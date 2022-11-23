@@ -2,171 +2,147 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37D46635FD6
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Nov 2022 14:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A28763603C
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Nov 2022 14:43:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236846AbiKWNck (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Nov 2022 08:32:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39696 "EHLO
+        id S237441AbiKWNn4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Nov 2022 08:43:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238096AbiKWNbg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Nov 2022 08:31:36 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 382C76F359;
-        Wed, 23 Nov 2022 05:14:36 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id f7so24786039edc.6;
-        Wed, 23 Nov 2022 05:14:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sauF/j+i6mkS8I5Asm3wkjg9rAoolnMVFFABQhVn7ts=;
-        b=JrgCjNHpmpS+UFD/hJxkEdxsDcmk00K9l1zgw4rjJ6QL5LFgR9cDjNY17XgiVyuKWT
-         GVX3FjNvQF532OmACfplDQxa0ET6vUF3+AwWkzCoQgdvk8wm/vwi5bqEPhjgds3tvHVk
-         qcn3+9bWbQ09f6O6mbQXTHtJZBCGwc8Lfjz7fIehiorZZ8oPg8dRKYCne/QKG+ZgQ3Z5
-         zzGAl10ChcVHD+8+Mhy+mnFO2Ek6zUiOt22qnko9TArrSnnj1eidLr1A138vvA9aLTcz
-         ZwMNfHN3QT6GpL5rAIMHY7Io5oO/gphYT8wcDC9vjb4hS9xYXmqoE4cy5//Ks0/sJomc
-         X3OA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sauF/j+i6mkS8I5Asm3wkjg9rAoolnMVFFABQhVn7ts=;
-        b=hTNUNN9prRDxYVem/12iuh5DtKfC5PRe+pzM1IrmUMOLxQc3FQ/yFXOPvGHBcvGji9
-         Wzl22oWHAMP9an14CgNX2/ihv8DD2OqqgNEAYqJd+3JNTaoqi+Xtopqi1pTy498UAVvW
-         cMC1niuea8DC+Vp1EuaBc2oBhoArwK86qNSq7CPerDBxPZ+Vl0mBWB/DPt4JE5K+EmGx
-         1u8VH+yBg8xOyCyYN09YFJlaO1EtG7SWE3aNDDXR3Fxorqu5VhaIlfs9UxMnoMA/BnCF
-         +EBlhakytqHlVOEQyRaANdboSi3nT5W0Flujf/+2evK7KMsI+xz8YPqSfZZ51erEW/g/
-         b9yQ==
-X-Gm-Message-State: ANoB5pnopyhkTq/4FvLPy0osu2m+4sy5RaC2DL4duSgtGf6o4Q0Cy4oF
-        4twblCdXN3tBgDHzhtoAL7I=
-X-Google-Smtp-Source: AA0mqf4EMwcpsdY1UQ9nMh8FYiw8FldQtuxFrB6UO57Z4G73kQazssLgzz4HdFhaHz+MfDNKhbLKUA==
-X-Received: by 2002:a05:6402:181:b0:461:ea0c:e151 with SMTP id r1-20020a056402018100b00461ea0ce151mr11327924edv.376.1669209274614;
-        Wed, 23 Nov 2022 05:14:34 -0800 (PST)
-Received: from [10.20.0.7] ([37.120.217.162])
-        by smtp.gmail.com with ESMTPSA id oz36-20020a1709077da400b00734bfab4d59sm958602ejc.170.2022.11.23.05.14.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Nov 2022 05:14:34 -0800 (PST)
-Message-ID: <711d5275-7e80-c00d-0cdc-0f3d52175361@gmail.com>
-Date:   Wed, 23 Nov 2022 14:14:31 +0100
+        with ESMTP id S237559AbiKWNnl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Nov 2022 08:43:41 -0500
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 709AA8E09B;
+        Wed, 23 Nov 2022 05:32:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669210327; x=1700746327;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=nANvhtrFdqCwCwxA6/+CX0ExEjOjpCpyBs81wpazx0E=;
+  b=Kfgqx84DNrxl9TaZUtHhTfvqNiKtVT9oE40P2pkuAOMe9WcsT4iMtiwF
+   0xlrA87sdp1r1NvBjoFFgCiB2AyBpjKGlhddvZcPnSpmRkfoCPvbITNcx
+   2G+msKHpZzdJmpOSI3wv4v6YFEjLTC2lcTgGA8BVMfQsEtzrQak5PF61M
+   GPtr4io3aOtr7DmEG8No8gHdH8ii72r3fo7kcumlA+tIbrDE8rDMgNqM3
+   d6AgjcvDYUP6SC0qtx6ot8BqvponSwCaqXq4c5FXPApR3t8BEoXSi81yU
+   /snvnIfDZqhyYtvbG+dx5JAovoRhO6gwdqFS8SZBQe4uWG1465aA4EOKa
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10539"; a="340944976"
+X-IronPort-AV: E=Sophos;i="5.96,187,1665471600"; 
+   d="scan'208";a="340944976"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2022 05:32:04 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10539"; a="641797490"
+X-IronPort-AV: E=Sophos;i="5.96,187,1665471600"; 
+   d="scan'208";a="641797490"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga002.jf.intel.com with ESMTP; 23 Nov 2022 05:32:01 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oxpr5-00GIjM-2x;
+        Wed, 23 Nov 2022 15:31:59 +0200
+Date:   Wed, 23 Nov 2022 15:31:59 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Yang Yingliang <yangyingliang@huawei.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        djrscally@gmail.com, heikki.krogerus@linux.intel.com,
+        sakari.ailus@linux.intel.com, gregkh@linuxfoundation.org,
+        rafael@kernel.org
+Subject: Re: [PATCH v3] device property: fix of node refcount leak in
+ fwnode_graph_get_next_endpoint()
+Message-ID: <Y34gz4UXN7il3b49@smile.fi.intel.com>
+References: <20221123022542.2999510-1-yangyingliang@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH 3/5] driver core: make struct device_type.uevent() take a
- const *
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org
-Cc:     Jens Axboe <axboe@kernel.dk>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Stefan Richter <stefanr@s5r6.in-berlin.de>,
-        Wolfram Sang <wsa@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Sean Young <sean@mess.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Sanyog Kale <sanyog.r.kale@intel.com>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Chaitanya Kulkarni <kch@nvidia.com>,
-        Ming Lei <ming.lei@redhat.com>,
-        Jilin Yuan <yuanjilin@cdjrlc.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Won Chung <wonchung@google.com>, alsa-devel@alsa-project.org,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-i3c@lists.infradead.org, linux-input@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org
-References: <20221123122523.1332370-1-gregkh@linuxfoundation.org>
- <20221123122523.1332370-3-gregkh@linuxfoundation.org>
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-In-Reply-To: <20221123122523.1332370-3-gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221123022542.2999510-1-yangyingliang@huawei.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Wed, Nov 23, 2022 at 10:25:42AM +0800, Yang Yingliang wrote:
+> The 'parent' returned by fwnode_graph_get_port_parent()
+> with refcount incremented when 'prev' is not NULL, it
+> needs be put when finish using it.
+> 
+> Because the parent is const, introduce a new variable to
+> store the returned fwnode, then put it before returning
+> from fwnode_graph_get_next_endpoint().
 
-On 11/23/22 13:25, Greg Kroah-Hartman wrote:
-> The uevent() callback in struct device_type should not be modifying the
-> device that is passed into it, so mark it as a const * and propagate the
-> function signature changes out into all relevant subsystems that use
-> this callback.
+To me this looks good enough. Not sure if Dan has a chance (time) to look at
+this, though. And maybe even test...
 
-[...]
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-> diff --git a/drivers/platform/surface/aggregator/bus.c b/drivers/platform/surface/aggregator/bus.c
-> index de539938896e..407eb55050a6 100644
-> --- a/drivers/platform/surface/aggregator/bus.c
-> +++ b/drivers/platform/surface/aggregator/bus.c
-> @@ -35,9 +35,9 @@ static struct attribute *ssam_device_attrs[] = {
->   };
->   ATTRIBUTE_GROUPS(ssam_device);
->   
-> -static int ssam_device_uevent(struct device *dev, struct kobj_uevent_env *env)
-> +static int ssam_device_uevent(const struct device *dev, struct kobj_uevent_env *env)
->   {
-> -	struct ssam_device *sdev = to_ssam_device(dev);
-> +	const struct ssam_device *sdev = to_ssam_device(dev);
->   
->   	return add_uevent_var(env, "MODALIAS=ssam:d%02Xc%02Xt%02Xi%02Xf%02X",
->   			      sdev->uid.domain, sdev->uid.category,
+> Fixes: b5b41ab6b0c1 ("device property: Check fwnode->secondary in fwnode_graph_get_next_endpoint()")
+> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+> ---
+> v2 -> v3:
+>   Add a out label.
+> 
+> v1 -> v2:
+>   Introduce a new variable to store the returned fwnode.
+> ---
+>  drivers/base/property.c | 18 ++++++++++++------
+>  1 file changed, 12 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index 2a5a37fcd998..7f338cb4fb7b 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -989,26 +989,32 @@ struct fwnode_handle *
+>  fwnode_graph_get_next_endpoint(const struct fwnode_handle *fwnode,
+>  			       struct fwnode_handle *prev)
+>  {
+> +	struct fwnode_handle *ep, *port_parent = NULL;
+>  	const struct fwnode_handle *parent;
+> -	struct fwnode_handle *ep;
+>  
+>  	/*
+>  	 * If this function is in a loop and the previous iteration returned
+>  	 * an endpoint from fwnode->secondary, then we need to use the secondary
+>  	 * as parent rather than @fwnode.
+>  	 */
+> -	if (prev)
+> -		parent = fwnode_graph_get_port_parent(prev);
+> -	else
+> +	if (prev) {
+> +		port_parent = fwnode_graph_get_port_parent(prev);
+> +		parent = port_parent;
+> +	} else {
+>  		parent = fwnode;
+> +	}
+>  	if (IS_ERR_OR_NULL(parent))
+>  		return NULL;
+>  
+>  	ep = fwnode_call_ptr_op(parent, graph_get_next_endpoint, prev);
+>  	if (ep)
+> -		return ep;
+> +		goto out_put_port_parent;
+> +
+> +	ep = fwnode_graph_get_next_endpoint(parent->secondary, NULL);
+>  
+> -	return fwnode_graph_get_next_endpoint(parent->secondary, NULL);
+> +out_put_port_parent:
+> +	fwnode_handle_put(port_parent);
+> +	return ep;
+>  }
+>  EXPORT_SYMBOL_GPL(fwnode_graph_get_next_endpoint);
+>  
+> -- 
+> 2.25.1
+> 
 
-[...]
+-- 
+With Best Regards,
+Andy Shevchenko
 
-> --- a/include/linux/surface_aggregator/device.h
-> +++ b/include/linux/surface_aggregator/device.h
-> @@ -229,7 +229,7 @@ static inline bool is_ssam_device(struct device *d)
->    * Return: Returns a pointer to the &struct ssam_device wrapping the given
->    * device @d.
->    */
-> -static inline struct ssam_device *to_ssam_device(struct device *d)
-> +static inline struct ssam_device *to_ssam_device(const struct device *d)
->   {
->   	return container_of(d, struct ssam_device, dev);
->   }
 
-I am slightly conflicted about this change as that now more or less
-implicitly drops the const. So I'm wondering if it wouldn't be better to
-either create a function specifically for const pointers or to just
-open-code it in the instance above.
-
-I guess we could also convert this to a macro. Then at least there
-wouldn't be an explicit and potentially misleading const-conversion
-indicated in the function signature.
-
-Regards,
-Max
