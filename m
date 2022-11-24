@@ -2,143 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E585B637E68
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Nov 2022 18:39:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B3C9A637FF4
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Nov 2022 20:59:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229585AbiKXRjj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Nov 2022 12:39:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60600 "EHLO
+        id S229735AbiKXT7M (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Nov 2022 14:59:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229582AbiKXRje (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Nov 2022 12:39:34 -0500
-Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 699091400DB;
-        Thu, 24 Nov 2022 09:39:32 -0800 (PST)
-Received: by mail-il1-f172.google.com with SMTP id g7so1059334ile.0;
-        Thu, 24 Nov 2022 09:39:32 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Fy9syUmf9lBB+vO3GmqmIFnyaumQJieA2YTiSTCb7KM=;
-        b=f8L/7Ygq4uH/kCgJ7wCvvIqhVCMXw7Zj8AdHE84F+QhFqyeOPKz5xfZLCxf6ZQiBKY
-         7zMoAD9nc0osFTvQ4Di09CKw8TzD6cYxJ5XEHy+Y5hhyuB+mJQqnIYumBw+Lgaw41Fuh
-         /cmFdlQGlxNbfpS614BO+S4U0WDX9kXxWIQpSmjm5OBzJwzVXIxlJxd0qGEVO5j9FF43
-         KUql4Mp5VrnxVDWmT20agNCAzeWcAJCSQbv1AIn2FplBvwP195PTpNnFZ+dpzkqmw9tE
-         MKywKrcuaHJ31oBX0fjvnma96OR+Kl7q6Z1Fcs6fsvhnvENd0IQq/tpDVhSRCqWRRLqM
-         9XjA==
-X-Gm-Message-State: ANoB5pmtlH6lFmQzNoiVgcvHPbtmVeF0PcgPB5HG32wpQtUZfNsQ8Np3
-        tle9WWkrhzN0GyRhdApbGw==
-X-Google-Smtp-Source: AA0mqf5LuJW5tA5bCdNf646Y8aYXGvi50nEq5DJ8+tW1hkLkNlDqAhJNb0OWuDggMcswzQjeTgOHCg==
-X-Received: by 2002:a05:6e02:de8:b0:302:aa2b:3bff with SMTP id m8-20020a056e020de800b00302aa2b3bffmr6261698ilj.161.1669311571546;
-        Thu, 24 Nov 2022 09:39:31 -0800 (PST)
-Received: from robh_at_kernel.org ([64.188.179.252])
-        by smtp.gmail.com with ESMTPSA id c12-20020a02330c000000b003898778bed7sm108682jae.134.2022.11.24.09.39.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Nov 2022 09:39:31 -0800 (PST)
-Received: (nullmailer pid 4182344 invoked by uid 1000);
-        Thu, 24 Nov 2022 17:39:27 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        with ESMTP id S229821AbiKXT7J (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Nov 2022 14:59:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD1FE10AF
+        for <linux-acpi@vger.kernel.org>; Thu, 24 Nov 2022 11:57:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1669319863;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=+7VjSpm55Uc6sFsUphFIMlvG+vQLARNqOyyl0AiFriE=;
+        b=Y/Hw93WFa6wFd057Co0BLQPolfuiIcW2rbPVQ4QBSGvVQMF+mtGSyyFO8tkk/JAxEaWIKW
+        p46QmLgoA0m40Mn+knirIVP4ZSrBGa4lbnvAyaKxWFvKKj6IrG4RBg/UUD+STbd5orwDJ5
+        oKzFk1vvM7au4MBvwkaUMg3de3inOrg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-437-CUuR7DQFMnWp-Ex-6V8ODw-1; Thu, 24 Nov 2022 14:57:41 -0500
+X-MC-Unique: CUuR7DQFMnWp-Ex-6V8ODw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 36DD685A588;
+        Thu, 24 Nov 2022 19:57:41 +0000 (UTC)
+Received: from shalem.redhat.com (unknown [10.39.195.152])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id A0BFF4B400F;
+        Thu, 24 Nov 2022 19:57:40 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org
+Subject: [PATCH 0/3] platform/x86: int3472/discrete: Make it work with IPU6
+Date:   Thu, 24 Nov 2022 20:57:34 +0100
+Message-Id: <20221124195737.390729-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-From:   Rob Herring <robh@kernel.org>
-To:     Pin-yen Lin <treapking@chromium.org>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Xin Ji <xji@analogixsemi.com>, Lyude Paul <lyude@redhat.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Benson Leung <bleung@chromium.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        David Airlie <airlied@gmail.com>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        Prashant Malani <pmalani@chromium.org>,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
-        <nfraprado@collabora.com>, Andrzej Hajda <andrzej.hajda@intel.com>,
-        Allen Chen <allen.chen@ite.com.tw>,
-        Marek Vasut <marex@denx.de>, linux-acpi@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Robert Foss <robert.foss@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        linux-kernel@vger.kernel.org, Guenter Roeck <groeck@chromium.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        chrome-platform@lists.linux.dev
-In-Reply-To: <20221124102056.393220-7-treapking@chromium.org>
-References: <20221124102056.393220-1-treapking@chromium.org>
- <20221124102056.393220-7-treapking@chromium.org>
-Message-Id: <166930150123.3946649.3725588692267123167.robh@kernel.org>
-Subject: Re: [PATCH v6 6/7] dt/bindings: drm/bridge: it6505: Add mode-switch support
-Date:   Thu, 24 Nov 2022 11:39:27 -0600
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi All,
 
-On Thu, 24 Nov 2022 18:20:55 +0800, Pin-yen Lin wrote:
-> ITE IT6505 can be used in systems to switch the DP traffic between
-> two downstreams, which can be USB Type-C DisplayPort alternate mode
-> lane or regular DisplayPort output ports.
-> 
-> Update the binding to accommodate this usage by introducing a
-> data-lanes and a mode-switch property on endpoints.
-> 
-> Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-> 
-> ---
-> 
-> Changes in v6:
-> - Remove switches node and use endpoints and data-lanes property to
->   describe the connections.
-> 
->  .../bindings/display/bridge/ite,it6505.yaml   | 94 ++++++++++++++++++-
->  1 file changed, 90 insertions(+), 4 deletions(-)
-> 
+Here is a small set of patches to make the int3472/discrete code
+work with the sensor drivers bundled with the (unfortunately out of tree)
+IPU6 driver.
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+There are parts of the out of tree IPU6 code, like the sensor drivers,
+which can be moved to the mainline and I do plan to work on this at some
+point and then some of this might need to change. But for now the goal is
+to make the out of tree driver work with standard mainline distro kernels
+through e.g. dkms. Otherwise users need to run a patched kernel just for
+a couple of small differences.
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml:99:1: [error] syntax error: found character '\t' that cannot start any token (syntax)
+This is basically a rewrite of this patch:
+https://github.com/intel/ipu6-drivers/blob/master/patch/int3472-support-independent-clock-and-LED-gpios-5.17%2B.patch
 
-dtschema/dtc warnings/errors:
-make[1]: *** Deleting file 'Documentation/devicetree/bindings/display/bridge/ite,it6505.example.dts'
-Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml:99:1: found character '\t' that cannot start any token
-make[1]: *** [Documentation/devicetree/bindings/Makefile:26: Documentation/devicetree/bindings/display/bridge/ite,it6505.example.dts] Error 1
-make[1]: *** Waiting for unfinished jobs....
-./Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml:99:1: found character '\t' that cannot start any token
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml: ignoring, error parsing file
-make: *** [Makefile:1492: dt_binding_check] Error 2
+Wich users who want to use the IPU6 driver so far have had to manually
+apply to their kernels which is quite inconvenient.
 
-doc reference errors (make refcheckdocs):
+This rewrite makes 2 significant changes:
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20221124102056.393220-7-treapking@chromium.org
+1. Don't break things on IPU3 platforms
 
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
+2. Instead of extending the int3472_sensor_configs[] quirks table for each
+model which needs "clken" and "pled" GPIOs, do this based on matching
+the ACPI HID of the ACPI device describing the sensor.
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+The need for these GPIOs is a property of the specific sensor driver which
+binds using this same HID, so by using this we avoid having to extend the
+int3472_sensor_configs[] quirks table all the time.
 
-pip3 install dtschema --upgrade
+This allows roling back the behavior to at least use a clk-framework
+clk instead of clken GPIO on a per sensor(-driver) basis as we mainline
+the sensor drivers, assuming that the drivers are switched over to the
+clk framework as part of their mainlining.
 
-Please check and re-submit after running the above command.
+A bigger question is what to do with the privacy-led GPIO on IPU3
+we so far have turned the LED on/off at the same as te clock,
+but at least on some IPU6 models this won't work, because they only
+have a privacy-led GPIO and no clk_en GPIO (there is no sensor
+clk-control at all on some models).
+
+I think we should maybe move all models, including IPU3 based
+models over to using a normal GPIO for controlling the privacy-led
+to make things consistent.
+
+And likewise (eventually) completely drop the "clken" GPIO this
+patch series introduces (with some sensors) and instead always model
+this through the clk-framework.
+
+Regards,
+
+Hans
+
+
+Hans de Goede (3):
+  platform/x86: int3472/discrete: Refactor GPIO to sensor mapping
+  platform/x86: int3472/discrete: Get the polarity from the _DSM entry
+  platform/x86: int3472/discrete: Add support for sensor-drivers which
+    expect clken + pled GPIOs
+
+ drivers/platform/x86/intel/int3472/common.h   |  2 +-
+ drivers/platform/x86/intel/int3472/discrete.c | 92 ++++++++++++++++---
+ 2 files changed, 78 insertions(+), 16 deletions(-)
+
+-- 
+2.38.1
 
