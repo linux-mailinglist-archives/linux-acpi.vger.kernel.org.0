@@ -2,144 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE89663755E
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Nov 2022 10:40:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06FB2637622
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Nov 2022 11:21:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229782AbiKXJkJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Nov 2022 04:40:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50390 "EHLO
+        id S229714AbiKXKVL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Nov 2022 05:21:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229538AbiKXJkH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Nov 2022 04:40:07 -0500
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A51B6122954;
-        Thu, 24 Nov 2022 01:40:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1669282805; x=1700818805;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=tBsRip1ybo+bmkgsgqnM9YexcOV4mKtEojxs1KBi+Eg=;
-  b=IG2LBE/XYm/3q9wMyn4p07ueh35yOd4zEASWfvHocuvoR6h2flOoUjig
-   MgGSeuinebLEeU+r6vssxBN3SDXJWNE53Zbhs4unHibbbqEy1umCTTFzM
-   EmqoLxgQMr1U8ccsDJgwcfrLUDIh4QXQJrBjBiwLqvFywe9sNkWwHY4V7
-   20hNmFnMfoTg1i3LgqyzJ/VtHkMfoz8FscofcvsWBtFPPJVks2u3tbWI8
-   EQ00Qa9LD4AyV8Kfz/mAmLie+OzNJDnnF6qCAtygAXean6p//2cjBV8LW
-   9B2Y6Me5Yo5ZrcOjRMYugB2SB94ExInL44ex1Zcq68h1fiakV9I1FghbT
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="297623060"
-X-IronPort-AV: E=Sophos;i="5.96,190,1665471600"; 
-   d="scan'208";a="297623060"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2022 01:40:04 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="784574061"
-X-IronPort-AV: E=Sophos;i="5.96,190,1665471600"; 
-   d="scan'208";a="784574061"
-Received: from lkp-server01.sh.intel.com (HELO 64a2d449c951) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 24 Nov 2022 01:40:03 -0800
-Received: from kbuild by 64a2d449c951 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oy8iA-0003iX-1M;
-        Thu, 24 Nov 2022 09:40:02 +0000
-Date:   Thu, 24 Nov 2022 17:39:26 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 666c2722497d7c679ade03e0500b55464914209a
-Message-ID: <637f3bce.3t8BO6DYn4Ri89Tu%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S229711AbiKXKVI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Nov 2022 05:21:08 -0500
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 390C014A2D4
+        for <linux-acpi@vger.kernel.org>; Thu, 24 Nov 2022 02:21:07 -0800 (PST)
+Received: by mail-pj1-x1029.google.com with SMTP id k2-20020a17090a4c8200b002187cce2f92so4746973pjh.2
+        for <linux-acpi@vger.kernel.org>; Thu, 24 Nov 2022 02:21:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aKDzMB5fuyIKOWGUg1teGVMCu3uNeoCRybEoMSGH3XM=;
+        b=AZ3ZiaNlTyWkDUA3AI6svtb7rNC4BSHFotUOkJax3CQ3W7X+Ri6AW6gPdCYMn6OXDj
+         bIUJV4AnSunad2r4qQRf0bx5RJTEsVr8xljQHzTGajNbFsLC7LmAezam+ue5ZfUvmCQc
+         dWJADcKv3hAuRK6JnoUcCq1fXOh1lRnhdofME=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aKDzMB5fuyIKOWGUg1teGVMCu3uNeoCRybEoMSGH3XM=;
+        b=Sfz8G1Z8O+k459A+cuLhgbwX7xam6JOeIAp7Ga3z9LBohxrLCo+JbRhcfsKW383veg
+         jvvnre3qQZMpZrVEtpvLVf/koLAfzw/vz0AQ09aNb3xGmlB8odTZUAhwq0oN9/hvmASP
+         j1Iph4E/d58jI6Jkt5HUW5DHZOQ6+7DOJWQYhQk3f1AuvhZzBzmAoGvAFEYmf7aFo0TL
+         bK2bCYD9DGk9UmqCnyvPTc7fl1KSz1e24+49LjR2jbAIeixXGUnDAReOkrOxXZZ+wmPx
+         BYZDLVqxTXGT31iRcOE/JT9si5tWqUjQ+Mqo8Z7pyrK3+/zhLNHGuLFrVxV/MUCQfIXY
+         qr9A==
+X-Gm-Message-State: ANoB5pnucIhtKrFxnFhTt3G95wwi0wcyPv6Z4dPQNdO23yhuuStMogtH
+        5pYjsS1X9ENRt66DIAg3GwuuHQ==
+X-Google-Smtp-Source: AA0mqf7uce32MDEk2weA/QnGkYpN+4bihhCWnMXDkXgQE9HqR2K528a00R4+x8rxcAwAjBLzeizP7g==
+X-Received: by 2002:a17:90b:2341:b0:218:a506:4fdb with SMTP id ms1-20020a17090b234100b00218a5064fdbmr21682953pjb.207.1669285266760;
+        Thu, 24 Nov 2022 02:21:06 -0800 (PST)
+Received: from treapking.tpe.corp.google.com ([2401:fa00:1:10:d446:708:8556:dfee])
+        by smtp.gmail.com with ESMTPSA id t123-20020a625f81000000b005747b59fc54sm854584pfb.172.2022.11.24.02.21.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Nov 2022 02:21:06 -0800 (PST)
+From:   Pin-yen Lin <treapking@chromium.org>
+To:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <robert.foss@linaro.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>
+Cc:     Javier Martinez Canillas <javierm@redhat.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        dri-devel@lists.freedesktop.org,
+        Hsin-Yi Wang <hsinyi@chromium.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        devicetree@vger.kernel.org, Pin-yen Lin <treapking@chromium.org>,
+        chrome-platform@lists.linux.dev, linux-acpi@vger.kernel.org,
+        Marek Vasut <marex@denx.de>, Xin Ji <xji@analogixsemi.com>,
+        Lyude Paul <lyude@redhat.com>,
+        =?UTF-8?q?N=C3=ADcolas=20F=20=2E=20R=20=2E=20A=20=2E=20Prado?= 
+        <nfraprado@collabora.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-kernel@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>
+Subject: [PATCH v6 0/7] Register Type-C mode-switch in DP bridge endpoints
+Date:   Thu, 24 Nov 2022 18:20:49 +0800
+Message-Id: <20221124102056.393220-1-treapking@chromium.org>
+X-Mailer: git-send-email 2.38.1.584.g0f3c55d4c2-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 666c2722497d7c679ade03e0500b55464914209a  Merge branch 'thermal-intel' into bleeding-edge
 
-elapsed time: 827m
+This series introduces bindings for anx7625/it6505 to register Type-C
+mode-switch in their output endpoints, and use data-lanes property to
+describe the pin connections.
 
-configs tested: 62
-configs skipped: 2
+The first two patch modifies fwnode_graph_devcon_matches and
+cros_typec_init_ports to enable the registration of the switches.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Patch 3~5 introduce the bindings for anx7625 and the corresponding driver
+modifications.
 
-gcc tested configs:
-alpha                             allnoconfig
-i386                              allnoconfig
-arm                               allnoconfig
-arc                               allnoconfig
-powerpc                           allnoconfig
-um                             i386_defconfig
-arc                                 defconfig
-um                           x86_64_defconfig
-alpha                               defconfig
-s390                                defconfig
-sh                               allmodconfig
-s390                             allmodconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-s390                             allyesconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                          rhel-8.3-func
-m68k                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-x86_64                           rhel-8.3-kvm
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-syz
-m68k                             allyesconfig
-ia64                             allmodconfig
-i386                 randconfig-a011-20221121
-i386                 randconfig-a013-20221121
-i386                 randconfig-a012-20221121
-i386                 randconfig-a014-20221121
-i386                 randconfig-a016-20221121
-i386                 randconfig-a015-20221121
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-x86_64                        randconfig-a015
-i386                                defconfig
-arc                  randconfig-r043-20221124
-x86_64                              defconfig
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                             allyesconfig
-x86_64                               rhel-8.3
-i386                          randconfig-a005
-x86_64                           allyesconfig
-arm                                 defconfig
-arm                              allyesconfig
-arm64                            allyesconfig
+Patch 6~7 add similar bindings and driver changes for it6505.
 
-clang tested configs:
-x86_64                        randconfig-a012
-x86_64                        randconfig-a016
-x86_64                        randconfig-a014
-x86_64               randconfig-a004-20221121
-x86_64               randconfig-a001-20221121
-x86_64               randconfig-a003-20221121
-x86_64               randconfig-a002-20221121
-x86_64               randconfig-a005-20221121
-x86_64               randconfig-a006-20221121
-hexagon              randconfig-r041-20221124
-riscv                randconfig-r042-20221124
-hexagon              randconfig-r045-20221124
-s390                 randconfig-r044-20221124
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
+v5: https://lore.kernel.org/linux-usb/20220622173605.1168416-1-pmalani@chromium.org/
+
+
+Changes in v6:
+- Dropped typec-switch binding and use endpoints and data-lanes properties
+  to describe the pin connections
+- Changed the driver implementation to accommodate with the new bindings
+- Changed it6505_typec_mux_set callback function to accommodate with
+  the latest drm-misc patches
+- Added new patches (patch 1,2,4) to fix probing issues
+- Merged it6505/anx7625 driver changes into a single patch
+
+Pin-yen Lin (5):
+  dt-bindings: drm/bridge: anx7625: Add mode-switch support
+  drm/bridge: anx7625: Check for Type-C during panel registration
+  drm/bridge: anx7625: Register Type C mode switches
+  dt/bindings: drm/bridge: it6505: Add mode-switch support
+  drm/bridge: it6505: Register Type C mode switches
+
+Prashant Malani (2):
+  device property: Add remote endpoint to devcon matcher
+  platform/chrome: cros_ec_typec: Purge blocking switch devlinks
+
+ .../display/bridge/analogix,anx7625.yaml      |  73 ++++++-
+ .../bindings/display/bridge/ite,it6505.yaml   |  94 +++++++-
+ drivers/base/property.c                       |  15 ++
+ drivers/gpu/drm/bridge/Kconfig                |   1 +
+ drivers/gpu/drm/bridge/analogix/Kconfig       |   1 +
+ drivers/gpu/drm/bridge/analogix/anx7625.c     | 182 +++++++++++++++-
+ drivers/gpu/drm/bridge/analogix/anx7625.h     |  20 ++
+ drivers/gpu/drm/bridge/ite-it6505.c           | 205 +++++++++++++++++-
+ drivers/platform/chrome/cros_ec_typec.c       |   9 +
+ 9 files changed, 589 insertions(+), 11 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.38.1.584.g0f3c55d4c2-goog
+
