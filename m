@@ -2,47 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E37326378B4
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Nov 2022 13:18:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D85DA6378C0
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Nov 2022 13:23:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229539AbiKXMSS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Nov 2022 07:18:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35084 "EHLO
+        id S229463AbiKXMXs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Nov 2022 07:23:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229495AbiKXMSR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Nov 2022 07:18:17 -0500
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96CD9B2C;
-        Thu, 24 Nov 2022 04:18:16 -0800 (PST)
+        with ESMTP id S229379AbiKXMXs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Nov 2022 07:23:48 -0500
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 116D363149;
+        Thu, 24 Nov 2022 04:23:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1669292296; x=1700828296;
+  t=1669292627; x=1700828627;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=88JzpGsV3l3i1UU+gsY2jc1hU9imedkQHBbOB9+/b6U=;
-  b=YUaMM5UaZqbyyEQpCuhXV1DJXir/vkLlfXYkOUdcTw/cKhvc2+y2aj2u
-   perQAc4l5HrDbMZ8leMOjpNOOHKP8FiGTZBEgk6GSt5UR0DldnH1NcK7W
-   oLexJdz/2LToiLelm4tIm2jLtj/Le4LxyMabLvcosKwivtKHhcaEf5Rst
-   /ywUS2ubuFm7AMH1enD28QzWIbS1vmeBrj64EMK5xbzNvYaCz3Q7s/ZYl
-   kAPsQsC8Rx3iDNuRYTp6odqnhI4Eg4mkdrBykL6AbFhEFt//1okNhVALo
-   3hrUk+ljQsoOt49nWNQwKyJPaaZXHwc8sCRX2Ilpk01lmXlt0HOzBtHNU
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="312990215"
+  bh=ObxTC5S376qcP+jc5Vqug+j/70Vb8bRa53QKgt/sNI0=;
+  b=TAkd87MI3g9IIv6jKxilbUyRn7Xtf91ySoQVrSKBa76amUvI/djlpyzA
+   Qp59Yye0ah75bHWg9ssGDdK3+8JSeEUzRFGK0YLvTvvePRiME0WX5fbL7
+   IlIBZTfO80x1cHOaoboFtTMDpQdBkHAwhKutyBk58JvqjJVJoqV4i5ag2
+   6f/342glZbcNdrdhVE4dDbaNnot7T0UaMja7bgJqoELxsJ5JVMN7irWlz
+   7wCE23nVKBxk6/mPyJgCuQobHXkkooTF1i6Ubp6LZczIZ/x5pZvk++dSn
+   tl4XoIuPSXBJvB2tIMein+e1b7cEH8yqNrUoMlRKU+C27D+9w5rJ3VMQ7
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="376434111"
 X-IronPort-AV: E=Sophos;i="5.96,190,1665471600"; 
-   d="scan'208";a="312990215"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2022 04:18:16 -0800
+   d="scan'208";a="376434111"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2022 04:23:46 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="887356125"
+X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="642336159"
 X-IronPort-AV: E=Sophos;i="5.96,190,1665471600"; 
-   d="scan'208";a="887356125"
+   d="scan'208";a="642336159"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga006.fm.intel.com with ESMTP; 24 Nov 2022 04:18:08 -0800
+  by orsmga002.jf.intel.com with ESMTP; 24 Nov 2022 04:23:37 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1oyBB6-00Gjps-36;
-        Thu, 24 Nov 2022 14:18:04 +0200
-Date:   Thu, 24 Nov 2022 14:18:04 +0200
+        id 1oyBGQ-00GjwQ-0y;
+        Thu, 24 Nov 2022 14:23:34 +0200
+Date:   Thu, 24 Nov 2022 14:23:34 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Pin-yen Lin <treapking@chromium.org>
 Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
@@ -76,14 +76,14 @@ Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>,
         linux-kernel@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>
-Subject: Re: [PATCH v6 5/7] drm/bridge: anx7625: Register Type C mode switches
-Message-ID: <Y39g/OBLW3pt9qdy@smile.fi.intel.com>
+Subject: Re: [PATCH v6 7/7] drm/bridge: it6505: Register Type C mode switches
+Message-ID: <Y39iRg2TZCljOyNN@smile.fi.intel.com>
 References: <20221124102056.393220-1-treapking@chromium.org>
- <20221124102056.393220-6-treapking@chromium.org>
+ <20221124102056.393220-8-treapking@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221124102056.393220-6-treapking@chromium.org>
+In-Reply-To: <20221124102056.393220-8-treapking@chromium.org>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
@@ -94,93 +94,114 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 24, 2022 at 06:20:54PM +0800, Pin-yen Lin wrote:
+On Thu, Nov 24, 2022 at 06:20:56PM +0800, Pin-yen Lin wrote:
 > Register USB Type-C mode switches when the "mode-switch" property and
-> relevant port are available in Device Tree. Configure the crosspoint
-> switch based on the entered alternate mode for a specific Type-C
-> connector.
+> relevant port are available in Device Tree. Configure the "lane_swap"
+> state based on the entered alternate mode for a specific Type-C
+> connector, which ends up updating the lane swap registers of the it6505
+> chip.
 
 ...
 
-> +static void anx7625_typec_two_ports_update(struct anx7625_data *ctx)
+>  config DRM_ITE_IT6505
+>          tristate "ITE IT6505 DisplayPort bridge"
+>          depends on OF
+> +	depends on TYPEC || TYPEC=n
+>  	select DRM_DISPLAY_DP_HELPER
+>  	select DRM_DISPLAY_HDCP_HELPER
+>  	select DRM_DISPLAY_HELPER
+
+Something went wrong with the indentation. Perhaps you need to fix it first.
+
+...
+
+>  #include <drm/drm_edid.h>
+>  #include <drm/drm_print.h>
+>  #include <drm/drm_probe_helper.h>
+> +#include <drm/drm_of.h>
+
+Make it ordered?
+
+...
+
+> +struct it6505_port_data {
+
+> +	bool dp_connected;
+
+Perhaps make it last?
+
+> +	struct typec_mux_dev *typec_mux;
+> +	struct it6505 *it6505;
+> +};
+
+...
+
+> +static void it6505_typec_ports_update(struct it6505 *it6505)
 > +{
-> +	if (ctx->typec_ports[0].dp_connected && ctx->typec_ports[1].dp_connected)
+> +	usleep_range(3000, 4000);
+> +
+> +	if (it6505->typec_ports[0].dp_connected && it6505->typec_ports[1].dp_connected)
 > +		/* Both ports available, do nothing to retain the current one. */
 > +		return;
-
-> +	else if (ctx->typec_ports[0].dp_connected)
-
-This 'else' is redundant. I would rewrite above as
-
-	/* Check if both ports available and do nothing to retain the current one */
-	if (ctx->typec_ports[0].dp_connected && ctx->typec_ports[1].dp_connected)
-		return;
-
-	if (ctx->typec_ports[0].dp_connected)
-
-> +		anx7625_set_crosspoint_switch(ctx, TYPEC_ORIENTATION_NORMAL);
-> +	else if (ctx->typec_ports[1].dp_connected)
-> +		anx7625_set_crosspoint_switch(ctx, TYPEC_ORIENTATION_REVERSE);
+> +	else if (it6505->typec_ports[0].dp_connected)
+> +		it6505->lane_swap = false;
+> +	else if (it6505->typec_ports[1].dp_connected)
+> +		it6505->lane_swap = true;
+> +
+> +	usleep_range(3000, 4000);
 > +}
 
-...
+As per previous patch comments.
 
-> +	data->dp_connected = (state->alt && state->alt->svid == USB_TYPEC_DP_SID &&
-> +			      state->alt->mode == USB_TYPEC_DP_MODE);
-
-Parentheses are not needed.
+Also, comment out these long sleeps. Why they are needed.
 
 ...
 
-> +	/*
-> +	 * <0 1> refers to SSRX1/SSTX1, and <2 3> refers to SSRX2/SSTX2.
-> +	 */
+> +		int ret = pm_runtime_get_sync(dev);
+> +
+> +		/*
+> +		 * On system resume, mux_set can be triggered before
+> +		 * pm_runtime_force_resume re-enables runtime power management.
+
+We refer to the functions as func().
+
+> +		 * Handling the error here to make sure the bridge is powered on.
+> +		 */
+> +		if (ret < 0)
+> +			it6505_poweron(it6505);
+
+This seems needed a bit more of explanation, esp. why you leave PM runtime
+reference count bumped up.
+
+...
+
+> +	num_lanes = drm_of_get_data_lanes_count(node, 0, 2);
+> +	if (num_lanes <= 0) {
+> +		dev_err(dev, "Error on getting data lanes count: %d\n",
+> +			num_lanes);
+> +		return num_lanes;
+> +	}
+> +
+> +	ret = of_property_read_u32_array(node, "data-lanes", dp_lanes, num_lanes);
+> +	if (ret) {
+> +		dev_err(dev, "Failed to read the data-lanes variable: %d\n",
+> +			ret);
+> +		return ret;
+> +	}
+> +
 > +	for (i = 0; i < num_lanes; i++) {
-
 > +		if (port_num != -1 && port_num != dp_lanes[i] / 2) {
 > +			dev_err(dev, "Invalid data lane numbers\n");
 > +			return -EINVAL;
 > +		}
 
-According to Rob Linux must not validate device tree. If you need it, use
-proper YAML schema.
+As per previous patch comments.
 
 > +		port_num = dp_lanes[i] / 2;
 > +	}
 
-...
-
-> +	if (!ctx->num_typec_switches) {
-> +		dev_warn(dev, "No Type-C switches node found\n");
-
-> +		return ret;
-
-Why not to return 0 explicitly?
-
-> +	}
-
-...
-
-> +	ctx->typec_ports = devm_kcalloc(
-
-Broken indentation.
-
-> +		dev, ctx->num_typec_switches, sizeof(struct anx7625_port_data),
-> +		GFP_KERNEL);
-> +	if (!ctx->typec_ports)
-> +		return -ENOMEM;
-
-...
-
-> +struct anx7625_port_data {
-
-> +	bool dp_connected;
-
-You can save some bytes on some architectures if move this to be last field.
-
-> +	struct typec_mux_dev *typec_mux;
-> +	struct anx7625_data *ctx;
-> +};
+The above seems like tons of duplicating code that drivers need to implement.
+Can we shrink that burden by adding some library functions?
 
 -- 
 With Best Regards,
