@@ -2,773 +2,281 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 193E5638938
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Nov 2022 12:56:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B74E638D55
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Nov 2022 16:14:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229646AbiKYL4l (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Nov 2022 06:56:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53124 "EHLO
+        id S229895AbiKYPN7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Nov 2022 10:13:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229664AbiKYL4j (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Nov 2022 06:56:39 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B13572F02A;
-        Fri, 25 Nov 2022 03:56:35 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4365CB82A8C;
-        Fri, 25 Nov 2022 11:56:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B92C433D6;
-        Fri, 25 Nov 2022 11:56:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669377392;
-        bh=icXlfugho0mdx2O82L8JyC7jmMR5KAUk9gnxoRAhDu0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=fuBXHsBXhwkT35VOONUYR5lEXnZjukWkiF2ktDsHXoatWREhn7hwpMofnld5f6fcn
-         BLSgQ6KgWiohyIO5X9a48no9eUPJTvRgko9eGh70lAWCUNgeuMKWz7BETepxK8mKD9
-         TGeyAfy2XUI0JyDMxXu1Byoqm5E8vzsn3TZkwbUyE5C9fEpf8fqmYC71JjXvy2CX6/
-         dDbYt0Bsar/+LamM3KKbSoiP5ZHOVb2o1/tQJl9ZlI+3sgS0eDCtUBnVxAGXNOkUVQ
-         zeMsAPwU3HL0pjOWvBBvt9QiNeIhJrDU6M0RkISoZF/NOQkUAQA2yGBehMxGZ1/R+p
-         H7gx81DfoEg7A==
-Date:   Fri, 25 Nov 2022 11:56:18 +0000
-From:   Mauro Carvalho Chehab <mchehab@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+        with ESMTP id S229901AbiKYPNm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Nov 2022 10:13:42 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 85410D4C;
+        Fri, 25 Nov 2022 07:13:14 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3EBC12B;
+        Fri, 25 Nov 2022 07:13:20 -0800 (PST)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1A4F63F587;
+        Fri, 25 Nov 2022 07:13:10 -0800 (PST)
+Date:   Fri, 25 Nov 2022 15:13:08 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Pierre Gondois <pierre.gondois@arm.com>
+Cc:     linux-kernel@vger.kernel.org, Ionela.Voinescu@arm.com,
+        Rob.Herring@arm.com, Catalin Marinas <catalin.marinas@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        Stefan Richter <stefanr@s5r6.in-berlin.de>,
-        Wolfram Sang <wsa@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Sean Young <sean@mess.org>, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Sanyog Kale <sanyog.r.kale@intel.com>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Chaitanya Kulkarni <kch@nvidia.com>,
-        Ming Lei <ming.lei@redhat.com>,
-        Jilin Yuan <yuanjilin@cdjrlc.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Won Chung <wonchung@google.com>, alsa-devel@alsa-project.org,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-i3c@lists.infradead.org, linux-input@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH 3/5] driver core: make struct device_type.uevent() take
- a const *
-Message-ID: <20221125115618.14ef8167@sal.lan>
-In-Reply-To: <20221123122523.1332370-3-gregkh@linuxfoundation.org>
-References: <20221123122523.1332370-1-gregkh@linuxfoundation.org>
-        <20221123122523.1332370-3-gregkh@linuxfoundation.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-redhat-linux-gnu)
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Gavin Shan <gshan@redhat.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        SeongJae Park <sj@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 5/5] arch_topology: Build cacheinfo from primary CPU
+Message-ID: <20221125151308.2vr25mnkctfj6h7b@bogus>
+References: <20221121171217.3581004-1-pierre.gondois@arm.com>
+ <20221121171217.3581004-6-pierre.gondois@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221121171217.3581004-6-pierre.gondois@arm.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Em Wed, 23 Nov 2022 13:25:21 +0100
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> escreveu:
-
-> The uevent() callback in struct device_type should not be modifying the
-> device that is passed into it, so mark it as a const * and propagate the
-> function signature changes out into all relevant subsystems that use
-> this callback.
-
-Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-
+On Mon, Nov 21, 2022 at 06:12:13PM +0100, Pierre Gondois wrote:
+> commit 3fcbf1c77d08 ("arch_topology: Fix cache attributes detection
+> in the CPU hotplug path")
+> adds a call to detect_cache_attributes() to populate the cacheinfo
+> before updating the siblings mask. detect_cache_attributes() allocates
+> memory and can take the PPTT mutex (on ACPI platforms). On PREEMPT_RT
+> kernels, on secondary CPUs, this triggers a:
+>   'BUG: sleeping function called from invalid context' [1]
+> as the code is executed with preemption and interrupts disabled.
 > 
-> Cc: Jens Axboe <axboe@kernel.dk>
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: Len Brown <lenb@kernel.org>
-> Cc: Stefan Richter <stefanr@s5r6.in-berlin.de>
-> Cc: Wolfram Sang <wsa@kernel.org>
-> Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Cc: Sean Young <sean@mess.org>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Frank Rowand <frowand.list@gmail.com>
-> Cc: Maximilian Luz <luzmaximilian@gmail.com>
-> Cc: Hans de Goede <hdegoede@redhat.com>
-> Cc: Mark Gross <markgross@kernel.org>
-> Cc: Vinod Koul <vkoul@kernel.org>
-> Cc: Bard Liao <yung-chuan.liao@linux.intel.com>
-> Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-> Cc: Sanyog Kale <sanyog.r.kale@intel.com>
-> Cc: Andreas Noever <andreas.noever@gmail.com>
-> Cc: Michael Jamet <michael.jamet@intel.com>
-> Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Cc: Yehezkel Bernat <YehezkelShB@gmail.com>
-> Cc: Jiri Slaby <jirislaby@kernel.org>
-> Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-> Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
-> Cc: Chaitanya Kulkarni <kch@nvidia.com>
-> Cc: Ming Lei <ming.lei@redhat.com>
-> Cc: Jilin Yuan <yuanjilin@cdjrlc.com>
-> Cc: Alan Stern <stern@rowland.harvard.edu>
-> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ira Weiny <ira.weiny@intel.com>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Won Chung <wonchung@google.com>
-> Cc: alsa-devel@alsa-project.org
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-acpi@vger.kernel.org
-> Cc: linux-block@vger.kernel.org
-> Cc: linux-i2c@vger.kernel.org
-> Cc: linux-i3c@lists.infradead.org
-> Cc: linux-input@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-media@vger.kernel.org
-> Cc: linux-serial@vger.kernel.org
-> Cc: linux-usb@vger.kernel.org
-> Cc: linux1394-devel@lists.sourceforge.net
-> Cc: platform-driver-x86@vger.kernel.org
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> The primary CPU was previously storing the cache information using
+> the now removed (struct cpu_topology).llc_id:
+> commit 5b8dc787ce4a ("arch_topology: Drop LLC identifier stash from
+> the CPU topology")
+> 
+> allocate_cache_info() tries to build the cacheinfo from the primary
+> CPU prior secondary CPUs boot, if the DT/ACPI description
+> contains cache information.
+> If allocate_cache_info() fails, then fallback to the current state
+> for the cacheinfo allocation. [1] will be triggered in such case.
+> 
+> When unplugging a CPU, the cacheinfo memory cannot be freed. If it
+> was, then the memory would be allocated early by the re-plugged
+> CPU and would trigger [1].
+> 
+> Note that populate_cache_leaves() might be called multiple times
+> due to populate_leaves being moved up. This is required since
+> detect_cache_attributes() might be called with per_cpu_cacheinfo(cpu)
+> being allocated but not populated.
+> 
+> [1]:
+> [    7.560791] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:46
+> [    7.560794] in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 0, name: swapper/111
+> [    7.560796] preempt_count: 1, expected: 0
+> [    7.560797] RCU nest depth: 1, expected: 1
+> [    7.560799] 3 locks held by swapper/111/0:
+> [    7.560800]  #0: ffff403e406cae98 (&pcp->lock){+.+.}-{3:3}, at: get_page_from_freelist+0x218/0x12c8
+> [    7.560811]  #1: ffffc5f8ed09f8e8 (rcu_read_lock){....}-{1:3}, at: rt_spin_trylock+0x48/0xf0
+> [    7.560820]  #2: ffff403f400b4fd8 (&zone->lock){+.+.}-{3:3}, at: rmqueue_bulk+0x64/0xa80
+> [    7.560824] irq event stamp: 0
+> [    7.560825] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+> [    7.560827] hardirqs last disabled at (0): [<ffffc5f8e9f7d594>] copy_process+0x5dc/0x1ab8
+> [    7.560830] softirqs last  enabled at (0): [<ffffc5f8e9f7d594>] copy_process+0x5dc/0x1ab8
+> [    7.560833] softirqs last disabled at (0): [<0000000000000000>] 0x0
+> [    7.560834] Preemption disabled at:
+> [    7.560835] [<ffffc5f8e9fd3c28>] migrate_enable+0x30/0x130
+> [    7.560838] CPU: 111 PID: 0 Comm: swapper/111 Tainted: G        W          6.0.0-rc4-rt6-[...]
+> [    7.560841] Call trace:
+> [...]
+> [    7.560870]  __kmalloc+0xbc/0x1e8
+> [    7.560873]  detect_cache_attributes+0x2d4/0x5f0
+> [    7.560876]  update_siblings_masks+0x30/0x368
+> [    7.560880]  store_cpu_topology+0x78/0xb8
+> [    7.560883]  secondary_start_kernel+0xd0/0x198
+> [    7.560885]  __secondary_switched+0xb0/0xb4
+> 
+> Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
 > ---
->  block/partitions/core.c                   |  4 ++--
->  drivers/acpi/device_sysfs.c               |  8 ++++----
->  drivers/acpi/internal.h                   |  2 +-
->  drivers/firewire/core-device.c            |  8 ++++----
->  drivers/i2c/i2c-core-base.c               |  4 ++--
->  drivers/i3c/device.c                      |  4 ++--
->  drivers/i3c/master.c                      |  4 ++--
->  drivers/input/input.c                     | 16 ++++++++--------
->  drivers/media/rc/rc-main.c                |  2 +-
->  drivers/of/device.c                       |  4 ++--
->  drivers/platform/surface/aggregator/bus.c |  4 ++--
->  drivers/soundwire/bus_type.c              |  4 ++--
->  drivers/thunderbolt/switch.c              |  4 ++--
->  drivers/thunderbolt/tb.h                  |  2 +-
->  drivers/thunderbolt/xdomain.c             |  6 +++---
->  drivers/tty/serdev/core.c                 |  2 +-
->  drivers/usb/core/message.c                |  8 ++++----
->  drivers/usb/core/usb.c                    |  4 ++--
->  drivers/usb/phy/phy.c                     |  6 +++---
->  drivers/usb/roles/class.c                 |  3 +--
->  drivers/usb/typec/class.c                 |  2 +-
->  include/linux/acpi.h                      |  4 ++--
->  include/linux/device.h                    |  2 +-
->  include/linux/firewire.h                  |  6 +++---
->  include/linux/i3c/device.h                |  4 ++--
->  include/linux/of_device.h                 |  4 ++--
->  include/linux/soundwire/sdw_type.h        |  2 +-
->  include/linux/surface_aggregator/device.h |  2 +-
->  28 files changed, 62 insertions(+), 63 deletions(-)
+>  drivers/base/arch_topology.c | 10 ++++++-
+>  drivers/base/cacheinfo.c     | 56 +++++++++++++++++++++++++++++-------
+>  include/linux/cacheinfo.h    |  1 +
+>  3 files changed, 55 insertions(+), 12 deletions(-)
 > 
-> diff --git a/block/partitions/core.c b/block/partitions/core.c
-> index b8112f52d388..7b8ef6296abd 100644
-> --- a/block/partitions/core.c
-> +++ b/block/partitions/core.c
-> @@ -254,9 +254,9 @@ static void part_release(struct device *dev)
->  	iput(dev_to_bdev(dev)->bd_inode);
->  }
+> diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
+> index e7d6e6657ffa..54be88f658a0 100644
+> --- a/drivers/base/arch_topology.c
+> +++ b/drivers/base/arch_topology.c
+> @@ -825,7 +825,7 @@ __weak int __init parse_acpi_topology(void)
+>  #if defined(CONFIG_ARM64) || defined(CONFIG_RISCV)
+>  void __init init_cpu_topology(void)
+>  {
+> -	int ret;
+> +	int cpu, ret;
 >  
-> -static int part_uevent(struct device *dev, struct kobj_uevent_env *env)
-> +static int part_uevent(const struct device *dev, struct kobj_uevent_env *env)
->  {
-> -	struct block_device *part = dev_to_bdev(dev);
-> +	const struct block_device *part = dev_to_bdev(dev);
->  
->  	add_uevent_var(env, "PARTN=%u", part->bd_partno);
->  	if (part->bd_meta_info && part->bd_meta_info->volname[0])
-> diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
-> index 120873dad2cc..daff2c0c5c52 100644
-> --- a/drivers/acpi/device_sysfs.c
-> +++ b/drivers/acpi/device_sysfs.c
-> @@ -133,7 +133,7 @@ static void acpi_hide_nondev_subnodes(struct acpi_device_data *data)
->   *         -EINVAL: output error
->   *         -ENOMEM: output is truncated
->   */
-> -static int create_pnp_modalias(struct acpi_device *acpi_dev, char *modalias,
-> +static int create_pnp_modalias(const struct acpi_device *acpi_dev, char *modalias,
->  			       int size)
->  {
->  	int len;
-> @@ -191,7 +191,7 @@ static int create_pnp_modalias(struct acpi_device *acpi_dev, char *modalias,
->   * only be called for devices having ACPI_DT_NAMESPACE_HID in their list of
->   * ACPI/PNP IDs.
->   */
-> -static int create_of_modalias(struct acpi_device *acpi_dev, char *modalias,
-> +static int create_of_modalias(const struct acpi_device *acpi_dev, char *modalias,
->  			      int size)
->  {
->  	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER };
-> @@ -239,7 +239,7 @@ static int create_of_modalias(struct acpi_device *acpi_dev, char *modalias,
->  	return len;
->  }
->  
-> -int __acpi_device_uevent_modalias(struct acpi_device *adev,
-> +int __acpi_device_uevent_modalias(const struct acpi_device *adev,
->  				  struct kobj_uevent_env *env)
->  {
->  	int len;
-> @@ -277,7 +277,7 @@ int __acpi_device_uevent_modalias(struct acpi_device *adev,
->   * Because other buses do not support ACPI HIDs & CIDs, e.g. for a device with
->   * hid:IBM0001 and cid:ACPI0001 you get: "acpi:IBM0001:ACPI0001".
->   */
-> -int acpi_device_uevent_modalias(struct device *dev, struct kobj_uevent_env *env)
-> +int acpi_device_uevent_modalias(const struct device *dev, struct kobj_uevent_env *env)
->  {
->  	return __acpi_device_uevent_modalias(acpi_companion_match(dev), env);
->  }
-> diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-> index 219c02df9a08..d422884eb3d0 100644
-> --- a/drivers/acpi/internal.h
-> +++ b/drivers/acpi/internal.h
-> @@ -120,7 +120,7 @@ int acpi_bus_register_early_device(int type);
->                       Device Matching and Notification
->     -------------------------------------------------------------------------- */
->  struct acpi_device *acpi_companion_match(const struct device *dev);
-> -int __acpi_device_uevent_modalias(struct acpi_device *adev,
-> +int __acpi_device_uevent_modalias(const struct acpi_device *adev,
->  				  struct kobj_uevent_env *env);
->  
->  /* --------------------------------------------------------------------------
-> diff --git a/drivers/firewire/core-device.c b/drivers/firewire/core-device.c
-> index adddd8c45d0c..aa597cda0d88 100644
-> --- a/drivers/firewire/core-device.c
-> +++ b/drivers/firewire/core-device.c
-> @@ -133,7 +133,7 @@ static void get_ids(const u32 *directory, int *id)
+>  	reset_cpu_topology();
+>  	ret = parse_acpi_topology();
+> @@ -840,6 +840,14 @@ void __init init_cpu_topology(void)
+>  		reset_cpu_topology();
+>  		return;
 >  	}
+> +
+> +	for_each_possible_cpu(cpu) {
+> +		ret = allocate_cache_info(cpu);
+> +		if (ret) {
+> +			pr_err("Early cacheinfo failed, ret = %d\n", ret);
+
+Is it better to be more specific in the error message or do you think
+error code will suffice ? Something like
+
+"Early cacheinfo allocation failed, ret = %d\n"
+
+> +			break;
+> +		}
+> +	}
 >  }
 >  
-> -static void get_modalias_ids(struct fw_unit *unit, int *id)
-> +static void get_modalias_ids(const struct fw_unit *unit, int *id)
->  {
->  	get_ids(&fw_parent_device(unit)->config_rom[5], id);
->  	get_ids(unit->directory, id);
-> @@ -195,7 +195,7 @@ static void fw_unit_remove(struct device *dev)
->  	driver->remove(fw_unit(dev));
+>  void store_cpu_topology(unsigned int cpuid)
+> diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
+> index 6f6cd120c4f1..429a55e7c5e2 100644
+> --- a/drivers/base/cacheinfo.c
+> +++ b/drivers/base/cacheinfo.c
+> @@ -371,10 +371,6 @@ static void free_cache_attributes(unsigned int cpu)
+>  		return;
+>  
+>  	cache_shared_cpu_map_remove(cpu);
+> -
+> -	kfree(per_cpu_cacheinfo(cpu));
+> -	per_cpu_cacheinfo(cpu) = NULL;
+> -	cache_leaves(cpu) = 0;
 >  }
 >  
-> -static int get_modalias(struct fw_unit *unit, char *buffer, size_t buffer_size)
-> +static int get_modalias(const struct fw_unit *unit, char *buffer, size_t buffer_size)
->  {
->  	int id[] = {0, 0, 0, 0};
->  
-> @@ -206,9 +206,9 @@ static int get_modalias(struct fw_unit *unit, char *buffer, size_t buffer_size)
->  			id[0], id[1], id[2], id[3]);
+>  int __weak init_cache_level(unsigned int cpu)
+> @@ -387,18 +383,56 @@ int __weak populate_cache_leaves(unsigned int cpu)
+>  	return -ENOENT;
 >  }
 >  
-> -static int fw_unit_uevent(struct device *dev, struct kobj_uevent_env *env)
-> +static int fw_unit_uevent(const struct device *dev, struct kobj_uevent_env *env)
->  {
-> -	struct fw_unit *unit = fw_unit(dev);
-> +	const struct fw_unit *unit = fw_unit(dev);
->  	char modalias[64];
->  
->  	get_modalias(unit, modalias, sizeof(modalias));
-> diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-> index b4edf10e8fd0..fb16e33e52c6 100644
-> --- a/drivers/i2c/i2c-core-base.c
-> +++ b/drivers/i2c/i2c-core-base.c
-> @@ -136,9 +136,9 @@ static int i2c_device_match(struct device *dev, struct device_driver *drv)
->  	return 0;
->  }
->  
-> -static int i2c_device_uevent(struct device *dev, struct kobj_uevent_env *env)
-> +static int i2c_device_uevent(const struct device *dev, struct kobj_uevent_env *env)
->  {
-> -	struct i2c_client *client = to_i2c_client(dev);
-> +	const struct i2c_client *client = to_i2c_client(dev);
->  	int rc;
->  
->  	rc = of_device_uevent_modalias(dev, env);
-> diff --git a/drivers/i3c/device.c b/drivers/i3c/device.c
-> index e92d3e9a52bd..05f8ab762e34 100644
-> --- a/drivers/i3c/device.c
-> +++ b/drivers/i3c/device.c
-> @@ -58,7 +58,7 @@ EXPORT_SYMBOL_GPL(i3c_device_do_priv_xfers);
->   *
->   * Retrieve I3C dev info.
->   */
-> -void i3c_device_get_info(struct i3c_device *dev,
-> +void i3c_device_get_info(const struct i3c_device *dev,
->  			 struct i3c_device_info *info)
->  {
->  	if (!info)
-> @@ -194,7 +194,7 @@ EXPORT_SYMBOL_GPL(i3cdev_to_dev);
->   *
->   * Return: a pointer to an I3C device object.
->   */
-> -struct i3c_device *dev_to_i3cdev(struct device *dev)
-> +struct i3c_device *dev_to_i3cdev(const struct device *dev)
->  {
->  	return container_of(dev, struct i3c_device, dev);
->  }
-> diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-> index 351c81a929a6..bf1a2b2f34c4 100644
-> --- a/drivers/i3c/master.c
-> +++ b/drivers/i3c/master.c
-> @@ -273,9 +273,9 @@ static struct attribute *i3c_device_attrs[] = {
->  };
->  ATTRIBUTE_GROUPS(i3c_device);
->  
-> -static int i3c_device_uevent(struct device *dev, struct kobj_uevent_env *env)
-> +static int i3c_device_uevent(const struct device *dev, struct kobj_uevent_env *env)
->  {
-> -	struct i3c_device *i3cdev = dev_to_i3cdev(dev);
-> +	const struct i3c_device *i3cdev = dev_to_i3cdev(dev);
->  	struct i3c_device_info devinfo;
->  	u16 manuf, part, ext;
->  
-> diff --git a/drivers/input/input.c b/drivers/input/input.c
-> index 50597165dc54..a612afffa196 100644
-> --- a/drivers/input/input.c
-> +++ b/drivers/input/input.c
-> @@ -1371,7 +1371,7 @@ INPUT_DEV_STRING_ATTR_SHOW(phys);
->  INPUT_DEV_STRING_ATTR_SHOW(uniq);
->  
->  static int input_print_modalias_bits(char *buf, int size,
-> -				     char name, unsigned long *bm,
-> +				     char name, const unsigned long *bm,
->  				     unsigned int min_bit, unsigned int max_bit)
->  {
->  	int len = 0, i;
-> @@ -1383,7 +1383,7 @@ static int input_print_modalias_bits(char *buf, int size,
->  	return len;
->  }
->  
-> -static int input_print_modalias(char *buf, int size, struct input_dev *id,
-> +static int input_print_modalias(char *buf, int size, const struct input_dev *id,
->  				int add_cr)
->  {
->  	int len;
-> @@ -1431,7 +1431,7 @@ static ssize_t input_dev_show_modalias(struct device *dev,
->  }
->  static DEVICE_ATTR(modalias, S_IRUGO, input_dev_show_modalias, NULL);
->  
-> -static int input_print_bitmap(char *buf, int buf_size, unsigned long *bitmap,
-> +static int input_print_bitmap(char *buf, int buf_size, const unsigned long *bitmap,
->  			      int max, int add_cr);
->  
->  static ssize_t input_dev_show_properties(struct device *dev,
-> @@ -1523,7 +1523,7 @@ static const struct attribute_group input_dev_id_attr_group = {
->  	.attrs	= input_dev_id_attrs,
->  };
->  
-> -static int input_print_bitmap(char *buf, int buf_size, unsigned long *bitmap,
-> +static int input_print_bitmap(char *buf, int buf_size, const unsigned long *bitmap,
->  			      int max, int add_cr)
->  {
->  	int i;
-> @@ -1620,7 +1620,7 @@ static void input_dev_release(struct device *device)
->   * device bitfields.
->   */
->  static int input_add_uevent_bm_var(struct kobj_uevent_env *env,
-> -				   const char *name, unsigned long *bitmap, int max)
-> +				   const char *name, const unsigned long *bitmap, int max)
->  {
->  	int len;
->  
-> @@ -1638,7 +1638,7 @@ static int input_add_uevent_bm_var(struct kobj_uevent_env *env,
->  }
->  
->  static int input_add_uevent_modalias_var(struct kobj_uevent_env *env,
-> -					 struct input_dev *dev)
-> +					 const struct input_dev *dev)
->  {
->  	int len;
->  
-> @@ -1676,9 +1676,9 @@ static int input_add_uevent_modalias_var(struct kobj_uevent_env *env,
->  			return err;					\
->  	} while (0)
->  
-> -static int input_dev_uevent(struct device *device, struct kobj_uevent_env *env)
-> +static int input_dev_uevent(const struct device *device, struct kobj_uevent_env *env)
->  {
-> -	struct input_dev *dev = to_input_dev(device);
-> +	const struct input_dev *dev = to_input_dev(device);
->  
->  	INPUT_ADD_HOTPLUG_VAR("PRODUCT=%x/%x/%x/%x",
->  				dev->id.bustype, dev->id.vendor,
-> diff --git a/drivers/media/rc/rc-main.c b/drivers/media/rc/rc-main.c
-> index 527d9324742b..6bdad6341844 100644
-> --- a/drivers/media/rc/rc-main.c
-> +++ b/drivers/media/rc/rc-main.c
-> @@ -1614,7 +1614,7 @@ static void rc_dev_release(struct device *device)
->  	kfree(dev);
->  }
->  
-> -static int rc_dev_uevent(struct device *device, struct kobj_uevent_env *env)
-> +static int rc_dev_uevent(const struct device *device, struct kobj_uevent_env *env)
->  {
->  	struct rc_dev *dev = to_rc_dev(device);
->  	int ret = 0;
-> diff --git a/drivers/of/device.c b/drivers/of/device.c
-> index c674a13c3055..dda51b7ce597 100644
-> --- a/drivers/of/device.c
-> +++ b/drivers/of/device.c
-> @@ -248,7 +248,7 @@ const void *of_device_get_match_data(const struct device *dev)
->  }
->  EXPORT_SYMBOL(of_device_get_match_data);
->  
-> -static ssize_t of_device_get_modalias(struct device *dev, char *str, ssize_t len)
-> +static ssize_t of_device_get_modalias(const struct device *dev, char *str, ssize_t len)
->  {
->  	const char *compat;
->  	char *c;
-> @@ -372,7 +372,7 @@ void of_device_uevent(const struct device *dev, struct kobj_uevent_env *env)
->  	mutex_unlock(&of_mutex);
->  }
->  
-> -int of_device_uevent_modalias(struct device *dev, struct kobj_uevent_env *env)
-> +int of_device_uevent_modalias(const struct device *dev, struct kobj_uevent_env *env)
->  {
->  	int sl;
->  
-> diff --git a/drivers/platform/surface/aggregator/bus.c b/drivers/platform/surface/aggregator/bus.c
-> index de539938896e..407eb55050a6 100644
-> --- a/drivers/platform/surface/aggregator/bus.c
-> +++ b/drivers/platform/surface/aggregator/bus.c
-> @@ -35,9 +35,9 @@ static struct attribute *ssam_device_attrs[] = {
->  };
->  ATTRIBUTE_GROUPS(ssam_device);
->  
-> -static int ssam_device_uevent(struct device *dev, struct kobj_uevent_env *env)
-> +static int ssam_device_uevent(const struct device *dev, struct kobj_uevent_env *env)
->  {
-> -	struct ssam_device *sdev = to_ssam_device(dev);
-> +	const struct ssam_device *sdev = to_ssam_device(dev);
->  
->  	return add_uevent_var(env, "MODALIAS=ssam:d%02Xc%02Xt%02Xi%02Xf%02X",
->  			      sdev->uid.domain, sdev->uid.category,
-> diff --git a/drivers/soundwire/bus_type.c b/drivers/soundwire/bus_type.c
-> index 04b3529f8929..26c9a0a85d49 100644
-> --- a/drivers/soundwire/bus_type.c
-> +++ b/drivers/soundwire/bus_type.c
-> @@ -58,9 +58,9 @@ int sdw_slave_modalias(const struct sdw_slave *slave, char *buf, size_t size)
->  			slave->id.sdw_version, slave->id.class_id);
->  }
->  
-> -int sdw_slave_uevent(struct device *dev, struct kobj_uevent_env *env)
-> +int sdw_slave_uevent(const struct device *dev, struct kobj_uevent_env *env)
->  {
-> -	struct sdw_slave *slave = dev_to_sdw_dev(dev);
-> +	const struct sdw_slave *slave = dev_to_sdw_dev(dev);
->  	char modalias[32];
->  
->  	sdw_slave_modalias(slave, modalias, sizeof(modalias));
-> diff --git a/drivers/thunderbolt/switch.c b/drivers/thunderbolt/switch.c
-> index 60da5c23ccaf..2f4ef156b210 100644
-> --- a/drivers/thunderbolt/switch.c
-> +++ b/drivers/thunderbolt/switch.c
-> @@ -2175,9 +2175,9 @@ static void tb_switch_release(struct device *dev)
->  	kfree(sw);
->  }
->  
-> -static int tb_switch_uevent(struct device *dev, struct kobj_uevent_env *env)
-> +static int tb_switch_uevent(const struct device *dev, struct kobj_uevent_env *env)
->  {
-> -	struct tb_switch *sw = tb_to_switch(dev);
-> +	const struct tb_switch *sw = tb_to_switch(dev);
->  	const char *type;
->  
->  	if (sw->config.thunderbolt_version == USB4_VERSION_1_0) {
-> diff --git a/drivers/thunderbolt/tb.h b/drivers/thunderbolt/tb.h
-> index f9786976f5ec..909da0a98134 100644
-> --- a/drivers/thunderbolt/tb.h
-> +++ b/drivers/thunderbolt/tb.h
-> @@ -815,7 +815,7 @@ static inline bool tb_is_switch(const struct device *dev)
->  	return dev->type == &tb_switch_type;
->  }
->  
-> -static inline struct tb_switch *tb_to_switch(struct device *dev)
-> +static inline struct tb_switch *tb_to_switch(const struct device *dev)
->  {
->  	if (tb_is_switch(dev))
->  		return container_of(dev, struct tb_switch, dev);
-> diff --git a/drivers/thunderbolt/xdomain.c b/drivers/thunderbolt/xdomain.c
-> index f00b2f62d8e3..aeb40a384bea 100644
-> --- a/drivers/thunderbolt/xdomain.c
-> +++ b/drivers/thunderbolt/xdomain.c
-> @@ -881,7 +881,7 @@ static ssize_t key_show(struct device *dev, struct device_attribute *attr,
->  }
->  static DEVICE_ATTR_RO(key);
->  
-> -static int get_modalias(struct tb_service *svc, char *buf, size_t size)
-> +static int get_modalias(const struct tb_service *svc, char *buf, size_t size)
->  {
->  	return snprintf(buf, size, "tbsvc:k%sp%08Xv%08Xr%08X", svc->key,
->  			svc->prtcid, svc->prtcvers, svc->prtcrevs);
-> @@ -953,9 +953,9 @@ static const struct attribute_group *tb_service_attr_groups[] = {
->  	NULL,
->  };
->  
-> -static int tb_service_uevent(struct device *dev, struct kobj_uevent_env *env)
-> +static int tb_service_uevent(const struct device *dev, struct kobj_uevent_env *env)
->  {
-> -	struct tb_service *svc = container_of(dev, struct tb_service, dev);
-> +	const struct tb_service *svc = container_of(dev, struct tb_service, dev);
->  	char modalias[64];
->  
->  	get_modalias(svc, modalias, sizeof(modalias));
-> diff --git a/drivers/tty/serdev/core.c b/drivers/tty/serdev/core.c
-> index 0180e1e4e75d..aa80de3a8194 100644
-> --- a/drivers/tty/serdev/core.c
-> +++ b/drivers/tty/serdev/core.c
-> @@ -42,7 +42,7 @@ static struct attribute *serdev_device_attrs[] = {
->  };
->  ATTRIBUTE_GROUPS(serdev_device);
->  
-> -static int serdev_device_uevent(struct device *dev, struct kobj_uevent_env *env)
-> +static int serdev_device_uevent(const struct device *dev, struct kobj_uevent_env *env)
->  {
->  	int rc;
->  
-> diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
-> index 4d59d927ae3e..c397574a6570 100644
-> --- a/drivers/usb/core/message.c
-> +++ b/drivers/usb/core/message.c
-> @@ -1818,11 +1818,11 @@ void usb_authorize_interface(struct usb_interface *intf)
->  	}
->  }
->  
-> -static int usb_if_uevent(struct device *dev, struct kobj_uevent_env *env)
-> +static int usb_if_uevent(const struct device *dev, struct kobj_uevent_env *env)
->  {
-> -	struct usb_device *usb_dev;
-> -	struct usb_interface *intf;
-> -	struct usb_host_interface *alt;
-> +	const struct usb_device *usb_dev;
-> +	const struct usb_interface *intf;
-> +	const struct usb_host_interface *alt;
->  
->  	intf = to_usb_interface(dev);
->  	usb_dev = interface_to_usbdev(intf);
-> diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-> index 11b15d7b357a..8527c06b65e6 100644
-> --- a/drivers/usb/core/usb.c
-> +++ b/drivers/usb/core/usb.c
-> @@ -423,9 +423,9 @@ static void usb_release_dev(struct device *dev)
->  	kfree(udev);
->  }
->  
-> -static int usb_dev_uevent(struct device *dev, struct kobj_uevent_env *env)
-> +static int usb_dev_uevent(const struct device *dev, struct kobj_uevent_env *env)
->  {
-> -	struct usb_device *usb_dev;
-> +	const struct usb_device *usb_dev;
->  
->  	usb_dev = to_usb_device(dev);
->  
-> diff --git a/drivers/usb/phy/phy.c b/drivers/usb/phy/phy.c
-> index 1b24492bb4e5..4b468bde19cf 100644
-> --- a/drivers/usb/phy/phy.c
-> +++ b/drivers/usb/phy/phy.c
-> @@ -80,7 +80,7 @@ static struct usb_phy *__of_usb_find_phy(struct device_node *node)
->  	return ERR_PTR(-EPROBE_DEFER);
->  }
->  
-> -static struct usb_phy *__device_to_usb_phy(struct device *dev)
-> +static struct usb_phy *__device_to_usb_phy(const struct device *dev)
->  {
->  	struct usb_phy *usb_phy;
->  
-> @@ -145,9 +145,9 @@ static void usb_phy_notify_charger_work(struct work_struct *work)
->  	kobject_uevent(&usb_phy->dev->kobj, KOBJ_CHANGE);
->  }
->  
-> -static int usb_phy_uevent(struct device *dev, struct kobj_uevent_env *env)
-> +static int usb_phy_uevent(const struct device *dev, struct kobj_uevent_env *env)
->  {
-> -	struct usb_phy *usb_phy;
-> +	const struct usb_phy *usb_phy;
->  	char uchger_state[50] = { 0 };
->  	char uchger_type[50] = { 0 };
->  	unsigned long flags;
-> diff --git a/drivers/usb/roles/class.c b/drivers/usb/roles/class.c
-> index a3575a5a18ce..3708fb70b693 100644
-> --- a/drivers/usb/roles/class.c
-> +++ b/drivers/usb/roles/class.c
-> @@ -271,8 +271,7 @@ static const struct attribute_group *usb_role_switch_groups[] = {
->  	NULL,
->  };
->  
-> -static int
-> -usb_role_switch_uevent(struct device *dev, struct kobj_uevent_env *env)
-> +static int usb_role_switch_uevent(const struct device *dev, struct kobj_uevent_env *env)
+> +int allocate_cache_info(unsigned int cpu)
+> +{
+> +	struct cpu_cacheinfo *this_cpu_ci;
+> +	unsigned int levels, split_levels;
+> +	int ret;
+> +
+> +	if (acpi_disabled) {
+> +		ret = init_of_cache_level(cpu);
+> +		if (ret < 0)
+> +			return ret;
+> +	} else {
+> +		ret = acpi_get_cache_info(cpu, &levels, &split_levels);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		this_cpu_ci = get_cpu_cacheinfo(cpu);
+> +		this_cpu_ci->num_levels = levels;
+> +		/*
+> +		 * This assumes that:
+> +		 * - there cannot be any split caches (data/instruction)
+> +		 *   above a unified cache
+> +		 * - data/instruction caches come by pair
+> +		 */
+> +		this_cpu_ci->num_leaves = levels + split_levels;
+> +	}
+> +	if (!cache_leaves(cpu))
+> +		return -ENOENT;
+> +
+
+The above part is more fetching info than allocating. Does it make sense
+to rename along similar lines.
+
+> +	per_cpu_cacheinfo(cpu) = kcalloc(cache_leaves(cpu),
+> +					 sizeof(struct cacheinfo), GFP_ATOMIC);
+> +	if (per_cpu_cacheinfo(cpu) == NULL) {
+> +		cache_leaves(cpu) = 0;
+> +		return -ENOMEM;
+> +	}
+> +
+
+IIReadC, detect_cache_attributes also have above allocation, does it make
+sense to consolidate into one inline function or something ?
+
+> +	return ret;
+> +}
+> +
+>  int detect_cache_attributes(unsigned int cpu)
 >  {
 >  	int ret;
 >  
-> diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
-> index bd5e5dd70431..8e2b2077f262 100644
-> --- a/drivers/usb/typec/class.c
-> +++ b/drivers/usb/typec/class.c
-> @@ -1718,7 +1718,7 @@ static const struct attribute_group *typec_groups[] = {
->  	NULL
->  };
+> -	/* Since early detection of the cacheinfo is allowed via this
+> -	 * function and this also gets called as CPU hotplug callbacks via
+> -	 * cacheinfo_cpu_online, the initialisation can be skipped and only
+> -	 * CPU maps can be updated as the CPU online status would be update
+> -	 * if called via cacheinfo_cpu_online path.
+> +	/* Since early initialization/allocation of the cacheinfo is allowed
+> +	 * via allocate_cache_info() and this also gets called as CPU hotplug
+> +	 * callbacks via cacheinfo_cpu_online, the init/alloc can be skipped
+> +	 * as it will happen only once (the cacheinfo memory is never freed).
+> +	 * Just populate the cacheinfo.
+>  	 */
+>  	if (per_cpu_cacheinfo(cpu))
+> -		goto update_cpu_map;
+> +		goto populate_leaves;
 >  
-> -static int typec_uevent(struct device *dev, struct kobj_uevent_env *env)
-> +static int typec_uevent(const struct device *dev, struct kobj_uevent_env *env)
->  {
->  	int ret;
+>  	if (init_cache_level(cpu) || !cache_leaves(cpu))
+>  		return -ENOENT;
+> @@ -410,6 +444,7 @@ int detect_cache_attributes(unsigned int cpu)
+>  		return -ENOMEM;
+>  	}
 >  
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 3015235d65e3..fc956c3f8324 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -722,7 +722,7 @@ const struct acpi_device_id *acpi_match_device(const struct acpi_device_id *ids,
->  const void *acpi_device_get_match_data(const struct device *dev);
->  extern bool acpi_driver_match_device(struct device *dev,
->  				     const struct device_driver *drv);
-> -int acpi_device_uevent_modalias(struct device *, struct kobj_uevent_env *);
-> +int acpi_device_uevent_modalias(const struct device *, struct kobj_uevent_env *);
->  int acpi_device_modalias(struct device *, char *, int);
+> +populate_leaves:
+>  	/*
+>  	 * populate_cache_leaves() may completely setup the cache leaves and
+>  	 * shared_cpu_map or it may leave it partially setup.
+> @@ -418,7 +453,6 @@ int detect_cache_attributes(unsigned int cpu)
+>  	if (ret)
+>  		goto free_ci;
 >  
->  struct platform_device *acpi_create_platform_device(struct acpi_device *,
-> @@ -957,7 +957,7 @@ static inline union acpi_object *acpi_evaluate_dsm(acpi_handle handle,
->  	return NULL;
->  }
->  
-> -static inline int acpi_device_uevent_modalias(struct device *dev,
-> +static inline int acpi_device_uevent_modalias(const struct device *dev,
->  				struct kobj_uevent_env *env)
->  {
->  	return -ENODEV;
-> diff --git a/include/linux/device.h b/include/linux/device.h
-> index 84ae52de6746..46093bae6905 100644
-> --- a/include/linux/device.h
-> +++ b/include/linux/device.h
-> @@ -88,7 +88,7 @@ int subsys_virtual_register(struct bus_type *subsys,
->  struct device_type {
->  	const char *name;
->  	const struct attribute_group **groups;
-> -	int (*uevent)(struct device *dev, struct kobj_uevent_env *env);
-> +	int (*uevent)(const struct device *dev, struct kobj_uevent_env *env);
->  	char *(*devnode)(struct device *dev, umode_t *mode,
->  			 kuid_t *uid, kgid_t *gid);
->  	void (*release)(struct device *dev);
-> diff --git a/include/linux/firewire.h b/include/linux/firewire.h
-> index 980019053e54..4c882d57df02 100644
-> --- a/include/linux/firewire.h
-> +++ b/include/linux/firewire.h
-> @@ -208,7 +208,7 @@ struct fw_device {
->  	struct fw_attribute_group attribute_group;
->  };
->  
-> -static inline struct fw_device *fw_device(struct device *dev)
-> +static inline struct fw_device *fw_device(const struct device *dev)
->  {
->  	return container_of(dev, struct fw_device, device);
->  }
-> @@ -229,7 +229,7 @@ struct fw_unit {
->  	struct fw_attribute_group attribute_group;
->  };
->  
-> -static inline struct fw_unit *fw_unit(struct device *dev)
-> +static inline struct fw_unit *fw_unit(const struct device *dev)
->  {
->  	return container_of(dev, struct fw_unit, device);
->  }
-> @@ -246,7 +246,7 @@ static inline void fw_unit_put(struct fw_unit *unit)
->  	put_device(&unit->device);
->  }
->  
-> -static inline struct fw_device *fw_parent_device(struct fw_unit *unit)
-> +static inline struct fw_device *fw_parent_device(const struct fw_unit *unit)
->  {
->  	return fw_device(unit->device.parent);
->  }
-> diff --git a/include/linux/i3c/device.h b/include/linux/i3c/device.h
-> index 8242e13e7b0b..cda61c1d6d60 100644
-> --- a/include/linux/i3c/device.h
-> +++ b/include/linux/i3c/device.h
-> @@ -186,7 +186,7 @@ static inline struct i3c_driver *drv_to_i3cdrv(struct device_driver *drv)
->  }
->  
->  struct device *i3cdev_to_dev(struct i3c_device *i3cdev);
-> -struct i3c_device *dev_to_i3cdev(struct device *dev);
-> +struct i3c_device *dev_to_i3cdev(const struct device *dev);
->  
->  const struct i3c_device_id *
->  i3c_device_match_id(struct i3c_device *i3cdev,
-> @@ -293,7 +293,7 @@ int i3c_device_do_priv_xfers(struct i3c_device *dev,
->  			     struct i3c_priv_xfer *xfers,
->  			     int nxfers);
->  
-> -void i3c_device_get_info(struct i3c_device *dev, struct i3c_device_info *info);
-> +void i3c_device_get_info(const struct i3c_device *dev, struct i3c_device_info *info);
->  
->  struct i3c_ibi_payload {
->  	unsigned int len;
-> diff --git a/include/linux/of_device.h b/include/linux/of_device.h
-> index ab7d557d541d..f4b57614979d 100644
-> --- a/include/linux/of_device.h
-> +++ b/include/linux/of_device.h
-> @@ -36,7 +36,7 @@ extern ssize_t of_device_modalias(struct device *dev, char *str, ssize_t len);
->  extern int of_device_request_module(struct device *dev);
->  
->  extern void of_device_uevent(const struct device *dev, struct kobj_uevent_env *env);
-> -extern int of_device_uevent_modalias(struct device *dev, struct kobj_uevent_env *env);
-> +extern int of_device_uevent_modalias(const struct device *dev, struct kobj_uevent_env *env);
->  
->  static inline struct device_node *of_cpu_device_node_get(int cpu)
->  {
-> @@ -83,7 +83,7 @@ static inline int of_device_request_module(struct device *dev)
->  	return -ENODEV;
->  }
->  
-> -static inline int of_device_uevent_modalias(struct device *dev,
-> +static inline int of_device_uevent_modalias(const struct device *dev,
->  				   struct kobj_uevent_env *env)
->  {
->  	return -ENODEV;
-> diff --git a/include/linux/soundwire/sdw_type.h b/include/linux/soundwire/sdw_type.h
-> index 52eb66cd11bc..d8c27f1e5559 100644
-> --- a/include/linux/soundwire/sdw_type.h
-> +++ b/include/linux/soundwire/sdw_type.h
-> @@ -21,7 +21,7 @@ static inline int is_sdw_slave(const struct device *dev)
->  int __sdw_register_driver(struct sdw_driver *drv, struct module *owner);
->  void sdw_unregister_driver(struct sdw_driver *drv);
->  
-> -int sdw_slave_uevent(struct device *dev, struct kobj_uevent_env *env);
-> +int sdw_slave_uevent(const struct device *dev, struct kobj_uevent_env *env);
->  
->  /**
->   * module_sdw_driver() - Helper macro for registering a Soundwire driver
-> diff --git a/include/linux/surface_aggregator/device.h b/include/linux/surface_aggregator/device.h
-> index 46c45d1b6368..a5dff729edb7 100644
-> --- a/include/linux/surface_aggregator/device.h
-> +++ b/include/linux/surface_aggregator/device.h
-> @@ -229,7 +229,7 @@ static inline bool is_ssam_device(struct device *d)
->   * Return: Returns a pointer to the &struct ssam_device wrapping the given
->   * device @d.
->   */
-> -static inline struct ssam_device *to_ssam_device(struct device *d)
-> +static inline struct ssam_device *to_ssam_device(const struct device *d)
->  {
->  	return container_of(d, struct ssam_device, dev);
->  }
+> -update_cpu_map:
+>  	/*
+>  	 * For systems using DT for cache hierarchy, fw_token
+>  	 * and shared_cpu_map will be set up here only if they are
+> diff --git a/include/linux/cacheinfo.h b/include/linux/cacheinfo.h
+> index f992d81d211f..7d390806b788 100644
+> --- a/include/linux/cacheinfo.h
+> +++ b/include/linux/cacheinfo.h
+> @@ -85,6 +85,7 @@ int populate_cache_leaves(unsigned int cpu);
+>  int cache_setup_acpi(unsigned int cpu);
+>  bool last_level_cache_is_valid(unsigned int cpu);
+>  bool last_level_cache_is_shared(unsigned int cpu_x, unsigned int cpu_y);
+> +int allocate_cache_info(unsigned int cpu);
+>  int detect_cache_attributes(unsigned int cpu);
+>  #ifndef CONFIG_ACPI_PPTT
+>  /*
+> -- 
+> 2.25.1
+> 
+
+With above nits fixed or discussed further to retain as is, you can add
+
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+
+
+-- 
+Regards,
+Sudeep
