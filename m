@@ -2,117 +2,152 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BEC8638D5E
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Nov 2022 16:19:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7D42638DBB
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Nov 2022 16:51:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229662AbiKYPS6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Nov 2022 10:18:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44440 "EHLO
+        id S229453AbiKYPvB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Nov 2022 10:51:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229570AbiKYPSz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Nov 2022 10:18:55 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 361FB20361;
-        Fri, 25 Nov 2022 07:18:53 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6F5142B;
-        Fri, 25 Nov 2022 07:18:59 -0800 (PST)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 48CE23F587;
-        Fri, 25 Nov 2022 07:18:50 -0800 (PST)
-Date:   Fri, 25 Nov 2022 15:18:47 +0000
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Pierre Gondois <pierre.gondois@arm.com>
-Cc:     linux-kernel@vger.kernel.org, Ionela.Voinescu@arm.com,
-        Rob.Herring@arm.com, Jeremy Linton <jeremy.linton@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Gavin Shan <gshan@redhat.com>,
-        Peter Chen <peter.chen@kernel.org>,
-        SeongJae Park <sj@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 4/5] ACPI: PPTT: Update acpi_find_last_cache_level()
- to acpi_get_cache_info()
-Message-ID: <20221125151847.ortklu4ptaftua6u@bogus>
-References: <20221121171217.3581004-1-pierre.gondois@arm.com>
- <20221121171217.3581004-5-pierre.gondois@arm.com>
+        with ESMTP id S229675AbiKYPu7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Nov 2022 10:50:59 -0500
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FAE231FB8;
+        Fri, 25 Nov 2022 07:50:56 -0800 (PST)
+Received: by mail-wr1-x436.google.com with SMTP id x17so7363784wrn.6;
+        Fri, 25 Nov 2022 07:50:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gGtFpd9/hEihcxfaAZXLh+MO2ImBUdS5RPJo51eOJ5A=;
+        b=Wd6tMpn1N5SIEtXHFwc1eScSBrFdtSlj2xAcP/GVikTRm1O6CSkkb4tWt9U3NoCIa4
+         ijWwVQUGwSEiaT41EnbxqcvBjeBbqgZx07Wf0Z2MhTvq72fA/IaeRK77bTB6tSZsvxD9
+         2xKnPOSOK3ua+7nYV3bUIOpZMkWLbqTwnDxvULKNAMT6BN4lAxIrxyeWtc7sX9aJTl5y
+         tOqchmZnX90FCKtSOS4kryZ6ll56ip6D7P+r/50tYc/nXW4J+/pDeMDNF3fr/rX9S7Yu
+         E7YisrgoDNkwMnZEswLQlMssNyAocughTN01RX8UKLKrGTfi3Ldvr6GSGE2hkDDJ8+32
+         nWJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gGtFpd9/hEihcxfaAZXLh+MO2ImBUdS5RPJo51eOJ5A=;
+        b=0te77cvKCGbeoPQeWjt4H8E5aJWpZrFAWQhlIBrdc6e3X1JWGd7+URKqE92XKuuLIb
+         em0P9esUtmCcCsI1BOmtSDstYSpqWArgyOtGXaS4NALp5csbqx0dBpuAThqta4UM+jm0
+         wYCQtbDd7JsChomf2QeuB6eU+Z2Bn6UTToG29/zgKAMj4rJ1KbHZnJu/JVBj864JX/0h
+         Iqz6UCAeCWHnmBGiIHnlJ/fbmVWnGbEzunO8L480667IIMNwdj4Eg2jThqo/Ufr7a4F1
+         ujEA8Z5QBv9Qw827zZjuBV9Hpl6JvXddNUWXlKNV80KkR0EClHXg9gpMVorVKSF4T+IY
+         1oiA==
+X-Gm-Message-State: ANoB5plaKCyqIBA66qBYiVWVFoDrUXHTk1B2B+IZbUdcZYQJiQHfO83q
+        wKGjN91o0mHdZ7dMZ6lMu+Qo7lPyfeo=
+X-Google-Smtp-Source: AA0mqf51cWgSgehn/7HYrUUOy965hQUYasigP3oEcbV2hg7FAxvEw+pQQdBzhgOj70jyVM+s/0Hx8A==
+X-Received: by 2002:a5d:4308:0:b0:241:e80e:225a with SMTP id h8-20020a5d4308000000b00241e80e225amr9726284wrq.560.1669391454971;
+        Fri, 25 Nov 2022 07:50:54 -0800 (PST)
+Received: from [192.168.0.14] (cpc141996-chfd3-2-0-cust928.12-3.cable.virginm.net. [86.13.91.161])
+        by smtp.gmail.com with ESMTPSA id j13-20020adfff8d000000b00241bd177f89sm4050389wrr.14.2022.11.25.07.50.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Nov 2022 07:50:54 -0800 (PST)
+Message-ID: <5beff345-84c2-d456-1b7f-05309afa397b@gmail.com>
+Date:   Fri, 25 Nov 2022 15:50:53 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221121171217.3581004-5-pierre.gondois@arm.com>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v3] device property: fix of node refcount leak in
+ fwnode_graph_get_next_endpoint()
+Content-Language: en-US
+To:     Yang Yingliang <yangyingliang@huawei.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com,
+        sakari.ailus@linux.intel.com, gregkh@linuxfoundation.org,
+        rafael@kernel.org
+References: <20221123022542.2999510-1-yangyingliang@huawei.com>
+From:   Daniel Scally <djrscally@gmail.com>
+In-Reply-To: <20221123022542.2999510-1-yangyingliang@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 21, 2022 at 06:12:12PM +0100, Pierre Gondois wrote:
-> acpi_find_last_cache_level() allows to find the last level of cache
-> for a given CPU. The function is only called on arm64 ACPI based
-> platforms to check for cache information that would be missing in
-> the CLIDR_EL1 register.
-> To allow populating (struct cpu_cacheinfo).num_leaves by only parsing
-> a PPTT, update acpi_find_last_cache_level() to get the 'split_levels',
-> i.e. the number of cache levels being split in data/instruction
-> caches.
-> 
-> It is assumed that there will not be data/instruction caches above a
-> unified cache.
-> If a split level consist of one data cache and no instruction cache
-> (or opposite), then the missing cache will still be populated
-> by default with minimal cache information, and maximal cpumask
-> (all non-existing caches have the same fw_token).
-> 
-> Suggested-by: Jeremy Linton <jeremy.linton@arm.com>
-> Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-> Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
+Hi all - sorry that took so long
+
+On 23/11/2022 02:25, Yang Yingliang wrote:
+> The 'parent' returned by fwnode_graph_get_port_parent()
+> with refcount incremented when 'prev' is not NULL, it
+> needs be put when finish using it.
+>
+> Because the parent is const, introduce a new variable to
+> store the returned fwnode, then put it before returning
+> from fwnode_graph_get_next_endpoint().
+>
+> Fixes: b5b41ab6b0c1 ("device property: Check fwnode->secondary in fwnode_graph_get_next_endpoint()")
+> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 > ---
->  arch/arm64/kernel/cacheinfo.c |  9 +++--
->  drivers/acpi/pptt.c           | 76 +++++++++++++++++++++++------------
->  include/linux/cacheinfo.h     |  8 ++--
->  3 files changed, 61 insertions(+), 32 deletions(-)
-> 
-> diff --git a/arch/arm64/kernel/cacheinfo.c b/arch/arm64/kernel/cacheinfo.c
-> index 97c42be71338..164255651d64 100644
-> --- a/arch/arm64/kernel/cacheinfo.c
-> +++ b/arch/arm64/kernel/cacheinfo.c
-> @@ -46,7 +46,7 @@ static void ci_leaf_init(struct cacheinfo *this_leaf,
->  int init_cache_level(unsigned int cpu)
+
+
+This looks fine to me (thanks for fixing it), and it works fine on my
+Surface:
+
+
+Reviewed-and-tested-by: Daniel Scally <djrscally@gmail.com>
+
+> v2 -> v3:
+>   Add a out label.
+>
+> v1 -> v2:
+>   Introduce a new variable to store the returned fwnode.
+> ---
+>  drivers/base/property.c | 18 ++++++++++++------
+>  1 file changed, 12 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index 2a5a37fcd998..7f338cb4fb7b 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -989,26 +989,32 @@ struct fwnode_handle *
+>  fwnode_graph_get_next_endpoint(const struct fwnode_handle *fwnode,
+>  			       struct fwnode_handle *prev)
 >  {
->  	unsigned int ctype, level, leaves;
-> -	int fw_level;
-> +	int fw_level, ret;
->  	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+> +	struct fwnode_handle *ep, *port_parent = NULL;
+>  	const struct fwnode_handle *parent;
+> -	struct fwnode_handle *ep;
 >  
->  	for (level = 1, leaves = 0; level <= MAX_CACHE_LEVEL; level++) {
-> @@ -61,8 +61,11 @@ int init_cache_level(unsigned int cpu)
->  
->  	if (acpi_disabled)
->  		fw_level = of_find_last_cache_level(cpu);
+>  	/*
+>  	 * If this function is in a loop and the previous iteration returned
+>  	 * an endpoint from fwnode->secondary, then we need to use the secondary
+>  	 * as parent rather than @fwnode.
+>  	 */
+> -	if (prev)
+> -		parent = fwnode_graph_get_port_parent(prev);
 > -	else
-> -		fw_level = acpi_find_last_cache_level(cpu);
-> +	else {
-
-You need to add braces to if as well in such cases. I think checkpatch
-might tell you that. Just found this by chance.
-
-Anyways, this looks good to me.
-
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-
-
--- 
-Regards,
-Sudeep
+> +	if (prev) {
+> +		port_parent = fwnode_graph_get_port_parent(prev);
+> +		parent = port_parent;
+> +	} else {
+>  		parent = fwnode;
+> +	}
+>  	if (IS_ERR_OR_NULL(parent))
+>  		return NULL;
+>  
+>  	ep = fwnode_call_ptr_op(parent, graph_get_next_endpoint, prev);
+>  	if (ep)
+> -		return ep;
+> +		goto out_put_port_parent;
+> +
+> +	ep = fwnode_graph_get_next_endpoint(parent->secondary, NULL);
+>  
+> -	return fwnode_graph_get_next_endpoint(parent->secondary, NULL);
+> +out_put_port_parent:
+> +	fwnode_handle_put(port_parent);
+> +	return ep;
+>  }
+>  EXPORT_SYMBOL_GPL(fwnode_graph_get_next_endpoint);
+>  
