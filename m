@@ -2,147 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 371446386C3
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Nov 2022 10:51:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D5656386E6
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Nov 2022 10:59:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230040AbiKYJvs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Nov 2022 04:51:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40528 "EHLO
+        id S229626AbiKYJ7W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Nov 2022 04:59:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229852AbiKYJvW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Nov 2022 04:51:22 -0500
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 699F03FB8B;
-        Fri, 25 Nov 2022 01:49:14 -0800 (PST)
-Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4NJVMt6mZfzbngb;
-        Fri, 25 Nov 2022 17:45:14 +0800 (CST)
-Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 25 Nov 2022 17:49:12 +0800
-Received: from [10.174.178.174] (10.174.178.174) by
- dggpemm500007.china.huawei.com (7.185.36.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 25 Nov 2022 17:49:11 +0800
+        with ESMTP id S229487AbiKYJ7V (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Nov 2022 04:59:21 -0500
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 272C8BB5;
+        Fri, 25 Nov 2022 01:59:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669370361; x=1700906361;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=aCQh/6+V3QT49febPe5j5JfKoJMAkFYpQopUmrNuS5k=;
+  b=TsvbwrZOEW51PWd0OKlQhbUGrGiQR1EGs4R01Zz0C2r33ZiLxQUB7iN3
+   eEFN1Qps3qxsM+yw8/PBkOKeZva5sxNJs2VIANSP+xqyXd8uIzuww0u/Y
+   am9cKUMSRjlFcSl2pb+vVValmcqfDiBjW9ezH581I9rNHVOStVD/n/IZC
+   KOFCOWZtHstMsOdic4aPzvJL1mTpT109WiZ3gNZ4aU5pAMJkRc55u8Hv7
+   BLXjCl/4ZnD/GngxKzB5y/MoIx7n8xaSb6xzR4XHFsRjE9X/ROnbEDKLr
+   si434ELMpadRwnG/kP8Kj5RgxBgOcWxRyw2sokEwclHYa+bjTLzlSaUHS
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10541"; a="400742217"
+X-IronPort-AV: E=Sophos;i="5.96,193,1665471600"; 
+   d="scan'208";a="400742217"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2022 01:59:20 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10541"; a="642656275"
+X-IronPort-AV: E=Sophos;i="5.96,193,1665471600"; 
+   d="scan'208";a="642656275"
+Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2022 01:59:18 -0800
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with SMTP id B4ECB203B0;
+        Fri, 25 Nov 2022 11:59:15 +0200 (EET)
+Date:   Fri, 25 Nov 2022 09:59:15 +0000
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Yang Yingliang <yangyingliang@huawei.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        andriy.shevchenko@linux.intel.com, djrscally@gmail.com,
+        heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
+        rafael@kernel.org
 Subject: Re: [PATCH v3] device property: fix of node refcount leak in
  fwnode_graph_get_next_endpoint()
-To:     Daniel Scally <djrscally@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <heikki.krogerus@linux.intel.com>, <sakari.ailus@linux.intel.com>,
-        <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
-        <yangyingliang@huawei.com>
+Message-ID: <Y4CR8/CXMhlMt+WS@paasikivi.fi.intel.com>
 References: <20221123022542.2999510-1-yangyingliang@huawei.com>
- <Y34gz4UXN7il3b49@smile.fi.intel.com>
- <d2c7979e-3891-283e-d20b-97b75a27730e@gmail.com>
-From:   Yang Yingliang <yangyingliang@huawei.com>
-Message-ID: <5061895a-bbd3-6a9f-c938-f101123ac308@huawei.com>
-Date:   Fri, 25 Nov 2022 17:49:11 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <d2c7979e-3891-283e-d20b-97b75a27730e@gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Originating-IP: [10.174.178.174]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221123022542.2999510-1-yangyingliang@huawei.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi Yang,
 
-On 2022/11/25 17:32, Daniel Scally wrote:
-> Hello
->
-> On 23/11/2022 13:31, Andy Shevchenko wrote:
->> On Wed, Nov 23, 2022 at 10:25:42AM +0800, Yang Yingliang wrote:
->>> The 'parent' returned by fwnode_graph_get_port_parent()
->>> with refcount incremented when 'prev' is not NULL, it
->>> needs be put when finish using it.
->>>
->>> Because the parent is const, introduce a new variable to
->>> store the returned fwnode, then put it before returning
->>> from fwnode_graph_get_next_endpoint().
->> To me this looks good enough. Not sure if Dan has a chance (time) to look at
->> this, though. And maybe even test...
->>
->> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->
-> Apologies; didn't notice this earlier. I will look at and test this today
+Thank you for the patch.
 
-Thanks,
+On Wed, Nov 23, 2022 at 10:25:42AM +0800, Yang Yingliang wrote:
+> The 'parent' returned by fwnode_graph_get_port_parent()
+> with refcount incremented when 'prev' is not NULL, it
+> needs be put when finish using it.
+> 
+> Because the parent is const, introduce a new variable to
+> store the returned fwnode, then put it before returning
+> from fwnode_graph_get_next_endpoint().
+> 
+> Fixes: b5b41ab6b0c1 ("device property: Check fwnode->secondary in fwnode_graph_get_next_endpoint()")
+> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 
-I tested it, without this patch, I got this message:
-OF: ERROR: memory leak, expected refcount 1 instead of 4, 
-of_node_get()/of_node_put() unbalanced - destroy cset entry: attach 
-overlay node /i2c/pmic@34/tcpc/connector
-after this patch,  the message is gone.
->
->>> Fixes: b5b41ab6b0c1 ("device property: Check fwnode->secondary in fwnode_graph_get_next_endpoint()")
->>> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
->>> ---
->>> v2 -> v3:
->>>    Add a out label.
->>>
->>> v1 -> v2:
->>>    Introduce a new variable to store the returned fwnode.
->>> ---
->>>   drivers/base/property.c | 18 ++++++++++++------
->>>   1 file changed, 12 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/drivers/base/property.c b/drivers/base/property.c
->>> index 2a5a37fcd998..7f338cb4fb7b 100644
->>> --- a/drivers/base/property.c
->>> +++ b/drivers/base/property.c
->>> @@ -989,26 +989,32 @@ struct fwnode_handle *
->>>   fwnode_graph_get_next_endpoint(const struct fwnode_handle *fwnode,
->>>   			       struct fwnode_handle *prev)
->>>   {
->>> +	struct fwnode_handle *ep, *port_parent = NULL;
->>>   	const struct fwnode_handle *parent;
->>> -	struct fwnode_handle *ep;
->>>   
->>>   	/*
->>>   	 * If this function is in a loop and the previous iteration returned
->>>   	 * an endpoint from fwnode->secondary, then we need to use the secondary
->>>   	 * as parent rather than @fwnode.
->>>   	 */
->>> -	if (prev)
->>> -		parent = fwnode_graph_get_port_parent(prev);
->>> -	else
->>> +	if (prev) {
->>> +		port_parent = fwnode_graph_get_port_parent(prev);
->>> +		parent = port_parent;
->>> +	} else {
->>>   		parent = fwnode;
->>> +	}
->>>   	if (IS_ERR_OR_NULL(parent))
->>>   		return NULL;
->>>   
->>>   	ep = fwnode_call_ptr_op(parent, graph_get_next_endpoint, prev);
->>>   	if (ep)
->>> -		return ep;
->>> +		goto out_put_port_parent;
->>> +
->>> +	ep = fwnode_graph_get_next_endpoint(parent->secondary, NULL);
->>>   
->>> -	return fwnode_graph_get_next_endpoint(parent->secondary, NULL);
->>> +out_put_port_parent:
->>> +	fwnode_handle_put(port_parent);
->>> +	return ep;
->>>   }
->>>   EXPORT_SYMBOL_GPL(fwnode_graph_get_next_endpoint);
->>>   
->>> -- 
->>> 2.25.1
->>>
-> .
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+
+-- 
+Sakari Ailus
