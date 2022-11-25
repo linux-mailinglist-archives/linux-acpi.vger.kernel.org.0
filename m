@@ -2,208 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2FB8638430
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Nov 2022 07:59:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DE1F638658
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Nov 2022 10:33:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229712AbiKYG7N (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Nov 2022 01:59:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59880 "EHLO
+        id S229481AbiKYJdC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Nov 2022 04:33:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229686AbiKYG7M (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Nov 2022 01:59:12 -0500
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 206E32CC98
-        for <linux-acpi@vger.kernel.org>; Thu, 24 Nov 2022 22:59:11 -0800 (PST)
-Received: by mail-ej1-x632.google.com with SMTP id n21so8238393ejb.9
-        for <linux-acpi@vger.kernel.org>; Thu, 24 Nov 2022 22:59:11 -0800 (PST)
+        with ESMTP id S229452AbiKYJdA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Nov 2022 04:33:00 -0500
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E66B51F9C4;
+        Fri, 25 Nov 2022 01:32:59 -0800 (PST)
+Received: by mail-wm1-x32a.google.com with SMTP id o7-20020a05600c510700b003cffc0b3374so2986455wms.0;
+        Fri, 25 Nov 2022 01:32:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=hoX4Z40MQwuszANnlGBImjuiii34Bm6IVdSkNEROGlk=;
-        b=DYIALqhs5m9PNMHPE8yqYIxFmhgXWCNuD1nJkRncSHnTb9KsT2SEjTxLyCLcf07SND
-         BuT1B67WTp6kKWo3FOST5wFfrrVouCr3lzbeI1KGFJ8ZBam/NFoSzrxJ91QWhGAFY65h
-         a9xen1l7WE8m+vLpAI2NRR5TH2Q/wtYpx+7Hs=
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1C9OyskwPZlHME1PL3eMYljWMwoWT8eKh9tVx7GnyNs=;
+        b=X1lHRr9ubBRLqHsVi0VQENrFN0+dhSqkauzWMsNmlIBxF1O5sWa6sPo9lm34+S2d3Y
+         zX4F5O3X+9AaDXU4zS5yQGVZGtiwHVR+8VbeEsmToe+kKK/0t095rN7VNZoJDquzOjag
+         F5kBL57pyGPpoOCf5uco2ckDIok7mktIF/1vjm5Gkuh5gn29Rux9gQItEVEQ+TNJJXBO
+         xVmjm/QUejgwI91jFeMbShZq20lo5GDSbQXiS+MNrWchAf7G/3V64LCwbX0t0j5AkP5r
+         EJ0hVxsTg9I+J0gMVEsfDeOvQULYoSawFpXBOng0sU6GNr6gXpU4HdrJ9EC82Gqu2qzM
+         EtuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hoX4Z40MQwuszANnlGBImjuiii34Bm6IVdSkNEROGlk=;
-        b=v86mTaoKSB/LBowJlUJF8Uu7EVlOxjbjezE7BlZyP+G+aWaOV8BVYocyQ/k1WanCaR
-         pM0V2EY8jlY8VBjPcH78qTynHXMSv0YYMirfp8+LndM/iravrCc6g22ki1BT8lBJ25hi
-         i8yDSqi91s7rPFxEfqWtcQ1nj+U6ylR8j0xaV9Mj4Qr+xFw+QqXZFAf602CCR4yPCwYo
-         8EJP86j2vUa0SxFEUb5O1QElOhTE0Lr0QsHQmqI9M+SeX/NLFIYt6qewrznbbpK7seQn
-         8G8t09VctWrDc1X4cLo15ouSJFg92EGX25DiPVc2N9OIqfUoDQajwMC+aPC2C1sOrAv2
-         uEMA==
-X-Gm-Message-State: ANoB5pneHv1n/puBwYpVmqZz4Gk7m3hJIrbu5Lj4biGdbup1PNEDekzX
-        Yizs8Wnw0swLabvbSlR6PWGPk1bIh1G2xr2a4w6kSg==
-X-Google-Smtp-Source: AA0mqf61omTI/URQcHXxO27ayXnv2S/Msse51DzkeZiQ+oIxOTmaxkcc1G6pL7lsFhNXP8G7IxSxXZbVbQkqQ2kKVNQ=
-X-Received: by 2002:a17:906:b1c6:b0:7ad:e82b:b66b with SMTP id
- bv6-20020a170906b1c600b007ade82bb66bmr14937894ejb.453.1669359549666; Thu, 24
- Nov 2022 22:59:09 -0800 (PST)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1C9OyskwPZlHME1PL3eMYljWMwoWT8eKh9tVx7GnyNs=;
+        b=6HzUgbuJgoRgq2xJWB9QolEBEWCI5/H4qeaiLb/k/LvfDHTdsKsa2ZBfKV+YwPSvbT
+         YuPiD7/gD7LFjwL6L04P/vY8RANXl04Dyzwe9pdR9xq8Jmlax65r7oV+tVV/PSY0M4i/
+         qvSwtx3MLyCVhHGZDLk8HRhctDeRHjeExCv83p2DdcFaftI6fA6Z0xAk8tHw7iHoh/eC
+         +nbKICTnWf85Ouj10mhtU3i+6XBQC9SSCw8P+G0oimD5dq0IoGlH9qdg1Ry8lyXQ5X4C
+         hmGR6s+OFoKNZp7IuhYXL7rG7ImhH3uD82BDJqltLR4hpBt8H8YglJ4jbUPGWGBYhnHn
+         KJDg==
+X-Gm-Message-State: ANoB5pkoJAqfBoitQ4g7NGM9X9x2N9mlq1hYn7SAU9GXcbUIX8C/TJPI
+        d8lfULrn622sto2id4TW748=
+X-Google-Smtp-Source: AA0mqf4q6TFRr6LgrxaDHG9T89iG0G5ZI2HSBkBeVAhnSnpeqpP6OOmimacE684/RiElIUU3DIEZxA==
+X-Received: by 2002:a05:600c:220d:b0:3cf:633f:c570 with SMTP id z13-20020a05600c220d00b003cf633fc570mr17959222wml.110.1669368778398;
+        Fri, 25 Nov 2022 01:32:58 -0800 (PST)
+Received: from [192.168.0.14] (cpc141996-chfd3-2-0-cust928.12-3.cable.virginm.net. [86.13.91.161])
+        by smtp.gmail.com with ESMTPSA id u22-20020a7bc056000000b003c6c1686b10sm8406659wmc.7.2022.11.25.01.32.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Nov 2022 01:32:58 -0800 (PST)
+Message-ID: <d2c7979e-3891-283e-d20b-97b75a27730e@gmail.com>
+Date:   Fri, 25 Nov 2022 09:32:56 +0000
 MIME-Version: 1.0
-References: <20221124102056.393220-1-treapking@chromium.org>
- <20221124102056.393220-6-treapking@chromium.org> <Y39g/OBLW3pt9qdy@smile.fi.intel.com>
-In-Reply-To: <Y39g/OBLW3pt9qdy@smile.fi.intel.com>
-From:   Pin-yen Lin <treapking@chromium.org>
-Date:   Fri, 25 Nov 2022 14:58:58 +0800
-Message-ID: <CAEXTbpeX7cfzBhvFvhCtP42LYDZ9OZQhDJ805VacQOE=-EVv0g@mail.gmail.com>
-Subject: Re: [PATCH v6 5/7] drm/bridge: anx7625: Register Type C mode switches
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        dri-devel@lists.freedesktop.org,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        devicetree@vger.kernel.org, chrome-platform@lists.linux.dev,
-        linux-acpi@vger.kernel.org, Marek Vasut <marex@denx.de>,
-        Xin Ji <xji@analogixsemi.com>, Lyude Paul <lyude@redhat.com>,
-        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
-        <nfraprado@collabora.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        linux-kernel@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v3] device property: fix of node refcount leak in
+ fwnode_graph_get_next_endpoint()
+Content-Language: en-US
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Yang Yingliang <yangyingliang@huawei.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        heikki.krogerus@linux.intel.com, sakari.ailus@linux.intel.com,
+        gregkh@linuxfoundation.org, rafael@kernel.org
+References: <20221123022542.2999510-1-yangyingliang@huawei.com>
+ <Y34gz4UXN7il3b49@smile.fi.intel.com>
+From:   Daniel Scally <djrscally@gmail.com>
+In-Reply-To: <Y34gz4UXN7il3b49@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+Hello
 
-Thanks for reviewing the patch.
+On 23/11/2022 13:31, Andy Shevchenko wrote:
+> On Wed, Nov 23, 2022 at 10:25:42AM +0800, Yang Yingliang wrote:
+>> The 'parent' returned by fwnode_graph_get_port_parent()
+>> with refcount incremented when 'prev' is not NULL, it
+>> needs be put when finish using it.
+>>
+>> Because the parent is const, introduce a new variable to
+>> store the returned fwnode, then put it before returning
+>> from fwnode_graph_get_next_endpoint().
+> To me this looks good enough. Not sure if Dan has a chance (time) to look at
+> this, though. And maybe even test...
+>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-On Thu, Nov 24, 2022 at 8:18 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Thu, Nov 24, 2022 at 06:20:54PM +0800, Pin-yen Lin wrote:
-> > Register USB Type-C mode switches when the "mode-switch" property and
-> > relevant port are available in Device Tree. Configure the crosspoint
-> > switch based on the entered alternate mode for a specific Type-C
-> > connector.
->
-> ...
->
-> > +static void anx7625_typec_two_ports_update(struct anx7625_data *ctx)
-> > +{
-> > +     if (ctx->typec_ports[0].dp_connected && ctx->typec_ports[1].dp_connected)
-> > +             /* Both ports available, do nothing to retain the current one. */
-> > +             return;
->
-> > +     else if (ctx->typec_ports[0].dp_connected)
->
-> This 'else' is redundant. I would rewrite above as
->
->         /* Check if both ports available and do nothing to retain the current one */
->         if (ctx->typec_ports[0].dp_connected && ctx->typec_ports[1].dp_connected)
->                 return;
->
->         if (ctx->typec_ports[0].dp_connected)
->
-> > +             anx7625_set_crosspoint_switch(ctx, TYPEC_ORIENTATION_NORMAL);
-> > +     else if (ctx->typec_ports[1].dp_connected)
-> > +             anx7625_set_crosspoint_switch(ctx, TYPEC_ORIENTATION_REVERSE);
-> > +}
 
-Thanks for the detailed suggestion. I'll adapt this in v7.
->
-> ...
->
-> > +     data->dp_connected = (state->alt && state->alt->svid == USB_TYPEC_DP_SID &&
-> > +                           state->alt->mode == USB_TYPEC_DP_MODE);
->
-> Parentheses are not needed.
-
-Will fix this in v7.
->
-> ...
->
-> > +     /*
-> > +      * <0 1> refers to SSRX1/SSTX1, and <2 3> refers to SSRX2/SSTX2.
-> > +      */
-> > +     for (i = 0; i < num_lanes; i++) {
->
-> > +             if (port_num != -1 && port_num != dp_lanes[i] / 2) {
-> > +                     dev_err(dev, "Invalid data lane numbers\n");
-> > +                     return -EINVAL;
-> > +             }
->
-> According to Rob Linux must not validate device tree. If you need it, use
-> proper YAML schema.
->
-> > +             port_num = dp_lanes[i] / 2;
-> > +     }
->
-
-I'll remove this from the driver in v7.
-
-> ...
->
-> > +     if (!ctx->num_typec_switches) {
-> > +             dev_warn(dev, "No Type-C switches node found\n");
->
-> > +             return ret;
->
-> Why not to return 0 explicitly?
-
-Will update to just "return 0" in v7.
+Apologies; didn't notice this earlier. I will look at and test this today
 
 >
-> > +     }
->
-> ...
->
-> > +     ctx->typec_ports = devm_kcalloc(
->
-> Broken indentation.
-
-Will fix in v7
->
-> > +             dev, ctx->num_typec_switches, sizeof(struct anx7625_port_data),
-> > +             GFP_KERNEL);
-> > +     if (!ctx->typec_ports)
-> > +             return -ENOMEM;
->
-> ...
->
-> > +struct anx7625_port_data {
->
-> > +     bool dp_connected;
->
-> You can save some bytes on some architectures if move this to be last field.
-
-Thanks for the suggestion. I'll do so in v7
->
-> > +     struct typec_mux_dev *typec_mux;
-> > +     struct anx7625_data *ctx;
-> > +};
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
+>> Fixes: b5b41ab6b0c1 ("device property: Check fwnode->secondary in fwnode_graph_get_next_endpoint()")
+>> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+>> ---
+>> v2 -> v3:
+>>   Add a out label.
+>>
+>> v1 -> v2:
+>>   Introduce a new variable to store the returned fwnode.
+>> ---
+>>  drivers/base/property.c | 18 ++++++++++++------
+>>  1 file changed, 12 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/drivers/base/property.c b/drivers/base/property.c
+>> index 2a5a37fcd998..7f338cb4fb7b 100644
+>> --- a/drivers/base/property.c
+>> +++ b/drivers/base/property.c
+>> @@ -989,26 +989,32 @@ struct fwnode_handle *
+>>  fwnode_graph_get_next_endpoint(const struct fwnode_handle *fwnode,
+>>  			       struct fwnode_handle *prev)
+>>  {
+>> +	struct fwnode_handle *ep, *port_parent = NULL;
+>>  	const struct fwnode_handle *parent;
+>> -	struct fwnode_handle *ep;
+>>  
+>>  	/*
+>>  	 * If this function is in a loop and the previous iteration returned
+>>  	 * an endpoint from fwnode->secondary, then we need to use the secondary
+>>  	 * as parent rather than @fwnode.
+>>  	 */
+>> -	if (prev)
+>> -		parent = fwnode_graph_get_port_parent(prev);
+>> -	else
+>> +	if (prev) {
+>> +		port_parent = fwnode_graph_get_port_parent(prev);
+>> +		parent = port_parent;
+>> +	} else {
+>>  		parent = fwnode;
+>> +	}
+>>  	if (IS_ERR_OR_NULL(parent))
+>>  		return NULL;
+>>  
+>>  	ep = fwnode_call_ptr_op(parent, graph_get_next_endpoint, prev);
+>>  	if (ep)
+>> -		return ep;
+>> +		goto out_put_port_parent;
+>> +
+>> +	ep = fwnode_graph_get_next_endpoint(parent->secondary, NULL);
+>>  
+>> -	return fwnode_graph_get_next_endpoint(parent->secondary, NULL);
+>> +out_put_port_parent:
+>> +	fwnode_handle_put(port_parent);
+>> +	return ep;
+>>  }
+>>  EXPORT_SYMBOL_GPL(fwnode_graph_get_next_endpoint);
+>>  
+>> -- 
+>> 2.25.1
+>>
