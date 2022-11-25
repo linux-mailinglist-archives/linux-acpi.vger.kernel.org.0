@@ -2,86 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 062746382EC
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Nov 2022 04:58:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 535856383A3
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Nov 2022 06:52:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229453AbiKYD6f (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Nov 2022 22:58:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43552 "EHLO
+        id S229606AbiKYFww (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Nov 2022 00:52:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229526AbiKYD6d (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Nov 2022 22:58:33 -0500
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 991A026128
-        for <linux-acpi@vger.kernel.org>; Thu, 24 Nov 2022 19:58:29 -0800 (PST)
-Received: by mail-ed1-x52e.google.com with SMTP id l11so4786577edb.4
-        for <linux-acpi@vger.kernel.org>; Thu, 24 Nov 2022 19:58:29 -0800 (PST)
+        with ESMTP id S229553AbiKYFwu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Nov 2022 00:52:50 -0500
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08FCD11154
+        for <linux-acpi@vger.kernel.org>; Thu, 24 Nov 2022 21:52:49 -0800 (PST)
+Received: by mail-ed1-x52c.google.com with SMTP id s5so4957460edc.12
+        for <linux-acpi@vger.kernel.org>; Thu, 24 Nov 2022 21:52:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=qG1EXeCBFcyO3EVAf0VFxb1QU3GfLO5BAHKXK8QXU44=;
-        b=cZ/iUq/8Ac4sXum6PlSkHb/8lyC1wBkmt7ce4NtB1gel3ZSjx7+/j9VGw3mOb3qQ75
-         z6OPVvh42cBseSf3c90EAdRkVfv5lG9N/kDoZLZEIPvPbhbLOrcU+xTYq7do2H3H1j12
-         XG72/gjTaeyAUuMMhwn3+Bt4Rity7g86DEFAY=
+        bh=RzN4h3qOAvIsS9Ytm8ViCV9LTXDRNYxBOrbT9kwa+z4=;
+        b=oEaPYaoWVwjCvCRl0HhYzkfATCZulKO7O6FroIlJirLXfGB0mUMNQ1vzzo0lRHG88h
+         cNaSmIx/Wju99aMFImQwYB8ffU35MFqJyO6o81ePWIivDyODyXWsv9bQogJMB23kCZrX
+         ZuFBm7OSJUcNIYbcpI9E72DmIeVVa15mZVqnY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qG1EXeCBFcyO3EVAf0VFxb1QU3GfLO5BAHKXK8QXU44=;
-        b=c30lVrPo1SWD48yJihZifuhaivz34PvzPDQ+ZdXnmqOn64PXRC0bMTtkZywBG4vJP0
-         XPpbyEqB6vKqKDaHFH6BqTaiolA1rovFGrnv6BPNYeCZm8s1eUwkdEB2uajniXu9RRD9
-         nn/4KboKNm5IS7/ppcsBgG4elV7ZMLjOzXxb0xTHJlJuHWtgZhVAVCqfl2G2owEsuwx2
-         naxK0A/UqXO/ZUKIt/IPVkCCNmggeml3KnrDhl82dtcBKGVhQ5Zlh3fUV46y8ChNXKyF
-         tV8B9UM6ccKiu8KFLRs5lSlnrxpTrLhi7xxmuumIr5bJnrOF4Xrjllq/2sP9/+L56qdt
-         n0cQ==
-X-Gm-Message-State: ANoB5pkx3qeSvXJEA4tLFUAkVjXmGYH0xPsHgBFaskPe53Mvx73qeSxi
-        wXGxYnONK9IMzr/hdzowtlU80LNaIoFBuMIT1VZO8g==
-X-Google-Smtp-Source: AA0mqf60CqwQOnre/TZIa/ZhVJ8FaIC4IKsOt/yGrHCUPoKZRFRMA3X+qFsKNmLvAyf46Xo33hjWsB1M1Hyr48/9OyU=
-X-Received: by 2002:a05:6402:3895:b0:468:15f1:54b5 with SMTP id
- fd21-20020a056402389500b0046815f154b5mr14693061edb.8.1669348708173; Thu, 24
- Nov 2022 19:58:28 -0800 (PST)
+        bh=RzN4h3qOAvIsS9Ytm8ViCV9LTXDRNYxBOrbT9kwa+z4=;
+        b=gPktRRSjuFzox1XfW2991fak+qvjUZFwB/Av9kh70GeO7yh2CR/GpxTVGPliBMHbvP
+         DtHsBxRzGqVKPwAvW7609kZ/wzfn6ad05NBbdw8Bn681I4x+q+Uh9d9SpbIrCztfQhSF
+         n2Hy/UJA3foSKHBmooraXXUYNmHbr+9ERKB3TQasbKZjx058o+FDLwzt71fQDrdvZDu6
+         EM8dz6ZpNgykCwfJXaMhfrzMKa0Obh4xt1rC/Wp6P+SuO8BidM4yJje3qpD5a4uMzIJS
+         4SWEErbDVPlMRjI8cG/RDyGj+o9QQdKAfv31ekJKpWYS1gWPA/3sr26NXncrFMZBK997
+         OoZw==
+X-Gm-Message-State: ANoB5pliYFl51B3WjWkrZjeOrL1aT73Y12aQIVnpPO3RA9NcELMlua7c
+        +fA0QND27WQjlJDdpIhHtYZYwmSTCki6+C6Ow7/MXw==
+X-Google-Smtp-Source: AA0mqf4swfPzjKVkl1scJTqiUbIDnuAEsouyb52592fG1trV+h5bVVpbQlj0dZBKZjpXqLgzGBJ89YmbylZKTLb1eqs=
+X-Received: by 2002:a05:6402:1397:b0:467:78f2:d81f with SMTP id
+ b23-20020a056402139700b0046778f2d81fmr16227783edv.88.1669355567575; Thu, 24
+ Nov 2022 21:52:47 -0800 (PST)
 MIME-Version: 1.0
 References: <20221124102056.393220-1-treapking@chromium.org>
- <20221124102056.393220-7-treapking@chromium.org> <166930150123.3946649.3725588692267123167.robh@kernel.org>
-In-Reply-To: <166930150123.3946649.3725588692267123167.robh@kernel.org>
+ <20221124102056.393220-3-treapking@chromium.org> <Y39ikbcqx5/pEc64@smile.fi.intel.com>
+In-Reply-To: <Y39ikbcqx5/pEc64@smile.fi.intel.com>
 From:   Pin-yen Lin <treapking@chromium.org>
-Date:   Fri, 25 Nov 2022 11:58:17 +0800
-Message-ID: <CAEXTbpfFN=HKCNpQc6wrKozK-X14ky1jrw8GBnkk4rPm1LWoXA@mail.gmail.com>
-Subject: Re: [PATCH v6 6/7] dt/bindings: drm/bridge: it6505: Add mode-switch support
-To:     Rob Herring <robh@kernel.org>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Xin Ji <xji@analogixsemi.com>, Lyude Paul <lyude@redhat.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Benson Leung <bleung@chromium.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        David Airlie <airlied@gmail.com>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        Prashant Malani <pmalani@chromium.org>,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
-        <nfraprado@collabora.com>, Andrzej Hajda <andrzej.hajda@intel.com>,
-        Allen Chen <allen.chen@ite.com.tw>,
-        Marek Vasut <marex@denx.de>, linux-acpi@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
+Date:   Fri, 25 Nov 2022 13:52:36 +0800
+Message-ID: <CAEXTbpcbQEyYfuCssENiFQxwe3t11HtHnpJHgjq+=GziNfUk-g@mail.gmail.com>
+Subject: Re: [PATCH v6 2/7] platform/chrome: cros_ec_typec: Purge blocking
+ switch devlinks
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
         Robert Foss <robert.foss@linaro.org>,
         Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        linux-kernel@vger.kernel.org, Guenter Roeck <groeck@chromium.org>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        dri-devel@lists.freedesktop.org,
+        Hsin-Yi Wang <hsinyi@chromium.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        devicetree@vger.kernel.org, chrome-platform@lists.linux.dev,
+        linux-acpi@vger.kernel.org, Marek Vasut <marex@denx.de>,
+        Xin Ji <xji@analogixsemi.com>, Lyude Paul <lyude@redhat.com>,
+        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
+        <nfraprado@collabora.com>,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        chrome-platform@lists.linux.dev
+        linux-kernel@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -92,58 +93,60 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Sorry for accidentally using the tab characters. Will fix this in v7.
+Hi Andy,
 
-On Fri, Nov 25, 2022 at 1:39 AM Rob Herring <robh@kernel.org> wrote:
+On Thu, Nov 24, 2022 at 8:25 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
->
-> On Thu, 24 Nov 2022 18:20:55 +0800, Pin-yen Lin wrote:
-> > ITE IT6505 can be used in systems to switch the DP traffic between
-> > two downstreams, which can be USB Type-C DisplayPort alternate mode
-> > lane or regular DisplayPort output ports.
+> On Thu, Nov 24, 2022 at 06:20:51PM +0800, Pin-yen Lin wrote:
+> > From: Prashant Malani <pmalani@chromium.org>
 > >
-> > Update the binding to accommodate this usage by introducing a
-> > data-lanes and a mode-switch property on endpoints.
+> > When using OF graph, the fw_devlink code will create links between the
+> > individual port driver (cros-ec-typec here) and the parent device for
+> > a Type-C switch (like mode-switch). Since the mode-switch will in turn
+> > have the usb-c-connector (i.e the child of the port driver) as a
+> > supplier, fw_devlink will not be able to resolve the cyclic dependency
+> > correctly.
 > >
-> > Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+> > As a result, the mode-switch driver probe() never runs, so mode-switches
+> > are never registered. Because of that, the port driver probe constantly
+> > fails with -EPROBE_DEFER, because the Type-C connector class requires all
+> > switch devices to be registered prior to port registration.
 > >
-> > ---
-> >
-> > Changes in v6:
-> > - Remove switches node and use endpoints and data-lanes property to
-> >   describe the connections.
-> >
-> >  .../bindings/display/bridge/ite,it6505.yaml   | 94 ++++++++++++++++++-
-> >  1 file changed, 90 insertions(+), 4 deletions(-)
-> >
+> > To break this deadlock and allow the mode-switch registration to occur,
+> > purge all the usb-c-connector nodes' absent suppliers. This eliminates
+> > the connector as a supplier for a switch and allows it to be probed.
 >
-> My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-> on your patch (DT_CHECKER_FLAGS is new in v5.13):
+> ...
 >
-> yamllint warnings/errors:
-> ./Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml:99:1: [error] syntax error: found character '\t' that cannot start any token (syntax)
+> > +     /*
+> > +      * OF graph may have set up some device links with switches, since connectors have their
+> > +      * own compatible. Purge these to avoid a deadlock in switch probe (the switch mistakenly
+> > +      * assumes the connector is a supplier).
+> > +      */
 >
-> dtschema/dtc warnings/errors:
-> make[1]: *** Deleting file 'Documentation/devicetree/bindings/display/bridge/ite,it6505.example.dts'
-> Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml:99:1: found character '\t' that cannot start any token
-> make[1]: *** [Documentation/devicetree/bindings/Makefile:26: Documentation/devicetree/bindings/display/bridge/ite,it6505.example.dts] Error 1
-> make[1]: *** Waiting for unfinished jobs....
-> ./Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml:99:1: found character '\t' that cannot start any token
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml: ignoring, error parsing file
-> make: *** [Makefile:1492: dt_binding_check] Error 2
+> A bit too long lines...
+
+I'll fix this in v7.
+
 >
-> doc reference errors (make refcheckdocs):
+> > +     if (dev->of_node)
 >
-> See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20221124102056.393220-7-treapking@chromium.org
+> Why do you need this check?
+
+We use this check to make sure only platforms using OF have their
+links purged. I'm not sure if this should also be done on x86
+platforms.
+
+Best regards,
+Pin-yen
+
 >
-> This check can fail if there are any dependencies. The base for a patch
-> series is generally the most recent rc1.
+> > +             device_for_each_child_node(dev, fwnode)
+> > +                     fw_devlink_purge_absent_suppliers(fwnode);
 >
-> If you already ran 'make dt_binding_check' and didn't see the above
-> error(s), then make sure 'yamllint' is installed and dt-schema is up to
-> date:
+> --
+> With Best Regards,
+> Andy Shevchenko
 >
-> pip3 install dtschema --upgrade
->
-> Please check and re-submit after running the above command.
 >
