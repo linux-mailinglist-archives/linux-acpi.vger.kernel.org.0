@@ -2,71 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94581638D57
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Nov 2022 16:14:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BEC8638D5E
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Nov 2022 16:19:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229642AbiKYPOn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Nov 2022 10:14:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36798 "EHLO
+        id S229662AbiKYPS6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Nov 2022 10:18:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229747AbiKYPO2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Nov 2022 10:14:28 -0500
-Received: from mail-vs1-xe29.google.com (mail-vs1-xe29.google.com [IPv6:2607:f8b0:4864:20::e29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4205311478
-        for <linux-acpi@vger.kernel.org>; Fri, 25 Nov 2022 07:14:23 -0800 (PST)
-Received: by mail-vs1-xe29.google.com with SMTP id i2so4465683vsc.1
-        for <linux-acpi@vger.kernel.org>; Fri, 25 Nov 2022 07:14:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=00R96ylnw99C7hvGye+CZ7+VyWh7xSdStdUJpbF6+K8=;
-        b=CAOJB+K0YN2Wg7AwX+1l/acsNdEMRdy3+cGq3RKEYHaIo1y86aqFvm/D2fXwVCa+k8
-         vClu34W+czXFHgffQX36IQ8foJv1JYJjkLogn9ttzbeZ9Q9n39VSpoROSHID5z8zCpa5
-         RxMH93AekJkUconxiygivxPdBA2xc65u5Xu55ZW3WVYFKrJDFv1mRtaGKXRJ2aEjxgtn
-         MZgXcwN1kI+ufffXInD14JO9oy0EwxFL3BHYek5FvQz/NVkS5pHAgy0DkCtwNeY1rNSc
-         XhvRcDxBFzmcLB5+L7gr3/nW2BnFMiLYF4jZPThZ+zgLbbFSFtXI4QLnl2cLtwc6xpp9
-         Ar+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=00R96ylnw99C7hvGye+CZ7+VyWh7xSdStdUJpbF6+K8=;
-        b=sDYUuK4de7bNwP04405wlNLCzgOCgkUUtCDasvROGWCVTjYnoubJALBL+A/629JNBR
-         lgflFV+HhEWKArm25+3uzoeaMxej/zJLYyMwR/QUKzXE0CH1ixKdw6XT7Yx3Sc30V0dr
-         4XNZia8huXmuz3m1nnSJPYIOynuyvtBDFPA/qpIWwSErH53Oed+HW5fGaFLLfP44OUYQ
-         5ABJDpAe4ZG3YFM7uKgdFJxMzYl1KjDnaWEOBbRzNuuOsImbm9v0XfUeL2FO8yFigPSe
-         5BbqCl5zzTHMpVEUONf1dxsKeKHLI79SHS3ld3xVDtOMaUCjgiz5xItq0RMQ9T2/9wFP
-         7T7g==
-X-Gm-Message-State: ANoB5plpD7YKFY0wRrh/EbqhzyHJSSBXSbspf60zcon9/GbqT3oA9M8n
-        Mqdwd77TEPW0P08ruCqHvCf1hW+HBl7SylOgM+k=
-X-Google-Smtp-Source: AA0mqf7qw1Nf/vssU5dF78txmmmFyhTLXPtOTN6OsAmR05oDbBguNhEM8ruspJs4vjV1zKVPN0TozvkUXMmY896kVo0=
-X-Received: by 2002:a67:6307:0:b0:3af:b418:df5e with SMTP id
- x7-20020a676307000000b003afb418df5emr12330948vsb.17.1669389261859; Fri, 25
- Nov 2022 07:14:21 -0800 (PST)
+        with ESMTP id S229570AbiKYPSz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Nov 2022 10:18:55 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 361FB20361;
+        Fri, 25 Nov 2022 07:18:53 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6F5142B;
+        Fri, 25 Nov 2022 07:18:59 -0800 (PST)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 48CE23F587;
+        Fri, 25 Nov 2022 07:18:50 -0800 (PST)
+Date:   Fri, 25 Nov 2022 15:18:47 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Pierre Gondois <pierre.gondois@arm.com>
+Cc:     linux-kernel@vger.kernel.org, Ionela.Voinescu@arm.com,
+        Rob.Herring@arm.com, Jeremy Linton <jeremy.linton@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Gavin Shan <gshan@redhat.com>,
+        Peter Chen <peter.chen@kernel.org>,
+        SeongJae Park <sj@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 4/5] ACPI: PPTT: Update acpi_find_last_cache_level()
+ to acpi_get_cache_info()
+Message-ID: <20221125151847.ortklu4ptaftua6u@bogus>
+References: <20221121171217.3581004-1-pierre.gondois@arm.com>
+ <20221121171217.3581004-5-pierre.gondois@arm.com>
 MIME-Version: 1.0
-Sender: karenleo218@gmail.com
-Received: by 2002:a59:c8e8:0:b0:305:138e:2423 with HTTP; Fri, 25 Nov 2022
- 07:14:20 -0800 (PST)
-From:   Rose Darren <rosedarren0001@gmail.com>
-Date:   Fri, 25 Nov 2022 15:14:20 +0000
-X-Google-Sender-Auth: LkrjKHg5v_iazxjy4k-fnAv228o
-Message-ID: <CAHROqdirKYzL4rG2yFT-UuQPBpuX_2Q2W=zfxjhA_5U=6OjtZg@mail.gmail.com>
-Subject: azq
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221121171217.3581004-5-pierre.gondois@arm.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SPRECHEN SIE ENGLISCH?
-Haben Sie gestern Abend meine Nachricht f=C3=BCr weitere Diskussionen erhal=
-ten?
+On Mon, Nov 21, 2022 at 06:12:12PM +0100, Pierre Gondois wrote:
+> acpi_find_last_cache_level() allows to find the last level of cache
+> for a given CPU. The function is only called on arm64 ACPI based
+> platforms to check for cache information that would be missing in
+> the CLIDR_EL1 register.
+> To allow populating (struct cpu_cacheinfo).num_leaves by only parsing
+> a PPTT, update acpi_find_last_cache_level() to get the 'split_levels',
+> i.e. the number of cache levels being split in data/instruction
+> caches.
+> 
+> It is assumed that there will not be data/instruction caches above a
+> unified cache.
+> If a split level consist of one data cache and no instruction cache
+> (or opposite), then the missing cache will still be populated
+> by default with minimal cache information, and maximal cpumask
+> (all non-existing caches have the same fw_token).
+> 
+> Suggested-by: Jeremy Linton <jeremy.linton@arm.com>
+> Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
+> Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
+> ---
+>  arch/arm64/kernel/cacheinfo.c |  9 +++--
+>  drivers/acpi/pptt.c           | 76 +++++++++++++++++++++++------------
+>  include/linux/cacheinfo.h     |  8 ++--
+>  3 files changed, 61 insertions(+), 32 deletions(-)
+> 
+> diff --git a/arch/arm64/kernel/cacheinfo.c b/arch/arm64/kernel/cacheinfo.c
+> index 97c42be71338..164255651d64 100644
+> --- a/arch/arm64/kernel/cacheinfo.c
+> +++ b/arch/arm64/kernel/cacheinfo.c
+> @@ -46,7 +46,7 @@ static void ci_leaf_init(struct cacheinfo *this_leaf,
+>  int init_cache_level(unsigned int cpu)
+>  {
+>  	unsigned int ctype, level, leaves;
+> -	int fw_level;
+> +	int fw_level, ret;
+>  	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+>  
+>  	for (level = 1, leaves = 0; level <= MAX_CACHE_LEVEL; level++) {
+> @@ -61,8 +61,11 @@ int init_cache_level(unsigned int cpu)
+>  
+>  	if (acpi_disabled)
+>  		fw_level = of_find_last_cache_level(cpu);
+> -	else
+> -		fw_level = acpi_find_last_cache_level(cpu);
+> +	else {
+
+You need to add braces to if as well in such cases. I think checkpatch
+might tell you that. Just found this by chance.
+
+Anyways, this looks good to me.
+
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+
+
+-- 
+Regards,
+Sudeep
