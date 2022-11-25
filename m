@@ -2,152 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7D42638DBB
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Nov 2022 16:51:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4379D638F3F
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Nov 2022 18:42:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229453AbiKYPvB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Nov 2022 10:51:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37782 "EHLO
+        id S229863AbiKYRme (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Nov 2022 12:42:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229675AbiKYPu7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Nov 2022 10:50:59 -0500
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FAE231FB8;
-        Fri, 25 Nov 2022 07:50:56 -0800 (PST)
-Received: by mail-wr1-x436.google.com with SMTP id x17so7363784wrn.6;
-        Fri, 25 Nov 2022 07:50:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gGtFpd9/hEihcxfaAZXLh+MO2ImBUdS5RPJo51eOJ5A=;
-        b=Wd6tMpn1N5SIEtXHFwc1eScSBrFdtSlj2xAcP/GVikTRm1O6CSkkb4tWt9U3NoCIa4
-         ijWwVQUGwSEiaT41EnbxqcvBjeBbqgZx07Wf0Z2MhTvq72fA/IaeRK77bTB6tSZsvxD9
-         2xKnPOSOK3ua+7nYV3bUIOpZMkWLbqTwnDxvULKNAMT6BN4lAxIrxyeWtc7sX9aJTl5y
-         tOqchmZnX90FCKtSOS4kryZ6ll56ip6D7P+r/50tYc/nXW4J+/pDeMDNF3fr/rX9S7Yu
-         E7YisrgoDNkwMnZEswLQlMssNyAocughTN01RX8UKLKrGTfi3Ldvr6GSGE2hkDDJ8+32
-         nWJg==
+        with ESMTP id S229493AbiKYRmc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Nov 2022 12:42:32 -0500
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C50AB69;
+        Fri, 25 Nov 2022 09:42:29 -0800 (PST)
+Received: by mail-qt1-f171.google.com with SMTP id s4so2909522qtx.6;
+        Fri, 25 Nov 2022 09:42:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gGtFpd9/hEihcxfaAZXLh+MO2ImBUdS5RPJo51eOJ5A=;
-        b=0te77cvKCGbeoPQeWjt4H8E5aJWpZrFAWQhlIBrdc6e3X1JWGd7+URKqE92XKuuLIb
-         em0P9esUtmCcCsI1BOmtSDstYSpqWArgyOtGXaS4NALp5csbqx0dBpuAThqta4UM+jm0
-         wYCQtbDd7JsChomf2QeuB6eU+Z2Bn6UTToG29/zgKAMj4rJ1KbHZnJu/JVBj864JX/0h
-         Iqz6UCAeCWHnmBGiIHnlJ/fbmVWnGbEzunO8L480667IIMNwdj4Eg2jThqo/Ufr7a4F1
-         ujEA8Z5QBv9Qw827zZjuBV9Hpl6JvXddNUWXlKNV80KkR0EClHXg9gpMVorVKSF4T+IY
-         1oiA==
-X-Gm-Message-State: ANoB5plaKCyqIBA66qBYiVWVFoDrUXHTk1B2B+IZbUdcZYQJiQHfO83q
-        wKGjN91o0mHdZ7dMZ6lMu+Qo7lPyfeo=
-X-Google-Smtp-Source: AA0mqf51cWgSgehn/7HYrUUOy965hQUYasigP3oEcbV2hg7FAxvEw+pQQdBzhgOj70jyVM+s/0Hx8A==
-X-Received: by 2002:a5d:4308:0:b0:241:e80e:225a with SMTP id h8-20020a5d4308000000b00241e80e225amr9726284wrq.560.1669391454971;
-        Fri, 25 Nov 2022 07:50:54 -0800 (PST)
-Received: from [192.168.0.14] (cpc141996-chfd3-2-0-cust928.12-3.cable.virginm.net. [86.13.91.161])
-        by smtp.gmail.com with ESMTPSA id j13-20020adfff8d000000b00241bd177f89sm4050389wrr.14.2022.11.25.07.50.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Nov 2022 07:50:54 -0800 (PST)
-Message-ID: <5beff345-84c2-d456-1b7f-05309afa397b@gmail.com>
-Date:   Fri, 25 Nov 2022 15:50:53 +0000
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gd7JLS7K2RX5uhImtxN5fxn5NCVFRhRNnrf3mNn1ihY=;
+        b=2yvKlzN+AhaosmP2s0Q5dgwXdTTgtnfxNxpoBVt68B6B1k3tNmXW42aCjZvtfO7baV
+         0DcqqZb6mQxYmvDWbdAEVcwhd9OFyNA6ky/77cab1KyUBgmC1km+xHkauKs60HmzlXR+
+         AQj3XW8zXFdlOhpcGAEkH9KBWNGFeFJXo5BqD9FXHPQyA6ic22JAJPy4r02HD1k8ZxKi
+         TPlkxOCXDvWx5RDKsyIzJtfyM/0ICu0/FcRWd7hIpv1uLzfjj6aIdIbjrp5TFoeBbHNa
+         7IgJz4OCzbyhmLyZxztJ/V59lM1v9FJ8Sl3iDlFa3f9TnOBauG9OjQRB6dKQlhwc80tL
+         d0nw==
+X-Gm-Message-State: ANoB5pnhtQ7m2jWaLGdpVDgQpbmai/boueXZZ7fdyVdkOcOU3Z9UNZVa
+        50nCbUYpQcOcvpzsySOYnTIVM0DBF1/dmXZaFKkNo5mpEMg=
+X-Google-Smtp-Source: AA0mqf4upWQUMGIIarIhe87kp1l3XuEV/NaTdTMUYckAbkiIK6K6lGfd6dgOpdWAoGmdZUeqY4a2Lb6H3O0yVvDK8MU=
+X-Received: by 2002:ac8:60d3:0:b0:3a5:4678:5b24 with SMTP id
+ i19-20020ac860d3000000b003a546785b24mr36364743qtm.411.1669398148180; Fri, 25
+ Nov 2022 09:42:28 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v3] device property: fix of node refcount leak in
- fwnode_graph_get_next_endpoint()
-Content-Language: en-US
-To:     Yang Yingliang <yangyingliang@huawei.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com,
-        sakari.ailus@linux.intel.com, gregkh@linuxfoundation.org,
-        rafael@kernel.org
-References: <20221123022542.2999510-1-yangyingliang@huawei.com>
-From:   Daniel Scally <djrscally@gmail.com>
-In-Reply-To: <20221123022542.2999510-1-yangyingliang@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 25 Nov 2022 18:42:17 +0100
+Message-ID: <CAJZ5v0ifxCo1ZLw8OqUMbnJHQLxP7dKjnxzN1wpogmt+dpm_=Q@mail.gmail.com>
+Subject: [GIT PULL] Power management fixes for v6.1-rc7
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi all - sorry that took so long
+Hi Linus,
 
-On 23/11/2022 02:25, Yang Yingliang wrote:
-> The 'parent' returned by fwnode_graph_get_port_parent()
-> with refcount incremented when 'prev' is not NULL, it
-> needs be put when finish using it.
->
-> Because the parent is const, introduce a new variable to
-> store the returned fwnode, then put it before returning
-> from fwnode_graph_get_next_endpoint().
->
-> Fixes: b5b41ab6b0c1 ("device property: Check fwnode->secondary in fwnode_graph_get_next_endpoint()")
-> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-> ---
+Please pull from the tag
+
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ pm-6.1-rc7
+
+with top-most commit 1056d314709d0607a22e589c54b1e47e0da57b9d
+
+ Documentation: add amd-pstate kernel command line options
+
+on top of commit eb7081409f94a9a8608593d0fb63a1aa3d6f95d8
+
+ Linux 6.1-rc6
+
+to receive power management fixes for 6.1-rc7.
+
+These revert a recent change in the schedutil cpufreq governor that
+had not been expected to make any functional difference, but turned
+out to introduce a performance regression, fix an initialization issue
+in the amd-pstate driver and make it actually replace the venerable
+ACPI cpufreq driver on the supported systems by default.
+
+Specifics:
+
+ - Revert a recent schedutil cpufreq governor change that introduced
+   a performance regression on Pixel 6 (Sam Wu).
+
+ - Fix amd-pstate driver initialization after running the kernel via
+   kexec (Wyes Karny).
+
+ - Turn amd-pstate into a built-in driver which allows it to take
+   precedence over acpi-cpufreq by default on supported systems and
+   amend it with a mechanism to disable this behavior (Perry Yuan).
+
+ - Update amd-pstate documentation in accordance with the other changes
+   made to it (Perry Yuan).
+
+Thanks!
 
 
-This looks fine to me (thanks for fixing it), and it works fine on my
-Surface:
+---------------
 
+Perry Yuan (4):
+      cpufreq: amd-pstate: change amd-pstate driver to be built-in type
+      cpufreq: amd-pstate: add amd-pstate driver parameter for mode selection
+      Documentation: amd-pstate: add driver working mode introduction
+      Documentation: add amd-pstate kernel command line options
 
-Reviewed-and-tested-by: Daniel Scally <djrscally@gmail.com>
+Sam Wu (1):
+      Revert "cpufreq: schedutil: Move max CPU capacity to sugov_policy"
 
-> v2 -> v3:
->   Add a out label.
->
-> v1 -> v2:
->   Introduce a new variable to store the returned fwnode.
-> ---
->  drivers/base/property.c | 18 ++++++++++++------
->  1 file changed, 12 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/base/property.c b/drivers/base/property.c
-> index 2a5a37fcd998..7f338cb4fb7b 100644
-> --- a/drivers/base/property.c
-> +++ b/drivers/base/property.c
-> @@ -989,26 +989,32 @@ struct fwnode_handle *
->  fwnode_graph_get_next_endpoint(const struct fwnode_handle *fwnode,
->  			       struct fwnode_handle *prev)
->  {
-> +	struct fwnode_handle *ep, *port_parent = NULL;
->  	const struct fwnode_handle *parent;
-> -	struct fwnode_handle *ep;
->  
->  	/*
->  	 * If this function is in a loop and the previous iteration returned
->  	 * an endpoint from fwnode->secondary, then we need to use the secondary
->  	 * as parent rather than @fwnode.
->  	 */
-> -	if (prev)
-> -		parent = fwnode_graph_get_port_parent(prev);
-> -	else
-> +	if (prev) {
-> +		port_parent = fwnode_graph_get_port_parent(prev);
-> +		parent = port_parent;
-> +	} else {
->  		parent = fwnode;
-> +	}
->  	if (IS_ERR_OR_NULL(parent))
->  		return NULL;
->  
->  	ep = fwnode_call_ptr_op(parent, graph_get_next_endpoint, prev);
->  	if (ep)
-> -		return ep;
-> +		goto out_put_port_parent;
-> +
-> +	ep = fwnode_graph_get_next_endpoint(parent->secondary, NULL);
->  
-> -	return fwnode_graph_get_next_endpoint(parent->secondary, NULL);
-> +out_put_port_parent:
-> +	fwnode_handle_put(port_parent);
-> +	return ep;
->  }
->  EXPORT_SYMBOL_GPL(fwnode_graph_get_next_endpoint);
->  
+Wyes Karny (1):
+      cpufreq: amd-pstate: cpufreq: amd-pstate: reset MSR_AMD_PERF_CTL
+register at init
+
+---------------
+
+ Documentation/admin-guide/kernel-parameters.txt | 11 ++++++
+ Documentation/admin-guide/pm/amd-pstate.rst     | 30 +++++++--------
+ drivers/cpufreq/Kconfig.x86                     |  2 +-
+ drivers/cpufreq/amd-pstate.c                    | 49 +++++++++++++++++--------
+ kernel/sched/cpufreq_schedutil.c                | 30 +++++++--------
+ 5 files changed, 74 insertions(+), 48 deletions(-)
