@@ -2,40 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA8066395B9
-	for <lists+linux-acpi@lfdr.de>; Sat, 26 Nov 2022 12:31:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0AB163977D
+	for <lists+linux-acpi@lfdr.de>; Sat, 26 Nov 2022 18:54:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229485AbiKZLbJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 26 Nov 2022 06:31:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60408 "EHLO
+        id S229487AbiKZRyp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 26 Nov 2022 12:54:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbiKZLbI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 26 Nov 2022 06:31:08 -0500
-Received: from smtp.smtpout.orange.fr (smtp-26.smtpout.orange.fr [80.12.242.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5AFE20F51
-        for <linux-acpi@vger.kernel.org>; Sat, 26 Nov 2022 03:31:04 -0800 (PST)
-Received: from pop-os.home ([86.243.100.34])
-        by smtp.orange.fr with ESMTPA
-        id ytOfoOUED1LdIytOfoAzaK; Sat, 26 Nov 2022 12:31:03 +0100
-X-ME-Helo: pop-os.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 26 Nov 2022 12:31:03 +0100
-X-ME-IP: 86.243.100.34
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        with ESMTP id S229459AbiKZRyo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 26 Nov 2022 12:54:44 -0500
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3181D14082;
+        Sat, 26 Nov 2022 09:54:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669485283; x=1701021283;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=+HBvBEKjgzLh+b0Rh5KAiXiIJQYa7lQ+EKQIYo9j+Fc=;
+  b=jiZpEOt+TFvAY2OT2IErBssaq1/EiSGqYfRFnVVVfY8p53dKfP1HPoQT
+   2i0tyYHwrWKnSnoMXdoLe9Og5bXY1Vj4XTZxCNOqi0LO+4HEtUcZcbTVZ
+   U3AzK/EGUA8WVOVWpb8VhEJWsuOBpVdAU3ciT4YkXgQp4Mgf0P9ZlmtnS
+   HkumJAiIJ2V/qFWBDofyLXANbOSLu+iwTRetqkIK9ccXSHtIM5bgL7O5d
+   BtSNBKmbYFGJKGlhZ+zRTTZuzOs6EIndMo4+YVb9lapd68suzzMgo6f2H
+   6alhGUkggqT82t79P3qPxm2ptWdq3kvwzrbkZBU6krSmH7ayj7JNhWmfQ
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10543"; a="341520756"
+X-IronPort-AV: E=Sophos;i="5.96,196,1665471600"; 
+   d="scan'208";a="341520756"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2022 09:54:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10543"; a="673794897"
+X-IronPort-AV: E=Sophos;i="5.96,196,1665471600"; 
+   d="scan'208";a="673794897"
+Received: from lkp-server01.sh.intel.com (HELO 64a2d449c951) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 26 Nov 2022 09:54:40 -0800
+Received: from kbuild by 64a2d449c951 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oyzNv-0006Ur-33;
+        Sat, 26 Nov 2022 17:54:39 +0000
+Date:   Sun, 27 Nov 2022 01:53:41 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
         linux-acpi@vger.kernel.org
-Subject: [PATCH] ACPI: APEI: Remove a useless include
-Date:   Sat, 26 Nov 2022 12:30:55 +0100
-Message-Id: <f619bc0b58a70e1cd1942b3db3716d6f9b261666.1669462247.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.34.1
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 86c625dd876b10c15ec2075d8d0b1fccaa1486bc
+Message-ID: <638252a5.ibwrwvRdXMcEEs8K%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -43,28 +64,83 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This file does not use rcu, so there is no point in including
-<linux/rculist.h>.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 86c625dd876b10c15ec2075d8d0b1fccaa1486bc  Merge branch 'pnp' into bleeding-edge
 
-So just remove it.
+elapsed time: 1353m
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/acpi/apei/apei-base.c | 1 -
- 1 file changed, 1 deletion(-)
+configs tested: 62
+configs skipped: 2
 
-diff --git a/drivers/acpi/apei/apei-base.c b/drivers/acpi/apei/apei-base.c
-index 02196a312dc5..c7c26872f4ce 100644
---- a/drivers/acpi/apei/apei-base.c
-+++ b/drivers/acpi/apei/apei-base.c
-@@ -25,7 +25,6 @@
- #include <linux/slab.h>
- #include <linux/io.h>
- #include <linux/kref.h>
--#include <linux/rculist.h>
- #include <linux/interrupt.h>
- #include <linux/debugfs.h>
- #include <acpi/apei.h>
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+powerpc                           allnoconfig
+arc                  randconfig-r043-20221124
+um                             i386_defconfig
+um                           x86_64_defconfig
+alpha                             allnoconfig
+x86_64                           rhel-8.3-syz
+i386                              allnoconfig
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+arm                               allnoconfig
+arc                               allnoconfig
+arc                                 defconfig
+s390                             allmodconfig
+alpha                               defconfig
+ia64                             allmodconfig
+s390                                defconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+sh                               allmodconfig
+m68k                             allyesconfig
+s390                             allyesconfig
+m68k                             allmodconfig
+powerpc                          allmodconfig
+x86_64                          rhel-8.3-func
+mips                             allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                           allyesconfig
+x86_64                        randconfig-a015
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+i386                          randconfig-a001
+i386                          randconfig-a003
+x86_64                        randconfig-a006
+i386                          randconfig-a005
+i386                                defconfig
+i386                             allyesconfig
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+arm                                 defconfig
+arm                              allyesconfig
+arm64                            allyesconfig
+
+clang tested configs:
+riscv                randconfig-r042-20221124
+hexagon              randconfig-r041-20221124
+hexagon              randconfig-r045-20221124
+s390                 randconfig-r044-20221124
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+x86_64                        randconfig-a012
+x86_64                        randconfig-a005
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
