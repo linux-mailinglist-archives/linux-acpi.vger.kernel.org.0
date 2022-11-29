@@ -2,262 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D245A639D16
-	for <lists+linux-acpi@lfdr.de>; Sun, 27 Nov 2022 22:03:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3462D63B78F
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Nov 2022 03:00:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229563AbiK0VDZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 27 Nov 2022 16:03:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53868 "EHLO
+        id S234907AbiK2CAN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Nov 2022 21:00:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229469AbiK0VDA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 27 Nov 2022 16:03:00 -0500
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0FEAB4B7
-        for <linux-acpi@vger.kernel.org>; Sun, 27 Nov 2022 13:02:50 -0800 (PST)
-Received: by mail-lf1-x12b.google.com with SMTP id d6so14588987lfs.10
-        for <linux-acpi@vger.kernel.org>; Sun, 27 Nov 2022 13:02:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YG9C8Je6fOUrC9EBgB6xvA4FHLC3Tgsmhxw2CT4bktI=;
-        b=GN2Qt9uZ5uhkxgBh58GG3jZ43mc+iwVYeEMNV3OOsR3CA/ZqKa2ZeT7+oSac3hUAW/
-         DBJQHIYaV/VXrvIIET1l/2qms3ULfWJu6ygEjctNV3S+nLp4eRK729aGLJA0cyPlSmDJ
-         IACAHnFBpgvSad/+Vm0uvW4W8Cls7VcH22J/gOPkHE0BVQSjL1Gt7OMKtohi2l029//x
-         rSB0ylRIKGo9wC4HVT7ZbNcTQavF3KC1DQKXH/OwN3p7wdxELZNRNd4b47WTPYslAH/b
-         kqD9V6SKRzR4pkHa/Yxpx8jNk1Ek2zP9sg08/+M1EGk+CjpnleiHGTMJ3++z5GNaKlTb
-         2ciQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YG9C8Je6fOUrC9EBgB6xvA4FHLC3Tgsmhxw2CT4bktI=;
-        b=xN47DmssZWXnKm67d7uX/0BHiDj8+x37fRA+Ni76MEaUgN7MUi3OMUoS76jYiK2wNr
-         jM1N6cie8X74TDRh9n38VIhUm+PKIjAoEcO8iF3pPaQO7p/Sx4LWCjM0tyXP+p0Ch+Nj
-         EFkkPDgFNsnxX7sjJdnQhBHLbULyHit8ATX42pIH2uXvnpO8u52Wc2Y1YOQYatus+Gb1
-         cy7wB2Q7V6lSOkAstw1GxB4KU2Z3s9ErR7Om8zlrK8HFDcUcBCiN0A7LaeAs/rSWkTPp
-         xBeIWazHohqM/tmvMbev+JcHAnq/bEqKiSAeN4VSpicutJDByJYYIuCHSliNtzQQoHrh
-         pyuA==
-X-Gm-Message-State: ANoB5pmJwFHD81z4403wQ2TtmScGyTcJV3Ea+7+nLoz8DQ66RFvgoXe3
-        vMCvX1GgrwDsJ3T1vj0cYkC2bg==
-X-Google-Smtp-Source: AA0mqf6+KhkW7HMo9DsQNAJ3vjBKT6NzKVCWbqHwEcMy871JpyCK4dnJ9wP25L4Ys5FqpqLH0nxz1A==
-X-Received: by 2002:ac2:4acc:0:b0:4b4:10ca:5240 with SMTP id m12-20020ac24acc000000b004b410ca5240mr17464297lfp.482.1669582967708;
-        Sun, 27 Nov 2022 13:02:47 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id z17-20020a056512371100b004b4bae1a05asm1405515lfr.293.2022.11.27.13.02.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 27 Nov 2022 13:02:47 -0800 (PST)
-Message-ID: <a2a8cd80-a614-e96f-90ab-a98c60527344@linaro.org>
-Date:   Sun, 27 Nov 2022 22:02:45 +0100
+        with ESMTP id S233934AbiK2CAM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Nov 2022 21:00:12 -0500
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5458745A09;
+        Mon, 28 Nov 2022 18:00:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669687211; x=1701223211;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=kokUTO3pNOqizW3Qp3hAUb5tGZM254XvbpWoLKp5c9g=;
+  b=CtnUcz1cDenVfJn6Q8ZRlA5m03LZ9DdFGrbZPgQBFQcB8homyusAYqRQ
+   HPTfYs1JSINgkC26BMP9vMh9nyK287YxV4Z7pnrNipb15ZZa3ONcTQEEQ
+   AmbPb6uZlyPIKp190ktxUyJONG2U2sLw88fqVRjWDtQNEd5D76tVYpc0E
+   BG+0mglsqpTMK+ovV8O8wGs2s/uvCBMWzRqXbdLfVQ1pUtoY2IhYH7r0x
+   Vc+Bq6THfNx0esNupWe9Zkiw0c8ucBNqQDYT/bRbj/feSCW2jyXeFJICV
+   Rk4AMDjZIGkZT+xq5Nd5yNDbsPuyTjRSy6oVYdqArCLU/qOhofL+0oJAa
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10545"; a="316831917"
+X-IronPort-AV: E=Sophos;i="5.96,201,1665471600"; 
+   d="scan'208";a="316831917"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2022 18:00:10 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10545"; a="643614243"
+X-IronPort-AV: E=Sophos;i="5.96,201,1665471600"; 
+   d="scan'208";a="643614243"
+Received: from lkp-server01.sh.intel.com (HELO 64a2d449c951) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 28 Nov 2022 18:00:09 -0800
+Received: from kbuild by 64a2d449c951 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1ozpuq-0008VP-1I;
+        Tue, 29 Nov 2022 02:00:08 +0000
+Date:   Tue, 29 Nov 2022 09:59:30 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ dee69e7005ce309e619155eb6372f287212e27f7
+Message-ID: <63856782.i3rgzZuq5QnxURN3%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v6 6/7] dt/bindings: drm/bridge: it6505: Add mode-switch
- support
-Content-Language: en-US
-To:     Pin-yen Lin <treapking@chromium.org>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>
-Cc:     Javier Martinez Canillas <javierm@redhat.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        dri-devel@lists.freedesktop.org,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        devicetree@vger.kernel.org, chrome-platform@lists.linux.dev,
-        linux-acpi@vger.kernel.org, Marek Vasut <marex@denx.de>,
-        Xin Ji <xji@analogixsemi.com>, Lyude Paul <lyude@redhat.com>,
-        =?UTF-8?Q?N=c3=adcolas_F_=2e_R_=2e_A_=2e_Prado?= 
-        <nfraprado@collabora.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        linux-kernel@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>
-References: <20221124102056.393220-1-treapking@chromium.org>
- <20221124102056.393220-7-treapking@chromium.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221124102056.393220-7-treapking@chromium.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 24/11/2022 11:20, Pin-yen Lin wrote:
-> ITE IT6505 can be used in systems to switch the DP traffic between
-> two downstreams, which can be USB Type-C DisplayPort alternate mode
-> lane or regular DisplayPort output ports.
-> 
-> Update the binding to accommodate this usage by introducing a
-> data-lanes and a mode-switch property on endpoints.
-> 
-> Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-> 
-> ---
-> 
-> Changes in v6:
-> - Remove switches node and use endpoints and data-lanes property to
->   describe the connections.
-> 
->  .../bindings/display/bridge/ite,it6505.yaml   | 94 ++++++++++++++++++-
->  1 file changed, 90 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml b/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
-> index 833d11b2303a..b4b9881c7759 100644
-> --- a/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
-> +++ b/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
-> @@ -52,9 +52,53 @@ properties:
->      maxItems: 1
->      description: extcon specifier for the Power Delivery
->  
-> -  port:
-> -    $ref: /schemas/graph.yaml#/properties/port
-> -    description: A port node pointing to DPI host port node
-> +  data-lanes:
-> +    maxItems: 1
-> +    description: restrict the dp output data-lanes with value of 1-4
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: dee69e7005ce309e619155eb6372f287212e27f7  Merge branches 'thermal-core' and 'thermal-intel' into linux-next
 
-Hm, where is the definition of this type? For example it comes with
-video-interfaces, which you did not reference here.
+elapsed time: 733m
 
-> +
-> +  max-pixel-clock-khz:
+configs tested: 62
+configs skipped: 2
 
-There is no such unit accepted:
-https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/property-units.yaml
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> +    maxItems: 1
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+arc                                 defconfig
+arc                              allyesconfig
+s390                             allmodconfig
+alpha                            allyesconfig
+x86_64                              defconfig
+arc                  randconfig-r043-20221128
+alpha                               defconfig
+x86_64                          rhel-8.3-func
+s390                                defconfig
+x86_64                    rhel-8.3-kselftests
+i386                 randconfig-a002-20221128
+i386                 randconfig-a003-20221128
+x86_64                               rhel-8.3
+x86_64                           rhel-8.3-syz
+i386                 randconfig-a001-20221128
+x86_64                         rhel-8.3-kunit
+i386                                defconfig
+i386                 randconfig-a005-20221128
+i386                 randconfig-a006-20221128
+x86_64                           rhel-8.3-kvm
+i386                 randconfig-a004-20221128
+arc                               allnoconfig
+s390                             allyesconfig
+x86_64                           allyesconfig
+x86_64               randconfig-a002-20221128
+alpha                             allnoconfig
+x86_64               randconfig-a005-20221128
+i386                              allnoconfig
+x86_64               randconfig-a001-20221128
+x86_64               randconfig-a006-20221128
+x86_64               randconfig-a003-20221128
+ia64                             allmodconfig
+arm                               allnoconfig
+x86_64               randconfig-a004-20221128
+powerpc                           allnoconfig
+mips                             allyesconfig
+i386                             allyesconfig
+powerpc                          allmodconfig
+sh                               allmodconfig
+arm                                 defconfig
+arm                              allyesconfig
+arm64                            allyesconfig
 
-maxItems of what type? What is this?
+clang tested configs:
+hexagon              randconfig-r045-20221128
+hexagon              randconfig-r041-20221128
+riscv                randconfig-r042-20221128
+s390                 randconfig-r044-20221128
+x86_64               randconfig-a013-20221128
+i386                 randconfig-a012-20221128
+i386                 randconfig-a014-20221128
+i386                 randconfig-a015-20221128
+x86_64               randconfig-a012-20221128
+i386                 randconfig-a016-20221128
+x86_64               randconfig-a014-20221128
+i386                 randconfig-a011-20221128
+i386                 randconfig-a013-20221128
+x86_64               randconfig-a011-20221128
+x86_64               randconfig-a016-20221128
+x86_64               randconfig-a015-20221128
 
-> +    description: restrict max pixel clock
-> +
-> +  ports:
-> +    $ref: /schemas/graph.yaml#/properties/ports
-
-This is incompatible change... how do you handle now ABI break?
-
-> +
-> +    properties:
-> +      port@0:
-> +        $ref: /schemas/graph.yaml#/$defs/port-base
-
-Why changing the ref?
-
-> +        unevaluatedProperties: false
-> +        description: A port node pointing to DPI host port node
-> +
-> +      port@1:
-> +        $ref: /schemas/graph.yaml#/properties/port-base
-> +        description:
-> +          Video port for panel or connector.
-> +
-> +        patternProperties:
-> +          "^endpoint@[01]$":
-> +            $ref: /schemas/media/video-interfaces.yaml#
-> +            type: object
-> +            unevaluatedProperties: false
-> +
-> +            properties:
-> +              reg:
-> +                maxItems: 1
-> +
-> +              remote-endpoint: true
-> +
-> +              data-lanes:
-> +                minItems: 1
-> +                uniqueItems: true
-> +                items:
-> +                  - enum: [ 0, 1, 2, 3]
-
-Same problem as your previouspatch.
-
-> +
-> +              mode-switch:
-> +                type: boolean
-> +                description: Register this node as a Type-C mode switch or not.
-> +
-> +	    required:
-> +        - reg
-> +	      - remote-endpoint
->  
->  required:
->    - compatible
-> @@ -62,7 +106,7 @@ required:
->    - pwr18-supply
->    - interrupts
->    - reset-gpios
-> -  - extcon
-> +  - ports
->  
->  additionalProperties: false
->  
-> @@ -92,3 +136,45 @@ examples:
->              };
->          };
->      };
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    &i2c3 {
-> +        clock-frequency = <100000>;
-> +
-> +        it6505dptx: it6505dptx@5c {
-
-Node names should be generic.
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-
-> +            compatible = "ite,it6505";
-> +            interrupts = <8 IRQ_TYPE_LEVEL_LOW 8 0>;
-> +            reg = <0x5c>;
-> +            pinctrl-names = "default";
-> +            pinctrl-0 = <&it6505_pins>;
-> +            ovdd-supply = <&mt6366_vsim2_reg>;
-> +            pwr18-supply = <&pp1800_dpbrdg_dx>;
-> +            reset-gpios = <&pio 177 0>;
-> +            hpd-gpios = <&pio 10 0>;
-> +
-> +            ports {
-> +                #address-cells = <1>;
-> +                #size-cells = <0>;
-> +                port@0 {
-> +                    reg = <0>;
-> +                    it6505_in: endpoint {
-> +                        remote-endpoint = <&dpi_out>;
-> +                    };
-> +                };
-> +                port@1 {
-> +                    reg = <1>;
-> +                    ite_typec0: endpoint@0 {
-> +                        mode-switch;
-> +                        data-lanes = <0 1>;
-
-Does not look like you tested the bindings. Please run `make
-dt_binding_check` (see
-Documentation/devicetree/bindings/writing-schema.rst for instructions).
-
-Best regards,
-Krzysztof
-
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
