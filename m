@@ -2,182 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2785F63DAF4
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Nov 2022 17:48:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 168BF63DCAF
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Nov 2022 19:07:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229611AbiK3QsU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 30 Nov 2022 11:48:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37934 "EHLO
+        id S229818AbiK3SHW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 30 Nov 2022 13:07:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229565AbiK3QsT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 30 Nov 2022 11:48:19 -0500
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E7FF23E9B;
-        Wed, 30 Nov 2022 08:48:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1669826898; x=1701362898;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=uTrgL6k/pta00i+eT2v7N/wL/p9QjJsL21ekxDAFN/o=;
-  b=L0g2Z03ZKirwlDjjzk/hbcCMCcWSqLG4loVGqrcKO3kt8Aq2Pzdn9Vml
-   RZkYLgxr+1MTVJk9LoNFZQr1K9fraFo2j9P4oYM0O1oZH1i1xkVPIQGXy
-   OPGN1W9G0zaPhhBi4021C50y6n2mx/YXgfjuMFXk+8bRbyqu0oLT80Wur
-   A68dbvstMCoSYSr+U3uj8kaHn00x+cgX1m8vpTVWB+rpnPYGWABob69tQ
-   P/Bkk73C7Q5ibdsDo/WSXkRcVFnfdf6jsgN2Q++lD32WplIo0bDTCReZw
-   JdDQVKIX+gUARRvhSjtgMLYtYarsXw1MitCYXaWesOo475lO6p3iXNshq
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10547"; a="314141263"
-X-IronPort-AV: E=Sophos;i="5.96,206,1665471600"; 
-   d="scan'208";a="314141263"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2022 08:48:17 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10547"; a="973170182"
-X-IronPort-AV: E=Sophos;i="5.96,207,1665471600"; 
-   d="scan'208";a="973170182"
-Received: from xwang-mobl1.amr.corp.intel.com (HELO [10.212.177.221]) ([10.212.177.221])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2022 08:48:16 -0800
-Message-ID: <4a0e9f91-8d8b-84bc-c9db-7265f5b65b63@intel.com>
-Date:   Wed, 30 Nov 2022 08:48:14 -0800
+        with ESMTP id S229964AbiK3SHQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 30 Nov 2022 13:07:16 -0500
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B541F7BF89
+        for <linux-acpi@vger.kernel.org>; Wed, 30 Nov 2022 10:07:11 -0800 (PST)
+Received: by mail-pg1-x52c.google.com with SMTP id s196so16817899pgs.3
+        for <linux-acpi@vger.kernel.org>; Wed, 30 Nov 2022 10:07:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=U/XxTMPICDie9ymNdj/MdgVV0xGRFOD3AAJXtRn0C+A=;
+        b=BUG7pdc6PPVgQrMC7CiGj2Cl3eIK6wgTQyCCd4Dbienm0CJNV7xL6LPRfKROL+QbPy
+         PUZ3tiRzLrEDxwF860wzhgXU5H2SbuQDAg7vva0vZRvRLq+N0atW72fRVeTH17CMqkdx
+         bZTV7NunSIMjvQ/f/p08lsxbdONCK/g78arTY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=U/XxTMPICDie9ymNdj/MdgVV0xGRFOD3AAJXtRn0C+A=;
+        b=MnZVQAsgs9TAwJSokmNzAO+LKcvI6wHXBYC8B4t3JxY5/EYBndCsnrDdV71pX6Vkhi
+         IgNcYchnTQFZpFL1Q21v8LZ6sTCqLV0330UEapqPtEPqQIuJ3j+29BbaQenJouNGMC8Q
+         zVrT8tf/EQJGjWYv9TtVvd8pZRPWQkgONf5LErXlDbvQX2DEKz86jLbtGKw72/sujXuY
+         zQyTbwuLA/d7fFNpxRhGcyiNVFi32zy4Fvh7XUxHSsI3CUpP4khSyWiEBQqn10Y1F/DD
+         KMKa3n/YKHgW9E5gn/ISf8TE2+Ncnrp09BNMNw0ug8aMKYSO/HxRGCoPsH9ggOo6Ps2Z
+         90Ew==
+X-Gm-Message-State: ANoB5plhtEfcwxkpujGKLFk8orClr0MBmTRjc+gRdZAIHc/IgPUC3H5s
+        wP7XJpefuYC0OrG74xRdQeM5VOdQ7ulz/Q==
+X-Google-Smtp-Source: AA0mqf5RcBDjkmhbI6TMIt6pR2GnqwA6/GTwauT45ctfQvaC6hLNOlWIZyLqc9shCYRj4E8V2WnYPg==
+X-Received: by 2002:a63:e50f:0:b0:477:bac2:e57f with SMTP id r15-20020a63e50f000000b00477bac2e57fmr32491211pgh.614.1669831630916;
+        Wed, 30 Nov 2022 10:07:10 -0800 (PST)
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com. [209.85.215.174])
+        by smtp.gmail.com with ESMTPSA id z188-20020a6233c5000000b0056d7cc80ea4sm1673779pfz.110.2022.11.30.10.07.09
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Nov 2022 10:07:10 -0800 (PST)
+Received: by mail-pg1-f174.google.com with SMTP id 6so16795483pgm.6
+        for <linux-acpi@vger.kernel.org>; Wed, 30 Nov 2022 10:07:09 -0800 (PST)
+X-Received: by 2002:aa7:81cb:0:b0:56e:1092:1272 with SMTP id
+ c11-20020aa781cb000000b0056e10921272mr44887867pfn.31.1669831629238; Wed, 30
+ Nov 2022 10:07:09 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH 1/3] acpi/processor: fix evaluating _PDC method when
- running as Xen dom0
-Content-Language: en-US
-To:     =?UTF-8?Q?Roger_Pau_Monn=c3=a9?= <roger.pau@citrix.com>
-Cc:     linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
-        jgross@suse.com, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Alex Chiang <achiang@hp.com>,
-        Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>,
-        linux-acpi@vger.kernel.org
-References: <20221121102113.41893-1-roger.pau@citrix.com>
- <20221121102113.41893-2-roger.pau@citrix.com>
- <6b212148-4e3f-3ef6-7922-901175746d44@intel.com>
- <Y4d8cm97hn5zuRQ1@Air-de-Roger>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <Y4d8cm97hn5zuRQ1@Air-de-Roger>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220929161917.2348231-1-rrangel@chromium.org>
+ <20220929093200.v6.9.I2efb7f551e0aa2dc4c53b5fd5bbea91a1cdd9b32@changeid> <Y3uP+Kx1xLWRVUAX@smile.fi.intel.com>
+In-Reply-To: <Y3uP+Kx1xLWRVUAX@smile.fi.intel.com>
+From:   Raul Rangel <rrangel@chromium.org>
+Date:   Wed, 30 Nov 2022 11:06:57 -0700
+X-Gmail-Original-Message-ID: <CAHQZ30CArSjaJUt2pg-3MQpbK4Zux7WXnr5E8vmnDrMyj0sN5w@mail.gmail.com>
+Message-ID: <CAHQZ30CArSjaJUt2pg-3MQpbK4Zux7WXnr5E8vmnDrMyj0sN5w@mail.gmail.com>
+Subject: Re: [PATCH v6 09/13] HID: i2c-hid: acpi: Stop setting wakeup_capable
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-input@vger.kernel.org,
+        dmitry.torokhov@gmail.com, hdegoede@redhat.com, rafael@kernel.org,
+        mika.westerberg@linux.intel.com, mario.limonciello@amd.com,
+        timvp@google.com, linus.walleij@linaro.org, jingle.wu@emc.com.tw,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Alistair Francis <alistair@alistair23.me>,
+        Jiri Kosina <jikos@kernel.org>, Rob Herring <robh@kernel.org>,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 11/30/22 07:53, Roger Pau Monné wrote:
-> On Tue, Nov 29, 2022 at 09:43:53AM -0800, Dave Hansen wrote:
->> On 11/21/22 02:21, Roger Pau Monne wrote:
->>> When running as a Xen dom0 the number of CPUs available to Linux can
->>> be different from the number of CPUs present on the system, but in
->>> order to properly fetch processor performance related data _PDC must
->>> be executed on all the physical CPUs online on the system.
->>
->> How is the number of CPUs available to Linux different?
->>
->> Is this a result of the ACPI tables that dom0 sees being "wrong"?
-> 
-> Depends on the mode.  This is all specific to Linux running as a Xen
-> dom0.
-> 
-> For PV dom0 the ACPI tables that dom0 sees are the native ones,
-> however available CPUs are not detected based on the MADT, but using
-> hypercalls, see xen_smp_ops struct and the
-> x86_init.mpparse.get_smp_config hook used in smp_pv.c
-> (_get_smp_config()).
-> 
-> For a PVH dom0 Xen provides dom0 with a crafted MADT table that does
-> only contain the CPUs available to dom0, and hence is likely different
-> from the native one present on the hardware.
-> 
-> In any case, the dynamic tables dom0 sees where the Processor
-> objects/devices reside are not modified by Xen in any way, so the ACPI
-> Processors are always exposed to dom0 as present on the native
-> tables.
-> 
-> Xen cannot parse the dynamic ACPI tables (neither should it, since
-> then it would act as OSPM), so it relies on dom0 to provide same data
-> present on those tables for Xen to properly manage the frequency and
-> idle states of the CPUs on the system.
-> 
->>> The current checks in processor_physically_present() result in some
->>> processor objects not getting their _PDC methods evaluated when Linux
->>> is running as Xen dom0.  Fix this by introducing a custom function to
->>> use when running as Xen dom0 in order to check whether a processor
->>> object matches a CPU that's online.
->>
->> What is the end user visible effect of this problem and of the solution?
-> 
-> Without this fix _PDC is only evaluated for the CPUs online from dom0
-> point of view, which means that if dom0 is limited to 8 CPUs but the
-> system has 24 CPUs, _PDC will only get evaluated for 8 CPUs, and that
-> can have the side effect of the data then returned by _PSD method or
-> other methods being different between CPUs where _PDC was evaluated vs
-> CPUs where the method wasn't evaluated.  Such mismatches can
-> ultimately lead to for example the CPU frequency driver in Xen not
-> initializing properly because the coordination methods between CPUs on
-> the same domain don't match.
-> 
-> Also not evaluating _PDC prevents the OS (or Xen in this case)
-> from notifying ACPI of the features it supports.
-> 
-> IOW this fix attempts to make sure all physically online CPUs get _PDC
-> evaluated, and in order to to that we need to ask the hypervisor if a
-> Processor ACPI ID matches an online CPU or not, because Linux doesn't
-> have that information when running as dom0.
-> 
-> Hope the above makes sense and allows to make some progress on the
-> issue, sometimes it's hard to summarize without getting too
-> specific,
+On Mon, Nov 21, 2022 at 7:49 AM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Thu, Sep 29, 2022 at 10:19:13AM -0600, Raul E Rangel wrote:
+> > This is now handled by the i2c-core driver.
+>
+> What happened to this patch? I don't see it in the Linux Next...
+>
 
-Yes, writing changelogs is hard. :)
+This was just merged into dtor's next branch a few days ago:
+https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git/commit/?id=1796f808e4bb2c074824dc32258ed1e719370cb3
 
-Let's try though.  I was missing some key pieces of background here.
-Believe it or not, I had no idea off the top of my head what _PDC was or
-why it's important.
-
-the information about _PDC being required on all processors was missing,
-as was the information about the dom0's incomplete concept of the
-available physical processors.
-
-== Background ==
-
-In ACPI systems, the OS can direct power management, as opposed to the
-firmware.  This OS-directed Power Management is called OSPM.  Part of
-telling the firmware that the OS going to direct power management is
-making ACPI "_PDC" (Processor Driver Capabilities) calls.  These _PDC
-calls must be made on every processor.  If these _PDC calls are not
-completed on every processor it can lead to inconsistency and later
-failures in things like the CPU frequency driver.
-
-In a Xen system, the dom0 kernel is responsible for system-wide power
-management.  The dom0 kernel is in charge of OSPM.  However, the Xen
-hypervisor hides some processors information from the dom0 kernel.  This
-is presumably done to ensure that the dom0 system has less interference
-with guests that want to use the other processors.
-
-== Problem ==
-
-But, this leads to a problem: the dom0 kernel needs to run _PDC on all
-the processors, but it can't always see them.
-
-== Solution ==
-
-In dom0 kernels, ignore the existing ACPI method for determining if a
-processor is physically present because it might not be accurate.
-Instead, ask the hypervisor for this information.
-
-This ensures that ...
-
-----
-
-Is that about right?
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
