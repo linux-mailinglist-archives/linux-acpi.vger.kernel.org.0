@@ -2,48 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBEA3640E69
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Dec 2022 20:26:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80FE1640E86
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Dec 2022 20:32:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234765AbiLBT0Y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Dec 2022 14:26:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52262 "EHLO
+        id S234287AbiLBTcC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Dec 2022 14:32:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234302AbiLBT0T (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Dec 2022 14:26:19 -0500
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 569EAF289C;
-        Fri,  2 Dec 2022 11:26:18 -0800 (PST)
-Received: by mail-qt1-f175.google.com with SMTP id y15so6577550qtv.5;
-        Fri, 02 Dec 2022 11:26:18 -0800 (PST)
+        with ESMTP id S234143AbiLBTb4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Dec 2022 14:31:56 -0500
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC3EEF37E8;
+        Fri,  2 Dec 2022 11:31:54 -0800 (PST)
+Received: by mail-qt1-f172.google.com with SMTP id x28so5494145qtv.13;
+        Fri, 02 Dec 2022 11:31:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cxqOAYX+EWKb+h7rdw206KR111U/KmrZPjRc5PMfRR4=;
-        b=I5D1xoKretWOe3Vq7nyv/48xRYdDZWxr+zOj6Nub8d5XOpaKTkELKyMUiCJ68NF/yb
-         tLqnir8Jd0JdulU+BDrSGq06Sn//09P+ZYscpsqbA5SsLiijaIwjwYEomx65PKPu1ksv
-         LtgwBc/AQMQd1ALdnGmWLqn4p7rhPm5K5ywsaHeN5ExrMX3TuR9nK87QtFnsXTNH03H4
-         8mYLDDVoDppWtl6m9Ny46kPZz4K54X0D7uTtGreGTT0Z9mgEk+Yf7iDfYsv+4OiAhP4e
-         ph2L3ntI2j1Bk170PGUNhhsTkZN5nOZPQUHsdTGnmPKlhCBB/n9QntbSS2iwM7rQOa+y
-         9jZg==
-X-Gm-Message-State: ANoB5pmkJ5xKlBvWxkxr/dDkpai49BnsZS9QBdcq6o9eT1YufEaFT1Xa
-        RjeS8rqMs0r1sIUFW2x+1fpO5dDYPlYNiMLdS6LHjBoS
-X-Google-Smtp-Source: AA0mqf5qRcVxiUk+3OCh7k/4kSqbN0qJ+Aui0tH4wysuxXxOeIC9P5KNmBIrvMDkP5jJciwsdj9Mzega48EiefoWVGc=
-X-Received: by 2002:a05:620a:51ca:b0:6ec:fa04:d97c with SMTP id
- cx10-20020a05620a51ca00b006ecfa04d97cmr47184706qkb.764.1670009177509; Fri, 02
- Dec 2022 11:26:17 -0800 (PST)
+        bh=KR1JEnfLJLcZzEsPrUCLpHxX68Jt2T5dkbON0C5T4m4=;
+        b=sph33/PCxbDDPjY1bJLrii5KkcAJLM+4G8M68JQbMOl9FFFt5E5WwSiLpqLkSKG5X4
+         7DTglgx+IhWv1P1YmqX3CGrXPp0OLIvH9g4xsuqTQWf0t5tzZgJ85Q8WBKcpsUMymckc
+         94f8l2z9adgZi0X27Zrpu7IHuZfH83RWBgzkU+OfDwtjWVsPktkJmqDCtqGCaDMsbW7z
+         CvY4TmoiTrp11VTXpSH4v7oRUrdKtnU9nqZJD8qIkpzePp3oIxibz0JM1IYS7cPS7Ueq
+         3Cd8raDBJvnVYNxMkTpSFyYluTrnnQOWmCS7YRRqCHoKkbCkhlVdm5H75iPqlDHpbNOC
+         2h8w==
+X-Gm-Message-State: ANoB5plKb7ViTMM1lo35ZLNTN7EXAvKNRyttfPd3ytFSCYffibj+36Ez
+        DwX2CVz3fUSCpjSk8x05MSxL4kfC0fDxeK8YYaQ=
+X-Google-Smtp-Source: AA0mqf7ZJtrfZdsToQVfdr2i579/xMmNC+JjxqSDATB1boQzliRr3/5+RJ93Evjm5F8moJid2bSqBybj0NPMFu3zxWo=
+X-Received: by 2002:a05:622a:410a:b0:3a5:5987:42c6 with SMTP id
+ cc10-20020a05622a410a00b003a5598742c6mr67087753qtb.147.1670009514139; Fri, 02
+ Dec 2022 11:31:54 -0800 (PST)
 MIME-Version: 1.0
-References: <202211301616083499042@zte.com.cn>
-In-Reply-To: <202211301616083499042@zte.com.cn>
+References: <20221130184101.357899-1-W_Armin@gmx.de>
+In-Reply-To: <20221130184101.357899-1-W_Armin@gmx.de>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 2 Dec 2022 20:26:06 +0100
-Message-ID: <CAJZ5v0gGy6nbW1DxBZORA=fYLFPjkrsojL=8V1cxWCmupqAvdw@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: use sysfs_emit() to instead of scnprintf()
-To:     ye.xingchen@zte.com.cn
-Cc:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+Date:   Fri, 2 Dec 2022 20:31:43 +0100
+Message-ID: <CAJZ5v0gY5UrD9tmVUWQEKdCmGK+W-4XiZ_EgY9Dd7jEuY_zmww@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: battery: Call power_supply_changed() when adding hooks
+To:     Armin Wolf <W_Armin@gmx.de>
+Cc:     rafael@kernel.org, hdegoede@redhat.com, lenb@kernel.org,
+        markgross@kernel.org, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -55,64 +56,49 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 30, 2022 at 9:16 AM <ye.xingchen@zte.com.cn> wrote:
+On Wed, Nov 30, 2022 at 7:41 PM Armin Wolf <W_Armin@gmx.de> wrote:
 >
-> From: ye xingchen <ye.xingchen@zte.com.cn>
+> If a battery hook is added to a battery, userspace software
+> is not informed that the available properties of the battery
+> might have changed. This for example causes upower to react
+> slowly if a new battery hook is added during runtime.
 >
-> Replace the open-code with sysfs_emit() to simplify the code.
+> Fix this by calling power_supply_changed() if a battery hook
+> was successfully added/removed.
 >
-> Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
+> Tested on a Dell Inspiron 3505.
+>
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
 > ---
-> v1 -> v2
-> combine patchs in drivers/acpi/.
->  drivers/acpi/acpi_pad.c  | 4 ++--
->  drivers/acpi/cppc_acpi.c | 4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
+>  drivers/acpi/battery.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/acpi/acpi_pad.c b/drivers/acpi/acpi_pad.c
-> index edbb28faee2a..02f1a1b1143c 100644
-> --- a/drivers/acpi/acpi_pad.c
-> +++ b/drivers/acpi/acpi_pad.c
-> @@ -287,7 +287,7 @@ static ssize_t rrtime_store(struct device *dev,
->  static ssize_t rrtime_show(struct device *dev,
->         struct device_attribute *attr, char *buf)
->  {
-> -       return scnprintf(buf, PAGE_SIZE, "%d\n", round_robin_time);
-> +       return sysfs_emit(buf, "%d\n", round_robin_time);
->  }
->  static DEVICE_ATTR_RW(rrtime);
->
-> @@ -309,7 +309,7 @@ static ssize_t idlepct_store(struct device *dev,
->  static ssize_t idlepct_show(struct device *dev,
->         struct device_attribute *attr, char *buf)
->  {
-> -       return scnprintf(buf, PAGE_SIZE, "%d\n", idle_pct);
-> +       return sysfs_emit(buf, "%d\n", idle_pct);
->  }
->  static DEVICE_ATTR_RW(idlepct);
->
-> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index 093675b1a1ff..0f17b1c32718 100644
-> --- a/drivers/acpi/cppc_acpi.c
-> +++ b/drivers/acpi/cppc_acpi.c
-> @@ -148,7 +148,7 @@ __ATTR(_name, 0444, show_##_name, NULL)
->                 if (ret)                                                \
->                         return ret;                                     \
->                                                                         \
-> -               return scnprintf(buf, PAGE_SIZE, "%llu\n",              \
-> +               return sysfs_emit(buf, "%llu\n",                \
->                                 (u64)st_name.member_name);              \
->         }                                                               \
->         define_one_cppc_ro(member_name)
-> @@ -174,7 +174,7 @@ static ssize_t show_feedback_ctrs(struct kobject *kobj,
->         if (ret)
->                 return ret;
->
-> -       return scnprintf(buf, PAGE_SIZE, "ref:%llu del:%llu\n",
-> +       return sysfs_emit(buf, "ref:%llu del:%llu\n",
->                         fb_ctrs.reference, fb_ctrs.delivered);
->  }
->  define_one_cppc_ro(feedback_ctrs);
+> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+> index 9482b0b6eadc..bf99053e5021 100644
+> --- a/drivers/acpi/battery.c
+> +++ b/drivers/acpi/battery.c
+> @@ -696,7 +696,8 @@ static void __battery_hook_unregister(struct acpi_battery_hook *hook, int lock)
+>         if (lock)
+>                 mutex_lock(&hook_mutex);
+>         list_for_each_entry(battery, &acpi_battery_list, list) {
+> -               hook->remove_battery(battery->bat, hook);
+> +               if (!hook->remove_battery(battery->bat, hook))
+> +                       power_supply_changed(battery->bat);
+>         }
+>         list_del(&hook->list);
+>         if (lock)
+> @@ -735,6 +736,8 @@ void battery_hook_register(struct acpi_battery_hook *hook)
+>                         __battery_hook_unregister(hook, 0);
+>                         goto end;
+>                 }
+> +
+> +               power_supply_changed(battery->bat);
+>         }
+>         pr_info("new extension: %s\n", hook->name);
+>  end:
 > --
 
-Applied as 6.2 material, thanks!
+Applied as 6.2 material, but I had to rebase it, so please check the
+result in my bleeding-edge branch.
+
+Thanks!
