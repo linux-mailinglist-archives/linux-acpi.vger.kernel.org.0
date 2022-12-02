@@ -2,103 +2,218 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE34C640BBA
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Dec 2022 18:06:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DDAB640CB3
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Dec 2022 18:57:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233928AbiLBRGs convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 2 Dec 2022 12:06:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41054 "EHLO
+        id S233411AbiLBR55 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Dec 2022 12:57:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233835AbiLBRGk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Dec 2022 12:06:40 -0500
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C351934D4;
-        Fri,  2 Dec 2022 09:06:39 -0800 (PST)
-Received: by mail-qt1-f169.google.com with SMTP id jr1so6007638qtb.7;
-        Fri, 02 Dec 2022 09:06:39 -0800 (PST)
+        with ESMTP id S233648AbiLBR5y (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Dec 2022 12:57:54 -0500
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B094B1AD93
+        for <linux-acpi@vger.kernel.org>; Fri,  2 Dec 2022 09:57:50 -0800 (PST)
+Received: by mail-pg1-x52d.google.com with SMTP id r18so4954071pgr.12
+        for <linux-acpi@vger.kernel.org>; Fri, 02 Dec 2022 09:57:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dabbelt-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QpV6FtlGJmbPG4Gl6DlIwigphMAcM3UTUgrO4+lemWs=;
+        b=AkdsJdvyIzbTuxBG/JKnklHpRXvVoLQA+8QI40Wz8FNvV41nXCSqsOQRPDxX0N6mEy
+         cJaZXq8mcQuxRYKeGkHP9JyRcNbOSAtl0KGE1cYX+PntDHTqVls2XiM3BUxBXugnEgPg
+         DvaeP/WTKdcCR/FStVwt2fHfvEW68ZeigiLiaw/i6bJA08q4Px7GR93qwKjVSzpz5RS3
+         HJh2cHG24Lm+5FYDTZGw9tb5zsKbY0KtZk+ryW+JL3iJPo406PUQi1NHt/59+1wHFdIE
+         vsht164Xjq3jDzr/OqP3UtRBAdGb//TTH8L2h/ew4aaJR7YNleU7PvgmnnB6ETBPnARP
+         rdpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xh9kgJLINYmxV8g3qTi7szoV+9siNmymyIdCpJv+cBQ=;
-        b=6vI2rMG1ROoB06Hf8KsxEZfXgrYNKGnZCqppEg40H+4nQO9/S9pmOGmi6yPurt/GRa
-         8cKsg4fgakuR6v7+EIZYCcgnhlLGuqj4Aa3afbsSCkG4hQS9hLMyNVTVQYFCb4gp5W/1
-         Es2BqX0rDY5JYjqHJUdwy50NI3zhZbD8n44mULw2W+J7N3jeXXVx5Mf64xkMZL3pQYWR
-         qj1zWWGGolA9v8b8cGmqq4X8PXGTcSpB2QGRKL9es4z6cuCztwN2N5I5EsGmr4YhjPfT
-         gXSLEA1Z6G0Yqu0exmOOCBUivBdsbTNX8ExA+ptfKNvtmJ5Kgf5ZbgnHUFV7n01A1Ueu
-         Y6zA==
-X-Gm-Message-State: ANoB5pnQ1+Iz0IIi6hTFNeFDDB94mE157XszYhOfaSXAPnmwhlFkHcSY
-        o8i31BdvbFKyZtb3IvoU9bHpf0u0959EMr/DXNI=
-X-Google-Smtp-Source: AA0mqf7fLL+ryfJc9gdlygwZFMKAW1X4WWvlOUNEoVLLyu7iJ7lEwsoaHA2t1RhbtGz9hRYHOwN5y8/jp/Ex9zi8Yls=
-X-Received: by 2002:ac8:4818:0:b0:3a6:a0d7:e1f7 with SMTP id
- g24-20020ac84818000000b003a6a0d7e1f7mr1208911qtq.153.1670000798144; Fri, 02
- Dec 2022 09:06:38 -0800 (PST)
-MIME-Version: 1.0
-References: <20221121102113.41893-1-roger.pau@citrix.com> <20221121102113.41893-2-roger.pau@citrix.com>
- <6b212148-4e3f-3ef6-7922-901175746d44@intel.com> <Y4d8cm97hn5zuRQ1@Air-de-Roger>
- <4a0e9f91-8d8b-84bc-c9db-7265f5b65b63@intel.com> <Y4nugxKV1J/BqhBt@Air-de-Roger>
- <93fd7ed0-5311-d6db-4d8b-b992a8f78ada@intel.com> <Y4opuLnLIT3v9Aa7@Air-de-Roger>
-In-Reply-To: <Y4opuLnLIT3v9Aa7@Air-de-Roger>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 2 Dec 2022 18:06:26 +0100
-Message-ID: <CAJZ5v0hrdwUNOELXM5zxtTeavp+_o7TbkCRBjZVqvQVxt4QBnA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] acpi/processor: fix evaluating _PDC method when
- running as Xen dom0
-To:     =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>
-Cc:     Dave Hansen <dave.hansen@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
-        jgross@suse.com, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Len Brown <lenb@kernel.org>,
-        Alex Chiang <achiang@hp.com>,
-        Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>,
-        linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QpV6FtlGJmbPG4Gl6DlIwigphMAcM3UTUgrO4+lemWs=;
+        b=TkxF02Zfugeq+kcfXqKA7svcapCKprzbZfK8zH4vSUpNAAEiy4OSXJkmwmaXeuKazk
+         vrAoHEAADejgOsJMudKJdRNVqsS133fjZY6t+e79Y+GLVtKmz6n3+ws6UtsMiZQuTnZq
+         noM3r4kWRziGGimx7WwsWqzMbQWYpvCWYOkdLwydgp5BJtq6k1lmJb8Kf4X5L3yYXV6m
+         LMYr0RBKAAmWvYkZ5ZpO1jzg7hSFniNQTx3+veljYWS93D0UW1X6Tv2P2a7Bj7nDVBTU
+         iK1B2EJuFMThw7KLcYAX8ApxQoM2fEg64g7ee2DrEf5gN37Uf//97165uHCJsnguml2H
+         70IQ==
+X-Gm-Message-State: ANoB5pm8I7XdrFoYpu00QWx4nQ5hXBY17Lo9unuJ0sCoGXFZzjR81ED+
+        0Wmmp+N9o5sITkXsqHu4iPcZbg==
+X-Google-Smtp-Source: AA0mqf6tDVB0CBWC9FT//8hYKJadLUBKQvQlKGnAljbWEkPH2FhmEmO8yFibfCHNjYT0HqGFeeM8yA==
+X-Received: by 2002:a62:3882:0:b0:56b:9ce2:891f with SMTP id f124-20020a623882000000b0056b9ce2891fmr58857615pfa.43.1670003869850;
+        Fri, 02 Dec 2022 09:57:49 -0800 (PST)
+Received: from localhost ([50.221.140.188])
+        by smtp.gmail.com with ESMTPSA id im15-20020a170902bb0f00b00189812a5397sm5802867plb.180.2022.12.02.09.57.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Dec 2022 09:57:49 -0800 (PST)
+Date:   Fri, 02 Dec 2022 09:57:49 -0800 (PST)
+X-Google-Original-Date: Fri, 02 Dec 2022 09:57:35 PST (-0800)
+Subject:     Re: [PATCH v2 1/5] cacheinfo: Use RISC-V's init_cache_level() as generic OF implementation
+In-Reply-To: <20221121171217.3581004-2-pierre.gondois@arm.com>
+CC:     linux-kernel@vger.kernel.org, Ionela.Voinescu@arm.com,
+        Rob.Herring@arm.com, pierre.gondois@arm.com,
+        Conor Dooley <conor.dooley@microchip.com>,
+        sudeep.holla@arm.com, catalin.marinas@arm.com,
+        Will Deacon <will@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        aou@eecs.berkeley.edu, rafael@kernel.org, lenb@kernel.org,
+        Greg KH <gregkh@linuxfoundation.org>, jeremy.linton@arm.com,
+        gshan@redhat.com, kuba@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org
+From:   Palmer Dabbelt <palmer@dabbelt.com>
+To:     pierre.gondois@arm.com
+Message-ID: <mhng-386efd8d-215e-4e3a-bbaa-ea03c843ab96@palmer-ri-x1c9a>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Dec 2, 2022 at 5:37 PM Roger Pau Monné <roger.pau@citrix.com> wrote:
+On Mon, 21 Nov 2022 09:12:09 PST (-0800), pierre.gondois@arm.com wrote:
+> RISC-V's implementation of init_of_cache_level() is following
+> the Devicetree Specification v0.3 regarding caches, cf.:
+> - s3.7.3 'Internal (L1) Cache Properties'
+> - s3.8 'Multi-level and Shared Cache Nodes'
 >
-> On Fri, Dec 02, 2022 at 08:17:56AM -0800, Dave Hansen wrote:
-> > On 12/2/22 04:24, Roger Pau Monné wrote:
-> > > On the implementation side, is the proposed approach acceptable?
-> > > Mostly asking because it adds Xen conditionals to otherwise generic
-> > > ACPI code.
-> >
-> > That's a good Rafael question.
-
-Sorry for joining late, but first off _PDC has been deprecated since
-ACPI 3.0 (2004) and it is not even present in ACPI 6.5 any more.
-
-It follows from your description that _PDC is still used in the field,
-though, after 18 years of deprecation.  Who uses it, if I may know?
-
-> > But, how do other places in the ACPI code handle things like this?
+> Allow reusing the implementation by moving it.
 >
-> Hm, I don't know of other places in the Xen case, the only resource
-> in ACPI AML tables managed by Xen are Processor objects/devices AFAIK.
-> The rest of devices are fully managed by the dom0 guest.
+> Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+> ---
+>  arch/riscv/kernel/cacheinfo.c | 39 +------------------------------
+>  drivers/base/cacheinfo.c      | 44 +++++++++++++++++++++++++++++++++++
+>  include/linux/cacheinfo.h     |  1 +
+>  3 files changed, 46 insertions(+), 38 deletions(-)
 >
-> I think such special handling is very specific to Xen, but maybe I'm
-> wrong and there are similar existing cases in ACPI code already.
+> diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinfo.c
+> index 90deabfe63ea..440a3df5944c 100644
+> --- a/arch/riscv/kernel/cacheinfo.c
+> +++ b/arch/riscv/kernel/cacheinfo.c
+> @@ -115,44 +115,7 @@ static void fill_cacheinfo(struct cacheinfo **this_leaf,
 >
-> We could add some kind of hook (iow: a function pointer in some struct
-> that could be filled on a implementation basis?) but I didn't want
-> overengineering this if adding a conditional was deemed OK.
+>  int init_cache_level(unsigned int cpu)
+>  {
+> -	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+> -	struct device_node *np = of_cpu_device_node_get(cpu);
+> -	struct device_node *prev = NULL;
+> -	int levels = 0, leaves = 0, level;
+> -
+> -	if (of_property_read_bool(np, "cache-size"))
+> -		++leaves;
+> -	if (of_property_read_bool(np, "i-cache-size"))
+> -		++leaves;
+> -	if (of_property_read_bool(np, "d-cache-size"))
+> -		++leaves;
+> -	if (leaves > 0)
+> -		levels = 1;
+> -
+> -	prev = np;
+> -	while ((np = of_find_next_cache_node(np))) {
+> -		of_node_put(prev);
+> -		prev = np;
+> -		if (!of_device_is_compatible(np, "cache"))
+> -			break;
+> -		if (of_property_read_u32(np, "cache-level", &level))
+> -			break;
+> -		if (level <= levels)
+> -			break;
+> -		if (of_property_read_bool(np, "cache-size"))
+> -			++leaves;
+> -		if (of_property_read_bool(np, "i-cache-size"))
+> -			++leaves;
+> -		if (of_property_read_bool(np, "d-cache-size"))
+> -			++leaves;
+> -		levels = level;
+> -	}
+> -
+> -	of_node_put(np);
+> -	this_cpu_ci->num_levels = levels;
+> -	this_cpu_ci->num_leaves = leaves;
+> -
+> -	return 0;
+> +	return init_of_cache_level(cpu);
+>  }
+>
+>  int populate_cache_leaves(unsigned int cpu)
+> diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
+> index 4b5cd08c5a65..a4308b48dd3e 100644
+> --- a/drivers/base/cacheinfo.c
+> +++ b/drivers/base/cacheinfo.c
+> @@ -224,8 +224,52 @@ static int cache_setup_of_node(unsigned int cpu)
+>
+>  	return 0;
+>  }
+> +
+> +int init_of_cache_level(unsigned int cpu)
+> +{
+> +	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+> +	struct device_node *np = of_cpu_device_node_get(cpu);
+> +	struct device_node *prev = NULL;
+> +	int levels = 0, leaves = 0, level;
+> +
+> +	if (of_property_read_bool(np, "cache-size"))
+> +		++leaves;
+> +	if (of_property_read_bool(np, "i-cache-size"))
+> +		++leaves;
+> +	if (of_property_read_bool(np, "d-cache-size"))
+> +		++leaves;
+> +	if (leaves > 0)
+> +		levels = 1;
+> +
+> +	prev = np;
+> +	while ((np = of_find_next_cache_node(np))) {
+> +		of_node_put(prev);
+> +		prev = np;
+> +		if (!of_device_is_compatible(np, "cache"))
+> +			break;
+> +		if (of_property_read_u32(np, "cache-level", &level))
+> +			break;
+> +		if (level <= levels)
+> +			break;
+> +		if (of_property_read_bool(np, "cache-size"))
+> +			++leaves;
+> +		if (of_property_read_bool(np, "i-cache-size"))
+> +			++leaves;
+> +		if (of_property_read_bool(np, "d-cache-size"))
+> +			++leaves;
+> +		levels = level;
+> +	}
+> +
+> +	of_node_put(np);
+> +	this_cpu_ci->num_levels = levels;
+> +	this_cpu_ci->num_leaves = leaves;
+> +
+> +	return 0;
+> +}
+> +
+>  #else
+>  static inline int cache_setup_of_node(unsigned int cpu) { return 0; }
+> +int init_of_cache_level(unsigned int cpu) { return 0; }
+>  #endif
+>
+>  int __weak cache_setup_acpi(unsigned int cpu)
+> diff --git a/include/linux/cacheinfo.h b/include/linux/cacheinfo.h
+> index 00b7a6ae8617..ff0328f3fbb0 100644
+> --- a/include/linux/cacheinfo.h
+> +++ b/include/linux/cacheinfo.h
+> @@ -80,6 +80,7 @@ struct cpu_cacheinfo {
+>
+>  struct cpu_cacheinfo *get_cpu_cacheinfo(unsigned int cpu);
+>  int init_cache_level(unsigned int cpu);
+> +int init_of_cache_level(unsigned int cpu);
+>  int populate_cache_leaves(unsigned int cpu);
+>  int cache_setup_acpi(unsigned int cpu);
+>  bool last_level_cache_is_valid(unsigned int cpu);
 
-What _PDC capabilities specifically do you need to pass to the
-firmware for things to work correctly?
-
-What platforms are affected?
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
