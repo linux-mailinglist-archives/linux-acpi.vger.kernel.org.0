@@ -2,132 +2,145 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDDEA63F7A5
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Dec 2022 19:43:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 029B964045B
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Dec 2022 11:18:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230267AbiLASn0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Dec 2022 13:43:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41164 "EHLO
+        id S232995AbiLBKSs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Dec 2022 05:18:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230103AbiLASnZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Dec 2022 13:43:25 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 293C9934C2;
-        Thu,  1 Dec 2022 10:43:25 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC797620B3;
-        Thu,  1 Dec 2022 18:43:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 208F8C433D6;
-        Thu,  1 Dec 2022 18:43:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1669920204;
-        bh=p4GYPrcLemfL1H4zQdK4YSafqKxYl8uzcCcsuNR5Mug=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=a2BoPen065qBe8Og5canw6L1zfhJNTp7AhJG9KCJ6kiqz0PbaFOGVhFTqYEHLQC/3
-         txrNOo/kDMMWMmzGqvPwfOzgrz6vwm2Q1DicWoYbq+xwADN5A7BOVkCSHc8BU+fkbm
-         ahiTJmpUWGq4d9z7eAd6F7xiHvrsPEH9AaFENflI=
-Date:   Thu, 1 Dec 2022 19:43:20 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     Jason Gunthorpe <jgg@ziepe.ca>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Stefan Richter <stefanr@s5r6.in-berlin.de>,
-        Wolfram Sang <wsa@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Sean Young <sean@mess.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Sanyog Kale <sanyog.r.kale@intel.com>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Chaitanya Kulkarni <kch@nvidia.com>,
-        Ming Lei <ming.lei@redhat.com>,
-        Jilin Yuan <yuanjilin@cdjrlc.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Won Chung <wonchung@google.com>, alsa-devel@alsa-project.org,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-i3c@lists.infradead.org, linux-input@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH 3/5] driver core: make struct device_type.uevent() take a
- const *
-Message-ID: <Y4j1yPD4Ypze7jx5@kroah.com>
-References: <Y34hgIW8p1RlQTBB@smile.fi.intel.com>
- <97be39ed-3cea-d55a-caa6-c2652baef399@gmail.com>
- <Y34zyzdbRUdyOSkA@casper.infradead.org>
- <Y34+V2bCDdqujBDk@kroah.com>
- <Y35JfNJDppRp5bLX@ziepe.ca>
- <Y35R+/eQJYI7VaDS@kroah.com>
- <Y35YlI93UBuTfgYy@ziepe.ca>
- <Y35dMIaNYSE0Cykd@casper.infradead.org>
- <Y35enjI+dhhqiG3B@ziepe.ca>
- <Y35ftyYlE8FX8xQO@casper.infradead.org>
+        with ESMTP id S232745AbiLBKSn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Dec 2022 05:18:43 -0500
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E02C2CBA4B;
+        Fri,  2 Dec 2022 02:18:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669976322; x=1701512322;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=xpBx1C4ebkHy1XecBYDMs78ys2LZ2wSf9uKxFIcWeCw=;
+  b=k1PkaJiLbqouGNIz3zQrGRN1Kry2eLufSB8wC08s2eE3AcAB6q3y5VY5
+   q9UrbHxrnYEZ4UtoqAEgChc4pF/kObe8H98sbQ7lpSdHKKCCl78rVL7kv
+   PnMH75cvgDz9PKh1yEE69cjl87sQU8s4QE16i6wNP1MPpTvhBJD5e4BxD
+   WQnzaDmYgSMoptjruNCKxYVnJ5Vg/O/MREFn0BjNh9KJrPQI2CBMJnXa5
+   xfAoz18qJxdZ+fx5SESueu18YykhqLKm/8HKUxLZH/lZtux5cbe+Rh7x/
+   1IiPbrJuzNyGr/ef2b2pDguqvKFA0peYpj8HSR1HTZvtffZVDKlB78vEn
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10548"; a="342861422"
+X-IronPort-AV: E=Sophos;i="5.96,212,1665471600"; 
+   d="scan'208";a="342861422"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2022 02:18:16 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10548"; a="890100169"
+X-IronPort-AV: E=Sophos;i="5.96,212,1665471600"; 
+   d="scan'208";a="890100169"
+Received: from lkp-server01.sh.intel.com (HELO 64a2d449c951) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 02 Dec 2022 02:18:09 -0800
+Received: from kbuild by 64a2d449c951 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1p137Q-000DXf-2b;
+        Fri, 02 Dec 2022 10:18:08 +0000
+Date:   Fri, 02 Dec 2022 18:17:27 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ aa570d791b81a37c7abb47547a2ea81f9c544667
+Message-ID: <6389d0b7.oTaArbIJopAKdLAq%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y35ftyYlE8FX8xQO@casper.infradead.org>
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 23, 2022 at 06:00:23PM +0000, Matthew Wilcox wrote:
-> On Wed, Nov 23, 2022 at 01:55:42PM -0400, Jason Gunthorpe wrote:
-> > On Wed, Nov 23, 2022 at 05:49:36PM +0000, Matthew Wilcox wrote:
-> > > On Wed, Nov 23, 2022 at 01:29:56PM -0400, Jason Gunthorpe wrote:
-> > > > #define generic_container_of(in_type, in, out_type, out_member) \
-> > > > 	_Generic(in,                                        \
-> > > >                   const in_type *: ((const out_type *)container_of(in, out_type, out_member)),   \
-> > > >                   in_type *: ((out_type *)container_of(in, out_type, out_member)) \
-> > > > 		  )
-> > > 
-> > > There's a neat trick I found in seqlock.h:
-> > > 
-> > > #define generic_container_of(in_t, in, out_t, m)			\
-> > > 	_Generic(*(in),							\
-> > > 		const in_t: ((const out_t *)container_of(in, out_t, m)), \
-> > > 		in_t: ((out_t *)container_of(in, out_type, m))	\
-> > > 	)
-> > >
-> > > and now it fits in 80 columns ;-)
-> > 
-> > Aside from less letters, is their another benifit to using *(in) ?
-> 
-> I don't think so.  It just looks nicer to me than putting the star in
-> each case.  If I'd thought of it, I would have done it to page_folio(),
-> but I won't change it now.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: aa570d791b81a37c7abb47547a2ea81f9c544667  Merge branch 'pm-sleep' into bleeding-edge
 
-Ah, but your trick will not work, that blows up and will not build.  The
-original one from Jason here does work.  _Generic is tricky...
+elapsed time: 825m
 
-thanks,
+configs tested: 62
+configs skipped: 2
 
-greg k-h
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+powerpc                           allnoconfig
+arc                                 defconfig
+s390                             allmodconfig
+x86_64                    rhel-8.3-kselftests
+alpha                               defconfig
+x86_64                          rhel-8.3-func
+um                             i386_defconfig
+s390                                defconfig
+um                           x86_64_defconfig
+sh                               allmodconfig
+s390                             allyesconfig
+alpha                            allyesconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+ia64                             allmodconfig
+arc                              allyesconfig
+mips                             allyesconfig
+arc                               allnoconfig
+alpha                             allnoconfig
+i386                              allnoconfig
+arm                               allnoconfig
+powerpc                          allmodconfig
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+arc                  randconfig-r043-20221201
+s390                 randconfig-r044-20221201
+x86_64                        randconfig-a015
+riscv                randconfig-r042-20221201
+x86_64                              defconfig
+x86_64                               rhel-8.3
+i386                          randconfig-a001
+i386                          randconfig-a003
+x86_64                           allyesconfig
+i386                          randconfig-a005
+i386                          randconfig-a014
+i386                          randconfig-a012
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+i386                          randconfig-a016
+x86_64                           rhel-8.3-kvm
+i386                                defconfig
+i386                             allyesconfig
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+x86_64                        randconfig-a006
+arm                                 defconfig
+arm64                            allyesconfig
+arm                              allyesconfig
+
+clang tested configs:
+x86_64                        randconfig-a014
+x86_64                        randconfig-a012
+hexagon              randconfig-r045-20221201
+x86_64                        randconfig-a016
+hexagon              randconfig-r041-20221201
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
