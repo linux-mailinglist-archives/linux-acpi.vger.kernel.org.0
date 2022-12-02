@@ -2,49 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80FE1640E86
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Dec 2022 20:32:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9976A640E95
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Dec 2022 20:36:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234287AbiLBTcC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Dec 2022 14:32:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59422 "EHLO
+        id S234807AbiLBTgt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Dec 2022 14:36:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234143AbiLBTb4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Dec 2022 14:31:56 -0500
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC3EEF37E8;
-        Fri,  2 Dec 2022 11:31:54 -0800 (PST)
-Received: by mail-qt1-f172.google.com with SMTP id x28so5494145qtv.13;
-        Fri, 02 Dec 2022 11:31:54 -0800 (PST)
+        with ESMTP id S234599AbiLBTgs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Dec 2022 14:36:48 -0500
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF951F3FBD;
+        Fri,  2 Dec 2022 11:36:47 -0800 (PST)
+Received: by mail-qv1-f49.google.com with SMTP id d13so4076009qvj.8;
+        Fri, 02 Dec 2022 11:36:47 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=KR1JEnfLJLcZzEsPrUCLpHxX68Jt2T5dkbON0C5T4m4=;
-        b=sph33/PCxbDDPjY1bJLrii5KkcAJLM+4G8M68JQbMOl9FFFt5E5WwSiLpqLkSKG5X4
-         7DTglgx+IhWv1P1YmqX3CGrXPp0OLIvH9g4xsuqTQWf0t5tzZgJ85Q8WBKcpsUMymckc
-         94f8l2z9adgZi0X27Zrpu7IHuZfH83RWBgzkU+OfDwtjWVsPktkJmqDCtqGCaDMsbW7z
-         CvY4TmoiTrp11VTXpSH4v7oRUrdKtnU9nqZJD8qIkpzePp3oIxibz0JM1IYS7cPS7Ueq
-         3Cd8raDBJvnVYNxMkTpSFyYluTrnnQOWmCS7YRRqCHoKkbCkhlVdm5H75iPqlDHpbNOC
-         2h8w==
-X-Gm-Message-State: ANoB5plKb7ViTMM1lo35ZLNTN7EXAvKNRyttfPd3ytFSCYffibj+36Ez
-        DwX2CVz3fUSCpjSk8x05MSxL4kfC0fDxeK8YYaQ=
-X-Google-Smtp-Source: AA0mqf7ZJtrfZdsToQVfdr2i579/xMmNC+JjxqSDATB1boQzliRr3/5+RJ93Evjm5F8moJid2bSqBybj0NPMFu3zxWo=
-X-Received: by 2002:a05:622a:410a:b0:3a5:5987:42c6 with SMTP id
- cc10-20020a05622a410a00b003a5598742c6mr67087753qtb.147.1670009514139; Fri, 02
- Dec 2022 11:31:54 -0800 (PST)
+        bh=Nxgo4hIVKl7dVdEPq4431GgDimW+AKvY+vGScoQXnqw=;
+        b=U9zahFSqZefGJQYQKFVbPOyn5XgDusbYPxZ/1a/DivRaHB3eHaqSLFZgAAySaSVQj2
+         8GuduE9DRQVqaoKm1O9fjbD8VLiD06tSAFefP/560sILcVagiKUnJWi1gu6wnuQMfn1E
+         t8ltoKa7uvb66yCua0l4u3rmWIk4xuPB8CJ44nIhOsJGI/CFGG5aeqw07yDYD0v6yDdA
+         9Tp1gh9KVgGjZC2JkV0WAUvlCF9N2sur71K9VKqnQI3Zq+6awGqd7QIgPvS8BfBk9J2g
+         Ou4STjDoBSKlb0xnv7RAi0+cN0q91+p6cYDHOaAFGYlMot7NVOh0EJgjsoBrbi422XK+
+         8mgA==
+X-Gm-Message-State: ANoB5pkEHSxST3i8KeZeyGArhaD39BUGN0MMJcpaYq/qj+jW73005i0o
+        Ns1vKDrIfexe9YtyWaHbsSIcf6CRB4ZgvjJPt10=
+X-Google-Smtp-Source: AA0mqf7qwsdx2owpfTQHhvJTnnhle8LG0mQyy+plpXwcfJpzmnFJm3VyR1D7mEkIQIivByu8QNSnxOfljLKSla99wQg=
+X-Received: by 2002:a05:6214:451b:b0:4c6:bf45:38ad with SMTP id
+ oo27-20020a056214451b00b004c6bf4538admr46865068qvb.73.1670009807011; Fri, 02
+ Dec 2022 11:36:47 -0800 (PST)
 MIME-Version: 1.0
-References: <20221130184101.357899-1-W_Armin@gmx.de>
-In-Reply-To: <20221130184101.357899-1-W_Armin@gmx.de>
+References: <20221201080514.3015400-1-lizetao1@huawei.com>
+In-Reply-To: <20221201080514.3015400-1-lizetao1@huawei.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 2 Dec 2022 20:31:43 +0100
-Message-ID: <CAJZ5v0gY5UrD9tmVUWQEKdCmGK+W-4XiZ_EgY9Dd7jEuY_zmww@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: battery: Call power_supply_changed() when adding hooks
-To:     Armin Wolf <W_Armin@gmx.de>
-Cc:     rafael@kernel.org, hdegoede@redhat.com, lenb@kernel.org,
-        markgross@kernel.org, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Fri, 2 Dec 2022 20:36:35 +0100
+Message-ID: <CAJZ5v0ia-CN=zsmQr9+vnFDfCe1U8EFUDiRfUnGVMqS9b9AXpQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: Fix use-after-free in acpi_ut_copy_ipackage_to_ipackage()
+To:     Li Zetao <lizetao1@huawei.com>
+Cc:     robert.moore@intel.com, rafael.j.wysocki@intel.com,
+        lenb@kernel.org, lv.zheng@intel.com, david.e.box@linux.intel.com,
+        linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -56,49 +57,71 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 30, 2022 at 7:41 PM Armin Wolf <W_Armin@gmx.de> wrote:
+On Thu, Dec 1, 2022 at 8:00 AM Li Zetao <lizetao1@huawei.com> wrote:
 >
-> If a battery hook is added to a battery, userspace software
-> is not informed that the available properties of the battery
-> might have changed. This for example causes upower to react
-> slowly if a new battery hook is added during runtime.
+> There is an use-after-free reported by KASAN:
 >
-> Fix this by calling power_supply_changed() if a battery hook
-> was successfully added/removed.
+>   BUG: KASAN: use-after-free in acpi_ut_remove_reference+0x3b/0x82
+>   Read of size 1 at addr ffff888112afc460 by task modprobe/2111
+>   CPU: 0 PID: 2111 Comm: modprobe Not tainted 6.1.0-rc7-dirty
+>   Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+>   Call Trace:
+>    <TASK>
+>    kasan_report+0xae/0xe0
+>    acpi_ut_remove_reference+0x3b/0x82
+>    acpi_ut_copy_iobject_to_iobject+0x3be/0x3d5
+>    acpi_ds_store_object_to_local+0x15d/0x3a0
+>    acpi_ex_store+0x78d/0x7fd
+>    acpi_ex_opcode_1A_1T_1R+0xbe4/0xf9b
+>    acpi_ps_parse_aml+0x217/0x8d5
+>    ...
+>    </TASK>
 >
-> Tested on a Dell Inspiron 3505.
+> The root cause of the problem is that the acpi_operand_object
+> is freed when acpi_ut_walk_package_tree() fails in
+> acpi_ut_copy_ipackage_to_ipackage(), lead to repeated release in
+> acpi_ut_copy_iobject_to_iobject(). The problem was introduced
+> by "8aa5e56eeb61" commit, this commit is to fix memory leak in
+> acpi_ut_copy_iobject_to_iobject(), repeatedly adding remove
+> operation, lead to "acpi_operand_object" used after free.
 >
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+> Fix it by removing acpi_ut_remove_reference() in
+> acpi_ut_copy_ipackage_to_ipackage(). acpi_ut_copy_ipackage_to_ipackage()
+> is called to copy an internal package object into another internal
+> package object, when it fails, the memory of acpi_operand_object
+> should be freed by the caller.
+>
+> Fixes: 8aa5e56eeb61 ("ACPICA: Utilities: Fix memory leak in acpi_ut_copy_iobject_to_iobject")
+> Signed-off-by: Li Zetao <lizetao1@huawei.com>
 > ---
->  drivers/acpi/battery.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>  drivers/acpi/acpica/utcopy.c | 7 -------
+>  1 file changed, 7 deletions(-)
 >
-> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-> index 9482b0b6eadc..bf99053e5021 100644
-> --- a/drivers/acpi/battery.c
-> +++ b/drivers/acpi/battery.c
-> @@ -696,7 +696,8 @@ static void __battery_hook_unregister(struct acpi_battery_hook *hook, int lock)
->         if (lock)
->                 mutex_lock(&hook_mutex);
->         list_for_each_entry(battery, &acpi_battery_list, list) {
-> -               hook->remove_battery(battery->bat, hook);
-> +               if (!hook->remove_battery(battery->bat, hook))
-> +                       power_supply_changed(battery->bat);
->         }
->         list_del(&hook->list);
->         if (lock)
-> @@ -735,6 +736,8 @@ void battery_hook_register(struct acpi_battery_hook *hook)
->                         __battery_hook_unregister(hook, 0);
->                         goto end;
->                 }
-> +
-> +               power_supply_changed(battery->bat);
->         }
->         pr_info("new extension: %s\n", hook->name);
->  end:
+> diff --git a/drivers/acpi/acpica/utcopy.c b/drivers/acpi/acpica/utcopy.c
+> index 400b9e15a709..63c17f420fb8 100644
+> --- a/drivers/acpi/acpica/utcopy.c
+> +++ b/drivers/acpi/acpica/utcopy.c
+> @@ -916,13 +916,6 @@ acpi_ut_copy_ipackage_to_ipackage(union acpi_operand_object *source_obj,
+>         status = acpi_ut_walk_package_tree(source_obj, dest_obj,
+>                                            acpi_ut_copy_ielement_to_ielement,
+>                                            walk_state);
+> -       if (ACPI_FAILURE(status)) {
+> -
+> -               /* On failure, delete the destination package object */
+> -
+> -               acpi_ut_remove_reference(dest_obj);
+> -       }
+> -
+>         return_ACPI_STATUS(status);
+>  }
+>
 > --
 
-Applied as 6.2 material, but I had to rebase it, so please check the
-result in my bleeding-edge branch.
+Applied as 6.2 material.
 
-Thanks!
+Normally, I would ask for a corresponding pull request to be submitted
+to the upstream project on GitHub, but this looks serious enough to be
+fast-tracked.
+
+Anyway, it would help if you submitted a pull request with this change
+to upstream ACPICA on GitHub.  Otherwise, I'll take care of that.
