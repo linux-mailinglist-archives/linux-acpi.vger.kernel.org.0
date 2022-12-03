@@ -2,82 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D31F64159A
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 Dec 2022 11:14:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82E466416AC
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 Dec 2022 13:28:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229675AbiLCKOz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 3 Dec 2022 05:14:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52782 "EHLO
+        id S229481AbiLCM2b (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 3 Dec 2022 07:28:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229670AbiLCKOw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Dec 2022 05:14:52 -0500
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96CA884DE4
-        for <linux-acpi@vger.kernel.org>; Sat,  3 Dec 2022 02:14:51 -0800 (PST)
-Received: by mail-yb1-xb36.google.com with SMTP id l67so8885138ybl.1
-        for <linux-acpi@vger.kernel.org>; Sat, 03 Dec 2022 02:14:51 -0800 (PST)
+        with ESMTP id S229462AbiLCM2a (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Dec 2022 07:28:30 -0500
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CE481CFC4;
+        Sat,  3 Dec 2022 04:28:29 -0800 (PST)
+Received: by mail-qt1-x82d.google.com with SMTP id fu10so46397qtb.0;
+        Sat, 03 Dec 2022 04:28:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=0GRcZGiiUpykwuh4e++q4OmaCC+IGELXlGsq/0NOdGM=;
-        b=UJ0a91s8abeTaPAedEfr4Wjo+WfmXOsArp5UTudw0qaaLUrCxNMFGF0ZwER+Q//DFX
-         ain4XIfpIC56FNdgLAsJ7PUb2x1T9xAgBHy7zSLiVT1cV8yoJze5GtcJVpNnSn+cMIBS
-         iyhlcUHPcVGbaORG2mxc2zCpXPVFLC6PEHQ0ZSp/6Rgobl7P4XuuG97GEmE5h8Ds/Pag
-         Oq3qvAuVuOp1zK2fLuY3NW/pGZRZ5IjDGw/fH3MZJzfrrRjrDq9/yiT0dSBTZoiwk12e
-         I20ggteiqClCZOzc8D5yY6D3xy70ItCn1ZoXESycVUZDF4NPtbfudnV7pRj78Hb1bgK0
-         fWOA==
+        bh=RF3ZWqhHQIklzTK83GUliMYJndHCzHZBEbNUYH/QgQE=;
+        b=hXpUXQQIEnDwmKjz3tn/JHSgz9IxaQRjLHzgFXT0CJsFCLVMYd3+R8kNQ/zbyPTS5G
+         LDL9Mw/ubGH77oMPRB3MEqRx5Ko3h5rCR5frnAi0YJlSI7Klaf1W4hgMV+emkjkDIbjR
+         5W76Y4k9iRPf/R9dciePhRz7cJu7Er9BAhvIBqXXWxyBisQlPNqxEqWTI6olcaIx8DT1
+         yA3E49Ed5Lf16JHp/uZcV9uK42YX52xZavAF3oBWBpoDJgfRyLONhXHYTAlEjWG1g+CB
+         /toIwLRmi6iXJ9jhKSL5qVtA5S7h0En6l8oTzIjVQE4ZhVqsOg8nqDr/UDYSTHCILwT8
+         l0LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0GRcZGiiUpykwuh4e++q4OmaCC+IGELXlGsq/0NOdGM=;
-        b=xfUp1hAFT+M0kKygGhHxfP3mItIOyqivsNKMdo30jTucYtEEDo87ndhkwDaFAnJZza
-         KmFTJNff4xwynRSnUjb26iTlPWSzE2uHieP+sHrlyAm5hTlXR5fxe3H6AMcEbhnktkEz
-         4rqj2IJ4+kMQ1kQ6EWtv6ry594F7oGtC+v0kh7EPlQEP5Ec5Q3sOSg1c1tzQwj5rYtbr
-         NClVoiT8Vu+tzNuclN8z4QEwt2d8wr2UxWXtxz1Ee3D5L+MDJqd2fE/onzuI+toAOLDI
-         ybjWSOKa1qiYUrmTJMEEC3V8gE8/X8jeaNY0PvXgSPELjKVc2Pwl7RpR/rAewFhQO6D1
-         aeMQ==
-X-Gm-Message-State: ANoB5pn8ah1HT7/FxoiyEV6mbdmpASRjQEtJ6YyWHSeSJOcnAvG2xv0y
-        A4lf5//5MprkAMqhPhzVs2F3R5GV9v1wBnyHTj9fLw==
-X-Google-Smtp-Source: AA0mqf7rHNUa8Dw3sQ45LPdqk95uye+g95p9EByvk10bjQFGqfBMwJOjSAYghvROHhvrPuVQCUorfF3B2KXN2vl964I=
-X-Received: by 2002:a25:bc8a:0:b0:6ee:e865:c2e2 with SMTP id
- e10-20020a25bc8a000000b006eee865c2e2mr8659839ybk.206.1670062490892; Sat, 03
- Dec 2022 02:14:50 -0800 (PST)
+        bh=RF3ZWqhHQIklzTK83GUliMYJndHCzHZBEbNUYH/QgQE=;
+        b=diXc6PauNn1FzFYz3NG2bTIQSyUN2ZusA1SuTajXikUisTTfCsXbQLpoa9gIg1f3Zf
+         +QiTTIALSEHDgbWttjN56xAOdK5pTW9wBD9mNWJuLzXKvTI0jyeZHOzVQ8OUyrYhrmNL
+         PPSfYYmxKkKaqINWKE+FUPqcI45y7IISQ8zg9NynSPqpiySvhTxiipvFActTCBaBgoP3
+         7V1jd789XZSnj7DS2gW/0G7kdGt7W2Z8NIrza7bpVN4RZJTeJ64fX96osT+aUIgt2ZUj
+         q1UqW4002f3VjFp39eJR3yyYLas3a2VVCYjgjmwfKnEjuH+ub2ggGyzPzUMH0JHp+cDb
+         k8ew==
+X-Gm-Message-State: ANoB5pmUFvIfLgmk8DKn53UhRt8ePJY6VVU6fVG2Y4fyn8N5268yMgZ4
+        wCHflvUqYjQtV7fxFynnW9T8EDzkXXtgnBzmfxg=
+X-Google-Smtp-Source: AA0mqf4NPt/Spc1Ig8VW/MvuvVBQJCyzbU+MANuMhxBDD67944mizuF34t8xOE9ttNR5NEvEEc01WnQFWRBR3NJFkMg=
+X-Received: by 2002:a05:622a:2489:b0:3a6:8c87:e15e with SMTP id
+ cn9-20020a05622a248900b003a68c87e15emr14943702qtb.481.1670070508755; Sat, 03
+ Dec 2022 04:28:28 -0800 (PST)
 MIME-Version: 1.0
-References: <20211015164809.22009-1-asmaa@nvidia.com> <20211015164809.22009-2-asmaa@nvidia.com>
-In-Reply-To: <20211015164809.22009-2-asmaa@nvidia.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sat, 3 Dec 2022 11:14:39 +0100
-Message-ID: <CACRpkdbvR0+5gKUH7eE2tZ1H9DR-WiYyh9KSnUTesYiZ=AezNw@mail.gmail.com>
-Subject: Re: [PATCH v5 1/2] gpio: mlxbf2: Introduce IRQ support
-To:     Asmaa Mnebhi <asmaa@nvidia.com>
-Cc:     andy.shevchenko@gmail.com, linux-gpio@vger.kernel.org,
+References: <20211015164809.22009-1-asmaa@nvidia.com> <20211015164809.22009-3-asmaa@nvidia.com>
+ <CACRpkdagKTDgUYBkF3hdE69Zew22uOpN9Ojsqwc=BrKpFOehNA@mail.gmail.com>
+In-Reply-To: <CACRpkdagKTDgUYBkF3hdE69Zew22uOpN9Ojsqwc=BrKpFOehNA@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 3 Dec 2022 14:27:52 +0200
+Message-ID: <CAHp75VeQTPsVbEfYe6FHzE=5QKRGQuEQSbnLrTKV+Sbssm3JeQ@mail.gmail.com>
+Subject: Re: [PATCH v5 2/2] net: mellanox: mlxbf_gige: Replace non-standard
+ interrupt handling
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Asmaa Mnebhi <asmaa@nvidia.com>, linux-gpio@vger.kernel.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org, andrew@lunn.ch, kuba@kernel.org,
         bgolaszewski@baylibre.com, davem@davemloft.net, rjw@rjwysocki.net,
         davthompson@nvidia.com
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Oct 15, 2021 at 6:48 PM Asmaa Mnebhi <asmaa@nvidia.com> wrote:
-
-> Introduce standard IRQ handling in the gpio-mlxbf2.c
-> driver.
+On Sat, Dec 3, 2022 at 12:13 PM Linus Walleij <linus.walleij@linaro.org> wrote:
 >
-> Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
+> On Fri, Oct 15, 2021 at 6:48 PM Asmaa Mnebhi <asmaa@nvidia.com> wrote:
+>
+> > Since the GPIO driver (gpio-mlxbf2.c) supports interrupt handling,
+> > replace the custom routine with simple IRQ request.
+> >
+> > Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
+>
+> Should this also be merged into the GPIO tree with patch 1?
 
-Looks good to me!
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Blast from the past?
 
-Yours,
-Linus Walleij
+-- 
+With Best Regards,
+Andy Shevchenko
