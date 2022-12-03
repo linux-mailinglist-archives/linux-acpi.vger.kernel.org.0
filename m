@@ -2,102 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29A35641813
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 Dec 2022 18:24:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8684F641999
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 Dec 2022 23:56:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbiLCRYi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 3 Dec 2022 12:24:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43478 "EHLO
+        id S229469AbiLCW4f (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 3 Dec 2022 17:56:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229765AbiLCRYi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Dec 2022 12:24:38 -0500
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03B6B1E70B;
-        Sat,  3 Dec 2022 09:24:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=b8jU26nVv5zOpuzDY4RwO7PBnJsJWgH0sc80AjiDjCg=; b=0Opbfyx0A7KcUTzMBxsQam5MR2
-        l6MSrcSSRtyJaDFtsvuJcPz7EPzYJo8F4ynaXRbCsckseKpHhXtY4+iCjwqSTJenHcMa5yeXLC9sk
-        nUEidgOVOL46zFwEyJgxDaCUWRgVII7sB5/A1M4lqWymyUKmAPx2EnMsVwJFa1NHXI4a3YFSALpt0
-        kamqwpd3Mn/B3Xg2VIdd3wesfmfG8mrHhfIn+27CIwFDR+pX3P7Z16usnSlH/4VY5F1Bgixddfcno
-        JLwkg5LnNx/9PQnWHj+gEDA85AnJz1IlZMBoUDNqtj6NQRH+Mo3hhpXpSi7YCWHLE33+2M4W9LZ8Q
-        Z57YNhHg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:35548)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1p1WFe-0005Gi-11; Sat, 03 Dec 2022 17:24:34 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1p1WFb-0005W0-Or; Sat, 03 Dec 2022 17:24:31 +0000
-Date:   Sat, 3 Dec 2022 17:24:31 +0000
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     kernel test robot <lkp@intel.com>, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org, netdev@vger.kernel.org
-Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH net-next v2] net: sfp: clean up i2c-bus property parsing
-Message-ID: <Y4uGT19d1Euz75Vd@shell.armlinux.org.uk>
-References: <E1p1OIG-0098J4-EV@rmk-PC.armlinux.org.uk>
- <202212040026.WN9NQzqq-lkp@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202212040026.WN9NQzqq-lkp@intel.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229575AbiLCW4d (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Dec 2022 17:56:33 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 428861DF22;
+        Sat,  3 Dec 2022 14:56:33 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D062260C63;
+        Sat,  3 Dec 2022 22:56:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4093FC433D7;
+        Sat,  3 Dec 2022 22:56:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1670108192;
+        bh=/EHaDLLjToS5E7UnFmD/Dr7X9Jc8W/rDMx8ISBfC2U8=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=QMg7XiIIYIhxbpPx2n401wIW5lE/s2GUWH4WCLhtlo3XQQpz3l/+wSHPHl8Lgv2fY
+         ipB46Ukf9DBDZWE9Z/Y7U4G6I3JeLT87QpmtaesWz3FdVoskoue/9NpqlF0dAAkpbb
+         X4xOmTIk7f8n6CvAxWV9QsvvmHob9NwjBriJanDdXlECeQLCdMnPxQzdY9hJ+ZFUVK
+         UcApBqjzXiww0OraVmUZ2tzAzNVuLAdEen9U/9j7upI2Tn4ja+xKyHeu/Ys5XtPSC+
+         MDCw6kI7y/Kt/syfVv4XH19yBryImVWqo1rBmaxSXHMCZ80ZLxgzN4fWOS8now/V7w
+         C800qZBwwKIqQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 2C993C395F5;
+        Sat,  3 Dec 2022 22:56:32 +0000 (UTC)
+Subject: Re: [GIT PULL] DAX and HMAT fixes for v6.1-rc8
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <638ab8e291345_c95729417@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+References: <638ab8e291345_c95729417@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+X-PR-Tracked-List-Id: <linux-mm.kvack.org>
+X-PR-Tracked-Message-Id: <638ab8e291345_c95729417@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm tags/dax-fixes-6.1-rc8
+X-PR-Tracked-Commit-Id: 472faf72b33d80aa8e7a99c9410c1a23d3bf0cd8
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 6085bc95797caa55a68bc0f7dd73e8c33e91037f
+Message-Id: <167010819216.27892.14565489712803195440.pr-tracker-bot@kernel.org>
+Date:   Sat, 03 Dec 2022 22:56:32 +0000
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     torvalds@linux-foundation.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+        nvdimm@lists.linux.dev
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Dec 04, 2022 at 12:40:25AM +0800, kernel test robot wrote:
-> Thank you for the patch! Perhaps something to improve:
+The pull request you sent on Fri, 2 Dec 2022 18:48:02 -0800:
 
-Sigh... this is another stupidity.
+> git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm tags/dax-fixes-6.1-rc8
 
-> 73970055450eeb Russell King          2017-07-25  2701  	if (pdev->dev.of_node) {
-> 73970055450eeb Russell King          2017-07-25 @2702  		struct device_node *node = pdev->dev.of_node;
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/6085bc95797caa55a68bc0f7dd73e8c33e91037f
 
-"node" declared here...
-
-> 259c8618b0099b Russell King          2017-12-14  2703  		const struct of_device_id *id;
-> 73970055450eeb Russell King          2017-07-25  2704  
-> 259c8618b0099b Russell King          2017-12-14  2705  		id = of_match_node(sfp_of_match, node);
-
-... and clearly used here, so the code looks to be correct.
-
-However, when CONFIG_OF is not set, of_match_node() does not make use
-of this argument:
-
-#define of_match_node(_matches, _node)  NULL
-
-which results in otherwise correct code issuing a warning when
-CONFIG_OF is disabled... and sure enough, your configuration has:
-
-> # CONFIG_OF is not set
-
-This illustrates just how bad an idea it is to use compiler macros for
-this stuff - it actively hurts compile testing, because you have to
-test every damn combination of configuration options to get proper
-coverage, which is totally and utterly rediculous.
-
-of_match_node() and ACPI_HANDLE_FWNODE() should *both* be inline
-functions when the subsystem is disabled, so that incorrect arguments
-can be detected, and warnings about unused variables such as the one
-you're reporting here doesn't happen.
-
-While the issue lies firmly in the realms of the DT (and ACPI) headers,
-I will yet again respin this patch to sort this out - but really the
-correct solution is to fix the bloody headers so compile coverage
-actually works.
+Thank you!
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
