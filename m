@@ -2,207 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF496641572
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 Dec 2022 10:51:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2115641595
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 Dec 2022 11:13:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229610AbiLCJvp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 3 Dec 2022 04:51:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60552 "EHLO
+        id S229649AbiLCKNu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 3 Dec 2022 05:13:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbiLCJvo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Dec 2022 04:51:44 -0500
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4B9B68C4A;
-        Sat,  3 Dec 2022 01:51:42 -0800 (PST)
-Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.53])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4NPQ3f05YpzkXn6;
-        Sat,  3 Dec 2022 17:48:13 +0800 (CST)
-Received: from localhost.localdomain (10.69.192.56) by
- kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Sat, 3 Dec 2022 17:51:40 +0800
-From:   Huisong Li <lihuisong@huawei.com>
-To:     <robbiek@xsightlabs.com>, <sudeep.holla@arm.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <rafael@kernel.org>, <rafael.j.wysocki@intel.com>,
-        <wanghuiqiang@huawei.com>, <zhangzekun11@huawei.com>,
-        <wangxiongfeng2@huawei.com>, <tanxiaofei@huawei.com>,
-        <guohanjun@huawei.com>, <xiexiuqi@huawei.com>,
-        <wangkefeng.wang@huawei.com>, <huangdaode@huawei.com>,
-        <lihuisong@huawei.com>
-Subject: [RFC-V3 2/2] mailbox: pcc: Support shared interrupt for multiple subspaces
-Date:   Sat, 3 Dec 2022 17:51:50 +0800
-Message-ID: <20221203095150.45422-3-lihuisong@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20221203095150.45422-1-lihuisong@huawei.com>
-References: <20221016034043.52227-1-lihuisong@huawei.com>
- <20221203095150.45422-1-lihuisong@huawei.com>
+        with ESMTP id S229626AbiLCKNs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Dec 2022 05:13:48 -0500
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CCDC60B47
+        for <linux-acpi@vger.kernel.org>; Sat,  3 Dec 2022 02:13:45 -0800 (PST)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-3bfd998fa53so72210077b3.5
+        for <linux-acpi@vger.kernel.org>; Sat, 03 Dec 2022 02:13:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=wBmOYpLKCwO+tluU+vXuBFaOvnYFkQdkgAkJOn+z3dE=;
+        b=c01aXZEpL0lsGvIA8axQe+u0D5W+oSU3f2s1Gm1moPtzCMq7V6qhDKa5+E4TFaauDq
+         y5xA8RXPhwRaBOegCIutXehvF46kxBJD1BNcjadTbJXheEVd0LwRK4WaW1Sf9Bir6mZS
+         ZmXMcBLfkCr+mg4Z7117YwF2NtNZoYCTx6/FPH82bE8UUdJQe4ELS3ACKG1LxTxv9/C9
+         6CQmkibSdtiwQOR3k1LtbtnL6VBl0rXeRcC/7JOr6pkVEyNaOcXdwwAJMelTT291IJih
+         djL6g7YGLqDZWZLMNbg56JMRNYbcY82lbDhHtNzq7uyAq9TXMe1f+ucw4g7JUfhzsWh/
+         NtuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wBmOYpLKCwO+tluU+vXuBFaOvnYFkQdkgAkJOn+z3dE=;
+        b=4Np91MaMFEDw27X+YtB7aYXnBUEZwoZEATMagjsi/AxGN+srDqgCBbwePFkXAFAH9o
+         W1/rFrsSkNkJlWYIo4wlBBYvHwxyDLf/aZdvGxn2dq0IHmyAHaWug7WQb3qH5GxlDND+
+         rMgui6WwNneS4MYxKnR1+wQ+7GLHfkG+cheLrJzBrr6VYkmOkCqi2ZfEIChTIuRZdRBh
+         rFSG9/vG97pR7JbNJcNxLDlGspHsz/+WnJpK1RQaWNBcLjG/p8b+3ZJ1sLHEZ9R8jKAY
+         E8DZGY8bv5Oqdx09qmcw0A3p/KWQecRkeyfbxyxjsH8ZygzY7DnSHNZpzhYWZYcVNBaI
+         rUfA==
+X-Gm-Message-State: ANoB5pmEiL3quWxH/6naAz8T8P4IzBXwaSUzdtwhW7yAaIZhO59xZqXb
+        amPYA3JkGh7nKJHG7aJpyfHJbfSCJl4quc4qgswSWQ==
+X-Google-Smtp-Source: AA0mqf5P+F3W24LqvzZ/BBOs/LJ4Ngbv0DrAifTQsBQOZeF8RCBig/ivNxeXFYX51WC62r2ttDGLXvEgNy1hqn2K9hw=
+X-Received: by 2002:a0d:e645:0:b0:3bb:6406:3df1 with SMTP id
+ p66-20020a0de645000000b003bb64063df1mr35954717ywe.319.1670062424683; Sat, 03
+ Dec 2022 02:13:44 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.69.192.56]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemm600004.china.huawei.com (7.193.23.242)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20211015164809.22009-1-asmaa@nvidia.com> <20211015164809.22009-3-asmaa@nvidia.com>
+In-Reply-To: <20211015164809.22009-3-asmaa@nvidia.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sat, 3 Dec 2022 11:13:33 +0100
+Message-ID: <CACRpkdagKTDgUYBkF3hdE69Zew22uOpN9Ojsqwc=BrKpFOehNA@mail.gmail.com>
+Subject: Re: [PATCH v5 2/2] net: mellanox: mlxbf_gige: Replace non-standard
+ interrupt handling
+To:     Asmaa Mnebhi <asmaa@nvidia.com>
+Cc:     andy.shevchenko@gmail.com, linux-gpio@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, andrew@lunn.ch, kuba@kernel.org,
+        bgolaszewski@baylibre.com, davem@davemloft.net, rjw@rjwysocki.net,
+        davthompson@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-If the platform acknowledge interrupt is level triggered, then it can
-be shared by multiple subspaces provided each one has a unique platform
-interrupt ack preserve and ack set masks.
+On Fri, Oct 15, 2021 at 6:48 PM Asmaa Mnebhi <asmaa@nvidia.com> wrote:
 
-If it can be shared, then we can request the irq with IRQF_SHARED and
-IRQF_ONESHOT flags. The first one indicating it can be shared and the
-latter one to keep the interrupt disabled until the hardirq handler
-finished.
+> Since the GPIO driver (gpio-mlxbf2.c) supports interrupt handling,
+> replace the custom routine with simple IRQ request.
+>
+> Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
 
-Further, since there is no way to detect if the interrupt is for a given
-channel as the interrupt ack preserve and ack set masks are for clearing
-the interrupt and not for reading the status(in case Irq Ack register
-may be write-only on some platforms), we need a way to identify if the
-given channel is in use and expecting the interrupt.
+Should this also be merged into the GPIO tree with patch 1?
 
-PCC type0, type1 and type5 do not support shared level triggered interrupt.
-The methods of determining whether a given channel for remaining types
-should respond to an interrupt are as follows:
- - type2: Whether the interrupt belongs to a given channel is only
-          determined by the status field in Generic Communications Channel
-          Shared Memory Region, which is done in rx_callback of PCC client.
- - type3: This channel checks chan_in_use flag first and then checks the
-          command complete bit(value '1' indicates that the command has
-          been completed).
- - type4: Platform ensure that the default value of the command complete
-          bit corresponding to the type4 channel is '1'. This command
-          complete bit is '0' when receive a platform notification.
-
-Signed-off-by: Huisong Li <lihuisong@huawei.com>
----
- drivers/mailbox/pcc.c | 46 ++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 43 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index ad6d0b7d50fc..90e9cc324081 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -99,6 +99,10 @@ enum pcc_chan_comm_flow_dir_type {
-  * @error: PCC register bundle for the error status register
-  * @plat_irq: platform interrupt
-  * @comm_flow_dir: direction of communication flow supported by the channel
-+ * @plat_irq_flags: platform interrupt flags
-+ * @chan_in_use: flag indicating whether the channel is in use or not when use
-+ *               platform interrupt, and only use it for communication from OSPM
-+ *               to Platform.
-  */
- struct pcc_chan_info {
- 	struct pcc_mbox_chan chan;
-@@ -109,6 +113,8 @@ struct pcc_chan_info {
- 	struct pcc_chan_reg error;
- 	int plat_irq;
- 	u8 comm_flow_dir;
-+	unsigned int plat_irq_flags;
-+	bool chan_in_use;
- };
- 
- #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
-@@ -232,6 +238,12 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
- 	return acpi_register_gsi(NULL, interrupt, trigger, polarity);
- }
- 
-+static bool pcc_chan_plat_irq_can_be_shared(struct pcc_chan_info *pchan)
-+{
-+	return (pchan->plat_irq_flags & ACPI_PCCT_INTERRUPT_MODE) ==
-+		ACPI_LEVEL_SENSITIVE;
-+}
-+
- static bool pcc_chan_need_rsp_irq(struct pcc_chan_info *pchan,
- 				  u64 cmd_complete_reg_val)
- {
-@@ -284,6 +296,9 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- 	int ret;
- 
- 	pchan = chan->con_priv;
-+	if (pchan->comm_flow_dir == PCC_ONLY_OSPM_TO_PLATFORM &&
-+	    !pchan->chan_in_use)
-+		return IRQ_NONE;
- 
- 	ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
- 	if (ret)
-@@ -310,9 +325,14 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- 	 * For communication flow from Platform to OSPM (like, slave subspace),
- 	 * need to set the command complete bit and ring doorbell after
- 	 * processing message.
-+	 *
-+	 * For communication flow from OSPM to Platform, clear chan_in_use flag
-+	 * to free this channel.
- 	 */
- 	if (pchan->comm_flow_dir == PCC_ONLY_PLATFORM_TO_OSPM)
- 		pcc_send_data(chan, NULL);
-+	else if (pchan->comm_flow_dir == PCC_ONLY_OSPM_TO_PLATFORM)
-+		pchan->chan_in_use = false;
- 
- 	return IRQ_HANDLED;
- }
-@@ -361,10 +381,13 @@ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
- 	spin_unlock_irqrestore(&chan->lock, flags);
- 
- 	if (pchan->plat_irq > 0) {
-+		unsigned long irqflags;
- 		int rc;
- 
--		rc = devm_request_irq(dev, pchan->plat_irq, pcc_mbox_irq, 0,
--				      MBOX_IRQ_NAME, chan);
-+		irqflags = pcc_chan_plat_irq_can_be_shared(pchan) ?
-+					IRQF_SHARED | IRQF_ONESHOT : 0;
-+		rc = devm_request_irq(dev, pchan->plat_irq, pcc_mbox_irq,
-+				      irqflags, MBOX_IRQ_NAME, chan);
- 		if (unlikely(rc)) {
- 			dev_err(dev, "failed to register PCC interrupt %d\n",
- 				pchan->plat_irq);
-@@ -426,7 +449,17 @@ static int pcc_send_data(struct mbox_chan *chan, void *data)
- 	if (ret)
- 		return ret;
- 
--	return pcc_chan_reg_read_modify_write(&pchan->db);
-+	ret = pcc_chan_reg_read_modify_write(&pchan->db);
-+	/*
-+	 * For communication flow from OSPM to Platform, set chan_in_use flag
-+	 * of this channel to true after ring doorbell, and clear this flag
-+	 * when the reply message is processed.
-+	 */
-+	if (!ret && pchan->comm_flow_dir == PCC_ONLY_OSPM_TO_PLATFORM &&
-+	    pchan->plat_irq > 0)
-+		pchan->chan_in_use = true;
-+
-+	return ret;
- }
- 
- static const struct mbox_chan_ops pcc_chan_ops = {
-@@ -509,6 +542,7 @@ static int pcc_parse_subspace_irq(struct pcc_chan_info *pchan,
- 		       pcct_ss->platform_interrupt);
- 		return -EINVAL;
- 	}
-+	pchan->plat_irq_flags = pcct_ss->flags;
- 
- 	if (pcct_ss->header.type == ACPI_PCCT_TYPE_HW_REDUCED_SUBSPACE_TYPE2) {
- 		struct acpi_pcct_hw_reduced_type2 *pcct2_ss = (void *)pcct_ss;
-@@ -530,6 +564,12 @@ static int pcc_parse_subspace_irq(struct pcc_chan_info *pchan,
- 					"PLAT IRQ ACK");
- 	}
- 
-+	if (pcc_chan_plat_irq_can_be_shared(pchan) &&
-+	    !pchan->plat_irq_ack.gas) {
-+		pr_err("PCC subspace has level IRQ with no ACK register\n");
-+		return -EINVAL;
-+	}
-+
- 	return ret;
- }
- 
--- 
-2.33.0
-
+Yours,
+Linus Walleij
