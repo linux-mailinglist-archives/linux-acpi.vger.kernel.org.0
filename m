@@ -2,78 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85A3D642D90
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Dec 2022 17:50:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 927F96430DF
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Dec 2022 19:56:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230509AbiLEQuA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 5 Dec 2022 11:50:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47512 "EHLO
+        id S232544AbiLES4u (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 5 Dec 2022 13:56:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232778AbiLEQtk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Dec 2022 11:49:40 -0500
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D67420F67
-        for <linux-acpi@vger.kernel.org>; Mon,  5 Dec 2022 08:48:54 -0800 (PST)
-Received: by mail-ot1-x342.google.com with SMTP id m7-20020a9d6447000000b0066da0504b5eso7587696otl.13
-        for <linux-acpi@vger.kernel.org>; Mon, 05 Dec 2022 08:48:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=O4WPtqOs6pYDke8VCfpzwsIX+8zN33o8tLS2XMy/lFU=;
-        b=EvWmzEra/azIE+dhpMGnktmqmSoesb8PSCiM/05QKkVO5anMKEbRHSG7nojCSOyYWk
-         9IDI1UgS5rC+uB5j5uOW4no2X6seMos8u1Uby8q6RKzl1vCALcAn7vpiT6rpclAi8Jt0
-         gPKoEl0xikkT9S+7dg4LTBa5X4VHIsnKU2e6OrEO/j4h9xN1NPllzu29Dg0k3gFH+bOt
-         HMDW+rYw/YqhqvZ6y4oXgIeqTNVodnF9zHtiwgFo2Y0tEc6ReoK23o3+Epe6dWg/8ai1
-         Z4r7fWQ42rAk0Fys+lVH3VBvE+2FTvVvceopyfVxKS8DxJV3KaRTE9M5zTY24mYt1gIO
-         /rEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=O4WPtqOs6pYDke8VCfpzwsIX+8zN33o8tLS2XMy/lFU=;
-        b=pir/d8+ljHGpliJYqnGe07cohsztlBdk9rfTY4SrI+Onjr/6xdsDlKdvDwHyWytFtx
-         2iToPuDt+HvWuFCy62lNhiNPmWNhfFaL9ww0EurCl7hQWW3Ga3nrfb/ekAgmOBJmk4rd
-         03XhPszEr8DndteHv4fQuXV6Bevam3Ia5K7P93qzoeCxcJohsTfwK7L3BffBA8Cp3KLI
-         GgJPMjsPAoCWW21G7Uzn2gG+cz3bhXq3zynLdcZrF2yAxLJ14tmEWe0OBi0N4lbFI0hM
-         26YM611ajwIH0ymiQTbkQO2mGOH46y+8kTI7LhovfXznoBHwlKMlzhrYa4qjnO0YGvWZ
-         ssbQ==
-X-Gm-Message-State: ANoB5plop88epb+sKi5o0H/ys9bTQwnS+Le3oKF7WEBGM2MsjRDHXpiC
-        D5EDWZN9ixiwmi6I566DjTwqkChfrQMyhmtfFkw=
-X-Google-Smtp-Source: AA0mqf6rJpockmAlPLGWb5IdXxyZXi5oeB/VlA7nQtTh5mH5GBjbP93nFRUHbmrw3A3v2AKvxeLYo6EVgAyGoUC2980=
-X-Received: by 2002:a05:6830:61ce:b0:66b:e4e2:8d25 with SMTP id
- cc14-20020a05683061ce00b0066be4e28d25mr41635604otb.152.1670258933537; Mon, 05
- Dec 2022 08:48:53 -0800 (PST)
+        with ESMTP id S233496AbiLES4e (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Dec 2022 13:56:34 -0500
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B10182228F;
+        Mon,  5 Dec 2022 10:56:17 -0800 (PST)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
+ id 9598059e2c2966bd; Mon, 5 Dec 2022 19:56:16 +0100
+Received: from kreacher.localnet (unknown [213.134.188.181])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 7DF5A2801DDF;
+        Mon,  5 Dec 2022 19:56:15 +0100 (CET)
+Authentication-Results: v370.home.net.pl; dmarc=none (p=none dis=none) header.from=rjwysocki.net
+Authentication-Results: v370.home.net.pl; spf=fail smtp.mailfrom=rjwysocki.net
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Subject: [PATCH] ACPI: thermal: Adjust critical.flags.valid check
+Date:   Mon, 05 Dec 2022 19:56:14 +0100
+Message-ID: <5883789.lOV4Wx5bFT@kreacher>
 MIME-Version: 1.0
-Received: by 2002:a05:6358:7211:b0:dd:1fa2:ef73 with HTTP; Mon, 5 Dec 2022
- 08:48:53 -0800 (PST)
-Reply-To: plml47@hotmail.com
-From:   Philip Manul <lometogo1999@gmail.com>
-Date:   Mon, 5 Dec 2022 08:48:53 -0800
-Message-ID: <CAFtqZGFXDNDSmyfAW1goTwuOjaKBWi=RMxR7avPMnWxdOUFKOg@mail.gmail.com>
-Subject: REP:
-To:     in <in@proposal.net>
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=2.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: **
+X-CLIENT-IP: 213.134.188.181
+X-CLIENT-HOSTNAME: 213.134.188.181
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrudeggdduudelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepffffffekgfehheffleetieevfeefvefhleetjedvvdeijeejledvieehueevueffnecukfhppedvudefrddufeegrddukeekrddukedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudekkedrudekuddphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohephedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohep
+ shhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---=20
-Guten tag,
-Mein Name ist Philip Manul. Ich bin von Beruf Rechtsanwalt. Ich habe
-einen verstorbenen Kunden, der zuf=C3=A4llig denselben Namen mit Ihnen
-teilt. Ich habe alle Papierdokumente in meinem Besitz. Ihr Verwandter,
-mein verstorbener Kunde, hat hier in meinem Land einen nicht
-beanspruchten Fonds zur=C3=BCckgelassen. Ich warte auf Ihre Antwort zum
-Verfahren.
-Philip Manul.
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+It is not necessary to compare critical.flags.valid to 1 in
+acpi_thermal_trips_update() and doing so is also inconsistent with
+other similar checks in that code, so simply check if the flag is
+not 0 instead.
+
+No expected functional impact.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/thermal.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: linux-pm/drivers/acpi/thermal.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/thermal.c
++++ linux-pm/drivers/acpi/thermal.c
+@@ -291,7 +291,7 @@ static int acpi_thermal_trips_update(str
+ 					  "Found critical threshold [%lu]\n",
+ 					  tz->trips.critical.temperature);
+ 		}
+-		if (tz->trips.critical.flags.valid == 1) {
++		if (tz->trips.critical.flags.valid) {
+ 			if (crt == -1) {
+ 				tz->trips.critical.flags.valid = 0;
+ 			} else if (crt > 0) {
+
+
+
