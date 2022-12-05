@@ -2,88 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7F44643108
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Dec 2022 20:08:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D588643466
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Dec 2022 20:46:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231774AbiLETIQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 5 Dec 2022 14:08:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56354 "EHLO
+        id S235055AbiLETqY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 5 Dec 2022 14:46:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230352AbiLETIP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Dec 2022 14:08:15 -0500
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2826DDF33;
-        Mon,  5 Dec 2022 11:08:14 -0800 (PST)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
- id 517f8ee01c49655d; Mon, 5 Dec 2022 20:08:12 +0100
-Received: from kreacher.localnet (unknown [213.134.188.181])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id C38072801EA0;
-        Mon,  5 Dec 2022 20:08:11 +0100 (CET)
-Authentication-Results: v370.home.net.pl; dmarc=none (p=none dis=none) header.from=rjwysocki.net
-Authentication-Results: v370.home.net.pl; spf=fail smtp.mailfrom=rjwysocki.net
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: [PATCH v1 5/5] ACPI: processor: perflib: Adjust acpi_processor_notify_smm() return value
-Date:   Mon, 05 Dec 2022 20:08:00 +0100
-Message-ID: <21694351.EfDdHjke4D@kreacher>
-In-Reply-To: <1836012.tdWV9SEqCh@kreacher>
-References: <1836012.tdWV9SEqCh@kreacher>
+        with ESMTP id S235056AbiLETqF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Dec 2022 14:46:05 -0500
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B62C52DA98;
+        Mon,  5 Dec 2022 11:42:26 -0800 (PST)
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-143ffc8c2b2so14723838fac.2;
+        Mon, 05 Dec 2022 11:42:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kwtUnWRhcXi3vHuwS7fJ1x5P4unvbDZKnLOAXO8tzqQ=;
+        b=vytJSjguo358gTWWGPgDDnGu0VuHKmjk21EabO/bSI/k+9ACMIwkFq+9TfNZHG5Lve
+         et/1ZopXwvTJXVk4N4OvIaSu/n2b/58+8Vg3c/Qsm55AOGTowubAnVxUyqKMcuiJV4m7
+         7I6iuMVb7lMs5uVOxBniOEXvNOCtgXrdGch4WfGemMhbyHzb+HyMh4tOoYACjetyfCz2
+         Odq99hQlP50Q7YAi8Jj8vPuf2bcNga7ZjCvMnuDi0dWrbZCr7ciB/nlPrK4/PFSYuhjM
+         G2hk4GIsJxtQWz+XHyKu6yn7L/li9vlFLQKrVaLC1fHjxjC+qq2QSL/2/PT6jeR9q7hR
+         nD2w==
+X-Gm-Message-State: ANoB5plIEUrgXEwk+L+qUKbll5bg9Om9dhzPaQMNw1jZuJyaKNy3pSJu
+        O9yJYMY1ChcuuekUP+JDBA==
+X-Google-Smtp-Source: AA0mqf7mIsgmwqlw8/wmvAHtTjOWt43bx7CJhpx5R1PKP7Ypb/aP8Ye3Bws7U3SFMAb8D4rKuV/myA==
+X-Received: by 2002:a05:6870:6c1b:b0:144:307b:c88a with SMTP id na27-20020a0568706c1b00b00144307bc88amr10087441oab.267.1670269345827;
+        Mon, 05 Dec 2022 11:42:25 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id o12-20020a4abe8c000000b0049f3f5afcbasm906400oop.13.2022.12.05.11.42.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Dec 2022 11:42:25 -0800 (PST)
+Received: (nullmailer pid 2470894 invoked by uid 1000);
+        Mon, 05 Dec 2022 19:42:24 -0000
+Date:   Mon, 5 Dec 2022 13:42:24 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Elliot Berman <quic_eberman@quicinc.com>
+Cc:     Will Deacon <will@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-acpi@vger.kernel.org,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Murali Nalajala <quic_mnalajal@quicinc.com>,
+        devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+        Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Prakruthi Deepak Heragu <quic_pheragu@quicinc.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Trilok Soni <quic_tsoni@quicinc.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Carl van Schaik <quic_cvanscha@quicinc.com>
+Subject: Re: [PATCH v7 02/20] dt-bindings: Add binding for gunyah hypervisor
+Message-ID: <167026934327.2470835.18397895386816332012.robh@kernel.org>
+References: <20221121140009.2353512-1-quic_eberman@quicinc.com>
+ <20221121140009.2353512-3-quic_eberman@quicinc.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.188.181
-X-CLIENT-HOSTNAME: 213.134.188.181
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrudeggdduvdduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffueeitdfgvddtudegueejtdffteetgeefkeffvdeftddttdeuhfegfedvjefhnecukfhppedvudefrddufeegrddukeekrddukedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudekkedrudekuddphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohephedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthht
- ohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221121140009.2353512-3-quic_eberman@quicinc.com>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Avoid returning a confusing error code from acpi_processor_notify_smm()
-if it is called for the second time in the case when SMM notification
-regarding P-state control is not supported.
+On Mon, 21 Nov 2022 05:59:51 -0800, Elliot Berman wrote:
+> When Linux is booted as a guest under the Gunyah hypervisor, the Gunyah
+> Resource Manager applies a devicetree overlay describing the virtual
+> platform configuration of the guest VM, such as the message queue
+> capability IDs for communicating with the Resource Manager. This
+> information is not otherwise discoverable by a VM: the Gunyah hypervisor
+> core does not provide a direct interface to discover capability IDs nor
+> a way to communicate with RM without having already known the
+> corresponding message queue capability ID. Add the DT bindings that
+> Gunyah adheres for the hypervisor node and message queues.
+> 
+> Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+> ---
+>  .../bindings/firmware/gunyah-hypervisor.yaml  | 82 +++++++++++++++++++
+>  MAINTAINERS                                   |  1 +
+>  2 files changed, 83 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/firmware/gunyah-hypervisor.yaml
+> 
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/processor_perflib.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-Index: linux-pm/drivers/acpi/processor_perflib.c
-===================================================================
---- linux-pm.orig/drivers/acpi/processor_perflib.c
-+++ linux-pm/drivers/acpi/processor_perflib.c
-@@ -475,10 +475,12 @@ int acpi_processor_notify_smm(struct mod
- 
- 	result = acpi_processor_pstate_control();
- 	if (result <= 0) {
--		if (!result)
-+		if (result) {
-+			is_done = result;
-+		} else {
- 			pr_debug("No SMI port or pstate_control\n");
--
--		is_done = -EIO;
-+			is_done = 1;
-+		}
- 		goto out_put;
- 	}
- 
-
-
-
+Reviewed-by: Rob Herring <robh@kernel.org>
