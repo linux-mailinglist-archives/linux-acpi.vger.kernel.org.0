@@ -2,113 +2,69 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB15164425D
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Dec 2022 12:46:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 520346444A0
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Dec 2022 14:34:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231641AbiLFLq3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 6 Dec 2022 06:46:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44256 "EHLO
+        id S234232AbiLFNeT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 6 Dec 2022 08:34:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbiLFLq3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Dec 2022 06:46:29 -0500
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 300441A21E;
-        Tue,  6 Dec 2022 03:46:28 -0800 (PST)
-Received: by mail-qt1-f171.google.com with SMTP id fz10so13501951qtb.3;
-        Tue, 06 Dec 2022 03:46:28 -0800 (PST)
+        with ESMTP id S233790AbiLFNeR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Dec 2022 08:34:17 -0500
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 825C725EA5
+        for <linux-acpi@vger.kernel.org>; Tue,  6 Dec 2022 05:34:16 -0800 (PST)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-3bf4ade3364so151843327b3.3
+        for <linux-acpi@vger.kernel.org>; Tue, 06 Dec 2022 05:34:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=plIPv+lnMIRiOFIe1dV+2tGtFokN2PX8I8Vl98aLxQc9p4eid896+qqRiD3cj5lfhx
+         z1hiGYil0vHTQsGiaUgsnmnfx7Jsn5jop25MSUm4B/gJqMPAdiI+jqYGT4X+agKLBheY
+         M4kLaJ4VYCDPrPdHz+VgEOo7V/8+VLiplXwZ5AxhmuB3ZAIj06bRIm6vVBa+cxsfUC69
+         p7oJjaq1f7uQyzM8lwAnIzamm5TXtetx0xVW4yZv8ZN22bVtgp/BSdTYcvwessuJv/HS
+         +NRVIrLiepTygJiUKe8fSjaB2LODMLrNxWaYxbpkKlISbamBewTovVPI3Q2nv//3DE4C
+         AORg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qyElq22QQ1GTvetKhoZOh6R2a7rwbH/w+jb8Vqh0V0s=;
-        b=x3Wk91o2B/cVPfgZ/s8dUVj088/sBmpwgradb6M4wv6NaU0oHKBL/gOuj33wLrh6Yp
-         MQ8AMJHB3DldRiHDjRzkkdSmx47eIyalVddCf+dFHVD0q13mfPozZrtxM4TjGBaNaCs5
-         sprVUd+9rlpxj4tL58w+9eSGes5VJcf3meOa/II+uvDIGvLcReV9XLfjbPqquF1s4hjo
-         ZFO1DhGFogJc+VP54nZvdcvvQIuJ+UMuGUuWUcsiXPoHtNDQQbxtKKouYMs7QZrsN/3d
-         qm9UzKnSjbzuW/eFLpB4QaSAVi35t4AzAF+VPr3cab12a7dEMkf4PUMedLc9i/T0p1qv
-         9liA==
-X-Gm-Message-State: ANoB5plS08q4/+8vpA7OHZSZVKGBsJ8xF8Gaqtf/0YR7bWxXz27HyTul
-        iAKtPMjYzPliArv7rC4oKk5VBy+MvkMqIuabQsU=
-X-Google-Smtp-Source: AA0mqf6OlPbSef1t/5ju5rMNOBN+/uViPbhBw37rlwY/UX7VSJp8+OHbFebQkhS1PtnHuS+a/uGp/39rcRQp0mn2pK4=
-X-Received: by 2002:a05:622a:1989:b0:3a5:7cf8:1a6e with SMTP id
- u9-20020a05622a198900b003a57cf81a6emr80036675qtc.48.1670327187313; Tue, 06
- Dec 2022 03:46:27 -0800 (PST)
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=fF1KWVF2MtvBFtmNpDd3nbpvYrOPsAxQyFxmEhEt2TFnqD0cCq+zjj85i898g9kgsG
+         vHul+65aqSDkq55gSvP2MfEObIzJgRaKEsaux3v0yyjSmKwJMMEkcFEye0uUuKlyrwAM
+         5FH8DJd2uBIliwNQIqRWHwYZRLsJu8hM2V2Qc6ZTXjs6sfiH/2YXPazK4gKKhJhEaTtq
+         JANBxiKiVctDnkfJ/68slwi4Z2J8Y+CfNZJ48CUCMVgrEtzvX1hzD0zfkJhJ8kmux/h8
+         ZoBcrCYBvoSzljLn/6KSRxywWRTMvip41LldrB0FX2fT2sOJ4GrbYVXGw7fMsj2Pkz4j
+         ku6Q==
+X-Gm-Message-State: ANoB5pmS0l3Im+e67ywtpNLiSNfW8bJ4qzi+QEZxCEBZ+dx7jufE7c21
+        05067iVTg7ZMb+cgCQjGJFxSdByFYKMqN6Rdz34=
+X-Google-Smtp-Source: AA0mqf5LIFZdFA8gXtM15wCQVGRPhLW0DnkI1aVHz2d7yBbqXPecX+J2gwBesGTmYMSfngKxp/YLH/vq5s11h8+sSxc=
+X-Received: by 2002:a81:5243:0:b0:3d2:2098:c5fb with SMTP id
+ g64-20020a815243000000b003d22098c5fbmr31224498ywb.121.1670333655770; Tue, 06
+ Dec 2022 05:34:15 -0800 (PST)
 MIME-Version: 1.0
-References: <202212061519451024396@zte.com.cn>
-In-Reply-To: <202212061519451024396@zte.com.cn>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 6 Dec 2022 12:46:16 +0100
-Message-ID: <CAJZ5v0hjutr3w5f06hwSeGnavfP9ihaX184RSySJ=7051BX0xg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: fan: Convert to use sysfs_emit_at() API
-To:     ye.xingchen@zte.com.cn
-Cc:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+Received: by 2002:a05:7010:a205:b0:314:d2a3:70a with HTTP; Tue, 6 Dec 2022
+ 05:34:15 -0800 (PST)
+Reply-To: mr.abraham022@gmail.com
+From:   "Mr.Abraham" <mrkojofofone01@gmail.com>
+Date:   Tue, 6 Dec 2022 13:34:15 +0000
+Message-ID: <CACJtp8tgBjrWD7ywREfL1yUK0-utTuArETnYq7P42dWiPJKSBA@mail.gmail.com>
+Subject: Hi
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Dec 6, 2022 at 8:19 AM <ye.xingchen@zte.com.cn> wrote:
->
-> From: ye xingchen <ye.xingchen@zte.com.cn>
->
-> Follow the advice of the Documentation/filesystems/sysfs.rst and show()
-> should only use sysfs_emit() or sysfs_emit_at() when formatting the
-> value to be returned to user space.
->
-> Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
-> ---
->  drivers/acpi/fan_attr.c | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/acpi/fan_attr.c b/drivers/acpi/fan_attr.c
-> index f15157d40713..f4f6e2381f1d 100644
-> --- a/drivers/acpi/fan_attr.c
-> +++ b/drivers/acpi/fan_attr.c
-> @@ -27,24 +27,24 @@ static ssize_t show_state(struct device *dev, struct device_attribute *attr, cha
->                 count = scnprintf(buf, PAGE_SIZE, "%lld:", fps->control);
->
->         if (fps->trip_point == 0xFFFFFFFF || fps->trip_point > 9)
-> -               count += scnprintf(&buf[count], PAGE_SIZE - count, "not-defined:");
-> +               count += sysfs_emit_at(buf, count, "not-defined:");
->         else
-> -               count += scnprintf(&buf[count], PAGE_SIZE - count, "%lld:", fps->trip_point);
-> +               count += sysfs_emit_at(buf, count, "%lld:", fps->trip_point);
->
->         if (fps->speed == 0xFFFFFFFF)
-> -               count += scnprintf(&buf[count], PAGE_SIZE - count, "not-defined:");
-> +               count += sysfs_emit_at(buf, count, "not-defined:");
->         else
-> -               count += scnprintf(&buf[count], PAGE_SIZE - count, "%lld:", fps->speed);
-> +               count += sysfs_emit_at(buf, count, "%lld:", fps->speed);
->
->         if (fps->noise_level == 0xFFFFFFFF)
-> -               count += scnprintf(&buf[count], PAGE_SIZE - count, "not-defined:");
-> +               count += sysfs_emit_at(buf, count, "not-defined:");
->         else
-> -               count += scnprintf(&buf[count], PAGE_SIZE - count, "%lld:", fps->noise_level * 100);
-> +               count += sysfs_emit_at(buf, count, "%lld:", fps->noise_level * 100);
->
->         if (fps->power == 0xFFFFFFFF)
-> -               count += scnprintf(&buf[count], PAGE_SIZE - count, "not-defined\n");
-> +               count += sysfs_emit_at(buf, count, "not-defined\n");
->         else
-> -               count += scnprintf(&buf[count], PAGE_SIZE - count, "%lld\n", fps->power);
-> +               count += sysfs_emit_at(buf, count, "%lld\n", fps->power);
->
->         return count;
->  }
-> --
-
-Applied as 6.2 material, thanks!
-
-However, if you are about to send any analogous material to me, please
-defer it until 6.2-rc1 is out, because it will be unlikely to get into
-6.2 anyway.
+My Greeting, Did you receive the letter i sent to you. Please answer me.
+Regard, Mr.Abraham
