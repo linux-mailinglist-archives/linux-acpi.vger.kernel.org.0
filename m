@@ -2,92 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02CCF64460D
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Dec 2022 15:49:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11E70644812
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Dec 2022 16:34:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235056AbiLFOtA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 6 Dec 2022 09:49:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45816 "EHLO
+        id S232604AbiLFPeF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 6 Dec 2022 10:34:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235014AbiLFOs6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Dec 2022 09:48:58 -0500
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0656225289
-        for <linux-acpi@vger.kernel.org>; Tue,  6 Dec 2022 06:48:05 -0800 (PST)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-3c21d6e2f3aso153843067b3.10
-        for <linux-acpi@vger.kernel.org>; Tue, 06 Dec 2022 06:48:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=qAOa1VhlRWQEWutYVn7vsc8dfFCMbpsWAMAMKpfYJbc=;
-        b=iAQthZPcPJ5luFrqpYx+Hvc4oHP8Ccb4UYtmP0xE+RPeft+3SA0p4DC6T0FzLpemL2
-         OErbcqBm3jSUWcVaV4ng/cZcErre30SLODycpD4+V6p/uE1/8bCA7174JQn8PQ+2TANI
-         98JRA9Ehie8pPmpahFZJtVMjzXb5X7KZcB59LEHTMZSFfNaMSJWDdJuhWIglmtfMEZ6x
-         z+YUx6VImUd0rHWlYQdkTxlfSmk/Xewjbm/IXYYXjGBtO5XLew7NXCcF/icLxcDMjkG6
-         ggtLh71tcx1qsoVTK3d/SGdsz2jVRir0hRxiu2PZDDTBcAolekBuLf11tjjUx6AJn2nx
-         i8Cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qAOa1VhlRWQEWutYVn7vsc8dfFCMbpsWAMAMKpfYJbc=;
-        b=O2oF+hYuwFajxWv63auH6ZN2s4CCiOW//mcEPy0sWFOZvK3HY9dKmXdXo0bZzal9/z
-         QdW7/FUn0bjcAWQX4tj6vco4veuJViMqFXVKPWk6pEDsrXDDax1aJuPwQGRYFJmLOh+/
-         o8eJJiP50QE0pDkhNPLjtElQ/W/jAmS7n8X7g1vImxCY0fb0u4NRcxrxatOVU288u2Ow
-         VHSehsWIYMUtpNe5erMp0a0rQyKnRF9RTUcx3SzMFeAyj2NpHa0vtprVv2vCnkd5JA1O
-         zf4rm5fk1/FSAbpkFGtQ2aIfbWg5Nl0sYDkzz+NEOHkUStWuB/sAn+/I7P32b/OGTWZa
-         +f6g==
-X-Gm-Message-State: ANoB5plYpK8So3gBJN5fCnMGkuNDX9QFGNC/ww2wUKHlJqruH2+9flPC
-        Yqe97gMPz21DLTSJ9C4mHcocK37hNnxup9vlbBgcPA==
-X-Google-Smtp-Source: AA0mqf4b9tOLZLYYojLjivmAujfjzfHVMh/sYYeoG+Kpfejl5KHbHnNiGiv5U2z1dPMfEMZ2g09GHiB1kUUyrfb4Ln8=
-X-Received: by 2002:a0d:e645:0:b0:3bb:6406:3df1 with SMTP id
- p66-20020a0de645000000b003bb64063df1mr47726538ywe.319.1670338084259; Tue, 06
- Dec 2022 06:48:04 -0800 (PST)
+        with ESMTP id S232458AbiLFPeE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Dec 2022 10:34:04 -0500
+Received: from out199-13.us.a.mail.aliyun.com (out199-13.us.a.mail.aliyun.com [47.90.199.13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F0822B26B;
+        Tue,  6 Dec 2022 07:34:02 -0800 (PST)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R881e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=xueshuai@linux.alibaba.com;NM=0;PH=DS;RN=16;SR=0;TI=SMTPD_---0VWhZXz6_1670340837;
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VWhZXz6_1670340837)
+          by smtp.aliyun-inc.com;
+          Tue, 06 Dec 2022 23:33:59 +0800
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+To:     rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
+        tony.luck@intel.com, bp@alien8.de, dave.hansen@linux.intel.com,
+        jarkko@kernel.org, naoya.horiguchi@nec.com, linmiaohe@huawei.com,
+        akpm@linux-foundation.org
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        cuibixuan@linux.alibaba.com, baolin.wang@linux.alibaba.com,
+        zhuo.song@linux.alibaba.com, xueshuai@linux.alibaba.com
+Subject: [RFC PATCH 0/2] ACPI: APEI: handle synchronous exceptions in task work
+Date:   Tue,  6 Dec 2022 23:33:52 +0800
+Message-Id: <20221206153354.92394-1-xueshuai@linux.alibaba.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
 MIME-Version: 1.0
-References: <20211015164809.22009-1-asmaa@nvidia.com> <20211015164809.22009-2-asmaa@nvidia.com>
- <CACRpkdbvR0+5gKUH7eE2tZ1H9DR-WiYyh9KSnUTesYiZ=AezNw@mail.gmail.com> <CAHp75VfaoS4yu0UOJj4V2N+4tWdD0JF47TFgfKCGt7SC-Uhfaw@mail.gmail.com>
-In-Reply-To: <CAHp75VfaoS4yu0UOJj4V2N+4tWdD0JF47TFgfKCGt7SC-Uhfaw@mail.gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 6 Dec 2022 15:47:52 +0100
-Message-ID: <CACRpkdYqrdT4K8wZGkjo=+zbtQ9R7GvdOLzEeHQUx=Xr54en6Q@mail.gmail.com>
-Subject: Re: [PATCH v5 1/2] gpio: mlxbf2: Introduce IRQ support
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Asmaa Mnebhi <asmaa@nvidia.com>, linux-gpio@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, andrew@lunn.ch, kuba@kernel.org,
-        bgolaszewski@baylibre.com, davem@davemloft.net, rjw@rjwysocki.net,
-        davthompson@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Dec 3, 2022 at 1:36 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Sat, Dec 3, 2022 at 12:14 PM Linus Walleij <linus.walleij@linaro.org> wrote:
-> > On Fri, Oct 15, 2021 at 6:48 PM Asmaa Mnebhi <asmaa@nvidia.com> wrote:
-> >
-> > > Introduce standard IRQ handling in the gpio-mlxbf2.c
-> > > driver.
-> > >
-> > > Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
-> >
-> > Looks good to me!
-> > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Currently, both synchronous and asynchronous error are queued and handled by a
+dedicated kthread in workqueue. Memory failure for synchronous error is
+synced by a trick.
+
+Although the task could be killed by page fault, the memory failure is handled
+in a kthread context so that the hwpoison-aware mechanisms, e.g. PF_MCE_EARLY,
+early kill, does not work as expected.
+
+To this end, separate synchronous and asynchronous error handling into
+different paths like X86 does:
+
+- task work for synchronous error.
+- and workqueue for asynchronous error.
+
+This patch set is based on a new UEFI proposal submitted by our colleague Yingwen.[1]
+
+> Background:
+> 
+> In ARM world, two type events (Sync/Async) from hardware IP need OS/VMM take different actions. 
+> Current CPER memory error record is not able to distinguish sync/async type event right now. 
+> Current OS/VMM need to take extra actions beyond CPER which is heavy burden to identify the 
+> two type events
+>  
+> Sync event (e.g. CPU consume poisoned data) --> Firmware  -> CPER error log  --> OS/VMM take recovery action.
+> Async event (e.g. Memory controller detect UE event)  --> Firmware  --> CPER error log  --> OS take page action. 
+> 
+> 
+> Proposal: 
 >
-> It was more than a year ago :-)
+> - In section description Flags field(UEFI spec section N.2, add sync flag as below. OS/VMM 
+>  could depend on this flag to distinguish sync/async events.
+> - Bit8 – sync flag; if set this flag indicates that this event record is synchronous(e.g. 
+>  cpu core consumes poison data, then cause instruction/data abort); if not set, this event record is asynchronous.
+> 
+> Best regards,
+> Yingwen Chen
+> 
+> [ Shuai Xue: The thread is only opened to the member of UEFI Workgroup.
+>   Paste here for discussion.]
 
-:D
+[1] https://members.uefi.org/wg/uswg/mail/thread/9453
 
-Searched my inbox in some weird way.
+Shuai Xue (2):
+  ACPI: APEI: set memory failure flags as MF_ACTION_REQUIRED on
+    synchronous events
+  ACPI: APEI: separate synchronous error handling into task work
 
+ drivers/acpi/apei/ghes.c | 120 ++++++++++++++++++++++-----------------
+ include/linux/cper.h     |  22 +++++++
+ 2 files changed, 89 insertions(+), 53 deletions(-)
 
-Yours,
-Linus Walleij
+-- 
+2.20.1.12.g72788fdb
+
