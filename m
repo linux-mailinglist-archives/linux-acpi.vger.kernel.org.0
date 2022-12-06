@@ -2,326 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A8DC644814
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Dec 2022 16:34:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1212E644A48
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Dec 2022 18:26:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234514AbiLFPeJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 6 Dec 2022 10:34:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56628 "EHLO
+        id S234448AbiLFR0J (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 6 Dec 2022 12:26:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234508AbiLFPeH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Dec 2022 10:34:07 -0500
-Received: from out199-11.us.a.mail.aliyun.com (out199-11.us.a.mail.aliyun.com [47.90.199.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58AB52B26B;
-        Tue,  6 Dec 2022 07:34:05 -0800 (PST)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=xueshuai@linux.alibaba.com;NM=0;PH=DS;RN=16;SR=0;TI=SMTPD_---0VWhZY-U_1670340840;
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VWhZY-U_1670340840)
-          by smtp.aliyun-inc.com;
-          Tue, 06 Dec 2022 23:34:01 +0800
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-To:     rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
-        tony.luck@intel.com, bp@alien8.de, dave.hansen@linux.intel.com,
-        jarkko@kernel.org, naoya.horiguchi@nec.com, linmiaohe@huawei.com,
-        akpm@linux-foundation.org
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        cuibixuan@linux.alibaba.com, baolin.wang@linux.alibaba.com,
-        zhuo.song@linux.alibaba.com, xueshuai@linux.alibaba.com
-Subject: [RFC PATCH 2/2] ACPI: APEI: separate synchronous error handling into task work
-Date:   Tue,  6 Dec 2022 23:33:54 +0800
-Message-Id: <20221206153354.92394-3-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+        with ESMTP id S230450AbiLFR0I (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Dec 2022 12:26:08 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93A813AC10;
+        Tue,  6 Dec 2022 09:26:07 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F67B615FC;
+        Tue,  6 Dec 2022 17:26:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BEADC433D6;
+        Tue,  6 Dec 2022 17:26:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1670347566;
+        bh=i4LFHgRC3eGQ/h/gsi4nG4EfbOLbqNKtWfgCfmTwX0c=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=PRHv0B5xJ2GAr1bKgFD8L8KIUI75dpWUvoOl1JkwpcMZpMsZb7mrYf7WUgZQV6f1B
+         vMo94bzvnSOKsXr2LQT8u0cwgAe+00mfYbwEJB68Xvajf8VrALHJdAmlB1CJXkRRxg
+         /dMDgIxn2/IYXp9stpunIJGl3XjA1iUaJjht0UVB3eN6M89zftjSJyjAEV6SFEw4yq
+         SCDJkA3XSCd5yiVePRgsWet6+hxP2Ro4qCebopzCo5+r979Q4aX638QYjCIOddc6zV
+         UoaFSci2x1r+YOg7PssexvqUKZGyK29RTwLHHT+Tsj8H7/1330DjYrM9u/2muuimRg
+         J3SzBtVTwPEZg==
+Date:   Tue, 6 Dec 2022 11:26:04 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>, linuxkernelml@undead.fr,
+        Florent DELAHAYE <kernelorg@undead.fr>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH] x86/PCI: Disable E820 reserved region clipping for Clevo
+ NL4XLU laptops
+Message-ID: <20221206172604.GA1356368@bhelgaas>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9faa7393-a985-52f6-4ceb-f853c0210a71@redhat.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Arm64 platform, errors could be signaled by synchronous interrupt, e.g.
-when an error is detected by a background scrubber, or signaled by
-synchronous exception, e.g. when an uncorrected error is consumed. Both
-synchronous and asynchronous error are queued and handled by a dedicated
-kthread in workqueue.
+On Sun, Dec 04, 2022 at 10:42:38AM +0100, Hans de Goede wrote:
+> On 12/2/22 22:58, Bjorn Helgaas wrote:
+> > On Wed, Oct 12, 2022 at 10:23:12AM +0200, Hans de Goede wrote:
+> >> On 10/11/22 19:40, Bjorn Helgaas wrote:
+> >>> On Mon, Oct 10, 2022 at 05:02:06PM +0200, Hans de Goede wrote:
+> >>>> Clevo NL4XLU barebones have the same E820 reservation covering
+> >>>> the entire _CRS 32-bit window issue as the Lenovo *IIL* and
+> >>>> Clevo X170KM-G models, relevant dmesg bits (with pci=no_e820):
+> >>>> ...
+> >>>> Add a no_e820 quirk for these models to fix the touchpad not working
+> >>>> (due to Linux being unable to assign a PCI BAR for the i2c-controller).
+> ...
 
-commit 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for
-synchronous errors") keep track of whether memory_failure() work was
-queued, and make task_work pending to flush out the workqueue so that the
-work for synchronous error is processed before returning to user-space.
-The trick ensures that the corrupted page is unmapped and poisoned. And
-after returning to user-space, the task starts at current instruction which
-triggering a page fault and kernel will send sigbus due to
-VM_FAULT_HWPOISON.
+> As I mentioned in the email-thread about that patch-series (and there
+> now is dmesg E820 output to confirm this) your generic fix will
+> unfortunately only work when people boot in EFI mode. It will still
+> be good to have the generic fix of course.
+> 
+> But maybe we should also add this quirk to make sure these
+> Clevo-s also work properly when booted in BIOS CSM mode ?
 
-Although the task could be killed by page fault, the memory failure is
-handled in a kthread context so that the hwpoison-aware mechanisms, e.g.
-PF_MCE_EARLY, early kill, does not work as expected.
+Yes, if they can boot in CSM mode, we should probably add the quirk.
+But Florent doesn't see a way to boot his Clevo NL41LU2/NL4XLU in CSM
+mode, so I think we can postpone adding the quirk until we find a
+machine where it makes a difference:
 
-To this end, separate synchronous and asynchronous error handling into
-different paths like X86 does:
+  https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1948811/comments/8
 
-- task work for synchronous error.
-- and workqueue for asynchronous error.
+I added a note to https://bugzilla.kernel.org/show_bug.cgi?id=216565
+to that effect.
 
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
----
- drivers/acpi/apei/ghes.c | 118 ++++++++++++++++++++++-----------------
- 1 file changed, 66 insertions(+), 52 deletions(-)
-
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index a420759fce2d..f13c298f47e6 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -421,46 +421,80 @@ static void ghes_clear_estatus(struct ghes *ghes,
- 		ghes_ack_error(ghes->generic_v2);
- }
- 
--/*
-- * Called as task_work before returning to user-space.
-- * Ensure any queued work has been done before we return to the context that
-- * triggered the notification.
-+/**
-+ * struct mce_task_work - for synchronous RAS event
-+ *
-+ * @twork:                callback_head for task work
-+ * @pfn:                  page frame number of corrupted page
-+ * @flags:                fine tune action taken
-+ *
-+ * Structure to pass task work to be handled before
-+ * returning to userspace via task_work_add().
-  */
--static void ghes_kick_task_work(struct callback_head *head)
-+struct mce_task_work {
-+	struct callback_head twork;
-+	u64 pfn;
-+	int flags;
-+};
-+
-+static void memory_failure_cb(struct callback_head *twork)
- {
--	struct acpi_hest_generic_status *estatus;
--	struct ghes_estatus_node *estatus_node;
--	u32 node_len;
-+	int ret;
-+	struct mce_task_work *twcb =
-+		container_of(twork, struct mce_task_work, twork);
-+	ret = memory_failure(twcb->pfn, twcb->flags);
-+	kfree(twcb);
- 
--	estatus_node = container_of(head, struct ghes_estatus_node, task_work);
--	if (IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
--		memory_failure_queue_kick(estatus_node->task_work_cpu);
-+	if (!ret)
-+		return;
-+	/*
-+	 * -EHWPOISON from memory_failure() means that it already sent SIGBUS
-+	 * to the current process with the proper error info,
-+	 * -EOPNOTSUPP means hwpoison_filter() filtered the error event,
-+	 *
-+	 * In both cases, no further processing is required.
-+	 */
-+	if (ret == -EHWPOISON || ret == -EOPNOTSUPP)
-+		return;
- 
--	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
--	node_len = GHES_ESTATUS_NODE_LEN(cper_estatus_len(estatus));
--	gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
-+	pr_err("Memory error not recovered");
-+	force_sig(SIGBUS);
- }
- 
--static bool ghes_do_memory_failure(u64 physical_addr, int flags)
-+static void ghes_do_memory_failure(u64 physical_addr, int flags)
- {
- 	unsigned long pfn;
-+	struct mce_task_work *twcb;
- 
- 	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
--		return false;
-+		return;
- 
- 	pfn = PHYS_PFN(physical_addr);
- 	if (!pfn_valid(pfn) && !arch_is_platform_page(physical_addr)) {
- 		pr_warn_ratelimited(FW_WARN GHES_PFX
- 		"Invalid address in generic error data: %#llx\n",
- 		physical_addr);
--		return false;
-+		return;
- 	}
- 
--	memory_failure_queue(pfn, flags);
--	return true;
-+	if (flags == MF_ACTION_REQUIRED && current->mm) {
-+		twcb = kmalloc(sizeof(*twcb), GFP_ATOMIC);
-+		if (!twcb)
-+			return;
-+
-+		twcb->pfn = pfn;
-+		twcb->flags = flags;
-+		init_task_work(&twcb->twork, memory_failure_cb);
-+		task_work_add(current, &twcb->twork, TWA_RESUME);
-+		return;
-+	} else {
-+		memory_failure_queue(pfn, flags);
-+	}
-+
-+	return;
- }
- 
--static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
-+static void ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
- 				       int sev)
- {
- 	int flags = -1;
-@@ -468,7 +502,7 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
- 	struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
- 
- 	if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
--		return false;
-+		return;
- 
- 	/* iff following two events can be handled properly by now */
- 	if (sec_sev == GHES_SEV_CORRECTED &&
-@@ -478,15 +512,12 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
- 		flags = (gdata->flags & CPER_SEC_SYNC) ? MF_ACTION_REQUIRED : 0;
- 
- 	if (flags != -1)
--		return ghes_do_memory_failure(mem_err->physical_addr, flags);
--
--	return false;
-+		ghes_do_memory_failure(mem_err->physical_addr, flags);
- }
- 
--static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
-+static void ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
- {
- 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
--	bool queued = false;
- 	int sec_sev, i;
- 	char *p;
- 
-@@ -494,7 +525,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int s
- 
- 	sec_sev = ghes_severity(gdata->error_severity);
- 	if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
--		return false;
-+		return;
- 
- 	p = (char *)(err + 1);
- 	for (i = 0; i < err->err_info_num; i++) {
-@@ -510,7 +541,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int s
- 		 * and don't filter out 'corrected' error here.
- 		 */
- 		if (is_cache && has_pa) {
--			queued = ghes_do_memory_failure(err_info->physical_fault_addr, 0);
-+			ghes_do_memory_failure(err_info->physical_fault_addr, 0);
- 			p += err_info->length;
- 			continue;
- 		}
-@@ -524,7 +555,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int s
- 		p += err_info->length;
- 	}
- 
--	return queued;
-+	return;
- }
- 
- /*
-@@ -622,7 +653,7 @@ static void ghes_defer_non_standard_event(struct acpi_hest_generic_data *gdata,
- 	schedule_work(&entry->work);
- }
- 
--static bool ghes_do_proc(struct ghes *ghes,
-+static void ghes_do_proc(struct ghes *ghes,
- 			 const struct acpi_hest_generic_status *estatus)
- {
- 	int sev, sec_sev;
-@@ -630,7 +661,6 @@ static bool ghes_do_proc(struct ghes *ghes,
- 	guid_t *sec_type;
- 	const guid_t *fru_id = &guid_null;
- 	char *fru_text = "";
--	bool queued = false;
- 
- 	sev = ghes_severity(estatus->error_severity);
- 	apei_estatus_for_each_section(estatus, gdata) {
-@@ -648,13 +678,13 @@ static bool ghes_do_proc(struct ghes *ghes,
- 			ghes_edac_report_mem_error(sev, mem_err);
- 
- 			arch_apei_report_mem_error(sev, mem_err);
--			queued = ghes_handle_memory_failure(gdata, sev);
-+			ghes_handle_memory_failure(gdata, sev);
- 		}
- 		else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
- 			ghes_handle_aer(gdata);
- 		}
- 		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
--			queued = ghes_handle_arm_hw_error(gdata, sev);
-+			ghes_handle_arm_hw_error(gdata, sev);
- 		} else {
- 			void *err = acpi_hest_get_payload(gdata);
- 
-@@ -664,8 +694,6 @@ static bool ghes_do_proc(struct ghes *ghes,
- 					       gdata->error_data_length);
- 		}
- 	}
--
--	return queued;
- }
- 
- static void __ghes_print_estatus(const char *pfx,
-@@ -961,9 +989,7 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
- 	struct ghes_estatus_node *estatus_node;
- 	struct acpi_hest_generic *generic;
- 	struct acpi_hest_generic_status *estatus;
--	bool task_work_pending;
- 	u32 len, node_len;
--	int ret;
- 
- 	llnode = llist_del_all(&ghes_estatus_llist);
- 	/*
-@@ -978,26 +1004,15 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
- 		estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
- 		len = cper_estatus_len(estatus);
- 		node_len = GHES_ESTATUS_NODE_LEN(len);
--		task_work_pending = ghes_do_proc(estatus_node->ghes, estatus);
-+		ghes_do_proc(estatus_node->ghes, estatus);
- 		if (!ghes_estatus_cached(estatus)) {
- 			generic = estatus_node->generic;
- 			if (ghes_print_estatus(NULL, generic, estatus))
- 				ghes_estatus_cache_add(generic, estatus);
- 		}
- 
--		if (task_work_pending && current->mm) {
--			estatus_node->task_work.func = ghes_kick_task_work;
--			estatus_node->task_work_cpu = smp_processor_id();
--			ret = task_work_add(current, &estatus_node->task_work,
--					    TWA_RESUME);
--			if (ret)
--				estatus_node->task_work.func = NULL;
--		}
--
--		if (!estatus_node->task_work.func)
--			gen_pool_free(ghes_estatus_pool,
--				      (unsigned long)estatus_node, node_len);
--
-+		gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node,
-+			      node_len);
- 		llnode = next;
- 	}
- }
-@@ -1057,7 +1072,6 @@ static int ghes_in_nmi_queue_one_entry(struct ghes *ghes,
- 
- 	estatus_node->ghes = ghes;
- 	estatus_node->generic = ghes->generic;
--	estatus_node->task_work.func = NULL;
- 	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
- 
- 	if (__ghes_read_estatus(estatus, buf_paddr, fixmap_idx, len)) {
--- 
-2.20.1.12.g72788fdb
-
+> >>>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216565
+> >>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> >>>> ---
+> >>>>  arch/x86/pci/acpi.c | 13 +++++++++++++
+> >>>>  1 file changed, 13 insertions(+)
+> >>>>
+> >>>> diff --git a/arch/x86/pci/acpi.c b/arch/x86/pci/acpi.c
+> >>>> index 2f82480fd430..45ef65d31a40 100644
+> >>>> --- a/arch/x86/pci/acpi.c
+> >>>> +++ b/arch/x86/pci/acpi.c
+> >>>> @@ -189,6 +189,19 @@ static const struct dmi_system_id pci_crs_quirks[] __initconst = {
+> >>>>  			DMI_MATCH(DMI_BOARD_NAME, "X170KM-G"),
+> >>>>  		},
+> >>>>  	},
+> >>>> +
+> >>>> +	/*
+> >>>> +	 * Clevo NL4XLU barebones have the same E820 reservation covering
+> >>>> +	 * the entire _CRS 32-bit window issue as the Lenovo *IIL* models.
+> >>>> +	 * See https://bugzilla.kernel.org/show_bug.cgi?id=216565
+> >>>> +	 */
+> >>>> +	{
+> >>>> +		.callback = set_no_e820,
+> >>>> +		.ident = "Clevo NL4XLU Barebone",
+> >>>> +		.matches = {
+> >>>> +			DMI_MATCH(DMI_BOARD_NAME, "NL4XLU"),
+> >>>> +		},
+> >>>> +	},
+> >>>>  	{}
+> >>>>  };
