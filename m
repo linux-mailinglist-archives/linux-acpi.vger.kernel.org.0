@@ -2,41 +2,43 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C05246459DF
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Dec 2022 13:34:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63F81645A3C
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Dec 2022 13:56:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229678AbiLGMez (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 7 Dec 2022 07:34:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50780 "EHLO
+        id S229470AbiLGM4P (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 7 Dec 2022 07:56:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229628AbiLGMez (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Dec 2022 07:34:55 -0500
-Received: from out30-8.freemail.mail.aliyun.com (out30-8.freemail.mail.aliyun.com [115.124.30.8])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D7CC45A14;
-        Wed,  7 Dec 2022 04:34:52 -0800 (PST)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=cuibixuan@linux.alibaba.com;NM=0;PH=DS;RN=17;SR=0;TI=SMTPD_---0VWm7CjE_1670416489;
-Received: from 30.221.148.76(mailfrom:cuibixuan@linux.alibaba.com fp:SMTPD_---0VWm7CjE_1670416489)
+        with ESMTP id S229536AbiLGM4L (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Dec 2022 07:56:11 -0500
+Received: from out30-6.freemail.mail.aliyun.com (out30-6.freemail.mail.aliyun.com [115.124.30.6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D24BC53ED0;
+        Wed,  7 Dec 2022 04:56:09 -0800 (PST)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R311e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045176;MF=xueshuai@linux.alibaba.com;NM=0;PH=DS;RN=18;SR=0;TI=SMTPD_---0VWm7Ihy_1670417763;
+Received: from 30.221.145.221(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VWm7Ihy_1670417763)
           by smtp.aliyun-inc.com;
-          Wed, 07 Dec 2022 20:34:50 +0800
-Message-ID: <19defb67-195d-6511-ad6c-96a768289754@linux.alibaba.com>
-Date:   Wed, 7 Dec 2022 20:34:47 +0800
+          Wed, 07 Dec 2022 20:56:05 +0800
+Message-ID: <737ba26b-d7c1-0014-d97f-33782ea4cd20@linux.alibaba.com>
+Date:   Wed, 7 Dec 2022 20:56:03 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.4.1
+ Gecko/20100101 Thunderbird/102.5.0
 Subject: Re: reply for ACPI: APEI: handle synchronous exceptions in task work
 Content-Language: en-US
-To:     Lv Ying <lvying6@huawei.com>, xueshuai@linux.alibaba.com
+To:     Lv Ying <lvying6@huawei.com>
 Cc:     akpm@linux-foundation.org, baolin.wang@linux.alibaba.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, james.morse@arm.com,
+        bp@alien8.de, cuibixuan@linux.alibaba.com,
+        dave.hansen@linux.intel.com, james.morse@arm.com,
         jarkko@kernel.org, lenb@kernel.org, linmiaohe@huawei.com,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         naoya.horiguchi@nec.com, rafael@kernel.org, tony.luck@intel.com,
-        zhuo.song@linux.alibaba.com, xiezhipeng1@huawei.com
+        zhuo.song@linux.alibaba.com, xiezhipeng1@huawei.com,
+        yingwen.cyw@alibaba-inc.com
 References: <20221206153354.92394-1-xueshuai@linux.alibaba.com>
  <20221207095413.1980862-1-lvying6@huawei.com>
-From:   Bixuan Cui <cuibixuan@linux.alibaba.com>
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
 In-Reply-To: <20221207095413.1980862-1-lvying6@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-10.2 required=5.0 tests=BAYES_00,
         ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
@@ -50,15 +52,33 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 
 
-在 2022/12/7 17:54, Lv Ying 写道:
+On 2022/12/7 PM5:54, Lv Ying wrote:
+> Hi Shuai Xue:
+> 
+> I notice that  we are both handling the same problem, my patchset:
+> RFC: https://lkml.org/lkml/fancy/2022/12/5/364
+> RFC PATCH v1: https://lkml.org/lkml/2022/12/7/244
+> has CC to you 
+
+I am glad to see that the community is trying to address the same problems,
+I have replied to your RFC version.
+
+> Yingwen's proposal in 2022/12/06[1]:
+> Add Bit 8 in "Common Platform Error Record" -> "Section Descriptor" ->
+> Flags (which Now, Bit 8 through 31 – Reserved) 
+> 
+> [1] https://members.uefi.org/wg/uswg/mail/thread/9453
+> 
 > Yingwen's proposal makes distinguish synchronous error by CPER report more
 > easy, however, it's not supported yet.
 > Looking forward to your reply if there is any progress on the proposal and
 > your suggestions about my patchset.
 
-Originally, the arm can distinguish between synchronous and asynchronous 
-errors, but the OS cannot. Therefore, it is more reasonable to 
-distinguish by adding 'sync flag' bit for arm.
+Yes, it is not supported yet. So we separated synchronous error handling into
+task work based on a similar flag internally.
 
-Thanks,
-Bixuan Cui
+We submitted the proposal last month after discussed with Tony. But there
+is still no progress, I will update it here in time.
+
+Cheers,
+Shuai
