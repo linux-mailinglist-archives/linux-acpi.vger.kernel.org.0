@@ -2,78 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 481AB645E9C
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Dec 2022 17:21:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C40D1645FFE
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Dec 2022 18:20:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229783AbiLGQVi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 7 Dec 2022 11:21:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45836 "EHLO
+        id S229523AbiLGRTt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 7 Dec 2022 12:19:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229811AbiLGQVh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Dec 2022 11:21:37 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EA9D63BA8;
-        Wed,  7 Dec 2022 08:21:36 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id E21A9CE1AFE;
-        Wed,  7 Dec 2022 16:21:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD664C433D6;
-        Wed,  7 Dec 2022 16:21:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1670430093;
-        bh=s4iNW1BXaJMNrUnKhvJnvr0PTKnv+uB2S+yk+zRRPVo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lDTYwUf0l8RUN5UsR6LWhgmgzQ+hN+5Etm0RYGxJBwwGMHKXnuyuzgEv46oWhIuUc
-         ovk6GSFes0zuv8Su5yCFKhLrZexSErmFAORuSLo/YUJ7awkqaq/tBmu6KxZU/zasvR
-         jhMBu8YFhYzlgTS/4bkIPgv3bKcBITKdlxibHMmU=
-Date:   Wed, 7 Dec 2022 17:21:30 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Miaoqian Lin <linmq006@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] device property: Fix documentation for
- fwnode_get_next_parent()
-Message-ID: <Y5C9ihcdY7ujcFzx@kroah.com>
-References: <20221207112219.2652411-1-linmq006@gmail.com>
- <Y5CFVHL0xTeWbKfU@paasikivi.fi.intel.com>
- <CAJZ5v0hWhY5ZG+jYR8BfxTfwgwYKkOP33K4+Qc7FJeMheQQcEA@mail.gmail.com>
+        with ESMTP id S229611AbiLGRTp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Dec 2022 12:19:45 -0500
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A896C218E
+        for <linux-acpi@vger.kernel.org>; Wed,  7 Dec 2022 09:19:44 -0800 (PST)
+Received: by mail-qt1-f180.google.com with SMTP id a16so1542177qtw.10
+        for <linux-acpi@vger.kernel.org>; Wed, 07 Dec 2022 09:19:44 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xYNj3MB1kq6JFwJ0LXu8hhQsXuA+NdUunfhzA6v6axI=;
+        b=YOEpzfNIx7ALH05iMd4ZK0yDELZdHkfa3Wld2tOnV+pCbMlgzahHRxhHHy+xAVtS9x
+         nqBSCN2y3XQ+/c3JUbMamPuU8tbHlyMKM+YYyV0lXz7hrfWUCw0FJrPSV7YsFeZR0HJ1
+         /ZEZm/XSuCBApwuLgaqyW8L1B6NrR1dOd+oEtjGsJpgM5MoyvVtU2dp1HREw1Rcjzayz
+         9sQSzylDLsgSJIIFE91rYZt8Q6gaQfr2mE5/tC7+MWohSgfO6PUZaSkDlELwCpz7n2jA
+         ds28bDRUCcW5Q2poWq/2nk+n6Z4l7By/9VyiBER2DR5W8P/OEHKlbhd9+vMDD0hMJC4X
+         8abg==
+X-Gm-Message-State: ANoB5pk34PB+wHoc5CoFFHQ9GEWgXDoBKO4I2TGCcsg+0aGsQHDaBJTm
+        LcjYwtgAq9cwa7TqApdQx42Oa589uwFlViCLo+w3guPk
+X-Google-Smtp-Source: AA0mqf4UG57YJjIUn8SXL1y4m6aswLwVvzeX3RPB23zEdcL8Fj4iadaidgQTDu/b1LPSY+Fook4V4CcCCHv1fJtLUEc=
+X-Received: by 2002:ac8:7dcb:0:b0:3a6:8dd0:4712 with SMTP id
+ c11-20020ac87dcb000000b003a68dd04712mr28734317qte.411.1670433583652; Wed, 07
+ Dec 2022 09:19:43 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0hWhY5ZG+jYR8BfxTfwgwYKkOP33K4+Qc7FJeMheQQcEA@mail.gmail.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20221206205234.606073-1-Benjamin.Cheatham@amd.com>
+ <SJ1PR11MB608313CBF490328F8C431796FC1B9@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <8f9feb3e-4c32-5c16-558c-7693cc277992@amd.com> <SJ1PR11MB6083C4960BC481DE9BEF2BB7FC1B9@SJ1PR11MB6083.namprd11.prod.outlook.com>
+In-Reply-To: <SJ1PR11MB6083C4960BC481DE9BEF2BB7FC1B9@SJ1PR11MB6083.namprd11.prod.outlook.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 7 Dec 2022 18:19:32 +0100
+Message-ID: <CAJZ5v0jLdOXtTQx_PF=_QGRTcQjUAU=ZNzaQkDJ7O8bABhF1cw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] ACPI, APEI, EINJ: Add new CXL Error Types
+To:     "Luck, Tony" <tony.luck@intel.com>,
+        Ben Cheatham <benjamin.cheatham@amd.com>
+Cc:     "rafael@kernel.org" <rafael@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "yazen.ghannam@amd.com" <yazen.ghannam@amd.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Dec 07, 2022 at 03:30:43PM +0100, Rafael J. Wysocki wrote:
-> On Wed, Dec 7, 2022 at 1:21 PM Sakari Ailus
-> <sakari.ailus@linux.intel.com> wrote:
-> >
-> > On Wed, Dec 07, 2022 at 03:22:18PM +0400, Miaoqian Lin wrote:
-> > > Use fwnode_handle_put() on the node pointer to release the refcount.
-> > > Change fwnode_handle_node() to fwnode_handle_put().
-> > >
-> > > Fixes: 233872585de1 ("device property: Add fwnode_get_next_parent()")
-> > > Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-> >
-> > Thanks!
-> >
-> > Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> 
-> So I'm assuming that Greg will pick up this one or please let me know otherwise.
+On Tue, Dec 6, 2022 at 10:37 PM Luck, Tony <tony.luck@intel.com> wrote:
+>
+> Hi Ben,
+>
+> > The last patch I mentioned leaving out added support for injecting CXL
+> > errors, but I don't have access to a machine that I can test it with at
+> > the moment so it'll probably have to wait.
+>
+> Parts 1 & 2 of your series can be applied now (as nice cleanups).
+>
+> But part 3 would just be confusing to users without the matching patch
+> to add CXL injection support.
+>
+> I.e. a user might
+>
+> # cat /sys/kernel/debug/apei/einj/available_error_type
+>
+> and see:
+>
+> 0x00001000      CXL.cache Protocol Correctable
+>
+> But:
+>
+> # echo 0x1000 > /sys/kernel/debug/apei/einj/error_type
+>
+> wouldn't do anything useful (may do weird stuff since the driver
+> doesn't appear to validate the "type" ... would be great if you fixed
+> that while you are digging around in this code :-).
+>
+> So I'm happy to offer up a "Reviewed-by: Tony Luck <tony.luck@intel.com>"
+> for all three parts. I just think that part 3 should not be applied until the
+> rest of the code to go with it is ready.
 
-I'll grab it now, thanks.
+I agree, so I've done accordingly.
 
-greg k-h
+Patches [1-2/3] have been applied as 6.2 material (with very minor
+subject adjustments) and Ben please resend patch [3/3] when sending
+the other material mentioned above (and please feel free to add the
+tag from Tony to it when doing that).
