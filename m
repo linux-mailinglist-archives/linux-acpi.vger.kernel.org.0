@@ -2,306 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40A21645381
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Dec 2022 06:45:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C24A6455F9
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Dec 2022 10:03:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229527AbiLGFpB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 7 Dec 2022 00:45:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59938 "EHLO
+        id S229527AbiLGJDL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 7 Dec 2022 04:03:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbiLGFou (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Dec 2022 00:44:50 -0500
-Received: from out30-45.freemail.mail.aliyun.com (out30-45.freemail.mail.aliyun.com [115.124.30.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 664E657B74;
-        Tue,  6 Dec 2022 21:44:45 -0800 (PST)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R701e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046060;MF=tianruidong@linux.alibaba.com;NM=0;PH=DS;RN=43;SR=0;TI=SMTPD_---0VWkBjQs_1670391876;
-Received: from 30.221.133.176(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0VWkBjQs_1670391876)
-          by smtp.aliyun-inc.com;
-          Wed, 07 Dec 2022 13:44:38 +0800
-Message-ID: <b365db02-b28c-1b22-2e87-c011cef848e2@linux.alibaba.com>
-Date:   Wed, 7 Dec 2022 13:44:35 +0800
+        with ESMTP id S229530AbiLGJDJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Dec 2022 04:03:09 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 063BD25E9C;
+        Wed,  7 Dec 2022 01:03:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1670403787; x=1701939787;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pr/OH7Q9TSvuKwwlnfT5ZBrKKBEWTJiWy1nLbYSZAf0=;
+  b=mjLqczw/PKybsE7SI/Zb/SsFq9iOdkPijvFtoXO3eoBKcWB/SvRrJAEz
+   80pT4px43c5NPomXdt9D7wn+D9W05Pva4duwCwOkoyNKiDxz72tHmn+85
+   3PbedHYj1PFr67UiXvg2YyP/CofZ2AuLQly44xik7N5ag9oWOvn2HzC+k
+   vAsgjTmd3ocrGf8yKcFS3xJNHQbKL1S15JiAXDrpgcDZ7GgOm5CxSXI5q
+   YVOiGk8LFMlYHgUWBghNA8jwIuxXclPqE2m4OaVHxWX+lqyTaKPa0XEk9
+   aO0Jdg8nfQWb7EFnA1cm4FtYuGvJK/7q7BNpXaaF4VgaMsRBikNudCsot
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="316857085"
+X-IronPort-AV: E=Sophos;i="5.96,223,1665471600"; 
+   d="scan'208";a="316857085"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2022 01:03:06 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="820891129"
+X-IronPort-AV: E=Sophos;i="5.96,223,1665471600"; 
+   d="scan'208";a="820891129"
+Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2022 01:02:52 -0800
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with SMTP id 532FE2029D;
+        Wed,  7 Dec 2022 11:02:49 +0200 (EET)
+Date:   Wed, 7 Dec 2022 09:02:49 +0000
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Yong Zhi <yong.zhi@intel.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Tianshu Qiu <tian.shu.qiu@intel.com>,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: Re: [PATCH v2 1/4] media: ipu3-cio2: Don't dereference fwnode handle
+Message-ID: <Y5BWuXjipZcMXlan@paasikivi.fi.intel.com>
+References: <20221121152704.30180-1-andriy.shevchenko@linux.intel.com>
+ <Y35wQuIbiCxyaOyp@smile.fi.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.11.0
-Subject: Re: [PATCH 1/2] ACPI/AEST: Initial AEST driver
-To:     Tyler Baicar <baicar@amperemail.onmicrosoft.com>,
-        "ishii.shuuichir@fujitsu.com" <ishii.shuuichir@fujitsu.com>,
-        'Tyler Baicar' <baicar@os.amperecomputing.com>,
-        "patches@amperecomputing.com" <patches@amperecomputing.com>,
-        "abdulhamid@os.amperecomputing.com" 
-        <abdulhamid@os.amperecomputing.com>,
-        "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "maz@kernel.org" <maz@kernel.org>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "alexandru.elisei@arm.com" <alexandru.elisei@arm.com>,
-        "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "guohanjun@huawei.com" <guohanjun@huawei.com>,
-        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "anshuman.khandual@arm.com" <anshuman.khandual@arm.com>,
-        "vincenzo.frascino@arm.com" <vincenzo.frascino@arm.com>,
-        "tabba@google.com" <tabba@google.com>,
-        "marcan@marcan.st" <marcan@marcan.st>,
-        "keescook@chromium.org" <keescook@chromium.org>,
-        "jthierry@redhat.com" <jthierry@redhat.com>,
-        "masahiroy@kernel.org" <masahiroy@kernel.org>,
-        "samitolvanen@google.com" <samitolvanen@google.com>,
-        "john.garry@huawei.com" <john.garry@huawei.com>,
-        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-        "gor@linux.ibm.com" <gor@linux.ibm.com>,
-        "zhangshaokun@hisilicon.com" <zhangshaokun@hisilicon.com>,
-        "tmricht@linux.ibm.com" <tmricht@linux.ibm.com>,
-        "dchinner@redhat.com" <dchinner@redhat.com>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "kvmarm@lists.cs.columbia.edu" <kvmarm@lists.cs.columbia.edu>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "Vineeth.Pillai@microsoft.com" <Vineeth.Pillai@microsoft.com>
-References: <20211124170708.3874-1-baicar@os.amperecomputing.com>
- <20211124170708.3874-2-baicar@os.amperecomputing.com>
- <TYCPR01MB6160D05580A6E8C9510D25A5E9709@TYCPR01MB6160.jpnprd01.prod.outlook.com>
- <9330bbfb-d016-0283-a5ed-e2f4d5446759@amperemail.onmicrosoft.com>
- <TYCPR01MB616007723D2C8BA08F5337D2E9F59@TYCPR01MB6160.jpnprd01.prod.outlook.com>
- <7413d707-93a5-3681-e338-adebef198ec5@amperemail.onmicrosoft.com>
-From:   Ruidong Tian <tianruidong@linux.alibaba.com>
-Cc:     baolin.wang@linux.alibaba.com, xueshuai@linux.alibaba.com
-In-Reply-To: <7413d707-93a5-3681-e338-adebef198ec5@amperemail.onmicrosoft.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.2 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,URI_DOTEDU,
-        USER_IN_DEF_SPF_WL autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y35wQuIbiCxyaOyp@smile.fi.intel.com>
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Tyler.
+Hi Andy,
 
-I am very interested in your work about AEST.
-When do you plan to update the v2 patch series?
+On Wed, Nov 23, 2022 at 09:10:58PM +0200, Andy Shevchenko wrote:
+> Dunno what happened to my previous reply to this. Okay, trying again...
+> 
+> + Cc: Petr, Sergey
+> 
+> On Mon, Nov 21, 2022 at 05:27:01PM +0200, Andy Shevchenko wrote:
+> > Use acpi_fwnode_handle() instead of dereferencing an fwnode handle directly,
+> > which is a better coding practice.
+> 
+> It appears that this series depends on fd070e8ceb90 ("test_printf: Refactor
+> fwnode_pointer() to make it more readable") which is in PRINTK tree.
+> 
+> Sakari, Mauro, if you are okay to route this via that tree, can we get your
+> tags for that? Otherwise we need to postpone this till v6.2-rc1 (but I would
+> like to decrease the chances to appear a new user of the to be removed API).
+> 
+> Note, that Greg Acked v1 of the swnode patches (which are the same in v2).
 
-Best regards.
+Sorry for the late reply. Feel free to do that if it's not too late, with:
 
-在 2022/5/9 21:37, Tyler Baicar 写道:
-> Hi Shuuichirou,
->
-> I should be able to get a v2 patch series out by the end of the month.
->
-> Thanks,
-> Tyler
->
-> On 4/20/2022 3:54 AM, ishii.shuuichir@fujitsu.com wrote:
->> Hi, Tyler.
->>
->> When do you plan to post the v2 patch series?
->> Please let me know if you don't mind.
->>
->> Best regards.
->>
->>> -----Original Message-----
->>> From: Tyler Baicar <baicar@amperemail.onmicrosoft.com>
->>> Sent: Friday, December 17, 2021 8:33 AM
->>> To: Ishii, Shuuichirou/石井 周一郎 <ishii.shuuichir@fujitsu.com>; 'Tyler 
->>> Baicar'
->>> <baicar@os.amperecomputing.com>; patches@amperecomputing.com;
->>> abdulhamid@os.amperecomputing.com; darren@os.amperecomputing.com;
->>> catalin.marinas@arm.com; will@kernel.org; maz@kernel.org;
->>> james.morse@arm.com; alexandru.elisei@arm.com; suzuki.poulose@arm.com;
->>> lorenzo.pieralisi@arm.com; guohanjun@huawei.com; sudeep.holla@arm.com;
->>> rafael@kernel.org; lenb@kernel.org; tony.luck@intel.com; bp@alien8.de;
->>> mark.rutland@arm.com; anshuman.khandual@arm.com;
->>> vincenzo.frascino@arm.com; tabba@google.com; marcan@marcan.st;
->>> keescook@chromium.org; jthierry@redhat.com; masahiroy@kernel.org;
->>> samitolvanen@google.com; john.garry@huawei.com; 
->>> daniel.lezcano@linaro.org;
->>> gor@linux.ibm.com; zhangshaokun@hisilicon.com; tmricht@linux.ibm.com;
->>> dchinner@redhat.com; tglx@linutronix.de; linux-kernel@vger.kernel.org;
->>> linux-arm-kernel@lists.infradead.org; kvmarm@lists.cs.columbia.edu;
->>> linux-acpi@vger.kernel.org; linux-edac@vger.kernel.org;
->>> Vineeth.Pillai@microsoft.com
->>> Subject: Re: [PATCH 1/2] ACPI/AEST: Initial AEST driver
->>>
->>> Hi Shuuichirou,
->>>
->>> Thank you for your feedback!
->>>
->>> On 12/9/2021 3:10 AM, ishii.shuuichir@fujitsu.com wrote:
->>>> Hi, Tyler.
->>>>
->>>> We would like to make a few comments.
->>>>
->>>>> -----Original Message-----
->>>>> From: Tyler Baicar <baicar@os.amperecomputing.com>
->>>>> Sent: Thursday, November 25, 2021 2:07 AM
->>>>> To: patches@amperecomputing.com; abdulhamid@os.amperecomputing.com;
->>>>> darren@os.amperecomputing.com; catalin.marinas@arm.com;
->>>>> will@kernel.org; maz@kernel.org; james.morse@arm.com;
->>>>> alexandru.elisei@arm.com; suzuki.poulose@arm.com;
->>>>> lorenzo.pieralisi@arm.com; guohanjun@huawei.com;
->>>>> sudeep.holla@arm.com; rafael@kernel.org; lenb@kernel.org;
->>>>> tony.luck@intel.com; bp@alien8.de; mark.rutland@arm.com;
->>>>> anshuman.khandual@arm.com; vincenzo.frascino@arm.com;
->>>>> tabba@google.com; marcan@marcan.st; keescook@chromium.org;
->>>>> jthierry@redhat.com; masahiroy@kernel.org; samitolvanen@google.com;
->>>>> john.garry@huawei.com; daniel.lezcano@linaro.org; gor@linux.ibm.com;
->>>>> zhangshaokun@hisilicon.com; tmricht@linux.ibm.com;
->>>>> dchinner@redhat.com; tglx@linutronix.de;
->>>>> linux-kernel@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
->>>>> kvmarm@lists.cs.columbia.edu; linux-acpi@vger.kernel.org;
->>>>> linux-edac@vger.kernel.org; Ishii, Shuuichirou/石井
->>>>> 周一郎 <ishii.shuuichir@fujitsu.com>; Vineeth.Pillai@microsoft.com
->>>>> Cc: Tyler Baicar <baicar@os.amperecomputing.com>
->>>>> Subject: [PATCH 1/2] ACPI/AEST: Initial AEST driver
->>>>>
->>>>> Add support for parsing the ARM Error Source Table and basic handling
->>>>> of errors reported through both memory mapped and system register
->>> interfaces.
->>>>>
->>>>> Assume system register interfaces are only registered with private
->>>>> peripheral interrupts (PPIs); otherwise there is no guarantee the
->>>>> core handling the error is the core which took the error and has the
->>>>> syndrome info in its system registers.
->>>>>
->>>>> Add logging for all detected errors and trigger a kernel panic if
->>>>> there is any uncorrected error present.
->>>>>
->>>>> Signed-off-by: Tyler Baicar <baicar@os.amperecomputing.com>
->>>>> ---
->>>> [...]
->>>>
->>>>> +static int __init aest_init_node(struct acpi_aest_hdr *node) {
->>>>> +    union acpi_aest_processor_data *proc_data;
->>>>> +    union aest_node_spec *node_spec;
->>>>> +    struct aest_node_data *data;
->>>>> +    int ret;
->>>>> +
->>>>> +    data = kzalloc(sizeof(struct aest_node_data), GFP_KERNEL);
->>>>> +    if (!data)
->>>>> +        return -ENOMEM;
->>>>> +
->>>>> +    data->node_type = node->type;
->>>>> +
->>>>> +    node_spec = ACPI_ADD_PTR(union aest_node_spec, node,
->>>>> node->node_specific_offset);
->>>>> +
->>>>> +    switch (node->type) {
->>>>> +    case ACPI_AEST_PROCESSOR_ERROR_NODE:
->>>>> +        memcpy(&data->data, node_spec, sizeof(struct
->>>>> acpi_aest_processor));
->>>>> +        break;
->>>>> +    case ACPI_AEST_MEMORY_ERROR_NODE:
->>>>> +        memcpy(&data->data, node_spec, sizeof(struct
->>>>> acpi_aest_memory));
->>>>> +        break;
->>>>> +    case ACPI_AEST_SMMU_ERROR_NODE:
->>>>> +        memcpy(&data->data, node_spec, sizeof(struct
->>>>> acpi_aest_smmu));
->>>>> +        break;
->>>>> +    case ACPI_AEST_VENDOR_ERROR_NODE:
->>>>> +        memcpy(&data->data, node_spec, sizeof(struct
->>>>> acpi_aest_vendor));
->>>>> +        break;
->>>>> +    case ACPI_AEST_GIC_ERROR_NODE:
->>>>> +        memcpy(&data->data, node_spec, sizeof(struct
->>>>> acpi_aest_gic));
->>>>> +        break;
->>>>> +    default:
->>>>> +        kfree(data);
->>>>> +        return -EINVAL;
->>>>> +    }
->>>>> +
->>>>> +    if (node->type == ACPI_AEST_PROCESSOR_ERROR_NODE) {
->>>>> +        proc_data = ACPI_ADD_PTR(union acpi_aest_processor_data,
->>>>> node_spec,
->>>>> +                     sizeof(acpi_aest_processor));
->>>>> +
->>>>> +        switch (data->data.processor.resource_type) {
->>>>> +        case ACPI_AEST_CACHE_RESOURCE:
->>>>> +            memcpy(&data->proc_data, proc_data,
->>>>> +                   sizeof(struct acpi_aest_processor_cache));
->>>>> +            break;
->>>>> +        case ACPI_AEST_TLB_RESOURCE:
->>>>> +            memcpy(&data->proc_data, proc_data,
->>>>> +                   sizeof(struct acpi_aest_processor_tlb));
->>>>> +            break;
->>>>> +        case ACPI_AEST_GENERIC_RESOURCE:
->>>>> +            memcpy(&data->proc_data, proc_data,
->>>>> +                   sizeof(struct acpi_aest_processor_generic));
->>>>> +            break;
->>>>> +        }
->>>>> +    }
->>>>> +
->>>>> +    ret = aest_init_interface(node, data);
->>>>> +    if (ret) {
->>>>> +        kfree(data);
->>>>> +        return ret;
->>>>> +    }
->>>>> +
->>>>> +    return aest_init_interrupts(node, data);
->>>> If aest_init_interrupts() failed, is it necessary to release the data
->>>> pointer acquired by kzalloc?
->>> aest_init_interrupts() returns an error if any of the interrupts in 
->>> the interrupt list
->>> fails, but it's possible that some interrupts in the list registered 
->>> successfully. So
->>> we attempt to keep chugging along in that scenario because some 
->>> interrupts may
->>> be enabled and registered with the interface successfully. If any 
->>> interrupt
->>> registration fails, there will be a print notifying that there was a 
->>> failure when
->>> initializing that node.
->>>>> +}
->>>>> +
->>>>> +static void aest_count_ppi(struct acpi_aest_hdr *node)
->>>>> +{
->>>>> +    struct acpi_aest_node_interrupt *interrupt;
->>>>> +    int i;
->>>>> +
->>>>> +    interrupt = ACPI_ADD_PTR(struct acpi_aest_node_interrupt, node,
->>>>> +                 node->node_interrupt_offset);
->>>>> +
->>>>> +    for (i = 0; i < node->node_interrupt_count; i++, interrupt++) {
->>>>> +        if (interrupt->gsiv >= 16 && interrupt->gsiv < 32)
->>>>> +            num_ppi++;
->>>>> +    }
->>>>> +}
->>>>> +
->>>>> +static int aest_starting_cpu(unsigned int cpu)
->>>>> +{
->>>>> +    int i;
->>>>> +
->>>>> +    for (i = 0; i < num_ppi; i++)
->>>>> +        enable_percpu_irq(ppi_irqs[i], IRQ_TYPE_NONE);
->>>>> +
->>>>> +    return 0;
->>>>> +}
->>>>> +
->>>>> +static int aest_dying_cpu(unsigned int cpu)
->>>>> +{
->>>> Wouldn't it be better to execute disable_percpu_irq(), which is paired
->>>> with enable_percpu_irq(), in aest_dying_cpu()?
->>>
->>> Good point. I will add that in the next version.
->>>
->>> Thanks,
->>>
->>> Tyler
->>
-> _______________________________________________
-> kvmarm mailing list
-> kvmarm@lists.cs.columbia.edu
-> https://lists.cs.columbia.edu/mailman/listinfo/kvmarm
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+
+I don't think the linkelihood for having a new user for this API is high.
+
+-- 
+Kind regards,
+
+Sakari Ailus
