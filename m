@@ -2,114 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E5A5645BD6
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Dec 2022 15:01:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 581C6645BFE
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Dec 2022 15:06:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230172AbiLGOBJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 7 Dec 2022 09:01:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56434 "EHLO
+        id S230087AbiLGOGT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 7 Dec 2022 09:06:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230240AbiLGOAb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Dec 2022 09:00:31 -0500
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73C425CD25;
-        Wed,  7 Dec 2022 06:00:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670421623; x=1701957623;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KEhTL3vrjhKTd4wINrdASIf1vXJvXtSZmJuHUaW4uZo=;
-  b=Mor1s7NP950cy/iGdx/951RKhBSbZQEv1O86ctNXIGo3TNQbfXOM7PXi
-   3cJAe8BF2mju8vCxKBatbmMGqpFkjUW98E/WGnxC73x677BnGA8ja2KWR
-   BYZ+D+HPTMY6ZhOSIcM6AOS2OnnYrWeLjNou4OCxnpY1qRLpVB3Pv4BAn
-   uJwUVVAk4mYNppASvks1Q+WXqDqi65JG1A9lzqdWnezXbBqLS9i1XpB8x
-   3Bf+O99T7ASVp50QXkmovx9xTE/vWlXfzCBS2baa24DZOtDQB5YT79Rt9
-   4H5ra2QhSjIM+SkIlQrlMGX0JcR7j/UVdSdq/+z4W+YCvxv9sUOVHr5kV
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="343925694"
-X-IronPort-AV: E=Sophos;i="5.96,225,1665471600"; 
-   d="scan'208";a="343925694"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2022 06:00:22 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="679141757"
-X-IronPort-AV: E=Sophos;i="5.96,225,1665471600"; 
-   d="scan'208";a="679141757"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2022 06:00:17 -0800
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id 6F6922029D;
-        Wed,  7 Dec 2022 16:00:15 +0200 (EET)
-Date:   Wed, 7 Dec 2022 14:00:15 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Yong Zhi <yong.zhi@intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Tianshu Qiu <tian.shu.qiu@intel.com>,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: Re: [PATCH v2 1/4] media: ipu3-cio2: Don't dereference fwnode handle
-Message-ID: <Y5Ccbzl9pCuiZIKh@paasikivi.fi.intel.com>
-References: <20221121152704.30180-1-andriy.shevchenko@linux.intel.com>
- <Y35wQuIbiCxyaOyp@smile.fi.intel.com>
- <Y5BWuXjipZcMXlan@paasikivi.fi.intel.com>
- <Y5BiiAwukaVrIvpF@smile.fi.intel.com>
+        with ESMTP id S229821AbiLGOFw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Dec 2022 09:05:52 -0500
+Received: from out30-57.freemail.mail.aliyun.com (out30-57.freemail.mail.aliyun.com [115.124.30.57])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E5AB9594;
+        Wed,  7 Dec 2022 06:04:58 -0800 (PST)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045176;MF=xueshuai@linux.alibaba.com;NM=0;PH=DS;RN=18;SR=0;TI=SMTPD_---0VWmLqB6_1670421893;
+Received: from 30.120.151.145(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VWmLqB6_1670421893)
+          by smtp.aliyun-inc.com;
+          Wed, 07 Dec 2022 22:04:54 +0800
+Message-ID: <7accd70e-ce35-d540-8254-fa41403b9eab@linux.alibaba.com>
+Date:   Wed, 7 Dec 2022 22:04:52 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y5BiiAwukaVrIvpF@smile.fi.intel.com>
-X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.5.0
+Subject: Re: reply for ACPI: APEI: handle synchronous exceptions in task work
+Content-Language: en-US
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+To:     Lv Ying <lvying6@huawei.com>
+Cc:     akpm@linux-foundation.org, baolin.wang@linux.alibaba.com,
+        bp@alien8.de, cuibixuan@linux.alibaba.com,
+        dave.hansen@linux.intel.com, james.morse@arm.com,
+        jarkko@kernel.org, lenb@kernel.org, linmiaohe@huawei.com,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        naoya.horiguchi@nec.com, rafael@kernel.org, tony.luck@intel.com,
+        zhuo.song@linux.alibaba.com, xiezhipeng1@huawei.com,
+        yingwen.cyw@alibaba-inc.com
+References: <20221206153354.92394-1-xueshuai@linux.alibaba.com>
+ <20221207095413.1980862-1-lvying6@huawei.com>
+ <737ba26b-d7c1-0014-d97f-33782ea4cd20@linux.alibaba.com>
+In-Reply-To: <737ba26b-d7c1-0014-d97f-33782ea4cd20@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-10.2 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Dec 07, 2022 at 11:53:12AM +0200, Andy Shevchenko wrote:
-> On Wed, Dec 07, 2022 at 09:02:49AM +0000, Sakari Ailus wrote:
-> > On Wed, Nov 23, 2022 at 09:10:58PM +0200, Andy Shevchenko wrote:
-> > > Dunno what happened to my previous reply to this. Okay, trying again...
-> > > 
-> > > + Cc: Petr, Sergey
-> > > 
-> > > On Mon, Nov 21, 2022 at 05:27:01PM +0200, Andy Shevchenko wrote:
-> > > > Use acpi_fwnode_handle() instead of dereferencing an fwnode handle directly,
-> > > > which is a better coding practice.
-> > > 
-> > > It appears that this series depends on fd070e8ceb90 ("test_printf: Refactor
-> > > fwnode_pointer() to make it more readable") which is in PRINTK tree.
-> > > 
-> > > Sakari, Mauro, if you are okay to route this via that tree, can we get your
-> > > tags for that? Otherwise we need to postpone this till v6.2-rc1 (but I would
-> > > like to decrease the chances to appear a new user of the to be removed API).
-> > > 
-> > > Note, that Greg Acked v1 of the swnode patches (which are the same in v2).
-> > 
-> > Sorry for the late reply. Feel free to do that if it's not too late, with:
-> > 
-> > Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-I intended to add this applies to the set.
 
+On 2022/12/7 PM8:56, Shuai Xue wrote:
 > 
-> Thank you!
-> I think it's a bit late for printk tree to consume this. If it's the case
-> (Petr?) then I will submit a new version after v6.2-rc1 is out.
 > 
-> > I don't think the linkelihood for having a new user for this API is high.
+> On 2022/12/7 PM5:54, Lv Ying wrote:
+>> Hi Shuai Xue:
+>>
+>> I notice that  we are both handling the same problem, my patchset:
+>> RFC: https://lkml.org/lkml/fancy/2022/12/5/364
+>> RFC PATCH v1: https://lkml.org/lkml/2022/12/7/244
+>> has CC to you 
+> 
+> I am glad to see that the community is trying to address the same problems,
+> I have replied to your RFC version.
+> 
+>> Yingwen's proposal in 2022/12/06[1]:
+>> Add Bit 8 in "Common Platform Error Record" -> "Section Descriptor" ->
+>> Flags (which Now, Bit 8 through 31 – Reserved) 
+>>
+>> [1] https://members.uefi.org/wg/uswg/mail/thread/9453
+>>
+>> Yingwen's proposal makes distinguish synchronous error by CPER report more
+>> easy, however, it's not supported yet.
+>> Looking forward to your reply if there is any progress on the proposal and
+>> your suggestions about my patchset.
+> 
+> Yes, it is not supported yet. So we separated synchronous error handling into
+> task work based on a similar flag internally.
+> 
+> We submitted the proposal last month after discussed with Tony. But there
+> is still no progress, I will update it here in time.
+> 
+> Cheers,
+> Shuai
 
--- 
-Sakari Ailus
+By the way, if you agree with the proposal, please vote to approve it in UEFI community
+with your right on behalf of your organization, then we can make it happen soon. :)
+
+Thank you.
+
+Best Regards,
+Shuai
