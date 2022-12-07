@@ -2,95 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 581C6645BFE
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Dec 2022 15:06:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32153645CA5
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Dec 2022 15:31:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230087AbiLGOGT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 7 Dec 2022 09:06:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34780 "EHLO
+        id S229565AbiLGOa5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 7 Dec 2022 09:30:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229821AbiLGOFw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Dec 2022 09:05:52 -0500
-Received: from out30-57.freemail.mail.aliyun.com (out30-57.freemail.mail.aliyun.com [115.124.30.57])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E5AB9594;
-        Wed,  7 Dec 2022 06:04:58 -0800 (PST)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045176;MF=xueshuai@linux.alibaba.com;NM=0;PH=DS;RN=18;SR=0;TI=SMTPD_---0VWmLqB6_1670421893;
-Received: from 30.120.151.145(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VWmLqB6_1670421893)
-          by smtp.aliyun-inc.com;
-          Wed, 07 Dec 2022 22:04:54 +0800
-Message-ID: <7accd70e-ce35-d540-8254-fa41403b9eab@linux.alibaba.com>
-Date:   Wed, 7 Dec 2022 22:04:52 +0800
+        with ESMTP id S229847AbiLGOa4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Dec 2022 09:30:56 -0500
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8809D2C1;
+        Wed,  7 Dec 2022 06:30:55 -0800 (PST)
+Received: by mail-qv1-f46.google.com with SMTP id i12so12736951qvs.2;
+        Wed, 07 Dec 2022 06:30:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TfJ7juuz7Ryq2gBRSh+TE4rPx2k8D+cEUA0AQUke7aI=;
+        b=bwDXUKF93BGLJZD0Kh9NZR5Mcp2A/Cq3D18+Cgo6uaU5bNns9UjDQufqQqoxWb9xH+
+         lWEI+Vx8mCibQUD2iadYdO2YMk6hwgUqEOMAE5aG8CObn6YBYz1b+ENS1TjT6aUt5wRo
+         EkeEFDKaFLVozchxhLl1raUjYhxwGDClDHmuer5q40+hJ3Un+zOIXST+nUaxg8wHu8cB
+         RaivLQCrPBqo1LMroU6Tiwsu+p8GLzm9mLTFrVJkB9uluQGKvI+YrTr2jgeIVM2OjN7B
+         979IHNfEly1blj52crhV5+CHkpGPBIMUzGZF9MC8M8Xu4pKN/w6NzwNfPbnpF+kT1xMj
+         04Ig==
+X-Gm-Message-State: ANoB5pmdnA9My1oyuwZlJEnNUxj9doCdKlGyopWdAC9sGa4uvB7W08nm
+        LftaU6ToMA5bL0H2tgqkM2qwRyBg7D7Jsx7m2Oo=
+X-Google-Smtp-Source: AA0mqf5CH1LldVknMmPiAOl4Y7lZZGFneSb+fPnltCoLIy1BXWcECiva/yE+Hq/5Uitog6jsJsGSWxjKez12MfjcKuU=
+X-Received: by 2002:a05:6214:2b90:b0:4c7:27cf:dfca with SMTP id
+ kr16-20020a0562142b9000b004c727cfdfcamr26090351qvb.3.1670423454756; Wed, 07
+ Dec 2022 06:30:54 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.5.0
-Subject: Re: reply for ACPI: APEI: handle synchronous exceptions in task work
-Content-Language: en-US
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-To:     Lv Ying <lvying6@huawei.com>
-Cc:     akpm@linux-foundation.org, baolin.wang@linux.alibaba.com,
-        bp@alien8.de, cuibixuan@linux.alibaba.com,
-        dave.hansen@linux.intel.com, james.morse@arm.com,
-        jarkko@kernel.org, lenb@kernel.org, linmiaohe@huawei.com,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        naoya.horiguchi@nec.com, rafael@kernel.org, tony.luck@intel.com,
-        zhuo.song@linux.alibaba.com, xiezhipeng1@huawei.com,
-        yingwen.cyw@alibaba-inc.com
-References: <20221206153354.92394-1-xueshuai@linux.alibaba.com>
- <20221207095413.1980862-1-lvying6@huawei.com>
- <737ba26b-d7c1-0014-d97f-33782ea4cd20@linux.alibaba.com>
-In-Reply-To: <737ba26b-d7c1-0014-d97f-33782ea4cd20@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-10.2 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+References: <20221207112219.2652411-1-linmq006@gmail.com> <Y5CFVHL0xTeWbKfU@paasikivi.fi.intel.com>
+In-Reply-To: <Y5CFVHL0xTeWbKfU@paasikivi.fi.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 7 Dec 2022 15:30:43 +0100
+Message-ID: <CAJZ5v0hWhY5ZG+jYR8BfxTfwgwYKkOP33K4+Qc7FJeMheQQcEA@mail.gmail.com>
+Subject: Re: [PATCH] device property: Fix documentation for fwnode_get_next_parent()
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     Miaoqian Lin <linmq006@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Wed, Dec 7, 2022 at 1:21 PM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
+>
+> On Wed, Dec 07, 2022 at 03:22:18PM +0400, Miaoqian Lin wrote:
+> > Use fwnode_handle_put() on the node pointer to release the refcount.
+> > Change fwnode_handle_node() to fwnode_handle_put().
+> >
+> > Fixes: 233872585de1 ("device property: Add fwnode_get_next_parent()")
+> > Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+>
+> Thanks!
+>
+> Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 
+So I'm assuming that Greg will pick up this one or please let me know otherwise.
 
-On 2022/12/7 PM8:56, Shuai Xue wrote:
-> 
-> 
-> On 2022/12/7 PM5:54, Lv Ying wrote:
->> Hi Shuai Xue:
->>
->> I notice that  we are both handling the same problem, my patchset:
->> RFC: https://lkml.org/lkml/fancy/2022/12/5/364
->> RFC PATCH v1: https://lkml.org/lkml/2022/12/7/244
->> has CC to you 
-> 
-> I am glad to see that the community is trying to address the same problems,
-> I have replied to your RFC version.
-> 
->> Yingwen's proposal in 2022/12/06[1]:
->> Add Bit 8 in "Common Platform Error Record" -> "Section Descriptor" ->
->> Flags (which Now, Bit 8 through 31 – Reserved) 
->>
->> [1] https://members.uefi.org/wg/uswg/mail/thread/9453
->>
->> Yingwen's proposal makes distinguish synchronous error by CPER report more
->> easy, however, it's not supported yet.
->> Looking forward to your reply if there is any progress on the proposal and
->> your suggestions about my patchset.
-> 
-> Yes, it is not supported yet. So we separated synchronous error handling into
-> task work based on a similar flag internally.
-> 
-> We submitted the proposal last month after discussed with Tony. But there
-> is still no progress, I will update it here in time.
-> 
-> Cheers,
-> Shuai
-
-By the way, if you agree with the proposal, please vote to approve it in UEFI community
-with your right on behalf of your organization, then we can make it happen soon. :)
-
-Thank you.
-
-Best Regards,
-Shuai
+> > ---
+> >  drivers/base/property.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/base/property.c b/drivers/base/property.c
+> > index 2a5a37fcd998..daa1e379762b 100644
+> > --- a/drivers/base/property.c
+> > +++ b/drivers/base/property.c
+> > @@ -601,7 +601,7 @@ EXPORT_SYMBOL_GPL(fwnode_get_parent);
+> >   * node's parents.
+> >   *
+> >   * Returns a node pointer with refcount incremented, use
+> > - * fwnode_handle_node() on it when done.
+> > + * fwnode_handle_put() on it when done.
+> >   */
+> >  struct fwnode_handle *fwnode_get_next_parent(struct fwnode_handle *fwnode)
+> >  {
+>
+> --
