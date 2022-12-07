@@ -2,106 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C24A6455F9
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Dec 2022 10:03:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC21A6456B1
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Dec 2022 10:39:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229527AbiLGJDL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 7 Dec 2022 04:03:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53182 "EHLO
+        id S229941AbiLGJjx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 7 Dec 2022 04:39:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbiLGJDJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Dec 2022 04:03:09 -0500
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 063BD25E9C;
-        Wed,  7 Dec 2022 01:03:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670403787; x=1701939787;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pr/OH7Q9TSvuKwwlnfT5ZBrKKBEWTJiWy1nLbYSZAf0=;
-  b=mjLqczw/PKybsE7SI/Zb/SsFq9iOdkPijvFtoXO3eoBKcWB/SvRrJAEz
-   80pT4px43c5NPomXdt9D7wn+D9W05Pva4duwCwOkoyNKiDxz72tHmn+85
-   3PbedHYj1PFr67UiXvg2YyP/CofZ2AuLQly44xik7N5ag9oWOvn2HzC+k
-   vAsgjTmd3ocrGf8yKcFS3xJNHQbKL1S15JiAXDrpgcDZ7GgOm5CxSXI5q
-   YVOiGk8LFMlYHgUWBghNA8jwIuxXclPqE2m4OaVHxWX+lqyTaKPa0XEk9
-   aO0Jdg8nfQWb7EFnA1cm4FtYuGvJK/7q7BNpXaaF4VgaMsRBikNudCsot
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="316857085"
-X-IronPort-AV: E=Sophos;i="5.96,223,1665471600"; 
-   d="scan'208";a="316857085"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2022 01:03:06 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="820891129"
-X-IronPort-AV: E=Sophos;i="5.96,223,1665471600"; 
-   d="scan'208";a="820891129"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2022 01:02:52 -0800
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id 532FE2029D;
-        Wed,  7 Dec 2022 11:02:49 +0200 (EET)
-Date:   Wed, 7 Dec 2022 09:02:49 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Yong Zhi <yong.zhi@intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Tianshu Qiu <tian.shu.qiu@intel.com>,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: Re: [PATCH v2 1/4] media: ipu3-cio2: Don't dereference fwnode handle
-Message-ID: <Y5BWuXjipZcMXlan@paasikivi.fi.intel.com>
-References: <20221121152704.30180-1-andriy.shevchenko@linux.intel.com>
- <Y35wQuIbiCxyaOyp@smile.fi.intel.com>
+        with ESMTP id S229640AbiLGJjw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Dec 2022 04:39:52 -0500
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72653B64;
+        Wed,  7 Dec 2022 01:39:51 -0800 (PST)
+Received: from kwepemi500015.china.huawei.com (unknown [172.30.72.54])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4NRsc26RZZzJp7r;
+        Wed,  7 Dec 2022 17:36:18 +0800 (CST)
+Received: from huawei.com (10.175.124.27) by kwepemi500015.china.huawei.com
+ (7.221.188.92) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Wed, 7 Dec
+ 2022 17:39:13 +0800
+From:   Lv Ying <lvying6@huawei.com>
+To:     <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
+        <tony.luck@intel.com>, <bp@alien8.de>, <naoya.horiguchi@nec.com>,
+        <linmiaohe@huawei.com>, <akpm@linux-foundation.org>,
+        <xueshuai@linux.alibaba.com>, <ashish.kalra@amd.com>
+CC:     <xiezhipeng1@huawei.com>, <wangkefeng.wang@huawei.com>,
+        <xiexiuqi@huawei.com>, <tanxiaofei@huawei.com>,
+        <lvying6@huawei.com>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+Subject: [RFC PATCH v1 0/2] ACPI: APEI: Make synchronization errors call
+Date:   Wed, 7 Dec 2022 17:39:33 +0800
+Message-ID: <20221207093935.1972530-1-lvying6@huawei.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y35wQuIbiCxyaOyp@smile.fi.intel.com>
-X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.124.27]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemi500015.china.huawei.com (7.221.188.92)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+Changes RFC PATCH v1 -> RFC
+============================
+1. add TODO to explain current there is no good way to distinguish
+ghes_proc_in_irq is called by synchronous or asynchronous error, so keep
+consistent with the current implementation
+2. filter out -EHWPOISON and -EOPNOTSUPP just like kill_me_maybe() 
 
-On Wed, Nov 23, 2022 at 09:10:58PM +0200, Andy Shevchenko wrote:
-> Dunno what happened to my previous reply to this. Okay, trying again...
-> 
-> + Cc: Petr, Sergey
-> 
-> On Mon, Nov 21, 2022 at 05:27:01PM +0200, Andy Shevchenko wrote:
-> > Use acpi_fwnode_handle() instead of dereferencing an fwnode handle directly,
-> > which is a better coding practice.
-> 
-> It appears that this series depends on fd070e8ceb90 ("test_printf: Refactor
-> fwnode_pointer() to make it more readable") which is in PRINTK tree.
-> 
-> Sakari, Mauro, if you are okay to route this via that tree, can we get your
-> tags for that? Otherwise we need to postpone this till v6.2-rc1 (but I would
-> like to decrease the chances to appear a new user of the to be removed API).
-> 
-> Note, that Greg Acked v1 of the swnode patches (which are the same in v2).
+Lv Ying (2):
+  ACPI: APEI: Make memory_failure() triggered by synchronization errors
+    execute in the current context
+  ACPI: APEI: fix reboot caused by synchronous error loop because of
+    memory_failure() failed
 
-Sorry for the late reply. Feel free to do that if it's not too late, with:
-
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-
-I don't think the linkelihood for having a new user for this API is high.
+ drivers/acpi/apei/ghes.c | 36 ++++++++++++++++++++------------
+ mm/memory-failure.c      | 45 ++++++++++++++++++++++++++++------------
+ 2 files changed, 55 insertions(+), 26 deletions(-)
 
 -- 
-Kind regards,
+2.36.1
 
-Sakari Ailus
