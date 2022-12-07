@@ -2,101 +2,128 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DC4A6459BE
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Dec 2022 13:21:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 098166459CF
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Dec 2022 13:29:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229521AbiLGMVr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 7 Dec 2022 07:21:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43800 "EHLO
+        id S229521AbiLGM3Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 7 Dec 2022 07:29:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229557AbiLGMVr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Dec 2022 07:21:47 -0500
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 640D4391E9;
-        Wed,  7 Dec 2022 04:21:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670415706; x=1701951706;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0kGd/OiPW1PJ4cPEb4PPblp3AImCctx/hnYQmTGU6Mc=;
-  b=i8RyJaEwN4iHglzkfINp+KsNjzXgDW+kwVgWL5Hm2cVthgOivoV9eSDh
-   K0nSmo9WW80Q7vCKbYcSKIS/Y0MvuZSl1i3M7tTRYkOAVcaWxNhqwHf0J
-   duaepWr8r0qTFy4qpoBZNV1NuZ1ZhpVXlhdHTcN4NJBTKI6eLFcYrk1vS
-   dD59j4OAovHkWhaVb3+c66f5aVsOvMylwxsv2XDybGncNtaZQKo7Sgu36
-   3JJ4rBhgnHJAOM4aYwXtiSZXyDZl2nIm5RSvoRKuuVrZjTJYfMSk4fwj4
-   +MCrpMpEzB6DRO3xsaWtvhMTenwX6GeiksxasazBTgbqufw4vPkgqCHr/
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="403148135"
-X-IronPort-AV: E=Sophos;i="5.96,225,1665471600"; 
-   d="scan'208";a="403148135"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2022 04:21:44 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="891782203"
-X-IronPort-AV: E=Sophos;i="5.96,225,1665471600"; 
-   d="scan'208";a="891782203"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2022 04:21:42 -0800
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id 6AE092033F;
-        Wed,  7 Dec 2022 14:21:40 +0200 (EET)
-Date:   Wed, 7 Dec 2022 12:21:40 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Miaoqian Lin <linmq006@gmail.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] device property: Fix documentation for
- fwnode_get_next_parent()
-Message-ID: <Y5CFVHL0xTeWbKfU@paasikivi.fi.intel.com>
-References: <20221207112219.2652411-1-linmq006@gmail.com>
+        with ESMTP id S229441AbiLGM3P (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Dec 2022 07:29:15 -0500
+Received: from out30-7.freemail.mail.aliyun.com (out30-7.freemail.mail.aliyun.com [115.124.30.7])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E33FF2A258;
+        Wed,  7 Dec 2022 04:29:11 -0800 (PST)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=cuibixuan@linux.alibaba.com;NM=0;PH=DS;RN=18;SR=0;TI=SMTPD_---0VWm2QMY_1670416146;
+Received: from 30.221.148.76(mailfrom:cuibixuan@linux.alibaba.com fp:SMTPD_---0VWm2QMY_1670416146)
+          by smtp.aliyun-inc.com;
+          Wed, 07 Dec 2022 20:29:07 +0800
+Message-ID: <ddc81946-8b76-ea49-ebf5-f2de2e30540d@linux.alibaba.com>
+Date:   Wed, 7 Dec 2022 20:29:04 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221207112219.2652411-1-linmq006@gmail.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.4.1
+Subject: Re: [RFC 2/2] ACPI: APEI: fix reboot caused by synchronous error loop
+ because of memory_failure() failed
+Content-Language: en-US
+To:     Lv Ying <lvying6@huawei.com>, rafael@kernel.org, lenb@kernel.org,
+        james.morse@arm.com, tony.luck@intel.com, bp@alien8.de,
+        naoya.horiguchi@nec.com, linmiaohe@huawei.com,
+        akpm@linux-foundation.org, xueshuai@linux.alibaba.com,
+        ashish.kalra@amd.com
+Cc:     xiezhipeng1@huawei.com, wangkefeng.wang@huawei.com,
+        xiexiuqi@huawei.com, tanxiaofei@huawei.com,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org
+References: <20221205115111.131568-1-lvying6@huawei.com>
+ <20221205115111.131568-3-lvying6@huawei.com>
+From:   Bixuan Cui <cuibixuan@linux.alibaba.com>
+In-Reply-To: <20221205115111.131568-3-lvying6@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-10.2 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
+        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Dec 07, 2022 at 03:22:18PM +0400, Miaoqian Lin wrote:
-> Use fwnode_handle_put() on the node pointer to release the refcount.
-> Change fwnode_handle_node() to fwnode_handle_put().
-> 
-> Fixes: 233872585de1 ("device property: Add fwnode_get_next_parent()")
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 
-Thanks!
 
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+在 2022/12/5 19:51, Lv Ying 写道:
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index 3b6ac3694b8d..4c1c558f7161 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -2266,7 +2266,11 @@ static void __memory_failure_work_func(struct work_struct *work, bool sync)
+>   			break;
+>   		if (entry.flags & MF_SOFT_OFFLINE)
+>   			soft_offline_page(entry.pfn, entry.flags);
+> -		else if (!sync || (entry.flags & MF_ACTION_REQUIRED))
+> +		else if (sync) {
+> +			if ((entry.flags & MF_ACTION_REQUIRED) &&
+> +					memory_failure(entry.pfn, entry.flags))
+> +				force_sig_mceerr(BUS_MCEERR_AR, 0, 0);
+> +		} else
+>   			memory_failure(entry.pfn, entry.flags);
+Hi,
 
-> ---
->  drivers/base/property.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/base/property.c b/drivers/base/property.c
-> index 2a5a37fcd998..daa1e379762b 100644
-> --- a/drivers/base/property.c
-> +++ b/drivers/base/property.c
-> @@ -601,7 +601,7 @@ EXPORT_SYMBOL_GPL(fwnode_get_parent);
->   * node's parents.
->   *
->   * Returns a node pointer with refcount incremented, use
-> - * fwnode_handle_node() on it when done.
-> + * fwnode_handle_put() on it when done.
->   */
->  struct fwnode_handle *fwnode_get_next_parent(struct fwnode_handle *fwnode)
->  {
+Some of the ideas in this patch are wrong :-(
 
--- 
-Kind regards,
+1. As Shuai Xue said, it is wrong to judge synchronization error and 
+asynchronization error through functions such as 
+memory_failure_queue_kick()/ghes_proc()/ghes_proc_in_irq(), because both 
+synchronization error and asynchronization error may go to the same 
+notification.
 
-Sakari Ailus
+2. There is no need to pass 'sync' to __memory_failure_work_func(), 
+because memory_failure() can directly handle synchronous and 
+asynchronous errors according to entry.flags & MF_ACTION_REQUIRED:
+
+entry.flags & MF_ACTION_REQUIRED == 1: Action: poison page and kill task 
+for synchronous error
+entry.flags & MF_ACTION_REQUIRED == 0: Action: poison page for 
+asynchronous error
+
+Reference x86:
+do_machine_check # MCE, synchronous
+    ->kill_me_maybe
+      ->memory_failure(p->mce_addr >> PAGE_SHIFT, MF_ACTION_REQUIRED);
+
+uc_decode_notifier # CMCI, asynchronous
+    ->memory_failure(pfn, 0)
+
+At the same time, the modification here is repeated with your patch 01
+  	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
+-		flags = 0;
++		flags = sync ? MF_ACTION_REQUIRED : 0;
+
+3. Why add 'force_sig_mceerr(BUS_MCEERR_AR, 0, 0)' after 
+memory_failure(pfn, MF_ACTION_REQUIRED)?
+The task will be killed in memory_failure():
+if poisoned, kill_accessing_process()->kill_proc()
+if not poisoned, hwpoison_user_mappings()->collect_procs()->kill_procs()
+
+Reference x86 to handle synchronous error:
+kill_me_maybe()
+{
+     int flags = MF_ACTION_REQUIRED;
+     ret = memory_failure(p->mce_addr >> PAGE_SHIFT, flags);
+     if (!ret) {
+	...
+         return;
+     }
+     if (ret == -EHWPOISON || ret == -EOPNOTSUPP)
+         return;
+
+     pr_err("Memory error not recovered");
+     kill_me_now(cb);
+}
+
+
+Thanks,
+Bixuan Cui
+
