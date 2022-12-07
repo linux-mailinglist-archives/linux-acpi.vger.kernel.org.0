@@ -2,100 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECA6D6458DA
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Dec 2022 12:22:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EEA4A6458DD
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Dec 2022 12:22:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229702AbiLGLWI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 7 Dec 2022 06:22:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35930 "EHLO
+        id S229976AbiLGLWk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 7 Dec 2022 06:22:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229853AbiLGLV5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Dec 2022 06:21:57 -0500
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3A922AE3E;
-        Wed,  7 Dec 2022 03:21:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
-        Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=VKfIZ8jyySPsQarwiJ7nK7I1JiZjo0stjyrVyrUEEiY=; b=ZhnMlGppE0Bj+Bf18ja/bEy35G
-        2A8MUJqRvy+tY7HbuwHBcfxmt/LEgqiFw8K55WXlTsrqwK/sFjKfYS/N4FjUNsBQ9si2KlMy8GjEk
-        FloDj3tQYrxrbJUY2EGQQ61YTsh0kHvhS37N6tCzdO8hxMT6cjGussLnMeenCLejigoT4gDuDYWDT
-        htwvDx3Set0wkyHUWmLxTtjdiAlKCtDCLZGLZVLdzs5KViFcpFe3Dj0OOBDfjmrQEW5PAkRrh/9pN
-        gG6YzbpS5rYLcI67NzoxU8aDopIxBIkEYwZ6SWxHpHbIe4aGVjAs+4GjJXDhcNejUa01pMyRsX/3y
-        Yp/5zClQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:35612)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1p2sUo-0000Za-T6; Wed, 07 Dec 2022 11:21:50 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1p2sUl-0000gl-Uq; Wed, 07 Dec 2022 11:21:47 +0000
-Date:   Wed, 7 Dec 2022 11:21:47 +0000
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org,
-        netdev@vger.kernel.org
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        with ESMTP id S230018AbiLGLWc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Dec 2022 06:22:32 -0500
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF4712E695;
+        Wed,  7 Dec 2022 03:22:30 -0800 (PST)
+Received: by mail-pl1-x635.google.com with SMTP id y4so16738648plb.2;
+        Wed, 07 Dec 2022 03:22:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=G43qICGmW3svAz/Oqna8zUPfVdBeq81tXpFt94ZZJn4=;
+        b=RsuVDwA7faWz631xDIv+QgFb8PsQynqPNNird4vSN5DMYxSjIOHhcx8Mgg41WMxyPT
+         Ex2kXHayr/uHbgDrz924HxW87fecO+4+T0H8Bf8VYRbYCO/xRDEWe0wS7y2oazy6H3Vi
+         uX3v2LyGBe7tOWx8VJ+aK6QkD7hjL7bBYG4AAYR789cP6fRViwCy65wSw9YlmamfbOIN
+         QmzmeRtP6yO8EsfZnRELRZon7Vte42KR3P3UWRR9xojQcIOQnn/7TbtJBMNvPjovBK+8
+         pdcjT+jELnNGnWE4+BxlIR5ZRoVZWFjQoeVEfuOIfmXrgEN7TryGPidOlperNQkK/tXQ
+         6IBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=G43qICGmW3svAz/Oqna8zUPfVdBeq81tXpFt94ZZJn4=;
+        b=ShFrhf8v2EsdOdlGIV1ByU7kM1l4O2JQahbfrzqEhiVuII6FiB6rDxFv7OfHif+bg4
+         9FBYwKxGGviuaXZwYF6bDAs91Ek7hN+O264RNzQIKZpsHB6TfdNo5f4SXsFMfjkZzo31
+         6JhBu8fFGb1mJ0KSIJkO4y1UyzBUbH7KmfnMRP04kUfajzD3dcPGS+G0FZLcBdUyGMKH
+         hl13GKO0WO5RRC1N6Cbs4KZHX2xj5rRregkV66x/z270Q4G5bwHbc6hTIwXBrkkw9a+x
+         vGUsMYHJhiGZK0CPspTwgFJ0ZCb1pqVmixi+cV8uKKY8eQ1R7IrMbm/eW3GHJLHJ83vU
+         v1qw==
+X-Gm-Message-State: ANoB5pnlIJJs14GNVchTJ/I0kiB+0dfUn9KIAFQFGCjQ71ZodMVp8yt8
+        Sc9duD6yefi/6PawFTosM54=
+X-Google-Smtp-Source: AA0mqf4CnN8oN9NIvpwszl6rDgmDVJ8EZR6IPv58LP8dKR5u/9BO4YWo+pTxKwXYPGlsYM6J6NwDnQ==
+X-Received: by 2002:a17:903:248c:b0:189:c8d9:42e9 with SMTP id p12-20020a170903248c00b00189c8d942e9mr19671158plw.124.1670412150109;
+        Wed, 07 Dec 2022 03:22:30 -0800 (PST)
+Received: from localhost.localdomain ([202.120.234.246])
+        by smtp.googlemail.com with ESMTPSA id im15-20020a170902bb0f00b00189812a5397sm14273280plb.180.2022.12.07.03.22.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Dec 2022 03:22:29 -0800 (PST)
+From:   Miaoqian Lin <linmq006@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Paolo Abeni <pabeni@redhat.com>, Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH RFC 0/2] Add I2C fwnode lookup/get interfaces
-Message-ID: <Y5B3S6KZTrYlIH8g@shell.armlinux.org.uk>
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     linmq006@gmail.com
+Subject: [PATCH] device property: Fix documentation for fwnode_get_next_parent()
+Date:   Wed,  7 Dec 2022 15:22:18 +0400
+Message-Id: <20221207112219.2652411-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Use fwnode_handle_put() on the node pointer to release the refcount.
+Change fwnode_handle_node() to fwnode_handle_put().
 
-This RFC series is not intended for the coming merge window, and we
-will need to decide how to merge it as it is split across two
-subsystems. These patches have been generated against the net-next,
-since patch 2 depends on a recently merged patch in that tree.
+Fixes: 233872585de1 ("device property: Add fwnode_get_next_parent()")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/base/property.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Currently, the SFP code attempts to work out what kind of fwnode we
-found when looking up the I2C bus for the SFP cage, converts the fwnode
-to the appropriate firmware specific representation to then call the
-appropriate I2C layer function. This is inefficient, since the device
-model provides a way to locate items on a bus_type by fwnode.
-
-In order to reduce this complexity, this series adds fwnode interfaces
-to the I2C subsystem to allow I2C adapters to be looked up. I also
-accidentally also converted the I2C clients to also be looked up, so
-I've left that in patch 1 if people think that could be useful - if
-not, I'll remove it.
-
-We could also convert the of_* functions to be inline in i2c.h and
-remove the stub of_* functions and exports.
-
-Do we want these to live in i2c-core-fwnode.c ? I don't see a Kconfig
-symbol that indicates whether we want fwnode support, and I know there
-are people looking to use software nodes to lookup the SFP I2C bus
-(which is why the manual firmware-specific code in sfp.c is a problem.)
-
-Thanks!
-
- drivers/i2c/i2c-core-acpi.c | 13 +-------
- drivers/i2c/i2c-core-base.c | 72 +++++++++++++++++++++++++++++++++++++++++++++
- drivers/i2c/i2c-core-of.c   | 51 ++------------------------------
- drivers/net/phy/sfp.c       | 13 +-------
- include/linux/i2c.h         |  9 ++++++
- 5 files changed, 86 insertions(+), 72 deletions(-)
-
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 2a5a37fcd998..daa1e379762b 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -601,7 +601,7 @@ EXPORT_SYMBOL_GPL(fwnode_get_parent);
+  * node's parents.
+  *
+  * Returns a node pointer with refcount incremented, use
+- * fwnode_handle_node() on it when done.
++ * fwnode_handle_put() on it when done.
+  */
+ struct fwnode_handle *fwnode_get_next_parent(struct fwnode_handle *fwnode)
+ {
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+2.25.1
+
