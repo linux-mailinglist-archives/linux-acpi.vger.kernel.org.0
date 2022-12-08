@@ -2,79 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72094646C18
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Dec 2022 10:44:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C7BF646C5D
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Dec 2022 11:03:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230223AbiLHJoi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 8 Dec 2022 04:44:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38398 "EHLO
+        id S229760AbiLHKDl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 8 Dec 2022 05:03:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230222AbiLHJoh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Dec 2022 04:44:37 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55AB26DCF5
-        for <linux-acpi@vger.kernel.org>; Thu,  8 Dec 2022 01:43:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1670492621;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QOPQI6SqAzpqn+J3Vr+5gc53ySVAptDT9STnmKemzW0=;
-        b=KuT76ggqEOLXIHRfQl763BJAOqsuAkJ9xTEybUW1WrRa7wukuepcVgYo03SPgFJYPyIdHX
-        SVulPvNMqNnIwp0ftJJPeIndnTjxVL757ks/jG7g/a0DBETos9n6CBGEdVBeWL/1VDQShH
-        /lkZOdoQm0gRCGBk96IXp71DSj+otJE=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-86-n83_vMp3MByf_vLm8q-qnQ-1; Thu, 08 Dec 2022 04:43:40 -0500
-X-MC-Unique: n83_vMp3MByf_vLm8q-qnQ-1
-Received: by mail-ej1-f70.google.com with SMTP id ds15-20020a170907724f00b007c0abebc958so751758ejc.2
-        for <linux-acpi@vger.kernel.org>; Thu, 08 Dec 2022 01:43:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QOPQI6SqAzpqn+J3Vr+5gc53ySVAptDT9STnmKemzW0=;
-        b=Qmmd3FnQqOpsiJ2d5IrnSbinKQFam+MSe7zYRN9NEjx8fkCHVfO7nAa8JbHWPYRJHX
-         GWneewa+3eO4x1BpUgmjewJ4ljxDDEhzZhLVKa1hinTMfeMb7MUalNp8gi/scb6UK+c3
-         NPIwqsPoO1S2uBjVX+bd+N4o5U0Cr6b2+vCkW4FyJNPXw1FkGmxdty3UHgF88zvoJ+AW
-         ZCdwtQLXHDV+lXJkmZda7RN3/ZMGpVp8TI8Z1jgc42HNzIEe167CtbvcuQDJPNggawnI
-         ZtBUxevX4jwy8SgGBCrvjKmSnuLkQLv9toY5A59atD2RXlS/9LYSjiNZY4IDy4pO0NQB
-         oAqw==
-X-Gm-Message-State: ANoB5pmergRbiaKZP9xDQma21XVldaUJJPfrpoXT5wdFReTAPqnn/H8C
-        Tp5kElmg56nvaAhByD3BN4mkentkOAfcP1C9dOYUbFYSYldUj7VsFywkJG73xTWHdgfdqBOEoYY
-        9eFte2uWo8OZ2jYBiu2JJmw==
-X-Received: by 2002:a17:906:1b55:b0:7c1:ac7:a57a with SMTP id p21-20020a1709061b5500b007c10ac7a57amr8300468ejg.348.1670492619262;
-        Thu, 08 Dec 2022 01:43:39 -0800 (PST)
-X-Google-Smtp-Source: AA0mqf4FrjbczRcOqiRlM1zZZtfZnuQsP7UqvdZhR4of4qPYEXKCvwbkjsrL4FnThrnCzOaLy30oBw==
-X-Received: by 2002:a17:906:1b55:b0:7c1:ac7:a57a with SMTP id p21-20020a1709061b5500b007c10ac7a57amr8300464ejg.348.1670492619059;
-        Thu, 08 Dec 2022 01:43:39 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id 7-20020a170906318700b007c0aefd9339sm8521375ejy.175.2022.12.08.01.43.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Dec 2022 01:43:38 -0800 (PST)
-Message-ID: <56fa6d12-1996-7ab3-9ad7-790a3b23e1c8@redhat.com>
-Date:   Thu, 8 Dec 2022 10:43:37 +0100
+        with ESMTP id S229683AbiLHKDk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Dec 2022 05:03:40 -0500
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25BAA4E686;
+        Thu,  8 Dec 2022 02:03:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1670493818; x=1702029818;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=T+eOy8kpGeFvv0C5bjdvd+Hz/oC/JRU1NsuROG9ParA=;
+  b=d3KvmhexqMDyXUVhr/Aw30Tx6iBcUpQ7YSLB2icz8T+HHvEntaGFmTQ9
+   otE74QWzaked8vGlbdWkg1M1c9RRjAFnUN7e444shopphyEtxWvrmT62A
+   KoA3zmgSDB5Sfy9y07ZkGncJnwna2306xkUmjJmHEuwqsebORh36PAZXN
+   B3OoyqIsZgNwyeqGQGU7fETwAi/MYlokIDCJk51YcZeyATKfuP8w1E6fg
+   faU1/nsyAMpkOn7+FFy/8C3CWAY9IkkQmBI9qTCNPTmGZthR699iop+XP
+   mImqV4L77XwkjbfOXzVDYLmajw9VcNq85h/CW0b6Ph8/tchIWuaCl9lbT
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10554"; a="318271232"
+X-IronPort-AV: E=Sophos;i="5.96,227,1665471600"; 
+   d="scan'208";a="318271232"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2022 02:03:37 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10554"; a="821282851"
+X-IronPort-AV: E=Sophos;i="5.96,227,1665471600"; 
+   d="scan'208";a="821282851"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga005.jf.intel.com with ESMTP; 08 Dec 2022 02:03:34 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id 5FC1411D; Thu,  8 Dec 2022 12:04:02 +0200 (EET)
+Date:   Thu, 8 Dec 2022 12:04:02 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Cc:     linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org,
+        netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Wolfram Sang <wsa@kernel.org>
+Subject: Re: [PATCH RFC 1/2] i2c: add fwnode APIs
+Message-ID: <Y5G2kkGC69FVWaiK@black.fi.intel.com>
+References: <Y5B3S6KZTrYlIH8g@shell.armlinux.org.uk>
+ <E1p2sVM-009tqA-Vq@rmk-PC.armlinux.org.uk>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v2 0/3] Adjust ACPI video detection fallback path
-To:     Mario Limonciello <mario.limonciello@amd.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Alexander Deucher <Alexander.Deucher@amd.com>
-Cc:     amd-gfx@lists.freedesktop.org, linux-acpi@vger.kernel.org,
-        Daniel Dadap <ddadap@nvidia.com>
-References: <20221208010910.7621-1-mario.limonciello@amd.com>
-Content-Language: en-US, nl
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20221208010910.7621-1-mario.limonciello@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <E1p2sVM-009tqA-Vq@rmk-PC.armlinux.org.uk>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -84,67 +70,246 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi,
 
-On 12/8/22 02:09, Mario Limonciello wrote:
-> In kernel 6.1 the backlight registration code was overhauled so that
-> at most one backlight device got registered. As part of this change
-> there was code added to still allow making an acpi_video0 device if the
-> BIOS contained backlight control methods but no native or vendor drivers
-> registered.
+On Wed, Dec 07, 2022 at 11:22:24AM +0000, Russell King (Oracle) wrote:
+> Add fwnode APIs for finding and getting I2C adapters, which will be
+> used by the SFP code. These are passed the fwnode corresponding to
+> the adapter, and return the I2C adapter. It is the responsibility of
+> the caller to find the appropriate fwnode.
 > 
-> Even after the overhaul this fallback logic is failing on the BIOS from
-> a number of motherboard manufacturers supporting Ryzen APUs.
-> What happens is the amdgpu driver finishes registration and as expected
-> doesn't create a backlight control device since no eDP panels are connected
-> to a desktop.
+> We keep the DT and ACPI interfaces, but where appropriate, recode them
+> to use the fwnode interfaces internally.
 > 
-> Then 8 seconds later the ACPI video detection code creates an
-> acpi_video0 device that is non-operational. GNOME then creates a
-> backlight slider.
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+
+Looks good, just few minor comments below. :)
+
+> ---
+>  drivers/i2c/i2c-core-acpi.c | 13 +------
+>  drivers/i2c/i2c-core-base.c | 72 +++++++++++++++++++++++++++++++++++++
+>  drivers/i2c/i2c-core-of.c   | 51 ++------------------------
+>  include/linux/i2c.h         |  9 +++++
+>  4 files changed, 85 insertions(+), 60 deletions(-)
 > 
-> To avoid this situation from happening make two sets of changes:
-> 
-> Prevent desktop problems w/ fallback logic
-> ------------------------------------------
-> 1) Add support for the video detect code to let native drivers cancel the
-> fallback logic if they didn't find a panel.
-> 
-> This is done this way so that if another driver decides that the ACPI
-> mechanism is still needed it can instead directly call the registration
-> function.
-> 
-> 2) Add code to amdgpu to notify the ACPI video detection code that no panel
-> was detected on an APU.
-> 
-> Disable fallback logic by default
-> ---------------------------------
-> This fallback logic was introduced to prevent regressions in the backlight
-> overhaul.  As it has been deemed unnecessary by Hans explicitly disable the
-> timeout.  If this turns out to be mistake and this part is reverted, the
-> other patches for preventing desktop problems will avoid regressions on
-> desktops.
+> diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+> index 4dd777cc0c89..d6037a328669 100644
+> --- a/drivers/i2c/i2c-core-acpi.c
+> +++ b/drivers/i2c/i2c-core-acpi.c
+> @@ -442,18 +442,7 @@ EXPORT_SYMBOL_GPL(i2c_acpi_find_adapter_by_handle);
+>  
+>  static struct i2c_client *i2c_acpi_find_client_by_adev(struct acpi_device *adev)
+>  {
+> -	struct device *dev;
+> -	struct i2c_client *client;
+> -
+> -	dev = bus_find_device_by_acpi_dev(&i2c_bus_type, adev);
+> -	if (!dev)
+> -		return NULL;
+> -
+> -	client = i2c_verify_client(dev);
+> -	if (!client)
+> -		put_device(dev);
+> -
+> -	return client;
+> +	return i2c_find_device_by_fwnode(acpi_fwnode_handle(adev));
+>  }
+>  
+>  static int i2c_acpi_notify(struct notifier_block *nb, unsigned long value,
+> diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+> index 9aa7b9d9a485..254ec043ce90 100644
+> --- a/drivers/i2c/i2c-core-base.c
+> +++ b/drivers/i2c/i2c-core-base.c
+> @@ -1011,6 +1011,27 @@ void i2c_unregister_device(struct i2c_client *client)
+>  }
+>  EXPORT_SYMBOL_GPL(i2c_unregister_device);
+>  
+> +/* must call put_device() when done with returned i2c_client device */
 
-Thanks, the entire v2 series looks good to me:
+I think proper kernel-doc would be better here and all the exported
+functions.
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+> +struct i2c_client *i2c_find_device_by_fwnode(struct fwnode_handle *fwnode)
+> +{
+> +	struct i2c_client *client;
+> +	struct device *dev;
+> +
+> +	if (!fwnode)
+> +		return NULL;
+> +
+> +	dev = bus_find_device_by_fwnode(&i2c_bus_type, fwnode);
+> +	if (!dev)
+> +		return NULL;
+> +
+> +	client = i2c_verify_client(dev);
+> +	if (!client)
+> +		put_device(dev);
+> +
+> +	return client;
+> +}
+> +EXPORT_SYMBOL(i2c_find_device_by_fwnode);
+> +
 
-for the series.
+Drop this empty line.
 
-Regards,
+>  
+>  static const struct i2c_device_id dummy_id[] = {
+>  	{ "dummy", 0 },
+> @@ -1761,6 +1782,57 @@ int devm_i2c_add_adapter(struct device *dev, struct i2c_adapter *adapter)
+>  }
+>  EXPORT_SYMBOL_GPL(devm_i2c_add_adapter);
+>  
+> +static int i2c_dev_or_parent_fwnode_match(struct device *dev, const void *data)
+> +{
+> +	if (dev_fwnode(dev) == data)
+> +		return 1;
+> +
+> +	if (dev->parent && dev_fwnode(dev->parent) == data)
+> +		return 1;
+> +
+> +	return 0;
+> +}
+> +
+> +/* must call put_device() when done with returned i2c_adapter device */
+> +struct i2c_adapter *i2c_find_adapter_by_fwnode(struct fwnode_handle *fwnode)
+> +{
+> +	struct i2c_adapter *adapter;
+> +	struct device *dev;
+> +
+> +	if (!fwnode)
+> +		return NULL;
+> +
+> +	dev = bus_find_device(&i2c_bus_type, NULL, fwnode,
+> +			      i2c_dev_or_parent_fwnode_match);
+> +	if (!dev)
+> +		return NULL;
+> +
+> +	adapter = i2c_verify_adapter(dev);
+> +	if (!adapter)
+> +		put_device(dev);
+> +
+> +	return adapter;
+> +}
+> +EXPORT_SYMBOL(i2c_find_adapter_by_fwnode);
+> +
+> +/* must call i2c_put_adapter() when done with returned i2c_adapter device */
+> +struct i2c_adapter *i2c_get_adapter_by_fwnode(struct fwnode_handle *fwnode)
+> +{
+> +	struct i2c_adapter *adapter;
+> +
+> +	adapter = i2c_find_adapter_by_fwnode(fwnode);
+> +	if (!adapter)
+> +		return NULL;
+> +
+> +	if (!try_module_get(adapter->owner)) {
+> +		put_device(&adapter->dev);
+> +		adapter = NULL;
+> +	}
+> +
+> +	return adapter;
+> +}
+> +EXPORT_SYMBOL(i2c_get_adapter_by_fwnode);
+> +
+>  static void i2c_parse_timing(struct device *dev, char *prop_name, u32 *cur_val_p,
+>  			    u32 def_val, bool use_def)
+>  {
+> diff --git a/drivers/i2c/i2c-core-of.c b/drivers/i2c/i2c-core-of.c
+> index 3ed74aa4b44b..c3e565e4bddf 100644
+> --- a/drivers/i2c/i2c-core-of.c
+> +++ b/drivers/i2c/i2c-core-of.c
+> @@ -113,69 +113,24 @@ void of_i2c_register_devices(struct i2c_adapter *adap)
+>  	of_node_put(bus);
+>  }
+>  
+> -static int of_dev_or_parent_node_match(struct device *dev, const void *data)
+> -{
+> -	if (dev->of_node == data)
+> -		return 1;
+> -
+> -	if (dev->parent)
+> -		return dev->parent->of_node == data;
+> -
+> -	return 0;
+> -}
+> -
+>  /* must call put_device() when done with returned i2c_client device */
+>  struct i2c_client *of_find_i2c_device_by_node(struct device_node *node)
+>  {
+> -	struct device *dev;
+> -	struct i2c_client *client;
+> -
+> -	dev = bus_find_device_by_of_node(&i2c_bus_type, node);
+> -	if (!dev)
+> -		return NULL;
+> -
+> -	client = i2c_verify_client(dev);
+> -	if (!client)
+> -		put_device(dev);
+> -
+> -	return client;
+> +	return i2c_find_device_by_fwnode(of_fwnode_handle(node));
+>  }
+>  EXPORT_SYMBOL(of_find_i2c_device_by_node);
+>  
+>  /* must call put_device() when done with returned i2c_adapter device */
+>  struct i2c_adapter *of_find_i2c_adapter_by_node(struct device_node *node)
+>  {
+> -	struct device *dev;
+> -	struct i2c_adapter *adapter;
+> -
+> -	dev = bus_find_device(&i2c_bus_type, NULL, node,
+> -			      of_dev_or_parent_node_match);
+> -	if (!dev)
+> -		return NULL;
+> -
+> -	adapter = i2c_verify_adapter(dev);
+> -	if (!adapter)
+> -		put_device(dev);
+> -
+> -	return adapter;
+> +	return i2c_find_adapter_by_fwnode(of_fwnode_handle(node));
+>  }
+>  EXPORT_SYMBOL(of_find_i2c_adapter_by_node);
+>  
+>  /* must call i2c_put_adapter() when done with returned i2c_adapter device */
+>  struct i2c_adapter *of_get_i2c_adapter_by_node(struct device_node *node)
+>  {
+> -	struct i2c_adapter *adapter;
+> -
+> -	adapter = of_find_i2c_adapter_by_node(node);
+> -	if (!adapter)
+> -		return NULL;
+> -
+> -	if (!try_module_get(adapter->owner)) {
+> -		put_device(&adapter->dev);
+> -		adapter = NULL;
+> -	}
+> -
+> -	return adapter;
+> +	return i2c_get_adapter_by_fwnode(of_fwnode_handle(node));
+>  }
+>  EXPORT_SYMBOL(of_get_i2c_adapter_by_node);
+>  
+> diff --git a/include/linux/i2c.h b/include/linux/i2c.h
+> index d84e0e99f084..bcee9faaf2e6 100644
+> --- a/include/linux/i2c.h
+> +++ b/include/linux/i2c.h
+> @@ -965,6 +965,15 @@ int i2c_handle_smbus_host_notify(struct i2c_adapter *adap, unsigned short addr);
+>  
+>  #endif /* I2C */
+>  
+> +/* must call put_device() when done with returned i2c_client device */
+> +struct i2c_client *i2c_find_device_by_fwnode(struct fwnode_handle *fwnode);
 
-Hans
+With the kernel-docs in place you probably can drop these comments.
 
-
-
-
-> Mario Limonciello (3):
->   ACPI: video: Allow GPU drivers to report no panels
->   drm/amd/display: Report to ACPI video if no panels were found
->   ACPI: video: Don't enable fallback path for creating ACPI backlight by
->     default
-> 
->  drivers/acpi/acpi_video.c                       | 17 ++++++++++++-----
->  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c   |  4 ++++
->  include/acpi/video.h                            |  1 +
->  3 files changed, 17 insertions(+), 5 deletions(-)
-> 
-
+> +
+> +/* must call put_device() when done with returned i2c_adapter device */
+> +struct i2c_adapter *i2c_find_adapter_by_fwnode(struct fwnode_handle *fwnode);
+> +
+> +/* must call i2c_put_adapter() when done with returned i2c_adapter device */
+> +struct i2c_adapter *i2c_get_adapter_by_fwnode(struct fwnode_handle *fwnode);
+> +
+>  #if IS_ENABLED(CONFIG_OF)
+>  /* must call put_device() when done with returned i2c_client device */
+>  struct i2c_client *of_find_i2c_device_by_node(struct device_node *node);
+> -- 
+> 2.30.2
