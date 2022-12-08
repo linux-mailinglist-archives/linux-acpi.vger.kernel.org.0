@@ -2,118 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48CC0646F1B
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Dec 2022 12:55:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74037647055
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Dec 2022 14:01:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230026AbiLHLz0 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 8 Dec 2022 06:55:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46164 "EHLO
+        id S229918AbiLHNBO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 8 Dec 2022 08:01:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229962AbiLHLzQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Dec 2022 06:55:16 -0500
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAC54862EF;
-        Thu,  8 Dec 2022 03:55:14 -0800 (PST)
-Received: by mail-qk1-f175.google.com with SMTP id c23so166165qkl.9;
-        Thu, 08 Dec 2022 03:55:14 -0800 (PST)
+        with ESMTP id S229709AbiLHNBN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Dec 2022 08:01:13 -0500
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B6678D66E;
+        Thu,  8 Dec 2022 05:01:11 -0800 (PST)
+Received: by mail-qv1-xf29.google.com with SMTP id e18so894225qvs.1;
+        Thu, 08 Dec 2022 05:01:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=fekV9oATPpFDs1lXKps2/TiD0fsHdaC60pqXyCCT6CA=;
+        b=HrnMNcLFVA9+1T8Kv9eFSiQOYSSJnL5i9412wnnuT/Zle1WIPEIHTlcplWMr0KCRE0
+         w3OZl4AafO4x7wNiEEtbSTPLuyuDUzkaDXvUFFMpB2qI5GyJwSg9admPrPTJb+bS2dx5
+         W8azC1pq0vLf84sj9NPC1S6ptUIrges3JfOgls77oK8hWRWQdN66MUc+mE0nieaa+YsH
+         QnEsIhdelRoAt7v9eYaeydX8Q8zBbx6Ucx/SPsM6iYs9y2vMNhdYSwxpmXxSEnmmK+OD
+         MiyOY3vLLkNTmR7TNxJKepJvLC0cvtzFkcuGpi4rRjoVlTYO8WtjeT8k+PZosek913od
+         jEbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UOhK73XFUHw28g86cgvDby+sgWSIim/zu34mirshZ70=;
-        b=iZ/uQDK101KzeGLJQVvs+AJovFKO7s0o5sD97Wf9Yn4DOpabcimCVADAgUaAxnv6mc
-         ow56Foqw05CuT3hek6xhDaluX62oQz3SkwM6NZUF8jh32nns4TMQOkDEajQnX7nV8hZb
-         2Qnck7jds2mBD/xqQzXArpOL5U2uDJ4iw/WPXJtFHVxjkI9ZkAkRsmZ2CgbL7kfQp4qI
-         40XsGVB78EXBPTuyVnOQTh6GU6Hj0q3frJu0Hd5yOF69LM2ACVUlqv4LVMt8/gKGw6eC
-         PArm0eUVcvzOhda6323RSxgaC/etQFn0xZZgkBy1VBmmBEICvh1bAbcqVRSct0ejAwHg
-         sXQw==
-X-Gm-Message-State: ANoB5pmDbSiyADooganbSZx9gpq8y+s73y7/IITgMef+tOKq244Dc8jT
-        AMgW/iyetwR21FAI8Cpt1R93mPO57I9eFBjsAhnZz0zN
-X-Google-Smtp-Source: AA0mqf5f88/4HpSHJTj3mgfnKFfZqnvAG7gHcsxQtX7HHGeFInPWoHOyvWZIgkOQC1Q+sJNLBNlw+jBuP6cSP/SCZGQ=
-X-Received: by 2002:a37:ad0c:0:b0:6ee:91b3:2484 with SMTP id
- f12-20020a37ad0c000000b006ee91b32484mr80173831qkm.648.1670500514005; Thu, 08
- Dec 2022 03:55:14 -0800 (PST)
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fekV9oATPpFDs1lXKps2/TiD0fsHdaC60pqXyCCT6CA=;
+        b=u20M5JOlyeCJ0whm8dNwYtUSh0d98OWDhQOzDuXUpW6lNaD9poT0FL0bNOnocpFkFg
+         7/glfFkmvfYtafD4g0NF7fZbsqc9Y7bjrsBDNTZPQrYyK4zyhvkCVeE8qQK9Z4kDl5OX
+         3ZnqVKW1vCgSBG1/SG1f1dLeUgimYdff083sQqmlpD1OJITn8cwQ+BRwPqiRNpoUewfR
+         ZomwcwM5pNnwwVHU6rZW4X7Gd7cVL4SXkj7CzihL1xS91GPUefvi0MND6SSti4ukrjMN
+         h8N+EW4rN9UBZsbRVmsqS5vdm5fG9t8S+DUMG81RED+Tubp1+C6ILt1mnixFfYb9o8qT
+         9E4g==
+X-Gm-Message-State: ANoB5pnG+eX47Oqvlpragr+mvKmuAj6joaV4ReKy8lbmtOO7R/QJEK9C
+        0fUq4FsAa2Oge31KJPqcRxRtPBoZEfMMfluZm0iie3kmC8I=
+X-Google-Smtp-Source: AA0mqf5IAq6OQH+V7WtQp87dAj/PAN5PzrOY6psk/23zLQDByhuFLl7u/aWjqt/iwn45EgKa7icd5S5lT1oLmafkaRw=
+X-Received: by 2002:ad4:5366:0:b0:4c6:73ac:5a5 with SMTP id
+ e6-20020ad45366000000b004c673ac05a5mr85807965qvv.48.1670504470503; Thu, 08
+ Dec 2022 05:01:10 -0800 (PST)
 MIME-Version: 1.0
-References: <20221208195046.1980312-1-amadeuszx.slawinski@linux.intel.com>
-In-Reply-To: <20221208195046.1980312-1-amadeuszx.slawinski@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 8 Dec 2022 12:55:03 +0100
-Message-ID: <CAJZ5v0jvEf=7qTqRkdS1v+fDActtZ1mxoyLBL60Vs6FH8b8OFQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPICA: Fix operand resolution
-To:     =?UTF-8?B?QW1hZGV1c3ogU8WCYXdpxYRza2k=?= 
-        <amadeuszx.slawinski@linux.intel.com>
-Cc:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        devel@acpica.org, linux-kernel@vger.kernel.org,
-        Cezary Rojewski <cezary.rojewski@intel.com>
+References: <20221208110202.107326-1-hdegoede@redhat.com>
+In-Reply-To: <20221208110202.107326-1-hdegoede@redhat.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 8 Dec 2022 15:00:34 +0200
+Message-ID: <CAHp75VdADDeXbu6ERc8ng8AdacHK4=uZeqb5jy0Vx_z3_=ZQmQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ACPI: x86: Add skip i2c clients quirk for Medion
+ Lifetab S10346
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 8, 2022 at 12:51 PM Amadeusz Sławiński
-<amadeuszx.slawinski@linux.intel.com> wrote:
+On Thu, Dec 8, 2022 at 1:02 PM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> In our tests we get UBSAN warning coming from ACPI parser. This is
-> caused by trying to resolve operands when there is none.
+> The Medion Lifetab S10346 is a x86 tablet which ships with Android x86 as
+> factory OS. The Android x86 kernel fork ignores I2C devices described in
+> the DSDT, except for the PMIC and Audio codecs.
 >
-> [    0.000000] Linux version 5.15.0-rc3chromeavsrel1.0.184+ (root@...) (gcc (Ubuntu 10.3.0-1ubuntu1~20.04) 10.3.0, GNU ld (GNU Binutils for Ubuntu) 2.34) #1 SMP PREEMPT Sat Oct 16 00:08:27 UTC 2021
-> ...
-> [ 14.719508] ================================================================================
-> [ 14.719551] UBSAN: array-index-out-of-bounds in /.../linux/drivers/acpi/acpica/dswexec.c:401:12
-> [ 14.719594] index -1 is out of range for type 'acpi_operand_object *[9]'
-> [ 14.719621] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.15.0-rc3chromeavsrel1.0.184+ #1
-> [ 14.719657] Hardware name: Intel Corp. Geminilake/GLK RVP2 LP4SD (07), BIOS GELKRVPA.X64.0214.B50.2009111159 09/11/2020
-> [ 14.719694] Call Trace:
-> [ 14.719712] dump_stack_lvl+0x38/0x49
-> [ 14.719749] dump_stack+0x10/0x12
-> [ 14.719775] ubsan_epilogue+0x9/0x45
-> [ 14.719801] __ubsan_handle_out_of_bounds.cold+0x44/0x49
-> [ 14.719835] acpi_ds_exec_end_op+0x1d7/0x6b5
-> [ 14.719870] acpi_ps_parse_loop+0x942/0xb34
-> ...
->
-> Problem happens because WalkState->NumOperands is 0 and it is used when
-> trying to access into operands table. Actual code is:
-> WalkState->Operands [WalkState->NumOperands -1]
-> which causes out of bound access. Improve the check before above access
-> to check if ACPI opcode should have any arguments (operands) at all.
->
-> Link: https://github.com/acpica/acpica/pull/745
-> Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-> Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-> ---
->  drivers/acpi/acpica/dswexec.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/acpi/acpica/dswexec.c b/drivers/acpi/acpica/dswexec.c
-> index e8ad41387f84..489c9b9d8d15 100644
-> --- a/drivers/acpi/acpica/dswexec.c
-> +++ b/drivers/acpi/acpica/dswexec.c
-> @@ -389,9 +389,11 @@ acpi_status acpi_ds_exec_end_op(struct acpi_walk_state *walk_state)
->
->                 /*
->                  * All opcodes require operand resolution, with the only exceptions
-> -                * being the object_type and size_of operators.
-> +                * being the object_type and size_of operators as well as operands that
+> As usual the Medion Lifetab S10346's DSDT contains a bunch of extra I2C
+> devices which are not actually there, causing various resource conflicts.
+> Add an ACPI_QUIRK_SKIP_I2C_CLIENTS quirk for the Medion Lifetab S10346 to
+> the acpi_quirk_skip_dmi_ids table to woraround this.
 
-Should this be "opcodes that take no arguments" rather?
+workaround
 
-> +                * take no arguments.
->                  */
-> -               if (!(walk_state->op_info->flags & AML_NO_OPERAND_RESOLVE)) {
-> +               if (!(walk_state->op_info->flags & AML_NO_OPERAND_RESOLVE) &&
-> +                   (walk_state->op_info->flags & AML_HAS_ARGS)) {
->
->                         /* Resolve all operands */
->
-> --
+
+Both look good to me,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+Side note. We adding a lot of DMI matching information here and there
+in the drivers and often it gets duplicated in handful of times, Maybe
+at some point we can create a global enum and matching table, let's
+say driver/platform/x86/dmi-platforms.c with
+include/linux/platform_data/x86/platform.h with global enum of the
+platforms?
+
+-- 
+With Best Regards,
+Andy Shevchenko
