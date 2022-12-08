@@ -2,168 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC20A6475AB
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Dec 2022 19:35:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A6136479E7
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Dec 2022 00:26:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229821AbiLHSfV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 8 Dec 2022 13:35:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46708 "EHLO
+        id S229479AbiLHX0Y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 8 Dec 2022 18:26:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229755AbiLHSfP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Dec 2022 13:35:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85926511ED
-        for <linux-acpi@vger.kernel.org>; Thu,  8 Dec 2022 10:33:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1670524436;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=bCIG329yX9Oxb7r754RzmGzuN+6eq3Xm04xVUdanQoI=;
-        b=byXopbxWtedv+Np0iGsAgvhOXfSv4Rk4NW2rKNObpL1V1xufm6u5GytAY6jXQewmxWX3PI
-        v4cWkT23qg/NXar1p5yGhLBhp7KgJ3Z8mkkwk9Ryzt99FGJS1BVFR8J98TUpfq0HeHnzij
-        YaC2eltfHVxBK8P5niu0PSM7VLhI7qc=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-570-N34YOluBPICB0TBCuoDqQg-1; Thu, 08 Dec 2022 13:33:55 -0500
-X-MC-Unique: N34YOluBPICB0TBCuoDqQg-1
-Received: by mail-ed1-f71.google.com with SMTP id z3-20020a056402274300b0046b14f99390so1398610edd.9
-        for <linux-acpi@vger.kernel.org>; Thu, 08 Dec 2022 10:33:55 -0800 (PST)
+        with ESMTP id S230177AbiLHX0J (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Dec 2022 18:26:09 -0500
+Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD9CD614C;
+        Thu,  8 Dec 2022 15:25:55 -0800 (PST)
+Received: by mail-qt1-x82a.google.com with SMTP id h24so2401594qta.9;
+        Thu, 08 Dec 2022 15:25:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XNi9Ztz/USYrTyc7KmWiTdI5lY+DaOhV8z0ob+ajO9A=;
+        b=m/PjQ69IU2l0+dd3Ot+Z8InqhQ9bvX6FQQePM/hhp0Sba4A+kwZdxtDL8/4RYX4vJO
+         Ok+ZGRbi5VuUxSYJMgR2AarhPvPtP8h88YOh4MemM0UhyrbOVq23N7l+5y+wGmm5WOJw
+         kJk5WnfNtr5xjJWoLAEdl5rszLEwkOsYEeZ8bSvlMMD5atk+Ib/80F7IF+1zXG5PFgYK
+         iH9VenTAmr8mcFkpFBKDJL4Jzok8G38ASLnncblOBPWuz6D2bN47EtpcBSP2pOFT5pWM
+         lgrSW9/GTTnfiQB2prFAgBZe71NnxWTepwdn9mielkabpR9ODfCY8Tms/1lwFnIUSJQb
+         gGwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bCIG329yX9Oxb7r754RzmGzuN+6eq3Xm04xVUdanQoI=;
-        b=nGh6PsTBCISbvCff0AYTcrbh7H2FYkKD+9pgG9zHOu50J0cIBxLeZw1IV87wTpLcvr
-         nyhJr29IcM4WSpvOY7cG+cB03KNg1usf+OuzdHlSDmIvkqYMhdyHuQgMRH1+1Q6UR+pJ
-         DNDLF4ZejYf2FoUY0dvCo/sdaQHAjQrKBQJH2NXd9tkVP2ZY3Khafo54+MTEap/KToms
-         oQkWzyNlk47AcRc0bknoMywQ/ERk25s7SCKUW6A8VLvj+kv/vpbU9US2bm/67mf7GNtb
-         ZpweVdCrxBdog75H1mTIPG5+EbW1S56Z1HohPBoIpyRZC+VqumFI3cshJHAwmAGrjWPq
-         1yDw==
-X-Gm-Message-State: ANoB5pmgsKi/3D4T3XYj5m/PBtoiR0zvGtCNA0RgMf5kKAuOZGTCubk1
-        swkkBPZNwDOs+JFgd7Rz/wdnNwbtoXp0w8m/RX67/6RB/idcpnRlSFmKmKfb96xqHd9VMn4lViH
-        NeSmMgCVOopbieh8b/Y2TDg==
-X-Received: by 2002:a17:906:15cf:b0:78d:f454:378a with SMTP id l15-20020a17090615cf00b0078df454378amr2350004ejd.45.1670524433916;
-        Thu, 08 Dec 2022 10:33:53 -0800 (PST)
-X-Google-Smtp-Source: AA0mqf7vNK3UwsAZQshgrNOKPMir8vleG8jbdL+Iit2lT5FiNc8fux5nHprcNRVnuNziRaQ16qrUYg==
-X-Received: by 2002:a17:906:15cf:b0:78d:f454:378a with SMTP id l15-20020a17090615cf00b0078df454378amr2349995ejd.45.1670524433764;
-        Thu, 08 Dec 2022 10:33:53 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id op4-20020a170906bce400b0078df3b4464fsm10178189ejb.19.2022.12.08.10.33.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Dec 2022 10:33:53 -0800 (PST)
-Message-ID: <c5acd35b-3bdb-c56e-f398-6d8bd33ba2ef@redhat.com>
-Date:   Thu, 8 Dec 2022 19:33:52 +0100
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XNi9Ztz/USYrTyc7KmWiTdI5lY+DaOhV8z0ob+ajO9A=;
+        b=tg09MFXv3+W6yFFbLTGfQz4ZVVJ4/TYSxVJHlOBNJmk6+p9iYqV37qbh/nyH/sE7/o
+         iogzE/k8oqofS3ewN1PqODJjPfpVc9WEA2+HcebVMUX+FJVnXvtcfkA/W+9M/XHVCVzu
+         AOqSx+4btCQlqK/xi+noJgG3at8zp1m5eEUVzQjlq+oFwNtU/X0MRDRXCuKaAmv5JpG2
+         dPRzySnWS/GHpncU+CoG50HFzA9fgvlNUrs2Xo6DzMBRrK+ezkK1deJcItnej5PfePO8
+         8yKdUbvNyh6y5Zc/zFjZeE7JpjeiIZBgnvzUeOy1uSaBnkDutngLfnqFg/aKokI9uFuk
+         5SqQ==
+X-Gm-Message-State: ANoB5plgjhRdhGZXOjz5taEFxs1ptzCDDoMi04kUOC1CLCJGQkCkPTIM
+        dv0uFBtLRXQ+UmeDdRM5kuA=
+X-Google-Smtp-Source: AA0mqf7rznZmEFIprWaiWXrNpPFjuOFrdr/7fWFzboq8YPec+AHx4QtPV03Sv+xbJaMdefm9qb/O4g==
+X-Received: by 2002:ac8:6ecb:0:b0:3a7:f424:d1bb with SMTP id f11-20020ac86ecb000000b003a7f424d1bbmr4799455qtv.21.1670541955026;
+        Thu, 08 Dec 2022 15:25:55 -0800 (PST)
+Received: from localhost.localdomain ([143.166.81.254])
+        by smtp.gmail.com with ESMTPSA id w13-20020a05620a444d00b006fafc111b12sm5087977qkp.83.2022.12.08.15.25.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Dec 2022 15:25:54 -0800 (PST)
+From:   Stuart Hayes <stuart.w.hayes@gmail.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        John Meneghini <jmeneghi@redhat.com>,
+        Charles Rose <charles_rose@dell.com>,
+        Stuart Hayes <stuart.w.hayes@gmail.com>,
+        Doug Farley <Douglas_Farley@dell.com>,
+        Lenny Szubowicz <lszubowi@redhat.com>
+Subject: [PATCH] acpi: add support for the NBFT
+Date:   Thu,  8 Dec 2022 17:25:36 -0600
+Message-Id: <20221208232536.591347-1-stuart.w.hayes@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [PATCH 0/4] ACPI[CA]: fix ECDT EC probe ordering issues
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Andy Shevchenko <andy@kernel.org>, kai.heng.feng@canonical.com,
-        =?UTF-8?Q?Johannes_Pen=c3=9fel?= <johannespenssel@posteo.net>,
-        linux-acpi@vger.kernel.org, devel@acpica.org
-References: <20221208142335.488382-1-hdegoede@redhat.com>
- <CAJZ5v0jA1cv5wuuouMkM1GsV3Chu+RSxBC7qH7YtDTVa4DGSOw@mail.gmail.com>
-Content-Language: en-US, nl
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAJZ5v0jA1cv5wuuouMkM1GsV3Chu+RSxBC7qH7YtDTVa4DGSOw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Add support for the NVMe Boot Firmware Table (NBFT) to facilitate
+booting from NVM Express namespaces which are accessed via
+NVMe over Fabrics (NVMe-oF).
 
-On 12/8/22 17:51, Rafael J. Wysocki wrote:
-> Hi Hans,
-> 
-> On Thu, Dec 8, 2022 at 3:23 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> Hi Rafael,
->>
->> As you requested in:
->> https://github.com/acpica/acpica/pull/786#issuecomment-1342632326
->>
->> Here is a non RFC version of my series fixing some ECDT EC probe
->> ordering issues which are causing issues om some laptops:
->>
->> https://bugzilla.kernel.org/show_bug.cgi?id=214899
->>
->> including the ACPICA changes.
->>
->> This series is rebased on top of linux-pm/bleeding-edge,
->> otherwise it is unchanged from the previous [RFC v3] version.
->>
->> From the original cover-letter of the previous [RFC v3] version:
->>
->> The problem this fixed is best described by the commit message of patch 4:
->>
->> ACPI-2.0 says that the EC OpRegion handler must be available immediately
->> (like the standard default OpRegion handlers):
->>
->> Quoting from the ACPI spec version 6.3: "6.5.4 _REG (Region) ...
->> 2. OSPM must make Embedded Controller operation regions, accessed via
->> the Embedded Controllers described in ECDT, available before executing
->> any control method. These operation regions may become inaccessible
->> after OSPM runs _REG(EmbeddedControl, 0)."
->>
->> So acpi_bus_init() calls acpi_ec_ecdt_probe(), which calls
->> acpi_install_address_space_handler() to install the EC's OpRegion
->> handler, early on.
->>
->> This not only installs the OpRegion handler, but also calls the EC's
->> _REG method. The _REG method call is a problem because it may rely on
->> initialization done by the _INI methods of one of the PCI / _SB root devs,
->> see for example: https://bugzilla.kernel.org/show_bug.cgi?id=214899 .
->>
->> Generally speaking _REG methods are executed when the ACPI-device they
->> are part of has a driver bound to it. Where as _INI methods must be
->> executed at table load time (according to the spec). The problem here
->> is that the early acpi_install_address_space_handler() call causes
->> the _REG handler to run too early.
->>
->> To allow fixing this the ACPICA code now allows to split the OpRegion
->> handler installation and the executing of _REG into 2 separate steps.
->>
->> This commit uses this ACPICA functionality to fix the EC probe ordering
->> by delaying the executing of _REG for ECDT described ECs till the matching
->> EC device in the DSDT gets parsed and acpi_ec_add() for it gets called.
->> This moves the calling of _REG for the EC on devices with an ECDT to
->> the same point in time where it is called on devices without an ECDT table.
->>
->> Changes in v3:
->> - Add a prep patch to fix an indentation issue in Linux' acpixf.h to fix
->>   the patch from ACPICA's script not applying
->> - Add 2 new functions to ACPICA for this instead of a flags argument
->>   1. acpi_install_address_space_handler_no_reg()
->>   2. acpi_execute_reg_methods()
->> - Add a patch to fix EC handler removal in the ECDT case
-> 
-> I've applied the series and queued it up for 6.2.
-> 
-> However, because I won't be able to do any kernel work before the next
-> week (most likely), it will not go into linux-next before Monday and I
-> would like it to spend at least a few days in it. This means that it
-> will be pushed in the second half of the merge window.
+Signed-off-by: Stuart Hayes <stuart.w.hayes@gmail.com>
+Signed-off-by: Doug Farley <Douglas_Farley@dell.com>
+Signed-off-by: Lenny Szubowicz <lszubowi@redhat.com>
+---
+ drivers/acpi/tables.c | 3 ++-
+ include/acpi/actbl1.h | 2 ++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-Second half of the merge window is perfectly fine with me. Thank you
-for picking this up.
-
-Regards,
-
-Hans
-
+diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
+index 47ec11d4c68e..f390c5883b56 100644
+--- a/drivers/acpi/tables.c
++++ b/drivers/acpi/tables.c
+@@ -545,7 +545,8 @@ static const char table_sigs[][ACPI_NAMESEG_SIZE] __initconst = {
+ 	ACPI_SIG_WDDT, ACPI_SIG_WDRT, ACPI_SIG_DSDT, ACPI_SIG_FADT,
+ 	ACPI_SIG_PSDT, ACPI_SIG_RSDT, ACPI_SIG_XSDT, ACPI_SIG_SSDT,
+ 	ACPI_SIG_IORT, ACPI_SIG_NFIT, ACPI_SIG_HMAT, ACPI_SIG_PPTT,
+-	ACPI_SIG_NHLT, ACPI_SIG_AEST, ACPI_SIG_CEDT, ACPI_SIG_AGDI };
++	ACPI_SIG_NHLT, ACPI_SIG_AEST, ACPI_SIG_CEDT, ACPI_SIG_AGDI,
++	ACPI_SIG_NBFT };
+ 
+ #define ACPI_HEADER_SIZE sizeof(struct acpi_table_header)
+ 
+diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+index 15c78678c5d3..6ec43410288a 100644
+--- a/include/acpi/actbl1.h
++++ b/include/acpi/actbl1.h
+@@ -49,6 +49,8 @@
+ #define ACPI_SIG_S3PT           "S3PT"	/* S3 Performance (sub)Table */
+ #define ACPI_SIG_PCCS           "PCC"	/* PCC Shared Memory Region */
+ 
++#define ACPI_SIG_NBFT		"NBFT"	/* NVMe Boot Firmware Table */
++
+ /* Reserved table signatures */
+ 
+ #define ACPI_SIG_MATR           "MATR"	/* Memory Address Translation Table */
+-- 
+2.31.1
 
