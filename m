@@ -2,169 +2,149 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99975646993
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Dec 2022 08:16:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72094646C18
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Dec 2022 10:44:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229550AbiLHHQz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 8 Dec 2022 02:16:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58104 "EHLO
+        id S230223AbiLHJoi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 8 Dec 2022 04:44:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbiLHHQx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Dec 2022 02:16:53 -0500
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 592E637231;
-        Wed,  7 Dec 2022 23:16:51 -0800 (PST)
-Received: from kwepemi500015.china.huawei.com (unknown [172.30.72.56])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4NSQRf23JQzmW8B;
-        Thu,  8 Dec 2022 15:15:58 +0800 (CST)
-Received: from [10.174.176.219] (10.174.176.219) by
- kwepemi500015.china.huawei.com (7.221.188.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 8 Dec 2022 15:16:47 +0800
-Subject: Re: [RFC 1/2] ACPI: APEI: Make memory_failure() triggered by
- synchronization errors execute in the current context
-To:     Shuai Xue <xueshuai@linux.alibaba.com>, <rafael@kernel.org>,
-        <lenb@kernel.org>, <james.morse@arm.com>, <tony.luck@intel.com>,
-        <bp@alien8.de>, <naoya.horiguchi@nec.com>, <linmiaohe@huawei.com>,
-        <akpm@linux-foundation.org>, <ashish.kalra@amd.com>,
-        <xiexiuqi@huawei.com>
-CC:     <xiezhipeng1@huawei.com>, <wangkefeng.wang@huawei.com>,
-        <tanxiaofei@huawei.com>, <linux-acpi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-        Bixuan Cui <cuibixuan@linux.alibaba.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        <yingwen.cyw@alibaba-inc.com>
-References: <20221205115111.131568-1-lvying6@huawei.com>
- <20221205115111.131568-2-lvying6@huawei.com>
- <c779d666-4937-e2dc-2d52-da0e49d5d1ac@linux.alibaba.com>
- <e7d66b23-ce62-4a50-91c3-29aaa41d2e90@huawei.com>
- <5afef5fd-7e44-32ae-fa94-5fcf47d4b4df@linux.alibaba.com>
-From:   Lv Ying <lvying6@huawei.com>
-Message-ID: <a4ea2510-7602-f259-f8b9-07cd44c07808@huawei.com>
-Date:   Thu, 8 Dec 2022 15:16:47 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        with ESMTP id S230222AbiLHJoh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Dec 2022 04:44:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55AB26DCF5
+        for <linux-acpi@vger.kernel.org>; Thu,  8 Dec 2022 01:43:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1670492621;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=QOPQI6SqAzpqn+J3Vr+5gc53ySVAptDT9STnmKemzW0=;
+        b=KuT76ggqEOLXIHRfQl763BJAOqsuAkJ9xTEybUW1WrRa7wukuepcVgYo03SPgFJYPyIdHX
+        SVulPvNMqNnIwp0ftJJPeIndnTjxVL757ks/jG7g/a0DBETos9n6CBGEdVBeWL/1VDQShH
+        /lkZOdoQm0gRCGBk96IXp71DSj+otJE=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-86-n83_vMp3MByf_vLm8q-qnQ-1; Thu, 08 Dec 2022 04:43:40 -0500
+X-MC-Unique: n83_vMp3MByf_vLm8q-qnQ-1
+Received: by mail-ej1-f70.google.com with SMTP id ds15-20020a170907724f00b007c0abebc958so751758ejc.2
+        for <linux-acpi@vger.kernel.org>; Thu, 08 Dec 2022 01:43:40 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QOPQI6SqAzpqn+J3Vr+5gc53ySVAptDT9STnmKemzW0=;
+        b=Qmmd3FnQqOpsiJ2d5IrnSbinKQFam+MSe7zYRN9NEjx8fkCHVfO7nAa8JbHWPYRJHX
+         GWneewa+3eO4x1BpUgmjewJ4ljxDDEhzZhLVKa1hinTMfeMb7MUalNp8gi/scb6UK+c3
+         NPIwqsPoO1S2uBjVX+bd+N4o5U0Cr6b2+vCkW4FyJNPXw1FkGmxdty3UHgF88zvoJ+AW
+         ZCdwtQLXHDV+lXJkmZda7RN3/ZMGpVp8TI8Z1jgc42HNzIEe167CtbvcuQDJPNggawnI
+         ZtBUxevX4jwy8SgGBCrvjKmSnuLkQLv9toY5A59atD2RXlS/9LYSjiNZY4IDy4pO0NQB
+         oAqw==
+X-Gm-Message-State: ANoB5pmergRbiaKZP9xDQma21XVldaUJJPfrpoXT5wdFReTAPqnn/H8C
+        Tp5kElmg56nvaAhByD3BN4mkentkOAfcP1C9dOYUbFYSYldUj7VsFywkJG73xTWHdgfdqBOEoYY
+        9eFte2uWo8OZ2jYBiu2JJmw==
+X-Received: by 2002:a17:906:1b55:b0:7c1:ac7:a57a with SMTP id p21-20020a1709061b5500b007c10ac7a57amr8300468ejg.348.1670492619262;
+        Thu, 08 Dec 2022 01:43:39 -0800 (PST)
+X-Google-Smtp-Source: AA0mqf4FrjbczRcOqiRlM1zZZtfZnuQsP7UqvdZhR4of4qPYEXKCvwbkjsrL4FnThrnCzOaLy30oBw==
+X-Received: by 2002:a17:906:1b55:b0:7c1:ac7:a57a with SMTP id p21-20020a1709061b5500b007c10ac7a57amr8300464ejg.348.1670492619059;
+        Thu, 08 Dec 2022 01:43:39 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id 7-20020a170906318700b007c0aefd9339sm8521375ejy.175.2022.12.08.01.43.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Dec 2022 01:43:38 -0800 (PST)
+Message-ID: <56fa6d12-1996-7ab3-9ad7-790a3b23e1c8@redhat.com>
+Date:   Thu, 8 Dec 2022 10:43:37 +0100
 MIME-Version: 1.0
-In-Reply-To: <5afef5fd-7e44-32ae-fa94-5fcf47d4b4df@linux.alibaba.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.176.219]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemi500015.china.huawei.com (7.221.188.92)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH v2 0/3] Adjust ACPI video detection fallback path
+To:     Mario Limonciello <mario.limonciello@amd.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Alexander Deucher <Alexander.Deucher@amd.com>
+Cc:     amd-gfx@lists.freedesktop.org, linux-acpi@vger.kernel.org,
+        Daniel Dadap <ddadap@nvidia.com>
+References: <20221208010910.7621-1-mario.limonciello@amd.com>
+Content-Language: en-US, nl
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20221208010910.7621-1-mario.limonciello@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2022/12/8 11:25, Shuai Xue wrote:
-> + Xie XiuQi
+Hi,
+
+On 12/8/22 02:09, Mario Limonciello wrote:
+> In kernel 6.1 the backlight registration code was overhauled so that
+> at most one backlight device got registered. As part of this change
+> there was code added to still allow making an acpi_video0 device if the
+> BIOS contained backlight control methods but no native or vendor drivers
+> registered.
 > 
-> On 2022/12/8 AM10:20, Lv Ying wrote:
->>
->>>
->>> We also encountered this problem in production environment, and tried to
->>> solve it by dividing synchronous and asynchronous error handling into different
->>> paths: task work for synchronous error and workqueue for asynchronous error.
->>>
->>> The main challenge is how to distinguish synchronous errors in kernel first
->>> mode through APEI, a related discussion is here.[1]
->>>
->> Hi Shuai:
->>
->> I'm very happy to have received your response, we encountered this problem in our production environment too. I spent a lot of time researching the rationale for synchronous errors and asynchronous errors to share the same process. I mention in my patch commit message: memory_failure() triggered by synchronous error is
->> executed in the kworker context, the early_kill mode of memory_failure()
->> will send wrong si_code by SIGBUS signal because of wrong current process.
->>
->> The challenge for my patch is to prove the rationality of distinguishing synchronous errors. I do not have a good idea of distinguishing synchronous error by looking through ACPI/UEFI spec, so I sent this patchset for more input. And I resent RFC PATCH v1 [1]add this as TODO.
->>
->>>> @@ -978,14 +979,14 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
->>>>            estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
->>>>            len = cper_estatus_len(estatus);
->>>>            node_len = GHES_ESTATUS_NODE_LEN(len);
->>>> -        task_work_pending = ghes_do_proc(estatus_node->ghes, estatus);
->>>> +        corruption_page_pending = ghes_do_proc(estatus_node->ghes, estatus, true);
->>>>            if (!ghes_estatus_cached(estatus)) {
->>>>                generic = estatus_node->generic;
->>>>                if (ghes_print_estatus(NULL, generic, estatus))
->>>>                    ghes_estatus_cache_add(generic, estatus);
->>>>            }
->>>
->>> In the case of your patch, it is inappropriate to assume that ghes_proc_in_irq() is only
->>> called to handle synchronous error. Firmware could notify all synchronous and asynchronous
->>> error signals to kernel through NMI notification, e.g. SDEI. In this case, asynchronous
->>> error will be treated as synchronous error.
->>>
->>
->> Yes, as I mentioned above, I do not have a good idea of distinguishing synchronous error. I agree with you that ghes_proc_in_irq() is called in SDEI, SEA, NMI notify type, they are NMI-like notify, this function run some job which may not be NMI safe in IRQ context. And NMI may be asynchronous error.
->>
->> However, cureent kernel use ghes_kick_task_work in ghes_proc_in_irq(), there is an assumption here that ghes_proc_in_irq() are currently in the context of a synchronous exception, although this is not appropriate.
->>
->>> Our colleague Yingwen has submitted a proposal to extend acpi_hest_generic_data::flag (bit 8)
->>> to indicate that the error is a synchronous[2]. Personally speaking, it is a more general
->>> solution and completely solves the problem.
->>>
->>>
->>>> Background:
->>>>
->>>> In ARM world, two type events (Sync/Async) from hardware IP need OS/VMM take different actions.
->>>> Current CPER memory error record is not able to distinguish sync/async type event right now.
->>>> Current OS/VMM need to take extra actions beyond CPER which is heavy burden to identify the
->>>> two type events
->>>>
->>>> Sync event (e.g. CPU consume poisoned data) --> Firmware  -> CPER error log  --> OS/VMM take recovery action.
->>>> Async event (e.g. Memory controller detect UE event)  --> Firmware  --> CPER error log  --> OS take page action.
->>>>
->>>>
->>>> Proposal:
->>>>
->>>> - In section description Flags field(UEFI spec section N.2, add sync flag as below. OS/VMM
->>>>    could depend on this flag to distinguish sync/async events.
->>>> - Bit8 – sync flag; if set this flag indicates that this event record is synchronous(e.g.
->>>>    cpu core consumes poison data, then cause instruction/data abort); if not set, this event record is asynchronous.
->>>>
->>>> Best regards,
->>>> Yingwen Chen
->>>
->>> A RFC patch set based on above proposal is here[3].
->>>
->>
->> I'm glad your team is working on advancing this thing in the UEFI community. This will make kernel identify synchronous as an easy job. Based on your proposal, I think your work is suitable.
->>
->> However, there are real problems here in the running production environment of the LTS kernel:
->> 1. this new proposal has not yet been accepted by the UEFI spec
->> 2. it will require firmware update in production environment which may be more difficult than kernel livepatch upgrade.
->>
->> If there are more ways to distinguish synchronous error in kernel APEI,
->> I can try it. For example, in APEI mode, is it suitable to use notify type to distinguish synchronous error?
->> synchronous error:
->> SDEI SEA
->> asynchronous error:
->> NMI
+> Even after the overhaul this fallback logic is failing on the BIOS from
+> a number of motherboard manufacturers supporting Ryzen APUs.
+> What happens is the amdgpu driver finishes registration and as expected
+> doesn't create a backlight control device since no eDP panels are connected
+> to a desktop.
 > 
-> Sorry, I'm afraid it's not suitable. It is no doubt that SEA notification is synchronous,
-> but we should not assume that platform use NMI notification for asynchronous errors,
-> and SDEI notification for synchronous errors.
+> Then 8 seconds later the ACPI video detection code creates an
+> acpi_video0 device that is non-operational. GNOME then creates a
+> backlight slider.
 > 
-> If we want to address the problem now, I prefer to just consider SEA notification is synchronous
-> and add MF_ACTION_REQUIRED when SEA is adopt. Please refer to XiuQi's work.[1]
+> To avoid this situation from happening make two sets of changes:
 > 
-> [1]https://lore.kernel.org/linux-arm-kernel/20221205160043.57465-4-xiexiuqi@huawei.com/T/
+> Prevent desktop problems w/ fallback logic
+> ------------------------------------------
+> 1) Add support for the video detect code to let native drivers cancel the
+> fallback logic if they didn't find a panel.
 > 
-> Best Regards,
-> Shuai
+> This is done this way so that if another driver decides that the ACPI
+> mechanism is still needed it can instead directly call the registration
+> function.
 > 
-Thanks for your advice, it may be currently more practical to solve the 
-problem that synchronous and asynchronous errors
-share the same processing flow only in the SEA scenario. I will refer to 
-XiuQi's work and update RFC PATCH v2.
+> 2) Add code to amdgpu to notify the ACPI video detection code that no panel
+> was detected on an APU.
+> 
+> Disable fallback logic by default
+> ---------------------------------
+> This fallback logic was introduced to prevent regressions in the backlight
+> overhaul.  As it has been deemed unnecessary by Hans explicitly disable the
+> timeout.  If this turns out to be mistake and this part is reverted, the
+> other patches for preventing desktop problems will avoid regressions on
+> desktops.
+
+Thanks, the entire v2 series looks good to me:
+
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+
+for the series.
+
+Regards,
+
+Hans
 
 
--- 
-Thanks!
-Lv Ying
+
+
+> Mario Limonciello (3):
+>   ACPI: video: Allow GPU drivers to report no panels
+>   drm/amd/display: Report to ACPI video if no panels were found
+>   ACPI: video: Don't enable fallback path for creating ACPI backlight by
+>     default
+> 
+>  drivers/acpi/acpi_video.c                       | 17 ++++++++++++-----
+>  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c   |  4 ++++
+>  include/acpi/video.h                            |  1 +
+>  3 files changed, 17 insertions(+), 5 deletions(-)
+> 
+
