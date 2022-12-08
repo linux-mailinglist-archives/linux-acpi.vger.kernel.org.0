@@ -2,122 +2,152 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6715764744B
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Dec 2022 17:29:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01F9D64747F
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Dec 2022 17:42:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229876AbiLHQ3P convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 8 Dec 2022 11:29:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39370 "EHLO
+        id S229674AbiLHQm3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 8 Dec 2022 11:42:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229564AbiLHQ3K (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Dec 2022 11:29:10 -0500
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B69B0175AC;
-        Thu,  8 Dec 2022 08:29:04 -0800 (PST)
-Received: by mail-qt1-f180.google.com with SMTP id fz10so1442385qtb.3;
-        Thu, 08 Dec 2022 08:29:04 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9SMMf+hquSFM569LOmgsVrquK2ebdVd9ejvYmGcH8kU=;
-        b=zJ7bJHgnNRYyZx7P3CLrYXvezwcwwolkoAUb+lgCpwJf3hcB8ON5GYMzkUyZYFr3rT
-         BgcSAkn7kILaAmTJgyg7/Nx9mQrHQzS4kVJY+uDeqsfmX0wm0vpWGIV3NjMTZy65H+B6
-         dx1cAWxodhvxfnfuXgLNoKOkdUhLaU5z3dtMK86X+Gi46Xu5UDunbe2oofGLoCBjLwfR
-         7I4vu0wq6FkqlsAK+xxoCWEBZTrwYP9CeFgk1ehxj4NwfQYL7Yqu47bc1y1Wqif12ZGI
-         ObdpLVSAAlAjL3K3BeCN9MJjhCclQLunaCSm7Dgk/xkcKDXAqzYyhII32v16+t+FMnvi
-         mPyQ==
-X-Gm-Message-State: ANoB5pkA+UyLxuZTTZmWJLU2gB17L6t9W0SCr+btjSGUL7amHENFPyaI
-        4X3bKQ8bcMdE3wyVoEKazCTDz9CkshuJiytDJfs=
-X-Google-Smtp-Source: AA0mqf4lf5c+gJxv89EuXzWEId/JI8uNVeliPyftHqgt2w9CDgAykQB8Ak/PnOQ83rYcvJ31DYzm94UVrm6p9KzOBLI=
-X-Received: by 2002:a05:622a:1989:b0:3a5:7cf8:1a6e with SMTP id
- u9-20020a05622a198900b003a57cf81a6emr86715503qtc.48.1670516943861; Thu, 08
- Dec 2022 08:29:03 -0800 (PST)
+        with ESMTP id S229470AbiLHQm3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Dec 2022 11:42:29 -0500
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2064.outbound.protection.outlook.com [40.107.94.64])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA4513AC15
+        for <linux-acpi@vger.kernel.org>; Thu,  8 Dec 2022 08:42:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Q04GZRynYQiZRLFBpy4DRGG/gCkuVhCeVFR0VwtIV9ozPnniA2zyNigEri1ooo0ACz3iMvdc+8JvxrpHWEMAbeF7P6CVl9jtEo7fjgov8rW3qXRETNgv+K9jwt2GWaLV0b7JeawjOUsiJ8ZwkwVXhk2N8r3HmoGV72qEepesWL0rLDYcfxIYmNsn2zky6lmt9VTwq0LENuqu76DUt7eHwXa8Gm86xS1dz5ppJQf274Nx3KQQY4RtH5IPBIarwCv2Y8G6Hbrwqy3Oc4oy8u0VcoFiHV7uTtC05Mtp2sBednneg9Ka/E/iK+NSZ3dbzc0ZsBum2TSwO/Tp0F3jrRNlTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9rCKyf8/s18ctIjfri6tBCLPXV0rQy6CCjPK31h0/QE=;
+ b=VHFEWlwCXJdbSs8hzRZ5sQROp7C8TX+V1lTkDtLFYKegiya4ZmFGSfSHu/9X1aWLSrIt2HqbuNPeBriCgzcHsNpCyOLrKGed0IzXUWC+U+f0Z8HsV0VDfW0vY4N8RcPnY7FRFdDK3PFw02dG0AWDKpprS/93ktDTMME0+GQgi45/A6e5OTM8bQJw2tHIzJ+q6TT9NSllJDMSAPScLxsMMuajHoEl0gcP/FApitEHaH3SqzUbYUWnqVUklDzup7rDOjn9q3zlqgnDwSwyVNI2HoVqgyAGlYEvSkzFM0NXBXkWvyKi6s8NleQVYoucSHju1pKJBcEOQJ7WytuubdbGKg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9rCKyf8/s18ctIjfri6tBCLPXV0rQy6CCjPK31h0/QE=;
+ b=YOgoCjM0oKv3o1DZecFCqu+EbKGUo+Zg7REMdcoHIXGxh8Z71hKcQq5hJBNE0sQn99hGfQR0YHBGP9Y+sX9OcI7RN1FxXk35JMbPvf8G0KtVs/cEmKBiA2RR2s0jumD+bzHZi5I1bRzpVa+n+RPIP0zCrL+d0hTvNoj5JkVgYBA=
+Received: from MW4PR04CA0389.namprd04.prod.outlook.com (2603:10b6:303:81::34)
+ by DM4PR12MB7501.namprd12.prod.outlook.com (2603:10b6:8:113::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.16; Thu, 8 Dec
+ 2022 16:42:25 +0000
+Received: from CO1NAM11FT015.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:303:81:cafe::29) by MW4PR04CA0389.outlook.office365.com
+ (2603:10b6:303:81::34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.16 via Frontend
+ Transport; Thu, 8 Dec 2022 16:42:25 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1NAM11FT015.mail.protection.outlook.com (10.13.175.130) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.5901.17 via Frontend Transport; Thu, 8 Dec 2022 16:42:24 +0000
+Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Thu, 8 Dec
+ 2022 10:42:23 -0600
+From:   Mario Limonciello <mario.limonciello@amd.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Alexander Deucher <Alexander.Deucher@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>
+CC:     <amd-gfx@lists.freedesktop.org>, <linux-acpi@vger.kernel.org>,
+        "Daniel Dadap" <ddadap@nvidia.com>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH v3 0/3] Adjust ACPI video detection fallback path
+Date:   Thu, 8 Dec 2022 10:42:04 -0600
+Message-ID: <20221208164207.13518-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20221208224016.2009797-1-amadeuszx.slawinski@linux.intel.com>
-In-Reply-To: <20221208224016.2009797-1-amadeuszx.slawinski@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 8 Dec 2022 17:28:52 +0100
-Message-ID: <CAJZ5v0izpg_awSBR-HUa58z-wQAm9QGNBV8T4bzavGUCou+R-w@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPICA: Fix operand resolution
-To:     =?UTF-8?B?QW1hZGV1c3ogU8WCYXdpxYRza2k=?= 
-        <amadeuszx.slawinski@linux.intel.com>
-Cc:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        devel@acpica.org, linux-kernel@vger.kernel.org,
-        Cezary Rojewski <cezary.rojewski@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1NAM11FT015:EE_|DM4PR12MB7501:EE_
+X-MS-Office365-Filtering-Correlation-Id: 081dc279-cf83-4437-21d6-08dad93b2f96
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: FvTzegFhq2T8wJL55T7kb0Py8xoVzS5WYkT0gCwvDWCK7tHMQa3uT0lBbs0yTbD137JxtD8jVBvc/Lgh3/plJZH5EcrJJGpYV5rgNPg5StWDqMcigFKy4jsSxjuewYvTEKI7IBCpLHklFaqv2a35y3QO2SQ9CIQI5yfFBZGd7W09PHkwQUU691WhrtOLV+hjihkGHdbBjVmVpPpCgoD0xhMn1XQ9RibuKh/NOAhV2nFoD8YQ4b/63JFswKup9WvIIBxnnCtWojEbPy9riP18G0EB+mK8ueKDY0vaa+UwIORmyFugw+wslzRJFpfDyCqhlbAReN+vnxAAvHm7J4dGo7iqFjN3KCzNqlgXSmg3LCbAf5bPv2HgmM1idUeUsK3tayaMCJVg3DjeiVDyrbOWEBHgIU1kx0XFywkZNuix57UQE3oRty3vNcTTlabU9G6Q8qv33J4aNDGmsxgcEQ1Hv8leHO2sgAv/dE+O2tooBdwl7ipob4T6oxC9/fRNb91QgV6V/+4gkFJI7CBwIloGqgu8XkxWVqeCIOkxgKkkMUIanUNZkurma/euSNDdzE/YppCwT3k3VgiuO2hc9QgPp+NVgUDZ1whNuebwr2FyRMh8XtxyAP9FYXgjdPxsRv4rl3vCNjXFPAIhah4x+0AdmqPyksAlxuEHMLmavOAsAysGatv3IRoeDkkMs/5gYe6wabDd2sw4yGixSJDrAQ4Nu0gjMNr5KVy01Hfho1z3HIw=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230022)(4636009)(346002)(136003)(376002)(396003)(39860400002)(451199015)(46966006)(40470700004)(36840700001)(40460700003)(36756003)(86362001)(2906002)(2616005)(336012)(47076005)(186003)(1076003)(426003)(16526019)(110136005)(83380400001)(478600001)(26005)(82310400005)(6666004)(7696005)(356005)(82740400003)(70206006)(44832011)(8936002)(41300700001)(40480700001)(81166007)(5660300002)(36860700001)(316002)(54906003)(8676002)(4326008)(70586007)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2022 16:42:24.9293
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 081dc279-cf83-4437-21d6-08dad93b2f96
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT015.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7501
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 8, 2022 at 3:40 PM Amadeusz Sławiński
-<amadeuszx.slawinski@linux.intel.com> wrote:
->
-> In our tests we get UBSAN warning coming from ACPI parser. This is
-> caused by trying to resolve operands when there is none.
->
-> [    0.000000] Linux version 5.15.0-rc3chromeavsrel1.0.184+ (root@...) (gcc (Ubuntu 10.3.0-1ubuntu1~20.04) 10.3.0, GNU ld (GNU Binutils for Ubuntu) 2.34) #1 SMP PREEMPT Sat Oct 16 00:08:27 UTC 2021
-> ...
-> [ 14.719508] ================================================================================
-> [ 14.719551] UBSAN: array-index-out-of-bounds in /.../linux/drivers/acpi/acpica/dswexec.c:401:12
-> [ 14.719594] index -1 is out of range for type 'acpi_operand_object *[9]'
-> [ 14.719621] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.15.0-rc3chromeavsrel1.0.184+ #1
-> [ 14.719657] Hardware name: Intel Corp. Geminilake/GLK RVP2 LP4SD (07), BIOS GELKRVPA.X64.0214.B50.2009111159 09/11/2020
-> [ 14.719694] Call Trace:
-> [ 14.719712] dump_stack_lvl+0x38/0x49
-> [ 14.719749] dump_stack+0x10/0x12
-> [ 14.719775] ubsan_epilogue+0x9/0x45
-> [ 14.719801] __ubsan_handle_out_of_bounds.cold+0x44/0x49
-> [ 14.719835] acpi_ds_exec_end_op+0x1d7/0x6b5
-> [ 14.719870] acpi_ps_parse_loop+0x942/0xb34
-> ...
->
-> Problem happens because WalkState->NumOperands is 0 and it is used when
-> trying to access into operands table. Actual code is:
-> WalkState->Operands [WalkState->NumOperands -1]
-> which causes out of bound access. Improve the check before above access
-> to check if ACPI opcode should have any arguments (operands) at all.
->
-> Link: https://github.com/acpica/acpica/pull/745
-> Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-> Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-> ---
->
-> Changes:
-> v2: Fix comment to tell that opcode has no arguments
->
-> ---
->  drivers/acpi/acpica/dswexec.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/acpi/acpica/dswexec.c b/drivers/acpi/acpica/dswexec.c
-> index e8ad41387f84..b082eb942a0f 100644
-> --- a/drivers/acpi/acpica/dswexec.c
-> +++ b/drivers/acpi/acpica/dswexec.c
-> @@ -389,9 +389,11 @@ acpi_status acpi_ds_exec_end_op(struct acpi_walk_state *walk_state)
->
->                 /*
->                  * All opcodes require operand resolution, with the only exceptions
-> -                * being the object_type and size_of operators.
-> +                * being the object_type and size_of operators as well as opcodes that
-> +                * take no arguments.
->                  */
-> -               if (!(walk_state->op_info->flags & AML_NO_OPERAND_RESOLVE)) {
-> +               if (!(walk_state->op_info->flags & AML_NO_OPERAND_RESOLVE) &&
-> +                   (walk_state->op_info->flags & AML_HAS_ARGS)) {
->
->                         /* Resolve all operands */
->
-> --
+In kernel 6.1 the backlight registration code was overhauled so that
+at most one backlight device got registered. As part of this change
+there was code added to still allow making an acpi_video0 device if the
+BIOS contained backlight control methods but no native or vendor drivers
+registered.
 
-Applied, thanks!
+Even after the overhaul this fallback logic is failing on the BIOS from
+a number of motherboard manufacturers supporting Ryzen APUs.
+What happens is the amdgpu driver finishes registration and as expected
+doesn't create a backlight control device since no eDP panels are connected
+to a desktop.
+
+Then 8 seconds later the ACPI video detection code creates an
+acpi_video0 device that is non-operational. GNOME then creates a
+backlight slider.
+
+To avoid this situation from happening make two sets of changes:
+
+Prevent desktop problems w/ fallback logic
+------------------------------------------
+1) Add support for the video detect code to let native drivers cancel the
+fallback logic if they didn't find a panel.
+
+This is done this way so that if another driver decides that the ACPI
+mechanism is still needed it can instead directly call the registration
+function.
+
+2) Add code to amdgpu to notify the ACPI video detection code that no panel
+was detected on an APU.
+
+Disable fallback logic by default
+---------------------------------
+This fallback logic was introduced to prevent regressions in the backlight
+overhaul.  As it has been deemed unnecessary by Hans explicitly disable the
+timeout.  If this turns out to be mistake and this part is reverted, the
+other patches for preventing desktop problems will avoid regressions on
+desktops.
+
+Mario Limonciello (3):
+  ACPI: video: Allow GPU drivers to report no panels
+  drm/amd/display: Report to ACPI video if no panels were found
+  ACPI: video: Don't enable fallback path for creating ACPI backlight by
+    default
+
+ drivers/acpi/acpi_video.c                       | 17 ++++++++++++-----
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c   |  4 ++++
+ include/acpi/video.h                            |  2 ++
+ 3 files changed, 18 insertions(+), 5 deletions(-)
+
+-- 
+2.34.1
+
