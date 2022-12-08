@@ -2,240 +2,168 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6518647536
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Dec 2022 18:56:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC20A6475AB
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Dec 2022 19:35:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229635AbiLHR4c (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 8 Dec 2022 12:56:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56900 "EHLO
+        id S229821AbiLHSfV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 8 Dec 2022 13:35:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229564AbiLHR4c (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Dec 2022 12:56:32 -0500
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58BA4AD309
-        for <linux-acpi@vger.kernel.org>; Thu,  8 Dec 2022 09:56:30 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SGjgh09lkrz8R0qAWlv5hqZz0XTFIgwUGSKDDsEcpOX4B33f1r+cDF8IWXpjHhgtE4XICAEFUjqnxw4KALyTEyjbPg2XfyObV4DLAAbRUZLOhe8LvmxCckTvjA9Ha8Hvv5bktyeRy5YTRw1MGkiltiqMhzei+wMyBb2vQrNExkYB2HLrLM37yqKhSD2xJVjJ75UGU/6ubBidwHB8gTNiFuJNYjmAbcvx94xqItXp4LhMfGCRhYqhC43Aq+ziFJo5YPOC0EZZZZe9ZcJMHBRxviTusuWkQx5urA4cy8Rovk4+xeyffyiEuLqWj939aVLrLEd8H0Xlb309NsvBkyAdyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vrNC2nvOq3McZXt25R/uFKYFlRwpz9dgm5AUD2B1KnY=;
- b=UrR/aDNIUVccZs5GL2dqebAhJBDX7lpM6aZPgnip3OxaLjNmf4dN6bJ8dkNETF3CJYSkhkpyW4flTh+TlvAWc3pqtzQLS24M+DnbH9b9rfVR3OpZIOi4nfhykRakdeIMtbDSwEDIzq7kNFT32MtH7qcuQmurUMRZtJRCeUeCHm8lzhT4+sSCtQT9s3lDFF76+xyDR848uXPoloJ26ruTmGTM82QqxtS/u3CT7W1SqfnA++2gU+S0tucRmzDlu2ujx8Gue8n8tO6Nt1+8qThrckwDHfXEtaTBUdOkTH8pEExXZi+dUBWgUBDQI8S4WLiLK1/g6Balfvr28+g0yUdFNA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vrNC2nvOq3McZXt25R/uFKYFlRwpz9dgm5AUD2B1KnY=;
- b=OGCa+CI+ZK9KqeCcPIOPJxXBwS2dLXeObVKoBHCIrFrguQ1a6Kjdim4ovYFI8rbRWOwQbRZGGMkFLydi6pVtuBH8b7HZ38BWUfX1Y6LBX0sTVg0R3TMlFg4hc593Op2Vyivbbh3gf+PqnHHTHqej4d2YCvt3I2uQVgjsM0mfHv4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by BN9PR12MB5065.namprd12.prod.outlook.com (2603:10b6:408:132::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.14; Thu, 8 Dec
- 2022 17:56:28 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::ff3c:2d37:75f3:442a]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::ff3c:2d37:75f3:442a%4]) with mapi id 15.20.5880.014; Thu, 8 Dec 2022
- 17:56:28 +0000
-Message-ID: <9b82e8c7-9308-1f99-a144-2cd2a770db73@amd.com>
-Date:   Thu, 8 Dec 2022 11:56:25 -0600
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [PATCH v3 1/3] ACPI: video: Allow GPU drivers to report no panels
-Content-Language: en-US
-To:     Daniel Dadap <ddadap@nvidia.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Alexander Deucher <Alexander.Deucher@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        amd-gfx@lists.freedesktop.org, linux-acpi@vger.kernel.org
-References: <20221208164207.13518-1-mario.limonciello@amd.com>
- <20221208164207.13518-2-mario.limonciello@amd.com>
- <Y5IjqZH8ocDkG2hx@ddadap-lakeline.nvidia.com>
-From:   "Limonciello, Mario" <mario.limonciello@amd.com>
-In-Reply-To: <Y5IjqZH8ocDkG2hx@ddadap-lakeline.nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BL0PR1501CA0022.namprd15.prod.outlook.com
- (2603:10b6:207:17::35) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+        with ESMTP id S229755AbiLHSfP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 8 Dec 2022 13:35:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85926511ED
+        for <linux-acpi@vger.kernel.org>; Thu,  8 Dec 2022 10:33:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1670524436;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=bCIG329yX9Oxb7r754RzmGzuN+6eq3Xm04xVUdanQoI=;
+        b=byXopbxWtedv+Np0iGsAgvhOXfSv4Rk4NW2rKNObpL1V1xufm6u5GytAY6jXQewmxWX3PI
+        v4cWkT23qg/NXar1p5yGhLBhp7KgJ3Z8mkkwk9Ryzt99FGJS1BVFR8J98TUpfq0HeHnzij
+        YaC2eltfHVxBK8P5niu0PSM7VLhI7qc=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-570-N34YOluBPICB0TBCuoDqQg-1; Thu, 08 Dec 2022 13:33:55 -0500
+X-MC-Unique: N34YOluBPICB0TBCuoDqQg-1
+Received: by mail-ed1-f71.google.com with SMTP id z3-20020a056402274300b0046b14f99390so1398610edd.9
+        for <linux-acpi@vger.kernel.org>; Thu, 08 Dec 2022 10:33:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bCIG329yX9Oxb7r754RzmGzuN+6eq3Xm04xVUdanQoI=;
+        b=nGh6PsTBCISbvCff0AYTcrbh7H2FYkKD+9pgG9zHOu50J0cIBxLeZw1IV87wTpLcvr
+         nyhJr29IcM4WSpvOY7cG+cB03KNg1usf+OuzdHlSDmIvkqYMhdyHuQgMRH1+1Q6UR+pJ
+         DNDLF4ZejYf2FoUY0dvCo/sdaQHAjQrKBQJH2NXd9tkVP2ZY3Khafo54+MTEap/KToms
+         oQkWzyNlk47AcRc0bknoMywQ/ERk25s7SCKUW6A8VLvj+kv/vpbU9US2bm/67mf7GNtb
+         ZpweVdCrxBdog75H1mTIPG5+EbW1S56Z1HohPBoIpyRZC+VqumFI3cshJHAwmAGrjWPq
+         1yDw==
+X-Gm-Message-State: ANoB5pmgsKi/3D4T3XYj5m/PBtoiR0zvGtCNA0RgMf5kKAuOZGTCubk1
+        swkkBPZNwDOs+JFgd7Rz/wdnNwbtoXp0w8m/RX67/6RB/idcpnRlSFmKmKfb96xqHd9VMn4lViH
+        NeSmMgCVOopbieh8b/Y2TDg==
+X-Received: by 2002:a17:906:15cf:b0:78d:f454:378a with SMTP id l15-20020a17090615cf00b0078df454378amr2350004ejd.45.1670524433916;
+        Thu, 08 Dec 2022 10:33:53 -0800 (PST)
+X-Google-Smtp-Source: AA0mqf7vNK3UwsAZQshgrNOKPMir8vleG8jbdL+Iit2lT5FiNc8fux5nHprcNRVnuNziRaQ16qrUYg==
+X-Received: by 2002:a17:906:15cf:b0:78d:f454:378a with SMTP id l15-20020a17090615cf00b0078df454378amr2349995ejd.45.1670524433764;
+        Thu, 08 Dec 2022 10:33:53 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id op4-20020a170906bce400b0078df3b4464fsm10178189ejb.19.2022.12.08.10.33.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Dec 2022 10:33:53 -0800 (PST)
+Message-ID: <c5acd35b-3bdb-c56e-f398-6d8bd33ba2ef@redhat.com>
+Date:   Thu, 8 Dec 2022 19:33:52 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|BN9PR12MB5065:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9e3d90d0-5765-4b93-3f5c-08dad94587af
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 2EShImsYqpDsY9FZkTiCWwEvbsQuoqY9foVlnVWMEHLpzfnCGoFIwUIt8CADKjDxkNhGSr4BnFwrJC0xF4RqjJT6WUJhP92l+fKSitfFwnrtytk6jBiIg6wdUAANPguV9wpcj+89JtZuhJhUEbKaOqxi84JqYvMCQ1pfvIf47VbhaIqzZUiDrpzd7xvzNHdOot+AH5vLVW2i403Ms0sQag5q4JHcWKpskTPcSDa0tcUN9kmml3pD7vTdV3lzDn/omLLvW9Trk6argHDzmofGVoD0yM7KqiJzIjrnVoM1NrrZatfAqW8Knjl28IGXWoeD+naoEMj/X/izTbGDxystqEdi3rTaT446/i3uSVVxJg2eLBOi/j6adJ9hxAHxb7xXyrxXnqgwkmWzf4doiEV2LX6oBGYg9xPAUToan8JEB/y3Vl+t4Cju0cty/dRq5s0g+EXxctrI8p3YZDN6MHvoobTxanJ37pvGqaK7Qze32Pkjh85lVGUIaXkHEx0A5qJ3zdSqKvdFKDMfkiotoS5abSPhzifnIYOeh5kwhvgAYeWUJ4q0i+tpzPDug49PZLougrVJvvnuKdLmreEvhg1HBjvcZOX4/Dgw+E8cRZhvjYA0Zkg+uQINu67M3dn6xlylnhmAn48Xnf7ityeMa+OG+mwv7ni/Yajdc3KDebfIROGkYMVefwBr4aOv8zlRWEtaasiF8XCtwiKf3vhTKjUAlbcuR8w67ZShui6zmNBJPPY=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(136003)(39860400002)(346002)(376002)(366004)(451199015)(66946007)(83380400001)(31686004)(86362001)(41300700001)(31696002)(2906002)(5660300002)(8936002)(4326008)(6666004)(8676002)(26005)(186003)(6506007)(6512007)(53546011)(2616005)(6916009)(6486002)(316002)(478600001)(66476007)(54906003)(66556008)(36756003)(38100700002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bmNmb3VDQlVRWS9LcVZYdTkzRlBGdHNqTmU1L0hQT3puVkVVa1VkeGVBelhs?=
- =?utf-8?B?M20ra1JiUEx0QmRHUXVhUEFpRU8ySlkvWEpURVpyd2NzYUR2alA2VFIrSFlL?=
- =?utf-8?B?TCticThCNnJ3S3RCS1pBSmtCUFhZdWljZzZwd0dqWGpudTJkQUpKQ002OTNn?=
- =?utf-8?B?QzgwVXBZSzhwem5QbG1rbktuQ3ZnYkllMU5aT0VOYlFuZTZwM2hLM0hEdzFW?=
- =?utf-8?B?WWQ1dGl0VXRaRmRrSVFDYjBxT2EzYVhhWjJPZ3ZTV1ptK0Rmem5BT0lSMW0z?=
- =?utf-8?B?L0lORTRRSVVYcjE0R20rWXVQQXpVd3JFbVRrTFl3SUxoclJVT3I2cXBkMDR1?=
- =?utf-8?B?Mk9aQ2JiUDFFeU8zd00vQlN6MzZHdlBUbWZrMHY2a2ROeFpYUDB2bWE0ckZ1?=
- =?utf-8?B?bG5ob3BqNVAxZERVTjhrRThLbG1Da2FHeWJjT2FBVjVobmJ5Z1lQUCs3TUIw?=
- =?utf-8?B?RWZKT1UwUEVMaUJNY2t5bFBWR1FXWTlxL0xYcEdhZ0lWdTNwUDNsLzZjZDQ4?=
- =?utf-8?B?YkFpeUVPZDYxcXU4TStubW5IS2JuM0R2S0YyV0dlUjRpanI3cWJzbFJWeTBt?=
- =?utf-8?B?dTByckV0M2hHUzdDOUxxZXpQbUdGblU4cGZBQlJ6aDlvdW90MXI4eCtIY0wy?=
- =?utf-8?B?UUNjZjNhbVhkcC9MRVFvd3lrcUwxcWJaM0NwMHdweTVhNHZoRXZVTHNNbjZy?=
- =?utf-8?B?dDRUQ1hxMXptYlJ1M1RCTFhZemtHeThFaFgwT2lrSDByYU5SR0hsaSt4aDU1?=
- =?utf-8?B?eG5GYUJETmFvenZxbmh6NTNHUzNDMnhEWXArUFhBcnpic29KVFRHWWI4K2pW?=
- =?utf-8?B?YmMxOE4wTzBJL3l2QzloTG5WM3ZuOTh5UVpLYUNqT2VwYjRaemR6cmUrdVBv?=
- =?utf-8?B?K3ZvajhNQ2ZCY05yVTdDU2FMSXNKVGVnMWJrclZwekhreEVLZVNrdFZsRk5v?=
- =?utf-8?B?WmZyTnFHYzZlWWx1dkFLMlljcHJpalM2OUUzN0Z6YjlLSDdveHpWOE1vZUlt?=
- =?utf-8?B?NTVSNzdLNjk2T2hWQllpb0Z5ZzhhS25NRmh6YmVyR1BUMmJERGlnS1FUdzhX?=
- =?utf-8?B?T1p4SEN4ZUNqVXErNnYwLzNtV0JUYThDcm8wN3F3T3VwbDVjdGFZWndaQitC?=
- =?utf-8?B?elRpTWsrVklHT05CeFFNZVVoNWJIU1daUStDVHp6MVdtK0U5Z3hRVUdGbnVD?=
- =?utf-8?B?dExtVnRaMFNUN3ZXdklDVzFoZzhsL2E4OHRXTEw1UkpyL1hPQlBmemZiZzhy?=
- =?utf-8?B?OFRBdU5STlpEWmNzWGlHMVowVGdxSXBkdFJHbHorbGFhMXg4UHZsVjdyOEJh?=
- =?utf-8?B?T2tST0VENk14YWNoUkV6MHh6NjBwNytaVmxlSFJwQVg2bERnUy91elM2UWZh?=
- =?utf-8?B?Um03R3VlK1lmamxEUit4dGorb0daYVNUTW1odllaZVNmVFZGRmlwbHRMc1Jy?=
- =?utf-8?B?UzAzbE0zQVNwTjhROE5NWTVOSHhYa2M1QkJibzRoUlJ6Yzl2aWlrQlI5MHJq?=
- =?utf-8?B?R3gxNk1YTzgrN1hrQnkzQWtyRXlGQzg3MjVLdlo5ekQ3clloenhjTno0S252?=
- =?utf-8?B?NWVOaWczQ3J6OFFYdldNWTU4VG11UEc5VSsxSmgxZFdXbUMvcHVMNms3SXBx?=
- =?utf-8?B?N1g4a0JucVE1QzRQMlpDbXYzN01XQ3dHU0ZwUmxyZHBtYkdwZy9Ibk1YZTEv?=
- =?utf-8?B?N1ZBUk9ZckpWdERmK1hucUhuajBNR2VXUGdjOStsaTJtZGN6cnNnSE5DejFR?=
- =?utf-8?B?KzhZVTVOR2hRQ2d1ejNiSXIyTU1CNnNJOEx3WFBRWUVCNG1qYUUwR21UeUJK?=
- =?utf-8?B?ckJpbkZnUWRqakk2RlpqU0tydXpWb1hkSmd0Y2xJdGFJUjdkenl6cGN0L21V?=
- =?utf-8?B?MytVLzYyTDBBUUljWjZrcEZ4UmNjSWVnbGNQVGhUL3RCMjg0N1JUcG44SlJ2?=
- =?utf-8?B?NnhwalRkekw5c3FJNEFXZm9zeE9pU3F0OHYwNHErVDZOektJSGdBb1NnbjBK?=
- =?utf-8?B?Qkh1SXZSUXdQOWNWWDZQM0N2UEFOWEY4dkdrN1FucTNqdFQ0dXZMOVl5azJp?=
- =?utf-8?B?N3NHRTY0QTdpZlNVSmtaaGNSdHJmUWd6TFRuckNKR0ljMFYxMTI2N2Y0bDRK?=
- =?utf-8?Q?jSq0rAdMzAM3B8Aihxitprfaj?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e3d90d0-5765-4b93-3f5c-08dad94587af
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2022 17:56:28.0232
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ex0iujTexd1uxdw9X44GdyIs/yK4VBMmM8dDVXjcxnIAGGTjQFQPYhlKOWdDe1lWVpLOMiOa8e+bhHtFxU/gtw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5065
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.1
+Subject: Re: [PATCH 0/4] ACPI[CA]: fix ECDT EC probe ordering issues
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Andy Shevchenko <andy@kernel.org>, kai.heng.feng@canonical.com,
+        =?UTF-8?Q?Johannes_Pen=c3=9fel?= <johannespenssel@posteo.net>,
+        linux-acpi@vger.kernel.org, devel@acpica.org
+References: <20221208142335.488382-1-hdegoede@redhat.com>
+ <CAJZ5v0jA1cv5wuuouMkM1GsV3Chu+RSxBC7qH7YtDTVa4DGSOw@mail.gmail.com>
+Content-Language: en-US, nl
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CAJZ5v0jA1cv5wuuouMkM1GsV3Chu+RSxBC7qH7YtDTVa4DGSOw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 12/8/2022 11:49, Daniel Dadap wrote:
-> On Thu, Dec 08, 2022 at 10:42:05AM -0600, Mario Limonciello wrote:
->> The current logic for the ACPI backlight detection will create
->> a backlight device if no native or vendor drivers have created
->> 8 seconds after the system has booted if the ACPI tables
->> included backlight control methods.
->>
->> If the GPU drivers have loaded, they may be able to report whether
->> any LCD panels were found.  Allow using this information to factor
->> in whether to enable the fallback logic for making an acpi_video0
->> backlight device.
->>
->> Suggested-by: Hans de Goede <hdegoede@redhat.com>
->> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
->> ---
->> v2->v3:
->>   * Add Hans' R-b
->>   * Add missing declaration for non CONFIG_ACPI_VIDEO case
->> v1->v2:
->>   * Cancel registration for backlight device instead (Hans)
->>   * drop desktop check (Dan)
->> ---
->>   drivers/acpi/acpi_video.c | 11 +++++++++++
->>   include/acpi/video.h      |  2 ++
->>   2 files changed, 13 insertions(+)
->>
->> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
->> index 32953646caeb..f64fdb029090 100644
->> --- a/drivers/acpi/acpi_video.c
->> +++ b/drivers/acpi/acpi_video.c
->> @@ -2178,6 +2178,17 @@ static bool should_check_lcd_flag(void)
->>   	return false;
->>   }
->>   
->> +/*
->> + * At least one graphics driver has reported that no LCD is connected
->> + * via the native interface. cancel the registration for fallback acpi_video0.
->> + * If another driver still deems this necessary, it can explicitly register it.
->> + */
->> +void acpi_video_report_nolcd(void)
->> +{
->> +	cancel_delayed_work(&video_bus_register_backlight_work);
->> +}
->> +EXPORT_SYMBOL(acpi_video_report_nolcd);
->> +
+Hi,
+
+On 12/8/22 17:51, Rafael J. Wysocki wrote:
+> Hi Hans,
 > 
-> Thanks for removing the desktop check.
-
-Sure.
-
-> 
-> It's not entirely clear to me what happens if you try to cancel a
-> delayed work that was never scheduled. I got as far as determining that
-> del_timer() in kernel/time/timer.c will probably return 0, but I didn't
-> really feel like walking through the rest of try_to_grab_pending() to
-> figure out what happens next. You've probably already tested this with
-> the default disabled timer, so as long as nothing bad happened there,
-> this seems fine.
-> 
-
-Yeah; I did test it and nothing blew up during my test.
-
-> This is probably overly complicated, so if you think it's worth doing, I
-> would definitely add it later, but I wonder if it might make sense to
-> pass an acpi_handle to a _BC[LM] method or one of its parents, so that
-> this could be scoped to a particular device. Looking at the ACPI table
-> dump from a random multi-GPU laptop, it looks like there are two
-> instances of _BCL, one under _SB.GP<number>.VGA.LCD for the iGPU, and
-> the other under _SB.PCI<num>.GPP<num>.PEGP.EDP<num> for the dGPU. The
-> caller would pass in handles for methods/devices that it will handle,
-> and then the fallback, if it runs at all, would skip any handles that
-> were registered with it when it crawls for _BC[LM]. Or the equivalent
-> inverse logic, or something else like that. I think it's probably fine
-> to keep the current unscoped design and just assert that any other GPU
-> drivers that want the ACPI video driver to handle panel backlight should
-> register it explicitly; if for some reason that ends up not working out,
-> we could revisit scoping it then.
-
-Yeah that is a lot more complex but complete setup.  I think if we end 
-up having to revert the 3rd patch and having GPU drivers call the 
-registration explicitly isn't a good idea for some reason it's worth 
-considering.
-
-> 
->>   int acpi_video_register(void)
->>   {
->>   	int ret = 0;
->> diff --git a/include/acpi/video.h b/include/acpi/video.h
->> index a275c35e5249..a56c8d45e9f8 100644
->> --- a/include/acpi/video.h
->> +++ b/include/acpi/video.h
->> @@ -53,6 +53,7 @@ enum acpi_backlight_type {
->>   };
->>   
->>   #if IS_ENABLED(CONFIG_ACPI_VIDEO)
->> +extern void acpi_video_report_nolcd(void);
->>   extern int acpi_video_register(void);
->>   extern void acpi_video_unregister(void);
->>   extern void acpi_video_register_backlight(void);
->> @@ -69,6 +70,7 @@ extern int acpi_video_get_levels(struct acpi_device *device,
->>   				 struct acpi_video_device_brightness **dev_br,
->>   				 int *pmax_level);
->>   #else
->> +static inline void acpi_video_report_nolcd(void) { return; };
->>   static inline int acpi_video_register(void) { return -ENODEV; }
->>   static inline void acpi_video_unregister(void) { return; }
->>   static inline void acpi_video_register_backlight(void) { return; }
->> -- 
->> 2.34.1
+> On Thu, Dec 8, 2022 at 3:23 PM Hans de Goede <hdegoede@redhat.com> wrote:
 >>
+>> Hi Rafael,
+>>
+>> As you requested in:
+>> https://github.com/acpica/acpica/pull/786#issuecomment-1342632326
+>>
+>> Here is a non RFC version of my series fixing some ECDT EC probe
+>> ordering issues which are causing issues om some laptops:
+>>
+>> https://bugzilla.kernel.org/show_bug.cgi?id=214899
+>>
+>> including the ACPICA changes.
+>>
+>> This series is rebased on top of linux-pm/bleeding-edge,
+>> otherwise it is unchanged from the previous [RFC v3] version.
+>>
+>> From the original cover-letter of the previous [RFC v3] version:
+>>
+>> The problem this fixed is best described by the commit message of patch 4:
+>>
+>> ACPI-2.0 says that the EC OpRegion handler must be available immediately
+>> (like the standard default OpRegion handlers):
+>>
+>> Quoting from the ACPI spec version 6.3: "6.5.4 _REG (Region) ...
+>> 2. OSPM must make Embedded Controller operation regions, accessed via
+>> the Embedded Controllers described in ECDT, available before executing
+>> any control method. These operation regions may become inaccessible
+>> after OSPM runs _REG(EmbeddedControl, 0)."
+>>
+>> So acpi_bus_init() calls acpi_ec_ecdt_probe(), which calls
+>> acpi_install_address_space_handler() to install the EC's OpRegion
+>> handler, early on.
+>>
+>> This not only installs the OpRegion handler, but also calls the EC's
+>> _REG method. The _REG method call is a problem because it may rely on
+>> initialization done by the _INI methods of one of the PCI / _SB root devs,
+>> see for example: https://bugzilla.kernel.org/show_bug.cgi?id=214899 .
+>>
+>> Generally speaking _REG methods are executed when the ACPI-device they
+>> are part of has a driver bound to it. Where as _INI methods must be
+>> executed at table load time (according to the spec). The problem here
+>> is that the early acpi_install_address_space_handler() call causes
+>> the _REG handler to run too early.
+>>
+>> To allow fixing this the ACPICA code now allows to split the OpRegion
+>> handler installation and the executing of _REG into 2 separate steps.
+>>
+>> This commit uses this ACPICA functionality to fix the EC probe ordering
+>> by delaying the executing of _REG for ECDT described ECs till the matching
+>> EC device in the DSDT gets parsed and acpi_ec_add() for it gets called.
+>> This moves the calling of _REG for the EC on devices with an ECDT to
+>> the same point in time where it is called on devices without an ECDT table.
+>>
+>> Changes in v3:
+>> - Add a prep patch to fix an indentation issue in Linux' acpixf.h to fix
+>>   the patch from ACPICA's script not applying
+>> - Add 2 new functions to ACPICA for this instead of a flags argument
+>>   1. acpi_install_address_space_handler_no_reg()
+>>   2. acpi_execute_reg_methods()
+>> - Add a patch to fix EC handler removal in the ECDT case
+> 
+> I've applied the series and queued it up for 6.2.
+> 
+> However, because I won't be able to do any kernel work before the next
+> week (most likely), it will not go into linux-next before Monday and I
+> would like it to spend at least a few days in it. This means that it
+> will be pushed in the second half of the merge window.
+
+Second half of the merge window is perfectly fine with me. Thank you
+for picking this up.
+
+Regards,
+
+Hans
+
 
