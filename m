@@ -2,124 +2,183 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0A4B648E9A
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Dec 2022 13:24:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 942BD648EE1
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Dec 2022 14:36:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229524AbiLJMYM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 10 Dec 2022 07:24:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40228 "EHLO
+        id S229685AbiLJNgH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 10 Dec 2022 08:36:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbiLJMYL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 10 Dec 2022 07:24:11 -0500
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EC0819C28
-        for <linux-acpi@vger.kernel.org>; Sat, 10 Dec 2022 04:24:09 -0800 (PST)
-Received: by mail-lf1-x134.google.com with SMTP id p8so11103672lfu.11
-        for <linux-acpi@vger.kernel.org>; Sat, 10 Dec 2022 04:24:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:cc:to:subject:from:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1ntMKn2p9kxpu5j1uY9R0oVW09w0Sy+4jvmvXlu/bLE=;
-        b=MsCPGBLXvljE/8n3GeFKQvjbG2pwOKSfJMq7SeHHoHgid3FYwkgVPDXuoVEnVrukvZ
-         UytqfBxRNvEzNvgrzDHzzumq7Cv9KOldxETiE5uDUxSh0s9wnH/8B0BxBbT0NltmF7Ae
-         aOagJ+O6DUTtrSN47ipyEiXDgKSISrIbcON6GoaQ1PJHYpIaMp3vdX2oLiHnMimxcdfC
-         nGLKiz+aR65lhfpG795dluJPgTbo1xcESioTtc9ePsUlqT1Pn6s+1sNUxatV4D2WNqMd
-         apq29eoIsqmbssuDnzzraT3Y0xh4OC9JKWe2N1eFw3pXMVj/jfzTmwuQ8Vs8ac2+8vzo
-         6OcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:from:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=1ntMKn2p9kxpu5j1uY9R0oVW09w0Sy+4jvmvXlu/bLE=;
-        b=PCgmoYplUckoTP8tLtOoyqObaJa5XxbgaPCBd4mGMX1zdkGQWjYptZVPWiLNMQvRVe
-         D3h+G6u77n2CnnJr7mVj2njprUfoPMYORHq75ZGCFvvdwq1lBr0Gbfas+I7FtQ1b/9cn
-         TGb1cEVSU1wt/xrArVRd8cIRZaUkaBaQE3b9sc159hLrFIpi7KGW1/rJ37TCyP5ZLleh
-         Vuqmf6yZ3g62OnOlUAhWP1c/dI5w9vIJe8gXwOiFoyx/fD7/gdnJRUuUdM61FhywjLtA
-         JzH3bBlNKu1x39L1hi48ew0qLg+D/b42XCy/gocHUFrQnLAujBP5huhgVk5WAJ5Hb3iZ
-         HYQA==
-X-Gm-Message-State: ANoB5pmQqjG209afujpZspSUxeyG/2Lx0Olbfc5QfLnXWCToMGDrjaw4
-        IjD9NlJoD6Nb+SvFgw0swBex0w==
-X-Google-Smtp-Source: AA0mqf5FvTpHbVoAOjsn2K0CO52k9pxEzW8xUPW8Hev+c9m9rHmgeApBz3E2gn3k7UwRWZISsNi6Vg==
-X-Received: by 2002:a05:6512:3d86:b0:4af:af1e:f966 with SMTP id k6-20020a0565123d8600b004afaf1ef966mr3327522lfv.38.1670675047999;
-        Sat, 10 Dec 2022 04:24:07 -0800 (PST)
-Received: from [192.168.1.101] (abxh44.neoplus.adsl.tpnet.pl. [83.9.1.44])
-        by smtp.gmail.com with ESMTPSA id c10-20020a05651200ca00b004aa0870b5e5sm703328lfp.147.2022.12.10.04.24.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 10 Dec 2022 04:24:07 -0800 (PST)
-Message-ID: <7cc6ae49-4109-c6aa-2278-63afca33b1e8@linaro.org>
-Date:   Sat, 10 Dec 2022 13:24:06 +0100
+        with ESMTP id S229568AbiLJNgG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 10 Dec 2022 08:36:06 -0500
+Received: from out30-42.freemail.mail.aliyun.com (out30-42.freemail.mail.aliyun.com [115.124.30.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 677E717073;
+        Sat, 10 Dec 2022 05:36:04 -0800 (PST)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R801e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045170;MF=xueshuai@linux.alibaba.com;NM=0;PH=DS;RN=19;SR=0;TI=SMTPD_---0VWy3O4v_1670679359;
+Received: from 30.221.144.117(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VWy3O4v_1670679359)
+          by smtp.aliyun-inc.com;
+          Sat, 10 Dec 2022 21:36:00 +0800
+Message-ID: <81dc3225-bd4c-22d6-ba62-b12f26e655e3@linux.alibaba.com>
+Date:   Sat, 10 Dec 2022 21:35:58 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.5.0
+Subject: Re: [PATCH v3 0/4] arm64: improve handle synchronous External Data
+ Abort
 Content-Language: en-US
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-Subject: Arm RAS EDAC & AEST table driver
-To:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>, linux-acpi@vger.kernel.org
-Cc:     Alex Elder <elder@linaro.org>,
-        Tyler Baicar <baicar@os.amperecomputing.com>
+To:     Xie XiuQi <xiexiuqi@huawei.com>, catalin.marinas@arm.com,
+        will@kernel.org, james.morse@arm.com, rafael@kernel.org,
+        tony.luck@intel.com, robert.moore@intel.com, bp@alien8.de,
+        devel@acpica.org, linux-arm-kernel@lists.infradead.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     tanxiaofei@huawei.com, wangxiongfeng2@huawei.com,
+        lvying6@huawei.com, naoya.horiguchi@nec.com,
+        wangkefeng.wang@huawei.com,
+        Bixuan Cui <cuibixuan@linux.alibaba.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>
+References: <20221205160043.57465-1-xiexiuqi@huawei.com>
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <20221205160043.57465-1-xiexiuqi@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-10.2 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi!
-
-I've been working on an EDAC driver utilizing Arm RAS for
-some time now. It's based on the (many) previous efforts by
-Qualcomm and Ampere folks. In its current state, it supports
-system register-based operation and error detection on CPU
-caches on DT platforms. I've started adding code for ACPI, but
-that has not been validated at all yet (other than compile
-testing), as I don't have any suitable hardware (RAS extensions
-& some kind of UEFI & a proper AEST table) to run it on.
-
-I made it by taking the Qualcomm Kryo (fancy Cortex)-specific
-driver that was written just for CPU cache error detection
-and generalizing it to the point where (I think) it's
-ready to handle all the configurations that it should as a
-generic impl (modulo IMPLEMENTATION DEFINED/vendor screw-up,
-of course..) when support for them is added.
-
-I've tried to make it extensible, so that support for other
-error sources (SMMU/GIC/vendor-specific/RAM/CPU_TLB/
-CPU_"generic") and implementations using MMIO registers can
-be added later on (again, I have no means of testing most of
-these things).
-
-Could I ask you folks for a general/first-impressions review
-of that said driver? Smoke testing would also be appreciated..
-
-As far as I'm aware, generating errors yourself for testing
-purposes is only possible if the AEST node interface is a
-MMIO one, as ERRnPFGCDN seems to only be accessible that way..
-
-Either my boards are super stable and never throw errors or
-the driver simply doesn't detect them, hard to tell :)
-
-It probably leaks memory like crazy and there are some obvious
-style issues, but please take a look at the general structure
-and share your opinions, especially if(when) you find errors!
-You can consider this a v(0.01), I suppose..
 
 
-Available over at [1], with an example dt part for QC SM8250.
+On 2022/12/6 AM12:00, Xie XiuQi wrote:
+> This series fix some issue for arm64 synchronous External Data Abort.
+> 
+> 1. fix unhandled processor error
+> According to the RAS documentation, if we cannot determine the impact
+> of the error based on the details of the error when an SEA occurs, the
+> process cannot safely continue to run. Therefore, for unhandled error,
+> we should signal the system and terminate the process immediately.
+> 
+> 2. improve for handling memory errors
+> 
+> If error happened in current execution context, we need pass
+> MF_ACTION_REQUIRED flag to memory_failure(), and if memory_failure()
+> recovery failed, we must handle this case, other than ignore it.
+> 
+> ---
+> v3: add improve for handing memory errors
+> v2: fix compile warning reported by kernel test robot.
+> 
+> Xie XiuQi (4):
+>   ACPI: APEI: include missing acpi/apei.h
+>   arm64: ghes: fix error unhandling in synchronous External Data Abort
+>   arm64: ghes: handle the case when memory_failure recovery failed
+>   arm64: ghes: pass MF_ACTION_REQUIRED to memory_failure when sea
+> 
+>  arch/arm64/kernel/acpi.c      |  6 ++++++
+>  drivers/acpi/apei/apei-base.c |  5 +++++
+>  drivers/acpi/apei/ghes.c      | 31 ++++++++++++++++++++++++-------
+>  include/acpi/apei.h           |  1 +
+>  include/linux/mm.h            |  2 +-
+>  mm/memory-failure.c           | 24 +++++++++++++++++-------
+>  6 files changed, 54 insertions(+), 15 deletions(-)
+> 
 
-Konrad
+Hi, XiuQi,
 
+As we discussed, if you want to fix this problem before the new UEFI version comes out,
+you need a another patch separated synchronous error handling into task work when SEA
+notification is used. Be careful that do not break error handling of other notification
+type.
 
-[1] https://github.com/konradybcio-work/linux/commits/ras_edac
+A reference code is pasted bellow.
+
+Thank you.
+
+Best Regards,
+Shuai
+
+----
+
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 57cae48ebc1f..1982a5e3fd8c 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -445,15 +445,71 @@ static void ghes_kick_task_work(struct callback_head *head)
+ 	gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
+ }
+
++/**
++ * struct mce_task_work - for synchronous RAS event
++ *
++ * @twork:                callback_head for task work
++ * @pfn:                  page frame number of corrupted page
++ * @flags:                fine tune action taken
++ *
++ * Structure to pass task work to be handled before
++ * ret_to_user via task_work_add().
++ */
++struct mce_task_work {
++	struct callback_head twork;
++	u64 pfn;
++	int flags;
++};
++
++static void memory_failure_cb(struct callback_head *twork)
++{
++	int rc;
++	struct mce_task_work *twcb =
++		container_of(twork, struct mce_task_work, twork);
++
++	rc = memory_failure(twcb->pfn, twcb->flags);
++	kfree(twcb);
++
++	if (!rc)
++		return;
++	/*
++	 * -EHWPOISON from memory_failure() means that it already sent SIGBUS
++	 * to the current process with the proper error info,
++	 * -EOPNOTSUPP means hwpoison_filter() filtered the error event,
++	 *
++	 * In both cases, no further processing is required.
++	 */
++	if (ret == -EHWPOISON || ret == -EOPNOTSUPP)
++		return;
++
++	pr_err("Memory error not recovered");
++	force_sig(SIGBUS);
++}
++
+ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
+ {
+ 	unsigned long pfn;
++	struct mce_task_work *twcb;
+
+ 	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
+ 		return false;
+
+ 	pfn = PHYS_PFN(physical_addr);
+-	memory_failure_queue(pfn, flags);
++
++	if (flags == MF_ACTION_REQUIRED && task->mm) {
++		twcb = kmalloc(sizeof(*twcb), GFP_ATOMIC);
++		if (!twcb)
++			return false;
++
++		twcb->pfn = pfn;
++		twcb->flags = flags;
++		init_task_work(&twcb->twork, memory_failure_cb);
++		task_work_add(current, &twcb->twork, TWA_RESUME);
++		return false;
++	} else {
++		memory_failure_queue(pfn, flags);
++	}
++
+ 	return true;
+ }
+
+-- 
+2.20.1.12.g72788fdb
