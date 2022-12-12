@@ -2,57 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2499D64AA91
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Dec 2022 23:46:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4275064ABC1
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Dec 2022 00:47:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233943AbiLLWqt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Dec 2022 17:46:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48452 "EHLO
+        id S233746AbiLLXrc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Dec 2022 18:47:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234020AbiLLWqa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Dec 2022 17:46:30 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0457A1C112;
-        Mon, 12 Dec 2022 14:46:26 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 51A2BB80E7A;
-        Mon, 12 Dec 2022 22:46:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F2487C433D2;
-        Mon, 12 Dec 2022 22:46:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670885184;
-        bh=MstQfPbhIAU7j4DKA3OFGf5pW7AaPX/kJtPtU1oAINA=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=duJ/O74l5PkZ/768MtkNWpVY9AIK+xovaiy1zKdLSZQHbW3NwNQ0s8RFiev68WktA
-         qQXuJqasT7wIonS+TJU/iXLe015GCKV2HVhl/a94a0GDa37il2RAHV403eHlZ7Vtux
-         VHF/to7MQsoPLKeIpsj+kk+nMno8GuLRy1EEhg4yBUhhLNYfRlLouQ4Go/xkHRSBVi
-         LT4rluBqUwK4Yjib6q4kYRAhjJV8EEQApolXiBvLUIiWGxgeZmoUNwdGfvBHt7q9Fz
-         wAKge3MVXG7aLxP35w3C10asxcYU4clvM3srWGUB5fu4VmBBFGd6Gg7YnRvyfYiKmg
-         +vUbYZ+6DwqgQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id DFC4CC00448;
-        Mon, 12 Dec 2022 22:46:23 +0000 (UTC)
-Subject: Re: [GIT PULL] Compute Express Link (CXL) for 6.2
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <6395383a608a5_4962d294e9@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-References: <6395383a608a5_4962d294e9@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <6395383a608a5_4962d294e9@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl tags/cxl-for-6.2
-X-PR-Tracked-Commit-Id: f04facfb993de47e2133b2b842d72b97b1c50162
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: c1f0fcd85d3d66f002fc1a4986363840fcca766d
-Message-Id: <167088518390.6748.16216442840433238533.pr-tracker-bot@kernel.org>
-Date:   Mon, 12 Dec 2022 22:46:23 +0000
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     torvalds@linux-foundation.org, linux-cxl@vger.kernel.org,
-        nvdimm@lists.linux.dev, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        with ESMTP id S234174AbiLLXrA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Dec 2022 18:47:00 -0500
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C13341CB19;
+        Mon, 12 Dec 2022 15:46:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1670888815; x=1702424815;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=LSqZ0loCfJhvbR9nXaGpiKI2neLHrfliGiYJe7SLDDs=;
+  b=XVpCQmxUtx2siXU+492VCO3vi3HtHfg6Vzom0Cff9GaY7z/+ndsb759w
+   y3wp9OA65b4LxjmjfOFIKb31TpuLt0yQvWtKGxj4c8ebzJyr2hsxSqD+J
+   OK8b1/vGzIQ05pk3155qATMnm5fl2PHmWjmz9uuJR1lUsuGIusV7fYqZo
+   w=;
+Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 12 Dec 2022 15:46:55 -0800
+X-QCInternal: smtphost
+Received: from nasanex01b.na.qualcomm.com ([10.46.141.250])
+  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2022 15:46:54 -0800
+Received: from [10.134.67.48] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Mon, 12 Dec
+ 2022 15:46:53 -0800
+Message-ID: <425a8fe9-24b6-26c7-9150-0d3fb76430be@quicinc.com>
+Date:   Mon, 12 Dec 2022 15:46:53 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v7 10/20] gunyah: rsc_mgr: Add resource manager RPC core
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Murali Nalajala <quic_mnalajal@quicinc.com>,
+        Trilok Soni <quic_tsoni@quicinc.com>,
+        "Srivatsa Vaddagiri" <quic_svaddagi@quicinc.com>,
+        Carl van Schaik <quic_cvanscha@quicinc.com>,
+        Prakruthi Deepak Heragu <quic_pheragu@quicinc.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-acpi@vger.kernel.org>
+References: <20221121140009.2353512-1-quic_eberman@quicinc.com>
+ <20221121140009.2353512-11-quic_eberman@quicinc.com>
+ <Y3uYRvrCZNnbDiY5@kroah.com>
+From:   Elliot Berman <quic_eberman@quicinc.com>
+In-Reply-To: <Y3uYRvrCZNnbDiY5@kroah.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,15 +80,33 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Sat, 10 Dec 2022 17:54:02 -0800:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl tags/cxl-for-6.2
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/c1f0fcd85d3d66f002fc1a4986363840fcca766d
+On 11/21/2022 7:24 AM, Greg Kroah-Hartman wrote:
+> On Mon, Nov 21, 2022 at 05:59:59AM -0800, Elliot Berman wrote:
+>> +struct gh_rm_rpc {
+>> +	struct device *dev;
+>> +	struct gunyah_resource tx_ghrsc, rx_ghrsc;
+>> +	struct gh_msgq msgq;
+>> +	struct mbox_client msgq_client;
+>> +	struct gh_rm_connection *active_rx_connection;
+>> +	int last_tx_ret;
+>> +
+>> +	struct idr call_idr;
+>> +	struct mutex call_idr_lock;
+>> +
+>> +	struct mutex send_lock;
+>> +
+>> +	struct work_struct recv_work;
+>> +};
+> 
+> What handles the reference counting for this object?  Shouldn't this be
+> a real 'struct device' and just have a pointer to the parent?  Otherwise
+> how do you know when to free this?
+> 
 
-Thank you!
+Reference counting is not needed on the gh_rm_rpc object because its 
+only client (the VM manager) is torn down before the gh_rm_rpc.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Thanks,
+Elliot
