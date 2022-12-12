@@ -2,429 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0C5F649B8E
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Dec 2022 11:01:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71B2A64A45E
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Dec 2022 16:45:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231773AbiLLKB5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Dec 2022 05:01:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36298 "EHLO
+        id S232152AbiLLPpj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Dec 2022 10:45:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231728AbiLLKB4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Dec 2022 05:01:56 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCC20B1C1
-        for <linux-acpi@vger.kernel.org>; Mon, 12 Dec 2022 02:00:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1670839258;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=67gB3ORosS0ConpkZZBUUcq/aPiALtghA9gZOPG9rz4=;
-        b=KUSH+S1yCCvSK3upnwDg5+EUWJXTEL8FJKBYjsXY55SvsTazDtLMDStM2vJm60ODrpS8da
-        xFiCZWehxC/Iqy9S0WbM7hei8n8OWlfrQV7Hz8KRv8Xec2RcPHLenzN9t+8YO7/DSygyXU
-        SeZDL6aNpHsUSl0O0shgBkS9xd8OcVQ=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-434-t8giqExrO0W_wtiw2TmmHQ-1; Mon, 12 Dec 2022 05:00:56 -0500
-X-MC-Unique: t8giqExrO0W_wtiw2TmmHQ-1
-Received: by mail-ed1-f71.google.com with SMTP id s13-20020a056402520d00b0046c78433b54so4748731edd.16
-        for <linux-acpi@vger.kernel.org>; Mon, 12 Dec 2022 02:00:56 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:content-language:cc:to:subject:from
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=67gB3ORosS0ConpkZZBUUcq/aPiALtghA9gZOPG9rz4=;
-        b=dXTvHiZ7F9pkzgtiUW3emfIs0PXVfISQwpCzERnLIvBQCWhgT9MviK3m5eTkrk92Ly
-         faTTXxYwIg3DUP530s2f4YcCDzmBuudrxm4YW3kp9rDzFBNR9aEpKwvqbrEpAZZRr0Oa
-         1hX4HkoTnJ2s5Krwae/rE3WJUa7I7teP+uzaCwRYhUqsMtRJ4XnX4afWwJSfXRzNMAzR
-         4/1KQzIbBE18WX3Hs6viY/if/y6r3CDJibMjeLXb9KJ5xirQq3UJZP4PdB9IekrLni/S
-         3MzBndIFpEVcT/lXjIaoVVioRlTMqXs6prjXGBghLuWQkYCgCTZcDoDn6jJTgP0D7y5Y
-         410A==
-X-Gm-Message-State: ANoB5plhEbUDXFjFaGnV+DAFUI6CWEYFnr4D0dedHuRarobsfeZfvVX3
-        5uddbxMGWX9peEazpLTz7caZLWAWOCf83Y21fr50BcehQmBN+lMXtNaNy7WZQFeUvt12+1DED1h
-        Q1h4FH7OfZh+6OOHeRTbHcw==
-X-Received: by 2002:a17:906:6d52:b0:7c1:5b5e:4d78 with SMTP id a18-20020a1709066d5200b007c15b5e4d78mr5966830ejt.51.1670839255518;
-        Mon, 12 Dec 2022 02:00:55 -0800 (PST)
-X-Google-Smtp-Source: AA0mqf5JK48J5z+UL651hesYs4aH847Oakcryrboz47IPA5WronTjS8o5jnkwcA19MKr6IO78q9nfw==
-X-Received: by 2002:a17:906:6d52:b0:7c1:5b5e:4d78 with SMTP id a18-20020a1709066d5200b007c15b5e4d78mr5966809ejt.51.1670839255278;
-        Mon, 12 Dec 2022 02:00:55 -0800 (PST)
-Received: from [10.40.98.142] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id b10-20020a17090630ca00b0073dbaeb50f6sm3086863ejb.169.2022.12.12.02.00.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Dec 2022 02:00:54 -0800 (PST)
-Message-ID: <4bbe54cb-744a-eb84-df67-024e01b9501e@redhat.com>
-Date:   Mon, 12 Dec 2022 11:00:54 +0100
+        with ESMTP id S232055AbiLLPpi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Dec 2022 10:45:38 -0500
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BD986320
+        for <linux-acpi@vger.kernel.org>; Mon, 12 Dec 2022 07:45:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1670859937; x=1702395937;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=bOXYXg+Psp/Jb274bPqAEZZCJv0Jnxl+EGdKwfx9IQQ=;
+  b=k+S0CBnWfdez/vspWP2bWxm2wrrUmIdXBsNuZs419lREkguVFudGDYW9
+   LJrxB8IZza3q0mC1sPCVeS9DZ/xkBg1QDVylJxBFL58DfbsJGgtgZJwsG
+   /gA04giwAoXCbyjpEKifvW/6Da3BZPpe2FXnxdDfNI3s5UUgz0WHlqLOm
+   7guJEAkMbLFIOYLbiJg3VARLzEbvTEP7eLkmztjW+igcQYK64ylOZNDRs
+   hY7vGd/DTOhWVnV4tY9GnUCgfBB1F/p7gpWMyvsepXqjsOA0BsTQZN3Qe
+   X+E/wSra5kmqGFaAH5Wd7OCUTTZBafPPuF3f+ibY7DUoIFtnI0qLycDKD
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10559"; a="298230955"
+X-IronPort-AV: E=Sophos;i="5.96,238,1665471600"; 
+   d="scan'208";a="298230955"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2022 07:45:37 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10559"; a="680716827"
+X-IronPort-AV: E=Sophos;i="5.96,238,1665471600"; 
+   d="scan'208";a="680716827"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001.jf.intel.com with ESMTP; 12 Dec 2022 07:45:35 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1p4kzl-008hhF-1Y;
+        Mon, 12 Dec 2022 17:45:33 +0200
+Date:   Mon, 12 Dec 2022 17:45:33 +0200
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
+To:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Niyas Sait <niyas.sait@linaro.org>, linus.walleij@linaro.org,
+        fugang.duan@linaro.org
+Subject: [RFC] ACPI Code First ECR: Pin Number Space vs. GPIO Number Space
+Message-ID: <Y5dMndGzaoZpm3w4@smile.fi.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-From:   Hans de Goede <hdegoede@redhat.com>
-Subject: [GIT PULL] platform-drivers-x86 for 6.2-1
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Andy Shevchenko <andy@infradead.org>,
-        Mark Gross <mark.gross@intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        linux-acpi <linux-acpi@vger.kernel.org>
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,URI_TRY_3LD autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+In the current form of the specification there is a room for misinterpretation
+the PinList argument for Pin*() descriptors and Gpio*() descriptors.
 
-Here is the main PDx86 PR for 6.2.
+When Pin*() descriptors have been introduced the relationship between the GPIO
+Number Space and Pin Number Space wasn't clarified, so update the specification
+to address this.
 
-Highlights:
- -  Intel:
-    -  PMC: Add support for Meteor Lake
-    -  Intel On Demand: various updates
- -  ideapad-laptop:
-    -  Add support for various Fn keys on new models
-    -  Fix touchpad on/off handling in a generic way to avoid having
-       to add more and more quirks
- -  android-x86-tablets: Add support for 2 more X86 Android tablet models
- -  New Dell WMI DDV driver
- -  Miscellaneous cleanups and small bugfixes
+# Title: Clarify the Number Space for the Pin*() and Gpio*() descriptors
 
-I am aware of one small conflict with the linx-pm/acpi tree due to one
-ACPI battery change being in my tree as dependency of other patches.
+# Status: Draft
 
-Here is the conflict report + resolution from Stephen:
+# Document: ACPI Specification 6.5
 
-"""
-Today's linux-next merge of the drivers-x86 tree got a conflict in:
+# License
+SPDX-License Identifier: CC-BY-4.0
 
-  drivers/acpi/battery.c
+# Submitter:
+* Sponsor: Rafael J. Wysocki, Intel
+* Creator/Contributor: Andy Shevchenko, Intel
 
-between commit:
+# Summary of the Change
+Clarify the Pin Number Space and GPIO Number Space and their relationship in
+the affected sections to reduce a room of possible misinterpretation.
 
-  98b0cf207b61 ("ACPI: battery: Call power_supply_changed() when adding hooks")
+# Benefits of the Change
+It will clarify what Pin Number Space and what GPIO Number Space mean.
+In particular, when it's appropriate to use one or the other.
 
-from the pm tree and commit:
+# Impact of the Change
+Clear understanding by all stakeholders what numbers should be assigned in
+the Pin*() and Gpio*() descriptors and how OSPMs will threat them.
 
-  878a82c23469 ("ACPI: battery: Pass battery hook pointer to hook callbacks")
+# References
+Microsoft GPIO Number Space for the Gpio*() descriptors which allows gaps in it.
+<https://learn.microsoft.com/en-us/windows-hardware/drivers/gpio/partitioning-a-gpio-controller-into-banks-of-pins>
 
-from the drivers-x86 tree.
+An example of the DSDT for the Intel Merrifield platform that has separate
+GPIO and pin control IP blocks.
+<https://github.com/u-boot/u-boot/blob/master/arch/x86/include/asm/arch-tangier/acpi/southcluster.asl>
 
-diff --cc drivers/acpi/battery.c
-index 883c75757400,9482b0b6eadc..000000000000
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@@ -696,8 -696,7 +696,8 @@@ static void __battery_hook_unregister(s
-  	if (lock)
-  		mutex_lock(&hook_mutex);
-  	list_for_each_entry(battery, &acpi_battery_list, list) {
-- 		if (!hook->remove_battery(battery->bat))
- -		hook->remove_battery(battery->bat, hook);
-++		if (!hook->remove_battery(battery->bat, hook))
- +			power_supply_changed(battery->bat);
-  	}
-  	list_del(&hook->list);
-  	if (lock)
-"""
+# Detailed Description of the Change
 
+* Add an additional note at the end of Description in the Sections 19.6.102,
+* 19.6.103, and 19.6.104:
 
-Regards,
+> Note: The PinList for the PinConfig/PinFunction/PinGroup descriptors is
+> provided in the Pin Number Space. The PinList for the GpioInt/GpioIo
+> descriptors is provided in the GPIO Number Space. That is, the certain pins
+> may or may not have a GPIO function and the certain GPIOs may or may not be
+> connected through a pin multiplexer. In other words the Pin and GPIO number
+> spaces are orthogonal to each other. Nevertheless, it's highly recommended
+> that the firmware writer will use 1:1 mapping between register index in the
+> hardware and the number in the Pin Number Space.
 
-Hans
+* Add an additional note at the end of Description in the Sections 19.6.56, and
+* 19.6.57:
 
+> Note: The PinList for the GpioInt/GpioIo descriptors is provided in the GPIO
+> Number Space. The PinList for the PinConfig/PinFunction/PinGroup descriptors
+> is provided in the Pin Number Space.
 
+* Replace {2, 3} by {7, 8} in the Pin*() descriptors in the examples in the
+* Sections 19.6.102, and 19.6.103.
 
-The following changes since commit b44fd994e45112b58b6c1dec4451d9a925784589:
+-- 
+With Best Regards,
+Andy Shevchenko
 
-  platform/x86: ideapad-laptop: Add module parameters to match DMI quirk tables (2022-11-16 08:47:08 +0100)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git tags/platform-drivers-x86-v6.2-1
-
-for you to fetch changes up to b0b698b80c56b0712f0d4346d51bf0363ba03068:
-
-  platform/mellanox: mlxbf-pmc: Fix event typo (2022-12-12 10:31:27 +0100)
-
-----------------------------------------------------------------
-platform-drivers-x86 for v6.2-1
-
-Highlights:
- -  Intel:
-    -  PMC: Add support for Meteor Lake
-    -  Intel On Demand: various updates
- -  ideapad-laptop:
-    -  Add support for various Fn keys on new models
-    -  Fix touchpad on/off handling in a generic way to avoid having
-       to add more and more quirks
- -  android-x86-tablets: Add support for 2 more X86 Android tablet models
- -  New Dell WMI DDV driver
- -  Miscellaneous cleanups and small bugfixes
-
-The following is an automated git shortlog grouped by driver:
-
-ACPI:
- -  battery: Pass battery hook pointer to hook callbacks
-
-ISST:
- -  Fix typo in comments
-
-Move existing HP drivers to a new hp subdir:
- - Move existing HP drivers to a new hp subdir
-
-dell:
- -  Add new dell-wmi-ddv driver
-
-dell-ddv:
- -  Warn if ePPID has a suspicious length
- -  Improve buffer handling
-
-huawei-wmi:
- -  remove unnecessary member
- -  fix return value calculation
- -  do not hard-code sizes
-
-ideapad-laptop:
- -  Make touchpad_ctrl_via_ec a module option
- -  Stop writing VPCCMD_W_TOUCHPAD at probe time
- -  Send KEY_TOUCHPAD_TOGGLE on some models
- -  Only toggle ps2 aux port on/off on select models
- -  Do not send KEY_TOUCHPAD* events on probe / resume
- -  Refactor ideapad_sync_touchpad_state()
- -  support for more special keys in WMI
- -  Add new _CFG bit numbers for future use
- -  Revert "check for touchpad support in _CFG"
-
-intel/pmc:
- -  Relocate Alder Lake PCH support
- -  Relocate Tiger Lake PCH support
- -  Relocate Ice Lake PCH support
- -  Relocate Cannon Lake Point PCH support
- -  Relocate Sunrise Point PCH support
- -  Move variable declarations and definitions to header and core.c
- -  Replace all the reg_map with init functions
-
-intel/pmc/core:
- -  Add Meteor Lake support to pmc core driver
-
-intel_scu_ipc:
- -  fix possible name leak in __intel_scu_ipc_register()
-
-mxm-wmi:
- -  fix memleak in mxm_wmi_call_mx[ds|mx]()
-
-platform/mellanox:
- -  mlxbf-pmc: Fix event typo
- -  Add BlueField-3 support in the tmfifo driver
-
-platform/x86/amd:
- -  pmc: Add a workaround for an s0i3 issue on Cezanne
-
-platform/x86/amd/pmf:
- -  pass the struct by reference
-
-platform/x86/dell:
- -  alienware-wmi: Use sysfs_emit() instead of scnprintf()
-
-platform/x86/intel:
- -  pmc: Fix repeated word in comment
-
-platform/x86/intel/hid:
- -  Add module-params for 5 button array + SW_TABLET_MODE reporting
-
-platform/x86/intel/sdsi:
- -  Add meter certificate support
- -  Support different GUIDs
- -  Hide attributes if hardware doesn't support
- -  Add Intel On Demand text
-
-sony-laptop:
- -  Convert to use sysfs_emit_at() API
-
-thinkpad_acpi:
- -  use strstarts()
- -  Fix max_brightness of thinklight
-
-tools/arch/x86:
- -  intel_sdsi: Add support for reading meter certificates
- -  intel_sdsi: Add support for new GUID
- -  intel_sdsi: Read more On Demand registers
- -  intel_sdsi: Add Intel On Demand text
- -  intel_sdsi: Add support for reading state certificates
-
-uv_sysfs:
- -  Use sysfs_emit() instead of scnprintf()
-
-wireless-hotkey:
- -  use ACPI HID as phys
-
-x86-android-tablets:
- -  Add Advantech MICA-071 extra button
- -  Add Lenovo Yoga Tab 3 (YT3-X90F) charger + fuel-gauge data
- -  Add Medion Lifetab S10346 data
-
-----------------------------------------------------------------
-Alex Hung (1):
-      platform/x86: wireless-hotkey: use ACPI HID as phys
-
-Armin Wolf (4):
-      ACPI: battery: Pass battery hook pointer to hook callbacks
-      platform/x86: dell: Add new dell-wmi-ddv driver
-      platform/x86: dell-ddv: Improve buffer handling
-      platform/x86: dell-ddv: Warn if ePPID has a suspicious length
-
-Barnabás Pőcze (4):
-      platform/x86: huawei-wmi: do not hard-code sizes
-      platform/x86: huawei-wmi: fix return value calculation
-      platform/x86: huawei-wmi: remove unnecessary member
-      platform/x86: thinkpad_acpi: use strstarts()
-
-David E. Box (9):
-      platform/x86/intel/sdsi: Add Intel On Demand text
-      platform/x86/intel/sdsi: Hide attributes if hardware doesn't support
-      platform/x86/intel/sdsi: Support different GUIDs
-      platform/x86/intel/sdsi: Add meter certificate support
-      tools/arch/x86: intel_sdsi: Add support for reading state certificates
-      tools/arch/x86: intel_sdsi: Add Intel On Demand text
-      tools/arch/x86: intel_sdsi: Read more On Demand registers
-      tools/arch/x86: intel_sdsi: Add support for new GUID
-      tools/arch/x86: intel_sdsi: Add support for reading meter certificates
-
-Eray Orçunus (2):
-      platform/x86: ideapad-laptop: Revert "check for touchpad support in _CFG"
-      platform/x86: ideapad-laptop: Add new _CFG bit numbers for future use
-
-Gayatri Kammela (4):
-      platform/x86: intel/pmc: Replace all the reg_map with init functions
-      platform/x86: intel/pmc: Relocate Tiger Lake PCH support
-      platform/x86: intel/pmc: Relocate Alder Lake PCH support
-      platform/x86: intel/pmc/core: Add Meteor Lake support to pmc core driver
-
-Hans de Goede (11):
-      platform/x86: thinkpad_acpi: Fix max_brightness of thinklight
-      platform/x86: ideapad-laptop: Refactor ideapad_sync_touchpad_state()
-      platform/x86: ideapad-laptop: Do not send KEY_TOUCHPAD* events on probe / resume
-      platform/x86: ideapad-laptop: Only toggle ps2 aux port on/off on select models
-      platform/x86: ideapad-laptop: Send KEY_TOUCHPAD_TOGGLE on some models
-      platform/x86: ideapad-laptop: Stop writing VPCCMD_W_TOUCHPAD at probe time
-      platform/x86: ideapad-laptop: Make touchpad_ctrl_via_ec a module option
-      platform/x86/intel/hid: Add module-params for 5 button array + SW_TABLET_MODE reporting
-      platform/x86: x86-android-tablets: Add Medion Lifetab S10346 data
-      platform/x86: x86-android-tablets: Add Lenovo Yoga Tab 3 (YT3-X90F) charger + fuel-gauge data
-      platform/x86: x86-android-tablets: Add Advantech MICA-071 extra button
-
-James Hurley (1):
-      platform/mellanox: mlxbf-pmc: Fix event typo
-
-Jilin Yuan (1):
-      platform/x86/intel: pmc: Fix repeated word in comment
-
-Jorge Lopez (1):
-      platform/x86: Move existing HP drivers to a new hp subdir
-
-Liming Sun (1):
-      platform/mellanox: Add BlueField-3 support in the tmfifo driver
-
-Mario Limonciello (1):
-      platform/x86/amd: pmc: Add a workaround for an s0i3 issue on Cezanne
-
-Muhammad Usama Anjum (1):
-      platform/x86/amd/pmf: pass the struct by reference
-
-Philipp Jungkamp (1):
-      platform/x86: ideapad-laptop: support for more special keys in WMI
-
-Rajvi Jingar (1):
-      platform/x86: intel/pmc: Relocate Sunrise Point PCH support
-
-Xi Pardee (3):
-      platform/x86: intel/pmc: Move variable declarations and definitions to header and core.c
-      platform/x86: intel/pmc: Relocate Cannon Lake Point PCH support
-      platform/x86: intel/pmc: Relocate Ice Lake PCH support
-
-Yang Yingliang (1):
-      platform/x86: intel_scu_ipc: fix possible name leak in __intel_scu_ipc_register()
-
-Yu Liao (1):
-      platform/x86: mxm-wmi: fix memleak in mxm_wmi_call_mx[ds|mx]()
-
-chen zhang (1):
-      platform/x86: ISST: Fix typo in comments
-
-ye xingchen (3):
-      platform/x86: uv_sysfs: Use sysfs_emit() instead of scnprintf()
-      platform/x86/dell: alienware-wmi: Use sysfs_emit() instead of scnprintf()
-      platform/x86: sony-laptop: Convert to use sysfs_emit_at() API
-
- Documentation/ABI/testing/debugfs-dell-wmi-ddv     |  21 +
- Documentation/ABI/testing/sysfs-driver-intel_sdsi  |  47 +-
- .../ABI/testing/sysfs-platform-dell-wmi-ddv        |   7 +
- MAINTAINERS                                        |  11 +-
- drivers/acpi/battery.c                             |   8 +-
- drivers/platform/mellanox/mlxbf-pmc.c              |   2 +-
- drivers/platform/mellanox/mlxbf-tmfifo-regs.h      |  10 +
- drivers/platform/mellanox/mlxbf-tmfifo.c           |  86 +-
- drivers/platform/x86/Kconfig                       |  43 +-
- drivers/platform/x86/Makefile                      |   4 +-
- drivers/platform/x86/amd/pmc.c                     |   6 +
- drivers/platform/x86/amd/pmf/cnqf.c                |  92 +-
- drivers/platform/x86/asus-wmi.c                    |   4 +-
- drivers/platform/x86/dell/Kconfig                  |  13 +
- drivers/platform/x86/dell/Makefile                 |   1 +
- drivers/platform/x86/dell/alienware-wmi.c          |  41 +-
- drivers/platform/x86/dell/dell-wmi-ddv.c           | 375 ++++++++
- drivers/platform/x86/hp/Kconfig                    |  63 ++
- drivers/platform/x86/hp/Makefile                   |  10 +
- drivers/platform/x86/{ => hp}/hp-wmi.c             |   0
- drivers/platform/x86/{ => hp}/hp_accel.c           |   2 +-
- drivers/platform/x86/{ => hp}/tc1100-wmi.c         |   0
- drivers/platform/x86/huawei-wmi.c                  |  51 +-
- drivers/platform/x86/ideapad-laptop.c              | 388 +++++---
- drivers/platform/x86/intel/Kconfig                 |   8 +-
- drivers/platform/x86/intel/hid.c                   |  36 +-
- drivers/platform/x86/intel/pmc/Makefile            |   3 +-
- drivers/platform/x86/intel/pmc/adl.c               | 325 +++++++
- drivers/platform/x86/intel/pmc/cnp.c               | 210 +++++
- drivers/platform/x86/intel/pmc/core.c              | 994 ++-------------------
- drivers/platform/x86/intel/pmc/core.h              |  91 +-
- drivers/platform/x86/intel/pmc/icl.c               |  56 ++
- drivers/platform/x86/intel/pmc/mtl.c               |  52 ++
- drivers/platform/x86/intel/pmc/spt.c               | 140 +++
- drivers/platform/x86/intel/pmc/tgl.c               | 269 ++++++
- drivers/platform/x86/intel/sdsi.c                  | 136 ++-
- .../x86/intel/speed_select_if/isst_if_common.c     |   2 +-
- drivers/platform/x86/intel_scu_ipc.c               |   2 +-
- drivers/platform/x86/lg-laptop.c                   |   4 +-
- drivers/platform/x86/mxm-wmi.c                     |   8 +-
- drivers/platform/x86/sony-laptop.c                 |  10 +-
- drivers/platform/x86/system76_acpi.c               |   4 +-
- drivers/platform/x86/thinkpad_acpi.c               |  63 +-
- drivers/platform/x86/toshiba_acpi.c                |   4 +-
- drivers/platform/x86/uv_sysfs.c                    |  16 +-
- drivers/platform/x86/wireless-hotkey.c             |  60 +-
- drivers/platform/x86/wmi.c                         |   1 +
- drivers/platform/x86/x86-android-tablets.c         | 285 +++++-
- include/acpi/battery.h                             |   4 +-
- tools/arch/x86/intel_sdsi/intel_sdsi.c             | 464 ++++++++--
- 50 files changed, 3080 insertions(+), 1452 deletions(-)
- create mode 100644 Documentation/ABI/testing/debugfs-dell-wmi-ddv
- create mode 100644 Documentation/ABI/testing/sysfs-platform-dell-wmi-ddv
- create mode 100644 drivers/platform/x86/dell/dell-wmi-ddv.c
- create mode 100644 drivers/platform/x86/hp/Kconfig
- create mode 100644 drivers/platform/x86/hp/Makefile
- rename drivers/platform/x86/{ => hp}/hp-wmi.c (100%)
- rename drivers/platform/x86/{ => hp}/hp_accel.c (99%)
- rename drivers/platform/x86/{ => hp}/tc1100-wmi.c (100%)
- create mode 100644 drivers/platform/x86/intel/pmc/adl.c
- create mode 100644 drivers/platform/x86/intel/pmc/cnp.c
- create mode 100644 drivers/platform/x86/intel/pmc/icl.c
- create mode 100644 drivers/platform/x86/intel/pmc/mtl.c
- create mode 100644 drivers/platform/x86/intel/pmc/spt.c
- create mode 100644 drivers/platform/x86/intel/pmc/tgl.c
 
