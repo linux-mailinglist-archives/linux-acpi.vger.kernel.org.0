@@ -2,418 +2,172 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9D1A64A552
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Dec 2022 17:54:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E1D164A560
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Dec 2022 17:58:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229515AbiLLQyc convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 12 Dec 2022 11:54:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53300 "EHLO
+        id S232715AbiLLQ5t (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Dec 2022 11:57:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232478AbiLLQyT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Dec 2022 11:54:19 -0500
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A8A32AA;
-        Mon, 12 Dec 2022 08:54:18 -0800 (PST)
-Received: by mail-qk1-f181.google.com with SMTP id k2so5385254qkk.7;
-        Mon, 12 Dec 2022 08:54:18 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TW6thbnM7z7IgnYfclXqxiiG9/yBWQ5aLX8Q25LITNE=;
-        b=bwQkSF7bP8RWip7diy16y/G5kxFtp1V3Bs45I2O+dYwTHu+6h73NG0pTLwQLyiNtO7
-         RqNktG4l20mhpDJFyc/kXGuzlhQPOG9hfGBPylNwMOojIryzNk0/uD4BJcOcTISM0wU8
-         G2FaF1n1/V6GwO/k7c9lrdNexumGoAqbmPNb1iCihKaZR7nsvdMUVVp/yzeH3Y0WvHCg
-         qhHnuuIhg/J/HBXyVQBmW9BlGKlVYN6AJ8TzZlM6HgKD3CeELMqbHolTYZzOkjXf7s4g
-         2lV5xmUZOKSKQeEIoox6gdBdsEp64dWbw2p+HlhgYby7FHt6k/tIjPW9yqeO7i3Qt7rZ
-         GdYQ==
-X-Gm-Message-State: ANoB5pnMKel1oMKQZXOnlvxq35gm9MymWW7t1WCpUV5z8liYChVaafoZ
-        VZOx3lCFGVNqjzHaxNunhZb6VXDIeDpaURyz7/qCs03v0bQ=
-X-Google-Smtp-Source: AA0mqf7WvCsajDgXNo7gzzIAgUeaIpDwX17kbR2VjvU/YXUKM8v5AugDrftNuh1soGucknaIWkXrDlBG3BHdHAdaasc=
-X-Received: by 2002:a05:620a:ec4:b0:6ff:86de:55f with SMTP id
- x4-20020a05620a0ec400b006ff86de055fmr323161qkm.648.1670864057076; Mon, 12 Dec
- 2022 08:54:17 -0800 (PST)
+        with ESMTP id S232800AbiLLQ5m (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Dec 2022 11:57:42 -0500
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2086.outbound.protection.outlook.com [40.107.92.86])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F01AD2DF4
+        for <linux-acpi@vger.kernel.org>; Mon, 12 Dec 2022 08:57:40 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SDtGnHd3YT3r+Mo7rGXIM+A3WngdTQKObJDnS9nXmClRu9y0d9M8H+/oOP9phGjZn5ulfwA8FtFrdFYE/gGrvzXVaWkA7yZ2HFGfMu4y+D+BCOvaTnoo8UBEggF+Wp6iOxDWFgIdJzFzhFhK/ZaZ53uiEv2qCT/NSr6wqAWGPpiTbsi6iYqhW6AvLzkzJ4g9Vmgqq21XXdidcKzXWsoz8JPnnWccV0CXgz2qt2O18zrR6HGib8fmybiSi/B0xaKixakzg0dqezQi/Bg4c8Wb4ESXdkLfEGbZgNE3HXQM3DEkknyaXNwAf1sq+PWAkHZqUt3wOrHAmHB7WP7jocOKCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=whUaEeX0TRKlB51e+R1Tywy3bFxAkXhh+epwV8VjBbo=;
+ b=k5y/comF2stXZitFw705QU3ngJTZa4jYdlEDzePd7E3ElhAGbF0fZRRobzaY9FQZ1HbTERqYPo93xRW+3QGwEvjp3QufXTnPvOOutLIM9oFrg+UW9kWtZj6/qyqHiHDtlp0MGH/LhXKeDjmLN85s1LemOHAvsvj++x1y6q0msJUXZEYk7+MBATlbDU0znGt5W7i4HlxwjQ+W4Y96OYKxsC97Id9rbpzhYiNLdtinhdWklGemHz5U3/7Np5QvFu1IfaydvOHoX5w+YQJC2EzQSPtpxDerbHiCVPTdxiNxrT7qTA8JgNnBr5GTHFia1lrpHd2WXBGgr9BnoOV5eyWP3g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=whUaEeX0TRKlB51e+R1Tywy3bFxAkXhh+epwV8VjBbo=;
+ b=G4SYbVRPYulY1L+DF51vrBq6rD/XoQm5quno5h1xJy/c8IlIbOsgdJvCkZJ/JwS3DgkSUly83SfihubVjlVmj2kAGBqRBU5UxR5FxnXYicxZFc3ldmMbNt3otGEQe+61V1aOj0/7Cg4CsHgTn/+VlF59RSRlzuHZ4ibH0PEXgos=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BYAPR12MB3270.namprd12.prod.outlook.com (2603:10b6:a03:137::31)
+ by SA1PR12MB7410.namprd12.prod.outlook.com (2603:10b6:806:2b4::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.19; Mon, 12 Dec
+ 2022 16:57:38 +0000
+Received: from BYAPR12MB3270.namprd12.prod.outlook.com
+ ([fe80::b770:9062:384e:6908]) by BYAPR12MB3270.namprd12.prod.outlook.com
+ ([fe80::b770:9062:384e:6908%6]) with mapi id 15.20.5880.019; Mon, 12 Dec 2022
+ 16:57:38 +0000
+Message-ID: <64f45c59-8b65-4f68-6cf0-995793de00fb@amd.com>
+Date:   Mon, 12 Dec 2022 10:57:34 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.1
+Subject: Re: [PATCH v2 0/3] ACPI, APEI, EINJ: Add new CXL Error Types
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Luck, Tony" <tony.luck@intel.com>
+Cc:     "lenb@kernel.org" <lenb@kernel.org>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "yazen.ghannam@amd.com" <yazen.ghannam@amd.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+References: <20221206205234.606073-1-Benjamin.Cheatham@amd.com>
+ <SJ1PR11MB608313CBF490328F8C431796FC1B9@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <8f9feb3e-4c32-5c16-558c-7693cc277992@amd.com>
+ <SJ1PR11MB6083C4960BC481DE9BEF2BB7FC1B9@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <CAJZ5v0jLdOXtTQx_PF=_QGRTcQjUAU=ZNzaQkDJ7O8bABhF1cw@mail.gmail.com>
+Content-Language: en-US
+From:   Ben Cheatham <benjamin.cheatham@amd.com>
+In-Reply-To: <CAJZ5v0jLdOXtTQx_PF=_QGRTcQjUAU=ZNzaQkDJ7O8bABhF1cw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH0PR03CA0101.namprd03.prod.outlook.com
+ (2603:10b6:610:cd::16) To BYAPR12MB3270.namprd12.prod.outlook.com
+ (2603:10b6:a03:137::31)
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 12 Dec 2022 17:54:06 +0100
-Message-ID: <CAJZ5v0jVU0jbU6KmQNQ7hUZp=kA+CP7fVibRnb1qCVjHRH2Xow@mail.gmail.com>
-Subject: [GIT PULL] ACPI and PNP updates for v6.2-rc1
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BYAPR12MB3270:EE_|SA1PR12MB7410:EE_
+X-MS-Office365-Filtering-Correlation-Id: dbb38dbc-2792-4b02-5b25-08dadc61f97a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: GbAu3s6L2eUPl/kr0MUYZrgCv/8huKIbChLahxJxucB4/jZ/sPQC6ebo2MVdFh+XZF2CaMG9utTaJY6KTdCxrEZYdYyylDUj1QxJVPmePyujM2FGjQFvsuzmZzfZrEVhRkWgRbmWfRSALm33ZmCAkGugAE+DKM4rsfDLtR6FEfRXgp8zmyQ5QUENyf6zfJAZnsr8IDFOD804FDWGPIkcfgaFIcqHs3jwTm7xHxGF897gsi04qP583tJh2mJ3wBy5azWt1XvIHn7OQ3BlHfarFz8mT1Np2ojaOs/fnxI9etsKwUGfEpHp+AmLToncA33tq4pfm3SWe9k+fMXl1PB414ssnob/s3lXs7uBxhaxz05BE/VjhWMx12PK5Li0Blk5/bPJ+mngsvUoisj3EXX3BeML3fSzYwaPUW/AQ35gW0rxd9X/Ontklzod9xIlJyZerXpN5ogZvN8BOfEBrhrY/ksD4AssxDhbqL53X4PVJhSqh6d5JLtoVfpBk0usoY8f8UcOSsfwjTBEjbOdq/CkxGIzHZXqMjscsErveYa9BUjPsdL+G55b4knCl1IEV6Icv6Z89mDO4ohpx2hSjRL9EWvRQPeRgvBJ0yDmsGYgoo0VFBSrHDlqnGgn1ZzyPTCrrf9QTKlCrv6Rx4SgxdfZWwZkzkDXIb1utPpggGSyKOKevC9sEcUfyacWHUKj/tH6VHwyFn951FsKJFiwhwZ10NTViax8tIDO2mTIrlh0arc=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3270.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(366004)(136003)(396003)(346002)(376002)(451199015)(66946007)(36756003)(2616005)(110136005)(66476007)(8676002)(4326008)(5660300002)(316002)(66556008)(66899015)(54906003)(2906002)(86362001)(31696002)(38100700002)(41300700001)(8936002)(83380400001)(6666004)(31686004)(6486002)(478600001)(6512007)(186003)(53546011)(6506007)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T3dmYlVtZC9XeWJNWVNJT0Z6ak0rcFNabVcvOXM4Rkk5MlB2aWhkMlhJOFc1?=
+ =?utf-8?B?aTJ0WlRWTVZjOFAyeEk2WXZEcHVtcTNBWUpmWDExRUs2ZWZTNFYzZDYzOFdB?=
+ =?utf-8?B?cFZhSHZtZ3ZvUlNsQllka01vSTcyVmxxQUhGeWhIS2tXR1ptanZTSGVNN3NW?=
+ =?utf-8?B?MUFqUlQ0WU5HVlowRVBUdXM1NUZBajZqSXNud0RoekQrUWVwUHQvUjZHTHQx?=
+ =?utf-8?B?ZTQrY29NTnBXYkUvNTkxcTZSaEtiaklPbWxqZWlqVHFiSFFINnNob0lWdGZK?=
+ =?utf-8?B?WUVrbG9kRTNOWmlTYVNSazBXL3Q2S2JxVmYrQk1HeEQzWTlXOFRvNFVRaEk5?=
+ =?utf-8?B?dVIxRUZQL1k4Q21lTXRURS8vSkRodUJTZmdPUlFCMUI1aFUvUENZSm95bXFV?=
+ =?utf-8?B?bWhHUHBic1VqUEl6UmlqV3M4aVgxb3BQYUxIODVxT2RPUnNRa1dVeDBES05G?=
+ =?utf-8?B?K3NrSVZVRUV2bDRYN2lHbUNrcUU2Q2h5bkluL1FQd2h6OVQ4RmlQQUxNdzQr?=
+ =?utf-8?B?RlRGMDlNZVIydGpHbGNVUTRvNFZDalQ4YVdYbjVuOGUrQjRacDl1UFhHQVpK?=
+ =?utf-8?B?WVV2NmJ1NmNLODBDZ0ZBT3c5MU84TVBnOWN3dStGYi9UK0l0ZFlZcmtuK2li?=
+ =?utf-8?B?WGQ4d0c4QVVJUUllYmpIN2hGVGc4ZVMzRnFsRFFseWZMbjFsNjVibWx0U3c3?=
+ =?utf-8?B?T3V1UTJoZlYwWnNNczNjU1BNRDVSMEhaQjFONGdoNmtUUFVLckxLdDJUaFB1?=
+ =?utf-8?B?MlpPeVNBMXlScEhrUURnRElmT29oK0lmaEl1ZnRJaFlBYU1ZV1J4ejJLcTJN?=
+ =?utf-8?B?R0JnMm45YW1pUG4zeDJtNStCcEZzaWx0ZXpzVlNDMVFLRzZKaFZoZkxJUjdR?=
+ =?utf-8?B?RFlrY29IUUo4c08rek1aWVdUL1NURzlpcUV6STVnUGNwYjlSQUczWDN3NEdP?=
+ =?utf-8?B?eFFiejRETGtGUlRKNlpTaEZ5VWUwL1JsRkp2YURqOWpDY2JRTG83LzJmaU1L?=
+ =?utf-8?B?UVVKdkFRS2xyVnVXeWFDZ2dndjc2M1RkZUtDQjZqSk1qa2FubkxWZ0xWRDBO?=
+ =?utf-8?B?MWpMdFVUZ2JEK3pEdmI0VzJwUFhoTnEzanUzaG12UUhOS1N2RWdRbXRqQlhp?=
+ =?utf-8?B?UmttaU81MmZwTjdqL3dOaCtOdWI3ZHl2K2U3cm9BazR3TXJQMDBwanNqZlE4?=
+ =?utf-8?B?V0QzaHNzRUhGdUQvUkpFc0cwYm5ERFhqVzZISzAydFpPT3VzY2dOOG9OWjQ0?=
+ =?utf-8?B?emxHK2tKbDBGdE1EQ1ZsUUdROUFWeEQ1Sk9ZNjZMSWJDLysxLzI2YXludU9O?=
+ =?utf-8?B?NGFJUlYzUTAyZ0pEWVF6VjE0M2RodlhBZ0lsWFJHM2cxZ2pWQk5mVWZDWkZi?=
+ =?utf-8?B?SEFTczd2aWdCN1BTSG9MM0d4MTE1Sm1KN0loQ25uL3NTcE9vQWVHUHBuTjBZ?=
+ =?utf-8?B?ZEY4KzIvY3VRVzVIVDUxRUEvakpGVEtsanFOMGhZQmJoT2txTnI5WUs1TjMw?=
+ =?utf-8?B?dWxXWXdrTjlJZkVjVCtYWVpUQWluTlVkWVY1bzR3ZFhtYVVHNDIwTjVZTExJ?=
+ =?utf-8?B?RGQ0bHNKVTNSaDN5a3FyWitFdFg3cXNLeklaZjYvOFVVVVFJNmp3dDBUTXRT?=
+ =?utf-8?B?aTgvTGlDeUQvZUdLWjhTTzl6czZOQmVYbGZlazYyS0pjRnlRUU1UOHdsejNz?=
+ =?utf-8?B?ZDNCby9XSzBIREN3aEFVY29JbFlyakZkWmNOK1pZUGxyVHNpbjdHRGhWUm1x?=
+ =?utf-8?B?WGNpTU4vRjFHTVNFVU9KMXZWWGpiVUM1MndMcko2K0s2MTI2YlFUbjlPMUE5?=
+ =?utf-8?B?RlZLdlhmQnVKMXpnR3RSeE04dnNyQ3VnU05zSXJWZktKMmdoNjJpdm53RzZL?=
+ =?utf-8?B?Y0htVTRKY2xTQXJNUmxBSGdvVTZ5ZWhWMWgvZzc1MS9MUHFaMTQ2L0pmdlNJ?=
+ =?utf-8?B?VDJaSGJEYU5CU0UrbHRNdFlhNlNndjhWbmpPS3NUU0lGRnZueW45ZGQ3eG9p?=
+ =?utf-8?B?Z214NHRRVEdtWkR6MUU2eXE3MXVTM0xyc3dtQTFlak82OVh0MHRVLy9XbFE3?=
+ =?utf-8?B?NzZJWW9xY3pFdUVONXJ3VHYvL05VWGRad29XalRkQndMT0p0cTU1R2U4bVNr?=
+ =?utf-8?B?QmlXQ3RyNW0yOHNnb2hsWThyMDFmdnIwTk0zQXdFVkxrR3lpZWRjTzJyZWNB?=
+ =?utf-8?Q?IBYcPk2uhMhMPQVjmF85kADU1pAsmwlW5BPUVL9s3DTt?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dbb38dbc-2792-4b02-5b25-08dadc61f97a
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3270.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2022 16:57:38.4174
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nTEfS1Lk4cpT+WX5gHXx4Fuq5G9TsDGQh6uXd0L6SuypkEi7v8mVuLBkkpMxQfPmrbO8LWIUMJGJeibzGvE+ag==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7410
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
 
-Please pull from the tag
-
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.2-rc1
-
-with top-most commit bee74dcbd3908291f4bfff3c81a52d52dcd48814
-
- Merge branches 'acpi-fan', 'acpi-pcc', 'acpi-misc' and 'pnp'
-
-on top of commit 76dcd734eca23168cb008912c0f69ff408905235
-
- Linux 6.1-rc8
-
-to receive ACPI and PNP updates for 6.2-rc1.
-
-These include new code (for instance, support for the FFH address space
-type and support for new firmware data structures in ACPICA), some new
-quirks (mostly related to backlight handling and I2C enumeration), a
-number of fixes and a fair amount of cleanups all over.
-
-Specifics:
-
- - Update the ACPICA code in the kernel to the 20221020 upstream
-   version and fix a couple of issues in it:
-
-   * Make acpi_ex_load_op() match upstream implementation (Rafael
-     Wysocki).
-   * Add support for loong_arch-specific APICs in MADT (Huacai Chen).
-   * Add support for fixed PCIe wake event (Huacai Chen).
-   * Add EBDA pointer sanity checks (Vit Kabele).
-   * Avoid accessing VGA memory when EBDA < 1KiB (Vit Kabele).
-   * Add CCEL table support to both compiler/disassembler (Kuppuswamy
-     Sathyanarayanan).
-   * Add a couple of new UUIDs to the known UUID list (Bob Moore).
-   * Add support for FFH Opregion special context data (Sudeep Holla).
-   * Improve warning message for "invalid ACPI name" (Bob Moore).
-   * Add support for CXL 3.0 structures (CXIMS & RDPAS) in the CEDT
-     table (Alison Schofield).
-   * Prepare IORT support for revision E.e (Robin Murphy).
-   * Finish support for the CDAT table (Bob Moore).
-   * Fix error code path in acpi_ds_call_control_method() (Rafael
-     Wysocki).
-   * Fix use-after-free in acpi_ut_copy_ipackage_to_ipackage() (Li
-     Zetao).
-   * Update the version of the ACPICA code in the kernel (Bob Moore).
-
- - Use ZERO_PAGE(0) instead of empty_zero_page in the ACPI device
-   enumeration code (Giulio Benetti).
-
- - Change the return type of the ACPI driver remove callback to void and
-   update its users accordingly (Dawei Li).
-
- - Add general support for FFH address space type and implement the low-
-   level part of it for ARM64 (Sudeep Holla).
-
- - Fix stale comments in the ACPI tables parsing code and make it print
-   more messages related to MADT (Hanjun Guo, Huacai Chen).
-
- - Replace invocations of generic library functions with more kernel-
-   specific counterparts in the ACPI sysfs interface (Christophe JAILLET,
-   Xu Panda).
-
- - Print full name paths of ACPI power resource objects during
-   enumeration (Kane Chen).
-
- - Eliminate a compiler warning regarding a missing function prototype
-   in the ACPI power management code (Sudeep Holla).
-
- - Fix and clean up the ACPI processor driver (Rafael Wysocki, Li Zhong,
-   Colin Ian King, Sudeep Holla).
-
- - Add quirk for the HP Pavilion Gaming 15-cx0041ur to the ACPI EC
-   driver (Mia Kanashi).
-
- - Add some mew ACPI backlight handling quirks and update some existing
-   ones (Hans de Goede).
-
- - Make the ACPI backlight driver prefer the native backlight control
-   over vendor backlight control when possible (Hans de Goede).
-
- - Drop unsetting ACPI APEI driver data on remove (Uwe Kleine-König).
-
- - Use xchg_release() instead of cmpxchg() for updating new GHES cache
-   slots (Ard Biesheuvel).
-
- - Clean up the ACPI APEI code (Sudeep Holla, Christophe JAILLET, Jay Lu).
-
- - Add new I2C device enumeration quirks for Medion Lifetab S10346 and
-   Lenovo Yoga Tab 3 Pro (YT3-X90F) (Hans de Goede).
-
- - Make the ACPI battery driver notify user space about adding new
-   battery hooks and removing the existing ones (Armin Wolf).
-
- - Modify the pfr_update and pfr_telemetry drivers to use ACPI_FREE()
-   for freeing acpi_object structures to help diagnostics (Wang ShaoBo).
-
- - Make the ACPI fan driver use sysfs_emit_at() in its sysfs interface
-   code (ye xingchen).
-
- - Fix the _FIF package extraction failure handling in the ACPI fan
-   driver (Hanjun Guo).
-
- - Fix the PCC mailbox handling error code path (Huisong Li).
-
- - Avoid using PCC Opregions if there is no platform interrupt allocated
-   for this purpose (Huisong Li).
-
- - Use sysfs_emit() instead of scnprintf() in the ACPI PAD driver and
-   CPPC library (ye xingchen).
-
- - Fix some kernel-doc issues in the ACPI GSI processing code (Xiongfeng
-   Wang).
-
- - Fix name memory leak in pnp_alloc_dev() (Yang Yingliang).
-
- - Do not disable PNP devices on suspend when they cannot be re-enabled
-   on resume (Hans de Goede).
-
- - Clean up the ACPI thermal driver a bit (Rafael Wysocki).
-
-Thanks!
-
-
----------------
-
-Alison Schofield (1):
-      ACPICA: Add CXL 3.0 structures (CXIMS & RDPAS) to the CEDT table
-
-Ard Biesheuvel (1):
-      apei/ghes: Use xchg_release() for updating new cache slot
-instead of cmpxchg()
-
-Armin Wolf (1):
-      ACPI: battery: Call power_supply_changed() when adding hooks
-
-Bob Moore (4):
-      ACPICA: Add a couple of new UUIDs to the known UUID list
-      ACPICA: Improve warning message for "invalid ACPI name"
-      ACPICA: Finish support for the CDAT table
-      ACPICA: Update version to 20221020
-
-Christophe JAILLET (2):
-      ACPI: sysfs: Use kstrtobool() instead of strtobool()
-      ACPI: APEI: Remove a useless include
-
-Colin Ian King (1):
-      ACPI: processor: throttling: remove variable count
-
-Dawei Li (1):
-      ACPI: make remove callback of ACPI driver void
-
-Giulio Benetti (1):
-      ACPI: scan: substitute empty_zero_page with helper ZERO_PAGE(0)
-
-Hanjun Guo (2):
-      ACPI: tables: Fix the stale comments for acpi_locate_initial_tables()
-      ACPI: fan: Bail out if extract package failed
-
-Hans de Goede (10):
-      ACPI: video: Add a few bugtracker links to DMI quirks
-      ACPI: video: Change GIGABYTE GB-BXBT-2807 quirk to force_none
-      ACPI: video: Change Sony Vaio VPCEH3U1E quirk to force_native
-      ACPI: video: Add force_vendor quirk for Sony Vaio PCG-FRV35
-      ACPI: video: Add force_native quirk for Sony Vaio VPCY11S1E
-      ACPI: video: Simplify __acpi_video_get_backlight_type()
-      ACPI: video: Prefer native over vendor
-      PNP: Do not disable devices on suspend when they cannot be
-re-enabled on resume
-      ACPI: x86: Add skip i2c clients quirk for Lenovo Yoga Tab 3 Pro (YT3-X90F)
-      ACPI: x86: Add skip i2c clients quirk for Medion Lifetab S10346
-
-Huacai Chen (4):
-      ACPICA: MADT: Add loong_arch-specific APICs support
-      ACPICA: Events: Support fixed PCIe wake event
-      Revert "LoongArch: Provisionally add ACPICA data structures"
-      ACPI: tables: Print CORE_PIC information when MADT is parsed
-
-Huisong Li (2):
-      ACPI: PCC: Setup PCC Opregion handler only if platform interrupt
-is available
-      mailbox: pcc: Reset pcc_chan_count to zero in case of PCC probe failure
-
-Jay Lu (2):
-      ACPI: APEI: EINJ: Fix formatting errors
-      ACPI: APEI: EINJ: Refactor available_error_type_show()
-
-Kane Chen (1):
-      ACPI: PM: Print full name path while adding power resource
-
-Kuppuswamy Sathyanarayanan (1):
-      ACPICA: iASL: Add CCEL table to both compiler/disassembler
-
-Li Zetao (1):
-      ACPICA: Fix use-after-free in acpi_ut_copy_ipackage_to_ipackage()
-
-Li Zhong (1):
-      ACPI: processor: idle: Check acpi_fetch_acpi_dev() return value
-
-Mia Kanashi (1):
-      ACPI: EC: Add quirk for the HP Pavilion Gaming 15-cx0041ur
-
-Rafael J. Wysocki (10):
-      ACPICA: Make acpi_ex_load_op() match upstream
-      ACPICA: Add utcksum.o to the acpidump Makefile
-      ACPICA: Fix error code path in acpi_ds_call_control_method()
-      ACPI: thermal: Adjust critical.flags.valid check
-      ACPI: processor: idle: Drop unnecessary statements and parens
-      ACPI: processor: perflib: Adjust white space
-      ACPI: processor: perflib: Drop redundant parentheses
-      ACPI: processor: perflib: Rearrange unregistration routine
-      ACPI: processor: perflib: Rearrange acpi_processor_notify_smm()
-      ACPI: processor: perflib: Adjust acpi_processor_notify_smm() return value
-
-Robin Murphy (1):
-      ACPICA: IORT: Update for revision E.e
-
-Sudeep Holla (9):
-      ACPICA: Add support for FFH Opregion special context data
-      ACPI: Implement a generic FFH Opregion handler
-      arm64: Add architecture specific ACPI FFH Opregion callbacks
-      ACPI: bus: Fix the _OSC capability check for FFH OpRegion
-      ACPI: FFH: Silence missing prototype warnings
-      ACPI: APEI: Silence missing prototype warnings
-      ACPI: PM: Silence missing prototype warning
-      ACPI: processor_idle: Silence missing prototype warnings
-      ACPI: processor: Silence missing prototype warnings
-
-Uwe Kleine-König (1):
-      ACPI: APEI: Drop unsetting driver data on remove
-
-Vit Kabele (2):
-      ACPICA: Check that EBDA pointer is in valid memory
-      ACPICA: Do not touch VGA memory when EBDA < 1ki_b
-
-Wang ShaoBo (2):
-      ACPI: pfr_telemetry: use ACPI_FREE() to free acpi_object
-      ACPI: pfr_update: use ACPI_FREE() to free acpi_object
-
-Xiongfeng Wang (1):
-      ACPI: irq: Fix some kernel-doc issues
-
-Xu Panda (1):
-      ACPI: sysfs: use sysfs_emit() to instead of scnprintf()
-
-Yang Yingliang (1):
-      PNP: fix name memory leak in pnp_alloc_dev()
-
-ye xingchen (2):
-      ACPI: use sysfs_emit() instead of scnprintf()
-      ACPI: fan: Convert to use sysfs_emit_at() API
-
----------------
-
- arch/arm64/kernel/acpi.c                          | 106 ++++++++++++++
- arch/ia64/hp/common/aml_nfw.c                     |   4 +-
- arch/loongarch/include/asm/acpi.h                 | 142 ------------------
- arch/x86/platform/olpc/olpc-xo15-sci.c            |   3 +-
- drivers/acpi/Kconfig                              |  10 ++
- drivers/acpi/Makefile                             |   1 +
- drivers/acpi/ac.c                                 |   8 +-
- drivers/acpi/acpi_ffh.c                           |  55 +++++++
- drivers/acpi/acpi_pad.c                           |   7 +-
- drivers/acpi/acpi_pcc.c                           |  47 +++---
- drivers/acpi/acpi_video.c                         |   8 +-
- drivers/acpi/acpica/Makefile                      |   1 +
- drivers/acpi/acpica/acglobal.h                    |   1 +
- drivers/acpi/acpica/actables.h                    |   5 -
- drivers/acpi/acpica/acutils.h                     |  13 ++
- drivers/acpi/acpica/dsmethod.c                    |  10 +-
- drivers/acpi/acpica/evevent.c                     |  11 ++
- drivers/acpi/acpica/evregion.c                    |   9 ++
- drivers/acpi/acpica/exconfig.c                    |   4 +-
- drivers/acpi/acpica/exfield.c                     |   8 +-
- drivers/acpi/acpica/exserial.c                    |   6 +
- drivers/acpi/acpica/hwsleep.c                     |  14 ++
- drivers/acpi/acpica/tbdata.c                      |   2 +-
- drivers/acpi/acpica/tbfadt.c                      |   2 +-
- drivers/acpi/acpica/tbprint.c                     |  77 +---------
- drivers/acpi/acpica/tbutils.c                     |   2 +-
- drivers/acpi/acpica/tbxfroot.c                    |  32 ++--
- drivers/acpi/acpica/utcksum.c                     | 170 ++++++++++++++++++++++
- drivers/acpi/acpica/utcopy.c                      |   7 -
- drivers/acpi/acpica/utglobal.c                    |   4 +
- drivers/acpi/acpica/utstring.c                    |  10 +-
- drivers/acpi/apei/apei-base.c                     |   2 +-
- drivers/acpi/apei/einj.c                          |  56 ++++---
- drivers/acpi/apei/ghes.c                          |  62 ++++----
- drivers/acpi/battery.c                            |  10 +-
- drivers/acpi/bus.c                                |   3 +
- drivers/acpi/button.c                             |   5 +-
- drivers/acpi/cppc_acpi.c                          |   4 +-
- drivers/acpi/ec.c                                 |  15 +-
- drivers/acpi/fan_attr.c                           |  16 +-
- drivers/acpi/fan_core.c                           |   1 +
- drivers/acpi/hed.c                                |   3 +-
- drivers/acpi/irq.c                                |   5 +-
- drivers/acpi/nfit/core.c                          |   3 +-
- drivers/acpi/pfr_telemetry.c                      |   6 +-
- drivers/acpi/pfr_update.c                         |   6 +-
- drivers/acpi/power.c                              |   2 +-
- drivers/acpi/processor_idle.c                     |   9 +-
- drivers/acpi/processor_perflib.c                  | 100 ++++++-------
- drivers/acpi/processor_throttling.c               |   4 +-
- drivers/acpi/sbs.c                                |   9 +-
- drivers/acpi/sbshc.c                              |   7 +-
- drivers/acpi/scan.c                               |   2 +-
- drivers/acpi/sysfs.c                              |   5 +-
- drivers/acpi/tables.c                             |  17 ++-
- drivers/acpi/thermal.c                            |   9 +-
- drivers/acpi/tiny-power-button.c                  |  10 +-
- drivers/acpi/video_detect.c                       | 110 ++++++++------
- drivers/acpi/x86/utils.c                          |  24 ++-
- drivers/char/sonypi.c                             |   3 +-
- drivers/char/tpm/tpm_crb.c                        |   4 +-
- drivers/hv/vmbus_drv.c                            |   4 +-
- drivers/hwmon/acpi_power_meter.c                  |   5 +-
- drivers/hwmon/asus_atk0110.c                      |   6 +-
- drivers/input/misc/atlas_btns.c                   |   4 +-
- drivers/mailbox/pcc.c                             |   1 +
- drivers/net/fjes/fjes_main.c                      |   4 +-
- drivers/platform/chrome/chromeos_privacy_screen.c |   3 +-
- drivers/platform/chrome/wilco_ec/event.c          |   4 +-
- drivers/platform/surface/surfacepro3_button.c     |   3 +-
- drivers/platform/x86/asus-laptop.c                |   3 +-
- drivers/platform/x86/asus-wireless.c              |   3 +-
- drivers/platform/x86/classmate-laptop.c           |  20 ++-
- drivers/platform/x86/dell/dell-rbtn.c             |   6 +-
- drivers/platform/x86/eeepc-laptop.c               |   3 +-
- drivers/platform/x86/fujitsu-laptop.c             |   4 +-
- drivers/platform/x86/fujitsu-tablet.c             |   3 +-
- drivers/platform/x86/intel/rst.c                  |   4 +-
- drivers/platform/x86/lg-laptop.c                  |   4 +-
- drivers/platform/x86/panasonic-laptop.c           |   8 +-
- drivers/platform/x86/sony-laptop.c                |   9 +-
- drivers/platform/x86/system76_acpi.c              |   4 +-
- drivers/platform/x86/topstar-laptop.c             |   3 +-
- drivers/platform/x86/toshiba_acpi.c               |   4 +-
- drivers/platform/x86/toshiba_bluetooth.c          |   6 +-
- drivers/platform/x86/toshiba_haps.c               |   4 +-
- drivers/platform/x86/wireless-hotkey.c            |   3 +-
- drivers/platform/x86/xo15-ebook.c                 |   3 +-
- drivers/pnp/core.c                                |   4 +-
- drivers/pnp/driver.c                              |   3 +-
- drivers/ptp/ptp_vmw.c                             |   3 +-
- drivers/thermal/intel/intel_menlow.c              |   8 +-
- drivers/video/backlight/apple_bl.c                |   3 +-
- drivers/watchdog/ni903x_wdt.c                     |   4 +-
- drivers/xen/xen-acpi-pad.c                        |   3 +-
- include/acpi/acconfig.h                           |   2 +
- include/acpi/acpi_bus.h                           |   2 +-
- include/acpi/acpixf.h                             |   2 +-
- include/acpi/actbl1.h                             | 151 ++++++++++++++++++-
- include/acpi/actbl2.h                             | 162 ++++++++++++++++++++-
- include/acpi/actypes.h                            |  10 +-
- include/acpi/acuuid.h                             |   3 +-
- include/acpi/processor.h                          |  10 ++
- include/linux/acpi.h                              |  13 ++
- tools/power/acpi/tools/acpidump/Makefile          |   1 +
- tools/power/acpi/tools/acpidump/apdump.c          |   4 +-
- 106 files changed, 1172 insertions(+), 635 deletions(-)
+On 12/7/22 11:19 AM, Rafael J. Wysocki wrote:
+> On Tue, Dec 6, 2022 at 10:37 PM Luck, Tony <tony.luck@intel.com> wrote:
+>> Hi Ben,
+>>
+>>> The last patch I mentioned leaving out added support for injecting CXL
+>>> errors, but I don't have access to a machine that I can test it with at
+>>> the moment so it'll probably have to wait.
+>> Parts 1 & 2 of your series can be applied now (as nice cleanups).
+>>
+>> But part 3 would just be confusing to users without the matching patch
+>> to add CXL injection support.
+>>
+>> I.e. a user might
+>>
+>> # cat /sys/kernel/debug/apei/einj/available_error_type
+>>
+>> and see:
+>>
+>> 0x00001000      CXL.cache Protocol Correctable
+>>
+>> But:
+>>
+>> # echo 0x1000 > /sys/kernel/debug/apei/einj/error_type
+>>
+>> wouldn't do anything useful (may do weird stuff since the driver
+>> doesn't appear to validate the "type" ... would be great if you fixed
+>> that while you are digging around in this code :-).
+>>
+>> So I'm happy to offer up a "Reviewed-by: Tony Luck <tony.luck@intel.com>"
+>> for all three parts. I just think that part 3 should not be applied until the
+>> rest of the code to go with it is ready.
+> I agree, so I've done accordingly.
+>
+> Patches [1-2/3] have been applied as 6.2 material (with very minor
+> subject adjustments) and Ben please resend patch [3/3] when sending
+> the other material mentioned above (and please feel free to add the
+> tag from Tony to it when doing that).
+Will do. Thanks for the review!
