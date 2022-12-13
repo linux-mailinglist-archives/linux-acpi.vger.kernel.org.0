@@ -2,216 +2,200 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3D7064AD23
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Dec 2022 02:36:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ECEE64AFDD
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Dec 2022 07:25:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233883AbiLMBgd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Dec 2022 20:36:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52404 "EHLO
+        id S234552AbiLMGZy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Dec 2022 01:25:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233825AbiLMBgc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Dec 2022 20:36:32 -0500
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7D601D673;
-        Mon, 12 Dec 2022 17:36:30 -0800 (PST)
-Received: by mail-lj1-x22e.google.com with SMTP id z4so1870623ljq.6;
-        Mon, 12 Dec 2022 17:36:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=fvZ9dsbTSO5t0cyccsnnRz540B4PzoHkUUU3iPVGl+U=;
-        b=WgQoeWydkLJHdlGHP6gVQ0NIsZGb+iP903Y9h70Q2Y2zyLPlvkHC23QVprLR0ayRsR
-         hnv2d2eKWl94mrkGGphxPTE/BdzFgZCPLaB/ywq7t6ESd+XGt9ggyRRaypfxw647VOtN
-         ElOJwKa2zTFse1Lqr5jfQ7TBDL0P/aYXIBmoNAbuQaT75UWYAOjZMcLCKYrX9WPjyRbq
-         ikTbp6iwWsdGzWRWtmjWl1elWwF9nZPrswsokChiAYPt6VdUh8A3rzBUI0Rk35ur0Jbn
-         rbQX5Guzkwgjn4D43+XRfXXrqxLwontWolWiiE8BEerqSVM1SR80yBzbvfkDMoLYBWh6
-         DtKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fvZ9dsbTSO5t0cyccsnnRz540B4PzoHkUUU3iPVGl+U=;
-        b=bQtnN/exxrEpQtTTzq0+5HwvFpGj8P6EBK3bmdTtdKgsh6w8f0iGiFfKiEQ11R0uzN
-         i0Bc5pSvhx+lr74Ip3BvfziIxTcaQTuxHYFjJcOPRAgHe391P0tDfeIzNn4H8m84blfa
-         jm9MzsseZyrBoPP7rpUASb6x8XrNz/Ln/UyU1tQQLb9vGeIAHJwjlYmsEwD5G1EMX3AR
-         o50/O360F84cRlnHvdYfNxVPNvOqwbVrcjRnOTnVOX8Aaj7SJxf/j30BqbRYNV9FEFp2
-         dy5FZkWBUhPqlln3VppqqgrRGHbk9djKxOt72n1zP4pxFIuP+aMpHxNZo36UbD39YRIE
-         39NA==
-X-Gm-Message-State: ANoB5pngzfyyaNZWjXrf6klXrShTbEf5o2791cRDoYsxnVF9Fu2smiqm
-        ZKXA8nSIXgkMmdX7vnyOE6xU6xDo8+bPZz+vcQ==
-X-Google-Smtp-Source: AA0mqf5wvwkn6bzo+kHF2Ex75sOLfziqTgDo96h9zXDqPU6XFguoZFVG9koMv9TLZBI5+I3Wc5FTsiJcFynLhHDdlsg=
-X-Received: by 2002:a05:651c:3c9:b0:279:ee82:f30a with SMTP id
- f9-20020a05651c03c900b00279ee82f30amr7180475ljp.397.1670895389018; Mon, 12
- Dec 2022 17:36:29 -0800 (PST)
+        with ESMTP id S232336AbiLMGZt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Dec 2022 01:25:49 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 687341D653;
+        Mon, 12 Dec 2022 22:25:47 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1C5BCB810DD;
+        Tue, 13 Dec 2022 06:25:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D46C433EF;
+        Tue, 13 Dec 2022 06:25:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1670912744;
+        bh=eMWjSga3C3hMbGjnvBP989uWEXS7JkaxC+FmhAkhfPI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=xSicbsLVQ4BhWrnWzKoQCDZrmwsGXB9uhhfHqLsox4Od+SI6WsiJFNiIxYhTCvaNW
+         7qqxRtiBJgA9N96ZexXmwtyuOOyHAKr0Ynzcyxo5WI10sFx2x8jG5PrLKh4NzQ5aQg
+         SGmKnb6d1qDe6AZV1d8NBnQcDi1I7DGidI4nz8Hs=
+Date:   Tue, 13 Dec 2022 07:25:41 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Elliot Berman <quic_eberman@quicinc.com>
+Cc:     Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Murali Nalajala <quic_mnalajal@quicinc.com>,
+        Trilok Soni <quic_tsoni@quicinc.com>,
+        Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>,
+        Carl van Schaik <quic_cvanscha@quicinc.com>,
+        Prakruthi Deepak Heragu <quic_pheragu@quicinc.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v7 10/20] gunyah: rsc_mgr: Add resource manager RPC core
+Message-ID: <Y5ga5T9dltMtBulF@kroah.com>
+References: <20221121140009.2353512-1-quic_eberman@quicinc.com>
+ <20221121140009.2353512-11-quic_eberman@quicinc.com>
+ <Y3uX9ywOVLubxYkW@kroah.com>
+ <a5c7089c-9880-e22a-ae33-eba91dc47f0e@quicinc.com>
 MIME-Version: 1.0
-From:   "Seija K." <doremylover123@gmail.com>
-Date:   Mon, 12 Dec 2022 20:36:18 -0500
-Message-ID: <CAA42iKzuae0PL1qm20sU87D2V-GF8mMFPSjKJu=fB81RrZgZbg@mail.gmail.com>
-Subject: [PATCH] drivers: correct parameters passed to strncmp
-To:     Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Jan Luebbe <jlu@pengutronix.de>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Kani Toshi <toshi.kani@hpe.com>, Jia He <justin.he@arm.com>
-Cc:     James Morse <james.morse@arm.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-        devel@acpica.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
-        nd@arm.com, Peter Zijlstra <peterz@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a5c7089c-9880-e22a-ae33-eba91dc47f0e@quicinc.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Many times when strncmp is called with the intent of ignoring the NULL
-terminator, the null terminator is accidentally included in that
-comparison, which in practice is just an strcmp with extra steps.
+On Mon, Dec 12, 2022 at 03:46:58PM -0800, Elliot Berman wrote:
+> 
+> 
+> On 11/21/2022 7:23 AM, Greg Kroah-Hartman wrote:
+> > On Mon, Nov 21, 2022 at 05:59:59AM -0800, Elliot Berman wrote:
+> > > The resource manager is a special virtual machine which is always
+> > > running on a Gunyah system. It provides APIs for creating and destroying
+> > > VMs, secure memory management, sharing/lending of memory between VMs,
+> > > and setup of inter-VM communication. Calls to the resource manager are
+> > > made via message queues.
+> > > 
+> > > This patch implements the basic probing and RPC mechanism to make those
+> > > API calls. Request/response calls can be made with gh_rm_call.
+> > > Drivers can also register to notifications pushed by RM via
+> > > gh_rm_register_notifier
+> > > 
+> > > Specific API calls that resource manager supports will be implemented in
+> > > subsequent patches.
+> > > 
+> > > Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+> > > ---
+> > >   MAINTAINERS                          |   2 +-
+> > >   drivers/virt/gunyah/Kconfig          |   7 +
+> > >   drivers/virt/gunyah/Makefile         |   2 +
+> > >   drivers/virt/gunyah/gunyah_rm_rpc.c  | 570 +++++++++++++++++++++++++++
+> > >   drivers/virt/gunyah/gunyah_rsc_mgr.c |  50 +++
+> > >   drivers/virt/gunyah/rsc_mgr.h        |  37 ++
+> > >   include/linux/gunyah_rsc_mgr.h       |  18 +
+> > >   7 files changed, 685 insertions(+), 1 deletion(-)
+> > >   create mode 100644 drivers/virt/gunyah/gunyah_rm_rpc.c
+> > >   create mode 100644 drivers/virt/gunyah/gunyah_rsc_mgr.c
+> > >   create mode 100644 drivers/virt/gunyah/rsc_mgr.h
+> > >   create mode 100644 include/linux/gunyah_rsc_mgr.h
+> > > 
+> > > diff --git a/MAINTAINERS b/MAINTAINERS
+> > > index 502798197b80..b65f7ff444e5 100644
+> > > --- a/MAINTAINERS
+> > > +++ b/MAINTAINERS
+> > > @@ -8948,7 +8948,7 @@ F:	Documentation/virt/gunyah/
+> > >   F:	arch/arm64/gunyah/
+> > >   F:	drivers/mailbox/gunyah-msgq.c
+> > >   F:	drivers/virt/gunyah/
+> > > -F:	include/linux/gunyah.h
+> > > +F:	include/linux/gunyah*.h
+> > >   HABANALABS PCI DRIVER
+> > >   M:	Oded Gabbay <ogabbay@kernel.org>
+> > > diff --git a/drivers/virt/gunyah/Kconfig b/drivers/virt/gunyah/Kconfig
+> > > index 127156a678a6..0bb497372d4e 100644
+> > > --- a/drivers/virt/gunyah/Kconfig
+> > > +++ b/drivers/virt/gunyah/Kconfig
+> > > @@ -10,3 +10,10 @@ config GUNYAH
+> > >   	  Say Y/M here to enable the drivers needed to interact in a Gunyah
+> > >   	  virtual environment.
+> > > +
+> > > +if GUNYAH
+> > > +config GUNYAH_RESOURCE_MANAGER
+> > > +	tristate
+> > > +	depends on MAILBOX
+> > > +	select GUNYAH_MESSAGE_QUEUES
+> > > +endif
+> > > diff --git a/drivers/virt/gunyah/Makefile b/drivers/virt/gunyah/Makefile
+> > > index 2ac4ee64b89d..b62ac4045621 100644
+> > > --- a/drivers/virt/gunyah/Makefile
+> > > +++ b/drivers/virt/gunyah/Makefile
+> > > @@ -1 +1,3 @@
+> > >   obj-$(CONFIG_GUNYAH) += gunyah.o
+> > > +
+> > > +obj-$(CONFIG_GUNYAH_RESOURCE_MANAGER) += gunyah_rsc_mgr.o gunyah_rm_rpc.o
+> > > diff --git a/drivers/virt/gunyah/gunyah_rm_rpc.c b/drivers/virt/gunyah/gunyah_rm_rpc.c
+> > > new file mode 100644
+> > > index 000000000000..45b1a8691982
+> > > --- /dev/null
+> > > +++ b/drivers/virt/gunyah/gunyah_rm_rpc.c
+> > > @@ -0,0 +1,570 @@
+> > > +// SPDX-License-Identifier: GPL-2.0-only
+> > > +/*
+> > > + * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
+> > > + */
+> > > +
+> > > +#include <linux/of.h>
+> > > +#include <linux/slab.h>
+> > > +#include <linux/mutex.h>
+> > > +#include <linux/sched.h>
+> > > +#include <linux/gunyah.h>
+> > > +#include <linux/module.h>
+> > > +#include <linux/of_irq.h>
+> > > +#include <linux/kthread.h>
+> > > +#include <linux/notifier.h>
+> > > +#include <linux/workqueue.h>
+> > > +#include <linux/completion.h>
+> > > +#include <linux/gunyah_rsc_mgr.h>
+> > > +#include <linux/platform_device.h>
+> > 
+> > This should not have anything to do with a platform device, please see
+> > below.
+> > 
+> > > +#include <linux/gunyah_rsc_mgr.h>
+> > > +#include <linux/platform_device.h>
+> > > +
+> > > +#include "rsc_mgr.h"
+> > > +
+> > > +static int gh_rm_drv_probe(struct platform_device *pdev)
+> > 
+> > Why is this tied to a platformm device?
+> > 
+> > I don't understand the relationship here, sorry.
+> > >> +{
+> > > +	struct gh_rm_rpc *rsc_mgr;
+> > > +
+> > > +	rsc_mgr = gh_rm_rpc_init(pdev);
+> > 
+> > Shouldn't this be creating a new one that is just a child passed in?
+> > Shouldn't this call just take a 'struct device *'?
+> > 
+> 
+> I'm following the suggestion from Arnd to have small core module that calls
+> into initialization routines for the other parts of the driver, rather than
+> creating bus for a few (2) devices.
+> 
+> https://lore.kernel.org/all/a3754259-9989-495e-a6bd-5501daff06a2@app.fastmail.com/
 
-Subtract from the places where the intent seems to be to do a
-comparison without the NULL terminator.
+2 devices is still a bus.  Please don't mess with the driver model in
+ways it is not ment to be messed with if at all possible.
 
-Signed-off-by: Seija Kijin <doremylover123@gmail.com>
+And again, don't abuse platform devices for dynamically discovered
+devices like this.
 
-diff --git a/arch/arm/mach-omap2/sr_device.c b/arch/arm/mach-omap2/sr_device.c
-index db672cf19a51..883f3078e233 100644
---- a/arch/arm/mach-omap2/sr_device.c
-+++ b/arch/arm/mach-omap2/sr_device.c
-@@ -94,12 +94,12 @@ static int __init sr_init_by_name(const char
-*name, const char *voltdm)
-struct omap_volt_data *volt_data;
-static int i;
-- if (!strncmp(name, "smartreflex_mpu_iva", 20) ||
-- !strncmp(name, "smartreflex_mpu", 16))
-+ if (!strncmp(name, "smartreflex_mpu_iva", 19) ||
-+ !strncmp(name, "smartreflex_mpu", 15))
-sr_data = &omap_sr_pdata[OMAP_SR_MPU];
-- else if (!strncmp(name, "smartreflex_core", 17))
-+ else if (!strncmp(name, "smartreflex_core", 16))
-sr_data = &omap_sr_pdata[OMAP_SR_CORE];
-- else if (!strncmp(name, "smartreflex_iva", 16))
-+ else if (!strncmp(name, "smartreflex_iva", 15))
-sr_data = &omap_sr_pdata[OMAP_SR_IVA];
-if (!sr_data) {
-diff --git a/drivers/edac/amd64_edac.c b/drivers/edac/amd64_edac.c
-index e3318e5575a3..1d832f484f8d 100644
---- a/drivers/edac/amd64_edac.c
-+++ b/drivers/edac/amd64_edac.c
-@@ -4333,7 +4333,7 @@ static int __init amd64_edac_init(void)
-return -EBUSY;
-owner = edac_get_owner();
-- if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
-+ if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR) - 1))
-return -EBUSY;
-if (!x86_match_cpu(amd64_cpuids))
-diff --git a/drivers/edac/i10nm_base.c b/drivers/edac/i10nm_base.c
-index 65aeea53e2df..546dd9fc5cc5 100644
---- a/drivers/edac/i10nm_base.c
-+++ b/drivers/edac/i10nm_base.c
-@@ -759,7 +759,7 @@ static int __init i10nm_init(void)
-return -EBUSY;
-owner = edac_get_owner();
-- if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
-+ if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR) - 1))
-return -EBUSY;
-if (cpu_feature_enabled(X86_FEATURE_HYPERVISOR))
-diff --git a/drivers/edac/igen6_edac.c b/drivers/edac/igen6_edac.c
-index 544dd19072ea..7df2b3a82221 100644
---- a/drivers/edac/igen6_edac.c
-+++ b/drivers/edac/igen6_edac.c
-@@ -1275,7 +1275,7 @@ static int __init igen6_init(void)
-return -EBUSY;
-owner = edac_get_owner();
-- if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
-+ if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR) - 1))
-return -EBUSY;
-edac_op_state = EDAC_OPSTATE_NMI;
-diff --git a/drivers/edac/pnd2_edac.c b/drivers/edac/pnd2_edac.c
-index 2b306f2cc605..08aeab382cb4 100644
---- a/drivers/edac/pnd2_edac.c
-+++ b/drivers/edac/pnd2_edac.c
-@@ -1532,7 +1532,7 @@ static int __init pnd2_init(void)
-return -EBUSY;
-owner = edac_get_owner();
-- if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
-+ if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR) - 1))
-return -EBUSY;
-if (cpu_feature_enabled(X86_FEATURE_HYPERVISOR))
-diff --git a/drivers/edac/sb_edac.c b/drivers/edac/sb_edac.c
-index 0c779a0326b6..6f8904b55213 100644
---- a/drivers/edac/sb_edac.c
-+++ b/drivers/edac/sb_edac.c
-@@ -3638,7 +3638,7 @@ static int __init sbridge_init(void)
-return -EBUSY;
-owner = edac_get_owner();
-- if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
-+ if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR) - 1))
-return -EBUSY;
-if (cpu_feature_enabled(X86_FEATURE_HYPERVISOR))
-diff --git a/drivers/edac/skx_base.c b/drivers/edac/skx_base.c
-index 9397abb42c49..ea38449710f5 100644
---- a/drivers/edac/skx_base.c
-+++ b/drivers/edac/skx_base.c
-@@ -657,7 +657,7 @@ static int __init skx_init(void)
-return -EBUSY;
-owner = edac_get_owner();
-- if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
-+ if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR) - 1))
-return -EBUSY;
-if (cpu_feature_enabled(X86_FEATURE_HYPERVISOR))
-diff --git a/drivers/media/pci/bt8xx/bttv-cards.c
-b/drivers/media/pci/bt8xx/bttv-cards.c
-index c2b5ab287dd7..c24cc2f46d2f 100644
---- a/drivers/media/pci/bt8xx/bttv-cards.c
-+++ b/drivers/media/pci/bt8xx/bttv-cards.c
-@@ -2968,7 +2968,7 @@ static void identify_by_eeprom(struct bttv *btv,
-unsigned char eeprom_data[256])
-if (0 == strncmp(eeprom_data,"GET MM20xPCTV",13))
-type = BTTV_BOARD_MODTEC_205;
-- else if (0 == strncmp(eeprom_data+20,"Picolo",7))
-+ else if (0 == strncmp(eeprom_data + 20, "Picolo", 6))
-type = BTTV_BOARD_EURESYS_PICOLO;
-else if (eeprom_data[0] == 0x84 && eeprom_data[2]== 0)
-type = BTTV_BOARD_HAUPPAUGE; /* old bt848 */
-diff --git a/drivers/net/ethernet/cavium/liquidio/lio_main.c
-b/drivers/net/ethernet/cavium/liquidio/lio_main.c
-index 98793b2ac2c7..795c44656ab3 100644
---- a/drivers/net/ethernet/cavium/liquidio/lio_main.c
-+++ b/drivers/net/ethernet/cavium/liquidio/lio_main.c
-@@ -912,7 +912,7 @@ liquidio_probe(struct pci_dev *pdev, const struct
-pci_device_id __maybe_unused *
-static bool fw_type_is_auto(void)
-{
-return strncmp(fw_type, LIO_FW_NAME_TYPE_AUTO,
-- sizeof(LIO_FW_NAME_TYPE_AUTO)) == 0;
-+ sizeof(LIO_FW_NAME_TYPE_AUTO) - 1) == 0;
-}
-/**
-diff --git a/drivers/staging/nvec/nvec_power.c
-b/drivers/staging/nvec/nvec_power.c
-index b1ef196e1cfe..3ed9e06e32de 100644
---- a/drivers/staging/nvec/nvec_power.c
-+++ b/drivers/staging/nvec/nvec_power.c
-@@ -207,7 +207,7 @@ static int nvec_power_bat_notifier(struct
-notifier_block *nb,
-* This differs a little from the spec fill in more if you find
-* some.
-*/
-- if (!strncmp(power->bat_type, "Li", 30))
-+ if (!strncmp(power->bat_type, "Li", 2))
-power->bat_type_enum = POWER_SUPPLY_TECHNOLOGY_LION;
-else
-power->bat_type_enum = POWER_SUPPLY_TECHNOLOGY_UNKNOWN;
+thanks,
+
+greg k-h
