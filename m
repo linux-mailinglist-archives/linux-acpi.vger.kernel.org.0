@@ -2,158 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C73364D09B
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Dec 2022 21:04:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85A5A64D1C3
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Dec 2022 22:27:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229803AbiLNUD5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Dec 2022 15:03:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35168 "EHLO
+        id S229469AbiLNV0q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Dec 2022 16:26:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229806AbiLNUDR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Dec 2022 15:03:17 -0500
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06CE52E6BF
-        for <linux-acpi@vger.kernel.org>; Wed, 14 Dec 2022 11:58:02 -0800 (PST)
-Received: by mail-qk1-f171.google.com with SMTP id pa22so1736102qkn.9
-        for <linux-acpi@vger.kernel.org>; Wed, 14 Dec 2022 11:58:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=newtkcsU2L/mNGxmkIZFRrPuKVEkF/N31MkWuzpD7Cw=;
-        b=IQVEXJrQIOllkUylrmHNGdX2By1Dz9qlNc7VpW3to2kTbB97djrG9b3rGHQhU9EgW6
-         LKw4mdNtcvjN78CIXbSvJIxIPFHaaUBxvR7Fa8jB4scpqKtWb8FPeL27eWzxE+WpRy3l
-         UBhgobI3ytiMoY7WXKKgn31dVF0mpgYYgna2OyGFNqkiK6OFyClhhEneGEKGJgdkGQWX
-         eGXYbhUieQVcmcstp464VvT4ajkR18Ygcs4kYmz0e1evCA0oqVX1UOXR7MBTLL89cbIs
-         8AIPja6mFFFfxdwAdK3yCW2nndplnwBwnVFIHTnjs8lzBkQFC6ZdpCaGskmqTjnBGhz6
-         P8Rw==
-X-Gm-Message-State: ANoB5pn7v/CJ7IDL10DjZGBAvrg7wsT3PMZU1MlwlwGEiYnNauU//0sE
-        bVMQrN753V1327uWuNNYvVQKgtBQbUoI6Qnypzw=
-X-Google-Smtp-Source: AA0mqf54KKy5f6JKYhzIb61gd29PdsSKbtyAHj1UKoFKDJYi/tPlHY6NoqT67dV1wk1ltfzJer8AdQ7k3qsXXfjitis=
-X-Received: by 2002:a05:620a:b90:b0:6ff:8f5a:1d37 with SMTP id
- k16-20020a05620a0b9000b006ff8f5a1d37mr729678qkh.501.1671047881095; Wed, 14
- Dec 2022 11:58:01 -0800 (PST)
+        with ESMTP id S229851AbiLNVZq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Dec 2022 16:25:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7C7936C7A
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Dec 2022 13:25:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1671053100;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=es5pjxDHLwLyb87qSja+0ZN7d8ZGmpWxkLo2O4sK3ME=;
+        b=Zm0L7/qa5sABXUATV0Mt7VezlVyoDvzKDtsrAEWwD/hmr0GwRh34kjMn7ZtDYuGyqCLryl
+        fyv5iWw+bFBny1Ph/qlXNaDCzLEV4myZWibr7kVuW7sovfsn4QYYrw/aLAha5+m+fTFtIi
+        9vRM4Dp2kD7EZQTbW+AwAgt/pMEyeME=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-595-D2nlkwB8M_aF0AVnypRf9Q-1; Wed, 14 Dec 2022 16:24:55 -0500
+X-MC-Unique: D2nlkwB8M_aF0AVnypRf9Q-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9731929ABA1B;
+        Wed, 14 Dec 2022 21:24:54 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.192.93])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 150742026D68;
+        Wed, 14 Dec 2022 21:24:52 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>, x86@kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH] x86/rtc: Simplify PNP ids check
+Date:   Wed, 14 Dec 2022 22:24:47 +0100
+Message-Id: <20221214212447.4058-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-References: <CAL4jJSh8tKxZc-6qO6oyPm=MrRPwuvkQkQMNmwLbuXX4GAuJ9g@mail.gmail.com>
- <e4df2651-7201-ff43-c3f1-68767f2579cf@intel.com> <CAL4jJShcJB9yHnWL+k4C0cjVW0hFtc=3tx1_0Uz4zbkzaaE_7g@mail.gmail.com>
-In-Reply-To: <CAL4jJShcJB9yHnWL+k4C0cjVW0hFtc=3tx1_0Uz4zbkzaaE_7g@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 14 Dec 2022 20:57:49 +0100
-Message-ID: <CAJZ5v0h-8RR0YLQ3w86JC4DypW-Kcu=snyqtup1wr_-0yzBJKA@mail.gmail.com>
-Subject: Re: intel_idle Jasper Lake Support
-To:     Maciej Koszanski <maciejkoszanskibusiness@gmail.com>
-Cc:     rafael@kernel.org, rui.zhang@intel.com, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Dec 14, 2022 at 8:43 PM Maciej Koszanski
-<maciejkoszanskibusiness@gmail.com> wrote:
->
-> Hi Rafael,
->
-> Thank you kindly for your reply! Very much appreciate your time answering my questions.
->
-> Output of /sys/devices/system/cpu/cpu0/cpuidle/state3/desc is ACPI FFH MWAIT 0x60.
-> Unsure what depth this attribute denotes, but I assume it's either C6/C7. :)
+compare_pnp_id() already iterates over the single linked pnp_ids list
+starting with the id past to it.
 
-Probably C7.
+So there is no need for add_rtc_cmos() to call compare_pnp_id()
+for each id on the list.
 
-> state2/desc is ACPI FFH MWAIT 0x31.
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ arch/x86/kernel/rtc.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-I would say C3.
+diff --git a/arch/x86/kernel/rtc.c b/arch/x86/kernel/rtc.c
+index 349046434513..1309b9b05338 100644
+--- a/arch/x86/kernel/rtc.c
++++ b/arch/x86/kernel/rtc.c
+@@ -138,15 +138,12 @@ static __init int add_rtc_cmos(void)
+ 	static const char * const ids[] __initconst =
+ 	    { "PNP0b00", "PNP0b01", "PNP0b02", };
+ 	struct pnp_dev *dev;
+-	struct pnp_id *id;
+ 	int i;
+ 
+ 	pnp_for_each_dev(dev) {
+-		for (id = dev->id; id; id = id->next) {
+-			for (i = 0; i < ARRAY_SIZE(ids); i++) {
+-				if (compare_pnp_id(id, ids[i]) != 0)
+-					return 0;
+-			}
++		for (i = 0; i < ARRAY_SIZE(ids); i++) {
++			if (compare_pnp_id(dev->id, ids[i]) != 0)
++				return 0;
+ 		}
+ 	}
+ #endif
+-- 
+2.38.1
 
-> Thank you for the clarification above! I was concerned that as powertop was reporting C3_ACPI,
-> that the ACPI tables provided C-States with a depth as far as C3, and that Jasper Lake would have
-> to have it's own static table added for support of deeper states.
-
-It is clarified in the intel_idle documentation too, please see:
-
-https://www.kernel.org/doc/html/latest/admin-guide/pm/intel_idle.html
-
-> I measured the system that I thrown together based on this CPU to pull about 23W from the wall at idle
-> and 45W under load (with an NVME drive that supports APST, ASPM and L1.2, and 2x 3.5inch HDD's.),
-> hence the slight obsession to go as low as possible and not be bottlenecked by C-States not going as
-> deep as they could. That being said, this is a weird, interesting motherboard I sourced from AliExpres
-> s with minimal documentation. :)
->
-> Many thanks,
-
-No problem.
-
-Thanks!
-
-
-> On Wed, 14 Dec 2022 at 18:16, Wysocki, Rafael J <rafael.j.wysocki@intel.com> wrote:
->>
->> +Rui who works on intel_idle
->>
->> Hi,
->>
->> Please see my responses inline.
->>
->> On 12/11/2022 10:53 PM, Maciej Koszanski wrote:
->> > Dear Rafael,
->> >
->> > My name is Maciej, and I'm currently using a Jasper Lake chip (Pentium
->> > Silver N6005) on an install of Debian as a NAS. I'm reaching out as I
->> > believe you're one of the maintainers for the intel_idle kernel, and
->> > you authored the related docs for the module, which I found to be a
->> > nice read. :)
->> >
->> Thanks!
->>
->>
->> > I'm currently running Kernel 6.0.0, and while intel_idle successfully
->> > loads on Debian (cat /sys/devices/system/cpu/cpuidle/current_driver
->> > returns intel_idle), it seems to be defaulting to ACPI c_states
->> > (Powertop is reporting C3_ACPI as lowest C-state).
->>
->> That's correct.
->>
->>
->> > I looked over the source for intel_idle and I don't think there's
->> > mention of Jasper Lake, which leads me to believe that it is not
->> > supported, I hope I'm not mistaken and that I'm not wasting your time!
->> > :) (Tremont-D and Snow Ridge seems to be supported)
->> >
->> This only means that there is no special idle states table for Jasper
->> Lake in intel_idle.  The support is based on the C-state tables returned
->> by the _CST methods in the ACPI tables of the system which is regarded
->> to be sufficient.
->>
->> As a general rule, special idle states tables are only added for
->> processor models where there is a demonstrable advantage from using
->> extra C-states or different MWAIT hints with respect to the C-state
->> tables from ACPI.
->>
->>
->> > Jasper Lake is starting to gain traction now in mini-PC form factors,
->> > and I would greatly appreciate if it was added as a platform in
->> > intel_idle to take advantage of the C-states. I'm sorry if the email
->> > comes off as if I'm begging for a feature to be implemented, and I'm
->> > sure you have other stuff to be busy with, but I greatly appreciate
->> > your time in reading this email to this point. :)
->> >
->> > Attached is an output of my cpuid, from what I gather the chip on the
->> > board that I have is capable of going down to C7?
->> >
->> Yes, it is AFAICS, but the C3_ACPI idle state reported for your platform
->> very well may be C7 (please check the MWAIT hint value in the "desc"
->> sysfs attribute of the C3_ACPI idle state).
->>
->> For the future, I would recommend using my kernel.org address (please
->> see the CC list of this message) for inquiries regarding the Linux
->> kernel and sending CCs of them to linux-acpi@vger.kernel.org .
->>
->> Cheers!
->>
->>
