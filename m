@@ -2,57 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8A0164E0D4
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Dec 2022 19:31:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D56BE64E133
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Dec 2022 19:45:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230453AbiLOSaq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Dec 2022 13:30:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55714 "EHLO
+        id S230111AbiLOSp5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Dec 2022 13:45:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230305AbiLOS3g (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Dec 2022 13:29:36 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69259F5BC;
-        Thu, 15 Dec 2022 10:28:54 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E979F61EB7;
-        Thu, 15 Dec 2022 18:28:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 548E2C43396;
-        Thu, 15 Dec 2022 18:28:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671128933;
-        bh=1ThKZ2KV+vE+nqXAV/w9d1N2Ghsp/GX0r5pFgGEiN2E=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=TSU703zWVNj3cxFJiEnqcO3zBQnV13k4NSAmhACL/26+PNXVT7oRWatT7skJeT94u
-         pLGJ9IJQXOW6WfWJW3Gb16akVv1KWMcQrlIrhLuyc4MHVA/tQUlegwcHNS8e4kWHwy
-         +faTtERx+fu3WZ8dYxloJH6qGcPKgKqxjSJ5WJbj5NoU8Xy99uR7hlDsKwYo7JXn78
-         yiIlZ0Ox+Nuct1tMZeSj1sYP27nxRNYMK+Bk1SgeikomfTjwsGbnt8eHEiUIYmN4aV
-         ugpXXATU1B8khkEufvD14v3SAjY0oNOavDS+SQLLaHo441vVlsJM/aK2EEL/wFT3xp
-         C5oN32JV9HpNA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 37E9BE4D00F;
-        Thu, 15 Dec 2022 18:28:53 +0000 (UTC)
-Subject: Re: [GIT PULL] More ACPI updates for v6.2-rc1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0hy7LXMyKF1H3Sh7ZKS8HyuMWPX_htN84wBYkRxxeNupA@mail.gmail.com>
-References: <CAJZ5v0hy7LXMyKF1H3Sh7ZKS8HyuMWPX_htN84wBYkRxxeNupA@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0hy7LXMyKF1H3Sh7ZKS8HyuMWPX_htN84wBYkRxxeNupA@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.2-rc1-2
-X-PR-Tracked-Commit-Id: 3d03140c4844bbd128728e8a367bb467d95f888e
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 057b40f43ce429a02e793adf3cfbf2446a19a38e
-Message-Id: <167112893322.20649.9904351691496894542.pr-tracker-bot@kernel.org>
-Date:   Thu, 15 Dec 2022 18:28:53 +0000
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        with ESMTP id S230263AbiLOSpk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Dec 2022 13:45:40 -0500
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B1512734
+        for <linux-acpi@vger.kernel.org>; Thu, 15 Dec 2022 10:45:39 -0800 (PST)
+Received: by mail-qt1-x82c.google.com with SMTP id j16so295961qtv.4
+        for <linux-acpi@vger.kernel.org>; Thu, 15 Dec 2022 10:45:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=joelfernandes.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+8kdbca7RYmzghu3wrDFH9WKgOWAt7+jGRtzBcbGXvg=;
+        b=RDxuf4vWN8ZO5ssFcc25XiKKo/4GxNXFK5YWWvzMeoCeWVtkwg58xezK7KBo9Ss9xz
+         cRmdZLa3PiR4GXoO+r7xTAIKFue3kCyWjSE9qpLAFUpETnMGbso2nsUUG+D7ToOMdWMt
+         aeuSy8tbFKDtZg9a5LPo8i60QdC0Nq7oz1EM8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+8kdbca7RYmzghu3wrDFH9WKgOWAt7+jGRtzBcbGXvg=;
+        b=fj1ILIxFYoN9QfY3+/moMGY6xpdalT6SfPJeOgEb5jMnSBqvOxi3WAZnKlXvvlzHNq
+         gMoW+B4ReJpxerVqsusj5Mu8+IymMYU9HSOrZfJ81Jyz3jK30++3lvUr5UOC2k43z9a3
+         j6lOrniqYdtpE+gqdVJwfw6oDJmk79becjEYMdPuZN5S+JiKyXqxQfYAXfW6gVoPtyxA
+         UqnitCZFxxpQcHd47AOByadP/HpOZi/zGDibWcSFyzC4yIypAqo7FcfNjmJu3CSA2CD/
+         ADNr9cZSIK+okYXPRe2msRQmCRRkxpv3V7x+ItfgeGQosc6g1fpkG7TiZ0SEo1OG2XkI
+         h/zQ==
+X-Gm-Message-State: AFqh2kpk246qs0HpJRil+Chd1LS5y4Zej96eTwyljRKZJGvsBWhz+Ocb
+        oc2uCPVhw2JQ3V0cy5G989KUVw==
+X-Google-Smtp-Source: AMrXdXtKc1qXGEu1lpOg9q/lsex/RBhHmz2vLTrGw4eI73/gi/6Pee1y9Cx54AsGsN+fgApbcwCoyQ==
+X-Received: by 2002:ac8:668d:0:b0:3a9:1ada:930f with SMTP id d13-20020ac8668d000000b003a91ada930fmr4932696qtp.23.1671129938658;
+        Thu, 15 Dec 2022 10:45:38 -0800 (PST)
+Received: from localhost (228.221.150.34.bc.googleusercontent.com. [34.150.221.228])
+        by smtp.gmail.com with ESMTPSA id w5-20020a05620a444500b006eed75805a2sm13009205qkp.126.2022.12.15.10.45.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Dec 2022 10:45:37 -0800 (PST)
+Date:   Thu, 15 Dec 2022 18:45:37 +0000
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux Trace Kernel <linux-trace-kernel@vger.kernel.org>,
+        linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Ross Zwisler <zwisler@google.com>,
+        Ching-lin Yu <chinglinyu@google.com>
+Subject: Re: [RFC][PATCH] ACPI: tracing: Have ACPI debug go to tracing ring
+ buffer
+Message-ID: <Y5trUep9IvCv1Uwy@google.com>
+References: <20221214233106.69b2c01b@gandalf.local.home>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221214233106.69b2c01b@gandalf.local.home>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,15 +74,151 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Thu, 15 Dec 2022 19:07:11 +0100:
+Hi Steve,
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.2-rc1-2
+On Wed, Dec 14, 2022 at 11:31:06PM -0500, Steven Rostedt wrote:
+> From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+> 
+> While debugging some firmware that was taking a bit of time to initialize,
+> I enabled ACPI_DEBUG and added a bit too much info to the debug_layer and
+> debug_level acpi command line options, and it made the computer not be
+> able to boot (too much info! or too much printk).
+> 
+> I decided that this would be easier to handle if the acpi output was
+> written instead into the trace buffer. This also has the added benefit of
+> adding other trace events and seeing how ACPI interacts with the rest of
+> the system.
+> 
+> Ideally, the ACPI trace should have proper trace events where data can be
+> stored more efficiently and be filtered and parsed better. But for now,
+> just writing the debug string into the buffer will suffice.  This makes it
+> possible to enable all ACPI output (setting triggers on other events to
+> stop tracing, to not lose the data you are looking for).
+> 
+> Even with all APCI debugging enable, the system continues to run perfectly
+> fine.
+> 
+> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+> ---
+> 
+>  drivers/acpi/Kconfig        | 13 +++++++++++++
+>  drivers/acpi/osl.c          |  9 ++++++++-
+>  include/trace/events/acpi.h | 30 ++++++++++++++++++++++++++++++
+>  3 files changed, 51 insertions(+), 1 deletion(-)
+>  create mode 100644 include/trace/events/acpi.h
+> 
+> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> index 473241b5193f..2dfeb3bf79a7 100644
+> --- a/drivers/acpi/Kconfig
+> +++ b/drivers/acpi/Kconfig
+> @@ -389,6 +389,19 @@ config ACPI_DEBUG
+>  	  Documentation/admin-guide/kernel-parameters.rst to control the type and
+>  	  amount of debug output.
+>  
+> +config ACPI_TRACE_PRINT
+> +	bool "Write debug into trace buffer"
+> +	depends on ACPI_DEBUG
+> +	help
+> +	  Instead of writing to the console, write to the trace ring buffer.
+> +	  This is much faster than writing to the console, and can handle
+> +	  all events.
+> +
+> +	  Use the acpi.debug_layer and acpi.debug_level kernel command-line
+> +	  parameters documented in Documentation/firmware-guide/acpi/debug.rst and
+> +	  Documentation/admin-guide/kernel-parameters.rst to control the type and
+> +	  amount of debug output.
+> +
+>  config ACPI_PCI_SLOT
+>  	bool "PCI slot detection driver"
+>  	depends on SYSFS && PCI
+> diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
+> index 3269a888fb7a..eeed5fd782ab 100644
+> --- a/drivers/acpi/osl.c
+> +++ b/drivers/acpi/osl.c
+> @@ -35,6 +35,9 @@
+>  #include <linux/uaccess.h>
+>  #include <linux/io-64-nonatomic-lo-hi.h>
+>  
+> +#define CREATE_TRACE_POINTS
+> +#include <trace/events/acpi.h>
+> +
+>  #include "acpica/accommon.h"
+>  #include "internal.h"
+>  
+> @@ -158,6 +161,8 @@ void acpi_os_vprintf(const char *fmt, va_list args)
+>  #ifdef ENABLE_DEBUGGER
+>  	if (acpi_in_debugger) {
+>  		kdb_printf("%s", buffer);
+> +	} else if (IS_ENABLED(CONFIG_ACPI_TRACE_PRINT)) {
+> +		trace_acpi_print(buffer);
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/057b40f43ce429a02e793adf3cfbf2446a19a38e
+Wouldn't it be better to also check trace_acpi_print_enabled() here in the
+else if() condition, along with IS_ENABLED()? That way if the CONFIG is
+enabled but the tracepoint is not enabled, at least the messages will go to
+dmesg instead of skipped.
 
-Thank you!
+>  	} else {
+>  		if (printk_get_level(buffer))
+>  			printk("%s", buffer);
+> @@ -165,7 +170,9 @@ void acpi_os_vprintf(const char *fmt, va_list args)
+>  			printk(KERN_CONT "%s", buffer);
+>  	}
+>  #else
+> -	if (acpi_debugger_write_log(buffer) < 0) {
+> +	if (IS_ENABLED(CONFIG_ACPI_TRACE_PRINT)) {
+> +		trace_acpi_print(buffer);
+> +	} else if (acpi_debugger_write_log(buffer) < 0) {
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Ditto.
+
+
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+
+thanks,
+
+ - Joel
+
+
+
+>  		if (printk_get_level(buffer))
+>  			printk("%s", buffer);
+>  		else
+> diff --git a/include/trace/events/acpi.h b/include/trace/events/acpi.h
+> new file mode 100644
+> index 000000000000..dab4dd42b5d7
+> --- /dev/null
+> +++ b/include/trace/events/acpi.h
+> @@ -0,0 +1,30 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+> +#undef TRACE_SYSTEM
+> +#define TRACE_SYSTEM acpi
+> +
+> +#if !defined(_TRACE_ACPI_H) || defined(TRACE_HEADER_MULTI_READ)
+> +#define _TRACE_ACPI_H
+> +
+> +#include <linux/tracepoint.h>
+> +
+> +TRACE_EVENT(acpi_print,
+> +
+> +	TP_PROTO(const char *buffer),
+> +
+> +	TP_ARGS(buffer),
+> +
+> +	TP_STRUCT__entry(
+> +		__string(buffer, buffer)
+> +	),
+> +
+> +	TP_fast_assign(
+> +		__assign_str(buffer, buffer);
+> +	),
+> +
+> +	TP_printk("%s", __get_str(buffer))
+> +);
+> +
+> +#endif /* _TRACE_SOCK_H */
+> +
+> +/* This part must be outside protection */
+> +#include <trace/define_trace.h>
+> -- 
+> 2.35.1
+> 
