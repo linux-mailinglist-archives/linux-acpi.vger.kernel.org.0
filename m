@@ -2,136 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB5BD64E1E0
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Dec 2022 20:38:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2639464E201
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Dec 2022 20:53:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230024AbiLOTiR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Dec 2022 14:38:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42414 "EHLO
+        id S229667AbiLOTxD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Dec 2022 14:53:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229911AbiLOTiQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Dec 2022 14:38:16 -0500
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6859B42F40
-        for <linux-acpi@vger.kernel.org>; Thu, 15 Dec 2022 11:38:15 -0800 (PST)
-Received: by mail-qv1-f45.google.com with SMTP id o12so105149qvn.3
-        for <linux-acpi@vger.kernel.org>; Thu, 15 Dec 2022 11:38:15 -0800 (PST)
+        with ESMTP id S229543AbiLOTxD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Dec 2022 14:53:03 -0500
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BE56532E6
+        for <linux-acpi@vger.kernel.org>; Thu, 15 Dec 2022 11:53:01 -0800 (PST)
+Received: by mail-lj1-x229.google.com with SMTP id g14so47561ljh.10
+        for <linux-acpi@vger.kernel.org>; Thu, 15 Dec 2022 11:53:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=joelfernandes.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=7WnaZc2bs26QE2S1hFU0wWVtk2SkMXSSpzkb6FSS1RI=;
+        b=aGblDN6+LiroAi5Ce2HI0sla+sv/MZ0o1VnWUgJkTxIOUl93xZYtZDnsd8zl1DABm2
+         OfhiFJBPHg9RSV8cw+9sGyvjAUzHb9igov4etIG+PT6jB8if72VmeESBXHF3IHsiLc5M
+         b2CmaXYJsYqhGPOOzKvG2srf3DxtCyWSKXn2E=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=aCo5fHS/msARJvD6FMrxNCEmeCv0inrfXrJpjQuhCMw=;
-        b=mVxFyH7Heasaeeeav+pOudUDQcnHvVezR/3CGRHtUaMmijNoR/eanjW0XazHmUt5RQ
-         IET7Z/4yUHX203bo8jNq7Y8x4iKYg/na3ZbtWTfLBd1+dV2JXniu2yX9FDUgoKym+xib
-         COXV+Or9cVPKvnT7ksaTJbo1jN9uZpkH1BSMOxfZEljceMikzq4mARediMaw5kjW5YP+
-         3BbTwBMZmkB7qT+s7D+TZGReDgH2jYnwNz7WF+eSV8S4wGIxUn51OCqPlHrPkMQmkraN
-         6pNmOIlKfIXO8nTS292pb9hPkdpgBFTdDMIFBF5U017wIfiMX3Lafkomw2+g1T6rxu7S
-         l61A==
-X-Gm-Message-State: ANoB5pnqmZMYqC4xWbJXhSOVQR0IeZPSVbTWlM2VuCaOS6vdRfFg6YWm
-        80zt/pYjBPEnz//79Yq87Jg2hgBJc9Trqumt8o4=
-X-Google-Smtp-Source: AA0mqf7AdSAPqm+Rm/jIw/Y0XeGDJqKbVJTE1m/sfpcH1vOPVW7DK7mkqwaQKrN3oZtPkNTVgdrXiuouoqbHmBThyl8=
-X-Received: by 2002:ad4:534b:0:b0:4b1:8429:a8a7 with SMTP id
- v11-20020ad4534b000000b004b18429a8a7mr70255020qvs.52.1671133094531; Thu, 15
- Dec 2022 11:38:14 -0800 (PST)
+        bh=7WnaZc2bs26QE2S1hFU0wWVtk2SkMXSSpzkb6FSS1RI=;
+        b=6PyhsSIqEpKWPZ2z61tQWGD3SNBkK/t00lpmsoblYMsx2RIETz2j/BvjtT2J2yTxQs
+         o84cgKlGeie+FIn12Gt1tbNFxwjluMVtHD1EUDT2gVlN5XFn0ypt+n9q8SVY6yesZ7f4
+         /0Eq7iXxikXewlmvgCyQQsbC4PbDXdkEsAE67CcMsNTM7vZN9f8NX5HbHSHP1agm1w6x
+         lPZjIR2PAtVYeU4OsLvl16WJwuLgWnLt44rcJOYyhz7n6s7hM1sVX2qYiB4XyBMso45a
+         3klcvcbruNB0Ui8nP06b8rgwrl9GJCRWnvki4OQK7nun6KnIrWNZam2+BvjivNOb/m50
+         HKRw==
+X-Gm-Message-State: ANoB5pmV1oY6lIIeuOdnIBEUj/6tzg5KqqRiBOcdZgQOXsVpGb3FUYCe
+        WcEHkMwoo/zfpyXeayZFCOp9OPijh65LbIJGM3Hgvw==
+X-Google-Smtp-Source: AA0mqf4FW9H2CtluhofbPQJiA6xZ7ZdK14RZtc7ewZw8cqvcl+H7LOmqZe+1wc0FJ8tx6X3g9uIC6DD8PJrYGi5UrrE=
+X-Received: by 2002:a05:651c:124c:b0:279:f45e:ccd6 with SMTP id
+ h12-20020a05651c124c00b00279f45eccd6mr7839328ljh.483.1671133979884; Thu, 15
+ Dec 2022 11:52:59 -0800 (PST)
 MIME-Version: 1.0
-References: <20221208164207.13518-1-mario.limonciello@amd.com> <MN0PR12MB61014F8D6D5B04B90997480DE2E19@MN0PR12MB6101.namprd12.prod.outlook.com>
-In-Reply-To: <MN0PR12MB61014F8D6D5B04B90997480DE2E19@MN0PR12MB6101.namprd12.prod.outlook.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 15 Dec 2022 20:38:03 +0100
-Message-ID: <CAJZ5v0hm00E4xNC6r9MieOTFtdchQHj9k8a34fk-0Oi6UzwLQA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] Adjust ACPI video detection fallback path
-To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        Daniel Dadap <ddadap@nvidia.com>
+References: <20221214233106.69b2c01b@gandalf.local.home> <Y5trUep9IvCv1Uwy@google.com>
+ <20221215141146.6ceb7cf2@gandalf.local.home>
+In-Reply-To: <20221215141146.6ceb7cf2@gandalf.local.home>
+From:   Joel Fernandes <joel@joelfernandes.org>
+Date:   Thu, 15 Dec 2022 14:52:48 -0500
+Message-ID: <CAEXW_YQLtK=4LMJ+LHPVWU0wbV-027HJoCEKTjZvBZ6krrn6vw@mail.gmail.com>
+Subject: Re: [RFC][PATCH] ACPI: tracing: Have ACPI debug go to tracing ring buffer
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux Trace Kernel <linux-trace-kernel@vger.kernel.org>,
+        linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Ross Zwisler <zwisler@google.com>,
+        Ching-lin Yu <chinglinyu@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 15, 2022 at 8:20 PM Limonciello, Mario
-<Mario.Limonciello@amd.com> wrote:
+On Thu, Dec 15, 2022 at 2:11 PM Steven Rostedt <rostedt@goodmis.org> wrote:
 >
-> [Public]
+> On Thu, 15 Dec 2022 18:45:37 +0000
+> Joel Fernandes <joel@joelfernandes.org> wrote:
 >
-> > -----Original Message-----
-> > From: Limonciello, Mario <Mario.Limonciello@amd.com>
-> > Sent: Thursday, December 8, 2022 10:42
-> > To: Rafael J . Wysocki <rafael@kernel.org>; Deucher, Alexander
-> > <Alexander.Deucher@amd.com>; Hans de Goede
-> > <hdegoede@redhat.com>
-> > Cc: amd-gfx@lists.freedesktop.org; linux-acpi@vger.kernel.org; Daniel
-> > Dadap <ddadap@nvidia.com>; Limonciello, Mario
-> > <Mario.Limonciello@amd.com>
-> > Subject: [PATCH v3 0/3] Adjust ACPI video detection fallback path
-> >
-> > In kernel 6.1 the backlight registration code was overhauled so that
-> > at most one backlight device got registered. As part of this change
-> > there was code added to still allow making an acpi_video0 device if the
-> > BIOS contained backlight control methods but no native or vendor drivers
-> > registered.
-> >
-> > Even after the overhaul this fallback logic is failing on the BIOS from
-> > a number of motherboard manufacturers supporting Ryzen APUs.
-> > What happens is the amdgpu driver finishes registration and as expected
-> > doesn't create a backlight control device since no eDP panels are connected
-> > to a desktop.
-> >
-> > Then 8 seconds later the ACPI video detection code creates an
-> > acpi_video0 device that is non-operational. GNOME then creates a
-> > backlight slider.
-> >
-> > To avoid this situation from happening make two sets of changes:
-> >
-> > Prevent desktop problems w/ fallback logic
-> > ------------------------------------------
-> > 1) Add support for the video detect code to let native drivers cancel the
-> > fallback logic if they didn't find a panel.
-> >
-> > This is done this way so that if another driver decides that the ACPI
-> > mechanism is still needed it can instead directly call the registration
-> > function.
-> >
-> > 2) Add code to amdgpu to notify the ACPI video detection code that no panel
-> > was detected on an APU.
-> >
-> > Disable fallback logic by default
-> > ---------------------------------
-> > This fallback logic was introduced to prevent regressions in the backlight
-> > overhaul.  As it has been deemed unnecessary by Hans explicitly disable the
-> > timeout.  If this turns out to be mistake and this part is reverted, the
-> > other patches for preventing desktop problems will avoid regressions on
-> > desktops.
-> >
-> > Mario Limonciello (3):
-> >   ACPI: video: Allow GPU drivers to report no panels
-> >   drm/amd/display: Report to ACPI video if no panels were found
-> >   ACPI: video: Don't enable fallback path for creating ACPI backlight by
-> >     default
-> >
-> >  drivers/acpi/acpi_video.c                       | 17 ++++++++++++-----
-> >  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c   |  4 ++++
-> >  include/acpi/video.h                            |  2 ++
-> >  3 files changed, 18 insertions(+), 5 deletions(-)
-> >
-> > --
-> > 2.34.1
+> > Wouldn't it be better to also check trace_acpi_print_enabled() here in the
+> > else if() condition, along with IS_ENABLED()? That way if the CONFIG is
+> > enabled but the tracepoint is not enabled, at least the messages will go to
+> > dmesg instead of skipped.
 >
-> FYI, besides me, this series also tested successfully by one of the
-> reporters to the Red Hat bugzilla.
+> I really don't want that. This was purposely done to be mutually exclusive.
+> The reason I added this in the first place, is because too much enabled
+> will render the system useless if printk() is used.
 >
-> https://bugzilla.redhat.com/show_bug.cgi?id=1783786#c8
+> After boot up, if I had enabled all debug events and then I were to disable
+> the acpi tracepoint, it will likely render the system useless again if it
+> were to switch over to printk.
 
-Thanks for letting me know!
+Ok, sure. I see where you were going. So you want no debugging
+messages at all if the trace event is disabled. That's fine with me. I
+would also add a note about the need to enable the specific trace
+event, in the Kconfig message and/or the Documentation. Otherwise, you
+might get someone say, "hey I enabled the CONFIG option but I see
+nothing in the trace buffer".
 
-I'll queue it up for 6.2-rc next week.
+Another approach could be to always enable the trace event by default,
+if the CONFIG is turned on. Or do a printk() telling the user about
+the event to enable, so they know why their trace buffer is empty.
+
+Up to you and the ACPI maintainers. ;-)
+
+thanks,
+
+ - Joel
