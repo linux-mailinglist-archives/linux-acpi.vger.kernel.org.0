@@ -2,116 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A00A364E033
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Dec 2022 19:07:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8A0164E0D4
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Dec 2022 19:31:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229867AbiLOSHY convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 15 Dec 2022 13:07:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40182 "EHLO
+        id S230453AbiLOSaq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Dec 2022 13:30:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229652AbiLOSHY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Dec 2022 13:07:24 -0500
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 377953B9C2;
-        Thu, 15 Dec 2022 10:07:23 -0800 (PST)
-Received: by mail-qt1-f179.google.com with SMTP id ay32so161671qtb.11;
-        Thu, 15 Dec 2022 10:07:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+R0AT2rjdktfIXZg7SxOTYK0enlSVf79ci15L9O/olY=;
-        b=I1GvffJ2PjtcQPoLEjwqan+NboCeBEX2pzAAlCUV5aztohz2HryO9Ej8YR1nbBhl5U
-         mDl6HSYsK1Dzjf76jPNi+2Ze70SGY+oe1B63JR9zlDpUT7Extg10KEYjpKNjiy2CvhBH
-         VBIrXGTfjw0eJnk8z9PgWXO2iYSHJwx7HJZ94xfX5lIO9hXFgHH2LtnIyV/s+quZ/hKB
-         Vmud/D2sH6FJ5eIm0QBTpYxC5sWcY7IjuyAi+2VQtGjL/Vq1Zys93DmCV1mXKpKBBzS/
-         DbmEYFIjhBoCwH6X1MVsMWPg+uJtANDjyPhE3OoAGMsDbDoW1X+lUw1AIjuFbVz7L+Ei
-         4Nwg==
-X-Gm-Message-State: ANoB5pnk32rAGfUPcJPscg3PlBVWIU2K/Lr2b7kj+N8S/oYHR4uHHNk3
-        TgmxoWpL9spC9ZI0jFWEx/Fy4dRf1Zh9dy3SfUmqzLjfi1g=
-X-Google-Smtp-Source: AA0mqf4UExJ/79GGQ8Zn7GM8tPddicE6lS3dfTgxiLRxelaeXDmcRaolLP69250vgb79Zxt+8D9QQZRGiWyEk8ZL8s0=
-X-Received: by 2002:ac8:7dcb:0:b0:3a6:8dd0:4712 with SMTP id
- c11-20020ac87dcb000000b003a68dd04712mr32464045qte.411.1671127642366; Thu, 15
- Dec 2022 10:07:22 -0800 (PST)
-MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 15 Dec 2022 19:07:11 +0100
-Message-ID: <CAJZ5v0hy7LXMyKF1H3Sh7ZKS8HyuMWPX_htN84wBYkRxxeNupA@mail.gmail.com>
-Subject: [GIT PULL] More ACPI updates for v6.2-rc1
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        with ESMTP id S230305AbiLOS3g (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Dec 2022 13:29:36 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69259F5BC;
+        Thu, 15 Dec 2022 10:28:54 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E979F61EB7;
+        Thu, 15 Dec 2022 18:28:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 548E2C43396;
+        Thu, 15 Dec 2022 18:28:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1671128933;
+        bh=1ThKZ2KV+vE+nqXAV/w9d1N2Ghsp/GX0r5pFgGEiN2E=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=TSU703zWVNj3cxFJiEnqcO3zBQnV13k4NSAmhACL/26+PNXVT7oRWatT7skJeT94u
+         pLGJ9IJQXOW6WfWJW3Gb16akVv1KWMcQrlIrhLuyc4MHVA/tQUlegwcHNS8e4kWHwy
+         +faTtERx+fu3WZ8dYxloJH6qGcPKgKqxjSJ5WJbj5NoU8Xy99uR7hlDsKwYo7JXn78
+         yiIlZ0Ox+Nuct1tMZeSj1sYP27nxRNYMK+Bk1SgeikomfTjwsGbnt8eHEiUIYmN4aV
+         ugpXXATU1B8khkEufvD14v3SAjY0oNOavDS+SQLLaHo441vVlsJM/aK2EEL/wFT3xp
+         C5oN32JV9HpNA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 37E9BE4D00F;
+        Thu, 15 Dec 2022 18:28:53 +0000 (UTC)
+Subject: Re: [GIT PULL] More ACPI updates for v6.2-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0hy7LXMyKF1H3Sh7ZKS8HyuMWPX_htN84wBYkRxxeNupA@mail.gmail.com>
+References: <CAJZ5v0hy7LXMyKF1H3Sh7ZKS8HyuMWPX_htN84wBYkRxxeNupA@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0hy7LXMyKF1H3Sh7ZKS8HyuMWPX_htN84wBYkRxxeNupA@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.2-rc1-2
+X-PR-Tracked-Commit-Id: 3d03140c4844bbd128728e8a367bb467d95f888e
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 057b40f43ce429a02e793adf3cfbf2446a19a38e
+Message-Id: <167112893322.20649.9904351691496894542.pr-tracker-bot@kernel.org>
+Date:   Thu, 15 Dec 2022 18:28:53 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+The pull request you sent on Thu, 15 Dec 2022 19:07:11 +0100:
 
-Please pull from the tag
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.2-rc1-2
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.2-rc1-2
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/057b40f43ce429a02e793adf3cfbf2446a19a38e
 
-with top-most commit 3d03140c4844bbd128728e8a367bb467d95f888e
+Thank you!
 
- Merge branch 'acpi-ec'
-
-on top of commit bee74dcbd3908291f4bfff3c81a52d52dcd48814
-
- Merge branches 'acpi-fan', 'acpi-pcc', 'acpi-misc' and 'pnp'
-
-to receive additional ACPI updates for 6.2-rc1.
-
-These fix an AML byte code execution issue in ACPICA and two issues in
-the ACPI EC driver which requires rearranging ACPICA code.
-
-Specifics:
-
- - Avoid trying to resolve operands in AML when there are none (Amadeusz
-   Sławiński).
-
- - Fix indentation in include/acpi/acpixf.h to help applying patches
-   from the upstream ACPICA git (Hans de Goede).
-
- - Make it possible to install an address space handler without
-   evaluating _REG for Operation Regions in the given address space (Hans
-   de Goede).
-
- - Defer the evaluation of _REG for ECDT described ECs till the matching
-   EC device in the DSDT gets parsed and acpi_ec_add() gets called for
-   it (Hans de Goede).
-
- - Fix EC address space handler unregistration (Hans de Goede).
-
-Thanks!
-
-
----------------
-
-Amadeusz Sławiński (1):
-      ACPICA: Fix operand resolution
-
-Hans de Goede (4):
-      ACPICA: include/acpi/acpixf.h: Fix indentation
-      ACPICA: Allow address_space_handler Install and _REG execution
-as 2 separate steps
-      ACPI: EC: Fix EC address space handler unregistration
-      ACPI: EC: Fix ECDT probe ordering issues
-
----------------
-
- drivers/acpi/acpica/dswexec.c  |   6 +-
- drivers/acpi/acpica/evxfregn.c |  92 ++++++++++++++++++++++++++---
- drivers/acpi/ec.c              |  32 ++++++----
- drivers/acpi/internal.h        |   1 +
- include/acpi/acpixf.h          | 130 ++++++++++++++++++++++-------------------
- 5 files changed, 181 insertions(+), 80 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
