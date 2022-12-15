@@ -2,358 +2,177 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18D9464D559
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Dec 2022 03:45:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0657864D5DE
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Dec 2022 05:31:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229475AbiLOCpO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Dec 2022 21:45:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59018 "EHLO
+        id S229637AbiLOEbU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Dec 2022 23:31:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbiLOCpN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Dec 2022 21:45:13 -0500
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 008D555A84;
-        Wed, 14 Dec 2022 18:45:10 -0800 (PST)
-Received: from kwepemi500015.china.huawei.com (unknown [172.30.72.54])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4NXc1h6ctzzJpMM;
-        Thu, 15 Dec 2022 10:41:28 +0800 (CST)
-Received: from [10.174.176.219] (10.174.176.219) by
- kwepemi500015.china.huawei.com (7.221.188.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Thu, 15 Dec 2022 10:45:06 +0800
-Subject: Re: [RFC PATCH v2 1/1] ACPI: APEI: Make memory_failure() triggered by
- synchronization errors execute in the current context
-To:     =?UTF-8?B?SE9SSUdVQ0hJIE5BT1lBKOWggOWPoyDnm7TkuZ8p?= 
-        <naoya.horiguchi@nec.com>
-CC:     "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "xueshuai@linux.alibaba.com" <xueshuai@linux.alibaba.com>,
-        "ashish.kalra@amd.com" <ashish.kalra@amd.com>,
-        "xiezhipeng1@huawei.com" <xiezhipeng1@huawei.com>,
-        "wangkefeng.wang@huawei.com" <wangkefeng.wang@huawei.com>,
-        "xiexiuqi@huawei.com" <xiexiuqi@huawei.com>,
-        "tanxiaofei@huawei.com" <tanxiaofei@huawei.com>,
-        "cuibixuan@linux.alibaba.com" <cuibixuan@linux.alibaba.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>
-References: <20221209095407.383211-1-lvying6@huawei.com>
- <20221209095407.383211-2-lvying6@huawei.com>
- <20221215002520.GA2020717@hori.linux.bs1.fc.nec.co.jp>
-From:   Lv Ying <lvying6@huawei.com>
-Message-ID: <76038f5b-914c-7ae0-e89f-500bd0c7502f@huawei.com>
-Date:   Thu, 15 Dec 2022 10:45:05 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        with ESMTP id S229451AbiLOEbL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Dec 2022 23:31:11 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99929303FE;
+        Wed, 14 Dec 2022 20:31:10 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D621661C54;
+        Thu, 15 Dec 2022 04:31:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181D0C433EF;
+        Thu, 15 Dec 2022 04:31:07 +0000 (UTC)
+Date:   Wed, 14 Dec 2022 23:31:06 -0500
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     LKML <linux-kernel@vger.kernel.org>,
+        Linux Trace Kernel <linux-trace-kernel@vger.kernel.org>,
+        linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Ross Zwisler <zwisler@google.com>,
+        Ching-lin Yu <chinglinyu@google.com>
+Subject: [RFC][PATCH] ACPI: tracing: Have ACPI debug go to tracing ring
+ buffer
+Message-ID: <20221214233106.69b2c01b@gandalf.local.home>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20221215002520.GA2020717@hori.linux.bs1.fc.nec.co.jp>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.176.219]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemi500015.china.huawei.com (7.221.188.92)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2022/12/15 8:26, HORIGUCHI NAOYA(堀口 直也) wrote:
-> On Fri, Dec 09, 2022 at 05:54:07PM +0800, Lv Ying wrote:
->> The memory uncorrected error which is detected by an external component and
->> notified via an IRQ, can be called asynchronization error. If an error is
->> detected as a result of user-space process accessing a corrupt memory
->> location, the CPU may take an abort. On arm64 this is a
->> 'synchronous external abort', and on a firmware first system it is notified
->> via NOTIFY_SEA, this can be called synchronization error.
->>
-> 
-> "synchronization error" in this context looks weird to me, maybe you mean
-> "synchronous error" ?  There're many places using "synchronization", so
-> please use consistent wording.
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-"synchronization error" in this context means "synchronous error", e.g 
-SEA. Thanks for your suggestion, I will use consistent wording - 
-"synchronous error".
+While debugging some firmware that was taking a bit of time to initialize,
+I enabled ACPI_DEBUG and added a bit too much info to the debug_layer and
+debug_level acpi command line options, and it made the computer not be
+able to boot (too much info! or too much printk).
 
-> 
->> Currently, synchronization error and asynchronization error both use
->> memory_failure_queue to schedule memory_failure() exectute in kworker
->> context. Commit 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue
->> for synchronous errors") make task_work pending to flush out the queue,
->> cancel_work_sync() in memory_failure_queue_kick() will make
->> memory_failure() exectute in kworker context first which will get
-> 
-> s/exectute/execute/
+I decided that this would be easier to handle if the acpi output was
+written instead into the trace buffer. This also has the added benefit of
+adding other trace events and seeing how ACPI interacts with the rest of
+the system.
 
-Thank you for your detailed review, I will check again and fix the typos 
-and syntax errors in the patch.
+Ideally, the ACPI trace should have proper trace events where data can be
+stored more efficiently and be filtered and parsed better. But for now,
+just writing the debug string into the buffer will suffice.  This makes it
+possible to enable all ACPI output (setting triggers on other events to
+stop tracing, to not lose the data you are looking for).
 
-> 
->> synchronization error info from kfifo, so task_work later will get nothing
->> from kfifo which doesn't work as expected. Even worse, synchronization
->> error notification has NMI like properties, (it can interrupt IRQ-masked
->> code), task_work may get wrong kfifo entry from interrupted
->> asynchronization error which is notified by IRQ.
->>
->> Since the memory_failure() triggered by a synchronous exception is
->> executed in the kworker context, the early_kill mode of memory_failure()
->> will send wrong si_code by SIGBUS signal: current process is kworker
->> thread, the actual user-space process accessing the corrupt memory location
->> will be collected by find_early_kill_thread(), and then send SIGBUS with
->> BUS_MCEERR_AO si_code to the actual user-space process instead of
->> BUS_MCEERR_AR. The machine-manager(kvm) use the si_code: BUS_MCEERR_AO for
->> 'action optional' early notifications, and BUS_MCEERR_AR for
->> 'action required' synchronous/late notifications.
->>
->> Make memory_failure() triggered by synchronization errors execute in the
->> current context, we do not need workqueue for synchronization error
->> anymore, use task_work handle synchronization errors directly. Since,
->> synchronization errors and asynchronization errors share the same kfifo,
->> use MF_ACTION_REQUIRED flag to distinguish them. And the asynchronization
->> error keeps the same as before.
->>
->> Currently, it's hard to distinguish synchronization error in APEI. It
->> can be determined that the SEA report synchronization error, so
->> currently only the synchronization error reported by SEA is distinguished
->> and handled in current context.
->>
->> Signed-off-by: Lv Ying <lvying6@huawei.com>
->> ---
->>   drivers/acpi/apei/ghes.c | 20 +++++++++-------
->>   mm/memory-failure.c      | 50 +++++++++++++++++++++++++++++-----------
->>   2 files changed, 48 insertions(+), 22 deletions(-)
->>
->> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
->> index 9952f3a792ba..19d62ec2177f 100644
->> --- a/drivers/acpi/apei/ghes.c
->> +++ b/drivers/acpi/apei/ghes.c
->> @@ -423,8 +423,8 @@ static void ghes_clear_estatus(struct ghes *ghes,
->>   
->>   /*
->>    * Called as task_work before returning to user-space.
->> - * Ensure any queued work has been done before we return to the context that
->> - * triggered the notification.
->> + * Ensure any queued corrupt page in synchronous errors has been handled before
->> + * we return to the user context that triggered the notification.
->>    */
->>   static void ghes_kick_task_work(struct callback_head *head)
->>   {
->> @@ -461,7 +461,7 @@ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
->>   }
->>   
->>   static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
->> -				       int sev)
->> +				       int sev, int notify_type)
->>   {
->>   	int flags = -1;
->>   	int sec_sev = ghes_severity(gdata->error_severity);
->> @@ -475,7 +475,7 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
->>   	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
->>   		flags = MF_SOFT_OFFLINE;
->>   	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
->> -		flags = 0;
->> +		flags = (notify_type == ACPI_HEST_NOTIFY_SEA) ? MF_ACTION_REQUIRED : 0;
->>   
->>   	if (flags != -1)
->>   		return ghes_do_memory_failure(mem_err->physical_addr, flags);
->> @@ -483,7 +483,8 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
->>   	return false;
->>   }
->>   
->> -static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
->> +static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev,
->> +		int notify_type)
->>   {
->>   	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
->>   	bool queued = false;
->> @@ -510,7 +511,9 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int s
->>   		 * and don't filter out 'corrected' error here.
->>   		 */
->>   		if (is_cache && has_pa) {
->> -			queued = ghes_do_memory_failure(err_info->physical_fault_addr, 0);
->> +			queued = ghes_do_memory_failure(err_info->physical_fault_addr,
->> +					(notify_type == ACPI_HEST_NOTIFY_SEA) ?
->> +					MF_ACTION_REQUIRED : 0);
->>   			p += err_info->length;
->>   			continue;
->>   		}
->> @@ -631,6 +634,7 @@ static bool ghes_do_proc(struct ghes *ghes,
->>   	const guid_t *fru_id = &guid_null;
->>   	char *fru_text = "";
->>   	bool queued = false;
->> +	int notify_type = ghes->generic->notify.type;
->>   
->>   	sev = ghes_severity(estatus->error_severity);
->>   	apei_estatus_for_each_section(estatus, gdata) {
->> @@ -648,13 +652,13 @@ static bool ghes_do_proc(struct ghes *ghes,
->>   			ghes_edac_report_mem_error(sev, mem_err);
->>   
->>   			arch_apei_report_mem_error(sev, mem_err);
->> -			queued = ghes_handle_memory_failure(gdata, sev);
->> +			queued = ghes_handle_memory_failure(gdata, sev, notify_type);
->>   		}
->>   		else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
->>   			ghes_handle_aer(gdata);
->>   		}
->>   		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
->> -			queued = ghes_handle_arm_hw_error(gdata, sev);
->> +			queued = ghes_handle_arm_hw_error(gdata, sev, notify_type);
->>   		} else {
->>   			void *err = acpi_hest_get_payload(gdata);
->>   
->> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->> index bead6bccc7f2..82238ec86acd 100644
->> --- a/mm/memory-failure.c
->> +++ b/mm/memory-failure.c
->> @@ -2204,7 +2204,11 @@ struct memory_failure_cpu {
->>   static DEFINE_PER_CPU(struct memory_failure_cpu, memory_failure_cpu);
->>   
->>   /**
->> - * memory_failure_queue - Schedule handling memory failure of a page.
->> + * memory_failure_queue
->> + * - Schedule handling memory failure of a page for asynchronous error, memory
->> + *   failure page will be executed in kworker thread
->> + * - put corrupt memory info into kfifo for synchronous error, task_work will
->> + *   handle them before returning to the user
-> 
-> I think that the top description of kernel-doc function documentation needs
-> to be brief, so could you move the above 2 items downward as details?
-> Maybe the first line can be updated like below (scheduling is done conditionally
-> with your change):
-> 
-> /**
->   * memory_failure_queue - Queue memory failure event
->   * @pfn: Page Number of the corrupted page
->   * @flags: Flags for memory failure handling
->   *
->   * ... (full details)
-> 
-> And maybe existing comment in "full details" is obsolete since commit
-> 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for synchronous
-> errors"), so could you update the whole description to explain the new
-> behavior with some background information as done in patch description?
-> 
+Even with all APCI debugging enable, the system continues to run perfectly
+fine.
 
-Thanks, your description is very concise and close to the meaning 
-expressed by the patch. I will fix it in the next patch.
-And I will update the whole description to explain the new behavior.
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
 
->>    * @pfn: Page Number of the corrupted page
->>    * @flags: Flags for memory failure handling
->>    *
->> @@ -2217,6 +2221,11 @@ static DEFINE_PER_CPU(struct memory_failure_cpu, memory_failure_cpu);
->>    * happen outside the current execution context (e.g. when
->>    * detected by a background scrubber)
->>    *
->> + * This function can also be used in synchronous errors which was detected as a
-> 
-> "... errors which was ..." seems unmatched in plurality.
-> 
->> + * result of user-space accessing a corrupt memory location, just put memory
-> 
-> s/corrupt/corrupted/
+ drivers/acpi/Kconfig        | 13 +++++++++++++
+ drivers/acpi/osl.c          |  9 ++++++++-
+ include/trace/events/acpi.h | 30 ++++++++++++++++++++++++++++++
+ 3 files changed, 51 insertions(+), 1 deletion(-)
+ create mode 100644 include/trace/events/acpi.h
 
-The typo and syntax error will be fixed in the next patch.
-
-> 
->> + * error info into kfifo, and then, task_work get and handle it in current
->> + * execution context instead of scheduling kworker to handle it
-> 
-> Please put a period at the end of sentence. kernel-doc comment is
-> converted to auto-generated documentation, so it needs to look like
-> natural English text.
-> See https://docs.kernel.org/doc-guide/kernel-doc.html#function-documentation
-> 
-
-Thanks, it help me a lot, I will update function comments as per the 
-kernel-doc.
-
->> + *
->>    * Can run in IRQ context.
->>    */
->> @@ -2230,9 +2239,10 @@ void memory_failure_queue(unsigned long pfn, int flags)
->>   
->>   	mf_cpu = &get_cpu_var(memory_failure_cpu);
->>   	spin_lock_irqsave(&mf_cpu->lock, proc_flags);
->> -	if (kfifo_put(&mf_cpu->fifo, entry))
->> -		schedule_work_on(smp_processor_id(), &mf_cpu->work);
->> -	else
->> +	if (kfifo_put(&mf_cpu->fifo, entry)) {
->> +		if (!(entry.flags & MF_ACTION_REQUIRED))
->> +			schedule_work_on(smp_processor_id(), &mf_cpu->work);
->> +	} else
->>   		pr_err("buffer overflow when queuing memory failure at %#lx\n",
->>   		       pfn);
->>   	spin_unlock_irqrestore(&mf_cpu->lock, proc_flags);
->> @@ -2240,12 +2250,15 @@ void memory_failure_queue(unsigned long pfn, int flags)
->>   }
->>   EXPORT_SYMBOL_GPL(memory_failure_queue);
->>   
->> -static void memory_failure_work_func(struct work_struct *work)
->> +/*
->> + * (a)synchronous error info should be consumed by the corresponding handler
->> + */
->> +static void __memory_failure_work_func(struct work_struct *work, bool sync)
->>   {
->>   	struct memory_failure_cpu *mf_cpu;
->>   	struct memory_failure_entry entry = { 0, };
->>   	unsigned long proc_flags;
->> -	int gotten;
->> +	int gotten, ret;
->>   
->>   	mf_cpu = container_of(work, struct memory_failure_cpu, work);
->>   	for (;;) {
->> @@ -2256,22 +2269,31 @@ static void memory_failure_work_func(struct work_struct *work)
->>   			break;
->>   		if (entry.flags & MF_SOFT_OFFLINE)
->>   			soft_offline_page(entry.pfn, entry.flags);
->> -		else
->> -			memory_failure(entry.pfn, entry.flags);
->> +		else {
->> +			if (sync && (entry.flags & MF_ACTION_REQUIRED)) {
->> +				ret = memory_failure(entry.pfn, entry.flags);
->> +				if (ret == -EHWPOISON || ret == -EOPNOTSUPP)
->> +					return;
->> +
->> +				pr_err("Memory error not recovered");
->> +				force_sig(SIGBUS);
->> +			} else if (!sync && !(entry.flags & MF_ACTION_REQUIRED))
->> +				memory_failure(entry.pfn, entry.flags);
-> 
-> So if sync is true and MF_ACTION_REQUIRED is not set, memory_failure() is
-> not called.  Does that break something?
-> 
-> Thanks,
-> Naoya Horiguchi
-> 
-
-Only in synchronous error handle process, set sync true.
-As expected, MF_ACTION_REQUIRED should be set in synchronous error 
-handle process.
-
-Kfifo is shared by synchronous error and asynchronous error. 
-Asynchronous error will not set MF_ACTION_REQUIRED. This judgment is to 
-prevent synchronous error calls memory_failure() handle asynchronous 
-errors in kfifo. If __memory_failure_work_func() in synchronous error 
-get an asynchronous error info(sync is true and MF_ACTION_REQUIRED is 
-not set), just ignore it, it will break nothing.
-
-However, currently we can only confirm that SEA is
-synchronous error, just set MF_ACTION_REQUIRED in SEA, other 
-indeterminate synchronous error will miss memory_failure().
-
-
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index 473241b5193f..2dfeb3bf79a7 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -389,6 +389,19 @@ config ACPI_DEBUG
+ 	  Documentation/admin-guide/kernel-parameters.rst to control the type and
+ 	  amount of debug output.
+ 
++config ACPI_TRACE_PRINT
++	bool "Write debug into trace buffer"
++	depends on ACPI_DEBUG
++	help
++	  Instead of writing to the console, write to the trace ring buffer.
++	  This is much faster than writing to the console, and can handle
++	  all events.
++
++	  Use the acpi.debug_layer and acpi.debug_level kernel command-line
++	  parameters documented in Documentation/firmware-guide/acpi/debug.rst and
++	  Documentation/admin-guide/kernel-parameters.rst to control the type and
++	  amount of debug output.
++
+ config ACPI_PCI_SLOT
+ 	bool "PCI slot detection driver"
+ 	depends on SYSFS && PCI
+diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
+index 3269a888fb7a..eeed5fd782ab 100644
+--- a/drivers/acpi/osl.c
++++ b/drivers/acpi/osl.c
+@@ -35,6 +35,9 @@
+ #include <linux/uaccess.h>
+ #include <linux/io-64-nonatomic-lo-hi.h>
+ 
++#define CREATE_TRACE_POINTS
++#include <trace/events/acpi.h>
++
+ #include "acpica/accommon.h"
+ #include "internal.h"
+ 
+@@ -158,6 +161,8 @@ void acpi_os_vprintf(const char *fmt, va_list args)
+ #ifdef ENABLE_DEBUGGER
+ 	if (acpi_in_debugger) {
+ 		kdb_printf("%s", buffer);
++	} else if (IS_ENABLED(CONFIG_ACPI_TRACE_PRINT)) {
++		trace_acpi_print(buffer);
+ 	} else {
+ 		if (printk_get_level(buffer))
+ 			printk("%s", buffer);
+@@ -165,7 +170,9 @@ void acpi_os_vprintf(const char *fmt, va_list args)
+ 			printk(KERN_CONT "%s", buffer);
+ 	}
+ #else
+-	if (acpi_debugger_write_log(buffer) < 0) {
++	if (IS_ENABLED(CONFIG_ACPI_TRACE_PRINT)) {
++		trace_acpi_print(buffer);
++	} else if (acpi_debugger_write_log(buffer) < 0) {
+ 		if (printk_get_level(buffer))
+ 			printk("%s", buffer);
+ 		else
+diff --git a/include/trace/events/acpi.h b/include/trace/events/acpi.h
+new file mode 100644
+index 000000000000..dab4dd42b5d7
+--- /dev/null
++++ b/include/trace/events/acpi.h
+@@ -0,0 +1,30 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++#undef TRACE_SYSTEM
++#define TRACE_SYSTEM acpi
++
++#if !defined(_TRACE_ACPI_H) || defined(TRACE_HEADER_MULTI_READ)
++#define _TRACE_ACPI_H
++
++#include <linux/tracepoint.h>
++
++TRACE_EVENT(acpi_print,
++
++	TP_PROTO(const char *buffer),
++
++	TP_ARGS(buffer),
++
++	TP_STRUCT__entry(
++		__string(buffer, buffer)
++	),
++
++	TP_fast_assign(
++		__assign_str(buffer, buffer);
++	),
++
++	TP_printk("%s", __get_str(buffer))
++);
++
++#endif /* _TRACE_SOCK_H */
++
++/* This part must be outside protection */
++#include <trace/define_trace.h>
 -- 
-Thanks!
-Lv Ying
+2.35.1
+
