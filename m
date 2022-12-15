@@ -2,96 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EAB564E1A6
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Dec 2022 20:17:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFBC364E1AE
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Dec 2022 20:20:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230445AbiLOTRJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Dec 2022 14:17:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59898 "EHLO
+        id S229591AbiLOTUh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Dec 2022 14:20:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230039AbiLOTQg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Dec 2022 14:16:36 -0500
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2040.outbound.protection.outlook.com [40.107.243.40])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9285F396DC;
-        Thu, 15 Dec 2022 11:16:35 -0800 (PST)
+        with ESMTP id S229572AbiLOTUg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Dec 2022 14:20:36 -0500
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2043.outbound.protection.outlook.com [40.107.244.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BAFA4D5D6
+        for <linux-acpi@vger.kernel.org>; Thu, 15 Dec 2022 11:20:33 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kY8YxhLZ/s7NSlBOBVhHC1apxw5pzVJmoxB/ebma+bQO5LgZ4mWGkM59HGXNq6tDUS6/r1AfjxQvqs4z3m8rsxLWfN4ZEJNl02vy+LFlnJlg8+Ly0SagkrKxc9dqRfidmQmOO6rji3mZcxj1n/xl+qGNaYDMMLsu4unJwBd3eMUBtALcLbGY7qQzVZ4jVM1dONejl7LrKzMWpckw5xBvOQgOmam5WhiwQLJ+bJ4olIzVHzOT4ihIADcXOxQUq89s/LIXIwJZkh4DjthEKCcwGi/B5PGT7iQegO6TtTnTjKqmX4chNPCEVC9tkvwLRJUbSNIXNNqB+aJyn4PMc2rQcQ==
+ b=PNv2nxPvw81LyZDf3eD69N6vT52zQhppxuErnTtOV/PFycezIycVgBDgu/BRViTsapxvTkaNv+4XzF1Xo1lrtbYVikwU4O0XaR07vrYCoDAfSEeMXGXSoZHZxDEocxdEuG67I7RrLoNd76S12L1dHLGaIuEnmSrwdMsSOf0XWzdoiwEdJx2KWMnMxGI6bGPrW//pYILeM1lYSlB80kXDUfizol78gRwW3FOvvrIv3+Kdr/5LPSGKfMKKVEbDdwmZywx9e5FTo0boz6WKg+LjpGwEI8r2uvBGKIiW8vVZZt4hEPlvRVVHh9nNY9/qxfevee+BNdr2Ki8xrSXnVXSp1Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AKV1mNoprL/sMayTX60gSb0wkWjN1K2SbLfP+Cw+2VI=;
- b=guZs9MhO72m4uc5AZdStbfXYrX8KR0icsWGFjh2AKiDQuo85ZCRNQ7ODpy3qSOO9Edh4oQ0BppluKuUNp+BVLpcNV3e8YXPrku2598rULTpeF4aHyhekHbVuyoFot7cZvZ0tzRzdFdpiaMNY5lNcbs82YVgEOSjq0k4FGkCwr8PYmBPBxYBTcjppWwIX8MvkNiwV+TNsplgmw4A/qqmYTtUSyR4i2r1ez5Uj9OdxYhQ1Pun/I7NHRqQu2vpSmUma59N9fmHIQ1hMSi4cIoUQkvSVfBjykOPWy3K7r/TNlhjTA6+P/nHhKlGyLEWFVBO572LkTF30gLrW6Md+Q2Q3Ug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
+ bh=ICvKOJu0dDevNVMYBpThUgAJlT7YxvkCBtb5sv8peA0=;
+ b=hFWA0BS/hbu/OECCELMjcGzzPyU+zPB0EJJ3ZZjbAlP9CLTcg1zzc4CUkJuihgOC4mfOf0JLW8QzGbVyDpUd8UuAfCIZ6lmKPQ76LTy3+XnLPuVL5JMFu1fRy3gS810JIPgzp5BpHcJUkhBEfL741y7jELQ2nOfVh4hLsmz/BwqiHEPvNhKEvvBpu5szKrOTuIAAIMXyIm9hg0QFuh6zqeo9gqDqTvbaPqUjBEnHQQpsCgohKPRveKk+aC6mldS6psZ0rbcxUNw7vgAHZCgZB7sapUo2WhDK5EPzPTEaK0JJidfjdMZYCubOZiV9Dny5fXsmiFfqC1PUPojq/aRIsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AKV1mNoprL/sMayTX60gSb0wkWjN1K2SbLfP+Cw+2VI=;
- b=BNYQs+bywSnQ9XlTyHBRnpS+dkth8AG5k2BaXxGJ6jIm0dD0QuBa8HFeyQ5hsVcr0HggMfCGYiH76rv5M6mVeF0EtQMIlfXUOIrpWp0Vts1lAMahSVaJNz8jBSgSS7eyGuX5JEn1N75du91WvEOxAgjZQOorBmOkq2v5gOJh/E0=
-Received: from DM6PR07CA0115.namprd07.prod.outlook.com (2603:10b6:5:330::6) by
- PH7PR12MB8154.namprd12.prod.outlook.com (2603:10b6:510:2b9::14) with
+ bh=ICvKOJu0dDevNVMYBpThUgAJlT7YxvkCBtb5sv8peA0=;
+ b=UmiMYKtuJ0+acACv9WgvxEb1RrMMvMkiXPv3Hd8vDROUVFAneJ915ZaALA+euSfyOMgt/mf7oCAUulYHgNN8uuVWF2iibuRAGGOUdYsyy38RgYszKVEKAGXuJ0LAzcChuHul/u/U1hEfddUbX/rRE/w21fjq4YaMx0Hd2Qa5C3Q=
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by IA0PR12MB7676.namprd12.prod.outlook.com (2603:10b6:208:432::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5924.11; Thu, 15 Dec
- 2022 19:16:33 +0000
-Received: from DM6NAM11FT108.eop-nam11.prod.protection.outlook.com
- (2603:10b6:5:330:cafe::fb) by DM6PR07CA0115.outlook.office365.com
- (2603:10b6:5:330::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5924.12 via Frontend
- Transport; Thu, 15 Dec 2022 19:16:33 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DM6NAM11FT108.mail.protection.outlook.com (10.13.172.95) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.5924.12 via Frontend Transport; Thu, 15 Dec 2022 19:16:32 +0000
-Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Thu, 15 Dec
- 2022 13:16:31 -0600
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     <rafael@kernel.org>, Mario Limonciello <mario.limonciello@amd.com>,
-        Philipp Zabel <philipp.zabel@gmail.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-CC:     <anson.tsao@amd.com>, <ben@bcheng.me>, <paul@zogpog.com>,
-        <bilkow@tutanota.com>, <Shyam-sundar.S-k@amd.com>,
-        <stable@vger.kernel.org>, Len Brown <lenb@kernel.org>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 2/2] ACPI: x86: s2idle: Stop using AMD specific codepath for Rembrandt+
-Date:   Thu, 15 Dec 2022 13:16:16 -0600
-Message-ID: <20221215191617.1438-3-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221215191617.1438-1-mario.limonciello@amd.com>
-References: <20221215191617.1438-1-mario.limonciello@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.19; Thu, 15 Dec
+ 2022 19:20:31 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::ff3c:2d37:75f3:442a]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::ff3c:2d37:75f3:442a%4]) with mapi id 15.20.5880.019; Thu, 15 Dec 2022
+ 19:20:30 +0000
+From:   "Limonciello, Mario" <Mario.Limonciello@amd.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>
+CC:     "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Daniel Dadap <ddadap@nvidia.com>
+Subject: RE: [PATCH v3 0/3] Adjust ACPI video detection fallback path
+Thread-Topic: [PATCH v3 0/3] Adjust ACPI video detection fallback path
+Thread-Index: AQHZCyQP+qdcODd6TUGTAuHMnqQfMq5vXaGQ
+Date:   Thu, 15 Dec 2022 19:20:30 +0000
+Message-ID: <MN0PR12MB61014F8D6D5B04B90997480DE2E19@MN0PR12MB6101.namprd12.prod.outlook.com>
+References: <20221208164207.13518-1-mario.limonciello@amd.com>
+In-Reply-To: <20221208164207.13518-1-mario.limonciello@amd.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Enabled=true;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SetDate=2022-12-15T19:18:07Z;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Method=Privileged;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Name=Public-AIP 2.0;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ActionId=94bf7e13-3f69-4914-bb49-f494aceff07a;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ContentBits=1
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_enabled: true
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_setdate: 2022-12-15T19:20:29Z
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_method: Privileged
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_name: Public-AIP 2.0
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_siteid: 3dd8961f-e488-4e60-8e11-a82d994e183d
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_actionid: 15461c5a-86b9-470c-af22-c107b8621d87
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_contentbits: 0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR12MB6101:EE_|IA0PR12MB7676:EE_
+x-ms-office365-filtering-correlation-id: 769f1552-00c5-4cce-ccc5-08daded16e7b
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Dl7VyFGHrYdax47dkWQqNvPA87c/tlaYO1wYwWuV+YGgd36oD+3RXYnCJVggo+0YVXyTJbu2m19vxpOSQ7R0OWXS5MM0vRXSAjVa36M9ngfnjYRZcTp4ul3Huh73GKiOejP1v7TaHVSbTeviOjUK9xUsW/KO4ZBwYzl1wY39jZiODUJzOHq5WEnPK7vG1mIqOoyHgkgs4axWlvNs8r14/YQtJKJWAOVi/+Qpv6M+oYWJj7nixajcW4arTm8U2QaT4p+R+e5GjA3UZtAcSO/1kkVEvZPEYCk7/PZe3lzbwHon9+MRlpZbggbcn7OcL8b7Gb3dFrMC84Qs6CBiuIHTZvuyUPqA6Fw7J/YuHMSdzq/tcS2JvOkDnCzfVo/I99P/bjRHmsGUZzFEZCdHEfaMivI8liDSNRnDE6O+Xw0aor5UZ3uBAkCmAIa//l/bdjFVQw6GibRgWGdfSXkLBm78bgWf5D9TMfSdteZFFoS/wLaOfQTjdOa6zsMawkWyRJAYZX04y5PlJuITjSE9DtSRzRm7XGwrPV6tjN+M70736UVwlocmKDTLOe4EGYkpJmCH1E/wNBiB+o51bXnkV8Up0T6F52SmSDDOmx6k8q1znko5b8hNMjpB6LAPuPLwovoSvi6VrSpaSNWgARZxk0lP0t4wceMHcB4ELqCeZmXEcA7AfxEcQiFMZ8DLBt44KgO53QA8xS5URr0l7VpsnpuRrUjvgmPeuZj+16YlrQD8IoY=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(346002)(39860400002)(366004)(376002)(136003)(451199015)(41300700001)(2906002)(52536014)(8936002)(83380400001)(9686003)(26005)(5660300002)(4326008)(186003)(122000001)(53546011)(38100700002)(6506007)(7696005)(38070700005)(66556008)(66946007)(66476007)(64756008)(66446008)(76116006)(8676002)(54906003)(316002)(110136005)(86362001)(33656002)(478600001)(71200400001)(55016003)(966005);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?F4PFKjO/QWV8iX6YYXjOs/plIfIr9YAAfdpB5zxG6pE1ibd/CXxd2PFyayyc?=
+ =?us-ascii?Q?ZxIR4NbSpjLMJ4sRdR21xlHf2YYwmhO64sAjCoFyDZTLRErxefBtT/1NRBL3?=
+ =?us-ascii?Q?WX+I1NdaZgIohPCqqR0fb13lgXVPANU7e4eANSJoHopG4RdlDTtCrP7LHFTu?=
+ =?us-ascii?Q?58AJLuwHoZYcnXb68GghwiIvZrxWfHB+4xgjOwD8hHn7v1ob288InTtrb/pH?=
+ =?us-ascii?Q?7PfACNkch1DPi57Mt5PtUfG7hbwfAaIM109cBQtHeLpgtp/GAWcpgXdNEp1w?=
+ =?us-ascii?Q?eoGe1ZYo4ndiECKTdHAKJ2D0E0FObFB7mWsMk/3Ujm5DiFY88N36lCGDcyXc?=
+ =?us-ascii?Q?IX5MmPpp1rGIINNqmvyieZEmXl/P5s7bkWw0Rp4ggt0J0a84VcKLuC2V7P8Y?=
+ =?us-ascii?Q?yG5rLPDszHT+hCasSmUayqK1Vwb4o5M0WS0H57djf1Anz7zkOOvW7qyO8B61?=
+ =?us-ascii?Q?9Z/tDVXJVJizsOLg52qBclMJRPrReo63ocqFL2ABMBxNABUGV4SVL4v/ik8H?=
+ =?us-ascii?Q?nqrmgSYcBQiRrkpEj7FC4nlsNkzBPxIbjDTBpoT65tWWWDir9vqzMdfQldTR?=
+ =?us-ascii?Q?xqz4KhOQxza4IyB2x5nlupPW97mv7qMnWFbD0UboAnqlzSgJeae6PtG3GCl6?=
+ =?us-ascii?Q?xjd8UsyCM34ShBquyFzdJKxuO6t35+Q1GG28QXd9Iogq4cNvhduGHo64ChGf?=
+ =?us-ascii?Q?DaRWjVF/r6+CfXuiAO2X9609UKrrc4Zz/V/u4vFPzeHBVORryJBjlw0eRl0D?=
+ =?us-ascii?Q?lqUXCFhCtZjvqXyj8EJsLqKiw/SSzn6uykndwD5BsG2L3tBvwDzOer9uWowl?=
+ =?us-ascii?Q?4Xtkk+9oZ/uB0g/1qBM0htSbBNilsM2FJgvi4JFopX/iAMQ7bnYYbK660O1h?=
+ =?us-ascii?Q?J7HcnZ3xP92tvtIEyhBQWxRhkQRS1ZnM746HQOzeapFqKXrW5NpX1EXf5AyR?=
+ =?us-ascii?Q?fbxX4GSVDpiD6Yu1pXEG9lCb3xcmzww7LR3FTMqv4F5XXz3ca5qYZ22rQd40?=
+ =?us-ascii?Q?+VWnp2QuxFE+Hik0pgh0A3+XjKe/9dtmIfwV4zTuGlzC0jJ0w9ixmGnQRzI1?=
+ =?us-ascii?Q?3mXBdC+CXN/PfKvIu8I2um33svoGFUr4iDJ/jiOtP9JTN36YaZNYA3Jl4D7P?=
+ =?us-ascii?Q?KLMotbN1z95W0Cmnyvxps+ZkNJ+fmwnlSp0tJsMQJzk7vwLrWE5iCbSR/YTE?=
+ =?us-ascii?Q?KZqNzzo/tObIPXT05fIES+f6g173n4MFocuAg2Z3c63ytCCmLZT5sJ3fH2Ow?=
+ =?us-ascii?Q?4zLiNhnm7aZuAy+qTigd+dugrrZXu1P3jcuSbYFcSYRfM7Gtu6HUJoZGwr76?=
+ =?us-ascii?Q?Q0cg9K6mkJ2D90bPu5HXGZH5KByjoYV6r9aihOQAfl61aI4u94gB0adhbxfM?=
+ =?us-ascii?Q?LVhCa8yCXTLcpQ15OUrLpnY0tK+ikQ8Mf/KJZmFPiXkQ/UJ6EALz7zv4Aes+?=
+ =?us-ascii?Q?nsR8ennxZQw9HQKeyMMncDYyqFSTq6/KNWASfxGBQlzSO6v1UY+Pa1g8uH1Y?=
+ =?us-ascii?Q?ojncTPoWh3ipbd4qzOXWerRmh34QuTE4AARdx7Mz5vAqHDqEquClCjtqRvoK?=
+ =?us-ascii?Q?IYC9RtXmC3ZCJWe1zhc=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6NAM11FT108:EE_|PH7PR12MB8154:EE_
-X-MS-Office365-Filtering-Correlation-Id: 28538afb-ca4e-4229-b7b7-08daded0e077
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: kE2tQkXGoO/tiOIQAjfnvi3V3k+FNzN8x9meKkgkrhyDz0qu8+W/Ho3Gf2qT0coGVClTyvlm9DZapaEsh/Cq6OGBs/7PVzeVun6KjiMxkoVrghepuZXxJ1kHm/iDUcHKDIR7N+GDG1mohJnUFvFk18dp8xMGf0pKUswPVjzMGHGolKgbaG+xvKLp2oSTTa9yvKR7vrlmBtTymP5na2vMZ3A+f3r6AXNXxUrp0d5SnK/zHLB3pG/StgyUEWD0gGeuV06LM3QfRhMO3eD9LhIesUuoP6SyJGpQU3LFP0tPuIpigiYgjwJTysHKRM4bhlsc8iPJPyAHIRw6iax6del2rXytMhdZLU2fC8hfjIfrevipXGspKk3VJTgEAReyVhhwf/hP9lP2EUNm0V+3SsGDzzxzzF3j04xAGmRsvFsFKVDpIEE1ThYk5UMuCrvA59p/V5Qg5SrOn45o7lSJNqa7uCextGP4yRQ/Lmgk3tJZhYzgDglrIx29yaw7ubmvFksNvrHdLMgYYlQLWUWA8gsCAV0B+nhK5J2gPuPdV1ca2YuGkMO3gA+FHoHcVpBqc8ovBmzlhZxWD2s8Cb8l+r2++yyKp9Sip5hzMuQ7817o2pliGGC+GsqruYAAd7yJgAvyTp/iDssCiNy+XH1BVRnxe87m4gflN+k0uKVdOXM2Niq//SLBU5iNOvPl6uGY7+4Z411lsZTwUknTJspPWbfhmPolm0r3mIwnrRlzLoeCYjxJNzgz63vCG5foAnn3Xh9TX0K1U2Io0TfFLP0GXhmBSxTP7OT2ToO/N8H1HYpPEYMQd3k+ihC7/i8zbQ4cFC1t
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:CA;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230022)(4636009)(376002)(136003)(39860400002)(346002)(396003)(451199015)(46966006)(36840700001)(40470700004)(54906003)(110136005)(2906002)(8936002)(336012)(1076003)(41300700001)(8676002)(2616005)(70586007)(70206006)(36860700001)(5660300002)(40480700001)(47076005)(316002)(426003)(36756003)(83380400001)(44832011)(7416002)(40460700003)(4326008)(86362001)(82310400005)(478600001)(6666004)(26005)(186003)(82740400003)(45080400002)(7696005)(16526019)(966005)(356005)(81166007)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Dec 2022 19:16:32.6071
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 769f1552-00c5-4cce-ccc5-08daded16e7b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Dec 2022 19:20:30.9016
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 28538afb-ca4e-4229-b7b7-08daded0e077
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT108.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8154
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: B1y70D+hPUR51/ZPg9xtISbdZjJJbrRaFN7ZDk+VSzzqbUapmCc4D1eNfJKBQ5hP3HwtwP2HYZCrr3g48FvPGQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7676
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
@@ -102,182 +131,76 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-After we introduced a module parameter and quirk infrastructure for
-picking the Microsoft GUID over the SOC vendor GUID we discovered
-that lots and lots of systems are getting this wrong.
+[Public]
 
-The table continues to grow, and is becoming unwieldy.
+> -----Original Message-----
+> From: Limonciello, Mario <Mario.Limonciello@amd.com>
+> Sent: Thursday, December 8, 2022 10:42
+> To: Rafael J . Wysocki <rafael@kernel.org>; Deucher, Alexander
+> <Alexander.Deucher@amd.com>; Hans de Goede
+> <hdegoede@redhat.com>
+> Cc: amd-gfx@lists.freedesktop.org; linux-acpi@vger.kernel.org; Daniel
+> Dadap <ddadap@nvidia.com>; Limonciello, Mario
+> <Mario.Limonciello@amd.com>
+> Subject: [PATCH v3 0/3] Adjust ACPI video detection fallback path
+>=20
+> In kernel 6.1 the backlight registration code was overhauled so that
+> at most one backlight device got registered. As part of this change
+> there was code added to still allow making an acpi_video0 device if the
+> BIOS contained backlight control methods but no native or vendor drivers
+> registered.
+>=20
+> Even after the overhaul this fallback logic is failing on the BIOS from
+> a number of motherboard manufacturers supporting Ryzen APUs.
+> What happens is the amdgpu driver finishes registration and as expected
+> doesn't create a backlight control device since no eDP panels are connect=
+ed
+> to a desktop.
+>=20
+> Then 8 seconds later the ACPI video detection code creates an
+> acpi_video0 device that is non-operational. GNOME then creates a
+> backlight slider.
+>=20
+> To avoid this situation from happening make two sets of changes:
+>=20
+> Prevent desktop problems w/ fallback logic
+> ------------------------------------------
+> 1) Add support for the video detect code to let native drivers cancel the
+> fallback logic if they didn't find a panel.
+>=20
+> This is done this way so that if another driver decides that the ACPI
+> mechanism is still needed it can instead directly call the registration
+> function.
+>=20
+> 2) Add code to amdgpu to notify the ACPI video detection code that no pan=
+el
+> was detected on an APU.
+>=20
+> Disable fallback logic by default
+> ---------------------------------
+> This fallback logic was introduced to prevent regressions in the backligh=
+t
+> overhaul.  As it has been deemed unnecessary by Hans explicitly disable t=
+he
+> timeout.  If this turns out to be mistake and this part is reverted, the
+> other patches for preventing desktop problems will avoid regressions on
+> desktops.
+>=20
+> Mario Limonciello (3):
+>   ACPI: video: Allow GPU drivers to report no panels
+>   drm/amd/display: Report to ACPI video if no panels were found
+>   ACPI: video: Don't enable fallback path for creating ACPI backlight by
+>     default
+>=20
+>  drivers/acpi/acpi_video.c                       | 17 ++++++++++++-----
+>  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c   |  4 ++++
+>  include/acpi/video.h                            |  2 ++
+>  3 files changed, 18 insertions(+), 5 deletions(-)
+>=20
+> --
+> 2.34.1
 
-We don't really have any benefit to forcing vendors to populate the
-AMD GUID. This is just extra work, and more and more vendors seem
-to mess it up.  As the Microsoft GUID is used by Windows as well,
-it's very likely that it won't be messed up like this.
+FYI, besides me, this series also tested successfully by one of the
+reporters to the Red Hat bugzilla.
 
-So drop all the quirks forcing it and the Rembrandt behavior. This
-means that Cezanne or later effectively only run the Microsoft GUID
-codepath with the exception of HP Elitebook 8*5 G9.
-
-Fixes: fd894f05cf30 ("ACPI: x86: s2idle: If a new AMD _HID is missing assume Rembrandt")
-Cc: stable@vger.kernel.org # 6.1
-Reported-by: Benjamin Cheng <ben@bcheng.me>
-Reported-by: bilkow@tutanota.com
-Reported-by: Paul <paul@zogpog.com>
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2292
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216768
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/acpi/x86/s2idle.c | 87 ++-------------------------------------
- 1 file changed, 3 insertions(+), 84 deletions(-)
-
-diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-index 422415cb14f4..c7afce465a07 100644
---- a/drivers/acpi/x86/s2idle.c
-+++ b/drivers/acpi/x86/s2idle.c
-@@ -28,10 +28,6 @@ static bool sleep_no_lps0 __read_mostly;
- module_param(sleep_no_lps0, bool, 0644);
- MODULE_PARM_DESC(sleep_no_lps0, "Do not use the special LPS0 device interface");
- 
--static bool prefer_microsoft_dsm_guid __read_mostly;
--module_param(prefer_microsoft_dsm_guid, bool, 0644);
--MODULE_PARM_DESC(prefer_microsoft_dsm_guid, "Prefer using Microsoft GUID in LPS0 device _DSM evaluation");
--
- static const struct acpi_device_id lps0_device_ids[] = {
- 	{"PNP0D80", },
- 	{"", },
-@@ -369,27 +365,15 @@ static int validate_dsm(acpi_handle handle, const char *uuid, int rev, guid_t *d
- }
- 
- struct amd_lps0_hid_device_data {
--	const unsigned int rev_id;
- 	const bool check_off_by_one;
--	const bool prefer_amd_guid;
- };
- 
- static const struct amd_lps0_hid_device_data amd_picasso = {
--	.rev_id = 0,
- 	.check_off_by_one = true,
--	.prefer_amd_guid = false,
- };
- 
- static const struct amd_lps0_hid_device_data amd_cezanne = {
--	.rev_id = 0,
- 	.check_off_by_one = false,
--	.prefer_amd_guid = false,
--};
--
--static const struct amd_lps0_hid_device_data amd_rembrandt = {
--	.rev_id = 2,
--	.check_off_by_one = false,
--	.prefer_amd_guid = true,
- };
- 
- static const struct acpi_device_id amd_hid_ids[] = {
-@@ -397,7 +381,6 @@ static const struct acpi_device_id amd_hid_ids[] = {
- 	{"AMD0005",	(kernel_ulong_t)&amd_picasso,	},
- 	{"AMDI0005",	(kernel_ulong_t)&amd_picasso,	},
- 	{"AMDI0006",	(kernel_ulong_t)&amd_cezanne,	},
--	{"AMDI0007",	(kernel_ulong_t)&amd_rembrandt,	},
- 	{}
- };
- 
-@@ -407,68 +390,7 @@ static int lps0_prefer_amd(const struct dmi_system_id *id)
- 	rev_id = 2;
- 	return 0;
- }
--
--static int lps0_prefer_microsoft(const struct dmi_system_id *id)
--{
--	pr_debug("Preferring Microsoft GUID.\n");
--	prefer_microsoft_dsm_guid = true;
--	return 0;
--}
--
- static const struct dmi_system_id s2idle_dmi_table[] __initconst = {
--	{
--		/*
--		 * ASUS TUF Gaming A17 FA707RE
--		 * https://bugzilla.kernel.org/show_bug.cgi?id=216101
--		 */
--		.callback = lps0_prefer_microsoft,
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "ASUS TUF Gaming A17"),
--		},
--	},
--	{
--		/* ASUS ROG Zephyrus G14 (2022) */
--		.callback = lps0_prefer_microsoft,
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "ROG Zephyrus G14 GA402"),
--		},
--	},
--	{
--		/*
--		 * Lenovo Yoga Slim 7 Pro X 14ARH7
--		 * https://bugzilla.kernel.org/show_bug.cgi?id=216473 : 82V2
--		 * https://bugzilla.kernel.org/show_bug.cgi?id=216438 : 82TL
--		 */
--		.callback = lps0_prefer_microsoft,
--		.matches = {
--			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "82"),
--		},
--	},
--	{
--		/*
--		 * ASUSTeK COMPUTER INC. ROG Flow X13 GV301RE_GV301RE
--		 * https://gitlab.freedesktop.org/drm/amd/-/issues/2148
--		 */
--		.callback = lps0_prefer_microsoft,
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "ROG Flow X13 GV301"),
--		},
--	},
--	{
--		/*
--		 * ASUSTeK COMPUTER INC. ROG Flow X16 GV601RW_GV601RW
--		 * https://gitlab.freedesktop.org/drm/amd/-/issues/2148
--		 */
--		.callback = lps0_prefer_microsoft,
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "ROG Flow X16 GV601"),
--		},
--	},
- 	{
- 		/*
- 		 * AMD Rembrandt based HP EliteBook 835/845/865 G9
-@@ -504,16 +426,14 @@ static int lps0_device_attach(struct acpi_device *adev,
- 		if (dev_id->id[0])
- 			data = (const struct amd_lps0_hid_device_data *) dev_id->driver_data;
- 		else
--			data = &amd_rembrandt;
--		rev_id = data->rev_id;
-+			data = &amd_cezanne;
- 		lps0_dsm_func_mask = validate_dsm(adev->handle,
- 					ACPI_LPS0_DSM_UUID_AMD, rev_id, &lps0_dsm_guid);
- 		if (lps0_dsm_func_mask > 0x3 && data->check_off_by_one) {
- 			lps0_dsm_func_mask = (lps0_dsm_func_mask << 1) | 0x1;
- 			acpi_handle_debug(adev->handle, "_DSM UUID %s: Adjusted function mask: 0x%x\n",
- 					  ACPI_LPS0_DSM_UUID_AMD, lps0_dsm_func_mask);
--		} else if (lps0_dsm_func_mask_microsoft > 0 && data->prefer_amd_guid &&
--				!prefer_microsoft_dsm_guid) {
-+		} else if (lps0_dsm_func_mask_microsoft > 0 && rev_id) {
- 			lps0_dsm_func_mask_microsoft = -EINVAL;
- 			acpi_handle_debug(adev->handle, "_DSM Using AMD method\n");
- 		}
-@@ -521,8 +441,7 @@ static int lps0_device_attach(struct acpi_device *adev,
- 		rev_id = 1;
- 		lps0_dsm_func_mask = validate_dsm(adev->handle,
- 					ACPI_LPS0_DSM_UUID, rev_id, &lps0_dsm_guid);
--		if (!prefer_microsoft_dsm_guid)
--			lps0_dsm_func_mask_microsoft = -EINVAL;
-+		lps0_dsm_func_mask_microsoft = -EINVAL;
- 	}
- 
- 	if (lps0_dsm_func_mask < 0 && lps0_dsm_func_mask_microsoft < 0)
--- 
-2.34.1
-
+https://bugzilla.redhat.com/show_bug.cgi?id=3D1783786#c8
