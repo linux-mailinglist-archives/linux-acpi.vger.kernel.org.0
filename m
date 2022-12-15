@@ -2,158 +2,143 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7B2864D647
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Dec 2022 06:53:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E490C64D8C9
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Dec 2022 10:42:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229679AbiLOFxp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Dec 2022 00:53:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57558 "EHLO
+        id S229592AbiLOJmc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Dec 2022 04:42:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229588AbiLOFxo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Dec 2022 00:53:44 -0500
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C13CD2AE3F;
-        Wed, 14 Dec 2022 21:53:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1671083623; x=1702619623;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=vBYIKub1ILlCxfTrAPE1vLqEgAoyGgoHOBktpWHdYAU=;
-  b=Iq5kW4BjR3QDf7N8jsE7BplxG98ufixNTBPz1JtT6hgqOYyGuSeSyrq/
-   /b5FCQ3hCGJulFeXQ+FrUswK5SGk5ihxUhM76XkA2XCGIdlBCtUc0JT97
-   rqDJApw4TYeTC8d2bBtre9gB1R9uaaq5+dDUBOFgIzxL6Emy5i3wO6Zm7
-   nIlA+78N35r+tOK6OVE09E1STQMImUk1to2J6617fWOopyjpi5PKSsspw
-   ShKIp4JMz7rY7x6sVSbIsZnNiizooN0vlnoSXa5yqcGdpZHzuaK/H0Oiq
-   OPZQp4qA1/Neqco203lWQHZtmu3yki8Xg9OTZZCCVoEWRxdXMv7VFVN3R
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10561"; a="345678573"
-X-IronPort-AV: E=Sophos;i="5.96,246,1665471600"; 
-   d="scan'208";a="345678573"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2022 21:53:43 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10561"; a="756221835"
-X-IronPort-AV: E=Sophos;i="5.96,246,1665471600"; 
-   d="scan'208";a="756221835"
-Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 14 Dec 2022 21:53:42 -0800
-Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1p5hBd-00064K-09;
-        Thu, 15 Dec 2022 05:53:41 +0000
-Date:   Thu, 15 Dec 2022 13:52:53 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 02f29b079520d658643d9f1cf1d2e815bc38d396
-Message-ID: <639ab635.cM9cGaA97WfPlvIt%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S229854AbiLOJma (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Dec 2022 04:42:30 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CCE82BF2
+        for <linux-acpi@vger.kernel.org>; Thu, 15 Dec 2022 01:41:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1671097309;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=1BG7uuSnGPV79muqIARaa573ojSEFReXOVoQVHexFwI=;
+        b=XfZID8WCsjc6V5lUaOh5pGf47lmHybYQscnMJn/Ikao1wbXlsOdrtkl6fZZKVPW0V7AjoL
+        IZ7hnjngC7j6a0sKUjVMeZZAG67wF9A2DQqbDWcNoES/OPIeiI8y7EgP8G/IJetMJGvrl4
+        ZRlHM9vuZDNzCh/2eKR9Ov99dxKL5Zw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-372-CTPDtuV8OTOv598Mvja6Hg-1; Thu, 15 Dec 2022 04:41:47 -0500
+X-MC-Unique: CTPDtuV8OTOv598Mvja6Hg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E3C8886C14C;
+        Thu, 15 Dec 2022 09:41:46 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.193.128])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 1860B14171BE;
+        Thu, 15 Dec 2022 09:41:45 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        Aditya Garg <gargaditya08@live.com>
+Subject: [PATCH] ACPI: video: Fix Apple GMUX backlight detection
+Date:   Thu, 15 Dec 2022 10:41:38 +0100
+Message-Id: <20221215094138.7120-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 02f29b079520d658643d9f1cf1d2e815bc38d396  Merge branch 'thermal-next' into linux-next
+The apple-gmux driver only binds to old GMUX devices which have an
+IORESOURCE_IO resource (using inb()/outb()) rather then memory-mapped
+IO (IORESOURCE_MEM).
 
-elapsed time: 725m
+T2 MacBooks use the new style GMUX devices (with IORESOURCE_MEM access),
+so these are not supported by the apple-gmux driver. This is not a problem
+since they have working ACPI video backlight support.
 
-configs tested: 75
-configs skipped: 2
+But the apple_gmux_present() helper only checks if an ACPI device with
+the "APP000B" HID is present, causing acpi_video_get_backlight_type()
+to return acpi_backlight_apple_gmux disabling the acpi_video backlight
+device.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Add a new apple_gmux_backlight_present() helper which checks that
+the "APP000B" device actually is an old GMUX device with an IORESOURCE_IO
+resource.
 
-gcc tested configs:
-powerpc                           allnoconfig
-i386                                defconfig
-um                           x86_64_defconfig
-alpha                             allnoconfig
-i386                              allnoconfig
-um                             i386_defconfig
-arc                               allnoconfig
-arm                               allnoconfig
-arc                                 defconfig
-s390                             allmodconfig
-alpha                               defconfig
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-i386                          randconfig-a014
-x86_64                           rhel-8.3-bpf
-s390                 randconfig-r044-20221214
-riscv                randconfig-r042-20221214
-x86_64                           rhel-8.3-syz
-i386                          randconfig-a012
-s390                                defconfig
-sh                               allmodconfig
-s390                             allyesconfig
-x86_64                         rhel-8.3-kunit
-mips                             allyesconfig
-i386                          randconfig-a016
-arc                  randconfig-r043-20221214
-powerpc                          allmodconfig
-i386                          randconfig-a001
-i386                          randconfig-a003
-x86_64                        randconfig-a006
-i386                             allyesconfig
-i386                          randconfig-a005
-x86_64                              defconfig
-m68k                             allyesconfig
-x86_64                           rhel-8.3-kvm
-x86_64                        randconfig-a013
-m68k                             allmodconfig
-x86_64                        randconfig-a011
-arc                              allyesconfig
-alpha                            allyesconfig
-x86_64                               rhel-8.3
-x86_64                        randconfig-a015
-x86_64                          rhel-8.3-rust
-x86_64                    rhel-8.3-kselftests
-x86_64                           allyesconfig
-x86_64                          rhel-8.3-func
-x86_64                            allnoconfig
-arm64                            allyesconfig
-arm                                 defconfig
-arm                              allyesconfig
-ia64                             allmodconfig
-riscv                             allnoconfig
-mips                        bcm47xx_defconfig
-sparc                       sparc32_defconfig
-loongarch                        alldefconfig
-mips                       bmips_be_defconfig
-sh                   rts7751r2dplus_defconfig
-sh                          rsk7269_defconfig
-parisc                generic-64bit_defconfig
-powerpc                 mpc834x_itx_defconfig
+This fixes the acpi_video0 backlight no longer registering on T2 MacBooks.
 
-clang tested configs:
-i386                          randconfig-a013
-arm                  randconfig-r046-20221214
-x86_64                        randconfig-a001
-i386                          randconfig-a011
-x86_64                        randconfig-a003
-i386                          randconfig-a015
-x86_64                        randconfig-a005
-i386                          randconfig-a002
-hexagon              randconfig-r041-20221214
-hexagon              randconfig-r045-20221214
-i386                          randconfig-a004
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-k001
-i386                          randconfig-a006
+Note people are working to add support for the new style GMUX to Linux:
+https://github.com/kekrby/linux-t2/commits/wip/hybrid-graphics
 
+Once this lands this patch should be reverted so that
+acpi_video_get_backlight_type() also prefers the gmux on new style GMUX
+MacBooks, but for now this is necessary to avoid regressing backlight
+control on T2 Macs.
+
+Fixes: 21245df307cb ("ACPI: video: Add Apple GMUX brightness control detection")
+Reported-and-tested-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/video_detect.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index a934bbc9dd37..1b78c7434492 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -34,6 +34,7 @@
+ #include <linux/module.h>
+ #include <linux/pci.h>
+ #include <linux/platform_data/x86/nvidia-wmi-ec-backlight.h>
++#include <linux/pnp.h>
+ #include <linux/types.h>
+ #include <linux/workqueue.h>
+ #include <acpi/video.h>
+@@ -105,6 +106,26 @@ static bool nvidia_wmi_ec_supported(void)
+ }
+ #endif
+ 
++static bool apple_gmux_backlight_present(void)
++{
++	struct acpi_device *adev;
++	struct device *dev;
++
++	adev = acpi_dev_get_first_match_dev(GMUX_ACPI_HID, NULL, -1);
++	if (!adev)
++		return false;
++
++	dev = acpi_get_first_physical_node(adev);
++	if (!dev)
++		return false;
++
++	/*
++	 * drivers/platform/x86/apple-gmux.c only supports old style
++	 * Apple GMUX with an IO-resource.
++	 */
++	return pnp_get_resource(to_pnp_dev(dev), IORESOURCE_IO, 0) != NULL;
++}
++
+ /* Force to use vendor driver when the ACPI device is known to be
+  * buggy */
+ static int video_detect_force_vendor(const struct dmi_system_id *d)
+@@ -767,7 +788,7 @@ static enum acpi_backlight_type __acpi_video_get_backlight_type(bool native)
+ 	if (nvidia_wmi_ec_present)
+ 		return acpi_backlight_nvidia_wmi_ec;
+ 
+-	if (apple_gmux_present())
++	if (apple_gmux_backlight_present())
+ 		return acpi_backlight_apple_gmux;
+ 
+ 	/* Use ACPI video if available, except when native should be preferred. */
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.38.1
+
