@@ -2,107 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F68164F8FA
-	for <lists+linux-acpi@lfdr.de>; Sat, 17 Dec 2022 13:52:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B124A64FA38
+	for <lists+linux-acpi@lfdr.de>; Sat, 17 Dec 2022 16:33:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229453AbiLQMwh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 17 Dec 2022 07:52:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53952 "EHLO
+        id S229894AbiLQP2B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 17 Dec 2022 10:28:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbiLQMwg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 17 Dec 2022 07:52:36 -0500
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EA6BFD3E;
-        Sat, 17 Dec 2022 04:52:35 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id a16so7069601edb.9;
-        Sat, 17 Dec 2022 04:52:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=V0/FvtrKk43Yr22AsZ/gI3Ef+eAPPhrmJIgnb/NYUVE=;
-        b=k+3vOaldPGFjWNoAJ7Db4gTHx6kzwbAwHoZaHZHWgJngyWY7GPF4OxBYQLYNIP6yzE
-         6TmfcjMrUDZUOTaY8TGfMXhjXy8Ul7HuCtgTYmcSP2ktHLdguSEHQk8sMawU/NRdUXEZ
-         OkzOcwe1AsLiemxIPSkWfOKvupjOoKt18iXfZtg0EpwN58Yic6iNghrOqJY5MnDBLM5l
-         7tx7DI2wqBQkikuJCI/AzAHeogAY/nxBM2noPmT6XLEQ5KAZnyO1W/vSjfSv5YtKst9p
-         zz4ujrSl8ZT6axYQB5+8VDI6e8a9oIsYCfkSwYVtxUki96tBG4sXUc29T3vB0r+hvH7a
-         tkyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V0/FvtrKk43Yr22AsZ/gI3Ef+eAPPhrmJIgnb/NYUVE=;
-        b=14FP9WUd93RW0j3XLRz45EcrpFws69uOCbJQ6Xs/et9MbLp5Iyc/Z4ExMv6TH6hJY4
-         tgRQOSUWyv1LPZsmXCRxr4dmZQcWhivqDkCf64c0a4+5ctGXOSVqNsuXpfKFNAICEr/e
-         on1Ue0kgnkOkl7fVhof8C0LWUBiAX2TS30+5Nd6fei+tLbuHAecpyBxdRFu1tBlJVv52
-         3bVawvaaVRYQGWvad8nr1OoZEG+0issmib6TBq81rjQKB3rhO4NBVy3Fh4b9GBJlz19E
-         XtGEOoo1mOO7X9r8N3tLPZpO3aR/30URAQhbBsSbkrcjv9eiynOGoTZYJin2OEqG6a/T
-         u8aw==
-X-Gm-Message-State: ANoB5pkzx1ZHcz+oLUBVh/G8lDXC82q0bMNqb9iv9fKqLGOzTXE1NV3w
-        qHdjeo49CzUOJYM0uiW/DYU=
-X-Google-Smtp-Source: AA0mqf4yU7/dy5/Zo+Zy66e1jii/H1j6lhynuvV+b63JjoKEju9kvwMO4zvzJP0uBn0W0C4Zw1A/1Q==
-X-Received: by 2002:a50:ed0a:0:b0:46b:19ab:68d8 with SMTP id j10-20020a50ed0a000000b0046b19ab68d8mr33837702eds.40.1671281553489;
-        Sat, 17 Dec 2022 04:52:33 -0800 (PST)
-Received: from rog (dynamic-046-114-141-166.46.114.pool.telefonica.de. [46.114.141.166])
-        by smtp.gmail.com with ESMTPSA id d22-20020a056402401600b004585eba4baesm1946202eda.80.2022.12.17.04.52.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Dec 2022 04:52:32 -0800 (PST)
-Date:   Sat, 17 Dec 2022 13:52:29 +0100
-From:   Philipp Zabel <philipp.zabel@gmail.com>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     rafael@kernel.org,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        anson.tsao@amd.com, ben@bcheng.me, paul@zogpog.com,
-        bilkow@tutanota.com, Shyam-sundar.S-k@amd.com,
-        stable@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] ACPI: x86: s2idle: Stop using AMD specific codepath
- for Rembrandt+
-Message-ID: <Y527jSpi96ARTZVN@rog>
-References: <20221215191617.1438-1-mario.limonciello@amd.com>
- <20221215191617.1438-3-mario.limonciello@amd.com>
+        with ESMTP id S229806AbiLQP1p (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 17 Dec 2022 10:27:45 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CFD915F0C;
+        Sat, 17 Dec 2022 07:27:42 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C326E60C20;
+        Sat, 17 Dec 2022 15:27:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75650C433F0;
+        Sat, 17 Dec 2022 15:27:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1671290861;
+        bh=ZkxL9EC5gdiSeuBMoXXn7hPEESSX2sCMYeJ2MoXdUBY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Rf6c9JnBxtwHDqJhL5Yu+jJXJFx0yIDt8kEVGgYhZ6UahTVH4AbVsv34WhNvPTTRJ
+         /LGL8xAS/SgNE4fUqHXbNCE1QBfrUVMYSBimsZcDv6yI66gzYZvog1swkJYAkiQ0en
+         r5huC4ODvU3pNBQsg3dn07yG6QYx5YcDqUUaF0OnD37rHizVlDwQuEICfGLJ7ianRR
+         zqxMUyE9S4iKLbr92qjQcP2f8/04LkN/BnmROJmyVgWp5PwQ6W0R5DvusJfoV9twQQ
+         DrpgGiM70B3y+pPQBGWl55nw2wZudIBhf3gVFX4GXAC398SDoEIBvUgBt1IcrvmSiP
+         7Eg8pVTbejl6w==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Li Zhong <floridsleeves@gmail.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 05/22] ACPI: processor: idle: Check acpi_fetch_acpi_dev() return value
+Date:   Sat, 17 Dec 2022 10:27:06 -0500
+Message-Id: <20221217152727.98061-5-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20221217152727.98061-1-sashal@kernel.org>
+References: <20221217152727.98061-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221215191617.1438-3-mario.limonciello@amd.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Am Thu, Dec 15, 2022 at 01:16:16PM -0600 schrieb Mario Limonciello:
-> After we introduced a module parameter and quirk infrastructure for
-> picking the Microsoft GUID over the SOC vendor GUID we discovered
-> that lots and lots of systems are getting this wrong.
-> 
-> The table continues to grow, and is becoming unwieldy.
-> 
-> We don't really have any benefit to forcing vendors to populate the
-> AMD GUID. This is just extra work, and more and more vendors seem
-> to mess it up.  As the Microsoft GUID is used by Windows as well,
-> it's very likely that it won't be messed up like this.
-> 
-> So drop all the quirks forcing it and the Rembrandt behavior. This
-> means that Cezanne or later effectively only run the Microsoft GUID
-> codepath with the exception of HP Elitebook 8*5 G9.
-> 
-> Fixes: fd894f05cf30 ("ACPI: x86: s2idle: If a new AMD _HID is missing assume Rembrandt")
-> Cc: stable@vger.kernel.org # 6.1
-> Reported-by: Benjamin Cheng <ben@bcheng.me>
-> Reported-by: bilkow@tutanota.com
-> Reported-by: Paul <paul@zogpog.com>
-> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2292
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216768
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+From: Li Zhong <floridsleeves@gmail.com>
 
-Reviewed-by: Philipp Zabel <philipp.zabel@gmail.com>
-Tested-by: Philipp Zabel <philipp.zabel@gmail.com>
+[ Upstream commit 2437513a814b3e93bd02879740a8a06e52e2cf7d ]
 
-regards
-Philipp
+The return value of acpi_fetch_acpi_dev() could be NULL, which would
+cause a NULL pointer dereference to occur in acpi_device_hid().
+
+Signed-off-by: Li Zhong <floridsleeves@gmail.com>
+[ rjw: Subject and changelog edits, added empty line after if () ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/processor_idle.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index acfabfe07c4f..fc5b5b2c9e81 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -1134,6 +1134,9 @@ static int acpi_processor_get_lpi_info(struct acpi_processor *pr)
+ 	status = acpi_get_parent(handle, &pr_ahandle);
+ 	while (ACPI_SUCCESS(status)) {
+ 		d = acpi_fetch_acpi_dev(pr_ahandle);
++		if (!d)
++			break;
++
+ 		handle = pr_ahandle;
+ 
+ 		if (strcmp(acpi_device_hid(d), ACPI_PROCESSOR_CONTAINER_HID))
+-- 
+2.35.1
+
