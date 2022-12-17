@@ -2,45 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2F0E64FA2D
-	for <lists+linux-acpi@lfdr.de>; Sat, 17 Dec 2022 16:33:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D0BA64FA35
+	for <lists+linux-acpi@lfdr.de>; Sat, 17 Dec 2022 16:33:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229991AbiLQP3N (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 17 Dec 2022 10:29:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33350 "EHLO
+        id S230173AbiLQP3p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 17 Dec 2022 10:29:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229915AbiLQP2Z (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 17 Dec 2022 10:28:25 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC802164AC;
-        Sat, 17 Dec 2022 07:27:50 -0800 (PST)
+        with ESMTP id S230062AbiLQP3H (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 17 Dec 2022 10:29:07 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCB351705F;
+        Sat, 17 Dec 2022 07:27:57 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F92460C14;
-        Sat, 17 Dec 2022 15:27:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4FCC433F2;
-        Sat, 17 Dec 2022 15:27:48 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6DB26B802C3;
+        Sat, 17 Dec 2022 15:27:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DC4C43392;
+        Sat, 17 Dec 2022 15:27:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671290869;
-        bh=0Dowszw+M3xbVXpxd9r+vcp2wE7GhUHIdP1j3o9nBQk=;
+        s=k20201202; t=1671290876;
+        bh=wgtxMlx7CjihsMRuaBVm90tUKVAegYDMFYtSba8yGNE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qj8n2IUs6gvPSj28oqzUlO4fRewyRBox5VjKsJRvLr/pjaxiF/hRHosNuhKFdosvQ
-         yW3ULnBxzV72egnLMincmLLF9KA7rJi9sLNUm6jwG70hlDMU6v+3TCNXEc/uzMRsdD
-         q+RvkqUx7n9VyqakzrzEZb5SLZdvorJqCiVcSkbR5Q+9yElxHw5frWfqng9/rjwiJg
-         fvw+eHCSl/GYSR6Iu/8SQ7aT52IbyXz77HF8qgoOd7DZXvJmd1pdjlCB//YZoSypIY
-         /LYN2BF5uncQSQqV4SXBsMUc9vt+UfCMy3hbr56j2vMWxc2k9eDSV7WAvgQPK+fQi6
-         vqvJoAPGq5K1Q==
+        b=JzC6iBjQuIUK4ZnW6J3rBH57bWp111YPFTIz+WHJ7UOUmSmvZh2JsP9JdG3N9eaWA
+         0gOpM/bVvrj6B5Aq940abyCz3y1Ja7X+SeX5zDfRnD/2DM1diKPxo35SUvVCJxsIPD
+         +S8CUXJFszg9ujw4dq+dcTBwGOWtLiemtDQ3qKWcDZLK/1Q3qDRgZ0SCXzNGp114hp
+         M9L6nz2832GY2Llbj86rgGXBLeHI4CSgdAqe6OIuszAW4lfBDiwVY56/+USK1Ot3zM
+         eiqMrEtCDXFtk7cssF9ABv/FxdQnFASSmYhDGJAEuP/X/M39i3xzR16et6I/VvR195
+         TK0Z14tjPgqug==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Stefan Joosten <stefan@atcomputing.nl>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
+Cc:     Jianmin Lv <lvjianmin@loongson.cn>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>,
+        bhelgaas@google.com, rafael@kernel.org, linux-pci@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 12/22] ACPI: video: Add force_native quirk for Sony Vaio VPCY11S1E
-Date:   Sat, 17 Dec 2022 10:27:13 -0500
-Message-Id: <20221217152727.98061-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 16/22] ACPI / PCI: fix LPIC IRQ model default PCI IRQ polarity
+Date:   Sat, 17 Dec 2022 10:27:17 -0500
+Message-Id: <20221217152727.98061-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221217152727.98061-1-sashal@kernel.org>
 References: <20221217152727.98061-1-sashal@kernel.org>
@@ -57,43 +57,55 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Jianmin Lv <lvjianmin@loongson.cn>
 
-[ Upstream commit f5a6ff923d4a1d639da36228d00e95ff67d417f0 ]
+[ Upstream commit d0c50cc4b957b2cf6e43cec4998d212b5abe9220 ]
 
-The Sony Vaio VPCY11S1E advertises both native and ACPI video backlight
-control interfaces, but only the native interface works and the default
-heuristics end up picking ACPI video on this model.
+On LoongArch based systems, the PCI devices (e.g. SATA controllers and
+PCI-to-PCI bridge controllers) in Loongson chipsets output high-level
+interrupt signal to the interrupt controller they are connected (see
+Loongson 7A1000 Bridge User Manual v2.00, sec 5.3, "For the bridge chip,
+AC97 DMA interrupts are edge triggered, gpio interrupts can be configured
+to be level triggered or edge triggered as needed, and the rest of the
+interrupts are level triggered and active high."), while the IRQs are
+active low from the perspective of PCI (see Conventional PCI spec r3.0,
+sec 2.2.6, "Interrupts on PCI are optional and defined as level sensitive,
+asserted low."), which means that the interrupt output of PCI devices plugged
+into PCI-to-PCI bridges of Loongson chipset will be also converted to high-level.
+So high level triggered type is required to be passed to acpi_register_gsi()
+when creating mappings for PCI devices.
 
-Add a video_detect_force_native DMI quirk for this.
-
-Reported-by: Stefan Joosten <stefan@atcomputing.nl>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20221022075955.11726-2-lvjianmin@loongson.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/acpi/pci_irq.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index 8e8b435b4c8c..ffa19d418847 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -619,6 +619,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "VPCEH3U1E"),
- 		},
- 	},
-+	{
-+	 .callback = video_detect_force_native,
-+	 /* Sony Vaio VPCY11S1E */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Sony Corporation"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "VPCY11S1E"),
-+		},
-+	},
- 
+diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
+index 08e15774fb9f..ff30ceca2203 100644
+--- a/drivers/acpi/pci_irq.c
++++ b/drivers/acpi/pci_irq.c
+@@ -387,13 +387,15 @@ int acpi_pci_irq_enable(struct pci_dev *dev)
+ 	u8 pin;
+ 	int triggering = ACPI_LEVEL_SENSITIVE;
  	/*
- 	 * These Toshibas have a broken acpi-video interface for brightness
+-	 * On ARM systems with the GIC interrupt model, level interrupts
++	 * On ARM systems with the GIC interrupt model, or LoongArch
++	 * systems with the LPIC interrupt model, level interrupts
+ 	 * are always polarity high by specification; PCI legacy
+ 	 * IRQs lines are inverted before reaching the interrupt
+ 	 * controller and must therefore be considered active high
+ 	 * as default.
+ 	 */
+-	int polarity = acpi_irq_model == ACPI_IRQ_MODEL_GIC ?
++	int polarity = acpi_irq_model == ACPI_IRQ_MODEL_GIC ||
++		       acpi_irq_model == ACPI_IRQ_MODEL_LPIC ?
+ 				      ACPI_ACTIVE_HIGH : ACPI_ACTIVE_LOW;
+ 	char *link = NULL;
+ 	char link_desc[16];
 -- 
 2.35.1
 
