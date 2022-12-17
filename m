@@ -2,45 +2,46 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 086EF64FA1A
-	for <lists+linux-acpi@lfdr.de>; Sat, 17 Dec 2022 16:33:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C92C964FA36
+	for <lists+linux-acpi@lfdr.de>; Sat, 17 Dec 2022 16:33:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229918AbiLQPa6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 17 Dec 2022 10:30:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60856 "EHLO
+        id S229996AbiLQPbe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 17 Dec 2022 10:31:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230024AbiLQP3j (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 17 Dec 2022 10:29:39 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 781AC1837B;
-        Sat, 17 Dec 2022 07:28:12 -0800 (PST)
+        with ESMTP id S230210AbiLQPak (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 17 Dec 2022 10:30:40 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3849186EF;
+        Sat, 17 Dec 2022 07:28:18 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1796160C13;
-        Sat, 17 Dec 2022 15:28:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC72C433F0;
-        Sat, 17 Dec 2022 15:28:10 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4E2B6B803F1;
+        Sat, 17 Dec 2022 15:28:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8F1C433F0;
+        Sat, 17 Dec 2022 15:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671290891;
-        bh=hMWM+V4ICwMI3VjpThbL+msBKbfsn/cx8Gjl0zT1VIk=;
+        s=k20201202; t=1671290896;
+        bh=Nr7Czi64UOU5LI7QtmOhNRgux5NWwntjgCqwpLPPEEA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kTWBF6llCOnrL0SWKmCwviDtIrOYb5R3SXU0VLmK6dxkpcsGNe/yFtCshmr2WOkbB
-         urXWzfYP7VEG7g/ZuLvzUzQqaRuRkZeqG8BhvUxz/GB/sWJeDxOlXFqT3E4ffMJAau
-         ue4X3YTig7KSmOjD+SMvqly6/p7y3UHMNafqh6cIhE/3w9LC897ucOeTJ9oQvJq+/r
-         ykiVnJl67oSkPoIDyVMQmxNUvJlHkg93s2pxN/MEcRbz3HEKwxWtvlWLWiv7I92rRL
-         Gw7W8dLzpdHt6N/msd5SRWJ45OVeYAiQ5GZDV44IlmZYCw3AMA8zMW/cjC3vdnMhWo
-         tuZVli4w8g0nQ==
+        b=H/e2kv34ukb4kuBDnS/kMO/tQC7OwcIUsAWNQpDa3oiaLkwLCMchWEcFMAQVdjB9f
+         RhNYSPXymHzPP2YIHcqLcqUxMLZdQyWQYzMj1w//4oegzU8Yr2Xx44uKJx1Xyr9WI0
+         uePu9tsisrQX+Aj1TdpCxnahtu5WVcuoOqVZZkiReAn0yR+BphkGBaKk017xwrnFji
+         3qXM/Vhh1qk5qBM0YINfGiXfjjY0QRbuqMScSCPjS0pEA+Sf1+laGHlwAUh2jYSea9
+         tfS5pqcXvXkm+wjIxWUdN85fC12h/TAPy1os97fKNhWy9hO9B4TqbwVKhsA/GxwSRl
+         +dJajVeZSkvJQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
-        andriy.shevchenko@linux.intel.com, mario.limonciello@amd.com,
+        mario.limonciello@amd.com, andriy.shevchenko@linux.intel.com,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 19/22] ACPI: x86: Add skip i2c clients quirk for Lenovo Yoga Tab 3 Pro (YT3-X90F)
-Date:   Sat, 17 Dec 2022 10:27:20 -0500
-Message-Id: <20221217152727.98061-19-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 21/22] ACPI: x86: Add skip i2c clients quirk for Medion Lifetab S10346
+Date:   Sat, 17 Dec 2022 10:27:22 -0500
+Message-Id: <20221217152727.98061-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221217152727.98061-1-sashal@kernel.org>
 References: <20221217152727.98061-1-sashal@kernel.org>
@@ -59,52 +60,40 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit fe820db35275561d8bf86ad19044d40ffc95bc04 ]
+[ Upstream commit ecc6aaabcedc276128315f57755364106017c606 ]
 
-The Lenovo Yoga Tab 3 Pro (YT3-X90F) is a x86 (Cherry Trail) tablet which
-ships with Android x86 as factory OS. The Android x86 kernel fork ignores
-I2C devices described in the DSDT, except for the PMIC and Audio codecs.
+The Medion Lifetab S10346 is a x86 tablet which ships with Android x86 as
+factory OS. The Android x86 kernel fork ignores I2C devices described in
+the DSDT, except for the PMIC and Audio codecs.
 
-As usual the Lenovo Yoga Tab 3 Pro's DSDT contains a bunch of extra I2C
+As usual the Medion Lifetab S10346's DSDT contains a bunch of extra I2C
 devices which are not actually there, causing various resource conflicts.
-Add an ACPI_QUIRK_SKIP_I2C_CLIENTS quirk for the Lenovo Yoga Tab 3 Pro to
+Add an ACPI_QUIRK_SKIP_I2C_CLIENTS quirk for the Medion Lifetab S10346 to
 the acpi_quirk_skip_dmi_ids table to woraround this.
 
-ACPI_QUIRK_SKIP_I2C_CLIENTS handling uses i2c_acpi_known_good_ids[],
-so that PMICs and Audio codecs will still be enumerated properly.
-The Lenovo Yoga Tab 3 Pro uses a Whiskey Cove PMIC, add the INT34D3 HID
-for this PMIC to the i2c_acpi_known_good_ids[] list.
-
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/acpi/x86/utils.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index d7d3f1669d4c..635de40b5822 100644
+index 635de40b5822..4e816bb402f6 100644
 --- a/drivers/acpi/x86/utils.c
 +++ b/drivers/acpi/x86/utils.c
-@@ -308,7 +308,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
- 	},
- 	{
--		/* Lenovo Yoga Tablet 1050F/L */
-+		/* Lenovo Yoga Tablet 2 1050F/L */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corp."),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "VALLEYVIEW C0 PLATFORM"),
-@@ -319,6 +319,16 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+@@ -329,6 +329,17 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
  		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
  					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
  	},
 +	{
-+		/* Lenovo Yoga Tab 3 Pro X90F */
++		/* Medion Lifetab S10346 */
 +		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
-+			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
++			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
++			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
++			/* Way too generic, also match on BIOS data */
++			DMI_MATCH(DMI_BIOS_DATE, "10/22/2015"),
 +		},
 +		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
 +					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
@@ -112,14 +101,6 @@ index d7d3f1669d4c..635de40b5822 100644
  	{
  		/* Nextbook Ares 8 */
  		.matches = {
-@@ -348,6 +358,7 @@ static const struct acpi_device_id i2c_acpi_known_good_ids[] = {
- 	{ "10EC5640", 0 }, /* RealTek ALC5640 audio codec */
- 	{ "INT33F4", 0 },  /* X-Powers AXP288 PMIC */
- 	{ "INT33FD", 0 },  /* Intel Crystal Cove PMIC */
-+	{ "INT34D3", 0 },  /* Intel Whiskey Cove PMIC */
- 	{ "NPCE69A", 0 },  /* Asus Transformer keyboard dock */
- 	{}
- };
 -- 
 2.35.1
 
