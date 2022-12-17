@@ -2,44 +2,44 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFCEA64FA09
-	for <lists+linux-acpi@lfdr.de>; Sat, 17 Dec 2022 16:33:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A9C864FA15
+	for <lists+linux-acpi@lfdr.de>; Sat, 17 Dec 2022 16:33:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229743AbiLQP2a (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 17 Dec 2022 10:28:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60774 "EHLO
+        id S229957AbiLQP2i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 17 Dec 2022 10:28:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229927AbiLQP2U (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 17 Dec 2022 10:28:20 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CF4E15F36;
-        Sat, 17 Dec 2022 07:27:46 -0800 (PST)
+        with ESMTP id S229953AbiLQP2X (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 17 Dec 2022 10:28:23 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D872915FF0;
+        Sat, 17 Dec 2022 07:27:48 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CACBFB802C8;
-        Sat, 17 Dec 2022 15:27:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4975C433F2;
-        Sat, 17 Dec 2022 15:27:42 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 70065B802C7;
+        Sat, 17 Dec 2022 15:27:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D6DC433F0;
+        Sat, 17 Dec 2022 15:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671290863;
-        bh=7btK5kH8e8Xyd6l+hOUla2wVBlEdr53EZgl+CozyNOc=;
+        s=k20201202; t=1671290866;
+        bh=gXqKP8qLSfDtzf3svRbeUhGdvQn00qDVDCgVG3upEKc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NQNEetdoosFy0h5PCVzSgeRJGNxr2UHMb9GVtRhi6mgEV2l6gfagIjGGor1H1uAPg
-         79x/vP2RJ1ZZly1MOC9Gd/7fobr50uQJ25bwvBZFziyhW0CrsXc6oJpiBZ7gK8TmS8
-         utuiOKcg55umepDDmE1PYgFrCQI+z7mnqLLeQBNtMQLVXSf6Q2eD2OXlUKlyD+Hq+R
-         eacg6U0lO53O5hj2VDHomTeW8XeHh3Dc6PlpyXdZXlcG7gG+CKpuIK3lIy1HTqvfXY
-         oX79BmbkA0BphGJiBiG8LVBfABBhAdodqChPmh7x7X+cmLVMdAK8wyz4rX92/McA1q
-         cnlX5aXgzXNkA==
+        b=cWTB/FbNw8gsyyce9DMKMnVpHM6C7FKo2M9wlMSYx7qwcYt9qNv4uu5SrV6VpPXlN
+         SpWJP8y6eGhj9vWfVbItJmkobZhBn/w+FEKfv3EVr6wwq6SgD0KsaxReOXXNnZFxvr
+         z85R43RnHITnHweZYnTeU8YFtbOQsUqLYPEORhfHhCJNJyCO6X6rX5Hsf/ibLSQiwH
+         /v/S0DaCGtx5pWmHPP7oPaRkX8VhhYvwLreTBOqAWG8qHmk6SHlItW4IQYx5boBDQ6
+         7Yty42WRLb36MNcbcPzWEpLiOIm1Qs+noKfmd/OlJytyDvdQTTfZFNmH3gFHHEs07V
+         MKUuneAvaoxKQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Chen Zhongjin <chenzhongjin@huawei.com>,
-        Sasha Levin <sashal@kernel.org>, robert.moore@intel.com,
-        linux-acpi@vger.kernel.org, devel@acpica.org
-Subject: [PATCH AUTOSEL 6.1 07/22] ACPICA: Fix error code path in acpi_ds_call_control_method()
-Date:   Sat, 17 Dec 2022 10:27:08 -0500
-Message-Id: <20221217152727.98061-7-sashal@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 09/22] ACPI: video: Change GIGABYTE GB-BXBT-2807 quirk to force_none
+Date:   Sat, 17 Dec 2022 10:27:10 -0500
+Message-Id: <20221217152727.98061-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221217152727.98061-1-sashal@kernel.org>
 References: <20221217152727.98061-1-sashal@kernel.org>
@@ -56,66 +56,70 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 404ec60438add1afadaffaed34bb5fe4ddcadd40 ]
+[ Upstream commit 9f7dd272ff9338f1f43c7a837d5a7ee67811d552 ]
 
-A use-after-free in acpi_ps_parse_aml() after a failing invocaion of
-acpi_ds_call_control_method() is reported by KASAN [1] and code
-inspection reveals that next_walk_state pushed to the thread by
-acpi_ds_create_walk_state() is freed on errors, but it is not popped
-from the thread beforehand.  Thus acpi_ds_get_current_walk_state()
-called by acpi_ps_parse_aml() subsequently returns it as the new
-walk state which is incorrect.
+The GIGABYTE GB-BXBT-2807 DMI quirk was added by
+commit 25417185e9b5 ("ACPI: video: Add DMI quirk for GIGABYTE
+GB-BXBT-2807") which says the following in its commit message:
 
-To address this, make acpi_ds_call_control_method() call
-acpi_ds_pop_walk_state() to pop next_walk_state from the thread before
-returning an error.
+"The GIGABYTE GB-BXBT-2807 is a mini-PC which uses off the shelf
+components, like an Intel GPU which is meant for mobile systems.
+As such, it, by default, has a backlight controller exposed.
 
-Link: https://lore.kernel.org/linux-acpi/20221019073443.248215-1-chenzhongjin@huawei.com/ # [1]
-Reported-by: Chen Zhongjin <chenzhongjin@huawei.com>
+Unfortunately, the backlight controller only confuses userspace, which
+sees the existence of a backlight device node and has the unrealistic
+belief that there is actually a backlight there!
+
+Add a DMI quirk to force the backlight off on this system."
+
+So in essence this quirk was using a video_detect_force_vendor quirk
+to disable backlight control. Now a days we have a specific "none"
+backlight type for this. Change the quirk to video_detect_force_none
+and group it together with the other force_none quirks.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Chen Zhongjin <chenzhongjin@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/dsmethod.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/acpi/video_detect.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
-index ae2e768830bf..9332bc688713 100644
---- a/drivers/acpi/acpica/dsmethod.c
-+++ b/drivers/acpi/acpica/dsmethod.c
-@@ -517,7 +517,7 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
- 	info = ACPI_ALLOCATE_ZEROED(sizeof(struct acpi_evaluate_info));
- 	if (!info) {
- 		status = AE_NO_MEMORY;
--		goto cleanup;
-+		goto pop_walk_state;
- 	}
- 
- 	info->parameters = &this_walk_state->operands[0];
-@@ -529,7 +529,7 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
- 
- 	ACPI_FREE(info);
- 	if (ACPI_FAILURE(status)) {
--		goto cleanup;
-+		goto pop_walk_state;
- 	}
- 
- 	next_walk_state->method_nesting_depth =
-@@ -575,6 +575,12 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
- 
- 	return_ACPI_STATUS(status);
- 
-+pop_walk_state:
-+
-+	/* On error, pop the walk state to be deleted from thread */
-+
-+	acpi_ds_pop_walk_state(thread);
-+
- cleanup:
- 
- 	/* On error, we must terminate the method properly */
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index b2a616287638..375d1ef8fbea 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -197,14 +197,6 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "1015CX"),
+ 		},
+ 	},
+-	{
+-	 .callback = video_detect_force_vendor,
+-	 /* GIGABYTE GB-BXBT-2807 */
+-	 .matches = {
+-		DMI_MATCH(DMI_SYS_VENDOR, "GIGABYTE"),
+-		DMI_MATCH(DMI_PRODUCT_NAME, "GB-BXBT-2807"),
+-		},
+-	},
+ 	{
+ 	 .callback = video_detect_force_vendor,
+ 	 /* Samsung N150/N210/N220 */
+@@ -671,6 +663,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex 9020M"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_none,
++	 /* GIGABYTE GB-BXBT-2807 */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "GIGABYTE"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "GB-BXBT-2807"),
++		},
++	},
+ 	{
+ 	 .callback = video_detect_force_none,
+ 	 /* MSI MS-7721 */
 -- 
 2.35.1
 
