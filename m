@@ -2,45 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE4B664FA47
-	for <lists+linux-acpi@lfdr.de>; Sat, 17 Dec 2022 16:33:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 04D1564FA89
+	for <lists+linux-acpi@lfdr.de>; Sat, 17 Dec 2022 16:45:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230014AbiLQPcI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 17 Dec 2022 10:32:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34440 "EHLO
+        id S230324AbiLQPd3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 17 Dec 2022 10:33:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230239AbiLQPbQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 17 Dec 2022 10:31:16 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ADC919282;
-        Sat, 17 Dec 2022 07:28:42 -0800 (PST)
+        with ESMTP id S230343AbiLQPcF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 17 Dec 2022 10:32:05 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0931F1A82E;
+        Sat, 17 Dec 2022 07:28:56 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1886D60C17;
-        Sat, 17 Dec 2022 15:28:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DDABC43396;
-        Sat, 17 Dec 2022 15:28:40 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B0DB2B802C3;
+        Sat, 17 Dec 2022 15:28:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913D8C433EF;
+        Sat, 17 Dec 2022 15:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671290921;
-        bh=wgtxMlx7CjihsMRuaBVm90tUKVAegYDMFYtSba8yGNE=;
+        s=k20201202; t=1671290933;
+        bh=BLlwjED9foaFr6NRfsmlEjhhZNQfzou4e6Mo/ntC5+A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SbZZJk50nBppuIdUY1j4IaiUIDAdmotphFGppfEvTBRSiANIMO/YEGDE20iDxDEvr
-         ysijFiLYlI+wtzzZD9MtLewVCyeOxs1Rab9tQR7QGS53PghO+7wdJ6DlQFpdZuQ0Lf
-         3C/ExFy3q4vvi+T5wtRKCw19IL/Aqcci4w8I7DCvCf54xkE7gmX0tYUrM6rnFfn5sH
-         SHhKXbxsETSC/hpUDmXuHkU99yfUg69Yc5GI8nII+b/WTA4Qypv6pXaQapS791JR2Z
-         Wgjy+iuehu3tkfEn6Kj8ORtOinAC2QsgR7KBfpUzJZdjKDVUHLm9DYQyM2aIoL+GF/
-         8s/oxhHERHSfA==
+        b=L8D4i8lPhAW7X3ENU22wtd6VFWwDvlJJpIJUUOLDUYmud1KMOvLV3TXOR9XWUFB+o
+         t+XZKcqDUnFuDcUgHmuvMjtGlUrPdHKiNWzrIbtAAZoXa86NUAt+ZxjlcUGYrEC1WU
+         D1Y76HQ0l+iNducncnVhBFxdiRcfdo8I8rRUbg2cy17WGeMNNdGFNUX+FnpP3hO3N8
+         EVzdM2nn/TgSmDxXPL/WsdraAbwnyyiYHhLcZoA5kxmyhyA5DfnC8qRmKhhg8bcqYE
+         2jvb/XxmqEj8/KpfQL11raytz1EvkvPrMmdd102sx6yz/3b2+cSWebf7VjckFMna9X
+         SVQkKVfXobw6w==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Jianmin Lv <lvjianmin@loongson.cn>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        bhelgaas@google.com, rafael@kernel.org, linux-pci@vger.kernel.org,
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
+        mario.limonciello@amd.com, andriy.shevchenko@linux.intel.com,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.0 11/16] ACPI / PCI: fix LPIC IRQ model default PCI IRQ polarity
-Date:   Sat, 17 Dec 2022 10:28:14 -0500
-Message-Id: <20221217152821.98618-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.0 14/16] ACPI: x86: Add skip i2c clients quirk for Lenovo Yoga Tab 3 Pro (YT3-X90F)
+Date:   Sat, 17 Dec 2022 10:28:17 -0500
+Message-Id: <20221217152821.98618-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221217152821.98618-1-sashal@kernel.org>
 References: <20221217152821.98618-1-sashal@kernel.org>
@@ -57,55 +57,69 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Jianmin Lv <lvjianmin@loongson.cn>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit d0c50cc4b957b2cf6e43cec4998d212b5abe9220 ]
+[ Upstream commit fe820db35275561d8bf86ad19044d40ffc95bc04 ]
 
-On LoongArch based systems, the PCI devices (e.g. SATA controllers and
-PCI-to-PCI bridge controllers) in Loongson chipsets output high-level
-interrupt signal to the interrupt controller they are connected (see
-Loongson 7A1000 Bridge User Manual v2.00, sec 5.3, "For the bridge chip,
-AC97 DMA interrupts are edge triggered, gpio interrupts can be configured
-to be level triggered or edge triggered as needed, and the rest of the
-interrupts are level triggered and active high."), while the IRQs are
-active low from the perspective of PCI (see Conventional PCI spec r3.0,
-sec 2.2.6, "Interrupts on PCI are optional and defined as level sensitive,
-asserted low."), which means that the interrupt output of PCI devices plugged
-into PCI-to-PCI bridges of Loongson chipset will be also converted to high-level.
-So high level triggered type is required to be passed to acpi_register_gsi()
-when creating mappings for PCI devices.
+The Lenovo Yoga Tab 3 Pro (YT3-X90F) is a x86 (Cherry Trail) tablet which
+ships with Android x86 as factory OS. The Android x86 kernel fork ignores
+I2C devices described in the DSDT, except for the PMIC and Audio codecs.
 
-Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20221022075955.11726-2-lvjianmin@loongson.cn
+As usual the Lenovo Yoga Tab 3 Pro's DSDT contains a bunch of extra I2C
+devices which are not actually there, causing various resource conflicts.
+Add an ACPI_QUIRK_SKIP_I2C_CLIENTS quirk for the Lenovo Yoga Tab 3 Pro to
+the acpi_quirk_skip_dmi_ids table to woraround this.
+
+ACPI_QUIRK_SKIP_I2C_CLIENTS handling uses i2c_acpi_known_good_ids[],
+so that PMICs and Audio codecs will still be enumerated properly.
+The Lenovo Yoga Tab 3 Pro uses a Whiskey Cove PMIC, add the INT34D3 HID
+for this PMIC to the i2c_acpi_known_good_ids[] list.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/pci_irq.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/acpi/x86/utils.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
-index 08e15774fb9f..ff30ceca2203 100644
---- a/drivers/acpi/pci_irq.c
-+++ b/drivers/acpi/pci_irq.c
-@@ -387,13 +387,15 @@ int acpi_pci_irq_enable(struct pci_dev *dev)
- 	u8 pin;
- 	int triggering = ACPI_LEVEL_SENSITIVE;
- 	/*
--	 * On ARM systems with the GIC interrupt model, level interrupts
-+	 * On ARM systems with the GIC interrupt model, or LoongArch
-+	 * systems with the LPIC interrupt model, level interrupts
- 	 * are always polarity high by specification; PCI legacy
- 	 * IRQs lines are inverted before reaching the interrupt
- 	 * controller and must therefore be considered active high
- 	 * as default.
- 	 */
--	int polarity = acpi_irq_model == ACPI_IRQ_MODEL_GIC ?
-+	int polarity = acpi_irq_model == ACPI_IRQ_MODEL_GIC ||
-+		       acpi_irq_model == ACPI_IRQ_MODEL_LPIC ?
- 				      ACPI_ACTIVE_HIGH : ACPI_ACTIVE_LOW;
- 	char *link = NULL;
- 	char link_desc[16];
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index 950a93922ca8..fb999597a3f0 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -308,7 +308,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
+ 	},
+ 	{
+-		/* Lenovo Yoga Tablet 1050F/L */
++		/* Lenovo Yoga Tablet 2 1050F/L */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corp."),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "VALLEYVIEW C0 PLATFORM"),
+@@ -319,6 +319,16 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
+ 	},
++	{
++		/* Lenovo Yoga Tab 3 Pro X90F */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
++			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
++		},
++		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
++					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
++	},
+ 	{
+ 		/* Nextbook Ares 8 */
+ 		.matches = {
+@@ -348,6 +358,7 @@ static const struct acpi_device_id i2c_acpi_known_good_ids[] = {
+ 	{ "10EC5640", 0 }, /* RealTek ALC5640 audio codec */
+ 	{ "INT33F4", 0 },  /* X-Powers AXP288 PMIC */
+ 	{ "INT33FD", 0 },  /* Intel Crystal Cove PMIC */
++	{ "INT34D3", 0 },  /* Intel Whiskey Cove PMIC */
+ 	{ "NPCE69A", 0 },  /* Asus Transformer keyboard dock */
+ 	{}
+ };
 -- 
 2.35.1
 
