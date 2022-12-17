@@ -2,49 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF8C264FA97
-	for <lists+linux-acpi@lfdr.de>; Sat, 17 Dec 2022 16:45:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1649E64FAD4
+	for <lists+linux-acpi@lfdr.de>; Sat, 17 Dec 2022 16:45:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230236AbiLQPdn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 17 Dec 2022 10:33:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33514 "EHLO
+        id S230423AbiLQPed (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 17 Dec 2022 10:34:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230368AbiLQPcH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 17 Dec 2022 10:32:07 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD8981A216;
-        Sat, 17 Dec 2022 07:28:57 -0800 (PST)
+        with ESMTP id S230396AbiLQPd0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 17 Dec 2022 10:33:26 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3620164AD;
+        Sat, 17 Dec 2022 07:29:16 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4992D60C12;
-        Sat, 17 Dec 2022 15:28:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDFE7C433EF;
-        Sat, 17 Dec 2022 15:28:55 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 85802B803F5;
+        Sat, 17 Dec 2022 15:29:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60653C43398;
+        Sat, 17 Dec 2022 15:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671290936;
-        bh=IYbKJGTY+0D09WGYZuSWxnuum7M0oPnE+h0/srHEp6c=;
+        s=k20201202; t=1671290954;
+        bh=XB/Jm1sXa32QNxH6LSfA0g3tCbuMnhLDx9FhhLm1tys=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XkHQHzUUUPCPRTGNftMt1SM0oYQmkgQNQLWPTWIHAxx+Xp6te4y6wmIl7N7jxt3Es
-         g4JWJS9ioYhDOvHrpr6NVYqXei+GAPCddSBSoG98bQxBiohG3selNa/GBP2qUNaPB2
-         DJLxxqYtfSNecbY9cT2kXyRW9OG4dP9+Ry8DQFZehnr4FUFMHPa+YVHPf4jehPW9U3
-         6OLRdkFz39M5hvmMChL4Ly+CStmeOpwnensg+wxyb5bI90twkqaMRK9i9MUxUpSCsJ
-         S6GuY+gEVwrzQFkDwArNkP/HFKGuUU24AnBpJiZ2EW662vohPoDJmkDF1OvCmLWvDi
-         NfX0BXzJ3hUFg==
+        b=M9NOv74nkLeQL5nBknDfOMhkk/doU4BUGYrAfCaLpJ2mGBrZ13F1lzL2HVbaKY0lY
+         cDzaQrRdNwzFykHQLNxTWdBQS1FNU+Hk4eJr7gxFjA8ZNwqbPBGyqsbn34oXqesw4U
+         i0Wnd8/3v9A9Co0rsTn7RhjOqPSX116nSN0S84H0Mp3VtdYPLahvB+5i39ZUWuaGT0
+         77/8kzTV6zVXvqN8FrYxdyUZZy6NNtsbrlhSdTF7dsd3FvegitfkKl8VomrrM97oA2
+         izLe0CRhgrooZ1WYUMPc+BXTGovpfQXCJco9zTQUFsq8+LzOgkOexPQhfIZCM62kTv
+         qi4lDRay1uAiQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
-        mario.limonciello@amd.com, andriy.shevchenko@linux.intel.com,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.0 15/16] ACPI: x86: Add skip i2c clients quirk for Medion Lifetab S10346
-Date:   Sat, 17 Dec 2022 10:28:18 -0500
-Message-Id: <20221217152821.98618-15-sashal@kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Chen Zhongjin <chenzhongjin@huawei.com>,
+        Sasha Levin <sashal@kernel.org>, robert.moore@intel.com,
+        linux-acpi@vger.kernel.org, devel@acpica.org
+Subject: [PATCH AUTOSEL 5.15 05/10] ACPICA: Fix error code path in acpi_ds_call_control_method()
+Date:   Sat, 17 Dec 2022 10:28:55 -0500
+Message-Id: <20221217152902.98870-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221217152821.98618-1-sashal@kernel.org>
-References: <20221217152821.98618-1-sashal@kernel.org>
+In-Reply-To: <20221217152902.98870-1-sashal@kernel.org>
+References: <20221217152902.98870-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -58,49 +56,66 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit ecc6aaabcedc276128315f57755364106017c606 ]
+[ Upstream commit 404ec60438add1afadaffaed34bb5fe4ddcadd40 ]
 
-The Medion Lifetab S10346 is a x86 tablet which ships with Android x86 as
-factory OS. The Android x86 kernel fork ignores I2C devices described in
-the DSDT, except for the PMIC and Audio codecs.
+A use-after-free in acpi_ps_parse_aml() after a failing invocaion of
+acpi_ds_call_control_method() is reported by KASAN [1] and code
+inspection reveals that next_walk_state pushed to the thread by
+acpi_ds_create_walk_state() is freed on errors, but it is not popped
+from the thread beforehand.  Thus acpi_ds_get_current_walk_state()
+called by acpi_ps_parse_aml() subsequently returns it as the new
+walk state which is incorrect.
 
-As usual the Medion Lifetab S10346's DSDT contains a bunch of extra I2C
-devices which are not actually there, causing various resource conflicts.
-Add an ACPI_QUIRK_SKIP_I2C_CLIENTS quirk for the Medion Lifetab S10346 to
-the acpi_quirk_skip_dmi_ids table to woraround this.
+To address this, make acpi_ds_call_control_method() call
+acpi_ds_pop_walk_state() to pop next_walk_state from the thread before
+returning an error.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Link: https://lore.kernel.org/linux-acpi/20221019073443.248215-1-chenzhongjin@huawei.com/ # [1]
+Reported-by: Chen Zhongjin <chenzhongjin@huawei.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Chen Zhongjin <chenzhongjin@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/acpi/acpica/dsmethod.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index fb999597a3f0..ae60e4aae0ee 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -329,6 +329,17 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
- 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
- 	},
-+	{
-+		/* Medion Lifetab S10346 */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
-+			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
-+			/* Way too generic, also match on BIOS data */
-+			DMI_MATCH(DMI_BIOS_DATE, "10/22/2015"),
-+		},
-+		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
-+					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
-+	},
- 	{
- 		/* Nextbook Ares 8 */
- 		.matches = {
+diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
+index 8e011e59b9b4..ee1832ba39a2 100644
+--- a/drivers/acpi/acpica/dsmethod.c
++++ b/drivers/acpi/acpica/dsmethod.c
+@@ -517,7 +517,7 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
+ 	info = ACPI_ALLOCATE_ZEROED(sizeof(struct acpi_evaluate_info));
+ 	if (!info) {
+ 		status = AE_NO_MEMORY;
+-		goto cleanup;
++		goto pop_walk_state;
+ 	}
+ 
+ 	info->parameters = &this_walk_state->operands[0];
+@@ -529,7 +529,7 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
+ 
+ 	ACPI_FREE(info);
+ 	if (ACPI_FAILURE(status)) {
+-		goto cleanup;
++		goto pop_walk_state;
+ 	}
+ 
+ 	next_walk_state->method_nesting_depth =
+@@ -575,6 +575,12 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
+ 
+ 	return_ACPI_STATUS(status);
+ 
++pop_walk_state:
++
++	/* On error, pop the walk state to be deleted from thread */
++
++	acpi_ds_pop_walk_state(thread);
++
+ cleanup:
+ 
+ 	/* On error, we must terminate the method properly */
 -- 
 2.35.1
 
