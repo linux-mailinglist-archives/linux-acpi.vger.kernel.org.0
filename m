@@ -2,47 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8C6564FAC1
+	by mail.lfdr.de (Postfix) with ESMTP id 5445E64FAC0
 	for <lists+linux-acpi@lfdr.de>; Sat, 17 Dec 2022 16:45:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231419AbiLQPkX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 17 Dec 2022 10:40:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53528 "EHLO
+        id S231512AbiLQPlN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 17 Dec 2022 10:41:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231292AbiLQPj0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 17 Dec 2022 10:39:26 -0500
+        with ESMTP id S231386AbiLQPj6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 17 Dec 2022 10:39:58 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE1892180;
-        Sat, 17 Dec 2022 07:30:46 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72D6813E13;
+        Sat, 17 Dec 2022 07:31:18 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B6A5DB802C6;
-        Sat, 17 Dec 2022 15:30:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C8CC43398;
-        Sat, 17 Dec 2022 15:30:40 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6A838B8049B;
+        Sat, 17 Dec 2022 15:31:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D98DC433F1;
+        Sat, 17 Dec 2022 15:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671291041;
-        bh=SLuoQTM+ujcjCEbGzYCHnjy9/9SF/cw1bs9ZM2PIfms=;
+        s=k20201202; t=1671291062;
+        bh=UwPT3DNk5t4dSFGTTejzKR0Qkzhat5PlsoNZ741aEzY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DeraZjixlbJD5ox+1vsBB1sKf4HkdQPn8A8LoPAckNS0D/qcHMcIs3r8mVG8DbjT4
-         BCx4maw6kphy9kf23Yrf/7xIrcFI9JNTJbcV9wzEg1DhgXyvg9Nagr4a2RzXo9ThlQ
-         Vd/gd4Q2tEx2qPnnAw43KfLQGXe+41q71/z6goy5jQ8bAGVNhD3nfNorJvjG9aeEmz
-         XlR1seggMvd47A+Gf5XFon2exO7+mWuTUY66DhTSQC9GZmK35vYeAfsziQ7o2rJGz3
-         TjEPsqA+tyk4XRj4B+j+cNtWEssQN7YqFHCikcq4b7TF1J7T/JrYrSXzfHdC2zQbmz
-         Op3pmxcIdFw/A==
+        b=FZJQucnrKN80HbgGkfK0666V8R2xqe/aavTiEYu0lYbS3XTCAcX/RIpY8eH3IC/V4
+         rR74Jj8F3PDSxldheDLea6BOh/yRHVOcZanQE2BNLyiBSMjibaf1Cpqgwv6Lj0tJq6
+         o6qRc7PNNFyCZLKRNib1DBja22MJJ5a8v03qeGVYOoRI3rlrgQnWNhDV8VPAobY3t9
+         OJffmsp0Hl2EpvB75q0qfXmcVCyoTlTIFPS7+PlxNAWjYdU3Y+uO0UNHINzoqDaCht
+         Jfo8vKjrMkI+ixNhImIxpH9LCoEwMJxpaZFtDiHKwTe8+VGMVq2WPsPbJabYkrLU3d
+         JeGicaVcyhvBw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Chen Zhongjin <chenzhongjin@huawei.com>,
         Sasha Levin <sashal@kernel.org>, robert.moore@intel.com,
         linux-acpi@vger.kernel.org, devel@acpica.org
-Subject: [PATCH AUTOSEL 4.14 4/8] ACPICA: Fix error code path in acpi_ds_call_control_method()
-Date:   Sat, 17 Dec 2022 10:30:27 -0500
-Message-Id: <20221217153033.99394-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 4/8] ACPICA: Fix error code path in acpi_ds_call_control_method()
+Date:   Sat, 17 Dec 2022 10:30:48 -0500
+Message-Id: <20221217153053.99513-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221217153033.99394-1-sashal@kernel.org>
-References: <20221217153033.99394-1-sashal@kernel.org>
+In-Reply-To: <20221217153053.99513-1-sashal@kernel.org>
+References: <20221217153053.99513-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -82,10 +82,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
-index d7fc36917c67..88e729e24314 100644
+index 2b3210f42a46..b77d6b86e3f9 100644
 --- a/drivers/acpi/acpica/dsmethod.c
 +++ b/drivers/acpi/acpica/dsmethod.c
-@@ -551,7 +551,7 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
+@@ -547,7 +547,7 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
  	info = ACPI_ALLOCATE_ZEROED(sizeof(struct acpi_evaluate_info));
  	if (!info) {
  		status = AE_NO_MEMORY;
@@ -94,7 +94,7 @@ index d7fc36917c67..88e729e24314 100644
  	}
  
  	info->parameters = &this_walk_state->operands[0];
-@@ -563,7 +563,7 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
+@@ -559,7 +559,7 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
  
  	ACPI_FREE(info);
  	if (ACPI_FAILURE(status)) {
@@ -103,7 +103,7 @@ index d7fc36917c67..88e729e24314 100644
  	}
  
  	/*
-@@ -595,6 +595,12 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
+@@ -591,6 +591,12 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
  
  	return_ACPI_STATUS(status);
  
