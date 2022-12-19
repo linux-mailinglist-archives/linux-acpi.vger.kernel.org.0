@@ -2,41 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E754E6508B9
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Dec 2022 09:47:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF48B650946
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Dec 2022 10:23:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229618AbiLSIrT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 19 Dec 2022 03:47:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57106 "EHLO
+        id S230373AbiLSJXC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 19 Dec 2022 04:23:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbiLSIrS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Dec 2022 03:47:18 -0500
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6423631C;
-        Mon, 19 Dec 2022 00:47:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=xECLJ6vvuGycZgsWCavR/22ByPpdv0Uc/q/a2trfbwU=; b=Ic1zhl1DaygTj4JKq8+KUL+L/+
-        f0g6dHAHYDpy92tYoDjZbnCL/NwSRtWO6cnIdbCfZjjD2MJUKbp0gY9PZHtPWgYY7DZ9UCuOsyHck
-        Nsa2kHy+xNoDK0s4lSGm87ifxFlURLGf9mmuiRswIGUL/MGaRd/O7yq94opN9hm886d1ZiZPAh2VJ
-        xIT79fpXKtZ+M0cq8Se41Tvp0xuermhtTZuLQ7AERVkpM/IRm+yDzHA3purJkEkCSpLL37OpHVZt/
-        rVSkG/zHu4y4ZcuKDO942YHPUwDtGMR9BUkYIi1GyF0VbY1wivRKTtOG+rgwR4W8UoowerQ4g9h0X
-        4Yafh3uQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:35776)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1p7Bni-0008Cf-CD; Mon, 19 Dec 2022 08:47:10 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1p7Bnf-0004Ur-1t; Mon, 19 Dec 2022 08:47:07 +0000
-Date:   Mon, 19 Dec 2022 08:47:07 +0000
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+        with ESMTP id S230403AbiLSJXA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Dec 2022 04:23:00 -0500
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8A9D63B8;
+        Mon, 19 Dec 2022 01:22:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1671441774; x=1702977774;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=52iEItY8ZXitQ7SKEinWt/UMnHA2rJUFDIU4axb89Hg=;
+  b=Ei42zOrsoHDBBtxhamiTXIRZkZsvbQPcxOGIkWpgroIIflreXEW+ANMC
+   3UO9N8rAY+Ni3t192lalvGd16ASbiAHqvVzhXgIYm4pwIpTCFtZ4HT5yj
+   8fY6QMMtN3AlvBVHEP8HJ9LOv7hvDbBk78waCT3xITHuzMKtiPnKuDfh0
+   XF0uJYv+kHoUNV0mzjzLLwEiVQIOl9J71OLfJHuZThB8KtnW/FvZcjJ+k
+   R+nJKs1mW45mg1EiPLPWaNoX4BIxdGqX/CcJbR6gMH7EpG+CrMXzatLDK
+   ChHLulueKv7R/nqTTJdH/2QSwQplYF1pmQHqkS0kS4jTF2hQ5Voh/e1xv
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10565"; a="320479333"
+X-IronPort-AV: E=Sophos;i="5.96,255,1665471600"; 
+   d="scan'208";a="320479333"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2022 01:22:53 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10565"; a="739270051"
+X-IronPort-AV: E=Sophos;i="5.96,255,1665471600"; 
+   d="scan'208";a="739270051"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by FMSMGA003.fm.intel.com with ESMTP; 19 Dec 2022 01:22:50 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id 39653F7; Mon, 19 Dec 2022 11:23:19 +0200 (EET)
+Date:   Mon, 19 Dec 2022 11:23:19 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
 Cc:     linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org,
         netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
         "David S. Miller" <davem@davemloft.net>,
@@ -45,18 +51,19 @@ Cc:     linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>, Wolfram Sang <wsa@kernel.org>
 Subject: Re: [PATCH RFC 1/2] i2c: add fwnode APIs
-Message-ID: <Y6AlC+9iGVGzWSbc@shell.armlinux.org.uk>
+Message-ID: <Y6Ath7zh2pv7DK1b@black.fi.intel.com>
 References: <Y5B3S6KZTrYlIH8g@shell.armlinux.org.uk>
  <E1p2sVM-009tqA-Vq@rmk-PC.armlinux.org.uk>
  <Y5G2kkGC69FVWaiK@black.fi.intel.com>
  <Y5G5ZyO1XRgjfN90@shell.armlinux.org.uk>
+ <Y6AlC+9iGVGzWSbc@shell.armlinux.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Y5G5ZyO1XRgjfN90@shell.armlinux.org.uk>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+In-Reply-To: <Y6AlC+9iGVGzWSbc@shell.armlinux.org.uk>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,43 +71,42 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Mika,
+Hi,
 
-On Thu, Dec 08, 2022 at 10:16:07AM +0000, Russell King (Oracle) wrote:
+On Mon, Dec 19, 2022 at 08:47:07AM +0000, Russell King (Oracle) wrote:
 > Hi Mika,
 > 
-> On Thu, Dec 08, 2022 at 12:04:02PM +0200, Mika Westerberg wrote:
-> > Hi,
+> On Thu, Dec 08, 2022 at 10:16:07AM +0000, Russell King (Oracle) wrote:
+> > Hi Mika,
 > > 
-> > On Wed, Dec 07, 2022 at 11:22:24AM +0000, Russell King (Oracle) wrote:
-> > > +EXPORT_SYMBOL(i2c_find_device_by_fwnode);
-> > > +
+> > On Thu, Dec 08, 2022 at 12:04:02PM +0200, Mika Westerberg wrote:
+> > > Hi,
+> > > 
+> > > On Wed, Dec 07, 2022 at 11:22:24AM +0000, Russell King (Oracle) wrote:
+> > > > +EXPORT_SYMBOL(i2c_find_device_by_fwnode);
+> > > > +
+> > > 
+> > > Drop this empty line.
 > > 
-> > Drop this empty line.
-> 
-> The additional empty line was there before, and I guess is something the
-> I2C maintainer wants to logically separate the i2c device stuff from
-> the rest of the file.
-> 
-> > > +/* must call put_device() when done with returned i2c_client device */
-> > > +struct i2c_client *i2c_find_device_by_fwnode(struct fwnode_handle *fwnode);
+> > The additional empty line was there before, and I guess is something the
+> > I2C maintainer wants to logically separate the i2c device stuff from
+> > the rest of the file.
 > > 
-> > With the kernel-docs in place you probably can drop these comments.
+> > > > +/* must call put_device() when done with returned i2c_client device */
+> > > > +struct i2c_client *i2c_find_device_by_fwnode(struct fwnode_handle *fwnode);
+> > > 
+> > > With the kernel-docs in place you probably can drop these comments.
+> > 
+> > It's what is there against the other prototypes - and is very easy to
+> > get wrong, as I've recently noticed in the sfp.c code as a result of
+> > creating this series.
+> > 
+> > I find the whole _find_ vs _get_ thing a tad confusing, and there
+> > probably should be just one interface with one way of putting
+> > afterwards to avoid subtle long-standing bugs like this.
+> > 
+> > Thanks.
 > 
-> It's what is there against the other prototypes - and is very easy to
-> get wrong, as I've recently noticed in the sfp.c code as a result of
-> creating this series.
-> 
-> I find the whole _find_ vs _get_ thing a tad confusing, and there
-> probably should be just one interface with one way of putting
-> afterwards to avoid subtle long-standing bugs like this.
-> 
-> Thanks.
+> Do you have any comments on my reply please?
 
-Do you have any comments on my reply please?
-
-Thanks.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+Sorry, no comments :) Thanks for the clarification.
