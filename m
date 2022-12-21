@@ -2,123 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E8AA6533AD
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Dec 2022 16:52:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61D04653440
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Dec 2022 17:44:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234535AbiLUPwj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Dec 2022 10:52:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46250 "EHLO
+        id S230330AbiLUQn7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Dec 2022 11:43:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229620AbiLUPw0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Dec 2022 10:52:26 -0500
-Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F210B1AF11;
-        Wed, 21 Dec 2022 07:52:23 -0800 (PST)
+        with ESMTP id S234626AbiLUQn5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Dec 2022 11:43:57 -0500
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C314E1B1C3
+        for <linux-acpi@vger.kernel.org>; Wed, 21 Dec 2022 08:43:56 -0800 (PST)
+Received: by mail-ej1-x643.google.com with SMTP id kw15so38113643ejc.10
+        for <linux-acpi@vger.kernel.org>; Wed, 21 Dec 2022 08:43:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1671637944; x=1703173944;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=J37cAmUSy89NFuYuAIQwv935ukDljKuizMPHPLJPbKM=;
-  b=nMl2HKAYop3b/z5l54nQ+AhmJQkqYOczWdr3s4fX9f+pRGMEGl6dUC8u
-   sNd9weT/8qTJpfM56u6RHXCMwb+8BODhQw1PdnYG0IXvWkJzndDkskPcn
-   v8mSGKWyUAYbulbspBJSSPVmBiFly2+5DVULNbBm/dyFjUhqvcoslvvMT
-   4=;
-X-IronPort-AV: E=Sophos;i="5.96,262,1665446400"; 
-   d="scan'208";a="293101506"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-iad-1e-m6i4x-3554bfcf.us-east-1.amazon.com) ([10.25.36.210])
-  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2022 15:52:16 +0000
-Received: from EX13D32EUC001.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
-        by email-inbound-relay-iad-1e-m6i4x-3554bfcf.us-east-1.amazon.com (Postfix) with ESMTPS id 7C927862F6;
-        Wed, 21 Dec 2022 15:52:13 +0000 (UTC)
-Received: from EX19D028EUC002.ant.amazon.com (10.252.61.186) by
- EX13D32EUC001.ant.amazon.com (10.43.164.159) with Microsoft SMTP Server (TLS)
- id 15.0.1497.42; Wed, 21 Dec 2022 15:52:12 +0000
-Received: from EX13MTAUWA001.ant.amazon.com (10.43.160.58) by
- EX19D028EUC002.ant.amazon.com (10.252.61.186) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.1118.20; Wed, 21 Dec 2022 15:52:11 +0000
-Received: from dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com (10.15.11.255)
- by mail-relay.amazon.com (10.43.160.118) with Microsoft SMTP Server id
- 15.0.1497.42 via Frontend Transport; Wed, 21 Dec 2022 15:52:10 +0000
-Received: by dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com (Postfix, from userid 23027615)
-        id 412FB20D08; Wed, 21 Dec 2022 16:52:10 +0100 (CET)
-From:   Pratyush Yadav <ptyadav@amazon.de>
-To:     <linux-pm@vger.kernel.org>
-CC:     Pratyush Yadav <ptyadav@amazon.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Robert Moore <robert.moore@intel.com>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devel@acpica.org>
-Subject: [PATCH 2/2] cpufreq: intel_pstate: use acpi perflib to update turbo frequency
-Date:   Wed, 21 Dec 2022 16:52:03 +0100
-Message-ID: <20221221155203.11347-3-ptyadav@amazon.de>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221221155203.11347-1-ptyadav@amazon.de>
-References: <20221221155203.11347-1-ptyadav@amazon.de>
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=b6ICykQPN4FWYe26rm3myJiY8Og6Xjh6UqIQ4+3pT6M=;
+        b=fvqr+Tt94mw0fBiJlvT0zP62QSQdIApdpuPom/2zpbT5xnaDczTj0eM6dkmChablWs
+         pG58Sq/Hbdq5LPgWoepJaeyOgySi+Ah7Tf6R547FWMrvA5CUOdCX07YyX6opyZPll0z+
+         YmIaZpKWs1u1fhOkfzQwAhrdfRzL5rlVsVrMOa6ngc9J2RtEhsWS89LkMkhE75JmBPDF
+         W62n7owzHummK20AwwsSH0clysC0rUOz89nxX4qOCVfS+scGYxaDz3EmGTSuet2Y9Ehg
+         zBWfyGFJBqhODk82rM/y3UWamtq3ZtB4iG8cs1omqSuKr5RZeccZocS7GiqClIPIbj9I
+         4nog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=b6ICykQPN4FWYe26rm3myJiY8Og6Xjh6UqIQ4+3pT6M=;
+        b=eUyHwMCaOlkKzrvPnrQ8iKGJ/TX7N0Gk+cgPr9cAh7f0A+LOuFtYKO5mmgYG9soLZz
+         Ps+V6cAoYRttvLiKhSTMeoExeD8I25bRXuVzdaPdQUgPmgF/pFwPV15kte23ikvTrR/g
+         dJL/dGXfoiwexktrb4eUHgLku48lgKbxIuHUblseUWjt3vGK3rQe7nGiHpSqKydquQ7Z
+         Qr7qGqnSGHAX4o2v0PSF2JywsQBtvRospBkMVxsWy2C5DH2kB1dJcAOAHC2txdtbN9m5
+         5+Fl7PZIFBKJJzRERQSOe2mLugBFVgUMVWH860didp2z+0dIVcgcKj4U3bixWGt3upo0
+         31Rg==
+X-Gm-Message-State: AFqh2krlFVw/sR1oM50aGeeGUSXnRMpjiZkws5nAABSjvK2wHIaNjs17
+        dVAd7LsUyDKCvrhIRLAfiK/rXoHcBywW2IqXbnU=
+X-Google-Smtp-Source: AMrXdXs1Oh0Oq8ZfZ9IOqRvATBJe3v/KKqNbCcYWUOmKdQaiScpLbBttmaRM/rGEVCvTiUMS2PrijtiRuofHLS/Ma+U=
+X-Received: by 2002:a17:906:3ec6:b0:7c1:2c5c:c3ca with SMTP id
+ d6-20020a1709063ec600b007c12c5cc3camr240074ejj.366.1671641035351; Wed, 21 Dec
+ 2022 08:43:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spam-Status: No, score=-10.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:7208:341:b0:5e:e736:966f with HTTP; Wed, 21 Dec 2022
+ 08:43:54 -0800 (PST)
+Reply-To: canyeu298@gmail.com
+From:   Can yeu <rm9831982@gmail.com>
+Date:   Wed, 21 Dec 2022 17:43:54 +0100
+Message-ID: <CACF1i3jkC6Zso8QFooR1e=bVhX14Cpg9PsrCXrv8i7SkpuzKgQ@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The _PSS table does not contain the whole turbo frequency range, but
-only +1 MHz above the max non-turbo frequency. The pstate driver then
-updates the ACPI perf data with the actual max frequency. But doing this
-here directly would mean that frequency QoS constraints that acpi
-perflib imposes do not get updated.
-
-This is a problem when a CPU is brought offline and online again. When
-the CPU first comes online, cpufreq is not initialized. So PPC
-constraints are not applied (because ignore_ppc == -1). This leads to
-the frequency QoS allowing all values from acpi perflib side.
-
-Once everything is initialized and then userspace brings a CPU down and
-up again, intel_pstate_init_acpi_perf_limits() calls
-acpi_processor_register_performance(), which then eventually calls
-acpi_processor_get_platform_limit(). There PPC is state 0, the turbo
-state, but the frequency has not been updated yet. So when
-acpi_processor_get_platform_limit() sets QoS constraints, it sets them
-with the max_non_turbo + 1 value.
-
-Now even though intel_pstate says it can support the full turbo speed,
-cpufreq only asks for up to max_non_turbo + 1 MHz since that is what
-satisfies all constraints.
-
-Call into acpi perflib's function to update the frequency so it can also
-update the QoS constraints with the new value.
-
-Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
----
- drivers/cpufreq/intel_pstate.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index fd73d6d2b808..b312f87ff522 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -464,8 +464,9 @@ static void intel_pstate_init_acpi_perf_limits(struct cpufreq_policy *policy)
- 	 * Also need to convert to MHz as _PSS freq is in MHz.
- 	 */
- 	if (!global.turbo_disabled)
--		cpu->acpi_perf_data.states[0].core_frequency =
--					policy->cpuinfo.max_freq / 1000;
-+		acpi_processor_fixup_perf_state(policy->cpu, 0,
-+						policy->cpuinfo.max_freq / 1000);
-+
- 	cpu->valid_pss_table = true;
- 	pr_debug("_PPC limits will be enforced\n");
- 
 -- 
-2.38.1
+Dear friend,
 
+I have an important message that I want to discuss with you.
+
+Please accept my sincere greetings
+
+Mrs Can Yeu
