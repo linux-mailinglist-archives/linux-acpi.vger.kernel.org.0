@@ -2,49 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7091D654558
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Dec 2022 17:45:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CFFC65455C
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Dec 2022 17:45:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229603AbiLVQpH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 22 Dec 2022 11:45:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52846 "EHLO
+        id S229526AbiLVQpy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 22 Dec 2022 11:45:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229552AbiLVQpG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 22 Dec 2022 11:45:06 -0500
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B022C3055A;
-        Thu, 22 Dec 2022 08:45:05 -0800 (PST)
-Received: by mail-qk1-f172.google.com with SMTP id o14so1172842qkk.5;
-        Thu, 22 Dec 2022 08:45:05 -0800 (PST)
+        with ESMTP id S235065AbiLVQpx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 22 Dec 2022 11:45:53 -0500
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0673410AF;
+        Thu, 22 Dec 2022 08:45:53 -0800 (PST)
+Received: by mail-qv1-f54.google.com with SMTP id q10so1569556qvt.10;
+        Thu, 22 Dec 2022 08:45:52 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NxL994ZGpsng6z6sP3chA/0SbhbU2L3QAQ9J36E7W9k=;
-        b=tc4Fj6I3MDe39GjXQdHAhpi25qj1LhN8MkiL70xR+sRRXx3K/gWK2J1SlUeVteA6wm
-         00Lm59MuzKJWfo9nfbl4XIo7frB+qPhxvkuFHsdmxHTUSaaq8QoFk+jdOnVKInX+DwzB
-         Yyg2Kh2YN6Jhh0Qffc6XdMKlnOSz8rD8BJSnhjhZaUsrUgatqXvCNKl/lBWbkYMa2hns
-         fctahRwC7v6RV3U6jzcDuY3FLm01fB5J0UXcyHhb1hIuddKwqq/6QZm05K71QEFyky1S
-         DMYf/sbZvVQ2O+KxdvY2D0UE3rbIu6PJ5mFceqqW/UNCW1qeIqBASwEAySjUzyGPC+YB
-         IrsQ==
-X-Gm-Message-State: AFqh2koRK02pyYUH+FQD0+K9bzqgDyz1/3Ei/OS/kqu3cYGIUBntVKHW
-        AeE+soCsqxg/fxWbS+zXeN3qHLAB2HPBBi/nG8E=
-X-Google-Smtp-Source: AMrXdXueOXNoMZJh1ljDOmnc56EBDw2PDckPQRzB2G1sHYIncyhPI/jlLhbzYIsCwjmeYgFc9T8EbNSH6QUGPIrhfAw=
-X-Received: by 2002:a05:620a:22b1:b0:702:50ce:e49 with SMTP id
- p17-20020a05620a22b100b0070250ce0e49mr307662qkh.443.1671727504866; Thu, 22
- Dec 2022 08:45:04 -0800 (PST)
+        bh=3V+V/RxVzQmiAleBn5pDq7PcTx4x79d2e+VRXiuewIo=;
+        b=D0Kh2D33rA08h9oAtpZLyXEDdC2mi8q/UKV7VdsOZqXgHEVaLilqTcZM4KvlVHQksR
+         i611FhtWnF7QAMVWQ/axWBL4hj5Rar7V8QU8xtYqr+a91NpZI/o+i7Ps8O39//6zC5Xv
+         c71wNHerxwm6LTTnumT2y4LfTJPDTbmr9jsC4RolxBc1l8MEzROQkNVP5CrzgLF6MVuC
+         I4CiZRFE5dpy6j3aIWN5hXWopMU2gKGOgyZ4B2SRNIqXscy1kMSe1D9f5PgtAWrSn+To
+         a09/gYHNtggRAbUIcq5AThuRkeFRfguREW6y4uKiMqTX1VHB/4TL1cl5d5OGwr1aPKuk
+         xKYQ==
+X-Gm-Message-State: AFqh2kpKYOtYqLDcaNmUNL/U4Sb1hFu9cxnAJBmctoXPZKfBa287ItEP
+        xV7mDhS8B1H3YVJkj6jDw/960Hn5r/cJ0mXLKe4=
+X-Google-Smtp-Source: AMrXdXufR5CWNI5qpC1KftZBMF/jf+zlhokSALHiyd6CDSS5P2DLg6WV4GE/jdMvuZ2GiL9jIR0eA6+r974Ga1yrOic=
+X-Received: by 2002:a05:6214:328f:b0:4b1:8429:a8a7 with SMTP id
+ mu15-20020a056214328f00b004b18429a8a7mr365563qvb.52.1671727552188; Thu, 22
+ Dec 2022 08:45:52 -0800 (PST)
 MIME-Version: 1.0
-References: <20221215094138.7120-1-hdegoede@redhat.com>
-In-Reply-To: <20221215094138.7120-1-hdegoede@redhat.com>
+References: <20221215094443.7466-1-hdegoede@redhat.com>
+In-Reply-To: <20221215094443.7466-1-hdegoede@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 22 Dec 2022 17:44:53 +0100
-Message-ID: <CAJZ5v0gre=j1=AMqREj1ZP-L3omHd6LmC8TxrZixUZfn_1R5KQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: video: Fix Apple GMUX backlight detection
+Date:   Thu, 22 Dec 2022 17:45:41 +0100
+Message-ID: <CAJZ5v0hrqca-fqSqGDXXKBonsCTOjHHBgOtjqv85oxQQ1hkVyA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: resource: Add Asus ExpertBook B2502 to Asus quirks
 To:     Hans de Goede <hdegoede@redhat.com>
 Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        Aditya Garg <gargaditya08@live.com>
+        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -56,90 +55,40 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 15, 2022 at 10:41 AM Hans de Goede <hdegoede@redhat.com> wrote:
+On Thu, Dec 15, 2022 at 10:45 AM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> The apple-gmux driver only binds to old GMUX devices which have an
-> IORESOURCE_IO resource (using inb()/outb()) rather then memory-mapped
-> IO (IORESOURCE_MEM).
+> The Asus ExpertBook B2502 has the same keyboard issue as Asus Vivobook
+> K3402ZA/K3502ZA. The kernel overrides IRQ 1 to Edge_High when it
+> should be Active_Low.
 >
-> T2 MacBooks use the new style GMUX devices (with IORESOURCE_MEM access),
-> so these are not supported by the apple-gmux driver. This is not a problem
-> since they have working ACPI video backlight support.
+> This patch adds the ExpertBook B2502 model to the existing
+> quirk list of Asus laptops with this issue.
 >
-> But the apple_gmux_present() helper only checks if an ACPI device with
-> the "APP000B" HID is present, causing acpi_video_get_backlight_type()
-> to return acpi_backlight_apple_gmux disabling the acpi_video backlight
-> device.
->
-> Add a new apple_gmux_backlight_present() helper which checks that
-> the "APP000B" device actually is an old GMUX device with an IORESOURCE_IO
-> resource.
->
-> This fixes the acpi_video0 backlight no longer registering on T2 MacBooks.
->
-> Note people are working to add support for the new style GMUX to Linux:
-> https://github.com/kekrby/linux-t2/commits/wip/hybrid-graphics
->
-> Once this lands this patch should be reverted so that
-> acpi_video_get_backlight_type() also prefers the gmux on new style GMUX
-> MacBooks, but for now this is necessary to avoid regressing backlight
-> control on T2 Macs.
->
-> Fixes: 21245df307cb ("ACPI: video: Add Apple GMUX brightness control detection")
-> Reported-and-tested-by: Aditya Garg <gargaditya08@live.com>
+> Fixes: b5f9223a105d ("ACPI: resource: Skip IRQ override on Asus Vivobook S5602ZA")
+> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2142574
 > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 > ---
->  drivers/acpi/video_detect.c | 23 ++++++++++++++++++++++-
->  1 file changed, 22 insertions(+), 1 deletion(-)
+>  drivers/acpi/resource.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 >
-> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-> index a934bbc9dd37..1b78c7434492 100644
-> --- a/drivers/acpi/video_detect.c
-> +++ b/drivers/acpi/video_detect.c
-> @@ -34,6 +34,7 @@
->  #include <linux/module.h>
->  #include <linux/pci.h>
->  #include <linux/platform_data/x86/nvidia-wmi-ec-backlight.h>
-> +#include <linux/pnp.h>
->  #include <linux/types.h>
->  #include <linux/workqueue.h>
->  #include <acpi/video.h>
-> @@ -105,6 +106,26 @@ static bool nvidia_wmi_ec_supported(void)
->  }
->  #endif
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index f27914aedbd5..e721f2ec014f 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -432,6 +432,13 @@ static const struct dmi_system_id asus_laptop[] = {
+>                         DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
+>                 },
+>         },
+> +       {
+> +               .ident = "Asus ExpertBook B2502",
+> +               .matches = {
+> +                       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+> +                       DMI_MATCH(DMI_BOARD_NAME, "B2502CBA"),
+> +               },
+> +       },
+>         { }
+>  };
 >
-> +static bool apple_gmux_backlight_present(void)
-> +{
-> +       struct acpi_device *adev;
-> +       struct device *dev;
-> +
-> +       adev = acpi_dev_get_first_match_dev(GMUX_ACPI_HID, NULL, -1);
-> +       if (!adev)
-> +               return false;
-> +
-> +       dev = acpi_get_first_physical_node(adev);
-> +       if (!dev)
-> +               return false;
-> +
-> +       /*
-> +        * drivers/platform/x86/apple-gmux.c only supports old style
-> +        * Apple GMUX with an IO-resource.
-> +        */
-> +       return pnp_get_resource(to_pnp_dev(dev), IORESOURCE_IO, 0) != NULL;
-> +}
-> +
->  /* Force to use vendor driver when the ACPI device is known to be
->   * buggy */
->  static int video_detect_force_vendor(const struct dmi_system_id *d)
-> @@ -767,7 +788,7 @@ static enum acpi_backlight_type __acpi_video_get_backlight_type(bool native)
->         if (nvidia_wmi_ec_present)
->                 return acpi_backlight_nvidia_wmi_ec;
->
-> -       if (apple_gmux_present())
-> +       if (apple_gmux_backlight_present())
->                 return acpi_backlight_apple_gmux;
->
->         /* Use ACPI video if available, except when native should be preferred. */
 > --
 
 Applied as 6.2-rc material, thanks!
