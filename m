@@ -2,116 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99FBA65537D
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Dec 2022 19:10:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F108655732
+	for <lists+linux-acpi@lfdr.de>; Sat, 24 Dec 2022 02:32:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232676AbiLWSKc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 23 Dec 2022 13:10:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48458 "EHLO
+        id S236367AbiLXBcz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 23 Dec 2022 20:32:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231241AbiLWSKc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 23 Dec 2022 13:10:32 -0500
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BB761D0FB;
-        Fri, 23 Dec 2022 10:10:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1671819028; x=1703355028;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=EHQ+fQ0PDjXdAmyvbXTIdBDCDsIgBAPhIBp4uzkZHPs=;
-  b=BcXvmIvSWExAjiCiiu1TGxHqn8xeszlfvQ6MuUAhTDorSWiywvvsUXkC
-   yeFSSkjOns3s5zYJIe/cfu6PGZrK5nyZnvOm67vvxhNeNu8u1TF9pDq0h
-   xqFyhroo5clKQR2J5ix+AN0kS0jyLlAG0bKO0F5NhT4gjixQSm/G19g0E
-   KJDWUu9jrOIhTzjQwN99HnkP8Em0GDNvYCoD0KYQND2U9dST3CF6oq239
-   wDwkaysVGlLsUu2f5GaE6ANyoYRr1PPqiNGo8Uo9Yz9GMJc/wHR2gWJZA
-   zurB/LBMRMqM3klahIz0pS83Fo0/pUCiPiVDWOjFgCVobnGXdOjwWNCWy
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10570"; a="303837404"
-X-IronPort-AV: E=Sophos;i="5.96,269,1665471600"; 
-   d="scan'208";a="303837404"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2022 10:10:27 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10570"; a="980987420"
-X-IronPort-AV: E=Sophos;i="5.96,269,1665471600"; 
-   d="scan'208";a="980987420"
-Received: from nsbhole-mobl1.amr.corp.intel.com (HELO spandruv-desk1.amr.corp.intel.com) ([10.209.21.195])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2022 10:10:26 -0800
-Message-ID: <2ed9702b67832e3e33ef352808124980206c1e95.camel@linux.intel.com>
-Subject: Re: [PATCH 0/2] intel_pstate: fix turbo not being used after a
- processor is rebooted
-From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     Pratyush Yadav <ptyadav@amazon.de>
-Cc:     linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Robert Moore <robert.moore@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devel@acpica.org
-Date:   Fri, 23 Dec 2022 10:10:26 -0800
-In-Reply-To: <mafs0k02jd8oh.fsf_-_@dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com>
-References: <20221221155203.11347-1-ptyadav@amazon.de>
-         <72bcd14eef038ec9181d30b3d196b0a872f47ccb.camel@linux.intel.com>
-         <mafs0k02jd8oh.fsf_-_@dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
+        with ESMTP id S236606AbiLXBcM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 23 Dec 2022 20:32:12 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C55418FCB;
+        Fri, 23 Dec 2022 17:30:46 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 50768B8213E;
+        Sat, 24 Dec 2022 01:30:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B60C433F0;
+        Sat, 24 Dec 2022 01:30:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1671845429;
+        bh=S+ByuJReLSBwV8oQbXlzNTKSMaLurKG1gsu/vl1k3uU=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=m1HvdLD1imcmenCw7PyWyme3EYabQaMHEW0QvEgckTzZ8l15eucUWfsSbLwqML8H1
+         EAwZjNj+Lltn4R66z9yPHIcx+DdbbZVbYEBIkICF0Di+jxcH7AdbH94wA35PGLu1Cz
+         qD7Ug6ultnlfwoOaDDiRqUAHMBp+RUWUjlMDl4kyZfvmKV2EsUlD+s2UeCUezyjsGL
+         jWdOOWSDe7pu34evFwItfDmYv5ROTlxUmY/zSD4k3/5RXrJpLhu5G5Qrb9XBeMopmL
+         cZX7UxBO3uaKArzXdfyTowHyot9vsZkbP7tEO96gjDVXEpkzlY4bcKl6gk5cve/NNa
+         6mubE7LFSjHAQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
+        <amadeuszx.slawinski@linux.intel.com>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, robert.moore@intel.com,
+        linux-acpi@vger.kernel.org, devel@acpica.org
+Subject: [PATCH AUTOSEL 6.1 22/26] ACPICA: Fix operand resolution
+Date:   Fri, 23 Dec 2022 20:29:26 -0500
+Message-Id: <20221224012930.392358-22-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20221224012930.392358-1-sashal@kernel.org>
+References: <20221224012930.392358-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Pratyush,
+From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
 
-On Thu, 2022-12-22 at 11:39 +0100, Pratyush Yadav wrote:
-> 
-> Hi Srinivas,
-> 
-> On Wed, Dec 21 2022, srinivas pandruvada wrote:
-> > On Wed, 2022-12-21 at 16:52 +0100, Pratyush Yadav wrote:
-> > > When a processor is brought offline and online again, it is
-> > > unable to
-> > > use Turbo mode because the _PSS table does not contain the whole
-> > > turbo
-> > > frequency range, but only +1 MHz above the max non-turbo
-> > > frequency.
-> > > This
-> > > causes problems when ACPI processor driver tries to set frequency
-> > > constraints. See patch 2 for more details.
-> > > 
-I can reproduce on a Broadwell server platform. But not on a client
-system with acpi_ppc usage.
+[ Upstream commit 7dfb216eda99bbfc2a8c3b03d2eec63314f52b3c ]
 
-Need to check what change broke this.
+In our tests we get UBSAN warning coming from ACPI parser. This is
+caused by trying to resolve operands when there is none.
 
-Thanks,
-Srinivas
+[    0.000000] Linux version 5.15.0-rc3chromeavsrel1.0.184+ (root@...) (gcc (Ubuntu 10.3.0-1ubuntu1~20.04) 10.3.0, GNU ld (GNU Binutils for Ubuntu) 2.34) #1 SMP PREEMPT Sat Oct 16 00:08:27 UTC 2021
+...
+[ 14.719508] ================================================================================
+[ 14.719551] UBSAN: array-index-out-of-bounds in /.../linux/drivers/acpi/acpica/dswexec.c:401:12
+[ 14.719594] index -1 is out of range for type 'acpi_operand_object *[9]'
+[ 14.719621] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.15.0-rc3chromeavsrel1.0.184+ #1
+[ 14.719657] Hardware name: Intel Corp. Geminilake/GLK RVP2 LP4SD (07), BIOS GELKRVPA.X64.0214.B50.2009111159 09/11/2020
+[ 14.719694] Call Trace:
+[ 14.719712] dump_stack_lvl+0x38/0x49
+[ 14.719749] dump_stack+0x10/0x12
+[ 14.719775] ubsan_epilogue+0x9/0x45
+[ 14.719801] __ubsan_handle_out_of_bounds.cold+0x44/0x49
+[ 14.719835] acpi_ds_exec_end_op+0x1d7/0x6b5
+[ 14.719870] acpi_ps_parse_loop+0x942/0xb34
+...
 
-> > 
-> > Thanks,
-> > Srinivas
-> > 
-> > > Pratyush Yadav (2):
-> > >   acpi: processor: allow fixing up the frequency for a
-> > > performance
-> > > state
-> > >   cpufreq: intel_pstate: use acpi perflib to update turbo
-> > > frequency
-> > > 
-> > >  drivers/acpi/processor_perflib.c | 40
-> > > ++++++++++++++++++++++++++++++++
-> > >  drivers/cpufreq/intel_pstate.c   |  5 ++--
-> > >  include/acpi/processor.h         |  2 ++
-> > >  3 files changed, 45 insertions(+), 2 deletions(-)
-> > > 
-> > > --
-> > > 2.38.1
-> > > 
-> > 
-> 
+Problem happens because WalkState->NumOperands is 0 and it is used when
+trying to access into operands table. Actual code is:
+WalkState->Operands [WalkState->NumOperands -1]
+which causes out of bound access. Improve the check before above access
+to check if ACPI opcode should have any arguments (operands) at all.
+
+Link: https://github.com/acpica/acpica/pull/745
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/acpica/dswexec.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/acpi/acpica/dswexec.c b/drivers/acpi/acpica/dswexec.c
+index e8ad41387f84..b082eb942a0f 100644
+--- a/drivers/acpi/acpica/dswexec.c
++++ b/drivers/acpi/acpica/dswexec.c
+@@ -389,9 +389,11 @@ acpi_status acpi_ds_exec_end_op(struct acpi_walk_state *walk_state)
+ 
+ 		/*
+ 		 * All opcodes require operand resolution, with the only exceptions
+-		 * being the object_type and size_of operators.
++		 * being the object_type and size_of operators as well as opcodes that
++		 * take no arguments.
+ 		 */
+-		if (!(walk_state->op_info->flags & AML_NO_OPERAND_RESOLVE)) {
++		if (!(walk_state->op_info->flags & AML_NO_OPERAND_RESOLVE) &&
++		    (walk_state->op_info->flags & AML_HAS_ARGS)) {
+ 
+ 			/* Resolve all operands */
+ 
+-- 
+2.35.1
 
