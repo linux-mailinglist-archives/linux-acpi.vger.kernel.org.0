@@ -2,35 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8485C6557E1
-	for <lists+linux-acpi@lfdr.de>; Sat, 24 Dec 2022 02:42:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5C686557D6
+	for <lists+linux-acpi@lfdr.de>; Sat, 24 Dec 2022 02:41:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236905AbiLXBmx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 23 Dec 2022 20:42:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51602 "EHLO
+        id S236542AbiLXBlh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 23 Dec 2022 20:41:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237031AbiLXBlg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 23 Dec 2022 20:41:36 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2919813F50;
-        Fri, 23 Dec 2022 17:33:39 -0800 (PST)
+        with ESMTP id S236904AbiLXBlE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 23 Dec 2022 20:41:04 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0B0C56D61;
+        Fri, 23 Dec 2022 17:33:26 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0BCDBB821B9;
-        Sat, 24 Dec 2022 01:33:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED6F3C433EF;
-        Sat, 24 Dec 2022 01:33:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BD02561FB4;
+        Sat, 24 Dec 2022 01:33:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51685C433F1;
+        Sat, 24 Dec 2022 01:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671845594;
-        bh=cnjgTSjEnC6ViECn2KVtL17c+UKIXVRxL9folpGcCbY=;
+        s=k20201202; t=1671845605;
+        bh=Yj7ZYMN5FNIlUcGPnZVSmxeHYb7iT43lSxTAESNJdtw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I+x9c3TquoO0CkLP11cSTkORCb8ZYeqU4tsG8Y8yDEW3YDKiz4wr7ITJyFOZtzLMb
-         4rhjKY0qz7qMPsKtQ+FtrABUSxIJUqbk7HtlO81BsXZwArQ5AqaG9O80ebPDU5yL0i
-         yIIcYrc+gDwuPpMwyNIDndZezGZOcQaWZRVi8i1eJNvF7NyH8KvKIRRletIoGMYPcA
-         3buRpab3r9Y+u04xJST2bdV2F0V10iWo7QcQ3kxW9hUsWlocyJtIXowgz3Oo/FQXgE
-         e4QpzD+d1f2BiKtLFabFTkdMcoEORVjfyU4ObGDpkvmW/CRuZcMWuSmFE5PK3+9GqY
-         6PW0hYZ6+8ghA==
+        b=nLGx3SquzK9/z7ZN96uX0eM14f7EqcMArCy9cKrMVbgJ+I/hI5fH1uYXTwsphEb8s
+         vviUDgWBdKClUX5Z/LSo/SRlrz5+T0j8YmdVipsk7n1yQVBB9DV+UYPP2uyjrAp9aM
+         yzPx5d03xqoNxbpbVpYWihqietibQ87CUbJPrBfZxLbNNoDmNcrDggQi/4utKCGJxy
+         8GWct+23gojo+5JJd0e1O53mxdw2KXDX41Uc9YEab3CXs4+yKsqemS3eYDKSNphbLP
+         HxGqCtxkWMelLBFfENqIteCCFoEF1ccOQc1/wmpGDDY+gPEUjEKHbHk3iRpoKLCfdT
+         CVQHc3pDOdumA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
@@ -39,12 +39,12 @@ Cc:     =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?=
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, robert.moore@intel.com,
         linux-acpi@vger.kernel.org, devel@acpica.org
-Subject: [PATCH AUTOSEL 4.19 6/6] ACPICA: Fix operand resolution
-Date:   Fri, 23 Dec 2022 20:32:54 -0500
-Message-Id: <20221224013254.393646-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 4/4] ACPICA: Fix operand resolution
+Date:   Fri, 23 Dec 2022 20:33:15 -0500
+Message-Id: <20221224013315.393820-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221224013254.393646-1-sashal@kernel.org>
-References: <20221224013254.393646-1-sashal@kernel.org>
+In-Reply-To: <20221224013315.393820-1-sashal@kernel.org>
+References: <20221224013315.393820-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
@@ -98,10 +98,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/acpi/acpica/dswexec.c b/drivers/acpi/acpica/dswexec.c
-index 1504b93cc5f4..93dfca60701f 100644
+index 20d7744b06ae..755f248908e7 100644
 --- a/drivers/acpi/acpica/dswexec.c
 +++ b/drivers/acpi/acpica/dswexec.c
-@@ -382,9 +382,11 @@ acpi_status acpi_ds_exec_end_op(struct acpi_walk_state *walk_state)
+@@ -416,9 +416,11 @@ acpi_status acpi_ds_exec_end_op(struct acpi_walk_state *walk_state)
  
  		/*
  		 * All opcodes require operand resolution, with the only exceptions
