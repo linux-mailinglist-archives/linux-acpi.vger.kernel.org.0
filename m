@@ -2,160 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1EE7655C05
-	for <lists+linux-acpi@lfdr.de>; Sun, 25 Dec 2022 01:28:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DE4A655E5E
+	for <lists+linux-acpi@lfdr.de>; Sun, 25 Dec 2022 22:31:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229473AbiLYA2W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 24 Dec 2022 19:28:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43216 "EHLO
+        id S229563AbiLYVbS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 25 Dec 2022 16:31:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbiLYA2V (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 24 Dec 2022 19:28:21 -0500
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B797E658F;
-        Sat, 24 Dec 2022 16:28:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1671928100; x=1703464100;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=uNm9/E9vQwOQhQmRGADmicSeDE6R/5EWg07gbn3dlB4=;
-  b=elI4GEBtrmlcZZ1lkvMjwfk/V6MsBQngM63bUnkEtfrfGEOpROE38ZV8
-   lCBgpE923OvBo7pzaKj58Xkxnl/WQNB4wG94lLrhhNlgqxFRF30jzGdiM
-   VOlE8qZi0k4ToV5SVETjLCs10VkWMW2N70YkjpPc2LBZLAxYIjNP4jC4l
-   CTHwTTQxKp4T6y81JemY/FCU9LifQbeYRWJOzolKcips8bQd1LoLMLQ6q
-   Ju3DT5R4GmX1F8WUw6pgRq7BGIj5SEs1wluY7tYS1genOVlL9nIVp8whc
-   DXQ7G9I9u1RzG8oXoIis31XPI0Gjc0FeiV1TDRD0t6/wmuhgFnQkox3KH
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10571"; a="319158882"
-X-IronPort-AV: E=Sophos;i="5.96,272,1665471600"; 
-   d="scan'208";a="319158882"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Dec 2022 16:28:20 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10571"; a="654475609"
-X-IronPort-AV: E=Sophos;i="5.96,272,1665471600"; 
-   d="scan'208";a="654475609"
-Received: from spandruv-desk.jf.intel.com ([10.54.75.8])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Dec 2022 16:28:20 -0800
-Message-ID: <8e2cc66f7dadcfb04099aac7c4eef0b02075c91b.camel@linux.intel.com>
-Subject: Re: [PATCH 0/2] intel_pstate: fix turbo not being used after a
- processor is rebooted
-From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     Pratyush Yadav <ptyadav@amazon.de>
-Cc:     linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Robert Moore <robert.moore@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devel@acpica.org
-Date:   Sat, 24 Dec 2022 16:28:19 -0800
-In-Reply-To: <2ed9702b67832e3e33ef352808124980206c1e95.camel@linux.intel.com>
-References: <20221221155203.11347-1-ptyadav@amazon.de>
-         <72bcd14eef038ec9181d30b3d196b0a872f47ccb.camel@linux.intel.com>
-         <mafs0k02jd8oh.fsf_-_@dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com>
-         <2ed9702b67832e3e33ef352808124980206c1e95.camel@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        with ESMTP id S229445AbiLYVbR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 25 Dec 2022 16:31:17 -0500
+Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08EFCC3E
+        for <linux-acpi@vger.kernel.org>; Sun, 25 Dec 2022 13:31:16 -0800 (PST)
+Received: by mail-yb1-xb2e.google.com with SMTP id 186so10291716ybe.8
+        for <linux-acpi@vger.kernel.org>; Sun, 25 Dec 2022 13:31:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=K1DFvd/qB2iPwiRdxjvsshI/YDS4Nv+p2asGKuDLehw=;
+        b=Ahu0M99Vw1klzTk56N2yIZPwVhCrlwj0MboTw9Khz/uDPY2C9LxqXNff1DmZ801gYf
+         58IKRb3CguNzEIW30mMh3N45jVDQumJDkJghyXyUxnKTyyeh9OFNH9MAd47A0HNlXi2H
+         nZwFpMjx1/VJ0+Kou8IrmJ6vqSBUM07sUh3oHbAZIwWM7hiFgu4SLcCh8w3Mg3Tbo2vE
+         CzshM5AdzZlMkpio3zjip/bIB9fQY3Kj1WRX59KSyVC5DJGaz8e9EmbikYQmvXkaYoBs
+         NgY0vIAHFL4BardDSiqIwLcb/humOTH3kGQ2DNnpFhi9drqcDLaGNH91ZjMQlALOdrZf
+         EUrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=K1DFvd/qB2iPwiRdxjvsshI/YDS4Nv+p2asGKuDLehw=;
+        b=JXSSCgq98ZLx2iPBqLDCBasUOxguNsipcdJF6fHwYPisHcnqbbYy2511E7lsSiujEN
+         GRvWh02YWyKLvp1l5EohdpirJEOU+WIibUBX42qnOUfl91VpV7jW9lAFngvahJKHPrRe
+         M7whuGzsS+RSvL38BjAZXmXiC88KLmIupaiVmaytGnTVHFOLzatT5wsub42ogzaOMBPa
+         2QeWTAdOcuHy5i+QoVQS7gvSXqKQ7vAGrMFWYcCyk8aykwmPuOiuoV+X5IyRZtmB50qK
+         uiiAAQBerM/toF+ciJZRAppPDvFHFy/TIbfsReqJ1OjKd7GhRym3DNGYuAbMWR6gECdO
+         bqOQ==
+X-Gm-Message-State: AFqh2krn3WI/0Vfs3bkNHWjpc2NbOegXh1xcwMwFsbr+HFotmSElbywi
+        i7zSC4xG4ybRGIBsJoA4VfREmVIaOsTV5tySev4=
+X-Google-Smtp-Source: AMrXdXs18lvVwODMY9P2lxYvVCXeVjkHznWHypPJb/UWj02PMmpXu15O2I0LHbqkqXezSyaCh8se8DKDBYS3uMY9P0k=
+X-Received: by 2002:a25:23d1:0:b0:6f9:b1b0:67f5 with SMTP id
+ j200-20020a2523d1000000b006f9b1b067f5mr1745374ybj.471.1672003867523; Sun, 25
+ Dec 2022 13:31:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:7010:5807:b0:2f3:1da0:c726 with HTTP; Sun, 25 Dec 2022
+ 13:31:07 -0800 (PST)
+Reply-To: thajxoa@gmail.com
+From:   Thaj Xoa <rw372964@gmail.com>
+Date:   Sun, 25 Dec 2022 21:31:07 +0000
+Message-ID: <CALyrWUHzVCq_GQcOS1PBh9=cF_mUo8+n3niKFFW1j80v=XECCQ@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 2022-12-23 at 10:10 -0800, srinivas pandruvada wrote:
-> Hi Pratyush,
-> 
-> On Thu, 2022-12-22 at 11:39 +0100, Pratyush Yadav wrote:
-> > 
-> > Hi Srinivas,
-> > 
-> > On Wed, Dec 21 2022, srinivas pandruvada wrote:
-> > > On Wed, 2022-12-21 at 16:52 +0100, Pratyush Yadav wrote:
-> > > > When a processor is brought offline and online again, it is
-> > > > unable to
-> > > > use Turbo mode because the _PSS table does not contain the whole
-> > > > turbo
-> > > > frequency range, but only +1 MHz above the max non-turbo
-> > > > frequency.
-> > > > This
-> > > > causes problems when ACPI processor driver tries to set frequency
-> > > > constraints. See patch 2 for more details.
-> > > > 
-> I can reproduce on a Broadwell server platform. But not on a client
-> system with acpi_ppc usage.
-> 
-> Need to check what change broke this.
+-- 
+Good Day Dearest,
 
-When PPC limits enforcement changed to PM QOS, this broke. Previously
-acpi_processor_get_platform_limit() was not enforcing any limits. It
-was just setting variable. So any update done after
-acpi_register_performance_state() call to pr->performance-
->states[ppc].core_frequency, was effective.
+ I am Mrs. Thaj Xoa from Vietnam, I Have an important message I want
+to tell you please reply back for more details.
 
-We don't really need to call
-	ret = freq_qos_update_request(&pr->perflib_req,
-			pr->performance->states[ppc].core_frequency *
-1000);
-
-if the PPC is not changed. When PPC is changed, this gets called again,
-so then we can call the above function to update cpufreq limit.
-
-The below change fixed for me.
-
-diff --git a/drivers/acpi/processor_perflib.c
-b/drivers/acpi/processor_perflib.c
-index 757a98f6d7a2..c6ced89c00dd 100644
---- a/drivers/acpi/processor_perflib.c
-+++ b/drivers/acpi/processor_perflib.c
-@@ -75,6 +75,11 @@ static int acpi_processor_get_platform_limit(struct
-acpi_processor *pr)
-        pr_debug("CPU %d: _PPC is %d - frequency %s limited\n", pr->id,
-                       (int)ppc, ppc ? "" : "not");
- 
-+       if (ppc == pr->performance_platform_limit) {
-+               pr_debug("CPU %d: _PPC is %d - frequency not
-changed\n", pr->id, ppc);
-+               return 0;
-+       }
-+
-        pr->performance_platform_limit = (int)ppc;
- 
-        if (ppc >= pr->performance->state_count ||
-
-Thanks,
-Srinivas
-
-> 
-> Thanks,
-> Srinivas
-> 
-> > > 
-> > > Thanks,
-> > > Srinivas
-> > > 
-> > > > Pratyush Yadav (2):
-> > > >   acpi: processor: allow fixing up the frequency for a
-> > > > performance
-> > > > state
-> > > >   cpufreq: intel_pstate: use acpi perflib to update turbo
-> > > > frequency
-> > > > 
-> > > >  drivers/acpi/processor_perflib.c | 40
-> > > > ++++++++++++++++++++++++++++++++
-> > > >  drivers/cpufreq/intel_pstate.c   |  5 ++--
-> > > >  include/acpi/processor.h         |  2 ++
-> > > >  3 files changed, 45 insertions(+), 2 deletions(-)
-> > > > 
-> > > > --
-> > > > 2.38.1
-> > > > 
-> > > 
-> > 
-> 
-
-
+Regards
+Mrs. Thaj xoa
