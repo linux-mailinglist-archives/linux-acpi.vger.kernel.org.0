@@ -2,54 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D3F065614A
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Dec 2022 09:49:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97089656151
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Dec 2022 09:57:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231922AbiLZItR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Dec 2022 03:49:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51040 "EHLO
+        id S231928AbiLZI5Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Dec 2022 03:57:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231773AbiLZItP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Dec 2022 03:49:15 -0500
-Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B941103
-        for <linux-acpi@vger.kernel.org>; Mon, 26 Dec 2022 00:49:14 -0800 (PST)
-Received: by mail-io1-xd29.google.com with SMTP id r72so5441855iod.5
-        for <linux-acpi@vger.kernel.org>; Mon, 26 Dec 2022 00:49:14 -0800 (PST)
+        with ESMTP id S231786AbiLZI5O (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Dec 2022 03:57:14 -0500
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEC4D5F8C
+        for <linux-acpi@vger.kernel.org>; Mon, 26 Dec 2022 00:57:12 -0800 (PST)
+Received: by mail-io1-xd2c.google.com with SMTP id p66so5462119iof.1
+        for <linux-acpi@vger.kernel.org>; Mon, 26 Dec 2022 00:57:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2GeevI+7bf+WdnjCpmvJ+ryR3Rl0w6Jx09kir3h8qMo=;
-        b=A9q8tX198F/2Z/0BSktVTjH8jcNAq1fdLNcR5/WqXtgUvu36TiKPpvatfDNeleCBNv
-         lkNJTFuEQZMnTD9qhgg6HKcGsFqiS9jvvpMSdNyiREwvfRXKbQGuZhkmQAg4Yf9MJBd0
-         0a3PRkzf2unQBF24GU5DTrxglocRfR4jJ/8Ko=
+        bh=y9TbX3Ceh1FvaBv664udZf8XfrOpdKKd1+DeV95MdyU=;
+        b=Bi5owdA6WovVAMZcv9Xg7UtskNw4+684vpuoZJeflxtV3ZDO4PKd2iJDfmLTyqqNpq
+         lOVR9fPEoBWOyeiHd85xuiPaMJnyBllR19W6q6zN8qOmAkm9E7Kl+IrfWMsltiZ4cmA1
+         C+ow+S7IbcqHZPmSLrl2qKxwome1/bjEv8xaM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=2GeevI+7bf+WdnjCpmvJ+ryR3Rl0w6Jx09kir3h8qMo=;
-        b=Kd36hGBxEdV8Myc8DDMYxeIM6YdXXvyxT/ckJL2jMdAd6AKFbuhxaSLfmr+v7ZrU91
-         hgA5o6axw/3gq3Mg+QaPcoOIPem9wj8Hr+rD8NmPREQ7aecrvzksx4fYTcu2zbxZwjtC
-         JYp407xNulYwP/GoB+J4LYlrRpvuUBTWlqDdX3y8DpC+cJxyk1ChtXq463tDQbgUZmzS
-         seIPU3sACwxYfhVp9XvCMpHBneQNfOm6TmF2cRaggx2Y1HgJ5+TO7l9rv3sqKluDdQ8e
-         vopdbvqflzD4umddXpWklmPaGCOI2yAfRYSpUA7Cp8hhV09hO1aWZCtJhx4ughCAf9my
-         WfQw==
-X-Gm-Message-State: AFqh2kpPH+85cSP4H+ojyu9ruykj8zZJjd5rxtO+2g3JBN/6hrLW1Pg6
-        y/WaKJu5Qevn7LaADmepM/NCmSI2D1dK4MAtsS7/kA==
-X-Google-Smtp-Source: AMrXdXuoIUzBqmDwKs1PuREjFiXYUco2lpJxyc5dz0d+UodE12xrOWp1ECASRqgdbQyL/HzV1vUTTbOYxbxmKfzXt3E=
-X-Received: by 2002:a6b:7a0a:0:b0:6e9:b3db:b5ce with SMTP id
- h10-20020a6b7a0a000000b006e9b3dbb5cemr1327069iom.179.1672044553677; Mon, 26
- Dec 2022 00:49:13 -0800 (PST)
+        bh=y9TbX3Ceh1FvaBv664udZf8XfrOpdKKd1+DeV95MdyU=;
+        b=WPifAmhZaXaVeXf3uSTHu1fmVNn5hZJIqjkPKAF33LVxw0O53DrhwOh/0VfIhbMo1b
+         sZE8MiXyRjt2Rrz85NIg+nik10ilKJbz2kvb5zqz3w+W+rceEXCssEuV/mE1s67LRiKl
+         1fiE23i8++SZsOt4GQsOpV8n8xetsB8KqPW7xo4/3MX6DTCtRFDSZAnA9lFTRYaj+Sz7
+         10V1H6FiNBBC3vXbOD9B08yLjJcBeggomj+tWa2pJGaHyloXOjhC+ddauakwhEeyveOB
+         83wuNve9/xCgWZ1QmVEsWR723bV4k1C5qGHu9YDlflBVXUOqf0HuQ6hoaZM9zHnGkZSk
+         CW7A==
+X-Gm-Message-State: AFqh2kr7qAoJUOrpvS26sdJo/leXtWIL2IKbTIYam2NOWMMG+rJWNLh6
+        ScWkp+K3VKQcqgdBVGF6EgOv1wzy5ptTZvaLgWUs9w==
+X-Google-Smtp-Source: AMrXdXvZZwiu7qagoS6yQmOv/xa7NoF2r1prkxbf2PgG2eUjFk6I49fFzrxM9Ian30iQB4AcDtL7g9FaZUcFi4kfwfI=
+X-Received: by 2002:a6b:490f:0:b0:6e3:29a8:47a with SMTP id
+ u15-20020a6b490f000000b006e329a8047amr1409337iob.209.1672045032266; Mon, 26
+ Dec 2022 00:57:12 -0800 (PST)
 MIME-Version: 1.0
 References: <20221124102056.393220-1-treapking@chromium.org>
- <20221124102056.393220-4-treapking@chromium.org> <00cc31a2-39b1-9bb3-5b79-3c6d51cd5d51@linaro.org>
-In-Reply-To: <00cc31a2-39b1-9bb3-5b79-3c6d51cd5d51@linaro.org>
+ <20221124102056.393220-7-treapking@chromium.org> <a2a8cd80-a614-e96f-90ab-a98c60527344@linaro.org>
+In-Reply-To: <a2a8cd80-a614-e96f-90ab-a98c60527344@linaro.org>
 From:   Pin-yen Lin <treapking@chromium.org>
-Date:   Mon, 26 Dec 2022 16:49:02 +0800
-Message-ID: <CAEXTbpfhBCWvZCziyc6chR2Vjc=SJSxYfYpdX8gd8PkG4G0+3w@mail.gmail.com>
-Subject: Re: [PATCH v6 3/7] dt-bindings: drm/bridge: anx7625: Add mode-switch support
+Date:   Mon, 26 Dec 2022 16:57:01 +0800
+Message-ID: <CAEXTbpeYZTeWvnGtRo3i7eGSAoQnkSmcpV=SS8MZA+an3SHUwQ@mail.gmail.com>
+Subject: Re: [PATCH v6 6/7] dt/bindings: drm/bridge: it6505: Add mode-switch support
 To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
         Neil Armstrong <neil.armstrong@linaro.org>,
@@ -86,7 +86,8 @@ Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -95,20 +96,16 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi Krzysztof,
 
-Thanks for the review.
-
-On Mon, Nov 28, 2022 at 4:58 AM Krzysztof Kozlowski
+On Mon, Nov 28, 2022 at 5:02 AM Krzysztof Kozlowski
 <krzysztof.kozlowski@linaro.org> wrote:
 >
 > On 24/11/2022 11:20, Pin-yen Lin wrote:
-> > Analogix 7625 can be used in systems to switch the DP traffic between
+> > ITE IT6505 can be used in systems to switch the DP traffic between
 > > two downstreams, which can be USB Type-C DisplayPort alternate mode
 > > lane or regular DisplayPort output ports.
 > >
 > > Update the binding to accommodate this usage by introducing a
 > > data-lanes and a mode-switch property on endpoints.
-> >
-> > Also include the link to the product brief in the bindings.
 > >
 > > Signed-off-by: Pin-yen Lin <treapking@chromium.org>
 > >
@@ -117,43 +114,70 @@ On Mon, Nov 28, 2022 at 4:58 AM Krzysztof Kozlowski
 > > Changes in v6:
 > > - Remove switches node and use endpoints and data-lanes property to
 > >   describe the connections.
+> >
+> >  .../bindings/display/bridge/ite,it6505.yaml   | 94 ++++++++++++++++++-
+> >  1 file changed, 90 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml b/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
+> > index 833d11b2303a..b4b9881c7759 100644
+> > --- a/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
+> > +++ b/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
+> > @@ -52,9 +52,53 @@ properties:
+> >      maxItems: 1
+> >      description: extcon specifier for the Power Delivery
+> >
+> > -  port:
+> > -    $ref: /schemas/graph.yaml#/properties/port
+> > -    description: A port node pointing to DPI host port node
+> > +  data-lanes:
+> > +    maxItems: 1
+> > +    description: restrict the dp output data-lanes with value of 1-4
 >
-> Except missing testing few things...
+> Hm, where is the definition of this type? For example it comes with
+> video-interfaces, which you did not reference here.
 >
-> >
-> >  .../display/bridge/analogix,anx7625.yaml      | 73 ++++++++++++++++++-
-> >  1 file changed, 71 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml b/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml
-> > index 4590186c4a0b..5fdbf1f3bab8 100644
-> > --- a/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml
-> > +++ b/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml
-> > @@ -12,7 +12,8 @@ maintainers:
-> >
-> >  description: |
-> >    The ANX7625 is an ultra-low power 4K Mobile HD Transmitter
-> > -  designed for portable devices.
-> > +  designed for portable devices. Product brief is available at
-> > +  https://www.analogix.com/en/system/files/AA-002291-PB-6-ANX7625_ProductBrief.pdf
-> >
-> >  properties:
-> >    compatible:
-> > @@ -112,10 +113,36 @@ properties:
-> >                data-lanes: true
-> >
-> >        port@1:
-> > -        $ref: /schemas/graph.yaml#/properties/port
-> > +        $ref: /schemas/graph.yaml#/properties/port-base
->
-> I don't understand why you are changing this line.
+Actually I messed up here with another accepted patch:
+https://lore.kernel.org/all/20221103091243.96036-2-allen.chen@ite.com.tw/
 
-Without this change, the `unevaluatedProperties: false` in
-`/schemas/graph.yaml#/properties/port` does not allow me to add new
-properties.
+This and the next new property have been added in that patch.
+> > +
+> > +  max-pixel-clock-khz:
 >
-> >          description:
-> >            Video port for panel or connector.
-> >
+> There is no such unit accepted:
+> https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/property-units.yaml
+>
+> > +    maxItems: 1
+>
+> maxItems of what type? What is this?
+>
+> > +    description: restrict max pixel clock
+> > +
+> > +  ports:
+> > +    $ref: /schemas/graph.yaml#/properties/ports
+>
+> This is incompatible change... how do you handle now ABI break?
+>
+This is also added in another patch, and currently we don't have any
+upstream it6505 users now.
+> > +
+> > +    properties:
+> > +      port@0:
+> > +        $ref: /schemas/graph.yaml#/$defs/port-base
+>
+> Why changing the ref?
+
+The `unevaluatedProperties: false` in
+`/schemas/graph.yaml#/properties/port` does not allow me to add new
+properties here.
+>
+> > +        unevaluatedProperties: false
+> > +        description: A port node pointing to DPI host port node
+> > +
+> > +      port@1:
+> > +        $ref: /schemas/graph.yaml#/properties/port-base
+> > +        description:
+> > +          Video port for panel or connector.
+> > +
 > > +        patternProperties:
 > > +          "^endpoint@[01]$":
 > > +            $ref: /schemas/media/video-interfaces.yaml#
@@ -169,55 +193,83 @@ properties.
 > > +              data-lanes:
 > > +                minItems: 1
 > > +                uniqueItems: true
->
-> These are confusing... you allow only one item, so why minItems and
-> uniqueItems?
-
-What I want to use is something like:
-```
-items:
-  enum: [0,1, 2, 3]
-```
-That is, all the items should be an integer between 0 and 3. I'll
-update this to a stricter version in v7.
->
 > > +                items:
 > > +                  - enum: [ 0, 1, 2, 3]
+>
+> Same problem as your previouspatch.
+>
 > > +
 > > +              mode-switch:
 > > +                type: boolean
 > > +                description: Register this node as a Type-C mode switch or not.
 > > +
-> > +            required:
-> > +              - reg
-> > +              - remote-endpoint
-> > +
-> >      required:
-> >        - port@0
-> >        - port@1
-> > @@ -186,3 +213,45 @@ examples:
+> > +         required:
+> > +        - reg
+> > +           - remote-endpoint
+> >
+> >  required:
+> >    - compatible
+> > @@ -62,7 +106,7 @@ required:
+> >    - pwr18-supply
+> >    - interrupts
+> >    - reset-gpios
+> > -  - extcon
+> > +  - ports
+> >
+> >  additionalProperties: false
+> >
+> > @@ -92,3 +136,45 @@ examples:
 > >              };
 > >          };
 > >      };
 > > +  - |
+> > +    #include <dt-bindings/interrupt-controller/irq.h>
+> > +
 > > +    &i2c3 {
-> > +     anx_bridge_dp: anx7625-dp@58 {
->
-> Messed up indentation.
-I'll fix this in the next version.
->
-> > +         compatible = "analogix,anx7625
+> > +        clock-frequency = <100000>;
+> > +
+> > +        it6505dptx: it6505dptx@5c {
 >
 > Node names should be generic.
 > https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-I'll update this in v7.
 >
-> ";
-> > +         reg = <0x58>;
+I'll fix this in v7.
+> > +            compatible = "ite,it6505";
+> > +            interrupts = <8 IRQ_TYPE_LEVEL_LOW 8 0>;
+> > +            reg = <0x5c>;
+> > +            pinctrl-names = "default";
+> > +            pinctrl-0 = <&it6505_pins>;
+> > +            ovdd-supply = <&mt6366_vsim2_reg>;
+> > +            pwr18-supply = <&pp1800_dpbrdg_dx>;
+> > +            reset-gpios = <&pio 177 0>;
+> > +            hpd-gpios = <&pio 10 0>;
+> > +
+> > +            ports {
+> > +                #address-cells = <1>;
+> > +                #size-cells = <0>;
+> > +                port@0 {
+> > +                    reg = <0>;
+> > +                    it6505_in: endpoint {
+> > +                        remote-endpoint = <&dpi_out>;
+> > +                    };
+> > +                };
+> > +                port@1 {
+> > +                    reg = <1>;
+> > +                    ite_typec0: endpoint@0 {
+> > +                        mode-switch;
+> > +                        data-lanes = <0 1>;
+>
+> Does not look like you tested the bindings. Please run `make
+> dt_binding_check` (see
+> Documentation/devicetree/bindings/writing-schema.rst for instructions).
+Sorry for not checking the documentation and testing the patches
+before submitting this.
+
+I'll fix the errors in v7.
+
+Best regards,
+Pin-yen
 >
 > Best regards,
 > Krzysztof
 >
-
-Best regards,
-Pin-yen
