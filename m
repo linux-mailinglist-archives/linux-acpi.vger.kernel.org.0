@@ -2,182 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAFE9656787
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Dec 2022 07:34:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B45C0656C9D
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Dec 2022 16:38:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229491AbiL0Geg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 27 Dec 2022 01:34:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33998 "EHLO
+        id S229985AbiL0Pi3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 27 Dec 2022 10:38:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbiL0Gef (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Dec 2022 01:34:35 -0500
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0042C3891;
-        Mon, 26 Dec 2022 22:34:33 -0800 (PST)
-Received: by mail-oi1-x22b.google.com with SMTP id n8so4964805oih.0;
-        Mon, 26 Dec 2022 22:34:33 -0800 (PST)
+        with ESMTP id S229566AbiL0Pi1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Dec 2022 10:38:27 -0500
+Received: from smtp-fw-9103.amazon.com (smtp-fw-9103.amazon.com [207.171.188.200])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD02810F6;
+        Tue, 27 Dec 2022 07:38:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0XXscYgKIA7/S8ggDNARrFFW3CWIO448R3pDI8wQKfg=;
-        b=cRurO+C13CQNxeixYaLjbgSrDVnlzOMU1zpFJy8rP9QQ7NtBG3ZBnAsSiSd5KMqLHC
-         fndDhWcnHBqHHybfod++2kgoJfQyrz1P/yxsk2yM8mGQRPcXg691HMjRceByiuplXKkb
-         m0wWUDIRVRZAIlrrmbBArjMg3Glyr8IYq0XGZQCaeoPkZRz4URlFLTCGNdDByiz4+c62
-         r0sLZQ4xnR/xZAOzGBOEr36wiKQItG45bNl21Wbaq9OosA/rOJ62BNQODoRXxrHJWfQw
-         Qya0f/g5lULr8zZ98qTG6LB/5Z6VWBgLQfwn1S/MlZ7dfOSZYFIBEK0CODHVilGBL57z
-         vOdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0XXscYgKIA7/S8ggDNARrFFW3CWIO448R3pDI8wQKfg=;
-        b=kfzr9Ar4ppP6G3I1oYeLOmx4EI91j8F9xXUV8v/EoSKIO0KOtkNQCkGmHVFCRNiDrg
-         s7EL/uhtBytjka8r08TEZlzrgyu8FAZZOodpTo4n83eSZz8HNqI8HIBVfjGW01/v1QeX
-         Xf9pF29H2beNkXvnS+ZBDxLDcRNR6XMY5KUOWn/IJpIACsze+teSXv9gCyr4omTJXuOo
-         SwtjPd1d29Y1E3korNn3kbqRxYZwJnQI2BEFs/W+CkoOnh7S2l3tpcqLwDCzGaslUmEk
-         FP0ZPcOfzfyx8NHYmo34qGNLh+JSWOXVozHEeDXRZGThe6R7Ny4srUsV7yaIy3B5W7kG
-         COwg==
-X-Gm-Message-State: AFqh2koraMgpKfyiXFhRAvGgtAXpbYlyGC8qdPTasohZxrYuAGHJ4/DQ
-        paGMxJtQspS+/Dvb/k0y0AShZzRrvII=
-X-Google-Smtp-Source: AMrXdXvzWb+PqL9kVPTn4TyXp1pfHJe9F0f2WTDXAntOkZiwefQZAdSiT8Zw7APAcCVSjy4BkFrwRw==
-X-Received: by 2002:aca:1c19:0:b0:355:1de8:de4b with SMTP id c25-20020aca1c19000000b003551de8de4bmr9645946oic.36.1672122873304;
-        Mon, 26 Dec 2022 22:34:33 -0800 (PST)
-Received: from protoss.cs.ucr.edu (protoss.cs.ucr.edu. [169.235.26.60])
-        by smtp.gmail.com with ESMTPSA id be15-20020a056808218f00b0035e7c48d08esm5551965oib.15.2022.12.26.22.34.32
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 26 Dec 2022 22:34:32 -0800 (PST)
-From:   Hang Zhang <zh.nvgt@gmail.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Hang Zhang <zh.nvgt@gmail.com>
-Subject: [PATCH] ACPI: custom_method: fix potential use-after-free issues
-Date:   Mon, 26 Dec 2022 22:33:35 -0800
-Message-Id: <20221227063335.61474-1-zh.nvgt@gmail.com>
-X-Mailer: git-send-email 2.39.0
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
+  t=1672155506; x=1703691506;
+  h=from:to:cc:subject:references:date:in-reply-to:
+   message-id:mime-version;
+  bh=j2XZBAWveY6jluLbVtDIMUY2FnTmKnvj9fGVpj/UwzM=;
+  b=VUfmyDggK1hW7WJYcvLkHB1p8Hd5tvlknDrkUcxQZNhOnlaATW16Mnux
+   f4H6ZSAhh9fq/ENdr2Ai9kHprroZMQAINp0VpZ+cniBUjtlxghx/V2+tu
+   6GV9USEX10e2StIjtuPfvGFteUQ4Vd2Ijqzrg5Z9/1Qr/vk4jgiTK44gx
+   4=;
+X-IronPort-AV: E=Sophos;i="5.96,278,1665446400"; 
+   d="scan'208";a="1087264031"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO email-inbound-relay-pdx-2c-m6i4x-f7c754c9.us-west-2.amazon.com) ([10.25.36.214])
+  by smtp-border-fw-9103.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2022 15:38:18 +0000
+Received: from EX13MTAUWA002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
+        by email-inbound-relay-pdx-2c-m6i4x-f7c754c9.us-west-2.amazon.com (Postfix) with ESMTPS id 5D49941C12;
+        Tue, 27 Dec 2022 15:38:18 +0000 (UTC)
+Received: from EX19D023UWA001.ant.amazon.com (10.13.139.15) by
+ EX13MTAUWA002.ant.amazon.com (10.43.160.12) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.42; Tue, 27 Dec 2022 15:38:17 +0000
+Received: from EX13MTAUWA001.ant.amazon.com (10.43.160.58) by
+ EX19D023UWA001.ant.amazon.com (10.13.139.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.1118.20; Tue, 27 Dec 2022 15:38:17 +0000
+Received: from dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com (10.15.11.255)
+ by mail-relay.amazon.com (10.43.160.118) with Microsoft SMTP Server id
+ 15.0.1497.42 via Frontend Transport; Tue, 27 Dec 2022 15:38:17 +0000
+Received: by dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com (Postfix, from userid 23027615)
+        id E4D7B20D2D; Tue, 27 Dec 2022 16:38:15 +0100 (CET)
+From:   Pratyush Yadav <ptyadav@amazon.de>
+To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+CC:     <linux-pm@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Len Brown" <lenb@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        "Robert Moore" <robert.moore@intel.com>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devel@acpica.org>
+Subject: Re: [PATCH 0/2] intel_pstate: fix turbo not being used after a
+ processor is rebooted
+References: <20221221155203.11347-1-ptyadav@amazon.de>
+        <72bcd14eef038ec9181d30b3d196b0a872f47ccb.camel@linux.intel.com>
+        <mafs0k02jd8oh.fsf_-_@dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com>
+        <2ed9702b67832e3e33ef352808124980206c1e95.camel@linux.intel.com>
+        <8e2cc66f7dadcfb04099aac7c4eef0b02075c91b.camel@linux.intel.com>
+Date:   Tue, 27 Dec 2022 16:38:15 +0100
+In-Reply-To: <8e2cc66f7dadcfb04099aac7c4eef0b02075c91b.camel@linux.intel.com>
+        (srinivas pandruvada's message of "Sat, 24 Dec 2022 16:28:19 -0800")
+Message-ID: <mafs07cycdfh4.fsf_-_@amazon.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-cm_write() is the .write callback of the custom_method debugfs
-interface, it operates on a global pointer "buf" (e.g., dereference,
-allocate, free, and nullification), the problem is that cm_write()
-is not protected by any locks, so concurrent invocations of it
-may cause use-after-free issues for "buf", e.g., one invocation
-may have just freed "buf" while being preempted before nullifying
-the pointer, then another invocation can dereference the now dangling
-"buf" pointer.
+Hi Srinivas,
 
-Fix the issue by protecting the "buf" operations in cm_write() with
-the inode write lock. Note that the .llseek callback of the debugfs
-interface has been protected by the same lock, this patch basically
-introduces it to the .write callback as well.
+On Sat, Dec 24 2022, srinivas pandruvada wrote:
 
-Signed-off-by: Hang Zhang <zh.nvgt@gmail.com>
----
- drivers/acpi/custom_method.c | 43 +++++++++++++++++++++++++-----------
- 1 file changed, 30 insertions(+), 13 deletions(-)
+> On Fri, 2022-12-23 at 10:10 -0800, srinivas pandruvada wrote:
+>> Hi Pratyush,
+>>
+>> On Thu, 2022-12-22 at 11:39 +0100, Pratyush Yadav wrote:
+>> >
+>> > Hi Srinivas,
+>> >
+>> > On Wed, Dec 21 2022, srinivas pandruvada wrote:
+>> > > On Wed, 2022-12-21 at 16:52 +0100, Pratyush Yadav wrote:
+>> > > > When a processor is brought offline and online again, it is
+>> > > > unable to
+>> > > > use Turbo mode because the _PSS table does not contain the whole
+>> > > > turbo
+>> > > > frequency range, but only +1 MHz above the max non-turbo
+>> > > > frequency.
+>> > > > This
+>> > > > causes problems when ACPI processor driver tries to set frequency
+>> > > > constraints. See patch 2 for more details.
+>> > > >
+>> I can reproduce on a Broadwell server platform. But not on a client
+>> system with acpi_ppc usage.
+>>
+>> Need to check what change broke this.
+>
+> When PPC limits enforcement changed to PM QOS, this broke. Previously
+> acpi_processor_get_platform_limit() was not enforcing any limits. It
+> was just setting variable. So any update done after
+> acpi_register_performance_state() call to pr->performance-
+>>states[ppc].core_frequency, was effective.
+>
+> We don't really need to call
+>         ret = freq_qos_update_request(&pr->perflib_req,
+>                         pr->performance->states[ppc].core_frequency *
+> 1000);
+>
+> if the PPC is not changed. When PPC is changed, this gets called again,
+> so then we can call the above function to update cpufreq limit.
+>
+> The below change fixed for me.
 
-diff --git a/drivers/acpi/custom_method.c b/drivers/acpi/custom_method.c
-index d39a9b474727..e3de5a06d903 100644
---- a/drivers/acpi/custom_method.c
-+++ b/drivers/acpi/custom_method.c
-@@ -29,28 +29,38 @@ static ssize_t cm_write(struct file *file, const char __user *user_buf,
- 	struct acpi_table_header table;
- 	acpi_status status;
- 	int ret;
-+	struct inode *inode = file_inode(file);
- 
- 	ret = security_locked_down(LOCKDOWN_ACPI_TABLES);
- 	if (ret)
- 		return ret;
- 
-+	inode_lock(inode);
- 	if (!(*ppos)) {
- 		/* parse the table header to get the table length */
--		if (count <= sizeof(struct acpi_table_header))
--			return -EINVAL;
-+		if (count <= sizeof(struct acpi_table_header)) {
-+			ret = -EINVAL;
-+			goto err;
-+		}
- 		if (copy_from_user(&table, user_buf,
--				   sizeof(struct acpi_table_header)))
--			return -EFAULT;
-+				   sizeof(struct acpi_table_header))) {
-+			ret = -EFAULT;
-+			goto err;
-+		}
- 		uncopied_bytes = max_size = table.length;
- 		/* make sure the buf is not allocated */
- 		kfree(buf);
- 		buf = kzalloc(max_size, GFP_KERNEL);
--		if (!buf)
--			return -ENOMEM;
-+		if (!buf) {
-+			ret = -ENOMEM;
-+			goto err;
-+		}
- 	}
- 
--	if (buf == NULL)
--		return -EINVAL;
-+	if (buf == NULL) {
-+		ret = -EINVAL;
-+		goto err;
-+	}
- 
- 	if ((*ppos > max_size) ||
- 	    (*ppos + count > max_size) ||
-@@ -58,13 +68,15 @@ static ssize_t cm_write(struct file *file, const char __user *user_buf,
- 	    (count > uncopied_bytes)) {
- 		kfree(buf);
- 		buf = NULL;
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto err;
- 	}
- 
- 	if (copy_from_user(buf + (*ppos), user_buf, count)) {
- 		kfree(buf);
- 		buf = NULL;
--		return -EFAULT;
-+		ret = -EFAULT;
-+		goto err;
- 	}
- 
- 	uncopied_bytes -= count;
-@@ -74,12 +86,17 @@ static ssize_t cm_write(struct file *file, const char __user *user_buf,
- 		status = acpi_install_method(buf);
- 		kfree(buf);
- 		buf = NULL;
--		if (ACPI_FAILURE(status))
--			return -EINVAL;
-+		if (ACPI_FAILURE(status)) {
-+			ret = -EINVAL;
-+			goto err;
-+		}
- 		add_taint(TAINT_OVERRIDDEN_ACPI_TABLE, LOCKDEP_NOW_UNRELIABLE);
- 	}
- 
--	return count;
-+	ret = count;
-+err:
-+	inode_unlock(inode);
-+	return ret;
- }
- 
- static const struct file_operations cm_fops = {
+Right. Should I re-roll my patches with your diff below then? Or do you
+think my patches should be good to merge as-is?
+
+>
+> diff --git a/drivers/acpi/processor_perflib.c
+> b/drivers/acpi/processor_perflib.c
+> index 757a98f6d7a2..c6ced89c00dd 100644
+> --- a/drivers/acpi/processor_perflib.c
+> +++ b/drivers/acpi/processor_perflib.c
+> @@ -75,6 +75,11 @@ static int acpi_processor_get_platform_limit(struct
+> acpi_processor *pr)
+>         pr_debug("CPU %d: _PPC is %d - frequency %s limited\n", pr->id,
+>                        (int)ppc, ppc ? "" : "not");
+>
+> +       if (ppc == pr->performance_platform_limit) {
+> +               pr_debug("CPU %d: _PPC is %d - frequency not
+> changed\n", pr->id, ppc);
+> +               return 0;
+> +       }
+> +
+>         pr->performance_platform_limit = (int)ppc;
+>
+>         if (ppc >= pr->performance->state_count ||
+>
+
 -- 
-2.39.0
+Regards,
+Pratyush Yadav
+
+
+
+Amazon Development Center Germany GmbH
+Krausenstr. 38
+10117 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
+Sitz: Berlin
+Ust-ID: DE 289 237 879
+
+
 
