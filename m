@@ -2,159 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6805A656D0B
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Dec 2022 17:40:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 632E9656D27
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Dec 2022 18:03:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230330AbiL0Qkt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 27 Dec 2022 11:40:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58756 "EHLO
+        id S231695AbiL0RDE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 27 Dec 2022 12:03:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231614AbiL0QkY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Dec 2022 11:40:24 -0500
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3061BE23;
-        Tue, 27 Dec 2022 08:40:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1672159222; x=1703695222;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=IRATqieH5GzTgS6odrliQ0LbeJjujXJnPHSE5feiNho=;
-  b=CvmKrK72CG1B3J2i9iaOgIN3OE6jyZDxsBwxRdpCtFONBXm4NHm/0BBR
-   EhACz6/M/tISnAt+K/IsXIMgXnY8eNPFJCNdpJmUUkkdXCEOKEcxmwJ9t
-   OwfjNalkW0exHGcB0S59XkSDbsNxApFBPmi8gZ0roIQxoeTIqNmoBKEUL
-   rQtmN/5MQpdkcevzHWz6rVgCmMR/TGt1CY58a5JEgMSmsryr8vClkbaGF
-   ZxruJR8gaA/vEucUp37CtNZJxxHN+hu9Bnh75VTsfFtESmPey0V1TmqH8
-   pn8pSvVXKg9/uJ4sf3wpPzdkh4j3o3i1Jq0X36GXja3ctJtiWHNkpeSAD
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10573"; a="321958438"
-X-IronPort-AV: E=Sophos;i="5.96,278,1665471600"; 
-   d="scan'208";a="321958438"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2022 08:40:22 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10573"; a="741781189"
-X-IronPort-AV: E=Sophos;i="5.96,278,1665471600"; 
-   d="scan'208";a="741781189"
-Received: from admiller-mobl1.amr.corp.intel.com (HELO spandruv-desk1.amr.corp.intel.com) ([10.212.206.1])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2022 08:40:21 -0800
-Message-ID: <33dd969d9bdb1eb93f8f2a2167efeb535455cf74.camel@linux.intel.com>
+        with ESMTP id S231691AbiL0RDE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Dec 2022 12:03:04 -0500
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD52FA1A5;
+        Tue, 27 Dec 2022 09:03:02 -0800 (PST)
+Received: by mail-qk1-f182.google.com with SMTP id k2so6507100qkk.7;
+        Tue, 27 Dec 2022 09:03:02 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iaq8xsHgqDM4KzPNZJEuqDvWcHT3+RJu15b87slvlnw=;
+        b=xwF5WcQTMapFYpSA7vTCWmRfL1xHxRXl9OGhhVMxBttTE/Jt4HJmxHVQp+zw1TniQd
+         HDeq7LK2ns0Qj4ZCiesOa1mq4nz2wv+4GgzdXiavtU35WGRURjNp/QV4wsuLhu7jPKwO
+         4WjwIIFOS6U3LB1lHvXKqkBCV3+NOYqk1CfMjvQCn+XC5mQILaB589QqQ3lzUf5CaBJD
+         odMWHFs4ehCB7jHiQZ8Q+qsfpa3l/rj1QE+/rZQMdOTL0mRpx7ZJxpxN9tzWbY5x8KpL
+         YsBMKrTr7r5COadlmCC79A9onyM024hwYxZcpDsWzm4TK82h3kEU2c28W+sNxw/pZK9V
+         odmw==
+X-Gm-Message-State: AFqh2ko6gG2ObqUY/KYBXW7OdYwOoN9Xl8caeKRjaajcKbLoQPPkWxRw
+        r+WxwDc46BHRUhRy33ksfHRIBDRclA+Fwi4sl5lZa4KS
+X-Google-Smtp-Source: AMrXdXtgWKHedIB8HjH0UJXYaNYWAORKsS22xlGN2s7fcT7EZilgqGMuSWNHdyDtBGIEptTw1ysUlkxzpSpoOxnasfo=
+X-Received: by 2002:a05:620a:5235:b0:6ff:8f5a:1d37 with SMTP id
+ dc53-20020a05620a523500b006ff8f5a1d37mr1132510qkb.501.1672160581776; Tue, 27
+ Dec 2022 09:03:01 -0800 (PST)
+MIME-Version: 1.0
+References: <20221221155203.11347-1-ptyadav@amazon.de> <72bcd14eef038ec9181d30b3d196b0a872f47ccb.camel@linux.intel.com>
+ <mafs0k02jd8oh.fsf_-_@dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com>
+ <2ed9702b67832e3e33ef352808124980206c1e95.camel@linux.intel.com>
+ <8e2cc66f7dadcfb04099aac7c4eef0b02075c91b.camel@linux.intel.com>
+ <mafs07cycdfh4.fsf_-_@amazon.de> <33dd969d9bdb1eb93f8f2a2167efeb535455cf74.camel@linux.intel.com>
+In-Reply-To: <33dd969d9bdb1eb93f8f2a2167efeb535455cf74.camel@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 27 Dec 2022 18:02:50 +0100
+Message-ID: <CAJZ5v0hFOA97FAq=CwGXgXTkC8aS_vyHjXuaFUppXktrG62H6w@mail.gmail.com>
 Subject: Re: [PATCH 0/2] intel_pstate: fix turbo not being used after a
  processor is rebooted
-From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     Pratyush Yadav <ptyadav@amazon.de>
-Cc:     linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
+To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc:     Pratyush Yadav <ptyadav@amazon.de>, linux-pm@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
         Viresh Kumar <viresh.kumar@linaro.org>,
         Robert Moore <robert.moore@intel.com>,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         devel@acpica.org
-Date:   Tue, 27 Dec 2022 08:40:21 -0800
-In-Reply-To: <mafs07cycdfh4.fsf_-_@amazon.de>
-References: <20221221155203.11347-1-ptyadav@amazon.de>
-         <72bcd14eef038ec9181d30b3d196b0a872f47ccb.camel@linux.intel.com>
-         <mafs0k02jd8oh.fsf_-_@dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com>
-         <2ed9702b67832e3e33ef352808124980206c1e95.camel@linux.intel.com>
-         <8e2cc66f7dadcfb04099aac7c4eef0b02075c91b.camel@linux.intel.com>
-         <mafs07cycdfh4.fsf_-_@amazon.de>
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 2022-12-27 at 16:38 +0100, Pratyush Yadav wrote:
-> Hi Srinivas,
-> 
-> On Sat, Dec 24 2022, srinivas pandruvada wrote:
-> 
-> > On Fri, 2022-12-23 at 10:10 -0800, srinivas pandruvada wrote:
-> > > Hi Pratyush,
-> > > 
-> > > On Thu, 2022-12-22 at 11:39 +0100, Pratyush Yadav wrote:
-> > > > 
-> > > > Hi Srinivas,
-> > > > 
-> > > > On Wed, Dec 21 2022, srinivas pandruvada wrote:
-> > > > > On Wed, 2022-12-21 at 16:52 +0100, Pratyush Yadav wrote:
-> > > > > > When a processor is brought offline and online again, it is
-> > > > > > unable to
-> > > > > > use Turbo mode because the _PSS table does not contain the
-> > > > > > whole
-> > > > > > turbo
-> > > > > > frequency range, but only +1 MHz above the max non-turbo
-> > > > > > frequency.
-> > > > > > This
-> > > > > > causes problems when ACPI processor driver tries to set
-> > > > > > frequency
-> > > > > > constraints. See patch 2 for more details.
-> > > > > > 
-> > > I can reproduce on a Broadwell server platform. But not on a
-> > > client
-> > > system with acpi_ppc usage.
-> > > 
-> > > Need to check what change broke this.
-> > 
-> > When PPC limits enforcement changed to PM QOS, this broke.
-> > Previously
-> > acpi_processor_get_platform_limit() was not enforcing any limits.
-> > It
-> > was just setting variable. So any update done after
-> > acpi_register_performance_state() call to pr->performance-
-> > > states[ppc].core_frequency, was effective.
-> > 
-> > We don't really need to call
-> >         ret = freq_qos_update_request(&pr->perflib_req,
-> >                         pr->performance->states[ppc].core_frequency
-> > *
-> > 1000);
-> > 
-> > if the PPC is not changed. When PPC is changed, this gets called
-> > again,
-> > so then we can call the above function to update cpufreq limit.
-> > 
-> > The below change fixed for me.
-> 
-> Right. 
-I think, this is the only change you require to fix this. In addition
-set pr->performance_platform_limit = 0 in
-acpi_processor_unregister_performance().
+On Tue, Dec 27, 2022 at 5:40 PM srinivas pandruvada
+<srinivas.pandruvada@linux.intel.com> wrote:
+>
+> On Tue, 2022-12-27 at 16:38 +0100, Pratyush Yadav wrote:
+> > Hi Srinivas,
+> >
+> > On Sat, Dec 24 2022, srinivas pandruvada wrote:
+> >
+> > > On Fri, 2022-12-23 at 10:10 -0800, srinivas pandruvada wrote:
+> > > > Hi Pratyush,
+> > > >
+> > > > On Thu, 2022-12-22 at 11:39 +0100, Pratyush Yadav wrote:
+> > > > >
+> > > > > Hi Srinivas,
+> > > > >
+> > > > > On Wed, Dec 21 2022, srinivas pandruvada wrote:
+> > > > > > On Wed, 2022-12-21 at 16:52 +0100, Pratyush Yadav wrote:
+> > > > > > > When a processor is brought offline and online again, it is
+> > > > > > > unable to
+> > > > > > > use Turbo mode because the _PSS table does not contain the
+> > > > > > > whole
+> > > > > > > turbo
+> > > > > > > frequency range, but only +1 MHz above the max non-turbo
+> > > > > > > frequency.
+> > > > > > > This
+> > > > > > > causes problems when ACPI processor driver tries to set
+> > > > > > > frequency
+> > > > > > > constraints. See patch 2 for more details.
+> > > > > > >
+> > > > I can reproduce on a Broadwell server platform. But not on a
+> > > > client
+> > > > system with acpi_ppc usage.
+> > > >
+> > > > Need to check what change broke this.
+> > >
+> > > When PPC limits enforcement changed to PM QOS, this broke.
+> > > Previously
+> > > acpi_processor_get_platform_limit() was not enforcing any limits.
+> > > It
+> > > was just setting variable. So any update done after
+> > > acpi_register_performance_state() call to pr->performance-
+> > > > states[ppc].core_frequency, was effective.
+> > >
+> > > We don't really need to call
+> > >         ret = freq_qos_update_request(&pr->perflib_req,
+> > >                         pr->performance->states[ppc].core_frequency
+> > > *
+> > > 1000);
+> > >
+> > > if the PPC is not changed. When PPC is changed, this gets called
+> > > again,
+> > > so then we can call the above function to update cpufreq limit.
+> > >
+> > > The below change fixed for me.
+> >
+> > Right.
+> I think, this is the only change you require to fix this. In addition
+> set pr->performance_platform_limit = 0 in
+> acpi_processor_unregister_performance().
 
-Thanks,
-Srinivas
+Not really, because if the limit is set to a lower frequency and then
+reset to _PSS[0], it needs to be set back to "no limit".
 
-> Should I re-roll my patches with your diff below then? Or do you
-> think my patches should be good to merge as-is?
-> 
-> > 
-> > diff --git a/drivers/acpi/processor_perflib.c
-> > b/drivers/acpi/processor_perflib.c
-> > index 757a98f6d7a2..c6ced89c00dd 100644
-> > --- a/drivers/acpi/processor_perflib.c
-> > +++ b/drivers/acpi/processor_perflib.c
-> > @@ -75,6 +75,11 @@ static int
-> > acpi_processor_get_platform_limit(struct
-> > acpi_processor *pr)
-> >         pr_debug("CPU %d: _PPC is %d - frequency %s limited\n", pr-
-> > >id,
-> >                        (int)ppc, ppc ? "" : "not");
-> > 
-> > +       if (ppc == pr->performance_platform_limit) {
-> > +               pr_debug("CPU %d: _PPC is %d - frequency not
-> > changed\n", pr->id, ppc);
-> > +               return 0;
-> > +       }
-> > +
-> >         pr->performance_platform_limit = (int)ppc;
-> > 
-> >         if (ppc >= pr->performance->state_count ||
-> > 
-> 
-
+I'll send a patch for that in a while.
