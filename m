@@ -2,106 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 086BD6577AD
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Dec 2022 15:22:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B6FE6586C9
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Dec 2022 21:41:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229822AbiL1OWq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Dec 2022 09:22:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57348 "EHLO
+        id S229668AbiL1Ull (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Dec 2022 15:41:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229627AbiL1OWp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Dec 2022 09:22:45 -0500
-Received: from smtp-fw-33001.amazon.com (smtp-fw-33001.amazon.com [207.171.190.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81C7BE0E6;
-        Wed, 28 Dec 2022 06:22:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1672237364; x=1703773364;
-  h=from:to:cc:subject:references:date:in-reply-to:
-   message-id:mime-version;
-  bh=h3umiEVN6xVCtWMnEfxoi68bgBtHL0Jz7Hqfcl2rLp0=;
-  b=o8fqEczvvVEYX865STNEpv+k2wLQLrIYiEBstRMPQHQjBOCKJhB7K9WC
-   G92phB8cgRdwD7Xfq8Z+TlT4c+9ewOWYw/f/SUzOjka3A9pnikDw1HtlS
-   TK1WApGtK+rfw85qX/iOORBH1MUORpm2nu3mQzFUtXToQ++7zp3utJq93
-   Q=;
-X-IronPort-AV: E=Sophos;i="5.96,280,1665446400"; 
-   d="scan'208";a="251384519"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-pdx-2b-m6i4x-f253a3a3.us-west-2.amazon.com) ([10.43.8.6])
-  by smtp-border-fw-33001.sea14.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2022 14:22:39 +0000
-Received: from EX13MTAUEE002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
-        by email-inbound-relay-pdx-2b-m6i4x-f253a3a3.us-west-2.amazon.com (Postfix) with ESMTPS id A919282221;
-        Wed, 28 Dec 2022 14:22:36 +0000 (UTC)
-Received: from EX13D36UEE002.ant.amazon.com (10.43.62.110) by
- EX13MTAUEE002.ant.amazon.com (10.43.62.24) with Microsoft SMTP Server (TLS)
- id 15.0.1497.42; Wed, 28 Dec 2022 14:22:35 +0000
-Received: from EX13MTAUEE002.ant.amazon.com (10.43.62.24) by
- EX13D36UEE002.ant.amazon.com (10.43.62.110) with Microsoft SMTP Server (TLS)
- id 15.0.1497.42; Wed, 28 Dec 2022 14:22:34 +0000
-Received: from dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com (10.15.11.255)
- by mail-relay.amazon.com (10.43.62.224) with Microsoft SMTP Server id
- 15.0.1497.42 via Frontend Transport; Wed, 28 Dec 2022 14:22:34 +0000
-Received: by dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com (Postfix, from userid 23027615)
-        id 49EE320D2E; Wed, 28 Dec 2022 15:22:33 +0100 (CET)
-From:   Pratyush Yadav <ptyadav@amazon.de>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-CC:     Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+        with ESMTP id S230406AbiL1Ulk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Dec 2022 15:41:40 -0500
+Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21C6C10ED;
+        Wed, 28 Dec 2022 12:41:38 -0800 (PST)
+Received: by mail-il1-f178.google.com with SMTP id d10so8736112ilc.12;
+        Wed, 28 Dec 2022 12:41:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5uBOQQYDQCIH7OuKYOssxy4KhYY8m5RLan038W/LXmQ=;
+        b=gUgagun4p8kPK3znssZQqmHmLAY9t7WcXzRdmjlqg1W7LanXj4dPThdLA8Luq38bSW
+         jNR1EOrb2WAlaD4XhVJoJ3/AZku76pEko39JydqScCYoMgsUU/z/WjSSYUSk+Ub6AtG1
+         5fOaApnd9hOku3mP8+x4HRyYmoMTasdvGk8do4G0VdnvhWWj5HJaMbQ4CZEifEOcEBA0
+         wBgysXoIArJ4L6ngFvfTaW2XxJBwtbA2r/uSFbMQ04ciNOfZxL9ijDStD+0cmVsHzxBn
+         m7IBE1v+D2oMYm4h1F9VQNAumrLh+R1eNN73Yun9kM9uOw97SXtxCzswnX/u9GkZHXJt
+         egPQ==
+X-Gm-Message-State: AFqh2kpNRnaZDwxdrnpViGoMCx6nm1mCacm4LnvI3U8+tkolssjYmsLY
+        TBY5jhOT66Kthn5sdg2uiuLXGlbJlnfx2PRNHdQjJwTdfCQ=
+X-Google-Smtp-Source: AMrXdXtVFTOYdLYC6urrEdam3FcpQgdgrbXEsoSsRSMqw6Empx6ZePHd+m5ebqd/PzjGesSIvGKSR1KSrzAfQ7un8BE=
+X-Received: by 2002:a05:6e02:1d8c:b0:303:814:dc0d with SMTP id
+ h12-20020a056e021d8c00b003030814dc0dmr2830249ila.131.1672260097365; Wed, 28
+ Dec 2022 12:41:37 -0800 (PST)
+MIME-Version: 1.0
+References: <12138067.O9o76ZdvQC@kreacher> <24821308109ba20d845e11caf32bede92fec5d8e.camel@linux.intel.com>
+In-Reply-To: <24821308109ba20d845e11caf32bede92fec5d8e.camel@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 28 Dec 2022 21:41:24 +0100
+Message-ID: <CAJZ5v0j1km2y6RAZcfJ8ERnn8r73vm2mSd6MUq2mHj32hFXu-g@mail.gmail.com>
 Subject: Re: [PATCH v1 1/2] ACPI: processor: perflib: Use the "no limit"
  frequency QoS
-References: <12138067.O9o76ZdvQC@kreacher>
-Date:   Wed, 28 Dec 2022 15:22:33 +0100
-In-Reply-To: <12138067.O9o76ZdvQC@kreacher> (Rafael J. Wysocki's message of
-        "Tue, 27 Dec 2022 20:51:43 +0100")
-Message-ID: <mafs0zgb7boba.fsf@amazon.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Pratyush Yadav <ptyadav@amazon.de>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Dec 27 2022, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Tue, Dec 27, 2022 at 9:55 PM srinivas pandruvada
+<srinivas.pandruvada@linux.intel.com> wrote:
 >
-> When _PPC returns 0, it means that the CPU frequency is not limited by
-> the platform firmware, so make acpi_processor_get_platform_limit()
-> update the frequency QoS request used by it to "no limit" in that case
-> and avoid updating the QoS request when the _PPC return value has not
-> changed.
+> On Tue, 2022-12-27 at 20:51 +0100, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > When _PPC returns 0, it means that the CPU frequency is not limited
+> > by
+> > the platform firmware, so make acpi_processor_get_platform_limit()
+> > update the frequency QoS request used by it to "no limit" in that
+> > case
+> > and avoid updating the QoS request when the _PPC return value has not
+> > changed.
+> >
+> > This addresses a problem with limiting CPU frequency artificially on
+> > some systems after CPU offline/online to the frequency that
+> > corresponds
+> > to the first entry in the _PSS return package.
+> >
+> > While at it, move the _PPC return value check against the state count
+> > earlier to avoid setting performance_platform_limit to an invalid
+> > value.
+> >
+> > Reported-by: Pratyush Yadav <ptyadav@amazon.de>
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >  drivers/acpi/processor_perflib.c |   27 +++++++++++++++++++++------
+> >  1 file changed, 21 insertions(+), 6 deletions(-)
+> >
+> > Index: linux-pm/drivers/acpi/processor_perflib.c
+> > ===================================================================
+> > --- linux-pm.orig/drivers/acpi/processor_perflib.c
+> > +++ linux-pm/drivers/acpi/processor_perflib.c
+> > @@ -53,6 +53,8 @@ static int acpi_processor_get_platform_l
+> >  {
+> >         acpi_status status = 0;
+> >         unsigned long long ppc = 0;
+> > +       s32 qos_value;
+> > +       int index;
+> >         int ret;
+> >
+> >         if (!pr)
+> > @@ -72,17 +74,30 @@ static int acpi_processor_get_platform_l
+> >                 }
+> >         }
+> >
+> > +       index = ppc;
+> > +
+> > +       if (pr->performance_platform_limit == index ||
+> > +           ppc >= pr->performance->state_count)
+> > +               return 0;
 >
-> This addresses a problem with limiting CPU frequency artificially on
-> some systems after CPU offline/online to the frequency that corresponds
-> to the first entry in the _PSS return package.
+> Do we need to re initialize pr->performance_platform_limit to 0 in
+> acpi_processor_unregister_performance()?
 >
-> While at it, move the _PPC return value check against the state count
-> earlier to avoid setting performance_platform_limit to an invalid value.
->
-> Reported-by: Pratyush Yadav <ptyadav@amazon.de>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> If PPC was 1 before the offline and after online the above check will
+> cause it to return as the pr->performance_platform_limit is not
+> changed. Not sure if the PM QOS state is preserved after offline and
+> online. This is stored in a per CPU variable, not in dynamically
+> allocated memory which will be reallocated during online again.
 
-Tested-by: Pratyush Yadav <ptyadav@amazon.de>
+Good point in general, but the QoS request is tied to the cpufreq
+policy, so it is not freed on offline.
 
--- 
-Regards,
-Pratyush Yadav
+However, if the policy goes away and is created again for the same CPU
+(like when the intel_pstate mode is changed via its 'status' attribute
+in sysfs), there may be a stale value in performance_platform_limit,
+so it needs to be cleared in acpi_processor_ppc_init() when the QoS
+request is first set to "no limit".
 
-
-
-Amazon Development Center Germany GmbH
-Krausenstr. 38
-10117 Berlin
-Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
-Sitz: Berlin
-Ust-ID: DE 289 237 879
-
-
-
+I'll update the patch accordingly.  I think I'll also split it in two
+to avoid making too many changes in one go.
