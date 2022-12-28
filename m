@@ -2,84 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C45836574BC
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Dec 2022 10:37:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2361D6574E4
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Dec 2022 10:46:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229668AbiL1JhX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Dec 2022 04:37:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40916 "EHLO
+        id S232861AbiL1Jqb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Dec 2022 04:46:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229632AbiL1JhX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Dec 2022 04:37:23 -0500
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49895BDB;
-        Wed, 28 Dec 2022 01:37:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1672220242; x=1703756242;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=XkK3LKwAOFdbmHz35XkZ5MZla29j/ici6NeL6N0Ob0c=;
-  b=HjDQocAWuPcW09rRA7mLozraa/JTIoMMRwigvLQyG+VMNcIDMbHDd84o
-   L9fBCKG19Z9PhPDF67zrlcYntgaDZezFfToLYh7jjogubJ2dfxoDgmrQU
-   v1fDs31EXQFHjVTgOfvr0V55uufADiSkOAXqlDSuqUkkLiBYDlHk1EaSH
-   Aci/yj3YjI4Qn7fkdmm0ogjKN0WPK6Pj0c8zRLFdueSeGlBZfR7r/795v
-   elJNedYVyzpy8d5ToQpjNwL/ZDgX194sYX+1ejVi8+djdV9vkHjpoU+d5
-   SEEp6+XuTDlvIAts8iRtF10OCt9MXhGr1hq5hdwnH2GUQkWQZ+v+L54WF
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10573"; a="385265074"
-X-IronPort-AV: E=Sophos;i="5.96,280,1665471600"; 
-   d="scan'208";a="385265074"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2022 01:37:21 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10573"; a="655264001"
-X-IronPort-AV: E=Sophos;i="5.96,280,1665471600"; 
-   d="scan'208";a="655264001"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga007.fm.intel.com with ESMTP; 28 Dec 2022 01:37:17 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pASs7-000W0b-2Z;
-        Wed, 28 Dec 2022 11:37:15 +0200
-Date:   Wed, 28 Dec 2022 11:37:15 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Yang Yingliang <yangyingliang@huawei.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        with ESMTP id S232814AbiL1JqR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Dec 2022 04:46:17 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 745DCDF11;
+        Wed, 28 Dec 2022 01:46:16 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A2EA613FB;
+        Wed, 28 Dec 2022 09:46:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0887FC433EF;
+        Wed, 28 Dec 2022 09:46:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1672220775;
+        bh=M9aJImHcshT/NgLbfqGwkdWWzgLR7i0nWaQ0G/H/bJs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QmJJs60l98CDJuuwpbYyfUX8Q7PNtPY1PrA6f9siwk/9+HA/ouoqvU0fh9H3JH9eJ
+         BKKsywVviJa3sNmK353fZuh818Zz6jDmNon7UjHfaDw6vSWpAgXNAhRA6mabr1AVNk
+         VbDPExOrif18IAdNtNwG0AXrDzx3WxIpzVgR2awo=
+Date:   Wed, 28 Dec 2022 10:46:12 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Yang Yingliang <yangyingliang@huawei.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         djrscally@gmail.com, heikki.krogerus@linux.intel.com,
-        sakari.ailus@linux.intel.com, gregkh@linuxfoundation.org,
-        rafael@kernel.org
+        sakari.ailus@linux.intel.com, rafael@kernel.org
 Subject: Re: [PATCH v3] device property: fix of node refcount leak in
  fwnode_graph_get_next_endpoint()
-Message-ID: <Y6wOS8NFAZc5+piJ@smile.fi.intel.com>
+Message-ID: <Y6wQZOn+fObx0Mua@kroah.com>
 References: <20221123022542.2999510-1-yangyingliang@huawei.com>
+ <Y6wOS8NFAZc5+piJ@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221123022542.2999510-1-yangyingliang@huawei.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <Y6wOS8NFAZc5+piJ@smile.fi.intel.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 23, 2022 at 10:25:42AM +0800, Yang Yingliang wrote:
-> The 'parent' returned by fwnode_graph_get_port_parent()
-> with refcount incremented when 'prev' is not NULL, it
-> needs be put when finish using it.
+On Wed, Dec 28, 2022 at 11:37:15AM +0200, Andy Shevchenko wrote:
+> On Wed, Nov 23, 2022 at 10:25:42AM +0800, Yang Yingliang wrote:
+> > The 'parent' returned by fwnode_graph_get_port_parent()
+> > with refcount incremented when 'prev' is not NULL, it
+> > needs be put when finish using it.
+> > 
+> > Because the parent is const, introduce a new variable to
+> > store the returned fwnode, then put it before returning
+> > from fwnode_graph_get_next_endpoint().
 > 
-> Because the parent is const, introduce a new variable to
-> store the returned fwnode, then put it before returning
-> from fwnode_graph_get_next_endpoint().
+> Rafael, Greg, is this went through the cracks?
 
-Rafael, Greg, is this went through the cracks?
+Yes, but still in my queue.  I'll look at it when I get back from break.
 
--- 
-With Best Regards,
-Andy Shevchenko
+thanks,
 
-
+greg k-h
