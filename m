@@ -2,92 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C92F6574F6
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Dec 2022 10:51:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 086BD6577AD
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Dec 2022 15:22:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229864AbiL1JvZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Dec 2022 04:51:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47558 "EHLO
+        id S229822AbiL1OWq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Dec 2022 09:22:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229691AbiL1Juh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Dec 2022 04:50:37 -0500
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8AF510075;
-        Wed, 28 Dec 2022 01:50:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1672221036; x=1703757036;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jcHRyTOIWLvjQ22vBtCT8JpVqWGWk/i6Ux7FH4hlVT8=;
-  b=I4VJWIhIz73moz63vBg/B00NjrFi9aGo/jdNvDflnIJKLz0BbDXzLXvt
-   VElGmlT35eabB9JxqSFrcqKt+SoV/xMjJ8g/9KNEvnEmSaglJS/TZ/dfm
-   trH9qogjZ478HnbAh4NHOx2Ouh53urfN+iQeewYY4gFwDqyBqdEosbVQc
-   sw4cMKnjoCtD+2Kmh6NczW9PVKThW48pywynWjvvIApsTlvApZKekNksK
-   n2bZsYaZgzUySNxdppOGJk0CeAJ4eCMSNziTOvpjGK0PgciRi4edJCB4A
-   yf/LL+dpGjElTJvGvY0zmIR0GR8P/LPssYKY9fJ8zV/XkjdW5k4xjYZlO
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10573"; a="385266942"
-X-IronPort-AV: E=Sophos;i="5.96,280,1665471600"; 
-   d="scan'208";a="385266942"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2022 01:50:36 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10573"; a="655265447"
-X-IronPort-AV: E=Sophos;i="5.96,280,1665471600"; 
-   d="scan'208";a="655265447"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga007.fm.intel.com with ESMTP; 28 Dec 2022 01:50:33 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pAT4y-000WIj-00;
-        Wed, 28 Dec 2022 11:50:32 +0200
-Date:   Wed, 28 Dec 2022 11:50:31 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Yang Yingliang <yangyingliang@huawei.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        djrscally@gmail.com, heikki.krogerus@linux.intel.com,
-        sakari.ailus@linux.intel.com, rafael@kernel.org
-Subject: Re: [PATCH v3] device property: fix of node refcount leak in
- fwnode_graph_get_next_endpoint()
-Message-ID: <Y6wRZyvqY2AhTLbp@smile.fi.intel.com>
-References: <20221123022542.2999510-1-yangyingliang@huawei.com>
- <Y6wOS8NFAZc5+piJ@smile.fi.intel.com>
- <Y6wQZOn+fObx0Mua@kroah.com>
+        with ESMTP id S229627AbiL1OWp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Dec 2022 09:22:45 -0500
+Received: from smtp-fw-33001.amazon.com (smtp-fw-33001.amazon.com [207.171.190.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81C7BE0E6;
+        Wed, 28 Dec 2022 06:22:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
+  t=1672237364; x=1703773364;
+  h=from:to:cc:subject:references:date:in-reply-to:
+   message-id:mime-version;
+  bh=h3umiEVN6xVCtWMnEfxoi68bgBtHL0Jz7Hqfcl2rLp0=;
+  b=o8fqEczvvVEYX865STNEpv+k2wLQLrIYiEBstRMPQHQjBOCKJhB7K9WC
+   G92phB8cgRdwD7Xfq8Z+TlT4c+9ewOWYw/f/SUzOjka3A9pnikDw1HtlS
+   TK1WApGtK+rfw85qX/iOORBH1MUORpm2nu3mQzFUtXToQ++7zp3utJq93
+   Q=;
+X-IronPort-AV: E=Sophos;i="5.96,280,1665446400"; 
+   d="scan'208";a="251384519"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-pdx-2b-m6i4x-f253a3a3.us-west-2.amazon.com) ([10.43.8.6])
+  by smtp-border-fw-33001.sea14.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2022 14:22:39 +0000
+Received: from EX13MTAUEE002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
+        by email-inbound-relay-pdx-2b-m6i4x-f253a3a3.us-west-2.amazon.com (Postfix) with ESMTPS id A919282221;
+        Wed, 28 Dec 2022 14:22:36 +0000 (UTC)
+Received: from EX13D36UEE002.ant.amazon.com (10.43.62.110) by
+ EX13MTAUEE002.ant.amazon.com (10.43.62.24) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.42; Wed, 28 Dec 2022 14:22:35 +0000
+Received: from EX13MTAUEE002.ant.amazon.com (10.43.62.24) by
+ EX13D36UEE002.ant.amazon.com (10.43.62.110) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.42; Wed, 28 Dec 2022 14:22:34 +0000
+Received: from dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com (10.15.11.255)
+ by mail-relay.amazon.com (10.43.62.224) with Microsoft SMTP Server id
+ 15.0.1497.42 via Frontend Transport; Wed, 28 Dec 2022 14:22:34 +0000
+Received: by dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com (Postfix, from userid 23027615)
+        id 49EE320D2E; Wed, 28 Dec 2022 15:22:33 +0100 (CET)
+From:   Pratyush Yadav <ptyadav@amazon.de>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+CC:     Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Subject: Re: [PATCH v1 1/2] ACPI: processor: perflib: Use the "no limit"
+ frequency QoS
+References: <12138067.O9o76ZdvQC@kreacher>
+Date:   Wed, 28 Dec 2022 15:22:33 +0100
+In-Reply-To: <12138067.O9o76ZdvQC@kreacher> (Rafael J. Wysocki's message of
+        "Tue, 27 Dec 2022 20:51:43 +0100")
+Message-ID: <mafs0zgb7boba.fsf@amazon.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y6wQZOn+fObx0Mua@kroah.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Dec 28, 2022 at 10:46:12AM +0100, Greg KH wrote:
-> On Wed, Dec 28, 2022 at 11:37:15AM +0200, Andy Shevchenko wrote:
-> > On Wed, Nov 23, 2022 at 10:25:42AM +0800, Yang Yingliang wrote:
-> > > The 'parent' returned by fwnode_graph_get_port_parent()
-> > > with refcount incremented when 'prev' is not NULL, it
-> > > needs be put when finish using it.
-> > > 
-> > > Because the parent is const, introduce a new variable to
-> > > store the returned fwnode, then put it before returning
-> > > from fwnode_graph_get_next_endpoint().
-> > 
-> > Rafael, Greg, is this went through the cracks?
-> 
-> Yes, but still in my queue.  I'll look at it when I get back from break.
+On Tue, Dec 27 2022, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>
+> When _PPC returns 0, it means that the CPU frequency is not limited by
+> the platform firmware, so make acpi_processor_get_platform_limit()
+> update the frequency QoS request used by it to "no limit" in that case
+> and avoid updating the QoS request when the _PPC return value has not
+> changed.
+>
+> This addresses a problem with limiting CPU frequency artificially on
+> some systems after CPU offline/online to the frequency that corresponds
+> to the first entry in the _PSS return package.
+>
+> While at it, move the _PPC return value check against the state count
+> earlier to avoid setting performance_platform_limit to an invalid value.
+>
+> Reported-by: Pratyush Yadav <ptyadav@amazon.de>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Have a nice one!
+Tested-by: Pratyush Yadav <ptyadav@amazon.de>
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Regards,
+Pratyush Yadav
+
+
+
+Amazon Development Center Germany GmbH
+Krausenstr. 38
+10117 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
+Sitz: Berlin
+Ust-ID: DE 289 237 879
+
 
 
