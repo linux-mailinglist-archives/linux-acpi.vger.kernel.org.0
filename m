@@ -2,66 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDEC56574EE
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Dec 2022 10:49:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C92F6574F6
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Dec 2022 10:51:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232874AbiL1JtV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Dec 2022 04:49:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46698 "EHLO
+        id S229864AbiL1JvZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Dec 2022 04:51:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232734AbiL1JtH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Dec 2022 04:49:07 -0500
+        with ESMTP id S229691AbiL1Juh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Dec 2022 04:50:37 -0500
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72C00F01B;
-        Wed, 28 Dec 2022 01:49:06 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8AF510075;
+        Wed, 28 Dec 2022 01:50:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1672220946; x=1703756946;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=+ozAS6yksRC8a62UTirV31SEjQ8EBsV6SC/XfQ+AkkA=;
-  b=UZdhzyyHMy/MsyrFmgyatPqdRrvUYqG6Rt4PTzzv9UJ7CcfKRa5mEEF0
-   UZXeNg8dUOPXS+ADr3EaQq2EeBVqXj3nm++cB6nhKrikcMjE/SpF1bXAS
-   mK5b9YjBjdIuXHezjcaSSrKe53ZqN1xw7AMwPfebIQp0zLj/bZA0SUbwA
-   4+rymtiDmh1fmGaTfbOFIL0btXqNUWbn1w5dHkJGeli2v1qQ8GOa7cY+V
-   7nR587SpiWXvjO9GVDjBSzw47Jq7r7koSlkR407o+Eo/H0ZaufFHKXDnb
-   k+tNjB4OOcaHZ1BoERJ6vKMwrTTbMU8bdlGdgLJeko1oHaGftFT4eMbd2
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10573"; a="385266808"
+  t=1672221036; x=1703757036;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jcHRyTOIWLvjQ22vBtCT8JpVqWGWk/i6Ux7FH4hlVT8=;
+  b=I4VJWIhIz73moz63vBg/B00NjrFi9aGo/jdNvDflnIJKLz0BbDXzLXvt
+   VElGmlT35eabB9JxqSFrcqKt+SoV/xMjJ8g/9KNEvnEmSaglJS/TZ/dfm
+   trH9qogjZ478HnbAh4NHOx2Ouh53urfN+iQeewYY4gFwDqyBqdEosbVQc
+   sw4cMKnjoCtD+2Kmh6NczW9PVKThW48pywynWjvvIApsTlvApZKekNksK
+   n2bZsYaZgzUySNxdppOGJk0CeAJ4eCMSNziTOvpjGK0PgciRi4edJCB4A
+   yf/LL+dpGjElTJvGvY0zmIR0GR8P/LPssYKY9fJ8zV/XkjdW5k4xjYZlO
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10573"; a="385266942"
 X-IronPort-AV: E=Sophos;i="5.96,280,1665471600"; 
-   d="scan'208";a="385266808"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2022 01:49:05 -0800
+   d="scan'208";a="385266942"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2022 01:50:36 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10573"; a="603291141"
+X-IronPort-AV: E=McAfee;i="6500,9779,10573"; a="655265447"
 X-IronPort-AV: E=Sophos;i="5.96,280,1665471600"; 
-   d="scan'208";a="603291141"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga003.jf.intel.com with ESMTP; 28 Dec 2022 01:49:00 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id E8B04220; Wed, 28 Dec 2022 11:49:31 +0200 (EET)
+   d="scan'208";a="655265447"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007.fm.intel.com with ESMTP; 28 Dec 2022 01:50:33 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pAT4y-000WIj-00;
+        Wed, 28 Dec 2022 11:50:32 +0200
+Date:   Wed, 28 Dec 2022 11:50:31 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Yang Yingliang <yangyingliang@huawei.com>,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Yong Zhi <yong.zhi@intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Tianshu Qiu <tian.shu.qiu@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Daniel Scally <dan.scally@ideasonboard.com>
-Subject: [PATCH v3 4/4] software node: Remove unused APIs
-Date:   Wed, 28 Dec 2022 11:49:22 +0200
-Message-Id: <20221228094922.84119-5-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221228094922.84119-1-andriy.shevchenko@linux.intel.com>
-References: <20221228094922.84119-1-andriy.shevchenko@linux.intel.com>
+        djrscally@gmail.com, heikki.krogerus@linux.intel.com,
+        sakari.ailus@linux.intel.com, rafael@kernel.org
+Subject: Re: [PATCH v3] device property: fix of node refcount leak in
+ fwnode_graph_get_next_endpoint()
+Message-ID: <Y6wRZyvqY2AhTLbp@smile.fi.intel.com>
+References: <20221123022542.2999510-1-yangyingliang@huawei.com>
+ <Y6wOS8NFAZc5+piJ@smile.fi.intel.com>
+ <Y6wQZOn+fObx0Mua@kroah.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y6wQZOn+fObx0Mua@kroah.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
@@ -71,105 +69,25 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-There are no more users of software_node_register_nodes() and
-software_node_unregister_nodes(). Remove them.
+On Wed, Dec 28, 2022 at 10:46:12AM +0100, Greg KH wrote:
+> On Wed, Dec 28, 2022 at 11:37:15AM +0200, Andy Shevchenko wrote:
+> > On Wed, Nov 23, 2022 at 10:25:42AM +0800, Yang Yingliang wrote:
+> > > The 'parent' returned by fwnode_graph_get_port_parent()
+> > > with refcount incremented when 'prev' is not NULL, it
+> > > needs be put when finish using it.
+> > > 
+> > > Because the parent is const, introduce a new variable to
+> > > store the returned fwnode, then put it before returning
+> > > from fwnode_graph_get_next_endpoint().
+> > 
+> > Rafael, Greg, is this went through the cracks?
+> 
+> Yes, but still in my queue.  I'll look at it when I get back from break.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Tested-by: Daniel Scally <dan.scally@ideasonboard.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
----
- drivers/base/swnode.c    | 61 ----------------------------------------
- include/linux/property.h |  3 --
- 2 files changed, 64 deletions(-)
+Have a nice one!
 
-diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-index 0a482212c7e8..da3c1c2cb9a8 100644
---- a/drivers/base/swnode.c
-+++ b/drivers/base/swnode.c
-@@ -819,67 +819,6 @@ swnode_register(const struct software_node *node, struct swnode *parent,
- 	return &swnode->fwnode;
- }
- 
--/**
-- * software_node_register_nodes - Register an array of software nodes
-- * @nodes: Zero terminated array of software nodes to be registered
-- *
-- * Register multiple software nodes at once. If any node in the array
-- * has its .parent pointer set (which can only be to another software_node),
-- * then its parent **must** have been registered before it is; either outside
-- * of this function or by ordering the array such that parent comes before
-- * child.
-- */
--int software_node_register_nodes(const struct software_node *nodes)
--{
--	int ret;
--	int i;
--
--	for (i = 0; nodes[i].name; i++) {
--		const struct software_node *parent = nodes[i].parent;
--
--		if (parent && !software_node_to_swnode(parent)) {
--			ret = -EINVAL;
--			goto err_unregister_nodes;
--		}
--
--		ret = software_node_register(&nodes[i]);
--		if (ret)
--			goto err_unregister_nodes;
--	}
--
--	return 0;
--
--err_unregister_nodes:
--	software_node_unregister_nodes(nodes);
--	return ret;
--}
--EXPORT_SYMBOL_GPL(software_node_register_nodes);
--
--/**
-- * software_node_unregister_nodes - Unregister an array of software nodes
-- * @nodes: Zero terminated array of software nodes to be unregistered
-- *
-- * Unregister multiple software nodes at once. If parent pointers are set up
-- * in any of the software nodes then the array **must** be ordered such that
-- * parents come before their children.
-- *
-- * NOTE: If you are uncertain whether the array is ordered such that
-- * parents will be unregistered before their children, it is wiser to
-- * remove the nodes individually, in the correct order (child before
-- * parent).
-- */
--void software_node_unregister_nodes(const struct software_node *nodes)
--{
--	unsigned int i = 0;
--
--	while (nodes[i].name)
--		i++;
--
--	while (i--)
--		software_node_unregister(&nodes[i]);
--}
--EXPORT_SYMBOL_GPL(software_node_unregister_nodes);
--
- /**
-  * software_node_register_node_group - Register a group of software nodes
-  * @node_group: NULL terminated array of software node pointers to be registered
-diff --git a/include/linux/property.h b/include/linux/property.h
-index 37179e3abad5..1ffd4f9bb67b 100644
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -486,9 +486,6 @@ const struct software_node *
- software_node_find_by_name(const struct software_node *parent,
- 			   const char *name);
- 
--int software_node_register_nodes(const struct software_node *nodes);
--void software_node_unregister_nodes(const struct software_node *nodes);
--
- int software_node_register_node_group(const struct software_node **node_group);
- void software_node_unregister_node_group(const struct software_node **node_group);
- 
 -- 
-2.35.1
+With Best Regards,
+Andy Shevchenko
+
 
