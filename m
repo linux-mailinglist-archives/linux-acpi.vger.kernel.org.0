@@ -2,101 +2,174 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99F66658703
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Dec 2022 22:27:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A857658CEE
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Dec 2022 13:58:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230486AbiL1V1V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Dec 2022 16:27:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39640 "EHLO
+        id S230083AbiL2M6k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Dec 2022 07:58:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229745AbiL1V1U (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Dec 2022 16:27:20 -0500
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 273A8140B5;
-        Wed, 28 Dec 2022 13:27:18 -0800 (PST)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
- id 5f72451d9ceeb59f; Wed, 28 Dec 2022 22:27:16 +0100
-Received: from kreacher.localnet (89-77-51-84.dynamic.chello.pl [89.77.51.84])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 0C8E9780AF8;
-        Wed, 28 Dec 2022 22:27:16 +0100 (CET)
-Authentication-Results: v370.home.net.pl; dmarc=none (p=none dis=none) header.from=rjwysocki.net
-Authentication-Results: v370.home.net.pl; spf=fail smtp.mailfrom=rjwysocki.net
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux PM <linux-pm@vger.kernel.org>
-Cc:     Pratyush Yadav <ptyadav@amazon.de>,
+        with ESMTP id S229611AbiL2M6j (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Dec 2022 07:58:39 -0500
+Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A38E613DE9;
+        Thu, 29 Dec 2022 04:58:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
+  t=1672318719; x=1703854719;
+  h=from:to:cc:subject:references:date:in-reply-to:
+   message-id:mime-version;
+  bh=fPipVc4z0gWEOJMhi7+Lql0b+KIlINn8rsi5K72nNU4=;
+  b=ivk5BPlqnEWddg5acAzcTnHH1K+W/6wzAZPtFSgdy3psZmNR5SCs/8pg
+   1ruuq/VqT2Wan9d5wwFYOS3L8W7atHstEFewZxLvHi9/ub5XTzjVUMEBy
+   DdpLtXGqKBFdVj4IYUZqKcPkbuPW60a3bT/7DxDIWUCogufMdF6d44go+
+   Y=;
+X-IronPort-AV: E=Sophos;i="5.96,284,1665446400"; 
+   d="scan'208";a="166123243"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-pdx-2b-m6i4x-26a610d2.us-west-2.amazon.com) ([10.25.36.210])
+  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2022 12:58:37 +0000
+Received: from EX13MTAUWB002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
+        by email-inbound-relay-pdx-2b-m6i4x-26a610d2.us-west-2.amazon.com (Postfix) with ESMTPS id 6032441886;
+        Thu, 29 Dec 2022 12:58:36 +0000 (UTC)
+Received: from EX19D024UWB003.ant.amazon.com (10.13.138.126) by
+ EX13MTAUWB002.ant.amazon.com (10.43.161.202) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.42; Thu, 29 Dec 2022 12:58:35 +0000
+Received: from EX13MTAUWB001.ant.amazon.com (10.43.161.207) by
+ EX19D024UWB003.ant.amazon.com (10.13.138.126) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.1118.20; Thu, 29 Dec 2022 12:58:35 +0000
+Received: from dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com (10.15.11.255)
+ by mail-relay.amazon.com (10.43.161.249) with Microsoft SMTP Server id
+ 15.0.1497.42 via Frontend Transport; Thu, 29 Dec 2022 12:58:35 +0000
+Received: by dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com (Postfix, from userid 23027615)
+        id C228220D25; Thu, 29 Dec 2022 13:58:33 +0100 (CET)
+From:   Pratyush Yadav <ptyadav@amazon.de>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+CC:     Linux PM <linux-pm@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: [PATCH v2 3/3] cpufreq: intel_pstate: Drop ACPI _PSS states table patching
-Date:   Wed, 28 Dec 2022 22:26:04 +0100
-Message-ID: <2269998.ElGaqSPkdT@kreacher>
-In-Reply-To: <12138067.O9o76ZdvQC@kreacher>
-References: <12138067.O9o76ZdvQC@kreacher>
+Subject: Re: [PATCH v2 1/3] ACPI: processor: perflib: Use the "no limit"
+ frequency QoS
+References: <12138067.O9o76ZdvQC@kreacher> <12124970.O9o76ZdvQC@kreacher>
+Date:   Thu, 29 Dec 2022 13:58:33 +0100
+In-Reply-To: <12124970.O9o76ZdvQC@kreacher> (Rafael J. Wysocki's message of
+        "Wed, 28 Dec 2022 22:21:49 +0100")
+Message-ID: <mafs0sfgybc3q.fsf_-_@amazon.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 89.77.51.84
-X-CLIENT-HOSTNAME: 89-77-51-84.dynamic.chello.pl
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedriedvgdduhedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffueeitdfgvddtudegueejtdffteetgeefkeffvdeftddttdeuhfegfedvjefhnecukfhppeekledrjeejrdehuddrkeegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepkeelrdejjedrhedurdekgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohephedprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehpthihrggurghvsegrmhgriihonhdruggvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhrihhnihhvrghs
- rdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi Rafael,
 
-After making acpi_processor_get_platform_limit() use the "no limit"
-value for its frequency QoS request when _PPC returns 0, it is not
-necessary to replace the frequency corresponding to the first _PSS
-return package entry with the maximum turbo frequency of the given
-CPU in intel_pstate_init_acpi_perf_limits() any more, so drop the
-code doing that along with the comment explaining it.
+On Wed, Dec 28 2022, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>
+> When _PPC returns 0, it means that the CPU frequency is not limited by
+> the platform firmware, so make acpi_processor_get_platform_limit()
+> update the frequency QoS request used by it to "no limit" in that case.
+>
+> This addresses a problem with limiting CPU frequency artificially on
+> some systems after CPU offline/online to the frequency that corresponds
+> to the first entry in the _PSS return package.
+>
+> Reported-by: Pratyush Yadav <ptyadav@amazon.de>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+>
+> v1 -> v2:
+>    * Move some changes into a separate patch
+>    * Update the changelog accordingly
+>
+> ---
+>  drivers/acpi/processor_perflib.c |   20 ++++++++++++++++----
+>  1 file changed, 16 insertions(+), 4 deletions(-)
+>
+> Index: linux-pm/drivers/acpi/processor_perflib.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/processor_perflib.c
+> +++ linux-pm/drivers/acpi/processor_perflib.c
+> @@ -53,6 +53,8 @@ static int acpi_processor_get_platform_l
+>  {
+>         acpi_status status = 0;
+>         unsigned long long ppc = 0;
+> +       s32 qos_value;
+> +       int index;
+>         int ret;
+>
+>         if (!pr)
+> @@ -72,17 +74,27 @@ static int acpi_processor_get_platform_l
+>                 }
+>         }
+>
+> +       index = ppc;
+> +
+>         pr_debug("CPU %d: _PPC is %d - frequency %s limited\n", pr->id,
+> -                      (int)ppc, ppc ? "" : "not");
+> +                index, index ? "is" : "is not");
+>
+> -       pr->performance_platform_limit = (int)ppc;
+> +       pr->performance_platform_limit = index;
+>
+>         if (ppc >= pr->performance->state_count ||
+>             unlikely(!freq_qos_request_active(&pr->perflib_req)))
+>                 return 0;
+>
+> -       ret = freq_qos_update_request(&pr->perflib_req,
+> -                       pr->performance->states[ppc].core_frequency * 1000);
+> +       /*
+> +        * If _PPC returns 0, it means that all of the available states can be
+> +        * used ("no limit").
+> +        */
+> +       if (index == 0)
+> +               qos_value = FREQ_QOS_MAX_DEFAULT_VALUE;
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
+One small thing I noticed: in acpi_processor_ppc_init() "no limit" value
+is set to INT_MAX and here it is set to FREQ_QOS_MAX_DEFAULT_VALUE. Both
+should evaluate to the same value but I think it would be nice if the
+same thing is used in both places. Perhaps you can fix that up when
+applying?
 
-v1 -> v2:
-   * Same as the previous [2/2], no changes.
+Other than this,
 
----
- drivers/cpufreq/intel_pstate.c |   14 --------------
- 1 file changed, 14 deletions(-)
+Reviewed-by: Pratyush Yadav <ptyadav@amazon.de>
+Tested-by: Pratyush Yadav <ptyadav@amazon.de>
 
-Index: linux-pm/drivers/cpufreq/intel_pstate.c
-===================================================================
---- linux-pm.orig/drivers/cpufreq/intel_pstate.c
-+++ linux-pm/drivers/cpufreq/intel_pstate.c
-@@ -452,20 +452,6 @@ static void intel_pstate_init_acpi_perf_
- 			 (u32) cpu->acpi_perf_data.states[i].control);
- 	}
- 
--	/*
--	 * The _PSS table doesn't contain whole turbo frequency range.
--	 * This just contains +1 MHZ above the max non turbo frequency,
--	 * with control value corresponding to max turbo ratio. But
--	 * when cpufreq set policy is called, it will call with this
--	 * max frequency, which will cause a reduced performance as
--	 * this driver uses real max turbo frequency as the max
--	 * frequency. So correct this frequency in _PSS table to
--	 * correct max turbo frequency based on the turbo state.
--	 * Also need to convert to MHz as _PSS freq is in MHz.
--	 */
--	if (!global.turbo_disabled)
--		cpu->acpi_perf_data.states[0].core_frequency =
--					policy->cpuinfo.max_freq / 1000;
- 	cpu->valid_pss_table = true;
- 	pr_debug("_PPC limits will be enforced\n");
- 
+Thanks for working on this.
+
+> +       else
+> +               qos_value = pr->performance->states[index].core_frequency * 1000;
+> +
+> +       ret = freq_qos_update_request(&pr->perflib_req, qos_value);
+>         if (ret < 0) {
+>                 pr_warn("Failed to update perflib freq constraint: CPU%d (%d)\n",
+>                         pr->id, ret);
+>
+>
+>
+
+-- 
+Regards,
+Pratyush Yadav
+
+
+
+Amazon Development Center Germany GmbH
+Krausenstr. 38
+10117 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
+Sitz: Berlin
+Ust-ID: DE 289 237 879
 
 
 
