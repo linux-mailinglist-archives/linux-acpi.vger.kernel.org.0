@@ -2,66 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A857658CEE
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Dec 2022 13:58:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A36E658F38
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Dec 2022 17:46:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230083AbiL2M6k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Dec 2022 07:58:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43488 "EHLO
+        id S233258AbiL2QqW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Dec 2022 11:46:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229611AbiL2M6j (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Dec 2022 07:58:39 -0500
-Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A38E613DE9;
-        Thu, 29 Dec 2022 04:58:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1672318719; x=1703854719;
-  h=from:to:cc:subject:references:date:in-reply-to:
-   message-id:mime-version;
-  bh=fPipVc4z0gWEOJMhi7+Lql0b+KIlINn8rsi5K72nNU4=;
-  b=ivk5BPlqnEWddg5acAzcTnHH1K+W/6wzAZPtFSgdy3psZmNR5SCs/8pg
-   1ruuq/VqT2Wan9d5wwFYOS3L8W7atHstEFewZxLvHi9/ub5XTzjVUMEBy
-   DdpLtXGqKBFdVj4IYUZqKcPkbuPW60a3bT/7DxDIWUCogufMdF6d44go+
-   Y=;
-X-IronPort-AV: E=Sophos;i="5.96,284,1665446400"; 
-   d="scan'208";a="166123243"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-pdx-2b-m6i4x-26a610d2.us-west-2.amazon.com) ([10.25.36.210])
-  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2022 12:58:37 +0000
-Received: from EX13MTAUWB002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
-        by email-inbound-relay-pdx-2b-m6i4x-26a610d2.us-west-2.amazon.com (Postfix) with ESMTPS id 6032441886;
-        Thu, 29 Dec 2022 12:58:36 +0000 (UTC)
-Received: from EX19D024UWB003.ant.amazon.com (10.13.138.126) by
- EX13MTAUWB002.ant.amazon.com (10.43.161.202) with Microsoft SMTP Server (TLS)
- id 15.0.1497.42; Thu, 29 Dec 2022 12:58:35 +0000
-Received: from EX13MTAUWB001.ant.amazon.com (10.43.161.207) by
- EX19D024UWB003.ant.amazon.com (10.13.138.126) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.1118.20; Thu, 29 Dec 2022 12:58:35 +0000
-Received: from dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com (10.15.11.255)
- by mail-relay.amazon.com (10.43.161.249) with Microsoft SMTP Server id
- 15.0.1497.42 via Frontend Transport; Thu, 29 Dec 2022 12:58:35 +0000
-Received: by dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com (Postfix, from userid 23027615)
-        id C228220D25; Thu, 29 Dec 2022 13:58:33 +0100 (CET)
-From:   Pratyush Yadav <ptyadav@amazon.de>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-CC:     Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: Re: [PATCH v2 1/3] ACPI: processor: perflib: Use the "no limit"
- frequency QoS
-References: <12138067.O9o76ZdvQC@kreacher> <12124970.O9o76ZdvQC@kreacher>
-Date:   Thu, 29 Dec 2022 13:58:33 +0100
-In-Reply-To: <12124970.O9o76ZdvQC@kreacher> (Rafael J. Wysocki's message of
-        "Wed, 28 Dec 2022 22:21:49 +0100")
-Message-ID: <mafs0sfgybc3q.fsf_-_@amazon.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
+        with ESMTP id S233585AbiL2Qp5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Dec 2022 11:45:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D0C615FE8
+        for <linux-acpi@vger.kernel.org>; Thu, 29 Dec 2022 08:45:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1672332306;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=uE1P5Bdwlwa4H9qvumuO6cO/f01N5gt3QNmApvjrJ90=;
+        b=LrXXUSysTvsOtDxBhM3j1CSAvnff5xuP4+lZVmUKE19qD2onCvjbamkis41RcE8+eCM2xK
+        6ET4Vp76TTJUZ2lhEyeTZQ19CwaGZbpqYUOMF9xcZOJqtrQv8KTMgw2fIH2txrT0c34tlf
+        do64fD/5qwV1q3IsGIb10QLYef6KPF8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-612-5iRBfx7aM--DWanDil9SkA-1; Thu, 29 Dec 2022 11:45:04 -0500
+X-MC-Unique: 5iRBfx7aM--DWanDil9SkA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0E9C4185A794;
+        Thu, 29 Dec 2022 16:45:04 +0000 (UTC)
+Received: from shalem.redhat.com (unknown [10.39.192.28])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 7FEAE4010D42;
+        Thu, 29 Dec 2022 16:45:02 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        "regressions @ lists . linux . dev" <regressions@lists.linux.dev>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: [PATCH 6.2 regression fix] gpiolib: Fix using uninitialized lookup-flags on ACPI platforms
+Date:   Thu, 29 Dec 2022 17:45:01 +0100
+Message-Id: <20221229164501.76044-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,107 +62,52 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+Commit 8eb1f71e7acc ("gpiolib: consolidate GPIO lookups") refactors
+fwnode_get_named_gpiod() and gpiod_get_index() into a unified
+gpiod_find_and_request() helper.
 
-On Wed, Dec 28 2022, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->
-> When _PPC returns 0, it means that the CPU frequency is not limited by
-> the platform firmware, so make acpi_processor_get_platform_limit()
-> update the frequency QoS request used by it to "no limit" in that case.
->
-> This addresses a problem with limiting CPU frequency artificially on
-> some systems after CPU offline/online to the frequency that corresponds
-> to the first entry in the _PSS return package.
->
-> Reported-by: Pratyush Yadav <ptyadav@amazon.de>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
->
-> v1 -> v2:
->    * Move some changes into a separate patch
->    * Update the changelog accordingly
->
-> ---
->  drivers/acpi/processor_perflib.c |   20 ++++++++++++++++----
->  1 file changed, 16 insertions(+), 4 deletions(-)
->
-> Index: linux-pm/drivers/acpi/processor_perflib.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/processor_perflib.c
-> +++ linux-pm/drivers/acpi/processor_perflib.c
-> @@ -53,6 +53,8 @@ static int acpi_processor_get_platform_l
->  {
->         acpi_status status = 0;
->         unsigned long long ppc = 0;
-> +       s32 qos_value;
-> +       int index;
->         int ret;
->
->         if (!pr)
-> @@ -72,17 +74,27 @@ static int acpi_processor_get_platform_l
->                 }
->         }
->
-> +       index = ppc;
-> +
->         pr_debug("CPU %d: _PPC is %d - frequency %s limited\n", pr->id,
-> -                      (int)ppc, ppc ? "" : "not");
-> +                index, index ? "is" : "is not");
->
-> -       pr->performance_platform_limit = (int)ppc;
-> +       pr->performance_platform_limit = index;
->
->         if (ppc >= pr->performance->state_count ||
->             unlikely(!freq_qos_request_active(&pr->perflib_req)))
->                 return 0;
->
-> -       ret = freq_qos_update_request(&pr->perflib_req,
-> -                       pr->performance->states[ppc].core_frequency * 1000);
-> +       /*
-> +        * If _PPC returns 0, it means that all of the available states can be
-> +        * used ("no limit").
-> +        */
-> +       if (index == 0)
-> +               qos_value = FREQ_QOS_MAX_DEFAULT_VALUE;
+The old functions both initialized their local lookupflags variable to
+GPIO_LOOKUP_FLAGS_DEFAULT, but the new code leaves it uninitialized.
 
-One small thing I noticed: in acpi_processor_ppc_init() "no limit" value
-is set to INT_MAX and here it is set to FREQ_QOS_MAX_DEFAULT_VALUE. Both
-should evaluate to the same value but I think it would be nice if the
-same thing is used in both places. Perhaps you can fix that up when
-applying?
+This is a problem for at least ACPI platforms, where acpi_find_gpio()
+only does a bunch of *lookupflags |= GPIO_* statements and thus relies
+on the variable being initialized.
 
-Other than this,
+The variable not being initialized leads to:
 
-Reviewed-by: Pratyush Yadav <ptyadav@amazon.de>
-Tested-by: Pratyush Yadav <ptyadav@amazon.de>
+1. Potentially the wrong flags getting used
+2. The check for conflicting lookup flags in gpiod_configure_flags():
+   "multiple pull-up, pull-down or pull-disable enabled, invalid config"
+   sometimes triggering, making the GPIO unavailable
 
-Thanks for working on this.
+Restore the initialization of lookupflags to GPIO_LOOKUP_FLAGS_DEFAULT
+to fix this.
 
-> +       else
-> +               qos_value = pr->performance->states[index].core_frequency * 1000;
-> +
-> +       ret = freq_qos_update_request(&pr->perflib_req, qos_value);
->         if (ret < 0) {
->                 pr_warn("Failed to update perflib freq constraint: CPU%d (%d)\n",
->                         pr->id, ret);
->
->
->
+Fixes: 8eb1f71e7acc ("gpiolib: consolidate GPIO lookups")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+Note I'm not working and not reading work email until Monday January 9th.
+I hit this while doing some hobby stuff and I decided to send this out
+right away to avoid others potentially wasting time debugging this, but
+I will not see any replies until Monday January 9th.
+---
+ drivers/gpio/gpiolib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 5a66d9616d7c..939c776b9488 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -3905,8 +3905,8 @@ static struct gpio_desc *gpiod_find_and_request(struct device *consumer,
+ 						const char *label,
+ 						bool platform_lookup_allowed)
+ {
++	unsigned long lookupflags = GPIO_LOOKUP_FLAGS_DEFAULT;
+ 	struct gpio_desc *desc = ERR_PTR(-ENOENT);
+-	unsigned long lookupflags;
+ 	int ret;
+ 
+ 	if (!IS_ERR_OR_NULL(fwnode))
 -- 
-Regards,
-Pratyush Yadav
-
-
-
-Amazon Development Center Germany GmbH
-Krausenstr. 38
-10117 Berlin
-Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
-Sitz: Berlin
-Ust-ID: DE 289 237 879
-
-
+2.38.1
 
