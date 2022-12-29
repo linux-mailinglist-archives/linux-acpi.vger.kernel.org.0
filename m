@@ -2,459 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4582659015
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Dec 2022 19:00:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA3E4659132
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Dec 2022 20:26:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229615AbiL2SAs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Dec 2022 13:00:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38086 "EHLO
+        id S231149AbiL2T0W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Dec 2022 14:26:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229699AbiL2SAr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Dec 2022 13:00:47 -0500
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F001313
-        for <linux-acpi@vger.kernel.org>; Thu, 29 Dec 2022 10:00:44 -0800 (PST)
-Received: by mail-wm1-x32d.google.com with SMTP id m26-20020a05600c3b1a00b003d9811fcaafso7174059wms.5
-        for <linux-acpi@vger.kernel.org>; Thu, 29 Dec 2022 10:00:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0bnRFOtera/4Ai8XY9VXDNmw2ZETDuwKCzUgDJzLzns=;
-        b=aS9QRK9h8BSd/H2DZeb0wrji/oEisoLg6mAYuNNOEOitrJVGk4t/l57o/rShSX5bS1
-         gBEs4qyz1ZFQGgu2RbmM1Tre3j0TUOIDvtbto4VrW+EJYYvG/AHws9+vTz6VTtmEySVK
-         SJRYcOGuaOqBLTrmcJU33bo7b/97ERO/3faPgg5V0KurGJMYYbbnOn127fA/XDDuhKsX
-         LNfTAvqCIFY5lO3nXL0mishSSzo5igucdZRv4X6Gh2IIaYRsindb+lxIwFgZGYF7XoY4
-         GVKztDSn543NizgVGMA7Gr6VPIBBah2nTQTxUsN9Czgn8iYzXNwaM1TWmrycn28dZ1y7
-         2ZyQ==
+        with ESMTP id S229535AbiL2T0V (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Dec 2022 14:26:21 -0500
+Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0304312AA2;
+        Thu, 29 Dec 2022 11:26:21 -0800 (PST)
+Received: by mail-io1-f49.google.com with SMTP id i83so10120044ioa.11;
+        Thu, 29 Dec 2022 11:26:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0bnRFOtera/4Ai8XY9VXDNmw2ZETDuwKCzUgDJzLzns=;
-        b=NU6iLNpM3Fn39zPnXGoVjY8hhBGBCsc6cBgwNv91GQUIJw1iHqw/mad8Os0gDubPY3
-         u0+dprvwiI4hkVU9FVUwVAUcBGKwpsJdeaOo8nS6JSGlR5sbIWl6JD1c9ek1CQKnI1FJ
-         2MSaI2thzBTk4CNuFskm/eGcl7osYXW6nI8qYpOwoUIl72qmHUeEeSWhRQiURQ8UKLko
-         KkLeEa21zoN8LVHIQMJt5pklqLt5UuDKcnjvqOiGUH1q3hT8Fmx6+mmw8RYUHLrItW/B
-         A0lO7s43NgIp0r+eNWD6PD4k3j2aM4HtDfcNETWz5xwCZSxiatYIByp0inTvSjUvpLZS
-         8r3A==
-X-Gm-Message-State: AFqh2krlIXS1uLYPgabv/cnC6hFxFtCKlPDuQJfzjtvWyr187/XehEhR
-        Vx2rGM+mZdat0POP/NMc+zLxPg==
-X-Google-Smtp-Source: AMrXdXvOUVzfSXMefQYKAU9R4QRh3+fb8PF3hR1HTvnmyBkvD/FllJJNib9Ei5eCwLQCFVEAVK8LwA==
-X-Received: by 2002:a05:600c:21c1:b0:3d3:45c6:b641 with SMTP id x1-20020a05600c21c100b003d345c6b641mr21184064wmj.22.1672336842514;
-        Thu, 29 Dec 2022 10:00:42 -0800 (PST)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id n25-20020a7bc5d9000000b003d969a595fbsm25393250wmk.10.2022.12.29.10.00.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Dec 2022 10:00:42 -0800 (PST)
-Message-ID: <9a500c88-2f1b-f7cd-a2ce-d12305c27d0a@linaro.org>
-Date:   Thu, 29 Dec 2022 19:00:41 +0100
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=96swl6SBp+iRyjcWKsO/bgYdGhEEyZ7jRkRVKCzJmJk=;
+        b=fdKTNdPVOBepco6nv3uEAsCFFERupaUvDVX858ZK91t7Oe34XK0hduVhMLW21VH+4D
+         aBUI/MQQUXloczNZMU7gsBR83VMWZYe1DEaF7GOaRn4fOeH5T6N2uv0OhiDBWIkLVjqd
+         RVTLs3sHJ1NmoOt+E9xhRB3VLFwttodRyzgRgPXkbnaaG7Q51aIczZJI/0j5Fk3nubyp
+         WPX71UzviJpxrNtvYQC0shFM4Zx/oT5uUQIkXEIVDCamkRbRoubS6fdWzJ7iELkVHKGd
+         jCrbpehXVJ41wLmrcHU/PoeiLm0XQZf1OEGs5hE6zseRx160AqJqJFD36jtzaRcqGNb1
+         KyKg==
+X-Gm-Message-State: AFqh2koAOgCpK3ZaYzWwsp0fR28ZaFgMHFrPc+cXhQzaEOqVfnzwYsLU
+        qjCgN7heGkB3aJHHqf2FTy9obMgiXJxx6FZhd88=
+X-Google-Smtp-Source: AMrXdXug5nzJqTiSBaZlx0Ltj5ScsXErS+NOcnzdRiPgRut+i2hNmOhohpwnNYeoRje1Nu/W3DqNAERoEMjMk7P0kBc=
+X-Received: by 2002:a02:9707:0:b0:396:2348:340e with SMTP id
+ x7-20020a029707000000b003962348340emr2793714jai.195.1672341980204; Thu, 29
+ Dec 2022 11:26:20 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [RFC PATCH] thermal/acpi: Add ACPI trip point routines
-Content-Language: en-US
-To:     rafael@kernel.org
-Cc:     srinivas.pandruvada@linux.intel.com, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>
-References: <20221221183840.2352014-1-daniel.lezcano@kernel.org>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20221221183840.2352014-1-daniel.lezcano@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
+References: <12138067.O9o76ZdvQC@kreacher> <12124970.O9o76ZdvQC@kreacher> <mafs0sfgybc3q.fsf_-_@amazon.de>
+In-Reply-To: <mafs0sfgybc3q.fsf_-_@amazon.de>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 29 Dec 2022 20:26:07 +0100
+Message-ID: <CAJZ5v0hAjKvinPqX2VuCv1jVu50jrnDpECaO=sA2CQZFHZpJdA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] ACPI: processor: perflib: Use the "no limit"
+ frequency QoS
+To:     Pratyush Yadav <ptyadav@amazon.de>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Thu, Dec 29, 2022 at 1:58 PM Pratyush Yadav <ptyadav@amazon.de> wrote:
+>
+> Hi Rafael,
+>
+> On Wed, Dec 28 2022, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > When _PPC returns 0, it means that the CPU frequency is not limited by
+> > the platform firmware, so make acpi_processor_get_platform_limit()
+> > update the frequency QoS request used by it to "no limit" in that case.
+> >
+> > This addresses a problem with limiting CPU frequency artificially on
+> > some systems after CPU offline/online to the frequency that corresponds
+> > to the first entry in the _PSS return package.
+> >
+> > Reported-by: Pratyush Yadav <ptyadav@amazon.de>
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >
+> > v1 -> v2:
+> >    * Move some changes into a separate patch
+> >    * Update the changelog accordingly
+> >
+> > ---
+> >  drivers/acpi/processor_perflib.c |   20 ++++++++++++++++----
+> >  1 file changed, 16 insertions(+), 4 deletions(-)
+> >
+> > Index: linux-pm/drivers/acpi/processor_perflib.c
+> > ===================================================================
+> > --- linux-pm.orig/drivers/acpi/processor_perflib.c
+> > +++ linux-pm/drivers/acpi/processor_perflib.c
+> > @@ -53,6 +53,8 @@ static int acpi_processor_get_platform_l
+> >  {
+> >         acpi_status status = 0;
+> >         unsigned long long ppc = 0;
+> > +       s32 qos_value;
+> > +       int index;
+> >         int ret;
+> >
+> >         if (!pr)
+> > @@ -72,17 +74,27 @@ static int acpi_processor_get_platform_l
+> >                 }
+> >         }
+> >
+> > +       index = ppc;
+> > +
+> >         pr_debug("CPU %d: _PPC is %d - frequency %s limited\n", pr->id,
+> > -                      (int)ppc, ppc ? "" : "not");
+> > +                index, index ? "is" : "is not");
+> >
+> > -       pr->performance_platform_limit = (int)ppc;
+> > +       pr->performance_platform_limit = index;
+> >
+> >         if (ppc >= pr->performance->state_count ||
+> >             unlikely(!freq_qos_request_active(&pr->perflib_req)))
+> >                 return 0;
+> >
+> > -       ret = freq_qos_update_request(&pr->perflib_req,
+> > -                       pr->performance->states[ppc].core_frequency * 1000);
+> > +       /*
+> > +        * If _PPC returns 0, it means that all of the available states can be
+> > +        * used ("no limit").
+> > +        */
+> > +       if (index == 0)
+> > +               qos_value = FREQ_QOS_MAX_DEFAULT_VALUE;
+>
+> One small thing I noticed: in acpi_processor_ppc_init() "no limit" value
+> is set to INT_MAX and here it is set to FREQ_QOS_MAX_DEFAULT_VALUE. Both
+> should evaluate to the same value but I think it would be nice if the
+> same thing is used in both places. Perhaps you can fix that up when
+> applying?
 
-Hi all,
+Yes, I'll do that.
 
-does this patch to convert ACPI trip points description into generic 
-structure as the thermal device tree parsing makes sense ?
+> Other than this,
+>
+> Reviewed-by: Pratyush Yadav <ptyadav@amazon.de>
+> Tested-by: Pratyush Yadav <ptyadav@amazon.de>
 
+Thanks!
 
-On 21/12/2022 19:38, Daniel Lezcano wrote:
-> From: Daniel Lezcano <daniel.lezcano@linaro.org>
-> 
-> The ACPI specification describes the trip points, the device tree
-> bindings as well.
-> 
-> The OF code uses the generic trip point structures.
-> 
-> The ACPI has their own trip points structure and uses the get_trip_*
-> ops to retrieve them.
-> 
-> We can do the same as the OF code and create a set of ACPI functions
-> to retrieve a trip point description. Having a common code for ACPI
-> will help to cleanup the remaining Intel drivers and get rid of the
-> get_trip_* functions.
-> 
-> These changes add the ACPI thermal calls to retrieve the basic
-> information we need to be reused in the thermal ACPI and Intel
-> drivers.
-> 
-> It does not depend on any material.
-> 
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
-> ---
->   drivers/thermal/Kconfig        |  13 ++
->   drivers/thermal/Makefile       |   1 +
->   drivers/thermal/thermal_acpi.c | 267 +++++++++++++++++++++++++++++++++
->   include/linux/thermal.h        |  16 ++
->   4 files changed, 297 insertions(+)
->   create mode 100644 drivers/thermal/thermal_acpi.c
-> 
-> diff --git a/drivers/thermal/Kconfig b/drivers/thermal/Kconfig
-> index e052dae614eb..e57011be7009 100644
-> --- a/drivers/thermal/Kconfig
-> +++ b/drivers/thermal/Kconfig
-> @@ -76,6 +76,19 @@ config THERMAL_OF
->   	  Say 'Y' here if you need to build thermal infrastructure
->   	  based on device tree.
->   
-> +config THERMAL_ACPI
-> +	bool
-> +	prompt "APIs to parse thermal data out of the ACPI tables"
-> +	depends on ACPI
-> +	default y
-> +	help
-> +	  This options provides helpers to add the support to
-> +	  read and parse thermal data definitions out of the
-> +	  ACPI tables blob.
-> +
-> +	  Say 'Y' here if you need to build thermal infrastructure
-> +	  based on ACPI.
-> +
->   config THERMAL_WRITABLE_TRIPS
->   	bool "Enable writable trip points"
->   	help
-> diff --git a/drivers/thermal/Makefile b/drivers/thermal/Makefile
-> index 2506c6c8ca83..60f0dfa9aae2 100644
-> --- a/drivers/thermal/Makefile
-> +++ b/drivers/thermal/Makefile
-> @@ -13,6 +13,7 @@ thermal_sys-$(CONFIG_THERMAL_NETLINK)		+= thermal_netlink.o
->   # interface to/from other layers providing sensors
->   thermal_sys-$(CONFIG_THERMAL_HWMON)		+= thermal_hwmon.o
->   thermal_sys-$(CONFIG_THERMAL_OF)		+= thermal_of.o
-> +thermal_sys-$(CONFIG_THERMAL_ACPI)		+= thermal_acpi.o
->   
->   # governors
->   thermal_sys-$(CONFIG_THERMAL_GOV_FAIR_SHARE)	+= gov_fair_share.o
-> diff --git a/drivers/thermal/thermal_acpi.c b/drivers/thermal/thermal_acpi.c
-> new file mode 100644
-> index 000000000000..4e18073f8817
-> --- /dev/null
-> +++ b/drivers/thermal/thermal_acpi.c
-> @@ -0,0 +1,267 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright 2022 Linaro Limited
-> + *
-> + * Author: Daniel Lezcano <daniel.lezcano@linaro.org>
-> + *
-> + * ACPI thermal configuration
-> + */
-> +#include <linux/acpi.h>
-> +#include <linux/module.h>
-> +#include <linux/kernel.h>
-> +#include <linux/units.h>
-> +#include <uapi/linux/thermal.h>
-> +
-> +#include "thermal_core.h"
-> +
-> +int thermal_acpi_trip_gtsh(struct acpi_device *adev)
-> +{
-> +	unsigned long long hyst;
-> +	acpi_status status;
-> +
-> +	status = acpi_evaluate_integer(adev->handle, "GTSH", NULL, &hyst);
-> +	if (ACPI_FAILURE(status))
-> +		return 0;
-> +
-> +	return (int)(hyst * 100);
-> +}
-> +
-> +int thermal_acpi_get_tzd(struct acpi_device *adev, struct acpi_handle_list *devices)
-> +{
-> +	acpi_status status;
-> +
-> +	/*
-> +	 * _TZD (Thermal zone device): This optional object evaluates
-> +	 * to a package of device names. Each name corresponds to a
-> +	 * device in the ACPI namespace that is associated with the
-> +	 * thermal zone. The temperature reported by the thermal zone
-> +	 * is roughly correspondent to that of each of the devices.
-> +	 */
-> +	status = acpi_evaluate_reference(adev->handle, "_TZD", NULL, devices);
-> +	if (ACPI_FAILURE(status))
-> +		return -EIO;
-> +
-> +	return 0;
-> +}
-> +
-> +int thermal_acpi_get_temp(struct acpi_device *adev, int *temperature)
-> +{
-> +	unsigned long long temp;
-> +	acpi_status status;
-> +
-> +	/*
-> +	 * _TMP (Temperature): This control method returns the thermal zone’s
-> +	 * current operating temperature. The return value is the current
-> +	 * temperature of the thermal zone in tenths of degrees Kelvin
-> +	 */
-> +	status = acpi_evaluate_integer(adev->handle, "_TMP", NULL, &temp);
-> +	if (ACPI_FAILURE(status))
-> +		return -EIO;
-> +
-> +	*temperature = deci_kelvin_to_millicelsius(temp);
-> +	
-> +	return 0;
-> +}
-> +
-> +int thermal_acpi_trip_crit(struct acpi_device *adev, struct thermal_trip *trip)
-> +{
-> +	unsigned long long temp;
-> +	acpi_status status;
-> +
-> +	/*
-> +	 * _CRT (Critical temperature): This object, when defined under a thermal
-> +	 * zone, returns the critical temperature at which OSPM must shutdown
-> +	 * the system. If this object it present under a device, the device’s
-> +	 * driver evaluates this object to determine the device’s critical cooling
-> +	 * temperature trip point. This value may then be used by the device’s
-> +	 * driver to program an internal device temperature sensor trip point
-> +         */
-> +	status = acpi_evaluate_integer(adev->handle, "_CRT", NULL, &temp);
-> +	if (ACPI_FAILURE(status))
-> +		return -EIO;
-> +
-> +	trip->hysteresis = thermal_acpi_trip_gtsh(adev);
-> +	trip->temperature = deci_kelvin_to_millicelsius(temp);
-> +	trip->type = THERMAL_TRIP_CRITICAL;
-> +
-> +	return 0;
-> +}
-> +
-> +int thermal_acpi_trip_hot(struct acpi_device *adev, struct thermal_trip *trip)
-> +{
-> +	unsigned long long temp;
-> +	acpi_status status;
-> +
-> +	/*
-> +	 * _HOT (Hot Temperature): This optional object, when defined under a
-> +	 * thermal zone, returns the critical temperature at which OSPM may
-> +	 * choose to transition the system into the S4 sleeping state. The
-> +	 * platform vendor should define _HOT to be far enough below _CRT so as
-> +	 * to allow OSPM enough time to transition the system into the S4
-> +	 * sleeping state. While dependent on the amount of installed memory,
-> +	 * on typical platforms OSPM implementations can transition the system
-> +	 * into the S4 sleeping state in tens of seconds. If this object it
-> +	 * present under a device, the device’s driver evaluates this object to
-> +	 * determine the device’s hot cooling temperature trip point. This value
-> +	 * may then be used by the device’s driver to program an internal device
-> +	 * temperature sensor trip point.
-> +	 */
-> +	status = acpi_evaluate_integer(adev->handle, "_HOT", NULL, &temp);
-> +	if (ACPI_FAILURE(status))
-> +		return -EIO;
-> +
-> +	trip->hysteresis = thermal_acpi_trip_gtsh(adev);
-> +	trip->temperature = deci_kelvin_to_millicelsius(temp);
-> +	trip->type = THERMAL_TRIP_HOT;
-> +
-> +	return 0;
-> +}
-> +
-> +int thermal_acpi_trip_psv_psl(struct acpi_device *adev, struct acpi_handle_list *devices)
-> +{
-> +	acpi_status status;
-> +
-> +	/*
-> +	 * _PSL (Passive List): This object is defined under a thermal zone and
-> +	 *  evaluates to a list of processor objects to be used for passive cooling
-> +	 */
-> +	status = acpi_evaluate_reference(adev->handle, "_PSL", NULL, devices);
-> +	if (ACPI_FAILURE(status))
-> +		return -EIO;
-> +
-> +	return 0;
-> +}
-> +
-> +int thermal_acpi_trip_psv_tsp(struct acpi_device *adev)
-> +{
-> +	acpi_status status;
-> +	unsigned long long tsp;
-> +	
-> +	/*
-> +	 * _TSP (Thermal Sampling Period): This object evaluates to a thermal
-> +	 * sampling period (in tenths of seconds) used by OSPM to implement the
-> +	 * Passive cooling equation. This value, along with _TC1 and _TC2, will
-> +	 * enable OSPM to provide the proper hysteresis required by the system
-> +	 * to accomplish an effective passive cooling policy.
-> +	 */
-> +	status = acpi_evaluate_integer(adev->handle, "_TSP", NULL, &tsp);
-> +	if (ACPI_FAILURE(status))
-> +		return -EIO;
-> +
-> +	return (int)tsp;
-> +}
-> +
-> +int thermal_acpi_trip_psv_tc1(struct acpi_device *adev)
-> +{
-> +	acpi_status status;
-> +	unsigned long long tc1;
-> +
-> +	/*
-> +	 * _TC1 (Thermal Constant 1): This object evaluates to the constant _TC1
-> +	 * for use in the Passive cooling formula
-> +	 */
-> +	status = acpi_evaluate_integer(adev->handle, "_TC1", NULL, &tc1);
-> +	if (ACPI_FAILURE(status))
-> +		return -EINVAL;
-> +
-> +	return (int)tc1;
-> +}
-> +
-> +int thermal_acpi_trip_psv_tc2(struct acpi_device *adev)
-> +{
-> +	acpi_status status;
-> +	unsigned long long tc2;
-> +	
-> +	/*
-> +	 * _TC2 (Thermal Constant 1): This object evaluates to the constant _TC2
-> +	 * for use in the Passive cooling formula
-> +	 */
-> +	status = acpi_evaluate_integer(adev->handle, "_TC2", NULL, &tc2);
-> +	if (ACPI_FAILURE(status))
-> +		return -EINVAL;
-> +
-> +	return (int)tc2;
-> +}
-> +
-> +int thermal_acpi_trip_psv(struct acpi_device *adev, struct thermal_trip *trip)
-> +{
-> +	unsigned long long temp;
-> +	acpi_status status;
-> +
-> +	/*
-> +	 * _PSV (Passive): This optional object, if present under a thermal zone,
-> +	 * evaluates to the temperature at which OSPM must activate passive
-> +	 * cooling policy
-> +	 */
-> +	status = acpi_evaluate_integer(adev->handle, "_PSV", NULL, &temp);
-> +	if (ACPI_FAILURE(status))
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * The _PSL, _TSP, _TC1 and _TC2 are required if the _PSV object exists.
-> +	 * We assume the caller will raise an error if it was able to get the _PSV
-> +	 * but then fail to get the other objects.
-> +	 */
-> +	trip->hysteresis = thermal_acpi_trip_gtsh(adev);
-> +	trip->temperature = deci_kelvin_to_millicelsius(temp);
-> +	trip->type = THERMAL_TRIP_PASSIVE;
-> +
-> +	return 0;
-> +}
-> +
-> +int thermal_acpi_trip_acl(struct acpi_device *adev,
-> +			  struct acpi_handle_list *devices, int id)
-> +{
-> +	acpi_status status;
-> +	char name[5];	
-> +
-> +	/*
-> +	 * _ALx: This object is defined under a thermal zone and evaluates to a
-> +	 * list of Active cooling devices to be turned on when the corresponding
-> +	 * _ACx temperature threshold is exceeded. For example, these devices
-> +	 * could be fans.
-> +	 */
-> +	sprintf(name, "_AL%d", id);
-> +
-> +	status = acpi_evaluate_reference(adev->handle, name, NULL, devices);
-> +	if (ACPI_FAILURE(status))
-> +		return -EINVAL;
-> +
-> +	return 0;
-> +}
-> +
-> +int thermal_acpi_trip_act(struct acpi_device *adev,
-> +			  struct thermal_trip *trip, int id)
-> +{
-> +	acpi_status status;
-> +	unsigned long long temp;
-> +	char name[5];	
-> +
-> +	/*
-> +	 * _ACx: This optional object, if present under a thermal zone, returns
-> +	 * the temperature trip point at which OSPM must start or stop active
-> +	 * cooling, where x is a value between 0 and 9 that designates multiple
-> +	 * active cooling levels of the thermal zone. If the Active cooling
-> +	 * device has one cooling level (that is, “on”) then that cooling level
-> +	 * must be defined as _AC0. If the cooling device has two levels of
-> +	 * capability, such as a high fan speed and a low fan speed, then they
-> +	 * must be defined as _AC0 and _AC1 respectively. The smaller the value
-> +	 * of x, the greater the cooling strength _ACx represents. In the above
-> +	 * example, _AC0 represents the greater level of cooling (the faster fan
-> +	 * speed) and _AC1 represents the lesser level of cooling (the slower
-> +	 * fan speed). For every _ACx method, there must be a matching _ALx
-> +	 * object or a corresponding entry in an _ART object’s active cooling
-> +	 * relationship list.
-> +	 */
-> +	sprintf(name, "_AC%d", id);
-> +
-> +	status = acpi_evaluate_integer(adev->handle, name, NULL, &temp);
-> +	if (ACPI_FAILURE(status))
-> +		return -EINVAL;
-> +
-> +	trip->hysteresis = thermal_acpi_trip_gtsh(adev);
-> +	trip->temperature = deci_kelvin_to_millicelsius(temp);
-> +	trip->type = THERMAL_TRIP_ACTIVE;
-> +
-> +	return 0;
-> +}
-> diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-> index e2797f314d99..67608a3a62d3 100644
-> --- a/include/linux/thermal.h
-> +++ b/include/linux/thermal.h
-> @@ -334,6 +334,22 @@ static inline void devm_thermal_of_zone_unregister(struct device *dev,
->   }
->   #endif
->   
-> +#ifdef CONFIG_ACPI
-> +struct acpi_handle_list;
-> +int thermal_acpi_get_temp(struct acpi_device *adev, int *temperature);
-> +int thermal_acpi_trip_crit(struct acpi_device *adev, struct thermal_trip *trip);
-> +int thermal_acpi_trip_hot(struct acpi_device *adev, struct thermal_trip *trip);
-> +int thermal_acpi_trip_psv(struct acpi_device *adev, struct thermal_trip *trip);
-> +int thermal_acpi_trip_act(struct acpi_device *adev, struct thermal_trip *trip, int id);
-> +int thermal_acpi_trip_acl(struct acpi_device *adev, struct acpi_handle_list *devices, int id);
-> +int thermal_acpi_trip_psv_psl(struct acpi_device *adev, struct acpi_handle_list *devices);
-> +int thermal_acpi_trip_psv_tsp(struct acpi_device *adev);
-> +int thermal_acpi_trip_psv_tc1(struct acpi_device *adev);
-> +int thermal_acpi_trip_psv_tc2(struct acpi_device *adev);
-> +int thermal_acpi_trip_gtsh(struct acpi_device *adev);
-> +int thermal_acpi_get_tzd(struct acpi_device *adev, struct acpi_handle_list *devices);
-> +#endif
-> +
->   int thermal_zone_get_trip(struct thermal_zone_device *tz, int trip_id,
->   			  struct thermal_trip *trip);
->   
+> Thanks for working on this.
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
-
+You're welcome.
