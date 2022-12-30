@@ -2,74 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED22C659B85
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Dec 2022 19:51:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C766659E3E
+	for <lists+linux-acpi@lfdr.de>; Sat, 31 Dec 2022 00:28:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235441AbiL3SvF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Dec 2022 13:51:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33656 "EHLO
+        id S229681AbiL3X2k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Dec 2022 18:28:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235408AbiL3SvF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Dec 2022 13:51:05 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B02E25F85;
-        Fri, 30 Dec 2022 10:51:03 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 080AFCE1752;
-        Fri, 30 Dec 2022 18:51:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 484AAC433EF;
-        Fri, 30 Dec 2022 18:51:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672426260;
-        bh=1gkjexlbXixD/Ce8m9KezHD+yhOtdTHY76LnIQuHK9o=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=PjMP7l74/gH0jQwNw8DM5o31c5fQ2WSLCjA5f1pgVfUq3g+EgmcWr/evqxAz7R9fO
-         dkpff5MFeK8rxWb27pY+YYnKPDPlPOm9rZ0G6PY7jVYMOpnnjzvzgu1upAopGbiAY1
-         Q0/b1HxHlFH6mRUcLV77dWQ2YNkK1zzMRs+Zn9rvpBU99OxPgb32cp3dfwqunW8XDX
-         fcm8yHvzl1vi+Xb+fyvz0A33fKaL++WhqphCvcvNFbHAuRDGXZcn9K9/EWm8yRI/yL
-         drz56D8WlXICaRMa4mXY1fhwOPZkDrCxLodNE1OTWv97dcwrhnnv8lcZLgFa7vk0Io
-         sy3/mYgm9RFYg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 3172EC395DF;
-        Fri, 30 Dec 2022 18:51:00 +0000 (UTC)
-Subject: Re: [GIT PULL] ACPI fixes for v6.2-rc2
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0iP4EgejNBO8EXejaSObSbpeuOh+vTz8CAvfu8bMXXTOQ@mail.gmail.com>
-References: <CAJZ5v0iP4EgejNBO8EXejaSObSbpeuOh+vTz8CAvfu8bMXXTOQ@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-pm.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0iP4EgejNBO8EXejaSObSbpeuOh+vTz8CAvfu8bMXXTOQ@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.2-rc2
-X-PR-Tracked-Commit-Id: 0948a9ef1d59d1bc7fae29f32058e463bbff4a6c
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: c8451c141e07a8d05693f6c8d0e418fbb4b68bb7
-Message-Id: <167242626019.31406.3835683663655257393.pr-tracker-bot@kernel.org>
-Date:   Fri, 30 Dec 2022 18:51:00 +0000
+        with ESMTP id S229938AbiL3X2c (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Dec 2022 18:28:32 -0500
+Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D57FE13D4C;
+        Fri, 30 Dec 2022 15:28:31 -0800 (PST)
+Received: by mail-oi1-x22e.google.com with SMTP id i127so20506466oif.8;
+        Fri, 30 Dec 2022 15:28:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=4IkI6vy8eebK2fwJ2aoil/AxN2eFftPhnKXap/KdveM=;
+        b=XdxM+f3d1DUsLGej44Offnqr5B8TwxtwS2lslLz3sekorPPaK3HVcMqforvpCVZNbj
+         Ce1P+j2/pZHpKBFeMiunlRtQJZL4HVC8Jxj86rsu0LcG46sZS+q9eoEx40NpUiMPMs2z
+         nU5wvUv8auYYXPJv6zixea6eWW3ZOoXZAGzfxx046N3UVMnWqNy7YqarvestStU/Grsw
+         Jx0Hx1z3Qjj4N9W90tjKnKP4ts49V4iCVh9hAwW8ikylOshnJCfOw+t4oSIGF9TPn7D1
+         WPeUNq/eIKgW4L/SbESaWIL+YBvsC4nSaKIe7c8o3J37noRD0FutJwlQj0GDpTF6ZdLi
+         Jj+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4IkI6vy8eebK2fwJ2aoil/AxN2eFftPhnKXap/KdveM=;
+        b=yk0wjCgtl/CiI9hHnyjHAaYr5soEojhRtcXysNkiTAvQXr55FVg9XMLQ3yrI4urQmh
+         Xp85u13VaACMIepxijvyoeg+q6Zmw0fibeB9m3dc4wwybk44UC4Hw2EhIOKA0F0LDTap
+         ToLP9Kby8GN72Ayyw0Z8Fq1Lb3SmpvbjJqX4qlxfVIcke0tUmwQvfSN/vRAM+y0YFmSk
+         yhzYm6s4LOhButt5GLdIHCI6Tgfd6NzzAMwalgzDGalc5k0ObIeBlqR5h9VhUhrHFeUo
+         vvEXkhPZKUGA2qe6rZUq59HfBz8xuI2sFr86IsV7aWd3NmiWJvpJjm1fL2wO1f6C2MGD
+         IjUQ==
+X-Gm-Message-State: AFqh2kr+hD27OvhPyVFCZNKFUwhnS5Md1oNFtWn5FmKDFLWntmb/ioj7
+        Q9K9RMdGAp+j6nkfxX/QUis76lzFpp9EahcGnsj80ByZCEY=
+X-Google-Smtp-Source: AMrXdXuFKQhABZItpKWCjyIMyzhC84k1nK1KJjvORQuidPmiB0EGFzq9zpZHo4M+corWJdxPWjgixVrSBFszfAaoyoo=
+X-Received: by 2002:a05:6808:1904:b0:35e:55de:13ae with SMTP id
+ bf4-20020a056808190400b0035e55de13aemr1625470oib.199.1672442911175; Fri, 30
+ Dec 2022 15:28:31 -0800 (PST)
+MIME-Version: 1.0
+References: <20221227063335.61474-1-zh.nvgt@gmail.com> <CAJZ5v0jmOMHHXvRnDcetDbh+0CySh5ddZJx1g3xTXPzCHokZRg@mail.gmail.com>
+In-Reply-To: <CAJZ5v0jmOMHHXvRnDcetDbh+0CySh5ddZJx1g3xTXPzCHokZRg@mail.gmail.com>
+From:   Hang Zhang <zh.nvgt@gmail.com>
+Date:   Fri, 30 Dec 2022 18:28:20 -0500
+Message-ID: <CAO2zrtbXDdWLhyZkJhisou4zxypxA-Fhpxx1Cop1ZXXf3oUxeA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: custom_method: fix potential use-after-free issues
 To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Fri, 30 Dec 2022 17:34:40 +0100:
+On Fri, Dec 30, 2022 at 1:31 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> On Tue, Dec 27, 2022 at 7:34 AM Hang Zhang <zh.nvgt@gmail.com> wrote:
+> >
+> > cm_write() is the .write callback of the custom_method debugfs
+> > interface, it operates on a global pointer "buf" (e.g., dereference,
+> > allocate, free, and nullification), the problem is that cm_write()
+> > is not protected by any locks, so concurrent invocations of it
+> > may cause use-after-free issues for "buf", e.g., one invocation
+> > may have just freed "buf" while being preempted before nullifying
+> > the pointer, then another invocation can dereference the now dangling
+> > "buf" pointer.
+> >
+> > Fix the issue by protecting the "buf" operations in cm_write() with
+> > the inode write lock. Note that the .llseek callback of the debugfs
+> > interface has been protected by the same lock, this patch basically
+> > introduces it to the .write callback as well.
+>
+> The problem is there, but the whole state is not protected from
+> concurrent use and the fix doesn't look sufficient to me (for example,
+> a different writer may start writing into the file before the previous
+> one has finished and the result will still be broken AFAICS).
+>
+> It looks like the file should be prevented from being opened by more
+> than one writer at a time.
+>
+> Or maybe it's time to drop this interface from the kernel altogether.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.2-rc2
+Hi, Rafael,
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/c8451c141e07a8d05693f6c8d0e418fbb4b68bb7
+Thank you very much for your feedback! We initially intended to bring
+up this potential concurrent UAF issue to the community with this
+tentative patch, but we do not have deep domain knowledge for the
+ACPI subsystem and the bigger picture, so your comment is highly
+valuable to us!
 
-Thank you!
+As far as I can understand, inode_lock is uniquely associated with
+the opened file, e.g., if two writers open the same debugfs file
+and write to it, then inode_lock as used in this patch should be
+able to synchronize their concurrent write because their inode_lock
+are on the same semaphore. Do you mean that this "custom_method"
+driver will handle the .open/.write of multiple different debugfs
+file instances, so that writers accessing different file instances
+will not be properly synchronized with inode_lock? Sorry if I missed
+anything here, and thank you in advance for your explanation!
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+I also think it is a good solution to totally drop this interface
+if the maintainers consider it appropriate (I do not have
+the knowledge to assess the role this interface plays, though).
+Thank you for your help!
