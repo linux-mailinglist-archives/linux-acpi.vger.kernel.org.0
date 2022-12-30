@@ -2,84 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AB266593F8
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Dec 2022 02:08:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F30B659548
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Dec 2022 06:59:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230297AbiL3BIM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Dec 2022 20:08:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33270 "EHLO
+        id S234480AbiL3F7l (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Dec 2022 00:59:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbiL3BIL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Dec 2022 20:08:11 -0500
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB2A71705B;
-        Thu, 29 Dec 2022 17:08:09 -0800 (PST)
-Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Njn7n73hjzqTJq;
-        Fri, 30 Dec 2022 09:03:33 +0800 (CST)
-Received: from [10.67.103.231] (10.67.103.231) by
- kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Fri, 30 Dec 2022 09:08:07 +0800
-Message-ID: <c22a11b6-2992-5a6c-3115-4bc7cf65ecfa@huawei.com>
-Date:   Fri, 30 Dec 2022 09:07:59 +0800
+        with ESMTP id S234461AbiL3F7k (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Dec 2022 00:59:40 -0500
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52C21E68
+        for <linux-acpi@vger.kernel.org>; Thu, 29 Dec 2022 21:59:39 -0800 (PST)
+Received: by mail-io1-xd30.google.com with SMTP id y4so10724449iof.0
+        for <linux-acpi@vger.kernel.org>; Thu, 29 Dec 2022 21:59:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fusetak.com; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+yI8IXYC+g9VQSXXRePDAV8T9sfECoiHVCxWFbYMy90=;
+        b=L8FlM01Qw+KPRAq4TQYCzNv9OqjVHphSzOsoBQTg8uYqT5Al8JvAZ63zYrQ3vm8FkG
+         iDt8wlJygbG85G5Zheyj2p9VAy0VBe/zmzMIMZiLbSBneeCXrBLEvloTaNJxur6awAwT
+         3dwBbgn+ro659MhTRaJLNktDJEQFkLYTCqLRdyEj8TmlpfB7Wruh1kS6QEe1iB34UFwI
+         9d4WzBD4+7hdFBPKzEQQDCnnQCS6UxnGmklE91wF4rEY9+PE/hh9rVIzSsvB8QsB+Wry
+         bPEAhUdfTDczcwOwTfE2ILpr72aiYxm1/0/Mox8e2ff3xOhCYix0h1HsFXl+mVAkbrJt
+         WUgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+yI8IXYC+g9VQSXXRePDAV8T9sfECoiHVCxWFbYMy90=;
+        b=EIs21vA8q8CM5wV03osXqooldT5SYJmGFhq+0ijdVKYt+uZEzKDp6y5l60Ms+IFRgC
+         FIYGkN1kJEw9Roo4vyHc48naLAp7r0Ugv6x51VxYscMOrDcfjD5YwZKx1WIHjxIyC5WU
+         TZpKFEPB/PQLYXdc1sxEkTw2Uhsy7GXRzybkkhr6BQM4GQgiXOsvgBJ+6qMp+MVFsGUc
+         7Q2ycU+wkIjML8Y1AP1rK/z/0OaYVyXSt+0RAU+N9uH3rB4rPCmYrVj30EcGQcz38gKO
+         jsUBHFS6Pd654hquS5petV6g5P2r0hF8RLY6zne9crkC4gh+iRuJraZeYK1jiVGVweXT
+         OujQ==
+X-Gm-Message-State: AFqh2koGrvg1rTBOCdjGdpmLfTCOzfolOS2GrVnbQsOaKRdXkif0Krw4
+        +wYG+hVs+F+XdfPZ8Fescnrhnrsld5vSJVZAQwLjKw==
+X-Google-Smtp-Source: AMrXdXuM4etmGmDpYZ0xl/zWaBGf+MDv8vaf/sF8eU6r33RNdz7gKwKotRJ9yx5DUxVI0nm1uMf+cA==
+X-Received: by 2002:a6b:6310:0:b0:6d6:4daf:623f with SMTP id p16-20020a6b6310000000b006d64daf623fmr19420602iog.6.1672379978278;
+        Thu, 29 Dec 2022 21:59:38 -0800 (PST)
+Received: from fusetakDesktop.internal.fusetak.net ([99.247.2.235])
+        by smtp.gmail.com with ESMTPSA id u4-20020a02cb84000000b003762308fe54sm6558942jap.93.2022.12.29.21.59.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Dec 2022 21:59:37 -0800 (PST)
+From:   Tamim Khan <tamim@fusetak.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     rafael@kernel.org, lenb@kernel.org, linux-kernel@vger.kernel.org,
+        Tamim Khan <tamim@fusetak.com>, zelenat <zelenat@gmail.com>
+Subject: [PATCH] ACPI: resource: Skip IRQ override on Asus Expertbook B2402CBA
+Date:   Fri, 30 Dec 2022 00:58:39 -0500
+Message-Id: <20221230055839.80885-1-tamim@fusetak.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [RFC-V3 0/2] mailbox: pcc: Support platform notification for
- type4 and shared interrupt
-From:   "lihuisong (C)" <lihuisong@huawei.com>
-To:     <robbiek@xsightlabs.com>, <sudeep.holla@arm.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <rafael@kernel.org>, <rafael.j.wysocki@intel.com>,
-        <wanghuiqiang@huawei.com>, <zhangzekun11@huawei.com>,
-        <wangxiongfeng2@huawei.com>, <tanxiaofei@huawei.com>,
-        <guohanjun@huawei.com>, <xiexiuqi@huawei.com>,
-        <wangkefeng.wang@huawei.com>, <huangdaode@huawei.com>
-References: <20221016034043.52227-1-lihuisong@huawei.com>
- <20221203095150.45422-1-lihuisong@huawei.com>
- <ef705471-0dd3-fef1-68df-6a5761410946@huawei.com>
-In-Reply-To: <ef705471-0dd3-fef1-68df-6a5761410946@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.103.231]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemm600004.china.huawei.com (7.193.23.242)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Kindly ping...
+Like the Asus Expertbook B2502CBA and various Asus Vivobook laptops,
+the Asus Expertbook B2402CBA has an ACPI DSDT table that describes IRQ 1
+as ActiveLow while the kernel overrides it to Edge_High. This prevents the 
+keyboard from working. To fix this issue, add this laptop to the 
+skip_override_table so that the kernel does not override IRQ 1.
 
-在 2022/12/14 10:57, lihuisong (C) 写道:
-> Hi Sudeep,
->
-> Can you take a look? This patch series works well for type3 and type4.
->
-> /Huisong Li
->
-> 在 2022/12/3 17:51, Huisong Li 写道:
->> PCC supports processing platform notification for slave subspaces and
->> shared interrupt for multiple subspaces.
->>
->> ---
->>   -v3: split V2 into two patches.
->>   -v2: don't use platform interrupt ack register to identify if the 
->> given
->>        channel should respond interrupt.
->>
->> Huisong Li (2):
->>    mailbox: pcc: Add processing platform notification for slave 
->> subspaces
->>    mailbox: pcc: Support shared interrupt for multiple subspaces
->>
->>   drivers/mailbox/pcc.c | 123 ++++++++++++++++++++++++++++++++++++++----
->>   1 file changed, 114 insertions(+), 9 deletions(-)
->>
-> .
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216864
+Tested-by: zelenat <zelenat@gmail.com>
+Signed-off-by: Tamim Khan <tamim@fusetak.com>
+---
+This patch is very similar to 7203481fd12b1257938519efb2460ea02b9236ee
+(ACPI: resource: Add Asus ExpertBook B2502 to Asus quirks) and just adds
+another ExpertBook that has the same IRQ override problem to the quirks list.
+
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 16dcd31d124f..153e3f8b446f 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -432,6 +432,13 @@ static const struct dmi_system_id asus_laptop[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
+ 		},
+ 	},
++	{
++		.ident = "Asus ExpertBook B2402CBA",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "B2402CBA"),
++		},
++	},
+ 	{
+ 		.ident = "Asus ExpertBook B2502",
+ 		.matches = {
+-- 
+2.38.1
+
