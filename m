@@ -2,58 +2,46 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CC68659A36
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Dec 2022 16:52:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41E71659A9C
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Dec 2022 17:35:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234929AbiL3Pwy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Dec 2022 10:52:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59758 "EHLO
+        id S235243AbiL3QfI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Dec 2022 11:35:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229527AbiL3Pwx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Dec 2022 10:52:53 -0500
-Received: from mail-io1-f43.google.com (mail-io1-f43.google.com [209.85.166.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6D85178BE;
-        Fri, 30 Dec 2022 07:52:52 -0800 (PST)
-Received: by mail-io1-f43.google.com with SMTP id i83so11263601ioa.11;
-        Fri, 30 Dec 2022 07:52:52 -0800 (PST)
+        with ESMTP id S235240AbiL3Qey (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Dec 2022 11:34:54 -0500
+Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DCF21C413;
+        Fri, 30 Dec 2022 08:34:52 -0800 (PST)
+Received: by mail-io1-f46.google.com with SMTP id q190so11329824iod.10;
+        Fri, 30 Dec 2022 08:34:52 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IMhrVDylLdSSZiiGal6d5OdoolcBpjlvVV/YDpmQ7VU=;
-        b=Ziao3QSV6HLqXT5s8OmszhM5Am86trE6Xo9QP9Wplr36PwL+CPVa32w/XvqOFH9JA7
-         4LE+PAd6Wp3IopDyqFPM29E8nqPym2JaEsBLVuTVBDSFCjq3fn4FxHehcl5+TSg6prtV
-         nzUrc3wMBoHyYq8J5FNjA5PGpeFVkmfUCrNgkjebGK8Mf0jWcG5H3BsHdLkM3sQtYDiT
-         iJCftmiTs8b3WmzHYnKIwLkV2LqimmUFfHUuHv9PKJ8+KAGrK3AEK141lWzxH91GRhPK
-         YD5rOkJwoFCvT96Ggu/Vsx4zk1+Uceg9hXXjJcch//B0BF7528OzHWrm5frtsp/h7LEC
-         a4FA==
-X-Gm-Message-State: AFqh2kqq5YiYCyZMEWmI3lJKvEBJXPfaYlRcUJt9fqVhMyQZTLOJoFmU
-        oxg2EWzClSwNQZEQ9yFzR4rosBsEInTv0LoD5BSrYTP2
-X-Google-Smtp-Source: AMrXdXvpAT6YjQ1nFxmbN0JScsZwmWSZj8k0RnFLb5ZBFiFYx+MhcFMACLWS+pIETR4njRRbXgw/tFMgL5UNRgb5+WA=
-X-Received: by 2002:a05:6638:8d:b0:38a:3357:8a4 with SMTP id
- v13-20020a056638008d00b0038a335708a4mr2559982jao.53.1672415572137; Fri, 30
- Dec 2022 07:52:52 -0800 (PST)
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JZa9jFc0rYlW/9i71Z6myIIyNiNlltKYl5kYSw6SvQs=;
+        b=W/K5zN95VhjSS6SB5s/k8+eVWfqx2bEOG940beJ1j469HdaGZ78WAxR2IHF5I+/FOf
+         /K5GkFDiaYuNf2JmeUX9gAnvEh72nzlO5LHqkOFup8RkXXYgxcb37cpNhjT1odHxzqkL
+         d0ikjRki135XKek9oGA3+3all4tsrgE7L5JRFFRYqOoM/vJqaPv6A291o45rUkGUaGP0
+         i4gBuT8EPoYNAGJpVFKz4AvovDEZ7tLzO3z4fJZDzhkPAFDzScOkKAI7NVCh5f6+Z+jV
+         QKGnirTQjQxqnBIX/Nkj4apuKMJJVDg1LAI0Wtc4F2iY69ZbpwkiDdV6uQBOtvTgjCox
+         2blw==
+X-Gm-Message-State: AFqh2koknlxMvnDDVPauxd9n0/kRq5tyKu3J1CEZ0/Bc3XblsJuDLFK3
+        Suzd4kv6K+NQz8QDmarFT2vQJkdhETNcl6mlcXZ8beoKmOc=
+X-Google-Smtp-Source: AMrXdXvEShAMrQSZAI4E82NI7DN4CJwEfGZ2mIXmEQ1/N4IDPgOFOJvUM/AjG3AhxajWllnwwmc0EkUyGkyFsXB+TJQ=
+X-Received: by 2002:a5e:8808:0:b0:6e2:bed4:c2d5 with SMTP id
+ l8-20020a5e8808000000b006e2bed4c2d5mr1850046ioj.177.1672418092227; Fri, 30
+ Dec 2022 08:34:52 -0800 (PST)
 MIME-Version: 1.0
-References: <20221214233106.69b2c01b@gandalf.local.home> <Y5trUep9IvCv1Uwy@google.com>
- <20221215141146.6ceb7cf2@gandalf.local.home> <CAEXW_YQLtK=4LMJ+LHPVWU0wbV-027HJoCEKTjZvBZ6krrn6vw@mail.gmail.com>
- <20221215151333.49af5442@gandalf.local.home>
-In-Reply-To: <20221215151333.49af5442@gandalf.local.home>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 30 Dec 2022 16:52:36 +0100
-Message-ID: <CAJZ5v0iNdLyOpAxsCTTq-zqRfWDrJ5_c2DUcJYE5ZFn7u+2qdQ@mail.gmail.com>
-Subject: Re: [RFC][PATCH] ACPI: tracing: Have ACPI debug go to tracing ring buffer
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     Joel Fernandes <joel@joelfernandes.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux Trace Kernel <linux-trace-kernel@vger.kernel.org>,
-        linux-acpi@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Ross Zwisler <zwisler@google.com>,
-        Ching-lin Yu <chinglinyu@google.com>
+Date:   Fri, 30 Dec 2022 17:34:40 +0100
+Message-ID: <CAJZ5v0iP4EgejNBO8EXejaSObSbpeuOh+vTz8CAvfu8bMXXTOQ@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v6.2-rc2
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -65,35 +53,73 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 15, 2022 at 9:13 PM Steven Rostedt <rostedt@goodmis.org> wrote:
->
-> On Thu, 15 Dec 2022 14:52:48 -0500
-> Joel Fernandes <joel@joelfernandes.org> wrote:
->
-> > Another approach could be to always enable the trace event by default,
-> > if the CONFIG is turned on. Or do a printk() telling the user about
-> > the event to enable, so they know why their trace buffer is empty.
->
-> Yeah, that is another option.
->
-> And, yes I need to document it better. I started to, but then decided to
-> hold off until I get some feedback in case this is rejected.
->
-> >
-> > Up to you and the ACPI maintainers. ;-)
->
-> I'm going to guess I may not hear back until the new year. I'm fine with
-> that :-)
+Hi Linus,
 
-It's just a couple of days, but still.
+Please pull from the tag
 
-Personally, I would use a command line option to control the behavior
-and the Kconfig option to provide its default value.
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.2-rc2
 
-This way it can be flipped without rebuilding the kernel if need be.
+with top-most commit 0948a9ef1d59d1bc7fae29f32058e463bbff4a6c
 
-I would also make the ACPI debug output go into the trace buffer so
-long as the Kconfig option is not changed or the command line option
-is not flipped.
+ Merge branches 'acpi-resource' and 'acpi-video'
 
-Cheers!
+on top of commit 057b40f43ce429a02e793adf3cfbf2446a19a38e
+
+ Merge tag 'acpi-6.2-rc1-2' of
+git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+
+to receive ACPI fixes for 6.2-rc2.
+
+These are new ACPI IRQ override quirks, low-power S0 idle (S0ix) support
+adjustments and ACPI backlight handling fixes, mostly for platforms
+using AMD chips.
+
+Specifics:
+
+ - Add ACPI IRQ override quirks for Asus ExpertBook B2502, Lenovo
+   14ALC7, and XMG Core 15 (Hans de Goede, Adrian Freund,  Erik
+   Schumacher).
+
+ - Adjust ACPI video detection fallback path to prevent non-operational
+   ACPI backlight devices from being created on systems where the native
+   driver does not detect a suitable panel (Mario Limonciello).
+
+ - Fix Apple GMUX backlight detection (Hans de Goede).
+
+ - Add a low-power S0 idle (S0ix) handling quirk for HP Elitebook 865
+   and stop using AMD-specific low-power S0 idle code path for systems
+   with Rembrandt chips and newer (Mario Limonciello).
+
+Thanks!
+
+
+---------------
+
+Adrian Freund (1):
+      ACPI: resource: do IRQ override on Lenovo 14ALC7
+
+Erik Schumacher (1):
+      ACPI: resource: do IRQ override on XMG Core 15
+
+Hans de Goede (2):
+      ACPI: resource: Add Asus ExpertBook B2502 to Asus quirks
+      ACPI: video: Fix Apple GMUX backlight detection
+
+Mario Limonciello (5):
+      ACPI: video: Allow GPU drivers to report no panels
+      drm/amd/display: Report to ACPI video if no panels were found
+      ACPI: video: Don't enable fallback path for creating ACPI
+backlight by default
+      ACPI: x86: s2idle: Force AMD GUID/_REV 2 on HP Elitebook 865
+      ACPI: x86: s2idle: Stop using AMD specific codepath for Rembrandt+
+
+---------------
+
+ drivers/acpi/acpi_video.c                         | 17 +++--
+ drivers/acpi/resource.c                           | 32 ++++++++-
+ drivers/acpi/video_detect.c                       | 23 +++++-
+ drivers/acpi/x86/s2idle.c                         | 87 ++++-------------------
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  4 ++
+ include/acpi/video.h                              |  2 +
+ 6 files changed, 82 insertions(+), 83 deletions(-)
