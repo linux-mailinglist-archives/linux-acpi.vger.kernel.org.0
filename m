@@ -2,52 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E1ED659B17
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Dec 2022 18:50:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2C2B659B1D
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Dec 2022 18:54:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235048AbiL3Ruj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Dec 2022 12:50:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39994 "EHLO
+        id S235274AbiL3Rx7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Dec 2022 12:53:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229812AbiL3Rui (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Dec 2022 12:50:38 -0500
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37C621A380;
-        Fri, 30 Dec 2022 09:50:37 -0800 (PST)
-Received: by mail-il1-f180.google.com with SMTP id z10so3341016ilq.8;
-        Fri, 30 Dec 2022 09:50:37 -0800 (PST)
+        with ESMTP id S231193AbiL3Rx6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Dec 2022 12:53:58 -0500
+Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 022C7F1C
+        for <linux-acpi@vger.kernel.org>; Fri, 30 Dec 2022 09:53:57 -0800 (PST)
+Received: by mail-il1-f174.google.com with SMTP id y2so11656973ily.5
+        for <linux-acpi@vger.kernel.org>; Fri, 30 Dec 2022 09:53:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=4IEfMatbjzZlz8Idd3KgEL3jiVKDqXFTfbe1i1sqjtY=;
-        b=nGENo+jauz2Caj09xgXKeTbXidScM0KbwApr0uhTwFCYpuzb50beOQXAwxYNbpAebn
-         LIUm5DMmhh2Cg1bNrPXxUY9mucY+hgPva53xeRfnl9T2Tfl6RrYBy9jT3XhhKD9euh0q
-         ZPuYpQLdFnFMWtK4ChUb7LPRl/bQUB2aO4fGhK19zXe12i/dVS3MERsaOUQPGmnsTxUZ
-         /Ohzz7nEGEW1fV3BwwyHabyvXlD6sW4QNAyk8/PjypkgVxXB6hbKgABEf9simF2GbP6b
-         2FVsR6Z9TmjGsgN91SZIQeiJ58OhL5PMDrQ84cqgp7mX5/F0B5fo+zy3DvHEo5Uue9tz
-         h4dQ==
-X-Gm-Message-State: AFqh2krje6XCqHWLJMOyWbmO7kkgWqj8cgj9mB/8/wZdKXfccsFS46LP
-        82P8mFVJcaONp0XHiH1fxoRCnXi8/LXY3oibqbs=
-X-Google-Smtp-Source: AMrXdXt+ZInYlM52yCvJPZfD+On4paDXqxx3zOvPsUhY0Nab/7GCaCvBg1HOUehcaYL8JniIUA7hEBG2FZp7dx1uOFA=
-X-Received: by 2002:a92:d988:0:b0:30c:2ff1:ae45 with SMTP id
- r8-20020a92d988000000b0030c2ff1ae45mr403731iln.131.1672422636513; Fri, 30 Dec
- 2022 09:50:36 -0800 (PST)
+        bh=/htuYpDlIdbEfr+H5sciFdu9hrh7E6EVU2TL6P4Qahg=;
+        b=12RDyKxQtPoF8C5Texz+nrE53QIrjzObFp2XBAEQkjshiqCQyW8pcD0J30ciASokXH
+         8IheKKP2szh/zjXDO4vgSbLIGEXuMdwpx4b/RM6mZHWQ7OkhaKt+7pZrYRJQRKVV5X9p
+         M2O6itfQQ/BrqIAF7rYL5y6X2y9YwZ7OjFpwXW8gLelJEvGOsutWbYCldN8INJJvtGg1
+         ZqEum+ELQe4g4Mz/E4qr6sCMDk8FQS9RwnUEWe2Yj/N0TEbMUSuml683WIjjeWcT8pYd
+         b2bg5nQdFf6SlNX4vyw3cVo9Wj5oKp+7j1w/6Y+0LBepmIj7CCrXC9RxMN/8pQBAs/TL
+         t8oA==
+X-Gm-Message-State: AFqh2kobtCccz7YJGEDtY1NVJmka2KmSyhAiLujZ0jiBgcHL9J4MjeP7
+        a3bNO4OpKF+PxaggSNVlDz2AfuUFaZG7C7U/7vc=
+X-Google-Smtp-Source: AMrXdXsSflhNGhkHp46W7uVNQ3skSmqPebwSs7e2k1mimUjcyoslpW1rsHmSN5vUoua7SKKFJ57tlMZhSy00wJhj+sM=
+X-Received: by 2002:a92:ab05:0:b0:30b:b015:376c with SMTP id
+ v5-20020a92ab05000000b0030bb015376cmr2695175ilh.201.1672422836293; Fri, 30
+ Dec 2022 09:53:56 -0800 (PST)
 MIME-Version: 1.0
-References: <20221215155120.2276-1-mario.limonciello@amd.com>
-In-Reply-To: <20221215155120.2276-1-mario.limonciello@amd.com>
+References: <20221220150126.1624988-1-sakari.ailus@linux.intel.com> <CAJZ5v0gdFdPjAc-aLZBDJAkZ1jjGdigBjX9RzWwTdokH_sCwhw@mail.gmail.com>
+In-Reply-To: <CAJZ5v0gdFdPjAc-aLZBDJAkZ1jjGdigBjX9RzWwTdokH_sCwhw@mail.gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 30 Dec 2022 18:50:24 +0100
-Message-ID: <CAJZ5v0j2AxY48wg9BnSev86d1Sg2poxVyOHdPjrfEGLQvLyCYg@mail.gmail.com>
-Subject: Re: [PATCH] ACPICA: Drop port I/O validation for some regions
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Robert Moore <robert.moore@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Lin Ming <ming.m.lin@intel.com>,
-        Len Brown <len.brown@intel.com>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-kernel@vger.kernel.org
+Date:   Fri, 30 Dec 2022 18:53:44 +0100
+Message-ID: <CAJZ5v0guBgiRn2E_MG+uNqVVmgd0iHPHHwUPK1b1jBG3xz3PHQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] ACPI: acpica: Constify pathname argument for acpi_get_handle()
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        linux-acpi@vger.kernel.org,
+        "Moore, Robert" <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -59,70 +57,51 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 15, 2022 at 4:51 PM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
+On Wed, Dec 21, 2022 at 2:43 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> Microsoft introduced support in Windows XP for blocking port I/O
-> to various regions.  For Windows compatibility ACPICA has adopted
-> the same protections and will disallow writes to those
-> (presumably) the same regions.
+> On Tue, Dec 20, 2022 at 4:01 PM Sakari Ailus
+> <sakari.ailus@linux.intel.com> wrote:
+> >
+> > acpi_get_handle() uses the pathname argument to find a handle related to
+> > that pathname but it does not need to modify it. Make it const, in order
+> > to be able to pass const pathname to it.
+> >
+> > Cc: "Moore, Robert" <robert.moore@intel.com>
+> > Link: https://github.com/acpica/acpica/pull/773
+> > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > ---
+> >  drivers/acpi/acpica/nsxfname.c | 2 +-
+> >  include/acpi/acpixf.h          | 2 +-
+> >  2 files changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/acpi/acpica/nsxfname.c b/drivers/acpi/acpica/nsxfname.c
+> > index b2cfdfef31947..a0592d15dd37c 100644
+> > --- a/drivers/acpi/acpica/nsxfname.c
+> > +++ b/drivers/acpi/acpica/nsxfname.c
+> > @@ -44,7 +44,7 @@ static char *acpi_ns_copy_device_id(struct acpi_pnp_device_id *dest,
+> >
+> >  acpi_status
+> >  acpi_get_handle(acpi_handle parent,
+> > -               acpi_string pathname, acpi_handle *ret_handle)
+> > +               const char *pathname, acpi_handle *ret_handle)
+> >  {
+> >         acpi_status status;
+> >         struct acpi_namespace_node *node = NULL;
+> > diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
+> > index 67c0b9e734b64..085f23d833349 100644
+> > --- a/include/acpi/acpixf.h
+> > +++ b/include/acpi/acpixf.h
+> > @@ -526,7 +526,7 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+> >                                            struct acpi_buffer *ret_path_ptr))
+> >  ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+> >                              acpi_get_handle(acpi_handle parent,
+> > -                                            acpi_string pathname,
+> > +                                            const char *pathname,
+> >                                              acpi_handle *ret_handle))
+> >  ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+> >                              acpi_attach_data(acpi_handle object,
+> > --
 >
-> On some systems the AML included with the firmware will issue 4 byte
-> long writes to 0x80.  These writes aren't making it over because of this
-> blockage. The first 4 byte write attempt is rejected, and then
-> subsequently 1 byte at a time each offset is tried. The first at 0x80
-> works, but then the next 3 bytes are rejected.
->
-> This manifests in bizarre failures for devices that expected the AML to
-> write all 4 bytes.  Trying the same AML on Windows 10 or 11 doesn't hit
-> this failure and all 4 bytes are written.
->
-> Either some of these regions were wrong or some point after Windows XP
-> some of these regions blocks have been lifted.
->
-> In the last 15 years there doesn't seem to be any reports popping up of
-> this error in the Windows event viewer anymore.  There is no documentation
-> at Microsoft's developer site indicating that Windows ACPI interpreter
-> blocks these regions. Between the lack of documentation and the fact that
-> the writes actually do work in Windows 10 and 11, it's quite likely
-> Windows doesn't actually enforce this anymore.
->
-> So to help the issue, only enforce Windows XP specific entries if the
-> latest _OSI supported is Windows XP. Continue to enforce the
-> ALWAYS_ILLEGAL entries.
->
-> Link: https://github.com/acpica/acpica/pull/817
-> Fixes: 7f0719039085 ("ACPICA: New: I/O port protection")
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/acpi/acpica/hwvalid.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/acpi/acpica/hwvalid.c b/drivers/acpi/acpica/hwvalid.c
-> index 915b26448d2c..0d392e7b0747 100644
-> --- a/drivers/acpi/acpica/hwvalid.c
-> +++ b/drivers/acpi/acpica/hwvalid.c
-> @@ -23,8 +23,8 @@ acpi_hw_validate_io_request(acpi_io_address address, u32 bit_width);
->   *
->   * The table is used to implement the Microsoft port access rules that
->   * first appeared in Windows XP. Some ports are always illegal, and some
-> - * ports are only illegal if the BIOS calls _OSI with a win_XP string or
-> - * later (meaning that the BIOS itelf is post-XP.)
-> + * ports are only illegal if the BIOS calls _OSI with nothing newer than
-> + * the specific _OSI strings.
->   *
->   * This provides ACPICA with the desired port protections and
->   * Microsoft compatibility.
-> @@ -145,7 +145,8 @@ acpi_hw_validate_io_request(acpi_io_address address, u32 bit_width)
->
->                         /* Port illegality may depend on the _OSI calls made by the BIOS */
->
-> -                       if (acpi_gbl_osi_data >= port_info->osi_dependency) {
-> +                       if (port_info->osi_dependency == ACPI_ALWAYS_ILLEGAL ||
-> +                           acpi_gbl_osi_data == port_info->osi_dependency) {
->                                 ACPI_DEBUG_PRINT((ACPI_DB_VALUES,
->                                                   "Denied AML access to port 0x%8.8X%8.8X/%X (%s 0x%.4X-0x%.4X)\n",
->                                                   ACPI_FORMAT_UINT64(address),
-> --
+> I'll queue up this one for 6.3 early next week, thanks!
 
-Applied as 6.3 material, thanks!
+Applied now, thanks!
