@@ -2,181 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E2BB659B61
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Dec 2022 19:31:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED22C659B85
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Dec 2022 19:51:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235334AbiL3Sbe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Dec 2022 13:31:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57202 "EHLO
+        id S235441AbiL3SvF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Dec 2022 13:51:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230434AbiL3Sbe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Dec 2022 13:31:34 -0500
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61CF8120A2;
-        Fri, 30 Dec 2022 10:31:33 -0800 (PST)
-Received: by mail-pf1-f173.google.com with SMTP id a184so4152648pfa.9;
-        Fri, 30 Dec 2022 10:31:33 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1LUR/HulHa/R3ncf+4u4lbtVYPtu97Sf8AH2dzsrdYo=;
-        b=5NNWwvGL3X+0RPkt+wpgPsSKvnuFkLPuFenS4cFRugtnITOHiUpgv3NfGUcMjDiyD2
-         PsNUQxKd86C6X2Zj0kG2d0pYtGk6zkM4C5aUFyzLVn2FqblwCcJuAh0SmWuoRIhRFkhI
-         EaoZUgdI0hVlNvXbKe3/rJIF5bnNBKD6M4trLu0S1W+GI+lAW1paidqnb1aO8ySlIXDH
-         +wh0xxFOJkdeKCp/4IJi6Kz2J6sHnvxcEjuVZRtcS12CNTPlN4KRVpGhT6upKH1NiYNp
-         AtnhITs011A6TyYyvvF6z39W5VmVsBHApBkjaEG22O61Um2Q+cVre7/2wkWnx1f5kZOo
-         KAhA==
-X-Gm-Message-State: AFqh2kr7djoop8j52UAfWf8FCmrXbGLyXjMaThvmCUKbWmLQNSZZnTPC
-        xmNVELbWwdRPXJrYAb9bQntZr91M6mS6BxmtJiaKdKTN
-X-Google-Smtp-Source: AMrXdXs0srt36RJwn01N1grV9jc8CWS0ahF4QEsEUY3kkg9aN6vqgGS4lVx2Ly4y6cm95QYGkNCNCXJxWWCDql3TAXA=
-X-Received: by 2002:a92:d988:0:b0:30c:2ff1:ae45 with SMTP id
- r8-20020a92d988000000b0030c2ff1ae45mr418627iln.131.1672425082395; Fri, 30 Dec
- 2022 10:31:22 -0800 (PST)
-MIME-Version: 1.0
-References: <20221227063335.61474-1-zh.nvgt@gmail.com>
-In-Reply-To: <20221227063335.61474-1-zh.nvgt@gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 30 Dec 2022 19:31:10 +0100
-Message-ID: <CAJZ5v0jmOMHHXvRnDcetDbh+0CySh5ddZJx1g3xTXPzCHokZRg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: custom_method: fix potential use-after-free issues
-To:     Hang Zhang <zh.nvgt@gmail.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S235408AbiL3SvF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Dec 2022 13:51:05 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B02E25F85;
+        Fri, 30 Dec 2022 10:51:03 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 080AFCE1752;
+        Fri, 30 Dec 2022 18:51:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 484AAC433EF;
+        Fri, 30 Dec 2022 18:51:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1672426260;
+        bh=1gkjexlbXixD/Ce8m9KezHD+yhOtdTHY76LnIQuHK9o=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=PjMP7l74/gH0jQwNw8DM5o31c5fQ2WSLCjA5f1pgVfUq3g+EgmcWr/evqxAz7R9fO
+         dkpff5MFeK8rxWb27pY+YYnKPDPlPOm9rZ0G6PY7jVYMOpnnjzvzgu1upAopGbiAY1
+         Q0/b1HxHlFH6mRUcLV77dWQ2YNkK1zzMRs+Zn9rvpBU99OxPgb32cp3dfwqunW8XDX
+         fcm8yHvzl1vi+Xb+fyvz0A33fKaL++WhqphCvcvNFbHAuRDGXZcn9K9/EWm8yRI/yL
+         drz56D8WlXICaRMa4mXY1fhwOPZkDrCxLodNE1OTWv97dcwrhnnv8lcZLgFa7vk0Io
+         sy3/mYgm9RFYg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 3172EC395DF;
+        Fri, 30 Dec 2022 18:51:00 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI fixes for v6.2-rc2
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0iP4EgejNBO8EXejaSObSbpeuOh+vTz8CAvfu8bMXXTOQ@mail.gmail.com>
+References: <CAJZ5v0iP4EgejNBO8EXejaSObSbpeuOh+vTz8CAvfu8bMXXTOQ@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-pm.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0iP4EgejNBO8EXejaSObSbpeuOh+vTz8CAvfu8bMXXTOQ@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.2-rc2
+X-PR-Tracked-Commit-Id: 0948a9ef1d59d1bc7fae29f32058e463bbff4a6c
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: c8451c141e07a8d05693f6c8d0e418fbb4b68bb7
+Message-Id: <167242626019.31406.3835683663655257393.pr-tracker-bot@kernel.org>
+Date:   Fri, 30 Dec 2022 18:51:00 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Dec 27, 2022 at 7:34 AM Hang Zhang <zh.nvgt@gmail.com> wrote:
->
-> cm_write() is the .write callback of the custom_method debugfs
-> interface, it operates on a global pointer "buf" (e.g., dereference,
-> allocate, free, and nullification), the problem is that cm_write()
-> is not protected by any locks, so concurrent invocations of it
-> may cause use-after-free issues for "buf", e.g., one invocation
-> may have just freed "buf" while being preempted before nullifying
-> the pointer, then another invocation can dereference the now dangling
-> "buf" pointer.
->
-> Fix the issue by protecting the "buf" operations in cm_write() with
-> the inode write lock. Note that the .llseek callback of the debugfs
-> interface has been protected by the same lock, this patch basically
-> introduces it to the .write callback as well.
+The pull request you sent on Fri, 30 Dec 2022 17:34:40 +0100:
 
-The problem is there, but the whole state is not protected from
-concurrent use and the fix doesn't look sufficient to me (for example,
-a different writer may start writing into the file before the previous
-one has finished and the result will still be broken AFAICS).
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.2-rc2
 
-It looks like the file should be prevented from being opened by more
-than one writer at a time.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/c8451c141e07a8d05693f6c8d0e418fbb4b68bb7
 
-Or maybe it's time to drop this interface from the kernel altogether.
+Thank you!
 
-> Signed-off-by: Hang Zhang <zh.nvgt@gmail.com>
-> ---
->  drivers/acpi/custom_method.c | 43 +++++++++++++++++++++++++-----------
->  1 file changed, 30 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/acpi/custom_method.c b/drivers/acpi/custom_method.c
-> index d39a9b474727..e3de5a06d903 100644
-> --- a/drivers/acpi/custom_method.c
-> +++ b/drivers/acpi/custom_method.c
-> @@ -29,28 +29,38 @@ static ssize_t cm_write(struct file *file, const char __user *user_buf,
->         struct acpi_table_header table;
->         acpi_status status;
->         int ret;
-> +       struct inode *inode = file_inode(file);
->
->         ret = security_locked_down(LOCKDOWN_ACPI_TABLES);
->         if (ret)
->                 return ret;
->
-> +       inode_lock(inode);
->         if (!(*ppos)) {
->                 /* parse the table header to get the table length */
-> -               if (count <= sizeof(struct acpi_table_header))
-> -                       return -EINVAL;
-> +               if (count <= sizeof(struct acpi_table_header)) {
-> +                       ret = -EINVAL;
-> +                       goto err;
-> +               }
->                 if (copy_from_user(&table, user_buf,
-> -                                  sizeof(struct acpi_table_header)))
-> -                       return -EFAULT;
-> +                                  sizeof(struct acpi_table_header))) {
-> +                       ret = -EFAULT;
-> +                       goto err;
-> +               }
->                 uncopied_bytes = max_size = table.length;
->                 /* make sure the buf is not allocated */
->                 kfree(buf);
->                 buf = kzalloc(max_size, GFP_KERNEL);
-> -               if (!buf)
-> -                       return -ENOMEM;
-> +               if (!buf) {
-> +                       ret = -ENOMEM;
-> +                       goto err;
-> +               }
->         }
->
-> -       if (buf == NULL)
-> -               return -EINVAL;
-> +       if (buf == NULL) {
-> +               ret = -EINVAL;
-> +               goto err;
-> +       }
->
->         if ((*ppos > max_size) ||
->             (*ppos + count > max_size) ||
-> @@ -58,13 +68,15 @@ static ssize_t cm_write(struct file *file, const char __user *user_buf,
->             (count > uncopied_bytes)) {
->                 kfree(buf);
->                 buf = NULL;
-> -               return -EINVAL;
-> +               ret = -EINVAL;
-> +               goto err;
->         }
->
->         if (copy_from_user(buf + (*ppos), user_buf, count)) {
->                 kfree(buf);
->                 buf = NULL;
-> -               return -EFAULT;
-> +               ret = -EFAULT;
-> +               goto err;
->         }
->
->         uncopied_bytes -= count;
-> @@ -74,12 +86,17 @@ static ssize_t cm_write(struct file *file, const char __user *user_buf,
->                 status = acpi_install_method(buf);
->                 kfree(buf);
->                 buf = NULL;
-> -               if (ACPI_FAILURE(status))
-> -                       return -EINVAL;
-> +               if (ACPI_FAILURE(status)) {
-> +                       ret = -EINVAL;
-> +                       goto err;
-> +               }
->                 add_taint(TAINT_OVERRIDDEN_ACPI_TABLE, LOCKDEP_NOW_UNRELIABLE);
->         }
->
-> -       return count;
-> +       ret = count;
-> +err:
-> +       inode_unlock(inode);
-> +       return ret;
->  }
->
->  static const struct file_operations cm_fops = {
-> --
-> 2.39.0
->
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
