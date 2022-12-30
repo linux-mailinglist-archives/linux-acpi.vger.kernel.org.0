@@ -2,107 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F30B659548
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Dec 2022 06:59:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82F6A65971B
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Dec 2022 11:05:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234480AbiL3F7l (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Dec 2022 00:59:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33426 "EHLO
+        id S234529AbiL3KEk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Dec 2022 05:04:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234461AbiL3F7k (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Dec 2022 00:59:40 -0500
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52C21E68
-        for <linux-acpi@vger.kernel.org>; Thu, 29 Dec 2022 21:59:39 -0800 (PST)
-Received: by mail-io1-xd30.google.com with SMTP id y4so10724449iof.0
-        for <linux-acpi@vger.kernel.org>; Thu, 29 Dec 2022 21:59:39 -0800 (PST)
+        with ESMTP id S230056AbiL3KEj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Dec 2022 05:04:39 -0500
+Received: from mail-vk1-xa36.google.com (mail-vk1-xa36.google.com [IPv6:2607:f8b0:4864:20::a36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F567193EB
+        for <linux-acpi@vger.kernel.org>; Fri, 30 Dec 2022 02:04:38 -0800 (PST)
+Received: by mail-vk1-xa36.google.com with SMTP id g65so6475941vkh.8
+        for <linux-acpi@vger.kernel.org>; Fri, 30 Dec 2022 02:04:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fusetak.com; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+yI8IXYC+g9VQSXXRePDAV8T9sfECoiHVCxWFbYMy90=;
-        b=L8FlM01Qw+KPRAq4TQYCzNv9OqjVHphSzOsoBQTg8uYqT5Al8JvAZ63zYrQ3vm8FkG
-         iDt8wlJygbG85G5Zheyj2p9VAy0VBe/zmzMIMZiLbSBneeCXrBLEvloTaNJxur6awAwT
-         3dwBbgn+ro659MhTRaJLNktDJEQFkLYTCqLRdyEj8TmlpfB7Wruh1kS6QEe1iB34UFwI
-         9d4WzBD4+7hdFBPKzEQQDCnnQCS6UxnGmklE91wF4rEY9+PE/hh9rVIzSsvB8QsB+Wry
-         bPEAhUdfTDczcwOwTfE2ILpr72aiYxm1/0/Mox8e2ff3xOhCYix0h1HsFXl+mVAkbrJt
-         WUgw==
+        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ExYPh7ZCQLAcVoV2/SqeVJ+2V2M6l9fcSXq3tB4QxWY=;
+        b=oEYPzAA+zkVxpKYc173YYeMY/bnwwE6uQr5YAZo6wkXXeoKXrRVo9ECSbBJMGIodQW
+         1O6DKlbOtBU5Wao+gvmkDjnAiSMurzBgSMPK+3BxWoq20LgoRTLWLsDGojFukSjc+kkJ
+         6qV7cHBzbTe5vnBE0r+68GkTFBybeLL9PyRf17h15eJtni37WNzNzfRSJ+PbBpeVZMsu
+         xsPqO3HqoMLhNVtqaml4WnVIo+U/5Tq3uTo45N+R3gQvXUTUgZuRHqATrUasLLcaTGQF
+         v1jmNG81SIs2OgyLXk2veo+CsIGQbhe24bTql+LNvBgvh92SOO+EWMdgSFSzq9Vrp4su
+         WHeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+yI8IXYC+g9VQSXXRePDAV8T9sfECoiHVCxWFbYMy90=;
-        b=EIs21vA8q8CM5wV03osXqooldT5SYJmGFhq+0ijdVKYt+uZEzKDp6y5l60Ms+IFRgC
-         FIYGkN1kJEw9Roo4vyHc48naLAp7r0Ugv6x51VxYscMOrDcfjD5YwZKx1WIHjxIyC5WU
-         TZpKFEPB/PQLYXdc1sxEkTw2Uhsy7GXRzybkkhr6BQM4GQgiXOsvgBJ+6qMp+MVFsGUc
-         7Q2ycU+wkIjML8Y1AP1rK/z/0OaYVyXSt+0RAU+N9uH3rB4rPCmYrVj30EcGQcz38gKO
-         jsUBHFS6Pd654hquS5petV6g5P2r0hF8RLY6zne9crkC4gh+iRuJraZeYK1jiVGVweXT
-         OujQ==
-X-Gm-Message-State: AFqh2koGrvg1rTBOCdjGdpmLfTCOzfolOS2GrVnbQsOaKRdXkif0Krw4
-        +wYG+hVs+F+XdfPZ8Fescnrhnrsld5vSJVZAQwLjKw==
-X-Google-Smtp-Source: AMrXdXuM4etmGmDpYZ0xl/zWaBGf+MDv8vaf/sF8eU6r33RNdz7gKwKotRJ9yx5DUxVI0nm1uMf+cA==
-X-Received: by 2002:a6b:6310:0:b0:6d6:4daf:623f with SMTP id p16-20020a6b6310000000b006d64daf623fmr19420602iog.6.1672379978278;
-        Thu, 29 Dec 2022 21:59:38 -0800 (PST)
-Received: from fusetakDesktop.internal.fusetak.net ([99.247.2.235])
-        by smtp.gmail.com with ESMTPSA id u4-20020a02cb84000000b003762308fe54sm6558942jap.93.2022.12.29.21.59.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Dec 2022 21:59:37 -0800 (PST)
-From:   Tamim Khan <tamim@fusetak.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     rafael@kernel.org, lenb@kernel.org, linux-kernel@vger.kernel.org,
-        Tamim Khan <tamim@fusetak.com>, zelenat <zelenat@gmail.com>
-Subject: [PATCH] ACPI: resource: Skip IRQ override on Asus Expertbook B2402CBA
-Date:   Fri, 30 Dec 2022 00:58:39 -0500
-Message-Id: <20221230055839.80885-1-tamim@fusetak.com>
-X-Mailer: git-send-email 2.38.1
+        bh=ExYPh7ZCQLAcVoV2/SqeVJ+2V2M6l9fcSXq3tB4QxWY=;
+        b=JDefT0s4czjLuwGVRVpy9uj8yIA2xdfhtlRMozkW56lG2gdwNrtAWR2rVvMxphChtG
+         9keqx5ivEyoujipXh3nhzu9pemgp1L2i2XM4vtJ8sCsTsU9Q2vZxj3GZEBXpT++V7vS/
+         oeAxA64CXZlUP7PRiCb3dh/5GyeBy5ej9JWPT7fBakgzhsQDeQZ7/lNukCZmtpMp29+8
+         d8SAYAvH2K6vwSWGWga46FSobAMHlxWlRqTXXHNE8Btc8Yxhj4i/7SBEEc7oDLyGVK+m
+         A4jX8zlgD+6qoAJeLDxAtiuNmoN68SL3V7TSgC5udPOlr8QTcTpw12RrjemwsGIqADyc
+         jHdg==
+X-Gm-Message-State: AFqh2kqtHpalO3rZ84clCk17Fm+5pbH/FEVkzcaGgi8j3lIhbm6QBPiJ
+        aX1pYC0sCx0qm7BpPv09NNGUrzQRlLRPQMtv1b+YxQ==
+X-Google-Smtp-Source: AMrXdXt7wuPRN1BtM7zjBgL/feVCI7O7KUPBfnqtP4FXAjQdG6O7OsnSKbdt+QnfbTIcRLLsLMiNIt47C0DxHFImiUA=
+X-Received: by 2002:a1f:2508:0:b0:3b7:bd26:9251 with SMTP id
+ l8-20020a1f2508000000b003b7bd269251mr3407821vkl.25.1672394677740; Fri, 30 Dec
+ 2022 02:04:37 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+References: <20221229164501.76044-1-hdegoede@redhat.com>
+In-Reply-To: <20221229164501.76044-1-hdegoede@redhat.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Fri, 30 Dec 2022 11:04:26 +0100
+Message-ID: <CAMRc=MeZ407hS2D2-PGgeyhOMfVopYTxCS-Y0CAnaKJeJHSZsA@mail.gmail.com>
+Subject: Re: [PATCH 6.2 regression fix] gpiolib: Fix using uninitialized
+ lookup-flags on ACPI platforms
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        "regressions @ lists . linux . dev" <regressions@lists.linux.dev>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Like the Asus Expertbook B2502CBA and various Asus Vivobook laptops,
-the Asus Expertbook B2402CBA has an ACPI DSDT table that describes IRQ 1
-as ActiveLow while the kernel overrides it to Edge_High. This prevents the 
-keyboard from working. To fix this issue, add this laptop to the 
-skip_override_table so that the kernel does not override IRQ 1.
+On Thu, Dec 29, 2022 at 5:45 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Commit 8eb1f71e7acc ("gpiolib: consolidate GPIO lookups") refactors
+> fwnode_get_named_gpiod() and gpiod_get_index() into a unified
+> gpiod_find_and_request() helper.
+>
+> The old functions both initialized their local lookupflags variable to
+> GPIO_LOOKUP_FLAGS_DEFAULT, but the new code leaves it uninitialized.
+>
+> This is a problem for at least ACPI platforms, where acpi_find_gpio()
+> only does a bunch of *lookupflags |= GPIO_* statements and thus relies
+> on the variable being initialized.
+>
+> The variable not being initialized leads to:
+>
+> 1. Potentially the wrong flags getting used
+> 2. The check for conflicting lookup flags in gpiod_configure_flags():
+>    "multiple pull-up, pull-down or pull-disable enabled, invalid config"
+>    sometimes triggering, making the GPIO unavailable
+>
+> Restore the initialization of lookupflags to GPIO_LOOKUP_FLAGS_DEFAULT
+> to fix this.
+>
+> Fixes: 8eb1f71e7acc ("gpiolib: consolidate GPIO lookups")
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+> Note I'm not working and not reading work email until Monday January 9th.
+> I hit this while doing some hobby stuff and I decided to send this out
+> right away to avoid others potentially wasting time debugging this, but
+> I will not see any replies until Monday January 9th.
+> ---
+>  drivers/gpio/gpiolib.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> index 5a66d9616d7c..939c776b9488 100644
+> --- a/drivers/gpio/gpiolib.c
+> +++ b/drivers/gpio/gpiolib.c
+> @@ -3905,8 +3905,8 @@ static struct gpio_desc *gpiod_find_and_request(struct device *consumer,
+>                                                 const char *label,
+>                                                 bool platform_lookup_allowed)
+>  {
+> +       unsigned long lookupflags = GPIO_LOOKUP_FLAGS_DEFAULT;
+>         struct gpio_desc *desc = ERR_PTR(-ENOENT);
+> -       unsigned long lookupflags;
+>         int ret;
+>
+>         if (!IS_ERR_OR_NULL(fwnode))
+> --
+> 2.38.1
+>
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216864
-Tested-by: zelenat <zelenat@gmail.com>
-Signed-off-by: Tamim Khan <tamim@fusetak.com>
----
-This patch is very similar to 7203481fd12b1257938519efb2460ea02b9236ee
-(ACPI: resource: Add Asus ExpertBook B2502 to Asus quirks) and just adds
-another ExpertBook that has the same IRQ override problem to the quirks list.
+Queued for fixes, thanks!
 
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 16dcd31d124f..153e3f8b446f 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -432,6 +432,13 @@ static const struct dmi_system_id asus_laptop[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
- 		},
- 	},
-+	{
-+		.ident = "Asus ExpertBook B2402CBA",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "B2402CBA"),
-+		},
-+	},
- 	{
- 		.ident = "Asus ExpertBook B2502",
- 		.matches = {
--- 
-2.38.1
-
+Bart
