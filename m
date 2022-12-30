@@ -2,46 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41E71659A9C
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Dec 2022 17:35:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 04B7A659B08
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Dec 2022 18:45:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235243AbiL3QfI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Dec 2022 11:35:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46142 "EHLO
+        id S229456AbiL3Rpt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Dec 2022 12:45:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235240AbiL3Qey (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Dec 2022 11:34:54 -0500
-Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DCF21C413;
-        Fri, 30 Dec 2022 08:34:52 -0800 (PST)
-Received: by mail-io1-f46.google.com with SMTP id q190so11329824iod.10;
-        Fri, 30 Dec 2022 08:34:52 -0800 (PST)
+        with ESMTP id S229861AbiL3Rpr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Dec 2022 12:45:47 -0500
+Received: from mail-io1-f43.google.com (mail-io1-f43.google.com [209.85.166.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47E49E78;
+        Fri, 30 Dec 2022 09:45:45 -0800 (PST)
+Received: by mail-io1-f43.google.com with SMTP id p66so11455726iof.1;
+        Fri, 30 Dec 2022 09:45:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JZa9jFc0rYlW/9i71Z6myIIyNiNlltKYl5kYSw6SvQs=;
-        b=W/K5zN95VhjSS6SB5s/k8+eVWfqx2bEOG940beJ1j469HdaGZ78WAxR2IHF5I+/FOf
-         /K5GkFDiaYuNf2JmeUX9gAnvEh72nzlO5LHqkOFup8RkXXYgxcb37cpNhjT1odHxzqkL
-         d0ikjRki135XKek9oGA3+3all4tsrgE7L5JRFFRYqOoM/vJqaPv6A291o45rUkGUaGP0
-         i4gBuT8EPoYNAGJpVFKz4AvovDEZ7tLzO3z4fJZDzhkPAFDzScOkKAI7NVCh5f6+Z+jV
-         QKGnirTQjQxqnBIX/Nkj4apuKMJJVDg1LAI0Wtc4F2iY69ZbpwkiDdV6uQBOtvTgjCox
-         2blw==
-X-Gm-Message-State: AFqh2koknlxMvnDDVPauxd9n0/kRq5tyKu3J1CEZ0/Bc3XblsJuDLFK3
-        Suzd4kv6K+NQz8QDmarFT2vQJkdhETNcl6mlcXZ8beoKmOc=
-X-Google-Smtp-Source: AMrXdXvEShAMrQSZAI4E82NI7DN4CJwEfGZ2mIXmEQ1/N4IDPgOFOJvUM/AjG3AhxajWllnwwmc0EkUyGkyFsXB+TJQ=
-X-Received: by 2002:a5e:8808:0:b0:6e2:bed4:c2d5 with SMTP id
- l8-20020a5e8808000000b006e2bed4c2d5mr1850046ioj.177.1672418092227; Fri, 30
- Dec 2022 08:34:52 -0800 (PST)
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gTP1DtWjB+7nv7oA/EEYqYhJy7cQJi0Y6iPnNBwX9Ic=;
+        b=G4tHhRoU8nLzdlsUqUdWGOKDRrRTHK9d6/rhIou7AB1tdu1q7xucGL7jqboByrvlWF
+         7wEjsSAPXG1Ev5zv14ygVQTBMCI1KoiLajIU//hiPY6AxfPnJfryZwlPgJMs1KHIPRtq
+         2ENocB1pRxjou+lXD0oosEKqs2BCbWKDYA1HWVlzMITGx4dmkajbNOgsNoRDmpLfpJI2
+         YapzU6sfQ2iuGHfh67hu5DIDJyabS3iW1SZS7LzOL6AKIGno6nl+3rKf6urv8t3b397G
+         X9+hl4nvP4ldyPbCRcNh0kRBE1PJYKMIlw7rx11R1B6UpikiO7Pr3BQBrm61nS9Yx8M+
+         GEKQ==
+X-Gm-Message-State: AFqh2kpy8HiWW+cfuiGDPUpMnsBaZF/BL8MHj6RC2ugNEdHaE1KY141O
+        qwNIR/8ShvAd2fKF9xbuX7hVLEsrre+Y1hdI2mQ=
+X-Google-Smtp-Source: AMrXdXv7+vNpXgfaps2GjiqW0Qs8iqSZRHzzk0jsVoislu1IZqz79DzHDTWjiLiavaOv58M02rMdfTjiGRIoBBxWM6Y=
+X-Received: by 2002:a5e:cb44:0:b0:6df:b793:35ac with SMTP id
+ h4-20020a5ecb44000000b006dfb79335acmr2331705iok.33.1672422344590; Fri, 30 Dec
+ 2022 09:45:44 -0800 (PST)
 MIME-Version: 1.0
+References: <20221208232536.591347-1-stuart.w.hayes@gmail.com>
+In-Reply-To: <20221208232536.591347-1-stuart.w.hayes@gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 30 Dec 2022 17:34:40 +0100
-Message-ID: <CAJZ5v0iP4EgejNBO8EXejaSObSbpeuOh+vTz8CAvfu8bMXXTOQ@mail.gmail.com>
-Subject: [GIT PULL] ACPI fixes for v6.2-rc2
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Fri, 30 Dec 2022 18:45:32 +0100
+Message-ID: <CAJZ5v0jq_z3H5Uw7vM1998pgtUyHE0M19aOg+mf1O=UgApf7cg@mail.gmail.com>
+Subject: Re: [PATCH] acpi: add support for the NBFT
+To:     Stuart Hayes <stuart.w.hayes@gmail.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, John Meneghini <jmeneghi@redhat.com>,
+        Charles Rose <charles_rose@dell.com>,
+        Doug Farley <Douglas_Farley@dell.com>,
+        Lenny Szubowicz <lszubowi@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -53,73 +59,62 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+On Fri, Dec 9, 2022 at 12:25 AM Stuart Hayes <stuart.w.hayes@gmail.com> wrote:
+>
+> Add support for the NVMe Boot Firmware Table (NBFT) to facilitate
+> booting from NVM Express namespaces which are accessed via
+> NVMe over Fabrics (NVMe-oF).
+>
+> Signed-off-by: Stuart Hayes <stuart.w.hayes@gmail.com>
 
-Please pull from the tag
+Tentatively applied as 6.3 material, but it was unclear what the S-o-b
+tags below mean, so I've dropped them.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.2-rc2
+If you are not the original author of the patch, you should add a From
+line pointing to the original author to it and the corresponding S-o-b
+tag along with your S-o-b.
 
-with top-most commit 0948a9ef1d59d1bc7fae29f32058e463bbff4a6c
+If you have developed the patch in collaboration with someone, there
+should be a Co-developed-by tag pointing to the other author along
+with the corresponding S-o-b tag.
 
- Merge branches 'acpi-resource' and 'acpi-video'
+S-o-b alone is meaningful only if you are sending a patch from someone
+else, for example as a code maintainer.
 
-on top of commit 057b40f43ce429a02e793adf3cfbf2446a19a38e
-
- Merge tag 'acpi-6.2-rc1-2' of
-git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
-
-to receive ACPI fixes for 6.2-rc2.
-
-These are new ACPI IRQ override quirks, low-power S0 idle (S0ix) support
-adjustments and ACPI backlight handling fixes, mostly for platforms
-using AMD chips.
-
-Specifics:
-
- - Add ACPI IRQ override quirks for Asus ExpertBook B2502, Lenovo
-   14ALC7, and XMG Core 15 (Hans de Goede, Adrian Freund,  Erik
-   Schumacher).
-
- - Adjust ACPI video detection fallback path to prevent non-operational
-   ACPI backlight devices from being created on systems where the native
-   driver does not detect a suitable panel (Mario Limonciello).
-
- - Fix Apple GMUX backlight detection (Hans de Goede).
-
- - Add a low-power S0 idle (S0ix) handling quirk for HP Elitebook 865
-   and stop using AMD-specific low-power S0 idle code path for systems
-   with Rembrandt chips and newer (Mario Limonciello).
-
-Thanks!
-
-
----------------
-
-Adrian Freund (1):
-      ACPI: resource: do IRQ override on Lenovo 14ALC7
-
-Erik Schumacher (1):
-      ACPI: resource: do IRQ override on XMG Core 15
-
-Hans de Goede (2):
-      ACPI: resource: Add Asus ExpertBook B2502 to Asus quirks
-      ACPI: video: Fix Apple GMUX backlight detection
-
-Mario Limonciello (5):
-      ACPI: video: Allow GPU drivers to report no panels
-      drm/amd/display: Report to ACPI video if no panels were found
-      ACPI: video: Don't enable fallback path for creating ACPI
-backlight by default
-      ACPI: x86: s2idle: Force AMD GUID/_REV 2 on HP Elitebook 865
-      ACPI: x86: s2idle: Stop using AMD specific codepath for Rembrandt+
-
----------------
-
- drivers/acpi/acpi_video.c                         | 17 +++--
- drivers/acpi/resource.c                           | 32 ++++++++-
- drivers/acpi/video_detect.c                       | 23 +++++-
- drivers/acpi/x86/s2idle.c                         | 87 ++++-------------------
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  4 ++
- include/acpi/video.h                              |  2 +
- 6 files changed, 82 insertions(+), 83 deletions(-)
+> Signed-off-by: Doug Farley <Douglas_Farley@dell.com>
+> Signed-off-by: Lenny Szubowicz <lszubowi@redhat.com>
+> ---
+>  drivers/acpi/tables.c | 3 ++-
+>  include/acpi/actbl1.h | 2 ++
+>  2 files changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
+> index 47ec11d4c68e..f390c5883b56 100644
+> --- a/drivers/acpi/tables.c
+> +++ b/drivers/acpi/tables.c
+> @@ -545,7 +545,8 @@ static const char table_sigs[][ACPI_NAMESEG_SIZE] __initconst = {
+>         ACPI_SIG_WDDT, ACPI_SIG_WDRT, ACPI_SIG_DSDT, ACPI_SIG_FADT,
+>         ACPI_SIG_PSDT, ACPI_SIG_RSDT, ACPI_SIG_XSDT, ACPI_SIG_SSDT,
+>         ACPI_SIG_IORT, ACPI_SIG_NFIT, ACPI_SIG_HMAT, ACPI_SIG_PPTT,
+> -       ACPI_SIG_NHLT, ACPI_SIG_AEST, ACPI_SIG_CEDT, ACPI_SIG_AGDI };
+> +       ACPI_SIG_NHLT, ACPI_SIG_AEST, ACPI_SIG_CEDT, ACPI_SIG_AGDI,
+> +       ACPI_SIG_NBFT };
+>
+>  #define ACPI_HEADER_SIZE sizeof(struct acpi_table_header)
+>
+> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+> index 15c78678c5d3..6ec43410288a 100644
+> --- a/include/acpi/actbl1.h
+> +++ b/include/acpi/actbl1.h
+> @@ -49,6 +49,8 @@
+>  #define ACPI_SIG_S3PT           "S3PT" /* S3 Performance (sub)Table */
+>  #define ACPI_SIG_PCCS           "PCC"  /* PCC Shared Memory Region */
+>
+> +#define ACPI_SIG_NBFT          "NBFT"  /* NVMe Boot Firmware Table */
+> +
+>  /* Reserved table signatures */
+>
+>  #define ACPI_SIG_MATR           "MATR" /* Memory Address Translation Table */
+> --
+> 2.31.1
+>
