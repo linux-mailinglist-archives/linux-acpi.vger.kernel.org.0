@@ -2,45 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE6A2659B50
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Dec 2022 19:13:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 312AD659B56
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Dec 2022 19:18:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231171AbiL3SNv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Dec 2022 13:13:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53590 "EHLO
+        id S229671AbiL3SSG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Dec 2022 13:18:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229832AbiL3SNs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Dec 2022 13:13:48 -0500
-Received: from mail-io1-f50.google.com (mail-io1-f50.google.com [209.85.166.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D9CAFC3;
-        Fri, 30 Dec 2022 10:13:48 -0800 (PST)
-Received: by mail-io1-f50.google.com with SMTP id p66so11493029iof.1;
-        Fri, 30 Dec 2022 10:13:48 -0800 (PST)
+        with ESMTP id S235450AbiL3SSF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Dec 2022 13:18:05 -0500
+Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FB7A1C410;
+        Fri, 30 Dec 2022 10:18:04 -0800 (PST)
+Received: by mail-io1-f53.google.com with SMTP id v2so11481486ioe.4;
+        Fri, 30 Dec 2022 10:18:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=BjjFYrn+Z6BrwQksjCuz3/lydaArAzbP2sbV0KLxPy8=;
-        b=irqIXhOR+QG3T3O+d81CHOLzqANbrlZCJ/hoiDso9hEtIoXY4sZYtRECMCY/KQe6Zd
-         NrT9Sh86QdStcjfAPoLI6+dQXWaQLoU9B0iAf2pI1nHv0PVR954WU/1fWFfm59f70Cmd
-         YZteNu2cyPgm8HOmrP6G9DRxTojK/ojzM+gHcPWi6Ve72tWzoVdENndoFX19UaWMTuvT
-         YNDH8q3Z4fRMQGsbkTeiIyB7g9fNJQeZloWEdeFc1oCNKX81/0lPzk8TjqtxNpAa7ipr
-         iyvS2SVrVtddhGIRAN4k3aB0H2ps8HVBCoR4dqKm/+9TQp1HzGDPfsBtENf5+KuNG3Js
-         L7bw==
-X-Gm-Message-State: AFqh2kqLfZwHM4sVvsTHTKHkIO/Lr7t9nq1/hPT5g5iBm3fxboAZt82g
-        Gj5tFc04BqgRUvYnQBd4DHE84224YIqS7aMqR5M=
-X-Google-Smtp-Source: AMrXdXsFDmiFbOwAISGoYvX96GPBHqjsnblzpwinRTNmG/43jaVn4C/GjMuEMo/LrdYQwGIRK6DNTbQ8+wvW98l2lTo=
-X-Received: by 2002:a5e:c00c:0:b0:6a2:8015:afef with SMTP id
- u12-20020a5ec00c000000b006a28015afefmr2425943iol.149.1672424027483; Fri, 30
- Dec 2022 10:13:47 -0800 (PST)
+        bh=CA5uU9xfc2kQPK+mg/5jhRujnxjVswB27Z1UxXXBvOg=;
+        b=IOnT3arSosPv6g+bxwJH8QgDvWwxxeY5FBbGiyFQJt7ZRVDfilNmhdu8ZQzYlwGXRG
+         sw5ssD/t5lXjBiB2pVsjHcQto5r5tCyG1L6MOfnbxg3ZFcCRagK2+oZ2ld+Em6cpAQba
+         OkUCPTlQ4ZBHPJfwjBKsu5e3id7CRz13LdvClsWcfNFAunCXfb1kPPhrdEF7tCfDOc5P
+         +CB+bbrkHWIdpKyIKCAZtUBvCsf+M2AwVHnzAdeggp5GwQhKvGuaer6OIIY/jxZt57bW
+         JboMbhlh5Ln/LLlbzNp0ceHj96CT4FstFqCx9gj4lv/7Lp01hX3Cr9iUxIo0+yKu++Nl
+         8TaA==
+X-Gm-Message-State: AFqh2kotaxVg/AXacJwgJv2cgff6glhQhbR6uKC2HqA6JDZQameiyiEc
+        PT0QNq8LF+gAvMDLx3Z4CuUF4AXWHmuTCkkpSYc=
+X-Google-Smtp-Source: AMrXdXtvG/+juumm/OZ/6Xk91ooHhF3lK0NDpHretXH3t7gCzczen11e1APu8EEbwu9uQ62YiVCVqPHZpEtSMwIgIyo=
+X-Received: by 2002:a02:3b4f:0:b0:39a:98b:480e with SMTP id
+ i15-20020a023b4f000000b0039a098b480emr2485950jaf.125.1672424283499; Fri, 30
+ Dec 2022 10:18:03 -0800 (PST)
 MIME-Version: 1.0
-References: <20221223142419.3781410-1-ammar.faizi@intel.com> <20221223142419.3781410-2-ammar.faizi@intel.com>
-In-Reply-To: <20221223142419.3781410-2-ammar.faizi@intel.com>
+References: <20221223142419.3781410-1-ammar.faizi@intel.com> <20221223142419.3781410-3-ammar.faizi@intel.com>
+In-Reply-To: <20221223142419.3781410-3-ammar.faizi@intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 30 Dec 2022 19:13:35 +0100
-Message-ID: <CAJZ5v0j1nB9W=uNHKhqLHovTgAq_5ZYkzp6z==AspY4Dfp3PxA@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] ACPI: Silence missing prototype warnings
+Date:   Fri, 30 Dec 2022 19:17:51 +0100
+Message-ID: <CAJZ5v0jAy6YmGwZ3QBrgGf4O0xmkF=K=cS71gB0S_0GBC0kLfg@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] ACPICA: Silence 'unused-but-set variable' warning
 To:     Ammar Faizi <ammarfaizi2@gnuweeb.org>
 Cc:     Robert Moore <robert.moore@intel.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -64,54 +64,74 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Dec 23, 2022 at 3:25 PM Ammar Faizi <ammarfaizi2@gnuweeb.org> wrote:
+On Fri, Dec 23, 2022 at 3:24 PM Ammar Faizi <ammarfaizi2@gnuweeb.org> wrote:
 >
 > From: Ammar Faizi <ammarfaizi2@gnuweeb.org>
 >
-> Compiling with clang-16:
+> @num_carats is used for debugging, passed to the 'ACPI_DEBUG_PRINT()'
+> macro. But this macro will expand to nothing when debug is disabled,
+> resulting in the following (clang-16):
 >
->   drivers/acpi/acpi_lpit.c:142:6: error: no previous prototype \
->   for function 'acpi_init_lpit' [-Werror,-Wmissing-prototypes]
+>   drivers/acpi/acpica/nsaccess.c:295:6: error: variable 'num_carats' set \
+>   but not used [-Werror,-Wunused-but-set-variable]
+>         u32 num_carats;
+>             ^
+>   1 error generated.
 >
->   drivers/acpi/ioapic.c:212:6: error: no previous prototype \
->   for function 'pci_ioapic_remove' [-Werror,-Wmissing-prototypes]
->
->   drivers/acpi/ioapic.c:229:5: error: no previous prototype \
->   for function 'acpi_ioapic_remove' [-Werror,-Wmissing-prototypes]
->
-> Include "internal.h" to silence them.
+> Move the variable declaration inside the else block to reduce the scope,
+> then add '(void)num_carats' to silence the warning when debug is disabled.
 >
 > Cc: LLVM Mailing List <llvm@lists.linux.dev>
 > Signed-off-by: Ammar Faizi <ammarfaizi2@gnuweeb.org>
-> ---
->  drivers/acpi/acpi_lpit.c | 1 +
->  drivers/acpi/ioapic.c    | 1 +
->  2 files changed, 2 insertions(+)
->
-> diff --git a/drivers/acpi/acpi_lpit.c b/drivers/acpi/acpi_lpit.c
-> index 50540d4d4948..3843d2576d3f 100644
-> --- a/drivers/acpi/acpi_lpit.c
-> +++ b/drivers/acpi/acpi_lpit.c
-> @@ -10,6 +10,7 @@
->  #include <linux/acpi.h>
->  #include <asm/msr.h>
->  #include <asm/tsc.h>
-> +#include "internal.h"
->
->  struct lpit_residency_info {
->         struct acpi_generic_address gaddr;
-> diff --git a/drivers/acpi/ioapic.c b/drivers/acpi/ioapic.c
-> index a690c7b18623..6677955b4a8e 100644
-> --- a/drivers/acpi/ioapic.c
-> +++ b/drivers/acpi/ioapic.c
-> @@ -24,6 +24,7 @@
->  #include <linux/acpi.h>
->  #include <linux/pci.h>
->  #include <acpi/acpi.h>
-> +#include "internal.h"
->
->  struct acpi_pci_ioapic {
->         acpi_handle     root_handle;
-> --
 
-Applied as 6.3 material, thanks!
+ACPICA changes require (at least) a pull request to be submitted to
+the upstream ACPICA project on GitHub.
+
+If such a pull request is created, please resend the Linux patch with
+a Link tag pointing to that pull request.
+
+Thanks!
+
+> ---
+>  drivers/acpi/acpica/nsaccess.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/acpi/acpica/nsaccess.c b/drivers/acpi/acpica/nsaccess.c
+> index a0c1a665dfc1..d73d052c5b3b 100644
+> --- a/drivers/acpi/acpica/nsaccess.c
+> +++ b/drivers/acpi/acpica/nsaccess.c
+> @@ -292,7 +292,6 @@ acpi_ns_lookup(union acpi_generic_state *scope_info,
+>         struct acpi_namespace_node *current_node = NULL;
+>         struct acpi_namespace_node *this_node = NULL;
+>         u32 num_segments;
+> -       u32 num_carats;
+>         acpi_name simple_name;
+>         acpi_object_type type_to_check_for;
+>         acpi_object_type this_search_type;
+> @@ -394,6 +393,7 @@ acpi_ns_lookup(union acpi_generic_state *scope_info,
+>                                           "Path is absolute from root [%p]\n",
+>                                           this_node));
+>                 } else {
+> +                       u32 num_carats = 0;
+>                         /* Pathname is relative to current scope, start there */
+>
+>                         ACPI_DEBUG_PRINT((ACPI_DB_NAMES,
+> @@ -406,7 +406,6 @@ acpi_ns_lookup(union acpi_generic_state *scope_info,
+>                          * the parent node for each prefix instance.
+>                          */
+>                         this_node = prefix_node;
+> -                       num_carats = 0;
+>                         while (*path == (u8) AML_PARENT_PREFIX) {
+>
+>                                 /* Name is fully qualified, no search rules apply */
+> @@ -449,6 +448,7 @@ acpi_ns_lookup(union acpi_generic_state *scope_info,
+>                                                   "Search scope is [%4.4s], path has %u carat(s)\n",
+>                                                   acpi_ut_get_node_name
+>                                                   (this_node), num_carats));
+> +                               (void)num_carats;
+>                         }
+>                 }
+>
+> --
+> Ammar Faizi
+>
