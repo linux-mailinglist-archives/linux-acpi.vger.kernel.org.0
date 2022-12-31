@@ -2,117 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C766659E3E
-	for <lists+linux-acpi@lfdr.de>; Sat, 31 Dec 2022 00:28:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9048865A308
+	for <lists+linux-acpi@lfdr.de>; Sat, 31 Dec 2022 08:12:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229681AbiL3X2k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Dec 2022 18:28:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39984 "EHLO
+        id S229546AbiLaHMD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 31 Dec 2022 02:12:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229938AbiL3X2c (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Dec 2022 18:28:32 -0500
-Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D57FE13D4C;
-        Fri, 30 Dec 2022 15:28:31 -0800 (PST)
-Received: by mail-oi1-x22e.google.com with SMTP id i127so20506466oif.8;
-        Fri, 30 Dec 2022 15:28:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=4IkI6vy8eebK2fwJ2aoil/AxN2eFftPhnKXap/KdveM=;
-        b=XdxM+f3d1DUsLGej44Offnqr5B8TwxtwS2lslLz3sekorPPaK3HVcMqforvpCVZNbj
-         Ce1P+j2/pZHpKBFeMiunlRtQJZL4HVC8Jxj86rsu0LcG46sZS+q9eoEx40NpUiMPMs2z
-         nU5wvUv8auYYXPJv6zixea6eWW3ZOoXZAGzfxx046N3UVMnWqNy7YqarvestStU/Grsw
-         Jx0Hx1z3Qjj4N9W90tjKnKP4ts49V4iCVh9hAwW8ikylOshnJCfOw+t4oSIGF9TPn7D1
-         WPeUNq/eIKgW4L/SbESaWIL+YBvsC4nSaKIe7c8o3J37noRD0FutJwlQj0GDpTF6ZdLi
-         Jj+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4IkI6vy8eebK2fwJ2aoil/AxN2eFftPhnKXap/KdveM=;
-        b=yk0wjCgtl/CiI9hHnyjHAaYr5soEojhRtcXysNkiTAvQXr55FVg9XMLQ3yrI4urQmh
-         Xp85u13VaACMIepxijvyoeg+q6Zmw0fibeB9m3dc4wwybk44UC4Hw2EhIOKA0F0LDTap
-         ToLP9Kby8GN72Ayyw0Z8Fq1Lb3SmpvbjJqX4qlxfVIcke0tUmwQvfSN/vRAM+y0YFmSk
-         yhzYm6s4LOhButt5GLdIHCI6Tgfd6NzzAMwalgzDGalc5k0ObIeBlqR5h9VhUhrHFeUo
-         vvEXkhPZKUGA2qe6rZUq59HfBz8xuI2sFr86IsV7aWd3NmiWJvpJjm1fL2wO1f6C2MGD
-         IjUQ==
-X-Gm-Message-State: AFqh2kr+hD27OvhPyVFCZNKFUwhnS5Md1oNFtWn5FmKDFLWntmb/ioj7
-        Q9K9RMdGAp+j6nkfxX/QUis76lzFpp9EahcGnsj80ByZCEY=
-X-Google-Smtp-Source: AMrXdXuFKQhABZItpKWCjyIMyzhC84k1nK1KJjvORQuidPmiB0EGFzq9zpZHo4M+corWJdxPWjgixVrSBFszfAaoyoo=
-X-Received: by 2002:a05:6808:1904:b0:35e:55de:13ae with SMTP id
- bf4-20020a056808190400b0035e55de13aemr1625470oib.199.1672442911175; Fri, 30
- Dec 2022 15:28:31 -0800 (PST)
+        with ESMTP id S229551AbiLaHMC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 31 Dec 2022 02:12:02 -0500
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E49F313E88;
+        Fri, 30 Dec 2022 23:12:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1672470721; x=1704006721;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=VyRpn98ajmqsDLFNKgzhw6Kyh+FK3ES9kzF/3gDLdCo=;
+  b=mQO3FICUHWJoZ+BwSt0e/CKCDZ93fJ4AA8ImvFyxkRfGiSPzUaMtJKQF
+   CyekYit9tA7mkbDqYNVVftGB5/Tr8arrhEd0Iv8vglD7Wtj/LMNvBk6/r
+   8Z9Yk0xlEsvXW6pBUaCGJYs7KvsYQN3PbMWiFwYjdnaIeQC/e3e1KTf8b
+   c/GlT7H+BphlMQkAppyLUh46sEndxPKFem3Nj7AHEy4jLSmpSTE149zzd
+   Zuok/C0Uj1NpfI4a2qF37tb0RiNcsh4DjUEApuWI4s/qSdywejQxJ42Pr
+   X0BCq4DCeMfZSyDZDrWLYSTElCzDJGlwxwDUsp7azEymUPvbME135Q/rg
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10576"; a="383588360"
+X-IronPort-AV: E=Sophos;i="5.96,289,1665471600"; 
+   d="scan'208";a="383588360"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2022 23:12:01 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10576"; a="717348012"
+X-IronPort-AV: E=Sophos;i="5.96,289,1665471600"; 
+   d="scan'208";a="717348012"
+Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 30 Dec 2022 23:11:59 -0800
+Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pBW2B-000N6W-0S;
+        Sat, 31 Dec 2022 07:11:59 +0000
+Date:   Sat, 31 Dec 2022 15:11:44 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 89c98a1b8faa98d47b5fc8697a1e97baeb894a28
+Message-ID: <63afe0b0.jmDOykJFwOqA4bZz%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20221227063335.61474-1-zh.nvgt@gmail.com> <CAJZ5v0jmOMHHXvRnDcetDbh+0CySh5ddZJx1g3xTXPzCHokZRg@mail.gmail.com>
-In-Reply-To: <CAJZ5v0jmOMHHXvRnDcetDbh+0CySh5ddZJx1g3xTXPzCHokZRg@mail.gmail.com>
-From:   Hang Zhang <zh.nvgt@gmail.com>
-Date:   Fri, 30 Dec 2022 18:28:20 -0500
-Message-ID: <CAO2zrtbXDdWLhyZkJhisou4zxypxA-Fhpxx1Cop1ZXXf3oUxeA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: custom_method: fix potential use-after-free issues
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Dec 30, 2022 at 1:31 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Tue, Dec 27, 2022 at 7:34 AM Hang Zhang <zh.nvgt@gmail.com> wrote:
-> >
-> > cm_write() is the .write callback of the custom_method debugfs
-> > interface, it operates on a global pointer "buf" (e.g., dereference,
-> > allocate, free, and nullification), the problem is that cm_write()
-> > is not protected by any locks, so concurrent invocations of it
-> > may cause use-after-free issues for "buf", e.g., one invocation
-> > may have just freed "buf" while being preempted before nullifying
-> > the pointer, then another invocation can dereference the now dangling
-> > "buf" pointer.
-> >
-> > Fix the issue by protecting the "buf" operations in cm_write() with
-> > the inode write lock. Note that the .llseek callback of the debugfs
-> > interface has been protected by the same lock, this patch basically
-> > introduces it to the .write callback as well.
->
-> The problem is there, but the whole state is not protected from
-> concurrent use and the fix doesn't look sufficient to me (for example,
-> a different writer may start writing into the file before the previous
-> one has finished and the result will still be broken AFAICS).
->
-> It looks like the file should be prevented from being opened by more
-> than one writer at a time.
->
-> Or maybe it's time to drop this interface from the kernel altogether.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 89c98a1b8faa98d47b5fc8697a1e97baeb894a28  Merge branch 'thermal-intel-next' into bleeding-edge
 
-Hi, Rafael,
+elapsed time: 726m
 
-Thank you very much for your feedback! We initially intended to bring
-up this potential concurrent UAF issue to the community with this
-tentative patch, but we do not have deep domain knowledge for the
-ACPI subsystem and the bigger picture, so your comment is highly
-valuable to us!
+configs tested: 79
+configs skipped: 2
 
-As far as I can understand, inode_lock is uniquely associated with
-the opened file, e.g., if two writers open the same debugfs file
-and write to it, then inode_lock as used in this patch should be
-able to synchronize their concurrent write because their inode_lock
-are on the same semaphore. Do you mean that this "custom_method"
-driver will handle the .open/.write of multiple different debugfs
-file instances, so that writers accessing different file instances
-will not be properly synchronized with inode_lock? Sorry if I missed
-anything here, and thank you in advance for your explanation!
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-I also think it is a good solution to totally drop this interface
-if the maintainers consider it appropriate (I do not have
-the knowledge to assess the role this interface plays, though).
-Thank you for your help!
+gcc tested configs:
+x86_64                           rhel-8.3-bpf
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+x86_64                           rhel-8.3-syz
+i386                                defconfig
+x86_64                              defconfig
+um                             i386_defconfig
+arc                                 defconfig
+i386                 randconfig-a012-20221226
+ia64                             allmodconfig
+s390                             allmodconfig
+um                           x86_64_defconfig
+i386                 randconfig-a011-20221226
+arm                                 defconfig
+i386                 randconfig-a013-20221226
+alpha                               defconfig
+i386                 randconfig-a014-20221226
+s390                                defconfig
+i386                 randconfig-a016-20221226
+x86_64                          rhel-8.3-func
+i386                 randconfig-a015-20221226
+x86_64                    rhel-8.3-kselftests
+i386                             allyesconfig
+arc                               allnoconfig
+x86_64                               rhel-8.3
+alpha                             allnoconfig
+i386                              allnoconfig
+arm                               allnoconfig
+s390                             allyesconfig
+arm                              allyesconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a014-20221226
+sh                               allmodconfig
+mips                             allyesconfig
+arm64                            allyesconfig
+x86_64               randconfig-a013-20221226
+x86_64               randconfig-a011-20221226
+powerpc                          allmodconfig
+alpha                            allyesconfig
+m68k                             allyesconfig
+x86_64               randconfig-a012-20221226
+x86_64                           allyesconfig
+x86_64               randconfig-a015-20221226
+m68k                             allmodconfig
+x86_64               randconfig-a016-20221226
+arc                              allyesconfig
+arm                  randconfig-r046-20221225
+arc                  randconfig-r043-20221225
+arc                  randconfig-r043-20221227
+arm                  randconfig-r046-20221227
+arc                  randconfig-r043-20221226
+riscv                randconfig-r042-20221226
+s390                 randconfig-r044-20221226
+riscv                             allnoconfig
+x86_64                            allnoconfig
+
+clang tested configs:
+x86_64                          rhel-8.3-rust
+x86_64               randconfig-a002-20221226
+x86_64               randconfig-a003-20221226
+x86_64               randconfig-a001-20221226
+i386                 randconfig-a004-20221226
+x86_64               randconfig-a004-20221226
+x86_64               randconfig-a006-20221226
+x86_64               randconfig-a005-20221226
+i386                 randconfig-a001-20221226
+i386                 randconfig-a003-20221226
+i386                 randconfig-a002-20221226
+i386                 randconfig-a006-20221226
+i386                 randconfig-a005-20221226
+hexagon              randconfig-r045-20221225
+riscv                randconfig-r042-20221227
+hexagon              randconfig-r041-20221225
+s390                 randconfig-r044-20221227
+hexagon              randconfig-r041-20221227
+hexagon              randconfig-r041-20221226
+arm                  randconfig-r046-20221226
+s390                 randconfig-r044-20221225
+hexagon              randconfig-r045-20221226
+riscv                randconfig-r042-20221225
+hexagon              randconfig-r045-20221227
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
