@@ -2,213 +2,319 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B29D065B3F6
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jan 2023 16:15:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE65265B520
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jan 2023 17:34:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236098AbjABPPt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 2 Jan 2023 10:15:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55432 "EHLO
+        id S236184AbjABQe1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 2 Jan 2023 11:34:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236300AbjABPPh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 Jan 2023 10:15:37 -0500
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2112F95B3;
-        Mon,  2 Jan 2023 07:15:32 -0800 (PST)
-Received: by mail-wm1-x32b.google.com with SMTP id g10so6739498wmo.1;
-        Mon, 02 Jan 2023 07:15:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=g55WvUk3pZh+76FrJSOP93CM4aqDNumn6UAqJNnkV2I=;
-        b=aLCMPvNvQuBR+BOYVst4ixKSXgpzdzOHK/L6SNa38txbqSLncrahKEF85ZT0ZQfGmV
-         +6n4bE1gkxhKRRnmJTdArfVryEqzNDUCzrLiS58xtUJK9Y3rNXOSSNMEgvHdragORXBL
-         g8Rq7umFfKXusEHfeLLV4Fgdv+Kht9Ipb6IzORx0/I0wJD4aIv1iIgIqJq+LymVkdinv
-         f2KmE/k3LBnhLE19WhgFqU9AhhUW6UJxYGl8nDq1af+M19nTKAk2Yva8JfZ7rVAyM7Iv
-         hNzZwcA982VJq2cZHFtkuzrbOi9RnpFxh6q62shorF38/C4+DBitILoM4xQdnmirG/LM
-         O0iQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g55WvUk3pZh+76FrJSOP93CM4aqDNumn6UAqJNnkV2I=;
-        b=biOfI+aLxCJskaOFXtg3Kah8QC28u5ghJAIhTXn90OHJRv/Bs1fQbajV11Ao2m0GAD
-         CM/q5Hpb+OrsTzgW0vrytdFZuRRXgq8PQqiN8I2oND8BVEfZsVzCkAaNqVUeJbWoOI9l
-         mV/S8negjCuYE3po9DsiVETqhQ6FXNbuVSn1BOtrE691WVUUXt0xLP6jPEXUKgB60Ei/
-         vShzwvtnJsczbNySjHLeKnu7D5+SXo4rXvuNo1/QIqFJcmYtMdw9UPUvBoe3ogkVGowE
-         1sKOFFLjRcZFOUBI54cK+JlsgLht/5psKVcBQBBT9CRlm/gBeuzbFOlS3YBVU+QoyjHd
-         0Xvg==
-X-Gm-Message-State: AFqh2kotF3SfMr74jq3iHZFgUxPjTqIxzThPn9ZXZPQdzcUoFJjlc5Vq
-        QfMnuBYpH9Qp1+HoOJiZER4=
-X-Google-Smtp-Source: AMrXdXvWTO524DeOp1N1HHR64ziyxg9sB0QO+udZTlGU/KNr/N+PZ9N8XO12CWRs/u839irqaO2vaw==
-X-Received: by 2002:a7b:ca51:0:b0:3d2:7a7:5cc6 with SMTP id m17-20020a7bca51000000b003d207a75cc6mr32325317wml.18.1672672530638;
-        Mon, 02 Jan 2023 07:15:30 -0800 (PST)
-Received: from Red ([2a01:cb1d:3d5:a100:4a02:2aff:fe07:1efc])
-        by smtp.googlemail.com with ESMTPSA id i2-20020a05600c354200b003d35acb0fd7sm47313218wmq.34.2023.01.02.07.15.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Jan 2023 07:15:30 -0800 (PST)
-Date:   Mon, 2 Jan 2023 16:15:27 +0100
-From:   Corentin Labbe <clabbe.montjoie@gmail.com>
-To:     Arnd Bergmann <arnd@arndb.de>, rafael@kernel.org, lenb@kernel.org,
-        linux-acpi@vger.kernel.org, erik.kaneda@intel.com
-Cc:     Dominik Brodowski <linux@dominikbrodowski.net>,
+        with ESMTP id S232103AbjABQe0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 Jan 2023 11:34:26 -0500
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 481FB26FB;
+        Mon,  2 Jan 2023 08:34:23 -0800 (PST)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
+ id c075bf340641f3c6; Mon, 2 Jan 2023 17:34:21 +0100
+Received: from kreacher.localnet (unknown [213.134.163.167])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 42A2928C0499;
+        Mon,  2 Jan 2023 17:34:20 +0100 (CET)
+Authentication-Results: v370.home.net.pl; dmarc=none (p=none dis=none) header.from=rjwysocki.net
+Authentication-Results: v370.home.net.pl; spf=fail smtp.mailfrom=rjwysocki.net
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     "Limonciello, Mario" <mario.limonciello@amd.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mehta Sanju <Sanju.Mehta@amd.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: pcmcia: ti: regression cannot get IRQ
-Message-ID: <Y7L1D6UTVwCKRx3+@Red>
-References: <Y7HMfUTjuWC+Zudk@Red>
- <52ec1b11-4756-4396-866b-6250c6018f93@app.fastmail.com>
+Subject: Re: [PATCH v5] PCI/ACPI: PCI/ACPI: Validate devices with power resources support D3
+Date:   Mon, 02 Jan 2023 17:34:19 +0100
+Message-ID: <8191575.T7Z3S40VBb@kreacher>
+In-Reply-To: <20221121221742.GA137841@bhelgaas>
+References: <20221121221742.GA137841@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <52ec1b11-4756-4396-866b-6250c6018f93@app.fastmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 213.134.163.167
+X-CLIENT-HOSTNAME: 213.134.163.167
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrjedvgdeltdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvffeuiedtgfdvtddugeeujedtffetteegfeekffdvfedttddtuefhgeefvdejhfenucfkphepvddufedrudefgedrudeifedrudeijeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrdduieefrdduieejpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeduvddprhgtphhtthhopehhvghlghgrrghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmrghrihhordhlihhmohhntghivghllhhosegrmhgurdgtohhmpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlvghnsgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghhvghlghgrrghssehgohhoghhlvgdrtghomhdp
+ rhgtphhtthhopehmihhkrgdrfigvshhtvghrsggvrhhgsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepufgrnhhjuhdrofgvhhhtrgesrghmugdrtghomhdprhgtphhtthhopehluhhkrghsseifuhhnnhgvrhdruggvpdhrtghpthhtoheprhgrfhgrvghlrdhjrdifhihsohgtkhhisehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphgtihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=12 Fuz1=12 Fuz2=12
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Le Mon, Jan 02, 2023 at 09:30:07AM +0100, Arnd Bergmann a écrit :
-> On Sun, Jan 1, 2023, at 19:10, Corentin Labbe wrote:
-> > Hello
-> >
-> > I was trying to boot again my old compaq armada 7400 laptop and the 
-> > network card is unusable.
-> >
-> > Last known working kernel is 4.16.18.
-> > First known bad kernel is 4.17.19
-> >
-> > The interesting log is:
-> > [    3.503348] yenta_cardbus 0000:00:0c.0: ISA IRQ mask 0x0698, PCI irq 
-> > 0
-> > [    3.503442] yenta_cardbus 0000:00:0c.0: Socket status: 30000006
-> > [    3.505250] yenta_cardbus 0000:00:0c.1: CardBus bridge found 
-> > [0e11:b048]
-> > [    3.505370] yenta_cardbus 0000:00:0c.1: adjusting diagnostic: 60 -> 
-> > 00
-> > [    3.505457] yenta_cardbus 0000:00:0c.1: Using INTVAL to route CSC 
-> > interrupts to PCI
-> > [    3.505554] yenta_cardbus 0000:00:0c.1: Routing CardBus interrupts 
-> > to ISA
-> > [    3.505556] yenta_cardbus 0000:00:0c.1: TI: mfunc 0x00000000, devctl 
-> > 0x64
-> > [    3.505556] yenta_cardbus 0000:00:0c.1: TI: no PCI interrupts. Fish. 
-> > Please report.
-> > [    3.505556] yenta_cardbus 0000:00:0c.1: no PCI IRQ, CardBus support 
-> > disabled for this socket.
-> > [    3.505556] yenta_cardbus 0000:00:0c.1: check your BIOS CardBus, 
-> > BIOS IRQ or ACPI settings.
-> > [    3.632323] yenta_cardbus 0000:00:0c.1: ISA IRQ mask 0x0698, PCI irq 
-> > 0
-> > [    3.632416] yenta_cardbus 0000:00:0c.1: Socket status: 30000020
-> >
-> > Full 4.16.18 log is availlable at: 
-> > http://kernel.montjoie.ovh/zoo/armada/dmesg-4.16.18.txt
-> > Since 4.17 (and 4.18) is stuck sarting init, I have log for 5.0.29
-> > Full 5.0.29 log is availlable at: 
-> > http://kernel.montjoie.ovh/zoo/armada/dmesg-5.0.21.txt
+On Monday, November 21, 2022 11:17:42 PM CET Bjorn Helgaas wrote:
+> On Mon, Nov 21, 2022 at 03:33:00PM +0100, Rafael J. Wysocki wrote:
+> > On Friday, November 18, 2022 10:13:39 PM CET Rafael J. Wysocki wrote:
+> > > On Fri, Nov 18, 2022 at 9:23 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > > >
+> > > > Hi Rafael,
+> > > >
+> > > > Sorry, I'm still confused (my perpetual state :)).
+> > > 
+> > > No worries, doing my best to address that.
+> > > 
+> > > > On Fri, Nov 18, 2022 at 02:16:17PM +0100, Rafael J. Wysocki wrote:
+> > > > > On Thu, Nov 17, 2022 at 11:16 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > > > > > On Thu, Nov 17, 2022 at 06:01:26PM +0100, Rafael J. Wysocki wrote:
+> > > > > > > On Thu, Nov 17, 2022 at 12:28 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > > > > > > > On Wed, Nov 16, 2022 at 01:00:36PM +0100, Rafael J. Wysocki wrote:
+> > > > > > > > > On Wed, Nov 16, 2022 at 1:37 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > > > > > > > > > On Mon, Nov 14, 2022 at 04:33:52PM +0100, Rafael J. Wysocki wrote:
+> > > > > > > > > > > On Fri, Nov 11, 2022 at 10:42 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > > > > > > > > > > >
+> > > > > > > > > > > > On Fri, Nov 11, 2022 at 12:58:28PM -0600, Limonciello, Mario wrote:
+> > > > > > > > > > > > > On 11/11/2022 11:41, Bjorn Helgaas wrote:
+> > > > > > > > > > > > > > On Mon, Oct 31, 2022 at 05:33:55PM -0500, Mario Limonciello wrote:
+> > > > > > > > > > > > > > > Firmware typically advertises that ACPI devices that represent PCIe
+> > > > > > > > > > > > > > > devices can support D3 by a combination of the value returned by
+> > > > > > > > > > > > > > > _S0W as well as the HotPlugSupportInD3 _DSD [1].
+> > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > `acpi_pci_bridge_d3` looks for this combination but also contains
+> > > > > > > > > > > > > > > an assumption that if an ACPI device contains power resources the PCIe
+> > > > > > > > > > > > > > > device it's associated with can support D3.  This was introduced
+> > > > > > > > > > > > > > > from commit c6e331312ebf ("PCI/ACPI: Whitelist hotplug ports for
+> > > > > > > > > > > > > > > D3 if power managed by ACPI").
+> > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > Some firmware configurations for "AMD Pink Sardine" do not support
+> > > > > > > > > > > > > > > wake from D3 in _S0W for the ACPI device representing the PCIe root
+> > > > > > > > > > > > > > > port used for tunneling. The PCIe device will still be opted into
+> > > > > > > > > > > > > > > runtime PM in the kernel [2] because of the logic within
+> > > > > > > > > > > > > > > `acpi_pci_bridge_d3`. This currently happens because the ACPI
+> > > > > > > > > > > > > > > device contains power resources.
+> > > > > > > > > > > >
+> > > > > > > > > > > > Wait.  Is this as simple as just recognizing that:
+> > > > > > > > > > > >
+> > > > > > > > > > > >   _PS0 means the OS has a knob to put the device in D0, but it doesn't
+> > > > > > > > > > > >   mean the device can wake itself from a low-power state.  The OS has
+> > > > > > > > > > > >   to use _S0W to learn the device's ability to wake itself.
+> > > > > > > > > > >
+> > > > > > > > > > > It is.
+> > > > > > > > > >
+> > > > > > > > > > Now I'm confused again about what "HotPlugSupportInD3" means.  The MS
+> > > > > > > > > > web page [1] says it identifies Root Ports capable of handling hot
+> > > > > > > > > > plug events while in D3.  That sounds kind of related to _S0W: If _S0W
+> > > > > > > > > > says "I can wake myself from D3hot and D3cold", how is that different
+> > > > > > > > > > from "I can handle hotplug events in D3"?
+> > > > > > > > >
+> > > > > > > > > For native PME/hot-plug signaling there is no difference.  This is the
+> > > > > > > > > same interrupt by the spec after all IIRC.
+> > > > > > > > >
+> > > > > > > > > For GPE-based signaling, though, there is a difference, because GPEs
+> > > > > > > > > can only be used directly for wake signaling (this is related to
+> > > > > > > > > _PRW).  In particular, the only provision in the ACPI spec for device
+> > > > > > > > > hot-add are the Bus Check and Device Check notification values (0 and
+> > > > > > > > > 1) which require AML to run and evaluate Notify() on specific AML
+> > > > > > > > > objects.
+> > > > > > > > >
+> > > > > > > > > Hence, there is no spec-defined way to tell the OS that "something can
+> > > > > > > > > be hot-added under this device while in D3 and you will get notified
+> > > > > > > > > about that".
+> > > > > > > >
+> > > > > > > > So I guess acpi_pci_bridge_d3() looks for:
+> > > > > > > >
+> > > > > > > >   - "wake signaling while in D3" (_S0W) and
+> > > > > > > >   - "notification of hotplug while in D3" ("HotPlugSupportInD3")
+> > > > > > > >
+> > > > > > > > For Root Ports with both those abilities (or bridges below such Root
+> > > > > > > > Ports), we allow D3, and this patch doesn't change that.
+> > > > > > > >
+> > > > > > > > What this patch *does* change is that all bridges with _PS0 or _PR0
+> > > > > > > > previously could use D3, but now will only be able to use D3 if they
+> > > > > > > > are also (or are below) a Root Port that can signal wakeup
+> > > > > > > > (wakeup.flags.valid) and can wakeup from D3hot or D3cold (_S0W).
+> > > > > > > >
+> > > > > > > > And this fixes the Pink Sardine because it has Root Ports that do
+> > > > > > > > Thunderbolt tunneling, and they have _PS0 or _PR0 but their _S0W says
+> > > > > > > > they cannot wake from D3.  Previously we put those in D3, but they
+> > > > > > > > couldn't wake up.  Now we won't put them in D3.
+> > > > > > > >
+> > > > > > > > I guess there's a possibility that this could break or cause higher
+> > > > > > > > power consumption on systems that were fixed by c6e331312ebf
+> > > > > > > > ("PCI/ACPI: Whitelist hotplug ports for D3 if power managed by ACPI").
+> > > > > > > > I don't know enough about that scenario.  Maybe Lukas will chime in.
+> > > > > > >
+> > > > > > > Well, it is possible that some of these systems will be affected.
+> > > > > > >
+> > > > > > > One of such cases is when the port in question has _S0W which says
+> > > > > > > that wakeup from D3 is not supported.  In that case I think the kernel
+> > > > > > > should honor the _S0W input, because there may be a good reason known
+> > > > > > > to the platform integrator for it.
+> > > > > > >
+> > > > > > > The other case is when wakeup.flags.valid is unset for the port's ACPI
+> > > > > > > companion which means that the port cannot signal wakeup through
+> > > > > > > ACPI-related means at all and this may be problematic, especially in
+> > > > > > > the system-wide suspend case in which the wakeup capability is not too
+> > > > > > > relevant unless there is a system wakeup device under the port.
+> > > > > > >
+> > > > > > > I don't think that the adev->wakeup.flags.valid check has any bearing
+> > > > > > > on the _S0W check - if there is _S0W and it says "no wakeup from D3",
+> > > > > > > it should still be taken into account - so that check can be moved
+> > > > > > > past the _S0W check.
+> > > > > >
+> > > > > > So if _S0W says it can wake from D3, but wakeup.flags is not valid,
+> > > > > > it's still OK to use D3?
+> > > > >
+> > > > > No, it isn't, as per the code today and I don't think that this
+> > > > > particular part should be changed now.
+> > > >
+> > > > But the current upstream code checks acpi_pci_power_manageable(dev)
+> > > > first, so if "dev" has _PR0 or _PS0, we'll use D3 even if _S0W says it
+> > > > can wake from D3 and wakeup.flags is not valid.
+> > > 
+> > > Yes, the current code will return 'true' if _PR0 or _PS0 is present
+> > > for dev regardless of anything else.
+> > > 
+> > > The proposed change is to make that conditional on whether or not _S0W
+> > > for the root port says that wakeup from D3 is supported (or it is not
+> > > present or unusable).
+> > > 
+> > > I see that I've missed one point now which is when the root port
+> > > doesn't have an ACPI companion, in which case we should go straight
+> > > for the "dev is power manageable" check.
+> > 
+> > Moreover, it is possible that the bridge passed to acpi_pci_bridge_d3() has its
+> > own _S0W or a wakeup GPE if it is power-manageable via ACPI.  In those cases
+> > it is not necessary to ask the Root Port's _S0W about wakeup from D3, so overall
+> > I would go for the patch like the below (not really tested).
+> > 
+> > This works in the same way as the current code (unless I have missed anything)
+> > except for the case when the "target" bridge is power-manageable via ACPI, but
+> > it cannot signal wakeup via ACPI and has no _S0W.  In that case it will consult
+> > the upstream Root Port's _S0W to check whether or not wakeup from D3 is
+> > supported.
+> > 
+> > [Note that if dev_has_acpi_pm is 'true', it is kind of pointless to look for the
+> > "HotPlugSupportInD3" property of the Root Port, because the function is going to
+> > return 'true' regardless, but I'm not sure if adding an extra if () for handling
+> > this particular case is worth the hassle.]
 > 
-> I see you hit this code path:
+> I think this has a lot of potential.  I haven't tried it, but I wonder
+> if splitting out the Root Port-specific parts to a separate function
+> would be helpful, if only to make it more obvious that there may be
+> two different devices involved.
 > 
->         if (!socket->cb_irq || request_irq(socket->cb_irq, yenta_interrupt, IRQF_SHARED, "yenta", socket)) {
->                 /* No IRQ or request_irq failed. Poll */
->                 socket->cb_irq = 0; /* But zero is a valid IRQ number. */
->                 timer_setup(&socket->poll_timer, yenta_interrupt_wrapper, 0);
->                 mod_timer(&socket->poll_timer, jiffies + HZ);
->                 dev_info(&dev->dev,
->                          "no PCI IRQ, CardBus support disabled for this socket.\n");
->                 dev_info(&dev->dev,
->                          "check your BIOS CardBus, BIOS IRQ or ACPI settings.\n");
->         } else {
-> 
-> 
-> The "socket->cb_irq" is just the device IRQ, which is originally
-> set to "11", and this one appears to be shared with all the other
-> PCI devices:
-> 
-> [    2.402035] ACPI: PCI Interrupt Link [C168] (IRQs *11)
-> [    2.403507] ACPI: PCI Interrupt Link [C16C] (IRQs *11)
-> [    2.405461] ACPI: Blank _CRS EXT IRQ resource
-> [    2.405546] ACPI: PCI Interrupt Link [C16D] (IRQs 11) *0, disabled.
-> [    2.407578] ACPI: Blank _CRS EXT IRQ resource
-> [    2.407663] ACPI: PCI Interrupt Link [C16E] (IRQs 11) *0, disabled.
-> [    2.409610] ACPI: Blank _CRS EXT IRQ resource
-> [    2.409695] ACPI: PCI Interrupt Link [C16F] (IRQs 11) *0, disabled.
-> [    2.411647] ACPI: Blank _CRS EXT IRQ resource
-> [    2.411733] ACPI: PCI Interrupt Link [C170] (IRQs 11) *0, disabled.
-> [    2.413690] ACPI: Blank _CRS EXT IRQ resource
-> [    2.413775] ACPI: PCI Interrupt Link [C171] (IRQs 11) *0, disabled.
-> [    2.416055] ACPI: Blank _CRS EXT IRQ resource
-> [    2.416140] ACPI: PCI Interrupt Link [C172] (IRQs 11) *0, disabled.
-> 
-> If any of them try to get the IRQ as non-shared, then the cardbus
-> one would fail. Do you see anything suspicious in /proc/interrupts?
-> 
+> If there are two devices ("dev" is a bridge below a Root Port), I
+> guess support in the Root Port is not necessarily required?  E.g.,
+> could "dev" assert a wakeup GPE that's not routed through the Root
+> Port?  If Root Port support *is* required, maybe it would read more
+> clearly to test that first, before looking at the downstream device.
 
-Hello
+Sorry for the delay.
 
-On 4.16.18 /proc/interrupts:
-           CPU0       
-  0:      55783    XT-PIC      timer
-  1:          9    XT-PIC      i8042
-  2:          0    XT-PIC      cascade
-  8:          0    XT-PIC      rtc0
- 11:        684    XT-PIC      acpi, yenta, yenta, eth2
- 12:        136    XT-PIC      i8042
- 14:       1526    XT-PIC      pata_triflex
- 15:          0    XT-PIC      pata_triflex
-NMI:          0   Non-maskable interrupts
-LOC:          0   Local timer interrupts
-SPU:          0   Spurious interrupts
-PMI:          0   Performance monitoring interrupts
-IWI:          0   IRQ work interrupts
-RTR:          0   APIC ICR read retries
-TRM:          0   Thermal event interrupts
-THR:          0   Threshold APIC interrupts
-MCE:          0   Machine check exceptions
-MCP:          1   Machine check polls
-ERR:          0
-MIS:          0
-PIN:          0   Posted-interrupt notification event
-NPI:          0   Nested posted-interrupt event
-PIW:          0   Posted-interrupt wakeup event
+I don't really think that Root Port support is required for a bridge below
+a Root Port if that bridge itself is power-manageable via ACPI.  Moreover,
+I don't think that the _S0W of a Root Port has any bearing on devices below
+it that have their own _S0W.
 
-On 5.0.21 /proc/interrupts give:
-           CPU0       
-  0:       4736    XT-PIC      timer
-  1:          9    XT-PIC      i8042
-  2:          0    XT-PIC      cascade
-  4:        438    XT-PIC      ttyS0
-  8:          0    XT-PIC      rtc0
- 11:          0    XT-PIC      acpi
- 12:        136    XT-PIC      i8042
- 14:       1224    XT-PIC      pata_triflex
- 15:          0    XT-PIC      pata_triflex
-NMI:          0   Non-maskable interrupts
-LOC:          0   Local timer interrupts
-SPU:          0   Spurious interrupts
-PMI:          0   Performance monitoring interrupts
-IWI:          0   IRQ work interrupts
-RTR:          0   APIC ICR read retries
-TRM:          0   Thermal event interrupts
-THR:          0   Threshold APIC interrupts
-MCE:          0   Machine check exceptions
-MCP:          1   Machine check polls
-ERR:        227
-MIS:          0
-PIN:          0   Posted-interrupt notification event
-NPI:          0   Nested posted-interrupt event
-PIW:          0   Posted-interrupt wakeup event
+So what we really want appears to be to evaluate _S0W for the target bridge,
+regardless of whether or not it is a Root Port, and return 'false' if that
+produces D2 or a shallower power state.  Otherwise, we can do what we've
+done so far.
+
+The patch below implements, this - please let me know what you think.
+
+---
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Subject: [PATCH] PCI / ACPI: PM: Take _S0W of the target bridge into account in acpi_pci_bridge_d3(()
+
+It is generally questionable to allow a PCI bridge to go into D3 if
+it has _S0W returning D2 or a shallower power state, so modify
+acpi_pci_bridge_d3(() to always take the return value of _S0W for the
+target bridge into accout.  That is, make it return 'false' if _S0W
+returns D2 or a shallower power state for the target bridge regardless
+of its ancestor PCIe Root Port properties.  Of course, this also causes
+'false' to be returned if the PCIe Root Port itself is the target and
+its _S0W returns D2 or a shallower power state.
+
+However, still allow bridges without _S0W that are power-manageable via
+ACPI to enter D3 to retain the current code behavior in that case.
+
+Reported-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/pci/pci-acpi.c |   39 +++++++++++++++++++++++++++++----------
+ 1 file changed, 29 insertions(+), 10 deletions(-)
+
+Index: linux-pm/drivers/pci/pci-acpi.c
+===================================================================
+--- linux-pm.orig/drivers/pci/pci-acpi.c
++++ linux-pm/drivers/pci/pci-acpi.c
+@@ -984,15 +984,33 @@ bool acpi_pci_bridge_d3(struct pci_dev *
+ 	if (acpi_pci_disabled || !dev->is_hotplug_bridge)
+ 		return false;
+ 
+-	/* Assume D3 support if the bridge is power-manageable by ACPI. */
+-	if (acpi_pci_power_manageable(dev))
+-		return true;
++	adev = ACPI_COMPANION(&dev->dev);
++	if (adev) {
++		/*
++		 * If the bridge has _S0W, whether or not it can go into D3
++		 * depends on what is returned by that object.  In particular,
++		 * if the power state returned by _S0W is D2 or shallower,
++		 * entering D3 should not be allowed.
++		 */
++		status = acpi_evaluate_integer(adev->handle, "_S0W", NULL, &state);
++		if (ACPI_SUCCESS(status) && state < ACPI_STATE_D3_HOT)
++			return false;
++
++		/*
++		 * Otherwise, assume that the bridge can enter D3 so long as it
++		 * is power-manageable via ACPI.
++		 */
++		if (acpi_device_power_manageable(adev))
++			return true;
++	}
+ 
+ 	rpdev = pcie_find_root_port(dev);
+ 	if (!rpdev)
+ 		return false;
+ 
+-	adev = ACPI_COMPANION(&rpdev->dev);
++	if (rpdev != dev)
++		adev = ACPI_COMPANION(&rpdev->dev);
++
+ 	if (!adev)
+ 		return false;
+ 
+@@ -1005,13 +1023,14 @@ bool acpi_pci_bridge_d3(struct pci_dev *
+ 		return false;
+ 
+ 	/*
+-	 * If the Root Port cannot wake itself from D3hot or D3cold, we
+-	 * can't use D3.
++	 * In the bridge-below-a-Root-Port case, evaluate _S0W for the Root Port
++	 * to verify whether or not it can signal wakeup from D3.
+ 	 */
+-	status = acpi_evaluate_integer(adev->handle, "_S0W", NULL, &state);
+-	if (ACPI_SUCCESS(status) && state < ACPI_STATE_D3_HOT)
+-		return false;
+-
++	if (rpdev != dev) {
++		status = acpi_evaluate_integer(adev->handle, "_S0W", NULL, &state);
++		if (ACPI_SUCCESS(status) && state < ACPI_STATE_D3_HOT)
++			return false;
++	}
+ 	/*
+ 	 * The "HotPlugSupportInD3" property in a Root Port _DSD indicates
+ 	 * the Port can signal hotplug events while in D3.  We assume any
 
 
-I have bisected this to:
-first bad commit: [5a8361f7ecceaed64b4064000d16cb703462be49] ACPICA: Integrate package handling with module-level code
-So I added ACPI people.
 
-Regards
