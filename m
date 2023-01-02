@@ -2,55 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5290C65B56C
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jan 2023 17:59:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8446C65B579
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jan 2023 18:05:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229976AbjABQ7t (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 2 Jan 2023 11:59:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50788 "EHLO
+        id S234924AbjABRFS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 2 Jan 2023 12:05:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233728AbjABQ7m (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 Jan 2023 11:59:42 -0500
+        with ESMTP id S232976AbjABRFN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 Jan 2023 12:05:13 -0500
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F257111B;
-        Mon,  2 Jan 2023 08:59:40 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0E6FDB7;
+        Mon,  2 Jan 2023 09:05:11 -0800 (PST)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
- id 79207faae1a7715a; Mon, 2 Jan 2023 17:59:38 +0100
+ id dc1510c9b7cfec88; Mon, 2 Jan 2023 18:05:10 +0100
 Received: from kreacher.localnet (unknown [213.134.163.167])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id AA44A28C0089;
-        Mon,  2 Jan 2023 17:59:37 +0100 (CET)
+        by v370.home.net.pl (Postfix) with ESMTPSA id C0F2C28C1374;
+        Mon,  2 Jan 2023 18:05:09 +0100 (CET)
 Authentication-Results: v370.home.net.pl; dmarc=none (p=none dis=none) header.from=rjwysocki.net
 Authentication-Results: v370.home.net.pl; spf=fail smtp.mailfrom=rjwysocki.net
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Limonciello, Mario" <mario.limonciello@amd.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mehta Sanju <Sanju.Mehta@amd.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5] PCI/ACPI: PCI/ACPI: Validate devices with power resources support D3
-Date:   Mon, 02 Jan 2023 17:59:36 +0100
-Message-ID: <1945994.PYKUYFuaPT@kreacher>
-In-Reply-To: <8191575.T7Z3S40VBb@kreacher>
-References: <20221121221742.GA137841@bhelgaas> <8191575.T7Z3S40VBb@kreacher>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>, Hang Zhang <zh.nvgt@gmail.com>
+Subject: [PATCH] ACPI: Drop the custom_method debugfs interface
+Date:   Mon, 02 Jan 2023 18:05:09 +0100
+Message-ID: <7499491.EvYhyI6sBW@kreacher>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
 X-CLIENT-IP: 213.134.163.167
 X-CLIENT-HOSTNAME: 213.134.163.167
 X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrjedvgdeliecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvffeuiedtgfdvtddugeeujedtffetteegfeekffdvfedttddtuefhgeefvdejhfenucfkphepvddufedrudefgedrudeifedrudeijeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrdduieefrdduieejpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeduvddprhgtphhtthhopehhvghlghgrrghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmrghrihhordhlihhmohhntghivghllhhosegrmhgurdgtohhmpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlvghnsgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghhvghlghgrrghssehgohhoghhlvgdrtghomhdp
- rhgtphhtthhopehmihhkrgdrfigvshhtvghrsggvrhhgsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepufgrnhhjuhdrofgvhhhtrgesrghmugdrtghomhdprhgtphhtthhopehluhhkrghsseifuhhnnhgvrhdruggvpdhrtghpthhtoheprhgrfhgrvghlrdhjrdifhihsohgtkhhisehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphgtihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=12 Fuz1=12 Fuz2=12
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrjedvgdeljecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeegfffhudejlefhtdegffekteduhfethffhieettefhkeevgfdvgfefieekiefgheenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvudefrddufeegrdduieefrdduieejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudeifedrudeijedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepgedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepiihhrdhnvhhgthesghhmrghilhdr
+ tghomh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,307 +49,274 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Monday, January 2, 2023 5:34:19 PM CET Rafael J. Wysocki wrote:
-> On Monday, November 21, 2022 11:17:42 PM CET Bjorn Helgaas wrote:
-> > On Mon, Nov 21, 2022 at 03:33:00PM +0100, Rafael J. Wysocki wrote:
-> > > On Friday, November 18, 2022 10:13:39 PM CET Rafael J. Wysocki wrote:
-> > > > On Fri, Nov 18, 2022 at 9:23 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > > >
-> > > > > Hi Rafael,
-> > > > >
-> > > > > Sorry, I'm still confused (my perpetual state :)).
-> > > > 
-> > > > No worries, doing my best to address that.
-> > > > 
-> > > > > On Fri, Nov 18, 2022 at 02:16:17PM +0100, Rafael J. Wysocki wrote:
-> > > > > > On Thu, Nov 17, 2022 at 11:16 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > > > > > On Thu, Nov 17, 2022 at 06:01:26PM +0100, Rafael J. Wysocki wrote:
-> > > > > > > > On Thu, Nov 17, 2022 at 12:28 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > > > > > > > On Wed, Nov 16, 2022 at 01:00:36PM +0100, Rafael J. Wysocki wrote:
-> > > > > > > > > > On Wed, Nov 16, 2022 at 1:37 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > > > > > > > > > On Mon, Nov 14, 2022 at 04:33:52PM +0100, Rafael J. Wysocki wrote:
-> > > > > > > > > > > > On Fri, Nov 11, 2022 at 10:42 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > On Fri, Nov 11, 2022 at 12:58:28PM -0600, Limonciello, Mario wrote:
-> > > > > > > > > > > > > > On 11/11/2022 11:41, Bjorn Helgaas wrote:
-> > > > > > > > > > > > > > > On Mon, Oct 31, 2022 at 05:33:55PM -0500, Mario Limonciello wrote:
-> > > > > > > > > > > > > > > > Firmware typically advertises that ACPI devices that represent PCIe
-> > > > > > > > > > > > > > > > devices can support D3 by a combination of the value returned by
-> > > > > > > > > > > > > > > > _S0W as well as the HotPlugSupportInD3 _DSD [1].
-> > > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > > `acpi_pci_bridge_d3` looks for this combination but also contains
-> > > > > > > > > > > > > > > > an assumption that if an ACPI device contains power resources the PCIe
-> > > > > > > > > > > > > > > > device it's associated with can support D3.  This was introduced
-> > > > > > > > > > > > > > > > from commit c6e331312ebf ("PCI/ACPI: Whitelist hotplug ports for
-> > > > > > > > > > > > > > > > D3 if power managed by ACPI").
-> > > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > > Some firmware configurations for "AMD Pink Sardine" do not support
-> > > > > > > > > > > > > > > > wake from D3 in _S0W for the ACPI device representing the PCIe root
-> > > > > > > > > > > > > > > > port used for tunneling. The PCIe device will still be opted into
-> > > > > > > > > > > > > > > > runtime PM in the kernel [2] because of the logic within
-> > > > > > > > > > > > > > > > `acpi_pci_bridge_d3`. This currently happens because the ACPI
-> > > > > > > > > > > > > > > > device contains power resources.
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > Wait.  Is this as simple as just recognizing that:
-> > > > > > > > > > > > >
-> > > > > > > > > > > > >   _PS0 means the OS has a knob to put the device in D0, but it doesn't
-> > > > > > > > > > > > >   mean the device can wake itself from a low-power state.  The OS has
-> > > > > > > > > > > > >   to use _S0W to learn the device's ability to wake itself.
-> > > > > > > > > > > >
-> > > > > > > > > > > > It is.
-> > > > > > > > > > >
-> > > > > > > > > > > Now I'm confused again about what "HotPlugSupportInD3" means.  The MS
-> > > > > > > > > > > web page [1] says it identifies Root Ports capable of handling hot
-> > > > > > > > > > > plug events while in D3.  That sounds kind of related to _S0W: If _S0W
-> > > > > > > > > > > says "I can wake myself from D3hot and D3cold", how is that different
-> > > > > > > > > > > from "I can handle hotplug events in D3"?
-> > > > > > > > > >
-> > > > > > > > > > For native PME/hot-plug signaling there is no difference.  This is the
-> > > > > > > > > > same interrupt by the spec after all IIRC.
-> > > > > > > > > >
-> > > > > > > > > > For GPE-based signaling, though, there is a difference, because GPEs
-> > > > > > > > > > can only be used directly for wake signaling (this is related to
-> > > > > > > > > > _PRW).  In particular, the only provision in the ACPI spec for device
-> > > > > > > > > > hot-add are the Bus Check and Device Check notification values (0 and
-> > > > > > > > > > 1) which require AML to run and evaluate Notify() on specific AML
-> > > > > > > > > > objects.
-> > > > > > > > > >
-> > > > > > > > > > Hence, there is no spec-defined way to tell the OS that "something can
-> > > > > > > > > > be hot-added under this device while in D3 and you will get notified
-> > > > > > > > > > about that".
-> > > > > > > > >
-> > > > > > > > > So I guess acpi_pci_bridge_d3() looks for:
-> > > > > > > > >
-> > > > > > > > >   - "wake signaling while in D3" (_S0W) and
-> > > > > > > > >   - "notification of hotplug while in D3" ("HotPlugSupportInD3")
-> > > > > > > > >
-> > > > > > > > > For Root Ports with both those abilities (or bridges below such Root
-> > > > > > > > > Ports), we allow D3, and this patch doesn't change that.
-> > > > > > > > >
-> > > > > > > > > What this patch *does* change is that all bridges with _PS0 or _PR0
-> > > > > > > > > previously could use D3, but now will only be able to use D3 if they
-> > > > > > > > > are also (or are below) a Root Port that can signal wakeup
-> > > > > > > > > (wakeup.flags.valid) and can wakeup from D3hot or D3cold (_S0W).
-> > > > > > > > >
-> > > > > > > > > And this fixes the Pink Sardine because it has Root Ports that do
-> > > > > > > > > Thunderbolt tunneling, and they have _PS0 or _PR0 but their _S0W says
-> > > > > > > > > they cannot wake from D3.  Previously we put those in D3, but they
-> > > > > > > > > couldn't wake up.  Now we won't put them in D3.
-> > > > > > > > >
-> > > > > > > > > I guess there's a possibility that this could break or cause higher
-> > > > > > > > > power consumption on systems that were fixed by c6e331312ebf
-> > > > > > > > > ("PCI/ACPI: Whitelist hotplug ports for D3 if power managed by ACPI").
-> > > > > > > > > I don't know enough about that scenario.  Maybe Lukas will chime in.
-> > > > > > > >
-> > > > > > > > Well, it is possible that some of these systems will be affected.
-> > > > > > > >
-> > > > > > > > One of such cases is when the port in question has _S0W which says
-> > > > > > > > that wakeup from D3 is not supported.  In that case I think the kernel
-> > > > > > > > should honor the _S0W input, because there may be a good reason known
-> > > > > > > > to the platform integrator for it.
-> > > > > > > >
-> > > > > > > > The other case is when wakeup.flags.valid is unset for the port's ACPI
-> > > > > > > > companion which means that the port cannot signal wakeup through
-> > > > > > > > ACPI-related means at all and this may be problematic, especially in
-> > > > > > > > the system-wide suspend case in which the wakeup capability is not too
-> > > > > > > > relevant unless there is a system wakeup device under the port.
-> > > > > > > >
-> > > > > > > > I don't think that the adev->wakeup.flags.valid check has any bearing
-> > > > > > > > on the _S0W check - if there is _S0W and it says "no wakeup from D3",
-> > > > > > > > it should still be taken into account - so that check can be moved
-> > > > > > > > past the _S0W check.
-> > > > > > >
-> > > > > > > So if _S0W says it can wake from D3, but wakeup.flags is not valid,
-> > > > > > > it's still OK to use D3?
-> > > > > >
-> > > > > > No, it isn't, as per the code today and I don't think that this
-> > > > > > particular part should be changed now.
-> > > > >
-> > > > > But the current upstream code checks acpi_pci_power_manageable(dev)
-> > > > > first, so if "dev" has _PR0 or _PS0, we'll use D3 even if _S0W says it
-> > > > > can wake from D3 and wakeup.flags is not valid.
-> > > > 
-> > > > Yes, the current code will return 'true' if _PR0 or _PS0 is present
-> > > > for dev regardless of anything else.
-> > > > 
-> > > > The proposed change is to make that conditional on whether or not _S0W
-> > > > for the root port says that wakeup from D3 is supported (or it is not
-> > > > present or unusable).
-> > > > 
-> > > > I see that I've missed one point now which is when the root port
-> > > > doesn't have an ACPI companion, in which case we should go straight
-> > > > for the "dev is power manageable" check.
-> > > 
-> > > Moreover, it is possible that the bridge passed to acpi_pci_bridge_d3() has its
-> > > own _S0W or a wakeup GPE if it is power-manageable via ACPI.  In those cases
-> > > it is not necessary to ask the Root Port's _S0W about wakeup from D3, so overall
-> > > I would go for the patch like the below (not really tested).
-> > > 
-> > > This works in the same way as the current code (unless I have missed anything)
-> > > except for the case when the "target" bridge is power-manageable via ACPI, but
-> > > it cannot signal wakeup via ACPI and has no _S0W.  In that case it will consult
-> > > the upstream Root Port's _S0W to check whether or not wakeup from D3 is
-> > > supported.
-> > > 
-> > > [Note that if dev_has_acpi_pm is 'true', it is kind of pointless to look for the
-> > > "HotPlugSupportInD3" property of the Root Port, because the function is going to
-> > > return 'true' regardless, but I'm not sure if adding an extra if () for handling
-> > > this particular case is worth the hassle.]
-> > 
-> > I think this has a lot of potential.  I haven't tried it, but I wonder
-> > if splitting out the Root Port-specific parts to a separate function
-> > would be helpful, if only to make it more obvious that there may be
-> > two different devices involved.
-> > 
-> > If there are two devices ("dev" is a bridge below a Root Port), I
-> > guess support in the Root Port is not necessarily required?  E.g.,
-> > could "dev" assert a wakeup GPE that's not routed through the Root
-> > Port?  If Root Port support *is* required, maybe it would read more
-> > clearly to test that first, before looking at the downstream device.
-> 
-> Sorry for the delay.
-> 
-> I don't really think that Root Port support is required for a bridge below
-> a Root Port if that bridge itself is power-manageable via ACPI.  Moreover,
-> I don't think that the _S0W of a Root Port has any bearing on devices below
-> it that have their own _S0W.
-> 
-> So what we really want appears to be to evaluate _S0W for the target bridge,
-> regardless of whether or not it is a Root Port, and return 'false' if that
-> produces D2 or a shallower power state.  Otherwise, we can do what we've
-> done so far.
-> 
-> The patch below implements, this - please let me know what you think.
-> 
-
-And here's a v2 with somewhat less code duplication.
-
----
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Subject: [PATCH] PCI / ACPI: PM: Take _S0W of the target bridge into account in acpi_pci_bridge_d3(()
 
-It is generally questionable to allow a PCI bridge to go into D3 if
-it has _S0W returning D2 or a shallower power state, so modify
-acpi_pci_bridge_d3(() to always take the return value of _S0W for the
-target bridge into accout.  That is, make it return 'false' if _S0W
-returns D2 or a shallower power state for the target bridge regardless
-of its ancestor PCIe Root Port properties.  Of course, this also causes
-'false' to be returned if the PCIe Root Port itself is the target and
-its _S0W returns D2 or a shallower power state.
+The ACPI custom_method debugfs interface is security-sensitive and
+concurrent access to it is broken [1].
 
-However, still allow bridges without _S0W that are power-manageable via
-ACPI to enter D3 to retain the current code behavior in that case.
+Moreover, the recipe for preparing a customized version of a given
+control method has changed at one point due to ACPICA changes, which
+has not been reflected in its documentation, so whoever used it before
+has had to adapt an no problems with it have been reported.
 
-Reported-by: Mario Limonciello <mario.limonciello@amd.com>
+The latter likely means that the number of its users is limited at best
+and attempting to fix the issues mentioned above is likely not worth the
+effort.  Moreover, if it gets broken in the process, the breakage may not
+be readily discovered, so deleting it altogheher appeares to be a better
+option.
+
+Accordingly, drop custom_method along with its (outdated anyway)
+documentation.
+
+Link: https://lore.kernel.org/linux-acpi/20221227063335.61474-1-zh.nvgt@gmail.com/ # [1]
+Reported-by: Hang Zhang <zh.nvgt@gmail.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/device_pm.c |   16 ++++++++++++++++
- drivers/pci/pci-acpi.c   |   34 ++++++++++++++++++++++++----------
- include/acpi/acpi_bus.h  |    1 +
- 3 files changed, 41 insertions(+), 10 deletions(-)
+ Documentation/firmware-guide/acpi/method-customizing.rst |   89 ------------
+ drivers/acpi/Kconfig                                     |   14 --
+ drivers/acpi/Makefile                                    |    1 
+ drivers/acpi/custom_method.c                             |  103 ---------------
+ 4 files changed, 207 deletions(-)
 
-Index: linux-pm/drivers/pci/pci-acpi.c
+Index: linux-pm/drivers/acpi/Kconfig
 ===================================================================
---- linux-pm.orig/drivers/pci/pci-acpi.c
-+++ linux-pm/drivers/pci/pci-acpi.c
-@@ -977,22 +977,37 @@ bool acpi_pci_bridge_d3(struct pci_dev *
- {
- 	struct pci_dev *rpdev;
- 	struct acpi_device *adev;
+--- linux-pm.orig/drivers/acpi/Kconfig
++++ linux-pm/drivers/acpi/Kconfig
+@@ -444,20 +444,6 @@ config ACPI_HED
+ 	  which is used to report some hardware errors notified via
+ 	  SCI, mainly the corrected errors.
+ 
+-config ACPI_CUSTOM_METHOD
+-	tristate "Allow ACPI methods to be inserted/replaced at run time"
+-	depends on DEBUG_FS
+-	help
+-	  This debug facility allows ACPI AML methods to be inserted and/or
+-	  replaced without rebooting the system. For details refer to:
+-	  Documentation/firmware-guide/acpi/method-customizing.rst.
+-
+-	  NOTE: This option is security sensitive, because it allows arbitrary
+-	  kernel memory to be written to by root (uid=0) users, allowing them
+-	  to bypass certain security measures (e.g. if root is not allowed to
+-	  load additional kernel modules after boot, this feature may be used
+-	  to override that restriction).
+-
+ config ACPI_BGRT
+ 	bool "Boottime Graphics Resource Table support"
+ 	depends on EFI && (X86 || ARM64)
+Index: linux-pm/drivers/acpi/Makefile
+===================================================================
+--- linux-pm.orig/drivers/acpi/Makefile
++++ linux-pm/drivers/acpi/Makefile
+@@ -101,7 +101,6 @@ obj-$(CONFIG_ACPI_SBS)		+= sbshc.o
+ obj-$(CONFIG_ACPI_SBS)		+= sbs.o
+ obj-$(CONFIG_ACPI_HED)		+= hed.o
+ obj-$(CONFIG_ACPI_EC_DEBUGFS)	+= ec_sys.o
+-obj-$(CONFIG_ACPI_CUSTOM_METHOD)+= custom_method.o
+ obj-$(CONFIG_ACPI_BGRT)		+= bgrt.o
+ obj-$(CONFIG_ACPI_CPPC_LIB)	+= cppc_acpi.o
+ obj-$(CONFIG_ACPI_SPCR_TABLE)	+= spcr.o
+Index: linux-pm/drivers/acpi/custom_method.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/custom_method.c
++++ /dev/null
+@@ -1,103 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * custom_method.c - debugfs interface for customizing ACPI control method
+- */
+-
+-#include <linux/init.h>
+-#include <linux/module.h>
+-#include <linux/kernel.h>
+-#include <linux/uaccess.h>
+-#include <linux/debugfs.h>
+-#include <linux/acpi.h>
+-#include <linux/security.h>
+-
+-#include "internal.h"
+-
+-MODULE_LICENSE("GPL");
+-
+-static struct dentry *cm_dentry;
+-
+-/* /sys/kernel/debug/acpi/custom_method */
+-
+-static ssize_t cm_write(struct file *file, const char __user *user_buf,
+-			size_t count, loff_t *ppos)
+-{
+-	static char *buf;
+-	static u32 max_size;
+-	static u32 uncopied_bytes;
+-
+-	struct acpi_table_header table;
 -	acpi_status status;
--	unsigned long long state;
- 	const union acpi_object *obj;
- 
- 	if (acpi_pci_disabled || !dev->is_hotplug_bridge)
- 		return false;
- 
--	/* Assume D3 support if the bridge is power-manageable by ACPI. */
--	if (acpi_pci_power_manageable(dev))
--		return true;
-+	adev = ACPI_COMPANION(&dev->dev);
-+	if (adev) {
-+		/*
-+		 * If the bridge has _S0W, whether or not it can go into D3
-+		 * depends on what is returned by that object.  In particular,
-+		 * if the power state returned by _S0W is D2 or shallower,
-+		 * entering D3 should not be allowed.
-+		 */
-+		if (acpi_dev_no_wakeup_from_d3(adev))
-+			return false;
-+
-+		/*
-+		 * Otherwise, assume that the bridge can enter D3 so long as it
-+		 * is power-manageable via ACPI.
-+		 */
-+		if (acpi_device_power_manageable(adev))
-+			return true;
-+	}
- 
- 	rpdev = pcie_find_root_port(dev);
- 	if (!rpdev)
- 		return false;
- 
--	adev = ACPI_COMPANION(&rpdev->dev);
-+	if (rpdev != dev)
-+		adev = ACPI_COMPANION(&rpdev->dev);
-+
- 	if (!adev)
- 		return false;
- 
-@@ -1005,11 +1020,10 @@ bool acpi_pci_bridge_d3(struct pci_dev *
- 		return false;
- 
- 	/*
--	 * If the Root Port cannot wake itself from D3hot or D3cold, we
--	 * can't use D3.
-+	 * In the bridge-below-a-Root-Port case, evaluate _S0W for the Root Port
-+	 * to verify whether or not it can signal wakeup from D3.
- 	 */
--	status = acpi_evaluate_integer(adev->handle, "_S0W", NULL, &state);
--	if (ACPI_SUCCESS(status) && state < ACPI_STATE_D3_HOT)
-+	if (rpdev != dev && acpi_dev_no_wakeup_from_d3(adev))
- 		return false;
- 
- 	/*
-Index: linux-pm/drivers/acpi/device_pm.c
+-	int ret;
+-
+-	ret = security_locked_down(LOCKDOWN_ACPI_TABLES);
+-	if (ret)
+-		return ret;
+-
+-	if (!(*ppos)) {
+-		/* parse the table header to get the table length */
+-		if (count <= sizeof(struct acpi_table_header))
+-			return -EINVAL;
+-		if (copy_from_user(&table, user_buf,
+-				   sizeof(struct acpi_table_header)))
+-			return -EFAULT;
+-		uncopied_bytes = max_size = table.length;
+-		/* make sure the buf is not allocated */
+-		kfree(buf);
+-		buf = kzalloc(max_size, GFP_KERNEL);
+-		if (!buf)
+-			return -ENOMEM;
+-	}
+-
+-	if (buf == NULL)
+-		return -EINVAL;
+-
+-	if ((*ppos > max_size) ||
+-	    (*ppos + count > max_size) ||
+-	    (*ppos + count < count) ||
+-	    (count > uncopied_bytes)) {
+-		kfree(buf);
+-		buf = NULL;
+-		return -EINVAL;
+-	}
+-
+-	if (copy_from_user(buf + (*ppos), user_buf, count)) {
+-		kfree(buf);
+-		buf = NULL;
+-		return -EFAULT;
+-	}
+-
+-	uncopied_bytes -= count;
+-	*ppos += count;
+-
+-	if (!uncopied_bytes) {
+-		status = acpi_install_method(buf);
+-		kfree(buf);
+-		buf = NULL;
+-		if (ACPI_FAILURE(status))
+-			return -EINVAL;
+-		add_taint(TAINT_OVERRIDDEN_ACPI_TABLE, LOCKDEP_NOW_UNRELIABLE);
+-	}
+-
+-	return count;
+-}
+-
+-static const struct file_operations cm_fops = {
+-	.write = cm_write,
+-	.llseek = default_llseek,
+-};
+-
+-static int __init acpi_custom_method_init(void)
+-{
+-	cm_dentry = debugfs_create_file("custom_method", S_IWUSR,
+-					acpi_debugfs_dir, NULL, &cm_fops);
+-	return 0;
+-}
+-
+-static void __exit acpi_custom_method_exit(void)
+-{
+-	debugfs_remove(cm_dentry);
+-}
+-
+-module_init(acpi_custom_method_init);
+-module_exit(acpi_custom_method_exit);
+Index: linux-pm/Documentation/firmware-guide/acpi/method-customizing.rst
 ===================================================================
---- linux-pm.orig/drivers/acpi/device_pm.c
-+++ linux-pm/drivers/acpi/device_pm.c
-@@ -484,6 +484,22 @@ void acpi_dev_power_up_children_with_adr
- 	acpi_dev_for_each_child(adev, acpi_power_up_if_adr_present, NULL);
- }
- 
-+/**
-+ * acpi_dev_no_wakeup_from_d3 - Check if wakeup signaling from D3 is supported
-+ * @adev: ACPI companion of the target device.
-+ *
-+ * Evaluate _S0W for @adev and return 'true' if it is successful and the power
-+ * state returned by it is D2 or shallower.
-+ */
-+bool acpi_dev_no_wakeup_from_d3(struct acpi_device *adev)
-+{
-+	unsigned long long state;
-+	acpi_status status;
-+
-+	status = acpi_evaluate_integer(adev->handle, "_S0W", NULL, &state);
-+	return ACPI_SUCCESS(status) && state < ACPI_STATE_D3_HOT;
-+}
-+
- #ifdef CONFIG_PM
- static DEFINE_MUTEX(acpi_pm_notifier_lock);
- static DEFINE_MUTEX(acpi_pm_notifier_install_lock);
-Index: linux-pm/include/acpi/acpi_bus.h
-===================================================================
---- linux-pm.orig/include/acpi/acpi_bus.h
-+++ linux-pm/include/acpi/acpi_bus.h
-@@ -533,6 +533,7 @@ int acpi_bus_update_power(acpi_handle ha
- int acpi_device_update_power(struct acpi_device *device, int *state_p);
- bool acpi_bus_power_manageable(acpi_handle handle);
- void acpi_dev_power_up_children_with_adr(struct acpi_device *adev);
-+bool acpi_dev_no_wakeup_from_d3(struct acpi_device *adev);
- int acpi_device_power_add_dependent(struct acpi_device *adev,
- 				    struct device *dev);
- void acpi_device_power_remove_dependent(struct acpi_device *adev,
+--- linux-pm.orig/Documentation/firmware-guide/acpi/method-customizing.rst
++++ /dev/null
+@@ -1,89 +0,0 @@
+-.. SPDX-License-Identifier: GPL-2.0
+-
+-=======================================
+-Linux ACPI Custom Control Method How To
+-=======================================
+-
+-:Author: Zhang Rui <rui.zhang@intel.com>
+-
+-
+-Linux supports customizing ACPI control methods at runtime.
+-
+-Users can use this to:
+-
+-1. override an existing method which may not work correctly,
+-   or just for debugging purposes.
+-2. insert a completely new method in order to create a missing
+-   method such as _OFF, _ON, _STA, _INI, etc.
+-
+-For these cases, it is far simpler to dynamically install a single
+-control method rather than override the entire DSDT, because kernel
+-rebuild/reboot is not needed and test result can be got in minutes.
+-
+-.. note::
+-
+-  - Only ACPI METHOD can be overridden, any other object types like
+-    "Device", "OperationRegion", are not recognized. Methods
+-    declared inside scope operators are also not supported.
+-
+-  - The same ACPI control method can be overridden for many times,
+-    and it's always the latest one that used by Linux/kernel.
+-
+-  - To get the ACPI debug object output (Store (AAAA, Debug)),
+-    please run::
+-
+-      echo 1 > /sys/module/acpi/parameters/aml_debug_output
+-
+-
+-1. override an existing method
+-==============================
+-a) get the ACPI table via ACPI sysfs I/F. e.g. to get the DSDT,
+-   just run "cat /sys/firmware/acpi/tables/DSDT > /tmp/dsdt.dat"
+-b) disassemble the table by running "iasl -d dsdt.dat".
+-c) rewrite the ASL code of the method and save it in a new file,
+-d) package the new file (psr.asl) to an ACPI table format.
+-   Here is an example of a customized \_SB._AC._PSR method::
+-
+-      DefinitionBlock ("", "SSDT", 1, "", "", 0x20080715)
+-      {
+-         Method (\_SB_.AC._PSR, 0, NotSerialized)
+-         {
+-            Store ("In AC _PSR", Debug)
+-            Return (ACON)
+-         }
+-      }
+-
+-   Note that the full pathname of the method in ACPI namespace
+-   should be used.
+-e) assemble the file to generate the AML code of the method.
+-   e.g. "iasl -vw 6084 psr.asl" (psr.aml is generated as a result)
+-   If parameter "-vw 6084" is not supported by your iASL compiler,
+-   please try a newer version.
+-f) mount debugfs by "mount -t debugfs none /sys/kernel/debug"
+-g) override the old method via the debugfs by running
+-   "cat /tmp/psr.aml > /sys/kernel/debug/acpi/custom_method"
+-
+-2. insert a new method
+-======================
+-This is easier than overriding an existing method.
+-We just need to create the ASL code of the method we want to
+-insert and then follow the step c) ~ g) in section 1.
+-
+-3. undo your changes
+-====================
+-The "undo" operation is not supported for a new inserted method
+-right now, i.e. we can not remove a method currently.
+-For an overridden method, in order to undo your changes, please
+-save a copy of the method original ASL code in step c) section 1,
+-and redo step c) ~ g) to override the method with the original one.
+-
+-
+-.. note:: We can use a kernel with multiple custom ACPI method running,
+-   But each individual write to debugfs can implement a SINGLE
+-   method override. i.e. if we want to insert/override multiple
+-   ACPI methods, we need to redo step c) ~ g) for multiple times.
+-
+-.. note:: Be aware that root can mis-use this driver to modify arbitrary
+-   memory and gain additional rights, if root's privileges got
+-   restricted (for example if root is not allowed to load additional
+-   modules after boot).
 
 
 
