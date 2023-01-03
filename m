@@ -2,517 +2,338 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE0C365B68C
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jan 2023 19:22:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B171165B94C
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Jan 2023 03:17:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232144AbjABSWd convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 2 Jan 2023 13:22:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53818 "EHLO
+        id S229745AbjACCRt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 2 Jan 2023 21:17:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbjABSWc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 Jan 2023 13:22:32 -0500
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14C265F4E;
-        Mon,  2 Jan 2023 10:22:30 -0800 (PST)
-Received: by mail-ej1-f53.google.com with SMTP id vm8so61345480ejc.2;
-        Mon, 02 Jan 2023 10:22:30 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HABD/6WRIt5b6pS9XoPxu7wui8DrMwnJuXKaglTWXqE=;
-        b=R/9MYR4uV3SYJicTu0Ur2BoeVSSDSeJZqcjnTAaZdsUZv0oOZzLsChCeZRkpm4c7ZK
-         K4huVyXZNdj8+uFA+U5B+4YJtf5lzA7B5MFu+6ANKJakJ7810JOU870sgpfKqJOYwdZB
-         TwBs1pn3LHV2+VBnDh9l5GcLxcuM33QGFAwGrhklUwm2fIp36V2b/pDlH2WCqfOmKRq4
-         oX2ajIkfSQTghaIDaquxvNiR99mloyo2Hsj9VSkVDf54VURFw4JGzshbaj9r4gXR/XUr
-         w8pncS0E2Hpc9Y7jlawQlpZEl+R5t4CuCVNCGcPH2YkrkHOL5XSFEFAQuIj2YoJsoYWa
-         /Rxw==
-X-Gm-Message-State: AFqh2ko7SRKp4uR1mflfa0U843pAbiV5uq7X5C83QELlj/PimS9XmqqI
-        Iui3UGHzidVRWmuYkiTfuell41SEyxGcRvRE28w=
-X-Google-Smtp-Source: AMrXdXvoDPBDR63/2QV2QcJYYenYHOsel48I1NT6JuP01OlGCeV9wpffrIYkVZTdI0QQvqAdVheVyDDipgCCLXRdVDo=
-X-Received: by 2002:a17:907:98ee:b0:7c1:5ff0:6cc2 with SMTP id
- ke14-20020a17090798ee00b007c15ff06cc2mr2833513ejc.246.1672683748316; Mon, 02
- Jan 2023 10:22:28 -0800 (PST)
+        with ESMTP id S230080AbjACCRs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 2 Jan 2023 21:17:48 -0500
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 784A36148;
+        Mon,  2 Jan 2023 18:17:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1672712267; x=1704248267;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=cbv2WQrzzYct6QGO37kJ1iEWxdslsRCum7HgReK57bw=;
+  b=hAA6r06zU/WYcsvIhiFvchqt2PC2cN7pTsVV1WBHrMR4WTT7r4liY7No
+   fLtk9kgGhj/6jVWeMJ8zBHl3fMvjanC+U8UoLmKAs2586+vrcWHhzTF6Q
+   DFdYs0d5X9+vdTy2v+c7895wK0QEUxghCkEfWeNvZUg/RcvMwtTOfpbZv
+   WMnMee95s13j6ISdik6nKH945L9WedNFlWL6gRjzBwpfmdOWYRKczzQDV
+   quEON3SZJQIr5Qz7nDPxZPceatPaN3eWhbOw0Gw7CcZTMItt6QUycJc8T
+   l4CxgblZuSjFuvuI13ix4VIra/FrhMzR16QzuEayE4xaOvTKfyX97FnDF
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10578"; a="322800071"
+X-IronPort-AV: E=Sophos;i="5.96,295,1665471600"; 
+   d="scan'208";a="322800071"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2023 18:17:46 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10578"; a="797023329"
+X-IronPort-AV: E=Sophos;i="5.96,295,1665471600"; 
+   d="scan'208";a="797023329"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by fmsmga001.fm.intel.com with ESMTP; 02 Jan 2023 18:17:46 -0800
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16; Mon, 2 Jan 2023 18:17:45 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16 via Frontend Transport; Mon, 2 Jan 2023 18:17:45 -0800
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.109)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.16; Mon, 2 Jan 2023 18:17:45 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Ys2b62Da6i1Tvt5lRRorjCY28zuMqVk0U3DL3r6sSVmBnMp51o1IQXa2Tjpu5qomloaYSMvtFtULEyr3hs99uGEU6kcL0GDpMObZeZ9jz7gZLRSXqWmu4hon6tphWKV+UKlnBeVSiFvEI7j3XXIECVlOOuUrTJ2QGjMjTGmFGqwv6zIRJpholhh1GcuJYhLudKiI/x14Hb9m9yb+KuZHwH9W+X6KBOsbzCbn5+wxAZ5grY2BZc2X5YmElhMqSdwriPS/uAiUrFapcqjW1DLb4Wt+ubbVoIzlFZWzpeu9nZIyif+UqLa9nFgM1a00/fBV6MUw9dILUzWBuQGra+tEAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cbv2WQrzzYct6QGO37kJ1iEWxdslsRCum7HgReK57bw=;
+ b=MXgBKvH3+UvVOpWySQd6jiYkUb6IxYWBSdChlITGx0T/qYptyY9SZKGmvr/uCt6rzTv+Q81HwROOi1gL5j2ugXLmhtZU1DNvlhFdIZa/AFmWtJe7lAW/m3/6g9oEWCSzNI4rcFkHSsOfJS2AFJix8Mb8veqQQPFTYmDqbzSSbpdXWfpPWlAfezQzFo07qdrjsghTl2DThY5jCIiVP4AOR6R9xEsipgGzKGNINjYBNaj22MkQrBY31bsifSswgDQLH1Jr7bwcrjVzSPBvcO8b/V9aousf39XYmLz6iUzWMmONzWK9Z7fYDGfTN8GvYVRzxLZzWbJtPjen60+eOr1k7Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB6622.namprd11.prod.outlook.com (2603:10b6:a03:478::6)
+ by PH0PR11MB4855.namprd11.prod.outlook.com (2603:10b6:510:41::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5944.19; Tue, 3 Jan
+ 2023 02:17:43 +0000
+Received: from SJ0PR11MB6622.namprd11.prod.outlook.com
+ ([fe80::e30c:74f4:5052:6fd2]) by SJ0PR11MB6622.namprd11.prod.outlook.com
+ ([fe80::e30c:74f4:5052:6fd2%6]) with mapi id 15.20.5944.019; Tue, 3 Jan 2023
+ 02:17:43 +0000
+From:   "Zhang, Rui" <rui.zhang@intel.com>
+To:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+CC:     "zh.nvgt@gmail.com" <zh.nvgt@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ACPI: Drop the custom_method debugfs interface
+Thread-Topic: [PATCH] ACPI: Drop the custom_method debugfs interface
+Thread-Index: AQHZHsxtQeyfqgfYWUqlGQstnY8bOq6L9YSA
+Date:   Tue, 3 Jan 2023 02:17:43 +0000
+Message-ID: <c26f6cbc705a939c31c6da96a8100c7e6a02d30c.camel@intel.com>
+References: <7499491.EvYhyI6sBW@kreacher>
+In-Reply-To: <7499491.EvYhyI6sBW@kreacher>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.5-0ubuntu1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB6622:EE_|PH0PR11MB4855:EE_
+x-ms-office365-filtering-correlation-id: 3ca95784-e195-4418-3e8a-08daed30b273
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: ZYP/afTe8ZPzf31to1jIr1SFxP9WrlqehIPpoxJ2NR7+3dJmajWB+QBE2iWmHkfpZsUFm3j0Voq1BVs+ODvfbL6HaA6Ze+ixMejPqspX73t0OpsLEZrgY2pm2FNvh2KoyKOriub3/P1QOz6xRya3YYKmMBYlXmJrWTwFW7HQcmHk23DWMOhONu9wlQr2pzYSocU/mvhMRRyGspgplBRmXpLlsxC7Zftj7f4m9XSelIbJwkXTR/ddmxMsZ9raT3HRUguW9VFVcag1UF5RueoN8BeOnWKykACyrbF+iJJNbnhm7tDT6ugDPR679U00hXsk4yet+13+hsz/ox6kAwpqd0Enj7xxLTqYTLJEFRvIdJAfROoFe5A+DYkPHuzXRLSD9mW50YxcZI6gZQ704V3A/Gz4uI4Yad9/daF8Stkd0PwjmJ+xlTIVsKG6tvQ0Pqie22A19W8kf7AOV8SsGZLJhxlpotjWv+E+uHXOG9n9msW59boMYnSWXAOQzoZxbI/93A7ECTz8A4BVBXrb0ddjfMUaTSogEhmSsK2H3xNkg1j3f8FErBnCKWmQ2UsUF6IuTAQvgq6l3xRMEcjges7g1UttMGmkGKwbhHK8OVlcyeyddVKhCwMEVWWk4E8ijKcag9SuHdq8yHi6Nyxzkcnn0UpTiZaxJLTvf+1SbOm28a413V5v5S9vg+i/hYuDlP2lmsfBLsFJ5gKDjf54CTKNgCvykyMm4HawwZTt/FYZJ9s9nBNFq8drPlll9h5bCu05
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB6622.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(346002)(136003)(396003)(366004)(376002)(39860400002)(451199015)(6506007)(38070700005)(316002)(83380400001)(2616005)(71200400001)(26005)(478600001)(36756003)(6512007)(186003)(54906003)(110136005)(2906002)(966005)(6486002)(5660300002)(82960400001)(38100700002)(122000001)(41300700001)(76116006)(66946007)(66446008)(4326008)(66476007)(66556008)(64756008)(8676002)(91956017)(86362001)(84970400001)(8936002)(22166006);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dDl6dEtLVWdpdSthUTNOa3o0UGJEZmJTMWtuNlBxL2tEaTg4M25vK3pYVW1a?=
+ =?utf-8?B?cUprVDhTSER0MmU2WUhKSW8rempTN1hUVjdzVGsxVlJRMUtZbWxIWnlXcmJu?=
+ =?utf-8?B?em51T1NjZ09PRFZ0a3VGQlFwbjJSN1dOaVZYYVU3MWRlYTNXalNMREJNcFZh?=
+ =?utf-8?B?ZTJaOXBrZi9Bcm5pVjZrb2tVb2J4aFpMN3grY1FFOXVJbFErT1phNWNqdEU0?=
+ =?utf-8?B?M0ZMWFRPUXZxUVAxU2RMc2EvUGpXYy9aV1NhZ2VWcm14WHNiTUlZa21QbWhj?=
+ =?utf-8?B?QUdTa05FcTMzS2ZTeGp0WitPdGk0TkFWMWxZQm1Zc3EwTk9wSU50eEhDTWlL?=
+ =?utf-8?B?blJ4RGtHUW1wTHhIYzFHTTdkS3Rtdlc4d2lvK3htbVNEU3FpV3VZRmxBRTFK?=
+ =?utf-8?B?UEZKMlFzajN0MjJ4SFVIajVTTWxPbVpaZzN3M0FoLzRIVG9qVTRDUlFVeUFl?=
+ =?utf-8?B?bmxIU004QUE3bXlmdGJ2bXpLWVRhVzJxaDg0c3BxOU9wa01vV2J3bEZabC9s?=
+ =?utf-8?B?ODRGSW5pMEpKVzEvV0lWYUlzcUZJVmY3dlJMQ0Nnd0ttLzhZbk5wL2MxSE1R?=
+ =?utf-8?B?LzJYaDFKTy9DNU9RUnRBRFE5RWY1WFM0VGRFcFUwWmxSeVJiM3FoZG5kOHI5?=
+ =?utf-8?B?QlRLVHFVTDhHUUF2WlU0MUUycGcra1QyaEFHd2JqS2VycUE3NUFMRWJJdXI1?=
+ =?utf-8?B?U3ppTXg1VHNYbVNIVlpYRnNITXIxUjNUUjMxaUI4dDd6NEdRWW9pWTRTaXln?=
+ =?utf-8?B?VmlHZFkreURXa2g2eUZPWW51ZGswTEY4S0FKRTc4bms5R3E4TkM4Q3pRUVR4?=
+ =?utf-8?B?ZFVjZFBmcVhGYzdZZktibVVqMEJ4VmtBUm5pUFBHMUYwaXV6WkdOdE1XSnVP?=
+ =?utf-8?B?cTMwek1TU3M0OEc3VmErOS9QMnQyNVlubTdTOHA0ZUIxcmZHaEtnQTFWOXo3?=
+ =?utf-8?B?akZCeFZHb1VtZk0xQ2hLNVRBbFRYZmNpNTl1L2pRN0tmTFJVZThFcUF0dHpt?=
+ =?utf-8?B?KzU2bDNRdm9DdTNVdXJGRUxpbkhxdURDRGdqZjloU1IwdXVuRkpFWDZ6YTBs?=
+ =?utf-8?B?OFV1dnhJMDl0WkVVblVEUSt0aXNVOWY0S0k4UURJZU9NMXAwSDVVRjVncjl4?=
+ =?utf-8?B?NXNodElUSlJ1cTBPZTZHaXM3MERrc1VwYVduMi8vdStBZDNrMkVsTHJVbW55?=
+ =?utf-8?B?NUE3VFdqRHpOQVpscjdIYm05Z1NrQlkxUVRHbEVwdzA1VlI2bmNVZStnVWQw?=
+ =?utf-8?B?TE1zUTIwcnRCSmNXaDZUREp3Z2VDNHlWVHV6MmZlTHN0b0pCM0R6dVZSR2Fq?=
+ =?utf-8?B?Rk0wWXVTc1NYVXREN0FVYWxCSW0veHMveUZma1Z3alA3bUsrQXB2TitJS1V5?=
+ =?utf-8?B?SlB6VzRZVXE0TDVUZ283cFhVYllWOExvVVpSZjNqbjJzUEhJTy9MYmJpKzNa?=
+ =?utf-8?B?c3UrUEFpWUpWK2JSdHQ1bTR4a2JYOGlqT0JGa1VXZXNDVUp1Sk5GTUYyUGll?=
+ =?utf-8?B?SndUaStHbVNlbEhqbC83TWtWMlhTSVlKaTlNNk1YY1J1Qno2WThvSzhzbVJx?=
+ =?utf-8?B?a3orb3NXR0FTL1RWaE5GUVdFczVjYlZFWWlLNFptRlBuRjdaL3ZtWjM4aVVR?=
+ =?utf-8?B?ZnFVMU4vUGx6RExlNkJHMTB6ZTZoUytuZWN3TnhxNm5WZ05MOTBzOFlZdEY3?=
+ =?utf-8?B?Rk80VVpDYkZOSUt2dis2S3JzRmFjaXRXSVhNTU5GZVVwQkhLZTZJdS95VTNv?=
+ =?utf-8?B?d3VwR1B6OXFjK1l2ZlkvMkVtcHRicGJvY01EU3lBM0l1Z1ZqN3d1UG40ZzdL?=
+ =?utf-8?B?SGV2QjlZTWpzRHJ0VERLM2hXNGFtdWllUHBscXVzYjJMOUxic2wwd2pKMTg5?=
+ =?utf-8?B?bFovWFVPV3VZQjQ5ZEQzaXlrWnJaK1hhbmNvMktMUklDRG5ydjROcXlMZVpH?=
+ =?utf-8?B?ZHd6NjVDRFpwSzNGNjgvaVFVZ0RxSVpSTmdMb0NJN29hY0h1WjVFWXdObEd4?=
+ =?utf-8?B?RnVoeGVxTnhiWEx2VXB5cDhnT0VSZWwxVkt6NDBjWGFGSHJZUEtZNmdKN282?=
+ =?utf-8?B?bHRldm9zYmpHTTAvVTZpdVFWY1E4elRvR3dyRzYvdkJ5ZGZQbjRYVGxyN1c0?=
+ =?utf-8?Q?xY39CKda6ABR4X8oDCqMHtqhM?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <421506860FFA3B4BB641AD26D27AB876@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20230102180112.1954082-1-daniel.lezcano@kernel.org> <20230102180112.1954082-2-daniel.lezcano@kernel.org>
-In-Reply-To: <20230102180112.1954082-2-daniel.lezcano@kernel.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 2 Jan 2023 19:22:16 +0100
-Message-ID: <CAJZ5v0hBtjkZxSN+B9WEwe4WR6+zwzY5QAPCE5Cq7ONB7x80YA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] thermal/acpi: Add ACPI trip point routines
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     rafael@kernel.org, srinivas.pandruvada@linux.intel.com,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, rui.zhang@intel.com,
-        Amit Kucheria <amitk@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6622.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3ca95784-e195-4418-3e8a-08daed30b273
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Jan 2023 02:17:43.3831
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: gfrzQNMn7/dMsF+d9Qw/irvuzLbQXkqTgZrm3l0PbRAZ1S0xV172V0s7EUTEYsFW4KJcKGG4Tu/1sXuqIyAQEw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4855
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 2, 2023 at 7:01 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
->
-> From: Daniel Lezcano <daniel.lezcano@linaro.org>
->
-> The ACPI specification describes the trip points, the device tree
-> bindings as well.
->
-> The OF code uses the generic trip point structures.
->
-> The ACPI has their own trip points structure and uses the get_trip_*
-> ops to retrieve them.
->
-> We can do the same as the OF code and create a set of ACPI functions
-> to retrieve a trip point description. Having a common code for ACPI
-> will help to cleanup the remaining Intel drivers and get rid of the
-> get_trip_* functions.
->
-> These changes add the ACPI thermal calls to retrieve the basic
-> information we need to be reused in the thermal ACPI and Intel
-> drivers.
->
-> The different ACPI functions have the generic trip point structure
-> passed as parameter where it is filled.
->
-> This structure aims to be the one used by all the thermal drivers and
-> the thermal framework.
->
-> After this series, a couple of Intel drivers and the ACPI thermal
-> driver will still have their own trip points definition but a new
-> series on top of this one will finish the conversion to the generic
-> trip point handling.
->
-> This series depends on the generic trip point added to the thermal
-> framework and available in the thermal/linux-next branch.
->
->  https://lkml.org/lkml/2022/10/3/456
->
-> It has been tested on a Intel i7-8650U - x280 with the INT3400, the
-> PCH, ACPITZ, and x86_pkg_temp. No regression observed so far.
->
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
-> ---
->  drivers/thermal/Kconfig        |  13 ++
->  drivers/thermal/Makefile       |   1 +
->  drivers/thermal/thermal_acpi.c | 279 +++++++++++++++++++++++++++++++++
->  include/linux/thermal.h        |  16 ++
->  4 files changed, 309 insertions(+)
->  create mode 100644 drivers/thermal/thermal_acpi.c
->
-> diff --git a/drivers/thermal/Kconfig b/drivers/thermal/Kconfig
-> index e052dae614eb..2c19bccd1223 100644
-> --- a/drivers/thermal/Kconfig
-> +++ b/drivers/thermal/Kconfig
-> @@ -76,6 +76,19 @@ config THERMAL_OF
->           Say 'Y' here if you need to build thermal infrastructure
->           based on device tree.
->
-> +config THERMAL_ACPI
-
-Not needed.
-
-Or if you want it to be built only if there are any users, call it
-ACPI_THERMAL_LIB and do
-
-config ACPI_THERMAL_LIB
-    depends on ACPI_THERMAL
-    bool
-
-and let the users select it.
-
-> +       bool
-> +       prompt "APIs to parse thermal data out of the ACPI tables"
-> +       depends on ACPI_THERMAL
-> +       default y
-> +       help
-> +         This options provides helpers to add the support to
-> +         read and parse thermal data definitions out of the
-> +         ACPI tables blob.
-> +
-> +         Say 'Y' here if you need to build thermal infrastructure
-> +         based on ACPI.
-> +
->  config THERMAL_WRITABLE_TRIPS
->         bool "Enable writable trip points"
->         help
-> diff --git a/drivers/thermal/Makefile b/drivers/thermal/Makefile
-> index 2506c6c8ca83..60f0dfa9aae2 100644
-> --- a/drivers/thermal/Makefile
-> +++ b/drivers/thermal/Makefile
-> @@ -13,6 +13,7 @@ thermal_sys-$(CONFIG_THERMAL_NETLINK)         += thermal_netlink.o
->  # interface to/from other layers providing sensors
->  thermal_sys-$(CONFIG_THERMAL_HWMON)            += thermal_hwmon.o
->  thermal_sys-$(CONFIG_THERMAL_OF)               += thermal_of.o
-> +thermal_sys-$(CONFIG_THERMAL_ACPI)             += thermal_acpi.o
->
->  # governors
->  thermal_sys-$(CONFIG_THERMAL_GOV_FAIR_SHARE)   += gov_fair_share.o
-> diff --git a/drivers/thermal/thermal_acpi.c b/drivers/thermal/thermal_acpi.c
-> new file mode 100644
-> index 000000000000..28c629b4d814
-> --- /dev/null
-> +++ b/drivers/thermal/thermal_acpi.c
-> @@ -0,0 +1,279 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright 2022 Linaro Limited
-> + *
-> + * Author: Daniel Lezcano <daniel.lezcano@linaro.org>
-> + *
-> + * ACPI thermal configuration
-> + */
-> +#include <linux/acpi.h>
-> +#include <linux/module.h>
-> +#include <linux/kernel.h>
-> +#include <linux/units.h>
-> +#include <uapi/linux/thermal.h>
-> +
-> +#include "thermal_core.h"
-> +
-> +int thermal_acpi_trip_gtsh(struct acpi_device *adev)
-> +{
-> +       unsigned long long hyst;
-> +       acpi_status status;
-> +
-> +       status = acpi_evaluate_integer(adev->handle, "GTSH", NULL, &hyst);
-> +       if (ACPI_FAILURE(status))
-> +               return 0;
-> +
-> +       return (int)(hyst * 100);
-
-What if the result is larger than INT_MAX?
-
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_acpi_trip_gtsh);
-> +
-> +int thermal_acpi_get_tzd(struct acpi_device *adev, struct acpi_handle_list *devices)
-> +{
-> +       acpi_status status;
-> +
-> +       /*
-> +        * _TZD (Thermal zone device): This optional object evaluates
-> +        * to a package of device names. Each name corresponds to a
-> +        * device in the ACPI namespace that is associated with the
-> +        * thermal zone. The temperature reported by the thermal zone
-> +        * is roughly correspondent to that of each of the devices.
-> +        */
-
-I don't think that the comment is necessary.
-
-The spec already contains a definition of this object.
-
-> +       status = acpi_evaluate_reference(adev->handle, "_TZD", NULL, devices);
-> +       if (ACPI_FAILURE(status))
-> +               return -EIO;
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_acpi_get_tzd);
-> +
-> +int thermal_acpi_get_temp(struct acpi_device *adev, int *temperature)
-> +{
-> +       unsigned long long temp;
-> +       acpi_status status;
-> +
-> +       /*
-> +        * _TMP (Temperature): This control method returns the thermal zone’s
-> +        * current operating temperature. The return value is the current
-> +        * temperature of the thermal zone in tenths of degrees Kelvin
-> +        */
-
-Like above.
-
-> +       status = acpi_evaluate_integer(adev->handle, "_TMP", NULL, &temp);
-> +       if (ACPI_FAILURE(status))
-> +               return -EIO;
-> +
-> +       *temperature = deci_kelvin_to_millicelsius(temp);
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_acpi_get_temp);
-> +
-> +int thermal_acpi_trip_crit(struct acpi_device *adev, struct thermal_trip *trip)
-> +{
-> +       unsigned long long temp;
-> +       acpi_status status;
-> +
-> +       /*
-> +        * _CRT (Critical temperature): This object, when defined under a thermal
-> +        * zone, returns the critical temperature at which OSPM must shutdown
-> +        * the system. If this object it present under a device, the device’s
-> +        * driver evaluates this object to determine the device’s critical cooling
-> +        * temperature trip point. This value may then be used by the device’s
-> +        * driver to program an internal device temperature sensor trip point
-> +         */
-
-Same here.
-
-> +       status = acpi_evaluate_integer(adev->handle, "_CRT", NULL, &temp);
-> +       if (ACPI_FAILURE(status))
-> +               return -EIO;
-> +
-> +       trip->hysteresis = thermal_acpi_trip_gtsh(adev);
-> +       trip->temperature = deci_kelvin_to_millicelsius(temp);
-> +       trip->type = THERMAL_TRIP_CRITICAL;
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_acpi_trip_crit);
-> +
-> +int thermal_acpi_trip_hot(struct acpi_device *adev, struct thermal_trip *trip)
-> +{
-> +       unsigned long long temp;
-> +       acpi_status status;
-> +
-> +       /*
-> +        * _HOT (Hot Temperature): This optional object, when defined under a
-> +        * thermal zone, returns the critical temperature at which OSPM may
-> +        * choose to transition the system into the S4 sleeping state. The
-> +        * platform vendor should define _HOT to be far enough below _CRT so as
-> +        * to allow OSPM enough time to transition the system into the S4
-> +        * sleeping state. While dependent on the amount of installed memory,
-> +        * on typical platforms OSPM implementations can transition the system
-> +        * into the S4 sleeping state in tens of seconds. If this object it
-> +        * present under a device, the device’s driver evaluates this object to
-> +        * determine the device’s hot cooling temperature trip point. This value
-> +        * may then be used by the device’s driver to program an internal device
-> +        * temperature sensor trip point.
-> +        */
-
-Same here.
-
-> +       status = acpi_evaluate_integer(adev->handle, "_HOT", NULL, &temp);
-> +       if (ACPI_FAILURE(status))
-> +               return -EIO;
-> +
-> +       trip->hysteresis = thermal_acpi_trip_gtsh(adev);
-> +       trip->temperature = deci_kelvin_to_millicelsius(temp);
-> +       trip->type = THERMAL_TRIP_HOT;
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_acpi_trip_hot);
-> +
-> +int thermal_acpi_trip_psv_psl(struct acpi_device *adev, struct acpi_handle_list *devices)
-> +{
-> +       acpi_status status;
-> +
-> +       /*
-> +        * _PSL (Passive List): This object is defined under a thermal zone and
-> +        *  evaluates to a list of processor objects to be used for passive cooling
-> +        */
-
-Same here.
-
-> +       status = acpi_evaluate_reference(adev->handle, "_PSL", NULL, devices);
-> +       if (ACPI_FAILURE(status))
-> +               return -EIO;
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_acpi_trip_psv_psl);
-> +
-> +int thermal_acpi_trip_psv_tsp(struct acpi_device *adev)
-> +{
-> +       acpi_status status;
-> +       unsigned long long tsp;
-> +
-> +       /*
-> +        * _TSP (Thermal Sampling Period): This object evaluates to a thermal
-> +        * sampling period (in tenths of seconds) used by OSPM to implement the
-> +        * Passive cooling equation. This value, along with _TC1 and _TC2, will
-> +        * enable OSPM to provide the proper hysteresis required by the system
-> +        * to accomplish an effective passive cooling policy.
-> +        */
-
-Same here.
-
-> +       status = acpi_evaluate_integer(adev->handle, "_TSP", NULL, &tsp);
-> +       if (ACPI_FAILURE(status))
-> +               return -EIO;
-> +
-> +       return (int)tsp;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_acpi_trip_psv_tsp);
-> +
-> +int thermal_acpi_trip_psv_tc1(struct acpi_device *adev)
-> +{
-> +       acpi_status status;
-> +       unsigned long long tc1;
-> +
-> +       /*
-> +        * _TC1 (Thermal Constant 1): This object evaluates to the constant _TC1
-> +        * for use in the Passive cooling formula
-> +        */
-
-Same here.
-
-> +       status = acpi_evaluate_integer(adev->handle, "_TC1", NULL, &tc1);
-> +       if (ACPI_FAILURE(status))
-> +               return -EINVAL;
-> +
-> +       return (int)tc1;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_acpi_trip_psv_tc1);
-> +
-> +int thermal_acpi_trip_psv_tc2(struct acpi_device *adev)
-> +{
-> +       acpi_status status;
-> +       unsigned long long tc2;
-> +
-> +       /*
-> +        * _TC2 (Thermal Constant 1): This object evaluates to the constant _TC2
-> +        * for use in the Passive cooling formula
-> +        */
-
-Same here.
-
-> +       status = acpi_evaluate_integer(adev->handle, "_TC2", NULL, &tc2);
-> +       if (ACPI_FAILURE(status))
-> +               return -EINVAL;
-> +
-> +       return (int)tc2;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_acpi_trip_psv_tc2);
-> +
-> +int thermal_acpi_trip_psv(struct acpi_device *adev, struct thermal_trip *trip)
-> +{
-> +       unsigned long long temp;
-> +       acpi_status status;
-> +
-> +       /*
-> +        * _PSV (Passive): This optional object, if present under a thermal zone,
-> +        * evaluates to the temperature at which OSPM must activate passive
-> +        * cooling policy
-> +        */
-
-Same here.
-
-> +       status = acpi_evaluate_integer(adev->handle, "_PSV", NULL, &temp);
-> +       if (ACPI_FAILURE(status))
-> +               return -EINVAL;
-> +
-> +       /*
-> +        * The _PSL, _TSP, _TC1 and _TC2 are required if the _PSV object exists.
-> +        * We assume the caller will raise an error if it was able to get the _PSV
-> +        * but then fail to get the other objects.
-> +        */
-> +       trip->hysteresis = thermal_acpi_trip_gtsh(adev);
-> +       trip->temperature = deci_kelvin_to_millicelsius(temp);
-> +       trip->type = THERMAL_TRIP_PASSIVE;
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_acpi_trip_psv);
-> +
-> +int thermal_acpi_trip_acl(struct acpi_device *adev,
-> +                         struct acpi_handle_list *devices, int id)
-> +{
-> +       acpi_status status;
-> +       char name[5];
-> +
-> +       /*
-> +        * _ALx: This object is defined under a thermal zone and evaluates to a
-> +        * list of Active cooling devices to be turned on when the corresponding
-> +        * _ACx temperature threshold is exceeded. For example, these devices
-> +        * could be fans.
-> +        */
-
-Same here.
-
-> +       sprintf(name, "_AL%d", id);
-> +
-> +       status = acpi_evaluate_reference(adev->handle, name, NULL, devices);
-> +       if (ACPI_FAILURE(status))
-> +               return -EINVAL;
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_acpi_trip_acl);
-> +
-> +int thermal_acpi_trip_act(struct acpi_device *adev,
-> +                         struct thermal_trip *trip, int id)
-> +{
-> +       acpi_status status;
-> +       unsigned long long temp;
-> +       char name[5];
-> +
-> +       /*
-> +        * _ACx: This optional object, if present under a thermal zone, returns
-> +        * the temperature trip point at which OSPM must start or stop active
-> +        * cooling, where x is a value between 0 and 9 that designates multiple
-> +        * active cooling levels of the thermal zone. If the Active cooling
-> +        * device has one cooling level (that is, “on”) then that cooling level
-> +        * must be defined as _AC0. If the cooling device has two levels of
-> +        * capability, such as a high fan speed and a low fan speed, then they
-> +        * must be defined as _AC0 and _AC1 respectively. The smaller the value
-> +        * of x, the greater the cooling strength _ACx represents. In the above
-> +        * example, _AC0 represents the greater level of cooling (the faster fan
-> +        * speed) and _AC1 represents the lesser level of cooling (the slower
-> +        * fan speed). For every _ACx method, there must be a matching _ALx
-> +        * object or a corresponding entry in an _ART object’s active cooling
-> +        * relationship list.
-> +        */
-
-Same here.
-
-> +       sprintf(name, "_AC%d", id);
-> +
-> +       status = acpi_evaluate_integer(adev->handle, name, NULL, &temp);
-> +       if (ACPI_FAILURE(status))
-> +               return -EINVAL;
-> +
-> +       trip->hysteresis = thermal_acpi_trip_gtsh(adev);
-> +       trip->temperature = deci_kelvin_to_millicelsius(temp);
-> +       trip->type = THERMAL_TRIP_ACTIVE;
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_acpi_trip_act);
-
-Overall, I'm not sure about simple wrappers around
-acpi_evaluate_integer/reference() that effectively discard the return
-value and don't even bother to sanitize the return value before
-returning it to the caller.
-
-The ones that initialize a trip point make more sense IMO.
-
-> diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-> index 30353e4b1424..65c1f1aafe02 100644
-> --- a/include/linux/thermal.h
-> +++ b/include/linux/thermal.h
-> @@ -334,6 +334,22 @@ static inline void devm_thermal_of_zone_unregister(struct device *dev,
->  }
->  #endif
->
-> +#ifdef CONFIG_THERMAL_ACPI
-> +struct acpi_handle_list;
-> +int thermal_acpi_get_temp(struct acpi_device *adev, int *temperature);
-> +int thermal_acpi_trip_crit(struct acpi_device *adev, struct thermal_trip *trip);
-> +int thermal_acpi_trip_hot(struct acpi_device *adev, struct thermal_trip *trip);
-> +int thermal_acpi_trip_psv(struct acpi_device *adev, struct thermal_trip *trip);
-> +int thermal_acpi_trip_act(struct acpi_device *adev, struct thermal_trip *trip, int id);
-> +int thermal_acpi_trip_acl(struct acpi_device *adev, struct acpi_handle_list *devices, int id);
-> +int thermal_acpi_trip_psv_psl(struct acpi_device *adev, struct acpi_handle_list *devices);
-> +int thermal_acpi_trip_psv_tsp(struct acpi_device *adev);
-> +int thermal_acpi_trip_psv_tc1(struct acpi_device *adev);
-> +int thermal_acpi_trip_psv_tc2(struct acpi_device *adev);
-> +int thermal_acpi_trip_gtsh(struct acpi_device *adev);
-> +int thermal_acpi_get_tzd(struct acpi_device *adev, struct acpi_handle_list *devices);
-> +#endif
-> +
->  int __thermal_zone_get_trip(struct thermal_zone_device *tz, int trip_id,
->                             struct thermal_trip *trip);
->  int thermal_zone_get_trip(struct thermal_zone_device *tz, int trip_id,
-> --
-> 2.34.1
->
+T24gTW9uLCAyMDIzLTAxLTAyIGF0IDE4OjA1ICswMTAwLCBSYWZhZWwgSi4gV3lzb2NraSB3cm90
+ZToNCj4gRnJvbTogUmFmYWVsIEouIFd5c29ja2kgPHJhZmFlbC5qLnd5c29ja2lAaW50ZWwuY29t
+Pg0KPiANCj4gVGhlIEFDUEkgY3VzdG9tX21ldGhvZCBkZWJ1Z2ZzIGludGVyZmFjZSBpcyBzZWN1
+cml0eS1zZW5zaXRpdmUgYW5kDQo+IGNvbmN1cnJlbnQgYWNjZXNzIHRvIGl0IGlzIGJyb2tlbiBb
+MV0uDQo+IA0KPiBNb3Jlb3ZlciwgdGhlIHJlY2lwZSBmb3IgcHJlcGFyaW5nIGEgY3VzdG9taXpl
+ZCB2ZXJzaW9uIG9mIGEgZ2l2ZW4NCj4gY29udHJvbCBtZXRob2QgaGFzIGNoYW5nZWQgYXQgb25l
+IHBvaW50IGR1ZSB0byBBQ1BJQ0EgY2hhbmdlcywgd2hpY2gNCj4gaGFzIG5vdCBiZWVuIHJlZmxl
+Y3RlZCBpbiBpdHMgZG9jdW1lbnRhdGlvbiwgc28gd2hvZXZlciB1c2VkIGl0DQo+IGJlZm9yZQ0K
+PiBoYXMgaGFkIHRvIGFkYXB0IGFuIG5vIHByb2JsZW1zIHdpdGggaXQgaGF2ZSBiZWVuIHJlcG9y
+dGVkLg0KPiANCj4gVGhlIGxhdHRlciBsaWtlbHkgbWVhbnMgdGhhdCB0aGUgbnVtYmVyIG9mIGl0
+cyB1c2VycyBpcyBsaW1pdGVkIGF0DQo+IGJlc3QNCj4gYW5kIGF0dGVtcHRpbmcgdG8gZml4IHRo
+ZSBpc3N1ZXMgbWVudGlvbmVkIGFib3ZlIGlzIGxpa2VseSBub3Qgd29ydGgNCj4gdGhlDQo+IGVm
+Zm9ydC4gIE1vcmVvdmVyLCBpZiBpdCBnZXRzIGJyb2tlbiBpbiB0aGUgcHJvY2VzcywgdGhlIGJy
+ZWFrYWdlIG1heQ0KPiBub3QNCj4gYmUgcmVhZGlseSBkaXNjb3ZlcmVkLCBzbyBkZWxldGluZyBp
+dCBhbHRvZ2hlaGVyIGFwcGVhcmVzIHRvIGJlIGENCj4gYmV0dGVyDQo+IG9wdGlvbi4NCj4gDQo+
+IEFjY29yZGluZ2x5LCBkcm9wIGN1c3RvbV9tZXRob2QgYWxvbmcgd2l0aCBpdHMgKG91dGRhdGVk
+IGFueXdheSkNCj4gZG9jdW1lbnRhdGlvbi4NCj4gDQo+IExpbms6IA0KPiBodHRwczovL2xvcmUu
+a2VybmVsLm9yZy9saW51eC1hY3BpLzIwMjIxMjI3MDYzMzM1LjYxNDc0LTEtemgubnZndEBnbWFp
+bC5jb20vDQo+ICMgWzFdDQo+IFJlcG9ydGVkLWJ5OiBIYW5nIFpoYW5nIDx6aC5udmd0QGdtYWls
+LmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogUmFmYWVsIEouIFd5c29ja2kgPHJhZmFlbC5qLnd5c29j
+a2lAaW50ZWwuY29tPg0KPiAtLS0NCj4gIERvY3VtZW50YXRpb24vZmlybXdhcmUtZ3VpZGUvYWNw
+aS9tZXRob2QtY3VzdG9taXppbmcucnN0IHwgICA4OSAtLS0tDQo+IC0tLS0tLS0tDQoNCkRvY3Vt
+ZW50YXRpb24vZmlybXdhcmUtZ3VpZGUvYWNwaS9pbmRleC5yc3QNCm5lZWRzIHRvIGJlIHVwZGF0
+ZWQgYXMgd2VsbC4NCg0KdGhhbmtzLA0KcnVpDQoNCj4gIGRyaXZlcnMvYWNwaS9LY29uZmlnICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAxNCAtLQ0KPiAgZHJpdmVycy9h
+Y3BpL01ha2VmaWxlICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAxIA0K
+PiAgZHJpdmVycy9hY3BpL2N1c3RvbV9tZXRob2QuYyAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgfCAgMTAzIC0tLS0NCj4gLS0tLS0tLS0tLS0NCj4gIDQgZmlsZXMgY2hhbmdlZCwgMjA3IGRl
+bGV0aW9ucygtKQ0KPiANCj4gSW5kZXg6IGxpbnV4LXBtL2RyaXZlcnMvYWNwaS9LY29uZmlnDQo+
+ID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT0NCj4gLS0tIGxpbnV4LXBtLm9yaWcvZHJpdmVycy9hY3BpL0tjb25maWcNCj4g
+KysrIGxpbnV4LXBtL2RyaXZlcnMvYWNwaS9LY29uZmlnDQo+IEBAIC00NDQsMjAgKzQ0NCw2IEBA
+IGNvbmZpZyBBQ1BJX0hFRA0KPiAgCSAgd2hpY2ggaXMgdXNlZCB0byByZXBvcnQgc29tZSBoYXJk
+d2FyZSBlcnJvcnMgbm90aWZpZWQgdmlhDQo+ICAJICBTQ0ksIG1haW5seSB0aGUgY29ycmVjdGVk
+IGVycm9ycy4NCj4gIA0KPiAtY29uZmlnIEFDUElfQ1VTVE9NX01FVEhPRA0KPiAtCXRyaXN0YXRl
+ICJBbGxvdyBBQ1BJIG1ldGhvZHMgdG8gYmUgaW5zZXJ0ZWQvcmVwbGFjZWQgYXQgcnVuDQo+IHRp
+bWUiDQo+IC0JZGVwZW5kcyBvbiBERUJVR19GUw0KPiAtCWhlbHANCj4gLQkgIFRoaXMgZGVidWcg
+ZmFjaWxpdHkgYWxsb3dzIEFDUEkgQU1MIG1ldGhvZHMgdG8gYmUgaW5zZXJ0ZWQNCj4gYW5kL29y
+DQo+IC0JICByZXBsYWNlZCB3aXRob3V0IHJlYm9vdGluZyB0aGUgc3lzdGVtLiBGb3IgZGV0YWls
+cyByZWZlciB0bzoNCj4gLQkgIERvY3VtZW50YXRpb24vZmlybXdhcmUtZ3VpZGUvYWNwaS9tZXRo
+b2QtY3VzdG9taXppbmcucnN0Lg0KPiAtDQo+IC0JICBOT1RFOiBUaGlzIG9wdGlvbiBpcyBzZWN1
+cml0eSBzZW5zaXRpdmUsIGJlY2F1c2UgaXQgYWxsb3dzDQo+IGFyYml0cmFyeQ0KPiAtCSAga2Vy
+bmVsIG1lbW9yeSB0byBiZSB3cml0dGVuIHRvIGJ5IHJvb3QgKHVpZD0wKSB1c2VycywNCj4gYWxs
+b3dpbmcgdGhlbQ0KPiAtCSAgdG8gYnlwYXNzIGNlcnRhaW4gc2VjdXJpdHkgbWVhc3VyZXMgKGUu
+Zy4gaWYgcm9vdCBpcyBub3QNCj4gYWxsb3dlZCB0bw0KPiAtCSAgbG9hZCBhZGRpdGlvbmFsIGtl
+cm5lbCBtb2R1bGVzIGFmdGVyIGJvb3QsIHRoaXMgZmVhdHVyZSBtYXkNCj4gYmUgdXNlZA0KPiAt
+CSAgdG8gb3ZlcnJpZGUgdGhhdCByZXN0cmljdGlvbikuDQo+IC0NCj4gIGNvbmZpZyBBQ1BJX0JH
+UlQNCj4gIAlib29sICJCb290dGltZSBHcmFwaGljcyBSZXNvdXJjZSBUYWJsZSBzdXBwb3J0Ig0K
+PiAgCWRlcGVuZHMgb24gRUZJICYmIChYODYgfHwgQVJNNjQpDQo+IEluZGV4OiBsaW51eC1wbS9k
+cml2ZXJzL2FjcGkvTWFrZWZpbGUNCj4gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQ0KPiAtLS0gbGludXgtcG0ub3JpZy9k
+cml2ZXJzL2FjcGkvTWFrZWZpbGUNCj4gKysrIGxpbnV4LXBtL2RyaXZlcnMvYWNwaS9NYWtlZmls
+ZQ0KPiBAQCAtMTAxLDcgKzEwMSw2IEBAIG9iai0kKENPTkZJR19BQ1BJX1NCUykJCSs9IHNic2hj
+Lm8NCj4gIG9iai0kKENPTkZJR19BQ1BJX1NCUykJCSs9IHNicy5vDQo+ICBvYmotJChDT05GSUdf
+QUNQSV9IRUQpCQkrPSBoZWQubw0KPiAgb2JqLSQoQ09ORklHX0FDUElfRUNfREVCVUdGUykJKz0g
+ZWNfc3lzLm8NCj4gLW9iai0kKENPTkZJR19BQ1BJX0NVU1RPTV9NRVRIT0QpKz0gY3VzdG9tX21l
+dGhvZC5vDQo+ICBvYmotJChDT05GSUdfQUNQSV9CR1JUKQkJKz0gYmdydC5vDQo+ICBvYmotJChD
+T05GSUdfQUNQSV9DUFBDX0xJQikJKz0gY3BwY19hY3BpLm8NCj4gIG9iai0kKENPTkZJR19BQ1BJ
+X1NQQ1JfVEFCTEUpCSs9IHNwY3Iubw0KPiBJbmRleDogbGludXgtcG0vZHJpdmVycy9hY3BpL2N1
+c3RvbV9tZXRob2QuYw0KPiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09DQo+IC0tLSBsaW51eC1wbS5vcmlnL2RyaXZlcnMv
+YWNwaS9jdXN0b21fbWV0aG9kLmMNCj4gKysrIC9kZXYvbnVsbA0KPiBAQCAtMSwxMDMgKzAsMCBA
+QA0KPiAtLy8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb25seQ0KPiAtLyoNCj4g
+LSAqIGN1c3RvbV9tZXRob2QuYyAtIGRlYnVnZnMgaW50ZXJmYWNlIGZvciBjdXN0b21pemluZyBB
+Q1BJIGNvbnRyb2wNCj4gbWV0aG9kDQo+IC0gKi8NCj4gLQ0KPiAtI2luY2x1ZGUgPGxpbnV4L2lu
+aXQuaD4NCj4gLSNpbmNsdWRlIDxsaW51eC9tb2R1bGUuaD4NCj4gLSNpbmNsdWRlIDxsaW51eC9r
+ZXJuZWwuaD4NCj4gLSNpbmNsdWRlIDxsaW51eC91YWNjZXNzLmg+DQo+IC0jaW5jbHVkZSA8bGlu
+dXgvZGVidWdmcy5oPg0KPiAtI2luY2x1ZGUgPGxpbnV4L2FjcGkuaD4NCj4gLSNpbmNsdWRlIDxs
+aW51eC9zZWN1cml0eS5oPg0KPiAtDQo+IC0jaW5jbHVkZSAiaW50ZXJuYWwuaCINCj4gLQ0KPiAt
+TU9EVUxFX0xJQ0VOU0UoIkdQTCIpOw0KPiAtDQo+IC1zdGF0aWMgc3RydWN0IGRlbnRyeSAqY21f
+ZGVudHJ5Ow0KPiAtDQo+IC0vKiAvc3lzL2tlcm5lbC9kZWJ1Zy9hY3BpL2N1c3RvbV9tZXRob2Qg
+Ki8NCj4gLQ0KPiAtc3RhdGljIHNzaXplX3QgY21fd3JpdGUoc3RydWN0IGZpbGUgKmZpbGUsIGNv
+bnN0IGNoYXIgX191c2VyDQo+ICp1c2VyX2J1ZiwNCj4gLQkJCXNpemVfdCBjb3VudCwgbG9mZl90
+ICpwcG9zKQ0KPiAtew0KPiAtCXN0YXRpYyBjaGFyICpidWY7DQo+IC0Jc3RhdGljIHUzMiBtYXhf
+c2l6ZTsNCj4gLQlzdGF0aWMgdTMyIHVuY29waWVkX2J5dGVzOw0KPiAtDQo+IC0Jc3RydWN0IGFj
+cGlfdGFibGVfaGVhZGVyIHRhYmxlOw0KPiAtCWFjcGlfc3RhdHVzIHN0YXR1czsNCj4gLQlpbnQg
+cmV0Ow0KPiAtDQo+IC0JcmV0ID0gc2VjdXJpdHlfbG9ja2VkX2Rvd24oTE9DS0RPV05fQUNQSV9U
+QUJMRVMpOw0KPiAtCWlmIChyZXQpDQo+IC0JCXJldHVybiByZXQ7DQo+IC0NCj4gLQlpZiAoISgq
+cHBvcykpIHsNCj4gLQkJLyogcGFyc2UgdGhlIHRhYmxlIGhlYWRlciB0byBnZXQgdGhlIHRhYmxl
+IGxlbmd0aCAqLw0KPiAtCQlpZiAoY291bnQgPD0gc2l6ZW9mKHN0cnVjdCBhY3BpX3RhYmxlX2hl
+YWRlcikpDQo+IC0JCQlyZXR1cm4gLUVJTlZBTDsNCj4gLQkJaWYgKGNvcHlfZnJvbV91c2VyKCZ0
+YWJsZSwgdXNlcl9idWYsDQo+IC0JCQkJICAgc2l6ZW9mKHN0cnVjdCBhY3BpX3RhYmxlX2hlYWRl
+cikpKQ0KPiAtCQkJcmV0dXJuIC1FRkFVTFQ7DQo+IC0JCXVuY29waWVkX2J5dGVzID0gbWF4X3Np
+emUgPSB0YWJsZS5sZW5ndGg7DQo+IC0JCS8qIG1ha2Ugc3VyZSB0aGUgYnVmIGlzIG5vdCBhbGxv
+Y2F0ZWQgKi8NCj4gLQkJa2ZyZWUoYnVmKTsNCj4gLQkJYnVmID0ga3phbGxvYyhtYXhfc2l6ZSwg
+R0ZQX0tFUk5FTCk7DQo+IC0JCWlmICghYnVmKQ0KPiAtCQkJcmV0dXJuIC1FTk9NRU07DQo+IC0J
+fQ0KPiAtDQo+IC0JaWYgKGJ1ZiA9PSBOVUxMKQ0KPiAtCQlyZXR1cm4gLUVJTlZBTDsNCj4gLQ0K
+PiAtCWlmICgoKnBwb3MgPiBtYXhfc2l6ZSkgfHwNCj4gLQkgICAgKCpwcG9zICsgY291bnQgPiBt
+YXhfc2l6ZSkgfHwNCj4gLQkgICAgKCpwcG9zICsgY291bnQgPCBjb3VudCkgfHwNCj4gLQkgICAg
+KGNvdW50ID4gdW5jb3BpZWRfYnl0ZXMpKSB7DQo+IC0JCWtmcmVlKGJ1Zik7DQo+IC0JCWJ1ZiA9
+IE5VTEw7DQo+IC0JCXJldHVybiAtRUlOVkFMOw0KPiAtCX0NCj4gLQ0KPiAtCWlmIChjb3B5X2Zy
+b21fdXNlcihidWYgKyAoKnBwb3MpLCB1c2VyX2J1ZiwgY291bnQpKSB7DQo+IC0JCWtmcmVlKGJ1
+Zik7DQo+IC0JCWJ1ZiA9IE5VTEw7DQo+IC0JCXJldHVybiAtRUZBVUxUOw0KPiAtCX0NCj4gLQ0K
+PiAtCXVuY29waWVkX2J5dGVzIC09IGNvdW50Ow0KPiAtCSpwcG9zICs9IGNvdW50Ow0KPiAtDQo+
+IC0JaWYgKCF1bmNvcGllZF9ieXRlcykgew0KPiAtCQlzdGF0dXMgPSBhY3BpX2luc3RhbGxfbWV0
+aG9kKGJ1Zik7DQo+IC0JCWtmcmVlKGJ1Zik7DQo+IC0JCWJ1ZiA9IE5VTEw7DQo+IC0JCWlmIChB
+Q1BJX0ZBSUxVUkUoc3RhdHVzKSkNCj4gLQkJCXJldHVybiAtRUlOVkFMOw0KPiAtCQlhZGRfdGFp
+bnQoVEFJTlRfT1ZFUlJJRERFTl9BQ1BJX1RBQkxFLA0KPiBMT0NLREVQX05PV19VTlJFTElBQkxF
+KTsNCj4gLQl9DQo+IC0NCj4gLQlyZXR1cm4gY291bnQ7DQo+IC19DQo+IC0NCj4gLXN0YXRpYyBj
+b25zdCBzdHJ1Y3QgZmlsZV9vcGVyYXRpb25zIGNtX2ZvcHMgPSB7DQo+IC0JLndyaXRlID0gY21f
+d3JpdGUsDQo+IC0JLmxsc2VlayA9IGRlZmF1bHRfbGxzZWVrLA0KPiAtfTsNCj4gLQ0KPiAtc3Rh
+dGljIGludCBfX2luaXQgYWNwaV9jdXN0b21fbWV0aG9kX2luaXQodm9pZCkNCj4gLXsNCj4gLQlj
+bV9kZW50cnkgPSBkZWJ1Z2ZzX2NyZWF0ZV9maWxlKCJjdXN0b21fbWV0aG9kIiwgU19JV1VTUiwN
+Cj4gLQkJCQkJYWNwaV9kZWJ1Z2ZzX2RpciwgTlVMTCwNCj4gJmNtX2ZvcHMpOw0KPiAtCXJldHVy
+biAwOw0KPiAtfQ0KPiAtDQo+IC1zdGF0aWMgdm9pZCBfX2V4aXQgYWNwaV9jdXN0b21fbWV0aG9k
+X2V4aXQodm9pZCkNCj4gLXsNCj4gLQlkZWJ1Z2ZzX3JlbW92ZShjbV9kZW50cnkpOw0KPiAtfQ0K
+PiAtDQo+IC1tb2R1bGVfaW5pdChhY3BpX2N1c3RvbV9tZXRob2RfaW5pdCk7DQo+IC1tb2R1bGVf
+ZXhpdChhY3BpX2N1c3RvbV9tZXRob2RfZXhpdCk7DQo+IEluZGV4OiBsaW51eC1wbS9Eb2N1bWVu
+dGF0aW9uL2Zpcm13YXJlLWd1aWRlL2FjcGkvbWV0aG9kLQ0KPiBjdXN0b21pemluZy5yc3QNCj4g
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PQ0KPiAtLS0gbGludXgtcG0ub3JpZy9Eb2N1bWVudGF0aW9uL2Zpcm13YXJlLWd1
+aWRlL2FjcGkvbWV0aG9kLQ0KPiBjdXN0b21pemluZy5yc3QNCj4gKysrIC9kZXYvbnVsbA0KPiBA
+QCAtMSw4OSArMCwwIEBADQo+IC0uLiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMA0K
+PiAtDQo+IC09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0NCj4gLUxpbnV4
+IEFDUEkgQ3VzdG9tIENvbnRyb2wgTWV0aG9kIEhvdyBUbw0KPiAtPT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09DQo+IC0NCj4gLTpBdXRob3I6IFpoYW5nIFJ1aSA8cnVpLnpo
+YW5nQGludGVsLmNvbT4NCj4gLQ0KPiAtDQo+IC1MaW51eCBzdXBwb3J0cyBjdXN0b21pemluZyBB
+Q1BJIGNvbnRyb2wgbWV0aG9kcyBhdCBydW50aW1lLg0KPiAtDQo+IC1Vc2VycyBjYW4gdXNlIHRo
+aXMgdG86DQo+IC0NCj4gLTEuIG92ZXJyaWRlIGFuIGV4aXN0aW5nIG1ldGhvZCB3aGljaCBtYXkg
+bm90IHdvcmsgY29ycmVjdGx5LA0KPiAtICAgb3IganVzdCBmb3IgZGVidWdnaW5nIHB1cnBvc2Vz
+Lg0KPiAtMi4gaW5zZXJ0IGEgY29tcGxldGVseSBuZXcgbWV0aG9kIGluIG9yZGVyIHRvIGNyZWF0
+ZSBhIG1pc3NpbmcNCj4gLSAgIG1ldGhvZCBzdWNoIGFzIF9PRkYsIF9PTiwgX1NUQSwgX0lOSSwg
+ZXRjLg0KPiAtDQo+IC1Gb3IgdGhlc2UgY2FzZXMsIGl0IGlzIGZhciBzaW1wbGVyIHRvIGR5bmFt
+aWNhbGx5IGluc3RhbGwgYSBzaW5nbGUNCj4gLWNvbnRyb2wgbWV0aG9kIHJhdGhlciB0aGFuIG92
+ZXJyaWRlIHRoZSBlbnRpcmUgRFNEVCwgYmVjYXVzZSBrZXJuZWwNCj4gLXJlYnVpbGQvcmVib290
+IGlzIG5vdCBuZWVkZWQgYW5kIHRlc3QgcmVzdWx0IGNhbiBiZSBnb3QgaW4gbWludXRlcy4NCj4g
+LQ0KPiAtLi4gbm90ZTo6DQo+IC0NCj4gLSAgLSBPbmx5IEFDUEkgTUVUSE9EIGNhbiBiZSBvdmVy
+cmlkZGVuLCBhbnkgb3RoZXIgb2JqZWN0IHR5cGVzIGxpa2UNCj4gLSAgICAiRGV2aWNlIiwgIk9w
+ZXJhdGlvblJlZ2lvbiIsIGFyZSBub3QgcmVjb2duaXplZC4gTWV0aG9kcw0KPiAtICAgIGRlY2xh
+cmVkIGluc2lkZSBzY29wZSBvcGVyYXRvcnMgYXJlIGFsc28gbm90IHN1cHBvcnRlZC4NCj4gLQ0K
+PiAtICAtIFRoZSBzYW1lIEFDUEkgY29udHJvbCBtZXRob2QgY2FuIGJlIG92ZXJyaWRkZW4gZm9y
+IG1hbnkgdGltZXMsDQo+IC0gICAgYW5kIGl0J3MgYWx3YXlzIHRoZSBsYXRlc3Qgb25lIHRoYXQg
+dXNlZCBieSBMaW51eC9rZXJuZWwuDQo+IC0NCj4gLSAgLSBUbyBnZXQgdGhlIEFDUEkgZGVidWcg
+b2JqZWN0IG91dHB1dCAoU3RvcmUgKEFBQUEsIERlYnVnKSksDQo+IC0gICAgcGxlYXNlIHJ1bjo6
+DQo+IC0NCj4gLSAgICAgIGVjaG8gMSA+IC9zeXMvbW9kdWxlL2FjcGkvcGFyYW1ldGVycy9hbWxf
+ZGVidWdfb3V0cHV0DQo+IC0NCj4gLQ0KPiAtMS4gb3ZlcnJpZGUgYW4gZXhpc3RpbmcgbWV0aG9k
+DQo+IC09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0NCj4gLWEpIGdldCB0aGUgQUNQSSB0
+YWJsZSB2aWEgQUNQSSBzeXNmcyBJL0YuIGUuZy4gdG8gZ2V0IHRoZSBEU0RULA0KPiAtICAganVz
+dCBydW4gImNhdCAvc3lzL2Zpcm13YXJlL2FjcGkvdGFibGVzL0RTRFQgPiAvdG1wL2RzZHQuZGF0
+Ig0KPiAtYikgZGlzYXNzZW1ibGUgdGhlIHRhYmxlIGJ5IHJ1bm5pbmcgImlhc2wgLWQgZHNkdC5k
+YXQiLg0KPiAtYykgcmV3cml0ZSB0aGUgQVNMIGNvZGUgb2YgdGhlIG1ldGhvZCBhbmQgc2F2ZSBp
+dCBpbiBhIG5ldyBmaWxlLA0KPiAtZCkgcGFja2FnZSB0aGUgbmV3IGZpbGUgKHBzci5hc2wpIHRv
+IGFuIEFDUEkgdGFibGUgZm9ybWF0Lg0KPiAtICAgSGVyZSBpcyBhbiBleGFtcGxlIG9mIGEgY3Vz
+dG9taXplZCBcX1NCLl9BQy5fUFNSIG1ldGhvZDo6DQo+IC0NCj4gLSAgICAgIERlZmluaXRpb25C
+bG9jayAoIiIsICJTU0RUIiwgMSwgIiIsICIiLCAweDIwMDgwNzE1KQ0KPiAtICAgICAgew0KPiAt
+ICAgICAgICAgTWV0aG9kIChcX1NCXy5BQy5fUFNSLCAwLCBOb3RTZXJpYWxpemVkKQ0KPiAtICAg
+ICAgICAgew0KPiAtICAgICAgICAgICAgU3RvcmUgKCJJbiBBQyBfUFNSIiwgRGVidWcpDQo+IC0g
+ICAgICAgICAgICBSZXR1cm4gKEFDT04pDQo+IC0gICAgICAgICB9DQo+IC0gICAgICB9DQo+IC0N
+Cj4gLSAgIE5vdGUgdGhhdCB0aGUgZnVsbCBwYXRobmFtZSBvZiB0aGUgbWV0aG9kIGluIEFDUEkg
+bmFtZXNwYWNlDQo+IC0gICBzaG91bGQgYmUgdXNlZC4NCj4gLWUpIGFzc2VtYmxlIHRoZSBmaWxl
+IHRvIGdlbmVyYXRlIHRoZSBBTUwgY29kZSBvZiB0aGUgbWV0aG9kLg0KPiAtICAgZS5nLiAiaWFz
+bCAtdncgNjA4NCBwc3IuYXNsIiAocHNyLmFtbCBpcyBnZW5lcmF0ZWQgYXMgYSByZXN1bHQpDQo+
+IC0gICBJZiBwYXJhbWV0ZXIgIi12dyA2MDg0IiBpcyBub3Qgc3VwcG9ydGVkIGJ5IHlvdXIgaUFT
+TCBjb21waWxlciwNCj4gLSAgIHBsZWFzZSB0cnkgYSBuZXdlciB2ZXJzaW9uLg0KPiAtZikgbW91
+bnQgZGVidWdmcyBieSAibW91bnQgLXQgZGVidWdmcyBub25lIC9zeXMva2VybmVsL2RlYnVnIg0K
+PiAtZykgb3ZlcnJpZGUgdGhlIG9sZCBtZXRob2QgdmlhIHRoZSBkZWJ1Z2ZzIGJ5IHJ1bm5pbmcN
+Cj4gLSAgICJjYXQgL3RtcC9wc3IuYW1sID4gL3N5cy9rZXJuZWwvZGVidWcvYWNwaS9jdXN0b21f
+bWV0aG9kIg0KPiAtDQo+IC0yLiBpbnNlcnQgYSBuZXcgbWV0aG9kDQo+IC09PT09PT09PT09PT09
+PT09PT09PT09DQo+IC1UaGlzIGlzIGVhc2llciB0aGFuIG92ZXJyaWRpbmcgYW4gZXhpc3Rpbmcg
+bWV0aG9kLg0KPiAtV2UganVzdCBuZWVkIHRvIGNyZWF0ZSB0aGUgQVNMIGNvZGUgb2YgdGhlIG1l
+dGhvZCB3ZSB3YW50IHRvDQo+IC1pbnNlcnQgYW5kIHRoZW4gZm9sbG93IHRoZSBzdGVwIGMpIH4g
+ZykgaW4gc2VjdGlvbiAxLg0KPiAtDQo+IC0zLiB1bmRvIHlvdXIgY2hhbmdlcw0KPiAtPT09PT09
+PT09PT09PT09PT09PT0NCj4gLVRoZSAidW5kbyIgb3BlcmF0aW9uIGlzIG5vdCBzdXBwb3J0ZWQg
+Zm9yIGEgbmV3IGluc2VydGVkIG1ldGhvZA0KPiAtcmlnaHQgbm93LCBpLmUuIHdlIGNhbiBub3Qg
+cmVtb3ZlIGEgbWV0aG9kIGN1cnJlbnRseS4NCj4gLUZvciBhbiBvdmVycmlkZGVuIG1ldGhvZCwg
+aW4gb3JkZXIgdG8gdW5kbyB5b3VyIGNoYW5nZXMsIHBsZWFzZQ0KPiAtc2F2ZSBhIGNvcHkgb2Yg
+dGhlIG1ldGhvZCBvcmlnaW5hbCBBU0wgY29kZSBpbiBzdGVwIGMpIHNlY3Rpb24gMSwNCj4gLWFu
+ZCByZWRvIHN0ZXAgYykgfiBnKSB0byBvdmVycmlkZSB0aGUgbWV0aG9kIHdpdGggdGhlIG9yaWdp
+bmFsIG9uZS4NCj4gLQ0KPiAtDQo+IC0uLiBub3RlOjogV2UgY2FuIHVzZSBhIGtlcm5lbCB3aXRo
+IG11bHRpcGxlIGN1c3RvbSBBQ1BJIG1ldGhvZA0KPiBydW5uaW5nLA0KPiAtICAgQnV0IGVhY2gg
+aW5kaXZpZHVhbCB3cml0ZSB0byBkZWJ1Z2ZzIGNhbiBpbXBsZW1lbnQgYSBTSU5HTEUNCj4gLSAg
+IG1ldGhvZCBvdmVycmlkZS4gaS5lLiBpZiB3ZSB3YW50IHRvIGluc2VydC9vdmVycmlkZSBtdWx0
+aXBsZQ0KPiAtICAgQUNQSSBtZXRob2RzLCB3ZSBuZWVkIHRvIHJlZG8gc3RlcCBjKSB+IGcpIGZv
+ciBtdWx0aXBsZSB0aW1lcy4NCj4gLQ0KPiAtLi4gbm90ZTo6IEJlIGF3YXJlIHRoYXQgcm9vdCBj
+YW4gbWlzLXVzZSB0aGlzIGRyaXZlciB0byBtb2RpZnkNCj4gYXJiaXRyYXJ5DQo+IC0gICBtZW1v
+cnkgYW5kIGdhaW4gYWRkaXRpb25hbCByaWdodHMsIGlmIHJvb3QncyBwcml2aWxlZ2VzIGdvdA0K
+PiAtICAgcmVzdHJpY3RlZCAoZm9yIGV4YW1wbGUgaWYgcm9vdCBpcyBub3QgYWxsb3dlZCB0byBs
+b2FkIGFkZGl0aW9uYWwNCj4gLSAgIG1vZHVsZXMgYWZ0ZXIgYm9vdCkuDQo+IA0KPiANCj4gDQo=
