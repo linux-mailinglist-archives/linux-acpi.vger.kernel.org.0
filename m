@@ -2,46 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FFC165C66A
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Jan 2023 19:40:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C73F665C66C
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Jan 2023 19:40:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234073AbjACSjr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 3 Jan 2023 13:39:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49504 "EHLO
+        id S238325AbjACSkD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 3 Jan 2023 13:40:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233929AbjACSjn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Jan 2023 13:39:43 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DABB211156;
-        Tue,  3 Jan 2023 10:39:42 -0800 (PST)
+        with ESMTP id S234022AbjACSj7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Jan 2023 13:39:59 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A03FB13D4C;
+        Tue,  3 Jan 2023 10:39:50 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 90228B810AB;
-        Tue,  3 Jan 2023 18:39:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4857CC433F2;
-        Tue,  3 Jan 2023 18:39:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F6AD614F0;
+        Tue,  3 Jan 2023 18:39:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A637BC43398;
+        Tue,  3 Jan 2023 18:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672771180;
-        bh=Nh+PE6b0zozXPBpBs8UrxaUxKujKyhLS05XtQAqHiw8=;
+        s=k20201202; t=1672771189;
+        bh=imEYwgAC/dH8lSJZo74E+eAnfm3WoSPBrWYHOX4C0rg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pnbm9d5RhBTq5rfcX6PjvDjPAXMbKGJAxDQHmlFvrS0mqy4h4DkYKgoMdTPf+6jjt
-         lQKCcm4uZCy6Heuup1kPsTt+YIofiwNG+eQZvDhNxHilaRcTkiXVaEAarssP5DAcCm
-         26TrX5JT0j9771ihOKvIcUvRRm+szrHDzVrGkf2GXQb5NnlHwHyncwjGMV8Dz2u2Ck
-         hSm6JL4uAXmJpGpOscZLJFycYMfB4zHXMIYPpKTzv6ur22OpC3x+6xBUmX0sar56i4
-         Pm5MM7bceZbc/3Zj6y1wcfbKTa5JqmKDcia4wpNjX68KZreHO6fDfFv/GibuLYrVhr
-         Nhl2d3SpFRZtw==
+        b=OQu2wC/XigJEjEHBpl/0pReM6VgeNw+TvvMJq5dMqGmXoibQSw5pmzSsIK7j1lmYq
+         TUk3W6hCbGEh0jUhxrQeadpXc/3THwrAYfkQbRF4Ek2ZHWF5Ak4sfzU++Efcp5tuR8
+         grtdnWqWdZQdSWXn5HojGxZE/IAEuBgiA20u3fG89UXbBrqsyghuW59Vl1Hcvcb4ZK
+         mBgIf+R082N2NldScD3YPztO6E1fWyT9FfFPxKJh+7H4fvaQ4L/81DKgm9lxMTahxA
+         rdLLQNgiiA4GsnRaSoj/KkYlZOkgxqNfc/wByamILb6y3jzYnfiKidBJajInJPApgU
+         1wVHE1YfhWe/Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Mario Limonciello <mario.limonciello@amd.com>,
         Hans de Goede <hdegoede@redhat.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
-        robert.moore@intel.com, linux-acpi@vger.kernel.org,
-        devel@acpica.org
-Subject: [PATCH AUTOSEL 6.1 03/10] ACPI: video: Allow GPU drivers to report no panels
-Date:   Tue,  3 Jan 2023 13:39:27 -0500
-Message-Id: <20230103183934.2022663-3-sashal@kernel.org>
+        linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 05/10] ACPI: video: Don't enable fallback path for creating ACPI backlight by default
+Date:   Tue,  3 Jan 2023 13:39:29 -0500
+Message-Id: <20230103183934.2022663-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230103183934.2022663-1-sashal@kernel.org>
 References: <20230103183934.2022663-1-sashal@kernel.org>
@@ -60,17 +59,17 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 00a734104af7d878f1252d49eff9298785c6cbdc ]
+[ Upstream commit 5aa9d943e9b6bf6e6023645cbe7ce7d5ed84baf4 ]
 
-The current logic for the ACPI backlight detection will create
-a backlight device if no native or vendor drivers have created
-8 seconds after the system has booted if the ACPI tables
-included backlight control methods.
-
-If the GPU drivers have loaded, they may be able to report whether
-any LCD panels were found.  Allow using this information to factor
-in whether to enable the fallback logic for making an acpi_video0
+The ACPI video detection code has a module parameter
+`register_backlight_delay` which is currently configured to 8 seconds.
+This means that if after 8 seconds of booting no native driver has created
+a backlight device then the code will attempt to make an ACPI video
 backlight device.
+
+This was intended as a safety mechanism with the backlight overhaul that
+occurred in kernel 6.1, but as it doesn't appear necesssary set it to be
+disabled by default.
 
 Suggested-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
@@ -78,52 +77,26 @@ Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_video.c | 11 +++++++++++
- include/acpi/video.h      |  2 ++
- 2 files changed, 13 insertions(+)
+ drivers/acpi/acpi_video.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
 diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index 32953646caeb..f64fdb029090 100644
+index f64fdb029090..0c79f463fbfd 100644
 --- a/drivers/acpi/acpi_video.c
 +++ b/drivers/acpi/acpi_video.c
-@@ -2178,6 +2178,17 @@ static bool should_check_lcd_flag(void)
- 	return false;
- }
+@@ -70,11 +70,7 @@ module_param(device_id_scheme, bool, 0444);
+ static int only_lcd = -1;
+ module_param(only_lcd, int, 0444);
  
-+/*
-+ * At least one graphics driver has reported that no LCD is connected
-+ * via the native interface. cancel the registration for fallback acpi_video0.
-+ * If another driver still deems this necessary, it can explicitly register it.
-+ */
-+void acpi_video_report_nolcd(void)
-+{
-+	cancel_delayed_work(&video_bus_register_backlight_work);
-+}
-+EXPORT_SYMBOL(acpi_video_report_nolcd);
-+
- int acpi_video_register(void)
- {
- 	int ret = 0;
-diff --git a/include/acpi/video.h b/include/acpi/video.h
-index a275c35e5249..8ed9bec03e53 100644
---- a/include/acpi/video.h
-+++ b/include/acpi/video.h
-@@ -53,6 +53,7 @@ enum acpi_backlight_type {
- };
- 
- #if IS_ENABLED(CONFIG_ACPI_VIDEO)
-+extern void acpi_video_report_nolcd(void);
- extern int acpi_video_register(void);
- extern void acpi_video_unregister(void);
- extern void acpi_video_register_backlight(void);
-@@ -69,6 +70,7 @@ extern int acpi_video_get_levels(struct acpi_device *device,
- 				 struct acpi_video_device_brightness **dev_br,
- 				 int *pmax_level);
- #else
-+static inline void acpi_video_report_nolcd(void) { return; };
- static inline int acpi_video_register(void) { return -ENODEV; }
- static inline void acpi_video_unregister(void) { return; }
- static inline void acpi_video_register_backlight(void) { return; }
+-/*
+- * Display probing is known to take up to 5 seconds, so delay the fallback
+- * backlight registration by 5 seconds + 3 seconds for some extra margin.
+- */
+-static int register_backlight_delay = 8;
++static int register_backlight_delay;
+ module_param(register_backlight_delay, int, 0444);
+ MODULE_PARM_DESC(register_backlight_delay,
+ 	"Delay in seconds before doing fallback (non GPU driver triggered) "
 -- 
 2.35.1
 
