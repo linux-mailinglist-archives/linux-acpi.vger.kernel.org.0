@@ -2,29 +2,34 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B12665DC2A
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jan 2023 19:32:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1DD165DC3E
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jan 2023 19:36:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239677AbjADScO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 4 Jan 2023 13:32:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42000 "EHLO
+        id S235302AbjADSg0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 4 Jan 2023 13:36:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240122AbjADScE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 Jan 2023 13:32:04 -0500
+        with ESMTP id S240012AbjADSgJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 Jan 2023 13:36:09 -0500
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8628A9FEF;
-        Wed,  4 Jan 2023 10:32:03 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1F85717E0E;
+        Wed,  4 Jan 2023 10:36:04 -0800 (PST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 104691063;
-        Wed,  4 Jan 2023 10:32:45 -0800 (PST)
-Received: from pierre123.arm.com (unknown [10.57.44.105])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0DA793F663;
-        Wed,  4 Jan 2023 10:31:59 -0800 (PST)
-From:   Pierre Gondois <pierre.gondois@arm.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Pierre Gondois <pierre.gondois@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 87CEB1063;
+        Wed,  4 Jan 2023 10:36:45 -0800 (PST)
+Received: from [10.57.44.105] (unknown [10.57.44.105])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5A8273F663;
+        Wed,  4 Jan 2023 10:35:59 -0800 (PST)
+Message-ID: <680a52a9-7493-328d-785f-66a12ee29c91@arm.com>
+Date:   Wed, 4 Jan 2023 19:35:53 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v3 0/5] arch_topology: Build cacheinfo from primary CPU
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        linux-kernel@vger.kernel.org
+Cc:     palmer@rivosinc.com, Ionela.Voinescu@arm.com,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>,
         Paul Walmsley <paul.walmsley@sifive.com>,
@@ -32,264 +37,115 @@ Cc:     Pierre Gondois <pierre.gondois@arm.com>,
         Albert Ou <aou@eecs.berkeley.edu>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
         Conor Dooley <conor.dooley@microchip.com>,
         Gavin Shan <gshan@redhat.com>,
         linux-arm-kernel@lists.infradead.org,
         linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org
-Subject: [PATCH v4 6/6] arch_topology: Build cacheinfo from primary CPU
-Date:   Wed,  4 Jan 2023 19:30:29 +0100
-Message-Id: <20230104183033.755668-7-pierre.gondois@arm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230104183033.755668-1-pierre.gondois@arm.com>
-References: <20230104183033.755668-1-pierre.gondois@arm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20221209103130.572196-1-pierre.gondois@arm.com>
+ <0f19cb3f-d6cf-4032-66d2-dedc9d09a0e3@linaro.org>
+From:   Pierre Gondois <pierre.gondois@arm.com>
+In-Reply-To: <0f19cb3f-d6cf-4032-66d2-dedc9d09a0e3@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-commit 3fcbf1c77d08 ("arch_topology: Fix cache attributes detection
-in the CPU hotplug path")
-adds a call to detect_cache_attributes() to populate the cacheinfo
-before updating the siblings mask. detect_cache_attributes() allocates
-memory and can take the PPTT mutex (on ACPI platforms). On PREEMPT_RT
-kernels, on secondary CPUs, this triggers a:
-  'BUG: sleeping function called from invalid context' [1]
-as the code is executed with preemption and interrupts disabled.
 
-The primary CPU was previously storing the cache information using
-the now removed (struct cpu_topology).llc_id:
-commit 5b8dc787ce4a ("arch_topology: Drop LLC identifier stash from
-the CPU topology")
 
-allocate_cache_info() tries to build the cacheinfo from the primary
-CPU prior secondary CPUs boot, if the DT/ACPI description
-contains cache information.
-If allocate_cache_info() fails, then fallback to the current state
-for the cacheinfo allocation. [1] will be triggered in such case.
+On 12/29/22 17:47, Krzysztof Kozlowski wrote:
+> On 09/12/2022 11:31, Pierre Gondois wrote:
+>> v2:
+>>   - Applied renaming/formatting comments from v1.
+>>   - Check CACHE_TYPE_VALID flag in pppt.c.
+>> v3:
+>>   - Applied Sudeep's suggestions (for patch 5/5):
+>>     - Renaming allocate_cache_info() -> fecth_cache_info()
+>>     - Updated error message
+>>     - Extract an inline allocate_cache_info() function
+>>   - Re-run checkpatch with --strict option
+>>
+>> Note:
+>> This patchset requires the following patch to be applied first in
+>> order to avoid the same bug described in the commit message:
+>> https://lore.kernel.org/all/20221116094958.2141072-1-pierre.gondois@arm.com/
+>>
+>> [1] and [2] build the CPU topology from the cacheinfo information for
+>> both DT/ACPI based systems and remove (struct cpu_topology).llc_id
+>> which was used by ACPI only.
+>>
+>> Creating the cacheinfo for secondary CPUs is done during early boot.
+>> Preemption and interrupts are disabled at this stage. On PREEMPT_RT
+>> kernels, allocating memory (and parsing the PPTT table for ACPI based
+>> systems) triggers a:
+>>    'BUG: sleeping function called from invalid context' [4]
+>>
+>> To prevent this bug, allocate the cacheinfo from the primary CPU when
+>> preemption and interrupts are enabled and before booting secondary
+>> CPUs. The cache levels/leaves are computed from DT/ACPI PPTT information
+>> only, without relying on the arm64 CLIDR_EL1 register.
+>> If no cache information is found in the DT/ACPI PPTT, then fallback
+>> to the current state, triggering [4] on PREEMPT_RT kernels.
+>>
+>> Patches to update the arm64 device trees that have incomplete cacheinfo
+>> (mostly for missing the 'cache-level' or 'cache-unified' property)
+>> have been sent at [3].
+>>
+>> Tested platforms:
+>> - ACPI + PPTT: Ampere Altra, Ampere eMAG, Cavium ThunderX2,
+>>    Kunpeng 920, Juno-r2
+>> - DT: rb5, db845c, Juno-r2
+>>
+> 
+> I gave the patchset a try with DTS fixes for cache topology on Qualcomm
+> RB5 board (SM8250 SoC) and with KASAN it produces:
+> 
+> BUG: KASAN: slab-out-of-bounds in populate_cache_leaves+0x84/0x15c
+> [    0.633014]  dump_backtrace.part.0+0xe0/0xf0
+> [    0.633035]  show_stack+0x18/0x40
+> [    0.633050]  dump_stack_lvl+0x8c/0xb8
+> [    0.633085]  print_report+0x188/0x488
+> [    0.633106]  kasan_report+0xac/0xf0
+> [    0.633136]  __asan_store4+0x80/0xa4
+> [    0.633158]  populate_cache_leaves+0x84/0x15c
+> [    0.633181]  detect_cache_attributes+0xc0/0x8c4
+> [    0.633213]  update_siblings_masks+0x28/0x43c
+> [    0.633235]  store_cpu_topology+0x98/0xc0
+> [    0.633251]  smp_prepare_cpus+0x2c/0x15c
+> [    0.633281]  kernel_init_freeable+0x22c/0x424
+> [    0.633310]  kernel_init+0x24/0x13c
+> [    0.633328]  ret_from_fork+0x10/0x20
+> [    0.633388]
+> [    0.708729] Allocated by task 1:
+> [    0.712078]  kasan_save_stack+0x2c/0x60
+> [    0.716066]  kasan_set_track+0x2c/0x40
+> [    0.719959]  kasan_save_alloc_info+0x24/0x3c
+> [    0.724387]  __kasan_kmalloc+0xa0/0xbc
+> [    0.728278]  __kmalloc+0x74/0x110
+> [    0.731740]  fetch_cache_info+0x170/0x210
+> [    0.735902]  init_cpu_topology+0x254/0x2bc
+> [    0.740171]  smp_prepare_cpus+0x20/0x15c
+> [    0.744272]  kernel_init_freeable+0x22c/0x424
+> [    0.748791]  kernel_init+0x24/0x13c
+> [    0.752420]  ret_from_fork+0x10/0x20
+> 
+> Best regards,
+> Krzysztof
 
-When unplugging a CPU, the cacheinfo memory cannot be freed. If it
-was, then the memory would be allocated early by the re-plugged
-CPU and would trigger [1].
+Hello Krzysztof,
+Thanks for trying the patch-set and reporting the issue. Hopefully
+the v4 should solve this:
+https://lore.kernel.org/all/20230104183033.755668-1-pierre.gondois@arm.com/
 
-Note that populate_cache_leaves() might be called multiple times
-due to populate_leaves being moved up. This is required since
-detect_cache_attributes() might be called with per_cpu_cacheinfo(cpu)
-being allocated but not populated.
+I will also try to follow the corresponding dts modifications,
 
-[1]:
-[    7.560791] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:46
-[    7.560794] in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 0, name: swapper/111
-[    7.560796] preempt_count: 1, expected: 0
-[    7.560797] RCU nest depth: 1, expected: 1
-[    7.560799] 3 locks held by swapper/111/0:
-[    7.560800]  #0: ffff403e406cae98 (&pcp->lock){+.+.}-{3:3}, at: get_page_from_freelist+0x218/0x12c8
-[    7.560811]  #1: ffffc5f8ed09f8e8 (rcu_read_lock){....}-{1:3}, at: rt_spin_trylock+0x48/0xf0
-[    7.560820]  #2: ffff403f400b4fd8 (&zone->lock){+.+.}-{3:3}, at: rmqueue_bulk+0x64/0xa80
-[    7.560824] irq event stamp: 0
-[    7.560825] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
-[    7.560827] hardirqs last disabled at (0): [<ffffc5f8e9f7d594>] copy_process+0x5dc/0x1ab8
-[    7.560830] softirqs last  enabled at (0): [<ffffc5f8e9f7d594>] copy_process+0x5dc/0x1ab8
-[    7.560833] softirqs last disabled at (0): [<0000000000000000>] 0x0
-[    7.560834] Preemption disabled at:
-[    7.560835] [<ffffc5f8e9fd3c28>] migrate_enable+0x30/0x130
-[    7.560838] CPU: 111 PID: 0 Comm: swapper/111 Tainted: G        W          6.0.0-rc4-rt6-[...]
-[    7.560841] Call trace:
-[...]
-[    7.560870]  __kmalloc+0xbc/0x1e8
-[    7.560873]  detect_cache_attributes+0x2d4/0x5f0
-[    7.560876]  update_siblings_masks+0x30/0x368
-[    7.560880]  store_cpu_topology+0x78/0xb8
-[    7.560883]  secondary_start_kernel+0xd0/0x198
-[    7.560885]  __secondary_switched+0xb0/0xb4
-
-Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
----
- arch/riscv/kernel/cacheinfo.c |  5 ---
- drivers/base/arch_topology.c  | 12 +++++-
- drivers/base/cacheinfo.c      | 71 ++++++++++++++++++++++++++---------
- include/linux/cacheinfo.h     |  1 +
- 4 files changed, 65 insertions(+), 24 deletions(-)
-
-diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinfo.c
-index 440a3df5944c..3a13113f1b29 100644
---- a/arch/riscv/kernel/cacheinfo.c
-+++ b/arch/riscv/kernel/cacheinfo.c
-@@ -113,11 +113,6 @@ static void fill_cacheinfo(struct cacheinfo **this_leaf,
- 	}
- }
- 
--int init_cache_level(unsigned int cpu)
--{
--	return init_of_cache_level(cpu);
--}
--
- int populate_cache_leaves(unsigned int cpu)
- {
- 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
-diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
-index e7d6e6657ffa..b1c1dd38ab01 100644
---- a/drivers/base/arch_topology.c
-+++ b/drivers/base/arch_topology.c
-@@ -736,7 +736,7 @@ void update_siblings_masks(unsigned int cpuid)
- 
- 	ret = detect_cache_attributes(cpuid);
- 	if (ret && ret != -ENOENT)
--		pr_info("Early cacheinfo failed, ret = %d\n", ret);
-+		pr_info("Early cacheinfo allocation failed, ret = %d\n", ret);
- 
- 	/* update core and thread sibling masks */
- 	for_each_online_cpu(cpu) {
-@@ -825,7 +825,7 @@ __weak int __init parse_acpi_topology(void)
- #if defined(CONFIG_ARM64) || defined(CONFIG_RISCV)
- void __init init_cpu_topology(void)
- {
--	int ret;
-+	int cpu, ret;
- 
- 	reset_cpu_topology();
- 	ret = parse_acpi_topology();
-@@ -840,6 +840,14 @@ void __init init_cpu_topology(void)
- 		reset_cpu_topology();
- 		return;
- 	}
-+
-+	for_each_possible_cpu(cpu) {
-+		ret = fetch_cache_info(cpu);
-+		if (ret) {
-+			pr_err("Early cacheinfo failed, ret = %d\n", ret);
-+			break;
-+		}
-+	}
- }
- 
- void store_cpu_topology(unsigned int cpuid)
-diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
-index 339cd1e3d5af..b57fbd0d7114 100644
---- a/drivers/base/cacheinfo.c
-+++ b/drivers/base/cacheinfo.c
-@@ -386,10 +386,6 @@ static void free_cache_attributes(unsigned int cpu)
- 		return;
- 
- 	cache_shared_cpu_map_remove(cpu);
--
--	kfree(per_cpu_cacheinfo(cpu));
--	per_cpu_cacheinfo(cpu) = NULL;
--	cache_leaves(cpu) = 0;
- }
- 
- int __weak init_cache_level(unsigned int cpu)
-@@ -402,29 +398,71 @@ int __weak populate_cache_leaves(unsigned int cpu)
- 	return -ENOENT;
- }
- 
-+static inline
-+int allocate_cache_info(int cpu)
-+{
-+	per_cpu_cacheinfo(cpu) = kcalloc(cache_leaves(cpu),
-+					 sizeof(struct cacheinfo), GFP_ATOMIC);
-+	if (!per_cpu_cacheinfo(cpu)) {
-+		cache_leaves(cpu) = 0;
-+		return -ENOMEM;
-+	}
-+
-+	return 0;
-+}
-+
-+int fetch_cache_info(unsigned int cpu)
-+{
-+	struct cpu_cacheinfo *this_cpu_ci;
-+	unsigned int levels, split_levels;
-+	int ret;
-+
-+	if (acpi_disabled) {
-+		ret = init_of_cache_level(cpu);
-+		if (ret < 0)
-+			return ret;
-+	} else {
-+		ret = acpi_get_cache_info(cpu, &levels, &split_levels);
-+		if (ret < 0)
-+			return ret;
-+
-+		this_cpu_ci = get_cpu_cacheinfo(cpu);
-+		this_cpu_ci->num_levels = levels;
-+		/*
-+		 * This assumes that:
-+		 * - there cannot be any split caches (data/instruction)
-+		 *   above a unified cache
-+		 * - data/instruction caches come by pair
-+		 */
-+		this_cpu_ci->num_leaves = levels + split_levels;
-+	}
-+	if (!cache_leaves(cpu))
-+		return -ENOENT;
-+
-+	return allocate_cache_info(cpu);
-+}
-+
- int detect_cache_attributes(unsigned int cpu)
- {
- 	int ret;
- 
--	/* Since early detection of the cacheinfo is allowed via this
--	 * function and this also gets called as CPU hotplug callbacks via
--	 * cacheinfo_cpu_online, the initialisation can be skipped and only
--	 * CPU maps can be updated as the CPU online status would be update
--	 * if called via cacheinfo_cpu_online path.
-+	/* Since early initialization/allocation of the cacheinfo is allowed
-+	 * via fetch_cache_info() and this also gets called as CPU hotplug
-+	 * callbacks via cacheinfo_cpu_online, the init/alloc can be skipped
-+	 * as it will happen only once (the cacheinfo memory is never freed).
-+	 * Just populate the cacheinfo.
- 	 */
- 	if (per_cpu_cacheinfo(cpu))
--		goto update_cpu_map;
-+		goto populate_leaves;
- 
- 	if (init_cache_level(cpu) || !cache_leaves(cpu))
- 		return -ENOENT;
- 
--	per_cpu_cacheinfo(cpu) = kcalloc(cache_leaves(cpu),
--					 sizeof(struct cacheinfo), GFP_ATOMIC);
--	if (per_cpu_cacheinfo(cpu) == NULL) {
--		cache_leaves(cpu) = 0;
--		return -ENOMEM;
--	}
-+	ret = allocate_cache_info(cpu);
-+	if (ret)
-+		return ret;
- 
-+populate_leaves:
- 	/*
- 	 * populate_cache_leaves() may completely setup the cache leaves and
- 	 * shared_cpu_map or it may leave it partially setup.
-@@ -433,7 +471,6 @@ int detect_cache_attributes(unsigned int cpu)
- 	if (ret)
- 		goto free_ci;
- 
--update_cpu_map:
- 	/*
- 	 * For systems using DT for cache hierarchy, fw_token
- 	 * and shared_cpu_map will be set up here only if they are
-diff --git a/include/linux/cacheinfo.h b/include/linux/cacheinfo.h
-index 00d8e7f9d1c6..dfef57077cd0 100644
---- a/include/linux/cacheinfo.h
-+++ b/include/linux/cacheinfo.h
-@@ -85,6 +85,7 @@ int populate_cache_leaves(unsigned int cpu);
- int cache_setup_acpi(unsigned int cpu);
- bool last_level_cache_is_valid(unsigned int cpu);
- bool last_level_cache_is_shared(unsigned int cpu_x, unsigned int cpu_y);
-+int fetch_cache_info(unsigned int cpu);
- int detect_cache_attributes(unsigned int cpu);
- #ifndef CONFIG_ACPI_PPTT
- /*
--- 
-2.25.1
-
+Regards,
+Pierre
