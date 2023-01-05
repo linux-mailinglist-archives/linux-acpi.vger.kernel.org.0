@@ -2,94 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34BED65ED10
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Jan 2023 14:27:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B13DF65EF2A
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Jan 2023 15:48:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233785AbjAEN1B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 Jan 2023 08:27:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45570 "EHLO
+        id S232154AbjAEOsK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 Jan 2023 09:48:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233878AbjAEN0F (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 Jan 2023 08:26:05 -0500
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 751CA112E
-        for <linux-acpi@vger.kernel.org>; Thu,  5 Jan 2023 05:26:03 -0800 (PST)
-Received: by mail-pj1-x102d.google.com with SMTP id z4-20020a17090a170400b00226d331390cso905263pjd.5
-        for <linux-acpi@vger.kernel.org>; Thu, 05 Jan 2023 05:26:03 -0800 (PST)
+        with ESMTP id S234102AbjAEOrw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 Jan 2023 09:47:52 -0500
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 940BA5017C
+        for <linux-acpi@vger.kernel.org>; Thu,  5 Jan 2023 06:47:45 -0800 (PST)
+Received: by mail-lj1-x22c.google.com with SMTP id s22so38881568ljp.5
+        for <linux-acpi@vger.kernel.org>; Thu, 05 Jan 2023 06:47:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fc4dD/OSI6AqbJN6YW1eI7+8gfamDs+/wg3E3xEDFpk=;
-        b=ilDKqTMCwbDsM/lv+BsibAMEc7MfUxkjTAzYnzjGW2+rIv6FFQbbaXmBYJ7Eo/oa7s
-         SyrbqLiZMOSyHLmInSxl0JwTdGvvxkuYV1siaWprQ9kU5KaeOfNdlwrir300ixSDzssE
-         alY0xIq2WeyEPVosjG2SfMIOr9zkKgCD3UHwg=
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PXulY+pWIwlGwQqIKlBOHZ+2vlznv2jfiN7s1zx/Vv8=;
+        b=HQk9PbSGfW6NRZTmQBW4QsK4nnu5t/UZpxfFQOqvWWxKmJxBM6+XctOFBKU4TgnOFq
+         Wesmv+90fbFYcH/tqSWrjCWxurX46hCa1OJ6cWMJDNl/lLZLkIa0qcXHbBATU29G/Y0s
+         ZmUyToWExl9oCSZFr/S1CLe9e3bI9JHLiuVwQ5rl4/mQlyB4W7QmJDuaAcLfpEJobDwG
+         qhqFsmdrIPB1pORTqjQ2fPpx9CpcDm2y8EZ6v5Nqm2h/OnXhzYX7CUHB8cUP9EXr/Jiz
+         8R26mFQhsV4O2pvT1JmJ6VC4Re+fQxEqUddXWbjevBAshiJ6c93qd2599PShf0yD1vaC
+         NsJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fc4dD/OSI6AqbJN6YW1eI7+8gfamDs+/wg3E3xEDFpk=;
-        b=cO8OEnpuVcWfTX663xmMYjRWM5Lj3K1+qZLdWNSAiT/4cRPBVGZ8YpYVkMGW36ISVx
-         XPRVsg6POFAA8FneUU4dLl9uvhEH6xqyOI0Eq13K07zbRc+tGVI6Hwor8Q3HVWY0Oqdp
-         ooNOgK6+IQIQHZi8aVinVt8GynPOcOCVs2+YqbKeU/vzO/L4yxlcYQIYhKTAHxbMwZNY
-         zMXb9bqnJ/w5Ng0VGZqBcKBfkyleLRY3ha2nlXje0Cn5klmgadqEkmQUFxoorhC2akLW
-         CP4O99A1BqMO3cYvLH52Lm33ZSrm/TSOseUTA/1GXSrxYku0LxlYledutz/NRj/KC72A
-         Zqfw==
-X-Gm-Message-State: AFqh2krT6PgpXcTNz7bugM0W+Gk5X3Zc9vfCymmQiP8zjI8IKeY/cOYk
-        q/XHnbxOXmK/AHJfbE1mQonlAA==
-X-Google-Smtp-Source: AMrXdXuqaC7MI7vTBvMovZr57wepZh7B/ugct7iXMnFx/sRimRJd0yTpskFUwNzpcePam0sInKQhyw==
-X-Received: by 2002:a17:90b:a15:b0:226:23c7:bb39 with SMTP id gg21-20020a17090b0a1500b0022623c7bb39mr27981382pjb.44.1672925162905;
-        Thu, 05 Jan 2023 05:26:02 -0800 (PST)
-Received: from treapking.tpe.corp.google.com ([2401:fa00:1:10:7a61:eb85:2e3:2bd0])
-        by smtp.gmail.com with ESMTPSA id gk22-20020a17090b119600b00225e670e4c7sm1372682pjb.35.2023.01.05.05.25.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Jan 2023 05:26:02 -0800 (PST)
-From:   Pin-yen Lin <treapking@chromium.org>
-To:     Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>
-Cc:     =?UTF-8?q?N=C3=ADcolas=20F=20=2E=20R=20=2E=20A=20=2E=20Prado?= 
-        <nfraprado@collabora.com>, Xin Ji <xji@analogixsemi.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        linux-kernel@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
-        linux-acpi@vger.kernel.org, Lyude Paul <lyude@redhat.com>,
-        dri-devel@lists.freedesktop.org, chrome-platform@lists.linux.dev,
-        Pin-yen Lin <treapking@chromium.org>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Marek Vasut <marex@denx.de>, devicetree@vger.kernel.org,
-        Stephen Boyd <swboyd@chromium.org>
-Subject: [PATCH v7 9/9] drm/bridge: it6505: Register Type C mode switches
-Date:   Thu,  5 Jan 2023 21:24:57 +0800
-Message-Id: <20230105132457.4125372-10-treapking@chromium.org>
-X-Mailer: git-send-email 2.39.0.314.g84b9a713c41-goog
-In-Reply-To: <20230105132457.4125372-1-treapking@chromium.org>
-References: <20230105132457.4125372-1-treapking@chromium.org>
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PXulY+pWIwlGwQqIKlBOHZ+2vlznv2jfiN7s1zx/Vv8=;
+        b=SpiQ8ndijN3UeMgucxIDsCKc3JTiFnPgCjL4F3NPbCaokO2vquJldIRlYMN/zEFqlH
+         w0WNTdx7YVsPNiix0fn1y14NIU/O/5pt3ApW0SlCtgrt7meg16q1aF3tB2Qo7D9BGYCb
+         8nNaIBif8B50oByIj5lXVOsIWiNUxmbmcvFhl/1jqyVWnm2BlwqmH3c4P9BSxAWyv4DD
+         0+xB+cb/t4piJMLDzrQrjdQTkTlncu+XDd/2tuUU7ZWKGQNIGrfdinAuQMlLFP+D/OxY
+         AL9ZLLQTgJQU2uysJ6LrxpKYw5E5LGGXzDADZMo6kWtrZikjvBdzp/nIqFd5HGWNnDCo
+         o9Ng==
+X-Gm-Message-State: AFqh2kpCfvG6zyNuVN3bYrWBzVK4mmXQA4gDzkL6cnPSSJT6oimSDDrC
+        dPQP4n38matUdzCvhd1H8R9pCA==
+X-Google-Smtp-Source: AMrXdXvKDfh3ytIEDjaGfHnzAT6/MTlbDY1OscWQxt7/6flisplLPoNtlNtZXOhEQZynB0rh28QKJQ==
+X-Received: by 2002:a2e:505b:0:b0:27f:baa4:e8 with SMTP id v27-20020a2e505b000000b0027fbaa400e8mr10412968ljd.28.1672930063881;
+        Thu, 05 Jan 2023 06:47:43 -0800 (PST)
+Received: from ?IPV6:2001:14ba:a085:4d00::8a5? (dzccz6yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a085:4d00::8a5])
+        by smtp.gmail.com with ESMTPSA id h20-20020a05651c125400b0027fb0ce035esm3688362ljh.67.2023.01.05.06.47.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Jan 2023 06:47:43 -0800 (PST)
+Message-ID: <ae9b9139-46fe-ecaa-1a23-5f0cde9d1256@linaro.org>
+Date:   Thu, 5 Jan 2023 16:47:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH v2 13/17] driver core: Use device's fwnode to check if it
+ is waiting for suppliers
+Content-Language: en-GB
+To:     Saravana Kannan <saravanak@google.com>,
+        Abel Vesa <abel.vesa@linaro.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        kernel-team@android.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-arm-msm@vger.kernel.org
+References: <20201121020232.908850-1-saravanak@google.com>
+ <20201121020232.908850-14-saravanak@google.com> <YrmXpcU1NTYW6T/n@linaro.org>
+ <CAGETcx8dwNcZFFzhhv=kMhpuQnyaEekrycpAmGusD-s+qfvA9g@mail.gmail.com>
+ <YrskVLshWeps+NXw@linaro.org>
+ <CAGETcx8F0wP+RA0KpjOJeZfc=DVG-MbM_=SkRHD4UhD2ReL7Kw@mail.gmail.com>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <CAGETcx8F0wP+RA0KpjOJeZfc=DVG-MbM_=SkRHD4UhD2ReL7Kw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -98,217 +95,246 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Register USB Type-C mode switches when the "mode-switch" property and
-relevant port are available in Device Tree. Configure the "lane_swap"
-state based on the entered alternate mode for a specific Type-C
-connector, which ends up updating the lane swap registers of the it6505
-chip.
+Hi,
 
-Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+On 28/06/2022 21:09, Saravana Kannan wrote:
+> On Tue, Jun 28, 2022 at 8:55 AM Abel Vesa <abel.vesa@linaro.org> wrote:
+>>
+>> On 22-06-27 15:30:25, Saravana Kannan wrote:
+>>> On Mon, Jun 27, 2022 at 4:42 AM Abel Vesa <abel.vesa@linaro.org> wrote:
+>>>>
+>>>> On 20-11-20 18:02:28, Saravana Kannan wrote:
+>>>>> To check if a device is still waiting for its supplier devices to be
+>>>>> added, we used to check if the devices is in a global
+>>>>> waiting_for_suppliers list. Since the global list will be deleted in
+>>>>> subsequent patches, this patch stops using this check.
+>>>>>
+>>>>> Instead, this patch uses a more device specific check. It checks if the
+>>>>> device's fwnode has any fwnode links that haven't been converted to
+>>>>> device links yet.
+>>>>>
+>>>>> Signed-off-by: Saravana Kannan <saravanak@google.com>
+>>>>> ---
+>>>>>   drivers/base/core.c | 18 ++++++++----------
+>>>>>   1 file changed, 8 insertions(+), 10 deletions(-)
+>>>>>
+>>>>> diff --git a/drivers/base/core.c b/drivers/base/core.c
+>>>>> index 395dece1c83a..1873cecb0cc4 100644
+>>>>> --- a/drivers/base/core.c
+>>>>> +++ b/drivers/base/core.c
+>>>>> @@ -51,6 +51,7 @@ static DEFINE_MUTEX(wfs_lock);
+>>>>>   static LIST_HEAD(deferred_sync);
+>>>>>   static unsigned int defer_sync_state_count = 1;
+>>>>>   static DEFINE_MUTEX(fwnode_link_lock);
+>>>>> +static bool fw_devlink_is_permissive(void);
+>>>>>
+>>>>>   /**
+>>>>>    * fwnode_link_add - Create a link between two fwnode_handles.
+>>>>> @@ -995,13 +996,13 @@ int device_links_check_suppliers(struct device *dev)
+>>>>>         * Device waiting for supplier to become available is not allowed to
+>>>>>         * probe.
+>>>>>         */
+>>>>> -     mutex_lock(&wfs_lock);
+>>>>> -     if (!list_empty(&dev->links.needs_suppliers) &&
+>>>>> -         dev->links.need_for_probe) {
+>>>>> -             mutex_unlock(&wfs_lock);
+>>>>> +     mutex_lock(&fwnode_link_lock);
+>>>>> +     if (dev->fwnode && !list_empty(&dev->fwnode->suppliers) &&
+>>>>> +         !fw_devlink_is_permissive()) {
+>>>>> +             mutex_unlock(&fwnode_link_lock);
+>>>>
+>>>> Hi Saravana,
+>>>>
+>>>> First of, sorry for going back to this.
+>>>
+>>> No worries at all. If there's an issue with fw_devlink, I want to have it fixed.
+>>>
+>>>> There is a scenario where this check will not work and probably should
+>>>> work. It goes like this:
+>>>>
+>>>> A clock controller is not allowed to probe because it uses a clock from a child device of a
+>>>> consumer, like so:
+>>>>
+>>>>          dispcc: clock-controller@af00000 {
+>>>>                  clocks = <&dsi0_phy 0>;
+>>>>          };
+>>>>
+>>>>          mdss: mdss@ae00000 {
+>>>>                  clocks = <&dispcc DISP_CC_MDSS_MDP_CLK>;
+>>>>
+>>>>                  dsi0_phy: dsi-phy@ae94400 {
+>>>>                          clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
+>>>>                  };
+>>>>          };
+>>>>
+>>>> This is a real scenario actually, but I stripped it down to the essentials.
+>>>
+>>> I'm well aware of this scenario and explicitly wrote code to address this :)
+>>>
+>>
+>> Actually, the problem seems to be when you have two dsi phys.
+>> Like so:
+>>
+>>           dispcc: clock-controller@af00000 {
+>>                   clocks = <&dsi0_phy 0>;
+>>                   clocks = <&dsi1_phy 0>;
+>>           };
+>>
+>>           mdss: mdss@ae00000 {
+>>                   clocks = <&dispcc DISP_CC_MDSS_MDP_CLK>;
+>>
+>>                   dsi0_phy: dsi-phy@ae94400 {
+>>                           clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
+>>                   };
+>>
+>>                   dsi1_phy: dsi-phy@ae64400 {
+>>                           clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
+>>                   };
+>>           };
+>>
+>> And from what I've seen happening so far is that the device_is_dependent
+>> check for the parent of the supplier (if it also a consumer) seems to return
+>> false on second pass of the same link due to the DL_FLAG_SYNC_STATE_ONLY
+>> being set this time around.
+>>
+>>> See this comment in fw_devlink_create_devlink()
+>>>
+>>>         /*
+>>>           * If we can't find the supplier device from its fwnode, it might be
+>>>           * due to a cyclic dependency between fwnodes. Some of these cycles can
+>>>           * be broken by applying logic. Check for these types of cycles and
+>>>           * break them so that devices in the cycle probe properly.
+>>>           *
+>>>           * If the supplier's parent is dependent on the consumer, then the
+>>>           * consumer and supplier have a cyclic dependency. Since fw_devlink
+>>>           * can't tell which of the inferred dependencies are incorrect, don't
+>>>           * enforce probe ordering between any of the devices in this cyclic
+>>>           * dependency. Do this by relaxing all the fw_devlink device links in
+>>>           * this cycle and by treating the fwnode link between the consumer and
+>>>           * the supplier as an invalid dependency.
+>>>           */
+>>>
+>>
+>> So when this thing you mentioned above is happening for the second dsi
+>> phy (order doesn't matter), since the dsi phy itself cannot be found,
+>> the device_is_dependent is run for the same link: dispcc -> mdss
+>> (supplier -> consumer), but again, since it has the
+>> DL_FLAG_SYNC_STATE_ONLY this time around, it will skip that specific
+>> link.
+> 
+> Ugh... I knew there was this gap, but didn't expect it to be a real world issue.
+> 
+> There are different ways of addressing this and they all fall
+> somewhere within a spectrum of:
+> "stop enforcing very specific edges of the dependency graph when you
+> find a cycles"
+> To
+> "just don't enforce any dependency for devices in a cycle and let the
+> drivers figure out when to -EPROBE_DEFER".
+> 
+> And each of those are of varying complexity. Ideally I'd prefer to
+> relax specific edges, but I need to balance it out with the code
+> complexity. Let me soak this for a few weeks to decide on what option
+> to take.
 
----
+I wanted to check if there is any progress on this topic? It appears 
+that few weeks turned into few months already and the issue is still 
+present. If not, can we please re-consider applying [1] while Saravana 
+is working on a better fix?
 
-Changes in v7:
-- Fixed style issues in it6505 driver
-- Removed the redundant sleep in it6505 driver
-- Removed DT property validation in it6505 driver
-- Rebased to drm-misc-next
-- Extracted common codes to another commit
+[1] 
+https://lore.kernel.org/all/20211125183622.597177-1-dmitry.baryshkov@linaro.org/
 
-Changes in v6:
-- Changed it6505_typec_mux_set callback function to accommodate with
-  the latest drm-misc patches
-- Changed the driver implementation to accommodate with the new binding
-- Squashed to a single patch
+> 
+> Thanks for the report.
+> 
+> -Saravana
+> 
+>>
+>>> Applying this comment to your example, dispcc is the "consumer",
+>>> dsi0_phy is the "supplier" and mdss is the "supplier's parent".
+>>>
+>>> And because we can't guarantee the order of addition of these top
+>>> level devices is why I also have this piece of recursive call inside
+>>> __fw_devlink_link_to_suppliers():
+>>>
+>>>                  /*
+>>>                   * If a device link was successfully created to a supplier, we
+>>>                   * now need to try and link the supplier to all its suppliers.
+>>>                   *
+>>>                   * This is needed to detect and delete false dependencies in
+>>>                   * fwnode links that haven't been converted to a device link
+>>>                   * yet. See comments in fw_devlink_create_devlink() for more
+>>>                   * details on the false dependency.
+>>>                   *
+>>>                   * Without deleting these false dependencies, some devices will
+>>>                   * never probe because they'll keep waiting for their false
+>>>                   * dependency fwnode links to be converted to device links.
+>>>                   */
+>>>                  sup_dev = get_dev_from_fwnode(sup);
+>>>                  __fw_devlink_link_to_suppliers(sup_dev, sup_dev->fwnode);
+>>>                  put_device(sup_dev);
+>>>
+>>> So when mdss gets added, we'll link it to dispcc and then check if
+>>> dispcc has any suppliers it needs to link to. And that's when the
+>>> logic will catch the cycle and fix it.
+>>>
+>>> Can you tell me why this wouldn't unblock the probing of dispcc? Are
+>>> you actually hitting this on a device? If so, can you please check why
+>>> this logic isn't sufficient to catch and undo the cycle?
+>>>
+>>
+>> This is happening on Qualcomm SDM845 with Linus's tree.
+>>
+>>> Thanks,
+>>> Saravana
+>>>
+>>>> So, the dsi0_phy will be "device_add'ed" (through of_platform_populate) by the mdss probe.
+>>>> The mdss will probe defer waiting for the DISP_CC_MDSS_MDP_CLK, while
+>>>> the dispcc will probe defer waiting for the dsi0_phy (supplier).
+>>>>
+>>>> Basically, this 'supplier availability check' does not work when a supplier might
+>>>> be populated by a consumer of the device that is currently trying to probe.
+>>>>
+>>>>
+>>>> Abel
+>>>>
+>>>>
+>>>>>                return -EPROBE_DEFER;
+>>>>>        }
+>>>>> -     mutex_unlock(&wfs_lock);
+>>>>> +     mutex_unlock(&fwnode_link_lock);
+>>>>>
+>>>>>        device_links_write_lock();
+>>>>>
+>>>>> @@ -1167,10 +1168,7 @@ static ssize_t waiting_for_supplier_show(struct device *dev,
+>>>>>        bool val;
+>>>>>
+>>>>>        device_lock(dev);
+>>>>> -     mutex_lock(&wfs_lock);
+>>>>> -     val = !list_empty(&dev->links.needs_suppliers)
+>>>>> -           && dev->links.need_for_probe;
+>>>>> -     mutex_unlock(&wfs_lock);
+>>>>> +     val = !list_empty(&dev->fwnode->suppliers);
+>>>>>        device_unlock(dev);
+>>>>>        return sysfs_emit(buf, "%u\n", val);
+>>>>>   }
+>>>>> @@ -2202,7 +2200,7 @@ static int device_add_attrs(struct device *dev)
+>>>>>                        goto err_remove_dev_groups;
+>>>>>        }
+>>>>>
+>>>>> -     if (fw_devlink_flags && !fw_devlink_is_permissive()) {
+>>>>> +     if (fw_devlink_flags && !fw_devlink_is_permissive() && dev->fwnode) {
+>>>>>                error = device_create_file(dev, &dev_attr_waiting_for_supplier);
+>>>>>                if (error)
+>>>>>                        goto err_remove_dev_online;
+>>>>> --
+>>>>> 2.29.2.454.gaff20da3a2-goog
+>>>>>
+>>>>>
+>>>
 
- drivers/gpu/drm/bridge/Kconfig      |   1 +
- drivers/gpu/drm/bridge/ite-it6505.c | 119 +++++++++++++++++++++++++++-
- 2 files changed, 116 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bridge/Kconfig
-index 737578dd57ed..33803f581562 100644
---- a/drivers/gpu/drm/bridge/Kconfig
-+++ b/drivers/gpu/drm/bridge/Kconfig
-@@ -87,6 +87,7 @@ config DRM_FSL_LDB
- config DRM_ITE_IT6505
- 	tristate "ITE IT6505 DisplayPort bridge"
- 	depends on OF
-+	depends on TYPEC || TYPEC=n
- 	select DRM_DISPLAY_DP_HELPER
- 	select DRM_DISPLAY_HDCP_HELPER
- 	select DRM_DISPLAY_HELPER
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index 9cda2df21b88..d9be09e889e2 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -17,6 +17,8 @@
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- #include <linux/types.h>
-+#include <linux/usb/typec_dp.h>
-+#include <linux/usb/typec_mux.h>
- #include <linux/wait.h>
- 
- #include <crypto/hash.h>
-@@ -28,6 +30,7 @@
- #include <drm/drm_crtc.h>
- #include <drm/drm_crtc_helper.h>
- #include <drm/drm_edid.h>
-+#include <drm/drm_of.h>
- #include <drm/drm_print.h>
- #include <drm/drm_probe_helper.h>
- 
-@@ -455,6 +458,7 @@ struct it6505 {
- 	struct delayed_work delayed_audio;
- 	struct it6505_audio_data audio;
- 	struct dentry *debugfs;
-+	struct drm_dp_typec_switch_desc switch_desc;
- 
- 	/* it6505 driver hold option */
- 	bool enable_drv_hold;
-@@ -3346,12 +3350,105 @@ static void it6505_shutdown(struct i2c_client *client)
- 		it6505_lane_off(it6505);
- }
- 
-+static void it6505_typec_ports_update(struct it6505 *it6505)
-+{
-+	struct drm_dp_typec_switch_desc switch_desc = it6505->switch_desc;
-+
-+	/* Check if both ports available and do nothing to retain the current one */
-+	if (switch_desc.typec_ports[0].dp_connected && switch_desc.typec_ports[1].dp_connected)
-+		return;
-+
-+	if (switch_desc.typec_ports[0].dp_connected)
-+		it6505->lane_swap = false;
-+	else if (switch_desc.typec_ports[1].dp_connected)
-+		it6505->lane_swap = true;
-+}
-+
-+static int it6505_typec_mux_set(struct typec_mux_dev *mux,
-+				struct typec_mux_state *state)
-+{
-+	struct drm_dp_typec_port_data *port_data = typec_mux_get_drvdata(mux);
-+	struct it6505 *it6505 = (struct it6505 *) port_data->data;
-+	struct device *dev = &it6505->client->dev;
-+	struct drm_dp_typec_switch_desc switch_desc = it6505->switch_desc;
-+	bool old_dp_connected, new_dp_connected;
-+
-+	if (switch_desc.num_typec_switches == 1)
-+		return 0;
-+
-+	mutex_lock(&it6505->extcon_lock);
-+
-+	old_dp_connected = switch_desc.typec_ports[0].dp_connected ||
-+			   switch_desc.typec_ports[1].dp_connected;
-+
-+	port_data->dp_connected = state->alt &&
-+				  state->alt->svid == USB_TYPEC_DP_SID &&
-+				  state->alt->mode == USB_TYPEC_DP_MODE;
-+
-+	dev_dbg(dev, "mux_set dp_connected: c0=%d, c1=%d\n",
-+		switch_desc.typec_ports[0].dp_connected, switch_desc.typec_ports[1].dp_connected);
-+
-+	new_dp_connected = switch_desc.typec_ports[0].dp_connected ||
-+			   switch_desc.typec_ports[1].dp_connected;
-+
-+	if (it6505->enable_drv_hold) {
-+		dev_dbg(dev, "enable driver hold\n");
-+		goto unlock;
-+	}
-+
-+	it6505_typec_ports_update(it6505);
-+
-+	if (!old_dp_connected && new_dp_connected) {
-+		int ret = pm_runtime_get_sync(dev);
-+
-+		/*
-+		 * pm_runtime_force_suspend() disables runtime PM when the
-+		 * system enters suspend state. But on system resume, mux_set
-+		 * can be triggered before pm_runtime_force_resume() re-enables
-+		 * runtime PM. This makes the bridge stay powered off if the
-+		 * downstream display is connected when the system is suspended.
-+		 * Handling the error here to make sure the bridge is powered
-+		 * on, and leave the PM runtime usage count incremented so
-+		 * the future runtime PM calls is balanced.
-+		 */
-+		if (ret < 0)
-+			it6505_poweron(it6505);
-+
-+		complete_all(&it6505->extcon_completion);
-+	}
-+
-+	if (old_dp_connected && !new_dp_connected) {
-+		reinit_completion(&it6505->extcon_completion);
-+		pm_runtime_put_sync(dev);
-+		if (it6505->bridge.dev)
-+			drm_helper_hpd_irq_event(it6505->bridge.dev);
-+		memset(it6505->dpcd, 0, sizeof(it6505->dpcd));
-+	}
-+
-+unlock:
-+	mutex_unlock(&it6505->extcon_lock);
-+	return 0;
-+}
-+
-+static void it6505_unregister_typec_switches(struct it6505 *it6505)
-+{
-+	drm_dp_unregister_typec_switches(&it6505->switch_desc);
-+}
-+
-+static int it6505_register_typec_switches(struct device *dev, struct it6505 *it6505)
-+{
-+	struct device_node *port = of_graph_get_port_by_id(dev->of_node, 1);
-+
-+	return drm_dp_register_typec_switches(dev, port, &it6505->switch_desc,
-+					      it6505, it6505_typec_mux_set);
-+}
-+
- static int it6505_i2c_probe(struct i2c_client *client)
- {
- 	struct it6505 *it6505;
- 	struct device *dev = &client->dev;
- 	struct extcon_dev *extcon;
--	int err, intp_irq;
-+	int err, intp_irq, ret;
- 
- 	it6505 = devm_kzalloc(&client->dev, sizeof(*it6505), GFP_KERNEL);
- 	if (!it6505)
-@@ -3371,11 +3468,24 @@ static int it6505_i2c_probe(struct i2c_client *client)
- 	if (PTR_ERR(extcon) == -EPROBE_DEFER)
- 		return -EPROBE_DEFER;
- 	if (IS_ERR(extcon)) {
--		dev_err(dev, "can not get extcon device!");
--		return PTR_ERR(extcon);
-+		if (PTR_ERR(extcon) != -ENODEV)
-+			dev_warn(dev, "Cannot get extcon device: %ld\n",
-+				 PTR_ERR(extcon));
-+		it6505->extcon = NULL;
-+	} else {
-+		it6505->extcon = extcon;
- 	}
- 
--	it6505->extcon = extcon;
-+	ret = it6505_register_typec_switches(dev, it6505);
-+	if (ret) {
-+		if (ret != -ENODEV)
-+			dev_warn(dev, "Didn't register Type-C switches, err: %d\n",
-+				 ret);
-+		if (!it6505->extcon) {
-+			dev_err(dev, "Both extcon and typec-switch are not registered.\n");
-+			return -EINVAL;
-+		}
-+	}
- 
- 	it6505->regmap = devm_regmap_init_i2c(client, &it6505_regmap_config);
- 	if (IS_ERR(it6505->regmap)) {
-@@ -3447,6 +3557,7 @@ static void it6505_i2c_remove(struct i2c_client *client)
- 	it6505_debugfs_remove(it6505);
- 	it6505_poweroff(it6505);
- 	it6505_remove_edid(it6505);
-+	it6505_unregister_typec_switches(it6505);
- }
- 
- static const struct i2c_device_id it6505_id[] = {
 -- 
-2.39.0.314.g84b9a713c41-goog
+With best wishes
+Dmitry
 
