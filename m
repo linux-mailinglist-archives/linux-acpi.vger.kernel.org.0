@@ -2,130 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6F0765F188
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Jan 2023 17:56:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3305465F583
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Jan 2023 22:09:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234187AbjAEQ4r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 Jan 2023 11:56:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43932 "EHLO
+        id S231888AbjAEVJq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 Jan 2023 16:09:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233450AbjAEQ4q (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 Jan 2023 11:56:46 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 359763727D;
-        Thu,  5 Jan 2023 08:56:45 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DF6F4B81B50;
-        Thu,  5 Jan 2023 16:56:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F96DC433D2;
-        Thu,  5 Jan 2023 16:56:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672937802;
-        bh=7tc21u/mJwi7G11AK6MRIZWAXhvEEkRIab0Zxf68F+Q=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=E32D3tUUsJHdLsR9EkFw7rjw8/bVapN/RF8R90nNXlBSTU/l5w+3tX22bOHRFW3Pw
-         zzJQJ9eErtHplJx+MXkQ5XYCZ04zMAjm5natweJALS3U2WAZ7Q8oCM7mZwS0DWJNT1
-         LA8MiEBzWnNRMzhPNqYLqm7m4TKVT+bGzsFsgElu4eC6PhmZnQaSAuoPnJLuOIuGgT
-         9/iA0G5GXhcKA+I+sCWF7PXsrahqUau82/EhNTD8FKRSmZWqlZfcFyxxEwcITRYK05
-         tkqLX40vCDap7BFZIkGc38MxMdbqRBcg0hHn/602LQekTgs3HgB5+TVVxghiLOfAlA
-         +jfgqWXJg1//w==
-Date:   Thu, 5 Jan 2023 10:56:39 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     ira.weiny@intel.com
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Lukas Wunner <lukas@wunner.de>, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        Alison Schofield <alison.schofield@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org
-Subject: Re: [PATCH V4 1/9] PCI/CXL: Export native CXL error reporting control
-Message-ID: <20230105165639.GA1150637@bhelgaas>
+        with ESMTP id S230402AbjAEVJp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 Jan 2023 16:09:45 -0500
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E5C7392C2;
+        Thu,  5 Jan 2023 13:09:44 -0800 (PST)
+Received: by mail-ej1-f54.google.com with SMTP id ud5so93007423ejc.4;
+        Thu, 05 Jan 2023 13:09:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pJeXqQs7pj8w9JbxIzmfQWQdjE54Pr1mrK4c4Lz7kh4=;
+        b=oHuELAuEWsRajUGegTNXAIdECVziRvWE8z+Mnnu6U6AjmIHn2oP/Tlntvfk7Vy59Iv
+         t091tESDhegLNSFFp0cTJL9h+VB2btlPM3tZZCAE1pq1rwJi7reGJNJ8ozNqaqu2Fq6W
+         KPYk/ytNKXk4LGi0F4hC4Q5LWD96uk4vHmCIvFBpWaPq8KUuNrBZN/isnkWOSn6PRcEU
+         fuoPYk1RItyy09L+M5uL3UpAoAaiVUiJoQJe1T3HWNvD0w1JH0REnqGyZJtluY/Jsw3e
+         83yOVsXUtSwaK4BJgdv6LwEDOgx6B62xxTHDj3AIZuDuVl69iMNKoZZ4T27JmlMebm01
+         Pujw==
+X-Gm-Message-State: AFqh2kqt0EF/4qag7kr8cEpllgj6dKDYQ455UkXrlBGgQp8HbOmUqQ1S
+        Hnl6F4vzBrPIvNH9Nx87erVG4n25oQmxPEtekXI=
+X-Google-Smtp-Source: AMrXdXs7pAC6LKgr3R8qrSr8LCt2e7fTAuaQw6P2jZE9QBvRm2HWoqyNT0l2zq1RemgFK2jTL97QKE6aq2xjVEbmONI=
+X-Received: by 2002:a17:906:50c:b0:836:9bcf:1702 with SMTP id
+ j12-20020a170906050c00b008369bcf1702mr6724440eja.509.1672952982522; Thu, 05
+ Jan 2023 13:09:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221212070627.1372402-2-ira.weiny@intel.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 5 Jan 2023 22:09:31 +0100
+Message-ID: <CAJZ5v0iXQzV-rbAAAOSALTCiT1nX6e-F3BarTSG7kZ32z9HL2g@mail.gmail.com>
+Subject: [GIT PULL] Thermal control fix for v6.2-rc3
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Dec 11, 2022 at 11:06:19PM -0800, ira.weiny@intel.com wrote:
-> From: Ira Weiny <ira.weiny@intel.com>
-> 
-> CXL _OSC Error Reporting Control is used by the OS to determine if
-> Firmware has control of various CXL error reporting capabilities
-> including the event logs.
-> 
-> Expose the result of negotiating CXL Error Reporting Control in struct
-> pci_host_bridge for consumption by the CXL drivers.
-> 
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Lukas Wunner <lukas@wunner.de>
-> Cc: linux-pci@vger.kernel.org
-> Cc: linux-acpi@vger.kernel.org
-> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Hi Linus,
 
-FWIW, for probe.c and pci.h:
+Please pull from the tag
 
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ thermal-6.2-rc3
 
-> ---
-> Changes from V3:
-> 	New patch split out
-> ---
->  drivers/acpi/pci_root.c | 3 +++
->  drivers/pci/probe.c     | 1 +
->  include/linux/pci.h     | 1 +
->  3 files changed, 5 insertions(+)
-> 
-> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> index b3c202d2a433..84030804a763 100644
-> --- a/drivers/acpi/pci_root.c
-> +++ b/drivers/acpi/pci_root.c
-> @@ -1047,6 +1047,9 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
->  	if (!(root->osc_control_set & OSC_PCI_EXPRESS_DPC_CONTROL))
->  		host_bridge->native_dpc = 0;
->  
-> +	if (!(root->osc_ext_control_set & OSC_CXL_ERROR_REPORTING_CONTROL))
-> +		host_bridge->native_cxl_error = 0;
-> +
->  	/*
->  	 * Evaluate the "PCI Boot Configuration" _DSM Function.  If it
->  	 * exists and returns 0, we must preserve any PCI resource
-> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> index 2f4e88a44e8b..34c9fd6840c4 100644
-> --- a/drivers/pci/probe.c
-> +++ b/drivers/pci/probe.c
-> @@ -596,6 +596,7 @@ static void pci_init_host_bridge(struct pci_host_bridge *bridge)
->  	bridge->native_ltr = 1;
->  	bridge->native_dpc = 1;
->  	bridge->domain_nr = PCI_DOMAIN_NR_NOT_SET;
-> +	bridge->native_cxl_error = 1;
->  
->  	device_initialize(&bridge->dev);
->  }
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index 1f81807492ef..08c3ccd2617b 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -577,6 +577,7 @@ struct pci_host_bridge {
->  	unsigned int	native_pme:1;		/* OS may use PCIe PME */
->  	unsigned int	native_ltr:1;		/* OS may use PCIe LTR */
->  	unsigned int	native_dpc:1;		/* OS may use PCIe DPC */
-> +	unsigned int	native_cxl_error:1;	/* OS may use CXL RAS/Events */
->  	unsigned int	preserve_config:1;	/* Preserve FW resource setup */
->  	unsigned int	size_windows:1;		/* Enable root bus sizing */
->  	unsigned int	msi_domain:1;		/* Bridge wants MSI domain */
-> -- 
-> 2.37.2
-> 
+with top-most commit b878d3ba9bb41cddb73ba4b56e5552f0a638daca
+
+ thermal: int340x: Add missing attribute for data rate base
+
+on top of commit 1b929c02afd37871d5afb9d498426f83432e71c2
+
+ Linux 6.2-rc1
+
+to receive a thermal control fix for 6.2-rc3.
+
+This adds a missing sysfs attribute to the int340x thermal control
+driver (Srinivas Pandruvada).
+
+Thanks!
+
+
+---------------
+
+Srinivas Pandruvada (1):
+      thermal: int340x: Add missing attribute for data rate base
+
+---------------
+
+ drivers/thermal/intel/int340x_thermal/processor_thermal_rfim.c | 4 ++++
+ 1 file changed, 4 insertions(+)
