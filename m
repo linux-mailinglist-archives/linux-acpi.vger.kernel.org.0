@@ -2,123 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCCFE660128
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Jan 2023 14:25:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16E94660A6F
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Jan 2023 00:54:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233945AbjAFNZI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Jan 2023 08:25:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59186 "EHLO
+        id S230285AbjAFXyw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Jan 2023 18:54:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233371AbjAFNZH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Jan 2023 08:25:07 -0500
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B3E076834
-        for <linux-acpi@vger.kernel.org>; Fri,  6 Jan 2023 05:25:05 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id o15so1035167wmr.4
-        for <linux-acpi@vger.kernel.org>; Fri, 06 Jan 2023 05:25:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aEJY9SspoKTdZNWPwR91nPyxh8XhVna7p82Tp53xTkM=;
-        b=FwHqLtth3iznDY87TFgqK4Zn/1OcPQR4+7tsaECyjX5gTy7VJeXCBa2UKhYwDE2igy
-         etxWyPKfhNpF/NL4DyQXYI52QHoCtXOgZqLyVqiOSFeBxxbDKNsuvPm2D1Tkf4KbBJpl
-         Pj1gyqVLqICtyGLYOiBFN4gxnCs1RpyjxcQzGe0OHlgDthlcCrso5YZBWsomjQ97z1z4
-         bISVczJ2qYo08Vh+Fb52XNzwdxivBRWh3cCaQqVrkaMEPtfxoBtNGB+vliHxtQJdLlIg
-         ta8tmqLJCCIusrzZJm1+rcosVa90dXeG4oNe64z4cT1SFqyCg5/GuQIf7K8ihFhyrZQm
-         t04g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aEJY9SspoKTdZNWPwR91nPyxh8XhVna7p82Tp53xTkM=;
-        b=MCAZmvg9OGFzQb3rmpjwpFknbJAhnHoawNvPbiebrsGqJBxw18EK2QixfR9B18/l7r
-         ivSH94Kt7Mbs3xH5ulxRKwQUmCKwg3RdO8FQuUyV3FBDv9hYuCyEnAUDcjyhytt57BrT
-         lcPZxuZL4CLgtUAp8M+2xtYnM+yQTdhKbrXyawJUvmYW+g2gzIni34dpKMh9deQKxxw3
-         mKBy5fhpX76KtfdxK5pK298hAycyhJnGU3qCwjpQvCNT7pZSWQzLDqtqOWC3V3ODoXci
-         ZD98AP/uVuWaPA4UV3nJ5zXsY7lc4GskRZdvb1C6ewP86eme4c+uTtEOdqp4BYIhRT4a
-         sVrg==
-X-Gm-Message-State: AFqh2kqpX27ejqOfE175Gj7DrJnw6+CC5R5g1l7R8aLV7M52YGVUyCzZ
-        C7KZU4TrF9OG9Xdr3/tFa9peFw==
-X-Google-Smtp-Source: AMrXdXt/n4jIfSt4F2r2JsJZVN39pMvLBWt5DXH1nuCZ9AUQMH3gVY4D9x7i9DeGKU1+3pcI6Cpc/Q==
-X-Received: by 2002:a7b:ca4f:0:b0:3d3:56ce:5673 with SMTP id m15-20020a7bca4f000000b003d356ce5673mr41656067wml.6.1673011503623;
-        Fri, 06 Jan 2023 05:25:03 -0800 (PST)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id f11-20020a05600c4e8b00b003d04e4ed873sm7040282wmq.22.2023.01.06.05.25.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Jan 2023 05:25:03 -0800 (PST)
-Message-ID: <9feeb96d-f5d6-d903-91bc-4fa54d0e0744@linaro.org>
-Date:   Fri, 6 Jan 2023 14:25:02 +0100
+        with ESMTP id S229547AbjAFXyu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Jan 2023 18:54:50 -0500
+X-Greylist: delayed 86 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 06 Jan 2023 15:54:50 PST
+Received: from forwardcorp1b.mail.yandex.net (forwardcorp1b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:df01])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5811572D22
+        for <linux-acpi@vger.kernel.org>; Fri,  6 Jan 2023 15:54:49 -0800 (PST)
+Received: from myt5-8800bd68420f.qloud-c.yandex.net (myt5-8800bd68420f.qloud-c.yandex.net [IPv6:2a02:6b8:c12:4615:0:640:8800:bd68])
+        by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 006F4603D8;
+        Sat,  7 Jan 2023 02:53:21 +0300 (MSK)
+Received: from d-tatianin-nix.yandex-team.ru (unknown [2a02:6b8:b081:a411::1:0])
+        by myt5-8800bd68420f.qloud-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id GrjGHk1QfmI1-jOsvmmwv;
+        Sat, 07 Jan 2023 02:53:20 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru; s=default;
+        t=1673049200; bh=/XBs1WOG92WdqAPsxP3UvFcRV9WrH7qoeiWMRR4XqwU=;
+        h=Message-Id:Date:Cc:Subject:To:From;
+        b=D9peeyCopzp39Z4vZ8aLrE1BZhLXdnat20tJuI7JEUnNvQ6qEAETcZAEPluWH0pjz
+         4rk1xvKhcfya3QoG50pRULVgsT2o1Rm6cWEHK0blHTA0kbnt0XJamnojRCQNS93N6u
+         ZAt1EgzVbbh4CaRW0ygNxaErqhGNnfaU+WDMBUuY=
+Authentication-Results: myt5-8800bd68420f.qloud-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+From:   Daniil Tatianin <d-tatianin@yandex-team.ru>
+To:     Robert Moore <robert.moore@intel.com>
+Cc:     Daniil Tatianin <d-tatianin@yandex-team.ru>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        devel@acpica.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v0] ACPICA: nsrepair: handle cases without a return value correctly
+Date:   Sat,  7 Jan 2023 02:53:08 +0300
+Message-Id: <20230106235308.99999-1-d-tatianin@yandex-team.ru>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v3 0/3] Thermal ACPI APIs for generic trip points
-Content-Language: en-US
-To:     "Zhang, Rui" <rui.zhang@intel.com>,
-        "srinivas.pandruvada@linux.intel.com" 
-        <srinivas.pandruvada@linux.intel.com>,
-        "rafael@kernel.org" <rafael@kernel.org>
-Cc:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-References: <20230104222127.2364396-1-daniel.lezcano@kernel.org>
- <cef493c6d918565d1b8c16aedadf5a19edd48b48.camel@intel.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <cef493c6d918565d1b8c16aedadf5a19edd48b48.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 06/01/2023 09:25, Zhang, Rui wrote:
-> Hi,  Daniel,
-> 
-> On Wed, 2023-01-04 at 23:21 +0100, Daniel Lezcano wrote:
->> Recently sent as a RFC, the thermal ACPI for generic trip points is a
->> set of
->> functions to fill the generic trip points structure which will become
->> the
->> standard structure for the thermal framework and its users.
->>
->> Different Intel drivers and the ACPI thermal driver are using the
->> ACPI tables to
->> get the thermal zone information. As those are getting the same
->> information,
->> providing this set of ACPI function with the generic trip points will
->> consolidate the code.
-> 
-> My understanding is that the ACPI thermal driver
-> (drivers/acpi/thermal.c) should be one of the top users of these APIs.
+Previously acpi_ns_simple_repair() would crash if expected_btypes
+contained any combination of ACPI_RTYPE_NONE with a different type,
+e.g | ACPI_RTYPE_INTEGER because of slightly incorrect logic in the
+!return_object branch, which wouldn't return AE_AML_NO_RETURN_VALUE
+for such cases.
 
-Yes, correct.
+Found by Linux Verification Center (linuxtesting.org) with the SVACE
+static analysis tool.
 
-> Is there any specific reason that it is not included in this patch
-> series? or is it just that you don't have ACPI thermal driver running
-> on your test platform?
+Link: https://github.com/acpica/acpica/pull/811
+Fixes: 61db45ca2163 ("ACPICA: Restore code that repairs NULL package elements in return values.")
+Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+---
+ drivers/acpi/acpica/nsrepair.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-The generic trip point handling in the acpi thermal driver is another 
-story. Some code reorg and cleanup should be done before. I have a 
-series for that but I need to test it more. That is the reason why it 
-will be submitted after this series is reviewed, so the changes will be 
-focused on the acpi thermal driver only.
-
-I have a laptop with acpitz but only the critical trip temp.
-
-
+diff --git a/drivers/acpi/acpica/nsrepair.c b/drivers/acpi/acpica/nsrepair.c
+index 367fcd201f96..ec512e06a48e 100644
+--- a/drivers/acpi/acpica/nsrepair.c
++++ b/drivers/acpi/acpica/nsrepair.c
+@@ -181,8 +181,9 @@ acpi_ns_simple_repair(struct acpi_evaluate_info *info,
+ 	 * Try to fix if there was no return object. Warning if failed to fix.
+ 	 */
+ 	if (!return_object) {
+-		if (expected_btypes && (!(expected_btypes & ACPI_RTYPE_NONE))) {
+-			if (package_index != ACPI_NOT_PACKAGE_ELEMENT) {
++		if (expected_btypes) {
++			if (!(expected_btypes & ACPI_RTYPE_NONE) &&
++			    package_index != ACPI_NOT_PACKAGE_ELEMENT) {
+ 				ACPI_WARN_PREDEFINED((AE_INFO,
+ 						      info->full_pathname,
+ 						      ACPI_WARN_ALWAYS,
+@@ -196,14 +197,15 @@ acpi_ns_simple_repair(struct acpi_evaluate_info *info,
+ 				if (ACPI_SUCCESS(status)) {
+ 					return (AE_OK);	/* Repair was successful */
+ 				}
+-			} else {
++			}
++
++			if (expected_btypes != ACPI_RTYPE_NONE) {
+ 				ACPI_WARN_PREDEFINED((AE_INFO,
+ 						      info->full_pathname,
+ 						      ACPI_WARN_ALWAYS,
+ 						      "Missing expected return value"));
++				return (AE_AML_NO_RETURN_VALUE);
+ 			}
+-
+-			return (AE_AML_NO_RETURN_VALUE);
+ 		}
+ 	}
+ 
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+2.25.1
 
