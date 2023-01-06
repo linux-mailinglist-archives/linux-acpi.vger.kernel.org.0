@@ -2,234 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85AFA66007D
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Jan 2023 13:48:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DAAC660114
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Jan 2023 14:19:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232094AbjAFMsZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Jan 2023 07:48:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38714 "EHLO
+        id S234063AbjAFNTT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Jan 2023 08:19:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229908AbjAFMsZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Jan 2023 07:48:25 -0500
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2642A714A1
-        for <linux-acpi@vger.kernel.org>; Fri,  6 Jan 2023 04:48:24 -0800 (PST)
-Received: by mail-wm1-x32f.google.com with SMTP id bg13-20020a05600c3c8d00b003d9712b29d2so3461472wmb.2
-        for <linux-acpi@vger.kernel.org>; Fri, 06 Jan 2023 04:48:24 -0800 (PST)
+        with ESMTP id S234002AbjAFNTN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Jan 2023 08:19:13 -0500
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 676E66CFDD
+        for <linux-acpi@vger.kernel.org>; Fri,  6 Jan 2023 05:19:12 -0800 (PST)
+Received: by mail-wr1-x436.google.com with SMTP id bs20so1251952wrb.3
+        for <linux-acpi@vger.kernel.org>; Fri, 06 Jan 2023 05:19:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=8zVNUT3bgdnMkFHoj/GybUreH+dejeypvrE/0mlGO44=;
-        b=RLC4VF3LVFfa0bOsrwXfVnS6UTPE8TaIBoiP8TlbOSfaW4I0JqJ2Io23P0TSAHqCCu
-         DHE1TXTIS5AzTr2RGltgLFG+Aco9X3ZY1L7QnO+HaZeIwZ5VfcAE2mFlrCt3Sg9NHp5d
-         1QG1PW20BpMEqgjWeMknBPLUsuFxI7dKRWOpQ245bGXK5aV1qSD5MtscROyyT94iwqgs
-         TSsDipA04LOSx70GU34PifTCQxjWI3Do4TSTWu9mbleO5PmcBmbtAfGJsYNmY02VUHMK
-         tCSzEXzicW1n4FLhB0rilYbyjDAGnHn5lkWHxEo4HfLZmF6zgnIUZT+ymH5w6i9wpFgw
-         aHcQ==
+        bh=eJpplfB5GZvqmTDPEaVor2GQBiZtx6Fmx8M4N/qSZEA=;
+        b=L/vblB4a0M4F/C2rNy4x4Ddrm8AwkJlwA5QZf764OwGDyQaVaRdzvzqdh6re8HfEwH
+         zP2cbCGSidi730ZkGEGJLeojgoOQq7YFcXjioPvm/Wa6j+3y62wse/IcY7L7eq3Eua49
+         wJZCDlF6SGBQuHXx7rgd0i4d+00JZ7dNJfyaS5eD3DfG5KZxFdkrC3kDghNXENJ2rkxW
+         qDuAK1D/jV1xJrrXfwr4EjM2RxpyidD73N2s8B+XDtqkI67SOSIipArZsQA0DMfNaGoQ
+         MEmzRxI8oAgVHy5qim74XN/0hIJI5Fd++owsfjBeenurnxcw/R3Sf8/d21dUF2m1EXuD
+         3M5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8zVNUT3bgdnMkFHoj/GybUreH+dejeypvrE/0mlGO44=;
-        b=Y0y253sgT5EdhsgDzBP1gko6in99atq/uIaTCLJWZbb8IdLdv6zqrKIeNaI25urmHz
-         cK4gXjxT+5QfF9n7/0huQltRR6CBAXXwjERRGhkQAdyBWLdQHzjLn/HD81k6J6KmNKQE
-         9fIFhaV5w69ctmFdC/oQUed21qqpwdBsvjPg59dXszv01t7nRFYzwzd2s7DM5POavb/v
-         gOo0S9n4QZBzOcIVnDs9TpjXX0tQ8KyInIo6IzasM2wcuTVe8ES8CQXqRs1zbG9S00LD
-         rEM3q0VK6jw55MIBEW/b3hQYGHaYZBCj77Z2wGpQgaeoHnEvxwK0WKgzEJzmKQIcn9LJ
-         VgwQ==
-X-Gm-Message-State: AFqh2krV93JSYT4VE1HK2r/Wemfu5Y+C6Q6SoRdJFzcUENXWsq5r78Gp
-        Nlm+jqNVx+DXC/YY6UqtscnPng==
-X-Google-Smtp-Source: AMrXdXvTAo5ItVnUoTZAbTRPzwj3gQr3rM9LmIfwukZgRbRtovmTeFlA8otEKXpd826Eati8fuXXjQ==
-X-Received: by 2002:a05:600c:3d91:b0:3d9:103d:9078 with SMTP id bi17-20020a05600c3d9100b003d9103d9078mr38149211wmb.22.1673009302667;
-        Fri, 06 Jan 2023 04:48:22 -0800 (PST)
-Received: from [192.168.1.102] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id h10-20020a05600c2caa00b003cfd58409desm6235286wmc.13.2023.01.06.04.48.20
+        bh=eJpplfB5GZvqmTDPEaVor2GQBiZtx6Fmx8M4N/qSZEA=;
+        b=URQuagIdS7afQzY0C0DjKHlfJ/G1PXA2yd34kH/5r+jJKztgR4UrxCH4MzZj6ZffZU
+         0LRq6H7r5tjygxwfrj8Y4yTLqUpitMquHs+aXNuav3tR1kVKoS7ZCpWUgCZlpNk1VRfl
+         UxeSk21ByFRX5ZPwRHELQstIJs7HuFTUPSP7WXUg4gMdbH8TUYzsxkpZgJcO8bcIbG4o
+         6mo8Hg5tzgRQ28AEyWSrS6Xd7fHDr1NLlyxsewZMa3HzabL5ubMC6RNyDrw/Ay5n+C4B
+         ThoZQgQNrCvt90gn3AWpdDxkJTf5CY+9RBqIsvZQEARco/XO0pILhP7hV1WxODnS1b4e
+         tG8w==
+X-Gm-Message-State: AFqh2kpkRRkEvIfkU8IsdWLQNcFAKSdbkikWJ73xfjMepYRK98PND1y0
+        tP3FaSZzJCnYpG38HgxprkuEuQ==
+X-Google-Smtp-Source: AMrXdXsK9zd1f6w44VhV8Jc17GLbeev2R+BC9yDTntZebOuq7YzekZknrSuTiVGZs2ykWMNhSmYfjg==
+X-Received: by 2002:a5d:6981:0:b0:295:6a4f:4183 with SMTP id g1-20020a5d6981000000b002956a4f4183mr12629387wru.5.1673011150846;
+        Fri, 06 Jan 2023 05:19:10 -0800 (PST)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id e7-20020a056000120700b00241dd5de644sm1167074wrx.97.2023.01.06.05.19.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Jan 2023 04:48:21 -0800 (PST)
-Message-ID: <5ad7a6bc-0ffd-9d2d-ed80-62c3530cf2fa@linaro.org>
-Date:   Fri, 6 Jan 2023 13:48:19 +0100
+        Fri, 06 Jan 2023 05:19:09 -0800 (PST)
+Message-ID: <9d141edb-c72c-8889-112b-71ce5699dc35@linaro.org>
+Date:   Fri, 6 Jan 2023 14:19:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH v7 7/9] dt/bindings: drm/bridge: it6505: Add mode-switch
- support
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v3 2/3] thermal/drivers/intel: Use generic trip points for
+ intel_pch
 Content-Language: en-US
-To:     Pin-yen Lin <treapking@chromium.org>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>
-Cc:     =?UTF-8?Q?N=c3=adcolas_F_=2e_R_=2e_A_=2e_Prado?= 
-        <nfraprado@collabora.com>, Xin Ji <xji@analogixsemi.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        linux-kernel@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
-        linux-acpi@vger.kernel.org, Lyude Paul <lyude@redhat.com>,
-        dri-devel@lists.freedesktop.org, chrome-platform@lists.linux.dev,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Marek Vasut <marex@denx.de>, devicetree@vger.kernel.org,
-        Stephen Boyd <swboyd@chromium.org>
-References: <20230105132457.4125372-1-treapking@chromium.org>
- <20230105132457.4125372-8-treapking@chromium.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230105132457.4125372-8-treapking@chromium.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To:     "Zhang, Rui" <rui.zhang@intel.com>,
+        "srinivas.pandruvada@linux.intel.com" 
+        <srinivas.pandruvada@linux.intel.com>,
+        "rafael@kernel.org" <rafael@kernel.org>
+Cc:     "Brown, Len" <len.brown@intel.com>,
+        "rdunlap@infradead.org" <rdunlap@infradead.org>,
+        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "amitk@kernel.org" <amitk@kernel.org>,
+        "ricardo.neri-calderon@linux.intel.com" 
+        <ricardo.neri-calderon@linux.intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
+References: <20230104222127.2364396-1-daniel.lezcano@kernel.org>
+ <20230104222127.2364396-3-daniel.lezcano@kernel.org>
+ <ff0b001a0b7c7beb17e007219414a39ba6d953ef.camel@intel.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <ff0b001a0b7c7beb17e007219414a39ba6d953ef.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 05/01/2023 14:24, Pin-yen Lin wrote:
-> ITE IT6505 can be used in systems to switch the DP traffic between
-> two downstreams, which can be USB Type-C DisplayPort alternate mode
-> lane or regular DisplayPort output ports.
 
-Use subject prefixes matching the subsystem (which you can get for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching).
+Hi Rui,
 
+On 06/01/2023 09:32, Zhang, Rui wrote:
+> On Wed, 2023-01-04 at 23:21 +0100, Daniel Lezcano wrote:
+>> From: Daniel Lezcano <daniel.lezcano@linaro.org>
+>>
+>> The thermal framework gives the possibility to register the trip
+>> points with the thermal zone. When that is done, no get_trip_* ops
+>> are
+>> needed and they can be removed.
+>>
+>> Convert the ops content logic into generic trip points and register
+>> them with the thermal zone.
+>>
+>> In order to consolidate the code, use the ACPI thermal framework API
+>> to fill the generic trip point from the ACPI tables.
+>>
+>> It has been tested on a Intel i7-8650U - x280 with the INT3400, the
+>> PCH, ACPITZ, and x86_pkg_temp. No regression observed so far.
+>>
+>> Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
+>> ---
+>>      V3:
+>>        - The driver Kconfig option selects CONFIG_THERMAL_ACPI
+>> ---
+>>   drivers/thermal/intel/Kconfig             |  1 +
+>>   drivers/thermal/intel/intel_pch_thermal.c | 88 +++++--------------
+>> ----
+>>   2 files changed, 20 insertions(+), 69 deletions(-)
+>>
+>> diff --git a/drivers/thermal/intel/Kconfig
+>> b/drivers/thermal/intel/Kconfig
+>> index f0c845679250..738b88b290f4 100644
+>> --- a/drivers/thermal/intel/Kconfig
+>> +++ b/drivers/thermal/intel/Kconfig
+>> @@ -75,6 +75,7 @@ config INTEL_BXT_PMIC_THERMAL
+>>   config INTEL_PCH_THERMAL
+>>   	tristate "Intel PCH Thermal Reporting Driver"
+>>   	depends on X86 && PCI
+>> +	select THERMAL_ACPI
 > 
-> Update the binding to accommodate this usage by introducing a
-> data-lanes and a mode-switch property on endpoints.
+> THERMAL_ACPI depends on ACPI but the PCH thermal driver does not.
+> So we will run into "unmet dependencies" issue when CONFIG_ACPI is
+> cleared like below
 > 
-> Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+> WARNING: unmet direct dependencies detected for THERMAL_ACPI
+>    Depends on [n]: THERMAL [=y] && ACPI [=n]
+>    Selected by [m]:
+>    - INTEL_PCH_THERMAL [=m] && THERMAL [=y] && (X86 [=y] ||
+> X86_INTEL_QUARK [=n] || COMPILE_TEST [=n]) && X86 [=y] && PCI [=y]
 > 
-> ---
-> 
-> Changes in v7:
-> - Fixed issues reported by dt_binding_check.
-> - Updated the schema and the example dts for data-lanes.
-> - Changed to generic naming for the example dts node.
-> 
-> Changes in v6:
-> - Remove switches node and use endpoints and data-lanes property to
->   describe the connections.
-> 
->  .../bindings/display/bridge/ite,it6505.yaml   | 95 ++++++++++++++++---
->  1 file changed, 84 insertions(+), 11 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml b/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
-> index b16a9d9127dd..1ee7cd0d2035 100644
-> --- a/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
-> +++ b/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
-> @@ -77,20 +77,45 @@ properties:
->          unevaluatedProperties: false
->          description: Video port for DP output
->  
-> -        properties:
-> -          endpoint:
-> +        patternProperties:
-> +          "^endpoint@[01]$":
->              $ref: /schemas/graph.yaml#/$defs/endpoint-base
->              unevaluatedProperties: false
->  
->              properties:
-> +              reg:
-> +                maxItems: 1
-> +
-> +              remote-endpoint: true
-> +
->                data-lanes:
-> -                minItems: 1
-> -                uniqueItems: true
-> -                items:
-> -                  - enum: [ 0, 1 ]
-> -                  - const: 1
-> -                  - const: 2
-> -                  - const: 3
-> +                oneOf:
-> +                  - minItems: 1
 
-Drop minItems.
+Ah yes, indeed. Thanks for spotting this.
 
-> +                    maxItems: 1
+Given the code, I think we should do:
 
-Actually drop this as well and just use items with one item (enum).
+	select THERMAL_ACPI if ACPI
 
-> +                    items:
-> +                      enum: [0, 1, 2, 3]
-> +
-> +                  - items:
-> +                      - const: 0
-> +                      - const: 1
-> +
-> +                  - items:
-> +                      - const: 2
-> +                      - const: 3
-> +
-> +                  - items:
-> +                      - const: 0
-> +                      - const: 1
-> +                      - const: 2
-> +                      - const: 3
-> +
-> +              mode-switch:
-> +                type: boolean
-> +                description: Register this node as a Type-C mode switch or not.
-> +
-> +            required:
-> +              - reg
-> +              - remote-endpoint
->  
->      required:
->        - port@0
-> @@ -102,7 +127,6 @@ required:
->    - pwr18-supply
->    - interrupts
->    - reset-gpios
-> -  - extcon
->    - ports
->  
->  additionalProperties: false
-> @@ -139,8 +163,11 @@ examples:
->                  };
->  
->                  port@1 {
-> +                    #address-cells = <1>;
-> +                    #size-cells = <0>;
->                      reg = <1>;
-> -                    it6505_out: endpoint {
-> +                    it6505_out: endpoint@0 {
-> +                        reg = <0>;
->                          remote-endpoint = <&dp_in>;
->                          data-lanes = <0 1>;
->                      };
-> @@ -148,3 +175,49 @@ examples:
->              };
->          };
->      };
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    i2c3 {
+it is from my POV semantically correct.
 
-Just i2c
 
-Best regards,
-Krzysztof
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
