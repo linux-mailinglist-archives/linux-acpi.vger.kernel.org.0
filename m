@@ -2,105 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16E94660A6F
-	for <lists+linux-acpi@lfdr.de>; Sat,  7 Jan 2023 00:54:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A8A7660B3F
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Jan 2023 02:07:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230285AbjAFXyw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Jan 2023 18:54:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55804 "EHLO
+        id S236767AbjAGBHs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Jan 2023 20:07:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229547AbjAFXyu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Jan 2023 18:54:50 -0500
-X-Greylist: delayed 86 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 06 Jan 2023 15:54:50 PST
-Received: from forwardcorp1b.mail.yandex.net (forwardcorp1b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:df01])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5811572D22
-        for <linux-acpi@vger.kernel.org>; Fri,  6 Jan 2023 15:54:49 -0800 (PST)
-Received: from myt5-8800bd68420f.qloud-c.yandex.net (myt5-8800bd68420f.qloud-c.yandex.net [IPv6:2a02:6b8:c12:4615:0:640:8800:bd68])
-        by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 006F4603D8;
-        Sat,  7 Jan 2023 02:53:21 +0300 (MSK)
-Received: from d-tatianin-nix.yandex-team.ru (unknown [2a02:6b8:b081:a411::1:0])
-        by myt5-8800bd68420f.qloud-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id GrjGHk1QfmI1-jOsvmmwv;
-        Sat, 07 Jan 2023 02:53:20 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru; s=default;
-        t=1673049200; bh=/XBs1WOG92WdqAPsxP3UvFcRV9WrH7qoeiWMRR4XqwU=;
-        h=Message-Id:Date:Cc:Subject:To:From;
-        b=D9peeyCopzp39Z4vZ8aLrE1BZhLXdnat20tJuI7JEUnNvQ6qEAETcZAEPluWH0pjz
-         4rk1xvKhcfya3QoG50pRULVgsT2o1Rm6cWEHK0blHTA0kbnt0XJamnojRCQNS93N6u
-         ZAt1EgzVbbh4CaRW0ygNxaErqhGNnfaU+WDMBUuY=
-Authentication-Results: myt5-8800bd68420f.qloud-c.yandex.net; dkim=pass header.i=@yandex-team.ru
-From:   Daniil Tatianin <d-tatianin@yandex-team.ru>
-To:     Robert Moore <robert.moore@intel.com>
-Cc:     Daniil Tatianin <d-tatianin@yandex-team.ru>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        devel@acpica.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v0] ACPICA: nsrepair: handle cases without a return value correctly
-Date:   Sat,  7 Jan 2023 02:53:08 +0300
-Message-Id: <20230106235308.99999-1-d-tatianin@yandex-team.ru>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S230201AbjAGBHr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Jan 2023 20:07:47 -0500
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE11E551C6
+        for <linux-acpi@vger.kernel.org>; Fri,  6 Jan 2023 17:07:46 -0800 (PST)
+Received: by mail-oi1-x243.google.com with SMTP id r130so2487020oih.2
+        for <linux-acpi@vger.kernel.org>; Fri, 06 Jan 2023 17:07:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=C56Q+YV0i1VwzqpPgsaApjf/2tDIDNvnJyLhwVpmM08=;
+        b=nmsmQMZvdhIgS6ecZLly4Ad7eZ8sM5Lr0ptLXa5TCdPxGsa7ao28nDJNkuukCByZH5
+         mhNyXs3eW1Ca80UK9WA6ojsNf8M50V9R07isr7abNe1V9JqdVigD+67J0fGcu1QptQRp
+         1B/BO7V9i6dzuTLoD8jI1Fs6V209NfyDzVGpLrmDuJw1liwGo8aT/TZAKLBTUg8Ll9iz
+         gg2FQTYQ6e98fsMbLwjU+tM7Ds0SJEbX7s8JnLr/BLVi5aGbBF7Yg3AYMUAyiTUs5IQh
+         egtjsnjyfTCnSUwipndbp/Fkd2WnN21jsUcg6GK1jQ8Co47u+mV+i4kQWRsDdTRXxO4k
+         XntQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=C56Q+YV0i1VwzqpPgsaApjf/2tDIDNvnJyLhwVpmM08=;
+        b=UBsusnmiGdmV0ElW7i85+T1TM3uX0GJVG/x3GBWYrsoeY2wcOOtj3Hzk8/r1IFn63K
+         L83Rgw/V13dxQ2vIIYhgwBnmiMf59gCUzJEbf6s+hC8lt0eHtjAAusr5DSZ6mq7mkZiI
+         VmzzRh17inggk+fNgG7Wc1vX57lElsL2ThcRwr/JwO2h/7lCafx0H+L6NVE8jQiu7MQP
+         dpXtme54RonEjKleznSTLhkmnXxlu/lVeJcoXpSrkXHKhtMWb2Kg1VQcXxet7LDlqR19
+         W0c4fCSV6Dsjof1IrVw56yHLajoim0UU3Lt4g9sg1yVaraNjjizZwRVxDP0494Xr6ACE
+         ZQhg==
+X-Gm-Message-State: AFqh2kon8CDeDi+X364jOlcf4TeIhn7QNfEPiSSCg+LsVODix1oditEi
+        8ALNvVDsZbdToC/hPej4U4oISlJdi+FFfWojb7w=
+X-Google-Smtp-Source: AMrXdXsRh6PRYoKr0jXpM6mjlzta2om81nvqgw58fUKsI8WKdwiVR5llClso3UyL6VUxKExk0JKBlqTf4VATJIjbX6k=
+X-Received: by 2002:aca:1b0a:0:b0:354:7fcd:4e27 with SMTP id
+ b10-20020aca1b0a000000b003547fcd4e27mr2936955oib.239.1673053666059; Fri, 06
+ Jan 2023 17:07:46 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Received: by 2002:a05:6808:2387:0:0:0:0 with HTTP; Fri, 6 Jan 2023 17:07:45
+ -0800 (PST)
+Reply-To: jamesaissy13@gmail.com
+From:   James AISSY <samueltia200@gmail.com>
+Date:   Fri, 6 Jan 2023 17:07:45 -0800
+Message-ID: <CAOD2y7nQAbfT-V-Bx9JaeknDim5e7QQ31TiK3Wo8QUvq-CuJqg@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Previously acpi_ns_simple_repair() would crash if expected_btypes
-contained any combination of ACPI_RTYPE_NONE with a different type,
-e.g | ACPI_RTYPE_INTEGER because of slightly incorrect logic in the
-!return_object branch, which wouldn't return AE_AML_NO_RETURN_VALUE
-for such cases.
+Hello My Dear,
 
-Found by Linux Verification Center (linuxtesting.org) with the SVACE
-static analysis tool.
+I hope this message finds you in good Health.
 
-Link: https://github.com/acpica/acpica/pull/811
-Fixes: 61db45ca2163 ("ACPICA: Restore code that repairs NULL package elements in return values.")
-Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
----
- drivers/acpi/acpica/nsrepair.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+My name is Mr. James AISSY. I am looking for a partner who is willing to
+team up with me for potential investment opportunities. I shall provide the
+FUND for the investment, and upon your acknowledgment of receiving this
+Message I will therefore enlighten you with the Full Details of my
+investment proposal.
 
-diff --git a/drivers/acpi/acpica/nsrepair.c b/drivers/acpi/acpica/nsrepair.c
-index 367fcd201f96..ec512e06a48e 100644
---- a/drivers/acpi/acpica/nsrepair.c
-+++ b/drivers/acpi/acpica/nsrepair.c
-@@ -181,8 +181,9 @@ acpi_ns_simple_repair(struct acpi_evaluate_info *info,
- 	 * Try to fix if there was no return object. Warning if failed to fix.
- 	 */
- 	if (!return_object) {
--		if (expected_btypes && (!(expected_btypes & ACPI_RTYPE_NONE))) {
--			if (package_index != ACPI_NOT_PACKAGE_ELEMENT) {
-+		if (expected_btypes) {
-+			if (!(expected_btypes & ACPI_RTYPE_NONE) &&
-+			    package_index != ACPI_NOT_PACKAGE_ELEMENT) {
- 				ACPI_WARN_PREDEFINED((AE_INFO,
- 						      info->full_pathname,
- 						      ACPI_WARN_ALWAYS,
-@@ -196,14 +197,15 @@ acpi_ns_simple_repair(struct acpi_evaluate_info *info,
- 				if (ACPI_SUCCESS(status)) {
- 					return (AE_OK);	/* Repair was successful */
- 				}
--			} else {
-+			}
-+
-+			if (expected_btypes != ACPI_RTYPE_NONE) {
- 				ACPI_WARN_PREDEFINED((AE_INFO,
- 						      info->full_pathname,
- 						      ACPI_WARN_ALWAYS,
- 						      "Missing expected return value"));
-+				return (AE_AML_NO_RETURN_VALUE);
- 			}
--
--			return (AE_AML_NO_RETURN_VALUE);
- 		}
- 	}
- 
--- 
-2.25.1
+I'm awaiting your Response.
 
+My regards,
+Mr. James AISSY.
