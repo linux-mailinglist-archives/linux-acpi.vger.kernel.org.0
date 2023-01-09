@@ -2,148 +2,246 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19FFB662C3B
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jan 2023 18:07:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E75A0662F85
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jan 2023 19:51:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237228AbjAIRHm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Jan 2023 12:07:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56276 "EHLO
+        id S235914AbjAISvm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 Jan 2023 13:51:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237186AbjAIRG6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Jan 2023 12:06:58 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 45E4A17593;
-        Mon,  9 Jan 2023 09:06:09 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E36E91042;
-        Mon,  9 Jan 2023 09:06:50 -0800 (PST)
-Received: from FVFF77S0Q05N (unknown [10.57.37.246])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A321C3F587;
-        Mon,  9 Jan 2023 09:06:06 -0800 (PST)
-Date:   Mon, 9 Jan 2023 17:06:00 +0000
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
-        lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, mhiramat@kernel.org,
-        ndesaulniers@google.com, ojeda@kernel.org, peterz@infradead.org,
-        rafael.j.wysocki@intel.com, revest@chromium.org,
-        robert.moore@intel.com, rostedt@goodmis.org, will@kernel.org
-Subject: Re: [PATCH 1/8] Compiler attributes: GCC function alignment
- workarounds
-Message-ID: <Y7xJeHDcanUJoHt+@FVFF77S0Q05N>
-References: <20230109135828.879136-1-mark.rutland@arm.com>
- <20230109135828.879136-2-mark.rutland@arm.com>
- <CANiq72kgmFYEO_EB_NxAF=S7VOf45KM7W3uwxxvftVErwfWzjg@mail.gmail.com>
+        with ESMTP id S234055AbjAISvl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Jan 2023 13:51:41 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B877A1B0;
+        Mon,  9 Jan 2023 10:51:40 -0800 (PST)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 309DthXp024652;
+        Mon, 9 Jan 2023 18:51:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=ndqB61nAt6ZcnmufjO7EHToLNrxx+EvxMZ0X9ORWO2Y=;
+ b=OFOwtZZbAx4Mr6lVSGNioF/FNkgNaHzKd0yXwRzjYAZDEJx+XTFhJE4169In7OoevRbJ
+ pkHzld7AkiyvwwoZ8TaGvtzgfUHUrlblFc0Z6r656vEcIM+41glDyrOQdvs29UeIlsBt
+ /m4eNATImhwin/4X5hmqIyIyoaQis9JUNf1ywtzEGQa13fxZNskqV2a3mkziAKf5IR0y
+ DgBZgKFFSjKIfP7L3cXH7+3iPNNtBJyh5AChGmSKw4Mk6mu7005cMx5tPo6pxK5uCRNZ
+ Aol8NwlXDptlt3WKY42yPUKIb10T+o7msNRBlJMnKf8+fwQuHXGNfNF0W3+zIDJXU+Dz Jg== 
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3my0u13tms-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 09 Jan 2023 18:51:22 +0000
+Received: from nasanex01b.na.qualcomm.com (corens_vlan604_snip.qualcomm.com [10.53.140.1])
+        by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 309IpKxj001695
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 9 Jan 2023 18:51:20 GMT
+Received: from [10.134.67.48] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Mon, 9 Jan 2023
+ 10:51:19 -0800
+Message-ID: <f30261bc-7d4c-b074-4531-2b244afe0e59@quicinc.com>
+Date:   Mon, 9 Jan 2023 10:51:19 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72kgmFYEO_EB_NxAF=S7VOf45KM7W3uwxxvftVErwfWzjg@mail.gmail.com>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH v8 11/28] gunyah: rsc_mgr: Add VM lifecycle RPC
+To:     Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
+CC:     Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Murali Nalajala <quic_mnalajal@quicinc.com>,
+        Trilok Soni <quic_tsoni@quicinc.com>,
+        "Carl van Schaik" <quic_cvanscha@quicinc.com>,
+        Prakruthi Deepak Heragu <quic_pheragu@quicinc.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        "Dmitry Baryshkov" <dmitry.baryshkov@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-acpi@vger.kernel.org>
+References: <20221219225850.2397345-1-quic_eberman@quicinc.com>
+ <20221219225850.2397345-12-quic_eberman@quicinc.com>
+ <20230109071309.GA3480070@quicinc.com>
+Content-Language: en-US
+From:   Elliot Berman <quic_eberman@quicinc.com>
+In-Reply-To: <20230109071309.GA3480070@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: uD31rIDTTBS-TOarOMzEqnYpHZD-IZI-
+X-Proofpoint-ORIG-GUID: uD31rIDTTBS-TOarOMzEqnYpHZD-IZI-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2023-01-09_12,2023-01-09_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1011
+ adultscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0
+ priorityscore=1501 phishscore=0 mlxscore=0 spamscore=0 mlxlogscore=869
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301090133
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 09, 2023 at 03:43:16PM +0100, Miguel Ojeda wrote:
-> On Mon, Jan 9, 2023 at 2:58 PM Mark Rutland <mark.rutland@arm.com> wrote:
-> >
-> > As far as I can tell, GCC doesn't respect '-falign-functions=N':
-> >
-> > * When the __weak__ attribute is used
-> >
-> >   GCC seems to forget the alignment specified by '-falign-functions=N',
-> >   but will respect the '__aligned__(N)' function attribute. Thus, we can
-> >   work around this by explciitly setting the alignment for weak
 
-Whoops: s/explciitly/explicitly/ here too; I'll go re-proofread the series.
 
-> >   functions.
-> >
-> > * When the __cold__ attribute is used
-> >
-> >   GCC seems to forget the alignment specified by '-falign-functions=N',
-> >   and also doesn't seem to respect the '__aligned__(N)' function
-> >   attribute. The only way to work around this is to not use the __cold__
-> >   attibute.
-
-Whoops: s/attibute/attribute/
-
-> If you happen to have a reduced case, then it would be nice to link it
-> in the commit. A bug report to GCC would also be nice.
+On 1/8/2023 11:13 PM, Srivatsa Vaddagiri wrote:
+> * Elliot Berman <quic_eberman@quicinc.com> [2022-12-19 14:58:32]:
 > 
-> I gave it a very quick try in Compiler Explorer, but I couldn't
-> reproduce it, so I guess it depends on flags, non-trivial functions or
-> something else.
-
-Sorry, that is something I had intendeed to do but I hadn't extracted a
-reproducer yet. I'll try to come up with something that can be included in the
-commit message and reported to GCC folk (and double-check at the same time that
-there's not another hidden cause)
-
-With this series applied and this patch reverted, it's possible to see when
-building defconfig + CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B=y, where scanning
-/proc/kallsyms with:
-
-  $ grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] '
-
-... will show a bunch of cold functions (and their callees/callers), largely
-init/exit functions (so I'll double-check whether section handling as an
-effect), e.g.
-
-  ffffdf08be173b8c t snd_soc_exit
-  ffffdf08be173bc4 t apple_mca_driver_exit
-  ffffdf08be173be8 t failover_exit
-  ffffdf08be173c10 t inet_diag_exit
-  ffffdf08be173c60 t tcp_diag_exit
-  ffffdf08be173c84 t cubictcp_unregister
-  ffffdf08be173cac t af_unix_exit
-  ffffdf08be173cf4 t packet_exit
-  ffffdf08be173d3c t cleanup_sunrpc
-  ffffdf08be173d8c t exit_rpcsec_gss
-  ffffdf08be173dc4 t exit_p9
-  ffffdf08be173dec T p9_client_exit
-  ffffdf08be173e10 t p9_trans_fd_exit
-  ffffdf08be173e58 t p9_virtio_cleanup
-  ffffdf08be173e90 t exit_dns_resolver
-
-> > + * '-falign-functions=N', and require alignment to be specificed via a function
+>> +/* Call: CONSOLE_OPEN, CONSOLE_CLOSE, CONSOLE_FLUSH */
 > 
-> Nit: specificed -> specified
-
-Thanks, fixed
-
-> > +#if CONFIG_FUNCTION_ALIGNMENT > 0
-> > +#define __function_aligned             __aligned(CONFIG_FUNCTION_ALIGNMENT)
-> > +#else
-> > +#define __function_aligned
-> > +#endif
+> I think this struct is used by other calls as well?
+> Also CONSOLE_** functions are not yet introduced in this patch
 > 
-> Currently, the file is intended for attributes that do not depend on
-> `CONFIG_*` options.
+>> +struct gh_vm_common_vmid_req {
+>> +	__le16 vmid;
+>> +	__le16 reserved0;
+>> +} __packed;
 > 
-> What I usually mention is that we could change that policy, but
-> otherwise these would go into e.g. `compiler_types.h`.
-
-I'm happy to move these, I just wasn't sure what the policy would be w.r.t. the
-existing __weak and __cold defitions since those end up depending upon
-__function_aligned.
-
-I assume I should move them all? i.e. move __weak as well?
-
-> > +#if !defined(CONFIG_CC_IS_GCC) || (CONFIG_FUNCTION_ALIGNMENT == 0)
-> >  #define __cold                          __attribute__((__cold__))
-> > +#else
-> > +#define __cold
-> > +#endif
+> [snip]
 > 
-> Similarly, in this case this could go into `compiler-gcc.h` /
-> `compiler-clang.h` etc., since the definition will be different for
-> each.
+>> +int gh_rm_alloc_vmid(struct gh_rm_rpc *rm, u16 vmid)
+>> +{
+>> +	void *resp;
+>> +	struct gh_vm_common_vmid_req req_payload = {
+>> +		.vmid = cpu_to_le16(vmid),
+>> +	};
+>> +	struct gh_vm_common_vmid_req *resp_payload;
+>> +	size_t resp_size;
+>> +	int ret;
+>> +
+>> +	if (vmid == GH_VMID_INVAL)
+>> +		vmid = 0;
+>> +
+>> +	ret = gh_rm_call(rm, GH_RM_RPC_VM_ALLOC_VMID, &req_payload, sizeof(req_payload), &resp,
+>> +			&resp_size);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	if (!vmid) {
+>> +		if (resp_size != sizeof(*resp_payload)) {
+>> +			ret = -EINVAL;
+>> +		} else {
+>> +			resp_payload = resp;
+>> +			ret = resp_payload->vmid;
+> 
+> Do we need a le_to_cpu() wrapper on the response here?
+> 
+>> +int gh_rm_vm_stop(struct gh_rm_rpc *rm, u16 vmid)
+>> +{
+>> +	struct gh_vm_stop_req req_payload = {
+>> +		.vmid = cpu_to_le16(vmid),
+>> +	};
+>> +	void *resp;
+>> +	size_t resp_size;
+>> +	int ret;
+>> +
+>> +	ret = gh_rm_call(rm, GH_RM_RPC_VM_STOP, &req_payload, sizeof(req_payload),
+>> +			&resp, &resp_size);
+>> +	if (ret)
+>> +		return ret;
+>> +	kfree(resp);
+> 
+> Why not use gh_rm_common_vmid_call() here as well?
+> 
+> 	return gh_rm_common_vmid_call(rm, GH_RM_RPC_VM_STOP, vmid);
+> 
+>> +
+>> +	return ret;
+>> +}
+>> +EXPORT_SYMBOL_GPL(gh_rm_vm_stop);
+>> +
+> 
+> [snip]
+> 
+>> +ssize_t gh_rm_get_hyp_resources(struct gh_rm_rpc *rm, u16 vmid,
+>> +				struct gh_rm_hyp_resource **resources)
+>> +{
+>> +	struct gh_vm_get_hyp_resources_resp *resp;
+>> +	size_t resp_size;
+>> +	int ret;
+>> +	struct gh_vm_common_vmid_req req_payload = {
+>> +		.vmid = cpu_to_le16(vmid),
+>> +	};
+>> +
+>> +	ret = gh_rm_call(rm, GH_RM_RPC_VM_GET_HYP_RESOURCES,
+>> +			 &req_payload, sizeof(req_payload),
+>> +			 (void **)&resp, &resp_size);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	if (resp_size < sizeof(*resp) ||
+>> +		(sizeof(*resp->entries) && (resp->n_entries > U32_MAX / sizeof(*resp->entries))) ||
+>> +		(resp_size != sizeof(*resp) + (resp->n_entries * sizeof(*resp->entries)))) {
+>> +		ret = -EIO;
+>> +		goto out;
+>> +	}
+>> +
+>> +	*resources = kmemdup(resp->entries, (resp->n_entries * sizeof(*resp->entries)), GFP_KERNEL);
+> 
+> Consider NULL return value from kmemdup
+> 
+>> +	ret = resp->n_entries;
+>> +
+>> +out:
+>> +	kfree(resp);
+>> +	return ret;
+>> +}
+>> +EXPORT_SYMBOL_GPL(gh_rm_get_hyp_resources);
+>> +
+>> +/**
+>> + * gh_rm_get_vmid() - Retrieve VMID of this virtual machine
+>> + * @vmid: Filled with the VMID of this VM
+>> + */
+>> +int gh_rm_get_vmid(struct gh_rm_rpc *rm, u16 *vmid)
+>> +{
+>> +	static u16 cached_vmid = GH_VMID_INVAL;
+>> +	void *resp;
+>> +	size_t resp_size;
+>> +	int ret;
+>> +	int payload = 0;
+>> +
+>> +	if (cached_vmid != GH_VMID_INVAL) {
+>> +		*vmid = cached_vmid;
+>> +		return 0;
+>> +	}
+>> +
+>> +	ret = gh_rm_call(rm, GH_RM_RPC_VM_GET_VMID, &payload, sizeof(payload), &resp, &resp_size);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	if (resp_size != sizeof(*vmid))
+> 
+> kfree(resp) in this case?
+> 
+>> +		return -EIO;
+>> +	*vmid = *(u16 *)resp;
+> 
+> Do we need a le_to_cpu() wrapper on the response?
+> Also update cached_vmid in success case.
+> 
+>> +	kfree(resp);
+>> +
+>> +	return ret;
+>> +}
 
-Sure, can do.
+Applied all these.
 
 Thanks,
-Mark.
+Elliot
