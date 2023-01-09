@@ -2,54 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35C0E66220D
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jan 2023 10:49:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2CF3662214
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jan 2023 10:51:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233629AbjAIJt0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Jan 2023 04:49:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40304 "EHLO
+        id S236818AbjAIJvJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 Jan 2023 04:51:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236787AbjAIJsL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Jan 2023 04:48:11 -0500
-Received: from mail-ua1-x936.google.com (mail-ua1-x936.google.com [IPv6:2607:f8b0:4864:20::936])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1991110EA
-        for <linux-acpi@vger.kernel.org>; Mon,  9 Jan 2023 01:47:38 -0800 (PST)
-Received: by mail-ua1-x936.google.com with SMTP id t8so1854512uaj.5
-        for <linux-acpi@vger.kernel.org>; Mon, 09 Jan 2023 01:47:38 -0800 (PST)
+        with ESMTP id S237033AbjAIJuY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Jan 2023 04:50:24 -0500
+Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com [IPv6:2607:f8b0:4864:20::e35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65F5F120BA
+        for <linux-acpi@vger.kernel.org>; Mon,  9 Jan 2023 01:49:38 -0800 (PST)
+Received: by mail-vs1-xe35.google.com with SMTP id m2so7976386vsv.9
+        for <linux-acpi@vger.kernel.org>; Mon, 09 Jan 2023 01:49:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=yJBLzPMDm5Q01iXB5Sz5L7WTxl86lVDIt70z6KlR+Fw=;
-        b=HF4vGRVX4KrX+Buk98OORMVOApzR1ZVhIZG6Z/HtmES/yCtZYx7hnX6SYer6Z4YTAz
-         cjSrcCBXFKxA//IC8yY8sz3kKi0LgCvBY3Q7kDlpNsWn7JMgogCtok+avfIe4kkZaoVB
-         e8nnGFC6Tz/w2uu/cS3fe6XpYKhq/DIl0p8q8=
+        bh=D5ahGc+OvNs5WM9eaB6chHv07ET6UjHeKRyotHsgAjM=;
+        b=Gpk1v2ZnmWgGcRSYw/UCvPVHlUAizncukxu/U3iy5e90X10p4sPxOeaTBy/IgZiWiA
+         695lU071VeiTqW+ry4mUWMgctnJqzd7m6V3oXk/QY0JyzBN+saxHeNBi+bNS5UstZqmK
+         XPn6dUrYFHrph5UApKtdK4HkMF1JNZbn9/6bA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=yJBLzPMDm5Q01iXB5Sz5L7WTxl86lVDIt70z6KlR+Fw=;
-        b=oZByQzMPVNgDOaTLB8llRgevaz0+uWzSlGaS9TgKBVexZfLLgWimBbZvVUsccSV/uD
-         eoSFtWCyVuE7jq/gMQWIEtRrEtVaefDHUXK8r6z1A1QBV6CnOXESOi6rBDr91fXsjKVx
-         oSciM6UqzshD0/QZpiA20lig3EfvngZ+Nuy4zo58fuhFVPOdR4XdEKgcuqVd/Q3k0tPE
-         gmD4VzO7cMWSXV76NenXAtE9f0yc8h7u2Hv0b515onbYtrtj5dngKWUfuWTZH+n5T4fO
-         MAcTyN5dauOx0FMeDC3RkgzJOmb5P4K2thgek37OYgKASszByKyYiy2cC+Jda5tNwl13
-         e1ug==
-X-Gm-Message-State: AFqh2kpw+p3ijQv2x7GFkpOauBvAZpHut5pOGNkrGo+dWszd3sDiUGYH
-        8LYmvIj3CmI6OHj2VgLVSoe2FJaTeBn0IjiCU+4cFg==
-X-Google-Smtp-Source: AMrXdXtrQtHYDxHPRjbH8w7qNhx5RWtnRaWn9ssgWPVavMNEUU5tSZg8SwoLKK8t83WFP7pMb0p2UP5jikrNxqjZXkY=
-X-Received: by 2002:a9f:3189:0:b0:4c7:b2c7:d054 with SMTP id
- v9-20020a9f3189000000b004c7b2c7d054mr5823348uad.97.1673257657210; Mon, 09 Jan
- 2023 01:47:37 -0800 (PST)
+        bh=D5ahGc+OvNs5WM9eaB6chHv07ET6UjHeKRyotHsgAjM=;
+        b=OWHCX+/9/A+h62Xz+re/jai7HHss08vUrV+Wn0lZOUXCUHvaL6OKqMtpdIfSD7zhkc
+         i+HvmCy7gdHqNRP1JFLV+K9/xfCLEKWqRxKtZ62ynJt+grn2A5dZfva3IpiimDCuklQR
+         GROZVkNYlNa3Z8NH/eJvtvmjFNwAAOPzp3viMu5SR5E/zw+3Br12Gp4vBjlRkmbvIxDU
+         xOE9O1pags59B1hX2NtIgtVa+VotaIFGxwoSO8QJ4etxrXZqWaGt85jfwo7ejaRk2CFf
+         gO5U2MrCwCzjnaWFlQu+DHo9a1XtTzoyTJ8AQa5FlEpJQYLbPHwBKjAw97Dv2KKwy11p
+         TMtQ==
+X-Gm-Message-State: AFqh2kr8A5AqpP/gkWVt8UqlqHbp+Lm3k2DF+FRmDJBMmYd3n6VuCTHZ
+        PUrX5hsae8UlDYmfisAj8Nwjh2iFmISBu5SoGof8aA==
+X-Google-Smtp-Source: AMrXdXvtT35ihskXX2g1gPIg+h8WjTir+1IBQq2gkg2Z1k7ClRuUMhLNc3woSUYbDnwMhV5JuPAWZz/dN1mL6/Xm590=
+X-Received: by 2002:a67:447:0:b0:3ce:d0ae:f6f6 with SMTP id
+ 68-20020a670447000000b003ced0aef6f6mr2967367vse.26.1673257777595; Mon, 09 Jan
+ 2023 01:49:37 -0800 (PST)
 MIME-Version: 1.0
-References: <20230109084101.265664-1-treapking@chromium.org> <20230109084101.265664-3-treapking@chromium.org>
-In-Reply-To: <20230109084101.265664-3-treapking@chromium.org>
+References: <20230109084101.265664-1-treapking@chromium.org> <20230109084101.265664-5-treapking@chromium.org>
+In-Reply-To: <20230109084101.265664-5-treapking@chromium.org>
 From:   Chen-Yu Tsai <wenst@chromium.org>
-Date:   Mon, 9 Jan 2023 17:47:26 +0800
-Message-ID: <CAGXv+5FVfSUo6aTfS6tGPZLT3gqBRj5i0h0gKk5EdifPj-4L8w@mail.gmail.com>
-Subject: Re: [PATCH v9 2/9] platform/chrome: cros_ec_typec: Purge blocking
- switch devlinks
+Date:   Mon, 9 Jan 2023 17:49:26 +0800
+Message-ID: <CAGXv+5HY6qn8QpvPasAh90f7pfzQcLfbP3_GSdk73mucU6ctsw@mail.gmail.com>
+Subject: Re: [PATCH v9 4/9] dt-bindings: display: bridge: anx7625: Add
+ mode-switch support
 To:     Pin-yen Lin <treapking@chromium.org>
 Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
         Neil Armstrong <neil.armstrong@linaro.org>,
@@ -77,6 +77,7 @@ Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
         Javier Martinez Canillas <javierm@redhat.com>,
         dri-devel@lists.freedesktop.org,
         Stephen Boyd <swboyd@chromium.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Thomas Zimmermann <tzimmermann@suse.de>,
         Hsin-Yi Wang <hsinyi@chromium.org>,
         chrome-platform@lists.linux.dev, Xin Ji <xji@analogixsemi.com>,
@@ -96,27 +97,17 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 On Mon, Jan 9, 2023 at 4:41 PM Pin-yen Lin <treapking@chromium.org> wrote:
 >
-> From: Prashant Malani <pmalani@chromium.org>
+> Analogix 7625 can be used in systems to switch the DP traffic between
+> two downstreams, which can be USB Type-C DisplayPort alternate mode
+> lane or regular DisplayPort output ports.
 >
-> When using OF graph, the fw_devlink code will create links between the
-> individual port driver (cros-ec-typec here) and the parent device for
-> a Type-C switch (like mode-switch). Since the mode-switch will in turn
-> have the usb-c-connector (i.e the child of the port driver) as a
-> supplier, fw_devlink will not be able to resolve the cyclic dependency
-> correctly.
+> Update the binding to accommodate this usage by introducing a
+> data-lanes and a mode-switch property on endpoints.
 >
-> As a result, the mode-switch driver probe() never runs, so mode-switches
-> are never registered. Because of that, the port driver probe constantly
-> fails with -EPROBE_DEFER, because the Type-C connector class requires all
-> switch devices to be registered prior to port registration.
+> Also include the link to the product brief in the bindings.
 >
-> To break this deadlock and allow the mode-switch registration to occur,
-> purge all the usb-c-connector nodes' absent suppliers. This eliminates
-> the connector as a supplier for a switch and allows it to be probed.
->
-> Signed-off-by: Prashant Malani <pmalani@chromium.org>
 > Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
 Tested-by: Chen-Yu Tsai <wenst@chromium.org>
