@@ -2,89 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 240C666302C
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jan 2023 20:19:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8DE966308D
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jan 2023 20:38:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237605AbjAITTD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Jan 2023 14:19:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57246 "EHLO
+        id S237505AbjAITiO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 Jan 2023 14:38:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235527AbjAITTC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Jan 2023 14:19:02 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44D458FD9
-        for <linux-acpi@vger.kernel.org>; Mon,  9 Jan 2023 11:18:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1673291894;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=zoLZoXv5kTqIagLLUj3c3IklqdI9Ly9EHlczHVsTcvI=;
-        b=EOEF4c1j/9h3R6q+oetWdGjFmp1a4hcEcHBw7KPLneBR3m9I3tovRrsM8au34pSzdKpfTC
-        57sg6S3aqwqXQGzj6GubostsGbJnzPS1rVNyYa8ytPzIHBcdueyENY6B57/cCHczo0vOLF
-        rSXlTbJmJfw0epsvLxTb8elXyXvYBFE=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-494-x3JbdIvPNqekeOa_pHGDkQ-1; Mon, 09 Jan 2023 14:18:13 -0500
-X-MC-Unique: x3JbdIvPNqekeOa_pHGDkQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A45AA3811F2B;
-        Mon,  9 Jan 2023 19:18:12 +0000 (UTC)
-Received: from shalem.redhat.com (unknown [10.39.192.23])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E4BD3140EBF5;
-        Mon,  9 Jan 2023 19:18:11 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH] ACPI: video: Allow selecting NVidia-WMI-EC or Apple GMUX backlight from the cmdline
-Date:   Mon,  9 Jan 2023 20:18:11 +0100
-Message-Id: <20230109191811.53961-1-hdegoede@redhat.com>
+        with ESMTP id S237526AbjAITiN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Jan 2023 14:38:13 -0500
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F14996171;
+        Mon,  9 Jan 2023 11:38:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1673293092; x=1704829092;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=+nSkl3nf47aICAlHJic69nCJD7igzHmBHn2JiTZ1cJs=;
+  b=ZONG6QbuYRlWq29Ea9xnRprFFGp0CK8qBeEOdiS7FdMT+Dh7L7Evbime
+   ZyAIhTG7HupvXuWPl0YNRyRWVPkEBZlU3cigj4Y+ZlZeJ5Xlen+8lxpKl
+   azEGr7vl6uNG6VrHXaXrRgkO0zxcMRwd8k3OPNnY/3h6N4gfLYiqv3xgU
+   g=;
+Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 09 Jan 2023 11:38:11 -0800
+X-QCInternal: smtphost
+Received: from nasanex01b.na.qualcomm.com ([10.46.141.250])
+  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2023 11:38:11 -0800
+Received: from [10.134.67.48] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Mon, 9 Jan 2023
+ 11:38:10 -0800
+Message-ID: <bea00abc-b137-945e-e0ad-67ba41e4d691@quicinc.com>
+Date:   Mon, 9 Jan 2023 11:38:10 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH v8 12/28] gunyah: vm_mgr: Introduce basic VM Manager
+Content-Language: en-US
+To:     Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
+CC:     Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Murali Nalajala <quic_mnalajal@quicinc.com>,
+        Trilok Soni <quic_tsoni@quicinc.com>,
+        Carl van Schaik <quic_cvanscha@quicinc.com>,
+        Prakruthi Deepak Heragu <quic_pheragu@quicinc.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-acpi@vger.kernel.org>
+References: <20221219225850.2397345-1-quic_eberman@quicinc.com>
+ <20221219225850.2397345-13-quic_eberman@quicinc.com>
+ <20230109090553.GA1737564@quicinc.com>
+From:   Elliot Berman <quic_eberman@quicinc.com>
+In-Reply-To: <20230109090553.GA1737564@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The patches adding NVidia-WMI-EC and Apple GMUX backlight detection
-support to acpi_video_get_backlight_type(), forgot to update
-acpi_video_parse_cmdline() to allow manually selecting these from
-the commandline.
 
-Add support for these to acpi_video_parse_cmdline().
 
-Fixes: fe7aebb40d42 ("ACPI: video: Add Nvidia WMI EC brightness control detection (v3)")
-Fixes: 21245df307cb ("ACPI: video: Add Apple GMUX brightness control detection")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/acpi/video_detect.c | 4 ++++
- 1 file changed, 4 insertions(+)
+On 1/9/2023 1:05 AM, Srivatsa Vaddagiri wrote:
+> * Elliot Berman <quic_eberman@quicinc.com> [2022-12-19 14:58:33]:
+> 
+>> +config GUNYAH_VM_MANAGER
+> 
+> Any reason why this needs to be a separate config? IOW CONFIG_GUNYAH should
+> enable VM management functionality also.
+> 
+>> @@ -550,14 +580,29 @@ static int gh_rm_drv_probe(struct platform_device *pdev)
+>>   	rsc_mgr->msgq_client.rx_callback = gh_rm_msgq_rx_data;
+>>   	rsc_mgr->msgq_client.tx_done = gh_rm_msgq_tx_done;
+>>   
+>> -	return gh_msgq_init(&pdev->dev, &rsc_mgr->msgq, &rsc_mgr->msgq_client,
+>> +	ret = gh_msgq_init(&pdev->dev, &rsc_mgr->msgq, &rsc_mgr->msgq_client,
+>>   				&rsc_mgr->tx_ghrsc, &rsc_mgr->rx_ghrsc);
+> 
+> Bail on error here.
+> 
+> [snip]
+> 
+>> +static __must_check struct gunyah_vm *gunyah_vm_alloc(struct gh_rm_rpc *rm)
+>> +{
+>> +	struct gunyah_vm *ghvm;
+>> +	int vmid;
+>> +
+>> +	vmid = gh_rm_alloc_vmid(rm, 0);
+>> +	if (vmid < 0)
+>> +		return ERR_PTR(vmid);
+>> +
+>> +	ghvm = kzalloc(sizeof(*ghvm), GFP_KERNEL);
+>> +	if (!ghvm)
+> 
+> dealloc_vmid here (as well as few other error paths)?
+> 
+>> +		return ghvm;
+>> +
+>> +	get_gh_rm(rm);
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index 1b78c7434492..8a541efc5675 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -50,6 +50,10 @@ static void acpi_video_parse_cmdline(void)
- 		acpi_backlight_cmdline = acpi_backlight_video;
- 	if (!strcmp("native", acpi_video_backlight_string))
- 		acpi_backlight_cmdline = acpi_backlight_native;
-+	if (!strcmp("nvidia_wmi_ec", acpi_video_backlight_string))
-+		acpi_backlight_cmdline = acpi_backlight_nvidia_wmi_ec;
-+	if (!strcmp("apple_gmux", acpi_video_backlight_string))
-+		acpi_backlight_cmdline = acpi_backlight_apple_gmux;
- 	if (!strcmp("none", acpi_video_backlight_string))
- 		acpi_backlight_cmdline = acpi_backlight_none;
- }
--- 
-2.39.0
+Applied all of these.
 
+Thanks,
+Elliot
