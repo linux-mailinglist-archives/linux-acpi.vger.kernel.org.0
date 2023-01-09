@@ -2,53 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E352766242E
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jan 2023 12:27:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C60D66243E
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jan 2023 12:33:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234531AbjAIL1T (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Jan 2023 06:27:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48752 "EHLO
+        id S234120AbjAILdj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 Jan 2023 06:33:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233658AbjAIL0p (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Jan 2023 06:26:45 -0500
-Received: from mail-vk1-xa36.google.com (mail-vk1-xa36.google.com [IPv6:2607:f8b0:4864:20::a36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD37B12600
-        for <linux-acpi@vger.kernel.org>; Mon,  9 Jan 2023 03:26:44 -0800 (PST)
-Received: by mail-vk1-xa36.google.com with SMTP id 6so3761125vkz.0
-        for <linux-acpi@vger.kernel.org>; Mon, 09 Jan 2023 03:26:44 -0800 (PST)
+        with ESMTP id S233913AbjAILdj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Jan 2023 06:33:39 -0500
+Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com [IPv6:2607:f8b0:4864:20::e30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0878B186C8
+        for <linux-acpi@vger.kernel.org>; Mon,  9 Jan 2023 03:33:35 -0800 (PST)
+Received: by mail-vs1-xe30.google.com with SMTP id n190so4359924vsc.11
+        for <linux-acpi@vger.kernel.org>; Mon, 09 Jan 2023 03:33:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bo9l2JVUA1McBtZKQkN0F54d6hhYCb2UnGDrUfplMvw=;
-        b=Y/bFXrLP7WAMZou8niwk7rQsUkfbc3zSSZnzK+H1y9HIj2x6aPpkEkzo1pthHM8CRG
-         86/iqchNl+vKpsCgsRSKwCB84c9t7dymtwzVd7kuEaXXLqiyu+fWxJpSbMQYxzHzQsNs
-         T6Szigx/avepoCNwU5QIXcSKzGNj/yv6jNQ5w=
+        bh=ZSDXftrDLJQK7xmJBG2ELgbyinIOI/n7lmtYUtA57Fs=;
+        b=bJJlCRQwZSRuqt1LoaMGKivf6A9fZ9rncAVmVob2q/Y2tEtiIA0bNy6vg8QZlbay+P
+         FaJc1wxuWpfDSwrzS8kdrpnt9CQr66M9legLAKRVqhxAUd0IrAS/Zzc7snKW2DWOEMlN
+         ybx/0SzQhIM6t1ARC1R98cssk90pNC/RqJO98=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Bo9l2JVUA1McBtZKQkN0F54d6hhYCb2UnGDrUfplMvw=;
-        b=k76mpFARjyIbSpCH2HPoY6f/eh5nwiFpRfoULR+7HxzrUM/xhmNYYNnUqIjTGMjsPx
-         lksrwc/8CSUfa9T+7eFcXZaoPgPMtfvUiozvwHkJbLDI/IMgQHDLCUSfSHBv9cqZBD2s
-         vpUfXKZnCkvySOLt1qZHtRkge1UrRpbIOKyEDMNOckID09ZddYlAq5bAHdSD6ydNDgcY
-         IKGPVPiajoFWSqI+602TjA9P4b6Bnsw3EeKodZhlYBBMFfUYHacazAxTOI+berR1c7ue
-         rjBwfQ63Q8QKE1T21dznbFc8a3rNgAuw46fglbcy1uAWV/KiVkmfdeCYcUzLLZ4Gga1c
-         NYRg==
-X-Gm-Message-State: AFqh2kpxjvMOwtCNhDfLpNDS1d+c+bFRjQT6CutINNN6Z5cgSmspVH3N
-        HnBirwoCvOwIwgvR/E2rJOxjNxsa0R/oD538nLYVfg==
-X-Google-Smtp-Source: AMrXdXtRqsnvaHVT65xQiCvm+AgHkuJFCN48Cuhs9Iwq7hEJZjw6WgLwkUsflSUoSemDXcCVgmmcJ2Y4qqOo4cGwVIE=
-X-Received: by 2002:a1f:df84:0:b0:3d5:9e3a:538 with SMTP id
- w126-20020a1fdf84000000b003d59e3a0538mr4564465vkg.22.1673263603882; Mon, 09
- Jan 2023 03:26:43 -0800 (PST)
+        bh=ZSDXftrDLJQK7xmJBG2ELgbyinIOI/n7lmtYUtA57Fs=;
+        b=rnqvwCbKVlTLx59VlnWjfTbdaMUUyjRF5Y8j9odeAatfWQP/JqcmPGKivyB0gKMqlJ
+         790T6Y2zGz+Jsac+qTjzhLYuMcTPzYIrLkxOWY6veAPhBlnX6vRhY5eL5z+kh9Hh3YuW
+         CFY6PrCHyCpPSFVEq3vk0BGDK6D/FDsD79z+GYuww0597PAY6agY+9q/xmbbOEIhQuL1
+         L9eS3KmBMKtwweKtOJExJWy9fDnrhKyeLzDOOfPt7s31KTEPAK8iL30ENKGsgCjAzQD9
+         YaZDaghogCnLwMRbD9q3ak+AAlYTkl874Vu8wMBDyZ2NlPS5PxqLXiB9NiEooe2P6gUp
+         VLcw==
+X-Gm-Message-State: AFqh2koE0CXflcoVglAd31Sb26kSHxj616oT0FN2uRvERiTxO1mauiFL
+        ZLHnQ014K73c6Hr/KGby0n8GdUCbFi+QxFcujWBjIQ==
+X-Google-Smtp-Source: AMrXdXuKLBlCyhGQkkUkLWKlzTLcYAo/jHsHe7IlF4q1WX5pDRdIAXdOYMK/bZk42xpiZYdtx3FQv038aJ+bvpjmxTA=
+X-Received: by 2002:a67:447:0:b0:3ce:d0ae:f6f6 with SMTP id
+ 68-20020a670447000000b003ced0aef6f6mr3016990vse.26.1673264014106; Mon, 09 Jan
+ 2023 03:33:34 -0800 (PST)
 MIME-Version: 1.0
-References: <20230109084101.265664-1-treapking@chromium.org> <20230109084101.265664-7-treapking@chromium.org>
-In-Reply-To: <20230109084101.265664-7-treapking@chromium.org>
+References: <20230109084101.265664-1-treapking@chromium.org>
+ <20230109084101.265664-4-treapking@chromium.org> <CAGXv+5G2bUNrA5zfmzZeXJjOgvKc0tFq_qd3UR11qeyNb=xNHQ@mail.gmail.com>
+In-Reply-To: <CAGXv+5G2bUNrA5zfmzZeXJjOgvKc0tFq_qd3UR11qeyNb=xNHQ@mail.gmail.com>
 From:   Chen-Yu Tsai <wenst@chromium.org>
-Date:   Mon, 9 Jan 2023 19:26:32 +0800
-Message-ID: <CAGXv+5E=-=cPGSi1eEDAkTm+RvuJNU4zeZOxunpR7r4+RgzNYA@mail.gmail.com>
-Subject: Re: [PATCH v9 6/9] drm/bridge: anx7625: Register Type C mode switches
+Date:   Mon, 9 Jan 2023 19:33:22 +0800
+Message-ID: <CAGXv+5GS5Bj1hzbUEP340FU4yYmEVf4wyNd2B_HEUAMz3OKw6A@mail.gmail.com>
+Subject: Re: [PATCH v9 3/9] drm/display: Add Type-C switch helpers
 To:     Pin-yen Lin <treapking@chromium.org>
 Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
         Neil Armstrong <neil.armstrong@linaro.org>,
@@ -69,21 +70,21 @@ Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
         Prashant Malani <pmalani@chromium.org>,
         Benson Leung <bleung@chromium.org>,
         Guenter Roeck <groeck@chromium.org>,
-        Marek Vasut <marex@denx.de>, devicetree@vger.kernel.org,
-        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
-        <nfraprado@collabora.com>, linux-acpi@vger.kernel.org,
-        Allen Chen <allen.chen@ite.com.tw>,
-        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        Marek Vasut <marex@denx.de>, chrome-platform@lists.linux.dev,
         Javier Martinez Canillas <javierm@redhat.com>,
-        dri-devel@lists.freedesktop.org,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        Kees Cook <keescook@chromium.org>,
+        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
+        <nfraprado@collabora.com>, Jani Nikula <jani.nikula@intel.com>,
+        Allen Chen <allen.chen@ite.com.tw>,
         Stephen Boyd <swboyd@chromium.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
         Hsin-Yi Wang <hsinyi@chromium.org>,
-        chrome-platform@lists.linux.dev, Xin Ji <xji@analogixsemi.com>,
-        linux-kernel@vger.kernel.org,
+        Xin Ji <xji@analogixsemi.com>,
         AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
+        <angelogioacchino.delregno@collabora.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -94,113 +95,154 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 9, 2023 at 4:41 PM Pin-yen Lin <treapking@chromium.org> wrote:
+On Mon, Jan 9, 2023 at 6:10 PM Chen-Yu Tsai <wenst@chromium.org> wrote:
 >
-> Register USB Type-C mode switches when the "mode-switch" property and
-> relevant port are available in Device Tree. Configure the crosspoint
-           ^ ports
+> On Mon, Jan 9, 2023 at 4:41 PM Pin-yen Lin <treapking@chromium.org> wrote:
+> >
+> > Add helpers to register and unregister Type-C "switches" for bridges
+> > capable of switching their output between two downstream devices.
+> >
+> > The helper registers USB Type-C mode switches when the "mode-switch"
+> > and the "data-lanes" properties are available in Device Tree.
+> >
+> > Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+>
+> Tested-by: Chen-Yu Tsai <wenst@chromium.org>
+>
+> on MT8192 based Hayato (ASUS Chromebook Flip CM3200).
+>
+> > ---
+> >
+> > (no changes since v8)
+> >
+> > Changes in v8:
+> > - Fixed the build issue when CONFIG_TYPEC=m
+> > - Fixed some style issues
+> >
+> > Changes in v7:
+> > - Extracted the common codes to a helper function
+> > - New in v7
+> >
+> >  drivers/gpu/drm/display/drm_dp_helper.c | 132 ++++++++++++++++++++++++
+> >  include/drm/display/drm_dp_helper.h     |  16 +++
+> >  2 files changed, 148 insertions(+)
+> >
+> > diff --git a/drivers/gpu/drm/display/drm_dp_helper.c b/drivers/gpu/drm/display/drm_dp_helper.c
+> > index 16565a0a5da6..fb9e23744c08 100644
+> > --- a/drivers/gpu/drm/display/drm_dp_helper.c
+> > +++ b/drivers/gpu/drm/display/drm_dp_helper.c
+> > @@ -30,11 +30,13 @@
+> >  #include <linux/sched.h>
+> >  #include <linux/seq_file.h>
+> >  #include <linux/string_helpers.h>
+> > +#include <linux/usb/typec_mux.h>
+> >  #include <linux/dynamic_debug.h>
+> >
+> >  #include <drm/display/drm_dp_helper.h>
+> >  #include <drm/display/drm_dp_mst_helper.h>
+> >  #include <drm/drm_edid.h>
+> > +#include <drm/drm_of.h>
+> >  #include <drm/drm_print.h>
+> >  #include <drm/drm_vblank.h>
+> >  #include <drm/drm_panel.h>
+> > @@ -3891,3 +3893,133 @@ int drm_panel_dp_aux_backlight(struct drm_panel *panel, struct drm_dp_aux *aux)
+> >  EXPORT_SYMBOL(drm_panel_dp_aux_backlight);
+> >
+> >  #endif
+> > +
+> > +#if IS_REACHABLE(CONFIG_TYPEC)
+> > +static int drm_dp_register_mode_switch(struct device *dev, struct device_node *node,
+> > +                                      struct drm_dp_typec_switch_desc *switch_desc,
+> > +                                      void *data, void *mux_set)
 
-> switch based on the entered alternate mode for a specific Type-C
-> connector.
+Using "typec_mux_set_fn_t" instead of "void *" for mux_set would be
+more explicit. Same for all the other instances where this parameter
+gets declared.
 
-You should also mention that the "one mode switch" scenario is not
-covered in this implementation, due to lack of actual hardware.
+ChenYu
 
-> Signed-off-by: Pin-yen Lin <treapking@chromium.org>
->
-> ---
->
-> (no changes since v7)
->
-> Changes in v7:
-> - Fixed style issues in anx7625 driver
-> - Removed DT property validation in anx7625 driver.
-> - Extracted common codes to another commit.
->
-> Changes in v6:
-> - Squashed to a single patch
->
->  drivers/gpu/drm/bridge/analogix/Kconfig   |  1 +
->  drivers/gpu/drm/bridge/analogix/anx7625.c | 88 +++++++++++++++++++++++
->  drivers/gpu/drm/bridge/analogix/anx7625.h | 13 ++++
->  3 files changed, 102 insertions(+)
->
-> diff --git a/drivers/gpu/drm/bridge/analogix/Kconfig b/drivers/gpu/drm/bridge/analogix/Kconfig
-> index 173dada218ec..992b43ed1dd7 100644
-> --- a/drivers/gpu/drm/bridge/analogix/Kconfig
-> +++ b/drivers/gpu/drm/bridge/analogix/Kconfig
-> @@ -34,6 +34,7 @@ config DRM_ANALOGIX_ANX7625
->         tristate "Analogix Anx7625 MIPI to DP interface support"
->         depends on DRM
->         depends on OF
-> +       depends on TYPEC || TYPEC=n
->         select DRM_DISPLAY_DP_HELPER
->         select DRM_DISPLAY_HDCP_HELPER
->         select DRM_DISPLAY_HELPER
-> diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
-> index 1cf242130b91..2bb504a8d789 100644
-> --- a/drivers/gpu/drm/bridge/analogix/anx7625.c
-> +++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
-> @@ -15,6 +15,8 @@
->  #include <linux/regulator/consumer.h>
->  #include <linux/slab.h>
->  #include <linux/types.h>
-> +#include <linux/usb/typec_dp.h>
-> +#include <linux/usb/typec_mux.h>
->  #include <linux/workqueue.h>
->
->  #include <linux/of_gpio.h>
-> @@ -2572,6 +2574,86 @@ static void anx7625_runtime_disable(void *data)
->         pm_runtime_disable(data);
->  }
->
-> +static void anx7625_set_crosspoint_switch(struct anx7625_data *ctx,
-> +                                         enum typec_orientation orientation)
-> +{
-> +       if (orientation == TYPEC_ORIENTATION_NORMAL) {
-> +               anx7625_reg_write(ctx, ctx->i2c.tcpc_client, TCPC_SWITCH_0,
-> +                                 SW_SEL1_SSRX_RX1 | SW_SEL1_DPTX0_RX2);
-> +               anx7625_reg_write(ctx, ctx->i2c.tcpc_client, TCPC_SWITCH_1,
-> +                                 SW_SEL2_SSTX_TX1 | SW_SEL2_DPTX1_TX2);
-> +       } else if (orientation == TYPEC_ORIENTATION_REVERSE) {
-> +               anx7625_reg_write(ctx, ctx->i2c.tcpc_client, TCPC_SWITCH_0,
-> +                                 SW_SEL1_SSRX_RX2 | SW_SEL1_DPTX0_RX1);
-> +               anx7625_reg_write(ctx, ctx->i2c.tcpc_client, TCPC_SWITCH_1,
-> +                                 SW_SEL2_SSTX_TX2 | SW_SEL2_DPTX1_TX1);
-> +       }
-> +}
-> +
-> +static void anx7625_typec_two_ports_update(struct anx7625_data *ctx)
-> +{
-> +       struct drm_dp_typec_switch_desc switch_desc = ctx->switch_desc;
-> +       /* Check if both ports available and do nothing to retain the current one */
-> +       if (switch_desc.typec_ports[0].dp_connected && switch_desc.typec_ports[1].dp_connected)
-> +               return;
-> +
-> +       if (switch_desc.typec_ports[0].dp_connected)
-> +               anx7625_set_crosspoint_switch(ctx, TYPEC_ORIENTATION_NORMAL);
-> +       else if (switch_desc.typec_ports[1].dp_connected)
-> +               anx7625_set_crosspoint_switch(ctx, TYPEC_ORIENTATION_REVERSE);
-> +}
-> +
-> +static int anx7625_typec_mux_set(struct typec_mux_dev *mux,
-> +                                struct typec_mux_state *state)
-> +{
-> +       struct drm_dp_typec_port_data *port_data = typec_mux_get_drvdata(mux);
-> +       struct anx7625_data *ctx = (struct anx7625_data *) port_data->data;
-> +       struct device *dev = &ctx->client->dev;
-> +       struct drm_dp_typec_switch_desc switch_desc = ctx->switch_desc;
-> +       bool new_dp_connected, old_dp_connected;
-> +
 
-And place a TODO note here.
-
-Otherwise this looks OK.
-
-Also,
-
-Tested-by: Chen-Yu Tsai <wenst@chromium.org>
-on MT8192 based Hayato (ASUS Chromebook Flip CM3200).
-
-And this also uncovered a deadlock in the unplug & disable path.
-I'll send a fix for that later once I figure out all the details.
+> > +{
+> > +       struct drm_dp_typec_port_data *port_data;
+> > +       struct typec_mux_desc mux_desc = {};
+> > +       char name[32];
+> > +       u32 dp_lanes[2];
+> > +       int ret, num_lanes, port_num = -1;
+> > +
+> > +       num_lanes = drm_of_get_data_lanes_count(node, 0, 2);
+> > +       if (num_lanes <= 0) {
+> > +               dev_err(dev, "Error on getting data lanes count: %d\n",
+> > +                       num_lanes);
+>
+> Also printing out the full node name (endpoint@N) would be more helpful.
+>
+> > +               return num_lanes;
+> > +       }
+> > +
+> > +       ret = of_property_read_u32_array(node, "data-lanes", dp_lanes, num_lanes);
+> > +       if (ret) {
+> > +               dev_err(dev, "Failed to read the data-lanes variable: %d\n",
+> > +                       ret);
+>
+> Same here.
+>
+> > +               return ret;
+> > +       }
+> > +
+> > +       port_num = dp_lanes[0] / 2;
+> > +
+> > +       port_data = &switch_desc->typec_ports[port_num];
+> > +       port_data->data = data;
+> > +       mux_desc.fwnode = &node->fwnode;
+> > +       mux_desc.drvdata = port_data;
+> > +       snprintf(name, sizeof(name), "%s-%u", node->name, port_num);
+> > +       mux_desc.name = name;
+> > +       mux_desc.set = mux_set;
+> > +
+> > +       port_data->typec_mux = typec_mux_register(dev, &mux_desc);
+> > +       if (IS_ERR(port_data->typec_mux)) {
+> > +               ret = PTR_ERR(port_data->typec_mux);
+> > +               dev_err(dev, "Mode switch register for port %d failed: %d\n",
+> > +                       port_num, ret);
+> > +       }
+> > +
+> > +       return ret;
+> > +}
+> > +
+> > +/**
+> > + * drm_dp_register_typec_switches() - register Type-C switches
+> > + * @dev: Device that registers Type-C switches
+> > + * @port: Device node for the switch
+> > + * @switch_desc: A Type-C switch descriptor
+> > + * @data: Private data for the switches
+> > + * @mux_set: Callback function for typec_mux_set
+> > + *
+> > + * This function registers USB Type-C switches for DP bridges that can switch
+> > + * the output signal between their output pins.
+> > + *
+> > + * Currently only mode switches are implemented, and the function assumes the
+> > + * given @port device node has endpoints with "mode-switch" property.
+> > + * Register the endpoint as port 0 if the "data-lanes" property falls in 0/1,
+> > + * and register it as port 1 if "data-lanes" falls in 2/3.
+> > + */
+> > +int drm_dp_register_typec_switches(struct device *dev, struct device_node *port,
+> > +                                  struct drm_dp_typec_switch_desc *switch_desc,
+> > +                                  void *data, void *mux_set)
+> > +{
+> > +       struct device_node *sw;
+> > +       int ret;
+> > +
+> > +       for_each_child_of_node(port, sw) {
+> > +               if (of_property_read_bool(sw, "mode-switch"))
+> > +                       switch_desc->num_typec_switches++;
+> > +       }
+> > +
+> > +       if (!switch_desc->num_typec_switches) {
+> > +               dev_warn(dev, "No Type-C switches node found\n");
+>
+> Maybe change this to dev_info or even dev_debug? A warning would be too
+> noisy if the bridge drivers are calling this helper unconditionally.
+>
+> Otherwise,
+>
+> Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
