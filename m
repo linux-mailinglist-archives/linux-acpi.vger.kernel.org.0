@@ -2,316 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C48D5662067
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jan 2023 09:43:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FA9666210D
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jan 2023 10:11:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233399AbjAIIm3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Jan 2023 03:42:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50976 "EHLO
+        id S236231AbjAIJLJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 Jan 2023 04:11:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236714AbjAIImI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Jan 2023 03:42:08 -0500
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBD2013CC1
-        for <linux-acpi@vger.kernel.org>; Mon,  9 Jan 2023 00:42:03 -0800 (PST)
-Received: by mail-pj1-x1030.google.com with SMTP id v13-20020a17090a6b0d00b00219c3be9830so8658427pjj.4
-        for <linux-acpi@vger.kernel.org>; Mon, 09 Jan 2023 00:42:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9iAqigrmRtbOwkIjEJ3yqHcs8IpEn5bVcl0Fnp8oBxA=;
-        b=UsXasHbilcmH352bWImADdEHGkeKLDKY8/6LTgkfSwTDOlG3fZbpIS6jGqe5W2B/9D
-         HwQNfa5wSvNFIbxNsyPR7nKuty0ce3XFiUo/sEkI5eyHTPdIPaH0Wq8a3Uuiw44EB3Zs
-         +7SVGSXED0FlrhRmhE2qJO5Z6uIp0t8QNaGF8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9iAqigrmRtbOwkIjEJ3yqHcs8IpEn5bVcl0Fnp8oBxA=;
-        b=MxCkIevG+A+JHFn8luqi5lpGJzYYRUq7OKS50b1nr7qFaOldFuhhMvyjUL/5R3LEM2
-         15w9srIkOTm6BYikqgS1bf6RQUNQu/9cq2pWvZoQJglq3y9fDBJLXg4Ebb1mA316J40s
-         y1v7eXO3e/xDrsGgIRmjhlXMYwlt2To57CndmBqTIU8gnYwIjvRHoxkq0ACXcHjp/1dL
-         Oy3ddmdtA9rEVo/z5ohSr3bsgcQwyMaOZ4aSxGk52mjHM3UuUcLQggIBYgPYJ09+zN/A
-         P+cSIGBlIZNTdMIkXQbdNLbEcJPH8J1tZMLynQ7M4s49PVa0vQ9Ti5C/3qpjyoluF1/G
-         37AA==
-X-Gm-Message-State: AFqh2koKFd0sJeaXeLuOgstt/M7Oj4d/2a9hRkKBm9ID0MsOfqvJmx6t
-        iSOw/IsmQXAgi2NSCzr08PGwXQ==
-X-Google-Smtp-Source: AMrXdXtbGhDZ0qIOz9gU/szDo57zt2q6abDLPDEdxc3raJT8EzkxPtZxtGeBR8yQCh4KG8AqYVqtqQ==
-X-Received: by 2002:a17:902:6ac6:b0:192:cd8a:f358 with SMTP id i6-20020a1709026ac600b00192cd8af358mr24722274plt.69.1673253723421;
-        Mon, 09 Jan 2023 00:42:03 -0800 (PST)
-Received: from treapking.tpe.corp.google.com ([2401:fa00:1:10:801:a736:715:9a15])
-        by smtp.gmail.com with ESMTPSA id c14-20020a170902d48e00b00186acb14c4asm5568119plg.67.2023.01.09.00.41.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Jan 2023 00:42:03 -0800 (PST)
-From:   Pin-yen Lin <treapking@chromium.org>
-To:     Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
+        with ESMTP id S236907AbjAIJKP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Jan 2023 04:10:15 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9624516495;
+        Mon,  9 Jan 2023 01:06:24 -0800 (PST)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3097r7Cv001816;
+        Mon, 9 Jan 2023 09:06:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=date : from : to :
+ cc : subject : message-id : reply-to : references : mime-version :
+ content-type : in-reply-to; s=qcppdkim1;
+ bh=XxHuIQPh1jtnEpxWMwNDr1Y0CAe06b1+6mK5HGVQu5w=;
+ b=EVgqWEiYLZ3+ztYFCe27IWCHuT6TjM9JoUdIhwAU1VzVPhez43C14F9ngot+0olMkFlp
+ 11/AomqEJjq7b5aD5hOrz0cFkggHfD8AszKSDeitiFf/WjIRK31xKtXVzxInYAly8R12
+ xXYNx9XuAXRGc+Y/AwcwW5rqDaIfVB9AMLi9AVzWOJpEHX0RHxzJ4ynfh5eiX3u/96l6
+ 7TuWrwY0eh3NsUMWQGSJ1pe/D4zjJE9n8oubKB5Wt/aR8G9lYTiQlKVAIG9VdT8ELW8j
+ vV/pktMaZjxTzEg3qZoRzedPpqrX3o5gzNGHA1GSQN8nT2/ba+ouPnrzZrYxKMadFYEP fg== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3my02t2q55-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 09 Jan 2023 09:06:06 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 309965Gk021644
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 9 Jan 2023 09:06:05 GMT
+Received: from quicinc.com (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Mon, 9 Jan 2023
+ 01:05:57 -0800
+Date:   Mon, 9 Jan 2023 14:35:53 +0530
+From:   Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
+To:     Elliot Berman <quic_eberman@quicinc.com>
+CC:     Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Murali Nalajala <quic_mnalajal@quicinc.com>,
+        Trilok Soni <quic_tsoni@quicinc.com>,
+        Carl van Schaik <quic_cvanscha@quicinc.com>,
+        Prakruthi Deepak Heragu <quic_pheragu@quicinc.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>
-Cc:     Hsin-Yi Wang <hsinyi@chromium.org>,
-        Pin-yen Lin <treapking@chromium.org>,
-        dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
-        Stephen Boyd <swboyd@chromium.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Xin Ji <xji@analogixsemi.com>, linux-acpi@vger.kernel.org,
-        devicetree@vger.kernel.org, chrome-platform@lists.linux.dev,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Allen Chen <allen.chen@ite.com.tw>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Lyude Paul <lyude@redhat.com>,
-        =?UTF-8?q?N=C3=ADcolas=20F=20=2E=20R=20=2E=20A=20=2E=20Prado?= 
-        <nfraprado@collabora.com>, linux-kernel@vger.kernel.org
-Subject: [PATCH v9 9/9] drm/bridge: it6505: Register Type C mode switches
-Date:   Mon,  9 Jan 2023 16:41:01 +0800
-Message-Id: <20230109084101.265664-10-treapking@chromium.org>
-X-Mailer: git-send-email 2.39.0.314.g84b9a713c41-goog
-In-Reply-To: <20230109084101.265664-1-treapking@chromium.org>
-References: <20230109084101.265664-1-treapking@chromium.org>
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v8 12/28] gunyah: vm_mgr: Introduce basic VM Manager
+Message-ID: <20230109090553.GA1737564@quicinc.com>
+Reply-To: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
+References: <20221219225850.2397345-1-quic_eberman@quicinc.com>
+ <20221219225850.2397345-13-quic_eberman@quicinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+In-Reply-To: <20221219225850.2397345-13-quic_eberman@quicinc.com>
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: AykUCM4ocXnB41CGW_xT6GSACgEI0PMz
+X-Proofpoint-ORIG-GUID: AykUCM4ocXnB41CGW_xT6GSACgEI0PMz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2023-01-09_03,2023-01-06_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
+ bulkscore=0 impostorscore=0 suspectscore=0 lowpriorityscore=0
+ priorityscore=1501 mlxscore=0 malwarescore=0 mlxlogscore=794 phishscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301090064
+X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Register USB Type-C mode switches when the "mode-switch" property and
-relevant port are available in Device Tree. Configure the "lane_swap"
-state based on the entered alternate mode for a specific Type-C
-connector, which ends up updating the lane swap registers of the it6505
-chip.
+* Elliot Berman <quic_eberman@quicinc.com> [2022-12-19 14:58:33]:
 
-Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+> +config GUNYAH_VM_MANAGER
 
----
+Any reason why this needs to be a separate config? IOW CONFIG_GUNYAH should
+enable VM management functionality also.
 
-(no changes since v7)
+> @@ -550,14 +580,29 @@ static int gh_rm_drv_probe(struct platform_device *pdev)
+>  	rsc_mgr->msgq_client.rx_callback = gh_rm_msgq_rx_data;
+>  	rsc_mgr->msgq_client.tx_done = gh_rm_msgq_tx_done;
+>  
+> -	return gh_msgq_init(&pdev->dev, &rsc_mgr->msgq, &rsc_mgr->msgq_client,
+> +	ret = gh_msgq_init(&pdev->dev, &rsc_mgr->msgq, &rsc_mgr->msgq_client,
+>  				&rsc_mgr->tx_ghrsc, &rsc_mgr->rx_ghrsc);
 
-Changes in v7:
-- Fixed style issues in it6505 driver
-- Removed the redundant sleep in it6505 driver
-- Removed DT property validation in it6505 driver
-- Rebased to drm-misc-next
-- Extracted common codes to another commit
+Bail on error here.
 
-Changes in v6:
-- Changed it6505_typec_mux_set callback function to accommodate with
-  the latest drm-misc patches
-- Changed the driver implementation to accommodate with the new binding
-- Squashed to a single patch
+[snip]
 
- drivers/gpu/drm/bridge/Kconfig      |   1 +
- drivers/gpu/drm/bridge/ite-it6505.c | 119 +++++++++++++++++++++++++++-
- 2 files changed, 116 insertions(+), 4 deletions(-)
+> +static __must_check struct gunyah_vm *gunyah_vm_alloc(struct gh_rm_rpc *rm)
+> +{
+> +	struct gunyah_vm *ghvm;
+> +	int vmid;
+> +
+> +	vmid = gh_rm_alloc_vmid(rm, 0);
+> +	if (vmid < 0)
+> +		return ERR_PTR(vmid);
+> +
+> +	ghvm = kzalloc(sizeof(*ghvm), GFP_KERNEL);
+> +	if (!ghvm)
 
-diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bridge/Kconfig
-index 737578dd57ed..33803f581562 100644
---- a/drivers/gpu/drm/bridge/Kconfig
-+++ b/drivers/gpu/drm/bridge/Kconfig
-@@ -87,6 +87,7 @@ config DRM_FSL_LDB
- config DRM_ITE_IT6505
- 	tristate "ITE IT6505 DisplayPort bridge"
- 	depends on OF
-+	depends on TYPEC || TYPEC=n
- 	select DRM_DISPLAY_DP_HELPER
- 	select DRM_DISPLAY_HDCP_HELPER
- 	select DRM_DISPLAY_HELPER
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index 9cda2df21b88..d9be09e889e2 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -17,6 +17,8 @@
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- #include <linux/types.h>
-+#include <linux/usb/typec_dp.h>
-+#include <linux/usb/typec_mux.h>
- #include <linux/wait.h>
- 
- #include <crypto/hash.h>
-@@ -28,6 +30,7 @@
- #include <drm/drm_crtc.h>
- #include <drm/drm_crtc_helper.h>
- #include <drm/drm_edid.h>
-+#include <drm/drm_of.h>
- #include <drm/drm_print.h>
- #include <drm/drm_probe_helper.h>
- 
-@@ -455,6 +458,7 @@ struct it6505 {
- 	struct delayed_work delayed_audio;
- 	struct it6505_audio_data audio;
- 	struct dentry *debugfs;
-+	struct drm_dp_typec_switch_desc switch_desc;
- 
- 	/* it6505 driver hold option */
- 	bool enable_drv_hold;
-@@ -3346,12 +3350,105 @@ static void it6505_shutdown(struct i2c_client *client)
- 		it6505_lane_off(it6505);
- }
- 
-+static void it6505_typec_ports_update(struct it6505 *it6505)
-+{
-+	struct drm_dp_typec_switch_desc switch_desc = it6505->switch_desc;
-+
-+	/* Check if both ports available and do nothing to retain the current one */
-+	if (switch_desc.typec_ports[0].dp_connected && switch_desc.typec_ports[1].dp_connected)
-+		return;
-+
-+	if (switch_desc.typec_ports[0].dp_connected)
-+		it6505->lane_swap = false;
-+	else if (switch_desc.typec_ports[1].dp_connected)
-+		it6505->lane_swap = true;
-+}
-+
-+static int it6505_typec_mux_set(struct typec_mux_dev *mux,
-+				struct typec_mux_state *state)
-+{
-+	struct drm_dp_typec_port_data *port_data = typec_mux_get_drvdata(mux);
-+	struct it6505 *it6505 = (struct it6505 *) port_data->data;
-+	struct device *dev = &it6505->client->dev;
-+	struct drm_dp_typec_switch_desc switch_desc = it6505->switch_desc;
-+	bool old_dp_connected, new_dp_connected;
-+
-+	if (switch_desc.num_typec_switches == 1)
-+		return 0;
-+
-+	mutex_lock(&it6505->extcon_lock);
-+
-+	old_dp_connected = switch_desc.typec_ports[0].dp_connected ||
-+			   switch_desc.typec_ports[1].dp_connected;
-+
-+	port_data->dp_connected = state->alt &&
-+				  state->alt->svid == USB_TYPEC_DP_SID &&
-+				  state->alt->mode == USB_TYPEC_DP_MODE;
-+
-+	dev_dbg(dev, "mux_set dp_connected: c0=%d, c1=%d\n",
-+		switch_desc.typec_ports[0].dp_connected, switch_desc.typec_ports[1].dp_connected);
-+
-+	new_dp_connected = switch_desc.typec_ports[0].dp_connected ||
-+			   switch_desc.typec_ports[1].dp_connected;
-+
-+	if (it6505->enable_drv_hold) {
-+		dev_dbg(dev, "enable driver hold\n");
-+		goto unlock;
-+	}
-+
-+	it6505_typec_ports_update(it6505);
-+
-+	if (!old_dp_connected && new_dp_connected) {
-+		int ret = pm_runtime_get_sync(dev);
-+
-+		/*
-+		 * pm_runtime_force_suspend() disables runtime PM when the
-+		 * system enters suspend state. But on system resume, mux_set
-+		 * can be triggered before pm_runtime_force_resume() re-enables
-+		 * runtime PM. This makes the bridge stay powered off if the
-+		 * downstream display is connected when the system is suspended.
-+		 * Handling the error here to make sure the bridge is powered
-+		 * on, and leave the PM runtime usage count incremented so
-+		 * the future runtime PM calls is balanced.
-+		 */
-+		if (ret < 0)
-+			it6505_poweron(it6505);
-+
-+		complete_all(&it6505->extcon_completion);
-+	}
-+
-+	if (old_dp_connected && !new_dp_connected) {
-+		reinit_completion(&it6505->extcon_completion);
-+		pm_runtime_put_sync(dev);
-+		if (it6505->bridge.dev)
-+			drm_helper_hpd_irq_event(it6505->bridge.dev);
-+		memset(it6505->dpcd, 0, sizeof(it6505->dpcd));
-+	}
-+
-+unlock:
-+	mutex_unlock(&it6505->extcon_lock);
-+	return 0;
-+}
-+
-+static void it6505_unregister_typec_switches(struct it6505 *it6505)
-+{
-+	drm_dp_unregister_typec_switches(&it6505->switch_desc);
-+}
-+
-+static int it6505_register_typec_switches(struct device *dev, struct it6505 *it6505)
-+{
-+	struct device_node *port = of_graph_get_port_by_id(dev->of_node, 1);
-+
-+	return drm_dp_register_typec_switches(dev, port, &it6505->switch_desc,
-+					      it6505, it6505_typec_mux_set);
-+}
-+
- static int it6505_i2c_probe(struct i2c_client *client)
- {
- 	struct it6505 *it6505;
- 	struct device *dev = &client->dev;
- 	struct extcon_dev *extcon;
--	int err, intp_irq;
-+	int err, intp_irq, ret;
- 
- 	it6505 = devm_kzalloc(&client->dev, sizeof(*it6505), GFP_KERNEL);
- 	if (!it6505)
-@@ -3371,11 +3468,24 @@ static int it6505_i2c_probe(struct i2c_client *client)
- 	if (PTR_ERR(extcon) == -EPROBE_DEFER)
- 		return -EPROBE_DEFER;
- 	if (IS_ERR(extcon)) {
--		dev_err(dev, "can not get extcon device!");
--		return PTR_ERR(extcon);
-+		if (PTR_ERR(extcon) != -ENODEV)
-+			dev_warn(dev, "Cannot get extcon device: %ld\n",
-+				 PTR_ERR(extcon));
-+		it6505->extcon = NULL;
-+	} else {
-+		it6505->extcon = extcon;
- 	}
- 
--	it6505->extcon = extcon;
-+	ret = it6505_register_typec_switches(dev, it6505);
-+	if (ret) {
-+		if (ret != -ENODEV)
-+			dev_warn(dev, "Didn't register Type-C switches, err: %d\n",
-+				 ret);
-+		if (!it6505->extcon) {
-+			dev_err(dev, "Both extcon and typec-switch are not registered.\n");
-+			return -EINVAL;
-+		}
-+	}
- 
- 	it6505->regmap = devm_regmap_init_i2c(client, &it6505_regmap_config);
- 	if (IS_ERR(it6505->regmap)) {
-@@ -3447,6 +3557,7 @@ static void it6505_i2c_remove(struct i2c_client *client)
- 	it6505_debugfs_remove(it6505);
- 	it6505_poweroff(it6505);
- 	it6505_remove_edid(it6505);
-+	it6505_unregister_typec_switches(it6505);
- }
- 
- static const struct i2c_device_id it6505_id[] = {
--- 
-2.39.0.314.g84b9a713c41-goog
+dealloc_vmid here (as well as few other error paths)?
 
+> +		return ghvm;
+> +
+> +	get_gh_rm(rm);
