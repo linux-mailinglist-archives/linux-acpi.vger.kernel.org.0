@@ -2,512 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05C496627EF
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jan 2023 15:01:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D4D06628C0
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jan 2023 15:44:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237219AbjAIN71 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Jan 2023 08:59:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38802 "EHLO
+        id S232753AbjAIOnp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 Jan 2023 09:43:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237054AbjAIN7A (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Jan 2023 08:59:00 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5ABBC25CD;
-        Mon,  9 Jan 2023 05:58:59 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 208AC1A2D;
-        Mon,  9 Jan 2023 05:59:41 -0800 (PST)
-Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 30F1C3F23F;
-        Mon,  9 Jan 2023 05:58:57 -0800 (PST)
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     catalin.marinas@arm.com, lenb@kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mark.rutland@arm.com, mhiramat@kernel.org, ndesaulniers@google.com,
-        ojeda@kernel.org, peterz@infradead.org, rafael.j.wysocki@intel.com,
-        revest@chromium.org, robert.moore@intel.com, rostedt@goodmis.org,
-        will@kernel.org
-Subject: [PATCH 8/8] arm64: Implement HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS
-Date:   Mon,  9 Jan 2023 13:58:28 +0000
-Message-Id: <20230109135828.879136-9-mark.rutland@arm.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230109135828.879136-1-mark.rutland@arm.com>
-References: <20230109135828.879136-1-mark.rutland@arm.com>
+        with ESMTP id S229801AbjAIOn3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Jan 2023 09:43:29 -0500
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88A8E1D0E3;
+        Mon,  9 Jan 2023 06:43:28 -0800 (PST)
+Received: by mail-yb1-xb29.google.com with SMTP id c124so8670866ybb.13;
+        Mon, 09 Jan 2023 06:43:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=oOV5umT1eYSPCClB4+myHjuitl4aoXhb6nSLgQO08gk=;
+        b=Ib8K8rpcpPPnd9UkyVa/rWjXDwToqrzgUpjzVKUSRZwwpX1/bygdNFWszldeYNJSKv
+         2l2s465QUYwoiGziVnnF+6sSA0Ej93BBrzdBGvm7sXf7hiGWgcQRVHIJO1B7896Eh7tf
+         1j4CN9XN5vSSv4S4fR29YT+fN3APmmwcoBNEw1xh4GC6Lutp0cu54vQee31/gXmmzluQ
+         P5uoZfOVYbNt9L1Hc+i31cFQP/6NHfK1WqLbPz2Jglew/mwYo1kS+FqRiVDf9jGR/7Tt
+         Kp6UnbAdy87hgMXFq7W93ytiR9shY9Ix+tjFLUIWWDPM1RRwnFzQBV3biIyw0HbibwU9
+         8TRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oOV5umT1eYSPCClB4+myHjuitl4aoXhb6nSLgQO08gk=;
+        b=g55Qrfu03NIF6y994ds0T8MomCF6SvdzFW6p68Y8myu8spAerfUlXaRJY/eJegkO1p
+         IRskS2vduODwUvOY/3F7zVBXqo1dsJNGA1OQv20NMKLIHDm5jVyE7F9FBK9nIaYDKNFx
+         vP3PL2YyNAaBZfF/ktH8LFFnMg0eo6eI7hc1trNpItReAyfzM5Di/WUvTh0B5rAjPITV
+         Wd823RQDSocpQ9ibp0ouhHwzT0Fu3ecfgXRJYlSsSQzCTg/UbueB1Fp9qVvyFBWk5SBj
+         IZ3DPe0qZumiCRPqGLrSpaRlaXMnzCW/cAz5j1opX32nd3XoIg53lGqbnAja5veGd6sS
+         Qd+g==
+X-Gm-Message-State: AFqh2koHgTXt768F1ywGAuL09xIzHCndeJyiKy/tjwM9YDZnUwgcs3WO
+        3NKPdhU1QJ5CHRp9kMTPRXdEtVNucsyoj/ztnYI=
+X-Google-Smtp-Source: AMrXdXvKAG5k8loTwZqxTwRU18wP1QE+Dt8R/ykgqKVgjUlqiWFM6VPMl5w1bD4uIBxMdKmhYHCFhd88rGVJU2HCyQE=
+X-Received: by 2002:a25:af13:0:b0:7bf:b130:9e24 with SMTP id
+ a19-20020a25af13000000b007bfb1309e24mr164044ybh.328.1673275407758; Mon, 09
+ Jan 2023 06:43:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230109135828.879136-1-mark.rutland@arm.com> <20230109135828.879136-2-mark.rutland@arm.com>
+In-Reply-To: <20230109135828.879136-2-mark.rutland@arm.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Mon, 9 Jan 2023 15:43:16 +0100
+Message-ID: <CANiq72kgmFYEO_EB_NxAF=S7VOf45KM7W3uwxxvftVErwfWzjg@mail.gmail.com>
+Subject: Re: [PATCH 1/8] Compiler attributes: GCC function alignment workarounds
+To:     Mark Rutland <mark.rutland@arm.com>
+Cc:     linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
+        lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, mhiramat@kernel.org,
+        ndesaulniers@google.com, ojeda@kernel.org, peterz@infradead.org,
+        rafael.j.wysocki@intel.com, revest@chromium.org,
+        robert.moore@intel.com, rostedt@goodmis.org, will@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This patch enables support for DYNAMIC_FTRACE_WITH_CALL_OPS on arm64.
-This allows each ftrace callsite to provide an ftrace_ops to the common
-ftrace trampoline, allowing each callsite to invoke distinct tracer
-functions without the need to fall back to list processing or to
-allocate custom trampoliens for each callsite. This significantly speeds
-up cases where multiple distinct trace functions are used and callsites
-are mostly traced by a single tracer.
+On Mon, Jan 9, 2023 at 2:58 PM Mark Rutland <mark.rutland@arm.com> wrote:
+>
+> As far as I can tell, GCC doesn't respect '-falign-functions=N':
+>
+> * When the __weak__ attribute is used
+>
+>   GCC seems to forget the alignment specified by '-falign-functions=N',
+>   but will respect the '__aligned__(N)' function attribute. Thus, we can
+>   work around this by explciitly setting the alignment for weak
+>   functions.
+>
+> * When the __cold__ attribute is used
+>
+>   GCC seems to forget the alignment specified by '-falign-functions=N',
+>   and also doesn't seem to respect the '__aligned__(N)' function
+>   attribute. The only way to work around this is to not use the __cold__
+>   attibute.
 
-The main idea is to place a pointer to the ftrace_ops as a literal at a
-fixed offset from the function entry point, which can be recovered by
-the common ftrace trampoline. Using a 64-bit literal avoids branch range
-limitations, and permits the ops to be swapped atomically without
-special considerations that apply to code-patching. In future this will
-also allow for the implementation of DYNAMIC_FTRACE_WITH_DIRECT_CALLS
-without branch range limitations by using additional fields in struct
-ftrace_ops.
+If you happen to have a reduced case, then it would be nice to link it
+in the commit. A bug report to GCC would also be nice.
 
-As noted in the core patch adding support for
-DYNAMIC_FTRACE_WITH_CALL_OPS, this approach allows for directly invoking
-ftrace_ops::func even for ftrace_ops which are dynamically-allocated (or
-part of a module), without going via ftrace_ops_list_func.
+I gave it a very quick try in Compiler Explorer, but I couldn't
+reproduce it, so I guess it depends on flags, non-trivial functions or
+something else.
 
-Currently, this approach is not compatible with CLANG_CFI, as the
-presence/absence of pre-function NOPs changes the offset of the
-pre-function type hash, and there's no existing mechanism to ensure a
-consistent offset for instrumented and uninstrumented functions. When
-CLANG_CFI is enabled, the existing scheme with a global ops->func
-pointer is used, and there should be no functional change. I am
-currently working with others to allow the two to work together in
-future (though this will liekly require updated compiler support).
+> + * '-falign-functions=N', and require alignment to be specificed via a function
 
-I've benchamrked this with the ftrace_ops sample module [1], which is
-not currently upstream, but available at:
+Nit: specificed -> specified
 
-  https://lore.kernel.org/lkml/20230103124912.2948963-1-mark.rutland@arm.com
-  git://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git ftrace-ops-sample-20230109
+> +#if CONFIG_FUNCTION_ALIGNMENT > 0
+> +#define __function_aligned             __aligned(CONFIG_FUNCTION_ALIGNMENT)
+> +#else
+> +#define __function_aligned
+> +#endif
 
-Using that module I measured the total time taken for 100,000 calls to a
-trivial instrumented function, with a number of tracers enabled with
-relevant filters (which would apply to the instrumented function) and a
-number of tracers enabled with irrelevant filters (which would not apply
-to the instrumented function). I tested on an M1 MacBook Pro, running
-under a HVF-accelerated QEMU VM (i.e. on real hardware).
+Currently, the file is intended for attributes that do not depend on
+`CONFIG_*` options.
 
-Before this patch:
+What I usually mention is that we could change that policy, but
+otherwise these would go into e.g. `compiler_types.h`.
 
-  Number of tracers     || Total time  | Per-call average time (ns)
-  Relevant | Irrelevant || (ns)        | Total        | Overhead
-  =========+============++=============+==============+============
-         0 |          0 ||      94,583 |         0.95 |           -
-         0 |          1 ||      93,709 |         0.94 |           -
-         0 |          2 ||      93,666 |         0.94 |           -
-         0 |         10 ||      93,709 |         0.94 |           -
-         0 |        100 ||      93,792 |         0.94 |           -
-  ---------+------------++-------------+--------------+------------
-         1 |          1 ||   6,467,833 |        64.68 |       63.73
-         1 |          2 ||   7,509,708 |        75.10 |       74.15
-         1 |         10 ||  23,786,792 |       237.87 |      236.92
-         1 |        100 || 106,432,500 |     1,064.43 |     1063.38
-  ---------+------------++-------------+--------------+------------
-         1 |          0 ||   1,431,875 |        14.32 |       13.37
-         2 |          0 ||   6,456,334 |        64.56 |       63.62
-        10 |          0 ||  22,717,000 |       227.17 |      226.22
-       100 |          0 || 103,293,667 |      1032.94 |     1031.99
-  ---------+------------++-------------+--------------+--------------
+> +#if !defined(CONFIG_CC_IS_GCC) || (CONFIG_FUNCTION_ALIGNMENT == 0)
+>  #define __cold                          __attribute__((__cold__))
+> +#else
+> +#define __cold
+> +#endif
 
-  Note: per-call overhead is estiamated relative to the baseline case
-  with 0 relevant tracers and 0 irrelevant tracers.
+Similarly, in this case this could go into `compiler-gcc.h` /
+`compiler-clang.h` etc., since the definition will be different for
+each.
 
-After this patch
-
-  Number of tracers     || Total time  | Per-call average time (ns)
-  Relevant | Irrelevant || (ns)        | Total        | Overhead
-  =========+============++=============+==============+============
-         0 |          0 ||      94,541 |         0.95 |           -
-         0 |          1 ||      93,666 |         0.94 |           -
-         0 |          2 ||      93,709 |         0.94 |           -
-         0 |         10 ||      93,667 |         0.94 |           -
-         0 |        100 ||      93,792 |         0.94 |           -
-  ---------+------------++-------------+--------------+------------
-         1 |          1 ||     281,000 |         2.81 |        1.86
-         1 |          2 ||     281,042 |         2.81 |        1.87
-         1 |         10 ||     280,958 |         2.81 |        1.86
-         1 |        100 ||     281,250 |         2.81 |        1.87
-  ---------+------------++-------------+--------------+------------
-         1 |          0 ||     280,959 |         2.81 |        1.86
-         2 |          0 ||   6,502,708 |        65.03 |       64.08
-        10 |          0 ||  18,681,209 |       186.81 |      185.87
-       100 |          0 || 103,550,458 |     1,035.50 |     1034.56
-  ---------+------------++-------------+--------------+------------
-
-  Note: per-call overhead is estiamated relative to the baseline case
-  with 0 relevant tracers and 0 irrelevant tracers.
-
-As can be seen from the above:
-
-a) Whenever there is a single relevant tracer function associated with a
-   tracee, the overhead of invoking the tracer is constant, and does not
-   scale with the number of tracers which are *not* associated with that
-   tracee.
-
-b) The overhead for a single relevant tracer has dropped to ~1/7 of the
-   overhead prior to this series (from 13.37ns to 1.86ns). This is
-   largely due to permitting calls to dynamically-allocated ftrace_ops
-   without going through ftrace_ops_list_func.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Florent Revest <revest@chromium.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Will Deacon <will@kernel.org>
----
- arch/arm64/Kconfig               |   3 +
- arch/arm64/Makefile              |   5 +-
- arch/arm64/include/asm/ftrace.h  |  15 +--
- arch/arm64/kernel/asm-offsets.c  |   4 +
- arch/arm64/kernel/entry-ftrace.S |  32 ++++++-
- arch/arm64/kernel/ftrace.c       | 156 +++++++++++++++++++++++++++++++
- 6 files changed, 195 insertions(+), 20 deletions(-)
-
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 03934808b2ed0..7838f568fa158 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -123,6 +123,7 @@ config ARM64
- 	select DMA_DIRECT_REMAP
- 	select EDAC_SUPPORT
- 	select FRAME_POINTER
-+	select FUNCTION_ALIGNMENT_8B if DYNAMIC_FTRACE_WITH_CALL_OPS
- 	select GENERIC_ALLOCATOR
- 	select GENERIC_ARCH_TOPOLOGY
- 	select GENERIC_CLOCKEVENTS_BROADCAST
-@@ -186,6 +187,8 @@ config ARM64
- 	select HAVE_DYNAMIC_FTRACE
- 	select HAVE_DYNAMIC_FTRACE_WITH_ARGS \
- 		if $(cc-option,-fpatchable-function-entry=2)
-+	select HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS \
-+		if (DYNAMIC_FTRACE_WITH_ARGS && !CFI_CLANG)
- 	select FTRACE_MCOUNT_USE_PATCHABLE_FUNCTION_ENTRY \
- 		if DYNAMIC_FTRACE_WITH_ARGS
- 	select HAVE_EFFICIENT_UNALIGNED_ACCESS
-diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-index d62bd221828f7..4c3be442fbb35 100644
---- a/arch/arm64/Makefile
-+++ b/arch/arm64/Makefile
-@@ -139,7 +139,10 @@ endif
- 
- CHECKFLAGS	+= -D__aarch64__
- 
--ifeq ($(CONFIG_DYNAMIC_FTRACE_WITH_ARGS),y)
-+ifeq ($(CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS),y)
-+  KBUILD_CPPFLAGS += -DCC_USING_PATCHABLE_FUNCTION_ENTRY
-+  CC_FLAGS_FTRACE := -fpatchable-function-entry=4,2
-+else ifeq ($(CONFIG_DYNAMIC_FTRACE_WITH_ARGS),y)
-   KBUILD_CPPFLAGS += -DCC_USING_PATCHABLE_FUNCTION_ENTRY
-   CC_FLAGS_FTRACE := -fpatchable-function-entry=2
- endif
-diff --git a/arch/arm64/include/asm/ftrace.h b/arch/arm64/include/asm/ftrace.h
-index 5664729800ae1..1c2672bbbf379 100644
---- a/arch/arm64/include/asm/ftrace.h
-+++ b/arch/arm64/include/asm/ftrace.h
-@@ -62,20 +62,7 @@ extern unsigned long ftrace_graph_call;
- 
- extern void return_to_handler(void);
- 
--static inline unsigned long ftrace_call_adjust(unsigned long addr)
--{
--	/*
--	 * Adjust addr to point at the BL in the callsite.
--	 * See ftrace_init_nop() for the callsite sequence.
--	 */
--	if (IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_ARGS))
--		return addr + AARCH64_INSN_SIZE;
--	/*
--	 * addr is the address of the mcount call instruction.
--	 * recordmcount does the necessary offset calculation.
--	 */
--	return addr;
--}
-+unsigned long ftrace_call_adjust(unsigned long addr);
- 
- #ifdef CONFIG_DYNAMIC_FTRACE_WITH_ARGS
- struct dyn_ftrace;
-diff --git a/arch/arm64/kernel/asm-offsets.c b/arch/arm64/kernel/asm-offsets.c
-index 2234624536d95..ae345b06e9f7e 100644
---- a/arch/arm64/kernel/asm-offsets.c
-+++ b/arch/arm64/kernel/asm-offsets.c
-@@ -9,6 +9,7 @@
- 
- #include <linux/arm_sdei.h>
- #include <linux/sched.h>
-+#include <linux/ftrace.h>
- #include <linux/kexec.h>
- #include <linux/mm.h>
- #include <linux/dma-mapping.h>
-@@ -193,6 +194,9 @@ int main(void)
-   DEFINE(KIMAGE_HEAD,			offsetof(struct kimage, head));
-   DEFINE(KIMAGE_START,			offsetof(struct kimage, start));
-   BLANK();
-+#endif
-+#ifdef CONFIG_FUNCTION_TRACER
-+  DEFINE(FTRACE_OPS_FUNC,		offsetof(struct ftrace_ops, func));
- #endif
-   return 0;
- }
-diff --git a/arch/arm64/kernel/entry-ftrace.S b/arch/arm64/kernel/entry-ftrace.S
-index 3b625f76ffbae..350ed81324ace 100644
---- a/arch/arm64/kernel/entry-ftrace.S
-+++ b/arch/arm64/kernel/entry-ftrace.S
-@@ -65,13 +65,35 @@ SYM_CODE_START(ftrace_caller)
- 	stp	x29, x30, [sp, #FREGS_SIZE]
- 	add	x29, sp, #FREGS_SIZE
- 
--	sub	x0, x30, #AARCH64_INSN_SIZE	// ip (callsite's BL insn)
--	mov	x1, x9				// parent_ip (callsite's LR)
--	ldr_l	x2, function_trace_op		// op
--	mov	x3, sp				// regs
-+	/* Prepare arguments for the the tracer func */
-+	sub	x0, x30, #AARCH64_INSN_SIZE		// ip (callsite's BL insn)
-+	mov	x1, x9					// parent_ip (callsite's LR)
-+	mov	x3, sp					// regs
-+
-+#ifdef CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
-+	/*
-+	 * The literal pointer to the ops is at an 8-byte aligned boundary
-+	 * which is either 12 or 16 bytes before the BL instruction in the call
-+	 * site. See ftrace_call_adjust() for details.
-+	 *
-+	 * Therefore here the LR points at `literal + 16` or `literal + 20`,
-+	 * and we can find the address of the literal in either case by
-+	 * aligning to an 8-byte boundary and subtracting 16. We do the
-+	 * alignment first as this allows us to fold the subtraction into the
-+	 * LDR.
-+	 */
-+	bic	x2, x30, 0x7
-+	ldr	x2, [x2, #-16]				// op
-+
-+	ldr	x4, [x2, #FTRACE_OPS_FUNC]		// op->func
-+	blr	x4					// op->func(ip, parent_ip, op, regs)
-+
-+#else
-+	ldr_l   x2, function_trace_op			// op
- 
- SYM_INNER_LABEL(ftrace_call, SYM_L_GLOBAL)
--	bl	ftrace_stub
-+	bl      ftrace_stub				// func(ip, parent_ip, op, regs)
-+#endif
- 
- /*
-  * At the callsite x0-x8 and x19-x30 were live. Any C code will have preserved
-diff --git a/arch/arm64/kernel/ftrace.c b/arch/arm64/kernel/ftrace.c
-index 38ebdf063255b..5545fe1a90125 100644
---- a/arch/arm64/kernel/ftrace.c
-+++ b/arch/arm64/kernel/ftrace.c
-@@ -60,6 +60,89 @@ int ftrace_regs_query_register_offset(const char *name)
- }
- #endif
- 
-+unsigned long ftrace_call_adjust(unsigned long addr)
-+{
-+	/*
-+	 * When using mcount, addr is the address of the mcount call
-+	 * instruction, and no adjustment is necessary.
-+	 */
-+	if (!IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_ARGS))
-+		return addr;
-+
-+	/*
-+	 * When using patchable-function-entry without pre-function NOPS, addr
-+	 * is the address of the first NOP after the function entry point.
-+	 *
-+	 * The compiler has either generated:
-+	 *
-+	 * addr+00:	func:	NOP		// To be patched to MOV X9, LR
-+	 * addr+04:		NOP		// To be patched to BL <caller>
-+	 *
-+	 * Or:
-+	 *
-+	 * addr-04:		BTI	C
-+	 * addr+00:	func:	NOP		// To be patched to MOV X9, LR
-+	 * addr+04:		NOP		// To be patched to BL <caller>
-+	 *
-+	 * We must adjust addr to the address of the NOP which will be patched
-+	 * to `BL <caller>`, which is at `addr + 4` bytes in either case.
-+	 *
-+	 */
-+	if (!IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS))
-+		return addr + AARCH64_INSN_SIZE;
-+
-+	/*
-+	 * When using patchable-function-entry with pre-function NOPs, addr is
-+	 * the address of the first pre-function NOP.
-+	 *
-+	 * Starting from an 8-byte aligned base, the compiler has either
-+	 * generated:
-+	 *
-+	 * addr+00:		NOP		// Literal (first 32 bits)
-+	 * addr+04:		NOP		// Literal (last 32 bits)
-+	 * addr+08:	func:	NOP		// To be patched to MOV X9, LR
-+	 * addr+12:		NOP		// To be patched to BL <caller>
-+	 *
-+	 * Or:
-+	 *
-+	 * addr+00:		NOP		// Literal (first 32 bits)
-+	 * addr+04:		NOP		// Literal (last 32 bits)
-+	 * addr+08:	func:	BTI	C
-+	 * addr+12:		NOP		// To be patched to MOV X9, LR
-+	 * addr+16:		NOP		// To be patched to BL <caller>
-+	 *
-+	 * We must adjust addr to the address of the NOP which will be patched
-+	 * to `BL <caller>`, which is at either addr+12 or addr+16 depending on
-+	 * whether there is a BTI.
-+	 */
-+
-+	if (!IS_ALIGNED(addr, sizeof(unsigned long))) {
-+		WARN_RATELIMIT(1, "Misaligned patch-site %pS\n",
-+			       (void *)(addr + 8));
-+		return 0;
-+	}
-+
-+	/* Skip the NOPs placed before the function entry point */
-+	addr += 2 * AARCH64_INSN_SIZE;
-+
-+	/* Skip any BTI */
-+	if (IS_ENABLED(CONFIG_ARM64_BTI_KERNEL)) {
-+		u32 insn = le32_to_cpu(*(__le32 *)addr);
-+
-+		if (aarch64_insn_is_bti(insn)) {
-+			addr += AARCH64_INSN_SIZE;
-+		} else if (insn != aarch64_insn_gen_nop()) {
-+			WARN_RATELIMIT(1, "unexpected insn in patch-site %pS: 0x%08x\n",
-+				       (void *)addr, insn);
-+		}
-+	}
-+
-+	/* Skip the first NOP after function entry */
-+	addr += AARCH64_INSN_SIZE;
-+
-+	return addr;
-+}
-+
- /*
-  * Replace a single instruction, which may be a branch or NOP.
-  * If @validate == true, a replaced instruction is checked against 'old'.
-@@ -98,6 +181,13 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
- 	unsigned long pc;
- 	u32 new;
- 
-+	/*
-+	 * When using CALL_OPS, the function to call is associated with the
-+	 * call site, and we don't have a global function pointer to update.
-+	 */
-+	if (IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS))
-+		return 0;
-+
- 	pc = (unsigned long)ftrace_call;
- 	new = aarch64_insn_gen_branch_imm(pc, (unsigned long)func,
- 					  AARCH64_INSN_BRANCH_LINK);
-@@ -176,6 +266,44 @@ static bool ftrace_find_callable_addr(struct dyn_ftrace *rec,
- 	return true;
- }
- 
-+#ifdef CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
-+static const struct ftrace_ops *arm64_rec_get_ops(struct dyn_ftrace *rec)
-+{
-+	const struct ftrace_ops *ops = NULL;
-+
-+	if (rec->flags & FTRACE_FL_CALL_OPS_EN) {
-+		ops = ftrace_find_unique_ops(rec);
-+		WARN_ON_ONCE(!ops);
-+	}
-+
-+	if (!ops)
-+		ops = &ftrace_list_ops;
-+
-+	return ops;
-+}
-+
-+static int ftrace_rec_set_ops(const struct dyn_ftrace *rec,
-+			      const struct ftrace_ops *ops)
-+{
-+	unsigned long literal = ALIGN_DOWN(rec->ip - 12, 8);
-+	return aarch64_insn_write_literal_u64((void *)literal,
-+					      (unsigned long)ops);
-+}
-+
-+static int ftrace_rec_set_nop_ops(struct dyn_ftrace *rec)
-+{
-+	return ftrace_rec_set_ops(rec, &ftrace_nop_ops);
-+}
-+
-+static int ftrace_rec_update_ops(struct dyn_ftrace *rec)
-+{
-+	return ftrace_rec_set_ops(rec, arm64_rec_get_ops(rec));
-+}
-+#else
-+static int ftrace_rec_set_nop_ops(struct dyn_ftrace *rec) { return 0; }
-+static int ftrace_rec_update_ops(struct dyn_ftrace *rec) { return 0; }
-+#endif
-+
- /*
-  * Turn on the call to ftrace_caller() in instrumented function
-  */
-@@ -183,6 +311,11 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
- {
- 	unsigned long pc = rec->ip;
- 	u32 old, new;
-+	int ret;
-+
-+	ret = ftrace_rec_update_ops(rec);
-+	if (ret)
-+		return ret;
- 
- 	if (!ftrace_find_callable_addr(rec, NULL, &addr))
- 		return -EINVAL;
-@@ -193,6 +326,19 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
- 	return ftrace_modify_code(pc, old, new, true);
- }
- 
-+#ifdef CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
-+int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
-+		       unsigned long addr)
-+{
-+	if (WARN_ON_ONCE(old_addr != (unsigned long)ftrace_caller))
-+		return -EINVAL;
-+	if (WARN_ON_ONCE(addr != (unsigned long)ftrace_caller))
-+		return -EINVAL;
-+
-+	return ftrace_rec_update_ops(rec);
-+}
-+#endif
-+
- #ifdef CONFIG_DYNAMIC_FTRACE_WITH_ARGS
- /*
-  * The compiler has inserted two NOPs before the regular function prologue.
-@@ -220,6 +366,11 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
- {
- 	unsigned long pc = rec->ip - AARCH64_INSN_SIZE;
- 	u32 old, new;
-+	int ret;
-+
-+	ret = ftrace_rec_set_nop_ops(rec);
-+	if (ret)
-+		return ret;
- 
- 	old = aarch64_insn_gen_nop();
- 	new = aarch64_insn_gen_move_reg(AARCH64_INSN_REG_9,
-@@ -237,9 +388,14 @@ int ftrace_make_nop(struct module *mod, struct dyn_ftrace *rec,
- {
- 	unsigned long pc = rec->ip;
- 	u32 old = 0, new;
-+	int ret;
- 
- 	new = aarch64_insn_gen_nop();
- 
-+	ret = ftrace_rec_set_nop_ops(rec);
-+	if (ret)
-+		return ret;
-+
- 	/*
- 	 * When using mcount, callsites in modules may have been initalized to
- 	 * call an arbitrary module PLT (which redirects to the _mcount stub)
--- 
-2.30.2
-
+Cheers,
+Miguel
