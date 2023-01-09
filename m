@@ -2,124 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D4D06628C0
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jan 2023 15:44:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5234D662AEC
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jan 2023 17:13:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232753AbjAIOnp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Jan 2023 09:43:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33326 "EHLO
+        id S229496AbjAIQNY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 Jan 2023 11:13:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229801AbjAIOn3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Jan 2023 09:43:29 -0500
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88A8E1D0E3;
-        Mon,  9 Jan 2023 06:43:28 -0800 (PST)
-Received: by mail-yb1-xb29.google.com with SMTP id c124so8670866ybb.13;
-        Mon, 09 Jan 2023 06:43:28 -0800 (PST)
+        with ESMTP id S230115AbjAIQNX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Jan 2023 11:13:23 -0500
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A20E1BC92
+        for <linux-acpi@vger.kernel.org>; Mon,  9 Jan 2023 08:13:22 -0800 (PST)
+Received: by mail-wr1-x435.google.com with SMTP id bk16so8678127wrb.11
+        for <linux-acpi@vger.kernel.org>; Mon, 09 Jan 2023 08:13:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=oOV5umT1eYSPCClB4+myHjuitl4aoXhb6nSLgQO08gk=;
-        b=Ib8K8rpcpPPnd9UkyVa/rWjXDwToqrzgUpjzVKUSRZwwpX1/bygdNFWszldeYNJSKv
-         2l2s465QUYwoiGziVnnF+6sSA0Ej93BBrzdBGvm7sXf7hiGWgcQRVHIJO1B7896Eh7tf
-         1j4CN9XN5vSSv4S4fR29YT+fN3APmmwcoBNEw1xh4GC6Lutp0cu54vQee31/gXmmzluQ
-         P5uoZfOVYbNt9L1Hc+i31cFQP/6NHfK1WqLbPz2Jglew/mwYo1kS+FqRiVDf9jGR/7Tt
-         Kp6UnbAdy87hgMXFq7W93ytiR9shY9Ix+tjFLUIWWDPM1RRwnFzQBV3biIyw0HbibwU9
-         8TRQ==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TfiNGwJ7nUW2t/7W07NzXNetigfULajsYrYfNX1hTqI=;
+        b=V32aGgayNcRgyV3hZzHKzk9rB+/sTElIiVBlCUFiadIhjVdF09ElSQL5sfaDtUfERK
+         Y73xmvp0NAnblGHZc18oF3DHYK+9X6MHX3vpA9wNCh4ckp/R+7Ly5z5tyh5KbjxwWrlY
+         ypqBs9gxgMOwNYJgC4OOlGPDqHDk4KgKS7ZO8NQ4ijY5oRuw4UprjvS73G4qmZ90M/ZY
+         hswiQ1jt2mefqxFStgsPpdTOUNek6w+A2FtghsxuKhQwhw7njWaU6CZAO3TpdikBemL/
+         0m7d4/EMWu87X6Aqm5m1Q+urHQjtslk1MzGPx2U2KIT62uFld08tiQU77jUHagkijePw
+         qBTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oOV5umT1eYSPCClB4+myHjuitl4aoXhb6nSLgQO08gk=;
-        b=g55Qrfu03NIF6y994ds0T8MomCF6SvdzFW6p68Y8myu8spAerfUlXaRJY/eJegkO1p
-         IRskS2vduODwUvOY/3F7zVBXqo1dsJNGA1OQv20NMKLIHDm5jVyE7F9FBK9nIaYDKNFx
-         vP3PL2YyNAaBZfF/ktH8LFFnMg0eo6eI7hc1trNpItReAyfzM5Di/WUvTh0B5rAjPITV
-         Wd823RQDSocpQ9ibp0ouhHwzT0Fu3ecfgXRJYlSsSQzCTg/UbueB1Fp9qVvyFBWk5SBj
-         IZ3DPe0qZumiCRPqGLrSpaRlaXMnzCW/cAz5j1opX32nd3XoIg53lGqbnAja5veGd6sS
-         Qd+g==
-X-Gm-Message-State: AFqh2koHgTXt768F1ywGAuL09xIzHCndeJyiKy/tjwM9YDZnUwgcs3WO
-        3NKPdhU1QJ5CHRp9kMTPRXdEtVNucsyoj/ztnYI=
-X-Google-Smtp-Source: AMrXdXvKAG5k8loTwZqxTwRU18wP1QE+Dt8R/ykgqKVgjUlqiWFM6VPMl5w1bD4uIBxMdKmhYHCFhd88rGVJU2HCyQE=
-X-Received: by 2002:a25:af13:0:b0:7bf:b130:9e24 with SMTP id
- a19-20020a25af13000000b007bfb1309e24mr164044ybh.328.1673275407758; Mon, 09
- Jan 2023 06:43:27 -0800 (PST)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TfiNGwJ7nUW2t/7W07NzXNetigfULajsYrYfNX1hTqI=;
+        b=u4SlA/m7poT+ga/v468LOrtWoT2Q+1MFTtt4ERmmvybvlTtgzVbMIlxsaGoUHVIAMd
+         o3OjfLI4lCIy3jFTKX3CEKXQi8Ov8NS2/x8VSlTAZHP539KAfuGSZ5jexiinOdJy2P9H
+         wDFsVJQVMy49YM9xezyUx++7Hlq3g4HUN+hiuDzcueNj0SDufaI/GJwibD9KqQBpdtkG
+         WLZ05NzpIjpzXV36iZlzMlc5uHO1WSSDEpq/7LKzgpNu2Rs4ZPKXcyr7QZUUPoUTgChH
+         VMcg4brIIdloeboDMm0FUUy9ikI0yS8bLAiTxmq1iWBp8VqyTbl3+Kykv9DmwlNvbPGF
+         uFOg==
+X-Gm-Message-State: AFqh2kpviy10ARxR8epWoNZKuFpBLf7L9bugWhNdqfCMawCkItC9S1cM
+        ga7aa7Q8ovG9EQlOPd/TKcN54w==
+X-Google-Smtp-Source: AMrXdXva9ejqrScLSqJndmjhzGnLcXaKNxvT63XElWgwEiO/vbKsn8Gw5EoGvIn5+AWshodqmk7R9Q==
+X-Received: by 2002:adf:f482:0:b0:2bb:f4bf:e758 with SMTP id l2-20020adff482000000b002bbf4bfe758mr2736091wro.48.1673280800820;
+        Mon, 09 Jan 2023 08:13:20 -0800 (PST)
+Received: from [192.168.1.109] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id m10-20020a056000008a00b002683695bf97sm8825933wrx.58.2023.01.09.08.13.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Jan 2023 08:13:20 -0800 (PST)
+Message-ID: <3b4d93e1-a065-49f9-93d7-cec4807d411e@linaro.org>
+Date:   Mon, 9 Jan 2023 17:13:16 +0100
 MIME-Version: 1.0
-References: <20230109135828.879136-1-mark.rutland@arm.com> <20230109135828.879136-2-mark.rutland@arm.com>
-In-Reply-To: <20230109135828.879136-2-mark.rutland@arm.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 9 Jan 2023 15:43:16 +0100
-Message-ID: <CANiq72kgmFYEO_EB_NxAF=S7VOf45KM7W3uwxxvftVErwfWzjg@mail.gmail.com>
-Subject: Re: [PATCH 1/8] Compiler attributes: GCC function alignment workarounds
-To:     Mark Rutland <mark.rutland@arm.com>
-Cc:     linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
-        lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, mhiramat@kernel.org,
-        ndesaulniers@google.com, ojeda@kernel.org, peterz@infradead.org,
-        rafael.j.wysocki@intel.com, revest@chromium.org,
-        robert.moore@intel.com, rostedt@goodmis.org, will@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH v4 3/6] cacheinfo: Check 'cache-unified' property to count
+ cache leaves
+Content-Language: en-US
+To:     Pierre Gondois <pierre.gondois@arm.com>,
+        linux-kernel@vger.kernel.org
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Gavin Shan <gshan@redhat.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org
+References: <20230104183033.755668-1-pierre.gondois@arm.com>
+ <20230104183033.755668-4-pierre.gondois@arm.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230104183033.755668-4-pierre.gondois@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 9, 2023 at 2:58 PM Mark Rutland <mark.rutland@arm.com> wrote:
->
-> As far as I can tell, GCC doesn't respect '-falign-functions=N':
->
-> * When the __weak__ attribute is used
->
->   GCC seems to forget the alignment specified by '-falign-functions=N',
->   but will respect the '__aligned__(N)' function attribute. Thus, we can
->   work around this by explciitly setting the alignment for weak
->   functions.
->
-> * When the __cold__ attribute is used
->
->   GCC seems to forget the alignment specified by '-falign-functions=N',
->   and also doesn't seem to respect the '__aligned__(N)' function
->   attribute. The only way to work around this is to not use the __cold__
->   attibute.
+On 04/01/2023 19:30, Pierre Gondois wrote:
+> The DeviceTree Specification v0.3 specifies that the cache node
+> '[d-|i-|]cache-size' property is required. The 'cache-unified'
+> property is specifies whether the cache level is separate
+> or unified.
+> 
+> If the cache-size property is missing, no cache leaves is accounted.
+> This can lead to a 'BUG: KASAN: slab-out-of-bounds' [1] bug.
+> 
+> Check 'cache-unified' property and always account for at least
+> one cache leave when parsing the device tree.
+> 
+> [1] https://lore.kernel.org/all/0f19cb3f-d6cf-4032-66d2-dedc9d09a0e3@linaro.org/
+> 
+> Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
 
-If you happen to have a reduced case, then it would be nice to link it
-in the commit. A bug report to GCC would also be nice.
+Thanks, solves the issue:
 
-I gave it a very quick try in Compiler Explorer, but I couldn't
-reproduce it, so I guess it depends on flags, non-trivial functions or
-something else.
+Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-> + * '-falign-functions=N', and require alignment to be specificed via a function
+Best regards,
+Krzysztof
 
-Nit: specificed -> specified
-
-> +#if CONFIG_FUNCTION_ALIGNMENT > 0
-> +#define __function_aligned             __aligned(CONFIG_FUNCTION_ALIGNMENT)
-> +#else
-> +#define __function_aligned
-> +#endif
-
-Currently, the file is intended for attributes that do not depend on
-`CONFIG_*` options.
-
-What I usually mention is that we could change that policy, but
-otherwise these would go into e.g. `compiler_types.h`.
-
-> +#if !defined(CONFIG_CC_IS_GCC) || (CONFIG_FUNCTION_ALIGNMENT == 0)
->  #define __cold                          __attribute__((__cold__))
-> +#else
-> +#define __cold
-> +#endif
-
-Similarly, in this case this could go into `compiler-gcc.h` /
-`compiler-clang.h` etc., since the definition will be different for
-each.
-
-Cheers,
-Miguel
