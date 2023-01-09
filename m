@@ -2,127 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8DE966308D
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jan 2023 20:38:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D92016630A1
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jan 2023 20:44:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237505AbjAITiO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Jan 2023 14:38:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42758 "EHLO
+        id S237512AbjAITnK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 Jan 2023 14:43:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237526AbjAITiN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Jan 2023 14:38:13 -0500
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F14996171;
-        Mon,  9 Jan 2023 11:38:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1673293092; x=1704829092;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=+nSkl3nf47aICAlHJic69nCJD7igzHmBHn2JiTZ1cJs=;
-  b=ZONG6QbuYRlWq29Ea9xnRprFFGp0CK8qBeEOdiS7FdMT+Dh7L7Evbime
-   ZyAIhTG7HupvXuWPl0YNRyRWVPkEBZlU3cigj4Y+ZlZeJ5Xlen+8lxpKl
-   azEGr7vl6uNG6VrHXaXrRgkO0zxcMRwd8k3OPNnY/3h6N4gfLYiqv3xgU
-   g=;
-Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 09 Jan 2023 11:38:11 -0800
-X-QCInternal: smtphost
-Received: from nasanex01b.na.qualcomm.com ([10.46.141.250])
-  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2023 11:38:11 -0800
-Received: from [10.134.67.48] (10.80.80.8) by nasanex01b.na.qualcomm.com
- (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Mon, 9 Jan 2023
- 11:38:10 -0800
-Message-ID: <bea00abc-b137-945e-e0ad-67ba41e4d691@quicinc.com>
-Date:   Mon, 9 Jan 2023 11:38:10 -0800
+        with ESMTP id S237470AbjAITmk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Jan 2023 14:42:40 -0500
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96FCD6CFE1;
+        Mon,  9 Jan 2023 11:42:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1673293359; x=1704829359;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=t0KtIDqmaJYRE1NQYpq+S3S1qQTjDdQlFxzAXzrQRYU=;
+  b=guKMXeEBx+uGo8zRBad8KdfPXBXrrs6CLSM06F+btBlUEQe1PJSWh5r8
+   TkadjJ/bsVjnfGZH5basmdM4kVeT5UXoPhcV02yrjyYfoeIbfc2tev9Pw
+   tg6CQxxAGpthrKZh2CsF9RgGk0DKzUFCPuiMAlc9J6NrflubXv8pg3PsN
+   6Dw1shNgKybzJVkm/Ogm1GkfBBjS98Z8TfoXMSkDdLYItXfU/XUU5Iwbj
+   aQliN6dmoJ4Sl517Tt3yuhMuxnrW6ttAl1i54Yn1mPnfX33BsEqx+OghH
+   5MGibWrRQAm/Qc5UrVlP2y839mlcTzox3ZMI0vdzssUdphe4cQFtsMX/S
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10585"; a="385269859"
+X-IronPort-AV: E=Sophos;i="5.96,311,1665471600"; 
+   d="scan'208";a="385269859"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2023 11:42:32 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10585"; a="656783487"
+X-IronPort-AV: E=Sophos;i="5.96,311,1665471600"; 
+   d="scan'208";a="656783487"
+Received: from cwchen-mobl.amr.corp.intel.com (HELO localhost) ([10.212.45.225])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2023 11:42:31 -0800
+From:   Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH v6 0/8] cxl: Process event logs
+Date:   Mon, 09 Jan 2023 11:42:20 -0800
+Message-Id: <20221216-cxl-ev-log-v6-0-346583105b30@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH v8 12/28] gunyah: vm_mgr: Introduce basic VM Manager
-Content-Language: en-US
-To:     Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
-CC:     Bjorn Andersson <quic_bjorande@quicinc.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Murali Nalajala <quic_mnalajal@quicinc.com>,
-        Trilok Soni <quic_tsoni@quicinc.com>,
-        Carl van Schaik <quic_cvanscha@quicinc.com>,
-        Prakruthi Deepak Heragu <quic_pheragu@quicinc.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-acpi@vger.kernel.org>
-References: <20221219225850.2397345-1-quic_eberman@quicinc.com>
- <20221219225850.2397345-13-quic_eberman@quicinc.com>
- <20230109090553.GA1737564@quicinc.com>
-From:   Elliot Berman <quic_eberman@quicinc.com>
-In-Reply-To: <20230109090553.GA1737564@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-B4-Tracking: v=1; b=H4sIABxuvGMC/1WOwQ6CMBBEf8X07JJugYKe/A/jAcoCm9RiWqwaw
+ 79bSEz0+CZ5M/MWgTxTEMfdW3iKHHhyCfR+J8zYuIGAu8RCSaVQoQbztEAR7DRAL3Ve53ioygJF
+ EtomELS+cWZMirtbm8Kbp56f28L5knjkME/+tQ1GXNNvt5KV1KrKMK9UIRUgsG+yB7F7ndjNZDM
+ zXcXaEctf7+9TLEEC1tJorKkrO/xVl2X5AAHSxbvxAAAA
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Ben Widawsky <bwidawsk@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
+        Bjorn Helgaas <helgaas@kernel.org>
+X-Mailer: b4 0.12-dev-cc11a
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1673293350; l=2483;
+ i=ira.weiny@intel.com; s=20221211; h=from:subject:message-id;
+ bh=t0KtIDqmaJYRE1NQYpq+S3S1qQTjDdQlFxzAXzrQRYU=;
+ b=Mo2DCQbXFcnT8uYCAtepvwGqxQOa0nqdlTARb74mU+RfuKxIJ5mIGQ2yGFB9ohKcO7QEcqZZa/Qy
+ oaftH/DyA5hvzPJ2uleeohuUaO1jInr24clsHqBFEVcCNvf1wTQ+
+X-Developer-Key: i=ira.weiny@intel.com; a=ed25519;
+ pk=noldbkG+Wp1qXRrrkfY1QJpDf7QsOEthbOT7vm0PqsE=
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+I accidentally missed some comments from Dan in my V5 that I sent.[*]  Dan
+asked me to do a quick spin to pick them up.
 
+[*] https://lore.kernel.org/all/6398dd6ed80fa_b05d1294fc@dwillia2-xfh.jf.intel.com.notmuch/
 
-On 1/9/2023 1:05 AM, Srivatsa Vaddagiri wrote:
-> * Elliot Berman <quic_eberman@quicinc.com> [2022-12-19 14:58:33]:
-> 
->> +config GUNYAH_VM_MANAGER
-> 
-> Any reason why this needs to be a separate config? IOW CONFIG_GUNYAH should
-> enable VM management functionality also.
-> 
->> @@ -550,14 +580,29 @@ static int gh_rm_drv_probe(struct platform_device *pdev)
->>   	rsc_mgr->msgq_client.rx_callback = gh_rm_msgq_rx_data;
->>   	rsc_mgr->msgq_client.tx_done = gh_rm_msgq_tx_done;
->>   
->> -	return gh_msgq_init(&pdev->dev, &rsc_mgr->msgq, &rsc_mgr->msgq_client,
->> +	ret = gh_msgq_init(&pdev->dev, &rsc_mgr->msgq, &rsc_mgr->msgq_client,
->>   				&rsc_mgr->tx_ghrsc, &rsc_mgr->rx_ghrsc);
-> 
-> Bail on error here.
-> 
-> [snip]
-> 
->> +static __must_check struct gunyah_vm *gunyah_vm_alloc(struct gh_rm_rpc *rm)
->> +{
->> +	struct gunyah_vm *ghvm;
->> +	int vmid;
->> +
->> +	vmid = gh_rm_alloc_vmid(rm, 0);
->> +	if (vmid < 0)
->> +		return ERR_PTR(vmid);
->> +
->> +	ghvm = kzalloc(sizeof(*ghvm), GFP_KERNEL);
->> +	if (!ghvm)
-> 
-> dealloc_vmid here (as well as few other error paths)?
-> 
->> +		return ghvm;
->> +
->> +	get_gh_rm(rm);
+This code has been tested with a newer qemu which allows for more events to be
+returned at a time as well an additional QMP event and interrupt injection.
+Those patches will follow once they have been cleaned up.
 
-Applied all of these.
+The series is now in 3 parts:
 
-Thanks,
-Elliot
+       1) Base functionality including interrupts
+       2) Tracing specific events (Dynamic Capacity Event Record is defered)
+       3) cxl-test infrastructure for basic tests
+
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Alison Schofield <alison.schofield@intel.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Ben Widawsky <bwidawsk@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-pci@vger.kernel.org
+Cc: linux-acpi@vger.kernel.org
+Cc: linux-cxl@vger.kernel.org
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+
+---
+Changes in v6:
+- Dan: address the missed comments on V4
+- Link to v5: https://lore.kernel.org/r/20221216-cxl-ev-log-v5-0-180c618ed5d1@intel.com
+
+---
+Davidlohr Bueso (1):
+      cxl/mem: Wire up event interrupts
+
+Ira Weiny (7):
+      cxl/mem: Read, trace, and clear events on driver load
+      cxl/mem: Trace General Media Event Record
+      cxl/mem: Trace DRAM Event Record
+      cxl/mem: Trace Memory Module Event Record
+      cxl/test: Add generic mock events
+      cxl/test: Add specific events
+      cxl/test: Simulate event log overflow
+
+ drivers/cxl/core/mbox.c       | 187 +++++++++++++++++
+ drivers/cxl/core/trace.h      | 479 ++++++++++++++++++++++++++++++++++++++++++
+ drivers/cxl/cxl.h             |  16 ++
+ drivers/cxl/cxlmem.h          | 173 +++++++++++++++
+ drivers/cxl/cxlpci.h          |   6 +
+ drivers/cxl/pci.c             | 241 +++++++++++++++++++++
+ tools/testing/cxl/test/Kbuild |   2 +-
+ tools/testing/cxl/test/mem.c  | 352 +++++++++++++++++++++++++++++++
+ 8 files changed, 1455 insertions(+), 1 deletion(-)
+---
+base-commit: 589c3357370a596ef7c99c00baca8ac799fce531
+change-id: 20221216-cxl-ev-log-f06383197541
+
+Best regards,
+-- 
+Ira Weiny <ira.weiny@intel.com>
