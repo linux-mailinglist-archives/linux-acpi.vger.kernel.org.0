@@ -2,153 +2,236 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C7886615FC
-	for <lists+linux-acpi@lfdr.de>; Sun,  8 Jan 2023 15:59:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 845DB661F0B
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jan 2023 08:13:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231551AbjAHO71 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 8 Jan 2023 09:59:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42322 "EHLO
+        id S233603AbjAIHNt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 9 Jan 2023 02:13:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229627AbjAHO70 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 8 Jan 2023 09:59:26 -0500
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B883B1E9
-        for <linux-acpi@vger.kernel.org>; Sun,  8 Jan 2023 06:59:25 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id g19-20020a05600c4ed300b003d9eb1dbc0aso1714665wmq.3
-        for <linux-acpi@vger.kernel.org>; Sun, 08 Jan 2023 06:59:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=l4M/UpUULlMB/QRDK84kNKvNm3p0JIVteECSWzec3Ns=;
-        b=Mdh4xNLK5EGYOgX2nVxEUx5L1UiPB+khVNYaQfPSmQStL1BSuw5IOXtROunniO6+xe
-         KMrYehrz4oX+cRis9/L8u/Nq1Yt8UssFdNEOXzUJS7904FSWWjW2b9eZ59h3X1eFICK0
-         CivGtb6v6jrgzEm9IUafFiSY/TAVNVQXFFuQMQhQEpRlWyuaTF728gyxDJX0dt/ybM73
-         Bd9ZgMwS01+5RgMiGa8EnB6X3S4eovB0EOxkXdn5FtAYKtF211SDstDZFQuWY6zhh4w6
-         DsC4qFJZv0MvRdXUqjfW8/PLGRBYba6rjx7x35eck57r9G24WJtGBTokaHGZ3ajBtCSP
-         Lw7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=l4M/UpUULlMB/QRDK84kNKvNm3p0JIVteECSWzec3Ns=;
-        b=RBgWV5Dbxty6HswmTMY5o4VFkK5ZW5ucv72FhSaxVkBFHVWTau91wUx52t6VQ0hu1q
-         fEFQCjhZAyLXmw9Gi77t5r3QTVtxY3egQAj0KCZkA1BsxwVe3QguJJoU3wXKy3sVWYKl
-         zalbExdbNjZ86ubSYrl/UmAYNk5ciLmpToj2uvlxGa+O7STBPXnik7KgW0LIhAlVmdKZ
-         qO7RlQLVOb8YSpwoMBMXdVvja+U65c3V462X5F0SWWwenO49yzIUQHBj72UfWWBITZ1K
-         1rjvPszzLdWnXX5ancDph5hv4DHafqn+LyreVnl6NKx/7ZIjzdUqUWCZ0gqySkBS8MOJ
-         Jq/A==
-X-Gm-Message-State: AFqh2kokzclOmiqGvMJ8NBz1vDhteMJqN8yj9Jw8YIW2gdEOD6pmyRaW
-        CcXL+1Od33g+v6CjrH3n3RvfKw==
-X-Google-Smtp-Source: AMrXdXu36HW1suA8i90fum2DC1iUwZ6q029yvEEFPy79hWo1C+3IfHGRRRTwWy5zSQkwe5jiynSHMQ==
-X-Received: by 2002:a05:600c:3502:b0:3d9:e75c:756c with SMTP id h2-20020a05600c350200b003d9e75c756cmr3336586wmq.12.1673189963864;
-        Sun, 08 Jan 2023 06:59:23 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id u8-20020a05600c19c800b003d9780466b0sm9203210wmq.31.2023.01.08.06.59.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 08 Jan 2023 06:59:23 -0800 (PST)
-Message-ID: <7f672ee7-7b78-dad9-ca58-2eb4c2c2dd39@linaro.org>
-Date:   Sun, 8 Jan 2023 15:59:20 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH v8 7/9] dt/bindings: display: bridge: it6505: Add
- mode-switch support
-Content-Language: en-US
-To:     Pin-yen Lin <treapking@chromium.org>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        with ESMTP id S233652AbjAIHNi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Jan 2023 02:13:38 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2606C655A;
+        Sun,  8 Jan 2023 23:13:37 -0800 (PST)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30952lm0009418;
+        Mon, 9 Jan 2023 07:13:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=date : from : to :
+ cc : subject : message-id : reply-to : references : mime-version :
+ content-type : in-reply-to; s=qcppdkim1;
+ bh=+T3VIEWVegWplUGukrhykwFnwriNfkJ62nVMapRgGrM=;
+ b=jXrP28WMz4c3qndcA3P40qMMezIc41FWg6h6xqFLqCWV0gmNiDnnJPSsygm5xGQUeCuh
+ g3HN4+EdBR0YF80wvBghWtE4vbAll3XQ3Uwl/Bcl9kmyP1GJlXGON2MlkQDJ2HDQJJXh
+ gIxUbE4sUlBUNnPxRvcle+Kbkknfh3TFXF3qtVS7VSm+xitmxf4VCJyh6K0wxNvJTjUa
+ 2pDyAAV3Y4MVBVt4zWC6nrNoD+Oh1WCTb76x0QGoC87NbRoB2kYEiyBLzGiUezn8UJ8A
+ gJ3Cr0ZxJIZ240O8FOQi32kIqBoXiH/dkUJseHxbJc+enveQaczSyDwzxi0EBDy/p6aJ Vg== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3my21ftf7x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 09 Jan 2023 07:13:21 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3097DK0e011786
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 9 Jan 2023 07:13:20 GMT
+Received: from quicinc.com (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Sun, 8 Jan 2023
+ 23:13:13 -0800
+Date:   Mon, 9 Jan 2023 12:43:09 +0530
+From:   Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
+To:     Elliot Berman <quic_eberman@quicinc.com>
+CC:     Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Murali Nalajala <quic_mnalajal@quicinc.com>,
+        Trilok Soni <quic_tsoni@quicinc.com>,
+        "Carl van Schaik" <quic_cvanscha@quicinc.com>,
+        Prakruthi Deepak Heragu <quic_pheragu@quicinc.com>,
+        Arnd Bergmann <arnd@arndb.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>
-Cc:     Thomas Zimmermann <tzimmermann@suse.de>,
-        dri-devel@lists.freedesktop.org, Lyude Paul <lyude@redhat.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        linux-kernel@vger.kernel.org, Xin Ji <xji@analogixsemi.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Allen Chen <allen.chen@ite.com.tw>,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        chrome-platform@lists.linux.dev,
-        =?UTF-8?Q?N=c3=adcolas_F_=2e_R_=2e_A_=2e_Prado?= 
-        <nfraprado@collabora.com>, devicetree@vger.kernel.org,
-        Marek Vasut <marex@denx.de>, linux-acpi@vger.kernel.org,
-        Stephen Boyd <swboyd@chromium.org>
-References: <20230107102231.23682-1-treapking@chromium.org>
- <20230107102231.23682-8-treapking@chromium.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230107102231.23682-8-treapking@chromium.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Rob Herring <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        "Dmitry Baryshkov" <dmitry.baryshkov@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v8 11/28] gunyah: rsc_mgr: Add VM lifecycle RPC
+Message-ID: <20230109071309.GA3480070@quicinc.com>
+Reply-To: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
+References: <20221219225850.2397345-1-quic_eberman@quicinc.com>
+ <20221219225850.2397345-12-quic_eberman@quicinc.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+In-Reply-To: <20221219225850.2397345-12-quic_eberman@quicinc.com>
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: KmxXwIzcVN610P58UOSed39adOioGZLg
+X-Proofpoint-GUID: KmxXwIzcVN610P58UOSed39adOioGZLg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2023-01-09_02,2023-01-06_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
+ impostorscore=0 bulkscore=0 malwarescore=0 mlxscore=0 lowpriorityscore=0
+ clxscore=1015 adultscore=0 priorityscore=1501 mlxlogscore=676 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2301090051
+X-Spam-Status: No, score=0.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 07/01/2023 11:22, Pin-yen Lin wrote:
-> ITE IT6505 can be used in systems to switch the DP traffic between
-> two downstreams, which can be USB Type-C DisplayPort alternate mode
-> lane or regular DisplayPort output ports.
-> 
-> Update the binding to accommodate this usage by introducing a
-> data-lanes and a mode-switch property on endpoints.
-> 
-> Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-> 
-> ---
-> 
-> Changes in v8:
-> - Updated bindings for data-lanes property
-> - Fixed subject prefix
+* Elliot Berman <quic_eberman@quicinc.com> [2022-12-19 14:58:32]:
 
-How? It is still wrong. You have slash there.
+> +/* Call: CONSOLE_OPEN, CONSOLE_CLOSE, CONSOLE_FLUSH */
 
-> 
+I think this struct is used by other calls as well?
+Also CONSOLE_** functions are not yet introduced in this patch
 
-(...)
+> +struct gh_vm_common_vmid_req {
+> +	__le16 vmid;
+> +	__le16 reserved0;
+> +} __packed;
 
->                  port@1 {
-> +                    #address-cells = <1>;
-> +                    #size-cells = <0>;
->                      reg = <1>;
-> -                    it6505_out: endpoint {
-> +                    it6505_out: endpoint@0 {
-> +                        reg = <0>;
->                          remote-endpoint = <&dp_in>;
->                          data-lanes = <0 1>;
->                      };
-> @@ -148,3 +173,49 @@ examples:
->              };
->          };
->      };
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
+[snip]
+
+> +int gh_rm_alloc_vmid(struct gh_rm_rpc *rm, u16 vmid)
+> +{
+> +	void *resp;
+> +	struct gh_vm_common_vmid_req req_payload = {
+> +		.vmid = cpu_to_le16(vmid),
+> +	};
+> +	struct gh_vm_common_vmid_req *resp_payload;
+> +	size_t resp_size;
+> +	int ret;
 > +
-> +    i2c3 {
+> +	if (vmid == GH_VMID_INVAL)
+> +		vmid = 0;
+> +
+> +	ret = gh_rm_call(rm, GH_RM_RPC_VM_ALLOC_VMID, &req_payload, sizeof(req_payload), &resp,
+> +			&resp_size);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (!vmid) {
+> +		if (resp_size != sizeof(*resp_payload)) {
+> +			ret = -EINVAL;
+> +		} else {
+> +			resp_payload = resp;
+> +			ret = resp_payload->vmid;
 
-Just i2c
+Do we need a le_to_cpu() wrapper on the response here?
 
+> +int gh_rm_vm_stop(struct gh_rm_rpc *rm, u16 vmid)
+> +{
+> +	struct gh_vm_stop_req req_payload = {
+> +		.vmid = cpu_to_le16(vmid),
+> +	};
+> +	void *resp;
+> +	size_t resp_size;
+> +	int ret;
+> +
+> +	ret = gh_rm_call(rm, GH_RM_RPC_VM_STOP, &req_payload, sizeof(req_payload),
+> +			&resp, &resp_size);
+> +	if (ret)
+> +		return ret;
+> +	kfree(resp);
 
-Best regards,
-Krzysztof
+Why not use gh_rm_common_vmid_call() here as well?
 
+	return gh_rm_common_vmid_call(rm, GH_RM_RPC_VM_STOP, vmid);
+
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(gh_rm_vm_stop);
+> +
+
+[snip]
+
+> +ssize_t gh_rm_get_hyp_resources(struct gh_rm_rpc *rm, u16 vmid,
+> +				struct gh_rm_hyp_resource **resources)
+> +{
+> +	struct gh_vm_get_hyp_resources_resp *resp;
+> +	size_t resp_size;
+> +	int ret;
+> +	struct gh_vm_common_vmid_req req_payload = {
+> +		.vmid = cpu_to_le16(vmid),
+> +	};
+> +
+> +	ret = gh_rm_call(rm, GH_RM_RPC_VM_GET_HYP_RESOURCES,
+> +			 &req_payload, sizeof(req_payload),
+> +			 (void **)&resp, &resp_size);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (resp_size < sizeof(*resp) ||
+> +		(sizeof(*resp->entries) && (resp->n_entries > U32_MAX / sizeof(*resp->entries))) ||
+> +		(resp_size != sizeof(*resp) + (resp->n_entries * sizeof(*resp->entries)))) {
+> +		ret = -EIO;
+> +		goto out;
+> +	}
+> +
+> +	*resources = kmemdup(resp->entries, (resp->n_entries * sizeof(*resp->entries)), GFP_KERNEL);
+
+Consider NULL return value from kmemdup
+
+> +	ret = resp->n_entries;
+> +
+> +out:
+> +	kfree(resp);
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(gh_rm_get_hyp_resources);
+> +
+> +/**
+> + * gh_rm_get_vmid() - Retrieve VMID of this virtual machine
+> + * @vmid: Filled with the VMID of this VM
+> + */
+> +int gh_rm_get_vmid(struct gh_rm_rpc *rm, u16 *vmid)
+> +{
+> +	static u16 cached_vmid = GH_VMID_INVAL;
+> +	void *resp;
+> +	size_t resp_size;
+> +	int ret;
+> +	int payload = 0;
+> +
+> +	if (cached_vmid != GH_VMID_INVAL) {
+> +		*vmid = cached_vmid;
+> +		return 0;
+> +	}
+> +
+> +	ret = gh_rm_call(rm, GH_RM_RPC_VM_GET_VMID, &payload, sizeof(payload), &resp, &resp_size);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (resp_size != sizeof(*vmid))
+
+kfree(resp) in this case?
+
+> +		return -EIO;
+> +	*vmid = *(u16 *)resp;
+
+Do we need a le_to_cpu() wrapper on the response?
+Also update cached_vmid in success case.
+
+> +	kfree(resp);
+> +
+> +	return ret;
+> +}
