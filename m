@@ -2,144 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5A49664F32
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jan 2023 23:57:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C891664FED
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Jan 2023 00:24:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234326AbjAJW45 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Jan 2023 17:56:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58956 "EHLO
+        id S234942AbjAJXY0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Jan 2023 18:24:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235250AbjAJW4c (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Jan 2023 17:56:32 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C72E6338D;
-        Tue, 10 Jan 2023 14:55:26 -0800 (PST)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30AMqhbI021237;
-        Tue, 10 Jan 2023 22:55:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=FnslzAltcK2Vf4x7yLy3vGWrYsR9oG+TmGbt1RNiTbA=;
- b=dDvCjD/0jz4NdH1/+fs0mlqd1EWGJtv9dGoEMl4Mv/kQqLFVX8h7WfNEDghYudNNDmD8
- gQpeVHO8jkIwE0NugYZwLGnIgT04I9Jb2XF+AKUZBML5K2IZmULc/o8pjAc3GrP+c9lF
- fiLEGUJMs81yS7PsfkgH7ekKHI+jhF/bbWfQlvh+8L69JxXunV8flEpLWh1eHwsaz8ry
- nnZ1R38n1uA55JE41oF4pmJCSSWy9h/E+cYfdbFVtpaSwKxMDUb5pO/3ScyIuLUhIX2N
- bUTPugpT0EFXJumEMdBEsd9axhvYdfg7gqv3pV6qtEH5+EVcGjPdjCi40GF0/78gJu+6 fA== 
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3n1dbg8gt2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 10 Jan 2023 22:55:10 +0000
-Received: from nasanex01b.na.qualcomm.com (corens_vlan604_snip.qualcomm.com [10.53.140.1])
-        by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 30AMt9bK020238
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 10 Jan 2023 22:55:09 GMT
-Received: from [10.134.67.48] (10.80.80.8) by nasanex01b.na.qualcomm.com
- (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Tue, 10 Jan
- 2023 14:55:09 -0800
-Message-ID: <560526fe-cd7b-575a-96c9-fe4f8d349e89@quicinc.com>
-Date:   Tue, 10 Jan 2023 14:55:08 -0800
+        with ESMTP id S235371AbjAJXYL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Jan 2023 18:24:11 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F0514E42D
+        for <linux-acpi@vger.kernel.org>; Tue, 10 Jan 2023 15:24:10 -0800 (PST)
+Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6977B1EC0682;
+        Wed, 11 Jan 2023 00:24:08 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1673393048;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=dtNSGuGKPKKWarL4raderkCgJPYz6hdJZd5bZDtbnIk=;
+        b=UwjdBYWVPrVlw8PR7QEaKxZvZKAQjJUnAo0pthDff9PD7DRk5DpZQBTIchRCykBmrebK9o
+        IUBe5y0EYgUnGZ8TaL9u0OjfnCsF/cgu0tsfL/ShE007n6jA9xeR51hTuVcc+42fKcZ6t9
+        USpi5E96ggy0V+aUdYwB1zT5qIi/cZ4=
+Date:   Wed, 11 Jan 2023 00:24:01 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     James Puthukattukaran <james.puthukattukaran@oracle.com>
+Cc:     linux-acpi@vger.kernel.org, x86@kernel.org, rafael@kernel.org,
+        lenb@kernel.org, mingo@redhat.com, tglx@linutronix.de,
+        hpa@zytor.com
+Subject: Re: [PATCH v3] x86/ACPI: Ignore CPUs that are not online capable for
+ x2apic, entries as well
+Message-ID: <Y73zkXlPqiMFeT6V@zn.tnic>
+References: <ef8c7138-8ed1-d849-0ed5-e629ddcafd63@oracle.com>
+ <1987c2d2-1246-b172-985f-360e5c2c437a@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH v8 04/28] arm64: smccc: Include alternative-macros.h
-Content-Language: en-US
-To:     Alex Elder <elder@linaro.org>,
-        Bjorn Andersson <quic_bjorande@quicinc.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "Lorenzo Pieralisi" <lpieralisi@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>
-CC:     Murali Nalajala <quic_mnalajal@quicinc.com>,
-        Trilok Soni <quic_tsoni@quicinc.com>,
-        Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>,
-        Carl van Schaik <quic_cvanscha@quicinc.com>,
-        Prakruthi Deepak Heragu <quic_pheragu@quicinc.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-acpi@vger.kernel.org>
-References: <20221219225850.2397345-1-quic_eberman@quicinc.com>
- <20221219225850.2397345-5-quic_eberman@quicinc.com>
- <f6bf5577-9a3a-e949-62b8-53f5fcdd3fa4@linaro.org>
-From:   Elliot Berman <quic_eberman@quicinc.com>
-In-Reply-To: <f6bf5577-9a3a-e949-62b8-53f5fcdd3fa4@linaro.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: qyhHMAiFyocYQdMtuahXfi9enDBktio1
-X-Proofpoint-ORIG-GUID: qyhHMAiFyocYQdMtuahXfi9enDBktio1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2023-01-10_09,2023-01-10_03,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 bulkscore=0
- spamscore=0 mlxscore=0 priorityscore=1501 impostorscore=0 clxscore=1015
- lowpriorityscore=0 mlxlogscore=843 suspectscore=0 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301100152
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1987c2d2-1246-b172-985f-360e5c2c437a@oracle.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-
-On 1/9/2023 1:34 PM, Alex Elder wrote:
-> On 12/19/22 4:58 PM, Elliot Berman wrote:
->> Fix build error when CONFIG_ARM64_SVE is selected and
->> asm/alternative-macros.h wasn't implicitly included by another header.
->>
->> In file included from arch/arm64/gunyah/gunyah_hypercall.c:6:
->> arch/arm64/gunyah/gunyah_hypercall.c: In function 
->> `gh_hypercall_msgq_send':
->> ./include/linux/arm-smccc.h:387:25: error: expected string literal 
->> before `ALTERNATIVE'
->>    387 | #define SMCCC_SVE_CHECK ALTERNATIVE("nop \n",  "bl 
->> __arm_smccc_sve_check \n", \
->>
->> Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+On Tue, Jan 10, 2023 at 05:43:41PM -0500, James Puthukattukaran wrote:
+> Adding others that I missed on my first email. 
 > 
-> If this is correct (and I presume it is), I think this patch should
-> be posted separate from (and before) the rest of the series.
+> James
 > 
+> On 12/22/22 13:26, James Puthukattukaran wrote:
+> > Extending commit aa06e20f1be6 ("x86/ACPI: Don't add CPUs that are not
+> > online capable") to include acpi_parse_x2apic as well.
 
-Ack, will send this separately.
+This doesn't look like an extension to some existing commit but like a separate
+fix.
 
->                      -Alex
-> 
->> ---
->>   include/linux/arm-smccc.h | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/include/linux/arm-smccc.h b/include/linux/arm-smccc.h
->> index 220c8c60e021..6a627cdbbdec 100644
->> --- a/include/linux/arm-smccc.h
->> +++ b/include/linux/arm-smccc.h
->> @@ -383,6 +383,7 @@ asmlinkage void __arm_smccc_hvc(unsigned long a0, 
->> unsigned long a1,
->>   /* nVHE hypervisor doesn't have a current thread so needs separate 
->> checks */
->>   #if defined(CONFIG_ARM64_SVE) && !defined(__KVM_NVHE_HYPERVISOR__)
->> +#include <asm/alternative-macros.h>
->>   #define SMCCC_SVE_CHECK ALTERNATIVE("nop \n",  "bl 
->> __arm_smccc_sve_check \n", \
->>                       ARM64_SVE)
-> 
+> > There is a check for invalid apicid; however, there are BIOS FW with madt
+> > version >= 5 support that do not bother setting apic id to an invalid value
+> > since they assume the OS will check the enabled and online capable flags.
+
+Which BIOSes are those?
+
+Also, I'm no BIOS guy but I don't see you checking MADT version anywhere?
+
+> > Signed-off-by: James Puthukattukaran<james.puthukattukaran@oracle.com>
+> > Reported-by: Benjamin Fuller<ben.fuller@oracle.com>
+> > 
+> > v2 : use 'enabled' local variable. Also fix checkpatch.pl catches
+> > v3 : updates as per Rafael's comments
+
+Yah, I'd like for Rafael to decide what to do here...
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
