@@ -2,94 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB771663403
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jan 2023 23:36:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC712663C05
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jan 2023 10:00:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237760AbjAIWgD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Jan 2023 17:36:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54490 "EHLO
+        id S238065AbjAJJAD convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 10 Jan 2023 04:00:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237865AbjAIWfu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 9 Jan 2023 17:35:50 -0500
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E6B81A3B1;
-        Mon,  9 Jan 2023 14:35:49 -0800 (PST)
-Received: by mail-yb1-xb32.google.com with SMTP id c124so9989317ybb.13;
-        Mon, 09 Jan 2023 14:35:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=52Yp4ABn9IwKHczAHFLPCUw19xrvZxttBABJ3c0YKI4=;
-        b=RCVr8mecrvtL/O6E/qBF81DQvb58HsZwdgJTH9veLCqWbv+Qt5J1UOwvTbzIjHOTrl
-         CinVuPHJ0xnvCKbAbD3IV9YqW6esoZbpaL8beBWBtSOcy1xtsGkG5fBt+R8xiIr/a1nZ
-         ndWdyy5gVsTpMn4sYnu1wZyU93rKiZ2Ib6MwsZspFK7jhRbjmcwWBSU0gd0mW2it1s9c
-         4RQVL5DsD7B96cESSGaJwRSlDGZQ95OrfugcF8wxc2heL4Wrb1p4dgjGuQwUEbDgNayL
-         zddfWqHdQxbEEaae8hRix7i782UZ3kn2B165vt77lyoLdZA32fsDv63YsnzsPmRZRlkq
-         nfJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=52Yp4ABn9IwKHczAHFLPCUw19xrvZxttBABJ3c0YKI4=;
-        b=EpuTa5CdXCCjrgkwiajiO5xlDJ387Vs7If2pUDvH2VJ8TisVLWKU7HDK8uHCtyChxQ
-         UIDv0WSy416ZVWwupj7qQU/sRG6qGCtUlJ/UoQC96U6zaC8Z0SS0ZKF7FC4jpXcnJLks
-         7GRom/Z6LOB6MdNUXfV0xMm9Ilywtple9rb6w9l9PXWKkRK+Fl4llA34v9IHI/cCe7Iv
-         9xmQTHEo5LtvYqhdJQTZTM0YQyLgtvP7MelDxRxew4KSL+s1FS2IASPDojK5JimdKBvs
-         iWFPr+Ofge1yZQ0RLEMEPx78HWf4Do5tbUeki5m5IOnhyS1NbMitCPwTVMQ9UcNOXkB9
-         EwOA==
-X-Gm-Message-State: AFqh2koVP7BcA7AFtAGiLjJN1SDeVqOQWGFK7d3QsBvJXZs+nys87sls
-        obKxVNMyAFhbjHuH+6lRZSPHIdc4mGZ8glccV5Y=
-X-Google-Smtp-Source: AMrXdXvIgqHyx2PQsX1jelm9tHNRJNpUjVtta5I1yR1rH/j8hsnqR0y3tMH+8iClgeeXLA3OHzrSdxe+QtKI8Zg3IF8=
-X-Received: by 2002:a25:bc43:0:b0:7b2:343d:6b11 with SMTP id
- d3-20020a25bc43000000b007b2343d6b11mr2539153ybk.75.1673303748797; Mon, 09 Jan
- 2023 14:35:48 -0800 (PST)
+        with ESMTP id S238321AbjAJI7E (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Jan 2023 03:59:04 -0500
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5EA338AB
+        for <linux-acpi@vger.kernel.org>; Tue, 10 Jan 2023 00:56:02 -0800 (PST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-170-YekVvk-BPaSzqybZP3NNRQ-1; Tue, 10 Jan 2023 08:55:59 +0000
+X-MC-Unique: YekVvk-BPaSzqybZP3NNRQ-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Tue, 10 Jan
+ 2023 08:55:58 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.044; Tue, 10 Jan 2023 08:55:58 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Mark Rutland' <mark.rutland@arm.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+CC:     "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "mhiramat@kernel.org" <mhiramat@kernel.org>,
+        "ndesaulniers@google.com" <ndesaulniers@google.com>,
+        "ojeda@kernel.org" <ojeda@kernel.org>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "rafael.j.wysocki@intel.com" <rafael.j.wysocki@intel.com>,
+        "revest@chromium.org" <revest@chromium.org>,
+        "robert.moore@intel.com" <robert.moore@intel.com>,
+        "rostedt@goodmis.org" <rostedt@goodmis.org>,
+        "will@kernel.org" <will@kernel.org>
+Subject: RE: [PATCH 0/8] arm64/ftrace: Add support for
+ DYNAMIC_FTRACE_WITH_CALL_OPS
+Thread-Topic: [PATCH 0/8] arm64/ftrace: Add support for
+ DYNAMIC_FTRACE_WITH_CALL_OPS
+Thread-Index: AQHZJDKgXMrizOIIlkyvOnatOuVuDa6XWT2g
+Date:   Tue, 10 Jan 2023 08:55:58 +0000
+Message-ID: <34e0144b19e149d99719a5ffc834f228@AcuMS.aculab.com>
+References: <20230109135828.879136-1-mark.rutland@arm.com>
+In-Reply-To: <20230109135828.879136-1-mark.rutland@arm.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-References: <20230109135828.879136-1-mark.rutland@arm.com> <20230109135828.879136-2-mark.rutland@arm.com>
- <CANiq72kgmFYEO_EB_NxAF=S7VOf45KM7W3uwxxvftVErwfWzjg@mail.gmail.com> <Y7xJeHDcanUJoHt+@FVFF77S0Q05N>
-In-Reply-To: <Y7xJeHDcanUJoHt+@FVFF77S0Q05N>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 9 Jan 2023 23:35:37 +0100
-Message-ID: <CANiq72mUZRH4wxDF7L43z4Q1XoCdP=V_MmVTrCOTWRa8SHvwaA@mail.gmail.com>
-Subject: Re: [PATCH 1/8] Compiler attributes: GCC function alignment workarounds
-To:     Mark Rutland <mark.rutland@arm.com>
-Cc:     linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
-        lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, mhiramat@kernel.org,
-        ndesaulniers@google.com, ojeda@kernel.org, peterz@infradead.org,
-        rafael.j.wysocki@intel.com, revest@chromium.org,
-        robert.moore@intel.com, rostedt@goodmis.org, will@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 9, 2023 at 6:06 PM Mark Rutland <mark.rutland@arm.com> wrote:
->
-> Sorry, that is something I had intendeed to do but I hadn't extracted a
-> reproducer yet. I'll try to come up with something that can be included in the
-> commit message and reported to GCC folk (and double-check at the same time that
-> there's not another hidden cause)
+From: Mark Rutland
+> Sent: 09 January 2023 13:58
+> 
+> This series adds a new DYNAMIC_FTRACE_WITH_CALL_OPS mechanism, and
+> enables support for this on arm64. This significantly reduces the
+> overhead of tracing when a callsite/tracee has a single associated
+> tracer, avoids a number of issues that make it undesireably and
+> infeasible to use dynamically-allocated trampolines (e.g. branch range
+> limitations), and makes it possible to implement support for
+> DYNAMIC_FTRACE_WITH_DIRECT_CALLS in future.
+> 
+> The main idea is to give each ftrace callsite an associated pointer to
+> an ftrace_ops. The architecture's ftrace_caller trampoline can recover
+> the ops pointer and invoke ops->func from this without needing to use
+> ftrace_ops_list_func, which has to iterate through all registered ops.
+> 
+> To do this, we use -fpatchable-function-entry=M,N, there N NOPs are
+> placed before the function entry point...
 
-Yeah, no worries :) I suggested it because from my quick test it
-didn't appear to be reproducible trivially, so I thought having the
-reproducer would be nice.
+Doesn't this bump the minimum gcc version up to something like 9.0 ?
 
-> I'm happy to move these, I just wasn't sure what the policy would be w.r.t. the
-> existing __weak and __cold defitions since those end up depending upon
-> __function_aligned.
->
-> I assume I should move them all? i.e. move __weak as well?
+How does it interact with the 'CFI stuff' that also uses the same area?
 
-Yeah, with the current policy, all should be moved since their
-behavior now depends on the config (eventually).
+	David
 
-Cheers,
-Miguel
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
+
