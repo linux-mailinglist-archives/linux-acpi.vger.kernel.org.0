@@ -2,57 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D5E9664781
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jan 2023 18:36:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79ED86647C4
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jan 2023 18:55:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234067AbjAJRgL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Jan 2023 12:36:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58224 "EHLO
+        id S235102AbjAJRzJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Jan 2023 12:55:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233327AbjAJRgJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Jan 2023 12:36:09 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5DFF1B1CD;
-        Tue, 10 Jan 2023 09:36:08 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4EAE8B818D4;
-        Tue, 10 Jan 2023 17:36:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CCAAC433EF;
-        Tue, 10 Jan 2023 17:36:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673372165;
-        bh=59ypGq2Qf4FeTGCBgsn+gwuksi0v6x1bCTZTGDdlhFE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Q6wjreUvwBQ6qoS2ROe8EPtUJ2jdB9eMUYFE6hHA6mPMctqisbG8rjdlaYqOvERI6
-         Ge3IWT34rfcjfIpvjZy3gbxzZOg/1TZ2CbFmkcniV4iU+I0+RmmlYVMFxpOglKs1FN
-         TgDYdjtkOmlwTjqQfhM/9ljPBTUdq5OGczPmtqiNyHZmXq+uOLkOGvnHrk6emjeW2H
-         wVg1lzRfIvY0wdzOUQCNoUSSN+CVhkxb5JveWm4AZTgu/Y69qQO2XUZa5wBbx7kdSq
-         5g1miOf6RQiHSfIrVOGqa7uO//dhRoSn0hsRhr9WJFMK6SjNMi5KfpNjV9hyMU0/jL
-         b94OrQ/6+AziQ==
-Date:   Tue, 10 Jan 2023 09:36:04 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     Wolfram Sang <wsa@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Paolo Abeni <pabeni@redhat.com>, linux-acpi@vger.kernel.org,
-        linux-i2c@vger.kernel.org, netdev@vger.kernel.org,
-        Andrew Lunn <andrew@lunn.ch>,
-        Eric Dumazet <edumazet@google.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH RFC v2 0/2] Add I2C fwnode lookup/get interfaces
-Message-ID: <20230110093604.15d7c113@kernel.org>
-In-Reply-To: <Y71h7OF6ydo2A0dw@shell.armlinux.org.uk>
-References: <Y6Az235wsnRWFYWA@shell.armlinux.org.uk>
-        <Y7v/FWpjt1MFLafG@ninjato>
-        <Y71h7OF6ydo2A0dw@shell.armlinux.org.uk>
+        with ESMTP id S234218AbjAJRyn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Jan 2023 12:54:43 -0500
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3937E59D20;
+        Tue, 10 Jan 2023 09:54:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1673373257; x=1704909257;
+  h=message-id:date:mime-version:from:subject:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=7AXhqOp1gtecOre6oRBlKXRLRxGw3ArZm7GFJzcZVEk=;
+  b=Fcx6xxCDO20S62posT7jSSj7cRKBl1Ks/+o6aHk99eQXzyi+/vkgz3Dr
+   KZvszjHAlgXVPA+9/KxT4qYjKpG+ZufXqa2QL3wXLpsN40nCYa3tiuKji
+   KMxmATm7lAleoGf1pMrtYiQA7gyzX4YRi1E+u7VXfPdSrGEJflV740nFv
+   Y=;
+Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 10 Jan 2023 09:54:15 -0800
+X-QCInternal: smtphost
+Received: from nasanex01b.na.qualcomm.com ([10.46.141.250])
+  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2023 09:54:15 -0800
+Received: from [10.134.67.48] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Tue, 10 Jan
+ 2023 09:54:14 -0800
+Message-ID: <26c0895b-9d69-d355-5b55-19e6ea69bae3@quicinc.com>
+Date:   Tue, 10 Jan 2023 09:54:14 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+From:   Elliot Berman <quic_eberman@quicinc.com>
+Subject: Re: [PATCH v8 00/28] Drivers for gunyah hypervisor
+To:     Alex Elder <elder@linaro.org>,
+        Bjorn Andersson <quic_bjorande@quicinc.com>
+CC:     Murali Nalajala <quic_mnalajal@quicinc.com>,
+        Trilok Soni <quic_tsoni@quicinc.com>,
+        Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>,
+        Carl van Schaik <quic_cvanscha@quicinc.com>,
+        Prakruthi Deepak Heragu <quic_pheragu@quicinc.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        "Dmitry Baryshkov" <dmitry.baryshkov@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-acpi@vger.kernel.org>
+References: <20221219225850.2397345-1-quic_eberman@quicinc.com>
+ <83b6dbc2-01da-04b6-64ec-9a69fd5c4c89@linaro.org>
+Content-Language: en-US
+In-Reply-To: <83b6dbc2-01da-04b6-64ec-9a69fd5c4c89@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,24 +82,28 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 10 Jan 2023 13:02:36 +0000 Russell King (Oracle) wrote:
-> On Mon, Jan 09, 2023 at 12:48:37PM +0100, Wolfram Sang wrote:
-> > > This RFC series is intended for the next merge window, but we will need
-> > > to decide how to merge it as it is split across two subsystems. These
-> > > patches have been generated against the net-next, since patch 2 depends
-> > > on a recently merged patch in that tree (which is now in mainline.)  
-> > 
-> > I'd prefer to apply it all to my I2C tree then. I can also provide an
-> > immutable branch for net if that is helpful.  
-> 
-> If we go for the immutable branch, then patch 2 might as well be
-> merged via the net tree, if net-next is willing to pull your
-> immutable branch.
-> 
-> Dave? Jakub? Paolo? Do you have any preferences how you'd like to
-> handle this?
 
-No strong preference here. Immutable branch works.
-Patch 2 will stick out in the diffstat for i2c so may indeed be better
-to apply it to net-next only, then again perhaps Wolfram prefers to
-have the user merged with the API? We're fine either way.
+
+On 1/9/2023 1:34 PM, Alex Elder wrote:
+> On 12/19/22 4:58 PM, Elliot Berman wrote:
+>> Gunyah is a Type-1 hypervisor independent of any
+>> high-level OS kernel, and runs in a higher CPU privilege level. It does
+>> not depend on any lower-privileged OS kernel/code for its core
+>> functionality. This increases its security and can support a much smaller
+>> trusted computing base than a Type-2 hypervisor.
+>>
+>> Gunyah is an open source hypervisor. The source repo is available at
+>> https://github.com/quic/gunyah-hypervisor.
+> 
+> Can you provide any history about the hypervisor code itself?
+> Was it publicly reviewed?  Has it been reviewed by anyone in
+> the Linux kernel community, who might have some useful input
+> on it?
+> 
+
+This is Gunyah's first interaction with wider public community. Gunyah 
+has been deployed in devices for past few generation of Qualcomm 
+Technolgoies, Inc. (mobile) chipsets.
+
+Thanks,
+Elliot
