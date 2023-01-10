@@ -2,370 +2,621 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B571664814
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jan 2023 19:05:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85455664933
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jan 2023 19:19:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234635AbjAJSFX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Jan 2023 13:05:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45336 "EHLO
+        id S239088AbjAJSTP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Jan 2023 13:19:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233017AbjAJSEl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Jan 2023 13:04:41 -0500
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A716C58307;
-        Tue, 10 Jan 2023 10:02:18 -0800 (PST)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
- id 28d6bfba788c9982; Tue, 10 Jan 2023 19:02:17 +0100
-Received: from kreacher.localnet (unknown [213.134.183.108])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id C39042624FFE;
-        Tue, 10 Jan 2023 19:02:15 +0100 (CET)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Limonciello, Mario" <mario.limonciello@amd.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mehta Sanju <Sanju.Mehta@amd.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5] PCI/ACPI: PCI/ACPI: Validate devices with power resources support D3
-Date:   Tue, 10 Jan 2023 19:02:15 +0100
-Message-ID: <5915557.lOV4Wx5bFT@kreacher>
-In-Reply-To: <1945994.PYKUYFuaPT@kreacher>
-References: <20221121221742.GA137841@bhelgaas> <8191575.T7Z3S40VBb@kreacher> <1945994.PYKUYFuaPT@kreacher>
+        with ESMTP id S239089AbjAJSSn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Jan 2023 13:18:43 -0500
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ACAD564E6;
+        Tue, 10 Jan 2023 10:16:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1673374612; x=1704910612;
+  h=message-id:date:mime-version:from:subject:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=OxDB973xx9LtVd1xyR8CU6pFAjyTPfHl/4+6SjD0JZ4=;
+  b=Yj7EMLMO0H0+fj6MUl69SbyNU9VO5nEz74vyB3qHMJdMN4+V5OpXozS9
+   pQWi2JlgvZ0XPVf8fVzB+En9n1/dmBWasFZXhebyGXZnQS3xHNDwReCRn
+   l/D+rujeeStwoch7PtSyjKob9GuCcRHC3dfooEvr9VHSlPIQiBxU9gBOn
+   c=;
+Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 10 Jan 2023 10:16:52 -0800
+X-QCInternal: smtphost
+Received: from nasanex01b.na.qualcomm.com ([10.46.141.250])
+  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2023 10:16:52 -0800
+Received: from [10.134.67.48] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Tue, 10 Jan
+ 2023 10:16:51 -0800
+Message-ID: <f626a867-7293-fd70-00d7-706d43342f5f@quicinc.com>
+Date:   Tue, 10 Jan 2023 10:16:50 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.183.108
-X-CLIENT-HOSTNAME: 213.134.183.108
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrledvgdegiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvffeuiedtgfdvtddugeeujedtffetteegfeekffdvfedttddtuefhgeefvdejhfenucfkphepvddufedrudefgedrudekfedruddtkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrddukeefrddutdekpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeduvddprhgtphhtthhopehhvghlghgrrghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmrghrihhordhlihhmohhntghivghllhhosegrmhgurdgtohhmpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlvghnsgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghhvghlghgrrghssehgohhoghhlvgdrtghomhdp
- rhgtphhtthhopehmihhkrgdrfigvshhtvghrsggvrhhgsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepufgrnhhjuhdrofgvhhhtrgesrghmugdrtghomhdprhgtphhtthhopehluhhkrghsseifuhhnnhgvrhdruggvpdhrtghpthhtoheprhgrfhgrvghlrdhjrdifhihsohgtkhhisehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphgtihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=12 Fuz1=12 Fuz2=12
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+From:   Elliot Berman <quic_eberman@quicinc.com>
+Subject: Re: [PATCH v8 09/28] mailbox: Add Gunyah message queue mailbox
+To:     Alex Elder <elder@linaro.org>,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        "Murali Nalajala" <quic_mnalajal@quicinc.com>,
+        Jonathan Corbet <corbet@lwn.net>
+CC:     Trilok Soni <quic_tsoni@quicinc.com>,
+        Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>,
+        Carl van Schaik <quic_cvanscha@quicinc.com>,
+        Prakruthi Deepak Heragu <quic_pheragu@quicinc.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-acpi@vger.kernel.org>
+References: <20221219225850.2397345-1-quic_eberman@quicinc.com>
+ <20221219225850.2397345-10-quic_eberman@quicinc.com>
+ <4e064b55-22fd-5f29-620b-715a5d822a75@linaro.org>
+Content-Language: en-US
+In-Reply-To: <4e064b55-22fd-5f29-620b-715a5d822a75@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Monday, January 2, 2023 5:59:36 PM CET Rafael J. Wysocki wrote:
-> On Monday, January 2, 2023 5:34:19 PM CET Rafael J. Wysocki wrote:
-> > On Monday, November 21, 2022 11:17:42 PM CET Bjorn Helgaas wrote:
-> > > On Mon, Nov 21, 2022 at 03:33:00PM +0100, Rafael J. Wysocki wrote:
-> > > > On Friday, November 18, 2022 10:13:39 PM CET Rafael J. Wysocki wrote:
-> > > > > On Fri, Nov 18, 2022 at 9:23 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > > > >
-> > > > > > Hi Rafael,
-> > > > > >
-> > > > > > Sorry, I'm still confused (my perpetual state :)).
-> > > > > 
-> > > > > No worries, doing my best to address that.
-> > > > > 
-> > > > > > On Fri, Nov 18, 2022 at 02:16:17PM +0100, Rafael J. Wysocki wrote:
-> > > > > > > On Thu, Nov 17, 2022 at 11:16 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > > > > > > On Thu, Nov 17, 2022 at 06:01:26PM +0100, Rafael J. Wysocki wrote:
-> > > > > > > > > On Thu, Nov 17, 2022 at 12:28 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > > > > > > > > On Wed, Nov 16, 2022 at 01:00:36PM +0100, Rafael J. Wysocki wrote:
-> > > > > > > > > > > On Wed, Nov 16, 2022 at 1:37 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > > > > > > > > > > On Mon, Nov 14, 2022 at 04:33:52PM +0100, Rafael J. Wysocki wrote:
-> > > > > > > > > > > > > On Fri, Nov 11, 2022 at 10:42 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > On Fri, Nov 11, 2022 at 12:58:28PM -0600, Limonciello, Mario wrote:
-> > > > > > > > > > > > > > > On 11/11/2022 11:41, Bjorn Helgaas wrote:
-> > > > > > > > > > > > > > > > On Mon, Oct 31, 2022 at 05:33:55PM -0500, Mario Limonciello wrote:
-> > > > > > > > > > > > > > > > > Firmware typically advertises that ACPI devices that represent PCIe
-> > > > > > > > > > > > > > > > > devices can support D3 by a combination of the value returned by
-> > > > > > > > > > > > > > > > > _S0W as well as the HotPlugSupportInD3 _DSD [1].
-> > > > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > > > `acpi_pci_bridge_d3` looks for this combination but also contains
-> > > > > > > > > > > > > > > > > an assumption that if an ACPI device contains power resources the PCIe
-> > > > > > > > > > > > > > > > > device it's associated with can support D3.  This was introduced
-> > > > > > > > > > > > > > > > > from commit c6e331312ebf ("PCI/ACPI: Whitelist hotplug ports for
-> > > > > > > > > > > > > > > > > D3 if power managed by ACPI").
-> > > > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > > > Some firmware configurations for "AMD Pink Sardine" do not support
-> > > > > > > > > > > > > > > > > wake from D3 in _S0W for the ACPI device representing the PCIe root
-> > > > > > > > > > > > > > > > > port used for tunneling. The PCIe device will still be opted into
-> > > > > > > > > > > > > > > > > runtime PM in the kernel [2] because of the logic within
-> > > > > > > > > > > > > > > > > `acpi_pci_bridge_d3`. This currently happens because the ACPI
-> > > > > > > > > > > > > > > > > device contains power resources.
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > Wait.  Is this as simple as just recognizing that:
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > >   _PS0 means the OS has a knob to put the device in D0, but it doesn't
-> > > > > > > > > > > > > >   mean the device can wake itself from a low-power state.  The OS has
-> > > > > > > > > > > > > >   to use _S0W to learn the device's ability to wake itself.
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > It is.
-> > > > > > > > > > > >
-> > > > > > > > > > > > Now I'm confused again about what "HotPlugSupportInD3" means.  The MS
-> > > > > > > > > > > > web page [1] says it identifies Root Ports capable of handling hot
-> > > > > > > > > > > > plug events while in D3.  That sounds kind of related to _S0W: If _S0W
-> > > > > > > > > > > > says "I can wake myself from D3hot and D3cold", how is that different
-> > > > > > > > > > > > from "I can handle hotplug events in D3"?
-> > > > > > > > > > >
-> > > > > > > > > > > For native PME/hot-plug signaling there is no difference.  This is the
-> > > > > > > > > > > same interrupt by the spec after all IIRC.
-> > > > > > > > > > >
-> > > > > > > > > > > For GPE-based signaling, though, there is a difference, because GPEs
-> > > > > > > > > > > can only be used directly for wake signaling (this is related to
-> > > > > > > > > > > _PRW).  In particular, the only provision in the ACPI spec for device
-> > > > > > > > > > > hot-add are the Bus Check and Device Check notification values (0 and
-> > > > > > > > > > > 1) which require AML to run and evaluate Notify() on specific AML
-> > > > > > > > > > > objects.
-> > > > > > > > > > >
-> > > > > > > > > > > Hence, there is no spec-defined way to tell the OS that "something can
-> > > > > > > > > > > be hot-added under this device while in D3 and you will get notified
-> > > > > > > > > > > about that".
-> > > > > > > > > >
-> > > > > > > > > > So I guess acpi_pci_bridge_d3() looks for:
-> > > > > > > > > >
-> > > > > > > > > >   - "wake signaling while in D3" (_S0W) and
-> > > > > > > > > >   - "notification of hotplug while in D3" ("HotPlugSupportInD3")
-> > > > > > > > > >
-> > > > > > > > > > For Root Ports with both those abilities (or bridges below such Root
-> > > > > > > > > > Ports), we allow D3, and this patch doesn't change that.
-> > > > > > > > > >
-> > > > > > > > > > What this patch *does* change is that all bridges with _PS0 or _PR0
-> > > > > > > > > > previously could use D3, but now will only be able to use D3 if they
-> > > > > > > > > > are also (or are below) a Root Port that can signal wakeup
-> > > > > > > > > > (wakeup.flags.valid) and can wakeup from D3hot or D3cold (_S0W).
-> > > > > > > > > >
-> > > > > > > > > > And this fixes the Pink Sardine because it has Root Ports that do
-> > > > > > > > > > Thunderbolt tunneling, and they have _PS0 or _PR0 but their _S0W says
-> > > > > > > > > > they cannot wake from D3.  Previously we put those in D3, but they
-> > > > > > > > > > couldn't wake up.  Now we won't put them in D3.
-> > > > > > > > > >
-> > > > > > > > > > I guess there's a possibility that this could break or cause higher
-> > > > > > > > > > power consumption on systems that were fixed by c6e331312ebf
-> > > > > > > > > > ("PCI/ACPI: Whitelist hotplug ports for D3 if power managed by ACPI").
-> > > > > > > > > > I don't know enough about that scenario.  Maybe Lukas will chime in.
-> > > > > > > > >
-> > > > > > > > > Well, it is possible that some of these systems will be affected.
-> > > > > > > > >
-> > > > > > > > > One of such cases is when the port in question has _S0W which says
-> > > > > > > > > that wakeup from D3 is not supported.  In that case I think the kernel
-> > > > > > > > > should honor the _S0W input, because there may be a good reason known
-> > > > > > > > > to the platform integrator for it.
-> > > > > > > > >
-> > > > > > > > > The other case is when wakeup.flags.valid is unset for the port's ACPI
-> > > > > > > > > companion which means that the port cannot signal wakeup through
-> > > > > > > > > ACPI-related means at all and this may be problematic, especially in
-> > > > > > > > > the system-wide suspend case in which the wakeup capability is not too
-> > > > > > > > > relevant unless there is a system wakeup device under the port.
-> > > > > > > > >
-> > > > > > > > > I don't think that the adev->wakeup.flags.valid check has any bearing
-> > > > > > > > > on the _S0W check - if there is _S0W and it says "no wakeup from D3",
-> > > > > > > > > it should still be taken into account - so that check can be moved
-> > > > > > > > > past the _S0W check.
-> > > > > > > >
-> > > > > > > > So if _S0W says it can wake from D3, but wakeup.flags is not valid,
-> > > > > > > > it's still OK to use D3?
-> > > > > > >
-> > > > > > > No, it isn't, as per the code today and I don't think that this
-> > > > > > > particular part should be changed now.
-> > > > > >
-> > > > > > But the current upstream code checks acpi_pci_power_manageable(dev)
-> > > > > > first, so if "dev" has _PR0 or _PS0, we'll use D3 even if _S0W says it
-> > > > > > can wake from D3 and wakeup.flags is not valid.
-> > > > > 
-> > > > > Yes, the current code will return 'true' if _PR0 or _PS0 is present
-> > > > > for dev regardless of anything else.
-> > > > > 
-> > > > > The proposed change is to make that conditional on whether or not _S0W
-> > > > > for the root port says that wakeup from D3 is supported (or it is not
-> > > > > present or unusable).
-> > > > > 
-> > > > > I see that I've missed one point now which is when the root port
-> > > > > doesn't have an ACPI companion, in which case we should go straight
-> > > > > for the "dev is power manageable" check.
-> > > > 
-> > > > Moreover, it is possible that the bridge passed to acpi_pci_bridge_d3() has its
-> > > > own _S0W or a wakeup GPE if it is power-manageable via ACPI.  In those cases
-> > > > it is not necessary to ask the Root Port's _S0W about wakeup from D3, so overall
-> > > > I would go for the patch like the below (not really tested).
-> > > > 
-> > > > This works in the same way as the current code (unless I have missed anything)
-> > > > except for the case when the "target" bridge is power-manageable via ACPI, but
-> > > > it cannot signal wakeup via ACPI and has no _S0W.  In that case it will consult
-> > > > the upstream Root Port's _S0W to check whether or not wakeup from D3 is
-> > > > supported.
-> > > > 
-> > > > [Note that if dev_has_acpi_pm is 'true', it is kind of pointless to look for the
-> > > > "HotPlugSupportInD3" property of the Root Port, because the function is going to
-> > > > return 'true' regardless, but I'm not sure if adding an extra if () for handling
-> > > > this particular case is worth the hassle.]
-> > > 
-> > > I think this has a lot of potential.  I haven't tried it, but I wonder
-> > > if splitting out the Root Port-specific parts to a separate function
-> > > would be helpful, if only to make it more obvious that there may be
-> > > two different devices involved.
-> > > 
-> > > If there are two devices ("dev" is a bridge below a Root Port), I
-> > > guess support in the Root Port is not necessarily required?  E.g.,
-> > > could "dev" assert a wakeup GPE that's not routed through the Root
-> > > Port?  If Root Port support *is* required, maybe it would read more
-> > > clearly to test that first, before looking at the downstream device.
-> > 
-> > Sorry for the delay.
-> > 
-> > I don't really think that Root Port support is required for a bridge below
-> > a Root Port if that bridge itself is power-manageable via ACPI.  Moreover,
-> > I don't think that the _S0W of a Root Port has any bearing on devices below
-> > it that have their own _S0W.
-> > 
-> > So what we really want appears to be to evaluate _S0W for the target bridge,
-> > regardless of whether or not it is a Root Port, and return 'false' if that
-> > produces D2 or a shallower power state.  Otherwise, we can do what we've
-> > done so far.
-> > 
-> > The patch below implements, this - please let me know what you think.
-> > 
-> 
-> And here's a v2 with somewhat less code duplication.
-
-I'm wondering if you have any comments on this one?
-
-> ---
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Subject: [PATCH] PCI / ACPI: PM: Take _S0W of the target bridge into account in acpi_pci_bridge_d3(()
-> 
-> It is generally questionable to allow a PCI bridge to go into D3 if
-> it has _S0W returning D2 or a shallower power state, so modify
-> acpi_pci_bridge_d3(() to always take the return value of _S0W for the
-> target bridge into accout.  That is, make it return 'false' if _S0W
-> returns D2 or a shallower power state for the target bridge regardless
-> of its ancestor PCIe Root Port properties.  Of course, this also causes
-> 'false' to be returned if the PCIe Root Port itself is the target and
-> its _S0W returns D2 or a shallower power state.
-> 
-> However, still allow bridges without _S0W that are power-manageable via
-> ACPI to enter D3 to retain the current code behavior in that case.
-> 
-> Reported-by: Mario Limonciello <mario.limonciello@amd.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
->  drivers/acpi/device_pm.c |   16 ++++++++++++++++
->  drivers/pci/pci-acpi.c   |   34 ++++++++++++++++++++++++----------
->  include/acpi/acpi_bus.h  |    1 +
->  3 files changed, 41 insertions(+), 10 deletions(-)
-> 
-> Index: linux-pm/drivers/pci/pci-acpi.c
-> ===================================================================
-> --- linux-pm.orig/drivers/pci/pci-acpi.c
-> +++ linux-pm/drivers/pci/pci-acpi.c
-> @@ -977,22 +977,37 @@ bool acpi_pci_bridge_d3(struct pci_dev *
->  {
->  	struct pci_dev *rpdev;
->  	struct acpi_device *adev;
-> -	acpi_status status;
-> -	unsigned long long state;
->  	const union acpi_object *obj;
->  
->  	if (acpi_pci_disabled || !dev->is_hotplug_bridge)
->  		return false;
->  
-> -	/* Assume D3 support if the bridge is power-manageable by ACPI. */
-> -	if (acpi_pci_power_manageable(dev))
-> -		return true;
-> +	adev = ACPI_COMPANION(&dev->dev);
-> +	if (adev) {
-> +		/*
-> +		 * If the bridge has _S0W, whether or not it can go into D3
-> +		 * depends on what is returned by that object.  In particular,
-> +		 * if the power state returned by _S0W is D2 or shallower,
-> +		 * entering D3 should not be allowed.
-> +		 */
-> +		if (acpi_dev_no_wakeup_from_d3(adev))
-> +			return false;
-> +
-> +		/*
-> +		 * Otherwise, assume that the bridge can enter D3 so long as it
-> +		 * is power-manageable via ACPI.
-> +		 */
-> +		if (acpi_device_power_manageable(adev))
-> +			return true;
-> +	}
->  
->  	rpdev = pcie_find_root_port(dev);
->  	if (!rpdev)
->  		return false;
->  
-> -	adev = ACPI_COMPANION(&rpdev->dev);
-> +	if (rpdev != dev)
-> +		adev = ACPI_COMPANION(&rpdev->dev);
-> +
->  	if (!adev)
->  		return false;
->  
-> @@ -1005,11 +1020,10 @@ bool acpi_pci_bridge_d3(struct pci_dev *
->  		return false;
->  
->  	/*
-> -	 * If the Root Port cannot wake itself from D3hot or D3cold, we
-> -	 * can't use D3.
-> +	 * In the bridge-below-a-Root-Port case, evaluate _S0W for the Root Port
-> +	 * to verify whether or not it can signal wakeup from D3.
->  	 */
-> -	status = acpi_evaluate_integer(adev->handle, "_S0W", NULL, &state);
-> -	if (ACPI_SUCCESS(status) && state < ACPI_STATE_D3_HOT)
-> +	if (rpdev != dev && acpi_dev_no_wakeup_from_d3(adev))
->  		return false;
->  
->  	/*
-> Index: linux-pm/drivers/acpi/device_pm.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/device_pm.c
-> +++ linux-pm/drivers/acpi/device_pm.c
-> @@ -484,6 +484,22 @@ void acpi_dev_power_up_children_with_adr
->  	acpi_dev_for_each_child(adev, acpi_power_up_if_adr_present, NULL);
->  }
->  
-> +/**
-> + * acpi_dev_no_wakeup_from_d3 - Check if wakeup signaling from D3 is supported
-> + * @adev: ACPI companion of the target device.
-> + *
-> + * Evaluate _S0W for @adev and return 'true' if it is successful and the power
-> + * state returned by it is D2 or shallower.
-> + */
-> +bool acpi_dev_no_wakeup_from_d3(struct acpi_device *adev)
-> +{
-> +	unsigned long long state;
-> +	acpi_status status;
-> +
-> +	status = acpi_evaluate_integer(adev->handle, "_S0W", NULL, &state);
-> +	return ACPI_SUCCESS(status) && state < ACPI_STATE_D3_HOT;
-> +}
-> +
->  #ifdef CONFIG_PM
->  static DEFINE_MUTEX(acpi_pm_notifier_lock);
->  static DEFINE_MUTEX(acpi_pm_notifier_install_lock);
-> Index: linux-pm/include/acpi/acpi_bus.h
-> ===================================================================
-> --- linux-pm.orig/include/acpi/acpi_bus.h
-> +++ linux-pm/include/acpi/acpi_bus.h
-> @@ -533,6 +533,7 @@ int acpi_bus_update_power(acpi_handle ha
->  int acpi_device_update_power(struct acpi_device *device, int *state_p);
->  bool acpi_bus_power_manageable(acpi_handle handle);
->  void acpi_dev_power_up_children_with_adr(struct acpi_device *adev);
-> +bool acpi_dev_no_wakeup_from_d3(struct acpi_device *adev);
->  int acpi_device_power_add_dependent(struct acpi_device *adev,
->  				    struct device *dev);
->  void acpi_device_power_remove_dependent(struct acpi_device *adev,
-> 
-> 
-> 
-> 
 
 
+On 1/9/2023 1:34 PM, Alex Elder wrote:
+> On 12/19/22 4:58 PM, Elliot Berman wrote:
+>> Gunyah message queues are a unidirectional inter-VM pipe for messages up
+> 
+> s/Gunyah message queues are/A Gunyah message queue is/
+> 
+>> to 1024 bytes. This driver supports pairing a receiver message queue and
+>> a transmitter message queue to expose a single mailbox channel.
+>>
+>> Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+>> ---
+>>   Documentation/virt/gunyah/message-queue.rst |   8 +
+>>   MAINTAINERS                                 |   1 +
+>>   drivers/mailbox/Kconfig                     |  10 +
+>>   drivers/mailbox/Makefile                   |   2 +
+>>   drivers/mailbox/gunyah-msgq.c               | 229 ++++++++++++++++++++
+>>   include/linux/gunyah.h                      |  61 +++++-
+>>   6 files changed, 309 insertions(+), 2 deletions(-)
+>>   create mode 100644 drivers/mailbox/gunyah-msgq.c
+>>
+>> diff --git a/Documentation/virt/gunyah/message-queue.rst 
+>> b/Documentation/virt/gunyah/message-queue.rst
+>> index be4ab289236a..9245dbe6dd8a 100644
+>> --- a/Documentation/virt/gunyah/message-queue.rst
+>> +++ b/Documentation/virt/gunyah/message-queue.rst
+>> @@ -54,3 +54,11 @@ vIRQ: two TX message queues will have two vIRQs 
+>> (and two capability IDs).
+>>         |               |         |                 |         
+>> |               |
+>>         |               |         |                 |         
+>> |               |
+>>         +---------------+         +-----------------+         
+>> +---------------+
+>> +
+>> +Gunyah message queues are exposed as mailboxes. To create the 
+>> mailbox, create
+>> +a mbox_client and call `gh_msgq_init`. On receipt of the RX_READY 
+>> interrupt,
+>> +all messages in the RX message queue are read and pushed via the 
+>> `rx_callback`
+>> +of the registered mbox_client.
+>> +
+>> +.. kernel-doc:: drivers/mailbox/gunyah-msgq.c
+>> +   :identifiers: gh_msgq_init
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 36698df6b0e5..667480bfd387 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -8942,6 +8942,7 @@ S:    Supported
+>>   F:    Documentation/devicetree/bindings/firmware/gunyah-hypervisor.yaml
+>>   F:    Documentation/virt/gunyah/
+>>   F:    arch/arm64/gunyah/
+>> +F:    drivers/mailbox/gunyah-msgq.c
+>>   F:    drivers/virt/gunyah/
+>>   F:    include/linux/gunyah.h
+>> diff --git a/drivers/mailbox/Kconfig b/drivers/mailbox/Kconfig
+>> index 05d6fae800e3..baf9451c5f04 100644
+>> --- a/drivers/mailbox/Kconfig
+>> +++ b/drivers/mailbox/Kconfig
+>> @@ -41,6 +41,16 @@ config IMX_MBOX
+>>       help
+>>         Mailbox implementation for i.MX Messaging Unit (MU).
+>> +config GUNYAH_MESSAGE_QUEUES
+> 
+> Is Gunyah useful without message queues? Are Gunyah message
+> queues useful without the rest of Gunyah?  Are there other
+> possible message queue implementations?  My point is that
+> maybe this isn't a necessary kernel config option.
+> 
 
+I can drop this.
 
+>> +    tristate "Gunyah Message Queue Mailbox"
+>> +    depends on GUNYAH
+>> +    help
+>> +      Mailbox implementation for Gunyah Message Queues. Gunyah 
+>> message queues
+>> +      are an IPC mechanism to pass short messages between virtual 
+>> machines
+>> +      running under the Gunyah hypervisor.
+>> +
+>> +      Say Y here if you run Linux as a Gunyah virtual machine.
+>> +
+>>   config PLATFORM_MHU
+>>       tristate "Platform MHU Mailbox"
+>>       depends on OF
+>> diff --git a/drivers/mailbox/Makefile b/drivers/mailbox/Makefile
+>> index fc9376117111..5f929bb55e9a 100644
+>> --- a/drivers/mailbox/Makefile
+>> +++ b/drivers/mailbox/Makefile
+>> @@ -55,6 +55,8 @@ obj-$(CONFIG_MTK_CMDQ_MBOX)    += mtk-cmdq-mailbox.o
+>>   obj-$(CONFIG_ZYNQMP_IPI_MBOX)    += zynqmp-ipi-mailbox.o
+>> +obj-$(CONFIG_GUNYAH)        += gunyah-msgq.o
+> 
+> Assuming you keep the Kconfig option, should this be
+> referring to CONFIG_GUNYAH_MESSAGE_QUEUES?
+> 
+>> +
+>>   obj-$(CONFIG_SUN6I_MSGBOX)    += sun6i-msgbox.o
+>>   obj-$(CONFIG_SPRD_MBOX)       += sprd-mailbox.o
+>> diff --git a/drivers/mailbox/gunyah-msgq.c 
+>> b/drivers/mailbox/gunyah-msgq.c
+>> new file mode 100644
+>> index 000000000000..d5a324e85428
+>> --- /dev/null
+>> +++ b/drivers/mailbox/gunyah-msgq.c
+>> @@ -0,0 +1,229 @@
+>> +// SPDX-License-Identifier: GPL-2.0-only
+>> +/*
+>> + * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights 
+>> reserved.
+>> + */
+>> +
+>> +#include <linux/mailbox_controller.h>
+>> +#include <linux/module.h>
+>> +#include <linux/interrupt.h>
+>> +#include <linux/gunyah.h>
+>> +#include <linux/printk.h>
+>> +#include <linux/init.h>
+>> +#include <linux/slab.h>
+>> +#include <linux/wait.h>
+>> +
+>> +#define mbox_chan_to_msgq(chan) (container_of(chan->mbox, struct 
+>> gh_msgq, mbox))
+>> +
+>> +static inline bool gh_msgq_has_tx(struct gh_msgq *msgq)
+>> +{
+>> +    return msgq->tx_ghrsc->type == GUNYAH_RESOURCE_TYPE_MSGQ_TX;
+> 
+> I think this was pointed out elsewhere; I think msgq->tx_ghrsc
+> can be null.  Same for msgq->rx_ghrsc below.
+> 
+>> +}
+>> +
+>> +static inline bool gh_msgq_has_rx(struct gh_msgq *msgq)
+>> +{
+>> +    return msgq->rx_ghrsc->type == GUNYAH_RESOURCE_TYPE_MSGQ_RX;
+> 
+> Is there any chance that a message queue would be created whose
+> type was anything other than MSGQ_RX?  It's possible that there
+> is some generic resource code that needs this type field, but
+> in this case I don't see why it's important.
+> 
+> And...  If that's the case, I think it's perhaps clearer to
+> just replace calls to gs_msgq_has_rx(msgq) with:
+> 
+>      if (msgq->rx_ghrsc)
+>          /* there is an RX message queue */
+> 
+
+Yep, that's what I've done for v9.
+
+>> +}
+>> +
+>> +static irqreturn_t gh_msgq_rx_irq_handler(int irq, void *data)
+>> +{
+>> +    struct gh_msgq *msgq = data;
+>> +    struct gh_msgq_rx_data rx_data;
+>> +    unsigned long gh_err;
+>> +    ssize_t ret;
+>> +    bool ready = false;
+>> +
+>> +    do {
+> 
+> Maybe:    bool ready = true;
+> 
+>      while (ready) {
+>> +        gh_err = gh_hypercall_msgq_recv(msgq->rx_ghrsc->capid,
+>> +                (uintptr_t)&rx_data.data, sizeof(rx_data.data),
+>> +                &rx_data.length, &ready);
+>> +        if (gh_err == GH_ERROR_OK) {
+>> +            mbox_chan_received_data(gh_msgq_chan(msgq), &rx_data);
+> 
+> Maybe            continue;
+>          }
+> 
+>          if (gh_err != GH_ERROR_MSGQUEUE_EMPTY)
+>              pr_warn(...);
+> 
+>          break;
+> 
+>> +        } else if (GH_ERROR_MSGQUEUE_EMPTY) {
+>> +            break;
+>> +        } else {
+>> +            pr_warn("Failed to receive data from msgq for %s: %ld\n",
+> 
+> s/%ld/%zd/
+> 
+>> +                msgq->mbox.dev ? dev_name(msgq->mbox.dev) : "", ret);
+>> +            break;
+>> +        }
+>> +    } while (ready);
+>> +
+>> +    return IRQ_HANDLED;
+>> +}
+>> +
+>> +static irqreturn_t gh_msgq_tx_irq_handler(int irq, void *data)
+>> +{
+>> +    struct gh_msgq *msgq = data;
+>> +
+>> +    mbox_chan_txdone(gh_msgq_chan(msgq), 0);
+>> +
+>> +    return IRQ_HANDLED;
+>> +}
+>> +
+>> +static void gh_msgq_txdone_tasklet(struct tasklet_struct *tasklet)
+>> +{
+>> +    struct gh_msgq *msgq = container_of(tasklet, struct gh_msgq, 
+>> txdone_tasklet);
+>> +
+>> +    mbox_chan_txdone(gh_msgq_chan(msgq), msgq->last_status);
+>> +}
+>> +
+>> +static int gh_msgq_send_data(struct mbox_chan *chan, void *data)
+>> +{
+>> +    struct gh_msgq *msgq = mbox_chan_to_msgq(chan);
+>> +    struct gh_msgq_tx_data *msgq_data = data;
+>> +    u64 tx_flags = 0;
+>> +    unsigned long ret;
+>> +    bool ready;
+>> +
+>> +    if (msgq_data->push)
+>> +        tx_flags |= GH_HYPERCALL_MSGQ_TX_FLAGS_PUSH;
+>> +
+> 
+> I probably missed something, but where is gh_hypercall_msgq_send()
+> defined?  I'm interested in what the ready flag is used for.
+> (Can the return value encode that?)
+> 
+
+It's in arch/arm64/gunyah/gunyah_hypercall.c. The return values of 
+encode whether more data can be received (ready flag).
+
+>> +    ret = gh_hypercall_msgq_send(msgq->tx_ghrsc->capid, 
+>> msgq_data->length,
+>> +                    (uintptr_t)msgq_data->data, tx_flags, &ready);
+>> +
+>> +    /**
+>> +     * unlikely because Linux tracks state of msgq and should not try to
+>> +     * send message when msgq is full.
+>> +     */
+> 
+> Is it just unlikely, or is it impossible?
+> 
+
+This would require multiple mailbox controllers interacting with the 
+same message queue.
+
+The only way I can think this is possible is if the Gunyah drivers are 
+unloaded when the message queue is full; drivers are then re-loaded 
+before the receiver processes the messages. The initial internal state 
+of the message queue controller assumes that there is space in the 
+message queue. We would get a Tx vIRQ once space becomes available and 
+the message would then be attempted to sent again. Since there's a safe 
+flow to recover from a inconsistent internal state and it's very 
+unlikely to start in that state, I don't think we need to add calls to 
+check if the message queue is full during initialization.
+
+>> +    if (unlikely(ret == GH_ERROR_MSGQUEUE_FULL))
+>> +        return -EAGAIN;
+>> +
+>> +    /**
+>> +     * Propagate all other errors to client. If we return error to 
+>> mailbox
+>> +     * framework, then no other messages can be sent and nobody will 
+>> know
+>> +     * to retry this message.
+>> +     */
+>> +    msgq->last_status = gh_remap_error(ret);
+>> +
+>> +    /**
+>> +     * This message was successfully sent, but message queue isn't 
+>> ready to
+>> +     * receive more messages because it's now full.Mailbox framework
+>> +     * requires that we only report that message was transmitted only 
+>> when
+> 
+> s/only //    (for one of them)
+> 
+>> +     * we're ready to transmit another message. We'll get that in the 
+>> form
+>> +     * of tx IRQ once the other side starts to drain the msgq.
+>> +     */
+>> +    if (ret == GH_ERROR_OK && !ready)
+>> +        return 0;
+>> +
+>> +    /**
+>> +     * We can send more messages. Mailbox frameworkrequires that tx 
+>> done
+>> +     * happens asynchronously to sending the message. Gunyah message 
+>> queues
+>> +     * tell us right away on the hypercall return whether we can send 
+>> more
+>> +     * messages. To work around this, defer the txdone to a tasklet.
+>> +     */
+>> +    tasklet_schedule(&msgq->txdone_tasklet);
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +struct mbox_chan_ops gh_msgq_ops = {
+>> +    .send_data = gh_msgq_send_data,
+>> +};
+>> +
+>> +/**
+>> + * gh_msgq_init() - Initialize a Gunyah message queue with an 
+>> mbox_client
+>> + * @parent: optional, device parent used for the mailbox controller
+>> + * @msgq: Pointer to the gh_msgq to initialize
+>> + * @cl: A mailbox client to bind to the mailbox channel that the 
+>> message queue creates
+>> + * @tx_ghrsc: optional, the transmission side of the message queue
+>> + * @rx_ghrsc: optional, the receiving side of the message queue
+>> + *
+>> + * At least one of tx_ghrsc and rx_ghrsc should be not NULL. Most 
+>> message queue use cases come with
+>> + * a pair of message queues to facilitiate bidirectional 
+>> communication. When tx_ghrsc is set,
+> 
+> s/facilitiate/facilitate/
+> 
+>> + * the client can send messages with 
+>> mbox_send_message(gh_msgq_chan(msgq), msg). When rx_ghrsc
+>> + * is set, the mbox_client should register an .rx_callback() and the 
+>> message queue driver will
+>> + * push all available messages upon receiving the RX ready interrupt. 
+>> The messages should be
+>> + * consumed or copied by the client right away as the gh_msgq_rx_data 
+>> will be replaced/destroyed
+>> + * after the callback.
+>> + *
+>> + * Returns - 0 on success, negative otherwise
+>> + */
+>> +int gh_msgq_init(struct device *parent, struct gh_msgq *msgq, struct 
+>> mbox_client *cl,
+>> +             struct gunyah_resource *tx_ghrsc, struct gunyah_resource 
+>> *rx_ghrsc)
+>> +{
+>> +    int ret;
+>> +
+>> +    /* Must have at least a tx_ghrsc or rx_ghrsc and that they are 
+>> the right device types */
+>> +    if ((!tx_ghrsc && !rx_ghrsc) ||
+>> +        (tx_ghrsc && tx_ghrsc->type != GUNYAH_RESOURCE_TYPE_MSGQ_TX) ||
+>> +        (rx_ghrsc && rx_ghrsc->type != GUNYAH_RESOURCE_TYPE_MSGQ_RX))
+> 
+> The internal parenthesis pairs above aren't really required.
+> 
+> 
+
+I think it's cleaner/easier to read this way.
+
+>> +        return -EINVAL;
+>> +
+>> +    msgq->tx_ghrsc = tx_ghrsc;
+>> +    msgq->rx_ghrsc = rx_ghrsc;
+>> +
+>> +    msgq->mbox.dev = parent;
+>> +    msgq->mbox.ops = &gh_msgq_ops;
+>> +    msgq->mbox.num_chans = 1;
+>> +    msgq->mbox.chans = kcalloc(msgq->mbox.num_chans, 
+>> sizeof(*msgq->mbox.chans), GFP_KERNEL);
+>> +    if (!msgq->mbox.chans)
+>> +        return -ENOMEM;
+>> +    msgq->mbox.txdone_irq = true;
+>> +
+>> +    if (gh_msgq_has_tx(msgq)) {
+> 
+> Maybe    if (tx_ghrsc) {
+> 
+>> +        ret = request_irq(msgq->tx_ghrsc->irq, 
+>> gh_msgq_tx_irq_handler, 0, "gh_msgq_tx",
+>> +                msgq);
+>> +        if (ret)
+>> +            gotoerr_chans;
+>> +    }
+>> +
+>> +    if (gh_msgq_has_rx(msgq)) {
+> 
+> Maybe    if (rx_ghrsc) {
+> 
+>> +        ret = request_threaded_irq(msgq->rx_ghrsc->irq, NULL, 
+>> gh_msgq_rx_irq_handler,
+>> +                        IRQF_ONESHOT, "gh_msgq_rx", msgq);
+>> +        if (ret)
+>> +            gotoerr_tx_irq;
+>> +    }
+>> +
+>> +    tasklet_setup(&msgq->txdone_tasklet, gh_msgq_txdone_tasklet);
+>> +
+>> +    ret = mbox_controller_register(&msgq->mbox);
+>> +    if (ret)
+>> +        goto err_rx_irq;
+>> +
+>> +    ret = mbox_bind_client(gh_msgq_chan(msgq), cl);
+>> +    if (ret)
+>> +        goto err_mbox;
+>> +
+>> +    return 0;
+>> +err_mbox:
+>> +    mbox_controller_unregister(&msgq->mbox);
+>> +err_rx_irq:
+>> +    if (gh_msgq_has_rx(msgq))
+> 
+>      if (rx_ghrsc)
+> 
+>> +        free_irq(msgq->rx_ghrsc->irq, msgq);
+>> +err_tx_irq:
+>> +    if (gh_msgq_has_tx(msgq))
+> 
+>      if (tx_ghrsc)
+> 
+
+Applied for the suggestions above.
+
+>> +        free_irq(msgq->tx_ghrsc->irq, msgq);
+>> +err_chans:
+>> +    kfree(msgq->mbox.chans);
+>> +    return ret;
+>> +}
+>> +EXPORT_SYMBOL_GPL(gh_msgq_init);
+>> +
+>> +void gh_msgq_remove(struct gh_msgq *msgq)
+>> +{
+>> +    mbox_controller_unregister(&msgq->mbox);
+>> +
+>> +    if (gh_msgq_has_rx(msgq))
+>> +        free_irq(msgq->rx_ghrsc->irq, msgq);
+>> +
+>> +    if (gh_msgq_has_tx(msgq))
+>> +        free_irq(msgq->tx_ghrsc->irq, msgq);
+>> +
+>> +    kfree(msgq->mbox.chans);
+>> +}
+>> +EXPORT_SYMBOL_GPL(gh_msgq_remove);
+>> +
+>> +
+>> +static int __init gh_msgq_init_module(void)
+>> +{
+>> +    if (gh_api_version() != GUNYAH_API_V1) {
+>> +        pr_warn("Unrecognized gunyahversion: %u. Currently 
+>> supported: %d\n",
+>> +            gh_api_version(), GUNYAH_API_V1);
+>> +        return -ENODEV;
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +module_init(gh_msgq_init_module);
+>> +
+>> +MODULE_LICENSE("GPL");
+>> +MODULE_DESCRIPTION("Gunyah Message Queue Driver");
+>> diff --git a/include/linux/gunyah.h b/include/linux/gunyah.h
+>> index c863cac4a3cf..e317d7ac938f 100644
+>> --- a/include/linux/gunyah.h
+>> +++ b/include/linux/gunyah.h
+>> @@ -7,10 +7,67 @@
+>>   #define _GUNYAH_H
+>>   #include <linux/bitfield.h>
+>> -#include <linux/types.h>
+>>   #include <linux/errno.h>
+>> +#include <linux/interrupt.h>
+>> +#include <linux/mailbox_controller.h>
+>> +#include <linux/mailbox_client.h>
+>> +#include <linux/types.h>
+>> +
+>> +/* Follows resource manager's resource types for VM_GET_HYP_RESOURCES */
+>> +enum gunyah_resource_type {
+>> +    GUNYAH_RESOURCE_TYPE_BELL_TX    = 0,
+>> +    GUNYAH_RESOURCE_TYPE_BELL_RX    = 1,
+>> +    GUNYAH_RESOURCE_TYPE_MSGQ_TX    = 2,
+>> +    GUNYAH_RESOURCE_TYPE_MSGQ_RX    = 3,
+>> +    GUNYAH_RESOURCE_TYPE_VCPU    = 4,
+>> +};
+>> +
+>> +struct gunyah_resource {
+>> +    enum gunyah_resource_type type;
+>> +    u64 capid;
+>> +    int irq;
+>> +};
+>> +
+>> +/**
+>> + * Gunyah Message Queues
+>> + */
+>> +
+>> +#define GH_MSGQ_MAX_MSG_SIZE    240
+>> +
+>> +struct gh_msgq_tx_data {
+>> +    size_t length;
+>> +    bool push;
+>> +    char data[];
+>> +};
+>> +
+>> +struct gh_msgq_rx_data {
+>> +    size_t length;
+>> +    char data[GH_MSGQ_MAX_MSG_SIZE];
+>> +};
+>> +
+>> +struct gh_msgq {
+>> +    struct gunyah_resource *tx_ghrsc;
+>> +    struct gunyah_resource *rx_ghrsc;
+>> +
+>> +    /* msgq private */
+>> +    int last_status;
+> 
+> Maybe note that last_status is an errno (and not GH_ERROR_*)
+> 
+
+Done, renamed to "last_ret".
+
+>                      -Alex
+> 
+>> +    struct mbox_controller mbox;
+>> +    struct tasklet_struct txdone_tasklet;
+>> +};
+>> +
+>> +
+>> +int gh_msgq_init(struct device *parent, struct gh_msgq *msgq, struct 
+>> mbox_client *cl,
+>> +             struct gunyah_resource *tx_ghrsc, struct gunyah_resource 
+>> *rx_ghrsc);
+>> +void gh_msgq_remove(struct gh_msgq *msgq);
+>> +
+>> +static inline struct mbox_chan *gh_msgq_chan(struct gh_msgq *msgq)
+>> +{
+>> +    return &msgq->mbox.chans[0];
+>> +}
+>> +
+>> +/******************************************************************************/
+>> +/* Common arch-independent macros and definitions for Gunyah 
+>> hypercalls */
+>> -/* Common Gunyah macros */
+>>   #define GH_CAPID_INVAL    U64_MAX
+>>   #define GH_VMID_ROOT_VM    0xff
+> 
