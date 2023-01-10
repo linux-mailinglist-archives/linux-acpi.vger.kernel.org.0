@@ -2,399 +2,248 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65A2F664458
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jan 2023 16:18:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DE156644DF
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jan 2023 16:32:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233867AbjAJPSD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Jan 2023 10:18:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54446 "EHLO
+        id S234719AbjAJPbi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Jan 2023 10:31:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234020AbjAJPSC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Jan 2023 10:18:02 -0500
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0240D5A8A4
-        for <linux-acpi@vger.kernel.org>; Tue, 10 Jan 2023 07:18:01 -0800 (PST)
-Received: by mail-wm1-x32f.google.com with SMTP id p1-20020a05600c1d8100b003d8c9b191e0so10270219wms.4
-        for <linux-acpi@vger.kernel.org>; Tue, 10 Jan 2023 07:18:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G+L5nKBjL6STERlSXFWCkSJxT84QGzIUAzA/TnmbEbw=;
-        b=gHL3Wy7rUTOmr8el0drFwI7kmw+ouL/DYftv/Zpx4pyylIGfNkjn3LAossEDKLXx8b
-         0HLak2iNIwbY3gRtSstIPQL3OVBDBReVmt7iH7Eosm3jcBRRy8N2NqFXHxrGD01MOE+F
-         Bq0FRucv++031M4Ywabc4zWR4rOEziaUh5p+gy0ce+FWkQ8dJxOIka/Vf6OwJElSit+a
-         fe05Ax8lMbX+1o+ucqKlNscpp/nbPLcZFwW6xH1DPVSfE6QELWHoQKOGi1QPvOcfmRZp
-         M55CiXtKdR+dyZ7xVoihfuEyDwLCMnPQ/i0kJtjPiJOxijOQp1D1rM+8a/ZVBPtd+iZf
-         eUbA==
+        with ESMTP id S239130AbjAJPaz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Jan 2023 10:30:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 293298B773
+        for <linux-acpi@vger.kernel.org>; Tue, 10 Jan 2023 07:29:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1673364593;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=/yxSKjjiV63qZ4xo0c25jroyEZ10sbvlzXlHQFiTEoU=;
+        b=I+sdX5Dqhfm/sGJG9EyY/V8QbN4G+NoS9IBBsbHaKg/bcWXPg0j0e9NPrY3tZBGBa54BQj
+        k9PHhI4zaUFHsYbVE4zIN5rWXi4U4Yp3jjgkj3/2R7Ni9TLL43BjlBmgSRJUEmo/S3nXWK
+        Jpve/WdzP6vEBk+185hLdyFmY3+wTRc=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-594-3sMOSJeBN9qMM7kWGX6C3A-1; Tue, 10 Jan 2023 10:29:52 -0500
+X-MC-Unique: 3sMOSJeBN9qMM7kWGX6C3A-1
+Received: by mail-ej1-f69.google.com with SMTP id hp2-20020a1709073e0200b0084d47e3fe82so4131144ejc.8
+        for <linux-acpi@vger.kernel.org>; Tue, 10 Jan 2023 07:29:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=G+L5nKBjL6STERlSXFWCkSJxT84QGzIUAzA/TnmbEbw=;
-        b=OCEGERsucCtyo+PyIdMiHbBG1Fez8cK213IYnXudaG6DeonHrzDKHMadDuueg4nmFg
-         1O6sHkFAgUPF7ORgwJ+cZpf/MCSivGyclzlFU5lBd32WNI5joWclfh9wtmoBRz1m8vIo
-         U6AL+UtQlUwaEDSteIOtzbWnYZXK5dCT/zZZ4MEhiPsJWxp7NcFPZBbTr8PIJSQVqd9T
-         /bT87avzOJM03GRNBYRRHC8IYaOQOajpYZT+XW7caPmelHGsJy74Y1jMAv6WNj067zKo
-         nM9urOdA2LTa+t3LD/lDfxpB4Il2usm9HBldeIXzUWk9ul5MET6loW8Q8mUFJwvggrXO
-         RWHg==
-X-Gm-Message-State: AFqh2kqi9Z8HrNaDF0u9u/uNjuEzrtYBWkYxrnqZ/S8kKCXnR7E2jmR3
-        ARSHYrx8gmMIqTEyd4I4L4AhTg==
-X-Google-Smtp-Source: AMrXdXs6iIJqdrd8F7xzn4ZrNVnbkLUMAHk3ReG9adbIDAlle3f/QtTS4JZ9RN2mfbLZag68vAdHJQ==
-X-Received: by 2002:a7b:c3c9:0:b0:3d2:e28:647f with SMTP id t9-20020a7bc3c9000000b003d20e28647fmr59452793wmj.15.1673363880461;
-        Tue, 10 Jan 2023 07:18:00 -0800 (PST)
-Received: from mai.. (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.gmail.com with ESMTPSA id p21-20020a7bcc95000000b003c65c9a36dfsm14857281wma.48.2023.01.10.07.17.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Jan 2023 07:18:00 -0800 (PST)
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     daniel.lezcano@linaro.org, rafael@kernel.org
-Cc:     srinivas.pandruvada@linux.intel.com, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        rui.zhang@intel.com, christophe.jaillet@wanadoo.fr,
-        Daniel Lezcano <daniel.lezcano@kernel.org>,
-        Amit Kucheria <amitk@kernel.org>
-Subject: [PATCH 3/3] thermal/drivers/intel: Use generic trip points int340x
-Date:   Tue, 10 Jan 2023 16:17:45 +0100
-Message-Id: <20230110151745.2546131-4-daniel.lezcano@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230110151745.2546131-1-daniel.lezcano@linaro.org>
-References: <20230110151745.2546131-1-daniel.lezcano@linaro.org>
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/yxSKjjiV63qZ4xo0c25jroyEZ10sbvlzXlHQFiTEoU=;
+        b=gqcmz1SK9XpOiESWSL47ra/GTxRYscYi+M3ONN70DfmAzWMRRXZ1fGNk/09KUO2m12
+         lBQPiy8cq+sxUuAWBMEmrsn/uu67cz/zTPn88oYztCaKrV1nTxOrEX67yY2MW0zzdmKl
+         a3T98hbY0bcGWNTj6jXs1Wx/tDPRIFYoBxlvzqgaMgdAj9TUIWULr0cg1+6NObYsQ5Ow
+         LEIfOI25Aruez5nsZZdvhL3GzW1ZOdqu06lyjaJ9vB2ela7KhHekMAEdd3tVsLdrscK6
+         cZG+WrrGTZMvBhAu9Ao0w4T9+P0wQYwJxg6hvwEEl4oo7c2PzfqRuXjN7jN5w8bGerOF
+         68PA==
+X-Gm-Message-State: AFqh2krdpUemDfqpLNdGW8yzO7D95pmXFM+c09V02wZK5jxowWhjgBa+
+        Qm4bsouaHMRBqp965OanPo0UnsXJOcuS0qgveBBq6PBiAG1Vz5Ft9urJf3Jp/75kBb15+4vd6nn
+        /KyEwhlbZ+/sL6XhocwYPCA==
+X-Received: by 2002:a17:906:3f86:b0:7c1:765:9cfc with SMTP id b6-20020a1709063f8600b007c107659cfcmr61565011ejj.34.1673364591018;
+        Tue, 10 Jan 2023 07:29:51 -0800 (PST)
+X-Google-Smtp-Source: AMrXdXtEVA4ofr4j4JqGHp8OVl9qfYtoQ2s2XMhN02AeJYgDHGzZq8VIunQmZQ7bGyIOZRDWxX5rXw==
+X-Received: by 2002:a17:906:3f86:b0:7c1:765:9cfc with SMTP id b6-20020a1709063f8600b007c107659cfcmr61564998ejj.34.1673364590818;
+        Tue, 10 Jan 2023 07:29:50 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id ex18-20020a170907955200b0081586470b7csm5106892ejc.173.2023.01.10.07.29.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Jan 2023 07:29:50 -0800 (PST)
+Message-ID: <f8d36fc8-6969-4e2c-6b64-7a13e15c970c@redhat.com>
+Date:   Tue, 10 Jan 2023 16:29:49 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH] ACPI: Fix selecting the wrong ACPI fwnode for the iGPU on
+ some Dell laptops
+Content-Language: en-US, nl
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org
+References: <20230109205721.60694-1-hdegoede@redhat.com>
+ <5655985.DvuYhMxLoT@kreacher>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <5655985.DvuYhMxLoT@kreacher>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The thermal framework gives the possibility to register the trip
-points with the thermal zone. When that is done, no get_trip_* ops are
-needed and they can be removed.
+Hi Rafael,
 
-Convert the ops content logic into generic trip points and register
-them with the thermal zone.
+On 1/10/23 14:33, Rafael J. Wysocki wrote:
+> On Monday, January 9, 2023 9:57:21 PM CET Hans de Goede wrote:
+>> The Dell Latitude E6430 both with and without the optional NVidia dGPU
+>> has a bug in its ACPI tables which is causing Linux to assign the wrong
+>> ACPI fwnode / companion to the pci_device for the i915 iGPU.
+>>
+>> Specifically under the PCI root bridge there are these 2 ACPI Device()s :
+>>
+>>  Scope (_SB.PCI0)
+>>  {
+>>      Device (GFX0)
+>>      {
+>>          Name (_ADR, 0x00020000)  // _ADR: Address
+>>      }
+>>
+>>      ...
+>>
+>>      Device (VID)
+>>      {
+>>          Name (_ADR, 0x00020000)  // _ADR: Address
+>>          ...
+>>
+>>          Method (_DOS, 1, NotSerialized)  // _DOS: Disable Output Switching
+>>          {
+>>              VDP8 = Arg0
+>>              VDP1 (One, VDP8)
+>>          }
+>>
+>>          Method (_DOD, 0, NotSerialized)  // _DOD: Display Output Devices
+>>          {
+>>              ...
+>>          }
+>>          ...
+>>      }
+>>  }
+>>
+>> The non-functional GFX0 ACPI device is a problem, because this gets
+>> returned as ACPI companion-device by acpi_find_child_device() for the iGPU.
+>>
+>> This is a long standing problem and the i915 driver does use the ACPI
+>> companion for some things, but works fine without it.
+>>
+>> However since commit 63f534b8bad9 ("ACPI: PCI: Rework acpi_get_pci_dev()")
+>> acpi_get_pci_dev() relies on the physical-node pointer in the acpi_device
+>> and that is set on the wrong acpi_device because of the wrong
+>> acpi_find_child_device() return. This breaks the ACPI video code, leading
+>> to non working backlight control in some cases.
+> 
+> Interesting.  Sorry for the trouble.
 
-In order to consolidate the code, use the ACPI thermal framework API
-to fill the generic trip point from the ACPI tables.
+No problem, as mentioned this is actually a long standing issue / bug
+in the ACPI tables, it just never surfaced before.
 
-It has been tested on a Intel i7-8650U - x280 with the INT3400, the
-PCH, ACPITZ, and x86_pkg_temp. No regression observed so far.
+>> Make find_child_checks() return a higher score for children which have
+>> pnp-ids set by various scan helpers like acpi_is_video_device(), so
+>> that it picks the right companion-device.
+> 
+> This has a potential of changing the behavior in some cases that are not
+> relevant here which is generally risky.
+> 
+>> An alternative approach would be to directly call acpi_is_video_device()
+>> from find_child_checks() but that would be somewhat computationally
+>> expensive given that acpi_find_child_device() iterates over all the
+>> PCI0 children every time it is called.
+> 
+> I agree with the above, but my fix would be something like the patch below (not
+> really tested, but it builds).
 
-Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
----
-   V3:
-      - The driver Kconfig option selects CONFIG_THERMAL_ACPI
-      - Change the initialization to use GTSH for the hysteresis on
-        all the trip points
+Thanks, I have just given this a spin on my E6430 and I can confirm
+it still fixes things.
 
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
----
- drivers/thermal/intel/int340x_thermal/Kconfig |   1 +
- .../int340x_thermal/int340x_thermal_zone.c    | 177 ++++--------------
- .../int340x_thermal/int340x_thermal_zone.h    |  10 +-
- 3 files changed, 43 insertions(+), 145 deletions(-)
+I'll send out this version (re-using most of the v1 commitmsg) as a v2
+right away.
 
-diff --git a/drivers/thermal/intel/int340x_thermal/Kconfig b/drivers/thermal/intel/int340x_thermal/Kconfig
-index 5d046de96a5d..b7072d37101d 100644
---- a/drivers/thermal/intel/int340x_thermal/Kconfig
-+++ b/drivers/thermal/intel/int340x_thermal/Kconfig
-@@ -9,6 +9,7 @@ config INT340X_THERMAL
- 	select THERMAL_GOV_USER_SPACE
- 	select ACPI_THERMAL_REL
- 	select ACPI_FAN
-+	select THERMAL_ACPI
- 	select INTEL_SOC_DTS_IOSF_CORE
- 	select PROC_THERMAL_MMIO_RAPL if POWERCAP
- 	help
-diff --git a/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c b/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
-index 228f44260b27..626b33253153 100644
---- a/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
-+++ b/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
-@@ -37,65 +37,6 @@ static int int340x_thermal_get_zone_temp(struct thermal_zone_device *zone,
- 	return 0;
- }
- 
--static int int340x_thermal_get_trip_temp(struct thermal_zone_device *zone,
--					 int trip, int *temp)
--{
--	struct int34x_thermal_zone *d = zone->devdata;
--	int i;
--
--	if (trip < d->aux_trip_nr)
--		*temp = d->aux_trips[trip];
--	else if (trip == d->crt_trip_id)
--		*temp = d->crt_temp;
--	else if (trip == d->psv_trip_id)
--		*temp = d->psv_temp;
--	else if (trip == d->hot_trip_id)
--		*temp = d->hot_temp;
--	else {
--		for (i = 0; i < INT340X_THERMAL_MAX_ACT_TRIP_COUNT; i++) {
--			if (d->act_trips[i].valid &&
--			    d->act_trips[i].id == trip) {
--				*temp = d->act_trips[i].temp;
--				break;
--			}
--		}
--		if (i == INT340X_THERMAL_MAX_ACT_TRIP_COUNT)
--			return -EINVAL;
--	}
--
--	return 0;
--}
--
--static int int340x_thermal_get_trip_type(struct thermal_zone_device *zone,
--					 int trip,
--					 enum thermal_trip_type *type)
--{
--	struct int34x_thermal_zone *d = zone->devdata;
--	int i;
--
--	if (trip < d->aux_trip_nr)
--		*type = THERMAL_TRIP_PASSIVE;
--	else if (trip == d->crt_trip_id)
--		*type = THERMAL_TRIP_CRITICAL;
--	else if (trip == d->hot_trip_id)
--		*type = THERMAL_TRIP_HOT;
--	else if (trip == d->psv_trip_id)
--		*type = THERMAL_TRIP_PASSIVE;
--	else {
--		for (i = 0; i < INT340X_THERMAL_MAX_ACT_TRIP_COUNT; i++) {
--			if (d->act_trips[i].valid &&
--			    d->act_trips[i].id == trip) {
--				*type = THERMAL_TRIP_ACTIVE;
--				break;
--			}
--		}
--		if (i == INT340X_THERMAL_MAX_ACT_TRIP_COUNT)
--			return -EINVAL;
--	}
--
--	return 0;
--}
--
- static int int340x_thermal_set_trip_temp(struct thermal_zone_device *zone,
- 				      int trip, int temp)
- {
-@@ -109,25 +50,6 @@ static int int340x_thermal_set_trip_temp(struct thermal_zone_device *zone,
- 	if (ACPI_FAILURE(status))
- 		return -EIO;
- 
--	d->aux_trips[trip] = temp;
--
--	return 0;
--}
--
--
--static int int340x_thermal_get_trip_hyst(struct thermal_zone_device *zone,
--		int trip, int *temp)
--{
--	struct int34x_thermal_zone *d = zone->devdata;
--	acpi_status status;
--	unsigned long long hyst;
--
--	status = acpi_evaluate_integer(d->adev->handle, "GTSH", NULL, &hyst);
--	if (ACPI_FAILURE(status))
--		*temp = 0;
--	else
--		*temp = hyst * 100;
--
- 	return 0;
- }
- 
-@@ -138,58 +60,36 @@ static void int340x_thermal_critical(struct thermal_zone_device *zone)
- 
- static struct thermal_zone_device_ops int340x_thermal_zone_ops = {
- 	.get_temp       = int340x_thermal_get_zone_temp,
--	.get_trip_temp	= int340x_thermal_get_trip_temp,
--	.get_trip_type	= int340x_thermal_get_trip_type,
- 	.set_trip_temp	= int340x_thermal_set_trip_temp,
--	.get_trip_hyst =  int340x_thermal_get_trip_hyst,
- 	.critical	= int340x_thermal_critical,
- };
- 
--static int int340x_thermal_get_trip_config(acpi_handle handle, char *name,
--				      int *temp)
--{
--	unsigned long long r;
--	acpi_status status;
--
--	status = acpi_evaluate_integer(handle, name, NULL, &r);
--	if (ACPI_FAILURE(status))
--		return -EIO;
--
--	*temp = deci_kelvin_to_millicelsius(r);
--
--	return 0;
--}
--
- int int340x_thermal_read_trips(struct int34x_thermal_zone *int34x_zone)
- {
--	int trip_cnt = int34x_zone->aux_trip_nr;
--	int i;
-+	int trip_cnt;
-+	int i, ret;
-+
-+	trip_cnt = int34x_zone->aux_trip_nr;
- 
--	int34x_zone->crt_trip_id = -1;
--	if (!int340x_thermal_get_trip_config(int34x_zone->adev->handle, "_CRT",
--					     &int34x_zone->crt_temp))
--		int34x_zone->crt_trip_id = trip_cnt++;
-+	ret = thermal_acpi_trip_crit(int34x_zone->adev, &int34x_zone->trips[trip_cnt]);
-+	if (!ret)
-+		trip_cnt++;
- 
--	int34x_zone->hot_trip_id = -1;
--	if (!int340x_thermal_get_trip_config(int34x_zone->adev->handle, "_HOT",
--					     &int34x_zone->hot_temp))
--		int34x_zone->hot_trip_id = trip_cnt++;
-+	ret = thermal_acpi_trip_hot(int34x_zone->adev, &int34x_zone->trips[trip_cnt]);
-+	if (!ret)
-+		trip_cnt++;
- 
--	int34x_zone->psv_trip_id = -1;
--	if (!int340x_thermal_get_trip_config(int34x_zone->adev->handle, "_PSV",
--					     &int34x_zone->psv_temp))
--		int34x_zone->psv_trip_id = trip_cnt++;
-+	ret = thermal_acpi_trip_psv(int34x_zone->adev, &int34x_zone->trips[trip_cnt]);
-+	if (!ret)
-+		trip_cnt++;
- 
- 	for (i = 0; i < INT340X_THERMAL_MAX_ACT_TRIP_COUNT; i++) {
--		char name[5] = { '_', 'A', 'C', '0' + i, '\0' };
- 
--		if (int340x_thermal_get_trip_config(int34x_zone->adev->handle,
--					name,
--					&int34x_zone->act_trips[i].temp))
-+		ret = thermal_acpi_trip_act(int34x_zone->adev, &int34x_zone->trips[trip_cnt], i);
-+		if (ret)
- 			break;
- 
--		int34x_zone->act_trips[i].id = trip_cnt++;
--		int34x_zone->act_trips[i].valid = true;
-+		trip_cnt++;
- 	}
- 
- 	return trip_cnt;
-@@ -208,7 +108,7 @@ struct int34x_thermal_zone *int340x_thermal_zone_add(struct acpi_device *adev,
- 	acpi_status status;
- 	unsigned long long trip_cnt;
- 	int trip_mask = 0;
--	int ret;
-+	int i, ret;
- 
- 	int34x_thermal_zone = kzalloc(sizeof(*int34x_thermal_zone),
- 				      GFP_KERNEL);
-@@ -228,32 +128,35 @@ struct int34x_thermal_zone *int340x_thermal_zone_add(struct acpi_device *adev,
- 		int34x_thermal_zone->ops->get_temp = get_temp;
- 
- 	status = acpi_evaluate_integer(adev->handle, "PATC", NULL, &trip_cnt);
--	if (ACPI_FAILURE(status))
--		trip_cnt = 0;
--	else {
--		int i;
--
--		int34x_thermal_zone->aux_trips =
--			kcalloc(trip_cnt,
--				sizeof(*int34x_thermal_zone->aux_trips),
--				GFP_KERNEL);
--		if (!int34x_thermal_zone->aux_trips) {
--			ret = -ENOMEM;
--			goto err_trip_alloc;
--		}
--		trip_mask = BIT(trip_cnt) - 1;
-+	if (!ACPI_FAILURE(status)) {
- 		int34x_thermal_zone->aux_trip_nr = trip_cnt;
--		for (i = 0; i < trip_cnt; ++i)
--			int34x_thermal_zone->aux_trips[i] = THERMAL_TEMP_INVALID;
-+		trip_mask = BIT(trip_cnt) - 1;
-+	}
-+
-+	int34x_thermal_zone->trips = kzalloc(sizeof(*int34x_thermal_zone->trips) *
-+					     (INT340X_THERMAL_MAX_TRIP_COUNT + trip_cnt),
-+					      GFP_KERNEL);
-+	if (!int34x_thermal_zone->trips) {
-+		ret = -ENOMEM;
-+		goto err_trips_alloc;
- 	}
- 
- 	trip_cnt = int340x_thermal_read_trips(int34x_thermal_zone);
- 
-+	for (i = 0; i < trip_cnt; ++i)
-+		int34x_thermal_zone->trips[i].hysteresis = thermal_acpi_trip_gtsh(adev);
-+
-+	for (i = 0; i < int34x_thermal_zone->aux_trip_nr; i++) {
-+		int34x_thermal_zone->trips[i].type = THERMAL_TRIP_PASSIVE;
-+		int34x_thermal_zone->trips[i].temperature = THERMAL_TEMP_INVALID;
-+	}
-+	
- 	int34x_thermal_zone->lpat_table = acpi_lpat_get_conversion_table(
- 								adev->handle);
- 
--	int34x_thermal_zone->zone = thermal_zone_device_register(
-+	int34x_thermal_zone->zone = thermal_zone_device_register_with_trips(
- 						acpi_device_bid(adev),
-+						int34x_thermal_zone->trips,
- 						trip_cnt,
- 						trip_mask, int34x_thermal_zone,
- 						int34x_thermal_zone->ops,
-@@ -272,9 +175,9 @@ struct int34x_thermal_zone *int340x_thermal_zone_add(struct acpi_device *adev,
- err_enable:
- 	thermal_zone_device_unregister(int34x_thermal_zone->zone);
- err_thermal_zone:
-+	kfree(int34x_thermal_zone->trips);
- 	acpi_lpat_free_conversion_table(int34x_thermal_zone->lpat_table);
--	kfree(int34x_thermal_zone->aux_trips);
--err_trip_alloc:
-+err_trips_alloc:
- 	kfree(int34x_thermal_zone->ops);
- err_ops_alloc:
- 	kfree(int34x_thermal_zone);
-@@ -287,7 +190,7 @@ void int340x_thermal_zone_remove(struct int34x_thermal_zone
- {
- 	thermal_zone_device_unregister(int34x_thermal_zone->zone);
- 	acpi_lpat_free_conversion_table(int34x_thermal_zone->lpat_table);
--	kfree(int34x_thermal_zone->aux_trips);
-+	kfree(int34x_thermal_zone->trips);
- 	kfree(int34x_thermal_zone->ops);
- 	kfree(int34x_thermal_zone);
- }
-diff --git a/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h b/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h
-index e28ab1ba5e06..0c2c8de92014 100644
---- a/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h
-+++ b/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h
-@@ -10,6 +10,7 @@
- #include <acpi/acpi_lpat.h>
- 
- #define INT340X_THERMAL_MAX_ACT_TRIP_COUNT	10
-+#define INT340X_THERMAL_MAX_TRIP_COUNT INT340X_THERMAL_MAX_ACT_TRIP_COUNT + 3
- 
- struct active_trip {
- 	int temp;
-@@ -19,15 +20,8 @@ struct active_trip {
- 
- struct int34x_thermal_zone {
- 	struct acpi_device *adev;
--	struct active_trip act_trips[INT340X_THERMAL_MAX_ACT_TRIP_COUNT];
--	unsigned long *aux_trips;
-+	struct thermal_trip *trips;
- 	int aux_trip_nr;
--	int psv_temp;
--	int psv_trip_id;
--	int crt_temp;
--	int crt_trip_id;
--	int hot_temp;
--	int hot_trip_id;
- 	struct thermal_zone_device *zone;
- 	struct thermal_zone_device_ops *ops;
- 	void *priv_data;
--- 
-2.34.1
+Regards,
+
+Hans
+
+
+
+
+
+> 
+> ---
+>  drivers/acpi/glue.c     |   14 ++++++++++++--
+>  drivers/acpi/scan.c     |    7 +++++--
+>  include/acpi/acpi_bus.h |    3 ++-
+>  3 files changed, 19 insertions(+), 5 deletions(-)
+> 
+> Index: linux-pm/include/acpi/acpi_bus.h
+> ===================================================================
+> --- linux-pm.orig/include/acpi/acpi_bus.h
+> +++ linux-pm/include/acpi/acpi_bus.h
+> @@ -230,7 +230,8 @@ struct acpi_pnp_type {
+>  	u32 hardware_id:1;
+>  	u32 bus_address:1;
+>  	u32 platform_id:1;
+> -	u32 reserved:29;
+> +	u32 backlight:1;
+> +	u32 reserved:28;
+>  };
+>  
+>  struct acpi_device_pnp {
+> Index: linux-pm/drivers/acpi/scan.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/scan.c
+> +++ linux-pm/drivers/acpi/scan.c
+> @@ -1370,9 +1370,12 @@ static void acpi_set_pnp_ids(acpi_handle
+>  		 * Some devices don't reliably have _HIDs & _CIDs, so add
+>  		 * synthetic HIDs to make sure drivers can find them.
+>  		 */
+> -		if (acpi_is_video_device(handle))
+> +		if (acpi_is_video_device(handle)) {
+>  			acpi_add_id(pnp, ACPI_VIDEO_HID);
+> -		else if (acpi_bay_match(handle))
+> +			pnp->type.backlight = 1;
+> +			break;
+> +		}
+> +		if (acpi_bay_match(handle))
+>  			acpi_add_id(pnp, ACPI_BAY_HID);
+>  		else if (acpi_dock_match(handle))
+>  			acpi_add_id(pnp, ACPI_DOCK_HID);
+> Index: linux-pm/drivers/acpi/glue.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/glue.c
+> +++ linux-pm/drivers/acpi/glue.c
+> @@ -75,7 +75,8 @@ static struct acpi_bus_type *acpi_get_bu
+>  }
+>  
+>  #define FIND_CHILD_MIN_SCORE	1
+> -#define FIND_CHILD_MAX_SCORE	2
+> +#define FIND_CHILD_MID_SCORE	2
+> +#define FIND_CHILD_MAX_SCORE	3
+>  
+>  static int match_any(struct acpi_device *adev, void *not_used)
+>  {
+> @@ -96,8 +97,17 @@ static int find_child_checks(struct acpi
+>  		return -ENODEV;
+>  
+>  	status = acpi_evaluate_integer(adev->handle, "_STA", NULL, &sta);
+> -	if (status == AE_NOT_FOUND)
+> +	if (status == AE_NOT_FOUND) {
+> +		/*
+> +		 * Special case: backlight device objects without _STA are
+> +		 * preferred to other objects with the same _ADR value, because
+> +		 * it is more likely that they are actually useful.
+> +		 */
+> +		if (adev->pnp.type.backlight)
+> +			return FIND_CHILD_MID_SCORE;
+> +
+>  		return FIND_CHILD_MIN_SCORE;
+> +	}
+>  
+>  	if (ACPI_FAILURE(status) || !(sta & ACPI_STA_DEVICE_ENABLED))
+>  		return -ENODEV;
+> 
+> 
+> 
 
