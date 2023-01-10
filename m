@@ -2,152 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7194D66422C
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jan 2023 14:46:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AE90664455
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jan 2023 16:18:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231409AbjAJNqM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Jan 2023 08:46:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40836 "EHLO
+        id S238629AbjAJPSB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Jan 2023 10:18:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238252AbjAJNqL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Jan 2023 08:46:11 -0500
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C2BD1208A;
-        Tue, 10 Jan 2023 05:46:08 -0800 (PST)
-Received: by mail-ed1-f50.google.com with SMTP id v6so17570658edd.6;
-        Tue, 10 Jan 2023 05:46:08 -0800 (PST)
+        with ESMTP id S233310AbjAJPR6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Jan 2023 10:17:58 -0500
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BDD450E57
+        for <linux-acpi@vger.kernel.org>; Tue, 10 Jan 2023 07:17:54 -0800 (PST)
+Received: by mail-wm1-x32b.google.com with SMTP id g10so9063574wmo.1
+        for <linux-acpi@vger.kernel.org>; Tue, 10 Jan 2023 07:17:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uzboIXLTJPA/CndXjJQee1fr50X0HrhF4nPYCfs1XU0=;
+        b=s2M+4R5+xJ7IBwXCD+r7bYx/xe4B+X65TcB6MadC7llHk9qljXzXPWxb0IzcEGnRm8
+         +PmCX6alj6KZ9Px81+SFMDjlwRnPFD5UOTT82D9NxHeOSFYs7LgL/c19kGR54PWvrfi8
+         iCwA6O3RPmy7YPmlW0l7WWG+EFFJ507m6LCDopm9/UmZl+Z/A52fHxf2HpnHIrdFCbeB
+         RCd/znrtNCLNn3++UYSDZBYvIzEBrn0R4UXq0sSRLU32cqntJgdudfflCXHlAfC7pG+n
+         ILpyx1G3j6DCxpGchxQOU0RVQU/LenMoSkKbpTNhneM7U4FMSlK10qT2O1gYhbY2pVYD
+         9jxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=2NZqRJmnFIorDTrRXJ2YTmVjJ4mNfBULNZqJURGRWr0=;
-        b=hz8+vzsPIFVkBm2vOhleaHvMcMnaoebdFEXW+yT5sH8FPyQr5E94+etyfrzM25TSdb
-         4Y++SsYTfu306QxlZQgLBkv23u90YD8jG+w9zSd/9mVtzI03VdP/4JS0lrhz2GBcL/PB
-         EZoyglkeUhiD/Avzmrst5LB5YbUy/oxYd41TXZv9YEqCGF1gcAx8f52U1sMAQ/nE4XBC
-         pqNRkiQ7vdAQ68OBe/mbdaxLFDDGqrvrJF27Q1m0tfx8Au8urcGAcEqB7CXOYobnakC3
-         6lNpDI63MFZBF734qiQfEhT2QiQ48lCQNoWHyAz6qO05P7TKK1QQFulV37LCBjZKWjt8
-         3v+Q==
-X-Gm-Message-State: AFqh2kro/5C1/piZG30WMbYQuhlFjlYzozd7Xf2g0PtlQfsaydRb4u9w
-        +dhOEwWdj0M3AAsjKiILWvjs1GZf17rsmelIHwKUKRQ1
-X-Google-Smtp-Source: AMrXdXsOKU/xHupfJ/bcMMWqOE/KsPdBWdUzkTeIFGcbIxnUfsBXWg1gFvncYzUxE5LqD3vOAaqhCNK6H2GtXAXJ6gc=
-X-Received: by 2002:a05:6402:298b:b0:47f:7465:6e76 with SMTP id
- eq11-20020a056402298b00b0047f74656e76mr6434814edb.181.1673358366989; Tue, 10
- Jan 2023 05:46:06 -0800 (PST)
+        bh=uzboIXLTJPA/CndXjJQee1fr50X0HrhF4nPYCfs1XU0=;
+        b=vOjYlDTh91Za/4XwqGC8posqchfCJJAzjpleK0/PxEceD/OOKZoHP9yeMlcIiLncno
+         GC+FNE2OF8wCQJRbxEvGNFGWpIPmjrYkIMvLNg01lDOXof1dmTVJqRFY7qr/8desN/Im
+         WGaw3qdf7CBSPy3yOmbuN9/ZMdEeokmY4N/1vmODLcLv4JP6e+x1cIOITmUO8f7VBo0t
+         8gDmqqxUjKV4PnlfbZsmxvMMfttLfpy/r22/C8EVE/Q4FdsvAFnPx6KWp/77WQLTStAo
+         93J0NLE9g+OVqUZ1XDDk723l9bLtnkIh1FfoD8WUOAG2CiMD+BBkTAqPe+6cl5lp+XHj
+         l0JA==
+X-Gm-Message-State: AFqh2krv1qW/tB/pB1XpuPfvKHtYaV4lysZH9MHHksBCIhjD/AJCzQde
+        OiY89rvo5/nWnBqwOhSoD1P7Vg==
+X-Google-Smtp-Source: AMrXdXu7O7gUKOxIlAJTx93hk0V+z8hFTJLZE8lDRHKCw9LYY61tcYom+IpefqFPQjV/fkBqrTumEg==
+X-Received: by 2002:a05:600c:3844:b0:3cf:7dc1:f424 with SMTP id s4-20020a05600c384400b003cf7dc1f424mr49054728wmr.3.1673363872999;
+        Tue, 10 Jan 2023 07:17:52 -0800 (PST)
+Received: from mai.. (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.gmail.com with ESMTPSA id p21-20020a7bcc95000000b003c65c9a36dfsm14857281wma.48.2023.01.10.07.17.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Jan 2023 07:17:52 -0800 (PST)
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+To:     daniel.lezcano@linaro.org, rafael@kernel.org
+Cc:     srinivas.pandruvada@linux.intel.com, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        rui.zhang@intel.com, christophe.jaillet@wanadoo.fr
+Subject: [PATCH v4 0/3] Thermal ACPI APIs for generic trip points
+Date:   Tue, 10 Jan 2023 16:17:42 +0100
+Message-Id: <20230110151745.2546131-1-daniel.lezcano@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230109135828.879136-1-mark.rutland@arm.com> <20230109135828.879136-3-mark.rutland@arm.com>
-In-Reply-To: <20230109135828.879136-3-mark.rutland@arm.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 10 Jan 2023 14:45:55 +0100
-Message-ID: <CAJZ5v0hMLRPqMOBjbJ9AFbBQ00TJ7VyntnXwBJqtuSw6FsHaxg@mail.gmail.com>
-Subject: Re: [PATCH 2/8] ACPI: Don't build ACPICA with '-Os'
-To:     Mark Rutland <mark.rutland@arm.com>
-Cc:     linux-arm-kernel@lists.infradead.org, Len Brown <lenb@kernel.org>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Robert Moore <robert.moore@intel.com>, catalin.marinas@arm.com,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mhiramat@kernel.org, ndesaulniers@google.com, ojeda@kernel.org,
-        peterz@infradead.org, revest@chromium.org, rostedt@goodmis.org,
-        will@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 9, 2023 at 2:58 PM Mark Rutland <mark.rutland@arm.com> wrote:
->
-> The ACPICA code has been built with '-Os' since the beginning of git
-> history, though there's no explanatory comment as to why.
->
-> This is unfortunate as building with '-Os' overrides -falign-functions,
-> which prevents CONFIG_FUNCITON_ALIGNMENT and
-> CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B from having their expected effect
-> on the ACPICA code. This is doubly unfortunate as in subsequent patches
-> arm64 will depend upon CONFIG_FUNCTION_ALIGNMENT for its ftrace
-> implementation.
->
-> Drop the '-Os' flag when building the ACPICA code. With this removed,
-> the code builds cleanly and works correctly in testing so far.
+Recently sent as a RFC, the thermal ACPI for generic trip points is a set of
+functions to fill the generic trip points structure which will become the
+standard structure for the thermal framework and its users.
 
-Fair enough.
+Different Intel drivers and the ACPI thermal driver are using the ACPI tables to
+get the thermal zone information. As those are getting the same information,
+providing this set of ACPI function with the generic trip points will
+consolidate the code.
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Also, the Intel PCH and the Intel 34xx drivers are converted to use the generic
+trip points relying on the ACPI generic trip point parsing functions.
 
-and please feel free to route this through the arch tree along with
-the rest of the series.
+These changes have been tested on a Thinkpad Lenovo x280 with the PCH and
+INT34xx drivers. No regression have been observed, the trip points remain the
+same for what is described on this system.
 
-Thanks!
+Changelog:
+ - V4:
+   - Fixed Kconfig option dependency, select THERMAL_ACPI if ACPI is set
+     only for the PCH driver
 
-> I've tested this by selecting CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B=y,
-> building and booting a kernel using ACPI, and looking for misaligned
-> text symbols:
->
-> * arm64:
->
->   Before:
->     #  grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
->     908
->     #  grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | grep acpi | wc -l
->     576
->
->   After:
->     # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
->     322
->     # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | grep acpi | wc -l
->     0
->
-> * x86_64:
->
->   Before:
->     # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
->     2057
->     # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | grep acpi | wc -l
->     706
->
->   After:
->     # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
->     1351
->     # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | grep acpi | wc -l
->     0
->
-> With the patch applied, the remaining unaligned text labels are a
-> combination of static call trampolines and labels in assembly, which
-> will be dealt with in subsequent patches.
->
-> Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Florent Revest <revest@chromium.org>
-> Cc: Len Brown <lenb@kernel.org>
-> Cc: Masami Hiramatsu <mhiramat@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Cc: Robert Moore <robert.moore@intel.com>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: linux-acpi@vger.kernel.org
-> ---
->  drivers/acpi/acpica/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/acpica/Makefile b/drivers/acpi/acpica/Makefile
-> index 9e0d95d76fff7..30f3fc13c29d1 100644
-> --- a/drivers/acpi/acpica/Makefile
-> +++ b/drivers/acpi/acpica/Makefile
-> @@ -3,7 +3,7 @@
->  # Makefile for ACPICA Core interpreter
->  #
->
-> -ccflags-y                      := -Os -D_LINUX -DBUILDING_ACPICA
-> +ccflags-y                      := -D_LINUX -DBUILDING_ACPICA
->  ccflags-$(CONFIG_ACPI_DEBUG)   += -DACPI_DEBUG_OUTPUT
->
->  # use acpi.o to put all files here into acpi.o modparam namespace
-> --
-> 2.30.2
->
+ - V3:
+   - Took into account Rafael's comments
+   - Used a silence option THERMAL_ACPI in order to stay consistent
+     with THERMAL_OF. It is up to the API user to select the option.
+
+ - V2:
+   - Fix the thermal ACPI patch where the thermal_acpi.c was not included in
+     the series
+   - Provide a couple of users of this API which could have been tested on a
+     real system
+
+Daniel Lezcano (3):
+  thermal/acpi: Add ACPI trip point routines
+  thermal/drivers/intel: Use generic trip points for intel_pch
+  thermal/drivers/intel: Use generic trip points int340x
+
+ drivers/thermal/Kconfig                       |   4 +
+ drivers/thermal/Makefile                      |   1 +
+ drivers/thermal/intel/Kconfig                 |   1 +
+ drivers/thermal/intel/int340x_thermal/Kconfig |   1 +
+ .../int340x_thermal/int340x_thermal_zone.c    | 177 ++++-----------
+ .../int340x_thermal/int340x_thermal_zone.h    |  10 +-
+ drivers/thermal/intel/intel_pch_thermal.c     |  88 ++------
+ drivers/thermal/thermal_acpi.c                | 211 ++++++++++++++++++
+ include/linux/thermal.h                       |   8 +
+ 9 files changed, 287 insertions(+), 214 deletions(-)
+ create mode 100644 drivers/thermal/thermal_acpi.c
+
+-- 
+2.34.1
+
