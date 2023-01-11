@@ -2,88 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 229FF665B6D
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Jan 2023 13:34:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46FD6665C8D
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Jan 2023 14:33:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232976AbjAKMep (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 11 Jan 2023 07:34:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46288 "EHLO
+        id S238493AbjAKNcd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 11 Jan 2023 08:32:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232120AbjAKMeo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Jan 2023 07:34:44 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADEFD12613;
-        Wed, 11 Jan 2023 04:34:43 -0800 (PST)
+        with ESMTP id S232251AbjAKNcD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Jan 2023 08:32:03 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70DB41B9F5;
+        Wed, 11 Jan 2023 05:27:43 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 48D5261CD8;
-        Wed, 11 Jan 2023 12:34:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B26C433F0;
-        Wed, 11 Jan 2023 12:34:41 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2EC71B81BDE;
+        Wed, 11 Jan 2023 13:27:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE70C433EF;
+        Wed, 11 Jan 2023 13:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673440482;
-        bh=8ECPtl95jMrSYLYK0fQjZE4iX607dsXxBcoAptHSDRk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=F+WPq2If4Vxd4uFQRjL2LkRRf9V8pa09IzqQRBW1tQo12YsZ1tw3NnSEdj9rdOG24
-         PlCE940j1Xm70AovSQjfwjaDDjU4jllNsj+2/T2FJ+xuUK4kBbks+hXC9XM2NrDpAx
-         GkYicY+nCOlqpN3y4fxSE+L6XAx0BM4IfXvweS2eE86TUtape8hhIHhCRO5cFGxpr/
-         JgjCveVG/zIMVxMJqsZ3Utrc+is98aUhzP09TtW5wCbk1KgWabOxtcqzLvXaFhkSr+
-         EDXqcOQnVTHpAdbyBw2cG64blL2y1hSKYqaiIGyfC+rOBco0FxTU45nRspsjwWgIFb
-         FtTn4Xzb8jzOg==
-Date:   Wed, 11 Jan 2023 18:04:38 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        Len Brown <lenb@kernel.org>,
-        Stefan Richter <stefanr@s5r6.in-berlin.de>,
-        Wolfram Sang <wsa@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Sean Young <sean@mess.org>, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Sanyog Kale <sanyog.r.kale@intel.com>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Chaitanya Kulkarni <kch@nvidia.com>,
-        Ming Lei <ming.lei@redhat.com>,
-        Jilin Yuan <yuanjilin@cdjrlc.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Won Chung <wonchung@google.com>, alsa-devel@alsa-project.org,
-        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-i3c@lists.infradead.org, linux-input@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: Re: [PATCH v2 05/16] driver core: make struct device_type.uevent()
- take a const *
-Message-ID: <Y76s3tgPkfGhUzEr@matsya>
-References: <20230111113018.459199-1-gregkh@linuxfoundation.org>
- <20230111113018.459199-6-gregkh@linuxfoundation.org>
+        s=k20201202; t=1673443660;
+        bh=fGkN7Tcc9YTFcYUuxGh5EQduQh3KswjLvTWHPdFxYnc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=KiUfZjUWmfHq0/XQGiaPWbfPX/CSbW4q70PHlrmD1K7EQO4Mtbpc4LckwJjbGoHGG
+         JSWvvuW1uOpnGcMAH9ZQZfmaffW+PfwSWAN4NLdt+jetVAh8MD8rmFzkM6BZH6gPut
+         lBNca1hzxWXB479IgDhUA2S6m0McQKh2XIuq/vpWFJymk2ZUkk1qBBR2TUeBKzMojY
+         ZzupKzxTK0eK4P9Dmq4AgNRwtXeQOiOOFmscJY/HjS//h8GIrl3Zqvk0KGNjpNelkf
+         vIM3nyUwEvPhd3qjIGtlBpp+67pgu9set6fx9mNTtIcURb1WdjX8D4YCNMZ/bDRa+E
+         SSGe9BMwk2TqA==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI: PRM: Check whether EFI runtime is available
+Date:   Wed, 11 Jan 2023 14:27:34 +0100
+Message-Id: <20230111132734.1571990-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230111113018.459199-6-gregkh@linuxfoundation.org>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1147; i=ardb@kernel.org; h=from:subject; bh=fGkN7Tcc9YTFcYUuxGh5EQduQh3KswjLvTWHPdFxYnc=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjvrlFfo2LBgRZH0zU03llnibes9XBYoffyPOnpuFq vTkLh+KJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY765RQAKCRDDTyI5ktmPJOONC/ 4/vJv9xi6/BiB5c+xeG27gaIyf8QuOQcjjhyQcQ95m+a50rAZ12GyGXcNbvm2IOyKSPPLZEu5rrELC U0SvX5JT97vzJbr7LvViamn5rmxfZjoB+FufIfEMz5EhVNvnPfiIzzWCVLVMtNBEh7G5iBNJMgNcEX rmDcmQXFv1J+z7yOU8iBxx5SFkZvEkZM+lXgRzFc/O53Dbg5XA3zlAHKCSm0gVNZxEJeYhRZ2ZbxYy Ehvd2y9KYzt0Rfk7xbwQ0mbPDVv6FHP/0si6pK/M/QzkXN1Tqlebf1movMvQ2ix3cWIwkfo7BGeC9W b8kOdaDjXWskI4JAfFILDFhpI5seio3dtUloPTlgplZtkadrJe46d8Zdggv4drO1Wq8882WMaBkPZu BuzhIh8eBaMu3PMddJtJYwpdk40M2cMNHHjstKeJKEZEqU9DdUHBv1bR2PNvj9PhWi3ALqBqOPwZKI phhsfsgdR8vjDjyq8yaDAagSgvWLcgWyjN+PIIBkmN08o=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -93,13 +53,36 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 11-01-23, 12:30, Greg Kroah-Hartman wrote:
-> The uevent() callback in struct device_type should not be modifying the
-> device that is passed into it, so mark it as a const * and propagate the
-> function signature changes out into all relevant subsystems that use
-> this callback.
+The ACPI PRM address space handler calls efi_call_virt_pointer() to
+execute PRM firmware code, but doing so is only permitted when the EFI
+runtime environment is available. Otherwise, such calls are guaranteed
+to result in a crash, and must therefore be avoided.
 
-Acked-by: Vinod Koul <vkoul@kernel.org>
+Cc: <stable@vger.kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>
+Cc: linux-acpi@vger.kernel.org
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/acpi/prmt.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
+diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+index 998101cf16e47145..74f924077866ae69 100644
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -236,6 +236,11 @@ static acpi_status acpi_platformrt_space_handler(u32 function,
+ 	efi_status_t status;
+ 	struct prm_context_buffer context;
+ 
++	if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
++		pr_err("PRM: EFI runtime services unavailable\n");
++		return AE_NOT_IMPLEMENTED;
++	}
++
+ 	/*
+ 	 * The returned acpi_status will always be AE_OK. Error values will be
+ 	 * saved in the first byte of the PRM message buffer to be used by ASL.
 -- 
-~Vinod
+2.39.0
+
