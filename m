@@ -2,95 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBB0A66581B
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Jan 2023 10:51:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 204F366582D
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Jan 2023 10:54:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238205AbjAKJvJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 11 Jan 2023 04:51:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46818 "EHLO
+        id S235982AbjAKJyS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 11 Jan 2023 04:54:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238753AbjAKJtw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Jan 2023 04:49:52 -0500
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26E67C76F
-        for <linux-acpi@vger.kernel.org>; Wed, 11 Jan 2023 01:48:45 -0800 (PST)
-Received: by mail-ej1-f44.google.com with SMTP id ss4so28133482ejb.11
-        for <linux-acpi@vger.kernel.org>; Wed, 11 Jan 2023 01:48:45 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CJSdKNiozoQ/fKT44b3RPqNb6mGyt9zq/l5dYOnFE84=;
-        b=6xzqOkabUj/AUynyD5BUAQoQ8qbzsQaTZ5TvIvMn325D0M8O2II+zYl1HdLy5PPKwy
-         iQx42kFb20dy+kcqJwayiRRoHEKIBO8ucqJ7sz2u3IwmorHaTO411xtILSYlqozWn7kJ
-         Lv+ujK4nmdeYjHy0T5ySwsgGKdAr+KojAD/uTuti/uzmQ+0BwJo14ZW6vXZfs6hQd+Hv
-         qDSqgDg7j+wd17+ZzTJye8MhsIbIAnBNUPcnqP8vgV0MzEQxvd9hb0OLx5OaefLSlF5C
-         X6k79WXKOSal99ctIk5jGBh/aCVaZJzBrZ7JMXlUE9Lets1wBVV5AiBvvEBPp35X4TUC
-         13Ew==
-X-Gm-Message-State: AFqh2kqmMS+9Nzm1tTsw7lnCliUB5P461/EVu5JtyJTJ1uPUXBG8X5kR
-        nLxv/zqzBZFUY+pXkCzcgwBrmpWXwPZTSgXtBpc=
-X-Google-Smtp-Source: AMrXdXvuT3LCiP/+pckmfubDwy/CrownSWm00zhuRod81cBaQl9cNT1xGgqkYba3e6dGwEBUTMC/Cc3wyGqrLkkFbrc=
-X-Received: by 2002:a17:906:9484:b0:84d:3c6a:4c55 with SMTP id
- t4-20020a170906948400b0084d3c6a4c55mr1760489ejx.509.1673430524098; Wed, 11
- Jan 2023 01:48:44 -0800 (PST)
+        with ESMTP id S235993AbjAKJxo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Jan 2023 04:53:44 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF3A5D109;
+        Wed, 11 Jan 2023 01:51:27 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9221EB81B76;
+        Wed, 11 Jan 2023 09:51:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F6DC433F1;
+        Wed, 11 Jan 2023 09:51:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1673430685;
+        bh=z0ZYgHqL1YLvYl+ue5zNy1KMy+u3shk6BmiAvHiQZSA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=xZGcZ5JDRrdXTJbt9tLPDzh24ToBaCeG04aIrg63SxaV0mqioT6pGZXGHiVeh9ZOU
+         sO0JuLfJTFUVrJVMPgoU9Fwio7tkoa1uh4VeY/xzIKAbqvAAsfPDw+kuuk3E42lxBv
+         sJ9yu85to26aoTWWeVLBJDsI3mtwYFGQ3RchmYyA=
+Date:   Wed, 11 Jan 2023 10:51:22 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+        Len Brown <lenb@kernel.org>,
+        Stefan Richter <stefanr@s5r6.in-berlin.de>,
+        Wolfram Sang <wsa@kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Sean Young <sean@mess.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Sanyog Kale <sanyog.r.kale@intel.com>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Ming Lei <ming.lei@redhat.com>,
+        Jilin Yuan <yuanjilin@cdjrlc.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Won Chung <wonchung@google.com>, alsa-devel@alsa-project.org,
+        devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-i3c@lists.infradead.org, linux-input@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH 3/5] driver core: make struct device_type.uevent() take a
+ const *
+Message-ID: <Y76GmvOD9KxSuD7o@kroah.com>
+References: <20221123122523.1332370-1-gregkh@linuxfoundation.org>
+ <20221123122523.1332370-3-gregkh@linuxfoundation.org>
+ <CAJZ5v0gqD_TW3iGLAiH=us1B0-JLGtv2VGTJjQwiWxCmris9ag@mail.gmail.com>
 MIME-Version: 1.0
-References: <ef8c7138-8ed1-d849-0ed5-e629ddcafd63@oracle.com>
- <1987c2d2-1246-b172-985f-360e5c2c437a@oracle.com> <Y73zkXlPqiMFeT6V@zn.tnic>
-In-Reply-To: <Y73zkXlPqiMFeT6V@zn.tnic>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 11 Jan 2023 10:48:32 +0100
-Message-ID: <CAJZ5v0iN1ZnBwrX6LxwCy+5iUrEzBCEUxmvCyVhkMJNofmTTbg@mail.gmail.com>
-Subject: Re: [PATCH v3] x86/ACPI: Ignore CPUs that are not online capable for
- x2apic, entries as well
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     James Puthukattukaran <james.puthukattukaran@oracle.com>,
-        linux-acpi@vger.kernel.org, x86@kernel.org, rafael@kernel.org,
-        lenb@kernel.org, mingo@redhat.com, tglx@linutronix.de,
-        hpa@zytor.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0gqD_TW3iGLAiH=us1B0-JLGtv2VGTJjQwiWxCmris9ag@mail.gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jan 11, 2023 at 12:24 AM Borislav Petkov <bp@alien8.de> wrote:
->
-> On Tue, Jan 10, 2023 at 05:43:41PM -0500, James Puthukattukaran wrote:
-> > Adding others that I missed on my first email.
+On Wed, Nov 23, 2022 at 01:38:05PM +0100, Rafael J. Wysocki wrote:
+> On Wed, Nov 23, 2022 at 1:25 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
 > >
-> > James
+> > The uevent() callback in struct device_type should not be modifying the
+> > device that is passed into it, so mark it as a const * and propagate the
+> > function signature changes out into all relevant subsystems that use
+> > this callback.
 > >
-> > On 12/22/22 13:26, James Puthukattukaran wrote:
-> > > Extending commit aa06e20f1be6 ("x86/ACPI: Don't add CPUs that are not
-> > > online capable") to include acpi_parse_x2apic as well.
->
-> This doesn't look like an extension to some existing commit but like a separate
-> fix.
->
-> > > There is a check for invalid apicid; however, there are BIOS FW with madt
-> > > version >= 5 support that do not bother setting apic id to an invalid value
-> > > since they assume the OS will check the enabled and online capable flags.
->
-> Which BIOSes are those?
->
-> Also, I'm no BIOS guy but I don't see you checking MADT version anywhere?
->
-> > > Signed-off-by: James Puthukattukaran<james.puthukattukaran@oracle.com>
-> > > Reported-by: Benjamin Fuller<ben.fuller@oracle.com>
-> > >
-> > > v2 : use 'enabled' local variable. Also fix checkpatch.pl catches
-> > > v3 : updates as per Rafael's comments
->
-> Yah, I'd like for Rafael to decide what to do here...
+> > Cc: Jens Axboe <axboe@kernel.dk>
+> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> > Cc: Len Brown <lenb@kernel.org>
+> > Cc: Stefan Richter <stefanr@s5r6.in-berlin.de>
+> > Cc: Wolfram Sang <wsa@kernel.org>
+> > Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> > Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> > Cc: Sean Young <sean@mess.org>
+> > Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > Cc: Rob Herring <robh+dt@kernel.org>
+> > Cc: Frank Rowand <frowand.list@gmail.com>
+> > Cc: Maximilian Luz <luzmaximilian@gmail.com>
+> > Cc: Hans de Goede <hdegoede@redhat.com>
+> > Cc: Mark Gross <markgross@kernel.org>
+> > Cc: Vinod Koul <vkoul@kernel.org>
+> > Cc: Bard Liao <yung-chuan.liao@linux.intel.com>
+> > Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+> > Cc: Sanyog Kale <sanyog.r.kale@intel.com>
+> > Cc: Andreas Noever <andreas.noever@gmail.com>
+> > Cc: Michael Jamet <michael.jamet@intel.com>
+> > Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+> > Cc: Yehezkel Bernat <YehezkelShB@gmail.com>
+> > Cc: Jiri Slaby <jirislaby@kernel.org>
+> > Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> > Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+> > Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
+> > Cc: Chaitanya Kulkarni <kch@nvidia.com>
+> > Cc: Ming Lei <ming.lei@redhat.com>
+> > Cc: Jilin Yuan <yuanjilin@cdjrlc.com>
+> > Cc: Alan Stern <stern@rowland.harvard.edu>
+> > Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> > Cc: Thomas Gleixner <tglx@linutronix.de>
+> > Cc: Ira Weiny <ira.weiny@intel.com>
+> > Cc: Dan Williams <dan.j.williams@intel.com>
+> > Cc: Won Chung <wonchung@google.com>
+> > Cc: alsa-devel@alsa-project.org
+> > Cc: devicetree@vger.kernel.org
+> > Cc: linux-acpi@vger.kernel.org
+> > Cc: linux-block@vger.kernel.org
+> > Cc: linux-i2c@vger.kernel.org
+> > Cc: linux-i3c@lists.infradead.org
+> > Cc: linux-input@vger.kernel.org
+> > Cc: linux-kernel@vger.kernel.org
+> > Cc: linux-media@vger.kernel.org
+> > Cc: linux-serial@vger.kernel.org
+> > Cc: linux-usb@vger.kernel.org
+> > Cc: linux1394-devel@lists.sourceforge.net
+> > Cc: platform-driver-x86@vger.kernel.org
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> 
+> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> (which my ACPI maintainer hat on).
 
-I've just sent my comments to the patch, but you have not been CCed, sorry.
+thanks for the review, I'll add it to the v2 patch.
 
-IMO the MADT version should be checked too and I would like to have at
-least one example of a platform affected by this problem in the
-changelog.
+greg k-h
