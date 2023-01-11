@@ -2,106 +2,408 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DDD5665EA2
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Jan 2023 16:02:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80F636662C5
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Jan 2023 19:29:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232469AbjAKPCV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 11 Jan 2023 10:02:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37840 "EHLO
+        id S233882AbjAKS2U (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 11 Jan 2023 13:28:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234822AbjAKPCL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Jan 2023 10:02:11 -0500
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA8A41C916
-        for <linux-acpi@vger.kernel.org>; Wed, 11 Jan 2023 07:01:59 -0800 (PST)
-Received: by mail-wr1-x436.google.com with SMTP id e3so6103277wru.13
-        for <linux-acpi@vger.kernel.org>; Wed, 11 Jan 2023 07:01:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AaucJbeurArINzx/XqwlyeZxosCdZQCp+GGH59FoJLw=;
-        b=BzJQPThURwdCce7DSuHydqHFnFmMUYBpD8p+nqaJSxRUdS/2Xl6wckfZ2HjLnPcPN5
-         wE5o0YbTLBfcesWxHslwUojicom7kbnBpm/v0z81lnYABLl3zBtYkIGzU6YIRzS/xBbD
-         zoPhqylLhAalYVX5/wBk0lX/HSDo6UY5fOVP5d/8+BYOIRVReHteo4i9Xb5fkae6z17t
-         VwIpjW6WO/aL14f9vG9eq51Y/J5Lj85/30T3kzQlI/42D5pUn5Gjk0ZI5r/yZGplPf09
-         N3xi77sGwgWRjHNUuW7U91/x4ntr6EPjW7tKYoUeYibNGdhTofrob3G1eoPTgQNxEiGb
-         8iJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AaucJbeurArINzx/XqwlyeZxosCdZQCp+GGH59FoJLw=;
-        b=yajtHCKYiRdh/xsrpGf+0Q0FhgW8e4LaPpmEHIDOQkIJbN/Bbp7xWt5+m7zMqu/DoF
-         Fh7PTW4dIujWxYWfwiBD4SKYLjlPonOwfDf9+ZAdEbjJixdu6MfPcASvzS4bZuQYvrp7
-         amnSes9uz4G5JHHqO+Tm35vfq8nWAUhr1zAH7H/WO5WzMmNonpmV4XnVR05kzmymt8CA
-         1G1v6dkxKhEhZ/+SUqWm4obJK85nuKca34NyOOFvJliC5usH/7azQxNWdQj8U0zJC9r3
-         eNtoDM0i6RJ4xorUNaXjaaNwxce+mBRU5WdxgwfBrngPO0sbT13T8FTFsqZz+sC1auxE
-         1upQ==
-X-Gm-Message-State: AFqh2krySv7+7vG6bgEH+3U9QM12+5+eDqSXtLhD1vARQQvzmVUnWevL
-        kDHKT+XewSLHfJGEB7gdWGtLWA==
-X-Google-Smtp-Source: AMrXdXtpWlmaH1CYDfLd+6Dy7rAPz1iLEIGX1Pos50zqDNV/j7WqrZblwbuWeIbTNepd9+4SFvngww==
-X-Received: by 2002:a5d:4cc2:0:b0:2a3:3a96:709a with SMTP id c2-20020a5d4cc2000000b002a33a96709amr21707353wrt.57.1673449318389;
-        Wed, 11 Jan 2023 07:01:58 -0800 (PST)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id z6-20020a05600c0a0600b003d96efd09b7sm27310573wmp.19.2023.01.11.07.01.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Jan 2023 07:01:57 -0800 (PST)
-Message-ID: <31c07acb-adcf-3c7e-c415-fa2cd67fd12f@linaro.org>
-Date:   Wed, 11 Jan 2023 16:01:56 +0100
+        with ESMTP id S231841AbjAKS2E (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Jan 2023 13:28:04 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E36EB32EA7;
+        Wed, 11 Jan 2023 10:28:02 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B9C2DFEC;
+        Wed, 11 Jan 2023 10:28:44 -0800 (PST)
+Received: from FVFF77S0Q05N (unknown [10.57.46.211])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5BB283F587;
+        Wed, 11 Jan 2023 10:28:00 -0800 (PST)
+Date:   Wed, 11 Jan 2023 18:27:53 +0000
+From:   Mark Rutland <mark.rutland@arm.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
+        lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, mhiramat@kernel.org,
+        ndesaulniers@google.com, ojeda@kernel.org, peterz@infradead.org,
+        rafael.j.wysocki@intel.com, revest@chromium.org,
+        robert.moore@intel.com, rostedt@goodmis.org, will@kernel.org
+Subject: Re: [PATCH 1/8] Compiler attributes: GCC function alignment
+ workarounds
+Message-ID: <Y77/qVgvaJidFpYt@FVFF77S0Q05N>
+References: <20230109135828.879136-1-mark.rutland@arm.com>
+ <20230109135828.879136-2-mark.rutland@arm.com>
+ <CANiq72kgmFYEO_EB_NxAF=S7VOf45KM7W3uwxxvftVErwfWzjg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v4 0/3] Thermal ACPI APIs for generic trip points
-Content-Language: en-US
-To:     "Zhang, Rui" <rui.zhang@intel.com>,
-        "rafael@kernel.org" <rafael@kernel.org>
-Cc:     "srinivas.pandruvada@linux.intel.com" 
-        <srinivas.pandruvada@linux.intel.com>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-References: <20230110151745.2546131-1-daniel.lezcano@linaro.org>
- <b070cfab-b8ab-f795-0c98-fc874f05f16b@linaro.org>
- <d51432466ed6b1a8eef0e966bf1b2c2bb2e1e37f.camel@intel.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <d51432466ed6b1a8eef0e966bf1b2c2bb2e1e37f.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72kgmFYEO_EB_NxAF=S7VOf45KM7W3uwxxvftVErwfWzjg@mail.gmail.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 11/01/2023 15:49, Zhang, Rui wrote:
-> On Wed, 2023-01-11 at 12:52 +0100, Daniel Lezcano wrote:
->> Can I consider these changes ok for thermal/bleeding-edge ?
->>
->>
-> Hi, Daniel,
+On Mon, Jan 09, 2023 at 03:43:16PM +0100, Miguel Ojeda wrote:
+> On Mon, Jan 9, 2023 at 2:58 PM Mark Rutland <mark.rutland@arm.com> wrote:
+> >
+> > As far as I can tell, GCC doesn't respect '-falign-functions=N':
+> >
+> > * When the __weak__ attribute is used
+> >
+> >   GCC seems to forget the alignment specified by '-falign-functions=N',
+> >   but will respect the '__aligned__(N)' function attribute. Thus, we can
+> >   work around this by explciitly setting the alignment for weak
+> >   functions.
+> >
+> > * When the __cold__ attribute is used
+> >
+> >   GCC seems to forget the alignment specified by '-falign-functions=N',
+> >   and also doesn't seem to respect the '__aligned__(N)' function
+> >   attribute. The only way to work around this is to not use the __cold__
+> >   attibute.
 > 
-> In general, the patch looks good to me.
-> But can you give me more time so that I can test them on my test box by
-> this week?
+> If you happen to have a reduced case, then it would be nice to link it
+> in the commit. A bug report to GCC would also be nice.
+> 
+> I gave it a very quick try in Compiler Explorer, but I couldn't
+> reproduce it, so I guess it depends on flags, non-trivial functions or
+> something else.
 
-Ah, yes, definitively. If you have a test box for these changes that is 
-awesome.
+So having spent today coming up with tests, it turns out it's not quite as I
+described above, but in a sense worse. I'm posting a summary here for
+posterity; I'll try to get this to compiler folk shortly.
 
-Do you have a suggestion for a x86 platform to test quark_dts, 
-processor_thermal_device_pci and intel_soc_dts_iosf ?
+GCC appears to not align cold functions to the alignment specified by
+`-falign-functions=N` when compiling at `-O1` or above. Alignment *can* be
+restored with explicit attributes on each function, but due to some
+interprocedural analysis, callees can be implicitly marked as cold (losing
+their default alignment), which means we don't have a reliable mechanism to
+ensure functions are always aligned short of annotating *every* function
+explicitly (and I suspect that's not sufficient due to some interprocedural optimizations).
+
+I've tested with the 12.1.0 binary release from the kernel.org cross toolchains
+page).
+
+LLVM always seems to repsect `-falign-functions=N` at both `-O1` and `-O2` (I
+tested the 10.0.0, 11.0.0, 11.0.1, 15.0.6 binary releases from llvm.org).
+
+For example:
+
+| [mark@lakrids:/mnt/data/tests/gcc-alignment]% cat test-cold.c                                           
+| #define __cold \
+|         __attribute__((cold))
+| 
+| #define EXPORT_FUNC_PTR(func) \
+|         typeof((func)) *__ptr_##func = (func)
+| 
+| __cold
+| void cold_func_a(void) { }
+| 
+| __cold
+| void cold_func_b(void) { }
+| 
+| __cold
+| void cold_func_c(void) { }
+| 
+| static __cold
+| void static_cold_func_a(void) { }
+| EXPORT_FUNC_PTR(static_cold_func_a);
+| 
+| static __cold
+| void static_cold_func_b(void) { }
+| EXPORT_FUNC_PTR(static_cold_func_b);
+| 
+| static __cold
+| void static_cold_func_c(void) { }
+| EXPORT_FUNC_PTR(static_cold_func_c);
+| [mark@lakrids:/mnt/data/tests/gcc-alignment]% usekorg 12.1.0 aarch64-linux-gcc -falign-functions=16 -c test-cold.c -O1
+| [mark@lakrids:/mnt/data/tests/gcc-alignment]% usekorg 12.1.0 aarch64-linux-objdump -d test-cold.o                     
+| 
+| test-cold.o:     file format elf64-littleaarch64
+| 
+| 
+| Disassembly of section .text:
+| 
+| 0000000000000000 <static_cold_func_a>:
+|    0:   d65f03c0        ret
+| 
+| 0000000000000004 <static_cold_func_b>:
+|    4:   d65f03c0        ret
+| 
+| 0000000000000008 <static_cold_func_c>:
+|    8:   d65f03c0        ret
+| 
+| 000000000000000c <cold_func_a>:
+|    c:   d65f03c0        ret
+| 
+| 0000000000000010 <cold_func_b>:
+|   10:   d65f03c0        ret
+| 
+| 0000000000000014 <cold_func_c>:
+|   14:   d65f03c0        ret
+| [mark@lakrids:/mnt/data/tests/gcc-alignment]% usekorg 12.1.0 aarch64-linux-objdump -h test-cold.o
+| 
+| test-cold.o:     file format elf64-littleaarch64
+| 
+| Sections:
+| Idx Name          Size      VMA               LMA               File off  Algn
+|   0 .text         00000018  0000000000000000  0000000000000000  00000040  2**2
+|                   CONTENTS, ALLOC, LOAD, READONLY, CODE
+|   1 .data         00000018  0000000000000000  0000000000000000  00000058  2**3
+|                   CONTENTS, ALLOC, LOAD, RELOC, DATA
+|   2 .bss          00000000  0000000000000000  0000000000000000  00000070  2**0
+|                   ALLOC
+|   3 .comment      00000013  0000000000000000  0000000000000000  00000070  2**0
+|                   CONTENTS, READONLY
+|   4 .note.GNU-stack 00000000  0000000000000000  0000000000000000  00000083  2**0
+|                   CONTENTS, READONLY
+|   5 .eh_frame     00000090  0000000000000000  0000000000000000  00000088  2**3
+|                   CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+
+In simple cases, alignment *can* be restored if an explicit function attribute
+is used. For example:
+
+| [mark@lakrids:/mnt/data/tests/gcc-alignment]% cat test-aligned-cold.c                            
+| #define __aligned(n) \
+|         __attribute__((aligned(n)))
+| 
+| #define __cold \
+|         __attribute__((cold)) __aligned(16)
+| 
+| #define EXPORT_FUNC_PTR(func) \
+|         typeof((func)) *__ptr_##func = (func)
+| 
+| __cold
+| void cold_func_a(void) { }
+| 
+| __cold
+| void cold_func_b(void) { }
+| 
+| __cold
+| void cold_func_c(void) { }
+| 
+| static __cold
+| void static_cold_func_a(void) { }
+| EXPORT_FUNC_PTR(static_cold_func_a);
+| 
+| static __cold
+| void static_cold_func_b(void) { }
+| EXPORT_FUNC_PTR(static_cold_func_b);
+| 
+| static __cold
+| void static_cold_func_c(void) { }
+| EXPORT_FUNC_PTR(static_cold_func_c);
+| [mark@lakrids:/mnt/data/tests/gcc-alignment]% usekorg 12.1.0 aarch64-linux-gcc -falign-functions=16 -c test-aligned-cold.c -O1
+| [mark@lakrids:/mnt/data/tests/gcc-alignment]% usekorg 12.1.0 aarch64-linux-objdump -d test-aligned-cold.o                     
+| 
+| test-aligned-cold.o:     file format elf64-littleaarch64
+| 
+| 
+| Disassembly of section .text:
+| 
+| 0000000000000000 <static_cold_func_a>:
+|    0:   d65f03c0        ret
+|    4:   d503201f        nop
+|    8:   d503201f        nop
+|    c:   d503201f        nop
+| 
+| 0000000000000010 <static_cold_func_b>:
+|   10:   d65f03c0        ret
+|   14:   d503201f        nop
+|   18:   d503201f        nop
+|   1c:   d503201f        nop
+| 
+| 0000000000000020 <static_cold_func_c>:
+|   20:   d65f03c0        ret
+|   24:   d503201f        nop
+|   28:   d503201f        nop
+|   2c:   d503201f        nop
+| 
+| 0000000000000030 <cold_func_a>:
+|   30:   d65f03c0        ret
+|   34:   d503201f        nop
+|   38:   d503201f        nop
+|   3c:   d503201f        nop
+| 
+| 0000000000000040 <cold_func_b>:
+|   40:   d65f03c0        ret
+|   44:   d503201f        nop
+|   48:   d503201f        nop
+|   4c:   d503201f        nop
+| 
+| 0000000000000050 <cold_func_c>:
+|   50:   d65f03c0        ret
+| [mark@lakrids:/mnt/data/tests/gcc-alignment]% usekorg 12.1.0 aarch64-linux-objdump -h test-aligned-cold.o
+| 
+| test-aligned-cold.o:     file format elf64-littleaarch64
+| 
+| Sections:
+| Idx Name          Size      VMA               LMA               File off  Algn
+|   0 .text         00000054  0000000000000000  0000000000000000  00000040  2**4
+|                   CONTENTS, ALLOC, LOAD, READONLY, CODE
+|   1 .data         00000018  0000000000000000  0000000000000000  00000098  2**3
+|                   CONTENTS, ALLOC, LOAD, RELOC, DATA
+|   2 .bss          00000000  0000000000000000  0000000000000000  000000b0  2**0
+|                   ALLOC
+|   3 .comment      00000013  0000000000000000  0000000000000000  000000b0  2**0
+|                   CONTENTS, READONLY
+|   4 .note.GNU-stack 00000000  0000000000000000  0000000000000000  000000c3  2**0
+|                   CONTENTS, READONLY
+|   5 .eh_frame     00000090  0000000000000000  0000000000000000  000000c8  2**3
+|                   CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
 
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+Unfortunately it appears that some interprocedural analysis determines that if
+a callee is only called/referenced from cold callers, the callee is marked as
+cold, and the alignment it would have got from the command line option is
+dropped. If it's given an explicit alignment attribute, the alignment is
+retained.
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+For example:
 
+| [mark@lakrids:/mnt/data/tests/gcc-alignment]% cat test-aligned-cold-caller.c                                    
+| #define noinline \
+|         __attribute__((noinline))
+| 
+| #define __aligned(n) \
+|         __attribute__((aligned(n)))
+| 
+| #define __cold \
+|         __attribute__((cold)) __aligned(16)
+| 
+| #define EXPORT_FUNC_PTR(func) \
+|         typeof((func)) *__ptr_##func = (func)
+| 
+| static noinline void callee_a(void)
+| {
+|         asm volatile("// callee_a\n" ::: "memory");
+| }
+| 
+| static noinline void callee_b(void)
+| {
+|         asm volatile("// callee_b\n" ::: "memory");
+| }
+| 
+| static noinline void callee_c(void)
+| {
+|         asm volatile("// callee_c\n" ::: "memory");
+| }
+| __cold
+| void cold_func_a(void) { callee_a(); }
+| 
+| __cold
+| void cold_func_b(void) { callee_b(); }
+| 
+| __cold
+| void cold_func_c(void) { callee_c(); }
+| 
+| static __cold
+| void static_cold_func_a(void) { callee_a(); }
+| EXPORT_FUNC_PTR(static_cold_func_a);
+| 
+| static __cold
+| void static_cold_func_b(void) { callee_b(); }
+| EXPORT_FUNC_PTR(static_cold_func_b);
+| 
+| static __cold
+| void static_cold_func_c(void) { callee_c(); }
+| EXPORT_FUNC_PTR(static_cold_func_c);
+| [mark@lakrids:/mnt/data/tests/gcc-alignment]% usekorg 12.1.0 aarch64-linux-gcc -falign-functions=16 -c test-aligned-cold-caller.c -O1
+| [mark@lakrids:/mnt/data/tests/gcc-alignment]% usekorg 12.1.0 aarch64-linux-objdump -d test-aligned-cold-caller.o                     
+| 
+| test-aligned-cold-caller.o:     file format elf64-littleaarch64
+| 
+| 
+| Disassembly of section .text:
+| 
+| 0000000000000000 <callee_a>:
+|    0:   d65f03c0        ret
+| 
+| 0000000000000004 <callee_b>:
+|    4:   d65f03c0        ret
+| 
+| 0000000000000008 <callee_c>:
+|    8:   d65f03c0        ret
+|    c:   d503201f        nop
+| 
+| 0000000000000010 <static_cold_func_a>:
+|   10:   a9bf7bfd        stp     x29, x30, [sp, #-16]!
+|   14:   910003fd        mov     x29, sp
+|   18:   97fffffa        bl      0 <callee_a>
+|   1c:   a8c17bfd        ldp     x29, x30, [sp], #16
+|   20:   d65f03c0        ret
+|   24:   d503201f        nop
+|   28:   d503201f        nop
+|   2c:   d503201f        nop
+| 
+| 0000000000000030 <static_cold_func_b>:
+|   30:   a9bf7bfd        stp     x29, x30, [sp, #-16]!
+|   34:   910003fd        mov     x29, sp
+|   38:   97fffff3        bl      4 <callee_b>
+|   3c:   a8c17bfd        ldp     x29, x30, [sp], #16
+|   40:   d65f03c0        ret
+|   44:   d503201f        nop
+|   48:   d503201f        nop
+|   4c:   d503201f        nop
+| 
+| 0000000000000050 <static_cold_func_c>:
+|   50:   a9bf7bfd        stp     x29, x30, [sp, #-16]!
+|   54:   910003fd        mov     x29, sp
+|   58:   97ffffec        bl      8 <callee_c>
+|   5c:   a8c17bfd        ldp     x29, x30, [sp], #16
+|   60:   d65f03c0        ret
+|   64:   d503201f        nop
+|   68:   d503201f        nop
+|   6c:   d503201f        nop
+| 
+| 0000000000000070 <cold_func_a>:
+|   70:   a9bf7bfd        stp     x29, x30, [sp, #-16]!
+|   74:   910003fd        mov     x29, sp
+|   78:   97ffffe2        bl      0 <callee_a>
+|   7c:   a8c17bfd        ldp     x29, x30, [sp], #16
+|   80:   d65f03c0        ret
+|   84:   d503201f        nop
+|   88:   d503201f        nop
+|   8c:   d503201f        nop
+| 
+| 0000000000000090 <cold_func_b>:
+|   90:   a9bf7bfd        stp     x29, x30, [sp, #-16]!
+|   94:   910003fd        mov     x29, sp
+|   98:   97ffffdb        bl      4 <callee_b>
+|   9c:   a8c17bfd        ldp     x29, x30, [sp], #16
+|   a0:   d65f03c0        ret
+|   a4:   d503201f        nop
+|   a8:   d503201f        nop
+|   ac:   d503201f        nop
+| 
+| 00000000000000b0 <cold_func_c>:
+|   b0:   a9bf7bfd        stp     x29, x30, [sp, #-16]!
+|   b4:   910003fd        mov     x29, sp
+|   b8:   97ffffd4        bl      8 <callee_c>
+|   bc:   a8c17bfd        ldp     x29, x30, [sp], #16
+|   c0:   d65f03c0        ret
+| [mark@lakrids:/mnt/data/tests/gcc-alignment]% usekorg 12.1.0 aarch64-linux-objdump -h test-aligned-cold-caller.o
+| 
+| test-aligned-cold-caller.o:     file format elf64-littleaarch64
+| 
+| Sections:
+| Idx Name          Size      VMA               LMA               File off  Algn
+|   0 .text         000000c4  0000000000000000  0000000000000000  00000040  2**4
+|                   CONTENTS, ALLOC, LOAD, READONLY, CODE
+|   1 .data         00000018  0000000000000000  0000000000000000  00000108  2**3
+|                   CONTENTS, ALLOC, LOAD, RELOC, DATA
+|   2 .bss          00000000  0000000000000000  0000000000000000  00000120  2**0
+|                   ALLOC
+|   3 .comment      00000013  0000000000000000  0000000000000000  00000120  2**0
+|                   CONTENTS, READONLY
+|   4 .note.GNU-stack 00000000  0000000000000000  0000000000000000  00000133  2**0
+|                   CONTENTS, READONLY
+|   5 .eh_frame     00000110  0000000000000000  0000000000000000  00000138  2**3
+|                   CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+
+Thanks,
+Mark.
