@@ -2,106 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 510F96657F3
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Jan 2023 10:47:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBB0A66581B
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Jan 2023 10:51:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236002AbjAKJrL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 11 Jan 2023 04:47:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46806 "EHLO
+        id S238205AbjAKJvJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 11 Jan 2023 04:51:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237975AbjAKJqf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Jan 2023 04:46:35 -0500
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C8C317E0C
-        for <linux-acpi@vger.kernel.org>; Wed, 11 Jan 2023 01:44:28 -0800 (PST)
-Received: by mail-ej1-f49.google.com with SMTP id u9so35458310ejo.0
-        for <linux-acpi@vger.kernel.org>; Wed, 11 Jan 2023 01:44:28 -0800 (PST)
+        with ESMTP id S238753AbjAKJtw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Jan 2023 04:49:52 -0500
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26E67C76F
+        for <linux-acpi@vger.kernel.org>; Wed, 11 Jan 2023 01:48:45 -0800 (PST)
+Received: by mail-ej1-f44.google.com with SMTP id ss4so28133482ejb.11
+        for <linux-acpi@vger.kernel.org>; Wed, 11 Jan 2023 01:48:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=WDJk/IY9RuEK56wCfr65vYLHErs9j10EgsadVOzTykE=;
-        b=pAIFXXxIbrdYElLzHF2FCmFufcBfxyahHMZxv4Uw4qGv+aoLcx378ZoyeK5k0zqDGa
-         b7PVHB1ZPmV1i+kI/Q5oTsMGJwg9S6kIy9EXhkPqIMvKFe5ShzLIutL4MIuT+1N7LeUG
-         ps5+DrOLVFIcjEhrLdS6WdRsf4puXf9E3eZ2JloS8EeJThbBPRNWo/8tus86QJma6K4Q
-         PGGN//CY4EuDXhoXWhDU75PGmM8FnC/9+pHYDMxxjU4AD8krSypk3c6fBo2v9IzkrVp2
-         /HkrFxPRoi3RGcJHKZg666ndBA7m0BmuND5Xc5DEgLLmYK0wJLR4WRwtiAwNzcdy5diM
-         AOiQ==
-X-Gm-Message-State: AFqh2kp4ZMdIMYl5uO2xVAHhev9Jli69qfAVok9Kue7BTFhZt/0+eOpu
-        G5yGeDFJI51zTYKSlIwOdu2UA9Lu6gi8u2M24XM=
-X-Google-Smtp-Source: AMrXdXu5Mpi1mZKsBH5auyDPLvx5zVBmNgxh9MHhkLGSAMZVxCjQlpOnU+QJX/Gb0g4EcI4upyQu+tDxOCy1MmEvYfM=
-X-Received: by 2002:a17:907:8d0e:b0:7b2:7b45:2cd2 with SMTP id
- tc14-20020a1709078d0e00b007b27b452cd2mr6281582ejc.615.1673430266546; Wed, 11
- Jan 2023 01:44:26 -0800 (PST)
+        bh=CJSdKNiozoQ/fKT44b3RPqNb6mGyt9zq/l5dYOnFE84=;
+        b=6xzqOkabUj/AUynyD5BUAQoQ8qbzsQaTZ5TvIvMn325D0M8O2II+zYl1HdLy5PPKwy
+         iQx42kFb20dy+kcqJwayiRRoHEKIBO8ucqJ7sz2u3IwmorHaTO411xtILSYlqozWn7kJ
+         Lv+ujK4nmdeYjHy0T5ySwsgGKdAr+KojAD/uTuti/uzmQ+0BwJo14ZW6vXZfs6hQd+Hv
+         qDSqgDg7j+wd17+ZzTJye8MhsIbIAnBNUPcnqP8vgV0MzEQxvd9hb0OLx5OaefLSlF5C
+         X6k79WXKOSal99ctIk5jGBh/aCVaZJzBrZ7JMXlUE9Lets1wBVV5AiBvvEBPp35X4TUC
+         13Ew==
+X-Gm-Message-State: AFqh2kqmMS+9Nzm1tTsw7lnCliUB5P461/EVu5JtyJTJ1uPUXBG8X5kR
+        nLxv/zqzBZFUY+pXkCzcgwBrmpWXwPZTSgXtBpc=
+X-Google-Smtp-Source: AMrXdXvuT3LCiP/+pckmfubDwy/CrownSWm00zhuRod81cBaQl9cNT1xGgqkYba3e6dGwEBUTMC/Cc3wyGqrLkkFbrc=
+X-Received: by 2002:a17:906:9484:b0:84d:3c6a:4c55 with SMTP id
+ t4-20020a170906948400b0084d3c6a4c55mr1760489ejx.509.1673430524098; Wed, 11
+ Jan 2023 01:48:44 -0800 (PST)
 MIME-Version: 1.0
 References: <ef8c7138-8ed1-d849-0ed5-e629ddcafd63@oracle.com>
-In-Reply-To: <ef8c7138-8ed1-d849-0ed5-e629ddcafd63@oracle.com>
+ <1987c2d2-1246-b172-985f-360e5c2c437a@oracle.com> <Y73zkXlPqiMFeT6V@zn.tnic>
+In-Reply-To: <Y73zkXlPqiMFeT6V@zn.tnic>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 11 Jan 2023 10:44:14 +0100
-Message-ID: <CAJZ5v0hsgLpWecW=imR09jUNnrs0i9kxnVnchh5GQeRQLEx2tg@mail.gmail.com>
+Date:   Wed, 11 Jan 2023 10:48:32 +0100
+Message-ID: <CAJZ5v0iN1ZnBwrX6LxwCy+5iUrEzBCEUxmvCyVhkMJNofmTTbg@mail.gmail.com>
 Subject: Re: [PATCH v3] x86/ACPI: Ignore CPUs that are not online capable for
  x2apic, entries as well
-To:     James Puthukattukaran <james.puthukattukaran@oracle.com>
-Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     James Puthukattukaran <james.puthukattukaran@oracle.com>,
+        linux-acpi@vger.kernel.org, x86@kernel.org, rafael@kernel.org,
+        lenb@kernel.org, mingo@redhat.com, tglx@linutronix.de,
+        hpa@zytor.com
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 22, 2022 at 7:26 PM James Puthukattukaran
-<james.puthukattukaran@oracle.com> wrote:
+On Wed, Jan 11, 2023 at 12:24 AM Borislav Petkov <bp@alien8.de> wrote:
 >
-> Extending commit aa06e20f1be6 ("x86/ACPI: Don't add CPUs that are not
-> online capable") to include acpi_parse_x2apic as well. There is a check
-> for invalid apicid; however, there are BIOS FW with madt version >= 5
-
-It would be good to give at least one example of a platform where this happens.
-
-> support that do not bother setting apic id to an invalid value since they
-> assume the OS will check the enabled and online capable flags.
+> On Tue, Jan 10, 2023 at 05:43:41PM -0500, James Puthukattukaran wrote:
+> > Adding others that I missed on my first email.
+> >
+> > James
+> >
+> > On 12/22/22 13:26, James Puthukattukaran wrote:
+> > > Extending commit aa06e20f1be6 ("x86/ACPI: Don't add CPUs that are not
+> > > online capable") to include acpi_parse_x2apic as well.
 >
-> Signed-off-by: James Puthukattukaran<james.puthukattukaran@oracle.com>
-> Reported-by: Benjamin Fuller<ben.fuller@oracle.com>
+> This doesn't look like an extension to some existing commit but like a separate
+> fix.
 >
-> v2 : use 'enabled' local variable. Also fix checkpatch.pl catches
-> v3 : updates as per Rafael's comments
-> ---
->  arch/x86/kernel/acpi/boot.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
+> > > There is a check for invalid apicid; however, there are BIOS FW with madt
+> > > version >= 5 support that do not bother setting apic id to an invalid value
+> > > since they assume the OS will check the enabled and online capable flags.
 >
-> diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-> index 907cc98b1938..cf2509f9de31 100644
-> --- a/arch/x86/kernel/acpi/boot.c
-> +++ b/arch/x86/kernel/acpi/boot.c
-> @@ -208,7 +208,15 @@ acpi_parse_x2apic(union acpi_subtable_headers *header, const unsigned long end)
->         apic_id = processor->local_apic_id;
->         enabled = processor->lapic_flags & ACPI_MADT_ENABLED;
+> Which BIOSes are those?
 >
-> -       /* Ignore invalid ID */
-> +       /* don't register processors that can not be onlined */
-> +       if (!enabled && acpi_support_online_capable &&
-> +           !(processor->lapic_flags & ACPI_MADT_ONLINE_CAPABLE))
-
-I would add a MADT version check to this, because
-ACPI_MADT_ONLINE_CAPABLE may be set by mistake in an older BIOS too.
-
-> +               return 0;
-> +
-> +       /*
-> +        * for systems older than madt version 5 (does not have
-
-Also please spell MADT in capitals.
-
-> +        * ACPI_MADT_ONLINE_CAPABLE defined); ignore invalid ID
-> +        */
->         if (apic_id == 0xffffffff)
->                 return 0;
+> Also, I'm no BIOS guy but I don't see you checking MADT version anywhere?
 >
-> --
+> > > Signed-off-by: James Puthukattukaran<james.puthukattukaran@oracle.com>
+> > > Reported-by: Benjamin Fuller<ben.fuller@oracle.com>
+> > >
+> > > v2 : use 'enabled' local variable. Also fix checkpatch.pl catches
+> > > v3 : updates as per Rafael's comments
+>
+> Yah, I'd like for Rafael to decide what to do here...
+
+I've just sent my comments to the patch, but you have not been CCed, sorry.
+
+IMO the MADT version should be checked too and I would like to have at
+least one example of a platform affected by this problem in the
+changelog.
