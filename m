@@ -2,50 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8734C6664A4
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Jan 2023 21:15:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6A306664A8
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Jan 2023 21:16:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230047AbjAKUPM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 11 Jan 2023 15:15:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41344 "EHLO
+        id S235684AbjAKUQG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 11 Jan 2023 15:16:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232626AbjAKUPK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Jan 2023 15:15:10 -0500
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70FCFB6A;
-        Wed, 11 Jan 2023 12:15:08 -0800 (PST)
-Received: by mail-ej1-f45.google.com with SMTP id gh17so39740746ejb.6;
-        Wed, 11 Jan 2023 12:15:08 -0800 (PST)
+        with ESMTP id S232626AbjAKUQE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Jan 2023 15:16:04 -0500
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F30CF2606
+        for <linux-acpi@vger.kernel.org>; Wed, 11 Jan 2023 12:16:02 -0800 (PST)
+Received: by mail-ej1-f51.google.com with SMTP id hw16so27832016ejc.10
+        for <linux-acpi@vger.kernel.org>; Wed, 11 Jan 2023 12:16:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=5sghTIEgreaXF5UzDGON1scQuNrZYlIWs9BXZ0rZ8Sk=;
-        b=UhbihVEbLervRiJMnPTXajSrKgdp4JJr5k6WeigQu4bxNf+LxaLZj1c7LaNf/gXxxM
-         j2fbbgjAaaMMMxfUDqT52naoysTMXIlJ84oyaEh/tiXkmxgDYdbPqS5Iy9dMfnfWIqeu
-         hekMCk43Iq6KupE2Rpkp2VIkOJK6btVjnukaROZJdc5NhKuz6w1Da6TIO6hEWqXyNFYU
-         Gc2mkhwQLYmgXxT9am3bAYuM9OZtNJ0UA3FwGe/YaOWNP8kHnBAXw94ZPVp2UO+OjGPP
-         Qes2GmjP0YqAswOwmESFwugC+91N+HtQR7NepUnLYvGSCE7MYFcFmuLf2XcRK7u+27nS
-         jYHA==
-X-Gm-Message-State: AFqh2kq9NopqBw0aS8dBdDKue6LUIkMeBSaokRBRUPVmoddUlw/5QRXy
-        cXs9el1soIcLe7MlqEIg4GOZKO0lNuhZbt0Q3tQ=
-X-Google-Smtp-Source: AMrXdXsi1h2Dg4p4Ligs+NfvJLXWv52gI/i1dCmWvrFzunVhVRYh6eUKJarICVWp1SkiL3ReRzAOJeKC1qUNbeOwD+k=
-X-Received: by 2002:a17:907:8d0e:b0:7b2:7b45:2cd2 with SMTP id
- tc14-20020a1709078d0e00b007b27b452cd2mr6499649ejc.615.1673468107048; Wed, 11
- Jan 2023 12:15:07 -0800 (PST)
+        bh=o1z4PL/IN1LIv7OyxQoymzmK/KzEPD/HExGAo5iOmQg=;
+        b=TWy7Za/03wzouD5yah/vW/b1BYLNreyWC7oROzkAkZX6cY2z+S7QvJEJcw+ociDUwc
+         jNcVxsmmaI8MuWv1LFZ/cQ8fzqYLtzedxekENdL0WX8DTS9P/aZjL764MD8JqY4LG/7E
+         sDsTfux8mp+8Fgo+HEnVY4Id4V4R8OILh3NVp2VoqqJgDQNmlkeRIq4LxUKiqbICfwRM
+         OLnPtOzlzA38Qi0EV7/FObe65XeKNKifT0rKxP0S0M9DhuT2TqHDItjGvJ6X/7cz3c7L
+         8JEBEoxnount1HIbhf1YbU8nu37Xt9leQVCt2S7kBmeweOE6c9ecTzGljuiDjBJHp8Lo
+         FPfg==
+X-Gm-Message-State: AFqh2kpArlkwDFdNEJC7SO3MW619t868TszVSp1EhYu/xo8uPUgIqDRr
+        MyI5ifjIxe+AlbTcXNYokSIR2BIpqCuIGuI0/UA=
+X-Google-Smtp-Source: AMrXdXuSJbGFSCkkaAXUdQYkZIuuWjMUfbCPchNpj7QpD2vsG8xLKF1RBydeaZBMkDnUHCjoweDtFLi1hGcx8ALhxWI=
+X-Received: by 2002:a17:907:98ee:b0:7c1:5ff0:6cc2 with SMTP id
+ ke14-20020a17090798ee00b007c15ff06cc2mr5386606ejc.246.1673468161612; Wed, 11
+ Jan 2023 12:16:01 -0800 (PST)
 MIME-Version: 1.0
-References: <20230106235308.99999-1-d-tatianin@yandex-team.ru>
-In-Reply-To: <20230106235308.99999-1-d-tatianin@yandex-team.ru>
+References: <20230109191811.53961-1-hdegoede@redhat.com>
+In-Reply-To: <20230109191811.53961-1-hdegoede@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 11 Jan 2023 21:14:55 +0100
-Message-ID: <CAJZ5v0goj3DYEbVa5PkeFBtNNvYb0wJU_dwooWdxgEyrT8yZqQ@mail.gmail.com>
-Subject: Re: [PATCH v0] ACPICA: nsrepair: handle cases without a return value correctly
-To:     Daniil Tatianin <d-tatianin@yandex-team.ru>
-Cc:     Robert Moore <robert.moore@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        devel@acpica.org, linux-kernel@vger.kernel.org
+Date:   Wed, 11 Jan 2023 21:15:50 +0100
+Message-ID: <CAJZ5v0i6iLPRctJ7cwGoBVmDDhQgbGw9cvqVu_Q8mebjkP7Dwg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: video: Allow selecting NVidia-WMI-EC or Apple GMUX
+ backlight from the cmdline
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -57,60 +56,37 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jan 7, 2023 at 12:54 AM Daniil Tatianin
-<d-tatianin@yandex-team.ru> wrote:
+On Mon, Jan 9, 2023 at 8:18 PM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> Previously acpi_ns_simple_repair() would crash if expected_btypes
-> contained any combination of ACPI_RTYPE_NONE with a different type,
-> e.g | ACPI_RTYPE_INTEGER because of slightly incorrect logic in the
-> !return_object branch, which wouldn't return AE_AML_NO_RETURN_VALUE
-> for such cases.
+> The patches adding NVidia-WMI-EC and Apple GMUX backlight detection
+> support to acpi_video_get_backlight_type(), forgot to update
+> acpi_video_parse_cmdline() to allow manually selecting these from
+> the commandline.
 >
-> Found by Linux Verification Center (linuxtesting.org) with the SVACE
-> static analysis tool.
+> Add support for these to acpi_video_parse_cmdline().
 >
-> Link: https://github.com/acpica/acpica/pull/811
-> Fixes: 61db45ca2163 ("ACPICA: Restore code that repairs NULL package elements in return values.")
-> Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+> Fixes: fe7aebb40d42 ("ACPI: video: Add Nvidia WMI EC brightness control detection (v3)")
+> Fixes: 21245df307cb ("ACPI: video: Add Apple GMUX brightness control detection")
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 > ---
->  drivers/acpi/acpica/nsrepair.c | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
+>  drivers/acpi/video_detect.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 >
-> diff --git a/drivers/acpi/acpica/nsrepair.c b/drivers/acpi/acpica/nsrepair.c
-> index 367fcd201f96..ec512e06a48e 100644
-> --- a/drivers/acpi/acpica/nsrepair.c
-> +++ b/drivers/acpi/acpica/nsrepair.c
-> @@ -181,8 +181,9 @@ acpi_ns_simple_repair(struct acpi_evaluate_info *info,
->          * Try to fix if there was no return object. Warning if failed to fix.
->          */
->         if (!return_object) {
-> -               if (expected_btypes && (!(expected_btypes & ACPI_RTYPE_NONE))) {
-> -                       if (package_index != ACPI_NOT_PACKAGE_ELEMENT) {
-> +               if (expected_btypes) {
-> +                       if (!(expected_btypes & ACPI_RTYPE_NONE) &&
-> +                           package_index != ACPI_NOT_PACKAGE_ELEMENT) {
->                                 ACPI_WARN_PREDEFINED((AE_INFO,
->                                                       info->full_pathname,
->                                                       ACPI_WARN_ALWAYS,
-> @@ -196,14 +197,15 @@ acpi_ns_simple_repair(struct acpi_evaluate_info *info,
->                                 if (ACPI_SUCCESS(status)) {
->                                         return (AE_OK); /* Repair was successful */
->                                 }
-> -                       } else {
-> +                       }
-> +
-> +                       if (expected_btypes != ACPI_RTYPE_NONE) {
->                                 ACPI_WARN_PREDEFINED((AE_INFO,
->                                                       info->full_pathname,
->                                                       ACPI_WARN_ALWAYS,
->                                                       "Missing expected return value"));
-> +                               return (AE_AML_NO_RETURN_VALUE);
->                         }
-> -
-> -                       return (AE_AML_NO_RETURN_VALUE);
->                 }
->         }
->
+> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+> index 1b78c7434492..8a541efc5675 100644
+> --- a/drivers/acpi/video_detect.c
+> +++ b/drivers/acpi/video_detect.c
+> @@ -50,6 +50,10 @@ static void acpi_video_parse_cmdline(void)
+>                 acpi_backlight_cmdline = acpi_backlight_video;
+>         if (!strcmp("native", acpi_video_backlight_string))
+>                 acpi_backlight_cmdline = acpi_backlight_native;
+> +       if (!strcmp("nvidia_wmi_ec", acpi_video_backlight_string))
+> +               acpi_backlight_cmdline = acpi_backlight_nvidia_wmi_ec;
+> +       if (!strcmp("apple_gmux", acpi_video_backlight_string))
+> +               acpi_backlight_cmdline = acpi_backlight_apple_gmux;
+>         if (!strcmp("none", acpi_video_backlight_string))
+>                 acpi_backlight_cmdline = acpi_backlight_none;
+>  }
 > --
 
-Applied as 6.3 material, thanks!
+Applied as 6.2-rc material, thanks!
