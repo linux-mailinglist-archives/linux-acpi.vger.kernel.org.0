@@ -2,127 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B73F1668703
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Jan 2023 23:32:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B55D66871C
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Jan 2023 23:41:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232674AbjALWcY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Jan 2023 17:32:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46512 "EHLO
+        id S239946AbjALWlN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Jan 2023 17:41:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232570AbjALWcD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Jan 2023 17:32:03 -0500
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51A71B42
-        for <linux-acpi@vger.kernel.org>; Thu, 12 Jan 2023 14:31:58 -0800 (PST)
-Received: by mail-yb1-xb33.google.com with SMTP id l139so20401644ybl.12
-        for <linux-acpi@vger.kernel.org>; Thu, 12 Jan 2023 14:31:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=/C/ZRKjPzNTEZUCk+rnSkeE6htJTMyaRVi+BQ5BKJ+U=;
-        b=JUPY63vtT6QcwqD9Ws2QE/pf7jC1/0su4w2j3d9Xn0NTdACzrFBjxjuFHWgpThUZws
-         imdknTpaWEjV9uHtradW98A1u35lfMGg1dddhCwsBClQF94e0939KX7UTkXNgez4GIry
-         JxaKGHbkQ7QWJVTYQ0VQgYI43iHND9qXIlcZM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/C/ZRKjPzNTEZUCk+rnSkeE6htJTMyaRVi+BQ5BKJ+U=;
-        b=OSJgWiLVIoaBIQKW41JOQBHNyrV2aTZ+9uzkuNy5s/2J4LcT951AhN5k7FcgcrGHyK
-         xmNtkoGIKptF1zQ/8uZ5rq/mxZuY7ZdYCa2+i+9yyit9HCYjMHy7oRwPyrvjD8U/UbBm
-         +kwrY3DKonSF1B23YjVVi8vzIaGLiHO7owOajcwCHjG7Rh8MeGsK6J2Qp4WlGKfh8cHf
-         dts3alBw5m3OxD4JK3kFiT5cQ3G+x8LNwNItcEE9me/I5jCwnrBlS8JCNauL6sHzowBs
-         sazsq4xD/j/FJL3mYfjqdZz2UAamhaDRfvkmixNyOp7Q2bim+Fw/jid89kXXOTQFW0hP
-         GroQ==
-X-Gm-Message-State: AFqh2kqtYgaHLaCLLzk4ts+h6vvoFPObXSve4s5SboyreHnp5/cD8CYt
-        n5JAX0nBCEEzlJSfTGj4o8z6pV/8H3cBrvvxbtNwYA==
-X-Google-Smtp-Source: AMrXdXuznEwChU9VQQ72rYVGqmbsFrMqOVBPMbeBVwgDM2AWPc/3hytO7eUeE33HPvr9ax9Vk/LALEeTjlK/OvpNWf8=
-X-Received: by 2002:a25:1083:0:b0:7ae:5e48:383b with SMTP id
- 125-20020a251083000000b007ae5e48383bmr2843942ybq.223.1673562717561; Thu, 12
- Jan 2023 14:31:57 -0800 (PST)
+        with ESMTP id S233576AbjALWlI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Jan 2023 17:41:08 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8175BC3C;
+        Thu, 12 Jan 2023 14:41:00 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 85CA2621D1;
+        Thu, 12 Jan 2023 22:41:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A440EC433EF;
+        Thu, 12 Jan 2023 22:40:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673563259;
+        bh=pCHG33j4SuQY0dNiZzwuDmzLjQWMe7kgUnvywi47kOw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=iDPITSBrSwIaZBqTl9WM43v1tDW+XIfQV20BECVurcimIiDvJpDHaqknb9ES/v14h
+         10IqM7G9sFDooNKJYsg3ALJHjNcxJ4wnwaaUwOhQZAeYgOUUakSw0tB+FfBap51akb
+         04xMxNY/Dmg9fiUaOcM9+2RHpWRGQDU1peNJGDBocLNBxM9MTx9Cy3F6y6zIaCeUo4
+         /TXeztvOdmsmZ0ItqyNF3OrP9ey0606/W2WqpqqJMZd4iXfHAgS67Ai+EhI5ZaPl6D
+         9qYiXX53J4RphmiginHA45FXqp3E85n2EFo7zVi2cNo50C67xx7OYKr8phyv3+tu0F
+         PKGyWqwsDyZ0Q==
+Date:   Thu, 12 Jan 2023 16:40:58 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Mehta, Sanju" <Sanju.Mehta@amd.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH v4] PCI / ACPI: PM: Take _S0W of the target bridge into
+ account in acpi_pci_bridge_d3(()
+Message-ID: <20230112224058.GA1799052@bhelgaas>
 MIME-Version: 1.0
-References: <20230112042104.4107253-1-treapking@chromium.org>
- <20230112042104.4107253-2-treapking@chromium.org> <Y8AL8nTcNcl6zX7H@paasikivi.fi.intel.com>
-In-Reply-To: <Y8AL8nTcNcl6zX7H@paasikivi.fi.intel.com>
-From:   Prashant Malani <pmalani@chromium.org>
-Date:   Thu, 12 Jan 2023 14:31:45 -0800
-Message-ID: <CACeCKaeN7KBi30M1fRWhTPgMbxF6=B+KuAS7Ny7+i9qCx+=49Q@mail.gmail.com>
-Subject: Re: [PATCH v10 1/9] device property: Add remote endpoint to devcon matcher
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     Pin-yen Lin <treapking@chromium.org>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
-        <nfraprado@collabora.com>, Marek Vasut <marex@denx.de>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Lyude Paul <lyude@redhat.com>, chrome-platform@lists.linux.dev,
-        Xin Ji <xji@analogixsemi.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-kernel@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
-        linux-acpi@vger.kernel.org, Hsin-Yi Wang <hsinyi@chromium.org>,
-        Chen-Yu Tsai <wenst@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <MN0PR12MB61013E30A82224755A81B0BEE2FD9@MN0PR12MB6101.namprd12.prod.outlook.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-HI Sakari,
+On Thu, Jan 12, 2023 at 10:09:21PM +0000, Limonciello, Mario wrote:
+> > -----Original Message-----
+> > From: Bjorn Helgaas <helgaas@kernel.org>
+> > Sent: Thursday, January 12, 2023 16:02
+> > To: Rafael J. Wysocki <rjw@rjwysocki.net>
+> > Cc: linux-pci@vger.kernel.org; Limonciello, Mario
+> > <Mario.Limonciello@amd.com>; Rafael J. Wysocki <rafael@kernel.org>; Len
+> > Brown <lenb@kernel.org>; Bjorn Helgaas <bhelgaas@google.com>; Mika
+> > Westerberg <mika.westerberg@linux.intel.com>; Mehta, Sanju
+> > <Sanju.Mehta@amd.com>; Lukas Wunner <lukas@wunner.de>; Rafael J .
+> > Wysocki <rafael.j.wysocki@intel.com>; linux-acpi@vger.kernel.org; linux-
+> > kernel@vger.kernel.org; Linux PM <linux-pm@vger.kernel.org>
+> > Subject: Re: [PATCH v4] PCI / ACPI: PM: Take _S0W of the target bridge into
+> > account in acpi_pci_bridge_d3(()
+> > 
+> > On Thu, Jan 12, 2023 at 09:51:24PM +0100, Rafael J. Wysocki wrote:
+> > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > >
+> > > It is generally questionable to allow a PCI bridge to go into D3 if
+> > > it has _S0W returning D2 or a shallower power state, so modify
+> > > acpi_pci_bridge_d3(() to always take the return value of _S0W for the
+> > > target bridge into accout.  That is, make it return 'false' if _S0W
+> > > returns D2 or a shallower power state for the target bridge regardless
+> > > of its ancestor PCIe Root Port properties.  Of course, this also causes
+> > > 'false' to be returned if the PCIe Root Port itself is the target and
+> > > its _S0W returns D2 or a shallower power state.
+> > >
+> > > However, still allow bridges without _S0W that are power-manageable via
+> > > ACPI to enter D3 to retain the current code behavior in that case.
+> > >
+> > > Link: https://lore.kernel.org/linux-pci/20221031223356.32570-1-
+> > mario.limonciello@amd.com/
+> > > Reported-by: Mario Limonciello <mario.limonciello@amd.com>
+> > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > 
+> > Applied to pci/pm for v6.3, thanks!
+> > 
+> > It'd be great if we could include a short description of the problems
+> > users might see.  I think the original problem was that on some AMD
+> > systems we put a USB4 router in D3 when it should remain in D0.  And I
+> > assume this means something doesn't wake up when it should?  Or maybe
+> > we miss a hotplug event?
+> > 
+> > If somebody has an example or some text, I'll add it to the commit
+> > log.
+> 
+> Here's a blurb for what happens on AMD side:
+> 
+> When the platform is configured to not allow the PCIe port used for
+> tunneling to wakeup from D3 it will runtime suspend into D0 and the
+> USB4 controller which is a consumer will runtime suspend into D3.
+> 
+> This inconsistency leads to failures to initialize PCIe tunnels for
+> USB4 devices.
 
-On Thu, Jan 12, 2023 at 5:32 AM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
->
-> Hi Pin-yen,
->
-> On Thu, Jan 12, 2023 at 12:20:56PM +0800, Pin-yen Lin wrote:
-> > From: Prashant Malani <pmalani@chromium.org>
-> > +             /*
-> > +              * Some drivers may register devices for endpoints. Check
-> > +              * the remote-endpoints for matches in addition to the remote
-> > +              * port parent.
-> > +              */
-> > +             node = fwnode_graph_get_remote_endpoint(ep);
-> > +             if (fwnode_device_is_available(node)) {
-> > +                     ret = match(node, con_id, data);
-> > +                     if (ret) {
-> > +                             if (matches)
-> > +                                     matches[count] = ret;
-> > +                             count++;
-> > +                     }
-> > +             }
->
-> Aren't you missing fwnode_handle-put(node) here??
+And what is J. Random User going to see?  DisplayPort not working
+ever?  It works to begin with, but not after a suspend?  Devices in a
+dock not being able to wake the system?
 
-It shouldn't be necessary. We aren't break-ing/continue-ing here,
-and fwnode_handle_put(node) is called latter in the loop [1][2]
+I don't really know what "PCIe tunnels for USB4 devices not being
+initialized" means for me.  I want to know what a problem report from
+a non-expert user might look like.
 
-BR,
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/base/property.c#n1256
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/base/property.c#n1261
+Bjorn
