@@ -2,175 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 745A266705B
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Jan 2023 12:00:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F0C066708E
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Jan 2023 12:09:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236600AbjALLAD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Jan 2023 06:00:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57518 "EHLO
+        id S229549AbjALLJN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Jan 2023 06:09:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238117AbjALK7f (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Jan 2023 05:59:35 -0500
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E12B6342;
-        Thu, 12 Jan 2023 02:48:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1673520534; x=1705056534;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=jfh/hKghtPdW5Oes/WPXdp58HNBjb/t8ROv6s8KXR2g=;
-  b=LyZA8cnBhzZMpmlZCMZbVd+bWaHogzaYGlFfXHRaHs+BfU0AA746d05y
-   UmDWB0opatc340FqUAPMV6TlSzjs+a7VN9H/OwoYYzzhbVWZMc3y4v2UC
-   2iBZVNzcx0ILftB4mOomojNcRpG9c9Wuz+CPAxs6A+H6k5DqtnTbd8D4u
-   Ka/I23f9u/IrsSU/bbxtX2JTW5omzyhk+rT7Sy3NKvhh+j5bm/sipRdFy
-   oJ1WMjyGOs/PRpADX7iFiZw9rvGHSH/UvLWgr1QDzRdUWTm3gNpX1sfFw
-   Tr0Zdy2s78n8fpfmF44DO5XoAfU6S7bYvMwUppP05FEYH5xkk9CIh5UEb
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="307191981"
-X-IronPort-AV: E=Sophos;i="5.96,319,1665471600"; 
-   d="scan'208";a="307191981"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2023 02:48:52 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="726253802"
-X-IronPort-AV: E=Sophos;i="5.96,319,1665471600"; 
-   d="scan'208";a="726253802"
-Received: from lkp-server02.sh.intel.com (HELO f1920e93ebb5) ([10.239.97.151])
-  by fmsmga004.fm.intel.com with ESMTP; 12 Jan 2023 02:48:50 -0800
-Received: from kbuild by f1920e93ebb5 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pFv8b-000A3c-1q;
-        Thu, 12 Jan 2023 10:48:49 +0000
-Date:   Thu, 12 Jan 2023 18:48:38 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 837dc62247d5e50a0724af2001f070962300c87e
-Message-ID: <63bfe586.t84X7VvLykMbUcZI%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S229899AbjALLIR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Jan 2023 06:08:17 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 79EDD23C;
+        Thu, 12 Jan 2023 03:00:47 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 556C8AD7;
+        Thu, 12 Jan 2023 03:01:29 -0800 (PST)
+Received: from FVFF77S0Q05N (unknown [10.57.43.206])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E28033F67D;
+        Thu, 12 Jan 2023 03:00:44 -0800 (PST)
+Date:   Thu, 12 Jan 2023 11:00:35 +0000
+From:   Mark Rutland <mark.rutland@arm.com>
+To:     Li Huafei <lihuafei1@huawei.com>
+Cc:     catalin.marinas@arm.com, lenb@kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        mhiramat@kernel.org, ndesaulniers@google.com, ojeda@kernel.org,
+        peterz@infradead.org, rafael.j.wysocki@intel.com,
+        revest@chromium.org, robert.moore@intel.com, rostedt@goodmis.org,
+        will@kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 4/8] ftrace: Add DYNAMIC_FTRACE_WITH_CALL_OPS
+Message-ID: <Y7/oUy2fIOoq1yFC@FVFF77S0Q05N>
+References: <20230109135828.879136-1-mark.rutland@arm.com>
+ <20230109135828.879136-5-mark.rutland@arm.com>
+ <ec65815e-a8c9-470a-ff89-41626c94df28@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ec65815e-a8c9-470a-ff89-41626c94df28@huawei.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 837dc62247d5e50a0724af2001f070962300c87e  Merge branch 'pm-cpuidle' into linux-next
+On Thu, Jan 12, 2023 at 02:48:45PM +0800, Li Huafei wrote:
+> On 2023/1/9 21:58, Mark Rutland wrote:
+> 
+> > diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
+> > index 99f1146614c04..5eeb2776124c5 100644
+> > --- a/include/linux/ftrace.h
+> > +++ b/include/linux/ftrace.h
+> > @@ -57,6 +57,9 @@ void arch_ftrace_ops_list_func(unsigned long ip, unsigned long parent_ip);
+> >  void arch_ftrace_ops_list_func(unsigned long ip, unsigned long parent_ip,
+> >  			       struct ftrace_ops *op, struct ftrace_regs *fregs);
+> >  #endif
+> > +extern const struct ftrace_ops ftrace_nop_ops;
+> > +extern const struct ftrace_ops ftrace_list_ops;
+> > +struct ftrace_ops *ftrace_find_unique_ops(struct dyn_ftrace *rec);
+> 
+> Hi Mark,
 
-elapsed time: 831m
+Hi Huafei,
 
-configs tested: 93
-configs skipped: 2
+Thanks for the reporrt.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+> This patch has build issues on x86:
+> 
+>     CC      mm/readahead.o
+>   In file included from include/linux/perf_event.h:52:0,
+>                    from arch/x86/events/amd/lbr.c:2:
+>   include/linux/ftrace.h:62:50: error: ‘struct dyn_ftrace’ declared inside parameter list will not be visible outside of this definition or declaration [-Werror]
+>    struct ftrace_ops *ftrace_find_unique_ops(struct dyn_ftrace *rec);
+> 
+> Here we should need 'struct dyn_ftrace' forward declaration.
 
-gcc tested configs:
-i386                                defconfig
-x86_64                            allnoconfig
-x86_64                        randconfig-a015
-i386                          randconfig-a014
-i386                          randconfig-a012
-alpha                             allnoconfig
-i386                              allnoconfig
-arm                               allnoconfig
-arc                               allnoconfig
-i386                          randconfig-a016
-arc                  randconfig-r043-20230110
-s390                 randconfig-r044-20230110
-i386                             allyesconfig
-riscv                randconfig-r042-20230110
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-x86_64                           rhel-8.3-kvm
-x86_64                           rhel-8.3-syz
-x86_64                           rhel-8.3-bpf
-x86_64                         rhel-8.3-kunit
-ia64                             allmodconfig
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-riscv                             allnoconfig
-s390                                defconfig
-s390                             allmodconfig
-arc                                 defconfig
-alpha                               defconfig
-s390                             allyesconfig
-powerpc                           allnoconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-sh                               allmodconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-arm64                            allyesconfig
-arm                                 defconfig
-arm                              allyesconfig
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64                        randconfig-a011
-x86_64                        randconfig-a013
-nios2                            allyesconfig
-nios2                               defconfig
-parisc                              defconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-m68k                         amcore_defconfig
-arm                        multi_v7_defconfig
-sh                              ul2_defconfig
-m68k                             alldefconfig
-powerpc                 mpc85xx_cds_defconfig
-powerpc                    klondike_defconfig
-i386                          randconfig-c001
-arm                          gemini_defconfig
-powerpc                     tqm8548_defconfig
-sh                ecovec24-romimage_defconfig
-sparc                       sparc64_defconfig
-powerpc                      mgcoge_defconfig
-openrisc                 simple_smp_defconfig
-arm                          simpad_defconfig
-arm                           stm32_defconfig
-loongarch                 loongson3_defconfig
-sparc                               defconfig
-xtensa                           allyesconfig
-csky                                defconfig
-sparc                            allyesconfig
-x86_64                                  kexec
+The build robot spotted this a couple of days ago (from my branch rather than
+the list), and I fixed it there a couple of days ago. The relevant messages were:
 
-clang tested configs:
-x86_64                        randconfig-a016
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-hexagon              randconfig-r041-20230110
-arm                  randconfig-r046-20230110
-hexagon              randconfig-r045-20230110
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a005
-x86_64                        randconfig-a003
-x86_64                        randconfig-a001
-arm                         s5pv210_defconfig
-hexagon                          alldefconfig
-powerpc                     ksi8560_defconfig
-x86_64                          rhel-8.3-rust
+  https://lore.kernel.org/oe-kbuild-all/202301100944.E0mV3kSO-lkp@intel.com/
+  https://lore.kernel.org/oe-kbuild-all/Y72TJ3qQuvx3gIOi@FVFF77S0Q05N/#t
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+... and the updated commit is at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/commit/?h=arm64/ftrace/per-callsite-ops&id=acab29d6ea2f20d8d156cdd301ad9790bd1d888f
+
+
+... I'll post a v2 with that folded in once this has had a bit more time to gather comments.
+
+Thanks,	
+Mark.
