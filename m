@@ -2,395 +2,424 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D1DE666AF9
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Jan 2023 06:50:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A57B666B45
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Jan 2023 07:49:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238852AbjALFur (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Jan 2023 00:50:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57874 "EHLO
+        id S229751AbjALGtK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Jan 2023 01:49:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239050AbjALFuZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Jan 2023 00:50:25 -0500
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9F4B4FCF0
-        for <linux-acpi@vger.kernel.org>; Wed, 11 Jan 2023 21:50:13 -0800 (PST)
-Received: by mail-lf1-x135.google.com with SMTP id cf42so26909484lfb.1
-        for <linux-acpi@vger.kernel.org>; Wed, 11 Jan 2023 21:50:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lGcnxSvWxRWSn9PS7ZT4pBpd8udr62wROyikBYb2lg8=;
-        b=pgCckdgUYOyzn4nBv4xRCD62BFDENk27wHATkQXP+fubiRlgLBZ3504Ir7XhJdCDEA
-         VoUZJ3QL7KEW2PzVRcHyNK0Wdm/XaK2SreTYuQuAX0x+Ejc61J9glxeAK+sj+X8Bm+pe
-         brWS4ZUnE9XAfufpbnONk6cPmb+FqkzeSHj4N517yv2hdHTCl/8794c4G4y6A9dy9eyZ
-         qGmFoqkUdyA8yjThsg6eSwa0XtOgS7NclSWy5xN0+O/8zfAEJ8FIhdFWEiushQasj6c3
-         si3ZknI6mZc6cwqGGIoGMn+KV/riJPlA+Sn8axTgIn6JKkay+SPLvDGJS/76MIUpWX4R
-         gKJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lGcnxSvWxRWSn9PS7ZT4pBpd8udr62wROyikBYb2lg8=;
-        b=ywNh2xSSxwCColpYMLlKZdb0Icn2Iy8qgYDU47tWHX6viAOxm37JHeOk5wRptil6ML
-         5pmuyCis0HPwYNghGNKyUx4ZcSMFrB96xzqqMAGe4QQaSzkuL8Ei13UcJjwk2G4CKJI/
-         kJWdF5XCzONu/2cTdqDMoh137XWP5BzkHlBCqoAzrgoW/NU5v28Jn/N1zMs8YpcDU3zv
-         +Zx4C6MWNf2nOVLFgY1OgVMbCbNhEXI6ZGTyrzFlMsdoBSVq6e0rWwV/od98HmD0z5ND
-         MkbSyLK3x9z/3sZBiU6TnnFSCLEgKV12Yyk6phD15lPbMi/GrUcTDlc31NI7mZ1blTKY
-         b2IQ==
-X-Gm-Message-State: AFqh2kpRZl4hVEoCmxyD8DbckYh4OzAzHQkK3ayBIHZFdvp+72gW9uV6
-        u3S927WVQpXc+99lVucJE1+fYQ==
-X-Google-Smtp-Source: AMrXdXs7D+NmoaqyDhYbSynRH192jtp+5AkzETCjN7fr8RvPNHj/9cpzhaK2bKTBHNW1bnene3ek8Q==
-X-Received: by 2002:a05:6512:1281:b0:4cc:8682:ec65 with SMTP id u1-20020a056512128100b004cc8682ec65mr4287026lfs.39.1673502612152;
-        Wed, 11 Jan 2023 21:50:12 -0800 (PST)
-Received: from ?IPV6:2001:14ba:a085:4d00::8a5? (dzccz6yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a085:4d00::8a5])
-        by smtp.gmail.com with ESMTPSA id f14-20020a0565123b0e00b004b7033da2d7sm3105024lfv.128.2023.01.11.21.50.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Jan 2023 21:50:11 -0800 (PST)
-Message-ID: <ca54d156-b38f-677e-2f48-8146323014b3@linaro.org>
-Date:   Thu, 12 Jan 2023 07:50:10 +0200
+        with ESMTP id S229921AbjALGtI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Jan 2023 01:49:08 -0500
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFDD94A978;
+        Wed, 11 Jan 2023 22:49:05 -0800 (PST)
+Received: from kwepemm600010.china.huawei.com (unknown [172.30.72.56])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Nsw5b2xypzJqH5;
+        Thu, 12 Jan 2023 14:44:51 +0800 (CST)
+Received: from [10.67.110.237] (10.67.110.237) by
+ kwepemm600010.china.huawei.com (7.193.23.86) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Thu, 12 Jan 2023 14:48:59 +0800
+Subject: Re: [PATCH 4/8] ftrace: Add DYNAMIC_FTRACE_WITH_CALL_OPS
+To:     Mark Rutland <mark.rutland@arm.com>
+CC:     <catalin.marinas@arm.com>, <lenb@kernel.org>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <mhiramat@kernel.org>, <ndesaulniers@google.com>,
+        <ojeda@kernel.org>, <peterz@infradead.org>,
+        <rafael.j.wysocki@intel.com>, <revest@chromium.org>,
+        <robert.moore@intel.com>, <rostedt@goodmis.org>, <will@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20230109135828.879136-1-mark.rutland@arm.com>
+ <20230109135828.879136-5-mark.rutland@arm.com>
+From:   Li Huafei <lihuafei1@huawei.com>
+Message-ID: <ec65815e-a8c9-470a-ff89-41626c94df28@huawei.com>
+Date:   Thu, 12 Jan 2023 14:48:45 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH v10 3/9] drm/display: Add Type-C switch helpers
-Content-Language: en-GB
-To:     Pin-yen Lin <treapking@chromium.org>
-Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        =?UTF-8?Q?N=c3=adcolas_F_=2e_R_=2e_A_=2e_Prado?= 
-        <nfraprado@collabora.com>, Marek Vasut <marex@denx.de>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Lyude Paul <lyude@redhat.com>, chrome-platform@lists.linux.dev,
-        Xin Ji <xji@analogixsemi.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-kernel@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
-        linux-acpi@vger.kernel.org, Hsin-Yi Wang <hsinyi@chromium.org>,
-        Chen-Yu Tsai <wenst@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Imre Deak <imre.deak@intel.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        Kees Cook <keescook@chromium.org>,
-        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        shaomin Deng <dengshaomin@cdjrlc.com>
-References: <20230112042104.4107253-1-treapking@chromium.org>
- <20230112042104.4107253-4-treapking@chromium.org>
- <ccea730e-c5cb-4225-8d1e-97a0a7cb2e34@linaro.org>
- <CAEXTbpek=5xqo2j0yKkC90+Oy1rXWQLJWu3X6vx6y-SqvxTvnA@mail.gmail.com>
- <e98a42d5-b97a-5482-1bad-478c234444ce@linaro.org>
- <CAEXTbpfrZCD-53wx2RaboH4rYPF7qm7TrhxyN80k++CZ2UqTKA@mail.gmail.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <CAEXTbpfrZCD-53wx2RaboH4rYPF7qm7TrhxyN80k++CZ2UqTKA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230109135828.879136-5-mark.rutland@arm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.110.237]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemm600010.china.huawei.com (7.193.23.86)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 12/01/2023 07:48, Pin-yen Lin wrote:
-> On Thu, Jan 12, 2023 at 1:24 PM Dmitry Baryshkov
-> <dmitry.baryshkov@linaro.org> wrote:
->>
->> On 12/01/2023 07:19, Pin-yen Lin wrote:
->>> Hi Dmitry,
->>>
->>> Thanks for the review.
->>>
->>> On Thu, Jan 12, 2023 at 12:40 PM Dmitry Baryshkov
->>> <dmitry.baryshkov@linaro.org> wrote:
->>>>
->>>> On 12/01/2023 06:20, Pin-yen Lin wrote:
->>>>> Add helpers to register and unregister Type-C "switches" for bridges
->>>>> capable of switching their output between two downstream devices.
->>>>>
->>>>> The helper registers USB Type-C mode switches when the "mode-switch"
->>>>> and the "data-lanes" properties are available in Device Tree.
->>>>>
->>>>> Signed-off-by: Pin-yen Lin <treapking@chromium.org>
->>>>> Tested-by: Chen-Yu Tsai <wenst@chromium.org>
->>>>> Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
->>>>> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->>>>>
->>>>> ---
->>>>>
->>>>> Changes in v10:
->>>>> - Collected Reviewed-by and Tested-by tags
->>>>> - Replaced "void *" with "typec_mux_set_fn_t" for mux_set callbacks
->>>>> - Print out the node name when errors on parsing DT
->>>>> - Use dev_dbg instead of dev_warn when no Type-C switch nodes available
->>>>> - Made the return path of drm_dp_register_mode_switch clearer
->>>>>
->>>>> Changes in v8:
->>>>> - Fixed the build issue when CONFIG_TYPEC=m
->>>>> - Fixed some style issues
->>>>>
->>>>> Changes in v7:
->>>>> - Extracted the common codes to a helper function
->>>>> - New in v7
->>>>>
->>>>>     drivers/gpu/drm/display/drm_dp_helper.c | 134 ++++++++++++++++++++++++
->>>>>     include/drm/display/drm_dp_helper.h     |  17 +++
->>>>>     2 files changed, 151 insertions(+)
->>>>>
->>>>> diff --git a/drivers/gpu/drm/display/drm_dp_helper.c b/drivers/gpu/drm/display/drm_dp_helper.c
->>>>> index 16565a0a5da6..a2ec40a621cb 100644
->>>>> --- a/drivers/gpu/drm/display/drm_dp_helper.c
->>>>> +++ b/drivers/gpu/drm/display/drm_dp_helper.c
->>>>> @@ -30,11 +30,13 @@
->>>>>     #include <linux/sched.h>
->>>>>     #include <linux/seq_file.h>
->>>>>     #include <linux/string_helpers.h>
->>>>> +#include <linux/usb/typec_mux.h>
->>>>>     #include <linux/dynamic_debug.h>
->>>>>
->>>>>     #include <drm/display/drm_dp_helper.h>
->>>>>     #include <drm/display/drm_dp_mst_helper.h>
->>>>>     #include <drm/drm_edid.h>
->>>>> +#include <drm/drm_of.h>
->>>>>     #include <drm/drm_print.h>
->>>>>     #include <drm/drm_vblank.h>
->>>>>     #include <drm/drm_panel.h>
->>>>> @@ -3891,3 +3893,135 @@ int drm_panel_dp_aux_backlight(struct drm_panel *panel, struct drm_dp_aux *aux)
->>>>>     EXPORT_SYMBOL(drm_panel_dp_aux_backlight);
->>>>>
->>>>>     #endif
->>>>> +
->>>>> +#if IS_REACHABLE(CONFIG_TYPEC)
->>>>> +static int drm_dp_register_mode_switch(struct device *dev, struct device_node *node,
->>>>> +                                    struct drm_dp_typec_switch_desc *switch_desc,
->>>>> +                                    void *data, typec_mux_set_fn_t mux_set)
->>>>> +{
->>>>> +     struct drm_dp_typec_port_data *port_data;
->>>>> +     struct typec_mux_desc mux_desc = {};
->>>>> +     char name[32];
->>>>> +     u32 dp_lanes[2];
->>>>> +     int ret, num_lanes, port_num = -1;
->>>>> +
->>>>> +     num_lanes = drm_of_get_data_lanes_count(node, 0, 2);
->>>>
->>>> 2 looks incorrect. IIRC DP altmode can support up to 4 lanes.
->>>
->>> This function is implemented for 4-lane DP bridges to switch its
->>> outputs between 2 downstreams. So, I assume that there will only be at
->>> most 2 lanes for each downstream. I don't think a 4-lane downstream
->>> makes sense for mode switches unless we want to support bridges with
->>> more than 4 lanes.
->>
->> Yes. However by using 4 here you'd make the helper generic and cover
->> both your case and the generic case. We don't need this for the msm case
->> (since the mux is handled by the PHY). But if not for the PHY, I'd have
->> used such helper (with max_lanes = 4).
->>
-> I wonder if simply using 4 here really makes it more generic here.
-> This function assumes the mapping between "data-lanes" and the port
-> number (e.g., 0/1 --> port 0) and hard-coded the way to parse the
-> property.
+
+
+On 2023/1/9 21:58, Mark Rutland wrote:
+> Architectures without dynamic ftrace trampolines incur an overhead when
+> multiple ftrace_ops are enabled with distinct filters. in these cases,
+> each call site calls a common trampoline which uses
+> ftrace_ops_list_func() to iterate over all enabled ftrace functions, and
+> so incurs an overhead relative to the size of this list (including RCU
+> protection overhead).
 > 
-> Is it better to use "reg" instead of "data-lanes" to determine the
-> port number? The drivers can still read the DT node to get the
-> "data-lanes" property if they want to do some fancy stuffs around
-> that.
+> Architectures with dynamic ftrace trampolines avoid this overhead for
+> call sites which have a single associated ftrace_ops. In these cases,
+> the dynamic trampoline is customized to branch directly to the relevant
+> ftrace function, avoiding the list overhead.
+> 
+> On some architectures it's impractical and/or undesirable to implement
+> dynamic ftrace trampolines. For example, arm64 has limited branch ranges
+> and cannot always directly branch from a call site to an arbitrary
+> address (e.g. from a kernel text address to an arbitrary module
+> address). Calls from modules to core kernel text can be indirected via
+> PLTs (allocated at module load time) to address this, but the same is
+> not possible from calls from core kernel text.
+> 
+> Using an indirect branch from a call site to an arbitrary trampoline is
+> possible, but requires several more instructions in the function
+> prologue (or immediately before it), and/or comes with far more complex
+> requirements for patching.
+> 
+> Instead, this patch adds a new option, where an architecture can
+> associate each call site with a pointer to an ftrace_ops, placed at a
+> fixed offset from the call site. A shared trampoline can recover this
+> pointer and call ftrace_ops::func() without needing to go via
+> ftrace_ops_list_func(), avoiding the associated overhead.
+> 
+> This avoids issues with branch range limitations, and avoids the need to
+> allocate and manipulate dynamic trampolines, making it far simpler to
+> implement and maintain, while having similar performance
+> characteristics.
+> 
+> Note that this allows for dynamic ftrace_ops to be invoked directly from
+> an architecture's ftrace_caller trampoline, whereas existing code forces
+> the use of ftrace_ops_get_list_func(), which is in part necessary to
+> permit the ftrace_ops to be freed once unregistereed *and* to avoid
+> branch/address-generation range limitation on some architectures (e.g.
+> where ops->func is a module address, and may be outside of the direct
+> branch range for callsites within the main kernel image).
+> 
+> The CALL_OPS approach avoids this problems and is safe as:
+> 
+> * The existing synchronization in ftrace_shutdown() using
+>   ftrace_shutdown() using synchronize_rcu_tasks_rude() (and
+>   synchronize_rcu_tasks()) ensures that no tasks hold a stale reference
+>   to an ftrace_ops (e.g. in the middle of the ftrace_caller trampoline,
+>   or while invoking ftrace_ops::func), when that ftrace_ops is
+>   unregistered.
+> 
+>   Arguably this could also be relied upon for the existing scheme,
+>   permitting dynamic ftrace_ops to be invoked directly when ops->func is
+>   in range, but this will require additional logic to handle branch
+>   range limitations, and is not handled by this patch.
+> 
+> * Each callsite's ftrace_ops pointer literal can hold any valid kernel
+>   address, and is updated atomically. As an architecture's ftrace_caller
+>   trampoline will atomically load the ops pointer then derefrence
+>   ops->func, there is no risk of invoking ops->func with a mismatches
+>   ops pointer, and updates to the ops pointer do not require special
+>   care.
+> 
+> A subsequent patch will implement architectures support for arm64. There
+> should be no functional change as a result of this patch alone.
+> 
+> Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Florent Revest <revest@chromium.org>
+> Cc: Masami Hiramatsu <mhiramat@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Will Deacon <will@kernel.org>
+> ---
+>  include/linux/ftrace.h |  15 +++++-
+>  kernel/trace/Kconfig   |   7 +++
+>  kernel/trace/ftrace.c  | 109 +++++++++++++++++++++++++++++++++++++++--
+>  3 files changed, 124 insertions(+), 7 deletions(-)
+> 
+> diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
+> index 99f1146614c04..5eeb2776124c5 100644
+> --- a/include/linux/ftrace.h
+> +++ b/include/linux/ftrace.h
+> @@ -57,6 +57,9 @@ void arch_ftrace_ops_list_func(unsigned long ip, unsigned long parent_ip);
+>  void arch_ftrace_ops_list_func(unsigned long ip, unsigned long parent_ip,
+>  			       struct ftrace_ops *op, struct ftrace_regs *fregs);
+>  #endif
+> +extern const struct ftrace_ops ftrace_nop_ops;
+> +extern const struct ftrace_ops ftrace_list_ops;
+> +struct ftrace_ops *ftrace_find_unique_ops(struct dyn_ftrace *rec);
 
-Yes, I admit, this sounds more logical.
+Hi Mark,
 
->>>>
->>>>> +     if (num_lanes <= 0) {
->>>>> +             dev_err(dev, "Error on getting data lanes count from %s: %d\n",
->>>>> +                     node->name, num_lanes);
->>>>> +             return num_lanes;
->>>>> +     }
->>>>> +
->>>>> +     ret = of_property_read_u32_array(node, "data-lanes", dp_lanes, num_lanes);
->>>>> +     if (ret) {
->>>>> +             dev_err(dev, "Failed to read the data-lanes variable from %s: %d\n",
->>>>> +                     node->name, ret);
->>>>> +             return ret;
->>>>> +     }
->>>>> +
->>>>> +     port_num = dp_lanes[0] / 2;
->>>>> +
->>>>> +     port_data = &switch_desc->typec_ports[port_num];
->>>>> +     port_data->data = data;
->>>>> +     mux_desc.fwnode = &node->fwnode;
->>>>> +     mux_desc.drvdata = port_data;
->>>>> +     snprintf(name, sizeof(name), "%s-%u", node->name, port_num);
->>>>> +     mux_desc.name = name;
->>>>> +     mux_desc.set = mux_set;
->>>>> +
->>>>> +     port_data->typec_mux = typec_mux_register(dev, &mux_desc);
->>>>> +     if (IS_ERR(port_data->typec_mux)) {
->>>>> +             ret = PTR_ERR(port_data->typec_mux);
->>>>> +             dev_err(dev, "Mode switch register for port %d failed: %d\n",
->>>>> +                     port_num, ret);
->>>>> +
->>>>> +             return ret;
->>>>> +     }
->>>>> +
->>>>> +     return 0;
->>>>> +}
->>>>> +
->>>>> +/**
->>>>> + * drm_dp_register_typec_switches() - register Type-C switches
->>>>> + * @dev: Device that registers Type-C switches
->>>>> + * @port: Device node for the switch
->>>>> + * @switch_desc: A Type-C switch descriptor
->>>>> + * @data: Private data for the switches
->>>>> + * @mux_set: Callback function for typec_mux_set
->>>>> + *
->>>>> + * This function registers USB Type-C switches for DP bridges that can switch
->>>>> + * the output signal between their output pins.
->>>>> + *
->>>>> + * Currently only mode switches are implemented, and the function assumes the
->>>>> + * given @port device node has endpoints with "mode-switch" property.
->>>>> + * Register the endpoint as port 0 if the "data-lanes" property falls in 0/1,
->>>>> + * and register it as port 1 if "data-lanes" falls in 2/3.
->>>>> + */
->>>>> +int drm_dp_register_typec_switches(struct device *dev, struct device_node *port,
->>>>> +                                struct drm_dp_typec_switch_desc *switch_desc,
->>>>> +                                void *data, typec_mux_set_fn_t mux_set)
->>>>> +{
->>>>> +     struct device_node *sw;
->>>>> +     int ret;
->>>>> +
->>>>> +     for_each_child_of_node(port, sw) {
->>>>> +             if (of_property_read_bool(sw, "mode-switch"))
->>>>> +                     switch_desc->num_typec_switches++;
->>>>> +     }
->>>>> +
->>>>> +     if (!switch_desc->num_typec_switches) {
->>>>> +             dev_dbg(dev, "No Type-C switches node found\n");
->>>>> +             return 0;
->>>>> +     }
->>>>> +
->>>>> +     switch_desc->typec_ports = devm_kcalloc(
->>>>> +             dev, switch_desc->num_typec_switches,
->>>>> +             sizeof(struct drm_dp_typec_port_data), GFP_KERNEL);
->>>>> +
->>>>> +     if (!switch_desc->typec_ports)
->>>>> +             return -ENOMEM;
->>>>> +
->>>>> +     /* Register switches for each connector. */
->>>>> +     for_each_child_of_node(port, sw) {
->>>>> +             if (!of_property_read_bool(sw, "mode-switch"))
->>>>> +                     continue;
->>>>> +             ret = drm_dp_register_mode_switch(dev, sw, switch_desc, data, mux_set);
->>>>> +             if (ret)
->>>>> +                     goto err_unregister_typec_switches;
->>>>> +     }
->>>>> +
->>>>> +     return 0;
->>>>> +
->>>>> +err_unregister_typec_switches:
->>>>> +     of_node_put(sw);
->>>>> +     drm_dp_unregister_typec_switches(switch_desc);
->>>>> +     dev_err(dev, "Failed to register mode switch: %d\n", ret);
->>>>> +     return ret;
->>>>> +}
->>>>> +EXPORT_SYMBOL(drm_dp_register_typec_switches);
->>>>> +
->>>>> +/**
->>>>> + * drm_dp_unregister_typec_switches() - unregister Type-C switches
->>>>> + * @switch_desc: A Type-C switch descriptor
->>>>> + */
->>>>> +void drm_dp_unregister_typec_switches(struct drm_dp_typec_switch_desc *switch_desc)
->>>>> +{
->>>>> +     int i;
->>>>> +
->>>>> +     for (i = 0; i < switch_desc->num_typec_switches; i++)
->>>>> +             typec_mux_unregister(switch_desc->typec_ports[i].typec_mux);
->>>>> +}
->>>>> +EXPORT_SYMBOL(drm_dp_unregister_typec_switches);
->>>>> +#else
->>>>> +void drm_dp_unregister_typec_switches(struct drm_dp_typec_switch_desc *switch_desc)
->>>>> +{
->>>>> +}
->>>>> +EXPORT_SYMBOL(drm_dp_register_typec_switches);
->>>>> +int drm_dp_register_typec_switches(struct device *dev, struct device_node *port,
->>>>> +                                struct drm_dp_typec_switch_desc *switch_desc,
->>>>> +                                void *data, typec_mux_set_fn_t mux_set)
->>>>> +{
->>>>> +     return 0;
->>>>> +}
->>>>> +EXPORT_SYMBOL(drm_dp_unregister_typec_switches);
->>>>> +#endif
->>>>> diff --git a/include/drm/display/drm_dp_helper.h b/include/drm/display/drm_dp_helper.h
->>>>> index ab55453f2d2c..5a3824f13b4e 100644
->>>>> --- a/include/drm/display/drm_dp_helper.h
->>>>> +++ b/include/drm/display/drm_dp_helper.h
->>>>> @@ -25,6 +25,7 @@
->>>>>
->>>>>     #include <linux/delay.h>
->>>>>     #include <linux/i2c.h>
->>>>> +#include <linux/usb/typec_mux.h>
->>>>>
->>>>>     #include <drm/display/drm_dp.h>
->>>>>     #include <drm/drm_connector.h>
->>>>> @@ -763,4 +764,20 @@ bool drm_dp_downstream_rgb_to_ycbcr_conversion(const u8 dpcd[DP_RECEIVER_CAP_SIZ
->>>>>                                                const u8 port_cap[4], u8 color_spc);
->>>>>     int drm_dp_pcon_convert_rgb_to_ycbcr(struct drm_dp_aux *aux, u8 color_spc);
->>>>>
->>>>> +struct drm_dp_typec_port_data {
->>>>> +     struct typec_mux_dev *typec_mux;
->>>>> +     void *data;
->>>>> +     bool dp_connected;
->>>>> +};
->>>>> +
->>>>> +struct drm_dp_typec_switch_desc {
->>>>> +     int num_typec_switches;
->>>>> +     struct drm_dp_typec_port_data *typec_ports;
->>>>> +};
->>>>> +
->>>>> +void drm_dp_unregister_typec_switches(struct drm_dp_typec_switch_desc *switch_desc);
->>>>> +int drm_dp_register_typec_switches(struct device *dev, struct device_node *port,
->>>>> +                                struct drm_dp_typec_switch_desc *switch_desc,
->>>>> +                                void *data, typec_mux_set_fn_t mux_set);
->>>>> +
->>>>>     #endif /* _DRM_DP_HELPER_H_ */
->>>>
->>>> --
->>>> With best wishes
->>>> Dmitry
->>>>
->>>
->>> Best regards,
->>> Pin-yen
->>
->> --
->> With best wishes
->> Dmitry
->>
-> Best regards,
-> Pin-yen
+This patch has build issues on x86:
 
--- 
-With best wishes
-Dmitry
+    CC      mm/readahead.o
+  In file included from include/linux/perf_event.h:52:0,
+                   from arch/x86/events/amd/lbr.c:2:
+  include/linux/ftrace.h:62:50: error: ‘struct dyn_ftrace’ declared inside parameter list will not be visible outside of this definition or declaration [-Werror]
+   struct ftrace_ops *ftrace_find_unique_ops(struct dyn_ftrace *rec);
 
+Here we should need 'struct dyn_ftrace' forward declaration.
+
+Thanks,
+Huafei
+
+>  #endif /* CONFIG_FUNCTION_TRACER */
+>  
+>  /* Main tracing buffer and events set up */
+> @@ -563,6 +566,8 @@ bool is_ftrace_trampoline(unsigned long addr);
+>   *  IPMODIFY - the record allows for the IP address to be changed.
+>   *  DISABLED - the record is not ready to be touched yet
+>   *  DIRECT   - there is a direct function to call
+> + *  CALL_OPS - the record can use callsite-specific ops
+> + *  CALL_OPS_EN - the function is set up to use callsite-specific ops
+>   *
+>   * When a new ftrace_ops is registered and wants a function to save
+>   * pt_regs, the rec->flags REGS is set. When the function has been
+> @@ -580,9 +585,11 @@ enum {
+>  	FTRACE_FL_DISABLED	= (1UL << 25),
+>  	FTRACE_FL_DIRECT	= (1UL << 24),
+>  	FTRACE_FL_DIRECT_EN	= (1UL << 23),
+> +	FTRACE_FL_CALL_OPS	= (1UL << 22),
+> +	FTRACE_FL_CALL_OPS_EN	= (1UL << 21),
+>  };
+>  
+> -#define FTRACE_REF_MAX_SHIFT	23
+> +#define FTRACE_REF_MAX_SHIFT	21
+>  #define FTRACE_REF_MAX		((1UL << FTRACE_REF_MAX_SHIFT) - 1)
+>  
+>  #define ftrace_rec_count(rec)	((rec)->flags & FTRACE_REF_MAX)
+> @@ -820,7 +827,8 @@ static inline int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
+>   */
+>  extern int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr);
+>  
+> -#ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
+> +#if defined(CONFIG_DYNAMIC_FTRACE_WITH_REGS) || \
+> +	defined(CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS)
+>  /**
+>   * ftrace_modify_call - convert from one addr to another (no nop)
+>   * @rec: the call site record (e.g. mcount/fentry)
+> @@ -833,6 +841,9 @@ extern int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr);
+>   * what we expect it to be, and then on success of the compare,
+>   * it should write to the location.
+>   *
+> + * When using call ops, this is called when the associated ops change, even
+> + * when (addr == old_addr).
+> + *
+>   * The code segment at @rec->ip should be a caller to @old_addr
+>   *
+>   * Return must be:
+> diff --git a/kernel/trace/Kconfig b/kernel/trace/Kconfig
+> index 197545241ab83..5df427a2321df 100644
+> --- a/kernel/trace/Kconfig
+> +++ b/kernel/trace/Kconfig
+> @@ -42,6 +42,9 @@ config HAVE_DYNAMIC_FTRACE_WITH_REGS
+>  config HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
+>  	bool
+>  
+> +config HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS
+> +	bool
+> +
+>  config HAVE_DYNAMIC_FTRACE_WITH_ARGS
+>  	bool
+>  	help
+> @@ -257,6 +260,10 @@ config DYNAMIC_FTRACE_WITH_DIRECT_CALLS
+>  	depends on DYNAMIC_FTRACE_WITH_REGS
+>  	depends on HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
+>  
+> +config DYNAMIC_FTRACE_WITH_CALL_OPS
+> +	def_bool y
+> +	depends on HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS
+> +
+>  config DYNAMIC_FTRACE_WITH_ARGS
+>  	def_bool y
+>  	depends on DYNAMIC_FTRACE
+> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+> index 442438b93fe98..c0b219ab89d2f 100644
+> --- a/kernel/trace/ftrace.c
+> +++ b/kernel/trace/ftrace.c
+> @@ -125,6 +125,33 @@ struct ftrace_ops global_ops;
+>  void ftrace_ops_list_func(unsigned long ip, unsigned long parent_ip,
+>  			  struct ftrace_ops *op, struct ftrace_regs *fregs);
+>  
+> +#ifdef CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
+> +/*
+> + * Stub used to invoke the list ops without requiring a separate trampoline.
+> + */
+> +const struct ftrace_ops ftrace_list_ops = {
+> +	.func	= ftrace_ops_list_func,
+> +	.flags	= FTRACE_OPS_FL_STUB,
+> +};
+> +
+> +static void ftrace_ops_nop_func(unsigned long ip, unsigned long parent_ip,
+> +				struct ftrace_ops *op,
+> +				struct ftrace_regs *fregs)
+> +{
+> +	/* do nothing */
+> +}
+> +
+> +/*
+> + * Stub used when a call site is disabled. May be called transiently by threads
+> + * which have made it into ftrace_caller but haven't yet recovered the ops at
+> + * the point the call site is disabled.
+> + */
+> +const struct ftrace_ops ftrace_nop_ops = {
+> +	.func	= ftrace_ops_nop_func,
+> +	.flags  = FTRACE_OPS_FL_STUB,
+> +};
+> +#endif
+> +
+>  static inline void ftrace_ops_init(struct ftrace_ops *ops)
+>  {
+>  #ifdef CONFIG_DYNAMIC_FTRACE
+> @@ -1814,6 +1841,18 @@ static bool __ftrace_hash_rec_update(struct ftrace_ops *ops,
+>  			 * if rec count is zero.
+>  			 */
+>  		}
+> +
+> +		/*
+> +		 * If the rec has a single associated ops, and ops->func can be
+> +		 * called directly, allow the call site to call via the ops.
+> +		 */
+> +		if (IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS) &&
+> +		    ftrace_rec_count(rec) == 1 &&
+> +		    ftrace_ops_get_func(ops) == ops->func)
+> +			rec->flags |= FTRACE_FL_CALL_OPS;
+> +		else
+> +			rec->flags &= ~FTRACE_FL_CALL_OPS;
+> +
+>  		count++;
+>  
+>  		/* Must match FTRACE_UPDATE_CALLS in ftrace_modify_all_code() */
+> @@ -2108,8 +2147,9 @@ void ftrace_bug(int failed, struct dyn_ftrace *rec)
+>  		struct ftrace_ops *ops = NULL;
+>  
+>  		pr_info("ftrace record flags: %lx\n", rec->flags);
+> -		pr_cont(" (%ld)%s", ftrace_rec_count(rec),
+> -			rec->flags & FTRACE_FL_REGS ? " R" : "  ");
+> +		pr_cont(" (%ld)%s%s", ftrace_rec_count(rec),
+> +			rec->flags & FTRACE_FL_REGS ? " R" : "  ",
+> +			rec->flags & FTRACE_FL_CALL_OPS ? " O" : "  ");
+>  		if (rec->flags & FTRACE_FL_TRAMP_EN) {
+>  			ops = ftrace_find_tramp_ops_any(rec);
+>  			if (ops) {
+> @@ -2177,6 +2217,7 @@ static int ftrace_check_record(struct dyn_ftrace *rec, bool enable, bool update)
+>  		 * want the direct enabled (it will be done via the
+>  		 * direct helper). But if DIRECT_EN is set, and
+>  		 * the count is not one, we need to clear it.
+> +		 *
+>  		 */
+>  		if (ftrace_rec_count(rec) == 1) {
+>  			if (!(rec->flags & FTRACE_FL_DIRECT) !=
+> @@ -2185,6 +2226,19 @@ static int ftrace_check_record(struct dyn_ftrace *rec, bool enable, bool update)
+>  		} else if (rec->flags & FTRACE_FL_DIRECT_EN) {
+>  			flag |= FTRACE_FL_DIRECT;
+>  		}
+> +
+> +		/*
+> +		 * Ops calls are special, as count matters.
+> +		 * As with direct calls, they must only be enabled when count
+> +		 * is one, otherwise they'll be handled via the list ops.
+> +		 */
+> +		if (ftrace_rec_count(rec) == 1) {
+> +			if (!(rec->flags & FTRACE_FL_CALL_OPS) !=
+> +			    !(rec->flags & FTRACE_FL_CALL_OPS_EN))
+> +				flag |= FTRACE_FL_CALL_OPS;
+> +		} else if (rec->flags & FTRACE_FL_CALL_OPS_EN) {
+> +			flag |= FTRACE_FL_CALL_OPS;
+> +		}
+>  	}
+>  
+>  	/* If the state of this record hasn't changed, then do nothing */
+> @@ -2229,6 +2283,21 @@ static int ftrace_check_record(struct dyn_ftrace *rec, bool enable, bool update)
+>  					rec->flags &= ~FTRACE_FL_DIRECT_EN;
+>  				}
+>  			}
+> +
+> +			if (flag & FTRACE_FL_CALL_OPS) {
+> +				if (ftrace_rec_count(rec) == 1) {
+> +					if (rec->flags & FTRACE_FL_CALL_OPS)
+> +						rec->flags |= FTRACE_FL_CALL_OPS_EN;
+> +					else
+> +						rec->flags &= ~FTRACE_FL_CALL_OPS_EN;
+> +				} else {
+> +					/*
+> +					 * Can only call directly if there's
+> +					 * only one sets of associated ops.
+> +					 */
+> +					rec->flags &= ~FTRACE_FL_CALL_OPS_EN;
+> +				}
+> +			}
+>  		}
+>  
+>  		/*
+> @@ -2258,7 +2327,8 @@ static int ftrace_check_record(struct dyn_ftrace *rec, bool enable, bool update)
+>  			 * and REGS states. The _EN flags must be disabled though.
+>  			 */
+>  			rec->flags &= ~(FTRACE_FL_ENABLED | FTRACE_FL_TRAMP_EN |
+> -					FTRACE_FL_REGS_EN | FTRACE_FL_DIRECT_EN);
+> +					FTRACE_FL_REGS_EN | FTRACE_FL_DIRECT_EN |
+> +					FTRACE_FL_CALL_OPS_EN);
+>  	}
+>  
+>  	ftrace_bug_type = FTRACE_BUG_NOP;
+> @@ -2431,6 +2501,25 @@ ftrace_find_tramp_ops_new(struct dyn_ftrace *rec)
+>  	return NULL;
+>  }
+>  
+> +struct ftrace_ops *
+> +ftrace_find_unique_ops(struct dyn_ftrace *rec)
+> +{
+> +	struct ftrace_ops *op, *found = NULL;
+> +	unsigned long ip = rec->ip;
+> +
+> +	do_for_each_ftrace_op(op, ftrace_ops_list) {
+> +
+> +		if (hash_contains_ip(ip, op->func_hash)) {
+> +			if (found)
+> +				return NULL;
+> +			found = op;
+> +		}
+> +
+> +	} while_for_each_ftrace_op(op);
+> +
+> +	return found;
+> +}
+> +
+>  #ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
+>  /* Protected by rcu_tasks for reading, and direct_mutex for writing */
+>  static struct ftrace_hash *direct_functions = EMPTY_HASH;
+> @@ -3780,11 +3869,12 @@ static int t_show(struct seq_file *m, void *v)
+>  	if (iter->flags & FTRACE_ITER_ENABLED) {
+>  		struct ftrace_ops *ops;
+>  
+> -		seq_printf(m, " (%ld)%s%s%s",
+> +		seq_printf(m, " (%ld)%s%s%s%s",
+>  			   ftrace_rec_count(rec),
+>  			   rec->flags & FTRACE_FL_REGS ? " R" : "  ",
+>  			   rec->flags & FTRACE_FL_IPMODIFY ? " I" : "  ",
+> -			   rec->flags & FTRACE_FL_DIRECT ? " D" : "  ");
+> +			   rec->flags & FTRACE_FL_DIRECT ? " D" : "  ",
+> +			   rec->flags & FTRACE_FL_CALL_OPS ? " O" : "  ");
+>  		if (rec->flags & FTRACE_FL_TRAMP_EN) {
+>  			ops = ftrace_find_tramp_ops_any(rec);
+>  			if (ops) {
+> @@ -3800,6 +3890,15 @@ static int t_show(struct seq_file *m, void *v)
+>  		} else {
+>  			add_trampoline_func(m, NULL, rec);
+>  		}
+> +		if (rec->flags & FTRACE_FL_CALL_OPS_EN) {
+> +			ops = ftrace_find_unique_ops(rec);
+> +			if (ops) {
+> +				seq_printf(m, "\tops: %pS (%pS)",
+> +					   ops, ops->func);
+> +			} else {
+> +				seq_puts(m, "\tops: ERROR!");
+> +			}
+> +		}
+>  		if (rec->flags & FTRACE_FL_DIRECT) {
+>  			unsigned long direct;
+>  
+> 
