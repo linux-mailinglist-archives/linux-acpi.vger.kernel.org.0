@@ -2,57 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B55D66871C
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Jan 2023 23:41:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 547EF66872A
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Jan 2023 23:44:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239946AbjALWlN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Jan 2023 17:41:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51672 "EHLO
+        id S231345AbjALWoj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Jan 2023 17:44:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233576AbjALWlI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Jan 2023 17:41:08 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8175BC3C;
-        Thu, 12 Jan 2023 14:41:00 -0800 (PST)
+        with ESMTP id S231540AbjALWog (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Jan 2023 17:44:36 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1954E3DBC2;
+        Thu, 12 Jan 2023 14:44:35 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 85CA2621D1;
-        Thu, 12 Jan 2023 22:41:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A440EC433EF;
-        Thu, 12 Jan 2023 22:40:59 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B530DB82033;
+        Thu, 12 Jan 2023 22:44:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C183C433A7;
+        Thu, 12 Jan 2023 22:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673563259;
-        bh=pCHG33j4SuQY0dNiZzwuDmzLjQWMe7kgUnvywi47kOw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=iDPITSBrSwIaZBqTl9WM43v1tDW+XIfQV20BECVurcimIiDvJpDHaqknb9ES/v14h
-         10IqM7G9sFDooNKJYsg3ALJHjNcxJ4wnwaaUwOhQZAeYgOUUakSw0tB+FfBap51akb
-         04xMxNY/Dmg9fiUaOcM9+2RHpWRGQDU1peNJGDBocLNBxM9MTx9Cy3F6y6zIaCeUo4
-         /TXeztvOdmsmZ0ItqyNF3OrP9ey0606/W2WqpqqJMZd4iXfHAgS67Ai+EhI5ZaPl6D
-         9qYiXX53J4RphmiginHA45FXqp3E85n2EFo7zVi2cNo50C67xx7OYKr8phyv3+tu0F
-         PKGyWqwsDyZ0Q==
-Date:   Thu, 12 Jan 2023 16:40:58 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Mehta, Sanju" <Sanju.Mehta@amd.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH v4] PCI / ACPI: PM: Take _S0W of the target bridge into
- account in acpi_pci_bridge_d3(()
-Message-ID: <20230112224058.GA1799052@bhelgaas>
+        s=k20201202; t=1673563472;
+        bh=RZLYtFJIoNIntNiCGOCc4lXxK6kyJFOWbJdlQl+orIw=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Og3eCJpXAW9+ZU38sof7CYWlrMf7Rt6Bcb04DBOHbSKcTeD3ixNxj/ufyh/YOEKFA
+         FZT9K/srjZ+rTDR6Ia7szASNz3c10bv+Ao/MvH/Oi57VWFx555XIIenukiESIzCw7m
+         eqxlTlhfr689fZyep3R5ZqnHlepkB8Je0MT5dy4M5pglGR7u9D8eTNSqvnkTJwwBC/
+         jH3EvLwBkaz9qKG/cF7IMZN7sDtNxEY0ar0nKookA4amAzPsXgfVRISaykLnx3Aw2p
+         HmjR7bNa6AxvCQ7v0RltC3rlUH6USDdzSgNMug+vTNF9LzVx9t5jKkymxw/In/8TZU
+         vGZp+ShjJNadg==
+Received: by mail-ua1-f53.google.com with SMTP id z13so3821702uav.3;
+        Thu, 12 Jan 2023 14:44:32 -0800 (PST)
+X-Gm-Message-State: AFqh2kqEllK9gidQquhp5X/yTx+8t2hhEAS9uMrNAJ9vUlxrg7i5YB8/
+        KrnQR3qh5yWtzzF3yznRIIH8zzOBpwcoFA8/Iw==
+X-Google-Smtp-Source: AMrXdXtZFoVEyDLRv9F7lmdnJWvJEcg8OkSGQmcET+vTNr5A9PdUpV3f5sKnSRP8h0PLVSDCnsxex9XK6NUvoE/hp8Y=
+X-Received: by 2002:ab0:76c1:0:b0:419:145a:dd46 with SMTP id
+ w1-20020ab076c1000000b00419145add46mr8969043uaq.77.1673563471032; Thu, 12 Jan
+ 2023 14:44:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <MN0PR12MB61013E30A82224755A81B0BEE2FD9@MN0PR12MB6101.namprd12.prod.outlook.com>
+References: <20230112042104.4107253-1-treapking@chromium.org>
+In-Reply-To: <20230112042104.4107253-1-treapking@chromium.org>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Thu, 12 Jan 2023 16:44:19 -0600
+X-Gmail-Original-Message-ID: <CAL_Jsq+KGQH2qTpB6NmmOzid39-oKTzZZJNPF1ybKQu72LbJLw@mail.gmail.com>
+Message-ID: <CAL_Jsq+KGQH2qTpB6NmmOzid39-oKTzZZJNPF1ybKQu72LbJLw@mail.gmail.com>
+Subject: Re: [PATCH v10 0/9] Register Type-C mode-switch in DP bridge endpoints
+To:     Pin-yen Lin <treapking@chromium.org>
+Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <robert.foss@linaro.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
+        <nfraprado@collabora.com>, Marek Vasut <marex@denx.de>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Lyude Paul <lyude@redhat.com>, chrome-platform@lists.linux.dev,
+        Xin Ji <xji@analogixsemi.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        linux-kernel@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
+        linux-acpi@vger.kernel.org, Hsin-Yi Wang <hsinyi@chromium.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Imre Deak <imre.deak@intel.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        shaomin Deng <dengshaomin@cdjrlc.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -62,67 +98,66 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jan 12, 2023 at 10:09:21PM +0000, Limonciello, Mario wrote:
-> > -----Original Message-----
-> > From: Bjorn Helgaas <helgaas@kernel.org>
-> > Sent: Thursday, January 12, 2023 16:02
-> > To: Rafael J. Wysocki <rjw@rjwysocki.net>
-> > Cc: linux-pci@vger.kernel.org; Limonciello, Mario
-> > <Mario.Limonciello@amd.com>; Rafael J. Wysocki <rafael@kernel.org>; Len
-> > Brown <lenb@kernel.org>; Bjorn Helgaas <bhelgaas@google.com>; Mika
-> > Westerberg <mika.westerberg@linux.intel.com>; Mehta, Sanju
-> > <Sanju.Mehta@amd.com>; Lukas Wunner <lukas@wunner.de>; Rafael J .
-> > Wysocki <rafael.j.wysocki@intel.com>; linux-acpi@vger.kernel.org; linux-
-> > kernel@vger.kernel.org; Linux PM <linux-pm@vger.kernel.org>
-> > Subject: Re: [PATCH v4] PCI / ACPI: PM: Take _S0W of the target bridge into
-> > account in acpi_pci_bridge_d3(()
-> > 
-> > On Thu, Jan 12, 2023 at 09:51:24PM +0100, Rafael J. Wysocki wrote:
-> > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > >
-> > > It is generally questionable to allow a PCI bridge to go into D3 if
-> > > it has _S0W returning D2 or a shallower power state, so modify
-> > > acpi_pci_bridge_d3(() to always take the return value of _S0W for the
-> > > target bridge into accout.  That is, make it return 'false' if _S0W
-> > > returns D2 or a shallower power state for the target bridge regardless
-> > > of its ancestor PCIe Root Port properties.  Of course, this also causes
-> > > 'false' to be returned if the PCIe Root Port itself is the target and
-> > > its _S0W returns D2 or a shallower power state.
-> > >
-> > > However, still allow bridges without _S0W that are power-manageable via
-> > > ACPI to enter D3 to retain the current code behavior in that case.
-> > >
-> > > Link: https://lore.kernel.org/linux-pci/20221031223356.32570-1-
-> > mario.limonciello@amd.com/
-> > > Reported-by: Mario Limonciello <mario.limonciello@amd.com>
-> > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > 
-> > Applied to pci/pm for v6.3, thanks!
-> > 
-> > It'd be great if we could include a short description of the problems
-> > users might see.  I think the original problem was that on some AMD
-> > systems we put a USB4 router in D3 when it should remain in D0.  And I
-> > assume this means something doesn't wake up when it should?  Or maybe
-> > we miss a hotplug event?
-> > 
-> > If somebody has an example or some text, I'll add it to the commit
-> > log.
-> 
-> Here's a blurb for what happens on AMD side:
-> 
-> When the platform is configured to not allow the PCIe port used for
-> tunneling to wakeup from D3 it will runtime suspend into D0 and the
-> USB4 controller which is a consumer will runtime suspend into D3.
-> 
-> This inconsistency leads to failures to initialize PCIe tunnels for
-> USB4 devices.
+On Wed, Jan 11, 2023 at 10:21 PM Pin-yen Lin <treapking@chromium.org> wrote:
+>
+>
+> This series introduces bindings for anx7625/it6505 to register Type-C
+> mode-switch in their output endpoints, and use data-lanes property to
+> describe the pin connections.
+>
+> The first two patch modifies fwnode_graph_devcon_matches and
+> cros_typec_init_ports to enable the registration of the switches.
+>
+> Patch 4~6 introduce the bindings for anx7625 and the corresponding driver
+> modifications.
+>
+> Patch 7~9 add similar bindings and driver changes for it6505.
+>
+> v9: https://lore.kernel.org/all/20230109084101.265664-1-treapking@chromium.org/
+> v8: https://lore.kernel.org/all/20230107102231.23682-1-treapking@chromium.org/
+> v7: https://lore.kernel.org/all/20230105132457.4125372-1-treapking@chromium.org/
+> v6: https://lore.kernel.org/all/20221124102056.393220-1-treapking@chromium.org/
+> v5: https://lore.kernel.org/linux-usb/20220622173605.1168416-1-pmalani@chromium.org/
+>
+> Changes in v10:
+> - Collected Reviewed-by and Tested-by tags
+> - Replaced "void *" with "typec_mux_set_fn_t" for mux_set callbacks
+> - Print out the node name when errors on parsing DT
+> - Use dev_dbg instead of dev_warn when no Type-C switch nodes available
+> - Made the return path of drm_dp_register_mode_switch clearer
+> - Added a TODO for implementing orientation switch for anx7625
+> - Updated the commit message for the absence of orientation switch
+> - Fixed typo in the commit message
+>
+> Changes in v9:
+> - Collected Reviewed-by tag
+> - Fixed subject prefix again
+> - Changed the naming of the example node for it6505
+>
+> Changes in v8:
+> - Fixed the build issue when CONFIG_TYPEC=m
+> - Fixed some style issues
+> - Fixed the subject prefixes for the bindings patch
+> - Fixed the bindings for data-lanes properties
+>
+> Changes in v7:
+> - Fix the long comment lines
+> - Extracted the common codes to a helper function
+> - Fixed style issues in anx7625 driver
+> - Removed DT property validation in anx7625 driver.
+> - Fixed style issues in it6505 driver
+> - Removed the redundant sleep in it6505 driver
+> - Removed DT property validation in it6505 driver
+> - Rebased to drm-misc-next
+> - Fixed indentations in bindings patches
+> - Added a new patch to fix indentations in Kconfig
 
-And what is J. Random User going to see?  DisplayPort not working
-ever?  It works to begin with, but not after a suspend?  Devices in a
-dock not being able to wake the system?
+4 versions in a week! Please slow down your pace. When you send a new
+version, you move to the end of my review queue.
 
-I don't really know what "PCIe tunnels for USB4 devices not being
-initialized" means for me.  I want to know what a problem report from
-a non-expert user might look like.
+IIRC, these 2 chips are a bit different in what the mode switch or
+muxing looks like. One had a built-in mux and the other doesn't? Do I
+have to go research this again? No, you need to explain all this in
+this series.
 
-Bjorn
+Rob
