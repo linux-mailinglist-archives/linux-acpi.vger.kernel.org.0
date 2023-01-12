@@ -2,157 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ED56667334
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Jan 2023 14:32:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 53DD566733A
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Jan 2023 14:33:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230316AbjALNcu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Jan 2023 08:32:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37082 "EHLO
+        id S229748AbjALNdn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Jan 2023 08:33:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229748AbjALNcs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Jan 2023 08:32:48 -0500
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D6143AA;
-        Thu, 12 Jan 2023 05:32:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1673530367; x=1705066367;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5s3rq0HPT7JhaK1ei+4B0dAg3NA3ZhC5O9DBhXYruHU=;
-  b=Gy6tRqM2oWmyJkZJS1MR77B6LL/cdVT0d00gWPyEKT6Hl33/bCiyNjk8
-   4m2R969sTk1WdZfDR/Vet3bVs3FJ/THhNlrRmDhp39uEyGbQoOQsUMu2M
-   IPzibrL38pw799IVl/KXOVqh1MhYCbK/wMFaEgpGKX1TacNp4zJRiJ+fY
-   QGPMxjbAnAzCWPleixQGnVzY5H/Xh0uxKFyUFjXEvbxu9MDvn/BV7zOz4
-   rMzRQuVsCN1+eR1XOinGNloJ16QJ/iFGdB60GMFGIbXuxAgNWggiBxl1v
-   Cs90c+OAUFhlzecjfZ54l3wph3j+u3xzJZ9jsuIaVrjlfX2SX3UtOFh4A
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10587"; a="386018575"
-X-IronPort-AV: E=Sophos;i="5.97,319,1669104000"; 
-   d="scan'208";a="386018575"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2023 05:32:45 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10587"; a="688334548"
-X-IronPort-AV: E=Sophos;i="5.97,319,1669104000"; 
-   d="scan'208";a="688334548"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2023 05:32:36 -0800
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id 4F4162021A;
-        Thu, 12 Jan 2023 15:32:34 +0200 (EET)
-Date:   Thu, 12 Jan 2023 13:32:34 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Pin-yen Lin <treapking@chromium.org>
-Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        =?iso-8859-1?Q?N=EDcolas_F_=2E_R_=2E_A_=2E?= Prado 
-        <nfraprado@collabora.com>, Marek Vasut <marex@denx.de>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Lyude Paul <lyude@redhat.com>, chrome-platform@lists.linux.dev,
-        Xin Ji <xji@analogixsemi.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-kernel@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
-        linux-acpi@vger.kernel.org, Hsin-Yi Wang <hsinyi@chromium.org>,
-        Chen-Yu Tsai <wenst@chromium.org>
-Subject: Re: [PATCH v10 1/9] device property: Add remote endpoint to devcon
- matcher
-Message-ID: <Y8AL8nTcNcl6zX7H@paasikivi.fi.intel.com>
-References: <20230112042104.4107253-1-treapking@chromium.org>
- <20230112042104.4107253-2-treapking@chromium.org>
+        with ESMTP id S233502AbjALNdb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Jan 2023 08:33:31 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 979A848CD7;
+        Thu, 12 Jan 2023 05:33:27 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A88C61F1C;
+        Thu, 12 Jan 2023 13:33:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 306EAC433D2;
+        Thu, 12 Jan 2023 13:33:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673530406;
+        bh=n0NRV/gQw0nEZmS2n3APRi2+VgzBWVgwAhTfyRlzfsU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=nDfCd2GNtAMorYb4yjLeRIab11aZO+4bAEKjATUWJbegZsGZPOSNIa6ne9pp0gOcG
+         SpoF0sW5WqStu0DQNkPIWJmGEyqj8JnVCTr/rJ5HF1KRwo/xB2O9s6frAeVB24UNyi
+         5XMcM2Rkf7Suldg7nLfna/i4DfnTDDEyIbj77npIuBaN590vv9xjkV8woz7vrtUhV+
+         DubgVaYQfR/d/aR19yewLTnxyE01yK6kyl57ErST1bo7RnKHvBmgfPpenS78ROlOKY
+         k26ubVk5AuUcNoBa3PvqYsHgyoPrOBAcQesyLseStqYDXC5y+PfIncqBEIBcwfeM+C
+         kQQMmk+9t4Xpw==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Subject: [PATCH v2] ACPI: PRM: Check whether EFI runtime is available
+Date:   Thu, 12 Jan 2023 14:33:19 +0100
+Message-Id: <20230112133319.3615177-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230112042104.4107253-2-treapking@chromium.org>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1906; i=ardb@kernel.org; h=from:subject; bh=n0NRV/gQw0nEZmS2n3APRi2+VgzBWVgwAhTfyRlzfsU=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjwAweHXz+wZutlvT8AmkNpNhME+0PhkT2sZDOYnh0 QYOTvuuJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY8AMHgAKCRDDTyI5ktmPJCvLC/ 40+93VWNq6Cf7jk//UbE3TFBu4YHvsgYoFFiIk3V56RyUokjt5IVcQy1A65vs9d/icuED26lSI5udC bvzCqJ1iW4y4E6gs/rVoC35feJSOIHerSw0RyJRGU4jnbDWYWRkFnmqkiLlqsCbtStLLTElFKiJGxT qz28nZZo2HYVXlk0FnFB/kNn58rRkH9VPtpeFW1B1SsOZc0nIOXVF1AYi+mLecYC+8DlWD0LcOb9Wc /nzkdfY2+0+FHWmP16FRK37tXHuSjWZgF5bgstroSD8ZqGlML44zw29tZ/pfbc/fFOkWHIUAh2x/gN lRgjzIkVBgqATq75ZdTal9jDU3c1iErULyFPSA2+nc8bIPV4ZKilOrpiEgAuDuGuM2saozbWaMtCA1 OkrPISBRZbE2EKBGQpL24fsiDc3i9XvG9zFFsrewYhVO/4vGFUUakP1TSJlTqaBg6zySFgH/d4YZql 4+Hjvyk1ScSPF1lN5REVSgxF1vo+xGS6Yn6QNEd7NAcZw=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Pin-yen,
+The ACPI PRM address space handler calls efi_call_virt_pointer() to
+execute PRM firmware code, but doing so is only permitted when the EFI
+runtime environment is available. Otherwise, such calls are guaranteed
+to result in a crash, and must therefore be avoided.
 
-On Thu, Jan 12, 2023 at 12:20:56PM +0800, Pin-yen Lin wrote:
-> From: Prashant Malani <pmalani@chromium.org>
-> 
-> When searching the device graph for device matches, check the
-> remote-endpoint itself for a match.
-> 
-> Some drivers register devices for individual endpoints. This allows
-> the matcher code to evaluate those for a match too, instead
-> of only looking at the remote parent devices. This is required when a
-> device supports two mode switches in its endpoints, so we can't simply
-> register the mode switch with the parent node.
-> 
-> Signed-off-by: Prashant Malani <pmalani@chromium.org>
-> Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-> Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-> Tested-by: Chen-Yu Tsai <wenst@chromium.org>
-> 
-> ---
-> 
-> Changes in v10:
-> - Collected Reviewed-by and Tested-by tags
-> 
-> Changes in v6:
-> - New in v6
-> 
->  drivers/base/property.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/drivers/base/property.c b/drivers/base/property.c
-> index 2a5a37fcd998..48877af4e444 100644
-> --- a/drivers/base/property.c
-> +++ b/drivers/base/property.c
-> @@ -1223,6 +1223,21 @@ static unsigned int fwnode_graph_devcon_matches(struct fwnode_handle *fwnode,
->  			break;
->  		}
->  
-> +		/*
-> +		 * Some drivers may register devices for endpoints. Check
-> +		 * the remote-endpoints for matches in addition to the remote
-> +		 * port parent.
-> +		 */
-> +		node = fwnode_graph_get_remote_endpoint(ep);
-> +		if (fwnode_device_is_available(node)) {
-> +			ret = match(node, con_id, data);
-> +			if (ret) {
-> +				if (matches)
-> +					matches[count] = ret;
-> +				count++;
-> +			}
-> +		}
+Given that the EFI runtime services may become unavailable after a crash
+occurring in the firmware, we need to check this each time the PRM
+address space handler is invoked. If the EFI runtime services were not
+available at registration time to being with, don't install the address
+space handler at all.
 
-Aren't you missing fwnode_handle-put(node) here??
+Cc: <stable@vger.kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>
+Cc: linux-acpi@vger.kernel.org
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+v2: check both at registration and at invocation time
 
-> +
->  		node = fwnode_graph_get_remote_port_parent(ep);
->  		if (!fwnode_device_is_available(node)) {
->  			fwnode_handle_put(node);
+ drivers/acpi/prmt.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
+diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+index 998101cf16e47145..3d4c4620f9f95309 100644
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -236,6 +236,11 @@ static acpi_status acpi_platformrt_space_handler(u32 function,
+ 	efi_status_t status;
+ 	struct prm_context_buffer context;
+ 
++	if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
++		pr_err_ratelimited("PRM: EFI runtime services no longer available\n");
++		return AE_NO_HANDLER;
++	}
++
+ 	/*
+ 	 * The returned acpi_status will always be AE_OK. Error values will be
+ 	 * saved in the first byte of the PRM message buffer to be used by ASL.
+@@ -325,6 +330,11 @@ void __init init_prmt(void)
+ 
+ 	pr_info("PRM: found %u modules\n", mc);
+ 
++	if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
++		pr_err("PRM: EFI runtime services unavailable\n");
++		return;
++	}
++
+ 	status = acpi_install_address_space_handler(ACPI_ROOT_OBJECT,
+ 						    ACPI_ADR_SPACE_PLATFORM_RT,
+ 						    &acpi_platformrt_space_handler,
 -- 
-Kind regards,
+2.39.0
 
-Sakari Ailus
