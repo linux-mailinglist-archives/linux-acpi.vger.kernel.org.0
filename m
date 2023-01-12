@@ -2,251 +2,275 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51F2466872C
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Jan 2023 23:45:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 65686668760
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Jan 2023 23:57:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240344AbjALWpH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Jan 2023 17:45:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53314 "EHLO
+        id S239946AbjALW5G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 12 Jan 2023 17:57:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240324AbjALWpG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Jan 2023 17:45:06 -0500
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2088.outbound.protection.outlook.com [40.107.223.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C4B95E0BF;
-        Thu, 12 Jan 2023 14:45:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eDoJxX3VEkGyv/9391zjkjVB45q8qLaXHvmjzP1lpV0jVxJ7XwLBcu27BIG4+ZPgqw1bUAqlX4drXLhjZ4x0onjNU6+8Z6lzw3QTsmsnrOABSjEJaxG3Sk8fVFJho4y3dcfmXuZ27YeBp3S4aXdibqtwnoLj+VK9jcHHQgKoJNAvb2f3eelczfRzIqCGxMFFzkS5aSrYd8dH4gi4e4DbM6vCHbyYkofc8PppiJYIj/psEpETg015UBw/FWYH0+19Xia5CeiZtYv2txPm2//6YGHdFaZRdzQaCwznQjwiG5zFEU6reJkdeoNvd18iKUjzzyKM+kTM2phsEN2ZbzpnZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=axiiyS7UsCNIvDOypTHJYKsdaZ+zx5E7oCA6KLldgrY=;
- b=Vz4Y5FmnKE9F+paIrWtfQUrj89NmuEO+Qz6RTU7CY78Ajh5M6/VJuQ7+AMiXx5wwUYqkJ0s16R+tW1KufQaz3ecCFCW4mLa33YpZKnfLgjn+Ae+yisUO9ZxpvzDl6ZbiyV3evqs9YsOz3esw0CswkUdntYGPUgN7pwdEPOPtTO+PDT7Dq7z5wSOQUVdO7MWZw8zmZAOzabmu1yn8o4c83XcUr9OhY5iUMq0+ESEVvOMbuJZhubpTZ0Hyw/QiVFUDJFJ0ee+4jnSaCB7urt72NDn4idY5cZQnQcACOATchTS+lg9UGL4TTcGs4hqcbuGMxYphBkiglKBIVBvBuxDz0g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=axiiyS7UsCNIvDOypTHJYKsdaZ+zx5E7oCA6KLldgrY=;
- b=JaTZfgTSH1n3Og5JkvnG47v95iI4CGxXzx7uXc0qcoqN/ui5SGdOHEQFM4574R8HTZmIxeoW0unVAM1vA9nIawG3BRSWYZFXpLR706WOd4Dddq3Lz7Wy8xYGjVLMpG661a9R2uQNPidgY3pAFebypnRGeLiwPkFTbTl7oQ8y5zE=
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by SA1PR12MB7222.namprd12.prod.outlook.com (2603:10b6:806:2bf::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5986.18; Thu, 12 Jan
- 2023 22:45:03 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::ff3c:2d37:75f3:442a]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::ff3c:2d37:75f3:442a%7]) with mapi id 15.20.5986.018; Thu, 12 Jan 2023
- 22:45:03 +0000
-From:   "Limonciello, Mario" <Mario.Limonciello@amd.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-CC:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Mehta, Sanju" <Sanju.Mehta@amd.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-Subject: RE: [PATCH v4] PCI / ACPI: PM: Take _S0W of the target bridge into
- account in acpi_pci_bridge_d3(()
-Thread-Topic: [PATCH v4] PCI / ACPI: PM: Take _S0W of the target bridge into
- account in acpi_pci_bridge_d3(()
-Thread-Index: AQHZJseoN/xcWk1Uu0CFj4KpEohgeK6bVWqAgAAAjtCAAApZAIAAACkQ
-Date:   Thu, 12 Jan 2023 22:45:03 +0000
-Message-ID: <MN0PR12MB61016E8166D73C4BD7C720D4E2FD9@MN0PR12MB6101.namprd12.prod.outlook.com>
-References: <MN0PR12MB61013E30A82224755A81B0BEE2FD9@MN0PR12MB6101.namprd12.prod.outlook.com>
- <20230112224058.GA1799052@bhelgaas>
-In-Reply-To: <20230112224058.GA1799052@bhelgaas>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2023-01-12T22:41:34Z;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=6f4ab7c4-aab2-49aa-a872-9998375e902a;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=1
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_enabled: true
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_setdate: 2023-01-12T22:45:01Z
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_method: Standard
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_name: General
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_siteid: 3dd8961f-e488-4e60-8e11-a82d994e183d
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_actionid: d3d74f71-fbf9-4036-8d3a-32ea1522f198
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_contentbits: 0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MN0PR12MB6101:EE_|SA1PR12MB7222:EE_
-x-ms-office365-filtering-correlation-id: f8f0899c-16ed-45d6-26df-08daf4eea4d7
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 2nnRjaIZaumYGXuPQiHeAEHjHh57xoaVqggNPnQhtHUPgrZidLMuvTJeBlYTi91+zQ7RlH6BpYRAPUpin1qgbrNXfvkoiM7qRIWITVouHzGGVXaYvzHZ0Ee33+PLaLPAFbU1eUM4b3laD2HdZdSXh6io+8o5f9tKv9XT/1FNjWO5oQ3rIw8uqMnfDVOJ+oVJvutok4BjXmWVtbiEmMl/L9lYkBtxc1MceE5ZmjRdXc1bpWLU58Q8oXtyJhBcJ9Shpx3feW7vUL8rbx2cp5jbZQbY+fi1pjpK3P5fMYL3i4frwDf6fVHUwAO88yGUGhaatJmCy21bsTWL25dLJ7KQQGxpQOK9twVLVt5muQK6wggmF9DG9QP2JvHvnGEFddr30MD3ITLUaW/L5lR4HK+5NyTzRZR9mXoFS+VJ5IfWkz3GNq8Xq6sazoX/3EYwS6a1xCapGhfJVaIAyVwTG8QS8/7twiWi9lre7/UUSHsWfRBK3RP7c13Dz7D6nJESo7JR1pefmuU5Vkh58nd8JeFeDXKKF8DOmANbgks1TPOns7boxfk0CQqz2Gnp5HskG2BI6bwP42wf58dZLjwuVhQZrC8sIVN07bQXikWKyuZs6gZSNPeLT9VDmhbEFkRIgOAQ/peVWwwcwHNmv5EkPWazw9NDRwLDjBli3C0gJ4DAfWUVj6TqLFOUW0W9e8MF27epP/aH51jhwEciFGKMuGXmWXKc64gwegY7THb7YEB78oA=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(376002)(136003)(366004)(396003)(39860400002)(451199015)(9686003)(6506007)(54906003)(186003)(55016003)(76116006)(86362001)(66946007)(38100700002)(66446008)(4326008)(66476007)(38070700005)(64756008)(7416002)(5660300002)(122000001)(66556008)(478600001)(66574015)(8676002)(6916009)(2906002)(71200400001)(33656002)(316002)(8936002)(41300700001)(52536014)(7696005)(83380400001)(15650500001)(966005)(53546011);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?EfrGqT1Wwkeq/opvMmvTTnPOiHwL0iIGSw1zRJ3FVCGfrSWvpkdcg0m5/Kls?=
- =?us-ascii?Q?eqHATn14PH1p9wCoUGmBpYRMvDkcKdo+TUOEqEFR42KSjq6P2YEZUt6ERK0o?=
- =?us-ascii?Q?T8YUd/XvWaoeS7DO09xS2P3zCmOsubcTZYEqsisUCn1rW+sY2Zk3jlg98+Bm?=
- =?us-ascii?Q?wVqRL7YbNd8maodebkf3tiOcn6pASvSBzSEk6yrXCi8xznESqYy88xy+WwHF?=
- =?us-ascii?Q?EB+0SzAAGbDe2ePY6ShKxxZCqncMr/Liky0efWWDa0msZlCRWXoyzJjyo2LC?=
- =?us-ascii?Q?WldmOxyCIZo2Y6RS/rKi9HwtUwWSGcbg548RrU88ZfGi1iGYp7ON3InkEMzN?=
- =?us-ascii?Q?ExtdJHOk9gNnA0qbkvF4PVizAg8uCVUcWJT2Npok6jwYfdGl2tyD6MUWrTnp?=
- =?us-ascii?Q?UBuprvsA6DUEpWtO+S5NRauyJCwv9+pSmmgBP2kPzWcF4cvGQSI9Y36X8con?=
- =?us-ascii?Q?zsFIRJcC05wX7EXCOL8QgHHoJ8sBBB86piUSvENQwSLo6M7eengNwYVe2bfu?=
- =?us-ascii?Q?N/v2IlB0pAipGWzx3wptskcIl10WZE4AC0vFssUoerFXtXDtA+5RHlBZ5oWG?=
- =?us-ascii?Q?O0Qs+jqLGkM7p9NNjoBYbB9mqCXhPBQWzcn8g/neMgUlRmpnwiB7JHeYKcY9?=
- =?us-ascii?Q?QBB3+l27wwVldNr8kKNeP9nKFTkDbqdBqk6zGBeBlxiopxA8xChbZJnij2za?=
- =?us-ascii?Q?hcGOKJoLObZKx5yShi/aobtoNaaxOQaPL5sUNQAjQn8+iX8nQ4PKVrpV5Nlb?=
- =?us-ascii?Q?fd3Y4qK4NOrGfI6ZkoWQQLTDn7vrtBv4PW6MQJw91wKmYBvuMzlge/Fc0/+6?=
- =?us-ascii?Q?efMJazh5ckxmAECUzlVoW9/Vy5sFgzdrCz/EMKKgRqf2k6IsLO4JpcMy5LsJ?=
- =?us-ascii?Q?BD1OTT5we0GXxf9++gHVfDV26Q70EFVL907UxjE/wbXrxQwNOFWYqGslIb7k?=
- =?us-ascii?Q?eFNbbIWdWsg7Y55zYYW078fx5otqiEI2q1Vs4ogkK2hcHnYcmozRAU2rpUqN?=
- =?us-ascii?Q?3OTFuBBd6ifDHpf7Wp9u26glbfXwa1ka7mtJVko1x1g5jvK5INBUBXwC8SAp?=
- =?us-ascii?Q?/ul/yXkyFecX6g6oFJkKNOKiyBba45NY/NZAIXzRL3H83GPq6iwinUr0XdKR?=
- =?us-ascii?Q?WZDnOFs3HiKWFQbKj0UECSq/6+Y6aiderNBg2N5ErahVo3F86bT6XO6kiTmR?=
- =?us-ascii?Q?IbgCDPB4XJjItCkPoUioUMEDQtWkU2SK2zWHuB9bVER8mYbqmWOJ9MMzk+l4?=
- =?us-ascii?Q?05s91EwsgHiX8QBh/9Sa2ioevVKhylzCVMinhXKcLgVPjEPlmR9lAgk8sv4B?=
- =?us-ascii?Q?DLEFm76h9NS5CTABgiNwj+fKjLzk454yNyNkHX3R5LfDtnVKgMcfjBQ7/Pja?=
- =?us-ascii?Q?cxlJYYXtYW5GAQj86UFSZfLV1UYGT94eTjSs/GcgbCBAelbwo6H1Df05D9mj?=
- =?us-ascii?Q?RSk/tlYrVLCWl4jRZOjeCNQlTSIPsYNU774a9QdFQDXLj+diWsFjDQqCr4wx?=
- =?us-ascii?Q?T7iQxkbQ6RlJDzwTw5yJNq85tAOb5ZaD3c7SL1LgotxmGqDxmfdnLCbBTLYG?=
- =?us-ascii?Q?qQvYL7H1bhVS3O6mAomU02kennw8NKimp4iEO9Dc+tmHxHaDNJPkmpnV0zQn?=
- =?us-ascii?Q?FssXgAUCql1+V/JEpEatmVE=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S240478AbjALW5F (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Jan 2023 17:57:05 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48D70517DC;
+        Thu, 12 Jan 2023 14:57:04 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D12F2B8202B;
+        Thu, 12 Jan 2023 22:57:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71884C433A4;
+        Thu, 12 Jan 2023 22:57:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673564221;
+        bh=XJbAYFtKJrsiJkc3mYwPVbfBQAWFjyHsbxpFxsr7kv4=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=ecH8E+bpJVchEE2eS/RESQzv4VtE+LZDzau2V9udBRpZBpyqYaQhBR/NhJHiDn/ld
+         VJizL7e0gDVZoxmsirE6EM9GcS36cX0eVzokhEwE5F49OyPgYJ+vFdHnSnAAjUC8Mm
+         xeoR7+TfM7WFMihxTjDQsfrgqumlMhVBC2fen+u6oXvsguYhW5cU6e9aTxG740TaAM
+         ISSUA4KsbAjRLCMOyMpGTfyy0Dz9hmdgW9nKVWJbAJH1MZgAQRkSQMqdkt4ATJPgZd
+         jo4Ibc6RPBRo7yYwPJ0Jbv5muBiGm7QsDTU50WgZdQWto7AkquztEXXWkMTMLFRuo+
+         Ts2/YwlqbH+zQ==
+Received: by mail-vk1-f178.google.com with SMTP id q141so6859135vkb.13;
+        Thu, 12 Jan 2023 14:57:01 -0800 (PST)
+X-Gm-Message-State: AFqh2krUbdLyqEsME/hCCnOAzWbyMZN5P5ZCsP/aK42wkl9QJJC+z0+E
+        JSGp6g/fAG8bY/YG06fiSGfKkN/wr8H43x2Prg==
+X-Google-Smtp-Source: AMrXdXt8wHrRY2gdsYARqhiRw0HAx5328dSIv8af4ZbpRgdiVb5LWwG0uV+KGfpJFJ9+GQ11YNTxNRn1tFh83Da+frk=
+X-Received: by 2002:a05:6122:221e:b0:3da:f920:c0ef with SMTP id
+ bb30-20020a056122221e00b003daf920c0efmr981096vkb.26.1673564220164; Thu, 12
+ Jan 2023 14:57:00 -0800 (PST)
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f8f0899c-16ed-45d6-26df-08daf4eea4d7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jan 2023 22:45:03.1147
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: EjttSqUU+moiyGx9J2bmx0H1oq+01YqsC2tviWQcTPLUPSZ4UTVi5vJpSCOsFHQXBsGm/E0rMgUkseUlNkrvcg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7222
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230112042104.4107253-1-treapking@chromium.org> <20230112042104.4107253-5-treapking@chromium.org>
+In-Reply-To: <20230112042104.4107253-5-treapking@chromium.org>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Thu, 12 Jan 2023 16:56:48 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJDGKskYoZvzCVWickpGpA5GtY6p9eY1tKia7cyd+umaA@mail.gmail.com>
+Message-ID: <CAL_JsqJDGKskYoZvzCVWickpGpA5GtY6p9eY1tKia7cyd+umaA@mail.gmail.com>
+Subject: Re: [PATCH v10 4/9] dt-bindings: display: bridge: anx7625: Add
+ mode-switch support
+To:     Pin-yen Lin <treapking@chromium.org>
+Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <robert.foss@linaro.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
+        <nfraprado@collabora.com>, Marek Vasut <marex@denx.de>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Lyude Paul <lyude@redhat.com>, chrome-platform@lists.linux.dev,
+        Xin Ji <xji@analogixsemi.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        linux-kernel@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
+        linux-acpi@vger.kernel.org, Hsin-Yi Wang <hsinyi@chromium.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Chen-Yu Tsai <wenst@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-[AMD Official Use Only - General]
+On Wed, Jan 11, 2023 at 10:21 PM Pin-yen Lin <treapking@chromium.org> wrote:
+>
+> Analogix 7625 can be used in systems to switch the DP traffic between
+> two downstreams, which can be USB Type-C DisplayPort alternate mode
+> lane or regular DisplayPort output ports.
+>
+> Update the binding to accommodate this usage by introducing a
+> data-lanes and a mode-switch property on endpoints.
+>
+> Also include the link to the product brief in the bindings.
+>
+> Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+> Tested-by: Chen-Yu Tsai <wenst@chromium.org>
+> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+>
+> ---
+>
+> Changes in v10:
+> - Collected Reviewed-by and Tested-by tags
+>
+> Changes in v9:
+> - Collected Reviewed-by tag
+>
+> Changes in v8:
+> - Updated anx7625 bindings for data-lane property
+> - Fixed the subject prefix
+>
+> Changes in v7:
+> - Fixed issues reported by dt_binding_check
+> - Updated the schema and the example dts for data-lanes.
+> - Changed to generic naming for the example dts node.
+>
+> Changes in v6:
+> - Remove switches node and use endpoints and data-lanes property to
+>   describe the connections.
+>
+>  .../display/bridge/analogix,anx7625.yaml      | 99 ++++++++++++++++++-
+>  1 file changed, 96 insertions(+), 3 deletions(-)
+>
+> diff --git a/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml b/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml
+> index 4590186c4a0b..b49a350c40e3 100644
+> --- a/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml
+> +++ b/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml
+> @@ -12,7 +12,8 @@ maintainers:
+>
+>  description: |
+>    The ANX7625 is an ultra-low power 4K Mobile HD Transmitter
+> -  designed for portable devices.
+> +  designed for portable devices. Product brief is available at
+> +  https://www.analogix.com/en/system/files/AA-002291-PB-6-ANX7625_ProductBrief.pdf
+>
+>  properties:
+>    compatible:
+> @@ -112,10 +113,48 @@ properties:
+>                data-lanes: true
+>
+>        port@1:
+> -        $ref: /schemas/graph.yaml#/properties/port
+> +        $ref: /schemas/graph.yaml#/$defs/port-base
+>          description:
+>            Video port for panel or connector.
+>
+> +        patternProperties:
+> +          "^endpoint@[01]$":
+> +            $ref: /schemas/graph.yaml#/$defs/endpoint-base
 
+You are using a property from video-interfaces.yaml, so you need to
+reference that.
 
+Needs some description of what each endpoint is. IOW, how each
+endpoint corresponds to the h/w.
 
-> -----Original Message-----
-> From: Bjorn Helgaas <helgaas@kernel.org>
-> Sent: Thursday, January 12, 2023 16:41
-> To: Limonciello, Mario <Mario.Limonciello@amd.com>
-> Cc: Rafael J. Wysocki <rjw@rjwysocki.net>; linux-pci@vger.kernel.org; Raf=
-ael J.
-> Wysocki <rafael@kernel.org>; Len Brown <lenb@kernel.org>; Bjorn Helgaas
-> <bhelgaas@google.com>; Mika Westerberg
-> <mika.westerberg@linux.intel.com>; Mehta, Sanju <Sanju.Mehta@amd.com>;
-> Lukas Wunner <lukas@wunner.de>; Rafael J . Wysocki
-> <rafael.j.wysocki@intel.com>; linux-acpi@vger.kernel.org; linux-
-> kernel@vger.kernel.org; Linux PM <linux-pm@vger.kernel.org>
-> Subject: Re: [PATCH v4] PCI / ACPI: PM: Take _S0W of the target bridge in=
-to
-> account in acpi_pci_bridge_d3(()
->=20
-> On Thu, Jan 12, 2023 at 10:09:21PM +0000, Limonciello, Mario wrote:
-> > > -----Original Message-----
-> > > From: Bjorn Helgaas <helgaas@kernel.org>
-> > > Sent: Thursday, January 12, 2023 16:02
-> > > To: Rafael J. Wysocki <rjw@rjwysocki.net>
-> > > Cc: linux-pci@vger.kernel.org; Limonciello, Mario
-> > > <Mario.Limonciello@amd.com>; Rafael J. Wysocki <rafael@kernel.org>;
-> Len
-> > > Brown <lenb@kernel.org>; Bjorn Helgaas <bhelgaas@google.com>; Mika
-> > > Westerberg <mika.westerberg@linux.intel.com>; Mehta, Sanju
-> > > <Sanju.Mehta@amd.com>; Lukas Wunner <lukas@wunner.de>; Rafael J .
-> > > Wysocki <rafael.j.wysocki@intel.com>; linux-acpi@vger.kernel.org; lin=
-ux-
-> > > kernel@vger.kernel.org; Linux PM <linux-pm@vger.kernel.org>
-> > > Subject: Re: [PATCH v4] PCI / ACPI: PM: Take _S0W of the target bridg=
-e into
-> > > account in acpi_pci_bridge_d3(()
-> > >
-> > > On Thu, Jan 12, 2023 at 09:51:24PM +0100, Rafael J. Wysocki wrote:
-> > > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > >
-> > > > It is generally questionable to allow a PCI bridge to go into D3 if
-> > > > it has _S0W returning D2 or a shallower power state, so modify
-> > > > acpi_pci_bridge_d3(() to always take the return value of _S0W for t=
-he
-> > > > target bridge into accout.  That is, make it return 'false' if _S0W
-> > > > returns D2 or a shallower power state for the target bridge regardl=
-ess
-> > > > of its ancestor PCIe Root Port properties.  Of course, this also ca=
-uses
-> > > > 'false' to be returned if the PCIe Root Port itself is the target a=
-nd
-> > > > its _S0W returns D2 or a shallower power state.
-> > > >
-> > > > However, still allow bridges without _S0W that are power-manageable=
- via
-> > > > ACPI to enter D3 to retain the current code behavior in that case.
-> > > >
-> > > > Link: https://lore.kernel.org/linux-pci/20221031223356.32570-1-
-> > > mario.limonciello@amd.com/
-> > > > Reported-by: Mario Limonciello <mario.limonciello@amd.com>
-> > > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > >
-> > > Applied to pci/pm for v6.3, thanks!
-> > >
-> > > It'd be great if we could include a short description of the problems
-> > > users might see.  I think the original problem was that on some AMD
-> > > systems we put a USB4 router in D3 when it should remain in D0.  And =
-I
-> > > assume this means something doesn't wake up when it should?  Or maybe
-> > > we miss a hotplug event?
-> > >
-> > > If somebody has an example or some text, I'll add it to the commit
-> > > log.
-> >
-> > Here's a blurb for what happens on AMD side:
-> >
-> > When the platform is configured to not allow the PCIe port used for
-> > tunneling to wakeup from D3 it will runtime suspend into D0 and the
-> > USB4 controller which is a consumer will runtime suspend into D3.
-> >
-> > This inconsistency leads to failures to initialize PCIe tunnels for
-> > USB4 devices.
->=20
-> And what is J. Random User going to see?  DisplayPort not working
-> ever?  It works to begin with, but not after a suspend?  Devices in a
-> dock not being able to wake the system?
->=20
-> I don't really know what "PCIe tunnels for USB4 devices not being
-> initialized" means for me.  I want to know what a problem report from
-> a non-expert user might look like.
->=20
-
-DP tunnels aren't affected, so monitors should still work.
-
-In terms of what doesn't work it depends on the architecture of the
-the connected device.  Here's some concrete up-leveled examples:
-
-USB4 docks contain that a PCIe network adapter and that adapter won't
-work when the dock is plugged in after the system boot.
-
-USB4 docks that contain a USB network adapter should work properly,
-but downstream USB4 or TBT3 devices connected to that USB4 dock will
-not work when the device or dock is plugged in after the system boots.
-
-TBT3 storage devices connected after the system has booted will not work.
-
-Thanks,
+> +            unevaluatedProperties: false
+> +
+> +            properties:
+> +              reg:
+> +                maxItems: 1
+> +
+> +              remote-endpoint: true
+> +
+> +              data-lanes:
+> +                oneOf:
+> +                  - items:
+> +                      - enum: [0, 1, 2, 3]
+> +
+> +                  - items:
+> +                      - const: 0
+> +                      - const: 1
+> +
+> +                  - items:
+> +                      - const: 2
+> +                      - const: 3
+> +
+> +                  - items:
+> +                      - const: 0
+> +                      - const: 1
+> +                      - const: 2
+> +                      - const: 3
+> +
+> +              mode-switch:
+> +                type: boolean
+> +                description: Register this node as a Type-C mode switch or not.
+> +
+> +            required:
+> +              - reg
+> +              - remote-endpoint
+> +
+>      required:
+>        - port@0
+>        - port@1
+> @@ -164,8 +203,12 @@ examples:
+>                  };
+>
+>                  mipi2dp_bridge_out: port@1 {
+> +                    #address-cells = <1>;
+> +                    #size-cells = <0>;
+> +
+>                      reg = <1>;
+> -                    anx7625_out: endpoint {
+> +                    anx7625_out: endpoint@0 {
+> +                        reg = <0>;
+>                          remote-endpoint = <&panel_in>;
+>                      };
+>                  };
+> @@ -186,3 +229,53 @@ examples:
+>              };
+>          };
+>      };
+> +  - |
+> +    i2c3 {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        encoder@58 {
+> +            compatible = "analogix,anx7625";
+> +            reg = <0x58>;
+> +            pinctrl-names = "default";
+> +            pinctrl-0 = <&anx7625_dp_pins>;
+> +            enable-gpios = <&pio 176 GPIO_ACTIVE_HIGH>;
+> +            reset-gpios = <&pio 177 GPIO_ACTIVE_HIGH>;
+> +            vdd10-supply = <&pp1100_dpbrdg>;
+> +            vdd18-supply = <&pp1800_dpbrdg_dx>;
+> +            vdd33-supply = <&pp3300_dpbrdg_dx>;
+> +            analogix,audio-enable;
+> +
+> +            ports {
+> +                #address-cells = <1>;
+> +                #size-cells = <0>;
+> +
+> +                port@0 {
+> +                    reg = <0>;
+> +                    anx7625_dp_in: endpoint {
+> +                        bus-type = <7>;
+> +                        remote-endpoint = <&dpi_out>;
+> +                    };
+> +                };
+> +
+> +                port@1 {
+> +                    #address-cells = <1>;
+> +                    #size-cells = <0>;
+> +
+> +                    reg = <1>;
+> +                    anx_typec0: endpoint@0 {
+> +                        reg = <0>;
+> +                        mode-switch;
+> +                        data-lanes = <0 1>;
+> +                        remote-endpoint = <&typec_port0>;
+> +                    };
+> +                    anx_typec1: endpoint@1 {
+> +                        reg = <1>;
+> +                        mode-switch;
+> +                        data-lanes = <2 3>;
+> +                        remote-endpoint = <&typec_port1>;
+> +                    };
+> +                };
+> +            };
+> +        };
+> +    };
+> --
+> 2.39.0.314.g84b9a713c41-goog
+>
