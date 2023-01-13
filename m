@@ -2,73 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D768669947
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jan 2023 15:02:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB34F669A36
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jan 2023 15:32:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239173AbjAMOCC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 Jan 2023 09:02:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57244 "EHLO
+        id S229565AbjAMObh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 Jan 2023 09:31:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241050AbjAMOBV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Jan 2023 09:01:21 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 311F0BF75;
-        Fri, 13 Jan 2023 05:58:28 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DCC25B82163;
-        Fri, 13 Jan 2023 13:58:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7A8F5C433D2;
-        Fri, 13 Jan 2023 13:58:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673618305;
-        bh=oIZX+dr+xeJD/+N3OsfU1Sw7gp2v7ioCcNJZx+8U3wE=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=CSxLlvUmxRoSqF+B47Er/tcuCSNCdu8B5a3gW38P1LPSB+8FaLF2HBZQrPJP+i7O4
-         xn93Y+3EVfjtgOUJ54vusAbGb3WOlISMsCG5P/5CIG26f8cCIpMdt9buEjXe7wbbIA
-         acvTUyDdmJvcbOJw0/+vj+/nhD+vqjZv9lKlBFITkW4q5Wodt/doWPNHOg3/0Gx6nk
-         ZriKbc4cCYzgqAJnZJ00xPVAaBVhhczGDcz+KkIDSn6I/WF9CjWjkvhU0/eN47k9qz
-         XdFYGAxgR2hT/FZVhW0qmiG3+Zn4Uy+t4pRYx44etmJvkg6Y9I+rDy1Xd9pXuSXA/g
-         AAX02RhQv/ahw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 5BDDDC395C7;
-        Fri, 13 Jan 2023 13:58:25 +0000 (UTC)
-Subject: Re: [GIT PULL] ACPI fixes for v6.2-rc4
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0hTgcWELD7-4SUZdMpm+CQHS+CRfzshjsHL9iAerE98mw@mail.gmail.com>
-References: <CAJZ5v0hTgcWELD7-4SUZdMpm+CQHS+CRfzshjsHL9iAerE98mw@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0hTgcWELD7-4SUZdMpm+CQHS+CRfzshjsHL9iAerE98mw@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.2-rc4
-X-PR-Tracked-Commit-Id: df3a71aba40fbe4bbd0842170e70c236eaed7c40
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: cdbbca256cf3f8b1f3f37a7102b54bf99f2fa656
-Message-Id: <167361830536.16011.11207962694910210942.pr-tracker-bot@kernel.org>
-Date:   Fri, 13 Jan 2023 13:58:25 +0000
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229597AbjAMOau (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Jan 2023 09:30:50 -0500
+Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 584A284BC5
+        for <linux-acpi@vger.kernel.org>; Fri, 13 Jan 2023 06:23:56 -0800 (PST)
+Received: by mail-il1-x12f.google.com with SMTP id a3so4903773ilp.6
+        for <linux-acpi@vger.kernel.org>; Fri, 13 Jan 2023 06:23:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+OF3VMKCJX/ixRNA7KETCaEsWyEBkIDVOlKWye/O0OA=;
+        b=JojvgH8XT/5W3Z19zz/xJpsK+UtUfuLOajrP2bUiE0PZHJLaHxyVoS/gdwZ4j1nINn
+         NAhLjtRw5JWhWpQP6cjr/K+IqEq6cG/swjHmgKkU8/bzhvwyjyHr6pxRihWxyvWQ7jH/
+         ycXHQba8H8CGw08mZc2lRnHbsatDyaP7XSi3luhnXRDyANgc7SfZsYR/2kBx67sDkelt
+         N009oKtaqxMaVcV5I8bJGY2a5+MgMpNdeDc6P09VU6v2oJr8B0zV2O/YER8mJLD4Mn1g
+         U9CLRknFXD87iaVRlJkboh6IHCCrAxvZm9BuL/cccG7OGvOaJ6fm9314ARdKvJNPjG9a
+         t4ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+OF3VMKCJX/ixRNA7KETCaEsWyEBkIDVOlKWye/O0OA=;
+        b=UikCnQmx+5hKBEqgCLBSUbh+Dstwqx4B0+DWgXtdo93yWixZXDrYcpsc9C4ZNyLeNJ
+         McueZzp1o2M0WYtd8sGQzrrHOidGus+9daDDzPc3eNqcLGEn8u1SxD4ywIwMKSiIS6xP
+         g+BAmBi+VahNFD+EbNrBgjKaM1XSWGqIuM+oCWOfa1KUGYNB/JT924ADmH9yoRpypuyN
+         ILMjGz+5D/DvPoQqJwlpXYCMN7u7YmFwAfT45IlYSKqCBtsHoITBcbeYcLBpuzk/BCe+
+         EK8IeObKjsHH4/KgJjf3wSVeqJRRd+P5sSrhUPJLUkabUhWVghJy7R9Jpq5Ggaparthm
+         dEag==
+X-Gm-Message-State: AFqh2kreW2Eb6tIKHHaaTLPs/vReKqjmIEGCdkwVekxF1kf5/AUuT/Vw
+        WmaGeCM3T6WS8Qi4jc8LZdQLsdWLIO/uFBNJV7Q=
+X-Google-Smtp-Source: AMrXdXszWXnZUU3mDwuG0prmaP86rTFSkz0+fra775veb5Y7HNHpZxCjxPfSPiWnLxbY0i6yMoRbzmb1JvPTG9uROSM=
+X-Received: by 2002:a92:3601:0:b0:30e:e57f:b106 with SMTP id
+ d1-20020a923601000000b0030ee57fb106mr115968ila.304.1673619835751; Fri, 13 Jan
+ 2023 06:23:55 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a05:6e02:1282:b0:30d:c36b:403c with HTTP; Fri, 13 Jan 2023
+ 06:23:55 -0800 (PST)
+Reply-To: hitnodeby23@yahoo.com
+From:   Hinda Itno Deby <atidigahcyril@gmail.com>
+Date:   Fri, 13 Jan 2023 06:23:55 -0800
+Message-ID: <CALHvQ-jffHwgwQxY7MVBOpZpcQX1hUnBOishkcFBMPm+SMZxqA@mail.gmail.com>
+Subject: Reply
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM,UNDISC_MONEY,URG_BIZ autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:12f listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5029]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [hitnodeby23[at]yahoo.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [atidigahcyril[at]gmail.com]
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.6 URG_BIZ Contains urgent matter
+        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.7 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Fri, 13 Jan 2023 12:06:23 +0100:
-
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.2-rc4
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/cdbbca256cf3f8b1f3f37a7102b54bf99f2fa656
-
-Thank you!
-
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+My name is Hinda Itno Deby Please I want us to discuss Urgent Business
+Proposal, if you are interested kindly reply to me so i can give you
+all the details.
+
+Thanks and God Bless You.
+Ms Hinda Itno Deby
