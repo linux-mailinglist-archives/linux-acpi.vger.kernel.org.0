@@ -2,66 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CC3666A103
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jan 2023 18:46:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FFF366A11F
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jan 2023 18:49:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229526AbjAMRqZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 Jan 2023 12:46:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55252 "EHLO
+        id S230181AbjAMRtj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 Jan 2023 12:49:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229978AbjAMRpz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Jan 2023 12:45:55 -0500
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 545B488DE8;
-        Fri, 13 Jan 2023 09:34:11 -0800 (PST)
+        with ESMTP id S229540AbjAMRs5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Jan 2023 12:48:57 -0500
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAA938F8C1;
+        Fri, 13 Jan 2023 09:40:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1673631251; x=1705167251;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=/mLCpdcyLaa16plox8m52Uh9afCDS916L+EggEDx7yA=;
-  b=TzgKGfsCcbAbr7z2pEp4ACatwWfmjJnTRlfSzz693hkMjOc5WXYrUSAF
-   qa264ntCglpbGn2aDHfKc+ZjODkUcbtTP81LGjc6eQ4ObfdJlTMNxatCz
-   HMd+mUwvR+ue6HLZtVIXZjLnzUu2XH6hsUW3kW5Pm7Zy25ogYLMsQUSEt
-   d2QvLqFv7OBsRn1fTQCfgvH0BG5qSDK4OT5RRbLyqTupHclW6mo0JaDD8
-   /OYYzcTYPnO9Z/36cHpKLrpJ0SzsMskkeXkr83C5qpeoW4UO8S9o6Bux1
-   Flzj1tpjvlUaNsedLfV+w0/12Cdw+bi/3D4vI//QSc8cGdfDkJzPZkSZL
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10589"; a="324108970"
+  t=1673631636; x=1705167636;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=aOFHIYXUBrqr9+If/r9gCmOL5KeU2zlnO6suhhT47oc=;
+  b=DpbO396DdHI5HlgDvDqfPK2KI6a0g1pjjkwQmY2vZtu1xtGrY3XNw2mY
+   FtGXbtZ7FmFbZBB+wFWIeQ4JcNxNifrnGDRamfF9GO3pVLlgmWhoCL5Ar
+   jvRDb6ngIYznciZGW47OXDjovlX5GfCOzMuTbSUjMoO8ebag6VR/6MQ1j
+   bFkW/c9YZ1sfRcRuplcMZb7hba4iJUY+OmySx+sMUFarIZKLG+Kw+GYWk
+   4Wa1Q7u4bdiOx31Auw2rcPFtFl33EAAkDuOafvv1ZQIbxDVZJ6Z3Sv2af
+   hPcivWUJE78Br7WLo/J5oKodHVELbMaonoi5BlqRIIvAtG5/7UWDso69f
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10589"; a="386396069"
 X-IronPort-AV: E=Sophos;i="5.97,214,1669104000"; 
-   d="scan'208";a="324108970"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2023 09:34:10 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10589"; a="721599716"
+   d="scan'208";a="386396069"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2023 09:40:35 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10589"; a="658287535"
 X-IronPort-AV: E=Sophos;i="5.97,214,1669104000"; 
-   d="scan'208";a="721599716"
-Received: from spandruv-desk.jf.intel.com ([10.54.75.8])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2023 09:34:10 -0800
-Message-ID: <6a5ea6ac492d354479f5d340c16588f2f4b3d7c0.camel@linux.intel.com>
-Subject: Re: [PATCH 3/3] thermal/drivers/intel: Use generic trip points
- int340x
-From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        "Zhang, Rui" <rui.zhang@intel.com>,
-        "rafael@kernel.org" <rafael@kernel.org>
-Cc:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "daniel.lezcano@kernel.org" <daniel.lezcano@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "amitk@kernel.org" <amitk@kernel.org>
-Date:   Fri, 13 Jan 2023 09:34:09 -0800
-In-Reply-To: <35b6549e-a722-4667-c471-907d91d424ce@linaro.org>
-References: <20230110151745.2546131-1-daniel.lezcano@linaro.org>
-         <20230110151745.2546131-4-daniel.lezcano@linaro.org>
-         <4f461027be209156d6d9f26870748f204ff4184b.camel@intel.com>
-         <ddcfbd2e-2ea0-9305-96c4-8127181cdd8c@linaro.org>
-         <34f9fc91c398f85c0bedaff89adbb33897cb1f62.camel@linux.intel.com>
-         <35b6549e-a722-4667-c471-907d91d424ce@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+   d="scan'208";a="658287535"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga002.jf.intel.com with ESMTP; 13 Jan 2023 09:40:26 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pGO2R-008jqV-0f;
+        Fri, 13 Jan 2023 19:40:23 +0200
+Date:   Fri, 13 Jan 2023 19:40:22 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Prashant Malani <pmalani@chromium.org>
+Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Pin-yen Lin <treapking@chromium.org>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <robert.foss@linaro.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        =?iso-8859-1?Q?N=EDcolas_F_=2E_R_=2E_A_=2E?= Prado 
+        <nfraprado@collabora.com>, Marek Vasut <marex@denx.de>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Lyude Paul <lyude@redhat.com>, chrome-platform@lists.linux.dev,
+        Xin Ji <xji@analogixsemi.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        linux-kernel@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
+        linux-acpi@vger.kernel.org, Hsin-Yi Wang <hsinyi@chromium.org>,
+        Chen-Yu Tsai <wenst@chromium.org>
+Subject: Re: [PATCH v10 1/9] device property: Add remote endpoint to devcon
+ matcher
+Message-ID: <Y8GXhhYY9a7Z/t9H@smile.fi.intel.com>
+References: <20230112042104.4107253-1-treapking@chromium.org>
+ <20230112042104.4107253-2-treapking@chromium.org>
+ <Y8AL8nTcNcl6zX7H@paasikivi.fi.intel.com>
+ <CACeCKaeN7KBi30M1fRWhTPgMbxF6=B+KuAS7Ny7+i9qCx+=49Q@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACeCKaeN7KBi30M1fRWhTPgMbxF6=B+KuAS7Ny7+i9qCx+=49Q@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
@@ -71,58 +97,45 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 2023-01-13 at 18:21 +0100, Daniel Lezcano wrote:
-> 
-> Hi Srinivas,
-> 
-> On 13/01/2023 16:48, srinivas pandruvada wrote:
-> > Hi Daniel,
-> > 
-> > > > > 
-> > 
-> > [...]
-> > 
-> > > > > -       status = acpi_evaluate_integer(d->adev->handle,
-> > > > > "GTSH",
-> > > > > NULL,
-> > > > > &hyst);
-> > > > > -       if (ACPI_FAILURE(status))
-> > > > > -               *temp = 0;
-> > > > > -       else
-> > > > > -               *temp = hyst * 100;
-> > > > 
-> > > > The previous code returns hyst * 100.
-> > > > But the new API retuurns hyst directly.
-> > > > 
-> > > > -/sys/class/thermal/thermal_zone2/trip_point_4_hyst:2000
-> > > > +/sys/class/the
-> > > > rmal/thermal_zone2/trip_point_4_hyst:20
-> > > > 
-> > > > Is this done on purpose?
-> > > 
-> > > No, it is an error. The function thermal_acpi_trip_gtsh() should
-> > > do:
-> > > 
-> > >          return deci_kelvin_to_millicelsius(hyst);
-> > > 
-> > > 
-> > 
-> > GTSH returns here in tenths of degree Kelvin. For example 15 means
-> > 1.5
-> > degree K.
-> 
-> Yes, so the above conversion is correct, right ?
-Correct.
+On Thu, Jan 12, 2023 at 02:31:45PM -0800, Prashant Malani wrote:
+> On Thu, Jan 12, 2023 at 5:32 AM Sakari Ailus
+> <sakari.ailus@linux.intel.com> wrote:
+> > On Thu, Jan 12, 2023 at 12:20:56PM +0800, Pin-yen Lin wrote:
+> > > From: Prashant Malani <pmalani@chromium.org>
 
-Thanks,
-Srinivas
+...
 
+> > > +             /*
+> > > +              * Some drivers may register devices for endpoints. Check
+> > > +              * the remote-endpoints for matches in addition to the remote
+> > > +              * port parent.
+> > > +              */
+> > > +             node = fwnode_graph_get_remote_endpoint(ep);
+> > > +             if (fwnode_device_is_available(node)) {
+> > > +                     ret = match(node, con_id, data);
+> > > +                     if (ret) {
+> > > +                             if (matches)
+> > > +                                     matches[count] = ret;
+> > > +                             count++;
+> > > +                     }
+> > > +             }
+> >
+> > Aren't you missing fwnode_handle-put(node) here??
 > 
-> > I would like to test your next series with thermald. If there is a
-> > problem, it will break every distro.
+> It shouldn't be necessary. We aren't break-ing/continue-ing here,
+> and fwnode_handle_put(node) is called latter in the loop [1][2]
 > 
-> Great, thanks!
+> BR,
 > 
-> 
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/base/property.c#n1256
+> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/base/property.c#n1261
+
+I'm really puzzled what do you mean by all this.
+Sakari is right, btw.
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
