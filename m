@@ -2,68 +2,191 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B788668C50
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jan 2023 07:17:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1ED81669027
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jan 2023 09:10:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235576AbjAMGRP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 Jan 2023 01:17:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59050 "EHLO
+        id S240931AbjAMIKx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 Jan 2023 03:10:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238936AbjAMGQc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Jan 2023 01:16:32 -0500
-X-Greylist: delayed 895 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 12 Jan 2023 22:10:46 PST
-Received: from mp-relay-01.fibernetics.ca (mp-relay-01.fibernetics.ca [208.85.217.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AE591BCB6;
-        Thu, 12 Jan 2023 22:10:42 -0800 (PST)
-Received: from mailpool-fe-01.fibernetics.ca (mailpool-fe-01.fibernetics.ca [208.85.217.144])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mp-relay-01.fibernetics.ca (Postfix) with ESMTPS id D016EE0D73;
-        Fri, 13 Jan 2023 05:45:50 +0000 (UTC)
-Received: from localhost (mailpool-mx-02.fibernetics.ca [208.85.217.141])
-        by mailpool-fe-01.fibernetics.ca (Postfix) with ESMTP id 9144B26892;
-        Fri, 13 Jan 2023 05:45:50 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at 
-X-Spam-Score: 3.651
-X-Spam-Level: ****
-X-Spam-Status: No, score=4.3 required=5.0 tests=BAYES_60,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,SPF_HELO_NONE,
-        SPF_PASS,SUBJ_ALL_CAPS autolearn=no autolearn_force=no version=3.4.6
-Received: from mailpool-fe-01.fibernetics.ca ([208.85.217.144])
-        by localhost (mail-mx-02.fibernetics.ca [208.85.217.141]) (amavisd-new, port 10024)
-        with ESMTP id kVGLbP-el9qG; Fri, 13 Jan 2023 05:45:50 +0000 (UTC)
-Received: from localhost (unknown [208.85.220.72])
-        by mail.ca.inter.net (Postfix) with ESMTP id 9E6262688E;
-        Fri, 13 Jan 2023 05:45:47 +0000 (UTC)
-Received: from reverse.rain.network (reverse.rain.network [197.184.176.8])
- by webmail.ca.inter.net (Horde Framework) with HTTP; Fri, 13 Jan 2023
- 00:45:47 -0500
-Message-ID: <20230113004547.66912vqb15xco557@webmail.ca.inter.net>
-Date:   Fri, 13 Jan 2023 00:45:47 -0500
-From:   INFO <boothg@istar.ca>
-Reply-to: s.g0392440821@gmail.com
-To:     undisclosed-recipients:;
-Subject: IST DIESE E-MAIL AKTIV?
+        with ESMTP id S240936AbjAMIKJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Jan 2023 03:10:09 -0500
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 559BE1177
+        for <linux-acpi@vger.kernel.org>; Fri, 13 Jan 2023 00:09:22 -0800 (PST)
+Received: by mail-io1-xd36.google.com with SMTP id b127so2166829iof.8
+        for <linux-acpi@vger.kernel.org>; Fri, 13 Jan 2023 00:09:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=W0+4RXTlK0IqIB9mYO3YSmFVYM13UL+Gup7cLGu7Nzw=;
+        b=Fmn00t90xJPmYNPJkrLBinV7c53WSSG1nRO2CEfpjlJfQU2BIZzTmdL1R0NOTFpb9Q
+         eR4ku2xTE6T2EWT8UoP4xt9FpbjU/g5bDKOeEHDAIe56Fp+yotzNdcp0EKF8GTBsTCkt
+         /hm6KiUd+IhQWCRDMH7pa5M0uSbadJuDDgiOA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=W0+4RXTlK0IqIB9mYO3YSmFVYM13UL+Gup7cLGu7Nzw=;
+        b=hIKqADejV4ES0eALZQYE+FZ+ZUBHMCH0E3IuQItqG6R0tR6p7hiarjZpKUiTvr6TP0
+         ayKYl1xKijrJ5ffYZggDEbayncA7O7gjUSvedMVf0ghIZZp8Wn2vZkR4YNpM7ktrWY77
+         a/GDZ8rVEQ4ZpjU3Dg0fVnybTuhyVAC/GeGGLuym7R1F7IdyJ657f1qI5OUY9l/exrgO
+         dPxCC4OGsEqwg8TMrtY+PXCbk0L4wdsDuZQKzAoVAhzXzB9TGy4ixq7+3FShdLdbZoKW
+         4sGoxPmsUXmO9IG971QEsPwOxU0IGUX9m2nFkNW41DqAXarsTM+VthkKDeAzDnHUn60e
+         oUXw==
+X-Gm-Message-State: AFqh2kpvQPNAtpbIV9rtjESrknXIOZYtc334x3UsctVjN5uudkvyd5Gj
+        YFv28x7wIJRNPD+tqDEmnClevkHCEK3xZ/GmZFezrg==
+X-Google-Smtp-Source: AMrXdXso2wCwKI04DP0Jnwsw8O26tdW8R7cqrPXE3TghshxleDtAvafXMMve9LCUvK+myYIiIF3cGOotr7mepvIezU0=
+X-Received: by 2002:a05:6638:1a7:b0:38a:3770:2fa2 with SMTP id
+ b7-20020a05663801a700b0038a37702fa2mr7649958jaq.208.1673597361628; Fri, 13
+ Jan 2023 00:09:21 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=ISO-8859-1;
- DelSp="Yes";
- format="flowed"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: Internet Messaging Program (IMP) H3 (4.3.7)
-X-Originating-User-Info: boothg@istar.ca 208.85.219.96
+References: <20230112042104.4107253-1-treapking@chromium.org> <CAL_Jsq+KGQH2qTpB6NmmOzid39-oKTzZZJNPF1ybKQu72LbJLw@mail.gmail.com>
+In-Reply-To: <CAL_Jsq+KGQH2qTpB6NmmOzid39-oKTzZZJNPF1ybKQu72LbJLw@mail.gmail.com>
+From:   Pin-yen Lin <treapking@chromium.org>
+Date:   Fri, 13 Jan 2023 16:09:10 +0800
+Message-ID: <CAEXTbpfvGrBWjGV9VcRiuTHo4eVqrFM9qEpvq5CPXEWk=4z+dQ@mail.gmail.com>
+Subject: Re: [PATCH v10 0/9] Register Type-C mode-switch in DP bridge endpoints
+To:     Rob Herring <robh+dt@kernel.org>
+Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <robert.foss@linaro.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
+        <nfraprado@collabora.com>, Marek Vasut <marex@denx.de>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Lyude Paul <lyude@redhat.com>, chrome-platform@lists.linux.dev,
+        Xin Ji <xji@analogixsemi.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        linux-kernel@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
+        linux-acpi@vger.kernel.org, Hsin-Yi Wang <hsinyi@chromium.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Imre Deak <imre.deak@intel.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        shaomin Deng <dengshaomin@cdjrlc.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi Rob,
 
+On Fri, Jan 13, 2023 at 6:44 AM Rob Herring <robh+dt@kernel.org> wrote:
+>
+> On Wed, Jan 11, 2023 at 10:21 PM Pin-yen Lin <treapking@chromium.org> wrote:
+> >
+> >
+> > This series introduces bindings for anx7625/it6505 to register Type-C
+> > mode-switch in their output endpoints, and use data-lanes property to
+> > describe the pin connections.
+> >
+> > The first two patch modifies fwnode_graph_devcon_matches and
+> > cros_typec_init_ports to enable the registration of the switches.
+> >
+> > Patch 4~6 introduce the bindings for anx7625 and the corresponding driver
+> > modifications.
+> >
+> > Patch 7~9 add similar bindings and driver changes for it6505.
+> >
+> > v9: https://lore.kernel.org/all/20230109084101.265664-1-treapking@chromium.org/
+> > v8: https://lore.kernel.org/all/20230107102231.23682-1-treapking@chromium.org/
+> > v7: https://lore.kernel.org/all/20230105132457.4125372-1-treapking@chromium.org/
+> > v6: https://lore.kernel.org/all/20221124102056.393220-1-treapking@chromium.org/
+> > v5: https://lore.kernel.org/linux-usb/20220622173605.1168416-1-pmalani@chromium.org/
+> >
+> > Changes in v10:
+> > - Collected Reviewed-by and Tested-by tags
+> > - Replaced "void *" with "typec_mux_set_fn_t" for mux_set callbacks
+> > - Print out the node name when errors on parsing DT
+> > - Use dev_dbg instead of dev_warn when no Type-C switch nodes available
+> > - Made the return path of drm_dp_register_mode_switch clearer
+> > - Added a TODO for implementing orientation switch for anx7625
+> > - Updated the commit message for the absence of orientation switch
+> > - Fixed typo in the commit message
+> >
+> > Changes in v9:
+> > - Collected Reviewed-by tag
+> > - Fixed subject prefix again
+> > - Changed the naming of the example node for it6505
+> >
+> > Changes in v8:
+> > - Fixed the build issue when CONFIG_TYPEC=m
+> > - Fixed some style issues
+> > - Fixed the subject prefixes for the bindings patch
+> > - Fixed the bindings for data-lanes properties
+> >
+> > Changes in v7:
+> > - Fix the long comment lines
+> > - Extracted the common codes to a helper function
+> > - Fixed style issues in anx7625 driver
+> > - Removed DT property validation in anx7625 driver.
+> > - Fixed style issues in it6505 driver
+> > - Removed the redundant sleep in it6505 driver
+> > - Removed DT property validation in it6505 driver
+> > - Rebased to drm-misc-next
+> > - Fixed indentations in bindings patches
+> > - Added a new patch to fix indentations in Kconfig
+>
+> 4 versions in a week! Please slow down your pace. When you send a new
+> version, you move to the end of my review queue.
 
-Sehr geehrter E-Mail-Begünstigter, Sie wurden für eine Spende in Höhe  
-von 3.500.000,00 ? ausgewählt. Wenden Sie sich an diese  
-E-Mail-Adresse: s.g0392440821@gmail.com, um weitere Informationen zum  
-Erhalt Ihrer Spende zu erhalten. Vielen Dank
+I see. I'll keep this in mind in the future series.
+>
+> IIRC, these 2 chips are a bit different in what the mode switch or
+> muxing looks like. One had a built-in mux and the other doesn't? Do I
+> have to go research this again? No, you need to explain all this in
+> this series.
 
+Yes, anx7625 has a built-in mux while it6505 doesn't, but it's for
+another use case.
+
+IIUC the built-in mux in anx7625 is designed for automatically
+switching between two orientations of a single Type-C connector, and
+in that case we might need to register an orientation switch. But we
+don't have hardware for this use case.
+
+The use case this series aimed is having two downstreams for the
+bridges, and registering two mode switches to switch between them. In
+this use case, the built-in mux of anx7625 is not used and the
+behavior of the switches is the same as it6505.
+
+Explanations and TODOs have been added in the anx7625 driver change. I
+can also mention this in the cover letter in the future series and
+please let me know if anything is not clear for you.
+
+>
+> Rob
+
+Thanks and regards,
+Pin-yen
