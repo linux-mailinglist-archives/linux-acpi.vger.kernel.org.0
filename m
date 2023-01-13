@@ -2,392 +2,196 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF82966A191
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jan 2023 19:09:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A155066A1A1
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jan 2023 19:13:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229463AbjAMSJM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 Jan 2023 13:09:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52150 "EHLO
+        id S230516AbjAMSNS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 Jan 2023 13:13:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229906AbjAMSIA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Jan 2023 13:08:00 -0500
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 324BA7D273
-        for <linux-acpi@vger.kernel.org>; Fri, 13 Jan 2023 10:02:45 -0800 (PST)
-Received: by mail-wr1-x42b.google.com with SMTP id v2so10801045wrw.10
-        for <linux-acpi@vger.kernel.org>; Fri, 13 Jan 2023 10:02:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LNsqfRU9ykGWoWek5xNKrp0F+4CtwhY97VSnFh382k4=;
-        b=GXjMWj6b0QBVOokmSEt/vgSRZq8ZACG4z4WA823mCJW/o8ilFa1KKlbNgYZkD+wg34
-         jc12NmSepdqUu3IzcBdQKEmqWjLFwNmmaVZHo15RkEIwhcI6uxfZCjVCLLwWZDAGzpl1
-         wnMqU8oy0vgMFZwCgRGjHJae+2V+EAmltb7tDPNXOHXG3JIq2iSIAngXLxTp9gHcGlab
-         6iD6YTP6hGXie20bDcVkf6q8FnnUUrxT2iSOZcTRfB26oz+EEpAK1Yz2HgN7aqu/b05R
-         Wv44k6+ELZnLcLzT+NkbBdo/xPU5ySlkBDJUSB+staPgEjLNxGemWq7cYBm/tcCsKvw/
-         nVsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LNsqfRU9ykGWoWek5xNKrp0F+4CtwhY97VSnFh382k4=;
-        b=DHgLQyYJgUcjwKVhVJTeukSh5bgoyAkN3ELKwp7hNCo6wwKzphOF8NFLFFL4lL5teP
-         jf4NNYmd743bNoEzzJode6lerV+2+AZN6huRzO3DfvQ4spoUHsaH5Yj2SuWbzcw0q2zp
-         2mdlnU/c+0RG/5dX4/BCdrg65aH43sjfywntLvxrsKCxiC4TPg2oD8Ndx86EumqXGrgL
-         /KhsFIK3Mg3YgSsEceflzvEDsv+wdi98vq3Cb+iJ5yzQNJynAY/FcHr8LXp/aux71tds
-         DiunJuDSSQzl8eBN5YqYHMVsk7QQLp6UZmvwU0z55kgU3fxlwHUOpQbN5ifUg1soyyH+
-         UIlQ==
-X-Gm-Message-State: AFqh2kq2oxulWPo9wb7citVsZML242U2VN5h2QOOulUnpx0W8Pwu2UWm
-        S/x7aK3YzoYvb5f8Q/B5amZSjg==
-X-Google-Smtp-Source: AMrXdXu2jhViziNn+M/GNVYT+n9dzSSTqCDeVH9XFzTod2Lsgef3Zf2FwievFPiZkGcGnCdXDE/G0w==
-X-Received: by 2002:adf:ee88:0:b0:2bc:67d:c018 with SMTP id b8-20020adfee88000000b002bc067dc018mr12769919wro.48.1673632963677;
-        Fri, 13 Jan 2023 10:02:43 -0800 (PST)
-Received: from mai.. (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.gmail.com with ESMTPSA id d18-20020adfe852000000b002426d0a4048sm20057227wrn.49.2023.01.13.10.02.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Jan 2023 10:02:43 -0800 (PST)
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     daniel.lezcano@linaro.org, rafael@kernel.org
-Cc:     srinivas.pandruvada@linux.intel.com, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        rui.zhang@intel.com, christophe.jaillet@wanadoo.fr
-Subject: [PATCH v5 3/3] thermal/drivers/intel: Use generic trip points int340x
-Date:   Fri, 13 Jan 2023 19:02:35 +0100
-Message-Id: <20230113180235.1604526-4-daniel.lezcano@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230113180235.1604526-1-daniel.lezcano@linaro.org>
-References: <20230113180235.1604526-1-daniel.lezcano@linaro.org>
+        with ESMTP id S230522AbjAMSMz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Jan 2023 13:12:55 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9C91FA6BD3;
+        Fri, 13 Jan 2023 10:05:01 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 96C4AFEC;
+        Fri, 13 Jan 2023 10:04:48 -0800 (PST)
+Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 8E4263F67D;
+        Fri, 13 Jan 2023 10:04:04 -0800 (PST)
+From:   Mark Rutland <mark.rutland@arm.com>
+To:     linux-arm-kernel@lists.infradead.org
+Cc:     catalin.marinas@arm.com, lenb@kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        mark.rutland@arm.com, mhiramat@kernel.org, ndesaulniers@google.com,
+        ojeda@kernel.org, peterz@infradead.org, rafael.j.wysocki@intel.com,
+        revest@chromium.org, robert.moore@intel.com, rostedt@goodmis.org,
+        will@kernel.org
+Subject: [PATCH v2 0/8] arm64/ftrace: Add support for DYNAMIC_FTRACE_WITH_CALL_OPS
+Date:   Fri, 13 Jan 2023 18:03:47 +0000
+Message-Id: <20230113180355.2930042-1-mark.rutland@arm.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: *
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The thermal framework gives the possibility to register the trip
-points with the thermal zone. When that is done, no get_trip_* ops are
-needed and they can be removed.
+This series adds a new DYNAMIC_FTRACE_WITH_CALL_OPS mechanism, and
+enables support for this on arm64. This significantly reduces the
+overhead of tracing when a callsite/tracee has a single associated
+tracer, avoids a number of issues that make it undesireably and
+infeasible to use dynamically-allocated trampolines (e.g. branch range
+limitations), and makes it possible to implement support for
+DYNAMIC_FTRACE_WITH_DIRECT_CALLS in future.
 
-Convert the ops content logic into generic trip points and register
-them with the thermal zone.
+The main idea is to give each ftrace callsite an associated pointer to
+an ftrace_ops. The architecture's ftrace_caller trampoline can recover
+the ops pointer and invoke ops->func from this without needing to use
+ftrace_ops_list_func, which has to iterate through all registered ops.
 
-In order to consolidate the code, use the ACPI thermal framework API
-to fill the generic trip point from the ACPI tables.
+To make this work, we use -fpatchable-function-entry=M,N, there N NOPs
+are placed before the function entry point. On arm64 NOPs are always 4
+bytes, so by allocating 2 per-function NOPs, we have enough space to
+place a 64-bit value. So that we can manipulate the pointer atomically,
+we need to align instrumented functions to at least 8 bytes, which we
+can ensure using -falign-functions=8.
 
-It has been tested on a Intel i7-8650U - x280 with the INT3400, the
-PCH, ACPITZ, and x86_pkg_temp. No regression observed so far.
+Each callsite ends up looking like:
 
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
----
- drivers/thermal/intel/int340x_thermal/Kconfig |   1 +
- .../int340x_thermal/int340x_thermal_zone.c    | 177 ++++--------------
- .../int340x_thermal/int340x_thermal_zone.h    |  10 +-
- 3 files changed, 43 insertions(+), 145 deletions(-)
+	# Aligned to 8 bytes
+	func - 8:
+		< pointer to ops >
+	func:
+		BTI		// optional
+		MOV	X9, LR
+		NOP		// patched to `BL ftrace_caller`
+	func_body:
 
-diff --git a/drivers/thermal/intel/int340x_thermal/Kconfig b/drivers/thermal/intel/int340x_thermal/Kconfig
-index 5d046de96a5d..b7072d37101d 100644
---- a/drivers/thermal/intel/int340x_thermal/Kconfig
-+++ b/drivers/thermal/intel/int340x_thermal/Kconfig
-@@ -9,6 +9,7 @@ config INT340X_THERMAL
- 	select THERMAL_GOV_USER_SPACE
- 	select ACPI_THERMAL_REL
- 	select ACPI_FAN
-+	select THERMAL_ACPI
- 	select INTEL_SOC_DTS_IOSF_CORE
- 	select PROC_THERMAL_MMIO_RAPL if POWERCAP
- 	help
-diff --git a/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c b/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
-index 228f44260b27..2a294862d673 100644
---- a/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
-+++ b/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
-@@ -37,65 +37,6 @@ static int int340x_thermal_get_zone_temp(struct thermal_zone_device *zone,
- 	return 0;
- }
- 
--static int int340x_thermal_get_trip_temp(struct thermal_zone_device *zone,
--					 int trip, int *temp)
--{
--	struct int34x_thermal_zone *d = zone->devdata;
--	int i;
--
--	if (trip < d->aux_trip_nr)
--		*temp = d->aux_trips[trip];
--	else if (trip == d->crt_trip_id)
--		*temp = d->crt_temp;
--	else if (trip == d->psv_trip_id)
--		*temp = d->psv_temp;
--	else if (trip == d->hot_trip_id)
--		*temp = d->hot_temp;
--	else {
--		for (i = 0; i < INT340X_THERMAL_MAX_ACT_TRIP_COUNT; i++) {
--			if (d->act_trips[i].valid &&
--			    d->act_trips[i].id == trip) {
--				*temp = d->act_trips[i].temp;
--				break;
--			}
--		}
--		if (i == INT340X_THERMAL_MAX_ACT_TRIP_COUNT)
--			return -EINVAL;
--	}
--
--	return 0;
--}
--
--static int int340x_thermal_get_trip_type(struct thermal_zone_device *zone,
--					 int trip,
--					 enum thermal_trip_type *type)
--{
--	struct int34x_thermal_zone *d = zone->devdata;
--	int i;
--
--	if (trip < d->aux_trip_nr)
--		*type = THERMAL_TRIP_PASSIVE;
--	else if (trip == d->crt_trip_id)
--		*type = THERMAL_TRIP_CRITICAL;
--	else if (trip == d->hot_trip_id)
--		*type = THERMAL_TRIP_HOT;
--	else if (trip == d->psv_trip_id)
--		*type = THERMAL_TRIP_PASSIVE;
--	else {
--		for (i = 0; i < INT340X_THERMAL_MAX_ACT_TRIP_COUNT; i++) {
--			if (d->act_trips[i].valid &&
--			    d->act_trips[i].id == trip) {
--				*type = THERMAL_TRIP_ACTIVE;
--				break;
--			}
--		}
--		if (i == INT340X_THERMAL_MAX_ACT_TRIP_COUNT)
--			return -EINVAL;
--	}
--
--	return 0;
--}
--
- static int int340x_thermal_set_trip_temp(struct thermal_zone_device *zone,
- 				      int trip, int temp)
- {
-@@ -109,25 +50,6 @@ static int int340x_thermal_set_trip_temp(struct thermal_zone_device *zone,
- 	if (ACPI_FAILURE(status))
- 		return -EIO;
- 
--	d->aux_trips[trip] = temp;
--
--	return 0;
--}
--
--
--static int int340x_thermal_get_trip_hyst(struct thermal_zone_device *zone,
--		int trip, int *temp)
--{
--	struct int34x_thermal_zone *d = zone->devdata;
--	acpi_status status;
--	unsigned long long hyst;
--
--	status = acpi_evaluate_integer(d->adev->handle, "GTSH", NULL, &hyst);
--	if (ACPI_FAILURE(status))
--		*temp = 0;
--	else
--		*temp = hyst * 100;
--
- 	return 0;
- }
- 
-@@ -138,58 +60,36 @@ static void int340x_thermal_critical(struct thermal_zone_device *zone)
- 
- static struct thermal_zone_device_ops int340x_thermal_zone_ops = {
- 	.get_temp       = int340x_thermal_get_zone_temp,
--	.get_trip_temp	= int340x_thermal_get_trip_temp,
--	.get_trip_type	= int340x_thermal_get_trip_type,
- 	.set_trip_temp	= int340x_thermal_set_trip_temp,
--	.get_trip_hyst =  int340x_thermal_get_trip_hyst,
- 	.critical	= int340x_thermal_critical,
- };
- 
--static int int340x_thermal_get_trip_config(acpi_handle handle, char *name,
--				      int *temp)
--{
--	unsigned long long r;
--	acpi_status status;
--
--	status = acpi_evaluate_integer(handle, name, NULL, &r);
--	if (ACPI_FAILURE(status))
--		return -EIO;
--
--	*temp = deci_kelvin_to_millicelsius(r);
--
--	return 0;
--}
--
- int int340x_thermal_read_trips(struct int34x_thermal_zone *int34x_zone)
- {
--	int trip_cnt = int34x_zone->aux_trip_nr;
--	int i;
-+	int trip_cnt;
-+	int i, ret;
-+
-+	trip_cnt = int34x_zone->aux_trip_nr;
- 
--	int34x_zone->crt_trip_id = -1;
--	if (!int340x_thermal_get_trip_config(int34x_zone->adev->handle, "_CRT",
--					     &int34x_zone->crt_temp))
--		int34x_zone->crt_trip_id = trip_cnt++;
-+	ret = thermal_acpi_trip_crit(int34x_zone->adev, &int34x_zone->trips[trip_cnt]);
-+	if (!ret)
-+		trip_cnt++;
- 
--	int34x_zone->hot_trip_id = -1;
--	if (!int340x_thermal_get_trip_config(int34x_zone->adev->handle, "_HOT",
--					     &int34x_zone->hot_temp))
--		int34x_zone->hot_trip_id = trip_cnt++;
-+	ret = thermal_acpi_trip_hot(int34x_zone->adev, &int34x_zone->trips[trip_cnt]);
-+	if (!ret)
-+		trip_cnt++;
- 
--	int34x_zone->psv_trip_id = -1;
--	if (!int340x_thermal_get_trip_config(int34x_zone->adev->handle, "_PSV",
--					     &int34x_zone->psv_temp))
--		int34x_zone->psv_trip_id = trip_cnt++;
-+	ret = thermal_acpi_trip_psv(int34x_zone->adev, &int34x_zone->trips[trip_cnt]);
-+	if (!ret)
-+		trip_cnt++;
- 
- 	for (i = 0; i < INT340X_THERMAL_MAX_ACT_TRIP_COUNT; i++) {
--		char name[5] = { '_', 'A', 'C', '0' + i, '\0' };
- 
--		if (int340x_thermal_get_trip_config(int34x_zone->adev->handle,
--					name,
--					&int34x_zone->act_trips[i].temp))
-+		ret = thermal_acpi_trip_act(int34x_zone->adev, &int34x_zone->trips[trip_cnt], i);
-+		if (ret)
- 			break;
- 
--		int34x_zone->act_trips[i].id = trip_cnt++;
--		int34x_zone->act_trips[i].valid = true;
-+		trip_cnt++;
- 	}
- 
- 	return trip_cnt;
-@@ -208,7 +108,7 @@ struct int34x_thermal_zone *int340x_thermal_zone_add(struct acpi_device *adev,
- 	acpi_status status;
- 	unsigned long long trip_cnt;
- 	int trip_mask = 0;
--	int ret;
-+	int i, ret;
- 
- 	int34x_thermal_zone = kzalloc(sizeof(*int34x_thermal_zone),
- 				      GFP_KERNEL);
-@@ -228,32 +128,35 @@ struct int34x_thermal_zone *int340x_thermal_zone_add(struct acpi_device *adev,
- 		int34x_thermal_zone->ops->get_temp = get_temp;
- 
- 	status = acpi_evaluate_integer(adev->handle, "PATC", NULL, &trip_cnt);
--	if (ACPI_FAILURE(status))
--		trip_cnt = 0;
--	else {
--		int i;
--
--		int34x_thermal_zone->aux_trips =
--			kcalloc(trip_cnt,
--				sizeof(*int34x_thermal_zone->aux_trips),
--				GFP_KERNEL);
--		if (!int34x_thermal_zone->aux_trips) {
--			ret = -ENOMEM;
--			goto err_trip_alloc;
--		}
--		trip_mask = BIT(trip_cnt) - 1;
-+	if (!ACPI_FAILURE(status)) {
- 		int34x_thermal_zone->aux_trip_nr = trip_cnt;
--		for (i = 0; i < trip_cnt; ++i)
--			int34x_thermal_zone->aux_trips[i] = THERMAL_TEMP_INVALID;
-+		trip_mask = BIT(trip_cnt) - 1;
-+	}
-+
-+	int34x_thermal_zone->trips = kzalloc(sizeof(*int34x_thermal_zone->trips) *
-+					     (INT340X_THERMAL_MAX_TRIP_COUNT + trip_cnt),
-+					      GFP_KERNEL);
-+	if (!int34x_thermal_zone->trips) {
-+		ret = -ENOMEM;
-+		goto err_trips_alloc;
- 	}
- 
- 	trip_cnt = int340x_thermal_read_trips(int34x_thermal_zone);
- 
-+	for (i = 0; i < trip_cnt; ++i)
-+		int34x_thermal_zone->trips[i].hysteresis = thermal_acpi_trip_gtsh(adev);
-+
-+	for (i = 0; i < int34x_thermal_zone->aux_trip_nr; i++) {
-+		int34x_thermal_zone->trips[i].type = THERMAL_TRIP_PASSIVE;
-+		int34x_thermal_zone->trips[i].temperature = THERMAL_TEMP_INVALID;
-+	}
-+
- 	int34x_thermal_zone->lpat_table = acpi_lpat_get_conversion_table(
- 								adev->handle);
- 
--	int34x_thermal_zone->zone = thermal_zone_device_register(
-+	int34x_thermal_zone->zone = thermal_zone_device_register_with_trips(
- 						acpi_device_bid(adev),
-+						int34x_thermal_zone->trips,
- 						trip_cnt,
- 						trip_mask, int34x_thermal_zone,
- 						int34x_thermal_zone->ops,
-@@ -272,9 +175,9 @@ struct int34x_thermal_zone *int340x_thermal_zone_add(struct acpi_device *adev,
- err_enable:
- 	thermal_zone_device_unregister(int34x_thermal_zone->zone);
- err_thermal_zone:
-+	kfree(int34x_thermal_zone->trips);
- 	acpi_lpat_free_conversion_table(int34x_thermal_zone->lpat_table);
--	kfree(int34x_thermal_zone->aux_trips);
--err_trip_alloc:
-+err_trips_alloc:
- 	kfree(int34x_thermal_zone->ops);
- err_ops_alloc:
- 	kfree(int34x_thermal_zone);
-@@ -287,7 +190,7 @@ void int340x_thermal_zone_remove(struct int34x_thermal_zone
- {
- 	thermal_zone_device_unregister(int34x_thermal_zone->zone);
- 	acpi_lpat_free_conversion_table(int34x_thermal_zone->lpat_table);
--	kfree(int34x_thermal_zone->aux_trips);
-+	kfree(int34x_thermal_zone->trips);
- 	kfree(int34x_thermal_zone->ops);
- 	kfree(int34x_thermal_zone);
- }
-diff --git a/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h b/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h
-index e28ab1ba5e06..0c2c8de92014 100644
---- a/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h
-+++ b/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h
-@@ -10,6 +10,7 @@
- #include <acpi/acpi_lpat.h>
- 
- #define INT340X_THERMAL_MAX_ACT_TRIP_COUNT	10
-+#define INT340X_THERMAL_MAX_TRIP_COUNT INT340X_THERMAL_MAX_ACT_TRIP_COUNT + 3
- 
- struct active_trip {
- 	int temp;
-@@ -19,15 +20,8 @@ struct active_trip {
- 
- struct int34x_thermal_zone {
- 	struct acpi_device *adev;
--	struct active_trip act_trips[INT340X_THERMAL_MAX_ACT_TRIP_COUNT];
--	unsigned long *aux_trips;
-+	struct thermal_trip *trips;
- 	int aux_trip_nr;
--	int psv_temp;
--	int psv_trip_id;
--	int crt_temp;
--	int crt_trip_id;
--	int hot_temp;
--	int hot_trip_id;
- 	struct thermal_zone_device *zone;
- 	struct thermal_zone_device_ops *ops;
- 	void *priv_data;
+When entering ftrace_caller, the LR points at func_body, and the
+ftrace_ops can be recovered at a negative offset from this the LR value:
+
+	BIC	<tmp>, LR, 0x7		// Align down (skips BTI)
+	LDR	<tmp>, [<tmp>, #-16]	// load ops pointer
+
+The ftrace_ops::func (and any other ftrace_ops fields) can then be
+recovered from this pointer to the ops.
+
+The first three patches enable the function alignment, working around
+cases where GCC drops alignment for cold functions or when building with
+'-Os'.
+
+The final four patches implement support for
+DYNAMIC_FTRACE_WITH_CALL_OPS on arm64. As noted in the final patch, this
+results in a significant reduction in overhead:
+
+  Before this series:
+
+  Number of tracers     || Total time  | Per-call average time (ns)
+  Relevant | Irrelevant || (ns)        | Total        | Overhead
+  =========+============++=============+==============+============
+         0 |          0 ||      94,583 |         0.95 |           -
+         0 |          1 ||      93,709 |         0.94 |           -
+         0 |          2 ||      93,666 |         0.94 |           -
+         0 |         10 ||      93,709 |         0.94 |           -
+         0 |        100 ||      93,792 |         0.94 |           -
+  ---------+------------++-------------+--------------+------------
+         1 |          1 ||   6,467,833 |        64.68 |       63.73
+         1 |          2 ||   7,509,708 |        75.10 |       74.15
+         1 |         10 ||  23,786,792 |       237.87 |      236.92
+         1 |        100 || 106,432,500 |     1,064.43 |     1063.38
+  ---------+------------++-------------+--------------+------------
+         1 |          0 ||   1,431,875 |        14.32 |       13.37
+         2 |          0 ||   6,456,334 |        64.56 |       63.62
+        10 |          0 ||  22,717,000 |       227.17 |      226.22
+       100 |          0 || 103,293,667 |      1032.94 |     1031.99
+  ---------+------------++-------------+--------------+--------------
+
+  Note: per-call overhead is estiamated relative to the baseline case
+  with 0 relevant tracers and 0 irrelevant tracers.
+
+  After this series:
+
+  Number of tracers     || Total time  | Per-call average time (ns)
+  Relevant | Irrelevant || (ns)        | Total        | Overhead
+  =========+============++=============+==============+============
+         0 |          0 ||      94,541 |         0.95 |           -
+         0 |          1 ||      93,666 |         0.94 |           -
+         0 |          2 ||      93,709 |         0.94 |           -
+         0 |         10 ||      93,667 |         0.94 |           -
+         0 |        100 ||      93,792 |         0.94 |           -
+  ---------+------------++-------------+--------------+------------
+         1 |          1 ||     281,000 |         2.81 |        1.86
+         1 |          2 ||     281,042 |         2.81 |        1.87
+         1 |         10 ||     280,958 |         2.81 |        1.86
+         1 |        100 ||     281,250 |         2.81 |        1.87
+  ---------+------------++-------------+--------------+------------
+         1 |          0 ||     280,959 |         2.81 |        1.86
+         2 |          0 ||   6,502,708 |        65.03 |       64.08
+        10 |          0 ||  18,681,209 |       186.81 |      185.87
+       100 |          0 || 103,550,458 |     1,035.50 |     1034.56
+  ---------+------------++-------------+--------------+------------
+
+  Note: per-call overhead is estiamated relative to the baseline case
+  with 0 relevant tracers and 0 irrelevant tracers.
+
+
+This version of the series can be found in my kernel.org git repo:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git
+
+Tagged as:
+
+  arm64-ftrace-per-callsite-ops-20230113
+
+Since v1 [1]:
+* Fold in Ack from Rafael
+* Update comments/commits with description of the GCC issue
+* Move the cold attribute changes to compiler_types.h
+* Drop the unnecessary changes to the weak attribute
+* Move declaration of ftrace_ops earlier
+* Clean up and improve commit messages
+* Regenerate statistics on misaligned text symbols
+
+[1] https://lore.kernel.org/linux-arm-kernel/20230109135828.879136-1-mark.rutland@arm.com/
+
+Thanks,
+Mark.
+
+Mark Rutland (8):
+  Compiler attributes: GCC cold function alignment workarounds
+  ACPI: Don't build ACPICA with '-Os'
+  arm64: Extend support for CONFIG_FUNCTION_ALIGNMENT
+  ftrace: Add DYNAMIC_FTRACE_WITH_CALL_OPS
+  arm64: insn: Add helpers for BTI
+  arm64: patching: Add aarch64_insn_write_literal_u64()
+  arm64: ftrace: Update stale comment
+  arm64: Implement HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS
+
+ arch/arm64/Kconfig                  |   3 +
+ arch/arm64/Makefile                 |   5 +-
+ arch/arm64/include/asm/ftrace.h     |  15 +--
+ arch/arm64/include/asm/insn.h       |   1 +
+ arch/arm64/include/asm/linkage.h    |  10 +-
+ arch/arm64/include/asm/patching.h   |   2 +
+ arch/arm64/kernel/asm-offsets.c     |   4 +
+ arch/arm64/kernel/entry-ftrace.S    |  32 +++++-
+ arch/arm64/kernel/ftrace.c          | 158 +++++++++++++++++++++++++++-
+ arch/arm64/kernel/patching.c        |  17 +++
+ drivers/acpi/acpica/Makefile        |   2 +-
+ include/linux/compiler_attributes.h |   6 --
+ include/linux/compiler_types.h      |  27 +++++
+ include/linux/ftrace.h              |  18 +++-
+ kernel/exit.c                       |   9 +-
+ kernel/trace/Kconfig                |   7 ++
+ kernel/trace/ftrace.c               | 109 ++++++++++++++++++-
+ 17 files changed, 385 insertions(+), 40 deletions(-)
+
 -- 
-2.34.1
+2.30.2
 
