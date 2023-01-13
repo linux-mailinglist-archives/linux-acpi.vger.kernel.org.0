@@ -2,160 +2,346 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B0276696C8
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jan 2023 13:20:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66EE96696E5
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jan 2023 13:25:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241159AbjAMMUI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 Jan 2023 07:20:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52824 "EHLO
+        id S241432AbjAMMZ3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 Jan 2023 07:25:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241138AbjAMMTc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Jan 2023 07:19:32 -0500
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CE2278258
-        for <linux-acpi@vger.kernel.org>; Fri, 13 Jan 2023 04:12:50 -0800 (PST)
-Received: by mail-wm1-x333.google.com with SMTP id ay40so15145915wmb.2
-        for <linux-acpi@vger.kernel.org>; Fri, 13 Jan 2023 04:12:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=k2B0hsASFUkHWI+dtbJoqoXBrOmDXx4P5iE4tDoIv9Y=;
-        b=r5LMJrP1xmHoLFxCeIJz1DlWNsBJgQSDhoBQsjNX1FZGWGcX5q6iezTlqp7iJ7dxsj
-         2l30AzU3QT015HNw22K27UXC69kTC9Dx3zjaT4zaSywPtt2UmipEhx2YBtCQbTSGOpFa
-         SVBhIPlb1y5YIsk0cxJGkLQuVIdSEnK9KyyCOIKergfjR9O/STPWjKP0B6cjspqe0DJ5
-         ufpKjggsU9ht6XRWi5FqyRLTAF0q/6DILqpjRUnnENWhFyEL2Sn2COJYru4UULhFeCzs
-         VKq9rKeYlp0KZ6KWzId19etifFPGkY4nLW/sjcNxqjKFA2MvjEAz/28i86FUaNO5dHtc
-         TJLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=k2B0hsASFUkHWI+dtbJoqoXBrOmDXx4P5iE4tDoIv9Y=;
-        b=JOSHj2c8N7N5S6jPEGI0DMSaGvazHU9JFlQFNzpmn5g8QisBaqvevjfPedm3I++A3o
-         Fkx/8iRj2l2ftQS6fHoEEYnQvk/OcHH+butdIRhrTHAE+gtXDg1CWcjeFb1a8tJdtM8h
-         3c4gUbiLm9Y2ZbYR3A2gan+HMQVdU1LTarcwZKRn4KWYGfCi+x9THew0oXgIa24CCtUI
-         9VsGfa9FEBqBQRgIEqm/2024bD29xqn0u/6VTbgruBTF3nLkkwvcbqG0/HNW6uXSM2rr
-         Fszbmjeoiw8ka8+Wn7Ze+GxaxmwwtLxvJ7dKBSoThJ5nv/a+J/Na06IPQBWbUuCI8qPe
-         Qs8g==
-X-Gm-Message-State: AFqh2krp2uPXgJx6HY/5Cq1t5Cp7AUEtxyudPPziHjmrsTj4P2+ffpkW
-        LpmSmPtR3J6xIxn/EH0PMB0Q9g==
-X-Google-Smtp-Source: AMrXdXu2ltpUhMmjl2uUB9itPccs5udi7WYLCpJAPI1VbQ0Ahcuu4yLeptqX5/gWOIqo97PCCNz40w==
-X-Received: by 2002:a7b:c851:0:b0:3d9:f067:1c32 with SMTP id c17-20020a7bc851000000b003d9f0671c32mr13643754wml.29.1673611968714;
-        Fri, 13 Jan 2023 04:12:48 -0800 (PST)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id t9-20020a05600c198900b003d9e74dd9b2sm22536878wmq.9.2023.01.13.04.12.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Jan 2023 04:12:48 -0800 (PST)
-Message-ID: <ddcfbd2e-2ea0-9305-96c4-8127181cdd8c@linaro.org>
-Date:   Fri, 13 Jan 2023 13:12:47 +0100
+        with ESMTP id S241372AbjAMMZH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Jan 2023 07:25:07 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E708F37267;
+        Fri, 13 Jan 2023 04:23:02 -0800 (PST)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4NtgSw2YrCz6J7TJ;
+        Fri, 13 Jan 2023 20:19:12 +0800 (CST)
+Received: from localhost (10.81.201.219) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Fri, 13 Jan
+ 2023 12:22:59 +0000
+Date:   Fri, 13 Jan 2023 12:22:58 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Ira Weiny <ira.weiny@intel.com>
+CC:     Dan Williams <dan.j.williams@intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Ben Widawsky <bwidawsk@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>, <linux-cxl@vger.kernel.org>
+Subject: Re: [PATCH v6 1/8] cxl/mem: Read, trace, and clear events on driver
+ load
+Message-ID: <20230113122258.00000eeb@Huawei.com>
+In-Reply-To: <20221216-cxl-ev-log-v6-1-346583105b30@intel.com>
+References: <20221216-cxl-ev-log-v6-0-346583105b30@intel.com>
+        <20221216-cxl-ev-log-v6-1-346583105b30@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH 3/3] thermal/drivers/intel: Use generic trip points
- int340x
-Content-Language: en-US
-To:     "Zhang, Rui" <rui.zhang@intel.com>,
-        "rafael@kernel.org" <rafael@kernel.org>
-Cc:     "srinivas.pandruvada@linux.intel.com" 
-        <srinivas.pandruvada@linux.intel.com>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "daniel.lezcano@kernel.org" <daniel.lezcano@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "amitk@kernel.org" <amitk@kernel.org>
-References: <20230110151745.2546131-1-daniel.lezcano@linaro.org>
- <20230110151745.2546131-4-daniel.lezcano@linaro.org>
- <4f461027be209156d6d9f26870748f204ff4184b.camel@intel.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <4f461027be209156d6d9f26870748f204ff4184b.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.81.201.219]
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Mon, 09 Jan 2023 11:42:20 -0800
+Ira Weiny <ira.weiny@intel.com> wrote:
 
-Hi Rui;
-
-thanks for testing and your comments
-
-
-On 13/01/2023 12:41, Zhang, Rui wrote:
-> On Tue, 2023-01-10 at 16:17 +0100, Daniel Lezcano wrote:
->> The thermal framework gives the possibility to register the trip
->> points with the thermal zone. When that is done, no get_trip_* ops
->> are
->> needed and they can be removed.
->>
->> Convert the ops content logic into generic trip points and register
->> them with the thermal zone.
->>
->> In order to consolidate the code, use the ACPI thermal framework API
->> to fill the generic trip point from the ACPI tables.
->>
->> It has been tested on a Intel i7-8650U - x280 with the INT3400, the
->> PCH, ACPITZ, and x86_pkg_temp. No regression observed so far.
->>
->> Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
->> ---
->>     V3:
->>        - The driver Kconfig option selects CONFIG_THERMAL_ACPI
->>        - Change the initialization to use GTSH for the hysteresis on
->>          all the trip points
->>
->> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
->> ---
->>   drivers/thermal/intel/int340x_thermal/Kconfig |   1 +
->>   .../int340x_thermal/int340x_thermal_zone.c    | 177 ++++----------
->> ----
-
-[ ... ]
-
->> -static int int340x_thermal_get_trip_hyst(struct thermal_zone_device
->> *zone,
->> -		int trip, int *temp)
->> -{
->> -	struct int34x_thermal_zone *d = zone->devdata;
->> -	acpi_status status;
->> -	unsigned long long hyst;
->> -
->> -	status = acpi_evaluate_integer(d->adev->handle, "GTSH", NULL,
->> &hyst);
->> -	if (ACPI_FAILURE(status))
->> -		*temp = 0;
->> -	else
->> -		*temp = hyst * 100;
+> CXL devices have multiple event logs which can be queried for CXL event
+> records.  Devices are required to support the storage of at least one
+> event record in each event log type.
 > 
-> The previous code returns hyst * 100.
-> But the new API retuurns hyst directly.
+> Devices track event log overflow by incrementing a counter and tracking
+> the time of the first and last overflow event seen.
 > 
-> -/sys/class/thermal/thermal_zone2/trip_point_4_hyst:2000
-> +/sys/class/the
-> rmal/thermal_zone2/trip_point_4_hyst:20
+> Software queries events via the Get Event Record mailbox command; CXL
+> rev 3.0 section 8.2.9.2.2 and clears events via CXL rev 3.0 section
+> 8.2.9.2.3 Clear Event Records mailbox command.
 > 
-> Is this done on purpose?
+> If the result of negotiating CXL Error Reporting Control is OS control,
+> read and clear all event logs on driver load.
+> 
+> Ensure a clean slate of events by reading and clearing the events on
+> driver load.
+> 
+> The status register is not used because a device may continue to trigger
+> events and the only requirement is to empty the log at least once.  This
+> allows for the required transition from empty to non-empty for interrupt
+> generation.  Handling of interrupts is in a follow on patch.
+> 
+> The device can return up to 1MB worth of event records per query.
+> Allocate a shared large buffer to handle the max number of records based
+> on the mailbox payload size.
+> 
+> This patch traces a raw event record and leaves specific event record
+> type tracing to subsequent patches.  Macros are created to aid in
+> tracing the common CXL Event header fields.
+> 
+> Each record is cleared explicitly.  A clear all bit is specified but is
+> only valid when the log overflows.
+> 
+> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+A few trivial comments inline, but whether you act on them or not lookjs
+good to me.
 
-No, it is an error. The function thermal_acpi_trip_gtsh() should do:
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-	return deci_kelvin_to_millicelsius(hyst);
+> 
+> ---
+> Changes from V4:
+>         Jonathan/Johnny
+>                 Clear limit mailbox size based on nr records
+>         Jonathan
+>                 Use offsetof() in CXL_CLEAR_EVENT_LIMIT_HANDLES()
+> ---
+>  drivers/cxl/core/mbox.c  | 137 +++++++++++++++++++++++++++++++++++++++++++++++
+>  drivers/cxl/core/trace.h | 120 +++++++++++++++++++++++++++++++++++++++++
+>  drivers/cxl/cxl.h        |  12 +++++
+>  drivers/cxl/cxlmem.h     |  86 +++++++++++++++++++++++++++++
+>  drivers/cxl/pci.c        |  40 ++++++++++++++
+>  5 files changed, 395 insertions(+)
+> 
+> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
+> index b03fba212799..5ad4716f2e11 100644
+> --- a/drivers/cxl/core/mbox.c
+> +++ b/drivers/cxl/core/mbox.c
+
+...
+
+> +static void cxl_mem_get_records_log(struct cxl_dev_state *cxlds,
+> +				    enum cxl_event_log_type type)
+> +{
+> +	struct cxl_get_event_payload *payload;
+> +	struct cxl_mbox_cmd mbox_cmd;
+> +	u8 log_type = type;
+> +	u16 nr_rec;
+> +
+> +	mutex_lock(&cxlds->event.log_lock);
+> +	payload = cxlds->event.buf;
+> +
+> +	mbox_cmd = (struct cxl_mbox_cmd) {
+> +		.opcode = CXL_MBOX_OP_GET_EVENT_RECORD,
+> +		.payload_in = &log_type,
+> +		.size_in = sizeof(log_type),
+> +		.payload_out = payload,
+> +		.size_out = cxlds->payload_size,
+> +		.min_out = struct_size(payload, records, 0),
+> +	};
+> +
+> +	do {
+> +		int rc, i;
+> +
+> +		rc = cxl_internal_send_cmd(cxlds, &mbox_cmd);
+> +		if (rc) {
+> +			dev_err_ratelimited(cxlds->dev, "Event log '%d': Failed to query event records : %d",
+
+Might as well have slightly shorter line by adding a break after dev,
+Same with other case below. If nothing else it will reduce bot warnings slightly I think.
+
+> +					    type, rc);
+> +			break;
+> +		}
+> +
+> +		nr_rec = le16_to_cpu(payload->record_count);
+> +		if (!nr_rec)
+> +			break;
+> +
+> +		for (i = 0; i < nr_rec; i++)
+> +			trace_cxl_generic_event(cxlds->dev, type,
+> +						&payload->records[i]);
+> +
+> +		if (payload->flags & CXL_GET_EVENT_FLAG_OVERFLOW)
+> +			trace_cxl_overflow(cxlds->dev, type, payload);
+> +
+> +		rc = cxl_clear_event_record(cxlds, type, payload);
+> +		if (rc) {
+> +			dev_err_ratelimited(cxlds->dev, "Event log '%d': Failed to clear events : %d",
+> +					    type, rc);
+> +			break;
+> +		}
+> +	} while (nr_rec);
+
+...
+
+> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
+> index ab138004f644..e0450b2a0f3f 100644
+> --- a/drivers/cxl/cxlmem.h
+> +++ b/drivers/cxl/cxlmem.h
+
+
+...
+
+> +/*
+> + * Common Event Record Format
+> + * CXL rev 3.0 section 8.2.9.2.1; Table 8-42
+> + */
+> +struct cxl_event_record_hdr {
+> +	uuid_t id;
+> +	u8 length;
+> +	u8 flags[3];
+> +	__le16 handle;
+> +	__le16 related_handle;
+> +	__le64 timestamp;
+> +	u8 maint_op_class;
+> +	u8 reserved[15];
+> +} __packed;
+> +
+> +#define CXL_EVENT_RECORD_DATA_LENGTH 0x50
+> +struct cxl_event_record_raw {
+> +	struct cxl_event_record_hdr hdr;
+> +	u8 data[CXL_EVENT_RECORD_DATA_LENGTH];
+> +} __packed;
+
+Mostly to avoid ugly casts in patch 3, I would consider
+a union of all the defined record types.  That way you could
+just pick the right one based on a uuid match and keep type
+safety etc.
+
+> +
+> +/*
+> + * Get Event Records output payload
+> + * CXL rev 3.0 section 8.2.9.2.2; Table 8-50
+> + */
+> +#define CXL_GET_EVENT_FLAG_OVERFLOW		BIT(0)
+> +#define CXL_GET_EVENT_FLAG_MORE_RECORDS		BIT(1)
+> +struct cxl_get_event_payload {
+> +	u8 flags;
+> +	u8 reserved1;
+> +	__le16 overflow_err_count;
+> +	__le64 first_overflow_timestamp;
+> +	__le64 last_overflow_timestamp;
+> +	__le16 record_count;
+> +	u8 reserved2[10];
+> +	struct cxl_event_record_raw records[];
+> +} __packed;
+> +
+> +/*
+> + * CXL rev 3.0 section 8.2.9.2.2; Table 8-49
+> + */
+> +enum cxl_event_log_type {
+> +	CXL_EVENT_TYPE_INFO = 0x00,
+> +	CXL_EVENT_TYPE_WARN,
+> +	CXL_EVENT_TYPE_FAIL,
+> +	CXL_EVENT_TYPE_FATAL,
+> +	CXL_EVENT_TYPE_MAX
+> +};
+> +
+> +/*
+> + * Clear Event Records input payload
+> + * CXL rev 3.0 section 8.2.9.2.3; Table 8-51
+> + */
+> +#define CXL_CLEAR_EVENT_MAX_HANDLES (0xff)
+> +struct cxl_mbox_clear_event_payload {
+> +	u8 event_log;		/* enum cxl_event_log_type */
+> +	u8 clear_flags;
+> +	u8 nr_recs;
+> +	u8 reserved[3];
+> +	__le16 handle[CXL_CLEAR_EVENT_MAX_HANDLES];
+> +} __packed;
+> +#define CXL_CLEAR_EVENT_LIMIT_HANDLES(payload_size)			\
+> +	(((payload_size) -						\
+> +	  offsetof(struct cxl_mbox_clear_event_payload, handle)) /	\
+> +	 sizeof(__le16))
+> +#define CXL_CLEAR_EVENT_PL_SIZE(nr_handles)				\
+> +	(offsetof(struct cxl_mbox_clear_event_payload, handle) +	\
+> +	 (nr_handles * sizeof(__le16)))
+> +
+
+Still ugly, but I guess I can live with it though it's a bit of
+large structure to put on the stack and if you used the heap then
+a simple struct_size() allocation and having a variable length
+array for last element would make this neater.
 
 
 
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+> diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
+> index 3a66aadb4df0..a2d8382bc593 100644
+> --- a/drivers/cxl/pci.c
+> +++ b/drivers/cxl/pci.c
+> @@ -417,8 +417,37 @@ static void disable_aer(void *pdev)
+>  	pci_disable_pcie_error_reporting(pdev);
+>  }
+>  
+> +static void cxl_mem_free_event_buffer(void *buf)
+> +{
+> +	kvfree(buf);
+> +}
+> +
+> +/*
+> + * There is a single buffer for reading event logs from the mailbox.  All logs
+> + * share this buffer protected by the cxlds->event_log_lock.
+> + */
+> +static int cxl_mem_alloc_event_buf(struct cxl_dev_state *cxlds)
+> +{
+> +	struct cxl_get_event_payload *buf;
+> +
+> +	dev_dbg(cxlds->dev, "Allocating event buffer size %zu\n",
+> +		cxlds->payload_size);
+> +
+> +	buf = kvmalloc(cxlds->payload_size, GFP_KERNEL);
+> +	if (!buf)
+> +		return -ENOMEM;
+> +
+> +	if (devm_add_action_or_reset(cxlds->dev, cxl_mem_free_event_buffer,
+> +				     buf))
+> +		return -ENOMEM;
+trivial:
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Should return the error code from devm_add_action_or_reset.
+Sure it's always -ENOMEM today, but it might not be in future ;)
+
+> +
+> +	cxlds->event.buf = buf;
+> +	return 0;
+> +}
+> +
+>  static int cxl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>  {
+> +	struct pci_host_bridge *host_bridge = pci_find_host_bridge(pdev->bus);
+>  	struct cxl_register_map map;
+>  	struct cxl_memdev *cxlmd;
+>  	struct cxl_dev_state *cxlds;
+> @@ -494,6 +523,17 @@ static int cxl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>  	if (IS_ERR(cxlmd))
+>  		return PTR_ERR(cxlmd);
+>  
+> +	rc = cxl_mem_alloc_event_buf(cxlds);
+
+I'm in two minds about this.  For current support, makes little sense to have
+this unless host_bridge->native_cxl_error is true, but then we'll end up moving
+it for DCD.
+
+On balance I'd rather today's code made sense and we had to modify a bit more when
+adding DCD support though, so better to move it under the if below.
+(unless I'm missing something of course!)
+
+> +	if (rc)
+> +		return rc;
+> +
+> +	/*
+> +	 * When BIOS maintains CXL error reporting control, it will process
+> +	 * event records.  Only one agent can do so.
+> +	 */
+> +	if (host_bridge->native_cxl_error)
+> +		cxl_mem_get_event_records(cxlds, CXLDEV_EVENT_STATUS_ALL);
+> +
+>  	if (cxlds->regs.ras) {
+>  		pci_enable_pcie_error_reporting(pdev);
+>  		rc = devm_add_action_or_reset(&pdev->dev, disable_aer, pdev);
+> 
 
