@@ -2,117 +2,137 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E2EB66A149
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jan 2023 18:58:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5A4366A0C4
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jan 2023 18:32:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230005AbjAMR6R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 Jan 2023 12:58:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37330 "EHLO
+        id S230037AbjAMRc1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 Jan 2023 12:32:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230218AbjAMR5y (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Jan 2023 12:57:54 -0500
-Received: from bee.birch.relay.mailchannels.net (bee.birch.relay.mailchannels.net [23.83.209.14])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E21156C049;
-        Fri, 13 Jan 2023 09:51:08 -0800 (PST)
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-        by relay.mailchannels.net (Postfix) with ESMTP id 40A203E0F9B;
-        Fri, 13 Jan 2023 17:42:39 +0000 (UTC)
-Received: from pdx1-sub0-mail-a315.dreamhost.com (unknown [127.0.0.6])
-        (Authenticated sender: dreamhost)
-        by relay.mailchannels.net (Postfix) with ESMTPA id 99E533E1268;
-        Fri, 13 Jan 2023 17:42:38 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1673631758; a=rsa-sha256;
-        cv=none;
-        b=aB6xa21VDCjs87dpabaUSa9RMma55OpPQaxzs5/hFiR/txUcRRtBhKPJN9Lf8kypZUGZve
-        OtaBHAQ7lJb45wZtVNvWkWy0UjltwLbKs+fM7/TV6MTsCzIZxNm7ve3Lm92e+lKQOT9/M3
-        x2ntuoAkr7IkXFeUK+r436fblVe20jhUhg1dMbR2zVJo8HVvQBFe6/hsAuoVO845FMrwd1
-        DJaHz0q9gaJkEBB0RpQykMWm/kz77h9n/xWvu4t5efnoGvLA0iegQuDA1WLsltdJbLYeK7
-        sKD01uBJh7ANtcJ+PB9U17U8AqTBnx3w0q1fSklosI2iA8PnCfO0LWFepTbkLQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-        s=arc-2022; t=1673631758;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references:dkim-signature;
-        bh=twgTTPRo+VXnNzflsrxDFTC/SO/Nbxj3cfBkYLW1hkg=;
-        b=33tB9wnNeVgJi+brT3FXVWGpHrSQprQzqzii7hJosZZtJdQCCj6dbkmrDasJE6JtHzd8Xx
-        bcKHi5hodfbnA9Bfits86Y1WQqQnCXzjR6WHqbW5OpxWcJOJLsosFJLh2xlbmVK82f445F
-        IQpjW7kfl3dqi6M4Fjg4kzYmU1ANGpRLR70vKS5thPIF3+qIM9GWgPX2ZeRcwivWmO4yqm
-        YXxfdvpo9ZSBbSgukYfOiAsNC9S1hq/6tRoqKe9VQP7RVNsxnKHKp4lJgvvTClLZrkQLt4
-        y8PMnTZQ9fxmBgzyLO08X3+gsnMXnDhLIMQgU1D4vpYJDCkvHL29vssuWL6dSQ==
-ARC-Authentication-Results: i=1;
-        rspamd-6f569fcb69-pz4jf;
-        auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
-X-MailChannels-Auth-Id: dreamhost
-X-Skirt-Oafish: 11b8c2af1ed5ac8b_1673631759033_935896507
-X-MC-Loop-Signature: 1673631759033:1125857754
-X-MC-Ingress-Time: 1673631759033
-Received: from pdx1-sub0-mail-a315.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-        by 100.97.48.85 (trex/6.7.1);
-        Fri, 13 Jan 2023 17:42:39 +0000
-Received: from offworld (ip72-199-50-187.sd.sd.cox.net [72.199.50.187])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: dave@stgolabs.net)
-        by pdx1-sub0-mail-a315.dreamhost.com (Postfix) with ESMTPSA id 4Ntpf51GyWzGX;
-        Fri, 13 Jan 2023 09:42:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
-        s=dreamhost; t=1673631758;
-        bh=twgTTPRo+VXnNzflsrxDFTC/SO/Nbxj3cfBkYLW1hkg=;
-        h=Date:From:To:Cc:Subject:Content-Type;
-        b=pK5KpZ772hyobLbvM90Mxb120RtMGLRQc1NTBkdqzOnDx4KQzICc/QtGrON+qOaR6
-         UZaq4nyW/+as5VqCbYpmIdiLzuLlmtJuwtURrOdUunDEOnzlziG6N/1kmiV1al23IR
-         SqK1fErGH759hq9eNs0oZb6AfS72PbVIxAT6Kdc60FyaTDIt3mKElSxhdAgMGJadx2
-         e7q3CGcKDt2AV6RaOapdZ0DIuCkfRrN23NiCnx67+bLvwVWqwl0M4HL33DuTKtNmrH
-         BDg+9bqi9hXA3bvRoHKoXA0ht9/gEKVoWmFNkbweLOG/i13+xd2e7igG1+9Pmkzygi
-         ScYv9WSjENQfg==
-Date:   Fri, 13 Jan 2023 09:16:33 -0800
-From:   Davidlohr Bueso <dave@stgolabs.net>
-To:     Ira Weiny <ira.weiny@intel.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Ben Widawsky <bwidawsk@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org
-Subject: Re: [PATCH v6 3/8] cxl/mem: Trace General Media Event Record
-Message-ID: <20230113171633.2ooichii3jk4exqe@offworld>
-References: <20221216-cxl-ev-log-v6-0-346583105b30@intel.com>
- <20221216-cxl-ev-log-v6-3-346583105b30@intel.com>
+        with ESMTP id S230472AbjAMRcJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Jan 2023 12:32:09 -0500
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E60894225
+        for <linux-acpi@vger.kernel.org>; Fri, 13 Jan 2023 09:21:13 -0800 (PST)
+Received: by mail-wr1-x430.google.com with SMTP id q10so2379483wrs.2
+        for <linux-acpi@vger.kernel.org>; Fri, 13 Jan 2023 09:21:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=N5FMUTSD2Bb9aPiO6k1P71VjRgpz4XMtlw/+XVppoH8=;
+        b=qBGrHm1GUCs7QwaYgM8fM+fBP7eHT3+DjFMWceuiU2j5KXaqvISdygjzc2dEThs3WT
+         cf3IuDzZSJup0BBAKBy3/xXs6v2lYAGMWEXrvr+by0okQvrJ9ohY3CGdqDs/Tlp3FLM+
+         OmUeVhHSkkZe4Q3b4lqGNm+6kDhQq0q6wJ/1BADBDTdi46qfxQCfOEPwCwoBql1erxu8
+         8ixCgXcew6NxO/AJGDGoHKYHcbwNHoAYoOvMCo4//1o4siyFAxY7MmcQH/JMVyCX60Qd
+         YCe12UXvAOQduuv2PM8yaNP7hFsPKa86r2D+5W5NnKe/ATzU7ynGkt9cSk3pFOrS0Yt8
+         vnwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=N5FMUTSD2Bb9aPiO6k1P71VjRgpz4XMtlw/+XVppoH8=;
+        b=7A+IRADwCeOQ/E+Q4b+Nf6Jxe/ZyjeBRjqjj0r5R5l670HbwcwOUnDsA/n8of0WP5e
+         s8IkNnODEAj2YM3D4vMBGFK6a0XIPL2+V3I9oV4l5u6Cjk9sDTEvL1Hfistl9D3PZSMZ
+         87tEwiwnR8kofSJXfMTuDrJEqvINRrLpnes7rgP2dNZGPcSB9rBDjnv330RCq5Anq8AM
+         ZsAlAN3sg9oHDiqWFR0X6Qc9k5lW5sz3gy3xf1d+wwaryj6xUtdj+bY2nvcJGucYEfJt
+         8kt1HdW0pJjUKOWu/DpQZTd/Ra1M9t4em04mBDw0ggmGVCT5PNsnZteSQs52a+JnVfI6
+         +wgw==
+X-Gm-Message-State: AFqh2krHSfByKhMbv5GF2QIrMaFpDLe1a0o4AOCus9ob6yZK9CPa//Nz
+        /vHjiovqnavjzU+TtkCb36yeDA==
+X-Google-Smtp-Source: AMrXdXtwaKDSiEHVFEYfqtAfdAIdk8ByuhNPLiXqpTPJ9VnvjbQcquOGq8mTQdbEUNw8CTD43MQp0w==
+X-Received: by 2002:adf:d0c8:0:b0:2bd:bae0:8de5 with SMTP id z8-20020adfd0c8000000b002bdbae08de5mr9364481wrh.58.1673630471594;
+        Fri, 13 Jan 2023 09:21:11 -0800 (PST)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id j11-20020adfd20b000000b0024207478de3sm19610837wrh.93.2023.01.13.09.21.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Jan 2023 09:21:10 -0800 (PST)
+Message-ID: <35b6549e-a722-4667-c471-907d91d424ce@linaro.org>
+Date:   Fri, 13 Jan 2023 18:21:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20221216-cxl-ev-log-v6-3-346583105b30@intel.com>
-User-Agent: NeoMutt/20220429
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH 3/3] thermal/drivers/intel: Use generic trip points
+ int340x
+Content-Language: en-US
+To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>,
+        "Zhang, Rui" <rui.zhang@intel.com>,
+        "rafael@kernel.org" <rafael@kernel.org>
+Cc:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "daniel.lezcano@kernel.org" <daniel.lezcano@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "amitk@kernel.org" <amitk@kernel.org>
+References: <20230110151745.2546131-1-daniel.lezcano@linaro.org>
+ <20230110151745.2546131-4-daniel.lezcano@linaro.org>
+ <4f461027be209156d6d9f26870748f204ff4184b.camel@intel.com>
+ <ddcfbd2e-2ea0-9305-96c4-8127181cdd8c@linaro.org>
+ <34f9fc91c398f85c0bedaff89adbb33897cb1f62.camel@linux.intel.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <34f9fc91c398f85c0bedaff89adbb33897cb1f62.camel@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 09 Jan 2023, Ira Weiny wrote:
 
->CXL rev 3.0 section 8.2.9.2.1.1 defines the General Media Event Record.
->
->Determine if the event read is a general media record and if so trace
->the record as a General Media Event Record.
->
->Reviewed-by: Dan Williams <dan.j.williams@intel.com>
->Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Hi Srinivas,
 
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+On 13/01/2023 16:48, srinivas pandruvada wrote:
+> Hi Daniel,
+> 
+>>>>
+> 
+> [...]
+> 
+>>>> -       status = acpi_evaluate_integer(d->adev->handle, "GTSH",
+>>>> NULL,
+>>>> &hyst);
+>>>> -       if (ACPI_FAILURE(status))
+>>>> -               *temp = 0;
+>>>> -       else
+>>>> -               *temp = hyst * 100;
+>>>
+>>> The previous code returns hyst * 100.
+>>> But the new API retuurns hyst directly.
+>>>
+>>> -/sys/class/thermal/thermal_zone2/trip_point_4_hyst:2000
+>>> +/sys/class/the
+>>> rmal/thermal_zone2/trip_point_4_hyst:20
+>>>
+>>> Is this done on purpose?
+>>
+>> No, it is an error. The function thermal_acpi_trip_gtsh() should do:
+>>
+>>          return deci_kelvin_to_millicelsius(hyst);
+>>
+>>
+> 
+> GTSH returns here in tenths of degree Kelvin. For example 15 means 1.5
+> degree K.
+
+Yes, so the above conversion is correct, right ?
+
+> I would like to test your next series with thermald. If there is a
+> problem, it will break every distro.
+
+Great, thanks!
+
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
+
