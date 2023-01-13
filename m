@@ -2,62 +2,46 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5A4366A0C4
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jan 2023 18:32:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CC3666A103
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jan 2023 18:46:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230037AbjAMRc1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 13 Jan 2023 12:32:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49764 "EHLO
+        id S229526AbjAMRqZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 Jan 2023 12:46:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230472AbjAMRcJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Jan 2023 12:32:09 -0500
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E60894225
-        for <linux-acpi@vger.kernel.org>; Fri, 13 Jan 2023 09:21:13 -0800 (PST)
-Received: by mail-wr1-x430.google.com with SMTP id q10so2379483wrs.2
-        for <linux-acpi@vger.kernel.org>; Fri, 13 Jan 2023 09:21:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=N5FMUTSD2Bb9aPiO6k1P71VjRgpz4XMtlw/+XVppoH8=;
-        b=qBGrHm1GUCs7QwaYgM8fM+fBP7eHT3+DjFMWceuiU2j5KXaqvISdygjzc2dEThs3WT
-         cf3IuDzZSJup0BBAKBy3/xXs6v2lYAGMWEXrvr+by0okQvrJ9ohY3CGdqDs/Tlp3FLM+
-         OmUeVhHSkkZe4Q3b4lqGNm+6kDhQq0q6wJ/1BADBDTdi46qfxQCfOEPwCwoBql1erxu8
-         8ixCgXcew6NxO/AJGDGoHKYHcbwNHoAYoOvMCo4//1o4siyFAxY7MmcQH/JMVyCX60Qd
-         YCe12UXvAOQduuv2PM8yaNP7hFsPKa86r2D+5W5NnKe/ATzU7ynGkt9cSk3pFOrS0Yt8
-         vnwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=N5FMUTSD2Bb9aPiO6k1P71VjRgpz4XMtlw/+XVppoH8=;
-        b=7A+IRADwCeOQ/E+Q4b+Nf6Jxe/ZyjeBRjqjj0r5R5l670HbwcwOUnDsA/n8of0WP5e
-         s8IkNnODEAj2YM3D4vMBGFK6a0XIPL2+V3I9oV4l5u6Cjk9sDTEvL1Hfistl9D3PZSMZ
-         87tEwiwnR8kofSJXfMTuDrJEqvINRrLpnes7rgP2dNZGPcSB9rBDjnv330RCq5Anq8AM
-         ZsAlAN3sg9oHDiqWFR0X6Qc9k5lW5sz3gy3xf1d+wwaryj6xUtdj+bY2nvcJGucYEfJt
-         8kt1HdW0pJjUKOWu/DpQZTd/Ra1M9t4em04mBDw0ggmGVCT5PNsnZteSQs52a+JnVfI6
-         +wgw==
-X-Gm-Message-State: AFqh2krHSfByKhMbv5GF2QIrMaFpDLe1a0o4AOCus9ob6yZK9CPa//Nz
-        /vHjiovqnavjzU+TtkCb36yeDA==
-X-Google-Smtp-Source: AMrXdXtwaKDSiEHVFEYfqtAfdAIdk8ByuhNPLiXqpTPJ9VnvjbQcquOGq8mTQdbEUNw8CTD43MQp0w==
-X-Received: by 2002:adf:d0c8:0:b0:2bd:bae0:8de5 with SMTP id z8-20020adfd0c8000000b002bdbae08de5mr9364481wrh.58.1673630471594;
-        Fri, 13 Jan 2023 09:21:11 -0800 (PST)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id j11-20020adfd20b000000b0024207478de3sm19610837wrh.93.2023.01.13.09.21.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Jan 2023 09:21:10 -0800 (PST)
-Message-ID: <35b6549e-a722-4667-c471-907d91d424ce@linaro.org>
-Date:   Fri, 13 Jan 2023 18:21:09 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
+        with ESMTP id S229978AbjAMRpz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Jan 2023 12:45:55 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 545B488DE8;
+        Fri, 13 Jan 2023 09:34:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1673631251; x=1705167251;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=/mLCpdcyLaa16plox8m52Uh9afCDS916L+EggEDx7yA=;
+  b=TzgKGfsCcbAbr7z2pEp4ACatwWfmjJnTRlfSzz693hkMjOc5WXYrUSAF
+   qa264ntCglpbGn2aDHfKc+ZjODkUcbtTP81LGjc6eQ4ObfdJlTMNxatCz
+   HMd+mUwvR+ue6HLZtVIXZjLnzUu2XH6hsUW3kW5Pm7Zy25ogYLMsQUSEt
+   d2QvLqFv7OBsRn1fTQCfgvH0BG5qSDK4OT5RRbLyqTupHclW6mo0JaDD8
+   /OYYzcTYPnO9Z/36cHpKLrpJ0SzsMskkeXkr83C5qpeoW4UO8S9o6Bux1
+   Flzj1tpjvlUaNsedLfV+w0/12Cdw+bi/3D4vI//QSc8cGdfDkJzPZkSZL
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10589"; a="324108970"
+X-IronPort-AV: E=Sophos;i="5.97,214,1669104000"; 
+   d="scan'208";a="324108970"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2023 09:34:10 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10589"; a="721599716"
+X-IronPort-AV: E=Sophos;i="5.97,214,1669104000"; 
+   d="scan'208";a="721599716"
+Received: from spandruv-desk.jf.intel.com ([10.54.75.8])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2023 09:34:10 -0800
+Message-ID: <6a5ea6ac492d354479f5d340c16588f2f4b3d7c0.camel@linux.intel.com>
 Subject: Re: [PATCH 3/3] thermal/drivers/intel: Use generic trip points
  int340x
-Content-Language: en-US
-To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>,
+From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
         "Zhang, Rui" <rui.zhang@intel.com>,
         "rafael@kernel.org" <rafael@kernel.org>
 Cc:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
@@ -66,73 +50,79 @@ Cc:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
         "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
         "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
         "amitk@kernel.org" <amitk@kernel.org>
+Date:   Fri, 13 Jan 2023 09:34:09 -0800
+In-Reply-To: <35b6549e-a722-4667-c471-907d91d424ce@linaro.org>
 References: <20230110151745.2546131-1-daniel.lezcano@linaro.org>
- <20230110151745.2546131-4-daniel.lezcano@linaro.org>
- <4f461027be209156d6d9f26870748f204ff4184b.camel@intel.com>
- <ddcfbd2e-2ea0-9305-96c4-8127181cdd8c@linaro.org>
- <34f9fc91c398f85c0bedaff89adbb33897cb1f62.camel@linux.intel.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <34f9fc91c398f85c0bedaff89adbb33897cb1f62.camel@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+         <20230110151745.2546131-4-daniel.lezcano@linaro.org>
+         <4f461027be209156d6d9f26870748f204ff4184b.camel@intel.com>
+         <ddcfbd2e-2ea0-9305-96c4-8127181cdd8c@linaro.org>
+         <34f9fc91c398f85c0bedaff89adbb33897cb1f62.camel@linux.intel.com>
+         <35b6549e-a722-4667-c471-907d91d424ce@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-Hi Srinivas,
-
-On 13/01/2023 16:48, srinivas pandruvada wrote:
-> Hi Daniel,
+On Fri, 2023-01-13 at 18:21 +0100, Daniel Lezcano wrote:
 > 
->>>>
+> Hi Srinivas,
 > 
-> [...]
+> On 13/01/2023 16:48, srinivas pandruvada wrote:
+> > Hi Daniel,
+> > 
+> > > > > 
+> > 
+> > [...]
+> > 
+> > > > > -       status = acpi_evaluate_integer(d->adev->handle,
+> > > > > "GTSH",
+> > > > > NULL,
+> > > > > &hyst);
+> > > > > -       if (ACPI_FAILURE(status))
+> > > > > -               *temp = 0;
+> > > > > -       else
+> > > > > -               *temp = hyst * 100;
+> > > > 
+> > > > The previous code returns hyst * 100.
+> > > > But the new API retuurns hyst directly.
+> > > > 
+> > > > -/sys/class/thermal/thermal_zone2/trip_point_4_hyst:2000
+> > > > +/sys/class/the
+> > > > rmal/thermal_zone2/trip_point_4_hyst:20
+> > > > 
+> > > > Is this done on purpose?
+> > > 
+> > > No, it is an error. The function thermal_acpi_trip_gtsh() should
+> > > do:
+> > > 
+> > >          return deci_kelvin_to_millicelsius(hyst);
+> > > 
+> > > 
+> > 
+> > GTSH returns here in tenths of degree Kelvin. For example 15 means
+> > 1.5
+> > degree K.
 > 
->>>> -       status = acpi_evaluate_integer(d->adev->handle, "GTSH",
->>>> NULL,
->>>> &hyst);
->>>> -       if (ACPI_FAILURE(status))
->>>> -               *temp = 0;
->>>> -       else
->>>> -               *temp = hyst * 100;
->>>
->>> The previous code returns hyst * 100.
->>> But the new API retuurns hyst directly.
->>>
->>> -/sys/class/thermal/thermal_zone2/trip_point_4_hyst:2000
->>> +/sys/class/the
->>> rmal/thermal_zone2/trip_point_4_hyst:20
->>>
->>> Is this done on purpose?
->>
->> No, it is an error. The function thermal_acpi_trip_gtsh() should do:
->>
->>          return deci_kelvin_to_millicelsius(hyst);
->>
->>
+> Yes, so the above conversion is correct, right ?
+Correct.
+
+Thanks,
+Srinivas
+
 > 
-> GTSH returns here in tenths of degree Kelvin. For example 15 means 1.5
-> degree K.
+> > I would like to test your next series with thermald. If there is a
+> > problem, it will break every distro.
+> 
+> Great, thanks!
+> 
+> 
 
-Yes, so the above conversion is correct, right ?
-
-> I would like to test your next series with thermald. If there is a
-> problem, it will break every distro.
-
-Great, thanks!
-
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
 
