@@ -2,153 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C58266AA4F
-	for <lists+linux-acpi@lfdr.de>; Sat, 14 Jan 2023 10:06:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02AA866B37A
+	for <lists+linux-acpi@lfdr.de>; Sun, 15 Jan 2023 19:38:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229787AbjANJGi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 14 Jan 2023 04:06:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46854 "EHLO
+        id S231524AbjAOSix (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 15 Jan 2023 13:38:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229620AbjANJGh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 14 Jan 2023 04:06:37 -0500
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3569259E6;
-        Sat, 14 Jan 2023 01:06:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1673687196; x=1705223196;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=w+bh/JTScrGi2k5GFuTgWKil04N/ZfVZFC2I5q32xlE=;
-  b=ADMRDHBswjvqogWffdL63mh/eZYVvnfEDhtcn/deVNxLRepBGHj1I8cQ
-   HG9ziujqUZ8ME5osGavklPeM7QCgBYPmxhOBcDDgfwBXQFOS1ULus6nZW
-   22ihgLaliHdEqqz4wEINypdWJ0JXmqIelQHyhtJsvN+QplnEsCkCEXHea
-   oARxs32s/74pFufUdi1U5EynG2Cdz2mp4mnwwbeZIgz/1IcN+VBdSGi2w
-   HkX04sQHQS+LBJowt/CUs3kGpZ4yfi8qMDioA9qjg5UESPeW3RqYzyzo3
-   avOiiGvd7XU3MKIL8RlSaDbyIyy804IZJmswSnDi3iewuqLZnxgSEPJYr
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10589"; a="303875858"
-X-IronPort-AV: E=Sophos;i="5.97,216,1669104000"; 
-   d="scan'208";a="303875858"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2023 01:06:35 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10589"; a="651775179"
-X-IronPort-AV: E=Sophos;i="5.97,216,1669104000"; 
-   d="scan'208";a="651775179"
-Received: from lkp-server02.sh.intel.com (HELO f1920e93ebb5) ([10.239.97.151])
-  by orsmga007.jf.intel.com with ESMTP; 14 Jan 2023 01:06:33 -0800
-Received: from kbuild by f1920e93ebb5 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pGcUi-000Bxb-2T;
-        Sat, 14 Jan 2023 09:06:32 +0000
-Date:   Sat, 14 Jan 2023 17:05:55 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- c7b1de870ff7fcb5652bc776a42630b07374b09d
-Message-ID: <63c27073.OSK/WBzbTUDR2ZMn%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S231449AbjAOSiv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 15 Jan 2023 13:38:51 -0500
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDDF41285D
+        for <linux-acpi@vger.kernel.org>; Sun, 15 Jan 2023 10:38:50 -0800 (PST)
+Received: by mail-pl1-x636.google.com with SMTP id p24so28202879plw.11
+        for <linux-acpi@vger.kernel.org>; Sun, 15 Jan 2023 10:38:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wgDu1UZCFEKonHoSuKGNi3twt6bIZItIIeZhKOBbBGs=;
+        b=gkJDbq/ocZLiukS/yFhQc7DFgrsi/wU7+B60LLQ0yVk2fGvngqJ0I8n0saVhRbpLAO
+         nyMcnviK+58KEzFnzPrAi+4FHmTgZiPNflvg9AiSW8O48md9PYAWQBjasWA99CTzOSE6
+         j0IrMNu+3GgK0giZqW7lR+R6+rcITGuSNFVFw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wgDu1UZCFEKonHoSuKGNi3twt6bIZItIIeZhKOBbBGs=;
+        b=FCNfFcLYxCHE9ZQwvneX3b2h+MrLhGQ0xFnldQInw4NIglyfh62xEXucKUBsqkw/p9
+         8yF7Q0Pk3CPFUdUe8JvNQsQ/7TxoQbF6PiIxvo1emC609VKt09OMLCDbLVSkUQ/yecfC
+         VUrloK46lAaBvCV6yVWVPRV4f7pTntiIJOt4piqX/mdLrPp8Sw6PVqfu6iKpBu6yj4k8
+         GgfkznTR0yjm0c9khjqgykO64xGPd+wWMQliV8tKLVTAM6qWKZn/YybMIJSFhZhBy6hw
+         bPSfteZQKbcx6u7VdXdxH8K8uBqo5kvNJObSc+f+8eyRlDArU0cdJj80Cpq9b4lmJ5M5
+         jpoA==
+X-Gm-Message-State: AFqh2kqNumuGRtEEe0rBlXpyJRGMzWmmQXnpF3lPaFts6F8WyDNBbQoz
+        cb7P6bdaOMl5+vDAJa6jzk8cig==
+X-Google-Smtp-Source: AMrXdXtwKryXCthfydUDvdFpoMDIWaa6UrOSYCiX1dvWpYv/ubTXTOmRJMZx563hFxmifVBujT/O1A==
+X-Received: by 2002:a17:902:aa8e:b0:191:4575:48aa with SMTP id d14-20020a170902aa8e00b00191457548aamr82447502plr.11.1673807930314;
+        Sun, 15 Jan 2023 10:38:50 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id h13-20020a170902680d00b001947ba0ac8fsm3160052plk.236.2023.01.15.10.38.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Jan 2023 10:38:49 -0800 (PST)
+Date:   Sun, 15 Jan 2023 10:38:48 -0800
+From:   Kees Cook <keescook@chromium.org>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH] ACPICA: Replace fake flexible arrays with flexible array
+ members
+Message-ID: <202301151037.20CC3F0@keescook>
+References: <20221118181538.never.225-kees@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Disposition: inline
+In-Reply-To: <20221118181538.never.225-kees@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: c7b1de870ff7fcb5652bc776a42630b07374b09d  Merge branch 'pm-cpuidle' into bleeding-edge
+On Fri, Nov 18, 2022 at 10:15:51AM -0800, Kees Cook wrote:
+> Functionally identical to ACPICA upstream pull request 813:
+> https://github.com/acpica/acpica/pull/813
 
-elapsed time: 721m
+Any update on this? Upstream is currently unbuildable since October.
 
-configs tested: 71
-configs skipped: 2
+> One-element arrays (and multi-element arrays being treated as
+> dynamically sized) are deprecated[1] and are being replaced with
+> flexible array members in support of the ongoing efforts to tighten the
+> FORTIFY_SOURCE routines on memcpy(), correctly instrument array indexing
+> with UBSAN_BOUNDS, and to globally enable -fstrict-flex-arrays=3.
+> 
+> Replace one-element array with flexible-array member in struct
+> acpi_resource_extended_irq. Replace 4-byte fixed-size array with 4-byte
+> padding in a union with a flexible-array member in struct
+> acpi_pci_routing_table.
+> 
+> This results in no differences in binary output.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+In the meantime, can you take this patch for Linux, and we can wait for
+ACPICA to catch up?
 
-gcc tested configs:
-x86_64                            allnoconfig
-arc                                 defconfig
-alpha                               defconfig
-s390                             allmodconfig
-s390                                defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-i386                              allnoconfig
-i386                                defconfig
-alpha                             allnoconfig
-arm                               allnoconfig
-x86_64                           rhel-8.3-syz
-arc                               allnoconfig
-x86_64                           rhel-8.3-kvm
-x86_64                           rhel-8.3-bpf
-powerpc                           allnoconfig
-x86_64                         rhel-8.3-kunit
-ia64                             allmodconfig
-s390                             allyesconfig
-x86_64                        randconfig-a013
-arc                  randconfig-r043-20230112
-x86_64                        randconfig-a011
-s390                 randconfig-r044-20230112
-i386                          randconfig-a001
-i386                          randconfig-a003
-x86_64                        randconfig-a015
-x86_64                    rhel-8.3-kselftests
-sh                               allmodconfig
-riscv                randconfig-r042-20230112
-mips                             allyesconfig
-m68k                             allyesconfig
-i386                          randconfig-a005
-x86_64                          rhel-8.3-func
-m68k                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-powerpc                          allmodconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-arm                                 defconfig
-i386                          randconfig-a014
-i386                             allyesconfig
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-i386                          randconfig-a012
-i386                          randconfig-a016
-x86_64                        randconfig-a006
-x86_64                           allyesconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-openrisc                         alldefconfig
-mips                 decstation_r4k_defconfig
-sh                          urquell_defconfig
-powerpc                       maple_defconfig
-arm64                               defconfig
+Thanks!
 
-clang tested configs:
-arm                  randconfig-r046-20230112
-x86_64                          rhel-8.3-rust
-hexagon              randconfig-r041-20230112
-x86_64                        randconfig-a012
-hexagon              randconfig-r045-20230112
-i386                          randconfig-a002
-x86_64                        randconfig-a014
-i386                          randconfig-a004
-x86_64                        randconfig-a016
-i386                          randconfig-a006
-i386                          randconfig-a013
-i386                          randconfig-a011
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-i386                          randconfig-a015
-x86_64                        randconfig-a005
+-Kees
+
+> 
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: Robert Moore <robert.moore@intel.com>
+> Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+> Cc: linux-acpi@vger.kernel.org
+> Cc: devel@acpica.org
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+>  include/acpi/acrestyp.h | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/acpi/acrestyp.h b/include/acpi/acrestyp.h
+> index a7fb8ddb3dc6..ee945084d46e 100644
+> --- a/include/acpi/acrestyp.h
+> +++ b/include/acpi/acrestyp.h
+> @@ -332,7 +332,7 @@ struct acpi_resource_extended_irq {
+>  	u8 wake_capable;
+>  	u8 interrupt_count;
+>  	struct acpi_resource_source resource_source;
+> -	u32 interrupts[1];
+> +	u32 interrupts[];
+>  };
+>  
+>  struct acpi_resource_generic_register {
+> @@ -679,7 +679,10 @@ struct acpi_pci_routing_table {
+>  	u32 pin;
+>  	u64 address;		/* here for 64-bit alignment */
+>  	u32 source_index;
+> -	char source[4];		/* pad to 64 bits so sizeof() works in all cases */
+> +	union {
+> +		char pad[4];	/* pad to 64 bits so sizeof() works in all cases */
+> +		DECLARE_FLEX_ARRAY(char, source);
+> +	};
+>  };
+>  
+>  #endif				/* __ACRESTYP_H__ */
+> -- 
+> 2.34.1
+> 
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Kees Cook
