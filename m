@@ -2,197 +2,213 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEE5A66CBFD
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Jan 2023 18:21:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56FAB66CDF9
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Jan 2023 18:53:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234605AbjAPRVN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Jan 2023 12:21:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46240 "EHLO
+        id S235126AbjAPRw7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 Jan 2023 12:52:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234411AbjAPRUv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Jan 2023 12:20:51 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C7CE036B1E;
-        Mon, 16 Jan 2023 08:59:27 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3313015A1;
-        Mon, 16 Jan 2023 09:00:09 -0800 (PST)
-Received: from FVFF77S0Q05N.cambridge.arm.com (FVFF77S0Q05N.cambridge.arm.com [10.1.35.162])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5B0403F67D;
-        Mon, 16 Jan 2023 08:59:10 -0800 (PST)
-Date:   Mon, 16 Jan 2023 16:59:04 +0000
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
-        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
-        nsekhar@ti.com, brgl@bgdev.pl, ulli.kroll@googlemail.com,
-        linus.walleij@linaro.org, shawnguo@kernel.org,
-        Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de,
-        festevam@gmail.com, linux-imx@nxp.com, tony@atomide.com,
-        khilman@kernel.org, krzysztof.kozlowski@linaro.org,
-        alim.akhtar@samsung.com, catalin.marinas@arm.com, will@kernel.org,
-        guoren@kernel.org, bcain@quicinc.com, chenhuacai@kernel.org,
-        kernel@xen0n.name, geert@linux-m68k.org, sammy@sammy.net,
-        monstr@monstr.eu, tsbogend@alpha.franken.de, dinguyen@kernel.org,
-        jonas@southpole.se, stefan.kristiansson@saunalahti.fi,
-        shorne@gmail.com, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, paul.walmsley@sifive.com,
-        palmer@dabbelt.com, aou@eecs.berkeley.edu, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com,
-        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
-        richard@nod.at, anton.ivanov@cambridgegreys.com,
-        johannes@sipsolutions.net, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, acme@kernel.org, alexander.shishkin@linux.intel.com,
-        jolsa@kernel.org, namhyung@kernel.org, jgross@suse.com,
-        srivatsa@csail.mit.edu, amakhalov@vmware.com,
-        pv-drivers@vmware.com, boris.ostrovsky@oracle.com,
-        chris@zankel.net, jcmvbkbc@gmail.com, rafael@kernel.org,
-        lenb@kernel.org, pavel@ucw.cz, gregkh@linuxfoundation.org,
-        mturquette@baylibre.com, sboyd@kernel.org,
-        daniel.lezcano@linaro.org, lpieralisi@kernel.org,
-        sudeep.holla@arm.com, agross@kernel.org, andersson@kernel.org,
-        konrad.dybcio@linaro.org, anup@brainfault.org,
-        thierry.reding@gmail.com, jonathanh@nvidia.com,
-        jacob.jun.pan@linux.intel.com, atishp@atishpatra.org,
-        Arnd Bergmann <arnd@arndb.de>, yury.norov@gmail.com,
-        andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk,
-        dennis@kernel.org, tj@kernel.org, cl@linux.com,
-        rostedt@goodmis.org, mhiramat@kernel.org, frederic@kernel.org,
-        paulmck@kernel.org, pmladek@suse.com, senozhatsky@chromium.org,
-        john.ogness@linutronix.de, juri.lelli@redhat.com,
-        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-        bsegall@google.com, mgorman@suse.de, bristot@redhat.com,
-        vschneid@redhat.com, ryabinin.a.a@gmail.com, glider@google.com,
-        andreyknvl@gmail.com, dvyukov@google.com,
-        vincenzo.frascino@arm.com,
-        Andrew Morton <akpm@linux-foundation.org>, jpoimboe@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org,
-        linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH v3 00/51] cpuidle,rcu: Clean up the mess
-Message-ID: <Y8WCWAuQSHN651dA@FVFF77S0Q05N.cambridge.arm.com>
-References: <20230112194314.845371875@infradead.org>
+        with ESMTP id S232803AbjAPRwW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Jan 2023 12:52:22 -0500
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D582430B15
+        for <linux-acpi@vger.kernel.org>; Mon, 16 Jan 2023 09:34:58 -0800 (PST)
+Received: by mail-lf1-x12f.google.com with SMTP id o20so11713049lfk.5
+        for <linux-acpi@vger.kernel.org>; Mon, 16 Jan 2023 09:34:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=semihalf.com; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MmraRpuO5ELeElFfAOw0Nh37ZSQFfwxPPIwwqMsmgL4=;
+        b=V+h/CQdJOWBxk+dGuEIFekryknJOcNnk7U+yyq0TPPCGK8xYOAo7uJSEbwsoa5kmwZ
+         rLDJwlQpGHrKqWG+5jfXbkpdahfno/3bqM5m+SdU/7F/z2SHcoxHCIkgQ5PpxC5sxcc4
+         PaQQPRi3eJciPzEOPQQGcHx9s9Io5r7y0Bqzdt6TsUkl5F/rdkY+ILog/WnN4eGE4IF0
+         RR7seekRYx/9W3H6hRdmPTUL8tkQQb3rzsL1L//Q/b0VU7U06Fckm6STuBl6tzuvKxfL
+         fyp4vVMR1yWVnVq5wSj7O/JH53eWH+2GRGrLeRUGnWaH+u5Iv3yIzDXBMOYhPWx+62/y
+         f8KA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MmraRpuO5ELeElFfAOw0Nh37ZSQFfwxPPIwwqMsmgL4=;
+        b=zMQk2jIBWLNiUW1AgUp4VqI8ylvDOVqHtXvh/vMgGcbHC0F3xQ/aFrJGNx02eG8Zeu
+         iDmSxEc/WithaZKLblJj04lTQ8lkDlS2bL3QHWSG4JjSQqYpsKGeVxRueAWTLFlhsee1
+         WmZroURnY9SIomzmY11TovgKhxVRWWOKDv1QmeZ/ABv1e5iQ99bzizMJh3QoxTDe0xrF
+         Ya+SyA+p8ARC2IkACoQBycglolNl2Xx8vRn/eN4SfZfF4KZDjCr7qTPqTfwtz72mHHnT
+         RU4EnP1uQ609ZxPAstjRMXTfWNu09lUs34cM152+I2bUN2pzGqt1j5Oqpa99CBxuMSDB
+         2pkQ==
+X-Gm-Message-State: AFqh2krcDX8G7fNQ4jOBjo46wIKSvzkRxzI2sCsXJ15vYAok9JguUTsj
+        NTOMqf5AVcjgJOCBpAAB16X3DQ==
+X-Google-Smtp-Source: AMrXdXuGyZsMSygYIaoRf9XpgzdIX4imHYpJs+W1uAV3qfHH1KN67g1oN78E5JS6WCPlxYhV0udbng==
+X-Received: by 2002:ac2:599d:0:b0:4b5:b8a9:b42c with SMTP id w29-20020ac2599d000000b004b5b8a9b42cmr24001064lfn.17.1673890497084;
+        Mon, 16 Jan 2023 09:34:57 -0800 (PST)
+Received: from gilgamesh.lab.semihalf.net ([83.142.187.85])
+        by smtp.gmail.com with ESMTPSA id k20-20020a2e8894000000b0028b7f51414fsm707333lji.80.2023.01.16.09.34.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Jan 2023 09:34:56 -0800 (PST)
+From:   Marcin Wojtas <mw@semihalf.com>
+To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org
+Cc:     rafael@kernel.org, andriy.shevchenko@linux.intel.com,
+        sean.wang@mediatek.com, Landen.Chao@mediatek.com,
+        linus.walleij@linaro.org, andrew@lunn.ch, vivien.didelot@gmail.com,
+        f.fainelli@gmail.com, olteanv@gmail.com, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        linux@armlinux.org.uk, hkallweit1@gmail.com, mw@semihalf.com,
+        jaz@semihalf.com, tn@semihalf.com, Samer.El-Haj-Mahmoud@arm.com
+Subject: [net-next: PATCH v4 0/8] DSA: switch to fwnode_/device_
+Date:   Mon, 16 Jan 2023 18:34:12 +0100
+Message-Id: <20230116173420.1278704-1-mw@semihalf.com>
+X-Mailer: git-send-email 2.29.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230112194314.845371875@infradead.org>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jan 12, 2023 at 08:43:14PM +0100, Peter Zijlstra wrote:
-> Hi All!
+Hi,
 
-Hi Peter,
+After a longer while this is a re-spin of the DSA migration
+to fwnode_/device_ API.
+It addresses all comments from the previous iteration - the
+details are summarized in the changelog section below.
+For reference, here is the discussion under v3.
+https://lore.kernel.org/netdev/20220727064321.2953971-1-mw@semihalf.com/t/
 
-> The (hopefully) final respin of cpuidle vs rcu cleanup patches. Barring any
-> objections I'll be queueing these patches in tip/sched/core in the next few
-> days.
+The ultimate goal of these changes is to prepare the DSA to use ACPI in
+future, which works locally on my branches [1][2], however, this part
+needs to be handled separately on the lists, as discussed in v1.
 
-I'm sorry to have to bear some bad news on that front. :(
+The patchset is based and tested on top of
+pure net-next/main branch. Each commit was checked on:
+* On EspressoBIN
+* On SolidRun CN913x CEx7 Eval Board 
 
-I just had a go at testing this on a Juno dev board, using your queue.git
-sched/idle branch and defconfig + CONFIG_PROVE_LOCKING=y +
-CONFIG_DEBUG_LOCKDEP=y + CONFIG_DEBUG_ATOMIC_SLEEP=y.
+Any comments or remarks will be appreciated.
 
-With that I consistently see RCU at boot time (log below).
+Best regards,
+Marcin
 
-| =============================
-| WARNING: suspicious RCU usage
-| 6.2.0-rc3-00051-gced9b6eecb31 #1 Not tainted
-| -----------------------------
-| include/trace/events/ipi.h:19 suspicious rcu_dereference_check() usage!
-| 
-| other info that might help us debug this:
-| 
-| 
-| rcu_scheduler_active = 2, debug_locks = 1
-| RCU used illegally from extended quiescent state!
-| no locks held by swapper/0/0.
-| 
-| stack backtrace:
-| CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.2.0-rc3-00051-gced9b6eecb31 #1
-| Hardware name: ARM LTD ARM Juno Development Platform/ARM Juno Development Platform, BIOS EDK II May 16 2021
-| Call trace:
-|  dump_backtrace.part.0+0xe4/0xf0
-|  show_stack+0x18/0x30
-|  dump_stack_lvl+0x98/0xd4
-|  dump_stack+0x18/0x34
-|  lockdep_rcu_suspicious+0xf8/0x10c
-|  trace_ipi_raise+0x1a8/0x1b0
-|  arch_irq_work_raise+0x4c/0x70
-|  __irq_work_queue_local+0x48/0x80
-|  irq_work_queue+0x50/0x80
-|  __wake_up_klogd.part.0+0x98/0xe0
-|  defer_console_output+0x20/0x30
-|  vprintk+0x98/0xf0
-|  _printk+0x5c/0x84
-|  lockdep_rcu_suspicious+0x34/0x10c
-|  trace_lock_acquire+0x174/0x180
-|  lock_acquire+0x3c/0x8c
-|  _raw_spin_lock_irqsave+0x70/0x150
-|  down_trylock+0x18/0x50
-|  __down_trylock_console_sem+0x3c/0xd0
-|  console_trylock+0x28/0x90
-|  vprintk_emit+0x11c/0x354
-|  vprintk_default+0x38/0x4c
-|  vprintk+0xd4/0xf0
-|  _printk+0x5c/0x84
-|  lockdep_rcu_suspicious+0x34/0x10c
-|  printk_sprint+0x238/0x240
-|  vprintk_store+0x32c/0x4b0
-|  vprintk_emit+0x104/0x354
-|  vprintk_default+0x38/0x4c
-|  vprintk+0xd4/0xf0
-|  _printk+0x5c/0x84
-|  lockdep_rcu_suspicious+0x34/0x10c
-|  trace_irq_disable+0x1ac/0x1b0
-|  trace_hardirqs_off+0xe8/0x110
-|  cpu_suspend+0x4c/0xfc
-|  psci_cpu_suspend_enter+0x58/0x6c
-|  psci_enter_idle_state+0x70/0x170
-|  cpuidle_enter_state+0xc4/0x464
-|  cpuidle_enter+0x38/0x50
-|  do_idle+0x230/0x2c0
-|  cpu_startup_entry+0x24/0x30
-|  rest_init+0x110/0x190
-|  arch_post_acpi_subsys_init+0x0/0x18
-|  start_kernel+0x6f8/0x738
-|  __primary_switched+0xbc/0xc4
+[1] https://github.com/semihalf-wojtas-marcin/Linux-Kernel/commits/dsa-acpi-dev
+[2] https://github.com/semihalf-wojtas-marcin/edk2-platforms/commits/dsa-acpi-v2
 
-IIUC what's happenign here is the PSCI cpuidle driver has entered idle and RCU
-is no longer watching when arm64's cpu_suspend() manipulates DAIF. Our
-local_daif_*() helpers poke lockdep and tracing, hence the call to
-trace_hardirqs_off() and the RCU usage.
+Changelog v3 -> v4:
+1/8:
+  * Improve commit message.
 
-I think we need RCU to be watching all the way down to cpu_suspend(), and it's
-cpu_suspend() that should actually enter/exit idle context. That and we need to
-make cpu_suspend() and the low-level PSCI invocation noinstr.
+2/8:
+  * Improve handling the old 'fixed-link' binding in
+    fwnode_phy_is_fixed_link()
+  * Stop shadowing the real error codes in fwnode_phy_register_fixed_link()
 
-I'm not sure whether 32-bit will have a similar issue or not.
+3/8 
+  * Make "label" property optional again
+  * Fix mt7530 compile error reported by kernel test robot <lkp@intel.com>
+  * Simplify code update in mv88e6xxx
 
-I'm surprised no-one else who has tested has seen this; I suspect people
-haven't enabled lockdep and friends. :/
+4/8
+  * Improve commit message
 
-Thanks,
-Mark. 
+5/8
+  * Improve commit message
+
+7/8
+  * Update dev_dbg message
+
+8/8
+  * Move fwnode declaration
+  * Simplify obtaining match_data 
+
+Changelog v2 -> v3:
+1/8:
+  * Replace forward declaration s/device_node/fwnode_handle/ in
+    include/linux/phy_fixed.h
+  * Add Florian's RB
+
+* 3/8:
+  * Extend lines width in the commit message.
+  * While dropping dp->dn fields in the drivers, switch to
+    fwnode_ API in the updated places.
+
+* 5/8:
+  * Update routine name to fwnode_find_parent_dev_match()
+  * Improve comment section
+  * Move the definition adjacent to a group of fwnode
+    APIs operating on parents
+
+Changelog v1 -> v2:
+1/8
+  * Drop unnecessary check in fixed_phy_get_gpiod()
+  * Improve line breaking
+  * Use device_set_node & dev_fwnode
+
+2/8
+  * Switch to fwnode_property_count_u32 and fix comparison
+    in if statement.
+
+3/8
+  * Drop dn usage entirely and use dp->fwnode only. Update
+    all dependent drivers to use to_of_node.
+  * Use device_set_node, dev_fwnode & device_get_named_child_node
+  * Replace '_of' routines suffix with '_fw'
+
+4/8
+  * Use device_set_node
+
+5/8
+  * New patch
+
+6/8 
+  * Use device_match_fwnode
+  * Restore EXPORT_SYMBOL()
+
+7/8
+  * Get rid of of_mdiobus_register_device 
+
+8/8
+  * Use dev_fwnode in mv88e6xxx_probe 
+  * Simplify condition checks in mv88e6xxx_probe as suggested by Andy
+
+Marcin Wojtas (8):
+  net: phy: fixed_phy: switch to fwnode_ API
+  net: mdio: switch fixed-link PHYs API to fwnode_
+  net: dsa: switch to device_/fwnode_ APIs
+  net: mvpp2: initialize port fwnode pointer
+  device property: introduce fwnode_find_parent_dev_match
+  net: core: switch to fwnode_find_net_device_by_node()
+  net: mdio: introduce fwnode_mdiobus_register_device()
+  net: dsa: mv88e6xxx: switch to device_/fwnode_ APIs
+
+ include/linux/etherdevice.h                     |   1 +
+ include/linux/fwnode_mdio.h                     |  22 ++++
+ include/linux/of_net.h                          |   6 -
+ include/linux/phy_fixed.h                       |   6 +-
+ include/linux/property.h                        |   1 +
+ include/net/dsa.h                               |   2 +-
+ net/dsa/port.h                                  |   4 +-
+ drivers/base/property.c                         |  23 ++++
+ drivers/net/dsa/mt7530.c                        |   6 +-
+ drivers/net/dsa/mv88e6xxx/chip.c                |  57 ++++-----
+ drivers/net/dsa/qca/qca8k-8xxx.c                |   2 +-
+ drivers/net/dsa/realtek/rtl8365mb.c             |   2 +-
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c |   2 +-
+ drivers/net/mdio/fwnode_mdio.c                  | 125 ++++++++++++++++++++
+ drivers/net/mdio/of_mdio.c                      | 112 +-----------------
+ drivers/net/phy/fixed_phy.c                     |  39 +++---
+ net/core/net-sysfs.c                            |  25 ++--
+ net/dsa/dsa.c                                   | 118 +++++++++---------
+ net/dsa/port.c                                  |  85 +++++++------
+ net/dsa/slave.c                                 |   7 +-
+ 20 files changed, 341 insertions(+), 304 deletions(-)
+
+-- 
+2.29.0
+
