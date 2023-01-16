@@ -2,76 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83CBC66CED7
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Jan 2023 19:30:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA22966CF9A
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Jan 2023 20:37:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233675AbjAPSas (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Jan 2023 13:30:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41254 "EHLO
+        id S233716AbjAPTh1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 Jan 2023 14:37:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233644AbjAPSa3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Jan 2023 13:30:29 -0500
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 151A75BB4;
-        Mon, 16 Jan 2023 10:16:23 -0800 (PST)
-Received: by mail-ej1-x62c.google.com with SMTP id hw16so58106217ejc.10;
-        Mon, 16 Jan 2023 10:16:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0kOKIRWpF9HuOzAZKrZQZpcRpAWjMLxyYQdRXeMnc+c=;
-        b=Kyr7d9HQhTj9x1xmzYyrZB3d0rVHrJf8i53USWmrcDBJyxlpdTJVwYYSRvzP5nJRZe
-         iTGDb78T6GxkSal2X547pTji9rOvN2E7XbXayq77KtCR5vzVyCmL1nKssju5eYmw9CHo
-         uMjyWYumwhujA63MYpph3klVLmy3xCvCzn3JFntG0S6D2LSc+5hXs2eYoSpkVbQSr1xJ
-         K22Jrho6ZCAkQXpMFZ/JTU0RU6NWgxxQg/AsmK2KsL1hGwdIdR6OSqbt61fwfQHJ6arv
-         PPUFF8EtlXlYzgYVs8CW9R7AIoA4CZiijxY7xBGXARb5DZNaqB/AKV8kFEOeab2j9FWh
-         GHdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0kOKIRWpF9HuOzAZKrZQZpcRpAWjMLxyYQdRXeMnc+c=;
-        b=sYTNsYoSDnaJRqngAH7CUZUzZGJ2auCEgyVizikgKsXfM0zfWufNPwGODISW/xpscv
-         MO1oh5imBK44k+EOM5/hwwu2PqTdH5B8BUoaQpORR089YUzxRtllIfs25lF37R0pCq8t
-         LIrcu9M6/S2EOxImt2HXa+C6Dq/ggJt33iwHQrfOGtH+96k1L0ds9+2uQTic1qHXv5e3
-         yJcCNBWBb+3tPRRUa+GvWgCsqS9ma4fxgVDDQRGIOEOyxX+NRVXpcDS6XNUL+DaC+AGd
-         vbxV9hnS8Fcb7uOApP9y8vCs7rKPv3p5mNc6S+oe3kUxLrs0LSAWR2LFo58zgA4ZXE1K
-         Q0gw==
-X-Gm-Message-State: AFqh2kpLShf1kPVBAYjB91t4eBjacRh0BuTlWFh8Lbw3kjMnz4+c3FEY
-        5ADPzohh4NstnDepIWooJAQ=
-X-Google-Smtp-Source: AMrXdXvmQKvVKQCixeZrgIEJeCLdwRT5FQvF0jau7jT0Nl1xt+V24BGYE/CueryjLU8tC3bG7QK0hQ==
-X-Received: by 2002:a17:906:7188:b0:7c1:eb:b2a7 with SMTP id h8-20020a170906718800b007c100ebb2a7mr13030148ejk.13.1673892981577;
-        Mon, 16 Jan 2023 10:16:21 -0800 (PST)
-Received: from skbuf ([188.27.185.68])
-        by smtp.gmail.com with ESMTPSA id r1-20020a17090609c100b007e0e2e35205sm12230589eje.143.2023.01.16.10.16.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Jan 2023 10:16:21 -0800 (PST)
-Date:   Mon, 16 Jan 2023 20:16:18 +0200
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     Marcin Wojtas <mw@semihalf.com>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
-        rafael@kernel.org, andriy.shevchenko@linux.intel.com,
-        sean.wang@mediatek.com, Landen.Chao@mediatek.com,
-        linus.walleij@linaro.org, andrew@lunn.ch, vivien.didelot@gmail.com,
-        f.fainelli@gmail.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, hkallweit1@gmail.com,
-        jaz@semihalf.com, tn@semihalf.com, Samer.El-Haj-Mahmoud@arm.com
-Subject: Re: [net-next: PATCH v4 2/8] net: mdio: switch fixed-link PHYs API
- to fwnode_
-Message-ID: <20230116181618.2iz54jywj7rqzygu@skbuf>
-References: <20230116173420.1278704-1-mw@semihalf.com>
- <20230116173420.1278704-3-mw@semihalf.com>
- <Y8WOVVnFInEoXLVX@shell.armlinux.org.uk>
+        with ESMTP id S232975AbjAPTh0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Jan 2023 14:37:26 -0500
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2054.outbound.protection.outlook.com [40.107.220.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE5162B615;
+        Mon, 16 Jan 2023 11:37:25 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ECBaEOu+zG83bweBJPRuujfsxFVd3bG6kXvq70lqIiTslIRGQzj+qq1xuuoGv6pdh02RXjEiQ2ADl+cWM2cflZ3iZtADBur8rQIuYwujDvmhFT/ANccCViPn9h52ZDMnbWlNEDMwWDjZWQrpzikKtBkwgdXu79WDbu4060e+F03AA1jtmqG9LhxR+kdA/548hHQGc3R8MQlZEi6NJ00eughu4k917iAhCF9aaurHWAN5foiPhESVIenm7/xdx4oUruRhPXQTY8A3vRhog9LtSFRPyPpflzdQna9P+1H2+GscIsxHDMJFpLvPCkV6uPporzSRvdGNdeAyc4HxJQ2LjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CJ47lhKQqIGsZ4KANVU3g2b4eXIyyf7yBWbmXFlKTzg=;
+ b=du2GYdgUFzEeyPDlSmVNaJgs8IOsHMJ+aN9fFkf8AmjkdForJLT7lH7/k38uY3CN592SVhFh7uFPw7W+b88KMSMmUtAZkJAyCKWk85AUoNx32YtPTl3hrWy58L9Q6ziuNJTMTpdXniJajVSsOlGbJjRpmDoroWeRt9264+EPtk6EvarJkwO8aQxsNdFo1UukQs1k60E+cfmuveCw4jyQb/1TQBHB6Twj4H0Dxrc9qeZ1Tv1E7JHvOFpXTvVynx2FYWxYB5+pilnPVDPiIHOI0/c0d9r0sWOWAz/HyCneLzVNuiwjl+qdYN9O0Kmlq1hgcBOkQP5ya7LzAZe0CzY5CQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CJ47lhKQqIGsZ4KANVU3g2b4eXIyyf7yBWbmXFlKTzg=;
+ b=DPRZVU09FyxxAgbkPK8ni98s6PInxDH7W5n8BAcwvH9PPMJJbVRJGjS9wS+UINytzO8mDvH81OUskxrjXOkxuxFaMZoX5ACIGCc+qFRg+6e9/KexSXb7rDtgs/jYIt2AsgddiQmAguozUKI3IZPy6KQ0KuauAZ8y2efv61BY6Xs=
+Received: from BN8PR04CA0003.namprd04.prod.outlook.com (2603:10b6:408:70::16)
+ by IA1PR12MB6115.namprd12.prod.outlook.com (2603:10b6:208:3e9::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5986.23; Mon, 16 Jan
+ 2023 19:37:24 +0000
+Received: from BN8NAM11FT105.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:70:cafe::5e) by BN8PR04CA0003.outlook.office365.com
+ (2603:10b6:408:70::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.19 via Frontend
+ Transport; Mon, 16 Jan 2023 19:37:24 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN8NAM11FT105.mail.protection.outlook.com (10.13.176.183) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6002.13 via Frontend Transport; Mon, 16 Jan 2023 19:37:23 +0000
+Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Mon, 16 Jan
+ 2023 13:37:22 -0600
+From:   Mario Limonciello <mario.limonciello@amd.com>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Raul E Rangel <rrangel@chromium.org>,
+        <linux-gpio@vger.kernel.org>, <linux-acpi@vger.kernel.org>
+CC:     <regressions@lists.linux.dev>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH 0/2] Fix a spurious wakeup regression
+Date:   Mon, 16 Jan 2023 13:37:00 -0600
+Message-ID: <20230116193702.31356-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y8WOVVnFInEoXLVX@shell.armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8NAM11FT105:EE_|IA1PR12MB6115:EE_
+X-MS-Office365-Filtering-Correlation-Id: c2e65e1b-850b-40f7-1857-08daf7f9178f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: lTGqOe62Cf8albc0LVKbxeazanVq0Ik/mVRlg6fvKbL6upqFQDWHhApkGdA7Hc/P3VjWX21LTIBm5PJr+nIT5ZDSO+LJAJh4b5NHPxqBWfX0hAME7XQwfXpxZwQAWq4cRPsjWsqg5Xbe7eHMy6ypbf0pl6rDWViwCA6k1QM0cL10FJ/O8eP53blaBwIb6P6sU1cai6MDNLj9oHW4e2gevng9/aLqpYSh8sKrhj405jwI9ktNKqbF3zfX9v4D3/zTSO4eM5HM1eWLpg+bJJ34DlY8I4k/PZXRb233ePRbZt3t/4UFMmlS6OAp23Kn7cjG4449zthRqAQg/7+iOea+5OHLGgMExMmXnry4f/NJYei+hcx15OfYki4impVEnc/5W+8rGzPeH6hAAddShMvm+tiMZFZxUXXNqZpO+ytFXnITnxONlB4ltCrU6VIf/K8zMuyXiU8MCwdJ+Sex/csPQgRsuzPoUC3qIWO934m//yEygcxKKsqlDpcYTXbC6h904iY9ZMAsA28kObfhuLruqDpoZXZ2/MnSPWtxgyfdqu7yz1HrlhZOA6EX3Xg4LmLYjqtbqWpFZxEXMxI+98lViK+7YNoqTM6B0L3JpgxHZzi6pDpAkbKYjyM+pihTT2UOnBgBqpXlETxwJHUhbGXlWkIT8qMLSGg1gLjRH/63rounq8itfrDBBui0MwMzDRVtEbH1Xv+oaottFYZTdgyEtH2nM4uQtbSchmtnjDqvlRk=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230022)(4636009)(396003)(136003)(39860400002)(346002)(376002)(451199015)(40470700004)(36840700001)(46966006)(36756003)(356005)(86362001)(8936002)(44832011)(70586007)(8676002)(70206006)(4744005)(4326008)(2906002)(81166007)(36860700001)(82740400003)(83380400001)(5660300002)(7696005)(110136005)(40460700003)(316002)(6666004)(54906003)(41300700001)(40480700001)(82310400005)(478600001)(426003)(47076005)(2616005)(336012)(16526019)(1076003)(26005)(186003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2023 19:37:23.9736
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2e65e1b-850b-40f7-1857-08daf7f9178f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT105.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6115
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,19 +100,27 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 16, 2023 at 05:50:13PM +0000, Russell King (Oracle) wrote:
-> On Mon, Jan 16, 2023 at 06:34:14PM +0100, Marcin Wojtas wrote:
-> > fixed-link PHYs API is used by DSA and a number of drivers
-> > and was depending on of_. Switch to fwnode_ so to make it
-> > hardware description agnostic and allow to be used in ACPI
-> > world as well.
-> 
-> Would it be better to let the fixed-link PHY die, and have everyone use
-> the more flexible fixed link implementation in phylink?
+commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+changed the policy such that I2C touchpads may be able to wake up the
+system by default if the system is configured as such.
 
-Would it be even better if DSA had some driver-level prerequisites to
-impose for ACPI support - like phylink support rather than adjust_link -
-and we would simply branch off to a dsa_shared_port_link_register_acpi()
-function, leaving the current dsa_shared_port_link_register_of() alone,
-with all its workarounds and hacks? I don't believe that carrying all
-that logic over to a common fwnode based API is the proper way forward.
+This had an unintended consequence on a Clevo NL50RU where the system
+would wakeup immediately after suspending the system.
+
+Reviewing the schematics and ACPI tables this appears to be a bug in
+the ACPI tables, but it was exposed by that change.
+
+To avoid the system waking up immediately after suspend disable wakeups
+by default on this system.
+
+Mario Limonciello (2):
+  gpiolib: acpi: Allow ignoring wake capability on pins that aren't in
+    _AEI
+  gpiolib: acpi: Add a ignore wakeup quirk for Clevo NL5xRU
+
+ drivers/gpio/gpiolib-acpi.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
+
+-- 
+2.34.1
+
