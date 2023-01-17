@@ -2,135 +2,155 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C663D66E2CA
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jan 2023 16:52:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6DF666E2E3
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jan 2023 16:57:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233908AbjAQPw0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Jan 2023 10:52:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51028 "EHLO
+        id S229517AbjAQP5d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Jan 2023 10:57:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230510AbjAQPwG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Jan 2023 10:52:06 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FDC78A5F;
-        Tue, 17 Jan 2023 07:51:30 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S229583AbjAQP5b (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Jan 2023 10:57:31 -0500
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD3D82B603;
+        Tue, 17 Jan 2023 07:57:30 -0800 (PST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 355AEB816AC;
-        Tue, 17 Jan 2023 15:51:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAECC433D2;
-        Tue, 17 Jan 2023 15:51:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673970687;
-        bh=LAHU/ov+crM226aErjpc7ArqwNV9Y9BlNGZh0t5iruI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=EQ8+CmdAqB2tDt+rySG0KGugqrfpCd4chqpIYTH458UkTgbyK46sZlHxXdlMnwszH
-         pt5SfD3O7wz9lNcuMBKVwHup9sc0teCKoeXQzfkHmarPLfh3UHAW3gbyZBPF/sZsY7
-         zu2J6nqwEXKkdeEkYgMzZbgMtKVufCiKsg7R5KV+po0xKi0m/0Lnh1ASDe+gUVcfSt
-         1aMWe4Pup7FgeiwpKGD0aE0fmaBCmwJp2xUcg83lD1a6uX75mRmSqJr+8XV/SMXwrA
-         zB5A1io7kD1m7LXBDNiECCREf/vKbRn0+UNC0+XHihawKI52WIrhbikQre6S+PBX2f
-         VxNO0PryV5VRA==
-Received: by mail-lj1-f175.google.com with SMTP id o7so33217842ljj.8;
-        Tue, 17 Jan 2023 07:51:27 -0800 (PST)
-X-Gm-Message-State: AFqh2kpnMnE/+0llkb5EIbj/9P6P+ucRRy7pX275F9I5VnGDVlH8XwDy
-        lPcN3cebVyGCFOdzE/BbFHV0GUcQTnaU627ApXE=
-X-Google-Smtp-Source: AMrXdXuQGfpw1SP+KWFNPYv1WII/g2JF24ofbpB9adMX+emOrcrwLULN5i7a9+BFoLtbsdXiITzqFIWa9xHEv/dMi0I=
-X-Received: by 2002:a2e:9449:0:b0:28b:9755:77a with SMTP id
- o9-20020a2e9449000000b0028b9755077amr358957ljh.152.1673970685853; Tue, 17 Jan
- 2023 07:51:25 -0800 (PST)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 73ABD1FE3C;
+        Tue, 17 Jan 2023 15:57:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1673971049; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=rpgawVd99OX2fg9gFrA1SwUU/eb0iIN1sOqRSVcIZeg=;
+        b=NbvuNjaeyuSDWK9T41o1ZE6yenmovxH9xNEbwB5mNsaF1w95I3+NfQR3NVRVbXgKYnOrIb
+        jDY4z0V8u39WRheGZ6pG5ywgN5iPQtMBC5HhRnpufbaWbqgokzdn8cLpsimyBIppRuQMfH
+        O/+P9lWyKRqkYvG7tjuiiPpeTiFfqag=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1B7D913357;
+        Tue, 17 Jan 2023 15:57:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id pi9ZBWnFxmM6XQAAMHmgww
+        (envelope-from <jgross@suse.com>); Tue, 17 Jan 2023 15:57:29 +0000
+From:   Juergen Gross <jgross@suse.com>
+To:     linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-acpi@vger.kernel.org
+Cc:     Juergen Gross <jgross@suse.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= 
+        <marmarek@invisiblethingslab.com>
+Subject: [PATCH v2] acpi: fix suspend with Xen PV
+Date:   Tue, 17 Jan 2023 16:57:23 +0100
+Message-Id: <20230117155724.22940-1-jgross@suse.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-References: <20230112133319.3615177-1-ardb@kernel.org> <CAJZ5v0iuwwDjDQDsdP3uvAO18EOcWXzCS6Yu0g62q40Em0vSOA@mail.gmail.com>
-In-Reply-To: <CAJZ5v0iuwwDjDQDsdP3uvAO18EOcWXzCS6Yu0g62q40Em0vSOA@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 17 Jan 2023 16:51:14 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXF1OfDrtWNt1VAE4Z1_bvhUKUUrqie0LroXXxsm3jAM0w@mail.gmail.com>
-Message-ID: <CAMj1kXF1OfDrtWNt1VAE4Z1_bvhUKUUrqie0LroXXxsm3jAM0w@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: PRM: Check whether EFI runtime is available
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     linux-efi@vger.kernel.org, stable@vger.kernel.org,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 17 Jan 2023 at 13:29, Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Thu, Jan 12, 2023 at 2:33 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > The ACPI PRM address space handler calls efi_call_virt_pointer() to
-> > execute PRM firmware code, but doing so is only permitted when the EFI
-> > runtime environment is available. Otherwise, such calls are guaranteed
-> > to result in a crash, and must therefore be avoided.
-> >
-> > Given that the EFI runtime services may become unavailable after a crash
-> > occurring in the firmware, we need to check this each time the PRM
-> > address space handler is invoked. If the EFI runtime services were not
-> > available at registration time to being with, don't install the address
-> > space handler at all.
-> >
-> > Cc: <stable@vger.kernel.org>
-> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > Cc: Len Brown <lenb@kernel.org>
-> > Cc: linux-acpi@vger.kernel.org
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> > v2: check both at registration and at invocation time
-> >
-> >  drivers/acpi/prmt.c | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> >
-> > diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-> > index 998101cf16e47145..3d4c4620f9f95309 100644
-> > --- a/drivers/acpi/prmt.c
-> > +++ b/drivers/acpi/prmt.c
-> > @@ -236,6 +236,11 @@ static acpi_status acpi_platformrt_space_handler(u32 function,
-> >         efi_status_t status;
-> >         struct prm_context_buffer context;
-> >
-> > +       if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
-> > +               pr_err_ratelimited("PRM: EFI runtime services no longer available\n");
-> > +               return AE_NO_HANDLER;
->
-> This error code is only used in GPE handling ATM.
->
-> The one that actually causes ACPICA to log a "no handler" error (in
-> acpi_ex_access_region()) is AE_NOT_EXIST.  Should it be used here?
->
+Commit f1e525009493 ("x86/boot: Skip realmode init code when running as
+Xen PV guest") missed one code path accessing real_mode_header, leading
+to dereferencing NULL when suspending the system under Xen:
 
-Not sure. Any error value is returned to the caller, the only
-difference is that AE_NOT_EXIST and AE_NOT_IMPLEMENTED trigger the
-non-ratelimited logging machinery.
+    [  348.284004] PM: suspend entry (deep)
+    [  348.289532] Filesystems sync: 0.005 seconds
+    [  348.291545] Freezing user space processes ... (elapsed 0.000 seconds) done.
+    [  348.292457] OOM killer disabled.
+    [  348.292462] Freezing remaining freezable tasks ... (elapsed 0.104 seconds) done.
+    [  348.396612] printk: Suspending console(s) (use no_console_suspend to debug)
+    [  348.749228] PM: suspend devices took 0.352 seconds
+    [  348.769713] ACPI: EC: interrupt blocked
+    [  348.816077] BUG: kernel NULL pointer dereference, address: 000000000000001c
+    [  348.816080] #PF: supervisor read access in kernel mode
+    [  348.816081] #PF: error_code(0x0000) - not-present page
+    [  348.816083] PGD 0 P4D 0
+    [  348.816086] Oops: 0000 [#1] PREEMPT SMP NOPTI
+    [  348.816089] CPU: 0 PID: 6764 Comm: systemd-sleep Not tainted 6.1.3-1.fc32.qubes.x86_64 #1
+    [  348.816092] Hardware name: Star Labs StarBook/StarBook, BIOS 8.01 07/03/2022
+    [  348.816093] RIP: e030:acpi_get_wakeup_address+0xc/0x20
 
-Given that neither value seems appropriate (the region is implemented
-and it has a handler), and we already emit a rate limited error
-message, I think AE_NOT_EXIST is not the right choice.
+Fix that by adding an optional acpi callback allowing to skip setting
+the wakeup address, as in the Xen PV case this will be handled by the
+hypervisor anyway.
 
+Fixes: f1e525009493 ("x86/boot: Skip realmode init code when running as Xen PV guest")
+Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+---
+V2:
+- new approach, avoid calling acpi_get_wakeup_address()
+---
+ arch/x86/include/asm/acpi.h | 8 ++++++++
+ drivers/acpi/sleep.c        | 6 +++++-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
 
->
-> > +       }
-> > +
-> >         /*
-> >          * The returned acpi_status will always be AE_OK. Error values will be
-> >          * saved in the first byte of the PRM message buffer to be used by ASL.
-> > @@ -325,6 +330,11 @@ void __init init_prmt(void)
-> >
-> >         pr_info("PRM: found %u modules\n", mc);
-> >
-> > +       if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
-> > +               pr_err("PRM: EFI runtime services unavailable\n");
-> > +               return;
-> > +       }
-> > +
-> >         status = acpi_install_address_space_handler(ACPI_ROOT_OBJECT,
-> >                                                     ACPI_ADR_SPACE_PLATFORM_RT,
-> >                                                     &acpi_platformrt_space_handler,
-> > --
-> > 2.39.0
-> >
+diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
+index 65064d9f7fa6..8eb74cf386db 100644
+--- a/arch/x86/include/asm/acpi.h
++++ b/arch/x86/include/asm/acpi.h
+@@ -14,6 +14,7 @@
+ #include <asm/mmu.h>
+ #include <asm/mpspec.h>
+ #include <asm/x86_init.h>
++#include <asm/cpufeature.h>
+ 
+ #ifdef CONFIG_ACPI_APEI
+ # include <asm/pgtable_types.h>
+@@ -63,6 +64,13 @@ extern int (*acpi_suspend_lowlevel)(void);
+ /* Physical address to resume after wakeup */
+ unsigned long acpi_get_wakeup_address(void);
+ 
++static inline bool acpi_skip_set_wakeup_address(void)
++{
++	return cpu_feature_enabled(X86_FEATURE_XENPV);
++}
++
++#define acpi_skip_set_wakeup_address acpi_skip_set_wakeup_address
++
+ /*
+  * Check if the CPU can handle C2 and deeper
+  */
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index 0b557c0d405e..4ca667251272 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -60,13 +60,17 @@ static struct notifier_block tts_notifier = {
+ 	.priority	= 0,
+ };
+ 
++#ifndef acpi_skip_set_wakeup_address
++#define acpi_skip_set_wakeup_address() false
++#endif
++
+ static int acpi_sleep_prepare(u32 acpi_state)
+ {
+ #ifdef CONFIG_ACPI_SLEEP
+ 	unsigned long acpi_wakeup_address;
+ 
+ 	/* do we have a wakeup address for S2 and S3? */
+-	if (acpi_state == ACPI_STATE_S3) {
++	if (acpi_state == ACPI_STATE_S3 && !acpi_skip_set_wakeup_address()) {
+ 		acpi_wakeup_address = acpi_get_wakeup_address();
+ 		if (!acpi_wakeup_address)
+ 			return -EFAULT;
+-- 
+2.35.3
+
