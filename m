@@ -2,170 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13AF866E245
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jan 2023 16:35:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C663D66E2CA
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jan 2023 16:52:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229694AbjAQPfj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Jan 2023 10:35:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38586 "EHLO
+        id S233908AbjAQPw0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Jan 2023 10:52:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232536AbjAQPfh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Jan 2023 10:35:37 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 78EE341B52;
-        Tue, 17 Jan 2023 07:35:35 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9822A165C;
-        Tue, 17 Jan 2023 07:36:16 -0800 (PST)
-Received: from FVFF77S0Q05N.cambridge.arm.com (FVFF77S0Q05N.cambridge.arm.com [10.1.31.153])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ACA663F67D;
-        Tue, 17 Jan 2023 07:35:17 -0800 (PST)
-Date:   Tue, 17 Jan 2023 15:35:10 +0000
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
-        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
-        nsekhar@ti.com, brgl@bgdev.pl, ulli.kroll@googlemail.com,
-        linus.walleij@linaro.org, shawnguo@kernel.org,
-        Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de,
-        festevam@gmail.com, linux-imx@nxp.com, tony@atomide.com,
-        khilman@kernel.org, krzysztof.kozlowski@linaro.org,
-        alim.akhtar@samsung.com, catalin.marinas@arm.com, will@kernel.org,
-        guoren@kernel.org, bcain@quicinc.com, chenhuacai@kernel.org,
-        kernel@xen0n.name, geert@linux-m68k.org, sammy@sammy.net,
-        monstr@monstr.eu, tsbogend@alpha.franken.de, dinguyen@kernel.org,
-        jonas@southpole.se, stefan.kristiansson@saunalahti.fi,
-        shorne@gmail.com, James.Bottomley@hansenpartnership.com,
-        deller@gmx.de, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, paul.walmsley@sifive.com,
-        palmer@dabbelt.com, aou@eecs.berkeley.edu, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com,
-        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
-        richard@nod.at, anton.ivanov@cambridgegreys.com,
-        johannes@sipsolutions.net, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, acme@kernel.org, alexander.shishkin@linux.intel.com,
-        jolsa@kernel.org, namhyung@kernel.org, jgross@suse.com,
-        srivatsa@csail.mit.edu, amakhalov@vmware.com,
-        pv-drivers@vmware.com, boris.ostrovsky@oracle.com,
-        chris@zankel.net, jcmvbkbc@gmail.com, rafael@kernel.org,
-        lenb@kernel.org, pavel@ucw.cz, gregkh@linuxfoundation.org,
-        mturquette@baylibre.com, sboyd@kernel.org,
-        daniel.lezcano@linaro.org, lpieralisi@kernel.org,
-        agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
-        anup@brainfault.org, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, jacob.jun.pan@linux.intel.com,
-        atishp@atishpatra.org, Arnd Bergmann <arnd@arndb.de>,
-        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk, dennis@kernel.org, tj@kernel.org,
-        cl@linux.com, rostedt@goodmis.org, mhiramat@kernel.org,
-        frederic@kernel.org, paulmck@kernel.org, pmladek@suse.com,
-        senozhatsky@chromium.org, john.ogness@linutronix.de,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
-        bristot@redhat.com, vschneid@redhat.com, ryabinin.a.a@gmail.com,
-        glider@google.com, andreyknvl@gmail.com, dvyukov@google.com,
-        vincenzo.frascino@arm.com,
-        Andrew Morton <akpm@linux-foundation.org>, jpoimboe@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org,
-        linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH v3 00/51] cpuidle,rcu: Clean up the mess
-Message-ID: <Y8bALvyrPpdg++/J@FVFF77S0Q05N.cambridge.arm.com>
-References: <20230112194314.845371875@infradead.org>
- <Y8WCWAuQSHN651dA@FVFF77S0Q05N.cambridge.arm.com>
- <Y8Z31UbzG3LJgAXE@hirez.programming.kicks-ass.net>
- <Y8afpbHtDOqAHq9M@FVFF77S0Q05N.cambridge.arm.com>
- <20230117142140.g423hxisv7djudof@bogus>
+        with ESMTP id S230510AbjAQPwG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Jan 2023 10:52:06 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FDC78A5F;
+        Tue, 17 Jan 2023 07:51:30 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 355AEB816AC;
+        Tue, 17 Jan 2023 15:51:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAECC433D2;
+        Tue, 17 Jan 2023 15:51:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673970687;
+        bh=LAHU/ov+crM226aErjpc7ArqwNV9Y9BlNGZh0t5iruI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=EQ8+CmdAqB2tDt+rySG0KGugqrfpCd4chqpIYTH458UkTgbyK46sZlHxXdlMnwszH
+         pt5SfD3O7wz9lNcuMBKVwHup9sc0teCKoeXQzfkHmarPLfh3UHAW3gbyZBPF/sZsY7
+         zu2J6nqwEXKkdeEkYgMzZbgMtKVufCiKsg7R5KV+po0xKi0m/0Lnh1ASDe+gUVcfSt
+         1aMWe4Pup7FgeiwpKGD0aE0fmaBCmwJp2xUcg83lD1a6uX75mRmSqJr+8XV/SMXwrA
+         zB5A1io7kD1m7LXBDNiECCREf/vKbRn0+UNC0+XHihawKI52WIrhbikQre6S+PBX2f
+         VxNO0PryV5VRA==
+Received: by mail-lj1-f175.google.com with SMTP id o7so33217842ljj.8;
+        Tue, 17 Jan 2023 07:51:27 -0800 (PST)
+X-Gm-Message-State: AFqh2kpnMnE/+0llkb5EIbj/9P6P+ucRRy7pX275F9I5VnGDVlH8XwDy
+        lPcN3cebVyGCFOdzE/BbFHV0GUcQTnaU627ApXE=
+X-Google-Smtp-Source: AMrXdXuQGfpw1SP+KWFNPYv1WII/g2JF24ofbpB9adMX+emOrcrwLULN5i7a9+BFoLtbsdXiITzqFIWa9xHEv/dMi0I=
+X-Received: by 2002:a2e:9449:0:b0:28b:9755:77a with SMTP id
+ o9-20020a2e9449000000b0028b9755077amr358957ljh.152.1673970685853; Tue, 17 Jan
+ 2023 07:51:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230117142140.g423hxisv7djudof@bogus>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230112133319.3615177-1-ardb@kernel.org> <CAJZ5v0iuwwDjDQDsdP3uvAO18EOcWXzCS6Yu0g62q40Em0vSOA@mail.gmail.com>
+In-Reply-To: <CAJZ5v0iuwwDjDQDsdP3uvAO18EOcWXzCS6Yu0g62q40Em0vSOA@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 17 Jan 2023 16:51:14 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXF1OfDrtWNt1VAE4Z1_bvhUKUUrqie0LroXXxsm3jAM0w@mail.gmail.com>
+Message-ID: <CAMj1kXF1OfDrtWNt1VAE4Z1_bvhUKUUrqie0LroXXxsm3jAM0w@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: PRM: Check whether EFI runtime is available
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-efi@vger.kernel.org, stable@vger.kernel.org,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 17, 2023 at 02:21:40PM +0000, Sudeep Holla wrote:
-> On Tue, Jan 17, 2023 at 01:16:21PM +0000, Mark Rutland wrote:
-> > On Tue, Jan 17, 2023 at 11:26:29AM +0100, Peter Zijlstra wrote:
-> > > On Mon, Jan 16, 2023 at 04:59:04PM +0000, Mark Rutland wrote:
-> > > 
-> > > > I'm sorry to have to bear some bad news on that front. :(
-> > > 
-> > > Moo, something had to give..
-> > > 
-> > > 
-> > > > IIUC what's happenign here is the PSCI cpuidle driver has entered idle and RCU
-> > > > is no longer watching when arm64's cpu_suspend() manipulates DAIF. Our
-> > > > local_daif_*() helpers poke lockdep and tracing, hence the call to
-> > > > trace_hardirqs_off() and the RCU usage.
-> > > 
-> > > Right, strictly speaking not needed at this point, IRQs should have been
-> > > traced off a long time ago.
-> > 
-> > True, but there are some other calls around here that *might* end up invoking
-> > RCU stuff (e.g. the MTE code).
-> > 
-> > That all needs a noinstr cleanup too, which I'll sort out as a follow-up.
-> > 
-> > > > I think we need RCU to be watching all the way down to cpu_suspend(), and it's
-> > > > cpu_suspend() that should actually enter/exit idle context. That and we need to
-> > > > make cpu_suspend() and the low-level PSCI invocation noinstr.
-> > > > 
-> > > > I'm not sure whether 32-bit will have a similar issue or not.
-> > > 
-> > > I'm not seeing 32bit or Risc-V have similar issues here, but who knows,
-> > > maybe I missed somsething.
-> > 
-> > I reckon if they do, the core changes here give us the infrastructure to fix
-> > them if/when we get reports.
-> > 
-> > > In any case, the below ought to cure the ARM64 case and remove that last
-> > > known RCU_NONIDLE() user as a bonus.
-> > 
-> > The below works for me testing on a Juno R1 board with PSCI, using defconfig +
-> > CONFIG_PROVE_LOCKING=y + CONFIG_DEBUG_LOCKDEP=y + CONFIG_DEBUG_ATOMIC_SLEEP=y.
-> > I'm not sure how to test the LPI / FFH part, but it looks good to me.
-> > 
-> > FWIW:
-> > 
-> > Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-> > Tested-by: Mark Rutland <mark.rutland@arm.com>
-> > 
-> > Sudeep, would you be able to give the LPI/FFH side a spin with the kconfig
-> > options above?
-> > 
-> 
-> Not sure if I have messed up something in my mail setup, but I did reply
-> earlier.
+On Tue, 17 Jan 2023 at 13:29, Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> On Thu, Jan 12, 2023 at 2:33 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+> >
+> > The ACPI PRM address space handler calls efi_call_virt_pointer() to
+> > execute PRM firmware code, but doing so is only permitted when the EFI
+> > runtime environment is available. Otherwise, such calls are guaranteed
+> > to result in a crash, and must therefore be avoided.
+> >
+> > Given that the EFI runtime services may become unavailable after a crash
+> > occurring in the firmware, we need to check this each time the PRM
+> > address space handler is invoked. If the EFI runtime services were not
+> > available at registration time to being with, don't install the address
+> > space handler at all.
+> >
+> > Cc: <stable@vger.kernel.org>
+> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> > Cc: Len Brown <lenb@kernel.org>
+> > Cc: linux-acpi@vger.kernel.org
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > ---
+> > v2: check both at registration and at invocation time
+> >
+> >  drivers/acpi/prmt.c | 10 ++++++++++
+> >  1 file changed, 10 insertions(+)
+> >
+> > diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+> > index 998101cf16e47145..3d4c4620f9f95309 100644
+> > --- a/drivers/acpi/prmt.c
+> > +++ b/drivers/acpi/prmt.c
+> > @@ -236,6 +236,11 @@ static acpi_status acpi_platformrt_space_handler(u32 function,
+> >         efi_status_t status;
+> >         struct prm_context_buffer context;
+> >
+> > +       if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
+> > +               pr_err_ratelimited("PRM: EFI runtime services no longer available\n");
+> > +               return AE_NO_HANDLER;
+>
+> This error code is only used in GPE handling ATM.
+>
+> The one that actually causes ACPICA to log a "no handler" error (in
+> acpi_ex_access_region()) is AE_NOT_EXIST.  Should it be used here?
+>
 
-Sorry, that was my bad; I had been drafting my reply for a while and forgot to
-re-check prior to sending.
+Not sure. Any error value is returned to the caller, the only
+difference is that AE_NOT_EXIST and AE_NOT_IMPLEMENTED trigger the
+non-ratelimited logging machinery.
 
-> I did test both DT/cpuidle-psci driver and  ACPI/LPI+FFH driver
-> with the fix Peter sent. I was seeing same splat as you in both DT and
-> ACPI boot which the patch fixed it. I used the same config as described by
-> you above.
+Given that neither value seems appropriate (the region is implemented
+and it has a handler), and we already emit a rate limited error
+message, I think AE_NOT_EXIST is not the right choice.
 
-Perfect; thanks!
 
-Mark.
+>
+> > +       }
+> > +
+> >         /*
+> >          * The returned acpi_status will always be AE_OK. Error values will be
+> >          * saved in the first byte of the PRM message buffer to be used by ASL.
+> > @@ -325,6 +330,11 @@ void __init init_prmt(void)
+> >
+> >         pr_info("PRM: found %u modules\n", mc);
+> >
+> > +       if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
+> > +               pr_err("PRM: EFI runtime services unavailable\n");
+> > +               return;
+> > +       }
+> > +
+> >         status = acpi_install_address_space_handler(ACPI_ROOT_OBJECT,
+> >                                                     ACPI_ADR_SPACE_PLATFORM_RT,
+> >                                                     &acpi_platformrt_space_handler,
+> > --
+> > 2.39.0
+> >
