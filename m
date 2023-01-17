@@ -2,155 +2,166 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6DF666E2E3
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jan 2023 16:57:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C560C66E30F
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jan 2023 17:06:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229517AbjAQP5d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Jan 2023 10:57:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54484 "EHLO
+        id S231584AbjAQQGJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Jan 2023 11:06:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229583AbjAQP5b (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Jan 2023 10:57:31 -0500
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD3D82B603;
-        Tue, 17 Jan 2023 07:57:30 -0800 (PST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 73ABD1FE3C;
-        Tue, 17 Jan 2023 15:57:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1673971049; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=rpgawVd99OX2fg9gFrA1SwUU/eb0iIN1sOqRSVcIZeg=;
-        b=NbvuNjaeyuSDWK9T41o1ZE6yenmovxH9xNEbwB5mNsaF1w95I3+NfQR3NVRVbXgKYnOrIb
-        jDY4z0V8u39WRheGZ6pG5ywgN5iPQtMBC5HhRnpufbaWbqgokzdn8cLpsimyBIppRuQMfH
-        O/+P9lWyKRqkYvG7tjuiiPpeTiFfqag=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1B7D913357;
-        Tue, 17 Jan 2023 15:57:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id pi9ZBWnFxmM6XQAAMHmgww
-        (envelope-from <jgross@suse.com>); Tue, 17 Jan 2023 15:57:29 +0000
-From:   Juergen Gross <jgross@suse.com>
-To:     linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-acpi@vger.kernel.org
-Cc:     Juergen Gross <jgross@suse.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>
-Subject: [PATCH v2] acpi: fix suspend with Xen PV
-Date:   Tue, 17 Jan 2023 16:57:23 +0100
-Message-Id: <20230117155724.22940-1-jgross@suse.com>
-X-Mailer: git-send-email 2.35.3
+        with ESMTP id S230323AbjAQQGI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Jan 2023 11:06:08 -0500
+Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D130259E9
+        for <linux-acpi@vger.kernel.org>; Tue, 17 Jan 2023 08:06:04 -0800 (PST)
+Received: by mail-oi1-x236.google.com with SMTP id v17so4944217oie.5
+        for <linux-acpi@vger.kernel.org>; Tue, 17 Jan 2023 08:06:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=semihalf.com; s=google;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4EfAchFh2XqfMOv5AF2Sfa5iQg29dDmyouMrbdYKJR0=;
+        b=Evh4xGotkD8K7/YI0wKm8LM4Bm1q9bxjAviJg6SXzmcPYwVIFvYspgAf+EiJ8JpdK2
+         +icEBqN5gdrXJSc7kJSmmI+4m7KzoG/vIhs9X+jRo+H+JXFu69KruiGH2gN+FMlWUYl3
+         JDMjpdeWohnVxTRBoeU4W+D/WRlq1k0YlC36ahRxFci3ttgSQPdxw+NpVrXpTTPZ4TJE
+         /ikn2hHuaPWDfvmSM8wN5oT99L8XAl4MK1zQVXJGrvWo5ueIfAaPxP3CFx/WNyT3qV6H
+         TcKp/fGF9wf2djy2JJPsVuVuviPvVNwlEKqyw///y8287ZmtlxJnnAm02L688c2rebm6
+         S+vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4EfAchFh2XqfMOv5AF2Sfa5iQg29dDmyouMrbdYKJR0=;
+        b=mp7hrWYoxedG1SINybtY7XbyPJSYnb20WbtxFqlhtQFP6XQi43u6KK99XCLkrjMPo3
+         TRIVMnwDGEkHHeStgqizmav4mWpfN/ySn8oYtsgYEviK/31l/fYX0G+Topsb3wxVuUKD
+         aR3CNy5/DEPxtTKqHeuKHe25RHJNM4Lty+ekOqEzNLOV+cUtUz9LoVcqG9k4iYeF8hmZ
+         K7OZWKrQpxRR9KDHuO3njb/3ZlzXYr0DimkRQ1Qx3wKlpex64WMJUw9f/v04MCrRh7Gd
+         TBg381M6jW7p17wRRYib8QqSasBvncFJihptZDqrZlpNxcyM+1XA2KTHwMWaw6hFQs/t
+         jBag==
+X-Gm-Message-State: AFqh2krrO15N+Hz4tfyKFVLfmAZvgMfjKTfm9UIRWJQW//QH2DNZ+HWL
+        CVwDhoHUxZugiUFgsgUziwvyDKwbyR5YCt8JaV09nw==
+X-Google-Smtp-Source: AMrXdXsrU0YdklNgBFboFkySo1rRevrkr0ofh47b+nLvVnnSnTEMZtKONOxGleKBt40RWI++MDGBklSCZNeSVCNjAjI=
+X-Received: by 2002:a05:6808:124f:b0:35e:18a6:10ea with SMTP id
+ o15-20020a056808124f00b0035e18a610eamr239009oiv.239.1673971564010; Tue, 17
+ Jan 2023 08:06:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230116173420.1278704-1-mw@semihalf.com> <20230116173420.1278704-3-mw@semihalf.com>
+ <Y8WOVVnFInEoXLVX@shell.armlinux.org.uk> <20230116181618.2iz54jywj7rqzygu@skbuf>
+ <Y8XJ3WoP+YKCjTlF@lunn.ch>
+In-Reply-To: <Y8XJ3WoP+YKCjTlF@lunn.ch>
+From:   Marcin Wojtas <mw@semihalf.com>
+Date:   Tue, 17 Jan 2023 17:05:53 +0100
+Message-ID: <CAPv3WKc8gfBb7BDf5kwyPCNRxmS_H8AgQKRitbsqvL7ihbP1DA@mail.gmail.com>
+Subject: Re: [net-next: PATCH v4 2/8] net: mdio: switch fixed-link PHYs API to fwnode_
+To:     Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>
+Cc:     "Russell King (Oracle)" <linux@armlinux.org.uk>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, rafael@kernel.org,
+        andriy.shevchenko@linux.intel.com, sean.wang@mediatek.com,
+        Landen.Chao@mediatek.com, linus.walleij@linaro.org,
+        vivien.didelot@gmail.com, f.fainelli@gmail.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, hkallweit1@gmail.com, jaz@semihalf.com,
+        tn@semihalf.com, Samer.El-Haj-Mahmoud@arm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Commit f1e525009493 ("x86/boot: Skip realmode init code when running as
-Xen PV guest") missed one code path accessing real_mode_header, leading
-to dereferencing NULL when suspending the system under Xen:
+Hi Andrew and Vladimir,
 
-    [  348.284004] PM: suspend entry (deep)
-    [  348.289532] Filesystems sync: 0.005 seconds
-    [  348.291545] Freezing user space processes ... (elapsed 0.000 seconds) done.
-    [  348.292457] OOM killer disabled.
-    [  348.292462] Freezing remaining freezable tasks ... (elapsed 0.104 seconds) done.
-    [  348.396612] printk: Suspending console(s) (use no_console_suspend to debug)
-    [  348.749228] PM: suspend devices took 0.352 seconds
-    [  348.769713] ACPI: EC: interrupt blocked
-    [  348.816077] BUG: kernel NULL pointer dereference, address: 000000000000001c
-    [  348.816080] #PF: supervisor read access in kernel mode
-    [  348.816081] #PF: error_code(0x0000) - not-present page
-    [  348.816083] PGD 0 P4D 0
-    [  348.816086] Oops: 0000 [#1] PREEMPT SMP NOPTI
-    [  348.816089] CPU: 0 PID: 6764 Comm: systemd-sleep Not tainted 6.1.3-1.fc32.qubes.x86_64 #1
-    [  348.816092] Hardware name: Star Labs StarBook/StarBook, BIOS 8.01 07/03/2022
-    [  348.816093] RIP: e030:acpi_get_wakeup_address+0xc/0x20
+pon., 16 sty 2023 o 23:04 Andrew Lunn <andrew@lunn.ch> napisa=C5=82(a):
+>
+> On Mon, Jan 16, 2023 at 08:16:18PM +0200, Vladimir Oltean wrote:
+> > On Mon, Jan 16, 2023 at 05:50:13PM +0000, Russell King (Oracle) wrote:
+> > > On Mon, Jan 16, 2023 at 06:34:14PM +0100, Marcin Wojtas wrote:
+> > > > fixed-link PHYs API is used by DSA and a number of drivers
+> > > > and was depending on of_. Switch to fwnode_ so to make it
+> > > > hardware description agnostic and allow to be used in ACPI
+> > > > world as well.
+> > >
+> > > Would it be better to let the fixed-link PHY die, and have everyone u=
+se
+> > > the more flexible fixed link implementation in phylink?
+> >
+> > Would it be even better if DSA had some driver-level prerequisites to
+> > impose for ACPI support - like phylink support rather than adjust_link =
+-
+> > and we would simply branch off to a dsa_shared_port_link_register_acpi(=
+)
+> > function, leaving the current dsa_shared_port_link_register_of() alone,
+> > with all its workarounds and hacks? I don't believe that carrying all
+> > that logic over to a common fwnode based API is the proper way forward.
 
-Fix that by adding an optional acpi callback allowing to skip setting
-the wakeup address, as in the Xen PV case this will be handled by the
-hypervisor anyway.
+In the past couple of years, a number of subsystems have migrated to a
+more generic HW description abstraction (e.g. a big chunk of network,
+pinctrl, gpio). ACPI aside, with this patchset one can even try to
+describe the switch topology with the swnode (I haven't tried that
+though). I fully agree that there should be no 0-day baggage in the
+DSA ACPI binding (FYI the more fwnode- version of the
+dsa_shared_port_validate_of() cought one issue in the WIP ACPI
+description in my setup). On the other hand, I find fwnode_/device_
+APIs really helpful for most of the cases - ACPI/OF/swnode differences
+can be hidden to a generic layer and the need of maintaining separate
+code paths related to the hardware description on the driver/subsystem
+level is minimized. An example could be found in v1 of this series,
+the last 4 patches in [1] show that it can be done in a simple /
+seamless way, especially given the ACPI (fwnode) PHY description in
+phylink is already settled and widely used. I am aware at the end of
+the day, after final review all this can be more complex.
 
-Fixes: f1e525009493 ("x86/boot: Skip realmode init code when running as Xen PV guest")
-Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
----
-V2:
-- new approach, avoid calling acpi_get_wakeup_address()
----
- arch/x86/include/asm/acpi.h | 8 ++++++++
- drivers/acpi/sleep.c        | 6 +++++-
- 2 files changed, 13 insertions(+), 1 deletion(-)
+I expect that the actual DSA ACPI support acceptance will require a
+lot of discussions and decisions, on whether certain solutions are
+worth migrating from OF world or require spec modification. For now my
+goal was to migrate to a more generic HW description API, and so to
+allow possible follow-up ACPI-related modifications, and additions to
+be extracted and better tracked.
 
-diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
-index 65064d9f7fa6..8eb74cf386db 100644
---- a/arch/x86/include/asm/acpi.h
-+++ b/arch/x86/include/asm/acpi.h
-@@ -14,6 +14,7 @@
- #include <asm/mmu.h>
- #include <asm/mpspec.h>
- #include <asm/x86_init.h>
-+#include <asm/cpufeature.h>
- 
- #ifdef CONFIG_ACPI_APEI
- # include <asm/pgtable_types.h>
-@@ -63,6 +64,13 @@ extern int (*acpi_suspend_lowlevel)(void);
- /* Physical address to resume after wakeup */
- unsigned long acpi_get_wakeup_address(void);
- 
-+static inline bool acpi_skip_set_wakeup_address(void)
-+{
-+	return cpu_feature_enabled(X86_FEATURE_XENPV);
-+}
-+
-+#define acpi_skip_set_wakeup_address acpi_skip_set_wakeup_address
-+
- /*
-  * Check if the CPU can handle C2 and deeper
-  */
-diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-index 0b557c0d405e..4ca667251272 100644
---- a/drivers/acpi/sleep.c
-+++ b/drivers/acpi/sleep.c
-@@ -60,13 +60,17 @@ static struct notifier_block tts_notifier = {
- 	.priority	= 0,
- };
- 
-+#ifndef acpi_skip_set_wakeup_address
-+#define acpi_skip_set_wakeup_address() false
-+#endif
-+
- static int acpi_sleep_prepare(u32 acpi_state)
- {
- #ifdef CONFIG_ACPI_SLEEP
- 	unsigned long acpi_wakeup_address;
- 
- 	/* do we have a wakeup address for S2 and S3? */
--	if (acpi_state == ACPI_STATE_S3) {
-+	if (acpi_state == ACPI_STATE_S3 && !acpi_skip_set_wakeup_address()) {
- 		acpi_wakeup_address = acpi_get_wakeup_address();
- 		if (!acpi_wakeup_address)
- 			return -EFAULT;
--- 
-2.35.3
+>
+> I agree with you there, here is little attempt to make a clean ACPI
+> binding. Most of the attempts to add ACPI support seem to try to take
+> the short cut for just search/replace of_ with fwnode_. And we then
+> have to push back and say no, and generally it then goes quiet.
 
+In most cases, the devices' description is pretty straightforward:
+* a node (single or with some children), resources (mem, irqs), mmio
+address space, optionally address on a bus and a couple of properties
+The DSDT/SSDT tables are very well suited for this. In case of
+separate, contained drivers that is also really easy to maintain.
+
+However, I fully understand your concerns and caution before blessing
+any change related to subsystem/generic code. Therefore ACPI support
+addition was split after v1 (refer to discussion in [1]) and will
+require ACPI maintainers' input and guidelines.
+
+>
+> Marcin, please approach this from the other end. Please document in
+> Documentation/firmware-guide/acpi/dsd what a clean binding should look
+> like, and then try to implement it.
+>
+
+This is how I initially approached this (original submission: [2]; a
+bit updated version, working on top of the current patchset: [3]). We
+then agreed that in order to remove a bit hacky mitigation of the
+double ACPI scan problem, an MDIOSerialBus _CRS method should be
+defined in the ACPI spec, similar to the
+I2CSerialBus/SPISerialBus/UARTSerialBus. I am going to submit the
+first version for review in the coming days. The DSA purely
+ACPI-related changes would be updated and submitted, once the method
+is accepted.
+
+Best regards,
+Marcin
+
+[1] https://www.spinics.net/lists/netdev/msg827337.html
+[2] https://www.spinics.net/lists/netdev/msg827345.html
+[3] https://github.com/semihalf-wojtas-marcin/Linux-Kernel/commit/e017e69c0=
+eda18747029bfe0c335df204670ba59
