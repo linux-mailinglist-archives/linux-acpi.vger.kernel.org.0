@@ -2,61 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C560C66E30F
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jan 2023 17:06:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A3F566E3AA
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jan 2023 17:35:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231584AbjAQQGJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Jan 2023 11:06:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59280 "EHLO
+        id S232132AbjAQQfV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Jan 2023 11:35:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230323AbjAQQGI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Jan 2023 11:06:08 -0500
-Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D130259E9
-        for <linux-acpi@vger.kernel.org>; Tue, 17 Jan 2023 08:06:04 -0800 (PST)
-Received: by mail-oi1-x236.google.com with SMTP id v17so4944217oie.5
-        for <linux-acpi@vger.kernel.org>; Tue, 17 Jan 2023 08:06:04 -0800 (PST)
+        with ESMTP id S232523AbjAQQfE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Jan 2023 11:35:04 -0500
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5D0640BC9;
+        Tue, 17 Jan 2023 08:34:58 -0800 (PST)
+Received: by mail-ej1-x630.google.com with SMTP id tz11so12268880ejc.0;
+        Tue, 17 Jan 2023 08:34:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4EfAchFh2XqfMOv5AF2Sfa5iQg29dDmyouMrbdYKJR0=;
-        b=Evh4xGotkD8K7/YI0wKm8LM4Bm1q9bxjAviJg6SXzmcPYwVIFvYspgAf+EiJ8JpdK2
-         +icEBqN5gdrXJSc7kJSmmI+4m7KzoG/vIhs9X+jRo+H+JXFu69KruiGH2gN+FMlWUYl3
-         JDMjpdeWohnVxTRBoeU4W+D/WRlq1k0YlC36ahRxFci3ttgSQPdxw+NpVrXpTTPZ4TJE
-         /ikn2hHuaPWDfvmSM8wN5oT99L8XAl4MK1zQVXJGrvWo5ueIfAaPxP3CFx/WNyT3qV6H
-         TcKp/fGF9wf2djy2JJPsVuVuviPvVNwlEKqyw///y8287ZmtlxJnnAm02L688c2rebm6
-         S+vg==
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qe6RxtFMgOj3bRq8rDugBk3dzDUP6KRit4SBct3uCQU=;
+        b=ZeAZQLAxglvNrRPh2JtfeaDM20pmym07ZKLZidBL7nlMD7d97j5A1g+iqZwob1ifh7
+         i3+HaU8qrQuQt+EoG4BoR0NH6HXo8jx0GdoOHmb8S+dHIC8yuqg5kI3AGl8ktu1Ohu0O
+         dn2u+zKsCZyqo7G9xQyX9bhNgNcK7ZvBlIBfMqFUk4AnmvmbRbj5kUTYdrg9HQHfdozD
+         OFEz5JrYbwkMt5LLOYCIxwp4iL4vc39Z6Bx0WsmlJCwIPYjYfO9FmbTlNItXbu2mR++M
+         DOVqPRYrue1DvJphBHylmK0APmUiBojTkbeLV62ONeZa3Sb8xnYUSDEkoXl/rv62M1mB
+         06aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4EfAchFh2XqfMOv5AF2Sfa5iQg29dDmyouMrbdYKJR0=;
-        b=mp7hrWYoxedG1SINybtY7XbyPJSYnb20WbtxFqlhtQFP6XQi43u6KK99XCLkrjMPo3
-         TRIVMnwDGEkHHeStgqizmav4mWpfN/ySn8oYtsgYEviK/31l/fYX0G+Topsb3wxVuUKD
-         aR3CNy5/DEPxtTKqHeuKHe25RHJNM4Lty+ekOqEzNLOV+cUtUz9LoVcqG9k4iYeF8hmZ
-         K7OZWKrQpxRR9KDHuO3njb/3ZlzXYr0DimkRQ1Qx3wKlpex64WMJUw9f/v04MCrRh7Gd
-         TBg381M6jW7p17wRRYib8QqSasBvncFJihptZDqrZlpNxcyM+1XA2KTHwMWaw6hFQs/t
-         jBag==
-X-Gm-Message-State: AFqh2krrO15N+Hz4tfyKFVLfmAZvgMfjKTfm9UIRWJQW//QH2DNZ+HWL
-        CVwDhoHUxZugiUFgsgUziwvyDKwbyR5YCt8JaV09nw==
-X-Google-Smtp-Source: AMrXdXsrU0YdklNgBFboFkySo1rRevrkr0ofh47b+nLvVnnSnTEMZtKONOxGleKBt40RWI++MDGBklSCZNeSVCNjAjI=
-X-Received: by 2002:a05:6808:124f:b0:35e:18a6:10ea with SMTP id
- o15-20020a056808124f00b0035e18a610eamr239009oiv.239.1673971564010; Tue, 17
- Jan 2023 08:06:04 -0800 (PST)
-MIME-Version: 1.0
-References: <20230116173420.1278704-1-mw@semihalf.com> <20230116173420.1278704-3-mw@semihalf.com>
- <Y8WOVVnFInEoXLVX@shell.armlinux.org.uk> <20230116181618.2iz54jywj7rqzygu@skbuf>
- <Y8XJ3WoP+YKCjTlF@lunn.ch>
-In-Reply-To: <Y8XJ3WoP+YKCjTlF@lunn.ch>
-From:   Marcin Wojtas <mw@semihalf.com>
-Date:   Tue, 17 Jan 2023 17:05:53 +0100
-Message-ID: <CAPv3WKc8gfBb7BDf5kwyPCNRxmS_H8AgQKRitbsqvL7ihbP1DA@mail.gmail.com>
-Subject: Re: [net-next: PATCH v4 2/8] net: mdio: switch fixed-link PHYs API to fwnode_
-To:     Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>
-Cc:     "Russell King (Oracle)" <linux@armlinux.org.uk>,
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Qe6RxtFMgOj3bRq8rDugBk3dzDUP6KRit4SBct3uCQU=;
+        b=5C2eYFLLRJ8IVePhCFjU0WxNcH4VyuM/h+MZzVgPuBxlv5421jCGwlSP+7kZCnYtdc
+         is/4MBxQ9tEguPpBX8RALjOlD8jhvsUBTJKhE+LvlQew+QbBb9Ve+XAy5cPILCRSYnZN
+         aL3Hf6/lNfNEVaokJBi9n/tLvBIl58oT9fstgHPpr7VD9otWooA8QFEOulyxqK08PeNi
+         E+YWUhIhT3GP2DI5rrg88B8OGugE5eg65oFAamN/z288nEoBbXYtUyJPk0gL/5BoEIAL
+         XNPEolq35MqAKxVsp8mFXAZ0hqTT+MCeRiYfK1vL2dGSUOJhQZRVxEim/QzwqeF848tv
+         FL0w==
+X-Gm-Message-State: AFqh2kqT1QCUMFVuVV30GvmXnYPgMm1ftbItj1faJftkdN+4cV7y9loY
+        v0AiyPpxO4GAoAgJFVV6VR8=
+X-Google-Smtp-Source: AMrXdXs4/slisBfscth/7jRP56KRh3W779krulsU4g+R5ywkvNSjw2+RVJ8k+nZyhgQtOYwGPgrVQA==
+X-Received: by 2002:a17:906:8c3:b0:7c4:f6e4:3e92 with SMTP id o3-20020a17090608c300b007c4f6e43e92mr16741876eje.31.1673973297179;
+        Tue, 17 Jan 2023 08:34:57 -0800 (PST)
+Received: from skbuf ([188.27.184.249])
+        by smtp.gmail.com with ESMTPSA id p3-20020a056402500300b00488abbbadb3sm13005064eda.63.2023.01.17.08.34.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Jan 2023 08:34:56 -0800 (PST)
+Date:   Tue, 17 Jan 2023 18:34:53 +0200
+From:   Vladimir Oltean <olteanv@gmail.com>
+To:     Marcin Wojtas <mw@semihalf.com>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        "Russell King (Oracle)" <linux@armlinux.org.uk>,
         linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
         netdev@vger.kernel.org, rafael@kernel.org,
         andriy.shevchenko@linux.intel.com, sean.wang@mediatek.com,
@@ -65,103 +61,62 @@ Cc:     "Russell King (Oracle)" <linux@armlinux.org.uk>,
         davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
         pabeni@redhat.com, hkallweit1@gmail.com, jaz@semihalf.com,
         tn@semihalf.com, Samer.El-Haj-Mahmoud@arm.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [net-next: PATCH v4 2/8] net: mdio: switch fixed-link PHYs API
+ to fwnode_
+Message-ID: <20230117163453.o7pv7cdvgeobne4b@skbuf>
+References: <20230116173420.1278704-1-mw@semihalf.com>
+ <20230116173420.1278704-3-mw@semihalf.com>
+ <Y8WOVVnFInEoXLVX@shell.armlinux.org.uk>
+ <20230116181618.2iz54jywj7rqzygu@skbuf>
+ <Y8XJ3WoP+YKCjTlF@lunn.ch>
+ <CAPv3WKc8gfBb7BDf5kwyPCNRxmS_H8AgQKRitbsqvL7ihbP1DA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPv3WKc8gfBb7BDf5kwyPCNRxmS_H8AgQKRitbsqvL7ihbP1DA@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andrew and Vladimir,
+On Tue, Jan 17, 2023 at 05:05:53PM +0100, Marcin Wojtas wrote:
+> In the past couple of years, a number of subsystems have migrated to a
+> more generic HW description abstraction (e.g. a big chunk of network,
+> pinctrl, gpio). ACPI aside, with this patchset one can even try to
+> describe the switch topology with the swnode (I haven't tried that
+> though). I fully agree that there should be no 0-day baggage in the
+> DSA ACPI binding (FYI the more fwnode- version of the
+> dsa_shared_port_validate_of() cought one issue in the WIP ACPI
+> description in my setup). On the other hand, I find fwnode_/device_
+> APIs really helpful for most of the cases - ACPI/OF/swnode differences
+> can be hidden to a generic layer and the need of maintaining separate
+> code paths related to the hardware description on the driver/subsystem
+> level is minimized. An example could be found in v1 of this series,
+> the last 4 patches in [1] show that it can be done in a simple /
+> seamless way, especially given the ACPI (fwnode) PHY description in
+> phylink is already settled and widely used. I am aware at the end of
+> the day, after final review all this can be more complex.
+> 
+> I expect that the actual DSA ACPI support acceptance will require a
+> lot of discussions and decisions, on whether certain solutions are
+> worth migrating from OF world or require spec modification. For now my
+> goal was to migrate to a more generic HW description API, and so to
+> allow possible follow-up ACPI-related modifications, and additions to
+> be extracted and better tracked.
 
-pon., 16 sty 2023 o 23:04 Andrew Lunn <andrew@lunn.ch> napisa=C5=82(a):
->
-> On Mon, Jan 16, 2023 at 08:16:18PM +0200, Vladimir Oltean wrote:
-> > On Mon, Jan 16, 2023 at 05:50:13PM +0000, Russell King (Oracle) wrote:
-> > > On Mon, Jan 16, 2023 at 06:34:14PM +0100, Marcin Wojtas wrote:
-> > > > fixed-link PHYs API is used by DSA and a number of drivers
-> > > > and was depending on of_. Switch to fwnode_ so to make it
-> > > > hardware description agnostic and allow to be used in ACPI
-> > > > world as well.
-> > >
-> > > Would it be better to let the fixed-link PHY die, and have everyone u=
-se
-> > > the more flexible fixed link implementation in phylink?
-> >
-> > Would it be even better if DSA had some driver-level prerequisites to
-> > impose for ACPI support - like phylink support rather than adjust_link =
--
-> > and we would simply branch off to a dsa_shared_port_link_register_acpi(=
-)
-> > function, leaving the current dsa_shared_port_link_register_of() alone,
-> > with all its workarounds and hacks? I don't believe that carrying all
-> > that logic over to a common fwnode based API is the proper way forward.
+I have a simple question.
 
-In the past couple of years, a number of subsystems have migrated to a
-more generic HW description abstraction (e.g. a big chunk of network,
-pinctrl, gpio). ACPI aside, with this patchset one can even try to
-describe the switch topology with the swnode (I haven't tried that
-though). I fully agree that there should be no 0-day baggage in the
-DSA ACPI binding (FYI the more fwnode- version of the
-dsa_shared_port_validate_of() cought one issue in the WIP ACPI
-description in my setup). On the other hand, I find fwnode_/device_
-APIs really helpful for most of the cases - ACPI/OF/swnode differences
-can be hidden to a generic layer and the need of maintaining separate
-code paths related to the hardware description on the driver/subsystem
-level is minimized. An example could be found in v1 of this series,
-the last 4 patches in [1] show that it can be done in a simple /
-seamless way, especially given the ACPI (fwnode) PHY description in
-phylink is already settled and widely used. I am aware at the end of
-the day, after final review all this can be more complex.
+If you expect that the DSA ACPI bindings will require a lot of
+discussions, then how do you know that what you convert to fwnode now
+will be needed later, and why do you insist to mechanically convert
+everything to fwnode without having that discussion first?
 
-I expect that the actual DSA ACPI support acceptance will require a
-lot of discussions and decisions, on whether certain solutions are
-worth migrating from OF world or require spec modification. For now my
-goal was to migrate to a more generic HW description API, and so to
-allow possible follow-up ACPI-related modifications, and additions to
-be extracted and better tracked.
-
->
-> I agree with you there, here is little attempt to make a clean ACPI
-> binding. Most of the attempts to add ACPI support seem to try to take
-> the short cut for just search/replace of_ with fwnode_. And we then
-> have to push back and say no, and generally it then goes quiet.
-
-In most cases, the devices' description is pretty straightforward:
-* a node (single or with some children), resources (mem, irqs), mmio
-address space, optionally address on a bus and a couple of properties
-The DSDT/SSDT tables are very well suited for this. In case of
-separate, contained drivers that is also really easy to maintain.
-
-However, I fully understand your concerns and caution before blessing
-any change related to subsystem/generic code. Therefore ACPI support
-addition was split after v1 (refer to discussion in [1]) and will
-require ACPI maintainers' input and guidelines.
-
->
-> Marcin, please approach this from the other end. Please document in
-> Documentation/firmware-guide/acpi/dsd what a clean binding should look
-> like, and then try to implement it.
->
-
-This is how I initially approached this (original submission: [2]; a
-bit updated version, working on top of the current patchset: [3]). We
-then agreed that in order to remove a bit hacky mitigation of the
-double ACPI scan problem, an MDIOSerialBus _CRS method should be
-defined in the ACPI spec, similar to the
-I2CSerialBus/SPISerialBus/UARTSerialBus. I am going to submit the
-first version for review in the coming days. The DSA purely
-ACPI-related changes would be updated and submitted, once the method
-is accepted.
-
-Best regards,
-Marcin
-
-[1] https://www.spinics.net/lists/netdev/msg827337.html
-[2] https://www.spinics.net/lists/netdev/msg827345.html
-[3] https://github.com/semihalf-wojtas-marcin/Linux-Kernel/commit/e017e69c0=
-eda18747029bfe0c335df204670ba59
+You see the lack of a need to maintain separate code paths between OF
+and ACPI as useful. Yet the DSA maintainers don't, and in some cases
+this is specifically what they want to avoid. So a mechanical conversion
+will end up making absolutely no progress.
