@@ -2,61 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BD7E66E18A
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jan 2023 16:01:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C631966E1F5
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jan 2023 16:20:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230033AbjAQPBq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Jan 2023 10:01:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40542 "EHLO
+        id S230144AbjAQPU4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Jan 2023 10:20:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232773AbjAQPBR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Jan 2023 10:01:17 -0500
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B6E03EFDD;
-        Tue, 17 Jan 2023 06:59:23 -0800 (PST)
+        with ESMTP id S229667AbjAQPUw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Jan 2023 10:20:52 -0500
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0739238B5C;
+        Tue, 17 Jan 2023 07:20:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1673967563; x=1705503563;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Fsn12zU4AWkY70iJC06FOS0sZRnrY0FwapJncIYxE6A=;
-  b=Kfp/pZ+t0LSvpyF3yw64dj5sGjK2vELhrNnaQhd014m1o/++RgYQPH+U
-   FEu/tga5J/MVT3Uyd/fKLxAOWKSUCLFsVGy7Fxq5Gyf4z5bKB0InxXgr+
-   KQweI2jFxFeyg9V4qFj9+Gb7cMHipGlpnSQNpwMNSE33bTDPahGE5Loa3
-   D5TFnoPPakI/zxqXSHazoj91GAQluDbKJYCfIH/UuKCPZ7JhHmRoi+7B8
-   KiJkR0oqSYCJ9z/SztYsoFnt6Oi9B6RZVN793aSskBI6gD5O3MZUk9Ym4
-   MZhK+ga1V8FZz5iPEzhC8lPcU8QVOJw3bVwbYDBqalDOQzBttVfFYluqV
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10592"; a="389211457"
+  t=1673968851; x=1705504851;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=fb+JWaRsNaPsvs8byFrWAP3CvcWmfiGFTmjbdAEmXcs=;
+  b=hriRGm090/+KkXHvlTsyZhi6TlhliVD5ko8pdMN/S8CCaDp+rtVLxi0E
+   Oswg4hKC/uFZ3tVL1KWd82izqR3ipZ1I0aDXJcP/WTmqsygeFRNb3h0h1
+   ez2L6DrmacUhdeyMpy1mSt8xW25Mr2VSOMPGHQMgbpJu7kCFv1WlDTALV
+   j/9z3c9feCIFjKCoLbAqUnHa6ulDlcXJ+KrWXpySkxp/RshK74hQaWw4r
+   0PNRriTYHCCbxeLFF3nCt4hRQkE20MhG2anGz+G4SI7PYEgdp+37ObWmZ
+   pHlG4tz+KrGFeRQBN2xpM345QmvsT9HLkl4+9lX8l/GPimZdKnnfukCrq
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10592"; a="326788583"
 X-IronPort-AV: E=Sophos;i="5.97,224,1669104000"; 
-   d="scan'208";a="389211457"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2023 06:59:23 -0800
+   d="scan'208";a="326788583"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2023 07:20:50 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10592"; a="727808338"
+X-IronPort-AV: E=McAfee;i="6500,9779,10592"; a="652575089"
 X-IronPort-AV: E=Sophos;i="5.97,224,1669104000"; 
-   d="scan'208";a="727808338"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga004.fm.intel.com with ESMTP; 17 Jan 2023 06:59:20 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pHnQk-00Acku-2v;
-        Tue, 17 Jan 2023 16:59:18 +0200
-Date:   Tue, 17 Jan 2023 16:59:18 +0200
+   d="scan'208";a="652575089"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga007.jf.intel.com with ESMTP; 17 Jan 2023 07:20:48 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id B3B84E1; Tue, 17 Jan 2023 17:21:22 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
-        linux-media@vger.kernel.org, heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH 4/8] ACPI: property: Generate camera swnodes for ACPI and
- DisCo for Imaging
-Message-ID: <Y8a3xixlrr4AVBjJ@smile.fi.intel.com>
-References: <20230117122244.2546597-1-sakari.ailus@linux.intel.com>
- <20230117122244.2546597-5-sakari.ailus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH v1 1/1] device property: Make fwnode_graph_for_each_endpoint() consistent
+Date:   Tue, 17 Jan 2023 17:21:20 +0200
+Message-Id: <20230117152120.42531-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230117122244.2546597-5-sakari.ailus@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
@@ -66,133 +61,36 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 17, 2023 at 02:22:40PM +0200, Sakari Ailus wrote:
-> Generate software nodes for information parsed from ACPI _CRS for CSI-2 as
-> well as MIPI DisCo for Imaging spec. The software nodes are compliant with
-> existing ACPI or DT definitions and are parsed by relevant drivers without
-> changes.
+Make fwnode_graph_for_each_endpoint() consistent with the rest of
+for_each_*() definitions in the file, i.e. use the form of
 
-...
+	for (iter = func(NULL); iter; \
+	     iter = func(iter))
 
-> +#define GRAPH_PORT_NAME(var, num) \
-> +	(snprintf((var), sizeof(var), "port@%u", (num)) > sizeof(var))
+as it's done in all the rest of the similar macro definitions.
 
-SWNODE_GRAPH_PORT_NAME_FMT ?
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ include/linux/property.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-...
-
-> +#define NEXT_PROPERTY(index, max)			   \
-> +	(WARN_ON(++(index) > ACPI_DEVICE_SWNODE_##max + 1) ?	\
-
-'>' -- > '>=' and drop ' + 1'?
-
-> +	 ACPI_DEVICE_SWNODE_##max : (index) - 1)
-
-...
-
-> +	static const char mipi_port_prefix[] = "mipi-img-port-";
-
-It's harder to read in the code, please put it in place.
-
-...
-
-> +			port->ep_props[NEXT_PROPERTY(*ep_prop_index,
-> +						     EP_DATA_LANES)] =
-
-It's hard to read, taking into account that you split on index of the array.
-
-How much a new monitor costs for you? Maybe I can donate to make you use more
-than 80 from time to time? :-)
-
-> +				PROPERTY_ENTRY_U32_ARRAY_LEN("data-lanes",
-> +							     port->data_lanes,
-> +							     num_lanes);
-
-...
-
-
-> +	ret = fwnode_property_read_u8_array(mipi_port_fwnode,
-> +					    "mipi-img-lane-polarities",
-> +					    u.val8, sizeof(u.val8));
-> +	if (ret > 0) {
-> +		unsigned int bytes = ret;
-> +
-> +		/* Total number of lanes here is clock lane + data lanes */
-> +		if (bytes << 3 >= 1 + num_lanes) {
-
-bytes * BITS_PER_BYTE? Or if you want to be super precise BITS_PER_TYPE(u8).
-
-> +			unsigned int i;
-> +
-> +			/* Move polarity bits to the lane polarity u32 array */
-> +			for (i = 0; i < 1 + num_lanes; i++)
-> +				port->lane_polarities[i] =
-> +					(u.val8[i >> 3] & (1 << (i & 7))) ?
-> +					1U : 0U;
-
-> +			port->ep_props[NEXT_PROPERTY(*ep_prop_index,
-> +						     EP_LANE_POLARITIES)] =
-
-Index on one line?
-
-> +				PROPERTY_ENTRY_U32_ARRAY_LEN("lane-polarities",
-> +							     port->lane_polarities,
-> +							     1 + num_lanes);
-> +		} else {
-> +			acpi_handle_warn(acpi_device_handle(device),
-> +					 "too few lane polarity bytes (%u)\n",
-> +					 bytes);
-> +		}
-> +	}
-
-...
-
-> +	unsigned int port_index = next_csi2_port_index(device->swnodes,
-> +						       port_nr);
-
-One line easier to read.
-
-...
-
-> +		if (!ret)
-
-Why not positive conditional?
-Also seems like {} are missing since the body is multi-line.
-
-> +			port->ep_props[NEXT_PROPERTY(ep_prop_index,
-> +						     EP_LINK_FREQUENCIES)] =
-
-Index on one line?
-
-> +				PROPERTY_ENTRY_U64_ARRAY_LEN("link-frequencies",
-> +							     port->link_frequencies,
-> +							     num_link_freqs);
-> +		else
-> +			acpi_handle_info(acpi_device_handle(device),
-> +					 "can't get link frequencies (%d)\n",
-> +					 ret);
-
-...
-
-> +	if (acpi_get_name(device->handle, ACPI_FULL_PATHNAME, &buffer) != AE_OK) {
-
-We have ACPI_SUCCESS() / ACPI_FAILURE()
-
-> +		acpi_handle_warn(acpi_device_handle(device), "cannot get path name\n");
-> +		return;
-> +	}
-
-...
-
-> +	ads->nodes[ACPI_DEVICE_SWNODE_ROOT] = (struct software_node) {
-> +		.name = buffer.pointer,
-> +		.properties = ads->dev_props,
-> +	};
-
-Aren't you provided a macro for this?
-
+diff --git a/include/linux/property.h b/include/linux/property.h
+index 37179e3abad5..f090419818a2 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -436,9 +436,9 @@ fwnode_graph_get_endpoint_by_id(const struct fwnode_handle *fwnode,
+ unsigned int fwnode_graph_get_endpoint_count(struct fwnode_handle *fwnode,
+ 					     unsigned long flags);
+ 
+-#define fwnode_graph_for_each_endpoint(fwnode, child)			\
+-	for (child = NULL;						\
+-	     (child = fwnode_graph_get_next_endpoint(fwnode, child)); )
++#define fwnode_graph_for_each_endpoint(fwnode, child)				\
++	for (child = fwnode_graph_get_next_endpoint(fwnode, NULL); child;	\
++	     child = fwnode_graph_get_next_endpoint(fwnode, child))
+ 
+ int fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
+ 				struct fwnode_endpoint *endpoint);
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.39.0
 
