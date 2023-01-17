@@ -2,157 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ABE866E403
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jan 2023 17:47:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7035266E415
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jan 2023 17:51:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229596AbjAQQrp convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 17 Jan 2023 11:47:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55422 "EHLO
+        id S230363AbjAQQv0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Jan 2023 11:51:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232562AbjAQQrb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Jan 2023 11:47:31 -0500
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D33686B3;
-        Tue, 17 Jan 2023 08:47:26 -0800 (PST)
-Received: by mail-ed1-f41.google.com with SMTP id v10so44693314edi.8;
-        Tue, 17 Jan 2023 08:47:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MW1lWHP2SnntF7BPwVjstED8maTOD84cMu75qGigYkU=;
-        b=jV/SjsjtGYaBABWLA+XVvyGa6sZS18MD4qHR26c2hTLYFdj1TXK3+RWdfqJRVAH+lz
-         pzspVbE8OaIweEwYyCN6VyPtMWm9Qv6xYX0Qix0VjvIyw8R6oT0pLJpvGp0m3UJRuz1J
-         xSix9i+v8FIpB74TLA2E+2+oWOkObQMUkxYVlN69hQoWixmXlHmaPDmIKb0tAXaYuJ41
-         DIssz/XOjuUi3Jy8BNIci01hddDx0cZoAHRxAThK3NTjR6b1pKRb/gWtKy/HlIYAwvNM
-         A5ZUUUHc7NGmslRTFhYJWH/s977BRJqsi/i4qXVR9RGafLmveD/N/3RClajR4bZKKckZ
-         /Jbg==
-X-Gm-Message-State: AFqh2kpsMem6Gq5RFWLnLl5fHbkrTCm+r1WIgdRYBx3vXvPi1umSPUnd
-        SIjyTW5MutWetbIybgI6OOEPKR0J+1oBlE/JR1s=
-X-Google-Smtp-Source: AMrXdXs33uPygCWA6d+K8cs5n+Ubw1HA4Oysng1ssnvF0dYOab252cMqJ0bUWCEg6Ur3BYBJwOdSKL1TIESwydq5t9Y=
-X-Received: by 2002:aa7:c3cb:0:b0:499:c651:625d with SMTP id
- l11-20020aa7c3cb000000b00499c651625dmr427388edr.413.1673974044780; Tue, 17
- Jan 2023 08:47:24 -0800 (PST)
+        with ESMTP id S233278AbjAQQvD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Jan 2023 11:51:03 -0500
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4197D1E9E4;
+        Tue, 17 Jan 2023 08:51:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1673974263; x=1705510263;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=DAmxMlbu+x5zp49k+P0zill7H3H48lEvCLdvP9/FK1Q=;
+  b=H5axUeiDOmzpM4oNy+MHo7BWfClS1ymLKG3McaeFsKStCSMU+3P68AqI
+   tsEoKb24KcrUEyc+C4bopuPw5HS0s3lBgF8GGWHgx1TUXiIAtfYiaYDj7
+   oiR5PT4DAxBLWuAd3/9ez59YC92v3dj54Vjg5JSoJD7cikkr7HPgwfKGA
+   RkSTQFYKBuBfHO14lMoGgPmF0YLXJHaHR6CMZP035PV2WThqTGy9U20eV
+   /i8HvmziqdjE4UXl3kt5hTM06y4KONc9e67a5z6LuYprqxF3+P4lawlp2
+   EbAiRnjAzr9j0oxFnnVlE6gnS8rPZGf7DjXErjL+CmHHJZ2JjTZ8FoQyb
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10592"; a="312619380"
+X-IronPort-AV: E=Sophos;i="5.97,224,1669104000"; 
+   d="scan'208";a="312619380"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2023 08:51:02 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10592"; a="801812559"
+X-IronPort-AV: E=Sophos;i="5.97,224,1669104000"; 
+   d="scan'208";a="801812559"
+Received: from youli-mobl1.amr.corp.intel.com (HELO [10.255.228.205]) ([10.255.228.205])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2023 08:51:02 -0800
+Message-ID: <7f969b09-438b-cee3-be4c-e08b97457b12@intel.com>
+Date:   Tue, 17 Jan 2023 08:51:09 -0800
 MIME-Version: 1.0
-References: <20230117155724.22940-1-jgross@suse.com>
-In-Reply-To: <20230117155724.22940-1-jgross@suse.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 17 Jan 2023 17:47:13 +0100
-Message-ID: <CAJZ5v0iCAT2W-m1T-v1wSBw+GQerhMAp1hT6SioJ53RQY=oA3g@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
 Subject: Re: [PATCH v2] acpi: fix suspend with Xen PV
-To:     Juergen Gross <jgross@suse.com>
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Juergen Gross <jgross@suse.com>
 Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
         linux-acpi@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        =?UTF-8?Q?Marek_Marczykowski=2DG=C3=B3recki?= 
+        "H. Peter Anvin" <hpa@zytor.com>, Len Brown <lenb@kernel.org>,
+        =?UTF-8?Q?Marek_Marczykowski-G=c3=b3recki?= 
         <marmarek@invisiblethingslab.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+References: <20230117155724.22940-1-jgross@suse.com>
+ <CAJZ5v0iCAT2W-m1T-v1wSBw+GQerhMAp1hT6SioJ53RQY=oA3g@mail.gmail.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <CAJZ5v0iCAT2W-m1T-v1wSBw+GQerhMAp1hT6SioJ53RQY=oA3g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 17, 2023 at 4:57 PM Juergen Gross <jgross@suse.com> wrote:
->
-> Commit f1e525009493 ("x86/boot: Skip realmode init code when running as
-> Xen PV guest") missed one code path accessing real_mode_header, leading
-> to dereferencing NULL when suspending the system under Xen:
->
->     [  348.284004] PM: suspend entry (deep)
->     [  348.289532] Filesystems sync: 0.005 seconds
->     [  348.291545] Freezing user space processes ... (elapsed 0.000 seconds) done.
->     [  348.292457] OOM killer disabled.
->     [  348.292462] Freezing remaining freezable tasks ... (elapsed 0.104 seconds) done.
->     [  348.396612] printk: Suspending console(s) (use no_console_suspend to debug)
->     [  348.749228] PM: suspend devices took 0.352 seconds
->     [  348.769713] ACPI: EC: interrupt blocked
->     [  348.816077] BUG: kernel NULL pointer dereference, address: 000000000000001c
->     [  348.816080] #PF: supervisor read access in kernel mode
->     [  348.816081] #PF: error_code(0x0000) - not-present page
->     [  348.816083] PGD 0 P4D 0
->     [  348.816086] Oops: 0000 [#1] PREEMPT SMP NOPTI
->     [  348.816089] CPU: 0 PID: 6764 Comm: systemd-sleep Not tainted 6.1.3-1.fc32.qubes.x86_64 #1
->     [  348.816092] Hardware name: Star Labs StarBook/StarBook, BIOS 8.01 07/03/2022
->     [  348.816093] RIP: e030:acpi_get_wakeup_address+0xc/0x20
->
-> Fix that by adding an optional acpi callback allowing to skip setting
-> the wakeup address, as in the Xen PV case this will be handled by the
-> hypervisor anyway.
->
-> Fixes: f1e525009493 ("x86/boot: Skip realmode init code when running as Xen PV guest")
-> Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-> Signed-off-by: Juergen Gross <jgross@suse.com>
-> ---
-> V2:
-> - new approach, avoid calling acpi_get_wakeup_address()
+On 1/17/23 08:47, Rafael J. Wysocki wrote:
+>> Fixes: f1e525009493 ("x86/boot: Skip realmode init code when running as Xen PV guest")
+>> Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+>> Signed-off-by: Juergen Gross <jgross@suse.com>
+>> ---
+>> V2:
+>> - new approach, avoid calling acpi_get_wakeup_address()
+> I'll queue this up for 6.3 if the x86 people don't object.
 
-I'll queue this up for 6.3 if the x86 people don't object.
-
-Thanks!
-
-> ---
->  arch/x86/include/asm/acpi.h | 8 ++++++++
->  drivers/acpi/sleep.c        | 6 +++++-
->  2 files changed, 13 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
-> index 65064d9f7fa6..8eb74cf386db 100644
-> --- a/arch/x86/include/asm/acpi.h
-> +++ b/arch/x86/include/asm/acpi.h
-> @@ -14,6 +14,7 @@
->  #include <asm/mmu.h>
->  #include <asm/mpspec.h>
->  #include <asm/x86_init.h>
-> +#include <asm/cpufeature.h>
->
->  #ifdef CONFIG_ACPI_APEI
->  # include <asm/pgtable_types.h>
-> @@ -63,6 +64,13 @@ extern int (*acpi_suspend_lowlevel)(void);
->  /* Physical address to resume after wakeup */
->  unsigned long acpi_get_wakeup_address(void);
->
-> +static inline bool acpi_skip_set_wakeup_address(void)
-> +{
-> +       return cpu_feature_enabled(X86_FEATURE_XENPV);
-> +}
-> +
-> +#define acpi_skip_set_wakeup_address acpi_skip_set_wakeup_address
-> +
->  /*
->   * Check if the CPU can handle C2 and deeper
->   */
-> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-> index 0b557c0d405e..4ca667251272 100644
-> --- a/drivers/acpi/sleep.c
-> +++ b/drivers/acpi/sleep.c
-> @@ -60,13 +60,17 @@ static struct notifier_block tts_notifier = {
->         .priority       = 0,
->  };
->
-> +#ifndef acpi_skip_set_wakeup_address
-> +#define acpi_skip_set_wakeup_address() false
-> +#endif
-> +
->  static int acpi_sleep_prepare(u32 acpi_state)
->  {
->  #ifdef CONFIG_ACPI_SLEEP
->         unsigned long acpi_wakeup_address;
->
->         /* do we have a wakeup address for S2 and S3? */
-> -       if (acpi_state == ACPI_STATE_S3) {
-> +       if (acpi_state == ACPI_STATE_S3 && !acpi_skip_set_wakeup_address()) {
->                 acpi_wakeup_address = acpi_get_wakeup_address();
->                 if (!acpi_wakeup_address)
->                         return -EFAULT;
-> --
+That 'Fixes:' patch looked to me like it was applied during the 6.2
+merge window.  I would have expected a fix to go up for 6.2 final.
