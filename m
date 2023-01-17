@@ -2,134 +2,152 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A92666D83F
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jan 2023 09:34:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BAAA466D8BE
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jan 2023 09:54:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236107AbjAQId6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Jan 2023 03:33:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44064 "EHLO
+        id S235956AbjAQIym (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Jan 2023 03:54:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236061AbjAQId5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Jan 2023 03:33:57 -0500
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A556468B;
-        Tue, 17 Jan 2023 00:33:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1673944436; x=1705480436;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=uH2fB088cGnOr7hqS9w5uSuu3uYOrmGvb6kAqqLC9f8=;
-  b=HEOZtIvaHI/gT+tuCgfXPY/S0TQ/aVAhWrYxYeamzCJaw5F5/bsFHXD4
-   lNpIUV3cdMXJAjHNz/K2oV891QR3GRxgKU/tB/nNJ6AYo9oo6YPgF5REk
-   BajkxGHAtKbibSj3Nq0fcosDJ1VHYE7YNPTPJCXOEDJewbGjSHaUaImA3
-   7Cpx3VNBmF3cVp4ypahIJI3C1h5tp2TWjxB5doIrGS5jBz4IK66G+qnF3
-   YTOTUrlQ71HlHV1mtUs3sVt8tFhvTMU9Tpm8Ff2Av7cjMh0A2Rd5ju9w4
-   vQzTxSbWNXCDI43+BsUpmWr2ed/T/7csj/O5GrquvQDLkWoPNTM2HUJpB
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10592"; a="312506361"
-X-IronPort-AV: E=Sophos;i="5.97,222,1669104000"; 
-   d="scan'208";a="312506361"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2023 00:33:55 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10592"; a="661208510"
-X-IronPort-AV: E=Sophos;i="5.97,222,1669104000"; 
-   d="scan'208";a="661208510"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga007.fm.intel.com with ESMTP; 17 Jan 2023 00:33:52 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pHhPi-00ARvt-0S;
-        Tue, 17 Jan 2023 10:33:50 +0200
-Date:   Tue, 17 Jan 2023 10:33:49 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Raul E Rangel <rrangel@chromium.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        regressions@lists.linux.dev,
-        Werner Sembach <wse@tuxedocomputers.com>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] gpiolib: acpi: Add a ignore wakeup quirk for Clevo
- NL5xRU
-Message-ID: <Y8ZdbVT+5z+q9xvC@smile.fi.intel.com>
-References: <20230116193702.31356-1-mario.limonciello@amd.com>
- <20230116193702.31356-3-mario.limonciello@amd.com>
+        with ESMTP id S235927AbjAQIyk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Jan 2023 03:54:40 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA4213C07;
+        Tue, 17 Jan 2023 00:54:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=82O7MPpmKDKH/y6naoktZs3WQBLC/PHyEl3Wjqd7/dM=; b=Ke5GdVNvGDwhG+k46q7dng0FmD
+        4svqJ3BuhIzpCyRd3d34EzrwpAYhtIPNP9U0JudPObAhyc7mKDDB2ufRnVUe8NMuF1emh9A0PNWIH
+        p1R0fL14Y4BiUEbkIt1kuIDfTIDr+dtl1B0SONy0L6U6H9msSNXgpTQM8WUKpqJC+XOMDTKkpqJUy
+        A0FDeq5XRHSYeh/RQjtt4CQSF65Phgmx7FmreCSehAcpaORvkTTe37Nk1Kd9I9heUV3/iILob+ev7
+        j5Jfjn7noy51S9Ufs13OCaNuk4vpeID6Jvr5f0ui2whQba0QF6a+wxAzj0g5CzDexgL5+ikNTlFRJ
+        Sa81nPeg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1pHhjP-009Wew-5Z; Tue, 17 Jan 2023 08:54:11 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 99EF1302D60;
+        Tue, 17 Jan 2023 09:53:52 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 46751201ABB3C; Tue, 17 Jan 2023 09:53:52 +0100 (CET)
+Date:   Tue, 17 Jan 2023 09:53:52 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Masami Hiramatsu <mhiramat@kernel.org>
+Cc:     richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
+        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
+        nsekhar@ti.com, brgl@bgdev.pl, ulli.kroll@googlemail.com,
+        linus.walleij@linaro.org, shawnguo@kernel.org,
+        Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de,
+        festevam@gmail.com, linux-imx@nxp.com, tony@atomide.com,
+        khilman@kernel.org, krzysztof.kozlowski@linaro.org,
+        alim.akhtar@samsung.com, catalin.marinas@arm.com, will@kernel.org,
+        guoren@kernel.org, bcain@quicinc.com, chenhuacai@kernel.org,
+        kernel@xen0n.name, geert@linux-m68k.org, sammy@sammy.net,
+        monstr@monstr.eu, tsbogend@alpha.franken.de, dinguyen@kernel.org,
+        jonas@southpole.se, stefan.kristiansson@saunalahti.fi,
+        shorne@gmail.com, James.Bottomley@hansenpartnership.com,
+        deller@gmx.de, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, paul.walmsley@sifive.com,
+        palmer@dabbelt.com, aou@eecs.berkeley.edu, hca@linux.ibm.com,
+        gor@linux.ibm.com, agordeev@linux.ibm.com,
+        borntraeger@linux.ibm.com, svens@linux.ibm.com,
+        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
+        richard@nod.at, anton.ivanov@cambridgegreys.com,
+        johannes@sipsolutions.net, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        hpa@zytor.com, acme@kernel.org, mark.rutland@arm.com,
+        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+        namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
+        amakhalov@vmware.com, pv-drivers@vmware.com,
+        boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
+        rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
+        gregkh@linuxfoundation.org, mturquette@baylibre.com,
+        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
+        sudeep.holla@arm.com, agross@kernel.org, andersson@kernel.org,
+        konrad.dybcio@linaro.org, anup@brainfault.org,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        jacob.jun.pan@linux.intel.com, atishp@atishpatra.org,
+        Arnd Bergmann <arnd@arndb.de>, yury.norov@gmail.com,
+        andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk,
+        dennis@kernel.org, tj@kernel.org, cl@linux.com,
+        rostedt@goodmis.org, frederic@kernel.org, paulmck@kernel.org,
+        pmladek@suse.com, senozhatsky@chromium.org,
+        john.ogness@linutronix.de, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        bsegall@google.com, mgorman@suse.de, bristot@redhat.com,
+        vschneid@redhat.com, ryabinin.a.a@gmail.com, glider@google.com,
+        andreyknvl@gmail.com, dvyukov@google.com,
+        vincenzo.frascino@arm.com,
+        Andrew Morton <akpm@linux-foundation.org>, jpoimboe@kernel.org,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-mm@kvack.org,
+        linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com
+Subject: Re: [PATCH v3 35/51] trace,hardirq: No moar _rcuidle() tracing
+Message-ID: <Y8ZiIMHyXX/yW1EI@hirez.programming.kicks-ass.net>
+References: <20230112194314.845371875@infradead.org>
+ <20230112195541.477416709@infradead.org>
+ <20230117132446.02ec12e4c10718de27790900@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230116193702.31356-3-mario.limonciello@amd.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230117132446.02ec12e4c10718de27790900@kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 16, 2023 at 01:37:02PM -0600, Mario Limonciello wrote:
-> commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
-> changed the policy such that I2C touchpads may be able to wake up the
-> system by default if the system is configured as such.
+On Tue, Jan 17, 2023 at 01:24:46PM +0900, Masami Hiramatsu wrote:
+> Hi Peter,
 > 
-> However on Clevo NL5xRU there is a mistake in the ACPI tables that the
-> TP_ATTN# signal connected to GPIO 9 is configured as ActiveLow and level
-> triggered but connected to a pull up. As soon as the system suspends the
-> touchpad loses power and then the system wakes up.
+> On Thu, 12 Jan 2023 20:43:49 +0100
+> Peter Zijlstra <peterz@infradead.org> wrote:
 > 
-> To avoid this problem, introduce a quirk for this model that will prevent
-> the wakeup capability for being set for GPIO 9.
-
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-> Fixes: 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
-> Reported-by: Werner Sembach <wse@tuxedocomputers.com>
-> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627
-> Co-developed-by: Werner Sembach <wse@tuxedocomputers.com>
-> Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/gpio/gpiolib-acpi.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+> > Robot reported that trace_hardirqs_{on,off}() tickle the forbidden
+> > _rcuidle() tracepoint through local_irq_{en,dis}able().
+> > 
+> > For 'sane' configs, these calls will only happen with RCU enabled and
+> > as such can use the regular tracepoint. This also means it's possible
+> > to trace them from NMI context again.
+> > 
+> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 > 
-> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-> index 4287555a12408..9ef0f5641b521 100644
-> --- a/drivers/gpio/gpiolib-acpi.c
-> +++ b/drivers/gpio/gpiolib-acpi.c
-> @@ -1623,6 +1623,19 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
->  			.ignore_interrupt = "AMDI0030:00@18",
->  		},
->  	},
-> +	{
-> +		/*
-> +		 * Spurious wakeups from TP_ATTN# pin
-> +		 * Found in BIOS 1.7.8
-> +		 * https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627
-> +		 */
-> +		.matches = {
-> +			DMI_MATCH(DMI_BOARD_NAME, "NL5xRU"),
-> +		},
-> +		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-> +			.ignore_wake = "ELAN0415:00@9",
-> +		},
-> +	},
->  	{} /* Terminating entry */
->  };
->  
-> -- 
-> 2.34.1
+> The code looks good to me. I just have a question about comment.
 > 
+> > ---
+> >  kernel/trace/trace_preemptirq.c |   21 +++++++++++++--------
+> >  1 file changed, 13 insertions(+), 8 deletions(-)
+> > 
+> > --- a/kernel/trace/trace_preemptirq.c
+> > +++ b/kernel/trace/trace_preemptirq.c
+> > @@ -20,6 +20,15 @@
+> >  static DEFINE_PER_CPU(int, tracing_irq_cpu);
+> >  
+> >  /*
+> > + * ...
+> 
+> Is this intended? Wouldn't you leave any comment here?
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+I indeed forgot to write the comment before posting, my bad :/ Ingo fixed
+it up when he applied.
