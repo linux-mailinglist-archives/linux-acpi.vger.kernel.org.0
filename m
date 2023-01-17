@@ -2,94 +2,145 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAE8A66DDB0
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jan 2023 13:34:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCAFD66DDC8
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jan 2023 13:39:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236244AbjAQMee (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Jan 2023 07:34:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55442 "EHLO
+        id S236618AbjAQMjw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Jan 2023 07:39:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236103AbjAQMed (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Jan 2023 07:34:33 -0500
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DD5635264
-        for <linux-acpi@vger.kernel.org>; Tue, 17 Jan 2023 04:34:32 -0800 (PST)
-Received: by mail-ed1-f49.google.com with SMTP id v13so10743112eda.11
-        for <linux-acpi@vger.kernel.org>; Tue, 17 Jan 2023 04:34:32 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jdjH7apTcY9B0+5D5jb83+J30HHxoTwlJfxN/zgwRAU=;
-        b=pG99hCn33pzLJYPmV+9qufShAplTZU40zG4KjtRh6GPXim78tHM8FMfKuz/U0a4qLL
-         f8PnPmUT+8VGVOCastdpQ6qooIPniNRM6Mfx/xjJ1x5xPhrJqWuGTKs4/7zX4l6jMw8z
-         BTXC2PrtU0CYudSfbgATbECJPgJTlVKGvACL69VpsCkO0I+50Qqaxaxp4WTayk0HdWqP
-         oWijK3NZnqSxQ8S4ZrcBAd5ctzRSfb651fNoKVrymkHDH0Vp7hRQ4lR8w3oWPlHoghp+
-         eupVkl0lHDZpph+UCPp/FL+gP36PK3beeUc8elOkeP7kvag1s/Qs+ITlogq1J3bprpz2
-         3G2Q==
-X-Gm-Message-State: AFqh2kopalLUv6G6A0Df0qK9TFApP4MuChvpx1tGIiivZXG+rOnkNW+x
-        tsi5hX26ih9m7vNk6o0I1tq7GUjKXWSow9c7EmI=
-X-Google-Smtp-Source: AMrXdXuFCOCNpoVmGyvFxctrN9qZgji19esmpfIQA+tLyPO9tyfRTurcKrMBVsO8XPIhkRuGqWM5x0uBdWAYIX+K37w=
-X-Received: by 2002:a05:6402:94a:b0:47f:7465:6e76 with SMTP id
- h10-20020a056402094a00b0047f74656e76mr294884edz.181.1673958870716; Tue, 17
- Jan 2023 04:34:30 -0800 (PST)
+        with ESMTP id S235897AbjAQMjv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Jan 2023 07:39:51 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3A5EC36B38;
+        Tue, 17 Jan 2023 04:39:50 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D469C143D;
+        Tue, 17 Jan 2023 04:40:31 -0800 (PST)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7F6B53F67D;
+        Tue, 17 Jan 2023 04:39:33 -0800 (PST)
+Date:   Tue, 17 Jan 2023 12:39:31 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>, richard.henderson@linaro.org,
+        ink@jurassic.park.msu.ru, mattst88@gmail.com, vgupta@kernel.org,
+        linux@armlinux.org.uk, nsekhar@ti.com, brgl@bgdev.pl,
+        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
+        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+        tony@atomide.com, khilman@kernel.org,
+        krzysztof.kozlowski@linaro.org, alim.akhtar@samsung.com,
+        catalin.marinas@arm.com, will@kernel.org, guoren@kernel.org,
+        bcain@quicinc.com, chenhuacai@kernel.org, kernel@xen0n.name,
+        geert@linux-m68k.org, sammy@sammy.net, monstr@monstr.eu,
+        tsbogend@alpha.franken.de, dinguyen@kernel.org, jonas@southpole.se,
+        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
+        James.Bottomley@hansenpartnership.com, deller@gmx.de,
+        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        paul.walmsley@sifive.com, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
+        davem@davemloft.net, richard@nod.at,
+        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        acme@kernel.org, alexander.shishkin@linux.intel.com,
+        jolsa@kernel.org, namhyung@kernel.org, jgross@suse.com,
+        srivatsa@csail.mit.edu, amakhalov@vmware.com,
+        pv-drivers@vmware.com, boris.ostrovsky@oracle.com,
+        chris@zankel.net, jcmvbkbc@gmail.com, rafael@kernel.org,
+        lenb@kernel.org, pavel@ucw.cz, gregkh@linuxfoundation.org,
+        mturquette@baylibre.com, sboyd@kernel.org,
+        daniel.lezcano@linaro.org, lpieralisi@kernel.org,
+        agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
+        anup@brainfault.org, thierry.reding@gmail.com,
+        jonathanh@nvidia.com, jacob.jun.pan@linux.intel.com,
+        atishp@atishpatra.org, Arnd Bergmann <arnd@arndb.de>,
+        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
+        linux@rasmusvillemoes.dk, dennis@kernel.org, tj@kernel.org,
+        cl@linux.com, rostedt@goodmis.org, mhiramat@kernel.org,
+        frederic@kernel.org, paulmck@kernel.org, pmladek@suse.com,
+        senozhatsky@chromium.org, john.ogness@linutronix.de,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
+        bristot@redhat.com, vschneid@redhat.com, ryabinin.a.a@gmail.com,
+        glider@google.com, andreyknvl@gmail.com, dvyukov@google.com,
+        vincenzo.frascino@arm.com,
+        Andrew Morton <akpm@linux-foundation.org>, jpoimboe@kernel.org,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-mm@kvack.org,
+        linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+        Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [PATCH v3 00/51] cpuidle,rcu: Clean up the mess
+Message-ID: <20230117123931.3ocl3ckkf72kusbz@bogus>
+References: <20230112194314.845371875@infradead.org>
+ <Y8WCWAuQSHN651dA@FVFF77S0Q05N.cambridge.arm.com>
+ <Y8Z31UbzG3LJgAXE@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-References: <20230113114126.172078-1-hdegoede@redhat.com>
-In-Reply-To: <20230113114126.172078-1-hdegoede@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 17 Jan 2023 13:34:14 +0100
-Message-ID: <CAJZ5v0jt+AArS=QyuA0mi8c9_f=8mfWgp_kGHk_iR1m15QwHFw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: video: Add backlight=native DMI quirk for Acer
- Aspire 4810T
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y8Z31UbzG3LJgAXE@hirez.programming.kicks-ass.net>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 13, 2023 at 12:41 PM Hans de Goede <hdegoede@redhat.com> wrote:
+On Tue, Jan 17, 2023 at 11:26:29AM +0100, Peter Zijlstra wrote:
+> On Mon, Jan 16, 2023 at 04:59:04PM +0000, Mark Rutland wrote:
+> 
+> > I'm sorry to have to bear some bad news on that front. :(
+> 
+> Moo, something had to give..
+> 
+> 
+> > IIUC what's happenign here is the PSCI cpuidle driver has entered idle and RCU
+> > is no longer watching when arm64's cpu_suspend() manipulates DAIF. Our
+> > local_daif_*() helpers poke lockdep and tracing, hence the call to
+> > trace_hardirqs_off() and the RCU usage.
+> 
+> Right, strictly speaking not needed at this point, IRQs should have been
+> traced off a long time ago.
+> 
+> > I think we need RCU to be watching all the way down to cpu_suspend(), and it's
+> > cpu_suspend() that should actually enter/exit idle context. That and we need to
+> > make cpu_suspend() and the low-level PSCI invocation noinstr.
+> > 
+> > I'm not sure whether 32-bit will have a similar issue or not.
+> 
+> I'm not seeing 32bit or Risc-V have similar issues here, but who knows,
+> maybe I missed somsething.
+> 
+> In any case, the below ought to cure the ARM64 case and remove that last
+> known RCU_NONIDLE() user as a bonus.
 >
-> The Acer Aspire 4810T predates Windows 8, so it defaults to using
-> acpi_video# for backlight control, but this is non functional on
-> this model.
->
-> Add a DMI quirk to use the native backlight interface which does
-> work properly.
->
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  drivers/acpi/video_detect.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->
-> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-> index d4edd64dcc2f..fb526ba8825b 100644
-> --- a/drivers/acpi/video_detect.c
-> +++ b/drivers/acpi/video_detect.c
-> @@ -515,6 +515,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
->                 DMI_MATCH(DMI_PRODUCT_NAME, "Precision 7510"),
->                 },
->         },
-> +       {
-> +        .callback = video_detect_force_native,
-> +        /* Acer Aspire 4810T */
-> +        .matches = {
-> +               DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-> +               DMI_MATCH(DMI_PRODUCT_NAME, "Aspire 4810T"),
-> +               },
-> +       },
->         {
->          .callback = video_detect_force_native,
->          /* Acer Aspire 5738z */
-> --
 
-Applied as 6.2-rc material, thanks!
+Thanks for the fix. I tested the series and did observe the same splat
+with both DT and ACPI boot(they enter idle in different code paths). Thanks
+to Mark for reminding me about ACPI. With this fix, I see the splat is
+gone in both DT(cpuidle-psci.c) and ACPI(acpi_processor_idle.c).
+
+You can add:
+
+Tested-by: Sudeep Holla <sudeep.holla@arm.com>
+
+--
+Regards,
+Sudeep
