@@ -2,106 +2,205 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B992B66D198
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Jan 2023 23:15:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D790566D54D
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jan 2023 05:25:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234993AbjAPWPi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Jan 2023 17:15:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51926 "EHLO
+        id S234972AbjAQEZP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 Jan 2023 23:25:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234562AbjAPWPf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Jan 2023 17:15:35 -0500
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A673610A95;
-        Mon, 16 Jan 2023 14:15:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=YJdSP6ajWattA/UAQ8BmtbdhHG1VfxlJKOf4GW8dgMw=; b=uEDh8oJ9HS6v+2ZzWzV3Wjaf8t
-        kiivbrhcgMn9WltPkFhpqLF6oByGKlvD2UwpzvVYo8om22flSZUPMetaJlH/NR37iZo38iDiS93Ij
-        yrJWXZ11jYqxFbYhtA6QWCtyDYYhqe4BA4bDc6/rvigTTmF5b+kg3zfyrfTZV6Hjg4IA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1pHXj6-002Gfb-A5; Mon, 16 Jan 2023 23:13:12 +0100
-Date:   Mon, 16 Jan 2023 23:13:12 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Marcin Wojtas <mw@semihalf.com>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, rafael@kernel.org,
-        andriy.shevchenko@linux.intel.com, sean.wang@mediatek.com,
-        Landen.Chao@mediatek.com, linus.walleij@linaro.org,
-        vivien.didelot@gmail.com, f.fainelli@gmail.com, olteanv@gmail.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux@armlinux.org.uk, hkallweit1@gmail.com,
-        jaz@semihalf.com, tn@semihalf.com, Samer.El-Haj-Mahmoud@arm.com
-Subject: Re: [net-next: PATCH v4 2/8] net: mdio: switch fixed-link PHYs API
- to fwnode_
-Message-ID: <Y8XL+PKLabp9oTsZ@lunn.ch>
-References: <20230116173420.1278704-1-mw@semihalf.com>
- <20230116173420.1278704-3-mw@semihalf.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230116173420.1278704-3-mw@semihalf.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S234808AbjAQEZN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Jan 2023 23:25:13 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25E1B12F2F;
+        Mon, 16 Jan 2023 20:25:12 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B38D611B3;
+        Tue, 17 Jan 2023 04:25:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0701C433EF;
+        Tue, 17 Jan 2023 04:24:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673929510;
+        bh=LKPfAbcdavLMCpifQk05Aqw+1tD2xg5qsuB6VorVVnI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=rvDfVQk7Tsas4+LZFK04iCV/SqfYXmqYXLFi42JOngYW1dOP0QSo6CLiBkpjYosKx
+         nKUcD4fx6Lu1RT5hJ5yblHd47Jqpvv59kmEAKtriWUWkTZ7hmC4Za3q3BgpEtr891G
+         Uhe5azCk4FahsTTDCEc3lE2+MzsUQWKU5CAcTO6IYBsGKCz8NivYw+lk7qeBhykDxt
+         x23XNA0A5LxituWhIHyg6sCe7NTSUKsY2ON6C3g6I/nFT8i/VEH7jmIvKLWoo8AYZN
+         JlOlRfIFLAGKs5+FVWy9q/WwqqbuzK/Mvbqfsgyxm4gYqDdXx2B1Vx+ckQBMj8vEfk
+         ICBnmkeUNpdwg==
+Date:   Tue, 17 Jan 2023 13:24:46 +0900
+From:   Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
+        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
+        nsekhar@ti.com, brgl@bgdev.pl, ulli.kroll@googlemail.com,
+        linus.walleij@linaro.org, shawnguo@kernel.org,
+        Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de,
+        festevam@gmail.com, linux-imx@nxp.com, tony@atomide.com,
+        khilman@kernel.org, krzysztof.kozlowski@linaro.org,
+        alim.akhtar@samsung.com, catalin.marinas@arm.com, will@kernel.org,
+        guoren@kernel.org, bcain@quicinc.com, chenhuacai@kernel.org,
+        kernel@xen0n.name, geert@linux-m68k.org, sammy@sammy.net,
+        monstr@monstr.eu, tsbogend@alpha.franken.de, dinguyen@kernel.org,
+        jonas@southpole.se, stefan.kristiansson@saunalahti.fi,
+        shorne@gmail.com, James.Bottomley@HansenPartnership.com,
+        deller@gmx.de, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, paul.walmsley@sifive.com,
+        palmer@dabbelt.com, aou@eecs.berkeley.edu, hca@linux.ibm.com,
+        gor@linux.ibm.com, agordeev@linux.ibm.com,
+        borntraeger@linux.ibm.com, svens@linux.ibm.com,
+        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
+        richard@nod.at, anton.ivanov@cambridgegreys.com,
+        johannes@sipsolutions.net, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        hpa@zytor.com, acme@kernel.org, mark.rutland@arm.com,
+        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+        namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
+        amakhalov@vmware.com, pv-drivers@vmware.com,
+        boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
+        rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
+        gregkh@linuxfoundation.org, mturquette@baylibre.com,
+        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
+        sudeep.holla@arm.com, agross@kernel.org, andersson@kernel.org,
+        konrad.dybcio@linaro.org, anup@brainfault.org,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        jacob.jun.pan@linux.intel.com, atishp@atishpatra.org,
+        Arnd Bergmann <arnd@arndb.de>, yury.norov@gmail.com,
+        andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk,
+        dennis@kernel.org, tj@kernel.org, cl@linux.com,
+        rostedt@goodmis.org, mhiramat@kernel.org, frederic@kernel.org,
+        paulmck@kernel.org, pmladek@suse.com, senozhatsky@chromium.org,
+        john.ogness@linutronix.de, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        bsegall@google.com, mgorman@suse.de, bristot@redhat.com,
+        vschneid@redhat.com, ryabinin.a.a@gmail.com, glider@google.com,
+        andreyknvl@gmail.com, dvyukov@google.com,
+        vincenzo.frascino@arm.com,
+        Andrew Morton <akpm@linux-foundation.org>, jpoimboe@kernel.org,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-mm@kvack.org,
+        linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com
+Subject: Re: [PATCH v3 35/51] trace,hardirq: No moar _rcuidle() tracing
+Message-Id: <20230117132446.02ec12e4c10718de27790900@kernel.org>
+In-Reply-To: <20230112195541.477416709@infradead.org>
+References: <20230112194314.845371875@infradead.org>
+        <20230112195541.477416709@infradead.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> +int fwnode_phy_register_fixed_link(struct fwnode_handle *fwnode)
-> +{
-> +	struct fixed_phy_status status = {};
-> +	struct fwnode_handle *fixed_link_node;
-> +	u32 fixed_link_prop[5];
-> +	const char *managed;
-> +	int rc;
-> +
-> +	if (fwnode_property_read_string(fwnode, "managed", &managed) == 0 &&
-> +	    strcmp(managed, "in-band-status") == 0) {
-> +		/* status is zeroed, namely its .link member */
-> +		goto register_phy;
-> +	}
-> +
-> +	/* New binding */
-> +	fixed_link_node = fwnode_get_named_child_node(fwnode, "fixed-link");
-> +	if (fixed_link_node) {
-> +		status.link = 1;
-> +		status.duplex = fwnode_property_present(fixed_link_node,
-> +							"full-duplex");
-> +		rc = fwnode_property_read_u32(fixed_link_node, "speed",
-> +					      &status.speed);
-> +		if (rc) {
-> +			fwnode_handle_put(fixed_link_node);
-> +			return rc;
-> +		}
-> +		status.pause = fwnode_property_present(fixed_link_node, "pause");
-> +		status.asym_pause = fwnode_property_present(fixed_link_node,
-> +							    "asym-pause");
-> +		fwnode_handle_put(fixed_link_node);
-> +
-> +		goto register_phy;
-> +	}
-> +
-> +	/* Old binding */
-> +	rc = fwnode_property_read_u32_array(fwnode, "fixed-link", fixed_link_prop,
-> +					    ARRAY_SIZE(fixed_link_prop));
-> +	if (rc)
-> +		return rc;
-> +
-> +	status.link = 1;
-> +	status.duplex = fixed_link_prop[1];
-> +	status.speed  = fixed_link_prop[2];
-> +	status.pause  = fixed_link_prop[3];
-> +	status.asym_pause = fixed_link_prop[4];
+Hi Peter,
 
-This is one example of the issue i just pointed out. The "Old binding"
-has been deprecated for years. Maybe a decade? There is no reason it
-should be used in ACPI.
+On Thu, 12 Jan 2023 20:43:49 +0100
+Peter Zijlstra <peterz@infradead.org> wrote:
 
-       Andrew
+> Robot reported that trace_hardirqs_{on,off}() tickle the forbidden
+> _rcuidle() tracepoint through local_irq_{en,dis}able().
+> 
+> For 'sane' configs, these calls will only happen with RCU enabled and
+> as such can use the regular tracepoint. This also means it's possible
+> to trace them from NMI context again.
+> 
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+
+The code looks good to me. I just have a question about comment.
+
+> ---
+>  kernel/trace/trace_preemptirq.c |   21 +++++++++++++--------
+>  1 file changed, 13 insertions(+), 8 deletions(-)
+> 
+> --- a/kernel/trace/trace_preemptirq.c
+> +++ b/kernel/trace/trace_preemptirq.c
+> @@ -20,6 +20,15 @@
+>  static DEFINE_PER_CPU(int, tracing_irq_cpu);
+>  
+>  /*
+> + * ...
+
+Is this intended? Wouldn't you leave any comment here?
+
+Thank you,
+
+> + */
+> +#ifdef CONFIG_ARCH_WANTS_NO_INSTR
+> +#define trace(point)	trace_##point
+> +#else
+> +#define trace(point)	if (!in_nmi()) trace_##point##_rcuidle
+> +#endif
+> +
+> +/*
+>   * Like trace_hardirqs_on() but without the lockdep invocation. This is
+>   * used in the low level entry code where the ordering vs. RCU is important
+>   * and lockdep uses a staged approach which splits the lockdep hardirq
+> @@ -28,8 +37,7 @@ static DEFINE_PER_CPU(int, tracing_irq_c
+>  void trace_hardirqs_on_prepare(void)
+>  {
+>  	if (this_cpu_read(tracing_irq_cpu)) {
+> -		if (!in_nmi())
+> -			trace_irq_enable(CALLER_ADDR0, CALLER_ADDR1);
+> +		trace(irq_enable)(CALLER_ADDR0, CALLER_ADDR1);
+>  		tracer_hardirqs_on(CALLER_ADDR0, CALLER_ADDR1);
+>  		this_cpu_write(tracing_irq_cpu, 0);
+>  	}
+> @@ -40,8 +48,7 @@ NOKPROBE_SYMBOL(trace_hardirqs_on_prepar
+>  void trace_hardirqs_on(void)
+>  {
+>  	if (this_cpu_read(tracing_irq_cpu)) {
+> -		if (!in_nmi())
+> -			trace_irq_enable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
+> +		trace(irq_enable)(CALLER_ADDR0, CALLER_ADDR1);
+>  		tracer_hardirqs_on(CALLER_ADDR0, CALLER_ADDR1);
+>  		this_cpu_write(tracing_irq_cpu, 0);
+>  	}
+> @@ -63,8 +70,7 @@ void trace_hardirqs_off_finish(void)
+>  	if (!this_cpu_read(tracing_irq_cpu)) {
+>  		this_cpu_write(tracing_irq_cpu, 1);
+>  		tracer_hardirqs_off(CALLER_ADDR0, CALLER_ADDR1);
+> -		if (!in_nmi())
+> -			trace_irq_disable(CALLER_ADDR0, CALLER_ADDR1);
+> +		trace(irq_disable)(CALLER_ADDR0, CALLER_ADDR1);
+>  	}
+>  
+>  }
+> @@ -78,8 +84,7 @@ void trace_hardirqs_off(void)
+>  	if (!this_cpu_read(tracing_irq_cpu)) {
+>  		this_cpu_write(tracing_irq_cpu, 1);
+>  		tracer_hardirqs_off(CALLER_ADDR0, CALLER_ADDR1);
+> -		if (!in_nmi())
+> -			trace_irq_disable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
+> +		trace(irq_disable)(CALLER_ADDR0, CALLER_ADDR1);
+>  	}
+>  }
+>  EXPORT_SYMBOL(trace_hardirqs_off);
+> 
+> 
+
+
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
