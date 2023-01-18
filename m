@@ -2,88 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 697B7670ED3
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jan 2023 01:41:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28D05670F0B
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jan 2023 01:51:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229649AbjARAl1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 17 Jan 2023 19:41:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38510 "EHLO
+        id S229648AbjARAv1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Jan 2023 19:51:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229806AbjARAkt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Jan 2023 19:40:49 -0500
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A30BA50840;
-        Tue, 17 Jan 2023 16:15:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674000915; x=1705536915;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=U+FNsffiUiBOhXgQVY2RTqxZzcTli6D4Y1VLa3Irm2Y=;
-  b=hFXMQG4xl1NOXXWOJN6D2BnlgSPjnSGhOcow34qZah6swOEy9P2dzAGx
-   hPlYOFsxYbmja2/Am9SDIJ5M5r0i7dAJXoO5SVU7uRVO8Ydmzgy55jt0q
-   ln58IaHn/BBvAafu18Lg2XlqJSakXjp0SaX311Zm6YOB/rQaK+4vC1qeN
-   yFMOD8IS+atuFGj4Knkj5r1c/Ks7GPpLGuLBLFgHEmkbmpP6tV/mMQWGt
-   itccpuztPcUawxiDwQL8HEX4uFSC1Nu/Q8v6AHNIKtLl1qGoTmbmOnkZG
-   b6YdkVYfqt45P5YL1PzzZY5xImV/d8zZQAMSINeEWWnFUcajchA2XRlv6
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="352102383"
-X-IronPort-AV: E=Sophos;i="5.97,224,1669104000"; 
-   d="scan'208";a="352102383"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2023 16:15:15 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="783443930"
-X-IronPort-AV: E=Sophos;i="5.97,224,1669104000"; 
-   d="scan'208";a="783443930"
-Received: from tblanzy-mobl.amr.corp.intel.com (HELO [10.209.6.252]) ([10.209.6.252])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2023 16:15:14 -0800
-Message-ID: <43d0f8b1-0d2e-0e0f-d794-0048641d84f1@intel.com>
-Date:   Tue, 17 Jan 2023 16:15:24 -0800
+        with ESMTP id S230008AbjARAuO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 17 Jan 2023 19:50:14 -0500
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8EB948597;
+        Tue, 17 Jan 2023 16:38:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+        Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+        In-Reply-To:References; bh=0HCpBuDUlZrcaYoduPW/Z+1qpg8yIbgenbGVPx9MOfk=; b=vV
+        m8kryVeZkEM87hthlDf5125GXBr4uT2ZkjLFASwXfys3F2ONkUp9EskecwNpN7VRj3Sj/KSDpL8fT
+        P90u4Q0CiTJIhrrwLW//dJIvE2InyPGwgK+0Tw8gKPqnt1lYMUlq/8So4Ta8zQ9FnghNrN3KWu6s2
+        brSv+//fMoHqXo0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1pHwTR-002NcW-Ps; Wed, 18 Jan 2023 01:38:41 +0100
+Date:   Wed, 18 Jan 2023 01:38:41 +0100
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Marcin Wojtas <mw@semihalf.com>
+Cc:     Vladimir Oltean <olteanv@gmail.com>,
+        "Russell King (Oracle)" <linux@armlinux.org.uk>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, rafael@kernel.org,
+        andriy.shevchenko@linux.intel.com, sean.wang@mediatek.com,
+        Landen.Chao@mediatek.com, linus.walleij@linaro.org,
+        vivien.didelot@gmail.com, f.fainelli@gmail.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, hkallweit1@gmail.com, jaz@semihalf.com,
+        tn@semihalf.com, Samer.El-Haj-Mahmoud@arm.com
+Subject: Re: [net-next: PATCH v4 2/8] net: mdio: switch fixed-link PHYs API
+ to fwnode_
+Message-ID: <Y8c/kQiZ4S11ua3z@lunn.ch>
+References: <20230116173420.1278704-1-mw@semihalf.com>
+ <20230116173420.1278704-3-mw@semihalf.com>
+ <Y8WOVVnFInEoXLVX@shell.armlinux.org.uk>
+ <20230116181618.2iz54jywj7rqzygu@skbuf>
+ <Y8XJ3WoP+YKCjTlF@lunn.ch>
+ <CAPv3WKc8gfBb7BDf5kwyPCNRxmS_H8AgQKRitbsqvL7ihbP1DA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH v2] acpi: fix suspend with Xen PV
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Juergen Gross <jgross@suse.com>, linux-kernel@vger.kernel.org,
-        x86@kernel.org, linux-acpi@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Len Brown <lenb@kernel.org>,
-        =?UTF-8?Q?Marek_Marczykowski-G=c3=b3recki?= 
-        <marmarek@invisiblethingslab.com>
-References: <20230117155724.22940-1-jgross@suse.com>
- <CAJZ5v0iCAT2W-m1T-v1wSBw+GQerhMAp1hT6SioJ53RQY=oA3g@mail.gmail.com>
- <7f969b09-438b-cee3-be4c-e08b97457b12@intel.com>
- <CAJZ5v0iOmZouhSb_ap0MA3-sk6RWJ7MRpTuGekrJrvOn-Y4JYQ@mail.gmail.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <CAJZ5v0iOmZouhSb_ap0MA3-sk6RWJ7MRpTuGekrJrvOn-Y4JYQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CAPv3WKc8gfBb7BDf5kwyPCNRxmS_H8AgQKRitbsqvL7ihbP1DA@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 1/17/23 09:08, Rafael J. Wysocki wrote:
-> On Tue, Jan 17, 2023 at 5:51 PM Dave Hansen <dave.hansen@intel.com> wrote:
->> On 1/17/23 08:47, Rafael J. Wysocki wrote:
->>>> Fixes: f1e525009493 ("x86/boot: Skip realmode init code when running as Xen PV guest")
->>>> Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
->>>> Signed-off-by: Juergen Gross <jgross@suse.com>
->>>> ---
->>>> V2:
->>>> - new approach, avoid calling acpi_get_wakeup_address()
->>> I'll queue this up for 6.3 if the x86 people don't object.
->> That 'Fixes:' patch looked to me like it was applied during the 6.2
->> merge window.  I would have expected a fix to go up for 6.2 final.
-> Right, sorry.  Definitely, 6.2-rc material.
+On Tue, Jan 17, 2023 at 05:05:53PM +0100, Marcin Wojtas wrote:
+> Hi Andrew and Vladimir,
+> 
+> pon., 16 sty 2023 o 23:04 Andrew Lunn <andrew@lunn.ch> napisał(a):
+> >
+> > On Mon, Jan 16, 2023 at 08:16:18PM +0200, Vladimir Oltean wrote:
+> > > On Mon, Jan 16, 2023 at 05:50:13PM +0000, Russell King (Oracle) wrote:
+> > > > On Mon, Jan 16, 2023 at 06:34:14PM +0100, Marcin Wojtas wrote:
+> > > > > fixed-link PHYs API is used by DSA and a number of drivers
+> > > > > and was depending on of_. Switch to fwnode_ so to make it
+> > > > > hardware description agnostic and allow to be used in ACPI
+> > > > > world as well.
+> > > >
+> > > > Would it be better to let the fixed-link PHY die, and have everyone use
+> > > > the more flexible fixed link implementation in phylink?
+> > >
+> > > Would it be even better if DSA had some driver-level prerequisites to
+> > > impose for ACPI support - like phylink support rather than adjust_link -
+> > > and we would simply branch off to a dsa_shared_port_link_register_acpi()
+> > > function, leaving the current dsa_shared_port_link_register_of() alone,
+> > > with all its workarounds and hacks? I don't believe that carrying all
+> > > that logic over to a common fwnode based API is the proper way forward.
+> 
+> In the past couple of years, a number of subsystems have migrated to a
+> more generic HW description abstraction (e.g. a big chunk of network,
+> pinctrl, gpio). ACPI aside, with this patchset one can even try to
+> describe the switch topology with the swnode (I haven't tried that
+> though). I fully agree that there should be no 0-day baggage in the
+> DSA ACPI binding (FYI the more fwnode- version of the
+> dsa_shared_port_validate_of() cought one issue in the WIP ACPI
+> description in my setup). On the other hand, I find fwnode_/device_
+> APIs really helpful for most of the cases - ACPI/OF/swnode differences
+> can be hidden to a generic layer and the need of maintaining separate
+> code paths related to the hardware description on the driver/subsystem
+> level is minimized.
 
-I think the original issue went up in x86/boot, so how about I queue
-this in x86/urgent?  Rafael, should I add an ack from you on it?
+It looks like we are heading towards three different descriptions. OF,
+ACPI and swnode. Each is likely to be different. OF has a lot of
+history in it, deprecated things etc, which should not appear in the
+others. So i see a big ugly block of code for the OF binding, and
+hopefully clean and tidy code for ACPI binding and a clean and tidy
+bit of code for swmode.,
+
+It would be nice if the results of that parsing could be presented to
+the drivers in a uniform way, so the driver itself does not need to
+care where the information came from. But to me it is clear that this
+uniform layer has no direct access to the databases, since the
+database as are different.
+
+	Andrew
