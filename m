@@ -2,117 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1088C672A38
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jan 2023 22:17:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E3AD672B2A
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jan 2023 23:14:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230386AbjARVQ7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Jan 2023 16:16:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46696 "EHLO
+        id S229468AbjARWOg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Jan 2023 17:14:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230458AbjARVQ6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Jan 2023 16:16:58 -0500
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE2A01C306;
-        Wed, 18 Jan 2023 13:16:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674076613; x=1705612613;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=+obUbfv4AWADjLLT9aInBE8U8pKm+zFRM9cucM+TI5M=;
-  b=Pf6xESk1m0U81RDfkfrgXrCugey9EnBvY54nvhkTne7PnL6IPMpIGoJp
-   gFiiM+FdfTiZS4jDO5Jfs+VzFCS8AdXDgpbgizwUNUL7pRUyfLz/Ebs0L
-   1SIKnXBJJUstWcHI7FR4KKPHxzHdJ7UB67gltpXWv9Ppu968OhQafIFTv
-   VtZLsYUNKHbMnMoOKcJLbFyavsYjgfsJ9YKRFQge4SUVijG53GGYmKG5n
-   7qnIt6LuQS7bdAkzpt9aAcDo8mGlnZw5zf7j5wU/dj5+AbpzV2twIA7bp
-   MCC79BJ+a6/8l/Q1rCYZ4DjhQgrTQEn9pgpFvf50CYmkiIJ4/RhC9zTO6
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="322792588"
-X-IronPort-AV: E=Sophos;i="5.97,226,1669104000"; 
-   d="scan'208";a="322792588"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 13:16:51 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="609821066"
-X-IronPort-AV: E=Sophos;i="5.97,226,1669104000"; 
-   d="scan'208";a="609821066"
-Received: from yzeleke-mobl1.amr.corp.intel.com (HELO spandruv-desk1.amr.corp.intel.com) ([10.209.16.158])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 13:16:50 -0800
-Message-ID: <340f3ecdaddb2c422dcbe3df712a082f333eab0d.camel@linux.intel.com>
+        with ESMTP id S230037AbjARWOa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Jan 2023 17:14:30 -0500
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AFAF64682
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Jan 2023 14:14:25 -0800 (PST)
+Received: by mail-wm1-x335.google.com with SMTP id k16so211956wms.2
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Jan 2023 14:14:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=egY6XBJDoe1wCCvHptPORHfFmJ5o0bmjSybogaKhxrI=;
+        b=xhK1YXGz1iG9zw8n8l7pbAefehCk66eUvgu5XTBk0C1MHWGKVcV55BtletQsQ0SbdR
+         cFRpWZ0yMltC2ygvlv4TigAfTx6FxPUgjd30WiYL3im6tZ4rdzqFqzx/r+OpILlqjwVZ
+         4FuL8fepwtM2HAxbkVS4dLIhlLxSxTt3T7nlCuHXsJXmPVMvuX5WBoVxSbToWXXEeyY1
+         ry1pyGoErhXJpBGncz2t4oElEcMNQtW3hzj4wp3YA82kkmAXaqLLYpVp54XFXvIYQEY2
+         PopbTJkokiGGybsIeEMeWOvQMt/8r93di9URWRHGIFzqjSjg2IurhS2h7TdtEtHXJMfz
+         Wcyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=egY6XBJDoe1wCCvHptPORHfFmJ5o0bmjSybogaKhxrI=;
+        b=LslHXRDrTlB/CCekSEgVdbXGJpIbtVyxDdaCeai39bDmKSvchuu1Ku07XBYaZN+20e
+         hmCK2jZK3PWmTZmUR0TPhqrPl51E8G2tGOzOBbpy9vqBxDJ5yYx4AKE38qEAAXkX/ysP
+         LvLdqsXJwqrL0ryZ2UyT0h8irMeHPKlep61G8IjGQCh3SFn25mmG1IpiiKZE3QfOdhwD
+         jlVGfQVTnobcXT7zl2KnWJcqGWv00iLMhUcLbYqcYpfZmdfG0zOYG0rZY1/2khjdXKJc
+         ClE92a+viog8hYmEiffp8aCD9Vywx1p53RyhffO8wJ+/ChNYA4/aL5/s6JY8aI4IegCq
+         TfQg==
+X-Gm-Message-State: AFqh2koC0NVZyZ14DOU/M402wcdcatD9ZPnOs6uSXLw7+YdJI5SMzu9p
+        qZx3Ftcs+U6qR9REzRiWnzTLyg==
+X-Google-Smtp-Source: AMrXdXvLIQ7udxrEj0OpmJcLvXl9yE5kf6WaRmM5Ei43XvTaGd6G2RysPm6iatEz4NjdYZtWWTgIcg==
+X-Received: by 2002:a05:600c:4f52:b0:3d2:3b4d:d619 with SMTP id m18-20020a05600c4f5200b003d23b4dd619mr8227806wmq.15.1674080063751;
+        Wed, 18 Jan 2023 14:14:23 -0800 (PST)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id f24-20020a05600c491800b003d9e74dd9b2sm2938429wmp.9.2023.01.18.14.14.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Jan 2023 14:14:23 -0800 (PST)
+Message-ID: <d6f71181-1de4-7937-eda0-8805d9dfc3b4@linaro.org>
+Date:   Wed, 18 Jan 2023 23:14:22 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
 Subject: Re: [PATCH v5 0/3] Thermal ACPI APIs for generic trip points
-From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+Content-Language: en-US
+To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>,
         "Zhang, Rui" <rui.zhang@intel.com>,
         "rafael@kernel.org" <rafael@kernel.org>
 Cc:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
         "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Date:   Wed, 18 Jan 2023 13:16:50 -0800
-In-Reply-To: <87627e1f-322c-a195-8ce6-8922d9787ff0@linaro.org>
 References: <20230113180235.1604526-1-daniel.lezcano@linaro.org>
-         <f76c13de-d250-ebc0-d234-ccb3a9ce3c28@linaro.org>
-         <2627c37e07dce6b125d3fea3bf38a5f2407ad6a1.camel@intel.com>
-         <5aabdd3010a02e361fbbe01f4af0e30d11f0ae6b.camel@linux.intel.com>
-         <c7abcce47df0aaa55f1e6c65f501bc691d35eae8.camel@linux.intel.com>
-         <c210542f-0a71-15f2-c58f-ec607e60b06d@linaro.org>
-         <8547963350fb3bdb09a4693f0eb80c7199ab6f21.camel@linux.intel.com>
-         <87627e1f-322c-a195-8ce6-8922d9787ff0@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+ <f76c13de-d250-ebc0-d234-ccb3a9ce3c28@linaro.org>
+ <2627c37e07dce6b125d3fea3bf38a5f2407ad6a1.camel@intel.com>
+ <5aabdd3010a02e361fbbe01f4af0e30d11f0ae6b.camel@linux.intel.com>
+ <c7abcce47df0aaa55f1e6c65f501bc691d35eae8.camel@linux.intel.com>
+ <c210542f-0a71-15f2-c58f-ec607e60b06d@linaro.org>
+ <8547963350fb3bdb09a4693f0eb80c7199ab6f21.camel@linux.intel.com>
+ <87627e1f-322c-a195-8ce6-8922d9787ff0@linaro.org>
+ <340f3ecdaddb2c422dcbe3df712a082f333eab0d.camel@linux.intel.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <340f3ecdaddb2c422dcbe3df712a082f333eab0d.camel@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 2023-01-18 at 22:01 +0100, Daniel Lezcano wrote:
-> On 18/01/2023 21:53, srinivas pandruvada wrote:
-> > On Wed, 2023-01-18 at 21:00 +0100, Daniel Lezcano wrote:
-> > > On 18/01/2023 20:16, srinivas pandruvada wrote:
-> > > 
-> > > [ ... ]
-> > > 
-> > > > > > But we'd better wait for the thermald test result from
-> > > > > > Srinvias.
-> > > > > 
-> > > > > A quick test show that things still work with thermald and
-> > > > > these
-> > > > > changes.
-> > > > 
-> > > > But I have a question. In some devices trip point temperature
-> > > > is
-> > > > not
-> > > > static. When hardware changes, we get notification. For example
-> > > > INT3403_PERF_TRIP_POINT_CHANGED for INT3403 drivers.
-> > > > Currently get_trip can get the latest changed value. But if we
-> > > > preregister, we need some mechanism to update them.
-> > > 
-> > > When the notification INT3403_PERF_TRIP_POINT_CHANGED happens, we
-> > > call
-> > > int340x_thermal_read_trips() which in turn updates the trip
-> > > points.
-> > > 
-> > 
-> > Not sure how we handle concurrency here when driver can freely
-> > update
-> > trips while thermal core is using trips.
+On 18/01/2023 22:16, srinivas pandruvada wrote:
+> On Wed, 2023-01-18 at 22:01 +0100, Daniel Lezcano wrote:
+>> On 18/01/2023 21:53, srinivas pandruvada wrote:
+>>> On Wed, 2023-01-18 at 21:00 +0100, Daniel Lezcano wrote:
+>>>> On 18/01/2023 20:16, srinivas pandruvada wrote:
+>>>>
+>>>> [ ... ]
+>>>>
+>>>>>>> But we'd better wait for the thermald test result from
+>>>>>>> Srinvias.
+>>>>>>
+>>>>>> A quick test show that things still work with thermald and
+>>>>>> these
+>>>>>> changes.
+>>>>>
+>>>>> But I have a question. In some devices trip point temperature
+>>>>> is
+>>>>> not
+>>>>> static. When hardware changes, we get notification. For example
+>>>>> INT3403_PERF_TRIP_POINT_CHANGED for INT3403 drivers.
+>>>>> Currently get_trip can get the latest changed value. But if we
+>>>>> preregister, we need some mechanism to update them.
+>>>>
+>>>> When the notification INT3403_PERF_TRIP_POINT_CHANGED happens, we
+>>>> call
+>>>> int340x_thermal_read_trips() which in turn updates the trip
+>>>> points.
+>>>>
+>>>
+>>> Not sure how we handle concurrency here when driver can freely
+>>> update
+>>> trips while thermal core is using trips.
+>>
+>> Don't we have the same race without this patch ? The thermal core can
+>> call get_trip_temp() while there is an update, no ?
+> Yes it is. But I can add a mutex locally here to solve.
+> But not any longer.
 > 
-> Don't we have the same race without this patch ? The thermal core can
-> call get_trip_temp() while there is an update, no ?
-Yes it is. But I can add a mutex locally here to solve.
-But not any longer.
+> I think you need some thermal_zone_read_lock/unlock() in core, which
+> can use rcu. Even mutex is fine as there will be no contention as
+> updates to trips will be rare.
 
-I think you need some thermal_zone_read_lock/unlock() in core, which
-can use rcu. Even mutex is fine as there will be no contention as
-updates to trips will be rare.
+I was planning to provide a thermal_trips_update(tz, trips) and from 
+there handle the locking.
 
-Thanks,
-Srinivas
+As the race was already existing, can we postpone this change after the 
+generic trip points changes?
 
-> 
+There is still a lot of work to do to consolidate the code. One of them 
+is to provide a generic function to browse the trip points and ensure 
+the code is using it instead of directly inspect the thermal zone 
+internals structure.
+
+I'm almost there but I need the remaining Intel drivers changes to be 
+merged (as well as ACPI which is finished but depending on this series).
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
