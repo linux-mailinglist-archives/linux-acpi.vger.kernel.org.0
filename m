@@ -2,50 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7AC1672885
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jan 2023 20:36:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 340656728C8
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jan 2023 20:55:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229476AbjARTg0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Jan 2023 14:36:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34952 "EHLO
+        id S229598AbjARTzn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Jan 2023 14:55:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229541AbjARTgZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Jan 2023 14:36:25 -0500
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E034B9EFA;
-        Wed, 18 Jan 2023 11:36:20 -0800 (PST)
-Received: by mail-ed1-f47.google.com with SMTP id v30so83410edb.9;
-        Wed, 18 Jan 2023 11:36:20 -0800 (PST)
+        with ESMTP id S229634AbjARTzh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Jan 2023 14:55:37 -0500
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2693F5954B;
+        Wed, 18 Jan 2023 11:55:31 -0800 (PST)
+Received: by mail-ed1-f43.google.com with SMTP id x10so146031edd.10;
+        Wed, 18 Jan 2023 11:55:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TFaCbGRXO/pQ0TUpQ1SBb2CqrXmII77VOVr2Wb3CdJg=;
-        b=2iBDEzcZy6zBBhtMVSZcqajreeIfnJYGhQIAzTVzeRRlshZlkGw37wQwS1l8ENHMxV
-         E1txsgebOh7OovxTn9ESKiK9Ru+xrTZeauLkPhI4HUE6uFoMcopbXEyyJZubbOjnQJzW
-         tHfVlApXIp8pvUVZzUl0722cSNoMvQJS3jf7Z0GzWvgNycOu9E2xiQyQFGBlzXfJHf6/
-         jG10hjfk90Y/aUkHBblLwHziUheEW7LXj3o9cR2L8qqp6GvgEws9h0regTsqMmU7Peo3
-         IrcPfyD9u8OSxH8dm8KvQK9HR1eahJJytsKd7ZQy4s+uh46xfEVA58iyilxx2y+WVGrm
-         Zzxw==
-X-Gm-Message-State: AFqh2kocESlD8BPqSK6vIOKQF46yhdHierPG+1QCsqt/BFe/RU84XU49
-        q07J+osn4bxuqIlET9KFDoiM9bcpWabg9pIYuAY19KOJ
-X-Google-Smtp-Source: AMrXdXtH/J5JYaM2D5yLut+qn0FbDvdIwh4x02bBN0equIIryPDtQQHEE95ojIXGbVyqOTw6IOe98kESuA9eFFjdoik=
+        bh=yQTDNe7yFHyxNpHt+5GYWQ4fTkN36Wo6nFC2zV7ddRA=;
+        b=UdRUtm22/nVwd2/yhLyFOkTfSiQXuXeMFQ3Kp6hVPDDBU4Z/NMpGYTxQL2IX4MA87a
+         52su/8R5xmPukNXLrUu/X39YO1pBFOSNi/hRGpzJawBunHm6YSvV7a4rnOem/sGoa2QH
+         DCjMhA8cXwbD1UB6OLGLG3R+Wfs4tp9rOnYKtdFFyl9Zb+LgIanoIwQYAyIn+LzU832H
+         GRvjRAaqT/YcnPSZXBG6mQwRkKmmQ6FGn0Pb4hW5a5w9SmA7U0zJ2FUZYdvZ/dWZpbyH
+         Sve/8mlqFgY2QG7nK1IrIO2XtaYAg0izF7rPFxnVi+CVHnDG2Ge3mHmXsCm5UxDn7jCN
+         qKLA==
+X-Gm-Message-State: AFqh2kqprf4nISB5XnyWJuqbbUqQZqMW4omqpZocJZmQXdIBePTReBzH
+        SzjuLD8e3tAlNtW0tfKIavWqe4IbD5Ej1do6fsY=
+X-Google-Smtp-Source: AMrXdXufxEuzBCgs6edR0DKECeIru46xUZ4hMNXNamwvHSWkmE+7Nka2sXtX+eHIroy5RNXVkD9xY9GYYRBKHTFJazI=
 X-Received: by 2002:a05:6402:40d6:b0:46d:53d7:d1f6 with SMTP id
- z22-20020a05640240d600b0046d53d7d1f6mr912154edb.211.1674070579297; Wed, 18
- Jan 2023 11:36:19 -0800 (PST)
+ z22-20020a05640240d600b0046d53d7d1f6mr918494edb.211.1674071730393; Wed, 18
+ Jan 2023 11:55:30 -0800 (PST)
 MIME-Version: 1.0
-References: <20230112133319.3615177-1-ardb@kernel.org> <CAJZ5v0iuwwDjDQDsdP3uvAO18EOcWXzCS6Yu0g62q40Em0vSOA@mail.gmail.com>
- <CAMj1kXF1OfDrtWNt1VAE4Z1_bvhUKUUrqie0LroXXxsm3jAM0w@mail.gmail.com>
-In-Reply-To: <CAMj1kXF1OfDrtWNt1VAE4Z1_bvhUKUUrqie0LroXXxsm3jAM0w@mail.gmail.com>
+References: <20230117152120.42531-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20230117152120.42531-1-andriy.shevchenko@linux.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 18 Jan 2023 20:36:07 +0100
-Message-ID: <CAJZ5v0hs-xFdREnhPNqBcHcCh558WvNwmA-1bgQrJwDQd7+Zng@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: PRM: Check whether EFI runtime is available
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>, linux-efi@vger.kernel.org,
-        stable@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org
+Date:   Wed, 18 Jan 2023 20:55:19 +0100
+Message-ID: <CAJZ5v0gdWWmAj9JMe--wUM+Z=MZLof65hbwHCGGgWknAnw61UQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] device property: Make fwnode_graph_for_each_endpoint()
+ consistent
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -57,58 +59,43 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 17, 2023 at 4:51 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+On Tue, Jan 17, 2023 at 4:21 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> On Tue, 17 Jan 2023 at 13:29, Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> > On Thu, Jan 12, 2023 at 2:33 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > >
-> > > The ACPI PRM address space handler calls efi_call_virt_pointer() to
-> > > execute PRM firmware code, but doing so is only permitted when the EFI
-> > > runtime environment is available. Otherwise, such calls are guaranteed
-> > > to result in a crash, and must therefore be avoided.
-> > >
-> > > Given that the EFI runtime services may become unavailable after a crash
-> > > occurring in the firmware, we need to check this each time the PRM
-> > > address space handler is invoked. If the EFI runtime services were not
-> > > available at registration time to being with, don't install the address
-> > > space handler at all.
-> > >
-> > > Cc: <stable@vger.kernel.org>
-> > > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > > Cc: Len Brown <lenb@kernel.org>
-> > > Cc: linux-acpi@vger.kernel.org
-> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > > ---
-> > > v2: check both at registration and at invocation time
-> > >
-> > >  drivers/acpi/prmt.c | 10 ++++++++++
-> > >  1 file changed, 10 insertions(+)
-> > >
-> > > diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-> > > index 998101cf16e47145..3d4c4620f9f95309 100644
-> > > --- a/drivers/acpi/prmt.c
-> > > +++ b/drivers/acpi/prmt.c
-> > > @@ -236,6 +236,11 @@ static acpi_status acpi_platformrt_space_handler(u32 function,
-> > >         efi_status_t status;
-> > >         struct prm_context_buffer context;
-> > >
-> > > +       if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
-> > > +               pr_err_ratelimited("PRM: EFI runtime services no longer available\n");
-> > > +               return AE_NO_HANDLER;
-> >
-> > This error code is only used in GPE handling ATM.
-> >
-> > The one that actually causes ACPICA to log a "no handler" error (in
-> > acpi_ex_access_region()) is AE_NOT_EXIST.  Should it be used here?
-> >
+> Make fwnode_graph_for_each_endpoint() consistent with the rest of
+> for_each_*() definitions in the file, i.e. use the form of
 >
-> Not sure. Any error value is returned to the caller, the only
-> difference is that AE_NOT_EXIST and AE_NOT_IMPLEMENTED trigger the
-> non-ratelimited logging machinery.
+>         for (iter = func(NULL); iter; \
+>              iter = func(iter))
 >
-> Given that neither value seems appropriate (the region is implemented
-> and it has a handler), and we already emit a rate limited error
-> message, I think AE_NOT_EXIST is not the right choice.
+> as it's done in all the rest of the similar macro definitions.
+>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-OK, applied as-is as 6.2-rc material, thanks!
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+and I think that you need to resend it and CC Greg (who picks up
+device property patches nowadays).
+
+> ---
+>  include/linux/property.h | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index 37179e3abad5..f090419818a2 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -436,9 +436,9 @@ fwnode_graph_get_endpoint_by_id(const struct fwnode_handle *fwnode,
+>  unsigned int fwnode_graph_get_endpoint_count(struct fwnode_handle *fwnode,
+>                                              unsigned long flags);
+>
+> -#define fwnode_graph_for_each_endpoint(fwnode, child)                  \
+> -       for (child = NULL;                                              \
+> -            (child = fwnode_graph_get_next_endpoint(fwnode, child)); )
+> +#define fwnode_graph_for_each_endpoint(fwnode, child)                          \
+> +       for (child = fwnode_graph_get_next_endpoint(fwnode, NULL); child;       \
+> +            child = fwnode_graph_get_next_endpoint(fwnode, child))
+>
+>  int fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
+>                                 struct fwnode_endpoint *endpoint);
+> --
