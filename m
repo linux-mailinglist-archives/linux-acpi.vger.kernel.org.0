@@ -2,130 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79907671FC3
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jan 2023 15:37:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E600672066
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jan 2023 16:01:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231417AbjAROh4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Jan 2023 09:37:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33710 "EHLO
+        id S231614AbjARPA7 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 18 Jan 2023 10:00:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231183AbjAROhj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Jan 2023 09:37:39 -0500
-Received: from mail-vs1-xe2b.google.com (mail-vs1-xe2b.google.com [IPv6:2607:f8b0:4864:20::e2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F86959744
-        for <linux-acpi@vger.kernel.org>; Wed, 18 Jan 2023 06:26:49 -0800 (PST)
-Received: by mail-vs1-xe2b.google.com with SMTP id j185so4756044vsc.13
-        for <linux-acpi@vger.kernel.org>; Wed, 18 Jan 2023 06:26:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lqqi0GQK72eWatBF5iXQ8orjIM5rhkb0842NAyd7NO4=;
-        b=HCBXy9lEZdNqqZezNdXa5R1YwPrZy6tl5PP5t2eD/lvD+coeSVqtK6+ajYbBSS+4Ao
-         71bd8ZGQY3psoI7VIVI9KNgBY2BRrVK8LM9JfJTNIG5p3sBU2JkH73GrbepCIyxHzHw2
-         QHdHn42XFKBUiRZcwnZZG7IfnMcpduia2QxBo7DU8tKMkzIe7hjJu/oWGeiG5aIizkBq
-         r5KPbUse5duP1eD0ewKlV1SkkikWE5NilH4EtI1VTNJn1fMBFEcBT+A7WNt3kh3Qiqin
-         xCpBt9jj6naEztaF+kEh8RvBliq3GG/rYrxlNGDqZi/w4NXlbzKvjj5IgqhD3yIvdF4/
-         6OJA==
+        with ESMTP id S229686AbjARPAc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Jan 2023 10:00:32 -0500
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F3216049B;
+        Wed, 18 Jan 2023 06:55:53 -0800 (PST)
+Received: by mail-ej1-f53.google.com with SMTP id v6so40854960ejg.6;
+        Wed, 18 Jan 2023 06:55:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Lqqi0GQK72eWatBF5iXQ8orjIM5rhkb0842NAyd7NO4=;
-        b=k2o+vMXhptehM67PZYUPeYnmMQNFUw+lA7K0qWepaV9YHtIA2PX7z3j9uanJM62X8d
-         3fI8kY/8q/Y80ltVxrrjGFqQlWm2u6PRdj8v5Qzc8dAviJ7M8K+ZNjOJq2PbRoXx+O7O
-         AtQAo4seRGtKwhlNJ6dsuHh2hTTgSPnBEhRvX03+sCqwB2iHS6LcJhxwdPzPm2GPLDSf
-         vV9yaKlU8wFaFfSZUkbB6q2Sqdt6TcIgLWvVFrCxhgJFNCvQdD0pzg3ydKFHGAWC/ZrE
-         gfFzkA8qzcBVMyf7H4MaAAHeDXI8H29QaX5oA1MYDja4rzpaERgAUB4Vmo4taBhMk1SD
-         y+9w==
-X-Gm-Message-State: AFqh2krPhFKQjzASd+8U07tgI0+4t5Kfl4Djakoe5BpE/LW9ZqtTGyeF
-        IR0fBfyb50rKYaIgZ6XfOwkC8oStcfTzO2BYiDzIqw==
-X-Google-Smtp-Source: AMrXdXvqsnUIUZ4tgMYk35KxtchmNg5II+5n7fzSAq5kmnbRxWa8736Kzje9pVpcxADmzMR8BCAAR/gytLy14cjL4CU=
-X-Received: by 2002:a67:c387:0:b0:3d2:3577:2d05 with SMTP id
- s7-20020a67c387000000b003d235772d05mr892021vsj.9.1674052008373; Wed, 18 Jan
- 2023 06:26:48 -0800 (PST)
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=b48v8QljjeQEvg4WS7Gp0aF7ulXCUr3rAEntulrG8ig=;
+        b=aoRLmaHoo6taw0BIhgPX2qkGb9FANR4kEm2BjiX8UgiVQPxmUX34pp9NhwMe9NT1qq
+         MqgXT0WVDikGvkpP6S1Y+//7FyFGnrYQ+umaX42C7VC84vfHSQ+POQv28mSp0/gQHPTo
+         dli3loN5caI4UTjVOJRtYHdsiX7XDYcHS7N2jcJ4rECRTKAvnLGbYw8SbYFVi1J89BoR
+         SW0sH1hfnrvpdzXKwY2cYbaS6GOZvMlKtVlorQ9PTlT8q0FDS+4uslKCZZdDDDKw8Lbn
+         B42TasX/hOZhXZsnm6DQKLyzmEsCqqwNPD1f318SS8oZ888JZxrR5t2jCE3dDJNXvs5L
+         4XWQ==
+X-Gm-Message-State: AFqh2kqT1WO07Sxr5Xrg0jm/dabRKllbVkscqjJNB+TZqbZzWMIldn83
+        QlBoT3ylhtOvYl410SmuhfoyMHyTi6+saIugAZ0=
+X-Google-Smtp-Source: AMrXdXtOAWIZIC5HT7/4nUTX9+gkurr4UMHBJyjTiC9rCjfjB+4K7GJaxInxHkN7JLsJn9RV0QkqAMishSZNR3BLDx4=
+X-Received: by 2002:a17:906:eb1b:b0:86e:abe4:5acf with SMTP id
+ mb27-20020a170906eb1b00b0086eabe45acfmr727417ejb.615.1674053751661; Wed, 18
+ Jan 2023 06:55:51 -0800 (PST)
 MIME-Version: 1.0
-References: <20230116193702.31356-1-mario.limonciello@amd.com> <20230116193702.31356-3-mario.limonciello@amd.com>
-In-Reply-To: <20230116193702.31356-3-mario.limonciello@amd.com>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Wed, 18 Jan 2023 15:26:37 +0100
-Message-ID: <CAMRc=MenxV6Nt3cyLPvPJXVDe6T1s2zeQ_ZszW8rrVwJbW0pXQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] gpiolib: acpi: Add a ignore wakeup quirk for Clevo NL5xRU
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Raul E Rangel <rrangel@chromium.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        regressions@lists.linux.dev,
-        Werner Sembach <wse@tuxedocomputers.com>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+References: <20230117155724.22940-1-jgross@suse.com> <CAJZ5v0iCAT2W-m1T-v1wSBw+GQerhMAp1hT6SioJ53RQY=oA3g@mail.gmail.com>
+ <7f969b09-438b-cee3-be4c-e08b97457b12@intel.com> <CAJZ5v0iOmZouhSb_ap0MA3-sk6RWJ7MRpTuGekrJrvOn-Y4JYQ@mail.gmail.com>
+ <43d0f8b1-0d2e-0e0f-d794-0048641d84f1@intel.com>
+In-Reply-To: <43d0f8b1-0d2e-0e0f-d794-0048641d84f1@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 18 Jan 2023 15:55:39 +0100
+Message-ID: <CAJZ5v0iNS2fV=xKJCVCK1wRjUxkNVUORLxhqFwCBr8Psgyx17w@mail.gmail.com>
+Subject: Re: [PATCH v2] acpi: fix suspend with Xen PV
+To:     Dave Hansen <dave.hansen@intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Juergen Gross <jgross@suse.com>, linux-kernel@vger.kernel.org,
+        x86@kernel.org, linux-acpi@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Len Brown <lenb@kernel.org>,
+        =?UTF-8?Q?Marek_Marczykowski=2DG=C3=B3recki?= 
+        <marmarek@invisiblethingslab.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 16, 2023 at 8:37 PM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
+On Wed, Jan 18, 2023 at 1:15 AM Dave Hansen <dave.hansen@intel.com> wrote:
 >
-> commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
-> changed the policy such that I2C touchpads may be able to wake up the
-> system by default if the system is configured as such.
+> On 1/17/23 09:08, Rafael J. Wysocki wrote:
+> > On Tue, Jan 17, 2023 at 5:51 PM Dave Hansen <dave.hansen@intel.com> wrote:
+> >> On 1/17/23 08:47, Rafael J. Wysocki wrote:
+> >>>> Fixes: f1e525009493 ("x86/boot: Skip realmode init code when running as Xen PV guest")
+> >>>> Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+> >>>> Signed-off-by: Juergen Gross <jgross@suse.com>
+> >>>> ---
+> >>>> V2:
+> >>>> - new approach, avoid calling acpi_get_wakeup_address()
+> >>> I'll queue this up for 6.3 if the x86 people don't object.
+> >> That 'Fixes:' patch looked to me like it was applied during the 6.2
+> >> merge window.  I would have expected a fix to go up for 6.2 final.
+> > Right, sorry.  Definitely, 6.2-rc material.
 >
-> However on Clevo NL5xRU there is a mistake in the ACPI tables that the
-> TP_ATTN# signal connected to GPIO 9 is configured as ActiveLow and level
-> triggered but connected to a pull up. As soon as the system suspends the
-> touchpad loses power and then the system wakes up.
->
-> To avoid this problem, introduce a quirk for this model that will prevent
-> the wakeup capability for being set for GPIO 9.
->
-> Fixes: 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
-> Reported-by: Werner Sembach <wse@tuxedocomputers.com>
-> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627
-> Co-developed-by: Werner Sembach <wse@tuxedocomputers.com>
-> Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/gpio/gpiolib-acpi.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
->
-> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-> index 4287555a12408..9ef0f5641b521 100644
-> --- a/drivers/gpio/gpiolib-acpi.c
-> +++ b/drivers/gpio/gpiolib-acpi.c
-> @@ -1623,6 +1623,19 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
->                         .ignore_interrupt = "AMDI0030:00@18",
->                 },
->         },
-> +       {
-> +               /*
-> +                * Spurious wakeups from TP_ATTN# pin
-> +                * Found in BIOS 1.7.8
-> +                * https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627
-> +                */
-> +               .matches = {
-> +                       DMI_MATCH(DMI_BOARD_NAME, "NL5xRU"),
-> +               },
-> +               .driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-> +                       .ignore_wake = "ELAN0415:00@9",
-> +               },
-> +       },
->         {} /* Terminating entry */
->  };
->
-> --
-> 2.34.1
->
+> I think the original issue went up in x86/boot, so how about I queue
+> this in x86/urgent?  Rafael, should I add an ack from you on it?
 
-Queued for fixes, thanks!
+Yes, please.
 
-Bart
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
