@@ -2,100 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 340656728C8
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jan 2023 20:55:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39A596728E8
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jan 2023 21:01:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229598AbjARTzn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Jan 2023 14:55:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41090 "EHLO
+        id S229748AbjARUBY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Jan 2023 15:01:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229634AbjARTzh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Jan 2023 14:55:37 -0500
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2693F5954B;
-        Wed, 18 Jan 2023 11:55:31 -0800 (PST)
-Received: by mail-ed1-f43.google.com with SMTP id x10so146031edd.10;
-        Wed, 18 Jan 2023 11:55:31 -0800 (PST)
+        with ESMTP id S229902AbjARUBJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Jan 2023 15:01:09 -0500
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 141FC59B72
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Jan 2023 12:01:02 -0800 (PST)
+Received: by mail-wm1-x32d.google.com with SMTP id k16so14947wms.2
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Jan 2023 12:01:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7dYEwLlHafATWFxoot4gAkpZeqySUmli4e77a+Kz66Q=;
+        b=YG2vrGt09g0yHnyyvId1HwQgn8Ll2rfdESrrdfrmWb1rRAXLf92doKETB0eY4JhCdV
+         d8ZN3RPTPar5q3ru582m4Cb0kbKdASv0uiQMcABTflWx0A0NajrZo5pOSJQXW4Ke/gYu
+         TNT0UTkw9nAtuGiQ7Pcle7xM68tzESmuBMgS6l4HYXRmZqzXi6iXffITyI67mO1lbQf2
+         I4iu3rdhJwsLHUFK/mLaElQZPfd2DOoygFff0ey2+2HTidDl/8tXiHgWCNVtKBV4RKsH
+         aC+EmW2ddQCDx+YvPw2o81xfKit3Ek3bJWCZ/m5c1q2l3ZR87lV4KOC0L+jI/AuetXCX
+         Luew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yQTDNe7yFHyxNpHt+5GYWQ4fTkN36Wo6nFC2zV7ddRA=;
-        b=UdRUtm22/nVwd2/yhLyFOkTfSiQXuXeMFQ3Kp6hVPDDBU4Z/NMpGYTxQL2IX4MA87a
-         52su/8R5xmPukNXLrUu/X39YO1pBFOSNi/hRGpzJawBunHm6YSvV7a4rnOem/sGoa2QH
-         DCjMhA8cXwbD1UB6OLGLG3R+Wfs4tp9rOnYKtdFFyl9Zb+LgIanoIwQYAyIn+LzU832H
-         GRvjRAaqT/YcnPSZXBG6mQwRkKmmQ6FGn0Pb4hW5a5w9SmA7U0zJ2FUZYdvZ/dWZpbyH
-         Sve/8mlqFgY2QG7nK1IrIO2XtaYAg0izF7rPFxnVi+CVHnDG2Ge3mHmXsCm5UxDn7jCN
-         qKLA==
-X-Gm-Message-State: AFqh2kqprf4nISB5XnyWJuqbbUqQZqMW4omqpZocJZmQXdIBePTReBzH
-        SzjuLD8e3tAlNtW0tfKIavWqe4IbD5Ej1do6fsY=
-X-Google-Smtp-Source: AMrXdXufxEuzBCgs6edR0DKECeIru46xUZ4hMNXNamwvHSWkmE+7Nka2sXtX+eHIroy5RNXVkD9xY9GYYRBKHTFJazI=
-X-Received: by 2002:a05:6402:40d6:b0:46d:53d7:d1f6 with SMTP id
- z22-20020a05640240d600b0046d53d7d1f6mr918494edb.211.1674071730393; Wed, 18
- Jan 2023 11:55:30 -0800 (PST)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7dYEwLlHafATWFxoot4gAkpZeqySUmli4e77a+Kz66Q=;
+        b=BOhZI/R8NLvEXuswE7QcNraYkO5Z2ySgbdk7SMqTF3DmUT591EVXOOV/RTNR4jiOKX
+         aRVOe/GZb3JkX+NlQnwWX3tP4qpfxwOcYoyONllVWuyvc/ivfR2WIczsXk7G+KxcI+oR
+         +Uov2KfOh9VB0ZpDh9L+8DPZmQeaIrGRCfOUgnJY7KUKJ3cIvHCyThdX+yaD1KScNEMt
+         +U6+b8/ctkmAYO3YYYTQXsXb777GyJG1sF6xfq/HEM4yx0oWmw5+yow3HwlDSejyvI4B
+         bKAr4YG2dJ5wYgjHdvNZyurfUJXwGbyECoX/PnT9n7hAevyjCeYyzXnnZDLu6F+aA985
+         z6vQ==
+X-Gm-Message-State: AFqh2kp6sq8LLaZgl2zP02QZ9jv/0rsUBXaOte96rV6SVV5Ynxg03Bxe
+        UtihZfFgtjx9M+G8TP+j81KMNA==
+X-Google-Smtp-Source: AMrXdXsKOk9RGH34JouXfHO4lX3tTXExBI8r27KQ19DpAYc2hCkx4gJMYsL82f9A3100rJ6R74M13g==
+X-Received: by 2002:a05:600c:714:b0:3d9:ed30:79d with SMTP id i20-20020a05600c071400b003d9ed30079dmr7915447wmn.18.1674072060565;
+        Wed, 18 Jan 2023 12:01:00 -0800 (PST)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id b5-20020a05600c150500b003daf98d7e35sm2635658wmg.14.2023.01.18.12.00.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Jan 2023 12:01:00 -0800 (PST)
+Message-ID: <c210542f-0a71-15f2-c58f-ec607e60b06d@linaro.org>
+Date:   Wed, 18 Jan 2023 21:00:59 +0100
 MIME-Version: 1.0
-References: <20230117152120.42531-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20230117152120.42531-1-andriy.shevchenko@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 18 Jan 2023 20:55:19 +0100
-Message-ID: <CAJZ5v0gdWWmAj9JMe--wUM+Z=MZLof65hbwHCGGgWknAnw61UQ@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] device property: Make fwnode_graph_for_each_endpoint()
- consistent
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v5 0/3] Thermal ACPI APIs for generic trip points
+Content-Language: en-US
+To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>,
+        "Zhang, Rui" <rui.zhang@intel.com>,
+        "rafael@kernel.org" <rafael@kernel.org>
+Cc:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+References: <20230113180235.1604526-1-daniel.lezcano@linaro.org>
+ <f76c13de-d250-ebc0-d234-ccb3a9ce3c28@linaro.org>
+ <2627c37e07dce6b125d3fea3bf38a5f2407ad6a1.camel@intel.com>
+ <5aabdd3010a02e361fbbe01f4af0e30d11f0ae6b.camel@linux.intel.com>
+ <c7abcce47df0aaa55f1e6c65f501bc691d35eae8.camel@linux.intel.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <c7abcce47df0aaa55f1e6c65f501bc691d35eae8.camel@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 17, 2023 at 4:21 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> Make fwnode_graph_for_each_endpoint() consistent with the rest of
-> for_each_*() definitions in the file, i.e. use the form of
->
->         for (iter = func(NULL); iter; \
->              iter = func(iter))
->
-> as it's done in all the rest of the similar macro definitions.
->
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+On 18/01/2023 20:16, srinivas pandruvada wrote:
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[ ... ]
 
-and I think that you need to resend it and CC Greg (who picks up
-device property patches nowadays).
+>>> But we'd better wait for the thermald test result from Srinvias.
+>>
+>> A quick test show that things still work with thermald and these
+>> changes.
+> 
+> But I have a question. In some devices trip point temperature is not
+> static. When hardware changes, we get notification. For example
+> INT3403_PERF_TRIP_POINT_CHANGED for INT3403 drivers.
+> Currently get_trip can get the latest changed value. But if we
+> preregister, we need some mechanism to update them.
 
-> ---
->  include/linux/property.h | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index 37179e3abad5..f090419818a2 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -436,9 +436,9 @@ fwnode_graph_get_endpoint_by_id(const struct fwnode_handle *fwnode,
->  unsigned int fwnode_graph_get_endpoint_count(struct fwnode_handle *fwnode,
->                                              unsigned long flags);
->
-> -#define fwnode_graph_for_each_endpoint(fwnode, child)                  \
-> -       for (child = NULL;                                              \
-> -            (child = fwnode_graph_get_next_endpoint(fwnode, child)); )
-> +#define fwnode_graph_for_each_endpoint(fwnode, child)                          \
-> +       for (child = fwnode_graph_get_next_endpoint(fwnode, NULL); child;       \
-> +            child = fwnode_graph_get_next_endpoint(fwnode, child))
->
->  int fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
->                                 struct fwnode_endpoint *endpoint);
-> --
+When the notification INT3403_PERF_TRIP_POINT_CHANGED happens, we call 
+int340x_thermal_read_trips() which in turn updates the trip points.
+
+
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
+
