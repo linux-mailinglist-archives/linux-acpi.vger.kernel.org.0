@@ -2,69 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5DA06714A2
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jan 2023 08:09:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A86E6717D7
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jan 2023 10:34:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230010AbjARHJD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Jan 2023 02:09:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57768 "EHLO
+        id S229552AbjARJeR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Jan 2023 04:34:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229598AbjARHIU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Jan 2023 02:08:20 -0500
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 206706C54B;
-        Tue, 17 Jan 2023 22:35:31 -0800 (PST)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045176;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0VZpGQyN_1674023708;
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VZpGQyN_1674023708)
-          by smtp.aliyun-inc.com;
-          Wed, 18 Jan 2023 14:35:10 +0800
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-To:     rafael@kernel.org, tony.luck@intel.com, bp@alien8.de
-Cc:     lenb@kernel.org, james.morse@arm.com, jaylu102@amd.com,
-        benjamin.cheatham@amd.com, dan.j.williams@intel.com,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        baolin.wang@linux.alibaba.com, xueshuai@linux.alibaba.com,
-        zhuo.song@linux.alibaba.com
-Subject: [PATCH] ACPI: APEI: EINJ: Limit error type to 32-bit width
-Date:   Wed, 18 Jan 2023 14:35:04 +0800
-Message-Id: <20230118063504.58026-1-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S230269AbjARJZO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Jan 2023 04:25:14 -0500
+Received: from mail.bostmarktrun.com (mail.bostmarktrun.com [135.125.238.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F00537F27
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Jan 2023 00:50:34 -0800 (PST)
+Received: by mail.bostmarktrun.com (Postfix, from userid 1002)
+        id B733DA27E4; Wed, 18 Jan 2023 08:50:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=bostmarktrun.com;
+        s=mail; t=1674031832;
+        bh=gfWmJwOZk+B/IN1TMPg7emKhIvoExrJdUiyEL8yd2Jk=;
+        h=Date:From:To:Subject:From;
+        b=kuQ8rAkbumnSZp3mOe30vQAQAINqHPlh9E0u0PnQ2YZzRcg29goivT/SKDZQEKunL
+         ty84JQ+defG0EwYk1b7Ugc+dzC9OfPmLVYplKbTWjUEqyS+KciCwz2Q0wOJD8n25g/
+         CoKaF/C9UJ2P6E0licsllxwoISFDX54pgQ3HAP/Q1C0ysSlg6DoPcSE2QX0S8Af5Lm
+         3d6dhnryMBI4A/0PzuubEMujwRvkj4CxsnYpttXoeB5aFWSFqaXge2JryWASBfBWA5
+         oOmmbgAbP4RhdfCFeRWGPUv6U5K5k+V5briKBIFLqmluBvvwuPKzxSCLWc7WlsgOla
+         Xcu3IcXG/UUMQ==
+Received: by mail.bostmarktrun.com for <linux-acpi@vger.kernel.org>; Wed, 18 Jan 2023 08:50:31 GMT
+Message-ID: <20230118074500-0.1.4p.wrm5.0.3l4rf6hiw2@bostmarktrun.com>
+Date:   Wed, 18 Jan 2023 08:50:31 GMT
+From:   "Corey Webb" <corey.webb@bostmarktrun.com>
+To:     <linux-acpi@vger.kernel.org>
+Subject: Custom Software Development
+X-Mailer: mail.bostmarktrun.com
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=6.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_PASS,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
+        *      blocklist
+        *      [URIs: bostmarktrun.com]
+        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [135.125.238.46 listed in zen.spamhaus.org]
+        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
+        *      blocklist
+        *      [URIs: bostmarktrun.com]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The bit map of error types to inject is 32-bit width[1]. Add parameter
-check to reflect the fact.
+Hi,=20
 
-[1] ACPI Specification 6.4, Section 18.6.4. Error Types
+I would like to reach the person responsible for the implementation of yo=
+ur company's goals, vision and mission or the decision-maker in the devel=
+opment of your technology strategy.
 
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
----
- drivers/acpi/apei/einj.c | 4 ++++
- 1 file changed, 4 insertions(+)
+I represent provider of lucrative IT solutions that remove the barriers t=
+o process development resulting from limited access to appropriate IT res=
+ources.
 
-diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
-index ab86b2f4e719..b4373e575660 100644
---- a/drivers/acpi/apei/einj.c
-+++ b/drivers/acpi/apei/einj.c
-@@ -616,6 +616,10 @@ static int error_type_set(void *data, u64 val)
- 	u32 available_error_type = 0;
- 	u32 tval, vendor;
- 
-+	/* Only low 32 bits for error type are valid */
-+	if (val & GENMASK_ULL(63, 32))
-+		return -EINVAL;
-+
- 	/*
- 	 * Vendor defined types have 0x80000000 bit set, and
- 	 * are not enumerated by ACPI_EINJ_GET_ERROR_TYPE
--- 
-2.20.1.12.g72788fdb
+We guarantee you access to the knowledge and experience of outstanding 3,=
+000 software developers from Poland and 500 professional consultants and =
+senior developers in the United States and other Western countries. =20
 
+We respond to a variety of needs, ranging from expanding your project tea=
+m with specialists with specific skills to supporting project managers, e=
+xperienced innovation teams to creating a Minimum Viable Project (MVP).
+
+The comprehensiveness of our services guarantees you dynamic software dev=
+elopment including creation, testing and implementation systems that are =
+the backbone of effective management of the entire organization.
+
+A partnership that lasts for years is the best proof that our clients mee=
+t their unique requirements within a specific timeframe, introduce new op=
+portunities and grow their business while we solve their problems.
+
+Are you available for a brief call? I will be looking forward to hearing =
+from you.
+
+
+Best regards
+Corey Webb
