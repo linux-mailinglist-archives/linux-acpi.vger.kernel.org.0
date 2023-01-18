@@ -2,99 +2,148 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A86E6717D7
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jan 2023 10:34:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80D4F671994
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jan 2023 11:49:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229552AbjARJeR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Jan 2023 04:34:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47486 "EHLO
+        id S229654AbjARKtO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Jan 2023 05:49:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230269AbjARJZO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Jan 2023 04:25:14 -0500
-Received: from mail.bostmarktrun.com (mail.bostmarktrun.com [135.125.238.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F00537F27
-        for <linux-acpi@vger.kernel.org>; Wed, 18 Jan 2023 00:50:34 -0800 (PST)
-Received: by mail.bostmarktrun.com (Postfix, from userid 1002)
-        id B733DA27E4; Wed, 18 Jan 2023 08:50:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=bostmarktrun.com;
-        s=mail; t=1674031832;
-        bh=gfWmJwOZk+B/IN1TMPg7emKhIvoExrJdUiyEL8yd2Jk=;
-        h=Date:From:To:Subject:From;
-        b=kuQ8rAkbumnSZp3mOe30vQAQAINqHPlh9E0u0PnQ2YZzRcg29goivT/SKDZQEKunL
-         ty84JQ+defG0EwYk1b7Ugc+dzC9OfPmLVYplKbTWjUEqyS+KciCwz2Q0wOJD8n25g/
-         CoKaF/C9UJ2P6E0licsllxwoISFDX54pgQ3HAP/Q1C0ysSlg6DoPcSE2QX0S8Af5Lm
-         3d6dhnryMBI4A/0PzuubEMujwRvkj4CxsnYpttXoeB5aFWSFqaXge2JryWASBfBWA5
-         oOmmbgAbP4RhdfCFeRWGPUv6U5K5k+V5briKBIFLqmluBvvwuPKzxSCLWc7WlsgOla
-         Xcu3IcXG/UUMQ==
-Received: by mail.bostmarktrun.com for <linux-acpi@vger.kernel.org>; Wed, 18 Jan 2023 08:50:31 GMT
-Message-ID: <20230118074500-0.1.4p.wrm5.0.3l4rf6hiw2@bostmarktrun.com>
-Date:   Wed, 18 Jan 2023 08:50:31 GMT
-From:   "Corey Webb" <corey.webb@bostmarktrun.com>
-To:     <linux-acpi@vger.kernel.org>
-Subject: Custom Software Development
-X-Mailer: mail.bostmarktrun.com
+        with ESMTP id S229813AbjARKry (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Jan 2023 05:47:54 -0500
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 617658765F
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Jan 2023 01:53:24 -0800 (PST)
+Received: by mail-wm1-x329.google.com with SMTP id f25-20020a1c6a19000000b003da221fbf48so1066801wmc.1
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Jan 2023 01:53:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/Q41RJO+h6k6168ZraYXL447AhJRg2Xc99d/LkAs2QQ=;
+        b=zZExUtYo13Lftddlf2ihuNmYpS0Nyd8EwbRqQrir7eyUpvzVLcrs5c8Ghb7UfQhjnX
+         DBaD13z+/BdA5f+AUtyVBM5b7vQX9ijTuUM2SgnkDlFVSYAdYTaAI6ZFU0gy2Le4j/Xw
+         jZXoupP5fVegQtzuFzfA8jA5ka/RTxJABF9Q7Q5e2AIe3oeTUjASzmfx3IdZbFJGiuS1
+         xpvviT7mPv4LTdZZokHfqh2WXzoHWsDYNLAokkhmsRXByX6aImvhL1eEukwXojX8KUdu
+         PFPTZHLtKJo22/f/lL5ryjXZkH5vrSm5jzwJvv4JAOJI7o2RuUKiTYHiyK3GzSXZCN6F
+         vYJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/Q41RJO+h6k6168ZraYXL447AhJRg2Xc99d/LkAs2QQ=;
+        b=nYuFhTnS47nEuDUDo6CdSfxmGguRq8L7hFlRO00jOukeACJmhiZTh488o5ale8ZJEQ
+         4ZcbF3KvuWd1Hi5lMKzo62h3JqZ/smGcCtoQUhZYkSVPnuK6N9GBfBmUDthy1nAHHrLe
+         VWokuBJJ/N6riw2B02YcGnePcMBtq5xkNLU4V16Bu2pSIXNiayZV41aX7tDJ7jYfyG0u
+         2ssB6S/nB5ndga3LGWHlrLBrSm5gIpnVzp0u39U0CtjID1BKTvT1o38UBu0gTxyPLHKe
+         pHisGfhDOMNzQkC8hPmzx3+d4cWcns6mV6Kte41PvS+qyrQYhECZzDkA03iJ4ZLgBxHE
+         fRqw==
+X-Gm-Message-State: AFqh2kqY0vTJ9egbwSb18LeEHk1EkHDIntV0FVhow5Xx8XrxLkeKIbo1
+        aZhJwEevPc3efTeGPQNEvOARIdt9pG3hOF3U
+X-Google-Smtp-Source: AMrXdXucG64+L7me1kWC4dE8dfpb4nk5JzCJtlsAOZgJwOTPPQqnllak5CBIbFFnecncg6lqmMPlHw==
+X-Received: by 2002:a05:600c:331d:b0:3d3:591a:bfda with SMTP id q29-20020a05600c331d00b003d3591abfdamr14722922wmp.27.1674035602762;
+        Wed, 18 Jan 2023 01:53:22 -0800 (PST)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id f3-20020adfdb43000000b00236883f2f5csm31401173wrj.94.2023.01.18.01.53.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Jan 2023 01:53:22 -0800 (PST)
+Message-ID: <f76c13de-d250-ebc0-d234-ccb3a9ce3c28@linaro.org>
+Date:   Wed, 18 Jan 2023 10:53:21 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-        SPF_PASS,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v5 0/3] Thermal ACPI APIs for generic trip points
+Content-Language: en-US
+To:     rafael@kernel.org, srinivas.pandruvada@linux.intel.com,
+        rui.zhang@intel.com
+Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, christophe.jaillet@wanadoo.fr
+References: <20230113180235.1604526-1-daniel.lezcano@linaro.org>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <20230113180235.1604526-1-daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
         version=3.4.6
-X-Spam-Report: *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
-        *      blocklist
-        *      [URIs: bostmarktrun.com]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *      [135.125.238.46 listed in zen.spamhaus.org]
-        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
-        *      blocklist
-        *      [URIs: bostmarktrun.com]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-X-Spam-Level: ******
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,=20
+Hi,
 
-I would like to reach the person responsible for the implementation of yo=
-ur company's goals, vision and mission or the decision-maker in the devel=
-opment of your technology strategy.
+On 13/01/2023 19:02, Daniel Lezcano wrote:
+> Recently sent as a RFC, the thermal ACPI for generic trip points is a set of
+> functions to fill the generic trip points structure which will become the
+> standard structure for the thermal framework and its users.
+> 
+> Different Intel drivers and the ACPI thermal driver are using the ACPI tables to
+> get the thermal zone information. As those are getting the same information,
+> providing this set of ACPI function with the generic trip points will
+> consolidate the code.
+> 
+> Also, the Intel PCH and the Intel 34xx drivers are converted to use the generic
+> trip points relying on the ACPI generic trip point parsing functions.
+> 
+> These changes have been tested on a Thinkpad Lenovo x280 with the PCH and
+> INT34xx drivers. No regression have been observed, the trip points remain the
+> same for what is described on this system.
 
-I represent provider of lucrative IT solutions that remove the barriers t=
-o process development resulting from limited access to appropriate IT res=
-ources.
+Are we ok with this series ?
 
-We guarantee you access to the knowledge and experience of outstanding 3,=
-000 software developers from Poland and 500 professional consultants and =
-senior developers in the United States and other Western countries. =20
+Sorry for insisting but I would like to go forward with the generic 
+thermal trip work. There are more patches pending depending on this series.
 
-We respond to a variety of needs, ranging from expanding your project tea=
-m with specialists with specific skills to supporting project managers, e=
-xperienced innovation teams to creating a Minimum Viable Project (MVP).
+Thanks
+   -- Daniel
 
-The comprehensiveness of our services guarantees you dynamic software dev=
-elopment including creation, testing and implementation systems that are =
-the backbone of effective management of the entire organization.
+> Changelog:
+>   - V5:
+>     - Fixed GTSH unit conversion, deciK -> milli C
+> 
+>   - V4:
+>     - Fixed Kconfig option dependency, select THERMAL_ACPI if ACPI is set
+>       only for the PCH driver
+> 
+>   - V3:
+>     - Took into account Rafael's comments
+>     - Used a silence option THERMAL_ACPI in order to stay consistent
+>       with THERMAL_OF. It is up to the API user to select the option.
+> 
+>   - V2:
+>     - Fix the thermal ACPI patch where the thermal_acpi.c was not included in
+>       the series
+>     - Provide a couple of users of this API which could have been tested on a
+>       real system
+> 
+> Daniel Lezcano (3):
+>    thermal/acpi: Add ACPI trip point routines
+>    thermal/drivers/intel: Use generic trip points for intel_pch
+>    thermal/drivers/intel: Use generic trip points int340x
+> 
+>   drivers/thermal/Kconfig                       |   4 +
+>   drivers/thermal/Makefile                      |   1 +
+>   drivers/thermal/intel/Kconfig                 |   1 +
+>   drivers/thermal/intel/int340x_thermal/Kconfig |   1 +
+>   .../int340x_thermal/int340x_thermal_zone.c    | 177 ++++-----------
+>   .../int340x_thermal/int340x_thermal_zone.h    |  10 +-
+>   drivers/thermal/intel/intel_pch_thermal.c     |  88 ++------
+>   drivers/thermal/thermal_acpi.c                | 210 ++++++++++++++++++
+>   include/linux/thermal.h                       |   8 +
+>   9 files changed, 286 insertions(+), 214 deletions(-)
+>   create mode 100644 drivers/thermal/thermal_acpi.c
+> 
 
-A partnership that lasts for years is the best proof that our clients mee=
-t their unique requirements within a specific timeframe, introduce new op=
-portunities and grow their business while we solve their problems.
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
-Are you available for a brief call? I will be looking forward to hearing =
-from you.
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
-
-Best regards
-Corey Webb
