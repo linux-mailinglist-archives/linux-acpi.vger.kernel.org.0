@@ -2,111 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39A596728E8
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jan 2023 21:01:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 190D26729A1
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jan 2023 21:44:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229748AbjARUBY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Jan 2023 15:01:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47880 "EHLO
+        id S230126AbjARUo5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Jan 2023 15:44:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229902AbjARUBJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Jan 2023 15:01:09 -0500
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 141FC59B72
-        for <linux-acpi@vger.kernel.org>; Wed, 18 Jan 2023 12:01:02 -0800 (PST)
-Received: by mail-wm1-x32d.google.com with SMTP id k16so14947wms.2
-        for <linux-acpi@vger.kernel.org>; Wed, 18 Jan 2023 12:01:02 -0800 (PST)
+        with ESMTP id S230007AbjARUov (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Jan 2023 15:44:51 -0500
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD0085F3BE
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Jan 2023 12:44:49 -0800 (PST)
+Received: by mail-yb1-xb2f.google.com with SMTP id e130so10187871yba.7
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Jan 2023 12:44:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7dYEwLlHafATWFxoot4gAkpZeqySUmli4e77a+Kz66Q=;
-        b=YG2vrGt09g0yHnyyvId1HwQgn8Ll2rfdESrrdfrmWb1rRAXLf92doKETB0eY4JhCdV
-         d8ZN3RPTPar5q3ru582m4Cb0kbKdASv0uiQMcABTflWx0A0NajrZo5pOSJQXW4Ke/gYu
-         TNT0UTkw9nAtuGiQ7Pcle7xM68tzESmuBMgS6l4HYXRmZqzXi6iXffITyI67mO1lbQf2
-         I4iu3rdhJwsLHUFK/mLaElQZPfd2DOoygFff0ey2+2HTidDl/8tXiHgWCNVtKBV4RKsH
-         aC+EmW2ddQCDx+YvPw2o81xfKit3Ek3bJWCZ/m5c1q2l3ZR87lV4KOC0L+jI/AuetXCX
-         Luew==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lxN0ifRPJLWymSPxr4LmL30NaXej0tc2KddBtHP7xgk=;
+        b=o/L/KAVnrxKsg6wfxIIKKTthzenbBpd8Yyjgu45Qrq8xfHYi9SJZ4WC3ePKrhqyRNg
+         0YWgPVF65SgQmhgKuSIT8Z35J7QzxNWKbJ7Mch1d4dIbub2+03oxAQhJ3OzwtUGbSDu6
+         IeONYzFGg8zICe9wX7jtU34Q+HHNzy3/mSlT0m9BQdc2iwNhYeYVxLOpuafpOJl8J6bV
+         es/KDYitXm0tt3HDdtiL2CEMzzYymJFNp2e1nyvq1m7OWfjdXl6a93j+FNHDWO6yHfx+
+         NjPLHNd1ZZULF1ATwHQ8s0jR0DUFaww5AQ+dNZmrpw04Vc/hiUi9H2jaK1McDF3hyape
+         MYyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7dYEwLlHafATWFxoot4gAkpZeqySUmli4e77a+Kz66Q=;
-        b=BOhZI/R8NLvEXuswE7QcNraYkO5Z2ySgbdk7SMqTF3DmUT591EVXOOV/RTNR4jiOKX
-         aRVOe/GZb3JkX+NlQnwWX3tP4qpfxwOcYoyONllVWuyvc/ivfR2WIczsXk7G+KxcI+oR
-         +Uov2KfOh9VB0ZpDh9L+8DPZmQeaIrGRCfOUgnJY7KUKJ3cIvHCyThdX+yaD1KScNEMt
-         +U6+b8/ctkmAYO3YYYTQXsXb777GyJG1sF6xfq/HEM4yx0oWmw5+yow3HwlDSejyvI4B
-         bKAr4YG2dJ5wYgjHdvNZyurfUJXwGbyECoX/PnT9n7hAevyjCeYyzXnnZDLu6F+aA985
-         z6vQ==
-X-Gm-Message-State: AFqh2kp6sq8LLaZgl2zP02QZ9jv/0rsUBXaOte96rV6SVV5Ynxg03Bxe
-        UtihZfFgtjx9M+G8TP+j81KMNA==
-X-Google-Smtp-Source: AMrXdXsKOk9RGH34JouXfHO4lX3tTXExBI8r27KQ19DpAYc2hCkx4gJMYsL82f9A3100rJ6R74M13g==
-X-Received: by 2002:a05:600c:714:b0:3d9:ed30:79d with SMTP id i20-20020a05600c071400b003d9ed30079dmr7915447wmn.18.1674072060565;
-        Wed, 18 Jan 2023 12:01:00 -0800 (PST)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id b5-20020a05600c150500b003daf98d7e35sm2635658wmg.14.2023.01.18.12.00.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Jan 2023 12:01:00 -0800 (PST)
-Message-ID: <c210542f-0a71-15f2-c58f-ec607e60b06d@linaro.org>
-Date:   Wed, 18 Jan 2023 21:00:59 +0100
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lxN0ifRPJLWymSPxr4LmL30NaXej0tc2KddBtHP7xgk=;
+        b=gd6F2BulPjf8LaAFxjTTHMQywDf8Arhc8N4OFrL4u7WfVX5S7tnVfVdVEYyPezaQ8Y
+         0HDMQTpt7SdtvcFKjR2FvChMASfEnjowwgo9wOGmYbbV2R6gRKM2l8Fni1IZ0QGs3uAE
+         MT0NrIJLMQRQoUjq7WD3cVjbP5wKUsAIEZdKcHZf+cYU4g+9t9BhKf/4cAjFOJnqhYzc
+         zlDlIdXdCLMXzf1/5TPzPGm5Y6uoFKIrS8pbLZuGWcdk9QvtsVnAPVpY9mEK2r67wb26
+         tAF2x1lzDS8Ir6Lr88mh3VzSq4fHEFXYaa8znpLS/Eiw3HlBG+G50DL/qzEwz8T4xWiC
+         Hh5g==
+X-Gm-Message-State: AFqh2kovfOWSHww0alXdqJgVCTLtuBew9cbLNV0+9CFRZdZ35wiVwuxZ
+        JdHbJd0rFnclwLIOjoyTRjEYhVuRbfJnn3xEzIBN2w==
+X-Google-Smtp-Source: AMrXdXsmCi/frVC6VtreQlaKByYSty9vXl8uhPqMcWmgUNLPIBdL7eylfPOfYiXjvhn0Wg/c/y6sw3UwLYqAp0TyoEk=
+X-Received: by 2002:a25:9d88:0:b0:7c0:acd2:6300 with SMTP id
+ v8-20020a259d88000000b007c0acd26300mr858664ybp.520.1674074689110; Wed, 18 Jan
+ 2023 12:44:49 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v5 0/3] Thermal ACPI APIs for generic trip points
-Content-Language: en-US
-To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>,
-        "Zhang, Rui" <rui.zhang@intel.com>,
-        "rafael@kernel.org" <rafael@kernel.org>
-Cc:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-References: <20230113180235.1604526-1-daniel.lezcano@linaro.org>
- <f76c13de-d250-ebc0-d234-ccb3a9ce3c28@linaro.org>
- <2627c37e07dce6b125d3fea3bf38a5f2407ad6a1.camel@intel.com>
- <5aabdd3010a02e361fbbe01f4af0e30d11f0ae6b.camel@linux.intel.com>
- <c7abcce47df0aaa55f1e6c65f501bc691d35eae8.camel@linux.intel.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <c7abcce47df0aaa55f1e6c65f501bc691d35eae8.camel@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+References: <20230116193702.31356-1-mario.limonciello@amd.com> <20230116193702.31356-3-mario.limonciello@amd.com>
+In-Reply-To: <20230116193702.31356-3-mario.limonciello@amd.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 18 Jan 2023 21:44:37 +0100
+Message-ID: <CACRpkdaX+ZVA7zQDnADEi5KPpfd-gwsxPsKaZo5FxEmgjv4S3Q@mail.gmail.com>
+Subject: Re: [PATCH 2/2] gpiolib: acpi: Add a ignore wakeup quirk for Clevo NL5xRU
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Raul E Rangel <rrangel@chromium.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        regressions@lists.linux.dev,
+        Werner Sembach <wse@tuxedocomputers.com>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
-X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 18/01/2023 20:16, srinivas pandruvada wrote:
+On Mon, Jan 16, 2023 at 8:37 PM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
 
-[ ... ]
+> However on Clevo NL5xRU there is a mistake in the ACPI tables that the
+> TP_ATTN# signal connected to GPIO 9 is configured as ActiveLow and level
+> triggered but connected to a pull up. As soon as the system suspends the
+> touchpad loses power and then the system wakes up.
 
->>> But we'd better wait for the thermald test result from Srinvias.
->>
->> A quick test show that things still work with thermald and these
->> changes.
-> 
-> But I have a question. In some devices trip point temperature is not
-> static. When hardware changes, we get notification. For example
-> INT3403_PERF_TRIP_POINT_CHANGED for INT3403 drivers.
-> Currently get_trip can get the latest changed value. But if we
-> preregister, we need some mechanism to update them.
+Now that is what I call proper root cause analysis. Hats off for this patch!
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-When the notification INT3403_PERF_TRIP_POINT_CHANGED happens, we call 
-int340x_thermal_read_trips() which in turn updates the trip points.
-
-
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
-
+Yours,
+Linus Walleij
