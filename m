@@ -2,52 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89A53671F8D
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jan 2023 15:28:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79907671FC3
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jan 2023 15:37:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230145AbjARO2K (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Jan 2023 09:28:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58226 "EHLO
+        id S231417AbjAROh4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Jan 2023 09:37:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230324AbjARO1l (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Jan 2023 09:27:41 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 568616CCC1;
-        Wed, 18 Jan 2023 06:13:03 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B8D811477;
-        Wed, 18 Jan 2023 06:13:44 -0800 (PST)
-Received: from [172.27.249.134] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D53273F67D;
-        Wed, 18 Jan 2023 06:12:48 -0800 (PST)
-Message-ID: <8ee7192d-f32d-5e33-e57e-1bbc2a0e37f6@arm.com>
-Date:   Wed, 18 Jan 2023 15:12:48 +0100
+        with ESMTP id S231183AbjAROhj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Jan 2023 09:37:39 -0500
+Received: from mail-vs1-xe2b.google.com (mail-vs1-xe2b.google.com [IPv6:2607:f8b0:4864:20::e2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F86959744
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Jan 2023 06:26:49 -0800 (PST)
+Received: by mail-vs1-xe2b.google.com with SMTP id j185so4756044vsc.13
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Jan 2023 06:26:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Lqqi0GQK72eWatBF5iXQ8orjIM5rhkb0842NAyd7NO4=;
+        b=HCBXy9lEZdNqqZezNdXa5R1YwPrZy6tl5PP5t2eD/lvD+coeSVqtK6+ajYbBSS+4Ao
+         71bd8ZGQY3psoI7VIVI9KNgBY2BRrVK8LM9JfJTNIG5p3sBU2JkH73GrbepCIyxHzHw2
+         QHdHn42XFKBUiRZcwnZZG7IfnMcpduia2QxBo7DU8tKMkzIe7hjJu/oWGeiG5aIizkBq
+         r5KPbUse5duP1eD0ewKlV1SkkikWE5NilH4EtI1VTNJn1fMBFEcBT+A7WNt3kh3Qiqin
+         xCpBt9jj6naEztaF+kEh8RvBliq3GG/rYrxlNGDqZi/w4NXlbzKvjj5IgqhD3yIvdF4/
+         6OJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Lqqi0GQK72eWatBF5iXQ8orjIM5rhkb0842NAyd7NO4=;
+        b=k2o+vMXhptehM67PZYUPeYnmMQNFUw+lA7K0qWepaV9YHtIA2PX7z3j9uanJM62X8d
+         3fI8kY/8q/Y80ltVxrrjGFqQlWm2u6PRdj8v5Qzc8dAviJ7M8K+ZNjOJq2PbRoXx+O7O
+         AtQAo4seRGtKwhlNJ6dsuHh2hTTgSPnBEhRvX03+sCqwB2iHS6LcJhxwdPzPm2GPLDSf
+         vV9yaKlU8wFaFfSZUkbB6q2Sqdt6TcIgLWvVFrCxhgJFNCvQdD0pzg3ydKFHGAWC/ZrE
+         gfFzkA8qzcBVMyf7H4MaAAHeDXI8H29QaX5oA1MYDja4rzpaERgAUB4Vmo4taBhMk1SD
+         y+9w==
+X-Gm-Message-State: AFqh2krPhFKQjzASd+8U07tgI0+4t5Kfl4Djakoe5BpE/LW9ZqtTGyeF
+        IR0fBfyb50rKYaIgZ6XfOwkC8oStcfTzO2BYiDzIqw==
+X-Google-Smtp-Source: AMrXdXvqsnUIUZ4tgMYk35KxtchmNg5II+5n7fzSAq5kmnbRxWa8736Kzje9pVpcxADmzMR8BCAAR/gytLy14cjL4CU=
+X-Received: by 2002:a67:c387:0:b0:3d2:3577:2d05 with SMTP id
+ s7-20020a67c387000000b003d235772d05mr892021vsj.9.1674052008373; Wed, 18 Jan
+ 2023 06:26:48 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v4 0/6] arch_topology: Build cacheinfo from primary CPU
-To:     Sudeep Holla <sudeep.holla@arm.com>, linux-kernel@vger.kernel.org
-Cc:     Len Brown <lenb@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, linux-acpi@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Will Deacon <will@kernel.org>, Gavin Shan <gshan@redhat.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-riscv@lists.infradead.org
-References: <20230104183033.755668-1-pierre.gondois@arm.com>
- <167404285593.885445.6219705651301997538.b4-ty@arm.com>
- <20230118120731.jgsq4l7htwizlsp5@bogus>
-Content-Language: en-US
-From:   Pierre Gondois <pierre.gondois@arm.com>
-In-Reply-To: <20230118120731.jgsq4l7htwizlsp5@bogus>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+References: <20230116193702.31356-1-mario.limonciello@amd.com> <20230116193702.31356-3-mario.limonciello@amd.com>
+In-Reply-To: <20230116193702.31356-3-mario.limonciello@amd.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Wed, 18 Jan 2023 15:26:37 +0100
+Message-ID: <CAMRc=MenxV6Nt3cyLPvPJXVDe6T1s2zeQ_ZszW8rrVwJbW0pXQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] gpiolib: acpi: Add a ignore wakeup quirk for Clevo NL5xRU
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Raul E Rangel <rrangel@chromium.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        regressions@lists.linux.dev,
+        Werner Sembach <wse@tuxedocomputers.com>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,104 +73,59 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Mon, Jan 16, 2023 at 8:37 PM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
+>
+> commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+> changed the policy such that I2C touchpads may be able to wake up the
+> system by default if the system is configured as such.
+>
+> However on Clevo NL5xRU there is a mistake in the ACPI tables that the
+> TP_ATTN# signal connected to GPIO 9 is configured as ActiveLow and level
+> triggered but connected to a pull up. As soon as the system suspends the
+> touchpad loses power and then the system wakes up.
+>
+> To avoid this problem, introduce a quirk for this model that will prevent
+> the wakeup capability for being set for GPIO 9.
+>
+> Fixes: 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+> Reported-by: Werner Sembach <wse@tuxedocomputers.com>
+> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627
+> Co-developed-by: Werner Sembach <wse@tuxedocomputers.com>
+> Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+>  drivers/gpio/gpiolib-acpi.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+>
+> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+> index 4287555a12408..9ef0f5641b521 100644
+> --- a/drivers/gpio/gpiolib-acpi.c
+> +++ b/drivers/gpio/gpiolib-acpi.c
+> @@ -1623,6 +1623,19 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
+>                         .ignore_interrupt = "AMDI0030:00@18",
+>                 },
+>         },
+> +       {
+> +               /*
+> +                * Spurious wakeups from TP_ATTN# pin
+> +                * Found in BIOS 1.7.8
+> +                * https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627
+> +                */
+> +               .matches = {
+> +                       DMI_MATCH(DMI_BOARD_NAME, "NL5xRU"),
+> +               },
+> +               .driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+> +                       .ignore_wake = "ELAN0415:00@9",
+> +               },
+> +       },
+>         {} /* Terminating entry */
+>  };
+>
+> --
+> 2.34.1
+>
 
-On 1/18/23 13:07, Sudeep Holla wrote:
-> On Wed, Jan 18, 2023 at 11:55:59AM +0000, Sudeep Holla wrote:
->> On Wed, 4 Jan 2023 19:30:23 +0100, Pierre Gondois wrote:
->>> v2:
->>>   - Applied renaming/formatting comments from v1.
->>>   - Check CACHE_TYPE_VALID flag in pppt.c.
->>> v3:
->>>   - Applied Sudeep's suggestions (for patch 5/5):
->>>     - Renaming allocate_cache_info() -> fecth_cache_info()
->>>     - Updated error message
->>>     - Extract an inline allocate_cache_info() function
->>>   - Re-run checkpatch with --strict option
->>> v4:
->>>   - Remove RISC-V's implementation of init_cache_level() as not
->>>     necessary.
->>>   - Add patch: 'cacheinfo: Check 'cache-unified' property to count
->>>     cache leaves' to increase the number of leaves at a cache level
->>>     when no cache-size property is found.
->>>   - In cacheinfo: Use RISC-V's init_cache_level() [...],
->>>     make 'levels', 'leaves' and 'level' unsigned int to match
->>>     of_property_read_u32()'s parameters signedness.
->>>
->>> [...]
->>
->> Applied to sudeep.holla/linux (for-next/cacheinfo), thanks!
->>
-> 
-> I pushed the changes and then noticed some build warning report by
-> kbuild posted only to you and one list(missing this list). Please post the
-> fix if required on top of my for-next/cacheinfo so that it can be added
-> on the top. Sorry for missing that.
-> 
+Queued for fixes, thanks!
 
-Hi Sudeep,
-I think the reported issue can be ignored, the 'levels' and 'split_levels'
-variables are initialized when used. If necessary, it is straightforward
-to fix the warning.
-Regards,
-Pierre
-
-
-The reported issue:
---- Start ---
-
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
-    drivers/base/cacheinfo.c: In function 'fetch_cache_info':
->> drivers/base/cacheinfo.c:440:50: warning: 'levels' is used uninitialized [-Wuninitialized]
-      440 |                 this_cpu_ci->num_leaves = levels + split_levels;
-          |                                           ~~~~~~~^~~~~~~~~~~~~~
-    drivers/base/cacheinfo.c:420:22: note: 'levels' was declared here
-      420 |         unsigned int levels, split_levels;
-          |                      ^~~~~~
->> drivers/base/cacheinfo.c:440:50: warning: 'split_levels' is used uninitialized [-Wuninitialized]
-      440 |                 this_cpu_ci->num_leaves = levels + split_levels;
-          |                                           ~~~~~~~^~~~~~~~~~~~~~
-    drivers/base/cacheinfo.c:420:30: note: 'split_levels' was declared here
-      420 |         unsigned int levels, split_levels;
-          |                              ^~~~~~~~~~~~
-
-
-vim +/levels +440 drivers/base/cacheinfo.c
-
-    416	
-    417	int fetch_cache_info(unsigned int cpu)
-    418	{
-    419		struct cpu_cacheinfo *this_cpu_ci;
-    420		unsigned int levels, split_levels;
-    421		int ret;
-    422	
-    423		if (acpi_disabled) {
-    424			ret = init_of_cache_level(cpu);
-    425			if (ret < 0)
-    426				return ret;
-    427		} else {
-    428			ret = acpi_get_cache_info(cpu, &levels, &split_levels);
-    429			if (ret < 0)
-    430				return ret;
-    431	
-    432			this_cpu_ci = get_cpu_cacheinfo(cpu);
-    433			this_cpu_ci->num_levels = levels;
-    434			/*
-    435			 * This assumes that:
-    436			 * - there cannot be any split caches (data/instruction)
-    437			 *   above a unified cache
-    438			 * - data/instruction caches come by pair
-    439			 */
-  > 440			this_cpu_ci->num_leaves = levels + split_levels;
-    441		}
-    442		if (!cache_leaves(cpu))
-    443			return -ENOENT;
-    444	
-    445		return allocate_cache_info(cpu);
-    446	}
-    447	
-
---- End ---
+Bart
