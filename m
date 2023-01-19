@@ -2,97 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 700F8673E48
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jan 2023 17:11:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 267F7673E87
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jan 2023 17:20:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229540AbjASQL2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 19 Jan 2023 11:11:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36440 "EHLO
+        id S229503AbjASQUF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 Jan 2023 11:20:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229515AbjASQL1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 11:11:27 -0500
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC99CB0;
-        Thu, 19 Jan 2023 08:11:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674144685; x=1705680685;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rFFNspM4PkcmcwS0KwDUA2pD12KposrRtHGWSG8muLM=;
-  b=jEVENeUgvUwqRDfxbqjkJKbZCriHdvddQMO/cVBg5VLMC2YaWM1LpaKf
-   WwC2XY1m6QqderZcO0iUPesXRT/l7dtBi1z3Ka2HXV0oYhbWTMjS9E3Ot
-   QrntHv77Wj6z8Rl/vk/VwfE8s/UNJuOr6XlZoRu9UGyKynqXgfryJfMjL
-   DULqZtRZSwTa9OGNklEhBHgg+2UpenLHcwdtHBR4pYC314/EZwlqRmgKG
-   6XFpNJrFLpfbX5Iv9VtYppGhyzefDadwsbn0RjI6hU2XHXdNvNod44IjD
-   mn0L71nPxyD/Viozaq7/Aamwp8nshB9gHEzVnqlre6OihXm7ILtpQQ9d9
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="305004581"
-X-IronPort-AV: E=Sophos;i="5.97,229,1669104000"; 
-   d="scan'208";a="305004581"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2023 08:11:14 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="802682237"
-X-IronPort-AV: E=Sophos;i="5.97,229,1669104000"; 
-   d="scan'208";a="802682237"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga001.fm.intel.com with ESMTP; 19 Jan 2023 08:11:13 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pIXVQ-00BkMq-02;
-        Thu, 19 Jan 2023 18:11:12 +0200
-Date:   Thu, 19 Jan 2023 18:11:11 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
-        linux-media@vger.kernel.org, heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH 7/8] ACPI: property: Skip MIPI property table without
- "mipi-img" prefix
-Message-ID: <Y8lrn0P0+CRPWUOV@smile.fi.intel.com>
-References: <20230117122244.2546597-1-sakari.ailus@linux.intel.com>
- <20230117122244.2546597-8-sakari.ailus@linux.intel.com>
- <Y8a+8q5hzkoPjpDO@smile.fi.intel.com>
- <Y8lnBeamT90z4aKY@paasikivi.fi.intel.com>
- <Y8lrNe9S4eIdWbXu@smile.fi.intel.com>
+        with ESMTP id S230328AbjASQTb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 11:19:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ACFC82D60
+        for <linux-acpi@vger.kernel.org>; Thu, 19 Jan 2023 08:18:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1674145116;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=qmHYjUt24sUlF/c+UMA/XCra8CJo51C7Y4xLfqoKvY0=;
+        b=ZwxKNIxo5uAccZHyJDO1xBRHHYDTpwJTzWtx0LzXOjhAIX4UJk6XEPp8DNgUaMI02ceUD/
+        3zaZZNlSLM1KvzCNU1yykU0uMlruoEPX/feC6UDNaDB57FkK/4lTFj8LM/ljng74bCjUWU
+        TwXajCzvowUI1ODzwdpu2IUgb7nuUs8=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-7-G6fLYfogOzG6HcOEitMZ7Q-1; Thu, 19 Jan 2023 11:17:42 -0500
+X-MC-Unique: G6fLYfogOzG6HcOEitMZ7Q-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2560D3814953;
+        Thu, 19 Jan 2023 16:17:25 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id A802D492B03;
+        Thu, 19 Jan 2023 16:17:24 +0000 (UTC)
+From:   Jeff Moyer <jmoyer@redhat.com>
+To:     Dan Carpenter <error27@gmail.com>
+Cc:     Dan Williams <dan.j.williams@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, nvdimm@lists.linux.dev,
+        linux-acpi@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        cip-dev <cip-dev@lists.cip-project.org>,
+        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: Re: [PATCH v2] ACPI: NFIT: prevent underflow in acpi_nfit_ctl()
+References: <Y8ldQn1v4r5i5WLX@kadam>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date:   Thu, 19 Jan 2023 11:21:22 -0500
+In-Reply-To: <Y8ldQn1v4r5i5WLX@kadam> (Dan Carpenter's message of "Thu, 19 Jan
+        2023 18:09:54 +0300")
+Message-ID: <x49y1py5wcd.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y8lrNe9S4eIdWbXu@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jan 19, 2023 at 06:09:26PM +0200, Andy Shevchenko wrote:
-> On Thu, Jan 19, 2023 at 03:51:33PM +0000, Sakari Ailus wrote:
-> > On Tue, Jan 17, 2023 at 05:29:54PM +0200, Andy Shevchenko wrote:
-> > > On Tue, Jan 17, 2023 at 02:22:43PM +0200, Sakari Ailus wrote:
+Dan Carpenter <error27@gmail.com> writes:
 
-...
+> The concern here would be that "family" is negative and we pass a
+> negative value to test_bit() resulting in an out of bounds read
+> and potentially a crash.
 
-> > > > +	if (memcmp(elements[0].string.pointer, MIPI_IMG_PREFIX,
-> > > > +		   sizeof(MIPI_IMG_PREFIX) - 1))
-> > > 
-> > > str_has_prefix()
-> > 
-> > str_has_prefix() calls strlen() on prefix on every call. sizeof() will
-> > generate much less code --- it's just a number.
-> 
-> Have you tried that? Because the strlen() over const string literals will be
-> optimized away on compilation time.
+I don't see how this can happen.  Do you have a particular scenario in
+mind?
 
-Probably that's the reason behind __always_inline for that function.
+-Jeff
 
-> > > > +		return;
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+> This patch is based on static analysis and not on testing.
+>
+> Fixes: 9a7e3d7f0568 ("ACPI: NFIT: Fix input validation of bus-family")
+> Signed-off-by: Dan Carpenter <error27@gmail.com>
+> ---
+> v2: add missing close parens ) in subject
+>
+>  drivers/acpi/nfit/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+> index f1cc5ec6a3b6..da0739f04c98 100644
+> --- a/drivers/acpi/nfit/core.c
+> +++ b/drivers/acpi/nfit/core.c
+> @@ -446,10 +446,10 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+>  	const char *cmd_name, *dimm_name;
+>  	unsigned long cmd_mask, dsm_mask;
+>  	u32 offset, fw_status = 0;
+> +	unsigned int family = 0;
+>  	acpi_handle handle;
+>  	const guid_t *guid;
+>  	int func, rc, i;
+> -	int family = 0;
+>  
+>  	if (cmd_rc)
+>  		*cmd_rc = -EINVAL;
 
