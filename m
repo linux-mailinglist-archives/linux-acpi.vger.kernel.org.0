@@ -2,107 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62436673B60
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jan 2023 15:12:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B044673B8A
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jan 2023 15:21:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231600AbjASOL7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 19 Jan 2023 09:11:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39110 "EHLO
+        id S231408AbjASOVb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 Jan 2023 09:21:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231494AbjASOLX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 09:11:23 -0500
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8483B829A5;
-        Thu, 19 Jan 2023 06:09:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674137389; x=1705673389;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=PNmoKYRJVjDp4F17/eUveCKQAApp+O2ZjxB9O8O8wrg=;
-  b=hgyugTjKw7I53S+5Vl8pekG7zY5XHdmtEEdXX01A0rGAi9MbL9JGz9uG
-   HSBUPlJ8w5QWkkzuS3AlucMXTq+4LNFaXZ0tE7ly9ciVoK9xOPirtkMSX
-   9p022+D8XthVHs9zgsA/OOuG6+618jM3BjzbtThuTQijViK2VAnxRv55p
-   5rJyKDnRx4GsEP2MNpRzLlv9qvmApx8KgFPbDyFi3dD1VluY5ro5CE0xg
-   hLpQXcbCgMcxOZBCBrHJ/pizXrOAL4394iAhH3/3gXLNVdPDz8/WRE7M/
-   At/zH2Lte8y/6c3svA2j9fBVRqNbj/gBYaBfFLCvN/fhCHxwd/MSIlT9g
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="327369183"
-X-IronPort-AV: E=Sophos;i="5.97,229,1669104000"; 
-   d="scan'208";a="327369183"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2023 06:04:12 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="690636743"
-X-IronPort-AV: E=Sophos;i="5.97,229,1669104000"; 
-   d="scan'208";a="690636743"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2023 06:04:10 -0800
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id A7F4C20497;
-        Thu, 19 Jan 2023 16:04:08 +0200 (EET)
-Date:   Thu, 19 Jan 2023 14:04:08 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
-        linux-media@vger.kernel.org, heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH 2/8] ACPI: property: Parse _CRS CSI-2 descriptor
-Message-ID: <Y8lN2FuKZksOlS0J@paasikivi.fi.intel.com>
-References: <20230117122244.2546597-1-sakari.ailus@linux.intel.com>
- <20230117122244.2546597-3-sakari.ailus@linux.intel.com>
- <Y8ax6TUtTCO6qQmz@smile.fi.intel.com>
+        with ESMTP id S231377AbjASOV2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 09:21:28 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25E9B3ABA;
+        Thu, 19 Jan 2023 06:21:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1674138081; bh=Ny0LIyIy4GYeNxVRqsepIJrTH+brTIWy5Eqgj908uvM=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=BQy6kjqtVPWffHeFMB7//sMS/abEsee7PWsSBv0cSuNS+s7CBcVSjTwOOjTrim4L1
+         EqDbbXxPYWKLxuyjkHeOdeQYI/isNk8fdvPZBH/EdCggRyXMbPYXeFZSkLczFWlkUn
+         653wVfO83COuLw/V1TLK3hKKEHHTniORt0HU5ODFl18+pbRC30Ra0cIc3bFV3D3+Bk
+         NmA7q4X9xQ8SdVqefbtN+4b0bXemc15fM9d1Z008VBcGvtGq/HBvD6SyuRjn51csLu
+         yKvBfFhQSHPs/G6XbAIqQdy4aEdu2IETdjGeb0jBK9ESqvREiTj/OIEC9+2Rlolk8U
+         cb9ZZ4VRBOyoQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from esprimo-mx.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
+ (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1MgvrB-1omTEb3cCr-00hKKe; Thu, 19 Jan 2023 15:21:20 +0100
+From:   Armin Wolf <W_Armin@gmx.de>
+To:     rafael@kernel.org, lenb@kernel.org
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/2] ACPI: battery: Fix various string handling issues
+Date:   Thu, 19 Jan 2023 15:21:13 +0100
+Message-Id: <20230119142115.38260-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y8ax6TUtTCO6qQmz@smile.fi.intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:J+xZQwCdYjduuupMiKWHSxhYonytUIVNgNt8jouF7YexN/V9PFe
+ N2eDHLVOPkxnGmbLZPAMmAzqY1YHDsvE3s+phqMcjgqTY6EMnmUwn/zLKG8sDVt6T/G7zL3
+ Sv1B9zjjEq7zAI8OgqjTVpC+287YXQfebG/ruiVtCWPTzUUzyJXxoZ8jFMHmegId12Dc0NL
+ jhaLq5crKJl4ECBycTblg==
+UI-OutboundReport: notjunk:1;M01:P0:YX+0BR3tP+s=;TmUGic/D7nPR5cvCyCBpGyhBZZd
+ 2Waqveq+Gn7bDybQD/6SHnTAN4y8JK7avKw5IJbGVX2r/k4YdmChbsqUDAj5OHtbiiwPH15kk
+ EPwTQhmD+dsn0kaFtfcaktTPnKKL/jKvrfyFqFflsUvOftb6xNR+3WzrukIzaO/Y4s1HKPodm
+ pr9Ey2TpFutdP5Uwdc44sSfoFAhZMf2V9yMHl8MXWyxOBwzRE6nKSY2vw+ICx5m3WVWCitx6i
+ MnUJ5rTb/heobFTmSl1FOk/WPZObyUIEilwR78rzeL4mlaNiwZN48rk5XilN2IQyUE5ulB1yW
+ lYNmfEJFEXOq3uDSKVgbtVclKEo+emaWglW6IbxhCbdtoUVevvwal5huR8FYlSRErPdjNDm+i
+ mn/E91Ff0Y+THHBPtTwynlj4yYItPQNmpEnvCnF3z56bhv6uI6bvrFn19T/T7HcokFmXJcE9f
+ iuujDBqpLON0c5umgElinZ8hTzmqKa7IqsVCgoeoUuVwMiplamnZ1kd2sRWpc4THllwqH0VoO
+ /klRFQnTdOqXzxYPnspMGSdIkiSx55a9jv7aM2O6aZ58Eice3UGoOadvg35sA0PRh/yHA+7N0
+ zuN8aJvFI+UWoNMavlQpoDiGF2q/Mu8R5FrDBqrwjpRqw22vhVJ8V93OhsN2o0t2UHEDwIs8G
+ mNcKVPJZjDS5Zs0DYY+a0gsItmeXLs/rpUDZnmtnTlMlvep9BeSwsIUBut6wu2syaS8TC/wQs
+ SQeIr+MJ8Cly0XhZ297bfuFP/PRvYgk1m3MG8bHn91XCYSmOc/+kbJeeZmMYmw4yRXXtAItUs
+ vJiUoDZzt8K2/z9EAtUR9fIxCbX5KPgT+lV1ht5dEK9hn16fOvIbf3kCT9GD63wxcpPb7I3Al
+ f5cgvBWgcejuJihdNJr2cni2mAoUsFvVYnr2+B6uGXnaXrTdzWdQvBFWU7FFoaPZUehcHKKYo
+ 8ZzFau0gVsM2pXmxQAUQ+rraVRQ=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+On my Dell Inspiron 3505, the battery model name was displayed
+differently than when running Windows. While i first suspected an
+ACPI issue, it turned out that the real reason was the ACPI battery
+driver failing to handle strings larger than 32 bytes.
 
-On Tue, Jan 17, 2023 at 04:34:17PM +0200, Andy Shevchenko wrote:
-> On Tue, Jan 17, 2023 at 02:22:38PM +0200, Sakari Ailus wrote:
-> > Parse newly added ACPI _CRS CSI-2 descriptor for CSI-2 and camera
-> > configuration. For now, only figure out where the descriptor is present in
-> > order to allow adding information from it to related devices.
-> 
-> ...
-> 
-> > +/*
-> > + * MIPI DisCo for Imaging support.
-> > + *
-> > + * Copyright (C) 2022 Intel Corporation
-> 
-> 2023?
+This caused the model name of the battery (35 bytes long, hex string)
+to miss proper NUL-termination, resulting in a buffer overread later.
+Luckily, a valid string was stored right after the now invalid string,
+appending only the battery serial number to the original model name.
 
-Yes.
+The first patch fixes a potential buffer overread then handling buffers,
+while the second patch finally increases the maximum string length to
+avoid truncating such larger strings.
 
-> 
-> > + */
-> 
-> ...
-> 
-> > +#include <linux/acpi.h>
-> > +#include <linux/module.h>
-> 
-> > +#include <linux/kernel.h>
-> 
-> Not sure why you need this one instead of corresponding types.h and might be a
-> few others (seems list.h, string.h at least).
+The patch series was tested on a Dell Inspiron 3505 and appears
+to work properly.
+=2D--
+Changes in v2:
+- Drop first patch since it was already applied
+- combine the second and third patch
+- do not replace 0 with '\0'
+- spell ACPI in capitals
+- rework the buffer length hdanling
 
-Good catch.
+Armin Wolf (2):
+  ACPI: battery: Fix buffer overread if not NUL-terminated
+  ACPI: battery: Increase maximum string length
 
-I'll fix these for v2.
+ drivers/acpi/battery.c | 35 +++++++++++++++++++++++------------
+ 1 file changed, 23 insertions(+), 12 deletions(-)
 
-> 
-> > +#include <linux/overflow.h>
-> > +#include <linux/slab.h>
-> > +#include <linux/sort.h>
+=2D-
+2.30.2
 
--- 
-Sakari Ailus
