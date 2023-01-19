@@ -2,89 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 949AE674120
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jan 2023 19:41:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A2EA67428A
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jan 2023 20:16:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230023AbjASSlq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 19 Jan 2023 13:41:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58914 "EHLO
+        id S231334AbjASTQq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 Jan 2023 14:16:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230064AbjASSlo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 13:41:44 -0500
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBD9B8C923;
-        Thu, 19 Jan 2023 10:41:42 -0800 (PST)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
- id ba2c56c5a2d2e054; Thu, 19 Jan 2023 19:41:40 +0100
-Received: from kreacher.localnet (unknown [213.134.183.25])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 5163766B87C;
-        Thu, 19 Jan 2023 19:41:39 +0100 (CET)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        x86 Maintainers <x86@kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-Subject: [PATCH] MAINTAINERS: Add x86 ACPI paths to the ACPI entry
-Date:   Thu, 19 Jan 2023 19:41:38 +0100
-Message-ID: <12136077.O9o76ZdvQC@kreacher>
+        with ESMTP id S231329AbjASTQ1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 14:16:27 -0500
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 040E1966D9;
+        Thu, 19 Jan 2023 11:15:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674155719; x=1705691719;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=1HuuDaAUhECpauFK3xburRU6vWUT+DOtnKE7jETeHAQ=;
+  b=ZV6t7T8MlkwDjgteF7KLqFnNXOAgWnwoWKr0Axhu1OerFC3VSkljc2Q8
+   pfYs0DrZdrlTLN+mCu6i4bVNkiVm5QFZ9jqiL6Wd2JaQLyEYowgs1Sp1j
+   IZKfKmjiOVDidExiCB18WfN4aRcp1BtAFEKIz9JwfyZANzxmDzCS+4HFc
+   jeaUS2BPxsEfoADWUPmZxKY/AUKZ08uUBx+osnzqBcamVrHcuq5j8qC95
+   i4/AF0YQreQRl/uY9FipU+Yqqu1M5QpOKV3pSAXJnTQ7qbd7o2seiXrBb
+   4XBmNt1YQ2nF/tEWm7fCQUaPSTPmlcc/t6vWdSTVUL1RwURIsMDhK9eId
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="324078044"
+X-IronPort-AV: E=Sophos;i="5.97,229,1669104000"; 
+   d="scan'208";a="324078044"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2023 11:10:32 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="802752086"
+X-IronPort-AV: E=Sophos;i="5.97,229,1669104000"; 
+   d="scan'208";a="802752086"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 19 Jan 2023 11:10:28 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 49936368; Thu, 19 Jan 2023 21:11:03 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Cc:     Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, kernel test robot <lkp@intel.com>
+Subject: [PATCH net-next v2 1/2] ACPI: utils: Add acpi_evaluate_dsm_typed() and acpi_check_dsm() stubs
+Date:   Thu, 19 Jan 2023 21:11:00 +0200
+Message-Id: <20230119191101.80131-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.183.25
-X-CLIENT-HOSTNAME: 213.134.183.25
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedruddutddguddujecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeegfffhudejlefhtdegffekteduhfethffhieettefhkeevgfdvgfefieekiefgheenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvudefrddufeegrddukeefrddvheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrddukeefrddvhedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepgedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgv
- lhdrohhrgh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+When the ACPI part of a driver is optional the methods used in it
+are expected to be available even if CONFIG_ACPI=n. This is not
+the case for _DSM related methods. Add stubs for
+acpi_evaluate_dsm_typed() and acpi_check_dsm() methods.
 
-In order for things like get_maintainer.pl to print linux-acpi as a
-list to receive copies of ACPI-related patches, add paths to ACPI files
-in the arch/x86/ directory to the ACPI entry in MAINTAINERS.
-
-While at it, make the list of ACPI files listed in the suspend-to-RAM
-entry more precise.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- MAINTAINERS |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+v2: new patch to prevent compilation failures (LKP)
+ include/linux/acpi.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-Index: linux-pm/MAINTAINERS
-===================================================================
---- linux-pm.orig/MAINTAINERS
-+++ linux-pm/MAINTAINERS
-@@ -361,6 +361,8 @@ T:	git git://git.kernel.org/pub/scm/linu
- F:	Documentation/ABI/testing/configfs-acpi
- F:	Documentation/ABI/testing/sysfs-bus-acpi
- F:	Documentation/firmware-guide/acpi/
-+F:	arch/x86/kernel/acpi/
-+F:	arch/x86/pci/acpi.c
- F:	drivers/acpi/
- F:	drivers/pci/*/*acpi*
- F:	drivers/pci/*acpi*
-@@ -20086,7 +20088,8 @@ L:	linux-pm@vger.kernel.org
- S:	Supported
- B:	https://bugzilla.kernel.org
- F:	Documentation/power/
--F:	arch/x86/kernel/acpi/
-+F:	arch/x86/kernel/acpi/sleep*
-+F:	arch/x86/kernel/acpi/wakeup*
- F:	drivers/base/power/
- F:	include/linux/freezer.h
- F:	include/linux/pm.h
-
-
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 5e6a876e17ba..4b12dad5a8a4 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -950,6 +950,12 @@ static inline bool acpi_driver_match_device(struct device *dev,
+ 	return false;
+ }
+ 
++static inline bool acpi_check_dsm(acpi_handle handle, const guid_t *guid,
++				  u64 rev, u64 funcs)
++{
++	return false;
++}
++
+ static inline union acpi_object *acpi_evaluate_dsm(acpi_handle handle,
+ 						   const guid_t *guid,
+ 						   u64 rev, u64 func,
+@@ -958,6 +964,15 @@ static inline union acpi_object *acpi_evaluate_dsm(acpi_handle handle,
+ 	return NULL;
+ }
+ 
++static inline union acpi_object *acpi_evaluate_dsm_typed(acpi_handle handle,
++							 const guid_t *guid,
++							 u64 rev, u64 func,
++							 union acpi_object *argv4,
++							 acpi_object_type type)
++{
++	return NULL;
++}
++
+ static inline int acpi_device_uevent_modalias(struct device *dev,
+ 				struct kobj_uevent_env *env)
+ {
+-- 
+2.39.0
 
