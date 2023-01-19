@@ -2,60 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B9E3673457
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jan 2023 10:27:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EAAA673684
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jan 2023 12:17:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229505AbjASJ06 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 19 Jan 2023 04:26:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43206 "EHLO
+        id S229501AbjASLRr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 Jan 2023 06:17:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbjASJ05 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 04:26:57 -0500
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42ACC7AB2;
-        Thu, 19 Jan 2023 01:26:57 -0800 (PST)
+        with ESMTP id S229459AbjASLRq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 06:17:46 -0500
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE2AB64DA1;
+        Thu, 19 Jan 2023 03:17:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674120417; x=1705656417;
+  t=1674127065; x=1705663065;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=CMAMmGZK9oCKcRxIz8Vz48WNhapUwOODnM/5yPjQvFg=;
-  b=LGRxVIvlQ51q29EuSv+p3wKfXuc3TwFMvoO2mVIQ2wftsVvcBkl1/Wtc
-   yiZSovoG2270IQStuhZSvgIvyYWiiXkAakXIuxh88CzCoQ7g2pNjCuCIe
-   myI7ErIyamaP+09SUwXZbIFwWamFG1fqRaz5wkrT1NkWmazJ4FUq+xQOY
-   q5LlUp4/rWTeCRLZibnK7bZ2LEdBfEQBQh1DRKPkOXPLJSbIDgVlBU83P
-   HwvqpxDBElC8eXZTCWMtI0ZC217s+aTHpVbFGgIwwXy2r5Y3GHVBxyGUv
-   LqtObML53xGp+r8D79pw9c0GNUlJDlbr9VrraJgPchA0PnVeOp1pOkall
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="322925103"
+  bh=+V4r9ZArU3A1gYY8X12Cens1VVxsFLF0cBxVdWqJJIA=;
+  b=XTa4iFB42WeA0TPUEx2dLOF2xZOdSwvPDCTZ8JoExEe6MHizUK28X+Su
+   d93tpL8OEvGG5nKWlIcMJicxOFgUxLXRR0uOEwXWq6W6+QR/E0foEc9SY
+   ja0C7m47qruKJzN75IG3J0vJI2OfhXFfgjblDWeYUiXj6qNVQTx6lygUO
+   46afn+VXbmikFmj3Sa/7x6rjZY+O4yzCvNCpCA1L0ve4UT2FQWr67vySj
+   Wt88DWLzyRYiHXpXBxMWQqrNbPp4QGk9+SqjbiBiWXeLVFGmbgmSBL5JG
+   bc8Rz+c0Y+hZacf6rG5yGz8JHi5RTbDTRgS/ER0pmI+bEvpyLJBXw2Uke
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="313132942"
 X-IronPort-AV: E=Sophos;i="5.97,228,1669104000"; 
-   d="scan'208";a="322925103"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2023 01:26:57 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="802565006"
+   d="scan'208";a="313132942"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2023 03:17:45 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="662080952"
 X-IronPort-AV: E=Sophos;i="5.97,228,1669104000"; 
-   d="scan'208";a="802565006"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmsmga001.fm.intel.com with SMTP; 19 Jan 2023 01:26:54 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Thu, 19 Jan 2023 11:26:53 +0200
-Date:   Thu, 19 Jan 2023 11:26:53 +0200
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+   d="scan'208";a="662080952"
+Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2023 03:17:43 -0800
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with SMTP id 96D67203C4;
+        Thu, 19 Jan 2023 13:17:41 +0200 (EET)
+Date:   Thu, 19 Jan 2023 11:17:41 +0000
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Daniel Scally <djrscally@gmail.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
 Subject: Re: [PATCH v1 1/1] device property: Make
  fwnode_graph_for_each_endpoint() consistent
-Message-ID: <Y8kM3bzIBF3dbuZh@kuha.fi.intel.com>
+Message-ID: <Y8km1Zwl1IUXh4s2@paasikivi.fi.intel.com>
 References: <20230117152120.42531-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20230117152120.42531-1-andriy.shevchenko@linux.intel.com>
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -73,33 +75,7 @@ On Tue, Jan 17, 2023 at 05:21:20PM +0200, Andy Shevchenko wrote:
 > 
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-FWIW:
-
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-
-> ---
->  include/linux/property.h | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index 37179e3abad5..f090419818a2 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -436,9 +436,9 @@ fwnode_graph_get_endpoint_by_id(const struct fwnode_handle *fwnode,
->  unsigned int fwnode_graph_get_endpoint_count(struct fwnode_handle *fwnode,
->  					     unsigned long flags);
->  
-> -#define fwnode_graph_for_each_endpoint(fwnode, child)			\
-> -	for (child = NULL;						\
-> -	     (child = fwnode_graph_get_next_endpoint(fwnode, child)); )
-> +#define fwnode_graph_for_each_endpoint(fwnode, child)				\
-> +	for (child = fwnode_graph_get_next_endpoint(fwnode, NULL); child;	\
-> +	     child = fwnode_graph_get_next_endpoint(fwnode, child))
->  
->  int fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
->  				struct fwnode_endpoint *endpoint);
-> -- 
-> 2.39.0
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 
 -- 
-heikki
+Sakari Ailus
