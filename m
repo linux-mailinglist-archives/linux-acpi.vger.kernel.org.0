@@ -2,92 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95C65673A71
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jan 2023 14:36:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10148673A6C
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jan 2023 14:36:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231356AbjASNgy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 19 Jan 2023 08:36:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41836 "EHLO
+        id S231277AbjASNgY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 Jan 2023 08:36:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231248AbjASNej (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 08:34:39 -0500
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3336C7E6A9;
-        Thu, 19 Jan 2023 05:34:37 -0800 (PST)
-Received: by mail-ej1-f51.google.com with SMTP id v6so5697057ejg.6;
-        Thu, 19 Jan 2023 05:34:37 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=58Cix+5iRcNAm7+Mebt4ukWRjiEsHxfA5Phv7jZQzQg=;
-        b=jOpnkeMLnjPPnVQY67O7NWMM5JDUB621yOfExSDntzSP0ZzrTl58QjJhnptbM060zu
-         ELYBvE9TSDUoxUYEirxSDFIi2fuard97n5IjYIGaGHlj8nRG/0z3s1kigjW23Kba9RkN
-         Z4FEoZTy3vuPCctbTu8rDhQkXGRapNGcKRkyS2P0gLRt8Y1VSZUNbCKzoJkM1iIzd/WQ
-         95NQJ8+8L0eZ/H9QXYlZJBssZfYjlSbYFjDaxZwn2MbFL2BIGsAAwfHimxC0YYDp84kW
-         mEDas/0vYOKHhj+oOukXMO+28QNqAV8gxIav8sz2LqKQXlleHBZjLiG6pDLsGo9HDR83
-         gpAQ==
-X-Gm-Message-State: AFqh2krQCKfJXMay07u6W3RPmxcOcGyouYVjMviT0VOmma6/ht5frGGh
-        hONTLx20gmQePW97K6GV0/evnkxFMSQIPpm05Og=
-X-Google-Smtp-Source: AMrXdXsZYHp3zJIym04pHVHKz9PxTjsbQ3vfb2LfMZDaevE58+t3Eeltfi9qXgOXQoAs86oTN2iShX+5tdjCHcMOV4c=
-X-Received: by 2002:a17:906:64a:b0:84d:3c6a:4c55 with SMTP id
- t10-20020a170906064a00b0084d3c6a4c55mr1459533ejb.509.1674135276370; Thu, 19
- Jan 2023 05:34:36 -0800 (PST)
+        with ESMTP id S231341AbjASNgG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 08:36:06 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 217867E6A8;
+        Thu, 19 Jan 2023 05:36:05 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B125C614C1;
+        Thu, 19 Jan 2023 13:36:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4319C433F2;
+        Thu, 19 Jan 2023 13:36:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1674135364;
+        bh=r+aEF8tR83YHD0+G3KraGQL5njNYG4yonFW3TjF0EmQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=g3FCCHLn9ZW7US6RqrnaN+l2IbrjHqzX0cccubFgQ1fzVlRcKE2dLS+kkR/whj/Kk
+         f5tkSmFDwULnXe00cTJRMMvvkqgypmi5EKFV49HDcr6tQ/nnM0oz5Zq+BlqXqgM6go
+         2oEG7nMFk/GXNer+HWL9+CZMlvKtwp9MnxIc4j2E=
+Date:   Thu, 19 Jan 2023 14:36:01 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: Re: [PATCH v1 1/1] device property: Make
+ fwnode_graph_for_each_endpoint() consistent
+Message-ID: <Y8lHQcrgyNLcXZIK@kroah.com>
+References: <20230117152120.42531-1-andriy.shevchenko@linux.intel.com>
+ <CAJZ5v0gdWWmAj9JMe--wUM+Z=MZLof65hbwHCGGgWknAnw61UQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230114085053.72059-1-W_Armin@gmx.de> <20230114085053.72059-2-W_Armin@gmx.de>
-In-Reply-To: <20230114085053.72059-2-W_Armin@gmx.de>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 19 Jan 2023 14:34:25 +0100
-Message-ID: <CAJZ5v0j6FMzHRhegQ-hQBmrrkHA=4rH6AeQOSmfTn5BcBW5dsw@mail.gmail.com>
-Subject: Re: [PATCH 1/4] ACPI: battery: Fix missing NUL-termination with large strings
-To:     Armin Wolf <W_Armin@gmx.de>
-Cc:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0gdWWmAj9JMe--wUM+Z=MZLof65hbwHCGGgWknAnw61UQ@mail.gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jan 14, 2023 at 9:51 AM Armin Wolf <W_Armin@gmx.de> wrote:
->
-> When encountering a string bigger than the destination buffer (32 bytes),
-> the string is not properly NUL-terminated, causing buffer overreads later.
->
-> This for example happens on the Inspiron 3505, where the battery
-> model name is larger than 32 bytes, which leads to sysfs showing
-> the model name together with the serial number string (which is
-> NUL-terminated and thus prevents worse).
->
-> Fix this by using strscpy() which ensures that the result is
-> always NUL-terminated.
->
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-> ---
->  drivers/acpi/battery.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-> index f4badcdde76e..fb64bd217d82 100644
-> --- a/drivers/acpi/battery.c
-> +++ b/drivers/acpi/battery.c
-> @@ -440,7 +440,7 @@ static int extract_package(struct acpi_battery *battery,
->
->                         if (element->type == ACPI_TYPE_STRING ||
->                             element->type == ACPI_TYPE_BUFFER)
-> -                               strncpy(ptr, element->string.pointer, 32);
-> +                               strscpy(ptr, element->string.pointer, 32);
->                         else if (element->type == ACPI_TYPE_INTEGER) {
->                                 strncpy(ptr, (u8 *)&element->integer.value,
->                                         sizeof(u64));
-> --
+On Wed, Jan 18, 2023 at 08:55:19PM +0100, Rafael J. Wysocki wrote:
+> On Tue, Jan 17, 2023 at 4:21 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> >
+> > Make fwnode_graph_for_each_endpoint() consistent with the rest of
+> > for_each_*() definitions in the file, i.e. use the form of
+> >
+> >         for (iter = func(NULL); iter; \
+> >              iter = func(iter))
+> >
+> > as it's done in all the rest of the similar macro definitions.
+> >
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
+> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> and I think that you need to resend it and CC Greg (who picks up
+> device property patches nowadays).
 
-Applied as 6.3 material, thanks!
+I can grab it from here, thanks.
 
-Please do not include this one in the next version of the series.
+greg k-h
