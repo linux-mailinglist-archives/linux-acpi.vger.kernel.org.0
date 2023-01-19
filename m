@@ -2,93 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAC92674B5A
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jan 2023 05:53:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13387674B87
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jan 2023 06:00:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231132AbjATExS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 19 Jan 2023 23:53:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47662 "EHLO
+        id S231146AbjATE7u (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 Jan 2023 23:59:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230519AbjATExB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 23:53:01 -0500
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98C8E6199;
-        Thu, 19 Jan 2023 20:44:54 -0800 (PST)
+        with ESMTP id S230156AbjATE7g (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 23:59:36 -0500
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B53BED05EE;
+        Thu, 19 Jan 2023 20:47:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674189894; x=1705725894;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gpQhvWWMNZ24mJkrY9xm4e0/kAGsmPtNbeIC2mHtNRI=;
-  b=l6QF82/fz9F75zqNWlvlOefOTVmwjZDnu1vZo+PeyGxvmik3UdwhBrqn
-   HiTEKK27kz5f7aOjdf6HCnHbKQ0zu3Cl0HBBQnnATKD1VsDpCcqQdDMzV
-   JlfOGPfuvvRK6iHcOL+xFDiCwzl+bSUHsHCFnjBquTibghS1dvmWTSH+C
-   BA0t01utK3QzKMlWnCV5Xo117yQO+uMW2foqxVOQ+npYipT0EaYh+k3gI
-   gDlTO/IcvHW4vpvWmgX0kFK7aQDFPKDOgzuvXEivku3zEbW6vwOq/wMwW
-   z/aXVlGxDAltNCAafVLO8cfZuErp0j1dyOegzHrD4d7OPZ+lq6CcbUm3B
+  t=1674190079; x=1705726079;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=E98QGbc8dlCtreJMfmIlTfn2lZ42kDRmuNfuyIyYYMg=;
+  b=jjyFhL55I2x8bWRNfQ3IImS98aao5Khj9QMvYOuVf3SLe57yyCJRhoYI
+   +rRilMz0XGGkdCjMKVEwI4O/FNZhyAcoh2D9JIx/ZSGOkyotHrb1TJXmH
+   gEUZAfP5kudBd66ye6pOTdSrt/hdOtJHbZnVhjf+sA7cHFLN4celEEGWx
+   rHoSOR0du3kcz27xKqI1E8SWqGmmgv6QsFe5W5j6EGEXIOWt02nO8IuAK
+   8Y0WHq7X07Zlb1w4L63VwBZvPjoK8CzzBOuXUMKbx8saBEvF8R4kEo+J4
+   9bSRxGUDFuabAHOSc9Th1omcoGeMPJ4VvAA9ADdB8W9RXHRo698Bu2NeZ
    A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="387694184"
+X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="308970218"
 X-IronPort-AV: E=Sophos;i="5.97,229,1669104000"; 
-   d="scan'208";a="387694184"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2023 08:09:29 -0800
+   d="scan'208";a="308970218"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2023 11:10:32 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="610114524"
+X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="728816425"
 X-IronPort-AV: E=Sophos;i="5.97,229,1669104000"; 
-   d="scan'208";a="610114524"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga003.jf.intel.com with ESMTP; 19 Jan 2023 08:09:27 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pIXTi-00BkKA-0S;
-        Thu, 19 Jan 2023 18:09:26 +0200
-Date:   Thu, 19 Jan 2023 18:09:25 +0200
+   d="scan'208";a="728816425"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga004.fm.intel.com with ESMTP; 19 Jan 2023 11:10:28 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 529D292; Thu, 19 Jan 2023 21:11:03 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
-        linux-media@vger.kernel.org, heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH 7/8] ACPI: property: Skip MIPI property table without
- "mipi-img" prefix
-Message-ID: <Y8lrNe9S4eIdWbXu@smile.fi.intel.com>
-References: <20230117122244.2546597-1-sakari.ailus@linux.intel.com>
- <20230117122244.2546597-8-sakari.ailus@linux.intel.com>
- <Y8a+8q5hzkoPjpDO@smile.fi.intel.com>
- <Y8lnBeamT90z4aKY@paasikivi.fi.intel.com>
+To:     Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Cc:     Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+Subject: [PATCH net-next v2 2/2] net: hns: Switch to use acpi_evaluate_dsm_typed()
+Date:   Thu, 19 Jan 2023 21:11:01 +0200
+Message-Id: <20230119191101.80131-2-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.39.0
+In-Reply-To: <20230119191101.80131-1-andriy.shevchenko@linux.intel.com>
+References: <20230119191101.80131-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y8lnBeamT90z4aKY@paasikivi.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jan 19, 2023 at 03:51:33PM +0000, Sakari Ailus wrote:
-> On Tue, Jan 17, 2023 at 05:29:54PM +0200, Andy Shevchenko wrote:
-> > On Tue, Jan 17, 2023 at 02:22:43PM +0200, Sakari Ailus wrote:
+The acpi_evaluate_dsm_typed() provides a way to check the type of the
+object evaluated by _DSM call. Use it instead of open coded variant.
 
-...
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+---
+v2: added tag (Tony), fixed compilation errors (LKP)
+ .../ethernet/hisilicon/hns/hns_dsaf_misc.c    | 20 +++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-> > > +	if (memcmp(elements[0].string.pointer, MIPI_IMG_PREFIX,
-> > > +		   sizeof(MIPI_IMG_PREFIX) - 1))
-> > 
-> > str_has_prefix()
-> 
-> str_has_prefix() calls strlen() on prefix on every call. sizeof() will
-> generate much less code --- it's just a number.
-
-Have you tried that? Because the strlen() over const string literals will be
-optimized away on compilation time.
-
-> > > +		return;
-
+diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_misc.c b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_misc.c
+index 740850b64aff..5df19c604d09 100644
+--- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_misc.c
++++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_misc.c
+@@ -554,11 +554,11 @@ static phy_interface_t hns_mac_get_phy_if_acpi(struct hns_mac_cb *mac_cb)
+ 	argv4.package.count = 1;
+ 	argv4.package.elements = &obj_args;
+ 
+-	obj = acpi_evaluate_dsm(ACPI_HANDLE(mac_cb->dev),
+-				&hns_dsaf_acpi_dsm_guid, 0,
+-				HNS_OP_GET_PORT_TYPE_FUNC, &argv4);
+-
+-	if (!obj || obj->type != ACPI_TYPE_INTEGER)
++	obj = acpi_evaluate_dsm_typed(ACPI_HANDLE(mac_cb->dev),
++				      &hns_dsaf_acpi_dsm_guid, 0,
++				      HNS_OP_GET_PORT_TYPE_FUNC, &argv4,
++				      ACPI_TYPE_INTEGER);
++	if (!obj)
+ 		return phy_if;
+ 
+ 	phy_if = obj->integer.value ?
+@@ -601,11 +601,11 @@ static int hns_mac_get_sfp_prsnt_acpi(struct hns_mac_cb *mac_cb, int *sfp_prsnt)
+ 	argv4.package.count = 1;
+ 	argv4.package.elements = &obj_args;
+ 
+-	obj = acpi_evaluate_dsm(ACPI_HANDLE(mac_cb->dev),
+-				&hns_dsaf_acpi_dsm_guid, 0,
+-				HNS_OP_GET_SFP_STAT_FUNC, &argv4);
+-
+-	if (!obj || obj->type != ACPI_TYPE_INTEGER)
++	obj = acpi_evaluate_dsm_typed(ACPI_HANDLE(mac_cb->dev),
++				      &hns_dsaf_acpi_dsm_guid, 0,
++				      HNS_OP_GET_SFP_STAT_FUNC, &argv4,
++				      ACPI_TYPE_INTEGER);
++	if (!obj)
+ 		return -ENODEV;
+ 
+ 	*sfp_prsnt = obj->integer.value;
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.39.0
 
