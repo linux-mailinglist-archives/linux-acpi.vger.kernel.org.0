@@ -2,109 +2,230 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C20A9673CBE
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jan 2023 15:48:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2ABC673D03
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jan 2023 16:05:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231232AbjASOsg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 19 Jan 2023 09:48:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36420 "EHLO
+        id S229844AbjASPFY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 Jan 2023 10:05:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231223AbjASOsL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 09:48:11 -0500
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 199044B77D;
-        Thu, 19 Jan 2023 06:47:19 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id g10so1737478wmo.1;
-        Thu, 19 Jan 2023 06:47:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qBdr6CvRTXDqztxS8w8Amt28GJOv4Ri8se7UX3qldf0=;
-        b=Rlcd0foPpo0HC2tQTapxWVA6Ga1i1tUz28R8lL0TO+0CW7/5yQ/iTNRPP5QXdzNB+F
-         a2iGNJPcx8F5Z8PVuvDxPTj8masQbhp7gvXiJzQMtnxRDEo6UbacI2Y3eQfve8AJ0bvl
-         n1tPyYjwvqAiuhlu4qxddnhyWosapw5WFH5beG1V8NP7oISxZq47UfLuD+9hzzQAIQ0d
-         gpkCrYz99hwXb/ZJ5R/Gom6BVOrlA2QW97Euu9fw+pOkhFqFNLI7ID+s/qxdijlj81a0
-         2JvkmJD5k0OJCJpUgHeqjdQ4g62xtIaMFgoHOvxzdAWAIO1VQanrTfXJy9wrzPVxxgC6
-         tneg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qBdr6CvRTXDqztxS8w8Amt28GJOv4Ri8se7UX3qldf0=;
-        b=TfcmpSqhLj1HteXQ7OnYoz24LrXpliktcpfRYKT/tcS2PXVKawAul/pKbyTAEkwDFc
-         d9pPDKNWnP4NBF9NyNw6KDKaRwAxJWdWrjB6Xa8lqi8p/aJsDwLKbsy990pD6rFQdd6e
-         Dp30AzYIlevkzyEwyqBuzkxWt02/CHBh6txjyZP1QN85CEc8Sp2vcMAfoXObszBD5d6+
-         i+qD/03OCB0iOI4k0AVx8f6FyF+TgOuLrKzfoLua4dNWwLTpnIHgffD59K6Zt7LgXlfe
-         jrqZcvvYxtZP+yZ1os49wIGHvzxdTsYaEVcIfzamdE3Km8r8RGuEN3OdzDCSscLl93vH
-         epxQ==
-X-Gm-Message-State: AFqh2kqxXx8pgmVe3PbjGdnMoaJgHE4ebXvBgd/l+gHcVRNGZITMFMv/
-        9w9IybT2eog4+Ix6LsGEJKFDlGebvJCIeA==
-X-Google-Smtp-Source: AMrXdXuPPvS8OnQHS/sRBKiM2PpTV40PNEhTNVTm09fiDdyyeEKvLn+CGTf+7kiDD3MI/en4rrwx+w==
-X-Received: by 2002:a05:600c:1d8e:b0:3d9:efe8:a42d with SMTP id p14-20020a05600c1d8e00b003d9efe8a42dmr10503656wms.21.1674139637594;
-        Thu, 19 Jan 2023 06:47:17 -0800 (PST)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id p18-20020a05600c359200b003db040f0d5esm5471979wmq.33.2023.01.19.06.47.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Jan 2023 06:47:17 -0800 (PST)
-Date:   Thu, 19 Jan 2023 17:47:13 +0300
-From:   Dan Carpenter <error27@gmail.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, nvdimm@lists.linux.dev,
-        linux-acpi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        cip-dev <cip-dev@lists.cip-project.org>,
-        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH] ACPI: NFIT: prevent underflow in acpi_nfit_ctl(
-Message-ID: <Y8lX8bKPN6ObNN2i@kili>
+        with ESMTP id S229941AbjASPFL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 10:05:11 -0500
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 809EC3D939;
+        Thu, 19 Jan 2023 07:05:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674140709; x=1705676709;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+/O9o3aiPQB5lPqPPuURHYG6nM0Q+9YhwVmnwbM/g4k=;
+  b=isjHNJD6k6d8IdNaitL2fiNalbuddDr0JldgRgfYTZ0TIBmGakgaQ+1P
+   XddASxgIIi+ct+j5kyilMkOmXDOvxB74V6MIpUobbKgPrXKki3zHa50fP
+   Z5cbokh4UNYMvp9I0sOtbgU/cFbYXmX+ybPsvNw6BgPI28H3HlWphq6Za
+   dmEfpqQwMx4OKmK1buGaYgBJTgxfYQPnHLMST5Mn8VdehwCpNH6I1y1tt
+   isB+9lQ1kS05Mv1ZcpIo97mNY/wY4VmecPVsvgK+xdz5yGkMgrZVse2mo
+   X/IfJPQwQCkMiFJrDx9Tlm0isDuDFvWZ5VOox3EerciMH7mHGWhvxgMkp
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="305674808"
+X-IronPort-AV: E=Sophos;i="5.97,229,1669104000"; 
+   d="scan'208";a="305674808"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2023 07:03:52 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="660235541"
+X-IronPort-AV: E=Sophos;i="5.97,229,1669104000"; 
+   d="scan'208";a="660235541"
+Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2023 07:03:50 -0800
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with SMTP id 8A150203C4;
+        Thu, 19 Jan 2023 17:03:48 +0200 (EET)
+Date:   Thu, 19 Jan 2023 15:03:48 +0000
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
+        linux-media@vger.kernel.org, heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH 4/8] ACPI: property: Generate camera swnodes for ACPI and
+ DisCo for Imaging
+Message-ID: <Y8lb1BIh7+4x9hFc@paasikivi.fi.intel.com>
+References: <20230117122244.2546597-1-sakari.ailus@linux.intel.com>
+ <20230117122244.2546597-5-sakari.ailus@linux.intel.com>
+ <Y8a3xixlrr4AVBjJ@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <Y8a3xixlrr4AVBjJ@smile.fi.intel.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The concern here would be that "family" is negative and we pass a
-negative value to test_bit() resulting in an out of bounds read
-and potentially a crash.
+Hi Andy,
 
-This patch is based on static analysis and not on testing.
+On Tue, Jan 17, 2023 at 04:59:18PM +0200, Andy Shevchenko wrote:
+> On Tue, Jan 17, 2023 at 02:22:40PM +0200, Sakari Ailus wrote:
+> > Generate software nodes for information parsed from ACPI _CRS for CSI-2 as
+> > well as MIPI DisCo for Imaging spec. The software nodes are compliant with
+> > existing ACPI or DT definitions and are parsed by relevant drivers without
+> > changes.
+> 
+> ...
+> 
+> > +#define GRAPH_PORT_NAME(var, num) \
+> > +	(snprintf((var), sizeof(var), "port@%u", (num)) > sizeof(var))
+> 
+> SWNODE_GRAPH_PORT_NAME_FMT ?
 
-Fixes: 9a7e3d7f0568 ("ACPI: NFIT: Fix input validation of bus-family")
-Signed-off-by: Dan Carpenter <error27@gmail.com>
----
-Another idea would be that we could change test_bit() to not accept
-bits higher than INT_MAX.
+The name is not used anywhere else. I would keep it as-is.
 
- drivers/acpi/nfit/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> ...
+> 
+> > +#define NEXT_PROPERTY(index, max)			   \
+> > +	(WARN_ON(++(index) > ACPI_DEVICE_SWNODE_##max + 1) ?	\
+> 
+> '>' -- > '>=' and drop ' + 1'?
 
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index f1cc5ec6a3b6..da0739f04c98 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -446,10 +446,10 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
- 	const char *cmd_name, *dimm_name;
- 	unsigned long cmd_mask, dsm_mask;
- 	u32 offset, fw_status = 0;
-+	unsigned int family = 0;
- 	acpi_handle handle;
- 	const guid_t *guid;
- 	int func, rc, i;
--	int family = 0;
- 
- 	if (cmd_rc)
- 		*cmd_rc = -EINVAL;
+Yeah.
+
+> 
+> > +	 ACPI_DEVICE_SWNODE_##max : (index) - 1)
+> 
+> ...
+> 
+> > +	static const char mipi_port_prefix[] = "mipi-img-port-";
+> 
+> It's harder to read in the code, please put it in place.
+
+There are multiple uses of it. It's better there's a single definition.
+
+> 
+> ...
+> 
+> > +			port->ep_props[NEXT_PROPERTY(*ep_prop_index,
+> > +						     EP_DATA_LANES)] =
+> 
+> It's hard to read, taking into account that you split on index of the array.
+> 
+> How much a new monitor costs for you? Maybe I can donate to make you use more
+> than 80 from time to time? :-)
+
+You know newspaper pages are split into multiple columns for a reason,
+similarly web pages with text columns very seldom span the entire page
+width. The number of characters per line tends to be less than --- you
+might be surprised --- 80. The reason is readability.
+
+> 
+> > +				PROPERTY_ENTRY_U32_ARRAY_LEN("data-lanes",
+> > +							     port->data_lanes,
+> > +							     num_lanes);
+> 
+> ...
+> 
+> 
+> > +	ret = fwnode_property_read_u8_array(mipi_port_fwnode,
+> > +					    "mipi-img-lane-polarities",
+> > +					    u.val8, sizeof(u.val8));
+> > +	if (ret > 0) {
+> > +		unsigned int bytes = ret;
+> > +
+> > +		/* Total number of lanes here is clock lane + data lanes */
+> > +		if (bytes << 3 >= 1 + num_lanes) {
+> 
+> bytes * BITS_PER_BYTE? Or if you want to be super precise BITS_PER_TYPE(u8).
+
+I think of these two, BITS_PER_TYPE(u8) looks better.
+
+> 
+> > +			unsigned int i;
+> > +
+> > +			/* Move polarity bits to the lane polarity u32 array */
+> > +			for (i = 0; i < 1 + num_lanes; i++)
+> > +				port->lane_polarities[i] =
+> > +					(u.val8[i >> 3] & (1 << (i & 7))) ?
+> > +					1U : 0U;
+> 
+> > +			port->ep_props[NEXT_PROPERTY(*ep_prop_index,
+> > +						     EP_LANE_POLARITIES)] =
+> 
+> Index on one line?
+> 
+> > +				PROPERTY_ENTRY_U32_ARRAY_LEN("lane-polarities",
+> > +							     port->lane_polarities,
+> > +							     1 + num_lanes);
+> > +		} else {
+> > +			acpi_handle_warn(acpi_device_handle(device),
+> > +					 "too few lane polarity bytes (%u)\n",
+> > +					 bytes);
+> > +		}
+> > +	}
+> 
+> ...
+> 
+> > +	unsigned int port_index = next_csi2_port_index(device->swnodes,
+> > +						       port_nr);
+> 
+> One line easier to read.
+> 
+> ...
+> 
+> > +		if (!ret)
+> 
+> Why not positive conditional?
+
+The success case is handled first.
+
+> Also seems like {} are missing since the body is multi-line.
+
+Multiple lines as such isn't a reason to add braces (per coding style).
+
+> 
+> > +			port->ep_props[NEXT_PROPERTY(ep_prop_index,
+> > +						     EP_LINK_FREQUENCIES)] =
+> 
+> Index on one line?
+
+This is more or less random.
+
+> 
+> > +				PROPERTY_ENTRY_U64_ARRAY_LEN("link-frequencies",
+> > +							     port->link_frequencies,
+> > +							     num_link_freqs);
+> > +		else
+> > +			acpi_handle_info(acpi_device_handle(device),
+> > +					 "can't get link frequencies (%d)\n",
+> > +					 ret);
+> 
+> ...
+> 
+> > +	if (acpi_get_name(device->handle, ACPI_FULL_PATHNAME, &buffer) != AE_OK) {
+> 
+> We have ACPI_SUCCESS() / ACPI_FAILURE()
+
+Yes.
+
+> 
+> > +		acpi_handle_warn(acpi_device_handle(device), "cannot get path name\n");
+> > +		return;
+> > +	}
+> 
+> ...
+> 
+> > +	ads->nodes[ACPI_DEVICE_SWNODE_ROOT] = (struct software_node) {
+> > +		.name = buffer.pointer,
+> > +		.properties = ads->dev_props,
+> > +	};
+> 
+> Aren't you provided a macro for this?
+
+I think I added a macro for this but forgot to use it. I'll address this
+(and other issues) in v2.
+
 -- 
-2.35.1
+Regards,
 
+Sakari Ailus
