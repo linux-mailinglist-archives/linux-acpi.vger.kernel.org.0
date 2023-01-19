@@ -2,80 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EAAA673684
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jan 2023 12:17:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 052A967382E
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jan 2023 13:18:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229501AbjASLRr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 19 Jan 2023 06:17:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58354 "EHLO
+        id S230190AbjASMSH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 Jan 2023 07:18:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbjASLRq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 06:17:46 -0500
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE2AB64DA1;
-        Thu, 19 Jan 2023 03:17:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674127065; x=1705663065;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+V4r9ZArU3A1gYY8X12Cens1VVxsFLF0cBxVdWqJJIA=;
-  b=XTa4iFB42WeA0TPUEx2dLOF2xZOdSwvPDCTZ8JoExEe6MHizUK28X+Su
-   d93tpL8OEvGG5nKWlIcMJicxOFgUxLXRR0uOEwXWq6W6+QR/E0foEc9SY
-   ja0C7m47qruKJzN75IG3J0vJI2OfhXFfgjblDWeYUiXj6qNVQTx6lygUO
-   46afn+VXbmikFmj3Sa/7x6rjZY+O4yzCvNCpCA1L0ve4UT2FQWr67vySj
-   Wt88DWLzyRYiHXpXBxMWQqrNbPp4QGk9+SqjbiBiWXeLVFGmbgmSBL5JG
-   bc8Rz+c0Y+hZacf6rG5yGz8JHi5RTbDTRgS/ER0pmI+bEvpyLJBXw2Uke
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="313132942"
-X-IronPort-AV: E=Sophos;i="5.97,228,1669104000"; 
-   d="scan'208";a="313132942"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2023 03:17:45 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="662080952"
-X-IronPort-AV: E=Sophos;i="5.97,228,1669104000"; 
-   d="scan'208";a="662080952"
-Received: from punajuuri.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.43])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2023 03:17:43 -0800
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id 96D67203C4;
-        Thu, 19 Jan 2023 13:17:41 +0200 (EET)
-Date:   Thu, 19 Jan 2023 11:17:41 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: Re: [PATCH v1 1/1] device property: Make
- fwnode_graph_for_each_endpoint() consistent
-Message-ID: <Y8km1Zwl1IUXh4s2@paasikivi.fi.intel.com>
-References: <20230117152120.42531-1-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S230361AbjASMSA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 07:18:00 -0500
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C527CC646;
+        Thu, 19 Jan 2023 04:17:42 -0800 (PST)
+Received: by mail-ej1-f43.google.com with SMTP id rl14so1828589ejb.2;
+        Thu, 19 Jan 2023 04:17:42 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HtpmlB8McVRoQ6HtPysr/zkpr2aEvec+90xBPvPorAE=;
+        b=faujHa8O2xrDhMPr9vTVPwGsYj0y+2FQGUnxdsARnU1a39tw+/ho0GUX6hU64gMpc1
+         EzPbY7SXMdDHmB0o9ksoGPwAstJDY9U7q5noiSI3WL1RQONGpq3FNiY8Y+9KSMP7tfbS
+         w12PmOmx0AXOfTRCH1K2DXDw5r5npYk4No3iarIUIqRnp11qJJd8ZTA+zBdvjxODAwBP
+         pxWCXX61QhAQyjgGdeERvtT6O50i99yHPkVGmDb/EHh+F9FL7+fwf4e9Tm02gd9TTOFI
+         f6qXbO+7yECKq/yTtxddV63TYH8k7WRZyQRbjnq3Ju1hoDk8vXgzZyHhozXv3Jhw6xHh
+         cQDQ==
+X-Gm-Message-State: AFqh2kqa+fmsZPLSQnpDE9dBmNBmKUabXmICoOReVDRS0eQ+LvZB+thB
+        D8r65+a0pyqJUT81u0YPGHCz2DTG2AdfMKbAMQw=
+X-Google-Smtp-Source: AMrXdXsE9kLda+v2YxV3tijWgD7lqhc0wx3Wx5Tdo5nIEuiTjFHcl2R32wakKpBIF+ECdaPJ1lIftCeB615RIkrPq4Y=
+X-Received: by 2002:a17:906:d971:b0:84d:381c:bdaa with SMTP id
+ rp17-20020a170906d97100b0084d381cbdaamr1155247ejb.79.1674130660879; Thu, 19
+ Jan 2023 04:17:40 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230117152120.42531-1-andriy.shevchenko@linux.intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230113180235.1604526-1-daniel.lezcano@linaro.org>
+ <f76c13de-d250-ebc0-d234-ccb3a9ce3c28@linaro.org> <2627c37e07dce6b125d3fea3bf38a5f2407ad6a1.camel@intel.com>
+ <5aabdd3010a02e361fbbe01f4af0e30d11f0ae6b.camel@linux.intel.com>
+ <c7abcce47df0aaa55f1e6c65f501bc691d35eae8.camel@linux.intel.com>
+ <c210542f-0a71-15f2-c58f-ec607e60b06d@linaro.org> <8547963350fb3bdb09a4693f0eb80c7199ab6f21.camel@linux.intel.com>
+ <87627e1f-322c-a195-8ce6-8922d9787ff0@linaro.org> <340f3ecdaddb2c422dcbe3df712a082f333eab0d.camel@linux.intel.com>
+ <d6f71181-1de4-7937-eda0-8805d9dfc3b4@linaro.org> <b51ecbb8ac774efc4fb4ac1349585b486303f86f.camel@linux.intel.com>
+In-Reply-To: <b51ecbb8ac774efc4fb4ac1349585b486303f86f.camel@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 19 Jan 2023 13:17:29 +0100
+Message-ID: <CAJZ5v0hYMPkGuJnOBkr+nRX4yny2wa6toPVbhbipRRKyS4Ei4g@mail.gmail.com>
+Subject: Re: [PATCH v5 0/3] Thermal ACPI APIs for generic trip points
+To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        "Zhang, Rui" <rui.zhang@intel.com>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 17, 2023 at 05:21:20PM +0200, Andy Shevchenko wrote:
-> Make fwnode_graph_for_each_endpoint() consistent with the rest of
-> for_each_*() definitions in the file, i.e. use the form of
-> 
-> 	for (iter = func(NULL); iter; \
-> 	     iter = func(iter))
-> 
-> as it's done in all the rest of the similar macro definitions.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+On Thu, Jan 19, 2023 at 12:04 AM srinivas pandruvada
+<srinivas.pandruvada@linux.intel.com> wrote:
+>
+> On Wed, 2023-01-18 at 23:14 +0100, Daniel Lezcano wrote:
+> > On 18/01/2023 22:16, srinivas pandruvada wrote:
+> > > On Wed, 2023-01-18 at 22:01 +0100, Daniel Lezcano wrote:
+> > > > On 18/01/2023 21:53, srinivas pandruvada wrote:
+> > > > > On Wed, 2023-01-18 at 21:00 +0100, Daniel Lezcano wrote:
+> > > > > > On 18/01/2023 20:16, srinivas pandruvada wrote:
+> > > > > >
+> > > > > > [ ... ]
+> > > > > >
+> > > > > > > > > But we'd better wait for the thermald test result from
+> > > > > > > > > Srinvias.
+> > > > > > > >
+> > > > > > > > A quick test show that things still work with thermald
+> > > > > > > > and
+> > > > > > > > these
+> > > > > > > > changes.
+> > > > > > >
+> > > > > > > But I have a question. In some devices trip point
+> > > > > > > temperature
+> > > > > > > is
+> > > > > > > not
+> > > > > > > static. When hardware changes, we get notification. For
+> > > > > > > example
+> > > > > > > INT3403_PERF_TRIP_POINT_CHANGED for INT3403 drivers.
+> > > > > > > Currently get_trip can get the latest changed value. But if
+> > > > > > > we
+> > > > > > > preregister, we need some mechanism to update them.
+> > > > > >
+> > > > > > When the notification INT3403_PERF_TRIP_POINT_CHANGED
+> > > > > > happens, we
+> > > > > > call
+> > > > > > int340x_thermal_read_trips() which in turn updates the trip
+> > > > > > points.
+> > > > > >
+> > > > >
+> > > > > Not sure how we handle concurrency here when driver can freely
+> > > > > update
+> > > > > trips while thermal core is using trips.
+> > > >
+> > > > Don't we have the same race without this patch ? The thermal core
+> > > > can
+> > > > call get_trip_temp() while there is an update, no ?
+> > > Yes it is. But I can add a mutex locally here to solve.
+> > > But not any longer.
+> > >
+> > > I think you need some thermal_zone_read_lock/unlock() in core,
+> > > which
+> > > can use rcu. Even mutex is fine as there will be no contention as
+> > > updates to trips will be rare.
+> >
+> > I was planning to provide a thermal_trips_update(tz, trips) and from
+> > there handle the locking.
+> >
+> > As the race was already existing, can we postpone this change after
+> > the
+> > generic trip points changes?
+> I think so.
 
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Well, what if this bug is reported by a user and a fix needs to be
+backported to "stable"?
 
--- 
-Sakari Ailus
+Are we going to backport the whole framework redesign along with it?
+
+Or is this extremely unlikely?
