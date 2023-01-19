@@ -2,124 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 903D8673FD7
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jan 2023 18:25:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 949AE674120
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jan 2023 19:41:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229505AbjASRZi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 19 Jan 2023 12:25:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36228 "EHLO
+        id S230023AbjASSlq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 Jan 2023 13:41:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjASRZh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 12:25:37 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90869798F9
-        for <linux-acpi@vger.kernel.org>; Thu, 19 Jan 2023 09:24:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1674149092;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=qUbE87rNCTKmfloRnEjFyKB0W2RvyZ90tu9oPE9S/V8=;
-        b=LlcLGK4oTJTXCkuOa2X6/bSUnwvAkObVp5AOzHL7paIC9d66NIsWVCbeWZ8x6Xiw422PbS
-        oU9Pn8IklfG6Oj8CXRq8qKft8W6lePYlyA2I/GJCVseyfenYqGJUkwPsk6gwzjD2pHqnpm
-        LvD9et5ImoycGE1jQ1VxWk/pEi6FARc=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-606-AvMF23_sOjGR8O5JoZaSLw-1; Thu, 19 Jan 2023 12:24:51 -0500
-X-MC-Unique: AvMF23_sOjGR8O5JoZaSLw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S230064AbjASSlo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 13:41:44 -0500
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBD9B8C923;
+        Thu, 19 Jan 2023 10:41:42 -0800 (PST)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
+ id ba2c56c5a2d2e054; Thu, 19 Jan 2023 19:41:40 +0100
+Received: from kreacher.localnet (unknown [213.134.183.25])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 25F1B3C10EDD;
-        Thu, 19 Jan 2023 17:24:51 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.39.194.158])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 43AF52026D68;
-        Thu, 19 Jan 2023 17:24:50 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH] ACPI: video: Add backlight=native DMI quirk for Asus U46E
-Date:   Thu, 19 Jan 2023 18:24:41 +0100
-Message-Id: <20230119172441.623918-1-hdegoede@redhat.com>
+        by v370.home.net.pl (Postfix) with ESMTPSA id 5163766B87C;
+        Thu, 19 Jan 2023 19:41:39 +0100 (CET)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        x86 Maintainers <x86@kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>
+Subject: [PATCH] MAINTAINERS: Add x86 ACPI paths to the ACPI entry
+Date:   Thu, 19 Jan 2023 19:41:38 +0100
+Message-ID: <12136077.O9o76ZdvQC@kreacher>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 213.134.183.25
+X-CLIENT-HOSTNAME: 213.134.183.25
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedruddutddguddujecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeegfffhudejlefhtdegffekteduhfethffhieettefhkeevgfdvgfefieekiefgheenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvudefrddufeegrddukeefrddvheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrddukeefrddvhedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepgedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgv
+ lhdrohhrgh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The Asus U46E backlight tables have a set of interesting problems:
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-1. Its ACPI tables do make _OSI ("Windows 2012") checks, so
-   acpi_osi_is_win8() should return true.
+In order for things like get_maintainer.pl to print linux-acpi as a
+list to receive copies of ACPI-related patches, add paths to ACPI files
+in the arch/x86/ directory to the ACPI entry in MAINTAINERS.
 
-   But the tables have 2 sets of _OSI calls, one from the usual global
-   _INI method setting a global OSYS variable and a second set of _OSI
-   calls from a MSOS method and the MSOS method is the only one calling
-   _OSI ("Windows 2012").
+While at it, make the list of ACPI files listed in the suspend-to-RAM
+entry more precise.
 
-   The MSOS method only gets called in the following cases:
-   1. From some Asus specific WMI methods
-   2. From _DOD, which only runs after acpi_video_get_backlight_type()
-      has already been called by the i915 driver
-   3. From other ACPI video bus methods which never run (see below)
-   4. From some EC query callbacks
-
-   So when i915 calls acpi_video_get_backlight_type() MSOS has never run
-   and acpi_osi_is_win8() returns false, so acpi_video_get_backlight_type()
-   returns acpi_video as the desired backlight type, which causes
-   the intel_backlight device to not register.
-
-2. _DOD effectively does this:
-
-                    Return (Package (0x01)
-                    {
-                        0x0400
-                    })
-
-   causing acpi_video_device_in_dod() to return false, which causes
-   the acpi_video backlight device to not register.
-
-Leaving the user with no backlight device at all. Note that before 6.1.y
-the i915 driver would register the intel_backlight device unconditionally
-and since that then was the only backlight device userspace would use that.
-
-Add a backlight=native DMI quirk for this special laptop to restore
-the old (and working) behavior of the intel_backlight device registering.
-
-Fixes: fb1836c91317 ("ACPI: video: Prefer native over vendor")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/video_detect.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ MAINTAINERS |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index aa6196e5e574..64eab35037c3 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -610,6 +610,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "GA503"),
- 		},
- 	},
-+	{
-+	 .callback = video_detect_force_native,
-+	 /* Asus U46E */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK Computer Inc."),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "U46E"),
-+		},
-+	},
- 	{
- 	 .callback = video_detect_force_native,
- 	 /* Asus UX303UB */
--- 
-2.39.0
+Index: linux-pm/MAINTAINERS
+===================================================================
+--- linux-pm.orig/MAINTAINERS
++++ linux-pm/MAINTAINERS
+@@ -361,6 +361,8 @@ T:	git git://git.kernel.org/pub/scm/linu
+ F:	Documentation/ABI/testing/configfs-acpi
+ F:	Documentation/ABI/testing/sysfs-bus-acpi
+ F:	Documentation/firmware-guide/acpi/
++F:	arch/x86/kernel/acpi/
++F:	arch/x86/pci/acpi.c
+ F:	drivers/acpi/
+ F:	drivers/pci/*/*acpi*
+ F:	drivers/pci/*acpi*
+@@ -20086,7 +20088,8 @@ L:	linux-pm@vger.kernel.org
+ S:	Supported
+ B:	https://bugzilla.kernel.org
+ F:	Documentation/power/
+-F:	arch/x86/kernel/acpi/
++F:	arch/x86/kernel/acpi/sleep*
++F:	arch/x86/kernel/acpi/wakeup*
+ F:	drivers/base/power/
+ F:	include/linux/freezer.h
+ F:	include/linux/pm.h
+
+
 
