@@ -2,500 +2,224 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 796CC6739B9
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jan 2023 14:16:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37778673A30
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jan 2023 14:29:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230253AbjASNQy convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 19 Jan 2023 08:16:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54838 "EHLO
+        id S230525AbjASN3t (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 Jan 2023 08:29:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231286AbjASNQd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 08:16:33 -0500
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58906273B;
-        Thu, 19 Jan 2023 05:16:04 -0800 (PST)
-Received: by mail-ej1-f52.google.com with SMTP id hw16so5512543ejc.10;
-        Thu, 19 Jan 2023 05:16:04 -0800 (PST)
+        with ESMTP id S229834AbjASN3q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Jan 2023 08:29:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A97478AB1
+        for <linux-acpi@vger.kernel.org>; Thu, 19 Jan 2023 05:28:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1674134937;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=jQ7TZ/uWcR3rMx72VYX8JKupiK67GA9GFvn8roRQmyo=;
+        b=fCZ76x1vofh0i2XVFPTIx8OjzQ/t+4K2KR3zQYmLL6GJAbd5RSxt5KfM9Ggh98P0Nr6KQy
+        lxjdNSjX/bWNgmBKso9ZsvWWRIZQp9wr7Xy5aeu3dQ2ycf71dU7pKyJ98Sd1afF26rC0bN
+        NqQYcdt5cKUiVEc0fBBV980Qex0ddI4=
+Received: from mail-vk1-f198.google.com (mail-vk1-f198.google.com
+ [209.85.221.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-125-VD72dih5NA6oP6mpWOIHbQ-1; Thu, 19 Jan 2023 08:28:56 -0500
+X-MC-Unique: VD72dih5NA6oP6mpWOIHbQ-1
+Received: by mail-vk1-f198.google.com with SMTP id s203-20020a1f2cd4000000b003d5b4915319so575931vks.18
+        for <linux-acpi@vger.kernel.org>; Thu, 19 Jan 2023 05:28:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        h=content-transfer-encoding:content-disposition:mime-version
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fuPJLNGabGsbrlhOcRlric/iKXyS+94jimdrGMQDzRE=;
-        b=3ay//uwSRm4bvKkKKm3HECMN2gdhLqJGLzK5y5oXcz5D2qf9ukl6Y6bDXdgiFgFqjf
-         N3CfUa7bbGmS456SMhYokfkdSYaVpBAwJx4mePpM0uY3gVHVgaPvGg2zOI9VAeo3kXA5
-         pK7571tS2ZeUsaFdptREICkSPlQmf/HwhYtSbVRv7a8zX8rN61EjKIybqf+MefjzEoHu
-         vvdW+5frlT5AVDv+1ntM7ZZlomLaps5jpMxyrGj2KIuAeDiFlsjNJff8oTHRKQqdztSN
-         Ie8PidHluP9pNjIjdkQu6DPyP19YmNmlzSRwXguXmyxcyAdQXH6CqOpEmZH6zxD7vRVu
-         9aTg==
-X-Gm-Message-State: AFqh2kr+71It4lMiLMcu+qZj7wccAqiZwC0POn9W+oPQhsMXsIcSk1ZQ
-        56pskvtd/tfSNou0TXrBfkforCdoNRnBzmhEISA=
-X-Google-Smtp-Source: AMrXdXtOG5Q7pPaecvDpTIChm1p3y9e1jZJMVt2IIBa/XY1dr4U4h/3wyHk7G/kRC5FQymcC4cIkmjFw5tOuEVroZ8I=
-X-Received: by 2002:a17:906:a20c:b0:7c1:5ff0:6cc2 with SMTP id
- r12-20020a170906a20c00b007c15ff06cc2mr914845ejy.246.1674134162844; Thu, 19
- Jan 2023 05:16:02 -0800 (PST)
+        bh=jQ7TZ/uWcR3rMx72VYX8JKupiK67GA9GFvn8roRQmyo=;
+        b=r18DeF6N0ZMeb8dIgjSxoWd0tNRLirYVGjj33Felzj/4Y4vndauDW5evp789zXsrqt
+         4RyNvHc5kK0aDu/hoqZ3X6ndUYw36F+UJ49y/6kQ5SF0x83GUGuqmGXZnzjP+7Ly74Hm
+         GQC3n8X9tNBzJZGXlUl6qiGsS2RXJ8rJNJo9V47TlAWLxZQsxdHoSxqtNDIR1vARR7p+
+         fJ9dEE8naBcURURBeXKTs50TqHNlsDbisoJdLJ8mo7P/Q/ihspZkwdnOwYJ6WGK1uIrM
+         K9H1fUwBLZciEWVrKdiKJeUPig6WlXdL1NW0Jno7eIyewKYjwOkAet7L/DoBOpzavtt+
+         X47w==
+X-Gm-Message-State: AFqh2krXAv4FfchVPNJWACbFyG2MIrFvDtddi9pH2NhiJ5mH6fqfbFm+
+        YNINsZOi2TtPD1Ady5UyzfGwh9HiqlFweQ561KhtG7vHN1KvinM07F4fp8lHBT+GEyxO5QOHr+n
+        B6q74jnmuUm6/rvj7UXlvnw==
+X-Received: by 2002:a67:e0cb:0:b0:3d3:d872:c821 with SMTP id m11-20020a67e0cb000000b003d3d872c821mr6701198vsl.27.1674134935658;
+        Thu, 19 Jan 2023 05:28:55 -0800 (PST)
+X-Google-Smtp-Source: AMrXdXsW2d4f3aJCvFi7ZPx3NN62wzdS1amESGFPao53yYXylhQRkBmdMXNQCs3VYkD3aCbWzy7zUg==
+X-Received: by 2002:a67:e0cb:0:b0:3d3:d872:c821 with SMTP id m11-20020a67e0cb000000b003d3d872c821mr6701165vsl.27.1674134935144;
+        Thu, 19 Jan 2023 05:28:55 -0800 (PST)
+Received: from localhost.localdomain ([176.206.23.228])
+        by smtp.gmail.com with ESMTPSA id m8-20020a05620a290800b006fb8239db65sm24355107qkp.43.2023.01.19.05.28.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Jan 2023 05:28:54 -0800 (PST)
+Date:   Thu, 19 Jan 2023 14:28:49 +0100
+From:   Juri Lelli <juri.lelli@redhat.com>
+To:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-rt-users@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Tommaso Cucinotta <tommaso.cucinotta@santannapisa.it>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>
+Subject: [ANNOUNCE][CFP] Power Management and Scheduling in the Linux Kernel
+ V edition (OSPM-summit 2023)
+Message-ID: <Y8lFkbJ6nluNdVYO@localhost.localdomain>
 MIME-Version: 1.0
-References: <20230113180235.1604526-1-daniel.lezcano@linaro.org> <20230113180235.1604526-2-daniel.lezcano@linaro.org>
-In-Reply-To: <20230113180235.1604526-2-daniel.lezcano@linaro.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 19 Jan 2023 14:15:51 +0100
-Message-ID: <CAJZ5v0jDF9qrQAQM1AhT-Q4A3Nzyht9XxZoZyS1afoAPt1h_=A@mail.gmail.com>
-Subject: Re: [PATCH v5 1/3] thermal/acpi: Add ACPI trip point routines
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     rafael@kernel.org, srinivas.pandruvada@linux.intel.com,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, rui.zhang@intel.com,
-        christophe.jaillet@wanadoo.fr
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 13, 2023 at 7:02 PM Daniel Lezcano
-<daniel.lezcano@linaro.org> wrote:
->
-> The ACPI specification describes the trip points, the device tree
-> bindings as well.
->
-> The OF code uses the generic trip point structures.
->
-> The ACPI has their own trip points structure and uses the get_trip_*
-> ops to retrieve them.
->
-> We can do the same as the OF code and create a set of ACPI functions
-> to retrieve a trip point description. Having a common code for ACPI
-> will help to cleanup the remaining Intel drivers and get rid of the
-> get_trip_* functions.
->
-> These changes add the ACPI thermal calls to retrieve the basic
-> information we need to be reused in the thermal ACPI and Intel
-> drivers.
->
-> The different ACPI functions have the generic trip point structure
-> passed as parameter where it is filled.
->
-> This structure aims to be the one used by all the thermal drivers and
-> the thermal framework.
->
-> After this series, a couple of Intel drivers and the ACPI thermal
-> driver will still have their own trip points definition but a new
-> series on top of this one will finish the conversion to the generic
-> trip point handling.
->
-> This series depends on the generic trip point added to the thermal
-> framework and available in the thermal/linux-next branch.
->
->  https://lkml.org/lkml/2022/10/3/456
->
-> It has been tested on a Intel i7-8650U - x280 with the INT3400, the
-> PCH, ACPITZ, and x86_pkg_temp. No regression observed so far.
-
-Some names of the functions defined below can be less cryptic IMO.
-Please see the following comments.
-
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> ---
->  drivers/thermal/Kconfig        |   4 +
->  drivers/thermal/Makefile       |   1 +
->  drivers/thermal/thermal_acpi.c | 209 +++++++++++++++++++++++++++++++++
->  include/linux/thermal.h        |   8 ++
->  4 files changed, 222 insertions(+)
->  create mode 100644 drivers/thermal/thermal_acpi.c
->
-> diff --git a/drivers/thermal/Kconfig b/drivers/thermal/Kconfig
-> index e052dae614eb..eaeb2b2ee6e9 100644
-> --- a/drivers/thermal/Kconfig
-> +++ b/drivers/thermal/Kconfig
-> @@ -76,6 +76,10 @@ config THERMAL_OF
->           Say 'Y' here if you need to build thermal infrastructure
->           based on device tree.
->
-> +config THERMAL_ACPI
-> +       depends on ACPI
-> +       bool
-> +
->  config THERMAL_WRITABLE_TRIPS
->         bool "Enable writable trip points"
->         help
-> diff --git a/drivers/thermal/Makefile b/drivers/thermal/Makefile
-> index 2506c6c8ca83..60f0dfa9aae2 100644
-> --- a/drivers/thermal/Makefile
-> +++ b/drivers/thermal/Makefile
-> @@ -13,6 +13,7 @@ thermal_sys-$(CONFIG_THERMAL_NETLINK)         += thermal_netlink.o
->  # interface to/from other layers providing sensors
->  thermal_sys-$(CONFIG_THERMAL_HWMON)            += thermal_hwmon.o
->  thermal_sys-$(CONFIG_THERMAL_OF)               += thermal_of.o
-> +thermal_sys-$(CONFIG_THERMAL_ACPI)             += thermal_acpi.o
->
->  # governors
->  thermal_sys-$(CONFIG_THERMAL_GOV_FAIR_SHARE)   += gov_fair_share.o
-> diff --git a/drivers/thermal/thermal_acpi.c b/drivers/thermal/thermal_acpi.c
-> new file mode 100644
-> index 000000000000..ef6f10713650
-> --- /dev/null
-> +++ b/drivers/thermal/thermal_acpi.c
-> @@ -0,0 +1,209 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright 2022 Linaro Limited
-> + *
-> + * Author: Daniel Lezcano <daniel.lezcano@linaro.org>
-> + *
-> + * ACPI thermal configuration
-> + */
-> +#include <linux/acpi.h>
-> +#include <linux/module.h>
-> +#include <linux/kernel.h>
-> +#include <linux/units.h>
-> +#include <uapi/linux/thermal.h>
-> +
-> +#include "thermal_core.h"
-> +
-> +/*
-> + * An hysteresis value below zero is invalid and we can consider a
-> + * value greater than 20°K/°C is invalid too.
-> + */
-> +#define HYSTERESIS_MIN_DECIK   0
-> +#define HYSTERESIS_MAX_DECIK   200
-
-If the full word "hysteresis" is used here, it should also be used in
-the hysteresis-related names below.
-
-I would use the "hyst" abbreviation here and elsewhere where applicable.
-
-> +
-> +/*
-> + * Minimum temperature for full military grade is 218°K (-55°C) and
-> + * max temperature is 448°K (175°C). We can consider those values as
-> + * the boundaries for the [trips] temperature returned by the
-> + * firmware. Any values out of these boundaries can be considered
-> + * bogus and we can assume the firmware has no data to provide.
-> + */
-> +#define TEMPERATURE_MIN_DECIK  2180
-> +#define TEMPERATURE_MAX_DECIK  4480
-
-Like the above, but regarding "temperature" and "temp" instead of
-"hysteresis" and "hyst", respectively.
-
-> +
-> +static int thermal_acpi_get_temperature_object(struct acpi_device *adev,
-> +                                              char *object, int *temperature)
-
-So this would become thermal_acpi_get_temp_object(). or even
-thermal_acpi_get_temp() because it really returns the temperature
-value.
-
-I also don't particularly like returning values via pointers, which is
-entirely avoidable here, because the temperature value obtained from
-the ACPI control methods must be a positive number.
-
-So I would make it
-
-static int thermal_acpi_get_temp(struct acpi_device *adev, char *object_name)
-{
-
-which would be consistent with the definition of the hysteresis
-function below (which returns the value directly).
-
-> +{
-> +       unsigned long long temp;
-> +       acpi_status status;
-> +
-> +       status = acpi_evaluate_integer(adev->handle, object, NULL, &temp);
-> +       if (ACPI_FAILURE(status)) {
-> +               acpi_handle_debug(adev->handle, "No temperature object '%s'\n", object);
-
-This message may not be true, because status need not be AE_NOT_FOUND.
-
-> +               return -ENODEV;
-> +       }
-> +
-> +       if (temp < TEMPERATURE_MIN_DECIK || temp >= TEMPERATURE_MAX_DECIK) {
-> +               acpi_handle_info(adev->handle, "Invalid temperature '%llu deci°K' for object '%s'\n",
-> +                                temp, object);
-
-I think that the message can be debug-level as well and I would just
-say "Invalid value %llu returned by %s\n" in it.
-
-> +               return -ENODATA;
-
-And I'm not sure if the difference between -ENODEV and -ENODATA
-matters here.  Maybe return -ENODATA in all error cases?
-
-> +       }
-> +
-> +       *temperature = deci_kelvin_to_millicelsius(temp);
-> +
-> +       return 0;
-> +}
-> +
-> +/**
-> + * thermal_acpi_trip_gtsh() - Get the global hysteresis value
-
-thermal_acpi_global_hyst() please.
-
-> + * @adev: the acpi device to get the description from
-> + *
-> + * Get the global hysteresis value for the trip points. If any call
-> + * fail, we shall return a zero hysteresis value.
-> + *
-> + * Return: An integer between %HYSTERESIS_MIN_DECIK and %HYSTERESIS_MAX_DECIK
-> + */
-> +int thermal_acpi_trip_gtsh(struct acpi_device *adev)
-> +{
-> +       unsigned long long hyst;
-> +       acpi_status status;
-> +
-> +       status = acpi_evaluate_integer(adev->handle, "GTSH", NULL, &hyst);
-
-GTSH is not a standard ACPI thing.
-
-AFAICS, it's int3403 specific, so using it in a generic ACPI library
-is questionable.
-
-> +       if (ACPI_FAILURE(status))
-> +               return 0;
-> +
-> +       if (hyst < HYSTERESIS_MIN_DECIK || hyst >= HYSTERESIS_MAX_DECIK) {
-> +               acpi_handle_info(adev->handle, "Invalid hysteresis '%llu deci°K' for object 'GTSH'\n",
-> +                                hyst);
-> +               return 0;
-> +       }
-> +
-> +       return deci_kelvin_to_millicelsius(hyst);
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_acpi_trip_gtsh);
-> +
-> +/**
-> + * thermal_acpi_trip_act() - Get the specified active trip point
-
-thermal_acpi_active_trip_temp, please.
-
-> + * @adev: the acpi device to get the description from
-
-Please spell ACPI in capitals in all comments.
-
-And I would say
-
-@adev: Thermal zone ACPI device object
-
-> + * @trip: a &struct thermal_trip to be filled if the function succeed
-
-@trip: Trip point structure to be populated on success
-
-> + * @id: an integer speciyfing the active trip point id
-
-@id: Active cooling level (0 - 9)
-
-> + *
-> + * The function calls the ACPI framework to get the "_ACTx" objects
-> + * which describe the active trip points.
-
-No, it doesn't do that.  What it really does can be described as
-
-"Evaluate the _ACx object for the thermal zone represented by @adev to
-obtain the temperature of the active cooling trip point corresponding
-to the active cooling level given by @id and initialize @trip as an
-active trip point using that temperature value"
-
-> The @id builds the "_ACTx"
-> + * string with the numbered active trip point name. Then it fills the
-> + * @trip structure with the information retrieved from those objects.
-> + *
-> + * Return:
-> + * * 0 - Success
-> + * * -ENODEV - Failed to retrieve the ACPI object
-> + * * -ENODATA - The ACPI object value appears to be inconsistent
-> + */
-> +int thermal_acpi_trip_act(struct acpi_device *adev,
-> +                         struct thermal_trip *trip, int id)
-> +{
-> +       char name[5];
-
-char name[] = "_AC0";
-
-> +       int ret;
-
-int temp;
-
-if (id < 0 || id > 9)
-        return -EINVAL;
-
-name[3] += id;
-
-> +
-> +       sprintf(name, "_AC%d", id);
-> +
-> +       ret = thermal_acpi_get_temperature_object(adev, name, &trip->temperature);
-> +       if (ret)
-> +               return ret;
-
-temp = thermal_acpi_get_temp(adev, name);
-if (temp < 0)
-        return temp;
-
-trip->temperature = temp;
-
-And analogously below.
-
-> +
-> +       trip->hysteresis = 0;
-> +       trip->type = THERMAL_TRIP_ACTIVE;
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_acpi_trip_act);
-> +
-> +/**
-> + * thermal_acpi_trip_psv() - Get the passive trip point
-
-thermal_acpi_passive_trip_temp, please.
-
-> + * @adev: the acpi device to get the description from
-> + * @trip: a &struct thermal_trip to be filled if the function succeed
-
-The same comments as above apply.
-
-> + *
-> + * The function calls the ACPI framework to get the "_PSV" object
-> + * which describe the passive trip point. Then it fills the @trip
-> + * structure with the information retrieved from those objects.
-
-"Evaluate the _PSV object for the thermal zone represented by @adev to
-obtain the temperature of the passive cooling trip point and
-initialize @trip as a passive trip point using that temperature
-value."
-
-> + *
-> + * Return:
-> + * * 0 - Success
-> + * * -ENODEV - Failed to retrieve the ACPI object
-> + * * -ENODATA - The ACPI object value appears to be inconsistent
-> + */
-> +int thermal_acpi_trip_psv(struct acpi_device *adev, struct thermal_trip *trip)
-> +{
-> +       int ret;
-> +
-> +       ret = thermal_acpi_get_temperature_object(adev, "_PSV", &trip->temperature);
-> +       if (ret)
-> +               return ret;
-> +
-> +       trip->hysteresis = 0;
-> +       trip->type = THERMAL_TRIP_PASSIVE;
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_acpi_trip_psv);
-> +
-> +/**
-> + * thermal_acpi_trip_hot() - Get the near critical trip point
-
-thermal_acpi_hot_trip_temp, please.
-
-> + * @adev: the acpi device to get the description from
-> + * @trip: a &struct thermal_trip to be filled if the function succeed
-
-The same comments as above apply.
-
-> + *
-> + * The function calls the ACPI framework to get the "_HOT" object
-> + * which describe the hot trip point. Then it fills the @trip
-> + * structure with the information retrieved from those objects.
-
-"Evaluate the _HOT object for the thermal zone represented by @adev to
-obtain the temperature of the trip point at which the system is
-expected to be put into the S4 sleep state and initialize @trip as a
-hot trip point using that temperature value."
-
-> + *
-> + * Return:
-> + * * 0 - Success
-> + * * -ENODEV - Failed to retrieve the ACPI object
-> + * * -ENODATA - The ACPI object appears to be inconsistent
-> + */
-> +int thermal_acpi_trip_hot(struct acpi_device *adev, struct thermal_trip *trip)
-> +{
-> +       int ret;
-> +
-> +       ret = thermal_acpi_get_temperature_object(adev, "_HOT", &trip->temperature);
-> +       if (ret)
-> +               return ret;
-> +
-> +       trip->hysteresis = 0;
-> +       trip->type = THERMAL_TRIP_HOT;
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_acpi_trip_hot);
-> +
-> +/**
-> + * thermal_acpi_trip_crit() - Get the critical trip point
-
-thermal_acpi_crit_trip_temp, please.
-
-> + * @adev: the acpi device to get the description from
-> + * @trip: a &struct thermal_trip to be filled if the function succeed
-
-The same comments as above apply.
-
-> + *
-> + * The function calls the ACPI framework to get the "_CRT" object
-> + * which describe the critical trip point. Then it fills the @trip
-> + * structure with the information retrieved from this object.
-
-"Evaluate the _CRT object for the thermal zone represented by @adev to
-obtain the temperature of the critical cooling trip point and
-initialize @trip as a critical trip point using that temperature
-value."
-
-> + *
-> + * Return:
-> + * * 0 - Success
-> + * * -ENODEV - Failed to retrieve the ACPI object
-> + * * -ENODATA - The ACPI object value appears to be inconsistent
-> + */
-> +int thermal_acpi_trip_crit(struct acpi_device *adev, struct thermal_trip *trip)
-> +{
-> +       int ret;
-> +
-> +       ret = thermal_acpi_get_temperature_object(adev, "_CRT", &trip->temperature);
-> +       if (ret)
-> +               return ret;
-> +
-> +       /*
-> +        * The hysteresis value has no sense here because critical
-> +        * trip point has no u-turn
-> +        */
-> +       trip->hysteresis = 0;
-> +       trip->type = THERMAL_TRIP_CRITICAL;
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(thermal_acpi_trip_crit);
-> diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-> index 30353e4b1424..ba2d5d4c23e2 100644
-> --- a/include/linux/thermal.h
-> +++ b/include/linux/thermal.h
-> @@ -334,6 +334,14 @@ static inline void devm_thermal_of_zone_unregister(struct device *dev,
->  }
->  #endif
->
-> +#ifdef CONFIG_THERMAL_ACPI
-> +int thermal_acpi_trip_gtsh(struct acpi_device *adev);
-> +int thermal_acpi_trip_crit(struct acpi_device *adev, struct thermal_trip *trip);
-> +int thermal_acpi_trip_hot(struct acpi_device *adev, struct thermal_trip *trip);
-> +int thermal_acpi_trip_psv(struct acpi_device *adev, struct thermal_trip *trip);
-> +int thermal_acpi_trip_act(struct acpi_device *adev, struct thermal_trip *trip, int id);
-> +#endif
-> +
->  int __thermal_zone_get_trip(struct thermal_zone_device *tz, int trip_id,
->                             struct thermal_trip *trip);
->  int thermal_zone_get_trip(struct thermal_zone_device *tz, int trip_id,
-> --
+Power Management and Scheduling in the Linux Kernel (OSPM-summit) V edition
+
+April 17-19, 2023
+Universita Politecnica delle Marche, Facolta di Economia
+Ancona, Italy
+
+---
+
+.:: FOCUS
+
+After a couple of years break, OSPM is back! In a different venue.
+
+The V edition of the Power Management and Scheduling in the Linux Kernel
+(OSPM) summit aims at fostering discussions on power management and
+(real-time) scheduling techniques. Summit will be held in Ancona (Italy)
+on April 17-19, 2023.
+
+We welcome anybody interested in having discussions on the broad scope
+of scheduler techniques for reducing energy consumption while meeting
+performance and latency requirements, real-time systems, real-time and
+non-real-time scheduling, tooling, debugging and tracing.
+
+Feel free to take a look at what happened previous years:
+
+ I   edition - https://lwn.net/Articles/721573/
+ II  edition - https://lwn.net/Articles/754923/
+ III edition - https://lwn.net/Articles/793281/
+ IV  edition - https://lwn.net/Articles/820337/ (online)
+
+.:: FORMAT
+
+The summit is organized to cover three days of discussions and talks.
+
+The list of topics of interest includes (but it is not limited to):
+
+ * Power management techniques
+ * Real-time and non real-time scheduling techniques
+ * Energy consumption and CPU capacity aware scheduling
+ * Real-time virtualization
+ * Mobile/Server power management real-world use cases (successes and
+   failures)
+ * Power management and scheduling tooling (configuration, integration,
+   testing, etc.)
+ * Tracing
+ * Recap/lightning talks
+
+Presentations can cover recently developed technologies, ongoing work
+and new ideas. Please understand that this workshop is not intended for
+presenting sales and marketing pitches.
+
+.:: ATTENDING
+
+Attending the OSPM-summit is free of charge, but registration to the
+event is mandatory. The event can allow a maximum of 50 people (so, be
+sure to register early!).
+
+Registrations open on February 17th, 2020.
+To register fill in the registration form available at
+https://forms.gle/QbRhGS3HWXinKBZq7
+
+While it is not strictly required to submit a topic/presentation (see
+below), registrations with a topic/presentation proposal will take
+precedence.
+
+.:: SUBMIT A TOPIC/PRESENTATION
+
+To submit a topic/presentation add its details to this list:
+https://docs.google.com/spreadsheets/d/10AJFQporrCPH9Gn6-MaRotdfO4Hm4LG6dVAoDrQdj5A/edit?usp=sharing
+
+Or, if you prefer, simply reply (only to me, please :) to this email
+specifying:
+
+- name/surname
+- affiliation
+- short bio
+- email address
+- title
+- abstract
+- 30min or 50min slot
+
+Deadline for submitting topics/presentations is 10th of February 2023.
+Notifications for accepted topics/presentations will be sent out 17th of
+February 2023.
+
+.:: VENUE
+
+The workshop will take place at Univpm [1], Universita Politecnica delle
+Marche, Facolta di Economia, Ancona, Italy.
+
+The workshop venue is within walking distance [2] from the city center
+[3] and in general from the hotels/accommodation suggested below.  You
+can reach Facolta di Economia by public transportation, via Conero Bus
+[4] (approx one every 10 minutes in rush hours)  from the station (15
+minutes to the venue).  A map of the city center with the venue,
+transportation and food/drinks places is provided here [5].  A smaller
+map locating the Facolta di Economia is also available: How to reach
+Facolta di Economia [6].
+
+For flights to Ancona, there are multiple options:
+
+- Flying directly to Ancona airport (direct flights from London Stansted
+  and Munich among others) Ancona Airport AOI [7]
+  Bus to Ancona city center from the airport Ancona airport shuttle [8]
+  Taxi service from Airport AOI to Ancona taxi [9]
+
+- Flight to Bologna airport Bologna airport [10]. From Bologna Ancona is
+  reachable by train, tickets purchasable from Trenitalia [11] (destination
+  “Ancona Centrale”). Bologna Centrale railway station is connected to
+  the airport by Marconi Express [12].
+
+A list of hotels within walking distance from the workshop venue:
+
+https://www.grandhotelpassetto.com/
+https://www.grandhotelpalaceancona.com/en/
+https://www.seeporthotel.com/
+https://www.thecityancona.it/en
+https://www.nh-hotels.it/hotel/nh-ancona
+https://www.hoteldellavittoria.it/it/
+
+1  - https://www.econ.univpm.it/?language=en
+2  - https://goo.gl/maps/9GRDxYPnUYuBSh5h9
+3  - https://goo.gl/maps/VGHaTsNi4GTgHGSj7
+4  - https://www.conerobus.it/
+5  - https://www.google.com/maps/d/u/0/edit?mid=135LJkfG6wq9rO2MoWPV2ofv1I2DfHvc&usp=sharing
+6  - https://www.econ.univpm.it/content/how-reach-us?language=en
+7  - https://www.ancona-airport.com/en/
+8  - https://www.ancona-airport.com/en/passengers/transportation/bus/
+9  - https://www.ctftaxi.it/?lang=en
+10 - https://www.bologna-airport.it/en/welcome-to-bologna-airport/?idC=62175
+11 - https://www.trenitalia.com/en.html
+12 - https://www.marconiexpress.it/
+
+.:: ORGANIZERS
+
+Juri Lelli (Red Hat)
+Daniel Bristot de Oliveira (Red Hat)
+Lorenzo Pieralisi (Linaro)
+Tommaso Cucinotta (SSSA)
+Adriano Mancini (UnivPM)
+Luca Spalazzi (UnivPM)
+Stefano Squartini (UnivPM)
+Emanuele Storti (UnivPM)
+
