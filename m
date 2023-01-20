@@ -2,89 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFF796755CE
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jan 2023 14:30:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB05167563C
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jan 2023 14:59:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229880AbjATNaX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Jan 2023 08:30:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44338 "EHLO
+        id S229635AbjATN7p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Jan 2023 08:59:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229843AbjATNaV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Jan 2023 08:30:21 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D765EC41C4;
-        Fri, 20 Jan 2023 05:30:20 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 00F10CE2481;
-        Fri, 20 Jan 2023 13:30:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 00BCBC433A7;
-        Fri, 20 Jan 2023 13:30:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674221417;
-        bh=14qKjVmYiRnKW0YAPYLimUZIu9YatqU1A6D8IUSQe5Y=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=ncRTeC6fOlPl3C+5YMzwqfkOEZaMuTnGVG3aE/S9pcz0vX3uL1IbnOVmP6sDY6S33
-         vph2rSe1qN5jdfDbFDsbwkXbWRnFyc6h43EweQMYFsTYEXg6sa5jdfm0loBQ6bu+fW
-         4qJHUYWHVjPtKf4hO6+egwjlMuwiqcFA2Wreb5IRTB3vPej6fjwjh55eCh/129vQpy
-         wqM7pji2HF8FRhvJbjZd0Qds1oHBXcp2IcIu23tEWJsOqGxrtcIJ13yK+C996bEr2z
-         a4QgkJI5Gp63zNrSG7ozTPYZ0o7ZKnInajiwi7di9lzUKcx0VvCq1O3Piza1HfleGh
-         LB7s1zkE2JWUA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id DF572E54D2B;
-        Fri, 20 Jan 2023 13:30:16 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229947AbjATN7p (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Jan 2023 08:59:45 -0500
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BFC5C13ED;
+        Fri, 20 Jan 2023 05:59:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674223184; x=1705759184;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6hxlWeTZ3wO0s346jXlTNQvBt5F9mG2+mI8oEMzYhoI=;
+  b=HSi59Y3HZdH6kGJy1Gxb9unJaBtaDtnSp4KeRg3LVb4DtfPEdS4r38fz
+   zLy0EIim0eyYIRni0313tqZjJqfH029c+ApoS64p+ylRdPtBYWU/n3Zd/
+   ZJ3Zxy/cOqzFG/qT2k4DU9wGADb2+126ocUT2ej4g0URSWVPxfmEEuY/x
+   EPLkcxA+WaqxvAzWTaJPrTXXiRJ9tNASHdw0VwZB8DRhDjiRZA7Zmi0sL
+   JsgmPGDyEnQ9mMmSGHMup5v5yt76T+gBJY5h/gXgysklKgVSrdN4ZC5aI
+   i88oFvMGPSUUodO6fGG4rHJywVi1Hghs7+ZG5se2GS75XLtwBKAkkqDin
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="327675533"
+X-IronPort-AV: E=Sophos;i="5.97,232,1669104000"; 
+   d="scan'208";a="327675533"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2023 05:59:43 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="638161021"
+X-IronPort-AV: E=Sophos;i="5.97,232,1669104000"; 
+   d="scan'208";a="638161021"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga006.jf.intel.com with ESMTP; 20 Jan 2023 05:59:41 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pIrvg-00CELW-1W;
+        Fri, 20 Jan 2023 15:59:40 +0200
+Date:   Fri, 20 Jan 2023 15:59:40 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
+        linux-media@vger.kernel.org, heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH 7/8] ACPI: property: Skip MIPI property table without
+ "mipi-img" prefix
+Message-ID: <Y8qeTK0I5C1Acy3m@smile.fi.intel.com>
+References: <20230117122244.2546597-1-sakari.ailus@linux.intel.com>
+ <20230117122244.2546597-8-sakari.ailus@linux.intel.com>
+ <Y8a+8q5hzkoPjpDO@smile.fi.intel.com>
+ <Y8lnBeamT90z4aKY@paasikivi.fi.intel.com>
+ <Y8lrNe9S4eIdWbXu@smile.fi.intel.com>
+ <Y8lrn0P0+CRPWUOV@smile.fi.intel.com>
+ <Y8qEDXxKS8VO8NLv@paasikivi.fi.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 1/2] ACPI: utils: Add acpi_evaluate_dsm_typed()
- and acpi_check_dsm() stubs
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <167422141691.18652.6742541025937587197.git-patchwork-notify@kernel.org>
-Date:   Fri, 20 Jan 2023 13:30:16 +0000
-References: <20230119191101.80131-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20230119191101.80131-1-andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     anthony.l.nguyen@intel.com, rafael.j.wysocki@intel.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, yisen.zhuang@huawei.com,
-        salil.mehta@huawei.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, rafael@kernel.org,
-        lenb@kernel.org, lkp@intel.com
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y8qEDXxKS8VO8NLv@paasikivi.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello:
+On Fri, Jan 20, 2023 at 12:07:41PM +0000, Sakari Ailus wrote:
+> On Thu, Jan 19, 2023 at 06:11:11PM +0200, Andy Shevchenko wrote:
+> > On Thu, Jan 19, 2023 at 06:09:26PM +0200, Andy Shevchenko wrote:
+> > > On Thu, Jan 19, 2023 at 03:51:33PM +0000, Sakari Ailus wrote:
+> > > > On Tue, Jan 17, 2023 at 05:29:54PM +0200, Andy Shevchenko wrote:
+> > > > > On Tue, Jan 17, 2023 at 02:22:43PM +0200, Sakari Ailus wrote:
 
-This series was applied to netdev/net-next.git (master)
-by David S. Miller <davem@davemloft.net>:
+...
 
-On Thu, 19 Jan 2023 21:11:00 +0200 you wrote:
-> When the ACPI part of a driver is optional the methods used in it
-> are expected to be available even if CONFIG_ACPI=n. This is not
-> the case for _DSM related methods. Add stubs for
-> acpi_evaluate_dsm_typed() and acpi_check_dsm() methods.
+> > > > > > +	if (memcmp(elements[0].string.pointer, MIPI_IMG_PREFIX,
+> > > > > > +		   sizeof(MIPI_IMG_PREFIX) - 1))
+> > > > > 
+> > > > > str_has_prefix()
+> > > > 
+> > > > str_has_prefix() calls strlen() on prefix on every call. sizeof() will
+> > > > generate much less code --- it's just a number.
+> > > 
+> > > Have you tried that? Because the strlen() over const string literals will be
+> > > optimized away on compilation time.
+> > 
+> > Probably that's the reason behind __always_inline for that function.
 > 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> 
-> [...]
+> For str_has_prefix() the reason probably is that inlining that function
+> generates less code than when not doing so.
 
-Here is the summary with links:
-  - [net-next,v2,1/2] ACPI: utils: Add acpi_evaluate_dsm_typed() and acpi_check_dsm() stubs
-    https://git.kernel.org/netdev/net-next/c/1b94ad7ccc21
-  - [net-next,v2,2/2] net: hns: Switch to use acpi_evaluate_dsm_typed()
-    https://git.kernel.org/netdev/net-next/c/498fe8101112
+Yes and also allows to optimize strlen() away.
+So I suggest to use that function.
 
-You are awesome, thank you!
+If assembly is different (WRT strlen("...const literal...") case),
+I would like to know the exact configuration options and the code
+that makes a call to strlen().
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+With Best Regards,
+Andy Shevchenko
 
 
