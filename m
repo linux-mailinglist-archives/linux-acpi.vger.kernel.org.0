@@ -2,104 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D81BE675C62
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jan 2023 19:04:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91935675C71
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jan 2023 19:08:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229623AbjATSEl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Jan 2023 13:04:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55386 "EHLO
+        id S229602AbjATSI0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Jan 2023 13:08:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229547AbjATSEk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Jan 2023 13:04:40 -0500
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEF564ED21;
-        Fri, 20 Jan 2023 10:04:39 -0800 (PST)
-Received: by mail-ej1-f52.google.com with SMTP id mp20so15928274ejc.7;
-        Fri, 20 Jan 2023 10:04:39 -0800 (PST)
+        with ESMTP id S229570AbjATSIZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Jan 2023 13:08:25 -0500
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E89367B2DF
+        for <linux-acpi@vger.kernel.org>; Fri, 20 Jan 2023 10:08:23 -0800 (PST)
+Received: by mail-wr1-x42a.google.com with SMTP id t5so5585429wrq.1
+        for <linux-acpi@vger.kernel.org>; Fri, 20 Jan 2023 10:08:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AYDLNXJWoiyDdXocdBDY3OI8vBR4rf1NLXYkAgc4tGo=;
+        b=c1FbpnPnGM7Xh3+EWEej3EnCU5G7+FyDKOQNB0HVGgm5J1F1a69x4YNugpan6qB52Y
+         eyUCebH67DjGaZnr1QiVRLiI8so9Dah2zqUR8eNk+rLAQB70S0Vv0aBxOP8CGUuM9wA0
+         uAKX4aNykJp4hb6DIVZC71uvGpWLSF6opNlbVuwa1ApVHK2UNmnM8H8c1vKfvM7OCLJu
+         coCCNZ32T9hZQPHB33Cw6i5D72IqGqnHlNNKmxm7fL9GG+RctqlFsGsRu6VYMOpZmAM+
+         +48zzMS+IqxjULEB+EaMbvZ9QJWnF7pzTFr/X7Wk5APiEf8NxbbiV0iwwBw80DMqJLrn
+         FAqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4yUiTs4/I96zb6GeOJNt6u1+rMYoVnhmy+Iw64l4AV4=;
-        b=yZfu33l/GY1Ry/yjpeYrTQmjWaZZdaHdofJc/SbuSuER/bH6a0ziVRzZ8kPYKP0K27
-         YUoM0HVEI8iPVHQLWpAyRwLeI28QtPKmfXZtwqE9Hiw4khtqFQRdLFj8KGqxpoYruPlh
-         hGon6GAU4fl9lajz8oClPT32S5CrzqNAtyZIL2/6u847An83WglGioagDZmKHn8Cq77h
-         qQS3JbxYMfILgfh8t7Q9JZqvut7iBQ3ZYUx2qSa1vcDnfRzmuA+O0JyIEuWIt/itGmBt
-         FOV0PBtQxrjjo0U3qqJuafLUUCmY9BMYa74kVEtOSafpXVb/jDRKnhsXQCvQYiYAW83l
-         P8QQ==
-X-Gm-Message-State: AFqh2kpuuFUo3Y8ehZ9w9kS7rIblklUnIAh6zonRPQ2kZL2Q92aWsbPP
-        qXKD9W90eR6uvqHfI3rbUynHVHAcXv5LAeqv31dB1HWaWM4=
-X-Google-Smtp-Source: AMrXdXvhmyM3zFN5s6ugW5DuMGqITWftkHw/6I1QsQUJZDv0Z5/op/Z5pH0Uwsmjgwa2UlPbTGD/U3Kpc1p4bOMtPR8=
-X-Received: by 2002:a17:907:8b88:b0:872:dae4:1ef7 with SMTP id
- tb8-20020a1709078b8800b00872dae41ef7mr1366576ejc.84.1674237878556; Fri, 20
- Jan 2023 10:04:38 -0800 (PST)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AYDLNXJWoiyDdXocdBDY3OI8vBR4rf1NLXYkAgc4tGo=;
+        b=DZ+QQ9jlzfYu4S4xLcwW5O7alku/k9qNi330h32+wkTGDtru2NAzGWwNK2kDN6R34j
+         N2TT+xKNkRteYYlfLaesJnHx4i/W1yuvg9n2nDiPnmBOZYD7PRe/4SvUqRFLbkVJ09Dx
+         FzeRNkoiYZhE3txPOfsFWNVsV98bGJFCxH1h22L9Q2F6BMUbw7Iee85LOuoFzmThwE7E
+         KOpVK6gMzgtGOFok4qP7CcXN6koIvWI/QMPQitFKl2NOVccIVqMvtBLjjXt4lT5k7n4H
+         LjW5dAeeoGGLjSZ9lsZmKkQQGSO+AitYOEcpu3wYOnfua3EDnwSbJbOY0RTPqFOwuIwx
+         F9gg==
+X-Gm-Message-State: AFqh2koBphwYk6XWa6gbwGXUOKPZ+vAbD+4BxSE8dsEIk8JgeF7ujoOb
+        9d2ACO65ZrY1EHjKECOFcIVy9g==
+X-Google-Smtp-Source: AMrXdXu5jlctrHfweOx4hVb1gm1jhsRmqdCjdEkgYjXhBx2MefSTOm5niiAzO/T6tIevf/LTpEkv2w==
+X-Received: by 2002:a5d:6a86:0:b0:2bb:e805:c1ef with SMTP id s6-20020a5d6a86000000b002bbe805c1efmr13602174wru.52.1674238102394;
+        Fri, 20 Jan 2023 10:08:22 -0800 (PST)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id r11-20020adff70b000000b002bdf290efdasm13809413wrp.58.2023.01.20.10.08.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Jan 2023 10:08:21 -0800 (PST)
+Message-ID: <e4468710-1336-847e-89e4-51c745a0a79b@linaro.org>
+Date:   Fri, 20 Jan 2023 19:08:20 +0100
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 20 Jan 2023 19:04:27 +0100
-Message-ID: <CAJZ5v0gFO1nANyUZG9TPiRBNTN8hOJNmgSDb6LE8JtCF5K4+=Q@mail.gmail.com>
-Subject: [GIT PULL] ACPI fixes for v6.2-rc5
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v5 1/3] thermal/acpi: Add ACPI trip point routines
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     srinivas.pandruvada@linux.intel.com, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        rui.zhang@intel.com, christophe.jaillet@wanadoo.fr
+References: <20230113180235.1604526-1-daniel.lezcano@linaro.org>
+ <20230113180235.1604526-2-daniel.lezcano@linaro.org>
+ <CAJZ5v0jDF9qrQAQM1AhT-Q4A3Nzyht9XxZoZyS1afoAPt1h_=A@mail.gmail.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <CAJZ5v0jDF9qrQAQM1AhT-Q4A3Nzyht9XxZoZyS1afoAPt1h_=A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
 
-Please pull from the tag
-
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.2-rc5
-
-with top-most commit 3bdd346ebda37f4cb12461d5e83a5b9d575afc63
-
- Merge branches 'acpi-prm' and 'acpi-video'
-
-on top of commit 5dc4c995db9eb45f6373a956eb1f69460e69e6d4
-
- Linux 6.2-rc4
-
-to receive ACPI fixes for 6.2-rc5.
-
-These update the ACPICA entry in MAINTAINERS, add a backlight handling
-quirk and fix the ACPI PRM (platform runtime) mechanism support.
-
-Specifics:
-
- - Update the ACPICA development list address in MAINTAINERS to the new
-   one that does not bounce (Rafael Wysocki).
-
- - Check whether EFI runtime is available when registering the ACPI PRM
-   address space handler and when running it (Ard Biesheuvel).
-
- - Add backlight=native DMI quirk for Acer Aspire 4810T to the ACPI
-   video driver (Hans de Goede).
-
-Thanks!
+Hi Rafael,
 
 
----------------
+On 19/01/2023 14:15, Rafael J. Wysocki wrote:
 
-Ard Biesheuvel (1):
-      ACPI: PRM: Check whether EFI runtime is available
+[ ... ]
 
-Hans de Goede (1):
-      ACPI: video: Add backlight=native DMI quirk for Acer Aspire 4810T
+>> +static int thermal_acpi_get_temperature_object(struct acpi_device *adev,
+>> +                                              char *object, int *temperature)
+> 
+> So this would become thermal_acpi_get_temp_object(). or even
+> thermal_acpi_get_temp() because it really returns the temperature
+> value.
+> 
+> I also don't particularly like returning values via pointers, which is
+> entirely avoidable here, because the temperature value obtained from
+> the ACPI control methods must be a positive number.
+> 
+> So I would make it
+> 
+> static int thermal_acpi_get_temp(struct acpi_device *adev, char *object_name)
+> {
 
-Rafael J. Wysocki (1):
-      MAINTAINERS: Update the ACPICA development list address
+We are converting decikelvin -> millicelsius. Even it is very unlikely, 
+the result could be less than zero (eg. -1°C). We won't be able to 
+differentiate -ENODATA with a negative value, no ?
 
----------------
+In the future, it is possible we will have to deal with cold trip points 
+in order to warm a board. May be we should don't care for now ?
 
- MAINTAINERS                 |  2 +-
- drivers/acpi/prmt.c         | 10 ++++++++++
- drivers/acpi/video_detect.c |  8 ++++++++
- 3 files changed, 19 insertions(+), 1 deletion(-)
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
+
