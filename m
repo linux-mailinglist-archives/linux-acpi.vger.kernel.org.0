@@ -2,118 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91935675C71
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jan 2023 19:08:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1851A675C77
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jan 2023 19:11:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229602AbjATSI0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Jan 2023 13:08:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58168 "EHLO
+        id S229661AbjATSLG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Jan 2023 13:11:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229570AbjATSIZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Jan 2023 13:08:25 -0500
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E89367B2DF
-        for <linux-acpi@vger.kernel.org>; Fri, 20 Jan 2023 10:08:23 -0800 (PST)
-Received: by mail-wr1-x42a.google.com with SMTP id t5so5585429wrq.1
-        for <linux-acpi@vger.kernel.org>; Fri, 20 Jan 2023 10:08:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AYDLNXJWoiyDdXocdBDY3OI8vBR4rf1NLXYkAgc4tGo=;
-        b=c1FbpnPnGM7Xh3+EWEej3EnCU5G7+FyDKOQNB0HVGgm5J1F1a69x4YNugpan6qB52Y
-         eyUCebH67DjGaZnr1QiVRLiI8so9Dah2zqUR8eNk+rLAQB70S0Vv0aBxOP8CGUuM9wA0
-         uAKX4aNykJp4hb6DIVZC71uvGpWLSF6opNlbVuwa1ApVHK2UNmnM8H8c1vKfvM7OCLJu
-         coCCNZ32T9hZQPHB33Cw6i5D72IqGqnHlNNKmxm7fL9GG+RctqlFsGsRu6VYMOpZmAM+
-         +48zzMS+IqxjULEB+EaMbvZ9QJWnF7pzTFr/X7Wk5APiEf8NxbbiV0iwwBw80DMqJLrn
-         FAqw==
+        with ESMTP id S229489AbjATSLF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Jan 2023 13:11:05 -0500
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0A957B2DF;
+        Fri, 20 Jan 2023 10:11:04 -0800 (PST)
+Received: by mail-ed1-f43.google.com with SMTP id x10so7706044edd.10;
+        Fri, 20 Jan 2023 10:11:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AYDLNXJWoiyDdXocdBDY3OI8vBR4rf1NLXYkAgc4tGo=;
-        b=DZ+QQ9jlzfYu4S4xLcwW5O7alku/k9qNi330h32+wkTGDtru2NAzGWwNK2kDN6R34j
-         N2TT+xKNkRteYYlfLaesJnHx4i/W1yuvg9n2nDiPnmBOZYD7PRe/4SvUqRFLbkVJ09Dx
-         FzeRNkoiYZhE3txPOfsFWNVsV98bGJFCxH1h22L9Q2F6BMUbw7Iee85LOuoFzmThwE7E
-         KOpVK6gMzgtGOFok4qP7CcXN6koIvWI/QMPQitFKl2NOVccIVqMvtBLjjXt4lT5k7n4H
-         LjW5dAeeoGGLjSZ9lsZmKkQQGSO+AitYOEcpu3wYOnfua3EDnwSbJbOY0RTPqFOwuIwx
-         F9gg==
-X-Gm-Message-State: AFqh2koBphwYk6XWa6gbwGXUOKPZ+vAbD+4BxSE8dsEIk8JgeF7ujoOb
-        9d2ACO65ZrY1EHjKECOFcIVy9g==
-X-Google-Smtp-Source: AMrXdXu5jlctrHfweOx4hVb1gm1jhsRmqdCjdEkgYjXhBx2MefSTOm5niiAzO/T6tIevf/LTpEkv2w==
-X-Received: by 2002:a5d:6a86:0:b0:2bb:e805:c1ef with SMTP id s6-20020a5d6a86000000b002bbe805c1efmr13602174wru.52.1674238102394;
-        Fri, 20 Jan 2023 10:08:22 -0800 (PST)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id r11-20020adff70b000000b002bdf290efdasm13809413wrp.58.2023.01.20.10.08.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Jan 2023 10:08:21 -0800 (PST)
-Message-ID: <e4468710-1336-847e-89e4-51c745a0a79b@linaro.org>
-Date:   Fri, 20 Jan 2023 19:08:20 +0100
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5t9C2zVNrqE3Ky7/satHgNnh/Bdqj/w8iXbeyqpGIXo=;
+        b=IegcUXzbTQW5KRKrykx/Y5drHcLtIkTUvY+Eg8g1KWIlPT4beVJU8QKkRQgfahijgs
+         j3OcDjiZ9OOz2KXTDI+KekRlGtK8svp+lazJFLqtWfsHJBGHNEuutgU56xBHVCe7j+ol
+         zWl+ANEKLHQWRHvIHAs9IqfwMC+lygQ2mTPvlVtikXcv6ZvNnNxu3xX7EMphQc/N73m2
+         82wDX/rP0Opn6BCWXFzhqeZN62yH1o+KVSUIjO4H2hqXnc+LudK/RA1WO52HudbcaCyn
+         MxR09Y+6RS4W+41gCOHAvLr7xYH/fq6PeFUTun7YG9uaZoNLCk5jiypBYSHRU2ax2Fv7
+         zy3w==
+X-Gm-Message-State: AFqh2kpM35edOs4vHkOmwCAwDnVYqutfOjoOdMmM2UPZ7I5fEI4kLezW
+        +Ss7oYSKr+6a5CiOsXmoUxsUC0flaMpnFjLPUBU=
+X-Google-Smtp-Source: AMrXdXsWe7JvMho9i9DVptno02FIGXKQMDST+FTnEgxoDexs6Xr1ZIRoEeUF1oCHMo3NcEREY8GYnm9Pv5NamONUt2A=
+X-Received: by 2002:a05:6402:1c1d:b0:48c:93ce:2b15 with SMTP id
+ ck29-20020a0564021c1d00b0048c93ce2b15mr1624666edb.110.1674238263321; Fri, 20
+ Jan 2023 10:11:03 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v5 1/3] thermal/acpi: Add ACPI trip point routines
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     srinivas.pandruvada@linux.intel.com, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        rui.zhang@intel.com, christophe.jaillet@wanadoo.fr
-References: <20230113180235.1604526-1-daniel.lezcano@linaro.org>
- <20230113180235.1604526-2-daniel.lezcano@linaro.org>
- <CAJZ5v0jDF9qrQAQM1AhT-Q4A3Nzyht9XxZoZyS1afoAPt1h_=A@mail.gmail.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <CAJZ5v0jDF9qrQAQM1AhT-Q4A3Nzyht9XxZoZyS1afoAPt1h_=A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: *
+References: <20221118181538.never.225-kees@kernel.org> <202301151037.20CC3F0@keescook>
+In-Reply-To: <202301151037.20CC3F0@keescook>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 20 Jan 2023 19:10:52 +0100
+Message-ID: <CAJZ5v0hvoAD1WLXzpMobTRSasBqy5dypHTysBU3=ionGgWR6nQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: Replace fake flexible arrays with flexible array members
+To:     Kees Cook <keescook@chromium.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org,
+        acpica-devel@lists.linuxfoundation.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Sun, Jan 15, 2023 at 7:38 PM Kees Cook <keescook@chromium.org> wrote:
+>
+> On Fri, Nov 18, 2022 at 10:15:51AM -0800, Kees Cook wrote:
+> > Functionally identical to ACPICA upstream pull request 813:
+> > https://github.com/acpica/acpica/pull/813
+>
+> Any update on this? Upstream is currently unbuildable since October.
+>
+> > One-element arrays (and multi-element arrays being treated as
+> > dynamically sized) are deprecated[1] and are being replaced with
+> > flexible array members in support of the ongoing efforts to tighten the
+> > FORTIFY_SOURCE routines on memcpy(), correctly instrument array indexing
+> > with UBSAN_BOUNDS, and to globally enable -fstrict-flex-arrays=3.
+> >
+> > Replace one-element array with flexible-array member in struct
+> > acpi_resource_extended_irq. Replace 4-byte fixed-size array with 4-byte
+> > padding in a union with a flexible-array member in struct
+> > acpi_pci_routing_table.
+> >
+> > This results in no differences in binary output.
+>
+> In the meantime, can you take this patch for Linux, and we can wait for
+> ACPICA to catch up?
 
-Hi Rafael,
+Applied now (as 6.3 material), sorry for the delay.
 
+Thanks!
 
-On 19/01/2023 14:15, Rafael J. Wysocki wrote:
-
-[ ... ]
-
->> +static int thermal_acpi_get_temperature_object(struct acpi_device *adev,
->> +                                              char *object, int *temperature)
-> 
-> So this would become thermal_acpi_get_temp_object(). or even
-> thermal_acpi_get_temp() because it really returns the temperature
-> value.
-> 
-> I also don't particularly like returning values via pointers, which is
-> entirely avoidable here, because the temperature value obtained from
-> the ACPI control methods must be a positive number.
-> 
-> So I would make it
-> 
-> static int thermal_acpi_get_temp(struct acpi_device *adev, char *object_name)
-> {
-
-We are converting decikelvin -> millicelsius. Even it is very unlikely, 
-the result could be less than zero (eg. -1°C). We won't be able to 
-differentiate -ENODATA with a negative value, no ?
-
-In the future, it is possible we will have to deal with cold trip points 
-in order to warm a board. May be we should don't care for now ?
-
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
-
+> >
+> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> > Cc: Len Brown <lenb@kernel.org>
+> > Cc: Robert Moore <robert.moore@intel.com>
+> > Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+> > Cc: linux-acpi@vger.kernel.org
+> > Cc: devel@acpica.org
+> > Signed-off-by: Kees Cook <keescook@chromium.org>
+> > ---
+> >  include/acpi/acrestyp.h | 7 +++++--
+> >  1 file changed, 5 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/include/acpi/acrestyp.h b/include/acpi/acrestyp.h
+> > index a7fb8ddb3dc6..ee945084d46e 100644
+> > --- a/include/acpi/acrestyp.h
+> > +++ b/include/acpi/acrestyp.h
+> > @@ -332,7 +332,7 @@ struct acpi_resource_extended_irq {
+> >       u8 wake_capable;
+> >       u8 interrupt_count;
+> >       struct acpi_resource_source resource_source;
+> > -     u32 interrupts[1];
+> > +     u32 interrupts[];
+> >  };
+> >
+> >  struct acpi_resource_generic_register {
+> > @@ -679,7 +679,10 @@ struct acpi_pci_routing_table {
+> >       u32 pin;
+> >       u64 address;            /* here for 64-bit alignment */
+> >       u32 source_index;
+> > -     char source[4];         /* pad to 64 bits so sizeof() works in all cases */
+> > +     union {
+> > +             char pad[4];    /* pad to 64 bits so sizeof() works in all cases */
+> > +             DECLARE_FLEX_ARRAY(char, source);
+> > +     };
+> >  };
+> >
+> >  #endif                               /* __ACRESTYP_H__ */
+> > --
+> > 2.34.1
+> >
+>
+> --
+> Kees Cook
