@@ -2,132 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1851A675C77
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jan 2023 19:11:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BE2A675C81
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jan 2023 19:15:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229661AbjATSLG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Jan 2023 13:11:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59126 "EHLO
+        id S229591AbjATSPj convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 20 Jan 2023 13:15:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229489AbjATSLF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Jan 2023 13:11:05 -0500
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0A957B2DF;
-        Fri, 20 Jan 2023 10:11:04 -0800 (PST)
-Received: by mail-ed1-f43.google.com with SMTP id x10so7706044edd.10;
-        Fri, 20 Jan 2023 10:11:04 -0800 (PST)
+        with ESMTP id S229454AbjATSPj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Jan 2023 13:15:39 -0500
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC30DDBE4;
+        Fri, 20 Jan 2023 10:15:35 -0800 (PST)
+Received: by mail-ej1-f46.google.com with SMTP id mg12so16046954ejc.5;
+        Fri, 20 Jan 2023 10:15:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5t9C2zVNrqE3Ky7/satHgNnh/Bdqj/w8iXbeyqpGIXo=;
-        b=IegcUXzbTQW5KRKrykx/Y5drHcLtIkTUvY+Eg8g1KWIlPT4beVJU8QKkRQgfahijgs
-         j3OcDjiZ9OOz2KXTDI+KekRlGtK8svp+lazJFLqtWfsHJBGHNEuutgU56xBHVCe7j+ol
-         zWl+ANEKLHQWRHvIHAs9IqfwMC+lygQ2mTPvlVtikXcv6ZvNnNxu3xX7EMphQc/N73m2
-         82wDX/rP0Opn6BCWXFzhqeZN62yH1o+KVSUIjO4H2hqXnc+LudK/RA1WO52HudbcaCyn
-         MxR09Y+6RS4W+41gCOHAvLr7xYH/fq6PeFUTun7YG9uaZoNLCk5jiypBYSHRU2ax2Fv7
-         zy3w==
-X-Gm-Message-State: AFqh2kpM35edOs4vHkOmwCAwDnVYqutfOjoOdMmM2UPZ7I5fEI4kLezW
-        +Ss7oYSKr+6a5CiOsXmoUxsUC0flaMpnFjLPUBU=
-X-Google-Smtp-Source: AMrXdXsWe7JvMho9i9DVptno02FIGXKQMDST+FTnEgxoDexs6Xr1ZIRoEeUF1oCHMo3NcEREY8GYnm9Pv5NamONUt2A=
-X-Received: by 2002:a05:6402:1c1d:b0:48c:93ce:2b15 with SMTP id
- ck29-20020a0564021c1d00b0048c93ce2b15mr1624666edb.110.1674238263321; Fri, 20
- Jan 2023 10:11:03 -0800 (PST)
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yqP17bCoNp80WwoAZTjADKbunc1QO+WYV+s3nQtpawA=;
+        b=43cTmRBsjOC6hSZW8wCzc5K/Ota7t6j0LPoAC7hjrSAVIYUE0LHEuEfRvLQyzRZExm
+         KudCe99UE3B2kr0IGFR8HfH5Yh3gskW8Ho+dLdZfV36Y/1BPVUo/yySQ3Z1Xr2OGFFEz
+         nrynEDcMqy1oPajq6KtxGejNFESk4TqzEhh3J1GUNFoBjPiIvB538/7D/H851gL7PERh
+         Trhja1FikGUUZvl4xC3ZCBv4A+JT7sv01jA1hEEpA1NnOU84DKKyCR0PG9U/rVhDWEyi
+         kZY3ArvBP5WICAxtzbwGGkVtygl1hKBimjKEJI4U27DhHLktxOkChMPQfKB+G4xbJ2Em
+         zfiQ==
+X-Gm-Message-State: AFqh2krVF9YJ5SqrC89sDh32B10XlpOIQhIO2rxEGG3+SnJAwX2QsBel
+        Fu0LNElHv5v1tAFecPxzVHfWhSH5ZFKiiy8xR64uUrmX
+X-Google-Smtp-Source: AMrXdXu5El6FR00TLRDD4xJXFPd1YsK3IG0zI4SInsKlGRR1rort+cbJ665y693HIOQ/Pf3MKjXmbIPvf+v+qVcaX3w=
+X-Received: by 2002:a17:906:2c4b:b0:870:3557:160e with SMTP id
+ f11-20020a1709062c4b00b008703557160emr1242549ejh.78.1674238534348; Fri, 20
+ Jan 2023 10:15:34 -0800 (PST)
 MIME-Version: 1.0
-References: <20221118181538.never.225-kees@kernel.org> <202301151037.20CC3F0@keescook>
-In-Reply-To: <202301151037.20CC3F0@keescook>
+References: <20230113180235.1604526-1-daniel.lezcano@linaro.org>
+ <20230113180235.1604526-2-daniel.lezcano@linaro.org> <CAJZ5v0jDF9qrQAQM1AhT-Q4A3Nzyht9XxZoZyS1afoAPt1h_=A@mail.gmail.com>
+ <e4468710-1336-847e-89e4-51c745a0a79b@linaro.org>
+In-Reply-To: <e4468710-1336-847e-89e4-51c745a0a79b@linaro.org>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 20 Jan 2023 19:10:52 +0100
-Message-ID: <CAJZ5v0hvoAD1WLXzpMobTRSasBqy5dypHTysBU3=ionGgWR6nQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPICA: Replace fake flexible arrays with flexible array members
-To:     Kees Cook <keescook@chromium.org>
+Date:   Fri, 20 Jan 2023 19:15:22 +0100
+Message-ID: <CAJZ5v0gdXJuNr9jUm6rPdPCuBjc8jwgcZQwtyxurd-jr50btLw@mail.gmail.com>
+Subject: Re: [PATCH v5 1/3] thermal/acpi: Add ACPI trip point routines
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org,
-        acpica-devel@lists.linuxfoundation.org
+        srinivas.pandruvada@linux.intel.com, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        rui.zhang@intel.com, christophe.jaillet@wanadoo.fr
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Jan 15, 2023 at 7:38 PM Kees Cook <keescook@chromium.org> wrote:
+On Fri, Jan 20, 2023 at 7:08 PM Daniel Lezcano
+<daniel.lezcano@linaro.org> wrote:
 >
-> On Fri, Nov 18, 2022 at 10:15:51AM -0800, Kees Cook wrote:
-> > Functionally identical to ACPICA upstream pull request 813:
-> > https://github.com/acpica/acpica/pull/813
 >
-> Any update on this? Upstream is currently unbuildable since October.
+> Hi Rafael,
 >
-> > One-element arrays (and multi-element arrays being treated as
-> > dynamically sized) are deprecated[1] and are being replaced with
-> > flexible array members in support of the ongoing efforts to tighten the
-> > FORTIFY_SOURCE routines on memcpy(), correctly instrument array indexing
-> > with UBSAN_BOUNDS, and to globally enable -fstrict-flex-arrays=3.
+>
+> On 19/01/2023 14:15, Rafael J. Wysocki wrote:
+>
+> [ ... ]
+>
+> >> +static int thermal_acpi_get_temperature_object(struct acpi_device *adev,
+> >> +                                              char *object, int *temperature)
 > >
-> > Replace one-element array with flexible-array member in struct
-> > acpi_resource_extended_irq. Replace 4-byte fixed-size array with 4-byte
-> > padding in a union with a flexible-array member in struct
-> > acpi_pci_routing_table.
+> > So this would become thermal_acpi_get_temp_object(). or even
+> > thermal_acpi_get_temp() because it really returns the temperature
+> > value.
 > >
-> > This results in no differences in binary output.
+> > I also don't particularly like returning values via pointers, which is
+> > entirely avoidable here, because the temperature value obtained from
+> > the ACPI control methods must be a positive number.
+> >
+> > So I would make it
+> >
+> > static int thermal_acpi_get_temp(struct acpi_device *adev, char *object_name)
+> > {
 >
-> In the meantime, can you take this patch for Linux, and we can wait for
-> ACPICA to catch up?
+> We are converting decikelvin -> millicelsius. Even it is very unlikely,
+> the result could be less than zero (eg. -1°C). We won't be able to
+> differentiate -ENODATA with a negative value, no ?
+>
+> In the future, it is possible we will have to deal with cold trip points
+> in order to warm a board. May be we should don't care for now ?
 
-Applied now (as 6.3 material), sorry for the delay.
-
-Thanks!
-
-> >
-> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > Cc: Len Brown <lenb@kernel.org>
-> > Cc: Robert Moore <robert.moore@intel.com>
-> > Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-> > Cc: linux-acpi@vger.kernel.org
-> > Cc: devel@acpica.org
-> > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > ---
-> >  include/acpi/acrestyp.h | 7 +++++--
-> >  1 file changed, 5 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/include/acpi/acrestyp.h b/include/acpi/acrestyp.h
-> > index a7fb8ddb3dc6..ee945084d46e 100644
-> > --- a/include/acpi/acrestyp.h
-> > +++ b/include/acpi/acrestyp.h
-> > @@ -332,7 +332,7 @@ struct acpi_resource_extended_irq {
-> >       u8 wake_capable;
-> >       u8 interrupt_count;
-> >       struct acpi_resource_source resource_source;
-> > -     u32 interrupts[1];
-> > +     u32 interrupts[];
-> >  };
-> >
-> >  struct acpi_resource_generic_register {
-> > @@ -679,7 +679,10 @@ struct acpi_pci_routing_table {
-> >       u32 pin;
-> >       u64 address;            /* here for 64-bit alignment */
-> >       u32 source_index;
-> > -     char source[4];         /* pad to 64 bits so sizeof() works in all cases */
-> > +     union {
-> > +             char pad[4];    /* pad to 64 bits so sizeof() works in all cases */
-> > +             DECLARE_FLEX_ARRAY(char, source);
-> > +     };
-> >  };
-> >
-> >  #endif                               /* __ACRESTYP_H__ */
-> > --
-> > 2.34.1
-> >
->
-> --
-> Kees Cook
+My point is that the ACPI specification mandates that the return
+values be in deciK and so always non-negative.
