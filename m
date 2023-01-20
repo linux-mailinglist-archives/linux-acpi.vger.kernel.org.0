@@ -2,139 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23C94675F82
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jan 2023 22:15:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ADAE67602D
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jan 2023 23:34:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229568AbjATVPp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Jan 2023 16:15:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36624 "EHLO
+        id S229553AbjATWeM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Jan 2023 17:34:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229379AbjATVPo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Jan 2023 16:15:44 -0500
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 111A086BC
-        for <linux-acpi@vger.kernel.org>; Fri, 20 Jan 2023 13:15:42 -0800 (PST)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-4fda31c3351so61136657b3.11
-        for <linux-acpi@vger.kernel.org>; Fri, 20 Jan 2023 13:15:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=NcIIC1O7Zs3rEuEM0nyGO+WgzZl8Vikm1z2RFIGcKb0=;
-        b=fhs5Iuj4i9tYiLtWZSoxdZ7lQeEEve400Bj1Vri0BU6rTFbqMbm9zOTpruHHGJiSv+
-         45iwza4m7m6J/UZxVCr4lOZWhgR3egS25OP/hJ5DF5TxBJPR6a3YEs64lCSotn3bkRIl
-         EpmHRQpEh50uuJCoQCzB/3vOLGZVErgkFlHxQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NcIIC1O7Zs3rEuEM0nyGO+WgzZl8Vikm1z2RFIGcKb0=;
-        b=KNEIkkXfuSYXvNeiwrKP9/9uQVELvfoHgnuqz4MOcWTeIN+MT1t2eXZwW4eA6KCuQA
-         DLPrr1L1zfGbZnHLyVEX4b/YWzwOu1nYX1V6M8FA/N2xwel4FYfaEASEfg9goPe0MuCG
-         4EkR87qyqmhbZJ85VepTW5M/IQDJg9WN/jrDMCAvKyl17Ykx31WVrJjPOqkV7xanUgVP
-         Q1IxqT5b/4mYgSjuD1wjxgKa1LuKIVfZFqg68zILQxddaZF9dZiV73FeYlYMeTFBccd6
-         J0vBpvIf5kX3xzEbh8lEGpUXNgBkalG4SVEIIa0xrKY7ihopNbaGMpd8lVdZMjyMRWPI
-         VYew==
-X-Gm-Message-State: AFqh2krNICQ53qlxfjcs+xMWrzurdXXY7gRymDYcRM5/PcjO3Y/rSYHZ
-        qpRoWTqOX4Ra9LjlsHgr1fl2TTQ8UgK9mTnbJExzqg==
-X-Google-Smtp-Source: AMrXdXuzhv476FXH02ilyJSYLORoSx3+kBVAKevbSIn6Qmw3KTvOzqgdIKhThap2Fmmuhb9Bgf50pSjtYaxEVyXLlAg=
-X-Received: by 2002:a0d:e8c9:0:b0:4e0:7220:22fd with SMTP id
- r192-20020a0de8c9000000b004e0722022fdmr2086808ywe.272.1674249341272; Fri, 20
- Jan 2023 13:15:41 -0800 (PST)
+        with ESMTP id S229537AbjATWeL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Jan 2023 17:34:11 -0500
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCC6E63E3C;
+        Fri, 20 Jan 2023 14:34:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674254047; x=1705790047;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Zo5M3gHxFkisjU6k7e7ZgCPdIm/H9EaePh8Ny1GQ5KA=;
+  b=OloH04B/Qqh3dDQVPt12TJFB6rSqZGmwND5AP1E6nfMdhsRw5A1/wrK7
+   HYi767GMvmxwASEI3YkBNJUtAtZbwBrNgnP9QfaogLAq8G1ac7tyJ/03a
+   oejElFYASMhIuq2lYqThXhNebxmcD7m59IZTNDOiDk2eGliKWT2X4Fqed
+   ov2umFmg/Sa1JnNK0WAZmmQF/iBYH24GXYcjpP3j/S737zE+ZhH29uiyi
+   IO4ENv20vshXgdof9NOQqNDmO7gw8JOtctnTyZ11edMZD0UYthtRD3e3A
+   c35XuE82MVtG4j5JiNQCJ16i5OigBfUB2bng1y0dF5Y8Lxxj4KmwdsWjo
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10596"; a="327802019"
+X-IronPort-AV: E=Sophos;i="5.97,233,1669104000"; 
+   d="scan'208";a="327802019"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2023 14:34:06 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10596"; a="724104009"
+X-IronPort-AV: E=Sophos;i="5.97,233,1669104000"; 
+   d="scan'208";a="724104009"
+Received: from turnipsi.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.44])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2023 14:34:05 -0800
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with SMTP id 048A4201C4;
+        Sat, 21 Jan 2023 00:34:03 +0200 (EET)
+Date:   Fri, 20 Jan 2023 22:34:02 +0000
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
+        linux-media@vger.kernel.org, heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH 7/8] ACPI: property: Skip MIPI property table without
+ "mipi-img" prefix
+Message-ID: <Y8sW2ud+Ae3VeSuM@paasikivi.fi.intel.com>
+References: <20230117122244.2546597-1-sakari.ailus@linux.intel.com>
+ <20230117122244.2546597-8-sakari.ailus@linux.intel.com>
+ <Y8a+8q5hzkoPjpDO@smile.fi.intel.com>
+ <Y8lnBeamT90z4aKY@paasikivi.fi.intel.com>
+ <Y8lrNe9S4eIdWbXu@smile.fi.intel.com>
+ <Y8qB/B5NfTWRi7Ma@paasikivi.fi.intel.com>
+ <Y8qvHzbs1J9pS9nj@smile.fi.intel.com>
 MIME-Version: 1.0
-References: <20230112042104.4107253-1-treapking@chromium.org>
- <20230112042104.4107253-2-treapking@chromium.org> <Y8AL8nTcNcl6zX7H@paasikivi.fi.intel.com>
- <CACeCKaeN7KBi30M1fRWhTPgMbxF6=B+KuAS7Ny7+i9qCx+=49Q@mail.gmail.com> <Y8VL/+My+s/PkG9L@paasikivi.fi.intel.com>
-In-Reply-To: <Y8VL/+My+s/PkG9L@paasikivi.fi.intel.com>
-From:   Prashant Malani <pmalani@chromium.org>
-Date:   Fri, 20 Jan 2023 13:15:30 -0800
-Message-ID: <CACeCKaeaQ+LHsnwdqtTA=O3Q=0dWz8_uNjXoNu5J_u4+HQLMsg@mail.gmail.com>
-Subject: Re: [PATCH v10 1/9] device property: Add remote endpoint to devcon matcher
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     Pin-yen Lin <treapking@chromium.org>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
-        <nfraprado@collabora.com>, Marek Vasut <marex@denx.de>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Lyude Paul <lyude@redhat.com>, chrome-platform@lists.linux.dev,
-        Xin Ji <xji@analogixsemi.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-kernel@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
-        linux-acpi@vger.kernel.org, Hsin-Yi Wang <hsinyi@chromium.org>,
-        Chen-Yu Tsai <wenst@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y8qvHzbs1J9pS9nj@smile.fi.intel.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 16, 2023 at 5:07 AM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
->
-> Hi Prashant,
->
-> On Thu, Jan 12, 2023 at 02:31:45PM -0800, Prashant Malani wrote:
-> > HI Sakari,
-> >
-> > On Thu, Jan 12, 2023 at 5:32 AM Sakari Ailus
-> > <sakari.ailus@linux.intel.com> wrote:
-> > >
-> > > Hi Pin-yen,
-> > >
-> > > On Thu, Jan 12, 2023 at 12:20:56PM +0800, Pin-yen Lin wrote:
-> > > > From: Prashant Malani <pmalani@chromium.org>
-> > > > +             /*
-> > > > +              * Some drivers may register devices for endpoints. Check
-> > > > +              * the remote-endpoints for matches in addition to the remote
-> > > > +              * port parent.
-> > > > +              */
-> > > > +             node = fwnode_graph_get_remote_endpoint(ep);
-> > > > +             if (fwnode_device_is_available(node)) {
-> > > > +                     ret = match(node, con_id, data);
-> > > > +                     if (ret) {
-> > > > +                             if (matches)
-> > > > +                                     matches[count] = ret;
-> > > > +                             count++;
-> > > > +                     }
-> > > > +             }
-> > >
-> > > Aren't you missing fwnode_handle-put(node) here??
-> >
-> > It shouldn't be necessary. We aren't break-ing/continue-ing here,
-> > and fwnode_handle_put(node) is called latter in the loop [1][2]
->
-> It is, but node is overwritten just below this chunk --- before
-> fwnode_handle_put() is called on it.
+On Fri, Jan 20, 2023 at 05:11:27PM +0200, Andy Shevchenko wrote:
+> On Fri, Jan 20, 2023 at 11:58:52AM +0000, Sakari Ailus wrote:
+> > On Thu, Jan 19, 2023 at 06:09:25PM +0200, Andy Shevchenko wrote:
+> > > On Thu, Jan 19, 2023 at 03:51:33PM +0000, Sakari Ailus wrote:
+> > > > On Tue, Jan 17, 2023 at 05:29:54PM +0200, Andy Shevchenko wrote:
+> > > > > On Tue, Jan 17, 2023 at 02:22:43PM +0200, Sakari Ailus wrote:
+> 
+> ...
+> 
+> > > > > > +	if (memcmp(elements[0].string.pointer, MIPI_IMG_PREFIX,
+> > > > > > +		   sizeof(MIPI_IMG_PREFIX) - 1))
+> > > > > 
+> > > > > str_has_prefix()
+> > > > 
+> > > > str_has_prefix() calls strlen() on prefix on every call. sizeof() will
+> > > > generate much less code --- it's just a number.
+> > > 
+> > > Have you tried that? Because the strlen() over const string literals will be
+> > > optimized away on compilation time.
+> > 
+> > Actually not. There seem to be an implementation of strlen() in
+> > include/linux/fortify-string.h that would seem to be capable of doing that.
+> > However its use is conditional to kernel configuration.
+> 
+> Ah, you missed probably the ability of the complier to find constant literals
+> and replace the strlen() with plain number.
 
-Ack. Thanks for pointing that out. My bad!
+It seems GCC does this if -foptimize-strlen (included in -O2) is given.
+Fair enough, I'll replace it with str_has_prefix() for v2.
 
-Pin-yen, please make this update when you send out a v11.
-
-BR,
-
--Prashant
+-- 
+Sakari Ailus
