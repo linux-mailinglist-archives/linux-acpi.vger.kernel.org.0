@@ -2,124 +2,169 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3276D677CF5
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 14:48:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0FCC677DA2
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 15:08:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231976AbjAWNsJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Jan 2023 08:48:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37770 "EHLO
+        id S232163AbjAWOI2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Jan 2023 09:08:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232024AbjAWNrx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 08:47:53 -0500
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C1ED26863;
-        Mon, 23 Jan 2023 05:47:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674481650; x=1706017650;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=kxz6Qmb9JJgDkMLpiIA7nHvUeKSoY4Ii0gk0EloM5/g=;
-  b=MtUcIhTc8QSM9ukEq4xxsBv9afp/obxB3T/U2d4Ra3RakwMtzQy/s/rE
-   R5L/GMT01nmTT3j7YN84tjgNnQu7XsYsiadwN1HexjsEMKVlU4zPWAOeE
-   IJ0ZuJtSgRg3ZZvW6U5ZaQkznGiaH+CAT6HnPNiDkX9UlPb5OHQLGmaQT
-   NvUtR2SWqzDH2gIf/fQZTZHX0OsQFwoRiH0UX0f6l+6XX6wB3gh8Mwap/
-   4TWVFeDaxq0xE/rRdv4a9khc5xKZ9/CNCztfN9VCtWxBsuzTEe7ce8PkW
-   /8Or/ICAQTAwH9TjKCzV8djVBOaOW36uR76U42RavM9j/TuYG/rnNw2Gv
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10598"; a="390542177"
-X-IronPort-AV: E=Sophos;i="5.97,239,1669104000"; 
-   d="scan'208";a="390542177"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2023 05:46:42 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10598"; a="785601929"
-X-IronPort-AV: E=Sophos;i="5.97,239,1669104000"; 
-   d="scan'208";a="785601929"
-Received: from turnipsi.fi.intel.com (HELO paasikivi.fi.intel.com) ([10.237.72.44])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2023 05:46:40 -0800
-Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id CF2F120DD5;
-        Mon, 23 Jan 2023 15:46:33 +0200 (EET)
-Received: from sailus by punajuuri.localdomain with local (Exim 4.94.2)
-        (envelope-from <sakari.ailus@linux.intel.com>)
-        id 1pJx9Y-00173e-5g; Mon, 23 Jan 2023 15:46:28 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     linux-media@vger.kernel.org, rafael@kernel.org,
-        andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com
-Subject: [PATCH v2 8/8] ACPI: property: Document _CRS CSI-2 and DisCo for Imaging support
-Date:   Mon, 23 Jan 2023 15:46:17 +0200
-Message-Id: <20230123134617.265382-9-sakari.ailus@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230123134617.265382-1-sakari.ailus@linux.intel.com>
-References: <20230123134617.265382-1-sakari.ailus@linux.intel.com>
+        with ESMTP id S232183AbjAWOI1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 09:08:27 -0500
+X-Greylist: delayed 599 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 23 Jan 2023 06:07:52 PST
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D29E24114;
+        Mon, 23 Jan 2023 06:07:51 -0800 (PST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+         client-signature RSA-PSS (4096 bits) client-digest SHA256)
+        (Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
+        by bmailout3.hostsharing.net (Postfix) with ESMTPS id 67420100DA1BD;
+        Mon, 23 Jan 2023 14:49:07 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+        id 352D22E5C2B; Mon, 23 Jan 2023 14:49:07 +0100 (CET)
+Date:   Mon, 23 Jan 2023 14:49:07 +0100
+From:   Lukas Wunner <lukas@wunner.de>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Aditya Garg <gargaditya08@live.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        linux-acpi@vger.kernel.org, Andy Shevchenko <andy@infradead.org>,
+        platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH 2/3] platform/x86: apple-gmux: Add apple_gmux_detect()
+ helper
+Message-ID: <20230123134907.GA2649@wunner.de>
+References: <20230123113750.462144-1-hdegoede@redhat.com>
+ <20230123113750.462144-3-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230123113750.462144-3-hdegoede@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Document how ACPI _CRS CSI-2 and DisCo for Imaging works. It's non-trivial
-so such documentation can be useful.
+On Mon, Jan 23, 2023 at 12:37:49PM +0100, Hans de Goede wrote:
+> --- a/include/linux/apple-gmux.h
+> +++ b/include/linux/apple-gmux.h
+[...]
+> +static inline bool apple_gmux_is_indexed(unsigned long iostart)
+> +{
+> +	u16 val;
+> +
+> +	outb(0xaa, iostart + 0xcc);
+> +	outb(0x55, iostart + 0xcd);
+> +	outb(0x00, iostart + 0xce);
+> +
+> +	val = inb(iostart + 0xcc) | (inb(iostart + 0xcd) << 8);
+> +	if (val == 0x55aa)
+> +		return true;
+> +
+> +	return false;
+> +}
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
----
- drivers/acpi/mipi.c | 37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+Something like this, and especially the large apple_gmux_detect() below,
+should not live in a header file.
 
-diff --git a/drivers/acpi/mipi.c b/drivers/acpi/mipi.c
-index 3cb698b094ac1..24cef9d501ebc 100644
---- a/drivers/acpi/mipi.c
-+++ b/drivers/acpi/mipi.c
-@@ -3,6 +3,43 @@
-  * MIPI DisCo for Imaging support.
-  *
-  * Copyright (C) 2023 Intel Corporation
-+ *
-+ * _CRS CSI-2 descriptors, as defined starting from ACPI 6.4 [1], contain
-+ * information on cross-device CSI-2 bus configuration. The descriptors are
-+ * located under transmitter devices, and the receiver devices have no direct
-+ * way to access them even if the information in these descriptors is equally
-+ * important for receivers. This information is amended with MIPI DisCo for
-+ * Imaging [2] specification that defines _DSD data nodes and properties.
-+ *
-+ * The support for these is based on two-fold approach, firstly renaming
-+ * properties where semantics matches and secondly gathering information to
-+ * generate properties using information gathered from various sources. The
-+ * former is trivial (see acpi_properties_prepare_mipi() at the end of the
-+ * file) whereas the latter requires a more elaborate explanation.
-+ *
-+ * acpi_bus_scan_crs_csi2() scans an ACPI bus for devices with _CRS CSI-2
-+ * descriptors and stores them to a linked list. This is done as traversing just
-+ * this list is much smaller task than the entire DSDT. This list is then used
-+ * to figure out how much memory is needed for swnodes related to a given ACPI
-+ * device (handle). Further on, the same function sets the property values for
-+ * the properties the values of which are obtained from the _CRS CSI-2
-+ * descriptor. The information is stored into another list where the information
-+ * can be looked up based on device's acpi_handle as the struct acpi_device
-+ * isn't available yet at this point (and could not, as cross-device references
-+ * need to be set up before the devices are available for drivers to probe).
-+ *
-+ * For each struct acpi_device, acpi_init_swnodes() further obtains information
-+ * required to find out the values for the rest of the properties needed by
-+ * drivers. This includes all port and endpoint properties as the node
-+ * structures used by DT graphs and DisCo for Imaging are different. Finally the
-+ * function registers software nodes for the device and sets the secondary
-+ * pointer for the ACPI device's fwnode.
-+ *
-+ * Access to data the structures is serialised using acpi_scan_lock in scan.c.
-+ *
-+ * [1] https://uefi.org/sites/default/files/resources/ACPI_Spec_6_4_Jan22.pdf
-+ *
-+ * [2] https://www.mipi.org/specifications/mipi-disco-imaging
-  */
- 
- #include <linux/acpi.h>
--- 
-2.30.2
+Why can't apple_gmux.ko just export a detection function which is used
+both internally and as a helper by the backlight detection?
 
+Thanks,
+
+Lukas
+
+>  
+>  /**
+> - * apple_gmux_present() - detect if gmux is built into the machine
+> + * apple_gmux_detect() - detect if gmux is built into the machine
+> + *
+> + * @pnp_dev:     Device to probe or NULL to use the first matching device
+> + * @indexed_ret: Returns (by reference) if the gmux is indexed or not
+> + *
+> + * Detect if a supported gmux device is present by actually probing it.
+> + * This avoids the false positives returned on some models by
+> + * apple_gmux_present().
+> + *
+> + * Return: %true if a supported gmux ACPI device is detected and the kernel
+> + * was configured with CONFIG_APPLE_GMUX, %false otherwise.
+> + */
+> +static inline bool apple_gmux_detect(struct pnp_dev *pnp_dev, bool *indexed_ret)
+> +{
+> +	u8 ver_major, ver_minor, ver_release;
+> +	struct resource *res;
+> +	bool indexed = false;
+> +
+> +	if (!pnp_dev) {
+> +		struct acpi_device *adev;
+> +		struct device *dev;
+> +
+> +		adev = acpi_dev_get_first_match_dev(GMUX_ACPI_HID, NULL, -1);
+> +		if (!adev)
+> +			return false;
+> +
+> +		dev = acpi_get_first_physical_node(adev);
+> +		if (!dev)
+> +			return false;
+> +
+> +		pnp_dev = to_pnp_dev(dev);
+> +	}
+> +
+> +	res = pnp_get_resource(pnp_dev, IORESOURCE_IO, 0);
+> +	if (!res)
+> +		return false;
+> +
+> +	if (resource_size(res) < GMUX_MIN_IO_LEN)
+> +		return false;
+> +
+> +	/*
+> +	 * Invalid version information may indicate either that the gmux
+> +	 * device isn't present or that it's a new one that uses indexed io.
+> +	 */
+> +	ver_major = inb(res->start + GMUX_PORT_VERSION_MAJOR);
+> +	ver_minor = inb(res->start + GMUX_PORT_VERSION_MINOR);
+> +	ver_release = inb(res->start + GMUX_PORT_VERSION_RELEASE);
+> +	if (ver_major == 0xff && ver_minor == 0xff && ver_release == 0xff) {
+> +		indexed = apple_gmux_is_indexed(res->start);
+> +		if (!indexed)
+> +			return false;
+> +	}
+> +
+> +	if (indexed_ret)
+> +		*indexed_ret = indexed;
+> +
+> +	return true;
+> +}
+> +
+> +/**
+> + * apple_gmux_present() - check if gmux ACPI device is present
+>   *
+>   * Drivers may use this to activate quirks specific to dual GPU MacBook Pros
+>   * and Mac Pros, e.g. for deferred probing, runtime pm and backlight.
+>   *
+> - * Return: %true if gmux is present and the kernel was configured
+> + * Return: %true if gmux ACPI device is present and the kernel was configured
+>   * with CONFIG_APPLE_GMUX, %false otherwise.
+>   */
+>  static inline bool apple_gmux_present(void)
+> @@ -57,6 +133,11 @@ static inline bool apple_gmux_present(void)
+>  	return false;
+>  }
+>  
+> +static inline bool apple_gmux_detect(struct pnp_dev *pnp_dev, bool *indexed_ret)
+> +{
+> +	return false;
+> +}
+> +
+>  #endif /* !CONFIG_APPLE_GMUX */
+>  
+>  #endif /* LINUX_APPLE_GMUX_H */
+> -- 
+> 2.39.0
