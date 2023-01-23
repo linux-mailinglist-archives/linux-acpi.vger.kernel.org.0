@@ -2,96 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3F59678637
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 20:24:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 806C567863F
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 20:26:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230267AbjAWTYl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Jan 2023 14:24:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33400 "EHLO
+        id S232159AbjAWT0U (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Jan 2023 14:26:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjAWTYk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 14:24:40 -0500
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABB57AD;
-        Mon, 23 Jan 2023 11:24:39 -0800 (PST)
-Received: by mail-ed1-f49.google.com with SMTP id x36so15797194ede.13;
-        Mon, 23 Jan 2023 11:24:39 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MMyITVm+spjaFdC/IumAxOobxC1X+PgdKWLIddSsFt0=;
-        b=OJbDJk3KA7BosEIKc/4POpMnEIpK4WR3My12xD8GI7GDLei/lwXGyMo5FOmAeFVuHQ
-         urywQrtom8E8zxgyYOG023dAxf+92dKJqLqC7blximBV3CJEJu5QWFkbfzYOXscE1bfD
-         zxsLCXlC2zC5f8PQCiWhFST1YDudGy/L3Npmo2k8Fnb6CPeZbmcAauwjahEYlaMzv+3J
-         48RD7PLKohtfRmGYVr+3rNdRxayE0CjGmq9ITK2B3dlBEcZzdIeS3Fm66QuEMFkf77Xg
-         sLhsYX79AEZiTXq0gqcbSBD7jxtyv4LlxCfa1MtrhjdAQGd83qTKCZcYTU8+dOYX1wwA
-         XnAg==
-X-Gm-Message-State: AO0yUKW5ED2HC8OF0ygxHc56Qx0ouel029FyzOEsidTP7PUO1Iek2oG8
-        R84DaDjnw/y8BPGtuT8PwbizNBLSWuxpJB4egvg=
-X-Google-Smtp-Source: AK7set+pgGjO2z6T4jo0KvY4uPUpTFbOgaSe2C/ypWs655SYgHtZ+FgxoBULQuHLIk/LsJlAw5rpTPUERdpojCGHhjU=
-X-Received: by 2002:a50:ec8f:0:b0:49f:6dda:9e1f with SMTP id
- e15-20020a50ec8f000000b0049f6dda9e1fmr78914edr.251.1674501878356; Mon, 23 Jan
- 2023 11:24:38 -0800 (PST)
-MIME-Version: 1.0
-References: <20230123171006.58274-1-andriy.shevchenko@linux.intel.com>
- <9e24156c-65fc-d38b-317a-9cc8fb2201b9@redhat.com> <Y87PWaFFpHeW5YLv@smile.fi.intel.com>
-In-Reply-To: <Y87PWaFFpHeW5YLv@smile.fi.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 23 Jan 2023 20:24:27 +0100
-Message-ID: <CAJZ5v0g_WmbCwcqvy_VwZZNDbX48c84vmkqUdGvjX3-w24GCwg@mail.gmail.com>
-Subject: Re: [PATCH v1 1/3] ACPI: video: Fix refcounting in apple_gmux_backlight_present()
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        acpica-devel@lists.linuxfoundation.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>
+        with ESMTP id S230267AbjAWT0T (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 14:26:19 -0500
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E55092113;
+        Mon, 23 Jan 2023 11:26:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674501978; x=1706037978;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Jy150XyuERCh2fiwnJuz+EToeoCHCaLdsWTWyPJgDPA=;
+  b=LeAMQCP/ml5BMLzbKgKnT4T5xeBo++hHrSbMxwFlfLwBghKXmT+qljQ1
+   2Y8uuNs7h4dJCMmsCRf3DMwJUNME59g0oJVd0o/F6bcRPjAJbGqzUQG4K
+   9c+8qrIHp4YZtI1h5Fp4hsqx8m1t9kZm89zSfMwQcWGGZVn5oA3PZQnjP
+   xvTCGazdpGzElVYp+zp27u70P2cz5oAgPYQnrZ14fvlMnA5mSviBth+t4
+   25L/+CjPj1kR3I/sSyx4F/DlCwqXl4wEYpQANS+ijzpKlrgTBzXIDb56q
+   Txhu6BQ7B7qveZqQrjYXoFcR/qO7oIJkG45jxYo/5wx5i3rf5HyOpX4FR
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10599"; a="412355868"
+X-IronPort-AV: E=Sophos;i="5.97,240,1669104000"; 
+   d="scan'208";a="412355868"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2023 11:26:18 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10599"; a="663789877"
+X-IronPort-AV: E=Sophos;i="5.97,240,1669104000"; 
+   d="scan'208";a="663789877"
+Received: from mhkirsch-mobl1.amr.corp.intel.com (HELO spandruv-desk1.amr.corp.intel.com) ([10.212.134.26])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2023 11:26:18 -0800
+Message-ID: <19f1860e20fbc75c3d2c3eefda29cccd18ca59a9.camel@linux.intel.com>
+Subject: Re: [PATCH v7 0/3] thermal: intel: Use generic trip points in 2
+ drivers
+From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux PM <linux-pm@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>
+Date:   Mon, 23 Jan 2023 11:26:09 -0800
+In-Reply-To: <3234230.44csPzL39Z@kreacher>
+References: <5916342.lOV4Wx5bFT@kreacher> <2882611.e9J7NaK4W3@kreacher>
+         <3234230.44csPzL39Z@kreacher>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 23, 2023 at 7:18 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Mon, Jan 23, 2023 at 06:46:44PM +0100, Hans de Goede wrote:
-> > On 1/23/23 18:10, Andy Shevchenko wrote:
-> > > acpi_dev_get_first_match_dev() gets ACPI device with the bumped
-> > > refcount. The caller must drop it when it's done.
-> > >
-> > > Fix ACPI device refcounting in apple_gmux_backlight_present().
->
-> ...
->
-> > Thank you for your work on this, much appreciated and I like
-> > the new acpi_get_first_match_physical_node().
-> >
-> > But I don't think this patch is a good idea. There is a
-> > regression related to apple_gmux_backlight_present()
-> > with a patch-set fixing it pending.
-> >
-> > And that patch-set actually removes this function. Adding
-> > a fix for this real, but not really important leak now,
-> > will just make backporting the actual fix harder.
-> >
-> > So I would prefer for this patch to not go in and to
-> > go for (a to be submitted v2) of the patch-set fixing
-> > the regression right away instead.
->
-> Maybe I missed something, but I noticed that you actually moved (not killed)
-> the code which is currently in this function. If it's the case, I prefer my
-> fix to be imported first.
+On Mon, 2023-01-23 at 19:52 +0100, Rafael J. Wysocki wrote:
+> On Monday, January 23, 2023 7:45:30 PM CET Rafael J. Wysocki wrote:
+> > On Monday, January 23, 2023 7:36:52 PM CET Rafael J. Wysocki wrote:
+> > > Hi All,
+> > > 
+> > > This is a new version of the series from Daniel posted as:
+> > > 
+> > > https://lore.kernel.org/linux-pm/20230120231530.2368330-1-daniel.lezcano@linaro.org/
+> > > 
+> > > The first patch has been reworked (see
+> > > https://lore.kernel.org/linux-pm/5911499.lOV4Wx5bFT@kreacher/)
+> > > and the other two have been rebased on top of it.
+> > > 
+> > > I have retained the R-by tags from Rui, because the changes in
+> > > patches [2-3/3] are
+> > > not essential, but I think that this new set needs to be tested
+> > > again.
+> > > 
+> > > Srinivas, can you test it please?
+> > 
+> > Something's wrong, sorry.
+> > 
+> > I get some invalid trip temperatures with this set.
+> 
+> Sorry, scratch this, I got confused by THERMAL_TEMP_INVALID showing
+> up in
+> sysfs, but it did show up before too.
+> 
+> Please test!
+> 
 
-Well, what about making the new code not leak?
+> 
 
-That way the separate fix won't be necessary any more, will it?
+> 
+> It will be easy if you have some test branch to avoid dependecies on
+> other patches.
+
+Thanks,
+Srinivas
+
+> 
+> 
+
