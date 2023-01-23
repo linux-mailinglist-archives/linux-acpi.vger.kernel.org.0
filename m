@@ -2,187 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B59AB678189
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 17:35:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CE32678192
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 17:36:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231795AbjAWQfA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Jan 2023 11:35:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37158 "EHLO
+        id S233203AbjAWQgU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Jan 2023 11:36:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233190AbjAWQez (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 11:34:55 -0500
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 027703A99
-        for <linux-acpi@vger.kernel.org>; Mon, 23 Jan 2023 08:34:55 -0800 (PST)
-Received: by mail-pl1-x62a.google.com with SMTP id jm10so11901837plb.13
-        for <linux-acpi@vger.kernel.org>; Mon, 23 Jan 2023 08:34:54 -0800 (PST)
+        with ESMTP id S233194AbjAWQgT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 11:36:19 -0500
+Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2087F2B2A3;
+        Mon, 23 Jan 2023 08:36:17 -0800 (PST)
+Received: by mail-qt1-x831.google.com with SMTP id x5so10090848qti.3;
+        Mon, 23 Jan 2023 08:36:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
+        d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=5tRrnShx/n2WV80skDnao7xhF7peDKBZlfo3A+0HJ+8=;
-        b=Fd0tthzhcOpkSsgJzr7d0TUgy7wlmd6tr+eVBZ5h3Z+ebUeKm25KnNFEj90dWg1Qh4
-         SEOJdEWI3mwtLa3vrzx60MKUmGClkeep1wEqKY/7fJiKV/EvmFPQvRoFL5l4IveetbAu
-         rakuLZ25VxKU7H+/NNIq7FjNrVcfti2nnj8/U=
+        bh=QR7e4YRCVj8cKg8ngMh755LkWTsMzsOiwqZAsVidrUs=;
+        b=Ts8b1aes1Iz/bEXZEyHKUidQtM4BDBQsn8ziWe4lTG5BCuBHABuubzbDOghuMiBmWI
+         1nFhKxlIYhCxwKEsfty0hMl6HlUYideBjuvg8Wx5Yzz8F6cb6crRYVq+YM7KmXPiYnGT
+         iureZG41yzWGxcUhv03P0J7iyQHR4SlofzkhRC2nfLC7/hs3Heatjl+hvSjP8Km7JtyM
+         p9vWmavNbYp6lrhDYFFTqAcoYUTMeS8TqmaiKaO+cfjVvhID3tPMwPA1DruzMWmbcnmN
+         3zrLbtpZR0PeSUi78sLnLZlxzkhPNhKrWjXQCuWcr41s1MAyg7wC3NDnAK6y8Yn83BBN
+         zoVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=5tRrnShx/n2WV80skDnao7xhF7peDKBZlfo3A+0HJ+8=;
-        b=CswYLzT8b0tVz8NUSmEI5kpG6yMZvZSd6QRTitDp0FAdowy9dFc52mdiHhX3p+dxor
-         yoh+BmSSb+qWHRHnNyM7GeTiXHB0NAqw+NHnINCzIhfHqfMvWHl9iilJ2NTKi6GbZraD
-         otsvYMowwPrxDlSxVemkavAmgfBdljLYmz9Z7glBuH22cerKQ2OlxuDdC7y/01AXZWDu
-         gcqdaV9Aa9Q4Tj9Ls/g8xKSv6SQtTK6jKZ/CNi0WImjkjRjtRi8f9xebX+ufKTQvDAxZ
-         fIm0ccUFxUMOcgK1LyBr9g9WYlZYAKWCZzp4t5YFiirLtyvxwqCWsK0QXFcoMCTMQjw+
-         wE1Q==
-X-Gm-Message-State: AFqh2krRh8tRKP8ggrhGotBzz19FVqQNYc0ZsCsIVtzpO4H0OgIA0ngN
-        vqVRV6SYy7RO+MMf1OdRuRkBP/jvP4vHcW7p
-X-Google-Smtp-Source: AMrXdXs3ODLFg0v1V+neuI8Zy3h9pf+E+GNgiPJWRoHtmDOjCfza0nRe/52N4xX1INkjgBhCX3j7QQ==
-X-Received: by 2002:a17:902:cf4b:b0:189:76ef:e112 with SMTP id e11-20020a170902cf4b00b0018976efe112mr28720848plg.41.1674491694348;
-        Mon, 23 Jan 2023 08:34:54 -0800 (PST)
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com. [209.85.214.174])
-        by smtp.gmail.com with ESMTPSA id x5-20020a1709029a4500b00192a04bc620sm4203192plv.295.2023.01.23.08.34.52
-        for <linux-acpi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Jan 2023 08:34:52 -0800 (PST)
-Received: by mail-pl1-f174.google.com with SMTP id d9so11926262pll.9
-        for <linux-acpi@vger.kernel.org>; Mon, 23 Jan 2023 08:34:52 -0800 (PST)
-X-Received: by 2002:a17:90a:1:b0:225:cb85:673d with SMTP id
- 1-20020a17090a000100b00225cb85673dmr2499659pja.184.1674491691901; Mon, 23 Jan
- 2023 08:34:51 -0800 (PST)
+        bh=QR7e4YRCVj8cKg8ngMh755LkWTsMzsOiwqZAsVidrUs=;
+        b=ayI5IHIOEJiXgf3pbaDCZJEbploYrqyBXJ2+Y1QVuOKSzWE2zrJ62+uewRcSTJ8fEC
+         pIK2qB3U1noM+Ez4pUampwyyZV0FgG/9NpiD3XHnIQ2K83wrztmV3cwmbjzow5UYSCJI
+         DPXRt6t/yEIo1tCYMjMqLjS519TfxvCdb9IJkQh1aHg66/o/8NRx1OsWe1+c5NPbd+LE
+         CUSoV1b9BIGEyQEsMXFZhbCdmAmokLghp7Y+Hct6wpqbRhoGBuMb9OG3wLGoiRfzQ3ky
+         zwKHxI6PBWtEHoZnDuvum595TWs/MSd3qKMKpNwECtjOzukkYaxi9vdfKisl0iZKNdCe
+         M8+g==
+X-Gm-Message-State: AFqh2kpWZ3EsMacFAf00ybILAE2zDXjftBfbC6+rImEgI1tMVrqhRH3G
+        70OQDcriD1AWzu7z6ylSYGtZQvGgZL0Abm7DWaw=
+X-Google-Smtp-Source: AMrXdXs0Rd/0e9T7NpAi8gCcnF3rB9VsJIdkEbxgrSw3F0BX1sNrEqBKsP6vf/PM+aXUvnPiZMXw6X7/8x/SFcvOvus=
+X-Received: by 2002:ac8:6e81:0:b0:3b6:3c45:ada4 with SMTP id
+ c1-20020ac86e81000000b003b63c45ada4mr1144928qtv.481.1674491776071; Mon, 23
+ Jan 2023 08:36:16 -0800 (PST)
 MIME-Version: 1.0
-References: <20230121134812.16637-1-mario.limonciello@amd.com>
- <20230121134812.16637-3-mario.limonciello@amd.com> <CAMRc=Meeiix1BuPi81Ad08yePvd7U5S-AVNwU+vYUHv2VcDiEQ@mail.gmail.com>
- <CAHQZ30Dgs=ScuQ2MkNkuHyZNC1wwaBDkMhcvh9dt3oAppTKBbw@mail.gmail.com> <MN0PR12MB61017872AB3769624CE2A49CE2C89@MN0PR12MB6101.namprd12.prod.outlook.com>
-In-Reply-To: <MN0PR12MB61017872AB3769624CE2A49CE2C89@MN0PR12MB6101.namprd12.prod.outlook.com>
-From:   Raul Rangel <rrangel@chromium.org>
-Date:   Mon, 23 Jan 2023 09:34:40 -0700
-X-Gmail-Original-Message-ID: <CAHQZ30DPW6xERd80R=5DFhykvkyOHQfG1=om8CfWNsHeigHu9g@mail.gmail.com>
-Message-ID: <CAHQZ30DPW6xERd80R=5DFhykvkyOHQfG1=om8CfWNsHeigHu9g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] gpiolib-acpi: Don't set GPIOs for wakeup in S3 mode
-To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Nathan Smythe <ncsmythe@scruboak.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Mark Hasemeyer <markhas@chromium.org>
+References: <20230123113750.462144-1-hdegoede@redhat.com> <20230123113750.462144-3-hdegoede@redhat.com>
+In-Reply-To: <20230123113750.462144-3-hdegoede@redhat.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 23 Jan 2023 18:35:39 +0200
+Message-ID: <CAHp75VeGo7toEdcAxJ7TNxGxTVx9OSD85yLrRbJXObe8j+O_sA@mail.gmail.com>
+Subject: Re: [PATCH 2/3] platform/x86: apple-gmux: Add apple_gmux_detect() helper
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Aditya Garg <gargaditya08@live.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Lukas Wunner <lukas@wunner.de>, linux-acpi@vger.kernel.org,
+        Andy Shevchenko <andy@infradead.org>,
+        platform-driver-x86@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 23, 2023 at 9:07 AM Limonciello, Mario
-<Mario.Limonciello@amd.com> wrote:
+On Mon, Jan 23, 2023 at 1:38 PM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> [Public]
+> Add a new (static inline) apple_gmux_detect() helper to apple-gmux.h
+> which can be used for gmux detection instead of apple_gmux_present().
 >
+> The latter is not really reliable since an ACPI device with a HID
+> of APP000B is present on some devices without a gmux at all, as well
+> as on devices with a newer (unsupported) MMIO based gmux model.
 >
->
-> > -----Original Message-----
-> > From: Raul Rangel <rrangel@chromium.org>
-> > Sent: Monday, January 23, 2023 09:55
-> > To: Bartosz Golaszewski <brgl@bgdev.pl>
-> > Cc: Limonciello, Mario <Mario.Limonciello@amd.com>; Mika Westerberg
-> > <mika.westerberg@linux.intel.com>; Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com>; Linus Walleij
-> > <linus.walleij@linaro.org>; Dmitry Torokhov <dmitry.torokhov@gmail.com>;
-> > Benjamin Tissoires <benjamin.tissoires@redhat.com>; Wolfram Sang
-> > <wsa@kernel.org>; Rafael J. Wysocki <rafael.j.wysocki@intel.com>; Nathan
-> > Smythe <ncsmythe@scruboak.org>; linux-gpio@vger.kernel.org; linux-
-> > acpi@vger.kernel.org; linux-kernel@vger.kernel.org; Mark Hasemeyer
-> > <markhas@chromium.org>
-> > Subject: Re: [PATCH 2/2] gpiolib-acpi: Don't set GPIOs for wakeup in S3 mode
-> >
-> > On Mon, Jan 23, 2023 at 8:03 AM Bartosz Golaszewski <brgl@bgdev.pl>
-> > wrote:
-> > >
-> > > On Sat, Jan 21, 2023 at 2:48 PM Mario Limonciello
-> > > <mario.limonciello@amd.com> wrote:
-> > > >
-> > > > commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
-> > > > adjusted the policy to enable wakeup by default if the ACPI tables
-> > > > indicated that a device was wake capable.
-> > > >
-> > > > It was reported however that this broke suspend on at least two
-> > System76
-> > > > systems in S3 mode and two Lenovo Gen2a systems, but only with S3.
-> > > > When the machines are set to s2idle, wakeup behaves properly.
-> > > >
-> > > > Configuring the GPIOs for wakeup with S3 doesn't work properly, so only
-> > > > set it when the system supports low power idle.
-> > > >
-> > > > Fixes: 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
-> > > > Fixes: b38f2d5d9615c ("i2c: acpi: Use ACPI wake capability bit to set
-> > wake_irq")
-> > > > Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2357
-> > > > Link: https://bugzilla.redhat.com/show_bug.cgi?id=2162013
-> > > > Reported-by: Nathan Smythe <ncsmythe@scruboak.org>
-> > > > Tested-by: Nathan Smythe <ncsmythe@scruboak.org>
-> > > > Suggested-by: Raul Rangel <rrangel@chromium.org>
-> > > > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > > > ---
-> > > >  drivers/gpio/gpiolib-acpi.c | 3 ++-
-> > > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-> > > > index 9ef0f5641b521..17c53f484280f 100644
-> > > > --- a/drivers/gpio/gpiolib-acpi.c
-> > > > +++ b/drivers/gpio/gpiolib-acpi.c
-> > > > @@ -1104,7 +1104,8 @@ int acpi_dev_gpio_irq_wake_get_by(struct
-> > acpi_device *adev, const char *name, in
-> > > >                                 dev_dbg(&adev->dev, "IRQ %d already in use\n", irq);
-> > > >                         }
-> > > >
-> > > > -                       if (wake_capable)
-> > > > +                       /* avoid suspend issues with GPIOs when systems are using
-> > S3 */
-> > > > +                       if (wake_capable && acpi_gbl_FADT.flags &
-> > ACPI_FADT_LOW_POWER_S0)
-> > > >                                 *wake_capable = info.wake_capable;
-> > > >
-> > > >                         return irq;
-> > > > --
-> > > > 2.34.1
-> > > >
-> > >
-> > > Applied, thanks!
-> > >
-> > > Bart
-> >
-> >
-> > We still need to figure out a proper fix for this. If you read my post
-> > here: https://gitlab.freedesktop.org/drm/amd/-/issues/2357#note_1732372
-> > I think we misinterpreted what the SharedAndWake bit is used for. To
-> > me it sounds like it's only valid for HW Reduced ACPI platforms, and
-> > S0ix. My changes made it so we call `dev_pm_set_wake_irq` when the
-> > Wake bit is set. Does anyone have any additional context on the Wake
-> > bit? I think we either need to make `dev_pm_set_wake_irq` (or a
-> > variant) only enable the wake on S0i3, or we can teach the ACPI
-> > subsystem to manage arming the IRQ's wake bit. Kind of like we already
-> > manage the GPE events for the device.
->
-> There is an FADT flag for HW reduced (ACPI_FADT_HW_REDUCED).  So
-> maybe something on top of my change to look at that too?
->
-> IE:
-> if (wake_capable && (acpi_gbl_FADT.flags & (ACPI_FADT_LOW_POWER_S0 | ACPI_FADT_HW_REDUCED)
+> This causes apple_gmux_present() to return false-postives on
 
-The problem with the ACPI_FADT_LOW_POWER_S0 FADT flag is that it
-defines if S0ix is supported. That's not mutually exclusive with S3.
-So we really need a runtime check to see which suspend mode we are
-entering.
+positives
+
+> a number of different Apple laptop models.
+>
+> This new helper uses the same probing as the actual apple-gmux
+> driver, so that it does not return false positives.
+>
+> To avoid code duplication the gmux_probe() function of the actual
+> driver is also moved over to using the new apple_gmux_detect() helper.
+
+...
+
+> +       if (!apple_gmux_detect(pnp, &indexed)) {
+> +               pr_info("gmux device not present\n");
+
+You may start using dev_info(&pnp->dev, ...) if I'm not mistaken.
+
+> +               return -ENODEV;
+> +       }
+
+...
+
+> +static inline bool apple_gmux_detect(struct pnp_dev *pnp_dev, bool *indexed_ret)
+> +{
+> +       u8 ver_major, ver_minor, ver_release;
+> +       struct resource *res;
+> +       bool indexed = false;
+> +
+> +       if (!pnp_dev) {
+> +               struct acpi_device *adev;
+> +               struct device *dev;
+> +
+> +               adev = acpi_dev_get_first_match_dev(GMUX_ACPI_HID, NULL, -1);
+> +               if (!adev)
+> +                       return false;
+> +
+> +               dev = acpi_get_first_physical_node(adev);
+> +               if (!dev)
+
+I remember I saw something like this in your tree(?). I hope it's not
+pending upstream (yet) because of a leak here. Don't forget to call
+acpi_dev_put() after you finish with adev. Recently I have fixed a
+bunch of similar issues in ASoC Intel.
+
+> +                       return false;
+> +
+> +               pnp_dev = to_pnp_dev(dev);
+> +       }
+> +
+> +       res = pnp_get_resource(pnp_dev, IORESOURCE_IO, 0);
+> +       if (!res)
+> +               return false;
+> +
+> +       if (resource_size(res) < GMUX_MIN_IO_LEN)
+> +               return false;
+> +
+> +       /*
+> +        * Invalid version information may indicate either that the gmux
+> +        * device isn't present or that it's a new one that uses indexed io.
+> +        */
+> +       ver_major = inb(res->start + GMUX_PORT_VERSION_MAJOR);
+> +       ver_minor = inb(res->start + GMUX_PORT_VERSION_MINOR);
+> +       ver_release = inb(res->start + GMUX_PORT_VERSION_RELEASE);
+> +       if (ver_major == 0xff && ver_minor == 0xff && ver_release == 0xff) {
+> +               indexed = apple_gmux_is_indexed(res->start);
+> +               if (!indexed)
+> +                       return false;
+> +       }
+> +
+> +       if (indexed_ret)
+> +               *indexed_ret = indexed;
+> +
+> +       return true;
+> +}
+
+-- 
+With Best Regards,
+Andy Shevchenko
