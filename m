@@ -2,179 +2,169 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BA27677EB6
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 16:06:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FE54677EBD
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 16:07:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231584AbjAWPG0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Jan 2023 10:06:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35288 "EHLO
+        id S229557AbjAWPHv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Jan 2023 10:07:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229956AbjAWPG0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 10:06:26 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A9BD29154
-        for <linux-acpi@vger.kernel.org>; Mon, 23 Jan 2023 07:05:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1674486329;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=fTYVbkyKdvuEmrdt1Pb2ChZH1pUOd1K3CR8rzj7RrTc=;
-        b=E6jCVbLpIIaeXD8Qak1Msgp/XC2QIPAayXqHPOwv3wG+5mE4kbxb1XTz782Bv3Oxc7LrDx
-        iriICmnsq5Jgn8w6uHvQLrIgnCaGdlei34fq17/UE3kWmOk9dvXN+wJBzeTWL2GV2lXwds
-        guZiScQdIjdXy1LuN4eoTNERpluGFVs=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-323-NKoqlacFP9yMf29SWP-wxA-1; Mon, 23 Jan 2023 10:05:27 -0500
-X-MC-Unique: NKoqlacFP9yMf29SWP-wxA-1
-Received: by mail-ed1-f70.google.com with SMTP id s3-20020a50ab03000000b0049ec3a108beso6143004edc.7
-        for <linux-acpi@vger.kernel.org>; Mon, 23 Jan 2023 07:05:27 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fTYVbkyKdvuEmrdt1Pb2ChZH1pUOd1K3CR8rzj7RrTc=;
-        b=Azv7TPPDw3PBijJDDdxVIuoXYFRRfOMqL3GjGN/iNxi/lXyS1DzP1v1k6XWjE7qLSl
-         WuLQVpdiVaKq9P34/XM4r7frU/eWDq+1oN0LEIDMiZSPDkeMLX2Pc9oaTfKBCbFR9igm
-         KPrxb8jT6b63cvsSOmrZjSpMut7FqOWCVCiV1/A4F5sP+RWgbIVDVdBB+2CRPZaNSckw
-         aqyPApTCSnynXWqyuP6MNSptNmJH2ubYZPwCkVnRV1/mJNBE+pVk9p24wRSlARDqYZ8L
-         h9Ni+PwV8IgIyCSjxFzQNW5icBaDOSd7UVWs3kcplHZUrELWct6zKttYo4+VAFDlBuv4
-         yGRA==
-X-Gm-Message-State: AFqh2krCJFjQyCWsindcZZQmixe9Pobamwp1DvG6QIDZJ7fC+CHyr9CY
-        InH3EODdI8HWtRS4lJOG8EOUaUEaDPnxop2DPPT1IUgh/1FbB1Jl/Uy55Gv3hRN9oIeNdzaQyde
-        eDQzOLu9bMYU1c+yA1Gcjeg==
-X-Received: by 2002:a17:906:6d9:b0:7c0:bbab:22e5 with SMTP id v25-20020a17090606d900b007c0bbab22e5mr26447567ejb.16.1674486326734;
-        Mon, 23 Jan 2023 07:05:26 -0800 (PST)
-X-Google-Smtp-Source: AMrXdXtaGb80KCnrGSq57l2+0T4QNJMwpzSTqJEVKoqBS/+WGl59/L/q9++NXn4Ao5pSBcZKRJIYwA==
-X-Received: by 2002:a17:906:6d9:b0:7c0:bbab:22e5 with SMTP id v25-20020a17090606d900b007c0bbab22e5mr26447546ejb.16.1674486326442;
-        Mon, 23 Jan 2023 07:05:26 -0800 (PST)
-Received: from [10.40.98.142] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id y19-20020a1709060a9300b0084debc351b3sm18942475ejf.20.2023.01.23.07.05.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Jan 2023 07:05:25 -0800 (PST)
-Message-ID: <8d087bd5-175a-67ab-22c6-1eb8e72c0485@redhat.com>
-Date:   Mon, 23 Jan 2023 16:05:25 +0100
+        with ESMTP id S231480AbjAWPHu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 10:07:50 -0500
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F1391116E;
+        Mon, 23 Jan 2023 07:07:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674486468; x=1706022468;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xzO2n8wSt+6WPLw+7OG0XeAurCZVYHzRVWciYTKK4pg=;
+  b=NhF3P+x+betDiAkIQKDiP7JwxgOz7YAUdNX7GVmL137UCkcli6xY3bF5
+   N+SqRzEpGoZ1JQSFj+UeuoXyCnU3/E24iG0201vKKdt1qNjRnY9dWPYOK
+   DtMVOkFHxL9YRsb0/00KtOj8EM2pr9y+tJYXlz04vndYwFcTKnCs3+AR9
+   sQ/HVMCJGoVswr0I0kVv5tFJdoyzRQYQnFR+RNKGi+F3cuzJ5/naGt+ID
+   Hpfn4zsfMIFo+245a8ytH9riQqYMf6txzlGKaAdtzYjxb4JOfpmkCI/CI
+   hNO04wR98wvLdfkOCx++ZjG3kbzO2xn07DIxZy7gr7xbuDMkSffBuJsBJ
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10598"; a="353324637"
+X-IronPort-AV: E=Sophos;i="5.97,239,1669104000"; 
+   d="scan'208";a="353324637"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2023 07:07:12 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10598"; a="804168116"
+X-IronPort-AV: E=Sophos;i="5.97,239,1669104000"; 
+   d="scan'208";a="804168116"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga001.fm.intel.com with ESMTP; 23 Jan 2023 07:07:10 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pJyPd-00DnDu-1F;
+        Mon, 23 Jan 2023 17:07:09 +0200
+Date:   Mon, 23 Jan 2023 17:07:09 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
+        rafael@kernel.org, heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH v2 2/8] ACPI: property: Parse _CRS CSI-2 descriptor
+Message-ID: <Y86inXQ+nEoFiosr@smile.fi.intel.com>
+References: <20230123134617.265382-1-sakari.ailus@linux.intel.com>
+ <20230123134617.265382-3-sakari.ailus@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH 0/3] ACPI: video/apple-gmux: Improve apple-gmux backlight
- detection
-Content-Language: en-US
-To:     Lukas Wunner <lukas@wunner.de>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Aditya Garg <gargaditya08@live.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        linux-acpi@vger.kernel.org, Andy Shevchenko <andy@infradead.org>,
-        platform-driver-x86@vger.kernel.org,
-        Emmanouil Kouroupakis <kartebi@gmail.com>
-References: <20230123113750.462144-1-hdegoede@redhat.com>
- <20230123120900.GA1924@wunner.de>
- <255bf66e-eb27-af2b-9a13-8b7d4b7b3c46@redhat.com>
- <20230123135827.GB2649@wunner.de>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20230123135827.GB2649@wunner.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230123134617.265382-3-sakari.ailus@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Mon, Jan 23, 2023 at 03:46:11PM +0200, Sakari Ailus wrote:
+> Parse newly added ACPI _CRS CSI-2 descriptor for CSI-2 and camera
+> configuration. For now, only figure out where the descriptor is present in
+> order to allow adding information from it to related devices.
 
-On 1/23/23 14:58, Lukas Wunner wrote:
-> On Mon, Jan 23, 2023 at 01:38:37PM +0100, Hans de Goede wrote:
->> On 1/23/23 13:09, Lukas Wunner wrote:
->>> On Mon, Jan 23, 2023 at 12:37:47PM +0100, Hans de Goede wrote:
->>>> Some apple laptop models have an ACPI device with a HID of APP000B
->>>> and that device has an IO resource (so it does not describe the new
->>>> unsupported MMIO based gmux type), but there actually is no gmux
->>>> in the laptop at all.
->>>>
->>>> This patch-series improves the drivers/acpi/video_detect.c so that
->>>> it no longer tries to use the non present gmux in this case.
->>>>
->>>> Note I'm still waiting for testing feedback from the reporter of
->>>> this problem. But from the logs the problem is clear
->>>> (the logs show: "apple_gmux: gmux device not present")
->>>
->>> Please provide a link to the original report.  I would also like to
->>> know the exact MacBook model used and I would like to see full dmesg
->>> output as well as an acpidump.
->>
->> I only have a report by private email. This does include full dmesg
->> output and an acpidump. I will forward this to you in a private
->> email.
->>
->> The reporter describes their model as a macbookpro8,1.
->>
->>> What you're saying here is that there's a fake APP000B device present
->>> in DSDT
->>
->> Yes that is exactly what I'm saying.
-> 
-> That's a 2011 13" MacBook Pro which indeed does not have dual GPUs.
-> 
-> I searched for other affected models and this seems to be more common
-> than I thought:
-> 
-> MacBookPro5,4
-> https://pastebin.com/8Xjq7RhS
-> 
-> MacBookPro8,1
-> https://linux-hardware.org/?probe=e513cfbadb&log=dmesg
-> 
-> MacBookPro9,2
-> https://bugzilla.kernel.org/attachment.cgi?id=278961
-> 
-> MacBookPro10,2
-> https://lkml.org/lkml/2014/9/22/657
-> 
-> MacBookPro11,2
-> https://forums.fedora-fr.org/viewtopic.php?id=70142
-> 
-> MacBookPro11,4
-> https://raw.githubusercontent.com/im-0/investigate-card-reader-suspend-problem-on-mbp11.4/master/test-16/dmesg
-> 
-> These are 13" and 15" models from the pre-retina and retina era
-> (2009 - 2015).  None of them have dual GPUs.  (Only a subset of
-> the 15" and 17" models had dual GPUs.)  Apple sloppily included
-> a GMUX device on all of them and it wasn't a problem so far
-> because the gmux driver detects non-presence and bails out,
-> but it throws off the new backlight algorithm.
-> 
-> This is really sad. :(
-> 
-> Please add a Reported-by to your commits
+...
 
-I was about to say that Emmanouil may want to keep their email
-private. But I see you've already added them to the Cc, so
-now the email is part of the platform-driver-x86 archives.
+> +	memcpy(inst->remote_name, csi2->resource_source.string_ptr,
+> +	       csi2->resource_source.string_length);
 
-Emmanouil, is it ok if I add a line like this:
+Why don't we use strscpy()? Is it really strings? Or is it some abuse of
+the ACPI object type?
 
-Reported-by: Emmanouil Kouroupakis <kartxxx@gmail.com>
+...
 
-to the commit message of v2 of the patches ? This gives you credit
-for reporting the bug, but it also exposes your email address
-in public places.
+> +static acpi_status scan_check_crs_csi2(acpi_handle handle, u32 nesting_level,
+> +				       void *context, void **ret)
+> +{
+> +	struct scan_check_crs_csi2_context inst_context = {
+> +		.handle = handle,
+> +		.res_list = LIST_HEAD_INIT(inst_context.res_list),
+> +	};
+> +	struct list_head *list = context;
+> +	struct crs_csi2 *csi2;
 
-> as well as the list I've
-> provided above so that we've got a complete record in the git history.
+> +	INIT_LIST_HEAD(&inst_context.res_list);
 
-Ack, I'll add the list of devices to v2 of the patches.
+Why do you need this? I don't see that variable is static...
 
-Regards,
+> +	acpi_walk_resources(handle, METHOD_NAME__CRS,
+> +			    scan_check_crs_csi2_instance, &inst_context);
+> +
+> +	if (list_empty(&inst_context.res_list))
+> +		return AE_OK;
+> +
+> +	csi2 = kmalloc(sizeof(*csi2), GFP_KERNEL);
+> +	if (!csi2)
+> +		return AE_OK;
+> +
+> +	csi2->handle = handle;
+> +	list_replace(&inst_context.res_list, &csi2->buses);
+> +	list_add(&csi2->list, list);
 
-Hans
+Hmm... Can list_swap() be used here?
+
+> +	return AE_OK;
+> +}
+
+...
+
+> +	/*
+> +	 * Figure out how much temporary storage we need for counting
+> +	 * connections in each device.
+> +	 */
+> +	list_for_each_entry(csi2, &crs_csi2_handles, list) {
+> +		struct crs_csi2_instance *inst;
+> +
+> +		handle_count++;
+
+> +		list_for_each_entry(inst, &csi2->buses, list)
+> +			handle_count++;
+
+list_count_nodes()?
+
+> +	}
+
+...
+
+> +	sort(handle_refs, handle_count, sizeof(*handle_refs), crs_handle_cmp,
+> +	     NULL);
+
+Yes, I would leave it on one line.
+
+...
+
+> +		if (check_mul_overflow(sizeof(*ads->ports) +
+> +				       sizeof(*ads->nodes) * 2 +
+> +				       sizeof(*ads->nodeptrs) * 2,
+> +				       (size_t)this_count, &alloc_size) ||
+
+Can this_count be of size_t type from the beginning?
+
+> +		    check_add_overflow(sizeof(*ads) + sizeof(*ads->nodes) +
+> +				       sizeof(*ads->nodeptrs) * 2,
+> +				       alloc_size, &alloc_size)) {
+> +			acpi_handle_warn(handle, "too many handles (%u)",
+> +					 this_count);
+> +			continue;
+> +		}
+
+...
+
+> +		ads->nodeptrs = (void *)(ads->nodes +
+> +					 this_count * 2 + 1);
+
+Why this is not on one line? (I have got less than 80).
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
