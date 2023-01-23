@@ -2,26 +2,26 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DCAC678B09
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 23:50:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30B93678B93
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jan 2023 00:01:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233353AbjAWWuB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Jan 2023 17:50:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54178 "EHLO
+        id S231582AbjAWXBD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Jan 2023 18:01:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233356AbjAWWuA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 17:50:00 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B71A193E8;
-        Mon, 23 Jan 2023 14:49:56 -0800 (PST)
+        with ESMTP id S231774AbjAWXA5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 18:00:57 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC8F236FC4;
+        Mon, 23 Jan 2023 15:00:36 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 19AEC61135;
-        Mon, 23 Jan 2023 22:49:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1900C4339B;
-        Mon, 23 Jan 2023 22:49:53 +0000 (UTC)
-Date:   Mon, 23 Jan 2023 17:49:52 -0500
+        by sin.source.kernel.org (Postfix) with ESMTPS id 32AB1CE1802;
+        Mon, 23 Jan 2023 23:00:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACBDDC43445;
+        Mon, 23 Jan 2023 23:00:15 +0000 (UTC)
+Date:   Mon, 23 Jan 2023 18:00:12 -0500
 From:   Steven Rostedt <rostedt@goodmis.org>
 To:     Catalin Marinas <catalin.marinas@arm.com>
 Cc:     Mark Rutland <mark.rutland@arm.com>,
@@ -32,10 +32,11 @@ Cc:     Mark Rutland <mark.rutland@arm.com>,
         revest@chromium.org, robert.moore@intel.com, will@kernel.org
 Subject: Re: [PATCH v3 0/8] arm64/ftrace: Add support for
  DYNAMIC_FTRACE_WITH_CALL_OPS
-Message-ID: <20230123174952.68b4a07e@gandalf.local.home>
-In-Reply-To: <Y86cXUmCn7c76AQY@arm.com>
+Message-ID: <20230123180012.5dba9b04@gandalf.local.home>
+In-Reply-To: <20230123174952.68b4a07e@gandalf.local.home>
 References: <20230123134603.1064407-1-mark.rutland@arm.com>
         <Y86cXUmCn7c76AQY@arm.com>
+        <20230123174952.68b4a07e@gandalf.local.home>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -49,25 +50,36 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 23 Jan 2023 14:40:29 +0000
-Catalin Marinas <catalin.marinas@arm.com> wrote:
+On Mon, 23 Jan 2023 17:49:52 -0500
+Steven Rostedt <rostedt@goodmis.org> wrote:
 
-> Hi Mark,
+> On Mon, 23 Jan 2023 14:40:29 +0000
+> Catalin Marinas <catalin.marinas@arm.com> wrote:
 > 
-> On Mon, Jan 23, 2023 at 01:45:55PM +0000, Mark Rutland wrote:
-> > I'm not sure how we want to merge this, so I've moved the core ftrace
-> > patch to the start of the series so that it can more easily be placed on
-> > a stable branch if we want that to go via the ftrace tree and the rest
-> > to go via arm64.  
+> > Hi Mark,
+> > 
+> > On Mon, Jan 23, 2023 at 01:45:55PM +0000, Mark Rutland wrote:  
+> > > I'm not sure how we want to merge this, so I've moved the core ftrace
+> > > patch to the start of the series so that it can more easily be placed on
+> > > a stable branch if we want that to go via the ftrace tree and the rest
+> > > to go via arm64.    
+> > 
+> > Happy to queue the whole series since Steve acked the ftrace changes.
+> > But I'll put on a stable branch in case there are any conflicts with the
+> > ftrace tree.
+> >   
 > 
-> Happy to queue the whole series since Steve acked the ftrace changes.
-> But I'll put on a stable branch in case there are any conflicts with the
-> ftrace tree.
+> I actually do have a conflict with this patch (I'll post it soon).
 > 
+> I could just cherry pick it from your tree. Linus seems to be OK with that
+> when it's just a single change.
 
-I actually do have a conflict with this patch (I'll post it soon).
+Forget about it. I'll post the patch, but it's not important (we need it
+mostly for something internal, but could possibly be useful to others). It
+can wait a merge window or two to apply it.
 
-I could just cherry pick it from your tree. Linus seems to be OK with that
-when it's just a single change.
+So feel free to take this through your tree, and then I'll add my patch in
+the merge window after that.
 
 -- Steve
+
