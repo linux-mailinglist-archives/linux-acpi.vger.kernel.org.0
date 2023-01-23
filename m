@@ -2,104 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51DC6677F49
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 16:16:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17C57677F8D
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 16:24:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232324AbjAWPQS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Jan 2023 10:16:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40220 "EHLO
+        id S232525AbjAWPY2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Jan 2023 10:24:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232303AbjAWPPw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 10:15:52 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 427AE29437
-        for <linux-acpi@vger.kernel.org>; Mon, 23 Jan 2023 07:15:30 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6F4B7C14;
-        Mon, 23 Jan 2023 07:15:37 -0800 (PST)
-Received: from [10.34.100.128] (pierre123.nice.arm.com [10.34.100.128])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 49C203F5A1;
-        Mon, 23 Jan 2023 07:14:55 -0800 (PST)
-Message-ID: <6fc14182-520b-d3ee-410c-8be3bc98a514@arm.com>
-Date:   Mon, 23 Jan 2023 16:14:56 +0100
+        with ESMTP id S232691AbjAWPYM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 10:24:12 -0500
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A3CE110439;
+        Mon, 23 Jan 2023 07:23:40 -0800 (PST)
+Received: from vm02.corp.microsoft.com (unknown [167.220.196.155])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 0D16B20E2D02;
+        Mon, 23 Jan 2023 07:23:02 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0D16B20E2D02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1674487385;
+        bh=7TNJ2WIfSIYuwj2O7qe++FA04VZR5MAYU2yAGmNDdFA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Wj+eKekO/LSI+nhLw7leLdjlsN8jdoRSQw+pP90GAr0gW5aWiGqydq+tnXYvIQMBF
+         cXu+DGC8Pwlo8YXL9Ubh31tTkXueZYA6nUlxxNSdo11dg5F0956AJXbS3nHofvXzO+
+         vjEfEBB7gPaewIQLfLxzRd9XXQMG+/8LFq7RimDI=
+From:   Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
+        "Brijesh Singh" <brijesh.singh@amd.com>,
+        "Tom Lendacky" <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        linux-crypto@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Len Brown" <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
+        "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org
+Subject: [PATCH v1 0/8] Support ACPI PSP on Hyper-V
+Date:   Mon, 23 Jan 2023 15:22:42 +0000
+Message-Id: <20230123152250.26413-1-jpiotrowski@linux.microsoft.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [bug report] arch_topology: Build cacheinfo from primary CPU
-Content-Language: en-US
-To:     Dan Carpenter <error27@gmail.com>
-Cc:     linux-acpi@vger.kernel.org
-References: <Y86iruJPuwNN7rZw@kili>
-From:   Pierre Gondois <pierre.gondois@arm.com>
-In-Reply-To: <Y86iruJPuwNN7rZw@kili>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello Dan,
-The 'levels' and 'split_levels' variables are initialized through their
-addresses when necessary, so I believe the warning can be ignored.
+This patch series introduces support for discovering AMD's PSP from an ACPI
+table and extends the CCP driver to allow binding to that device on x86. This
+method of PSP discovery is used on Hyper-V when SNP isolation support is
+exposed to the guest. There is no ACPI node associated with this PSP, so after
+parsing the ASPT it is registered with the system as a platform_device.
 
-If you still want to have the variables initialized, please let me know and I
-will send a patch,
+I was not quite sure about where to place some of this code but opted for
+placing the ASPT parsing code in drivers/acpi/ and the platform device creation
+in arch/x86/ because configuring the irq for the PSP through the ACPI interface
+requires poking at bits from the architectural vector domain. This was also
+inspired by the sev-guest device.
 
-Regards,
-Pierre
+This series is a prerequisite for nested SNP-host support on Hyper-V but is
+independent of the SNP-host support patch set. Hyper-V only supports nested
+SEV-SNP (not SEV or SEV-ES) so the PSP only supports a subset of the full PSP
+command set. Without SNP-host support (which is not upstream yet), the only
+PSP command that will succeed is SEV_PLATFORM_STATUS.
 
-On 1/23/23 16:07, Dan Carpenter wrote:
-> Hello Pierre Gondois,
-> 
-> The patch 5944ce092b97: "arch_topology: Build cacheinfo from primary
-> CPU" from Jan 4, 2023, leads to the following Smatch static checker
-> warning:
-> 
-> drivers/base/cacheinfo.c:440 fetch_cache_info()	error: uninitialized symbol 'levels'.
-> drivers/base/cacheinfo.c:447 fetch_cache_info() error: uninitialized symbol 'split_levels'.
-> 
-> drivers/base/cacheinfo.c
->      424 int fetch_cache_info(unsigned int cpu)
->      425 {
->      426         struct cpu_cacheinfo *this_cpu_ci;
->      427         unsigned int levels, split_levels;
->      428         int ret;
->      429
->      430         if (acpi_disabled) {
->      431                 ret = init_of_cache_level(cpu);
->      432                 if (ret < 0)
->      433                         return ret;
->      434         } else {
->      435                 ret = acpi_get_cache_info(cpu, &levels, &split_levels);
->      436                 if (ret < 0)
->      437                         return ret;
-> 
-> Apparently, I must have CONFIG_ACPI_PPTT disabled.
-> 
->      438
->      439                 this_cpu_ci = get_cpu_cacheinfo(cpu);
-> --> 440                 this_cpu_ci->num_levels = levels;
->                                                    ^^^^^^
-> Unititialized.
-> 
->      441                 /*
->      442                  * This assumes that:
->      443                  * - there cannot be any split caches (data/instruction)
->      444                  *   above a unified cache
->      445                  * - data/instruction caches come by pair
->      446                  */
->      447                 this_cpu_ci->num_leaves = levels + split_levels;
->      448         }
->      449         if (!cache_leaves(cpu))
->      450                 return -ENOENT;
->      451
->      452         return allocate_cache_info(cpu);
->      453 }
-> 
-> regards,
-> dan carpenter
+Jeremi Piotrowski (8):
+  include/acpi: add definition of ASPT table
+  ACPI: ASPT: Add helper to parse table
+  x86/psp: Register PSP platform device when ASP table is present
+  x86/psp: Add IRQ support
+  crypto: cpp - Bind to psp platform device on x86
+  crypto: ccp - Add vdata for platform device
+  crypto: ccp - Skip DMA coherency check for platform psp
+  crypto: ccp - Allow platform device to be psp master device
+
+ arch/x86/kernel/Makefile          |   2 +-
+ arch/x86/kernel/psp.c             | 213 ++++++++++++++++++++++++++++++
+ drivers/acpi/Makefile             |   1 +
+ drivers/acpi/aspt.c               | 104 +++++++++++++++
+ drivers/crypto/ccp/sp-dev.c       |  67 +++++++++-
+ drivers/crypto/ccp/sp-dev.h       |  16 ++-
+ drivers/crypto/ccp/sp-pci.c       |  48 -------
+ drivers/crypto/ccp/sp-platform.c  |  73 +++++++++-
+ include/acpi/actbl1.h             |  46 +++++++
+ include/linux/platform_data/psp.h |  32 +++++
+ 10 files changed, 544 insertions(+), 58 deletions(-)
+ create mode 100644 arch/x86/kernel/psp.c
+ create mode 100644 drivers/acpi/aspt.c
+ create mode 100644 include/linux/platform_data/psp.h
+
+-- 
+2.25.1
+
