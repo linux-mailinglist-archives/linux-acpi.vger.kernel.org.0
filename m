@@ -2,141 +2,178 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D54226779E8
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 12:15:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D906D6779EE
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 12:15:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231516AbjAWLPh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Jan 2023 06:15:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50524 "EHLO
+        id S231547AbjAWLP5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Jan 2023 06:15:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231389AbjAWLPg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 06:15:36 -0500
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24F75A256
-        for <linux-acpi@vger.kernel.org>; Mon, 23 Jan 2023 03:15:35 -0800 (PST)
-Received: by mail-wr1-x430.google.com with SMTP id z5so10440715wrt.6
-        for <linux-acpi@vger.kernel.org>; Mon, 23 Jan 2023 03:15:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3XkQ9oUZTbY4eAuJQ4rHHOrVFOAzENNJtkSeiTWtEh0=;
-        b=wUtzcgACzqkGpAo+dlIAkkVs6Qga9eBS/4luyVihK9aL8B6be54Fdz8ErF4ZFZJOJH
-         GA6F/QEDPB/5QQUKt47SnMBOxvtVP+LU6haiTyp5PPUSCD+9aeAh4mMyKKimLsa2Dz5e
-         wpLH8Y9Q/2I8HkCyurp36dJyHl53vmT38wyKT0U4ON6cJy8FYY0RdjBquA3/ewmyoYR1
-         5nefyRK7/5LFic8ciEONbsrNRkWjBOZyryDHEaPZ0A2AK/J4FcEeQoQcUTCV13YPJC7l
-         1+sb3j5YU4Op9lqoer1aeogDqiVDX9aQfwuFTepkhNzn9IIHcI4ju8wLBQYlkyplx0qn
-         tQEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3XkQ9oUZTbY4eAuJQ4rHHOrVFOAzENNJtkSeiTWtEh0=;
-        b=1PWcP1ql705ijoZ0BXogBJl6Q5N8jRoYG0OJjFu1hLQEMKJ7vccaGkpxBJUkXvzwte
-         Lohjn0SaNTsmcJvJBwXLBhzCyiMSoyJaZDQSD4bzPLxCMzVLLfbUKudPlR2yNeWTmmXo
-         lKjY+O/IcDaLE0NbtgQVpIdCsN9AqdJAovHAtW2gjuQ7XsP1kgdFiKfcyzIRNr3JvUvh
-         HwG+qouCKJQbuOf9f44OD5k6CQ5BnpSlPVi7FyOIzc13St+yNlQsYMpjhr5/+vnifBx/
-         C3nChdf8D1+DEK6xAR+Z3oXu9gE+e3es+B0P2rIzBMn5aT1vBS3aD/36RcbfsGDDOLcb
-         JYrg==
-X-Gm-Message-State: AFqh2koqASHAaiS0ee2pAY6Pz+pGny1FJKao6dOA77CabSQiwYW/0DhX
-        a2Hyp/L5m7pRDKHB2G8ALHXW2A==
-X-Google-Smtp-Source: AMrXdXtDML4IHtodIbfm9IsqYkufHLWTDtMNlTsWu6FPw06LoyDhO1IrZK4zXFMaz4QiNCrwC+nxTw==
-X-Received: by 2002:a5d:5c07:0:b0:2bd:fa1d:5291 with SMTP id cc7-20020a5d5c07000000b002bdfa1d5291mr23368215wrb.67.1674472533568;
-        Mon, 23 Jan 2023 03:15:33 -0800 (PST)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id b9-20020adff909000000b002be5401ef5fsm7908845wrr.39.2023.01.23.03.15.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Jan 2023 03:15:33 -0800 (PST)
-Message-ID: <6a073166-af3c-4867-6237-dca6e03633db@linaro.org>
-Date:   Mon, 23 Jan 2023 12:15:31 +0100
+        with ESMTP id S231694AbjAWLPx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 06:15:53 -0500
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 620E2C173;
+        Mon, 23 Jan 2023 03:15:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674472548; x=1706008548;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=NOX55dF+ZFRgnsP31/lh7fPCVLV26VLen72klqgd68o=;
+  b=IjwtOxyuTSf6+/ZHrKCtlO+B9BaGEeqNZwY6/wJwrAq2+lAzKf0+8TZx
+   Pjb9DTO5M/muTyyXXUYlrArLJYIVTK+YYC3U7fpe2652jpCWSXxcyKVkm
+   WCPe5sGCaOxpnU17niwEGYFU3MsAZrONhGra4fdqoz+mwHsAx1OXrtwxh
+   eZFK2S7PgCjbSBiiMYaKPrB8wnFgao38N2Lw85bzRBZjB25iA7/Y3DiAo
+   Mgu6vRFlJYYRaHxYPfPlRej7jmy35e/jckle/bqkV3Rcz92uWsZiGOAgu
+   PbpS0RDbieIwrCFxgDYTKBFezw+5p48MACYAfyhStI1miykABnH63FgbD
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10598"; a="388371131"
+X-IronPort-AV: E=Sophos;i="5.97,239,1669104000"; 
+   d="scan'208";a="388371131"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2023 03:15:47 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10598"; a="693805792"
+X-IronPort-AV: E=Sophos;i="5.97,239,1669104000"; 
+   d="scan'208";a="693805792"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2023 03:15:46 -0800
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+        by kekkonen.fi.intel.com (Postfix) with SMTP id B762C11F70E;
+        Mon, 23 Jan 2023 13:15:43 +0200 (EET)
+Date:   Mon, 23 Jan 2023 13:15:43 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
+        linux-media@vger.kernel.org, heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH 4/8] ACPI: property: Generate camera swnodes for ACPI and
+ DisCo for Imaging
+Message-ID: <Y85sX/rlWREqFJhv@kekkonen.localdomain>
+References: <20230117122244.2546597-1-sakari.ailus@linux.intel.com>
+ <20230117122244.2546597-5-sakari.ailus@linux.intel.com>
+ <Y8a3xixlrr4AVBjJ@smile.fi.intel.com>
+ <Y8lb1BIh7+4x9hFc@paasikivi.fi.intel.com>
+ <Y8lld1G0qN4qbCUe@smile.fi.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v6 1/3] thermal/acpi: Add ACPI trip point routines
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-pm@vger.kernel.org
-Cc:     rafael@kernel.org, srinivas.pandruvada@linux.intel.com,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        rui.zhang@intel.com, christophe.jaillet@wanadoo.fr,
-        Amit Kucheria <amitk@kernel.org>
-References: <20230120231530.2368330-1-daniel.lezcano@linaro.org>
- <20230120231530.2368330-2-daniel.lezcano@linaro.org>
- <5911499.lOV4Wx5bFT@kreacher>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <5911499.lOV4Wx5bFT@kreacher>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y8lld1G0qN4qbCUe@smile.fi.intel.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 22/01/2023 23:08, Rafael J. Wysocki wrote:
-> On Saturday, January 21, 2023 12:15:28 AM CET Daniel Lezcano wrote:
->> The ACPI specification describes the trip points, the device tree
->> bindings as well.
->>
->> The OF code uses the generic trip point structures.
->>
->> The ACPI has their own trip points structure and uses the get_trip_*
->> ops to retrieve them.
->>
->> We can do the same as the OF code and create a set of ACPI functions
->> to retrieve a trip point description. Having a common code for ACPI
->> will help to cleanup the remaining Intel drivers and get rid of the
->> get_trip_* functions.
->>
->> These changes add the ACPI thermal calls to retrieve the basic
->> information we need to be reused in the thermal ACPI and Intel
->> drivers.
->>
->> The different ACPI functions have the generic trip point structure
->> passed as parameter where it is filled.
->>
->> This structure aims to be the one used by all the thermal drivers and
->> the thermal framework.
->>
->> After this series, a couple of Intel drivers and the ACPI thermal
->> driver will still have their own trip points definition but a new
->> series on top of this one will finish the conversion to the generic
->> trip point handling.
->>
->> This series depends on the generic trip point added to the thermal
->> framework and available in the thermal/linux-next branch.
->>
->>   https://lkml.org/lkml/2022/10/3/456
->>
->> It has been tested on a Intel i7-8650U - x280 with the INT3400, the
->> PCH, ACPITZ, and x86_pkg_temp. No regression observed so far.
->>
->> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
->> Reviewed-by: Zhang Rui <rui.zhang@intel.com>
->> Tested-by: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-> 
-> Co-developed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Also I'm not sure if this version has been tested and reviewed.
-> 
-> There are still a few things to improve in it, but overall I think that
-> something like the patch below would be better - it is fewer lines of code
-> and less duplication.
+Hi Andy,
 
-I'm always in favor of the simplest code, in terms of line of code and 
-readability. I'm perfectly fine with your proposal.
+On Thu, Jan 19, 2023 at 05:44:55PM +0200, Andy Shevchenko wrote:
+> On Thu, Jan 19, 2023 at 03:03:48PM +0000, Sakari Ailus wrote:
+> > On Tue, Jan 17, 2023 at 04:59:18PM +0200, Andy Shevchenko wrote:
+> > > On Tue, Jan 17, 2023 at 02:22:40PM +0200, Sakari Ailus wrote:
+> 
+> ...
+> 
+> > > > +#define GRAPH_PORT_NAME(var, num) \
+> > > > +	(snprintf((var), sizeof(var), "port@%u", (num)) > sizeof(var))
+> > > 
+> > > SWNODE_GRAPH_PORT_NAME_FMT ?
+> > 
+> > The name is not used anywhere else. I would keep it as-is.
+> 
+> It repeats the same string literal which is the part of the firmware node graph
+> representation, right? I think you can rename the above mentioned format macro
+> and use it in your code. We will reduce the possible deviation and amount of
+> points of error.
 
+Ah, I thought you had suggested using a new one. Yes, I'll use the existing
+macro.
+
+> 
+> ...
+> 
+> > > > +	static const char mipi_port_prefix[] = "mipi-img-port-";
+> > > 
+> > > It's harder to read in the code, please put it in place.
+> > 
+> > There are multiple uses of it. It's better there's a single definition.
+> 
+> Yes and without this definition one read exact value of the property without
+> too much brain power, now I need to go first to remember the prefix, then
+> concatenate it without typo in my brain and think about the result.
+
+Still having them exactly the same is of utmost importance and a common
+definition reliably achieves that. What the string actually is is of
+secondary importance.
+
+> 
+> ...
+> 
+> > > > +			port->ep_props[NEXT_PROPERTY(*ep_prop_index,
+> > > > +						     EP_DATA_LANES)] =
+> > > 
+> > > It's hard to read, taking into account that you split on index of the array.
+> > > 
+> > > How much a new monitor costs for you? Maybe I can donate to make you use more
+> > > than 80 from time to time? :-)
+> > 
+> > You know newspaper pages are split into multiple columns for a reason,
+> > similarly web pages with text columns very seldom span the entire page
+> > width. The number of characters per line tends to be less than --- you
+> > might be surprised --- 80. The reason is readability.
+> 
+> Surprisingly to you, the newspaper and the limit is for quick reading the
+> text. The code differs to the SciFi book, for example. And doesn't have
+> same requirements. Code has different tokenisation which you break when
+> splitting in the middle of the token. That's why one line is better than
+> silly 80 characters limit. It _increases_ readability of the *code*.
+
+I disagree. Do you know if studies have been made on the topic?
+
+I can make some a little longer if that makes you happy (depending on other
+comments, too), but I won't make the lines e.g.  200 characters long.
+
+> 
+> > > > +				PROPERTY_ENTRY_U32_ARRAY_LEN("data-lanes",
+> > > > +							     port->data_lanes,
+> > > > +							     num_lanes);
+> 
+> Ditto for all other similar cases.
+> 
+> ...
+> 
+> > > > +		if (!ret)
+> > > 
+> > > Why not positive conditional?
+> > 
+> > The success case is handled first.
+> 
+> And in kernel we usually check for error first. Esp. taking into account that
+> here you have both cases under 'if'.
+
+The other assignments take place just before this, so it's closer to them. I
+can change this though.
+
+> 
+> ...
+> 
+> > > > +	if (acpi_get_name(device->handle, ACPI_FULL_PATHNAME, &buffer) != AE_OK) {
+> > > 
+> > > We have ACPI_SUCCESS() / ACPI_FAILURE()
+> > 
+> > Yes.
+> 
+> Why not using them?
+
+Yes, in v2.
+
+> 
+> > > > +		acpi_handle_warn(acpi_device_handle(device), "cannot get path name\n");
+> > > > +		return;
+> > > > +	}
 
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+Kind regards,
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
-
+Sakari Ailus
