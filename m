@@ -2,76 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11FD0677A99
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 13:15:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A90E8677AB6
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 13:23:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229579AbjAWMOt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Jan 2023 07:14:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54382 "EHLO
+        id S230163AbjAWMXP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Jan 2023 07:23:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbjAWMOt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 07:14:49 -0500
-X-Greylist: delayed 344 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 23 Jan 2023 04:14:48 PST
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E91218140;
-        Mon, 23 Jan 2023 04:14:48 -0800 (PST)
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-         client-signature RSA-PSS (4096 bits) client-digest SHA256)
-        (Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
-        by bmailout2.hostsharing.net (Postfix) with ESMTPS id F1E092800C981;
-        Mon, 23 Jan 2023 13:09:00 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-        id E5AD02DEC14; Mon, 23 Jan 2023 13:09:00 +0100 (CET)
-Date:   Mon, 23 Jan 2023 13:09:00 +0100
-From:   Lukas Wunner <lukas@wunner.de>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Aditya Garg <gargaditya08@live.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        linux-acpi@vger.kernel.org, Andy Shevchenko <andy@infradead.org>,
-        platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH 0/3] ACPI: video/apple-gmux: Improve apple-gmux backlight
- detection
-Message-ID: <20230123120900.GA1924@wunner.de>
-References: <20230123113750.462144-1-hdegoede@redhat.com>
+        with ESMTP id S230150AbjAWMXO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 07:23:14 -0500
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92FFA902D;
+        Mon, 23 Jan 2023 04:23:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674476593; x=1706012593;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=NGgD7whDEY/8n5iwKWV38/lNDe31QKJgf6jUF7ERzLg=;
+  b=FB2dQhhTxwuLv+/sPyjlL9rwzc2Vn8V0GxnI2s9LZl6Aei+HINXS9XVZ
+   pYN5DaU42HvyEQJbTUY0GkBGj6wlYo/z/UnevEUoulvW8Z+ei9z7CnNXc
+   0v/ovipF6iibZhIcDPDKNK9lm2smHkhSA2wm+j5HHxXGv2oEd05AKc3Pq
+   BVUOoOUlTrtw5gnTnjhnZr4ALjVlB82LLLa9GLFwaKNvfVZBFoiUesJqK
+   1lnR5rWIJkBqkHhwo905UPQmU/UyT5ch0+156hYZMtlPBfcjh0EtnTMb7
+   5+TyNfLg2pWC6cwfIR2qh3ZdsfYWcDVtg8S2RQumSl6ozHT6ZhzbV1qBL
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10598"; a="390529807"
+X-IronPort-AV: E=Sophos;i="5.97,239,1669104000"; 
+   d="scan'208";a="390529807"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2023 04:23:12 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10598"; a="663540221"
+X-IronPort-AV: E=Sophos;i="5.97,239,1669104000"; 
+   d="scan'208";a="663540221"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007.fm.intel.com with ESMTP; 23 Jan 2023 04:23:08 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pJvqs-00DjGb-1H;
+        Mon, 23 Jan 2023 14:23:06 +0200
+Date:   Mon, 23 Jan 2023 14:23:06 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Raul E Rangel <rrangel@chromium.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Nathan Smythe <ncsmythe@scruboak.org>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] gpiolib-acpi: Don't set GPIOs for wakeup in S3 mode
+Message-ID: <Y858KiEntqtleiRM@smile.fi.intel.com>
+References: <20230121134812.16637-1-mario.limonciello@amd.com>
+ <20230121134812.16637-3-mario.limonciello@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230123113750.462144-1-hdegoede@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230121134812.16637-3-mario.limonciello@amd.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 23, 2023 at 12:37:47PM +0100, Hans de Goede wrote:
-> Some apple laptop models have an ACPI device with a HID of APP000B
-> and that device has an IO resource (so it does not describe the new
-> unsupported MMIO based gmux type), but there actually is no gmux
-> in the laptop at all.
+On Sat, Jan 21, 2023 at 07:48:11AM -0600, Mario Limonciello wrote:
+> commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+> adjusted the policy to enable wakeup by default if the ACPI tables
+> indicated that a device was wake capable.
 > 
-> This patch-series improves the drivers/acpi/video_detect.c so that
-> it no longer tries to use the non present gmux in this case.
+> It was reported however that this broke suspend on at least two System76
+> systems in S3 mode and two Lenovo Gen2a systems, but only with S3.
+> When the machines are set to s2idle, wakeup behaves properly.
 > 
-> Note I'm still waiting for testing feedback from the reporter of
-> this problem. But from the logs the problem is clear
-> (the logs show: "apple_gmux: gmux device not present")
+> Configuring the GPIOs for wakeup with S3 doesn't work properly, so only
+> set it when the system supports low power idle.
 
-Please provide a link to the original report.  I would also like to
-know the exact MacBook model used and I would like to see full dmesg
-output as well as an acpidump.
+Fine by me,
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-What you're saying here is that there's a fake APP000B device present
-in DSDT and I have a hard time believng that.  We need to find out
-what's really going on and how macOS handles this.
+> Fixes: 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+> Fixes: b38f2d5d9615c ("i2c: acpi: Use ACPI wake capability bit to set wake_irq")
+> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2357
+> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2162013
+> Reported-by: Nathan Smythe <ncsmythe@scruboak.org>
+> Tested-by: Nathan Smythe <ncsmythe@scruboak.org>
+> Suggested-by: Raul Rangel <rrangel@chromium.org>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+>  drivers/gpio/gpiolib-acpi.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+> index 9ef0f5641b521..17c53f484280f 100644
+> --- a/drivers/gpio/gpiolib-acpi.c
+> +++ b/drivers/gpio/gpiolib-acpi.c
+> @@ -1104,7 +1104,8 @@ int acpi_dev_gpio_irq_wake_get_by(struct acpi_device *adev, const char *name, in
+>  				dev_dbg(&adev->dev, "IRQ %d already in use\n", irq);
+>  			}
+>  
+> -			if (wake_capable)
+> +			/* avoid suspend issues with GPIOs when systems are using S3 */
+> +			if (wake_capable && acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0)
+>  				*wake_capable = info.wake_capable;
+>  
+>  			return irq;
+> -- 
+> 2.34.1
+> 
 
-Thanks,
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Lukas
+
