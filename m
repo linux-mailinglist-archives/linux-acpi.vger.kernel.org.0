@@ -2,230 +2,186 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE9BC677F8F
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 16:24:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79B9F677F98
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 16:25:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232663AbjAWPY2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Jan 2023 10:24:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55728 "EHLO
+        id S231676AbjAWPZP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Jan 2023 10:25:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232694AbjAWPYM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 10:24:12 -0500
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AF51E1449F;
-        Mon, 23 Jan 2023 07:23:40 -0800 (PST)
-Received: from vm02.corp.microsoft.com (unknown [167.220.196.155])
-        by linux.microsoft.com (Postfix) with ESMTPSA id ADE7720E2D0F;
-        Mon, 23 Jan 2023 07:23:19 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com ADE7720E2D0F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1674487401;
-        bh=9zBj7lGZiNLssSN0Bow0NnJuBiAOG3TjbvKNnsD+cgs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=piUgfKTMtNgh91hbplX9eKpXd+cuU/rha676DInDJuLERkQLHA2nONmmv2OsnQVjp
-         hSQBjrl0UAZPYIEpKncMTGUCcN6sqxXLu/n3hokF9Qt4rQ0XGuB0EibnNmjjuxQZjn
-         zR6e6P54nIBapIr6mh5IysSrEzuQrfi7iY3Yr+48=
-From:   Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
-        "Brijesh Singh" <brijesh.singh@amd.com>,
-        "Tom Lendacky" <thomas.lendacky@amd.com>,
-        "Kalra, Ashish" <ashish.kalra@amd.com>,
-        linux-crypto@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Len Brown" <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH v1 2/8] ACPI: ASPT: Add helper to parse table
-Date:   Mon, 23 Jan 2023 15:22:44 +0000
-Message-Id: <20230123152250.26413-3-jpiotrowski@linux.microsoft.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230123152250.26413-1-jpiotrowski@linux.microsoft.com>
-References: <20230123152250.26413-1-jpiotrowski@linux.microsoft.com>
+        with ESMTP id S232748AbjAWPYq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 10:24:46 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD94228D2B;
+        Mon, 23 Jan 2023 07:24:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674487465; x=1706023465;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DRDJqfSjegh3mnRuJBsIdTku5kJeEacaR1GSblr7dDw=;
+  b=nyewBIAh/kcZNzFJGPFLnDz3t6hPvA4f7nXN8mEEEwjxXU61DCD9jyxJ
+   C0osTr9sSe23u3nlPCdxmmc2IXjNA6uP1sDF85DVHjDOW5a2RCSZmvWHK
+   zfhBoa7XAlWOESID4yAjr8AyWV+3aLsgvqTbDs575anC0poibU/WJQwsG
+   kepeAtI5oX/989TsT8F60vvro/+SZn0Fs5+cfdOeMX8JEpK/epS4rOw/A
+   gu+snGzuASKUSxuiGBz++ja6jPbe05Kod5ue0WgokmIICGl0SDPmTfB7t
+   VYGu9Lake8HCmdF8HaqXHgN/96t8ldIn2iIzxO11UDGkis2eS+GdKjjHT
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10599"; a="326098609"
+X-IronPort-AV: E=Sophos;i="5.97,239,1669104000"; 
+   d="scan'208";a="326098609"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2023 07:23:52 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10599"; a="835562114"
+X-IronPort-AV: E=Sophos;i="5.97,239,1669104000"; 
+   d="scan'208";a="835562114"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga005.jf.intel.com with ESMTP; 23 Jan 2023 07:23:51 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pJyfl-00DncG-2S;
+        Mon, 23 Jan 2023 17:23:49 +0200
+Date:   Mon, 23 Jan 2023 17:23:49 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
+        rafael@kernel.org, heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH v2 4/8] ACPI: property: Generate camera swnodes for ACPI
+ and DisCo for Imaging
+Message-ID: <Y86mhdQrcWMr58wV@smile.fi.intel.com>
+References: <20230123134617.265382-1-sakari.ailus@linux.intel.com>
+ <20230123134617.265382-5-sakari.ailus@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230123134617.265382-5-sakari.ailus@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The ASP table indicates the presence of a Platform Security Processor
-with a register window and registers to configure interrupt delivery.
-The helper checks for the presence of the table and returns a resource
-and struct with register offsets.
+On Mon, Jan 23, 2023 at 03:46:13PM +0200, Sakari Ailus wrote:
+> Generate software nodes for information parsed from ACPI _CRS for CSI-2 as
+> well as MIPI DisCo for Imaging spec. The software nodes are compliant with
+> existing ACPI or DT definitions and are parsed by relevant drivers without
+> changes.
 
-Signed-off-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
----
- drivers/acpi/Makefile             |   1 +
- drivers/acpi/aspt.c               | 104 ++++++++++++++++++++++++++++++
- include/linux/platform_data/psp.h |  32 +++++++++
- 3 files changed, 137 insertions(+)
- create mode 100644 drivers/acpi/aspt.c
- create mode 100644 include/linux/platform_data/psp.h
+...
 
-diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-index 0002eecbf870..9621c90e0221 100644
---- a/drivers/acpi/Makefile
-+++ b/drivers/acpi/Makefile
-@@ -57,6 +57,7 @@ acpi-y				+= evged.o
- acpi-y				+= sysfs.o
- acpi-y				+= property.o
- acpi-$(CONFIG_X86)		+= acpi_cmos_rtc.o
-+acpi-$(CONFIG_X86)		+= aspt.o
- acpi-$(CONFIG_X86)		+= x86/apple.o
- acpi-$(CONFIG_X86)		+= x86/utils.o
- acpi-$(CONFIG_X86)		+= x86/s2idle.o
-diff --git a/drivers/acpi/aspt.c b/drivers/acpi/aspt.c
-new file mode 100644
-index 000000000000..cf629db35036
---- /dev/null
-+++ b/drivers/acpi/aspt.c
-@@ -0,0 +1,104 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#define pr_fmt(fmt) "ACPI: ASPT: " fmt
-+#include <linux/acpi.h>
-+#include <linux/kernel.h>
-+#include <linux/platform_data/psp.h>
-+
-+static int __init psp_validate_regs(const struct acpi_aspt_global_regs *gregs,
-+	const struct acpi_aspt_sev_mbox_regs *sevregs,
-+	const struct acpi_aspt_acpi_mbox_regs *acpiregs)
-+{
-+	u64 pfn;
-+	int idx;
-+	u64 regs[] = {
-+		gregs->feature_reg_addr,
-+		gregs->irq_en_reg_addr,
-+		gregs->irq_st_reg_addr,
-+		sevregs->cmd_resp_reg_addr,
-+		sevregs->cmd_buf_lo_reg_addr,
-+		sevregs->cmd_buf_hi_reg_addr,
-+		acpiregs->cmd_resp_reg_addr
-+	};
-+	pfn = regs[0] >> PAGE_SHIFT;
-+	for (idx = 1; idx < ARRAY_SIZE(regs); idx++) {
-+		if (regs[idx] >> PAGE_SHIFT != pfn)
-+			return -EINVAL;
-+	}
-+	return 0;
-+}
-+
-+/**
-+ * acpi_parse_aspt - Parse ASPT table and return contained information
-+ * @res: will be filled with the address and size of the ASP register window
-+ * @pdata: will be filled with the register offsets parsed from the ASPT table
-+ */
-+int __init acpi_parse_aspt(struct resource *res, struct psp_platform_data *pdata)
-+{
-+	struct acpi_aspt_acpi_mbox_regs acpiregs = {};
-+	struct acpi_aspt_sev_mbox_regs sevregs = {};
-+	struct acpi_aspt_global_regs gregs = {};
-+	struct acpi_aspt_header *entry, *end;
-+	struct acpi_table_aspt *aspt;
-+	unsigned long base;
-+	acpi_status status;
-+	int err = 0;
-+
-+	status = acpi_get_table(ACPI_SIG_ASPT, 0, (struct acpi_table_header **)&aspt);
-+	if (ACPI_FAILURE(status))
-+		return -ENODEV;
-+	if (aspt->header.revision != ASPT_REVISION_ID) {
-+		pr_err("unsupported table revision: %d\n", (int)aspt->header.revision);
-+		err = -ENODEV;
-+		goto exit;
-+	}
-+	entry = (struct acpi_aspt_header *)(aspt + 1);
-+	end = (struct acpi_aspt_header *)((void *)aspt + aspt->header.length);
-+	while (entry < end) {
-+		if (((void *)entry + entry->length) > (void *)end) {
-+			pr_err("error during parsing\n");
-+			err = -EINVAL;
-+			goto exit;
-+		}
-+		switch (entry->type) {
-+		case ACPI_ASPT_TYPE_GLOBAL_REGS:
-+			memcpy(&gregs, entry, entry->length);
-+			break;
-+		case ACPI_ASPT_TYPE_SEV_MBOX_REGS:
-+			memcpy(&sevregs, entry, entry->length);
-+			break;
-+		case ACPI_ASPT_TYPE_ACPI_MBOX_REGS:
-+			memcpy(&acpiregs, entry, entry->length);
-+			break;
-+		}
-+		entry = (struct acpi_aspt_header *)((void *)entry + entry->length);
-+	}
-+	if (!gregs.header.length || !sevregs.header.length || !acpiregs.header.length) {
-+		pr_err("missing ASPT table entry: %u %u %u\n", gregs.header.length,
-+			sevregs.header.length,
-+			acpiregs.header.length);
-+		err = -EINVAL;
-+		goto exit;
-+	}
-+	/* All registers are expected to be within the same page */
-+	err = psp_validate_regs(&gregs, &sevregs, &acpiregs);
-+	if (err) {
-+		pr_err("ASPT registers span multiple pages\n");
-+		goto exit;
-+	}
-+
-+	base = ALIGN_DOWN(gregs.feature_reg_addr, PAGE_SIZE);
-+	*res = (struct resource)DEFINE_RES_MEM(base, PAGE_SIZE);
-+
-+	pdata->sev_cmd_resp_reg = sevregs.cmd_resp_reg_addr & ~PAGE_MASK;
-+	pdata->sev_cmd_buf_lo_reg = sevregs.cmd_buf_lo_reg_addr & ~PAGE_MASK;
-+	pdata->sev_cmd_buf_hi_reg = sevregs.cmd_buf_hi_reg_addr & ~PAGE_MASK;
-+	pdata->feature_reg = gregs.feature_reg_addr & ~PAGE_MASK;
-+	pdata->irq_en_reg = gregs.irq_en_reg_addr & ~PAGE_MASK;
-+	pdata->irq_st_reg = gregs.irq_st_reg_addr & ~PAGE_MASK;
-+	pdata->mbox_irq_id = sevregs.mbox_irq_id;
-+	pdata->acpi_cmd_resp_reg = acpiregs.cmd_resp_reg_addr & ~PAGE_MASK;
-+
-+exit:
-+	acpi_put_table((struct acpi_table_header *)aspt);
-+	return err;
-+}
-diff --git a/include/linux/platform_data/psp.h b/include/linux/platform_data/psp.h
-new file mode 100644
-index 000000000000..b761f72168d6
---- /dev/null
-+++ b/include/linux/platform_data/psp.h
-@@ -0,0 +1,32 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * psp.h - PSP register offsets parsed from ASPT ACPI table
-+ */
-+
-+#ifndef __LINUX_PSP_H
-+#define __LINUX_PSP_H
-+
-+#include <linux/types.h>
-+#include <linux/ioport.h>
-+
-+struct psp_platform_data {
-+	int sev_cmd_resp_reg;
-+	int sev_cmd_buf_lo_reg;
-+	int sev_cmd_buf_hi_reg;
-+	int feature_reg;
-+	int irq_en_reg;
-+	int irq_st_reg;
-+	int mbox_irq_id;
-+	int acpi_cmd_resp_reg;
-+};
-+
-+#if IS_ENABLED(CONFIG_ACPI)
-+int acpi_parse_aspt(struct resource *res, struct psp_platform_data *pdata);
-+#else
-+static inline acpi_parse_aspt(struct resource *res, struct psp_platform_data *pdata)
-+{
-+	return -ENODEV;
-+}
-+#endif
-+
-+#endif /* __LINUX_PSP_H */
+> +static struct acpi_device_software_nodes *
+> +crs_csi2_swnode_get(acpi_handle handle)
+
+It's 81 on one line. Why not to join?
+
+> +{
+> +	struct crs_csi2_swnodes *swnodes;
+> +
+> +	list_for_each_entry(swnodes, &crs_csi2_swnodes, list)
+> +		if (swnodes->handle == handle)
+> +			return swnodes->ads;
+> +
+> +	return NULL;
+> +}
+
+...
+
+> +#define GRAPH_PORT_NAME(var, num)					   \
+> +	(snprintf((var), sizeof(var), SWNODE_GRAPH_PORT_NAME_FMT, (num)) > \
+> +	 sizeof(var))
+
+>= ?
+
+("excluding the trailing '\0'")
+
+...
+
+> +static struct fwnode_handle *get_mipi_port_handle(struct acpi_device *device,
+> +						  unsigned int port)
+> +{
+
+> +	static const char mipi_port_prefix[] = "mipi-img-port-";
+
+It's used only once in this function, why not keeping it in the format string?
+
+> +	char mipi_port_name[sizeof(mipi_port_prefix) + 2];
+> +
+> +	if (snprintf(mipi_port_name, sizeof(mipi_port_name), "%s%u",
+> +		     mipi_port_prefix, port) > sizeof(mipi_port_name)) {
+> +		acpi_handle_info(acpi_device_handle(device),
+> +				 "mipi port name too long for port %u\n", port);
+> +		return NULL;
+> +	}
+> +
+> +	return fwnode_get_named_child_node(acpi_fwnode_handle(device),
+> +					   mipi_port_name);
+> +}
+
+...
+
+> +			/* Move polarity bits to the lane polarity u32 array */
+> +			for (i = 0; i < 1 + num_lanes; i++)
+> +				port->lane_polarities[i] =
+> +					(u.val8[i >> 3] & (1 << (i & 7))) ?
+> +					1U : 0U;
+
+Wouldn't
+
+				port->lane_polarities[i] =
+					!!(u.val8[i >> 3] & (1 << (i & 7)));
+
+be better?
+
+...
+
+> +	ret = software_node_register_node_group(ads->nodeptrs);
+> +	if (ret < 0) {
+> +		acpi_handle_warn(acpi_device_handle(device),
+> +				 "cannot register software nodes (%d)!\n", ret);
+> +		device->swnodes = NULL;
+> +		return;
+> +	}
+
+> +	device->fwnode.secondary = software_node_fwnode(ads->nodes);
+
+	struct fwnode_handle *primary;
+	...
+	primary = acpi_fwnode_handle(device);
+	primary->secondary = ...
+
+?
+
+The point is to avoid direct dereferences of fwnode in struct acpi_device.
+
+
+...
+
+> +static void acpi_free_swnodes(struct acpi_device *device)
+> +{
+> +	struct acpi_device_software_nodes *ads = device->swnodes;
+> +
+> +	if (!ads)
+> +		return;
+> +
+> +	software_node_unregister_node_group(ads->nodeptrs);
+
+> +	set_secondary_fwnode(&device->dev, NULL);
+
+Interestingly you are not use same API above. Why?
+
+> +	kfree(ads->nodes[ACPI_DEVICE_SWNODE_ROOT].name);
+> +	kfree(ads);
+> +
+> +	device->swnodes = NULL;
+> +}
+
 -- 
-2.25.1
+With Best Regards,
+Andy Shevchenko
+
 
