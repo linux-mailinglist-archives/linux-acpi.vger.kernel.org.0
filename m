@@ -2,169 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FE54677EBD
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 16:07:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4496677EBB
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 16:07:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229557AbjAWPHv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Jan 2023 10:07:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36494 "EHLO
+        id S232019AbjAWPHj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Jan 2023 10:07:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231480AbjAWPHu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 10:07:50 -0500
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F1391116E;
-        Mon, 23 Jan 2023 07:07:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674486468; x=1706022468;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xzO2n8wSt+6WPLw+7OG0XeAurCZVYHzRVWciYTKK4pg=;
-  b=NhF3P+x+betDiAkIQKDiP7JwxgOz7YAUdNX7GVmL137UCkcli6xY3bF5
-   N+SqRzEpGoZ1JQSFj+UeuoXyCnU3/E24iG0201vKKdt1qNjRnY9dWPYOK
-   DtMVOkFHxL9YRsb0/00KtOj8EM2pr9y+tJYXlz04vndYwFcTKnCs3+AR9
-   sQ/HVMCJGoVswr0I0kVv5tFJdoyzRQYQnFR+RNKGi+F3cuzJ5/naGt+ID
-   Hpfn4zsfMIFo+245a8ytH9riQqYMf6txzlGKaAdtzYjxb4JOfpmkCI/CI
-   hNO04wR98wvLdfkOCx++ZjG3kbzO2xn07DIxZy7gr7xbuDMkSffBuJsBJ
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10598"; a="353324637"
-X-IronPort-AV: E=Sophos;i="5.97,239,1669104000"; 
-   d="scan'208";a="353324637"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2023 07:07:12 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10598"; a="804168116"
-X-IronPort-AV: E=Sophos;i="5.97,239,1669104000"; 
-   d="scan'208";a="804168116"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga001.fm.intel.com with ESMTP; 23 Jan 2023 07:07:10 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pJyPd-00DnDu-1F;
-        Mon, 23 Jan 2023 17:07:09 +0200
-Date:   Mon, 23 Jan 2023 17:07:09 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        rafael@kernel.org, heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH v2 2/8] ACPI: property: Parse _CRS CSI-2 descriptor
-Message-ID: <Y86inXQ+nEoFiosr@smile.fi.intel.com>
-References: <20230123134617.265382-1-sakari.ailus@linux.intel.com>
- <20230123134617.265382-3-sakari.ailus@linux.intel.com>
+        with ESMTP id S231480AbjAWPHi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 10:07:38 -0500
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6523828D01
+        for <linux-acpi@vger.kernel.org>; Mon, 23 Jan 2023 07:07:31 -0800 (PST)
+Received: by mail-wm1-x32d.google.com with SMTP id k16so9256925wms.2
+        for <linux-acpi@vger.kernel.org>; Mon, 23 Jan 2023 07:07:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1RNT2OiNXGjJEKXpvdefLUa+i7waiiWYsbDu0gmBtwY=;
+        b=Rs+kiDR4I33uxCS0R6tMo2JXPL/IslDBhq0l3AmRRi3u2vq6wQZTg2Gec5j3ql/McN
+         5WJIfs2GrV0rzHfUVQsimt3XAQbhJW5jOF8wcpwhjngczy6xJ2WjzAxTSFebO1/raxKV
+         9YbZp/G0xMYrWYl3RPvMF4j4QbsnZleHj79iOsmHgw7vZZghxpjJU5g5XxVrt8PXM2Na
+         Dbjf1gYIbH7teEo8+hNeUQJbSxqiGDvjsBwgUl7nRjZ4F4kGyBS+DMCvuiCalbVO83oM
+         rbvkpe1cXGyFSNAQlVxA7M1us8zAE9h76Pdbell9+b8IawsZZ35XvRzb8XThSuAgn2Pm
+         bq+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1RNT2OiNXGjJEKXpvdefLUa+i7waiiWYsbDu0gmBtwY=;
+        b=jmsZlYhE7AnvWN1jqjIl2TVXyOtU6dCyAO3yn3/OhBMy8oeP8lKiTXSHVMOrTjQQXh
+         YgL/Wyp/nWOttKZHsncTTY+v5hMMthKxTdQgfW8MXMgPjBJ9jcS5KNDpzm3ThsqalLzI
+         yAvubZiCqT7z7YEaXExdMuRvGVUx8MmTNXjf6rVIAsT78s1wXfbwHkIYBgRymZOfF2dG
+         CiVQEB02b3Eyz/13e7poeGmFR5kbSlletWZcgYkR90Qb6BV76R/uGB0OWwYN06GxjIbT
+         qF3n702PINIy6f3LTe3oFpC2+WB4cWJIkD50l1VDGkignBjYyPQR6bSNT1iBzsb1S/SD
+         mN/A==
+X-Gm-Message-State: AFqh2kqBR0+6J7ApyQhrVzmux8oQdL4OxsfzNGPt+d0HrQLlzw9oH6OL
+        jBwMC0LmfRayFzGrD2A7pxxNT6bIKMWY9w==
+X-Google-Smtp-Source: AMrXdXseGMCQqrstaFFjDjAUu2I5MTNxpPosbygExx3/3yWaaKzKF0CVTNLIjVY4Vwa0rpEMvhEHFQ==
+X-Received: by 2002:a05:600c:3ca6:b0:3d1:caf1:3f56 with SMTP id bg38-20020a05600c3ca600b003d1caf13f56mr32531609wmb.9.1674486449711;
+        Mon, 23 Jan 2023 07:07:29 -0800 (PST)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id r6-20020a05600c458600b003da286f8332sm11166596wmo.18.2023.01.23.07.07.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Jan 2023 07:07:29 -0800 (PST)
+Date:   Mon, 23 Jan 2023 18:07:26 +0300
+From:   Dan Carpenter <error27@gmail.com>
+To:     pierre.gondois@arm.com
+Cc:     linux-acpi@vger.kernel.org
+Subject: [bug report] arch_topology: Build cacheinfo from primary CPU
+Message-ID: <Y86iruJPuwNN7rZw@kili>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230123134617.265382-3-sakari.ailus@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 23, 2023 at 03:46:11PM +0200, Sakari Ailus wrote:
-> Parse newly added ACPI _CRS CSI-2 descriptor for CSI-2 and camera
-> configuration. For now, only figure out where the descriptor is present in
-> order to allow adding information from it to related devices.
+Hello Pierre Gondois,
 
-...
+The patch 5944ce092b97: "arch_topology: Build cacheinfo from primary
+CPU" from Jan 4, 2023, leads to the following Smatch static checker
+warning:
 
-> +	memcpy(inst->remote_name, csi2->resource_source.string_ptr,
-> +	       csi2->resource_source.string_length);
+drivers/base/cacheinfo.c:440 fetch_cache_info()	error: uninitialized symbol 'levels'.
+drivers/base/cacheinfo.c:447 fetch_cache_info() error: uninitialized symbol 'split_levels'.
 
-Why don't we use strscpy()? Is it really strings? Or is it some abuse of
-the ACPI object type?
+drivers/base/cacheinfo.c
+    424 int fetch_cache_info(unsigned int cpu)
+    425 {
+    426         struct cpu_cacheinfo *this_cpu_ci;
+    427         unsigned int levels, split_levels;
+    428         int ret;
+    429 
+    430         if (acpi_disabled) {
+    431                 ret = init_of_cache_level(cpu);
+    432                 if (ret < 0)
+    433                         return ret;
+    434         } else {
+    435                 ret = acpi_get_cache_info(cpu, &levels, &split_levels);
+    436                 if (ret < 0)
+    437                         return ret;
 
-...
+Apparently, I must have CONFIG_ACPI_PPTT disabled.
 
-> +static acpi_status scan_check_crs_csi2(acpi_handle handle, u32 nesting_level,
-> +				       void *context, void **ret)
-> +{
-> +	struct scan_check_crs_csi2_context inst_context = {
-> +		.handle = handle,
-> +		.res_list = LIST_HEAD_INIT(inst_context.res_list),
-> +	};
-> +	struct list_head *list = context;
-> +	struct crs_csi2 *csi2;
+    438 
+    439                 this_cpu_ci = get_cpu_cacheinfo(cpu);
+--> 440                 this_cpu_ci->num_levels = levels;
+                                                  ^^^^^^
+Unititialized.
 
-> +	INIT_LIST_HEAD(&inst_context.res_list);
+    441                 /*
+    442                  * This assumes that:
+    443                  * - there cannot be any split caches (data/instruction)
+    444                  *   above a unified cache
+    445                  * - data/instruction caches come by pair
+    446                  */
+    447                 this_cpu_ci->num_leaves = levels + split_levels;
+    448         }
+    449         if (!cache_leaves(cpu))
+    450                 return -ENOENT;
+    451 
+    452         return allocate_cache_info(cpu);
+    453 }
 
-Why do you need this? I don't see that variable is static...
-
-> +	acpi_walk_resources(handle, METHOD_NAME__CRS,
-> +			    scan_check_crs_csi2_instance, &inst_context);
-> +
-> +	if (list_empty(&inst_context.res_list))
-> +		return AE_OK;
-> +
-> +	csi2 = kmalloc(sizeof(*csi2), GFP_KERNEL);
-> +	if (!csi2)
-> +		return AE_OK;
-> +
-> +	csi2->handle = handle;
-> +	list_replace(&inst_context.res_list, &csi2->buses);
-> +	list_add(&csi2->list, list);
-
-Hmm... Can list_swap() be used here?
-
-> +	return AE_OK;
-> +}
-
-...
-
-> +	/*
-> +	 * Figure out how much temporary storage we need for counting
-> +	 * connections in each device.
-> +	 */
-> +	list_for_each_entry(csi2, &crs_csi2_handles, list) {
-> +		struct crs_csi2_instance *inst;
-> +
-> +		handle_count++;
-
-> +		list_for_each_entry(inst, &csi2->buses, list)
-> +			handle_count++;
-
-list_count_nodes()?
-
-> +	}
-
-...
-
-> +	sort(handle_refs, handle_count, sizeof(*handle_refs), crs_handle_cmp,
-> +	     NULL);
-
-Yes, I would leave it on one line.
-
-...
-
-> +		if (check_mul_overflow(sizeof(*ads->ports) +
-> +				       sizeof(*ads->nodes) * 2 +
-> +				       sizeof(*ads->nodeptrs) * 2,
-> +				       (size_t)this_count, &alloc_size) ||
-
-Can this_count be of size_t type from the beginning?
-
-> +		    check_add_overflow(sizeof(*ads) + sizeof(*ads->nodes) +
-> +				       sizeof(*ads->nodeptrs) * 2,
-> +				       alloc_size, &alloc_size)) {
-> +			acpi_handle_warn(handle, "too many handles (%u)",
-> +					 this_count);
-> +			continue;
-> +		}
-
-...
-
-> +		ads->nodeptrs = (void *)(ads->nodes +
-> +					 this_count * 2 + 1);
-
-Why this is not on one line? (I have got less than 80).
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+regards,
+dan carpenter
