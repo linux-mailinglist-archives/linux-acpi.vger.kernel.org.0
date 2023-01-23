@@ -2,52 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A1616786E7
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 20:56:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2DC26786F7
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jan 2023 21:00:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231663AbjAWT4q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Jan 2023 14:56:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57694 "EHLO
+        id S231674AbjAWUAa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Jan 2023 15:00:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231468AbjAWT4p (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 14:56:45 -0500
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B31AB2E0DB;
-        Mon, 23 Jan 2023 11:56:44 -0800 (PST)
-Received: by mail-ej1-f46.google.com with SMTP id az20so33573392ejc.1;
-        Mon, 23 Jan 2023 11:56:44 -0800 (PST)
+        with ESMTP id S230129AbjAWUA3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Jan 2023 15:00:29 -0500
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F7B927D6B
+        for <linux-acpi@vger.kernel.org>; Mon, 23 Jan 2023 12:00:28 -0800 (PST)
+Received: by mail-ej1-f50.google.com with SMTP id hw16so33457321ejc.10
+        for <linux-acpi@vger.kernel.org>; Mon, 23 Jan 2023 12:00:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=aG6bB8FbYSgUcAOVToCiYMh7xqxeYAsreqwmnjwBA0Y=;
-        b=bZQ7mxQ1dXv9GTtAq097G6yG/hAsqcOzu/oPdF80/FZBgAxz6ubOk8svgGiaR0v0QC
-         HdxvKCD5iaFGFR+kF22pxQgUnjbXxxqLrI2tigqdYE9aDTDkLmgJbJhXB7Wl16vNZLeq
-         26lwppSyH5XmnXLPNySfklhFLuGiK6KbtdU81PuJjrOPFGqb0J7HooO4IgAm50jbaZ1o
-         B/geJWvDYTmdSgL/a6vh4Q8qyzTJMFqktz+7DL1lZ434QlVjik6aJdTGBBbXeGDo6lAn
-         KFFbdHeLaqF4bdkMRFqDl6OH0IjcUuODd0p0yY1V1lkeYyNsXXYXvUaZC3dqgEJ7zS3o
-         6T3w==
-X-Gm-Message-State: AFqh2kpYAvl5Z2LGMm8s3OM+m2HvUDlOKuxGSpwdFa7Fiayyt5nexBpx
-        nO2TfV/nXiM4n23IelVyoywVtQ6b7mqzXQPvFMLAEXLi
-X-Google-Smtp-Source: AMrXdXsH8dI2YuaT8bEeC4cuEqD4vfb8OuoVtiHh1h6d70WyqgMaw3yamYPwRuG0sn/fJbVyCIy5xRpBQTABqblSUuc=
-X-Received: by 2002:a17:906:92c8:b0:877:8b1c:fd7c with SMTP id
- d8-20020a17090692c800b008778b1cfd7cmr2048919ejx.67.1674503803379; Mon, 23 Jan
- 2023 11:56:43 -0800 (PST)
+        bh=40qXZUnFGQ7ve0bNYv96SrOOUpKugaFZGVN1hQpqfP0=;
+        b=0ZhqRm6hCi2ZZ3tnj1xQ64fTMEgozDfdQZBjXGrtkC+jHdlRDnEByKQe9BBwyysLdH
+         lNN831u3bglXj9g93C38BVwetw4uyb0h1h9KPwzc/GLkhLOTnXC7O8aWjDLR3Ftzxw2W
+         6tpwbl8fVlqntSAgb3Fb4dxWpOBX6qPHg8ZS67Gm97gR6dxFTlOfOO3GAdc1SSWmDUnm
+         icyHOxkAHqiL9ISsxJQX1/ZHd1JLZNp5xzGRccclRhfHP69RtL4sHQKXtaW2QoYu7PYx
+         qm643+ChHgzFF0IbnVtMVO681/3Ny3A14wy6nbFaTQ76HOqREyZanV6QRZ+E+djXA5nv
+         zyvg==
+X-Gm-Message-State: AFqh2koVlLY7AadRyaeVZFITZKb/fQqDVK1+O27ini8gXhESTOUMcsCc
+        4cZD85XIV9fODuMykO1YUOELe6lGuidOfVICHm8=
+X-Google-Smtp-Source: AMrXdXtDkWPO0cICOZRJSCYboLUtX4oU3AuOqdMLnCRm9VggXqnac2q+nS8HXqfswKbhD4Rw9RobR/LLKvaU7lxDc68=
+X-Received: by 2002:a17:906:2c4b:b0:870:3557:160e with SMTP id
+ f11-20020a1709062c4b00b008703557160emr2001363ejh.78.1674504027140; Mon, 23
+ Jan 2023 12:00:27 -0800 (PST)
 MIME-Version: 1.0
-References: <20230123152250.26413-1-jpiotrowski@linux.microsoft.com> <20230123152250.26413-2-jpiotrowski@linux.microsoft.com>
-In-Reply-To: <20230123152250.26413-2-jpiotrowski@linux.microsoft.com>
+References: <20230119163744.548749-1-hdegoede@redhat.com>
+In-Reply-To: <20230119163744.548749-1-hdegoede@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 23 Jan 2023 20:56:32 +0100
-Message-ID: <CAJZ5v0i=NDrHAQYQPfvBGvkvBzNnDhUxxPivQ1VaZ8HBhAyS0A@mail.gmail.com>
-Subject: Re: [PATCH v1 1/8] include/acpi: add definition of ASPT table
-To:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kalra, Ashish" <ashish.kalra@amd.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Date:   Mon, 23 Jan 2023 21:00:16 +0100
+Message-ID: <CAJZ5v0he+0WHk_iQB6T06h6Zx-UOW6F7R=ay-hLV9-_KxbTaiQ@mail.gmail.com>
+Subject: Re: [PATCH 0/2] ACPI: video: More backlight quirks
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -59,89 +56,57 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 23, 2023 at 4:23 PM Jeremi Piotrowski
-<jpiotrowski@linux.microsoft.com> wrote:
+On Thu, Jan 19, 2023 at 5:38 PM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> The AMD Secure Processor ACPI Table provides the memory location of the
-> register window and register offsets necessary to communicate with AMD's
-> PSP (Platform Security Processor). This table is exposed on Hyper-V VMs
-> configured with support for AMD's SNP isolation technology.
+> Hi Rafael,
 >
-> Signed-off-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-
-This modifies the ACPICA code, so it should at least be submitted as a
-pull request to the upstream ACPICA project on GitHub.
-
-Thanks!
-
-> ---
->  include/acpi/actbl1.h | 46 +++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 46 insertions(+)
+> With the backlight changes landing in 6.1.y now showing up in
+> distribution repositories I have been receiving a steady stream of
+> backlight bug reports by email.
 >
-> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
-> index 15c78678c5d3..00d40373df37 100644
-> --- a/include/acpi/actbl1.h
-> +++ b/include/acpi/actbl1.h
-> @@ -26,6 +26,7 @@
->   */
->  #define ACPI_SIG_AEST           "AEST" /* Arm Error Source Table */
->  #define ACPI_SIG_ASF            "ASF!" /* Alert Standard Format table */
-> +#define ACPI_SIG_ASPT           "ASPT" /* AMD Secure Processor Table */
->  #define ACPI_SIG_BERT           "BERT" /* Boot Error Record Table */
->  #define ACPI_SIG_BGRT           "BGRT" /* Boot Graphics Resource Table */
->  #define ACPI_SIG_BOOT           "BOOT" /* Simple Boot Flag Table */
-> @@ -106,6 +107,51 @@ struct acpi_whea_header {
->         u64 mask;               /* Bitmask required for this register instruction */
->  };
+> These bug-reports fall into various categories and most of them are
+> already fixed with some recent fixes which are in 6.1.7 and later.
 >
-> +/* https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/acpitabl/ns-acpitabl-aspt_table */
-> +#define ASPT_REVISION_ID 0x01
-> +struct acpi_table_aspt {
-> +       struct acpi_table_header header;
-> +       u32 num_entries;
-> +};
-> +
-> +struct acpi_aspt_header {
-> +       u16 type;
-> +       u16 length;
-> +};
-> +
-> +enum acpi_aspt_type {
-> +       ACPI_ASPT_TYPE_GLOBAL_REGS = 0,
-> +       ACPI_ASPT_TYPE_SEV_MBOX_REGS = 1,
-> +       ACPI_ASPT_TYPE_ACPI_MBOX_REGS = 2,
-> +};
-> +
-> +/* 0: ASPT Global Registers */
-> +struct acpi_aspt_global_regs {
-> +       struct acpi_aspt_header header;
-> +       u32 reserved;
-> +       u64 feature_reg_addr;
-> +       u64 irq_en_reg_addr;
-> +       u64 irq_st_reg_addr;
-> +};
-> +
-> +/* 1: ASPT SEV Mailbox Registers */
-> +struct acpi_aspt_sev_mbox_regs {
-> +       struct acpi_aspt_header header;
-> +       u8 mbox_irq_id;
-> +       u8 reserved[3];
-> +       u64 cmd_resp_reg_addr;
-> +       u64 cmd_buf_lo_reg_addr;
-> +       u64 cmd_buf_hi_reg_addr;
-> +};
-> +
-> +/* 2: ASPT ACPI Mailbox Registers */
-> +struct acpi_aspt_acpi_mbox_regs {
-> +       struct acpi_aspt_header header;
-> +       u32 reserved1;
-> +       u64 cmd_resp_reg_addr;
-> +       u64 reserved2[2];
-> +};
-> +
->  /*******************************************************************************
->   *
->   * ASF - Alert Standard Format table (Signature "ASF!")
+> One category (unfortunately) requires adding DMI quirks.
+>
+> I have been receiving reports from users with pre Windows 8 laptops,
+> who used to pass acpi_backlight=vendor on the kernel commandline to hide
+> a non functioning acpi_video# backlight device, so that userspace will
+> use the native (GPU driver) backlight device instead.
+>
+> Starting with 6.1.y acpi_backlight=vendor is now also honored by
+> the native backlight drivers, hiding the native backlight device,
+> leaving these users with no backlight device at all.
+>
+> This leads to them sending me a bug-report. Which in a way is a good
+> thing because these models really needed to have a DMI quirk added
+> all along, but this was never reported upstream.
+>
+> The fix here is to use "acpi_backlight=native" and to set this through
+> a DMI quirk so that things will work out of the box.
+>
+> The Acer Aspire 4810T quirk from a couple of days was like this and
+> the first quirk in this series is too.
+>
+> I expect to receive more bug-reports like this, so you can expect
+> a steady trickle of backlight quirk patches from me the coming time.
+>
+> Note the second quirk in this series is also a "acpi_backlight=native"
+> quirk, but the root cause is somewhat different, see the commit msg.
+>
+> Regards,
+>
+> Hans
+>
+>
+>
+> Hans de Goede (2):
+>   ACPI: video: Add backlight=native DMI quirk for HP Pavilion g6-1d80nr
+>   ACPI: video: Add backlight=native DMI quirk for HP EliteBook 8460p
+>
+>  drivers/acpi/video_detect.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+>
 > --
-> 2.25.1
->
+
+Both applied as 6.2-rc material, thanks!
