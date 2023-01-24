@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AEF967A27D
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jan 2023 20:19:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DC6567A27A
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jan 2023 20:19:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234421AbjAXTTL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 Jan 2023 14:19:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52776 "EHLO
+        id S234228AbjAXTTK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Jan 2023 14:19:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234343AbjAXTTK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Jan 2023 14:19:10 -0500
+        with ESMTP id S229933AbjAXTTJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Jan 2023 14:19:09 -0500
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05FA531E3B;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4869A31E26;
         Tue, 24 Jan 2023 11:19:08 -0800 (PST)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
- id 86a9f70f4c250077; Tue, 24 Jan 2023 20:19:07 +0100
+ id 121f397b287e1538; Tue, 24 Jan 2023 20:19:06 +0100
 Received: from kreacher.localnet (unknown [213.134.189.30])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id A76BB7A644A;
-        Tue, 24 Jan 2023 20:19:06 +0100 (CET)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 3D6BF7A644A;
+        Tue, 24 Jan 2023 20:19:05 +0100 (CET)
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux PM <linux-pm@vger.kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
@@ -30,9 +30,9 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         Zhang Rui <rui.zhang@intel.com>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH v1 5/6] thermal: intel: int340x: Populate auxiliary trip points first
-Date:   Tue, 24 Jan 2023 20:18:09 +0100
-Message-ID: <10235439.nUPlyArG6x@kreacher>
+Subject: [PATCH v1 6/6] thermal: intel: int340x: Drop pointless cast to unsigned long
+Date:   Tue, 24 Jan 2023 20:18:52 +0100
+Message-ID: <1940542.PYKUYFuaPT@kreacher>
 In-Reply-To: <12159228.O9o76ZdvQC@kreacher>
 References: <12159228.O9o76ZdvQC@kreacher>
 MIME-Version: 1.0
@@ -54,45 +54,31 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Populate the auxiliary trip points in the int340x thermal zone before
-the "regular" ACPI ones, because they occupy the initial entries of
-the trip points table.
+The explicit casting from int to unsigned long in
+int340x_thermal_get_zone_temp() is pointless, becuase the multiplication
+result is cast back to int by the assignment in the same statement, so
+drop it.
 
-No intentional functional impact.
+No expected functional impact.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 Index: linux-pm/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
 ===================================================================
 --- linux-pm.orig/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
 +++ linux-pm/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
-@@ -142,6 +142,11 @@ struct int34x_thermal_zone *int340x_ther
- 		goto err_trips_alloc;
- 	}
+@@ -29,7 +29,7 @@ static int int340x_thermal_get_zone_temp
+ 		if (conv_temp < 0)
+ 			return conv_temp;
  
-+	for (i = 0; i < int34x_zone->aux_trip_nr; i++) {
-+		int34x_zone->trips[i].type = THERMAL_TRIP_PASSIVE;
-+		int34x_zone->trips[i].temperature = THERMAL_TEMP_INVALID;
-+	}
-+
- 	trip_cnt = int340x_thermal_read_trips(int34x_zone);
- 
- 	status = acpi_evaluate_integer(adev->handle, "GTSH", NULL, &hyst);
-@@ -153,11 +158,6 @@ struct int34x_thermal_zone *int340x_ther
- 	for (i = 0; i < trip_cnt; ++i)
- 		int34x_zone->trips[i].hysteresis = hyst;
- 
--	for (i = 0; i < int34x_zone->aux_trip_nr; i++) {
--		int34x_zone->trips[i].type = THERMAL_TRIP_PASSIVE;
--		int34x_zone->trips[i].temperature = THERMAL_TEMP_INVALID;
--	}
--
- 	int34x_zone->lpat_table = acpi_lpat_get_conversion_table(adev->handle);
- 
- 	int34x_zone->zone = thermal_zone_device_register_with_trips(
+-		*temp = (unsigned long)conv_temp * 10;
++		*temp = conv_temp * 10;
+ 	} else {
+ 		/* _TMP returns the temperature in tenths of degrees Kelvin */
+ 		*temp = deci_kelvin_to_millicelsius(tmp);
 
 
 
