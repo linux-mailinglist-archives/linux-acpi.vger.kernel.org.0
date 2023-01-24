@@ -2,63 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7BBD679DCE
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jan 2023 16:44:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF8C3679DFD
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jan 2023 16:52:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234491AbjAXPn7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 Jan 2023 10:43:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56146 "EHLO
+        id S233364AbjAXPwO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Jan 2023 10:52:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235264AbjAXPn6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Jan 2023 10:43:58 -0500
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3F9B6A45;
-        Tue, 24 Jan 2023 07:43:56 -0800 (PST)
+        with ESMTP id S232788AbjAXPwN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Jan 2023 10:52:13 -0500
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BB7222789;
+        Tue, 24 Jan 2023 07:52:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674575036; x=1706111036;
+  t=1674575533; x=1706111533;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=KwSmSzXNDFzeQhf+d70xYTh76xHp2WPVcGIoNfs08vs=;
-  b=HGh1m3o95PRieB9rq0hok2/VfvRFKKCoCPPDtZv3NzebBFRQfe9J13ky
-   YClHmnDfkzLONXfaumoOIVO2VNvMe0I6RpLh1UH1wMliFWVML5QIJnqAv
-   ALzGGwyDDEkIoeq532Il/vnegnEjJv4AXQLAJqib/Qam5Poq2xkNFcECT
-   f6humRrlAxQE20ecwV6detvFxU1NHPdhqC4tBCFz8EN8HZNNXyEjnrgLz
-   jJ89seVOpl7ZMjv5fjFMx6u1CRhTTrSSUo/nfeJ9bq31W8vv1dUSw9A2h
-   nh+EYMrmk58huHGXUpkAsfdnRz8M0RGfgQP29JuBl3eAs41ugB3tip8DH
+  bh=IgYeAnqzF1flLFSZckUXZtQPTmJAi6PYPpcfA50lTQc=;
+  b=dcpiXDp5LpKnRdGjzjB7c+9mf3ndnJKNpVYmEIayavVManwtF2S4Vqia
+   HeDlXS4z8UzGQshpVuMrOi/m/sUQbM3h1LCwXcnGIJ8x02uNyOnDF70hY
+   daTe1riLRFQH0g/K+k0zAUmA/F7cakM/ntAHMRNKuOT0EHJ+EuhT02E76
+   jfm1aiphh1t25At1hC45H7UER8uL4Rlpqx88EbeCgIXpvp5jVkD6XTKfQ
+   zHKhpxGJTSuajYda6Js4sgVNkJ1lPSph6PcHUptHtnm3vybnO0SL5ConS
+   +Usk/IbxVvVVkbLBS9qMHOEcVr8FKQaJSf4+wkTgvNOgZRH92IsGg+H5Q
    g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10600"; a="314223584"
+X-IronPort-AV: E=McAfee;i="6500,9779,10600"; a="306677250"
 X-IronPort-AV: E=Sophos;i="5.97,242,1669104000"; 
-   d="scan'208";a="314223584"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2023 07:43:27 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10600"; a="612083442"
+   d="scan'208";a="306677250"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2023 07:52:13 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10600"; a="836006897"
 X-IronPort-AV: E=Sophos;i="5.97,242,1669104000"; 
-   d="scan'208";a="612083442"
+   d="scan'208";a="836006897"
 Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2023 07:43:26 -0800
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2023 07:52:11 -0800
 Received: from kekkonen.localdomain (localhost [IPv6:::1])
-        by kekkonen.fi.intel.com (Postfix) with SMTP id 094DB122501;
-        Tue, 24 Jan 2023 17:43:23 +0200 (EET)
-Date:   Tue, 24 Jan 2023 17:43:22 +0200
+        by kekkonen.fi.intel.com (Postfix) with SMTP id 84BD5122501;
+        Tue, 24 Jan 2023 17:52:08 +0200 (EET)
+Date:   Tue, 24 Jan 2023 17:52:08 +0200
 From:   Sakari Ailus <sakari.ailus@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
         rafael@kernel.org, heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH v2 4/8] ACPI: property: Generate camera swnodes for ACPI
- and DisCo for Imaging
-Message-ID: <Y8/8moorDUIseO3/@kekkonen.localdomain>
+Subject: Re: [PATCH v2 2/8] ACPI: property: Parse _CRS CSI-2 descriptor
+Message-ID: <Y8/+qHPNKYaQmTCv@kekkonen.localdomain>
 References: <20230123134617.265382-1-sakari.ailus@linux.intel.com>
- <20230123134617.265382-5-sakari.ailus@linux.intel.com>
- <Y86mhdQrcWMr58wV@smile.fi.intel.com>
+ <20230123134617.265382-3-sakari.ailus@linux.intel.com>
+ <Y86inXQ+nEoFiosr@smile.fi.intel.com>
+ <Y86wzwrlvro3RFto@kekkonen.localdomain>
+ <Y87DBSUo1IJZmMDO@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y86mhdQrcWMr58wV@smile.fi.intel.com>
+In-Reply-To: <Y87DBSUo1IJZmMDO@smile.fi.intel.com>
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -67,154 +67,69 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi Andy,
 
-On Mon, Jan 23, 2023 at 05:23:49PM +0200, Andy Shevchenko wrote:
-> On Mon, Jan 23, 2023 at 03:46:13PM +0200, Sakari Ailus wrote:
-> > Generate software nodes for information parsed from ACPI _CRS for CSI-2 as
-> > well as MIPI DisCo for Imaging spec. The software nodes are compliant with
-> > existing ACPI or DT definitions and are parsed by relevant drivers without
-> > changes.
+On Mon, Jan 23, 2023 at 07:25:25PM +0200, Andy Shevchenko wrote:
+> On Mon, Jan 23, 2023 at 06:07:43PM +0200, Sakari Ailus wrote:
+> > On Mon, Jan 23, 2023 at 05:07:09PM +0200, Andy Shevchenko wrote:
+> > > On Mon, Jan 23, 2023 at 03:46:11PM +0200, Sakari Ailus wrote:
 > 
 > ...
 > 
-> > +static struct acpi_device_software_nodes *
-> > +crs_csi2_swnode_get(acpi_handle handle)
+> > > > +	memcpy(inst->remote_name, csi2->resource_source.string_ptr,
+> > > > +	       csi2->resource_source.string_length);
+> > > 
+> > > Why don't we use strscpy()? Is it really strings? Or is it some abuse of
+> > > the ACPI object type?
+> > 
+> > I didn't find a guarantee it would be nil terminated. Albeit I'm fine
+> > switching to strscpy() if there's such a guarantee.
 > 
-> It's 81 on one line. Why not to join?
+> Following this logic neither memcpy() (and especially memcpy()!) call
+> guarantees that. But hold on, have you actually read strscpy() documentation?
 
-Works for me.
-
-> 
-> > +{
-> > +	struct crs_csi2_swnodes *swnodes;
-> > +
-> > +	list_for_each_entry(swnodes, &crs_csi2_swnodes, list)
-> > +		if (swnodes->handle == handle)
-> > +			return swnodes->ads;
-> > +
-> > +	return NULL;
-> > +}
-> 
-> ...
-> 
-> > +#define GRAPH_PORT_NAME(var, num)					   \
-> > +	(snprintf((var), sizeof(var), SWNODE_GRAPH_PORT_NAME_FMT, (num)) > \
-> > +	 sizeof(var))
-> 
-> >= ?
-> 
-> ("excluding the trailing '\0'")
-
-Thanks, indeed. A bug introduced in v2.
+Yes. And there is such a guarantee, too. The string_length contains the
+length of the string, including the terminating nil character. I have no
+problem with strscpy() but it won't affect the end result in any way. :-)
 
 > 
 > ...
 > 
-> > +static struct fwnode_handle *get_mipi_port_handle(struct acpi_device *device,
-> > +						  unsigned int port)
-> > +{
+> > > > +	list_replace(&inst_context.res_list, &csi2->buses);
+> > > > +	list_add(&csi2->list, list);
+> > > 
+> > > Hmm... Can list_swap() be used here?
+> > 
+> > We're replacing an entry in a list and then adding an entry to another. How
+> > would you use list_swap() here?
 > 
-> > +	static const char mipi_port_prefix[] = "mipi-img-port-";
-> 
-> It's used only once in this function, why not keeping it in the format string?
-
-Twice, not once. My point was that it's critical the strings remain the
-same length, and certainly what that string actually is, is less important.
-
-> 
-> > +	char mipi_port_name[sizeof(mipi_port_prefix) + 2];
-> > +
-> > +	if (snprintf(mipi_port_name, sizeof(mipi_port_name), "%s%u",
-> > +		     mipi_port_prefix, port) > sizeof(mipi_port_name)) {
-> > +		acpi_handle_info(acpi_device_handle(device),
-> > +				 "mipi port name too long for port %u\n", port);
-> > +		return NULL;
-> > +	}
-> > +
-> > +	return fwnode_get_named_child_node(acpi_fwnode_handle(device),
-> > +					   mipi_port_name);
-> > +}
+> I see, so it is about two different lists.
 > 
 > ...
 > 
-> > +			/* Move polarity bits to the lane polarity u32 array */
-> > +			for (i = 0; i < 1 + num_lanes; i++)
-> > +				port->lane_polarities[i] =
-> > +					(u.val8[i >> 3] & (1 << (i & 7))) ?
-> > +					1U : 0U;
+> > > > +	/*
+> > > > +	 * Figure out how much temporary storage we need for counting
+> > > > +	 * connections in each device.
+> > > > +	 */
+> > > > +	list_for_each_entry(csi2, &crs_csi2_handles, list) {
+> > > > +		struct crs_csi2_instance *inst;
+> > > > +
+> > > > +		handle_count++;
+> > > 
+> > > > +		list_for_each_entry(inst, &csi2->buses, list)
+> > > > +			handle_count++;
+> > > 
+> > > list_count_nodes()?
+> > 
+> > Are you suggesting adding a new list API function or using one that's not
+> > in the linux-acpi/testing branch yet?
 > 
-> Wouldn't
-> 
-> 				port->lane_polarities[i] =
-> 					!!(u.val8[i >> 3] & (1 << (i & 7)));
-> 
-> be better?
+> It's in USB tree.
+> I'm fine if you switch your code later on.
 
-It would work, yes, although the target is a u32. Casting to bool would
-look nicer to me. I lean towards what it is at the moment but bool seems
-fairly reasonable, too.
-
-> 
-> ...
-> 
-> > +	ret = software_node_register_node_group(ads->nodeptrs);
-> > +	if (ret < 0) {
-> > +		acpi_handle_warn(acpi_device_handle(device),
-> > +				 "cannot register software nodes (%d)!\n", ret);
-> > +		device->swnodes = NULL;
-> > +		return;
-> > +	}
-> 
-> > +	device->fwnode.secondary = software_node_fwnode(ads->nodes);
-> 
-> 	struct fwnode_handle *primary;
-> 	...
-> 	primary = acpi_fwnode_handle(device);
-> 	primary->secondary = ...
-> 
-> ?
-> 
-> The point is to avoid direct dereferences of fwnode in struct acpi_device.
-
-Yes.
+Ack, I'll post a patch once this hits the linux-acpi tree.
 
 > 
+> > > > +	}
 > 
-> ...
-> 
-> > +static void acpi_free_swnodes(struct acpi_device *device)
-> > +{
-> > +	struct acpi_device_software_nodes *ads = device->swnodes;
-> > +
-> > +	if (!ads)
-> > +		return;
-> > +
-> > +	software_node_unregister_node_group(ads->nodeptrs);
-> 
-> > +	set_secondary_fwnode(&device->dev, NULL);
-> 
-> Interestingly you are not use same API above. Why?
-
-Good question.
-
-dev->fwnode hasn't been set when assigning the secondary fwnode in
-acpi_init_swnodes(), therefore set_secondary_fwnode() won't do what it
-should.
-
-It can be still called here as it just sets dev->fwnode->secondary NULL.
-
-I can add a comment mentioning this.
-
-I think it'd be better to have a set of fwnodes attached to a device rather
-than one primary and another secondary, with various levels of success
-depending on the order of assigning them. But I think it's out of scope of
-this set.
-
-> 
-> > +	kfree(ads->nodes[ACPI_DEVICE_SWNODE_ROOT].name);
-> > +	kfree(ads);
-> > +
-> > +	device->swnodes = NULL;
-> > +}
 
 -- 
 Kind regards,
