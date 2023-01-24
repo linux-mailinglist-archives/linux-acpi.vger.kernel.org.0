@@ -2,169 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B8EF6795E2
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jan 2023 11:58:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7A1F6796CB
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jan 2023 12:40:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232776AbjAXK6z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 Jan 2023 05:58:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59906 "EHLO
+        id S234193AbjAXLkW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Jan 2023 06:40:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233417AbjAXK6v (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Jan 2023 05:58:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5D9A2DE6A
-        for <linux-acpi@vger.kernel.org>; Tue, 24 Jan 2023 02:58:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1674557886;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=4b5SNYIXjjQOhFYbM58fT6s8i3UuoEENPwTGEaDKm2U=;
-        b=Wqv8C3WMrDchQO6jn68gZVtV/YHrSa3AuzW+eVEgGsysSKX0WmqjjEDWC/pZ4qxLQLywKJ
-        SqmMPAdhPa9vESveFXSAIhyLoLG6ti0xHMh7PRR48pnyWoeJuTVO4jkvyPZgvBQ3quDPG1
-        aXVSGsHStrQw2gDgftjZdZbeI+SzS0k=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-301-rndxwYs6MQmAtcRkiDkvjA-1; Tue, 24 Jan 2023 05:58:02 -0500
-X-MC-Unique: rndxwYs6MQmAtcRkiDkvjA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2DC7B101A521;
-        Tue, 24 Jan 2023 10:58:02 +0000 (UTC)
-Received: from shalem.redhat.com (unknown [10.39.195.52])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 7C90B40444C3;
-        Tue, 24 Jan 2023 10:58:00 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Lukas Wunner <lukas@wunner.de>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
-        Emmanouil Kouroupakis <kartebi@gmail.com>,
-        Aditya Garg <gargaditya08@live.com>,
-        Orlando Chamberlain <orlandoch.dev@gmail.com>,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH v2 3/3] ACPI: video: Fix apple gmux detection
-Date:   Tue, 24 Jan 2023 11:57:54 +0100
-Message-Id: <20230124105754.62167-4-hdegoede@redhat.com>
-In-Reply-To: <20230124105754.62167-1-hdegoede@redhat.com>
-References: <20230124105754.62167-1-hdegoede@redhat.com>
+        with ESMTP id S234194AbjAXLkU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Jan 2023 06:40:20 -0500
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E39F2CC49;
+        Tue, 24 Jan 2023 03:40:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674560417; x=1706096417;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=NIYk1uI41v3OvDRzECTRb8uxkg78dVlwCPE4WWsO46w=;
+  b=lNqZ8SvbDBfDkgavloGqHHXFyOszeCedx6svXxBP8TOR1RWpI4cIfBjN
+   jaRTX48tcb3/7gfcdQ330MN6vT0ObRJ17tdm6voPrGnKo35eIQlrX1nAz
+   jk7i0sb4aPhTFExModbHxNxeocoBPkcUTZxvcSRV4klULKTxv+FL9aRKC
+   f3Y0YCzNy/mKUuUtozrjghEDXfIYcChgIKZD2QxF84aJU1cmZX9un3avT
+   N9eQifwGXede8x/7FZfKHT8WKOU8Lbbs8OykL2utCnemqRBf8wr0B/Xpr
+   2oW8A4dePqXhIR3HFZo4I5Z7ZhOesV/CLo2UZy/zFgnkgURjnIoL59+du
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10599"; a="314175682"
+X-IronPort-AV: E=Sophos;i="5.97,242,1669104000"; 
+   d="scan'208";a="314175682"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2023 03:40:16 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10599"; a="804565001"
+X-IronPort-AV: E=Sophos;i="5.97,242,1669104000"; 
+   d="scan'208";a="804565001"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 24 Jan 2023 03:40:13 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 24 Jan 2023 13:40:13 +0200
+Date:   Tue, 24 Jan 2023 13:40:13 +0200
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
+        rafael@kernel.org, andriy.shevchenko@linux.intel.com
+Subject: Re: [PATCH v2 3/8] device property: Add SOFTWARE_NODE() macro for
+ defining software nodes
+Message-ID: <Y8/DnebjvGFsBgjk@kuha.fi.intel.com>
+References: <20230123134617.265382-1-sakari.ailus@linux.intel.com>
+ <20230123134617.265382-4-sakari.ailus@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230123134617.265382-4-sakari.ailus@linux.intel.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Some apple laptop models have an ACPI device with a HID of APP000B
-and that device has an IO resource (so it does not describe the new
-unsupported MMIO based gmux type), but there actually is no gmux
-in the laptop at all.
+On Mon, Jan 23, 2023 at 03:46:12PM +0200, Sakari Ailus wrote:
+> Add SOFTWARE_NODE() macro in order to make defining software nodes look
+> nicer. This is analogous to different PROPERTY_ENTRY_*() macros for
+> defining properties.
+> 
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-The gmux_probe() function of the actual apple-gmux driver has code
-to detect this, this code has been factored out into a new
-apple_gmux_detect() helper in apple-gmux.h.
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-Use this new function to fix acpi_video_get_backlight_type() wrongly
-returning apple_gmux as type on the following laptops:
+> ---
+>  include/linux/property.h | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index 37179e3abad5c..6745a86bc9b97 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -477,6 +477,13 @@ struct software_node {
+>  	const struct property_entry *properties;
+>  };
+>  
+> +#define SOFTWARE_NODE(_name_, _properties_, _parent_)	\
+> +	(struct software_node) {			\
+> +		.name = _name_,				\
+> +		.properties = _properties_,		\
+> +		.parent = _parent_,			\
+> +	}
+> +
+>  bool is_software_node(const struct fwnode_handle *fwnode);
+>  const struct software_node *
+>  to_software_node(const struct fwnode_handle *fwnode);
+> -- 
+> 2.30.2
 
-MacBookPro5,4
-https://pastebin.com/8Xjq7RhS
-
-MacBookPro8,1
-https://linux-hardware.org/?probe=e513cfbadb&log=dmesg
-
-MacBookPro9,2
-https://bugzilla.kernel.org/attachment.cgi?id=278961
-
-MacBookPro10,2
-https://lkml.org/lkml/2014/9/22/657
-
-MacBookPro11,2
-https://forums.fedora-fr.org/viewtopic.php?id=70142
-
-MacBookPro11,4
-https://raw.githubusercontent.com/im-0/investigate-card-reader-suspend-problem-on-mbp11.4/mast
-
-Fixes: 21245df307cb ("ACPI: video: Add Apple GMUX brightness control detection")
-Link: https://lore.kernel.org/platform-driver-x86/20230123113750.462144-1-hdegoede@redhat.com/
-Reported-by: Emmanouil Kouroupakis <kartebi@gmail.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes in v2:
-- Add list of known affected Apple models (Lukas Wunner)
-- Add Reported-by and Link tags
----
- drivers/acpi/video_detect.c | 24 +++---------------------
- 1 file changed, 3 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index 64eab35037c3..a8c02608dde4 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -110,26 +110,6 @@ static bool nvidia_wmi_ec_supported(void)
- }
- #endif
- 
--static bool apple_gmux_backlight_present(void)
--{
--	struct acpi_device *adev;
--	struct device *dev;
--
--	adev = acpi_dev_get_first_match_dev(GMUX_ACPI_HID, NULL, -1);
--	if (!adev)
--		return false;
--
--	dev = acpi_get_first_physical_node(adev);
--	if (!dev)
--		return false;
--
--	/*
--	 * drivers/platform/x86/apple-gmux.c only supports old style
--	 * Apple GMUX with an IO-resource.
--	 */
--	return pnp_get_resource(to_pnp_dev(dev), IORESOURCE_IO, 0) != NULL;
--}
--
- /* Force to use vendor driver when the ACPI device is known to be
-  * buggy */
- static int video_detect_force_vendor(const struct dmi_system_id *d)
-@@ -791,6 +771,7 @@ static enum acpi_backlight_type __acpi_video_get_backlight_type(bool native)
- {
- 	static DEFINE_MUTEX(init_mutex);
- 	static bool nvidia_wmi_ec_present;
-+	static bool apple_gmux_present;
- 	static bool native_available;
- 	static bool init_done;
- 	static long video_caps;
-@@ -804,6 +785,7 @@ static enum acpi_backlight_type __acpi_video_get_backlight_type(bool native)
- 				    ACPI_UINT32_MAX, find_video, NULL,
- 				    &video_caps, NULL);
- 		nvidia_wmi_ec_present = nvidia_wmi_ec_supported();
-+		apple_gmux_present = apple_gmux_detect(NULL, NULL);
- 		init_done = true;
- 	}
- 	if (native)
-@@ -825,7 +807,7 @@ static enum acpi_backlight_type __acpi_video_get_backlight_type(bool native)
- 	if (nvidia_wmi_ec_present)
- 		return acpi_backlight_nvidia_wmi_ec;
- 
--	if (apple_gmux_backlight_present())
-+	if (apple_gmux_present)
- 		return acpi_backlight_apple_gmux;
- 
- 	/* Use ACPI video if available, except when native should be preferred. */
 -- 
-2.39.0
-
+heikki
