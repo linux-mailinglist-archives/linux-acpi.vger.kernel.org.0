@@ -2,129 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EEA6679C73
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jan 2023 15:49:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 792A6679C91
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jan 2023 15:52:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235067AbjAXOtL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 Jan 2023 09:49:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32850 "EHLO
+        id S235065AbjAXOwb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Jan 2023 09:52:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235026AbjAXOtI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Jan 2023 09:49:08 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6E73B900B;
-        Tue, 24 Jan 2023 06:48:44 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DFCC24B3;
-        Tue, 24 Jan 2023 06:49:25 -0800 (PST)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ECA8B3F71E;
-        Tue, 24 Jan 2023 06:48:41 -0800 (PST)
-Date:   Tue, 24 Jan 2023 14:48:39 +0000
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Conor Dooley <conor.dooley@microchip.com>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Pierre Gondois <pierre.gondois@arm.com>,
-        linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@rivosinc.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Gavin Shan <gshan@redhat.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v4 6/6] arch_topology: Build cacheinfo from primary CPU
-Message-ID: <20230124144839.2szjjv256j3pdaif@bogus>
-References: <20230104183033.755668-1-pierre.gondois@arm.com>
- <20230104183033.755668-7-pierre.gondois@arm.com>
- <CAMuHMdUjgxgOXf5He1x=PLn7MQTjZgFQUHj8JrwbyweT4uOALQ@mail.gmail.com>
- <20230124140420.4srnufcvamvff77v@bogus>
- <Y8/tl999NQwbPL/R@wendy>
+        with ESMTP id S235094AbjAXOw0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Jan 2023 09:52:26 -0500
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB6DC4AA48;
+        Tue, 24 Jan 2023 06:52:13 -0800 (PST)
+Received: by mail-ej1-f52.google.com with SMTP id kt14so39706667ejc.3;
+        Tue, 24 Jan 2023 06:52:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aMUbBr/rdScwYBHhL+3zrpC7GVtT6nThOwqhrKrOV9c=;
+        b=oklV27N6i6T2fnMzbbvb02E6+pDFkimhPwKOytleJjwrCnJrS9YwnYJ6dRyA0e5h16
+         nphw6j4/zcElfFCi2I+b3cZbiJQUpfXafls8CLKGRRTHGkNbjci0JFBcI/f6qcOYEDZm
+         mvxkzo45Sx7KVgINQeEJanbKRyZJWsxWGhqIUkv7QZzeCl4/ehzsVzHU2i9ZmFC2Vpjy
+         9WFOifM3mr4yX2pAqKXxPslEOXK7h9JSfy4mkIgsErBlC8XYKiE0V9c67Jb56UP5Cg7e
+         60J65fIQQgwuuS75Gqtrs2AkFo48CbG4cs0cCmnJmdz/O7uK+W8scRjcaWKzkYvDHV4m
+         2/6Q==
+X-Gm-Message-State: AFqh2krAZqbtKiFOqWVz47313ZJo4PVcxRehnSAo4+Tj7MJ/Lu/8DQlf
+        4YDe8F8slRDy2mX+GAHdvDo4vCuA8bxFZYTTku30eZQu
+X-Google-Smtp-Source: AMrXdXt8C1p5I0HUh53TVWpDmTW9Mv4ZDA/3rs6Z88yAbfrZowYe+m5AzMjdfxdNirjg21RS4EOPnucMitIK3TXRS8Q=
+X-Received: by 2002:a17:906:4e9a:b0:84d:4dc6:1c08 with SMTP id
+ v26-20020a1709064e9a00b0084d4dc61c08mr4700163eju.421.1674571932458; Tue, 24
+ Jan 2023 06:52:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y8/tl999NQwbPL/R@wendy>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <5916342.lOV4Wx5bFT@kreacher> <2882611.e9J7NaK4W3@kreacher>
+ <3234230.44csPzL39Z@kreacher> <19f1860e20fbc75c3d2c3eefda29cccd18ca59a9.camel@linux.intel.com>
+ <CAJZ5v0gK_O-9_tPEVbmBbf+2vxVA2_C5tPGOo_qghyw86pohoA@mail.gmail.com> <ca878d5a177b68eaf5f698e0afda5c0b1718a53f.camel@linux.intel.com>
+In-Reply-To: <ca878d5a177b68eaf5f698e0afda5c0b1718a53f.camel@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 24 Jan 2023 15:52:01 +0100
+Message-ID: <CAJZ5v0hSPh4u9W9XSQ=i2FdA64-343p-JtB9khn5YWDH5_LTmQ@mail.gmail.com>
+Subject: Re: [PATCH v7 0/3] thermal: intel: Use generic trip points in 2 drivers
+To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 24, 2023 at 02:39:19PM +0000, Conor Dooley wrote:
-> On Tue, Jan 24, 2023 at 02:04:20PM +0000, Sudeep Holla wrote:
-> > Conor might help me remember the details.
-> 
-> And I can't shirk either since you know I just replied to Pierre!
-> 
-> > On Tue, Jan 24, 2023 at 02:50:16PM +0100, Geert Uytterhoeven wrote:
-> 
-> > > > @@ -840,6 +840,14 @@ void __init init_cpu_topology(void)
-> > > >                 reset_cpu_topology();
-> > > >                 return;
-> > > >         }
-> > > > +
-> > > > +       for_each_possible_cpu(cpu) {
-> > > > +               ret = fetch_cache_info(cpu);
-> > > > +               if (ret) {
-> > > > +                       pr_err("Early cacheinfo failed, ret = %d\n", ret);
-> > > 
-> > > This triggers on all my RV64 platforms (K210, Icicle, Starlight,
-> > > RZ/Five).
-> > > 
-> > > This seems to be a respin of
-> > > https://lore.kernel.org/all/CAMuHMdUBZ791fxCPkKQ6HCwLE4GJB2S35QC=SQ+X8w5Q4C_70g@mail.gmail.com
-> > > which had the same issue.
-> > >
-> > 
-> > I need to recollect my memories reading all the thread, but even after the
-> > fixes there were few platforms that failed with so early allocation but were
-> > fine with initcalls. Are these such platforms or am I mixing up things here ?
-> > Do you still see all the cacheinfo in the sysfs with initcalls that happen
-> > later in the boot ?
-> 
-> IIRC that stuff was failing back then because riscv calls
-> init_cpu_topology() far sooner in boot than arm64 does, and therefore
-> caused allocation failures. You made that warning go away in the below
-> patch by moving detect_cache_attributes() to update_siblings_masks(),
-> which both arches call later during boot IIRC:
-> https://lore.kernel.org/all/20220713133344.1201247-1-sudeep.holla@arm.com
-> 
-> Pierre's patch has added fetch_cache_info() to the problematic
-> init_cpu_topology() which is called before we can actually do any
-> allocation in smp_prepare_boot_cpu() or something like that.
-> 
-> That's what I get for only reviewing the patch that was specifically for
-> riscv, and not the rest of the series... D'oh.
-> 
-> This actually came up a few weeks ago, although I kinda considered the
-> reason it was triggered to be a bit bogus there, since that dmips property
-> is not (yet?) a valid property on RISC-V. The patch for that is here:
-> https://patchwork.kernel.org/project/linux-riscv/patch/20230105033705.3946130-1-leyfoon.tan@starfivetech.com/
-> I tried it on a PolarFire SoC (unfortunately not an Icicle, I just went
-> and bricked mine an hour ago) & it should be a fix for this problem too.
-> 
-> My suggested commit message for that is somewhat prophetic now that I
-> look back at it:
-> https://lore.kernel.org/all/Y7V4byskevAWKM3G@spud/
+On Mon, Jan 23, 2023 at 10:35 PM srinivas pandruvada
+<srinivas.pandruvada@linux.intel.com> wrote:
 >
+> On Mon, 2023-01-23 at 20:54 +0100, Rafael J. Wysocki wrote:
+> > On Mon, Jan 23, 2023 at 8:26 PM srinivas pandruvada
+> > <srinivas.pandruvada@linux.intel.com> wrote:
+> > >
+> > > On Mon, 2023-01-23 at 19:52 +0100, Rafael J. Wysocki wrote:
+> > > > On Monday, January 23, 2023 7:45:30 PM CET Rafael J. Wysocki
+> > > > wrote:
+> > > > > On Monday, January 23, 2023 7:36:52 PM CET Rafael J. Wysocki
+> > > > > wrote:
+> > > > > > Hi All,
+> > > > > >
+> > > > > > This is a new version of the series from Daniel posted as:
+> > > > > >
+> > > > > > https://lore.kernel.org/linux-pm/20230120231530.2368330-1-daniel.lezcano@linaro.org/
+> > > > > >
+> > > > > > The first patch has been reworked (see
+> > > > > > https://lore.kernel.org/linux-pm/5911499.lOV4Wx5bFT@kreacher/
+> > > > > > )
+> > > > > > and the other two have been rebased on top of it.
+> > > > > >
+> > > > > > I have retained the R-by tags from Rui, because the changes
+> > > > > > in
+> > > > > > patches [2-3/3] are
+> > > > > > not essential, but I think that this new set needs to be
+> > > > > > tested
+> > > > > > again.
+> > > > > >
+> > > > > > Srinivas, can you test it please?
+> > > > >
+> > > > > Something's wrong, sorry.
+> > > > >
+> > > > > I get some invalid trip temperatures with this set.
+> > > >
+> > > > Sorry, scratch this, I got confused by THERMAL_TEMP_INVALID
+> > > > showing
+> > > > up in
+> > > > sysfs, but it did show up before too.
+> > > >
+> > > > Please test!
+> > > >
+> > >
+> > > >
+> > >
+> > > >
+> > > It will be easy if you have some test branch to avoid dependecies
+> > > on
+> > > other patches.
+> >
+> > Please see the thermal-intel-test branch in linux-pm.git.  It's this
+> > series on top of the core thermal stuff + ARM drivers.
+> Tested on one system. Works fine.
 
-Ah, that thread, I remember that :).
+Thanks!
 
-I still need to understand how this is related to memory allocation.
-Pierre was suggesting(in private) if we need to keep fetch_cache_info()
-arch specific but I really don't want to go down that patch until I
-understand and there is no other option.
-
-Thanks for your time. I will try to recall boot flow and see if I can
-gather the reasoning for the seen behaviour.
-
--- 
-Regards,
-Sudeep
+I'll add a T-by from you to the series (which will be moved to the
+thermal-intel branch).
