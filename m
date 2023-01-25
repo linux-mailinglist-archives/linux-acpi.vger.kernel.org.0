@@ -2,148 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A95A567AF0A
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jan 2023 10:59:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 564D267AFD5
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jan 2023 11:40:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233965AbjAYJ7B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Jan 2023 04:59:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44650 "EHLO
+        id S235595AbjAYKkN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Jan 2023 05:40:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230174AbjAYJ7A (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Jan 2023 04:59:00 -0500
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78DBD4997B;
-        Wed, 25 Jan 2023 01:58:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674640736; x=1706176736;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=+anlwynG1paGsjavBdn2ta5mXew30jOhzLYN5tUMxgw=;
-  b=V1iq6QzujFxEZ/zHiQu8exQLdolD+EOmEYcbb1FSh0Ex/pdpjl5RQ1HG
-   +uCLgz4PZwKdXZpC6fqk0jU8KNxvihWHLIhNV8ECLZADNMAnq9D7xag5a
-   3AXDXBHShtUc7WnwZIl/jssUoczLpQG5pi4qzc2EDDhrnipQJ5QgsAe0M
-   oEPZmEJyj3Y0dxcdTCxVbY/YQuaJGkNK6cNYPQOcjCCx9zfEsPUIUudbL
-   BWt5J46vUCsRazOB430eNYF70Riv8BH2j4wiKv+DSPfsh++o0MNDjqQsz
-   yX4BoRrp0Ig+cCmHiFLdKXbk0kearVQjBupoJAWF6rBgvHMtmJ/yY5gHj
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10600"; a="391025673"
-X-IronPort-AV: E=Sophos;i="5.97,245,1669104000"; 
-   d="scan'208";a="391025673"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2023 01:58:55 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10600"; a="907828782"
-X-IronPort-AV: E=Sophos;i="5.97,245,1669104000"; 
-   d="scan'208";a="907828782"
-Received: from lkp-server01.sh.intel.com (HELO 5646d64e7320) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 25 Jan 2023 01:58:53 -0800
-Received: from kbuild by 5646d64e7320 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pKcYO-0007Dk-37;
-        Wed, 25 Jan 2023 09:58:52 +0000
-Date:   Wed, 25 Jan 2023 17:58:44 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        with ESMTP id S235523AbjAYKkI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Jan 2023 05:40:08 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F09C79742
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Jan 2023 02:39:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1674643161;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=jNdHlwqa75bo03BzDGn3/1P66BHrvZnULx8SRTRIIXg=;
+        b=Mg4vHgqhBlJi4udMvEYQcqDe/000OiWRC0GUW4Q5oj8G7vRxR8GWoicLnRCo0wrXxcpJA4
+        uoIXNV4pshDkli4lFMYzRJzTGohgK438ngqR23L2PAbk0B4/8ZHCFMublf0dXSSSpk8Jsx
+        6MmLTz02rS5HDGjXncA8K/WHlicYQN0=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-563-bx4jaRnfONyWspXK2ImlHg-1; Wed, 25 Jan 2023 05:39:19 -0500
+X-MC-Unique: bx4jaRnfONyWspXK2ImlHg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9F36D1C00406;
+        Wed, 25 Jan 2023 10:39:18 +0000 (UTC)
+Received: from shalem.redhat.com (unknown [10.39.193.104])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 7F5DF492C14;
+        Wed, 25 Jan 2023 10:39:17 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Andy Shevchenko <andy@kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Mario Limonciello <Mario.Limonciello@amd.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-gpio@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 561b75628983188ea131d1830bc08d633ce5f5bb
-Message-ID: <63d0fd54.Azin3S7jE+phXA2m%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Subject: [RFC 0/1] pinctrl: amd: Fix handling of PIN_CONFIG_BIAS_PULL_UP/_DOWN settings
+Date:   Wed, 25 Jan 2023 11:39:15 +0100
+Message-Id: <20230125103916.16772-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 561b75628983188ea131d1830bc08d633ce5f5bb  Merge branch 'thermal/bleeding-edge' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into bleeding-edge
+Hi All,
 
-elapsed time: 720m
+I've been going over my local patch queue and found this. This is a fix
+which I wrote quite a while ago trying to address:
 
-configs tested: 66
-configs skipped: 2
+https://bugzilla.kernel.org/show_bug.cgi?id=212379
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Testing if this really helped that bug has been inconclusive, but
+in itself the bugfixes from this patch still seem the right thing
+to do.
 
-gcc tested configs:
-x86_64                            allnoconfig
-arc                                 defconfig
-s390                             allmodconfig
-alpha                               defconfig
-s390                                defconfig
-s390                             allyesconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              defconfig
-powerpc                           allnoconfig
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-alpha                             allnoconfig
-i386                              allnoconfig
-arm                               allnoconfig
-arc                               allnoconfig
-i386                                defconfig
-arc                  randconfig-r043-20230123
-arm                                 defconfig
-arm                  randconfig-r046-20230123
-arm64                            allyesconfig
-sh                               allmodconfig
-arm                              allyesconfig
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-ia64                             allmodconfig
-i386                 randconfig-a004-20230123
-x86_64                           rhel-8.3-kvm
-i386                 randconfig-a003-20230123
-x86_64                    rhel-8.3-kselftests
-i386                 randconfig-a002-20230123
-x86_64                          rhel-8.3-func
-x86_64                           rhel-8.3-bpf
-i386                 randconfig-a001-20230123
-i386                 randconfig-a006-20230123
-i386                 randconfig-a005-20230123
-x86_64               randconfig-a002-20230123
-x86_64               randconfig-a001-20230123
-x86_64               randconfig-a004-20230123
-x86_64               randconfig-a003-20230123
-i386                             allyesconfig
-x86_64               randconfig-a006-20230123
-x86_64               randconfig-a005-20230123
-mips                             allyesconfig
-powerpc                          allmodconfig
-m68k                             allyesconfig
-alpha                            allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
+Still I have marked this as a RFC for now, because it really could
+use another pair of eyes + more testing before getting merged.
 
-clang tested configs:
-hexagon              randconfig-r041-20230123
-hexagon              randconfig-r045-20230123
-s390                 randconfig-r044-20230123
-x86_64               randconfig-a013-20230123
-riscv                randconfig-r042-20230123
-x86_64               randconfig-a011-20230123
-x86_64               randconfig-a012-20230123
-x86_64               randconfig-a016-20230123
-x86_64               randconfig-a015-20230123
-x86_64               randconfig-a014-20230123
-x86_64                          rhel-8.3-rust
-i386                 randconfig-a012-20230123
-i386                 randconfig-a013-20230123
-i386                 randconfig-a011-20230123
-i386                 randconfig-a014-20230123
-i386                 randconfig-a016-20230123
-i386                 randconfig-a015-20230123
+Regards,
+
+Hans
+
+
+Hans de Goede (1):
+  pinctrl: amd: Fix handling of PIN_CONFIG_BIAS_PULL_UP/_DOWN settings
+
+ drivers/pinctrl/pinctrl-amd.c | 37 +++++++++++++++++++++++++++--------
+ 1 file changed, 29 insertions(+), 8 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.39.0
+
