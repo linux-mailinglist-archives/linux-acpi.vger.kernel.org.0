@@ -2,185 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F21967B526
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jan 2023 15:55:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1746567B521
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jan 2023 15:54:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235857AbjAYOzp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Jan 2023 09:55:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55750 "EHLO
+        id S235484AbjAYOya (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Jan 2023 09:54:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235335AbjAYOzp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Jan 2023 09:55:45 -0500
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4DA74EC6;
-        Wed, 25 Jan 2023 06:55:39 -0800 (PST)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
- id 7fbb2e3704d35487; Wed, 25 Jan 2023 15:55:38 +0100
-Received: from kreacher.localnet (unknown [213.134.163.149])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 994952201948;
-        Wed, 25 Jan 2023 15:55:37 +0100 (CET)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux PM <linux-pm@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH v1 2/3] thermal: intel: int340x: Use zone lock for synchronization
-Date:   Wed, 25 Jan 2023 15:54:03 +0100
-Message-ID: <4798426.GXAFRqVoOG@kreacher>
-In-Reply-To: <5665899.DvuYhMxLoT@kreacher>
-References: <5665899.DvuYhMxLoT@kreacher>
+        with ESMTP id S234862AbjAYOy3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Jan 2023 09:54:29 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id ABDE730FE;
+        Wed, 25 Jan 2023 06:54:28 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BB1E74B3;
+        Wed, 25 Jan 2023 06:55:09 -0800 (PST)
+Received: from bogus (unknown [10.57.77.84])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AB89D3F71E;
+        Wed, 25 Jan 2023 06:54:25 -0800 (PST)
+Date:   Wed, 25 Jan 2023 14:54:23 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Conor Dooley <conor.dooley@microchip.com>,
+        Pierre Gondois <pierre.gondois@arm.com>,
+        linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@rivosinc.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Gavin Shan <gshan@redhat.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4 6/6] arch_topology: Build cacheinfo from primary CPU
+Message-ID: <20230125145423.pid3hsstswzuez73@bogus>
+References: <20230104183033.755668-1-pierre.gondois@arm.com>
+ <20230104183033.755668-7-pierre.gondois@arm.com>
+ <CAMuHMdUjgxgOXf5He1x=PLn7MQTjZgFQUHj8JrwbyweT4uOALQ@mail.gmail.com>
+ <20230124140420.4srnufcvamvff77v@bogus>
+ <Y8/tl999NQwbPL/R@wendy>
+ <20230124144839.2szjjv256j3pdaif@bogus>
+ <20230124145541.2xwtr7ro2bjnsjd7@bogus>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.163.149
-X-CLIENT-HOSTNAME: 213.134.163.149
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedruddvvddgjedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffueeitdfgvddtudegueejtdffteetgeefkeffvdeftddttdeuhfegfedvjefhnecukfhppedvudefrddufeegrdduieefrddugeelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudeifedrudegledphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepiedprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthht
- ohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopegurghnihgvlhdrlhgviigtrghnoheslhhinhgrrhhordhorhhg
-X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230124145541.2xwtr7ro2bjnsjd7@bogus>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi Geert,
 
-Because the ->get_trip_temp() and ->get_trip_type() thermal zone
-callbacks are only invoked from __thermal_zone_get_trip() which is
-always called by the thermal core under the zone lock, it is sufficient
-for int340x_thermal_update_trips() to acquire the zone lock for mutual
-exclusion with those callbacks.
+On Tue, Jan 24, 2023 at 02:55:41PM +0000, Sudeep Holla wrote:
+> 
+> Geert, can you please try with the patch Conor pointed out and see if
+> that helps to fix the allocation failures[1]
+> 
 
-Accordingly, modify int340x_thermal_update_trips() to use the zone lock
-instead of the internal trip_mutex and drop the latter which is not
-necessary any more.
+Sorry for the nag, but did you get the chance to test -next with [1]
+and see if it fixes the cacheinfo memory failure you were observing ?
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c |   28 +++--------
- drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h |    1 
- 2 files changed, 8 insertions(+), 21 deletions(-)
+-- 
+Regards,
+Sudeep
 
-Index: linux-pm/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
-===================================================================
---- linux-pm.orig/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
-+++ linux-pm/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
-@@ -41,9 +41,7 @@ static int int340x_thermal_get_trip_temp
- 					 int trip, int *temp)
- {
- 	struct int34x_thermal_zone *d = zone->devdata;
--	int i, ret = 0;
--
--	mutex_lock(&d->trip_mutex);
-+	int i;
- 
- 	if (trip < d->aux_trip_nr)
- 		*temp = d->aux_trips[trip];
-@@ -62,12 +60,10 @@ static int int340x_thermal_get_trip_temp
- 			}
- 		}
- 		if (i == INT340X_THERMAL_MAX_ACT_TRIP_COUNT)
--			ret = -EINVAL;
-+			return -EINVAL;
- 	}
- 
--	mutex_unlock(&d->trip_mutex);
--
--	return ret;
-+	return 0;
- }
- 
- static int int340x_thermal_get_trip_type(struct thermal_zone_device *zone,
-@@ -75,9 +71,7 @@ static int int340x_thermal_get_trip_type
- 					 enum thermal_trip_type *type)
- {
- 	struct int34x_thermal_zone *d = zone->devdata;
--	int i, ret = 0;
--
--	mutex_lock(&d->trip_mutex);
-+	int i;
- 
- 	if (trip < d->aux_trip_nr)
- 		*type = THERMAL_TRIP_PASSIVE;
-@@ -96,12 +90,10 @@ static int int340x_thermal_get_trip_type
- 			}
- 		}
- 		if (i == INT340X_THERMAL_MAX_ACT_TRIP_COUNT)
--			ret = -EINVAL;
-+			return -EINVAL;
- 	}
- 
--	mutex_unlock(&d->trip_mutex);
--
--	return ret;
-+	return 0;
- }
- 
- static int int340x_thermal_set_trip_temp(struct thermal_zone_device *zone,
-@@ -222,8 +214,6 @@ struct int34x_thermal_zone *int340x_ther
- 	if (!int34x_thermal_zone)
- 		return ERR_PTR(-ENOMEM);
- 
--	mutex_init(&int34x_thermal_zone->trip_mutex);
--
- 	int34x_thermal_zone->adev = adev;
- 
- 	int34x_thermal_zone->ops = kmemdup(&int340x_thermal_zone_ops,
-@@ -286,7 +276,6 @@ err_thermal_zone:
- err_trip_alloc:
- 	kfree(int34x_thermal_zone->ops);
- err_ops_alloc:
--	mutex_destroy(&int34x_thermal_zone->trip_mutex);
- 	kfree(int34x_thermal_zone);
- 	return ERR_PTR(ret);
- }
-@@ -299,7 +288,6 @@ void int340x_thermal_zone_remove(struct
- 	acpi_lpat_free_conversion_table(int34x_thermal_zone->lpat_table);
- 	kfree(int34x_thermal_zone->aux_trips);
- 	kfree(int34x_thermal_zone->ops);
--	mutex_destroy(&int34x_thermal_zone->trip_mutex);
- 	kfree(int34x_thermal_zone);
- }
- EXPORT_SYMBOL_GPL(int340x_thermal_zone_remove);
-@@ -309,7 +297,7 @@ void int340x_thermal_update_trips(struct
- 	acpi_handle zone_handle = int34x_zone->adev->handle;
- 	int i, err;
- 
--	mutex_lock(&int34x_zone->trip_mutex);
-+	mutex_lock(&int34x_zone->zone->lock);
- 
- 	if (int34x_zone->crt_trip_id > 0) {
- 		err = int340x_thermal_get_trip_config(zone_handle, "_CRT",
-@@ -344,7 +332,7 @@ void int340x_thermal_update_trips(struct
- 			int34x_zone->act_trips[i].temp = THERMAL_TEMP_INVALID;
- 	}
- 
--	mutex_unlock(&int34x_zone->trip_mutex);
-+	mutex_unlock(&int34x_zone->zone->lock);
- }
- EXPORT_SYMBOL_GPL(int340x_thermal_update_trips);
- 
-Index: linux-pm/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h
-===================================================================
---- linux-pm.orig/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h
-+++ linux-pm/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h
-@@ -32,7 +32,6 @@ struct int34x_thermal_zone {
- 	struct thermal_zone_device_ops *ops;
- 	void *priv_data;
- 	struct acpi_lpat_conversion_table *lpat_table;
--	struct mutex trip_mutex;
- };
- 
- struct int34x_thermal_zone *int340x_thermal_zone_add(struct acpi_device *,
-
-
-
+[1] https://lore.kernel.org/all/20230103035316.3841303-1-leyfoon.tan@starfivetech.com/
