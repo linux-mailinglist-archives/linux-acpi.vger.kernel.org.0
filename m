@@ -2,142 +2,232 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4912B67B105
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jan 2023 12:20:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF64467B12B
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jan 2023 12:29:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235372AbjAYLUO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Jan 2023 06:20:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43578 "EHLO
+        id S235161AbjAYL2x (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Jan 2023 06:28:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235656AbjAYLTh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Jan 2023 06:19:37 -0500
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8116C582A0
-        for <linux-acpi@vger.kernel.org>; Wed, 25 Jan 2023 03:18:10 -0800 (PST)
-Received: by mail-qk1-x72b.google.com with SMTP id d13so9618765qkk.12
-        for <linux-acpi@vger.kernel.org>; Wed, 25 Jan 2023 03:18:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xndRFfvOQ48aiXQOB4DRbxIaOWkLd0zIEBIIhFu1e1Q=;
-        b=NpcAqfypvVIdEcZwa21J5/ij8yH909pJzDTGNPl9whr+wMNzp7pj51rz2wOMnv+MAX
-         GFceI8FHrw+kff8FtuUiVyeNEeWL/HGmQ/7+qU9cjW81bwa6Rfi2HRTk8u5f0m1890a9
-         zv/okL/KW5yhd2/lb34CE7pTMK0pCNIDDPgj42nAupRWY3Y7IjvCoLkEoPMHlidYK4hw
-         uv1hm4Xoi0X8TFMtT6nLEhAVnOCkkNgkM8YnFopMUWQpYlHn1VAhYrgnioWksd+8uJCp
-         rcHQcyk3Hav+Tqrq4RPT1KycW/k4gz5YJPQbp5Po0TmkluzRQXpCLUCw43cczCWxXiMS
-         tICg==
+        with ESMTP id S235419AbjAYL2V (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Jan 2023 06:28:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 628319EF8
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Jan 2023 03:27:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1674646053;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=xAXVbQ97ZxwjsentYq0CfzBjn+pygJ3o7IS0xpGSlI4=;
+        b=TPWIdjmZ6ysEgvfgoJ6W2Tsa28s4fZyJbS6Z95MN/Cvxt9jzn04UAp71a1iEzipf22U8Gs
+        GciVmvwo9n78AekXRKSD8B1p/sEs11KMaOOvQ4rAA2ocCpmGhB6IPAjcnYAXKxMdQhhKRj
+        12Z01g1ToDbQpPihxyTHJvTiI920aPI=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-605-gDaAXbViOy61QaqXi1lP7Q-1; Wed, 25 Jan 2023 06:27:32 -0500
+X-MC-Unique: gDaAXbViOy61QaqXi1lP7Q-1
+Received: by mail-ed1-f71.google.com with SMTP id w3-20020a056402268300b00487e0d9b53fso12828505edd.10
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Jan 2023 03:27:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xndRFfvOQ48aiXQOB4DRbxIaOWkLd0zIEBIIhFu1e1Q=;
-        b=oPWNR1Vg7rUceAuwcyaTSO3RXAVAghfiUUz5sqaxUgDL85orj0+jJtnm9DepnhfUui
-         exwz0mQ7XD2qbTMk/Nf9cQtHRMwGFiIVdOpS2e0KGyYTRsrvuUk8JKtk5K4Wob6qDsdZ
-         +4iveVRgGgJjPiEuoPME4Q+NmJbtKjvxsrVdt0CcYyh0uMdq6wJ7q2UQ7S/qeLPa8XRx
-         EQFDTRMR0Z0FvFOgQzBwEomNHdADBpE08P5xvZE2s1SaOxmhM3fzFkoHUR6uMxGLUgd2
-         9ef/sUJ28X7E0rl4hthIM6EO+zMFgZWx2pIvLflzSorAIqAuTLSqB0IRYhoDfXPA7rOA
-         NODQ==
-X-Gm-Message-State: AFqh2kogl15zgbKe3fbUR1HGS4fCZL23s1qom7zYIAQXjyKVuwUiBhOi
-        5mfq79ScD7WwN3xxFWXtPDix+MerjlzrSSp0feyUXKn/p4Q=
-X-Google-Smtp-Source: AMrXdXuRRtTvtxrBQkNpCMEhzD5E4Ugb1X/63TH8gF6DUTowfaTGTlrJazcF7zh5NGEl/6te6FhA3SuJnnBT+eeHY1s=
-X-Received: by 2002:a05:620a:1139:b0:705:b8ad:5b36 with SMTP id
- p25-20020a05620a113900b00705b8ad5b36mr1724942qkk.734.1674645489146; Wed, 25
- Jan 2023 03:18:09 -0800 (PST)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xAXVbQ97ZxwjsentYq0CfzBjn+pygJ3o7IS0xpGSlI4=;
+        b=RyLy2e8oN9sw82i0AbR+gcjBl4PgzjlvpI/dA8lDAbuHzDoXEabizUYOdVzSIQ1nU5
+         l/+LzuDWq0B21MQhV2qMLgLuotNc3YMXi2KD7+lR0+mBzlPGMrfpcSYiFmnAzETLNC56
+         jNGtEGvT1Rn6dkg8BdA7b3+xpWblhXJKZOpaOzt4CsXtTQy/gDhJ8XL8IDEteMWfpDqJ
+         IcH4igs1lh63tzIudaTiTOlxuhB+2EEoXZTUNqgEkeYuxtOV7aj+8PswxtkIyLI43vDE
+         f3/d9LnPVdfr+JRHzLbLmAEhJm9SBnAMsdCy9p2L8V1abdmqyM30vkfkY2NZLyyrOuSw
+         Z5Ww==
+X-Gm-Message-State: AO0yUKW/znuvH3y4J/hmXd20S39NQtgnJIcvoVY9prY/4c8s1iKH+fD9
+        Nd1CEAfMAIxBGOKyLjmvlDSryaE8pj/SbgbNe3uMijNZwfOBGgs/KhKmAw9RhQAsRcEoGZC9qr3
+        kFYTsMX5dtIMWhFTWxr0Plw==
+X-Received: by 2002:a17:907:1c12:b0:7fd:eb9e:6fd5 with SMTP id nc18-20020a1709071c1200b007fdeb9e6fd5mr5140844ejc.45.1674646049763;
+        Wed, 25 Jan 2023 03:27:29 -0800 (PST)
+X-Google-Smtp-Source: AK7set+i/m/zbhzkMhjOpF3UYIL+peY5VlFUiGOTonIdZPJJVuHY5eVrK+0GVIb2M0z47QviYRtq1w==
+X-Received: by 2002:a17:907:1c12:b0:7fd:eb9e:6fd5 with SMTP id nc18-20020a1709071c1200b007fdeb9e6fd5mr5140822ejc.45.1674646049519;
+        Wed, 25 Jan 2023 03:27:29 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id q4-20020a1709064c8400b007c0d4d3a0c1sm2214916eju.32.2023.01.25.03.27.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Jan 2023 03:27:28 -0800 (PST)
+Message-ID: <40a048b6-bcd3-4b13-8e48-45cb44246b80@redhat.com>
+Date:   Wed, 25 Jan 2023 12:27:28 +0100
 MIME-Version: 1.0
-References: <20230125110718.18194-1-hdegoede@redhat.com>
-In-Reply-To: <20230125110718.18194-1-hdegoede@redhat.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 25 Jan 2023 13:17:33 +0200
-Message-ID: <CAHp75VdBzHuo3Ft-f7wPcYF69yJC6_3vnAqxwgxCaKYn556_hQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: PMIC: Add comments with DSDT power opregion field names
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [RFC 1/1] pinctrl: amd: Fix handling of
+ PIN_CONFIG_BIAS_PULL_UP/_DOWN settings
+Content-Language: en-US, nl
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Andy Shevchenko <andy@kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Mario Limonciello <Mario.Limonciello@amd.com>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
+References: <20230125103916.16772-1-hdegoede@redhat.com>
+ <20230125103916.16772-2-hdegoede@redhat.com>
+ <CAHp75VdKei2GtGuLZ4R=WxzciPFjVhDji+wO3xWU4Z893z0J8A@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CAHp75VdKei2GtGuLZ4R=WxzciPFjVhDji+wO3xWU4Z893z0J8A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jan 25, 2023 at 1:07 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> The DSDTs of CHT devices using the Dollar Cove TI PMIC, all use
-> LDO1 - LDO14 names for the DSDT power opregion field names.
->
-> Add comments with these fields to make it easier to see which PMIC
-> registers are being set by ACPI code using these.
->
-> Note that LDO4 is missing and the mapped registers jump from 0x43
-> to 0x45 to match. This matches with how the fields are declared
-> in the DSDT where LDO3 is skipped to. Note there is no hole in
+Hi,
 
-LDO4?
+On 1/25/23 12:14, Andy Shevchenko wrote:
+> On Wed, Jan 25, 2023 at 12:39 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>>
+>> PIN_CONFIG_BIAS_PULL_UP is documented as follows:
+>>
+>> @PIN_CONFIG_BIAS_PULL_UP: the pin will be pulled up (usually with high
+>> impedance to VDD). If the argument is != 0 pull-up is enabled,
+>> if it is 0, pull-up is total, i.e. the pin is connected to VDD.
+>>
+>> This patch fixes 2 issues with how the AMD pinctrl code was handling this:
+>>
+>> 1. amd_pinconf_set() was setting the PULL_UP_ENABLE bit as follows:
+>>     pin_reg &= ~BIT(PULL_UP_ENABLE_OFF);
+>>     pin_reg |= ((arg>>1) & BIT(0)) << PULL_UP_ENABLE_OFF;
+>>    When called from gpio_set_bias() for ACPI enumerated GPIOs arg == 1,
+>>    so the pull-up enable bit would be cleared instead of being set.
+>>    It seems unnecessary to say that this is BAD.
+>>
+>>    There is no real convention for the meaning of arg other then that
+> 
+> than
+> 
+>>    a value != 0 means the pull-up should be enabled (which was being
+>>    violated here). Looking at other drivers the Intel pinctrl drivers
+>>    all treat 1 (as used by gpio_set_bias()) as indictating that the
+> 
+> indicating
+> 
+>>    driver should pick the pull-up strength; and all other values are
+>>    interpreted as the amount of ohm with which to pull-up, with non
+>>    supported values being rejected with -EINVAL.
+>>
+>>    This patch changes the AMD pinctrl code to match this behavior so
+>>    that the behavior of all x86 pinctrl drivers is consistent.
+>>
+>> 2. arg == 0 does not mean that the pull-up/-down is disabled as the
+>>    old code was assuming. Rather it means that the "pull-up is total,
+>>    i.e. the pin is connected to VDD". The correct way for
+>>    amd_pinconf_get() to indicate that the pull-up/-down is not enabled
+>>    is to return -EINVAL. I've checked a whole bunch of pinctrl drivers
+>>    and they all behave this way. This patch brings the AMD pinctrl driver
+>>    in line with this.
+>>
+>> Fixes: dbad75dd1f25 ("pinctrl: add AMD GPIO driver support.")
+>> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=212379
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> ---
+>>  drivers/pinctrl/pinctrl-amd.c | 37 +++++++++++++++++++++++++++--------
+>>  1 file changed, 29 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.c
+>> index 9bc6e3922e78..88174195b5c8 100644
+>> --- a/drivers/pinctrl/pinctrl-amd.c
+>> +++ b/drivers/pinctrl/pinctrl-amd.c
+>> @@ -744,11 +744,19 @@ static int amd_pinconf_get(struct pinctrl_dev *pctldev,
+>>                 break;
+>>
+>>         case PIN_CONFIG_BIAS_PULL_DOWN:
+>> -               arg = (pin_reg >> PULL_DOWN_ENABLE_OFF) & BIT(0);
+>> +               if (!(pin_reg & BIT(PULL_DOWN_ENABLE_OFF)))
+>> +                       return -EINVAL;
+>> +               arg = 1;
+>>                 break;
+>>
+>>         case PIN_CONFIG_BIAS_PULL_UP:
+>> -               arg = (pin_reg >> PULL_UP_SEL_OFF) & (BIT(0) | BIT(1));
+>> +               if (!(pin_reg & BIT(PULL_UP_ENABLE_OFF)))
+>> +                       return -EINVAL;
+>> +
+>> +               if (pin_reg & BIT(PULL_UP_SEL_OFF))
+>> +                       arg = 8000;
+>> +               else
+>> +                       arg = 4000;
+>>                 break;
+> 
+> Do I understand correctly that there is only one bias value possible
+> for Pdown (4k?) and two for Pup (4k & 8k)?
 
-too
+Yes I believe so, it has been a while ago and I don't know
+where I got the 8k and 4k values from anymore (oops) ...
 
-> the field addresses, LDO3 is simply just not defined on either side.
+> Also I have stumbled over _OFF. Does it actually mean "offset"? Can we
+> rename to avoid (my) confusion with OFF as something being "off"?
+> (Maybe a separate patch?)
 
-LDO4?
+Yes it means offset, I actually stumbled over this while re-reading
+the patch myself too. So definitely something to fix.
 
-With commit message clarification (whatever is considered correct)
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> 
+>>         case PIN_CONFIG_DRIVE_STRENGTH:
+>> @@ -790,15 +798,28 @@ static int amd_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
+>>                         break;
+>>
+>>                 case PIN_CONFIG_BIAS_PULL_DOWN:
+>> -                       pin_reg &= ~BIT(PULL_DOWN_ENABLE_OFF);
+>> -                       pin_reg |= (arg & BIT(0)) << PULL_DOWN_ENABLE_OFF;
+>> +                       pin_reg |= BIT(PULL_DOWN_ENABLE_OFF);
+>>                         break;
+>>
+>>                 case PIN_CONFIG_BIAS_PULL_UP:
+>> -                       pin_reg &= ~BIT(PULL_UP_SEL_OFF);
+>> -                       pin_reg |= (arg & BIT(0)) << PULL_UP_SEL_OFF;
+>> -                       pin_reg &= ~BIT(PULL_UP_ENABLE_OFF);
+>> -                       pin_reg |= ((arg>>1) & BIT(0)) << PULL_UP_ENABLE_OFF;
+>> +                       /* Set default ohm value in case none is given */
+>> +                       if (arg == 1)
+>> +                               arg = 4000;
+>> +
+>> +                       switch (arg) {
+>> +                       case 4000:
+>> +                               pin_reg &= ~BIT(PULL_UP_SEL_OFF);
+>> +                               pin_reg |= BIT(PULL_UP_ENABLE_OFF);
+>> +                               break;
+>> +                       case 8000:
+>> +                               pin_reg |= BIT(PULL_UP_SEL_OFF);
+>> +                               pin_reg |= BIT(PULL_UP_ENABLE_OFF);
+>> +                               break;
+>> +                       default:
+>> +                               dev_err(&gpio_dev->pdev->dev,
+>> +                                       "Invalid pull-up arg %u\n", arg);
+>> +                               ret = -EINVAL;
+>> +                       }
+> 
+> Can Pup and Pdown be enabled simultaneously?
 
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  drivers/acpi/pmic/intel_pmic_chtdc_ti.c | 26 ++++++++++++-------------
->  1 file changed, 13 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
-> index 418eec523025..c84ef3d15181 100644
-> --- a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
-> +++ b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
-> @@ -20,19 +20,19 @@
->  #define CHTDC_TI_GPADC         0x5a
->
->  static struct pmic_table chtdc_ti_power_table[] = {
-> -       { .address = 0x00, .reg = 0x41 },
-> -       { .address = 0x04, .reg = 0x42 },
-> -       { .address = 0x08, .reg = 0x43 },
-> -       { .address = 0x0c, .reg = 0x45 },
-> -       { .address = 0x10, .reg = 0x46 },
-> -       { .address = 0x14, .reg = 0x47 },
-> -       { .address = 0x18, .reg = 0x48 },
-> -       { .address = 0x1c, .reg = 0x49 },
-> -       { .address = 0x20, .reg = 0x4a },
-> -       { .address = 0x24, .reg = 0x4b },
-> -       { .address = 0x28, .reg = 0x4c },
-> -       { .address = 0x2c, .reg = 0x4d },
-> -       { .address = 0x30, .reg = 0x4e },
-> +       { .address = 0x00, .reg = 0x41 }, /* LDO1 */
-> +       { .address = 0x04, .reg = 0x42 }, /* LDO2 */
-> +       { .address = 0x08, .reg = 0x43 }, /* LDO3 */
-> +       { .address = 0x0c, .reg = 0x45 }, /* LDO5 */
-> +       { .address = 0x10, .reg = 0x46 }, /* LDO6 */
-> +       { .address = 0x14, .reg = 0x47 }, /* LDO7 */
-> +       { .address = 0x18, .reg = 0x48 }, /* LDO8 */
-> +       { .address = 0x1c, .reg = 0x49 }, /* LDO9 */
-> +       { .address = 0x20, .reg = 0x4a }, /* LD10 */
-> +       { .address = 0x24, .reg = 0x4b }, /* LD11 */
-> +       { .address = 0x28, .reg = 0x4c }, /* LD12 */
-> +       { .address = 0x2c, .reg = 0x4d }, /* LD13 */
-> +       { .address = 0x30, .reg = 0x4e }, /* LD14 */
->  };
->
->  static struct pmic_table chtdc_ti_thermal_table[] = {
-> --
-> 2.39.0
->
+I believe so, so I think that we also need to clear the other
+enable bit (e.g. clear down when enabling up) when enabling
+the pull up / down. I'll do this for v2 (after waiting for other
+comments first).
 
+>>                         break;
+>>
+>>                 case PIN_CONFIG_DRIVE_STRENGTH:
+> 
+> After your answers I might come with some comments, but FWIW the
+> code-wise this seems correct approach.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Thank you for taking a look.
+
+Regards,
+
+Hans
+
