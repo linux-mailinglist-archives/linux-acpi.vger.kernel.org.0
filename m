@@ -2,169 +2,294 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 801CD67ABDC
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jan 2023 09:35:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D1BF67ABEC
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jan 2023 09:39:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235027AbjAYIfG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Jan 2023 03:35:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40778 "EHLO
+        id S235235AbjAYIjA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Jan 2023 03:39:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234991AbjAYIfF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Jan 2023 03:35:05 -0500
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A063C1449E;
-        Wed, 25 Jan 2023 00:34:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674635698; x=1706171698;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+cMHH+hV8T3hgfEPVg2jlFJxktRQQRXVpCUwb4gt8gw=;
-  b=gHfRSf25KcBnFEax0pq9WWRf/FoeziJwNsY4OG7CgAN9IEfeXXN8lhGs
-   2Ji2d/Dsn72X6Lx1rkzoesQ/UoAS9AzpNFZ9HoOQy/vXW/wURvzr3JUC5
-   NpiAAPLeqAMTtrw786OTawtCj+fHgj/dAZPjyth+12Bc9Ub2P0vSM7EKr
-   cbPXyiv9Y14Dmggc0izlyI4Hjawb4o1PuKx0ng7dECjFgeDLJcQeTvGie
-   tG7CGZvvrjhrbdsrVqvq4P2mtaXtQVWDZUemJZcnHn5JGAM4FdPhmadrr
-   vQqtgIYjUhcW5X6Iyq8DzX1BKqCNqipjEXkJwxWPUslF0DvmBLWNF+yf+
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10600"; a="327762290"
-X-IronPort-AV: E=Sophos;i="5.97,244,1669104000"; 
-   d="scan'208";a="327762290"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2023 00:34:58 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10600"; a="786360254"
-X-IronPort-AV: E=Sophos;i="5.97,244,1669104000"; 
-   d="scan'208";a="786360254"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2023 00:34:56 -0800
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-        by kekkonen.fi.intel.com (Postfix) with SMTP id 6C420120C31;
-        Wed, 25 Jan 2023 10:34:53 +0200 (EET)
-Date:   Wed, 25 Jan 2023 10:34:53 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        rafael@kernel.org, heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH v2 4/8] ACPI: property: Generate camera swnodes for ACPI
- and DisCo for Imaging
-Message-ID: <Y9DprUZN1OCHszjU@kekkonen.localdomain>
-References: <20230123134617.265382-1-sakari.ailus@linux.intel.com>
- <20230123134617.265382-5-sakari.ailus@linux.intel.com>
- <Y86mhdQrcWMr58wV@smile.fi.intel.com>
- <Y8/8moorDUIseO3/@kekkonen.localdomain>
- <Y9AJgpG0KlbA302N@smile.fi.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y9AJgpG0KlbA302N@smile.fi.intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S235221AbjAYIi7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Jan 2023 03:38:59 -0500
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DBE528D0F
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Jan 2023 00:38:57 -0800 (PST)
+Received: by mail-yb1-xb49.google.com with SMTP id z17-20020a256651000000b007907852ca4dso19255115ybm.16
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Jan 2023 00:38:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=gBh0+9Ej4fdZiBcL1FEtjjBddEyxpct0JkyXcSRf3Wg=;
+        b=lB4btchvNlTfCRHflexrgCXbRXFvyy8g1gFK/OMeKiIJNh1tqeN9E/OUXMnf2U4uji
+         YYT9ZG6Uz9BNIXcJPuB6IBGSNwEdssClBGTD7I8F8xN9feCnsNR77DeUemH49gSW7JIZ
+         i8Fyk+8dX7xmZBgb/4LlxS50DWuY+p/ZAvE5rke3AXUvgG50Y7E3pTP3J2Z3NRLwRPG+
+         tuCoTtjvQeclLyeusopPtZIO8LUuu13+9dnLJ2g+6d0g96WjPTO8eD8l7HbwyilzSGVH
+         oGzLOV4is7gwgAYTgd7llD5IZe+pWMCF81FsE6KNSAjCT9NY1E+DcM18ZvHUvuruVpcX
+         WOLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gBh0+9Ej4fdZiBcL1FEtjjBddEyxpct0JkyXcSRf3Wg=;
+        b=aEjBmO90yGKjvZHrDQCvvwFdF7fv2H48fzXH3vYkoTBX4uSYjdYtumGREIHCpnZq1H
+         XRvgfWQnc0vETaylbG4XGWA3oXrpN78BF23AtRBnYv02VSU3lS+k0DQdmErVir87qo0h
+         Ci6KKsFhBYfCta0LvF6zurPVQbCLTyuNsI69ft9oL29NGayeTyR9Oy2diQhbp65oX87h
+         iPk/00UQ4xdb9CM+nHnpRgsz6Z8sHlNjEhXMD546iwOwIjocoq77kPdIh7DTGOedPM59
+         NlZ3sgPMiKrNme9SfD5ivJOdg8Cb7wZGcUAYA29CGjqKJbjKv9spo4sdPUSsENmbr3tM
+         FQgw==
+X-Gm-Message-State: AFqh2kppP2Zpjk99i1d+lMmZQtZmVDxLFZG+9uCsFA50/GWilxyJ5ln0
+        J9ubcqIdgBR4Cb2kdXpcK9S3GlBR+5M=
+X-Google-Smtp-Source: AMrXdXtLI+TT5dUaC9pRI2aKjkmKt7tjdC79b+se6AwZUh4jJJgCSUqcAubWc2ByjewYclrfSPgwiLKmrmw=
+X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:f7b0:20e8:ce66:f98])
+ (user=surenb job=sendgmr) by 2002:a05:6902:34f:b0:6f9:7bf9:8fc7 with SMTP id
+ e15-20020a056902034f00b006f97bf98fc7mr3373858ybs.279.1674635936246; Wed, 25
+ Jan 2023 00:38:56 -0800 (PST)
+Date:   Wed, 25 Jan 2023 00:38:45 -0800
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.39.1.405.gd4c25cc71f-goog
+Message-ID: <20230125083851.27759-1-surenb@google.com>
+Subject: [PATCH v2 0/6] introduce vm_flags modifier functions
+From:   Suren Baghdasaryan <surenb@google.com>
+To:     akpm@linux-foundation.org
+Cc:     michel@lespinasse.org, jglisse@google.com, mhocko@suse.com,
+        vbabka@suse.cz, hannes@cmpxchg.org, mgorman@techsingularity.net,
+        dave@stgolabs.net, willy@infradead.org, liam.howlett@oracle.com,
+        peterz@infradead.org, ldufour@linux.ibm.com, paulmck@kernel.org,
+        luto@kernel.org, songliubraving@fb.com, peterx@redhat.com,
+        david@redhat.com, dhowells@redhat.com, hughd@google.com,
+        bigeasy@linutronix.de, kent.overstreet@linux.dev,
+        punit.agrawal@bytedance.com, lstoakes@gmail.com,
+        peterjung1337@gmail.com, rientjes@google.com,
+        axelrasmussen@google.com, joelaf@google.com, minchan@google.com,
+        jannh@google.com, shakeelb@google.com, tatashin@google.com,
+        edumazet@google.com, gthelen@google.com, gurua@google.com,
+        arjunroy@google.com, soheil@google.com, hughlynch@google.com,
+        leewalsh@google.com, posk@google.com, will@kernel.org,
+        aneesh.kumar@linux.ibm.com, npiggin@gmail.com,
+        chenhuacai@kernel.org, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, richard@nod.at,
+        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+        qianweili@huawei.com, wangzhou1@hisilicon.com,
+        herbert@gondor.apana.org.au, davem@davemloft.net, vkoul@kernel.org,
+        airlied@gmail.com, daniel@ffwll.ch,
+        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+        tzimmermann@suse.de, l.stach@pengutronix.de,
+        krzysztof.kozlowski@linaro.org, patrik.r.jakobsson@gmail.com,
+        matthias.bgg@gmail.com, robdclark@gmail.com,
+        quic_abhinavk@quicinc.com, dmitry.baryshkov@linaro.org,
+        tomba@kernel.org, hjc@rock-chips.com, heiko@sntech.de,
+        ray.huang@amd.com, kraxel@redhat.com, sre@kernel.org,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+        tfiga@chromium.org, m.szyprowski@samsung.com, mchehab@kernel.org,
+        dimitri.sivanich@hpe.com, zhangfei.gao@linaro.org,
+        jejb@linux.ibm.com, martin.petersen@oracle.com,
+        dgilbert@interlog.com, hdegoede@redhat.com, mst@redhat.com,
+        jasowang@redhat.com, alex.williamson@redhat.com, deller@gmx.de,
+        jayalk@intworks.biz, viro@zeniv.linux.org.uk, nico@fluxnic.net,
+        xiang@kernel.org, chao@kernel.org, tytso@mit.edu,
+        adilger.kernel@dilger.ca, miklos@szeredi.hu,
+        mike.kravetz@oracle.com, muchun.song@linux.dev, bhe@redhat.com,
+        andrii@kernel.org, yoshfuji@linux-ipv6.org, dsahern@kernel.org,
+        kuba@kernel.org, pabeni@redhat.com, perex@perex.cz, tiwai@suse.com,
+        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
+        linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org, linux-graphics-maintainer@vmware.com,
+        linux-ia64@vger.kernel.org, linux-arch@vger.kernel.org,
+        loongarch@lists.linux.dev, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-acpi@vger.kernel.org,
+        linux-crypto@vger.kernel.org, nvdimm@lists.linux.dev,
+        dmaengine@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, etnaviv@lists.freedesktop.org,
+        linux-samsung-soc@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        freedreno@lists.freedesktop.org,
+        linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        xen-devel@lists.xenproject.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-accelerators@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
+        target-devel@vger.kernel.org, linux-usb@vger.kernel.org,
+        netdev@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-aio@kvack.org, linux-fsdevel@vger.kernel.org,
+        linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+        devel@lists.orangefs.org, kexec@lists.infradead.org,
+        linux-xfs@vger.kernel.org, bpf@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, kasan-dev@googlegroups.com,
+        selinux@vger.kernel.org, alsa-devel@alsa-project.org,
+        kernel-team@android.com, surenb@google.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+This patchset was originally published as a part of per-VMA locking [1] and
+was split after suggestion that it's viable on its own and to facilitate
+the review process. It is now a preprequisite for the next version of per-VMA
+lock patchset, which reuses vm_flags modifier functions to lock the VMA when
+vm_flags are being updated.
 
-On Tue, Jan 24, 2023 at 06:38:26PM +0200, Andy Shevchenko wrote:
-> On Tue, Jan 24, 2023 at 05:43:22PM +0200, Sakari Ailus wrote:
-> > On Mon, Jan 23, 2023 at 05:23:49PM +0200, Andy Shevchenko wrote:
-> > > On Mon, Jan 23, 2023 at 03:46:13PM +0200, Sakari Ailus wrote:
-> 
-> ...
-> 
-> > > > +static struct fwnode_handle *get_mipi_port_handle(struct acpi_device *device,
-> > > > +						  unsigned int port)
-> > > > +{
-> > > 
-> > > > +	static const char mipi_port_prefix[] = "mipi-img-port-";
-> > > 
-> > > It's used only once in this function, why not keeping it in the format string?
-> > 
-> > Twice, not once. My point was that it's critical the strings remain the
-> > same length, and certainly what that string actually is, is less important.
-> 
-> Still can be placed twice as is. But fine, I leave it to maintainers.
-> 
-> > > > +	char mipi_port_name[sizeof(mipi_port_prefix) + 2];
-> > > > +
-> > > > +	if (snprintf(mipi_port_name, sizeof(mipi_port_name), "%s%u",
-> > > > +		     mipi_port_prefix, port) > sizeof(mipi_port_name)) {
-> 
-> Btw, seems also a candidate for >= ?
+VMA vm_flags modifications are usually done under exclusive mmap_lock
+protection because this attrubute affects other decisions like VMA merging
+or splitting and races should be prevented. Introduce vm_flags modifier
+functions to enforce correct locking.
 
-Good catch. snprintf() excludes '\0' from the return value.
+[1] https://lore.kernel.org/all/20230109205336.3665937-1-surenb@google.com/
 
-> 
-> > > > +		acpi_handle_info(acpi_device_handle(device),
-> > > > +				 "mipi port name too long for port %u\n", port);
-> > > > +		return NULL;
-> > > > +	}
-> > > > +
-> > > > +	return fwnode_get_named_child_node(acpi_fwnode_handle(device),
-> > > > +					   mipi_port_name);
-> > > > +}
-> 
-> ...
-> 
-> > > > +			/* Move polarity bits to the lane polarity u32 array */
-> > > > +			for (i = 0; i < 1 + num_lanes; i++)
-> > > > +				port->lane_polarities[i] =
-> > > > +					(u.val8[i >> 3] & (1 << (i & 7))) ?
-> > > > +					1U : 0U;
-> > > 
-> > > Wouldn't
-> > > 
-> > > 				port->lane_polarities[i] =
-> > > 					!!(u.val8[i >> 3] & (1 << (i & 7)));
-> > > 
-> > > be better?
-> > 
-> > It would work, yes, although the target is a u32. Casting to bool would
-> > look nicer to me. I lean towards what it is at the moment but bool seems
-> > fairly reasonable, too.
-> 
-> I think we can do even better and switch this to bitmap APIs.
-> 
-> I'll comment separately with the better context given.
+The patchset applies cleanly over mm-unstable branch of mm tree.
 
-The problem with the bitmap APIs is that they work on unsigned long, so
-there are endian issues that will need to be handled. I thing it's simply
-not worth it: either you have temporary space for this or a new API is
-needed. What the line above is, after all, fairly trivial.
+My apologies for an extremely large distribution list. The patch touches
+lots of files and many are in arch/ and drivers/.
 
-> 
-> ...
-> 
-> > dev->fwnode hasn't been set when assigning the secondary fwnode in
-> > acpi_init_swnodes(), therefore set_secondary_fwnode() won't do what it
-> > should.
-> > 
-> > It can be still called here as it just sets dev->fwnode->secondary NULL.
-> > 
-> > I can add a comment mentioning this.
-> 
-> Or maybe drop the use of the specific API and rather do something similar
-> to the above?
+Suren Baghdasaryan (6):
+  mm: introduce vma->vm_flags modifier functions
+  mm: replace VM_LOCKED_CLEAR_MASK with VM_LOCKED_MASK
+  mm: replace vma->vm_flags direct modifications with modifier calls
+  mm: replace vma->vm_flags indirect modification in ksm_madvise
+  mm: introduce mod_vm_flags_nolock and use it in untrack_pfn
+  mm: export dump_mm()
 
-Yes, that's what I actually thought. But still a comment is good to have
-here, so someone doesn't try to convert this to use the functions intended
-for this (!).
-
-> 
-> > I think it'd be better to have a set of fwnodes attached to a device rather
-> > than one primary and another secondary, with various levels of success
-> > depending on the order of assigning them. But I think it's out of scope of
-> > this set.
-> 
-> Yeah, but it's quite a big topic out of the scope of this series.
-
-Yes.
+ arch/arm/kernel/process.c                     |  2 +-
+ arch/ia64/mm/init.c                           |  8 +--
+ arch/loongarch/include/asm/tlb.h              |  2 +-
+ arch/powerpc/kvm/book3s_hv_uvmem.c            |  5 +-
+ arch/powerpc/kvm/book3s_xive_native.c         |  2 +-
+ arch/powerpc/mm/book3s64/subpage_prot.c       |  2 +-
+ arch/powerpc/platforms/book3s/vas-api.c       |  2 +-
+ arch/powerpc/platforms/cell/spufs/file.c      | 14 ++---
+ arch/s390/mm/gmap.c                           |  8 +--
+ arch/x86/entry/vsyscall/vsyscall_64.c         |  2 +-
+ arch/x86/kernel/cpu/sgx/driver.c              |  2 +-
+ arch/x86/kernel/cpu/sgx/virt.c                |  2 +-
+ arch/x86/mm/pat/memtype.c                     | 14 +++--
+ arch/x86/um/mem_32.c                          |  2 +-
+ drivers/acpi/pfr_telemetry.c                  |  2 +-
+ drivers/android/binder.c                      |  3 +-
+ drivers/char/mspec.c                          |  2 +-
+ drivers/crypto/hisilicon/qm.c                 |  2 +-
+ drivers/dax/device.c                          |  2 +-
+ drivers/dma/idxd/cdev.c                       |  2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gem.c       |  2 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c      |  4 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_doorbell.c     |  4 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_events.c       |  4 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c      |  4 +-
+ drivers/gpu/drm/drm_gem.c                     |  2 +-
+ drivers/gpu/drm/drm_gem_dma_helper.c          |  3 +-
+ drivers/gpu/drm/drm_gem_shmem_helper.c        |  2 +-
+ drivers/gpu/drm/drm_vm.c                      |  8 +--
+ drivers/gpu/drm/etnaviv/etnaviv_gem.c         |  2 +-
+ drivers/gpu/drm/exynos/exynos_drm_gem.c       |  4 +-
+ drivers/gpu/drm/gma500/framebuffer.c          |  2 +-
+ drivers/gpu/drm/i810/i810_dma.c               |  2 +-
+ drivers/gpu/drm/i915/gem/i915_gem_mman.c      |  4 +-
+ drivers/gpu/drm/mediatek/mtk_drm_gem.c        |  2 +-
+ drivers/gpu/drm/msm/msm_gem.c                 |  2 +-
+ drivers/gpu/drm/omapdrm/omap_gem.c            |  3 +-
+ drivers/gpu/drm/rockchip/rockchip_drm_gem.c   |  3 +-
+ drivers/gpu/drm/tegra/gem.c                   |  5 +-
+ drivers/gpu/drm/ttm/ttm_bo_vm.c               |  3 +-
+ drivers/gpu/drm/virtio/virtgpu_vram.c         |  2 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_ttm_glue.c      |  2 +-
+ drivers/gpu/drm/xen/xen_drm_front_gem.c       |  3 +-
+ drivers/hsi/clients/cmt_speech.c              |  2 +-
+ drivers/hwtracing/intel_th/msu.c              |  2 +-
+ drivers/hwtracing/stm/core.c                  |  2 +-
+ drivers/infiniband/hw/hfi1/file_ops.c         |  4 +-
+ drivers/infiniband/hw/mlx5/main.c             |  4 +-
+ drivers/infiniband/hw/qib/qib_file_ops.c      | 13 +++--
+ drivers/infiniband/hw/usnic/usnic_ib_verbs.c  |  2 +-
+ .../infiniband/hw/vmw_pvrdma/pvrdma_verbs.c   |  2 +-
+ .../common/videobuf2/videobuf2-dma-contig.c   |  2 +-
+ .../common/videobuf2/videobuf2-vmalloc.c      |  2 +-
+ drivers/media/v4l2-core/videobuf-dma-contig.c |  2 +-
+ drivers/media/v4l2-core/videobuf-dma-sg.c     |  4 +-
+ drivers/media/v4l2-core/videobuf-vmalloc.c    |  2 +-
+ drivers/misc/cxl/context.c                    |  2 +-
+ drivers/misc/habanalabs/common/memory.c       |  2 +-
+ drivers/misc/habanalabs/gaudi/gaudi.c         |  4 +-
+ drivers/misc/habanalabs/gaudi2/gaudi2.c       |  8 +--
+ drivers/misc/habanalabs/goya/goya.c           |  4 +-
+ drivers/misc/ocxl/context.c                   |  4 +-
+ drivers/misc/ocxl/sysfs.c                     |  2 +-
+ drivers/misc/open-dice.c                      |  4 +-
+ drivers/misc/sgi-gru/grufile.c                |  4 +-
+ drivers/misc/uacce/uacce.c                    |  2 +-
+ drivers/sbus/char/oradax.c                    |  2 +-
+ drivers/scsi/cxlflash/ocxl_hw.c               |  2 +-
+ drivers/scsi/sg.c                             |  2 +-
+ .../staging/media/atomisp/pci/hmm/hmm_bo.c    |  2 +-
+ drivers/staging/media/deprecated/meye/meye.c  |  4 +-
+ .../media/deprecated/stkwebcam/stk-webcam.c   |  2 +-
+ drivers/target/target_core_user.c             |  2 +-
+ drivers/uio/uio.c                             |  2 +-
+ drivers/usb/core/devio.c                      |  3 +-
+ drivers/usb/mon/mon_bin.c                     |  3 +-
+ drivers/vdpa/vdpa_user/iova_domain.c          |  2 +-
+ drivers/vfio/pci/vfio_pci_core.c              |  2 +-
+ drivers/vhost/vdpa.c                          |  2 +-
+ drivers/video/fbdev/68328fb.c                 |  2 +-
+ drivers/video/fbdev/core/fb_defio.c           |  4 +-
+ drivers/xen/gntalloc.c                        |  2 +-
+ drivers/xen/gntdev.c                          |  4 +-
+ drivers/xen/privcmd-buf.c                     |  2 +-
+ drivers/xen/privcmd.c                         |  4 +-
+ fs/aio.c                                      |  2 +-
+ fs/cramfs/inode.c                             |  2 +-
+ fs/erofs/data.c                               |  2 +-
+ fs/exec.c                                     |  4 +-
+ fs/ext4/file.c                                |  2 +-
+ fs/fuse/dax.c                                 |  2 +-
+ fs/hugetlbfs/inode.c                          |  4 +-
+ fs/orangefs/file.c                            |  3 +-
+ fs/proc/task_mmu.c                            |  2 +-
+ fs/proc/vmcore.c                              |  3 +-
+ fs/userfaultfd.c                              |  2 +-
+ fs/xfs/xfs_file.c                             |  2 +-
+ include/linux/mm.h                            | 51 +++++++++++++++++--
+ include/linux/mm_types.h                      |  8 ++-
+ include/linux/pgtable.h                       |  5 +-
+ kernel/bpf/ringbuf.c                          |  4 +-
+ kernel/bpf/syscall.c                          |  4 +-
+ kernel/events/core.c                          |  2 +-
+ kernel/fork.c                                 |  2 +-
+ kernel/kcov.c                                 |  2 +-
+ kernel/relay.c                                |  2 +-
+ mm/debug.c                                    |  1 +
+ mm/hugetlb.c                                  |  4 +-
+ mm/khugepaged.c                               |  2 +
+ mm/ksm.c                                      |  2 +
+ mm/madvise.c                                  |  2 +-
+ mm/memory.c                                   | 19 +++----
+ mm/memremap.c                                 |  4 +-
+ mm/mlock.c                                    | 12 ++---
+ mm/mmap.c                                     | 32 +++++++-----
+ mm/mprotect.c                                 |  2 +-
+ mm/mremap.c                                   |  8 +--
+ mm/nommu.c                                    | 11 ++--
+ mm/secretmem.c                                |  2 +-
+ mm/shmem.c                                    |  2 +-
+ mm/vmalloc.c                                  |  2 +-
+ net/ipv4/tcp.c                                |  4 +-
+ security/selinux/selinuxfs.c                  |  6 +--
+ sound/core/oss/pcm_oss.c                      |  2 +-
+ sound/core/pcm_native.c                       |  9 ++--
+ sound/soc/pxa/mmp-sspa.c                      |  2 +-
+ sound/usb/usx2y/us122l.c                      |  4 +-
+ sound/usb/usx2y/usX2Yhwdep.c                  |  2 +-
+ sound/usb/usx2y/usx2yhwdeppcm.c               |  2 +-
+ 129 files changed, 292 insertions(+), 233 deletions(-)
 
 -- 
-Regards,
+2.39.1
 
-Sakari Ailus
