@@ -2,235 +2,264 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36BA367AD0D
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jan 2023 09:57:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 233D967AD1F
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jan 2023 10:02:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235022AbjAYI5N (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Jan 2023 03:57:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54750 "EHLO
+        id S234581AbjAYJCQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Jan 2023 04:02:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235089AbjAYI5I (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Jan 2023 03:57:08 -0500
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D51E2FCFF;
-        Wed, 25 Jan 2023 00:56:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674637008; x=1706173008;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=mn2i7e06MCggHhYXwnswA9N22qy6vuuPEAqt7YRysfs=;
-  b=QX0omS0u6ujvwH2uHaTu8fk00LiPYJ6Q2MOixtpiMJIF+iPZUFSDzFk9
-   xsnqLBt2eOQFPY8vzi/DuCgU4JQx7PaYQdh4AYMbYlDq/JFXpnT1HNxs4
-   t8SwqyUx2BWc+BNl+gWayBrr7cOBYd4YB45YkpEn6Bq5PeEqyG3TbDVFx
-   NNWyO7b5iwPeFAstfMDisCNgK1+2Rbpd+fnhmiZUX3kXArFkKdZB0dvfK
-   ydU70ktGt82c5KDsslGedbWEAmehV6aXzjyfCgP9ZEeOCDVLkjqnKFstV
-   vt2D4NCkUH4nm/rF5YlGlRz1pQJSTTy3jAe1nH7U7vrjCgFbtCriPjuiN
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10600"; a="328596969"
-X-IronPort-AV: E=Sophos;i="5.97,244,1669104000"; 
-   d="scan'208";a="328596969"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2023 00:56:48 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10600"; a="770649630"
-X-IronPort-AV: E=Sophos;i="5.97,244,1669104000"; 
-   d="scan'208";a="770649630"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2023 00:56:46 -0800
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-        by kekkonen.fi.intel.com (Postfix) with SMTP id 4A94F120C31;
-        Wed, 25 Jan 2023 10:56:41 +0200 (EET)
-Date:   Wed, 25 Jan 2023 10:56:41 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        rafael@kernel.org, heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH v2 4/8] ACPI: property: Generate camera swnodes for ACPI
- and DisCo for Imaging
-Message-ID: <Y9DuyZUr3McCPGuh@kekkonen.localdomain>
-References: <20230123134617.265382-1-sakari.ailus@linux.intel.com>
- <20230123134617.265382-5-sakari.ailus@linux.intel.com>
- <Y9Aw5/mSYEadHRKK@smile.fi.intel.com>
+        with ESMTP id S232745AbjAYJCP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Jan 2023 04:02:15 -0500
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05CDD32E49;
+        Wed, 25 Jan 2023 01:02:14 -0800 (PST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 6FA971FED3;
+        Wed, 25 Jan 2023 09:02:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1674637332; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=SlRMHnKgl2ysMiG3ziDgQVqy0pZ2+RMTN2tEUkXl1oQ=;
+        b=CylERLDbieGu3PWTdvXLEld0Li+qbd7wIdoCwjIyDd+qG3j/xsmZaFNxHZ9BHqigKFDp2h
+        G+luEBa1wjOWHFua4YAnGvwD5IYd5KDo2FdpDHLq+ELEUbPuYE6WIwO6oA3RlzeuL+Fv1J
+        XkwT2InE7+nANi+BujeIlpRiAMYhk9g=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 224651339E;
+        Wed, 25 Jan 2023 09:02:12 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id reRPCBTw0GOqDAAAMHmgww
+        (envelope-from <mhocko@suse.com>); Wed, 25 Jan 2023 09:02:12 +0000
+Date:   Wed, 25 Jan 2023 10:02:11 +0100
+From:   Michal Hocko <mhocko@suse.com>
+To:     Suren Baghdasaryan <surenb@google.com>
+Cc:     akpm@linux-foundation.org, michel@lespinasse.org,
+        jglisse@google.com, vbabka@suse.cz, hannes@cmpxchg.org,
+        mgorman@techsingularity.net, dave@stgolabs.net,
+        willy@infradead.org, liam.howlett@oracle.com, peterz@infradead.org,
+        ldufour@linux.ibm.com, paulmck@kernel.org, luto@kernel.org,
+        songliubraving@fb.com, peterx@redhat.com, david@redhat.com,
+        dhowells@redhat.com, hughd@google.com, bigeasy@linutronix.de,
+        kent.overstreet@linux.dev, punit.agrawal@bytedance.com,
+        lstoakes@gmail.com, peterjung1337@gmail.com, rientjes@google.com,
+        axelrasmussen@google.com, joelaf@google.com, minchan@google.com,
+        jannh@google.com, shakeelb@google.com, tatashin@google.com,
+        edumazet@google.com, gthelen@google.com, gurua@google.com,
+        arjunroy@google.com, soheil@google.com, hughlynch@google.com,
+        leewalsh@google.com, posk@google.com, will@kernel.org,
+        aneesh.kumar@linux.ibm.com, npiggin@gmail.com,
+        chenhuacai@kernel.org, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, richard@nod.at,
+        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+        qianweili@huawei.com, wangzhou1@hisilicon.com,
+        herbert@gondor.apana.org.au, davem@davemloft.net, vkoul@kernel.org,
+        airlied@gmail.com, daniel@ffwll.ch,
+        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+        tzimmermann@suse.de, l.stach@pengutronix.de,
+        krzysztof.kozlowski@linaro.org, patrik.r.jakobsson@gmail.com,
+        matthias.bgg@gmail.com, robdclark@gmail.com,
+        quic_abhinavk@quicinc.com, dmitry.baryshkov@linaro.org,
+        tomba@kernel.org, hjc@rock-chips.com, heiko@sntech.de,
+        ray.huang@amd.com, kraxel@redhat.com, sre@kernel.org,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+        tfiga@chromium.org, m.szyprowski@samsung.com, mchehab@kernel.org,
+        dimitri.sivanich@hpe.com, zhangfei.gao@linaro.org,
+        jejb@linux.ibm.com, martin.petersen@oracle.com,
+        dgilbert@interlog.com, hdegoede@redhat.com, mst@redhat.com,
+        jasowang@redhat.com, alex.williamson@redhat.com, deller@gmx.de,
+        jayalk@intworks.biz, viro@zeniv.linux.org.uk, nico@fluxnic.net,
+        xiang@kernel.org, chao@kernel.org, tytso@mit.edu,
+        adilger.kernel@dilger.ca, miklos@szeredi.hu,
+        mike.kravetz@oracle.com, muchun.song@linux.dev, bhe@redhat.com,
+        andrii@kernel.org, yoshfuji@linux-ipv6.org, dsahern@kernel.org,
+        kuba@kernel.org, pabeni@redhat.com, perex@perex.cz, tiwai@suse.com,
+        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
+        linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org, linux-graphics-maintainer@vmware.com,
+        linux-ia64@vger.kernel.org, linux-arch@vger.kernel.org,
+        loongarch@lists.linux.dev, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-acpi@vger.kernel.org,
+        linux-crypto@vger.kernel.org, nvdimm@lists.linux.dev,
+        dmaengine@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, etnaviv@lists.freedesktop.org,
+        linux-samsung-soc@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        freedreno@lists.freedesktop.org,
+        linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        xen-devel@lists.xenproject.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-accelerators@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
+        target-devel@vger.kernel.org, linux-usb@vger.kernel.org,
+        netdev@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-aio@kvack.org, linux-fsdevel@vger.kernel.org,
+        linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+        devel@lists.orangefs.org, kexec@lists.infradead.org,
+        linux-xfs@vger.kernel.org, bpf@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, kasan-dev@googlegroups.com,
+        selinux@vger.kernel.org, alsa-devel@alsa-project.org,
+        kernel-team@android.com
+Subject: Re: [PATCH v2 2/6] mm: replace VM_LOCKED_CLEAR_MASK with
+ VM_LOCKED_MASK
+Message-ID: <Y9DwE4Z8hB38aX6X@dhcp22.suse.cz>
+References: <20230125083851.27759-1-surenb@google.com>
+ <20230125083851.27759-3-surenb@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y9Aw5/mSYEadHRKK@smile.fi.intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230125083851.27759-3-surenb@google.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+On Wed 25-01-23 00:38:47, Suren Baghdasaryan wrote:
+> To simplify the usage of VM_LOCKED_CLEAR_MASK in clear_vm_flags(),
+> replace it with VM_LOCKED_MASK bitmask and convert all users.
+>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 
-On Tue, Jan 24, 2023 at 09:26:31PM +0200, Andy Shevchenko wrote:
-> On Mon, Jan 23, 2023 at 03:46:13PM +0200, Sakari Ailus wrote:
-> 
-> As promised the idea of bitmap APIs.
-> 
-> Also I have stumbled over couple of suspicious places. See below.
-> 
-> ...
-> 
-> > +static void init_port_csi2_common(struct acpi_device *device,
-> > +				  struct fwnode_handle *mipi_port_fwnode,
-> > +				  unsigned int *ep_prop_index,
-> > +				  unsigned int port_nr)
-> > +{
-> > +	unsigned int port_index = next_csi2_port_index(device->swnodes, port_nr);
-> > +	struct acpi_device_software_nodes *ads = device->swnodes;
-> > +	struct acpi_device_software_node_port *port = &ads->ports[port_index];
-> > +	unsigned int num_lanes = 0;
-> > +	union {
-> > +		u32 val;
-> 
-> // Not sure why this even exists.
-> // And hence why do we need union?
+Acked-by: Michal Hocko <mhocko@suse.com>
 
-We could remove the union, yes, with one more u32 of stack used.
-
+> ---
+>  include/linux/mm.h | 4 ++--
+>  kernel/fork.c      | 2 +-
+>  mm/hugetlb.c       | 4 ++--
+>  mm/mlock.c         | 6 +++---
+>  mm/mmap.c          | 6 +++---
+>  mm/mremap.c        | 2 +-
+>  6 files changed, 12 insertions(+), 12 deletions(-)
 > 
-> > +		/* Data lanes + the clock lane */
-> > +		u8 val8[BITS_TO_BYTES(ARRAY_SIZE(port->data_lanes) + 1)];
-> > +	} u;
-> 
-> Somewhere
-> 
-> #define MAX_LANES(port)		(ARRAY_SIZE((port)->data_lanes) + 1)
-> 
-> 	u8 val8[BITS_TO_BYTES(MAX_LANES(port))];
-> 
-> ...
-> 
-> 	/* Data lanes + the clock lane */
-> 	DECLARE_BITMAP(polarity, MAX_LANES(port)));
-> 
-> > +	int ret;
-> > +
-> > +	*ep_prop_index = ACPI_DEVICE_SWNODE_EP_CLOCK_LANES;
-> > +
-> > +	if (GRAPH_PORT_NAME(port->port_name, port_nr))
-> > +		return;
-> > +
-> > +	ads->nodes[ACPI_DEVICE_SWNODE_PRT(port_index)] =
-> > +		SOFTWARE_NODE(port->port_name, port->port_props,
-> > +			      &ads->nodes[ACPI_DEVICE_SWNODE_ROOT]);
-> > +
-> > +	ret = fwnode_property_read_u8(mipi_port_fwnode, "mipi-img-clock-lane", u.val8);
-> > +	if (!ret) {
-> > +		port->ep_props[NEXT_PROPERTY(*ep_prop_index, EP_CLOCK_LANES)] =
-> > +			PROPERTY_ENTRY_U32("clock-lanes", *u.val8);
-> > +	}
-> 
-> > +	ret = fwnode_property_count_u8(mipi_port_fwnode, "mipi-img-data-lanes");
-> > +	if (ret > 0) {
-> > +		num_lanes = ret;
-> > +
-> > +		if (num_lanes > ARRAY_SIZE(port->data_lanes)) {
-> 
-> 		>= MAX_LANES(port)
-
-I find the original better: it does this by referring to the array itself.
-
-> 
-> > +			acpi_handle_warn(acpi_device_handle(device),
-> > +					 "too many data lanes (%u)\n",
-> > +					 num_lanes);
-> > +			num_lanes = ARRAY_SIZE(port->data_lanes);
-> 
-> 			= MAX_LANES(port) - 1;
-> 
-> > +		}
-> > +
-> > +		ret = fwnode_property_read_u8_array(mipi_port_fwnode, "mipi-img-data-lanes",
-> > +						    u.val8, num_lanes);
-> 
-> > +		if (!ret) {
-> > +			unsigned int i;
-> > +
-> > +			for (i = 0; i < num_lanes; i++)
-> > +				port->data_lanes[i] = u.val8[i];
-> > +
-> > +			port->ep_props[NEXT_PROPERTY(*ep_prop_index, EP_DATA_LANES)] =
-> > +				PROPERTY_ENTRY_U32_ARRAY_LEN("data-lanes", port->data_lanes,
-> > +							     num_lanes);
-> > +		}
-> > +	}
-> 
-> > +	ret = fwnode_property_read_u8_array(mipi_port_fwnode,
-> > +					    "mipi-img-lane-polarities",
-> > +					    u.val8, sizeof(u.val8));
-> > +	if (ret > 0) {
-> 
-> How is it supposed to work?!
-
-Hmm. I think in the past, some of these functions have returned the number
-of the entries even when the buffer is provided
-(acpi_copy_property_array_string() still does!). Good catch, I'll fix this
-for v3.
-
-> 
-> > +		unsigned int bytes = ret;
-> > +
-> > +		/* Total number of lanes here is clock lane + data lanes */
-> > +		if (bytes * BITS_PER_TYPE(u8) >= 1 + num_lanes) {
-> > +			unsigned int i;
-> > +
-> > +			/* Move polarity bits to the lane polarity u32 array */
-> > +			for (i = 0; i < 1 + num_lanes; i++)
-> > +				port->lane_polarities[i] =
-> > +					(u.val8[i >> 3] & (1 << (i & 7))) ?
-> > +					1U : 0U;
-> > +
-> > +			port->ep_props[NEXT_PROPERTY(*ep_prop_index, EP_LANE_POLARITIES)] =
-> > +				PROPERTY_ENTRY_U32_ARRAY_LEN("lane-polarities",
-> > +							     port->lane_polarities,
-> > +							     1 + num_lanes);
-> > +		} else {
-> > +			acpi_handle_warn(acpi_device_handle(device),
-> > +					 "too few lane polarity bytes (%u)\n",
-> > +					 bytes);
-> > +		}
-> > +	}
-> 
-> 	ret = fwnode_property_count_u8(mipi_port_fwnode, "mipi-img-dlane-polarities");
-> 	if (ret < 0) {
-> 		acpi_handle_debug(acpi_device_handle(device),
-> 				  "no lane polarity provided\n");
-> 	} else if (ret < 1 + num_lanes) {
-> 		acpi_handle_warn(acpi_device_handle(device),
-> 				 "too few lane polarity bytes (%u)\n", bytes);
-> 	} else {
-> 		// assuming we dropped the union and renamed to val...
-> 		ret = fwnode_property_read_u8_array(mipi_port_fwnode,
-> 						    "mipi-img-lane-polarities",
-> 						    val, sizeof(val));
-> 		if (ret) {
-> 			...can't read... (debug message?)
-> 		} else {
-> 			unsigned int i;
-> 
-> 			for (i = 0; i < 1 + num_lanes; i++)
-> 				bitmap_set_value8(polarity, val[i], i * BITS_PER_BYTE);
-
-You'll still needed to access invididual bits in val.
-
-> 
-> 			// assuming that lane_polarities is zeroed by default...
-> 			for_each_set_bit(i, polarity, 1 + num_lanes)
-> 				port->lane_polarities[i] = 1;
-> 		}
-> 	}
-> 
-> > +	ads->nodes[ACPI_DEVICE_SWNODE_EP(port_index)] =
-> > +		SOFTWARE_NODE("endpoint@0", ads->ports[port_index].ep_props,
-> > +			      &ads->nodes[ACPI_DEVICE_SWNODE_PRT(port_index)]);
-> > +}
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index b71f2809caac..da62bdd627bf 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -421,8 +421,8 @@ extern unsigned int kobjsize(const void *objp);
+>  /* This mask defines which mm->def_flags a process can inherit its parent */
+>  #define VM_INIT_DEF_MASK	VM_NOHUGEPAGE
+>  
+> -/* This mask is used to clear all the VMA flags used by mlock */
+> -#define VM_LOCKED_CLEAR_MASK	(~(VM_LOCKED | VM_LOCKONFAULT))
+> +/* This mask represents all the VMA flag bits used by mlock */
+> +#define VM_LOCKED_MASK	(VM_LOCKED | VM_LOCKONFAULT)
+>  
+>  /* Arch-specific flags to clear when updating VM flags on protection change */
+>  #ifndef VM_ARCH_CLEAR
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index 6683c1b0f460..03d472051236 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -669,7 +669,7 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+>  			tmp->anon_vma = NULL;
+>  		} else if (anon_vma_fork(tmp, mpnt))
+>  			goto fail_nomem_anon_vma_fork;
+> -		tmp->vm_flags &= ~(VM_LOCKED | VM_LOCKONFAULT);
+> +		clear_vm_flags(tmp, VM_LOCKED_MASK);
+>  		file = tmp->vm_file;
+>  		if (file) {
+>  			struct address_space *mapping = file->f_mapping;
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index d20c8b09890e..4ecdbad9a451 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -6973,8 +6973,8 @@ static unsigned long page_table_shareable(struct vm_area_struct *svma,
+>  	unsigned long s_end = sbase + PUD_SIZE;
+>  
+>  	/* Allow segments to share if only one is marked locked */
+> -	unsigned long vm_flags = vma->vm_flags & VM_LOCKED_CLEAR_MASK;
+> -	unsigned long svm_flags = svma->vm_flags & VM_LOCKED_CLEAR_MASK;
+> +	unsigned long vm_flags = vma->vm_flags & ~VM_LOCKED_MASK;
+> +	unsigned long svm_flags = svma->vm_flags & ~VM_LOCKED_MASK;
+>  
+>  	/*
+>  	 * match the virtual addresses, permission and the alignment of the
+> diff --git a/mm/mlock.c b/mm/mlock.c
+> index 0336f52e03d7..5c4fff93cd6b 100644
+> --- a/mm/mlock.c
+> +++ b/mm/mlock.c
+> @@ -497,7 +497,7 @@ static int apply_vma_lock_flags(unsigned long start, size_t len,
+>  		if (vma->vm_start != tmp)
+>  			return -ENOMEM;
+>  
+> -		newflags = vma->vm_flags & VM_LOCKED_CLEAR_MASK;
+> +		newflags = vma->vm_flags & ~VM_LOCKED_MASK;
+>  		newflags |= flags;
+>  		/* Here we know that  vma->vm_start <= nstart < vma->vm_end. */
+>  		tmp = vma->vm_end;
+> @@ -661,7 +661,7 @@ static int apply_mlockall_flags(int flags)
+>  	struct vm_area_struct *vma, *prev = NULL;
+>  	vm_flags_t to_add = 0;
+>  
+> -	current->mm->def_flags &= VM_LOCKED_CLEAR_MASK;
+> +	current->mm->def_flags &= ~VM_LOCKED_MASK;
+>  	if (flags & MCL_FUTURE) {
+>  		current->mm->def_flags |= VM_LOCKED;
+>  
+> @@ -681,7 +681,7 @@ static int apply_mlockall_flags(int flags)
+>  	for_each_vma(vmi, vma) {
+>  		vm_flags_t newflags;
+>  
+> -		newflags = vma->vm_flags & VM_LOCKED_CLEAR_MASK;
+> +		newflags = vma->vm_flags & ~VM_LOCKED_MASK;
+>  		newflags |= to_add;
+>  
+>  		/* Ignore errors */
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index d4abc6feced1..323bd253b25a 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -2671,7 +2671,7 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
+>  		if ((vm_flags & VM_SPECIAL) || vma_is_dax(vma) ||
+>  					is_vm_hugetlb_page(vma) ||
+>  					vma == get_gate_vma(current->mm))
+> -			vma->vm_flags &= VM_LOCKED_CLEAR_MASK;
+> +			clear_vm_flags(vma, VM_LOCKED_MASK);
+>  		else
+>  			mm->locked_vm += (len >> PAGE_SHIFT);
+>  	}
+> @@ -3340,8 +3340,8 @@ static struct vm_area_struct *__install_special_mapping(
+>  	vma->vm_start = addr;
+>  	vma->vm_end = addr + len;
+>  
+> -	vma->vm_flags = vm_flags | mm->def_flags | VM_DONTEXPAND | VM_SOFTDIRTY;
+> -	vma->vm_flags &= VM_LOCKED_CLEAR_MASK;
+> +	init_vm_flags(vma, (vm_flags | mm->def_flags |
+> +		      VM_DONTEXPAND | VM_SOFTDIRTY) & ~VM_LOCKED_MASK);
+>  	vma->vm_page_prot = vm_get_page_prot(vma->vm_flags);
+>  
+>  	vma->vm_ops = ops;
+> diff --git a/mm/mremap.c b/mm/mremap.c
+> index 1b3ee02bead7..35db9752cb6a 100644
+> --- a/mm/mremap.c
+> +++ b/mm/mremap.c
+> @@ -687,7 +687,7 @@ static unsigned long move_vma(struct vm_area_struct *vma,
+>  
+>  	if (unlikely(!err && (flags & MREMAP_DONTUNMAP))) {
+>  		/* We always clear VM_LOCKED[ONFAULT] on the old vma */
+> -		vma->vm_flags &= VM_LOCKED_CLEAR_MASK;
+> +		clear_vm_flags(vma, VM_LOCKED_MASK);
+>  
+>  		/*
+>  		 * anon_vma links of the old vma is no longer needed after its page
+> -- 
+> 2.39.1
 
 -- 
-Kind regards,
-
-Sakari Ailus
+Michal Hocko
+SUSE Labs
