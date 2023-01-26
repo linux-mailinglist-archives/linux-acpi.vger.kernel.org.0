@@ -2,94 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0A8567D19F
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jan 2023 17:31:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C3AC67D203
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jan 2023 17:45:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229446AbjAZQbB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 26 Jan 2023 11:31:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40582 "EHLO
+        id S232371AbjAZQpD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 26 Jan 2023 11:45:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjAZQbA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 Jan 2023 11:31:00 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E429B2712
-        for <linux-acpi@vger.kernel.org>; Thu, 26 Jan 2023 08:30:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1674750657; bh=XocCkBma2oS46lroeeKDOArg3fVvjpOicGTTadaOvrc=;
-        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=U3zvQsa5gz9DPBD92RWN3jJjJ1NRjuqqAYOtsEmKn81Lbwm6v5ImoT3hgttC8X3Bs
-         ZWdyMqQkUMOB0b/SQifuXMGvlgBH+88Rz0KR1ZHZAqOd0G7iBSAUjqZKYKcHIRcCYA
-         LJiRb4dX98h36vrmId30Gm9ztC+Mg7Om0H1pJmvSGhW0CpTFRNT/WVDvs1I/vEbslt
-         dluVNdavFcpo0dQ48wawP3WkTp8BaEXrM0Zj/evPO8tRpz25LU3XICRg0htwWPLsov
-         voicWH4AYVHpLICqIRXXg8I2R3bz20Q3V8Xv3o/vEUz0QmqEjvPVQC+S/74kPxZyeI
-         JWzIGwBLgL6nw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MAONd-1pVlMf1u9b-00BxX2; Thu, 26
- Jan 2023 17:25:30 +0100
-To:     Robert Moore <robert.moore@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc:     linux-acpi@vger.kernel.org, acpica-devel@lists.linuxfoundation.org
-From:   Armin Wolf <W_Armin@gmx.de>
-Subject: Handling of Integers in ToHexString()
-Message-ID: <b5151aba-3453-f539-41d0-2bc61d175a53@gmx.de>
-Date:   Thu, 26 Jan 2023 17:25:28 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        with ESMTP id S232740AbjAZQpB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 Jan 2023 11:45:01 -0500
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED9AA55BD
+        for <linux-acpi@vger.kernel.org>; Thu, 26 Jan 2023 08:45:00 -0800 (PST)
+Received: by mail-ej1-f42.google.com with SMTP id v6so6663892ejg.6
+        for <linux-acpi@vger.kernel.org>; Thu, 26 Jan 2023 08:45:00 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7bs5DNlYlts1nOv7duwgOuaumGIVuw3+LxrxAblLR7o=;
+        b=AxjpIFH7tV194Vuram7DbooGXlhrqWmxwzraLypAMgYKXyt/cI+0EVfMi5mQtR9SoS
+         w6mTLwsLIkOUOwNuC0MxckQuYdQK10DF48sxspWjyb8hMPFdMsgCEBOhaK/Sx5ShkgE9
+         1IX7Ft2G43RvJJcJGxAzQ4YLAjxkCt3igWxbDtAEX9CQVXSICMwnpflNB59zqN5CjZX9
+         NhvpJ56C5iaa7He7XAMIMOO9ccSINibaIxY1403or5lWwvxeXCH03sNZPJ0Kg0eAG3gT
+         qaJYP4jwIqXJndPzYQF0EFweMgD+3fwZ7M1R6YfuTgqrrViZLrz5MqeGIP6vaWjzPSC6
+         ihAQ==
+X-Gm-Message-State: AFqh2kr5XTBV5L0ZX866jfEs5gMvi5X19X2Yem4DG5qQ5N5p9kEWFUXy
+        Bf8eqml+DofliWaP/uIT0nZqG3N7lqYlHgYAxBw=
+X-Google-Smtp-Source: AMrXdXsLIlBdiPL0P+wlGQPiVQXcp3pgaPXFxI3fnMifV9dredbXCuJFoV1EOlkkIynuS3JU/h9srsKf3cN4GrMMks0=
+X-Received: by 2002:a17:907:c928:b0:85e:4218:c011 with SMTP id
+ ui40-20020a170907c92800b0085e4218c011mr4387320ejc.258.1674751499495; Thu, 26
+ Jan 2023 08:44:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Provags-ID: V03:K1:7+97NG4rTS9M4q5GmRTE2zWLubpCGeMu+5npie+rqsINFRC5Xjt
- n23hUHAF0Z1DQVeK2q4loJZYtgStFTf8ZB/mnS1PrJGJWh9zj87UhxipkUKu/hoF5jcKt7Q
- O6ejlEnG2e8qL936yNDt7+VbT76icgx/70yjkCe8MI1bWSoobgE+uNZ7c6HXOqzlK7euoOt
- en1/5ZGvC3SGDknSBttNA==
-UI-OutboundReport: notjunk:1;M01:P0:7OBVhVO2NoI=;8GBH56/ZdFgzBCLemIFMEVQ3AnK
- +3mnNGAlUcc6BIx1Zr/cUL2fy8JV1Q+JBuMxhMyvJrj9agBXHK6fC3pEA9zk39pMyExoY4PbW
- cilM8F8WsA6ZIStNDs4t7Nrgo/se1xgUmxa9O4i+rF4y7Pm73gDypPlileWNzvSz9iZ6uZELO
- pMi6Flfb8tcj5ZYsgwdTfQmJx9YACk6nAJlUp1TTl/aJZ4sGifD0P2F3kH79rtTr9LCCfb2ur
- gX0rS94ijjQc357vSCJigtpifCxb1WmHv0eU4VpIj+1Al6VUxXO5Es1Q5XVSHvuxtVSPx26hY
- LTzAcpEw0FTRCyJIatx6R03AEV/ADjBk6WOtzhcTdhPP54s/YYAzd5wstGBFkilGPfwWMpEFg
- MYEme5NcUAeF2NUF6FE/Zu/baPxrg+OVh2WItCFR0CbYcjRfm4Z302OxI/O8e82LpFSIP4NrS
- 2qJi+tti23oQdHXszLB4foy3jkoxYCX5I8vvkMl/PjJa2qt2JuqEPDYP+ZVQ3YaSycCjdWEHG
- mEo5iB75rZyUMkIdUjNOgAOvdwJ3SMXqe71jyrb5s5soqe9BrdZNMZTXk7Rh6go1Ib9kRIHa+
- /p4m9Z3ETDQPiyvGcR2P7ARCda2z4EQMPlTX60aOpDH6uFwix93j210GAA5yOaCtVNicOmS/M
- +DZ2mQ7lVHMNRLQSeX+aMZYrY95CpIvZLz8LeFA8dzZDT1oCTHHT5zFeJthlhnoN3Xj3+gq5q
- i6FeATyG8sAg0MB0j+rF0eVPol3Oh533wTgIYOBzq3LeFJpKPeL4OOfshOnFTf2mwIIjR/v8K
- XAqbTZUdDwo6fmeePnzzqlEKCAU+8UlBCahrgTPcfa70CCIM6TdHviz/sFLYh6pLWiRBGibnm
- trJauz5tKmDisNnmYhaTYEZfk2XTwv0+oPzuOqD8NLr+7gra3UbSHUrOd402I4N3qZ7nOmC4J
- cWvIzGvNny8yb5F/I3pShzE6ZSg=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <b5151aba-3453-f539-41d0-2bc61d175a53@gmx.de>
+In-Reply-To: <b5151aba-3453-f539-41d0-2bc61d175a53@gmx.de>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 26 Jan 2023 17:44:48 +0100
+Message-ID: <CAJZ5v0iL_M61sWavvZ48Ji5xeC_WN8fu=d0EPGitFQ-MWTi7CA@mail.gmail.com>
+Subject: Re: Handling of Integers in ToHexString()
+To:     Armin Wolf <W_Armin@gmx.de>
+Cc:     Robert Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, acpica-devel@lists.linuxfoundation.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello,
+On Thu, Jan 26, 2023 at 5:31 PM Armin Wolf <W_Armin@gmx.de> wrote:
+>
+> Hello,
+>
+> i noticed that ACPICA handles integers passed to ToHexString() differently than the ACPI implementation of Microsoft Windows:
+>
+> Windows:
+> byte 0x0f =>"0xf"
+> word 0x0f0f => "0xf0f"
+> dword 0x0f0f0f0f => "0xf0f0f0f"
+> qword 0x0f0f0f0f0f0f0f0f => "0xf0f0f0f0f0f0f0f"
+>
+> ACPICA:
+> byte 0x0f =>"0000000f"
+> word 0x0f0f => "00000f0f"
+> dword 0x0f0f0f0f => "0f0f0f0f"
+> qword 0x0f0f0f0f0f0f0f0f => "0f0f0f0f" (32-bit table, but qword is 64-bit?)
+>
+> This causes problems on my Inspiron 3505, as the ACPI battery serial number is generated by using ToHexString(<16 bit field>, Local1)
+> and Mid(Local1, 0x02, 0x04, Local0), causing a wrong serial number to be displayed when using ACPICA (0020 instead of 20CD).
+>
+> Could it be possible to change the behavior of ToHexString() regarding integers to match the Microsoft Windows behavior?
 
-i noticed that ACPICA handles integers passed to ToHexString() differently than the ACPI implementation of Microsoft Windows:
+I think so, but I guess you'll need to submit a PR to the upstream
+ACPICA project on GitHub to get it started.
 
-Windows:
-byte 0x0f =>"0xf"
-word 0x0f0f => "0xf0f"
-dword 0x0f0f0f0f => "0xf0f0f0f"
-qword 0x0f0f0f0f0f0f0f0f => "0xf0f0f0f0f0f0f0f"
+> Something similar was already done in ACPICA version 20181213.
 
-ACPICA:
-byte 0x0f =>"0000000f"
-word 0x0f0f => "00000f0f"
-dword 0x0f0f0f0f => "0f0f0f0f"
-qword 0x0f0f0f0f0f0f0f0f => "0f0f0f0f" (32-bit table, but qword is 64-bit?)
-
-This causes problems on my Inspiron 3505, as the ACPI battery serial number is generated by using ToHexString(<16 bit field>, Local1)
-and Mid(Local1, 0x02, 0x04, Local0), causing a wrong serial number to be displayed when using ACPICA (0020 instead of 20CD).
-
-Could it be possible to change the behavior of ToHexString() regarding integers to match the Microsoft Windows behavior?
-Something similar was already done in ACPICA version 20181213.
-
-Armin Wolf
-
+Interesting.
