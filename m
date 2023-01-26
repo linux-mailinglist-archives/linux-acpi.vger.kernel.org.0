@@ -2,133 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88CD667D165
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jan 2023 17:26:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0A8567D19F
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jan 2023 17:31:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232770AbjAZQ0L (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 26 Jan 2023 11:26:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34142 "EHLO
+        id S229446AbjAZQbB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 26 Jan 2023 11:31:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232736AbjAZQ0E (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 Jan 2023 11:26:04 -0500
-Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A65756F231
-        for <linux-acpi@vger.kernel.org>; Thu, 26 Jan 2023 08:25:22 -0800 (PST)
-Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-50aa54cc7c0so2438677b3.8
-        for <linux-acpi@vger.kernel.org>; Thu, 26 Jan 2023 08:25:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=rUFKXit/Slxp5jNkRtm2qJfbudUdkwg/5ym9L9/2xFg=;
-        b=BrNExWGHbV1NeR+vu2Js5zAqwDKTAmFhHgoWjYZ0a3qbH7rru8W3QViuclznskZkVo
-         6Q5eqrGX7jMOOdvE9K9lsVmJpHX9roidNQoqd4ah6qpZ3z5AR/LzfumpWsF7qxr+L/L7
-         2EeJAw9MATGkA5VBf2UwOc7KCg21F0CUspP8pGqPmL78PHbmYrJgHGcDXuiJf+tpyEq5
-         mYd3qiJmdB/mmqbT25mkgF6e/9yHOLIF4ZmJU2qiUjSg09+a1L9BOQF70sP/z/t1hEtG
-         N3QguNCw23qX8RL/9XVLJb/vAzwIwx19tcG6Myly1SJ+d6fdbBsCbrW+Wp9iSE9SLjFe
-         r7Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rUFKXit/Slxp5jNkRtm2qJfbudUdkwg/5ym9L9/2xFg=;
-        b=K8Q3/n9S+PT3iRa9dVSXEf2W2P7z3VN/SmRtlekNS0jLR0VXfnCVKNcGge9ExzSW9y
-         ZWpg1pxcht5rMnMGRMiBNqw/yNo+0onOMYNU2/8czx6L6gE/Ja3O6FhzKx2aSaojFae8
-         ZcEhMk3aW/Cdbg7nnL27ATpGRiI7QTz3Tx9K7YbPDZ37X4LEizqcbMddo+LYv2cmpUDi
-         gLX4DWe0cKdEZ0Dt9cXWk2tQEza5Oa2eO8zWvhlv+dKrzGsL670C+bBObSCrG6TYdIk+
-         lfYJUF+KHIXFo8qOys2LS+iNAjzfCM8tL+VunQe1kUrUKqbGKvVuQOU9bE9kA8cxGOVT
-         jIZw==
-X-Gm-Message-State: AFqh2ko+w5sh6zkjLbE6tgvSbPsy8zZ0DlW9LMINayYj9Vmdp+soTT9S
-        2FC0LEGRY2Ip/Mw19aPPFdhEU/LC1WmPepw2pokOog==
-X-Google-Smtp-Source: AMrXdXvRVLeaIi85wIrJBS5zRkOyr5/BQ66PCe0y1aLe9hmWIu7jqHBlhyy2SYPoXbE9x4WotKo1j1aRHLVU6Hd1LsI=
-X-Received: by 2002:a81:1b8b:0:b0:4ff:774b:7ffb with SMTP id
- b133-20020a811b8b000000b004ff774b7ffbmr3541685ywb.218.1674750315051; Thu, 26
- Jan 2023 08:25:15 -0800 (PST)
+        with ESMTP id S229452AbjAZQbA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 Jan 2023 11:31:00 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E429B2712
+        for <linux-acpi@vger.kernel.org>; Thu, 26 Jan 2023 08:30:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1674750657; bh=XocCkBma2oS46lroeeKDOArg3fVvjpOicGTTadaOvrc=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=U3zvQsa5gz9DPBD92RWN3jJjJ1NRjuqqAYOtsEmKn81Lbwm6v5ImoT3hgttC8X3Bs
+         ZWdyMqQkUMOB0b/SQifuXMGvlgBH+88Rz0KR1ZHZAqOd0G7iBSAUjqZKYKcHIRcCYA
+         LJiRb4dX98h36vrmId30Gm9ztC+Mg7Om0H1pJmvSGhW0CpTFRNT/WVDvs1I/vEbslt
+         dluVNdavFcpo0dQ48wawP3WkTp8BaEXrM0Zj/evPO8tRpz25LU3XICRg0htwWPLsov
+         voicWH4AYVHpLICqIRXXg8I2R3bz20Q3V8Xv3o/vEUz0QmqEjvPVQC+S/74kPxZyeI
+         JWzIGwBLgL6nw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MAONd-1pVlMf1u9b-00BxX2; Thu, 26
+ Jan 2023 17:25:30 +0100
+To:     Robert Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc:     linux-acpi@vger.kernel.org, acpica-devel@lists.linuxfoundation.org
+From:   Armin Wolf <W_Armin@gmx.de>
+Subject: Handling of Integers in ToHexString()
+Message-ID: <b5151aba-3453-f539-41d0-2bc61d175a53@gmx.de>
+Date:   Thu, 26 Jan 2023 17:25:28 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-References: <20230125083851.27759-1-surenb@google.com> <20230125083851.27759-2-surenb@google.com>
- <Y9JFFYjfJf9uDijE@kernel.org> <Y9KTUw/04FmBVplw@kernel.org> <Y9KXjLaFFUvqqdd4@casper.infradead.org>
-In-Reply-To: <Y9KXjLaFFUvqqdd4@casper.infradead.org>
-From:   Suren Baghdasaryan <surenb@google.com>
-Date:   Thu, 26 Jan 2023 08:25:03 -0800
-Message-ID: <CAJuCfpHs4wvQpitiAYc+PQX3LnitF=wvm=zVX7CzMozzmnbcnw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/6] mm: introduce vma->vm_flags modifier functions
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     Mike Rapoport <rppt@kernel.org>, akpm@linux-foundation.org,
-        michel@lespinasse.org, jglisse@google.com, mhocko@suse.com,
-        vbabka@suse.cz, hannes@cmpxchg.org, mgorman@techsingularity.net,
-        dave@stgolabs.net, liam.howlett@oracle.com, peterz@infradead.org,
-        ldufour@linux.ibm.com, paulmck@kernel.org, luto@kernel.org,
-        songliubraving@fb.com, peterx@redhat.com, david@redhat.com,
-        dhowells@redhat.com, hughd@google.com, bigeasy@linutronix.de,
-        kent.overstreet@linux.dev, punit.agrawal@bytedance.com,
-        lstoakes@gmail.com, peterjung1337@gmail.com, rientjes@google.com,
-        axelrasmussen@google.com, joelaf@google.com, minchan@google.com,
-        jannh@google.com, shakeelb@google.com, tatashin@google.com,
-        edumazet@google.com, gthelen@google.com, gurua@google.com,
-        arjunroy@google.com, soheil@google.com, hughlynch@google.com,
-        leewalsh@google.com, posk@google.com, will@kernel.org,
-        aneesh.kumar@linux.ibm.com, npiggin@gmail.com,
-        chenhuacai@kernel.org, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, richard@nod.at,
-        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
-        qianweili@huawei.com, wangzhou1@hisilicon.com,
-        herbert@gondor.apana.org.au, davem@davemloft.net, vkoul@kernel.org,
-        airlied@gmail.com, daniel@ffwll.ch,
-        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-        tzimmermann@suse.de, l.stach@pengutronix.de,
-        krzysztof.kozlowski@linaro.org, patrik.r.jakobsson@gmail.com,
-        matthias.bgg@gmail.com, robdclark@gmail.com,
-        quic_abhinavk@quicinc.com, dmitry.baryshkov@linaro.org,
-        tomba@kernel.org, hjc@rock-chips.com, heiko@sntech.de,
-        ray.huang@amd.com, kraxel@redhat.com, sre@kernel.org,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-        tfiga@chromium.org, m.szyprowski@samsung.com, mchehab@kernel.org,
-        dimitri.sivanich@hpe.com, zhangfei.gao@linaro.org,
-        jejb@linux.ibm.com, martin.petersen@oracle.com,
-        dgilbert@interlog.com, hdegoede@redhat.com, mst@redhat.com,
-        jasowang@redhat.com, alex.williamson@redhat.com, deller@gmx.de,
-        jayalk@intworks.biz, viro@zeniv.linux.org.uk, nico@fluxnic.net,
-        xiang@kernel.org, chao@kernel.org, tytso@mit.edu,
-        adilger.kernel@dilger.ca, miklos@szeredi.hu,
-        mike.kravetz@oracle.com, muchun.song@linux.dev, bhe@redhat.com,
-        andrii@kernel.org, yoshfuji@linux-ipv6.org, dsahern@kernel.org,
-        kuba@kernel.org, pabeni@redhat.com, perex@perex.cz, tiwai@suse.com,
-        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
-        linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org, linux-graphics-maintainer@vmware.com,
-        linux-ia64@vger.kernel.org, linux-arch@vger.kernel.org,
-        loongarch@lists.linux.dev, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux-crypto@vger.kernel.org, nvdimm@lists.linux.dev,
-        dmaengine@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, etnaviv@lists.freedesktop.org,
-        linux-samsung-soc@vger.kernel.org, intel-gfx@lists.freedesktop.org,
-        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        freedreno@lists.freedesktop.org,
-        linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        xen-devel@lists.xenproject.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-accelerators@lists.ozlabs.org, sparclinux@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
-        target-devel@vger.kernel.org, linux-usb@vger.kernel.org,
-        netdev@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-aio@kvack.org, linux-fsdevel@vger.kernel.org,
-        linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
-        devel@lists.orangefs.org, kexec@lists.infradead.org,
-        linux-xfs@vger.kernel.org, bpf@vger.kernel.org,
-        linux-perf-users@vger.kernel.org, kasan-dev@googlegroups.com,
-        selinux@vger.kernel.org, alsa-devel@alsa-project.org,
-        kernel-team@android.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Provags-ID: V03:K1:7+97NG4rTS9M4q5GmRTE2zWLubpCGeMu+5npie+rqsINFRC5Xjt
+ n23hUHAF0Z1DQVeK2q4loJZYtgStFTf8ZB/mnS1PrJGJWh9zj87UhxipkUKu/hoF5jcKt7Q
+ O6ejlEnG2e8qL936yNDt7+VbT76icgx/70yjkCe8MI1bWSoobgE+uNZ7c6HXOqzlK7euoOt
+ en1/5ZGvC3SGDknSBttNA==
+UI-OutboundReport: notjunk:1;M01:P0:7OBVhVO2NoI=;8GBH56/ZdFgzBCLemIFMEVQ3AnK
+ +3mnNGAlUcc6BIx1Zr/cUL2fy8JV1Q+JBuMxhMyvJrj9agBXHK6fC3pEA9zk39pMyExoY4PbW
+ cilM8F8WsA6ZIStNDs4t7Nrgo/se1xgUmxa9O4i+rF4y7Pm73gDypPlileWNzvSz9iZ6uZELO
+ pMi6Flfb8tcj5ZYsgwdTfQmJx9YACk6nAJlUp1TTl/aJZ4sGifD0P2F3kH79rtTr9LCCfb2ur
+ gX0rS94ijjQc357vSCJigtpifCxb1WmHv0eU4VpIj+1Al6VUxXO5Es1Q5XVSHvuxtVSPx26hY
+ LTzAcpEw0FTRCyJIatx6R03AEV/ADjBk6WOtzhcTdhPP54s/YYAzd5wstGBFkilGPfwWMpEFg
+ MYEme5NcUAeF2NUF6FE/Zu/baPxrg+OVh2WItCFR0CbYcjRfm4Z302OxI/O8e82LpFSIP4NrS
+ 2qJi+tti23oQdHXszLB4foy3jkoxYCX5I8vvkMl/PjJa2qt2JuqEPDYP+ZVQ3YaSycCjdWEHG
+ mEo5iB75rZyUMkIdUjNOgAOvdwJ3SMXqe71jyrb5s5soqe9BrdZNMZTXk7Rh6go1Ib9kRIHa+
+ /p4m9Z3ETDQPiyvGcR2P7ARCda2z4EQMPlTX60aOpDH6uFwix93j210GAA5yOaCtVNicOmS/M
+ +DZ2mQ7lVHMNRLQSeX+aMZYrY95CpIvZLz8LeFA8dzZDT1oCTHHT5zFeJthlhnoN3Xj3+gq5q
+ i6FeATyG8sAg0MB0j+rF0eVPol3Oh533wTgIYOBzq3LeFJpKPeL4OOfshOnFTf2mwIIjR/v8K
+ XAqbTZUdDwo6fmeePnzzqlEKCAU+8UlBCahrgTPcfa70CCIM6TdHviz/sFLYh6pLWiRBGibnm
+ trJauz5tKmDisNnmYhaTYEZfk2XTwv0+oPzuOqD8NLr+7gra3UbSHUrOd402I4N3qZ7nOmC4J
+ cWvIzGvNny8yb5F/I3pShzE6ZSg=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -136,35 +69,27 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jan 26, 2023 at 7:09 AM Matthew Wilcox <willy@infradead.org> wrote:
->
-> On Thu, Jan 26, 2023 at 04:50:59PM +0200, Mike Rapoport wrote:
-> > On Thu, Jan 26, 2023 at 11:17:09AM +0200, Mike Rapoport wrote:
-> > > On Wed, Jan 25, 2023 at 12:38:46AM -0800, Suren Baghdasaryan wrote:
-> > > > +/* Use when VMA is not part of the VMA tree and needs no locking */
-> > > > +static inline void init_vm_flags(struct vm_area_struct *vma,
-> > > > +                          unsigned long flags)
-> > >
-> > > I'd suggest to make it vm_flags_init() etc.
-> >
-> > Thinking more about it, it will be even clearer to name these vma_flags_xyz()
->
-> Perhaps vma_VERB_flags()?
->
-> vma_init_flags()
-> vma_reset_flags()
-> vma_set_flags()
-> vma_clear_flags()
-> vma_mod_flags()
+Hello,
 
-Due to excessive email bouncing I posted the v3 of this patchset using
-the original per-VMA patchset's distribution list. That might have
-dropped Mike from the list. Sorry about that Mike, I'll add you to my
-usual list of suspects :)
-The v3 is here:
-https://lore.kernel.org/all/20230125233554.153109-1-surenb@google.com/
-and Andrew did suggest the same renames, so I'll be posting v4 with
-those changes later today.
-Thanks for the feedback!
+i noticed that ACPICA handles integers passed to ToHexString() differently than the ACPI implementation of Microsoft Windows:
 
->
+Windows:
+byte 0x0f =>"0xf"
+word 0x0f0f => "0xf0f"
+dword 0x0f0f0f0f => "0xf0f0f0f"
+qword 0x0f0f0f0f0f0f0f0f => "0xf0f0f0f0f0f0f0f"
+
+ACPICA:
+byte 0x0f =>"0000000f"
+word 0x0f0f => "00000f0f"
+dword 0x0f0f0f0f => "0f0f0f0f"
+qword 0x0f0f0f0f0f0f0f0f => "0f0f0f0f" (32-bit table, but qword is 64-bit?)
+
+This causes problems on my Inspiron 3505, as the ACPI battery serial number is generated by using ToHexString(<16 bit field>, Local1)
+and Mid(Local1, 0x02, 0x04, Local0), causing a wrong serial number to be displayed when using ACPICA (0020 instead of 20CD).
+
+Could it be possible to change the behavior of ToHexString() regarding integers to match the Microsoft Windows behavior?
+Something similar was already done in ACPICA version 20181213.
+
+Armin Wolf
+
