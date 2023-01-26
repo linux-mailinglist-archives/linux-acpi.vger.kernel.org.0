@@ -2,191 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02A8567C147
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jan 2023 01:03:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC17D67C65D
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jan 2023 09:55:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229844AbjAZADH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Jan 2023 19:03:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54956 "EHLO
+        id S233849AbjAZIzZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 26 Jan 2023 03:55:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbjAZADG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Jan 2023 19:03:06 -0500
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA6FE62D37;
-        Wed, 25 Jan 2023 16:03:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674691380; x=1706227380;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=GPaRQ79iFc5dVxB25ki374pEeK248SYwNjKLwiAk40o=;
-  b=O3X3o3oN3lHdT4/iaxDsSEQ9aRUDSxuXt1h1nGvVlT2duYgHgzCfcGcT
-   CXqIcMqSm5Gfr07HE5dbOe2kol/l+3FXZNg9okfzNS2W05jL34L7HRFXv
-   O4PzuZCrrcdDz7ipo2K7bmAVh0JUgao9ECK5be19I+gWDlhqYAluwRcYa
-   38B2cuYyVsEmXd5F4tFYOKFfq2WPI48b6KqmXZeFyRhNhGd1mrkPNuwmc
-   G3pQiS/MgYzcF9+6ynYn3/K+vjooPcoEiOTaiEaTeQwPs4aIpA5keu386
-   2AsZI6ZfDMiUY3UKsNek+JkFUtIzHRaigDjeiA90SNsECACwoyZScZn8j
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10601"; a="310294419"
-X-IronPort-AV: E=Sophos;i="5.97,246,1669104000"; 
-   d="scan'208";a="310294419"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2023 16:02:59 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10601"; a="640125719"
-X-IronPort-AV: E=Sophos;i="5.97,246,1669104000"; 
-   d="scan'208";a="640125719"
-Received: from habushar-mobl.amr.corp.intel.com (HELO spandruv-desk1.amr.corp.intel.com) ([10.209.122.234])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2023 16:02:59 -0800
-Message-ID: <10ad845597c47b8b7d1ba1aa9fe93825d249f56e.camel@linux.intel.com>
-Subject: Re: [PATCH v1 0/3] thermal: intel: int340x: Use generic trip points
- table
-From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Date:   Wed, 25 Jan 2023 16:02:59 -0800
-In-Reply-To: <CAJZ5v0iVqGoVq1TVvYoQLxRWnP1nTPe7seeQvbVPancxH_6J1g@mail.gmail.com>
-References: <5665899.DvuYhMxLoT@kreacher>
-         <CAJZ5v0iVqGoVq1TVvYoQLxRWnP1nTPe7seeQvbVPancxH_6J1g@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
+        with ESMTP id S236511AbjAZIzY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 Jan 2023 03:55:24 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 234D442BE9;
+        Thu, 26 Jan 2023 00:54:56 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 37D19C14;
+        Thu, 26 Jan 2023 00:55:27 -0800 (PST)
+Received: from [10.34.100.128] (pierre123.nice.arm.com [10.34.100.128])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0F7463F71E;
+        Thu, 26 Jan 2023 00:54:42 -0800 (PST)
+Message-ID: <26a57d7f-5917-c54b-2f96-492346a599a1@arm.com>
+Date:   Thu, 26 Jan 2023 09:54:38 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v4 6/6] arch_topology: Build cacheinfo from primary CPU
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Sudeep Holla <sudeep.holla@arm.com>
+Cc:     Conor Dooley <conor.dooley@microchip.com>,
+        linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@rivosinc.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Gavin Shan <gshan@redhat.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org
+References: <20230104183033.755668-1-pierre.gondois@arm.com>
+ <20230104183033.755668-7-pierre.gondois@arm.com>
+ <CAMuHMdUjgxgOXf5He1x=PLn7MQTjZgFQUHj8JrwbyweT4uOALQ@mail.gmail.com>
+ <20230124140420.4srnufcvamvff77v@bogus> <Y8/tl999NQwbPL/R@wendy>
+ <20230124144839.2szjjv256j3pdaif@bogus>
+ <20230124145541.2xwtr7ro2bjnsjd7@bogus>
+ <20230125145423.pid3hsstswzuez73@bogus>
+ <CAMuHMdWZ+_kdMp+0VfYAJZRHBWiyobQQJwEM_kHN6yeVVGxSvg@mail.gmail.com>
+Content-Language: en-US
+From:   Pierre Gondois <pierre.gondois@arm.com>
+In-Reply-To: <CAMuHMdWZ+_kdMp+0VfYAJZRHBWiyobQQJwEM_kHN6yeVVGxSvg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+Hello Geert, Sudeep,
 
-
-On Wed, 2023-01-25 at 16:20 +0100, Rafael J. Wysocki wrote:
-> Hi Srinivas,
+On 1/25/23 16:28, Geert Uytterhoeven wrote:
+> Hi Sudeep,
 > 
-> On Wed, Jan 25, 2023 at 3:55 PM Rafael J. Wysocki <rjw@rjwysocki.net>
-> wrote:
-> > 
-> > Hi All,
-> > 
-> > This series replaces the following patch:
-> > 
-> > https://patchwork.kernel.org/project/linux-pm/patch/2147918.irdbgypaU6@kreacher/
-> > 
-> > but it has been almost completely rewritten, so I've dropped all
-> > tags from it.
-> > 
-> > 
-
-[...]
-
-> > The series is on top of this patch:
-> > 
-> > https://patchwork.kernel.org/project/linux-pm/patch/2688799.mvXUDI8C0e@kreacher/
-> > 
-> > which applies on top of the linux-next branch in linux-pm.git from
-> > today.
+> On Wed, Jan 25, 2023 at 3:54 PM Sudeep Holla <sudeep.holla@arm.com> wrote:
+>> On Tue, Jan 24, 2023 at 02:55:41PM +0000, Sudeep Holla wrote:
+>>> Geert, can you please try with the patch Conor pointed out and see if
+>>> that helps to fix the allocation failures[1]
+>>>
+>>
+>> Sorry for the nag, but did you get the chance to test -next with [1]
+>> and see if it fixes the cacheinfo memory failure you were observing ?
 > 
-> There are two additional branches in linux-pm.git:
+>> [1] https://lore.kernel.org/all/20230103035316.3841303-1-leyfoon.tan@starfivetech.com/
 > 
-> thermal-intel-fixes
-On two systems test, no issues are observed.
-
-> thermal-intel-testing
-branch: thermal-intel-test
-
-No issues, but number of trips are not same as invalid trips are not
-registered.
-Not sure if this is correct. At boot up they may be invalid, but
-firmware may update later (Not aware of such scenario).
-
-For example, the hot is not registered.
-
-Current:
-
-thermal_zone9/trip_point_0_type:critical
-thermal_zone9/trip_point_0_temp:125050
-thermal_zone9/trip_point_0_hyst:0
-
-thermal_zone9/trip_point_1_type:hot
-thermal_zone9/trip_point_1_temp:-273250
-thermal_zone9/trip_point_1_hyst:0
-
-thermal_zone9/trip_point_2_type:passive
-thermal_zone9/trip_point_2_temp:103050
-thermal_zone9/trip_point_2_hyst:0
-
-thermal_zone9/trip_point_3_type:active
-thermal_zone9/trip_point_3_temp:103050
-thermal_zone9/trip_point_3_hyst:0
-
-thermal_zone9/trip_point_4_type:active
-thermal_zone9/trip_point_4_temp:101050
-thermal_zone9/trip_point_4_hyst:0
-
-thermal_zone9/trip_point_5_type:active
-thermal_zone9/trip_point_5_temp:100050
-thermal_zone9/trip_point_5_hyst:0
-
-
-thermal_zone9/trip_point_6_type:active
-thermal_zone9/trip_point_6_temp:98550
-thermal_zone9/trip_point_6_hyst:0
-
-thermal_zone9/trip_point_7_type:active
-thermal_zone9/trip_point_7_temp:97050
-thermal_zone9/trip_point_7_hyst:0
-
-
-with 6.3-rc1 changes
-
-thermal_zone9/trip_point_0_type:critical
-thermal_zone9/trip_point_0_temp:125050
-thermal_zone9/trip_point_0_hyst:0
-
-thermal_zone9/trip_point_1_type:passive
-thermal_zone9/trip_point_1_temp:103050
-thermal_zone9/trip_point_1_hyst:0
-
-thermal_zone9/trip_point_2_type:active
-thermal_zone9/trip_point_2_temp:103050
-thermal_zone9/trip_point_2_hyst:0
-
-thermal_zone9/trip_point_3_type:active
-thermal_zone9/trip_point_3_temp:101050
-thermal_zone9/trip_point_3_hyst:0
-
-thermal_zone9/trip_point_4_type:active
-thermal_zone9/trip_point_4_temp:100050
-thermal_zone9/trip_point_4_hyst:0
-
-thermal_zone9/trip_point_5_type:active
-thermal_zone9/trip_point_5_temp:98550
-thermal_zone9/trip_point_5_hyst:0
-
-
-thermal_zone9/trip_point_6_hyst:0
-thermal_zone9/trip_point_6_temp:97050
-thermal_zone9/trip_point_6_type:active
-
-Thanks,
-Srinivas
-
-
+> After applying that patch, the issue is gone.
+> Thanks, sending my Tb!
 > 
-> The former is just fixes to go on top of 6.2-rc5 and the latter -
-> this
-> series on top of those and the current thermal-intel branch I have
-> locally with the Intel thermal drivers changes for 6.3.
+> Gr{oetje,eeting}s,
 > 
-> I would appreciate giving each of them a go in your test setup.
+>                          Geert
 > 
-> Cheers!
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> 
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                  -- Linus Torvalds
 
+Happy to hear the issue disappears with the patch, thanks for solving the issue,
+Regards,
+Pierre
