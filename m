@@ -2,93 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CBA867D36B
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jan 2023 18:42:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3A0E67D7B1
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jan 2023 22:27:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231953AbjAZRml (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 26 Jan 2023 12:42:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45096 "EHLO
+        id S232960AbjAZV1n (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 26 Jan 2023 16:27:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231905AbjAZRml (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 Jan 2023 12:42:41 -0500
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 380E16F238;
-        Thu, 26 Jan 2023 09:42:40 -0800 (PST)
-Received: by mail-ej1-f51.google.com with SMTP id kt14so7162930ejc.3;
-        Thu, 26 Jan 2023 09:42:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=P6V7ncPnxJBEuBCN7F/c3tMBlXX2E3XQnP/lz++oPxI=;
-        b=52KVzZ5fbxoEqolVvDhP06X59XEt2eM6D3CctCoS4iy7XTOpHDobTQ/JwUDvRHGVXH
-         J16BY5WthPA+fq6zvvA+mRZ8zqGzC06EZ7bffqviBOTvFO9zkZpOwRhXNt5hTGyG4yQr
-         hLs+xvpH1HnoqaQ/LR7PaKWLwzn3LoyIwEYjVclJfC/c8G9E+NlKXGVKRyZNhoDhnTIl
-         T0QhJg82yJ11womEl8zi3mERlhQ3qthsqvtA2KdGUBXQKTS4Hvi9saesdwTXUtHFtauc
-         7nJfw9xrgz8o+4avSWOM+2PclNwbIT3we6Gqon4r9rTrESVh7B7qwBN2vmtMziSfdiyE
-         Aztg==
-X-Gm-Message-State: AFqh2krmZXh6d7ed3lgUnO+x0KQhN8uLUVj26C2KxAiisucpL9EyRZiB
-        sy+VyWxJN9SPWETt8cu90Wsq7sgDJUXhHLFzjvU=
-X-Google-Smtp-Source: AMrXdXtCWpxohPqZO/BhPp5vN+gQA3+ofCgeCWKQyPQRAOjmOW4+BOwjE0j7g51+N3tfJrb20ZvSeP8uOLg8Qw5DQpk=
-X-Received: by 2002:a17:906:f6cb:b0:870:fef9:9001 with SMTP id
- jo11-20020a170906f6cb00b00870fef99001mr6319463ejb.25.1674754958785; Thu, 26
- Jan 2023 09:42:38 -0800 (PST)
+        with ESMTP id S232957AbjAZV1m (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 Jan 2023 16:27:42 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53CD93EFED;
+        Thu, 26 Jan 2023 13:27:41 -0800 (PST)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30QKr5qU003063;
+        Thu, 26 Jan 2023 21:27:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : from : to : cc : references : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=eub/xV2CndV03ABVthGsowvrdm8zTqb73Ay8YAMFLgU=;
+ b=EnMCtFwqCgXYn7qv6B4+uwnY25L8e33icayzlkYrvcWoZn5ml+/jvO48LNg+ZpNliGcU
+ /slccjyiWkdtX3fuJEJAo5RJ2xeLiTvG7kU6qkOU6hW27BqxlJps4dWv6SpS+nhvTLaU
+ 36t6TLuvJnySJ9SfffvkKBphkJY1+iHIoUGIrAh//Lw1QAnPwzHh6wrtSL0ahaHKag3o
+ yhbzr2VupoZVjIvhGzirHDwFf6mndVkE3U0dJwfONMNj+DhCPIFoYUJa/JVuHPu4tsxC
+ GEQm8KwNs1W3Q13gikhpY6XlQTI9O3hYgD0SzOAMtQlmIRZEkTYWhfLq772omIgzJ58G qQ== 
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3nbp1v9bh1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 26 Jan 2023 21:27:24 +0000
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+        by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 30QLRNUo021049
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 26 Jan 2023 21:27:23 GMT
+Received: from [10.110.106.42] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Thu, 26 Jan
+ 2023 13:27:22 -0800
+Message-ID: <6bafae1a-61b3-887a-14fc-77d389509f4f@quicinc.com>
+Date:   Thu, 26 Jan 2023 13:27:22 -0800
 MIME-Version: 1.0
-References: <5665899.DvuYhMxLoT@kreacher> <CAJZ5v0iVqGoVq1TVvYoQLxRWnP1nTPe7seeQvbVPancxH_6J1g@mail.gmail.com>
- <10ad845597c47b8b7d1ba1aa9fe93825d249f56e.camel@linux.intel.com>
- <5926007.lOV4Wx5bFT@kreacher> <3c45463d2dc546b4198272107738cc073b3d23c0.camel@linux.intel.com>
-In-Reply-To: <3c45463d2dc546b4198272107738cc073b3d23c0.camel@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 26 Jan 2023 18:42:27 +0100
-Message-ID: <CAJZ5v0gNZJcomUv5-xw8oswHn0j7DNXmneuempQuhCrHsWHeRA@mail.gmail.com>
-Subject: Re: [PATCH v1 0/3] thermal: intel: int340x: Use generic trip points table
-To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH v7 10/20] gunyah: rsc_mgr: Add resource manager RPC core
+From:   Elliot Berman <quic_eberman@quicinc.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Murali Nalajala <quic_mnalajal@quicinc.com>,
+        Trilok Soni <quic_tsoni@quicinc.com>,
+        "Srivatsa Vaddagiri" <quic_svaddagi@quicinc.com>,
+        Carl van Schaik <quic_cvanscha@quicinc.com>,
+        Prakruthi Deepak Heragu <quic_pheragu@quicinc.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-acpi@vger.kernel.org>
+References: <20221121140009.2353512-1-quic_eberman@quicinc.com>
+ <20221121140009.2353512-11-quic_eberman@quicinc.com>
+ <Y3uYRvrCZNnbDiY5@kroah.com>
+ <425a8fe9-24b6-26c7-9150-0d3fb76430be@quicinc.com>
+ <Y5gbFhVpuDoZ2ZmY@kroah.com>
+ <f0f4243f-4cbe-0aa2-19b6-047d791207ab@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <f0f4243f-4cbe-0aa2-19b6-047d791207ab@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: beyvsiomKsGMAhOhYtuXkCyYCDsnp1bK
+X-Proofpoint-GUID: beyvsiomKsGMAhOhYtuXkCyYCDsnp1bK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-26_09,2023-01-26_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 clxscore=1015 spamscore=0 phishscore=0 bulkscore=0
+ suspectscore=0 adultscore=0 mlxlogscore=663 mlxscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301260201
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Srinivas,
 
-On Thu, Jan 26, 2023 at 6:17 PM srinivas pandruvada
-<srinivas.pandruvada@linux.intel.com> wrote:
->
-> Hi Rafael,
->
-> On Thu, 2023-01-26 at 14:13 +0100, Rafael J. Wysocki wrote:
-> > On Thursday, January 26, 2023 1:02:59 AM CET srinivas pandruvada
-> > wrote:
-> > > Hi Rafael,
-> > >
-> > >
-> >
->
-> [...]
->
-> > I've added the appended patch to the thermal-intel-test branch.  Can
-> > you please
-> > check if it makes that difference in behavior go away?
-> I synced the tree again and your patch in thermal-intel-test fixes the
-> issue.
 
-Thanks a lot for testing and the confirmation!
+On 12/15/2022 6:25 PM, Elliot Berman wrote:
+> 
+> 
+> On 12/12/2022 10:26 PM, Greg Kroah-Hartman wrote:
+>> On Mon, Dec 12, 2022 at 03:46:53PM -0800, Elliot Berman wrote:
+>>>
+>>> Reference counting is not needed on the gh_rm_rpc object because its 
+>>> only
+>>> client (the VM manager) is torn down before the gh_rm_rpc.
+>>
+>> So again, who controls the lifecycle of it?  Where is the reference
+>> count for the structure as it is pointing to reference counted memory?
+> 
+> Had some internal review and I think I'm now taking better care of this 
+> (and the device situation in the other mail). I will send out next 
+> revision soon.
 
-In the meantime, I've merged the thermal-intel-test into the
-bleeding-edge branch and if 0-day reports success with building it,
-I'll move the patches to linux-next.
+Hello Greg,
 
-Cheers!
+I've sent v9 series and wanted to get your feedback on the changes to 
+the patches that you had suggested.
+
+https://lore.kernel.org/all/20230120224627.4053418-10-quic_eberman@quicinc.com/
+
+Thanks,
+Elliot
