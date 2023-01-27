@@ -2,47 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDE2767E017
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jan 2023 10:27:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AA5A67E025
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jan 2023 10:30:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232911AbjA0J1z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 27 Jan 2023 04:27:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42308 "EHLO
+        id S232992AbjA0JaB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 27 Jan 2023 04:30:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232735AbjA0J1y (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Jan 2023 04:27:54 -0500
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AA055BA9;
-        Fri, 27 Jan 2023 01:27:50 -0800 (PST)
+        with ESMTP id S232976AbjA0JaA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Jan 2023 04:30:00 -0500
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31FE48A79;
+        Fri, 27 Jan 2023 01:29:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674811672; x=1706347672;
+  t=1674811799; x=1706347799;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=irOFwGOpCdgiAWhOEXeba39LtNKCJ17Fddk8cCsao5I=;
-  b=EQ/tr08Otk1Dg0J1e5sOT5KRZv58/hHcvAdP09KJ8VUI0ecXQX5TdB2f
-   qL/Vyuvf7gDXjtqg9Qw4V03i2+k3R/4pH8UsTr64XF/ndNQdaOibnZm5F
-   ViTVEg7qn5fi7GCgShmH2T7ihnzznMp+QI0QDKH+EdhNq7lrmwN6TucgE
-   C0vIxknLYew1D0v9UdW/iJCt9m2AqKnYol0rEEYob0faFfps6M/lqJLPp
-   FwgOJaSwQBfV3NVTbLrwSsxuBuIhCHBpblitBLW0DcI6MLpsyYat+WhUO
-   e0QVDxnjuccNclxpE3GWTOZu1HKFAgaGNBc+JkhNxdrELsbOKq1fsK49e
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="325723982"
+  bh=d2yDCTUWrATaE6uAigdEvJNdLttVhMNqs/VWyHeY5TI=;
+  b=iS3A+v8UEQvdTPj6561v21ctgdiIqspp/ibfJ7KAQ1kplQPNUus7EHNe
+   LJagv6KdrYYmezdtN1t19D+NEJFVGcrjlKHD6bZmBbHVxPmHuFclqODow
+   4GqBsnt+qLISuIDcuOGFwv9H7UdmPJSb3kyOdgsUs8Nru21rQcxgr116x
+   R/+2xej832aYZRTJxpdUlh6Y3sLpWs5yaJKN1kp+QWLbiuusESvtrFbYL
+   s1q+uM9NxUE93iETeFQuUrEm/MYLeRuSba+uaNhW3r1PTGAw76uLfti0K
+   NJ/NWekAUI6dHs8PEDy3kwbkG0S8jEsExLRWKPaZvl+4cPpIvaXjkfq57
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="391603533"
 X-IronPort-AV: E=Sophos;i="5.97,250,1669104000"; 
-   d="scan'208";a="325723982"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2023 01:27:23 -0800
+   d="scan'208";a="391603533"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2023 01:29:58 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="787159567"
+X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="771513309"
 X-IronPort-AV: E=Sophos;i="5.97,250,1669104000"; 
-   d="scan'208";a="787159567"
+   d="scan'208";a="771513309"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga004.jf.intel.com with ESMTP; 27 Jan 2023 01:27:10 -0800
+  by fmsmga002.fm.intel.com with ESMTP; 27 Jan 2023 01:29:47 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pLL0k-00FtTe-1I;
-        Fri, 27 Jan 2023 11:27:06 +0200
-Date:   Fri, 27 Jan 2023 11:27:06 +0200
+        id 1pLL3H-00FtWf-2a;
+        Fri, 27 Jan 2023 11:29:43 +0200
+Date:   Fri, 27 Jan 2023 11:29:43 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Saravana Kannan <saravanak@google.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -86,15 +86,15 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 04/11] gpiolib: Clear the gpio_device's fwnode
- initialized flag before adding
-Message-ID: <Y9OY6pMwYtab1Avd@smile.fi.intel.com>
+Subject: Re: [PATCH v2 05/11] driver core: fw_devlink: Add DL_FLAG_CYCLE
+ support to device links
+Message-ID: <Y9OZh0ZqtnqmKcvT@smile.fi.intel.com>
 References: <20230127001141.407071-1-saravanak@google.com>
- <20230127001141.407071-5-saravanak@google.com>
+ <20230127001141.407071-6-saravanak@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230127001141.407071-5-saravanak@google.com>
+In-Reply-To: <20230127001141.407071-6-saravanak@google.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
@@ -105,34 +105,61 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jan 26, 2023 at 04:11:31PM -0800, Saravana Kannan wrote:
-> Registering an irqdomain sets the flag for the fwnode. But having the
-> flag set when a device is added is interpreted by fw_devlink to mean the
-> device has already been initialized and will never probe. This prevents
-> fw_devlink from creating device links with the gpio_device as a
-> supplier. So, clear the flag before adding the device.
+On Thu, Jan 26, 2023 at 04:11:32PM -0800, Saravana Kannan wrote:
+> fw_devlink uses DL_FLAG_SYNC_STATE_ONLY device link flag for two
+> purposes:
+> 
+> 1. To allow a parent device to proxy its child device's dependency on a
+>    supplier so that the supplier doesn't get its sync_state() callback
+>    before the child device/consumer can be added and probed. In this
+>    usage scenario, we need to ignore cycles for ensure correctness of
+>    sync_state() callbacks.
+> 
+> 2. When there are dependency cycles in firmware, we don't know which of
+>    those dependencies are valid. So, we have to ignore them all wrt
+>    probe ordering while still making sure the sync_state() callbacks
+>    come correctly.
+> 
+> However, when detecting dependency cycles, there can be multiple
+> dependency cycles between two devices that we need to detect. For
+> example:
+> 
+> A -> B -> A and A -> C -> B -> A.
+> 
+> To detect multiple cycles correct, we need to be able to differentiate
+> DL_FLAG_SYNC_STATE_ONLY device links used for (1) vs (2) above.
+> 
+> To allow this differentiation, add a DL_FLAG_CYCLE that can be use to
+> mark use case (2). We can then use the DL_FLAG_CYCLE to decide which
+> DL_FLAG_SYNC_STATE_ONLY device links to follow when looking for
+> dependency cycles.
 
 ...
 
-> +	/*
-> +	 * If fwnode doesn't belong to another device, it's safe to clear its
-> +	 * initialized flag.
-> +	 */
-> +	if (!gdev->dev.fwnode->dev)
-> +		fwnode_dev_initialized(gdev->dev.fwnode, false);
+> +static inline bool device_link_flag_is_sync_state_only(u32 flags)
+> +{
+> +	return (flags & ~(DL_FLAG_INFERRED | DL_FLAG_CYCLE))
+> +		== (DL_FLAG_SYNC_STATE_ONLY | DL_FLAG_MANAGED);
 
-Do not dereference fwnode in struct device. Use dev_fwnode() for that.
+Weird indentation, why not
 
-	struct fwnode_handle *fwnode = dev_fwnode(&gdev->dev);
+	return (flags & ~(DL_FLAG_INFERRED | DL_FLAG_CYCLE)) ==
+	       (DL_FLAG_SYNC_STATE_ONLY | DL_FLAG_MANAGED);
 
-	if (!fwnode->dev)
-		fwnode_dev_initialized(fwnode, false);
+?
 
-+ Blank line.
+> +}
 
->  	ret = gcdev_register(gdev, gpio_devt);
->  	if (ret)
->  		return ret;
+...
+
+>  			       DL_FLAG_AUTOREMOVE_SUPPLIER | \
+>  			       DL_FLAG_AUTOPROBE_CONSUMER  | \
+>  			       DL_FLAG_SYNC_STATE_ONLY | \
+> -			       DL_FLAG_INFERRED)
+> +			       DL_FLAG_INFERRED | \
+> +			       DL_FLAG_CYCLE)
+
+You can make less churn by squeezing the new one above the last one.
 
 -- 
 With Best Regards,
