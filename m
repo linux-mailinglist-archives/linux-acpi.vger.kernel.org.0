@@ -2,59 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADFB867E111
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jan 2023 11:08:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB9FA67E117
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jan 2023 11:10:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233337AbjA0KIp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 27 Jan 2023 05:08:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47390 "EHLO
+        id S233398AbjA0KKp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 27 Jan 2023 05:10:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232583AbjA0KIo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Jan 2023 05:08:44 -0500
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FA9B3EC40;
-        Fri, 27 Jan 2023 02:08:43 -0800 (PST)
+        with ESMTP id S232538AbjA0KKo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Jan 2023 05:10:44 -0500
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEC4B4B89E;
+        Fri, 27 Jan 2023 02:10:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674814123; x=1706350123;
+  t=1674814242; x=1706350242;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=f67KzVxHpdXmqPA8CszlUnWN06gxy+VJ0oxvgBWzgFw=;
-  b=KiNugtqFm0hO1elXkrEfsTzpLczGu6Dw7qu8JnuVdBwGAGI/RQQ3Cd02
-   zyGe+jKtTToFCgTBP146G/IYMCiQVLgaOK+xO+F6UkRXijYEH7qySS0gH
-   8s5PTT+leZmH0af9RsVonsw4JOolf3DWEDR894mYQxegv+EOapqZgnDGY
-   JDVddKvIRFob5AToCpCEUlgTKe+03lvMBKUMdP6uyNTBiYYTJkno7pRKm
-   nKNlAeKSfPuZcnBfBaa5Tpf9TpswsuIraO/X9RoQcIJKOJsKgFIicKXTT
-   koAk37WctvIg9NG6bkfOsou/zVtGCmUHeizrePUdMKLiapUMTk1XbmC9o
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="329183496"
+  bh=Qg/3JDFsC2nzbd86XepCeae+28Y0mZGY4eLCR4gfcsI=;
+  b=EHmNzsNUXbZ20M83kZzhtWO/+kfcv+EgSdi4z+c/kHxxMUs3Py+XQZv9
+   tU+nXiYTmyuo85p4su8bKJqJkhJyfZAgtnZU0S5vhflXJ9baT8RMjJo7/
+   hD2ERE+pYOskdxLmbODtQxp/HKtNs6yIgQrmcDX8YzVCXNqLDRM1noyFy
+   wpZw3sbZI6VMeIt+Q2wiR5eiaJ4hteXdCT23Ok7IlwTyvr+Qtdr/jLU6O
+   16yZ6aZaRDYiWOokh2S0Qr2tORZDD3bv3cRVYNJzFqtkJS45KFIwqGZs4
+   YNGNlnT5BFvkPsQt7Ap4p81G4mVw6KAeNkP5jgejseCfGfDlY4+Fcp8gJ
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="307403875"
 X-IronPort-AV: E=Sophos;i="5.97,250,1669104000"; 
-   d="scan'208";a="329183496"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2023 02:08:43 -0800
+   d="scan'208";a="307403875"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2023 02:10:42 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="726647928"
+X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="695462376"
 X-IronPort-AV: E=Sophos;i="5.97,250,1669104000"; 
-   d="scan'208";a="726647928"
+   d="scan'208";a="695462376"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga008.fm.intel.com with ESMTP; 27 Jan 2023 02:08:41 -0800
+  by orsmga001.jf.intel.com with ESMTP; 27 Jan 2023 02:10:31 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pLLey-00FuNs-0e;
-        Fri, 27 Jan 2023 12:08:40 +0200
-Date:   Fri, 27 Jan 2023 12:08:39 +0200
+        id 1pLLgh-00FuQp-2J;
+        Fri, 27 Jan 2023 12:10:27 +0200
+Date:   Fri, 27 Jan 2023 12:10:27 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        rafael@kernel.org, heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH v3 2/8] ACPI: property: Parse _CRS CSI-2 descriptor
-Message-ID: <Y9Oip7cLqWgdzKry@smile.fi.intel.com>
-References: <20230125224101.401285-1-sakari.ailus@linux.intel.com>
- <20230125224101.401285-3-sakari.ailus@linux.intel.com>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Saravana Kannan <saravanak@google.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Linux Kernel Functional Testing <lkft@linaro.org>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        John Stultz <jstultz@google.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Maxim Kiselev <bigunclemax@gmail.com>,
+        Maxim Kochetkov <fido_max@inbox.ru>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Colin Foster <colin.foster@in-advantage.com>,
+        Martin Kepplinger <martin.kepplinger@puri.sm>,
+        Jean-Philippe Brucker <jpb@kernel.org>,
+        kernel-team@android.com, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 08/11] driver core: fw_devlink: Make cycle detection
+ more robust
+Message-ID: <Y9OjE+bJquDcCpJ8@smile.fi.intel.com>
+References: <20230127001141.407071-1-saravanak@google.com>
+ <20230127001141.407071-9-saravanak@google.com>
+ <Y9OcqGTocu8ZlFqy@smile.fi.intel.com>
+ <CAMuHMdXRbiNW9nd_N_=+OTo-uCmy2ePfOmREEHcqLyEn1H=Rhg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230125224101.401285-3-sakari.ailus@linux.intel.com>
+In-Reply-To: <CAMuHMdXRbiNW9nd_N_=+OTo-uCmy2ePfOmREEHcqLyEn1H=Rhg@mail.gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
@@ -65,78 +107,22 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jan 26, 2023 at 12:40:55AM +0200, Sakari Ailus wrote:
-> Parse newly added ACPI _CRS CSI-2 descriptor for CSI-2 and camera
-> configuration. For now, only figure out where the descriptor is present in
-> order to allow adding information from it to related devices.
+On Fri, Jan 27, 2023 at 10:52:02AM +0100, Geert Uytterhoeven wrote:
+> On Fri, Jan 27, 2023 at 10:43 AM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> > On Thu, Jan 26, 2023 at 04:11:35PM -0800, Saravana Kannan wrote:
+> > > + * Check if @sup_handle or any of its ancestors or suppliers direct/indirectly
+> > > + * depend on @con.  This function can detect multiple cyles between @sup_handle
+> >
+> > A single space is enough.
+> 
+> It's very common to write two spaces after a full stop.
+> When joining two sentences on separate lines in vim using SHIFT-J,
+> vim will make sure there are two spaces.
 
-...
+But is this consistent with all kernel doc comments in the core.c?
 
-> +	if (status != AE_OK) {
-
-ACPI_FAILURE()
-
-> +		acpi_handle_warn(inst_context->handle,
-> +				 "cannot get handle for %s\n",
-> +				 csi2->resource_source.string_ptr);
-> +		return AE_OK;
-> +	}
-
-...
-
-> +	struct scan_check_crs_csi2_context inst_context = {
-> +		.handle = handle,
-> +		.res_list = LIST_HEAD_INIT(inst_context.res_list),
-> +	};
-> +	struct list_head *list = context;
-> +	struct crs_csi2 *csi2;
-
-> +	INIT_LIST_HEAD(&inst_context.res_list);
-
-Do you still need this?
-
-...
-
-> +	acpi_walk_resources(handle, METHOD_NAME__CRS,
-> +			    scan_check_crs_csi2_instance, &inst_context);
-> +
-> +	if (list_empty(&inst_context.res_list))
-> +		return AE_OK;
-
-I'm wondering if you can utilize acpi_dev_get_resources().
-
-...
-
-> +	/* Collect the devices that have a _CRS CSI-2 resource */
-> +	acpi_walk_namespace(ACPI_TYPE_DEVICE, handle, ACPI_UINT32_MAX,
-
-Other serial buses limit the DEPTH by 32, why do we need more here?
-
-> +			    scan_check_crs_csi2, NULL, &crs_csi2_handles, NULL);
-
-...
-
-> +	sort(handle_refs, handle_count, sizeof(*handle_refs), crs_handle_cmp,
-> +	     NULL);
-
-A single line?
-
-...
-
-> +		if (check_mul_overflow(sizeof(*ads->ports) +
-> +				       sizeof(*ads->nodes) * 2 +
-> +				       sizeof(*ads->nodeptrs) * 2,
-> +				       (size_t)this_count, &alloc_size) ||
-
-So, now you know why this_count can't be type of size_t?
-
-> +		    check_add_overflow(sizeof(*ads) + sizeof(*ads->nodes) +
-> +				       sizeof(*ads->nodeptrs) * 2,
-> +				       alloc_size, &alloc_size)) {
-> +			acpi_handle_warn(handle, "too many handles (%u)",
-> +					 this_count);
-> +			continue;
-> +		}
+I'm fine with either as long as it's consistent.
 
 -- 
 With Best Regards,
