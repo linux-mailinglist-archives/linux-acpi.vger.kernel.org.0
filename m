@@ -2,126 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7E9A67ED8F
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jan 2023 19:33:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9A1567EDD9
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jan 2023 19:52:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234500AbjA0SdW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 27 Jan 2023 13:33:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40854 "EHLO
+        id S229583AbjA0Sw3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 27 Jan 2023 13:52:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233870AbjA0SdV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Jan 2023 13:33:21 -0500
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C146D5CD2A
-        for <linux-acpi@vger.kernel.org>; Fri, 27 Jan 2023 10:33:19 -0800 (PST)
-Received: by mail-pj1-x1033.google.com with SMTP id h5-20020a17090a9c0500b0022bb85eb35dso5526283pjp.3
-        for <linux-acpi@vger.kernel.org>; Fri, 27 Jan 2023 10:33:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=N/9ssvHiiy+plkRR4udjNa8oEgujll5vQQ/ky9lgwkQ=;
-        b=MEsqZvqHHxVo24sSLue2qMy5OYfz1En4a7Kl20FmlHTRhTya0HGbT409oGPiBizbUA
-         4fK8iCvvn1iCyJ75EwGQggqarxOfVE8LUrYV3RimeD5QS7bmZFN4L3yr67zIexx3qcrj
-         G8cY2peQhLqXZKSmpXGScDkKJZ78kn+33Qq/I=
+        with ESMTP id S229477AbjA0Sw2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Jan 2023 13:52:28 -0500
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0AE994;
+        Fri, 27 Jan 2023 10:52:27 -0800 (PST)
+Received: by mail-ed1-f50.google.com with SMTP id cw4so424833edb.13;
+        Fri, 27 Jan 2023 10:52:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=N/9ssvHiiy+plkRR4udjNa8oEgujll5vQQ/ky9lgwkQ=;
-        b=oIviHPAoCY42skMO4NcCz3hA0G7++/LDrMka2w28tNaksX+Rnqqza99tPmKJn5VB9x
-         2Dre+zRXtyPCzhbonDnlDwhDDOz0yILAQyF4wKhMgS3zvskCEw2ms52UmKx9voKwj4uw
-         kTckSLjXp5z9tPaCGPN5WC50B6LT9v3vvgVvbXDjxADit2YDHk4aYQKp23SjEv7PZcnP
-         l+ja3Tq1WgyxESFYpBR4J9aSMnxnkFZm0sF+JgpPApuyiR5UQitHh66miYY/avimXCmj
-         HpayTWrM3fR4FeHGmns/vAl9qR+7/+FYlDS4/A1ssGaWmpKz26ep+fHxXjrSbbeXGqs7
-         xxCA==
-X-Gm-Message-State: AO0yUKVbFVPy/rsZGXfchwggzEnIqLolXcW5JJcSBsuCLvTD9XFBDCHh
-        asTzFnOscDD85/h1VbT32eTPDA==
-X-Google-Smtp-Source: AK7set/QEBqEUwQhnQz9ZU2M2LduC999BE9fVgvnAZDZ/H2QYc/JhCQAP95ReN55+7eQdlQ4aeO2zA==
-X-Received: by 2002:a17:902:db0d:b0:196:2ba5:8ace with SMTP id m13-20020a170902db0d00b001962ba58acemr12516215plx.19.1674844399263;
-        Fri, 27 Jan 2023 10:33:19 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id s9-20020a170902ea0900b0019311ec72e8sm2810229plg.253.2023.01.27.10.33.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Jan 2023 10:33:18 -0800 (PST)
-Date:   Fri, 27 Jan 2023 10:33:17 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jw63GzPu4GtHBPw24o9RJNE5pYfXgCOIEYBBEaEe0S8=;
+        b=uToDeALBsnLIJraZ0sWyS64CrBzZJbtwQMldnvIeGNtpSwKMQjPN1aDbyn4ZE5B+F9
+         Ff1bg0XD4TW9nTRmA4NTUsPxt4zOtbEY3Yl0l9IavnNuCOadbMs3f5qe+syqkC4khWif
+         gb7qtAGyo6/s7wwCl/CPtasOp4cH3A4p74PrEqYS+47Jl6tfPqYlFNNzu2/GKQ76aDv1
+         G9mmGf41KLE+7ZSXvYcZWeAP5nDpdgtmmAXVOIqKcEaDd/KJCe/83SDkVGE4GwedkxDK
+         09eh6ZFMf3/Nt3EzPmadpPN5d36DMnIq9i9aP7YZ+s6mexiTCyQ7O7sMg+RP9+7kCJ/W
+         2kog==
+X-Gm-Message-State: AO0yUKV5BMj7s5rl6d20zTPocVVOS64VOmzL9KE+h21jCSn7pmTQIYQd
+        d6EJD0cEJ0dlXpi+cqoWTBxYu5S724NsTzU1Ec8=
+X-Google-Smtp-Source: AK7set9Vdi/DhQGJC5Hr+Bj+Arl0dZza8GGHXkQK4NDcqc7sJqTZn3Zl/cudIQBOQxp4fiVjVqNWqqAoZOME+iBchMw=
+X-Received: by 2002:a05:6402:175c:b0:4a0:8f64:cddc with SMTP id
+ v28-20020a056402175c00b004a08f64cddcmr3162453edx.58.1674845546326; Fri, 27
+ Jan 2023 10:52:26 -0800 (PST)
+MIME-Version: 1.0
+References: <20221118181538.never.225-kees@kernel.org> <202301151037.20CC3F0@keescook>
+ <CAJZ5v0hvoAD1WLXzpMobTRSasBqy5dypHTysBU3=ionGgWR6nQ@mail.gmail.com>
+ <202301201116.6ED85A70@keescook> <CAJZ5v0hQypNonoqr1V1xqN5bX+pKBF3AR=F-mRynN5yvcS9kyA@mail.gmail.com>
+ <202301271032.43B50EB7@keescook>
+In-Reply-To: <202301271032.43B50EB7@keescook>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 27 Jan 2023 19:52:14 +0100
+Message-ID: <CAJZ5v0iV3vjkVMKOpmTEzHxRHPTeR23daSpDQtbfmgSE4K6AXQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: Replace fake flexible arrays with flexible array members
+To:     Kees Cook <keescook@chromium.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
         "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-hardening@vger.kernel.org,
         acpica-devel@lists.linuxfoundation.org
-Subject: Re: [PATCH] ACPICA: Replace fake flexible arrays with flexible array
- members
-Message-ID: <202301271032.43B50EB7@keescook>
-References: <20221118181538.never.225-kees@kernel.org>
- <202301151037.20CC3F0@keescook>
- <CAJZ5v0hvoAD1WLXzpMobTRSasBqy5dypHTysBU3=ionGgWR6nQ@mail.gmail.com>
- <202301201116.6ED85A70@keescook>
- <CAJZ5v0hQypNonoqr1V1xqN5bX+pKBF3AR=F-mRynN5yvcS9kyA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0hQypNonoqr1V1xqN5bX+pKBF3AR=F-mRynN5yvcS9kyA@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 27, 2023 at 07:08:39PM +0100, Rafael J. Wysocki wrote:
-> On Fri, Jan 20, 2023 at 8:16 PM Kees Cook <keescook@chromium.org> wrote:
-> >
-> > On Fri, Jan 20, 2023 at 07:10:52PM +0100, Rafael J. Wysocki wrote:
-> > > On Sun, Jan 15, 2023 at 7:38 PM Kees Cook <keescook@chromium.org> wrote:
-> > > >
-> > > > On Fri, Nov 18, 2022 at 10:15:51AM -0800, Kees Cook wrote:
-> > > > > Functionally identical to ACPICA upstream pull request 813:
-> > > > > https://github.com/acpica/acpica/pull/813
-> > > >
-> > > > Any update on this? Upstream is currently unbuildable since October.
-> > > >
-> > > > > One-element arrays (and multi-element arrays being treated as
-> > > > > dynamically sized) are deprecated[1] and are being replaced with
-> > > > > flexible array members in support of the ongoing efforts to tighten the
-> > > > > FORTIFY_SOURCE routines on memcpy(), correctly instrument array indexing
-> > > > > with UBSAN_BOUNDS, and to globally enable -fstrict-flex-arrays=3.
-> > > > >
-> > > > > Replace one-element array with flexible-array member in struct
-> > > > > acpi_resource_extended_irq. Replace 4-byte fixed-size array with 4-byte
-> > > > > padding in a union with a flexible-array member in struct
-> > > > > acpi_pci_routing_table.
-> > > > >
-> > > > > This results in no differences in binary output.
-> > > >
-> > > > In the meantime, can you take this patch for Linux, and we can wait for
-> > > > ACPICA to catch up?
+On Fri, Jan 27, 2023 at 7:33 PM Kees Cook <keescook@chromium.org> wrote:
+>
+> On Fri, Jan 27, 2023 at 07:08:39PM +0100, Rafael J. Wysocki wrote:
+> > On Fri, Jan 20, 2023 at 8:16 PM Kees Cook <keescook@chromium.org> wrote:
 > > >
-> > > Applied now (as 6.3 material), sorry for the delay.
+> > > On Fri, Jan 20, 2023 at 07:10:52PM +0100, Rafael J. Wysocki wrote:
+> > > > On Sun, Jan 15, 2023 at 7:38 PM Kees Cook <keescook@chromium.org> wrote:
+> > > > >
+> > > > > On Fri, Nov 18, 2022 at 10:15:51AM -0800, Kees Cook wrote:
+> > > > > > Functionally identical to ACPICA upstream pull request 813:
+> > > > > > https://github.com/acpica/acpica/pull/813
+> > > > >
+> > > > > Any update on this? Upstream is currently unbuildable since October.
+> > > > >
+> > > > > > One-element arrays (and multi-element arrays being treated as
+> > > > > > dynamically sized) are deprecated[1] and are being replaced with
+> > > > > > flexible array members in support of the ongoing efforts to tighten the
+> > > > > > FORTIFY_SOURCE routines on memcpy(), correctly instrument array indexing
+> > > > > > with UBSAN_BOUNDS, and to globally enable -fstrict-flex-arrays=3.
+> > > > > >
+> > > > > > Replace one-element array with flexible-array member in struct
+> > > > > > acpi_resource_extended_irq. Replace 4-byte fixed-size array with 4-byte
+> > > > > > padding in a union with a flexible-array member in struct
+> > > > > > acpi_pci_routing_table.
+> > > > > >
+> > > > > > This results in no differences in binary output.
+> > > > >
+> > > > > In the meantime, can you take this patch for Linux, and we can wait for
+> > > > > ACPICA to catch up?
+> > > >
+> > > > Applied now (as 6.3 material), sorry for the delay.
+> > >
+> > > Thanks!
 > >
-> > Thanks!
-> 
-> Unfortunately, this breaks compilation for the ACPI tools in tools/power/acpi/.
+> > Unfortunately, this breaks compilation for the ACPI tools in tools/power/acpi/.
+>
+> What's the make target to test this?
 
-What's the make target to test this?
+Just cd to tools/power/acpi in the kernel tree and run make.
 
-> Apparently, the problem is that DECLARE_FLEX_ARRAY() is not defined
-> when the tools are built, because kernel headers are not used then.
+> > Apparently, the problem is that DECLARE_FLEX_ARRAY() is not defined
+> > when the tools are built, because kernel headers are not used then.
+>
+> This should exist in the stddef.h tools headers, but perhaps it isn't
+> included already?
 
-This should exist in the stddef.h tools headers, but perhaps it isn't
-included already?
+No, it isn't AFAICS.
 
-> I guess the changes from your upstream PR need to be backported
-> literally for this to work, so I'll drop this one for the time being.
-> Or please let me know if you have a better idea.
+> > I guess the changes from your upstream PR need to be backported
+> > literally for this to work, so I'll drop this one for the time being.
+> > Or please let me know if you have a better idea.
+>
+> I can send a new version if I can reproduce the build failure you see...
 
-I can send a new version if I can reproduce the build failure you see...
-
--- 
-Kees Cook
+Sure, thanks!
