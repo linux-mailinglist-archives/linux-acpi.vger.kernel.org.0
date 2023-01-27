@@ -2,149 +2,155 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E344967E19F
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jan 2023 11:30:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D28567E1B9
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jan 2023 11:35:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231522AbjA0KaB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 27 Jan 2023 05:30:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40000 "EHLO
+        id S231766AbjA0Kf0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 27 Jan 2023 05:35:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231564AbjA0K3u (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Jan 2023 05:29:50 -0500
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D5C13503;
-        Fri, 27 Jan 2023 02:29:47 -0800 (PST)
-Received: by mail-oi1-f182.google.com with SMTP id i9so3856357oif.4;
-        Fri, 27 Jan 2023 02:29:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PKruyQW1tJheLO2piiCDKl7s1j50V272W4MEFdOhqCA=;
-        b=00+WBZEp5E7eC76VI9EsDKRtz4ugATiY6ovgMMg5+8PzQAlrpPfvIdodehUMGd0n86
-         qtdHuIn6Hf9dWrjaQ6ZXLe3g2cBht7i0u4e6MnjVp+XmHtqNlbiaeFhg9m/DZURgXkeJ
-         5zRTt4mI7f3XZGXeXo9/u97SvmTw6OhV3sYHc4ds7vtxk9S7DZYkdiloDTZNHRRNN0dr
-         opf8/Kd/An02cPK3pPj5ctk9gz47BfZ8sNfNRf7FaqcuvTBI/IG7ZRGFcQtVilWyf4yG
-         hOhmcLcAvIneUWFdTCV02nxnhIKcTXyjnuCRQOKkUcxaJgDoI2mgfvTAXoqIUy9GQxVx
-         bulw==
-X-Gm-Message-State: AO0yUKWwdXt3Yvo6SNRiUw3mgR9xlU24cMNk8GWoIVDNxPyOsmCtQ8IG
-        rZKRGhSSFZqcpwLknwe8DMGj5Nw3r69cLA==
-X-Google-Smtp-Source: AK7set+qty1T48p73vD/2rNItlz11TA6XIf8lynjnYUo1pcyPxbsdPj1v3HWUIOWXFa6e7SRbVsIfA==
-X-Received: by 2002:a05:6808:d1:b0:35e:7595:30df with SMTP id t17-20020a05680800d100b0035e759530dfmr2415966oic.9.1674815387051;
-        Fri, 27 Jan 2023 02:29:47 -0800 (PST)
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com. [209.85.210.47])
-        by smtp.gmail.com with ESMTPSA id f66-20020aca3845000000b0036acbbf9fbasm1399943oia.46.2023.01.27.02.29.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Jan 2023 02:29:46 -0800 (PST)
-Received: by mail-ot1-f47.google.com with SMTP id g21-20020a9d6495000000b0068bb336141dso98981otl.11;
-        Fri, 27 Jan 2023 02:29:46 -0800 (PST)
-X-Received: by 2002:a0d:f281:0:b0:508:2f2c:8e5f with SMTP id
- b123-20020a0df281000000b005082f2c8e5fmr772773ywf.384.1674815376246; Fri, 27
- Jan 2023 02:29:36 -0800 (PST)
+        with ESMTP id S231786AbjA0KfV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Jan 2023 05:35:21 -0500
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E5F1783DB;
+        Fri, 27 Jan 2023 02:35:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674815716; x=1706351716;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=PuhCw8UDUx1Zk7kLhlDdcgYsdjEiqfMPtf2H+4bRJRk=;
+  b=mDltvMGscbyBIZlIC9IQIAHFE/younfPtpscYEfTerPOfMny7CR3wYXw
+   0muEUp5ayQ1VpZnuoK3FXjYfGIb8MDcKW3SSeqKcE6b53sDtavbVIgXcM
+   PXUymTJQO3VbOlcjb3QcusC170rlSxljrXD8fyyRAHMvrLLVnkGId8uaU
+   r8vQaIu1u88cefyOFnr4zDXpx9MKqLPK0mAtChK6a0JiDuafgWdEoAf0G
+   UwvpOYdaf+QhTxkw521JBs1ROe+jzdchG+QY/8LUVWaFR2diZb7uNlBhf
+   f56LhB6UQN1oHLJjROUhHJKkUcfZh9K9ZLuSt4SloTjQBpifDElhUURe6
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="315013621"
+X-IronPort-AV: E=Sophos;i="5.97,250,1669104000"; 
+   d="scan'208";a="315013621"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2023 02:35:16 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="805756714"
+X-IronPort-AV: E=Sophos;i="5.97,250,1669104000"; 
+   d="scan'208";a="805756714"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga001.fm.intel.com with ESMTP; 27 Jan 2023 02:35:14 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pLM4f-00FuvU-0S;
+        Fri, 27 Jan 2023 12:35:13 +0200
+Date:   Fri, 27 Jan 2023 12:35:12 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
+        rafael@kernel.org, heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH v3 4/8] ACPI: property: Generate camera swnodes for ACPI
+ and DisCo for Imaging
+Message-ID: <Y9Oo4L0ToRTZye2Z@smile.fi.intel.com>
+References: <20230125224101.401285-1-sakari.ailus@linux.intel.com>
+ <20230125224101.401285-5-sakari.ailus@linux.intel.com>
 MIME-Version: 1.0
-References: <20230127001141.407071-1-saravanak@google.com> <20230127001141.407071-9-saravanak@google.com>
- <Y9OcqGTocu8ZlFqy@smile.fi.intel.com> <CAMuHMdXRbiNW9nd_N_=+OTo-uCmy2ePfOmREEHcqLyEn1H=Rhg@mail.gmail.com>
- <Y9OjE+bJquDcCpJ8@smile.fi.intel.com>
-In-Reply-To: <Y9OjE+bJquDcCpJ8@smile.fi.intel.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 27 Jan 2023 11:29:24 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVpDJmjFebdc5yi421Tyvnh4w5AqZTuA035o4FU_wZRKw@mail.gmail.com>
-Message-ID: <CAMuHMdVpDJmjFebdc5yi421Tyvnh4w5AqZTuA035o4FU_wZRKw@mail.gmail.com>
-Subject: Re: [PATCH v2 08/11] driver core: fw_devlink: Make cycle detection
- more robust
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Saravana Kannan <saravanak@google.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Len Brown <lenb@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux Kernel Functional Testing <lkft@linaro.org>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Abel Vesa <abel.vesa@linaro.org>,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        John Stultz <jstultz@google.com>,
-        Doug Anderson <dianders@chromium.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Maxim Kiselev <bigunclemax@gmail.com>,
-        Maxim Kochetkov <fido_max@inbox.ru>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Colin Foster <colin.foster@in-advantage.com>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Jean-Philippe Brucker <jpb@kernel.org>,
-        kernel-team@android.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230125224101.401285-5-sakari.ailus@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+On Thu, Jan 26, 2023 at 12:40:57AM +0200, Sakari Ailus wrote:
+> Generate software nodes for information parsed from ACPI _CRS for CSI-2 as
+> well as MIPI DisCo for Imaging spec. The software nodes are compliant with
+> existing ACPI or DT definitions and are parsed by relevant drivers without
+> changes.
 
-On Fri, Jan 27, 2023 at 11:10 AM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
-> On Fri, Jan 27, 2023 at 10:52:02AM +0100, Geert Uytterhoeven wrote:
-> > On Fri, Jan 27, 2023 at 10:43 AM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> > > On Thu, Jan 26, 2023 at 04:11:35PM -0800, Saravana Kannan wrote:
-> > > > + * Check if @sup_handle or any of its ancestors or suppliers direct/indirectly
-> > > > + * depend on @con.  This function can detect multiple cyles between @sup_handle
-> > >
-> > > A single space is enough.
-> >
-> > It's very common to write two spaces after a full stop.
+...
 
-See e.g.:
+> +static unsigned int next_csi2_port_index(struct acpi_device_software_nodes *ads,
+> +					 unsigned int port_nr)
+> +{
+> +	unsigned int i;
+> +
+> +	for (i = 0; i < ads->num_ports; i++) {
+> +		struct acpi_device_software_node_port *port = &ads->ports[i];
+> +
+> +		if (port->port_nr == port_nr)
+> +			return i;
 
-    git grep "\.  [^ ]
+> +		if (port->port_nr != NO_CSI2_PORT)
+> +			continue;
+> +
+> +		port->port_nr = port_nr;
+> +
+> +		return i;
 
-> > When joining two sentences on separate lines in vim using SHIFT-J,
-> > vim will make sure there are two spaces.
->
-> But is this consistent with all kernel doc comments in the core.c?
+Maybe it would be better to use the same pattern as above?
 
-Probably there are inconsistencies...
-(Aren't there everywhere?)
+		if (port->port_nr == NO_CSI2_PORT) {
+			port->port_nr = port_nr;
+			return i;
+		}
 
-> I'm fine with either as long as it's consistent.
+> +	}
+> +
+> +	return NO_CSI2_PORT;
+> +}
 
-At least the kerneldoc source will look similar to the PDF output
-(LaTeX inserts more space after a full stop automatically ;-).
+...
 
-Gr{oetje,eeting}s,
+> +static struct fwnode_handle *get_mipi_port_handle(struct acpi_device *device,
+> +						  unsigned int port)
+> +{
+> +	static const char mipi_port_prefix[] = "mipi-img-port-";
+> +	char mipi_port_name[sizeof(mipi_port_prefix) + 2];
 
-                        Geert
+I think the following will be better:
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+	char mipi_port_name[16];
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+
+> +	if (snprintf(mipi_port_name, sizeof(mipi_port_name), "%s%u",
+> +		     mipi_port_prefix, port) >= sizeof(mipi_port_name)) {
+
+	if (snprintf(mipi_port_name, sizeof(mipi_port_name), "mipi-img-port-%u",
+		     port) >= sizeof(mipi_port_name)) {
+
+> +		acpi_handle_info(acpi_device_handle(device),
+> +				 "mipi port name too long for port %u\n", port);
+> +		return NULL;
+> +	}
+> +
+> +	return fwnode_get_named_child_node(acpi_fwnode_handle(device),
+> +					   mipi_port_name);
+> +}
+
+...
+
+> +	union {
+> +		u32 val;
+
+OK. I stopped here, because I'm not sure you have really sent an updated
+version. For sure the val and union is not used.
+
+> +		/* Data lanes + the clock lane */
+> +		u8 val8[BITS_TO_BYTES(ARRAY_SIZE(port->data_lanes) + 1)];
+> +	} u;
+
+...
+
+Please, address all in v3.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
