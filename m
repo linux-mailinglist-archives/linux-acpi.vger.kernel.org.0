@@ -2,51 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 052DD67E091
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jan 2023 10:45:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A72867E0B9
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jan 2023 10:51:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233210AbjA0JpF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 27 Jan 2023 04:45:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57742 "EHLO
+        id S231874AbjA0Jvr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 27 Jan 2023 04:51:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231969AbjA0JpE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Jan 2023 04:45:04 -0500
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8A56761F9;
-        Fri, 27 Jan 2023 01:45:03 -0800 (PST)
+        with ESMTP id S231743AbjA0Jvq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Jan 2023 04:51:46 -0500
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA87D2713;
+        Fri, 27 Jan 2023 01:51:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674812703; x=1706348703;
+  t=1674813105; x=1706349105;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=qVG3SO3/mw1Za7KIPJqbPMkWrirnnDCNx1aYcVedBMY=;
-  b=VmoFcCYL/V5hZ4+O+K0sTip9tuFwjzGmtekPy9372nVufBYyAS7bzuPF
-   P2ooTJBTOief0Il0obQrpjHBi2hadWpcBJoXwV9l/NM0Xg/xILDL2EWKb
-   K+ZPctdO4KggQNIEmwcBertcJtjbVm0UbdFbU5Jx3qFeqUJgnvc+rofvI
-   0ZiLoQcDe8rsm5yBrsCp7zP24HYnSP8NCEUeIjvoQgoDOGonSLMl10PiT
-   ejfGaDtXkJ80uu59biMXJGMzVBmDCR4sHRnAmBCVO3+xMiw/wJ0xv9CZ9
-   6D/bstbiq2/8XU/t7Q/Wm8ONQ4BCvW0sQqzBxWocV4z+5ZMBgjsZLp12I
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="413277656"
+  bh=ZWP6U/h1buqDvrZDQgJO3Y6rjFGk3hK7uUv26Hnc6SY=;
+  b=iG/mm3HDa6YzH977juVQVf4trYcEdd8jVS0WF3burG1WprMo9WQCWdPt
+   zagbVhQUsR9mR7/ell8Y3vYl+oQ41n8hsj7i9awshob4mvyyGMLp8crmj
+   oJ3S0DRuThF5x8uz8Kxz2qozBw0il417AGHIoYwkfHeZD8dtb+UTsmd9d
+   RcEZ38fnHMQpkveLcxhe5CgEgorJZNJeb/tHK6VeEbzASN2PotlTycrlK
+   aCAT3J/b5QPWeJt+VWUo5vBXwsMLi1OiH2zwhs79XD1r96LTEWXXVb5rt
+   7KzMZ0IqB3adllrPiYYyHwkSucUds7KX7yg8/3Ft4eZEPlu1nWjgnXmuV
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="389428691"
 X-IronPort-AV: E=Sophos;i="5.97,250,1669104000"; 
-   d="scan'208";a="413277656"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2023 01:45:03 -0800
+   d="scan'208";a="389428691"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2023 01:51:36 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="908614631"
+X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="771520372"
 X-IronPort-AV: E=Sophos;i="5.97,250,1669104000"; 
-   d="scan'208";a="908614631"
+   d="scan'208";a="771520372"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga006.fm.intel.com with ESMTP; 27 Jan 2023 01:44:52 -0800
+  by fmsmga002.fm.intel.com with ESMTP; 27 Jan 2023 01:51:26 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pLLHs-00FtoI-1i;
-        Fri, 27 Jan 2023 11:44:48 +0200
-Date:   Fri, 27 Jan 2023 11:44:48 +0200
+        id 1pLLOE-00Fu2l-0h;
+        Fri, 27 Jan 2023 11:51:22 +0200
+Date:   Fri, 27 Jan 2023 11:51:21 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Saravana Kannan <saravanak@google.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Sudeep Holla <sudeep.holla@arm.com>,
         Cristian Marussi <cristian.marussi@arm.com>,
@@ -71,6 +70,7 @@ Cc:     Saravana Kannan <saravanak@google.com>,
         Naresh Kamboju <naresh.kamboju@linaro.org>,
         Abel Vesa <abel.vesa@linaro.org>,
         Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
         John Stultz <jstultz@google.com>,
         Doug Anderson <dianders@chromium.org>,
         Guenter Roeck <linux@roeck-us.net>,
@@ -86,17 +86,15 @@ Cc:     Saravana Kannan <saravanak@google.com>,
         linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 03/11] soc: renesas: Move away from using OF_POPULATED
- for fw_devlink
-Message-ID: <Y9OdEOuqfrIrFR4E@smile.fi.intel.com>
+Subject: Re: [PATCH v2 10/11] irqchip/irq-imx-gpcv2: Mark fwnode device as
+ not initialized
+Message-ID: <Y9OemQgO9qoSdT1r@smile.fi.intel.com>
 References: <20230127001141.407071-1-saravanak@google.com>
- <20230127001141.407071-4-saravanak@google.com>
- <Y9OYdX38NfRE9Tvb@smile.fi.intel.com>
- <CAMuHMdUdi9ShckBiEAfg3dgp9EUm354tpf3zEz8Dduo2Qyo2vA@mail.gmail.com>
+ <20230127001141.407071-11-saravanak@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdUdi9ShckBiEAfg3dgp9EUm354tpf3zEz8Dduo2Qyo2vA@mail.gmail.com>
+In-Reply-To: <20230127001141.407071-11-saravanak@google.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
@@ -107,26 +105,23 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 27, 2023 at 10:30:35AM +0100, Geert Uytterhoeven wrote:
-> On Fri, Jan 27, 2023 at 10:25 AM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Thu, Jan 26, 2023 at 04:11:30PM -0800, Saravana Kannan wrote:
+On Thu, Jan 26, 2023 at 04:11:37PM -0800, Saravana Kannan wrote:
+> Since this device is only partially initialized by the irqchip driver,
+> we need to mark the fwnode device as not initialized. This is to let
+> fw_devlink know that the device will be completely initialized at a
+> later point. That way, fw_devlink will continue to defer the probe of
+> the power domain consumers till the power domain driver successfully
+> binds to the struct device and completes the initialization of the
+> device.
 
 ...
 
-> > > -             of_node_set_flag(np, OF_POPULATED);
-> > > +             fwnode_dev_initialized(&np->fwnode, true);
-> >
-> > of_fwnode_handle(np) ?
-> 
-> Or of_node_to_fwnode().
+>  		pd_pdev->dev.of_node = np;
+> +		pd_pdev->dev.fwnode = of_fwnode_handle(np);
 
-Not really.
+Instead,
 
-> Looks like we have (at least) two of them...
-
-Yes, and the latter one is IRQ subsystem invention. Should gone in favour of
-the generic helper.
+		device_set_node(&pd_dev->dev, of_fwnode_handle(np));
 
 -- 
 With Best Regards,
