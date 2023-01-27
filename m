@@ -2,59 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0296D67E036
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jan 2023 10:31:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F097867E057
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jan 2023 10:34:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233082AbjA0JbU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 27 Jan 2023 04:31:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45252 "EHLO
+        id S233061AbjA0JeN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 27 Jan 2023 04:34:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232599AbjA0JbN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Jan 2023 04:31:13 -0500
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B65F13525B;
-        Fri, 27 Jan 2023 01:30:59 -0800 (PST)
-Received: by mail-qt1-f173.google.com with SMTP id d3so3527600qte.8;
-        Fri, 27 Jan 2023 01:30:59 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=y5Bg3XM00OVfj9CBB6CoZK0gXWkuIJjg1b6VOboGlP0=;
-        b=XwJsvxvMsfDZGSghlm0dYwvsrCL75svGWecLZhJ0aoVePvbuzJ428EN0kFrT8cr6ru
-         0NVzH4WLglrA6Pbkh0Z56IiC7d2ltc6pie85lxoroxTyrULsyd9erQ7CxBNmLveYHRx1
-         620Ge5UwZv9s0n2KlMMcXBlh6HMzMivPumZ8MIU9mf+JyMVATgLfqYMIiCMizXxG4tVv
-         UjJK2WjDKCHJAAiZtsZxqKsX31AmqfEfCZct1VwxIQ3rK7yCD8FJ9n9w3Sb12OP0nWFc
-         ojDKOWyLw1GWYq1I01X8LDPldRX5CjSDavZd0trup0PnwgpnKiDhp2nSfF3VZkd5yBHS
-         dBpQ==
-X-Gm-Message-State: AO0yUKX/3qj204gabMa0AU5YB5yJlwblQAcf9p1M9E3bQIB06vMmueVD
-        UAw5rr0hsKDVvR+r58QD+AXmVAY8s0k04A==
-X-Google-Smtp-Source: AK7set/Px2mTQDnrXaZgF6X6CiXK0u7yJDkBADmtJXaT3kxEYBk/8+kZaO3X0I854oj+fX8IJVyqlw==
-X-Received: by 2002:ac8:7f50:0:b0:3b7:fc64:2149 with SMTP id g16-20020ac87f50000000b003b7fc642149mr19026297qtk.44.1674811858627;
-        Fri, 27 Jan 2023 01:30:58 -0800 (PST)
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com. [209.85.219.170])
-        by smtp.gmail.com with ESMTPSA id n7-20020ac86747000000b003ab43dabfb1sm2344965qtp.55.2023.01.27.01.30.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Jan 2023 01:30:58 -0800 (PST)
-Received: by mail-yb1-f170.google.com with SMTP id m199so5264617ybm.4;
-        Fri, 27 Jan 2023 01:30:58 -0800 (PST)
-X-Received: by 2002:a25:dd8:0:b0:80a:6a1c:7c3b with SMTP id
- 207-20020a250dd8000000b0080a6a1c7c3bmr2129588ybn.89.1674811847373; Fri, 27
- Jan 2023 01:30:47 -0800 (PST)
-MIME-Version: 1.0
-References: <20230127001141.407071-1-saravanak@google.com> <20230127001141.407071-4-saravanak@google.com>
- <Y9OYdX38NfRE9Tvb@smile.fi.intel.com>
-In-Reply-To: <Y9OYdX38NfRE9Tvb@smile.fi.intel.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 27 Jan 2023 10:30:35 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUdi9ShckBiEAfg3dgp9EUm354tpf3zEz8Dduo2Qyo2vA@mail.gmail.com>
-Message-ID: <CAMuHMdUdi9ShckBiEAfg3dgp9EUm354tpf3zEz8Dduo2Qyo2vA@mail.gmail.com>
-Subject: Re: [PATCH v2 03/11] soc: renesas: Move away from using OF_POPULATED
- for fw_devlink
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Saravana Kannan <saravanak@google.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        with ESMTP id S232160AbjA0JeN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Jan 2023 04:34:13 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F29529E07;
+        Fri, 27 Jan 2023 01:33:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674812024; x=1706348024;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mwCyMlAJfonCrHYzpmJJHccfkoSdmotmHtS5TBMdU+k=;
+  b=cj6NrjfhKZh3eK2SVTd8241zK827Wf3bQJo/DT2wO19e9p3E7PAWQBy6
+   plnfIBv7LVU+7FvG2jPDZyOEjRtFgMpuU+hbZmtpr/tHVZkSWhOWwED/Y
+   0RFH6/3Rvuv9aR1oEax7PEBqvIbPM415/pcJWfGKwIy5NIESIVgbwcPon
+   KcaSTFAb2Lx75Sp3k6j5uaKfNbR5YOiaMCK7a7RgWIHUYRFk6hPjQKR7/
+   sCxF3duCAovGegqfTM4Sdvm9eA+dlh6GdbPbpNECMDx9sl86ABtHNm2Fp
+   Eel/7TQWKL+Vvj2kp5E5JrYgKXMWVR30pacl6jEFkNdK1SAKRIS9zpZvk
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="306702685"
+X-IronPort-AV: E=Sophos;i="5.97,250,1669104000"; 
+   d="scan'208";a="306702685"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2023 01:33:43 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="731791790"
+X-IronPort-AV: E=Sophos;i="5.97,250,1669104000"; 
+   d="scan'208";a="731791790"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga004.fm.intel.com with ESMTP; 27 Jan 2023 01:33:33 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pLL6u-00Ftar-2t;
+        Fri, 27 Jan 2023 11:33:28 +0200
+Date:   Fri, 27 Jan 2023 11:33:28 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Sudeep Holla <sudeep.holla@arm.com>,
         Cristian Marussi <cristian.marussi@arm.com>,
@@ -79,6 +70,7 @@ Cc:     Saravana Kannan <saravanak@google.com>,
         Naresh Kamboju <naresh.kamboju@linaro.org>,
         Abel Vesa <abel.vesa@linaro.org>,
         Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
         John Stultz <jstultz@google.com>,
         Doug Anderson <dianders@chromium.org>,
         Guenter Roeck <linux@roeck-us.net>,
@@ -94,47 +86,71 @@ Cc:     Saravana Kannan <saravanak@google.com>,
         linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v2 06/11] driver core: fw_devlink: Allow marking a fwnode
+ link as being part of a cycle
+Message-ID: <Y9OaaC806Ywg7rM9@smile.fi.intel.com>
+References: <20230127001141.407071-1-saravanak@google.com>
+ <20230127001141.407071-7-saravanak@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230127001141.407071-7-saravanak@google.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+On Thu, Jan 26, 2023 at 04:11:33PM -0800, Saravana Kannan wrote:
+> To improve detection and handling of dependency cycles, we need to be
+> able to mark fwnode links as being part of cycles. fwnode links marked
+> as being part of a cycle should not block their consumers from probing.
 
-On Fri, Jan 27, 2023 at 10:25 AM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
-> On Thu, Jan 26, 2023 at 04:11:30PM -0800, Saravana Kannan wrote:
-> > The OF_POPULATED flag was set to let fw_devlink know that the device
-> > tree node will not have a struct device created for it. This information
-> > is used by fw_devlink to avoid deferring the probe of consumers of this
-> > device tree node.
-> >
-> > Let's use fwnode_dev_initialized() instead because it achieves the same
-> > effect without using OF specific flags. This allows more generic code to
-> > be written in driver core.
->
-> ...
->
-> > -             of_node_set_flag(np, OF_POPULATED);
-> > +             fwnode_dev_initialized(&np->fwnode, true);
->
-> of_fwnode_handle(np) ?
+...
 
-Or of_node_to_fwnode(). Looks like we have (at least) two of them...
+> +	list_for_each_entry(link, &fwnode->suppliers, c_hook) {
+> +		if (link->flags & FWLINK_FLAG_CYCLE)
+> +			continue;
+> +		return link->supplier;
 
-Gr{oetje,eeting}s,
+Hmm...
 
-                        Geert
+		if (!(link->flags & FWLINK_FLAG_CYCLE))
+			return link->supplier;
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+?
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> +	}
+> +
+> +	return NULL;
+
+...
+
+> -	if (dev->fwnode && !list_empty(&dev->fwnode->suppliers) &&
+> -	    !fw_devlink_is_permissive()) {
+> -		sup_fw = list_first_entry(&dev->fwnode->suppliers,
+> -					  struct fwnode_link,
+> -					  c_hook)->supplier;
+> +	sup_fw = fwnode_links_check_suppliers(dev->fwnode);
+
+dev_fwnode() ?
+
+...
+
+> -	val = !list_empty(&dev->fwnode->suppliers);
+> +	mutex_lock(&fwnode_link_lock);
+> +	val = !!fwnode_links_check_suppliers(dev->fwnode);
+
+Ditto?
+
+> +	mutex_unlock(&fwnode_link_lock);
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
