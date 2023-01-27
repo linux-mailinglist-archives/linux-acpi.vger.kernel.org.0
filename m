@@ -2,47 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F023367E895
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jan 2023 15:48:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 957AF67E89B
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jan 2023 15:49:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233850AbjA0OsB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 27 Jan 2023 09:48:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56516 "EHLO
+        id S233954AbjA0OtE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 27 Jan 2023 09:49:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233847AbjA0Or6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Jan 2023 09:47:58 -0500
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F21EAA5C4;
-        Fri, 27 Jan 2023 06:47:51 -0800 (PST)
-Received: by mail-ej1-f51.google.com with SMTP id me3so14325645ejb.7;
-        Fri, 27 Jan 2023 06:47:51 -0800 (PST)
+        with ESMTP id S233902AbjA0OtB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Jan 2023 09:49:01 -0500
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6F5083956;
+        Fri, 27 Jan 2023 06:48:55 -0800 (PST)
+Received: by mail-ej1-f49.google.com with SMTP id v6so14352674ejg.6;
+        Fri, 27 Jan 2023 06:48:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=5me8lH3pgTa/DmTSAOi6nOH6JQRARB47Lugm5ahDMX0=;
-        b=o73ZSI+DMxS6IQSTH1YA1VF3Ck4EYHPGspsI3QbamlG5hiWDFHHsAExCAqVhj7L+Kb
-         tGkZ8W+TtBhqci5GTPbOaxnVcdcrcVh2J0A6k97jA9G/GoY2qJnVCLFy7I602nv6aRjX
-         3gLXg8IsspJ+IsFrSkMEHQkxxhScc78FN0rFjFzdko+P6f4PttmiDAmZIozBQnTLZUxP
-         TtsvcpGh56ZLCqWgtAm7ND3m417AlWVHmRiU5+DjM79vouEKtIYvGxM6FioZQ23HZBNN
-         ikP5OgqIcusXnJsMm7xe/Ni+lb4rUxTbok/ryfyMiRCV34s6JfNHFNth/+e0ASmFrrLO
-         iFWA==
-X-Gm-Message-State: AFqh2kqhlNiTovsTkPfv0LuZH/iqDRSGZMPghHi1X262gqzxfkwHPFcv
-        uvWAGx+GT05i81TVTGnm7wjEFcQs+hFoOpkPrwPrEwljI80=
-X-Google-Smtp-Source: AMrXdXuGI4kw8ZnMqc3nnwa6G8UtmTtEA15K2gzlVsrcauttnFipd7ola0AM6Y5iKKt2GaANLuRiZrg7vaKD2uMldPo=
-X-Received: by 2002:a17:906:70d2:b0:844:44e0:1c4e with SMTP id
- g18-20020a17090670d200b0084444e01c4emr6046209ejk.291.1674830869527; Fri, 27
- Jan 2023 06:47:49 -0800 (PST)
+        bh=pDZSfvcweMhru3H4SpEh2Ne6HE/qZsteqzptlNMS+3M=;
+        b=TrUDtI7E/XtzFMgv0zDmcFTHELihi3fEE/fH4OCturJM2Q4SrxNxQY0A0RbmmjQBBD
+         8vZPi+onfcQuG3k9L3MoG5Lbef+inC0otweMlxwThdxQzxkVvnKhvwSd26voUiHieyAJ
+         xs0pQC9dI6vh7CstQ23UQhed37yr1ykWO7K54WayDO2t2EfJIwYblqNNu9JEdvApWVYb
+         SVL1+IgjpG7tDJxpY2O37OQ9Sb9Mr9nVCc1CK5dtkJyJ8DGuolizxeETJVRNz9NadoLG
+         q+1OuYi0ecGrmnjXTjwXzhFLniZd66g5PX5GNAg16TdtePIE/SpV1uYWoOTKtngPPm5W
+         oV8A==
+X-Gm-Message-State: AFqh2koQHqDBYMi7ELhINnktrwXsM6hwP7x6rto6LU0Z3ki9ervuRTyK
+        7dGoiCUMAQOhfF7534QSUDmQxKloa5T+Lmqc0FuaOJ8uiH4=
+X-Google-Smtp-Source: AMrXdXvgbAnVMAmlLmX/wvyPnY+aujV2utm1wNw+PqU6ytWO/VEFWiY9drpmJ1iQxt1VdZSFknE91HHhNFi4xTKDoeM=
+X-Received: by 2002:a17:907:c928:b0:85e:4218:c011 with SMTP id
+ ui40-20020a170907c92800b0085e4218c011mr5227477ejc.258.1674830934217; Fri, 27
+ Jan 2023 06:48:54 -0800 (PST)
 MIME-Version: 1.0
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 27 Jan 2023 15:47:38 +0100
-Message-ID: <CAJZ5v0gFS6URrN3fe4p6fv5oGL34XuT7-xGNdLnYELZOgfwjmw@mail.gmail.com>
-Subject: [GIT PULL] Thermal control fixes for v6.2-rc6
+Date:   Fri, 27 Jan 2023 15:48:43 +0100
+Message-ID: <CAJZ5v0gPyShdVDECk=h6ouiqa5AsgV7sqvFC=DzJ3dhS_cw-Jw@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v6.2-rc6
 To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -59,35 +57,31 @@ Hi Linus,
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- thermal-6.2-rc6
+ acpi-6.2-rc6
 
-with top-most commit acd7e9ee57c880b99671dd99680cb707b7b5b0ee
+with top-most commit e6b3086fddc0065a5ffb947d4d29dd0e6efc327b
 
- thermal: intel: int340x: Add locking to int340x_thermal_get_trip_type()
+ ACPI: video: Add backlight=native DMI quirk for Asus U46E
 
 on top of commit 2241ab53cbb5cdb08a6b2d4688feb13971058f65
 
  Linux 6.2-rc5
 
-to receive thermal control fixes for 6.2-rc6.
+to receive ACPI fixes for 6.2-rc6.
 
-These add locking to the Intel int340x thermal control driver to prevent
-its thermal zone callbacks from racing with firmware-induced thermal
-trip point updates (Srinivas Pandruvada, Rafael Wysocki).
+These add ACPI backlight handling quirks for 3 machines (Hans de Goede).
 
 Thanks!
 
 
 ---------------
 
-Rafael J. Wysocki (1):
-      thermal: intel: int340x: Add locking to int340x_thermal_get_trip_type()
-
-Srinivas Pandruvada (1):
-      thermal: intel: int340x: Protect trip temperature from concurrent updates
+Hans de Goede (3):
+      ACPI: video: Add backlight=native DMI quirk for HP Pavilion g6-1d80nr
+      ACPI: video: Add backlight=native DMI quirk for HP EliteBook 8460p
+      ACPI: video: Add backlight=native DMI quirk for Asus U46E
 
 ---------------
 
- .../intel/int340x_thermal/int340x_thermal_zone.c   | 28 +++++++++++++++++-----
- .../intel/int340x_thermal/int340x_thermal_zone.h   |  1 +
- 2 files changed, 23 insertions(+), 6 deletions(-)
+ drivers/acpi/video_detect.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
