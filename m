@@ -2,55 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4848067F3D8
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Jan 2023 02:49:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7082067F56F
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Jan 2023 08:19:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229883AbjA1Btz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 27 Jan 2023 20:49:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57658 "EHLO
+        id S231809AbjA1HT1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 28 Jan 2023 02:19:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229792AbjA1Bty (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Jan 2023 20:49:54 -0500
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97CD57EFC7;
-        Fri, 27 Jan 2023 17:49:53 -0800 (PST)
-Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.55])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4P3clb0KFRz16NQX;
-        Sat, 28 Jan 2023 09:47:55 +0800 (CST)
-Received: from [10.67.103.231] (10.67.103.231) by
- kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Sat, 28 Jan 2023 09:49:50 +0800
-Message-ID: <f90e04d2-e1f3-15a7-2b60-8494d2bec866@huawei.com>
-Date:   Sat, 28 Jan 2023 09:49:50 +0800
+        with ESMTP id S231767AbjA1HT0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 28 Jan 2023 02:19:26 -0500
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 784B97E6E2
+        for <linux-acpi@vger.kernel.org>; Fri, 27 Jan 2023 23:19:24 -0800 (PST)
+Received: by mail-pl1-x636.google.com with SMTP id g23so7026107plq.12
+        for <linux-acpi@vger.kernel.org>; Fri, 27 Jan 2023 23:19:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=laXAH5vCj60E4SKPB0EaS+rzszoEwgFmO/AUUT4c6EE=;
+        b=tmPZMbcJdI07kMJbg//bhDUNZ5KDVVZ2XAzmy8ooz8DAs/87eQ8xaIW9TMmlo7p11e
+         hdSVHBR5OJilXJnd6grGS0h68h34HGg+wmw02fuRE3b8brDJ4Rpk3tb6YfnqMUaMNhjM
+         fgye91Hf232OS8bCCEAmgY2kHzH7TvDc87sBHl+WPLXCSalMe5BWf/ze5NEMJrUa7o2O
+         Jcy1lTTkJcImUcG+o7lTL+/xh3ChzFeROE8zm199gWvoBKR4rdbbAdKNH/EVHjkrThIl
+         Bz8K7V429/gShD3wOSxSSFR7OYsgY82uRYwvBvSbV+BGLHO84mkzYjIcLyNuodj9mkX3
+         YaOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=laXAH5vCj60E4SKPB0EaS+rzszoEwgFmO/AUUT4c6EE=;
+        b=ZecFvLSBb9zR4w/Tf9RGj0Tlrn9laVv8SSDo29m58L4AweFi+p9OJxm6MVqKIH1mzq
+         OKqeU1FIT8/CP7YzUvajMyl1CzFuD8obfVxgSYd796MDdA053REcSZWzQW+tfyhQadfX
+         vR+cNujRbvgbVBrhVFc7rYtnDBJ01Z/dLpwwaMgy/XXQSiIMmfA2yO0Xr5tfz+kTWxZm
+         Wk0RoD39kI85iRakJf0FT09C0AepfUMXWfLEMprZrOvwACo3gP39Vpf3e8wNCVLg98dS
+         aNqiKKqm76uAq2B/1FoNl4PjRBL5OQxVYPO5MQ7d7OmdubBTCEc2zp1zb8BWwjAZjQRR
+         Xy9w==
+X-Gm-Message-State: AO0yUKWapZPeBQZvsUgoxqUCPRgCiq77Z43lH6lzQIaPgUdA3YPCd2Mg
+        xeLIefnDBEFZ5XyuS9XKikwipBiSJVLWMK5hSfdTlg==
+X-Google-Smtp-Source: AK7set9Mr0byHbMSV0I8NA2aqwV2H7BFCi7M8aNlkggIrU6lOiPUWBoUK5Tegh3Ooimmvu26mnAavaDANvOV+V848Ys=
+X-Received: by 2002:a17:90a:64c5:b0:22b:ef05:ea5b with SMTP id
+ i5-20020a17090a64c500b0022bef05ea5bmr2691642pjm.50.1674890363672; Fri, 27 Jan
+ 2023 23:19:23 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [RFC-V3 0/2] mailbox: pcc: Support platform notification for
- type4 and shared interrupt
-From:   "lihuisong (C)" <lihuisong@huawei.com>
-To:     Sudeep Holla <sudeep.holla@arm.com>
-CC:     <robbiek@xsightlabs.com>, <linux-acpi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <rafael@kernel.org>,
-        <rafael.j.wysocki@intel.com>, <wanghuiqiang@huawei.com>,
-        <zhangzekun11@huawei.com>, <wangxiongfeng2@huawei.com>,
-        <tanxiaofei@huawei.com>, <guohanjun@huawei.com>,
-        <xiexiuqi@huawei.com>, <wangkefeng.wang@huawei.com>,
-        <huangdaode@huawei.com>
-References: <20221016034043.52227-1-lihuisong@huawei.com>
- <20221203095150.45422-1-lihuisong@huawei.com>
- <ef705471-0dd3-fef1-68df-6a5761410946@huawei.com>
- <20230103041826.qo67fp45vzpch4os@bogus>
- <bff0af77-91ed-e3d5-4beb-817214c979d6@huawei.com>
-In-Reply-To: <bff0af77-91ed-e3d5-4beb-817214c979d6@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.103.231]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemm600004.china.huawei.com (7.193.23.242)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <20230127001141.407071-1-saravanak@google.com> <20230127001141.407071-4-saravanak@google.com>
+ <CAMuHMdV4B49OM7S-UAxJtfAR8OvG_-S526fGnTA+t+-orytrTw@mail.gmail.com>
+In-Reply-To: <CAMuHMdV4B49OM7S-UAxJtfAR8OvG_-S526fGnTA+t+-orytrTw@mail.gmail.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Fri, 27 Jan 2023 23:18:46 -0800
+Message-ID: <CAGETcx9EXkbAfEX6pBL84DBr3SEwiJe7N4xh91TspLn8CwZ+LQ@mail.gmail.com>
+Subject: Re: [PATCH v2 03/11] soc: renesas: Move away from using OF_POPULATED
+ for fw_devlink
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Linux Kernel Functional Testing <lkft@linaro.org>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        John Stultz <jstultz@google.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Maxim Kiselev <bigunclemax@gmail.com>,
+        Maxim Kochetkov <fido_max@inbox.ru>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Colin Foster <colin.foster@in-advantage.com>,
+        Martin Kepplinger <martin.kepplinger@puri.sm>,
+        Jean-Philippe Brucker <jpb@kernel.org>,
+        kernel-team@android.com, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,22 +108,59 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-在 2023/1/5 9:14, lihuisong (C) 写道:
+On Fri, Jan 27, 2023 at 12:11 AM Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
 >
-> 在 2023/1/4 19:06, Sudeep Holla 写道:
->> On Wed, Dec 14, 2022 at 10:57:51AM +0800, lihuisong (C) wrote:
->>> Hi Sudeep,
->>>
->>> Can you take a look? This patch series works well for type3 and type4.
->>>
->> Hi Huisong Li,
->>
->> Sorry for the delay. I have been away and will be for some more time.
->> I will take a look at this ASAP. Thanks for your patience.
-> Thank you for your advance notice. Looking forward to your comments.😁
+> Hi Saravana,
 >
-> .
-Hi Sudeep,
+> On Fri, Jan 27, 2023 at 1:11 AM Saravana Kannan <saravanak@google.com> wrote:
+> > The OF_POPULATED flag was set to let fw_devlink know that the device
+> > tree node will not have a struct device created for it. This information
+> > is used by fw_devlink to avoid deferring the probe of consumers of this
+> > device tree node.
+> >
+> > Let's use fwnode_dev_initialized() instead because it achieves the same
+> > effect without using OF specific flags. This allows more generic code to
+> > be written in driver core.
+> >
+> > Signed-off-by: Saravana Kannan <saravanak@google.com>
+>
+> Thanks for your patch!
+>
+> > --- a/drivers/soc/renesas/rcar-sysc.c
+> > +++ b/drivers/soc/renesas/rcar-sysc.c
+> > @@ -437,7 +437,7 @@ static int __init rcar_sysc_pd_init(void)
+> >
+> >         error = of_genpd_add_provider_onecell(np, &domains->onecell_data);
+> >         if (!error)
+> > -               of_node_set_flag(np, OF_POPULATED);
+> > +               fwnode_dev_initialized(&np->fwnode, true);
+>
+> As drivers/soc/renesas/rmobile-sysc.c is already using this method,
+> it should work fine.
+>
+> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> i.e. will queue in renesas-devel for v6.4.
 
-Can you take a look at this patch series?
+Thanks! Does that mean I should drop this from this series? If two
+maintainers pick the same patch up, will it cause problems? I'm
+eventually expecting this series to be picked up by Greg into
+driver-core-next.
+
+-Saravana
+
+>
+> >
+> >  out_put:
+> >         of_node_put(np);
+>
+> Gr{oetje,eeting}s,
+>
+>                         Geert
+>
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+>
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                 -- Linus Torvalds
