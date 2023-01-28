@@ -2,58 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD74D67F5A5
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Jan 2023 08:35:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 433E867F5AD
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Jan 2023 08:35:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233793AbjA1HfS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 28 Jan 2023 02:35:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36758 "EHLO
+        id S233662AbjA1Hfb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 28 Jan 2023 02:35:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233662AbjA1HfJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 28 Jan 2023 02:35:09 -0500
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03A803D911
-        for <linux-acpi@vger.kernel.org>; Fri, 27 Jan 2023 23:34:57 -0800 (PST)
-Received: by mail-pg1-x532.google.com with SMTP id v3so4563784pgh.4
-        for <linux-acpi@vger.kernel.org>; Fri, 27 Jan 2023 23:34:56 -0800 (PST)
+        with ESMTP id S233773AbjA1HfS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 28 Jan 2023 02:35:18 -0500
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BF6A42DFB
+        for <linux-acpi@vger.kernel.org>; Fri, 27 Jan 2023 23:35:06 -0800 (PST)
+Received: by mail-pf1-x42c.google.com with SMTP id u5so4359951pfm.10
+        for <linux-acpi@vger.kernel.org>; Fri, 27 Jan 2023 23:35:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=VSzzcrZHpCAhZ5ULfCoy554S0eFulAfOQZjabEFT0U8=;
-        b=T6LKh5CR8Si1HhKOUOGGGtZ6+5L8QCDzffO83OhZP2wPlLcupyHUy8bxsfcm8v8cZ/
-         j/3yaxzN8/IO3o6B/J2ZsXS3POXQlpJG5U9RkT8mKeAbGUGrJsmRBdHQ2xULA4UQhGqf
-         zKLVdpZ1DrH+Ji4aokYjjs7mbouXc5esEsTOJ/ntzTKiT6IkydC8+bkHwec1Og+MUxr0
-         hXNtqQGQVu8qI2xASbYOzyQVR63cGIoNL3Me9EcDqvlg2CkGQqU8vPcIbc6cvzwKo+70
-         ZUFzjUxjTnxSefwef5FGjcIYJ5dpXAlOlag4Rt23C89TQdrXibm+UEG3fZfhVxtUazd9
-         9bkw==
+        bh=fW3AKP8yfyWbCYFiOCYBE5dJ7hHsJnAodp2LEYJn4Vw=;
+        b=lHUTyxAC2Z3dGytbZtYbsBvl9Q5AHPnBmnzbboaEFGefm4vt5wGKbo8IDMBRwnkwjX
+         Ql1ETUQ1aAgJupasOnE7VG5MGTBA8KaY29TJCitbwbP4jwDIJUiwWV0g1ZTsp40MpP0H
+         9rhslHBELGOL/aoi/KnnFBO3YMdv37Q2QI1IUf5fqUXzuofrQYDHKS/CzCF0LYMo8vWZ
+         tI3U3CHiJUet3zdcgLjaYB6K6iRuYx1mdMWg/KjwTVgvs/5FZ+7NZ1N9VMrUHHfFraSv
+         0/NrRubz/yg0bCdQlPsFqsDCLMrNxCp5Zt7Oe7IUCEPgognUuDqvxYtqGGjHQ7wNb/FP
+         Gv+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=VSzzcrZHpCAhZ5ULfCoy554S0eFulAfOQZjabEFT0U8=;
-        b=2PJ7qG2gc989jpEhUWk9kfPQpBtNzCTBOLeVMeSnZogO2vmQAGrZEFTJwH0+iti2Iu
-         1k+LGWe+57pn1KSZocgEXTfzMUkWnncorFvpXE4d3wvZPvGwrFwT2w/ZKTpMSRfbj6bH
-         z3QkrjYVW/heMw1ipCF9ldYWvwi199zwBlg9dfHXYk6V85aihr22WJr6Kcy1rNPrvHco
-         J/YoCuDDdIrm0S004Y5Vxr/L9WmGROkSl1XYRNxagb0DMmTfGB1XnTA0Wk3uhuLMsas1
-         t4gXqq4sHJBozKOY+c/Xn89niJZG7bL5fR6Hm69XKY64JpmO2tD9gsZsMDI+8rmMboh0
-         gyVg==
-X-Gm-Message-State: AFqh2koRLq8zYPCgZmhIxb/sqlxPE0A9oBA95UCvvZ37Qyawnoppw6nU
-        VzxASEbE6ZjOHR2ktmJXj1O8VfBwGi7CP9Z9zxMGEw==
-X-Google-Smtp-Source: AMrXdXswL1uNSyC4P6OZZsmWvEys2JlxAMsY9Dtx/ZhkSOaPgA1JW1DbGLOznM5iRN4ulYnMstMca6Cy78SGFhjnIGo=
-X-Received: by 2002:aa7:820f:0:b0:58d:a713:d1dd with SMTP id
- k15-20020aa7820f000000b0058da713d1ddmr5316394pfi.59.1674891296202; Fri, 27
- Jan 2023 23:34:56 -0800 (PST)
+        bh=fW3AKP8yfyWbCYFiOCYBE5dJ7hHsJnAodp2LEYJn4Vw=;
+        b=2vvsuKpPLeFx9NQVSJdVn9ZAKy/UaAjQv7UK45jUkCcUXbxdPArVQCc9YC3CpuYn17
+         gtaNKevnofggw2+gNZ1IO6W45JXVdXdls2n0xeyhXSlZJBL3eL7dE8YADq/hD48pTasG
+         zshNvqEOf0Jv2RU2eY42sWnu6rC8BUtjz/nXCYwo7wmia0MXZgBRVpMgQquW5FMxWCHU
+         +OGK2aUPRMvZrKJT4YXmHVXnLk9fm/a9n0P5rmiNzyaInTjCznJmR3H0KfpfGdtEFwp8
+         OIPYzc494P1/vwjsSlFxG3z/BYBhe778FMfuLeFp+bPEL26h5wnMtY7NATSapUPqHvuY
+         MOUw==
+X-Gm-Message-State: AFqh2kqw3PYBlyRH7srL8N6hebuK9hOWQwWHldvsTEn/jPXhijcoBoj1
+        evoZ48vSuIJlYgYmgVZHrgxTBCWJM8nyAGFdMxKIyw==
+X-Google-Smtp-Source: AMrXdXspOko3i9eZbZNNXtK2nv+QW2nyoLWAfoc3slj/hBD5cnlQZhCg4zVode064EjF8sgDDn9uFZGn/bWDqO4Z2F4=
+X-Received: by 2002:a63:2153:0:b0:479:45df:425e with SMTP id
+ s19-20020a632153000000b0047945df425emr4464587pgm.116.1674891305496; Fri, 27
+ Jan 2023 23:35:05 -0800 (PST)
 MIME-Version: 1.0
-References: <20230127001141.407071-1-saravanak@google.com> <20230127001141.407071-7-saravanak@google.com>
- <Y9OaaC806Ywg7rM9@smile.fi.intel.com>
-In-Reply-To: <Y9OaaC806Ywg7rM9@smile.fi.intel.com>
+References: <20230127001141.407071-1-saravanak@google.com> <20230127001141.407071-9-saravanak@google.com>
+ <Y9OcqGTocu8ZlFqy@smile.fi.intel.com>
+In-Reply-To: <Y9OcqGTocu8ZlFqy@smile.fi.intel.com>
 From:   Saravana Kannan <saravanak@google.com>
-Date:   Fri, 27 Jan 2023 23:34:19 -0800
-Message-ID: <CAGETcx9XGq20kagmVXwEV6MF9mp9Ta5ra0+Ynhb7GiUKnxkWqg@mail.gmail.com>
-Subject: Re: [PATCH v2 06/11] driver core: fw_devlink: Allow marking a fwnode
- link as being part of a cycle
+Date:   Fri, 27 Jan 2023 23:34:28 -0800
+Message-ID: <CAGETcx-PiV12pKnVuKyvNcjYbHA=YFJG1QUa-o-G1cL3iMHgcA@mail.gmail.com>
+Subject: Re: [PATCH v2 08/11] driver core: fw_devlink: Make cycle detection
+ more robust
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -100,7 +100,7 @@ Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -108,55 +108,268 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 27, 2023 at 1:33 AM Andy Shevchenko
+On Fri, Jan 27, 2023 at 1:43 AM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 >
-> On Thu, Jan 26, 2023 at 04:11:33PM -0800, Saravana Kannan wrote:
-> > To improve detection and handling of dependency cycles, we need to be
-> > able to mark fwnode links as being part of cycles. fwnode links marked
-> > as being part of a cycle should not block their consumers from probing.
+> On Thu, Jan 26, 2023 at 04:11:35PM -0800, Saravana Kannan wrote:
+> > fw_devlink could only detect a single and simple cycle because it relied
+> > mainly on device link cycle detection code that only checked for cycles
+> > between devices. The expectation was that the firmware wouldn't have
+> > complicated cycles and multiple cycles between devices. That expectation
+> > has been proven to be wrong.
+> >
+> > For example, fw_devlink could handle:
+> >
+> > +-+        +-+
+> > |A+------> |B+
+> > +-+        +++
+> >  ^          |
+> >  |          |
+> >  +----------+
+> >
+> > But it couldn't handle even something as "simple" as:
+> >
+> >  +---------------------+
+> >  |                     |
+> >  v                     |
+> > +-+        +-+        +++
+> > |A+------> |B+------> |C|
+> > +-+        +++        +-+
+> >  ^          |
+> >  |          |
+> >  +----------+
+> >
+> > But firmware has even more complicated cycles like:
+> >
+> >     +---------------------+
+> >     |                     |
+> >     v                     |
+> >    +-+       +---+       +++
+> > +--+A+------>| B +-----> |C|<--+
+> > |  +-+       ++--+       +++   |
+> > |   ^         | ^         |    |
+> > |   |         | |         |    |
+> > |   +---------+ +---------+    |
+> > |                              |
+> > +------------------------------+
+> >
+> > And this is without including parent child dependencies or nodes in the
+> > cycle that are just firmware nodes that'll never have a struct device
+> > created for them.
+> >
+> > The proper way to treat these devices it to not force any probe ordering
+> > between them, while still enforce dependencies between node in the
+> > cycles (A, B and C) and their consumers.
+> >
+> > So this patch goes all out and just deals with all types of cycles. It
+> > does this by:
+> >
+> > 1. Following dependencies across device links, parent-child and fwnode
+> >    links.
+> > 2. When it find cycles, it mark the device links and fwnode links as
+> >    such instead of just deleting them or making the indistinguishable
+> >    from proxy SYNC_STATE_ONLY device links.
+> >
+> > This way, when new nodes get added, we can immediately find and mark any
+> > new cycles whether the new node is a device or firmware node.
 >
 > ...
 >
-> > +     list_for_each_entry(link, &fwnode->suppliers, c_hook) {
-> > +             if (link->flags & FWLINK_FLAG_CYCLE)
-> > +                     continue;
-> > +             return link->supplier;
+> > + * Check if @sup_handle or any of its ancestors or suppliers direct/indirectly
+> > + * depend on @con.  This function can detect multiple cyles between @sup_handle
 >
-> Hmm...
+> A single space is enough.
+>
+> > + * and @con. When such dependency cycles are found, convert all device links
+> > + * created solely by fw_devlink into SYNC_STATE_ONLY device links.  Also, mark
+>
+> Ditto.
+>
+> > + * all fwnode links in the cycle with FWLINK_FLAG_CYCLE so that when they are
+> > + * converted into a device link in the future, they are created as
+> > + * SYNC_STATE_ONLY device links.  This is the equivalent of doing
+>
+> Ditto.
 
-Thanks!
+Lol, you are the king of nit picks :) I don't know how you even notice
+these :) I don't like the double spacing either, but as Geert pointed
+out, vim inserts them when I use it to auto word-wrap comment blocks.
+I'll try to address them as I find them, but I'm not going to send out
+revisions of patches just for double spaces.
 
 >
->                 if (!(link->flags & FWLINK_FLAG_CYCLE))
->                         return link->supplier;
+> > + * fw_devlink=permissive just between the devices in the cycle. We need to do
+> > + * this because, at this point, fw_devlink can't tell which of these
+> > + * dependencies is not a real dependency.
+> > + *
+> > + * Return true if one or more cycles were found. Otherwise, return false.
 >
-> ?
+> Return:
+
+I'm following the rest of the function docs in this file.
+
 >
+> (you may run `kernel-doc -v ...` to see all warnings)
+
+Hmmm I ran it on the patch file and it didn't give me anything useful.
+Running it on the whole file is just a lot of lines to dig through.
+
+>
+> ...
+>
+> > +static bool __fw_devlink_relax_cycles(struct device *con,
+> > +                              struct fwnode_handle *sup_handle)
+> > +{
+> > +     struct fwnode_link *link;
+> > +     struct device_link *dev_link;
+>
+> > +     struct device *sup_dev = NULL, *par_dev = NULL;
+>
+> You can put it the first line since it's long enough.
+
+Wait, is that a style guideline to have the longer lines first?
+
+> But why do you need sup_dev assignment?
+
+Defensive programming I suppose. I can see this function being
+refactored in the future where a goto out; is inserted before sup_dev
+is assigned. And then the put_device(sup_dev) at "out" will end up
+operating on some junk value and causing memory corruption.
+
+>
+> > +     bool ret = false;
+> > +
+> > +     if (!sup_handle)
+> > +             return false;
+> > +
+> > +     /*
+> > +      * We aren't trying to find all cycles. Just a cycle between con and
+> > +      * sup_handle.
+> > +      */
+> > +     if (sup_handle->flags & FWNODE_FLAG_VISITED)
+> > +             return false;
+> > +
+> > +     sup_handle->flags |= FWNODE_FLAG_VISITED;
+>
+> > +     sup_dev = get_dev_from_fwnode(sup_handle);
+> > +
+>
+> I would put it closer to the condition:
+>
+> > +     /* Termination condition. */
+> > +     if (sup_dev == con) {
+>
+>         /* Get supplier device and check for termination condition */
+>         sup_dev = get_dev_from_fwnode(sup_handle);
+>         if (sup_dev == con) {
+
+I put it the way it is because sup_dev is used for more than just
+checking for termination condition.
+
+>
+> > +             ret = true;
+> > +             goto out;
 > > +     }
 > > +
-> > +     return NULL;
+> > +     /*
+> > +      * If sup_dev is bound to a driver and @con hasn't started binding to
+> > +      * a driver, @sup_dev can't be a consumer of @con.  So, no need to
 >
-> ...
->
-> > -     if (dev->fwnode && !list_empty(&dev->fwnode->suppliers) &&
-> > -         !fw_devlink_is_permissive()) {
-> > -             sup_fw = list_first_entry(&dev->fwnode->suppliers,
-> > -                                       struct fwnode_link,
-> > -                                       c_hook)->supplier;
-> > +     sup_fw = fwnode_links_check_suppliers(dev->fwnode);
->
-> dev_fwnode() ?
->
-> ...
->
-> > -     val = !list_empty(&dev->fwnode->suppliers);
-> > +     mutex_lock(&fwnode_link_lock);
-> > +     val = !!fwnode_links_check_suppliers(dev->fwnode);
->
-> Ditto?
+> sup_dev or @sup_dev? What's the difference? Should you spell one of them
+> in full?
 
-Similar response as Patch 1 and Patch 4.
+Probably copy-pasta from a function doc. I'll make it sup_dev.
+
+>
+> > +      * check further.
+> > +      */
+> > +     if (sup_dev && sup_dev->links.status ==  DL_DEV_DRIVER_BOUND &&
+>
+> As in the comment above, the single space is enough.
+>
+> > +         con->links.status == DL_DEV_NO_DRIVER) {
+> > +             ret = false;
+> > +             goto out;
+> > +     }
+> > +
+> > +     list_for_each_entry(link, &sup_handle->suppliers, c_hook) {
+> > +             if (__fw_devlink_relax_cycles(con, link->supplier)) {
+> > +                     __fwnode_link_cycle(link);
+> > +                     ret = true;
+> > +             }
+> > +     }
+> > +
+> > +     /*
+> > +      * Give priority to device parent over fwnode parent to account for any
+> > +      * quirks in how fwnodes are converted to devices.
+> > +      */
+>
+> > +     if (sup_dev) {
+> > +             par_dev = sup_dev->parent;
+> > +             get_device(par_dev);
+> > +     } else {
+> > +             par_dev = fwnode_get_next_parent_dev(sup_handle);
+> > +     }
+>
+>         if (sup_dev)
+>                 par_dev = get_device(sup_dev->parent);
+>         else
+>                 par_dev = fwnode_get_next_parent_dev(sup_handle);
+
+Ack, thanks. Makes it nicer.
+
+>
+> > +     if (par_dev)
+> > +             ret |= __fw_devlink_relax_cycles(con, par_dev->fwnode);
+>
+> Instead I would rather do a similar pattern of the ret assignment as elsewhere
+> in the function.
+>
+>         if (par_dev && __fw_devlink_relax_cycles(con, par_dev->fwnode))
+>                 ret = true;
+
+Ack. Good suggestion!
+
+>
+> > +     if (!sup_dev)
+> > +             goto out;
+> > +
+> > +     list_for_each_entry(dev_link, &sup_dev->links.suppliers, c_node) {
+> > +             /*
+> > +              * Ignore a SYNC_STATE_ONLY flag only if it wasn't marked as a
+> > +              * such due to a cycle.
+> > +              */
+> > +             if (device_link_flag_is_sync_state_only(dev_link->flags) &&
+> > +                 !(dev_link->flags & DL_FLAG_CYCLE))
+> > +                     continue;
+> > +
+> > +             if (__fw_devlink_relax_cycles(con,
+> > +                                           dev_link->supplier->fwnode)) {
+>
+> Keep it on one line.
+
+It'll make it > 80. Is this some recent change about allowing > 80
+cols? I'm leaving it as is for now.
 
 
--Saravana
+> > +                     fw_devlink_relax_link(dev_link);
+> > +                     dev_link->flags |= DL_FLAG_CYCLE;
+> > +                     ret = true;
+> > +             }
+> > +     }
+> > +
+> > +out:
+> > +     sup_handle->flags &= ~FWNODE_FLAG_VISITED;
+> > +     put_device(sup_dev);
+> > +     put_device(par_dev);
+> > +     return ret;
+> > +}
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
+> --
+> To unsubscribe from this group and stop receiving emails from it, send an email to kernel-team+unsubscribe@android.com.
+>
