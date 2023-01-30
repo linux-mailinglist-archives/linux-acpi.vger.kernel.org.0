@@ -2,127 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B057681246
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 15:19:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC512681359
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 15:33:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237630AbjA3OTo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Jan 2023 09:19:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60784 "EHLO
+        id S237819AbjA3Oc7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Jan 2023 09:32:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237635AbjA3OTU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 09:19:20 -0500
-Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43F5C3B0EE;
-        Mon, 30 Jan 2023 06:18:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1675088298; x=1706624298;
-  h=from:to:cc:subject:references:date:in-reply-to:
-   message-id:mime-version;
-  bh=C5oru7Dbvy/1R6SKKLx3znkVOYm2h1iV1BR520o60ms=;
-  b=R3O7ERFqbE/QrrXsxdwb80zo+aP0HTnq9h/Zh+1xUfKdtHNoF99m7DYb
-   mIe7tNReN7St8wmr8GhPhhpjC5Yvh2E71CTY3EIQsnYkTGAoa6gqG/2Dm
-   IXua7jEaKqyuIqD9Ph2e7gxRNfg5WxRMyexU9dCLW7X5akVIzLRMGes1D
-   U=;
-X-IronPort-AV: E=Sophos;i="5.97,258,1669075200"; 
-   d="scan'208";a="293479665"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-iad-1e-m6i4x-0aba4706.us-east-1.amazon.com) ([10.43.8.2])
-  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2023 14:18:02 +0000
-Received: from EX13MTAUEE002.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
-        by email-inbound-relay-iad-1e-m6i4x-0aba4706.us-east-1.amazon.com (Postfix) with ESMTPS id 6FE4FAC40E;
-        Mon, 30 Jan 2023 14:17:59 +0000 (UTC)
-Received: from EX19D014UEC003.ant.amazon.com (10.252.135.249) by
- EX13MTAUEE002.ant.amazon.com (10.43.62.24) with Microsoft SMTP Server (TLS)
- id 15.0.1497.45; Mon, 30 Jan 2023 14:17:55 +0000
-Received: from EX13MTAUEE002.ant.amazon.com (10.43.62.24) by
- EX19D014UEC003.ant.amazon.com (10.252.135.249) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1118.24;
- Mon, 30 Jan 2023 14:17:55 +0000
-Received: from dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com (10.15.11.255)
- by mail-relay.amazon.com (10.43.62.224) with Microsoft SMTP Server id
- 15.0.1497.45 via Frontend Transport; Mon, 30 Jan 2023 14:17:55 +0000
-Received: by dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com (Postfix, from userid 23027615)
-        id 34AC120D34; Mon, 30 Jan 2023 15:17:55 +0100 (CET)
-From:   Pratyush Yadav <ptyadav@amazon.de>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-CC:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: Re: [PATCH v2 1/3] ACPI: processor: perflib: Use the "no limit"
- frequency QoS
-References: <12138067.O9o76ZdvQC@kreacher> <12124970.O9o76ZdvQC@kreacher>
-        <mafs0sfgybc3q.fsf_-_@amazon.de>
-        <CAJZ5v0hAjKvinPqX2VuCv1jVu50jrnDpECaO=sA2CQZFHZpJdA@mail.gmail.com>
-Date:   Mon, 30 Jan 2023 15:17:55 +0100
-In-Reply-To: <CAJZ5v0hAjKvinPqX2VuCv1jVu50jrnDpECaO=sA2CQZFHZpJdA@mail.gmail.com>       (Rafael
- J. Wysocki's message of "Thu, 29 Dec 2022 20:26:07 +0100")
-Message-ID: <mafs0zga0ds30.fsf_-_@amazon.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
+        with ESMTP id S237833AbjA3Ocj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 09:32:39 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 45AB538B40;
+        Mon, 30 Jan 2023 06:32:05 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F00131758;
+        Mon, 30 Jan 2023 06:32:46 -0800 (PST)
+Received: from bogus (unknown [10.57.77.84])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 572E63F882;
+        Mon, 30 Jan 2023 06:31:56 -0800 (PST)
+Date:   Mon, 30 Jan 2023 14:31:53 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Linux Kernel Functional Testing <lkft@linaro.org>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        John Stultz <jstultz@google.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Maxim Kiselev <bigunclemax@gmail.com>,
+        Maxim Kochetkov <fido_max@inbox.ru>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Colin Foster <colin.foster@in-advantage.com>,
+        Martin Kepplinger <martin.kepplinger@puri.sm>,
+        Jean-Philippe Brucker <jpb@kernel.org>,
+        kernel-team@android.com, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 04/11] gpiolib: Clear the gpio_device's fwnode
+ initialized flag before adding
+Message-ID: <20230130143153.67dsxn4lugfetfwb@bogus>
+References: <20230127001141.407071-1-saravanak@google.com>
+ <20230127001141.407071-5-saravanak@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230127001141.407071-5-saravanak@google.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+On Thu, Jan 26, 2023 at 04:11:31PM -0800, Saravana Kannan wrote:
+> Registering an irqdomain sets the flag for the fwnode. But having the
+> flag set when a device is added is interpreted by fw_devlink to mean the
+> device has already been initialized and will never probe. This prevents
+> fw_devlink from creating device links with the gpio_device as a
+> supplier. So, clear the flag before adding the device.
+> 
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> Acked-by: Bartosz Golaszewski <brgl@bgdev.pl>
+> ---
+>  drivers/gpio/gpiolib.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> index 939c776b9488..b23140c6485f 100644
+> --- a/drivers/gpio/gpiolib.c
+> +++ b/drivers/gpio/gpiolib.c
+> @@ -578,6 +578,12 @@ static int gpiochip_setup_dev(struct gpio_device *gdev)
+>  {
+>  	int ret;
+>  
+> +	/*
+> +	 * If fwnode doesn't belong to another device, it's safe to clear its
+> +	 * initialized flag.
+> +	 */
+> +	if (!gdev->dev.fwnode->dev)
+> +		fwnode_dev_initialized(gdev->dev.fwnode, false);
 
-On Thu, Dec 29 2022, Rafael J. Wysocki wrote:
-
-> On Thu, Dec 29, 2022 at 1:58 PM Pratyush Yadav <ptyadav@amazon.de> wrote:
->>
->> Hi Rafael,
->>
->> On Wed, Dec 28 2022, Rafael J. Wysocki wrote:
->> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->> >
->> > When _PPC returns 0, it means that the CPU frequency is not limited by
->> > the platform firmware, so make acpi_processor_get_platform_limit()
->> > update the frequency QoS request used by it to "no limit" in that case.
->> >
->> > This addresses a problem with limiting CPU frequency artificially on
->> > some systems after CPU offline/online to the frequency that corresponds
->> > to the first entry in the _PSS return package.
->> >
->> > Reported-by: Pratyush Yadav <ptyadav@amazon.de>
->> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->> > ---
-[...]
->>
->> One small thing I noticed: in acpi_processor_ppc_init() "no limit" value
->> is set to INT_MAX and here it is set to FREQ_QOS_MAX_DEFAULT_VALUE. Both
->> should evaluate to the same value but I think it would be nice if the
->> same thing is used in both places. Perhaps you can fix that up when
->> applying?
->
-> Yes, I'll do that.
-
-Following up on this series. I do not see it queued anywhere in the
-linux-pm [0] tree. I would like to have this in the v6.3 merge window if
-possible.
-
-[0] https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/
+This is the one causing the kernel crash during the boot on FVP which
+Naresh has reported. Just reverted this and was able to boot, confirming
+the issue with this patch.
 
 -- 
 Regards,
-Pratyush Yadav
-
-
-
-Amazon Development Center Germany GmbH
-Krausenstr. 38
-10117 Berlin
-Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
-Sitz: Berlin
-Ust-ID: DE 289 237 879
-
-
-
+Sudeep
