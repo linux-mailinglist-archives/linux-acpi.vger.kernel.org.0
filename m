@@ -2,53 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A5A36818BA
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 19:23:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AD0D6818BC
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 19:23:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237642AbjA3SXT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Jan 2023 13:23:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56556 "EHLO
+        id S235869AbjA3SXV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Jan 2023 13:23:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237514AbjA3SXS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 13:23:18 -0500
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B4DC4522A
-        for <linux-acpi@vger.kernel.org>; Mon, 30 Jan 2023 10:22:49 -0800 (PST)
-Received: by mail-pj1-x1029.google.com with SMTP id e8-20020a17090a9a8800b0022c387f0f93so11345970pjp.3
-        for <linux-acpi@vger.kernel.org>; Mon, 30 Jan 2023 10:22:49 -0800 (PST)
+        with ESMTP id S237713AbjA3SXT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 13:23:19 -0500
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22FE3457E4
+        for <linux-acpi@vger.kernel.org>; Mon, 30 Jan 2023 10:22:50 -0800 (PST)
+Received: by mail-pj1-x102d.google.com with SMTP id rm7-20020a17090b3ec700b0022c05558d22so11926966pjb.5
+        for <linux-acpi@vger.kernel.org>; Mon, 30 Jan 2023 10:22:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ventanamicro.com; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=H7KlC1E/qchNA2FeI/jtSOoGuHWoLpY70PQmwt3/hBY=;
-        b=UAEtEYB4sxc8KHHENJmXhvAQAx2IpZSpMetPcln5se48nk/nwrzG6OCr8vrvlOUK4R
-         Q+wYu1Ei9STWCCcjnVi0yf8DJySBsWU4urpY0FXpxBrXWGscireaG+r2UxmjnzPvg2IL
-         LxJ0jAlYtFZ2uAx70DH9AUiRgf4N/2VZIKisxxdLNHogJxvEDSHwnESsH5fIRX9kLuQH
-         BSxZoAcbStJwMc5BV5sYkpWhZJcbX2j9cI28SyWWheLy+onRcrtMd6fX6MzSNd7mf+3V
-         X4QmOiVfdgskQjJPOvOk4K9vQRx+ifGBs1R8C9y9NTsQKp25glwE7MQEAxzFO3dGX8kC
-         Qw0A==
+        bh=uV9EY4GcIdMg2ei4Z2c7LvEp7Me6Q3TdFGwPQrDSIKc=;
+        b=HnFGgGXu5x/MzSPNUPo2v/pKakFqmqRWg6BQwRTPrZG4sJqOl/VUF4GTP9i9fJrngn
+         LxjYkozJRcGqTFtpW1ZJenp6ieACXPwwdG8MofsYgdXKJo5bGJiU0jbTysRY6DO9X+JD
+         d9Zk77XxcXjHiM85uUyrqJTmc7fAHFRL1A4fD+B7GRTbo7uY2M8vLRiPTp5ZYb/dLo9T
+         /SYJqVtO/2F4YdkMHCFjfdUDBtdyKQHJsdI5DwhbrCwQaIjM5lYyqZYggOVeBPbj4vo2
+         dDyQwLdHBvmIGLO/TMUSRZtfcaEzTpFPU9j3uW5NE2cW9jpp5hZ1pilvVSBNhPXLL49z
+         JgYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=H7KlC1E/qchNA2FeI/jtSOoGuHWoLpY70PQmwt3/hBY=;
-        b=NU66qU9kZE42qjIGZYYmAtevWZi58nWAApODm7Vsiun1N18dMlAfUZyI2ljr+PjVwv
-         yX3rl2dts9CyeBawmJ/p/JNuJDkbWMAchKV/x8FDsDOHoefd1GB7gZopRRlgh67HNvnZ
-         caqqDlVrNZvJaomVYjpoitKuYoFP1QRY8ucdeI7oYM6Y7WwzOAZ9IlVD54FBeAt7OS9V
-         xWeC4UXoKqymE/pT3LRt5MaM6L0V7v4e5qg1IR8gJ1FTb9VeVPskittQRCowHcpLIRwT
-         KziIQUBmnxHhQHSs29G/oAHfBNkPL0BGDGgQhpCa+sxgd27wAmlmC336eGQ56FRFZxNu
-         K2Eg==
-X-Gm-Message-State: AO0yUKWfrc//0hvK/pTRZMmDnjaG6OY5Z6m2N7JYs4Pb90DHcThCvaFI
-        CB+3VAUx4IPzbIiXhws8hMvCNQ==
-X-Google-Smtp-Source: AK7set9BFSU/mcgDE8X3OMCmuvOsHIDDbHvxpRXfPUvGLXJNQQEIIvYdvRJRPOqM+/blvkVNGf+CvA==
-X-Received: by 2002:a05:6a20:441f:b0:ae:47a6:e6d9 with SMTP id ce31-20020a056a20441f00b000ae47a6e6d9mr13097359pzb.6.1675102958616;
-        Mon, 30 Jan 2023 10:22:38 -0800 (PST)
+        bh=uV9EY4GcIdMg2ei4Z2c7LvEp7Me6Q3TdFGwPQrDSIKc=;
+        b=vm81qyccdgn7xxtlhdcdSDN1iusd8othUSUv1DO1h5FkwjofrrPAhf9BJCQMdfVhy5
+         02mAckP+lCtMDflg8tYSyplj4sJ8yQurtlRz+pAt6P36z7quU+Tlx7nXeDzf/6Avptb/
+         GbWM6x+x3bVA/0boZ8zI4mWytqhnIGqlyQvRWKHYoIVEVHlrfXclvzbbhYtJFt6n3I4n
+         8uFTsuia5/hcGp1JpTWlgzAHE6nZzUA0iuao6lFUGZKw7196VMbxP7+7BSgyZ7dOaYZU
+         v3jnZwFAW6X43gGRA86FFynrv6HQ95O9M+Hc7ADaTYM7eGV5OAMgrXBQMlRs+vYoF+r0
+         h3wQ==
+X-Gm-Message-State: AO0yUKWXKbWimio56fttr/ufSgW8fAE4pvtJPEuXvKvFjDgKaht9eGet
+        c0crkVpp8OxsSZFF50ocPaisvw==
+X-Google-Smtp-Source: AK7set81m2sVmD0y/bGOO8qzoxXZgLQgJIi7xrMyNGd5m9OOckwQkYd5K05oM4haw3dx8ZgNydqYQw==
+X-Received: by 2002:a17:90b:3805:b0:22c:4e1:93e with SMTP id mq5-20020a17090b380500b0022c04e1093emr23296691pjb.15.1675102963434;
+        Mon, 30 Jan 2023 10:22:43 -0800 (PST)
 Received: from kerodipc.Dlink ([49.206.9.96])
-        by smtp.gmail.com with ESMTPSA id j193-20020a638bca000000b00478162d9923sm7000291pge.13.2023.01.30.10.22.34
+        by smtp.gmail.com with ESMTPSA id j193-20020a638bca000000b00478162d9923sm7000291pge.13.2023.01.30.10.22.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Jan 2023 10:22:38 -0800 (PST)
+        Mon, 30 Jan 2023 10:22:43 -0800 (PST)
 From:   Sunil V L <sunilvl@ventanamicro.com>
 To:     Palmer Dabbelt <palmer@dabbelt.com>,
         Albert Ou <aou@eecs.berkeley.edu>,
@@ -63,10 +63,12 @@ Cc:     linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
         Anup Patel <apatel@ventanamicro.com>,
         Andrew Jones <ajones@ventanamicro.com>,
         Atish Patra <atishp@rivosinc.com>,
-        Jisheng Zhang <jszhang@kernel.org>
-Subject: [PATCH 01/24] riscv: move sbi_init() earlier before jump_label_init()
-Date:   Mon, 30 Jan 2023 23:52:02 +0530
-Message-Id: <20230130182225.2471414-2-sunilvl@ventanamicro.com>
+        Sunil V L <sunilvl@ventanamicro.com>,
+        Robert Moore <robert.moore@intel.com>,
+        acpica-devel@lists.linuxfoundation.org
+Subject: [PATCH 02/24] ACPICA: MADT: Add RISC-V INTC interrupt controller
+Date:   Mon, 30 Jan 2023 23:52:03 +0530
+Message-Id: <20230130182225.2471414-3-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.38.0
 In-Reply-To: <20230130182225.2471414-1-sunilvl@ventanamicro.com>
 References: <20230130182225.2471414-1-sunilvl@ventanamicro.com>
@@ -81,73 +83,61 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Jisheng Zhang <jszhang@kernel.org>
+The ECR to add RISC-V INTC interrupt controller is approved by
+the UEFI forum and will be availabl in the next revision of
+the ACPI specification.
 
-We call jump_label_init() in setup_arch() is to use static key
-mechanism earlier, but riscv jump label relies on the sbi functions,
-If we enable static key before sbi_init(), the code path looks like:
-  static_branch_enable()
-    ..
-      arch_jump_label_transform()
-        patch_text_nosync()
-          flush_icache_range()
-            flush_icache_all()
-              sbi_remote_fence_i() for CONFIG_RISCV_SBI case
-                __sbi_rfence()
+This patch is not yet merged in ACPICA but a PR is raised.
 
-Since sbi isn't initialized, so NULL deference! Here is a typical
-panic log:
+ACPICA PR: https://github.com/acpica/acpica/pull/804
+Reference: Mantis ID: 2348
 
-[    0.000000] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[    0.000000] Oops [#1]
-[    0.000000] Modules linked in:
-[    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted 5.18.0-rc7+ #79
-[    0.000000] Hardware name: riscv-virtio,qemu (DT)
-[    0.000000] epc : 0x0
-[    0.000000]  ra : sbi_remote_fence_i+0x1e/0x26
-[    0.000000] epc : 0000000000000000 ra : ffffffff80005826 sp : ffffffff80c03d50
-[    0.000000]  gp : ffffffff80ca6178 tp : ffffffff80c0ad80 t0 : 6200000000000000
-[    0.000000]  t1 : 0000000000000000 t2 : 62203a6b746e6972 s0 : ffffffff80c03d60
-[    0.000000]  s1 : ffffffff80001af6 a0 : 0000000000000000 a1 : 0000000000000000
-[    0.000000]  a2 : 0000000000000000 a3 : 0000000000000000 a4 : 0000000000000000
-[    0.000000]  a5 : 0000000000000000 a6 : 0000000000000000 a7 : 0000000000080200
-[    0.000000]  s2 : ffffffff808b3e48 s3 : ffffffff808bf698 s4 : ffffffff80cb2818
-[    0.000000]  s5 : 0000000000000001 s6 : ffffffff80c9c345 s7 : ffffffff80895aa0
-[    0.000000]  s8 : 0000000000000001 s9 : 000000000000007f s10: 0000000000000000
-[    0.000000]  s11: 0000000000000000 t3 : ffffffff80824d08 t4 : 0000000000000022
-[    0.000000]  t5 : 000000000000003d t6 : 0000000000000000
-[    0.000000] status: 0000000000000100 badaddr: 0000000000000000 cause: 000000000000000c
-[    0.000000] ---[ end trace 0000000000000000 ]---
-[    0.000000] Kernel panic - not syncing: Attempted to kill the idle task!
-[    0.000000] ---[ end Kernel panic - not syncing: Attempted to kill the idle task! ]---
-
-Fix this issue by moving sbi_init() earlier before jump_label_init()
-
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Cc: Robert Moore <robert.moore@intel.com>
+Cc: acpica-devel@lists.linuxfoundation.org
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 ---
- arch/riscv/kernel/setup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/acpi/actbl2.h | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-index 86acd690d529..4335f08ffaf2 100644
---- a/arch/riscv/kernel/setup.c
-+++ b/arch/riscv/kernel/setup.c
-@@ -270,6 +270,7 @@ void __init setup_arch(char **cmdline_p)
- 	*cmdline_p = boot_command_line;
+diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+index b2973dbe37ee..c432fd15db65 100644
+--- a/include/acpi/actbl2.h
++++ b/include/acpi/actbl2.h
+@@ -891,7 +891,8 @@ enum acpi_madt_type {
+ 	ACPI_MADT_TYPE_MSI_PIC = 21,
+ 	ACPI_MADT_TYPE_BIO_PIC = 22,
+ 	ACPI_MADT_TYPE_LPC_PIC = 23,
+-	ACPI_MADT_TYPE_RESERVED = 24,	/* 24 to 0x7F are reserved */
++	ACPI_MADT_TYPE_RINTC = 24,
++	ACPI_MADT_TYPE_RESERVED = 25,	/* 25 to 0x7F are reserved */
+ 	ACPI_MADT_TYPE_OEM_RESERVED = 0x80	/* 0x80 to 0xFF are reserved for OEM use */
+ };
  
- 	early_ioremap_setup();
-+	sbi_init();
- 	jump_label_init();
- 	parse_early_param();
+@@ -1250,6 +1251,24 @@ enum acpi_madt_lpc_pic_version {
+ 	ACPI_MADT_LPC_PIC_VERSION_RESERVED = 2	/* 2 and greater are reserved */
+ };
  
-@@ -287,7 +288,6 @@ void __init setup_arch(char **cmdline_p)
- 	misc_mem_init();
++/* 24: RISC-V INTC */
++struct acpi_madt_rintc {
++	struct acpi_subtable_header header;
++	u8 version;
++	u8 reserved;
++	u32 flags;
++	u64 hart_id;
++	u32 uid;		/* ACPI processor UID */
++};
++
++/* Values for RISC-V INTC Version field above */
++
++enum acpi_madt_rintc_version {
++	ACPI_MADT_RINTC_VERSION_NONE = 0,
++	ACPI_MADT_RINTC_VERSION_V1 = 1,
++	ACPI_MADT_RINTC_VERSION_RESERVED = 2	/* 2 and greater are reserved */
++};
++
+ /* 80: OEM data */
  
- 	init_resources();
--	sbi_init();
- 
- #ifdef CONFIG_KASAN
- 	kasan_init();
+ struct acpi_madt_oem_data {
 -- 
 2.38.0
 
