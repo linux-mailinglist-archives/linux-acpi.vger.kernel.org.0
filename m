@@ -2,47 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9FD3680CD0
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 13:04:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 194B9680CF7
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 13:08:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236068AbjA3ME2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Jan 2023 07:04:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33016 "EHLO
+        id S235634AbjA3MIP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Jan 2023 07:08:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236069AbjA3MEZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 07:04:25 -0500
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6039914E8E;
-        Mon, 30 Jan 2023 04:04:17 -0800 (PST)
+        with ESMTP id S236531AbjA3MID (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 07:08:03 -0500
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33D5130180;
+        Mon, 30 Jan 2023 04:07:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675080258; x=1706616258;
+  t=1675080439; x=1706616439;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=Rj5FdHRZxfvSxZ+bvMThiL/pa+WbSCwCmjvsd0eDOSg=;
-  b=YLUBHnwvSn57hEjyLjxTIM7//ulgDoDi6/LDYYn4ZoZKVMj794Dfh2CS
-   Fn1nas37hzoHCPmbWF820H0Bp6pMhn7QyiPJ1vbDa3xuHOyIcmQcOK2tm
-   MOVpQXonSugvcvPljgcDiOr7rAbK0QWCI6mz6umheUhgApFcO7eLg5d6a
-   0lCpgqPQrGx5Sz2gvzB3ACI1mc7rGsSavraIhNF+2IgNa07EoqlUB0BBn
-   cRVl4d886XWOBLRNHD1Z3of9SEyTaSqYdDla/bddOpUdEdYe3FmznSu72
-   ZUttda2rKz8GqZNxprwk7q7nrXo0tb/gUiY2IjdLJk5o8ncpWBQuFZL3j
+  bh=L8oHpgiQkMSBM2SGo1lMty/TFLibAaBZaruIjfet5+o=;
+  b=RIbRL4iuurpmcGH98p+ohe9OYus1xtYMU81sSaKjTqpUbmuicuUM6kyJ
+   qoJvc2qm6kzjMk1Lo14TEy1Kl/r4zOf0YvVwcd18t5xIHnEQbGL7IN1Pc
+   wBdrfgcwPh+LbG4Ksc7gexro6QKTxD7qsiqV6RNXWni6knD+FBXR5apHV
+   yx/Yp6bqU0ttdOQnTlq5WuQHZ2DTrvzYM9M2p6UqZuPkKoXtJ7LVLndjO
+   R6XG59+67bdv9ZRVC2mBmV9Jq+IGkaO5Ec2qZ59nEtmfYyXqDsKCIfhtX
+   KItFak1Jb6oiRPM51+xMTELIOJ8/tc51fhKo9surCNHzmOvCGScomspMk
    Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10605"; a="315499561"
+X-IronPort-AV: E=McAfee;i="6500,9779,10605"; a="311160688"
 X-IronPort-AV: E=Sophos;i="5.97,257,1669104000"; 
-   d="scan'208";a="315499561"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2023 04:04:16 -0800
+   d="scan'208";a="311160688"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2023 04:06:09 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10605"; a="732674303"
+X-IronPort-AV: E=McAfee;i="6500,9779,10605"; a="909473739"
 X-IronPort-AV: E=Sophos;i="5.97,257,1669104000"; 
-   d="scan'208";a="732674303"
+   d="scan'208";a="909473739"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga004.fm.intel.com with ESMTP; 30 Jan 2023 04:04:05 -0800
+  by fmsmga006.fm.intel.com with ESMTP; 30 Jan 2023 04:05:59 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pMStF-00HKsM-2X;
-        Mon, 30 Jan 2023 14:04:01 +0200
-Date:   Mon, 30 Jan 2023 14:04:01 +0200
+        id 1pMSv5-00HKuX-01;
+        Mon, 30 Jan 2023 14:05:55 +0200
+Date:   Mon, 30 Jan 2023 14:05:54 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Saravana Kannan <saravanak@google.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -86,21 +86,20 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 01/11] driver core: fw_devlink: Don't purge child
- fwnode's consumer links
-Message-ID: <Y9eyMck6rPRyfgrX@smile.fi.intel.com>
+Subject: Re: [PATCH v2 04/11] gpiolib: Clear the gpio_device's fwnode
+ initialized flag before adding
+Message-ID: <Y9eyohkI7EKOlHSX@smile.fi.intel.com>
 References: <20230127001141.407071-1-saravanak@google.com>
- <20230127001141.407071-2-saravanak@google.com>
- <Y9OXs9+uYi31dYJD@smile.fi.intel.com>
- <CAGETcx_g8yKQQQVtNt+6cB8hS7OY9=dqm4tDhm1ZJZqG5nzSLg@mail.gmail.com>
+ <20230127001141.407071-5-saravanak@google.com>
+ <Y9OY6pMwYtab1Avd@smile.fi.intel.com>
+ <CAGETcx_sm5Efy=80kc9gNTaZgvOQzBGxwWA1n+bPJYWg43OebA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAGETcx_g8yKQQQVtNt+6cB8hS7OY9=dqm4tDhm1ZJZqG5nzSLg@mail.gmail.com>
+In-Reply-To: <CAGETcx_sm5Efy=80kc9gNTaZgvOQzBGxwWA1n+bPJYWg43OebA@mail.gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -108,93 +107,43 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 27, 2023 at 11:33:28PM -0800, Saravana Kannan wrote:
-> On Fri, Jan 27, 2023 at 1:22 AM Andy Shevchenko
+On Fri, Jan 27, 2023 at 11:33:38PM -0800, Saravana Kannan wrote:
+> On Fri, Jan 27, 2023 at 1:27 AM Andy Shevchenko
 > <andriy.shevchenko@linux.intel.com> wrote:
-> > On Thu, Jan 26, 2023 at 04:11:28PM -0800, Saravana Kannan wrote:
+> > On Thu, Jan 26, 2023 at 04:11:31PM -0800, Saravana Kannan wrote:
 
 ...
 
-> > >  static unsigned int defer_sync_state_count = 1;
-> > >  static DEFINE_MUTEX(fwnode_link_lock);
-> > >  static bool fw_devlink_is_permissive(void);
-> > > +static void __fw_devlink_link_to_consumers(struct device *dev);
-> > >  static bool fw_devlink_drv_reg_done;
-> > >  static bool fw_devlink_best_effort;
+> > > +     /*
+> > > +      * If fwnode doesn't belong to another device, it's safe to clear its
+> > > +      * initialized flag.
+> > > +      */
+> > > +     if (!gdev->dev.fwnode->dev)
+> > > +             fwnode_dev_initialized(gdev->dev.fwnode, false);
 > >
-> > I'm wondering if may avoid adding more forward declarations...
+> > Do not dereference fwnode in struct device. Use dev_fwnode() for that.
 > >
-> > Perhaps it's a sign that devlink code should be split to its own
-> > module?
+> >         struct fwnode_handle *fwnode = dev_fwnode(&gdev->dev);
+> >
+> >         if (!fwnode->dev)
+> >                 fwnode_dev_initialized(fwnode, false);
 > 
-> I've thought about that before, but I'm not there yet. Maybe once my
-> remaining refactors and TODOs are done, it'd be a good time to revisit
-> this question.
+> Honestly, we should work towards NOT needing dev_fwnode().
+
+Honestly, it's that We SHOULD go to avoid any direct dereference of fwnode from
+the struct device. I explained you in the comment in the other patch.
+
+> The
+> function literally dereferences dev->fwnode or the one inside of_node.
+> So my dereference is fine. The whole "fwnode might not be set for
+> devices with of_node" is wrong and we should fix that instead of
+> writing wrappers to work around it.
 > 
-> But I don't think it should be done for the reason of forward
-> declaration as we'd just end up moving these into base.h and we can do
-> that even today.
+> Also, for now I'm going to leave this as if for the same reasons as I
+> mentioned in Patch 1.
 
-What I meant is that the stacking up forward declarations is a good sign that
-something has to be done sooner than later.
+Same.
 
-...
-
-> > > -int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup)
-> > > +static int __fwnode_link_add(struct fwnode_handle *con,
-> > > +                          struct fwnode_handle *sup)
-> >
-> > I believe we tolerate a bit longer lines, so you may still have it on a single
-> > line.
-> 
-> That'd make it >80 cols. I'm going to leave it as is.
-
-Is it a problem?
-
-...
-
-> > >       if (dev->fwnode && dev->fwnode->dev == dev) {
-> >
-> > You may have above something like
-> >
-> >         fwnode = dev_fwnode(dev);
-> 
-> I'll leave it as-is for now. I see dev->fwnode vs dev_fwnode() don't
-> always give the same results. I need to re-examine other places I use
-> dev->fwnode in fw_devlink code before I start using that function. But
-> in general it seems like a good idea. I'll add this to my TODOs.
-
-Please do, the rationale is to actually move the fwnode to the proper layer,
-now we have the single linked list defined in struct fwnode_handle and
-dereferencing fwnode from struct device without helper adds a lot of
-headache in the future. So, I really would like to see that we stopped doing
-that.
-
-> >         if (fwnode && fwnode->dev == dev) {
-> >
-> > >               struct fwnode_handle *child;
-> > >               fwnode_links_purge_suppliers(dev->fwnode);
-> > > +             mutex_lock(&fwnode_link_lock);
-> > >               fwnode_for_each_available_child_node(dev->fwnode, child)
-> > > -                     fw_devlink_purge_absent_suppliers(child);
-> > > +                     __fw_devlink_pickup_dangling_consumers(child,
-> > > +                                                            dev->fwnode);
-> >
-> >                         __fw_devlink_pickup_dangling_consumers(child, fwnode);
-> 
-> I like the dev->fwnode->dev == dev check. It makes it super clear that
-> I'm checking "The device's fwnode points back to the device". If I
-> just use fwnode->dev == dev, then one will have to go back and read
-> what fwnode is set to, etc. Also, when reading all these function
-> calls it's easier to see that I'm working on the dev's fwnode (where
-> dev is the device that was just bound to a driver) instead of some
-> other fwnode.
-> 
-> So I find it more readable as is and the compiler would optimize it
-> anyway. If you feel strongly about this, I can change to use fwnode
-> instead of dev->fwnode.
-
-Please, read above.
 
 -- 
 With Best Regards,
