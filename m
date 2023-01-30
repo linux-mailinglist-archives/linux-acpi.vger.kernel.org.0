@@ -2,114 +2,186 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E06CE680848
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 10:14:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E4C1680996
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 10:34:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235725AbjA3JOq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Jan 2023 04:14:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50672 "EHLO
+        id S236274AbjA3Jeg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Jan 2023 04:34:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236130AbjA3JOp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 04:14:45 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4D34241C3;
-        Mon, 30 Jan 2023 01:14:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1675070077; bh=s8AkH4O6tZzfz+r4vJLuBJMfjtu256PBbhMH/jEEhxQ=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=hBMAvF2hsLmR2cLaLbotJ51Zrh2bJe3+5JkfZl9W2/s9wtlQTsXKGhUwhwy58Ro+5
-         P65dZKCmsYJ164aj6HEk4/z4kykzanJ13saN/5G0v9OWCBZsH0IxUOV0h9HSk0WDkB
-         MdxqF6DNpuQpFGmGjGmf62yR5jNHEGhAlUZifIPOWdcWkbWqDd+fEkNmHExzHg1N0J
-         oqm0COjkRldmDgo5LP235IvfNevI9tMKk2IZevuD0tamDlmAViVtnTIbOBbe8BTXfo
-         qkqcVIf6uw4CnccUih7AkSO99Wz4YhFCnMImsT1yDU+14OI+Hfhs6sHQSj+9oadu/F
-         IT/i/jG5UR8Mg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MWigq-1pBXBV2kBc-00X6Ue; Mon, 30
- Jan 2023 10:14:37 +0100
-Subject: Re: [PATCH v2 0/2] ACPI: battery: Fix various string handling issues
-From:   Armin Wolf <W_Armin@gmx.de>
-To:     rafael@kernel.org, lenb@kernel.org
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230119142115.38260-1-W_Armin@gmx.de>
-Message-ID: <8e3ddde5-87aa-a72a-dcfa-5a6041377b15@gmx.de>
-Date:   Mon, 30 Jan 2023 10:14:37 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        with ESMTP id S236411AbjA3JeO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 04:34:14 -0500
+X-Greylist: delayed 666 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 30 Jan 2023 01:32:50 PST
+Received: from vsp04-out.oderland.com (vsp04-out.oderland.com [IPv6:2a02:28f0::30:1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B55712116
+        for <linux-acpi@vger.kernel.org>; Mon, 30 Jan 2023 01:32:50 -0800 (PST)
+X-Scanned-Cookie: 5bd76ac53f3641449bb03f2408df0bbfc2159e32
+Received: from office.oderland.com (office.oderland.com [91.201.60.5])
+        by vsp-out.oderland.com (Halon) with ESMTPSA
+        id 826dac8c-a07f-11ed-84da-3167612d0455;
+        Mon, 30 Jan 2023 10:21:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=oderland.se
+        ; s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=0ed0B94xsqNqJd94Zwcm9kr+L8XMZvFguOtTUNMulaA=; b=Yfgkk28gf3fJvP5Ju08zAIRzJ5
+        3MXCfJonVoX+et3HNf9QiBraYUR1WdaKnr/Vt31bLq2MpkSieV2rEtWh+cqTi6KJuBlzDsKz0WV1W
+        wr8PtJiALInhKzd3U4DwZUrY5X4KhB4nReJ1jM9muQQMTQ/4f9p8MkoOi2s1F/732ff1Dq8bivKL5
+        uVer+W7VH2ODWRR9aR5wnh1A1pWgMJfuwsOUHZbwKGovxnPGXkZOKk7ZYfR7Y4T0OXf364DZlnfxd
+        B4eJyh+gpnyclQZZoOnt3uFTL2cbYszZNyqwRuuhpPiPAzeXl5rnQngv2+IrV0oIw1hHnsxQM4Qcy
+        7MoED3aA==;
+Received: from 160.193-180-18.r.oderland.com ([193.180.18.160]:48568 helo=[10.137.0.14])
+        by office.oderland.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+        (Exim 4.95)
+        (envelope-from <josef@oderland.se>)
+        id 1pMQMB-00AhxU-NW;
+        Mon, 30 Jan 2023 10:21:42 +0100
+Message-ID: <952fdc14-a8e5-a59a-9c7d-af1adf361d77@oderland.se>
+Date:   Mon, 30 Jan 2023 10:21:42 +0100
 MIME-Version: 1.0
-In-Reply-To: <20230119142115.38260-1-W_Armin@gmx.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:108.0) Gecko/20100101
+ Thunderbird/108.0
+Subject: Re: [PATCH 1/3] acpi/processor: fix evaluating _PDC method when
+ running as Xen dom0
 Content-Language: en-US
-X-Provags-ID: V03:K1:9g1ZHK6rzJeww0WSSbFMBOgqn7oUQCKJ4XU3fehMP2/zw59c9xR
- WmIvJ3iSPT49v7vCCUU9lmIKnqvYSjbqK0o2t2WDIp3gGEvLu4Qc7hvTh6rsiztmZkS0FHQ
- MuiHfcw/LoKLG5XnYKmhETo3rZ4Nt6lrusQfSaXsFJ4Nq8C9jH9fFk2OSbOxmDD1780bSzX
- fhXOG+L+CQ997m5r8DfMA==
-UI-OutboundReport: notjunk:1;M01:P0:NYzVJkqPI44=;SIvQM7tfF3nnAr4gZrV1SSI/f5A
- ZmE00yrppY82SyH2kRzoJNFpAlnpGFRQkagd6p62JInsPnt2H7tJE98VGPKWp8ipkpEL3xu2V
- 1YFl6l/2XVL10Fl1xce8EW/u19Ta47sjveswxePL+iaGVyZaSdBBRncuyTU7Ui/qf4CQtFF4F
- yyEkte6UhJJ2/hcO381t0WUgN7Izu49JIVCpI9z73m5aI+RojrjW7boE7NU25z1FXnHMjsr8P
- t7ANeDxx11SfR+MqazgcTFj36b8Pr0XezXQPcSigMIgt2T/BE6i8nyCnXMGat1ugVTGsS3sGT
- 3wqfj8L4pwnJUgaEp7Bw8XrqmKaNnpHjSiXSmYhJw5nwW1zS1uP4PukJrkyzb9WKNLoaHOuiF
- 0nHmgx6U31FC0VlbEhEy/R8HxmR0vFhH/RNWPI0cdONoZslYPapaNPQgRyQL3wBS9/WzoAmiw
- 31umQiXw396KLwatAo+r8blkm8N/Ns7n6WdJiguxhVUSsXmbFKqR6cvczwtlahvPXSBaOesjY
- GnOEbWjzku+kA9H7nCzB4LHTBgGGItb/CIDkD5A2Rhca5yv60iYcsqx8VheDVFEoEYnxm5rTQ
- x7AKpY5gxiUAA4p1J/wDGmkCAHGCJjAIFIcJgsxrUclyycJZI7JC0BMgtjtbnELdGionYKIu5
- ubL4WI6i9A9bp03sgoFIu2XLBTA/EQGkp1nfEnW1zOdf5WSYoPRkIWRUQHh3XafRsKy8tCqH+
- q2INYzhstfNXD0c1Q1F0Euj3uRSaU2x60CoeKK/DR/ZV+kBO/YIK+u0gNh2BaN64t+QelEr6B
- LK7BeY3BDBd1N2RsZYuXCrG4ttqQVvSJQmQxrUBnH2yNtnjr8xjmKWAfud/Svzev39QPXUTP9
- fFOcHGASMX2dfo4kqj5gjPZEJ0/Ys4MyUQrnHwWydyFXgFAHQDqUmZpdUCi4SnupZS0bNmEkA
- ue804AlsjwXHsrpdf5Sqhl4dl5c=
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+To:     Roger Pau Monne <roger.pau@citrix.com>,
+        linux-kernel@vger.kernel.org
+Cc:     xen-devel@lists.xenproject.org, x86@kernel.org,
+        linux-acpi@vger.kernel.org
+References: <20221121102113.41893-1-roger.pau@citrix.com>
+ <20221121102113.41893-2-roger.pau@citrix.com>
+From:   Josef Johansson <josef@oderland.se>
+In-Reply-To: <20221121102113.41893-2-roger.pau@citrix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+x-oderland-domain-valid: yes
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Am 19.01.23 um 15:21 schrieb Armin Wolf:
-
-> On my Dell Inspiron 3505, the battery model name was displayed
-> differently than when running Windows. While i first suspected an
-> ACPI issue, it turned out that the real reason was the ACPI battery
-> driver failing to handle strings larger than 32 bytes.
+On 11/21/22 11:21, Roger Pau Monne wrote:
+> When running as a Xen dom0 the number of CPUs available to Linux can
+> be different from the number of CPUs present on the system, but in
+> order to properly fetch processor performance related data _PDC must
+> be executed on all the physical CPUs online on the system.
 >
-> This caused the model name of the battery (35 bytes long, hex string)
-> to miss proper NUL-termination, resulting in a buffer overread later.
-> Luckily, a valid string was stored right after the now invalid string,
-> appending only the battery serial number to the original model name.
+> The current checks in processor_physically_present() result in some
+> processor objects not getting their _PDC methods evaluated when Linux
+> is running as Xen dom0.  Fix this by introducing a custom function to
+> use when running as Xen dom0 in order to check whether a processor
+> object matches a CPU that's online.
 >
-> The first patch fixes a potential buffer overread then handling buffers,
-> while the second patch finally increases the maximum string length to
-> avoid truncating such larger strings.
->
-> The patch series was tested on a Dell Inspiron 3505 and appears
-> to work properly.
-
-Are there any outstanding issues with the patch series which need
-to be fixed for mainline inclusion?
-
-Armin Wolf
-
+> Fixes: 5d554a7bb064 ('ACPI: processor: add internal processor_physically_present()')
+> Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
 > ---
-> Changes in v2:
-> - Drop first patch since it was already applied
-> - combine the second and third patch
-> - do not replace 0 with '\0'
-> - spell ACPI in capitals
-> - rework the buffer length hdanling
+>   arch/x86/include/asm/xen/hypervisor.h | 10 ++++++++++
+>   arch/x86/xen/enlighten.c              | 27 +++++++++++++++++++++++++++
+>   drivers/acpi/processor_pdc.c          | 11 +++++++++++
+>   3 files changed, 48 insertions(+)
 >
-> Armin Wolf (2):
->    ACPI: battery: Fix buffer overread if not NUL-terminated
->    ACPI: battery: Increase maximum string length
->
->   drivers/acpi/battery.c | 35 +++++++++++++++++++++++------------
->   1 file changed, 23 insertions(+), 12 deletions(-)
->
-> --
-> 2.30.2
->
->
+> diff --git a/arch/x86/include/asm/xen/hypervisor.h b/arch/x86/include/asm/xen/hypervisor.h
+> index 16f548a661cf..b9f512138043 100644
+> --- a/arch/x86/include/asm/xen/hypervisor.h
+> +++ b/arch/x86/include/asm/xen/hypervisor.h
+> @@ -61,4 +61,14 @@ void __init xen_pvh_init(struct boot_params *boot_params);
+>   void __init mem_map_via_hcall(struct boot_params *boot_params_p);
+>   #endif
+>   
+> +#ifdef CONFIG_XEN_DOM0
+> +bool __init xen_processor_present(uint32_t acpi_id);
+> +#else
+> +static inline bool xen_processor_present(uint32_t acpi_id)
+> +{
+> +	BUG();
+> +	return false;
+> +}
+> +#endif
+> +
+>   #endif /* _ASM_X86_XEN_HYPERVISOR_H */
+> diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
+> index b8db2148c07d..d4c44361a26c 100644
+> --- a/arch/x86/xen/enlighten.c
+> +++ b/arch/x86/xen/enlighten.c
+> @@ -346,3 +346,30 @@ void xen_arch_unregister_cpu(int num)
+>   }
+>   EXPORT_SYMBOL(xen_arch_unregister_cpu);
+>   #endif
+> +
+> +#ifdef CONFIG_XEN_DOM0
+> +bool __init xen_processor_present(uint32_t acpi_id)
+> +{
+> +	unsigned int i, maxid;
+> +	struct xen_platform_op op = {
+> +		.cmd = XENPF_get_cpuinfo,
+> +		.interface_version = XENPF_INTERFACE_VERSION,
+> +	};
+> +	int ret = HYPERVISOR_platform_op(&op);
+> +
+> +	if (ret)
+> +		return false;
+> +
+> +	maxid = op.u.pcpu_info.max_present;
+> +	for (i = 0; i <= maxid; i++) {
+> +		op.u.pcpu_info.xen_cpuid = i;
+> +		ret = HYPERVISOR_platform_op(&op);
+> +		if (ret)
+> +			continue;
+> +		if (op.u.pcpu_info.acpi_id == acpi_id)
+> +			return op.u.pcpu_info.flags & XEN_PCPU_FLAGS_ONLINE;
+> +	}
+> +
+> +	return false;
+> +}
+My compiler (Default GCC on Fedora 32, compiling for Qubes) complain 
+loudly that the below was missing.
+
++}
++EXPORT_SYMBOL(xen_processor_present);
+
+`ERROR: MODPOST xen_processor_present 
+[drivers/xen/xen-acpi-processor.ko] undefined!`
+
+Same thing with xen_sanitize_pdc in the next patch.
+
++}
++EXPORT_SYMBOL(xen_sanitize_pdc);
+
+Everything compiled fine after those changes.
+> +#endif
+> diff --git a/drivers/acpi/processor_pdc.c b/drivers/acpi/processor_pdc.c
+> index 8c3f82c9fff3..18fb04523f93 100644
+> --- a/drivers/acpi/processor_pdc.c
+> +++ b/drivers/acpi/processor_pdc.c
+> @@ -14,6 +14,8 @@
+>   #include <linux/acpi.h>
+>   #include <acpi/processor.h>
+>   
+> +#include <xen/xen.h>
+> +
+>   #include "internal.h"
+>   
+>   static bool __init processor_physically_present(acpi_handle handle)
+> @@ -47,6 +49,15 @@ static bool __init processor_physically_present(acpi_handle handle)
+>   		return false;
+>   	}
+>   
+> +	if (xen_initial_domain())
+> +		/*
+> +		 * When running as a Xen dom0 the number of processors Linux
+> +		 * sees can be different from the real number of processors on
+> +		 * the system, and we still need to execute _PDC for all of
+> +		 * them.
+> +		 */
+> +		return xen_processor_present(acpi_id);
+> +
+>   	type = (acpi_type == ACPI_TYPE_DEVICE) ? 1 : 0;
+>   	cpuid = acpi_get_cpuid(handle, type, acpi_id);
+>   
+
