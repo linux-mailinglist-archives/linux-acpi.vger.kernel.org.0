@@ -2,60 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13144681373
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 15:36:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 451A1681877
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 19:16:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235556AbjA3Oga (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Jan 2023 09:36:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57934 "EHLO
+        id S237393AbjA3SQC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Jan 2023 13:16:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235123AbjA3Og3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 09:36:29 -0500
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A1DC13F;
-        Mon, 30 Jan 2023 06:36:28 -0800 (PST)
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-16332831ed0so15182887fac.10;
-        Mon, 30 Jan 2023 06:36:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9D5+mOa+V6zLZUsgo8fYk9qa1TaSMliGQ0eIaxr9+OE=;
-        b=ujvaDeOyxdEPQBM6LHJVbeVJzeIjTEh9A/RQkWgete8QeKRXzDf6lksCF5XFXvlRIF
-         sqk7bEMlKpmHhE4I0N+xxQpp5B8PTyz6+mEACJb6aLo9yon60800epD5UdpJItIxVRxj
-         CJJNxjQCyUqKEO0VDMYVfjby/d+CxF9C2hApUXWhrqwVhR4GJm+UC8aU0phkTUqfWBFR
-         i4sjMVimjD6U5pV4DQE3HFykUJnzSY269VGf/jfex8SbC12Qv1o2pNBcqCuJUStF0Xq1
-         /OdEWJhrPvNLKP8UEy/y2wRXhApi+0enrQ3gwRfRmrTT8IzRvNF/Q3phcnlvox3FtWvs
-         6Obw==
-X-Gm-Message-State: AO0yUKWPgNA4nWSqacZuUcTbGrw1m+e0tSsD52xYCrX5lba17YfXEzk6
-        b0LDnLBRsED4pSwutqe2K7GVOnbokkU2UQ==
-X-Google-Smtp-Source: AK7set+8OYk4njLoOMTUhSZWHB6oaLJyCVrpGEBDZSVs11tu5z653ZnqxL02nNp6sEBftIRrarFWSA==
-X-Received: by 2002:a05:6870:204c:b0:163:cd39:5f1f with SMTP id l12-20020a056870204c00b00163cd395f1fmr847394oad.40.1675089387661;
-        Mon, 30 Jan 2023 06:36:27 -0800 (PST)
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com. [209.85.210.43])
-        by smtp.gmail.com with ESMTPSA id f64-20020a9d2c46000000b0068bcd2b0bfasm1873405otb.65.2023.01.30.06.36.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Jan 2023 06:36:27 -0800 (PST)
-Received: by mail-ot1-f43.google.com with SMTP id v24-20020a05683011d800b0068bdd29b160so116756otq.13;
-        Mon, 30 Jan 2023 06:36:27 -0800 (PST)
-X-Received: by 2002:a25:ab30:0:b0:80b:8247:e8b1 with SMTP id
- u45-20020a25ab30000000b0080b8247e8b1mr1966130ybi.604.1675089376546; Mon, 30
- Jan 2023 06:36:16 -0800 (PST)
-MIME-Version: 1.0
-References: <20230127001141.407071-1-saravanak@google.com> <20230127001141.407071-9-saravanak@google.com>
- <Y9OcqGTocu8ZlFqy@smile.fi.intel.com> <CAGETcx-PiV12pKnVuKyvNcjYbHA=YFJG1QUa-o-G1cL3iMHgcA@mail.gmail.com>
- <Y9e09qUa9CDxHFcb@smile.fi.intel.com>
-In-Reply-To: <Y9e09qUa9CDxHFcb@smile.fi.intel.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 30 Jan 2023 15:36:04 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXSgS-hu1xV_vmJZi_kr6ypiS=a-e0p7Hb75HKDfz9k-g@mail.gmail.com>
-Message-ID: <CAMuHMdXSgS-hu1xV_vmJZi_kr6ypiS=a-e0p7Hb75HKDfz9k-g@mail.gmail.com>
-Subject: Re: [PATCH v2 08/11] driver core: fw_devlink: Make cycle detection
- more robust
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Saravana Kannan <saravanak@google.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        with ESMTP id S237403AbjA3SPz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 13:15:55 -0500
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E2392B60E;
+        Mon, 30 Jan 2023 10:15:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675102549; x=1706638549;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=QjXjMnu6Y3KsGfyiWp4s/PbltUG+5MX/5jw4lyAX9SI=;
+  b=ADRBXuR4/RUxMjE7apGEcC3zByEzkwGtZZXw0+n6W6bc5Kl+bqGAKVOi
+   h3xQyBWJjgWwtR7JrsRNiwuqD9LbAKXkIvPVXk4bBGBhPYaqfkHcAet1k
+   t8fRoO+ZbD0GRdEr94lxCFrSC99diXMX3yny36DtUhGuvJuRX0+DsSOMM
+   azQcjM7racXV7eYCbI23WqCaUSdCtgEFy9JrzQ75Iihl6gP0QVCvuf0jr
+   JeY3XTrXbdO1LCFhgsgu/grgFlem5BF4Lj4/n0HdyWDgKSHicTWWX7ssM
+   c6+dSq3fHsMc1U95WS+yrnj/HkgDhxbK8wXEB5UWmUGHwK4nr8AbBSFvF
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10606"; a="328909709"
+X-IronPort-AV: E=Sophos;i="5.97,258,1669104000"; 
+   d="scan'208";a="328909709"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2023 10:15:46 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10606"; a="657563974"
+X-IronPort-AV: E=Sophos;i="5.97,258,1669104000"; 
+   d="scan'208";a="657563974"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2023 10:15:34 -0800
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+        by kekkonen.fi.intel.com (Postfix) with SMTP id 9970A1202B0;
+        Mon, 30 Jan 2023 16:39:47 +0200 (EET)
+Date:   Mon, 30 Jan 2023 16:39:47 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Sudeep Holla <sudeep.holla@arm.com>,
         Cristian Marussi <cristian.marussi@arm.com>,
@@ -72,14 +60,15 @@ Cc:     Saravana Kannan <saravanak@google.com>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Magnus Damm <magnus.damm@gmail.com>,
         Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Daniel Scally <djrscally@gmail.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
         Tony Lindgren <tony@atomide.com>,
         Linux Kernel Functional Testing <lkft@linaro.org>,
         Naresh Kamboju <naresh.kamboju@linaro.org>,
         Abel Vesa <abel.vesa@linaro.org>,
         Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
         John Stultz <jstultz@google.com>,
         Doug Anderson <dianders@chromium.org>,
         Guenter Roeck <linux@roeck-us.net>,
@@ -95,49 +84,161 @@ Cc:     Saravana Kannan <saravanak@google.com>,
         linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v2 09/11] of: property: Simplify of_link_to_phandle()
+Message-ID: <Y9fWsxYJgNR0z6te@kekkonen.localdomain>
+References: <20230127001141.407071-1-saravanak@google.com>
+ <20230127001141.407071-10-saravanak@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230127001141.407071-10-saravanak@google.com>
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+Hi Saravana,
 
-On Mon, Jan 30, 2023 at 1:16 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
-> On Fri, Jan 27, 2023 at 11:34:28PM -0800, Saravana Kannan wrote:
-> > On Fri, Jan 27, 2023 at 1:43 AM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> > > On Thu, Jan 26, 2023 at 04:11:35PM -0800, Saravana Kannan wrote:
-> > > > +static bool __fw_devlink_relax_cycles(struct device *con,
-> > > > +                              struct fwnode_handle *sup_handle)
-> > > > +{
-> > > > +     struct fwnode_link *link;
-> > > > +     struct device_link *dev_link;
-> > >
-> > > > +     struct device *sup_dev = NULL, *par_dev = NULL;
-> > >
-> > > You can put it the first line since it's long enough.
-> >
-> > Wait, is that a style guideline to have the longer lines first?
->
-> No, but it's easier to read.
+On Thu, Jan 26, 2023 at 04:11:36PM -0800, Saravana Kannan wrote:
+> The driver core now:
+> - Has the parent device of a supplier pick up the consumers if the
+>   supplier never has a device created for it.
+> - Ignores a supplier if the supplier has no parent device and will never
+>   be probed by a driver
+> 
+> And already prevents creating a device link with the consumer as a
+> supplier of a parent.
+> 
+> So, we no longer need to find the "compatible" node of the supplier or
+> do any other checks in of_link_to_phandle(). We simply need to make sure
+> that the supplier is available in DT.
+> 
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> ---
+>  drivers/of/property.c | 84 +++++++------------------------------------
+>  1 file changed, 13 insertions(+), 71 deletions(-)
+> 
+> diff --git a/drivers/of/property.c b/drivers/of/property.c
+> index 134cfc980b70..c651aad6f34b 100644
+> --- a/drivers/of/property.c
+> +++ b/drivers/of/property.c
+> @@ -1062,20 +1062,6 @@ of_fwnode_device_get_match_data(const struct fwnode_handle *fwnode,
+>  	return of_device_get_match_data(dev);
+>  }
+>  
+> -static bool of_is_ancestor_of(struct device_node *test_ancestor,
+> -			      struct device_node *child)
+> -{
+> -	of_node_get(child);
+> -	while (child) {
+> -		if (child == test_ancestor) {
+> -			of_node_put(child);
+> -			return true;
+> -		}
+> -		child = of_get_next_parent(child);
+> -	}
+> -	return false;
+> -}
+> -
+>  static struct device_node *of_get_compat_node(struct device_node *np)
+>  {
+>  	of_node_get(np);
+> @@ -1106,71 +1092,27 @@ static struct device_node *of_get_compat_node_parent(struct device_node *np)
+>  	return node;
+>  }
+>  
+> -/**
+> - * of_link_to_phandle - Add fwnode link to supplier from supplier phandle
+> - * @con_np: consumer device tree node
+> - * @sup_np: supplier device tree node
+> - *
+> - * Given a phandle to a supplier device tree node (@sup_np), this function
+> - * finds the device that owns the supplier device tree node and creates a
+> - * device link from @dev consumer device to the supplier device. This function
+> - * doesn't create device links for invalid scenarios such as trying to create a
+> - * link with a parent device as the consumer of its child device. In such
+> - * cases, it returns an error.
+> - *
+> - * Returns:
+> - * - 0 if fwnode link successfully created to supplier
+> - * - -EINVAL if the supplier link is invalid and should not be created
+> - * - -ENODEV if struct device will never be create for supplier
+> - */
+> -static int of_link_to_phandle(struct device_node *con_np,
+> +static void of_link_to_phandle(struct device_node *con_np,
+>  			      struct device_node *sup_np)
+>  {
+> -	struct device *sup_dev;
+> -	struct device_node *tmp_np = sup_np;
+> +	struct device_node *tmp_np = of_node_get(sup_np);
+>  
+> -	/*
+> -	 * Find the device node that contains the supplier phandle.  It may be
+> -	 * @sup_np or it may be an ancestor of @sup_np.
+> -	 */
+> -	sup_np = of_get_compat_node(sup_np);
+> -	if (!sup_np) {
+> -		pr_debug("Not linking %pOFP to %pOFP - No device\n",
+> -			 con_np, tmp_np);
+> -		return -ENODEV;
+> -	}
+> +	/* Check that sup_np and its ancestors are available. */
+> +	while (tmp_np) {
+> +		if (of_fwnode_handle(tmp_np)->dev) {
+> +			of_node_put(tmp_np);
+> +			break;
+> +		}
+>  
+> -	/*
+> -	 * Don't allow linking a device node as a consumer of one of its
+> -	 * descendant nodes. By definition, a child node can't be a functional
+> -	 * dependency for the parent node.
+> -	 */
+> -	if (of_is_ancestor_of(con_np, sup_np)) {
+> -		pr_debug("Not linking %pOFP to %pOFP - is descendant\n",
+> -			 con_np, sup_np);
+> -		of_node_put(sup_np);
+> -		return -EINVAL;
+> -	}
+> +		if (!of_device_is_available(tmp_np)) {
+> +			of_node_put(tmp_np);
+> +			return;
+> +		}
+>  
+> -	/*
+> -	 * Don't create links to "early devices" that won't have struct devices
+> -	 * created for them.
+> -	 */
+> -	sup_dev = get_dev_from_fwnode(&sup_np->fwnode);
+> -	if (!sup_dev &&
+> -	    (of_node_check_flag(sup_np, OF_POPULATED) ||
+> -	     sup_np->fwnode.flags & FWNODE_FLAG_NOT_DEVICE)) {
+> -		pr_debug("Not linking %pOFP to %pOFP - No struct device\n",
+> -			 con_np, sup_np);
+> -		of_node_put(sup_np);
+> -		return -ENODEV;
+> +		tmp_np = of_get_next_parent(tmp_np);
+>  	}
+> -	put_device(sup_dev);
+>  
+>  	fwnode_link_add(of_fwnode_handle(con_np), of_fwnode_handle(sup_np));
 
-Yes it is, "reverse xmas tree" local variable ordering:
-https://elixir.bootlin.com/linux/v6.2-rc6/source/Documentation/process/maintainer-netdev.rst#L272
+fwnode_link_add() returns int. Why is the return type of this function
+changed to void?
 
-Gr{oetje,eeting}s,
+> -	of_node_put(sup_np);
+> -
+> -	return 0;
+>  }
+>  
+>  /**
 
-                        Geert
+-- 
+Regards,
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Sakari Ailus
