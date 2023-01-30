@@ -2,102 +2,137 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C64D6819DB
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 20:07:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9FA5681A05
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 20:11:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236102AbjA3THb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Jan 2023 14:07:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38204 "EHLO
+        id S229887AbjA3TLx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Jan 2023 14:11:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236432AbjA3THa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 14:07:30 -0500
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A397538B5C;
-        Mon, 30 Jan 2023 11:07:28 -0800 (PST)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
- id e536acd3fe07cf94; Mon, 30 Jan 2023 20:07:26 +0100
-Received: from kreacher.localnet (unknown [213.134.169.112])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 246EA2528287;
-        Mon, 30 Jan 2023 20:07:26 +0100 (CET)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux PM <linux-pm@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc:     Zhang Rui <rui.zhang@intel.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        David Box <david.e.box@linux.intel.com>
-Subject: [PATCH v1 8/8] thermal: intel: intel_pch: Refer to thermal zone name directly
-Date:   Mon, 30 Jan 2023 20:07:17 +0100
-Message-ID: <837557782.0ifERbkFSE@kreacher>
-In-Reply-To: <1751684.VLH7GnMWUR@kreacher>
-References: <1751684.VLH7GnMWUR@kreacher>
+        with ESMTP id S236693AbjA3TLw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 14:11:52 -0500
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5930313D61;
+        Mon, 30 Jan 2023 11:11:48 -0800 (PST)
+Received: by mail-ej1-f41.google.com with SMTP id kt14so34822095ejc.3;
+        Mon, 30 Jan 2023 11:11:48 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eU65rRYM52Gc5N9gkV6nZZxQJLE3/bOxD/7FlWwA6u4=;
+        b=pHaTVlx5yrjQK1EqEUb+qTVX3jJ87y0PTPwKSR1fuQuYGvdu9txYFauFQYaQ0V+ImT
+         OxNeYK2BpvdPbY8ivcBcKZelLk3tPqNfZwvT4F4qgTMSr6LN/fFuorCHqurNCLRP0dPX
+         WyPf06od6Q6/2Z2jL5pWK2ZUhFq4hVMpBf69OW+gTUy5BTaY2TwWKaYDwN8bFOB3vVCt
+         u7zOKPlbO7JMkKh4ApjCdGevE4TpFfzSOvf33095AHagOIYv6fArEr7Zdf9PP4azUPlb
+         LRFcpaGb9Il+PkbcTYRUqwihmRPg3QeJlD8k9zaRR2qa/WWeasGX7CPo49eqikjRz923
+         oAow==
+X-Gm-Message-State: AO0yUKXH0mMifVZ7nQsVEx6AKxLuOqy2V8MTFqO0jiPCgmNBZT/R1oRV
+        swtC05SSOxftkyJyNJ5vE75nRSQ9uiRX3+7GpcE=
+X-Google-Smtp-Source: AK7set+Xu6B/4xzytt/Jz5draCvC7NhSMfDYO18XJfe49e1baxtM0KT9xIySxJqmB0gOmJA1MuBhQ/KrwoQqqYxa/7A=
+X-Received: by 2002:a17:906:1dcd:b0:87f:575a:9b67 with SMTP id
+ v13-20020a1709061dcd00b0087f575a9b67mr2806864ejh.274.1675105906763; Mon, 30
+ Jan 2023 11:11:46 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+References: <20230130182225.2471414-1-sunilvl@ventanamicro.com>
+In-Reply-To: <20230130182225.2471414-1-sunilvl@ventanamicro.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 30 Jan 2023 20:11:35 +0100
+Message-ID: <CAJZ5v0g218rmTM+ra-vP6qcj7OFzDSBwd4ei9H2fPjhuFsXXrA@mail.gmail.com>
+Subject: Re: [PATCH 00/24] Add basic ACPI support for RISC-V
+To:     Sunil V L <sunilvl@ventanamicro.com>
+Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        Anup Patel <apatel@ventanamicro.com>,
+        Andrew Jones <ajones@ventanamicro.com>,
+        Atish Patra <atishp@rivosinc.com>
 Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.169.112
-X-CLIENT-HOSTNAME: 213.134.169.112
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrudefvddguddvfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvffeuiedtgfdvtddugeeujedtffetteegfeekffdvfedttddtuefhgeefvdejhfenucfkphepvddufedrudefgedrudeiledrudduvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrdduieelrdduuddvpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeeipdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdho
- rhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhhiugdrvgdrsghogieslhhinhhugidrihhnthgvlhdrtghomh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Mon, Jan 30, 2023 at 7:22 PM Sunil V L <sunilvl@ventanamicro.com> wrote:
+>
+> This patch series enables the basic ACPI infrastructure for RISC-V.
+> Supporting external interrupt controllers is in progress and hence it is
+> tested using polling based HVC SBI console and RAM disk.
+>
+> The series depends on Anup's IPI improvement series.
+> https://github.com/avpatel/linux/commits/riscv_ipi_imp_v17
+>
+> These changes are available at
+> https://github.com/vlsunil/linux/commits/acpi_b1_us_review_ipi17
+>
+> Testing:
+> 1) Build Qemu with ACPI support using below branch
+> https://github.com/vlsunil/qemu/tree/acpi_b1_us_review
+>
+> 2) Build EDK2 as per instructions in
+> https://github.com/vlsunil/riscv-uefi-edk2-docs/wiki/RISC-V-Qemu-Virt-support
+>
+> 3) Build Linux after enabling SBI HVC and SBI earlycon
+> CONFIG_RISCV_SBI_V01=y
+> CONFIG_SERIAL_EARLYCON_RISCV_SBI=y
+> CONFIG_HVC_RISCV_SBI=y
+>
+> 4) Build buildroot.
+>
+> Run with below command.
+> qemu-system-riscv64   -nographic \
+> -drive file=Build/RiscVVirtQemu/RELEASE_GCC5/FV/RISCV_VIRT.fd,if=pflash,format=raw,unit=1 \
+> -machine virt,acpi=on -smp 16 -m 2G \
+> -kernel arch/riscv/boot/Image \
+> -initrd buildroot/output/images/rootfs.cpio \
+> -append "root=/dev/ram ro console=hvc0 earlycon=sbi"
+>
+> Jisheng Zhang (1):
+>   riscv: move sbi_init() earlier before jump_label_init()
+>
+> Sunil V L (23):
+>   ACPICA: MADT: Add RISC-V INTC interrupt controller
+>   ACPICA: Add structure definitions for RISC-V RHCT
+>   RISC-V: ACPI: Add empty headers to enable ACPI core
+>   RISC-V: ACPI: Add basic functions to build ACPI core
+>   RISC-V: ACPI: Add PCI functions to build ACPI core
+>   RISC-V: ACPI: Enable ACPI build infrastructure
+>   ACPI: Enable ACPI_PROCESSOR for RISC-V
+>   ACPI: OSL: Make should_use_kmap() 0 for RISC-V.
+>   ACPI: processor_core: RISC-V: Enable mapping processor to the hartid
+>   RISC-V: ACPI: irqchip/riscv-intc: Add ACPI support
+>   RISC-V: ACPI: smpboot: Create wrapper smp_setup()
+>   RISC-V: ACPI: smpboot: Add ACPI support in smp_setup()
+>   RISC-V: ACPI: smpboot: Add function to retrieve the hartid
+>   clocksource/timer-riscv: Refactor riscv_timer_init_dt()
+>   RISC-V: ACPI: clocksource/timer-riscv: Add ACPI support
+>   ACPI: RISC-V: drivers/acpi: Add RHCT related code
+>   RISC-V: ACPI: time.c: Add ACPI support for time_init()
+>   RISC-V: ACPI: cpufeature: Add ACPI support in riscv_fill_hwcap()
+>   RISC-V: ACPI: cpu: Enable cpuinfo for ACPI systems
+>   RISC-V: ACPI: Add ACPI initialization in setup_arch()
+>   RISC-V: ACPI: Enable ACPI in defconfig
+>   MAINTAINERS: Add entry for drivers/acpi/riscv
+>   Documentation/kernel-parameters.txt: Add RISC-V for ACPI parameter
 
-Make intel_pch_thermal_probe() use a const char pointer instead of
-a struct board_info one for accessing the thermal zone name.
+The series looks fine to me from the ACPI perspective, so please feel
+free to add
 
-No intentional functional impact.
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
+to it and route it via RISC-V.
 
-BTW, Srinivas, I'm wondering if user space would be terribly confused by
-changing this driver to use "Intel PCH" as the thermal zone name of all
-of the supported platforms?
-
----
- drivers/thermal/intel/intel_pch_thermal.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-Index: linux-pm/drivers/thermal/intel/intel_pch_thermal.c
-===================================================================
---- linux-pm.orig/drivers/thermal/intel/intel_pch_thermal.c
-+++ linux-pm/drivers/thermal/intel/intel_pch_thermal.c
-@@ -175,7 +175,7 @@ static int intel_pch_thermal_probe(struc
- 				   const struct pci_device_id *id)
- {
- 	enum pch_board_ids board_id = id->driver_data;
--	const struct board_info *bi = &board_info[board_id];
-+	const char *zone_name = board_info[board_id].name;
- 	struct pch_thermal_device *ptd;
- 	u16 trip_temp;
- 	int nr_trips;
-@@ -249,12 +249,12 @@ read_trips:
- 
- 	nr_trips += pch_wpt_add_acpi_psv_trip(ptd, nr_trips);
- 
--	ptd->tzd = thermal_zone_device_register_with_trips(bi->name, ptd->trips,
-+	ptd->tzd = thermal_zone_device_register_with_trips(zone_name, ptd->trips,
- 							   nr_trips, 0, ptd,
- 							   &tzd_ops, NULL, 0, 0);
- 	if (IS_ERR(ptd->tzd)) {
- 		dev_err(&pdev->dev, "Failed to register thermal zone %s\n",
--			bi->name);
-+			zone_name);
- 		err = PTR_ERR(ptd->tzd);
- 		goto error_cleanup;
- 	}
-
-
-
+Thanks!
