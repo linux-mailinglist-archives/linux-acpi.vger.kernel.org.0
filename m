@@ -2,145 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9670A6814EA
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 16:24:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B84F768154B
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 16:41:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237906AbjA3PYD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Jan 2023 10:24:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39518 "EHLO
+        id S236389AbjA3Pls (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Jan 2023 10:41:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237048AbjA3PYC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 10:24:02 -0500
-Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7CA5CDC6;
-        Mon, 30 Jan 2023 07:24:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1675092242; x=1706628242;
-  h=from:to:cc:subject:references:date:in-reply-to:
-   message-id:mime-version;
-  bh=A66cVsR4HyfnWSdDHQxAKiNNCa+Rl3FGTfIyI72znt8=;
-  b=fP9vMw+p8s6Fn9j7yKe31G17TdgxUXSUl4YEFdfdUl7Fe2MMr7dPWFY8
-   N8BwMFDswu8D73Z66AWMDQ94YJk6aMjE7meeYwOlyEtFZP4LMDy6RbkRg
-   N3Fld6iykXyEuJLot1nI/TDs1rexP5Z1dgN7DXj02oTU3kbR3wdURTUGO
-   k=;
-X-IronPort-AV: E=Sophos;i="5.97,258,1669075200"; 
-   d="scan'208";a="305617471"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-pdx-2c-m6i4x-e7094f15.us-west-2.amazon.com) ([10.25.36.210])
-  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2023 15:23:55 +0000
-Received: from EX13MTAUWA001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
-        by email-inbound-relay-pdx-2c-m6i4x-e7094f15.us-west-2.amazon.com (Postfix) with ESMTPS id 8EB0B42420;
-        Mon, 30 Jan 2023 15:23:54 +0000 (UTC)
-Received: from EX19D031UWA002.ant.amazon.com (10.13.139.96) by
- EX13MTAUWA001.ant.amazon.com (10.43.160.58) with Microsoft SMTP Server (TLS)
- id 15.0.1497.45; Mon, 30 Jan 2023 15:23:54 +0000
-Received: from EX13MTAUWA001.ant.amazon.com (10.43.160.58) by
- EX19D031UWA002.ant.amazon.com (10.13.139.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.1118.24; Mon, 30 Jan 2023 15:23:53 +0000
-Received: from dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com (10.15.11.255)
- by mail-relay.amazon.com (10.43.160.118) with Microsoft SMTP Server id
- 15.0.1497.45 via Frontend Transport; Mon, 30 Jan 2023 15:23:53 +0000
-Received: by dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com (Postfix, from userid 23027615)
-        id 1C57120D6D; Mon, 30 Jan 2023 16:23:52 +0100 (CET)
-From:   Pratyush Yadav <ptyadav@amazon.de>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-CC:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: Re: [PATCH v2 1/3] ACPI: processor: perflib: Use the "no limit"
- frequency QoS
-References: <12138067.O9o76ZdvQC@kreacher> <12124970.O9o76ZdvQC@kreacher>
-        <mafs0sfgybc3q.fsf_-_@amazon.de>
-        <CAJZ5v0hAjKvinPqX2VuCv1jVu50jrnDpECaO=sA2CQZFHZpJdA@mail.gmail.com>
-        <mafs0zga0ds30.fsf_-_@amazon.de>
-        <CAJZ5v0j1CBe7Hjhg7Tzm3HkuinA9zgtPffMtd96ZaOds=US+xQ@mail.gmail.com>
-Date:   Mon, 30 Jan 2023 16:23:51 +0100
-In-Reply-To: <CAJZ5v0j1CBe7Hjhg7Tzm3HkuinA9zgtPffMtd96ZaOds=US+xQ@mail.gmail.com>       (Rafael
- J. Wysocki's message of "Mon, 30 Jan 2023 15:58:47 +0100")
-Message-ID: <mafs0v8kodp14.fsf_-_@amazon.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
+        with ESMTP id S236328AbjA3Plq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 10:41:46 -0500
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 117043EC5D;
+        Mon, 30 Jan 2023 07:41:44 -0800 (PST)
+Received: by mail-ej1-f48.google.com with SMTP id ml19so9368545ejb.0;
+        Mon, 30 Jan 2023 07:41:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tzK5NqKm3YGWaIvnBzWYA/xJ8EpQYLnwL3Kv6C4EQRs=;
+        b=2NhmgOgCNfrlV5oxvosWIHkKBDelStCfFH29A3w2H9uC7NDZa86fFTOeHq0iyehoqo
+         CMg1Gwi/WkRpISxgrnpjfruNyJ63ZSEG1nRTlX2O24h6uVID8dQxw5T7CKkl1fNWGJTQ
+         /xFb3CKrpbhv5lv+4+PATvyTb+gCzM0SOkd/ufGo60f0j+jBUeHa8/B5N3O+MDCS3U5f
+         HsU9DtDveWB7/EMdzUxtYFppXcXFch6E1zKPGSqtYbjfeNMf6DL0sIFke4zdEQd97Zbc
+         XtMcWpF/rZsOTcaIrCPfEG9X/cDNkWCrp+Yq7qHOgkR5QmzUIfm8JIDThi0SUOuSVt6R
+         pBzA==
+X-Gm-Message-State: AFqh2kofreNqZtvblVBOp8Y+R8b3YTHQeDpAqrpCDeMLV1EKSjNWcxW4
+        l5/M6oiiUj/hFB6+pc7pYbX1/ttApmNo7KnG/Z4=
+X-Google-Smtp-Source: AMrXdXup4ZFmnsvF3CqvSnQBC+tvG7tCgOvxCSkysOzOqqw5ESl0oBKd/akdoyYq1hiGG5Y5yBkkDQtXgKpqxNnaMCw=
+X-Received: by 2002:a17:906:60c8:b0:877:612e:517e with SMTP id
+ f8-20020a17090660c800b00877612e517emr6882689ejk.152.1675093302603; Mon, 30
+ Jan 2023 07:41:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230118063504.58026-1-xueshuai@linux.alibaba.com>
+ <SJ1PR11MB60831C602B33D51DC6E604E6FCC79@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <202e4635-5233-9588-6c5e-ac61d280a431@linux.alibaba.com>
+In-Reply-To: <202e4635-5233-9588-6c5e-ac61d280a431@linux.alibaba.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 30 Jan 2023 16:41:31 +0100
+Message-ID: <CAJZ5v0hJ=XVVyw-feraYmTkGKeis7wrxDehtHOYuRSPUzYrSHA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: APEI: EINJ: Limit error type to 32-bit width
+To:     Shuai Xue <xueshuai@linux.alibaba.com>
+Cc:     "Luck, Tony" <tony.luck@intel.com>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "bp@alien8.de" <bp@alien8.de>, "lenb@kernel.org" <lenb@kernel.org>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "jaylu102@amd.com" <jaylu102@amd.com>,
+        "benjamin.cheatham@amd.com" <benjamin.cheatham@amd.com>,
+        "Williams, Dan J" <dan.j.williams@intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+        "zhuo.song@linux.alibaba.com" <zhuo.song@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
-
-On Mon, Jan 30 2023, Rafael J. Wysocki wrote:
-> On Mon, Jan 30, 2023 at 3:18 PM Pratyush Yadav <ptyadav@amazon.de> wrote:
->>
->> Hi Rafael,
->>
->> On Thu, Dec 29 2022, Rafael J. Wysocki wrote:
->>
->> > On Thu, Dec 29, 2022 at 1:58 PM Pratyush Yadav <ptyadav@amazon.de> wrote:
->> >>
->> >> Hi Rafael,
->> >>
->> >> On Wed, Dec 28 2022, Rafael J. Wysocki wrote:
->> >> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->> >> >
->> >> > When _PPC returns 0, it means that the CPU frequency is not limited by
->> >> > the platform firmware, so make acpi_processor_get_platform_limit()
->> >> > update the frequency QoS request used by it to "no limit" in that case.
->> >> >
->> >> > This addresses a problem with limiting CPU frequency artificially on
->> >> > some systems after CPU offline/online to the frequency that corresponds
->> >> > to the first entry in the _PSS return package.
->> >> >
->> >> > Reported-by: Pratyush Yadav <ptyadav@amazon.de>
->> >> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->> >> > ---
->> [...]
->> >>
->> >> One small thing I noticed: in acpi_processor_ppc_init() "no limit" value
->> >> is set to INT_MAX and here it is set to FREQ_QOS_MAX_DEFAULT_VALUE. Both
->> >> should evaluate to the same value but I think it would be nice if the
->> >> same thing is used in both places. Perhaps you can fix that up when
->> >> applying?
->> >
->> > Yes, I'll do that.
->>
->> Following up on this series. I do not see it queued anywhere in the
->> linux-pm [0] tree. I would like to have this in the v6.3 merge window if
->> possible.
->>
->> [0] https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/
+On Thu, Jan 19, 2023 at 3:10 AM Shuai Xue <xueshuai@linux.alibaba.com> wrote:
 >
-> It's already in the mainline:
 >
-> e8a0e30b742f cpufreq: intel_pstate: Drop ACPI _PSS states table patching
-> 99387b016022 ACPI: processor: perflib: Avoid updating frequency QoS
-> unnecessarily
-> c02d5feb6e2f ACPI: processor: perflib: Use the "no limit" frequency QoS
+>
+> On 2023/1/19 AM12:37, Luck, Tony wrote:
+> >> The bit map of error types to inject is 32-bit width[1]. Add parameter
+> >> check to reflect the fact.
+> >>
+> >> [1] ACPI Specification 6.4, Section 18.6.4. Error Types
+> >>
+> >> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+> >
+> > Reviewed-by: Tony Luck <tony.luck@intel.com>
 
-Hmm, I skimmed through the git log and did not spot any of these. Seems
-like they were buried deeper in the logs due to merges. I can see them
-now. My bad.
-
--- 
-Regards,
-Pratyush Yadav
-
-
-
-Amazon Development Center Germany GmbH
-Krausenstr. 38
-10117 Berlin
-Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
-Sitz: Berlin
-Ust-ID: DE 289 237 879
-
-
-
+Applied as 6.3 material, thanks!
