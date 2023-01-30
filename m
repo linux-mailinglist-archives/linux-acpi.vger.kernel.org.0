@@ -2,82 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FA9D681F59
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Jan 2023 00:05:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 643C4681F6E
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Jan 2023 00:11:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230484AbjA3XF2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Jan 2023 18:05:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34402 "EHLO
+        id S229787AbjA3XLb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Jan 2023 18:11:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231844AbjA3XFH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 18:05:07 -0500
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92D0A234E6
-        for <linux-acpi@vger.kernel.org>; Mon, 30 Jan 2023 15:04:41 -0800 (PST)
-Received: by mail-pf1-x429.google.com with SMTP id a184so8966831pfa.9
-        for <linux-acpi@vger.kernel.org>; Mon, 30 Jan 2023 15:04:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=XdRC0OQkVR/ozB2hiuV32F6DVYjFM4/FcPLtjobz0Ao=;
-        b=KOIq9/jg3JX30yP8DPF9fmoHorPXLFxGtJPT1u5/kXCZ5Wt5bPI2asmD8niO9Kzx+M
-         xD/Gkd6Ql+W1ToFWl1AuhlyUhj1fMctfmUim7NRt+qXh55vestjQDdPLLcSGEPJx9aky
-         Q+jvP4IwoUr4OHtvt4ktlLD1cyo68+qD6H4pAKGW0w5OP+zvDrbdEQnKhUjkm/S22wc4
-         akUuTDIFYfeQ2UrLpFV4v7imYvCH2IP1HOrolUZ2yeLXBvcaC1R46c7+F7T0cBHs06qs
-         xvuwskMX+c+nWA7TqLVpnNKGR758TXg/Bh5hX5Ymehm0ObyejY5rxX4TLNZYqIQIfSem
-         Epsw==
+        with ESMTP id S230058AbjA3XLa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 18:11:30 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF08316AE7
+        for <linux-acpi@vger.kernel.org>; Mon, 30 Jan 2023 15:10:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1675120238;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=p+K8e/zfLN4jZoxJoefnBbSYk/h9sMX4+P4UDlH6in4=;
+        b=H91EZjtd+lk6Jju/7S+zG6ONG2LSQ5dKnNvpNeb0plDB/cOEGUcn/qRtzjYSx7nDgVptGl
+        Yd8LE9ElO768DUrnCfnZbdn2DYAIBwoNV+JpjwzbrNNqcMIUqwmemtRXAj1vDLYJCkpX0M
+        diN0QVoDSsMYdrQUkbLFU6Xd/MKNLGE=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-510-rokcNdD4NEazG4NjeLtesg-1; Mon, 30 Jan 2023 18:10:36 -0500
+X-MC-Unique: rokcNdD4NEazG4NjeLtesg-1
+Received: by mail-qt1-f198.google.com with SMTP id p6-20020a05622a048600b003b9a3ab9153so1109718qtx.8
+        for <linux-acpi@vger.kernel.org>; Mon, 30 Jan 2023 15:10:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XdRC0OQkVR/ozB2hiuV32F6DVYjFM4/FcPLtjobz0Ao=;
-        b=wYs/JMveY+SOLlJIq32QOnTp5D7ijRINOAoLiwo6x4C8DxufFDSKqzZKXz6Iy398/W
-         bs301I6ekyXQHS5HNaIkz+i1PGpB+xf7T5AtfxGKbpveOTpzQ5ldxF44oyc/HrmaeQXs
-         wBCwQ6xCpswKTLOeumrBDFUTWN9djGbHzHUJZk6jot22INOZch2f9KeckyrAT9HkEjK9
-         gFeWIWM/MO+oghBAnDP6upt1uiraDRHF/hLP/gDE4vFjgWhUSy9mYsP37TkitKcrGjUy
-         VmBlh7Dp8zP/C2S64ir56ica2ugWS6x1nRwyFdd/u3yIWeCq2CnGZZ6Quvrf2jxtTDMt
-         r/CA==
-X-Gm-Message-State: AFqh2kqRU6P3E1S9P8zLu74hLEctnydZq4IGUcBxh4MeuTI8tGqetl9Y
-        DB2ngWwK0TaLIZBfhzt4kDojYHcDZ9om4Wc0FwGBAw==
-X-Google-Smtp-Source: AMrXdXu78ZNBFwh1Hdz7MGXxBugR+lKveWyplrZS/KbJUqwTgyFF8mtvAlEh8NiqWf32qu8rg8xqReGWQy5C+y8rEGM=
-X-Received: by 2002:aa7:820f:0:b0:58d:a713:d1dd with SMTP id
- k15-20020aa7820f000000b0058da713d1ddmr6673321pfi.59.1675119815929; Mon, 30
- Jan 2023 15:03:35 -0800 (PST)
-MIME-Version: 1.0
-References: <20230127001141.407071-1-saravanak@google.com> <20230130085542.38546-1-naresh.kamboju@linaro.org>
-In-Reply-To: <20230130085542.38546-1-naresh.kamboju@linaro.org>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Mon, 30 Jan 2023 15:03:01 -0800
-Message-ID: <CAGETcx_411fVxsM-ZMK7j2Bvkmi2TKPbzSuD+03M3cb7WKHfJw@mail.gmail.com>
-Subject: Re: [PATCH v2 00/11] fw_devlink improvements
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc:     abel.vesa@linaro.org, alexander.stein@ew.tq-group.com,
-        andriy.shevchenko@linux.intel.com, bigunclemax@gmail.com,
-        brgl@bgdev.pl, colin.foster@in-advantage.com,
-        cristian.marussi@arm.com, devicetree@vger.kernel.org,
-        dianders@chromium.org, djrscally@gmail.com,
-        dmitry.baryshkov@linaro.org, festevam@gmail.com, fido_max@inbox.ru,
-        frowand.list@gmail.com, geert+renesas@glider.be,
-        geert@linux-m68k.org, gregkh@linuxfoundation.org,
-        heikki.krogerus@linux.intel.com, jpb@kernel.org,
-        jstultz@google.com, kernel-team@android.com, kernel@pengutronix.de,
-        lenb@kernel.org, linus.walleij@linaro.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-imx@nxp.com,
-        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux@roeck-us.net, lkft@linaro.org, luca.weiss@fairphone.com,
-        magnus.damm@gmail.com, martin.kepplinger@puri.sm, maz@kernel.org,
-        miquel.raynal@bootlin.com, rafael@kernel.org, robh+dt@kernel.org,
-        s.hauer@pengutronix.de, sakari.ailus@linux.intel.com,
-        shawnguo@kernel.org, sudeep.holla@arm.com, tglx@linutronix.de,
-        tony@atomide.com
+        h=mime-version:user-agent:content-transfer-encoding:organization
+         :references:in-reply-to:date:cc:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=p+K8e/zfLN4jZoxJoefnBbSYk/h9sMX4+P4UDlH6in4=;
+        b=5VPvALEcPIg2+BMqV/TR78zLQGT06UFTj8Zs9toEsNie5jWCCvwfBTRkX8Ew5TkH90
+         Z5tpD7OvFGaAVTJ8mHGuCFBWECud44HoK5FquGgwE8ugbRBsxqm3S//wFwkwCXp7OZ0x
+         z44zVkfXjRAkxHdOMZgfK+zs9Uxd8eUF41fGRpV4Vu1+nMyqyzaBT+vG8TOAADCUWekp
+         lY0UFqi+JgSsdtta6n3BIDMidPxylT7nmZRXbjFS9nr1CgOkGYrMojC4Bz994HdnwDPF
+         aSWjxWv8VbrIrjlaloWbrr1skqle9q9OUnTEUh+2fmjEJ0rNTCv+IUXdKI6c8eAKSZmd
+         16LQ==
+X-Gm-Message-State: AO0yUKWAzmIRvYj5WQeBTJhdKCN8p1ysaoQMYHYDtW9RJlRpjGIRFvE5
+        JNKPJdhnHB3CVkrtJsWiXYASLlWjTwIlMWaWQGMRdN88to0/opctbWwaSONagLxZUoAgL0AEfpK
+        qYVktFOj5qjOx1AlcsVnBpQ==
+X-Received: by 2002:a05:622a:180e:b0:3b4:2b61:da32 with SMTP id t14-20020a05622a180e00b003b42b61da32mr15365919qtc.59.1675120235966;
+        Mon, 30 Jan 2023 15:10:35 -0800 (PST)
+X-Google-Smtp-Source: AK7set89917aaMWXfx8H2M6z2jsMBTb17FVp8nR3WX9yHmkqkhPUzBHVr8SFkLh0Wpt7DzxdggBhnA==
+X-Received: by 2002:a05:622a:180e:b0:3b4:2b61:da32 with SMTP id t14-20020a05622a180e00b003b42b61da32mr15365872qtc.59.1675120235657;
+        Mon, 30 Jan 2023 15:10:35 -0800 (PST)
+Received: from ?IPv6:2600:4040:5c68:6800::feb? ([2600:4040:5c68:6800::feb])
+        by smtp.gmail.com with ESMTPSA id k22-20020a05620a139600b0071f17af8733sm2954494qki.64.2023.01.30.15.10.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Jan 2023 15:10:35 -0800 (PST)
+Message-ID: <e620862840bcac9dcd46dd63e247966424af060f.camel@redhat.com>
+Subject: Re: [PATCH v9 0/9] Register Type-C mode-switch in DP bridge
+ endpoints
+From:   Lyude Paul <lyude@redhat.com>
+To:     Pin-yen Lin <treapking@chromium.org>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <robert.foss@linaro.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>
+Cc:     Hsin-Yi Wang <hsinyi@chromium.org>,
+        dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
+        Stephen Boyd <swboyd@chromium.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Xin Ji <xji@analogixsemi.com>, linux-acpi@vger.kernel.org,
+        devicetree@vger.kernel.org, chrome-platform@lists.linux.dev,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Allen Chen <allen.chen@ite.com.tw>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        =?ISO-8859-1?Q?N=EDcolas?= "F . R . A . Prado" 
+        <nfraprado@collabora.com>, linux-kernel@vger.kernel.org,
+        Douglas Anderson <dianders@chromium.org>,
+        Imre Deak <imre.deak@intel.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Jim Cromie <jim.cromie@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Ville =?ISO-8859-1?Q?Syrj=E4l=E4?= 
+        <ville.syrjala@linux.intel.com>
+Date:   Mon, 30 Jan 2023 18:10:33 -0500
+In-Reply-To: <20230109084101.265664-1-treapking@chromium.org>
+References: <20230109084101.265664-1-treapking@chromium.org>
+Organization: Red Hat Inc.
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -85,26 +118,95 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 30, 2023 at 12:56 AM Naresh Kamboju
-<naresh.kamboju@linaro.org> wrote:
->
-> Build test pass on arm, arm64, i386, mips, parisc, powerpc, riscv, s390, sh,
-> sparc and x86_64.
->
-> Boot and LTP smoke pass on qemu-arm64, qemu-armv7, qemu-i386 and qemu-x86_64.
-> Boot failed on FVP.
->
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
->
-> Please refer following link for details of testing.
-> FVP boot log failed.
-> https://qa-reports.linaro.org/~anders.roxell/linux-mainline-patches/build/lore_kernel_org_linux-devicetree_20230127001141_407071-1-saravanak_google_com/testrun/14389034/suite/boot/test/gcc-12-lkftconfig-64k_page_size/details/
+Don't know if this still needs reviews from me (feel free to respond if it
+does!), but I wanted to say nice work! This is something I've wanted to see
+added to DRM for a while =E2=99=A5
 
-Sudeep pointed me to what the issue might be. But it's strange that
-you are hitting an issue now. I'm pretty sure I haven't changed this
-part since v1. I'd also expect the limited assumptions I made to have
-not been affected between v1 and v2.
 
-Anyway, I'll look at this and fix it in v3.
+On Mon, 2023-01-09 at 16:40 +0800, Pin-yen Lin wrote:
+> This series introduces bindings for anx7625/it6505 to register Type-C
+> mode-switch in their output endpoints, and use data-lanes property to
+> describe the pin connections.
+>=20
+> The first two patch modifies fwnode_graph_devcon_matches and
+> cros_typec_init_ports to enable the registration of the switches.
+>=20
+> Patch 4~6 introduce the bindings for anx7625 and the corresponding driver
+> modifications.
+>=20
+> Patch 7~9 add similar bindings and driver changes for it6505.
+>=20
+> v7: https://lore.kernel.org/all/20230105132457.4125372-1-treapking@chromi=
+um.org/
+> v6: https://lore.kernel.org/all/20221124102056.393220-1-treapking@chromiu=
+m.org/
+> v5: https://lore.kernel.org/linux-usb/20220622173605.1168416-1-pmalani@ch=
+romium.org/
+>=20
+> Changes in v9:
+> - Collected Reviewed-by tag
+> - Fixed subject prefix again
+> - Changed the naming of the example node for it6505
+>=20
+> Changes in v8:
+> - Fixed the build issue when CONFIG_TYPEC=3Dm
+> - Fixed some style issues
+> - Fixed the subject prefixes for the bindings patch
+> - Fixed the bindings for data-lanes properties
+>=20
+> Changes in v7:
+> - Fix the long comment lines
+> - Extracted the common codes to a helper function
+> - Fixed style issues in anx7625 driver
+> - Removed DT property validation in anx7625 driver.
+> - Fixed style issues in it6505 driver
+> - Removed the redundant sleep in it6505 driver
+> - Removed DT property validation in it6505 driver
+> - Rebased to drm-misc-next
+> - Fixed indentations in bindings patches
+> - Added a new patch to fix indentations in Kconfig
+>=20
+> Changes in v6:
+> - Changed it6505_typec_mux_set callback function to accommodate with
+>   the latest drm-misc patches
+> - Changed the driver implementation to accommodate with the new binding
+> - Dropped typec-switch binding and use endpoints and data-lanes propertie=
+s
+>   to describe the pin connections
+> - Added new patches (patch 1,2,4) to fix probing issues
+> - Changed the bindings of it6505/anx7625 and modified the drivers
+>   accordingly
+> - Merged it6505/anx7625 driver changes into a single patch
+>=20
+> Pin-yen Lin (7):
+>   drm/display: Add Type-C switch helpers
+>   dt-bindings: display: bridge: anx7625: Add mode-switch support
+>   drm/bridge: anx7625: Check for Type-C during panel registration
+>   drm/bridge: anx7625: Register Type C mode switches
+>   dt-bindings: display: bridge: it6505: Add mode-switch support
+>   drm/bridge: it6505: Fix Kconfig indentation
+>   drm/bridge: it6505: Register Type C mode switches
+>=20
+> Prashant Malani (2):
+>   device property: Add remote endpoint to devcon matcher
+>   platform/chrome: cros_ec_typec: Purge blocking switch devlinks
+>=20
+>  .../display/bridge/analogix,anx7625.yaml      |  99 ++++++++++++-
+>  .../bindings/display/bridge/ite,it6505.yaml   |  93 ++++++++++--
+>  drivers/base/property.c                       |  15 ++
+>  drivers/gpu/drm/bridge/Kconfig                |  21 +--
+>  drivers/gpu/drm/bridge/analogix/Kconfig       |   1 +
+>  drivers/gpu/drm/bridge/analogix/anx7625.c     | 101 +++++++++++++-
+>  drivers/gpu/drm/bridge/analogix/anx7625.h     |  13 ++
+>  drivers/gpu/drm/bridge/ite-it6505.c           | 119 +++++++++++++++-
+>  drivers/gpu/drm/display/drm_dp_helper.c       | 132 ++++++++++++++++++
+>  drivers/platform/chrome/cros_ec_typec.c       |  10 ++
+>  include/drm/display/drm_dp_helper.h           |  16 +++
+>  11 files changed, 591 insertions(+), 29 deletions(-)
+>=20
 
--Saravana
+--=20
+Cheers,
+ Lyude Paul (she/her)
+ Software Engineer at Red Hat
+
