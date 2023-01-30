@@ -2,173 +2,171 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD036681B01
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 21:00:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC1CB681C8A
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 22:18:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236242AbjA3UAu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Jan 2023 15:00:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50096 "EHLO
+        id S229456AbjA3VSi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Jan 2023 16:18:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236321AbjA3UAt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 15:00:49 -0500
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3E9A45F6C
-        for <linux-acpi@vger.kernel.org>; Mon, 30 Jan 2023 12:00:47 -0800 (PST)
-Received: by mail-pj1-x1031.google.com with SMTP id n20-20020a17090aab9400b00229ca6a4636so16722368pjq.0
-        for <linux-acpi@vger.kernel.org>; Mon, 30 Jan 2023 12:00:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=oYPPhRQH7ubPQanie/vKOvvHKXQgtOiqcTGLviBDhmA=;
-        b=VuIJDnbFxTUIxWa8L1VWYdb9MI+Uw4XrbLFKat84mMs9afmGaZW62Y8sKNZY5LBIF4
-         +Ul6XxbH/vm/jWs4c0ZPc3jWE3uAo28avKQqTO/OylcU85C+pB8xolsbJyGsGs/rL36V
-         ZSGY0QiNRBwyMe6LPf8vVH/qahQuHtl7YMtCVevzTZ34CA2joFRibts3ttJxVgZaxcTx
-         l/FqMCCgujpobwNcfJfN4c6OBuaJYFlasSYS1viKL0qQV/M1/KYatfFCLgEyymahIMwl
-         4hVV55hFljOlpo+yPWWpOYotAjaJ3htnES4ajEtyGZ/W45QNCPKfgFhg3OCpw5z0Gfbg
-         1ESw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oYPPhRQH7ubPQanie/vKOvvHKXQgtOiqcTGLviBDhmA=;
-        b=lZfecl8XuRgjB5lWcTVl5+dYAplcTrP/kXKirgkc5Bmcnh6kLAI8as5LDYcqHLxABX
-         415DhcNFC+fKIkIb64nevfOeBOz5bOE+sD1x0Nk2/M4tfa2qwBFa0O3XtWmOMlVgeDZ1
-         0Ma2i3WjDth+XC7FJN1aBzEPZBUhYcB+ZG/QogFVsy4PBTA/mmpMt69pG7x9+UR2CbCP
-         reaLHuQt6fu+p2C40ptB+nEGyUzqC+Q0aBoNvAeVoI6kDaPm6om0BV6B/ZntogrSIzw6
-         D9jxZC3V1zRXixgr3DtxHUNsPbUF09ZmlBBsP+c1RVUmOc+WAa4pQ2ijHGTnEwkGhE4v
-         hnAw==
-X-Gm-Message-State: AO0yUKUlQoLIlqbFu3Hobq0SI4rx26/1zKHT3XoVgKRxJ3TvT8sTkXzJ
-        nn1pHEGiEOavRtA/YF4v1QqQ5sCnXbU5UknGJ91P3g==
-X-Google-Smtp-Source: AK7set+H0YyjCWkJd7M+yIj4eRkqAmXNub+KUOd2n+yHCGliVqKml+ieu+Re/d5tqMId+oQWqascMv0yHsacweeoFCU=
-X-Received: by 2002:a17:902:d64d:b0:196:7c6e:eb8d with SMTP id
- y13-20020a170902d64d00b001967c6eeb8dmr912246plh.12.1675108846782; Mon, 30 Jan
- 2023 12:00:46 -0800 (PST)
+        with ESMTP id S230035AbjA3VSh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 16:18:37 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C89AB3608E;
+        Mon, 30 Jan 2023 13:18:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675113516; x=1706649516;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=qe+WmYJgRNGkTMxI0SNXZg1RIUYyuZL/j/KynyoRHnQ=;
+  b=A8jbAVU1MLjLtnRrkP8QjwwrqApMnp2Uj4FrZs6pElIr2LUppHi9Zgdx
+   4Pu5bL8Cr8ZYz8BZJd1091719f46N4BXv66P3/vK2zeFux7jqnnzh9Ush
+   puperYYiKiNLg5Im1wNvis/bSDG+Ztx2WT4loFY1lrfWKZaATyhWh5lDm
+   GZ3vn9SVEMofon0uO7PaDIoiqWgqTVHqOVxem1hpbJ/9Er5zzduyQ7Etb
+   EBK+9bgTMVqKnhbS1Cdd1nWOeLf3jqV6Er7b+faKBC/gI4Idow8eQU/Jw
+   OcPqieobkU7fRgVmcTj280opYk3c1I/Gj9IjsAoL/IzQtywKYPkQTHnNe
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10606"; a="327695641"
+X-IronPort-AV: E=Sophos;i="5.97,259,1669104000"; 
+   d="scan'208";a="327695641"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2023 13:18:35 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10606"; a="788167665"
+X-IronPort-AV: E=Sophos;i="5.97,259,1669104000"; 
+   d="scan'208";a="788167665"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2023 13:18:33 -0800
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+        by kekkonen.fi.intel.com (Postfix) with SMTP id C3FC21202B0;
+        Mon, 30 Jan 2023 23:18:30 +0200 (EET)
+Date:   Mon, 30 Jan 2023 23:18:30 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
+        rafael@kernel.org, heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH v3 2/8] ACPI: property: Parse _CRS CSI-2 descriptor
+Message-ID: <Y9g0JvBWvn9Rsi7Q@kekkonen.localdomain>
+References: <20230125224101.401285-1-sakari.ailus@linux.intel.com>
+ <20230125224101.401285-3-sakari.ailus@linux.intel.com>
+ <Y9Oip7cLqWgdzKry@smile.fi.intel.com>
 MIME-Version: 1.0
-References: <20230127001141.407071-1-saravanak@google.com> <20230127001141.407071-4-saravanak@google.com>
- <CAMuHMdV4B49OM7S-UAxJtfAR8OvG_-S526fGnTA+t+-orytrTw@mail.gmail.com>
- <CAGETcx9EXkbAfEX6pBL84DBr3SEwiJe7N4xh91TspLn8CwZ+LQ@mail.gmail.com> <CAMuHMdUFeSim2gvmiBuPbAajbK6ybh67gBmbLLqRhG1T5+v0JA@mail.gmail.com>
-In-Reply-To: <CAMuHMdUFeSim2gvmiBuPbAajbK6ybh67gBmbLLqRhG1T5+v0JA@mail.gmail.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Mon, 30 Jan 2023 12:00:10 -0800
-Message-ID: <CAGETcx-TSrjFnmxV02TMaGN6Au4f9SuLgzjMPOqAOTqx_bqLhA@mail.gmail.com>
-Subject: Re: [PATCH v2 03/11] soc: renesas: Move away from using OF_POPULATED
- for fw_devlink
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Len Brown <lenb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux Kernel Functional Testing <lkft@linaro.org>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Abel Vesa <abel.vesa@linaro.org>,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        John Stultz <jstultz@google.com>,
-        Doug Anderson <dianders@chromium.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Maxim Kiselev <bigunclemax@gmail.com>,
-        Maxim Kochetkov <fido_max@inbox.ru>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Colin Foster <colin.foster@in-advantage.com>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Jean-Philippe Brucker <jpb@kernel.org>,
-        kernel-team@android.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y9Oip7cLqWgdzKry@smile.fi.intel.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 30, 2023 at 12:43 AM Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
->
-> Hi Saravana,
->
-> On Sat, Jan 28, 2023 at 8:19 AM Saravana Kannan <saravanak@google.com> wrote:
-> > On Fri, Jan 27, 2023 at 12:11 AM Geert Uytterhoeven
-> > <geert@linux-m68k.org> wrote:
-> > > On Fri, Jan 27, 2023 at 1:11 AM Saravana Kannan <saravanak@google.com> wrote:
-> > > > The OF_POPULATED flag was set to let fw_devlink know that the device
-> > > > tree node will not have a struct device created for it. This information
-> > > > is used by fw_devlink to avoid deferring the probe of consumers of this
-> > > > device tree node.
-> > > >
-> > > > Let's use fwnode_dev_initialized() instead because it achieves the same
-> > > > effect without using OF specific flags. This allows more generic code to
-> > > > be written in driver core.
-> > > >
-> > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > >
-> > > Thanks for your patch!
-> > >
-> > > > --- a/drivers/soc/renesas/rcar-sysc.c
-> > > > +++ b/drivers/soc/renesas/rcar-sysc.c
-> > > > @@ -437,7 +437,7 @@ static int __init rcar_sysc_pd_init(void)
-> > > >
-> > > >         error = of_genpd_add_provider_onecell(np, &domains->onecell_data);
-> > > >         if (!error)
-> > > > -               of_node_set_flag(np, OF_POPULATED);
-> > > > +               fwnode_dev_initialized(&np->fwnode, true);
-> > >
-> > > As drivers/soc/renesas/rmobile-sysc.c is already using this method,
-> > > it should work fine.
-> > >
-> > > Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > > i.e. will queue in renesas-devel for v6.4.
+Hi Andy,
 
-I hope you meant queue it up for 6.3 and not 6.4?
+Thank you for the review.
 
-> >
-> > Thanks! Does that mean I should drop this from this series? If two
-> > maintainers pick the same patch up, will it cause problems? I'm
-> > eventually expecting this series to be picked up by Greg into
-> > driver-core-next.
->
-> Indeed. Patches for drivers/soc/renesas/ are supposed to go upstream
-> through the renesas-devel and soc trees. This patch has no dependencies
-> on anything else in the series (or vice versa), so there is no reason
-> to deviate from that, and possibly cause conflicts later.
+On Fri, Jan 27, 2023 at 12:08:39PM +0200, Andy Shevchenko wrote:
+> On Thu, Jan 26, 2023 at 12:40:55AM +0200, Sakari Ailus wrote:
+> > Parse newly added ACPI _CRS CSI-2 descriptor for CSI-2 and camera
+> > configuration. For now, only figure out where the descriptor is present in
+> > order to allow adding information from it to related devices.
+> 
+> ...
+> 
+> > +	if (status != AE_OK) {
+> 
+> ACPI_FAILURE()
 
-This series is supposed to fix a bunch of issues and I vaguely think
-the series depends on this patch to work correctly on some Renesas
-systems. You are my main renesas person, so it's probably some issue
-you hit. Is you pick it up outside of this series I need to keep
-asking folks to pick up two different patch threads. I don't have a
-strong opinion, just a FYI. If you can take this patch soon, I don't
-have any concerns.
+Yes.
 
-> BTW, I will convert to of_node_to_fwnode() while applying.
+> 
+> > +		acpi_handle_warn(inst_context->handle,
+> > +				 "cannot get handle for %s\n",
+> > +				 csi2->resource_source.string_ptr);
+> > +		return AE_OK;
+> > +	}
+> 
+> ...
+> 
+> > +	struct scan_check_crs_csi2_context inst_context = {
+> > +		.handle = handle,
+> > +		.res_list = LIST_HEAD_INIT(inst_context.res_list),
+> > +	};
+> > +	struct list_head *list = context;
+> > +	struct crs_csi2 *csi2;
+> 
+> > +	INIT_LIST_HEAD(&inst_context.res_list);
+> 
+> Do you still need this?
 
-Sounds good.
+Oops. Forgot to remove it, I'll do in v4.
 
--Saravana
+> 
+> ...
+> 
+> > +	acpi_walk_resources(handle, METHOD_NAME__CRS,
+> > +			    scan_check_crs_csi2_instance, &inst_context);
+> > +
+> > +	if (list_empty(&inst_context.res_list))
+> > +		return AE_OK;
+> 
+> I'm wondering if you can utilize acpi_dev_get_resources().
+
+We don't have an acpi_device yet. I'd rather keep scanning for _CRS CSI2
+resources here, as we'd otherwise have to split creating acpi_device's and
+registering them into two.
+
+I'd say if someone had implemented this like that, I'd ask them to change
+it.
+
+> 
+> ...
+> 
+> > +	/* Collect the devices that have a _CRS CSI-2 resource */
+> > +	acpi_walk_namespace(ACPI_TYPE_DEVICE, handle, ACPI_UINT32_MAX,
+> 
+> Other serial buses limit the DEPTH by 32, why do we need more here?
+
+I'm using the same value as for scanning devices to be added. Effectively
+this is not a practical limit but it doesn't need to be.
+
+> 
+> > +			    scan_check_crs_csi2, NULL, &crs_csi2_handles, NULL);
+> 
+> ...
+> 
+> > +	sort(handle_refs, handle_count, sizeof(*handle_refs), crs_handle_cmp,
+> > +	     NULL);
+> 
+> A single line?
+
+Can do...
+
+> 
+> ...
+> 
+> > +		if (check_mul_overflow(sizeof(*ads->ports) +
+> > +				       sizeof(*ads->nodes) * 2 +
+> > +				       sizeof(*ads->nodeptrs) * 2,
+> > +				       (size_t)this_count, &alloc_size) ||
+> 
+> So, now you know why this_count can't be type of size_t?
+
+Forgot to change this one, thanks!
+
+> 
+> > +		    check_add_overflow(sizeof(*ads) + sizeof(*ads->nodes) +
+> > +				       sizeof(*ads->nodeptrs) * 2,
+> > +				       alloc_size, &alloc_size)) {
+> > +			acpi_handle_warn(handle, "too many handles (%u)",
+> > +					 this_count);
+> > +			continue;
+> > +		}
+> 
+
+-- 
+Kind regards,
+
+Sakari Ailus
