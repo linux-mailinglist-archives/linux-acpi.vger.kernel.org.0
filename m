@@ -2,100 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A297F680D9C
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 13:29:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B057681246
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 15:19:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232776AbjA3M3V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Jan 2023 07:29:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56302 "EHLO
+        id S237630AbjA3OTo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Jan 2023 09:19:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231173AbjA3M3V (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 07:29:21 -0500
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B7872685F;
-        Mon, 30 Jan 2023 04:29:20 -0800 (PST)
-Received: by mail-ed1-f41.google.com with SMTP id m8so1545843edd.10;
-        Mon, 30 Jan 2023 04:29:20 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qCbcC/SCqrKNfyxz02Ndo4K5PjoPuepHRt3ZEc19gvc=;
-        b=mui2O7j4uHgWgkBmChAoCKPfjSyXWyG5poF7LeHVS347QRwVgQyEPGNtMunTV00+y6
-         r6ZJ7jEbJYs3Q4bkQT/PRz2XM7riPY1BlrN2JGmSzHOk83ogbcFDTTB19nDD0oO7E6q0
-         PNeLnkLmo0+GdLvnaQs13fI4DLl+7wVOfkCubc48U25wXdfGSzw/bWwGzQMGAVcY4H+K
-         Xj/RAl/fDa/hqzapRwJTX256d0xcOu4pXmVCQP3pdeMTGw6jpkY7tYtqqIq0xC5uzkTd
-         AyUYM03D81/p1i7cYQpOMXaoX68oFlEYsg9gD4k0/6T8aMGDy8YyWEdBv9FLB68fGS/e
-         4uiA==
-X-Gm-Message-State: AO0yUKXPYFtIkFZ1MFA1c1c14KAvkSVPK0lUit8b3dsWuiVZEfLuUIOb
-        VGZpG8MKyBj2DCwWB2UimtHXZVYqE5rlt0icTbA=
-X-Google-Smtp-Source: AK7set+I7yl7/pgKbZGIlh6IPE69HDCVB3m1cGgNYMwHGcwBhRzt5XFl7PuIsnxrSPwcYYiSM6RRp9wRkvnfo6FX4L4=
-X-Received: by 2002:a05:6402:845:b0:4a2:56e7:178 with SMTP id
- b5-20020a056402084500b004a256e70178mr460794edz.58.1675081758611; Mon, 30 Jan
- 2023 04:29:18 -0800 (PST)
+        with ESMTP id S237635AbjA3OTU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 09:19:20 -0500
+Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43F5C3B0EE;
+        Mon, 30 Jan 2023 06:18:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
+  t=1675088298; x=1706624298;
+  h=from:to:cc:subject:references:date:in-reply-to:
+   message-id:mime-version;
+  bh=C5oru7Dbvy/1R6SKKLx3znkVOYm2h1iV1BR520o60ms=;
+  b=R3O7ERFqbE/QrrXsxdwb80zo+aP0HTnq9h/Zh+1xUfKdtHNoF99m7DYb
+   mIe7tNReN7St8wmr8GhPhhpjC5Yvh2E71CTY3EIQsnYkTGAoa6gqG/2Dm
+   IXua7jEaKqyuIqD9Ph2e7gxRNfg5WxRMyexU9dCLW7X5akVIzLRMGes1D
+   U=;
+X-IronPort-AV: E=Sophos;i="5.97,258,1669075200"; 
+   d="scan'208";a="293479665"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-iad-1e-m6i4x-0aba4706.us-east-1.amazon.com) ([10.43.8.2])
+  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2023 14:18:02 +0000
+Received: from EX13MTAUEE002.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
+        by email-inbound-relay-iad-1e-m6i4x-0aba4706.us-east-1.amazon.com (Postfix) with ESMTPS id 6FE4FAC40E;
+        Mon, 30 Jan 2023 14:17:59 +0000 (UTC)
+Received: from EX19D014UEC003.ant.amazon.com (10.252.135.249) by
+ EX13MTAUEE002.ant.amazon.com (10.43.62.24) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.45; Mon, 30 Jan 2023 14:17:55 +0000
+Received: from EX13MTAUEE002.ant.amazon.com (10.43.62.24) by
+ EX19D014UEC003.ant.amazon.com (10.252.135.249) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1118.24;
+ Mon, 30 Jan 2023 14:17:55 +0000
+Received: from dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com (10.15.11.255)
+ by mail-relay.amazon.com (10.43.62.224) with Microsoft SMTP Server id
+ 15.0.1497.45 via Frontend Transport; Mon, 30 Jan 2023 14:17:55 +0000
+Received: by dev-dsk-ptyadav-1c-37607b33.eu-west-1.amazon.com (Postfix, from userid 23027615)
+        id 34AC120D34; Mon, 30 Jan 2023 15:17:55 +0100 (CET)
+From:   Pratyush Yadav <ptyadav@amazon.de>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+CC:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Subject: Re: [PATCH v2 1/3] ACPI: processor: perflib: Use the "no limit"
+ frequency QoS
+References: <12138067.O9o76ZdvQC@kreacher> <12124970.O9o76ZdvQC@kreacher>
+        <mafs0sfgybc3q.fsf_-_@amazon.de>
+        <CAJZ5v0hAjKvinPqX2VuCv1jVu50jrnDpECaO=sA2CQZFHZpJdA@mail.gmail.com>
+Date:   Mon, 30 Jan 2023 15:17:55 +0100
+In-Reply-To: <CAJZ5v0hAjKvinPqX2VuCv1jVu50jrnDpECaO=sA2CQZFHZpJdA@mail.gmail.com>       (Rafael
+ J. Wysocki's message of "Thu, 29 Dec 2022 20:26:07 +0100")
+Message-ID: <mafs0zga0ds30.fsf_-_@amazon.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
 MIME-Version: 1.0
-References: <20230119142115.38260-1-W_Armin@gmx.de> <8e3ddde5-87aa-a72a-dcfa-5a6041377b15@gmx.de>
-In-Reply-To: <8e3ddde5-87aa-a72a-dcfa-5a6041377b15@gmx.de>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 30 Jan 2023 13:29:02 +0100
-Message-ID: <CAJZ5v0jkN_Qi+DNmQvbk+bRKfGkgZOvwLmYEujpn9d47TMSrng@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] ACPI: battery: Fix various string handling issues
-To:     Armin Wolf <W_Armin@gmx.de>
-Cc:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 30, 2023 at 10:14 AM Armin Wolf <W_Armin@gmx.de> wrote:
->
-> Am 19.01.23 um 15:21 schrieb Armin Wolf:
->
-> > On my Dell Inspiron 3505, the battery model name was displayed
-> > differently than when running Windows. While i first suspected an
-> > ACPI issue, it turned out that the real reason was the ACPI battery
-> > driver failing to handle strings larger than 32 bytes.
-> >
-> > This caused the model name of the battery (35 bytes long, hex string)
-> > to miss proper NUL-termination, resulting in a buffer overread later.
-> > Luckily, a valid string was stored right after the now invalid string,
-> > appending only the battery serial number to the original model name.
-> >
-> > The first patch fixes a potential buffer overread then handling buffers,
-> > while the second patch finally increases the maximum string length to
-> > avoid truncating such larger strings.
-> >
-> > The patch series was tested on a Dell Inspiron 3505 and appears
-> > to work properly.
->
-> Are there any outstanding issues with the patch series which need
-> to be fixed for mainline inclusion?
+Hi Rafael,
 
-I'll have a look shortly and let you know.
+On Thu, Dec 29 2022, Rafael J. Wysocki wrote:
 
-Thanks!
+> On Thu, Dec 29, 2022 at 1:58 PM Pratyush Yadav <ptyadav@amazon.de> wrote:
+>>
+>> Hi Rafael,
+>>
+>> On Wed, Dec 28 2022, Rafael J. Wysocki wrote:
+>> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>> >
+>> > When _PPC returns 0, it means that the CPU frequency is not limited by
+>> > the platform firmware, so make acpi_processor_get_platform_limit()
+>> > update the frequency QoS request used by it to "no limit" in that case.
+>> >
+>> > This addresses a problem with limiting CPU frequency artificially on
+>> > some systems after CPU offline/online to the frequency that corresponds
+>> > to the first entry in the _PSS return package.
+>> >
+>> > Reported-by: Pratyush Yadav <ptyadav@amazon.de>
+>> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>> > ---
+[...]
+>>
+>> One small thing I noticed: in acpi_processor_ppc_init() "no limit" value
+>> is set to INT_MAX and here it is set to FREQ_QOS_MAX_DEFAULT_VALUE. Both
+>> should evaluate to the same value but I think it would be nice if the
+>> same thing is used in both places. Perhaps you can fix that up when
+>> applying?
+>
+> Yes, I'll do that.
 
-> > ---
-> > Changes in v2:
-> > - Drop first patch since it was already applied
-> > - combine the second and third patch
-> > - do not replace 0 with '\0'
-> > - spell ACPI in capitals
-> > - rework the buffer length hdanling
-> >
-> > Armin Wolf (2):
-> >    ACPI: battery: Fix buffer overread if not NUL-terminated
-> >    ACPI: battery: Increase maximum string length
-> >
-> >   drivers/acpi/battery.c | 35 +++++++++++++++++++++++------------
-> >   1 file changed, 23 insertions(+), 12 deletions(-)
-> >
-> > --
+Following up on this series. I do not see it queued anywhere in the
+linux-pm [0] tree. I would like to have this in the v6.3 merge window if
+possible.
+
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/
+
+-- 
+Regards,
+Pratyush Yadav
+
+
+
+Amazon Development Center Germany GmbH
+Krausenstr. 38
+10117 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
+Sitz: Berlin
+Ust-ID: DE 289 237 879
+
+
+
