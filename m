@@ -2,227 +2,186 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2676680B3E
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 11:49:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4757680B43
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 11:49:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236019AbjA3KtA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Jan 2023 05:49:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40958 "EHLO
+        id S236137AbjA3KtT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Jan 2023 05:49:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236026AbjA3Ks5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 05:48:57 -0500
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::224])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BE5C2E0E7;
-        Mon, 30 Jan 2023 02:48:54 -0800 (PST)
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id D390DE0017;
-        Mon, 30 Jan 2023 10:48:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1675075732;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=YzHSMHv3dQqwmrI3sIIweVUhA59SIPhf3LtT2+gMqwo=;
-        b=MQEW+BWX07JMZKyk7WxIMNMKaml7A1vMbtjmGrh6EPmaJiv2WJRTQE06Ze6pOiCsOClePO
-        exJH0V47FbkEzh/tXaUIsD6FeIdhx08yME4jZfjovH9zJk4vlXfnWUfBh4e38r+Is+QZGc
-        83XnM7EpMzE28GXCmGX7PavPiIuUoNVTh4xSrkeQWeAVsrMYCd0XE24fv3YIP89J2duoiA
-        XtfC0nU3RTq2vmjkpzrLpAKKFUlMYBpWl5WArV87flGN+O/lcdfS+nivatQ7y95vo/8YKW
-        uxkn4gifipv2t7q8OUR/lbJEEdcUT2FgIQSxHiiqiDNNJGBpMPphBsrmrJJGBw==
-Date:   Mon, 30 Jan 2023 11:48:39 +0100
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Len Brown <lenb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux Kernel Functional Testing <lkft@linaro.org>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Abel Vesa <abel.vesa@linaro.org>,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        John Stultz <jstultz@google.com>,
-        Doug Anderson <dianders@chromium.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Maxim Kiselev <bigunclemax@gmail.com>,
-        Maxim Kochetkov <fido_max@inbox.ru>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Colin Foster <colin.foster@in-advantage.com>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Jean-Philippe Brucker <jpb@kernel.org>,
-        kernel-team@android.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-acpi@vger.kernel.org
+        with ESMTP id S236129AbjA3KtP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 05:49:15 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB46F30E8B;
+        Mon, 30 Jan 2023 02:49:12 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 145B760F1F;
+        Mon, 30 Jan 2023 10:49:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6FFC433D2;
+        Mon, 30 Jan 2023 10:49:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675075751;
+        bh=wCu0zevkwF5n8KQD6jAt1pkBKCPzPzPbWvTExkh/QQM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=pQ3VOZEn2aYW6E9PfhkAi9z7TyHlR5qe3jcekvvPt8GgeMg2QImdSeKRJj+q6Oy+p
+         0DU28ix1eGi5KSioZYVv8IHIl/5cPXchDDhsnZZ6Xe81MTmV5ceBeKtFnFmb3BT26J
+         iYpfBQFzBAsz7NRoZjyEBKN69inTzEHXICbFAnliEUY+FC2glIL1MDEF+luHu36ta8
+         wvWhb0c7HfiY9XJNdGxt+9wP3ZTA3MAok5Qk9XRcoxdvOe6MyEki/YBamVtyN9zFCZ
+         vh1SIOxT0VL8ljlbdopj5W7WMNESASq0tpBd/g4d1V3ADHAo8tszlsAoFupyZf6AKt
+         j38nD/WjKDM1w==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <maz@kernel.org>)
+        id 1pMRim-005nJE-Kj;
+        Mon, 30 Jan 2023 10:49:08 +0000
+Date:   Mon, 30 Jan 2023 10:49:04 +0000
+Message-ID: <86k0141en3.wl-maz@kernel.org>
+From:   Marc Zyngier <maz@kernel.org>
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc:     saravanak@google.com, abel.vesa@linaro.org,
+        alexander.stein@ew.tq-group.com, andriy.shevchenko@linux.intel.com,
+        bigunclemax@gmail.com, brgl@bgdev.pl,
+        colin.foster@in-advantage.com, cristian.marussi@arm.com,
+        devicetree@vger.kernel.org, dianders@chromium.org,
+        djrscally@gmail.com, dmitry.baryshkov@linaro.org,
+        festevam@gmail.com, fido_max@inbox.ru, frowand.list@gmail.com,
+        geert+renesas@glider.be, geert@linux-m68k.org,
+        gregkh@linuxfoundation.org, heikki.krogerus@linux.intel.com,
+        jpb@kernel.org, jstultz@google.com, kernel-team@android.com,
+        kernel@pengutronix.de, lenb@kernel.org, linus.walleij@linaro.org,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-gpio@vger.kernel.org, linux-imx@nxp.com,
+        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux@roeck-us.net, lkft@linaro.org, luca.weiss@fairphone.com,
+        magnus.damm@gmail.com, martin.kepplinger@puri.sm,
+        miquel.raynal@bootlin.com, rafael@kernel.org, robh+dt@kernel.org,
+        s.hauer@pengutronix.de, sakari.ailus@linux.intel.com,
+        shawnguo@kernel.org, sudeep.holla@arm.com, tglx@linutronix.de,
+        tony@atomide.com
 Subject: Re: [PATCH v2 00/11] fw_devlink improvements
-Message-ID: <20230130114839.379f08bd@xps-13>
-In-Reply-To: <20230127001141.407071-1-saravanak@google.com>
+In-Reply-To: <20230130085542.38546-1-naresh.kamboju@linaro.org>
 References: <20230127001141.407071-1-saravanak@google.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        <20230130085542.38546-1-naresh.kamboju@linaro.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: naresh.kamboju@linaro.org, saravanak@google.com, abel.vesa@linaro.org, alexander.stein@ew.tq-group.com, andriy.shevchenko@linux.intel.com, bigunclemax@gmail.com, brgl@bgdev.pl, colin.foster@in-advantage.com, cristian.marussi@arm.com, devicetree@vger.kernel.org, dianders@chromium.org, djrscally@gmail.com, dmitry.baryshkov@linaro.org, festevam@gmail.com, fido_max@inbox.ru, frowand.list@gmail.com, geert+renesas@glider.be, geert@linux-m68k.org, gregkh@linuxfoundation.org, heikki.krogerus@linux.intel.com, jpb@kernel.org, jstultz@google.com, kernel-team@android.com, kernel@pengutronix.de, lenb@kernel.org, linus.walleij@linaro.org, linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org, linux-imx@nxp.com, linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux@roeck-us.net, lkft@linaro.org, luca.weiss@fairphone.com, magnus.damm@gmail.com, martin.kepplinger@puri.sm, miquel.raynal@bootlin.com, rafael@kernel.org, robh+dt@k
+ ernel.org, s.hauer@pengutronix.de, sakari.ailus@linux.intel.com, shawnguo@kernel.org, sudeep.holla@arm.com, tglx@linutronix.de, tony@atomide.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Maxim & Maxim,
+On Mon, 30 Jan 2023 08:55:42 +0000,
+Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+> 
+> Build test pass on arm, arm64, i386, mips, parisc, powerpc, riscv, s390, sh,
+> sparc and x86_64.
+> 
+> Boot and LTP smoke pass on qemu-arm64, qemu-armv7, qemu-i386 and qemu-x86_64.
+> Boot failed on FVP.
+> 
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> 
+> Please refer following link for details of testing.
+> FVP boot log failed.
+> https://qa-reports.linaro.org/~anders.roxell/linux-mainline-patches/build/lore_kernel_org_linux-devicetree_20230127001141_407071-1-saravanak_google_com/testrun/14389034/suite/boot/test/gcc-12-lkftconfig-64k_page_size/details/
+> 
+> 
+> [    2.613437] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
+> [    2.613628] Mem abort info:
+> [    2.613756]   ESR = 0x0000000096000005
+> [    2.613904]   EC = 0x25: DABT (current EL), IL = 32 bits
+> [    2.614071]   SET = 0, FnV = 0
+> [    2.614215]   EA = 0, S1PTW = 0
+> [    2.614358]   FSC = 0x05: level 1 translation fault
+> [    2.614517] Data abort info:
+> [    2.614647]   ISV = 0, ISS = 0x00000005
+> [    2.614792]   CM = 0, WnR = 0
+> [    2.614934] [0000000000000010] user address but active_mm is swapper
+> [    2.615105] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+> [    2.615219] Modules linked in:
+> [    2.615310] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.2.0-rc5 #1
+> [    2.615445] Hardware name: FVP Base RevC (DT)
+> [    2.615533] pstate: 61400009 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+> [    2.615685] pc : gpiochip_setup_dev (include/linux/err.h:41 include/linux/fwnode.h:201 drivers/gpio/gpiolib.c:586) 
+> [    2.615816] lr : gpiochip_add_data_with_key (drivers/gpio/gpiolib.c:871) 
+> [    2.615970] sp : ffff8000081af5e0
+> [    2.616051] x29: ffff8000081af5e0 x28: 0000000000000000 x27: ffff0008027cb5a0
+> [    2.616261] x26: 0000000000000000 x25: ffffd7c5d6745910 x24: ffff0008027f4800
+> [    2.616472] x23: 0000000000000000 x22: ffffd7c5d62b99a8 x21: 0000000000000202
+> [    2.616679] x20: 0000000000000000 x19: ffff0008027f4800 x18: ffffffffffffffff
+> [    2.616890] x17: ffffd7c5d6467928 x16: 0000000013e3690a x15: ffff8000081af3b0
+> [    2.617102] x14: ffff00080275cd8a x13: ffff00080275cd88 x12: 0000000000000001
+> [    2.617312] x11: 62726568746f6d3a x10: 0000000000000000 x9 : ffffd7c5d3b3ebe0
+> [    2.617522] x8 : ffff8000081af548 x7 : 0000000000000000 x6 : 0000000000000001
+> [    2.617727] x5 : 0000000000000000 x4 : ffff000800640000 x3 : ffffd7c5d62b99c8
+> [    2.617933] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
+> [    2.618138] Call trace:
+> [    2.618204] gpiochip_setup_dev (include/linux/err.h:41 include/linux/fwnode.h:201 drivers/gpio/gpiolib.c:586) 
+> [    2.618337] gpiochip_add_data_with_key (drivers/gpio/gpiolib.c:871) 
+> [    2.618493] devm_gpiochip_add_data_with_key (drivers/gpio/gpiolib-devres.c:478) 
+> [    2.618654] bgpio_pdev_probe (drivers/gpio/gpio-mmio.c:793) 
+> [    2.618785] platform_probe (drivers/base/platform.c:1401) 
+> [    2.618928] really_probe (drivers/base/dd.c:560 drivers/base/dd.c:639) 
+> [    2.619056] __driver_probe_device (drivers/base/dd.c:778) 
+> [    2.619193] driver_probe_device (drivers/base/dd.c:808) 
+> [    2.619329] __device_attach_driver (drivers/base/dd.c:937) 
+> [    2.619464] bus_for_each_drv (drivers/base/bus.c:427) 
+> [    2.619590] __device_attach (drivers/base/dd.c:1010) 
+> [    2.619722] device_initial_probe (drivers/base/dd.c:1058) 
+> [    2.619861] bus_probe_device (drivers/base/bus.c:489) 
+> [    2.619988] device_add (drivers/base/core.c:3637) 
+> [    2.620102] platform_device_add (drivers/base/platform.c:717) 
+> [    2.620251] mfd_add_device (drivers/mfd/mfd-core.c:297) 
+> [    2.620397] devm_mfd_add_devices (drivers/mfd/mfd-core.c:351 drivers/mfd/mfd-core.c:449) 
+> [    2.620548] vexpress_sysreg_probe (drivers/mfd/vexpress-sysreg.c:115) 
+> [    2.620672] platform_probe (drivers/base/platform.c:1401) 
+> [    2.620814] really_probe (drivers/base/dd.c:560 drivers/base/dd.c:639) 
+> [    2.620940] __driver_probe_device (drivers/base/dd.c:778) 
+> [    2.621080] driver_probe_device (drivers/base/dd.c:808) 
+> [    2.621216] __driver_attach (drivers/base/dd.c:1195) 
+> [    2.621344] bus_for_each_dev (drivers/base/bus.c:301) 
+> [    2.621467] driver_attach (drivers/base/dd.c:1212) 
+> [    2.621596] bus_add_driver (drivers/base/bus.c:618) 
+> [    2.621720] driver_register (drivers/base/driver.c:246) 
+> [    2.621859] __platform_driver_register (drivers/base/platform.c:868) 
+> [    2.622012] vexpress_sysreg_driver_init (drivers/mfd/vexpress-sysreg.c:134) 
+> [    2.622145] do_one_initcall (init/main.c:1306) 
+> [    2.622269] kernel_init_freeable (init/main.c:1378 init/main.c:1395 init/main.c:1414 init/main.c:1634) 
+> [    2.622394] kernel_init (init/main.c:1526) 
+> [    2.622531] ret_from_fork (arch/arm64/kernel/entry.S:864) 
+> [ 2.622692] Code: 910003fd a90153f3 aa0003f3 f9414c00 (f9400801)
+> All code
+> ========
+>    0:*	fd                   	std    		<-- trapping instruction
+>    1:	03 00                	add    (%rax),%eax
+>    3:	91                   	xchg   %eax,%ecx
+>    4:	f3 53                	repz push %rbx
+>    6:	01 a9 f3 03 00 aa    	add    %ebp,-0x55fffc0d(%rcx)
+>    c:	00 4c 41 f9          	add    %cl,-0x7(%rcx,%rax,2)
+>   10:	01 08                	add    %ecx,(%rax)
+>   12:	40 f9                	rex stc
 
-saravanak@google.com wrote on Thu, 26 Jan 2023 16:11:27 -0800:
-
-> This patch series improves fw_devlink in the following ways:
->=20
-> 1. It no longer cares about a fwnode having a "compatible" property. It
->    figures this our more dynamically. The only expectation is that
->    fwnode that are converted to devices actually get probed by a driver
->    for the dependencies to be enforced correctly.
->=20
-> 2. Finer grained dependency tracking. fw_devlink will now create device
->    links from the consumer to the actual resource's device (if it has one,
->    Eg: gpio_device) instead of the parent supplier device. This improves
->    things like async suspend/resume ordering, potentially remove the need
->    for frameworks to create device links, more parallelized async probing,
->    and better sync_state() tracking.
->=20
-> 3. Handle hardware/software quirks where a child firmware node gets
->    populated as a device before its parent firmware node AND actually
->    supplies a non-optional resource to the parent firmware node's
->    device.
->=20
-> 4. Way more robust at cycle handling (see patch for the insane cases).
->=20
-> 5. Stops depending on OF_POPULATED to figure out some corner cases.
->=20
-> 6. Simplifies the work that needs to be done by the firmware specific
->    code.
->=20
-> Sorry it took a while to roll in the fixes I gave in the v1 series
-> thread[1] into a v2 series.
->=20
-> Since I didn't make any additional changes on top of what I already gave
-> in the v1 thread and Dmitry is very eager to get this series going, I'm
-> sending it out without testing locally. I already tested these patches a
-> few months ago as part of the v1 series. So I don't expect any major
-> issues. I'll test them again on my end in the next few days and will
-> report here if I actually find anything wrong.
->=20
-> Tony, Naresh, Abel, Sudeep, Geert,
->=20
-> I got the following reviewed by's and tested by's a few months back, but
-> it's been 5 months since I sent out v1. So I wasn't sure if it was okay
-> to include them in the v2 commits. Let me know if you are okay with this
-> being included in the commits and/or if you want to test this series
-> again.
->=20
-> Reviewed-by: Tony Lindgren <tony@atomide.com>
-> Tested-by: Tony Lindgren <tony@atomide.com>
-> Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-> Tested-by: Abel Vesa <abel.vesa@linaro.org>
-> Tested-by: Sudeep Holla <sudeep.holla@arm.com>
-> Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
->=20
-> Dmitry, Maxim(s), Miquel, Luca, Doug, Colin, Martin, Jean-Philippe,
->=20
-> I've Cc-ed you because I had pointed you to v1 of this series + the
-> patches in that thread at one point or another as a fix to some issue
-> you were facing. It'd appreciate it if you can test this series and
-> report any issues, or things it fixed and give Tested-bys.
-
-Maxim & Maxim I would really appreciate if you could validate that the
-original issue you had is solved with this version? I don't have any
-hardware suffering from this issue.
-
-> In addition, if you can also apply a revert of this series[2] and delete
-> driver_deferred_probe_check_state() from your tree and see if you hit
-> any issues and report them, that'd be great too! I'm pretty sure some of
-> you will hit issues with that. I want to fix those next and then
-> revert[2].
->=20
-> Thanks,
-> Saravana
->=20
-> [1] - https://lore.kernel.org/lkml/20220810060040.321697-1-saravanak@goog=
-le.com/
-> [2] - https://lore.kernel.org/lkml/20220819221616.2107893-1-saravanak@goo=
-gle.com/
-> [3] - https://lore.kernel.org/lkml/CAGETcx-JUV1nj8wBJrTPfyvM7=3DMre5j_vkV=
-mZojeiumUGG6QZQ@mail.gmail.com/
->=20
-> v1 -> v2:
-> - Fixed Patch 1 to handle a corner case discussed in [3].
-> - New patch 10 to handle "fsl,imx8mq-gpc" being initialized by 2 drivers.
-> - New patch 11 to add fw_devlink support for SCMI devices.
->=20
-> Cc: Abel Vesa <abel.vesa@linaro.org>
-> Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Cc: Tony Lindgren <tony@atomide.com>
-> Cc: Sudeep Holla <sudeep.holla@arm.com>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: John Stultz <jstultz@google.com>
-> Cc: Doug Anderson <dianders@chromium.org>
-> Cc: Guenter Roeck <linux@roeck-us.net>
-> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Cc: Maxim Kiselev <bigunclemax@gmail.com>
-> Cc: Maxim Kochetkov <fido_max@inbox.ru>
-> Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-> Cc: Luca Weiss <luca.weiss@fairphone.com>
-> Cc: Colin Foster <colin.foster@in-advantage.com>
-> Cc: Martin Kepplinger <martin.kepplinger@puri.sm>
-> Cc: Jean-Philippe Brucker <jpb@kernel.org>
->=20
-> Saravana Kannan (11):
->   driver core: fw_devlink: Don't purge child fwnode's consumer links
->   driver core: fw_devlink: Improve check for fwnode with no
->     device/driver
->   soc: renesas: Move away from using OF_POPULATED for fw_devlink
->   gpiolib: Clear the gpio_device's fwnode initialized flag before adding
->   driver core: fw_devlink: Add DL_FLAG_CYCLE support to device links
->   driver core: fw_devlink: Allow marking a fwnode link as being part of
->     a cycle
->   driver core: fw_devlink: Consolidate device link flag computation
->   driver core: fw_devlink: Make cycle detection more robust
->   of: property: Simplify of_link_to_phandle()
->   irqchip/irq-imx-gpcv2: Mark fwnode device as not initialized
->   firmware: arm_scmi: Set fwnode for the scmi_device
->=20
->  drivers/base/core.c             | 443 +++++++++++++++++++++-----------
->  drivers/firmware/arm_scmi/bus.c |   2 +
->  drivers/gpio/gpiolib.c          |   6 +
->  drivers/irqchip/irq-imx-gpcv2.c |   1 +
->  drivers/of/property.c           |  84 +-----
->  drivers/soc/imx/gpcv2.c         |   1 +
->  drivers/soc/renesas/rcar-sysc.c |   2 +-
->  include/linux/device.h          |   1 +
->  include/linux/fwnode.h          |  12 +-
->  9 files changed, 332 insertions(+), 220 deletions(-)
->=20
-
+Could you please fix your scripts so that they report something that
+matches the tested architecture? I like x86 asm as much as the next
+guy, but this is an arm64 crash... :-/
 
 Thanks,
-Miqu=C3=A8l
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
