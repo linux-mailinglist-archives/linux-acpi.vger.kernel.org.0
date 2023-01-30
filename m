@@ -2,86 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20C9768156E
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 16:46:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A35B681582
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jan 2023 16:49:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237520AbjA3PqJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Jan 2023 10:46:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56716 "EHLO
+        id S236792AbjA3Ptc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Jan 2023 10:49:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237369AbjA3Pp6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 10:45:58 -0500
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 930633FF0E;
-        Mon, 30 Jan 2023 07:45:43 -0800 (PST)
-Received: by mail-ej1-f44.google.com with SMTP id gr7so8358857ejb.5;
-        Mon, 30 Jan 2023 07:45:43 -0800 (PST)
+        with ESMTP id S237838AbjA3Ps6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 10:48:58 -0500
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 001EE86B6
+        for <linux-acpi@vger.kernel.org>; Mon, 30 Jan 2023 07:48:27 -0800 (PST)
+Received: by mail-ej1-f41.google.com with SMTP id m2so32523430ejb.8
+        for <linux-acpi@vger.kernel.org>; Mon, 30 Jan 2023 07:48:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0PvbEcYxraBBpiH7uTe+5RKHDm8u6Tluv0rEzDxAUZg=;
-        b=rT4QkrcAAG1zo2sYK1nW8k2vCLgR5nGF9j+ke9b5nxweTOgXIAl2cR+0SJ3OxutiFn
-         be11SqSymcjnxGxQ7IhpNrRLNLYJACo5SXku/RggiXOwuQhXvtJVo6/nM3WYeH1OwsgM
-         Y6SfzJN6XI8+GoFTdmFLfGxERbqvBjhby6mnrgDJ6YVoldVOPOvv0CpFr/T5kaQhU5yY
-         rYcJ7jgPR7Ru7S0IgnGxhAwGEB2N61Hm4d4NrtnWjty30LGFibhiY5/IWzRfgDv6X8u6
-         +cuj8in+ZSle2wKZfeSPeGmo8cICNtStp3eZb8oiurUZ4Ye1Ba1jUVxldrB9O3xeOCfT
-         sRLg==
-X-Gm-Message-State: AO0yUKUUR0ZBa3VxrM3dTINdFUEeqkxLRHT6cNnuoCWe1XNSNAZbxarN
-        yds/T9nqW8mx/qbJet5J8CzAzMxXDeI9WldYxJA=
-X-Google-Smtp-Source: AK7set/Ulxsu+qRUJPbaTJqX2uabotCXwgGrTXh+6Eaa/BktTHIkqHNwrMuGvW2EEEi21/g527R5TYsgKYhSzFKOiGo=
-X-Received: by 2002:a17:907:58d:b0:878:581b:63ee with SMTP id
- vw13-20020a170907058d00b00878581b63eemr3809440ejb.244.1675093542178; Mon, 30
- Jan 2023 07:45:42 -0800 (PST)
+        bh=46vggT4ysY52ow700PqHQbq3HZqyBdRX+kYILjdEfyo=;
+        b=7YBzA+xje2Vg6nUkSLzT92y0k7pIi4sF+p5XDivVd9jZpQBnZUEidG8M08pLbCKFKR
+         I4j9mZWgwJQuqBMzilMpDzKndojDsYWzFUWOaqRmA4+a1oreuHRSVL+ChRU1LOMV6gs2
+         /IQqd7PPIvOtznHspS/P2Ahr9xZ3AnXF96toH4K1yJGJ2YEw2pqe2VKhq6JVT1j4ezGr
+         2y8UzgtnUSFSxlpSwLQvr6adD1RREZo2GZyxltYIXviyi1KT88nVAVQMG+y5EFFBJKlt
+         SzupuUF6X7ZLrOHtCcbsqdrnrmCtMmnFom5TUtZvcCvLd8KwqE6GZYpD7ZseEBBvbOKS
+         Ro6g==
+X-Gm-Message-State: AFqh2krSHsK/4u0XCwpQismyFQXU85wAhUKKHtRWOOuCSCDAyGk7PGyl
+        eUSVBK8cgMW9bPhXUHXy3/LDb517CEtmTw452w4=
+X-Google-Smtp-Source: AMrXdXvhlcVflWSBL4SMktVTQo7Jn2b4lBNaK08IlYJsoLAD6KVn3Nil11QfIVF1BX3jgCd74dElKma4b4eRlrdOttE=
+X-Received: by 2002:a17:907:c928:b0:85e:4218:c011 with SMTP id
+ ui40-20020a170907c92800b0085e4218c011mr7416739ejc.258.1675093706592; Mon, 30
+ Jan 2023 07:48:26 -0800 (PST)
 MIME-Version: 1.0
-References: <20230119142115.38260-1-W_Armin@gmx.de> <8e3ddde5-87aa-a72a-dcfa-5a6041377b15@gmx.de>
- <CAJZ5v0jkN_Qi+DNmQvbk+bRKfGkgZOvwLmYEujpn9d47TMSrng@mail.gmail.com>
-In-Reply-To: <CAJZ5v0jkN_Qi+DNmQvbk+bRKfGkgZOvwLmYEujpn9d47TMSrng@mail.gmail.com>
+References: <20230125113811.53409-1-hdegoede@redhat.com>
+In-Reply-To: <20230125113811.53409-1-hdegoede@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 30 Jan 2023 16:45:30 +0100
-Message-ID: <CAJZ5v0h_4=CyjONaqpsC4fdVuu_zEZWDsLDXczkRdPQ=+hnkTw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] ACPI: battery: Fix various string handling issues
-To:     Armin Wolf <w_armin@gmx.de>
-Cc:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+Date:   Mon, 30 Jan 2023 16:48:15 +0100
+Message-ID: <CAJZ5v0jYx4Niqyfgju=S2GAoS+FG7yLcxxoPFde+=w0F28OUdQ@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: PMIC: Add comments with DSDT power opregion
+ field names
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 30, 2023 at 1:29 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+On Wed, Jan 25, 2023 at 12:38 PM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> On Mon, Jan 30, 2023 at 10:14 AM Armin Wolf <W_Armin@gmx.de> wrote:
-> >
-> > Am 19.01.23 um 15:21 schrieb Armin Wolf:
-> >
-> > > On my Dell Inspiron 3505, the battery model name was displayed
-> > > differently than when running Windows. While i first suspected an
-> > > ACPI issue, it turned out that the real reason was the ACPI battery
-> > > driver failing to handle strings larger than 32 bytes.
-> > >
-> > > This caused the model name of the battery (35 bytes long, hex string)
-> > > to miss proper NUL-termination, resulting in a buffer overread later.
-> > > Luckily, a valid string was stored right after the now invalid string,
-> > > appending only the battery serial number to the original model name.
-> > >
-> > > The first patch fixes a potential buffer overread then handling buffers,
-> > > while the second patch finally increases the maximum string length to
-> > > avoid truncating such larger strings.
-> > >
-> > > The patch series was tested on a Dell Inspiron 3505 and appears
-> > > to work properly.
-> >
-> > Are there any outstanding issues with the patch series which need
-> > to be fixed for mainline inclusion?
+> The DSDTs of CHT devices using the Dollar Cove TI PMIC, all use
+> LDO1 - LDO14 names for the DSDT power opregion field names.
 >
-> I'll have a look shortly and let you know.
+> Add comments with these fields to make it easier to see which PMIC
+> registers are being set by ACPI code using these.
+>
+> Note that LDO4 is missing and the mapped registers jump from 0x43
+> to 0x45 to match. This matches with how the fields are declared
+> in the DSDT where LDO4 is skipped too. Note there is no hole in
+> the field addresses, LDO4 is simply just not defined on either side.
+>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+> Changes in v2:
+> - s/LDO3/LDO4/ in the commit message, because I somehow go this
+>   wrong initially (thank you for catching this Andy)
+> ---
+>  drivers/acpi/pmic/intel_pmic_chtdc_ti.c | 26 ++++++++++++-------------
+>  1 file changed, 13 insertions(+), 13 deletions(-)
+>
+> diff --git a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
+> index 418eec523025..c84ef3d15181 100644
+> --- a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
+> +++ b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
+> @@ -20,19 +20,19 @@
+>  #define CHTDC_TI_GPADC         0x5a
+>
+>  static struct pmic_table chtdc_ti_power_table[] = {
+> -       { .address = 0x00, .reg = 0x41 },
+> -       { .address = 0x04, .reg = 0x42 },
+> -       { .address = 0x08, .reg = 0x43 },
+> -       { .address = 0x0c, .reg = 0x45 },
+> -       { .address = 0x10, .reg = 0x46 },
+> -       { .address = 0x14, .reg = 0x47 },
+> -       { .address = 0x18, .reg = 0x48 },
+> -       { .address = 0x1c, .reg = 0x49 },
+> -       { .address = 0x20, .reg = 0x4a },
+> -       { .address = 0x24, .reg = 0x4b },
+> -       { .address = 0x28, .reg = 0x4c },
+> -       { .address = 0x2c, .reg = 0x4d },
+> -       { .address = 0x30, .reg = 0x4e },
+> +       { .address = 0x00, .reg = 0x41 }, /* LDO1 */
+> +       { .address = 0x04, .reg = 0x42 }, /* LDO2 */
+> +       { .address = 0x08, .reg = 0x43 }, /* LDO3 */
+> +       { .address = 0x0c, .reg = 0x45 }, /* LDO5 */
+> +       { .address = 0x10, .reg = 0x46 }, /* LDO6 */
+> +       { .address = 0x14, .reg = 0x47 }, /* LDO7 */
+> +       { .address = 0x18, .reg = 0x48 }, /* LDO8 */
+> +       { .address = 0x1c, .reg = 0x49 }, /* LDO9 */
+> +       { .address = 0x20, .reg = 0x4a }, /* LD10 */
+> +       { .address = 0x24, .reg = 0x4b }, /* LD11 */
+> +       { .address = 0x28, .reg = 0x4c }, /* LD12 */
+> +       { .address = 0x2c, .reg = 0x4d }, /* LD13 */
+> +       { .address = 0x30, .reg = 0x4e }, /* LD14 */
+>  };
+>
+>  static struct pmic_table chtdc_ti_thermal_table[] = {
+> --
 
-I've queued up the patches for 6.3, thanks!
+Applied as 6.3 material, thanks!
