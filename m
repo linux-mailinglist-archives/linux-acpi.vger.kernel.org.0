@@ -2,55 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9359682744
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Jan 2023 09:47:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C61B1682864
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Jan 2023 10:13:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232090AbjAaIrH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 31 Jan 2023 03:47:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33864 "EHLO
+        id S232579AbjAaJNk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 31 Jan 2023 04:13:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230172AbjAaIqw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Jan 2023 03:46:52 -0500
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACD774B88A
-        for <linux-acpi@vger.kernel.org>; Tue, 31 Jan 2023 00:42:41 -0800 (PST)
-Received: by mail-pl1-x631.google.com with SMTP id 5so14370273plo.3
-        for <linux-acpi@vger.kernel.org>; Tue, 31 Jan 2023 00:42:41 -0800 (PST)
+        with ESMTP id S232511AbjAaJNV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Jan 2023 04:13:21 -0500
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE0674E521
+        for <linux-acpi@vger.kernel.org>; Tue, 31 Jan 2023 01:11:13 -0800 (PST)
+Received: by mail-pg1-x52a.google.com with SMTP id d10so9557715pgm.13
+        for <linux-acpi@vger.kernel.org>; Tue, 31 Jan 2023 01:11:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ventanamicro.com; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ARSqzITLXBgBgKXOXaBzTznpHHClJvtQ0GMIZieUXhk=;
-        b=NG4bXOsXt/J3qkvlabr4QEliZMMvxYhxRDdDb7ES2Lri3vzuL69Aci/0/UtE9kd9Zt
-         nFDzUetjHjHybSdI7eNAKYgx5bq0GTqgvKh9C2Ox6xlQc1qwp8m39TtEf166CRFItG2R
-         N/iuvJwOJAlDky3OuCjHT2/MFSpP5DDXIm+KVF/KFQlyNggkekRJqX4c6sEalbQOWP5l
-         n7VvTJ0yisYwsUtrVs8nIcHTONLxSdH/o6qRo2u1kxwLaahB8THkyOfbv9RJW0TiwHz+
-         1hFxlexNIyyJzoK6n88BHTz4/tLJo9wYPRWPOUVh95MG+XVunx52UmSCJP86KEeDANAl
-         7OBg==
+        bh=+G7LKm94Gh8IveRXkVxzmqetNifcC6zGcwfVmKZiIxU=;
+        b=eqXSbhCEC9s02q8nHxUEus2+H/2Y0rvRKIp9bmt9yZfTuOssg1+p7nndjt2NON5wIW
+         0/xDxXb9svWhNEqPLB2Rkr2XW12YJIgZLHJUxwc0oD+YaTcloroWP2GQkUwK+y+rcFij
+         yzwEDLuRbzZv/qbhS6M4i67X+ja+AFpECod3dAEHZNGXfwqFJdUtRuZEqhVKkIh/jbTc
+         u5WZQInCjtsSmScQ182N0Rn8PUceGOmZ46ulxNvHkMWH9xtNpDxiA8fFGaKzebqxW9LB
+         KgY3T9Sy1JDPUittTemk7HZycvL7LywHjj+jk2cmQYG6Qc22WgvPMX58TH4Hixxm7rrQ
+         6aJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ARSqzITLXBgBgKXOXaBzTznpHHClJvtQ0GMIZieUXhk=;
-        b=tMKCp5AlcMp+Ug8UEtdHGBxiu+YoKDAOI65O96zeng4bKu4/P3S+0R/fajt+6go40O
-         Kcdiu4J/+mN2W/atrCr2H0STtTuzXVMXu3mvGqNv5DbtRU20AIRhXR6PjA8+CURxPatX
-         hMgxni4y10HDl/RCi2vGXQdOdU01QcFfcBm7IuKuIsEkefhBwLTLETRtiiNfRWXtP/Xw
-         UqX5x4eJnkHuXb/UIcvjCmluzcGUPsXHU4BhrLmLbhVc8RUhEvpR6M7gBv1LuPU9eJlz
-         OWeamM4gT5+7WEZiKX9PfQnoRHsJqT7xGkK9wu5YSyK9r9r0uAxwYAQUR7MZsXNno0Du
-         U1JQ==
-X-Gm-Message-State: AFqh2kqt4ubq66p5Zbm8xCZjGTqFRe6nnk58j4XSwN8AAmem1FVavIEG
-        8x1ZETPAA6zzExEIoamhC/Ard3sTzvjrHEBb
-X-Google-Smtp-Source: AMrXdXvDWtXgsitMeIdZoasXXSOSj70rH/aFeCaP2XDbmUOEeY0dvlFfKQ/myV1EU79OkGFGBNzrAQ==
-X-Received: by 2002:a05:6a20:6698:b0:b8:701f:1d04 with SMTP id o24-20020a056a20669800b000b8701f1d04mr53756232pzh.11.1675154556416;
-        Tue, 31 Jan 2023 00:42:36 -0800 (PST)
+        bh=+G7LKm94Gh8IveRXkVxzmqetNifcC6zGcwfVmKZiIxU=;
+        b=LDdIa18DIld6NR7FlBp/NLst4zIvyNydug2Vbl44rSJl1d0iqR7C7lrUjkSRL97l+f
+         /vaxEJnAsNXlxjeZPNKp01UkQt/Xvd7J6q/9l786AIYRsMoA+QJcHuz1U7Q8Ks+zP99r
+         pmeJuAvfA4i/B4cxaosp0vowpCA/gWaJVPar89jFRaNCQs40UHNvXTfky1lA4tCdoV3E
+         YnyPNPN1cuaWS0OW3WFWLuyTITlUxtnvj1NsKsF1xn6xD9W2GdkL6aEXOdrKpIDXNEvl
+         cpEetiFME/lRM4EoTOGyQ8oeRMI2NJtOIoh612fnU9Kplf8skDVgwEacSh3gMtNO3YFf
+         edFg==
+X-Gm-Message-State: AO0yUKUNzFNB+Ya+QO5D9aw64frfOFjau9DghXl5L+Ck0nqPL19Hoi6G
+        9aq9ZiLTrU+QXQX9kcYDGhmOIQ==
+X-Google-Smtp-Source: AK7set9Wno7a0XYRFhzJYb6jckFGgD3MgmlKDmdJYnMg7BAjHupX6GqxvIMpR9adRETeVxpQn4ox6A==
+X-Received: by 2002:a05:6a00:1483:b0:592:61a5:40 with SMTP id v3-20020a056a00148300b0059261a50040mr15751149pfu.16.1675156269503;
+        Tue, 31 Jan 2023 01:11:09 -0800 (PST)
 Received: from sunil-laptop ([49.206.9.96])
-        by smtp.gmail.com with ESMTPSA id z19-20020a62d113000000b0058bacd6c4e8sm1005959pfg.207.2023.01.31.00.42.01
+        by smtp.gmail.com with ESMTPSA id bt26-20020a056a00439a00b0058a7bacd31fsm6540587pfb.32.2023.01.31.01.11.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Jan 2023 00:42:17 -0800 (PST)
-Date:   Tue, 31 Jan 2023 14:11:57 +0530
+        Tue, 31 Jan 2023 01:11:09 -0800 (PST)
+Date:   Tue, 31 Jan 2023 14:41:00 +0530
 From:   Sunil V L <sunilvl@ventanamicro.com>
-To:     Conor Dooley <conor@kernel.org>
+To:     Jessica Clarke <jrtc27@jrtc27.com>
 Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
         Albert Ou <aou@eecs.berkeley.edu>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
@@ -59,20 +59,20 @@ Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
         Marc Zyngier <maz@kernel.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         Jonathan Corbet <corbet@lwn.net>,
-        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
         Anup Patel <apatel@ventanamicro.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Atish Patra <atishp@rivosinc.com>
-Subject: Re: [PATCH 22/24] RISC-V: ACPI: Enable ACPI in defconfig
-Message-ID: <Y9jUVZRUigLqoIKT@sunil-laptop>
+        linux-doc@vger.kernel.org, Atish Patra <atishp@rivosinc.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-acpi@vger.kernel.org, linux-riscv@lists.infradead.org,
+        Andrew Jones <ajones@ventanamicro.com>
+Subject: Re: [PATCH 11/24] RISC-V: ACPI: irqchip/riscv-intc: Add ACPI support
+Message-ID: <Y9jbJDwuJ0RnkviA@sunil-laptop>
 References: <20230130182225.2471414-1-sunilvl@ventanamicro.com>
- <20230130182225.2471414-23-sunilvl@ventanamicro.com>
- <Y9hXF8RpNawkuTEN@spud>
+ <20230130182225.2471414-12-sunilvl@ventanamicro.com>
+ <AFDD5897-27A3-4418-B08B-9650B543692D@jrtc27.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y9hXF8RpNawkuTEN@spud>
+In-Reply-To: <AFDD5897-27A3-4418-B08B-9650B543692D@jrtc27.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -82,60 +82,123 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Conor,
-On Mon, Jan 30, 2023 at 11:47:35PM +0000, Conor Dooley wrote:
-> Hey Sunil,
-> 
-> Two quick comments while I think of them..
-> 
+Hi Jessica,
 
-Sure. Thank you!
-
-> On Mon, Jan 30, 2023 at 11:52:23PM +0530, Sunil V L wrote:
-> > RISC-V: ACPI: Enable ACPI in defconfig
-> 
-> btw, about half of this series redundantly puts "ACPI:" or "RISC-V:
-> ACPI:" into $subject. None of commits that mention ACPI after the last :
-> should mention ACPI in the prefix IMO, it's just noise.
-> 
-> For example, this one should be something like:
-> RISC-V: enable ACPI in defconfig
-> 
-
-I agree. Will update in the next version. I added ACPI in begining so that
-I could quickly identify them along with other patches in my branch.
-
-> > Add support to build ACPI subsystem in defconfig.
+On Mon, Jan 30, 2023 at 11:38:49PM +0000, Jessica Clarke wrote:
+> On 30 Jan 2023, at 18:22, Sunil V L <sunilvl@ventanamicro.com> wrote:
+> > 
+> > Add support for initializing the RISC-V INTC driver on ACPI based
+> > platforms.
 > > 
 > > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 > > ---
-> >  arch/riscv/configs/defconfig | 4 ++++
-> >  1 file changed, 4 insertions(+)
+> > drivers/irqchip/irq-riscv-intc.c | 79 +++++++++++++++++++++++++++-----
+> > 1 file changed, 67 insertions(+), 12 deletions(-)
 > > 
-> > diff --git a/arch/riscv/configs/defconfig b/arch/riscv/configs/defconfig
-> > index 128dcf4c0814..8ce06fb0dde8 100644
-> > --- a/arch/riscv/configs/defconfig
-> > +++ b/arch/riscv/configs/defconfig
-> > @@ -218,3 +218,7 @@ CONFIG_RCU_EQS_DEBUG=y
-> >  # CONFIG_FTRACE is not set
-> >  # CONFIG_RUNTIME_TESTING_MENU is not set
-> >  CONFIG_MEMTEST=y
-> > +CONFIG_ARCH_SUPPORTS_ACPI=y
+> > diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
+> > index f229e3e66387..044ec92fcba7 100644
+> > --- a/drivers/irqchip/irq-riscv-intc.c
+> > +++ b/drivers/irqchip/irq-riscv-intc.c
+> > @@ -6,6 +6,7 @@
+> >  */
+> > 
+> > #define pr_fmt(fmt) "riscv-intc: " fmt
+> > +#include <linux/acpi.h>
+> > #include <linux/atomic.h>
+> > #include <linux/bits.h>
+> > #include <linux/cpu.h>
+> > @@ -112,6 +113,30 @@ static struct fwnode_handle *riscv_intc_hwnode(void)
+> > 	return intc_domain->fwnode;
+> > }
+> > 
+> > +static int __init riscv_intc_init_common(struct fwnode_handle *fn)
+> > +{
+> > +	int rc;
+> > +
+> > +	intc_domain = irq_domain_create_linear(fn, BITS_PER_LONG,
+> > +					       &riscv_intc_domain_ops, NULL);
+> > +	if (!intc_domain) {
+> > +		pr_err("unable to add IRQ domain\n");
+> > +		return -ENXIO;
+> > +	}
+> > +
+> > +	rc = set_handle_irq(&riscv_intc_irq);
+> > +	if (rc) {
+> > +		pr_err("failed to set irq handler\n");
+> > +		return rc;
+> > +	}
+> > +
+> > +	riscv_set_intc_hwnode_fn(riscv_intc_hwnode);
+> > +
+> > +	pr_info("%d local interrupts mapped\n", BITS_PER_LONG);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > static int __init riscv_intc_init(struct device_node *node,
+> > 				  struct device_node *parent)
+> > {
+> > @@ -133,24 +158,54 @@ static int __init riscv_intc_init(struct device_node *node,
+> > 	if (riscv_hartid_to_cpuid(hartid) != smp_processor_id())
+> > 		return 0;
+> > 
+> > -	intc_domain = irq_domain_add_linear(node, BITS_PER_LONG,
+> > -					    &riscv_intc_domain_ops, NULL);
+> > -	if (!intc_domain) {
+> > -		pr_err("unable to add IRQ domain\n");
+> > -		return -ENXIO;
+> > -	}
+> > -
+> > -	rc = set_handle_irq(&riscv_intc_irq);
+> > +	rc = riscv_intc_init_common(of_node_to_fwnode(node));
+> > 	if (rc) {
+> > -		pr_err("failed to set irq handler\n");
+> > +		pr_err("failed to initialize INTC\n");
+> > 		return rc;
+> > 	}
+> > 
+> > -	riscv_set_intc_hwnode_fn(riscv_intc_hwnode);
+> > +	return 0;
+> > +}
+> > 
+> > -	pr_info("%d local interrupts mapped\n", BITS_PER_LONG);
+> > +IRQCHIP_DECLARE(riscv, "riscv,cpu-intc", riscv_intc_init);
+> > +
+> > +#ifdef CONFIG_ACPI
+> > +
+> > +static int __init
+> > +riscv_intc_acpi_init(union acpi_subtable_headers *header,
+> > +		     const unsigned long end)
+> > +{
+> > +	int rc;
+> > +	struct fwnode_handle *fn;
+> > +	struct acpi_madt_rintc *rintc;
+> > +
+> > +	rintc = (struct acpi_madt_rintc *)header;
+> > +
+> > +	/*
+> > +	 * The ACPI MADT will have one INTC for each CPU (or HART)
+> > +	 * so riscv_intc_acpi_init() function will be called once
+> > +	 * for each INTC. We only need to do INTC initialization
+> > +	 * for the INTC belonging to the boot CPU (or boot HART).
+> > +	 */
+> > +	if (riscv_hartid_to_cpuid(rintc->hart_id) != smp_processor_id())
+> > +		return 0;
 > 
-> This needs to go into the arch Kconfig file, where it will be selected.
-> Check what arm64 does if you are not sure what I mean.
-> 
+> Why are we carrying forward this mess to ACPI? The DT bindings are
+> awful and a complete pain to deal with, as evidenced by how both Linux
+> and FreeBSD have to go out of their way to do special things to only
+> look at one of the many copies of the same thing.
+>
 
-Yes, I have added in "[PATCH 07/24] RISC-V: ACPI: Enable ACPI build
-infrastructure". But forgot to remove here. Thanks!. Will update it when
-I send next revision.
+Local interrupt controller structures are per-cpu in any architecture.
+So, there will be multiple such structures. It is upto the OS to choose
+one of them. What is the issue here?
 
-> Hopefully I'll get a chance to look at the rest of this this week
-> sometime,
-> Conor.
-> 
+The RISC-V DT code is selecting the one which is corresponding to the boot
+cpu. While in ACPI we can choose any one, I think it is better to
+follow the DT code to keep it similar and boot cpu is always guaranteed
+to be available.
 
 Thanks!
 Sunil
-
-
