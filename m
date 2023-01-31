@@ -2,123 +2,248 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA9D8681FE7
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Jan 2023 00:47:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35F4C682157
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Jan 2023 02:20:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229623AbjA3Xrn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Jan 2023 18:47:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33702 "EHLO
+        id S230240AbjAaBUp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Jan 2023 20:20:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbjA3Xrm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 18:47:42 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 544A32B63F;
-        Mon, 30 Jan 2023 15:47:42 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E047E61302;
-        Mon, 30 Jan 2023 23:47:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33320C433EF;
-        Mon, 30 Jan 2023 23:47:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675122461;
-        bh=WoJeIgf/JQZhJHXDszCWgkHNzPbweY0aWYQ3iEPGhBI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=QULFyBjTeeC1392caZNLBFUYEO05aNmt2qcr6HCpbQfJG2gU2FkCDLwIgYUjz18Q8
-         uChNcDCAt0lr57gFu+1jkgxml6xL7DE7LuDBWkog8j9Ivc837sGCjv0UpTOD5Snbp0
-         d8cxiAZHD24140/A9KBZxYbySlCqpCOnpFU+MgQbb1/Hfd02VQ1hxYoZ164EuA5e5E
-         1Tp/4WdqExpa5XLCnjzmcjtOSaA5WERxcbf1ShyECo1MsVWtSlNJMVpVRagSxdlT1h
-         7AQVsg2bu2pbk9IVx2gu4xU1FPlwj1iYAS/8j5MckNHeBucgBCo0GJ8Q4JoCNDywGU
-         ffrSlyJINLfRQ==
-Date:   Mon, 30 Jan 2023 23:47:35 +0000
-From:   Conor Dooley <conor@kernel.org>
-To:     Sunil V L <sunilvl@ventanamicro.com>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        Anup Patel <apatel@ventanamicro.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Atish Patra <atishp@rivosinc.com>
-Subject: Re: [PATCH 22/24] RISC-V: ACPI: Enable ACPI in defconfig
-Message-ID: <Y9hXF8RpNawkuTEN@spud>
-References: <20230130182225.2471414-1-sunilvl@ventanamicro.com>
- <20230130182225.2471414-23-sunilvl@ventanamicro.com>
+        with ESMTP id S230221AbjAaBUo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 20:20:44 -0500
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88E4911145
+        for <linux-acpi@vger.kernel.org>; Mon, 30 Jan 2023 17:20:42 -0800 (PST)
+Received: by mail-pf1-x433.google.com with SMTP id j20so2535544pfj.0
+        for <linux-acpi@vger.kernel.org>; Mon, 30 Jan 2023 17:20:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=WlKnm9SlBY6a95G31ugIPx75GFY5lk/gBJScYr6B/MA=;
+        b=D9rmez0+kSKL3ccFg9a8F7AC1nKa00vADDYdszu9EH8DheWWLli6rK5KQG+m5BDTun
+         lBN3WiydFkh0tenV2406XKnQtMRh6xc6n2fE0ebr1WQaK0U9SEeflAszPpkaoEczXCPa
+         XnJ1zqvgyNwoi6VrgYqpbxCLOgDdxcvws0ZfwlT70OkOSwwYd8pazHEn/kuiJtYM22J7
+         kOf9lJua0c/fv0pyYlG9F4HJa3jGoahD9mRdj1+isxbekM65F/g6qDG8KyLMcWDQWG6+
+         R8T2lbX2UzZVK83BTDKWSVk4xIjaABA2PMQlvA9tQVzbLSueVsWJKDQjFrANX9n7Nu8n
+         auYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WlKnm9SlBY6a95G31ugIPx75GFY5lk/gBJScYr6B/MA=;
+        b=ZgNP2BMv0J6yteWOEuMhTtyG1W8P4Wt+zPyuD2LhdhyFFVPQV1TNuZKz7uuDXAMT/J
+         yhCegMfz6mSz18SIx1aISqV/MSH1AcIZM5IopfcU2ir5DiBpRimP8fonuR24D2VAWNDH
+         WQ93ecGMUOHOqbVzKloqWEV3XY4An8lG8fwXJrz+TMPdwKE3s3WPdc/eEKy5RL0Dqzxj
+         OikwriYSqI6b0yWaLf6aenq5ZaQi4WfSvl+JcnZlxWXH6oYXqodoUWLVQCIjYj9STYAr
+         OjnoCEYGfGFuHClygw8dHHIQrTcVfm1BNQ+gWyXwDpkbws+Usi7UxvMMAQLhaLghmBMg
+         FOVw==
+X-Gm-Message-State: AO0yUKV3EeXpNHSzohmATiwNIUdZnofkG3LV7nzM0bBNznr52ksV2hvU
+        yx8qTm7XeImh0daMCy4UCABXLiZB+IBbBR09IXSYyQ==
+X-Google-Smtp-Source: AK7set/OnrysWGmShNaN4ttMAIR9UncJ4m1eUuwNep1bR9GutY4sRTfWIiOaEY4ReHbIYjKOu7DJxRnva6K27yrlZqg=
+X-Received: by 2002:aa7:91d3:0:b0:592:61cc:5aeb with SMTP id
+ z19-20020aa791d3000000b0059261cc5aebmr2113642pfa.59.1675128041704; Mon, 30
+ Jan 2023 17:20:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="zg0/95MUBwMtXXq2"
-Content-Disposition: inline
-In-Reply-To: <20230130182225.2471414-23-sunilvl@ventanamicro.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230127001141.407071-1-saravanak@google.com> <20230130114839.379f08bd@xps-13>
+ <CALHCpMimX63NC2P=mYdqOv339P06B4iAd10L2NpC5ALy_207vA@mail.gmail.com>
+In-Reply-To: <CALHCpMimX63NC2P=mYdqOv339P06B4iAd10L2NpC5ALy_207vA@mail.gmail.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Mon, 30 Jan 2023 17:20:05 -0800
+Message-ID: <CAGETcx8FpmbaRm2CCwqt3BRBpgbogwP5gNB+iA5OEtuxWVTNLA@mail.gmail.com>
+Subject: Re: [PATCH v2 00/11] fw_devlink improvements
+To:     Maxim Kiselev <bigunclemax@gmail.com>
+Cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Linux Kernel Functional Testing <lkft@linaro.org>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        John Stultz <jstultz@google.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Maxim Kochetkov <fido_max@inbox.ru>,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Colin Foster <colin.foster@in-advantage.com>,
+        Martin Kepplinger <martin.kepplinger@puri.sm>,
+        Jean-Philippe Brucker <jpb@kernel.org>,
+        kernel-team@android.com, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Mon, Jan 30, 2023 at 4:09 AM Maxim Kiselev <bigunclemax@gmail.com> wrote:
+>
+> Hi Saravana & Miquel.
+>
+> Sorry for the long response. I finally got access to my test device
+> and tried this patch series.
+>
+> And unfortunately it didn't solve my issue. I'm still getting a
+> hanging f1070000.ethernet dependency
+> from the nvmem-cell mac@6 subnode.
 
---zg0/95MUBwMtXXq2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks for testing the series.
 
-Hey Sunil,
+Btw, don't top post. It's frowned upon. Top post means your reply is
+on the top before the email you are replying to. See how my first line
+of reply in inline with your email I'm replying to?
 
-Two quick comments while I think of them..
+>
+> Here are related parts of my kernel log and device tree:
+>
+>
+>     [    2.713302] device: 'mtd-0': device_add
+>     [    2.719528] device: 'spi0': device_add
+>     [    2.724180] device: 'spi0.0': device_add
+>     [    2.728957] spi-nor spi0.0: mx66l51235f (65536 Kbytes)
+>     [    2.735338] 7 fixed-partitions partitions found on MTD device spi0.0
+>     [    2.741978] device:
+> 'f1010600.spi:m25p80@0:partitions:partition@1': device_add
+>     [    2.749636] Creating 7 MTD partitions on "spi0.0":
+>     [    2.754564] 0x000000000000-0x000000080000 : "SPI.U_BOOT"
+>     [    2.759981] device: 'mtd0': device_add
+>     [    2.764323] device: 'mtd0': device_add
+>     [    2.768280] device: 'mtd0ro': device_add
+>     [    2.772624] 0x0000000a0000-0x0000000c0000 : "SPI.INV_INFO"
+>     [    2.778218] device: 'mtd1': device_add
+>     [    2.782549] device: 'mtd1': device_add
+>     [    2.786582] device: 'mtd1ro': device_add
+>     ...
+>     [    5.426625] mvneta_bm f10c0000.bm: Buffer Manager for network
+> controller enabled
+>     [    5.492867] platform f1070000.ethernet: error -EPROBE_DEFER:
+> wait for supplier mac@6
+>     [    5.528636] device: 'Fixed MDIO bus.0': device_add
+>     [    5.533726] device: 'fixed-0': device_add
+>     [    5.547564] device: 'f1072004.mdio-eth-mii': device_add
+>     [    5.616368] device: 'f1072004.mdio-eth-mii:00': device_add
+>     [    5.645127] device: 'f1072004.mdio-eth-mii:1e': device_add
+>     [    5.651530] devices_kset: Moving f1070000.ethernet to end of list
+>     [    5.657948] platform f1070000.ethernet: error -EPROBE_DEFER:
+> wait for supplier mac@6
+>
+>     spi@10600 {
+>         m25p80@0 {
+>             compatible = "mx66l51235l";
+>
+>             partitions {
+>                 compatible = "fixed-partitions";
+>
+>                 partition@0 {
+>                     label = "SPI.U_BOOT";
+>                 };
+>                 partition@1 {
+>                     compatible = "nvmem-cells";
+>                     label = "SPI.INV_INFO";
+>                     macaddr: mac@6 {
+>                         reg = <0x6 0x6>;
+>                     };
+>                 };
+>                 ...
+>             };
+>         };
+>     };
+>
+>     enet1: ethernet@70000 {
+>         nvmem-cells = <&macaddr>;
+>         nvmem-cell-names = "mac-address";
+>         phy-mode = "rgmii";
+>         phy = <&phy0>;
+>     };
+>
+>
+> Maybe I should provide some additional debug info?
 
-On Mon, Jan 30, 2023 at 11:52:23PM +0530, Sunil V L wrote:
-> RISC-V: ACPI: Enable ACPI in defconfig
+I took a look at it and I think I know the issue. But it'll be good if
+you can point me to the dts (not dtsi) file that corresponds to the
+board you are seeing this issue on so I can double check my guess by
+looking at the exact code/drivers.
 
-btw, about half of this series redundantly puts "ACPI:" or "RISC-V:
-ACPI:" into $subject. None of commits that mention ACPI after the last :
-should mention ACPI in the prefix IMO, it's just noise.
+The main problem/mistake is the nvmem framework is using a "struct
+bus" instead of a "struct class" to keep a list of the nvmem devices.
+And we can't change it now because it'd affect the sysfs paths
+significantly and might break userspace ABI.
 
-For example, this one should be something like:
-RISC-V: enable ACPI in defconfig
+Can you try the patch at the end of this email under these
+configurations and tell me which ones fail vs pass? I don't need logs
+for any pass/failures.
+1. On top of this series
+2. Without this series
+3. On top of the series but with the call to fwnode_dev_initialized() deleted?
+4. Without this series, but with the call to fwnode_dev_initialized() deleted?
 
-> Add support to build ACPI subsystem in defconfig.
->=20
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> ---
->  arch/riscv/configs/defconfig | 4 ++++
->  1 file changed, 4 insertions(+)
->=20
-> diff --git a/arch/riscv/configs/defconfig b/arch/riscv/configs/defconfig
-> index 128dcf4c0814..8ce06fb0dde8 100644
-> --- a/arch/riscv/configs/defconfig
-> +++ b/arch/riscv/configs/defconfig
-> @@ -218,3 +218,7 @@ CONFIG_RCU_EQS_DEBUG=3Dy
->  # CONFIG_FTRACE is not set
->  # CONFIG_RUNTIME_TESTING_MENU is not set
->  CONFIG_MEMTEST=3Dy
-> +CONFIG_ARCH_SUPPORTS_ACPI=3Dy
+-Saravana
 
-This needs to go into the arch Kconfig file, where it will be selected.
-Check what arm64 does if you are not sure what I mean.
+Sorry about tabs to spaces conversion. Email client issue.
 
-Hopefully I'll get a chance to look at the rest of this this week
-sometime,
-Conor.
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index 321d7d63e068..23d94c0ecccf 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -752,6 +752,7 @@ static int nvmem_add_cells_from_of(struct
+nvmem_device *nvmem)
+ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
+ {
+        struct nvmem_device *nvmem;
++       struct fwnode_handle *fwnode;
+        int rval;
 
+        if (!config->dev)
+@@ -804,9 +805,18 @@ struct nvmem_device *nvmem_register(const struct
+nvmem_config *config)
+        nvmem->keepout = config->keepout;
+        nvmem->nkeepout = config->nkeepout;
+        if (config->of_node)
+-               nvmem->dev.of_node = config->of_node;
++               fwnode = of_fwnode_handle(config->of_node);
+        else if (!config->no_of_node)
+-               nvmem->dev.of_node = config->dev->of_node;
++               fwnode = of_fwnode_handle(config->dev->of_node);
++       device_set_node(&nvmem->dev, fwnode);
++
++       /*
++        * If the fwnode doesn't have another device associated with it, mark
++        * the fwnode as initialized since no driver is going to bind to the
++        * nvmem.
++        */
++       if (fwnode && !fwnode->dev)
++               fwnode_dev_initialized(fwnode, true);
 
---zg0/95MUBwMtXXq2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCY9hXFwAKCRB4tDGHoIJi
-0jz5AP9T0B2MgLSmPbYSg1QODDZGfojq049zs7BQd+8I5h0xMQEAg7Tq0HANXXSF
-/wo06urL3IrFIJh1toI0j0c616zj5Q8=
-=lM2h
------END PGP SIGNATURE-----
-
---zg0/95MUBwMtXXq2--
+        switch (config->id) {
+        case NVMEM_DEVID_NONE:
