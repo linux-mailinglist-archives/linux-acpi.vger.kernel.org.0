@@ -2,422 +2,208 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B476682409
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Jan 2023 06:32:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D296068244F
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Jan 2023 07:09:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229981AbjAaFcm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 31 Jan 2023 00:32:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41488 "EHLO
+        id S229565AbjAaGJl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 31 Jan 2023 01:09:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230236AbjAaFcU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Jan 2023 00:32:20 -0500
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F1A41DBAB;
-        Mon, 30 Jan 2023 21:32:15 -0800 (PST)
-Received: by mail-lf1-x132.google.com with SMTP id cf42so22595507lfb.1;
-        Mon, 30 Jan 2023 21:32:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=QZFo8Db1DELpP3PggDa39ncTgche8KwZ1+RaAo+FkPo=;
-        b=SmOAZMMLAF1gkDs8NCaIpOvq/hbPmRuGuTh9v/Y26PF11eF++GH1zZBuunVcPQmwd4
-         S99ex5ndQLT7tZhjZq5R1KB/eDkhoq18H+vqKyFXYfaZ5XqWP5id//4/XfvkppQUg1Qo
-         QrrTsoIxFgMw8+PeG4hmWxKte9MCf92acI94EWBg8wzWROPyfAeW5PtBtohGeBuogvHv
-         l7U8nw5rhxmWrByo5yAjNvhWtllNoum0BWr/Pc1lQZexgAu3HbNwqB58sZFy3xF/TNRw
-         vHABSAQM+bFuhjhZqR3JH4cJAhpJXGQygVWDfagyZ7Gyud3ZR+s3AIl9FTFZ8hBqBafJ
-         NKwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QZFo8Db1DELpP3PggDa39ncTgche8KwZ1+RaAo+FkPo=;
-        b=pq1lunbZHHcfFQbVIubTItP7wAsxkXQU79SY1CbAN6D0+SAqTrm5y3kij2s1twQ53Q
-         5VsdqBTJZVo6QU0wBDi2dVgHQfjudjTxjh/7yGzHF+tn8l4mL8EwFqvuvp6g3khdBJKP
-         Nk3M+ERICyMQyPEFUj0BwAkTUesXdA3qj9J/6rOBUVEDN8fROcR43aJExJaMTx1gSYVw
-         cTPMzUzC7t8EfxmbT4YtGWMo7sCppLRAx8vlWCxW/gEFaVciDqFLLaLezskTIt4GuDxU
-         tdEy8B4hI1RldZIMKgd6I/7JtEpK1CgUF4dmLp+tefBxmG2v1zabEUGYYmW0kCqtsMrd
-         Akrg==
-X-Gm-Message-State: AFqh2kpSHGQ63C4goLt9qbQ5OVtndUp2SZQLOuTRRofhyQf+9omMbUfA
-        ExYND6PYqY4insJoUyCRQVzNj/yQkfYL3bGUXWv+m7wxsNEFbl4w
-X-Google-Smtp-Source: AMrXdXveUz7wjOxoHwrp0H59dQ1oMLROUXyYadwlIOAVvdYURTTlBFJsDdDiXP46fILQYBYnhcO475oNCXSHk6o1VSY=
-X-Received: by 2002:a05:6512:34cb:b0:4cb:ce4:7bf0 with SMTP id
- w11-20020a05651234cb00b004cb0ce47bf0mr6699010lfr.78.1675143133275; Mon, 30
- Jan 2023 21:32:13 -0800 (PST)
+        with ESMTP id S229518AbjAaGJk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Jan 2023 01:09:40 -0500
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8415A3B3E5;
+        Mon, 30 Jan 2023 22:09:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675145377; x=1706681377;
+  h=from:to:subject:date:message-id:references:in-reply-to:
+   content-id:content-transfer-encoding:mime-version;
+  bh=wD6in6KKEW7eAAJ2hZ9mNADClN5TYGfK4QgyWjdvpkk=;
+  b=f0bWQOtkue68qAVexSnX7eGWsHi+F6b4YpNTe35tGDyKn0UUNIquP+WZ
+   S6WHJ7juKYlwcdZCfhkj4cvq1zHbgDt+1Vca4BNiwQ4Ua0cXr0tdv6wc0
+   A2jaCJgF9otG6paDLa3R6T4stYhgNMT2ePUsqxwtlnqGU8I+kVXVJ4JDQ
+   dsClEa1laqBVABP7K58RFoXttka0EH2DVE0N6uwFXr1JYW7YfnNl8/NAP
+   ygid1UkqLGX20OgGHHCV8Gcoj8VUPHWIA+rUugD/jV74dbKuXzsLuvQoY
+   DEImbto0kH3j+9PXwwwhMscfl8JWwG8EtILxzzQXdPlT9fhCtffQFmxjP
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10606"; a="315722327"
+X-IronPort-AV: E=Sophos;i="5.97,259,1669104000"; 
+   d="scan'208";a="315722327"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2023 22:09:36 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10606"; a="772827170"
+X-IronPort-AV: E=Sophos;i="5.97,259,1669104000"; 
+   d="scan'208";a="772827170"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by fmsmga002.fm.intel.com with ESMTP; 30 Jan 2023 22:09:20 -0800
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16; Mon, 30 Jan 2023 22:09:20 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16; Mon, 30 Jan 2023 22:09:19 -0800
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16 via Frontend Transport; Mon, 30 Jan 2023 22:09:19 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.44) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.16; Mon, 30 Jan 2023 22:09:18 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Cfs/gAMP05uMU03i0vyk9gIJz/NkC3bYInxME0aq9MSzliU2WYZzzVUs+HQY9TBwA+96r6cq17fYXIQ3jOrWxHPn827Sc3zFQRrKDxyibx725uz4p4pw/djyqV+DL1RP5wvw9IR+C6fGxMPreF/aNwW4lYsX2mCa/BFG5dLjP803XQSZbdhJwfItX8eHDOCgrG2GdA3q4BpbOH7wA0OgLfhz39cRyqASCs8vh50koc635KmBQL1rHWTH/Uzev2e8VvGIsoLcEUtavn92+ozYpFWZHevaA7kkW2A5d5rXjqslMjW9lC/24PLO04ODivbDvXkewe7DeoQQy8oto5eCNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wD6in6KKEW7eAAJ2hZ9mNADClN5TYGfK4QgyWjdvpkk=;
+ b=Hz18L9NSlvpzZpPp1yow3byaxA0d2azNUhCpOi+xECejMuvUVnD/LCXFdshPL263ySWm+5pYSd6xsZFV3tf5/Jz4DsyeRrB0IPg71biwq+ldRG/TdDWU4AGdMbN1Ee6eUzuA4MjsRb04Wz7x+cr5POvO3b669OcsYFZky4iXTQNdrrn4n7gVSOu9xpYjcwoyDn2GdSJLNWbYMkja1JjvLLM2hoho68zuu46fHEARwENpwiCm/GE5TZgKSEePFSM1Tmg25N4TuVCwE6MOJUpITYFjclo5TPMmo9Uw6eLs42NCSFuvNWc/T+kxIshJQ7p9BbLAHIsWiWlN46YVpyo2BQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB6622.namprd11.prod.outlook.com (2603:10b6:a03:478::6)
+ by SA2PR11MB4923.namprd11.prod.outlook.com (2603:10b6:806:fa::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6043.36; Tue, 31 Jan
+ 2023 06:09:17 +0000
+Received: from SJ0PR11MB6622.namprd11.prod.outlook.com
+ ([fe80::e30c:74f4:5052:6fd2]) by SJ0PR11MB6622.namprd11.prod.outlook.com
+ ([fe80::e30c:74f4:5052:6fd2%5]) with mapi id 15.20.6043.036; Tue, 31 Jan 2023
+ 06:09:17 +0000
+From:   "Zhang, Rui" <rui.zhang@intel.com>
+To:     "topi.maenpaa@visionappster.com" <topi.maenpaa@visionappster.com>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: Re: ACPI BIOS bug breaks wake from sleep
+Thread-Topic: ACPI BIOS bug breaks wake from sleep
+Thread-Index: AQHZNHdbtzsqjn0OVEKjPU+oPYN5I664DCiA
+Date:   Tue, 31 Jan 2023 06:09:17 +0000
+Message-ID: <8d9af4cf1adf0700c4c2092e66eb9af4eb934d4c.camel@intel.com>
+References: <465f350f019667aa353bad8d1939a683fd400fc3.camel@visionappster.com>
+In-Reply-To: <465f350f019667aa353bad8d1939a683fd400fc3.camel@visionappster.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.5-0ubuntu1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB6622:EE_|SA2PR11MB4923:EE_
+x-ms-office365-filtering-correlation-id: 56b34a41-8fed-425b-ee56-08db0351af76
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: UkH0SgeNTyukdFoc/YBETLOc0DhuYIyup2852fwMgp17yqgx5kY1Oze56NQ4bk3elSh4BK0dMeHVMr0I/H0LGO45UpJbNdK6eT2T9WrmySQx2TtOxiDTaLqFKeV1UOl69Ms47FVVHfrmOT4nJorYDMX+6FNdMwe7lbuN6bGsT1rVsh6UcyrqYcKptYl4tXKUvOmL7A/ZpHYN1bmQ8scrmQdcy3LEZ6gZbFrH4b2NSg+RWgMsltoFsavCB2Byu0BhhqXqAwxBe50Q74a1maw0/ovqX0oZywamOVZluUSz/Ljtp53LV8mjRE0L13TvM253Ot+N0ZS9CbOIAE/EKG9wFwFSIS0vrgXFDQlMqMjVHwRvdoFOCh+m8Ig1dtImOe2YKf39ductw7cAAvkilwgThvYTVH7t1+9LELay2eNczUWkJ9hwFdxVTBoRsS4kl6cu9k0PthjV2GgDH91Tu8XBGk50cDUkKnDaCJLoDl20vyfTJEMfpz9p45KCNvYMWyWJw5QitrnZjAaUNfMfXSV2foRnfUCgFtRyfa4pBP4Iivg8qQp6Z4zlPtoMIZYiGHkAWSlr0opDCTZ77u7+4/PQlEIIggvP+uOFYeVJXdkHM1a9dM3qVv0yZcKFlMSubmPBOqxqT9+cJBT/bbhbL+gRKc+ACsFseFEWQ6a8ZgFd7QHJJ3TPLOtiEcgI1f777mMt9gaL++UWhSgFh29QPmWksCVnxfWYNljOwE3fzIyVnp4=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB6622.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(366004)(396003)(346002)(376002)(39860400002)(136003)(451199018)(38100700002)(38070700005)(122000001)(86362001)(82960400001)(36756003)(110136005)(66946007)(41300700001)(5660300002)(8936002)(76116006)(66556008)(316002)(66476007)(64756008)(66446008)(8676002)(91956017)(2906002)(66574015)(2616005)(83380400001)(6486002)(478600001)(6512007)(71200400001)(6506007)(26005)(186003)(966005);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?RXNUdHVVQjRCZk1mN0w1YU9JWUErYWNSUzBlam5jMHF3cVM0OERXbEVFNS9X?=
+ =?utf-8?B?ekNCd1NaVmJZRmg5UTVEaGdmMTJLWkhsSnUxcnFrMGtBZXF5UXFWUXpISTFW?=
+ =?utf-8?B?NklISWx2S2ZVaW9OWlh2bzdpSDVSNTdEeHJWL2c5YStTdXhoRjBVazdKZmc4?=
+ =?utf-8?B?MERmOS9WLzdha0d5K1FYZ2g2NzlpN0xBbTRBYUMwRmZIUkNGejlKcGRoSllT?=
+ =?utf-8?B?VEZTdHBzVHVqN1A4Z2ZmK0NnejdGbWJaMkNWYklrUFdIYkx4M2hqcmdURHp3?=
+ =?utf-8?B?WlFsZEliNFBSVmNGL1hqcXpXbXdXbTBiaTZpNmpxVFpqbFF2ekY2Y3p5NUxw?=
+ =?utf-8?B?MkRjcTdDM0hPeXM2WEo5TGtmSGV0ekxqSStQVGlzMlVwVTlKY3g5RmlwQUxL?=
+ =?utf-8?B?N1dpQ1h4dmJxVm00VUpkSzE4Tm5GVzNPV2J0NE1EcUhJN1ljT0dnQ0VTZlpy?=
+ =?utf-8?B?dnN2UDYyUFF1TWVsWVcrN3hSS0p1QWVzOHZhVkVTSTI1NzRFc3BaRitMdENX?=
+ =?utf-8?B?OG5hMVdwZGJza2gySlJocVZrc2JSMmtQak8rdCtWVCtDVllVMVY4b0h0NUYy?=
+ =?utf-8?B?S1BGOUJodXZEajYvTWRZeHdIUEhLMXdSeDFaL1ZaQkdEU3BLZ2E3ZW5YQ2Zo?=
+ =?utf-8?B?clpDRWNIaWNleVBFZUtwVlRhOUs2TkFlVzFadEprK0orS0VTUW9wNzh3TjIw?=
+ =?utf-8?B?SStYSjRjenZockRXWXpwVTg4QWVibFNpQnZtOHRZVjBhQjd4dnIzNkoyZ283?=
+ =?utf-8?B?M25nN0lMd0g4YnZLaHdpSmYrWnptZjdpRnB4TlFpb1E2OWRpVlgyZGR1VDNM?=
+ =?utf-8?B?MDVTOG5Hbm1QRlg1Qk5jb1kxNG9wK0FPOWU0bDNjN3hFbEtLZVZiVTNDY0ha?=
+ =?utf-8?B?YldiNmQ5SXQ3UUxPK1NhNTdDNVdKcndKeUFROElFbnZiNmZxeEUyL0UyOVd4?=
+ =?utf-8?B?NUF0bjRheWFmY3dwdThyTG00R1JOQmNuNGhQUmdmdXFpd1pXN09la3R6SHMz?=
+ =?utf-8?B?bDJrUDh5WitsM2ExYlZDRFp3eVRzaThJcW8yeXVEcTJRMENlQTVib3luclEw?=
+ =?utf-8?B?cUY5QjhWbFJsTDFjSm5IRkVmQXordW1oQ1Iydm1DUjNOckNZeXhRRk9ac2x1?=
+ =?utf-8?B?SmtEYkNRTjA5T1ZxWTJjTVRVb2pZZVBxUU5sUFd1emFKM3NiVVhnSFNOcVcz?=
+ =?utf-8?B?TGdSS3lkS0ZCeFE5cE92L0xuQXMyNzB6eWkralNjdzAxb25UUitXbEdtRmJX?=
+ =?utf-8?B?WmIwUGxoQms3K1djN3FrRzEvS1hCdThQcVRkQTJKL2pGb1lIazVKcWw2NU1B?=
+ =?utf-8?B?ZHlEdSt6eHhwWndYUG1SNlYvb2dZZTNxU01BNEVoWjZqcXRXZ2ZmMWdDVEFh?=
+ =?utf-8?B?TXBNdmh0UllwYm9iaGJ3TFc2QTU1Q3dyNWFyL3RYRFRlMWY4U3E3ZDRTZW5Y?=
+ =?utf-8?B?dnZrd3BtTDBKVVpDRHNQNFZuMGtlL1hqUTVtOFNNUElNZ2I4bnFRelNQRHcv?=
+ =?utf-8?B?aTBSQWNqUjVPeXlYWGlKMW54MFJMUzhzdzRmZEl3RmI4NnV3TFJheTdXTkNv?=
+ =?utf-8?B?VDIvMFZpV0F3dFhlL3VSd1RKSzJEYUNvOEwrazlSMUxrcjlIbll2cWtPZ3Yy?=
+ =?utf-8?B?bEF1MWs2U3BKMHYvZ3JRRHJqbUgwcDhoVXg2UlArdnRvWHdaYnRhWlNiaCtJ?=
+ =?utf-8?B?cWU0QW1lanRRZzQrMXFYUkh3aXhsTk5kZjJ5bXZHTGxPL3p1WmdweDBGN1Nl?=
+ =?utf-8?B?a2hqekhBekxQL3g4ejNqVEtiVmh6WjRob056RC81aWNvSDVXcWdxV1ZJYXhI?=
+ =?utf-8?B?bVVZRlpzUkhtWVZBT1R4NlVvRGRjbjVzQldaV1hSRVZDVmc4bEJ1R3BrdG9S?=
+ =?utf-8?B?OXpTNFFPa3QyVm44Sm9nMWdkakFvM2NqN3oyU2ExMDdMNXZGOWpHRVRqc245?=
+ =?utf-8?B?aFF3cEVuMlRRTDVTZUVGWU14VDlEUGVQUGxsRUpTWVAxZjVQaCtyY2l5MFNS?=
+ =?utf-8?B?ZzhRTklMSlNpUkp0b1VOamdhZVJ2dE1BTE5ydjdLc2VzQklmekNwVEt2TGhw?=
+ =?utf-8?B?TFlsRklYSG9UeDgwVkx1MWJtSlV2NzJ5OU1IbW9EclZPREZSNWtuNFgyOS9Z?=
+ =?utf-8?B?eXkrZDlIa0RISTJ4Nmx0N29pejBrZ3N6bDNUSUhzbXJLRjJJVDQxS09IZkFT?=
+ =?utf-8?B?RWc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A38C11D16A24D448BDDE10B588A03523@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <2667007.mvXUDI8C0e@kreacher>
-In-Reply-To: <2667007.mvXUDI8C0e@kreacher>
-From:   Swift Geek <swiftgeek@gmail.com>
-Date:   Tue, 31 Jan 2023 06:31:14 +0100
-Message-ID: <CAO0qwq0FKkhUkimOb3QLb4w3hcb3XrLSFxgvZ_oqOyJeZHm96w@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: Drop the custom_method debugfs interface
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>, Hang Zhang <zh.nvgt@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6622.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56b34a41-8fed-425b-ee56-08db0351af76
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Jan 2023 06:09:17.3474
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: SPEILQ/tI++MeAssUYgF5+JeX4i74xVpKAuXUkGIo6sTwRSqxIdhOqy0ibUwDg517fItcFg2U+XCbkpFf/RI/Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4923
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 31, 2023 at 5:26 AM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
->
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->
-> The ACPI custom_method debugfs interface is security-sensitive and
-> concurrent access to it is broken [1].
->
-> Moreover, the recipe for preparing a customized version of a given
-> control method has changed at one point due to ACPICA changes, which
-> has not been reflected in its documentation, so whoever used it before
-> has had to adapt an no problems with it have been reported.
->
-> The latter likely means that the number of its users is limited at best
-> and attempting to fix the issues mentioned above is likely not worth the
-> effort.  Moreover, if it gets broken in the process, the breakage may not
-> be readily discovered, so deleting it altogheher appeares to be a better
-> option.
->
-> Accordingly, drop custom_method along with its (outdated anyway)
-> documentation.
->
-> Link: https://lore.kernel.org/linux-acpi/20221227063335.61474-1-zh.nvgt@gmail.com/ # [1]
-> Reported-by: Hang Zhang <zh.nvgt@gmail.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-Sample on iasl "20220331", and thinkpad X200 running coreboot, for
-easy reference
-
-test.dsl created according to existing linux docs (ie. by providing
-full path to `_Q26`):
-
-DefinitionBlock ("", "DSDT", 2, "COREv4", "COREBOOT", 0x20090419)
-{
-        Method (\_SB.PCI0.LPCB.EC._Q26, 0, NotSerialized)  // _Qxx: EC
-Query, xx=0x00-0xFF
-        {
-                Printf ("_Q26 FUN!")
-                Notify (AC, 0x80) // Status Change
-                PNOT ()
-        }
-}
-
-`iasl test.dsl`
-`iasl -vw 6084 test.dsl`
-`iasl -vw 6084 -vw 6160 test.dsl`
-
-Neither of those combinations make any difference in output `test.aml` binary.
-With slightly newer iasl "20221020" we have to ignore errors, just
-like original document describes. Still works fine with `iasl -vw 6084
--vw 6160 test.dsl`
-`iasl -h` is pretty clear about '-vw' being used to ignore particular
-error messages, so I really see no substantial change here.
-
-modprobe custom_method
-cat test.aml > /sys/kernel/debug/acpi/custom_method
-echo 1 > /sys/module/acpi/parameters/aml_debug_output
-
-Now upon each connection of AC power brick to lappy, I get following
-message in dmesg:
-[  699.784020] ACPI Debug:  "_Q26 FUN!"
-
-Latest tested and working linux kernel: 6.1
-Sorry for not testing writing acpi stuff on 6.2-rc6 kernel
-
-It's sad to see custom_method go, since it lives under debugfs and you
-have to specifically build this, so I don't see it as a security
-issue.
-When I write/troubleshoot DSDT I do it alone, and I do not think that
-there is a machine for which people developed DSDT concurrently while
-being connected to same machine, with root access, swapping DSDT table
-at the same time. It works for me great, and I presume it does so for
-other embed developers.
-
-I guess it's possible to create replacement workflow with kexec and
-entire table load via CONFIG_ACPI_TABLE_UPGRADE, but note how it would
-be more difficult and more things could go wrong. Swapping out just
-single method even when machine has significant uptime feels like a
-great thing I had with custom_method (like just when some rare
-condition started occurring).
-
-Anyway I get that maintenance burden is too great for this portion of
-kernel, and obscure use cases of a firmware developer writing DSDT are
-not a priority. I'm not smart enough to maintain it, so I guess I need
-to say my goodbyes to this fun part of the kernel. Thanks to everyone
-that kept it going for this long.
-
-Sebastian Grzywna
-
-> ---
->
-> -> v2: Update index.rst too.
->
-> ---
->  Documentation/firmware-guide/acpi/index.rst              |    1
->  Documentation/firmware-guide/acpi/method-customizing.rst |   89 ------------
->  drivers/acpi/Kconfig                                     |   14 --
->  drivers/acpi/Makefile                                    |    1
->  drivers/acpi/custom_method.c                             |  103 ---------------
->  5 files changed, 208 deletions(-)
->
-> Index: linux-pm/drivers/acpi/Kconfig
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/Kconfig
-> +++ linux-pm/drivers/acpi/Kconfig
-> @@ -444,20 +444,6 @@ config ACPI_HED
->           which is used to report some hardware errors notified via
->           SCI, mainly the corrected errors.
->
-> -config ACPI_CUSTOM_METHOD
-> -       tristate "Allow ACPI methods to be inserted/replaced at run time"
-> -       depends on DEBUG_FS
-> -       help
-> -         This debug facility allows ACPI AML methods to be inserted and/or
-> -         replaced without rebooting the system. For details refer to:
-> -         Documentation/firmware-guide/acpi/method-customizing.rst.
-> -
-> -         NOTE: This option is security sensitive, because it allows arbitrary
-> -         kernel memory to be written to by root (uid=0) users, allowing them
-> -         to bypass certain security measures (e.g. if root is not allowed to
-> -         load additional kernel modules after boot, this feature may be used
-> -         to override that restriction).
-> -
->  config ACPI_BGRT
->         bool "Boottime Graphics Resource Table support"
->         depends on EFI && (X86 || ARM64)
-> Index: linux-pm/drivers/acpi/Makefile
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/Makefile
-> +++ linux-pm/drivers/acpi/Makefile
-> @@ -101,7 +101,6 @@ obj-$(CONFIG_ACPI_SBS)              += sbshc.o
->  obj-$(CONFIG_ACPI_SBS)         += sbs.o
->  obj-$(CONFIG_ACPI_HED)         += hed.o
->  obj-$(CONFIG_ACPI_EC_DEBUGFS)  += ec_sys.o
-> -obj-$(CONFIG_ACPI_CUSTOM_METHOD)+= custom_method.o
->  obj-$(CONFIG_ACPI_BGRT)                += bgrt.o
->  obj-$(CONFIG_ACPI_CPPC_LIB)    += cppc_acpi.o
->  obj-$(CONFIG_ACPI_SPCR_TABLE)  += spcr.o
-> Index: linux-pm/drivers/acpi/custom_method.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/custom_method.c
-> +++ /dev/null
-> @@ -1,103 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0-only
-> -/*
-> - * custom_method.c - debugfs interface for customizing ACPI control method
-> - */
-> -
-> -#include <linux/init.h>
-> -#include <linux/module.h>
-> -#include <linux/kernel.h>
-> -#include <linux/uaccess.h>
-> -#include <linux/debugfs.h>
-> -#include <linux/acpi.h>
-> -#include <linux/security.h>
-> -
-> -#include "internal.h"
-> -
-> -MODULE_LICENSE("GPL");
-> -
-> -static struct dentry *cm_dentry;
-> -
-> -/* /sys/kernel/debug/acpi/custom_method */
-> -
-> -static ssize_t cm_write(struct file *file, const char __user *user_buf,
-> -                       size_t count, loff_t *ppos)
-> -{
-> -       static char *buf;
-> -       static u32 max_size;
-> -       static u32 uncopied_bytes;
-> -
-> -       struct acpi_table_header table;
-> -       acpi_status status;
-> -       int ret;
-> -
-> -       ret = security_locked_down(LOCKDOWN_ACPI_TABLES);
-> -       if (ret)
-> -               return ret;
-> -
-> -       if (!(*ppos)) {
-> -               /* parse the table header to get the table length */
-> -               if (count <= sizeof(struct acpi_table_header))
-> -                       return -EINVAL;
-> -               if (copy_from_user(&table, user_buf,
-> -                                  sizeof(struct acpi_table_header)))
-> -                       return -EFAULT;
-> -               uncopied_bytes = max_size = table.length;
-> -               /* make sure the buf is not allocated */
-> -               kfree(buf);
-> -               buf = kzalloc(max_size, GFP_KERNEL);
-> -               if (!buf)
-> -                       return -ENOMEM;
-> -       }
-> -
-> -       if (buf == NULL)
-> -               return -EINVAL;
-> -
-> -       if ((*ppos > max_size) ||
-> -           (*ppos + count > max_size) ||
-> -           (*ppos + count < count) ||
-> -           (count > uncopied_bytes)) {
-> -               kfree(buf);
-> -               buf = NULL;
-> -               return -EINVAL;
-> -       }
-> -
-> -       if (copy_from_user(buf + (*ppos), user_buf, count)) {
-> -               kfree(buf);
-> -               buf = NULL;
-> -               return -EFAULT;
-> -       }
-> -
-> -       uncopied_bytes -= count;
-> -       *ppos += count;
-> -
-> -       if (!uncopied_bytes) {
-> -               status = acpi_install_method(buf);
-> -               kfree(buf);
-> -               buf = NULL;
-> -               if (ACPI_FAILURE(status))
-> -                       return -EINVAL;
-> -               add_taint(TAINT_OVERRIDDEN_ACPI_TABLE, LOCKDEP_NOW_UNRELIABLE);
-> -       }
-> -
-> -       return count;
-> -}
-> -
-> -static const struct file_operations cm_fops = {
-> -       .write = cm_write,
-> -       .llseek = default_llseek,
-> -};
-> -
-> -static int __init acpi_custom_method_init(void)
-> -{
-> -       cm_dentry = debugfs_create_file("custom_method", S_IWUSR,
-> -                                       acpi_debugfs_dir, NULL, &cm_fops);
-> -       return 0;
-> -}
-> -
-> -static void __exit acpi_custom_method_exit(void)
-> -{
-> -       debugfs_remove(cm_dentry);
-> -}
-> -
-> -module_init(acpi_custom_method_init);
-> -module_exit(acpi_custom_method_exit);
-> Index: linux-pm/Documentation/firmware-guide/acpi/method-customizing.rst
-> ===================================================================
-> --- linux-pm.orig/Documentation/firmware-guide/acpi/method-customizing.rst
-> +++ /dev/null
-> @@ -1,89 +0,0 @@
-> -.. SPDX-License-Identifier: GPL-2.0
-> -
-> -=======================================
-> -Linux ACPI Custom Control Method How To
-> -=======================================
-> -
-> -:Author: Zhang Rui <rui.zhang@intel.com>
-> -
-> -
-> -Linux supports customizing ACPI control methods at runtime.
-> -
-> -Users can use this to:
-> -
-> -1. override an existing method which may not work correctly,
-> -   or just for debugging purposes.
-> -2. insert a completely new method in order to create a missing
-> -   method such as _OFF, _ON, _STA, _INI, etc.
-> -
-> -For these cases, it is far simpler to dynamically install a single
-> -control method rather than override the entire DSDT, because kernel
-> -rebuild/reboot is not needed and test result can be got in minutes.
-> -
-> -.. note::
-> -
-> -  - Only ACPI METHOD can be overridden, any other object types like
-> -    "Device", "OperationRegion", are not recognized. Methods
-> -    declared inside scope operators are also not supported.
-> -
-> -  - The same ACPI control method can be overridden for many times,
-> -    and it's always the latest one that used by Linux/kernel.
-> -
-> -  - To get the ACPI debug object output (Store (AAAA, Debug)),
-> -    please run::
-> -
-> -      echo 1 > /sys/module/acpi/parameters/aml_debug_output
-> -
-> -
-> -1. override an existing method
-> -==============================
-> -a) get the ACPI table via ACPI sysfs I/F. e.g. to get the DSDT,
-> -   just run "cat /sys/firmware/acpi/tables/DSDT > /tmp/dsdt.dat"
-> -b) disassemble the table by running "iasl -d dsdt.dat".
-> -c) rewrite the ASL code of the method and save it in a new file,
-> -d) package the new file (psr.asl) to an ACPI table format.
-> -   Here is an example of a customized \_SB._AC._PSR method::
-> -
-> -      DefinitionBlock ("", "SSDT", 1, "", "", 0x20080715)
-> -      {
-> -         Method (\_SB_.AC._PSR, 0, NotSerialized)
-> -         {
-> -            Store ("In AC _PSR", Debug)
-> -            Return (ACON)
-> -         }
-> -      }
-> -
-> -   Note that the full pathname of the method in ACPI namespace
-> -   should be used.
-> -e) assemble the file to generate the AML code of the method.
-> -   e.g. "iasl -vw 6084 psr.asl" (psr.aml is generated as a result)
-> -   If parameter "-vw 6084" is not supported by your iASL compiler,
-> -   please try a newer version.
-> -f) mount debugfs by "mount -t debugfs none /sys/kernel/debug"
-> -g) override the old method via the debugfs by running
-> -   "cat /tmp/psr.aml > /sys/kernel/debug/acpi/custom_method"
-> -
-> -2. insert a new method
-> -======================
-> -This is easier than overriding an existing method.
-> -We just need to create the ASL code of the method we want to
-> -insert and then follow the step c) ~ g) in section 1.
-> -
-> -3. undo your changes
-> -====================
-> -The "undo" operation is not supported for a new inserted method
-> -right now, i.e. we can not remove a method currently.
-> -For an overridden method, in order to undo your changes, please
-> -save a copy of the method original ASL code in step c) section 1,
-> -and redo step c) ~ g) to override the method with the original one.
-> -
-> -
-> -.. note:: We can use a kernel with multiple custom ACPI method running,
-> -   But each individual write to debugfs can implement a SINGLE
-> -   method override. i.e. if we want to insert/override multiple
-> -   ACPI methods, we need to redo step c) ~ g) for multiple times.
-> -
-> -.. note:: Be aware that root can mis-use this driver to modify arbitrary
-> -   memory and gain additional rights, if root's privileges got
-> -   restricted (for example if root is not allowed to load additional
-> -   modules after boot).
-> Index: linux-pm/Documentation/firmware-guide/acpi/index.rst
-> ===================================================================
-> --- linux-pm.orig/Documentation/firmware-guide/acpi/index.rst
-> +++ linux-pm/Documentation/firmware-guide/acpi/index.rst
-> @@ -14,7 +14,6 @@ ACPI Support
->     dsd/phy
->     enumeration
->     osi
-> -   method-customizing
->     method-tracing
->     DSD-properties-rules
->     debug
->
->
->
+VGhpcyBzZWVtcyBsaWtlIGEgZ3JhcGhpY3MgaXNzdWUuDQpQbGVhc2UgY29uZmlybSBpZiB0aGUg
+cHJvYmxlbSBzdGlsbCBleGlzdHMgd2l0aCBMQVRFU1QgdmFuaWxsYSBrZXJuZWwuDQpJZiB5ZXMs
+IHBsZWFzZSBib290IHdpdGgga2VybmVsIHBhcmFtZXRlciAibm9tb2Rlc2V0IiBhbmQgc2VlIGlm
+IHRoZQ0KcHJvYmxlbSBpcyBzdGlsbCB0aGVyZS4NCg0KdGhhbmtzLA0KcnVpDQoNCk9uIE1vbiwg
+MjAyMy0wMS0zMCBhdCAwNjo1MiArMDAwMCwgVG9waSBNw6RlbnDDpMOkIHdyb3RlOg0KPiBIaSwN
+Cj4gDQo+IEkgaG9wZSBJJ20gbm90IGJyZWFraW5nIHJ1bGVzIGJ5IHBvc3RpbmcgdGhpcyBxdWVz
+dGlvbiBoZXJlLiBJZiBJIGFtLA0KPiBjb3VsZCB5b3UgcGxlYXNlIHBvaW50IG1lIHRvIHRoZSBy
+aWdodCBmb3J1bT8NCj4gDQo+IEkgcmVjZW50bHkgYm91Z2h0IGEgbmV3IGxhcHRvcCBJIGFzc3Vt
+ZWQgd2FzIGNsb3NlIGVub3VnaCB0byBvdGhlciBIUA0KPiBsYXB0b3AgbW9kZWxzIHRoYXQgd29y
+a2VkIGZpbmUgd2l0aCBMaW51eC4gSXQgYXBwYXJlbnRseSB3YXNuJ3QuDQo+IEhhcmR3YXJlIHNw
+ZWNzOg0KPiBodHRwczovL3N1cHBvcnQuaHAuY29tL3VzLWVuL2RvY3VtZW50L2lzaF81OTk0NjQx
+LTU5OTQ3MDUtMTYuIEkgaGF2ZQ0KPiB0aGUgbW9kZWwgd2l0aCBhbiBJbnRlbCBDb3JlIGk3IDEy
+NzAwSCBhbmQgTlZJRElBIFJUWCBBMjAwMC4NCj4gDQo+IEknbSBydW5uaW5nIEt1YnVudHUgMjIu
+MTAgKHRyaWVkIDIyLjA0IGZpcnN0KSB3aXRoIGtlcm5lbCB2ZXJzaW9uDQo+IDUuMTkuMC0yOS4g
+SSB1cGdyYWRlZCB0aGUgZmlybXdhcmUgdG8gdGhlIGxhdGVzdCB2ZXJzaW9uIGZvdW5kIG9uDQo+
+IEhQJ3MNCj4gc2l0ZS4gVGhlIHZlcnNpb24gaXMgbm93IEJJT1MgVTk3IFZlci4gMDEuMDQuMDEg
+MTAvMjUvMjAyMi4gVGhpcyBoYWQNCj4gbm8NCj4gZWZmZWN0Lg0KPiANCj4gVGhlIHByb2JsZW0g
+aXMgdGhlIGxhcHRvcCB3b24ndCB3YWtlIHVwIGFmdGVyIGJlaW5nIHN1c3BlbmRlZC4gVGhpcw0K
+PiBoYXBwZW5zIGlycmVzcGVjdGl2ZSBvZiB0aGUgd2F5IHRoZSBzdXNwZW5kIGhhcHBlbmVkOyBj
+bG9zaW5nIHRoZSBsaWQNCj4gYW5kIGV4cGxpY2l0bHkgaW52b2tpbmcgInN5c3RlbWN0bCBzdXNw
+ZW5kIiBoYXZlIHRoZSBzYW1lIGVmZmVjdC4NCj4gT25jZQ0KPiBzdXNwZW5kZWQsIG9wZW5pbmcg
+dGhlIGxpZCBvciBwcmVzc2luZyB0aGUgcG93ZXIgYnV0dG9uIHdpbGwgY2F1c2UNCj4gdGhlDQo+
+IGtleWJvYXJkIGJhY2tsaWdodCB0byB0dXJuIG9uIGZvciBhIHdoaWxlIGFuZCB0aGUgc2NyZWVu
+IHRvIGZsYXNoIGENCj4gZmV3DQo+IHRpbWVzLiBJIGFsc28gc2VlIEFDUEkgcmVsYXRlZCBlcnJv
+ciBtZXNzYWdlcyBxdWlja2x5IGZsYXNoaW5nIG9uIHRoZQ0KPiBzY3JlZW4uIEkgdG9vayBhIHZp
+ZGVvIHRvIGNvbmZpcm0gdGhleSB3ZXJlIHRoZSBzYW1lIEkgc2VlIGluIHRoZQ0KPiBzeXN0ZW0g
+am91cm5hbC4NCj4gDQo+IEkgYXR0YWNoZWQgdGhlIChob3BlZnVsbHkpIHJlbGV2YW50IHBhcnRz
+IG9mIG15IHN5c3RlbSBqb3VybmFsLiBUaGUNCj4gZmlyc3QgZXJyb3IgYXBwZWFyZWQgZHVyaW5n
+ICJub3JtYWwiIG9wZXJhdGlvbiBiZWZvcmUgSSBjbG9zZWQgdGhlDQo+IGxpZC4NCj4gVGhlIG5l
+eHQgY2h1bmsgb2YgdGhlIGxvZyBpcyB3aGVuIEkgY2xvc2VkIHRoZSBsaWQsIGFuZCB0aGUgdGhp
+cmQgb25lDQo+IHdoZW4gSSByZW9wZW5lZCBpdC4gDQo+IA0KPiBJIGRvbid0IGFsd2F5cyBzZWUg
+dGhlICJMaWQgY2xvc2VkIiBtZXNzYWdlIGluIHRoZSBsb2csIGJ1dCAiQUNQSQ0KPiBCSU9TDQo+
+IEVycm9yIChidWcpOiBBRV9BTUxfUEFDS0FHRV9MSU1JVCwgSW5kZXggKDB4MDAwMDAwMEZGKSBp
+cyBiZXlvbmQgZW5kDQo+IG9mDQo+IG9iamVjdCAobGVuZ3RoIDB4MTIpICgyMDIyMDMzMS9leG9w
+YXJnMi0zOTMpIiBpcyBhbHdheXMgdGhlcmUuIFNhbWUNCj4gZ29lcyB0byB0aGUgcGFydCB0aGF0
+IHN0YXJ0cyB3aXRoICJbIGN1dCBoZXJlIF0iLiBJdCBpcyBhIGJpdCBoYXJkIHRvDQo+IHN5bmNo
+cm9uaXplIHRoZSBsb2cgYW5kIHRoZSBwaHlzaWNhbCBldmVudHMsIGJ1dCBpdCBzZWVtcyB0byBt
+ZSB0aGF0DQo+IHRoZSBlcnJvciBtZXNzYWdlcyBjYW4gYXBwZWFyIGVpdGhlciB3aGVuIEkgY2xv
+c2UgdGhlIGxpZCBvciB3aGVuIEkNCj4gb3BlbiBpdC4NCj4gDQo+IA0KPiBNeSBxdWVzdGlvbnM6
+DQo+IA0KPiAxLiBJcyB0aGVyZSBhIHdheSBJIGNhbiB3b3JrIGFyb3VuZCB0aGlzIHVzaW5nIGtl
+cm5lbCBib290IHBhcmFtZXRlcnMNCj4gb3IgdGhlIGxpa2U/IEknbSBhc3N1bWluZyBkaXNhYmxp
+bmcgQUNQSSB3b3VsZCBtYWtlIGl0IGRpc2FwcGVhciwgYnV0DQo+IHRoYXQgaXNuJ3QgYW4gb3B0
+aW9uIGZvciBhIGEgbGFwdG9wLg0KPiANCj4gMi4gV2hhdCB3b3VsZCBpdCB0YWtlIHRvIHdvcmsg
+YXJvdW5kIHRoaXMgaW4gdGhlIEFDUEktcmVsYXRlZCBrZXJuZWwNCj4gc291cmNlIGNvZGU/DQo+
+IA0KPiANCj4gLSBUb3BpDQo=
