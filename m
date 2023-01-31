@@ -2,204 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B7B2682D56
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Jan 2023 14:08:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CE80682D91
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Jan 2023 14:17:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230116AbjAaNI2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 31 Jan 2023 08:08:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43984 "EHLO
+        id S230136AbjAaNRA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 31 Jan 2023 08:17:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229934AbjAaNI1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Jan 2023 08:08:27 -0500
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50D623AAB;
-        Tue, 31 Jan 2023 05:08:24 -0800 (PST)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
- id b5552f1a09772976; Tue, 31 Jan 2023 14:08:22 +0100
-Received: from kreacher.localnet (unknown [213.134.183.17])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 9515678167E;
-        Tue, 31 Jan 2023 14:08:21 +0100 (CET)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "Zhang, Rui" <rui.zhang@intel.com>
-Cc:     "srinivas.pandruvada@linux.intel.com" 
-        <srinivas.pandruvada@linux.intel.com>,
-        "david.e.box@linux.intel.com" <david.e.box@linux.intel.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v1 7/8] thermal: intel: intel_pch: Rename board ID symbols
-Date:   Tue, 31 Jan 2023 14:08:20 +0100
-Message-ID: <12166249.O9o76ZdvQC@kreacher>
-In-Reply-To: <03b213dd351605d34f3d2ebc29fc3795cd2a58d2.camel@intel.com>
-References: <1751684.VLH7GnMWUR@kreacher> <2144306.Icojqenx9y@kreacher> <03b213dd351605d34f3d2ebc29fc3795cd2a58d2.camel@intel.com>
+        with ESMTP id S231253AbjAaNQx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Jan 2023 08:16:53 -0500
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14E3F4A222
+        for <linux-acpi@vger.kernel.org>; Tue, 31 Jan 2023 05:16:51 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id h12so14157314wrv.10
+        for <linux-acpi@vger.kernel.org>; Tue, 31 Jan 2023 05:16:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Leq3Br8tucz3HJXKezu/W0nqkL6CQAl/uSwPttKsgF8=;
+        b=o4S/16NLY7JSiLwNRPGMoAIemTVfPSg6AL9SZ+JR+O5op4nH+7MClNQsYpuF9fb0ZY
+         LGBbZu+oJ4xl3jNFHecg1jrAE3oE5J+1kRQk901Tor/t+KAHMPK+Q2mq6x5S2dgK3OUZ
+         5FLRUHbOTG2tEwJnw76Ld68cOVX3ffhiwRgIA0f1lkGWrV2VlGPYKWupPH1f/H8jcaiz
+         eip2S+T0+h/7gVBJAVR9DfkKWciTGWkR+ap/9S6q7nRqF92zjJznFDp8ST51hxP67dYe
+         Tm400SWZPguaJKd0dQfry1q34mIYKRE4AkgYEqTF/Py9TSbIbgWqc9rMVebUDHy7vg3U
+         OTAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Leq3Br8tucz3HJXKezu/W0nqkL6CQAl/uSwPttKsgF8=;
+        b=oEmYT01eBFW3zHncvoAsZjkNyNl8tlMLUgjlEWOWzXCVVVwvvOl60KCzqVZtpVJscb
+         0z1vAxOPYSyVZV0qo4NJGQcl5ovsma4yEXk68jGIpInF7IwOhssrKCjQ7t0K2JDUElaY
+         Cjr/uDQ2t7tmWxEQbh9AnMw6b4W5xk0lwCDIDBk8zT9D72KOV/JWDQiPOvgn+EqqY2Tv
+         up5FQvYmHyYqJZN2JjWOqcMn6FYpgx+qzqfvWxL2/76mHVh3laBRW2tvH73HWX3Arqes
+         48ZQuK4LFKFK6+KssF3Yt9jDJl9hnYZpRlgEXzrkLt5/5p6RfDSA5/LZrkKlJ6Z9KsIw
+         MRhA==
+X-Gm-Message-State: AFqh2kqglLiQjvEgDgQzGCdLNusIkVaymTl8Ur5STKN8pZ/latDaHIgL
+        fz2yiKfAKIDV496LR4yEzSGRIw==
+X-Google-Smtp-Source: AMrXdXtYsRWRbZFKwyKPdRYPyxJU/qgmSqxYjdztVLapSLqqIonXfLWODMvHvbl9Zza62nVRER4/aw==
+X-Received: by 2002:a05:6000:1c08:b0:2bd:f5bd:5482 with SMTP id ba8-20020a0560001c0800b002bdf5bd5482mr56602829wrb.28.1675171009516;
+        Tue, 31 Jan 2023 05:16:49 -0800 (PST)
+Received: from [192.168.2.1] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id e21-20020a5d5955000000b002b57bae7174sm14598150wri.5.2023.01.31.05.16.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 31 Jan 2023 05:16:49 -0800 (PST)
+Message-ID: <47330c74-3619-d706-f41e-a2a2c18ece71@linaro.org>
+Date:   Tue, 31 Jan 2023 14:16:46 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.183.17
-X-CLIENT-HOSTNAME: 213.134.183.17
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrudefgedggeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepfeduudeutdeugfelffduieegiedtueefledvjeegffdttefhhffhtefhleejgfetnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvddufedrudefgedrudekfedrudejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudekfedrudejpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeeipdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomhdprhgtphhtthhopehsrhhinhhivhgrshdrphgrnhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepuggrvhhiugdrvgdr
- sghogieslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v1 1/8] thermal: intel: intel_pch: Make
+ pch_wpt_add_acpi_psv_trip() return int
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux PM <linux-pm@vger.kernel.org>
+Cc:     Zhang Rui <rui.zhang@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        David Box <david.e.box@linux.intel.com>
+References: <1751684.VLH7GnMWUR@kreacher> <1941501.usQuhbGJ8B@kreacher>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <1941501.usQuhbGJ8B@kreacher>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tuesday, January 31, 2023 12:17:55 PM CET Zhang, Rui wrote:
-> On Mon, 2023-01-30 at 20:04 +0100, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > 
-> > Use capitals in the names of the board ID symbols and add the PCH_
-> > prefix to each of them for consistency.
-> > 
-> > Also rename the board_ids enum accordingly.
-> > 
-> > No intentional functional impact.
-> > 
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >  drivers/thermal/intel/intel_pch_thermal.c |   54 +++++++++++++++--
-> > -------------
-> >  1 file changed, 27 insertions(+), 27 deletions(-)
-> > 
-> > Index: linux-pm/drivers/thermal/intel/intel_pch_thermal.c
-> > ===================================================================
-> > --- linux-pm.orig/drivers/thermal/intel/intel_pch_thermal.c
-> > +++ linux-pm/drivers/thermal/intel/intel_pch_thermal.c
-> > @@ -135,38 +135,38 @@ static struct thermal_zone_device_ops tz
-> >  	.critical = pch_critical,
-> >  };
-> >  
-> > -enum board_ids {
-> > -	board_hsw,
-> > -	board_wpt,
-> > -	board_skl,
-> > -	board_cnl,
-> > -	board_cml,
-> > -	board_lwb,
-> > -	board_wbg,
-> > +enum pch_board_ids {
-> > +	PCH_BOARD_HSW = 0,
-> > +	PCH_BOARD_WPT,
-> > +	PCH_BOARD_SKL,
-> > +	PCH_BOARD_CNL,
-> > +	PCH_BOARD_CML,
-> > +	PCH_BOARD_LWB,
-> > +	PCH_BOARD_WBG,
-> >  };
-> >  
-> >  static const struct board_info {
-> >  	const char *name;
-> >  } board_info[] = {
+On 30/01/2023 19:58, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> Now struct board_info has "name" field only, so maybe we can remove
-> struct board_info, and use a "static const char *" array instead?
+> Modify pch_wpt_add_acpi_psv_trip() to return an int value instead of
+> using a return pointer for that.
+> 
+> While at it, drop an excessive empty code line.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
 
-Good point.
-
-I think that the last patch in the series can be replaced with the
-appended one.
-
-> BTW, I'm building a kernel with this patch series as well as 
-> https://patchwork.kernel.org/project/linux-pm/list/?series=717084,
-> will update the test result later.
-
-Thank you!
-
----
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Subject: [PATCH] thermal: intel: intel_pch: Drop struct board_info
-
-Because the only member of struct board_info is the name, the
-board_info[] array of struct board_info elements can be replaced with
-an array of strings.
-
-Modify the code accordingly and drop struct board_info.
-
-No intentional functional impact.
-
-Suggested-by: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/thermal/intel/intel_pch_thermal.c |   42 +++++++++---------------------
- 1 file changed, 13 insertions(+), 29 deletions(-)
-
-Index: linux-pm/drivers/thermal/intel/intel_pch_thermal.c
-===================================================================
---- linux-pm.orig/drivers/thermal/intel/intel_pch_thermal.c
-+++ linux-pm/drivers/thermal/intel/intel_pch_thermal.c
-@@ -145,37 +145,20 @@ enum pch_board_ids {
- 	PCH_BOARD_WBG,
- };
- 
--static const struct board_info {
--	const char *name;
--} board_info[] = {
--	[PCH_BOARD_HSW] = {
--		.name = "pch_haswell",
--	},
--	[PCH_BOARD_WPT] = {
--		.name = "pch_wildcat_point",
--	},
--	[PCH_BOARD_SKL] = {
--		.name = "pch_skylake",
--	},
--	[PCH_BOARD_CNL] = {
--		.name = "pch_cannonlake",
--	},
--	[PCH_BOARD_CML] = {
--		.name = "pch_cometlake",
--	},
--	[PCH_BOARD_LWB] = {
--		.name = "pch_lewisburg",
--	},
--	[PCH_BOARD_WBG] = {
--		.name = "pch_wellsburg",
--	},
-+static const char *board_names[] = {
-+	[PCH_BOARD_HSW] = "pch_haswell",
-+	[PCH_BOARD_WPT] = "pch_wildcat_point",
-+	[PCH_BOARD_SKL] = "pch_skylake",
-+	[PCH_BOARD_CNL] = "pch_cannonlake",
-+	[PCH_BOARD_CML] = "pch_cometlake",
-+	[PCH_BOARD_LWB] = "pch_lewisburg",
-+	[PCH_BOARD_WBG] = "pch_wellsburg",
- };
- 
- static int intel_pch_thermal_probe(struct pci_dev *pdev,
- 				   const struct pci_device_id *id)
- {
- 	enum pch_board_ids board_id = id->driver_data;
--	const struct board_info *bi = &board_info[board_id];
- 	struct pch_thermal_device *ptd;
- 	u16 trip_temp;
- 	int nr_trips;
-@@ -249,12 +232,13 @@ read_trips:
- 
- 	nr_trips += pch_wpt_add_acpi_psv_trip(ptd, nr_trips);
- 
--	ptd->tzd = thermal_zone_device_register_with_trips(bi->name, ptd->trips,
--							   nr_trips, 0, ptd,
--							   &tzd_ops, NULL, 0, 0);
-+	ptd->tzd = thermal_zone_device_register_with_trips(board_names[board_id],
-+							   ptd->trips, nr_trips,
-+							   0, ptd, &tzd_ops,
-+							   NULL, 0, 0);
- 	if (IS_ERR(ptd->tzd)) {
- 		dev_err(&pdev->dev, "Failed to register thermal zone %s\n",
--			bi->name);
-+			board_names[board_id]);
- 		err = PTR_ERR(ptd->tzd);
- 		goto error_cleanup;
- 	}
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 
 
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
