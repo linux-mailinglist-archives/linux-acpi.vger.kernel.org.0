@@ -2,54 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70F94682D2A
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Jan 2023 14:01:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B7B2682D56
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Jan 2023 14:08:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230286AbjAaNBV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 31 Jan 2023 08:01:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36148 "EHLO
+        id S230116AbjAaNI2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 31 Jan 2023 08:08:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229624AbjAaNBU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Jan 2023 08:01:20 -0500
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DED624B898;
-        Tue, 31 Jan 2023 05:01:18 -0800 (PST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        with ESMTP id S229934AbjAaNI1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Jan 2023 08:08:27 -0500
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50D623AAB;
+        Tue, 31 Jan 2023 05:08:24 -0800 (PST)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
+ id b5552f1a09772976; Tue, 31 Jan 2023 14:08:22 +0100
+Received: from kreacher.localnet (unknown [213.134.183.17])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 91455228FF;
-        Tue, 31 Jan 2023 13:01:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1675170077; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-        bh=NLETNYRB1I9t8cXemPHR0hkOBQ4tV56gRSZ+uiABDF4=;
-        b=GPWeZ4HzDM+VzbgslendF66NPeXFYqPxEb+vlNczJZkOEBnHkue46fCyggBcrvUCJ+ZdtD
-        dgppdI6fldhPvn0YyQG8kOFBaE4Htszp+4/n+hQYJHrzDN9tu5My+G/4+1UdIYvDCQ22mY
-        2StCAs8kkuRu508IIn7Nxr111QM/E6k=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 574BB13585;
-        Tue, 31 Jan 2023 13:01:17 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id n5lvFB0R2WPmGgAAMHmgww
-        (envelope-from <petr.pavlu@suse.com>); Tue, 31 Jan 2023 13:01:17 +0000
-From:   Petr Pavlu <petr.pavlu@suse.com>
-To:     rafael@kernel.org, lenb@kernel.org, viresh.kumar@linaro.org
-Cc:     pmladek@suse.com, mcgrof@kernel.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Petr Pavlu <petr.pavlu@suse.com>
-Subject: [PATCH] ACPI: cpufreq: use a platform device to load ACPI PPC and PCC drivers
-Date:   Tue, 31 Jan 2023 14:00:41 +0100
-Message-Id: <20230131130041.629-1-petr.pavlu@suse.com>
-X-Mailer: git-send-email 2.35.3
+        by v370.home.net.pl (Postfix) with ESMTPSA id 9515678167E;
+        Tue, 31 Jan 2023 14:08:21 +0100 (CET)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "Zhang, Rui" <rui.zhang@intel.com>
+Cc:     "srinivas.pandruvada@linux.intel.com" 
+        <srinivas.pandruvada@linux.intel.com>,
+        "david.e.box@linux.intel.com" <david.e.box@linux.intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v1 7/8] thermal: intel: intel_pch: Rename board ID symbols
+Date:   Tue, 31 Jan 2023 14:08:20 +0100
+Message-ID: <12166249.O9o76ZdvQC@kreacher>
+In-Reply-To: <03b213dd351605d34f3d2ebc29fc3795cd2a58d2.camel@intel.com>
+References: <1751684.VLH7GnMWUR@kreacher> <2144306.Icojqenx9y@kreacher> <03b213dd351605d34f3d2ebc29fc3795cd2a58d2.camel@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 213.134.183.17
+X-CLIENT-HOSTNAME: 213.134.183.17
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrudefgedggeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepfeduudeutdeugfelffduieegiedtueefledvjeegffdttefhhffhtefhleejgfetnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvddufedrudefgedrudekfedrudejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudekfedrudejpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeeipdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomhdprhgtphhtthhopehsrhhinhhivhgrshdrphgrnhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepuggrvhhiugdrvgdr
+ sghogieslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,275 +53,153 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The acpi-cpufreq and pcc-cpufreq drivers are loaded through per-CPU
-module aliases. This can result in many unnecessary load requests during
-boot if another frequency module, such as intel_pstate, is already
-active. For instance, on a typical Intel system, one can observe that
-udev makes 2x#CPUs attempts to insert acpi_cpufreq and 1x#CPUs attempts
-for pcc_cpufreq. All these tries then fail if another frequency module
-is already registered.
+On Tuesday, January 31, 2023 12:17:55 PM CET Zhang, Rui wrote:
+> On Mon, 2023-01-30 at 20:04 +0100, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > 
+> > Use capitals in the names of the board ID symbols and add the PCH_
+> > prefix to each of them for consistency.
+> > 
+> > Also rename the board_ids enum accordingly.
+> > 
+> > No intentional functional impact.
+> > 
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >  drivers/thermal/intel/intel_pch_thermal.c |   54 +++++++++++++++--
+> > -------------
+> >  1 file changed, 27 insertions(+), 27 deletions(-)
+> > 
+> > Index: linux-pm/drivers/thermal/intel/intel_pch_thermal.c
+> > ===================================================================
+> > --- linux-pm.orig/drivers/thermal/intel/intel_pch_thermal.c
+> > +++ linux-pm/drivers/thermal/intel/intel_pch_thermal.c
+> > @@ -135,38 +135,38 @@ static struct thermal_zone_device_ops tz
+> >  	.critical = pch_critical,
+> >  };
+> >  
+> > -enum board_ids {
+> > -	board_hsw,
+> > -	board_wpt,
+> > -	board_skl,
+> > -	board_cnl,
+> > -	board_cml,
+> > -	board_lwb,
+> > -	board_wbg,
+> > +enum pch_board_ids {
+> > +	PCH_BOARD_HSW = 0,
+> > +	PCH_BOARD_WPT,
+> > +	PCH_BOARD_SKL,
+> > +	PCH_BOARD_CNL,
+> > +	PCH_BOARD_CML,
+> > +	PCH_BOARD_LWB,
+> > +	PCH_BOARD_WBG,
+> >  };
+> >  
+> >  static const struct board_info {
+> >  	const char *name;
+> >  } board_info[] = {
+> 
+> Now struct board_info has "name" field only, so maybe we can remove
+> struct board_info, and use a "static const char *" array instead?
 
-Both acpi-cpufreq and pcc-cpufreq drivers have their platform firmware
-interface defined by ACPI. Allowed performance states and parameters
-must be same for each CPU. This makes it possible to model these
-interfaces as platform devices.
+Good point.
 
-The patch extends the ACPI parsing logic to check the ACPI namespace if
-the PPC or PCC interface is present and creates a virtual platform
-device for each if it is available. The acpi-cpufreq and pcc-cpufreq
-drivers are then updated to map to these devices.
+I think that the last patch in the series can be replaced with the
+appended one.
 
-This allows to try loading acpi-cpufreq and pcc-cpufreq only once during
-boot and only if a given interface is available in the firmware.
+> BTW, I'm building a kernel with this patch series as well as 
+> https://patchwork.kernel.org/project/linux-pm/list/?series=717084,
+> will update the test result later.
 
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Thank you!
+
 ---
- drivers/acpi/Makefile          |  1 +
- drivers/acpi/acpi_cpufreq.c    | 49 ++++++++++++++++++++++++++++++++++
- drivers/acpi/bus.c             |  1 +
- drivers/acpi/internal.h        |  2 ++
- drivers/cpufreq/acpi-cpufreq.c | 39 +++++++++++++++------------
- drivers/cpufreq/pcc-cpufreq.c  | 34 ++++++++++++++++-------
- 6 files changed, 99 insertions(+), 27 deletions(-)
- create mode 100644 drivers/acpi/acpi_cpufreq.c
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Subject: [PATCH] thermal: intel: intel_pch: Drop struct board_info
 
-diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-index feb36c0b9446..880db1082c3e 100644
---- a/drivers/acpi/Makefile
-+++ b/drivers/acpi/Makefile
-@@ -57,6 +57,7 @@ acpi-y				+= evged.o
- acpi-y				+= sysfs.o
- acpi-y				+= property.o
- acpi-$(CONFIG_X86)		+= acpi_cmos_rtc.o
-+acpi-$(CONFIG_X86)		+= acpi_cpufreq.o
- acpi-$(CONFIG_X86)		+= x86/apple.o
- acpi-$(CONFIG_X86)		+= x86/utils.o
- acpi-$(CONFIG_X86)		+= x86/s2idle.o
-diff --git a/drivers/acpi/acpi_cpufreq.c b/drivers/acpi/acpi_cpufreq.c
-new file mode 100644
-index 000000000000..7cf243c67475
---- /dev/null
-+++ b/drivers/acpi/acpi_cpufreq.c
-@@ -0,0 +1,49 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Registration of platform devices for ACPI Processor Performance Control and
-+ * Processor Clocking Control.
-+ */
-+
-+#include <linux/acpi.h>
-+#include <linux/platform_device.h>
-+
-+#include "internal.h"
-+
-+static void __init cpufreq_add_device(const char *name)
-+{
-+	struct platform_device *pdev;
-+
-+	pdev = platform_device_register_simple(name, PLATFORM_DEVID_NONE, NULL,
-+					       0);
-+	if (IS_ERR(pdev))
-+		pr_err("%s device creation failed: %ld\n", name, PTR_ERR(pdev));
-+}
-+
-+static acpi_status __init acpi_pct_match(acpi_handle handle, u32 level,
-+					 void *context, void **return_value)
-+{
-+	bool *pct = context;
-+
-+	/* Check if the first CPU has _PCT. The data must be same for all. */
-+	*pct = acpi_has_method(handle, "_PCT");
-+	return AE_CTRL_TERMINATE;
-+}
-+
-+void __init acpi_cpufreq_init(void)
-+{
-+	acpi_status status;
-+	acpi_handle handle;
-+	bool pct = false;
-+
-+	status = acpi_get_handle(NULL, "\\_SB", &handle);
-+	if (ACPI_FAILURE(status))
-+		return;
-+
-+	acpi_walk_namespace(ACPI_TYPE_PROCESSOR, ACPI_ROOT_OBJECT,
-+			    ACPI_UINT32_MAX, acpi_pct_match, NULL, &pct, NULL);
-+	if (pct)
-+		cpufreq_add_device("acpi-cpufreq");
-+
-+	if (acpi_has_method(handle, "PCCH"))
-+		cpufreq_add_device("pcc-cpufreq");
-+}
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index 0c05ccde1f7a..f1559e26d5ff 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -1428,6 +1428,7 @@ static int __init acpi_init(void)
- 	acpi_viot_init();
- 	acpi_agdi_init();
- 	acpi_apmt_init();
-+	acpi_cpufreq_init();
- 	return 0;
- }
- 
-diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-index ec584442fb29..c9b1a5f689fa 100644
---- a/drivers/acpi/internal.h
-+++ b/drivers/acpi/internal.h
-@@ -157,8 +157,10 @@ static inline void acpi_early_processor_set_pdc(void) {}
- 
- #ifdef CONFIG_X86
- void acpi_early_processor_osc(void);
-+void acpi_cpufreq_init(void);
- #else
- static inline void acpi_early_processor_osc(void) {}
-+static inline void acpi_cpufreq_init(void) {}
- #endif
- 
- /* --------------------------------------------------------------------------
-diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
-index 78adfb2ffff6..e1a5384cf21c 100644
---- a/drivers/cpufreq/acpi-cpufreq.c
-+++ b/drivers/cpufreq/acpi-cpufreq.c
-@@ -965,7 +965,7 @@ static void __init acpi_cpufreq_boost_init(void)
- 	acpi_cpufreq_driver.boost_enabled = boost_state(0);
- }
- 
--static int __init acpi_cpufreq_init(void)
-+static int __init acpi_cpufreq_probe(struct platform_device *pdev)
- {
- 	int ret;
- 
-@@ -1010,13 +1010,32 @@ static int __init acpi_cpufreq_init(void)
- 	return ret;
- }
- 
--static void __exit acpi_cpufreq_exit(void)
-+static int acpi_cpufreq_remove(struct platform_device *pdev)
- {
- 	pr_debug("%s\n", __func__);
- 
- 	cpufreq_unregister_driver(&acpi_cpufreq_driver);
- 
- 	free_acpi_perf_data();
-+
-+	return 0;
-+}
-+
-+static struct platform_driver acpi_cpufreq_platdrv = {
-+	.driver = {
-+		.name	= "acpi-cpufreq",
-+	},
-+	.remove		= acpi_cpufreq_remove,
-+};
-+
-+static int __init acpi_cpufreq_init(void)
-+{
-+	return platform_driver_probe(&acpi_cpufreq_platdrv, acpi_cpufreq_probe);
-+}
-+
-+static void __exit acpi_cpufreq_exit(void)
-+{
-+	platform_driver_unregister(&acpi_cpufreq_platdrv);
- }
- 
- module_param(acpi_pstate_strict, uint, 0644);
-@@ -1027,18 +1046,4 @@ MODULE_PARM_DESC(acpi_pstate_strict,
- late_initcall(acpi_cpufreq_init);
- module_exit(acpi_cpufreq_exit);
- 
--static const struct x86_cpu_id __maybe_unused acpi_cpufreq_ids[] = {
--	X86_MATCH_FEATURE(X86_FEATURE_ACPI, NULL),
--	X86_MATCH_FEATURE(X86_FEATURE_HW_PSTATE, NULL),
--	{}
--};
--MODULE_DEVICE_TABLE(x86cpu, acpi_cpufreq_ids);
--
--static const struct acpi_device_id __maybe_unused processor_device_ids[] = {
--	{ACPI_PROCESSOR_OBJECT_HID, },
--	{ACPI_PROCESSOR_DEVICE_HID, },
--	{},
--};
--MODULE_DEVICE_TABLE(acpi, processor_device_ids);
--
--MODULE_ALIAS("acpi");
-+MODULE_ALIAS("platform:acpi-cpufreq");
-diff --git a/drivers/cpufreq/pcc-cpufreq.c b/drivers/cpufreq/pcc-cpufreq.c
-index 9f3fc7a073d0..0c362932ca60 100644
---- a/drivers/cpufreq/pcc-cpufreq.c
-+++ b/drivers/cpufreq/pcc-cpufreq.c
-@@ -384,7 +384,7 @@ static int __init pcc_cpufreq_do_osc(acpi_handle *handle)
- 	return ret;
- }
- 
--static int __init pcc_cpufreq_probe(void)
-+static int __init pcc_cpufreq_evaluate(void)
- {
- 	acpi_status status;
- 	struct acpi_buffer output = {ACPI_ALLOCATE_BUFFER, NULL};
-@@ -576,7 +576,7 @@ static struct cpufreq_driver pcc_cpufreq_driver = {
- 	.name = "pcc-cpufreq",
+Because the only member of struct board_info is the name, the
+board_info[] array of struct board_info elements can be replaced with
+an array of strings.
+
+Modify the code accordingly and drop struct board_info.
+
+No intentional functional impact.
+
+Suggested-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/thermal/intel/intel_pch_thermal.c |   42 +++++++++---------------------
+ 1 file changed, 13 insertions(+), 29 deletions(-)
+
+Index: linux-pm/drivers/thermal/intel/intel_pch_thermal.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/intel/intel_pch_thermal.c
++++ linux-pm/drivers/thermal/intel/intel_pch_thermal.c
+@@ -145,37 +145,20 @@ enum pch_board_ids {
+ 	PCH_BOARD_WBG,
  };
  
--static int __init pcc_cpufreq_init(void)
-+static int __init pcc_cpufreq_probe(struct platform_device *pdev)
+-static const struct board_info {
+-	const char *name;
+-} board_info[] = {
+-	[PCH_BOARD_HSW] = {
+-		.name = "pch_haswell",
+-	},
+-	[PCH_BOARD_WPT] = {
+-		.name = "pch_wildcat_point",
+-	},
+-	[PCH_BOARD_SKL] = {
+-		.name = "pch_skylake",
+-	},
+-	[PCH_BOARD_CNL] = {
+-		.name = "pch_cannonlake",
+-	},
+-	[PCH_BOARD_CML] = {
+-		.name = "pch_cometlake",
+-	},
+-	[PCH_BOARD_LWB] = {
+-		.name = "pch_lewisburg",
+-	},
+-	[PCH_BOARD_WBG] = {
+-		.name = "pch_wellsburg",
+-	},
++static const char *board_names[] = {
++	[PCH_BOARD_HSW] = "pch_haswell",
++	[PCH_BOARD_WPT] = "pch_wildcat_point",
++	[PCH_BOARD_SKL] = "pch_skylake",
++	[PCH_BOARD_CNL] = "pch_cannonlake",
++	[PCH_BOARD_CML] = "pch_cometlake",
++	[PCH_BOARD_LWB] = "pch_lewisburg",
++	[PCH_BOARD_WBG] = "pch_wellsburg",
+ };
+ 
+ static int intel_pch_thermal_probe(struct pci_dev *pdev,
+ 				   const struct pci_device_id *id)
  {
- 	int ret;
+ 	enum pch_board_ids board_id = id->driver_data;
+-	const struct board_info *bi = &board_info[board_id];
+ 	struct pch_thermal_device *ptd;
+ 	u16 trip_temp;
+ 	int nr_trips;
+@@ -249,12 +232,13 @@ read_trips:
  
-@@ -587,9 +587,9 @@ static int __init pcc_cpufreq_init(void)
- 	if (acpi_disabled)
- 		return -ENODEV;
+ 	nr_trips += pch_wpt_add_acpi_psv_trip(ptd, nr_trips);
  
--	ret = pcc_cpufreq_probe();
-+	ret = pcc_cpufreq_evaluate();
- 	if (ret) {
--		pr_debug("pcc_cpufreq_init: PCCH evaluation failed\n");
-+		pr_debug("pcc_cpufreq_probe: PCCH evaluation failed\n");
- 		return ret;
+-	ptd->tzd = thermal_zone_device_register_with_trips(bi->name, ptd->trips,
+-							   nr_trips, 0, ptd,
+-							   &tzd_ops, NULL, 0, 0);
++	ptd->tzd = thermal_zone_device_register_with_trips(board_names[board_id],
++							   ptd->trips, nr_trips,
++							   0, ptd, &tzd_ops,
++							   NULL, 0, 0);
+ 	if (IS_ERR(ptd->tzd)) {
+ 		dev_err(&pdev->dev, "Failed to register thermal zone %s\n",
+-			bi->name);
++			board_names[board_id]);
+ 		err = PTR_ERR(ptd->tzd);
+ 		goto error_cleanup;
  	}
- 
-@@ -607,21 +607,35 @@ static int __init pcc_cpufreq_init(void)
- 	return ret;
- }
- 
--static void __exit pcc_cpufreq_exit(void)
-+static int pcc_cpufreq_remove(struct platform_device *pdev)
- {
- 	cpufreq_unregister_driver(&pcc_cpufreq_driver);
- 
- 	pcc_clear_mapping();
- 
- 	free_percpu(pcc_cpu_info);
-+
-+	return 0;
- }
- 
--static const struct acpi_device_id __maybe_unused processor_device_ids[] = {
--	{ACPI_PROCESSOR_OBJECT_HID, },
--	{ACPI_PROCESSOR_DEVICE_HID, },
--	{},
-+static struct platform_driver pcc_cpufreq_platdrv = {
-+	.driver = {
-+		.name	= "pcc-cpufreq",
-+	},
-+	.remove		= pcc_cpufreq_remove,
- };
--MODULE_DEVICE_TABLE(acpi, processor_device_ids);
-+
-+static int __init pcc_cpufreq_init(void)
-+{
-+	return platform_driver_probe(&pcc_cpufreq_platdrv, pcc_cpufreq_probe);
-+}
-+
-+static void __exit pcc_cpufreq_exit(void)
-+{
-+	platform_driver_unregister(&pcc_cpufreq_platdrv);
-+}
-+
-+MODULE_ALIAS("platform:pcc-cpufreq");
- 
- MODULE_AUTHOR("Matthew Garrett, Naga Chumbalkar");
- MODULE_VERSION(PCC_VERSION);
--- 
-2.35.3
+
+
 
