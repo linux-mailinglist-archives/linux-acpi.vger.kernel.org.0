@@ -2,55 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67FE268215C
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Jan 2023 02:26:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 622876821AE
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Jan 2023 02:58:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230076AbjAaBZ7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Jan 2023 20:25:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47600 "EHLO
+        id S230480AbjAaB6H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Jan 2023 20:58:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229490AbjAaBZ6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 20:25:58 -0500
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E84E4222EF;
-        Mon, 30 Jan 2023 17:25:53 -0800 (PST)
-Received: from dggpemm500015.china.huawei.com (unknown [172.30.72.56])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4P5S4F0sPPzRnvL;
-        Tue, 31 Jan 2023 09:23:41 +0800 (CST)
-Received: from [10.174.177.133] (10.174.177.133) by
- dggpemm500015.china.huawei.com (7.185.36.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Tue, 31 Jan 2023 09:25:51 +0800
-Subject: Re: [PATCH v3 1/8] ftrace: Add DYNAMIC_FTRACE_WITH_CALL_OPS
-To:     Mark Rutland <mark.rutland@arm.com>
-CC:     <linux-arm-kernel@lists.infradead.org>, <catalin.marinas@arm.com>,
-        <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <mhiramat@kernel.org>,
-        <ndesaulniers@google.com>, <ojeda@kernel.org>,
-        <peterz@infradead.org>, <rafael.j.wysocki@intel.com>,
-        <revest@chromium.org>, <robert.moore@intel.com>,
-        <rostedt@goodmis.org>, <will@kernel.org>,
-        "liwei (GF)" <liwei391@huawei.com>
-References: <20230123134603.1064407-1-mark.rutland@arm.com>
- <20230123134603.1064407-2-mark.rutland@arm.com>
- <f2f5dfc6-3deb-9fce-a9be-9386e844a9cf@huawei.com>
- <Y9ebIY/pWz0Ms9S6@FVFF77S0Q05N>
-From:   "Wangshaobo (bobo)" <bobo.shaobowang@huawei.com>
-Message-ID: <60ec7607-7c5c-1a6e-18c9-8025cb2f289f@huawei.com>
-Date:   Tue, 31 Jan 2023 09:25:51 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+        with ESMTP id S230513AbjAaB6G (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Jan 2023 20:58:06 -0500
+Received: from out30-42.freemail.mail.aliyun.com (out30-42.freemail.mail.aliyun.com [115.124.30.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2C6ACDC6;
+        Mon, 30 Jan 2023 17:58:04 -0800 (PST)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0VaUebrP_1675130280;
+Received: from 30.240.116.180(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VaUebrP_1675130280)
+          by smtp.aliyun-inc.com;
+          Tue, 31 Jan 2023 09:58:01 +0800
+Message-ID: <926a3de3-ec6d-95e9-d799-c01e7ba9d2f9@linux.alibaba.com>
+Date:   Tue, 31 Jan 2023 09:57:59 +0800
 MIME-Version: 1.0
-In-Reply-To: <Y9ebIY/pWz0Ms9S6@FVFF77S0Q05N>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.133]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemm500015.china.huawei.com (7.185.36.181)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.5.0
+Subject: Re: [PATCH] ACPI: APEI: EINJ: Limit error type to 32-bit width
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Luck, Tony" <tony.luck@intel.com>, "bp@alien8.de" <bp@alien8.de>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "jaylu102@amd.com" <jaylu102@amd.com>,
+        "benjamin.cheatham@amd.com" <benjamin.cheatham@amd.com>,
+        "Williams, Dan J" <dan.j.williams@intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+        "zhuo.song@linux.alibaba.com" <zhuo.song@linux.alibaba.com>
+References: <20230118063504.58026-1-xueshuai@linux.alibaba.com>
+ <SJ1PR11MB60831C602B33D51DC6E604E6FCC79@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <202e4635-5233-9588-6c5e-ac61d280a431@linux.alibaba.com>
+ <CAJZ5v0hJ=XVVyw-feraYmTkGKeis7wrxDehtHOYuRSPUzYrSHA@mail.gmail.com>
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <CAJZ5v0hJ=XVVyw-feraYmTkGKeis7wrxDehtHOYuRSPUzYrSHA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-10.0 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -59,45 +56,24 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 
 
-在 2023/1/30 18:25, Mark Rutland 写道:
-> On Sat, Jan 28, 2023 at 04:46:48PM +0800, Wangshaobo (bobo) wrote:
->> 锟斤拷 2023/1/23 21:45, Mark Rutland 写锟斤拷:
->>> +config DYNAMIC_FTRACE_WITH_CALL_OPS
->>> +	def_bool y
->>> +	depends on HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS
->>> +
->> Hi Mark,
-> 
-> Hi,
-> 
->> I have test your patches and it looks fine with my sample module,
-> 
-> Thanks for testing!
-> 
->> but here setting DYNAMIC_FTRACE_WITH_CALL_OPS to y immutably may increase the
->> .text section size by 5% or more, how about making this to optional^^
-> 
-> We could consider making this optional. I had not made this optional so far as
-> in the future I'd like to make this the only implementation of ftrace on arm64
-> (once we can drop the old mcount version, and once we've sorted out the
-> incompatibility with CFI). In the mean time, it probably makes sense to have
-> the option at least to enable testing of each of the two forms.
-> 
-> Is your concern that the overall kernel image size is larger, or do you care
-> specifically about the size of the .text section for some reason?
-> 
-> Thanks,
-> Mark
-Embedded devices may pay more attention to Image size, and which may 
-also indirectly affects performance, for more reason, I think making 
-sense to have the option for testing is more important.
-
--- Wang ShaoBo
-> 
+On 2023/1/30 PM11:41, Rafael J. Wysocki wrote:
+> On Thu, Jan 19, 2023 at 3:10 AM Shuai Xue <xueshuai@linux.alibaba.com> wrote:
 >>
->> -- Wang ShaoBo
->>>    config DYNAMIC_FTRACE_WITH_ARGS
->>>    	def_bool y
->>>    	depends on DYNAMIC_FTRACE
->>> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
->>> index 442438b93fe9..e634b80f49d1 100644
+>>
+>>
+>> On 2023/1/19 AM12:37, Luck, Tony wrote:
+>>>> The bit map of error types to inject is 32-bit width[1]. Add parameter
+>>>> check to reflect the fact.
+>>>>
+>>>> [1] ACPI Specification 6.4, Section 18.6.4. Error Types
+>>>>
+>>>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+>>>
+>>> Reviewed-by: Tony Luck <tony.luck@intel.com>
+> 
+> Applied as 6.3 material, thanks!
+
+Thank you.
+
+Cheers
+Shuai
