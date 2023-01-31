@@ -2,203 +2,189 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C61B1682864
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Jan 2023 10:13:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE195682A17
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Jan 2023 11:13:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232579AbjAaJNk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 31 Jan 2023 04:13:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40146 "EHLO
+        id S229992AbjAaKNq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 31 Jan 2023 05:13:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232511AbjAaJNV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Jan 2023 04:13:21 -0500
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE0674E521
-        for <linux-acpi@vger.kernel.org>; Tue, 31 Jan 2023 01:11:13 -0800 (PST)
-Received: by mail-pg1-x52a.google.com with SMTP id d10so9557715pgm.13
-        for <linux-acpi@vger.kernel.org>; Tue, 31 Jan 2023 01:11:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+G7LKm94Gh8IveRXkVxzmqetNifcC6zGcwfVmKZiIxU=;
-        b=eqXSbhCEC9s02q8nHxUEus2+H/2Y0rvRKIp9bmt9yZfTuOssg1+p7nndjt2NON5wIW
-         0/xDxXb9svWhNEqPLB2Rkr2XW12YJIgZLHJUxwc0oD+YaTcloroWP2GQkUwK+y+rcFij
-         yzwEDLuRbzZv/qbhS6M4i67X+ja+AFpECod3dAEHZNGXfwqFJdUtRuZEqhVKkIh/jbTc
-         u5WZQInCjtsSmScQ182N0Rn8PUceGOmZ46ulxNvHkMWH9xtNpDxiA8fFGaKzebqxW9LB
-         KgY3T9Sy1JDPUittTemk7HZycvL7LywHjj+jk2cmQYG6Qc22WgvPMX58TH4Hixxm7rrQ
-         6aJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+G7LKm94Gh8IveRXkVxzmqetNifcC6zGcwfVmKZiIxU=;
-        b=LDdIa18DIld6NR7FlBp/NLst4zIvyNydug2Vbl44rSJl1d0iqR7C7lrUjkSRL97l+f
-         /vaxEJnAsNXlxjeZPNKp01UkQt/Xvd7J6q/9l786AIYRsMoA+QJcHuz1U7Q8Ks+zP99r
-         pmeJuAvfA4i/B4cxaosp0vowpCA/gWaJVPar89jFRaNCQs40UHNvXTfky1lA4tCdoV3E
-         YnyPNPN1cuaWS0OW3WFWLuyTITlUxtnvj1NsKsF1xn6xD9W2GdkL6aEXOdrKpIDXNEvl
-         cpEetiFME/lRM4EoTOGyQ8oeRMI2NJtOIoh612fnU9Kplf8skDVgwEacSh3gMtNO3YFf
-         edFg==
-X-Gm-Message-State: AO0yUKUNzFNB+Ya+QO5D9aw64frfOFjau9DghXl5L+Ck0nqPL19Hoi6G
-        9aq9ZiLTrU+QXQX9kcYDGhmOIQ==
-X-Google-Smtp-Source: AK7set9Wno7a0XYRFhzJYb6jckFGgD3MgmlKDmdJYnMg7BAjHupX6GqxvIMpR9adRETeVxpQn4ox6A==
-X-Received: by 2002:a05:6a00:1483:b0:592:61a5:40 with SMTP id v3-20020a056a00148300b0059261a50040mr15751149pfu.16.1675156269503;
-        Tue, 31 Jan 2023 01:11:09 -0800 (PST)
-Received: from sunil-laptop ([49.206.9.96])
-        by smtp.gmail.com with ESMTPSA id bt26-20020a056a00439a00b0058a7bacd31fsm6540587pfb.32.2023.01.31.01.11.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Jan 2023 01:11:09 -0800 (PST)
-Date:   Tue, 31 Jan 2023 14:41:00 +0530
-From:   Sunil V L <sunilvl@ventanamicro.com>
-To:     Jessica Clarke <jrtc27@jrtc27.com>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
+        with ESMTP id S229716AbjAaKNq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Jan 2023 05:13:46 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2D58549029;
+        Tue, 31 Jan 2023 02:13:45 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD1CA2F4;
+        Tue, 31 Jan 2023 02:14:26 -0800 (PST)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 770FD3F64C;
+        Tue, 31 Jan 2023 02:13:39 -0800 (PST)
+Date:   Tue, 31 Jan 2023 10:13:37 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Anup Patel <apatel@ventanamicro.com>,
-        linux-doc@vger.kernel.org, Atish Patra <atishp@rivosinc.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-acpi@vger.kernel.org, linux-riscv@lists.infradead.org,
-        Andrew Jones <ajones@ventanamicro.com>
-Subject: Re: [PATCH 11/24] RISC-V: ACPI: irqchip/riscv-intc: Add ACPI support
-Message-ID: <Y9jbJDwuJ0RnkviA@sunil-laptop>
-References: <20230130182225.2471414-1-sunilvl@ventanamicro.com>
- <20230130182225.2471414-12-sunilvl@ventanamicro.com>
- <AFDD5897-27A3-4418-B08B-9650B543692D@jrtc27.com>
+        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Linux Kernel Functional Testing <lkft@linaro.org>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        John Stultz <jstultz@google.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Maxim Kiselev <bigunclemax@gmail.com>,
+        Maxim Kochetkov <fido_max@inbox.ru>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Colin Foster <colin.foster@in-advantage.com>,
+        Martin Kepplinger <martin.kepplinger@puri.sm>,
+        Jean-Philippe Brucker <jpb@kernel.org>,
+        kernel-team@android.com, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 04/11] gpiolib: Clear the gpio_device's fwnode
+ initialized flag before adding
+Message-ID: <20230131101337.376mnrvhltbsychd@bogus>
+References: <20230127001141.407071-1-saravanak@google.com>
+ <20230127001141.407071-5-saravanak@google.com>
+ <20230130143153.67dsxn4lugfetfwb@bogus>
+ <Y9fe2arI8afeURWn@smile.fi.intel.com>
+ <CAGETcx9aPp+JU-hO+fGyGps6jaoKoFzZd2zzy5YZBKoU8G=OhA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <AFDD5897-27A3-4418-B08B-9650B543692D@jrtc27.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CAGETcx9aPp+JU-hO+fGyGps6jaoKoFzZd2zzy5YZBKoU8G=OhA@mail.gmail.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Jessica,
-
-On Mon, Jan 30, 2023 at 11:38:49PM +0000, Jessica Clarke wrote:
-> On 30 Jan 2023, at 18:22, Sunil V L <sunilvl@ventanamicro.com> wrote:
-> > 
-> > Add support for initializing the RISC-V INTC driver on ACPI based
-> > platforms.
-> > 
-> > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> > ---
-> > drivers/irqchip/irq-riscv-intc.c | 79 +++++++++++++++++++++++++++-----
-> > 1 file changed, 67 insertions(+), 12 deletions(-)
-> > 
-> > diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
-> > index f229e3e66387..044ec92fcba7 100644
-> > --- a/drivers/irqchip/irq-riscv-intc.c
-> > +++ b/drivers/irqchip/irq-riscv-intc.c
-> > @@ -6,6 +6,7 @@
-> >  */
-> > 
-> > #define pr_fmt(fmt) "riscv-intc: " fmt
-> > +#include <linux/acpi.h>
-> > #include <linux/atomic.h>
-> > #include <linux/bits.h>
-> > #include <linux/cpu.h>
-> > @@ -112,6 +113,30 @@ static struct fwnode_handle *riscv_intc_hwnode(void)
-> > 	return intc_domain->fwnode;
-> > }
-> > 
-> > +static int __init riscv_intc_init_common(struct fwnode_handle *fn)
-> > +{
-> > +	int rc;
-> > +
-> > +	intc_domain = irq_domain_create_linear(fn, BITS_PER_LONG,
-> > +					       &riscv_intc_domain_ops, NULL);
-> > +	if (!intc_domain) {
-> > +		pr_err("unable to add IRQ domain\n");
-> > +		return -ENXIO;
-> > +	}
-> > +
-> > +	rc = set_handle_irq(&riscv_intc_irq);
-> > +	if (rc) {
-> > +		pr_err("failed to set irq handler\n");
-> > +		return rc;
-> > +	}
-> > +
-> > +	riscv_set_intc_hwnode_fn(riscv_intc_hwnode);
-> > +
-> > +	pr_info("%d local interrupts mapped\n", BITS_PER_LONG);
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > static int __init riscv_intc_init(struct device_node *node,
-> > 				  struct device_node *parent)
-> > {
-> > @@ -133,24 +158,54 @@ static int __init riscv_intc_init(struct device_node *node,
-> > 	if (riscv_hartid_to_cpuid(hartid) != smp_processor_id())
-> > 		return 0;
-> > 
-> > -	intc_domain = irq_domain_add_linear(node, BITS_PER_LONG,
-> > -					    &riscv_intc_domain_ops, NULL);
-> > -	if (!intc_domain) {
-> > -		pr_err("unable to add IRQ domain\n");
-> > -		return -ENXIO;
-> > -	}
-> > -
-> > -	rc = set_handle_irq(&riscv_intc_irq);
-> > +	rc = riscv_intc_init_common(of_node_to_fwnode(node));
-> > 	if (rc) {
-> > -		pr_err("failed to set irq handler\n");
-> > +		pr_err("failed to initialize INTC\n");
-> > 		return rc;
-> > 	}
-> > 
-> > -	riscv_set_intc_hwnode_fn(riscv_intc_hwnode);
-> > +	return 0;
-> > +}
-> > 
-> > -	pr_info("%d local interrupts mapped\n", BITS_PER_LONG);
-> > +IRQCHIP_DECLARE(riscv, "riscv,cpu-intc", riscv_intc_init);
-> > +
-> > +#ifdef CONFIG_ACPI
-> > +
-> > +static int __init
-> > +riscv_intc_acpi_init(union acpi_subtable_headers *header,
-> > +		     const unsigned long end)
-> > +{
-> > +	int rc;
-> > +	struct fwnode_handle *fn;
-> > +	struct acpi_madt_rintc *rintc;
-> > +
-> > +	rintc = (struct acpi_madt_rintc *)header;
-> > +
-> > +	/*
-> > +	 * The ACPI MADT will have one INTC for each CPU (or HART)
-> > +	 * so riscv_intc_acpi_init() function will be called once
-> > +	 * for each INTC. We only need to do INTC initialization
-> > +	 * for the INTC belonging to the boot CPU (or boot HART).
-> > +	 */
-> > +	if (riscv_hartid_to_cpuid(rintc->hart_id) != smp_processor_id())
-> > +		return 0;
+On Mon, Jan 30, 2023 at 08:01:17PM -0800, Saravana Kannan wrote:
+> On Mon, Jan 30, 2023 at 7:14 AM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> >
+> > On Mon, Jan 30, 2023 at 02:31:53PM +0000, Sudeep Holla wrote:
+> > > On Thu, Jan 26, 2023 at 04:11:31PM -0800, Saravana Kannan wrote:
+> > > > Registering an irqdomain sets the flag for the fwnode. But having the
+> > > > flag set when a device is added is interpreted by fw_devlink to mean the
+> > > > device has already been initialized and will never probe. This prevents
+> > > > fw_devlink from creating device links with the gpio_device as a
+> > > > supplier. So, clear the flag before adding the device.
+> >
+> > ...
+> >
+> > > > +   /*
+> > > > +    * If fwnode doesn't belong to another device, it's safe to clear its
+> > > > +    * initialized flag.
+> > > > +    */
+> > > > +   if (!gdev->dev.fwnode->dev)
+> > > > +           fwnode_dev_initialized(gdev->dev.fwnode, false);
+> > >
+> > > This is the one causing the kernel crash during the boot on FVP which
+> > > Naresh has reported. Just reverted this and was able to boot, confirming
+> > > the issue with this patch.
+> >
+> > I'm wondering if
+> >
+> >         if (!dev_fwnode(&gdev->dev)->dev)
+> >                 fwnode_dev_initialized(&dev_fwnode(gdev->dev), false);
+> >
+> > works.
 > 
-> Why are we carrying forward this mess to ACPI? The DT bindings are
-> awful and a complete pain to deal with, as evidenced by how both Linux
-> and FreeBSD have to go out of their way to do special things to only
-> look at one of the many copies of the same thing.
+> No, that won't help. The problem was that with arm32, we have gpio
+> devices created without any of_node or fwnode. So I can't assume
+> fwnode will always be present.
 >
 
-Local interrupt controller structures are per-cpu in any architecture.
-So, there will be multiple such structures. It is upto the OS to choose
-one of them. What is the issue here?
+Correct, and this one is not even arm32. But it is just reusing a driver
+that needs to be supported even on arm32.
 
-The RISC-V DT code is selecting the one which is corresponding to the boot
-cpu. While in ACPI we can choose any one, I think it is better to
-follow the DT code to keep it similar and boot cpu is always guaranteed
-to be available.
+Not sure on how to proceed. As a simple way to check, I added a NULL check
+for fwnode building on top of Andy's suggestion[1]. That works.
 
-Thanks!
-Sunil
+Also the driver in question on arm64 FVP model is drivers/mfd/vexpress-sysreg.c
+mfd_add_device() in drivers/mfd/mfd-core.c allows addition of devices without
+of_node/fwnode. I am sure returning error like[2] will break many platforms
+but I just wanted to confirm the root cause and [2] fixes the boot without
+NULL check for fwnode in gpiochip_setup_dev().
+
+Hope this helps.
+
+--
+Regards,
+Sudeep
+
+[1]
+
+-->8
+diff --git i/drivers/gpio/gpiolib.c w/drivers/gpio/gpiolib.c
+index b23140c6485f..e162f13aa2c9 100644
+--- i/drivers/gpio/gpiolib.c
++++ w/drivers/gpio/gpiolib.c
+@@ -577,13 +577,15 @@ static void gpiodevice_release(struct device *dev)
+ static int gpiochip_setup_dev(struct gpio_device *gdev)
+ {
+        int ret;
++       struct fwnode_handle *fwnode = dev_fwnode(&gdev->dev);
+
+        /*
+         * If fwnode doesn't belong to another device, it's safe to clear its
+         * initialized flag.
+         */
+-       if (!gdev->dev.fwnode->dev)
+-               fwnode_dev_initialized(gdev->dev.fwnode, false);
++       if (fwnode && !fwnode->dev)
++               fwnode_dev_initialized(fwnode, false);
++
+        ret = gcdev_register(gdev, gpio_devt);
+        if (ret)
+                return ret;
+
+[2]
+
+-->8
+
+diff --git i/drivers/mfd/mfd-core.c w/drivers/mfd/mfd-core.c
+index 16d1861e9682..3b2c4b0e9a2a 100644
+--- i/drivers/mfd/mfd-core.c
++++ w/drivers/mfd/mfd-core.c
+@@ -231,9 +231,11 @@ static int mfd_add_device(struct device *parent, int id,
+                        }
+                }
+
+-               if (!pdev->dev.of_node)
++               if (!pdev->dev.of_node) {
+                        pr_warn("%s: Failed to locate of_node [id: %d]\n",
+                                cell->name, platform_id);
++                       goto fail_alias;
++               }
+        }
+
+        mfd_acpi_add_device(cell, pdev);
+
