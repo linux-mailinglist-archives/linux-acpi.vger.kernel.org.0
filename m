@@ -2,145 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4F1C68321B
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Jan 2023 17:02:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6D20683295
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Jan 2023 17:29:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230267AbjAaQCu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 31 Jan 2023 11:02:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41340 "EHLO
+        id S231582AbjAaQ3y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 31 Jan 2023 11:29:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230443AbjAaQCu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Jan 2023 11:02:50 -0500
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71D074ED27
-        for <linux-acpi@vger.kernel.org>; Tue, 31 Jan 2023 08:02:48 -0800 (PST)
-Received: by mail-wm1-x333.google.com with SMTP id m5-20020a05600c4f4500b003db03b2559eso10977445wmq.5
-        for <linux-acpi@vger.kernel.org>; Tue, 31 Jan 2023 08:02:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wdMGPgA5Z+kE+bOJxrk1w++j7n82pnWUSu1/WHQUxqw=;
-        b=u6d2uhUXHbyBWtehUzCGiwYSlD5sXIWoR8f6tKVVQYp6zCzGdesUi3PsMlUYNZ2Tm5
-         hdrwVd64uoNOEBLh3C7TeiYVVnyhpR4XKo6EmngrJUCt4Sc8uscq/b8d779MvRO4w7sa
-         8q39h/vH4NySvYXym6FhyVAZE6j0UpwoONggX5w4hKR3ueTQMdEUqpU3NKrw1v7dMtKd
-         ebq1XDxiIuN2IwZvu95GZU7IzXu7yQejKla9nElOeFBVBDsmtE3aKDLgCgGs8bGI1Ivc
-         +vzg+JmOJzyBOzvSwI2SzqVpsVKLET/UgXTsLepCJvRWA4Ep35WaQWiwbZzI0TzAaHgk
-         kO0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wdMGPgA5Z+kE+bOJxrk1w++j7n82pnWUSu1/WHQUxqw=;
-        b=L8ztJcj688AFeGAwnajZsG3CWA6RCNxBRfXJbOthukjCS6DCH4RtNDGJ9kNsHgaRqc
-         5UfFU12dwih4pJ71HROelB6n5gaFB/sSqswECI0VtZC/dd7o+bErhqo158vHqj9HfxXS
-         dUxV454GEV5YBja+DYZdXR6Iw20i3pY+pbxvB+xo1xi5z/O/lLOUGvYE/VTbeaklhSSG
-         RIouxUaX/VdZJZeJ6nmJqpJdq2G6CWfBr3kQE4QnUsrIhRQtq8K1pyeS4rHWtYr2V5j9
-         NBJ+ZRuv2QozlrUzKnvcyjwbx8GSqmKK2QUB85++ELUgemMFeiyDlhAi14pNVkgRwDuL
-         8S/Q==
-X-Gm-Message-State: AO0yUKVQAaQj3sE2uwF+n2BK8M8xlnHw0AMNfHwO9bOGfbgJ6vqFqd9q
-        xJI2hVHREprkQX8RX/I7s4QK+A==
-X-Google-Smtp-Source: AK7set+eFxCCoBppFXrc0Sm6MzRKo/b8M7EJxaLgIpYy/8zhGhrkBo6l2qaunHUvuKoHj7494kts8A==
-X-Received: by 2002:a05:600c:5028:b0:3dd:1982:4ce0 with SMTP id n40-20020a05600c502800b003dd19824ce0mr5912287wmr.16.1675180966899;
-        Tue, 31 Jan 2023 08:02:46 -0800 (PST)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id h13-20020a05600c314d00b003db2b81660esm6773316wmo.21.2023.01.31.08.02.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Jan 2023 08:02:46 -0800 (PST)
-Message-ID: <03b7e4ae-04b6-42ca-cad0-7828797f7bf9@linaro.org>
-Date:   Tue, 31 Jan 2023 17:02:45 +0100
+        with ESMTP id S231998AbjAaQ3T (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Jan 2023 11:29:19 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95B0E56488;
+        Tue, 31 Jan 2023 08:29:09 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3F2E0B81DAE;
+        Tue, 31 Jan 2023 16:29:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 727A2C433EF;
+        Tue, 31 Jan 2023 16:28:50 +0000 (UTC)
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     linux-kernel@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>
+Cc:     Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+        Russell King <linux@armlinux.org.uk>,
+        Jens Axboe <axboe@kernel.dk>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Daniel Jordan <daniel.m.jordan@oracle.com>,
+        Akinobu Mita <akinobu.mita@gmail.com>,
+        Helge Deller <deller@gmx.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        Karsten Keil <isdn@linux-pingi.de>,
+        Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Petr Mladek <pmladek@suse.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+        Naoya Horiguchi <naoya.horiguchi@nec.com>,
+        Miaohe Lin <linmiaohe@huawei.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Len Brown <len.brown@intel.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Daniel Bristot de Oliveira <bristot@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Evgeniy Polyakov <zbr@ioremap.net>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>, alsa-devel@alsa-project.org,
+        coresight@lists.linaro.org, bpf@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, isdn4linux@listserv.isdn4linux.de,
+        keyrings@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-sgx@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-trace-devel@vger.kernel.org,
+        linux-trace-kernel@vger.kernel.org, live-patching@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-mm@kvack.org,
+        openrisc@lists.librecores.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
+        x86@kernel.org
+Subject: Re: (subset) [PATCH 00/35] Documentation: correct lots of spelling errors (series 1)
+Date:   Tue, 31 Jan 2023 16:28:48 +0000
+Message-Id: <167518251202.582976.5415495075435902323.b4-ty@arm.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230127064005.1558-1-rdunlap@infradead.org>
+References: <20230127064005.1558-1-rdunlap@infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v1 8/8] thermal: intel: intel_pch: Refer to thermal zone
- name directly
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc:     Zhang Rui <rui.zhang@intel.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        David Box <david.e.box@linux.intel.com>
-References: <1751684.VLH7GnMWUR@kreacher> <837557782.0ifERbkFSE@kreacher>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <837557782.0ifERbkFSE@kreacher>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: *
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 30/01/2023 20:07, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Thu, 26 Jan 2023 22:39:30 -0800, Randy Dunlap wrote:
+> Correct many spelling errors in Documentation/ as reported by codespell.
 > 
-> Make intel_pch_thermal_probe() use a const char pointer instead of
-> a struct board_info one for accessing the thermal zone name.
+> Maintainers of specific kernel subsystems are only Cc-ed on their
+> respective patches, not the entire series. [if all goes well]
 > 
-> No intentional functional impact.
+> These patches are based on linux-next-20230125.
 > 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
-> 
-> BTW, Srinivas, I'm wondering if user space would be terribly confused by
-> changing this driver to use "Intel PCH" as the thermal zone name of all
-> of the supported platforms?
-> 
-> ---
->   drivers/thermal/intel/intel_pch_thermal.c |    6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> Index: linux-pm/drivers/thermal/intel/intel_pch_thermal.c
-> ===================================================================
-> --- linux-pm.orig/drivers/thermal/intel/intel_pch_thermal.c
-> +++ linux-pm/drivers/thermal/intel/intel_pch_thermal.c
-> @@ -175,7 +175,7 @@ static int intel_pch_thermal_probe(struc
->   				   const struct pci_device_id *id)
->   {
->   	enum pch_board_ids board_id = id->driver_data;
-> -	const struct board_info *bi = &board_info[board_id];
-> +	const char *zone_name = board_info[board_id].name;
+> [...]
 
-Assuming you will change 'board_info[board_id].name' by
-'board_info[board_id]'
+Applied to arm64 (for-next/misc), thanks!
 
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-
->   	struct pch_thermal_device *ptd;
->   	u16 trip_temp;
->   	int nr_trips;
-> @@ -249,12 +249,12 @@ read_trips:
->   
->   	nr_trips += pch_wpt_add_acpi_psv_trip(ptd, nr_trips);
->   
-> -	ptd->tzd = thermal_zone_device_register_with_trips(bi->name, ptd->trips,
-> +	ptd->tzd = thermal_zone_device_register_with_trips(zone_name, ptd->trips,
->   							   nr_trips, 0, ptd,
->   							   &tzd_ops, NULL, 0, 0);
->   	if (IS_ERR(ptd->tzd)) {
->   		dev_err(&pdev->dev, "Failed to register thermal zone %s\n",
-> -			bi->name);
-> +			zone_name);
->   		err = PTR_ERR(ptd->tzd);
->   		goto error_cleanup;
->   	}
-> 
-> 
-> 
+[01/35] Documentation: arm64: correct spelling
+        https://git.kernel.org/arm64/c/a70f00e7f1a3
 
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Catalin
 
