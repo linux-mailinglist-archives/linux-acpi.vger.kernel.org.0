@@ -2,52 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C26D6878DA
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Feb 2023 10:31:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42BED6878FB
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Feb 2023 10:36:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229710AbjBBJbt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Feb 2023 04:31:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40040 "EHLO
+        id S231575AbjBBJgF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Feb 2023 04:36:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232079AbjBBJbs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Feb 2023 04:31:48 -0500
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 427AC59E6F;
-        Thu,  2 Feb 2023 01:31:47 -0800 (PST)
-Received: by mail-ed1-f45.google.com with SMTP id x7so1390071edr.0;
-        Thu, 02 Feb 2023 01:31:47 -0800 (PST)
+        with ESMTP id S231643AbjBBJfy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Feb 2023 04:35:54 -0500
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69A0B88F01;
+        Thu,  2 Feb 2023 01:35:24 -0800 (PST)
+Received: by mail-ej1-f48.google.com with SMTP id p26so4122843ejx.13;
+        Thu, 02 Feb 2023 01:35:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ffpgR5z2JZo6pwKFf6fTkgFN1AbQFcPjb/i8EhiUIp0=;
-        b=PnZb8TfMK9LulumZbLHMdE9FvYIZNFF+ziO3KmXlRPbPkYrv52Ffb97jKAoCJn9avG
-         Fo0KNzsBIlCii7tOyRTJKk5x61Fn7p4bpXcdQ0qHAkseLFitxfwmyhJPiVdlX5ZZXsWs
-         VMJv5Q0lUCuHm9ARq5+2vdw6Zc80EfeXxUi/oKGORZBf8yorBMJY0KYrPGiu4sDIHFRk
-         tv6qM0sHVSUIr4jT7UPraXNTI7pHUma2bMLci8eZHbzOjXHhaP27vFtRZlVHwPYbLgUY
-         dA4ChUbqLxUwWhwfHAY6dwddBDRtP2pB0fsaPV2yIPHYI07ht6tApk19foHl4GaCpKq0
-         2X0g==
-X-Gm-Message-State: AO0yUKUqnLQ+2DJMLaQsOFHkFGK5qVxH4r2CnzUosFpoMjO3Y7OlkQlm
-        7d34YpYH9HtxPOCUC7pfcrwgujE7OA36qY4Steg=
-X-Google-Smtp-Source: AK7set9306TERMaXrdPKee5SdML+Gqydz/luQ9C1YIJFgYD0NZ/nYQnWiZBRLI5KkCDKzPTMZc9hEPaVfQaHClP1dUA=
-X-Received: by 2002:a50:cd8e:0:b0:4a2:480b:e164 with SMTP id
- p14-20020a50cd8e000000b004a2480be164mr1594675edi.50.1675330305735; Thu, 02
- Feb 2023 01:31:45 -0800 (PST)
+        bh=X4P+6DJXMGU/GZ6vC+OA7Rv2lwEcUeLQojPFdj2bMYU=;
+        b=1wpFaF0JJoOmsBhpQcnNXAtTKL1PYZOGSTE32mv02CxHwk+YVimytfWUZ/gxWxWM18
+         18+MeFygUWFLJgHtRQO7Ujp9QWUvcyWPEU1MEUI7ck6LGDvHBKmyXVLGxLl3zWjHrjOY
+         RwhiFsM7PSJev5GAekI0aaLgjGUg7LYBJ2VaLSSFMm7CEUXi724S86pXzuV42ac/O09t
+         EGkAUc9hs9btAHzeBCt7umXWrKWApqqJ+iu9nFW/oebiwTwwIsXlT3swwSdGSZ1RLiBI
+         wP6D8CBhG5HfLB7L2ncO9/aYXrZIoDq33/zV/dxXbILBavn/FRG+Cr5mW2khKudcyxuk
+         8Mpw==
+X-Gm-Message-State: AO0yUKVW6UWQy8Q951Dtbojc6a75viv4fh8M9cFFwQyf0WEYN1q8ilvV
+        L0qugfeAdB18HidTgaDvtqmfHKNyRnHi+uvWHPU=
+X-Google-Smtp-Source: AK7set9sKQAZXmRj4+REuiGeggHYJ4JQtQBqgzxnG0dm+vm9SPQgzRMqJSX3pLIlMO165L8G/PnH4sIuciDlDxViMNA=
+X-Received: by 2002:a17:906:6886:b0:877:612e:517e with SMTP id
+ n6-20020a170906688600b00877612e517emr1692509ejr.152.1675330502794; Thu, 02
+ Feb 2023 01:35:02 -0800 (PST)
 MIME-Version: 1.0
-References: <20230202034821.25123-1-tianruidong@linux.alibaba.com>
-In-Reply-To: <20230202034821.25123-1-tianruidong@linux.alibaba.com>
+References: <20230131233755.58942-1-pedro.falcato@gmail.com> <CAJZ5v0iXcRFamA+mE837=zHReBT-+8WmMeRDR7L9R+FVpLr25A@mail.gmail.com>
+In-Reply-To: <CAJZ5v0iXcRFamA+mE837=zHReBT-+8WmMeRDR7L9R+FVpLr25A@mail.gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 2 Feb 2023 10:31:33 +0100
-Message-ID: <CAJZ5v0i=2f+NFHbyYNgL8vqkcf8ST=14-uqHqOUmL0JPVhmiBw@mail.gmail.com>
-Subject: Re: [PATCH] ACPICA: PCI: Undefined ACPI_ADR_SPACE_PCI_CONFIG when
- CONFIG_PCI is unset
-To:     Ruidong Tian <tianruidong@linux.alibaba.com>
-Cc:     robert.moore@intel.com, rafael.j.wysocki@intel.com,
+Date:   Thu, 2 Feb 2023 10:34:51 +0100
+Message-ID: <CAJZ5v0ifTg24nNYa-jPkVqmg=gjqmow2ahkm2NV2eDy6Z9HEsg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: Make custom_method use per-open state
+To:     "Marty E. Plummer" <hanetzer@startmail.com>
+Cc:     rafael@kernel.org, Pedro Falcato <pedro.falcato@gmail.com>,
         lenb@kernel.org, linux-acpi@vger.kernel.org,
-        acpica-devel@lists.linuxfoundation.org,
-        linux-kernel@vger.kernel.org, baolin.wang@linux.alibaba.com,
-        jkchen@linux.alibaba.com, xueshuai@linux.alibaba.com
+        linux-kernel@vger.kernel.org, rui.zhang@intel.com,
+        swiftgeek@gmail.com, zh.nvgt@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -59,60 +57,30 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 2, 2023 at 4:48 AM Ruidong Tian
-<tianruidong@linux.alibaba.com> wrote:
+On Thu, Feb 2, 2023 at 2:04 AM Marty E. Plummer <hanetzer@startmail.com> wrote:
 >
-> ACPI core subsystem initialization will fail when Kernel disabled PCI but
-> ACPI tables still have PCI config address spaces.
+> From: "Rafael J. Wysocki" <rafael@kernel.org>
 >
-> Enable ACPI_ADR_SPACE_PCI_CONFIG in acpi_gbl_default_address_spaces
-> only when ACPI_PCI_CONFIGURED is defined.
+> > On Wed, Feb 1, 2023 at 12:38 AM Pedro Falcato <pedro.falcato@gmail.com> wrote:
+> > >
+> > > Make custom_method keep its own per-file-open state instead of global
+> > > state in order to avoid race conditions[1] and other possible conflicts
+> > > with other concurrent users.
+> > >
+> > > Link: https://lore.kernel.org/linux-acpi/20221227063335.61474-1-zh.nvgt@gmail.com/ # [1]
+> > > Reported-by: Hang Zhang <zh.nvgt@gmail.com>
+> > > Cc: Swift Geek <swiftgeek@gmail.com>
+> > > Signed-off-by: Pedro Falcato <pedro.falcato@gmail.com>
+> > > ---
+> > >  This patch addresses Hang's problems plus the ones raised by Rafael in his review (see link above).
+> > >  https://lore.kernel.org/lkml/2667007.mvXUDI8C0e@kreacher/ was submitted but since there were still people
+> > >  that wanted this feature, I took my time to write up a patch that should fix the issues.
+> > >  Hopefully the linux-acpi maintainers have not decided to remove custom_method just yet.
+> >
+> > Well, thanks for the patch, but yes, they have.  Sorry.
 >
-> Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
+> Honestly, I think that's a bit of a cop out. This is git. git revert exists,
+> and you're crippling the abilities of quite a lot of coreboot/etc development.
 
-As an ACPICA change, this should first be submitted (as a pull
-request) to the upstream ACPICA project on GitHub.
-
-Having done that, please resubmit the patch with a Link tag pointing
-to the corresponding upstream pull request.
-
-Thanks!
-
-> ---
->  drivers/acpi/acpica/evhandler.c | 2 ++
->  include/acpi/acconfig.h         | 4 ++++
->  2 files changed, 6 insertions(+)
->
-> diff --git a/drivers/acpi/acpica/evhandler.c b/drivers/acpi/acpica/evhandler.c
-> index be9a05498adc..86057e39df8c 100644
-> --- a/drivers/acpi/acpica/evhandler.c
-> +++ b/drivers/acpi/acpica/evhandler.c
-> @@ -26,7 +26,9 @@ acpi_ev_install_handler(acpi_handle obj_handle,
->  u8 acpi_gbl_default_address_spaces[ACPI_NUM_DEFAULT_SPACES] = {
->         ACPI_ADR_SPACE_SYSTEM_MEMORY,
->         ACPI_ADR_SPACE_SYSTEM_IO,
-> +#ifdef ACPI_PCI_CONFIGURED
->         ACPI_ADR_SPACE_PCI_CONFIG,
-> +#endif
->         ACPI_ADR_SPACE_DATA_TABLE
->  };
->
-> diff --git a/include/acpi/acconfig.h b/include/acpi/acconfig.h
-> index 151e40385673..28456120529f 100644
-> --- a/include/acpi/acconfig.h
-> +++ b/include/acpi/acconfig.h
-> @@ -162,7 +162,11 @@
->  /* Maximum space_ids for Operation Regions */
->
->  #define ACPI_MAX_ADDRESS_SPACE          255
-> +#ifdef ACPI_PCI_CONFIGURED
->  #define ACPI_NUM_DEFAULT_SPACES         4
-> +#else
-> +#define ACPI_NUM_DEFAULT_SPACES         3
-> +#endif
->
->  /* Array sizes.  Used for range checking also */
->
-> --
-> 2.33.1
->
+Perhaps they can try to use the ACPI debugger that's in the kernel now
+instead of a known-broken interface?
