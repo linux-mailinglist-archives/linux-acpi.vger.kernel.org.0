@@ -2,53 +2,69 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CFF5687DCA
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Feb 2023 13:46:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19314688229
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Feb 2023 16:28:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232238AbjBBMqW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Feb 2023 07:46:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44860 "EHLO
+        id S233036AbjBBP2u (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Feb 2023 10:28:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232377AbjBBMqE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Feb 2023 07:46:04 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D1C78E06F
-        for <linux-acpi@vger.kernel.org>; Thu,  2 Feb 2023 04:45:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1675341892;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=/gnOeRjGL09Vlvg1hl9ICcmCu3Gm74p3kvVsOTDj5Rw=;
-        b=DsnsJLnnmZJqnvrvf4LghhaWyHUJVC3eL8kYB/NSWbSxywFfToxAlQguNTzmKlkBLk3CuF
-        RTZLFYmjfd3TNNq1GSRi/ES8GnaKVRSOE231/rNJ/eh75M/qvTMHF5tOMVvPV43NpEAfrS
-        14CP8qTDGMFovq9ThOEalEb4r+7qoy0=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-593-Ltpr7qwDNbqiCY-63tcH1A-1; Thu, 02 Feb 2023 07:44:51 -0500
-X-MC-Unique: Ltpr7qwDNbqiCY-63tcH1A-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8ADEB3C0F687;
-        Thu,  2 Feb 2023 12:44:50 +0000 (UTC)
-Received: from shalem.redhat.com (unknown [10.39.194.53])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id D68A1492C3E;
-        Thu,  2 Feb 2023 12:44:49 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH] ACPI: video: Fix Lenovo Ideapad Z570 DMI match
-Date:   Thu,  2 Feb 2023 13:44:49 +0100
-Message-Id: <20230202124449.427651-1-hdegoede@redhat.com>
+        with ESMTP id S232553AbjBBP2d (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Feb 2023 10:28:33 -0500
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D866A71991;
+        Thu,  2 Feb 2023 07:27:54 -0800 (PST)
+Received: by mail-wr1-x433.google.com with SMTP id q5so2095723wrv.0;
+        Thu, 02 Feb 2023 07:27:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:subject:cc:to
+         :from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4zXuFALYGSZNiLfpSFyxIQQMRAOLQQA0KedSdkeUSjs=;
+        b=oycBZ/KXioTJcaItzlY27p8AXDdC5RoZnJBmQwgMGa2CFZ5lSMCOty3GrdP3r7dQ8Q
+         Wed/LBPPfR6ZCBAoSgieGbs6hSIHU2KNMPljdOX9ralygqsnl7/ZqF7PuHTX5Yj+YGCj
+         O9Gtqu+wORnQ8Es8Sy40HSiG/HZKn0ThhLSGQuxKnS7ShaSm9UgCHjpcaXY3aSle0NPu
+         HLGuC8hjb0ijyf9+ZP/yH1OMXzDnyb5Jyzd5kz4lkQ9memKbxQPV1mJKeU9zi5R+/pd6
+         NsPuKrmz4iEVybr2k/YSmtlFhtI3kHM7NunwG9tTf3O9qQc1FDPZ3V+uNGWfzjk/oO2f
+         Q9GA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:subject:cc:to
+         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4zXuFALYGSZNiLfpSFyxIQQMRAOLQQA0KedSdkeUSjs=;
+        b=jOUcbbj57Xv3pGin5gjaGXUr74n/JpTBhI3A/+hXwInnkePAoXOTcjzzMH6v1Pclbz
+         BkS+MxLkCwTFKO++E/pFAW4LvwJO4NBaEJTYnC7o42G4tjzAtFRQudl6BTfAKcxfPPSV
+         U1bXbbuSR8tJvIL35TkZ+0N7xmjNIj+P6+Rk1oZLy12tONukarsrLDP8TFw0G0zoOqQy
+         JjFECotihKjflKwSwjwMLkb9NwjmHGvMHQXNKnv6vcfqEvDQATCyyvdzXYTPJPUVc/q9
+         TQokaX9Rio/9rC+Kf8bD8F9PZ0pPpuyte3PFvoA8uMpZThwe+2gPiHTbP/BCp0wqRxuB
+         l8Hg==
+X-Gm-Message-State: AO0yUKUjgtR6SG7pF0PKPo6TRVEbWukcxMofJw4jTqyMoWQm6C/xsmjp
+        zVGM3DahjJKphWXx8jR4v4Cbbv00yLSjDHGQ
+X-Google-Smtp-Source: AK7set/io3O+6FmyprUDN4VOemX48j2E8gNULZFPMCCwmhYInRf8fZ9hAbFmXmmafkQWU3GAw5kx4Q==
+X-Received: by 2002:a05:6000:185:b0:2bf:b77c:df72 with SMTP id p5-20020a056000018500b002bfb77cdf72mr6208951wrx.25.1675351663258;
+        Thu, 02 Feb 2023 07:27:43 -0800 (PST)
+Received: from localhost.localdomain (staticline-31-182-169-137.toya.net.pl. [31.182.169.137])
+        by smtp.gmail.com with ESMTPSA id d10-20020adffbca000000b00287da7ee033sm19668463wrs.46.2023.02.02.07.27.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Feb 2023 07:27:43 -0800 (PST)
+Date:   Thu, 2 Feb 2023 16:27:16 +0100
+From:   Sebastian Grzywna <swiftgeek@gmail.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        "Len Brown" <lenb@kernel.org>, linux-kernel@vger.kernel.org,
+        "Zhang, Rui" <rui.zhang@intel.com>,
+        "Hang Zhang" <zh.nvgt@gmail.com>
+Subject: [PATCH] ACPI / Documentation: update ACPI customize method feature
+ doc
+Message-ID: <20230202162716.2ef29dd4@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,34 +72,39 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Multiple Ideapad Z570 variants need acpi_backlight=native to force native
-use on these pre Windows 8 machines since acpi_video backlight control
-does not work here.
 
-The original DMI quirk matches on a product_name of "102434U" but other
-variants may have different product_name-s such as e.g. "1024D9U".
+Add one more warning to ignore with iasl 20221020
 
-Move to checking product_version instead as is more or less standard for
-Lenovo DMI quirks for similar reasons.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/lkml/CAJZ5v0hbFNGugDJ3PGLzfNm7h7f8vTesUOZ0R_vkYGaxBWFCdQ@mail.gmail.com/
+Reported-by: "Rafael J . Wysocki" <rafael@kernel.org>
+Reported-by: "Zhang, Rui" <rui.zhang@intel.com>
+Signed-off-by: Sebastian Grzywna <swiftgeek@gmail.com>
 ---
- drivers/acpi/video_detect.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../firmware-guide/acpi/method-customizing.rst        | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index a8c02608dde4..710ac640267d 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -434,7 +434,7 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 	 /* Lenovo Ideapad Z570 */
- 	 .matches = {
- 		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--		DMI_MATCH(DMI_PRODUCT_NAME, "102434U"),
-+		DMI_MATCH(DMI_PRODUCT_VERSION, "Ideapad Z570"),
- 		},
- 	},
- 	{
+diff --git a/Documentation/firmware-guide/acpi/method-customizing.rst b/Documentation/firmware-guide/acpi/method-customizing.rst
+index de3ebcaed4cf..e813608cbdd9 100644
+--- a/Documentation/firmware-guide/acpi/method-customizing.rst
++++ b/Documentation/firmware-guide/acpi/method-customizing.rst
+@@ -55,10 +55,13 @@ d) package the new file (psr.asl) to an ACPI table format.
+ 
+    Note that the full pathname of the method in ACPI namespace
+    should be used.
+-e) assemble the file to generate the AML code of the method.
+-   e.g. "iasl -vw 6084 psr.asl" (psr.aml is generated as a result)
+-   If parameter "-vw 6084" is not supported by your iASL compiler,
+-   please try a newer version.
++e) assemble the file to generate the AML code of the method,
++   ignoring missing prefix scopes and objects. e.g.
++   "iasl -vw 6084 -vw 6160 psr.asl" (psr.aml is generated as
++   a result). If parameters "-vw 6084" and "-vw 6160" are
++   not supported by your iASL compiler, please try a newer version.
++   In the future it might be necessary to ignore more error
++   messageids.
+ f) mount debugfs by "mount -t debugfs none /sys/kernel/debug"
+ g) override the old method via the debugfs by running
+    "cat /tmp/psr.aml > /sys/kernel/debug/acpi/custom_method"
 -- 
 2.39.1
 
