@@ -2,68 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4598468830F
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Feb 2023 16:49:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B39FA688584
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Feb 2023 18:36:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233186AbjBBPtI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Feb 2023 10:49:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50096 "EHLO
+        id S231237AbjBBRg3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Feb 2023 12:36:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233074AbjBBPsv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Feb 2023 10:48:51 -0500
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25A662312A;
-        Thu,  2 Feb 2023 07:48:17 -0800 (PST)
-Received: by mail-pf1-x433.google.com with SMTP id u5so1479298pfm.10;
-        Thu, 02 Feb 2023 07:48:17 -0800 (PST)
+        with ESMTP id S230373AbjBBRg3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Feb 2023 12:36:29 -0500
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CDB329409;
+        Thu,  2 Feb 2023 09:36:27 -0800 (PST)
+Received: by mail-ed1-x535.google.com with SMTP id z11so2807171ede.1;
+        Thu, 02 Feb 2023 09:36:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mBRKU9ePr2Z6fcG6an6gYpt7CqLb0XsF4lYBsix8b8U=;
-        b=FSnBEMxJIPecU08W0GFfZwy05AgsLIHW9cJN+1f7niVTxMoU5iQ02+i2e9C5bUQXGE
-         kQg8IIcSdDi6PvjV4lU7TsqNpM9wVTbeSrbFtt4HIC9Uy6y9p2AHQ8ztK+ZZc+SSpM8s
-         2UFSM16bJRxbzhsFozSajcqqGildUFM5tN/ueGo5iXULxeuCiavDw9GNfQvGGPPbrBvV
-         JIY+uyGcHBAvvWymjKtEFny2Q0zFcksVExnPGHSI1XgJDrTehCTioNLtj7YGysDUeM2z
-         QqZ+QB0Jby+5l6sY0fP/C39SRLVu/G/tzcUxb+gAHwLazk63smIm+7UJ9xdiUT1MH1Rt
-         SZEg==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=/HioFfeJdcxYRSIePrk0xPeneN7bTewVzuuGNUxyF+Q=;
+        b=DgYe/MckqiMlJv5lX6qtOy2RdSlf9HWoVcWPf1C5A9ll+SRh7voCyz+NA64bhzh+6/
+         s6mvdEEKfye26uhEJ23ipwJr8a1qpBHq2v8E1UNx3Kjua7yEJBM1lVMSWb7l5t4afwPX
+         NC8Ngx0j3yd+p+rWO5aBYsOU6K0KVHnSRrS4OC8T+e1TqldTsGc0awMKVV7I7kIlqXM1
+         UZDPQrrR0l2mmgiBijgpcJMKDpPzpRpNQ/Dx9ap2wWz77ECUrTvDzHZH/LuGcXempTwQ
+         VIYpEcFp/DDcRU0BBLCdKwGsD1XFx66gOy31SAxiBmBrOEU453nRjdZ0cq+Rjhp6xSQo
+         KKXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mBRKU9ePr2Z6fcG6an6gYpt7CqLb0XsF4lYBsix8b8U=;
-        b=Rh2ZZPoxoiXwSb4H7haUTIJut+rtEOgbsPKbERWX1bifD8LQxy2RcHnhnFyFTvfyG1
-         KP+dXewu6Kej0BX8VxNCiu1h284N6E2pmmgZjXqzsQCoKEdemgdBVEW7/exSm1j0pNMx
-         irltd9LVH4QeYyFs0tGPUd7nMMs6ggvpn+OEArvtXtgcVDxyy15ikBeDnhKAhUCeScVN
-         GIdABhv8Dz8A7k8hdwJ8hGaeRKhEYZwfGSst4I4our3ZX/NKB8KQEdtYuPX0MfHu1NUF
-         lUTqkqufBzweZ59h12KiSDUjyiRM1rD8VqrGBfkJtqA8PyV1fWn2DTLqFqhgNVJhcF4M
-         3Bxw==
-X-Gm-Message-State: AO0yUKWy129cYzQqL483GbIrroU2zUnf6wjtwv7nJxQu3Ky6RCGt9Fk/
-        ES5vNHeMicAV2WquaQu9a36hdDgXu5R+i4G7ANT+r04pr2M=
-X-Google-Smtp-Source: AK7set/h3mMM2F+0vXAwb5oGQKg4EXoZwqxMzEYgicmwV2/Yp3EUZNPcF7SYcLSIaAtf887iYnHtLn1b78c7GBIj7ps=
-X-Received: by 2002:aa7:8d16:0:b0:591:4b17:22b5 with SMTP id
- j22-20020aa78d16000000b005914b1722b5mr1344241pfe.14.1675352894050; Thu, 02
- Feb 2023 07:48:14 -0800 (PST)
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/HioFfeJdcxYRSIePrk0xPeneN7bTewVzuuGNUxyF+Q=;
+        b=WhSXP/43cKwX0nUlJqBKfSMw+iqaujkxI91k92siMj8913saLcyqmyhV/4VrmyYTdv
+         30Z/H/pUQ0ocsZQ3Sg8iTTeEhUnzRuLhafAF+9PiM4y7G1C7RsLOm8AGJa6hUehdz3p2
+         shuYdtSyP8kp35tRqz5CT8vkgj4fv3j3fIqwxIzFIkNV5N+t0KosZkg9EVmG2/yjiZbP
+         HtzuERZ/WCqJYztUfItyeXU660Dg4YpHUBhq6ifv1mlDGPFf09ndp8KQJPdpIydMiHLt
+         YfeZhwREDBDE+GYRyFP1OZvrNWPQtOy0tT6J4/ke/leRTnetahbeM1rzLKLXYemw571f
+         ackQ==
+X-Gm-Message-State: AO0yUKW5vYz33GDrWCc4zCm7MXqAaVPcz1Q5ptiSUiCuFVCHdW7INO9D
+        lX3k/ER9JXhOBWmQH80SNCgFfQl3np3xSHP+1lk=
+X-Google-Smtp-Source: AK7set8kMxHBzefcTNVdGk+Fp2hvQCwE7N//UbyQQXSrTxuXqDeQbZXJhcbZfUDVjj6ajWFyZn1lL6NGFTaLwf83qvw=
+X-Received: by 2002:a05:6402:339:b0:49c:ea59:46b with SMTP id
+ q25-20020a056402033900b0049cea59046bmr2368486edw.54.1675359386002; Thu, 02
+ Feb 2023 09:36:26 -0800 (PST)
 MIME-Version: 1.0
-References: <20230131233755.58942-1-pedro.falcato@gmail.com>
- <CAJZ5v0iXcRFamA+mE837=zHReBT-+8WmMeRDR7L9R+FVpLr25A@mail.gmail.com>
- <20230202084953.3035c6e3@gmail.com> <CAJZ5v0iwO=xJ8A=vv4Khm6Z+Lb9hpZsZmyCjMeSHutMWRcp78g@mail.gmail.com>
- <CAJZ5v0hbFNGugDJ3PGLzfNm7h7f8vTesUOZ0R_vkYGaxBWFCdQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0hbFNGugDJ3PGLzfNm7h7f8vTesUOZ0R_vkYGaxBWFCdQ@mail.gmail.com>
-From:   Pedro Falcato <pedro.falcato@gmail.com>
-Date:   Thu, 2 Feb 2023 15:48:02 +0000
-Message-ID: <CAKbZUD3UPMuH-NHXL093FaaFtEaeC295RemSeVMC8jLr6zbghA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: Make custom_method use per-open state
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Marty E. Plummer" <hanetzer@startmail.com>,
-        Sebastian Grzywna <swiftgeek@gmail.com>,
-        linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        linux-kernel@vger.kernel.org, rui.zhang@intel.com,
-        Hang Zhang <zh.nvgt@gmail.com>
+References: <20230127001141.407071-1-saravanak@google.com> <20230130085542.38546-1-naresh.kamboju@linaro.org>
+ <CAGETcx_411fVxsM-ZMK7j2Bvkmi2TKPbzSuD+03M3cb7WKHfJw@mail.gmail.com> <20230131101813.goaoy32qvrowvyyb@bogus>
+In-Reply-To: <20230131101813.goaoy32qvrowvyyb@bogus>
+From:   Maxim Kiselev <bigunclemax@gmail.com>
+Date:   Thu, 2 Feb 2023 20:36:14 +0300
+Message-ID: <CALHCpMijXAgQx2qq8g8zdq=6AHwP+g5WVBjjry=v+dKEq9KDLw@mail.gmail.com>
+Subject: Re: [PATCH v2 00/11] fw_devlink improvements
+To:     Sudeep Holla <sudeep.holla@arm.com>
+Cc:     Saravana Kannan <saravanak@google.com>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        abel.vesa@linaro.org, alexander.stein@ew.tq-group.com,
+        andriy.shevchenko@linux.intel.com, brgl@bgdev.pl,
+        colin.foster@in-advantage.com, cristian.marussi@arm.com,
+        devicetree@vger.kernel.org, dianders@chromium.org,
+        djrscally@gmail.com, dmitry.baryshkov@linaro.org,
+        festevam@gmail.com, fido_max@inbox.ru, frowand.list@gmail.com,
+        geert+renesas@glider.be, geert@linux-m68k.org,
+        gregkh@linuxfoundation.org, heikki.krogerus@linux.intel.com,
+        jpb@kernel.org, jstultz@google.com, kernel-team@android.com,
+        kernel@pengutronix.de, lenb@kernel.org, linus.walleij@linaro.org,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-gpio@vger.kernel.org, linux-imx@nxp.com,
+        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux@roeck-us.net, lkft@linaro.org, luca.weiss@fairphone.com,
+        magnus.damm@gmail.com, martin.kepplinger@puri.sm, maz@kernel.org,
+        miquel.raynal@bootlin.com, rafael@kernel.org, robh+dt@kernel.org,
+        s.hauer@pengutronix.de, sakari.ailus@linux.intel.com,
+        shawnguo@kernel.org, tglx@linutronix.de, tony@atomide.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -74,96 +85,106 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 2, 2023 at 10:45 AM Rafael J. Wysocki <rafael@kernel.org> wrote=
-:
->
-> On Thu, Feb 2, 2023 at 11:03 AM Rafael J. Wysocki <rafael@kernel.org> wro=
-te:
-> >
-> > On Thu, Feb 2, 2023 at 8:50 AM Sebastian Grzywna <swiftgeek@gmail.com> =
-wrote:
-> > >
-> > > Dnia 2023-02-01, o godz. 19:34:48
-> > > "Rafael J. Wysocki" <rafael@kernel.org> napisa=C5=82(a):
-> > >
-> > > > On Wed, Feb 1, 2023 at 12:38 AM Pedro Falcato
-> > > > <pedro.falcato@gmail.com> wrote:
-> > > > >
-> > > > > Make custom_method keep its own per-file-open state instead of
-> > > > > global state in order to avoid race conditions[1] and other
-> > > > > possible conflicts with other concurrent users.
-> > > > >
-> > > > > Link:
-> > > > > https://lore.kernel.org/linux-acpi/20221227063335.61474-1-zh.nvgt=
-@gmail.com/
-> > > > > # [1] Reported-by: Hang Zhang <zh.nvgt@gmail.com> Cc: Swift Geek
-> > > > > <swiftgeek@gmail.com> Signed-off-by: Pedro Falcato
-> > > > > <pedro.falcato@gmail.com> ---
-> > > > >  This patch addresses Hang's problems plus the ones raised by
-> > > > > Rafael in his review (see link above).
-> > > > > https://lore.kernel.org/lkml/2667007.mvXUDI8C0e@kreacher/ was
-> > > > > submitted but since there were still people that wanted this
-> > > > > feature, I took my time to write up a patch that should fix the
-> > > > > issues. Hopefully the linux-acpi maintainers have not decided to
-> > > > > remove custom_method just yet.
-> > > >
-> > > > Well, thanks for the patch, but yes, they have.  Sorry.
-> > >
-> > > Hi Rafael,
-> > > Can you please explain why you don't want to keep it, given there's a
-> > > patch?
-> >
-> > Because this interface was a bad idea to start with and its
-> > implementation is questionable at the design level.
-> >
-> > Granted, at the time it was introduced, there was no alternative, but
-> > there is the AML debugger in the kernel now and as far as debugging is
-> > concerned, it is actually more powerful than custom_metod AFAICS.  See
-> > Documentation/firmware-guide/acpi/aml-debugger.rst.
-> >
-> > If the AML debugger has problems, I would very much prefer fixing them
-> > to the perpetual maintenance of custom_method.
-> >
-> > > I find it really useful in my day-to-day as a firmware engineer.
-> > > I don't see much happening in git history of
-> > > drivers/acpi/custom_method.c , and I don't see anything that was
-> > > specifically changed in it in past 10 years to keep it being
-> > > functional. Without your more detailed explanation I have hard time
-> > > understanding your decision to remove it, since I'm not a kernel
-> > > developer myself.
-> >
-> > It's been always conceptually questionable, problematic from the
-> > security standpoint and implemented poorly.  Also its documentation is
-> > outdated.
-> >
-> > The patches fixing its most apparent functional issues don't actually
-> > address much of the above.
-> >
-> > The AML debugger should really be used for debug rather than
-> > custom_method and honestly, what's the purpose of it beyond debug?
->
-> The above said, if people really do care about custom_method, it can
-> be retained, but its documentation needs to be updated to cover the
-> current requirements (according to Rui, they have changed after some
-> upstream ACPICA changes).
->
-> Also note that the upstream ACPICA may not be guaranteed to avoid
-> breaking this interface in the future, as it depends on
-> acpi_install_method() that is provided by ACPICA specifically for the
-> use in the AML debugger.
+Hi Saravana,
 
-Just to be clear, I have no stake in this matter and wrote this patch becau=
-se
-someone complained on #coreboot about the removal. This patch was mostly
-trivial to write and if you decide there really is no value in keeping
-this, I'm a-OK.
+> Can you try the patch at the end of this email under these
+> configurations and tell me which ones fail vs pass? I don't need logs
 
-From a maintainers' PoV, if the AML debugger completely encompasses this
-from a functional PoV with a good UX, I would probably encourage you to
-remove this once and for all (what's the value in having 2 of the same
-functionality?).
+I did these tests and here is the results:
 
-Hopefully the FW folks can give more context and feedback.
+1. On top of this series - Not works
+2. Without this series    - Works
+3. On top of the series with the fwnode_dev_initialized() deleted - Not works
+4. Without this series, with the fwnode_dev_initialized() deleted  - Works
 
---=20
-Pedro
+So your nvmem/core.c patch helps only when it is applied without the series.
+But despite the fact that this helps to avoid getting stuck at probing
+my ethernet device, there is still regression.
+
+When the ethernet module is loaded it takes a lot of time to drop dependency
+from the nvmem-cell with mac address.
+
+Please look at the kernel logs below.
+
+The first log corresponds to kernel with your nvmem/core.c patch:
+
+    [    0.036462] ethernet@70000 Linked as a fwnode consumer to
+clock-gating-control@1821c
+    [    0.036572] ethernet@70000 Linked as a fwnode consumer to partition@1
+    [    0.045596] device: 'f1070000.ethernet': device_add
+    [    0.045854] ethernet@70000 Dropping the fwnode link to
+clock-gating-control@1821c
+    [    0.114990] device:
+'platform:f1010600.spi:m25p80@0:partitions:partition@1--platform:f1070000.ethernet':
+device_add
+    [    0.115266] devices_kset: Moving f1070000.ethernet to end of list
+    [    0.115308] platform f1070000.ethernet: Linked as a consumer to
+f1010600.spi:m25p80@0:partitions:partition@1
+    [    0.115345] ethernet@70000 Dropping the fwnode link to partition@1
+    [    1.968232] platform f1070000.ethernet: error -EPROBE_DEFER:
+supplier f1010600.spi:m25p80@0:partitions:partition@1 not ready
+    [    2.088696] devices_kset: Moving f1070000.ethernet to end of list
+    [    2.088988] platform f1070000.ethernet: error -EPROBE_DEFER:
+supplier f1010600.spi:m25p80@0:partitions:partition@1 not ready
+    [    2.152411] devices_kset: Moving f1070000.ethernet to end of list
+    [    2.152735] platform f1070000.ethernet: error -EPROBE_DEFER:
+supplier f1010600.spi:m25p80@0:partitions:partition@1 not ready
+    [    2.153870] devices_kset: Moving f1070000.ethernet to end of list
+    [    2.154152] platform f1070000.ethernet: error -EPROBE_DEFER:
+supplier f1010600.spi:m25p80@0:partitions:partition@1 not ready
+    [    2.644950] devices_kset: Moving f1070000.ethernet to end of list
+    [    2.645282] platform f1070000.ethernet: error -EPROBE_DEFER:
+supplier f1010600.spi:m25p80@0:partitions:partition@1 not ready
+    [    3.169218] devices_kset: Moving f1070000.ethernet to end of list
+    [    3.169506] platform f1070000.ethernet: error -EPROBE_DEFER:
+supplier f1010600.spi:m25p80@0:partitions:partition@1 not ready
+    [    3.170444] devices_kset: Moving f1070000.ethernet to end of list
+    [    3.170721] platform f1070000.ethernet: error -EPROBE_DEFER:
+supplier f1010600.spi:m25p80@0:partitions:partition@1 not ready
+    [    3.419068] devices_kset: Moving f1070000.ethernet to end of list
+    [    3.419359] platform f1070000.ethernet: error -EPROBE_DEFER:
+supplier f1010600.spi:m25p80@0:partitions:partition@1 not ready
+    [    3.521275] devices_kset: Moving f1070000.ethernet to end of list
+    [    3.521564] platform f1070000.ethernet: error -EPROBE_DEFER:
+supplier f1010600.spi:m25p80@0:partitions:partition@1 not ready
+    [    3.639196] devices_kset: Moving f1070000.ethernet to end of list
+    [    3.639532] platform f1070000.ethernet: error -EPROBE_DEFER:
+supplier f1010600.spi:m25p80@0:partitions:partition@1 not ready
+    [   13.960144] platform f1070000.ethernet: Relaxing link with
+f1010600.spi:m25p80@0:partitions:partition@1
+    [   13.960260] devices_kset: Moving f1070000.ethernet to end of list
+    [   13.971735] device: 'eth0': device_add
+    [   13.974140] mvneta f1070000.ethernet eth0: Using device tree
+mac address de:fa:ce:db:ab:e1
+    [   13.974275] mvneta f1070000.ethernet: Dropping the link to
+f1010600.spi:m25p80@0:partitions:partition@1
+    [   13.974318] device:
+'platform:f1010600.spi:m25p80@0:partitions:partition@1--platform:f1070000.ethernet':
+device_unregister
+
+It took around 13 seconds to obtain a mac from nvmem-cell and bring up
+f1070000.ethernet
+
+
+And here is the second log which corresponds to kernel without your
+nvmem/core.c patch but also with reverted change 'bcdf0315':
+
+    [    0.036285] ethernet@70000 Linked as a fwnode consumer to
+clock-gating-control@1821c
+    [    0.036395] ethernet@70000 Linked as a fwnode consumer to partition@1
+    [    0.045416] device: 'f1070000.ethernet': device_add
+    [    0.045674] ethernet@70000 Dropping the fwnode link to
+clock-gating-control@1821c
+    [    0.116136] ethernet@70000 Dropping the fwnode link to partition@1
+    [    1.977060] device: 'eth0': device_add
+    [    1.979145] mvneta f1070000.ethernet eth0: Using device tree
+mac address de:fa:ce:db:ab:e1
+
+It took around 1.5 second to obtain a mac from nvmem-cell
+
+P.S. Your nvmem patch definitely helps to avoid a device probe stuck
+but look like it is not best way to solve a problem which we discussed
+in the MTD thread.
+
+P.P.S. Also I don't know why your nvmem-cell patch doesn't help when it was
+applied on top of this series. Maybe I missed something.
