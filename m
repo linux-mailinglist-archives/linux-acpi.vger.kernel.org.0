@@ -2,106 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A03A687C89
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Feb 2023 12:44:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CFF5687DCA
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Feb 2023 13:46:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231932AbjBBLoW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Feb 2023 06:44:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37240 "EHLO
+        id S232238AbjBBMqW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Feb 2023 07:46:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230372AbjBBLoV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Feb 2023 06:44:21 -0500
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 436216D07E
-        for <linux-acpi@vger.kernel.org>; Thu,  2 Feb 2023 03:44:20 -0800 (PST)
-Received: by mail-wr1-x431.google.com with SMTP id m14so1406244wrg.13
-        for <linux-acpi@vger.kernel.org>; Thu, 02 Feb 2023 03:44:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nCHejXhzVWqFTVZyLcdF4swd6AONbEaaLxACeSyN1HY=;
-        b=uvFhN3rLZVF1afPjrHRSt8+dkrUJgBkkEqLZHWcSDHskFxqWoSRc17t8lWVcsj5TKI
-         bCrJbXhS4C91YlI91ApwQR4mZbInnmc3/mEiwLMTbBS5dSibfFxRD0L8mE8ppELFhvou
-         y9fWBjV9TAlqu7fDSzKMY9KLF8MZvDkBD+Jt/K7fFay54RXA63C8VFH5pewPLEjvlZCW
-         lzQy5VGprXMEjMCvC3LTcfVkwyTO3O+gd8jRsLSHTo4IUdfzI1l1V5NAbfiS3G8QIMaj
-         MVa8D+YEiL10Wd3lFIFlTzPmQtugWuNGJCYr1cX7ihnMgDWdpJg+WWmydESSjnQIsFgm
-         TTCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nCHejXhzVWqFTVZyLcdF4swd6AONbEaaLxACeSyN1HY=;
-        b=hEmwVVXl21NAL/p6HOS60aFa4bp0pEn2/FHxJ0fHcV1pA8Vc7ODYnjBFrwGEnuvxF0
-         cc3Fzaabm8OH8koRl7MfnIHhUyEEHS8HJO0d1jFlHQXQnDxyrpIssa/yB5rqGB2x1JyY
-         AXtwAVY/LrCA94ieAohOkyjNrGcS2jXmnXR0WlKhD5eNb6MDt8fn1a1dhrF3rTSXQPVs
-         nUtY1iZUAxclcFdqsC33pZKal8oobQJpgEc04j26UNjvbN7pY7YuvNIfZkW8KKJDdGNK
-         7sdLc5a17IcZ8vWgXAjjAZtEXzXntSXbX7IbhRKW73Exzc9dcDAOY9ZwLMK74XGNoe5L
-         OUHA==
-X-Gm-Message-State: AO0yUKWhQiZBsrgA/PV8ux0K6SYmZ8MrmbT0IAjI5Cvk+w3YI3FjSQ0M
-        BuuQZm4vWEOEKIqj6gs81CaRdg==
-X-Google-Smtp-Source: AK7set8UU7ws8XjaNdTE+B4sJRlBCk+opRei+C9yXbDCk4VrtIC1lx5AfEbB+AMDV9VVNKM5XTqiUg==
-X-Received: by 2002:a5d:598a:0:b0:2bf:ae16:98f4 with SMTP id n10-20020a5d598a000000b002bfae1698f4mr1784314wri.30.1675338258757;
-        Thu, 02 Feb 2023 03:44:18 -0800 (PST)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id z12-20020a5d4d0c000000b002bbb2d43f65sm19688663wrt.14.2023.02.02.03.44.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Feb 2023 03:44:18 -0800 (PST)
-Message-ID: <a30c16bc-041d-31c2-dfda-f16b0fa51eca@linaro.org>
-Date:   Thu, 2 Feb 2023 12:44:17 +0100
+        with ESMTP id S232377AbjBBMqE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Feb 2023 07:46:04 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D1C78E06F
+        for <linux-acpi@vger.kernel.org>; Thu,  2 Feb 2023 04:45:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1675341892;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=/gnOeRjGL09Vlvg1hl9ICcmCu3Gm74p3kvVsOTDj5Rw=;
+        b=DsnsJLnnmZJqnvrvf4LghhaWyHUJVC3eL8kYB/NSWbSxywFfToxAlQguNTzmKlkBLk3CuF
+        RTZLFYmjfd3TNNq1GSRi/ES8GnaKVRSOE231/rNJ/eh75M/qvTMHF5tOMVvPV43NpEAfrS
+        14CP8qTDGMFovq9ThOEalEb4r+7qoy0=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-593-Ltpr7qwDNbqiCY-63tcH1A-1; Thu, 02 Feb 2023 07:44:51 -0500
+X-MC-Unique: Ltpr7qwDNbqiCY-63tcH1A-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8ADEB3C0F687;
+        Thu,  2 Feb 2023 12:44:50 +0000 (UTC)
+Received: from shalem.redhat.com (unknown [10.39.194.53])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id D68A1492C3E;
+        Thu,  2 Feb 2023 12:44:49 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI: video: Fix Lenovo Ideapad Z570 DMI match
+Date:   Thu,  2 Feb 2023 13:44:49 +0100
+Message-Id: <20230202124449.427651-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v1] thermal: ACPI: Make helpers retrieve temperature only
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-References: <5641279.DvuYhMxLoT@kreacher>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <5641279.DvuYhMxLoT@kreacher>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: *
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 27/01/2023 19:17, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> It is slightly better to make the ACPI thermal helper functions retrieve
-> the trip point temperature only instead of doing the full trip point
-> initialization, because they are also used for updating some already
-> registered trip points, in which case initializing a new trip just
-> in order to update the temperature of an existing one is somewhat
-> wasteful.
-> 
-> Modify the ACPI thermal helpers accordingly and update their users.
-> 
-> No intentional functional impact.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
+Multiple Ideapad Z570 variants need acpi_backlight=native to force native
+use on these pre Windows 8 machines since acpi_video backlight control
+does not work here.
 
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+The original DMI quirk matches on a product_name of "102434U" but other
+variants may have different product_name-s such as e.g. "1024D9U".
 
+Move to checking product_version instead as is more or less standard for
+Lenovo DMI quirks for similar reasons.
 
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/video_detect.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index a8c02608dde4..710ac640267d 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -434,7 +434,7 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 	 /* Lenovo Ideapad Z570 */
+ 	 .matches = {
+ 		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+-		DMI_MATCH(DMI_PRODUCT_NAME, "102434U"),
++		DMI_MATCH(DMI_PRODUCT_VERSION, "Ideapad Z570"),
+ 		},
+ 	},
+ 	{
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+2.39.1
 
