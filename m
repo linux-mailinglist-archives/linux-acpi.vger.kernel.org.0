@@ -2,295 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BE9E6876BE
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Feb 2023 08:50:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C26D6878DA
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Feb 2023 10:31:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230463AbjBBHuX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Feb 2023 02:50:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48010 "EHLO
+        id S229710AbjBBJbt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Feb 2023 04:31:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229761AbjBBHuW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Feb 2023 02:50:22 -0500
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5904030FB;
-        Wed,  1 Feb 2023 23:50:21 -0800 (PST)
-Received: by mail-wm1-x32f.google.com with SMTP id bg26so705313wmb.0;
-        Wed, 01 Feb 2023 23:50:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xhMp2mcNadfnherTAzCDojpxmUZhldJPGeGKk3DUDdw=;
-        b=fzqTkx9BZu9JeeeRbdFqNm6cL4gmo3h3IUq9H3641OkHPcZTvxi8ONuIzME92axTGM
-         0hjUkMxjkN89IRpMs6xqxD5uJYi9qKJclY1pARyp7INeghvjHYzZlBdBYN51531aVNwb
-         Cq2hCMismhNGvIRj5HgBGTGC9B1QYC1eh+cXHNG86n/5Qj1IyfN9Npnpn0q95KpBIp2m
-         dSeRN7gJh3XzCGWLNZe6eQzAp3/jRcBd8UmxbR4E/Zp4U29dnOG4Qlyf3fBCnGtJKve8
-         G4xPgD8Hhf+ZzzYRv90SeHd8e1EgtZvKnFd69YRt4ySFcMXHgx5iOba2qo1nnp3fbg8Y
-         glDQ==
+        with ESMTP id S232079AbjBBJbs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Feb 2023 04:31:48 -0500
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 427AC59E6F;
+        Thu,  2 Feb 2023 01:31:47 -0800 (PST)
+Received: by mail-ed1-f45.google.com with SMTP id x7so1390071edr.0;
+        Thu, 02 Feb 2023 01:31:47 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xhMp2mcNadfnherTAzCDojpxmUZhldJPGeGKk3DUDdw=;
-        b=XSGUZl+eAwOWZ2NJ/maKpAyU7j1M+VxfyHjUXYmGgTdwlwbh5w0vkXAIHi/6aCFqiE
-         x3hgZEJdgQVsR35i/QBj6iAabMX7AFqzlJv0GfFNBFeufj6StY92Q0NWgJtZL5KnbA7u
-         w9wkM9uzoR1phpNiWTOKtEGA7hcmQ/HWefh+R7ZVgawW77uOLRBjYNKTGeB9RfEzcUu5
-         ZY6Vd8rvOXnb8Z+LeIos6FqixSnnXDOMwO0KtVMZwhxrBq7NBymw05AcoeCHUP/1pdiL
-         mpPdWA4tRppBGJA8Va5tmP7teEEwit5S6SvwYX38YSelVMxJ0SyZ3Ot/WFnXO3Z3VYGo
-         hYzg==
-X-Gm-Message-State: AO0yUKUXBbEnKi4DiicgXO9/w4Rhp91/fiey7oW1haBTdJgkUxF/T2n/
-        TeP3IuHrjZy25ue10wb+u33suzS56pssHDOA
-X-Google-Smtp-Source: AK7set+pJNBXPE4ov9v78QQVzztj0g5UU0VBXX6eom9QcypZ1csfbm9oTo4oH1gIei9EzqAfesDjFg==
-X-Received: by 2002:a05:600c:4446:b0:3dc:98a4:787d with SMTP id v6-20020a05600c444600b003dc98a4787dmr4828997wmn.3.1675324219691;
-        Wed, 01 Feb 2023 23:50:19 -0800 (PST)
-Received: from localhost.localdomain (staticline-31-182-169-137.toya.net.pl. [31.182.169.137])
-        by smtp.gmail.com with ESMTPSA id j25-20020a05600c1c1900b003daf6e3bc2fsm6188212wms.1.2023.02.01.23.50.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Feb 2023 23:50:19 -0800 (PST)
-Date:   Thu, 2 Feb 2023 08:49:53 +0100
-From:   Sebastian Grzywna <swiftgeek@gmail.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Pedro Falcato <pedro.falcato@gmail.com>,
-        linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        linux-kernel@vger.kernel.org, rui.zhang@intel.com,
-        Hang Zhang <zh.nvgt@gmail.com>
-Subject: Re: [PATCH] ACPI: Make custom_method use per-open state
-Message-ID: <20230202084953.3035c6e3@gmail.com>
-In-Reply-To: <CAJZ5v0iXcRFamA+mE837=zHReBT-+8WmMeRDR7L9R+FVpLr25A@mail.gmail.com>
-References: <20230131233755.58942-1-pedro.falcato@gmail.com>
-        <CAJZ5v0iXcRFamA+mE837=zHReBT-+8WmMeRDR7L9R+FVpLr25A@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ffpgR5z2JZo6pwKFf6fTkgFN1AbQFcPjb/i8EhiUIp0=;
+        b=PnZb8TfMK9LulumZbLHMdE9FvYIZNFF+ziO3KmXlRPbPkYrv52Ffb97jKAoCJn9avG
+         Fo0KNzsBIlCii7tOyRTJKk5x61Fn7p4bpXcdQ0qHAkseLFitxfwmyhJPiVdlX5ZZXsWs
+         VMJv5Q0lUCuHm9ARq5+2vdw6Zc80EfeXxUi/oKGORZBf8yorBMJY0KYrPGiu4sDIHFRk
+         tv6qM0sHVSUIr4jT7UPraXNTI7pHUma2bMLci8eZHbzOjXHhaP27vFtRZlVHwPYbLgUY
+         dA4ChUbqLxUwWhwfHAY6dwddBDRtP2pB0fsaPV2yIPHYI07ht6tApk19foHl4GaCpKq0
+         2X0g==
+X-Gm-Message-State: AO0yUKUqnLQ+2DJMLaQsOFHkFGK5qVxH4r2CnzUosFpoMjO3Y7OlkQlm
+        7d34YpYH9HtxPOCUC7pfcrwgujE7OA36qY4Steg=
+X-Google-Smtp-Source: AK7set9306TERMaXrdPKee5SdML+Gqydz/luQ9C1YIJFgYD0NZ/nYQnWiZBRLI5KkCDKzPTMZc9hEPaVfQaHClP1dUA=
+X-Received: by 2002:a50:cd8e:0:b0:4a2:480b:e164 with SMTP id
+ p14-20020a50cd8e000000b004a2480be164mr1594675edi.50.1675330305735; Thu, 02
+ Feb 2023 01:31:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230202034821.25123-1-tianruidong@linux.alibaba.com>
+In-Reply-To: <20230202034821.25123-1-tianruidong@linux.alibaba.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 2 Feb 2023 10:31:33 +0100
+Message-ID: <CAJZ5v0i=2f+NFHbyYNgL8vqkcf8ST=14-uqHqOUmL0JPVhmiBw@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: PCI: Undefined ACPI_ADR_SPACE_PCI_CONFIG when
+ CONFIG_PCI is unset
+To:     Ruidong Tian <tianruidong@linux.alibaba.com>
+Cc:     robert.moore@intel.com, rafael.j.wysocki@intel.com,
+        lenb@kernel.org, linux-acpi@vger.kernel.org,
+        acpica-devel@lists.linuxfoundation.org,
+        linux-kernel@vger.kernel.org, baolin.wang@linux.alibaba.com,
+        jkchen@linux.alibaba.com, xueshuai@linux.alibaba.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dnia 2023-02-01, o godz. 19:34:48
-"Rafael J. Wysocki" <rafael@kernel.org> napisa=C5=82(a):
+On Thu, Feb 2, 2023 at 4:48 AM Ruidong Tian
+<tianruidong@linux.alibaba.com> wrote:
+>
+> ACPI core subsystem initialization will fail when Kernel disabled PCI but
+> ACPI tables still have PCI config address spaces.
+>
+> Enable ACPI_ADR_SPACE_PCI_CONFIG in acpi_gbl_default_address_spaces
+> only when ACPI_PCI_CONFIGURED is defined.
+>
+> Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
 
-> On Wed, Feb 1, 2023 at 12:38 AM Pedro Falcato
-> <pedro.falcato@gmail.com> wrote:
-> >
-> > Make custom_method keep its own per-file-open state instead of
-> > global state in order to avoid race conditions[1] and other
-> > possible conflicts with other concurrent users.
-> >
-> > Link:
-> > https://lore.kernel.org/linux-acpi/20221227063335.61474-1-zh.nvgt@gmail=
-.com/
-> > # [1] Reported-by: Hang Zhang <zh.nvgt@gmail.com> Cc: Swift Geek
-> > <swiftgeek@gmail.com> Signed-off-by: Pedro Falcato
-> > <pedro.falcato@gmail.com> ---
-> >  This patch addresses Hang's problems plus the ones raised by
-> > Rafael in his review (see link above).
-> > https://lore.kernel.org/lkml/2667007.mvXUDI8C0e@kreacher/ was
-> > submitted but since there were still people that wanted this
-> > feature, I took my time to write up a patch that should fix the
-> > issues. Hopefully the linux-acpi maintainers have not decided to
-> > remove custom_method just yet. =20
->=20
-> Well, thanks for the patch, but yes, they have.  Sorry.
-=20
-Hi Rafael,
-Can you please explain why you don't want to keep it, given there's a
-patch? I find it really useful in my day-to-day as a firmware engineer.
-I don't see much happening in git history of
-drivers/acpi/custom_method.c , and I don't see anything that was
-specifically changed in it in past 10 years to keep it being
-functional. Without your more detailed explanation I have hard time
-understanding your decision to remove it, since I'm not a kernel
-developer myself.
-Thanks,
-Sebastian Grzywna
+As an ACPICA change, this should first be submitted (as a pull
+request) to the upstream ACPICA project on GitHub.
 
-> >  drivers/acpi/custom_method.c | 119
-> > +++++++++++++++++++++++++++-------- 1 file changed, 92
-> > insertions(+), 27 deletions(-)
-> >
-> > diff --git a/drivers/acpi/custom_method.c
-> > b/drivers/acpi/custom_method.c index d39a9b47472..034fb14f118 100644
-> > --- a/drivers/acpi/custom_method.c
-> > +++ b/drivers/acpi/custom_method.c
-> > @@ -17,73 +17,138 @@ MODULE_LICENSE("GPL");
-> >
-> >  static struct dentry *cm_dentry;
-> >
-> > +struct custom_method_state {
-> > +       char *buf;
-> > +       u32 max_size;
-> > +       u32 uncopied_bytes;
-> > +       struct mutex lock;
-> > +};
-> > +
-> > +static int cm_open(struct inode *inode, struct file *file)
-> > +{
-> > +       struct custom_method_state *state;
-> > +
-> > +       state =3D kzalloc(sizeof(struct custom_method_state),
-> > GFP_KERNEL); +
-> > +       if (!state)
-> > +               return -ENOMEM;
-> > +
-> > +       file->private_data =3D state;
-> > +       mutex_init(&state->lock);
-> > +
-> > +       return 0;
-> > +}
-> > +
-> > +static int cm_release(struct inode *inode, struct file *file)
-> > +{
-> > +       struct custom_method_state *state;
-> > +
-> > +       state =3D file->private_data;
-> > +
-> > +       mutex_destroy(&state->lock);
-> > +
-> > +       /* Make sure the buf gets freed */
-> > +       kfree(state->buf);
-> > +
-> > +       kfree(state);
-> > +       return 0;
-> > +}
-> > +
-> >  /* /sys/kernel/debug/acpi/custom_method */
-> >
-> >  static ssize_t cm_write(struct file *file, const char __user
-> > *user_buf, size_t count, loff_t *ppos)
-> >  {
-> > -       static char *buf;
-> > -       static u32 max_size;
-> > -       static u32 uncopied_bytes;
-> > +       struct custom_method_state *state;
-> > +       char *buf;
-> >
-> >         struct acpi_table_header table;
-> >         acpi_status status;
-> >         int ret;
-> >
-> > +       state =3D file->private_data;
-> > +       buf =3D state->buf;
-> > +
-> >         ret =3D security_locked_down(LOCKDOWN_ACPI_TABLES);
-> >         if (ret)
-> >                 return ret;
-> >
-> > +       mutex_lock(&state->lock);
-> > +
-> >         if (!(*ppos)) {
-> >                 /* parse the table header to get the table length */
-> > -               if (count <=3D sizeof(struct acpi_table_header))
-> > -                       return -EINVAL;
-> > +               if (count <=3D sizeof(struct acpi_table_header)) {
-> > +                       count =3D -EINVAL;
-> > +                       goto out;
-> > +               }
-> > +
-> >                 if (copy_from_user(&table, user_buf,
-> > -                                  sizeof(struct
-> > acpi_table_header)))
-> > -                       return -EFAULT;
-> > -               uncopied_bytes =3D max_size =3D table.length;
-> > +                                  sizeof(struct
-> > acpi_table_header))) {
-> > +                       count =3D -EFAULT;
-> > +                       goto out;
-> > +               }
-> > +
-> > +               state->uncopied_bytes =3D state->max_size =3D
-> > table.length; /* make sure the buf is not allocated */
-> >                 kfree(buf);
-> > -               buf =3D kzalloc(max_size, GFP_KERNEL);
-> > -               if (!buf)
-> > -                       return -ENOMEM;
-> > +               buf =3D state->buf =3D kzalloc(state->max_size,
-> > GFP_KERNEL);
-> > +               if (!buf) {
-> > +                       count =3D -ENOMEM;
-> > +                       goto out;
-> > +               }
-> >         }
-> >
-> > -       if (buf =3D=3D NULL)
-> > -               return -EINVAL;
-> > +       /* Check if someone seeked ahead or if we errored out
-> > +        * (buf will be NULL)
-> > +        */
-> > +       if (buf =3D=3D NULL) {
-> > +               count =3D -EINVAL;
-> > +               goto out;
-> > +       }
-> >
-> > -       if ((*ppos > max_size) ||
-> > -           (*ppos + count > max_size) ||
-> > +       if ((*ppos > state->max_size) ||
-> > +           (*ppos + count > state->max_size) ||
-> >             (*ppos + count < count) ||
-> > -           (count > uncopied_bytes)) {
-> > -               kfree(buf);
-> > -               buf =3D NULL;
-> > -               return -EINVAL;
-> > +           (count > state->uncopied_bytes)) {
-> > +               count =3D -EINVAL;
-> > +               goto err_free;
-> >         }
-> >
-> >         if (copy_from_user(buf + (*ppos), user_buf, count)) {
-> > -               kfree(buf);
-> > -               buf =3D NULL;
-> > -               return -EFAULT;
-> > +               count =3D -EFAULT;
-> > +               goto err_free;
-> >         }
-> >
-> > -       uncopied_bytes -=3D count;
-> > +       state->uncopied_bytes -=3D count;
-> >         *ppos +=3D count;
-> >
-> > -       if (!uncopied_bytes) {
-> > +       if (!state->uncopied_bytes) {
-> >                 status =3D acpi_install_method(buf);
-> >                 kfree(buf);
-> > -               buf =3D NULL;
-> > -               if (ACPI_FAILURE(status))
-> > -                       return -EINVAL;
-> > +               state->buf =3D NULL;
-> > +
-> > +               if (ACPI_FAILURE(status)) {
-> > +                       count =3D -EINVAL;
-> > +                       goto out;
-> > +               }
-> > +
-> >                 add_taint(TAINT_OVERRIDDEN_ACPI_TABLE,
-> > LOCKDEP_NOW_UNRELIABLE); }
-> >
-> > +out:
-> > +       mutex_unlock(&state->lock);
-> > +       return count;
-> > +err_free:
-> > +       mutex_unlock(&state->lock);
-> > +       kfree(buf);
-> > +       state->buf =3D NULL;
-> >         return count;
-> >  }
-> >
-> >  static const struct file_operations cm_fops =3D {
-> >         .write =3D cm_write,
-> > +       .open =3D cm_open,
-> > +       .release =3D cm_release,
-> >         .llseek =3D default_llseek,
-> >  };
-> >
-> > --
-> > 2.39.0
-> > =20
+Having done that, please resubmit the patch with a Link tag pointing
+to the corresponding upstream pull request.
 
+Thanks!
+
+> ---
+>  drivers/acpi/acpica/evhandler.c | 2 ++
+>  include/acpi/acconfig.h         | 4 ++++
+>  2 files changed, 6 insertions(+)
+>
+> diff --git a/drivers/acpi/acpica/evhandler.c b/drivers/acpi/acpica/evhandler.c
+> index be9a05498adc..86057e39df8c 100644
+> --- a/drivers/acpi/acpica/evhandler.c
+> +++ b/drivers/acpi/acpica/evhandler.c
+> @@ -26,7 +26,9 @@ acpi_ev_install_handler(acpi_handle obj_handle,
+>  u8 acpi_gbl_default_address_spaces[ACPI_NUM_DEFAULT_SPACES] = {
+>         ACPI_ADR_SPACE_SYSTEM_MEMORY,
+>         ACPI_ADR_SPACE_SYSTEM_IO,
+> +#ifdef ACPI_PCI_CONFIGURED
+>         ACPI_ADR_SPACE_PCI_CONFIG,
+> +#endif
+>         ACPI_ADR_SPACE_DATA_TABLE
+>  };
+>
+> diff --git a/include/acpi/acconfig.h b/include/acpi/acconfig.h
+> index 151e40385673..28456120529f 100644
+> --- a/include/acpi/acconfig.h
+> +++ b/include/acpi/acconfig.h
+> @@ -162,7 +162,11 @@
+>  /* Maximum space_ids for Operation Regions */
+>
+>  #define ACPI_MAX_ADDRESS_SPACE          255
+> +#ifdef ACPI_PCI_CONFIGURED
+>  #define ACPI_NUM_DEFAULT_SPACES         4
+> +#else
+> +#define ACPI_NUM_DEFAULT_SPACES         3
+> +#endif
+>
+>  /* Array sizes.  Used for range checking also */
+>
+> --
+> 2.33.1
+>
