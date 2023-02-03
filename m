@@ -2,143 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D05F689B48
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Feb 2023 15:14:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BBAE968A047
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Feb 2023 18:34:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232566AbjBCOOu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Feb 2023 09:14:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58456 "EHLO
+        id S233312AbjBCRd6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Feb 2023 12:33:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232717AbjBCOOc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Feb 2023 09:14:32 -0500
-Received: from vsp01-out.oderland.com (vsp01-out.oderland.com [IPv6:2a02:28f0::25:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58940DBDE
-        for <linux-acpi@vger.kernel.org>; Fri,  3 Feb 2023 06:13:41 -0800 (PST)
-X-Scanned-Cookie: 5bd76ac53f3641449bb03f2408df0bbfc2159e32
-Received: from office.oderland.com (office.oderland.com [91.201.60.5])
-        by vsp-out.oderland.com (Halon) with ESMTPSA
-        id c5c667fc-a3ca-11ed-988b-13c61387685f;
-        Fri, 03 Feb 2023 14:58:01 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=oderland.se
-        ; s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=0vnqyLQjLM8vIxF5gJPRlxfMok/MJsZ2QdrgPNLap6A=; b=aAPvWYDchoFfYjna1mfsZ6jyzK
-        cI6Dyni4w4oCB0PaIj9A2cpbKDveCoTAg5bDP0iU3yusuhhT2Oi0luM1iVAb30AeJmPC+v4ja5uJ3
-        1OBQg6L4q9G6cMsBVX17Ng1wAOvLVRJRz2Ffb9DA5Ez/Jt8uL6+SvmbJ6HXVlm5vFNYcdeNa4kqZu
-        X7CuhssKOrDKqUH0v4NVGr42ENlJ7wwgZ1upz3ydYa3/8wld/2Z9a03IX6CTPmsgjuiWE8A8DCq8h
-        hWPD5uEUWEeolZ5xzaaR+/eQanWZ+jlMV9quhwKtAK6SROlPEnye7Try6AyyqOboYARa9UJFkUX4g
-        l34Ro1XA==;
-Received: from 160.193-180-18.r.oderland.com ([193.180.18.160]:42860 helo=[10.137.0.14])
-        by office.oderland.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-        (Exim 4.95)
-        (envelope-from <josef@oderland.se>)
-        id 1pNwZq-0040K8-9P;
-        Fri, 03 Feb 2023 14:58:01 +0100
-Message-ID: <06e6cefb-c773-d959-d569-84dd63e240e1@oderland.se>
-Date:   Fri, 3 Feb 2023 14:58:00 +0100
+        with ESMTP id S231526AbjBCRdv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Feb 2023 12:33:51 -0500
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2296BA4284
+        for <linux-acpi@vger.kernel.org>; Fri,  3 Feb 2023 09:33:49 -0800 (PST)
+Received: by mail-wm1-x335.google.com with SMTP id j29-20020a05600c1c1d00b003dc52fed235so4447280wms.1
+        for <linux-acpi@vger.kernel.org>; Fri, 03 Feb 2023 09:33:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BdQwXSk6at4HTQQwAKtI4mmLfEPTQnP+6m7tLLX/JCM=;
+        b=N7dRtRxLgR2H8Z7n0XTd9aWAm2GEDBZia3OGr4Y6fkL6SdTutP1BD7KNKSW6d7dx47
+         ktFCX56E5g1ubKJm4/OnbTv40U6jkCFYl4XdwAe3xP7jamVEXP4ditpw2CnA1V7kDbSk
+         Cqvylwb54ZMrDLxI2Bv9SN5SeRMW5bKJlKYhqQXmKg91caMv7t00F5Y3odgUmKj5p9fE
+         BVeLfU9sZB/bt0XxKhFGtGC2m8/5E7MNPEUbUQNhmKPJfqsBplwGsZDXDF4vzsjWjLa4
+         qRwshIki2940HADXdpZgD4TqQ4K0LHS+oX4En8kM2CzlrtaQgEe+EDiWqo/BqMPQVhOP
+         BSig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BdQwXSk6at4HTQQwAKtI4mmLfEPTQnP+6m7tLLX/JCM=;
+        b=Ncg74rPwfh9/v3EJrH5hhKH6idmMdtowl8Qig+0vMSc0TuERTQj4/8py2C4rDH1J6D
+         UVC7pi9lMX67NbnkXO4CmHTlQLisn+KVU9cmFeBozyJgHuPxiEEk0m2tbhgz0oy77l3W
+         9qr886vpI3DyX2nndM1iOozOYCRx3P4P3qSkHbCZ2OW+FrMfLQkTTkw2k9+yLSdQqrK/
+         OfLWPcfelPCeCaHV4BF1/0RqdHDa39zlmg/gCUmELMVtaWQ5i5nLSyOsaAO20ukdFRAp
+         uZgxYoPtb2ru3sPIrDJhhCEjTnXAUJ9lYgHGySBKoe2fcdXAeFBr/e1fN8CMlJvPAzFd
+         H8Iw==
+X-Gm-Message-State: AO0yUKVuKLXlvsKo4JqbnXfPc5+Y/qT/ALEOUpNww/QClnTMeEoN8Usi
+        gyhOtXuHAP4khSRqAYq3sXlVzA==
+X-Google-Smtp-Source: AK7set86tzxrkk8KEdyApTlZ4mRXwV81+0gOMkI+8qKNWexoAijxHWshS4TddCUKY8+E8raeRUH+1w==
+X-Received: by 2002:a7b:c388:0:b0:3db:2e6e:7826 with SMTP id s8-20020a7bc388000000b003db2e6e7826mr12471715wmj.5.1675445627539;
+        Fri, 03 Feb 2023 09:33:47 -0800 (PST)
+Received: from mai.. (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.gmail.com with ESMTPSA id z4-20020a05600c0a0400b003dfdeb57027sm5876356wmp.38.2023.02.03.09.33.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Feb 2023 09:33:47 -0800 (PST)
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+To:     rjw@rjwysocki.net
+Cc:     linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: [PATCH v1 00/11] Generic trip points for ACPI
+Date:   Fri,  3 Feb 2023 18:33:20 +0100
+Message-Id: <20230203173331.3322089-1-daniel.lezcano@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:108.0) Gecko/20100101
- Thunderbird/108.0
-Subject: Re: [PATCH 1/3] acpi/processor: fix evaluating _PDC method when
- running as Xen dom0
-To:     Jan Beulich <jbeulich@suse.com>
-Cc:     xen-devel@lists.xenproject.org, x86@kernel.org,
-        linux-acpi@vger.kernel.org, Roger Pau Monne <roger.pau@citrix.com>,
-        linux-kernel@vger.kernel.org
-References: <20221121102113.41893-1-roger.pau@citrix.com>
- <20221121102113.41893-2-roger.pau@citrix.com>
- <952fdc14-a8e5-a59a-9c7d-af1adf361d77@oderland.se>
- <513e2851-9098-b510-588e-1e68d44d23fc@suse.com>
-Content-Language: en-US
-From:   Josef Johansson <josef@oderland.se>
-In-Reply-To: <513e2851-9098-b510-588e-1e68d44d23fc@suse.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-x-oderland-domain-valid: yes
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+This series introduces the generic trip points usage in the thermal ACPI
+driver. It provides a step by step changes to move the current code the
+generic trip points.
 
-On 2/3/23 08:05, Jan Beulich wrote:
-> On 30.01.2023 10:21, Josef Johansson wrote:
->> On 11/21/22 11:21, Roger Pau Monne wrote:
->>> --- a/arch/x86/xen/enlighten.c
->>> +++ b/arch/x86/xen/enlighten.c
->>> @@ -346,3 +346,30 @@ void xen_arch_unregister_cpu(int num)
->>>    }
->>>    EXPORT_SYMBOL(xen_arch_unregister_cpu);
->>>    #endif
->>> +
->>> +#ifdef CONFIG_XEN_DOM0
->>> +bool __init xen_processor_present(uint32_t acpi_id)
->>> +{
->>> +	unsigned int i, maxid;
->>> +	struct xen_platform_op op = {
->>> +		.cmd = XENPF_get_cpuinfo,
->>> +		.interface_version = XENPF_INTERFACE_VERSION,
->>> +	};
->>> +	int ret = HYPERVISOR_platform_op(&op);
->>> +
->>> +	if (ret)
->>> +		return false;
->>> +
->>> +	maxid = op.u.pcpu_info.max_present;
->>> +	for (i = 0; i <= maxid; i++) {
->>> +		op.u.pcpu_info.xen_cpuid = i;
->>> +		ret = HYPERVISOR_platform_op(&op);
->>> +		if (ret)
->>> +			continue;
->>> +		if (op.u.pcpu_info.acpi_id == acpi_id)
->>> +			return op.u.pcpu_info.flags & XEN_PCPU_FLAGS_ONLINE;
->>> +	}
->>> +
->>> +	return false;
->>> +}
->> My compiler (Default GCC on Fedora 32, compiling for Qubes) complain
->> loudly that the below was missing.
->>
->> +}
->> +EXPORT_SYMBOL(xen_processor_present);
->>
->> `ERROR: MODPOST xen_processor_present
->> [drivers/xen/xen-acpi-processor.ko] undefined!`
->>
->> Same thing with xen_sanitize_pdc in the next patch.
->>
->> +}
->> +EXPORT_SYMBOL(xen_sanitize_pdc);
->>
->> Everything compiled fine after those changes.
-> Except that you may not export __init symbols. The section mismatch checker
-> should actually complain about that.
->
-> Jan
+I don't have an ACPI platform, the code is not tested.
 
-That makes sense. Patch 3 does change it from an __init though.
-
-diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
-index 394dd6675113..a7b41103d3e5 100644
---- a/arch/x86/xen/enlighten.c
-+++ b/arch/x86/xen/enlighten.c
-@@ -348,7 +348,7 @@ EXPORT_SYMBOL(xen_arch_unregister_cpu);
-  #endif
-
-  #ifdef CONFIG_XEN_DOM0
--bool __init xen_processor_present(uint32_t acpi_id)
-+bool xen_processor_present(uint32_t acpi_id)
-  {
+The changes are based on top of linux-pm/linux-next
 
 
-So the change should be in Patch 3 I guess.
+Daniel Lezcano (11):
+  thermal/acpi: Remove the intermediate acpi_thermal_trip structure
+  thermal/acpi: Change to a common acpi_thermal_trip structure
+  thermal/acpi: Convert the acpi thermal trips to an array
+  thermal/acpi: Move the active trip points to the same array
+  thermal/acpi: Optimize get_trip_points()
+  thermal/acpi: Encapsulate in functions the trip initialization
+  thermal/acpi: Simplifify the condition check
+  thermal/acpi: Remove active and enabled flags
+  thermal/acpi: Convert the units to milli Celsuis
+  thermal/acpi: Rewrite the trip point intialization to use the generic
+    thermal trip
+  thermal/acpi: Use the thermal framework ACPI API
 
-Regards
-- Josef
+ drivers/acpi/thermal.c | 683 ++++++++++++++++++++++++++---------------
+ 1 file changed, 439 insertions(+), 244 deletions(-)
+
+-- 
+2.34.1
+
