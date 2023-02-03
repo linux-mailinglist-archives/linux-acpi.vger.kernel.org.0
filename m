@@ -2,62 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60B0E68A04C
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Feb 2023 18:34:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A226868A050
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Feb 2023 18:34:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230180AbjBCReB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Feb 2023 12:34:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39626 "EHLO
+        id S233088AbjBCReC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Feb 2023 12:34:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233088AbjBCRdz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Feb 2023 12:33:55 -0500
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC395A4296
-        for <linux-acpi@vger.kernel.org>; Fri,  3 Feb 2023 09:33:53 -0800 (PST)
-Received: by mail-wm1-x32b.google.com with SMTP id u10so1375345wmj.3
-        for <linux-acpi@vger.kernel.org>; Fri, 03 Feb 2023 09:33:53 -0800 (PST)
+        with ESMTP id S233209AbjBCRd5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Feb 2023 12:33:57 -0500
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CEBBA4284
+        for <linux-acpi@vger.kernel.org>; Fri,  3 Feb 2023 09:33:54 -0800 (PST)
+Received: by mail-wm1-x331.google.com with SMTP id hn2-20020a05600ca38200b003dc5cb96d46so6505449wmb.4
+        for <linux-acpi@vger.kernel.org>; Fri, 03 Feb 2023 09:33:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dvG3PRWH913fhYfH6droRPy4T3voXfu7htf9rVkWrmY=;
-        b=lnQ3roigEDYuqBl6Otv/hvV7G4ayuVGLtkEXGGFHNIpWLvlu9dpE2OXbeLlVGd3/Rp
-         ARXaI1yYU+9dZTFsolhTGw/ySAv6tZ+5GwNGDYCxbpOVl0XY/05sLUl4pPwfmBBIXjJy
-         6lYYEc5C7TesGe9NlGwRVmtZUnC09PzmHs3L17HiG81gb53AFbsHEC6N4ovW5gD1q4SR
-         Xvrj/6O+c/7g4FH3lhOMV2z/hzV1cvHvj8r8JRLFetziuI+xVr+OjEC2ox21yWbB8hFK
-         o0nyTsS0y+iP+ntp3oKEKeKaptnXl61zDQb0Y6K3EgJhq51lgMC3nwnHQnJcpCYbzun/
-         CxNQ==
+        bh=ImiRnspQldFz7aUHwWWQjNaQE6HDsbMFrGvzaxyK5ic=;
+        b=DrUrXi+3MZkKGS1YkNuyIUAsszP2BKSd0lj3kjyE32lDqIQzjAc32ARNByxftBoL/L
+         bECIbPXeJlDE12N+JgqGeUucqOHSkO+7huARpQlwgpwwAoJw/Jk0qCoVxF2Eei/03wci
+         MNDGHZpZn1oBctXywwrApgshMLnVywL1UzrInacXI7ASed8Ibc5CNGtvXOHXl/snQcUB
+         YTbLPBwy6uv1CgqJAkIfMhQc8auPb0Lh2L98VSq/2mXHLfsm2qeGAGTrHwlSXCRK/k1v
+         +xnP1sAufZJWvvFZMKcU+v+6DJGGs859kK1uQG3LuY9txUs1xJURgTNai1rBhukduh+O
+         w1Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dvG3PRWH913fhYfH6droRPy4T3voXfu7htf9rVkWrmY=;
-        b=LrHZkRKcu2prJNzjj4Sv6Xz3+wP35hJTi8TGrvNAtn+1009hLk0X7srX0QgdDrNeWO
-         yTUJSFJEzc9/NvF59gLOJ0rho191E5u3eNEehAe274MMn0jjsWoNpdN9kqA/eGwdsswW
-         iXSJ+IxydSCDMb5lv0Q6tv+sdWq8JOrr3btzOQXacNfzo1G6p+ImG2baMdCC63/H/mau
-         B9HoMKyVKhDSS6Wwhm7J+uTYYE5jwK0gSC1ZCV/UitTIlXfhTmGGW3XEK2467PJbfH3g
-         lOa7oJGNXLRXO1TA/9FoxTzalQ7/JNM9mnpSSc94emUkBB9avsJRstq6Y7pwz7AKgLm1
-         I9sQ==
-X-Gm-Message-State: AO0yUKW+0HDtV4dUUar7o+cqtWpEvGwEyYMR3CRHdCv6OX2mfn3blbwY
-        o6YtgSxLAfLYoUxop170eOgz+w==
-X-Google-Smtp-Source: AK7set8B+86fJOeSqMIG3rwnSypRFgABlE3WT0yHzdjYj8vQmHRadocfkJ/HkDsSJZE08RqHK3cBMg==
-X-Received: by 2002:a05:600c:4446:b0:3dc:98a4:787d with SMTP id v6-20020a05600c444600b003dc98a4787dmr10275192wmn.3.1675445632024;
-        Fri, 03 Feb 2023 09:33:52 -0800 (PST)
+        bh=ImiRnspQldFz7aUHwWWQjNaQE6HDsbMFrGvzaxyK5ic=;
+        b=kTP8hn7acJwsBzqieki2LHFQY5DK9JbUXbqhWHMN0ZG282oz2r13tsc+3qAbuIXGiC
+         i8U2RHiROJ/dXW+y8IxkGEgRzGAfNpv8deDCmEGIEpi5Sis6Kn1tpLMmK/J7PA7M7wdu
+         XQ/NnQbyZp80KZynhNk/ZRJiZh5VgCekQu5jC5aPTxRzbw0Parp0P0jwhmWa8Ok9xxKe
+         9Zee6PSTdR73REZQDDkRrQPW9UXn1DIDkJ24uNx44zifDW+LIGDE3k+5rKuj0lfFF8zZ
+         oXrh3td84wNTr9ZRrik7AW8J8/0d8BNOFsz0ldZ76gvrDgIBi7ILEgz/cdDX7N6XZCJz
+         NDWQ==
+X-Gm-Message-State: AO0yUKVxUGijByV9EZbyI4Jb0+KGMGveHiVNDiraI1LPODvymMfci4yL
+        WMdCI0qpR6clYGm0O9vgWXt2kw==
+X-Google-Smtp-Source: AK7set+eMPg1WZNepDpu7gVBu0BxBwV+B1QdmNepYQkXk/BukKkfYSTe5vSBs4tqpjqwGxCTRlrvng==
+X-Received: by 2002:a05:600c:3ba7:b0:3df:50eb:7ca6 with SMTP id n39-20020a05600c3ba700b003df50eb7ca6mr8334613wms.15.1675445633074;
+        Fri, 03 Feb 2023 09:33:53 -0800 (PST)
 Received: from mai.. (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.gmail.com with ESMTPSA id z4-20020a05600c0a0400b003dfdeb57027sm5876356wmp.38.2023.02.03.09.33.51
+        by smtp.gmail.com with ESMTPSA id z4-20020a05600c0a0400b003dfdeb57027sm5876356wmp.38.2023.02.03.09.33.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Feb 2023 09:33:51 -0800 (PST)
+        Fri, 03 Feb 2023 09:33:52 -0800 (PST)
 From:   Daniel Lezcano <daniel.lezcano@linaro.org>
 To:     rjw@rjwysocki.net
 Cc:     linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
         linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v1 04/11] thermal/acpi: Move the active trip points to the same array
-Date:   Fri,  3 Feb 2023 18:33:24 +0100
-Message-Id: <20230203173331.3322089-5-daniel.lezcano@linaro.org>
+Subject: [PATCH v1 05/11] thermal/acpi: Optimize get_trip_points()
+Date:   Fri,  3 Feb 2023 18:33:25 +0100
+Message-Id: <20230203173331.3322089-6-daniel.lezcano@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230203173331.3322089-1-daniel.lezcano@linaro.org>
 References: <20230203173331.3322089-1-daniel.lezcano@linaro.org>
@@ -74,204 +74,56 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This change does the second pass to move the active trip points in the
-thermal trip array.
+The function has two purposes. Initialize the trip points by reading
+the ACPI table and then doing a check trip points exists.
+
+This check will go through all the trip points and at the end if a
+valid trip point is found, the parsing is considered valid.
+
+Instead of checking all the trip points, exit when a valid trip point
+is found.
 
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 ---
- drivers/acpi/thermal.c | 71 +++++++++++++++++++++---------------------
- 1 file changed, 35 insertions(+), 36 deletions(-)
+ drivers/acpi/thermal.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-index 6b07de78c4c6..903f0e3d95f5 100644
+index 903f0e3d95f5..c4fd583fbf5c 100644
 --- a/drivers/acpi/thermal.c
 +++ b/drivers/acpi/thermal.c
-@@ -153,7 +153,6 @@ struct acpi_thermal {
- 	struct acpi_thermal_flags flags;
- 	struct acpi_thermal_state state;
- 	struct acpi_thermal_trip trips[ACPI_THERMAL_TRIP_MAX];
--	struct acpi_thermal_trip active[ACPI_THERMAL_MAX_ACTIVE];
- 	struct acpi_handle_list devices;
- 	struct thermal_zone_device *thermal_zone;
- 	int kelvin_offset;	/* in millidegrees */
-@@ -379,19 +378,19 @@ static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
- 	}
+@@ -461,23 +461,20 @@ static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
  
- 	/* Active (optional) */
--	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
-+	for (i = ACPI_THERMAL_TRIP_ACTIVE; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
- 		char name[5] = { '_', 'A', 'C', ('0' + i), '\0' };
--		valid = tz->active[i].flags.valid;
-+		valid = tz->trips[i].flags.valid;
+ static int acpi_thermal_get_trip_points(struct acpi_thermal *tz)
+ {
+-	int i, valid, ret = acpi_thermal_trips_update(tz, ACPI_TRIPS_INIT);
++	int i, ret;
  
- 		if (act == -1)
- 			break; /* disable all active trip points */
++	ret = acpi_thermal_trips_update(tz, ACPI_TRIPS_INIT);
+ 	if (ret)
+ 		return ret;
  
- 		if (flag == ACPI_TRIPS_INIT || ((flag & ACPI_TRIPS_ACTIVE) &&
--		    tz->active[i].flags.valid)) {
-+		    tz->trips[i].flags.valid)) {
- 			status = acpi_evaluate_integer(tz->device->handle,
- 						       name, NULL, &tmp);
- 			if (ACPI_FAILURE(status)) {
--				tz->active[i].flags.valid = 0;
-+				tz->trips[i].flags.valid = 0;
- 				if (i == 0)
- 					break;
+-	valid = tz->trips[ACPI_THERMAL_TRIP_CRITICAL].flags.valid |
+-		tz->trips[ACPI_THERMAL_TRIP_HOT].flags.valid |
+-		tz->trips[ACPI_THERMAL_TRIP_PASSIVE].flags.valid;
++	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
++		if (tz->trips[i].flags.valid)
++			return 0;
++	}
  
-@@ -399,50 +398,50 @@ static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
- 					break;
+-	for (i = ACPI_THERMAL_TRIP_ACTIVE; i < ACPI_THERMAL_MAX_ACTIVE; i++)
+-		valid |= tz->trips[i].flags.valid;
++	pr_warn(FW_BUG "No valid trip found\n");
  
- 				if (i == 1)
--					tz->active[0].temperature = celsius_to_deci_kelvin(act);
-+					tz->trips[0].temperature = celsius_to_deci_kelvin(act);
- 				else
- 					/*
- 					 * Don't allow override higher than
- 					 * the next higher trip point
- 					 */
--					tz->active[i - 1].temperature =
--						(tz->active[i - 2].temperature <
-+					tz->trips[i - 1].temperature =
-+						(tz->trips[i - 2].temperature <
- 						celsius_to_deci_kelvin(act) ?
--						tz->active[i - 2].temperature :
-+						tz->trips[i - 2].temperature :
- 						celsius_to_deci_kelvin(act));
+-	if (!valid) {
+-		pr_warn(FW_BUG "No valid trip found\n");
+-		return -ENODEV;
+-	}
+-	return 0;
++	return -ENODEV;
+ }
  
- 				break;
- 			} else {
--				tz->active[i].temperature = tmp;
--				tz->active[i].flags.valid = 1;
-+				tz->trips[i].temperature = tmp;
-+				tz->trips[i].flags.valid = 1;
- 			}
- 		}
- 
- 		name[2] = 'L';
--		if ((flag & ACPI_TRIPS_DEVICES) && tz->active[i].flags.valid ) {
-+		if ((flag & ACPI_TRIPS_DEVICES) && tz->trips[i].flags.valid ) {
- 			memset(&devices, 0, sizeof(struct acpi_handle_list));
- 			status = acpi_evaluate_reference(tz->device->handle,
- 							 name, NULL, &devices);
- 			if (ACPI_FAILURE(status)) {
- 				acpi_handle_info(tz->device->handle,
- 						 "Invalid active%d threshold\n", i);
--				tz->active[i].flags.valid = 0;
-+				tz->trips[i].flags.valid = 0;
- 			} else {
--				tz->active[i].flags.valid = 1;
-+				tz->trips[i].flags.valid = 1;
- 			}
- 
--			if (memcmp(&tz->active[i].devices, &devices,
-+			if (memcmp(&tz->trips[i].devices, &devices,
- 				   sizeof(struct acpi_handle_list))) {
--				memcpy(&tz->active[i].devices, &devices,
-+				memcpy(&tz->trips[i].devices, &devices,
- 				       sizeof(struct acpi_handle_list));
- 				ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "device");
- 			}
- 		}
- 		if ((flag & ACPI_TRIPS_ACTIVE) || (flag & ACPI_TRIPS_DEVICES))
--			if (valid != tz->active[i].flags.valid)
-+			if (valid != tz->trips[i].flags.valid)
- 				ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "state");
- 
--		if (!tz->active[i].flags.valid)
-+		if (!tz->trips[i].flags.valid)
- 			break;
- 	}
- 
-@@ -471,8 +470,8 @@ static int acpi_thermal_get_trip_points(struct acpi_thermal *tz)
- 		tz->trips[ACPI_THERMAL_TRIP_HOT].flags.valid |
- 		tz->trips[ACPI_THERMAL_TRIP_PASSIVE].flags.valid;
- 
--	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++)
--		valid |= tz->active[i].flags.valid;
-+	for (i = ACPI_THERMAL_TRIP_ACTIVE; i < ACPI_THERMAL_MAX_ACTIVE; i++)
-+		valid |= tz->trips[i].flags.valid;
- 
- 	if (!valid) {
- 		pr_warn(FW_BUG "No valid trip found\n");
-@@ -533,7 +532,7 @@ static int thermal_get_trip_type(struct thermal_zone_device *thermal,
- 		trip--;
- 	}
- 
--	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE && tz->active[i].flags.valid; i++) {
-+	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE && tz->trips[i].flags.valid; i++) {
- 		if (!trip) {
- 			*type = THERMAL_TRIP_ACTIVE;
- 			return 0;
-@@ -583,11 +582,11 @@ static int thermal_get_trip_temp(struct thermal_zone_device *thermal,
- 		trip--;
- 	}
- 
--	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE &&
--		tz->active[i].flags.valid; i++) {
-+	for (i = ACPI_THERMAL_TRIP_ACTIVE; i < ACPI_THERMAL_MAX_ACTIVE &&
-+		tz->trips[i].flags.valid; i++) {
- 		if (!trip) {
- 			*temp = deci_kelvin_to_millicelsius_with_offset(
--					tz->active[i].temperature,
-+					tz->trips[i].temperature,
- 					tz->kelvin_offset);
- 			return 0;
- 		}
-@@ -719,13 +718,13 @@ static int acpi_thermal_cooling_device_cb(struct thermal_zone_device *thermal,
- 		}
- 	}
- 
--	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
--		if (!tz->active[i].flags.valid)
-+	for (i = ACPI_THERMAL_TRIP_ACTIVE; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
-+		if (!tz->trips[i].flags.valid)
- 			break;
- 
- 		trip++;
--		for (j = 0; j < tz->active[i].devices.count; j++) {
--			handle = tz->active[i].devices.handles[j];
-+		for (j = 0; j < tz->trips[i].devices.count; j++) {
-+			handle = tz->trips[i].devices.handles[j];
- 			dev = acpi_fetch_acpi_dev(handle);
- 			if (dev != device)
- 				continue;
-@@ -791,7 +790,7 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
- 	if (tz->trips[ACPI_THERMAL_TRIP_PASSIVE].flags.valid)
- 		trips++;
- 
--	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE && tz->active[i].flags.valid;
-+	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE && tz->trips[i].flags.valid;
- 	     i++, trips++);
- 
- 	if (tz->trips[ACPI_THERMAL_TRIP_PASSIVE].flags.valid)
-@@ -1082,20 +1081,20 @@ static int acpi_thermal_resume(struct device *dev)
- 	if (!tz)
- 		return -EINVAL;
- 
--	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
--		if (!tz->active[i].flags.valid)
-+	for (i = ACPI_THERMAL_TRIP_ACTIVE; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
-+		if (!tz->trips[i].flags.valid)
- 			break;
--		tz->active[i].flags.enabled = 1;
--		for (j = 0; j < tz->active[i].devices.count; j++) {
-+		tz->trips[i].flags.enabled = 1;
-+		for (j = 0; j < tz->trips[i].devices.count; j++) {
- 			result = acpi_bus_update_power(
--					tz->active[i].devices.handles[j],
-+					tz->trips[i].devices.handles[j],
- 					&power_state);
- 			if (result || (power_state != ACPI_STATE_D0)) {
--				tz->active[i].flags.enabled = 0;
-+				tz->trips[i].flags.enabled = 0;
- 				break;
- 			}
- 		}
--		tz->state.active |= tz->active[i].flags.enabled;
-+		tz->state.active |= tz->trips[i].flags.enabled;
- 	}
- 
- 	acpi_queue_thermal_check(tz);
+ /* sys I/F for generic thermal sysfs support */
 -- 
 2.34.1
 
