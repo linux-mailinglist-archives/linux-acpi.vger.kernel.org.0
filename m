@@ -2,95 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C84468A47A
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Feb 2023 22:17:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DDCBC68A4DA
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Feb 2023 22:47:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233595AbjBCVRG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Feb 2023 16:17:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33000 "EHLO
+        id S232491AbjBCVro (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Feb 2023 16:47:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232806AbjBCVRE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Feb 2023 16:17:04 -0500
-X-Greylist: delayed 490 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 03 Feb 2023 13:16:25 PST
-Received: from out-126.mta1.migadu.com (out-126.mta1.migadu.com [IPv6:2001:41d0:203:375::7e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C970A879F
-        for <linux-acpi@vger.kernel.org>; Fri,  3 Feb 2023 13:16:25 -0800 (PST)
-Date:   Fri, 3 Feb 2023 21:08:00 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1675458492;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=zF794bsssBgYs01gtLHUkS28EIicNc0l0YnvFt/94YI=;
-        b=gF+Ot9L7bvkYWgstVlN3IGR5gepXbOhnLUW+ryxf0GGE8OvgoAe8gh4332GPCHIBnUEDfl
-        OstQTXxU52klLCCbGsxtBPABUoe9zoYwljDknwyOPX3XqLcs69d34u9p3+onFADs6Ko7Qx
-        oTbdNErPix3LGrijaxdz/cn1jgoVGFY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Oliver Upton <oliver.upton@linux.dev>
-To:     James Morse <james.morse@arm.com>
-Cc:     linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
-        kvmarm@lists.linux.dev, kvm@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Borislav Petkov <bp@alien8.de>, H Peter Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Len Brown <lenb@kernel.org>,
-        Rafael Wysocki <rafael@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: Re: [RFC PATCH 29/32] KVM: arm64: Pass hypercalls to userspace
-Message-ID: <Y913sIqWxmf4O5oG@google.com>
-References: <20230203135043.409192-1-james.morse@arm.com>
- <20230203135043.409192-30-james.morse@arm.com>
+        with ESMTP id S233184AbjBCVrn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Feb 2023 16:47:43 -0500
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 793098E079
+        for <linux-acpi@vger.kernel.org>; Fri,  3 Feb 2023 13:47:42 -0800 (PST)
+Received: by mail-wr1-x42a.google.com with SMTP id r27so2011039wrr.1
+        for <linux-acpi@vger.kernel.org>; Fri, 03 Feb 2023 13:47:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=P8TDshsiDXMdYWnpIvV/GOghPr+ioBHI9cIhZ4cJ9rQ=;
+        b=EJid9QgFYrPQ6OPSPtkgVHICn00FivJrpf36zYBhP2ZizLnsmZ5kjN5Km8QtBdnNcv
+         x8dnKCSwkl6gowRidZ2CtBhwLkAbWAH2bKzzXLoZ57tQIMs9le2cQzz47yab6txger6w
+         X2rIB+hL6fC8DolrghQlP3B7QuYM4Ex2lUj5hmtL/EP/A/npJ9T7PDWk6VTQwFimoutc
+         wXTz16wyPdpAXyZ5k1pysv1Ss6UzUP5uBKURD32ygC2V/dfia2BQdRsMwCZ+jhLOfgEl
+         x5z15I5arCLDc7sdCKJlJqNyEpSaT/Z7DINEfLE+/WKpSudhswZEmds6XDZio4MDS603
+         9uTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=P8TDshsiDXMdYWnpIvV/GOghPr+ioBHI9cIhZ4cJ9rQ=;
+        b=eBZXBIqwlTUatw71xGJZkMTiSgRpXgAGocg9pxZL+BhrzvwN3UfR1uwcQENrF5LnnC
+         +bHe+xZniBPOHb6WGEAq9ADevdMd2Z+nqyPLmp5+mnyuH71eRhKjttf0mQVyEDoaHU5U
+         OAWFBkuZcwer4kPJoapQDZjW0Ln+BuXF1moCQxCSve0zH32rhzqL32RPi8VeVUpWxsLK
+         IkuIi50i9MjWfift8fCpvunwmBekZ5IxBkExtsNIejHC5f3QMU1wIf2G4vDRLlDXBG9P
+         yD0jh5af/l/EZxlYcCC4TGc0MK62ntb1O+3gX7jLRZpbiO+HX3BLF62u5MpykFVd06tu
+         ktAQ==
+X-Gm-Message-State: AO0yUKVgPUA8jEuVv9pXAjcx4J88rfubmi7jIZzkfA73mXw6hSDAt26l
+        Rh1IBmILX8dg5jK3GwD4OjnQpQ==
+X-Google-Smtp-Source: AK7set/MDCSRhyInEFAIPuAWPUJirQWAI4uG90Lz9Rd6GzuaefvjBGS/B8F/a7vBnKAv60t01CLlCw==
+X-Received: by 2002:adf:f006:0:b0:2bf:e778:6500 with SMTP id j6-20020adff006000000b002bfe7786500mr11690683wro.64.1675460860862;
+        Fri, 03 Feb 2023 13:47:40 -0800 (PST)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id t10-20020adff60a000000b002bbddb89c71sm2891608wrp.67.2023.02.03.13.47.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Feb 2023 13:47:40 -0800 (PST)
+Message-ID: <a4da1cb6-80a5-a3a9-72e6-62e5ad810509@linaro.org>
+Date:   Fri, 3 Feb 2023 22:47:39 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230203135043.409192-30-james.morse@arm.com>
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v1 00/11] Generic trip points for ACPI
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     rjw@rjwysocki.net, linux-acpi@vger.kernel.org,
+        linux-pm@vger.kernel.org
+References: <20230203173331.3322089-1-daniel.lezcano@linaro.org>
+ <CAJZ5v0gkOfbWZWzsTKLBD9C8TaAp0qmTv0L0X7E3fBSLyMUEcQ@mail.gmail.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <CAJZ5v0gkOfbWZWzsTKLBD9C8TaAp0qmTv0L0X7E3fBSLyMUEcQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi James,
-
-On Fri, Feb 03, 2023 at 01:50:40PM +0000, James Morse wrote:
-> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+On 03/02/2023 19:46, Rafael J. Wysocki wrote:
+> On Fri, Feb 3, 2023 at 6:34 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
+>>
+>> This series introduces the generic trip points usage in the thermal ACPI
+>> driver. It provides a step by step changes to move the current code the
+>> generic trip points.
+>>
+>> I don't have an ACPI platform, the code is not tested.
 > 
-> When capability KVM_CAP_ARM_HVC_TO_USER is available, userspace can
-> request to handle all hypercalls that aren't handled by KVM.
+> What's the purpose of sending this now, then?  Should it be an RFC?
+> I'm certainly going to treat it this way.
 
-I would very much prefer we not go down this route. This capability
-effectively constructs an ABI out of what KVM presently does not
-implement. What would happen if KVM decides to implement a new set
-of hypercalls later down the road that were previously forwarded to
-userspace?
+I did basic testing on a x86 laptop having critical trip points but 
+nothing else.
 
-Instead of a catch-all I think we should take the approach of having
-userspace explicitly request which hypercalls should be forwarded to
-userspace. I proposed something similar [1], but never got around to
-respinning it (oops).
+I understand it can be treated as RFC.
 
-Let me dust those patches off and align with Marc's suggestions.
+Is there any dummy ACPI tables with thermal available somewhere I can 
+play with in Qemu ?
 
-[1]: https://lore.kernel.org/kvmarm/20221110015327.3389351-1-oliver.upton@linux.dev/
 
---
-Thanks,
-Oliver
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
+
