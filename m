@@ -2,67 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89B2968A0B1
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Feb 2023 18:45:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F17F68A10B
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Feb 2023 18:59:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233294AbjBCRp3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Feb 2023 12:45:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48896 "EHLO
+        id S232960AbjBCR7Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Feb 2023 12:59:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233809AbjBCRo5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Feb 2023 12:44:57 -0500
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42C66A7785
-        for <linux-acpi@vger.kernel.org>; Fri,  3 Feb 2023 09:44:45 -0800 (PST)
-Received: by mail-wr1-x430.google.com with SMTP id o18so5343627wrj.3
-        for <linux-acpi@vger.kernel.org>; Fri, 03 Feb 2023 09:44:45 -0800 (PST)
+        with ESMTP id S233025AbjBCR7P (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Feb 2023 12:59:15 -0500
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 593192E82C
+        for <linux-acpi@vger.kernel.org>; Fri,  3 Feb 2023 09:59:12 -0800 (PST)
+Received: by mail-wr1-x42d.google.com with SMTP id q5so5415076wrv.0
+        for <linux-acpi@vger.kernel.org>; Fri, 03 Feb 2023 09:59:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m+5C4ydL02isaLKa3zc+GpYQSiiz854VPklETAp2HFU=;
-        b=sG6xh8xQNejGSuKPUa4k/fJ86szxWvQ9HoNdYvHpioZo5m0dRyM6sTVyyY94whVgv6
-         N1+sA9Tq1IoCDxCfHehebc2xGyzlY92iQjYq5zxyydxWelux8OI737w5gSXoNGhnDdYC
-         1cADmm/gMMohMtZgar4AjsoCdYPEy2nkhEMn3x+/dSO3h7U9aNWqUCAqz+tyUEwSos5f
-         OrcBootA7nuW5iqyPB8A0QRDmILWpt5cdql5Dzoi73rt8zP+5aJoYAgxPizkps4OdYzc
-         Xr+JSJ9BLolzO0xmo7UAN5qTnU6GFt91wI9B9b5k0gsxWx7KDGIyzaOi8p5Ifz5qI6Or
-         0TAA==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GAXndW8cnBV3+ngs0K02NLGwczyzotwAPD8N8ShiwYk=;
+        b=PWLPACbQ/nV+Qzotx45Bi6IXcdXtrj+EUb+UtwhJ56Od/Z8LMacFOyHwodvU05vtlZ
+         SSUgUkrW0cAlFBAE8V4RAqv6JIrJnb7NQVipdNgMeN9Dj78JeSbW2nP3uiTSif15ooUs
+         +zIIpxXbE8VCVLs2r+Ou3mFf6M06ZvA2neVUUKwYzp+Y0wQgCgYGU0e2qhgmBag+ORX7
+         2N8jGa5gwq7EAiSPcG7doVI9ZOM1x0iJSzp7jdtzvEp+s4Aad2YOoCbOE2NkBPIJS2Ix
+         1Eg/R3FrTP8SpoxGR6jA+FayvDBct913m3j6QJBUXAiB58bQ0QvfqDJf3RvNkN+MsYLf
+         D6gQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=m+5C4ydL02isaLKa3zc+GpYQSiiz854VPklETAp2HFU=;
-        b=U9XxM+VryXDPaxX8i3evDQfrtUQBmfJaiEh4xlq6JTiKI9tojMbMAgwmF5fczRqovp
-         WBT6/e5Je5LaDiy5tYRYeOqa2MqsazLask1lsJxPsH3ebdAJBqBqqbqqjsVWmDnT9/Bg
-         hXwBALgUM3PnjkyPCtfy5FTh8SIAepHAccNbhpObhHWSUwLafCZJWRYw8Tfu4dxI+4zS
-         UnV4zamn1JY9et5HfMbD+EQOCVaQIeheAvoJYC5EW2zEWEyNGahKLRomfhirovjB+DCL
-         EO9itefcfny9nQfKYTbE5grotf9L2hgET7ooeuoV3jD6SrBMMsq1ql8GVuylt+a2O1By
-         zKXA==
-X-Gm-Message-State: AO0yUKVz/VrSxDWxtDmGvfJixehc5QgKiYFZEJXvu+0LOobimj2DiHdk
-        5r3XwKCEOLNj8yK5Z0B+TWJNcQ==
-X-Google-Smtp-Source: AK7set+/g5vP8p/e6zxCIdQYGAwSA5RSAGBsWkgRow0IIEBh34ietmzBe0bcXc1sCSEXq+DEpAgONw==
-X-Received: by 2002:a5d:660f:0:b0:2bf:95cc:744c with SMTP id n15-20020a5d660f000000b002bf95cc744cmr10179895wru.0.1675446285470;
-        Fri, 03 Feb 2023 09:44:45 -0800 (PST)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GAXndW8cnBV3+ngs0K02NLGwczyzotwAPD8N8ShiwYk=;
+        b=iEx/4Q70LxFBMx/zchVtrKPpl5F+nBnR8E8vSh54PdIH1lmFn5sYnaJUBpbxZ1Htu/
+         5y9osC4u30d2sdTc420ZhSnw6wTvSXAxkaz26yBhy3b9XcrQw9zSKTDwD5kiTioYEZGb
+         3LYrtNQYTwc7Go1aWDLPMKY6UjqnNudwdb37rrjqFoQ5BZiXt/VXGCx4Ji3l7QEHotMg
+         O5HHnkzQsGt+IPRRUGAHAzfaFGipVliKzvnC+2E9E07Kno33nxbdEZtwwxwAcPFJjJbP
+         ePKQrwFkCD1QWFs2xHHWJJFxR1IRrYjOUyOZOjV3TD4Pns/owAq/jhIyTPKzzVIgfH3T
+         LpYg==
+X-Gm-Message-State: AO0yUKXlJCM0stTSTluAt7x5+lgP0y/O+9Ms41+IWe6e8tmVKVzxqlhY
+        CNWek7wNYZwZjlkSfU+6mdtaoA==
+X-Google-Smtp-Source: AK7set8ijXCv3HYsShNElZlKs0hYepcRyZAUe7b95uq7Zb3BQnwNsE7WskLXcPjZnTB3tOJK7iIFNA==
+X-Received: by 2002:adf:fb03:0:b0:2be:57a6:8161 with SMTP id c3-20020adffb03000000b002be57a68161mr8387433wrr.46.1675447150846;
+        Fri, 03 Feb 2023 09:59:10 -0800 (PST)
 Received: from mai.. (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.gmail.com with ESMTPSA id z1-20020a5d4c81000000b002bdd8f12effsm2443528wrs.30.2023.02.03.09.44.44
+        by smtp.gmail.com with ESMTPSA id s14-20020adfa28e000000b002c3be49ef94sm2599012wra.52.2023.02.03.09.59.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Feb 2023 09:44:45 -0800 (PST)
+        Fri, 03 Feb 2023 09:59:10 -0800 (PST)
 From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     rjw@rjwysocki.net
-Cc:     daniel.lezcano@linaro.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org,
-        Daniel Lezcano <daniel.lezcano@kernel.org>,
+To:     daniel.lezcano@linaro.org, rjw@rjwysocki.net
+Cc:     linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        Sebastian Reichel <sre@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Kees Cook <keescook@chromium.org>,
+        "Lee, Chun-Yi" <joeyli.kernel@gmail.com>,
+        Chuansheng Liu <chuansheng.liu@intel.com>,
+        ye xingchen <ye.xingchen@zte.com.cn>,
         linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v2 11/11] thermal/acpi: Use the thermal framework ACPI API
-Date:   Fri,  3 Feb 2023 18:44:29 +0100
-Message-Id: <20230203174429.3375691-12-daniel.lezcano@linaro.org>
+Subject: [PATCH] thermal: Hunt zero trip points thermal zones usage
+Date:   Fri,  3 Feb 2023 18:58:31 +0100
+Message-Id: <20230203175832.3406504-1-daniel.lezcano@linaro.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230203174429.3375691-1-daniel.lezcano@linaro.org>
-References: <20230203174429.3375691-1-daniel.lezcano@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -76,200 +80,130 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Daniel Lezcano <daniel.lezcano@kernel.org>
+Some drivers are declaring a thermal zone without any thermal trip
+points.
 
-The thermal framework has a set of functions to fill the trip
-points. Those functions are already used by the int340x and the quark
-Intel's platform.
+On the other side, we are introducing the function
+thermal_zone_device_register_with_trips() which provides an array of
+generic thermal trip points. When all the drivers will be converted to
+the generic trip points, keeping two functions will be useless.
 
-Reuse these functions in order to consolidate the generic trip points
-usage across the thermal ACPI user.
+Most of the drivers are now using
+thermal_zone_device_register_with_trips() with the generic trip
+points. As soon as the remaining drivers are merged, the
+thermal_zone_device_register_with_trips() will be renamed to
+thermal_zone_device_register().
 
-Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
+Obviously this renaming can only happen if there are no more user of
+the thermal_zone_device_register() function.
+
+This change uses thermal_zone_device_register_with_trips() with a NULL
+parameter for the trip point array instead of
+thermal_zone_device_register().
+
+No functional change intended.
+
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 ---
- drivers/acpi/thermal.c | 85 +++++++++++++++++++-----------------------
- 1 file changed, 38 insertions(+), 47 deletions(-)
+ drivers/power/supply/power_supply_core.c                | 2 +-
+ drivers/thermal/armada_thermal.c                        | 4 ++--
+ drivers/thermal/dove_thermal.c                          | 4 ++--
+ drivers/thermal/intel/int340x_thermal/int3400_thermal.c | 6 +++---
+ drivers/thermal/kirkwood_thermal.c                      | 4 ++--
+ drivers/thermal/spear_thermal.c                         | 5 +++--
+ 6 files changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-index f89236cd4fcd..5e4d93c67b75 100644
---- a/drivers/acpi/thermal.c
-+++ b/drivers/acpi/thermal.c
-@@ -259,8 +259,11 @@ static struct thermal_trip *acpi_thermal_trips_alloc_critical(struct acpi_therma
- 							      struct thermal_trip *trips,
- 							      int *num_trips)
- {
--	acpi_status status = AE_OK;
--	unsigned long long temp;
-+	struct thermal_trip trip = {
-+		.type = THERMAL_TRIP_CRITICAL,
-+	};
-+
-+	int ret;
+diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
+index 7c790c41e2fe..208a849a71d9 100644
+--- a/drivers/power/supply/power_supply_core.c
++++ b/drivers/power/supply/power_supply_core.c
+@@ -1166,7 +1166,7 @@ static int psy_register_thermal(struct power_supply *psy)
  
- 	/*
- 	 * Module parameters disable the critical trip point
-@@ -268,14 +271,12 @@ static struct thermal_trip *acpi_thermal_trips_alloc_critical(struct acpi_therma
- 	if (crt < 0)
- 		goto out;
+ 	/* Register battery zone device psy reports temperature */
+ 	if (psy_has_property(psy->desc, POWER_SUPPLY_PROP_TEMP)) {
+-		psy->tzd = thermal_zone_device_register(psy->desc->name,
++		psy->tzd = thermal_zone_device_register_with_trips(psy->desc->name, NULL,
+ 				0, 0, psy, &psy_tzd_ops, NULL, 0, 0);
+ 		if (IS_ERR(psy->tzd))
+ 			return PTR_ERR(psy->tzd);
+diff --git a/drivers/thermal/armada_thermal.c b/drivers/thermal/armada_thermal.c
+index 99e86484a55c..83a4080bffc7 100644
+--- a/drivers/thermal/armada_thermal.c
++++ b/drivers/thermal/armada_thermal.c
+@@ -856,8 +856,8 @@ static int armada_thermal_probe(struct platform_device *pdev)
+ 		/* Wait the sensors to be valid */
+ 		armada_wait_sensor_validity(priv);
  
--	status = acpi_evaluate_integer(tz->device->handle, "_CRT", NULL, &temp);
--	if (ACPI_FAILURE(status)) {
--		acpi_handle_debug(tz->device->handle, "No critical threshold\n");
-+	ret = thermal_acpi_critical_trip_temp(tz->device->handle, &trip.temperature);
-+	if (ret)
- 		goto out;
--	}
--
--	if (temp <= 2732) {
--		pr_info(FW_BUG "Invalid critical threshold (%llu)\n", temp);
-+	
-+	if (trip.temperature <= 0) {
-+		pr_info(FW_BUG "Invalid critical threshold (%d)\n", trip.temperature);
- 		goto out;
+-		tz = thermal_zone_device_register(priv->zone_name, 0, 0, priv,
+-						  &legacy_ops, NULL, 0, 0);
++		tz = thermal_zone_device_register_with_trips(priv->zone_name, NULL, 0, 0, priv,
++							     &legacy_ops, NULL, 0, 0);
+ 		if (IS_ERR(tz)) {
+ 			dev_err(&pdev->dev,
+ 				"Failed to register thermal zone device\n");
+diff --git a/drivers/thermal/dove_thermal.c b/drivers/thermal/dove_thermal.c
+index 056622a58d00..fce15af5a7f6 100644
+--- a/drivers/thermal/dove_thermal.c
++++ b/drivers/thermal/dove_thermal.c
+@@ -142,8 +142,8 @@ static int dove_thermal_probe(struct platform_device *pdev)
+ 		return ret;
  	}
  
-@@ -283,10 +284,7 @@ static struct thermal_trip *acpi_thermal_trips_alloc_critical(struct acpi_therma
- 	if (!trips)
- 		goto out;
+-	thermal = thermal_zone_device_register("dove_thermal", 0, 0,
+-					       priv, &ops, NULL, 0, 0);
++	thermal = thermal_zone_device_register_with_trips("dove_thermal", NULL, 0, 0,
++							  priv, &ops, NULL, 0, 0);
+ 	if (IS_ERR(thermal)) {
+ 		dev_err(&pdev->dev,
+ 			"Failed to register thermal zone device\n");
+diff --git a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
+index d0295123cc3e..dac60b6a281c 100644
+--- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
++++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
+@@ -609,9 +609,9 @@ static int int3400_thermal_probe(struct platform_device *pdev)
  
--	memset(&trips[*num_trips], 0, sizeof(*trips));
--
--	trips[*num_trips].temperature = deci_kelvin_to_millicelsius(temp);
--	trips[*num_trips].type = THERMAL_TRIP_CRITICAL;
-+	trips[*num_trips] = trip; /* structure copy */
+ 	evaluate_odvp(priv);
  
- 	if (crt > 0)
- 		acpi_thermal_trips_override(&trips[*num_trips], crt * MILLI);
-@@ -300,23 +298,21 @@ static struct thermal_trip *acpi_thermal_trips_alloc_hot(struct acpi_thermal *tz
- 							 struct thermal_trip *trips,
- 							 int *num_trips)
- {
--	acpi_status status;
--	unsigned long long temp;
-+	struct thermal_trip trip = {
-+		.type = THERMAL_TRIP_HOT,
-+	};
+-	priv->thermal = thermal_zone_device_register("INT3400 Thermal", 0, 0,
+-						priv, &int3400_thermal_ops,
+-						&int3400_thermal_params, 0, 0);
++	priv->thermal = thermal_zone_device_register_with_trips("INT3400 Thermal", NULL, 0, 0,
++								priv, &int3400_thermal_ops,
++								&int3400_thermal_params, 0, 0);
+ 	if (IS_ERR(priv->thermal)) {
+ 		result = PTR_ERR(priv->thermal);
+ 		goto free_art_trt;
+diff --git a/drivers/thermal/kirkwood_thermal.c b/drivers/thermal/kirkwood_thermal.c
+index bec7ec20e79d..4506b7dfb474 100644
+--- a/drivers/thermal/kirkwood_thermal.c
++++ b/drivers/thermal/kirkwood_thermal.c
+@@ -74,8 +74,8 @@ static int kirkwood_thermal_probe(struct platform_device *pdev)
+ 	if (IS_ERR(priv->sensor))
+ 		return PTR_ERR(priv->sensor);
  
--	status = acpi_evaluate_integer(tz->device->handle, "_HOT", NULL, &temp);
--	if (ACPI_FAILURE(status)) {
--		acpi_handle_debug(tz->device->handle, "No hot threshold\n");
-+	int ret;
-+
-+	ret = thermal_acpi_hot_trip_temp(tz->device->handle, &trip.temperature);
-+	if (ret)
- 		goto out;
--	}
+-	thermal = thermal_zone_device_register("kirkwood_thermal", 0, 0,
+-					       priv, &ops, NULL, 0, 0);
++	thermal = thermal_zone_device_register_with_trips("kirkwood_thermal", NULL, 0, 0,
++							  priv, &ops, NULL, 0, 0);
+ 	if (IS_ERR(thermal)) {
+ 		dev_err(&pdev->dev,
+ 			"Failed to register thermal zone device\n");
+diff --git a/drivers/thermal/spear_thermal.c b/drivers/thermal/spear_thermal.c
+index 6a722b10d738..0d20bc9c5c0b 100644
+--- a/drivers/thermal/spear_thermal.c
++++ b/drivers/thermal/spear_thermal.c
+@@ -122,8 +122,9 @@ static int spear_thermal_probe(struct platform_device *pdev)
+ 	stdev->flags = val;
+ 	writel_relaxed(stdev->flags, stdev->thermal_base);
  
- 	trips = krealloc(trips, sizeof(*trips) * (*num_trips + 1), GFP_KERNEL);
- 	if (!trips)
- 		goto out;
- 
--	memset(&trips[*num_trips], 0, sizeof(*trips));
--
--	trips[*num_trips].temperature = deci_kelvin_to_millicelsius(temp);
--	trips[*num_trips].type = THERMAL_TRIP_HOT;
-+	trips[*num_trips] = trip; /* structure copy */
- 	
- 	(*num_trips)++;
- out:
-@@ -327,9 +323,12 @@ static struct thermal_trip *acpi_thermal_trips_alloc_passive(struct acpi_thermal
- 							     struct thermal_trip *trips,
- 							     int *num_trips)
- {
--	struct acpi_handle_list devices;
- 	acpi_status status;
--	unsigned long long temp;
-+	struct acpi_handle_list devices;
-+	struct thermal_trip trip = {
-+		.type = THERMAL_TRIP_PASSIVE
-+	};
-+	int ret;
- 
- 	/*
- 	 * Module parameters disable all passive trip points
-@@ -337,26 +336,21 @@ static struct thermal_trip *acpi_thermal_trips_alloc_passive(struct acpi_thermal
- 	if (psv < 0)
- 		goto out;
- 	
--	status = acpi_evaluate_integer(tz->device->handle, "_PSV", NULL, &temp);
--	if (ACPI_FAILURE(status)) {
--		acpi_handle_debug(tz->device->handle, "No passive threshold\n");
-+	ret = thermal_acpi_passive_trip_temp(tz->device->handle, &trip.temperature);
-+	if (ret)
- 		goto out;
--	}
--
-+	
- 	status = acpi_evaluate_reference(tz->device->handle, "_PSL", NULL, &devices);
- 	if (ACPI_FAILURE(status)) {
- 		acpi_handle_debug(tz->device->handle, "No passive device associated\n");
- 		goto out;
- 	}
--	
-+
- 	trips = krealloc(trips, sizeof(*trips) * (*num_trips + 1), GFP_KERNEL);
- 	if (!trips)
- 		goto out;
- 
--	memset(&trips[*num_trips], 0, sizeof(*trips));
--
--	trips[*num_trips].temperature = deci_kelvin_to_millicelsius(temp);
--	trips[*num_trips].type = THERMAL_TRIP_PASSIVE;
-+	trips[*num_trips] = trip; /* structure copy */	
- 	
- 	(*num_trips)++;
- out:
-@@ -367,10 +361,9 @@ static struct thermal_trip *acpi_thermal_trips_alloc_active(struct acpi_thermal
- 							    struct thermal_trip *trips,
- 							    int *num_trips)
- {
--	struct acpi_handle_list devices;
- 	acpi_status status;
--	unsigned long long temp;
--	int i;
-+	struct acpi_handle_list devices;
-+	int i, ret;
- 
- 	/*
- 	 * Module parameters disable all active trip points
-@@ -379,12 +372,13 @@ static struct thermal_trip *acpi_thermal_trips_alloc_active(struct acpi_thermal
- 		return trips;
- 
- 	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
-+		struct thermal_trip trip = {
-+			.type = THERMAL_TRIP_ACTIVE,
-+		};
- 		char name[5];
- 
--		sprintf(name, "_AC%d", i);
--
--		status = acpi_evaluate_integer(tz->device->handle, name, NULL, &temp);
--		if (ACPI_FAILURE(status))
-+		ret = thermal_acpi_active_trip_temp(tz->device->handle, i , &trip.temperature);
-+		if (ret)
- 			break;
- 
- 		sprintf(name, "_AL%d", i);
-@@ -394,16 +388,13 @@ static struct thermal_trip *acpi_thermal_trips_alloc_active(struct acpi_thermal
- 			acpi_handle_info(tz->device->handle, "No _AL%d defined for _AC%d\n", i, i);
- 			break;
- 		}
--
-+		
- 		trips = krealloc(trips, sizeof(*trips) * (*num_trips + 1), GFP_KERNEL);
- 		if (!trips)
- 			break;
- 
--		memset(&trips[*num_trips], 0, sizeof(*trips));
-+		trips[*num_trips] = trip; /* structure copy */	
- 
--		trips[*num_trips].temperature = deci_kelvin_to_millicelsius(temp);
--		trips[*num_trips].type = THERMAL_TRIP_ACTIVE;
--	
- 		(*num_trips)++;
- 	}
- 
+-	spear_thermal = thermal_zone_device_register("spear_thermal", 0, 0,
+-				stdev, &ops, NULL, 0, 0);
++	spear_thermal = thermal_zone_device_register_with_trips("spear_thermal",
++								NULL, 0, 0,
++								stdev, &ops, NULL, 0, 0);
+ 	if (IS_ERR(spear_thermal)) {
+ 		dev_err(&pdev->dev, "thermal zone device is NULL\n");
+ 		ret = PTR_ERR(spear_thermal);
 -- 
 2.34.1
 
