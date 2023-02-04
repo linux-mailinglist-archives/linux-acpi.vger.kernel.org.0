@@ -2,149 +2,196 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2616A68AA7C
-	for <lists+linux-acpi@lfdr.de>; Sat,  4 Feb 2023 15:08:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C8DF68ACDF
+	for <lists+linux-acpi@lfdr.de>; Sat,  4 Feb 2023 23:31:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233657AbjBDOIy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 4 Feb 2023 09:08:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32862 "EHLO
+        id S229448AbjBDWbG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 4 Feb 2023 17:31:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233602AbjBDOIu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 4 Feb 2023 09:08:50 -0500
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3285836FC6;
-        Sat,  4 Feb 2023 06:08:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675519728; x=1707055728;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=/aD9cjyUFI+LzMyeRYqGwo1f2SsDqINK3vbOF2GNhDg=;
-  b=UjrwsvEwWq3Mj2YPcHUcmYXwdLut9wjRxcF1B+iJmqScFwaoNuTmYA8m
-   IHmfv3+Dkt60efYqlLj2vlqlNesbVZnUoHl7arM85OmNGrJLQf+H6T3vW
-   zEGgbgmmctFhU0K4DTGBqhsKi6V2UjLME0e7JYNVoWmKrT+hzd8nk5lsY
-   96FeiE/fWIvAMbuVj2UWpc9GbXgjoauYtWZUB4o5Rzdlh9Bu91y4Br5a2
-   gEN6VTtaikEO937+Fl58oS3OkWrjCq37CE3ySnW74qZzyxth9lhKw6etq
-   AJnYcIB3f6AZ0WcbdKwk7od3v5ueO9IZeBLNE784emAeQY9VNdxYrHQL8
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10610"; a="309280549"
-X-IronPort-AV: E=Sophos;i="5.97,272,1669104000"; 
-   d="scan'208";a="309280549"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2023 06:08:47 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10610"; a="616007583"
-X-IronPort-AV: E=Sophos;i="5.97,272,1669104000"; 
-   d="scan'208";a="616007583"
-Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 04 Feb 2023 06:08:45 -0800
-Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pOJDh-0001LQ-0Q;
-        Sat, 04 Feb 2023 14:08:45 +0000
-Date:   Sat, 04 Feb 2023 22:08:33 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 6c08dffbc02b6d339abcebb393bbadbf81c560ed
-Message-ID: <63de66e1.w58GEM7uEW+FVDYQ%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S231324AbjBDWbC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 4 Feb 2023 17:31:02 -0500
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F7212387A
+        for <linux-acpi@vger.kernel.org>; Sat,  4 Feb 2023 14:30:56 -0800 (PST)
+Received: by mail-pf1-x42e.google.com with SMTP id w20so6059312pfn.4
+        for <linux-acpi@vger.kernel.org>; Sat, 04 Feb 2023 14:30:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=2c3ryMxpOrIrZDVaOC8ynRmFu3tYBCZQcCXL31Q6F3k=;
+        b=E4A5hYEQRp90Hq5gcHozZx89CANxAwz5pa5hV0u6D7/CSE7D9FjEvqXYB61jPCQN6R
+         uanAQTYAH37I86uAD9fDVd49n5AU/IEwpa65uBkowop5pcrCfFX/HEqL6I3zA9pf0F/P
+         032WaKdRiA1F3CA+VV0gqYE/t8IDtiSmSqfwZvkJnIKPsa3Rxgert/AdhpNpC3cDkPXN
+         ZbnNVdwFWbp0s9NZKPQf67Rm7IXXFcig56fq7QTqXVPsjWTVSNoZ/+s1RlvgWSk4eex2
+         1Ql/Hhl5ACwU2n9vWNsCmfribawOpaIaR63+0/CkkzNuCejBofd+kArEuZQQTqc6wP/+
+         PQpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2c3ryMxpOrIrZDVaOC8ynRmFu3tYBCZQcCXL31Q6F3k=;
+        b=vF00UnVKefUyCsTCWR/2mZVFMJSW0rvSGUS2wUO7jZHPsxf/pWqMDVpLDl0/z9ZQmG
+         BydENb6RzKUIOr2KD48ouMONP3S5xMSEsOwnoIYcX6DkQAQ/p8Nr7xD32SroNib4q4y1
+         LzbMtkCXMs7khcM9stXAYc27vx1Cqm8HkgdGKkIas0I9eLHlAc2ftT5+N0Ykc/WputNE
+         O4cU2EPueDgcXuri/butKu8aeX09DYkrzyf3h4qgVSw8wjusCWhGy8wCxQviuL9NTpsc
+         +LPYf1KTRncLVBYi6xDaCaq21qKAL7nfQ8j3qsvN2Nn+qLKF7JMm+RDA3mVEnsLINql+
+         nNFw==
+X-Gm-Message-State: AO0yUKW+pgv0EBZQvuLHchYHO9Y2Z/UQr43CApK4o9wtPtqzIVjwd6jz
+        G9hRN9kNwoyN3TZoYSlQnnHVVo0QDNzu8usQgNDOew==
+X-Google-Smtp-Source: AK7set+ZC7Ks2eIaN+4nhpE4jlE1jqO/ZiAjj58j/wvorPO2PW5t0ia/NMESz7xFZXQD1dSaARAuey5tmskPGv2QHv4=
+X-Received: by 2002:a62:1a57:0:b0:593:bac2:b49 with SMTP id
+ a84-20020a621a57000000b00593bac20b49mr3621986pfa.44.1675549855647; Sat, 04
+ Feb 2023 14:30:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230127001141.407071-1-saravanak@google.com> <20230127001141.407071-4-saravanak@google.com>
+ <CAMuHMdV4B49OM7S-UAxJtfAR8OvG_-S526fGnTA+t+-orytrTw@mail.gmail.com>
+ <CAGETcx9EXkbAfEX6pBL84DBr3SEwiJe7N4xh91TspLn8CwZ+LQ@mail.gmail.com>
+ <CAMuHMdUFeSim2gvmiBuPbAajbK6ybh67gBmbLLqRhG1T5+v0JA@mail.gmail.com>
+ <CAGETcx-TSrjFnmxV02TMaGN6Au4f9SuLgzjMPOqAOTqx_bqLhA@mail.gmail.com> <CAMuHMdX=F5zPfVQLihWRBt0EN-nNW=x4v_XFpp4aY9WrhkwmJw@mail.gmail.com>
+In-Reply-To: <CAMuHMdX=F5zPfVQLihWRBt0EN-nNW=x4v_XFpp4aY9WrhkwmJw@mail.gmail.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Sat, 4 Feb 2023 14:30:19 -0800
+Message-ID: <CAGETcx_7wRwYaERw5oJT-Lh+rU_9QAM6HRthEe6ShyhyCQTciw@mail.gmail.com>
+Subject: Re: [PATCH v2 03/11] soc: renesas: Move away from using OF_POPULATED
+ for fw_devlink
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Linux Kernel Functional Testing <lkft@linaro.org>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        John Stultz <jstultz@google.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Maxim Kiselev <bigunclemax@gmail.com>,
+        Maxim Kochetkov <fido_max@inbox.ru>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Colin Foster <colin.foster@in-advantage.com>,
+        Martin Kepplinger <martin.kepplinger@puri.sm>,
+        Jean-Philippe Brucker <jpb@kernel.org>,
+        kernel-team@android.com, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 6c08dffbc02b6d339abcebb393bbadbf81c560ed  Merge branch 'pm-cpufreq' into bleeding-edge
+On Tue, Jan 31, 2023 at 12:14 AM Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+>
+> Hi Saravana,
+>
+> On Mon, Jan 30, 2023 at 9:00 PM Saravana Kannan <saravanak@google.com> wrote:
+> > On Mon, Jan 30, 2023 at 12:43 AM Geert Uytterhoeven
+> > <geert@linux-m68k.org> wrote:
+> > > On Sat, Jan 28, 2023 at 8:19 AM Saravana Kannan <saravanak@google.com> wrote:
+> > > > On Fri, Jan 27, 2023 at 12:11 AM Geert Uytterhoeven
+> > > > <geert@linux-m68k.org> wrote:
+> > > > > On Fri, Jan 27, 2023 at 1:11 AM Saravana Kannan <saravanak@google.com> wrote:
+> > > > > > The OF_POPULATED flag was set to let fw_devlink know that the device
+> > > > > > tree node will not have a struct device created for it. This information
+> > > > > > is used by fw_devlink to avoid deferring the probe of consumers of this
+> > > > > > device tree node.
+> > > > > >
+> > > > > > Let's use fwnode_dev_initialized() instead because it achieves the same
+> > > > > > effect without using OF specific flags. This allows more generic code to
+> > > > > > be written in driver core.
+> > > > > >
+> > > > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > > > >
+> > > > > Thanks for your patch!
+> > > > >
+> > > > > > --- a/drivers/soc/renesas/rcar-sysc.c
+> > > > > > +++ b/drivers/soc/renesas/rcar-sysc.c
+> > > > > > @@ -437,7 +437,7 @@ static int __init rcar_sysc_pd_init(void)
+> > > > > >
+> > > > > >         error = of_genpd_add_provider_onecell(np, &domains->onecell_data);
+> > > > > >         if (!error)
+> > > > > > -               of_node_set_flag(np, OF_POPULATED);
+> > > > > > +               fwnode_dev_initialized(&np->fwnode, true);
+> > > > >
+> > > > > As drivers/soc/renesas/rmobile-sysc.c is already using this method,
+> > > > > it should work fine.
+> > > > >
+> > > > > Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> > > > > i.e. will queue in renesas-devel for v6.4.
+> >
+> > I hope you meant queue it up for 6.3 and not 6.4?
+>
+> V6.4.
+> The deadline for submitting pull requests for the soc tree is rc6.
+> Sorry, your series was posted too late to make that.
+>
+> > > > Thanks! Does that mean I should drop this from this series? If two
+> > > > maintainers pick the same patch up, will it cause problems? I'm
+> > > > eventually expecting this series to be picked up by Greg into
+> > > > driver-core-next.
+> > >
+> > > Indeed. Patches for drivers/soc/renesas/ are supposed to go upstream
+> > > through the renesas-devel and soc trees. This patch has no dependencies
+> > > on anything else in the series (or vice versa), so there is no reason
+> > > to deviate from that, and possibly cause conflicts later.
+> >
+> > This series is supposed to fix a bunch of issues and I vaguely think
+> > the series depends on this patch to work correctly on some Renesas
+> > systems. You are my main renesas person, so it's probably some issue
+> > you hit. Is you pick it up outside of this series I need to keep
+> > asking folks to pick up two different patch threads. I don't have a
+> > strong opinion, just a FYI. If you can take this patch soon, I don't
+> > have any concerns.
+>
+> Oh right, you do remove OF_POPULATED handling in
+> "[PATCH v2 09/11] of: property: Simplify of_link_to_phandle()".
+> It might be wise to postpone that removal, as after your series,
+> there are stillseveral users left, some of them might be impacted.
+>
+> I do plan to test your full series on all my boards, but probably that
+> won't happen this week.
+>
+> > > BTW, I will convert to of_node_to_fwnode() while applying.
+> >
+> > Sounds good.
+>
+> If you still want this to land in v6,3 (with the of_node_to_fwnode()
+> conversion):
+> Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+>
 
-elapsed time: 979m
+Yeah, let me try to land this in 6.3 with the series.
 
-configs tested: 67
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-x86_64                            allnoconfig
-arc                                 defconfig
-s390                             allmodconfig
-alpha                               defconfig
-s390                                defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-m68k                             allyesconfig
-arc                               allnoconfig
-arc                              allyesconfig
-s390                             allyesconfig
-alpha                            allyesconfig
-alpha                             allnoconfig
-i386                              allnoconfig
-arm                               allnoconfig
-x86_64                        randconfig-a006
-powerpc                           allnoconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-sh                               allmodconfig
-ia64                             allmodconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                           rhel-8.3-bpf
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-kvm
-x86_64                           allyesconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                          rhel-8.3-func
-riscv                randconfig-r042-20230204
-arc                  randconfig-r043-20230204
-s390                 randconfig-r044-20230204
-i386                          randconfig-a001
-x86_64                        randconfig-a013
-i386                          randconfig-a003
-x86_64                        randconfig-a011
-x86_64                        randconfig-a015
-i386                          randconfig-a005
-i386                                defconfig
-i386                          randconfig-a014
-i386                             allyesconfig
-i386                          randconfig-a012
-i386                          randconfig-a016
-riscv                             allnoconfig
-m68k                             allmodconfig
-arm                                 defconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-
-clang tested configs:
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-x86_64                          rhel-8.3-rust
-hexagon              randconfig-r041-20230204
-arm                  randconfig-r046-20230204
-hexagon              randconfig-r045-20230204
-x86_64                        randconfig-a014
-i386                          randconfig-a002
-i386                          randconfig-a004
-x86_64                        randconfig-a012
-x86_64                        randconfig-a016
-i386                          randconfig-a006
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+-Saravana
