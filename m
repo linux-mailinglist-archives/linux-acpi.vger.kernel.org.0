@@ -2,65 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C8DF68ACDF
-	for <lists+linux-acpi@lfdr.de>; Sat,  4 Feb 2023 23:31:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FC1068ACE6
+	for <lists+linux-acpi@lfdr.de>; Sat,  4 Feb 2023 23:32:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229448AbjBDWbG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 4 Feb 2023 17:31:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50874 "EHLO
+        id S232576AbjBDWcv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 4 Feb 2023 17:32:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231324AbjBDWbC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 4 Feb 2023 17:31:02 -0500
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F7212387A
-        for <linux-acpi@vger.kernel.org>; Sat,  4 Feb 2023 14:30:56 -0800 (PST)
-Received: by mail-pf1-x42e.google.com with SMTP id w20so6059312pfn.4
-        for <linux-acpi@vger.kernel.org>; Sat, 04 Feb 2023 14:30:56 -0800 (PST)
+        with ESMTP id S232541AbjBDWcu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 4 Feb 2023 17:32:50 -0500
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48F42234E9
+        for <linux-acpi@vger.kernel.org>; Sat,  4 Feb 2023 14:32:43 -0800 (PST)
+Received: by mail-pl1-x62e.google.com with SMTP id m13so8667816plx.13
+        for <linux-acpi@vger.kernel.org>; Sat, 04 Feb 2023 14:32:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2c3ryMxpOrIrZDVaOC8ynRmFu3tYBCZQcCXL31Q6F3k=;
-        b=E4A5hYEQRp90Hq5gcHozZx89CANxAwz5pa5hV0u6D7/CSE7D9FjEvqXYB61jPCQN6R
-         uanAQTYAH37I86uAD9fDVd49n5AU/IEwpa65uBkowop5pcrCfFX/HEqL6I3zA9pf0F/P
-         032WaKdRiA1F3CA+VV0gqYE/t8IDtiSmSqfwZvkJnIKPsa3Rxgert/AdhpNpC3cDkPXN
-         ZbnNVdwFWbp0s9NZKPQf67Rm7IXXFcig56fq7QTqXVPsjWTVSNoZ/+s1RlvgWSk4eex2
-         1Ql/Hhl5ACwU2n9vWNsCmfribawOpaIaR63+0/CkkzNuCejBofd+kArEuZQQTqc6wP/+
-         PQpA==
+        bh=TCubKHsyMQJF8LMl1XgSOrfeBF7lBTY/RGmJLycWlaU=;
+        b=G2+vuASwFpuwWTpilhz1IvtVsiUT9WhCHPg3bHDt/5F+ZoUeYQwXI0GHaH/YaKtytT
+         o1acMo5Mlm9cllOyD5PirVkDAsyvv3CP6uyWR+LaTPS1ROgZi0SnUgG8oPPxwGDdvf2H
+         Luf92Ex8l5lVs6qa9X7drp1/LtoiKUv6uQViswIbJn67mpOnBEQ7U8Nir6vHJjl4A/oJ
+         +5ukHAB+inYG8Le10OO2jEj7EmNeHwW7lkjz8nuxXrYC+JIa5v+c8qtK+v9w+HDq7apx
+         KU2y4mG6YSECFfteheftSjttr13wzYo3LIzXiFwWhQHZEs641AvyDiOb9vOPwrpjxbKw
+         BE5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=2c3ryMxpOrIrZDVaOC8ynRmFu3tYBCZQcCXL31Q6F3k=;
-        b=vF00UnVKefUyCsTCWR/2mZVFMJSW0rvSGUS2wUO7jZHPsxf/pWqMDVpLDl0/z9ZQmG
-         BydENb6RzKUIOr2KD48ouMONP3S5xMSEsOwnoIYcX6DkQAQ/p8Nr7xD32SroNib4q4y1
-         LzbMtkCXMs7khcM9stXAYc27vx1Cqm8HkgdGKkIas0I9eLHlAc2ftT5+N0Ykc/WputNE
-         O4cU2EPueDgcXuri/butKu8aeX09DYkrzyf3h4qgVSw8wjusCWhGy8wCxQviuL9NTpsc
-         +LPYf1KTRncLVBYi6xDaCaq21qKAL7nfQ8j3qsvN2Nn+qLKF7JMm+RDA3mVEnsLINql+
-         nNFw==
-X-Gm-Message-State: AO0yUKW+pgv0EBZQvuLHchYHO9Y2Z/UQr43CApK4o9wtPtqzIVjwd6jz
-        G9hRN9kNwoyN3TZoYSlQnnHVVo0QDNzu8usQgNDOew==
-X-Google-Smtp-Source: AK7set+ZC7Ks2eIaN+4nhpE4jlE1jqO/ZiAjj58j/wvorPO2PW5t0ia/NMESz7xFZXQD1dSaARAuey5tmskPGv2QHv4=
-X-Received: by 2002:a62:1a57:0:b0:593:bac2:b49 with SMTP id
- a84-20020a621a57000000b00593bac20b49mr3621986pfa.44.1675549855647; Sat, 04
- Feb 2023 14:30:55 -0800 (PST)
+        bh=TCubKHsyMQJF8LMl1XgSOrfeBF7lBTY/RGmJLycWlaU=;
+        b=6EnZNDVi38b/ta44sXBhClB8owLct45COm5CrTeL11JO6tab8v3LlwnMnDb862Un9H
+         wRoi9mTFowVkhy/EsLF/9Zu0XPluUAEPh99MGHsKf+PLpI7MJF8glzDJujatrBAI9vH7
+         0RF6+lRX9q/urSeAXlHvafbEvyArhY/bZiklPHgqL2yiAHaTcUmFyTXWLFt6s+cwQK/s
+         1XxWD5am3S1B/Fu33cSsDBasvqblpFlzu0kw7NpgN4o9cijS2hUIxc2uHvwJTAdc9FkU
+         I+IuhkmmTD163pPp5na32cGafKnRVg9zw0WgfXHP3WNT716NeFWGpTNfY3qPg2kr188H
+         9pVg==
+X-Gm-Message-State: AO0yUKWcMUXDDrUUbB061HfHsJ7ONKsD0bgl1TGtiGpY98ydUKh7IKVp
+        eaZzk0Un9ekOBwuQscvWpANE+CoqLCsEDbnFAITb+w==
+X-Google-Smtp-Source: AK7set+WTHxq5oO63yGH1Y9Xnzv5N1lAd2jXSDL3AuczoyplN2Tu7uL6IRfi3QFZwCS/cMVnCxbzD3B8jbvtM9uZpe8=
+X-Received: by 2002:a17:90a:656:b0:226:cff8:6472 with SMTP id
+ q22-20020a17090a065600b00226cff86472mr2232226pje.73.1675549962139; Sat, 04
+ Feb 2023 14:32:42 -0800 (PST)
 MIME-Version: 1.0
-References: <20230127001141.407071-1-saravanak@google.com> <20230127001141.407071-4-saravanak@google.com>
- <CAMuHMdV4B49OM7S-UAxJtfAR8OvG_-S526fGnTA+t+-orytrTw@mail.gmail.com>
- <CAGETcx9EXkbAfEX6pBL84DBr3SEwiJe7N4xh91TspLn8CwZ+LQ@mail.gmail.com>
- <CAMuHMdUFeSim2gvmiBuPbAajbK6ybh67gBmbLLqRhG1T5+v0JA@mail.gmail.com>
- <CAGETcx-TSrjFnmxV02TMaGN6Au4f9SuLgzjMPOqAOTqx_bqLhA@mail.gmail.com> <CAMuHMdX=F5zPfVQLihWRBt0EN-nNW=x4v_XFpp4aY9WrhkwmJw@mail.gmail.com>
-In-Reply-To: <CAMuHMdX=F5zPfVQLihWRBt0EN-nNW=x4v_XFpp4aY9WrhkwmJw@mail.gmail.com>
+References: <20230127001141.407071-1-saravanak@google.com> <20230127001141.407071-5-saravanak@google.com>
+ <20230130143153.67dsxn4lugfetfwb@bogus> <Y9fe2arI8afeURWn@smile.fi.intel.com>
+ <CAGETcx9aPp+JU-hO+fGyGps6jaoKoFzZd2zzy5YZBKoU8G=OhA@mail.gmail.com> <20230131101337.376mnrvhltbsychd@bogus>
+In-Reply-To: <20230131101337.376mnrvhltbsychd@bogus>
 From:   Saravana Kannan <saravanak@google.com>
-Date:   Sat, 4 Feb 2023 14:30:19 -0800
-Message-ID: <CAGETcx_7wRwYaERw5oJT-Lh+rU_9QAM6HRthEe6ShyhyCQTciw@mail.gmail.com>
-Subject: Re: [PATCH v2 03/11] soc: renesas: Move away from using OF_POPULATED
- for fw_devlink
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Date:   Sat, 4 Feb 2023 14:32:05 -0800
+Message-ID: <CAGETcx9Jc1YAV49+gJWo0gFh1rxJ3nwBCw_CKYhAREBwvq5Kcw@mail.gmail.com>
+Subject: Re: [PATCH v2 04/11] gpiolib: Clear the gpio_device's fwnode
+ initialized flag before adding
+To:     Sudeep Holla <sudeep.holla@arm.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
         Cristian Marussi <cristian.marussi@arm.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Bartosz Golaszewski <brgl@bgdev.pl>,
@@ -75,7 +73,6 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Magnus Damm <magnus.damm@gmail.com>,
         Len Brown <lenb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Daniel Scally <djrscally@gmail.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
@@ -84,6 +81,7 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Naresh Kamboju <naresh.kamboju@linaro.org>,
         Abel Vesa <abel.vesa@linaro.org>,
         Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
         John Stultz <jstultz@google.com>,
         Doug Anderson <dianders@chromium.org>,
         Guenter Roeck <linux@roeck-us.net>,
@@ -111,87 +109,113 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 31, 2023 at 12:14 AM Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
+On Tue, Jan 31, 2023 at 2:13 AM Sudeep Holla <sudeep.holla@arm.com> wrote:
 >
-> Hi Saravana,
->
-> On Mon, Jan 30, 2023 at 9:00 PM Saravana Kannan <saravanak@google.com> wrote:
-> > On Mon, Jan 30, 2023 at 12:43 AM Geert Uytterhoeven
-> > <geert@linux-m68k.org> wrote:
-> > > On Sat, Jan 28, 2023 at 8:19 AM Saravana Kannan <saravanak@google.com> wrote:
-> > > > On Fri, Jan 27, 2023 at 12:11 AM Geert Uytterhoeven
-> > > > <geert@linux-m68k.org> wrote:
-> > > > > On Fri, Jan 27, 2023 at 1:11 AM Saravana Kannan <saravanak@google.com> wrote:
-> > > > > > The OF_POPULATED flag was set to let fw_devlink know that the device
-> > > > > > tree node will not have a struct device created for it. This information
-> > > > > > is used by fw_devlink to avoid deferring the probe of consumers of this
-> > > > > > device tree node.
-> > > > > >
-> > > > > > Let's use fwnode_dev_initialized() instead because it achieves the same
-> > > > > > effect without using OF specific flags. This allows more generic code to
-> > > > > > be written in driver core.
-> > > > > >
-> > > > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > > > >
-> > > > > Thanks for your patch!
-> > > > >
-> > > > > > --- a/drivers/soc/renesas/rcar-sysc.c
-> > > > > > +++ b/drivers/soc/renesas/rcar-sysc.c
-> > > > > > @@ -437,7 +437,7 @@ static int __init rcar_sysc_pd_init(void)
-> > > > > >
-> > > > > >         error = of_genpd_add_provider_onecell(np, &domains->onecell_data);
-> > > > > >         if (!error)
-> > > > > > -               of_node_set_flag(np, OF_POPULATED);
-> > > > > > +               fwnode_dev_initialized(&np->fwnode, true);
-> > > > >
-> > > > > As drivers/soc/renesas/rmobile-sysc.c is already using this method,
-> > > > > it should work fine.
-> > > > >
-> > > > > Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > > > > i.e. will queue in renesas-devel for v6.4.
-> >
-> > I hope you meant queue it up for 6.3 and not 6.4?
->
-> V6.4.
-> The deadline for submitting pull requests for the soc tree is rc6.
-> Sorry, your series was posted too late to make that.
->
-> > > > Thanks! Does that mean I should drop this from this series? If two
-> > > > maintainers pick the same patch up, will it cause problems? I'm
-> > > > eventually expecting this series to be picked up by Greg into
-> > > > driver-core-next.
+> On Mon, Jan 30, 2023 at 08:01:17PM -0800, Saravana Kannan wrote:
+> > On Mon, Jan 30, 2023 at 7:14 AM Andy Shevchenko
+> > <andriy.shevchenko@linux.intel.com> wrote:
 > > >
-> > > Indeed. Patches for drivers/soc/renesas/ are supposed to go upstream
-> > > through the renesas-devel and soc trees. This patch has no dependencies
-> > > on anything else in the series (or vice versa), so there is no reason
-> > > to deviate from that, and possibly cause conflicts later.
+> > > On Mon, Jan 30, 2023 at 02:31:53PM +0000, Sudeep Holla wrote:
+> > > > On Thu, Jan 26, 2023 at 04:11:31PM -0800, Saravana Kannan wrote:
+> > > > > Registering an irqdomain sets the flag for the fwnode. But having the
+> > > > > flag set when a device is added is interpreted by fw_devlink to mean the
+> > > > > device has already been initialized and will never probe. This prevents
+> > > > > fw_devlink from creating device links with the gpio_device as a
+> > > > > supplier. So, clear the flag before adding the device.
+> > >
+> > > ...
+> > >
+> > > > > +   /*
+> > > > > +    * If fwnode doesn't belong to another device, it's safe to clear its
+> > > > > +    * initialized flag.
+> > > > > +    */
+> > > > > +   if (!gdev->dev.fwnode->dev)
+> > > > > +           fwnode_dev_initialized(gdev->dev.fwnode, false);
+> > > >
+> > > > This is the one causing the kernel crash during the boot on FVP which
+> > > > Naresh has reported. Just reverted this and was able to boot, confirming
+> > > > the issue with this patch.
+> > >
+> > > I'm wondering if
+> > >
+> > >         if (!dev_fwnode(&gdev->dev)->dev)
+> > >                 fwnode_dev_initialized(&dev_fwnode(gdev->dev), false);
+> > >
+> > > works.
 > >
-> > This series is supposed to fix a bunch of issues and I vaguely think
-> > the series depends on this patch to work correctly on some Renesas
-> > systems. You are my main renesas person, so it's probably some issue
-> > you hit. Is you pick it up outside of this series I need to keep
-> > asking folks to pick up two different patch threads. I don't have a
-> > strong opinion, just a FYI. If you can take this patch soon, I don't
-> > have any concerns.
->
-> Oh right, you do remove OF_POPULATED handling in
-> "[PATCH v2 09/11] of: property: Simplify of_link_to_phandle()".
-> It might be wise to postpone that removal, as after your series,
-> there are stillseveral users left, some of them might be impacted.
->
-> I do plan to test your full series on all my boards, but probably that
-> won't happen this week.
->
-> > > BTW, I will convert to of_node_to_fwnode() while applying.
+> > No, that won't help. The problem was that with arm32, we have gpio
+> > devices created without any of_node or fwnode. So I can't assume
+> > fwnode will always be present.
 > >
-> > Sounds good.
 >
-> If you still want this to land in v6,3 (with the of_node_to_fwnode()
-> conversion):
-> Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Correct, and this one is not even arm32. But it is just reusing a driver
+> that needs to be supported even on arm32.
 >
+> Not sure on how to proceed. As a simple way to check, I added a NULL check
+> for fwnode building on top of Andy's suggestion[1]. That works.
+>
+> Also the driver in question on arm64 FVP model is drivers/mfd/vexpress-sysreg.c
+> mfd_add_device() in drivers/mfd/mfd-core.c allows addition of devices without
+> of_node/fwnode. I am sure returning error like[2] will break many platforms
+> but I just wanted to confirm the root cause and [2] fixes the boot without
+> NULL check for fwnode in gpiochip_setup_dev().
+>
+> Hope this helps.
 
-Yeah, let me try to land this in 6.3 with the series.
+Thanks for debugging it for me Sudeep. Incorporated into my v3.
 
 -Saravana
+
+>
+> --
+> Regards,
+> Sudeep
+>
+> [1]
+>
+> -->8
+> diff --git i/drivers/gpio/gpiolib.c w/drivers/gpio/gpiolib.c
+> index b23140c6485f..e162f13aa2c9 100644
+> --- i/drivers/gpio/gpiolib.c
+> +++ w/drivers/gpio/gpiolib.c
+> @@ -577,13 +577,15 @@ static void gpiodevice_release(struct device *dev)
+>  static int gpiochip_setup_dev(struct gpio_device *gdev)
+>  {
+>         int ret;
+> +       struct fwnode_handle *fwnode = dev_fwnode(&gdev->dev);
+>
+>         /*
+>          * If fwnode doesn't belong to another device, it's safe to clear its
+>          * initialized flag.
+>          */
+> -       if (!gdev->dev.fwnode->dev)
+> -               fwnode_dev_initialized(gdev->dev.fwnode, false);
+> +       if (fwnode && !fwnode->dev)
+> +               fwnode_dev_initialized(fwnode, false);
+> +
+>         ret = gcdev_register(gdev, gpio_devt);
+>         if (ret)
+>                 return ret;
+>
+> [2]
+>
+> -->8
+>
+> diff --git i/drivers/mfd/mfd-core.c w/drivers/mfd/mfd-core.c
+> index 16d1861e9682..3b2c4b0e9a2a 100644
+> --- i/drivers/mfd/mfd-core.c
+> +++ w/drivers/mfd/mfd-core.c
+> @@ -231,9 +231,11 @@ static int mfd_add_device(struct device *parent, int id,
+>                         }
+>                 }
+>
+> -               if (!pdev->dev.of_node)
+> +               if (!pdev->dev.of_node) {
+>                         pr_warn("%s: Failed to locate of_node [id: %d]\n",
+>                                 cell->name, platform_id);
+> +                       goto fail_alias;
+> +               }
+>         }
+>
+>         mfd_acpi_add_device(cell, pdev);
+>
