@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59AB468B383
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 02:02:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D1BD68B384
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 02:03:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229521AbjBFBCy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 5 Feb 2023 20:02:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53144 "EHLO
+        id S229528AbjBFBDA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 5 Feb 2023 20:03:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbjBFBCx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 5 Feb 2023 20:02:53 -0500
+        with ESMTP id S229526AbjBFBDA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 5 Feb 2023 20:03:00 -0500
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08BF48A71;
-        Sun,  5 Feb 2023 17:02:52 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B640DBFE;
+        Sun,  5 Feb 2023 17:02:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675645372; x=1707181372;
+  t=1675645377; x=1707181377;
   h=subject:from:to:cc:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=yszGLPkFMXedVGllSqe6JjeO5D0jX4yLcgUfwilZAzI=;
-  b=FTdgOzxiK/n8EQrct1NKXny2jtk1ViZwiVEpgp9OZkPYE4CXUjZBJSUj
-   VZqMuRxyEbtehyZ11M36/P/r7n4tsbt9qu/15yhULYXKG+d0NwadZA5uE
-   SM+sw2ibRu3KiXXkjtyL6zw95dwgLgx/KWw2mmruy7mpKlYo5yO/RQ931
-   Z1TkR8raZZ56FFpisyDfzoUnARRtGBkVagXqkbGJE0jhqf899RhjZMwSl
-   PAz64pP9vJ7oILUYmdcQ/JfH3g6hgKj8YfEyejrG04X1WngqADCNrvHQe
-   8P1ktKEjs18+ZoWNCYjnZ9s2rjiUuqdvRREd76PUOnofiVCkEWeAWO4Ow
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10612"; a="331243798"
+  bh=2NFt5YIQN4Pv/UJUgAAJbE/vCys4h+IOB5VcXpizhjY=;
+  b=dL0oz9mOolNG2TuoGvxn4nrTmr9p9Q4GzxTt7u9Vs/Ne4ZpTmlBMojLr
+   JZnB6iS3wbppxMKVcJIIENUdQ9hLZiG5wJ25P2qpjTXvfdhSbv9TJLzsh
+   AeHfczri/tiaxuaxrFzo4Uzqx5tWOScpxW/TK7Mgb8mR22LZ24Jh23Hzv
+   oXr6KQpGa4AyWmadad0Htu63v3XB5lX5btTEDAR/CYsJTc/dD5YzxJkK8
+   Spln6wehYlxKj1At75mrrNR9BFkVxfhMq8Ounrmj+83HPFuWTScHMq5pe
+   DMoXKZzCWo+u/rmGI+qU9CiCJ8Ayrc5ifVjRnxsIGSanhOe3A7pvTj2V8
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10612"; a="331243807"
 X-IronPort-AV: E=Sophos;i="5.97,276,1669104000"; 
-   d="scan'208";a="331243798"
+   d="scan'208";a="331243807"
 Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2023 17:02:51 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10612"; a="643855741"
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2023 17:02:57 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10612"; a="643855748"
 X-IronPort-AV: E=Sophos;i="5.97,276,1669104000"; 
-   d="scan'208";a="643855741"
+   d="scan'208";a="643855748"
 Received: from mkrysak-mobl.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.212.255.187])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2023 17:02:51 -0800
-Subject: [PATCH 04/18] cxl/region: Validate region mode vs decoder mode
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2023 17:02:57 -0800
+Subject: [PATCH 05/18] cxl/region: Add volatile region creation support
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     linux-cxl@vger.kernel.org
 Cc:     dave.hansen@linux.intel.com, linux-mm@kvack.org,
         linux-acpi@vger.kernel.org
-Date:   Sun, 05 Feb 2023 17:02:51 -0800
-Message-ID: <167564537131.847146.9020072654741860107.stgit@dwillia2-xfh.jf.intel.com>
+Date:   Sun, 05 Feb 2023 17:02:56 -0800
+Message-ID: <167564537678.847146.4066579806086171091.stgit@dwillia2-xfh.jf.intel.com>
 In-Reply-To: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
 References: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
 User-Agent: StGit/0.18-3-g996c
@@ -59,29 +59,216 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In preparation for a new region mode, do not, for example, allow
-'ram' decoders to be assigned to 'pmem' regions and vice versa.
+Expand the region creation infrastructure to enable 'ram'
+(volatile-memory) regions. The internals of create_pmem_region_store()
+and create_pmem_region_show() are factored out into helpers
+__create_region() and __create_region_show() for the 'ram' case to
+reuse.
 
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/cxl/core/region.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ Documentation/ABI/testing/sysfs-bus-cxl |   22 +++++-----
+ drivers/cxl/core/core.h                 |    1 
+ drivers/cxl/core/port.c                 |   14 ++++++
+ drivers/cxl/core/region.c               |   71 +++++++++++++++++++++++++------
+ 4 files changed, 82 insertions(+), 26 deletions(-)
 
+diff --git a/Documentation/ABI/testing/sysfs-bus-cxl b/Documentation/ABI/testing/sysfs-bus-cxl
+index 4c4e1cbb1169..3acf2f17a73f 100644
+--- a/Documentation/ABI/testing/sysfs-bus-cxl
++++ b/Documentation/ABI/testing/sysfs-bus-cxl
+@@ -285,20 +285,20 @@ Description:
+ 		interleave_granularity).
+ 
+ 
+-What:		/sys/bus/cxl/devices/decoderX.Y/create_pmem_region
+-Date:		May, 2022
+-KernelVersion:	v6.0
++What:		/sys/bus/cxl/devices/decoderX.Y/create_{pmem,ram}_region
++Date:		May, 2022, January, 2023
++KernelVersion:	v6.0 (pmem), v6.3 (ram)
+ Contact:	linux-cxl@vger.kernel.org
+ Description:
+ 		(RW) Write a string in the form 'regionZ' to start the process
+-		of defining a new persistent memory region (interleave-set)
+-		within the decode range bounded by root decoder 'decoderX.Y'.
+-		The value written must match the current value returned from
+-		reading this attribute. An atomic compare exchange operation is
+-		done on write to assign the requested id to a region and
+-		allocate the region-id for the next creation attempt. EBUSY is
+-		returned if the region name written does not match the current
+-		cached value.
++		of defining a new persistent, or volatile memory region
++		(interleave-set) within the decode range bounded by root decoder
++		'decoderX.Y'. The value written must match the current value
++		returned from reading this attribute. An atomic compare exchange
++		operation is done on write to assign the requested id to a
++		region and allocate the region-id for the next creation attempt.
++		EBUSY is returned if the region name written does not match the
++		current cached value.
+ 
+ 
+ What:		/sys/bus/cxl/devices/decoderX.Y/delete_region
+diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
+index 8c04672dca56..5eb873da5a30 100644
+--- a/drivers/cxl/core/core.h
++++ b/drivers/cxl/core/core.h
+@@ -11,6 +11,7 @@ extern struct attribute_group cxl_base_attribute_group;
+ 
+ #ifdef CONFIG_CXL_REGION
+ extern struct device_attribute dev_attr_create_pmem_region;
++extern struct device_attribute dev_attr_create_ram_region;
+ extern struct device_attribute dev_attr_delete_region;
+ extern struct device_attribute dev_attr_region;
+ extern const struct device_type cxl_pmem_region_type;
+diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+index 8566451cb22f..47e450c3a5a9 100644
+--- a/drivers/cxl/core/port.c
++++ b/drivers/cxl/core/port.c
+@@ -294,6 +294,7 @@ static struct attribute *cxl_decoder_root_attrs[] = {
+ 	&dev_attr_cap_type3.attr,
+ 	&dev_attr_target_list.attr,
+ 	SET_CXL_REGION_ATTR(create_pmem_region)
++	SET_CXL_REGION_ATTR(create_ram_region)
+ 	SET_CXL_REGION_ATTR(delete_region)
+ 	NULL,
+ };
+@@ -305,6 +306,13 @@ static bool can_create_pmem(struct cxl_root_decoder *cxlrd)
+ 	return (cxlrd->cxlsd.cxld.flags & flags) == flags;
+ }
+ 
++static bool can_create_ram(struct cxl_root_decoder *cxlrd)
++{
++	unsigned long flags = CXL_DECODER_F_TYPE3 | CXL_DECODER_F_RAM;
++
++	return (cxlrd->cxlsd.cxld.flags & flags) == flags;
++}
++
+ static umode_t cxl_root_decoder_visible(struct kobject *kobj, struct attribute *a, int n)
+ {
+ 	struct device *dev = kobj_to_dev(kobj);
+@@ -313,7 +321,11 @@ static umode_t cxl_root_decoder_visible(struct kobject *kobj, struct attribute *
+ 	if (a == CXL_REGION_ATTR(create_pmem_region) && !can_create_pmem(cxlrd))
+ 		return 0;
+ 
+-	if (a == CXL_REGION_ATTR(delete_region) && !can_create_pmem(cxlrd))
++	if (a == CXL_REGION_ATTR(create_ram_region) && !can_create_ram(cxlrd))
++		return 0;
++
++	if (a == CXL_REGION_ATTR(delete_region) &&
++	    !(can_create_pmem(cxlrd) || can_create_ram(cxlrd)))
+ 		return 0;
+ 
+ 	return a->mode;
 diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index c9e7f05caa0f..53d6dbe4de6d 100644
+index 53d6dbe4de6d..8dea49c021b8 100644
 --- a/drivers/cxl/core/region.c
 +++ b/drivers/cxl/core/region.c
-@@ -1217,6 +1217,12 @@ static int cxl_region_attach(struct cxl_region *cxlr,
- 	struct cxl_dport *dport;
- 	int i, rc = -ENXIO;
+@@ -1685,6 +1685,15 @@ static struct cxl_region *devm_cxl_add_region(struct cxl_root_decoder *cxlrd,
+ 	struct device *dev;
+ 	int rc;
  
-+	if (cxled->mode != cxlr->mode) {
-+		dev_dbg(&cxlr->dev, "%s region mode: %d mismatch: %d\n",
-+			dev_name(&cxled->cxld.dev), cxlr->mode, cxled->mode);
-+		return -EINVAL;
++	switch (mode) {
++	case CXL_DECODER_RAM:
++	case CXL_DECODER_PMEM:
++		break;
++	default:
++		dev_err(&cxlrd->cxlsd.cxld.dev, "unsupported mode %d\n", mode);
++		return ERR_PTR(-EINVAL);
 +	}
 +
- 	if (cxled->mode == CXL_DECODER_DEAD) {
- 		dev_dbg(&cxlr->dev, "%s dead\n", dev_name(&cxled->cxld.dev));
- 		return -ENODEV;
+ 	cxlr = cxl_region_alloc(cxlrd, id);
+ 	if (IS_ERR(cxlr))
+ 		return cxlr;
+@@ -1713,12 +1722,38 @@ static struct cxl_region *devm_cxl_add_region(struct cxl_root_decoder *cxlrd,
+ 	return ERR_PTR(rc);
+ }
+ 
++static ssize_t __create_region_show(struct cxl_root_decoder *cxlrd, char *buf)
++{
++	return sysfs_emit(buf, "region%u\n", atomic_read(&cxlrd->region_id));
++}
++
+ static ssize_t create_pmem_region_show(struct device *dev,
+ 				       struct device_attribute *attr, char *buf)
+ {
+-	struct cxl_root_decoder *cxlrd = to_cxl_root_decoder(dev);
++	return __create_region_show(to_cxl_root_decoder(dev), buf);
++}
+ 
+-	return sysfs_emit(buf, "region%u\n", atomic_read(&cxlrd->region_id));
++static ssize_t create_ram_region_show(struct device *dev,
++				      struct device_attribute *attr, char *buf)
++{
++	return __create_region_show(to_cxl_root_decoder(dev), buf);
++}
++
++static struct cxl_region *__create_region(struct cxl_root_decoder *cxlrd,
++					  enum cxl_decoder_mode mode, int id)
++{
++	int rc;
++
++	rc = memregion_alloc(GFP_KERNEL);
++	if (rc < 0)
++		return ERR_PTR(rc);
++
++	if (atomic_cmpxchg(&cxlrd->region_id, id, rc) != id) {
++		memregion_free(rc);
++		return ERR_PTR(-EBUSY);
++	}
++
++	return devm_cxl_add_region(cxlrd, id, mode, CXL_DECODER_EXPANDER);
+ }
+ 
+ static ssize_t create_pmem_region_store(struct device *dev,
+@@ -1727,29 +1762,37 @@ static ssize_t create_pmem_region_store(struct device *dev,
+ {
+ 	struct cxl_root_decoder *cxlrd = to_cxl_root_decoder(dev);
+ 	struct cxl_region *cxlr;
+-	int id, rc;
++	int rc, id;
+ 
+ 	rc = sscanf(buf, "region%d\n", &id);
+ 	if (rc != 1)
+ 		return -EINVAL;
+ 
+-	rc = memregion_alloc(GFP_KERNEL);
+-	if (rc < 0)
+-		return rc;
++	cxlr = __create_region(cxlrd, CXL_DECODER_PMEM, id);
++	if (IS_ERR(cxlr))
++		return PTR_ERR(cxlr);
++	return len;
++}
++DEVICE_ATTR_RW(create_pmem_region);
+ 
+-	if (atomic_cmpxchg(&cxlrd->region_id, id, rc) != id) {
+-		memregion_free(rc);
+-		return -EBUSY;
+-	}
++static ssize_t create_ram_region_store(struct device *dev,
++				       struct device_attribute *attr,
++				       const char *buf, size_t len)
++{
++	struct cxl_root_decoder *cxlrd = to_cxl_root_decoder(dev);
++	struct cxl_region *cxlr;
++	int rc, id;
+ 
+-	cxlr = devm_cxl_add_region(cxlrd, id, CXL_DECODER_PMEM,
+-				   CXL_DECODER_EXPANDER);
++	rc = sscanf(buf, "region%d\n", &id);
++	if (rc != 1)
++		return -EINVAL;
++
++	cxlr = __create_region(cxlrd, CXL_DECODER_RAM, id);
+ 	if (IS_ERR(cxlr))
+ 		return PTR_ERR(cxlr);
+-
+ 	return len;
+ }
+-DEVICE_ATTR_RW(create_pmem_region);
++DEVICE_ATTR_RW(create_ram_region);
+ 
+ static ssize_t region_show(struct device *dev, struct device_attribute *attr,
+ 			   char *buf)
 
