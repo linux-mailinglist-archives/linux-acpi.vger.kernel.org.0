@@ -2,325 +2,163 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50D0A68C74A
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 21:09:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ECFC68C7E7
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 21:49:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229960AbjBFUJK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Feb 2023 15:09:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47368 "EHLO
+        id S230010AbjBFUt1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Feb 2023 15:49:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229963AbjBFUJI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 15:09:08 -0500
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C53D71DBBE
-        for <linux-acpi@vger.kernel.org>; Mon,  6 Feb 2023 12:09:05 -0800 (PST)
-Received: by mail-pj1-x102e.google.com with SMTP id d6-20020a17090ae28600b00230aa72904fso4379888pjz.5
-        for <linux-acpi@vger.kernel.org>; Mon, 06 Feb 2023 12:09:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g8zQ21lgm/+hysyLZDWkcJECUGjBC4CaZ4mgsX1s5q0=;
-        b=O9Ya8X/CYW79qvsDBwCU4QasH/GJVsFJdbauSxy3ALcMP6Td/e++Sr2/Kk6Y/0Bi8A
-         HExajCOknNGEaSGBqbSIS45SYN+jvrVOYSflvwXC3/9Qjgfb0vkmu/mC3BtSnmYO9Azo
-         YPq/Mke+7pPZKPUQgwb8ALjXPF1KrfIvJzJ39kARqaWQOILz2ekiU1kAmdv7kLwwoYFq
-         Swvoy0nXykBQyGQaOv/e5ca1b3v6nwtm5i0x5rsR/qHbJEI7HvDPoGHOVfAIrnCwXGAV
-         Ve4YLBD8wxoPxTg47Ch0cATZ7vPGTBikjD33kVkmh+AQic7pGD32UqcBXm345/EvJKI8
-         8QpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=g8zQ21lgm/+hysyLZDWkcJECUGjBC4CaZ4mgsX1s5q0=;
-        b=scg6su9sJwrJCsGpiAZUQObDZg+1RkFrUX1KVSo9Qjp7lJSzEXc7NSayyyZGFAFFr2
-         LnOSEc3GwGB+wyagwhfu96X4lB5OMF6VyNdAqpL8lZanFY7dl/nbrb2MZXM3Bi6/BO+2
-         xpWpXA3LAmg98dHktdSXj9oQbHTRl/mPVGRosz8HMPFmQB5DWJqsvVst49eUCzBku12i
-         LtzmfnP/Qx4IS6gIFATNjDverkZdvWzM4LehSuIV4RuQf3SEWLxw3LUVCECeTZqa5+Q3
-         kVCVyuJkQ+zrau/A+znbZ/rIozAIS8Wf6yUtgvpilSJfSeKFuYPtP8EphY0D8aV5xy6J
-         T83w==
-X-Gm-Message-State: AO0yUKWN+k9/qv36RwCcnU4W122DrPe7BhGbVKkQ6auB7KOJzwxHW89g
-        r82EgSgjoEieS5er9aSt52SOqDH9/WY95HOqCNXoIw==
-X-Google-Smtp-Source: AK7set/KBPOtO+P54MX/LciN9urMG1z25fzyBFed50xf4hc+H6GtlXs0JkU2MZxc6mAROsbMMvV71vF/eDS3vFQiFbE=
-X-Received: by 2002:a17:90a:187:b0:22c:ad5e:e1e3 with SMTP id
- 7-20020a17090a018700b0022cad5ee1e3mr3608581pjc.141.1675714144798; Mon, 06 Feb
- 2023 12:09:04 -0800 (PST)
+        with ESMTP id S229566AbjBFUtZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 15:49:25 -0500
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5D6F1DBB8;
+        Mon,  6 Feb 2023 12:49:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675716564; x=1707252564;
+  h=subject:from:to:cc:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=oAQH9+a1F3+Z9lfOsRPCje7dNsi+nuaOseGb4Sm3t+E=;
+  b=S3uIduuDU8YCPARYbU8IhkoHWJAw5Qpg3+pphra8SpDiP9sAmT60aPqI
+   kQYJ2LPNEQs2eMr0BhM+fS5Stk7CY/BTMG9RI+7cWnAbhp4f1lyiqdCum
+   z9iRGFHibBRmb+wc4UdbDR6cI9i3TYiT88Eq5j6E4ya8XHeXUJqTpjz8W
+   jr4bx1PoCOHGGe6FepeqUpJnNxznjOQpLXNJp5zU4Rdvm3/GBa07hWgL0
+   pQ833s9xHspzBYgdB0dMUO2p2Ia3THD1CIrTEpx3BmmiLLfioFH5dgbze
+   QceB1izgg+XCmLfQ1YWcvZXlmsobiHKLdqvNuY5B8xLP8pn8JV6mQPrVx
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10613"; a="393911766"
+X-IronPort-AV: E=Sophos;i="5.97,276,1669104000"; 
+   d="scan'208";a="393911766"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2023 12:49:24 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10613"; a="616559303"
+X-IronPort-AV: E=Sophos;i="5.97,276,1669104000"; 
+   d="scan'208";a="616559303"
+Received: from djiang5-mobl3.amr.corp.intel.com (HELO djiang5-mobl3.local) ([10.212.111.195])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2023 12:49:23 -0800
+Subject: [PATCH 00/18] cxl: Add support for QTG ID retrieval for CXL subsystem
+From:   Dave Jiang <dave.jiang@intel.com>
+To:     linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Cc:     dan.j.williams@intel.com, ira.weiny@intel.com,
+        vishal.l.verma@intel.com, alison.schofield@intel.com,
+        rafael@kernel.org, bhelgaas@google.com, robert.moore@intel.com
+Date:   Mon, 06 Feb 2023 13:49:21 -0700
+Message-ID: <167571650007.587790.10040913293130712882.stgit@djiang5-mobl3.local>
+User-Agent: StGit/1.5
 MIME-Version: 1.0
-References: <20230127001141.407071-1-saravanak@google.com> <20230130085542.38546-1-naresh.kamboju@linaro.org>
- <CAGETcx_411fVxsM-ZMK7j2Bvkmi2TKPbzSuD+03M3cb7WKHfJw@mail.gmail.com>
- <20230131101813.goaoy32qvrowvyyb@bogus> <CALHCpMijXAgQx2qq8g8zdq=6AHwP+g5WVBjjry=v+dKEq9KDLw@mail.gmail.com>
- <CAGETcx_UvW819m1Y-QU_ySB1nG_RegKKT06=YjkK=C_qjbAySw@mail.gmail.com>
- <CALHCpMha_1nXt4rUe+A184XSWpyNk0_PkYjWZ+tUN7BJWqENLA@mail.gmail.com>
- <CAGETcx_uri6exkv1Jkzmc4PyEam9yjuH2H1zrq4LYNtJ+XDMWw@mail.gmail.com> <20230206103912.7db5ed72@xps-13>
-In-Reply-To: <20230206103912.7db5ed72@xps-13>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Mon, 6 Feb 2023 12:08:28 -0800
-Message-ID: <CAGETcx-0VboaAeoa+_AqDtrDj6v6ZytFj6pU-FVyAu-pk-hG6A@mail.gmail.com>
-Subject: Re: [PATCH v2 00/11] fw_devlink improvements
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Maxim Kiselev <bigunclemax@gmail.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        abel.vesa@linaro.org, alexander.stein@ew.tq-group.com,
-        andriy.shevchenko@linux.intel.com, brgl@bgdev.pl,
-        colin.foster@in-advantage.com, cristian.marussi@arm.com,
-        devicetree@vger.kernel.org, dianders@chromium.org,
-        djrscally@gmail.com, dmitry.baryshkov@linaro.org,
-        festevam@gmail.com, fido_max@inbox.ru, frowand.list@gmail.com,
-        geert+renesas@glider.be, geert@linux-m68k.org,
-        gregkh@linuxfoundation.org, heikki.krogerus@linux.intel.com,
-        jpb@kernel.org, jstultz@google.com, kernel-team@android.com,
-        kernel@pengutronix.de, lenb@kernel.org, linus.walleij@linaro.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-imx@nxp.com,
-        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux@roeck-us.net, lkft@linaro.org, luca.weiss@fairphone.com,
-        magnus.damm@gmail.com, martin.kepplinger@puri.sm, maz@kernel.org,
-        rafael@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de,
-        sakari.ailus@linux.intel.com, shawnguo@kernel.org,
-        tglx@linutronix.de, tony@atomide.com,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 6, 2023 at 1:39 AM Miquel Raynal <miquel.raynal@bootlin.com> wr=
-ote:
->
-> Hi Saravana,
->
-> + Srinivas, nvmem maintainer
->
-> saravanak@google.com wrote on Sun, 5 Feb 2023 17:32:57 -0800:
->
-> > On Fri, Feb 3, 2023 at 1:39 AM Maxim Kiselev <bigunclemax@gmail.com> wr=
-ote:
-> > >
-> > > =D0=BF=D1=82, 3 =D1=84=D0=B5=D0=B2=D1=80. 2023 =D0=B3. =D0=B2 09:07, =
-Saravana Kannan <saravanak@google.com>:
-> > > >
-> > > > On Thu, Feb 2, 2023 at 9:36 AM Maxim Kiselev <bigunclemax@gmail.com=
-> wrote:
-> > > > >
-> > > > > Hi Saravana,
-> > > > >
-> > > > > > Can you try the patch at the end of this email under these
-> > > > > > configurations and tell me which ones fail vs pass? I don't nee=
-d logs
-> > > > >
-> > > > > I did these tests and here is the results:
-> > > >
-> > > > Did you hand edit the In-Reply-To: in the header? Because in the
-> > > > thread you are reply to the wrong email, but the context in your em=
-ail
-> > > > seems to be from the right email.
-> > > >
-> > > > For example, see how your reply isn't under the email you are reply=
-ing
-> > > > to in this thread overview:
-> > > > https://lore.kernel.org/lkml/20230127001141.407071-1-saravanak@goog=
-le.com/#r
-> > > >
-> > > > > 1. On top of this series - Not works
-> > > > > 2. Without this series    - Works
-> > > > > 3. On top of the series with the fwnode_dev_initialized() deleted=
- - Not works
-> > > > > 4. Without this series, with the fwnode_dev_initialized() deleted=
-  - Works
-> > > > >
-> > > > > So your nvmem/core.c patch helps only when it is applied without =
-the series.
-> > > > > But despite the fact that this helps to avoid getting stuck at pr=
-obing
-> > > > > my ethernet device, there is still regression.
-> > > > >
-> > > > > When the ethernet module is loaded it takes a lot of time to drop=
- dependency
-> > > > > from the nvmem-cell with mac address.
-> > > > >
-> > > > > Please look at the kernel logs below.
-> > > >
-> > > > The kernel logs below really aren't that useful for me in their
-> > > > current state. See more below.
-> > > >
-> > > > ---8<---- <snip> --->8----
-> > > >
-> > > > > P.S. Your nvmem patch definitely helps to avoid a device probe st=
-uck
-> > > > > but look like it is not best way to solve a problem which we disc=
-ussed
-> > > > > in the MTD thread.
-> > > > >
-> > > > > P.P.S. Also I don't know why your nvmem-cell patch doesn't help w=
-hen it was
-> > > > > applied on top of this series. Maybe I missed something.
-> > > >
-> > > > Yeah, I'm not too sure if the test was done correctly. You also did=
-n't
-> > > > answer my question about the dts from my earlier email.
-> > > > https://lore.kernel.org/lkml/CAGETcx8FpmbaRm2CCwqt3BRBpgbogwP5gNB+i=
-A5OEtuxWVTNLA@mail.gmail.com/#t
-> > > >
-> > > > So, can you please retest config 1 with all pr_debug and dev_dbg in
-> > > > drivers/core/base.c changed to the _info variants? And then share t=
-he
-> > > > kernel log from the beginning of boot? Maybe attach it to the email=
- so
-> > > > it doesn't get word wrapped by your email client. And please point =
-me
-> > > > to the .dts that corresponds to your board. Without that, I can't
-> > > > debug much.
-> > > >
-> > > > Thanks,
-> > > > Saravana
-> > >
-> > > > Did you hand edit the In-Reply-To: in the header? Because in the
-> > > > thread you are reply to the wrong email, but the context in your em=
-ail
-> > > > seems to be from the right email.
-> > >
-> > > Sorry for that, it seems like I accidently deleted it.
-> > >
-> > > > So, can you please retest config 1 with all pr_debug and dev_dbg in
-> > > > drivers/core/base.c changed to the _info variants? And then share t=
-he
-> > > > kernel log from the beginning of boot? Maybe attach it to the email=
- so
-> > > > it doesn't get word wrapped by your email client. And please point =
-me
-> > > > to the .dts that corresponds to your board. Without that, I can't
-> > > > debug much.
-> > >
-> > > Ok, I retested config 1 with all _debug logs changed to the _info. I
-> > > added the kernel log and the dts file to the attachment of this email=
-.
-> >
-> > Ah, so your device is not supported/present upstream? Even though it's
-> > not upstream, I'll help fix this because it should fix what I believe
-> > are unreported issues in upstream.
-> >
-> > Ok I know why configs 1 - 4 behaved the way they did and why my test
-> > patch didn't help.
-> >
-> > After staring at mtd/nvmem code for a few hours I think mtd/nvmem
-> > interaction is kind of a mess.
->
-> nvmem is a recent subsystem but mtd carries a lot of legacy stuff we
-> cannot really re-wire without breaking users, so nvmem on top of mtd
-> of course inherit from the fragile designs in place.
+Hi Bjorn, please review the relevant patches to the PCI subsystem: 10/18, 11/18. Thank you!
+pcie_get_speed() and pcie_get_width() are created in order to allow CXL driver to calculate
+the bandwith and latency for the PCI links.
 
-Thanks for the context. Yeah, I figured. That's why I explicitly
-limited my comment to "interaction". Although, I'd love to see the MTD
-parsers all be converted to proper drivers that probe. MTD is
-essentially repeating the driver matching logic. I think it can be
-cleaned up to move to proper drivers and still not break backward
-compatibility. Not saying it'll be trivial, but it should be possible.
-Ironically MTD uses mtd_class but has real drivers that work on the
-device (compared to nvmem_bus below).
+Hi Rafael, please review the relevant patches to the ACPI: 2/18, 5/18. Thank you!
+acpi_ut_verify_cdat_checksum() is exported to allow usage by a driver.
 
-> > mtd core creates "partition" platform
-> > devices (including for nvmem-cells) that are probed by drivers in
-> > drivers/nvmem. However, there's no driver for "nvmem-cells" partition
-> > platform device. However, the nvmem core creates nvmem_device when
-> > nvmem_register() is called by MTD or these partition platform devices
-> > created by MTD. But these nvmem_devices are added to a nvmem_bus but
-> > the bus has no means to even register a driver (it should really be a
-> > nvmem_class and not nvmem_bus).
->
-> Srinivas, do you think we could change this?
+This series adds the retrieval of QoS Throttling Group (QTG) IDs for the CXL Fixed
+Memory Window Structure (CFMWS) and the CXL memory device. It provides the QTG IDs
+to user space to provide some guidance with putting the proper DPA range under the
+appropriate CFMWS window.
 
-Yeah, this part gets a bit tricky. It depends on whether the sysfs
-files for nvmem devices is considered an ABI. Changing from bus to
-class would change the sysfs path for nvmem devices from:
-/sys/class/nvmem to /sys/bus/nvmem
+The CFMWS structure contains a QTG ID that is associated with the memory window that the
+structure exports. On Linux, the CFMWS is represented as a CXL root decoder. The QTG
+ID will be attached to the CXL root decoder and exported as a sysfs attribute (qtg_id).
 
-> > And the nvmem_device sometimes points
-> > to the DT node of the MTD device or sometimes the partition platform
-> > devices or maybe no DT node at all.
->
-> I guess this comes from the fact that this is not strongly defined in
-> mtd and depends on the situation (not mentioning 20 years of history
-> there as well). "mtd" is a bit inconsistent on what it means. Older
-> designs mixed: controllers, ECC engines when relevant and memories;
-> while these three components are completely separated. Hence
-> sometimes the mtd device ends up being the top level controller,
-> sometimes it's just one partition...
->
-> But I'm surprised not all of them point to a DT node. Could you show us
-> an example? Because that might likely be unexpected (or perhaps I am
-> missing something).
+The QTG ID for a device is retrieved via sending a _DSM method to the ACPI0017 device.
+The _DSM expects an input package of 4 DWORDS that contains the read latency, write
+latency, read bandwidth, and write banwidth. These are the caluclated numbers for the
+path between the CXL device and the CXL host bridge (HB). The QTG ID is also exported
+as a sysfs attribute under the mem device memory type:
+/sys/bus/cxl/devices/memX/ram/qtg_id or /sys/bus/cxl/devices/memX/pmem/qtg_id
 
-Well, the logic that sets the DT node for nvmem_device is like so:
+The latency numbers are the aggregated latencies for the path between the CXL device and
+the CXL HB. If a CXL device is directly attached to the CXL HB, the latency
+would be the device latencies from the device Coherent Device Attribute Table (CDAT) plus
+the caluclated PCIe link latency between the device and the HB. The bandwidth in this
+configuration would be the minimum between the CDAT bandwidth number and link bandwidth
+between the device and the HB.
 
-        if (config->of_node)
-                nvmem->dev.of_node =3D config->of_node;
-        else if (!config->no_of_node)
-                nvmem->dev.of_node =3D config->dev->of_node;
+If a configuration has a switch in between, then the latency would be the aggregated
+latencies from the device CDAT, the link latency between device and switch, the
+latencies from the switch CDAT, and the link latency between switch and the HB. Given
+that the switch CDAT is not easily retrieved on Linux currently, a guesstimated
+constant number will be used for calculation. The bandwidth calculation would be the
+min of device CDAT bandwidth, link bandwith between device and switch, switch CDAT
+bandwidth, and link bandwidth between switch and HB.  And without the switch CDAT,
+the switch CDAT bandwidth will be skipped.
 
-So there's definitely a path (where both if's could be false) where
-the DT node will not get set. I don't know if that path is possible
-with the existing users of nvmem_register(), but it's definitely
-possible.
+There can be 0 or more switches between the CXL device and the CXL HB. There are detailed
+examples on calculating bandwidth and latency in the CXL Memory Device Software Guide [4].
 
-> > So it's a mess of multiple devices pointing to the same DT node with
-> > no clear way to identify which ones will point to a DT node and which
-> > ones will probe and which ones won't. In the future, we shouldn't
-> > allow adding new compatible strings for partitions for which we don't
-> > plan on adding nvmem drivers.
-> >
-> > Can you give the patch at the end of the email a shot? It should fix
-> > the issue with this series and without this series. It just avoids
-> > this whole mess by not creating useless platform device for
-> > nvmem-cells compatible DT nodes.
->
-> Thanks a lot for your help.
+The CDAT provides Device Scoped Memory Affinity Structures (DSMAS) that contains the
+Device Physical Address (DPA) range and the related Device Scoped Latency and Bandwidth
+Informat Stuctures (DSLBIS). Each DSLBIS provides a latency or bandwidth entry that is
+tied to a DSMAS entry via a per DSMAS unique DSMAD handle.
 
-No problem. I want fw_devlink to work for everyone.
+[1]: https://www.computeexpresslink.org/download-the-specification
+[2]: https://uefi.org/sites/default/files/resources/Coherent%20Device%20Attribute%20Table_1.01.pdf
+[3]: https://uefi.org/sites/default/files/resources/ACPI_Spec_6_5_Aug29.pdf
+[4]: https://cdrdv2-public.intel.com/643805/643805_CXL%20Memory%20Device%20SW%20Guide_Rev1p0.pdf
 
-> >
-> > Thanks,
-> > Saravana
-> >
-> > diff --git a/drivers/mtd/mtdpart.c b/drivers/mtd/mtdpart.c
-> > index d442fa94c872..88a213f4d651 100644
-> > --- a/drivers/mtd/mtdpart.c
-> > +++ b/drivers/mtd/mtdpart.c
-> > @@ -577,6 +577,7 @@ static int mtd_part_of_parse(struct mtd_info *maste=
-r,
-> >  {
-> >         struct mtd_part_parser *parser;
-> >         struct device_node *np;
-> > +       struct device_node *child;
-> >         struct property *prop;
-> >         struct device *dev;
-> >         const char *compat;
-> > @@ -594,6 +595,10 @@ static int mtd_part_of_parse(struct mtd_info *mast=
-er,
-> >         else
-> >                 np =3D of_get_child_by_name(np, "partitions");
-> >
-> > +       for_each_child_of_node(np, child)
-> > +               if (of_device_is_compatible(child, "nvmem-cells"))
-> > +                       of_node_set_flag(child, OF_POPULATED);
->
-> What about a comment explaining why we need that in the final patch
-> (with a comment)? Otherwise it's a little bit obscure.
+---
 
-This wasn't meant to be reviewed :) Just a quick patch to make sure
-I'm going down the right path. Once Maxim confirms I was going to roll
-this into a proper patch.
+Dave Jiang (18):
+      cxl: Export QTG ids from CFMWS to sysfs
+      ACPICA: Export acpi_ut_verify_cdat_checksum()
+      cxl: Add checksum verification to CDAT from CXL
+      cxl: Add common helpers for cdat parsing
+      ACPICA: Fix 'struct acpi_cdat_dsmas' spelling mistake
+      cxl: Add callback to parse the DSMAS subtables from CDAT
+      cxl: Add callback to parse the DSLBIS subtable from CDAT
+      cxl: Add support for _DSM Function for retrieving QTG ID
+      cxl: Add helper function to retrieve ACPI handle of CXL root device
+      PCI: Export pcie_get_speed() using the code from sysfs PCI link speed show function
+      PCI: Export pcie_get_width() using the code from sysfs PCI link width show function
+      cxl: Add helpers to calculate pci latency for the CXL device
+      cxl: Add latency and bandwidth calculations for the CXL path
+      cxl: Wait Memory_Info_Valid before access memory related info
+      cxl: Move identify and partition query from pci probe to port probe
+      cxl: Move reading of CDAT data from device to after media is ready
+      cxl: Attach QTG IDs to the DPA ranges for the device
+      cxl: Export sysfs attributes for device QTG IDs
 
-But point noted. Will add a comment.
 
-Thanks,
-Saravana
+ Documentation/ABI/testing/sysfs-bus-cxl |  22 ++++
+ drivers/acpi/acpica/utcksum.c           |   4 +-
+ drivers/cxl/acpi.c                      |   3 +
+ drivers/cxl/core/Makefile               |   2 +
+ drivers/cxl/core/acpi.c                 | 129 +++++++++++++++++++
+ drivers/cxl/core/cdat.c                 | 157 ++++++++++++++++++++++++
+ drivers/cxl/core/cdat.h                 |  15 +++
+ drivers/cxl/core/mbox.c                 |   2 +
+ drivers/cxl/core/memdev.c               |  26 ++++
+ drivers/cxl/core/pci.c                  | 103 +++++++++++++++-
+ drivers/cxl/core/port.c                 |  76 ++++++++++++
+ drivers/cxl/cxl.h                       |  50 ++++++++
+ drivers/cxl/cxlmem.h                    |   2 +
+ drivers/cxl/cxlpci.h                    |  14 +++
+ drivers/cxl/pci.c                       |   8 --
+ drivers/cxl/port.c                      | 105 +++++++++++++++-
+ drivers/pci/pci-sysfs.c                 |  21 +---
+ drivers/pci/pci.c                       |  40 ++++++
+ include/acpi/actbl1.h                   |   7 +-
+ include/linux/acpi.h                    |   7 ++
+ include/linux/pci.h                     |   2 +
+ 21 files changed, 760 insertions(+), 35 deletions(-)
+ create mode 100644 drivers/cxl/core/acpi.c
+ create mode 100644 drivers/cxl/core/cdat.c
+ create mode 100644 drivers/cxl/core/cdat.h
+
+--
+
