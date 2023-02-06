@@ -2,50 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 382E268B391
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 02:04:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3556F68B392
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 02:04:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229488AbjBFBEI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 5 Feb 2023 20:04:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53512 "EHLO
+        id S229485AbjBFBEQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 5 Feb 2023 20:04:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbjBFBEH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 5 Feb 2023 20:04:07 -0500
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7034B8A53;
-        Sun,  5 Feb 2023 17:04:06 -0800 (PST)
+        with ESMTP id S229468AbjBFBEP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 5 Feb 2023 20:04:15 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1360BD537;
+        Sun,  5 Feb 2023 17:04:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675645446; x=1707181446;
+  t=1675645454; x=1707181454;
   h=subject:from:to:cc:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=hrvnto86ChTGsi4fHJ4Lqo9DG2au7l7fsMPus7NStq0=;
-  b=GK1gs7gjNinPobEQFOc3k1Nm8HHd2JJM9E/4bB4HdriIxfEMKG5XNFt4
-   Jd5gEST7yqgEKCU9g485QmHjb1eas/X6CWWiF5J3NKnaaQCQ6Y0Usl0tH
-   5Jxi0PPg6cdsoLbfgzzLaWATrN8ECoQ8FpYmIqw26RJjxotTkde0r6sEu
-   JDf59wAnKEN9RTg3MmJZaKr7n5oYDm+Khup3md3v11wwwjcp6n7sO4dTd
-   h2AGgKld6nS6NzNNLBqKLsmE5jpj7Qjwg0tdkFQvfRrdmFsKiG9UjglUx
-   prwWkl53zzNWPOhyljA7QUOC3JSDkk1lx1AhNnLbaYpAHvjzovuJo/qNG
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10612"; a="309442702"
+  bh=wPmMkCp6DCx1PzgRrsiFSVETspBvehWCurZIdpJuvvk=;
+  b=D80baL58UYzAjhHmJYADerqUAj7KeGawsfDrfKHEkTLOHtzIgJTfBu7M
+   lNo323RclCpB/YMZfJhY8ym5YZCeFkgjKSu3NKdg3C0PTaA9EmGLZtIEl
+   nbWwTAsnQKSDslTmw0qlix2xcpTrDpuC7GKz8TyiGd3lLVufcmsV95qod
+   NXWjDrfvJjP8OR8HUj1sJ+gyi730aLcSARcikg9VUw0OkZKtXBpd/LAek
+   hCJfCHcIp+xDUykkEayEahpcGlJ/NKoZlAGGj08/sSjL0MPhRXAlvwxrQ
+   TKB0rKMdidgUeH0n5mUL/dyjKHtBK7/j/UdWnnbkQZZuh3UXY7XSlr0Q6
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10612"; a="329123119"
 X-IronPort-AV: E=Sophos;i="5.97,276,1669104000"; 
-   d="scan'208";a="309442702"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2023 17:04:06 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10612"; a="775006766"
+   d="scan'208";a="329123119"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2023 17:04:12 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10612"; a="698692901"
 X-IronPort-AV: E=Sophos;i="5.97,276,1669104000"; 
-   d="scan'208";a="775006766"
+   d="scan'208";a="698692901"
 Received: from mkrysak-mobl.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.212.255.187])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2023 17:04:05 -0800
-Subject: [PATCH 17/18] dax: Assign RAM regions to memory-hotplug by default
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2023 17:04:11 -0800
+Subject: [PATCH 18/18] cxl/dax: Create dax devices for CXL RAM regions
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     linux-cxl@vger.kernel.org
-Cc:     Michal Hocko <mhocko@suse.com>,
-        David Hildenbrand <david@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
+Cc:     dave.hansen@linux.intel.com, linux-mm@kvack.org,
         linux-acpi@vger.kernel.org
-Date:   Sun, 05 Feb 2023 17:04:05 -0800
-Message-ID: <167564544513.847146.4645646177864365755.stgit@dwillia2-xfh.jf.intel.com>
+Date:   Sun, 05 Feb 2023 17:04:11 -0800
+Message-ID: <167564545116.847146.4741351262959589920.stgit@dwillia2-xfh.jf.intel.com>
 In-Reply-To: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
 References: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
 User-Agent: StGit/0.18-3-g996c
@@ -61,265 +59,408 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The default mode for device-dax instances is backwards for RAM-regions
-as evidenced by the fact that it tends to catch end users by surprise.
-"Where is my memory?". Recall that platforms are increasingly shipping
-with performance-differentiated memory pools beyond typical DRAM and
-NUMA effects. This includes HBM (high-bandwidth-memory) and CXL (dynamic
-interleave, varied media types, and future fabric attached
-possibilities).
+While platform firmware takes some responsibility for mapping the RAM
+capacity of CXL devices present at boot, the OS is responsible for
+mapping the remainder and hot-added devices. Platform firmware is also
+responsible for identifying the platform general purpose memory pool,
+typically DDR attached DRAM, and arranging for the remainder to be 'Soft
+Reserved'. That reservation allows the CXL subsystem to route the memory
+to core-mm via memory-hotplug (dax_kmem), or leave it for dedicated
+access (device-dax).
 
-For this reason the EFI_MEMORY_SP (EFI Special Purpose Memory => Linux
-'Soft Reserved') attribute is expected to be applied to all memory-pools
-that are not the general purpose pool. This designation gives an
-Operating System a chance to defer usage of a memory pool until later in
-the boot process where its performance properties can be interrogated
-and administrator policy can be applied.
+The new 'struct cxl_dax_region' object allows for a CXL memory resource
+(region) to be published, but also allow for udev and module policy to
+act on that event. It also prevents cxl_core.ko from having a module
+loading dependency on any drivers/dax/ modules.
 
-'Soft Reserved' memory can be anything from too limited and precious to
-be part of the general purpose pool (HBM), too slow to host hot kernel
-data structures (some PMEM media), or anything in between. However, in
-the absence of an explicit policy, the memory should at least be made
-usable by default. The current device-dax default hides all
-non-general-purpose memory behind a device interface.
-
-The expectation is that the distribution of users that want the memory
-online by default vs device-dedicated-access by default follows the
-Pareto principle. A small number of enlightened users may want to do
-userspace memory management through a device, but general users just
-want the kernel to make the memory available with an option to get more
-advanced later.
-
-Arrange for all device-dax instances not backed by PMEM to default to
-attaching to the dax_kmem driver. From there the baseline memory hotplug
-policy (CONFIG_MEMORY_HOTPLUG_DEFAULT_ONLINE / memhp_default_state=)
-gates whether the memory comes online or stays offline. Where, if it
-stays offline, it can be reliably converted back to device-mode where it
-can be partitioned, or fronted by a userspace allocator.
-
-So, if someone wants device-dax instances for their 'Soft Reserved'
-memory:
-
-1/ Build a kernel with CONFIG_MEMORY_HOTPLUG_DEFAULT_ONLINE=n or boot
-   with memhp_default_state=offline, or roll the dice and hope that the
-   kernel has not pinned a page in that memory before step 2.
-
-2/ Write a udev rule to convert the target dax device(s) from
-   'system-ram' mode to 'devdax' mode:
-
-   daxctl reconfigure-device $dax -m devdax -f
-
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/dax/Kconfig     |    2 +-
- drivers/dax/bus.c       |   53 ++++++++++++++++++++---------------------------
- drivers/dax/bus.h       |   12 +++++++++--
- drivers/dax/device.c    |    3 +--
- drivers/dax/hmem/hmem.c |   12 ++++++++++-
- drivers/dax/kmem.c      |    1 +
- 6 files changed, 46 insertions(+), 37 deletions(-)
+ MAINTAINERS               |    1 
+ drivers/cxl/acpi.c        |    3 +
+ drivers/cxl/core/core.h   |    3 +
+ drivers/cxl/core/port.c   |    2 +
+ drivers/cxl/core/region.c |  108 ++++++++++++++++++++++++++++++++++++++++++++-
+ drivers/cxl/cxl.h         |   12 +++++
+ drivers/dax/Kconfig       |   13 +++++
+ drivers/dax/Makefile      |    2 +
+ drivers/dax/cxl.c         |   53 ++++++++++++++++++++++
+ drivers/dax/hmem/hmem.c   |   14 ++++++
+ 10 files changed, 208 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/dax/cxl.c
 
-diff --git a/drivers/dax/Kconfig b/drivers/dax/Kconfig
-index d13c889c2a64..1163eb62e5f6 100644
---- a/drivers/dax/Kconfig
-+++ b/drivers/dax/Kconfig
-@@ -50,7 +50,7 @@ config DEV_DAX_HMEM_DEVICES
- 	def_bool y
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7f86d02cb427..73a9f3401e0e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6035,6 +6035,7 @@ M:	Dan Williams <dan.j.williams@intel.com>
+ M:	Vishal Verma <vishal.l.verma@intel.com>
+ M:	Dave Jiang <dave.jiang@intel.com>
+ L:	nvdimm@lists.linux.dev
++L:	linux-cxl@vger.kernel.org
+ S:	Supported
+ F:	drivers/dax/
  
- config DEV_DAX_KMEM
--	tristate "KMEM DAX: volatile-use of persistent memory"
-+	tristate "KMEM DAX: map dax-devices as System-RAM"
- 	default DEV_DAX
- 	depends on DEV_DAX
- 	depends on MEMORY_HOTPLUG # for add_memory() and friends
-diff --git a/drivers/dax/bus.c b/drivers/dax/bus.c
-index 1dad813ee4a6..012d576004e9 100644
---- a/drivers/dax/bus.c
-+++ b/drivers/dax/bus.c
-@@ -56,6 +56,25 @@ static int dax_match_id(struct dax_device_driver *dax_drv, struct device *dev)
- 	return match;
+diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
+index ad0849af42d7..8ebb9a74790d 100644
+--- a/drivers/cxl/acpi.c
++++ b/drivers/cxl/acpi.c
+@@ -731,7 +731,8 @@ static void __exit cxl_acpi_exit(void)
+ 	cxl_bus_drain();
  }
  
-+static int dax_match_type(struct dax_device_driver *dax_drv, struct device *dev)
+-module_init(cxl_acpi_init);
++/* load before dax_hmem sees 'Soft Reserved' CXL ranges */
++subsys_initcall(cxl_acpi_init);
+ module_exit(cxl_acpi_exit);
+ MODULE_LICENSE("GPL v2");
+ MODULE_IMPORT_NS(CXL);
+diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
+index 479f01da6d35..cde475e13216 100644
+--- a/drivers/cxl/core/core.h
++++ b/drivers/cxl/core/core.h
+@@ -15,12 +15,14 @@ extern struct device_attribute dev_attr_create_ram_region;
+ extern struct device_attribute dev_attr_delete_region;
+ extern struct device_attribute dev_attr_region;
+ extern const struct device_type cxl_pmem_region_type;
++extern const struct device_type cxl_dax_region_type;
+ extern const struct device_type cxl_region_type;
+ void cxl_decoder_kill_region(struct cxl_endpoint_decoder *cxled);
+ #define CXL_REGION_ATTR(x) (&dev_attr_##x.attr)
+ #define CXL_REGION_TYPE(x) (&cxl_region_type)
+ #define SET_CXL_REGION_ATTR(x) (&dev_attr_##x.attr),
+ #define CXL_PMEM_REGION_TYPE(x) (&cxl_pmem_region_type)
++#define CXL_DAX_REGION_TYPE(x) (&cxl_dax_region_type)
+ int cxl_region_init(void);
+ void cxl_region_exit(void);
+ #else
+@@ -38,6 +40,7 @@ static inline void cxl_region_exit(void)
+ #define CXL_REGION_TYPE(x) NULL
+ #define SET_CXL_REGION_ATTR(x)
+ #define CXL_PMEM_REGION_TYPE(x) NULL
++#define CXL_DAX_REGION_TYPE(x) NULL
+ #endif
+ 
+ struct cxl_send_command;
+diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+index 8d0895cbae93..0faeb1ffc212 100644
+--- a/drivers/cxl/core/port.c
++++ b/drivers/cxl/core/port.c
+@@ -46,6 +46,8 @@ static int cxl_device_id(struct device *dev)
+ 		return CXL_DEVICE_NVDIMM;
+ 	if (dev->type == CXL_PMEM_REGION_TYPE())
+ 		return CXL_DEVICE_PMEM_REGION;
++	if (dev->type == CXL_DAX_REGION_TYPE())
++		return CXL_DEVICE_DAX_REGION;
+ 	if (is_cxl_port(dev)) {
+ 		if (is_cxl_root(to_cxl_port(dev)))
+ 			return CXL_DEVICE_ROOT;
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index 6fe8c70790df..86fa54015a99 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -2261,6 +2261,75 @@ static struct cxl_pmem_region *cxl_pmem_region_alloc(struct cxl_region *cxlr)
+ 	return cxlr_pmem;
+ }
+ 
++static void cxl_dax_region_release(struct device *dev)
 +{
-+	enum dax_driver_type type = DAXDRV_DEVICE_TYPE;
-+	struct dev_dax *dev_dax = to_dev_dax(dev);
++	struct cxl_dax_region *cxlr_dax = to_cxl_dax_region(dev);
 +
-+	if (dev_dax->region->res.flags & IORESOURCE_DAX_KMEM)
-+		type = DAXDRV_KMEM_TYPE;
++	kfree(cxlr_dax);
++}
 +
-+	if (dax_drv->type == type)
-+		return 1;
++static const struct attribute_group *cxl_dax_region_attribute_groups[] = {
++	&cxl_base_attribute_group,
++	NULL,
++};
 +
-+	/* default to device mode if dax_kmem is disabled */
-+	if (dax_drv->type == DAXDRV_DEVICE_TYPE &&
-+	    !IS_ENABLED(CONFIG_DEV_DAX_KMEM))
-+		return 1;
++const struct device_type cxl_dax_region_type = {
++	.name = "cxl_dax_region",
++	.release = cxl_dax_region_release,
++	.groups = cxl_dax_region_attribute_groups,
++};
 +
++static bool is_cxl_dax_region(struct device *dev)
++{
++	return dev->type == &cxl_dax_region_type;
++}
++
++struct cxl_dax_region *to_cxl_dax_region(struct device *dev)
++{
++	if (dev_WARN_ONCE(dev, !is_cxl_dax_region(dev),
++			  "not a cxl_dax_region device\n"))
++		return NULL;
++	return container_of(dev, struct cxl_dax_region, dev);
++}
++EXPORT_SYMBOL_NS_GPL(to_cxl_dax_region, CXL);
++
++static struct lock_class_key cxl_dax_region_key;
++
++static struct cxl_dax_region *cxl_dax_region_alloc(struct cxl_region *cxlr)
++{
++	struct cxl_region_params *p = &cxlr->params;
++	struct cxl_dax_region *cxlr_dax;
++	struct device *dev;
++
++	down_read(&cxl_region_rwsem);
++	if (p->state != CXL_CONFIG_COMMIT) {
++		cxlr_dax = ERR_PTR(-ENXIO);
++		goto out;
++	}
++
++	cxlr_dax = kzalloc(sizeof(*cxlr_dax), GFP_KERNEL);
++	if (!cxlr_dax) {
++		cxlr_dax = ERR_PTR(-ENOMEM);
++		goto out;
++	}
++
++	cxlr_dax->hpa_range.start = p->res->start;
++	cxlr_dax->hpa_range.end = p->res->end;
++
++	dev = &cxlr_dax->dev;
++	cxlr_dax->cxlr = cxlr;
++	device_initialize(dev);
++	lockdep_set_class(&dev->mutex, &cxl_dax_region_key);
++	device_set_pm_not_required(dev);
++	dev->parent = &cxlr->dev;
++	dev->bus = &cxl_bus_type;
++	dev->type = &cxl_dax_region_type;
++out:
++	up_read(&cxl_region_rwsem);
++
++	return cxlr_dax;
++}
++
+ static void cxlr_pmem_unregister(void *_cxlr_pmem)
+ {
+ 	struct cxl_pmem_region *cxlr_pmem = _cxlr_pmem;
+@@ -2345,6 +2414,42 @@ static int devm_cxl_add_pmem_region(struct cxl_region *cxlr)
+ 	return rc;
+ }
+ 
++static void cxlr_dax_unregister(void *_cxlr_dax)
++{
++	struct cxl_dax_region *cxlr_dax = _cxlr_dax;
++
++	device_unregister(&cxlr_dax->dev);
++}
++
++static int devm_cxl_add_dax_region(struct cxl_region *cxlr)
++{
++	struct cxl_dax_region *cxlr_dax;
++	struct device *dev;
++	int rc;
++
++	cxlr_dax = cxl_dax_region_alloc(cxlr);
++	if (IS_ERR(cxlr_dax))
++		return PTR_ERR(cxlr_dax);
++
++	dev = &cxlr_dax->dev;
++	rc = dev_set_name(dev, "dax_region%d", cxlr->id);
++	if (rc)
++		goto err;
++
++	rc = device_add(dev);
++	if (rc)
++		goto err;
++
++	dev_dbg(&cxlr->dev, "%s: register %s\n", dev_name(dev->parent),
++		dev_name(dev));
++
++	return devm_add_action_or_reset(&cxlr->dev, cxlr_dax_unregister,
++					cxlr_dax);
++err:
++	put_device(dev);
++	return rc;
++}
++
+ static int match_decoder_by_range(struct device *dev, void *data)
+ {
+ 	struct range *r1, *r2 = data;
+@@ -2606,8 +2711,7 @@ static int cxl_region_probe(struct device *dev)
+ 					p->res->start, p->res->end, cxlr,
+ 					is_system_ram) > 0)
+ 			return 0;
+-		dev_dbg(dev, "TODO: hookup devdax\n");
+-		return 0;
++		return devm_cxl_add_dax_region(cxlr);
+ 	default:
+ 		dev_dbg(&cxlr->dev, "unsupported region mode: %d\n",
+ 			cxlr->mode);
+diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+index 4c6ee6c96f23..336b65d333a2 100644
+--- a/drivers/cxl/cxl.h
++++ b/drivers/cxl/cxl.h
+@@ -505,6 +505,12 @@ struct cxl_pmem_region {
+ 	struct cxl_pmem_region_mapping mapping[];
+ };
+ 
++struct cxl_dax_region {
++	struct device dev;
++	struct cxl_region *cxlr;
++	struct range hpa_range;
++};
++
+ /**
+  * struct cxl_port - logical collection of upstream port devices and
+  *		     downstream port devices to construct a CXL memory
+@@ -699,6 +705,7 @@ void cxl_driver_unregister(struct cxl_driver *cxl_drv);
+ #define CXL_DEVICE_MEMORY_EXPANDER	5
+ #define CXL_DEVICE_REGION		6
+ #define CXL_DEVICE_PMEM_REGION		7
++#define CXL_DEVICE_DAX_REGION		8
+ 
+ #define MODULE_ALIAS_CXL(type) MODULE_ALIAS("cxl:t" __stringify(type) "*")
+ #define CXL_MODALIAS_FMT "cxl:t%d"
+@@ -715,6 +722,7 @@ struct cxl_nvdimm_bridge *cxl_find_nvdimm_bridge(struct device *dev);
+ #ifdef CONFIG_CXL_REGION
+ bool is_cxl_pmem_region(struct device *dev);
+ struct cxl_pmem_region *to_cxl_pmem_region(struct device *dev);
++struct cxl_dax_region *to_cxl_dax_region(struct device *dev);
+ void cxl_add_to_region(struct cxl_endpoint_decoder *cxled);
+ #else
+ static inline bool is_cxl_pmem_region(struct device *dev)
+@@ -725,6 +733,10 @@ static inline struct cxl_pmem_region *to_cxl_pmem_region(struct device *dev)
+ {
+ 	return NULL;
+ }
++static inline struct cxl_dax_region *to_cxl_dax_region(struct device *dev)
++{
++	return NULL;
++}
+ static inline void cxl_add_to_region(struct cxl_endpoint_decoder *cxled)
+ {
+ }
+diff --git a/drivers/dax/Kconfig b/drivers/dax/Kconfig
+index 1163eb62e5f6..bd06e16c7ac8 100644
+--- a/drivers/dax/Kconfig
++++ b/drivers/dax/Kconfig
+@@ -45,6 +45,19 @@ config DEV_DAX_HMEM
+ 
+ 	  Say M if unsure.
+ 
++config DEV_DAX_CXL
++	tristate "CXL DAX: direct access to CXL RAM regions"
++	depends on CXL_REGION && DEV_DAX
++	default CXL_REGION && DEV_DAX
++	help
++	  CXL RAM regions are either mapped by platform-firmware
++	  and published in the initial system-memory map as "System RAM", mapped
++	  by platform-firmware as "Soft Reserved", or dynamically provisioned
++	  after boot by the CXL driver. In the latter two cases a device-dax
++	  instance is created to access that unmapped-by-default address range.
++	  Per usual it can remain as dedicated access via a device interface, or
++	  converted to "System RAM" via the dax_kmem facility.
++
+ config DEV_DAX_HMEM_DEVICES
+ 	depends on DEV_DAX_HMEM && DAX
+ 	def_bool y
+diff --git a/drivers/dax/Makefile b/drivers/dax/Makefile
+index 90a56ca3b345..5ed5c39857c8 100644
+--- a/drivers/dax/Makefile
++++ b/drivers/dax/Makefile
+@@ -3,10 +3,12 @@ obj-$(CONFIG_DAX) += dax.o
+ obj-$(CONFIG_DEV_DAX) += device_dax.o
+ obj-$(CONFIG_DEV_DAX_KMEM) += kmem.o
+ obj-$(CONFIG_DEV_DAX_PMEM) += dax_pmem.o
++obj-$(CONFIG_DEV_DAX_CXL) += dax_cxl.o
+ 
+ dax-y := super.o
+ dax-y += bus.o
+ device_dax-y := device.o
+ dax_pmem-y := pmem.o
++dax_cxl-y := cxl.o
+ 
+ obj-y += hmem/
+diff --git a/drivers/dax/cxl.c b/drivers/dax/cxl.c
+new file mode 100644
+index 000000000000..ccdf8de85bd5
+--- /dev/null
++++ b/drivers/dax/cxl.c
+@@ -0,0 +1,53 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Copyright(c) 2023 Intel Corporation. All rights reserved. */
++#include <linux/module.h>
++#include <linux/dax.h>
++
++#include "../cxl/cxl.h"
++#include "bus.h"
++
++static int cxl_dax_region_probe(struct device *dev)
++{
++	struct cxl_dax_region *cxlr_dax = to_cxl_dax_region(dev);
++	int nid = phys_to_target_node(cxlr_dax->hpa_range.start);
++	struct cxl_region *cxlr = cxlr_dax->cxlr;
++	struct dax_region *dax_region;
++	struct dev_dax_data data;
++	struct dev_dax *dev_dax;
++
++	if (nid == NUMA_NO_NODE)
++		nid = memory_add_physaddr_to_nid(cxlr_dax->hpa_range.start);
++
++	dax_region = alloc_dax_region(dev, cxlr->id, &cxlr_dax->hpa_range, nid,
++				      PMD_SIZE, IORESOURCE_DAX_KMEM);
++	if (!dax_region)
++		return -ENOMEM;
++
++	data = (struct dev_dax_data) {
++		.dax_region = dax_region,
++		.id = -1,
++		.size = range_len(&cxlr_dax->hpa_range),
++	};
++	dev_dax = devm_create_dev_dax(&data);
++	if (IS_ERR(dev_dax))
++		return PTR_ERR(dev_dax);
++
++	/* child dev_dax instances now own the lifetime of the dax_region */
++	dax_region_put(dax_region);
 +	return 0;
 +}
 +
- enum id_action {
- 	ID_REMOVE,
- 	ID_ADD,
-@@ -216,14 +235,9 @@ static int dax_bus_match(struct device *dev, struct device_driver *drv)
- {
- 	struct dax_device_driver *dax_drv = to_dax_drv(drv);
- 
--	/*
--	 * All but the 'device-dax' driver, which has 'match_always'
--	 * set, requires an exact id match.
--	 */
--	if (dax_drv->match_always)
-+	if (dax_match_id(dax_drv, dev))
- 		return 1;
--
--	return dax_match_id(dax_drv, dev);
-+	return dax_match_type(dax_drv, dev);
- }
- 
- /*
-@@ -1413,13 +1427,10 @@ struct dev_dax *devm_create_dev_dax(struct dev_dax_data *data)
- }
- EXPORT_SYMBOL_GPL(devm_create_dev_dax);
- 
--static int match_always_count;
--
- int __dax_driver_register(struct dax_device_driver *dax_drv,
- 		struct module *module, const char *mod_name)
- {
- 	struct device_driver *drv = &dax_drv->drv;
--	int rc = 0;
- 
- 	/*
- 	 * dax_bus_probe() calls dax_drv->probe() unconditionally.
-@@ -1434,26 +1445,7 @@ int __dax_driver_register(struct dax_device_driver *dax_drv,
- 	drv->mod_name = mod_name;
- 	drv->bus = &dax_bus_type;
- 
--	/* there can only be one default driver */
--	mutex_lock(&dax_bus_lock);
--	match_always_count += dax_drv->match_always;
--	if (match_always_count > 1) {
--		match_always_count--;
--		WARN_ON(1);
--		rc = -EINVAL;
--	}
--	mutex_unlock(&dax_bus_lock);
--	if (rc)
--		return rc;
--
--	rc = driver_register(drv);
--	if (rc && dax_drv->match_always) {
--		mutex_lock(&dax_bus_lock);
--		match_always_count -= dax_drv->match_always;
--		mutex_unlock(&dax_bus_lock);
--	}
--
--	return rc;
-+	return driver_register(drv);
- }
- EXPORT_SYMBOL_GPL(__dax_driver_register);
- 
-@@ -1463,7 +1455,6 @@ void dax_driver_unregister(struct dax_device_driver *dax_drv)
- 	struct dax_id *dax_id, *_id;
- 
- 	mutex_lock(&dax_bus_lock);
--	match_always_count -= dax_drv->match_always;
- 	list_for_each_entry_safe(dax_id, _id, &dax_drv->ids, list) {
- 		list_del(&dax_id->list);
- 		kfree(dax_id);
-diff --git a/drivers/dax/bus.h b/drivers/dax/bus.h
-index fbb940293d6d..8cd79ab34292 100644
---- a/drivers/dax/bus.h
-+++ b/drivers/dax/bus.h
-@@ -11,7 +11,10 @@ struct dax_device;
- struct dax_region;
- void dax_region_put(struct dax_region *dax_region);
- 
--#define IORESOURCE_DAX_STATIC (1UL << 0)
-+/* dax bus specific ioresource flags */
-+#define IORESOURCE_DAX_STATIC BIT(0)
-+#define IORESOURCE_DAX_KMEM BIT(1)
-+
- struct dax_region *alloc_dax_region(struct device *parent, int region_id,
- 		struct range *range, int target_node, unsigned int align,
- 		unsigned long flags);
-@@ -25,10 +28,15 @@ struct dev_dax_data {
- 
- struct dev_dax *devm_create_dev_dax(struct dev_dax_data *data);
- 
-+enum dax_driver_type {
-+	DAXDRV_KMEM_TYPE,
-+	DAXDRV_DEVICE_TYPE,
++static struct cxl_driver cxl_dax_region_driver = {
++	.name = "cxl_dax_region",
++	.probe = cxl_dax_region_probe,
++	.id = CXL_DEVICE_DAX_REGION,
++	.drv = {
++		.suppress_bind_attrs = true,
++	},
 +};
 +
- struct dax_device_driver {
- 	struct device_driver drv;
- 	struct list_head ids;
--	int match_always;
-+	enum dax_driver_type type;
- 	int (*probe)(struct dev_dax *dev);
- 	void (*remove)(struct dev_dax *dev);
- };
-diff --git a/drivers/dax/device.c b/drivers/dax/device.c
-index 5494d745ced5..ecdff79e31f2 100644
---- a/drivers/dax/device.c
-+++ b/drivers/dax/device.c
-@@ -475,8 +475,7 @@ EXPORT_SYMBOL_GPL(dev_dax_probe);
- 
- static struct dax_device_driver device_dax_driver = {
- 	.probe = dev_dax_probe,
--	/* all probe actions are unwound by devm, so .remove isn't necessary */
--	.match_always = 1,
-+	.type = DAXDRV_DEVICE_TYPE,
- };
- 
- static int __init dax_init(void)
++module_cxl_driver(cxl_dax_region_driver);
++MODULE_ALIAS_CXL(CXL_DEVICE_DAX_REGION);
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Intel Corporation");
++MODULE_IMPORT_NS(CXL);
 diff --git a/drivers/dax/hmem/hmem.c b/drivers/dax/hmem/hmem.c
-index e7bdff3132fa..5ec08f9f8a57 100644
+index 5ec08f9f8a57..e5fe8b39fb94 100644
 --- a/drivers/dax/hmem/hmem.c
 +++ b/drivers/dax/hmem/hmem.c
-@@ -11,15 +11,25 @@ module_param_named(region_idle, region_idle, bool, 0644);
+@@ -72,6 +72,13 @@ static int hmem_register_device(struct device *host, int target_nid,
+ 	long id;
+ 	int rc;
  
- static int dax_hmem_probe(struct platform_device *pdev)
- {
-+	unsigned long flags = IORESOURCE_DAX_KMEM;
- 	struct device *dev = &pdev->dev;
- 	struct dax_region *dax_region;
- 	struct memregion_info *mri;
- 	struct dev_dax_data data;
- 	struct dev_dax *dev_dax;
- 
-+	/*
-+	 * @region_idle == true indicates that an administrative agent
-+	 * wants to manipulate the range partitioning before the devices
-+	 * are created, so do not send them to the dax_kmem driver by
-+	 * default.
-+	 */
-+	if (region_idle)
-+		flags = 0;
++	if (IS_ENABLED(CONFIG_CXL_REGION) &&
++	    region_intersects(res->start, resource_size(res), IORESOURCE_MEM,
++			      IORES_DESC_CXL) != REGION_DISJOINT) {
++		dev_dbg(host, "deferring range to CXL: %pr\n", res);
++		return 0;
++	}
 +
- 	mri = dev->platform_data;
- 	dax_region = alloc_dax_region(dev, pdev->id, &mri->range,
--				      mri->target_node, PMD_SIZE, 0);
-+				      mri->target_node, PMD_SIZE, flags);
- 	if (!dax_region)
- 		return -ENOMEM;
+ 	rc = region_intersects(res->start, resource_size(res), IORESOURCE_MEM,
+ 			       IORES_DESC_SOFT_RESERVED);
+ 	if (rc != REGION_INTERSECTS)
+@@ -157,6 +164,13 @@ static __exit void dax_hmem_exit(void)
+ module_init(dax_hmem_init);
+ module_exit(dax_hmem_exit);
  
-diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-index 4852a2dbdb27..918d01d3fbaa 100644
---- a/drivers/dax/kmem.c
-+++ b/drivers/dax/kmem.c
-@@ -239,6 +239,7 @@ static void dev_dax_kmem_remove(struct dev_dax *dev_dax)
- static struct dax_device_driver device_dax_kmem_driver = {
- 	.probe = dev_dax_kmem_probe,
- 	.remove = dev_dax_kmem_remove,
-+	.type = DAXDRV_KMEM_TYPE,
- };
- 
- static int __init dax_kmem_init(void)
++/* Allow for CXL to define its own dax regions */
++#if IS_ENABLED(CONFIG_CXL_REGION)
++#if IS_MODULE(CONFIG_CXL_ACPI)
++MODULE_SOFTDEP("pre: cxl_acpi");
++#endif
++#endif
++
+ MODULE_ALIAS("platform:hmem*");
+ MODULE_ALIAS("platform:hmem_platform*");
+ MODULE_LICENSE("GPL v2");
 
