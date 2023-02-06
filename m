@@ -2,193 +2,170 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB58268C9AE
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 23:40:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F376468C9B4
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 23:41:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229640AbjBFWkG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Feb 2023 17:40:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54874 "EHLO
+        id S229832AbjBFWlc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Feb 2023 17:41:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229873AbjBFWkC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 17:40:02 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C27D22FCF2;
-        Mon,  6 Feb 2023 14:40:01 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 74292B8163C;
-        Mon,  6 Feb 2023 22:40:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE7C4C4339C;
-        Mon,  6 Feb 2023 22:39:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675723199;
-        bh=9iz/w8OdItqhWxQdKOH1Ytz58emPE+PUWmHFZOibTSc=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=b9T3I81Txdmyxr5E2HUpcPbXDH6MblYxC0TIJBgmNa4vrEqq474a9+nDKO05HogqG
-         5VOLWuKOBXucq/V2iLzdd+UvDXAs1qaxcG5g5/K5UZA4I0LjU0VrZeNeJyMcvE/qAf
-         iuxKBLlEqcyCGjKDx6GrsXkqVCvSZ1Jfam+eNxK36nGUsUphcV71xb8j8ejIevtwVP
-         HPMnXfnhGtBpNsQ18Om+Ial+b0QbW7zAK/iJnhXUvL8mawz6IQfvh1kTe3Q0fNByh0
-         SBHNbTTrbFitJWOs4zIZI8J3yhl94C6NiqCL7VZNFAHDISTY3tchBA+4xvN3Dyw3Ut
-         Jjnh5cm9jdCGw==
-Date:   Mon, 6 Feb 2023 16:39:57 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Dave Jiang <dave.jiang@intel.com>
-Cc:     linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, dan.j.williams@intel.com,
-        ira.weiny@intel.com, vishal.l.verma@intel.com,
-        alison.schofield@intel.com, rafael@kernel.org, bhelgaas@google.com,
-        robert.moore@intel.com
-Subject: Re: [PATCH 12/18] cxl: Add helpers to calculate pci latency for the
- CXL device
-Message-ID: <20230206223957.GA2248946@bhelgaas>
+        with ESMTP id S229536AbjBFWlb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 17:41:31 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFAAA27D6B;
+        Mon,  6 Feb 2023 14:41:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675723290; x=1707259290;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=icL/vzCvDKIx0vVTt7mGj47ZeqruLivskwmA6EaeK0c=;
+  b=A0QkaSr3fnWQlvqX+68zWwTCXP5JspteYKw0Rupjcoim0XdJxL/GjT/X
+   rtsDPW1EdRhKISQ81xB8nVxPIX8qU22N50977rH7eyzdbRyuCvtRzmCfe
+   PIUoBnHDrkQCy+XP7wSFZ5A3heE+VpBr8xiXZpOTaRLwc71YM9qQ6bjWe
+   JIDYB5RM1FMzUnP/P+nbbHbzQv5Pwt+NU5CzNc3lOCLlOLibfNK8t9Oqt
+   i+7dWgRikDaue6lYBMmNypw6eyqLKJ150f588obEnNaI/XsJTte1ddYrI
+   DaLSq778T1KUrQ+8Zk/XO8HXJD8RpU1kwut11g1FE9kv7bZNFbgWLhwP1
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10613"; a="329349460"
+X-IronPort-AV: E=Sophos;i="5.97,276,1669104000"; 
+   d="scan'208";a="329349460"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2023 14:41:30 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10613"; a="775298862"
+X-IronPort-AV: E=Sophos;i="5.97,276,1669104000"; 
+   d="scan'208";a="775298862"
+Received: from djiang5-mobl3.amr.corp.intel.com (HELO [10.212.111.195]) ([10.212.111.195])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2023 14:41:30 -0800
+Message-ID: <e7277580-eb0c-4ea2-ac96-eb80a1e56c1b@intel.com>
+Date:   Mon, 6 Feb 2023 15:41:29 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <167571666898.587790.4824622451425607591.stgit@djiang5-mobl3.local>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.6.0
+Subject: Re: [PATCH 06/18] cxl/region: Refactor attach_target() for
+ autodiscovery
+Content-Language: en-US
+To:     Dan Williams <dan.j.williams@intel.com>, linux-cxl@vger.kernel.org
+Cc:     dave.hansen@linux.intel.com, linux-mm@kvack.org,
+        linux-acpi@vger.kernel.org
+References: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
+ <167564538227.847146.16305045998592488364.stgit@dwillia2-xfh.jf.intel.com>
+From:   Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <167564538227.847146.16305045998592488364.stgit@dwillia2-xfh.jf.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 06, 2023 at 01:51:10PM -0700, Dave Jiang wrote:
-> The latency is calculated by dividing the FLIT size over the bandwidth. Add
-> support to retrieve the FLIT size for the CXL device and calculate the
-> latency of the downstream link.
 
-s/FLIT/flit/ to match spec usage.
 
-Most of this looks like PCIe, not necessarily CXL-specific.
-
-I guess you only care about the latency of a single link, not the
-entire path?
-
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> ---
->  drivers/cxl/core/pci.c |   67 ++++++++++++++++++++++++++++++++++++++++++++++++
->  drivers/cxl/cxlpci.h   |   14 ++++++++++
->  2 files changed, 81 insertions(+)
+On 2/5/23 6:03 PM, Dan Williams wrote:
+> Region autodiscovery is the process of kernel creating 'struct
+> cxl_region' object to represent active CXL memory ranges it finds
+> already active in hardware when the driver loads. Typically this happens
+> when platform firmware establishes CXL memory regions and then publishes
+> them in the memory map. However, this can also happen in the case of
+> kexec-reboot after the kernel has created regions.
 > 
-> diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
-> index a24dac36bedd..54ac6f8825ff 100644
-> --- a/drivers/cxl/core/pci.c
-> +++ b/drivers/cxl/core/pci.c
-> @@ -633,3 +633,70 @@ void read_cdat_data(struct cxl_port *port)
->  	}
->  }
->  EXPORT_SYMBOL_NS_GPL(read_cdat_data, CXL);
+> In the autodiscovery case the region creation process starts with a
+> known endpoint decoder. Refactor attach_target() into a helper that is
+> suitable to be called from either sysfs, for runtime region creation, or
+> from cxl_port_probe() after it has enumerated all endpoint decoders.
+> 
+> The cxl_port_probe() context is an async device-core probing context, so
+> it is not appropriate to allow SIGTERM to interrupt the assembly
+> process. Refactor attach_target() to take @cxled and @state as arguments
+> where @state indicates whether waiting from the region rwsem is
+> interruptible or not.
+> 
+> No behavior change is intended.
+> 
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+
+> ---
+>   drivers/cxl/core/region.c |   47 +++++++++++++++++++++++++++------------------
+>   1 file changed, 28 insertions(+), 19 deletions(-)
+> 
+> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+> index 8dea49c021b8..97eafdd75675 100644
+> --- a/drivers/cxl/core/region.c
+> +++ b/drivers/cxl/core/region.c
+> @@ -1418,31 +1418,25 @@ void cxl_decoder_kill_region(struct cxl_endpoint_decoder *cxled)
+>   	up_write(&cxl_region_rwsem);
+>   }
+>   
+> -static int attach_target(struct cxl_region *cxlr, const char *decoder, int pos)
+> +static int attach_target(struct cxl_region *cxlr,
+> +			 struct cxl_endpoint_decoder *cxled, int pos,
+> +			 unsigned int state)
+>   {
+> -	struct device *dev;
+> -	int rc;
+> -
+> -	dev = bus_find_device_by_name(&cxl_bus_type, NULL, decoder);
+> -	if (!dev)
+> -		return -ENODEV;
+> -
+> -	if (!is_endpoint_decoder(dev)) {
+> -		put_device(dev);
+> -		return -EINVAL;
+> -	}
+> +	int rc = 0;
+>   
+> -	rc = down_write_killable(&cxl_region_rwsem);
+> +	if (state == TASK_INTERRUPTIBLE)
+> +		rc = down_write_killable(&cxl_region_rwsem);
+> +	else
+> +		down_write(&cxl_region_rwsem);
+>   	if (rc)
+> -		goto out;
+> +		return rc;
 > +
-> +static int pcie_speed_to_mbps(enum pci_bus_speed speed)
-> +{
-> +	switch (speed) {
-> +	case PCIE_SPEED_2_5GT:
-> +		return 2500;
-> +	case PCIE_SPEED_5_0GT:
-> +		return 5000;
-> +	case PCIE_SPEED_8_0GT:
-> +		return 8000;
-> +	case PCIE_SPEED_16_0GT:
-> +		return 16000;
-> +	case PCIE_SPEED_32_0GT:
-> +		return 32000;
-> +	case PCIE_SPEED_64_0GT:
-> +		return 64000;
-> +	default:
-> +		break;
+>   	down_read(&cxl_dpa_rwsem);
+> -	rc = cxl_region_attach(cxlr, to_cxl_endpoint_decoder(dev), pos);
+> +	rc = cxl_region_attach(cxlr, cxled, pos);
+>   	if (rc == 0)
+>   		set_bit(CXL_REGION_F_INCOHERENT, &cxlr->flags);
+>   	up_read(&cxl_dpa_rwsem);
+>   	up_write(&cxl_region_rwsem);
+> -out:
+> -	put_device(dev);
+>   	return rc;
+>   }
+>   
+> @@ -1480,8 +1474,23 @@ static size_t store_targetN(struct cxl_region *cxlr, const char *buf, int pos,
+>   
+>   	if (sysfs_streq(buf, "\n"))
+>   		rc = detach_target(cxlr, pos);
+> -	else
+> -		rc = attach_target(cxlr, buf, pos);
+> +	else {
+> +		struct device *dev;
+> +
+> +		dev = bus_find_device_by_name(&cxl_bus_type, NULL, buf);
+> +		if (!dev)
+> +			return -ENODEV;
+> +
+> +		if (!is_endpoint_decoder(dev)) {
+> +			rc = -EINVAL;
+> +			goto out;
+> +		}
+> +
+> +		rc = attach_target(cxlr, to_cxl_endpoint_decoder(dev), pos,
+> +				   TASK_INTERRUPTIBLE);
+> +out:
+> +		put_device(dev);
 > +	}
-> +
-> +	return -EINVAL;
-> +}
-> +
-> +static int cxl_pci_mbits_to_mbytes(struct pci_dev *pdev)
-> +{
-> +	int mbits;
-> +
-> +	mbits = pcie_speed_to_mbps(pcie_get_speed(pdev));
-> +	if (mbits < 0)
-> +		return mbits;
-> +
-> +	return mbits >> 3;
-> +}
-> +
-> +static int cxl_get_flit_size(struct pci_dev *pdev)
-> +{
-> +	if (cxl_pci_flit_256(pdev))
-> +		return 256;
-> +
-> +	return 66;
-
-I don't know about the 66-byte flit format, maybe this part is
-CXL-specific?
-
-> + * cxl_pci_get_latency - calculate the link latency for the PCIe link
-> + * @pdev - PCI device
-> + *
-> + * CXL Memory Device SW Guide v1.0 2.11.4 Link latency calculation
-> + * Link latency = LinkPropagationLatency + FlitLatency + RetimerLatency
-> + * LinkProgationLatency is negligible, so 0 will be used
-> + * RetimerLatency is assumed to be neglibible and 0 will be used
-
-s/neglibible/negligible/
-
-> + * FlitLatency = FlitSize / LinkBandwidth
-> + * FlitSize is defined by spec. CXL v3.0 4.2.1.
-> + * 68B flit is used up to 32GT/s. >32GT/s, 256B flit size is used.
-> + * The FlitLatency is converted to pico-seconds.
-
-I guess this means cxl_pci_get_latency() actually *returns* a value in
-picoseconds?
-
-There are a couple instances of this written as "pico-seconds", but
-most are "picoseconds".
-
-> +long cxl_pci_get_latency(struct pci_dev *pdev)
-> +{
-> +	long bw, flit_size;
-> +
-> +	bw = cxl_pci_mbits_to_mbytes(pdev);
-> +	if (bw < 0)
-> +		return bw;
-> +
-> +	flit_size = cxl_get_flit_size(pdev);
-> +	return flit_size * 1000000L / bw;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_pci_get_latency, CXL);
-> diff --git a/drivers/cxl/cxlpci.h b/drivers/cxl/cxlpci.h
-> index 920909791bb9..d64a3e0458ab 100644
-> --- a/drivers/cxl/cxlpci.h
-> +++ b/drivers/cxl/cxlpci.h
-> @@ -62,8 +62,22 @@ enum cxl_regloc_type {
->  	CXL_REGLOC_RBI_TYPES
->  };
->  
-> +/*
-> + * CXL v3.0 6.2.3 Table 6-4
-
-The copy I have refers to *Revision 3.0, Version 1.0*, i.e.,
-"Revision" is the major level and "Version" is the minor.  So I would
-cite this as "CXL r3.0", not "CXL v3.0".  I suppose the same for CXL
-Memory Device above, but I don't have that spec.
-
-> + * The table indicates that if PCIe Flit Mode is set, then CXL is in 256B flits
-> + * mode, otherwise it's 68B flits mode.
-> + */
-> +static inline bool cxl_pci_flit_256(struct pci_dev *pdev)
-> +{
-> +	u32 lnksta2;
-> +
-> +	pcie_capability_read_dword(pdev, PCI_EXP_LNKSTA2, &lnksta2);
-> +	return lnksta2 & BIT(10);
-
-Add a #define for the bit.
-
-AFAICT, the PCIe spec defines this bit, and it only indicates the link
-is or will be operating in Flit Mode; it doesn't actually say anything
-about how large the flits are.  I suppose that's because PCIe only
-talks about 256B flits, not 66B ones?
-
-Bjorn
+>   
+>   	if (rc < 0)
+>   		return rc;
+> 
