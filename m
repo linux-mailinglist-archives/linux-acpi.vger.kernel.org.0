@@ -2,46 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11BD868C42E
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 18:06:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD4B168C50D
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 18:45:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229550AbjBFRGn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Feb 2023 12:06:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42310 "EHLO
+        id S230023AbjBFRpz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Feb 2023 12:45:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229537AbjBFRGm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 12:06:42 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8AFC22032;
-        Mon,  6 Feb 2023 09:06:40 -0800 (PST)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4P9Xh02LSGz6J9yW;
-        Tue,  7 Feb 2023 01:05:20 +0800 (CST)
-Received: from localhost (10.81.207.58) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.17; Mon, 6 Feb
- 2023 17:06:38 +0000
-Date:   Mon, 6 Feb 2023 17:06:36 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+        with ESMTP id S229990AbjBFRpy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 12:45:54 -0500
+Received: from bird.elm.relay.mailchannels.net (bird.elm.relay.mailchannels.net [23.83.212.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA0CD2B2A8;
+        Mon,  6 Feb 2023 09:45:41 -0800 (PST)
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+        by relay.mailchannels.net (Postfix) with ESMTP id 8C10C7E153D;
+        Mon,  6 Feb 2023 17:45:40 +0000 (UTC)
+Received: from pdx1-sub0-mail-a221.dreamhost.com (unknown [127.0.0.6])
+        (Authenticated sender: dreamhost)
+        by relay.mailchannels.net (Postfix) with ESMTPA id 0B9807E1BEB;
+        Mon,  6 Feb 2023 17:45:40 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1675705540; a=rsa-sha256;
+        cv=none;
+        b=AHtYt9eUWyhODzXYwuV3PQOLHr1s+09m1S3W9O97t1j25yxzpX4YTpKmQEEbzBxITidfir
+        Jg8M0fSGCiumRNk8QhciK3LrTZsOL4mx+7VTGMFcKL/NeQ8QYdkNLtXSEpTE/lUFU2xSV+
+        hJKn81nfLKOhyNbxKZeGrBDuyQ5+l9vdnnEila/B+JNJKwFb/SdpqB4Wl+hRqfmSV7ZYAS
+        yHU13jKHDUAjB9e5WD0IPiP34IFhA5R3OoAnBEdEMC4Ik3QO0al5gI+DF6zfw+HfA/BFmE
+        bB/mpKkrd9MU+CfoXn7NWguMhcfdabE1OYzxVXYBCZPQVUp1sb23SxCQdCdseA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+        s=arc-2022; t=1675705540;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references:dkim-signature;
+        bh=3RUNAXgDE0f/nNzbflUV5Av58uCfCjLXusvt31cTdrs=;
+        b=lR2UwC/NwDHiWiJZnwKH2XopLuyRfnXiB74NKLhkLtgEWwSs4J6HM50fzt0Maf9sXvPNTE
+        abwEWAj99wF/2m83UuAeCFxGxIPiZZaio0xNHclH17Wu1lt3EeXBk5jYkCJKQ7zpMmFmyE
+        qIMufLSUdd1uDejOWivyVNyHSYbzcqZH80HaXvbcC/idOUU9zRZYX49uslVc0HUnZ2em8J
+        x4W4PiNsWdr11qsCfRSlLT/Q7rfrNoPMW+AHAvamZv/BoPUlPqgkTXFGucNwog998QHr5o
+        4NlY9xvqt8pqXspE8jMEYNMP/rqiyc+xqp70uimbkTJ5XyyVmEXyUg5JKyflIA==
+ARC-Authentication-Results: i=1;
+        rspamd-5fb8f68d88-vqvfk;
+        auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Left-Stretch: 637568a91d17b01c_1675705540379_1488037364
+X-MC-Loop-Signature: 1675705540379:3862434003
+X-MC-Ingress-Time: 1675705540379
+Received: from pdx1-sub0-mail-a221.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+        by 100.99.229.28 (trex/6.7.1);
+        Mon, 06 Feb 2023 17:45:40 +0000
+Received: from offworld (ip72-199-50-187.sd.sd.cox.net [72.199.50.187])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: dave@stgolabs.net)
+        by pdx1-sub0-mail-a221.dreamhost.com (Postfix) with ESMTPSA id 4P9YZV6pWKz9t;
+        Mon,  6 Feb 2023 09:45:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+        s=dreamhost; t=1675705539;
+        bh=3RUNAXgDE0f/nNzbflUV5Av58uCfCjLXusvt31cTdrs=;
+        h=Date:From:To:Cc:Subject:Content-Type;
+        b=lkeL1n+OXLg2qI5yCtNhW4g+KfM4mm1JAbQ0etfFeY3E3oWAgamWc8cZA3AjTIZ5f
+         i7yA3/x50s4lZSQWRUO2+KpD+/colHn4EhgkdknTVbTprtlOZJa84nVYB+2u6caBh4
+         83esFO8jaNgIx3+bgKudk1SVjSWMO5hDRAa+6XOqplhILzmIguikBo4Q2CiobYtcbM
+         fH3eQ9YpGWt2KQPk4p51VhotmWhYzBfUB6DxoziUdhGGwTErF0SCULEt4R9PCL7pyK
+         XcHXdh5wBDYAf7FIWO5yjKQhZXEmsbnpItdISXIrI+ZwxiuyPQmYSr6cYbdjV7Cmnz
+         +meMv/DFpL+Mw==
+Date:   Mon, 6 Feb 2023 09:18:12 -0800
+From:   Davidlohr Bueso <dave@stgolabs.net>
 To:     Dan Williams <dan.j.williams@intel.com>
-CC:     <linux-cxl@vger.kernel.org>, <dave.hansen@linux.intel.com>,
-        <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH 06/18] cxl/region: Refactor attach_target() for
- autodiscovery
-Message-ID: <20230206170636.0000739e@Huawei.com>
-In-Reply-To: <167564538227.847146.16305045998592488364.stgit@dwillia2-xfh.jf.intel.com>
+Cc:     Gregory Price <gregory.price@memverge.com>,
+        linux-cxl@vger.kernel.org, David Hildenbrand <david@redhat.com>,
+        Kees Cook <keescook@chromium.org>, stable@vger.kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH 00/18] CXL RAM and the 'Soft Reserved' => 'System RAM'
+ default
+Message-ID: <20230206171812.2kra5mqrqk26f6mf@offworld>
+Mail-Followup-To: Dan Williams <dan.j.williams@intel.com>,
+        Gregory Price <gregory.price@memverge.com>,
+        linux-cxl@vger.kernel.org, David Hildenbrand <david@redhat.com>,
+        Kees Cook <keescook@chromium.org>, stable@vger.kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+        linux-acpi@vger.kernel.org
 References: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
-        <167564538227.847146.16305045998592488364.stgit@dwillia2-xfh.jf.intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ <Y+CRyz0eFKfERZLD@memverge.com>
+ <63e13907cffb9_ea22229458@dwillia2-xfh.jf.intel.com.notmuch>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.81.207.58]
-X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <63e13907cffb9_ea22229458@dwillia2-xfh.jf.intel.com.notmuch>
+User-Agent: NeoMutt/20220429
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,122 +110,52 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, 05 Feb 2023 17:03:02 -0800
-Dan Williams <dan.j.williams@intel.com> wrote:
+On Mon, 06 Feb 2023, Dan Williams wrote:
 
-> Region autodiscovery is the process of kernel creating 'struct
-> cxl_region' object to represent active CXL memory ranges it finds
-> already active in hardware when the driver loads. Typically this happens
-> when platform firmware establishes CXL memory regions and then publishes
-> them in the memory map. However, this can also happen in the case of
-> kexec-reboot after the kernel has created regions.
-> 
-> In the autodiscovery case the region creation process starts with a
-> known endpoint decoder. Refactor attach_target() into a helper that is
-> suitable to be called from either sysfs, for runtime region creation, or
-> from cxl_port_probe() after it has enumerated all endpoint decoders.
-> 
-> The cxl_port_probe() context is an async device-core probing context, so
-> it is not appropriate to allow SIGTERM to interrupt the assembly
-> process. Refactor attach_target() to take @cxled and @state as arguments
-> where @state indicates whether waiting from the region rwsem is
-> interruptible or not.
+>Gregory Price wrote:
+>[..]
+>> Leverage the same QEMU branch, machine, and configuration as my prior
+>> tests, i'm now experiencing a kernel panic on boot.  Will debug a bit
+>> in the morning, but here is the stack trace i'm seeing
+>>
+>> Saw this in both 1 and 2 root port configurations
+>>
+>> (note: I also have the region reset issue previously discussed on top of
+>> your branch).
+>>
+>> QEMU configuration:
+>>
+>> sudo /opt/qemu-cxl/bin/qemu-system-x86_64 \
+>> -drive file=/var/lib/libvirt/images/cxl.qcow2,format=qcow2,index=0,media=disk,id=hd \
+>> -m 2G,slots=4,maxmem=4G \
+>> -smp 4 \
+>> -machine type=q35,accel=kvm,cxl=on \
+>> -enable-kvm \
+>> -nographic \
+>> -device pxb-cxl,id=cxl.0,bus=pcie.0,bus_nr=52 \
+>> -device cxl-rp,id=rp0,bus=cxl.0,chassis=0,port=0,slot=0 \
+>> -object memory-backend-file,id=mem0,mem-path=/tmp/mem0,size=1G,share=true \
+>> -device cxl-type3,bus=rp0,volatile-memdev=mem0,id=cxl-mem0 \
+>> -M cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.size=1G
+>>
+>[..]
+>> [   15.162837] RIP: 0010:bus_add_device+0x5b/0x150
+>
+>I suspect cxl_bus_type is not intialized yet. I think this should
+>address it:
 
-As below, I'd have broken this change out as a follow up patch - that
-way reviewer could check for strict noop refactor, then look in ioslation
-at that case.
+Yep, thanks.
 
-I don't care that much though as second patch would only have about 4 lines
-of diff.
-
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-> 
-> No behavior change is intended.
-> 
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  drivers/cxl/core/region.c |   47 +++++++++++++++++++++++++++------------------
->  1 file changed, 28 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-> index 8dea49c021b8..97eafdd75675 100644
-> --- a/drivers/cxl/core/region.c
-> +++ b/drivers/cxl/core/region.c
-> @@ -1418,31 +1418,25 @@ void cxl_decoder_kill_region(struct cxl_endpoint_decoder *cxled)
->  	up_write(&cxl_region_rwsem);
->  }
->  
-> -static int attach_target(struct cxl_region *cxlr, const char *decoder, int pos)
-> +static int attach_target(struct cxl_region *cxlr,
-> +			 struct cxl_endpoint_decoder *cxled, int pos,
-> +			 unsigned int state)
->  {
-> -	struct device *dev;
-> -	int rc;
-> -
-> -	dev = bus_find_device_by_name(&cxl_bus_type, NULL, decoder);
-> -	if (!dev)
-> -		return -ENODEV;
-> -
-> -	if (!is_endpoint_decoder(dev)) {
-> -		put_device(dev);
-> -		return -EINVAL;
-> -	}
-> +	int rc = 0;
->  
-> -	rc = down_write_killable(&cxl_region_rwsem);
-> +	if (state == TASK_INTERRUPTIBLE)
-> +		rc = down_write_killable(&cxl_region_rwsem);
-> +	else
-> +		down_write(&cxl_region_rwsem);
-
-I'd be tempted to do this in two hops for patch readability. First
-make the code reorg then follow up with this bit before the use
-of it in the next patch.
-
->  	if (rc)
-> -		goto out;
-> +		return rc;
-> +
->  	down_read(&cxl_dpa_rwsem);
-> -	rc = cxl_region_attach(cxlr, to_cxl_endpoint_decoder(dev), pos);
-> +	rc = cxl_region_attach(cxlr, cxled, pos);
->  	if (rc == 0)
->  		set_bit(CXL_REGION_F_INCOHERENT, &cxlr->flags);
->  	up_read(&cxl_dpa_rwsem);
->  	up_write(&cxl_region_rwsem);
-> -out:
-> -	put_device(dev);
->  	return rc;
->  }
->  
-> @@ -1480,8 +1474,23 @@ static size_t store_targetN(struct cxl_region *cxlr, const char *buf, int pos,
->  
->  	if (sysfs_streq(buf, "\n"))
->  		rc = detach_target(cxlr, pos);
-> -	else
-> -		rc = attach_target(cxlr, buf, pos);
-> +	else {
-> +		struct device *dev;
-> +
-> +		dev = bus_find_device_by_name(&cxl_bus_type, NULL, buf);
-> +		if (!dev)
-> +			return -ENODEV;
-> +
-> +		if (!is_endpoint_decoder(dev)) {
-> +			rc = -EINVAL;
-> +			goto out;
-> +		}
-> +
-> +		rc = attach_target(cxlr, to_cxl_endpoint_decoder(dev), pos,
-> +				   TASK_INTERRUPTIBLE);
-> +out:
-> +		put_device(dev);
-> +	}
->  
->  	if (rc < 0)
->  		return rc;
-> 
-> 
-
+>
+>diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+>index 0faeb1ffc212..6fe00702327f 100644
+>--- a/drivers/cxl/core/port.c
+>+++ b/drivers/cxl/core/port.c
+>@@ -2011,6 +2011,6 @@ static void cxl_core_exit(void)
+>	debugfs_remove_recursive(cxl_debugfs);
+> }
+>
+>-module_init(cxl_core_init);
+>+subsys_initcall(cxl_core_init);
+> module_exit(cxl_core_exit);
+> MODULE_LICENSE("GPL v2");
