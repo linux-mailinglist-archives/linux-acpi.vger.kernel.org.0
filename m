@@ -2,46 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89F6668C2F1
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 17:19:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D5D868C331
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 17:28:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231862AbjBFQTC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Feb 2023 11:19:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58318 "EHLO
+        id S229648AbjBFQ2e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Feb 2023 11:28:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231838AbjBFQSk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 11:18:40 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29A8C44B4;
-        Mon,  6 Feb 2023 08:18:10 -0800 (PST)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4P9WXS4wm7z6J7fH;
-        Tue,  7 Feb 2023 00:13:44 +0800 (CST)
-Received: from localhost (10.81.207.58) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.17; Mon, 6 Feb
- 2023 16:18:07 +0000
-Date:   Mon, 6 Feb 2023 16:18:04 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-CC:     <linux-cxl@vger.kernel.org>, <dave.hansen@linux.intel.com>,
-        <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH 05/18] cxl/region: Add volatile region creation support
-Message-ID: <20230206161804.00005c47@Huawei.com>
-In-Reply-To: <167564537678.847146.4066579806086171091.stgit@dwillia2-xfh.jf.intel.com>
-References: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
-        <167564537678.847146.4066579806086171091.stgit@dwillia2-xfh.jf.intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S229488AbjBFQ2d (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 11:28:33 -0500
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26407CA3E;
+        Mon,  6 Feb 2023 08:28:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=J5qsFrHxoW2pjLsk9qiM9/YFEvZ8jiTM8kTlPvrNykI=; b=BAOxXGE+aFkV0YgDmD1FI0nQiT
+        48D0zmDTiKokqjB1LeJHR93tlsQGGgNTC0x2cG2h/L7Am0B/95CtGNPtOInhD+73dvwezG6eQYyH3
+        rA7a7iXsUxdf46SWBs2/tFq3olzRo6TkaLEtAcNW+G2vp+iKRzMd9ooklmMzdmebP+MLEWeJ5JXnA
+        hf9UYirDZq2OJN0hVB2LuETgO/dKleQXaGU7zvEIozLPrNiKkzS0JvTVTzQCi+3E4KUvdeBERS8FU
+        PDVtmkzsjQRLNAEK/+t6EqQE/Kw12aDRLHDK+Fkg+D3vL6XC7ZF92aELPJYKcx5B2uvh2dV3KOT+P
+        J8A+lwlw==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1pP4Lx-009KBQ-T0; Mon, 06 Feb 2023 16:28:25 +0000
+Date:   Mon, 6 Feb 2023 08:28:25 -0800
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Petr Pavlu <petr.pavlu@suse.com>, Allan Day <aday@redhat.com>,
+        Michael Catanzaro <mcatanzaro.kernel@gmail.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, viresh.kumar@linaro.org,
+        pmladek@suse.com, linux-acpi@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ACPI: cpufreq: use a platform device to load ACPI PPC
+ and PCC drivers
+Message-ID: <Y+EqqRddrIZ8yWiT@bombadil.infradead.org>
+References: <20230131130041.629-1-petr.pavlu@suse.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.81.207.58]
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230131130041.629-1-petr.pavlu@suse.com>
+Sender: Luis Chamberlain <mcgrof@infradead.org>
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,232 +52,291 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, 05 Feb 2023 17:02:56 -0800
-Dan Williams <dan.j.williams@intel.com> wrote:
+On Tue, Jan 31, 2023 at 02:00:41PM +0100, Petr Pavlu wrote:
+> The acpi-cpufreq and pcc-cpufreq drivers are loaded through per-CPU
+> module aliases.
 
-> Expand the region creation infrastructure to enable 'ram'
-> (volatile-memory) regions. The internals of create_pmem_region_store()
-> and create_pmem_region_show() are factored out into helpers
-> __create_region() and __create_region_show() for the 'ram' case to
-> reuse.
+It gets me to question, what makes this "per-CPU module aliases" and
+how do we find other similar uses as they are likely incorrect too?
+
+> This can result in many unnecessary load requests during
+> boot if another frequency module, such as intel_pstate, is already
+> active. 
+
+Perhaps you should mention that in the worst case, without the fix in
+commit 0254127ab977e ("module: Don't wait for GOING modules") some of
+these module load requests could fail and prevent boot, and that
+discussion over these duplicate module reqests ended up in us deciding that
+they are not needed, we just need one.
+
+> For instance, on a typical Intel system, one can observe that
+> udev makes 2x#CPUs attempts to insert acpi_cpufreq and 1x#CPUs attempts
+> for pcc_cpufreq. All these tries then fail if another frequency module
+> is already registered.
 > 
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Entirely trivial comments inline.
+> Both acpi-cpufreq and pcc-cpufreq drivers have their platform firmware
+> interface defined by ACPI. Allowed performance states and parameters
+> must be same for each CPU. This makes it possible to model these
+> interfaces as platform devices.
+> 
+> The patch extends the ACPI parsing logic to check the ACPI namespace if
+> the PPC or PCC interface is present and creates a virtual platform
+> device for each if it is available. The acpi-cpufreq and pcc-cpufreq
+> drivers are then updated to map to these devices.
+> 
+> This allows to try loading acpi-cpufreq and pcc-cpufreq only once during
+> boot and only if a given interface is available in the firmware.
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+That could cut boot time too? If so how much?
 
+  Luis
+
+> Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
 > ---
->  Documentation/ABI/testing/sysfs-bus-cxl |   22 +++++-----
->  drivers/cxl/core/core.h                 |    1 
->  drivers/cxl/core/port.c                 |   14 ++++++
->  drivers/cxl/core/region.c               |   71 +++++++++++++++++++++++++------
->  4 files changed, 82 insertions(+), 26 deletions(-)
+>  drivers/acpi/Makefile          |  1 +
+>  drivers/acpi/acpi_cpufreq.c    | 49 ++++++++++++++++++++++++++++++++++
+>  drivers/acpi/bus.c             |  1 +
+>  drivers/acpi/internal.h        |  2 ++
+>  drivers/cpufreq/acpi-cpufreq.c | 39 +++++++++++++++------------
+>  drivers/cpufreq/pcc-cpufreq.c  | 34 ++++++++++++++++-------
+>  6 files changed, 99 insertions(+), 27 deletions(-)
+>  create mode 100644 drivers/acpi/acpi_cpufreq.c
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-cxl b/Documentation/ABI/testing/sysfs-bus-cxl
-> index 4c4e1cbb1169..3acf2f17a73f 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-cxl
-> +++ b/Documentation/ABI/testing/sysfs-bus-cxl
-> @@ -285,20 +285,20 @@ Description:
->  		interleave_granularity).
->  
->  
-> -What:		/sys/bus/cxl/devices/decoderX.Y/create_pmem_region
-> -Date:		May, 2022
-> -KernelVersion:	v6.0
-> +What:		/sys/bus/cxl/devices/decoderX.Y/create_{pmem,ram}_region
-> +Date:		May, 2022, January, 2023
-> +KernelVersion:	v6.0 (pmem), v6.3 (ram)
->  Contact:	linux-cxl@vger.kernel.org
->  Description:
->  		(RW) Write a string in the form 'regionZ' to start the process
-> -		of defining a new persistent memory region (interleave-set)
-> -		within the decode range bounded by root decoder 'decoderX.Y'.
-> -		The value written must match the current value returned from
-> -		reading this attribute. An atomic compare exchange operation is
-> -		done on write to assign the requested id to a region and
-> -		allocate the region-id for the next creation attempt. EBUSY is
-> -		returned if the region name written does not match the current
-> -		cached value.
-> +		of defining a new persistent, or volatile memory region
-> +		(interleave-set) within the decode range bounded by root decoder
-> +		'decoderX.Y'. The value written must match the current value
-> +		returned from reading this attribute. An atomic compare exchange
-> +		operation is done on write to assign the requested id to a
-> +		region and allocate the region-id for the next creation attempt.
-> +		EBUSY is returned if the region name written does not match the
-> +		current cached value.
->  
->  
->  What:		/sys/bus/cxl/devices/decoderX.Y/delete_region
-> diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
-> index 8c04672dca56..5eb873da5a30 100644
-> --- a/drivers/cxl/core/core.h
-> +++ b/drivers/cxl/core/core.h
-> @@ -11,6 +11,7 @@ extern struct attribute_group cxl_base_attribute_group;
->  
->  #ifdef CONFIG_CXL_REGION
->  extern struct device_attribute dev_attr_create_pmem_region;
-> +extern struct device_attribute dev_attr_create_ram_region;
->  extern struct device_attribute dev_attr_delete_region;
->  extern struct device_attribute dev_attr_region;
->  extern const struct device_type cxl_pmem_region_type;
-> diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
-> index 8566451cb22f..47e450c3a5a9 100644
-> --- a/drivers/cxl/core/port.c
-> +++ b/drivers/cxl/core/port.c
-> @@ -294,6 +294,7 @@ static struct attribute *cxl_decoder_root_attrs[] = {
->  	&dev_attr_cap_type3.attr,
->  	&dev_attr_target_list.attr,
->  	SET_CXL_REGION_ATTR(create_pmem_region)
-> +	SET_CXL_REGION_ATTR(create_ram_region)
->  	SET_CXL_REGION_ATTR(delete_region)
->  	NULL,
->  };
-> @@ -305,6 +306,13 @@ static bool can_create_pmem(struct cxl_root_decoder *cxlrd)
->  	return (cxlrd->cxlsd.cxld.flags & flags) == flags;
+> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+> index feb36c0b9446..880db1082c3e 100644
+> --- a/drivers/acpi/Makefile
+> +++ b/drivers/acpi/Makefile
+> @@ -57,6 +57,7 @@ acpi-y				+= evged.o
+>  acpi-y				+= sysfs.o
+>  acpi-y				+= property.o
+>  acpi-$(CONFIG_X86)		+= acpi_cmos_rtc.o
+> +acpi-$(CONFIG_X86)		+= acpi_cpufreq.o
+>  acpi-$(CONFIG_X86)		+= x86/apple.o
+>  acpi-$(CONFIG_X86)		+= x86/utils.o
+>  acpi-$(CONFIG_X86)		+= x86/s2idle.o
+> diff --git a/drivers/acpi/acpi_cpufreq.c b/drivers/acpi/acpi_cpufreq.c
+> new file mode 100644
+> index 000000000000..7cf243c67475
+> --- /dev/null
+> +++ b/drivers/acpi/acpi_cpufreq.c
+> @@ -0,0 +1,49 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Registration of platform devices for ACPI Processor Performance Control and
+> + * Processor Clocking Control.
+> + */
+> +
+> +#include <linux/acpi.h>
+> +#include <linux/platform_device.h>
+> +
+> +#include "internal.h"
+> +
+> +static void __init cpufreq_add_device(const char *name)
+> +{
+> +	struct platform_device *pdev;
+> +
+> +	pdev = platform_device_register_simple(name, PLATFORM_DEVID_NONE, NULL,
+> +					       0);
+> +	if (IS_ERR(pdev))
+> +		pr_err("%s device creation failed: %ld\n", name, PTR_ERR(pdev));
+> +}
+> +
+> +static acpi_status __init acpi_pct_match(acpi_handle handle, u32 level,
+> +					 void *context, void **return_value)
+> +{
+> +	bool *pct = context;
+> +
+> +	/* Check if the first CPU has _PCT. The data must be same for all. */
+> +	*pct = acpi_has_method(handle, "_PCT");
+> +	return AE_CTRL_TERMINATE;
+> +}
+> +
+> +void __init acpi_cpufreq_init(void)
+> +{
+> +	acpi_status status;
+> +	acpi_handle handle;
+> +	bool pct = false;
+> +
+> +	status = acpi_get_handle(NULL, "\\_SB", &handle);
+> +	if (ACPI_FAILURE(status))
+> +		return;
+> +
+> +	acpi_walk_namespace(ACPI_TYPE_PROCESSOR, ACPI_ROOT_OBJECT,
+> +			    ACPI_UINT32_MAX, acpi_pct_match, NULL, &pct, NULL);
+> +	if (pct)
+> +		cpufreq_add_device("acpi-cpufreq");
+> +
+> +	if (acpi_has_method(handle, "PCCH"))
+> +		cpufreq_add_device("pcc-cpufreq");
+> +}
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index 0c05ccde1f7a..f1559e26d5ff 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -1428,6 +1428,7 @@ static int __init acpi_init(void)
+>  	acpi_viot_init();
+>  	acpi_agdi_init();
+>  	acpi_apmt_init();
+> +	acpi_cpufreq_init();
+>  	return 0;
 >  }
 >  
-> +static bool can_create_ram(struct cxl_root_decoder *cxlrd)
-> +{
-> +	unsigned long flags = CXL_DECODER_F_TYPE3 | CXL_DECODER_F_RAM;
-> +
-> +	return (cxlrd->cxlsd.cxld.flags & flags) == flags;
-> +}
-> +
->  static umode_t cxl_root_decoder_visible(struct kobject *kobj, struct attribute *a, int n)
->  {
->  	struct device *dev = kobj_to_dev(kobj);
-> @@ -313,7 +321,11 @@ static umode_t cxl_root_decoder_visible(struct kobject *kobj, struct attribute *
->  	if (a == CXL_REGION_ATTR(create_pmem_region) && !can_create_pmem(cxlrd))
->  		return 0;
+> diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+> index ec584442fb29..c9b1a5f689fa 100644
+> --- a/drivers/acpi/internal.h
+> +++ b/drivers/acpi/internal.h
+> @@ -157,8 +157,10 @@ static inline void acpi_early_processor_set_pdc(void) {}
 >  
-> -	if (a == CXL_REGION_ATTR(delete_region) && !can_create_pmem(cxlrd))
-> +	if (a == CXL_REGION_ATTR(create_ram_region) && !can_create_ram(cxlrd))
-> +		return 0;
-> +
-> +	if (a == CXL_REGION_ATTR(delete_region) &&
-> +	    !(can_create_pmem(cxlrd) || can_create_ram(cxlrd)))
->  		return 0;
+>  #ifdef CONFIG_X86
+>  void acpi_early_processor_osc(void);
+> +void acpi_cpufreq_init(void);
+>  #else
+>  static inline void acpi_early_processor_osc(void) {}
+> +static inline void acpi_cpufreq_init(void) {}
+>  #endif
 >  
->  	return a->mode;
-> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-> index 53d6dbe4de6d..8dea49c021b8 100644
-> --- a/drivers/cxl/core/region.c
-> +++ b/drivers/cxl/core/region.c
-> @@ -1685,6 +1685,15 @@ static struct cxl_region *devm_cxl_add_region(struct cxl_root_decoder *cxlrd,
->  	struct device *dev;
->  	int rc;
->  
-> +	switch (mode) {
-> +	case CXL_DECODER_RAM:
-> +	case CXL_DECODER_PMEM:
-> +		break;
-> +	default:
-> +		dev_err(&cxlrd->cxlsd.cxld.dev, "unsupported mode %d\n", mode);
-> +		return ERR_PTR(-EINVAL);
-> +	}
-> +
->  	cxlr = cxl_region_alloc(cxlrd, id);
->  	if (IS_ERR(cxlr))
->  		return cxlr;
-> @@ -1713,12 +1722,38 @@ static struct cxl_region *devm_cxl_add_region(struct cxl_root_decoder *cxlrd,
->  	return ERR_PTR(rc);
+>  /* --------------------------------------------------------------------------
+> diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
+> index 78adfb2ffff6..e1a5384cf21c 100644
+> --- a/drivers/cpufreq/acpi-cpufreq.c
+> +++ b/drivers/cpufreq/acpi-cpufreq.c
+> @@ -965,7 +965,7 @@ static void __init acpi_cpufreq_boost_init(void)
+>  	acpi_cpufreq_driver.boost_enabled = boost_state(0);
 >  }
 >  
-> +static ssize_t __create_region_show(struct cxl_root_decoder *cxlrd, char *buf)
-> +{
-> +	return sysfs_emit(buf, "region%u\n", atomic_read(&cxlrd->region_id));
-> +}
-> +
->  static ssize_t create_pmem_region_show(struct device *dev,
->  				       struct device_attribute *attr, char *buf)
+> -static int __init acpi_cpufreq_init(void)
+> +static int __init acpi_cpufreq_probe(struct platform_device *pdev)
 >  {
-> -	struct cxl_root_decoder *cxlrd = to_cxl_root_decoder(dev);
-> +	return __create_region_show(to_cxl_root_decoder(dev), buf);
-> +}
+>  	int ret;
 >  
-> -	return sysfs_emit(buf, "region%u\n", atomic_read(&cxlrd->region_id));
-> +static ssize_t create_ram_region_show(struct device *dev,
-> +				      struct device_attribute *attr, char *buf)
-> +{
-> +	return __create_region_show(to_cxl_root_decoder(dev), buf);
-> +}
-> +
-> +static struct cxl_region *__create_region(struct cxl_root_decoder *cxlrd,
-> +					  enum cxl_decoder_mode mode, int id)
-> +{
-> +	int rc;
-> +
-> +	rc = memregion_alloc(GFP_KERNEL);
-> +	if (rc < 0)
-> +		return ERR_PTR(rc);
-> +
-> +	if (atomic_cmpxchg(&cxlrd->region_id, id, rc) != id) {
-> +		memregion_free(rc);
-> +		return ERR_PTR(-EBUSY);
-> +	}
-> +
-> +	return devm_cxl_add_region(cxlrd, id, mode, CXL_DECODER_EXPANDER);
+> @@ -1010,13 +1010,32 @@ static int __init acpi_cpufreq_init(void)
+>  	return ret;
 >  }
 >  
->  static ssize_t create_pmem_region_store(struct device *dev,
-> @@ -1727,29 +1762,37 @@ static ssize_t create_pmem_region_store(struct device *dev,
+> -static void __exit acpi_cpufreq_exit(void)
+> +static int acpi_cpufreq_remove(struct platform_device *pdev)
 >  {
->  	struct cxl_root_decoder *cxlrd = to_cxl_root_decoder(dev);
->  	struct cxl_region *cxlr;
-> -	int id, rc;
-> +	int rc, id;
+>  	pr_debug("%s\n", __func__);
 >  
->  	rc = sscanf(buf, "region%d\n", &id);
->  	if (rc != 1)
->  		return -EINVAL;
+>  	cpufreq_unregister_driver(&acpi_cpufreq_driver);
 >  
-> -	rc = memregion_alloc(GFP_KERNEL);
-> -	if (rc < 0)
-> -		return rc;
-> +	cxlr = __create_region(cxlrd, CXL_DECODER_PMEM, id);
-> +	if (IS_ERR(cxlr))
-> +		return PTR_ERR(cxlr);
-
-I'd have a blank line here - see below.
-
-> +	return len;
-> +}
-> +DEVICE_ATTR_RW(create_pmem_region);
->  
-> -	if (atomic_cmpxchg(&cxlrd->region_id, id, rc) != id) {
-> -		memregion_free(rc);
-> -		return -EBUSY;
-> -	}
-> +static ssize_t create_ram_region_store(struct device *dev,
-> +				       struct device_attribute *attr,
-> +				       const char *buf, size_t len)
-> +{
-> +	struct cxl_root_decoder *cxlrd = to_cxl_root_decoder(dev);
-> +	struct cxl_region *cxlr;
-> +	int rc, id;
->  
-> -	cxlr = devm_cxl_add_region(cxlrd, id, CXL_DECODER_PMEM,
-> -				   CXL_DECODER_EXPANDER);
-> +	rc = sscanf(buf, "region%d\n", &id);
-> +	if (rc != 1)
-> +		return -EINVAL;
+>  	free_acpi_perf_data();
 > +
-> +	cxlr = __create_region(cxlrd, CXL_DECODER_RAM, id);
->  	if (IS_ERR(cxlr))
->  		return PTR_ERR(cxlr);
+> +	return 0;
+> +}
+> +
+> +static struct platform_driver acpi_cpufreq_platdrv = {
+> +	.driver = {
+> +		.name	= "acpi-cpufreq",
+> +	},
+> +	.remove		= acpi_cpufreq_remove,
+> +};
+> +
+> +static int __init acpi_cpufreq_init(void)
+> +{
+> +	return platform_driver_probe(&acpi_cpufreq_platdrv, acpi_cpufreq_probe);
+> +}
+> +
+> +static void __exit acpi_cpufreq_exit(void)
+> +{
+> +	platform_driver_unregister(&acpi_cpufreq_platdrv);
+>  }
+>  
+>  module_param(acpi_pstate_strict, uint, 0644);
+> @@ -1027,18 +1046,4 @@ MODULE_PARM_DESC(acpi_pstate_strict,
+>  late_initcall(acpi_cpufreq_init);
+>  module_exit(acpi_cpufreq_exit);
+>  
+> -static const struct x86_cpu_id __maybe_unused acpi_cpufreq_ids[] = {
+> -	X86_MATCH_FEATURE(X86_FEATURE_ACPI, NULL),
+> -	X86_MATCH_FEATURE(X86_FEATURE_HW_PSTATE, NULL),
+> -	{}
+> -};
+> -MODULE_DEVICE_TABLE(x86cpu, acpi_cpufreq_ids);
 > -
-
-Just so you know I read to the end!
-
-Spurious unrelated white space change :)
-
->  	return len;
+> -static const struct acpi_device_id __maybe_unused processor_device_ids[] = {
+> -	{ACPI_PROCESSOR_OBJECT_HID, },
+> -	{ACPI_PROCESSOR_DEVICE_HID, },
+> -	{},
+> -};
+> -MODULE_DEVICE_TABLE(acpi, processor_device_ids);
+> -
+> -MODULE_ALIAS("acpi");
+> +MODULE_ALIAS("platform:acpi-cpufreq");
+> diff --git a/drivers/cpufreq/pcc-cpufreq.c b/drivers/cpufreq/pcc-cpufreq.c
+> index 9f3fc7a073d0..0c362932ca60 100644
+> --- a/drivers/cpufreq/pcc-cpufreq.c
+> +++ b/drivers/cpufreq/pcc-cpufreq.c
+> @@ -384,7 +384,7 @@ static int __init pcc_cpufreq_do_osc(acpi_handle *handle)
+>  	return ret;
 >  }
-> -DEVICE_ATTR_RW(create_pmem_region);
-> +DEVICE_ATTR_RW(create_ram_region);
 >  
->  static ssize_t region_show(struct device *dev, struct device_attribute *attr,
->  			   char *buf)
+> -static int __init pcc_cpufreq_probe(void)
+> +static int __init pcc_cpufreq_evaluate(void)
+>  {
+>  	acpi_status status;
+>  	struct acpi_buffer output = {ACPI_ALLOCATE_BUFFER, NULL};
+> @@ -576,7 +576,7 @@ static struct cpufreq_driver pcc_cpufreq_driver = {
+>  	.name = "pcc-cpufreq",
+>  };
+>  
+> -static int __init pcc_cpufreq_init(void)
+> +static int __init pcc_cpufreq_probe(struct platform_device *pdev)
+>  {
+>  	int ret;
+>  
+> @@ -587,9 +587,9 @@ static int __init pcc_cpufreq_init(void)
+>  	if (acpi_disabled)
+>  		return -ENODEV;
+>  
+> -	ret = pcc_cpufreq_probe();
+> +	ret = pcc_cpufreq_evaluate();
+>  	if (ret) {
+> -		pr_debug("pcc_cpufreq_init: PCCH evaluation failed\n");
+> +		pr_debug("pcc_cpufreq_probe: PCCH evaluation failed\n");
+>  		return ret;
+>  	}
+>  
+> @@ -607,21 +607,35 @@ static int __init pcc_cpufreq_init(void)
+>  	return ret;
+>  }
+>  
+> -static void __exit pcc_cpufreq_exit(void)
+> +static int pcc_cpufreq_remove(struct platform_device *pdev)
+>  {
+>  	cpufreq_unregister_driver(&pcc_cpufreq_driver);
+>  
+>  	pcc_clear_mapping();
+>  
+>  	free_percpu(pcc_cpu_info);
+> +
+> +	return 0;
+>  }
+>  
+> -static const struct acpi_device_id __maybe_unused processor_device_ids[] = {
+> -	{ACPI_PROCESSOR_OBJECT_HID, },
+> -	{ACPI_PROCESSOR_DEVICE_HID, },
+> -	{},
+> +static struct platform_driver pcc_cpufreq_platdrv = {
+> +	.driver = {
+> +		.name	= "pcc-cpufreq",
+> +	},
+> +	.remove		= pcc_cpufreq_remove,
+>  };
+> -MODULE_DEVICE_TABLE(acpi, processor_device_ids);
+> +
+> +static int __init pcc_cpufreq_init(void)
+> +{
+> +	return platform_driver_probe(&pcc_cpufreq_platdrv, pcc_cpufreq_probe);
+> +}
+> +
+> +static void __exit pcc_cpufreq_exit(void)
+> +{
+> +	platform_driver_unregister(&pcc_cpufreq_platdrv);
+> +}
+> +
+> +MODULE_ALIAS("platform:pcc-cpufreq");
+>  
+>  MODULE_AUTHOR("Matthew Garrett, Naga Chumbalkar");
+>  MODULE_VERSION(PCC_VERSION);
 > 
-
