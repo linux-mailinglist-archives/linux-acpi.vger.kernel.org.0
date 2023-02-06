@@ -2,267 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B7FE68B8CE
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 10:39:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 420A368B9E4
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 11:21:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229917AbjBFJjv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Feb 2023 04:39:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40452 "EHLO
+        id S230253AbjBFKV1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Feb 2023 05:21:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229906AbjBFJju (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 04:39:50 -0500
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F012E11674;
-        Mon,  6 Feb 2023 01:39:47 -0800 (PST)
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id 68028240002;
-        Mon,  6 Feb 2023 09:39:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1675676386;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=AubTcWOYqSxJt7Wh6bP1/DqkOsNeNYXj8kBwWyYv++A=;
-        b=lkoOheG4wX9oGM+5NpVS2+5pvUbY5At5ACfEIBMm6y+lcmVVBjbgHKvJC6NqPSpWErCPyf
-        QKY83Q/7p9AN5K3I8dR98yGB+RNuCJYrkGDO4HA+kfcRiewe9KrdZdiHIiwyezVQwSQygI
-        Lwnb3WRZiEu0xfftHuFvd2dAHEsKBAuAjoTpgvABwVnCQ89X0CnhAaER2B8p7ZUCt6ITHk
-        yV7Cmtt9Dy1iQ41jZjEcYEqGt1BWaljAAD+ThVmw3RRjYvCFVC6Fs5apc/Yd5RDIwz5W0f
-        UPQ/UQJG8jYoPZPZm9CyGMxcIl3GrqLg8XuO4bEQzSUmcSGIvr+bIs6TVeReYQ==
-Date:   Mon, 6 Feb 2023 10:39:12 +0100
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Maxim Kiselev <bigunclemax@gmail.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        abel.vesa@linaro.org, alexander.stein@ew.tq-group.com,
-        andriy.shevchenko@linux.intel.com, brgl@bgdev.pl,
-        colin.foster@in-advantage.com, cristian.marussi@arm.com,
-        devicetree@vger.kernel.org, dianders@chromium.org,
-        djrscally@gmail.com, dmitry.baryshkov@linaro.org,
-        festevam@gmail.com, fido_max@inbox.ru, frowand.list@gmail.com,
-        geert+renesas@glider.be, geert@linux-m68k.org,
-        gregkh@linuxfoundation.org, heikki.krogerus@linux.intel.com,
-        jpb@kernel.org, jstultz@google.com, kernel-team@android.com,
-        kernel@pengutronix.de, lenb@kernel.org, linus.walleij@linaro.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-imx@nxp.com,
-        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux@roeck-us.net, lkft@linaro.org, luca.weiss@fairphone.com,
-        magnus.damm@gmail.com, martin.kepplinger@puri.sm, maz@kernel.org,
-        rafael@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de,
-        sakari.ailus@linux.intel.com, shawnguo@kernel.org,
-        tglx@linutronix.de, tony@atomide.com,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: Re: [PATCH v2 00/11] fw_devlink improvements
-Message-ID: <20230206103912.7db5ed72@xps-13>
-In-Reply-To: <CAGETcx_uri6exkv1Jkzmc4PyEam9yjuH2H1zrq4LYNtJ+XDMWw@mail.gmail.com>
-References: <20230127001141.407071-1-saravanak@google.com>
-        <20230130085542.38546-1-naresh.kamboju@linaro.org>
-        <CAGETcx_411fVxsM-ZMK7j2Bvkmi2TKPbzSuD+03M3cb7WKHfJw@mail.gmail.com>
-        <20230131101813.goaoy32qvrowvyyb@bogus>
-        <CALHCpMijXAgQx2qq8g8zdq=6AHwP+g5WVBjjry=v+dKEq9KDLw@mail.gmail.com>
-        <CAGETcx_UvW819m1Y-QU_ySB1nG_RegKKT06=YjkK=C_qjbAySw@mail.gmail.com>
-        <CALHCpMha_1nXt4rUe+A184XSWpyNk0_PkYjWZ+tUN7BJWqENLA@mail.gmail.com>
-        <CAGETcx_uri6exkv1Jkzmc4PyEam9yjuH2H1zrq4LYNtJ+XDMWw@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+        with ESMTP id S230057AbjBFKV0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 05:21:26 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 636032069F;
+        Mon,  6 Feb 2023 02:20:59 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ED41813D5;
+        Mon,  6 Feb 2023 02:11:29 -0800 (PST)
+Received: from [10.57.75.57] (unknown [10.57.75.57])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 584233F71E;
+        Mon,  6 Feb 2023 02:10:43 -0800 (PST)
+Message-ID: <cffde8a1-74e4-9b61-1eea-544ba3405ed4@arm.com>
+Date:   Mon, 6 Feb 2023 10:10:41 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.6.1
+Subject: Re: [RFC PATCH 29/32] KVM: arm64: Pass hypercalls to userspace
+To:     Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>
+Cc:     linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+        kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Borislav Petkov <bp@alien8.de>, H Peter Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Oliver Upton <oliver.upton@linux.dev>,
+        Len Brown <lenb@kernel.org>,
+        Rafael Wysocki <rafael@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>
+References: <20230203135043.409192-1-james.morse@arm.com>
+ <20230203135043.409192-30-james.morse@arm.com> <865ycg1kv2.wl-maz@kernel.org>
+From:   Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <865ycg1kv2.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Saravana,
+Hi,
 
-+ Srinivas, nvmem maintainer
+A few cents from the Realm support point of view.
 
-saravanak@google.com wrote on Sun, 5 Feb 2023 17:32:57 -0800:
+On 05/02/2023 10:12, Marc Zyngier wrote:
+> On Fri, 03 Feb 2023 13:50:40 +0000,
+> James Morse <james.morse@arm.com> wrote:
+>>
+>> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+>>
+>> When capability KVM_CAP_ARM_HVC_TO_USER is available, userspace can
+>> request to handle all hypercalls that aren't handled by KVM. With the
+>> help of another capability, this will allow userspace to handle PSCI
+>> calls.
+>>
+>> Suggested-by: James Morse <james.morse@arm.com>
+>> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+>> Signed-off-by: James Morse <james.morse@arm.com>
+>>
+>> ---
+>>
+> 
+> On top of Oliver's ask not to make this a blanket "steal everything",
+> but instead to have an actual request for ranges of forwarded
+> hypercalls:
+> 
+>> Notes on this implementation:
+>>
+>> * A similar mechanism was proposed for SDEI some time ago [1]. This RFC
+>>    generalizes the idea to all hypercalls, since that was suggested on
+>>    the list [2, 3].
+>>
+>> * We're reusing kvm_run.hypercall. I copied x0-x5 into
+>>    kvm_run.hypercall.args[] to help userspace but I'm tempted to remove
+>>    this, because:
+>>    - Most user handlers will need to write results back into the
+>>      registers (x0-x3 for SMCCC), so if we keep this shortcut we should
+>>      go all the way and read them back on return to kernel.
+>>    - QEMU doesn't care about this shortcut, it pulls all vcpu regs before
+>>      handling the call.
 
-> On Fri, Feb 3, 2023 at 1:39 AM Maxim Kiselev <bigunclemax@gmail.com> wrot=
-e:
-> >
-> > =D0=BF=D1=82, 3 =D1=84=D0=B5=D0=B2=D1=80. 2023 =D0=B3. =D0=B2 09:07, Sa=
-ravana Kannan <saravanak@google.com>: =20
-> > >
-> > > On Thu, Feb 2, 2023 at 9:36 AM Maxim Kiselev <bigunclemax@gmail.com> =
-wrote: =20
-> > > >
-> > > > Hi Saravana,
-> > > > =20
-> > > > > Can you try the patch at the end of this email under these
-> > > > > configurations and tell me which ones fail vs pass? I don't need =
-logs =20
-> > > >
-> > > > I did these tests and here is the results: =20
-> > >
-> > > Did you hand edit the In-Reply-To: in the header? Because in the
-> > > thread you are reply to the wrong email, but the context in your email
-> > > seems to be from the right email.
-> > >
-> > > For example, see how your reply isn't under the email you are replying
-> > > to in this thread overview:
-> > > https://lore.kernel.org/lkml/20230127001141.407071-1-saravanak@google=
-.com/#r
-> > > =20
-> > > > 1. On top of this series - Not works
-> > > > 2. Without this series    - Works
-> > > > 3. On top of the series with the fwnode_dev_initialized() deleted -=
- Not works
-> > > > 4. Without this series, with the fwnode_dev_initialized() deleted  =
-- Works
-> > > >
-> > > > So your nvmem/core.c patch helps only when it is applied without th=
-e series.
-> > > > But despite the fact that this helps to avoid getting stuck at prob=
-ing
-> > > > my ethernet device, there is still regression.
-> > > >
-> > > > When the ethernet module is loaded it takes a lot of time to drop d=
-ependency
-> > > > from the nvmem-cell with mac address.
-> > > >
-> > > > Please look at the kernel logs below. =20
-> > >
-> > > The kernel logs below really aren't that useful for me in their
-> > > current state. See more below.
-> > >
-> > > ---8<---- <snip> --->8----
-> > > =20
-> > > > P.S. Your nvmem patch definitely helps to avoid a device probe stuck
-> > > > but look like it is not best way to solve a problem which we discus=
-sed
-> > > > in the MTD thread.
-> > > >
-> > > > P.P.S. Also I don't know why your nvmem-cell patch doesn't help whe=
-n it was
-> > > > applied on top of this series. Maybe I missed something. =20
-> > >
-> > > Yeah, I'm not too sure if the test was done correctly. You also didn't
-> > > answer my question about the dts from my earlier email.
-> > > https://lore.kernel.org/lkml/CAGETcx8FpmbaRm2CCwqt3BRBpgbogwP5gNB+iA5=
-OEtuxWVTNLA@mail.gmail.com/#t
-> > >
-> > > So, can you please retest config 1 with all pr_debug and dev_dbg in
-> > > drivers/core/base.c changed to the _info variants? And then share the
-> > > kernel log from the beginning of boot? Maybe attach it to the email so
-> > > it doesn't get word wrapped by your email client. And please point me
-> > > to the .dts that corresponds to your board. Without that, I can't
-> > > debug much.
-> > >
-> > > Thanks,
-> > > Saravana =20
-> > =20
-> > > Did you hand edit the In-Reply-To: in the header? Because in the
-> > > thread you are reply to the wrong email, but the context in your email
-> > > seems to be from the right email. =20
-> >
-> > Sorry for that, it seems like I accidently deleted it.
-> > =20
-> > > So, can you please retest config 1 with all pr_debug and dev_dbg in
-> > > drivers/core/base.c changed to the _info variants? And then share the
-> > > kernel log from the beginning of boot? Maybe attach it to the email so
-> > > it doesn't get word wrapped by your email client. And please point me
-> > > to the .dts that corresponds to your board. Without that, I can't
-> > > debug much. =20
-> >
-> > Ok, I retested config 1 with all _debug logs changed to the _info. I
-> > added the kernel log and the dts file to the attachment of this email. =
-=20
->=20
-> Ah, so your device is not supported/present upstream? Even though it's
-> not upstream, I'll help fix this because it should fix what I believe
-> are unreported issues in upstream.
->=20
-> Ok I know why configs 1 - 4 behaved the way they did and why my test
-> patch didn't help.
->=20
-> After staring at mtd/nvmem code for a few hours I think mtd/nvmem
-> interaction is kind of a mess.
+This may not be always possible, e.g., for Realms. GET_ONE_REG is
+not supported. So using an explicit passing down of the args is
+preferrable.
 
-nvmem is a recent subsystem but mtd carries a lot of legacy stuff we
-cannot really re-wire without breaking users, so nvmem on top of mtd
-of course inherit from the fragile designs in place.
-
-> mtd core creates "partition" platform
-> devices (including for nvmem-cells) that are probed by drivers in
-> drivers/nvmem. However, there's no driver for "nvmem-cells" partition
-> platform device. However, the nvmem core creates nvmem_device when
-> nvmem_register() is called by MTD or these partition platform devices
-> created by MTD. But these nvmem_devices are added to a nvmem_bus but
-> the bus has no means to even register a driver (it should really be a
-> nvmem_class and not nvmem_bus).
-
-Srinivas, do you think we could change this?
-
-> And the nvmem_device sometimes points
-> to the DT node of the MTD device or sometimes the partition platform
-> devices or maybe no DT node at all.
-
-I guess this comes from the fact that this is not strongly defined in
-mtd and depends on the situation (not mentioning 20 years of history
-there as well). "mtd" is a bit inconsistent on what it means. Older
-designs mixed: controllers, ECC engines when relevant and memories;
-while these three components are completely separated. Hence
-sometimes the mtd device ends up being the top level controller,
-sometimes it's just one partition...
-
-But I'm surprised not all of them point to a DT node. Could you show us
-an example? Because that might likely be unexpected (or perhaps I am
-missing something).
-
-> So it's a mess of multiple devices pointing to the same DT node with
-> no clear way to identify which ones will point to a DT node and which
-> ones will probe and which ones won't. In the future, we shouldn't
-> allow adding new compatible strings for partitions for which we don't
-> plan on adding nvmem drivers.
->
-> Can you give the patch at the end of the email a shot? It should fix
-> the issue with this series and without this series. It just avoids
-> this whole mess by not creating useless platform device for
-> nvmem-cells compatible DT nodes.
-
-Thanks a lot for your help.
-
->=20
-> Thanks,
-> Saravana
->=20
-> diff --git a/drivers/mtd/mtdpart.c b/drivers/mtd/mtdpart.c
-> index d442fa94c872..88a213f4d651 100644
-> --- a/drivers/mtd/mtdpart.c
-> +++ b/drivers/mtd/mtdpart.c
-> @@ -577,6 +577,7 @@ static int mtd_part_of_parse(struct mtd_info *master,
->  {
->         struct mtd_part_parser *parser;
->         struct device_node *np;
-> +       struct device_node *child;
->         struct property *prop;
->         struct device *dev;
->         const char *compat;
-> @@ -594,6 +595,10 @@ static int mtd_part_of_parse(struct mtd_info *master,
->         else
->                 np =3D of_get_child_by_name(np, "partitions");
->=20
-> +       for_each_child_of_node(np, child)
-> +               if (of_device_is_compatible(child, "nvmem-cells"))
-> +                       of_node_set_flag(child, OF_POPULATED);
-
-What about a comment explaining why we need that in the final patch
-(with a comment)? Otherwise it's a little bit obscure.
-
-> +
->         of_property_for_each_string(np, "compatible", prop, compat) {
->                 parser =3D mtd_part_get_compatible_parser(compat);
->                 if (!parser)
-
-
-Thanks,
-Miqu=C3=A8l
+Thanks
+Suzuki
