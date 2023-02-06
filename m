@@ -2,160 +2,148 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD4B168C50D
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 18:45:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ECC368C4AE
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 18:27:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230023AbjBFRpz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Feb 2023 12:45:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46182 "EHLO
+        id S229513AbjBFR1w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Feb 2023 12:27:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229990AbjBFRpy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 12:45:54 -0500
-Received: from bird.elm.relay.mailchannels.net (bird.elm.relay.mailchannels.net [23.83.212.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA0CD2B2A8;
-        Mon,  6 Feb 2023 09:45:41 -0800 (PST)
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-        by relay.mailchannels.net (Postfix) with ESMTP id 8C10C7E153D;
-        Mon,  6 Feb 2023 17:45:40 +0000 (UTC)
-Received: from pdx1-sub0-mail-a221.dreamhost.com (unknown [127.0.0.6])
-        (Authenticated sender: dreamhost)
-        by relay.mailchannels.net (Postfix) with ESMTPA id 0B9807E1BEB;
-        Mon,  6 Feb 2023 17:45:40 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1675705540; a=rsa-sha256;
-        cv=none;
-        b=AHtYt9eUWyhODzXYwuV3PQOLHr1s+09m1S3W9O97t1j25yxzpX4YTpKmQEEbzBxITidfir
-        Jg8M0fSGCiumRNk8QhciK3LrTZsOL4mx+7VTGMFcKL/NeQ8QYdkNLtXSEpTE/lUFU2xSV+
-        hJKn81nfLKOhyNbxKZeGrBDuyQ5+l9vdnnEila/B+JNJKwFb/SdpqB4Wl+hRqfmSV7ZYAS
-        yHU13jKHDUAjB9e5WD0IPiP34IFhA5R3OoAnBEdEMC4Ik3QO0al5gI+DF6zfw+HfA/BFmE
-        bB/mpKkrd9MU+CfoXn7NWguMhcfdabE1OYzxVXYBCZPQVUp1sb23SxCQdCdseA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-        s=arc-2022; t=1675705540;
+        with ESMTP id S229873AbjBFR1u (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 12:27:50 -0500
+X-Greylist: delayed 461 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 06 Feb 2023 09:27:23 PST
+Received: from out-40.mta0.migadu.com (out-40.mta0.migadu.com [IPv6:2001:41d0:1004:224b::28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D66B32DE6F
+        for <linux-acpi@vger.kernel.org>; Mon,  6 Feb 2023 09:27:23 -0800 (PST)
+Date:   Mon, 6 Feb 2023 17:19:25 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1675703978;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references:dkim-signature;
-        bh=3RUNAXgDE0f/nNzbflUV5Av58uCfCjLXusvt31cTdrs=;
-        b=lR2UwC/NwDHiWiJZnwKH2XopLuyRfnXiB74NKLhkLtgEWwSs4J6HM50fzt0Maf9sXvPNTE
-        abwEWAj99wF/2m83UuAeCFxGxIPiZZaio0xNHclH17Wu1lt3EeXBk5jYkCJKQ7zpMmFmyE
-        qIMufLSUdd1uDejOWivyVNyHSYbzcqZH80HaXvbcC/idOUU9zRZYX49uslVc0HUnZ2em8J
-        x4W4PiNsWdr11qsCfRSlLT/Q7rfrNoPMW+AHAvamZv/BoPUlPqgkTXFGucNwog998QHr5o
-        4NlY9xvqt8pqXspE8jMEYNMP/rqiyc+xqp70uimbkTJ5XyyVmEXyUg5JKyflIA==
-ARC-Authentication-Results: i=1;
-        rspamd-5fb8f68d88-vqvfk;
-        auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
-X-MailChannels-Auth-Id: dreamhost
-X-Left-Stretch: 637568a91d17b01c_1675705540379_1488037364
-X-MC-Loop-Signature: 1675705540379:3862434003
-X-MC-Ingress-Time: 1675705540379
-Received: from pdx1-sub0-mail-a221.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-        by 100.99.229.28 (trex/6.7.1);
-        Mon, 06 Feb 2023 17:45:40 +0000
-Received: from offworld (ip72-199-50-187.sd.sd.cox.net [72.199.50.187])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: dave@stgolabs.net)
-        by pdx1-sub0-mail-a221.dreamhost.com (Postfix) with ESMTPSA id 4P9YZV6pWKz9t;
-        Mon,  6 Feb 2023 09:45:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
-        s=dreamhost; t=1675705539;
-        bh=3RUNAXgDE0f/nNzbflUV5Av58uCfCjLXusvt31cTdrs=;
-        h=Date:From:To:Cc:Subject:Content-Type;
-        b=lkeL1n+OXLg2qI5yCtNhW4g+KfM4mm1JAbQ0etfFeY3E3oWAgamWc8cZA3AjTIZ5f
-         i7yA3/x50s4lZSQWRUO2+KpD+/colHn4EhgkdknTVbTprtlOZJa84nVYB+2u6caBh4
-         83esFO8jaNgIx3+bgKudk1SVjSWMO5hDRAa+6XOqplhILzmIguikBo4Q2CiobYtcbM
-         fH3eQ9YpGWt2KQPk4p51VhotmWhYzBfUB6DxoziUdhGGwTErF0SCULEt4R9PCL7pyK
-         XcHXdh5wBDYAf7FIWO5yjKQhZXEmsbnpItdISXIrI+ZwxiuyPQmYSr6cYbdjV7Cmnz
-         +meMv/DFpL+Mw==
-Date:   Mon, 6 Feb 2023 09:18:12 -0800
-From:   Davidlohr Bueso <dave@stgolabs.net>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     Gregory Price <gregory.price@memverge.com>,
-        linux-cxl@vger.kernel.org, David Hildenbrand <david@redhat.com>,
-        Kees Cook <keescook@chromium.org>, stable@vger.kernel.org,
+         in-reply-to:in-reply-to:references:references;
+        bh=HQYDCy4xAq7++DqBp2PrFrzWfoeLMTv7/t3BwVc+5/M=;
+        b=J9ErNIUpPqZIZXdMg30fbXll1h9T0Tvc0m6YwSEjZKdUoEOooQgqWauEEwTKgz5T3W0FTk
+        rki4AZWQsgRfhqb68OZxWvRzYjB94NkQRpb2vk7/ewhW1i4abF/GN+8YazanH4qC5F0Wee
+        Dwv1drNtXNr6gUzp6+ranIztAkcY0no=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Oliver Upton <oliver.upton@linux.dev>
+To:     Marc Zyngier <maz@kernel.org>
+Cc:     James Morse <james.morse@arm.com>, linux-pm@vger.kernel.org,
+        loongarch@lists.linux.dev, kvmarm@lists.linux.dev,
+        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Borislav Petkov <bp@alien8.de>, H Peter Anvin <hpa@zytor.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 00/18] CXL RAM and the 'Soft Reserved' => 'System RAM'
- default
-Message-ID: <20230206171812.2kra5mqrqk26f6mf@offworld>
-Mail-Followup-To: Dan Williams <dan.j.williams@intel.com>,
-        Gregory Price <gregory.price@memverge.com>,
-        linux-cxl@vger.kernel.org, David Hildenbrand <david@redhat.com>,
-        Kees Cook <keescook@chromium.org>, stable@vger.kernel.org,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-        linux-acpi@vger.kernel.org
-References: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
- <Y+CRyz0eFKfERZLD@memverge.com>
- <63e13907cffb9_ea22229458@dwillia2-xfh.jf.intel.com.notmuch>
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Len Brown <lenb@kernel.org>,
+        Rafael Wysocki <rafael@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>
+Subject: Re: [RFC PATCH 29/32] KVM: arm64: Pass hypercalls to userspace
+Message-ID: <Y+E2nVnadj1emNs5@google.com>
+References: <20230203135043.409192-1-james.morse@arm.com>
+ <20230203135043.409192-30-james.morse@arm.com>
+ <865ycg1kv2.wl-maz@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <63e13907cffb9_ea22229458@dwillia2-xfh.jf.intel.com.notmuch>
-User-Agent: NeoMutt/20220429
+In-Reply-To: <865ycg1kv2.wl-maz@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 06 Feb 2023, Dan Williams wrote:
+On Sun, Feb 05, 2023 at 10:12:49AM +0000, Marc Zyngier wrote:
+> On Fri, 03 Feb 2023 13:50:40 +0000,
+> James Morse <james.morse@arm.com> wrote:
+> > 
+> > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > 
+> > When capability KVM_CAP_ARM_HVC_TO_USER is available, userspace can
+> > request to handle all hypercalls that aren't handled by KVM. With the
+> > help of another capability, this will allow userspace to handle PSCI
+> > calls.
+> > 
+> > Suggested-by: James Morse <james.morse@arm.com>
+> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > Signed-off-by: James Morse <james.morse@arm.com>
+> > 
+> > ---
+> > 
+> 
+> On top of Oliver's ask not to make this a blanket "steal everything",
+> but instead to have an actual request for ranges of forwarded
+> hypercalls:
+> 
+> > Notes on this implementation:
+> > 
+> > * A similar mechanism was proposed for SDEI some time ago [1]. This RFC
+> >   generalizes the idea to all hypercalls, since that was suggested on
+> >   the list [2, 3].
+> > 
+> > * We're reusing kvm_run.hypercall. I copied x0-x5 into
+> >   kvm_run.hypercall.args[] to help userspace but I'm tempted to remove
+> >   this, because:
+> >   - Most user handlers will need to write results back into the
+> >     registers (x0-x3 for SMCCC), so if we keep this shortcut we should
+> >     go all the way and read them back on return to kernel.
+> >   - QEMU doesn't care about this shortcut, it pulls all vcpu regs before
+> >     handling the call.
+> >   - SMCCC uses x0-x16 for parameters.
+> >   x0 does contain the SMCCC function ID and may be useful for fast
+> >   dispatch, we could keep that plus the immediate number.
+> > 
+> > * Add a flag in the kvm_run.hypercall telling whether this is HVC or
+> >   SMC?  Can be added later in those bottom longmode and pad fields.
+> 
+> We definitely need this. A nested hypervisor can (and does) use SMCs
+> as the conduit. The question is whether they represent two distinct
+> namespaces or not. I *think* we can unify them, but someone should
+> check and maybe get clarification from the owners of the SMCCC spec.
+> 
+> >
+> > * On top of this we could share with userspace which HVC ranges are
+> >   available and which ones are handled by KVM. That can actually be added
+> >   independently, through a vCPU/VM device attribute which doesn't consume
+> >   a new ioctl:
+> >   - userspace issues HAS_ATTR ioctl on the vcpu fd to query whether this
+> >     feature is available.
+> >   - userspace queries the number N of HVC ranges using one GET_ATTR.
+> >   - userspace passes an array of N ranges using another GET_ATTR. The
+> >     array is filled and returned by KVM.
+> 
+> As mentioned above, I think this interface should go both ways.
+> Userspace should request the forwarding of a certain range of
+> hypercalls via a similar SET_ATTR interface.
+> 
+> Another question is how we migrate VMs that have these forwarding
+> requirements. Do we expect the VMM to replay the forwarding as part of
+> the setting up on the other side? Or do we save/restore this via a
+> firmware pseudo-register?
 
->Gregory Price wrote:
->[..]
->> Leverage the same QEMU branch, machine, and configuration as my prior
->> tests, i'm now experiencing a kernel panic on boot.  Will debug a bit
->> in the morning, but here is the stack trace i'm seeing
->>
->> Saw this in both 1 and 2 root port configurations
->>
->> (note: I also have the region reset issue previously discussed on top of
->> your branch).
->>
->> QEMU configuration:
->>
->> sudo /opt/qemu-cxl/bin/qemu-system-x86_64 \
->> -drive file=/var/lib/libvirt/images/cxl.qcow2,format=qcow2,index=0,media=disk,id=hd \
->> -m 2G,slots=4,maxmem=4G \
->> -smp 4 \
->> -machine type=q35,accel=kvm,cxl=on \
->> -enable-kvm \
->> -nographic \
->> -device pxb-cxl,id=cxl.0,bus=pcie.0,bus_nr=52 \
->> -device cxl-rp,id=rp0,bus=cxl.0,chassis=0,port=0,slot=0 \
->> -object memory-backend-file,id=mem0,mem-path=/tmp/mem0,size=1G,share=true \
->> -device cxl-type3,bus=rp0,volatile-memdev=mem0,id=cxl-mem0 \
->> -M cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.size=1G
->>
->[..]
->> [   15.162837] RIP: 0010:bus_add_device+0x5b/0x150
->
->I suspect cxl_bus_type is not intialized yet. I think this should
->address it:
+Personally I'd prefer we left that job to userspace.
 
-Yep, thanks.
+We could also implement GET_ATTR, in case userspace has forgotten what
+it wrote to the hypercall filter. The firmware pseudo-registers are
+handy for moving KVM state back and forth 'for free', but I don't think
+we need to bend over backwards to migrate state userspace is directly
+responsible for.
 
->
->diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
->index 0faeb1ffc212..6fe00702327f 100644
->--- a/drivers/cxl/core/port.c
->+++ b/drivers/cxl/core/port.c
->@@ -2011,6 +2011,6 @@ static void cxl_core_exit(void)
->	debugfs_remove_recursive(cxl_debugfs);
-> }
->
->-module_init(cxl_core_init);
->+subsys_initcall(cxl_core_init);
-> module_exit(cxl_core_exit);
-> MODULE_LICENSE("GPL v2");
+-- 
+Thanks,
+Oliver
