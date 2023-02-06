@@ -2,170 +2,139 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F376468C9B4
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 23:41:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B504B68C9B8
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 23:43:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229832AbjBFWlc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Feb 2023 17:41:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55464 "EHLO
+        id S229878AbjBFWnm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Feb 2023 17:43:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229536AbjBFWlb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 17:41:31 -0500
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFAAA27D6B;
-        Mon,  6 Feb 2023 14:41:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675723290; x=1707259290;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=icL/vzCvDKIx0vVTt7mGj47ZeqruLivskwmA6EaeK0c=;
-  b=A0QkaSr3fnWQlvqX+68zWwTCXP5JspteYKw0Rupjcoim0XdJxL/GjT/X
-   rtsDPW1EdRhKISQ81xB8nVxPIX8qU22N50977rH7eyzdbRyuCvtRzmCfe
-   PIUoBnHDrkQCy+XP7wSFZ5A3heE+VpBr8xiXZpOTaRLwc71YM9qQ6bjWe
-   JIDYB5RM1FMzUnP/P+nbbHbzQv5Pwt+NU5CzNc3lOCLlOLibfNK8t9Oqt
-   i+7dWgRikDaue6lYBMmNypw6eyqLKJ150f588obEnNaI/XsJTte1ddYrI
-   DaLSq778T1KUrQ+8Zk/XO8HXJD8RpU1kwut11g1FE9kv7bZNFbgWLhwP1
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10613"; a="329349460"
-X-IronPort-AV: E=Sophos;i="5.97,276,1669104000"; 
-   d="scan'208";a="329349460"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2023 14:41:30 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10613"; a="775298862"
-X-IronPort-AV: E=Sophos;i="5.97,276,1669104000"; 
-   d="scan'208";a="775298862"
-Received: from djiang5-mobl3.amr.corp.intel.com (HELO [10.212.111.195]) ([10.212.111.195])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2023 14:41:30 -0800
-Message-ID: <e7277580-eb0c-4ea2-ac96-eb80a1e56c1b@intel.com>
-Date:   Mon, 6 Feb 2023 15:41:29 -0700
+        with ESMTP id S229536AbjBFWnl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 17:43:41 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1E0C1A0;
+        Mon,  6 Feb 2023 14:43:40 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C38161052;
+        Mon,  6 Feb 2023 22:43:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7066C433D2;
+        Mon,  6 Feb 2023 22:43:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675723419;
+        bh=LcWE6lqyUx1tYRkadazTCvdsU9i6nzatE7AvkG7OvbA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=mlpMXJm3wRMm5Koi6JzJMibFX3jucmzuN07kJ+G7q1mAb6gcv6rD+JVPGOeg5Mezs
+         uQjLxyStL3ZnRI1FeOKqepOUN9S0X3Q+bTaGmbDUjzpPX7FGbae8o8DQqbVjf+oHP6
+         26M1+esJr8/94E5oFmctoZoA1CxxxUn6mx5EUvtgZLmbU3+zUhGsqrfzStOu53zReb
+         aldlSGuS7+CIcp1wmo17JqtVKnU4SRxWy7ED3a9MqzRMbr7xQN8eJMq6ZCld0JOBlZ
+         VdR5rvQJ3GIqbSIE7Z2oF07T2sggATFvM/YJM2PofCRbHwYjt2FjuE2o6iQ7CoH9/s
+         fSvESnAROVnRg==
+Date:   Mon, 6 Feb 2023 16:43:38 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Dave Jiang <dave.jiang@intel.com>
+Cc:     linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, dan.j.williams@intel.com,
+        ira.weiny@intel.com, vishal.l.verma@intel.com,
+        alison.schofield@intel.com, rafael@kernel.org, bhelgaas@google.com,
+        robert.moore@intel.com
+Subject: Re: [PATCH 11/18] PCI: Export pcie_get_width() using the code from
+ sysfs PCI link width show function
+Message-ID: <20230206224338.GA2256550@bhelgaas>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.6.0
-Subject: Re: [PATCH 06/18] cxl/region: Refactor attach_target() for
- autodiscovery
-Content-Language: en-US
-To:     Dan Williams <dan.j.williams@intel.com>, linux-cxl@vger.kernel.org
-Cc:     dave.hansen@linux.intel.com, linux-mm@kvack.org,
-        linux-acpi@vger.kernel.org
-References: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
- <167564538227.847146.16305045998592488364.stgit@dwillia2-xfh.jf.intel.com>
-From:   Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <167564538227.847146.16305045998592488364.stgit@dwillia2-xfh.jf.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <167571666013.587790.16270669112177554916.stgit@djiang5-mobl3.local>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Mon, Feb 06, 2023 at 01:51:01PM -0700, Dave Jiang wrote:
+> Move the logic in current_link_width_show() to a common function and export
+> that functiuon as pcie_get_width() to allow other drivers to to retrieve
+> the current negotiated link width.
 
+s/a common function and export that functiuon and export that functiuon as//
 
-On 2/5/23 6:03 PM, Dan Williams wrote:
-> Region autodiscovery is the process of kernel creating 'struct
-> cxl_region' object to represent active CXL memory ranges it finds
-> already active in hardware when the driver loads. Typically this happens
-> when platform firmware establishes CXL memory regions and then publishes
-> them in the memory map. However, this can also happen in the case of
-> kexec-reboot after the kernel has created regions.
-> 
-> In the autodiscovery case the region creation process starts with a
-> known endpoint decoder. Refactor attach_target() into a helper that is
-> suitable to be called from either sysfs, for runtime region creation, or
-> from cxl_port_probe() after it has enumerated all endpoint decoders.
-> 
-> The cxl_port_probe() context is an async device-core probing context, so
-> it is not appropriate to allow SIGTERM to interrupt the assembly
-> process. Refactor attach_target() to take @cxled and @state as arguments
-> where @state indicates whether waiting from the region rwsem is
-> interruptible or not.
-> 
-> No behavior change is intended.
-> 
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+I don't see the module caller of this, so not clear on why it needs to
+be exported.
 
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 > ---
->   drivers/cxl/core/region.c |   47 +++++++++++++++++++++++++++------------------
->   1 file changed, 28 insertions(+), 19 deletions(-)
+>  drivers/pci/pci-sysfs.c |    9 +--------
+>  drivers/pci/pci.c       |   20 ++++++++++++++++++++
+>  include/linux/pci.h     |    1 +
+>  3 files changed, 22 insertions(+), 8 deletions(-)
 > 
-> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-> index 8dea49c021b8..97eafdd75675 100644
-> --- a/drivers/cxl/core/region.c
-> +++ b/drivers/cxl/core/region.c
-> @@ -1418,31 +1418,25 @@ void cxl_decoder_kill_region(struct cxl_endpoint_decoder *cxled)
->   	up_write(&cxl_region_rwsem);
->   }
->   
-> -static int attach_target(struct cxl_region *cxlr, const char *decoder, int pos)
-> +static int attach_target(struct cxl_region *cxlr,
-> +			 struct cxl_endpoint_decoder *cxled, int pos,
-> +			 unsigned int state)
->   {
-> -	struct device *dev;
-> -	int rc;
-> -
-> -	dev = bus_find_device_by_name(&cxl_bus_type, NULL, decoder);
-> -	if (!dev)
-> -		return -ENODEV;
-> -
-> -	if (!is_endpoint_decoder(dev)) {
-> -		put_device(dev);
+> diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+> index 0217bb5ca8fa..139096c39380 100644
+> --- a/drivers/pci/pci-sysfs.c
+> +++ b/drivers/pci/pci-sysfs.c
+> @@ -215,15 +215,8 @@ static ssize_t current_link_width_show(struct device *dev,
+>  				       struct device_attribute *attr, char *buf)
+>  {
+>  	struct pci_dev *pci_dev = to_pci_dev(dev);
+> -	u16 linkstat;
+> -	int err;
+>  
+> -	err = pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &linkstat);
+> -	if (err)
 > -		return -EINVAL;
-> -	}
-> +	int rc = 0;
->   
-> -	rc = down_write_killable(&cxl_region_rwsem);
-> +	if (state == TASK_INTERRUPTIBLE)
-> +		rc = down_write_killable(&cxl_region_rwsem);
-> +	else
-> +		down_write(&cxl_region_rwsem);
->   	if (rc)
-> -		goto out;
-> +		return rc;
+> -
+> -	return sysfs_emit(buf, "%u\n",
+> -		(linkstat & PCI_EXP_LNKSTA_NLW) >> PCI_EXP_LNKSTA_NLW_SHIFT);
+> +	return sysfs_emit(buf, "%u\n", pcie_get_width(pci_dev));
+>  }
+>  static DEVICE_ATTR_RO(current_link_width);
+>  
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index d0131b5623b1..0858fa2f1c2d 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -6235,6 +6235,26 @@ enum pci_bus_speed pcie_get_speed(struct pci_dev *dev)
+>  }
+>  EXPORT_SYMBOL(pcie_get_speed);
+>  
+> +/**
+> + * pcie_get_width - query for the PCI device's current link width
+> + * @dev: PCI device to query
+> + *
+> + * Query the PCI device current negoiated width.
+> + */
 > +
->   	down_read(&cxl_dpa_rwsem);
-> -	rc = cxl_region_attach(cxlr, to_cxl_endpoint_decoder(dev), pos);
-> +	rc = cxl_region_attach(cxlr, cxled, pos);
->   	if (rc == 0)
->   		set_bit(CXL_REGION_F_INCOHERENT, &cxlr->flags);
->   	up_read(&cxl_dpa_rwsem);
->   	up_write(&cxl_region_rwsem);
-> -out:
-> -	put_device(dev);
->   	return rc;
->   }
->   
-> @@ -1480,8 +1474,23 @@ static size_t store_targetN(struct cxl_region *cxlr, const char *buf, int pos,
->   
->   	if (sysfs_streq(buf, "\n"))
->   		rc = detach_target(cxlr, pos);
-> -	else
-> -		rc = attach_target(cxlr, buf, pos);
-> +	else {
-> +		struct device *dev;
+> +enum pcie_link_width pcie_get_width(struct pci_dev *dev)
+> +{
+> +	u16 linkstat;
+> +	int err;
 > +
-> +		dev = bus_find_device_by_name(&cxl_bus_type, NULL, buf);
-> +		if (!dev)
-> +			return -ENODEV;
+> +	err = pcie_capability_read_word(dev, PCI_EXP_LNKSTA, &linkstat);
+> +	if (err)
+> +		return PCIE_LNK_WIDTH_UNKNOWN;
 > +
-> +		if (!is_endpoint_decoder(dev)) {
-> +			rc = -EINVAL;
-> +			goto out;
-> +		}
+> +	return FIELD_GET(PCI_EXP_LNKSTA_NLW, linkstat);
+> +}
+> +EXPORT_SYMBOL(pcie_get_width);
 > +
-> +		rc = attach_target(cxlr, to_cxl_endpoint_decoder(dev), pos,
-> +				   TASK_INTERRUPTIBLE);
-> +out:
-> +		put_device(dev);
-> +	}
->   
->   	if (rc < 0)
->   		return rc;
+>  /**
+>   * pcie_bandwidth_capable - calculate a PCI device's link bandwidth capability
+>   * @dev: PCI device
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index 6a065986ff8f..21eca09a98e2 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -305,6 +305,7 @@ enum pci_bus_speed {
+>  
+>  enum pci_bus_speed pcie_get_speed(struct pci_dev *dev);
+>  enum pci_bus_speed pcie_get_speed_cap(struct pci_dev *dev);
+> +enum pcie_link_width pcie_get_width(struct pci_dev *dev);
+>  enum pcie_link_width pcie_get_width_cap(struct pci_dev *dev);
+>  
+>  struct pci_vpd {
+> 
 > 
