@@ -2,63 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E07E068C72C
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 20:59:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 50D0A68C74A
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 21:09:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229893AbjBFT7x (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Feb 2023 14:59:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43174 "EHLO
+        id S229960AbjBFUJK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Feb 2023 15:09:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229664AbjBFT7v (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 14:59:51 -0500
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18B542A15F
-        for <linux-acpi@vger.kernel.org>; Mon,  6 Feb 2023 11:59:42 -0800 (PST)
-Received: by mail-pl1-x62d.google.com with SMTP id h15so5995544plk.12
-        for <linux-acpi@vger.kernel.org>; Mon, 06 Feb 2023 11:59:42 -0800 (PST)
+        with ESMTP id S229963AbjBFUJI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 15:09:08 -0500
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C53D71DBBE
+        for <linux-acpi@vger.kernel.org>; Mon,  6 Feb 2023 12:09:05 -0800 (PST)
+Received: by mail-pj1-x102e.google.com with SMTP id d6-20020a17090ae28600b00230aa72904fso4379888pjz.5
+        for <linux-acpi@vger.kernel.org>; Mon, 06 Feb 2023 12:09:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uiqZzp1m6352u9cE1eTVGIt8ZCSyeo/MwstDjspPGas=;
-        b=X27CqPSsZHQj8wN4Zy+tCNfMySdafRcmUSE8JzjGIH+rCnqM91u56FQY9n4Y9tOoiC
-         1badUOr4gvDkC9HegyTNqkS7PXVXlX0sIr7kWdyUFtsNji1ndIebzZaVswFJtJR3bUNN
-         9sDvxqWHi+h5dfFzV9bdCPzgAKA6NCi88rrWMu5KGixVf59j16rf5PyPISLFZxb2VNJM
-         a9PDMPA2A17USw3ZNEujFVGfsZp5hlr4m8EUbi4QT8blftjOvcC6oqn5P/Ch4sAe/3wi
-         qy7dqYpEnvArK2PK38Sw4pAM7NRN0UW/tAknCTL2B7xpLDydxFD3PZVrQcpuMeAxg6Aj
-         wnxQ==
+        bh=g8zQ21lgm/+hysyLZDWkcJECUGjBC4CaZ4mgsX1s5q0=;
+        b=O9Ya8X/CYW79qvsDBwCU4QasH/GJVsFJdbauSxy3ALcMP6Td/e++Sr2/Kk6Y/0Bi8A
+         HExajCOknNGEaSGBqbSIS45SYN+jvrVOYSflvwXC3/9Qjgfb0vkmu/mC3BtSnmYO9Azo
+         YPq/Mke+7pPZKPUQgwb8ALjXPF1KrfIvJzJ39kARqaWQOILz2ekiU1kAmdv7kLwwoYFq
+         Swvoy0nXykBQyGQaOv/e5ca1b3v6nwtm5i0x5rsR/qHbJEI7HvDPoGHOVfAIrnCwXGAV
+         Ve4YLBD8wxoPxTg47Ch0cATZ7vPGTBikjD33kVkmh+AQic7pGD32UqcBXm345/EvJKI8
+         8QpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=uiqZzp1m6352u9cE1eTVGIt8ZCSyeo/MwstDjspPGas=;
-        b=W5fsXvS4KmnVmke2LjiZxreMZpZiWKR/8IiL0BPfJZCF8+i04iud3oghpR047JureT
-         504aGSHgmqiNCTkFLo/2/qnlhq7gZKQQo3GI+02Mg9oMs6C0D09NFkNEhJJlYq4B/jpQ
-         KPU/QzUuJ7Oh6Kq89x/bNErtcM4LpprRZdbLJQcSoRmc11tYDFWJm3tHHSINvjdfZIG9
-         8Ep5v1XE2rRsiIwMmLuGgb7Il/vci8F/1/ADmTTyZEsw2IK3DBM4IPzx/sZo3itxagF2
-         jreDkvaoEGTYf3oR7KhUuSXCC0+gZEgqZU4EzHkEvOa2yAJkzBQaw6SgXy2hmBts9C1K
-         cwgg==
-X-Gm-Message-State: AO0yUKVUl4PGrWHF5vWq2JmJHjRN/NkCSzEahNfqD7ku786kpUvgHDph
-        qXduBZfgWsxuWiI0X+8JLeFUJpIbeI4dymItHvl4AA==
-X-Google-Smtp-Source: AK7set+JyeT7jLCGiKnvTEWqHa2pc44cY6ErYmbe7Od9zICdWyAargVkqjl6Av0+DBNxVvLuGTkSjpMxdGScNPiv2V8=
-X-Received: by 2002:a17:902:ed52:b0:199:62c:15f1 with SMTP id
- y18-20020a170902ed5200b00199062c15f1mr23982plb.12.1675713581212; Mon, 06 Feb
- 2023 11:59:41 -0800 (PST)
+        bh=g8zQ21lgm/+hysyLZDWkcJECUGjBC4CaZ4mgsX1s5q0=;
+        b=scg6su9sJwrJCsGpiAZUQObDZg+1RkFrUX1KVSo9Qjp7lJSzEXc7NSayyyZGFAFFr2
+         LnOSEc3GwGB+wyagwhfu96X4lB5OMF6VyNdAqpL8lZanFY7dl/nbrb2MZXM3Bi6/BO+2
+         xpWpXA3LAmg98dHktdSXj9oQbHTRl/mPVGRosz8HMPFmQB5DWJqsvVst49eUCzBku12i
+         LtzmfnP/Qx4IS6gIFATNjDverkZdvWzM4LehSuIV4RuQf3SEWLxw3LUVCECeTZqa5+Q3
+         kVCVyuJkQ+zrau/A+znbZ/rIozAIS8Wf6yUtgvpilSJfSeKFuYPtP8EphY0D8aV5xy6J
+         T83w==
+X-Gm-Message-State: AO0yUKWN+k9/qv36RwCcnU4W122DrPe7BhGbVKkQ6auB7KOJzwxHW89g
+        r82EgSgjoEieS5er9aSt52SOqDH9/WY95HOqCNXoIw==
+X-Google-Smtp-Source: AK7set/KBPOtO+P54MX/LciN9urMG1z25fzyBFed50xf4hc+H6GtlXs0JkU2MZxc6mAROsbMMvV71vF/eDS3vFQiFbE=
+X-Received: by 2002:a17:90a:187:b0:22c:ad5e:e1e3 with SMTP id
+ 7-20020a17090a018700b0022cad5ee1e3mr3608581pjc.141.1675714144798; Mon, 06 Feb
+ 2023 12:09:04 -0800 (PST)
 MIME-Version: 1.0
 References: <20230127001141.407071-1-saravanak@google.com> <20230130085542.38546-1-naresh.kamboju@linaro.org>
  <CAGETcx_411fVxsM-ZMK7j2Bvkmi2TKPbzSuD+03M3cb7WKHfJw@mail.gmail.com>
  <20230131101813.goaoy32qvrowvyyb@bogus> <CALHCpMijXAgQx2qq8g8zdq=6AHwP+g5WVBjjry=v+dKEq9KDLw@mail.gmail.com>
  <CAGETcx_UvW819m1Y-QU_ySB1nG_RegKKT06=YjkK=C_qjbAySw@mail.gmail.com>
  <CALHCpMha_1nXt4rUe+A184XSWpyNk0_PkYjWZ+tUN7BJWqENLA@mail.gmail.com>
- <CAGETcx_uri6exkv1Jkzmc4PyEam9yjuH2H1zrq4LYNtJ+XDMWw@mail.gmail.com> <CAL_Jsq+rLZuQYn-90C1gy_uGEXiGeDNZ3OfumTFcx4pP97sXsg@mail.gmail.com>
-In-Reply-To: <CAL_Jsq+rLZuQYn-90C1gy_uGEXiGeDNZ3OfumTFcx4pP97sXsg@mail.gmail.com>
+ <CAGETcx_uri6exkv1Jkzmc4PyEam9yjuH2H1zrq4LYNtJ+XDMWw@mail.gmail.com> <20230206103912.7db5ed72@xps-13>
+In-Reply-To: <20230206103912.7db5ed72@xps-13>
 From:   Saravana Kannan <saravanak@google.com>
-Date:   Mon, 6 Feb 2023 11:59:04 -0800
-Message-ID: <CAGETcx96eBBSfHhPvLBxPwUqwF88cv72KxKQ7tJ=3dYDt8JjGQ@mail.gmail.com>
+Date:   Mon, 6 Feb 2023 12:08:28 -0800
+Message-ID: <CAGETcx-0VboaAeoa+_AqDtrDj6v6ZytFj6pU-FVyAu-pk-hG6A@mail.gmail.com>
 Subject: Re: [PATCH v2 00/11] fw_devlink improvements
-To:     Rob Herring <robh+dt@kernel.org>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>
 Cc:     Maxim Kiselev <bigunclemax@gmail.com>,
         Sudeep Holla <sudeep.holla@arm.com>,
         Naresh Kamboju <naresh.kamboju@linaro.org>,
@@ -77,9 +77,10 @@ Cc:     Maxim Kiselev <bigunclemax@gmail.com>,
         linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
         linux@roeck-us.net, lkft@linaro.org, luca.weiss@fairphone.com,
         magnus.damm@gmail.com, martin.kepplinger@puri.sm, maz@kernel.org,
-        miquel.raynal@bootlin.com, rafael@kernel.org,
-        s.hauer@pengutronix.de, sakari.ailus@linux.intel.com,
-        shawnguo@kernel.org, tglx@linutronix.de, tony@atomide.com
+        rafael@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de,
+        sakari.ailus@linux.intel.com, shawnguo@kernel.org,
+        tglx@linutronix.de, tony@atomide.com,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
@@ -93,11 +94,15 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 6, 2023 at 7:19 AM Rob Herring <robh+dt@kernel.org> wrote:
+On Mon, Feb 6, 2023 at 1:39 AM Miquel Raynal <miquel.raynal@bootlin.com> wr=
+ote:
 >
-> On Sun, Feb 5, 2023 at 7:33 PM Saravana Kannan <saravanak@google.com> wro=
-te:
-> >
+> Hi Saravana,
+>
+> + Srinivas, nvmem maintainer
+>
+> saravanak@google.com wrote on Sun, 5 Feb 2023 17:32:57 -0800:
+>
 > > On Fri, Feb 3, 2023 at 1:39 AM Maxim Kiselev <bigunclemax@gmail.com> wr=
 ote:
 > > >
@@ -208,37 +213,114 @@ me
 > > patch didn't help.
 > >
 > > After staring at mtd/nvmem code for a few hours I think mtd/nvmem
-> > interaction is kind of a mess. mtd core creates "partition" platform
+> > interaction is kind of a mess.
+>
+> nvmem is a recent subsystem but mtd carries a lot of legacy stuff we
+> cannot really re-wire without breaking users, so nvmem on top of mtd
+> of course inherit from the fragile designs in place.
+
+Thanks for the context. Yeah, I figured. That's why I explicitly
+limited my comment to "interaction". Although, I'd love to see the MTD
+parsers all be converted to proper drivers that probe. MTD is
+essentially repeating the driver matching logic. I think it can be
+cleaned up to move to proper drivers and still not break backward
+compatibility. Not saying it'll be trivial, but it should be possible.
+Ironically MTD uses mtd_class but has real drivers that work on the
+device (compared to nvmem_bus below).
+
+> > mtd core creates "partition" platform
 > > devices (including for nvmem-cells) that are probed by drivers in
 > > drivers/nvmem. However, there's no driver for "nvmem-cells" partition
 > > platform device. However, the nvmem core creates nvmem_device when
 > > nvmem_register() is called by MTD or these partition platform devices
 > > created by MTD. But these nvmem_devices are added to a nvmem_bus but
 > > the bus has no means to even register a driver (it should really be a
-> > nvmem_class and not nvmem_bus). And the nvmem_device sometimes points
+> > nvmem_class and not nvmem_bus).
+>
+> Srinivas, do you think we could change this?
+
+Yeah, this part gets a bit tricky. It depends on whether the sysfs
+files for nvmem devices is considered an ABI. Changing from bus to
+class would change the sysfs path for nvmem devices from:
+/sys/class/nvmem to /sys/bus/nvmem
+
+> > And the nvmem_device sometimes points
 > > to the DT node of the MTD device or sometimes the partition platform
 > > devices or maybe no DT node at all.
-> >
+>
+> I guess this comes from the fact that this is not strongly defined in
+> mtd and depends on the situation (not mentioning 20 years of history
+> there as well). "mtd" is a bit inconsistent on what it means. Older
+> designs mixed: controllers, ECC engines when relevant and memories;
+> while these three components are completely separated. Hence
+> sometimes the mtd device ends up being the top level controller,
+> sometimes it's just one partition...
+>
+> But I'm surprised not all of them point to a DT node. Could you show us
+> an example? Because that might likely be unexpected (or perhaps I am
+> missing something).
+
+Well, the logic that sets the DT node for nvmem_device is like so:
+
+        if (config->of_node)
+                nvmem->dev.of_node =3D config->of_node;
+        else if (!config->no_of_node)
+                nvmem->dev.of_node =3D config->dev->of_node;
+
+So there's definitely a path (where both if's could be false) where
+the DT node will not get set. I don't know if that path is possible
+with the existing users of nvmem_register(), but it's definitely
+possible.
+
 > > So it's a mess of multiple devices pointing to the same DT node with
 > > no clear way to identify which ones will point to a DT node and which
 > > ones will probe and which ones won't. In the future, we shouldn't
 > > allow adding new compatible strings for partitions for which we don't
 > > plan on adding nvmem drivers.
+> >
+> > Can you give the patch at the end of the email a shot? It should fix
+> > the issue with this series and without this series. It just avoids
+> > this whole mess by not creating useless platform device for
+> > nvmem-cells compatible DT nodes.
 >
-> That won't work. Having a compatible string cannot mean there must be a d=
-river.
+> Thanks a lot for your help.
 
-Right, I know what you mean Rob and I know where you are coming from
-(DT isn't just about Linux or even driver core). But what I'm saying
-is that this seems to already be the case for MTD partitions after
-commit:
-bcdf0315a61a mtd: call of_platform_populate() for MTD partitions
+No problem. I want fw_devlink to work for everyone.
 
-So, if we are adding compatible properties only for some of them, then
-I'm saying we should make sure people write drivers for them going
-forward.
+> >
+> > Thanks,
+> > Saravana
+> >
+> > diff --git a/drivers/mtd/mtdpart.c b/drivers/mtd/mtdpart.c
+> > index d442fa94c872..88a213f4d651 100644
+> > --- a/drivers/mtd/mtdpart.c
+> > +++ b/drivers/mtd/mtdpart.c
+> > @@ -577,6 +577,7 @@ static int mtd_part_of_parse(struct mtd_info *maste=
+r,
+> >  {
+> >         struct mtd_part_parser *parser;
+> >         struct device_node *np;
+> > +       struct device_node *child;
+> >         struct property *prop;
+> >         struct device *dev;
+> >         const char *compat;
+> > @@ -594,6 +595,10 @@ static int mtd_part_of_parse(struct mtd_info *mast=
+er,
+> >         else
+> >                 np =3D of_get_child_by_name(np, "partitions");
+> >
+> > +       for_each_child_of_node(np, child)
+> > +               if (of_device_is_compatible(child, "nvmem-cells"))
+> > +                       of_node_set_flag(child, OF_POPULATED);
+>
+> What about a comment explaining why we need that in the final patch
+> (with a comment)? Otherwise it's a little bit obscure.
 
-I don't know enough about MTD partitions to know why only some of them
-have compatible properties.
+This wasn't meant to be reviewed :) Just a quick patch to make sure
+I'm going down the right path. Once Maxim confirms I was going to roll
+this into a proper patch.
 
--Saravana
+But point noted. Will add a comment.
+
+Thanks,
+Saravana
