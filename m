@@ -2,164 +2,218 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1BE168C9D3
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 23:54:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68F7868C834
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 22:04:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229879AbjBFWyZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Feb 2023 17:54:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60908 "EHLO
+        id S229447AbjBFVEJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Feb 2023 16:04:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229745AbjBFWyW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 17:54:22 -0500
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2065.outbound.protection.outlook.com [40.107.92.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F246A30B19;
-        Mon,  6 Feb 2023 14:54:19 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DvPNaZaybCICAO7WyI2yzSegZMbRTk6OPpv/6+MWGHRQGff+lEag6BgCWXZvLoUpVXzdMyw20gnHWTwucgs9q1wKtlIjJc8AhupGcvOWlOjbFiV31pkvgGrvhRHUmMnrmttLO97t22lOma94xEIzXhYZUKV3B6VMvkvFML1ZcVaSmOuXbhQZ5UjPCSi3AeXToSGP2iZaU7vCrbA9Ka1Z0Sw4akJN61GeDdkekFd3VElu0JmC8aoZYkANrNjp9RKxgnh9z/MaQVQueG9JKebUdM0edFmVRN6jr4bjTR+Qa8h4l0SPjCYNlCxDhCQxPlZw9TrXWUnrcQ16hHq2nIWszw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4bb8jCOTM2gb8DMT6ila7Mgf5ik9dm/bOrt1zl8RwRQ=;
- b=TAFoMdBY00nbUSMX6gx+T76Ie2OtLxjojPbbH8kIJZd5GJu8ra9Anm415GzhJKmdCmgZ37RhI42dGcPzibAibaFPRcXdv00NyZC6cVO6wDpQcY6O4iOw8hw81zAOWdGM7G5oRsRE6BnCpQBxN1R7qc1g+tZx0QZtuqKPLCQKIZz3XxC8veKigDV6enjGM70MQ/kC1FdDR5RDaYtQ0wowHqxsAWKrXtrwTkSrHeuyAlphGQq1m0IxO6FXlozXmyLavuN2DzpdqPXnjalDNFo38Umno2+HC9edS1hTLSwY5ym28LpL3DlyJawi9j7GzWQamWOaGmNCK8vaBvyOAthD4Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=memverge.com; dmarc=pass action=none header.from=memverge.com;
- dkim=pass header.d=memverge.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=memverge.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4bb8jCOTM2gb8DMT6ila7Mgf5ik9dm/bOrt1zl8RwRQ=;
- b=LsbsolV1F0h68sZw5QCHlNDJSXvDBB+SMJFzd5x/q12alMNLQqCVHf6X9JkkHp9N2hXBxxxtt0LO9XaOfdA3lobumtzzRQLoZa+ts7oKooGHq9RIas4cJlnXUUbdKXjXFzE29zsd5kN10+QiIR0vcXFdt+Y5ysB3nAxfhoBWfW0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=memverge.com;
-Received: from BN6PR17MB3121.namprd17.prod.outlook.com (2603:10b6:405:7c::19)
- by MN2PR17MB3999.namprd17.prod.outlook.com (2603:10b6:208:202::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6064.34; Mon, 6 Feb
- 2023 22:54:17 +0000
-Received: from BN6PR17MB3121.namprd17.prod.outlook.com
- ([fe80::d253:1eb3:9347:c660]) by BN6PR17MB3121.namprd17.prod.outlook.com
- ([fe80::d253:1eb3:9347:c660%4]) with mapi id 15.20.6064.034; Mon, 6 Feb 2023
- 22:54:17 +0000
-Date:   Mon, 6 Feb 2023 14:05:45 -0500
-From:   Gregory Price <gregory.price@memverge.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     linux-cxl@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
-        David Hildenbrand <david@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 17/18] dax: Assign RAM regions to memory-hotplug by
- default
-Message-ID: <Y+FPiePV0Pn561yw@memverge.com>
-References: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
- <167564544513.847146.4645646177864365755.stgit@dwillia2-xfh.jf.intel.com>
- <Y+E4UGJhKXIj7ssm@memverge.com>
- <63e17c1c4f8a3_e3dae29457@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <63e17c1c4f8a3_e3dae29457@dwillia2-xfh.jf.intel.com.notmuch>
-X-ClientProxiedBy: SJ0PR03CA0115.namprd03.prod.outlook.com
- (2603:10b6:a03:333::30) To BN6PR17MB3121.namprd17.prod.outlook.com
- (2603:10b6:405:7c::19)
+        with ESMTP id S229550AbjBFVEI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 16:04:08 -0500
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42FB3B444;
+        Mon,  6 Feb 2023 13:04:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675717447; x=1707253447;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ehhTh2z9Y6QKN8C0AvGM3mrZyVdoETrxIgPO6fX6tu0=;
+  b=UihYyZ2NBmwFpNCfxNxDYYx+Hq/1vuvKDwTHTX4XSyQYzyq0oIxRVBYb
+   U5JvtraAtRDwSej+LmIdqWb4Yw9E+Ov6kfGCy/9gD8OmPF1BoA5BDmTaR
+   ovE2aIpPOiSC51VdD7nzNflMlfMm2FujHjbAn6K8RnkcJiKKcyOGtR1+z
+   dPfFwq5kZFZzCMOAw4hd6QhuxUGnTBNDPDLG2f+UPK1QSbt9I58xhfrnd
+   fdJc8gl9IW7wsRYMAdfAOfhQXdIO/XFRkgZOdvr9FvdM7CbwGSSFxk6rd
+   z7ZHQ/MFn2YpzCEdzpT3h9lsKUmxWgKhnZY0wuZZ8Lexny/1jpRwGvzNh
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10613"; a="312969099"
+X-IronPort-AV: E=Sophos;i="5.97,276,1669104000"; 
+   d="scan'208";a="312969099"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2023 13:04:06 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10613"; a="659972825"
+X-IronPort-AV: E=Sophos;i="5.97,276,1669104000"; 
+   d="scan'208";a="659972825"
+Received: from djiang5-mobl3.amr.corp.intel.com (HELO [10.212.111.195]) ([10.212.111.195])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2023 13:04:06 -0800
+Message-ID: <283ddb72-d2ed-1c48-01e9-b470bbd007cb@intel.com>
+Date:   Mon, 6 Feb 2023 14:04:05 -0700
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN6PR17MB3121:EE_|MN2PR17MB3999:EE_
-X-MS-Office365-Filtering-Correlation-Id: fb850aa3-ce16-4d12-120a-08db08951362
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 2V6GaeMloasgGh/J2OMfjDOSwHvTyi9ppmoRe0+4/vnCiy+PdxU/j95zJzEM0Fu6BB8v7AOuueyMs1p3Co5fULUb1kvOH5fMIzXPIdhunP8ox67TCzRmUuVESt0k1bSnPIWKp1qkdWKa56dHb4BuI3dXOfa8cE8YH44gBZIzUK7rqk20/ajks5/oyodTp5NAYoO5mCaFwUXKHr4fb/OpdnpNbLnoxZWSC0MEI/KGus9IVoJFmaM71MdjylUy0OgAqQjBp9lEtSTqGTIDlFhN10+3FguJijgJ08rGAv6SEWcW2nXqPYjntklm3tiTeco3AOnjvdKLYQ5pz9rXmwbPQxg1mm9r0gqCxAHFapXFJg18hW4I7qBrMfdJ/L7hl0N/uF6nRn89cc1dJa7xcZyeSiyNpvqmEd0SLP3OCko8xGP/yAF8txpYeh5IE5qwtbx6DXu1U0Ovjaq8KpIl0CwMLuI+27MStQKphavbIfMna6GzRyggNI5CsUb4+CNrYONJqRLXewsiRiJ+EFW4gkbLlKNcru3mRdlDZVRgg69TQKMTuOX0my5D+r8wzddZNZdav2Q7s2Z1UhWshr5YA6pye1nPHWWiepNwCUTTBizfc0po2K7Lfie/Rk855K5w0uVf9FppkiM2pE6/pOHih3jmD9oNeL7TGUBDps5c4KUZLfxS5s18t9XgZ7nJs+TaM60P
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR17MB3121.namprd17.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(346002)(396003)(136003)(39850400004)(366004)(376002)(451199018)(6486002)(54906003)(316002)(478600001)(36756003)(2906002)(38100700002)(86362001)(2616005)(83380400001)(6916009)(66946007)(66476007)(4326008)(5660300002)(8676002)(6666004)(8936002)(41300700001)(44832011)(66556008)(6506007)(6512007)(186003)(26005)(67856001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?20mqZJirYXDuevE6RTd8e634mkp5DvdyPMC+Y4Xehlf69ONhrt38AuFYYCid?=
- =?us-ascii?Q?iaJVKXEhQ3nWTKMwDlX7Y+jRAXQ2DTF4dqBcozNyVCsDCkKIzj/UwuTk0HYj?=
- =?us-ascii?Q?KEXMCYyfPuVjsuxN1CN3h2Zen8StHnwBZtxdze/7qtCBD1eNQDkr3Fzy4QNr?=
- =?us-ascii?Q?NsZncIloX5qYZgsLGPkcplh15cPYOEkl/AL11Vy+qVuoISI6JWIoKbukCtiP?=
- =?us-ascii?Q?O4DdNNLjIA0xU7/V+9YPnxVEH7qumItvHVekBn9hChUOL0tfMd2oYp9FswWt?=
- =?us-ascii?Q?e0PpOAwyTfrPKil0NpbZo5caJHi8AkvkiIC9Wp+D517swxEWKoVw2vSspAJe?=
- =?us-ascii?Q?HU7rqsZ/lilrboxFOYhToC2fCcMkH/lRq4LBM+BIMXJF2TP65LpEE7UZ2MMY?=
- =?us-ascii?Q?DAxpYCwVB/dymkkP8df4p8RF9yjgVCl2aGBfgwETsXiampacXk9ot2zGI3Ip?=
- =?us-ascii?Q?mgzxsbBQZevJOnvQTsfaU5qZP3BP8NlBV4emuwAuOsfOc/C8LOeEvQNA4Kpi?=
- =?us-ascii?Q?nH1TqfidLpI9Czqa77PM6O+Qec8UTELAsoB/OmE5k0ASc+2xy5gNd1OXb1lq?=
- =?us-ascii?Q?PyiroRzx1+9bPcBpKPu1gIB4O8Aw6+c05kgQ+VdDNAnTJ0fI7tP8hUzda3h7?=
- =?us-ascii?Q?wIHiVUGg2jWLvnKm9hmkyxxfoOZLez4vdvZFO9+JbjpBUDu/vJnR2zpnv3sO?=
- =?us-ascii?Q?rT3canFRLVdgnLqWSvpAoN/k9ghm99ryHJSf18+OxINoO/VPsMmJ2cl0ff0J?=
- =?us-ascii?Q?UKyc/zwY9+OfbR1cKUazFGy7IRnk1v5D7QOOBJodzvpn/RX4a6D6/icr5cjl?=
- =?us-ascii?Q?u2JN/iSebvYkpuEpw4y/isjsmP7ZXqI7YJieKUMC+mHi51j4NCTTIqHJKsGm?=
- =?us-ascii?Q?FUhd6M5m8hum4ko2pnb38dvZ0KeYVvF9fRQD9l0CnYHHtoio1IsIV01NK+1k?=
- =?us-ascii?Q?3y3ok8CjGJzFSTtvISJkPU0UXT3YlZIPio//OwwDiSPhwvKiXOAYefm1U/+o?=
- =?us-ascii?Q?13MAVsXSlFyJy5k1rBc+sshHfJer58/UbT2AR77hr86Ydgcjb+9KSxOGF6Su?=
- =?us-ascii?Q?z6vSfaSN3KoJHBlesac1u5oC2n+n1AJnRuw60/Lu3adNj47vDdYA/FfmzMKp?=
- =?us-ascii?Q?jx/v/Pk4ya0a2No9iktRZB9tlUBHppTzFcgYYrU4pM6lL80HfV9VP/o4VrR0?=
- =?us-ascii?Q?XhrarpvDoNDcYp2YU4aSzmdWClhvK8vMALaFSBPRur/JYxKD+k1gBP7LKEBj?=
- =?us-ascii?Q?oVkJeds1NPtk70CoIrLiwT0hkVvG/QAGh66YJ/Hz83kbPt8vGtZZDDvR5606?=
- =?us-ascii?Q?GsXzvjnyWGm5xo8lJC7c0zXvzNonDq7oq75o+P+KbY+Fo8g/Ifee1ouKUR23?=
- =?us-ascii?Q?2VqGIm4KJEjYoraEFGMZmUieLgsJW/v2PALMVqAkSvmUxA8GJiQ1azkkHOTx?=
- =?us-ascii?Q?ovp3nXc4LfPt2FgOn5DJpsISFJdPvzd0tCCMmoMhAo4OgZnoMR2jbr6u6wDe?=
- =?us-ascii?Q?d2ocfZ6QVkUmcV0PYEaIRJQ23Owh1Fd7Ku7DZcjH+6DLY+dSBCk+KjJvAI+V?=
- =?us-ascii?Q?ykn7uINXnytojYHzJ2gDXXKvGibvfTTUQN2IsIXgEMl9VZY8yPG7ZJMmL4LV?=
- =?us-ascii?Q?Bo4qXAzrrOlrZbULMaY6134=3D?=
-X-OriginatorOrg: memverge.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fb850aa3-ce16-4d12-120a-08db08951362
-X-MS-Exchange-CrossTenant-AuthSource: BN6PR17MB3121.namprd17.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2023 22:54:17.3744
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5c90cb59-37e7-4c81-9c07-00473d5fb682
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nAZ0iEipxYMVPBnYcT1gPfUc35FPl801ZkNglyyHRBy1KE7co8zT84Bn/Sc0K8TqluJCNVuNLs018CJMB/sLYIyCjdDVCtTUWSZ0WeLeF0k=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR17MB3999
-X-Spam-Status: No, score=0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.6.0
+Subject: Re: [PATCH 01/18] cxl/Documentation: Update references to attributes
+ added in v6.0
+Content-Language: en-US
+To:     Dan Williams <dan.j.williams@intel.com>, linux-cxl@vger.kernel.org
+Cc:     dave.hansen@linux.intel.com, linux-mm@kvack.org,
+        linux-acpi@vger.kernel.org
+References: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
+ <167564535494.847146.12120939572640882946.stgit@dwillia2-xfh.jf.intel.com>
+From:   Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <167564535494.847146.12120939572640882946.stgit@dwillia2-xfh.jf.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 06, 2023 at 02:15:56PM -0800, Dan Williams wrote:
-> Gregory Price wrote:
-> > On Sun, Feb 05, 2023 at 05:04:05PM -0800, Dan Williams wrote:
-> [..]
-> > 
-> > Stupid question: when defaulting to online, do these devices get placed
-> > into Zone Normal?  Is there a way for us, at a minimum, to online this
-> > as Zone Moveable in an effort to assist the "hope the kernel has not
-> > pinned a page" problem (and to try to keep kernel resources out of this
-> > zone in general).
-> > 
-> > If this is covered by a different patch or already set up this way,
-> > ignore me :]
+
+
+On 2/5/23 6:02 PM, Dan Williams wrote:
+> Prior to Linus deciding that the kernel that following v5.19 would be
+> v6.0, the CXL ABI documentation already referenced v5.20. In preparation
+> for updating these entries update the kernel version to v6.0.
 > 
-> Have a look in Documentation/admin-guide/mm/memory-hotplug.rst, the
-> 'daxctl recconfigure-device' man page and the the policy options of how
-> hot-added memory is brought online.
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+
+> ---
+>   Documentation/ABI/testing/sysfs-bus-cxl |   30 +++++++++++++++---------------
+>   1 file changed, 15 insertions(+), 15 deletions(-)
 > 
-> The routing can be anything from fully offline device-dax, to fully
-> online ZONE_NORMAL, or even a mix of device-dax subdivision,
-> ZONE_NORMAL, and ZONE_MOVABLE memblocks all within one CXL ram region.
-
-Hm.
-
-I'm just thinking, for early expander devices the assumption that the
-default behavior should be auto-online is good.  Just kinda working
-through this in my head for multi-headed devices and early pools, and I
-suppose the kernel paremeter covers that. Most of those will be used in
-specialty, vertically integrated systems, so we're good to go.
-
-In the future when we get fully featured DCD's, I imagine we will have a
-memory region of size X, with N memory blocks, but only some of those
-blocks are online.  I suppose it could also be done such that DCD capacity
-add events drive the creation of new blocks under the region, as opposed
-to having the region pre-create the blocks.
-
-Either way I think the kernel parameter probably covers this case as
-well, I'm just wondering if at some point the default will yet again
-wish to be false, but i think that's a "CXL has become so successful all
-memory is now CXL DCDs and computers look radically different" scenario.
-
-Anyway, this seems good.
-
-Reviewed-by: Gregory Price <gregory.price@memverge.com>
+> diff --git a/Documentation/ABI/testing/sysfs-bus-cxl b/Documentation/ABI/testing/sysfs-bus-cxl
+> index 329a7e46c805..5be032313e29 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-cxl
+> +++ b/Documentation/ABI/testing/sysfs-bus-cxl
+> @@ -198,7 +198,7 @@ Description:
+>   
+>   What:		/sys/bus/cxl/devices/endpointX/CDAT
+>   Date:		July, 2022
+> -KernelVersion:	v5.20
+> +KernelVersion:	v6.0
+>   Contact:	linux-cxl@vger.kernel.org
+>   Description:
+>   		(RO) If this sysfs entry is not present no DOE mailbox was
+> @@ -209,7 +209,7 @@ Description:
+>   
+>   What:		/sys/bus/cxl/devices/decoderX.Y/mode
+>   Date:		May, 2022
+> -KernelVersion:	v5.20
+> +KernelVersion:	v6.0
+>   Contact:	linux-cxl@vger.kernel.org
+>   Description:
+>   		(RW) When a CXL decoder is of devtype "cxl_decoder_endpoint" it
+> @@ -229,7 +229,7 @@ Description:
+>   
+>   What:		/sys/bus/cxl/devices/decoderX.Y/dpa_resource
+>   Date:		May, 2022
+> -KernelVersion:	v5.20
+> +KernelVersion:	v6.0
+>   Contact:	linux-cxl@vger.kernel.org
+>   Description:
+>   		(RO) When a CXL decoder is of devtype "cxl_decoder_endpoint",
+> @@ -240,7 +240,7 @@ Description:
+>   
+>   What:		/sys/bus/cxl/devices/decoderX.Y/dpa_size
+>   Date:		May, 2022
+> -KernelVersion:	v5.20
+> +KernelVersion:	v6.0
+>   Contact:	linux-cxl@vger.kernel.org
+>   Description:
+>   		(RW) When a CXL decoder is of devtype "cxl_decoder_endpoint" it
+> @@ -260,7 +260,7 @@ Description:
+>   
+>   What:		/sys/bus/cxl/devices/decoderX.Y/interleave_ways
+>   Date:		May, 2022
+> -KernelVersion:	v5.20
+> +KernelVersion:	v6.0
+>   Contact:	linux-cxl@vger.kernel.org
+>   Description:
+>   		(RO) The number of targets across which this decoder's host
+> @@ -275,7 +275,7 @@ Description:
+>   
+>   What:		/sys/bus/cxl/devices/decoderX.Y/interleave_granularity
+>   Date:		May, 2022
+> -KernelVersion:	v5.20
+> +KernelVersion:	v6.0
+>   Contact:	linux-cxl@vger.kernel.org
+>   Description:
+>   		(RO) The number of consecutive bytes of host physical address
+> @@ -287,7 +287,7 @@ Description:
+>   
+>   What:		/sys/bus/cxl/devices/decoderX.Y/create_pmem_region
+>   Date:		May, 2022
+> -KernelVersion:	v5.20
+> +KernelVersion:	v6.0
+>   Contact:	linux-cxl@vger.kernel.org
+>   Description:
+>   		(RW) Write a string in the form 'regionZ' to start the process
+> @@ -303,7 +303,7 @@ Description:
+>   
+>   What:		/sys/bus/cxl/devices/decoderX.Y/delete_region
+>   Date:		May, 2022
+> -KernelVersion:	v5.20
+> +KernelVersion:	v6.0
+>   Contact:	linux-cxl@vger.kernel.org
+>   Description:
+>   		(WO) Write a string in the form 'regionZ' to delete that region,
+> @@ -312,7 +312,7 @@ Description:
+>   
+>   What:		/sys/bus/cxl/devices/regionZ/uuid
+>   Date:		May, 2022
+> -KernelVersion:	v5.20
+> +KernelVersion:	v6.0
+>   Contact:	linux-cxl@vger.kernel.org
+>   Description:
+>   		(RW) Write a unique identifier for the region. This field must
+> @@ -322,7 +322,7 @@ Description:
+>   
+>   What:		/sys/bus/cxl/devices/regionZ/interleave_granularity
+>   Date:		May, 2022
+> -KernelVersion:	v5.20
+> +KernelVersion:	v6.0
+>   Contact:	linux-cxl@vger.kernel.org
+>   Description:
+>   		(RW) Set the number of consecutive bytes each device in the
+> @@ -333,7 +333,7 @@ Description:
+>   
+>   What:		/sys/bus/cxl/devices/regionZ/interleave_ways
+>   Date:		May, 2022
+> -KernelVersion:	v5.20
+> +KernelVersion:	v6.0
+>   Contact:	linux-cxl@vger.kernel.org
+>   Description:
+>   		(RW) Configures the number of devices participating in the
+> @@ -343,7 +343,7 @@ Description:
+>   
+>   What:		/sys/bus/cxl/devices/regionZ/size
+>   Date:		May, 2022
+> -KernelVersion:	v5.20
+> +KernelVersion:	v6.0
+>   Contact:	linux-cxl@vger.kernel.org
+>   Description:
+>   		(RW) System physical address space to be consumed by the region.
+> @@ -360,7 +360,7 @@ Description:
+>   
+>   What:		/sys/bus/cxl/devices/regionZ/resource
+>   Date:		May, 2022
+> -KernelVersion:	v5.20
+> +KernelVersion:	v6.0
+>   Contact:	linux-cxl@vger.kernel.org
+>   Description:
+>   		(RO) A region is a contiguous partition of a CXL root decoder
+> @@ -372,7 +372,7 @@ Description:
+>   
+>   What:		/sys/bus/cxl/devices/regionZ/target[0..N]
+>   Date:		May, 2022
+> -KernelVersion:	v5.20
+> +KernelVersion:	v6.0
+>   Contact:	linux-cxl@vger.kernel.org
+>   Description:
+>   		(RW) Write an endpoint decoder object name to 'targetX' where X
+> @@ -391,7 +391,7 @@ Description:
+>   
+>   What:		/sys/bus/cxl/devices/regionZ/commit
+>   Date:		May, 2022
+> -KernelVersion:	v5.20
+> +KernelVersion:	v6.0
+>   Contact:	linux-cxl@vger.kernel.org
+>   Description:
+>   		(RW) Write a boolean 'true' string value to this attribute to
+> 
