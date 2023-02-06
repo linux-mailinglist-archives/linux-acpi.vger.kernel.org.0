@@ -2,49 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC96068B386
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 02:03:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01C6668B387
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 02:03:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229537AbjBFBDM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 5 Feb 2023 20:03:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53244 "EHLO
+        id S229544AbjBFBDZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 5 Feb 2023 20:03:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229517AbjBFBDJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 5 Feb 2023 20:03:09 -0500
+        with ESMTP id S229536AbjBFBDY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 5 Feb 2023 20:03:24 -0500
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EEDC126DD;
-        Sun,  5 Feb 2023 17:03:08 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D447144B5;
+        Sun,  5 Feb 2023 17:03:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675645388; x=1707181388;
+  t=1675645402; x=1707181402;
   h=subject:from:to:cc:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=pd/OzsallZam53iFg2v2xJwCJFvmTCwZnqxjvamzJrs=;
-  b=V6ixechAb0aRGXZJn8LGYRHnpWFwokMukFUkZSNgO3O286d93Qz+2pRd
-   It6QuUCPzNPz0q8zDU3uyInALTW715NE1d5UHEvYJ4dQY1uG8EQKL8aRY
-   D2URgHZpvHKBYmAywnZ42EzXD6oR/gwarEtJqq8oqWb7/oAIZbdA2nX5m
-   d4j+HK6AKaUT45dMwcqzy3kbiHPeNqSGj8o/nLBmmj+DPjH6Of5/UkeLC
-   q/VWl5vpnBB9fLyF438ixhX8JGihlu+UBioMRKxbQIKGe6FBUeg8yE7+G
-   sJQ8F6LSVC2AxjxNeqII65+G5I1vbFsw9zSKaHKOXwU8kf2HLN5riSvFO
+  bh=AeIQeRHiJX+pQkHKAuoYi54yr8qg0sN4RL762t1p8Jc=;
+  b=bx49lvqJ4e8uv2OvNwbT3WZ5NpqFhkCUeqsUs9woWs3AymVqkit2JdnO
+   VqJ2HOcySlldDGhb3WFd2/OI6DKAX7YilwP7ChfYS2N/jEmGbjbr8GJl4
+   sKEimG8+avDUIt7H5zRZfhGjgrtPqQToelaAJRk7I7gEerF2GVPWkz3rw
+   4s8ST54R4tMZw5L17v//qNXjzJFCSR7OkayENtmZU029jlgxUBZS1P+EZ
+   D8Y4nCTlf8NYG7h6kd00B0iyihin9C+D8HnAFVYZZtuKbZh7rHMfD2gnn
+   Eq11ApoGoLhjfG7enK3eFmAju5NOl3f4lwRX4/CqLUgprYXyLWg7Z8YO7
    w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10612"; a="312763186"
+X-IronPort-AV: E=McAfee;i="6500,9779,10612"; a="312763198"
 X-IronPort-AV: E=Sophos;i="5.97,276,1669104000"; 
-   d="scan'208";a="312763186"
+   d="scan'208";a="312763198"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2023 17:03:08 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10612"; a="616291299"
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2023 17:03:13 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10612"; a="616291316"
 X-IronPort-AV: E=Sophos;i="5.97,276,1669104000"; 
-   d="scan'208";a="616291299"
+   d="scan'208";a="616291316"
 Received: from mkrysak-mobl.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.212.255.187])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2023 17:03:08 -0800
-Subject: [PATCH 07/18] cxl/region: Move region-position validation to a
- helper
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2023 17:03:13 -0800
+Subject: [PATCH 08/18] kernel/range: Uplevel the cxl subsystem's
+ range_contains() helper
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     linux-cxl@vger.kernel.org
-Cc:     dave.hansen@linux.intel.com, linux-mm@kvack.org,
-        linux-acpi@vger.kernel.org
-Date:   Sun, 05 Feb 2023 17:03:07 -0800
-Message-ID: <167564538779.847146.8356062886811511706.stgit@dwillia2-xfh.jf.intel.com>
+Cc:     Kees Cook <keescook@chromium.org>, dave.hansen@linux.intel.com,
+        linux-mm@kvack.org, linux-acpi@vger.kernel.org
+Date:   Sun, 05 Feb 2023 17:03:13 -0800
+Message-ID: <167564539327.847146.788601375229324484.stgit@dwillia2-xfh.jf.intel.com>
 In-Reply-To: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
 References: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
 User-Agent: StGit/0.18-3-g996c
@@ -60,184 +60,75 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In preparation for region autodiscovery, that needs all devices
-discovered before their relative position in the region can be
-determined, consolidate all position dependent validation in a helper.
+In support of the CXL subsystem's use of 'struct range' to track decode
+address ranges, add a common range_contains() implementation with
+identical semantics as resource_contains();
 
-Recall that in the on-demand region creation flow the end-user picks the
-position of a given endpoint decoder in a region. In the autodiscovery
-case the position of an endpoint decoder can only be determined after
-all other endpoint decoders that claim to decode the region's address
-range have been enumerated and attached. So, in the autodiscovery case
-endpoint decoders may be attached before their relative position is
-known. Once all decoders arrive, then positions can be determined and
-validated with cxl_region_validate_position() the same as user initiated
-on-demand creation.
+The existing 'range_contains()' in lib/stackinit_kunit.c is namespaced
+with a 'stackinit_' prefix.
 
+Cc: Kees Cook <keescook@chromium.org>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/cxl/core/region.c |  119 +++++++++++++++++++++++++++++----------------
- 1 file changed, 76 insertions(+), 43 deletions(-)
+ drivers/cxl/core/pci.c |    5 -----
+ include/linux/range.h  |    5 +++++
+ lib/stackinit_kunit.c  |    6 +++---
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 97eafdd75675..c82d3b6f3d1f 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -1207,35 +1207,13 @@ static int cxl_region_setup_targets(struct cxl_region *cxlr)
- 	return 0;
+diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
+index 1d1492440287..9ed2120dbf8a 100644
+--- a/drivers/cxl/core/pci.c
++++ b/drivers/cxl/core/pci.c
+@@ -214,11 +214,6 @@ static int devm_cxl_enable_mem(struct device *host, struct cxl_dev_state *cxlds)
+ 	return devm_add_action_or_reset(host, clear_mem_enable, cxlds);
  }
  
--static int cxl_region_attach(struct cxl_region *cxlr,
--			     struct cxl_endpoint_decoder *cxled, int pos)
-+static int cxl_region_validate_position(struct cxl_region *cxlr,
-+					struct cxl_endpoint_decoder *cxled,
-+					int pos)
+-static bool range_contains(struct range *r1, struct range *r2)
+-{
+-	return r1->start <= r2->start && r1->end >= r2->end;
+-}
+-
+ /* require dvsec ranges to be covered by a locked platform window */
+ static int dvsec_range_allowed(struct device *dev, void *arg)
  {
--	struct cxl_root_decoder *cxlrd = to_cxl_root_decoder(cxlr->dev.parent);
- 	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
--	struct cxl_port *ep_port, *root_port, *iter;
- 	struct cxl_region_params *p = &cxlr->params;
--	struct cxl_dport *dport;
--	int i, rc = -ENXIO;
--
--	if (cxled->mode != cxlr->mode) {
--		dev_dbg(&cxlr->dev, "%s region mode: %d mismatch: %d\n",
--			dev_name(&cxled->cxld.dev), cxlr->mode, cxled->mode);
--		return -EINVAL;
--	}
--
--	if (cxled->mode == CXL_DECODER_DEAD) {
--		dev_dbg(&cxlr->dev, "%s dead\n", dev_name(&cxled->cxld.dev));
--		return -ENODEV;
--	}
--
--	/* all full of members, or interleave config not established? */
--	if (p->state > CXL_CONFIG_INTERLEAVE_ACTIVE) {
--		dev_dbg(&cxlr->dev, "region already active\n");
--		return -EBUSY;
--	} else if (p->state < CXL_CONFIG_INTERLEAVE_ACTIVE) {
--		dev_dbg(&cxlr->dev, "interleave config missing\n");
--		return -ENXIO;
--	}
-+	int i;
- 
- 	if (pos < 0 || pos >= p->interleave_ways) {
- 		dev_dbg(&cxlr->dev, "position %d out of range %d\n", pos,
-@@ -1274,6 +1252,71 @@ static int cxl_region_attach(struct cxl_region *cxlr,
- 		}
- 	}
- 
-+	return 0;
-+}
-+
-+static int cxl_region_attach_position(struct cxl_region *cxlr,
-+				      struct cxl_root_decoder *cxlrd,
-+				      struct cxl_endpoint_decoder *cxled,
-+				      const struct cxl_dport *dport, int pos)
-+{
-+	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
-+	struct cxl_port *iter;
-+	int rc;
-+
-+	if (cxlrd->calc_hb(cxlrd, pos) != dport) {
-+		dev_dbg(&cxlr->dev, "%s:%s invalid target position for %s\n",
-+			dev_name(&cxlmd->dev), dev_name(&cxled->cxld.dev),
-+			dev_name(&cxlrd->cxlsd.cxld.dev));
-+		return -ENXIO;
-+	}
-+
-+	for (iter = cxled_to_port(cxled); !is_cxl_root(iter);
-+	     iter = to_cxl_port(iter->dev.parent)) {
-+		rc = cxl_port_attach_region(iter, cxlr, cxled, pos);
-+		if (rc)
-+			goto err;
-+	}
-+
-+	return 0;
-+
-+err:
-+	for (iter = cxled_to_port(cxled); !is_cxl_root(iter);
-+	     iter = to_cxl_port(iter->dev.parent))
-+		cxl_port_detach_region(iter, cxlr, cxled);
-+	return rc;
-+}
-+
-+static int cxl_region_attach(struct cxl_region *cxlr,
-+			     struct cxl_endpoint_decoder *cxled, int pos)
-+{
-+	struct cxl_root_decoder *cxlrd = to_cxl_root_decoder(cxlr->dev.parent);
-+	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
-+	struct cxl_region_params *p = &cxlr->params;
-+	struct cxl_port *ep_port, *root_port;
-+	struct cxl_dport *dport;
-+	int rc = -ENXIO;
-+
-+	if (cxled->mode != cxlr->mode) {
-+		dev_dbg(&cxlr->dev, "%s region mode: %d mismatch: %d\n",
-+			dev_name(&cxled->cxld.dev), cxlr->mode, cxled->mode);
-+		return -EINVAL;
-+	}
-+
-+	if (cxled->mode == CXL_DECODER_DEAD) {
-+		dev_dbg(&cxlr->dev, "%s dead\n", dev_name(&cxled->cxld.dev));
-+		return -ENODEV;
-+	}
-+
-+	/* all full of members, or interleave config not established? */
-+	if (p->state > CXL_CONFIG_INTERLEAVE_ACTIVE) {
-+		dev_dbg(&cxlr->dev, "region already active\n");
-+		return -EBUSY;
-+	} else if (p->state < CXL_CONFIG_INTERLEAVE_ACTIVE) {
-+		dev_dbg(&cxlr->dev, "interleave config missing\n");
-+		return -ENXIO;
-+	}
-+
- 	ep_port = cxled_to_port(cxled);
- 	root_port = cxlrd_to_port(cxlrd);
- 	dport = cxl_find_dport_by_dev(root_port, ep_port->host_bridge);
-@@ -1284,13 +1327,6 @@ static int cxl_region_attach(struct cxl_region *cxlr,
- 		return -ENXIO;
- 	}
- 
--	if (cxlrd->calc_hb(cxlrd, pos) != dport) {
--		dev_dbg(&cxlr->dev, "%s:%s invalid target position for %s\n",
--			dev_name(&cxlmd->dev), dev_name(&cxled->cxld.dev),
--			dev_name(&cxlrd->cxlsd.cxld.dev));
--		return -ENXIO;
--	}
--
- 	if (cxled->cxld.target_type != cxlr->type) {
- 		dev_dbg(&cxlr->dev, "%s:%s type mismatch: %d vs %d\n",
- 			dev_name(&cxlmd->dev), dev_name(&cxled->cxld.dev),
-@@ -1314,12 +1350,13 @@ static int cxl_region_attach(struct cxl_region *cxlr,
- 		return -EINVAL;
- 	}
- 
--	for (iter = ep_port; !is_cxl_root(iter);
--	     iter = to_cxl_port(iter->dev.parent)) {
--		rc = cxl_port_attach_region(iter, cxlr, cxled, pos);
--		if (rc)
--			goto err;
--	}
-+	rc = cxl_region_validate_position(cxlr, cxled, pos);
-+	if (rc)
-+		return rc;
-+
-+	rc = cxl_region_attach_position(cxlr, cxlrd, cxled, dport, pos);
-+	if (rc)
-+		return rc;
- 
- 	p->targets[pos] = cxled;
- 	cxled->pos = pos;
-@@ -1343,10 +1380,6 @@ static int cxl_region_attach(struct cxl_region *cxlr,
- 
- err_decrement:
- 	p->nr_targets--;
--err:
--	for (iter = ep_port; !is_cxl_root(iter);
--	     iter = to_cxl_port(iter->dev.parent))
--		cxl_port_detach_region(iter, cxlr, cxled);
- 	return rc;
+diff --git a/include/linux/range.h b/include/linux/range.h
+index 274681cc3154..7efb6a9b069b 100644
+--- a/include/linux/range.h
++++ b/include/linux/range.h
+@@ -13,6 +13,11 @@ static inline u64 range_len(const struct range *range)
+ 	return range->end - range->start + 1;
  }
  
++static inline bool range_contains(struct range *r1, struct range *r2)
++{
++	return r1->start <= r2->start && r1->end >= r2->end;
++}
++
+ int add_range(struct range *range, int az, int nr_range,
+ 		u64 start, u64 end);
+ 
+diff --git a/lib/stackinit_kunit.c b/lib/stackinit_kunit.c
+index 4591d6cf5e01..05947a2feb93 100644
+--- a/lib/stackinit_kunit.c
++++ b/lib/stackinit_kunit.c
+@@ -31,8 +31,8 @@ static volatile u8 forced_mask = 0xff;
+ static void *fill_start, *target_start;
+ static size_t fill_size, target_size;
+ 
+-static bool range_contains(char *haystack_start, size_t haystack_size,
+-			   char *needle_start, size_t needle_size)
++static bool stackinit_range_contains(char *haystack_start, size_t haystack_size,
++				     char *needle_start, size_t needle_size)
+ {
+ 	if (needle_start >= haystack_start &&
+ 	    needle_start + needle_size <= haystack_start + haystack_size)
+@@ -175,7 +175,7 @@ static noinline void test_ ## name (struct kunit *test)		\
+ 								\
+ 	/* Validate that compiler lined up fill and target. */	\
+ 	KUNIT_ASSERT_TRUE_MSG(test,				\
+-		range_contains(fill_start, fill_size,		\
++		stackinit_range_contains(fill_start, fill_size,	\
+ 			    target_start, target_size),		\
+ 		"stack fill missed target!? "			\
+ 		"(fill %zu wide, target offset by %d)\n",	\
 
