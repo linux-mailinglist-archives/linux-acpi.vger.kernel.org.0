@@ -2,214 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3A4A68C131
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 16:19:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E0F368C217
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 16:46:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229722AbjBFPS7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Feb 2023 10:18:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55024 "EHLO
+        id S230157AbjBFPqk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Feb 2023 10:46:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbjBFPS6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 10:18:58 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4300D2688;
-        Mon,  6 Feb 2023 07:18:57 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D469060F28;
-        Mon,  6 Feb 2023 15:18:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 426B6C433AF;
-        Mon,  6 Feb 2023 15:18:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675696736;
-        bh=t6snAmiA8jL5WTtfh345TOoJ0hKZpmGhPlbNqKUc674=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=mzipr2AWMFAR6T+NAjtERt43GC+nstYbVIaAykqc1I0Ytm2LbzGkL2SnEvBR4Lnw0
-         cJOoPDCu4MWQZSZwtZRU+GuQq8lN0t6iV+CS364ljYSdHyqmo244guz3qW5TAD2264
-         0ZmfjDD9ipjxWJ/Mu6dvEtKxmmM8z2FqYTEMKFLvJPRo76IpQdUwHZflJy2jLZwdya
-         Qu9lEFkuNTErMGfxACWETvt+vb00FbpXfHNwAyFTgFrCMgb+VyLoAlaDm1rfjO5M6A
-         g1nKZHpiRdLXd2QE8yG+PQx/3QXcbgJqEjFORhEPkNJJNqmAPnl2Bf9aOZ/3R/7Vug
-         8OBNwElfbd6lg==
-Received: by mail-vk1-f182.google.com with SMTP id t190so6260683vkb.13;
-        Mon, 06 Feb 2023 07:18:56 -0800 (PST)
-X-Gm-Message-State: AO0yUKXIGIn5Q+ywBd23Xhof4LEumH09vhK3UxJulpKXp7RUW16PfDZ+
-        4OjOqMPREw/FV9KjESmU/INnWboojK+SDr2BXA==
-X-Google-Smtp-Source: AK7set+IxAQSTK6n6CnvuB4SYDav6xPxSMs7u6KqyPm7oYpZV3d07lbHLtC/gF7MyTiAVGTuOLibZnVtlItzu85XemE=
-X-Received: by 2002:ac5:cbf8:0:b0:3d5:d30f:81c2 with SMTP id
- i24-20020ac5cbf8000000b003d5d30f81c2mr2836396vkn.14.1675696734849; Mon, 06
- Feb 2023 07:18:54 -0800 (PST)
-MIME-Version: 1.0
-References: <20230127001141.407071-1-saravanak@google.com> <20230130085542.38546-1-naresh.kamboju@linaro.org>
- <CAGETcx_411fVxsM-ZMK7j2Bvkmi2TKPbzSuD+03M3cb7WKHfJw@mail.gmail.com>
- <20230131101813.goaoy32qvrowvyyb@bogus> <CALHCpMijXAgQx2qq8g8zdq=6AHwP+g5WVBjjry=v+dKEq9KDLw@mail.gmail.com>
- <CAGETcx_UvW819m1Y-QU_ySB1nG_RegKKT06=YjkK=C_qjbAySw@mail.gmail.com>
- <CALHCpMha_1nXt4rUe+A184XSWpyNk0_PkYjWZ+tUN7BJWqENLA@mail.gmail.com> <CAGETcx_uri6exkv1Jkzmc4PyEam9yjuH2H1zrq4LYNtJ+XDMWw@mail.gmail.com>
-In-Reply-To: <CAGETcx_uri6exkv1Jkzmc4PyEam9yjuH2H1zrq4LYNtJ+XDMWw@mail.gmail.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 6 Feb 2023 09:18:43 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+rLZuQYn-90C1gy_uGEXiGeDNZ3OfumTFcx4pP97sXsg@mail.gmail.com>
-Message-ID: <CAL_Jsq+rLZuQYn-90C1gy_uGEXiGeDNZ3OfumTFcx4pP97sXsg@mail.gmail.com>
-Subject: Re: [PATCH v2 00/11] fw_devlink improvements
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Maxim Kiselev <bigunclemax@gmail.com>,
+        with ESMTP id S229682AbjBFPqf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 10:46:35 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C747F2914B;
+        Mon,  6 Feb 2023 07:46:17 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BD81713D5;
+        Mon,  6 Feb 2023 07:40:26 -0800 (PST)
+Received: from bogus (unknown [10.57.12.205])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5EF613F703;
+        Mon,  6 Feb 2023 07:39:42 -0800 (PST)
+Date:   Mon, 6 Feb 2023 15:39:40 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Huisong Li <lihuisong@huawei.com>
+Cc:     robbiek@xsightlabs.com, linux-acpi@vger.kernel.org,
         Sudeep Holla <sudeep.holla@arm.com>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        abel.vesa@linaro.org, alexander.stein@ew.tq-group.com,
-        andriy.shevchenko@linux.intel.com, brgl@bgdev.pl,
-        colin.foster@in-advantage.com, cristian.marussi@arm.com,
-        devicetree@vger.kernel.org, dianders@chromium.org,
-        djrscally@gmail.com, dmitry.baryshkov@linaro.org,
-        festevam@gmail.com, fido_max@inbox.ru, frowand.list@gmail.com,
-        geert+renesas@glider.be, geert@linux-m68k.org,
-        gregkh@linuxfoundation.org, heikki.krogerus@linux.intel.com,
-        jpb@kernel.org, jstultz@google.com, kernel-team@android.com,
-        kernel@pengutronix.de, lenb@kernel.org, linus.walleij@linaro.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-imx@nxp.com,
-        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux@roeck-us.net, lkft@linaro.org, luca.weiss@fairphone.com,
-        magnus.damm@gmail.com, martin.kepplinger@puri.sm, maz@kernel.org,
-        miquel.raynal@bootlin.com, rafael@kernel.org,
-        s.hauer@pengutronix.de, sakari.ailus@linux.intel.com,
-        shawnguo@kernel.org, tglx@linutronix.de, tony@atomide.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        linux-kernel@vger.kernel.org, rafael@kernel.org,
+        rafael.j.wysocki@intel.com, wanghuiqiang@huawei.com,
+        zhangzekun11@huawei.com, wangxiongfeng2@huawei.com,
+        tanxiaofei@huawei.com, guohanjun@huawei.com, xiexiuqi@huawei.com,
+        wangkefeng.wang@huawei.com, huangdaode@huawei.com
+Subject: Re: [RFC-V3 1/2] mailbox: pcc: Add processing platform notification
+ for slave subspaces
+Message-ID: <20230206153940.gcddy3b3znk72yqd@bogus>
+References: <20221016034043.52227-1-lihuisong@huawei.com>
+ <20221203095150.45422-1-lihuisong@huawei.com>
+ <20221203095150.45422-2-lihuisong@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221203095150.45422-2-lihuisong@huawei.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Feb 5, 2023 at 7:33 PM Saravana Kannan <saravanak@google.com> wrote=
-:
->
-> On Fri, Feb 3, 2023 at 1:39 AM Maxim Kiselev <bigunclemax@gmail.com> wrot=
-e:
-> >
-> > =D0=BF=D1=82, 3 =D1=84=D0=B5=D0=B2=D1=80. 2023 =D0=B3. =D0=B2 09:07, Sa=
-ravana Kannan <saravanak@google.com>:
-> > >
-> > > On Thu, Feb 2, 2023 at 9:36 AM Maxim Kiselev <bigunclemax@gmail.com> =
-wrote:
-> > > >
-> > > > Hi Saravana,
-> > > >
-> > > > > Can you try the patch at the end of this email under these
-> > > > > configurations and tell me which ones fail vs pass? I don't need =
-logs
-> > > >
-> > > > I did these tests and here is the results:
-> > >
-> > > Did you hand edit the In-Reply-To: in the header? Because in the
-> > > thread you are reply to the wrong email, but the context in your emai=
-l
-> > > seems to be from the right email.
-> > >
-> > > For example, see how your reply isn't under the email you are replyin=
-g
-> > > to in this thread overview:
-> > > https://lore.kernel.org/lkml/20230127001141.407071-1-saravanak@google=
-.com/#r
-> > >
-> > > > 1. On top of this series - Not works
-> > > > 2. Without this series    - Works
-> > > > 3. On top of the series with the fwnode_dev_initialized() deleted -=
- Not works
-> > > > 4. Without this series, with the fwnode_dev_initialized() deleted  =
-- Works
-> > > >
-> > > > So your nvmem/core.c patch helps only when it is applied without th=
-e series.
-> > > > But despite the fact that this helps to avoid getting stuck at prob=
-ing
-> > > > my ethernet device, there is still regression.
-> > > >
-> > > > When the ethernet module is loaded it takes a lot of time to drop d=
-ependency
-> > > > from the nvmem-cell with mac address.
-> > > >
-> > > > Please look at the kernel logs below.
-> > >
-> > > The kernel logs below really aren't that useful for me in their
-> > > current state. See more below.
-> > >
-> > > ---8<---- <snip> --->8----
-> > >
-> > > > P.S. Your nvmem patch definitely helps to avoid a device probe stuc=
-k
-> > > > but look like it is not best way to solve a problem which we discus=
-sed
-> > > > in the MTD thread.
-> > > >
-> > > > P.P.S. Also I don't know why your nvmem-cell patch doesn't help whe=
-n it was
-> > > > applied on top of this series. Maybe I missed something.
-> > >
-> > > Yeah, I'm not too sure if the test was done correctly. You also didn'=
-t
-> > > answer my question about the dts from my earlier email.
-> > > https://lore.kernel.org/lkml/CAGETcx8FpmbaRm2CCwqt3BRBpgbogwP5gNB+iA5=
-OEtuxWVTNLA@mail.gmail.com/#t
-> > >
-> > > So, can you please retest config 1 with all pr_debug and dev_dbg in
-> > > drivers/core/base.c changed to the _info variants? And then share the
-> > > kernel log from the beginning of boot? Maybe attach it to the email s=
-o
-> > > it doesn't get word wrapped by your email client. And please point me
-> > > to the .dts that corresponds to your board. Without that, I can't
-> > > debug much.
-> > >
-> > > Thanks,
-> > > Saravana
-> >
-> > > Did you hand edit the In-Reply-To: in the header? Because in the
-> > > thread you are reply to the wrong email, but the context in your emai=
-l
-> > > seems to be from the right email.
-> >
-> > Sorry for that, it seems like I accidently deleted it.
-> >
-> > > So, can you please retest config 1 with all pr_debug and dev_dbg in
-> > > drivers/core/base.c changed to the _info variants? And then share the
-> > > kernel log from the beginning of boot? Maybe attach it to the email s=
-o
-> > > it doesn't get word wrapped by your email client. And please point me
-> > > to the .dts that corresponds to your board. Without that, I can't
-> > > debug much.
-> >
-> > Ok, I retested config 1 with all _debug logs changed to the _info. I
-> > added the kernel log and the dts file to the attachment of this email.
->
-> Ah, so your device is not supported/present upstream? Even though it's
-> not upstream, I'll help fix this because it should fix what I believe
-> are unreported issues in upstream.
->
-> Ok I know why configs 1 - 4 behaved the way they did and why my test
-> patch didn't help.
->
-> After staring at mtd/nvmem code for a few hours I think mtd/nvmem
-> interaction is kind of a mess. mtd core creates "partition" platform
-> devices (including for nvmem-cells) that are probed by drivers in
-> drivers/nvmem. However, there's no driver for "nvmem-cells" partition
-> platform device. However, the nvmem core creates nvmem_device when
-> nvmem_register() is called by MTD or these partition platform devices
-> created by MTD. But these nvmem_devices are added to a nvmem_bus but
-> the bus has no means to even register a driver (it should really be a
-> nvmem_class and not nvmem_bus). And the nvmem_device sometimes points
-> to the DT node of the MTD device or sometimes the partition platform
-> devices or maybe no DT node at all.
->
-> So it's a mess of multiple devices pointing to the same DT node with
-> no clear way to identify which ones will point to a DT node and which
-> ones will probe and which ones won't. In the future, we shouldn't
-> allow adding new compatible strings for partitions for which we don't
-> plan on adding nvmem drivers.
+Hi Huisong,
 
-That won't work. Having a compatible string cannot mean there must be a dri=
-ver.
+Apologies for such a long delay.
 
-Rob
+Also I would like to hear from Robbie King who I know is playing around
+with this these days 😄. At minimum if this logic works for him as well.
+
+On Sat, Dec 03, 2022 at 05:51:49PM +0800, Huisong Li wrote:
+> Currently, PCC driver doesn't support the processing of platform
+> notification for slave PCC subspaces because of the incomplete
+> communication flow.
+> 
+> According to ACPI specification, if platform sends a notification
+> to OSPM, it must clear the command complete bit and trigger platform
+> interrupt. OSPM needs to check whether the command complete bit is
+> cleared, clear platform interrupt, process command, and then set the
+> command complete and ring doorbell to Platform. But the current judgment
+> on the command complete is not applicable to type4 in pcc_mbox_irq().
+> 
+> This patch introduces a communication flow direction field to detect
+> whether the interrupt belongs to the master or slave subspace channel.
+> And PCC driver needs to add the phase of setting the command complete
+> and ring doorbell in pcc_mbox_irq() to complete type4 communication
+> flow after processing command from Platform.
+> 
+> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+> ---
+>  drivers/mailbox/pcc.c | 77 +++++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 71 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+> index 105d46c9801b..ad6d0b7d50fc 100644
+> --- a/drivers/mailbox/pcc.c
+> +++ b/drivers/mailbox/pcc.c
+> @@ -80,6 +80,13 @@ struct pcc_chan_reg {
+>  	u64 status_mask;
+>  };
+>  
+> +enum pcc_chan_comm_flow_dir_type {
+> +	PCC_ONLY_OSPM_TO_PLATFORM,
+> +	PCC_ONLY_PLATFORM_TO_OSPM,
+> +	PCC_BIDIRECTIONAL,
+> +	PCC_DIR_UNKNOWN,
+> +};
+> +
+>  /**
+>   * struct pcc_chan_info - PCC channel specific information
+>   *
+> @@ -91,6 +98,7 @@ struct pcc_chan_reg {
+>   * @cmd_update: PCC register bundle for the command complete update register
+>   * @error: PCC register bundle for the error status register
+>   * @plat_irq: platform interrupt
+> + * @comm_flow_dir: direction of communication flow supported by the channel
+>   */
+>  struct pcc_chan_info {
+>  	struct pcc_mbox_chan chan;
+> @@ -100,12 +108,15 @@ struct pcc_chan_info {
+>  	struct pcc_chan_reg cmd_update;
+>  	struct pcc_chan_reg error;
+>  	int plat_irq;
+> +	u8 comm_flow_dir;
+
+I would rather just save the 'type' as read from the PCCT. We don't know
+what future types might be and just identifying them by the direction of
+flow of the data, it restricts the usage of this.
+
+>  };
+>  
+>  #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
+>  static struct pcc_chan_info *chan_info;
+>  static int pcc_chan_count;
+>  
+> +static int pcc_send_data(struct mbox_chan *chan, void *data);
+> +
+>  /*
+>   * PCC can be used with perf critical drivers such as CPPC
+>   * So it makes sense to locally cache the virtual address and
+> @@ -221,6 +232,43 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
+>  	return acpi_register_gsi(NULL, interrupt, trigger, polarity);
+>  }
+>  
+> +static bool pcc_chan_need_rsp_irq(struct pcc_chan_info *pchan,
+> +				  u64 cmd_complete_reg_val)
+
+Probably rename this as pcc_chan_command_complete or something similar.
+
+> +{
+> +	bool need_rsp;
+> +
+> +	if (!pchan->cmd_complete.gas)
+> +		return true;
+> +
+> +	cmd_complete_reg_val &= pchan->cmd_complete.status_mask;
+> +
+> +	switch (pchan->comm_flow_dir) {
+
+Use the channel type instead here.
+
+-- 
+Regards,
+Sudeep
