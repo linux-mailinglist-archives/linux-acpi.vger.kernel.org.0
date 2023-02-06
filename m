@@ -2,206 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8C9C68B79C
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 09:44:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA3C668B8B0
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 10:28:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229982AbjBFIny (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Feb 2023 03:43:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59948 "EHLO
+        id S229711AbjBFJ2R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Feb 2023 04:28:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229700AbjBFInr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 03:43:47 -0500
-Received: from mail-vk1-xa32.google.com (mail-vk1-xa32.google.com [IPv6:2607:f8b0:4864:20::a32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B6E21A4
-        for <linux-acpi@vger.kernel.org>; Mon,  6 Feb 2023 00:43:45 -0800 (PST)
-Received: by mail-vk1-xa32.google.com with SMTP id q76so5741429vkb.4
-        for <linux-acpi@vger.kernel.org>; Mon, 06 Feb 2023 00:43:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=p8oD7R/FrBAkelIyxEM30uYD5gBcZlDZhHvr+FZng8E=;
-        b=Nu81GZyEPAhLyKvqA8hK3yjuBadLPq/OVMOmYEObPhNf2/DKkCmXdZqOLJWZqHMyXo
-         NZIYjTV+s6RChRPAaCo7wrHHpfathmnstTrzEvaFR0b+kCEoIS6XyE/BdDW+cmQfE5cL
-         8lSkomPhvvSestXsJzriH0Mncz82ICUOTfcQE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=p8oD7R/FrBAkelIyxEM30uYD5gBcZlDZhHvr+FZng8E=;
-        b=yNtubRLIf16vXYrzWdNOQxQbBO3afysL1C9q2K9axRyymmlZuM+cK41H82YAgoearx
-         sUfhhDIuWXCJF7f9ze3bWV66riDHlsU/3nV0JHLYp/nvbeot2G61+sgmjCIxt8aWOafe
-         YuJnrDqmvjyMW5QlstobtcRF+P0cUmv00WSnzXBoMJq4Baba+XEaz+JLrEhV66VEVYnd
-         V5Tyk45GElcMpMKZivCp2wImHBjDlIO7378KsTRJrddJUFeQMHG3NXwWlWegqK1gpN3+
-         4PISiiZCfA+DmiqXTC/K63zi/g/021DEzga8JxmSlrt3uvAcu2JMg9Pi926vIHfKirWX
-         9xBA==
-X-Gm-Message-State: AO0yUKX+JjEiANQepaTyblA2iSVrUe8DLYcfKW72WE4L/8G7kiURG+mg
-        flAvvbeh80Pd4LvEB7nzbY5htBGvPIgYYRZ4/h3DOQ==
-X-Google-Smtp-Source: AK7set8rfNXDkSD7s7g/Z9Yi+fgiFxMAJA536L7Dzqiaomn/KaU5rwWRdIO8WqqAsbdrjqdw1OE5rCloQrh5y08A5OA=
-X-Received: by 2002:ac5:cac7:0:b0:3ea:7394:e9ef with SMTP id
- m7-20020ac5cac7000000b003ea7394e9efmr2630363vkl.11.1675673024627; Mon, 06 Feb
- 2023 00:43:44 -0800 (PST)
+        with ESMTP id S229542AbjBFJ2Q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 04:28:16 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D92071BD2;
+        Mon,  6 Feb 2023 01:28:14 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BF661113E;
+        Mon,  6 Feb 2023 01:28:56 -0800 (PST)
+Received: from FVFF77S0Q05N (unknown [10.57.91.13])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B6293F71E;
+        Mon,  6 Feb 2023 01:28:11 -0800 (PST)
+Date:   Mon, 6 Feb 2023 09:28:09 +0000
+From:   Mark Rutland <mark.rutland@arm.com>
+To:     "Wangshaobo (bobo)" <bobo.shaobowang@huawei.com>
+Cc:     linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
+        lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, mhiramat@kernel.org,
+        ndesaulniers@google.com, ojeda@kernel.org, peterz@infradead.org,
+        rafael.j.wysocki@intel.com, revest@chromium.org,
+        robert.moore@intel.com, rostedt@goodmis.org, will@kernel.org,
+        "liwei (GF)" <liwei391@huawei.com>
+Subject: Re: [PATCH v3 1/8] ftrace: Add DYNAMIC_FTRACE_WITH_CALL_OPS
+Message-ID: <Y+DIKQvfYE15QL3F@FVFF77S0Q05N>
+References: <20230123134603.1064407-1-mark.rutland@arm.com>
+ <20230123134603.1064407-2-mark.rutland@arm.com>
+ <f2f5dfc6-3deb-9fce-a9be-9386e844a9cf@huawei.com>
+ <Y9ebIY/pWz0Ms9S6@FVFF77S0Q05N>
+ <60ec7607-7c5c-1a6e-18c9-8025cb2f289f@huawei.com>
 MIME-Version: 1.0
-References: <20230204133040.1236799-1-treapking@chromium.org> <20230204133040.1236799-5-treapking@chromium.org>
-In-Reply-To: <20230204133040.1236799-5-treapking@chromium.org>
-From:   Chen-Yu Tsai <wenst@chromium.org>
-Date:   Mon, 6 Feb 2023 16:43:33 +0800
-Message-ID: <CAGXv+5Gf5r4Unz+JCHUJS33uvuxPRDnwi=vTfxyM4rPTQZ0xbw@mail.gmail.com>
-Subject: Re: [PATCH v11 4/9] dt-bindings: display: bridge: anx7625: Add
- mode-switch support
-To:     Pin-yen Lin <treapking@chromium.org>
-Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        linux-kernel@vger.kernel.org,
-        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
-        <nfraprado@collabora.com>, Hsin-Yi Wang <hsinyi@chromium.org>,
-        devicetree@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
-        Lyude Paul <lyude@redhat.com>, linux-acpi@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
-        Xin Ji <xji@analogixsemi.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        chrome-platform@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <60ec7607-7c5c-1a6e-18c9-8025cb2f289f@huawei.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Feb 4, 2023 at 9:31 PM Pin-yen Lin <treapking@chromium.org> wrote:
->
-> Analogix 7625 can be used in systems to switch the DP traffic between
-> two downstreams, which can be USB Type-C DisplayPort alternate mode
-> lane or regular DisplayPort output ports.
->
-> Update the binding to accommodate this usage by introducing a
-> data-lanes and a mode-switch property on endpoints.
->
-> Also include the link to the product brief in the bindings.
->
-> Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-> Tested-by: Chen-Yu Tsai <wenst@chromium.org>
-> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->
-> ---
->
-> Changes in v11:
-> - Updated the description of the endpoints
-> - Referenced video-interfaces.yaml instead for the endpoints
->
-> Changes in v10:
-> - Collected Reviewed-by and Tested-by tags
->
-> Changes in v9:
-> - Collected Reviewed-by tag
->
-> Changes in v8:
-> - Updated anx7625 bindings for data-lane property
-> - Fixed the subject prefix
->
-> Changes in v7:
-> - Fixed issues reported by dt_binding_check
-> - Updated the schema and the example dts for data-lanes.
-> - Changed to generic naming for the example dts node.
->
-> Changes in v6:
-> - Remove switches node and use endpoints and data-lanes property to
->   describe the connections.
->
->  .../display/bridge/analogix,anx7625.yaml      | 94 ++++++++++++++++++-
->  1 file changed, 91 insertions(+), 3 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml b/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml
-> index 4590186c4a0b..f287e8e0602f 100644
-> --- a/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml
-> +++ b/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml
-> @@ -12,7 +12,8 @@ maintainers:
->
->  description: |
->    The ANX7625 is an ultra-low power 4K Mobile HD Transmitter
-> -  designed for portable devices.
-> +  designed for portable devices. Product brief is available at
-> +  https://www.analogix.com/en/system/files/AA-002291-PB-6-ANX7625_ProductBrief.pdf
->
->  properties:
->    compatible:
-> @@ -112,9 +113,46 @@ properties:
->                data-lanes: true
->
->        port@1:
-> -        $ref: /schemas/graph.yaml#/properties/port
-> +        $ref: /schemas/graph.yaml#/$defs/port-base
->          description:
-> -          Video port for panel or connector.
-> +          Video port for panel or connector. Each endpoint connects to a video
-> +          output downstream, and the "data-lanes" property is used to describe
-> +          the pin connections. 0, 1, 2, 3 in "data-lanes" maps to SSRX1, SSTX1,
-> +          SSRX2, SSTX2, respectively.
-> +
-> +        patternProperties:
-> +          "^endpoint@[01]$":
-> +            $ref: /schemas/media/video-interfaces.yaml#
-> +            properties:
-> +              reg: true
-> +
-> +              remote-endpoint: true
-> +
-> +              data-lanes:
-> +                oneOf:
-> +                  - items:
-> +                      - enum: [0, 1, 2, 3]
-> +
-> +                  - items:
-> +                      - const: 0
-> +                      - const: 1
-> +
-> +                  - items:
-> +                      - const: 2
-> +                      - const: 3
-> +
-> +                  - items:
-> +                      - const: 0
-> +                      - const: 1
-> +                      - const: 2
-> +                      - const: 3
+On Tue, Jan 31, 2023 at 09:25:51AM +0800, Wangshaobo (bobo) wrote:
+> 在 2023/1/30 18:25, Mark Rutland 写道:
+> > On Sat, Jan 28, 2023 at 04:46:48PM +0800, Wangshaobo (bobo) wrote:
+> > > 锟斤拷 2023/1/23 21:45, Mark Rutland 写锟斤拷:
+> > > > +config DYNAMIC_FTRACE_WITH_CALL_OPS
+> > > > +	def_bool y
+> > > > +	depends on HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS
+> > > > +
+> > > Hi Mark,
+> > 
+> > Hi,
+> > 
+> > > I have test your patches and it looks fine with my sample module,
+> > 
+> > Thanks for testing!
+> > 
+> > > but here setting DYNAMIC_FTRACE_WITH_CALL_OPS to y immutably may increase the
+> > > .text section size by 5% or more, how about making this to optional^^
+> > 
+> > We could consider making this optional. I had not made this optional so far as
+> > in the future I'd like to make this the only implementation of ftrace on arm64
+> > (once we can drop the old mcount version, and once we've sorted out the
+> > incompatibility with CFI). In the mean time, it probably makes sense to have
+> > the option at least to enable testing of each of the two forms.
+> > 
+> > Is your concern that the overall kernel image size is larger, or do you care
+> > specifically about the size of the .text section for some reason?
+> > 
+> > Thanks,
+> > Mark
+> Embedded devices may pay more attention to Image size, and which may also
+> indirectly affects performance, for more reason,
 
-Given that this bridge only supports up to two lanes, including all four
-lanes doesn't make sense.
+I appreciate those concerns, however:
 
-> +
-> +              mode-switch:
-> +                type: boolean
-> +                description: Register this node as a Type-C mode switch or not.
+a) For the Image size, the mcount_loc table and associated relocations already
+   imposes a much greater penalty. So I'd expect that where the size truly
+   matters, ftrace would be completely disabled anyway.
 
-I would reword this as "Serves as Type-C mode switch if present"
+   I'm currently looking at shrinking the mcount_loc table (and removing the
+   need for relocationgs), which should save much more space.
 
-ChenYu
+b) For performance, without data this is supposition. Everything so far
+   indicates that there is not a measureable performance difference, and from
+   other threads it's possible that the increased function alignment *aids*
+   performance.
+
+   If you have data to the contrary, I'm happy to investigate.
+
+> I think making sense to have the option for testing is more important.
+
+As above, I'm happy to add an option for functional testing of the ftrace
+implementation, but I don't think that it's a good idea to use that as a size
+or performance tweak.
+
+Thanks,
+Mark.
