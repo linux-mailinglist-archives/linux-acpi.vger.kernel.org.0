@@ -2,151 +2,175 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E0F368C217
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 16:46:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ACEE68C219
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Feb 2023 16:47:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230157AbjBFPqk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Feb 2023 10:46:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53928 "EHLO
+        id S229993AbjBFPrE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Feb 2023 10:47:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229682AbjBFPqf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 10:46:35 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C747F2914B;
-        Mon,  6 Feb 2023 07:46:17 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BD81713D5;
-        Mon,  6 Feb 2023 07:40:26 -0800 (PST)
-Received: from bogus (unknown [10.57.12.205])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5EF613F703;
-        Mon,  6 Feb 2023 07:39:42 -0800 (PST)
-Date:   Mon, 6 Feb 2023 15:39:40 +0000
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Huisong Li <lihuisong@huawei.com>
-Cc:     robbiek@xsightlabs.com, linux-acpi@vger.kernel.org,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        linux-kernel@vger.kernel.org, rafael@kernel.org,
-        rafael.j.wysocki@intel.com, wanghuiqiang@huawei.com,
-        zhangzekun11@huawei.com, wangxiongfeng2@huawei.com,
-        tanxiaofei@huawei.com, guohanjun@huawei.com, xiexiuqi@huawei.com,
-        wangkefeng.wang@huawei.com, huangdaode@huawei.com
-Subject: Re: [RFC-V3 1/2] mailbox: pcc: Add processing platform notification
- for slave subspaces
-Message-ID: <20230206153940.gcddy3b3znk72yqd@bogus>
-References: <20221016034043.52227-1-lihuisong@huawei.com>
- <20221203095150.45422-1-lihuisong@huawei.com>
- <20221203095150.45422-2-lihuisong@huawei.com>
+        with ESMTP id S230037AbjBFPrC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 10:47:02 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC2E82B60F;
+        Mon,  6 Feb 2023 07:46:38 -0800 (PST)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4P9Vqy5t0Vz6J7gF;
+        Mon,  6 Feb 2023 23:42:06 +0800 (CST)
+Received: from localhost (10.81.207.58) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.17; Mon, 6 Feb
+ 2023 15:46:29 +0000
+Date:   Mon, 6 Feb 2023 15:46:27 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+CC:     <linux-cxl@vger.kernel.org>, <dave.hansen@linux.intel.com>,
+        <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH 02/18] cxl/region: Add a mode attribute for regions
+Message-ID: <20230206154627.00000a1b@Huawei.com>
+In-Reply-To: <167564536041.847146.11330354943211409793.stgit@dwillia2-xfh.jf.intel.com>
+References: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
+        <167564536041.847146.11330354943211409793.stgit@dwillia2-xfh.jf.intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221203095150.45422-2-lihuisong@huawei.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.81.207.58]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
 X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Huisong,
+On Sun, 05 Feb 2023 17:02:40 -0800
+Dan Williams <dan.j.williams@intel.com> wrote:
 
-Apologies for such a long delay.
+> In preparation for a new region type, "ram" regions, add a mode
+> attribute to clarify the mode of the decoders that can be added to a
+> region. Share the internals of mode_show() (for decoders) with the
+> region case.
+> 
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+I guess the DEAD decoder cases is an odd enough path that it is
+fine to not worry that it is presented as mixed (none might be
+more appropriate as you can't put any memory behind it).
 
-Also I would like to hear from Robbie King who I know is playing around
-with this these days 😄. At minimum if this logic works for him as well.
+Other than that this is straight forwards exposure of internal data
+that already existed...
 
-On Sat, Dec 03, 2022 at 05:51:49PM +0800, Huisong Li wrote:
-> Currently, PCC driver doesn't support the processing of platform
-> notification for slave PCC subspaces because of the incomplete
-> communication flow.
-> 
-> According to ACPI specification, if platform sends a notification
-> to OSPM, it must clear the command complete bit and trigger platform
-> interrupt. OSPM needs to check whether the command complete bit is
-> cleared, clear platform interrupt, process command, and then set the
-> command complete and ring doorbell to Platform. But the current judgment
-> on the command complete is not applicable to type4 in pcc_mbox_irq().
-> 
-> This patch introduces a communication flow direction field to detect
-> whether the interrupt belongs to the master or slave subspace channel.
-> And PCC driver needs to add the phase of setting the command complete
-> and ring doorbell in pcc_mbox_irq() to complete type4 communication
-> flow after processing command from Platform.
-> 
-> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
 > ---
->  drivers/mailbox/pcc.c | 77 +++++++++++++++++++++++++++++++++++++++----
->  1 file changed, 71 insertions(+), 6 deletions(-)
+>  Documentation/ABI/testing/sysfs-bus-cxl |   11 +++++++++++
+>  drivers/cxl/core/port.c                 |   12 +-----------
+>  drivers/cxl/core/region.c               |   10 ++++++++++
+>  drivers/cxl/cxl.h                       |   14 ++++++++++++++
+>  4 files changed, 36 insertions(+), 11 deletions(-)
 > 
-> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-> index 105d46c9801b..ad6d0b7d50fc 100644
-> --- a/drivers/mailbox/pcc.c
-> +++ b/drivers/mailbox/pcc.c
-> @@ -80,6 +80,13 @@ struct pcc_chan_reg {
->  	u64 status_mask;
->  };
+> diff --git a/Documentation/ABI/testing/sysfs-bus-cxl b/Documentation/ABI/testing/sysfs-bus-cxl
+> index 5be032313e29..058b0c45001f 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-cxl
+> +++ b/Documentation/ABI/testing/sysfs-bus-cxl
+> @@ -358,6 +358,17 @@ Description:
+>  		results in the same address being allocated.
 >  
-> +enum pcc_chan_comm_flow_dir_type {
-> +	PCC_ONLY_OSPM_TO_PLATFORM,
-> +	PCC_ONLY_PLATFORM_TO_OSPM,
-> +	PCC_BIDIRECTIONAL,
-> +	PCC_DIR_UNKNOWN,
-> +};
+>  
+> +What:		/sys/bus/cxl/devices/regionZ/mode
+> +Date:		January, 2023
+> +KernelVersion:	v6.3
+> +Contact:	linux-cxl@vger.kernel.org
+> +Description:
+> +		(RO) The mode of a region is established at region creation time
+> +		and dictates the mode of the endpoint decoder that comprise the
+> +		region. For more details on the possible modes see
+> +		/sys/bus/cxl/devices/decoderX.Y/mode
 > +
->  /**
->   * struct pcc_chan_info - PCC channel specific information
->   *
-> @@ -91,6 +98,7 @@ struct pcc_chan_reg {
->   * @cmd_update: PCC register bundle for the command complete update register
->   * @error: PCC register bundle for the error status register
->   * @plat_irq: platform interrupt
-> + * @comm_flow_dir: direction of communication flow supported by the channel
->   */
->  struct pcc_chan_info {
->  	struct pcc_mbox_chan chan;
-> @@ -100,12 +108,15 @@ struct pcc_chan_info {
->  	struct pcc_chan_reg cmd_update;
->  	struct pcc_chan_reg error;
->  	int plat_irq;
-> +	u8 comm_flow_dir;
-
-I would rather just save the 'type' as read from the PCCT. We don't know
-what future types might be and just identifying them by the direction of
-flow of the data, it restricts the usage of this.
-
->  };
->  
->  #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
->  static struct pcc_chan_info *chan_info;
->  static int pcc_chan_count;
->  
-> +static int pcc_send_data(struct mbox_chan *chan, void *data);
 > +
->  /*
->   * PCC can be used with perf critical drivers such as CPPC
->   * So it makes sense to locally cache the virtual address and
-> @@ -221,6 +232,43 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
->  	return acpi_register_gsi(NULL, interrupt, trigger, polarity);
+>  What:		/sys/bus/cxl/devices/regionZ/resource
+>  Date:		May, 2022
+>  KernelVersion:	v6.0
+> diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+> index 410c036c09fa..8566451cb22f 100644
+> --- a/drivers/cxl/core/port.c
+> +++ b/drivers/cxl/core/port.c
+> @@ -180,17 +180,7 @@ static ssize_t mode_show(struct device *dev, struct device_attribute *attr,
+>  {
+>  	struct cxl_endpoint_decoder *cxled = to_cxl_endpoint_decoder(dev);
+>  
+> -	switch (cxled->mode) {
+> -	case CXL_DECODER_RAM:
+> -		return sysfs_emit(buf, "ram\n");
+> -	case CXL_DECODER_PMEM:
+> -		return sysfs_emit(buf, "pmem\n");
+> -	case CXL_DECODER_NONE:
+> -		return sysfs_emit(buf, "none\n");
+> -	case CXL_DECODER_MIXED:
+> -	default:
+> -		return sysfs_emit(buf, "mixed\n");
+> -	}
+> +	return sysfs_emit(buf, "%s\n", cxl_decoder_mode_name(cxled->mode));
 >  }
 >  
-> +static bool pcc_chan_need_rsp_irq(struct pcc_chan_info *pchan,
-> +				  u64 cmd_complete_reg_val)
-
-Probably rename this as pcc_chan_command_complete or something similar.
-
+>  static ssize_t mode_store(struct device *dev, struct device_attribute *attr,
+> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+> index 60828d01972a..17d2d0c12725 100644
+> --- a/drivers/cxl/core/region.c
+> +++ b/drivers/cxl/core/region.c
+> @@ -458,6 +458,15 @@ static ssize_t resource_show(struct device *dev, struct device_attribute *attr,
+>  }
+>  static DEVICE_ATTR_RO(resource);
+>  
+> +static ssize_t mode_show(struct device *dev, struct device_attribute *attr,
+> +			 char *buf)
 > +{
-> +	bool need_rsp;
+> +	struct cxl_region *cxlr = to_cxl_region(dev);
 > +
-> +	if (!pchan->cmd_complete.gas)
-> +		return true;
+> +	return sysfs_emit(buf, "%s\n", cxl_decoder_mode_name(cxlr->mode));
+> +}
+> +static DEVICE_ATTR_RO(mode);
 > +
-> +	cmd_complete_reg_val &= pchan->cmd_complete.status_mask;
+>  static int alloc_hpa(struct cxl_region *cxlr, resource_size_t size)
+>  {
+>  	struct cxl_root_decoder *cxlrd = to_cxl_root_decoder(cxlr->dev.parent);
+> @@ -585,6 +594,7 @@ static struct attribute *cxl_region_attrs[] = {
+>  	&dev_attr_interleave_granularity.attr,
+>  	&dev_attr_resource.attr,
+>  	&dev_attr_size.attr,
+> +	&dev_attr_mode.attr,
+>  	NULL,
+>  };
+>  
+> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+> index aa3af3bb73b2..ca76879af1de 100644
+> --- a/drivers/cxl/cxl.h
+> +++ b/drivers/cxl/cxl.h
+> @@ -320,6 +320,20 @@ enum cxl_decoder_mode {
+>  	CXL_DECODER_DEAD,
+>  };
+>  
+> +static inline const char *cxl_decoder_mode_name(enum cxl_decoder_mode mode)
+> +{
+> +	static const char * const names[] = {
+> +		[CXL_DECODER_NONE] = "none",
+> +		[CXL_DECODER_RAM] = "ram",
+> +		[CXL_DECODER_PMEM] = "pmem",
+> +		[CXL_DECODER_MIXED] = "mixed",
+> +	};
 > +
-> +	switch (pchan->comm_flow_dir) {
+> +	if (mode >= CXL_DECODER_NONE && mode <= CXL_DECODER_MIXED)
+> +		return names[mode];
+> +	return "mixed";
+> +}
+> +
+>  /**
+>   * struct cxl_endpoint_decoder - Endpoint  / SPA to DPA decoder
+>   * @cxld: base cxl_decoder_object
+> 
 
-Use the channel type instead here.
-
--- 
-Regards,
-Sudeep
