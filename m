@@ -2,192 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C99568CFDD
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Feb 2023 07:57:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2176068D08F
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Feb 2023 08:25:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229667AbjBGG5s (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Feb 2023 01:57:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59980 "EHLO
+        id S229565AbjBGHZU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Feb 2023 02:25:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229525AbjBGG5r (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Feb 2023 01:57:47 -0500
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 521F2222F1;
-        Mon,  6 Feb 2023 22:57:46 -0800 (PST)
+        with ESMTP id S229738AbjBGHZT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Feb 2023 02:25:19 -0500
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 284C22ED62;
+        Mon,  6 Feb 2023 23:25:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675753066; x=1707289066;
-  h=date:from:to:cc:subject:message-id:mime-version:
+  t=1675754718; x=1707290718;
+  h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=v9gdSWkXD/byI0aHL2myY7VyOo9xeNCbyQXYWq1oG1U=;
-  b=HRrGm8BjVFscrnbhnxMiXaHhMHJwjpijgaVcZpThGtxOKdKuPiDO5RXX
-   xAFQobi+Ao0xR5yt6RbbuSUPRiCqGpP8Drxj/0TxxMjdvR3roNwoqWNwP
-   GpHycpqYreczyFdoMJEilJz1gKA2lCVbtHUG+3iAoC5Nb9vy47vvEsLIc
-   9ZmA4vL15RFbVvjvofBbCzTrAMNRtvG2RAA14MOX7/8LdqDeEYYmuIKpU
-   TPlZPH8cRAkoDGaKoEKeJ8rK9d/l9tvt4tx/nGWrrubXJpgmdhBY07x2j
-   Pdgk8EdA2z4btMv42HZIcuSLpezDdCVv0dL3tYq2Lr6YtmMq65iTAufSs
+  bh=wIhE4o9BjRTaPYx3WM+PdzIPTyiOBr12rvLi9TUQ5Xs=;
+  b=GP2dV8ZQ4VL3hJpT9P1kDPN4siAZNOu5o2sUeNwQSrZvwx8YEGLwSusF
+   iz+WXMEWu3fJFuTMlFeNCh85r0XZbazOu6wSDurK2KMqodYt8dYqoQN4j
+   GOIv1xpLIr+Sq1Nxuk0m9vIF3LS8mpVgJIUbUKfJLcAK3u+0V1v7bcBde
+   8mt4BFpyW/UZ3YaqJMUfi44lHxjPGRTbxBRlh3cXscHDZjjwDeSLL0lkv
+   NNOgtHv/doL8e6I4/WScWpiPq+2hJheTyYCs6Y+wDElYXxaakG3uGQQ9P
+   zVOzCnfalPsxmqMYTcIR6bYjobsSeDUMh3M3GbEEfFzWYAkbngFomntVh
    A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10613"; a="415645319"
+X-IronPort-AV: E=McAfee;i="6500,9779,10613"; a="309763433"
 X-IronPort-AV: E=Sophos;i="5.97,278,1669104000"; 
-   d="scan'208";a="415645319"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2023 22:57:45 -0800
+   d="scan'208";a="309763433"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2023 23:25:11 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10613"; a="697152313"
+X-IronPort-AV: E=McAfee;i="6500,9779,10613"; a="809418436"
 X-IronPort-AV: E=Sophos;i="5.97,278,1669104000"; 
-   d="scan'208";a="697152313"
-Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 06 Feb 2023 22:57:44 -0800
-Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pPHvD-0003EJ-1u;
-        Tue, 07 Feb 2023 06:57:43 +0000
-Date:   Tue, 07 Feb 2023 14:57:29 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- dcf0f94e28915d8dc7d174be2554edf87c3d655f
-Message-ID: <63e1f659.Z66hIz6D4ZuSnKWP%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+   d="scan'208";a="809418436"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 06 Feb 2023 23:25:02 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id 294D61C5; Tue,  7 Feb 2023 09:25:40 +0200 (EET)
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Wolfram Sang <wsa@kernel.org>
+Cc:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
+        <amadeuszx.slawinski@linux.intel.com>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        Raul E Rangel <rrangel@chromium.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: [RFC] i2c: core: Do not enable wakeup by default
+Date:   Tue,  7 Feb 2023 09:25:40 +0200
+Message-Id: <20230207072540.27226-1-mika.westerberg@linux.intel.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: dcf0f94e28915d8dc7d174be2554edf87c3d655f  Merge branch 'acpi-video' into bleeding-edge
+After commit b38f2d5d9615 ("i2c: acpi: Use ACPI wake capability bit to
+set wake_irq") the I2C core has been setting I2C_CLIENT_WAKE for ACPI
+devices if they announce to be wake capable in their device description.
+However, on certain systems where audio codec has been connected through
+I2C this causes system suspend to wake up immediately because power to
+the codec is turned off which pulls the interrupt line "low" triggering
+wake up.
 
-elapsed time: 730m
+Possible reason why the interrupt is marked as wake capable is that some
+codecs apparently support "Wake on Voice" or similar functionality.
 
-configs tested: 110
-configs skipped: 4
+In any case, I don't think we should be enabling wakeup by default on
+all I2C devices that are wake capable. According to device_init_wakeup()
+documentation most devices should leave it disabled, with exceptions on
+devices such as keyboards, power buttons etc. Userspace can enable
+wakeup as needed by writing to device "power/wakeup" attribute.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Reported-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+---
+Hi,
 
-gcc tested configs:
-um                             i386_defconfig
-x86_64                            allnoconfig
-um                           x86_64_defconfig
-powerpc                           allnoconfig
-alpha                            allyesconfig
-m68k                             allmodconfig
-mips                         db1xxx_defconfig
-m68k                             allyesconfig
-arc                              allyesconfig
-arc                                 defconfig
-sh                          rsk7269_defconfig
-alpha                               defconfig
-i386                                defconfig
-sh                               allmodconfig
-alpha                             allnoconfig
-i386                              allnoconfig
-arc                               allnoconfig
-arm                               allnoconfig
-x86_64                              defconfig
-s390                             allmodconfig
-mips                             allyesconfig
-ia64                             allmodconfig
-x86_64                               rhel-8.3
-powerpc                          allmodconfig
-i386                 randconfig-a011-20230206
-x86_64                           rhel-8.3-syz
-i386                 randconfig-a014-20230206
-x86_64                         rhel-8.3-kunit
-x86_64                           allyesconfig
-i386                 randconfig-a012-20230206
-i386                 randconfig-a016-20230206
-s390                                defconfig
-x86_64                           rhel-8.3-kvm
-x86_64               randconfig-a013-20230206
-x86_64               randconfig-a011-20230206
-x86_64                    rhel-8.3-kselftests
-x86_64               randconfig-a012-20230206
-i386                 randconfig-a013-20230206
-x86_64               randconfig-a014-20230206
-i386                 randconfig-a015-20230206
-x86_64                          rhel-8.3-func
-s390                             allyesconfig
-sh                         ecovec24_defconfig
-x86_64                           rhel-8.3-bpf
-x86_64               randconfig-a015-20230206
-x86_64               randconfig-a016-20230206
-i386                             allyesconfig
-arm                                 defconfig
-riscv                    nommu_k210_defconfig
-mips                           jazz_defconfig
-sh                          r7780mp_defconfig
-um                               alldefconfig
-xtensa                  nommu_kc705_defconfig
-arm64                            allyesconfig
-parisc                           allyesconfig
-arm                           h3600_defconfig
-arm                              allyesconfig
-arc                     nsimosci_hs_defconfig
-sh                                  defconfig
-s390                 randconfig-r044-20230206
-xtensa                              defconfig
-arc                  randconfig-r043-20230205
-arm                            hisi_defconfig
-arm                  randconfig-r046-20230205
-arc                  randconfig-r043-20230206
-riscv                randconfig-r042-20230206
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-i386                          randconfig-c001
-x86_64                        randconfig-a006
-i386                          debian-10.3-kvm
-i386                        debian-10.3-kunit
-i386                         debian-10.3-func
-riscv                             allnoconfig
-riscv                    nommu_virt_defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-riscv                          rv32_defconfig
+Sending this as RFC because I'm not too familiar with the usage of
+I2C_CLIENT_WAKE and whether this is something that is expected behaviour
+in users of I2C devices. On ACPI side I think this is the correct thing
+to do at least.
 
-clang tested configs:
-mips                       rbtx49xx_defconfig
-arm                         lpc32xx_defconfig
-riscv                            alldefconfig
-arm                           sama7_defconfig
-x86_64               randconfig-a001-20230206
-x86_64               randconfig-a005-20230206
-powerpc                 mpc832x_mds_defconfig
-powerpc                      ppc44x_defconfig
-x86_64               randconfig-a006-20230206
-x86_64               randconfig-a002-20230206
-x86_64               randconfig-a004-20230206
-x86_64               randconfig-a003-20230206
-arm                       aspeed_g4_defconfig
-x86_64                          rhel-8.3-rust
-hexagon                             defconfig
-i386                 randconfig-a005-20230206
-i386                 randconfig-a004-20230206
-i386                 randconfig-a001-20230206
-i386                 randconfig-a002-20230206
-i386                 randconfig-a003-20230206
-i386                 randconfig-a006-20230206
-hexagon              randconfig-r041-20230205
-riscv                randconfig-r042-20230205
-hexagon              randconfig-r045-20230206
-hexagon              randconfig-r041-20230206
-arm                  randconfig-r046-20230206
-s390                 randconfig-r044-20230205
-hexagon              randconfig-r045-20230205
-x86_64                        randconfig-k001
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
+ drivers/i2c/i2c-core-base.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index 087e480b624c..7046549bdae7 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -527,7 +527,7 @@ static int i2c_device_probe(struct device *dev)
+ 			goto put_sync_adapter;
+ 		}
+ 
+-		device_init_wakeup(&client->dev, true);
++		device_init_wakeup(&client->dev, false);
+ 
+ 		if (wakeirq > 0 && wakeirq != client->irq)
+ 			status = dev_pm_set_dedicated_wake_irq(dev, wakeirq);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.39.1
+
