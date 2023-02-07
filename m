@@ -2,227 +2,219 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ACEA68E25B
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Feb 2023 21:57:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29D8D68E2F4
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Feb 2023 22:26:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229478AbjBGU5m (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Feb 2023 15:57:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46018 "EHLO
+        id S229874AbjBGV0S (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Feb 2023 16:26:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjBGU5k (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Feb 2023 15:57:40 -0500
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A8A611647;
-        Tue,  7 Feb 2023 12:57:39 -0800 (PST)
-Received: by mail-qt1-f178.google.com with SMTP id g8so18308502qtq.13;
-        Tue, 07 Feb 2023 12:57:39 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=stAVsaUhrI2VyH6NyKcHcY+/3Po2YLTE8rKYRoMV1wU=;
-        b=MePtt6+340djBSmSXVbEwH8kcQj2EMJ7pSDDPQEkpqlK3vU+Q0FWFrH3X3f5NXjBlx
-         jtt9Y72cVYlqYszdp/249KyuYBr0c+piB1JsfvtFYGzqIHfZQvnqiPv5KXtRH3M6un25
-         K1/yAXwcAsjTjLRtQJhiEqEMZXE3xmVFJi0YT9rPqimepZpnGh1nv8anCis2mD6s15Ro
-         Ixg+DzOJEBrOR4/mpUZkPPc0DgjIdJRnVJhfcArWThd5fuYWvZnHy3Rh+DV2uOm0lcxL
-         X8euQBQrqEP6LjJu82zGlXhe9+3+RnIHLapwjpDVcBhK0pZOsR3muQh0I64DropLmiyH
-         fjcg==
-X-Gm-Message-State: AO0yUKUrCchewnewM5Ui/Pd/Zii5MBdwkrWeF62x23S2AZTDzM9f29f5
-        NMhJoFx2OtKyDnyD92BuBYVXtBJqUN+7Lg==
-X-Google-Smtp-Source: AK7set/yK96fHKzvj7tLcWyuEI7gC7UCj2Zz/Z5Ct5CxUemLKhS5GWRug8fn4PlDtilF+GkfFPycXA==
-X-Received: by 2002:a05:622a:1489:b0:3ba:110a:bc6e with SMTP id t9-20020a05622a148900b003ba110abc6emr7754473qtx.33.1675803458307;
-        Tue, 07 Feb 2023 12:57:38 -0800 (PST)
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com. [209.85.128.169])
-        by smtp.gmail.com with ESMTPSA id t189-20020a372dc6000000b0072771acaf09sm10220897qkh.126.2023.02.07.12.57.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Feb 2023 12:57:37 -0800 (PST)
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-52a849206adso65540517b3.4;
-        Tue, 07 Feb 2023 12:57:37 -0800 (PST)
-X-Received: by 2002:a25:928e:0:b0:8a0:2a4:a96c with SMTP id
- y14-20020a25928e000000b008a002a4a96cmr477401ybl.380.1675803446414; Tue, 07
- Feb 2023 12:57:26 -0800 (PST)
-MIME-Version: 1.0
-References: <20230207014207.1678715-1-saravanak@google.com> <20230207014207.1678715-10-saravanak@google.com>
-In-Reply-To: <20230207014207.1678715-10-saravanak@google.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 7 Feb 2023 21:57:14 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com>
-Message-ID: <CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com>
-Subject: Re: [PATCH v3 09/12] of: property: Simplify of_link_to_phandle()
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
+        with ESMTP id S229535AbjBGV0L (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Feb 2023 16:26:11 -0500
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3397B3EFF8;
+        Tue,  7 Feb 2023 13:25:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675805149; x=1707341149;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wNen/FnBjNX3bzOs+p58aweLxojs1tMz6HAqiUGxA78=;
+  b=MlgW8QcLa+XIsZoejVc1UIbmHkyvefrbedsQ2HDfmjGn22HYAdVhWrLk
+   jb54i2ck3nsKMVQEZ+H8Ykx8HZKJjwl0pj9oNJBdkzJdPmUXjAqaVgS4x
+   P6KQyuh/Zdep8+uoK0l2bEwNwy9fx7URarzOH0rYIfobECOKHgI3xNYr9
+   6gL1BEq3v4oNAKWoIRlzWGrnv2iglDzD1sRwlgtcVfg3bSns5ZCShRVyI
+   S7kY1yHmND0/lTiTa72Ohl7xzC4IAhCypmNiH362WlO2lUFeA/Kfygenc
+   xfdyVnkpS5QMSvZF5Zr3OFETz4rm/DbToOoEGs2UXjMEQ+KkCABfudSOj
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="331765716"
+X-IronPort-AV: E=Sophos;i="5.97,279,1669104000"; 
+   d="scan'208";a="331765716"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2023 13:25:47 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="730595933"
+X-IronPort-AV: E=Sophos;i="5.97,279,1669104000"; 
+   d="scan'208";a="730595933"
+Received: from isergee-mobl3.ger.corp.intel.com (HELO intel.com) ([10.249.37.137])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2023 13:25:37 -0800
+Date:   Tue, 7 Feb 2023 22:25:34 +0100
+From:   Andi Shyti <andi.shyti@linux.intel.com>
+To:     Pin-yen Lin <treapking@chromium.org>
+Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <robert.foss@linaro.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Daniel Scally <djrscally@gmail.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        Abel Vesa <abel.vesa@linaro.org>,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Tony Lindgren <tony@atomide.com>,
-        John Stultz <jstultz@google.com>,
-        Doug Anderson <dianders@chromium.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Maxim Kiselev <bigunclemax@gmail.com>,
-        Maxim Kochetkov <fido_max@inbox.ru>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Colin Foster <colin.foster@in-advantage.com>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Jean-Philippe Brucker <jpb@kernel.org>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        kernel-team@android.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        linux-kernel@vger.kernel.org,
+        =?iso-8859-15?Q?N=EDcolas_F_=2E_R_=2E_A_=2E?= Prado 
+        <nfraprado@collabora.com>, Hsin-Yi Wang <hsinyi@chromium.org>,
+        devicetree@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
+        Lyude Paul <lyude@redhat.com>, linux-acpi@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
+        Xin Ji <xji@analogixsemi.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        chrome-platform@lists.linux.dev,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Imre Deak <imre.deak@intel.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Kees Cook <keescook@chromium.org>,
+        Thierry Reding <treding@nvidia.com>
+Subject: Re: [PATCH v11 3/9] drm/display: Add Type-C switch helpers
+Message-ID: <Y+LBzkP+/j6RQ5Jy@ashyti-mobl2.lan>
+References: <20230204133040.1236799-1-treapking@chromium.org>
+ <20230204133040.1236799-4-treapking@chromium.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230204133040.1236799-4-treapking@chromium.org>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Saravana,
+Hi Pin-yen,
 
-On Tue, Feb 7, 2023 at 2:42 AM Saravana Kannan <saravanak@google.com> wrote:
-> The driver core now:
-> - Has the parent device of a supplier pick up the consumers if the
->   supplier never has a device created for it.
-> - Ignores a supplier if the supplier has no parent device and will never
->   be probed by a driver
->
-> And already prevents creating a device link with the consumer as a
-> supplier of a parent.
->
-> So, we no longer need to find the "compatible" node of the supplier or
-> do any other checks in of_link_to_phandle(). We simply need to make sure
-> that the supplier is available in DT.
->
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
+[...]
 
-Thanks for your patch!
+> +static int drm_dp_register_mode_switch(struct device *dev,
+> +				       struct fwnode_handle *fwnode,
+> +				       struct drm_dp_typec_switch_desc *switch_desc,
+> +				       void *data, typec_mux_set_fn_t mux_set)
+> +{
+> +	struct drm_dp_typec_port_data *port_data;
+> +	struct typec_mux_desc mux_desc = {};
+> +	char name[32];
+> +	u32 port_num;
+> +	int ret;
+> +
+> +	ret = fwnode_property_read_u32(fwnode, "reg", &port_num);
+> +	if (ret) {
+> +		dev_err(dev, "Failed to read reg property: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	port_data = &switch_desc->typec_ports[port_num];
+> +	port_data->data = data;
+> +	port_data->port_num = port_num;
+> +	port_data->fwnode = fwnode;
+> +	mux_desc.fwnode = fwnode;
+> +	mux_desc.drvdata = port_data;
+> +	snprintf(name, sizeof(name), "%pfwP-%u", fwnode, port_num);
+> +	mux_desc.name = name;
+> +	mux_desc.set = mux_set;
+> +
+> +	port_data->typec_mux = typec_mux_register(dev, &mux_desc);
+> +	if (IS_ERR(port_data->typec_mux)) {
+> +		ret = PTR_ERR(port_data->typec_mux);
+> +		dev_err(dev, "Mode switch register for port %d failed: %d\n",
+> +			port_num, ret);
+> +
+> +		return ret;
 
-This patch introduces a regression when dynamically loading DT overlays.
-Unfortunately this happens when using the out-of-tree OF configfs,
-which is not supported upstream.  Still, there may be (obscure)
-in-tree users.
+you don't need this return here...
 
-When loading a DT overlay[1] to enable an SPI controller, and
-instantiate a connected SPI EEPROM:
+> +	}
+> +
+> +	return 0;
 
-    $ overlay add 25lc040
-    OF: overlay: WARNING: memory leak will occur if overlay removed,
-property: /keys/status
-    OF: overlay: WARNING: memory leak will occur if overlay removed,
-property: /soc/spi@e6e90000/pinctrl-0
-    OF: overlay: WARNING: memory leak will occur if overlay removed,
-property: /soc/spi@e6e90000/pinctrl-names
-    OF: overlay: WARNING: memory leak will occur if overlay removed,
-property: /soc/spi@e6e90000/cs-gpios
-    OF: overlay: WARNING: memory leak will occur if overlay removed,
-property: /soc/spi@e6e90000/status
-    OF: overlay: WARNING: memory leak will occur if overlay removed,
-property: /__symbols__/msiof0_pins
+Just "return ret;" here.
 
-The SPI controller and the SPI EEPROM are no longer instantiated.
+> +}
+> +
+> +/**
+> + * drm_dp_register_typec_switches() - register Type-C switches
+> + * @dev: Device that registers Type-C switches
+> + * @port: Device node for the switch
+> + * @switch_desc: A Type-C switch descriptor
+> + * @data: Private data for the switches
+> + * @mux_set: Callback function for typec_mux_set
+> + *
+> + * This function registers USB Type-C switches for DP bridges that can switch
+> + * the output signal between their output pins.
+> + *
+> + * Currently only mode switches are implemented, and the function assumes the
+> + * given @port device node has endpoints with "mode-switch" property.
+> + * The port number is determined by the "reg" property of the endpoint.
+> + */
+> +int drm_dp_register_typec_switches(struct device *dev, struct fwnode_handle *port,
+> +				   struct drm_dp_typec_switch_desc *switch_desc,
+> +				   void *data, typec_mux_set_fn_t mux_set)
+> +{
+> +	struct fwnode_handle *sw;
+> +	int ret;
+> +
+> +	fwnode_for_each_child_node(port, sw) {
+> +		if (fwnode_property_present(sw, "mode-switch"))
+> +			switch_desc->num_typec_switches++;
+> +	}
 
-    # cat /sys/kernel/debug/devices_deferred
-    e6e90000.spi    platform: wait for supplier msiof0
+no need for brackets here
 
-Let's remove the overlay again:
+> +
+> +	if (!switch_desc->num_typec_switches) {
+> +		dev_dbg(dev, "No Type-C switches node found\n");
 
-    $ overlay rm 25lc040
-    input: keys as /devices/platform/keys/input/input1
+dev_warn()?
 
-And retry:
+> +		return 0;
+> +	}
+> +
+> +	switch_desc->typec_ports = devm_kcalloc(
+> +		dev, switch_desc->num_typec_switches,
+> +		sizeof(struct drm_dp_typec_port_data), GFP_KERNEL);
+> +
+> +	if (!switch_desc->typec_ports)
+> +		return -ENOMEM;
+> +
+> +	/* Register switches for each connector. */
+> +	fwnode_for_each_child_node(port, sw) {
+> +		if (!fwnode_property_present(sw, "mode-switch"))
+> +			continue;
+> +		ret = drm_dp_register_mode_switch(dev, sw, switch_desc, data, mux_set);
+> +		if (ret)
+> +			goto err_unregister_typec_switches;
+> +	}
+> +
+> +	return 0;
+> +
+> +err_unregister_typec_switches:
+> +	fwnode_handle_put(sw);
+> +	drm_dp_unregister_typec_switches(switch_desc);
+> +	dev_err(dev, "Failed to register mode switch: %d\n", ret);
 
-    $ overlay add 25lc040
-    OF: overlay: WARNING: memory leak will occur if overlay removed,
-property: /keys/status
-    OF: overlay: WARNING: memory leak will occur if overlay removed,
-property: /soc/spi@e6e90000/pinctrl-0
-    OF: overlay: WARNING: memory leak will occur if overlay removed,
-property: /soc/spi@e6e90000/pinctrl-names
-    OF: overlay: WARNING: memory leak will occur if overlay removed,
-property: /soc/spi@e6e90000/cs-gpios
-    OF: overlay: WARNING: memory leak will occur if overlay removed,
-property: /soc/spi@e6e90000/status
-    OF: overlay: WARNING: memory leak will occur if overlay removed,
-property: /__symbols__/msiof0_pins
-    spi_sh_msiof e6e90000.spi: DMA available
-    spi_sh_msiof e6e90000.spi: registered master spi0
-    spi spi0.0: setup mode 0, 8 bits/w, 100000 Hz max --> 0
-    at25 spi0.0: 512 Byte at25 eeprom, pagesize 16
-    spi_sh_msiof e6e90000.spi: registered child spi0.0
+there is a bit of dmesg spamming. Please choose where you want to
+print the error, either in this function or in
+drm_dp_register_mode_switch().
 
-Now it succeeds, and the SPI EEPROM is available, and works.
+Andi
 
-Without this patch, or with this patch reverted after applying the
-full series:
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL(drm_dp_register_typec_switches);
 
-    $ overlay add 25lc040
-    OF: overlay: WARNING: memory leak will occur if overlay removed,
-property: /keys/status
-    OF: overlay: WARNING: memory leak will occur if overlay removed,
-property: /soc/spi@e6e90000/pinctrl-0
-    OF: overlay: WARNING: memory leak will occur if overlay removed,
-property: /soc/spi@e6e90000/pinctrl-names
-    OF: overlay: WARNING: memory leak will occur if overlay removed,
-property: /soc/spi@e6e90000/cs-gpios
-    OF: overlay: WARNING: memory leak will occur if overlay removed,
-property: /soc/spi@e6e90000/status
-    OF: overlay: WARNING: memory leak will occur if overlay removed,
-property: /__symbols__/msiof0_pins
-    OF: Not linking spi@e6e90000 to interrupt-controller@f1010000 - No
-struct device
-    spi_sh_msiof e6e90000.spi: DMA available
-    spi_sh_msiof e6e90000.spi: registered master spi0
-    spi spi0.0: setup mode 0, 8 bits/w, 100000 Hz max --> 0
-    at25 spi0.0: 444 bps (2 bytes in 9 ticks)
-    at25 spi0.0: 512 Byte at25 eeprom, pagesize 16
-    spi_sh_msiof e6e90000.spi: registered child spi0.0
-
-The SPI EEPROM is available on the first try after boot.
-
-All output is with #define DEBUG in drivers/of/property.c, and with
-CONFIG_SPI_DEBUG=y.
-
-Note that your patch has no impact on drivers/of/unittest.c, as that
-checks only internal DT structures, not actual device instantiation.
-
-Thanks! ;-)
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/diff/arch/arm64/boot/dts/renesas/r8a77990-ebisu-cn41-msiof0-25lc040.dtso?h=topic/renesas-overlays&id=86d0cf6fa7f191145380485c22f684873c5cce26
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+[...]
