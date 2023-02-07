@@ -2,63 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 938D968E227
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Feb 2023 21:51:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E3CF68E22A
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Feb 2023 21:52:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229519AbjBGUvV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Feb 2023 15:51:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40748 "EHLO
+        id S229548AbjBGUwZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Feb 2023 15:52:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjBGUvU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Feb 2023 15:51:20 -0500
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EB5D3E09B;
-        Tue,  7 Feb 2023 12:51:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675803078; x=1707339078;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ToyNyrwixtOUDg+eEMoqUNCxsjNhmyVleCWCGzItYuE=;
-  b=bCpirNkOMfvauRRHwGt3h+f9RRE9Y4baCGmIi1d65SaUqPyHNkEJn7cT
-   b/StdWnYd+qw6wZo+nC7coePPKEb8tVG1RtWMNX9s7G+vEPXaxvWDJU7x
-   vYVjnxsvOPj7dRDrCFY5tSHcaSZB9sqYxlv+eCvCpj+6pAbjeDfd1gA/v
-   uJESwCV+gQaw+uZS2TXYG0SIKG2I4uej/b/zgbZd09LPhStLcQK2Yrq2q
-   WV/Qe6+i5g7vIuJBhzaJseuQPXZlWY4GCsZ4n+BUMgD7tcpVZuYwby1fM
-   8ECZJkimbv/gZg6Z5Se23Z5xtZDEb1jqYVAitPzxRYbzLfcRqKCDpYT2B
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="415846707"
-X-IronPort-AV: E=Sophos;i="5.97,279,1669104000"; 
-   d="scan'208";a="415846707"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2023 12:51:18 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="912470733"
-X-IronPort-AV: E=Sophos;i="5.97,279,1669104000"; 
-   d="scan'208";a="912470733"
-Received: from djiang5-mobl3.amr.corp.intel.com (HELO [10.212.98.37]) ([10.212.98.37])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2023 12:51:17 -0800
-Message-ID: <19f777db-fdc4-3f6e-ced5-d7bc43f6a340@intel.com>
-Date:   Tue, 7 Feb 2023 13:51:17 -0700
+        with ESMTP id S229441AbjBGUwZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Feb 2023 15:52:25 -0500
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B84F3B652;
+        Tue,  7 Feb 2023 12:52:24 -0800 (PST)
+Received: by mail-ot1-f54.google.com with SMTP id e12-20020a0568301e4c00b0068bc93e7e34so4627792otj.4;
+        Tue, 07 Feb 2023 12:52:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TcVPFnoRaSoY1gzZkXWhCCA1qymR4MwDuxSfBidY0Gc=;
+        b=5UF5YlLyugxA3myDT/Ra1ZntNN09BdeRFCF5pi5LDfjPevsZ0q/6d4gNbaDeODEheZ
+         8kBZcVjR7dNB+fCe/zi89N8DGIZXkGpRP5inVTSk8cAZBQqCv6bZycvjwEmc4epiJFRF
+         WhnXw5BMV774B+SxPnGR9h6TT87hLVmwwQp9FguWltp53zWlMwK/RKR4DCpmwG9m5KgB
+         pa1RUt99udLmesiN1G0Woh7aqhvrTRHW46TGdTQs3y9Ledo6wLVOXJKp2SzLYmMdBYya
+         CJpf9GH4HJAHKDY1m2LmhhiapZxBz7oL9BQG1SGlBd1PFAk1VZnJB4GHYZhiepFIhEBP
+         n9BQ==
+X-Gm-Message-State: AO0yUKU0VoZ41y3pOjg2Ep7hjgQUc08wWReOj8sFUbwSdZUoyg1rFrE1
+        uz2U3RuFmAk8JNEkQcJcOQ==
+X-Google-Smtp-Source: AK7set85cQER3pOfyCBLnV+ZWaH2+cz2iVzzjg8skSTkYOgkgyYEDrHKGYM6G+GfbIGe9UuBz9KkSg==
+X-Received: by 2002:a05:6830:2004:b0:68b:a341:b93b with SMTP id e4-20020a056830200400b0068ba341b93bmr2500643otp.36.1675803143255;
+        Tue, 07 Feb 2023 12:52:23 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id bk25-20020a056830369900b0068664355604sm7205144otb.22.2023.02.07.12.52.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Feb 2023 12:52:22 -0800 (PST)
+Received: (nullmailer pid 4134263 invoked by uid 1000);
+        Tue, 07 Feb 2023 20:52:21 -0000
+Date:   Tue, 7 Feb 2023 14:52:21 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Pin-yen Lin <treapking@chromium.org>
+Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <robert.foss@linaro.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        linux-kernel@vger.kernel.org,
+        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
+        <nfraprado@collabora.com>, Hsin-Yi Wang <hsinyi@chromium.org>,
+        devicetree@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
+        Lyude Paul <lyude@redhat.com>, linux-acpi@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
+        Xin Ji <xji@analogixsemi.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        chrome-platform@lists.linux.dev
+Subject: Re: [PATCH v11 7/9] dt-bindings: display: bridge: it6505: Add
+ mode-switch support
+Message-ID: <20230207205221.GA4121517-robh@kernel.org>
+References: <20230204133040.1236799-1-treapking@chromium.org>
+ <20230204133040.1236799-8-treapking@chromium.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.6.0
-Subject: Re: [PATCH 12/18] cxl: Add helpers to calculate pci latency for the
- CXL device
-Content-Language: en-US
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, dan.j.williams@intel.com,
-        ira.weiny@intel.com, vishal.l.verma@intel.com,
-        alison.schofield@intel.com, rafael@kernel.org, bhelgaas@google.com,
-        robert.moore@intel.com
-References: <20230206223957.GA2248946@bhelgaas>
-From:   Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20230206223957.GA2248946@bhelgaas>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230204133040.1236799-8-treapking@chromium.org>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,173 +93,105 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-
-On 2/6/23 3:39 PM, Bjorn Helgaas wrote:
-> On Mon, Feb 06, 2023 at 01:51:10PM -0700, Dave Jiang wrote:
->> The latency is calculated by dividing the FLIT size over the bandwidth. Add
->> support to retrieve the FLIT size for the CXL device and calculate the
->> latency of the downstream link.
+On Sat, Feb 04, 2023 at 09:30:38PM +0800, Pin-yen Lin wrote:
+> ITE IT6505 can be used in systems to switch the DP traffic between
+> two downstreams, which can be USB Type-C DisplayPort alternate mode
+> lane or regular DisplayPort output ports.
 > 
-> s/FLIT/flit/ to match spec usage.
-
-ok will fix.
-
+> Update the binding to accommodate this usage by introducing a
+> data-lanes and a mode-switch property on endpoints.
 > 
-> Most of this looks like PCIe, not necessarily CXL-specific.
+> Signed-off-by: Pin-yen Lin <treapking@chromium.org>
 > 
-> I guess you only care about the latency of a single link, not the
-> entire path?
-
-I am adding each of the link individually together in the next patch. 
-Are you suggesting a similar function like pcie_bandwidth_available() 
-but for latency for the entire path?
+> ---
 > 
->> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
->> ---
->>   drivers/cxl/core/pci.c |   67 ++++++++++++++++++++++++++++++++++++++++++++++++
->>   drivers/cxl/cxlpci.h   |   14 ++++++++++
->>   2 files changed, 81 insertions(+)
->>
->> diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
->> index a24dac36bedd..54ac6f8825ff 100644
->> --- a/drivers/cxl/core/pci.c
->> +++ b/drivers/cxl/core/pci.c
->> @@ -633,3 +633,70 @@ void read_cdat_data(struct cxl_port *port)
->>   	}
->>   }
->>   EXPORT_SYMBOL_NS_GPL(read_cdat_data, CXL);
->> +
->> +static int pcie_speed_to_mbps(enum pci_bus_speed speed)
->> +{
->> +	switch (speed) {
->> +	case PCIE_SPEED_2_5GT:
->> +		return 2500;
->> +	case PCIE_SPEED_5_0GT:
->> +		return 5000;
->> +	case PCIE_SPEED_8_0GT:
->> +		return 8000;
->> +	case PCIE_SPEED_16_0GT:
->> +		return 16000;
->> +	case PCIE_SPEED_32_0GT:
->> +		return 32000;
->> +	case PCIE_SPEED_64_0GT:
->> +		return 64000;
->> +	default:
->> +		break;
->> +	}
->> +
->> +	return -EINVAL;
->> +}
->> +
->> +static int cxl_pci_mbits_to_mbytes(struct pci_dev *pdev)
->> +{
->> +	int mbits;
->> +
->> +	mbits = pcie_speed_to_mbps(pcie_get_speed(pdev));
->> +	if (mbits < 0)
->> +		return mbits;
->> +
->> +	return mbits >> 3;
->> +}
->> +
->> +static int cxl_get_flit_size(struct pci_dev *pdev)
->> +{
->> +	if (cxl_pci_flit_256(pdev))
->> +		return 256;
->> +
->> +	return 66;
+> Changes in v11:
+> - Updated the description of the endpoints in the bindings
+> - Referenced video-interfaces.yaml instead for the endpoints binding
+> - Removed duplicated definitions from inherited schema
 > 
-> I don't know about the 66-byte flit format, maybe this part is
-> CXL-specific?
-
-68-byte flit format. Looks like this is a typo from me.
-
+> Changes in v9:
+> - Fixed subject prefix again
+> - Changed the naming of the example node for it6505
 > 
->> + * cxl_pci_get_latency - calculate the link latency for the PCIe link
->> + * @pdev - PCI device
->> + *
->> + * CXL Memory Device SW Guide v1.0 2.11.4 Link latency calculation
->> + * Link latency = LinkPropagationLatency + FlitLatency + RetimerLatency
->> + * LinkProgationLatency is negligible, so 0 will be used
->> + * RetimerLatency is assumed to be neglibible and 0 will be used
+> Changes in v8:
+> - Updated bindings for data-lanes property
+> - Fixed subject prefix
 > 
-> s/neglibible/negligible/
-
-thank you will fix.
+> Changes in v7:
+> - Fixed issues reported by dt_binding_check.
+> - Updated the schema and the example dts for data-lanes.
+> - Changed to generic naming for the example dts node.
 > 
->> + * FlitLatency = FlitSize / LinkBandwidth
->> + * FlitSize is defined by spec. CXL v3.0 4.2.1.
->> + * 68B flit is used up to 32GT/s. >32GT/s, 256B flit size is used.
->> + * The FlitLatency is converted to pico-seconds.
+> Changes in v6:
+> - Remove switches node and use endpoints and data-lanes property to
+>   describe the connections.
 > 
-> I guess this means cxl_pci_get_latency() actually *returns* a value in
-> picoseconds?
-
-yes
-
+>  .../bindings/display/bridge/ite,it6505.yaml   | 101 +++++++++++++++---
+>  1 file changed, 88 insertions(+), 13 deletions(-)
 > 
-> There are a couple instances of this written as "pico-seconds", but
-> most are "picoseconds".
+> diff --git a/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml b/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
+> index b16a9d9127dd..8ae9c5cba22c 100644
+> --- a/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
+> +++ b/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
+> @@ -75,22 +75,49 @@ properties:
+>        port@1:
+>          $ref: /schemas/graph.yaml#/$defs/port-base
+>          unevaluatedProperties: false
+> -        description: Video port for DP output
+> +        description:
+> +          Video port for DP output. Each endpoint connects to a video output
+> +          downstream, and the "data-lanes" property is used to describe the pin
+> +          connections. 0, 1, 2, 3 in "data-lanes" maps to TX0, TX1, TX2, TX3,
+> +          respectively.
+>  
+> -        properties:
+> -          endpoint:
+> -            $ref: /schemas/graph.yaml#/$defs/endpoint-base
+> +
+> +        patternProperties:
+> +          "^endpoint@[01]$":
+> +            $ref: /schemas/media/video-interfaces.yaml#
+>              unevaluatedProperties: false
+>  
+>              properties:
+> +              reg: true
+> +
+> +              remote-endpoint: true
+> +
+>                data-lanes:
+> -                minItems: 1
+> -                uniqueItems: true
+> -                items:
+> -                  - enum: [ 0, 1 ]
+> -                  - const: 1
+> -                  - const: 2
+> -                  - const: 3
+> +                oneOf:
+> +                  - items:
+> +                      - enum: [0, 1, 2, 3]
+> +
+> +                  - items:
+> +                      - const: 0
+> +                      - const: 1
+> +
+> +                  - items:
+> +                      - const: 2
+> +                      - const: 3
+> +
+> +                  - items:
+> +                      - const: 0
+> +                      - const: 1
+> +                      - const: 2
+> +                      - const: 3
+> +
+> +              mode-switch:
+> +                type: boolean
+> +                description: Register this node as a Type-C mode switch or not.
 
-ok will fix.
+Existing users put this property in the device's node, not the endpoint. 
+That seems more like a property of the device, than the DP link.
 
-> 
->> +long cxl_pci_get_latency(struct pci_dev *pdev)
->> +{
->> +	long bw, flit_size;
->> +
->> +	bw = cxl_pci_mbits_to_mbytes(pdev);
->> +	if (bw < 0)
->> +		return bw;
->> +
->> +	flit_size = cxl_get_flit_size(pdev);
->> +	return flit_size * 1000000L / bw;
->> +}
->> +EXPORT_SYMBOL_NS_GPL(cxl_pci_get_latency, CXL);
->> diff --git a/drivers/cxl/cxlpci.h b/drivers/cxl/cxlpci.h
->> index 920909791bb9..d64a3e0458ab 100644
->> --- a/drivers/cxl/cxlpci.h
->> +++ b/drivers/cxl/cxlpci.h
->> @@ -62,8 +62,22 @@ enum cxl_regloc_type {
->>   	CXL_REGLOC_RBI_TYPES
->>   };
->>   
->> +/*
->> + * CXL v3.0 6.2.3 Table 6-4
-> 
-> The copy I have refers to *Revision 3.0, Version 1.0*, i.e.,
-> "Revision" is the major level and "Version" is the minor.  So I would
-> cite this as "CXL r3.0", not "CXL v3.0".  I suppose the same for CXL
-> Memory Device above, but I don't have that spec.
+You are using fwnode_typec_mux_get(), right?
 
-Ok will fix.
-
-> 
->> + * The table indicates that if PCIe Flit Mode is set, then CXL is in 256B flits
->> + * mode, otherwise it's 68B flits mode.
->> + */
->> +static inline bool cxl_pci_flit_256(struct pci_dev *pdev)
->> +{
->> +	u32 lnksta2;
->> +
->> +	pcie_capability_read_dword(pdev, PCI_EXP_LNKSTA2, &lnksta2);
->> +	return lnksta2 & BIT(10);
-> 
-> Add a #define for the bit.
-
-ok will add.
-
-> 
-> AFAICT, the PCIe spec defines this bit, and it only indicates the link
-> is or will be operating in Flit Mode; it doesn't actually say anything
-> about how large the flits are.  I suppose that's because PCIe only
-> talks about 256B flits, not 66B ones?
-
-Looking at CXL v1.0 rev3.0 6.2.3 "256B Flit Mode", table 6-4, it shows 
-that when PCIe Flit Mode is set, then CXL is in 256B flits mode, 
-otherwise, it is 68B flits. So an assumption is made here regarding the 
-flit side based on the table.
-
-> 
-> Bjorn
+Rob
