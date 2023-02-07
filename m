@@ -2,113 +2,176 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2176068D08F
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Feb 2023 08:25:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BECA868D0F5
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Feb 2023 08:52:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229565AbjBGHZU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Feb 2023 02:25:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51346 "EHLO
+        id S230378AbjBGHwM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Feb 2023 02:52:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229738AbjBGHZT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Feb 2023 02:25:19 -0500
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 284C22ED62;
-        Mon,  6 Feb 2023 23:25:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675754718; x=1707290718;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=wIhE4o9BjRTaPYx3WM+PdzIPTyiOBr12rvLi9TUQ5Xs=;
-  b=GP2dV8ZQ4VL3hJpT9P1kDPN4siAZNOu5o2sUeNwQSrZvwx8YEGLwSusF
-   iz+WXMEWu3fJFuTMlFeNCh85r0XZbazOu6wSDurK2KMqodYt8dYqoQN4j
-   GOIv1xpLIr+Sq1Nxuk0m9vIF3LS8mpVgJIUbUKfJLcAK3u+0V1v7bcBde
-   8mt4BFpyW/UZ3YaqJMUfi44lHxjPGRTbxBRlh3cXscHDZjjwDeSLL0lkv
-   NNOgtHv/doL8e6I4/WScWpiPq+2hJheTyYCs6Y+wDElYXxaakG3uGQQ9P
-   zVOzCnfalPsxmqMYTcIR6bYjobsSeDUMh3M3GbEEfFzWYAkbngFomntVh
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10613"; a="309763433"
-X-IronPort-AV: E=Sophos;i="5.97,278,1669104000"; 
-   d="scan'208";a="309763433"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2023 23:25:11 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10613"; a="809418436"
-X-IronPort-AV: E=Sophos;i="5.97,278,1669104000"; 
-   d="scan'208";a="809418436"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 06 Feb 2023 23:25:02 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-        id 294D61C5; Tue,  7 Feb 2023 09:25:40 +0200 (EET)
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Wolfram Sang <wsa@kernel.org>
-Cc:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
-        <amadeuszx.slawinski@linux.intel.com>,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        Raul E Rangel <rrangel@chromium.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: [RFC] i2c: core: Do not enable wakeup by default
-Date:   Tue,  7 Feb 2023 09:25:40 +0200
-Message-Id: <20230207072540.27226-1-mika.westerberg@linux.intel.com>
-X-Mailer: git-send-email 2.39.1
+        with ESMTP id S231132AbjBGHv5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Feb 2023 02:51:57 -0500
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C81FACC2E;
+        Mon,  6 Feb 2023 23:51:55 -0800 (PST)
+Received: by mail-ed1-x536.google.com with SMTP id v13so14217449eda.11;
+        Mon, 06 Feb 2023 23:51:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1MAcGBhfYJH12s1m6Mlrfjjm34y3tTLoDEvIT2WAfMg=;
+        b=d7K7xElfgp/OSqI7i4n2yCI8yumpN7UeyLpjtJx0sV/FpiLD/636yAvtiMkTtkYb0l
+         ucDlBQjpSjRU/+aOWJzRHVKBDZmOhA9zcBhNG5jaISqPzCREvE8uZC2fePI4uuhZFVb3
+         ZVouoHp1n3OcwIk5MiJh0HjBTnFDhTrgYxHmdndZjz9aHrNYR1jEt9EX39P/tut7eww2
+         ZcW5YPGlY2CrQTQvywR1fryKusmAXif+bU4ox7LT3G7pbNcV0JmP5H0Igll2IULkiee4
+         v+Wj5EP7kCIfF1E2g0QBph3fJfdfQTZAzVt/QiF+meDGsqk7AxQoWo+UjQZk24PGorhf
+         JxBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1MAcGBhfYJH12s1m6Mlrfjjm34y3tTLoDEvIT2WAfMg=;
+        b=hrFA4I0jm//HYLjjbajuD+Bk7sHl+TisG3n98PztbBeh64qsPTj+Q6HbBJVTQgQxdO
+         YkxuvkqZ5yTecrSC+ijKernYyCWqoyMHUSNSHPy55ier4Yw+Lop+uTkh864dfpt3RqD3
+         hhSYWuel2uv7oZ7p0f2N+dWFzFteDexJaqtVL3K6Q7qcCI1MuoijxltB3nuWcyl7+UDy
+         EkwyFdArK6n8AF/CamaMM7at6AYYx/CY+eCyqCaaucauHnReMCO6miivMZU6zl9VaoJb
+         XD4ytQqrPT/jRGwl99ZudynxlWRvAf1cJWzxXFt2CNUdnUDBOUJWWH+pU/dxNDEdmVGg
+         GsJg==
+X-Gm-Message-State: AO0yUKUjlmyBwSovbanBxQ3OBIXYwH5ECcZQolhSp3Jxvc04s/9KwUmU
+        0zNRTIfkM+jOOYb4JLhu9qrCC53MWVEPNoDNCmw=
+X-Google-Smtp-Source: AK7set9lt5j+w095nFTUJw9kawQv3h15WZBR3heYuhLpaFmwnyQ54oO5vLiD88vSYWR/e266zEZphxYcff6g5Hda/As=
+X-Received: by 2002:a50:8a83:0:b0:4aa:9903:ec5f with SMTP id
+ j3-20020a508a83000000b004aa9903ec5fmr656184edj.54.1675756314187; Mon, 06 Feb
+ 2023 23:51:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230207014207.1678715-1-saravanak@google.com> <20230207014207.1678715-13-saravanak@google.com>
+In-Reply-To: <20230207014207.1678715-13-saravanak@google.com>
+From:   Maxim Kiselev <bigunclemax@gmail.com>
+Date:   Tue, 7 Feb 2023 10:51:41 +0300
+Message-ID: <CALHCpMgC55uTnZKPGdKmSX1f0++bSLp2odBp5gQ1kmg90JuQwQ@mail.gmail.com>
+Subject: Re: [PATCH v3 12/12] mtd: mtdpart: Don't create platform device
+ that'll never probe
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        John Stultz <jstultz@google.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Maxim Kochetkov <fido_max@inbox.ru>,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Colin Foster <colin.foster@in-advantage.com>,
+        Martin Kepplinger <martin.kepplinger@puri.sm>,
+        Jean-Philippe Brucker <jpb@kernel.org>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        kernel-team@android.com, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-After commit b38f2d5d9615 ("i2c: acpi: Use ACPI wake capability bit to
-set wake_irq") the I2C core has been setting I2C_CLIENT_WAKE for ACPI
-devices if they announce to be wake capable in their device description.
-However, on certain systems where audio codec has been connected through
-I2C this causes system suspend to wake up immediately because power to
-the codec is turned off which pulls the interrupt line "low" triggering
-wake up.
+=D0=B2=D1=82, 7 =D1=84=D0=B5=D0=B2=D1=80. 2023 =D0=B3. =D0=B2 04:42, Sarava=
+na Kannan <saravanak@google.com>:
+>
+> These "nvmem-cells" platform devices never get probed because there's no
+> platform driver for it and it's never used anywhere else. So it's a
+> waste of memory. These devices also cause fw_devlink to block nvmem
+> consumers of "nvmem-cells" partition from probing because the supplier
+> device never probes.
+>
+> So stop creating platform devices for nvmem-cells partitions to avoid
+> wasting memory and to avoid blocking probing of consumers.
+>
+> Reported-by: Maxim Kiselev <bigunclemax@gmail.com>
+> Fixes: bcdf0315a61a ("mtd: call of_platform_populate() for MTD partitions=
+")
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> ---
+>  drivers/mtd/mtdpart.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+>
+> diff --git a/drivers/mtd/mtdpart.c b/drivers/mtd/mtdpart.c
+> index d442fa94c872..85f5ee6f06fc 100644
+> --- a/drivers/mtd/mtdpart.c
+> +++ b/drivers/mtd/mtdpart.c
+> @@ -577,6 +577,7 @@ static int mtd_part_of_parse(struct mtd_info *master,
+>  {
+>         struct mtd_part_parser *parser;
+>         struct device_node *np;
+> +       struct device_node *child;
+>         struct property *prop;
+>         struct device *dev;
+>         const char *compat;
+> @@ -594,6 +595,15 @@ static int mtd_part_of_parse(struct mtd_info *master=
+,
+>         else
+>                 np =3D of_get_child_by_name(np, "partitions");
+>
+> +       /*
+> +        * Don't create devices that are added to a bus but will never ge=
+t
+> +        * probed. That'll cause fw_devlink to block probing of consumers=
+ of
+> +        * this partition until the partition device is probed.
+> +        */
+> +       for_each_child_of_node(np, child)
+> +               if (of_device_is_compatible(child, "nvmem-cells"))
+> +                       of_node_set_flag(child, OF_POPULATED);
+> +
+>         of_property_for_each_string(np, "compatible", prop, compat) {
+>                 parser =3D mtd_part_get_compatible_parser(compat);
+>                 if (!parser)
+> --
+> 2.39.1.519.gcb327c4b5f-goog
+>
 
-Possible reason why the interrupt is marked as wake capable is that some
-codecs apparently support "Wake on Voice" or similar functionality.
+Hi, Saravana!
 
-In any case, I don't think we should be enabling wakeup by default on
-all I2C devices that are wake capable. According to device_init_wakeup()
-documentation most devices should leave it disabled, with exceptions on
-devices such as keyboards, power buttons etc. Userspace can enable
-wakeup as needed by writing to device "power/wakeup" attribute.
+Now it works pretty well. Thank you so much for your efforts.
 
-Reported-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
----
-Hi,
+> Reported-by: Maxim Kiselev <bigunclemax@gmail.com>
+> Fixes: bcdf0315a61a ("mtd: call of_platform_populate() for MTD partitions=
+")
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
 
-Sending this as RFC because I'm not too familiar with the usage of
-I2C_CLIENT_WAKE and whether this is something that is expected behaviour
-in users of I2C devices. On ACPI side I think this is the correct thing
-to do at least.
-
- drivers/i2c/i2c-core-base.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index 087e480b624c..7046549bdae7 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -527,7 +527,7 @@ static int i2c_device_probe(struct device *dev)
- 			goto put_sync_adapter;
- 		}
- 
--		device_init_wakeup(&client->dev, true);
-+		device_init_wakeup(&client->dev, false);
- 
- 		if (wakeirq > 0 && wakeirq != client->irq)
- 			status = dev_pm_set_dedicated_wake_irq(dev, wakeirq);
--- 
-2.39.1
-
+Tested-by: Maksim Kiselev <bigunclemax@gmail.com>
