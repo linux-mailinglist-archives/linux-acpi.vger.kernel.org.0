@@ -2,45 +2,31 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EDFB68D55A
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Feb 2023 12:23:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BB1668D71C
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Feb 2023 13:47:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230507AbjBGLXt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Feb 2023 06:23:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45608 "EHLO
+        id S231818AbjBGMrD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Feb 2023 07:47:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231577AbjBGLXs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Feb 2023 06:23:48 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB6CECDE4;
-        Tue,  7 Feb 2023 03:23:45 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8A00AB818FF;
-        Tue,  7 Feb 2023 11:23:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5D8C433D2;
-        Tue,  7 Feb 2023 11:23:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675769023;
-        bh=3ODqaHBZp5FJ22eMEpdVmf5CP3x7xF2WSgLTgVHOmlM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=iSpHwSAeY4ZzLuVXGHdbTfKlE2wIuw6Pe+OwOVybmGLbecytzJUeBRzZK0hqyG4MR
-         Y5VuFx5KV6yuy6orKAmWmIIBl+5UdbMlzNUvqtG2GsTm7Oto87hB6Fi45Cowvelyj9
-         9IVVLLszQ7gDFSYn3VdXCIYWPxZJIbUmwXwRYLK5POPVSB9alI3mauLkiqJY7FCgRL
-         0wQPRN1V1nAMobXMMsrv2vIxONuHECBC2VVm57o1QZbajZr+hRPuuxvjx4AI/D7Fzb
-         TlsDR08XaeKhYHKpPGPXHEx00C5zXz8tPjppXSkKTapQA6MZXz/emapV1Sjs7mg9Hu
-         Rwccvkc4286NQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.95)
-        (envelope-from <maz@kernel.org>)
-        id 1pPM4a-008J4O-KK;
-        Tue, 07 Feb 2023 11:23:40 +0000
-Date:   Tue, 07 Feb 2023 11:23:40 +0000
-Message-ID: <86sffhzpkz.wl-maz@kernel.org>
-From:   Marc Zyngier <maz@kernel.org>
-To:     Suzuki K Poulose <suzuki.poulose@arm.com>
+        with ESMTP id S231528AbjBGMrC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Feb 2023 07:47:02 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5207611E9B;
+        Tue,  7 Feb 2023 04:47:01 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0F4C6106F;
+        Tue,  7 Feb 2023 04:47:43 -0800 (PST)
+Received: from [10.57.75.57] (unknown [10.57.75.57])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4589B3F71E;
+        Tue,  7 Feb 2023 04:46:56 -0800 (PST)
+Message-ID: <7a88cefe-c817-3bca-f3e1-88254a144e3e@arm.com>
+Date:   Tue, 7 Feb 2023 12:46:54 +0000
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.6.1
+Subject: Re: [RFC PATCH 29/32] KVM: arm64: Pass hypercalls to userspace
+To:     Marc Zyngier <maz@kernel.org>
 Cc:     James Morse <james.morse@arm.com>, linux-pm@vger.kernel.org,
         loongarch@lists.linux.dev, kvmarm@lists.linux.dev,
         kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
@@ -62,95 +48,107 @@ Cc:     James Morse <james.morse@arm.com>, linux-pm@vger.kernel.org,
         Salil Mehta <salil.mehta@huawei.com>,
         Russell King <linux@armlinux.org.uk>,
         Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: Re: [RFC PATCH 29/32] KVM: arm64: Pass hypercalls to userspace
-In-Reply-To: <985abd9c-b3f9-3f9d-eec7-df1f26733762@arm.com>
 References: <20230203135043.409192-1-james.morse@arm.com>
-        <20230203135043.409192-30-james.morse@arm.com>
-        <865ycg1kv2.wl-maz@kernel.org>
-        <cffde8a1-74e4-9b61-1eea-544ba3405ed4@arm.com>
-        <86wn4vynyr.wl-maz@kernel.org>
-        <985abd9c-b3f9-3f9d-eec7-df1f26733762@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: suzuki.poulose@arm.com, james.morse@arm.com, linux-pm@vger.kernel.org, loongarch@lists.linux.dev, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org, tglx@linutronix.de, lpieralisi@kernel.org, mark.rutland@arm.com, sudeep.holla@arm.com, bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com, mingo@redhat.com, will@kernel.org, catalin.marinas@arm.com, chenhuacai@kernel.org, oliver.upton@linux.dev, lenb@kernel.org, rafael@kernel.org, kernel@xen0n.name, salil.mehta@huawei.com, linux@armlinux.org.uk, jean-philippe@linaro.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+ <20230203135043.409192-30-james.morse@arm.com> <865ycg1kv2.wl-maz@kernel.org>
+ <cffde8a1-74e4-9b61-1eea-544ba3405ed4@arm.com> <86wn4vynyr.wl-maz@kernel.org>
+ <985abd9c-b3f9-3f9d-eec7-df1f26733762@arm.com> <86sffhzpkz.wl-maz@kernel.org>
+From:   Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <86sffhzpkz.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 07 Feb 2023 09:41:54 +0000,
-Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+On 07/02/2023 11:23, Marc Zyngier wrote:
+> On Tue, 07 Feb 2023 09:41:54 +0000,
+> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>>
+>> Hi Marc,
+>>
+>> On 06/02/2023 12:31, Marc Zyngier wrote:
+>>> On Mon, 06 Feb 2023 10:10:41 +0000,
+>>> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>>>>
+>>>> This may not be always possible, e.g., for Realms. GET_ONE_REG is
+>>>> not supported. So using an explicit passing down of the args is
+>>>> preferrable.
+>>>
+>>> What is the blocker for CCA to use GET_ONE_REG? The value obviously
+>>> exists and is made available to the host. pKVM is perfectly able to
+>>> use GET_ONE_REG and gets a bunch of zeroes for things that the
+>>> hypervisor has decided to hide from the host.
+>>>
+>>
+>> It is not impossible. On a "HOST CALL" (explicit calls to the Host
+>> from Realm), the GPRs are made available to the host and can be
+>> stashed into the vcpu reg state and the request can be
+>> serviced. However, it is a bit odd, to make this exception - "the
+>> GET_ONE_REG is valid now", while in almost all other cases it is
+>> invalid (exception of MMIO).
 > 
-> Hi Marc,
+> But that's an RMM decision. If the RMM decides to forward the
+> hypercall to the host (irrespective of the potential forwarding to
+> userspace), it makes the GPRs available.
 > 
-> On 06/02/2023 12:31, Marc Zyngier wrote:
-> > On Mon, 06 Feb 2023 10:10:41 +0000,
-> > Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
-> >> 
-> >> This may not be always possible, e.g., for Realms. GET_ONE_REG is
-> >> not supported. So using an explicit passing down of the args is
-> >> preferrable.
-> > 
-> > What is the blocker for CCA to use GET_ONE_REG? The value obviously
-> > exists and is made available to the host. pKVM is perfectly able to
-> > use GET_ONE_REG and gets a bunch of zeroes for things that the
-> > hypervisor has decided to hide from the host.
-> > 
+> If the hypercall is forwarded to userspace, then the host is
+> responsible to check with the RMM that it will be willing to provide
+> the required information (passed as GPRs or not).
+
+Just to be clear, on a hypercall, all the arguments are provided to
+the host. And it is always possible for the host to sync the vcpu
+GPR state with those arguments and make them available via the 
+GET_ONE_REG call.
+
 > 
-> It is not impossible. On a "HOST CALL" (explicit calls to the Host
-> from Realm), the GPRs are made available to the host and can be
-> stashed into the vcpu reg state and the request can be
-> serviced. However, it is a bit odd, to make this exception - "the
-> GET_ONE_REG is valid now", while in almost all other cases it is
-> invalid (exception of MMIO).
-
-But that's an RMM decision. If the RMM decides to forward the
-hypercall to the host (irrespective of the potential forwarding to
-userspace), it makes the GPRs available.
-
-If the hypercall is forwarded to userspace, then the host is
-responsible to check with the RMM that it will be willing to provide
-the required information (passed as GPRs or not).
-
-> Of course we could always return what is stashed in the vcpu state,
-> which is may be invalid/ 0. But given the construct of "host doesn't
-> have access to the register state", it may be a good idea to say,
-> request always fails, to indicate that the Host is probably doing
-> something wrong, than silently passing on incorrect information.
-
-I disagree. Either you fail at the delegation point, or you don't. On
-getting a hypercall exit to userspace, you are guaranteed that the
-GPRs are valid.
-
-> > Of course, it requires that the hypervisor (the RMM in your case)
-> > knows about the semantics of the hypercall, but that's obviously
+>> Of course we could always return what is stashed in the vcpu state,
+>> which is may be invalid/ 0. But given the construct of "host doesn't
+>> have access to the register state", it may be a good idea to say,
+>> request always fails, to indicate that the Host is probably doing
+>> something wrong, than silently passing on incorrect information.
 > 
-> RMM doesn't care about the semantics of hypercall, other than
-> considering it just like an SMCCC compliant call. The hypercall
-> arguments/results are passed down/up by the Realm in a separate
-> structure.
+> I disagree. Either you fail at the delegation point, or you don't. On
+> getting a hypercall exit to userspace, you are guaranteed that the
+> GPRs are valid.
 
-That's because the RMM doesn't use registers to pass the data. But at
-the end of the day, this is the same thing. The host gets the data
-from the RMM, stashes it in the GPRs, and exit to userspace.
+This is possible, as I mentioned below, the question is bug vs feature.
 
-The important thing here is that GET_ONE_REG is valid in the context
-where it matters. If the VMM tries to use it outside of the context of
-a hypercall, it gets junk. It's not a bug, it's a feature.
+> 
+>>> Of course, it requires that the hypervisor (the RMM in your case)
+>>> knows about the semantics of the hypercall, but that's obviously
+>>
+>> RMM doesn't care about the semantics of hypercall, other than
+>> considering it just like an SMCCC compliant call. The hypercall
+>> arguments/results are passed down/up by the Realm in a separate
+>> structure.
+> 
+> That's because the RMM doesn't use registers to pass the data. But at
+> the end of the day, this is the same thing. The host gets the data
+> from the RMM, stashes it in the GPRs, and exit to userspace.
 
-Thanks,
+True.
 
-	M.
+> 
+> The important thing here is that GET_ONE_REG is valid in the context
+> where it matters. If the VMM tries to use it outside of the context of
+> a hypercall, it gets junk. It's not a bug, it's a feature.
 
--- 
-Without deviation from the norm, progress is not possible.
+This is what I was concerned about.  As long as this "For any exit
+other than hypercall (at least for now), you get junk values when using
+GET_ONE_REG for confidential guests" is an acceptable feature, that 
+should be alright.
+
+Thanks
+Suzuki
+
+> 
+> Thanks,
+> 
+> 	M.
+> 
+
