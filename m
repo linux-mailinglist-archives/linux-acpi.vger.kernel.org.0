@@ -2,162 +2,192 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 973DF68CC8A
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Feb 2023 03:27:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C99568CFDD
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Feb 2023 07:57:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229741AbjBGC1g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Feb 2023 21:27:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33214 "EHLO
+        id S229667AbjBGG5s (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Feb 2023 01:57:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbjBGC1g (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Feb 2023 21:27:36 -0500
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C9403430F;
-        Mon,  6 Feb 2023 18:27:34 -0800 (PST)
-Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.57])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4P9n3P0GZpzkXqp;
-        Tue,  7 Feb 2023 10:22:57 +0800 (CST)
-Received: from [10.67.103.231] (10.67.103.231) by
- kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Tue, 7 Feb 2023 10:27:31 +0800
-Message-ID: <926bf147-5e93-0104-1bf4-171efcd15c5c@huawei.com>
-Date:   Tue, 7 Feb 2023 10:27:31 +0800
+        with ESMTP id S229525AbjBGG5r (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Feb 2023 01:57:47 -0500
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 521F2222F1;
+        Mon,  6 Feb 2023 22:57:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675753066; x=1707289066;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=v9gdSWkXD/byI0aHL2myY7VyOo9xeNCbyQXYWq1oG1U=;
+  b=HRrGm8BjVFscrnbhnxMiXaHhMHJwjpijgaVcZpThGtxOKdKuPiDO5RXX
+   xAFQobi+Ao0xR5yt6RbbuSUPRiCqGpP8Drxj/0TxxMjdvR3roNwoqWNwP
+   GpHycpqYreczyFdoMJEilJz1gKA2lCVbtHUG+3iAoC5Nb9vy47vvEsLIc
+   9ZmA4vL15RFbVvjvofBbCzTrAMNRtvG2RAA14MOX7/8LdqDeEYYmuIKpU
+   TPlZPH8cRAkoDGaKoEKeJ8rK9d/l9tvt4tx/nGWrrubXJpgmdhBY07x2j
+   Pdgk8EdA2z4btMv42HZIcuSLpezDdCVv0dL3tYq2Lr6YtmMq65iTAufSs
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10613"; a="415645319"
+X-IronPort-AV: E=Sophos;i="5.97,278,1669104000"; 
+   d="scan'208";a="415645319"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2023 22:57:45 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10613"; a="697152313"
+X-IronPort-AV: E=Sophos;i="5.97,278,1669104000"; 
+   d="scan'208";a="697152313"
+Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 06 Feb 2023 22:57:44 -0800
+Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pPHvD-0003EJ-1u;
+        Tue, 07 Feb 2023 06:57:43 +0000
+Date:   Tue, 07 Feb 2023 14:57:29 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ dcf0f94e28915d8dc7d174be2554edf87c3d655f
+Message-ID: <63e1f659.Z66hIz6D4ZuSnKWP%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [RFC-V3 1/2] mailbox: pcc: Add processing platform notification
- for slave subspaces
-To:     Sudeep Holla <sudeep.holla@arm.com>,
-        Robbie King <robbiek@xsightlabs.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <rafael@kernel.org>, <rafael.j.wysocki@intel.com>,
-        <wanghuiqiang@huawei.com>, <zhangzekun11@huawei.com>,
-        <wangxiongfeng2@huawei.com>, <tanxiaofei@huawei.com>,
-        <guohanjun@huawei.com>, <xiexiuqi@huawei.com>,
-        <wangkefeng.wang@huawei.com>, <huangdaode@huawei.com>
-References: <20221016034043.52227-1-lihuisong@huawei.com>
- <20221203095150.45422-1-lihuisong@huawei.com>
- <20221203095150.45422-2-lihuisong@huawei.com>
- <20230206153940.gcddy3b3znk72yqd@bogus>
-From:   "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <20230206153940.gcddy3b3znk72yqd@bogus>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.103.231]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemm600004.china.huawei.com (7.193.23.242)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: dcf0f94e28915d8dc7d174be2554edf87c3d655f  Merge branch 'acpi-video' into bleeding-edge
 
-在 2023/2/6 23:39, Sudeep Holla 写道:
-> Hi Huisong,
->
-> Apologies for such a long delay.
->
-> Also I would like to hear from Robbie King who I know is playing around
-> with this these days 😄. At minimum if this logic works for him as well.
+elapsed time: 730m
 
-@Robbie King,
-Do you use this patchset to test your requirements?
-Any other problems? Can you tell us your result?
+configs tested: 110
+configs skipped: 4
 
->
-> On Sat, Dec 03, 2022 at 05:51:49PM +0800, Huisong Li wrote:
->> Currently, PCC driver doesn't support the processing of platform
->> notification for slave PCC subspaces because of the incomplete
->> communication flow.
->>
->> According to ACPI specification, if platform sends a notification
->> to OSPM, it must clear the command complete bit and trigger platform
->> interrupt. OSPM needs to check whether the command complete bit is
->> cleared, clear platform interrupt, process command, and then set the
->> command complete and ring doorbell to Platform. But the current judgment
->> on the command complete is not applicable to type4 in pcc_mbox_irq().
->>
->> This patch introduces a communication flow direction field to detect
->> whether the interrupt belongs to the master or slave subspace channel.
->> And PCC driver needs to add the phase of setting the command complete
->> and ring doorbell in pcc_mbox_irq() to complete type4 communication
->> flow after processing command from Platform.
->>
->> Signed-off-by: Huisong Li <lihuisong@huawei.com>
->> ---
->>   drivers/mailbox/pcc.c | 77 +++++++++++++++++++++++++++++++++++++++----
->>   1 file changed, 71 insertions(+), 6 deletions(-)
->>
->> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
->> index 105d46c9801b..ad6d0b7d50fc 100644
->> --- a/drivers/mailbox/pcc.c
->> +++ b/drivers/mailbox/pcc.c
->> @@ -80,6 +80,13 @@ struct pcc_chan_reg {
->>   	u64 status_mask;
->>   };
->>   
->> +enum pcc_chan_comm_flow_dir_type {
->> +	PCC_ONLY_OSPM_TO_PLATFORM,
->> +	PCC_ONLY_PLATFORM_TO_OSPM,
->> +	PCC_BIDIRECTIONAL,
->> +	PCC_DIR_UNKNOWN,
->> +};
->> +
->>   /**
->>    * struct pcc_chan_info - PCC channel specific information
->>    *
->> @@ -91,6 +98,7 @@ struct pcc_chan_reg {
->>    * @cmd_update: PCC register bundle for the command complete update register
->>    * @error: PCC register bundle for the error status register
->>    * @plat_irq: platform interrupt
->> + * @comm_flow_dir: direction of communication flow supported by the channel
->>    */
->>   struct pcc_chan_info {
->>   	struct pcc_mbox_chan chan;
->> @@ -100,12 +108,15 @@ struct pcc_chan_info {
->>   	struct pcc_chan_reg cmd_update;
->>   	struct pcc_chan_reg error;
->>   	int plat_irq;
->> +	u8 comm_flow_dir;
-> I would rather just save the 'type' as read from the PCCT. We don't know
-> what future types might be and just identifying them by the direction of
-> flow of the data, it restricts the usage of this.
-Ack.
->
->>   };
->>   
->>   #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
->>   static struct pcc_chan_info *chan_info;
->>   static int pcc_chan_count;
->>   
->> +static int pcc_send_data(struct mbox_chan *chan, void *data);
->> +
->>   /*
->>    * PCC can be used with perf critical drivers such as CPPC
->>    * So it makes sense to locally cache the virtual address and
->> @@ -221,6 +232,43 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
->>   	return acpi_register_gsi(NULL, interrupt, trigger, polarity);
->>   }
->>   
->> +static bool pcc_chan_need_rsp_irq(struct pcc_chan_info *pchan,
->> +				  u64 cmd_complete_reg_val)
-> Probably rename this as pcc_chan_command_complete or something similar.
-Ack
->
->> +{
->> +	bool need_rsp;
->> +
->> +	if (!pchan->cmd_complete.gas)
->> +		return true;
->> +
->> +	cmd_complete_reg_val &= pchan->cmd_complete.status_mask;
->> +
->> +	switch (pchan->comm_flow_dir) {
-> Use the channel type instead here.
-Ack
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+um                             i386_defconfig
+x86_64                            allnoconfig
+um                           x86_64_defconfig
+powerpc                           allnoconfig
+alpha                            allyesconfig
+m68k                             allmodconfig
+mips                         db1xxx_defconfig
+m68k                             allyesconfig
+arc                              allyesconfig
+arc                                 defconfig
+sh                          rsk7269_defconfig
+alpha                               defconfig
+i386                                defconfig
+sh                               allmodconfig
+alpha                             allnoconfig
+i386                              allnoconfig
+arc                               allnoconfig
+arm                               allnoconfig
+x86_64                              defconfig
+s390                             allmodconfig
+mips                             allyesconfig
+ia64                             allmodconfig
+x86_64                               rhel-8.3
+powerpc                          allmodconfig
+i386                 randconfig-a011-20230206
+x86_64                           rhel-8.3-syz
+i386                 randconfig-a014-20230206
+x86_64                         rhel-8.3-kunit
+x86_64                           allyesconfig
+i386                 randconfig-a012-20230206
+i386                 randconfig-a016-20230206
+s390                                defconfig
+x86_64                           rhel-8.3-kvm
+x86_64               randconfig-a013-20230206
+x86_64               randconfig-a011-20230206
+x86_64                    rhel-8.3-kselftests
+x86_64               randconfig-a012-20230206
+i386                 randconfig-a013-20230206
+x86_64               randconfig-a014-20230206
+i386                 randconfig-a015-20230206
+x86_64                          rhel-8.3-func
+s390                             allyesconfig
+sh                         ecovec24_defconfig
+x86_64                           rhel-8.3-bpf
+x86_64               randconfig-a015-20230206
+x86_64               randconfig-a016-20230206
+i386                             allyesconfig
+arm                                 defconfig
+riscv                    nommu_k210_defconfig
+mips                           jazz_defconfig
+sh                          r7780mp_defconfig
+um                               alldefconfig
+xtensa                  nommu_kc705_defconfig
+arm64                            allyesconfig
+parisc                           allyesconfig
+arm                           h3600_defconfig
+arm                              allyesconfig
+arc                     nsimosci_hs_defconfig
+sh                                  defconfig
+s390                 randconfig-r044-20230206
+xtensa                              defconfig
+arc                  randconfig-r043-20230205
+arm                            hisi_defconfig
+arm                  randconfig-r046-20230205
+arc                  randconfig-r043-20230206
+riscv                randconfig-r042-20230206
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+i386                          randconfig-c001
+x86_64                        randconfig-a006
+i386                          debian-10.3-kvm
+i386                        debian-10.3-kunit
+i386                         debian-10.3-func
+riscv                             allnoconfig
+riscv                    nommu_virt_defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+riscv                          rv32_defconfig
+
+clang tested configs:
+mips                       rbtx49xx_defconfig
+arm                         lpc32xx_defconfig
+riscv                            alldefconfig
+arm                           sama7_defconfig
+x86_64               randconfig-a001-20230206
+x86_64               randconfig-a005-20230206
+powerpc                 mpc832x_mds_defconfig
+powerpc                      ppc44x_defconfig
+x86_64               randconfig-a006-20230206
+x86_64               randconfig-a002-20230206
+x86_64               randconfig-a004-20230206
+x86_64               randconfig-a003-20230206
+arm                       aspeed_g4_defconfig
+x86_64                          rhel-8.3-rust
+hexagon                             defconfig
+i386                 randconfig-a005-20230206
+i386                 randconfig-a004-20230206
+i386                 randconfig-a001-20230206
+i386                 randconfig-a002-20230206
+i386                 randconfig-a003-20230206
+i386                 randconfig-a006-20230206
+hexagon              randconfig-r041-20230205
+riscv                randconfig-r042-20230205
+hexagon              randconfig-r045-20230206
+hexagon              randconfig-r041-20230206
+arm                  randconfig-r046-20230206
+s390                 randconfig-r044-20230205
+hexagon              randconfig-r045-20230205
+x86_64                        randconfig-k001
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
