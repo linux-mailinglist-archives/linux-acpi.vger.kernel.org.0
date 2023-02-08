@@ -2,36 +2,36 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1CCE68F9C6
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 22:34:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7D7368F9E2
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 22:49:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230356AbjBHVeL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Feb 2023 16:34:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53684 "EHLO
+        id S231697AbjBHVts (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Feb 2023 16:49:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbjBHVeL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 16:34:11 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7267218145;
-        Wed,  8 Feb 2023 13:34:10 -0800 (PST)
+        with ESMTP id S230167AbjBHVtr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 16:49:47 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE406227AC;
+        Wed,  8 Feb 2023 13:49:46 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F2CB4617DA;
-        Wed,  8 Feb 2023 21:34:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47BD1C433EF;
-        Wed,  8 Feb 2023 21:34:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53578617E9;
+        Wed,  8 Feb 2023 21:49:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3D5C433EF;
+        Wed,  8 Feb 2023 21:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675892049;
-        bh=Frt26srycEDnTaQe7B7tU/DqA0WSAWAkqfb5tJZSCuM=;
+        s=k20201202; t=1675892985;
+        bh=wj5vfzfVr8l+HoJfz2VIJSWnMOX1Qnb2cZ0rsoPxTvs=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vP97vjw/PyubC0CpESEZgZ1CG2zuzhvGoNNTqp5d49ECfQ2p/BeppEJO5gIau7wxC
-         /cjIj+Od9SPU00zuRCvA/QRnLXPP+i6OSNsd1yttz1ExuUuPpyMlF77qzCxOPSxZO6
-         e4LfTk34m4F4PceT6qJCwd+DmWP7iDYaw3LGzQp3in0nVOrnUgmMSiMLVLOxgFhSKh
-         tXbyD0SMsU3PybPFjAQIA1bgecC+T4UKE/WIBnLQM3aEGIgQK6hkxnCTBlQaqhkYjW
-         td0KMC+m8DyVO125txUrvfhCVKcXavEeSOMlfjOn1vGGb+2ce9v5sXGgc/zVsb0VQy
-         miuQJgRQck0mg==
-Date:   Wed, 8 Feb 2023 21:34:03 +0000
+        b=CpYB7qcXFmR4rPZWVxTpaWhOmSv3BLrMMPJUfYvmDKZpidFOXxORwDaDoDT+H8NR7
+         0pXpttoNAtQs7XDbuAVgs5v0xvbJ3dfFbGgfaAANzreCJBjtrHTWy/nCs9pSTBKbD0
+         V9RGcoxfxbzreN1e5nykhO4oDUTB8ljgDUotGPO8/9/01I2tS7m5IbPJJ3limXVhnw
+         Z5A1iVpkbI1eBwqcgz6LwCQ1XPac/9/Vnu5X6bnce0pQY5g3/0S928EAZMTF4NxS2O
+         q+tib17QgIoRI+fcQIP+ZffRyY2Ho4A+0goqPcP5hE2LkjBCswHOvAUmGULZ0DLczn
+         6IYcgfFVt4pFg==
+Date:   Wed, 8 Feb 2023 21:49:40 +0000
 From:   Conor Dooley <conor@kernel.org>
 To:     Sunil V L <sunilvl@ventanamicro.com>
 Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
@@ -47,17 +47,17 @@ Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
         Anup Patel <apatel@ventanamicro.com>,
         Andrew Jones <ajones@ventanamicro.com>,
         Atish Patra <atishp@rivosinc.com>
-Subject: Re: [PATCH 12/24] RISC-V: ACPI: smpboot: Create wrapper smp_setup()
-Message-ID: <Y+QVSxzbpC5WbRvY@spud>
+Subject: Re: [PATCH 11/24] RISC-V: ACPI: irqchip/riscv-intc: Add ACPI support
+Message-ID: <Y+QY9DCf6JPBNVS7@spud>
 References: <20230130182225.2471414-1-sunilvl@ventanamicro.com>
- <20230130182225.2471414-13-sunilvl@ventanamicro.com>
+ <20230130182225.2471414-12-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="NE7BMaNMGtVs0aCh"
+        protocol="application/pgp-signature"; boundary="FkTChGvxflSskHE0"
 Content-Disposition: inline
-In-Reply-To: <20230130182225.2471414-13-sunilvl@ventanamicro.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+In-Reply-To: <20230130182225.2471414-12-sunilvl@ventanamicro.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,70 +66,86 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
---NE7BMaNMGtVs0aCh
+--FkTChGvxflSskHE0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 30, 2023 at 11:52:13PM +0530, Sunil V L wrote:
-> Subject: RISC-V: ACPI: smpboot: Create wrapper smp_setup()
+Hey Sunil,
 
-As I pointed out the other day, this one of the patches that really
-doesn't warrant an ACPI: prefix.
+On Mon, Jan 30, 2023 at 11:52:12PM +0530, Sunil V L wrote:
+> Add support for initializing the RISC-V INTC driver on ACPI based
+> platforms.
+>=20
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 
-With that fixed:
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> +static int __init
+> +riscv_intc_acpi_init(union acpi_subtable_headers *header,
+> +		     const unsigned long end)
+> +{
+> +	int rc;
+> +	struct fwnode_handle *fn;
+> +	struct acpi_madt_rintc *rintc;
+> +
+> +	rintc =3D (struct acpi_madt_rintc *)header;
+> +
+> +	/*
+> +	 * The ACPI MADT will have one INTC for each CPU (or HART)
+> +	 * so riscv_intc_acpi_init() function will be called once
+> +	 * for each INTC. We only need to do INTC initialization
+> +	 * for the INTC belonging to the boot CPU (or boot HART).
+> +	 */
+> +	if (riscv_hartid_to_cpuid(rintc->hart_id) !=3D smp_processor_id())
+> +		return 0;
+> +
+> +	fn =3D irq_domain_alloc_named_fwnode("RISCV-INTC");
+> +	WARN_ON(fn =3D=3D NULL);
+
+Is there a reason that you do not just check this as !fn?
+
+> +	if (!fn) {
+
+This is a repeated check from the WARN_ON(), no?
+
+> +		pr_err("unable to allocate INTC FW node\n");
+
+Why do you need a WARN_ON() & the pr_err() here?
+
+> +		return -1;
+
+Why not an actual ERRNO?
 
 Cheers,
 Conor.
 
-> smp_setup() currently assumes DT based platforms. To enable ACPI,
-> first make this as a wrapper function and move existing code to
-> a separate DT specific function.
->=20
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> ---
->  arch/riscv/kernel/smpboot.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->=20
-> diff --git a/arch/riscv/kernel/smpboot.c b/arch/riscv/kernel/smpboot.c
-> index 00b53913d4c6..26214ddefaa4 100644
-> --- a/arch/riscv/kernel/smpboot.c
-> +++ b/arch/riscv/kernel/smpboot.c
-> @@ -70,7 +70,7 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
->  	}
->  }
-> =20
-> -void __init setup_smp(void)
-> +static void __init of_parse_and_init_cpus(void)
->  {
->  	struct device_node *dn;
->  	unsigned long hart;
-> @@ -116,6 +116,11 @@ void __init setup_smp(void)
->  	}
->  }
-> =20
-> +void __init setup_smp(void)
-> +{
-> +	of_parse_and_init_cpus();
-> +}
+> +	}
 > +
->  static int start_secondary_cpu(int cpu, struct task_struct *tidle)
->  {
->  	if (cpu_ops[cpu]->cpu_start)
+> +	rc =3D riscv_intc_init_common(fn);
+> +	if (rc) {
+> +		pr_err("failed to initialize INTC\n");
+> +		return rc;
+> +	}
+> =20
+>  	return 0;
+>  }
+> =20
+> -IRQCHIP_DECLARE(riscv, "riscv,cpu-intc", riscv_intc_init);
+> +IRQCHIP_ACPI_DECLARE(riscv_intc, ACPI_MADT_TYPE_RINTC,
+> +		     NULL, 1, riscv_intc_acpi_init);
+> +#endif
 > --=20
 > 2.38.0
 >=20
 
---NE7BMaNMGtVs0aCh
+--FkTChGvxflSskHE0
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCY+QVSwAKCRB4tDGHoIJi
-0rA0AQCroHvywJ2/alTXUyLQurVVhB6TsNE5+X/Kdt9LMX+7PwEA2ThIcbHkMQtO
-X/uJ5T+Gft/uIzrywZzvl8dgupEJfAA=
-=h91G
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCY+QY8wAKCRB4tDGHoIJi
+0rhbAP0c5iexcaIlQM8iL+DvYIOwu7IRC087VNqdopdTjepYHQD9GVGT+vN2Psae
+gsDMt8FH4tgfoYPmthIAfw3XtOVNQQM=
+=lDAG
 -----END PGP SIGNATURE-----
 
---NE7BMaNMGtVs0aCh--
+--FkTChGvxflSskHE0--
