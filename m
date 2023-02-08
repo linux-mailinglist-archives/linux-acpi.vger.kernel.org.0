@@ -2,315 +2,237 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9619B68F9A8
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 22:27:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A558668F9AC
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 22:27:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231389AbjBHV1K (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Feb 2023 16:27:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51304 "EHLO
+        id S231565AbjBHV1x (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Feb 2023 16:27:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229953AbjBHV1J (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 16:27:09 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E06521C7DB;
-        Wed,  8 Feb 2023 13:27:05 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 512D7B81F05;
-        Wed,  8 Feb 2023 21:27:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98E0C433D2;
-        Wed,  8 Feb 2023 21:26:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675891622;
-        bh=oI7y/FZhevEdPWTxEZ3gltCzaLhYnX3pa+zhqi7lojU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kvUV+QOoPcofq6JRXv3o5N3Ym1RXQNN1T/FLKfz+9De+6hKU2UZ4BfURPanxoURAh
-         /8XMjpDLGHJyG0c5gxbYCq4iuvzcIaV20GeASVA5vIFaVvSjC+8lXNov9n2jAym2Um
-         KyE2+KGwAAwstbZdDTlLMcKdwe19eSR7BmYHRb3vILrvk6ZGu0KuzwunctXPPNeL52
-         IRhkHPJ5vkDwcyjfrCZSBQmdfn030NM4GOC6VntaI415hL7yuY3SbDar9fyzg6iWzM
-         J+0wxmO0HOc41xm69u+6BC9Y1hPDve7nu6UQ695jU2E9rYVr1zi7jX4kp5fFYdjlIN
-         W/Asq6vZDNo/g==
-Date:   Wed, 8 Feb 2023 21:26:57 +0000
-From:   Conor Dooley <conor@kernel.org>
-To:     Sunil V L <sunilvl@ventanamicro.com>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        Anup Patel <apatel@ventanamicro.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Atish Patra <atishp@rivosinc.com>
-Subject: Re: [PATCH 06/24] RISC-V: ACPI: Add PCI functions to build ACPI core
-Message-ID: <Y+QToXO2kYQ2ipdz@spud>
-References: <20230130182225.2471414-1-sunilvl@ventanamicro.com>
- <20230130182225.2471414-7-sunilvl@ventanamicro.com>
+        with ESMTP id S231489AbjBHV1x (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 16:27:53 -0500
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 087C518145;
+        Wed,  8 Feb 2023 13:27:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675891672; x=1707427672;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tO5ZStCHaE9EaCQ5G44gxhPHC4TmQE3JIjZ4/JyKrE8=;
+  b=fbvsT1GjY0pYRR6Kz1sXFpHf18kxdsyz0ernYFg1uVdOwsMEC9AzIE+q
+   WnpOUSbzYAPS/01r2a4fhlev+kmCx4AydB/nawUhp7+1gKzocvP4DWD8X
+   bO+v1/MWEAttpEvKvEqXDLft7+aLI4FuYms51Grs+rj1xE8NLJHRjhPcO
+   4Ud7crYeolwrz17puWctW9g+MOTRzle15t9R+gKrBNAfOyDbPiclx5nVf
+   78OkcAngDUGWYB1u4inpP1w1y5XExMaexwrtCwV1AV2htQCjgTuFRsTMi
+   X4DcJxnqGB/fRB+Zf6yD9M4pO5YBuS6GLCd0ZZKtAEyVlIKXbnmZKr/0r
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="313566165"
+X-IronPort-AV: E=Sophos;i="5.97,281,1669104000"; 
+   d="scan'208";a="313566165"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 13:27:51 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="756180453"
+X-IronPort-AV: E=Sophos;i="5.97,281,1669104000"; 
+   d="scan'208";a="756180453"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 13:27:49 -0800
+Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
+        by kekkonen.fi.intel.com (Postfix) with ESMTP id A5B5D120D20;
+        Wed,  8 Feb 2023 23:27:47 +0200 (EET)
+Received: from sailus by punajuuri.localdomain with local (Exim 4.94.2)
+        (envelope-from <sakari.ailus@linux.intel.com>)
+        id 1pPryM-00DMZ8-NT; Wed, 08 Feb 2023 23:27:22 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     linux-media@vger.kernel.org, rafael@kernel.org,
+        andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com
+Subject: [PATCH v5 0/8] ACPI _CRS CSI-2 and MIPI DisCo for Imaging support
+Date:   Wed,  8 Feb 2023 23:27:04 +0200
+Message-Id: <20230208212712.3184953-1-sakari.ailus@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="pAMvRf+LG3lTC78u"
-Content-Disposition: inline
-In-Reply-To: <20230130182225.2471414-7-sunilvl@ventanamicro.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hello all,
 
---pAMvRf+LG3lTC78u
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Here's an implementation of ACPI 6.4 _CRS CSI-2 resource descriptor and
+MIPI DisCo for Imaging 1.0 [1]. What the two basically provide is an
+officially sanctioned way to describe CSI-2 connected cameras to operating
+system software, something DT based systems have enjoyed for quite some
+time already.
 
-On Mon, Jan 30, 2023 at 11:52:07PM +0530, Sunil V L wrote:
-> When CONFIG_PCI is enabled, ACPI core expects few arch
-> functions related to PCI. Add those functions so that
-> ACPI core gets build. These are levraged from arm64.
->=20
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> ---
->  arch/riscv/kernel/Makefile |   1 +
->  arch/riscv/kernel/pci.c    | 173 +++++++++++++++++++++++++++++++++++++
->  2 files changed, 174 insertions(+)
->  create mode 100644 arch/riscv/kernel/pci.c
+The implementation digs the information from ACPI tables (_CRS descriptors
+and data + property extensions) and constructs software nodes that are
+compatible with Documentation/firmware-guide/acpi/dsd/graph.rst and
+Documentation/devicetree/bindings/media/video-interface-devices.yaml . No
+specific driver changes are needed.
 
-> diff --git a/arch/riscv/kernel/pci.c b/arch/riscv/kernel/pci.c
-> new file mode 100644
-> index 000000000000..3388af3a67a0
-> --- /dev/null
-> +++ b/arch/riscv/kernel/pci.c
-> @@ -0,0 +1,173 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Code borrowed from ARM64
-> + *
-> + * Copyright (C) 2003 Anton Blanchard <anton@au.ibm.com>, IBM
-> + * Copyright (C) 2014 ARM Ltd.
-> + * Copyright (C) 2022-2023 Ventana Micro System Inc.
-> + */
-> +
-> +#include <linux/acpi.h>
-> +#include <linux/init.h>
-> +#include <linux/io.h>
-> +#include <linux/kernel.h>
-> +#include <linux/mm.h>
-> +#include <linux/pci.h>
-> +#include <linux/pci-acpi.h>
-> +#include <linux/pci-ecam.h>
-> +
-> +#ifdef CONFIG_ACPI
+These patches are on the testing branch of the linux-acpi tree where they
+depend on the patch constifying the ACPI pathname argument for
+acpi_get_handle() (commit 91fdb91ccca2b48572a1ccf1d382fd599e3e1237).
 
-Quickly checking against ARM64, they do not wrap the read/write
-functions in this ifdef, so why do we need to do so?
+[1] https://www.mipi.org/specifications/mipi-disco-imaging
 
-> +/*
-> + * raw_pci_read/write - Platform-specific PCI config space access.
-> + */
-> +int raw_pci_read(unsigned int domain, unsigned int bus,
-> +		  unsigned int devfn, int reg, int len, u32 *val)
-> +{
-> +	struct pci_bus *b =3D pci_find_bus(domain, bus);
-> +
-> +	if (!b)
-> +		return PCIBIOS_DEVICE_NOT_FOUND;
-> +	return b->ops->read(b, devfn, reg, len, val);
+since v4:
 
-A newline before the return would be appreciated by my eyes :)
+- Add leading dots to comment sentences.
 
-> +}
-> +
-> +int raw_pci_write(unsigned int domain, unsigned int bus,
-> +		unsigned int devfn, int reg, int len, u32 val)
+- Use UINT_MAX - 1 to denote an unallocated port instead of ~1U.
 
-Also, both read and write functions here appear to have incorrect
-alignment on the second lines.
+- Unwrap a line.
 
-> +{
-> +	struct pci_bus *b =3D pci_find_bus(domain, bus);
-> +
-> +	if (!b)
-> +		return PCIBIOS_DEVICE_NOT_FOUND;
-> +	return b->ops->write(b, devfn, reg, len, val);
-> +}
-> +
-> +
+- Get ACPI handle into a local variable in acpi_init_swnodes() for easier
+  use, use acpi_device_handle() to obtain it.
 
-Extra newline here too, looks to be exactly where you deleted the numa
-stuff from arm64 ;)
+- Rework "rotation" property checking and _PLD object access.
 
-> +struct acpi_pci_generic_root_info {
-> +	struct acpi_pci_root_info	common;
-> +	struct pci_config_window	*cfg;	/* config space mapping */
-> +};
-> +
-> +int acpi_pci_bus_find_domain_nr(struct pci_bus *bus)
-> +{
-> +	struct pci_config_window *cfg =3D bus->sysdata;
-> +	struct acpi_device *adev =3D to_acpi_device(cfg->parent);
-> +	struct acpi_pci_root *root =3D acpi_driver_data(adev);
-> +
-> +	return root->segment;
-> +}
-> +
-> +static int pci_acpi_root_prepare_resources(struct acpi_pci_root_info *ci)
+- Also obtain return value of acpi_get_name() into a local variable before
+  testing it.
 
-Rhetorical question perhaps, but what does "ci" mean?
+- Use a local variable for the first element string pointer in
+  acpi_properties_prepare_mipi().
 
-> +{
-> +	struct resource_entry *entry, *tmp;
-> +	int status;
-> +
-> +	status =3D acpi_pci_probe_root_resources(ci);
-> +	resource_list_for_each_entry_safe(entry, tmp, &ci->resources) {
-> +		if (!(entry->res->flags & IORESOURCE_WINDOW))
-> +			resource_list_destroy_entry(entry);
-> +	}
-> +	return status;
+since v3:
 
-Perhaps that extra newline from above could migrate down to the line
-above the return here.
+- Add comments to data structures and functions, code inside functions.
 
-> +}
-> +
-> +/*
-> + * Lookup the bus range for the domain in MCFG, and set up config space
-> + * mapping.
-> + */
-> +static struct pci_config_window *
-> +pci_acpi_setup_ecam_mapping(struct acpi_pci_root *root)
+- Use ACPI_FAILURE() for testing ACPI framework function return values.
 
-This all fits on 1 line.
+- Unwrap a few lines.
 
-> +{
-> +	struct device *dev =3D &root->device->dev;
-> +	struct resource *bus_res =3D &root->secondary;
-> +	u16 seg =3D root->segment;
-> +	const struct pci_ecam_ops *ecam_ops;
-> +	struct resource cfgres;
-> +	struct acpi_device *adev;
-> +	struct pci_config_window *cfg;
-> +	int ret;
-> +
-> +	ret =3D pci_mcfg_lookup(root, &cfgres, &ecam_ops);
-> +	if (ret) {
-> +		dev_err(dev, "%04x:%pR ECAM region not found\n", seg, bus_res);
-> +		return NULL;
-> +	}
-> +
-> +	adev =3D acpi_resource_consumer(&cfgres);
-> +	if (adev)
-> +		dev_info(dev, "ECAM area %pR reserved by %s\n", &cfgres,
-> +			 dev_name(&adev->dev));
-> +	else
-> +		dev_warn(dev, FW_BUG "ECAM area %pR not reserved in ACPI namespace\n",
-> +			 &cfgres);
-> +
-> +	cfg =3D pci_ecam_create(dev, &cfgres, bus_res, ecam_ops);
-> +	if (IS_ERR(cfg)) {
-> +		dev_err(dev, "%04x:%pR error %ld mapping ECAM\n", seg, bus_res,
-> +			PTR_ERR(cfg));
-> +		return NULL;
-> +	}
-> +
-> +	return cfg;
-> +}
-> +
-> +/* release_info: free resources allocated by init_info */
+- Rename list heads as "head", some were called just "list".
 
-The fact that you haven't picked a consistent comment style for this
-functions really bothers my OCD. Yes, it may be copy-paste from arm64,
-but since this is "new code" I don't think there's harm in at least
-*starting* with something that looks cohesive.
+- Count ACPI handles related to _CRS CSI2 resources during tree walk.
 
-> +static void pci_acpi_generic_release_info(struct acpi_pci_root_info *ci)
-> +{
-> +	struct acpi_pci_generic_root_info *ri;
-> +
-> +	ri =3D container_of(ci, struct acpi_pci_generic_root_info, common);
-> +	pci_ecam_free(ri->cfg);
-> +	kfree(ci->ops);
-> +	kfree(ri);
-> +}
-> +
-> +
+- Reshape testing for CSI-2 port allocation in next_csi2_port_index().
 
-Extra newline here.
+- Move allocation of software nodes into a new function,
+  acpi_crs_csi2_alloc_fill_swnodes().
 
-> +/* Interface called from ACPI code to setup PCI host controller */
-> +struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
-> +{
-> +	struct acpi_pci_generic_root_info *ri;
-> +	struct pci_bus *bus, *child;
-> +	struct acpi_pci_root_ops *root_ops;
-> +	struct pci_host_bridge *host;
-> +
-> +	ri =3D kzalloc(sizeof(*ri), GFP_KERNEL);
-> +	if (!ri)
-> +		return NULL;
-> +
-> +	root_ops =3D kzalloc(sizeof(*root_ops), GFP_KERNEL);
-> +	if (!root_ops) {
-> +		kfree(ri);
-> +		return NULL;
-> +	}
-> +
-> +	ri->cfg =3D pci_acpi_setup_ecam_mapping(root);
-> +	if (!ri->cfg) {
-> +		kfree(ri);
-> +		kfree(root_ops);
-> +		return NULL;
-> +	}
-> +
-> +	root_ops->release_info =3D pci_acpi_generic_release_info;
-> +	root_ops->prepare_resources =3D pci_acpi_root_prepare_resources;
-> +	root_ops->pci_ops =3D (struct pci_ops *)&ri->cfg->ops->pci_ops;
-> +	bus =3D acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg);
-> +	if (!bus)
-> +		return NULL;
-> +
-> +	/* If we must preserve the resource configuration, claim now */
-> +	host =3D pci_find_host_bridge(bus);
-> +	if (host->preserve_config)
-> +		pci_bus_claim_resources(bus);
-> +
-> +	/*
-> +	 * Assign whatever was left unassigned. If we didn't claim above,
-> +	 * this will reassign everything.
-> +	 */
-> +	pci_assign_unassigned_root_bus_resources(bus);
-> +
-> +	list_for_each_entry(child, &bus->children, node)
-> +		pcie_bus_configure_settings(child);
-> +
-> +	return bus;
-> +}
+- Comments: acpi_bus_scan_crs_csi2() is to be called on the namespace
+  root.
 
-Anyways, this does look to be "leveraged from arm64" as you say and I
-only had minor nits to comment about...
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+- Use size_t for this_count variable in acpi_bus_scan_crs_csi2().
 
-Cheers,
-Conor.
+- Revert the NEXT_PROPERTY() macro condition to original (the suggested
+  one was different).
+
+- Remove u union in init_port_csi2_common().
+
+- Fix val array size in init_port_csi2_common(). This issue was masked by
+  the presence of a u32 field in the union.
+
+- Use "-" for copyright year range.
+
+since v2:
+
+- Unwrap a few lines.
+
+- Copy CSI-2 resource source string using strscpy() instead of memcpy() in
+  scan_check_crs_csi2_instance.
+
+- Fix GRAPH_PORT_NAME() sanity check bug introduced in v2.
+
+- Fix snprintf() return value check for port node name in
+  get_mipi_port_handle().
+
+- Fix mipi-img-lane-polarities reading.
+
+- Cast bit value to bool instead of using ... ? 1U : 0U.
+
+- Get primary fwnode using acpi_fwnode_handle().
+
+- Don't use MIPI_IMG_PREFIX in the array of renamed properties.
+
+- Use tabs for indenting drivers/acpi/property.c authors.
+
+- Add a comment on assigning ACPI device's secondary fwnode and assign
+  ACPI device's secondary fwnode straight to NULL when unassigning it.
+
+since v1:
+
+- Update copyright notices.
+
+- Include linux/types.h instead of linux/kernel.h in drivers/acpi/mipi.c.
+
+- Use SWNODE_GRAPH_PORT_NAME_FMT instead of plain "port@%u" in
+  GRAPH_PORT_NAME macro.
+
+- Make the condition in NEXT_PROPERTY() macro easier to read.
+
+- Unwrap lines to make them moderately longer than 80 characters.
+
+- Use * BITS_PER_TYPE(u8) instead of << 3 to convert bytes to bits in
+  init_port_csi2_common().
+
+- Test ACPI framework call success using ACPI_SUCCESS() instead of
+  comparing with AE_OK. Likewise for ACPI_FAILURE and != AE_OK.
+
+- Use newly added SOFTWARE_NODE() macro to construct the root software
+  node.
+
+- Use str_has_prefix() to test for a string prefix instead of memcmp().
+
+- Add pr_fmt() macro to drivers/acpi/property.c.
+
+- Move logical or operators to the end of the line in
+  acpi_properties_prepare().
+
+- Improve bad node type error in acpi_parse_string_ref().
+
+Sakari Ailus (8):
+  ACPI: property: Parse data node string references in properties
+  ACPI: property: Parse _CRS CSI-2 descriptor
+  device property: Add SOFTWARE_NODE() macro for defining software nodes
+  ACPI: property: Generate camera swnodes for ACPI and DisCo for Imaging
+  ACPI: property: Dig "rotation" property for devices with CSI2 _CRS
+  ACPI: property: Rename parsed MIPI DisCo for Imaging properties
+  ACPI: property: Skip MIPI property table without "mipi-img" prefix
+  ACPI: property: Document _CRS CSI-2 and DisCo for Imaging support
+
+ drivers/acpi/Makefile    |   2 +-
+ drivers/acpi/internal.h  |   9 +
+ drivers/acpi/mipi.c      | 806 +++++++++++++++++++++++++++++++++++++++
+ drivers/acpi/property.c  | 132 +++++--
+ drivers/acpi/scan.c      |  35 +-
+ include/acpi/acpi_bus.h  |  82 ++++
+ include/linux/property.h |   7 +
+ 7 files changed, 1042 insertions(+), 31 deletions(-)
+ create mode 100644 drivers/acpi/mipi.c
+
+-- 
+2.30.2
 
 
---pAMvRf+LG3lTC78u
-Content-Type: application/pgp-signature; name="signature.asc"
+Sakari Ailus (8):
+  ACPI: property: Parse data node string references in properties
+  ACPI: property: Parse _CRS CSI-2 descriptor
+  device property: Add SOFTWARE_NODE() macro for defining software nodes
+  ACPI: property: Generate camera swnodes for ACPI and DisCo for Imaging
+  ACPI: property: Dig "rotation" property for devices with CSI2 _CRS
+  ACPI: property: Rename parsed MIPI DisCo for Imaging properties
+  ACPI: property: Skip MIPI property table without "mipi-img" prefix
+  ACPI: property: Document _CRS CSI-2 and DisCo for Imaging support
 
------BEGIN PGP SIGNATURE-----
+ drivers/acpi/Makefile    |   2 +-
+ drivers/acpi/internal.h  |   9 +
+ drivers/acpi/mipi.c      | 809 +++++++++++++++++++++++++++++++++++++++
+ drivers/acpi/property.c  | 132 +++++--
+ drivers/acpi/scan.c      |  35 +-
+ include/acpi/acpi_bus.h  |  82 ++++
+ include/linux/property.h |   7 +
+ 7 files changed, 1045 insertions(+), 31 deletions(-)
+ create mode 100644 drivers/acpi/mipi.c
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCY+QToQAKCRB4tDGHoIJi
-0olNAP9lp3WE8VCFaQckxPUKRtzrtdzfJ3ELelGbTEBAtUvOxgD+N9unferlze1j
-9CtTXW5bLgdHZbiLIlkSAugaqVc7uwE=
-=cnvy
------END PGP SIGNATURE-----
+-- 
+2.30.2
 
---pAMvRf+LG3lTC78u--
