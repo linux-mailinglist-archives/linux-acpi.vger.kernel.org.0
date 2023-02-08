@@ -2,249 +2,182 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7405568E969
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 08:57:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0892468E9DF
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 09:28:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230432AbjBHH5R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Feb 2023 02:57:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44332 "EHLO
+        id S230185AbjBHI2V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Feb 2023 03:28:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230171AbjBHH5Q (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 02:57:16 -0500
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2759D1166F;
-        Tue,  7 Feb 2023 23:57:10 -0800 (PST)
-Received: by mail-qv1-f50.google.com with SMTP id e6so8796303qvp.1;
-        Tue, 07 Feb 2023 23:57:10 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nfN06Fr/21gttqDSQulqZGi0pmIW2PjRSxTzZoYMCB8=;
-        b=JUZ7ybifd+yN4v+9noDhs1MVGyYoLfOS27uBfBDm6PNWdXTtnoB0i0JZGW+9socIQ8
-         ypReKHZTZb/DzselUezojFMcBJu2EimprAt6vjCNHTxHrqLvR3mgwgrwtl47smUyZ0Oz
-         xHDOIm5zW3p/Fm3+4nYuTM6L5O+TXtkzwhbqwwHUd7KRQLfelZgeGEV1ad88Ftibu6aF
-         kM+VBI98v0NxQfVLkFFt/Djv55c2lAv2L4TVVZkvw8UhFCHc+mUgABBLQ2obT8SF6rhR
-         sNWXEnJVEqbVfUElv6xzqyXBlYRnJtTOeiwQ9bn8N7zyH/7E59tcDg0mLnD5s4/AskPJ
-         Vy3w==
-X-Gm-Message-State: AO0yUKXQQEQHI3hXqNd9wsA9004aKoAOA/lu+Vtaaq1guDVJL8VLPvMW
-        Xdadapjh4TAlyq8kB0SIYk8qh8ytcwWgdg==
-X-Google-Smtp-Source: AK7set+4/QrsbC5huPjk0StkVYupCys6U7066g41jPpo/QnWQMJNjaWJ2d974OC2UmLWYhti675Hyg==
-X-Received: by 2002:ad4:5aac:0:b0:56c:1ff0:7659 with SMTP id u12-20020ad45aac000000b0056c1ff07659mr1308097qvg.46.1675843029031;
-        Tue, 07 Feb 2023 23:57:09 -0800 (PST)
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com. [209.85.219.176])
-        by smtp.gmail.com with ESMTPSA id b5-20020a05620a126500b00706b09b16fasm11071553qkl.11.2023.02.07.23.57.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Feb 2023 23:57:08 -0800 (PST)
-Received: by mail-yb1-f176.google.com with SMTP id q9so278082ybk.2;
-        Tue, 07 Feb 2023 23:57:08 -0800 (PST)
-X-Received: by 2002:a0d:f444:0:b0:526:78ad:bb15 with SMTP id
- d65-20020a0df444000000b0052678adbb15mr694356ywf.47.1675843017906; Tue, 07 Feb
- 2023 23:56:57 -0800 (PST)
+        with ESMTP id S230073AbjBHI2V (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 03:28:21 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72600457C7;
+        Wed,  8 Feb 2023 00:28:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675844899; x=1707380899;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=r0prHdkASu3A/4syhSnZzC8TLnpbY5J2hKbwFQ10tDQ=;
+  b=TQex7BWGmrC8TkFnU5mQlBDVqW77J/JRHxPUyKufjTyIcdBBuOp5tmuW
+   akcmoghvSCOz0HHZ2oKxXSFfD99fGQnapL8FVeZMAE43B3nbhxMfkai5e
+   R4sntqJ0tRDWG0/bJbULN2qEVUFLEhkArfCCt5poCHvqV4Lbz9OjCTe9p
+   yzN5UkefERcQycpTIabpIMlnF2NmWnPzpw2FNd6403Ju6xMAcK1gG3vKk
+   6piqSVlncL3xYN10bq8YDYSSLI1QjV78N+3MFkkFuqtmrDP4MaCZFvT2N
+   Tf80LAtWIaFXDJKuMaotXH+8n1FZSx1+/PD0MXdONBX/r3x7CJlxo9L4V
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="329769125"
+X-IronPort-AV: E=Sophos;i="5.97,280,1669104000"; 
+   d="scan'208";a="329769125"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 00:28:19 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="755968798"
+X-IronPort-AV: E=Sophos;i="5.97,280,1669104000"; 
+   d="scan'208";a="755968798"
+Received: from aslawinx-mobl.ger.corp.intel.com (HELO [10.99.16.144]) ([10.99.16.144])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 00:28:17 -0800
+Message-ID: <b429918f-fe63-2897-8ade-d17fe2e3646f@linux.intel.com>
+Date:   Wed, 8 Feb 2023 09:28:14 +0100
 MIME-Version: 1.0
-References: <20230207014207.1678715-1-saravanak@google.com>
- <20230207014207.1678715-10-saravanak@google.com> <CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com>
- <CAGETcx8DaZqS7+47PhX4hQOfSk7AzPcTu=2i+4gAgXr6wyDNgg@mail.gmail.com> <CAGETcx_bkuFaLCiPrAWCPQz+w79ccDp6=9e881qmK=vx3hBMyg@mail.gmail.com>
-In-Reply-To: <CAGETcx_bkuFaLCiPrAWCPQz+w79ccDp6=9e881qmK=vx3hBMyg@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 8 Feb 2023 08:56:45 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVREiVoGp-jvXKAdPSwjio13VgtPXWppnGOB+gSS9op+g@mail.gmail.com>
-Message-ID: <CAMuHMdVREiVoGp-jvXKAdPSwjio13VgtPXWppnGOB+gSS9op+g@mail.gmail.com>
-Subject: Re: [PATCH v3 09/12] of: property: Simplify of_link_to_phandle()
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [RFC] i2c: core: Do not enable wakeup by default
+Content-Language: en-US
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Raul Rangel <rrangel@chromium.org>
+Cc:     Wolfram Sang <wsa@kernel.org>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        Abel Vesa <abel.vesa@linaro.org>,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Tony Lindgren <tony@atomide.com>,
-        John Stultz <jstultz@google.com>,
-        Doug Anderson <dianders@chromium.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Maxim Kiselev <bigunclemax@gmail.com>,
-        Maxim Kochetkov <fido_max@inbox.ru>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Colin Foster <colin.foster@in-advantage.com>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Jean-Philippe Brucker <jpb@kernel.org>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        kernel-team@android.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
+        "Limonciello, Mario" <mario.limonciello@amd.com>
+References: <20230207072540.27226-1-mika.westerberg@linux.intel.com>
+ <CAHQZ30Bzn1Lxy+Y2gCcFTmzWzwnxqUZAHAjSh67Pz=WweaKHkg@mail.gmail.com>
+ <Y+NH9pjbFfmijHF+@black.fi.intel.com>
+From:   =?UTF-8?Q?Amadeusz_S=c5=82awi=c5=84ski?= 
+        <amadeuszx.slawinski@linux.intel.com>
+In-Reply-To: <Y+NH9pjbFfmijHF+@black.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Saravana,
+On 2/8/2023 7:57 AM, Mika Westerberg wrote:
+> Hi,
+> 
+> On Tue, Feb 07, 2023 at 09:33:55AM -0700, Raul Rangel wrote:
+>> Sorry, resending in plain text mode.
+>>
+>> On Tue, Feb 7, 2023 at 12:25 AM Mika Westerberg
+>> <mika.westerberg@linux.intel.com> wrote:
+>>>
+>>> After commit b38f2d5d9615 ("i2c: acpi: Use ACPI wake capability bit to
+>>> set wake_irq") the I2C core has been setting I2C_CLIENT_WAKE for ACPI
+>>> devices if they announce to be wake capable in their device description.
+>>> However, on certain systems where audio codec has been connected through
+>>> I2C this causes system suspend to wake up immediately because power to
+>>> the codec is turned off which pulls the interrupt line "low" triggering
+>>> wake up.
+>>>
+>>> Possible reason why the interrupt is marked as wake capable is that some
+>>> codecs apparently support "Wake on Voice" or similar functionality.
+>>
+>> That's generally a bug in the ACPI tables. The wake bit shouldn't be
+>> set if the power domain for the device is powered off on suspend. The
+>> best thing is to fix the ACPI tables, but if you can't, then you can
+>> set the ignore_wake flag for the device:
+>> https://github.com/torvalds/linux/blob/master/drivers/gpio/gpiolib-acpi.c#L31.
+>> If that works we can add a quirk for the device:
+>> https://github.com/torvalds/linux/blob/master/drivers/gpio/gpiolib-acpi.c#L1633.
 
-On Wed, Feb 8, 2023 at 8:32 AM Saravana Kannan <saravanak@google.com> wrote:
-> On Tue, Feb 7, 2023 at 6:08 PM Saravana Kannan <saravanak@google.com> wrote:
-> > On Tue, Feb 7, 2023 at 12:57 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > > On Tue, Feb 7, 2023 at 2:42 AM Saravana Kannan <saravanak@google.com> wrote:
-> > > > The driver core now:
-> > > > - Has the parent device of a supplier pick up the consumers if the
-> > > >   supplier never has a device created for it.
-> > > > - Ignores a supplier if the supplier has no parent device and will never
-> > > >   be probed by a driver
-> > > >
-> > > > And already prevents creating a device link with the consumer as a
-> > > > supplier of a parent.
-> > > >
-> > > > So, we no longer need to find the "compatible" node of the supplier or
-> > > > do any other checks in of_link_to_phandle(). We simply need to make sure
-> > > > that the supplier is available in DT.
-> > > >
-> > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > >
-> > > Thanks for your patch!
-> > >
-> > > This patch introduces a regression when dynamically loading DT overlays.
-> > > Unfortunately this happens when using the out-of-tree OF configfs,
-> > > which is not supported upstream.  Still, there may be (obscure)
-> > > in-tree users.
-> > >
-> > > When loading a DT overlay[1] to enable an SPI controller, and
-> > > instantiate a connected SPI EEPROM:
+I've seen this one already and also tried to use it, but it didn't work. 
+Also when I was reading code I wasn't really convinced that it is linked 
+to i2c in any straightforward way. I mean i2c decides in different 
+places that it has wake support (I even added some prints to make sure 
+;). The code you pointed out decides in 
+https://github.com/torvalds/linux/blob/master/drivers/gpio/gpiolib-acpi.c#L387 
+but i2c code seems to decide in 
+https://github.com/torvalds/linux/blob/master/drivers/i2c/i2c-core-acpi.c#L176 
+where it just checks if irq flags has wake_capable flag set. When I 
+looked at it previously I was pretty sure it comes straight from BIOS 
+and passes the quirk code you mentioned, still I may have missed something.
 
-[...]
+> 
+> I think (hope) these systems are not yet available for public so there
+> is a chance that the tables can still be fixed, without need to add any
+> quirks.
+> 
+> @Amadeusz, @Cezary, if that's the case I suggest filing a bug against
+> the BIOS.
+> 
 
-> > > The SPI controller and the SPI EEPROM are no longer instantiated.
+Well, I tried custom DSDT and had problems, but I just remembered that I 
+probably need to pass "revision+1" in file, so kernel sees it as a newer 
+version, let me try again. Is it enough to replace "ExclusiveAndWake" 
+with "Exclusive"?
 
-> > Sigh... I spent way too long trying to figure out if I caused a memory
-> > leak. I should have scrolled down further! Doesn't look like that part
-> > is related to anything I did.
-> >
-> > There are some flags set to avoid re-parsing fwnodes multiple times.
-> > My guess is that the issue you are seeing has to do with how many of
-> > the in memory structs are reused vs not when an overlay is
-> > applied/removed and some of these flags might not be getting cleared
-> > and this is having a bigger impact with this patch (because the fwnode
-> > links are no longer anchored on "compatible" nodes).
-> >
-> > With/without this patch (let's keep the series) can you look at how
-> > the following things change between each step you do above (add,
-> > remove, retry):
-> > 1) List of directories under /sys/class/devlink
-> > 2) Enable the debug logs inside __fwnode_link_add(),
-> > __fwnode_link_del(), device_link_add()
-> >
-> > My guess is that the final solution would entail clearing
-> > FWNODE_FLAG_LINKS_ADDED for some fwnodes.
->
-> You replied just as I was about to hit send. So sending this anyway...
->
-> Ok, I took a closer look and I think it's a bit of a mess. The fact
-> that it even worked for you without this patch is a bit of a
-> coincidence.
->
-> Let's just take platform devices that are created by
-> driver/of/platform.c as an example.
->
-> The main problem is that when you add/remove properties to a DT node
-> of an existing platform device, nothing is really done about it at the
-> device level. We don't even unbind and rebind the driver so the driver
-> could make use of the new properties. We don't remove and add back the
-> device so whoever might use the new property will use it. And if you
-> are adding a new node, it'll only trigger any platform device level
-> impact if it's a new node of a "simple-bus" (or similar bus) device.
->
-> Problem 1:
-> So if you add a new child node to an existing probed device that adds
-> its children explicitly (as in, the parent is not a "simple-bus" like
-> device), nothing will happen. The newly added child device node will
-> get converted into a platform device, not will the parent device
-> notice it. So in your case of adding msiof0_pins, it's just that when
-> the consumer gets the pins, the driver doesn't get involved much and
-> it's the pinctrl framework that reads the DT and figures it out.
->
-> With this patch, the fwnode links point to the actual resource and the
-> actual parent device inherits them if they don't get converted to a
-> struct device. But since we are adding this msiof0_pins after the
-> parent device has probed, the fwnode link isn't inherited by the
-> parent pinctrl device.
->
-> Problem 2:
-> So if you add a property to an already bound device, nothing is done
-> by the driver. In your overlay example, if you move the status="okay"
-> line to be the first property you change in the msiof0 spi device,
-> you'll probably see that fw_devlink is no longer the one blocking the
-> probe. This is because the platform device will get added as soon as
-> the status flips from disabled to enabled and at that point fw_devlink
-> will think it has no suppliers and won't do any probe deferring. And
-> then as the new properties get added nothing will happen at the device
-> or fw_devlink level. If the msiof0's spi driver fails immediately with
-> NOT -EPROBE_DEFER when platform device is added because it couldn't
-> find any pinctrl property, then msiof0 will never probe (unless you
-> remove and add the driver). If it had failed with -EPROBE_DEFER, then
-> it might probe again if something else triggers a deferred probe
-> attempt. Clearly, things working/not working based on the order of
-> properties in DT is not a good implementation.
->
-> Problem 3:
-> What if you enable a previously disabled supplier. There's no way to
-> handle that from a fw_devlink level without re-parsing the entire
-> device tree because existing devices might be consumers now.
->
-> Anyway, long story short, it's sorta worked due to coincidence and
-> it's quite messy to get it to work correctly.
+>>> In any case, I don't think we should be enabling wakeup by default on
+>>> all I2C devices that are wake capable. According to device_init_wakeup()
+>>> documentation most devices should leave it disabled, with exceptions on
+>>> devices such as keyboards, power buttons etc. Userspace can enable
+>>> wakeup as needed by writing to device "power/wakeup" attribute.
+>>
+>> Enabling wake by default was an unintended side-effect. I didn't catch
+>> this when I wrote the patch :/ It's been exposing all the incorrect
+>> ACPI configurations for better or worse. Mario pushed a patch up
+>> earlier to disable thes Wake GPIOs when using S3:
+>> https://github.com/torvalds/linux/commit/d63f11c02b8d3e54bdb65d8c309f73b7f474aec4.
+>> Are you having problems with S3 or S0iX?
+> 
+> I think this case is S0ix.
 
-Several subsystems register notifiers to be informed of the events
-above. E.g. drivers/spi/spi.c:
+We test both cases in our setups.
 
-        if (IS_ENABLED(CONFIG_OF_DYNAMIC))
-                WARN_ON(of_reconfig_notifier_register(&spi_of_notifier));
-        if (IS_ENABLED(CONFIG_ACPI))
-                WARN_ON(acpi_reconfig_notifier_register(&spi_acpi_notifier));
+> 
+>>> Reported-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+>>> Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+>>> ---
+>>> Hi,
+>>>
+>>> Sending this as RFC because I'm not too familiar with the usage of
+>>> I2C_CLIENT_WAKE and whether this is something that is expected behaviour
+>>> in users of I2C devices. On ACPI side I think this is the correct thing
+>>> to do at least.
+>>>
+>>>   drivers/i2c/i2c-core-base.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+>>> index 087e480b624c..7046549bdae7 100644
+>>> --- a/drivers/i2c/i2c-core-base.c
+>>> +++ b/drivers/i2c/i2c-core-base.c
+>>> @@ -527,7 +527,7 @@ static int i2c_device_probe(struct device *dev)
+>>>                          goto put_sync_adapter;
+>>>                  }
+>>>
+>>> -               device_init_wakeup(&client->dev, true);
+>>> +               device_init_wakeup(&client->dev, false);
+>>
+>> This would be a change in behavior for Device Tree. Maybe you can
+>> declare a `bool enable_wake = true`, then in the ACPI branch
+>> (https://github.com/torvalds/linux/blob/master/drivers/i2c/i2c-core-base.c#L495)
+>> set `enable_wake = false`. This would keep wakes enabled by default on
+>> device tree and disabled for ACPI. This matches the original behavior
+>> before my patch.
+> 
+> I don't think it's a good idea to make the behaviour different. Drivers
+> in general do not need to know whether the device was enumerated on ACPI
+> or DT or whatnot. Same goes for users who should expect similar
+> behaviour on the same device.
+> 
+> I wonder what is the reason why I2C bus does this for all wake capable
+> devices in the first place? Typically it should be up to the user to
+> enable them not the opposite.
 
-So my issue might be triggered using ACPI, too.
-
-> Another way to get this to work is to:
-> 1) unload pinctrl driver, unload spi driver.
-> 2) apply overlay
-> 3) reload pinctrl driver, reload spi driver.
->
-> This is assuming unloading those 2 drivers doesn't crash your system.
-
-Unloading the pinctrl driver is not an option.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
