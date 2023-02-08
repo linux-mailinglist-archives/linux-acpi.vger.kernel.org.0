@@ -2,174 +2,175 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3B7F68EC58
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 11:09:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F21AE68EEFB
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 13:30:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230037AbjBHKJI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Feb 2023 05:09:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49980 "EHLO
+        id S229598AbjBHMah (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Feb 2023 07:30:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229706AbjBHKJG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 05:09:06 -0500
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FA7293F3;
-        Wed,  8 Feb 2023 02:09:05 -0800 (PST)
-Received: by mail-qt1-f170.google.com with SMTP id h24so20055725qta.12;
-        Wed, 08 Feb 2023 02:09:05 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Al90dbaVnMvp1zrarwIGYloHZEfuuu1TJgBG8XepFdE=;
-        b=ODARmn87I0+wpt7STPuOcAeBBIeRkkY/k2hP75Qd4JOmZxio7IfcvQdWW9foKUFJVB
-         Itxtl8SjNumukYOQra1ho0pXyAuPGXc5EKHwHc+/IhuF0oR4RLecpLvyVrWuLfjmme5e
-         iQyJCsh85x9mH1QlC1Z0F2UPzE1dqJu+5ERGhRy0Fw4mSMG7RTes46DPLOndJAV2dwwJ
-         iLtTO54zg1K1pmS9w8eufYCnb13IZ+aEnubUQSI9oHBh5suTCdUGjQXySiKv6kymRe1j
-         nJsuIY0jQtB560gkm8r4dc131LxAylv8/D0ctnEypNhKfyks8bA5xc6sTGpo4Dv6N0AF
-         ErXg==
-X-Gm-Message-State: AO0yUKXsgEY8F3V3EFBVd8aLTRVnoEIVTxJ/SJYscTfqx5MSiwGzhJbo
-        KqNXxWQiDHoWC2aPojWoUado5EWuuINBfS2S
-X-Google-Smtp-Source: AK7set+z2q+GKKBVkMO9i5mvqn6izSiK+EF5MtJjRSaQhddI6zFY8709SiO4krMyjD9TKY81rsaDkg==
-X-Received: by 2002:ac8:5fc1:0:b0:3b8:49a9:48c0 with SMTP id k1-20020ac85fc1000000b003b849a948c0mr11975248qta.13.1675850944267;
-        Wed, 08 Feb 2023 02:09:04 -0800 (PST)
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com. [209.85.219.169])
-        by smtp.gmail.com with ESMTPSA id x11-20020a05620a448b00b0072c01a3b6aasm11511525qkp.100.2023.02.08.02.09.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Feb 2023 02:09:03 -0800 (PST)
-Received: by mail-yb1-f169.google.com with SMTP id o187so21579816ybg.3;
-        Wed, 08 Feb 2023 02:09:02 -0800 (PST)
-X-Received: by 2002:a5b:508:0:b0:8a3:59a4:340e with SMTP id
- o8-20020a5b0508000000b008a359a4340emr741320ybp.604.1675850942618; Wed, 08 Feb
- 2023 02:09:02 -0800 (PST)
+        with ESMTP id S229457AbjBHMah (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 07:30:37 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED241AD2D;
+        Wed,  8 Feb 2023 04:30:34 -0800 (PST)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4PBfSP3JP0z6801v;
+        Wed,  8 Feb 2023 20:29:09 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.17; Wed, 8 Feb
+ 2023 12:30:32 +0000
+Date:   Wed, 8 Feb 2023 12:30:31 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+CC:     <linux-cxl@vger.kernel.org>, <dave.hansen@linux.intel.com>,
+        <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH 07/18] cxl/region: Move region-position validation to a
+ helper
+Message-ID: <20230208123031.00006990@Huawei.com>
+In-Reply-To: <167564538779.847146.8356062886811511706.stgit@dwillia2-xfh.jf.intel.com>
+References: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
+        <167564538779.847146.8356062886811511706.stgit@dwillia2-xfh.jf.intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-References: <20230207142952.51844-1-andriy.shevchenko@linux.intel.com> <20230207142952.51844-9-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20230207142952.51844-9-andriy.shevchenko@linux.intel.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 8 Feb 2023 11:08:51 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVkhymFCys_LnqKtpXLBT6sKURbVqBnp2wDUc63nhxvSw@mail.gmail.com>
-Message-ID: <CAMuHMdVkhymFCys_LnqKtpXLBT6sKURbVqBnp2wDUc63nhxvSw@mail.gmail.com>
-Subject: Re: [PATCH v3 08/12] gpio: aggregator: Add missing header(s)
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Devarsh Thakkar <devarsht@ti.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-gpio@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-doc-tw-discuss@lists.sourceforge.net,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-wpan@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-arch@vger.kernel.org,
-        devicetree@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jonathan Corbet <corbet@lwn.net>, Alex Shi <alexs@kernel.org>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Hu Haowen <src.res@email.cn>,
-        Russell King <linux@armlinux.org.uk>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Mun Yew Tham <mun.yew.tham@intel.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alexander Aring <alex.aring@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>, Lee Jones <lee@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+On Sun, 05 Feb 2023 17:03:07 -0800
+Dan Williams <dan.j.williams@intel.com> wrote:
 
-Thanks for your patch!
+> In preparation for region autodiscovery, that needs all devices
+> discovered before their relative position in the region can be
+> determined, consolidate all position dependent validation in a helper.
+> 
+> Recall that in the on-demand region creation flow the end-user picks the
+> position of a given endpoint decoder in a region. In the autodiscovery
+> case the position of an endpoint decoder can only be determined after
+> all other endpoint decoders that claim to decode the region's address
+> range have been enumerated and attached. So, in the autodiscovery case
+> endpoint decoders may be attached before their relative position is
+> known. Once all decoders arrive, then positions can be determined and
+> validated with cxl_region_validate_position() the same as user initiated
+> on-demand creation.
+> 
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Hi Dan,
 
-On Tue, Feb 7, 2023 at 3:29 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
-> Do not imply that some of the generic headers may be always included.
-> Instead, include explicitly what we are direct user of.
+A few comments inline, but mostly reflect the original code rather than
+the refactoring you have done in this patch.
 
-That applies only to the addition of #include <linux/slab.h>...
-Please also describe the other changes.
+Jonathan
 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/gpio/gpio-aggregator.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/gpio/gpio-aggregator.c b/drivers/gpio/gpio-aggregator.c
-> index 6d17d262ad91..20a686f12df7 100644
-> --- a/drivers/gpio/gpio-aggregator.c
-> +++ b/drivers/gpio/gpio-aggregator.c
-> @@ -10,19 +10,20 @@
->  #include <linux/bitmap.h>
->  #include <linux/bitops.h>
->  #include <linux/ctype.h>
-> -#include <linux/gpio.h>
-> -#include <linux/gpio/consumer.h>
-> -#include <linux/gpio/driver.h>
-> -#include <linux/gpio/machine.h>
->  #include <linux/idr.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/mutex.h>
->  #include <linux/overflow.h>
->  #include <linux/platform_device.h>
-> +#include <linux/slab.h>
->  #include <linux/spinlock.h>
->  #include <linux/string.h>
->
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/gpio/driver.h>
-> +#include <linux/gpio/machine.h>
+
+> +static int cxl_region_attach(struct cxl_region *cxlr,
+> +			     struct cxl_endpoint_decoder *cxled, int pos)
+> +{
+> +	struct cxl_root_decoder *cxlrd = to_cxl_root_decoder(cxlr->dev.parent);
+> +	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
+> +	struct cxl_region_params *p = &cxlr->params;
+> +	struct cxl_port *ep_port, *root_port;
+> +	struct cxl_dport *dport;
+> +	int rc = -ENXIO;
 > +
->  #define AGGREGATOR_MAX_GPIOS 512
+> +	if (cxled->mode != cxlr->mode) {
+> +		dev_dbg(&cxlr->dev, "%s region mode: %d mismatch: %d\n",
+> +			dev_name(&cxled->cxld.dev), cxlr->mode, cxled->mode);
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (cxled->mode == CXL_DECODER_DEAD) {
+> +		dev_dbg(&cxlr->dev, "%s dead\n", dev_name(&cxled->cxld.dev));
+> +		return -ENODEV;
+> +	}
+> +
+> +	/* all full of members, or interleave config not established? */
+> +	if (p->state > CXL_CONFIG_INTERLEAVE_ACTIVE) {
+> +		dev_dbg(&cxlr->dev, "region already active\n");
+> +		return -EBUSY;
+> +	} else if (p->state < CXL_CONFIG_INTERLEAVE_ACTIVE) {
+> +		dev_dbg(&cxlr->dev, "interleave config missing\n");
+> +		return -ENXIO;
+> +	}
+> +
+>  	ep_port = cxled_to_port(cxled);
+>  	root_port = cxlrd_to_port(cxlrd);
+>  	dport = cxl_find_dport_by_dev(root_port, ep_port->host_bridge);
+> @@ -1284,13 +1327,6 @@ static int cxl_region_attach(struct cxl_region *cxlr,
+>  		return -ENXIO;
+>  	}
+>  
+> -	if (cxlrd->calc_hb(cxlrd, pos) != dport) {
+> -		dev_dbg(&cxlr->dev, "%s:%s invalid target position for %s\n",
+> -			dev_name(&cxlmd->dev), dev_name(&cxled->cxld.dev),
+> -			dev_name(&cxlrd->cxlsd.cxld.dev));
+> -		return -ENXIO;
+> -	}
+> -
 
-For the actual changes:
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+In an ideal world, this would have been nice as two patches.
+One that reorders the various checks so that they are in the order
+after you have factored things out (easy to review for correctness)
+then one that factored it out.
 
-Gr{oetje,eeting}s,
+>  	if (cxled->cxld.target_type != cxlr->type) {
+>  		dev_dbg(&cxlr->dev, "%s:%s type mismatch: %d vs %d\n",
+>  			dev_name(&cxlmd->dev), dev_name(&cxled->cxld.dev),
+> @@ -1314,12 +1350,13 @@ static int cxl_region_attach(struct cxl_region *cxlr,
+>  		return -EINVAL;
+>  	}
+>  
+> -	for (iter = ep_port; !is_cxl_root(iter);
+> -	     iter = to_cxl_port(iter->dev.parent)) {
+> -		rc = cxl_port_attach_region(iter, cxlr, cxled, pos);
+> -		if (rc)
+> -			goto err;
+> -	}
+> +	rc = cxl_region_validate_position(cxlr, cxled, pos);
+> +	if (rc)
+> +		return rc;
+> +
+> +	rc = cxl_region_attach_position(cxlr, cxlrd, cxled, dport, pos);
+> +	if (rc)
+> +		return rc;
+>  
+>  	p->targets[pos] = cxled;
+>  	cxled->pos = pos;
 
-                        Geert
+More something about original code than the refactoring...
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+I'm not keen on the side effects that aren't unwound in the error paths.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+p->targets[pos] and cxled->pos are left set.  Probably never matters
+but not elegant or as easy to reason about as it would be if they
+were cleared in error cases.  In particular there is a check on
+whether p->targets[pos] is set that will result in a dev_dbg even
+though setting it up actually failed.
+
+
+> @@ -1343,10 +1380,6 @@ static int cxl_region_attach(struct cxl_region *cxlr,
+>  
+>  err_decrement:
+>  	p->nr_targets--;
+> -err:
+> -	for (iter = ep_port; !is_cxl_root(iter);
+> -	     iter = to_cxl_port(iter->dev.parent))
+> -		cxl_port_detach_region(iter, cxlr, cxled);
+>  	return rc;
+>  }
+>  
+> 
+
