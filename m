@@ -2,280 +2,199 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37C5168E9F0
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 09:35:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 764D568EA0C
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 09:40:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230392AbjBHIfw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Feb 2023 03:35:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36738 "EHLO
+        id S229827AbjBHIkT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Feb 2023 03:40:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230288AbjBHIfv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 03:35:51 -0500
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B89617CCF
-        for <linux-acpi@vger.kernel.org>; Wed,  8 Feb 2023 00:35:50 -0800 (PST)
-Received: by mail-pj1-x1032.google.com with SMTP id v18-20020a17090ae99200b00230f079dcd9so2982766pjy.1
-        for <linux-acpi@vger.kernel.org>; Wed, 08 Feb 2023 00:35:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=aGCngmn3qYO37IvW03Wsv1Sd1d/k2b7T3ZI7GJg8uRY=;
-        b=cPsKgAUkHw27v8h88LQ+bRZGoy8A0erdlmgM5JUOi+2YLRFRsZDgzow810SgerWi6c
-         7ZkNatq08eCjuhQV7vWipxsC16kWxyMGN4pLB44A3wVf9ll3ZCJAwTr36t6R3fCmR4mz
-         QT45nsmhTLkg/c9q2OJkwRV4bZNHdzodoupS0UIoqpgq+BrHm31rA+MOuwvudwKX898F
-         AGuaP1JtqWkQ8jLB0gUq0Cm6dY77IVfaRwp2a3fYuz8wQtmx0GCux71qn7uQMbDXTY/R
-         S4wBHfTUkAi7AFZ1sy97qwTexNEuDqZE7tdokzNf2CDa1SO7FjGL7mBMUCxyvfRXkVFE
-         X3Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aGCngmn3qYO37IvW03Wsv1Sd1d/k2b7T3ZI7GJg8uRY=;
-        b=30/sudqfzJIFtaLlNTCkp7c9hs4vDo+3eewDzLXTm/H5+QK8WPwmuRV7Zt8EwCZoJb
-         cyyRAR7r3zBld9L0g9Cye1byEeNxFwFR5vk206CNlRHBjx1jqufv9WocQlB5CB9dGyJg
-         RQ4JRwqJYDUOutf+zWB1GWRvAaqjQfXhZCkL5WYUVYhhNYPxOJ6+KfNcc3+BzPElZ6KR
-         7X0K6bHzKBv/apGECihjKXHOfgOZvV5OFUhtheW4j5aItpBHAltdfb/Yy6orLcs1vm/S
-         YxpRoDyXypA1TFG1+T0+WAaK9vbWwJqsk67weLuCrGte4yq1PVzhAmugSxZfwKhiJNZn
-         JFng==
-X-Gm-Message-State: AO0yUKV/xLvvTRUfgnuOjSkqJiFD9FHBoyl/yICZjDI1ItNf8Tnjjkzp
-        neITa+pbAPWxSyyodzHipv7FZyk+hEkiJ98ZIaMeVQ==
-X-Google-Smtp-Source: AK7set/TDWd3+Egoy+JfLKAz5sJaXWQWjOWmfrHsqy3L62s04ncd7pLxpA5rCkq4UU5UWfrCIcarV+jDJQ7ZU53Ulek=
-X-Received: by 2002:a17:90a:d082:b0:22c:ad5e:e1e3 with SMTP id
- k2-20020a17090ad08200b0022cad5ee1e3mr523701pju.141.1675845349397; Wed, 08 Feb
- 2023 00:35:49 -0800 (PST)
-MIME-Version: 1.0
-References: <20230207014207.1678715-1-saravanak@google.com>
- <20230207014207.1678715-10-saravanak@google.com> <CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com>
- <CAGETcx8DaZqS7+47PhX4hQOfSk7AzPcTu=2i+4gAgXr6wyDNgg@mail.gmail.com>
- <CAGETcx_bkuFaLCiPrAWCPQz+w79ccDp6=9e881qmK=vx3hBMyg@mail.gmail.com> <CAMuHMdVREiVoGp-jvXKAdPSwjio13VgtPXWppnGOB+gSS9op+g@mail.gmail.com>
-In-Reply-To: <CAMuHMdVREiVoGp-jvXKAdPSwjio13VgtPXWppnGOB+gSS9op+g@mail.gmail.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Wed, 8 Feb 2023 00:35:12 -0800
-Message-ID: <CAGETcx_+rhHvaC_HJXGrr5_WAd2+k5f=rWYnkCZ6z5bGX-wj4w@mail.gmail.com>
-Subject: Re: [PATCH v3 09/12] of: property: Simplify of_link_to_phandle()
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
+        with ESMTP id S229500AbjBHIkS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 03:40:18 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EAE4FF1F;
+        Wed,  8 Feb 2023 00:40:17 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 08764B81C69;
+        Wed,  8 Feb 2023 08:40:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79529C433D2;
+        Wed,  8 Feb 2023 08:40:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675845614;
+        bh=adWnpp1g9RFqPwQqHmQOvEb/SGvHh6YP0oNFIBMWN5Q=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=iW9MSmpK9cnLE/S4Oe4ja1Gv4lyUkFg5DM+mnVIWe5ssivwI7nGiTYym/18HTYKxV
+         99cd+PNPxkugWHgVsXjRh0QoiuylkSTsQmFcpcse2GeIgDXf/BDkU3msTm4tzlqNZc
+         JyBo+qEmxglrRYYxIY1uc+ciYNo8eBRzV1rwKnTdgznolowEmR+D0226ANjJBROhU7
+         /da85/eUXgBJTJF+4RmqUQs1DKIdeb8p4rYG3jDDxnnt+EohAqdt8sOD4b4/djnppA
+         X8DrOqxWL8UgGEMbCbY4IhDVQ1eL02nlb6gVN16lwQJT4AxQPFf2i9VdxZMFBFy0ul
+         nELH+UI9hsu6w==
+Received: from 82-132-235-19.dab.02.net ([82.132.235.19] helo=wait-a-minute.misterjones.org)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <maz@kernel.org>)
+        id 1pPfzv-008b9y-Ss;
+        Wed, 08 Feb 2023 08:40:12 +0000
+Date:   Wed, 08 Feb 2023 08:40:09 +0000
+Message-ID: <878rh81rfa.wl-maz@kernel.org>
+From:   Marc Zyngier <maz@kernel.org>
+To:     James Morse <james.morse@arm.com>
+Cc:     linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+        kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Borislav Petkov <bp@alien8.de>, H Peter Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Oliver Upton <oliver.upton@linux.dev>,
         Len Brown <lenb@kernel.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        Abel Vesa <abel.vesa@linaro.org>,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Tony Lindgren <tony@atomide.com>,
-        John Stultz <jstultz@google.com>,
-        Doug Anderson <dianders@chromium.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Maxim Kiselev <bigunclemax@gmail.com>,
-        Maxim Kochetkov <fido_max@inbox.ru>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Colin Foster <colin.foster@in-advantage.com>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Jean-Philippe Brucker <jpb@kernel.org>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        kernel-team@android.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+        Rafael Wysocki <rafael@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>
+Subject: Re: [RFC PATCH 29/32] KVM: arm64: Pass hypercalls to userspace
+In-Reply-To: <7462738f-e837-cd99-f441-8e7c29d250cd@arm.com>
+References: <20230203135043.409192-1-james.morse@arm.com>
+        <20230203135043.409192-30-james.morse@arm.com>
+        <865ycg1kv2.wl-maz@kernel.org>
+        <7462738f-e837-cd99-f441-8e7c29d250cd@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 82.132.235.19
+X-SA-Exim-Rcpt-To: james.morse@arm.com, linux-pm@vger.kernel.org, loongarch@lists.linux.dev, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org, tglx@linutronix.de, lpieralisi@kernel.org, mark.rutland@arm.com, sudeep.holla@arm.com, bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com, mingo@redhat.com, will@kernel.org, catalin.marinas@arm.com, chenhuacai@kernel.org, suzuki.poulose@arm.com, oliver.upton@linux.dev, lenb@kernel.org, rafael@kernel.org, kernel@xen0n.name, salil.mehta@huawei.com, linux@armlinux.org.uk, jean-philippe@linaro.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 7, 2023 at 11:57 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->
-> Hi Saravana,
->
-> On Wed, Feb 8, 2023 at 8:32 AM Saravana Kannan <saravanak@google.com> wrote:
-> > On Tue, Feb 7, 2023 at 6:08 PM Saravana Kannan <saravanak@google.com> wrote:
-> > > On Tue, Feb 7, 2023 at 12:57 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > > > On Tue, Feb 7, 2023 at 2:42 AM Saravana Kannan <saravanak@google.com> wrote:
-> > > > > The driver core now:
-> > > > > - Has the parent device of a supplier pick up the consumers if the
-> > > > >   supplier never has a device created for it.
-> > > > > - Ignores a supplier if the supplier has no parent device and will never
-> > > > >   be probed by a driver
-> > > > >
-> > > > > And already prevents creating a device link with the consumer as a
-> > > > > supplier of a parent.
-> > > > >
-> > > > > So, we no longer need to find the "compatible" node of the supplier or
-> > > > > do any other checks in of_link_to_phandle(). We simply need to make sure
-> > > > > that the supplier is available in DT.
-> > > > >
-> > > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > > >
-> > > > Thanks for your patch!
-> > > >
-> > > > This patch introduces a regression when dynamically loading DT overlays.
-> > > > Unfortunately this happens when using the out-of-tree OF configfs,
-> > > > which is not supported upstream.  Still, there may be (obscure)
-> > > > in-tree users.
-> > > >
-> > > > When loading a DT overlay[1] to enable an SPI controller, and
-> > > > instantiate a connected SPI EEPROM:
->
-> [...]
->
-> > > > The SPI controller and the SPI EEPROM are no longer instantiated.
->
-> > > Sigh... I spent way too long trying to figure out if I caused a memory
-> > > leak. I should have scrolled down further! Doesn't look like that part
-> > > is related to anything I did.
-> > >
-> > > There are some flags set to avoid re-parsing fwnodes multiple times.
-> > > My guess is that the issue you are seeing has to do with how many of
-> > > the in memory structs are reused vs not when an overlay is
-> > > applied/removed and some of these flags might not be getting cleared
-> > > and this is having a bigger impact with this patch (because the fwnode
-> > > links are no longer anchored on "compatible" nodes).
-> > >
-> > > With/without this patch (let's keep the series) can you look at how
-> > > the following things change between each step you do above (add,
-> > > remove, retry):
-> > > 1) List of directories under /sys/class/devlink
-> > > 2) Enable the debug logs inside __fwnode_link_add(),
-> > > __fwnode_link_del(), device_link_add()
-> > >
-> > > My guess is that the final solution would entail clearing
-> > > FWNODE_FLAG_LINKS_ADDED for some fwnodes.
-> >
-> > You replied just as I was about to hit send. So sending this anyway...
-> >
-> > Ok, I took a closer look and I think it's a bit of a mess. The fact
-> > that it even worked for you without this patch is a bit of a
-> > coincidence.
-> >
-> > Let's just take platform devices that are created by
-> > driver/of/platform.c as an example.
-> >
-> > The main problem is that when you add/remove properties to a DT node
-> > of an existing platform device, nothing is really done about it at the
-> > device level. We don't even unbind and rebind the driver so the driver
-> > could make use of the new properties. We don't remove and add back the
-> > device so whoever might use the new property will use it. And if you
-> > are adding a new node, it'll only trigger any platform device level
-> > impact if it's a new node of a "simple-bus" (or similar bus) device.
-> >
-> > Problem 1:
-> > So if you add a new child node to an existing probed device that adds
-> > its children explicitly (as in, the parent is not a "simple-bus" like
-> > device), nothing will happen. The newly added child device node will
-> > get converted into a platform device, not will the parent device
-> > notice it. So in your case of adding msiof0_pins, it's just that when
-> > the consumer gets the pins, the driver doesn't get involved much and
-> > it's the pinctrl framework that reads the DT and figures it out.
-> >
-> > With this patch, the fwnode links point to the actual resource and the
-> > actual parent device inherits them if they don't get converted to a
-> > struct device. But since we are adding this msiof0_pins after the
-> > parent device has probed, the fwnode link isn't inherited by the
-> > parent pinctrl device.
-> >
-> > Problem 2:
-> > So if you add a property to an already bound device, nothing is done
-> > by the driver. In your overlay example, if you move the status="okay"
-> > line to be the first property you change in the msiof0 spi device,
-> > you'll probably see that fw_devlink is no longer the one blocking the
-> > probe. This is because the platform device will get added as soon as
-> > the status flips from disabled to enabled and at that point fw_devlink
-> > will think it has no suppliers and won't do any probe deferring. And
-> > then as the new properties get added nothing will happen at the device
-> > or fw_devlink level. If the msiof0's spi driver fails immediately with
-> > NOT -EPROBE_DEFER when platform device is added because it couldn't
-> > find any pinctrl property, then msiof0 will never probe (unless you
-> > remove and add the driver). If it had failed with -EPROBE_DEFER, then
-> > it might probe again if something else triggers a deferred probe
-> > attempt. Clearly, things working/not working based on the order of
-> > properties in DT is not a good implementation.
-> >
-> > Problem 3:
-> > What if you enable a previously disabled supplier. There's no way to
-> > handle that from a fw_devlink level without re-parsing the entire
-> > device tree because existing devices might be consumers now.
-> >
-> > Anyway, long story short, it's sorta worked due to coincidence and
-> > it's quite messy to get it to work correctly.
->
-> Several subsystems register notifiers to be informed of the events
-> above. E.g. drivers/spi/spi.c:
->
->         if (IS_ENABLED(CONFIG_OF_DYNAMIC))
->                 WARN_ON(of_reconfig_notifier_register(&spi_of_notifier));
->         if (IS_ENABLED(CONFIG_ACPI))
->                 WARN_ON(acpi_reconfig_notifier_register(&spi_acpi_notifier));
->
-> So my issue might be triggered using ACPI, too.
+On Tue, 07 Feb 2023 17:50:58 +0000,
+James Morse <james.morse@arm.com> wrote:
+> 
+> Hi Marc,
+> 
+> On 05/02/2023 10:12, Marc Zyngier wrote:
+> > On Fri, 03 Feb 2023 13:50:40 +0000,
+> > James Morse <james.morse@arm.com> wrote:
+> >>
+> >> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> >>
+> >> When capability KVM_CAP_ARM_HVC_TO_USER is available, userspace can
+> >> request to handle all hypercalls that aren't handled by KVM. With the
+> >> help of another capability, this will allow userspace to handle PSCI
+> >> calls.
+> 
+> > On top of Oliver's ask not to make this a blanket "steal everything",
+> > but instead to have an actual request for ranges of forwarded
+> > hypercalls:
+> > 
+> >> Notes on this implementation:
+> >>
+> >> * A similar mechanism was proposed for SDEI some time ago [1]. This RFC
+> >>   generalizes the idea to all hypercalls, since that was suggested on
+> >>   the list [2, 3].
+> >>
+> >> * We're reusing kvm_run.hypercall. I copied x0-x5 into
+> >>   kvm_run.hypercall.args[] to help userspace but I'm tempted to remove
+> >>   this, because:
+> >>   - Most user handlers will need to write results back into the
+> >>     registers (x0-x3 for SMCCC), so if we keep this shortcut we should
+> >>     go all the way and read them back on return to kernel.
+> >>   - QEMU doesn't care about this shortcut, it pulls all vcpu regs before
+> >>     handling the call.
+> >>   - SMCCC uses x0-x16 for parameters.
+> >>   x0 does contain the SMCCC function ID and may be useful for fast
+> >>   dispatch, we could keep that plus the immediate number.
+> >>
+> >> * Add a flag in the kvm_run.hypercall telling whether this is HVC or
+> >>   SMC?  Can be added later in those bottom longmode and pad fields.
+> 
+> > We definitely need this. A nested hypervisor can (and does) use SMCs
+> > as the conduit.
+> 
+> Christoffer's comments last time round on this was that EL2 guests
+> get SMC with this, and EL1 guests get HVC. The VMM could never get
+> both...
 
-Yeah, I did notice this before my email. Here's an ugly hack (at end
-of email) to test my theory about Problem 1. I didn't compile test it
-(because I should go to bed now), but you get the idea. Can you give
-this a shot? It should fix your specific case. Basically for all
-overlays (I hope the function is only used for overlays) we assume all
-nodes are NOT devices until they actually get added as a device. Don't
-review the code, it's not meant to be :)
+I agree with the first half of the statement (EL2 guest using SMC),
+but limiting EL1 guests to HVC is annoying. On systems that have a
+secure side, it would make sense to be able to route the guest's SMC
+calls to userspace and allow it to emulate/proxy/deny such calls.
 
--Saravana
+This would solve the 10 year old question of "how do we allow a guest
+to call into secure services...
 
---- a/drivers/of/dynamic.c
-+++ b/drivers/of/dynamic.c
-@@ -226,6 +226,7 @@ static void __of_attach_node(struct device_node *np)
-        np->sibling = np->parent->child;
-        np->parent->child = np;
-        of_node_clear_flag(np, OF_DETACHED);
-+       np->fwnode.flags |= FWNODE_FLAG_NOT_DEVICE;
- }
+> 
+> 
+> > The question is whether they represent two distinct
+> > namespaces or not. I *think* we can unify them, but someone should
+> > check and maybe get clarification from the owners of the SMCCC spec.
+> 
+> i.e. the VMM requests 0xC400_0000:0xC400_001F regardless of SMC/HVC?
+> 
+> I don't yet see how a VMM could get HVC out of a virtual-EL2 guest....
 
- /**
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index 81c8c227ab6b..7299cd668e51 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -732,6 +732,7 @@ static int of_platform_notify(struct notifier_block *nb,
-                if (of_node_check_flag(rd->dn, OF_POPULATED))
-                        return NOTIFY_OK;
+My statement was badly formulated, and I conflated the need for SMC in
+EL2 guests with the (separate) need to handle SMC for EL1 guests.
 
-+               rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
-                /* pdev_parent may be NULL when no bus platform device */
-                pdev_parent = of_find_device_by_node(rd->dn->parent);
-                pdev = of_platform_device_create(rd->dn, NULL,
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 15f174f4e056..1de55561b25d 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -4436,6 +4436,7 @@ static int of_spi_notify(struct notifier_block
-*nb, unsigned long action,
-                        return NOTIFY_OK;
-                }
+>
+> 
+> >> * On top of this we could share with userspace which HVC ranges are
+> >>   available and which ones are handled by KVM. That can actually be added
+> >>   independently, through a vCPU/VM device attribute which doesn't consume
+> >>   a new ioctl:
+> >>   - userspace issues HAS_ATTR ioctl on the vcpu fd to query whether this
+> >>     feature is available.
+> >>   - userspace queries the number N of HVC ranges using one GET_ATTR.
+> >>   - userspace passes an array of N ranges using another GET_ATTR. The
+> >>     array is filled and returned by KVM.
+> 
+> > As mentioned above, I think this interface should go both ways.
+> > Userspace should request the forwarding of a certain range of
+> > hypercalls via a similar SET_ATTR interface.
+> 
+> Yup, I'll sync up with Oliver about that.
+> 
+> 
+> > Another question is how we migrate VMs that have these forwarding
+> > requirements. Do we expect the VMM to replay the forwarding as part of
+> > the setting up on the other side? Or do we save/restore this via a
+> > firmware pseudo-register?
+> 
+> Pfff. VMMs problem. Enabling these things means it has its own
+> internal state to migrate.  (is this vCPU on or off?), I doubt it
+> needs reminding that the state exists.
 
-+               rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
-                spi = of_register_spi_device(ctlr, rd->dn);
-                put_device(&ctlr->dev);
+I'm perfectly OK with the VMM being in the driving seat here and that
+it'd have to replay its own state. But it needs some level of
+documentation.
+
+> That said, Salil is looking at making this work with migration in Qemu.
+
+Yup, that'd be needed.
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
