@@ -2,154 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2404768EA2B
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 09:49:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0401668EA5F
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 10:02:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229726AbjBHItC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Feb 2023 03:49:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44016 "EHLO
+        id S230040AbjBHJCS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Feb 2023 04:02:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229740AbjBHItA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 03:49:00 -0500
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E641D457CF;
-        Wed,  8 Feb 2023 00:48:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675846139; x=1707382139;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=VWAdscYA026WDG+uTuShMIHtJETF9TVgLCsDEURJfMQ=;
-  b=UrgbU66cr8tWuBo6dEnGDkdFePfhCmu2EULhfDp9k3KPtYPr6DOzcRDe
-   fHDfbVInU0UYsqPMXqN7lVOyjhVbEQxEIMKSTDjnqkQHteZdwzKbZYhbX
-   TRRmCtR28VATdjIrW2Wn94drGPh8GHjIM21TEcNafoaRDEPrrBHckyR3S
-   wqnPj0aUzWeaau7SFOa9XM5IpzYch9A9zPKzw5ICQtVpjdA1AK+w3LIDJ
-   KlqUJsTwvtDn+atvfOI9KuFMCDNkK5iPA9IXBqv48OWsehkdG1RXvl8K6
-   KE+XMIY6klA3xSWwjF8jzW8MW4NeYDeqYgyxlvVBzIpsZLpZEUSeuD174
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="327441663"
-X-IronPort-AV: E=Sophos;i="5.97,280,1669104000"; 
-   d="scan'208";a="327441663"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 00:48:59 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="735857144"
-X-IronPort-AV: E=Sophos;i="5.97,280,1669104000"; 
-   d="scan'208";a="735857144"
-Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 08 Feb 2023 00:48:58 -0800
-Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pPg8P-0004Ky-26;
-        Wed, 08 Feb 2023 08:48:57 +0000
-Date:   Wed, 08 Feb 2023 16:48:35 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- c1b84754ab99a2c591d64da339f6e9fbb63ce238
-Message-ID: <63e361e3.tqYzCWjL1Q92TgCB%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+        with ESMTP id S229598AbjBHJCR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 04:02:17 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3084915568;
+        Wed,  8 Feb 2023 01:02:16 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id CFF1EB81C6A;
+        Wed,  8 Feb 2023 09:02:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778D4C433A0;
+        Wed,  8 Feb 2023 09:02:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675846933;
+        bh=Au9MWvR8WSilVR5o+G1SBG0j1tkJGbQ1BYt+vNhmIjE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=RzQiZ9P6NDDC6vH0trcQ+X2uILhWWJkrt7w+rg5sjO3axMWd9ufymHHtAWCV7eUqM
+         fjAVNVi0+LTcNRR/9g4MpfdnptHZaX9SFbjlPF7S/NDq6hsgVkqHzcWmVNnqaNzrMD
+         MSkofGRklN9fhQfkxl7z7jeZmJqtZRcSCZjdWnHZzr3MpC+TtmwHuRNNS8tDu6i7yz
+         D0ShsgTgsIGKOHCWr2jWrCUf8c6PPX6NLy/tGbT6kWGgYUWy8gDNUwjdBdslnJe24f
+         hj2PWLvbvaqv/tKaepwKx9+ywYeFCX/gY1aRb3iikq4ryc4DBq8BCLhh/NFh6gIMQ3
+         z2Qv8NH9XA0Nw==
+Received: from [104.132.45.110] (helo=wait-a-minute.misterjones.org)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <maz@kernel.org>)
+        id 1pPgLD-008bNL-4P;
+        Wed, 08 Feb 2023 09:02:11 +0000
+Date:   Wed, 08 Feb 2023 09:02:09 +0000
+Message-ID: <877cws1qem.wl-maz@kernel.org>
+From:   Marc Zyngier <maz@kernel.org>
+To:     James Morse <james.morse@arm.com>
+Cc:     Oliver Upton <oliver.upton@linux.dev>, linux-pm@vger.kernel.org,
+        loongarch@lists.linux.dev, kvmarm@lists.linux.dev,
+        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Borislav Petkov <bp@alien8.de>, H Peter Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Len Brown <lenb@kernel.org>,
+        Rafael Wysocki <rafael@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>
+Subject: Re: [RFC PATCH 29/32] KVM: arm64: Pass hypercalls to userspace
+In-Reply-To: <0621bf8e-06f2-70f2-6d2b-f311c5a4ffce@arm.com>
+References: <20230203135043.409192-1-james.morse@arm.com>
+        <20230203135043.409192-30-james.morse@arm.com>
+        <Y913sIqWxmf4O5oG@google.com>
+        <0621bf8e-06f2-70f2-6d2b-f311c5a4ffce@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 104.132.45.110
+X-SA-Exim-Rcpt-To: james.morse@arm.com, oliver.upton@linux.dev, linux-pm@vger.kernel.org, loongarch@lists.linux.dev, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org, tglx@linutronix.de, lpieralisi@kernel.org, mark.rutland@arm.com, sudeep.holla@arm.com, bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com, mingo@redhat.com, will@kernel.org, catalin.marinas@arm.com, chenhuacai@kernel.org, suzuki.poulose@arm.com, lenb@kernel.org, rafael@kernel.org, kernel@xen0n.name, salil.mehta@huawei.com, linux@armlinux.org.uk, jean-philippe@linaro.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: c1b84754ab99a2c591d64da339f6e9fbb63ce238  Merge branch 'thermal-intel' into bleeding-edge
+On Tue, 07 Feb 2023 17:50:59 +0000,
+James Morse <james.morse@arm.com> wrote:
+> 
+> Hi Oliver,
+> 
+> On 03/02/2023 21:08, Oliver Upton wrote:
+> > On Fri, Feb 03, 2023 at 01:50:40PM +0000, James Morse wrote:
+> >> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> >>
+> >> When capability KVM_CAP_ARM_HVC_TO_USER is available, userspace can
+> >> request to handle all hypercalls that aren't handled by KVM.
+> 
+> > I would very much prefer we not go down this route. This capability
+> > effectively constructs an ABI out of what KVM presently does not
+> > implement. What would happen if KVM decides to implement a new set
+> > of hypercalls later down the road that were previously forwarded to
+> > userspace?
+> 
+> The user-space support would never get called. If we have a
+> wild-west allocation of IDs in this area we have bigger
+> problems. I'd hope in this example it would be a VMM or an in-kernel
+> implementation of the same feature.
+> 
+> When I floated something like this before for supporting SDEI in
+> guests, Christoffer didn't like tie-ing KVM to SMC-CC - hence the
+> all or nothing.
+> 
+> Since then we've had things like Spectre, which I don't think the
+> VMM should ever be allowed to handle, which makes the whole thing
+> much murkier.
 
-elapsed time: 725m
+That ship has sailed a long time ago. We also have grown a bunch of
+in-kernel SMCCC services that are KVM specific (the silly PTP stuff,
+for example, not to mention all the pKVM hypercalls...).
 
-configs tested: 72
-configs skipped: 2
+It is also likely that these ranges will grow over time (it has been a
+long time since the last drop of Spectre-like crap, and something must
+be brewing somewhere), so a level of discrimination is important.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arc                               allnoconfig
-alpha                             allnoconfig
-i386                              allnoconfig
-arm                               allnoconfig
-x86_64                            allnoconfig
-arc                                 defconfig
-powerpc                           allnoconfig
-alpha                               defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                           rhel-8.3-bpf
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-kvm
-x86_64                              defconfig
-arm                                 defconfig
-s390                                defconfig
-s390                             allmodconfig
-sh                               allmodconfig
-x86_64                               rhel-8.3
-arm64                            allyesconfig
-powerpc                          allmodconfig
-mips                             allyesconfig
-s390                             allyesconfig
-arm                              allyesconfig
-x86_64                           allyesconfig
-i386                 randconfig-a013-20230206
-i386                 randconfig-a011-20230206
-i386                 randconfig-a014-20230206
-i386                 randconfig-a012-20230206
-i386                                defconfig
-ia64                             allmodconfig
-i386                 randconfig-a015-20230206
-i386                 randconfig-a016-20230206
-m68k                             allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-x86_64               randconfig-a014-20230206
-riscv                randconfig-r042-20230204
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-x86_64               randconfig-a013-20230206
-s390                 randconfig-r044-20230206
-x86_64               randconfig-a011-20230206
-x86_64               randconfig-a015-20230206
-arc                  randconfig-r043-20230204
-arc                  randconfig-r043-20230206
-x86_64               randconfig-a012-20230206
-x86_64               randconfig-a016-20230206
-s390                 randconfig-r044-20230204
-riscv                randconfig-r042-20230206
-i386                             allyesconfig
-
-clang tested configs:
-x86_64               randconfig-a002-20230206
-x86_64               randconfig-a004-20230206
-x86_64               randconfig-a003-20230206
-x86_64               randconfig-a001-20230206
-x86_64               randconfig-a005-20230206
-x86_64               randconfig-a006-20230206
-x86_64                          rhel-8.3-rust
-hexagon              randconfig-r045-20230206
-hexagon              randconfig-r041-20230206
-hexagon              randconfig-r041-20230204
-arm                  randconfig-r046-20230204
-arm                  randconfig-r046-20230206
-hexagon              randconfig-r045-20230204
-i386                 randconfig-a002-20230206
-i386                 randconfig-a004-20230206
-i386                 randconfig-a001-20230206
-i386                 randconfig-a003-20230206
-i386                 randconfig-a005-20230206
-i386                 randconfig-a006-20230206
+	M.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Without deviation from the norm, progress is not possible.
