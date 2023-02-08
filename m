@@ -2,116 +2,128 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC5EA68F9AA
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 22:27:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8109668F9BF
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 22:31:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231500AbjBHV1g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Feb 2023 16:27:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51690 "EHLO
+        id S230207AbjBHVb4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Feb 2023 16:31:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231489AbjBHV1f (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 16:27:35 -0500
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 310D71E5D7;
-        Wed,  8 Feb 2023 13:27:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675891654; x=1707427654;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=zY/5QQL5G7M2ItNNs5xB/kWxPlChJgQ3KM+vywG553k=;
-  b=EF8Rh5KTulqFvawvwnqeU8dyEvqhi4HH/9ba4DyzCXnm50lm+OkaHD1n
-   QGAp+YSsAWCPwtw6PlOxo3t1MSJdylLqi4l8i2l2RD0WvwcK7y83ZHOcm
-   6XxwLcUTPawmI0A/QCAv3mLIVcO7rdOrkPpuGfiigOMEGs0NxxS2KXmM3
-   +rblHyc+o43EecP0rDwllS8Wgo/EOv1OsySnWJ2OvbH7K5Wm0JoAgF4BV
-   YasDMs/XfbwaNtInPYclaPCyUS2Iw1Ei+HHfnX190nPJ7NlxJkoSWqQid
-   elTMC2eLpzrMqLjjO/8dUAYUqOt3DiV9OCNYXMTW2pCMGBnoJDheXHgpk
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="313566121"
-X-IronPort-AV: E=Sophos;i="5.97,281,1669104000"; 
-   d="scan'208";a="313566121"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 13:27:33 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="756180407"
-X-IronPort-AV: E=Sophos;i="5.97,281,1669104000"; 
-   d="scan'208";a="756180407"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 13:27:32 -0800
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-        by kekkonen.fi.intel.com (Postfix) with SMTP id 5ADCB120D20;
-        Wed,  8 Feb 2023 23:27:29 +0200 (EET)
-Date:   Wed, 8 Feb 2023 23:27:29 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        rafael@kernel.org, heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH v4 6/8] ACPI: property: Rename parsed MIPI DisCo for
- Imaging properties
-Message-ID: <Y+QTwQq07XvRLQt/@kekkonen.localdomain>
-References: <20230208152807.3064242-1-sakari.ailus@linux.intel.com>
- <20230208152807.3064242-7-sakari.ailus@linux.intel.com>
- <Y+PUO3a8ZOq0Haa2@smile.fi.intel.com>
+        with ESMTP id S231861AbjBHVbx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 16:31:53 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F372A10A95;
+        Wed,  8 Feb 2023 13:31:52 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 983DAB81FBB;
+        Wed,  8 Feb 2023 21:31:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE33C433EF;
+        Wed,  8 Feb 2023 21:31:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675891910;
+        bh=rA4gQOEFjzOk984ttGkJ0iqLtjVnP14qiD/o3VUE7i8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=bP0/njXkd0bPDm6/oZMgT6Ptof/Ka2NfBb9jV2a9TNUWQ27Jf9GY0XvTU1TdWJ5w9
+         IIYTVcy3pjk4y4/qZFtlpvV6Po9rkREmDAsJv2RY4M2DDPU+FYJUy4xyyk0P1sB/Pm
+         u9kBL5TLrzkcz2jM4YwjWVIwOCXAuXkKtxeaNyrS7KVnszeCqKrilI5SvDK14t+dpr
+         H1aWp06edFlxBeCjwduVWqT24ynyidxUTHQLFdNIcnDnvtN3DAWTgzmIw7W4Wcwk1m
+         w76tflcqSAABRvhoxnp3XHgTPB3+PziXWR7eiEoBub9FHZKT1F2pwSvU2BSR5hstAL
+         EPK5QfqzPi6ig==
+Date:   Wed, 8 Feb 2023 21:31:44 +0000
+From:   Conor Dooley <conor@kernel.org>
+To:     Sunil V L <sunilvl@ventanamicro.com>
+Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        Anup Patel <apatel@ventanamicro.com>,
+        Andrew Jones <ajones@ventanamicro.com>,
+        Atish Patra <atishp@rivosinc.com>
+Subject: Re: [PATCH 07/24] RISC-V: ACPI: Enable ACPI build infrastructure
+Message-ID: <Y+QUwFIIj7tvrHpM@spud>
+References: <20230130182225.2471414-1-sunilvl@ventanamicro.com>
+ <20230130182225.2471414-8-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="UkPMmNX0YR0XBnLk"
 Content-Disposition: inline
-In-Reply-To: <Y+PUO3a8ZOq0Haa2@smile.fi.intel.com>
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230130182225.2471414-8-sunilvl@ventanamicro.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 08, 2023 at 06:56:27PM +0200, Andy Shevchenko wrote:
-> On Wed, Feb 08, 2023 at 05:28:05PM +0200, Sakari Ailus wrote:
-> > MIPI DisCo for Imaging defines properties for sensor-adjacent devices such
-> > as EEPROM, LED flash or lens VCM as either device or sub-node references.
-> > This is compliant with existing DT definitions apart from property names.
-> > 
-> > Rename parsed MIPI-defined properties so drivers will have a unified view
-> > of them as defined in DT and already parsed by drivers. This can be done
-> > in-place as the MIPI-defined property strings are always longer than the
-> > DT one. This also results in loss of constness in parser function
-> > arguments.
-> > 
-> > Individual bindings to devices could define the references differently
-> > between MIPI DisCo for Imaging and DT, in terms of device or sub-node
-> > references. This will still need to be handled in the drivers themselves.
-> 
-> ...
-> 
-> > +void acpi_properties_prepare_mipi(union acpi_object *elements)
-> > +{
-> > +	unsigned int i;
-> > +
-> > +	/* Replace MIPI DisCo for Imaging property names with DT equivalents. */
-> > +	for (i = 0; i < ARRAY_SIZE(mipi_disco_props); i++) {
-> > +		if (!strcmp(mipi_disco_props[i].mipi_prop,
-> > +			    elements[0].string.pointer)) {
-> 
-> 	/* const ? */ char *e0 = elements[0].string.pointer;
 
-Yes, and can be placed outside the loop.
+--UkPMmNX0YR0XBnLk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 	...
-> 
-> 		if (!strcmp(mipi_disco_props[i].mipi_prop, e0)) {
-> 
-> > +			WARN_ON(strscpy(elements[0].string.pointer,
-> > +					mipi_disco_props[i].dt_prop,
-> > +					elements[0].string.length) < 0);
-> 
-> 			WARN_ON(strscpy(e0, mipi_disco_props[i].dt_prop,
-> 					elements[0].string.pointer) < 0);
-> ?
-> 
-> > +			break;
-> > +		}
-> > +	}
-> > +}
-> 
+On Mon, Jan 30, 2023 at 11:52:08PM +0530, Sunil V L wrote:
+> Enable build infrastructure to add ACPI support for
+> RISC-V.
+>=20
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> ---
+>  arch/riscv/Kconfig | 5 +++++
+>  1 file changed, 5 insertions(+)
+>=20
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index d153e1cd890b..f664350679bc 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -12,6 +12,9 @@ config 32BIT
+> =20
+>  config RISCV
+>  	def_bool y
+> +	select ACPI_GENERIC_GSI if ACPI
+> +	select ACPI_MCFG if (ACPI && PCI)
 
--- 
-Sakari Ailus
+These brackets are not needed, right?
+
+> +	select ACPI_REDUCED_HARDWARE_ONLY if ACPI
+>  	select ARCH_CLOCKSOURCE_INIT
+>  	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
+>  	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
+> @@ -598,6 +601,7 @@ config EFI_STUB
+>  config EFI
+>  	bool "UEFI runtime support"
+>  	depends on OF && !XIP_KERNEL
+> +	select ARCH_SUPPORTS_ACPI if 64BIT
+>  	select LIBFDT
+>  	select UCS2_STRING
+>  	select EFI_PARAMS_FROM_FDT
+> @@ -703,3 +707,4 @@ source "drivers/cpufreq/Kconfig"
+>  endmenu # "CPU Power Management"
+> =20
+>  source "arch/riscv/kvm/Kconfig"
+> +source "drivers/acpi/Kconfig"
+
+For consistency with the rest of the file, a newline before drivers
+would be in order here.
+
+
+--UkPMmNX0YR0XBnLk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCY+QUwAAKCRB4tDGHoIJi
+0rw5AQDDR6lnLoWhrmspoMPPN+hMhDSf8VsjqYTW0h7JY6VCtgD/Wzc177tWPb2s
+yKCcO2mls+ZCX4eSFUDrTp1LKrw4MwU=
+=uBfZ
+-----END PGP SIGNATURE-----
+
+--UkPMmNX0YR0XBnLk--
