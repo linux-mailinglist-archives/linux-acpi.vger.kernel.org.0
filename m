@@ -2,100 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1966C68EF45
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 13:44:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A942268EFEC
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 14:37:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230428AbjBHMoO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Feb 2023 07:44:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44048 "EHLO
+        id S229718AbjBHNha (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Feb 2023 08:37:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230414AbjBHMoO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 07:44:14 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF5C73C16;
-        Wed,  8 Feb 2023 04:44:12 -0800 (PST)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4PBfm73Ht9z6J9mD;
-        Wed,  8 Feb 2023 20:42:47 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.17; Wed, 8 Feb
- 2023 12:44:10 +0000
-Date:   Wed, 8 Feb 2023 12:44:09 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-CC:     <linux-cxl@vger.kernel.org>, <stable@vger.kernel.org>,
-        <dave.hansen@linux.intel.com>, <linux-mm@kvack.org>,
-        <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH 10/18] cxl/region: Fix passthrough-decoder detection
-Message-ID: <20230208124409.0000658e@Huawei.com>
-In-Reply-To: <167564540422.847146.13816934143225777888.stgit@dwillia2-xfh.jf.intel.com>
-References: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
-        <167564540422.847146.13816934143225777888.stgit@dwillia2-xfh.jf.intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S230377AbjBHNh3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 08:37:29 -0500
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BF0828213;
+        Wed,  8 Feb 2023 05:37:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675863449; x=1707399449;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mvzxSsipozkOczStJxxLS2JmQaRIUgdUKmAgwtMA4Cg=;
+  b=XMhIbX3hMjj3Vvi+7z+EybXp+lg5P5jLCYa16LrRRNwREgd1GSa4ITjr
+   rOOEnq2Pb+41o/ZPKux9DfImuCxf2KMBuwpWoZ2zNycZN2ZTL4FMcdNA0
+   hlm7iohjoOx8LleIRxXpPlg2pYdxLr1qHsm0h0u7OpPZgAfI4ktM01WBf
+   292rx18yyiifyO0SNqHdOSQ6asPa/A8AlyylNM9M2optzQhR8jPBNG9PR
+   Emefn14Y9gXGJTZ5kumqpWqBAsTmgf74lPr+4yFhHdIBZz/NzClx8+O+T
+   6S2/8IKIMsrNrguQt1Hwt74OtINeJyAuuke9VnB0sqCSEOIy0DY8yt9Ro
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="313436570"
+X-IronPort-AV: E=Sophos;i="5.97,280,1669104000"; 
+   d="scan'208";a="313436570"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 05:37:28 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="776020864"
+X-IronPort-AV: E=Sophos;i="5.97,280,1669104000"; 
+   d="scan'208";a="776020864"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP; 08 Feb 2023 05:37:17 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pPkdN-00485l-0I;
+        Wed, 08 Feb 2023 15:37:13 +0200
+Date:   Wed, 8 Feb 2023 15:37:12 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Tony Lindgren <tony@atomide.com>,
+        John Stultz <jstultz@google.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Maxim Kiselev <bigunclemax@gmail.com>,
+        Maxim Kochetkov <fido_max@inbox.ru>,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Colin Foster <colin.foster@in-advantage.com>,
+        Martin Kepplinger <martin.kepplinger@puri.sm>,
+        Jean-Philippe Brucker <jpb@kernel.org>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        kernel-team@android.com, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v3 09/12] of: property: Simplify of_link_to_phandle()
+Message-ID: <Y+OliBAHiUPzbBPG@smile.fi.intel.com>
+References: <20230207014207.1678715-1-saravanak@google.com>
+ <20230207014207.1678715-10-saravanak@google.com>
+ <CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com>
+ <CAGETcx8DaZqS7+47PhX4hQOfSk7AzPcTu=2i+4gAgXr6wyDNgg@mail.gmail.com>
+ <CAGETcx_bkuFaLCiPrAWCPQz+w79ccDp6=9e881qmK=vx3hBMyg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGETcx_bkuFaLCiPrAWCPQz+w79ccDp6=9e881qmK=vx3hBMyg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, 05 Feb 2023 17:03:24 -0800
-Dan Williams <dan.j.williams@intel.com> wrote:
+On Tue, Feb 07, 2023 at 11:31:57PM -0800, Saravana Kannan wrote:
+> On Tue, Feb 7, 2023 at 6:08 PM Saravana Kannan <saravanak@google.com> wrote:
 
-> A passthrough decoder is a decoder that maps only 1 target. It is a
-> special case because it does not impose any constraints on the
-> interleave-math as compared to a decoder with multiple targets. Extend
-> the passthrough case to multi-target-capable decoders that only have one
-> target selected. I.e. the current code was only considering passthrough
-> *ports* which are only a subset of the potential passthrough decoder
-> scenarios.
+...
+
+> Another way to get this to work is to:
+> 1) unload pinctrl driver, unload spi driver.
+> 2) apply overlay
+> 3) reload pinctrl driver, reload spi driver.
 > 
-> Fixes: e4f6dfa9ef75 ("cxl/region: Fix 'distance' calculation with passthrough ports")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  drivers/cxl/core/region.c |    4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-> index c82d3b6f3d1f..34cf95217901 100644
-> --- a/drivers/cxl/core/region.c
-> +++ b/drivers/cxl/core/region.c
-> @@ -1019,10 +1019,10 @@ static int cxl_port_setup_targets(struct cxl_port *port,
->  		int i, distance;
->  
->  		/*
-> -		 * Passthrough ports impose no distance requirements between
-> +		 * Passthrough decoders impose no distance requirements between
->  		 * peers
+> This is assuming unloading those 2 drivers doesn't crash your system.
 
-I think we have a terminology inconsistency.  My understanding was we were using
-passthrough decoders for the special case where there is no programmable hardware.
-In this case I think we are also considering the case where that hardware must
-be programmed etc, it's just that we don't care about interleave.
-I'd just explain what it is rather than trying to assign a term. 
+Just a side note.
 
-Decoders that have a single target configured impose...
+For ACPI case the ACPICA prevents appearing of the same device in the
+namespace, so the above is kinda enforced, that's why overlays work better
+there (but have a lot of limitations).
 
+-- 
+With Best Regards,
+Andy Shevchenko
 
-
->  		 */
-> -		if (port->nr_dports == 1)
-> +		if (cxl_rr->nr_targets == 1)
->  			distance = 0;
->  		else
->  			distance = p->nr_targets / cxl_rr->nr_targets;
-> 
-> 
 
