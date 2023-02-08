@@ -2,36 +2,36 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 800F968F76B
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 19:50:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 040A368F874
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 20:56:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229559AbjBHSut (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Feb 2023 13:50:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47382 "EHLO
+        id S231388AbjBHT4P (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Feb 2023 14:56:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230207AbjBHSus (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 13:50:48 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEF7D49422;
-        Wed,  8 Feb 2023 10:50:47 -0800 (PST)
+        with ESMTP id S229740AbjBHT4O (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 14:56:14 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B16A34ED0D;
+        Wed,  8 Feb 2023 11:56:03 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 75733B81F45;
-        Wed,  8 Feb 2023 18:50:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F0AC433D2;
-        Wed,  8 Feb 2023 18:50:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EDBA61739;
+        Wed,  8 Feb 2023 19:56:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB6AC433EF;
+        Wed,  8 Feb 2023 19:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675882245;
-        bh=aj8x5SDs25y8h+VPsvp1Z3QlTPzHoa2icbVCfoaqexE=;
+        s=k20201202; t=1675886162;
+        bh=Nj7MhMOma/HhW6EJVI/dLGhU2fOrQO9qpmLNfI/Who4=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hAJ8Sm/EsdS5aquTPc13W7ADNi5CwgFTirWqfzYHXRuA5abvJXKH/fzDIPBAhrBGi
-         prsnPoOwSUOWQUoP4k0GxcJVSKYTKc9qbqnPTbbpBiCYrnWxFiRLXWGp1knjhJDe7y
-         5bR6laiAZ5ICnUFMCBMuaxQ2fdcyvYDv1fDJNojs3dkt0ZlS4CfeHuPJOfWJMUXPzB
-         nWHQa7sbV+BlxsUEvGQOnqqINg8IyNbr/o9IEMbZqisJ+PMFl6JWZxmibB05zcWoMp
-         HIxOnf0WbFRGbmaAyk3i585IP23qUdGL32Jz3pzR9Sl1CKHPnuYnKHZfrPrtRd71TS
-         lAf1QO+yvLqRA==
-Date:   Wed, 8 Feb 2023 18:50:39 +0000
+        b=FcEo3DMVV4Y7zsWygtvXpZ31miHsh4fX1lyo9Z2R7rBcUexvI/yMFmEMPUd3Casfk
+         Q8sYLT2sNaRJ+9Qj1Ve8Oeu+XmdS78gf2n/DymN3UiJ3KylKavgJql5I1RgwZFZE4v
+         KQ/ZeE4ZoUSn8q16KrBtyXmkjbCo3xpQvUGOGd+D5/U9PdPRTh8vCxo16SVlZBcGMg
+         Ebb7W28UH1pG2cszbdgIbDeGYQsRypqEhkW1xRlWEcXdaLm0acZp0rn7qSFCoXE2ry
+         sU9GYsazGaEWdMj/aFnHMqQELDmjQSTFfHBMPg7Fwyc09MWDZET2zmaaZtoT6FmaPE
+         qkDpl8yODLD9g==
+Date:   Wed, 8 Feb 2023 19:55:56 +0000
 From:   Conor Dooley <conor@kernel.org>
 To:     Sunil V L <sunilvl@ventanamicro.com>
 Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
@@ -47,17 +47,17 @@ Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
         Anup Patel <apatel@ventanamicro.com>,
         Andrew Jones <ajones@ventanamicro.com>,
         Atish Patra <atishp@rivosinc.com>
-Subject: Re: [PATCH 00/24] Add basic ACPI support for RISC-V
-Message-ID: <Y+Pu/z7dN87v3udc@spud>
+Subject: Re: [PATCH 04/24] RISC-V: ACPI: Add empty headers to enable ACPI core
+Message-ID: <Y+P+TF1MJ2OnwHVX@spud>
 References: <20230130182225.2471414-1-sunilvl@ventanamicro.com>
- <Y+Ppv6kB1iksf+TF@spud>
+ <20230130182225.2471414-5-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="aaYcc/YKkg738NAj"
+        protocol="application/pgp-signature"; boundary="NmY+w7HCTBD70FFj"
 Content-Disposition: inline
-In-Reply-To: <Y+Ppv6kB1iksf+TF@spud>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+In-Reply-To: <20230130182225.2471414-5-sunilvl@ventanamicro.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,54 +66,96 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
---aaYcc/YKkg738NAj
+--NmY+w7HCTBD70FFj
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 08, 2023 at 06:28:15PM +0000, Conor Dooley wrote:
-> Hey Sunil,
->=20
-> On Mon, Jan 30, 2023 at 11:52:01PM +0530, Sunil V L wrote:
-> > This patch series enables the basic ACPI infrastructure for RISC-V.
-> > Supporting external interrupt controllers is in progress and hence it is
-> > tested using polling based HVC SBI console and RAM disk.
-> >=20
-> > The series depends on Anup's IPI improvement series.
-> > https://github.com/avpatel/linux/commits/riscv_ipi_imp_v17
->=20
-> In the future, please provide links to patchsets rather than "random"
-> git trees.
->=20
-> > Jisheng Zhang (1):
-> >   riscv: move sbi_init() earlier before jump_label_init()
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->=20
-> What has this patch got to do with your series? Just something that was
-> sitting in your tree?
->=20
-> If you need this, it'd be ideal if you would submit *with* the R-b tags
-> it appears to have had by v6 [1] & add the reason that you need to move
-> it to the commit message.
-> In Jisheng's series that was obvious, but this is a significantly larger
-> series and it is hard to spot your reasoning for it.
+On Mon, Jan 30, 2023 at 11:52:05PM +0530, Sunil V L wrote:
+> Few header files are required unconditionally by ACPI core.
 
-Apologies, I forgot to provide the link!
-https://lore.kernel.org/all/20220821140918.3613-1-jszhang@kernel.org/
+nit: A few. Without the article this has a different meaning.
+
+> So add empty header files for now and update it when needed.
+
+s/ and update it when needed// ;)
+
+>=20
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> ---
+>  arch/riscv/include/asm/acenv.h | 17 +++++++++++++++++
+>  arch/riscv/include/asm/cpu.h   |  9 +++++++++
+>  2 files changed, 26 insertions(+)
+>  create mode 100644 arch/riscv/include/asm/acenv.h
+>  create mode 100644 arch/riscv/include/asm/cpu.h
+>=20
+> diff --git a/arch/riscv/include/asm/acenv.h b/arch/riscv/include/asm/acen=
+v.h
+> new file mode 100644
+> index 000000000000..bbc38ecdf753
+> --- /dev/null
+> +++ b/arch/riscv/include/asm/acenv.h
+> @@ -0,0 +1,17 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * RISC-V specific ACPICA environments and implementation
+> + *
+> + * Copyright (C) 2014, Linaro Ltd.
+> + *   Author: Hanjun Guo <hanjun.guo@linaro.org>
+> + *   Author: Graeme Gregory <graeme.gregory@linaro.org>
+> + * Copyright (C) 2023, Ventana Micro Systems Inc.
+> + *   Author: Sunil V L <sunilvl@ventanamicro.com>
+
+More out of idle curiosity than anything else, but what, may I ask, is
+copyrightable about 2 empty files?
+Triply so given there are !3! contributors to said empty file!
+
+> + */
+> +
+> +#ifndef _ASM_ACENV_H
+> +#define _ASM_ACENV_H
+> +
+> +/* It is required unconditionally by ACPI core, update it when needed. */
+
+How come this file gets a comment and the other doesn't?
+Also the comment doesn't really make much sense to me in a vacuum, and
+ideally would read like:
+"This header is required unconditionally by the ACPI core"
+That is, if a comment is really even needed.
 
 Cheers,
 Conor.
 
+> +
+> +#endif /* _ASM_ACENV_H */
+> diff --git a/arch/riscv/include/asm/cpu.h b/arch/riscv/include/asm/cpu.h
+> new file mode 100644
+> index 000000000000..51ec1a89a7a9
+> --- /dev/null
+> +++ b/arch/riscv/include/asm/cpu.h
+> @@ -0,0 +1,9 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (C) 2014 ARM Ltd.
+> + * Copyright (C) 2023 Ventana Micro Systems Inc.
+> + */
+> +#ifndef __ASM_CPU_H
+> +#define __ASM_CPU_H
+> +
+> +#endif /* __ASM_CPU_H */
+> --=20
+> 2.38.0
+>=20
 
---aaYcc/YKkg738NAj
+--NmY+w7HCTBD70FFj
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCY+Pu/wAKCRB4tDGHoIJi
-0pqjAP9v4xdzdROd07gJezBPig/rkwOEA+Nl74MUMwUBEgsVJwEAlKLC7xLXGfWy
-pbk12modw39jo6nvkXOoN9lAb7SH9QM=
-=465b
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCY+P+TAAKCRB4tDGHoIJi
+0lCXAQCMJNnnXM92WRsao6hIMtmCm8CiXSb5vBbh41ZMlT//rgD8DVM5pRplyPUB
+oIfuBKsZMkhJ3PwPcrbDHKHeWNlxLgg=
+=8eKC
 -----END PGP SIGNATURE-----
 
---aaYcc/YKkg738NAj--
+--NmY+w7HCTBD70FFj--
