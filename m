@@ -2,132 +2,156 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A942268EFEC
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 14:37:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BCF668F0B8
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 15:26:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229718AbjBHNha (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Feb 2023 08:37:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39884 "EHLO
+        id S231493AbjBHO0H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Feb 2023 09:26:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230377AbjBHNh3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 08:37:29 -0500
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BF0828213;
-        Wed,  8 Feb 2023 05:37:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675863449; x=1707399449;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=mvzxSsipozkOczStJxxLS2JmQaRIUgdUKmAgwtMA4Cg=;
-  b=XMhIbX3hMjj3Vvi+7z+EybXp+lg5P5jLCYa16LrRRNwREgd1GSa4ITjr
-   rOOEnq2Pb+41o/ZPKux9DfImuCxf2KMBuwpWoZ2zNycZN2ZTL4FMcdNA0
-   hlm7iohjoOx8LleIRxXpPlg2pYdxLr1qHsm0h0u7OpPZgAfI4ktM01WBf
-   292rx18yyiifyO0SNqHdOSQ6asPa/A8AlyylNM9M2optzQhR8jPBNG9PR
-   Emefn14Y9gXGJTZ5kumqpWqBAsTmgf74lPr+4yFhHdIBZz/NzClx8+O+T
-   6S2/8IKIMsrNrguQt1Hwt74OtINeJyAuuke9VnB0sqCSEOIy0DY8yt9Ro
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="313436570"
-X-IronPort-AV: E=Sophos;i="5.97,280,1669104000"; 
-   d="scan'208";a="313436570"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 05:37:28 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="776020864"
-X-IronPort-AV: E=Sophos;i="5.97,280,1669104000"; 
-   d="scan'208";a="776020864"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP; 08 Feb 2023 05:37:17 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pPkdN-00485l-0I;
-        Wed, 08 Feb 2023 15:37:13 +0200
-Date:   Wed, 8 Feb 2023 15:37:12 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
+        with ESMTP id S231280AbjBHOZv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 09:25:51 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AFCB4B1AB;
+        Wed,  8 Feb 2023 06:25:44 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id BAAD9B81E3A;
+        Wed,  8 Feb 2023 14:25:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5819EC433EF;
+        Wed,  8 Feb 2023 14:25:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675866341;
+        bh=t5jw1fCX4NoFeI2EPmYRhXOtkcVOIpQY0b9/jl5R8zA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=QgNyeqlpCi/SBDeCi1TjNEdCqZoJFbgr2WJlBzhmFCZPBDl+FvwZLFuUoEtRHiVbv
+         uS4uK4r0XCkRineIPNNP9oNxBtbjMeBbnPgCgvwNC+24iI018JePzQOYQtTUyIy/Mp
+         /qg/12O4pWuU4Ph2uCYFfSRaCoExuPkTdS6885J4+z8cV91aO0N0MHwBMlJryvG9OZ
+         X0le3Z/bcdQT3Q9bcuXnQc0LtSfZRuA6mh3CZD/9kvJpn4wp9UOAU86Mdp+1pChhIx
+         M/bUit0KIlLfw8FTXVwGO//F6H/bwcRj6WGI2Aj+ovZgdrJEnNUillAjBfdPPc/tmo
+         KNXBaoR+knFdw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <maz@kernel.org>)
+        id 1pPlOF-008gAy-0C;
+        Wed, 08 Feb 2023 14:25:39 +0000
+Date:   Wed, 08 Feb 2023 14:25:38 +0000
+Message-ID: <86h6vwz125.wl-maz@kernel.org>
+From:   Marc Zyngier <maz@kernel.org>
+To:     James Morse <james.morse@arm.com>
+Cc:     linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+        kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Borislav Petkov <bp@alien8.de>, H Peter Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Oliver Upton <oliver.upton@linux.dev>,
         Len Brown <lenb@kernel.org>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        Abel Vesa <abel.vesa@linaro.org>,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Tony Lindgren <tony@atomide.com>,
-        John Stultz <jstultz@google.com>,
-        Doug Anderson <dianders@chromium.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Maxim Kiselev <bigunclemax@gmail.com>,
-        Maxim Kochetkov <fido_max@inbox.ru>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Colin Foster <colin.foster@in-advantage.com>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Jean-Philippe Brucker <jpb@kernel.org>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        kernel-team@android.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v3 09/12] of: property: Simplify of_link_to_phandle()
-Message-ID: <Y+OliBAHiUPzbBPG@smile.fi.intel.com>
-References: <20230207014207.1678715-1-saravanak@google.com>
- <20230207014207.1678715-10-saravanak@google.com>
- <CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com>
- <CAGETcx8DaZqS7+47PhX4hQOfSk7AzPcTu=2i+4gAgXr6wyDNgg@mail.gmail.com>
- <CAGETcx_bkuFaLCiPrAWCPQz+w79ccDp6=9e881qmK=vx3hBMyg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGETcx_bkuFaLCiPrAWCPQz+w79ccDp6=9e881qmK=vx3hBMyg@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Rafael Wysocki <rafael@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>
+Subject: Re: [RFC PATCH 29/32] KVM: arm64: Pass hypercalls to userspace
+In-Reply-To: <878rh81rfa.wl-maz@kernel.org>
+References: <20230203135043.409192-1-james.morse@arm.com>
+        <20230203135043.409192-30-james.morse@arm.com>
+        <865ycg1kv2.wl-maz@kernel.org>
+        <7462738f-e837-cd99-f441-8e7c29d250cd@arm.com>
+        <878rh81rfa.wl-maz@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: james.morse@arm.com, linux-pm@vger.kernel.org, loongarch@lists.linux.dev, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org, tglx@linutronix.de, lpieralisi@kernel.org, mark.rutland@arm.com, sudeep.holla@arm.com, bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com, mingo@redhat.com, will@kernel.org, catalin.marinas@arm.com, chenhuacai@kernel.org, suzuki.poulose@arm.com, oliver.upton@linux.dev, lenb@kernel.org, rafael@kernel.org, kernel@xen0n.name, salil.mehta@huawei.com, linux@armlinux.org.uk, jean-philippe@linaro.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 07, 2023 at 11:31:57PM -0800, Saravana Kannan wrote:
-> On Tue, Feb 7, 2023 at 6:08 PM Saravana Kannan <saravanak@google.com> wrote:
-
-...
-
-> Another way to get this to work is to:
-> 1) unload pinctrl driver, unload spi driver.
-> 2) apply overlay
-> 3) reload pinctrl driver, reload spi driver.
+On Wed, 08 Feb 2023 08:40:09 +0000,
+Marc Zyngier <maz@kernel.org> wrote:
 > 
-> This is assuming unloading those 2 drivers doesn't crash your system.
+> On Tue, 07 Feb 2023 17:50:58 +0000,
+> James Morse <james.morse@arm.com> wrote:
+> > 
+> > Hi Marc,
+> > 
+> > On 05/02/2023 10:12, Marc Zyngier wrote:
+> > > On Fri, 03 Feb 2023 13:50:40 +0000,
+> > > James Morse <james.morse@arm.com> wrote:
+> > >>
+> > >> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > >>
+> > >> When capability KVM_CAP_ARM_HVC_TO_USER is available, userspace can
+> > >> request to handle all hypercalls that aren't handled by KVM. With the
+> > >> help of another capability, this will allow userspace to handle PSCI
+> > >> calls.
+> > 
+> > > On top of Oliver's ask not to make this a blanket "steal everything",
+> > > but instead to have an actual request for ranges of forwarded
+> > > hypercalls:
+> > > 
+> > >> Notes on this implementation:
+> > >>
+> > >> * A similar mechanism was proposed for SDEI some time ago [1]. This RFC
+> > >>   generalizes the idea to all hypercalls, since that was suggested on
+> > >>   the list [2, 3].
+> > >>
+> > >> * We're reusing kvm_run.hypercall. I copied x0-x5 into
+> > >>   kvm_run.hypercall.args[] to help userspace but I'm tempted to remove
+> > >>   this, because:
+> > >>   - Most user handlers will need to write results back into the
+> > >>     registers (x0-x3 for SMCCC), so if we keep this shortcut we should
+> > >>     go all the way and read them back on return to kernel.
+> > >>   - QEMU doesn't care about this shortcut, it pulls all vcpu regs before
+> > >>     handling the call.
+> > >>   - SMCCC uses x0-x16 for parameters.
+> > >>   x0 does contain the SMCCC function ID and may be useful for fast
+> > >>   dispatch, we could keep that plus the immediate number.
+> > >>
+> > >> * Add a flag in the kvm_run.hypercall telling whether this is HVC or
+> > >>   SMC?  Can be added later in those bottom longmode and pad fields.
+> > 
+> > > We definitely need this. A nested hypervisor can (and does) use SMCs
+> > > as the conduit.
+> > 
+> > Christoffer's comments last time round on this was that EL2 guests
+> > get SMC with this, and EL1 guests get HVC. The VMM could never get
+> > both...
+> 
+> I agree with the first half of the statement (EL2 guest using SMC),
+> but limiting EL1 guests to HVC is annoying. On systems that have a
+> secure side, it would make sense to be able to route the guest's SMC
+> calls to userspace and allow it to emulate/proxy/deny such calls.
 
-Just a side note.
+You also want to look at the TRNG firmware spec (aka DEN0098), which
+explicitly calls out for the use of SMC when EL2 and EL3 are
+implemented (see 1.5 "Invocation considerations").
 
-For ACPI case the ACPICA prevents appearing of the same device in the
-namespace, so the above is kinda enforced, that's why overlays work better
-there (but have a lot of limitations).
+Is it mad? Yes. But madness seems to be the direction of travel these
+days.
+
+	M.
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Without deviation from the norm, progress is not possible.
