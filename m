@@ -2,85 +2,147 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4075868EC3A
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 10:56:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1999E68EB68
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 10:30:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230011AbjBHJ4Y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Feb 2023 04:56:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44890 "EHLO
+        id S230184AbjBHJax (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Feb 2023 04:30:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229942AbjBHJ4W (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 04:56:22 -0500
-X-Greylist: delayed 89030 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 08 Feb 2023 01:56:21 PST
-Received: from mail.crawnon.pl (mail.crawnon.pl [51.68.198.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77BBA43917
-        for <linux-acpi@vger.kernel.org>; Wed,  8 Feb 2023 01:56:21 -0800 (PST)
-Received: by mail.crawnon.pl (Postfix, from userid 1002)
-        id 1DCECA335F; Tue,  7 Feb 2023 09:11:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=crawnon.pl; s=mail;
-        t=1675761133; bh=C5hX24svv/9/TME4wPCHfYjl17BCtmuxEd1i9B4zdYs=;
-        h=Date:From:To:Subject:From;
-        b=jHkehYj0hQ54gOIeX/lC0FIKcHXxHG0crnLZ+AZF0hFg6lBh/lOEZ+j+z9+mJZUQC
-         uRR7NHkHvjo3XLcQbHVKGPCNmLqIEr9CwH0m0Wua0Kz86Z4O2shlURKZ6gHDDJzSb3
-         uHcYzs+QaRWM3UiIakOYqdTx8wCEHflKBktfL3GcmuFLnIXhio2rfbVGamCk8uBlL2
-         HZaMgWqIP4iX4xDLjFgDG3XFkGnKrauVub9xciMZWexxjwl2B9lKXYx+ZJEml+mVr8
-         5gspBpVXj/Kt0BPkWs9kTwDdlSXp+RPtTUxhpExaBf+0r4j00tzIExxqfqHmTcNLfA
-         msUzY3+47GQCQ==
-Received: by mail.crawnon.pl for <linux-acpi@vger.kernel.org>; Tue,  7 Feb 2023 09:10:31 GMT
-Message-ID: <20230207074500-0.1.90.hvdz.0.131lkj6ehh@crawnon.pl>
-Date:   Tue,  7 Feb 2023 09:10:31 GMT
-From:   =?UTF-8?Q? "Miko=C5=82aj_Fiodorczyk" ?= 
-        <mikolaj.fiodorczyk@crawnon.pl>
-To:     <linux-acpi@vger.kernel.org>
-Subject: Fotowoltaika - nowe warunki
-X-Mailer: mail.crawnon.pl
+        with ESMTP id S230360AbjBHJag (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 04:30:36 -0500
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DC454708A;
+        Wed,  8 Feb 2023 01:29:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675848550; x=1707384550;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=eGv08XQ2pEAy7afPQ6nPqxR+KoFH0W15a828kZ+Zbxs=;
+  b=UtabKmguMqE+is5RT9Wu//UJdTgTBD6POvsIiuRhuhUJFwQO/sHSFBNk
+   lF0wDHuTPuMonph84qXXXHUXHNRWdUIESpywT0Qtqt6l3pzu0kw9su522
+   LVhwHCsa570kKVQQsX2EpgbC5mlOpaFMTOwBw3b9P333t1OEr6nhYFvfC
+   6BMjJt+Lsf0bvvaFylWcjcRjAC6MveFv5C36YBKYEMhnyqR7caXifvii+
+   yXZVzhv8nZuNO5zB2DMwZ5JcqjlJ7MYrpRQiEPrprxPsXYZR0IfFE9SU/
+   TPq61gTStaBi/ioH/KRbCRjSkHNT7zSJ8ViJ6cgFIUlt9tIM5LkzJuRgO
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="394345378"
+X-IronPort-AV: E=Sophos;i="5.97,280,1669104000"; 
+   d="scan'208";a="394345378"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 01:29:06 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="791136677"
+X-IronPort-AV: E=Sophos;i="5.97,280,1669104000"; 
+   d="scan'208";a="791136677"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga004.jf.intel.com with ESMTP; 08 Feb 2023 01:29:04 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id CD1551A6; Wed,  8 Feb 2023 11:29:42 +0200 (EET)
+Date:   Wed, 8 Feb 2023 11:29:42 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Amadeusz =?utf-8?B?U8WCYXdpxYRza2k=?= 
+        <amadeuszx.slawinski@linux.intel.com>
+Cc:     Raul Rangel <rrangel@chromium.org>, Wolfram Sang <wsa@kernel.org>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
+        "Limonciello, Mario" <mario.limonciello@amd.com>
+Subject: Re: [RFC] i2c: core: Do not enable wakeup by default
+Message-ID: <Y+Nrhq9l6CIPjL7Z@black.fi.intel.com>
+References: <20230207072540.27226-1-mika.westerberg@linux.intel.com>
+ <CAHQZ30Bzn1Lxy+Y2gCcFTmzWzwnxqUZAHAjSh67Pz=WweaKHkg@mail.gmail.com>
+ <Y+NH9pjbFfmijHF+@black.fi.intel.com>
+ <b429918f-fe63-2897-8ade-d17fe2e3646f@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_05,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-        SPF_PASS,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
-        *      blocklist
-        *      [URIs: crawnon.pl]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *      [51.68.198.42 listed in zen.spamhaus.org]
-        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
-        *      blocklist
-        *      [URIs: crawnon.pl]
-        * -0.5 BAYES_05 BODY: Bayes spam probability is 1 to 5%
-        *      [score: 0.0219]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-X-Spam-Level: *****
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b429918f-fe63-2897-8ade-d17fe2e3646f@linux.intel.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Hi,
 
-chcia=C5=82bym poinformowa=C4=87, i=C5=BC mog=C4=85 Pa=C5=84stwo uzyska=C4=
-=87 dofinansowanie na systemy fotowoltaiczne w ramach nowej edycji progra=
-mu M=C3=B3j Pr=C4=85d.
+On Wed, Feb 08, 2023 at 09:28:14AM +0100, Amadeusz Sławiński wrote:
+> On 2/8/2023 7:57 AM, Mika Westerberg wrote:
+> > Hi,
+> > 
+> > On Tue, Feb 07, 2023 at 09:33:55AM -0700, Raul Rangel wrote:
+> > > Sorry, resending in plain text mode.
+> > > 
+> > > On Tue, Feb 7, 2023 at 12:25 AM Mika Westerberg
+> > > <mika.westerberg@linux.intel.com> wrote:
+> > > > 
+> > > > After commit b38f2d5d9615 ("i2c: acpi: Use ACPI wake capability bit to
+> > > > set wake_irq") the I2C core has been setting I2C_CLIENT_WAKE for ACPI
+> > > > devices if they announce to be wake capable in their device description.
+> > > > However, on certain systems where audio codec has been connected through
+> > > > I2C this causes system suspend to wake up immediately because power to
+> > > > the codec is turned off which pulls the interrupt line "low" triggering
+> > > > wake up.
+> > > > 
+> > > > Possible reason why the interrupt is marked as wake capable is that some
+> > > > codecs apparently support "Wake on Voice" or similar functionality.
+> > > 
+> > > That's generally a bug in the ACPI tables. The wake bit shouldn't be
+> > > set if the power domain for the device is powered off on suspend. The
+> > > best thing is to fix the ACPI tables, but if you can't, then you can
+> > > set the ignore_wake flag for the device:
+> > > https://github.com/torvalds/linux/blob/master/drivers/gpio/gpiolib-acpi.c#L31.
+> > > If that works we can add a quirk for the device:
+> > > https://github.com/torvalds/linux/blob/master/drivers/gpio/gpiolib-acpi.c#L1633.
+> 
+> I've seen this one already and also tried to use it, but it didn't work.
+> Also when I was reading code I wasn't really convinced that it is linked to
+> i2c in any straightforward way. I mean i2c decides in different places that
+> it has wake support (I even added some prints to make sure ;). The code you
+> pointed out decides in https://github.com/torvalds/linux/blob/master/drivers/gpio/gpiolib-acpi.c#L387
+> but i2c code seems to decide in https://github.com/torvalds/linux/blob/master/drivers/i2c/i2c-core-acpi.c#L176
+> where it just checks if irq flags has wake_capable flag set. When I looked
+> at it previously I was pretty sure it comes straight from BIOS and passes
+> the quirk code you mentioned, still I may have missed something.
+> 
+> > 
+> > I think (hope) these systems are not yet available for public so there
+> > is a chance that the tables can still be fixed, without need to add any
+> > quirks.
+> > 
+> > @Amadeusz, @Cezary, if that's the case I suggest filing a bug against
+> > the BIOS.
+> > 
+> 
+> Well, I tried custom DSDT and had problems, but I just remembered that I
+> probably need to pass "revision+1" in file, so kernel sees it as a newer
+> version, let me try again. Is it enough to replace "ExclusiveAndWake" with
+> "Exclusive"?
 
-Program zapewnia 6000 z=C5=82 dofinansowania na instalacj=C4=99 paneli i =
-16 000 z=C5=82 na magazyn energii, ni=C5=BCsze cen pr=C4=85du i mo=C5=BCl=
-iwo=C5=9B=C4=87 odliczenia koszt=C3=B3w zwi=C4=85zanych z instalacj=C4=85=
- fotowoltaiki w ramach rozliczenia PIT (tzw. ulga termomodernizacyjna).
+Yes, I think that should be enough.
 
-Czy s=C4=85 Pa=C5=84stwo otwarci na wst=C4=99pn=C4=85 rozmow=C4=99 w tym =
-temacie?
+> 
+> > > > In any case, I don't think we should be enabling wakeup by default on
+> > > > all I2C devices that are wake capable. According to device_init_wakeup()
+> > > > documentation most devices should leave it disabled, with exceptions on
+> > > > devices such as keyboards, power buttons etc. Userspace can enable
+> > > > wakeup as needed by writing to device "power/wakeup" attribute.
+> > > 
+> > > Enabling wake by default was an unintended side-effect. I didn't catch
+> > > this when I wrote the patch :/ It's been exposing all the incorrect
+> > > ACPI configurations for better or worse. Mario pushed a patch up
+> > > earlier to disable thes Wake GPIOs when using S3:
+> > > https://github.com/torvalds/linux/commit/d63f11c02b8d3e54bdb65d8c309f73b7f474aec4.
+> > > Are you having problems with S3 or S0iX?
+> > 
+> > I think this case is S0ix.
+> 
+> We test both cases in our setups.
 
-
-Pozdrawiam,
-Miko=C5=82aj Fiodorczyk
+Thanks for the clarification!
