@@ -2,147 +2,174 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1999E68EB68
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 10:30:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3B7F68EC58
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 11:09:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230184AbjBHJax (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Feb 2023 04:30:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44696 "EHLO
+        id S230037AbjBHKJI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Feb 2023 05:09:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230360AbjBHJag (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 04:30:36 -0500
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DC454708A;
-        Wed,  8 Feb 2023 01:29:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675848550; x=1707384550;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=eGv08XQ2pEAy7afPQ6nPqxR+KoFH0W15a828kZ+Zbxs=;
-  b=UtabKmguMqE+is5RT9Wu//UJdTgTBD6POvsIiuRhuhUJFwQO/sHSFBNk
-   lF0wDHuTPuMonph84qXXXHUXHNRWdUIESpywT0Qtqt6l3pzu0kw9su522
-   LVhwHCsa570kKVQQsX2EpgbC5mlOpaFMTOwBw3b9P333t1OEr6nhYFvfC
-   6BMjJt+Lsf0bvvaFylWcjcRjAC6MveFv5C36YBKYEMhnyqR7caXifvii+
-   yXZVzhv8nZuNO5zB2DMwZ5JcqjlJ7MYrpRQiEPrprxPsXYZR0IfFE9SU/
-   TPq61gTStaBi/ioH/KRbCRjSkHNT7zSJ8ViJ6cgFIUlt9tIM5LkzJuRgO
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="394345378"
-X-IronPort-AV: E=Sophos;i="5.97,280,1669104000"; 
-   d="scan'208";a="394345378"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 01:29:06 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10614"; a="791136677"
-X-IronPort-AV: E=Sophos;i="5.97,280,1669104000"; 
-   d="scan'208";a="791136677"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga004.jf.intel.com with ESMTP; 08 Feb 2023 01:29:04 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-        id CD1551A6; Wed,  8 Feb 2023 11:29:42 +0200 (EET)
-Date:   Wed, 8 Feb 2023 11:29:42 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Amadeusz =?utf-8?B?U8WCYXdpxYRza2k=?= 
-        <amadeuszx.slawinski@linux.intel.com>
-Cc:     Raul Rangel <rrangel@chromium.org>, Wolfram Sang <wsa@kernel.org>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
-        "Limonciello, Mario" <mario.limonciello@amd.com>
-Subject: Re: [RFC] i2c: core: Do not enable wakeup by default
-Message-ID: <Y+Nrhq9l6CIPjL7Z@black.fi.intel.com>
-References: <20230207072540.27226-1-mika.westerberg@linux.intel.com>
- <CAHQZ30Bzn1Lxy+Y2gCcFTmzWzwnxqUZAHAjSh67Pz=WweaKHkg@mail.gmail.com>
- <Y+NH9pjbFfmijHF+@black.fi.intel.com>
- <b429918f-fe63-2897-8ade-d17fe2e3646f@linux.intel.com>
+        with ESMTP id S229706AbjBHKJG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 05:09:06 -0500
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FA7293F3;
+        Wed,  8 Feb 2023 02:09:05 -0800 (PST)
+Received: by mail-qt1-f170.google.com with SMTP id h24so20055725qta.12;
+        Wed, 08 Feb 2023 02:09:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Al90dbaVnMvp1zrarwIGYloHZEfuuu1TJgBG8XepFdE=;
+        b=ODARmn87I0+wpt7STPuOcAeBBIeRkkY/k2hP75Qd4JOmZxio7IfcvQdWW9foKUFJVB
+         Itxtl8SjNumukYOQra1ho0pXyAuPGXc5EKHwHc+/IhuF0oR4RLecpLvyVrWuLfjmme5e
+         iQyJCsh85x9mH1QlC1Z0F2UPzE1dqJu+5ERGhRy0Fw4mSMG7RTes46DPLOndJAV2dwwJ
+         iLtTO54zg1K1pmS9w8eufYCnb13IZ+aEnubUQSI9oHBh5suTCdUGjQXySiKv6kymRe1j
+         nJsuIY0jQtB560gkm8r4dc131LxAylv8/D0ctnEypNhKfyks8bA5xc6sTGpo4Dv6N0AF
+         ErXg==
+X-Gm-Message-State: AO0yUKXsgEY8F3V3EFBVd8aLTRVnoEIVTxJ/SJYscTfqx5MSiwGzhJbo
+        KqNXxWQiDHoWC2aPojWoUado5EWuuINBfS2S
+X-Google-Smtp-Source: AK7set+z2q+GKKBVkMO9i5mvqn6izSiK+EF5MtJjRSaQhddI6zFY8709SiO4krMyjD9TKY81rsaDkg==
+X-Received: by 2002:ac8:5fc1:0:b0:3b8:49a9:48c0 with SMTP id k1-20020ac85fc1000000b003b849a948c0mr11975248qta.13.1675850944267;
+        Wed, 08 Feb 2023 02:09:04 -0800 (PST)
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com. [209.85.219.169])
+        by smtp.gmail.com with ESMTPSA id x11-20020a05620a448b00b0072c01a3b6aasm11511525qkp.100.2023.02.08.02.09.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Feb 2023 02:09:03 -0800 (PST)
+Received: by mail-yb1-f169.google.com with SMTP id o187so21579816ybg.3;
+        Wed, 08 Feb 2023 02:09:02 -0800 (PST)
+X-Received: by 2002:a5b:508:0:b0:8a3:59a4:340e with SMTP id
+ o8-20020a5b0508000000b008a359a4340emr741320ybp.604.1675850942618; Wed, 08 Feb
+ 2023 02:09:02 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b429918f-fe63-2897-8ade-d17fe2e3646f@linux.intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230207142952.51844-1-andriy.shevchenko@linux.intel.com> <20230207142952.51844-9-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20230207142952.51844-9-andriy.shevchenko@linux.intel.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 8 Feb 2023 11:08:51 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVkhymFCys_LnqKtpXLBT6sKURbVqBnp2wDUc63nhxvSw@mail.gmail.com>
+Message-ID: <CAMuHMdVkhymFCys_LnqKtpXLBT6sKURbVqBnp2wDUc63nhxvSw@mail.gmail.com>
+Subject: Re: [PATCH v3 08/12] gpio: aggregator: Add missing header(s)
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Devarsh Thakkar <devarsht@ti.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        linux-gpio@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-doc-tw-discuss@lists.sourceforge.net,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-wpan@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-arch@vger.kernel.org,
+        devicetree@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>,
+        Jonathan Corbet <corbet@lwn.net>, Alex Shi <alexs@kernel.org>,
+        Yanteng Si <siyanteng@loongson.cn>,
+        Hu Haowen <src.res@email.cn>,
+        Russell King <linux@armlinux.org.uk>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Mun Yew Tham <mun.yew.tham@intel.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Alexander Aring <alex.aring@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>,
+        Li Yang <leoyang.li@nxp.com>, Lee Jones <lee@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi Andy,
 
-On Wed, Feb 08, 2023 at 09:28:14AM +0100, Amadeusz Sławiński wrote:
-> On 2/8/2023 7:57 AM, Mika Westerberg wrote:
-> > Hi,
-> > 
-> > On Tue, Feb 07, 2023 at 09:33:55AM -0700, Raul Rangel wrote:
-> > > Sorry, resending in plain text mode.
-> > > 
-> > > On Tue, Feb 7, 2023 at 12:25 AM Mika Westerberg
-> > > <mika.westerberg@linux.intel.com> wrote:
-> > > > 
-> > > > After commit b38f2d5d9615 ("i2c: acpi: Use ACPI wake capability bit to
-> > > > set wake_irq") the I2C core has been setting I2C_CLIENT_WAKE for ACPI
-> > > > devices if they announce to be wake capable in their device description.
-> > > > However, on certain systems where audio codec has been connected through
-> > > > I2C this causes system suspend to wake up immediately because power to
-> > > > the codec is turned off which pulls the interrupt line "low" triggering
-> > > > wake up.
-> > > > 
-> > > > Possible reason why the interrupt is marked as wake capable is that some
-> > > > codecs apparently support "Wake on Voice" or similar functionality.
-> > > 
-> > > That's generally a bug in the ACPI tables. The wake bit shouldn't be
-> > > set if the power domain for the device is powered off on suspend. The
-> > > best thing is to fix the ACPI tables, but if you can't, then you can
-> > > set the ignore_wake flag for the device:
-> > > https://github.com/torvalds/linux/blob/master/drivers/gpio/gpiolib-acpi.c#L31.
-> > > If that works we can add a quirk for the device:
-> > > https://github.com/torvalds/linux/blob/master/drivers/gpio/gpiolib-acpi.c#L1633.
-> 
-> I've seen this one already and also tried to use it, but it didn't work.
-> Also when I was reading code I wasn't really convinced that it is linked to
-> i2c in any straightforward way. I mean i2c decides in different places that
-> it has wake support (I even added some prints to make sure ;). The code you
-> pointed out decides in https://github.com/torvalds/linux/blob/master/drivers/gpio/gpiolib-acpi.c#L387
-> but i2c code seems to decide in https://github.com/torvalds/linux/blob/master/drivers/i2c/i2c-core-acpi.c#L176
-> where it just checks if irq flags has wake_capable flag set. When I looked
-> at it previously I was pretty sure it comes straight from BIOS and passes
-> the quirk code you mentioned, still I may have missed something.
-> 
-> > 
-> > I think (hope) these systems are not yet available for public so there
-> > is a chance that the tables can still be fixed, without need to add any
-> > quirks.
-> > 
-> > @Amadeusz, @Cezary, if that's the case I suggest filing a bug against
-> > the BIOS.
-> > 
-> 
-> Well, I tried custom DSDT and had problems, but I just remembered that I
-> probably need to pass "revision+1" in file, so kernel sees it as a newer
-> version, let me try again. Is it enough to replace "ExclusiveAndWake" with
-> "Exclusive"?
+Thanks for your patch!
 
-Yes, I think that should be enough.
+On Tue, Feb 7, 2023 at 3:29 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+> Do not imply that some of the generic headers may be always included.
+> Instead, include explicitly what we are direct user of.
 
-> 
-> > > > In any case, I don't think we should be enabling wakeup by default on
-> > > > all I2C devices that are wake capable. According to device_init_wakeup()
-> > > > documentation most devices should leave it disabled, with exceptions on
-> > > > devices such as keyboards, power buttons etc. Userspace can enable
-> > > > wakeup as needed by writing to device "power/wakeup" attribute.
-> > > 
-> > > Enabling wake by default was an unintended side-effect. I didn't catch
-> > > this when I wrote the patch :/ It's been exposing all the incorrect
-> > > ACPI configurations for better or worse. Mario pushed a patch up
-> > > earlier to disable thes Wake GPIOs when using S3:
-> > > https://github.com/torvalds/linux/commit/d63f11c02b8d3e54bdb65d8c309f73b7f474aec4.
-> > > Are you having problems with S3 or S0iX?
-> > 
-> > I think this case is S0ix.
-> 
-> We test both cases in our setups.
+That applies only to the addition of #include <linux/slab.h>...
+Please also describe the other changes.
 
-Thanks for the clarification!
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/gpio/gpio-aggregator.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/gpio/gpio-aggregator.c b/drivers/gpio/gpio-aggregator.c
+> index 6d17d262ad91..20a686f12df7 100644
+> --- a/drivers/gpio/gpio-aggregator.c
+> +++ b/drivers/gpio/gpio-aggregator.c
+> @@ -10,19 +10,20 @@
+>  #include <linux/bitmap.h>
+>  #include <linux/bitops.h>
+>  #include <linux/ctype.h>
+> -#include <linux/gpio.h>
+> -#include <linux/gpio/consumer.h>
+> -#include <linux/gpio/driver.h>
+> -#include <linux/gpio/machine.h>
+>  #include <linux/idr.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+>  #include <linux/mutex.h>
+>  #include <linux/overflow.h>
+>  #include <linux/platform_device.h>
+> +#include <linux/slab.h>
+>  #include <linux/spinlock.h>
+>  #include <linux/string.h>
+>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/gpio/driver.h>
+> +#include <linux/gpio/machine.h>
+> +
+>  #define AGGREGATOR_MAX_GPIOS 512
+
+For the actual changes:
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
