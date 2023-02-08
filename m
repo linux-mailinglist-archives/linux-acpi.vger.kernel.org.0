@@ -2,236 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 818E368E5D4
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 03:08:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80FBD68E618
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 03:32:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230011AbjBHCIj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Feb 2023 21:08:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38256 "EHLO
+        id S229527AbjBHCcL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Feb 2023 21:32:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229596AbjBHCIi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Feb 2023 21:08:38 -0500
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6A0830EAB
-        for <linux-acpi@vger.kernel.org>; Tue,  7 Feb 2023 18:08:37 -0800 (PST)
-Received: by mail-pg1-x52c.google.com with SMTP id q9so11732594pgq.5
-        for <linux-acpi@vger.kernel.org>; Tue, 07 Feb 2023 18:08:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=IvovDvydwtbWeac/PH7UfSyXwAMSyNiyFbqoOtJrtSo=;
-        b=WWQxHI+zVjB3sxN2VS2B69gLrKIkQgRtwbALikURfje+mgHB872p8xbeWLvH+p4IFZ
-         X8+gzwTrp4f8Iqv+GOVcMboqkGmpV6XCzVLsKb9tI8vHAtFYOS65xE0nK8FBo0FvHUS5
-         kLCUDHNKjZU2PG9fwT6xT2AwoqJ15mXjo0mYl13Pu+SA1WyKavCbdHx6PD5lqKGJ3wgC
-         7D6vVEqjeNTVTG6hQTP9QF8j56x8iWlfej2t9hwMElA86EjAiIpjOpRcB/lD6PasKIrh
-         kmZBeQKHwLAIUuLiEJoB0YPmfi5gj6Y7jc62lRAFUchW6NHbfHNbRvovubDoqex0T+1v
-         lH2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IvovDvydwtbWeac/PH7UfSyXwAMSyNiyFbqoOtJrtSo=;
-        b=XbNFHCptsBaeQuh4SQ0V1dIPzE/JZ9Ea6+jM7ykBMFJZUVB8+Gkiia2TjCQJr8Huxd
-         WIQJCnnlALIPaH/vTb6UhbUscnsNSsfXmp+M24/optwvlVMCwbkuMPSrHvuQE1H/f8Yt
-         dg7hd/RsQAmf1QbfbG94LoiIQ42I7nE4yfxNnW6ao87PVs7zNzDvZyTlSqVyeQjbs57W
-         DNZqguFekB2W/JpKCGXY2KoTLfsi2ux3VEo2FqbZ9F50pp60LUNtCZ1uxUJaJpXcahPd
-         lj2WZs/01nQfv9k1xVM3cBdtGMLLg2G9uhn/OnAfCre9m6bWBIn6CZsgFYgwFsmydSgW
-         1nUQ==
-X-Gm-Message-State: AO0yUKXcxzw6qQYcobya5P6lQnj9b6nazhd7YXysz00mKprg1gx+7egR
-        gtIXn/U3Fbl91gnQ+fl9Uy7qC0I8bnjCZgNEO8xQZA==
-X-Google-Smtp-Source: AK7set/Bb7BMdpe4sUnoHifR4lQMHdn9y6L/o7MBzyuPCkiBgdepa4Ke551WLY6JkSSLbKcR1vDbHA3Fx/XWThsP5c0=
-X-Received: by 2002:a63:7f1d:0:b0:4de:7028:d2fc with SMTP id
- a29-20020a637f1d000000b004de7028d2fcmr1133917pgd.122.1675822116756; Tue, 07
- Feb 2023 18:08:36 -0800 (PST)
+        with ESMTP id S230248AbjBHCcJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Feb 2023 21:32:09 -0500
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C536A199EF;
+        Tue,  7 Feb 2023 18:32:01 -0800 (PST)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R911e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0Vb9eAsn_1675823518;
+Received: from localhost(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0Vb9eAsn_1675823518)
+          by smtp.aliyun-inc.com;
+          Wed, 08 Feb 2023 10:31:59 +0800
+From:   Yang Li <yang.lee@linux.alibaba.com>
+To:     rafael@kernel.org
+Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yang Li <yang.lee@linux.alibaba.com>,
+        Abaci Robot <abaci@linux.alibaba.com>
+Subject: [PATCH -next] ACPI: CPPC: Fix some kernel-doc comments
+Date:   Wed,  8 Feb 2023 10:31:58 +0800
+Message-Id: <20230208023158.69934-1-yang.lee@linux.alibaba.com>
+X-Mailer: git-send-email 2.20.1.7.g153144c
 MIME-Version: 1.0
-References: <20230207014207.1678715-1-saravanak@google.com>
- <20230207014207.1678715-10-saravanak@google.com> <CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com>
-In-Reply-To: <CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Tue, 7 Feb 2023 18:08:00 -0800
-Message-ID: <CAGETcx8DaZqS7+47PhX4hQOfSk7AzPcTu=2i+4gAgXr6wyDNgg@mail.gmail.com>
-Subject: Re: [PATCH v3 09/12] of: property: Simplify of_link_to_phandle()
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        Abel Vesa <abel.vesa@linaro.org>,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Tony Lindgren <tony@atomide.com>,
-        John Stultz <jstultz@google.com>,
-        Doug Anderson <dianders@chromium.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Maxim Kiselev <bigunclemax@gmail.com>,
-        Maxim Kochetkov <fido_max@inbox.ru>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Colin Foster <colin.foster@in-advantage.com>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Jean-Philippe Brucker <jpb@kernel.org>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        kernel-team@android.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 7, 2023 at 12:57 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->
-> Hi Saravana,
->
-> On Tue, Feb 7, 2023 at 2:42 AM Saravana Kannan <saravanak@google.com> wrote:
-> > The driver core now:
-> > - Has the parent device of a supplier pick up the consumers if the
-> >   supplier never has a device created for it.
-> > - Ignores a supplier if the supplier has no parent device and will never
-> >   be probed by a driver
-> >
-> > And already prevents creating a device link with the consumer as a
-> > supplier of a parent.
-> >
-> > So, we no longer need to find the "compatible" node of the supplier or
-> > do any other checks in of_link_to_phandle(). We simply need to make sure
-> > that the supplier is available in DT.
-> >
-> > Signed-off-by: Saravana Kannan <saravanak@google.com>
->
-> Thanks for your patch!
->
-> This patch introduces a regression when dynamically loading DT overlays.
-> Unfortunately this happens when using the out-of-tree OF configfs,
-> which is not supported upstream.  Still, there may be (obscure)
-> in-tree users.
->
-> When loading a DT overlay[1] to enable an SPI controller, and
-> instantiate a connected SPI EEPROM:
->
->     $ overlay add 25lc040
->     OF: overlay: WARNING: memory leak will occur if overlay removed,
-> property: /keys/status
->     OF: overlay: WARNING: memory leak will occur if overlay removed,
-> property: /soc/spi@e6e90000/pinctrl-0
->     OF: overlay: WARNING: memory leak will occur if overlay removed,
-> property: /soc/spi@e6e90000/pinctrl-names
->     OF: overlay: WARNING: memory leak will occur if overlay removed,
-> property: /soc/spi@e6e90000/cs-gpios
->     OF: overlay: WARNING: memory leak will occur if overlay removed,
-> property: /soc/spi@e6e90000/status
->     OF: overlay: WARNING: memory leak will occur if overlay removed,
-> property: /__symbols__/msiof0_pins
->
-> The SPI controller and the SPI EEPROM are no longer instantiated.
->
->     # cat /sys/kernel/debug/devices_deferred
->     e6e90000.spi    platform: wait for supplier msiof0
->
-> Let's remove the overlay again:
->
->     $ overlay rm 25lc040
->     input: keys as /devices/platform/keys/input/input1
->
-> And retry:
->
->     $ overlay add 25lc040
->     OF: overlay: WARNING: memory leak will occur if overlay removed,
-> property: /keys/status
->     OF: overlay: WARNING: memory leak will occur if overlay removed,
-> property: /soc/spi@e6e90000/pinctrl-0
->     OF: overlay: WARNING: memory leak will occur if overlay removed,
-> property: /soc/spi@e6e90000/pinctrl-names
->     OF: overlay: WARNING: memory leak will occur if overlay removed,
-> property: /soc/spi@e6e90000/cs-gpios
->     OF: overlay: WARNING: memory leak will occur if overlay removed,
-> property: /soc/spi@e6e90000/status
->     OF: overlay: WARNING: memory leak will occur if overlay removed,
-> property: /__symbols__/msiof0_pins
->     spi_sh_msiof e6e90000.spi: DMA available
->     spi_sh_msiof e6e90000.spi: registered master spi0
->     spi spi0.0: setup mode 0, 8 bits/w, 100000 Hz max --> 0
->     at25 spi0.0: 512 Byte at25 eeprom, pagesize 16
->     spi_sh_msiof e6e90000.spi: registered child spi0.0
->
-> Now it succeeds, and the SPI EEPROM is available, and works.
->
-> Without this patch, or with this patch reverted after applying the
-> full series:
->
->     $ overlay add 25lc040
->     OF: overlay: WARNING: memory leak will occur if overlay removed,
-> property: /keys/status
->     OF: overlay: WARNING: memory leak will occur if overlay removed,
-> property: /soc/spi@e6e90000/pinctrl-0
->     OF: overlay: WARNING: memory leak will occur if overlay removed,
-> property: /soc/spi@e6e90000/pinctrl-names
->     OF: overlay: WARNING: memory leak will occur if overlay removed,
-> property: /soc/spi@e6e90000/cs-gpios
->     OF: overlay: WARNING: memory leak will occur if overlay removed,
-> property: /soc/spi@e6e90000/status
->     OF: overlay: WARNING: memory leak will occur if overlay removed,
-> property: /__symbols__/msiof0_pins
->     OF: Not linking spi@e6e90000 to interrupt-controller@f1010000 - No
-> struct device
->     spi_sh_msiof e6e90000.spi: DMA available
->     spi_sh_msiof e6e90000.spi: registered master spi0
->     spi spi0.0: setup mode 0, 8 bits/w, 100000 Hz max --> 0
->     at25 spi0.0: 444 bps (2 bytes in 9 ticks)
->     at25 spi0.0: 512 Byte at25 eeprom, pagesize 16
->     spi_sh_msiof e6e90000.spi: registered child spi0.0
->
-> The SPI EEPROM is available on the first try after boot.
+Add the description of @pcc_ss_id in pcc_data_alloc().
+Add the description of @cpu_num in cppc_get_transition_latency().
 
-Sigh... I spent way too long trying to figure out if I caused a memory
-leak. I should have scrolled down further! Doesn't look like that part
-is related to anything I did.
+clear the below warnings:
+drivers/acpi/cppc_acpi.c:607: warning: Function parameter or member 'pcc_ss_id' not described in 'pcc_data_alloc'
+drivers/acpi/cppc_acpi.c:1616: warning: Function parameter or member 'cpu_num' not described in 'cppc_get_transition_latency'
 
-There are some flags set to avoid re-parsing fwnodes multiple times.
-My guess is that the issue you are seeing has to do with how many of
-the in memory structs are reused vs not when an overlay is
-applied/removed and some of these flags might not be getting cleared
-and this is having a bigger impact with this patch (because the fwnode
-links are no longer anchored on "compatible" nodes).
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=3983
+Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+---
+ drivers/acpi/cppc_acpi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-With/without this patch (let's keep the series) can you look at how
-the following things change between each step you do above (add,
-remove, retry):
-1) List of directories under /sys/class/devlink
-2) Enable the debug logs inside __fwnode_link_add(),
-__fwnode_link_del(), device_link_add()
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 02d83c807271..bc7b304944a7 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -596,6 +596,9 @@ bool __weak cpc_supported_by_cpu(void)
+ /**
+  * pcc_data_alloc() - Allocate the pcc_data memory for pcc subspace
+  *
++ * @pcc_ss_id: The PCC Subspace index as parsed in the PCC client
++ *	       ACPI package.
++ *
+  * Check and allocate the cppc_pcc_data memory.
+  * In some processor configurations it is possible that same subspace
+  * is shared between multiple CPUs. This is seen especially in CPUs
+@@ -1604,6 +1607,8 @@ EXPORT_SYMBOL_GPL(cppc_set_perf);
+ /**
+  * cppc_get_transition_latency - returns frequency transition latency in ns
+  *
++ * @cpu_num: the number of the specified cpu for per_cpu()
++ *
+  * ACPI CPPC does not explicitly specify how a platform can specify the
+  * transition latency for performance change requests. The closest we have
+  * is the timing information from the PCCT tables which provides the info
+-- 
+2.20.1.7.g153144c
 
-My guess is that the final solution would entail clearing
-FWNODE_FLAG_LINKS_ADDED for some fwnodes.
-
-Thanks,
-Saravana
