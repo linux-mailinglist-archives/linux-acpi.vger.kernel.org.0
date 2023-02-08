@@ -2,159 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29E9168F87C
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 20:59:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D81E68F8C8
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 21:26:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231158AbjBHT7J (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Feb 2023 14:59:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57824 "EHLO
+        id S229962AbjBHU0M (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Feb 2023 15:26:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230507AbjBHT7I (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 14:59:08 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C6E837B77;
-        Wed,  8 Feb 2023 11:59:07 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2DE5E617C5;
-        Wed,  8 Feb 2023 19:59:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09504C433EF;
-        Wed,  8 Feb 2023 19:59:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675886346;
-        bh=0L/axqFrTla1CjyJcAYNEtPZxT9IS5v2UY5FZZEsCkQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=AFqrMlQmq/8t32iG+XK1RwRmiNQkaDdASAMhJ5U2dk/ihWKkwE4y7Bjji7Hg96vyU
-         WAZZKauygf7/Uyzr2hM76BT/f/d3qklXvwqLPiTW0awBdxYYkyirs561FZmYIsljS+
-         /7/zSLfvTStUgDEIzQ2biuTb0GlGVrU4WAp6C6ROgv97vMdpUgfC+nNbur0eBEA7rD
-         iLIjN+lSEOLmNSWuRRnOdtl7SH7zLEwqzJpQ5VnVaaN+PW9JobJDXunpOEGP53oDF7
-         OkZEIHrssruZ/bBCJ0Kz253RcOWxNqKNOXSTjss1a1ZeePJ+s37UxXWbVZIIxvh/jf
-         /XMOZ8E+BF8xA==
-Date:   Wed, 8 Feb 2023 19:59:00 +0000
-From:   Conor Dooley <conor@kernel.org>
-To:     Sunil V L <sunilvl@ventanamicro.com>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        Anup Patel <apatel@ventanamicro.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Atish Patra <atishp@rivosinc.com>,
-        Robert Moore <robert.moore@intel.com>,
-        acpica-devel@lists.linuxfoundation.org
-Subject: Re: [PATCH 02/24] ACPICA: MADT: Add RISC-V INTC interrupt controller
-Message-ID: <Y+P/BDbP68vNTOao@spud>
-References: <20230130182225.2471414-1-sunilvl@ventanamicro.com>
- <20230130182225.2471414-3-sunilvl@ventanamicro.com>
+        with ESMTP id S229745AbjBHU0L (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 15:26:11 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5486639CFC;
+        Wed,  8 Feb 2023 12:26:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675887969; x=1707423969;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=T1S/OSskZmAwmIGSRQH2mggp3Mf/j4uP40UTYr4GaC4=;
+  b=Q/chbdhGVj7m5Qq0kuT8q3qGYrAQ36e65KSXjwJpZCszG8lb2Q0qDYgX
+   9jcUl9MOzriegIJdff54kgqtn92V2NHmWNGxy9BoEQi4kavRrK0CmtvRd
+   s9cDGOr2nYbW20iT5JqBuE2Y6l4O/J0xeiIzjQPuOu9is3G/ubJDiH4lh
+   /IK0Jt5ukn8hQlH7oGH/TuHN4n5x1zRXQr0T3Dm5x85GOC+guPUDKSrKB
+   11+yr/pBlYoDpeAq1KwLsUIPdVKI82zFkoESaWKg1TQrUwwJqDFPiDatn
+   QA8bbZIsnFqnn+X/2LhkpSs/PKWY45vPwxVgq1kRlrf+sQXYrLLwgk1Lm
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="329942483"
+X-IronPort-AV: E=Sophos;i="5.97,281,1669104000"; 
+   d="scan'208";a="329942483"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 12:26:09 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="776182603"
+X-IronPort-AV: E=Sophos;i="5.97,281,1669104000"; 
+   d="scan'208";a="776182603"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 12:26:07 -0800
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+        by kekkonen.fi.intel.com (Postfix) with SMTP id D8824120D20;
+        Wed,  8 Feb 2023 22:26:04 +0200 (EET)
+Date:   Wed, 8 Feb 2023 22:26:04 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
+        rafael@kernel.org, heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH v4 2/8] ACPI: property: Parse _CRS CSI-2 descriptor
+Message-ID: <Y+QFXGDUXEB4ablF@kekkonen.localdomain>
+References: <20230208152807.3064242-1-sakari.ailus@linux.intel.com>
+ <20230208152807.3064242-3-sakari.ailus@linux.intel.com>
+ <Y+PROE+7o8yuoGB6@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="C3CfOFtGyHgf+Q8p"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230130182225.2471414-3-sunilvl@ventanamicro.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <Y+PROE+7o8yuoGB6@smile.fi.intel.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi Andy,
 
---C3CfOFtGyHgf+Q8p
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks for the review.
 
-On Mon, Jan 30, 2023 at 11:52:03PM +0530, Sunil V L wrote:
-> The ECR to add RISC-V INTC interrupt controller is approved by
-> the UEFI forum and will be availabl in the next revision of
+On Wed, Feb 08, 2023 at 06:43:36PM +0200, Andy Shevchenko wrote:
+> On Wed, Feb 08, 2023 at 05:28:01PM +0200, Sakari Ailus wrote:
+> > Parse newly added ACPI _CRS CSI-2 descriptor for CSI-2 and camera
+> > configuration. For now, only figure out where the descriptor is present in
+> > order to allow adding information from it to related devices.
+> 
+> Nit-picks below that may be ignored. Up to you, guys.
+> 
+> ...
+> 
+> > +#define NO_CSI2_PORT (~1U)
+> 
+> A bit unclear why this value. Is it bitfield? Then GENMASK() would be better.
+> Is it a plain value with a type limit? Then (UINT_MAX - 1) probably the best.
 
-nit: available
+This value is used to signify that a port node isn't yet allocated for a
+CSI-2 port. I can change this to UINT_MAX - 1.
 
-> the ACPI specification.
->=20
-> This patch is not yet merged in ACPICA but a PR is raised.
->=20
-> ACPICA PR: https://github.com/acpica/acpica/pull/804
+> 
+> ...
+> 
+> > +	ads->nodeptrs = (void *)(ads->nodes +
+> > +				 ports_count * 2 + 1);
+> 
+> Now this fits one line.
 
-I had a quick check with git grep, and as this doesn't appear to be a
-regular pattern in the history, so could you please make this a regular
-Link: trailer?
+Yes.
 
-Cheers,
-Conor.
+> 
+> ...
+> 
+> > +	handle_refs = kcalloc(csi2_all.handle_count + 1, sizeof(*handle_refs),
+> > +			      GFP_KERNEL);
+> > +	if (!handle_refs) {
+> > +		acpi_handle_debug(handle, "no memory for %zu handle refs\n",
+> > +				  csi2_all.handle_count + 1);
+> > +		return;
+> > +	}
+> 
+> In a code above you used "1 + foo" approach if I'm not mistaken. Why here is
+> the difference?
 
-> Reference: Mantis ID: 2348
->=20
-> Cc: Robert Moore <robert.moore@intel.com>
-> Cc: acpica-devel@lists.linuxfoundation.org
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> ---
->  include/acpi/actbl2.h | 21 ++++++++++++++++++++-
->  1 file changed, 20 insertions(+), 1 deletion(-)
->=20
-> diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
-> index b2973dbe37ee..c432fd15db65 100644
-> --- a/include/acpi/actbl2.h
-> +++ b/include/acpi/actbl2.h
-> @@ -891,7 +891,8 @@ enum acpi_madt_type {
->  	ACPI_MADT_TYPE_MSI_PIC =3D 21,
->  	ACPI_MADT_TYPE_BIO_PIC =3D 22,
->  	ACPI_MADT_TYPE_LPC_PIC =3D 23,
-> -	ACPI_MADT_TYPE_RESERVED =3D 24,	/* 24 to 0x7F are reserved */
-> +	ACPI_MADT_TYPE_RINTC =3D 24,
-> +	ACPI_MADT_TYPE_RESERVED =3D 25,	/* 25 to 0x7F are reserved */
->  	ACPI_MADT_TYPE_OEM_RESERVED =3D 0x80	/* 0x80 to 0xFF are reserved for O=
-EM use */
->  };
-> =20
-> @@ -1250,6 +1251,24 @@ enum acpi_madt_lpc_pic_version {
->  	ACPI_MADT_LPC_PIC_VERSION_RESERVED =3D 2	/* 2 and greater are reserved =
-*/
->  };
-> =20
-> +/* 24: RISC-V INTC */
-> +struct acpi_madt_rintc {
-> +	struct acpi_subtable_header header;
-> +	u8 version;
-> +	u8 reserved;
-> +	u32 flags;
-> +	u64 hart_id;
-> +	u32 uid;		/* ACPI processor UID */
-> +};
-> +
-> +/* Values for RISC-V INTC Version field above */
-> +
-> +enum acpi_madt_rintc_version {
-> +	ACPI_MADT_RINTC_VERSION_NONE =3D 0,
-> +	ACPI_MADT_RINTC_VERSION_V1 =3D 1,
-> +	ACPI_MADT_RINTC_VERSION_RESERVED =3D 2	/* 2 and greater are reserved */
-> +};
-> +
->  /* 80: OEM data */
-> =20
->  struct acpi_madt_oem_data {
-> --=20
-> 2.38.0
->=20
+The last entry is a guardian (NULL handle). 1 + number of lanes is used
+where the first lane is the clock lane.
 
---C3CfOFtGyHgf+Q8p
-Content-Type: application/pgp-signature; name="signature.asc"
+> 
+> ...
+> 
+> In some code comments which I removed before remarking you forgot the
+> grammatical period.
 
------BEGIN PGP SIGNATURE-----
+Some comments aren't proper sentences. I'll see which could be improved by
+adding a period.
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCY+P/BAAKCRB4tDGHoIJi
-0oxgAP9WC8kaZpNByCNLjTup93CdqUIB1TlRT73uQ3yz9WixvQD/Rvbx0KtjGQdl
-xUQvPl6J6xLQx7FkEo52jziNk7hw9wU=
-=J+2F
------END PGP SIGNATURE-----
+-- 
+Regards,
 
---C3CfOFtGyHgf+Q8p--
+Sakari Ailus
