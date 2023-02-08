@@ -2,170 +2,315 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA1E868F970
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 22:05:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9619B68F9A8
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Feb 2023 22:27:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231911AbjBHVFO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Feb 2023 16:05:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40138 "EHLO
+        id S231389AbjBHV1K (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Feb 2023 16:27:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232357AbjBHVEq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 16:04:46 -0500
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 690C9125AB;
-        Wed,  8 Feb 2023 13:04:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675890259; x=1707426259;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FZG9PLpoY1qYgYnRoz88BAvdkbKCEGF3ZT8rJwxcgmM=;
-  b=IHMKQX6I52i1SYeYDHr4jrs3gIuJdgjUh2emylHyWjXuAgWO0tKcU037
-   +Ba/dukktNYTMGEAnVdzzB2NS8GMjtl3CT1evCZkN3bm3/MQcz+g86jfn
-   DI3ShKEm+KZq9bKRANpaDoh+1F/nxfC6GdBjbRy+4Eun+I8QSjhmS5bqx
-   KIM5WYe8viNpsgwL37EulYTCSKP5xUyiKk26bpTgIt0vXF1GmOTeGR0JO
-   r/mEK0x21cNZ1xGTD3zddwdI85kV92yEY5Srm6fRlnhzsWmxk8p2yaO5t
-   HRguKNf3CGlK/4DvnDT9EfTLVYEoSqjIcv0joQYkz7WJ++SKnmQ/lFbzS
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="332048278"
-X-IronPort-AV: E=Sophos;i="5.97,281,1669104000"; 
-   d="scan'208";a="332048278"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 13:04:17 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="996284230"
-X-IronPort-AV: E=Sophos;i="5.97,281,1669104000"; 
-   d="scan'208";a="996284230"
-Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 08 Feb 2023 13:04:15 -0800
-Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pPrby-0004eM-0b;
-        Wed, 08 Feb 2023 21:04:14 +0000
-Date:   Thu, 9 Feb 2023 05:04:11 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev, linux-media@vger.kernel.org,
-        rafael@kernel.org, andriy.shevchenko@linux.intel.com,
-        heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH v4 2/8] ACPI: property: Parse _CRS CSI-2 descriptor
-Message-ID: <202302090459.kIM95vle-lkp@intel.com>
-References: <20230208152807.3064242-3-sakari.ailus@linux.intel.com>
+        with ESMTP id S229953AbjBHV1J (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 16:27:09 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E06521C7DB;
+        Wed,  8 Feb 2023 13:27:05 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 512D7B81F05;
+        Wed,  8 Feb 2023 21:27:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98E0C433D2;
+        Wed,  8 Feb 2023 21:26:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675891622;
+        bh=oI7y/FZhevEdPWTxEZ3gltCzaLhYnX3pa+zhqi7lojU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=kvUV+QOoPcofq6JRXv3o5N3Ym1RXQNN1T/FLKfz+9De+6hKU2UZ4BfURPanxoURAh
+         /8XMjpDLGHJyG0c5gxbYCq4iuvzcIaV20GeASVA5vIFaVvSjC+8lXNov9n2jAym2Um
+         KyE2+KGwAAwstbZdDTlLMcKdwe19eSR7BmYHRb3vILrvk6ZGu0KuzwunctXPPNeL52
+         IRhkHPJ5vkDwcyjfrCZSBQmdfn030NM4GOC6VntaI415hL7yuY3SbDar9fyzg6iWzM
+         J+0wxmO0HOc41xm69u+6BC9Y1hPDve7nu6UQ695jU2E9rYVr1zi7jX4kp5fFYdjlIN
+         W/Asq6vZDNo/g==
+Date:   Wed, 8 Feb 2023 21:26:57 +0000
+From:   Conor Dooley <conor@kernel.org>
+To:     Sunil V L <sunilvl@ventanamicro.com>
+Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        Anup Patel <apatel@ventanamicro.com>,
+        Andrew Jones <ajones@ventanamicro.com>,
+        Atish Patra <atishp@rivosinc.com>
+Subject: Re: [PATCH 06/24] RISC-V: ACPI: Add PCI functions to build ACPI core
+Message-ID: <Y+QToXO2kYQ2ipdz@spud>
+References: <20230130182225.2471414-1-sunilvl@ventanamicro.com>
+ <20230130182225.2471414-7-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="pAMvRf+LG3lTC78u"
 Content-Disposition: inline
-In-Reply-To: <20230208152807.3064242-3-sakari.ailus@linux.intel.com>
+In-Reply-To: <20230130182225.2471414-7-sunilvl@ventanamicro.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Sakari,
 
-I love your patch! Perhaps something to improve:
+--pAMvRf+LG3lTC78u
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[auto build test WARNING on rafael-pm/linux-next]
-[also build test WARNING on sailus-media-tree/streams linus/master v6.2-rc7 next-20230208]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+On Mon, Jan 30, 2023 at 11:52:07PM +0530, Sunil V L wrote:
+> When CONFIG_PCI is enabled, ACPI core expects few arch
+> functions related to PCI. Add those functions so that
+> ACPI core gets build. These are levraged from arm64.
+>=20
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> ---
+>  arch/riscv/kernel/Makefile |   1 +
+>  arch/riscv/kernel/pci.c    | 173 +++++++++++++++++++++++++++++++++++++
+>  2 files changed, 174 insertions(+)
+>  create mode 100644 arch/riscv/kernel/pci.c
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Sakari-Ailus/ACPI-property-Parse-data-node-string-references-in-properties/20230208-233112
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20230208152807.3064242-3-sakari.ailus%40linux.intel.com
-patch subject: [PATCH v4 2/8] ACPI: property: Parse _CRS CSI-2 descriptor
-config: x86_64-rhel-8.3-syz (https://download.01.org/0day-ci/archive/20230209/202302090459.kIM95vle-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-8) 11.3.0
-reproduce (this is a W=1 build):
-        # https://github.com/intel-lab-lkp/linux/commit/d78f47f2d5051c50bdcea131da1779ec0fc8e266
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Sakari-Ailus/ACPI-property-Parse-data-node-string-references-in-properties/20230208-233112
-        git checkout d78f47f2d5051c50bdcea131da1779ec0fc8e266
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        make W=1 O=build_dir ARCH=x86_64 olddefconfig
-        make W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/acpi/
+> diff --git a/arch/riscv/kernel/pci.c b/arch/riscv/kernel/pci.c
+> new file mode 100644
+> index 000000000000..3388af3a67a0
+> --- /dev/null
+> +++ b/arch/riscv/kernel/pci.c
+> @@ -0,0 +1,173 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Code borrowed from ARM64
+> + *
+> + * Copyright (C) 2003 Anton Blanchard <anton@au.ibm.com>, IBM
+> + * Copyright (C) 2014 ARM Ltd.
+> + * Copyright (C) 2022-2023 Ventana Micro System Inc.
+> + */
+> +
+> +#include <linux/acpi.h>
+> +#include <linux/init.h>
+> +#include <linux/io.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mm.h>
+> +#include <linux/pci.h>
+> +#include <linux/pci-acpi.h>
+> +#include <linux/pci-ecam.h>
+> +
+> +#ifdef CONFIG_ACPI
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/20230208152807.3064242-3-sakari.ailus@linux.intel.com
+Quickly checking against ARM64, they do not wrap the read/write
+functions in this ifdef, so why do we need to do so?
 
-All warnings (new ones prefixed by >>):
+> +/*
+> + * raw_pci_read/write - Platform-specific PCI config space access.
+> + */
+> +int raw_pci_read(unsigned int domain, unsigned int bus,
+> +		  unsigned int devfn, int reg, int len, u32 *val)
+> +{
+> +	struct pci_bus *b =3D pci_find_bus(domain, bus);
+> +
+> +	if (!b)
+> +		return PCIBIOS_DEVICE_NOT_FOUND;
+> +	return b->ops->read(b, devfn, reg, len, val);
 
->> drivers/acpi/mipi.c:205:6: warning: no previous prototype for 'acpi_crs_csi2_alloc_fill_swnodes' [-Wmissing-prototypes]
-     205 | void acpi_crs_csi2_alloc_fill_swnodes(size_t ports_count, acpi_handle handle)
-         |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A newline before the return would be appreciated by my eyes :)
+
+> +}
+> +
+> +int raw_pci_write(unsigned int domain, unsigned int bus,
+> +		unsigned int devfn, int reg, int len, u32 val)
+
+Also, both read and write functions here appear to have incorrect
+alignment on the second lines.
+
+> +{
+> +	struct pci_bus *b =3D pci_find_bus(domain, bus);
+> +
+> +	if (!b)
+> +		return PCIBIOS_DEVICE_NOT_FOUND;
+> +	return b->ops->write(b, devfn, reg, len, val);
+> +}
+> +
+> +
+
+Extra newline here too, looks to be exactly where you deleted the numa
+stuff from arm64 ;)
+
+> +struct acpi_pci_generic_root_info {
+> +	struct acpi_pci_root_info	common;
+> +	struct pci_config_window	*cfg;	/* config space mapping */
+> +};
+> +
+> +int acpi_pci_bus_find_domain_nr(struct pci_bus *bus)
+> +{
+> +	struct pci_config_window *cfg =3D bus->sysdata;
+> +	struct acpi_device *adev =3D to_acpi_device(cfg->parent);
+> +	struct acpi_pci_root *root =3D acpi_driver_data(adev);
+> +
+> +	return root->segment;
+> +}
+> +
+> +static int pci_acpi_root_prepare_resources(struct acpi_pci_root_info *ci)
+
+Rhetorical question perhaps, but what does "ci" mean?
+
+> +{
+> +	struct resource_entry *entry, *tmp;
+> +	int status;
+> +
+> +	status =3D acpi_pci_probe_root_resources(ci);
+> +	resource_list_for_each_entry_safe(entry, tmp, &ci->resources) {
+> +		if (!(entry->res->flags & IORESOURCE_WINDOW))
+> +			resource_list_destroy_entry(entry);
+> +	}
+> +	return status;
+
+Perhaps that extra newline from above could migrate down to the line
+above the return here.
+
+> +}
+> +
+> +/*
+> + * Lookup the bus range for the domain in MCFG, and set up config space
+> + * mapping.
+> + */
+> +static struct pci_config_window *
+> +pci_acpi_setup_ecam_mapping(struct acpi_pci_root *root)
+
+This all fits on 1 line.
+
+> +{
+> +	struct device *dev =3D &root->device->dev;
+> +	struct resource *bus_res =3D &root->secondary;
+> +	u16 seg =3D root->segment;
+> +	const struct pci_ecam_ops *ecam_ops;
+> +	struct resource cfgres;
+> +	struct acpi_device *adev;
+> +	struct pci_config_window *cfg;
+> +	int ret;
+> +
+> +	ret =3D pci_mcfg_lookup(root, &cfgres, &ecam_ops);
+> +	if (ret) {
+> +		dev_err(dev, "%04x:%pR ECAM region not found\n", seg, bus_res);
+> +		return NULL;
+> +	}
+> +
+> +	adev =3D acpi_resource_consumer(&cfgres);
+> +	if (adev)
+> +		dev_info(dev, "ECAM area %pR reserved by %s\n", &cfgres,
+> +			 dev_name(&adev->dev));
+> +	else
+> +		dev_warn(dev, FW_BUG "ECAM area %pR not reserved in ACPI namespace\n",
+> +			 &cfgres);
+> +
+> +	cfg =3D pci_ecam_create(dev, &cfgres, bus_res, ecam_ops);
+> +	if (IS_ERR(cfg)) {
+> +		dev_err(dev, "%04x:%pR error %ld mapping ECAM\n", seg, bus_res,
+> +			PTR_ERR(cfg));
+> +		return NULL;
+> +	}
+> +
+> +	return cfg;
+> +}
+> +
+> +/* release_info: free resources allocated by init_info */
+
+The fact that you haven't picked a consistent comment style for this
+functions really bothers my OCD. Yes, it may be copy-paste from arm64,
+but since this is "new code" I don't think there's harm in at least
+*starting* with something that looks cohesive.
+
+> +static void pci_acpi_generic_release_info(struct acpi_pci_root_info *ci)
+> +{
+> +	struct acpi_pci_generic_root_info *ri;
+> +
+> +	ri =3D container_of(ci, struct acpi_pci_generic_root_info, common);
+> +	pci_ecam_free(ri->cfg);
+> +	kfree(ci->ops);
+> +	kfree(ri);
+> +}
+> +
+> +
+
+Extra newline here.
+
+> +/* Interface called from ACPI code to setup PCI host controller */
+> +struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
+> +{
+> +	struct acpi_pci_generic_root_info *ri;
+> +	struct pci_bus *bus, *child;
+> +	struct acpi_pci_root_ops *root_ops;
+> +	struct pci_host_bridge *host;
+> +
+> +	ri =3D kzalloc(sizeof(*ri), GFP_KERNEL);
+> +	if (!ri)
+> +		return NULL;
+> +
+> +	root_ops =3D kzalloc(sizeof(*root_ops), GFP_KERNEL);
+> +	if (!root_ops) {
+> +		kfree(ri);
+> +		return NULL;
+> +	}
+> +
+> +	ri->cfg =3D pci_acpi_setup_ecam_mapping(root);
+> +	if (!ri->cfg) {
+> +		kfree(ri);
+> +		kfree(root_ops);
+> +		return NULL;
+> +	}
+> +
+> +	root_ops->release_info =3D pci_acpi_generic_release_info;
+> +	root_ops->prepare_resources =3D pci_acpi_root_prepare_resources;
+> +	root_ops->pci_ops =3D (struct pci_ops *)&ri->cfg->ops->pci_ops;
+> +	bus =3D acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg);
+> +	if (!bus)
+> +		return NULL;
+> +
+> +	/* If we must preserve the resource configuration, claim now */
+> +	host =3D pci_find_host_bridge(bus);
+> +	if (host->preserve_config)
+> +		pci_bus_claim_resources(bus);
+> +
+> +	/*
+> +	 * Assign whatever was left unassigned. If we didn't claim above,
+> +	 * this will reassign everything.
+> +	 */
+> +	pci_assign_unassigned_root_bus_resources(bus);
+> +
+> +	list_for_each_entry(child, &bus->children, node)
+> +		pcie_bus_configure_settings(child);
+> +
+> +	return bus;
+> +}
+
+Anyways, this does look to be "leveraged from arm64" as you say and I
+only had minor nits to comment about...
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+
+Cheers,
+Conor.
 
 
-vim +/acpi_crs_csi2_alloc_fill_swnodes +205 drivers/acpi/mipi.c
+--pAMvRf+LG3lTC78u
+Content-Type: application/pgp-signature; name="signature.asc"
 
-   200	
-   201	/*
-   202	 * Allocate memory and set up software nodes for an ACPI device with given
-   203	 * number of CSI-2 ports.
-   204	 */
- > 205	void acpi_crs_csi2_alloc_fill_swnodes(size_t ports_count, acpi_handle handle)
-   206	{
-   207		struct acpi_device_software_nodes *ads;
-   208		struct crs_csi2_swnodes *swnodes;
-   209		size_t alloc_size;
-   210		unsigned int i;
-   211		bool overflow;
-   212		void *end;
-   213	
-   214		/*
-   215		 * Allocate memory for ports, node pointers (number of nodes +
-   216		 * 1 (guardian), nodes (root + number of ports * 2 (for for
-   217		 * every port there is an endpoint)).
-   218		 */
-   219		overflow = check_mul_overflow(sizeof(*ads->ports) +
-   220					      sizeof(*ads->nodes) * 2 +
-   221					      sizeof(*ads->nodeptrs) * 2,
-   222					      ports_count, &alloc_size);
-   223		overflow = overflow ||
-   224			   check_add_overflow(sizeof(*ads) + sizeof(*ads->nodes) +
-   225					      sizeof(*ads->nodeptrs) * 2,
-   226					      alloc_size, &alloc_size);
-   227		if (overflow) {
-   228			acpi_handle_warn(handle,
-   229					 "too many _CRS CSI2 resource handles (%zu)",
-   230					 ports_count);
-   231			return;
-   232		}
-   233	
-   234		swnodes = kzalloc(sizeof(*swnodes), GFP_KERNEL);
-   235		ads = kzalloc(alloc_size, GFP_KERNEL);
-   236		ads->ports = (void *)(ads + 1);
-   237		ads->nodes = (void *)(ads->ports + ports_count);
-   238		ads->nodeptrs = (void *)(ads->nodes +
-   239					 ports_count * 2 + 1);
-   240		end = ads->nodeptrs + ports_count * 2 + 2;
-   241		if (!swnodes || !ads || WARN_ON((void *)ads + alloc_size != end)) {
-   242			kfree(swnodes);
-   243			kfree(ads);
-   244			acpi_handle_debug(handle,
-   245					  "cannot allocate for %zu software nodes\n",
-   246					  ports_count);
-   247			return;
-   248		}
-   249	
-   250		ads->num_ports = ports_count;
-   251		for (i = 0; i < ports_count * 2 + 1; i++)
-   252			ads->nodeptrs[i] = &ads->nodes[i];
-   253		ads->nodeptrs[i] = NULL;
-   254		for (i = 0; i < ports_count; i++)
-   255			ads->ports[i].port_nr = NO_CSI2_PORT;
-   256		swnodes->handle = handle;
-   257		swnodes->ads = ads;
-   258		list_add(&swnodes->list, &crs_csi2_swnodes);
-   259	}
-   260	
+-----BEGIN PGP SIGNATURE-----
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCY+QToQAKCRB4tDGHoIJi
+0olNAP9lp3WE8VCFaQckxPUKRtzrtdzfJ3ELelGbTEBAtUvOxgD+N9unferlze1j
+9CtTXW5bLgdHZbiLIlkSAugaqVc7uwE=
+=cnvy
+-----END PGP SIGNATURE-----
+
+--pAMvRf+LG3lTC78u--
