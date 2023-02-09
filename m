@@ -2,276 +2,258 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F91E68FD24
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Feb 2023 03:30:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9567968FD4A
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Feb 2023 03:48:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231939AbjBICaw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Feb 2023 21:30:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56882 "EHLO
+        id S231542AbjBICsb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Feb 2023 21:48:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231961AbjBICaZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 21:30:25 -0500
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2062.outbound.protection.outlook.com [40.107.220.62])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12F1F298D3;
-        Wed,  8 Feb 2023 18:30:23 -0800 (PST)
+        with ESMTP id S232128AbjBICrU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Feb 2023 21:47:20 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5636C7A84;
+        Wed,  8 Feb 2023 18:44:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675910649; x=1707446649;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=5tLMdc5PAVqdBIsCHaUEEIqEbY5XqX5F5n6ayn/X0WM=;
+  b=QrhXjNhB9F4Q8GmMV9kZ/XXYOkFt1aYtuKvzCd46LQRC6V928F+Fr/EB
+   SGnLAsSMcsZ9Lg2yu/Y23DklD7LHaFmubrASNgcQsNoztXpQaMkee1Z1s
+   ZI/Vl0bxIU66guHrPY+oaKVTNpfAhxmkz5s8LD0qfZY91fZ2mpABLRPL6
+   D3YjfDQh3zs7nYoehptBefLd2tz+GmqzBD9QvW7z0A09VXGiVXK2/gJav
+   WzDqXKvYJpsIB/2lJmxN2CQYBgBxmGRbS7tpS6v6bY7djXLVqCw4ufpzT
+   kvIkMs3sa2HfqrU/y6KVG1bh760TlV196YaUhamADwKSvE2NkWDlA8byR
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="309642857"
+X-IronPort-AV: E=Sophos;i="5.97,281,1669104000"; 
+   d="scan'208";a="309642857"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2023 18:44:09 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="667475989"
+X-IronPort-AV: E=Sophos;i="5.97,281,1669104000"; 
+   d="scan'208";a="667475989"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orsmga002.jf.intel.com with ESMTP; 08 Feb 2023 18:44:08 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16; Wed, 8 Feb 2023 18:44:08 -0800
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16 via Frontend Transport; Wed, 8 Feb 2023 18:44:08 -0800
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.101)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.16; Wed, 8 Feb 2023 18:44:07 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fA5D14TxqGbc9VqyYnmmrlNo9T1bPtJ28ReJV5kWl1vtDatArBjtG6dQSJl7Z6Q8H/EZ7EKxJGLax9XHa430ZPwWMvWUEfwVBK8OG21b5aJXBNgmZksVxDPuMmOGKyrHQR6VIMDM2Qplmpi0EcdpgsAiGD/fGY07X699C/7JO8sRlzxgVsRC3+iyBAYZb/hHlbHNQStQQGHTivo0f4ytl8LOoFPj0zVmYq1Eb9ZBpbhgTgQGU3H2rvLyGK0gtpw3+mJ1qeP550w1yOlZrxCwIi77Mw7DLiGfQ3568eOwCSScf9kyN4mtj3gjiH3L2prfup3oMcod2jKcu3dMnUypTQ==
+ b=eR+4ELTCEhG4VdSN10AfaTsEfA38ekWVA+n5ugccvF9ndJC+nBtbcQKVUvrwmNNeQZ1thkhMm+N4vfYJqgqmZdVtIPVXQtLZ+ikOvS6+U7nlnNDOjZON4xtzEck4aQnLjrQrqXdjHGAYQR8SfuogKNYGZvpZGHwxHzvCvBPFbzppk6lj5dJ07d2tmo2aaFWmK0vAP5AwmUEiXFUmm/ha100hRUrY/HXtlVY2bCpXNH5Iqau0uNLfuQRW8lL5iAA/Ykyf+WV65NKc2m8UGXcQESiCRr9/nQNhOYkSr1BPVjfxzDbsV7rjUU0oI+uYuOxPfIM8PzSZOpH8VDX4M/ambg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=plRQxGLHBG83GxP1tZGDFLCqUCZiNlBJMhYp6Yw5X0I=;
- b=G68QgSDFaFwX6kevWWlDKkA8Vph3AHDalXHzXX3XfH/apa4Udbo6tYs5H2Q/QU+Potl71Ez1jEBgwR8mDvHN/Rclsb1zWR6CE8gyoyEeqfrfEwsGlQ9jk4uG6w0h3EJTcXiHS+GRDFnS/9TCS5vMxCYObcxQjYu7FK8wBZy6bJ9yONqT/tbF5lH2Lrpluuo4dWUsM+Z7W8zgYDfvAbtLKy2JhczzkBRLAgt9y5hXc4gQ3uyGSUNdzLQXTeop4/Eiaf8ONZKz2RfOz+tIfxN2mIrbmfNjArZ4gngLo619KHE2y8tuDWLDfliGPIDpRjjGMe9Hal9gOghRglftXe+gGA==
+ bh=+fRYA4e13JKkvk16MccroNn6S5E2k+/h6RC5frvi9ew=;
+ b=CcTXsai7T+Vifn440QiLStx+Bu2ZPxcgIg0mkyYYdxgL04DAxzj9Mc4W909TjmRmMY+vIeLmnENKzGtglcmWutJNKyWWfpYzQNmU5S9pMNKGYmfRGdRVbvibVwuYX8lZnPfGushViSMpZXJFSOL5XF2g4vmpko1suaYA6X0xiyQ6E+0Ur4O/q2zc3fAWFHBYzjXBs9sTtr22bdGWmZrjCtWnfa9h2X9c0oZHBfASqMgZ0lv0SPsecockn9TzKDfIp5buiWIYSHyPyLrpRd4eFD1uZ9jpwTM7VRu1fkGRbjB98bz47lBdNg7VOqEkyCCtgU8w4598RqvoFKP6c+ck9w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=plRQxGLHBG83GxP1tZGDFLCqUCZiNlBJMhYp6Yw5X0I=;
- b=vaVbybcHOg73/wYx7uNumUOJyBPNxcj4IHwZzP5UdTSZIFqEp//7KrWnyjapnlEsmUTJS93o7XqF28DpEvxbMTsgh8+iJe+7F85qEYyZBJbu9E/tPdnTAJAB+McRC25ekCgf7U9Axain+ElaXJGlWteXwrlh97ekK4a1OM0xax0=
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by BN9PR12MB5180.namprd12.prod.outlook.com (2603:10b6:408:11d::22) with
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL0PR11MB2995.namprd11.prod.outlook.com (2603:10b6:208:7a::28)
+ by CH3PR11MB7841.namprd11.prod.outlook.com (2603:10b6:610:121::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6086.17; Thu, 9 Feb
- 2023 02:30:18 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::a59e:bafb:f202:313c]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::a59e:bafb:f202:313c%6]) with mapi id 15.20.6086.017; Thu, 9 Feb 2023
- 02:30:18 +0000
-Message-ID: <a93d84ca-c7e5-1936-863e-444a3d7f5a92@amd.com>
-Date:   Wed, 8 Feb 2023 20:30:20 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [RFC] i2c: core: Do not enable wakeup by default
-Content-Language: en-US
-To:     Raul Rangel <rrangel@chromium.org>,
-        =?UTF-8?Q?Amadeusz_S=c5=82awi=c5=84ski?= 
-        <amadeuszx.slawinski@linux.intel.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org
-References: <20230207072540.27226-1-mika.westerberg@linux.intel.com>
- <CAHQZ30Bzn1Lxy+Y2gCcFTmzWzwnxqUZAHAjSh67Pz=WweaKHkg@mail.gmail.com>
- <Y+NH9pjbFfmijHF+@black.fi.intel.com>
- <b429918f-fe63-2897-8ade-d17fe2e3646f@linux.intel.com>
- <CAHQZ30C=_aS+FefChYZFAG4vNbFZofh=wpP2mBGbfW1JTD3D_A@mail.gmail.com>
-From:   Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <CAHQZ30C=_aS+FefChYZFAG4vNbFZofh=wpP2mBGbfW1JTD3D_A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA0PR13CA0026.namprd13.prod.outlook.com
- (2603:10b6:806:130::31) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6064.36; Thu, 9 Feb
+ 2023 02:44:03 +0000
+Received: from BL0PR11MB2995.namprd11.prod.outlook.com
+ ([fe80::66b1:16ec:b971:890c]) by BL0PR11MB2995.namprd11.prod.outlook.com
+ ([fe80::66b1:16ec:b971:890c%4]) with mapi id 15.20.6064.034; Thu, 9 Feb 2023
+ 02:44:03 +0000
+Date:   Thu, 9 Feb 2023 10:43:45 +0800
+From:   Philip Li <philip.li@intel.com>
+To:     kernel test robot <lkp@intel.com>
+CC:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        <linux-acpi@vger.kernel.org>, <oe-kbuild-all@lists.linux.dev>,
+        <linux-media@vger.kernel.org>, <rafael@kernel.org>,
+        <andriy.shevchenko@linux.intel.com>,
+        <heikki.krogerus@linux.intel.com>
+Subject: Re: [PATCH v4 2/8] ACPI: property: Parse _CRS CSI-2 descriptor
+Message-ID: <Y+Rd4d11fYSJbkSK@rli9-mobl>
+References: <20230208152807.3064242-3-sakari.ailus@linux.intel.com>
+ <202302090459.kIM95vle-lkp@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <202302090459.kIM95vle-lkp@intel.com>
+X-ClientProxiedBy: SG2PR04CA0172.apcprd04.prod.outlook.com (2603:1096:4::34)
+ To BL0PR11MB2995.namprd11.prod.outlook.com (2603:10b6:208:7a::28)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|BN9PR12MB5180:EE_
-X-MS-Office365-Filtering-Correlation-Id: df869c13-590e-40eb-391b-08db0a459568
+X-MS-TrafficTypeDiagnostic: BL0PR11MB2995:EE_|CH3PR11MB7841:EE_
+X-MS-Office365-Filtering-Correlation-Id: bfc0f563-9e2b-4dcb-cac6-08db0a4780ea
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: yBO45iBlhh8lL6fl258WBRtzJc1gwWqZjHGlsjZqKau8c8BLgRHPfKp6a6J8wv689ukygRkzUr5vsuq+Oj+JHm0SX9wLoZ1esjgdSDuSx0E3EwsL8Zj6/4ob6VHglrpDmPGhmQlqNxNUeoXuZvAODr/AwYk42M6y45c+dVIt6nyyqLalESzo52/M9C59h4UBfSCcSj+p9l5hxaZhN3yVRIihrcj+WeTxr3LBOMktixJqPZA1qHTnLUWiebeY0FssVIdHc1O1/lHcLnfLUHqOO7/11h0WowioL7DjlFoaEWZVHivmJB0nNXC3Ty1mhPytZWoyqthxpc356jiiyPpkAvsmXwYwL/5R5BhlkekuiVFTYmNV9Qy26/+PSoKd5TEQWCjokRvbB0S1NRpvmkE9Ig1nZaFsRh8BLtuND0Tgyq8zIe/czCRFVZgKfwKp1epH9LzNGpnJHLL+6wGO64hJ1Bz68DP76BV9isAZrR98TbnGtFZl/3cBOHYMjKkyZzrUCcxRGC6BZb5ZNjYFiyZJULvCEHaLOTFsXotOI4Ojla+c/ERE7j4wRCHIWZJvAc/Rq5ndO0sZOGuXXwf0gNMeGTgf6tRR0cqkYHf6JENdbxpL59y5PWeE5cH9J5JxlU6J9Wx9jaVWCRGidU9WPhQOuhwYMIr4dD+6ji6JuCOWXurt7ZoPNdSLoNURKPX6rVJ7DVi+NT3ulk6B3eM/8AZj6DRTDa6HUNhArH3Q+lo/BE2aQBCZgSia7wnSm1FFn5kPCY3sBfmlrKJLFY4VS+4v28XWnVdBaUH0kKJe35h/t9hv1YFrPsIgFXaC49ggt4gf
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(396003)(136003)(346002)(366004)(376002)(39860400002)(451199018)(66476007)(4326008)(66946007)(8676002)(31696002)(38100700002)(316002)(66556008)(66574015)(83380400001)(110136005)(54906003)(86362001)(5660300002)(6486002)(966005)(478600001)(31686004)(44832011)(53546011)(186003)(6506007)(6512007)(36756003)(6666004)(2906002)(41300700001)(8936002)(2616005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: c/TRR93k+6KuzZAJR2YFBSNzvmXM5xH6IzUPb4PKYYJ7aida8Cl9LKGyJRZoNJzWnUSVYT1OE8+dM+UQ60sjpGOICOwwbKfVKPqrMwQ0/yCTcu0rhK7uHKML3NLNCnLw12dL0M95znFBiT7/qHx4ZeZ3hW6YQAtj2S2GbC0jiOE3tYwdZWpmmI6WUf62aZPJuyyppaxUShlZVVUiAECV6cvs1yOU8U0RtaLiS8lqDgVJrV4vmM/ffmHrRPf9FV4EP3kAU2ahbyiomeYARYi8x9OIpHvf3xqbpiSfrbM8SHkpCV6dUmZPQBhcOciJKMA4Poq4RJa17QFyXZO+R/PEWoA4EPPffmcZfvBOdfQYmg0ANXw6akqo4GUDY+bbD4/ilng8DkpgHXa50wxD47hD7216J/hXDDwkcNmmBcMXrJol/GeiaxBTsIKs8p7lL1XwEvpyKwkBe16l6lnGmb8wAvXen98V4gXzhyGKEnAcau5z5FkUZZhjxVisNpXmQ2O/FL3U36DMJJRK2fcvVyka51wZ7RjVEe/WLhYRc1iT0uZQYiFnCz2ctcQ28l95AxGA1mw6ReJ/EC95o0aEX4Sy9TnHWnigqUeHaPsHdZT0+v+1fAF7K1vnsxvkuZOlxKqSMnt7oEWPOYAQCp5+eOBXEEAUgWkjMcTSw9zXU2w5q26zFz/2YpKATA2rnntu4HfS1BStE/o9krUgHZOJsIR3GDUuDJ2ilYnJceWvyXABxNG3tLG3Awhd6V44zAiuR83kvB7dcu3s5cSo1VB+ryPUmg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR11MB2995.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(7916004)(376002)(396003)(39860400002)(136003)(366004)(346002)(451199018)(6506007)(966005)(9686003)(478600001)(6486002)(186003)(6512007)(26005)(6666004)(6636002)(316002)(83380400001)(66476007)(66946007)(66556008)(82960400001)(38100700002)(8676002)(4326008)(2906002)(8936002)(41300700001)(44832011)(86362001)(5660300002)(33716001)(6862004)(67856001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bHN5RElFMFdXMHlLR1dDdnl1VUxyaFFwcExuMXE1Q3ZuaERYU0t2S0xjVnRl?=
- =?utf-8?B?RjRVUTNFWGQxemNnQmYzQVNscDBoRGlmMSs5WEVCMG9QL2ZZRmlONlhMaS96?=
- =?utf-8?B?cFU4SS9WTUdPZ3pSU3BKOFBSNEJ0ODlIRVVVWG1mdGpzSGhDZTQzNkxnMFh5?=
- =?utf-8?B?NUQ1blZ3aUNYZmdxU3NYZVRldTFzcGR3Mmk1azJjaER4cGpueXlSWTJ4K0hO?=
- =?utf-8?B?Q2c0Ylo3WXc1ZlZaMkxzbGR2eE1zTFlycnFhOExSeUVtVGZyblI5U3dlcXNN?=
- =?utf-8?B?alZ3ckd0dDRkaDlhR1NHTEFldWlyeTJEZDkwV0JzbTFPMWI4S1dxZUY5V2RR?=
- =?utf-8?B?b3FhQWRsSS82bDJ4aVZhZGg2ZGxuTllFK2h6NXptQWJNMW1pSS9wNXNSY2Vz?=
- =?utf-8?B?N0o4a0NyejczRXNrUENxZWt1azV5QWx6RlhsY0FUZnNBeFhieHpWejFvUTRJ?=
- =?utf-8?B?WWh0TW8rZTJ5SEorRVN4OEw1TmRzWVk5TEord00zRlJqR1hEdmdDT3NGNkpp?=
- =?utf-8?B?OWlkZ3NWNy93MTNObk1HcmVhZDlDWEdCNktxK2ZwTTBVU1hpODE4SlVNOTBK?=
- =?utf-8?B?b3QxRExYWXEySTg4bVpwTDQwWGQvSGw1bnFEOWxaVFBuYisrU1FRUW02TSs1?=
- =?utf-8?B?YzBWdjdTdmYwTjlJQVZZWWgvZUpDMVY2Q0NnTGlTZGtsSDRYRzNUckhtUXI5?=
- =?utf-8?B?aVRuakV2NkxYeTZwTG1WcHlxOUFqckUvbnNkR0JMTWNKb3lrejlwR2lGL0pz?=
- =?utf-8?B?OWpCbzhzT0hna2NvR1NpbGY0R3VUNzg4bDlNeFIwWXBnNjVUMWtRVXhWcXlQ?=
- =?utf-8?B?bmsrdlkybTlHekkrM3Z2TnNEaHc3V1VSc1RwSDdWZUE4eGNGLzRtNGtzZURq?=
- =?utf-8?B?R2w3a1JEeFpWV09vViswc3IzR3ZENmxzREhIb3Q0aDlUNllnRlJEMXBEME96?=
- =?utf-8?B?UE10TGpWaFNQcHZ1b3llbU1veXErMitJZE8yYldKN21UTTgxcFJMUGxCamk4?=
- =?utf-8?B?S1J4VHlmSGJHZHAyT3BtTmo2bmRZdXMyZnhpZGlSSXJXRWZZN1p2cGtXMFcz?=
- =?utf-8?B?UnMzZW8xMWtPdFhvVlBhVHVCaW1zdHk3b3ZIMmRBdWFuTU0xcW5YYXQ2a25X?=
- =?utf-8?B?N0dtYStndTBOWko3K0Uxbk1KdlBTc0owQXNLYWxzMGc3RkZZQWJmQ3VXRkJT?=
- =?utf-8?B?TnN1ZnlaRTQ3SUszT3psRVFlMjMrTytwc0hZcTQ4YlhoaUhVWFA1eDViWjhm?=
- =?utf-8?B?QUJyaVNwZUZNNVBxMHBnSVFyOHU1WW5HZ3FqcENkVWVWZ25sL0Nxd1Q4WFhP?=
- =?utf-8?B?RGZUbDI3ZWVoSmxvQ1gvazFGVGpkSzV6QVFwL2FWREJ3Skc1Q2xmQjdHeGhs?=
- =?utf-8?B?enZ6cjlMWEVRTktDZVlqTFFUQXBhZSsvWDFqSmFqU1p0QkdEVzNBbnNZNEpm?=
- =?utf-8?B?bmR4MHBJZmFMK0I4SmxCNGg4Tnk3ZGlLZTdpYS84UkpJaHdqalFyZzdXcGNY?=
- =?utf-8?B?WUcvcWFiV3hNY2xTNXJSd0Fod21aUkhaREhta3RiQlVXenFYY1g0anBhTENI?=
- =?utf-8?B?SXprKzVSWkNJNjkwN0RuSnE0ZTdkZGcxSVJVQU1XcHRKb1pINDN5UzhreUdG?=
- =?utf-8?B?aUQvU1dMNWkramUzZ1htTEc1cE9XcXJJanlXdThtbWVxTWkraE83WFlFeTdr?=
- =?utf-8?B?LytCWVowM2N3ZFZUd0RzU3JORXFsdnRzblVNdlVyODZWa05qU2syVWZoMkhK?=
- =?utf-8?B?bks3aFM4RWNPaENWaDc0MTZmZG1oeTBxeG5CbUg2L214aHVEUkt4dU5xdGdL?=
- =?utf-8?B?QmNjRHlKL1BTNFVNMDR4U3pQZXBwVWVUcDQ4U3NKanRrV2EvSmpvQXFMbWRX?=
- =?utf-8?B?Rk9yeDExbnVZaDZOOUhxTk81Z2VoWjFzcFp3T2swUUlRSE5nd05tY0hzUGp4?=
- =?utf-8?B?Qi9weHZkbkY0ZGJUbDZuTDBHTThoMFNRYjVkR3JzNFVqTHJod0tUclFsekNs?=
- =?utf-8?B?S2NVNWZ5bDJ0YzlBRnlucHhWSmRNTm5YL2VHZlMwSTVwQ2pIbVdzWDBZUWNV?=
- =?utf-8?B?YmVzbEl1VHROSnlJd3lhcG1xRzRpbmlQQlFRem9wcjQyc0NIWFY0N1JxZkcx?=
- =?utf-8?B?T3k3MW5XR1RNVDZwc1BvVG4wdDNvM044Y0hDcFZ6UkRKQnJxcHR5amVvbUJz?=
- =?utf-8?Q?UFY4HBlQ4R4B5COypeBHqtavoIK2J05xkkXDw+IbPVTB?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: df869c13-590e-40eb-391b-08db0a459568
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?uGDqVsXMb9oN1Qh0KaEs+QyfmXwhoZNoWI/o34RJALJNaLKJ6RoShKcSuO7c?=
+ =?us-ascii?Q?ZGLM3U/X5YqEVhkPKG6vCNvdB/AxwVva0TsY+TzH6+JKHg33RI2H4H4ZdS42?=
+ =?us-ascii?Q?lyC2j1RBOLALjWSDBPMnczlF/L3bSF7ZTw5plZt+7eQxcY4qQaNR4euwA/mO?=
+ =?us-ascii?Q?5r743KZsaPgge7jrY2lNk6JrsEZ6Yno+bTmKSYvHQOS4wUPFnJ4BQQiw+wm4?=
+ =?us-ascii?Q?6JmTRnjyCfe4qJKKeJAusRebpbZH1CXheu773oPQgrjr1wb+b9DurZUXPKKy?=
+ =?us-ascii?Q?dbB4b5qRoKBT4qhI4gH+Dcryhodq1RYnw4FyoFV8R+s1MtbwLKU00MzM51PB?=
+ =?us-ascii?Q?CTzPmsgIlj1CUZMidGllTZn8L0uDoVolzpGtTTxJE4V9byaRaLz5WNKWYEt1?=
+ =?us-ascii?Q?GxBVoqEA6wM03vS2l30GscKaH783yyW1akflMiIonPbFly/SXUQg7vZ/0ipw?=
+ =?us-ascii?Q?L55b2MiPvW3RWmlPxOfRUTxPOei7c3LV39K/lm18lwfoHVikGAaATnuQ4e0r?=
+ =?us-ascii?Q?UXZ5B0OFYv3nelKZMxyJxZfJgtG9Xh47JTgyUTJZKNI/tNbN/eDgE6SUWEXz?=
+ =?us-ascii?Q?V8xCuM0LAVD1IKssyvPBXH7dcaSvDtGV6EErVy2QWVB1TX+xaZJpUDV5cH/Y?=
+ =?us-ascii?Q?Dp425NfHl+RQsbBgYpS/UEQaNa79MW93FwixZ9yBAZ+uVozn9dbcAKhId2lY?=
+ =?us-ascii?Q?MbfGIDC9k/uovEWYiJWvhH6oJapvZa1JTSsxjP4r1rDqp/+IUdBkM6vsPaAA?=
+ =?us-ascii?Q?WCqB3CVO+TaKSrDy13hbp9lHkfplfVkTegmyjw+jNWpATN/2tcSXWy18vM6Z?=
+ =?us-ascii?Q?1yZ9WHkr8erCDLZIDmPHU0OMxweV6c84MRMDbOGXO/IF2ddM2JG+8nHn+5xS?=
+ =?us-ascii?Q?3q2lHBBI5WFsIhqzclYZ/YrbRUzEXTIErosrIVifKaq+l4/h/2quSqPsEtkQ?=
+ =?us-ascii?Q?uWEbXxZRxSXmTcfHFX/rwUE7rDQ/IIrTRcEUQWQpOWDRPJO4K4EZA1H19/CF?=
+ =?us-ascii?Q?Ia6iWgXrtYUVrj3JdWNMxQBsBqmfLrc22+Z/ngmy6ggYGjxQKArGMSuWBOc6?=
+ =?us-ascii?Q?2s5n2ETgrs2M7unpFyggHLXasKBTygeuO3G+tz6W3IrKBxwqhvHPXb+xe/oQ?=
+ =?us-ascii?Q?iiXhSq0d7Ht+ydf2zlZOrXtG/U/rnVP0KfA36h/7aIL/p2u+UwBrv4hpWqBj?=
+ =?us-ascii?Q?W644cyob23LkQ/CWkMX7P3SEtj5WwDf2lDXz2L0ozLlG34CwRrB0natMrfOg?=
+ =?us-ascii?Q?q4i/BJ/3/o3nddcsjKZOJywiYR6l6ZAj1r6fO4qyZSqmHTGh/NwIsGBXGQyG?=
+ =?us-ascii?Q?G5t84P05Gnc/Dueh3v1EpMFZXmurjfHCTEFboyQUncMhUwpD78/x+86HGMyz?=
+ =?us-ascii?Q?nnI3oFJoTdTMHWBP2aSM57GsbsVGJYLCbKfAfWd5L94kIRoNpJNMcBopjuu8?=
+ =?us-ascii?Q?YprVb88VbJCcoYZAH5vcF51fv2pZBIPHBWbRgcvD32IswzZT84DyLGYo+KmO?=
+ =?us-ascii?Q?GNNCvo9zDa4vvjclAyyrsR3U8+ysTkRVqy/4oPYdZsxHSjBjyDB8Bb7D8q6F?=
+ =?us-ascii?Q?EE1ZMBg41C6C3NEX2ZbO8UAwQvcTfc4ROMmQH5o2yNxVm2agsp6p9CVsdlQ8?=
+ =?us-ascii?Q?eQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: bfc0f563-9e2b-4dcb-cac6-08db0a4780ea
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR11MB2995.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2023 02:30:17.9963
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2023 02:44:03.3945
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Zw7KeXnV3JFHutnD9l62bkKv815gJqqPD/SKyrq5aQaAPG3yFMLRv9JBwXGCfNLhdH28whCbjTAVwln6kggwXA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5180
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6MtfHn4PDDA2fgleLzOmCQkqxqBM2GkSuHhV18AAS7KfAQ/Q5fEuaLDdT83Za5WczIWyxl7BHGXxZR3Df+B+Hw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7841
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2/8/23 09:58, Raul Rangel wrote:
-> On Wed, Feb 8, 2023 at 1:28 AM Amadeusz Sławiński
-> <amadeuszx.slawinski@linux.intel.com> wrote:
->>
->> On 2/8/2023 7:57 AM, Mika Westerberg wrote:
->>> Hi,
->>>
->>> On Tue, Feb 07, 2023 at 09:33:55AM -0700, Raul Rangel wrote:
->>>> Sorry, resending in plain text mode.
->>>>
->>>> On Tue, Feb 7, 2023 at 12:25 AM Mika Westerberg
->>>> <mika.westerberg@linux.intel.com> wrote:
->>>>>
->>>>> After commit b38f2d5d9615 ("i2c: acpi: Use ACPI wake capability bit to
->>>>> set wake_irq") the I2C core has been setting I2C_CLIENT_WAKE for ACPI
->>>>> devices if they announce to be wake capable in their device description.
->>>>> However, on certain systems where audio codec has been connected through
->>>>> I2C this causes system suspend to wake up immediately because power to
->>>>> the codec is turned off which pulls the interrupt line "low" triggering
->>>>> wake up.
->>>>>
->>>>> Possible reason why the interrupt is marked as wake capable is that some
->>>>> codecs apparently support "Wake on Voice" or similar functionality.
->>>>
->>>> That's generally a bug in the ACPI tables. The wake bit shouldn't be
->>>> set if the power domain for the device is powered off on suspend. The
->>>> best thing is to fix the ACPI tables, but if you can't, then you can
->>>> set the ignore_wake flag for the device:
->>>> https://github.com/torvalds/linux/blob/master/drivers/gpio/gpiolib-acpi.c#L31.
->>>> If that works we can add a quirk for the device:
->>>> https://github.com/torvalds/linux/blob/master/drivers/gpio/gpiolib-acpi.c#L1633.
->>
+On Thu, Feb 09, 2023 at 05:04:11AM +0800, kernel test robot wrote:
+> Hi Sakari,
 > 
->> I've seen this one already and also tried to use it, but it didn't work.
->> Also when I was reading code I wasn't really convinced that it is linked
->> to i2c in any straightforward way. I mean i2c decides in different
->> places that it has wake support (I even added some prints to make sure
->> ;). The code you pointed out decides in
->> https://github.com/torvalds/linux/blob/master/drivers/gpio/gpiolib-acpi.c#L387
->> but i2c code seems to decide in
->> https://github.com/torvalds/linux/blob/master/drivers/i2c/i2c-core-acpi.c#L176
->> where it just checks if irq flags has wake_capable flag set. When I
->> looked at it previously I was pretty sure it comes straight from BIOS
->> and passes the quirk code you mentioned, still I may have missed something.
+> I love your patch! Perhaps something to improve:
 > 
-> You also need the following patch
-> https://github.com/torvalds/linux/commit/0e3b175f079247f0d40d2ab695999c309d3a7498,
-> otherwise the ignore flag only applies to _AEI GPIOs.
+> [auto build test WARNING on rafael-pm/linux-next]
+> [also build test WARNING on sailus-media-tree/streams linus/master v6.2-rc7 next-20230208]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
 > 
-
-I want to point out a non-obvious nuance to that as well.  When it's not 
-triggered by an _AEI GPIO then it will not have the parent controller 
-for the quirk but rather the string used for the ACPI device that 
-declared the GPIO.
-
-That's why the quirk that we applied for the Clevo BIOS bug was not 
-AMDI0030 but was instead the string used for the ACPI device.
-
-So if you're experimenting with this make sure you're using the right 
-values, and explicitly look for the string in your kernel log that it's 
-in use.
-
->>
->>>
->>> I think (hope) these systems are not yet available for public so there
->>> is a chance that the tables can still be fixed, without need to add any
->>> quirks.
->>>
->>> @Amadeusz, @Cezary, if that's the case I suggest filing a bug against
->>> the BIOS.
->>>
->>
->> Well, I tried custom DSDT and had problems, but I just remembered that I
->> probably need to pass "revision+1" in file, so kernel sees it as a newer
->> version, let me try again. Is it enough to replace "ExclusiveAndWake"
->> with "Exclusive"?
->>
->>>>> In any case, I don't think we should be enabling wakeup by default on
->>>>> all I2C devices that are wake capable. According to device_init_wakeup()
->>>>> documentation most devices should leave it disabled, with exceptions on
->>>>> devices such as keyboards, power buttons etc. Userspace can enable
->>>>> wakeup as needed by writing to device "power/wakeup" attribute.
->>>>
->>>> Enabling wake by default was an unintended side-effect. I didn't catch
->>>> this when I wrote the patch :/ It's been exposing all the incorrect
->>>> ACPI configurations for better or worse. Mario pushed a patch up
->>>> earlier to disable thes Wake GPIOs when using S3:
->>>> https://github.com/torvalds/linux/commit/d63f11c02b8d3e54bdb65d8c309f73b7f474aec4.
->>>> Are you having problems with S3 or S0iX?
->>>
->>> I think this case is S0ix.
->>
->> We test both cases in our setups.
+> url:    https://github.com/intel-lab-lkp/linux/commits/Sakari-Ailus/ACPI-property-Parse-data-node-string-references-in-properties/20230208-233112
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+> patch link:    https://lore.kernel.org/r/20230208152807.3064242-3-sakari.ailus%40linux.intel.com
+> patch subject: [PATCH v4 2/8] ACPI: property: Parse _CRS CSI-2 descriptor
+> config: x86_64-rhel-8.3-syz (https://download.01.org/0day-ci/archive/20230209/202302090459.kIM95vle-lkp@intel.com/config)
+> compiler: gcc-11 (Debian 11.3.0-8) 11.3.0
+> reproduce (this is a W=1 build):
+>         # https://github.com/intel-lab-lkp/linux/commit/d78f47f2d5051c50bdcea131da1779ec0fc8e266
+>         git remote add linux-review https://github.com/intel-lab-lkp/linux
+>         git fetch --no-tags linux-review Sakari-Ailus/ACPI-property-Parse-data-node-string-references-in-properties/20230208-233112
+>         git checkout d78f47f2d5051c50bdcea131da1779ec0fc8e266
+>         # save the config file
+>         mkdir build_dir && cp config build_dir/.config
+>         make W=1 O=build_dir ARCH=x86_64 olddefconfig
+>         make W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/acpi/
 > 
-> IMO if a device needs to support wake from S3 the ACPI table needs to
-> define a _PRW and define the proper power resources to keep the device
-> functional during S3.
-> 
->>
->>>
->>>>> Reported-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
->>>>> Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
->>>>> ---
->>>>> Hi,
->>>>>
->>>>> Sending this as RFC because I'm not too familiar with the usage of
->>>>> I2C_CLIENT_WAKE and whether this is something that is expected behaviour
->>>>> in users of I2C devices. On ACPI side I think this is the correct thing
->>>>> to do at least.
->>>>>
->>>>>    drivers/i2c/i2c-core-base.c | 2 +-
->>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
->>>>> index 087e480b624c..7046549bdae7 100644
->>>>> --- a/drivers/i2c/i2c-core-base.c
->>>>> +++ b/drivers/i2c/i2c-core-base.c
->>>>> @@ -527,7 +527,7 @@ static int i2c_device_probe(struct device *dev)
->>>>>                           goto put_sync_adapter;
->>>>>                   }
->>>>>
->>>>> -               device_init_wakeup(&client->dev, true);
->>>>> +               device_init_wakeup(&client->dev, false);
->>>>
->>>> This would be a change in behavior for Device Tree. Maybe you can
->>>> declare a `bool enable_wake = true`, then in the ACPI branch
->>>> (https://github.com/torvalds/linux/blob/master/drivers/i2c/i2c-core-base.c#L495)
->>>> set `enable_wake = false`. This would keep wakes enabled by default on
->>>> device tree and disabled for ACPI. This matches the original behavior
->>>> before my patch.
->>>
->>> I don't think it's a good idea to make the behaviour different. Drivers
->>> in general do not need to know whether the device was enumerated on ACPI
->>> or DT or whatnot. Same goes for users who should expect similar
->>> behaviour on the same device.
->>>
->>> I wonder what is the reason why I2C bus does this for all wake capable
->>> devices in the first place? Typically it should be up to the user to
->>> enable them not the opposite.
->>
+> If you fix the issue, kindly add following tag where applicable
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Link: https://lore.kernel.org/oe-kbuild-all/20230208152807.3064242-3-sakari.ailus@linux.intel.com
 
+Sorry that the link is wrong, it should be
+	Link: https://lore.kernel.org/oe-kbuild-all/202302090459.kIM95vle-lkp@intel.com/
+
+> 
+> All warnings (new ones prefixed by >>):
+> 
+> >> drivers/acpi/mipi.c:205:6: warning: no previous prototype for 'acpi_crs_csi2_alloc_fill_swnodes' [-Wmissing-prototypes]
+>      205 | void acpi_crs_csi2_alloc_fill_swnodes(size_t ports_count, acpi_handle handle)
+>          |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> 
+> vim +/acpi_crs_csi2_alloc_fill_swnodes +205 drivers/acpi/mipi.c
+> 
+>    200	
+>    201	/*
+>    202	 * Allocate memory and set up software nodes for an ACPI device with given
+>    203	 * number of CSI-2 ports.
+>    204	 */
+>  > 205	void acpi_crs_csi2_alloc_fill_swnodes(size_t ports_count, acpi_handle handle)
+>    206	{
+>    207		struct acpi_device_software_nodes *ads;
+>    208		struct crs_csi2_swnodes *swnodes;
+>    209		size_t alloc_size;
+>    210		unsigned int i;
+>    211		bool overflow;
+>    212		void *end;
+>    213	
+>    214		/*
+>    215		 * Allocate memory for ports, node pointers (number of nodes +
+>    216		 * 1 (guardian), nodes (root + number of ports * 2 (for for
+>    217		 * every port there is an endpoint)).
+>    218		 */
+>    219		overflow = check_mul_overflow(sizeof(*ads->ports) +
+>    220					      sizeof(*ads->nodes) * 2 +
+>    221					      sizeof(*ads->nodeptrs) * 2,
+>    222					      ports_count, &alloc_size);
+>    223		overflow = overflow ||
+>    224			   check_add_overflow(sizeof(*ads) + sizeof(*ads->nodes) +
+>    225					      sizeof(*ads->nodeptrs) * 2,
+>    226					      alloc_size, &alloc_size);
+>    227		if (overflow) {
+>    228			acpi_handle_warn(handle,
+>    229					 "too many _CRS CSI2 resource handles (%zu)",
+>    230					 ports_count);
+>    231			return;
+>    232		}
+>    233	
+>    234		swnodes = kzalloc(sizeof(*swnodes), GFP_KERNEL);
+>    235		ads = kzalloc(alloc_size, GFP_KERNEL);
+>    236		ads->ports = (void *)(ads + 1);
+>    237		ads->nodes = (void *)(ads->ports + ports_count);
+>    238		ads->nodeptrs = (void *)(ads->nodes +
+>    239					 ports_count * 2 + 1);
+>    240		end = ads->nodeptrs + ports_count * 2 + 2;
+>    241		if (!swnodes || !ads || WARN_ON((void *)ads + alloc_size != end)) {
+>    242			kfree(swnodes);
+>    243			kfree(ads);
+>    244			acpi_handle_debug(handle,
+>    245					  "cannot allocate for %zu software nodes\n",
+>    246					  ports_count);
+>    247			return;
+>    248		}
+>    249	
+>    250		ads->num_ports = ports_count;
+>    251		for (i = 0; i < ports_count * 2 + 1; i++)
+>    252			ads->nodeptrs[i] = &ads->nodes[i];
+>    253		ads->nodeptrs[i] = NULL;
+>    254		for (i = 0; i < ports_count; i++)
+>    255			ads->ports[i].port_nr = NO_CSI2_PORT;
+>    256		swnodes->handle = handle;
+>    257		swnodes->ads = ads;
+>    258		list_add(&swnodes->list, &crs_csi2_swnodes);
+>    259	}
+>    260	
+> 
+> -- 
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests
+> 
