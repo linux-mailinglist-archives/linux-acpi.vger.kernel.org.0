@@ -2,186 +2,133 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 517F1690212
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Feb 2023 09:25:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14DDE6902FB
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Feb 2023 10:13:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229498AbjBIIZP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Feb 2023 03:25:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40728 "EHLO
+        id S229527AbjBIJNQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Feb 2023 04:13:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjBIIZO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Feb 2023 03:25:14 -0500
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A4E483EF;
-        Thu,  9 Feb 2023 00:25:14 -0800 (PST)
+        with ESMTP id S229519AbjBIJNP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Feb 2023 04:13:15 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D505C44A2;
+        Thu,  9 Feb 2023 01:13:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675931114; x=1707467114;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=AZG4nt/NF5XD1bCU1D1DTXwVLKlPtu8KECtv/J/wG8I=;
-  b=Mi0K/0oIASlwm1TonxoWn65pmijsgsHinO0xPVyVJCaRQPQeKRtAj7TE
-   da+7xM0K+0u8qwK6NhQKH9Xdg34m1R1ZCddEIsmVFBYdXvIA6ZhzOBBbp
-   /zPvj9HK8MthgUUWsqlIcXCPW/vyi6SZJBtBNVU8DONbbEY11l8O4UJWX
-   NedqTqTkKTDIc/LH86vTSEFZVLKC6TGfqeuSahTmlW/yqcfE3lGH+yQoi
-   1ht+ET3Q5iYYkvZIk+PParr2yNlIDuC4VMiz2EZnTzbNjhtUXcyC0zkCS
-   ayFOgTsHdMKCvIxNr9q1KT2UY2aWvgevXh8iT5z8K1HqfEhYac1LP5pVN
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="416272821"
+  t=1675933994; x=1707469994;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=A2Y0cFe+mGUU9UKtiWLgv0e4Ql/hERPl9lTE9VmC7Rk=;
+  b=lbs1H5yivR2GEl1sXqm6iIRyGLoDpN/eT+I5Hn8ybJjJJt1MYwwQtuBC
+   1VLF1uv+SB7nviJm5BIoQjWejISIhDaw75l6MSzznM9moojzxQYpsS/bQ
+   QhLSA52uunrhNcAi/n8qatyJIdqF8ZlY/IyX6QzXLTuLJB9nX7HIHk6JL
+   k9KNJSfkff8OY6MLY17bdoUp6YQ6RloxYrAlNHlVSG2jw/LrDkKv5y03O
+   699MJkvTpFktZ0L8oyTJtQMT4dUYN5aoD4pua5M2wmqpkpISm67O+fPkB
+   frUxmgCn0hsJgO1nV2QGy3AZJfnTQ9LkYyFG/+seokGdrKMF/yInc7CJh
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="330083191"
 X-IronPort-AV: E=Sophos;i="5.97,283,1669104000"; 
-   d="scan'208";a="416272821"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2023 00:25:09 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="913055567"
+   d="scan'208";a="330083191"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2023 01:13:05 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10615"; a="810268103"
 X-IronPort-AV: E=Sophos;i="5.97,283,1669104000"; 
-   d="scan'208";a="913055567"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2023 00:25:01 -0800
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-        by kekkonen.fi.intel.com (Postfix) with SMTP id 3D16811FADB;
-        Thu,  9 Feb 2023 10:24:59 +0200 (EET)
-Date:   Thu, 9 Feb 2023 10:24:59 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Pin-yen Lin <treapking@chromium.org>
-Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        linux-kernel@vger.kernel.org,
-        =?iso-8859-1?Q?N=EDcolas_F_=2E_R_=2E_A_=2E?= Prado 
-        <nfraprado@collabora.com>, Hsin-Yi Wang <hsinyi@chromium.org>,
-        devicetree@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
-        Lyude Paul <lyude@redhat.com>, linux-acpi@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
-        Xin Ji <xji@analogixsemi.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        chrome-platform@lists.linux.dev, Chen-Yu Tsai <wenst@chromium.org>
-Subject: Re: [PATCH v11 1/9] device property: Add remote endpoint to devcon
- matcher
-Message-ID: <Y+St24gfyhb4VWPT@kekkonen.localdomain>
-References: <20230204133040.1236799-1-treapking@chromium.org>
- <20230204133040.1236799-2-treapking@chromium.org>
- <Y+AbhnfJvScvHTGY@kekkonen.localdomain>
- <CAEXTbpf-s8NQKwSxhe=cO-KO=TTSXFznm=1J-ikhc558M6brdQ@mail.gmail.com>
+   d="scan'208";a="810268103"
+Received: from aslawinx-mobl.ger.corp.intel.com (HELO [10.99.16.144]) ([10.99.16.144])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2023 01:13:02 -0800
+Message-ID: <eadeb808-1925-164e-3e78-0f14c4f2bdc4@linux.intel.com>
+Date:   Thu, 9 Feb 2023 10:13:00 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAEXTbpf-s8NQKwSxhe=cO-KO=TTSXFznm=1J-ikhc558M6brdQ@mail.gmail.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [RFC] i2c: core: Do not enable wakeup by default
+Content-Language: en-US
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     Raul Rangel <rrangel@chromium.org>, Wolfram Sang <wsa@kernel.org>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
+        "Limonciello, Mario" <mario.limonciello@amd.com>
+References: <20230207072540.27226-1-mika.westerberg@linux.intel.com>
+ <CAHQZ30Bzn1Lxy+Y2gCcFTmzWzwnxqUZAHAjSh67Pz=WweaKHkg@mail.gmail.com>
+ <Y+NH9pjbFfmijHF+@black.fi.intel.com>
+ <b429918f-fe63-2897-8ade-d17fe2e3646f@linux.intel.com>
+ <Y+Nrhq9l6CIPjL7Z@black.fi.intel.com>
+From:   =?UTF-8?Q?Amadeusz_S=c5=82awi=c5=84ski?= 
+        <amadeuszx.slawinski@linux.intel.com>
+In-Reply-To: <Y+Nrhq9l6CIPjL7Z@black.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Pin-yen,
-
-On Thu, Feb 09, 2023 at 12:28:33PM +0800, Pin-yen Lin wrote:
-> Hi Sakari,
+On 2/8/2023 10:29 AM, Mika Westerberg wrote:
+> Hi,
 > 
-> Thanks for the review.
+> On Wed, Feb 08, 2023 at 09:28:14AM +0100, Amadeusz Sławiński wrote:
+>> On 2/8/2023 7:57 AM, Mika Westerberg wrote:
+>>> Hi,
+>>>
+>>> On Tue, Feb 07, 2023 at 09:33:55AM -0700, Raul Rangel wrote:
+>>>> Sorry, resending in plain text mode.
+>>>>
+>>>> On Tue, Feb 7, 2023 at 12:25 AM Mika Westerberg
+>>>> <mika.westerberg@linux.intel.com> wrote:
+>>>>>
+>>>>> After commit b38f2d5d9615 ("i2c: acpi: Use ACPI wake capability bit to
+>>>>> set wake_irq") the I2C core has been setting I2C_CLIENT_WAKE for ACPI
+>>>>> devices if they announce to be wake capable in their device description.
+>>>>> However, on certain systems where audio codec has been connected through
+>>>>> I2C this causes system suspend to wake up immediately because power to
+>>>>> the codec is turned off which pulls the interrupt line "low" triggering
+>>>>> wake up.
+>>>>>
+>>>>> Possible reason why the interrupt is marked as wake capable is that some
+>>>>> codecs apparently support "Wake on Voice" or similar functionality.
+>>>>
+>>>> That's generally a bug in the ACPI tables. The wake bit shouldn't be
+>>>> set if the power domain for the device is powered off on suspend. The
+>>>> best thing is to fix the ACPI tables, but if you can't, then you can
+>>>> set the ignore_wake flag for the device:
+>>>> https://github.com/torvalds/linux/blob/master/drivers/gpio/gpiolib-acpi.c#L31.
+>>>> If that works we can add a quirk for the device:
+>>>> https://github.com/torvalds/linux/blob/master/drivers/gpio/gpiolib-acpi.c#L1633.
+>>
+>> I've seen this one already and also tried to use it, but it didn't work.
+>> Also when I was reading code I wasn't really convinced that it is linked to
+>> i2c in any straightforward way. I mean i2c decides in different places that
+>> it has wake support (I even added some prints to make sure ;). The code you
+>> pointed out decides in https://github.com/torvalds/linux/blob/master/drivers/gpio/gpiolib-acpi.c#L387
+>> but i2c code seems to decide in https://github.com/torvalds/linux/blob/master/drivers/i2c/i2c-core-acpi.c#L176
+>> where it just checks if irq flags has wake_capable flag set. When I looked
+>> at it previously I was pretty sure it comes straight from BIOS and passes
+>> the quirk code you mentioned, still I may have missed something.
+>>
+>>>
+>>> I think (hope) these systems are not yet available for public so there
+>>> is a chance that the tables can still be fixed, without need to add any
+>>> quirks.
+>>>
+>>> @Amadeusz, @Cezary, if that's the case I suggest filing a bug against
+>>> the BIOS.
+>>>
+>>
+>> Well, I tried custom DSDT and had problems, but I just remembered that I
+>> probably need to pass "revision+1" in file, so kernel sees it as a newer
+>> version, let me try again. Is it enough to replace "ExclusiveAndWake" with
+>> "Exclusive"?
 > 
-> On Mon, Feb 6, 2023 at 5:11 AM Sakari Ailus
-> <sakari.ailus@linux.intel.com> wrote:
-> >
-> > Hi Pin-yen,
-> >
-> > On Sat, Feb 04, 2023 at 09:30:32PM +0800, Pin-yen Lin wrote:
-> > > From: Prashant Malani <pmalani@chromium.org>
-> > >
-> > > When searching the device graph for device matches, check the
-> > > remote-endpoint itself for a match.
-> > >
-> > > Some drivers register devices for individual endpoints. This allows
-> > > the matcher code to evaluate those for a match too, instead
-> > > of only looking at the remote parent devices. This is required when a
-> > > device supports two mode switches in its endpoints, so we can't simply
-> > > register the mode switch with the parent node.
-> > >
-> > > Signed-off-by: Prashant Malani <pmalani@chromium.org>
-> > > Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-> > > Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-> > > Tested-by: Chen-Yu Tsai <wenst@chromium.org>
-> >
-> > Thanks for the update.
-> >
-> > I intended to give my Reviewed-by: but there's something still needs to be
-> > addressed. See below.
-> >
-> > >
-> > > ---
-> > >
-> > > Changes in v11:
-> > > - Added missing fwnode_handle_put in drivers/base/property.c
-> > >
-> > > Changes in v10:
-> > > - Collected Reviewed-by and Tested-by tags
-> > >
-> > > Changes in v6:
-> > > - New in v6
-> > >
-> > >  drivers/base/property.c | 16 ++++++++++++++++
-> > >  1 file changed, 16 insertions(+)
-> > >
-> > > diff --git a/drivers/base/property.c b/drivers/base/property.c
-> > > index 2a5a37fcd998..e6f915b72eb7 100644
-> > > --- a/drivers/base/property.c
-> > > +++ b/drivers/base/property.c
-> > > @@ -1223,6 +1223,22 @@ static unsigned int fwnode_graph_devcon_matches(struct fwnode_handle *fwnode,
-> > >                       break;
-> > >               }
-> > >
-> > > +             /*
-> > > +              * Some drivers may register devices for endpoints. Check
-> > > +              * the remote-endpoints for matches in addition to the remote
-> > > +              * port parent.
-> > > +              */
-> > > +             node = fwnode_graph_get_remote_endpoint(ep);
-> >
-> > Here fwnode_graph_get_remote_endpoint() returns an endpoint...
-> >
-> > > +             if (fwnode_device_is_available(node)) {
-> >
-> > and you're calling fwnode_device_is_available() on the endpoint node, which
-> > always returns true.
-> >
-> > Shouldn't you call this on the device node instead? What about match()
-> > below?
+> Yes, I think that should be enough.
 > 
-> Yes we should have checked the availability on the device node itself
-> instead of the endpoint node. But regarding the match() call, we need
-> to call it with the endpoint node because that's where we put the
-> "mode-switch" properties and register the mode switches on. We can't
-> use the device node because we want to register two mode switches for
-> the same device node.
 
-Ok.
+And yes, it seems to work when I bump revision. So will use it as 
+workaround for now and see about fixing BIOS.
 
-I think it should be documented for both fwnode_connection_find_match() and
-fwnode_connection_find_matches() may then be also called with the endpoint
-node.
-
--- 
-Regards,
-
-Sakari Ailus
