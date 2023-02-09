@@ -2,40 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49292690C76
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Feb 2023 16:10:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 593DB690CB5
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Feb 2023 16:16:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229761AbjBIPKr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Feb 2023 10:10:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51138 "EHLO
+        id S230256AbjBIPQq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Feb 2023 10:16:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230034AbjBIPKq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Feb 2023 10:10:46 -0500
+        with ESMTP id S231296AbjBIPQj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Feb 2023 10:16:39 -0500
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 166F8367D6;
-        Thu,  9 Feb 2023 07:10:43 -0800 (PST)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4PCKv96tSPz6J7lN;
-        Thu,  9 Feb 2023 23:06:13 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E817D63126;
+        Thu,  9 Feb 2023 07:16:10 -0800 (PST)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4PCL1P2JGpz6J7YD;
+        Thu,  9 Feb 2023 23:11:37 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.17; Thu, 9 Feb
- 2023 15:10:41 +0000
-Date:   Thu, 9 Feb 2023 15:10:40 +0000
+ 2023 15:16:04 +0000
+Date:   Thu, 9 Feb 2023 15:16:03 +0000
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To:     Dave Jiang <dave.jiang@intel.com>
-CC:     Bjorn Helgaas <helgaas@kernel.org>, <linux-cxl@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <dan.j.williams@intel.com>, <ira.weiny@intel.com>,
-        <vishal.l.verma@intel.com>, <alison.schofield@intel.com>,
-        <rafael@kernel.org>, <bhelgaas@google.com>,
-        <robert.moore@intel.com>
+CC:     <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>, <dan.j.williams@intel.com>,
+        <ira.weiny@intel.com>, <vishal.l.verma@intel.com>,
+        <alison.schofield@intel.com>, <rafael@kernel.org>,
+        <bhelgaas@google.com>, <robert.moore@intel.com>
 Subject: Re: [PATCH 12/18] cxl: Add helpers to calculate pci latency for the
  CXL device
-Message-ID: <20230209151040.00006d93@Huawei.com>
-In-Reply-To: <158ba672-09f1-a202-4fb6-7168496b95c4@intel.com>
-References: <20230208221559.GA2489627@bhelgaas>
-        <158ba672-09f1-a202-4fb6-7168496b95c4@intel.com>
+Message-ID: <20230209151603.00005b53@Huawei.com>
+In-Reply-To: <167571666898.587790.4824622451425607591.stgit@djiang5-mobl3.local>
+References: <167571650007.587790.10040913293130712882.stgit@djiang5-mobl3.local>
+        <167571666898.587790.4824622451425607591.stgit@djiang5-mobl3.local>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
@@ -54,112 +53,138 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 8 Feb 2023 16:56:30 -0700
+On Mon, 06 Feb 2023 13:51:10 -0700
 Dave Jiang <dave.jiang@intel.com> wrote:
 
-> On 2/8/23 3:15 PM, Bjorn Helgaas wrote:
-> > On Tue, Feb 07, 2023 at 01:51:17PM -0700, Dave Jiang wrote:  
-> >>
-> >>
-> >> On 2/6/23 3:39 PM, Bjorn Helgaas wrote:  
-> >>> On Mon, Feb 06, 2023 at 01:51:10PM -0700, Dave Jiang wrote:  
-> >>>> The latency is calculated by dividing the FLIT size over the
-> >>>> bandwidth. Add support to retrieve the FLIT size for the CXL
-> >>>> device and calculate the latency of the downstream link.  
-> >   
-> >>> I guess you only care about the latency of a single link, not the
-> >>> entire path?  
-> >>
-> >> I am adding each of the link individually together in the next
-> >> patch. Are you suggesting a similar function like
-> >> pcie_bandwidth_available() but for latency for the entire path?  
-> > 
-> > Only a clarifying question.
-> >   
-> >>>> +static int cxl_get_flit_size(struct pci_dev *pdev)
-> >>>> +{
-> >>>> +	if (cxl_pci_flit_256(pdev))
-> >>>> +		return 256;
-> >>>> +
-> >>>> +	return 66;  
-> >>>
-> >>> I don't know about the 66-byte flit format, maybe this part is
-> >>> CXL-specific?  
-> >>
-> >> 68-byte flit format. Looks like this is a typo from me.  
-> > 
-> > This part must be CXL-specific, since I don't think PCIe mentions
-> > 68-byte flits.
-> >   
-> >>>> + * The table indicates that if PCIe Flit Mode is set, then CXL is in 256B flits
-> >>>> + * mode, otherwise it's 68B flits mode.
-> >>>> + */
-> >>>> +static inline bool cxl_pci_flit_256(struct pci_dev *pdev)
-> >>>> +{
-> >>>> +	u32 lnksta2;
-> >>>> +
-> >>>> +	pcie_capability_read_dword(pdev, PCI_EXP_LNKSTA2, &lnksta2);
-> >>>> +	return lnksta2 & BIT(10);  
-> >>>
-> >>> Add a #define for the bit.  
-> >>
-> >> ok will add.
-> >>  
-> >>>
-> >>> AFAICT, the PCIe spec defines this bit, and it only indicates the link
-> >>> is or will be operating in Flit Mode; it doesn't actually say anything
-> >>> about how large the flits are.  I suppose that's because PCIe only
-> >>> talks about 256B flits, not 66B ones?  
-> >>
-> >> Looking at CXL v1.0 rev3.0 6.2.3 "256B Flit Mode", table 6-4, it shows that
-> >> when PCIe Flit Mode is set, then CXL is in 256B flits mode, otherwise, it is
-> >> 68B flits. So an assumption is made here regarding the flit side based on
-> >> the table.  
-> > 
-> > So reading PCI_EXP_LNKSTA2 and extracting the Flit Mode bit is
-> > PCIe-generic, but the interpretation of "PCIe Flit Mode not enabled
-> > means 68-byte flits" is CXL-specific?
-> > 
-> > This sounds wrong, but I don't know quite how.  How would the PCI core
-> > manage links where Flit Mode being cleared really means Flit Mode is
-> > *enabled* but with a different size?  Seems like something could go
-> > wrong there.  
+> The latency is calculated by dividing the FLIT size over the bandwidth. Add
+> support to retrieve the FLIT size for the CXL device and calculate the
+> latency of the downstream link.
 > 
-> Looking at the PCIe base spec and the CXL spec, that seemed to be the 
-> only way that implies the flit size for a CXL device as far as I can 
-> tell. I've yet to find a good way to make that determination. Dan?
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 
-So a given CXL port has either trained up in:
-* normal PCI (in which case all the normal PCI stuff applies) and we'll
-  fail some of the other checks in the CXL driver never get hear here
-  - I 'think' the driver will load for the PCI device to enable things
-  like firmware upgrade, but we won't register the CXL Port devices
-  that ultimately call this stuff.
-  It's perfectly possible to have a driver that will cope with this
-  but it's pretty meaningless for a lot of cxl type 3 driver.
-* 68 byte flit (which was CXL precursor to PCI going flit based)
-  Can be queried via CXL DVSEC Flex Bus Port Status CXL r3.0 8.2.1.3.3
-* 256 byte flits (may or may not be compatible with PCIe ones as there
-  are some optional latency optimizations)
-
-So if the 68 byte flit is enabled the 256 byte one should never be and
-CXL description is overriding the old PCIe
-
-Hence I think we should have the additional check on the flex bus
-dvsec even though it should be consistent with your assumption above.
-
-Hmm. That does raise a question of how we take the latency optimized
-flits into account or indeed some of the other latency impacting things
-that may or may not be running - IDE in it's various modes for example.
-
-For latency optimized we can query relevant bit in the flex bus port status.
-IDE info will be somewhere I guess though no idea if there is a way to
-know the latency impacts.  
+I'd like to see some approx numbers in this patch description. What
+sort of level is each component?  Hard to be sure the neglected parts
+don't matter without that sort of back of the envelope numbers.
 
 Jonathan
 
+> ---
+>  drivers/cxl/core/pci.c |   67 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  drivers/cxl/cxlpci.h   |   14 ++++++++++
+>  2 files changed, 81 insertions(+)
+> 
+> diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
+> index a24dac36bedd..54ac6f8825ff 100644
+> --- a/drivers/cxl/core/pci.c
+> +++ b/drivers/cxl/core/pci.c
+> @@ -633,3 +633,70 @@ void read_cdat_data(struct cxl_port *port)
+>  	}
+>  }
+>  EXPORT_SYMBOL_NS_GPL(read_cdat_data, CXL);
+> +
+> +static int pcie_speed_to_mbps(enum pci_bus_speed speed)
+> +{
+> +	switch (speed) {
+> +	case PCIE_SPEED_2_5GT:
+> +		return 2500;
+> +	case PCIE_SPEED_5_0GT:
+> +		return 5000;
+> +	case PCIE_SPEED_8_0GT:
+> +		return 8000;
+> +	case PCIE_SPEED_16_0GT:
+> +		return 16000;
+> +	case PCIE_SPEED_32_0GT:
+> +		return 32000;
+> +	case PCIE_SPEED_64_0GT:
+> +		return 64000;
+> +	default:
+> +		break;
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +static int cxl_pci_mbits_to_mbytes(struct pci_dev *pdev)
+> +{
+> +	int mbits;
+> +
+> +	mbits = pcie_speed_to_mbps(pcie_get_speed(pdev));
+> +	if (mbits < 0)
+> +		return mbits;
+> +
+> +	return mbits >> 3;
+> +}
+> +
+> +static int cxl_get_flit_size(struct pci_dev *pdev)
+> +{
+> +	if (cxl_pci_flit_256(pdev))
+> +		return 256;
+> +
+> +	return 66;
+> +}
+> +
+> +/**
+> + * cxl_pci_get_latency - calculate the link latency for the PCIe link
+> + * @pdev - PCI device
+> + *
+> + * CXL Memory Device SW Guide v1.0 2.11.4 Link latency calculation
+> + * Link latency = LinkPropagationLatency + FlitLatency + RetimerLatency
+> + * LinkProgationLatency is negligible, so 0 will be used
+> + * RetimerLatency is assumed to be neglibible and 0 will be used
+> + * FlitLatency = FlitSize / LinkBandwidth
+> + * FlitSize is defined by spec. CXL v3.0 4.2.1.
+> + * 68B flit is used up to 32GT/s. >32GT/s, 256B flit size is used.
+> + * The FlitLatency is converted to pico-seconds.
+> + */
+> +long cxl_pci_get_latency(struct pci_dev *pdev)
+> +{
+> +	long bw, flit_size;
+> +
+> +	bw = cxl_pci_mbits_to_mbytes(pdev);
+> +	if (bw < 0)
+> +		return bw;
+> +
+> +	flit_size = cxl_get_flit_size(pdev);
+
+So, if latency optimized, it's 128 bytes (approx)
+
+> +	return flit_size * 1000000L / bw;
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cxl_pci_get_latency, CXL);
+> diff --git a/drivers/cxl/cxlpci.h b/drivers/cxl/cxlpci.h
+> index 920909791bb9..d64a3e0458ab 100644
+> --- a/drivers/cxl/cxlpci.h
+> +++ b/drivers/cxl/cxlpci.h
+> @@ -62,8 +62,22 @@ enum cxl_regloc_type {
+>  	CXL_REGLOC_RBI_TYPES
+>  };
+>  
+> +/*
+> + * CXL v3.0 6.2.3 Table 6-4
+> + * The table indicates that if PCIe Flit Mode is set, then CXL is in 256B flits
+> + * mode, otherwise it's 68B flits mode.
+> + */
+> +static inline bool cxl_pci_flit_256(struct pci_dev *pdev)
+> +{
+
+As per other branch of thread, I'd like to see 68 byte confirmed by checking
+the flex bus dvsec.  Sure it should always match your assumption (as we shouldn't
+be in normal PCI at this stage) but we might be if this code gets called
+in other paths from current intent.
+
+
+> +	u32 lnksta2;
+> +
+> +	pcie_capability_read_dword(pdev, PCI_EXP_LNKSTA2, &lnksta2);
+> +	return lnksta2 & BIT(10);
+> +}
+> +
+>  int devm_cxl_port_enumerate_dports(struct cxl_port *port);
+>  struct cxl_dev_state;
+>  int cxl_hdm_decode_init(struct cxl_dev_state *cxlds, struct cxl_hdm *cxlhdm);
+>  void read_cdat_data(struct cxl_port *port);
+> +long cxl_pci_get_latency(struct pci_dev *pdev);
+>  #endif /* __CXL_PCI_H__ */
 > 
 > 
-> > 
-> > Bjorn  
 
