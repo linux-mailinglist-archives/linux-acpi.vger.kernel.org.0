@@ -2,219 +2,243 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59D62690B22
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Feb 2023 14:58:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D841690B34
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Feb 2023 15:02:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230304AbjBIN6g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Feb 2023 08:58:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58586 "EHLO
+        id S230225AbjBIOC3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Feb 2023 09:02:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230225AbjBIN6e (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Feb 2023 08:58:34 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 228235D1F8;
-        Thu,  9 Feb 2023 05:58:32 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7C980B8214C;
-        Thu,  9 Feb 2023 13:58:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B734C433AC;
-        Thu,  9 Feb 2023 13:58:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675951109;
-        bh=93VyRdd+x46c6JfnCI26c2eQ2tKwTRA+5LoCiqT+VC0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=jmQdnIc4ohWuhyM/wboCHrBLSTj4CBb+bA/6XmgM59Q+I305QMacZrl3VDyL2kBav
-         V+1/wPdF7b0HEIXSoijDHkuPV5z0XqxTJanmcMWS5lO34S8DhKBpd7T3TP+FUZpLUh
-         tZJBxTdDaccDbjmQ5ndcwIGj+l7Iwvq8iMsQdVXrYHTIqdPf/Gw/zaZWqIXkyFj5of
-         ajadWgbeABINJgNePiULZcqGc0DQSJYpJMU7JkD0JEAX7Zszy2qoLcTzfAMF02hgoF
-         XsPx7jDziQAd1KU3raoq78O7x+gHUmPk6F1amZhrmlpRwglJ1YOlWVIOES7eTgbJAT
-         oO2I2RcwNsTZA==
-Received: by mail-vs1-f54.google.com with SMTP id k6so2204264vsk.1;
-        Thu, 09 Feb 2023 05:58:28 -0800 (PST)
-X-Gm-Message-State: AO0yUKVjOZ3WFSDe114eZdtB7unpPCYvwuyjOzy2rWFpFxJhjC0eLQMG
-        gh2iV93htisD6BEJl4LZHBV52bB7VugIRStHww==
-X-Google-Smtp-Source: AK7set+jecLjckPcdRc6heEopqoGnC8BMT68O2x6tSHaNNqZRNC1BW5aLQrtdmUMcVM3DFY1urReQ/39uyBueeBrXyw=
-X-Received: by 2002:a67:cc1d:0:b0:3f3:5ce0:85ab with SMTP id
- q29-20020a67cc1d000000b003f35ce085abmr3125109vsl.26.1675951107969; Thu, 09
- Feb 2023 05:58:27 -0800 (PST)
+        with ESMTP id S230202AbjBIOCX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Feb 2023 09:02:23 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80FAD5241;
+        Thu,  9 Feb 2023 06:02:21 -0800 (PST)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4PCJRm6R0Pz6J9hQ;
+        Thu,  9 Feb 2023 22:00:52 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.17; Thu, 9 Feb
+ 2023 14:02:18 +0000
+Date:   Thu, 9 Feb 2023 14:02:17 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Dave Jiang <dave.jiang@intel.com>
+CC:     <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>, <dan.j.williams@intel.com>,
+        <ira.weiny@intel.com>, <vishal.l.verma@intel.com>,
+        <alison.schofield@intel.com>, <rafael@kernel.org>,
+        <bhelgaas@google.com>, <robert.moore@intel.com>
+Subject: Re: [PATCH 08/18] cxl: Add support for _DSM Function for retrieving
+ QTG ID
+Message-ID: <20230209140217.00002d22@Huawei.com>
+In-Reply-To: <167571663199.587790.13615282047168132392.stgit@djiang5-mobl3.local>
+References: <167571650007.587790.10040913293130712882.stgit@djiang5-mobl3.local>
+        <167571663199.587790.13615282047168132392.stgit@djiang5-mobl3.local>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-References: <20230204133040.1236799-1-treapking@chromium.org>
- <20230204133040.1236799-8-treapking@chromium.org> <20230207205221.GA4121517-robh@kernel.org>
- <CAEXTbpf5KqH7zev+kooUmz2DiMya-53UmvAMJfcOYcm7CCDthQ@mail.gmail.com>
-In-Reply-To: <CAEXTbpf5KqH7zev+kooUmz2DiMya-53UmvAMJfcOYcm7CCDthQ@mail.gmail.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Thu, 9 Feb 2023 07:58:16 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJ35gJnpwfOtW8jQP2RmzJtLG2YdTC6dt7pf-GjJggORw@mail.gmail.com>
-Message-ID: <CAL_JsqJ35gJnpwfOtW8jQP2RmzJtLG2YdTC6dt7pf-GjJggORw@mail.gmail.com>
-Subject: Re: [PATCH v11 7/9] dt-bindings: display: bridge: it6505: Add
- mode-switch support
-To:     Pin-yen Lin <treapking@chromium.org>
-Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        linux-kernel@vger.kernel.org,
-        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
-        <nfraprado@collabora.com>, Hsin-Yi Wang <hsinyi@chromium.org>,
-        devicetree@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
-        Lyude Paul <lyude@redhat.com>, linux-acpi@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
-        Xin Ji <xji@analogixsemi.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        chrome-platform@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 8, 2023 at 10:00 PM Pin-yen Lin <treapking@chromium.org> wrote:
->
-> Hi Rob,
->
-> Thanks for the review.
->
-> On Wed, Feb 8, 2023 at 4:52 AM Rob Herring <robh@kernel.org> wrote:
-> >
-> > On Sat, Feb 04, 2023 at 09:30:38PM +0800, Pin-yen Lin wrote:
-> > > ITE IT6505 can be used in systems to switch the DP traffic between
-> > > two downstreams, which can be USB Type-C DisplayPort alternate mode
-> > > lane or regular DisplayPort output ports.
-> > >
-> > > Update the binding to accommodate this usage by introducing a
-> > > data-lanes and a mode-switch property on endpoints.
-> > >
-> > > Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-> > >
-> > > ---
-> > >
-> > > Changes in v11:
-> > > - Updated the description of the endpoints in the bindings
-> > > - Referenced video-interfaces.yaml instead for the endpoints binding
-> > > - Removed duplicated definitions from inherited schema
-> > >
-> > > Changes in v9:
-> > > - Fixed subject prefix again
-> > > - Changed the naming of the example node for it6505
-> > >
-> > > Changes in v8:
-> > > - Updated bindings for data-lanes property
-> > > - Fixed subject prefix
-> > >
-> > > Changes in v7:
-> > > - Fixed issues reported by dt_binding_check.
-> > > - Updated the schema and the example dts for data-lanes.
-> > > - Changed to generic naming for the example dts node.
-> > >
-> > > Changes in v6:
-> > > - Remove switches node and use endpoints and data-lanes property to
-> > >   describe the connections.
-> > >
-> > >  .../bindings/display/bridge/ite,it6505.yaml   | 101 +++++++++++++++---
-> > >  1 file changed, 88 insertions(+), 13 deletions(-)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml b/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
-> > > index b16a9d9127dd..8ae9c5cba22c 100644
-> > > --- a/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
-> > > +++ b/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
-> > > @@ -75,22 +75,49 @@ properties:
-> > >        port@1:
-> > >          $ref: /schemas/graph.yaml#/$defs/port-base
-> > >          unevaluatedProperties: false
-> > > -        description: Video port for DP output
-> > > +        description:
-> > > +          Video port for DP output. Each endpoint connects to a video output
-> > > +          downstream, and the "data-lanes" property is used to describe the pin
-> > > +          connections. 0, 1, 2, 3 in "data-lanes" maps to TX0, TX1, TX2, TX3,
-> > > +          respectively.
-> > >
-> > > -        properties:
-> > > -          endpoint:
-> > > -            $ref: /schemas/graph.yaml#/$defs/endpoint-base
-> > > +
-> > > +        patternProperties:
-> > > +          "^endpoint@[01]$":
-> > > +            $ref: /schemas/media/video-interfaces.yaml#
-> > >              unevaluatedProperties: false
-> > >
-> > >              properties:
-> > > +              reg: true
-> > > +
-> > > +              remote-endpoint: true
-> > > +
-> > >                data-lanes:
-> > > -                minItems: 1
-> > > -                uniqueItems: true
-> > > -                items:
-> > > -                  - enum: [ 0, 1 ]
-> > > -                  - const: 1
-> > > -                  - const: 2
-> > > -                  - const: 3
-> > > +                oneOf:
-> > > +                  - items:
-> > > +                      - enum: [0, 1, 2, 3]
-> > > +
-> > > +                  - items:
-> > > +                      - const: 0
-> > > +                      - const: 1
-> > > +
-> > > +                  - items:
-> > > +                      - const: 2
-> > > +                      - const: 3
-> > > +
-> > > +                  - items:
-> > > +                      - const: 0
-> > > +                      - const: 1
-> > > +                      - const: 2
-> > > +                      - const: 3
-> > > +
-> > > +              mode-switch:
-> > > +                type: boolean
-> > > +                description: Register this node as a Type-C mode switch or not.
-> >
-> > Existing users put this property in the device's node, not the endpoint.
-> > That seems more like a property of the device, than the DP link.
->
-> In our use case, we want to register two mode switches for the same
-> device. That's why we put the "mode-switch" property in the endpoints
-> instead of the device node.
+On Mon, 06 Feb 2023 13:50:33 -0700
+Dave Jiang <dave.jiang@intel.com> wrote:
 
-Then do that. Register a mode switch for each endpoint connected to a
-USB-C connector. You can walk the graph to see what type of connector.
+> CXL spec v3.0 9.17.3 CXL Root Device Specific Methods (_DSM)
+> 
+> Add support to retrieve QTG ID via ACPI _DSM call. The _DSM call requires
+> an input of an ACPI package with 4 dwords (read latency, write latency,
+> read bandwidth, write bandwidth). The call returns a package with 1 WORD
+> that provides the max supported QTG ID and a package that may contain 0 or
+> more WORDs as the recommended QTG IDs in the recommended order.
+> 
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+A few minor bits inline.
 
-The only way I could see this as an issue is you have 2 USB-C
-connectors and one is a mode switch and one is not. Not sure if such a
-scenario is likely or possible. If it is, please educate me.
+Jonathan
 
-> > You are using fwnode_typec_mux_get(), right?
->
-> Yes. This is called by cros_ec_typec.c[1] in our use case.
+> ---
+>  drivers/cxl/core/Makefile |    1 
+>  drivers/cxl/core/acpi.c   |   99 +++++++++++++++++++++++++++++++++++++++++++++
+>  drivers/cxl/cxl.h         |   15 +++++++
+>  3 files changed, 115 insertions(+)
+>  create mode 100644 drivers/cxl/core/acpi.c
+> 
+> diff --git a/drivers/cxl/core/Makefile b/drivers/cxl/core/Makefile
+> index 438ce27faf77..11ccc2016ab7 100644
+> --- a/drivers/cxl/core/Makefile
+> +++ b/drivers/cxl/core/Makefile
+> @@ -11,4 +11,5 @@ cxl_core-y += mbox.o
+>  cxl_core-y += pci.o
+>  cxl_core-y += hdm.o
+>  cxl_core-y += cdat.o
+> +cxl_core-y += acpi.o
+>  cxl_core-$(CONFIG_CXL_REGION) += region.o
+> diff --git a/drivers/cxl/core/acpi.c b/drivers/cxl/core/acpi.c
+> new file mode 100644
+> index 000000000000..86dc6c9c1f24
+> --- /dev/null
+> +++ b/drivers/cxl/core/acpi.c
+> @@ -0,0 +1,99 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/* Copyright(c) 2022 Intel Corporation. All rights reserved. */
+> +#include <linux/module.h>
+> +#include <linux/device.h>
+> +#include <linux/kernel.h>
+> +#include <linux/acpi.h>
+> +#include <linux/pci.h>
+> +#include <asm/div64.h>
+> +#include "cxlpci.h"
+> +#include "cxl.h"
+> +
+> +const guid_t acpi_cxl_qtg_id_guid =
+> +	GUID_INIT(0xF365F9A6, 0xA7DE, 0x4071,
+> +		  0xA6, 0x6A, 0xB4, 0x0C, 0x0B, 0x4F, 0x8E, 0x52);
+> +
+> +/**
+> + * cxl_acpi_evaluate_qtg_dsm - Retrieve QTG ids via ACPI _DSM
+> + * @handle: ACPI handle
+> + * @input: bandwidth and latency data
+> + *
+> + * Issue QTG _DSM with accompanied bandwidth and latency data in order to get
+> + * the QTG IDs that falls within the performance data.
+> + */
+> +struct qtg_dsm_output *cxl_acpi_evaluate_qtg_dsm(acpi_handle handle,
+> +						 struct qtg_dsm_input *input)
+> +{
+> +	struct qtg_dsm_output *output;
+> +	union acpi_object *out_obj, *out_buf, *pkg, in_buf, in_obj;
 
-That code looks for 'mode-switch' in the device's node, not the
-endpoint. So how does it work for you?
+Reorder to reverse Xmas tree perhaps.
 
-Rob
+> +	int len;
+> +	int rc;
+Might as well put those on one line.
+
+> +
+> +	in_obj.type = ACPI_TYPE_PACKAGE;
+> +	in_obj.package.count = 1;
+> +	in_obj.package.elements = &in_buf;
+> +	in_buf.type = ACPI_TYPE_BUFFER;
+> +	in_buf.buffer.pointer = (u8 *)input;
+> +	in_buf.buffer.length = sizeof(u32) * 4;
+c99 style is nicer to read.
+
+	union acpi_object in_obj = {
+		.type = 
+
+	}
+> +
+> +	out_obj = acpi_evaluate_dsm(handle, &acpi_cxl_qtg_id_guid, 1, 1, &in_obj);
+> +	if (!out_obj)
+> +		return ERR_PTR(-ENXIO);
+> +
+> +	if (out_obj->type != ACPI_TYPE_PACKAGE) {
+> +		rc = -ENXIO;
+> +		goto err;
+> +	}
+> +
+> +	/*
+> +	 * CXL spec v3.0 9.17.3.1
+> +	 * There should be 2 elements in the package. 1 WORD for max QTG ID supported
+> +	 * by the platform, and the other a package of recommended QTGs
+> +	 */
+> +	if (out_obj->package.count != 2) {
+
+This stuff is usually designed to be extensible - tends to be explicitly allowed in
+stuff in the ACPI spec (not mentioned AFAICT in the CXL spec).  So I'd be tempted to allow
+> 2 just don't read them.
+
+	if (out_obj->package.count < 2) {
+> +		rc = -ENXIO;
+> +		goto err;
+> +	}
+> +
+> +	pkg = &out_obj->package.elements[1];
+> +	if (pkg->type != ACPI_TYPE_PACKAGE) {
+> +		rc = -ENXIO;
+> +		goto err;
+> +	}
+> +
+> +	out_buf = &pkg->package.elements[0];
+> +	if (out_buf->type != ACPI_TYPE_BUFFER) {
+> +		rc = -ENXIO;
+> +		goto err;
+> +	}
+> +
+> +	len = out_buf->buffer.length;
+> +	output = kmalloc(len + sizeof(*output), GFP_KERNEL);
+> +	if (!output) {
+> +		rc = -ENOMEM;
+> +		goto err;
+> +	}
+> +
+> +	/* It's legal to have 0 QTG entries */
+> +	if (len == 0) {
+> +		output->nr = 0;
+> +		goto out;
+> +	}
+> +
+> +	/* Malformed package, not multiple of WORD size */
+> +	if (len % sizeof(u16)) {
+> +		rc = -ENXIO;
+> +		goto out;
+> +	}
+> +
+> +	output->nr = len / sizeof(u16);
+> +	memcpy(output->qtg_ids, out_buf->buffer.pointer, len);
+
+Worth checking them against Max Support QTG ID as provided in the
+outer package?  Obviously if they are greater than that there is
+a bug, but meh.
+
+> +out:
+> +	ACPI_FREE(out_obj);
+> +	return output;
+> +
+> +err:
+> +	ACPI_FREE(out_obj);
+> +	return ERR_PTR(rc);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cxl_acpi_evaluate_qtg_dsm, CXL);
+> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+> index 849b22236f1d..e70df07f9b4b 100644
+> --- a/drivers/cxl/cxl.h
+> +++ b/drivers/cxl/cxl.h
+> @@ -719,6 +719,21 @@ int cdat_table_parse_dslbis(void *table, cdat_tbl_entry_handler handler,
+>  int cxl_dsmas_parse_entry(struct acpi_cdat_header *header, void *arg);
+>  int cxl_dslbis_parse_entry(struct acpi_cdat_header *header, void *arg);
+>  
+> +struct qtg_dsm_input {
+> +	u32 rd_lat;
+> +	u32 wr_lat;
+> +	u32 rd_bw;
+> +	u32 wr_bw;
+> +};
+> +
+> +struct qtg_dsm_output {
+> +	int nr;
+> +	u16 qtg_ids[];
+> +};
+> +
+> +struct qtg_dsm_output *cxl_acpi_evaluate_qtg_dsm(acpi_handle handle,
+> +						 struct qtg_dsm_input *input);
+> +
+>  /*
+>   * Unit test builds overrides this to __weak, find the 'strong' version
+>   * of these symbols in tools/testing/cxl/.
+> 
+> 
+
