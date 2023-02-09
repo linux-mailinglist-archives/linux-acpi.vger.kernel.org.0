@@ -2,191 +2,345 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB62A690D2F
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Feb 2023 16:41:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CE4C690F0E
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Feb 2023 18:20:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231419AbjBIPlJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Feb 2023 10:41:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53400 "EHLO
+        id S230020AbjBIRU0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Feb 2023 12:20:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231449AbjBIPlI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Feb 2023 10:41:08 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BA425A91F;
-        Thu,  9 Feb 2023 07:41:03 -0800 (PST)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4PCLdf5Mccz6J9gH;
-        Thu,  9 Feb 2023 23:39:34 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.17; Thu, 9 Feb
- 2023 15:41:00 +0000
-Date:   Thu, 9 Feb 2023 15:41:00 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Dave Jiang <dave.jiang@intel.com>
-CC:     <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <dan.j.williams@intel.com>,
-        <ira.weiny@intel.com>, <vishal.l.verma@intel.com>,
-        <alison.schofield@intel.com>, <rafael@kernel.org>,
-        <bhelgaas@google.com>, <robert.moore@intel.com>
-Subject: Re: [PATCH 18/18] cxl: Export sysfs attributes for device QTG IDs
-Message-ID: <20230209154100.0000059d@Huawei.com>
-In-Reply-To: <167571672370.587790.13206197631776290440.stgit@djiang5-mobl3.local>
-References: <167571650007.587790.10040913293130712882.stgit@djiang5-mobl3.local>
-        <167571672370.587790.13206197631776290440.stgit@djiang5-mobl3.local>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S229535AbjBIRUZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Feb 2023 12:20:25 -0500
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DEE266EE2;
+        Thu,  9 Feb 2023 09:20:22 -0800 (PST)
+Received: by mail-ej1-f49.google.com with SMTP id jg8so8493773ejc.6;
+        Thu, 09 Feb 2023 09:20:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SG57mmjbhYM9BoWm4xrmekyB95oyr1WzNADHth4u0ww=;
+        b=hy3E1ccZY+Es6JJlmSTJJY69CBsn21AsA6GXKACqh1Pp3PRtlvFNMfyUU0bepbc1l+
+         IrvNwWyTepiLerYFcfhjBW04e7kViyRJqDDJZqUfA2MqfJae80yXI3pgQUnMALnRSL1a
+         7ZxUZiRScM+oswVrhgYSeMt6RZlPgvWSu6G5CAGKSXb7G6NdgUu9uKj1jO/0RuCVaRDr
+         NY2UJsGMoecRp0/yEuI19YpAu3TPRFLIn+QtX0hpzGpi6y9zzj5o4gT4X/QYtZJuqUnm
+         YEODh5tcLtoj8xwVJNSDKsli2t6ItQfXbk1Ocea3X4JIAtvPTHDtXwJbHqQETY2XGt6O
+         nVFQ==
+X-Gm-Message-State: AO0yUKWGZ9z51ymmsCRdoKj6eHmW4cRKKxJhE74URJc1T0NB0kiewrYV
+        0mEtF/V+coUSLCabNJ9xT27pupWpOTGgSCQq/wbXXFSI
+X-Google-Smtp-Source: AK7set9/epi6aGjnzUjZBaflcdyFzbY1I678+DIpPRrxqACZtfk0BDo3xPUOCgcyTHrlYNPj4+/So2NAQebIe77PfAY=
+X-Received: by 2002:a17:906:ce2e:b0:87f:575a:9b67 with SMTP id
+ sd14-20020a170906ce2e00b0087f575a9b67mr2855368ejb.274.1675963220768; Thu, 09
+ Feb 2023 09:20:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230131130041.629-1-petr.pavlu@suse.com>
+In-Reply-To: <20230131130041.629-1-petr.pavlu@suse.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 9 Feb 2023 18:20:09 +0100
+Message-ID: <CAJZ5v0gptfbwPzXCosXKb3H3Hqu0p_PiPORA_RhGcJvteVBnYw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: cpufreq: use a platform device to load ACPI PPC and
+ PCC drivers
+To:     Petr Pavlu <petr.pavlu@suse.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, viresh.kumar@linaro.org,
+        pmladek@suse.com, mcgrof@kernel.org, linux-acpi@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 06 Feb 2023 13:52:05 -0700
-Dave Jiang <dave.jiang@intel.com> wrote:
+On Tue, Jan 31, 2023 at 2:01 PM Petr Pavlu <petr.pavlu@suse.com> wrote:
+>
+> The acpi-cpufreq and pcc-cpufreq drivers are loaded through per-CPU
+> module aliases. This can result in many unnecessary load requests during
+> boot if another frequency module, such as intel_pstate, is already
+> active. For instance, on a typical Intel system, one can observe that
+> udev makes 2x#CPUs attempts to insert acpi_cpufreq and 1x#CPUs attempts
+> for pcc_cpufreq. All these tries then fail if another frequency module
+> is already registered.
 
-> Export qtg_id sysfs attributes for the respective ram and pmem DPA range of
-> a CXL device. The QTG ID should show up as
-> /sys/bus/cxl/devices/memX/pmem/qtg_id for pmem or as
-> /sys/bus/cxl/devices/memX/ram/qtg_id for ram.
+Right, which is unnecessary overhead.
 
-This doesn't extend to devices with say multiple DSMAS regions
-for RAM with different access characteristics.  Think of a device
-with HBM and DDR for example, or a mix of DDR4 and DDR5.
+> Both acpi-cpufreq and pcc-cpufreq drivers have their platform firmware
+> interface defined by ACPI. Allowed performance states and parameters
+> must be same for each CPU.
 
-Once we are dealing with memory pools of significant size there
-are very likely to be DPA regions with different characteristics.
+This is an assumption made by the code in those drivers, the
+specification doesn't actually require this IIRC.
 
-So minimum I'd suggest is leave space for an ABI that might look like.
+> This makes it possible to model these
+> interfaces as platform devices.
+>
+> The patch extends the ACPI parsing logic to check the ACPI namespace if
+> the PPC or PCC interface is present and creates a virtual platform
+> device for each if it is available. The acpi-cpufreq and pcc-cpufreq
+> drivers are then updated to map to these devices.
+>
+> This allows to try loading acpi-cpufreq and pcc-cpufreq only once during
+> boot and only if a given interface is available in the firmware.
 
-mem/range0_qtg_id
-mem/range1_qtg_id
-mem/range0_base
-mem/range0_length
-mem/range1_base
-mem/range1_length
-etc but with the flexibility to not present the rangeX_base/length stuff if there
-is only one presented.  For now just present the range0_qtg_id
+This is clever, but will it always work?
 
-I'm fine if you want to implement multiple ranges from the start though.
-
-As with previous ABI patch, I'd like to see a little description in the patch
-header of what this stuff is for as well.  Obvious to some of us perhaps, but
-better to call it out for anyone who is wondering why userspace needs to know.
-
-I'm guessing you have a nice QEMU patch adding the DSM etc?
-
-Thanks,
-
-Jonathan
-
-
-> 
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+> Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
 > ---
->  Documentation/ABI/testing/sysfs-bus-cxl |   15 +++++++++++++++
->  drivers/cxl/core/memdev.c               |   26 ++++++++++++++++++++++++++
->  2 files changed, 41 insertions(+)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-cxl b/Documentation/ABI/testing/sysfs-bus-cxl
-> index 0932c2f6fbf4..8133a13e118d 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-cxl
-> +++ b/Documentation/ABI/testing/sysfs-bus-cxl
-> @@ -27,6 +27,14 @@ Description:
->  		identically named field in the Identify Memory Device Output
->  		Payload in the CXL-2.0 specification.
->  
-> +What:		/sys/bus/cxl/devices/memX/ram/qtg_id
-> +Date:		January, 2023
-> +KernelVersion:	v6.3
-> +Contact:	linux-cxl@vger.kernel.org
-> +Description:
-> +		(RO) Shows calculated QoS Throttling Group ID for the
-> +		"Volatile Only Capacity" DPA range.
+>  drivers/acpi/Makefile          |  1 +
+>  drivers/acpi/acpi_cpufreq.c    | 49 ++++++++++++++++++++++++++++++++++
+>  drivers/acpi/bus.c             |  1 +
+>  drivers/acpi/internal.h        |  2 ++
+>  drivers/cpufreq/acpi-cpufreq.c | 39 +++++++++++++++------------
+>  drivers/cpufreq/pcc-cpufreq.c  | 34 ++++++++++++++++-------
+>  6 files changed, 99 insertions(+), 27 deletions(-)
+>  create mode 100644 drivers/acpi/acpi_cpufreq.c
+>
+> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+> index feb36c0b9446..880db1082c3e 100644
+> --- a/drivers/acpi/Makefile
+> +++ b/drivers/acpi/Makefile
+> @@ -57,6 +57,7 @@ acpi-y                                += evged.o
+>  acpi-y                         += sysfs.o
+>  acpi-y                         += property.o
+>  acpi-$(CONFIG_X86)             += acpi_cmos_rtc.o
+> +acpi-$(CONFIG_X86)             += acpi_cpufreq.o
+>  acpi-$(CONFIG_X86)             += x86/apple.o
+>  acpi-$(CONFIG_X86)             += x86/utils.o
+>  acpi-$(CONFIG_X86)             += x86/s2idle.o
+> diff --git a/drivers/acpi/acpi_cpufreq.c b/drivers/acpi/acpi_cpufreq.c
+> new file mode 100644
+> index 000000000000..7cf243c67475
+> --- /dev/null
+> +++ b/drivers/acpi/acpi_cpufreq.c
+> @@ -0,0 +1,49 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Registration of platform devices for ACPI Processor Performance Control and
+> + * Processor Clocking Control.
+> + */
 > +
->  
->  What:		/sys/bus/cxl/devices/memX/pmem/size
->  Date:		December, 2020
-> @@ -37,6 +45,13 @@ Description:
->  		identically named field in the Identify Memory Device Output
->  		Payload in the CXL-2.0 specification.
->  
-> +What:		/sys/bus/cxl/devices/memX/pmem/qtg_id
-> +Date:		January, 2023
-> +KernelVersion:	v6.3
-> +Contact:	linux-cxl@vger.kernel.org
-> +Description:
-> +		(RO) Shows calculated QoS Throttling Group ID for the
-> +		"Persistent Only Capacity" DPA range.
->  
->  What:		/sys/bus/cxl/devices/memX/serial
->  Date:		January, 2022
-> diff --git a/drivers/cxl/core/memdev.c b/drivers/cxl/core/memdev.c
-> index a74a93310d26..06f9ac929ef4 100644
-> --- a/drivers/cxl/core/memdev.c
-> +++ b/drivers/cxl/core/memdev.c
-> @@ -76,6 +76,18 @@ static ssize_t ram_size_show(struct device *dev, struct device_attribute *attr,
->  static struct device_attribute dev_attr_ram_size =
->  	__ATTR(size, 0444, ram_size_show, NULL);
->  
-> +static ssize_t ram_qtg_id_show(struct device *dev, struct device_attribute *attr,
-> +			       char *buf)
+> +#include <linux/acpi.h>
+> +#include <linux/platform_device.h>
+> +
+> +#include "internal.h"
+> +
+> +static void __init cpufreq_add_device(const char *name)
 > +{
-> +	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
-> +	struct cxl_dev_state *cxlds = cxlmd->cxlds;
+> +       struct platform_device *pdev;
 > +
-> +	return sysfs_emit(buf, "%d\n", cxlds->ram_qtg_id);
+> +       pdev = platform_device_register_simple(name, PLATFORM_DEVID_NONE, NULL,
+> +                                              0);
+> +       if (IS_ERR(pdev))
+> +               pr_err("%s device creation failed: %ld\n", name, PTR_ERR(pdev));
 > +}
 > +
-> +static struct device_attribute dev_attr_ram_qtg_id =
-> +	__ATTR(qtg_id, 0444, ram_qtg_id_show, NULL);
-> +
->  static ssize_t pmem_size_show(struct device *dev, struct device_attribute *attr,
->  			      char *buf)
->  {
-> @@ -89,6 +101,18 @@ static ssize_t pmem_size_show(struct device *dev, struct device_attribute *attr,
->  static struct device_attribute dev_attr_pmem_size =
->  	__ATTR(size, 0444, pmem_size_show, NULL);
->  
-> +static ssize_t pmem_qtg_id_show(struct device *dev, struct device_attribute *attr,
-> +				char *buf)
+> +static acpi_status __init acpi_pct_match(acpi_handle handle, u32 level,
+> +                                        void *context, void **return_value)
 > +{
-> +	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
-> +	struct cxl_dev_state *cxlds = cxlmd->cxlds;
+> +       bool *pct = context;
 > +
-> +	return sysfs_emit(buf, "%d\n", cxlds->pmem_qtg_id);
+> +       /* Check if the first CPU has _PCT. The data must be same for all. */
+> +       *pct = acpi_has_method(handle, "_PCT");
+> +       return AE_CTRL_TERMINATE;
 > +}
 > +
-> +static struct device_attribute dev_attr_pmem_qtg_id =
-> +	__ATTR(qtg_id, 0444, pmem_qtg_id_show, NULL);
+> +void __init acpi_cpufreq_init(void)
+> +{
+> +       acpi_status status;
+> +       acpi_handle handle;
+> +       bool pct = false;
 > +
->  static ssize_t serial_show(struct device *dev, struct device_attribute *attr,
->  			   char *buf)
->  {
-> @@ -117,11 +141,13 @@ static struct attribute *cxl_memdev_attributes[] = {
->  
->  static struct attribute *cxl_memdev_pmem_attributes[] = {
->  	&dev_attr_pmem_size.attr,
-> +	&dev_attr_pmem_qtg_id.attr,
->  	NULL,
->  };
->  
->  static struct attribute *cxl_memdev_ram_attributes[] = {
->  	&dev_attr_ram_size.attr,
-> +	&dev_attr_ram_qtg_id.attr,
->  	NULL,
->  };
->  
-> 
-> 
+> +       status = acpi_get_handle(NULL, "\\_SB", &handle);
+> +       if (ACPI_FAILURE(status))
+> +               return;
+> +
+> +       acpi_walk_namespace(ACPI_TYPE_PROCESSOR, ACPI_ROOT_OBJECT,
+> +                           ACPI_UINT32_MAX, acpi_pct_match, NULL, &pct, NULL);
 
+Well, one more full ACPI Namespace walk at init time.
+
+Also, this only covers processor objects and what about processor
+device objects?
+
+> +       if (pct)
+> +               cpufreq_add_device("acpi-cpufreq");
+> +
+> +       if (acpi_has_method(handle, "PCCH"))
+> +               cpufreq_add_device("pcc-cpufreq");
+> +}
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index 0c05ccde1f7a..f1559e26d5ff 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -1428,6 +1428,7 @@ static int __init acpi_init(void)
+>         acpi_viot_init();
+>         acpi_agdi_init();
+>         acpi_apmt_init();
+> +       acpi_cpufreq_init();
+>         return 0;
+>  }
+>
+> diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+> index ec584442fb29..c9b1a5f689fa 100644
+> --- a/drivers/acpi/internal.h
+> +++ b/drivers/acpi/internal.h
+> @@ -157,8 +157,10 @@ static inline void acpi_early_processor_set_pdc(void) {}
+>
+>  #ifdef CONFIG_X86
+>  void acpi_early_processor_osc(void);
+> +void acpi_cpufreq_init(void);
+>  #else
+>  static inline void acpi_early_processor_osc(void) {}
+> +static inline void acpi_cpufreq_init(void) {}
+>  #endif
+>
+>  /* --------------------------------------------------------------------------
+> diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
+> index 78adfb2ffff6..e1a5384cf21c 100644
+> --- a/drivers/cpufreq/acpi-cpufreq.c
+> +++ b/drivers/cpufreq/acpi-cpufreq.c
+> @@ -965,7 +965,7 @@ static void __init acpi_cpufreq_boost_init(void)
+>         acpi_cpufreq_driver.boost_enabled = boost_state(0);
+>  }
+>
+> -static int __init acpi_cpufreq_init(void)
+> +static int __init acpi_cpufreq_probe(struct platform_device *pdev)
+>  {
+>         int ret;
+>
+> @@ -1010,13 +1010,32 @@ static int __init acpi_cpufreq_init(void)
+>         return ret;
+>  }
+>
+> -static void __exit acpi_cpufreq_exit(void)
+> +static int acpi_cpufreq_remove(struct platform_device *pdev)
+>  {
+>         pr_debug("%s\n", __func__);
+>
+>         cpufreq_unregister_driver(&acpi_cpufreq_driver);
+>
+>         free_acpi_perf_data();
+> +
+> +       return 0;
+> +}
+> +
+> +static struct platform_driver acpi_cpufreq_platdrv = {
+> +       .driver = {
+> +               .name   = "acpi-cpufreq",
+> +       },
+> +       .remove         = acpi_cpufreq_remove,
+> +};
+> +
+> +static int __init acpi_cpufreq_init(void)
+> +{
+> +       return platform_driver_probe(&acpi_cpufreq_platdrv, acpi_cpufreq_probe);
+> +}
+> +
+> +static void __exit acpi_cpufreq_exit(void)
+> +{
+> +       platform_driver_unregister(&acpi_cpufreq_platdrv);
+>  }
+>
+>  module_param(acpi_pstate_strict, uint, 0644);
+> @@ -1027,18 +1046,4 @@ MODULE_PARM_DESC(acpi_pstate_strict,
+>  late_initcall(acpi_cpufreq_init);
+>  module_exit(acpi_cpufreq_exit);
+>
+> -static const struct x86_cpu_id __maybe_unused acpi_cpufreq_ids[] = {
+> -       X86_MATCH_FEATURE(X86_FEATURE_ACPI, NULL),
+> -       X86_MATCH_FEATURE(X86_FEATURE_HW_PSTATE, NULL),
+> -       {}
+> -};
+> -MODULE_DEVICE_TABLE(x86cpu, acpi_cpufreq_ids);
+> -
+> -static const struct acpi_device_id __maybe_unused processor_device_ids[] = {
+> -       {ACPI_PROCESSOR_OBJECT_HID, },
+> -       {ACPI_PROCESSOR_DEVICE_HID, },
+> -       {},
+> -};
+> -MODULE_DEVICE_TABLE(acpi, processor_device_ids);
+> -
+> -MODULE_ALIAS("acpi");
+> +MODULE_ALIAS("platform:acpi-cpufreq");
+> diff --git a/drivers/cpufreq/pcc-cpufreq.c b/drivers/cpufreq/pcc-cpufreq.c
+> index 9f3fc7a073d0..0c362932ca60 100644
+> --- a/drivers/cpufreq/pcc-cpufreq.c
+> +++ b/drivers/cpufreq/pcc-cpufreq.c
+> @@ -384,7 +384,7 @@ static int __init pcc_cpufreq_do_osc(acpi_handle *handle)
+>         return ret;
+>  }
+>
+> -static int __init pcc_cpufreq_probe(void)
+> +static int __init pcc_cpufreq_evaluate(void)
+>  {
+>         acpi_status status;
+>         struct acpi_buffer output = {ACPI_ALLOCATE_BUFFER, NULL};
+> @@ -576,7 +576,7 @@ static struct cpufreq_driver pcc_cpufreq_driver = {
+>         .name = "pcc-cpufreq",
+>  };
+>
+> -static int __init pcc_cpufreq_init(void)
+> +static int __init pcc_cpufreq_probe(struct platform_device *pdev)
+>  {
+>         int ret;
+>
+> @@ -587,9 +587,9 @@ static int __init pcc_cpufreq_init(void)
+>         if (acpi_disabled)
+>                 return -ENODEV;
+>
+> -       ret = pcc_cpufreq_probe();
+> +       ret = pcc_cpufreq_evaluate();
+>         if (ret) {
+> -               pr_debug("pcc_cpufreq_init: PCCH evaluation failed\n");
+> +               pr_debug("pcc_cpufreq_probe: PCCH evaluation failed\n");
+>                 return ret;
+>         }
+>
+> @@ -607,21 +607,35 @@ static int __init pcc_cpufreq_init(void)
+>         return ret;
+>  }
+>
+> -static void __exit pcc_cpufreq_exit(void)
+> +static int pcc_cpufreq_remove(struct platform_device *pdev)
+>  {
+>         cpufreq_unregister_driver(&pcc_cpufreq_driver);
+>
+>         pcc_clear_mapping();
+>
+>         free_percpu(pcc_cpu_info);
+> +
+> +       return 0;
+>  }
+>
+> -static const struct acpi_device_id __maybe_unused processor_device_ids[] = {
+> -       {ACPI_PROCESSOR_OBJECT_HID, },
+> -       {ACPI_PROCESSOR_DEVICE_HID, },
+> -       {},
+> +static struct platform_driver pcc_cpufreq_platdrv = {
+> +       .driver = {
+> +               .name   = "pcc-cpufreq",
+> +       },
+> +       .remove         = pcc_cpufreq_remove,
+>  };
+> -MODULE_DEVICE_TABLE(acpi, processor_device_ids);
+> +
+> +static int __init pcc_cpufreq_init(void)
+> +{
+> +       return platform_driver_probe(&pcc_cpufreq_platdrv, pcc_cpufreq_probe);
+> +}
+> +
+> +static void __exit pcc_cpufreq_exit(void)
+> +{
+> +       platform_driver_unregister(&pcc_cpufreq_platdrv);
+> +}
+> +
+> +MODULE_ALIAS("platform:pcc-cpufreq");
+>
+>  MODULE_AUTHOR("Matthew Garrett, Naga Chumbalkar");
+>  MODULE_VERSION(PCC_VERSION);
+> --
