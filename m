@@ -2,143 +2,237 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1412F6915B0
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Feb 2023 01:40:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 022C7691A2D
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Feb 2023 09:43:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230029AbjBJAjw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Feb 2023 19:39:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34794 "EHLO
+        id S231549AbjBJInQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Feb 2023 03:43:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229674AbjBJAjv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Feb 2023 19:39:51 -0500
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 325AD677A1;
-        Thu,  9 Feb 2023 16:39:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675989565; x=1707525565;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=PXyJgNPvZehyPMk+XcL+100g+1+DfTr5lbVyZtp1LCE=;
-  b=OwKZ2s60vWs8F/dath/+Fqt6hQ3Tpxu7FxK2qa8lacLeBAECvKeBbL5Z
-   xqlBd3Bp5+gJrsCn4pPxDuHO9qPgHeR9vVXF12wZv+hiCZdJzguai3lVk
-   Zp17n6VvpKxIQ+ykXJ/kQr9xiZPUChEvDzEcbkdhyzF46Z+2DjeAUNUwQ
-   sfQOznoa3+T+APRiiGxZ+nWM11W9KevAXTLVz6KVlUPMgTStT1u558NWL
-   p79QSKJk0WPsHGblkdgYkxRq2Xpxxqb9HvdaYzgvKuTVhZsWAPFsEVGz3
-   q+HoSoMImOEXKfgZ+JEzdXoavM+OiXPYhsr5oqt6xIPJDjTNt3ffkCyMf
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10616"; a="310656960"
-X-IronPort-AV: E=Sophos;i="5.97,285,1669104000"; 
-   d="scan'208";a="310656960"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2023 16:37:29 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10616"; a="756606662"
-X-IronPort-AV: E=Sophos;i="5.97,285,1669104000"; 
-   d="scan'208";a="756606662"
-Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 09 Feb 2023 16:37:13 -0800
-Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pQHPc-0005PK-1M;
-        Fri, 10 Feb 2023 00:37:12 +0000
-Date:   Fri, 10 Feb 2023 08:36:59 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-        devel@acpica.org, linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge 209/212] drivers/cpuidle/driver.c:187:
- undefined reference to `__divdi3'
-Message-ID: <202302100849.6RI86Ten-lkp@intel.com>
+        with ESMTP id S231559AbjBJInP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Feb 2023 03:43:15 -0500
+Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57567448F
+        for <linux-acpi@vger.kernel.org>; Fri, 10 Feb 2023 00:43:13 -0800 (PST)
+Received: by mail-io1-xd35.google.com with SMTP id y2so1685137iot.4
+        for <linux-acpi@vger.kernel.org>; Fri, 10 Feb 2023 00:43:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=bZdTaoQdI84eQVm+vowEVZgNB1qPoT93d6+CHcz4blI=;
+        b=iyvEHGe6/7SbWqRS09KX0I+WywD0bnenAZGLlHm5sfjEHyNlDI4l22hm+KQEtrgKZE
+         R1fXVtPTQCsz8siZwhwpUvt+AwDA7Np2E63V//ExCV+a0C3BJUGbXnV4efB3gR+9zt2h
+         qlR2l5eyXw1krz28H+TQq+pLLfQ0HzyhMAQcU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bZdTaoQdI84eQVm+vowEVZgNB1qPoT93d6+CHcz4blI=;
+        b=AnUfhRcwpdRzwT3XwZhd5AAHiMiY/PyKH4pxWyiZILesgkW/zFqynlFsGBSso89Bh4
+         nimMIW0GyVLP2qR6p5rdQ6YGphrEikVLVVdsQjmfnhl/ymdWlO5Fp3uZPrNw99ZHEp14
+         CKPEERKivJ62avP4EhiFhQxkOgAyh3vL84uwf98c7IBzcgxKZ5MOnFNUjOnPz8vSvdPw
+         Cmx/45cLVZgsqPIdPzQFYUNKUV25B/VKuWAQO3H32SlUWS6+m8Dr1hfrSJ8QMQsz0G9h
+         HaZwcr9rqyPI28mMWNyMVglcr53hfmpA/U9T4IHH+IQ6oTB9t0V+bc9u/501WKIiVcny
+         kQwQ==
+X-Gm-Message-State: AO0yUKVDN/7dMFBzdpoSf2RKMvm78n9ztZ2bhL+dCW/gz222HrATO+Fr
+        b8WeK9t9GFEyHc7X73EnxrSOR836YzfKHpKuhJwtjg==
+X-Google-Smtp-Source: AK7set/VfS77SYvoCBXeLjVPuFwQjPzNpXxw20gUzrrgPUaIYOvSb9+5aL4Cd9lr+FCStNinLRHbmx9wj26VQvZpD4w=
+X-Received: by 2002:a05:6602:348:b0:6de:383e:4146 with SMTP id
+ w8-20020a056602034800b006de383e4146mr7976471iou.48.1676018592711; Fri, 10 Feb
+ 2023 00:43:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230204133040.1236799-1-treapking@chromium.org>
+ <20230204133040.1236799-8-treapking@chromium.org> <20230207205221.GA4121517-robh@kernel.org>
+ <CAEXTbpf5KqH7zev+kooUmz2DiMya-53UmvAMJfcOYcm7CCDthQ@mail.gmail.com> <CAL_JsqJ35gJnpwfOtW8jQP2RmzJtLG2YdTC6dt7pf-GjJggORw@mail.gmail.com>
+In-Reply-To: <CAL_JsqJ35gJnpwfOtW8jQP2RmzJtLG2YdTC6dt7pf-GjJggORw@mail.gmail.com>
+From:   Pin-yen Lin <treapking@chromium.org>
+Date:   Fri, 10 Feb 2023 16:43:01 +0800
+Message-ID: <CAEXTbpcoS6us6Qz4UmdR8zC7n-euLQr25dv4Hg2JkqVL2pX5LA@mail.gmail.com>
+Subject: Re: [PATCH v11 7/9] dt-bindings: display: bridge: it6505: Add
+ mode-switch support
+To:     Rob Herring <robh@kernel.org>
+Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <robert.foss@linaro.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        linux-kernel@vger.kernel.org,
+        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
+        <nfraprado@collabora.com>, Hsin-Yi Wang <hsinyi@chromium.org>,
+        devicetree@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
+        Lyude Paul <lyude@redhat.com>, linux-acpi@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
+        Xin Ji <xji@analogixsemi.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        chrome-platform@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-head:   ccf0090d0435abab1a8c84e595802e88ad90b357
-commit: de375f9c854a136822d5409a92d4efb57ac65e32 [209/212] cpuidle: driver: Update microsecond values of state parameters as needed
-config: i386-randconfig-a001 (https://download.01.org/0day-ci/archive/20230210/202302100849.6RI86Ten-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-8) 11.3.0
-reproduce (this is a W=1 build):
-        # https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?id=de375f9c854a136822d5409a92d4efb57ac65e32
-        git remote add rafael-pm https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
-        git fetch --no-tags rafael-pm bleeding-edge
-        git checkout de375f9c854a136822d5409a92d4efb57ac65e32
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        make W=1 O=build_dir ARCH=i386 olddefconfig
-        make W=1 O=build_dir ARCH=i386 SHELL=/bin/bash
+On Thu, Feb 9, 2023 at 9:58 PM Rob Herring <robh@kernel.org> wrote:
+>
+> On Wed, Feb 8, 2023 at 10:00 PM Pin-yen Lin <treapking@chromium.org> wrote:
+> >
+> > Hi Rob,
+> >
+> > Thanks for the review.
+> >
+> > On Wed, Feb 8, 2023 at 4:52 AM Rob Herring <robh@kernel.org> wrote:
+> > >
+> > > On Sat, Feb 04, 2023 at 09:30:38PM +0800, Pin-yen Lin wrote:
+> > > > ITE IT6505 can be used in systems to switch the DP traffic between
+> > > > two downstreams, which can be USB Type-C DisplayPort alternate mode
+> > > > lane or regular DisplayPort output ports.
+> > > >
+> > > > Update the binding to accommodate this usage by introducing a
+> > > > data-lanes and a mode-switch property on endpoints.
+> > > >
+> > > > Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+> > > >
+> > > > ---
+> > > >
+> > > > Changes in v11:
+> > > > - Updated the description of the endpoints in the bindings
+> > > > - Referenced video-interfaces.yaml instead for the endpoints binding
+> > > > - Removed duplicated definitions from inherited schema
+> > > >
+> > > > Changes in v9:
+> > > > - Fixed subject prefix again
+> > > > - Changed the naming of the example node for it6505
+> > > >
+> > > > Changes in v8:
+> > > > - Updated bindings for data-lanes property
+> > > > - Fixed subject prefix
+> > > >
+> > > > Changes in v7:
+> > > > - Fixed issues reported by dt_binding_check.
+> > > > - Updated the schema and the example dts for data-lanes.
+> > > > - Changed to generic naming for the example dts node.
+> > > >
+> > > > Changes in v6:
+> > > > - Remove switches node and use endpoints and data-lanes property to
+> > > >   describe the connections.
+> > > >
+> > > >  .../bindings/display/bridge/ite,it6505.yaml   | 101 +++++++++++++++---
+> > > >  1 file changed, 88 insertions(+), 13 deletions(-)
+> > > >
+> > > > diff --git a/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml b/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
+> > > > index b16a9d9127dd..8ae9c5cba22c 100644
+> > > > --- a/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
+> > > > +++ b/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
+> > > > @@ -75,22 +75,49 @@ properties:
+> > > >        port@1:
+> > > >          $ref: /schemas/graph.yaml#/$defs/port-base
+> > > >          unevaluatedProperties: false
+> > > > -        description: Video port for DP output
+> > > > +        description:
+> > > > +          Video port for DP output. Each endpoint connects to a video output
+> > > > +          downstream, and the "data-lanes" property is used to describe the pin
+> > > > +          connections. 0, 1, 2, 3 in "data-lanes" maps to TX0, TX1, TX2, TX3,
+> > > > +          respectively.
+> > > >
+> > > > -        properties:
+> > > > -          endpoint:
+> > > > -            $ref: /schemas/graph.yaml#/$defs/endpoint-base
+> > > > +
+> > > > +        patternProperties:
+> > > > +          "^endpoint@[01]$":
+> > > > +            $ref: /schemas/media/video-interfaces.yaml#
+> > > >              unevaluatedProperties: false
+> > > >
+> > > >              properties:
+> > > > +              reg: true
+> > > > +
+> > > > +              remote-endpoint: true
+> > > > +
+> > > >                data-lanes:
+> > > > -                minItems: 1
+> > > > -                uniqueItems: true
+> > > > -                items:
+> > > > -                  - enum: [ 0, 1 ]
+> > > > -                  - const: 1
+> > > > -                  - const: 2
+> > > > -                  - const: 3
+> > > > +                oneOf:
+> > > > +                  - items:
+> > > > +                      - enum: [0, 1, 2, 3]
+> > > > +
+> > > > +                  - items:
+> > > > +                      - const: 0
+> > > > +                      - const: 1
+> > > > +
+> > > > +                  - items:
+> > > > +                      - const: 2
+> > > > +                      - const: 3
+> > > > +
+> > > > +                  - items:
+> > > > +                      - const: 0
+> > > > +                      - const: 1
+> > > > +                      - const: 2
+> > > > +                      - const: 3
+> > > > +
+> > > > +              mode-switch:
+> > > > +                type: boolean
+> > > > +                description: Register this node as a Type-C mode switch or not.
+> > >
+> > > Existing users put this property in the device's node, not the endpoint.
+> > > That seems more like a property of the device, than the DP link.
+> >
+> > In our use case, we want to register two mode switches for the same
+> > device. That's why we put the "mode-switch" property in the endpoints
+> > instead of the device node.
+>
+> Then do that. Register a mode switch for each endpoint connected to a
+> USB-C connector. You can walk the graph to see what type of connector.
+>
+> The only way I could see this as an issue is you have 2 USB-C
+> connectors and one is a mode switch and one is not. Not sure if such a
+> scenario is likely or possible. If it is, please educate me.
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202302100849.6RI86Ten-lkp@intel.com/
+We can know which endpoints should be registered as a MUX by walking
+through the graph, but the typec_mux_match[1] checks if the node
+explicitly specifies a "mode-switch" property. So we still have to put
+the property in the endpoints.
 
-All errors (new ones prefixed by >>):
+[1]: https://elixir.bootlin.com/linux/latest/source/drivers/usb/typec/mux.c#L265
+>
+> > > You are using fwnode_typec_mux_get(), right?
+> >
+> > Yes. This is called by cros_ec_typec.c[1] in our use case.
+>
+> That code looks for 'mode-switch' in the device's node, not the
+> endpoint. So how does it work for you?
 
-   ld: drivers/cpuidle/driver.o: in function `__cpuidle_driver_init':
->> drivers/cpuidle/driver.c:187: undefined reference to `__divdi3'
->> ld: drivers/cpuidle/driver.c:194: undefined reference to `__divdi3'
+We modified the function in patch 1/9 of this series to make it also
+look for endpoints.
+>
+> Rob
 
-
-vim +187 drivers/cpuidle/driver.c
-
-   149	
-   150	/**
-   151	 * __cpuidle_driver_init - initialize the driver's internal data
-   152	 * @drv: a valid pointer to a struct cpuidle_driver
-   153	 */
-   154	static void __cpuidle_driver_init(struct cpuidle_driver *drv)
-   155	{
-   156		int i;
-   157	
-   158		/*
-   159		 * Use all possible CPUs as the default, because if the kernel boots
-   160		 * with some CPUs offline and then we online one of them, the CPU
-   161		 * notifier has to know which driver to assign.
-   162		 */
-   163		if (!drv->cpumask)
-   164			drv->cpumask = (struct cpumask *)cpu_possible_mask;
-   165	
-   166		for (i = 0; i < drv->state_count; i++) {
-   167			struct cpuidle_state *s = &drv->states[i];
-   168	
-   169			/*
-   170			 * Look for the timer stop flag in the different states and if
-   171			 * it is found, indicate that the broadcast timer has to be set
-   172			 * up.
-   173			 */
-   174			if (s->flags & CPUIDLE_FLAG_TIMER_STOP)
-   175				drv->bctimer = 1;
-   176	
-   177			/*
-   178			 * The core will use the target residency and exit latency
-   179			 * values in nanoseconds, but allow drivers to provide them in
-   180			 * microseconds too.
-   181			 */
-   182			if (s->target_residency > 0)
-   183				s->target_residency_ns = s->target_residency * NSEC_PER_USEC;
-   184			else if (s->target_residency_ns < 0)
-   185				s->target_residency_ns = 0;
-   186			else
- > 187				s->target_residency = s->target_residency_ns / NSEC_PER_USEC;
-   188	
-   189			if (s->exit_latency > 0)
-   190				s->exit_latency_ns = s->exit_latency * NSEC_PER_USEC;
-   191			else if (s->exit_latency_ns < 0)
-   192				s->exit_latency_ns =  0;
-   193			else
- > 194				s->exit_latency = s->exit_latency_ns / NSEC_PER_USEC;
-   195		}
-   196	}
-   197	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Regards,
+Pin-yen
