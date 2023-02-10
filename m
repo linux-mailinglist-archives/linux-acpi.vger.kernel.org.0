@@ -2,146 +2,143 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9920569155F
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Feb 2023 01:30:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1412F6915B0
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Feb 2023 01:40:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229775AbjBJAak (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Feb 2023 19:30:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51048 "EHLO
+        id S230029AbjBJAjw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Feb 2023 19:39:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229762AbjBJAaj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Feb 2023 19:30:39 -0500
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5E5C125A4;
-        Thu,  9 Feb 2023 16:30:37 -0800 (PST)
-Received: by mail-pg1-x52f.google.com with SMTP id s8so2678534pgg.11;
-        Thu, 09 Feb 2023 16:30:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=j/k0erUD/kDhxh7/K7OwX/bqJpwb0bJwB0iaNCFMZK4=;
-        b=m45PZQvJM/hD/Xj9vlTDu7tBQyIzoAKV+Ug121N7xEPFN7JnwalygRfN9Deee662VD
-         1QVbr7FN2GjKS80HHKfM2VRvvS5Vumhqz4Q+X5SC3+HRHqlG8a7QYMW60YZ5vMmXuVWT
-         Whj682Dxwd3DP/j9rmnilydYjFYDO78yDRgj3f2c7t5Yh9pLdW/rRTvgu6ytHpVWH4Bp
-         WyfwWCyWVkyOkZzxzrnyvN21unxPk7gjxu9VkavwgK4rgme7Roz1XT+g6ILjuGTvn1Ca
-         djNyiDLTeCH+LIzJyxsFu0Lca5uXhw3bVHkTtzSaYa2Z8GkE/XD13cpHeodi0b9EwBno
-         w3Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j/k0erUD/kDhxh7/K7OwX/bqJpwb0bJwB0iaNCFMZK4=;
-        b=imNCB5YEGb78LKNyU+wzeL/H1iYwWxeAuK2mArDGOf8lHLPeMjSO63NSt9NtamWke7
-         Zcr1OXH1HLFVaFBBU4wfpjEbQ/UYisapCy9S7MDHXPPkQ41ZpA2n4YVxkNzwqs+x2Yl5
-         /Ue9tX/AmGog2dcdokrZz+QskLqzb7mKVUb0/8lxxMBR4TbDi3D7hlinmqCba2HwZbPe
-         BsCI7girFxG8nsN3PkftaAkfmvcB8i+YOOo5k4yo5JRYX9aa6jdjQZeDLgaU7EjOK9Lq
-         r6X5u/8V9dgrfGMv2nfAhhGzLJZmsQhX9879r/5XEJwW2rsavEqo2QUXmcVq7kDphFzz
-         wpAA==
-X-Gm-Message-State: AO0yUKWUstSy+4URxhLVCpX38XSe2jM5U1EZo/Lv9PIW/6ovqAysQb8h
-        En0lN9dqQExrKBxM//3uyGU=
-X-Google-Smtp-Source: AK7set8J843VCb5Swh1of6p2yfW1raUVGGmO4Q3S+xAJAvwl45nss0avFGNhPNql2c/P0j9nxUjhIg==
-X-Received: by 2002:aa7:9e42:0:b0:5a8:5424:d13a with SMTP id z2-20020aa79e42000000b005a85424d13amr3990100pfq.11.1675989036714;
-        Thu, 09 Feb 2023 16:30:36 -0800 (PST)
-Received: from google.com ([2620:15c:9d:2:4b3d:5db5:694e:89d0])
-        by smtp.gmail.com with ESMTPSA id e24-20020aa78c58000000b005815217e665sm392161pfd.65.2023.02.09.16.30.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Feb 2023 16:30:35 -0800 (PST)
-Date:   Thu, 9 Feb 2023 16:30:29 -0800
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
-        Devarsh Thakkar <devarsht@ti.com>,
-        Michael Walle <michael@walle.cc>,
-        Dipen Patel <dipenp@nvidia.com>,
-        Thierry Reding <treding@nvidia.com>,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Lee Jones <lee@kernel.org>, linux-gpio@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-doc-tw-discuss@lists.sourceforge.net,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-arch@vger.kernel.org,
-        devicetree@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jonathan Corbet <corbet@lwn.net>, Alex Shi <alexs@kernel.org>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Hu Haowen <src.res@email.cn>,
-        Russell King <linux@armlinux.org.uk>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Mun Yew Tham <mun.yew.tham@intel.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alexander Aring <alex.aring@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>
-Subject: Re: [PATCH v4 08/18] gpiolib: remove gpio_set_debounce()
-Message-ID: <Y+WQJTsdeZeAEs/S@google.com>
-References: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com>
- <20230208173343.37582-9-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S229674AbjBJAjv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Feb 2023 19:39:51 -0500
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 325AD677A1;
+        Thu,  9 Feb 2023 16:39:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675989565; x=1707525565;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=PXyJgNPvZehyPMk+XcL+100g+1+DfTr5lbVyZtp1LCE=;
+  b=OwKZ2s60vWs8F/dath/+Fqt6hQ3Tpxu7FxK2qa8lacLeBAECvKeBbL5Z
+   xqlBd3Bp5+gJrsCn4pPxDuHO9qPgHeR9vVXF12wZv+hiCZdJzguai3lVk
+   Zp17n6VvpKxIQ+ykXJ/kQr9xiZPUChEvDzEcbkdhyzF46Z+2DjeAUNUwQ
+   sfQOznoa3+T+APRiiGxZ+nWM11W9KevAXTLVz6KVlUPMgTStT1u558NWL
+   p79QSKJk0WPsHGblkdgYkxRq2Xpxxqb9HvdaYzgvKuTVhZsWAPFsEVGz3
+   q+HoSoMImOEXKfgZ+JEzdXoavM+OiXPYhsr5oqt6xIPJDjTNt3ffkCyMf
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10616"; a="310656960"
+X-IronPort-AV: E=Sophos;i="5.97,285,1669104000"; 
+   d="scan'208";a="310656960"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2023 16:37:29 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10616"; a="756606662"
+X-IronPort-AV: E=Sophos;i="5.97,285,1669104000"; 
+   d="scan'208";a="756606662"
+Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 09 Feb 2023 16:37:13 -0800
+Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pQHPc-0005PK-1M;
+        Fri, 10 Feb 2023 00:37:12 +0000
+Date:   Fri, 10 Feb 2023 08:36:59 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
+        devel@acpica.org, linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge 209/212] drivers/cpuidle/driver.c:187:
+ undefined reference to `__divdi3'
+Message-ID: <202302100849.6RI86Ten-lkp@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230208173343.37582-9-andriy.shevchenko@linux.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 08, 2023 at 07:33:33PM +0200, Andy Shevchenko wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> gpio_set_debounce() only has a single user, which is trivially
-> converted to gpiod_set_debounce().
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+head:   ccf0090d0435abab1a8c84e595802e88ad90b357
+commit: de375f9c854a136822d5409a92d4efb57ac65e32 [209/212] cpuidle: driver: Update microsecond values of state parameters as needed
+config: i386-randconfig-a001 (https://download.01.org/0day-ci/archive/20230210/202302100849.6RI86Ten-lkp@intel.com/config)
+compiler: gcc-11 (Debian 11.3.0-8) 11.3.0
+reproduce (this is a W=1 build):
+        # https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?id=de375f9c854a136822d5409a92d4efb57ac65e32
+        git remote add rafael-pm https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
+        git fetch --no-tags rafael-pm bleeding-edge
+        git checkout de375f9c854a136822d5409a92d4efb57ac65e32
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        make W=1 O=build_dir ARCH=i386 olddefconfig
+        make W=1 O=build_dir ARCH=i386 SHELL=/bin/bash
 
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202302100849.6RI86Ten-lkp@intel.com/
 
-Thanks.
+All errors (new ones prefixed by >>):
+
+   ld: drivers/cpuidle/driver.o: in function `__cpuidle_driver_init':
+>> drivers/cpuidle/driver.c:187: undefined reference to `__divdi3'
+>> ld: drivers/cpuidle/driver.c:194: undefined reference to `__divdi3'
+
+
+vim +187 drivers/cpuidle/driver.c
+
+   149	
+   150	/**
+   151	 * __cpuidle_driver_init - initialize the driver's internal data
+   152	 * @drv: a valid pointer to a struct cpuidle_driver
+   153	 */
+   154	static void __cpuidle_driver_init(struct cpuidle_driver *drv)
+   155	{
+   156		int i;
+   157	
+   158		/*
+   159		 * Use all possible CPUs as the default, because if the kernel boots
+   160		 * with some CPUs offline and then we online one of them, the CPU
+   161		 * notifier has to know which driver to assign.
+   162		 */
+   163		if (!drv->cpumask)
+   164			drv->cpumask = (struct cpumask *)cpu_possible_mask;
+   165	
+   166		for (i = 0; i < drv->state_count; i++) {
+   167			struct cpuidle_state *s = &drv->states[i];
+   168	
+   169			/*
+   170			 * Look for the timer stop flag in the different states and if
+   171			 * it is found, indicate that the broadcast timer has to be set
+   172			 * up.
+   173			 */
+   174			if (s->flags & CPUIDLE_FLAG_TIMER_STOP)
+   175				drv->bctimer = 1;
+   176	
+   177			/*
+   178			 * The core will use the target residency and exit latency
+   179			 * values in nanoseconds, but allow drivers to provide them in
+   180			 * microseconds too.
+   181			 */
+   182			if (s->target_residency > 0)
+   183				s->target_residency_ns = s->target_residency * NSEC_PER_USEC;
+   184			else if (s->target_residency_ns < 0)
+   185				s->target_residency_ns = 0;
+   186			else
+ > 187				s->target_residency = s->target_residency_ns / NSEC_PER_USEC;
+   188	
+   189			if (s->exit_latency > 0)
+   190				s->exit_latency_ns = s->exit_latency * NSEC_PER_USEC;
+   191			else if (s->exit_latency_ns < 0)
+   192				s->exit_latency_ns =  0;
+   193			else
+ > 194				s->exit_latency = s->exit_latency_ns / NSEC_PER_USEC;
+   195		}
+   196	}
+   197	
 
 -- 
-Dmitry
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
