@@ -2,60 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E98FD691AC0
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Feb 2023 10:06:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C9F1691AC1
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Feb 2023 10:06:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231774AbjBJJGQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Feb 2023 04:06:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39100 "EHLO
+        id S231883AbjBJJGZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Feb 2023 04:06:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231779AbjBJJFv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Feb 2023 04:05:51 -0500
+        with ESMTP id S231219AbjBJJF6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Feb 2023 04:05:58 -0500
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31E845FF4;
-        Fri, 10 Feb 2023 01:05:24 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26F9163585;
+        Fri, 10 Feb 2023 01:05:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676019924; x=1707555924;
-  h=subject:from:to:cc:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=aAOYbYjD+N5rIbj4yLf5cWdsbDyvwj1VTim/NDqe4VU=;
-  b=N9M1/N0syUZ/ijR4s/xbctWiKVwo+n7kdFCbOnpUjIBF/4w56a8JTSWm
-   DAEJStqukpqmNgtYP0sEavrb8qfNhN6KgvKdq+XbWoW24BaI3ZM7Fxuc8
-   0JMjlcKjK3R7ip/jXub3mmbVHaRFXv9FZi3P36Eb83coLLAipn9RNupqp
-   POHJ9ymBAUkdLpnXn7ZUa4qpLuAtDG8+ul1NdY4zAzRHlkomeqc7pS86T
-   NplHb2P+8FAvVPL93lmuQMmPXHKbcixE+9ivk44kr2gT4jmOQCe1L5TzK
-   qcGgPa355SH4ACyzngLr7WPVfJCpycDGXRIQjynqFtBdVZHcwkNVdREKN
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10616"; a="314018672"
+  t=1676019929; x=1707555929;
+  h=subject:from:to:cc:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=0DbfECaRxiOQUgGeyWMl1ZfzEksrLbe++d0Gmjbv5io=;
+  b=UWFGI2G9E/Z82lZhr7Rdg0UrxhlNk2JoBVMi1vRsNnewdRK/BOxv5zHW
+   DuN1IqbcSl39gOrxmZpgHr4ByB8wKeYnMU3L9fM/oduvdUTpkV4CCE6pR
+   HYo2r7+RFx9jER1h2ZE+TzFRBre9bAkPCVp9vtjby8t4z9pKIogAEECWm
+   Qyyy1OB2CRYfLbppTO5/u19bojnddC6XuyNrioqpRly9p4ricwGhaUQu1
+   zfS4B4/cFxVpJ4rC/d+F7M64NTQ5JHfBbfsQoMbcthXAUVx98RHewVcE+
+   ql8SmJvE6LW8OKvgSxH7mEWBD54rIdkFgA77+/FQOPqccdbvU9nx5hOa9
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10616"; a="314018692"
 X-IronPort-AV: E=Sophos;i="5.97,286,1669104000"; 
-   d="scan'208";a="314018672"
+   d="scan'208";a="314018692"
 Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2023 01:05:22 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10616"; a="736669673"
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2023 01:05:28 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10616"; a="736669726"
 X-IronPort-AV: E=Sophos;i="5.97,286,1669104000"; 
-   d="scan'208";a="736669673"
+   d="scan'208";a="736669726"
 Received: from hrchavan-mobl.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.209.46.42])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2023 01:05:22 -0800
-Subject: [PATCH v2 00/20] CXL RAM and the 'Soft Reserved' => 'System RAM'
- default
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2023 01:05:28 -0800
+Subject: [PATCH v2 01/20] cxl/memdev: Fix endpoint port removal
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     linux-cxl@vger.kernel.org
-Cc:     Ira Weiny <ira.weiny@intel.com>,
-        David Hildenbrand <david@redhat.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Kees Cook <keescook@chromium.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Michal Hocko <mhocko@suse.com>,
-        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Gregory Price <gregory.price@memverge.com>,
-        Fan Ni <fan.ni@samsung.com>, linux-mm@kvack.org,
-        linux-acpi@vger.kernel.org
-Date:   Fri, 10 Feb 2023 01:05:21 -0800
-Message-ID: <167601992097.1924368.18291887895351917895.stgit@dwillia2-xfh.jf.intel.com>
+Cc:     vishal.l.verma@intel.com, dave.hansen@linux.intel.com,
+        linux-mm@kvack.org, linux-acpi@vger.kernel.org
+Date:   Fri, 10 Feb 2023 01:05:27 -0800
+Message-ID: <167601992789.1924368.8083994227892600608.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <167601992097.1924368.18291887895351917895.stgit@dwillia2-xfh.jf.intel.com>
+References: <167601992097.1924368.18291887895351917895.stgit@dwillia2-xfh.jf.intel.com>
 User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -69,152 +59,174 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Changes since v1: [1]
-- Add a fix for memdev removal racing port removal (found by unit tests)
-- Add a fix to unwind region target list updates on error in
-  cxl_region_attach() (Jonathan)
-- Move the passthrough decoder fix for submission for v6.2-final (Greg)
-- Fix wrong initcall for cxl_core (Gregory and Davidlohr)
-- Add an endpoint decoder state (CXL_DECODER_STATE_AUTO) to replace
-  the flag CXL_DECODER_F_AUTO (Jonathan)
-- Reflow cmp_decode_pos() to reduce levels of indentation (Jonathan)
-- Fix a leaked reference count in cxl_add_to_region() (Jonathan)
-- Make cxl_add_to_region() return an error (Jonathan)
-- Fix several spurious whitespace changes (Jonathan)
-- Cleanup some spurious changes from the tools/testing/cxl update
-  (Jonathan)
-- Test for == CXL_CONFIG_COMMIT rather than >= CXL_CONFIG_COMMIT
-  (Jonathan)
-- Add comment to clarify device_attach() return code expectation in
-  cxl_add_to_region() (Jonathan)
-- Add a patch to split cxl_port_probe() into switch and endpoint port
-  probe calls (Jonathan)
-- Collect reviewed-by and tested-by tags
+Testing of ram region support [1], stimulates a long standing bug in
+cxl_detach_ep() where some cxl_ep_remove() cleanup is skipped due to
+inability to walk ports after dports have been unregistered. That
+results in a failure to re-register a memdev after the port is
+re-enabled leading to a crash like the following:
 
-[1]: http://lore.kernel.org/r/167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com
+    cxl_port_setup_targets: cxl region4: cxl_host_bridge.0:port4 iw: 1 ig: 256
+    general protection fault, ...
+    [..]
+    RIP: 0010:cxl_region_setup_targets+0x897/0x9e0 [cxl_core]
+    dev_name at include/linux/device.h:700
+    (inlined by) cxl_port_setup_targets at drivers/cxl/core/region.c:1155
+    (inlined by) cxl_region_setup_targets at drivers/cxl/core/region.c:1249
+    [..]
+    Call Trace:
+     <TASK>
+     attach_target+0x39a/0x760 [cxl_core]
+     ? __mutex_unlock_slowpath+0x3a/0x290
+     cxl_add_to_region+0xb8/0x340 [cxl_core]
+     ? lockdep_hardirqs_on+0x7d/0x100
+     discover_region+0x4b/0x80 [cxl_port]
+     ? __pfx_discover_region+0x10/0x10 [cxl_port]
+     device_for_each_child+0x58/0x90
+     cxl_port_probe+0x10e/0x130 [cxl_port]
+     cxl_bus_probe+0x17/0x50 [cxl_core]
 
+Change the port ancestry walk to be by depth rather than by dport. This
+ensures that even if a port has unregistered its dports a deferred
+memdev cleanup will still be able to cleanup the memdev's interest in
+that port.
+
+The parent_port->dev.driver check is only needed for determining if the
+bottom up removal beat the top-down removal, but cxl_ep_remove() can
+always proceed.
+
+Fixes: 2703c16c75ae ("cxl/core/port: Add switch port enumeration")
+Link: http://lore.kernel.org/r/167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com [1]
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
-Cover letter same as v1
+ drivers/cxl/core/memdev.c |    1 +
+ drivers/cxl/core/port.c   |   58 +++++++++++++++++++++++++--------------------
+ drivers/cxl/cxlmem.h      |    2 ++
+ 3 files changed, 35 insertions(+), 26 deletions(-)
 
-Summary:
---------
+diff --git a/drivers/cxl/core/memdev.c b/drivers/cxl/core/memdev.c
+index a74a93310d26..3a8bc2b06047 100644
+--- a/drivers/cxl/core/memdev.c
++++ b/drivers/cxl/core/memdev.c
+@@ -246,6 +246,7 @@ static struct cxl_memdev *cxl_memdev_alloc(struct cxl_dev_state *cxlds,
+ 	if (rc < 0)
+ 		goto err;
+ 	cxlmd->id = rc;
++	cxlmd->depth = -1;
+ 
+ 	dev = &cxlmd->dev;
+ 	device_initialize(dev);
+diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+index 410c036c09fa..317bcf4dbd9d 100644
+--- a/drivers/cxl/core/port.c
++++ b/drivers/cxl/core/port.c
+@@ -1207,6 +1207,7 @@ int cxl_endpoint_autoremove(struct cxl_memdev *cxlmd, struct cxl_port *endpoint)
+ 
+ 	get_device(&endpoint->dev);
+ 	dev_set_drvdata(dev, endpoint);
++	cxlmd->depth = endpoint->depth;
+ 	return devm_add_action_or_reset(dev, delete_endpoint, cxlmd);
+ }
+ EXPORT_SYMBOL_NS_GPL(cxl_endpoint_autoremove, CXL);
+@@ -1241,50 +1242,55 @@ static void reap_dports(struct cxl_port *port)
+ 	}
+ }
+ 
++struct detach_ctx {
++	struct cxl_memdev *cxlmd;
++	int depth;
++};
++
++static int port_has_memdev(struct device *dev, const void *data)
++{
++	const struct detach_ctx *ctx = data;
++	struct cxl_port *port;
++
++	if (!is_cxl_port(dev))
++		return 0;
++
++	port = to_cxl_port(dev);
++	if (port->depth != ctx->depth)
++		return 0;
++
++	return !!cxl_ep_load(port, ctx->cxlmd);
++}
++
+ static void cxl_detach_ep(void *data)
+ {
+ 	struct cxl_memdev *cxlmd = data;
+-	struct device *iter;
+ 
+-	for (iter = &cxlmd->dev; iter; iter = grandparent(iter)) {
+-		struct device *dport_dev = grandparent(iter);
++	for (int i = cxlmd->depth - 1; i >= 1; i--) {
+ 		struct cxl_port *port, *parent_port;
++		struct detach_ctx ctx = {
++			.cxlmd = cxlmd,
++			.depth = i,
++		};
++		struct device *dev;
+ 		struct cxl_ep *ep;
+ 		bool died = false;
+ 
+-		if (!dport_dev)
+-			break;
+-
+-		port = find_cxl_port(dport_dev, NULL);
+-		if (!port)
+-			continue;
+-
+-		if (is_cxl_root(port)) {
+-			put_device(&port->dev);
++		dev = bus_find_device(&cxl_bus_type, NULL, &ctx,
++				      port_has_memdev);
++		if (!dev)
+ 			continue;
+-		}
++		port = to_cxl_port(dev);
+ 
+ 		parent_port = to_cxl_port(port->dev.parent);
+ 		device_lock(&parent_port->dev);
+-		if (!parent_port->dev.driver) {
+-			/*
+-			 * The bottom-up race to delete the port lost to a
+-			 * top-down port disable, give up here, because the
+-			 * parent_port ->remove() will have cleaned up all
+-			 * descendants.
+-			 */
+-			device_unlock(&parent_port->dev);
+-			put_device(&port->dev);
+-			continue;
+-		}
+-
+ 		device_lock(&port->dev);
+ 		ep = cxl_ep_load(port, cxlmd);
+ 		dev_dbg(&cxlmd->dev, "disconnect %s from %s\n",
+ 			ep ? dev_name(ep->ep) : "", dev_name(&port->dev));
+ 		cxl_ep_remove(port, ep);
+ 		if (ep && !port->dead && xa_empty(&port->endpoints) &&
+-		    !is_cxl_root(parent_port)) {
++		    !is_cxl_root(parent_port) && parent_port->dev.driver) {
+ 			/*
+ 			 * This was the last ep attached to a dynamically
+ 			 * enumerated port. Block new cxl_add_ep() and garbage
+diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
+index ab138004f644..c9da3c699a21 100644
+--- a/drivers/cxl/cxlmem.h
++++ b/drivers/cxl/cxlmem.h
+@@ -38,6 +38,7 @@
+  * @cxl_nvb: coordinate removal of @cxl_nvd if present
+  * @cxl_nvd: optional bridge to an nvdimm if the device supports pmem
+  * @id: id number of this memdev instance.
++ * @depth: endpoint port depth
+  */
+ struct cxl_memdev {
+ 	struct device dev;
+@@ -47,6 +48,7 @@ struct cxl_memdev {
+ 	struct cxl_nvdimm_bridge *cxl_nvb;
+ 	struct cxl_nvdimm *cxl_nvd;
+ 	int id;
++	int depth;
+ };
+ 
+ static inline struct cxl_memdev *to_cxl_memdev(struct device *dev)
 
-CXL RAM support allows for the dynamic provisioning of new CXL RAM
-regions, and more routinely, assembling a region from an existing
-configuration established by platform-firmware. The latter is motivated
-by CXL memory RAS (Reliability, Availability and Serviceability)
-support, that requires associating device events with System Physical
-Address ranges and vice versa.
-
-The 'Soft Reserved' policy rework arranges for performance
-differentiated memory like CXL attached DRAM, or high-bandwidth memory,
-to be designated for 'System RAM' by default, rather than the device-dax
-dedicated access mode. That current device-dax default is confusing and
-surprising for the Pareto of users that do not expect memory to be
-quarantined for dedicated access by default. Most users expect all
-'System RAM'-capable memory to show up in FREE(1).
-
-
-Details:
---------
-
-Recall that the Linux 'Soft Reserved' designation for memory is a
-reaction to platform-firmware, like EFI EDK2, delineating memory with
-the EFI Specific Purpose Memory attribute (EFI_MEMORY_SP). An
-alternative way to think of that attribute is that it specifies the
-*not* general-purpose memory pool. It is memory that may be too precious
-for general usage or not performant enough for some hot data structures.
-However, in the absence of explicit policy it should just be 'System
-RAM' by default.
-
-Rather than require every distribution to ship a udev policy to assign
-dax devices to dax_kmem (the device-memory hotplug driver) just make
-that the kernel default. This is similar to the rationale in:
-
-commit 8604d9e534a3 ("memory_hotplug: introduce CONFIG_MEMORY_HOTPLUG_DEFAULT_ONLINE")
-
-With this change the relatively niche use case of accessing this memory
-via mapping a device-dax instance can be achieved by building with
-CONFIG_MEMORY_HOTPLUG_DEFAULT_ONLINE=n, or specifying
-memhp_default_state=offline at boot, and then use:
-
-    daxctl reconfigure-device $device -m devdax --force
-
-...to shift the corresponding address range to device-dax access.
-
-The process of assembling a device-dax instance for a given CXL region
-device configuration is similar to the process of assembling a
-Device-Mapper or MDRAID storage-device array. Specifically, asynchronous
-probing by the PCI and driver core enumerates all CXL endpoints and
-their decoders. Then, once enough decoders have arrived to a describe a
-given region, that region is passed to the device-dax subsystem where it
-is subject to the above 'dax_kmem' policy. This assignment and policy
-choice is only possible if memory is set aside by the 'Soft Reserved'
-designation. Otherwise, CXL that is mapped as 'System RAM' becomes
-immutable by CXL driver mechanisms, but is still enumerated for RAS
-purposes.
-
-This series is also available via:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl.git/log/?h=for-6.3/cxl-ram-region
-
-...and has gone through some preview testing in various forms.
-
----
-
-Dan Williams (20):
-      cxl/memdev: Fix endpoint port removal
-      cxl/Documentation: Update references to attributes added in v6.0
-      cxl/region: Add a mode attribute for regions
-      cxl/region: Support empty uuids for non-pmem regions
-      cxl/region: Validate region mode vs decoder mode
-      cxl/region: Add volatile region creation support
-      cxl/region: Refactor attach_target() for autodiscovery
-      cxl/region: Cleanup target list on attach error
-      cxl/region: Move region-position validation to a helper
-      kernel/range: Uplevel the cxl subsystem's range_contains() helper
-      cxl/region: Enable CONFIG_CXL_REGION to be toggled
-      cxl/port: Split endpoint and switch port probe
-      cxl/region: Add region autodiscovery
-      tools/testing/cxl: Define a fixed volatile configuration to parse
-      dax/hmem: Move HMAT and Soft reservation probe initcall level
-      dax/hmem: Drop unnecessary dax_hmem_remove()
-      dax/hmem: Convey the dax range via memregion_info()
-      dax/hmem: Move hmem device registration to dax_hmem.ko
-      dax: Assign RAM regions to memory-hotplug by default
-      cxl/dax: Create dax devices for CXL RAM regions
-
-
- Documentation/ABI/testing/sysfs-bus-cxl |   64 +-
- MAINTAINERS                             |    1 
- drivers/acpi/numa/hmat.c                |    4 
- drivers/cxl/Kconfig                     |   12 
- drivers/cxl/acpi.c                      |    3 
- drivers/cxl/core/core.h                 |    7 
- drivers/cxl/core/hdm.c                  |   25 +
- drivers/cxl/core/memdev.c               |    1 
- drivers/cxl/core/pci.c                  |    5 
- drivers/cxl/core/port.c                 |   92 ++-
- drivers/cxl/core/region.c               |  851 ++++++++++++++++++++++++++++---
- drivers/cxl/cxl.h                       |   57 ++
- drivers/cxl/cxlmem.h                    |    5 
- drivers/cxl/port.c                      |  113 +++-
- drivers/dax/Kconfig                     |   17 +
- drivers/dax/Makefile                    |    2 
- drivers/dax/bus.c                       |   53 +-
- drivers/dax/bus.h                       |   12 
- drivers/dax/cxl.c                       |   53 ++
- drivers/dax/device.c                    |    3 
- drivers/dax/hmem/Makefile               |    3 
- drivers/dax/hmem/device.c               |  102 ++--
- drivers/dax/hmem/hmem.c                 |  148 +++++
- drivers/dax/kmem.c                      |    1 
- include/linux/dax.h                     |    7 
- include/linux/memregion.h               |    2 
- include/linux/range.h                   |    5 
- lib/stackinit_kunit.c                   |    6 
- tools/testing/cxl/test/cxl.c            |  147 +++++
- 29 files changed, 1484 insertions(+), 317 deletions(-)
- create mode 100644 drivers/dax/cxl.c
-
-base-commit: 172738bbccdb4ef76bdd72fc72a315c741c39161
