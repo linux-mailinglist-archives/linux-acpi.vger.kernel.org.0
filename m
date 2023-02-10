@@ -2,98 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CA36692395
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Feb 2023 17:46:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E265D6923F4
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Feb 2023 18:05:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232445AbjBJQqq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Feb 2023 11:46:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57630 "EHLO
+        id S232878AbjBJRFm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Feb 2023 12:05:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231680AbjBJQqp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Feb 2023 11:46:45 -0500
-Received: from srv6.fidu.org (srv6.fidu.org [159.69.62.71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5481A212A9;
-        Fri, 10 Feb 2023 08:46:43 -0800 (PST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by srv6.fidu.org (Postfix) with ESMTP id D4885C800A2;
-        Fri, 10 Feb 2023 17:46:40 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        tuxedocomputers.com; h=content-transfer-encoding:mime-version
-        :x-mailer:message-id:date:date:subject:subject:from:from; s=
-        default; t=1676047600; x=1677862001; bh=lj97MTYeLUXW3JItQJS6lNK9
-        mm2JV8JsthYXirBOGx8=; b=JuM4kqBvklfLXluBBfWLjKv1niL1TfQWHYfbihPU
-        UJz3nZfg6xwJE8ow7Fz2sDabohr6Cnyyn4kkEEzVeUIrd08Kms7rgt/Hgcgv+nnp
-        oCAstjE93qjfoXMGpf8S0PBe2F9c0qODJws5uxzuqGalkWkP21EEXWmL4hTkHhGv
-        ZFw=
-X-Virus-Scanned: Debian amavisd-new at srv6.fidu.org
-Received: from srv6.fidu.org ([127.0.0.1])
-        by localhost (srv6.fidu.org [127.0.0.1]) (amavisd-new, port 10026)
-        with LMTP id 7xQoZMhkBKNk; Fri, 10 Feb 2023 17:46:40 +0100 (CET)
-Received: from wsembach-tuxedo.fritz.box (host-88-217-226-44.customer.m-online.net [88.217.226.44])
-        (Authenticated sender: wse@tuxedocomputers.com)
-        by srv6.fidu.org (Postfix) with ESMTPA id 18BC0C8009D;
-        Fri, 10 Feb 2023 17:46:40 +0100 (CET)
-From:   Werner Sembach <wse@tuxedocomputers.com>
-To:     mika.westerberg@linux.intel.com, andriy.shevchenko@linux.intel.com,
-        linus.walleij@linaro.org, brgl@bgdev.pl,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] gpiolib: acpi: Add a ignore wakeup quirk for Clevo NH5xAx
-Date:   Fri, 10 Feb 2023 17:46:36 +0100
-Message-Id: <20230210164636.628462-1-wse@tuxedocomputers.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S232860AbjBJRFl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Feb 2023 12:05:41 -0500
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F8D671031;
+        Fri, 10 Feb 2023 09:05:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676048740; x=1707584740;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+kVL093vuqMy/XSj3eiI+5YfoBG6X1O8lTOOxXMxMQI=;
+  b=n9QZDxcPuqQf5FwQOGXStJ5NVLSSU6uMwoXRbRbHN0y6eBbHLbXeyINf
+   Nov//lyDlVVijnw+8vDOhgC4n+SsemLuri1ueTSg4HHPwCU6beuK9huDq
+   /YK4Cg3pK56uZilLfvhsX6rW27PwBt+qg2y+nZ7Sop8Gg1cGg9qOLHDhn
+   ndUCgAs44MAnvOyclDm9HjQFAjy9zPUzYlVnzBPPpXMb7ioHtUOqzUuCo
+   aPQv7YJ6R5G9EndblP50V+gPzOuEqbrQx6e8SfN7FbyT3YqfmgNHcsJHH
+   xwcaqti7ModylVVCsNbGDHZ3BjslvK4i3l4uU7ASRAebuoZGVIP7le4sm
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="328158465"
+X-IronPort-AV: E=Sophos;i="5.97,287,1669104000"; 
+   d="scan'208";a="328158465"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2023 09:05:02 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="700537280"
+X-IronPort-AV: E=Sophos;i="5.97,287,1669104000"; 
+   d="scan'208";a="700537280"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001.jf.intel.com with ESMTP; 10 Feb 2023 09:04:59 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pQWpV-0058Qb-2k;
+        Fri, 10 Feb 2023 19:04:57 +0200
+Date:   Fri, 10 Feb 2023 19:04:57 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Werner Sembach <wse@tuxedocomputers.com>
+Cc:     mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
+        brgl@bgdev.pl, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] gpiolib: acpi: Add a ignore wakeup quirk for Clevo NH5xAx
+Message-ID: <Y+Z5OSa6hepQBOyc@smile.fi.intel.com>
+References: <20230210164636.628462-1-wse@tuxedocomputers.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230210164636.628462-1-wse@tuxedocomputers.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
-changed the policy such that I2C touchpads may be able to wake up the
-system by default if the system is configured as such.
+On Fri, Feb 10, 2023 at 05:46:36PM +0100, Werner Sembach wrote:
+> commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+> changed the policy such that I2C touchpads may be able to wake up the
+> system by default if the system is configured as such.
+> 
+> However on Clevo NH5xAx/TUXEDO XA15 Gen10 there is a mistake in the ACPI
+> tables that the TP_ATTN# signal connected to GPIO 10 is configured as
+> ActiveLow and level triggered but connected to a pull up.
 
-However on Clevo NH5xAx/TUXEDO XA15 Gen10 there is a mistake in the ACPI
-tables that the TP_ATTN# signal connected to GPIO 10 is configured as
-ActiveLow and level triggered but connected to a pull up. As soon as the
-system suspends the touchpad loses power and then the system wakes up.
+I'm not sure I understand the issue here. From what you say here it seems
+correct ACPI description.
 
-To avoid this problem, introduce a quirk for this model that will prevent
-the wakeup capability for being set for GPIO 10.
+> As soon as the
+> system suspends the touchpad loses power and then the system wakes up.
+> 
+> To avoid this problem, introduce a quirk for this model that will prevent
+> the wakeup capability for being set for GPIO 10.
 
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org # v6.1+
----
- drivers/gpio/gpiolib-acpi.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+I'm not against fixing this, but wouldn't be better to actually target the root
+cause and have a different quirk? Or is it me who didn't get what is the root
+cause?
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index e2ab4d5253bea..82e8e43582eba 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -1612,6 +1612,18 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
- 			.ignore_wake = "ELAN0415:00@9",
- 		},
- 	},
-+	{
-+		/*
-+		 * Spurious wakeups from TP_ATTN# pin
-+		 * Found in BIOS 1.7.7
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "NH5xAx"),
-+		},
-+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-+			.ignore_wake = "SYNA1202:00@16",
-+		},
-+	},
- 	{} /* Terminating entry */
- };
- 
 -- 
-2.34.1
+With Best Regards,
+Andy Shevchenko
+
 
