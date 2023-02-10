@@ -2,93 +2,208 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E00E5691CBB
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Feb 2023 11:32:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 617C46920C5
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Feb 2023 15:25:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232002AbjBJKcK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Feb 2023 05:32:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47314 "EHLO
+        id S231954AbjBJOZm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Feb 2023 09:25:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232000AbjBJKcK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Feb 2023 05:32:10 -0500
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6179E6D608;
-        Fri, 10 Feb 2023 02:32:09 -0800 (PST)
-X-IronPort-AV: E=McAfee;i="6500,9779,10616"; a="318403729"
-X-IronPort-AV: E=Sophos;i="5.97,286,1669104000"; 
-   d="scan'208";a="318403729"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2023 02:32:08 -0800
+        with ESMTP id S232285AbjBJOZl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Feb 2023 09:25:41 -0500
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CD8772DCE;
+        Fri, 10 Feb 2023 06:25:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676039140; x=1707575140;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=H1SqrmLgHpUvGFFELx6jqQvyWcxoiuwisvwOptrdSDQ=;
+  b=VbpJJ/V4aX/4qTKnJAV64XzJtovLhZRJwKwRMygnS6ERnXEB39G0Gbng
+   YFb+yQTJ0/iQwIefSwZ2BXHllOaghLEcIfPRmNwhFpwQhkJ4vIkGgSOHa
+   /4kCrZsoYvezPpcGUBRwGSnermXWntfZRLYV18ISKEC1bWZg8EtZkz6kr
+   R8yY+0n5nuPhr/BRVwL39mnufLG09Ph3RsbxxfQxWj10V1ZcXy0/6hKrp
+   IGsLLLJLepTRywiyMV41NMgF/vmmBd3rwJ937hEdaRuRmvps+EFBAYYPN
+   MnDz96if1hx55tQ2xTtX/pJ2+rnwsh0IoCxccddY91DPHK60EA8AsqA7X
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="332568596"
+X-IronPort-AV: E=Sophos;i="5.97,287,1669104000"; 
+   d="scan'208";a="332568596"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2023 06:25:39 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10616"; a="668011981"
-X-IronPort-AV: E=Sophos;i="5.97,286,1669104000"; 
-   d="scan'208";a="668011981"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga002.jf.intel.com with ESMTP; 10 Feb 2023 02:32:07 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andy.shevchenko@gmail.com>)
-        id 1pQQhJ-0050Uk-1b;
-        Fri, 10 Feb 2023 12:32:05 +0200
-Date:   Fri, 10 Feb 2023 12:32:05 +0200
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-To:     Asmaa Mnebhi <asmaa@nvidia.com>
-Cc:     "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "bgolaszewski@baylibre.com" <bgolaszewski@baylibre.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v2 0/2] Add NVIDIA BlueField-3 GPIO driver and pin
- controller
-Message-ID: <Y+YdJdkToTAcvCDt@smile.fi.intel.com>
-References: <20230208185714.27313-1-asmaa@nvidia.com>
- <CAHp75Vf7FcAvSwLPWj4OfnJ61iXy7TAFFzTAq_8b9VXeyCfBFg@mail.gmail.com>
- <CH2PR12MB3895C873B4381A88636A0EABD7D99@CH2PR12MB3895.namprd12.prod.outlook.com>
- <CAHp75VfVJ8B1d+gSi6WJw9guJBUkaJwH1yU7N7FpJ-DtL_L6Rg@mail.gmail.com>
+X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="617897494"
+X-IronPort-AV: E=Sophos;i="5.97,287,1669104000"; 
+   d="scan'208";a="617897494"
+Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 10 Feb 2023 06:25:37 -0800
+Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pQULI-0005q5-2V;
+        Fri, 10 Feb 2023 14:25:36 +0000
+Date:   Fri, 10 Feb 2023 22:25:17 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD REGRESSION
+ ccf0090d0435abab1a8c84e595802e88ad90b357
+Message-ID: <63e653cd.T/LKpgkWdE5RDfio%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHp75VfVJ8B1d+gSi6WJw9guJBUkaJwH1yU7N7FpJ-DtL_L6Rg@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
-        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_SOFTFAIL
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,LONGWORDS,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Feb 10, 2023 at 12:15:15PM +0200, Andy Shevchenko wrote:
-> On Fri, Feb 10, 2023 at 12:48 AM Asmaa Mnebhi <asmaa@nvidia.com> wrote:
-> 
-> First of all, do not top-post!
-> 
-> > Thank you for your response. I was just going to contact you regarding this. I successfully sent these patches to you, Linus and Bartosz while they failed to get delivered to the "*.kernel.org" emails below:
-> > linux-gpio@vger.kernel.org;
-> > linux-kernel@vger.kernel.org;
-> > linux-acpi@vger.kernel.org
-> >
-> > Have these emails changed?
-> 
-> No, but you need to work with your company's IT to understand what's
-> going on. Your mails are only available privately and not in the
-> archives on lore.kernel.org. This is an issue and I'm not going to
-> comment on something that was not in public.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: ccf0090d0435abab1a8c84e595802e88ad90b357  Merge branch 'acpi-cppc' into bleeding-edge
 
-To illustrate what I'm talking about:
+Error/Warning reports:
 
-https://lore.kernel.org/linux-gpio/CACRpkdZ_sPCa+Q6MWUKj1ytCe5AxTp--bMmbRTUfsNO0kZTMpQ@mail.gmail.com/T/#t
+https://lore.kernel.org/oe-kbuild-all/202302100849.6RI86Ten-lkp@intel.com
 
+Error/Warning: (recently discovered and may have been fixed)
 
-> > These patches don't have much in common with gpio-mlxbf or gpio-mlxbf2 because the hardware registers and logic have changed across generations. The only similar code between gpio-mlxbf2.c and gpio-mlxbf3.c is the irq handling.
-> 
-> I see, don't forget to put it in the cover letter for the next version
-> (you will send it when you will be sure that emails are going to the
-> kernel.org archives).
+arm-linux-gnueabi-ld: driver.c:(.text+0x214): undefined reference to `__aeabi_ldivmod'
+arm-linux-gnueabi-ld: driver.c:(.text+0x370): undefined reference to `__aeabi_ldivmod'
+driver.c:(.text+0x11c): undefined reference to `__aeabi_ldivmod'
+driver.c:(.text+0x23a): undefined reference to `__divdi3'
+driver.c:(.text+0x240): undefined reference to `__divdi3'
+driver.c:(.text+0x281): undefined reference to `__divdi3'
+driver.c:(.text+0x2e0): undefined reference to `__aeabi_ldivmod'
+drivers/cpuidle/driver.c:187: undefined reference to `__divdi3'
+ld.lld: error: undefined symbol: __udivdi3
+ld: driver.c:(.text+0x266): undefined reference to `__divdi3'
+ld: driver.c:(.text+0x2ac): undefined reference to `__divdi3'
+ld: drivers/cpuidle/driver.c:194: undefined reference to `__divdi3'
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- arm-allmodconfig
+|   |-- arm-linux-gnueabi-ld:driver.c:(.text):undefined-reference-to-__aeabi_ldivmod
+|   `-- driver.c:(.text):undefined-reference-to-__aeabi_ldivmod
+|-- arm-defconfig
+|   |-- arm-linux-gnueabi-ld:driver.c:(.text):undefined-reference-to-__aeabi_ldivmod
+|   `-- driver.c:(.text):undefined-reference-to-__aeabi_ldivmod
+|-- i386-allyesconfig
+|   |-- driver.c:(.text):undefined-reference-to-__divdi3
+|   `-- ld:driver.c:(.text):undefined-reference-to-__divdi3
+|-- i386-debian-10.3
+|   |-- drivers-cpuidle-driver.c:undefined-reference-to-__divdi3
+|   `-- ld:drivers-cpuidle-driver.c:undefined-reference-to-__divdi3
+|-- i386-defconfig
+|   |-- driver.c:(.text):undefined-reference-to-__divdi3
+|   `-- ld:driver.c:(.text):undefined-reference-to-__divdi3
+|-- i386-randconfig-a001
+|   |-- drivers-cpuidle-driver.c:undefined-reference-to-__divdi3
+|   `-- ld:drivers-cpuidle-driver.c:undefined-reference-to-__divdi3
+|-- i386-randconfig-a014
+|   |-- drivers-cpuidle-driver.c:undefined-reference-to-__divdi3
+|   `-- ld:drivers-cpuidle-driver.c:undefined-reference-to-__divdi3
+`-- riscv-rv32_defconfig
+    `-- driver.c:(.text):undefined-reference-to-__divdi3
+clang_recent_errors
+`-- i386-randconfig-a004
+    `-- ld.lld:error:undefined-symbol:__udivdi3
+
+elapsed time: 1069m
+
+configs tested: 79
+configs skipped: 3
+
+gcc tested configs:
+powerpc                           allnoconfig
+arc                                 defconfig
+um                             i386_defconfig
+alpha                               defconfig
+um                           x86_64_defconfig
+x86_64                            allnoconfig
+s390                             allmodconfig
+s390                                defconfig
+arc                  randconfig-r043-20230209
+arm                  randconfig-r046-20230209
+x86_64                           rhel-8.3-bpf
+ia64                             allmodconfig
+s390                             allyesconfig
+sh                               allmodconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                           rhel-8.3-syz
+m68k                             allyesconfig
+i386                          randconfig-a001
+m68k                             allmodconfig
+i386                          randconfig-a003
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+arc                              allyesconfig
+mips                             allyesconfig
+alpha                             allnoconfig
+i386                          randconfig-a014
+i386                              allnoconfig
+arm                               allnoconfig
+arc                               allnoconfig
+powerpc                          allmodconfig
+i386                          randconfig-a012
+alpha                            allyesconfig
+i386                          randconfig-a016
+x86_64                           allyesconfig
+i386                          randconfig-a005
+i386                                defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                          rhel-8.3-func
+arm                                 defconfig
+i386                             allyesconfig
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a015
+arm                              allyesconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allmodconfig
+nios2                               defconfig
+parisc                              defconfig
+parisc64                            defconfig
+csky                                defconfig
+sparc                               defconfig
+x86_64                                  kexec
+i386                              debian-10.3
+m68k                                defconfig
+ia64                                defconfig
+loongarch                         allnoconfig
+loongarch                           defconfig
+loongarch                        allmodconfig
+riscv                             allnoconfig
+riscv                          rv32_defconfig
+riscv                               defconfig
+riscv                            allmodconfig
+mips                             allmodconfig
+
+clang tested configs:
+hexagon              randconfig-r041-20230209
+hexagon              randconfig-r045-20230209
+s390                 randconfig-r044-20230209
+riscv                randconfig-r042-20230209
+i386                          randconfig-a013
+i386                          randconfig-a002
+i386                          randconfig-a011
+i386                          randconfig-a004
+i386                          randconfig-a015
+i386                          randconfig-a006
+x86_64                          rhel-8.3-rust
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
