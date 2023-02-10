@@ -2,60 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3871D6929B2
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Feb 2023 22:57:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EBC36929BF
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Feb 2023 22:59:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233600AbjBJV5z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Feb 2023 16:57:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41994 "EHLO
+        id S233550AbjBJV7j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Feb 2023 16:59:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233625AbjBJV5x (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Feb 2023 16:57:53 -0500
+        with ESMTP id S232505AbjBJV7i (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Feb 2023 16:59:38 -0500
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83EA67DD22;
-        Fri, 10 Feb 2023 13:57:51 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EFE97D8B3;
+        Fri, 10 Feb 2023 13:59:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676066271; x=1707602271;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=vPxF1JseRSs4g26NzPX6yAqIVHYMWM5zfMZbpc6cPmA=;
-  b=ffdXpIX5PeC7qhusKogCYaQ1tyEcCXMSGoFzAUOW2LE/Gv2LBQAzygge
-   R4ksVGTkZ3k9DC9Qb2elnBQyJMMAZfyD0UZNkCb0PV6DFriDZlKpHOqCQ
-   TgZjYh9J9BIwUTTccvsNIJrndt63PWrK0AA7FVKrhctvz+UV/o6QiYUR4
-   2vv8XUMYuZqlhwIV21O3MAn1eipX+pX5N20EKMfEf/fYvfCg2dJbeQo3C
-   PW7Zj8UVdzP/6fVfGu2diRTHXVADo0Lt2IyDepKATqB1rsWLA5/uvxzqt
-   obuKgNAfZeOVcswO9MKDxa7bSXE9ehdgXfNCDTbgm6yykJqV9I2SRROSE
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="330544827"
+  t=1676066378; x=1707602378;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=IWeWBAcXU8gR83oqaSxz80kzyVRTcSG6AcaGmWbiYD8=;
+  b=LUaeco8sb//FAPtCcxzVpDXfNxDbE+PUV+ZsKRXhRRyEp+7SI2qkzfZv
+   1s4VvoC6cjNORKpwpwxZE1UbTqgbPI4UYtjb2g9fv94rcw4R8hldwLLJJ
+   8EGxP0UGTPXjLrDvKnSrgx5JiNotAMMZs15xlzWr1jUV94AgoMFmY9Fg0
+   emLjr97NlW6paJ/nxFI+nHcatP0ca3UQh0GO1XJavxBzJ3UkqPFMMcUg6
+   KyZUTOhRAY80glV9lQGD3tSW3aoSEwQbEvlQVv8TJq0d2irotYPa3AbBv
+   AuyHLOFxVQ8mMFvY+giBhG4fs8qhzHW5OyEpKvoQJh4c96LDyDrhdYkwA
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="330545038"
 X-IronPort-AV: E=Sophos;i="5.97,287,1669104000"; 
-   d="scan'208";a="330544827"
+   d="scan'208";a="330545038"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2023 13:57:43 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="700616193"
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2023 13:59:37 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="700616322"
 X-IronPort-AV: E=Sophos;i="5.97,287,1669104000"; 
-   d="scan'208";a="700616193"
+   d="scan'208";a="700616322"
 Received: from djiang5-mobl3.amr.corp.intel.com (HELO [10.213.190.133]) ([10.213.190.133])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2023 13:57:42 -0800
-Message-ID: <368f047a-b722-504f-41de-41b3f10cdeb8@intel.com>
-Date:   Fri, 10 Feb 2023 14:57:42 -0700
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2023 13:59:37 -0800
+Message-ID: <3bef679e-ddb6-45a1-2152-522fc217efa8@intel.com>
+Date:   Fri, 10 Feb 2023 14:59:36 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Firefox/102.0 Thunderbird/102.6.0
-Subject: Re: [PATCH v2 15/20] dax/hmem: Move HMAT and Soft reservation probe
- initcall level
+Subject: Re: [PATCH v2 16/20] dax/hmem: Drop unnecessary dax_hmem_remove()
 Content-Language: en-US
-From:   Dave Jiang <dave.jiang@intel.com>
 To:     Dan Williams <dan.j.williams@intel.com>, linux-cxl@vger.kernel.org
-Cc:     Fan Ni <fan.ni@samsung.com>, vishal.l.verma@intel.com,
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Gregory Price <gregory.price@memverge.com>,
+        Fan Ni <fan.ni@samsung.com>, vishal.l.verma@intel.com,
         dave.hansen@linux.intel.com, linux-mm@kvack.org,
         linux-acpi@vger.kernel.org
 References: <167601992097.1924368.18291887895351917895.stgit@dwillia2-xfh.jf.intel.com>
- <167602001107.1924368.11562316181038595611.stgit@dwillia2-xfh.jf.intel.com>
- <448c17f6-cdfa-9422-c35e-cf95e1b99604@intel.com>
-In-Reply-To: <448c17f6-cdfa-9422-c35e-cf95e1b99604@intel.com>
+ <167602001664.1924368.9102029637928071240.stgit@dwillia2-xfh.jf.intel.com>
+From:   Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <167602001664.1924368.9102029637928071240.stgit@dwillia2-xfh.jf.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
@@ -68,62 +68,39 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 
 
-On 2/10/23 2:53 PM, Dave Jiang wrote:
+On 2/10/23 2:06 AM, Dan Williams wrote:
+> Empty driver remove callbacks can just be elided.
 > 
-> 
-> On 2/10/23 2:06 AM, Dan Williams wrote:
->> In preparation for moving more filtering of "hmem" ranges into the
->> dax_hmem.ko module, update the initcall levels. HMAT range registration
->> moves to subsys_initcall() to be done before Soft Reservation probing,
->> and Soft Reservation probing is moved to device_initcall() to be done
->> before dax_hmem.ko initialization if it is built-in.
->>
->> Tested-by: Fan Ni <fan.ni@samsung.com>
->> Link: 
->> https://lore.kernel.org/r/167564542109.847146.10113972881782419363.stgit@dwillia2-xfh.jf.intel.com
->> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> 
-> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Gregory Price <gregory.price@memverge.com>
+> Tested-by: Fan Ni <fan.ni@samsung.com>
+> Link: https://lore.kernel.org/r/167564542679.847146.17174404738816053065.stgit@dwillia2-xfh.jf.intel.com
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
 Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 
+> ---
+>   drivers/dax/hmem/hmem.c |    7 -------
+>   1 file changed, 7 deletions(-)
 > 
->> ---
->>   drivers/acpi/numa/hmat.c  |    2 +-
->>   drivers/dax/hmem/Makefile |    3 ++-
->>   drivers/dax/hmem/device.c |    2 +-
->>   3 files changed, 4 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
->> index 605a0c7053be..ff24282301ab 100644
->> --- a/drivers/acpi/numa/hmat.c
->> +++ b/drivers/acpi/numa/hmat.c
->> @@ -869,4 +869,4 @@ static __init int hmat_init(void)
->>       acpi_put_table(tbl);
->>       return 0;
->>   }
->> -device_initcall(hmat_init);
->> +subsys_initcall(hmat_init);
->> diff --git a/drivers/dax/hmem/Makefile b/drivers/dax/hmem/Makefile
->> index 57377b4c3d47..d4c4cd6bccd7 100644
->> --- a/drivers/dax/hmem/Makefile
->> +++ b/drivers/dax/hmem/Makefile
->> @@ -1,6 +1,7 @@
->>   # SPDX-License-Identifier: GPL-2.0
->> -obj-$(CONFIG_DEV_DAX_HMEM) += dax_hmem.o
->> +# device_hmem.o deliberately precedes dax_hmem.o for initcall ordering
->>   obj-$(CONFIG_DEV_DAX_HMEM_DEVICES) += device_hmem.o
->> +obj-$(CONFIG_DEV_DAX_HMEM) += dax_hmem.o
->>   device_hmem-y := device.o
->>   dax_hmem-y := hmem.o
->> diff --git a/drivers/dax/hmem/device.c b/drivers/dax/hmem/device.c
->> index 903325aac991..20749c7fab81 100644
->> --- a/drivers/dax/hmem/device.c
->> +++ b/drivers/dax/hmem/device.c
->> @@ -104,4 +104,4 @@ static __init int hmem_init(void)
->>    * As this is a fallback for address ranges unclaimed by the ACPI HMAT
->>    * parsing it must be at an initcall level greater than hmat_init().
->>    */
->> -late_initcall(hmem_init);
->> +device_initcall(hmem_init);
->>
+> diff --git a/drivers/dax/hmem/hmem.c b/drivers/dax/hmem/hmem.c
+> index 1bf040dbc834..c7351e0dc8ff 100644
+> --- a/drivers/dax/hmem/hmem.c
+> +++ b/drivers/dax/hmem/hmem.c
+> @@ -44,15 +44,8 @@ static int dax_hmem_probe(struct platform_device *pdev)
+>   	return 0;
+>   }
+>   
+> -static int dax_hmem_remove(struct platform_device *pdev)
+> -{
+> -	/* devm handles teardown */
+> -	return 0;
+> -}
+> -
+>   static struct platform_driver dax_hmem_driver = {
+>   	.probe = dax_hmem_probe,
+> -	.remove = dax_hmem_remove,
+>   	.driver = {
+>   		.name = "hmem",
+>   	},
+> 
