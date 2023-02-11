@@ -2,49 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D04E7692FEE
-	for <lists+linux-acpi@lfdr.de>; Sat, 11 Feb 2023 11:18:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 221E4693086
+	for <lists+linux-acpi@lfdr.de>; Sat, 11 Feb 2023 12:51:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbjBKKSh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 11 Feb 2023 05:18:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47934 "EHLO
+        id S229522AbjBKLvh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 11 Feb 2023 06:51:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbjBKKSh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 11 Feb 2023 05:18:37 -0500
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BED3D2BF25;
-        Sat, 11 Feb 2023 02:18:35 -0800 (PST)
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-         client-signature RSA-PSS (4096 bits) client-digest SHA256)
-        (Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
-        by bmailout3.hostsharing.net (Postfix) with ESMTPS id 2BEF4102EF788;
-        Sat, 11 Feb 2023 11:18:34 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-        id DD643239FF4; Sat, 11 Feb 2023 11:18:33 +0100 (CET)
-Date:   Sat, 11 Feb 2023 11:18:33 +0100
-From:   Lukas Wunner <lukas@wunner.de>
-To:     Dave Jiang <dave.jiang@intel.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, dan.j.williams@intel.com,
-        ira.weiny@intel.com, vishal.l.verma@intel.com,
-        alison.schofield@intel.com, rafael@kernel.org, bhelgaas@google.com,
-        robert.moore@intel.com
-Subject: Re: [PATCH 04/18] cxl: Add common helpers for cdat parsing
-Message-ID: <20230211101833.GA12138@wunner.de>
-References: <167571650007.587790.10040913293130712882.stgit@djiang5-mobl3.local>
- <167571659666.587790.1381783105886436293.stgit@djiang5-mobl3.local>
- <20230209115803.00002778@Huawei.com>
- <3c69a080-de0c-3244-cc44-0a187230d203@intel.com>
+        with ESMTP id S229455AbjBKLvh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 11 Feb 2023 06:51:37 -0500
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0ACB12059;
+        Sat, 11 Feb 2023 03:51:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676116295; x=1707652295;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=l85uAjCpOoq+tYp3j9Q/TW1Ruotvzt3rvsIYcwVY2rI=;
+  b=iiAkPiSj2wf/UBm/os8bqlJvlR5es1+0B3XpmqaGb12XPJOBeC7w6iiq
+   iJv65qFdhLhJNyPQDauWELAER7vfM21B5iW/7U33/vb3n5qQIB5Nev7+n
+   pX6Q+HqR45QwQQai5G6iccurU4A1iHIbRtksj/x1/fsANe/CCPe6Df8Ia
+   FdaPIBLYp5oVMRYRxUyFQSlFjTfTnwF2RDxG+E+q0ZT4SqkeCbndCQIhL
+   CeEewPwUQ0GI9UTEruqpq9pHsAZNIcuN6NQARARK8P+uArGD1bM0x5LXi
+   7cMYXbOKxcPbwGEynPPuHQFOSRUdwvxBmEk9ws4Y3KyfEj8fHhJ5IGUPd
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="358007966"
+X-IronPort-AV: E=Sophos;i="5.97,289,1669104000"; 
+   d="scan'208";a="358007966"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2023 03:51:35 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="842285157"
+X-IronPort-AV: E=Sophos;i="5.97,289,1669104000"; 
+   d="scan'208";a="842285157"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga005.jf.intel.com with ESMTP; 11 Feb 2023 03:51:33 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1pQoPk-005TEW-1b;
+        Sat, 11 Feb 2023 13:51:32 +0200
+Date:   Sat, 11 Feb 2023 13:51:32 +0200
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
+To:     Asmaa Mnebhi <asmaa@nvidia.com>
+Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] Support NVIDIA BlueField-3 GPIO controller
+Message-ID: <Y+eBRLB0Q38vGtjR@smile.fi.intel.com>
+References: <cover.1676042188.git.asmaa@nvidia.com>
+ <c1bf45a868edcd3df5263fa76a32b28e6c9ca3d1.1676042188.git.asmaa@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3c69a080-de0c-3244-cc44-0a187230d203@intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
+In-Reply-To: <c1bf45a868edcd3df5263fa76a32b28e6c9ca3d1.1676042188.git.asmaa@nvidia.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,93 +66,246 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 09, 2023 at 03:57:32PM -0700, Dave Jiang wrote:
-> On 2/9/23 4:58 AM, Jonathan Cameron wrote:
-> > On Mon, 06 Feb 2023 13:49:58 -0700 Dave Jiang <dave.jiang@intel.com> wrote:
-> > > Add helper functions to parse the CDAT table and provide a callback to
-> > > parse the sub-table. Helpers are provided for DSMAS and DSLBIS sub-table
-> > > parsing. The code is patterned after the ACPI table parsing helpers.
-[...]
-> > Are these all worthwhile given the resulting function name is longer
-> > than accessing it directly.  If aim is to move the details of the
-> > struct cdat_subtable_entry away from being exposed at caller, then
-> > fair enough, but if that is the plan I'd expect to see something about
-> > that in the patch description.
-> > 
-> > Feels like some premature abstraction, but I don't feel particularly
-> > strongly about this.
+On Fri, Feb 10, 2023 at 10:39:40AM -0500, Asmaa Mnebhi wrote:
+> This patch adds support for the BlueField-3 SoC GPIO driver
+
+The Submitting Patches states that imperative speech should be used.
+
+> which allows:
+> - setting certain GPIOs as interrupts from other dependent drivers
+> - ability to manipulate certain GPIO pins via libgpiod tools
 > 
-> I'll drop them. The code was adapted from ACPI table parsing code. But we
-> can simplify for our usages.
+> BlueField-3 has 56 GPIOs but the user is only allowed to change some
+> of them into GPIO mode. Use valid_mask to make it impossible to alter
+> the rest of the GPIOs.
 
-Yes just iterating over the CDAT entries and directly calling the
-appropriate parser function for the entry seems more straightforward.
+...
+
+> +	help
+> +	  Say Y here if you want GPIO support on Mellanox BlueField 3 SoC.
+
+Have you run checkpatch? Nowadays 3+ lines of help is recommended.
+I would suggest to add a standard phrase about module name in case
+the module build is chosen.
+
+...
+
+> +// SPDX-License-Identifier: GPL-2.0-only or BSD-3-Clause
+
+> +
+
+Redundant blank line
+
+> +/*
+> + * Copyright (C) 2022 NVIDIA CORPORATION & AFFILIATES
+> + */
+
+This can be on one line.
+
+...
+
+> +#include <linux/acpi.h>
+
+No user of this header.
+
+> +#include <linux/gpio/driver.h>
+> +#include <linux/platform_device.h>
+
+Approx dozen of header inclusions are missing.
+(bits.h, types.h, spinlock.h, ...)
+
+...
+
+> +struct mlxbf3_gpio_context {
+> +	struct gpio_chip gc;
+
+> +	struct irq_chip irq_chip;
+
+Have you run it on v6.1+ kernels? This should not be here, i.e. it must be
+static and const.
+
+> +	/* YU GPIO block address */
+> +	void __iomem *gpio_io;
+> +
+> +	/* YU GPIO cause block address */
+> +	void __iomem *gpio_cause_io;
+> +
+> +	/* Mask of valid gpios that can be accessed by software */
+> +	unsigned int valid_mask;
+> +};
+
+...
+
+> +		generic_handle_irq(irq_find_mapping(gc->irq.domain, level));
+
+There is a helper that unites these two calls together.
+
+...
+
+> +	bool fall = false;
+> +	bool rise = false;
+
+Instead, just assign each of the in the corresponding switch-case.
+
+> +	switch (type & IRQ_TYPE_SENSE_MASK) {
+> +	case IRQ_TYPE_EDGE_BOTH:
+> +		fall = true;
+> +		rise = true;
+> +		break;
+> +	case IRQ_TYPE_EDGE_RISING:
+> +		rise = true;
+> +		break;
+> +	case IRQ_TYPE_EDGE_FALLING:
+> +		fall = true;
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+
+...
+
+> +	raw_spin_lock_irqsave(&gs->gc.bgpio_lock, flags);
+> +	if (fall) {
+> +		val = readl(gs->gpio_io + MLXBF_GPIO_CAUSE_FALL_EN);
+> +		val |= BIT(offset);
+> +		writel(val, gs->gpio_io + MLXBF_GPIO_CAUSE_FALL_EN);
+> +	}
+> +
+> +	if (rise) {
+> +		val = readl(gs->gpio_io + MLXBF_GPIO_CAUSE_RISE_EN);
+> +		val |= BIT(offset);
+> +		writel(val, gs->gpio_io + MLXBF_GPIO_CAUSE_RISE_EN);
+> +	}
+> +	raw_spin_unlock_irqrestore(&gs->gc.bgpio_lock, flags);
+
+Don't you need to choose and lock the IRQ handler here?
+
+> +}
+
+...
+
+> +static int mlxbf3_gpio_init_valid_mask(struct gpio_chip *gc,
+> +				       unsigned long *valid_mask,
+> +				       unsigned int ngpios)
+> +{
+> +	struct mlxbf3_gpio_context *gs = gpiochip_get_data(gc);
+> +
+> +	*valid_mask = gs->valid_mask;
+> +
+> +	return 0;
+> +}
+
+Why do you need this?
 
 
-> > Random musing follows...
-> > We could add a variable length element to that struct
-> > definition and the magic to associate that with the length parameter
-> > and get range protection if relevant hardening is turned on.
-> > 
-> > Structure definition comes (I think) from scripts in acpica so
-> > would need to push such changes into acpica and I'm not sure
-> > they will be keen even though it would be good for the kernel
-> > to have the protections.
-[...]
-> I see what you are saying. But I'm not sure how easily we can do this for
-> the CDAT table due to endieness. Is this what you had in mind?
-> 
-> From:
-> struct cdat_entry_header {
-> 	u8 type;
-> 	u8 reserved;
-> 	__le16 length;
-> } __packed;
-> 
-> To:
-> struct cdat_entry_header {
-> 	u8 type;
-> 	u8 reserved;
-> 	__le16 length;
-> 	DECLARE_BOUNDED_ARRAY(u8, body, le16_to_cpu(length));
-> } __packed;
+> +	struct resource *res;
 
-I think this is backwards.  I'd suggest creating a struct for each
-CDAT entry which includes the header.  The kernel switched to
--std=gnu11 a while ago, so you should be able to use an unnamed field
-for the header:
+Useless variable, see below.
 
-struct cdat_dsmas {
-	struct cdat_entry_header;
-	u8 dsmad_handle;
-	u8 flags;
-	u8 reserved[2];
-	__le64 dpa_base;
-	__le64 dpa_length;
-}
+...
 
-Note that in my commit "cxl/pci: Handle truncated CDAT entries",
-I'm only verifying that the number of bytes received via DOE
-matches the length field in the cdat_entry_header.  I do not
-verify in cxl_cdat_read_table() whether that length is correct
-for the specific CDAT structure.  I think that's the job of
-the function parsing that particular structure type.
-
-In other words, at the top of your DSMAS parsing function,
-you need to check:
-
-	struct cdat_dsmas dsmas;
-
-	if (dsmas->length != sizeof(*dsmas)) {
-		dev_err(...);
-		return -EINVAL;
-	}
+> +	const char *name;
 
 
-Note how the check is simplified by the header being part of
-struct cdat_dsmas.  If the header wasn't part of struct cdat_dsmas,
-an addition would be needed here.
+> +	name = dev_name(dev);
 
-Thanks,
+Useless, just call dev_name() where it's needed.
 
-Lukas
+...
+
+> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	if (!res)
+> +		return -ENODEV;
+> +
+> +	/* Resource shared with pinctrl driver */
+> +	gs->gpio_io = devm_ioremap(dev, res->start, resource_size(res));
+> +	if (!gs->gpio_io)
+> +		return -ENOMEM;
+> +
+> +	/* YU GPIO block address */
+> +	gs->gpio_cause_io = devm_platform_ioremap_resource(pdev, 1);
+> +	if (IS_ERR(gs->gpio_cause_io))
+> +		return PTR_ERR(gs->gpio_cause_io);
+
+These can be folded in a single devm_platform_ioremap_resource() call.
+
+...
+
+
+> +	if (device_property_read_u32(dev, "npins", &npins))
+> +		npins = MLXBF3_GPIO_MAX_PINS_PER_BLOCK;
+
+You can get of conditional.
+
+	npins = MLXBF3_GPIO_MAX_PINS_PER_BLOCK;
+	device_property_read_u32(dev, "npins", &npins);
+
+...
+
+> +	if (device_property_read_u32(dev, "valid_mask", &valid_mask))
+> +		valid_mask = 0x0;
+
+Besides that you can move this directly to the respective call and drop
+redundant private copy of valid mask, you mean that without that property
+no valid GPIOs?
+
+> +	gs->valid_mask = valid_mask;
+
+...
+
+> +		girq->handler = handle_simple_irq;
+
+Should be handle_bad_irq() to avoid some subtle issues that hard to debug.
+
+...
+
+> +		ret = devm_request_irq(dev, irq, mlxbf3_gpio_irq_handler,
+> +				       IRQF_SHARED, name, gs);
+> +		if (ret) {
+
+> +			dev_err(dev, "failed to request IRQ");
+> +			return ret;
+
+return dev_err_probe(...);
+
+> +		}
+> +	}
+
+...
+
+> +	ret = devm_gpiochip_add_data(dev, &gs->gc, gs);
+> +	if (ret) {
+> +		dev_err(dev, "Failed adding memory mapped gpiochip\n");
+> +		return ret;
+
+Ditto.
+
+> +	}
+
+...
+
+> +static const struct acpi_device_id __maybe_unused mlxbf3_gpio_acpi_match[] = {
+> +	{ "MLNXBF33", 0 },
+
+> +	{},
+
+No comma for termination entry.
+
+> +};
+
+...
+
+> +	.probe    = mlxbf3_gpio_probe,
+> +};
+
+> +
+
+Redundant blank line.
+
+> +module_platform_driver(mlxbf3_gpio_driver);
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
