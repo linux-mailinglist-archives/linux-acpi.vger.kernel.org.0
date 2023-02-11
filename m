@@ -2,59 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 194756930BE
-	for <lists+linux-acpi@lfdr.de>; Sat, 11 Feb 2023 12:56:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 081EC6930C5
+	for <lists+linux-acpi@lfdr.de>; Sat, 11 Feb 2023 12:59:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229521AbjBKL4G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 11 Feb 2023 06:56:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37590 "EHLO
+        id S229523AbjBKL7V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 11 Feb 2023 06:59:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229629AbjBKL4F (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 11 Feb 2023 06:56:05 -0500
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6FC418A81;
-        Sat, 11 Feb 2023 03:55:47 -0800 (PST)
+        with ESMTP id S230193AbjBKL65 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 11 Feb 2023 06:58:57 -0500
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 246332CC6A;
+        Sat, 11 Feb 2023 03:58:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676116547; x=1707652547;
+  t=1676116724; x=1707652724;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=95wQjL+Zc8jViWbxfkoTEwvp3PeuR6v8ELcSbnJPmnQ=;
-  b=HFtbvswWwDMdNR/JtZH28FlPUYxnUwXhOO1pL9JqI4e5n/aIrPGi+obE
-   y5moRHRhObbMUwfYPKWCZu0TMRkz/gls5Zh+8elGTb+LMujWUmXwfBbiJ
-   IrJC734tYZXNKIS3DuR4xZ2tdvrf+l+Z2PaVB14gFB0w6+e5Mw8rK76ZH
-   nxRXLg81iPih57rajSEevX3MY4pOQnf0Cg7c890kHBzInvJDR+qd490Cm
-   PNJU66vseLxVZYR/vrcAEQ6KzYerZJc7wGWqF8fEXSuguPGTTirh3zDAi
-   q60flafmzfGF9cSOzuSmjv7ekrctl4OW9eJzYrhv0GaSPtQpL0WkLWiTB
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="328300434"
+  bh=mYvgNqBMI7hpwT5WQYb0Rjjv8qQe3QJxhkvxZA4ioDg=;
+  b=m6tRPr98lZWxH7oZcXawN8B7N0BISZFYiWrghjPQx03z0bhYTMICiZ6q
+   kijxVbV7tCbeGnNqcpTc5XntoadQS7m9ohDSs+oaxiwj83t78MwVNfrG0
+   cT8CS4aX5ylZDALE7SMYMMMZWSrL9Mz1I8aBfi0HjmRE2gXzXjo3dfcHU
+   FbkzcvBau4n0eXejDSlvTP4Zq7bf3zpFj0cVuex3EwUD+oqQA+Yie7ctP
+   xhhoRTsJa48C6IIQmA//lCwKKIdzwOB3Uw5sh/4aOoTTTihBzxesUUole
+   z9Ov87lFlmhw36Q5coRJlfSg6LcHsc44l6mKzPpvAdsxnViaErRzgcWid
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="329234833"
 X-IronPort-AV: E=Sophos;i="5.97,289,1669104000"; 
-   d="scan'208";a="328300434"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2023 03:55:34 -0800
+   d="scan'208";a="329234833"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2023 03:58:43 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="811103125"
+X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="670298931"
 X-IronPort-AV: E=Sophos;i="5.97,289,1669104000"; 
-   d="scan'208";a="811103125"
+   d="scan'208";a="670298931"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga001.fm.intel.com with ESMTP; 11 Feb 2023 03:55:33 -0800
+  by fmsmga007.fm.intel.com with ESMTP; 11 Feb 2023 03:58:42 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@intel.com>)
-        id 1pQoTc-005TIG-1R;
-        Sat, 11 Feb 2023 13:55:32 +0200
-Date:   Sat, 11 Feb 2023 13:55:32 +0200
+        id 1pQoWf-005TLE-13;
+        Sat, 11 Feb 2023 13:58:41 +0200
+Date:   Sat, 11 Feb 2023 13:58:40 +0200
 From:   Andy Shevchenko <andriy.shevchenko@intel.com>
 To:     Asmaa Mnebhi <asmaa@nvidia.com>
 Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] Support NVIDIA BlueField-3 pinctrl driver
-Message-ID: <Y+eCNEHcmo4qapcI@smile.fi.intel.com>
+Subject: Re: [PATCH v3 0/2] Add NVIDIA BlueField-3 GPIO driver and pin
+ controller
+Message-ID: <Y+eC8JFE63lRaEgT@smile.fi.intel.com>
 References: <cover.1676042188.git.asmaa@nvidia.com>
- <acd85e20d3e8d45ce3254e6ffe5ad2b5039b1a34.1676042188.git.asmaa@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <acd85e20d3e8d45ce3254e6ffe5ad2b5039b1a34.1676042188.git.asmaa@nvidia.com>
+In-Reply-To: <cover.1676042188.git.asmaa@nvidia.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -65,56 +65,28 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Feb 10, 2023 at 10:39:41AM -0500, Asmaa Mnebhi wrote:
-> This patch adds support to the BlueField-3 SoC pin controller.
+On Fri, Feb 10, 2023 at 10:39:39AM -0500, Asmaa Mnebhi wrote:
+> This series of patches creates a pin controller driver and GPIO
+> driver for NVIDIA BlueField-3 SoC.
+> The first patch creates a GPIO driver for handling interrupts and
+> allowing the change of direction and value of a GPIO if needed.
+> The second patch creates a pin controller driver for allowing a
+> select number of GPIO pins to be manipulated from userspace or
+> the kernel.
+> 
+> The BlueField-3 SoC gpio-mlxbf3.c driver handles different hardware registers
+> and logic that from gpio-mlxbf.c and gpio-mlxbf2.c.
+> For that reason, we have separate drivers for each generation.
 
-Please read Submitting Patches on how to create better commit message.
+It seems you neglected to include maintainers and reviewers of the previous
+version(s) of your series. Don't do this. Please, respect people who invested
+their time in your code.
 
-> It allows muxing individual GPIOs to switch from the default
-> hardware mode to software controlled mode.
+Hint: I have a "smart" script [1] which helps to collect proper people (except
+reviewers that you need to add manually via --cc command line parameter) and
+mailing lists. Fell free to re-use, modify, send feedback.
 
-...
-
-> +config PINCTRL_MLXBF
-> +	tristate "NVIDIA BlueField-3 SoC Pinctrl driver"
-> +	depends on (MELLANOX_PLATFORM && ARM64 && ACPI)
-
-This is wrong.
-Please make sure you cover more testing.
-Also, do you really need an ACPI dependency?
-
-> +	select PINMUX
-> +	select GPIOLIB
-> +	select GPIOLIB_IRQCHIP
-> +	select GPIO_MLXBF3
-> +	help
-> +	  This selects the pinctrl driver for BlueField-3 SoCs.
-
-Same comment as per previous patch.
-
-> +// SPDX-License-Identifier: GPL-2.0-only or BSD-3-Clause
-> +
-> +/*
-> + * Copyright (C) 2022 NVIDIA CORPORATION & AFFILIATES
-> + */
-> +
-> +#include <linux/acpi.h>
-> +#include <linux/platform_device.h>
-
-Same comments as per previous patch.
-
-> +#include <linux/pinctrl/pinctrl.h>
-> +#include <linux/pinctrl/pinmux.h>
-
-Based on the above, I stop here and wait for next version where comments given
-anywhere are applied to all appropriate places.
-
-...
-
-> +	BUILD_BUG_ON(ARRAY_SIZE(mlxbf_pinctrl_single_group_names) !=
-> +		     ARRAY_SIZE(mlxbf_pinctrl_single_group_pins));
-
-static_assert().
+[1]: https://github.com/andy-shev/home-bin-tools/blob/master/ge2maintainer.sh
 
 -- 
 With Best Regards,
