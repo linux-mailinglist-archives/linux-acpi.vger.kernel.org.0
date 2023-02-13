@@ -2,112 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CF57693DC4
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 06:13:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7B046940EA
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 10:25:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229700AbjBMFNx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Feb 2023 00:13:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36792 "EHLO
+        id S229918AbjBMJZI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Feb 2023 04:25:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229558AbjBMFNw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 00:13:52 -0500
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC106A5E6
-        for <linux-acpi@vger.kernel.org>; Sun, 12 Feb 2023 21:13:51 -0800 (PST)
-Received: by mail-pj1-x102c.google.com with SMTP id d13-20020a17090ad3cd00b0023127b2d602so11047224pjw.2
-        for <linux-acpi@vger.kernel.org>; Sun, 12 Feb 2023 21:13:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1/rXlbQZUiYssX0GWdtn60fAH8aeaRBmLehOaQBY1mE=;
-        b=BczA9Dit8WldsIfP8UBgYlgc8TWJhovdzXsusWUlS+5qwERWfEecSRfNvw2jdkipTt
-         FftWA7ruHlkUk3JVzZ1R2/G95S9ueaU75uXAfKH/d+o6Wvx4A4+tsy2UkZIZma/LHypW
-         b1HtPzukBNiYeS0/OLsWF5NHpFKXqO/xMwlEYEGDKUzBZ8D91k9sx7/8fVBaxjddDALw
-         /YCfRX/nPAgzOb51JRnSuTkMLiQr0ZQA5dXciGNdnFXKrI+gu84pYpUm/ENQNd65VC1s
-         ugorSZLeiHIEBj3MNBjGdwfT2IeeGdw1kY8bm8vt05A2ZhJTkpwI5IEJNhKGy16PpfJv
-         i99Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1/rXlbQZUiYssX0GWdtn60fAH8aeaRBmLehOaQBY1mE=;
-        b=YjtSvbQNQKyZ3vSfPuVW5bWMeqBDSITWVvjYVwUKY56WSz+UTFOOad/k3tviVvl/rJ
-         Y3qAnnvijMRcwnC7VEL2QviFQYxbw/QHHXwNtVwrWFzqiIECXKMqBBWeOOfpHeava6D0
-         5GD4myxZ7eDnbHzlwQLYki+db3FbzBVx9OgNJ5+s5Cs7Q92ogq/YasetUmtRL90DOra6
-         lQDDITZtUjjZTBDCk6GueqjwicQLTzCJ+FzsGjAjSXtW9drNI0bSskP+i5m5iz0jF5Sh
-         Zg4PNKU6Dnint0VGeJwaLtIfeegceLTa7GXl7Bnqnw05441pWXl370eR1VorutLDCIEo
-         qTMQ==
-X-Gm-Message-State: AO0yUKVHacP/ssnSh+0aVRbcfiksxlV+DZPBSDNeL502gii2PvYpePO+
-        Nd9e5o1a7Y8TYF5BMLWlqgB4kw==
-X-Google-Smtp-Source: AK7set+HBd/TKOpekO2R5ZNBdJ5nlE4W2Q0OVyhq7zVLBYibkTxtu4XeGFM4NuzAT9/O7iEzdrKiyA==
-X-Received: by 2002:a17:903:24c:b0:198:a715:d26d with SMTP id j12-20020a170903024c00b00198a715d26dmr25510023plh.8.1676265231494;
-        Sun, 12 Feb 2023 21:13:51 -0800 (PST)
-Received: from sunil-laptop ([49.206.14.226])
-        by smtp.gmail.com with ESMTPSA id e9-20020a170902784900b00198f9fa23a3sm7079601pln.287.2023.02.12.21.13.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Feb 2023 21:13:51 -0800 (PST)
-Date:   Mon, 13 Feb 2023 10:43:42 +0530
-From:   Sunil V L <sunilvl@ventanamicro.com>
-To:     Conor Dooley <conor@kernel.org>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        Anup Patel <apatel@ventanamicro.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Atish Patra <atishp@rivosinc.com>,
-        Robert Moore <robert.moore@intel.com>,
-        acpica-devel@lists.linuxfoundation.org
-Subject: Re: [PATCH 02/24] ACPICA: MADT: Add RISC-V INTC interrupt controller
-Message-ID: <Y+nHBivfemYR2NGD@sunil-laptop>
-References: <20230130182225.2471414-1-sunilvl@ventanamicro.com>
- <20230130182225.2471414-3-sunilvl@ventanamicro.com>
- <Y+P/BDbP68vNTOao@spud>
+        with ESMTP id S229955AbjBMJYy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 04:24:54 -0500
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 915FD14EBF;
+        Mon, 13 Feb 2023 01:24:52 -0800 (PST)
+Received: from vm02.corp.microsoft.com (unknown [167.220.196.155])
+        by linux.microsoft.com (Postfix) with ESMTPSA id A6C7320C8B6E;
+        Mon, 13 Feb 2023 01:24:49 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A6C7320C8B6E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1676280292;
+        bh=4QUbK/o9M3m8NodgfLJgSex5yc5ApLq708AIPOlvkWc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=QqwuvsXOI11qwMfX6Y/EsOY0w+dNHVfb18/3Jx5e6jjgjA0jAAmyX9NU8ez9HLxS7
+         nhbXmfm6N168W4W3T1kk3v/MjD4ZoOz2N3E9dy/j133foWYC/9V4Gd50x43uvbhfs5
+         yuXvDbWcfWElHWSt4e+gMpXADPpoMh3f0jA9nMP0=
+From:   Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
+        "Brijesh Singh" <brijesh.singh@amd.com>,
+        "Tom Lendacky" <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        linux-crypto@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Len Brown" <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
+        "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org
+Subject: [PATCH v2 0/8] Support ACPI PSP on Hyper-V
+Date:   Mon, 13 Feb 2023 09:24:21 +0000
+Message-Id: <20230213092429.1167812-1-jpiotrowski@linux.microsoft.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y+P/BDbP68vNTOao@spud>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 08, 2023 at 07:59:00PM +0000, Conor Dooley wrote:
-> On Mon, Jan 30, 2023 at 11:52:03PM +0530, Sunil V L wrote:
-> > The ECR to add RISC-V INTC interrupt controller is approved by
-> > the UEFI forum and will be availabl in the next revision of
-> 
-> nit: available
-> 
-Thanks!
+This patch series introduces support for discovering AMD's PSP from an ACPI
+table and extends the CCP driver to allow binding to that device on x86. This
+method of PSP discovery is used on Hyper-V when SNP isolation support is
+exposed to the guest. There is no ACPI node associated with this PSP, so after
+parsing the ASPT it is registered with the system as a platform_device.
 
-> > the ACPI specification.
-> > 
-> > This patch is not yet merged in ACPICA but a PR is raised.
-> > 
-> > ACPICA PR: https://github.com/acpica/acpica/pull/804
-> 
-> I had a quick check with git grep, and as this doesn't appear to be a
-> regular pattern in the history, so could you please make this a regular
-> Link: trailer?
-> 
-This patch should be merged in acpica repo first and then we will get
-this in standard format. Until then, it exists to allow other
-patches get reviewed. I believe by the time we get all other patches
-reviewed, acpica will have this merged.
+I thought about putting psp.c in arch/x86/coco, but that directory is meant for
+the (confidential) guest side of CoCo, not the supporting host side code.
+It was kept in arch/x86/kernel because configuring the irq for the PSP through
+the ACPI interface requires poking at bits from the architectural vector
+domain.
 
-Thanks!
-Sunil
+This series is a prerequisite for nested SNP-host support on Hyper-V but is
+independent of the SNP-host support patch set. Hyper-V only supports nested
+SEV-SNP (not SEV or SEV-ES) so the PSP only supports a subset of the full PSP
+command set. Without SNP-host support (which is not upstream yet), the only
+PSP command that will succeed is SEV_PLATFORM_STATUS.
+
+Changes since v1:
+* move platform_device_add_data() call to commit that introduces psp device
+* change psp dependency from CONFIG_AMD_MEM_ENCRYPT to CONFIG_KVM_AMD_SEV
+* add blank lines, s/plat/platform/, remove variable initializers before first
+  use, remove masking/shifting where not needed
+* dynamically allocate sev_vdata/psp_vdata structs instead of overwriting static
+  variables
+
+Jeremi Piotrowski (8):
+  include/acpi: add definition of ASPT table
+  ACPI: ASPT: Add helper to parse table
+  x86/psp: Register PSP platform device when ASP table is present
+  x86/psp: Add IRQ support
+  crypto: cpp - Bind to psp platform device on x86
+  crypto: ccp - Add vdata for platform device
+  crypto: ccp - Skip DMA coherency check for platform psp
+  crypto: ccp - Allow platform device to be psp master device
+
+ arch/x86/kernel/Makefile          |   1 +
+ arch/x86/kernel/psp.c             | 219 ++++++++++++++++++++++++++++++
+ drivers/acpi/Makefile             |   1 +
+ drivers/acpi/aspt.c               | 104 ++++++++++++++
+ drivers/crypto/ccp/sp-dev.c       |  66 +++++++++
+ drivers/crypto/ccp/sp-dev.h       |   4 +
+ drivers/crypto/ccp/sp-pci.c       |  48 -------
+ drivers/crypto/ccp/sp-platform.c  |  76 ++++++++++-
+ include/acpi/actbl1.h             |  46 +++++++
+ include/linux/platform_data/psp.h |  32 +++++
+ 10 files changed, 548 insertions(+), 49 deletions(-)
+ create mode 100644 arch/x86/kernel/psp.c
+ create mode 100644 drivers/acpi/aspt.c
+ create mode 100644 include/linux/platform_data/psp.h
+
+-- 
+2.25.1
+
