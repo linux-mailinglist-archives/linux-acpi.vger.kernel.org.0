@@ -2,120 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFAFB69479C
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 15:04:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B34446947B1
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 15:06:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229664AbjBMOEQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Feb 2023 09:04:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33854 "EHLO
+        id S229581AbjBMOG2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Feb 2023 09:06:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229581AbjBMOEQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 09:04:16 -0500
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2062.outbound.protection.outlook.com [40.107.95.62])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89D03DBF4;
-        Mon, 13 Feb 2023 06:04:14 -0800 (PST)
+        with ESMTP id S229963AbjBMOG1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 09:06:27 -0500
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2077.outbound.protection.outlook.com [40.107.96.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27E0B1ABE2;
+        Mon, 13 Feb 2023 06:06:26 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Z7bnOO00h/QzAvmoyEDq4Zn7kE3wuXM4yMAnTiqU4aLhJa13B6hrVOA1Wa8FSJFwp4HZ1FYEF4C+xHAvnfedZpyC7aeRDcx47JvDS/nO1d3JLU0gDc12m3czr4A3r//JIIFCwyytr4aX3md0p0OOESuJkGGjLL1cDl0wzCdZb9CSDUt2x82RJTrlYmADuXH9kSqYXOR4nFqTof/kGLO4KUWhuCUscD7iaiq2xT55y8690d9llSymPyzX1GMUsv/ywmg1sVSW2sanRb2iIBWrwuOKEkz6lnnsTY96ukD1pw9iMhnA6P2wGiSfr2gyBCBP4jQasL/zknPhZXatWSMW3Q==
+ b=n7BFHu2joEwu4HUzkFD9N0ikQDrmCC4wL8WgnJAaW03KzA5vTECUX8ldoPZEj19aDjiAL/LgTWLCQ/vLsgAZiHr7fkeBVlBafVnYKEMAfojcgXOYflxYKkNsHt79+7IC/lAZuYCt9+LRKhmK5U1H8SdpvbW5d5k4OvNzmenQOtSLL8/n4Au+JYVs52cMd1GIO86WzGWayL3ZNdpaxjDMiGrHcd5pM9atLxTxuWiuJiNXwKjDcI7ib/U43yMWqCpLBNFOqqpaZ2vD0IRTrWIq/iU2a953XRh41i3dlnWP+UMQXoglaqXjksaX8MRu5XGEhjdXNUz8hp9393OpBYQCcw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JZm8Ye1TVlsm/s/UCmqEEy6v/MDIDxoDrMePProaqEE=;
- b=XvGershRtT2wVK1rsE6+Xf9K+YVMfDgIJziu24JaZ6RCQ7ySyYjHKqigF0GBnGNFTI5yBl0byKIk0vxU7KkrB+KDuMUCJRz0sGOOWuviCEOgUceYQZ7VHQpJsjS8O3a4kn0d+Cqb8euc3XKbviBd6iP/zpmEsvMJFwCaHIeteulns/c7h3K1QH/1dSPkdCUI20+ZisIkYaUFB9ki8OHgVih7svEyiIYe7dVjuJzZLFdNLsT1NmXx/lsW4Zp2GhX1qKgY0SHx/uXCsp4Eqnyh/t/nNNwSFus6qVcxEfhQdd2/MLgX3J2NhlMUTNH6M84JToiCtd60y3dyfAnuW/Wqaw==
+ bh=KSpYi48hI00TplssZkNsXxwro7N09FY+iaiVfvBiusM=;
+ b=URu9FVDiiftQyzPraq97HzuU+0eExA+rwD+nPsr/R7y6XKOIa4F8KRgyBFZvjOuVRa6G5UpdLE0pIiazvFVvPa5HLs8j1EyBomB6iPM0K26rJZ/bOpyFo16vNi30boi4TNqai5VXKZlS5kKblovW9+50WMEhqjx1CXCV+GVDO8YzR5IdAG1dax9EX99zeP+LjzZC71s9UlEdjZ5VyD7ILGIr2I2qcP5wF75l6nOWQuoP/IS5kpSRq0V/kAaSePBAn4t8NXrZ9XUAA0OY9Ty38KFH6AsU2/BSY3hPfjTZcZieP6t+d40WRY9OCzvpzKODtFXOI8bs817j9j604if0nQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JZm8Ye1TVlsm/s/UCmqEEy6v/MDIDxoDrMePProaqEE=;
- b=5AZgU95KMJNAmZJ8Ekh8k1c3GtUBA4/MwgKoQM/3cRs35mpSeIW9Qik93C4ENGQtTxpcJ1UQz+r4sV4Yn19w0lTjJIY8uBcqrZ1Grf24tPoVVhzxyY96qLNwbFstNylNXe6KOmRRwAO3r4KpwdzIpOFVMfb+j4eaUVj6XgSxB90=
+ bh=KSpYi48hI00TplssZkNsXxwro7N09FY+iaiVfvBiusM=;
+ b=hY1wed7yDDm+KczzVO5G2BWo8R0y9e6DKjjLYBy4IfrbuRwNxivhasgOjPY/xOMpdn0rTzuu7USfdle57ymE1w6B5I48omdofOblmYz7Q1xN6kSzbs7zeY68iFHok5bFPE3XJkjfN6TBORytq4nNZ0FD3ZX8Ck6Wh8CQ7WIVJzY=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5176.namprd12.prod.outlook.com (2603:10b6:208:311::19)
- by BN9PR12MB5034.namprd12.prod.outlook.com (2603:10b6:408:104::17) with
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by SA1PR12MB7366.namprd12.prod.outlook.com (2603:10b6:806:2b3::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6086.23; Mon, 13 Feb
- 2023 14:04:12 +0000
-Received: from BL1PR12MB5176.namprd12.prod.outlook.com
- ([fe80::4e8:93c9:612f:1f08]) by BL1PR12MB5176.namprd12.prod.outlook.com
- ([fe80::4e8:93c9:612f:1f08%3]) with mapi id 15.20.6086.024; Mon, 13 Feb 2023
- 14:04:12 +0000
-Message-ID: <79e4b25a-2b45-e21d-e4a2-f886204d8300@amd.com>
-Date:   Mon, 13 Feb 2023 19:34:02 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.1
+ 2023 14:06:24 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::a59e:bafb:f202:313c]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::a59e:bafb:f202:313c%5]) with mapi id 15.20.6086.024; Mon, 13 Feb 2023
+ 14:06:23 +0000
+Message-ID: <ac5f2aa2-e1fb-5335-12f3-9616fb294bc8@amd.com>
+Date:   Mon, 13 Feb 2023 08:06:21 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
 Subject: Re: RFI: Tablet mode support on HP Pro x360 435 G9 w/ AMD Ryzen 7
  5825U
-To:     Hans de Goede <hdegoede@redhat.com>,
+Content-Language: en-US
+To:     Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Carsten Hatger <xmb8dsv4@gmail.com>,
         linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         Jorge Lopez <jorgealtxwork@gmail.com>
-Cc:     mario.limonciello@amd.com
 References: <CACp=KFQN79Rz0CHP-5kwP9Y5Y9bEAoN0eJzoOpSejg6aF9qnpw@mail.gmail.com>
  <233344ca-5df1-abd9-6fb6-c04634f1b401@redhat.com>
-From:   Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-In-Reply-To: <233344ca-5df1-abd9-6fb6-c04634f1b401@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+ <79e4b25a-2b45-e21d-e4a2-f886204d8300@amd.com>
+From:   Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <79e4b25a-2b45-e21d-e4a2-f886204d8300@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN3PR01CA0004.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:95::12) To BL1PR12MB5176.namprd12.prod.outlook.com
- (2603:10b6:208:311::19)
+X-ClientProxiedBy: SN6PR08CA0016.namprd08.prod.outlook.com
+ (2603:10b6:805:66::29) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5176:EE_|BN9PR12MB5034:EE_
-X-MS-Office365-Filtering-Correlation-Id: d763d1a9-0aac-4bd7-254a-08db0dcb2efb
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SA1PR12MB7366:EE_
+X-MS-Office365-Filtering-Correlation-Id: d62163be-a814-4432-052e-08db0dcb7d59
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: f6WTOJChc48Y9BSp3pW+hzaCOMXGaPXM7GAMcJUoV2k/PKcUuIcOOy2bfcLHBV76NTUuEtwjz4hIkjjocTH+5cffVGnnK42Wpyg/JH0cHik+NSRfCuJAwSFGo2rsYmxLT6yl+QHNxf7vuwDBt73gHxMHLHvwU9HbsK2iDweL5ME7yK1i/KzEGehih7e1PkNaUluIRhKnSLAQLAm7VL+Gree5wcpuee0tXmmKh4rNPyJdiJRWZaDAc4X1/Qn7N7bhrhWAMYZUBbUUaDDr0TXM4mTwutBFgZYqap1eUbYzuH72zSPlRe582i3AV3KItkM7JaZSCGFHHk/976Jj+TOmvkbNhqFme7q0mKQ0SdDFr0MJBgX6l23k5S05/h31XJDJxGjBwdHXlFb+BKHCz6ERPdh3SaNRFzmSFS4GgiPQWZ7swIVoMC+4mOkB46y2azmdERak9u9g05p8gBKlvd7HyHoPrF8li2gAWf0bolhtwpcxOJwIhwC61MZrASJ47i1s7ZXwKbzxlpl1BhkogriMBlBL+gOLumcb9qr4DlbU9kSbEKQ9zqiw65srcirCY0n0KwUhI2SHeeWs92rmZuuoOPM/e2sroKGPh2DzdDAKaxQFCgDun0q+W2HpqzhWFZudnzOxN8aO88BmIDj0+KnaNmAkadS8mLi7sEJMWnJfYYELCMLJmuOAKK0+lEtk1nvJHhs/TIx2m3+PIAEVffX9Nl6VxEgAloGT+3sb7UuBcodIFeZIQXbx0ES9irA/unVOUMzIO6lRpVEvA5r4SGqiC+Z3Yy4M8h7/wQYljAUjVmIwJ4Y1fI87MryIiiKFkWkg
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(366004)(376002)(396003)(136003)(346002)(39860400002)(451199018)(6486002)(966005)(6506007)(478600001)(31686004)(53546011)(31696002)(86362001)(6512007)(26005)(66556008)(45080400002)(186003)(110136005)(316002)(4326008)(2616005)(8676002)(66946007)(66476007)(6666004)(36756003)(8936002)(41300700001)(5660300002)(83380400001)(38100700002)(2906002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: Z6TpYXEx8aJyM7K5cRF88QTl7sFxsa+4YSRMMjSIX1d8cwZJRZXnY0kqj+5COg1FjKioCS7eSHPYz75J2iz6hrZ3FjdFQgYB7FZ0cYIpFGjrwz1wOoVlkea29IgqET4ELxUc+AcA1JFw9G4PYj2LlaiVbKMII69fxufLsT2HmiOKYD8YzyB/EXBuy1c3aWK7UVW7TNyN8LXGGfKFwjJGQengbqWtddrEnxU1/J/zlF3w2x3fqQ3Ay2fK6+4dlslGS+vd1OugzI7+Ox8RkcQ+7kON0sl1SosywSj56yBORuGgQ9n0sq77Tq+uJalNWR7hcQqSkJ8cDqfan0aF6yxA2DSFuBRDg6bD0HKkHNyloo5YdEG9JnGuRv1jifbCRYoYAR2A/OLGPyqOg60s8Zt/YvhytG1k4m9sZzExdgG3KAIDL50TPAAC+IFskvDbIzuMP11zJXwrrQDvX0MQl8AX+J1B8M4VGLVhFN2mpA7vPEawq8sj+Ojj0M4ZeHASQg9MyIDZjNmK8uBW0/4dnB3Gbp9nGYap0adkaujCJM8YlVbk4Gzy5JjtDerO1Gz32YAK1N6wFrdBNFNTZEzobBjTe2KRpDMppDUmlmWGRlHOXMUm6MocKXiTdZPNa9voPDV2VXO63nXsW0t4St6e7X1R09FgEBpmKrvn9+4KoBI/2ZQIJWSf7NjLfTmQYXxmHCnzI261L4Wk5e8c0O0G2mYyGc8vlYKfThtaQM1hHXvtnWbFrwWUpCnQfu0P9Rc/ZvzCjXzfjTQc1ol0N7B6nnsVmaPphYtI7yR4+iiMFPXOQnQiG1d/Rniq6hyB+CynvxXh
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(396003)(39860400002)(346002)(366004)(136003)(376002)(451199018)(31686004)(83380400001)(36756003)(86362001)(31696002)(8676002)(66556008)(66476007)(38100700002)(66946007)(2616005)(6512007)(186003)(478600001)(6486002)(110136005)(53546011)(45080400002)(966005)(5660300002)(316002)(6506007)(41300700001)(8936002)(2906002)(44832011)(43740500002)(45980500001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OEc3R3g0RCtNb3FOTnBhMzFWbFFHNG1VN2J5eDVtRTlXQXBSMjdVTzZkV3Vo?=
- =?utf-8?B?S041NEIwK05hN0paTWh4T2lhQjR6bHZmNEdtREJiSURTb3JsdnFRc0tmOTJC?=
- =?utf-8?B?ZUJFRlZ3dFJjUmd4SXMwWDcwQkh4dDMxUUdCSWlOY2pYRTNlTENYeWIrd3A4?=
- =?utf-8?B?MDJ6cWozSnVVK2lzTm9nNkhMZmV3UytBRThtRG9nelArSGN3ZjNsMEU4L0RW?=
- =?utf-8?B?NnBqNVZ6NDhPMVltdVI3UlFZenN5RFhYbWVIVTQ1clB1dnY1YklVa3JUTWxp?=
- =?utf-8?B?aFlSaXRhMnJOTE5Wei9xOGdLb3h1ODZ6cXNMSnNOS1pBaE1RMUN5ZWdIRFcx?=
- =?utf-8?B?MTRxaTdEY0JuRlVKRjQ1YU5QYjFyb0xTMXBjem1oY1UvMm9uZkROVEovRUFi?=
- =?utf-8?B?M2VsRW4zOWFKOGJsT3l1WHZwMmZ1SDR6cC9NY3RHWnlDS0QyYW1DeEE5Q2Jn?=
- =?utf-8?B?a2d1MG1EQlhuYnZYUVYzWWN5akJkZWZBUEFZYTJUSnJmbUZGT3lCYWNadW1w?=
- =?utf-8?B?Rm9nV1FUSmxMNCt0U01qWkw3MStXQytINno1eUdocGRrYnYxRWJDNzB0c0dT?=
- =?utf-8?B?TG84SWlRSFpiQ2MxYnZmaDlpNGwrWHR1QkVRRTJ3aE9hUFVhdjl4SUFHVEhz?=
- =?utf-8?B?OWF1N1JtdnE2Qk1VaG94dGo3NURZSTZlcWc0UlhtYnh6OGRPMFphM1p1RHh0?=
- =?utf-8?B?clltYnpFNlpsMVovV0pqWHZiMkg5Z0pUZFAxa3hENkUvS3laUWsrT2xTTEs4?=
- =?utf-8?B?S0VQTUY1MXc1a0IxYmlnelZ0SGtVUmUyRjZPNzFSS2dTRzdseitFMzdSOGQ0?=
- =?utf-8?B?enlnRnkvTmhBM1BtdUNtUVNMRHB5cHgxZWF5ZUdYS1pZdkxDcWs3MmZ3WTFa?=
- =?utf-8?B?aUZYTTZ2aDVXZzJNLzVacmNuT09hYUFsejhlMm5oZHZ2SW41Y1lJU2MzU0R3?=
- =?utf-8?B?SDlYbklQNTdGYzkwQWZQWXp0L2RaUnJVcHdSb3M3cy9iZ1k0QjNPeFBWNzNu?=
- =?utf-8?B?UVdNaVl4T2p5WmdGSmpFWjVBTVlwS1pXNHJlMCtyazlqTm8vWjYxT1VIVVUw?=
- =?utf-8?B?V1h4dUJBTjV1Nlpibno0SFVMcC9CYldBN0tZOTNTV2ZrSEpBL1ZaSm5TcE9p?=
- =?utf-8?B?dTFNQ1ZSZnZRUW5uRUZYK1pqaEpRcWxCUDRTdWdTTXhJdURLd1FOelVTZnpw?=
- =?utf-8?B?eVNZVDAxM25nQjRJWmFDTXkyZGY0emhnUEhBNXZic3JhQytQY1BNRnZ5ajc2?=
- =?utf-8?B?bUtUUHZKcDZpbk1BTUVDY3V0dC9yV2huUFBONkM4Q0VERUFMNFNZckZsYkZ0?=
- =?utf-8?B?VHFIWk9pU3RFMys4NXNrN2JZZnJEUm9QQWl0L3BqbzJOOXE5SUExMkRCaDNq?=
- =?utf-8?B?SW1xZmdYYWpuTFQvR003L0NITzU0WldEajQzWjlmVGRiMjhIVzdodkN1Z1Iy?=
- =?utf-8?B?U1VxSitBWm01WlcrNEtnVHMvL3VUOVk2R1BIWVNqS3dqTzFTdXVha2Q5OVdE?=
- =?utf-8?B?T29lbVpiS0lnOE9EMFNTYWlwSVQ0RHlVSkJoTmpFOC9yYXExZjJHOTZQUWI1?=
- =?utf-8?B?S1NyTU5wRVBITVUyaDBZT3F1ZWtFdkoxTmZGWlhDbmIzWnpkQWh2Rk1ob3NR?=
- =?utf-8?B?Ykp6VTNYbGswazgybmZYdnFXelNma05LMFZ6aTBBbytMaXNXQi9MU3FKNU54?=
- =?utf-8?B?dlhnYlMyMHV0enMxTTJFSDdtb3AwMDFTWVdiK1BvYy81WStqNDY3QkFPMVBN?=
- =?utf-8?B?OGZxUFBxSVk1T1laaEwwZG93c3REV2VpdFRwT1ZXQmhya3h6OFlwalR5TC9H?=
- =?utf-8?B?QTdKTE5iTXhYNWxTdERlbStvMzQ2bUs2UmRodDEzTXE3STlKcU1jSWdQc0Iw?=
- =?utf-8?B?OGNvdTRFLzJEK0lrQncvek1NOE1NOG14aTM2THF1aFc0bXJKMCtYYkEraUFi?=
- =?utf-8?B?SkM3dHJ6N2VQQjdXUGQrSEQ2aDd0bExTWCtudU05clNZYTk3MHJHaFovUGJm?=
- =?utf-8?B?MngwOVhCSnRYYUx4VVlEcmNJbTdsd0xGbWd0WlNCMWdodDUyS3JVZlI4RUY3?=
- =?utf-8?B?b0syZ2w2bi9QVkFpekw5ZW92MW9aUVFuSnhVRWNnRm4ySWIrQVlyRGtnQllh?=
- =?utf-8?Q?/KjNQhwdxD/54EAbnYpdHTXbN?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aGN6bHdPYlNaTXpNUGRmd2sza3I3ZTFzd2oycmFvVE5sMHQ1ZXBucG16eW96?=
+ =?utf-8?B?akRGNFI3RWc5N3dQSytRUzdvWWtwM0I0ZUJBV01PZXg4Vi9jZG80TmUzRVo1?=
+ =?utf-8?B?N2tENnBoa1UrSHRtTktDbXJqaVE4KzlJM0pVTzZKVGxSN2RnRVE5NDZHU0hJ?=
+ =?utf-8?B?LzFuVjNkK3c0YWdhT2NjdnYyN0JiOVprN2RIV05hTkMyMTZUZURYUmFKUisy?=
+ =?utf-8?B?akRVb2lKN2RWMm1JNEVtaVpRTnQ3c0ZUM1ZUOEd6MjdhN0ZkWlhyY1lLdjAx?=
+ =?utf-8?B?WU5aMHVJbmRIamdFRm9Yb3pDbWJsUDA3dElYNHc5RFV4VHdZSkhRRkdscmU2?=
+ =?utf-8?B?em0zOER2NFcvNk50MDlBdEtFU2ROMUJjWTlSMFFhNXp4YmRvUU5va0t5b1hM?=
+ =?utf-8?B?RWxNa0xvYWY1YWUrbWdnenJJTDZOMmZGcjU3RmZ2cmpvRnRDdzJPaGNqdHhF?=
+ =?utf-8?B?dXJrYWxKVGZqbHlHeFNwZldCdDlDWXZUOFZXTFNSYjdGbkNhU1hyMi9iWDdQ?=
+ =?utf-8?B?cFRzVzl2dExlY1ZkYyt3SUlleXdaMzR0ZU5uV2JmVnRIL2luR1lEY284bW96?=
+ =?utf-8?B?blpxbFVPdFlNbWJyM0tWTDlaT2dnTHZGVlFpZTV5enZTWFZKNFhBcFVxQXQ4?=
+ =?utf-8?B?VGdnUXFlZ1NNSmgzMjZENmNEYlVXMzFCSkJ1RVU0ckFxYkhPQWpDZExnUWI1?=
+ =?utf-8?B?aGd4OVpoMjR4RTRXYVltODVQVHVxTnhIQ3FWbGdIejRubmNxaVBxUFNJNWtG?=
+ =?utf-8?B?bjA5ckg2bDFoM2dyaG5kM1JhbW81QjBvSXpFc2Fsa2ZUVzFPUGZ3Q1VKWURF?=
+ =?utf-8?B?dGJIaTgyN1lSblIvNlB6a05sYVdIK3FNSFFOaTJFQWIrSXZ4THROb1h2a3pa?=
+ =?utf-8?B?LzVLRVM0L1VKL1V4OGhkeGxJK3ZsazBpNTBkcHBtZW9XWGpzcnFEekNXNlV4?=
+ =?utf-8?B?bGNvS3R2WGJyVS9HR0o5SlJpZlpMN2xUNDhsYk16YlpKVUtxL3NFMHAvRXlu?=
+ =?utf-8?B?eGViZEhOK2hPbm1ZVGhmMGJqRHk2WGkzb0wvQ3F0ZGlYS3lQcStzVk1IZEhU?=
+ =?utf-8?B?TTdFMWNiRmFKd0RSMi8yZFVMNTM4MEJxVE1ObVdjeEhsYmhhZFNYSExrV3p1?=
+ =?utf-8?B?UEU0RXRETWs5MjJvN3lLZWxLL3pscldvaENrVTd3QjBiRmw3aHVDNTdxUmZn?=
+ =?utf-8?B?U3ZYdE1ZUzZBalM2NzNzeVZ5WTB4WUFsVkdLT0pJN0Y2czA3VjFCeHBVWU1m?=
+ =?utf-8?B?b2VMK2JpdExBbFZrOTYwNnZXUEUzbVFDcG50djI5R2l4bkc2YzF4MDE3Rkgx?=
+ =?utf-8?B?Vno1Ry9qeGNVYldPbDRJM0cyQ0JVY0xFcTlwSlgyU29ERTd3UUhwRlBsTGpS?=
+ =?utf-8?B?Ny9jbzl3Y2NBSHY4UEh5cUIreXlPOUNUNWQrenM3RllhbU1CUy9VbkgrSVRa?=
+ =?utf-8?B?L2JZM0NFUGl6Mm9Ec1ZSZ2RFaXVMaGxwOWd6c0VyV1p4ZUIvZi80QU01YmNF?=
+ =?utf-8?B?NWtQUW5BRmdpMDNrdUNZRzNDbk42Sk1yNjQvaHE5UnBhSkZ4SmRudmx5Y3hW?=
+ =?utf-8?B?SnlkNXZyV1l5NSt6czZaeHNxVGVSeUtSOUFSWXN6S3owdEtpRXVUbjNBdWVL?=
+ =?utf-8?B?dWRkZ1pVbTlUdGVtOWkxZ1ZXNlBsdUN1Q0xLbG9ydVJoOWs2RDdXbHFKZkU3?=
+ =?utf-8?B?WHNKaUcyaXNFRHdOVWtRVnRUTnlUSXpmSUE5NE1GREI1WEFBWFplYkFESFFQ?=
+ =?utf-8?B?U0E1NXB6NzAzZlpuM1FvL2xVaXpUVmhSZFQrMzM0RThwaDhwaEgxcGJpbUNi?=
+ =?utf-8?B?ekkzK3B2ODBEbVJVc29EQlNmMW9ZeEdDV3RUbDhQOG5ZY1pnZjlwNmkyMHpG?=
+ =?utf-8?B?NEMrOWhPS05CK1NqZGxsTit5OC82aGJCQ2RsdUZWRGhYdmVySnpRc0NzMitK?=
+ =?utf-8?B?MG9yNHJlTGc3VVU2MGNYVVZxSWtBWExyS2dQbmJZZ2Q3Q1VEYzgxSFFySnRz?=
+ =?utf-8?B?bnFLL1d6WTkzZmMzYjlFTmpSNHEwbExiRWI2R1lVVEFpSkVKVHVLRU5mZmh6?=
+ =?utf-8?B?VFkyOU1nZTYxbTlrQmhqMzhySW12VUowR3FKQ2tjeW9mbnBiMFpMM3o3S1Rs?=
+ =?utf-8?B?WHFadXc1MDJwNXRRcEtCYVpjcXlwWFIzbkdjRWNMUmF5cHlSWXdQRHRmQldC?=
+ =?utf-8?Q?ywnTDt3QXRuLjLMxdkNhwPkXnGMY8aAG52tgKSOKl46W?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d763d1a9-0aac-4bd7-254a-08db0dcb2efb
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5176.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d62163be-a814-4432-052e-08db0dcb7d59
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2023 14:04:12.1883
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2023 14:06:23.7440
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Lyqz9/suOayvgSrp7MuA/CNrNTeiNgGknTmyveNGdhX1KLyjxW7fSHjJKpxwQyJu5cQOnfniThtkopRDCs/krw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5034
+X-MS-Exchange-CrossTenant-UserPrincipalName: AM/yyu8TBOE+oHstI2h2LoYoS1boptymGBvAtE2MCqkEqXpM84ofnPdLclrPx14844ZCLA7Hlq2jyXTdkOI8kQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7366
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
@@ -127,82 +130,84 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
-
-On 2/13/2023 6:01 PM, Hans de Goede wrote:
-> Hi Carsten,
-> 
-> On 2/13/23 11:43, Carsten Hatger wrote:
->> Dear all,
+On 2/13/23 08:04, Shyam Sundar S K wrote:
+>
+> On 2/13/2023 6:01 PM, Hans de Goede wrote:
+>> Hi Carsten,
 >>
->> I'd like to have tablet mode support on my system, probably by means
->> an linux input device such as implemented in the intel platform
->> specific driver drivers/platform/x86/intel/vbtn.c [0]
+>> On 2/13/23 11:43, Carsten Hatger wrote:
+>>> Dear all,
+>>>
+>>> I'd like to have tablet mode support on my system, probably by means
+>>> an linux input device such as implemented in the intel platform
+>>> specific driver drivers/platform/x86/intel/vbtn.c [0]
+>>>
+>>> In the end I hope GNOME eventually to rotate the systems display and
+>>> to show some virtual keyboard (upon users request), cf. for [3]
+>>>
+>>> It appears there has already been a patch proposed  by the chromium
+>>> team to support device PNP0C60 [1] but not merged to [5].
+
+Does your system support a PNP0C60 device?
+
+Or you're just mentioning this patch existed?
+
+It might be useful to look at an acpidump.
+
+>>> Since the system of interest is a HP Probook, there is already a
+>>> driver providing virtual buttons,namely hp-wmi [6]. However, the
+>>> driver loads probes and loads successfully but doesn't provide any
+>>> additional functionality plus some non critical errors on incorrect
+>>> ACPI method calls.
+>>>
+>>> I've noticed AMD has started to provide platform specific driver(s)
+>>> such as pmf [2].
+> PMF is meant for power and thermal management.
+>
+> To my knowledge there is no support for CEZANNE/green
+>>> sardine based systems (yet).
+>>>
+>>> What would be recommended practice and subsystem/folder to provide
+>>> such capability by means of a (platform specific) driver? At least the
+>>> CID PNP0C60 seems to be held by Microsoft [4] and thus be common to
+>>> both amd and intel platforms [4]. However, HID INT33D6 is held by
+>>> Intel and HID AMDI0081 by AMD. Yet I'm not quite sure if
+> IIRC, AMDI0081 is used by SFH driver as UMDF sensor class extension
+> driver[1][2], but on Linux we have implemented it as HID based driver
+> and is a single driver.
+>
+>
+>>> iio-sensor-proxy [7] needs to be involved, too.
+> you mean to say, amd_sfh driver is not switching to tablet mode?
+>
+> Thanks,
+> Shyam
+>
+> [1]
+> https://github.com/MicrosoftDocs/windows-driver-docs/blob/staging/windows-driver-docs-pr/sensors/overview-of-converged-sensor-driver-model.md
+>
+> [2]
+> https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/continuum
+>
+>> The first thing to do here is to figure out which (ACPI) device
+>> is the right device to get the SW_TABLET_MODE events from on this
+>> device.
 >>
->> In the end I hope GNOME eventually to rotate the systems display and
->> to show some virtual keyboard (upon users request), cf. for [3]
+>> Maybe Jorge (added to the Cc) can help with this ?
 >>
->> It appears there has already been a patch proposed  by the chromium
->> team to support device PNP0C60 [1] but not merged to [5].
+>> Regards,
 >>
->> Since the system of interest is a HP Probook, there is already a
->> driver providing virtual buttons,namely hp-wmi [6]. However, the
->> driver loads probes and loads successfully but doesn't provide any
->> additional functionality plus some non critical errors on incorrect
->> ACPI method calls.
+>> Hans
 >>
->> I've noticed AMD has started to provide platform specific driver(s)
->> such as pmf [2]. 
-
-PMF is meant for power and thermal management.
-
-To my knowledge there is no support for CEZANNE/green
->> sardine based systems (yet).
 >>
->> What would be recommended practice and subsystem/folder to provide
->> such capability by means of a (platform specific) driver? At least the
->> CID PNP0C60 seems to be held by Microsoft [4] and thus be common to
->> both amd and intel platforms [4]. However, HID INT33D6 is held by
->> Intel and HID AMDI0081 by AMD. Yet I'm not quite sure if
-
-IIRC, AMDI0081 is used by SFH driver as UMDF sensor class extension
-driver[1][2], but on Linux we have implemented it as HID based driver
-and is a single driver.
-
-
->> iio-sensor-proxy [7] needs to be involved, too.
-
-you mean to say, amd_sfh driver is not switching to tablet mode?
-
-Thanks,
-Shyam
-
-[1]
-https://github.com/MicrosoftDocs/windows-driver-docs/blob/staging/windows-driver-docs-pr/sensors/overview-of-converged-sensor-driver-model.md
-
-[2]
-https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/continuum
-
-> 
-> The first thing to do here is to figure out which (ACPI) device
-> is the right device to get the SW_TABLET_MODE events from on this
-> device.
-> 
-> Maybe Jorge (added to the Cc) can help with this ?
-> 
-> Regards,
-> 
-> Hans
-> 
-> 
-> 
-> 
->> [0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/intel/vbtn.c?h=v6.2-rc8
->> [1] https://lore.kernel.org/lkml/1472628817-3145-1-git-send-email-wnhuang@google.com/
->> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/amd/pmf?h=v6.2-rc8
->> [3] https://gitlab.gnome.org/GNOME/mutter/-/issues/1760
->> [4] https://learn.microsoft.com/en-us/windows-hardware/drivers/gpiobtn/button-implementation
->> [5] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/acpi/button.c?h=v6.2-rc8
->> [6] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/hp/hp-wmi.c?h=v6.2-rc8
->> [7] https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/
 >>
-> 
+>>
+>>> [0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/intel/vbtn.c?h=v6.2-rc8
+>>> [1] https://lore.kernel.org/lkml/1472628817-3145-1-git-send-email-wnhuang@google.com/
+>>> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/amd/pmf?h=v6.2-rc8
+>>> [3] https://gitlab.gnome.org/GNOME/mutter/-/issues/1760
+>>> [4] https://learn.microsoft.com/en-us/windows-hardware/drivers/gpiobtn/button-implementation
+>>> [5] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/acpi/button.c?h=v6.2-rc8
+>>> [6] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/hp/hp-wmi.c?h=v6.2-rc8
+>>> [7] https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/
+>>>
