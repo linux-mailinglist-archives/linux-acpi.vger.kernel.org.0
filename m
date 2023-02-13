@@ -2,212 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B34446947B1
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 15:06:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D757B69483B
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 15:38:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229581AbjBMOG2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Feb 2023 09:06:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34240 "EHLO
+        id S229655AbjBMOij (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Feb 2023 09:38:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229963AbjBMOG1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 09:06:27 -0500
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2077.outbound.protection.outlook.com [40.107.96.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27E0B1ABE2;
-        Mon, 13 Feb 2023 06:06:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=n7BFHu2joEwu4HUzkFD9N0ikQDrmCC4wL8WgnJAaW03KzA5vTECUX8ldoPZEj19aDjiAL/LgTWLCQ/vLsgAZiHr7fkeBVlBafVnYKEMAfojcgXOYflxYKkNsHt79+7IC/lAZuYCt9+LRKhmK5U1H8SdpvbW5d5k4OvNzmenQOtSLL8/n4Au+JYVs52cMd1GIO86WzGWayL3ZNdpaxjDMiGrHcd5pM9atLxTxuWiuJiNXwKjDcI7ib/U43yMWqCpLBNFOqqpaZ2vD0IRTrWIq/iU2a953XRh41i3dlnWP+UMQXoglaqXjksaX8MRu5XGEhjdXNUz8hp9393OpBYQCcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KSpYi48hI00TplssZkNsXxwro7N09FY+iaiVfvBiusM=;
- b=URu9FVDiiftQyzPraq97HzuU+0eExA+rwD+nPsr/R7y6XKOIa4F8KRgyBFZvjOuVRa6G5UpdLE0pIiazvFVvPa5HLs8j1EyBomB6iPM0K26rJZ/bOpyFo16vNi30boi4TNqai5VXKZlS5kKblovW9+50WMEhqjx1CXCV+GVDO8YzR5IdAG1dax9EX99zeP+LjzZC71s9UlEdjZ5VyD7ILGIr2I2qcP5wF75l6nOWQuoP/IS5kpSRq0V/kAaSePBAn4t8NXrZ9XUAA0OY9Ty38KFH6AsU2/BSY3hPfjTZcZieP6t+d40WRY9OCzvpzKODtFXOI8bs817j9j604if0nQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KSpYi48hI00TplssZkNsXxwro7N09FY+iaiVfvBiusM=;
- b=hY1wed7yDDm+KczzVO5G2BWo8R0y9e6DKjjLYBy4IfrbuRwNxivhasgOjPY/xOMpdn0rTzuu7USfdle57ymE1w6B5I48omdofOblmYz7Q1xN6kSzbs7zeY68iFHok5bFPE3XJkjfN6TBORytq4nNZ0FD3ZX8Ck6Wh8CQ7WIVJzY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by SA1PR12MB7366.namprd12.prod.outlook.com (2603:10b6:806:2b3::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6086.23; Mon, 13 Feb
- 2023 14:06:24 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::a59e:bafb:f202:313c]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::a59e:bafb:f202:313c%5]) with mapi id 15.20.6086.024; Mon, 13 Feb 2023
- 14:06:23 +0000
-Message-ID: <ac5f2aa2-e1fb-5335-12f3-9616fb294bc8@amd.com>
-Date:   Mon, 13 Feb 2023 08:06:21 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: RFI: Tablet mode support on HP Pro x360 435 G9 w/ AMD Ryzen 7
- 5825U
-Content-Language: en-US
-To:     Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Carsten Hatger <xmb8dsv4@gmail.com>,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        Jorge Lopez <jorgealtxwork@gmail.com>
-References: <CACp=KFQN79Rz0CHP-5kwP9Y5Y9bEAoN0eJzoOpSejg6aF9qnpw@mail.gmail.com>
- <233344ca-5df1-abd9-6fb6-c04634f1b401@redhat.com>
- <79e4b25a-2b45-e21d-e4a2-f886204d8300@amd.com>
-From:   Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <79e4b25a-2b45-e21d-e4a2-f886204d8300@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN6PR08CA0016.namprd08.prod.outlook.com
- (2603:10b6:805:66::29) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+        with ESMTP id S230318AbjBMOib (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 09:38:31 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 464631BAFD;
+        Mon, 13 Feb 2023 06:38:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676299105; x=1707835105;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7XoZrHzVwE2zyKzwKNugTFygMtiMpXySNVGRuWXd27Q=;
+  b=mSql/uNftaZLdzx86j3eAlK26k5xf04N8Xk1SPFHIXfBEZLHf84M2yjC
+   O+9Y8OA+Muz5tbv1dO7rtdeuHjZfJW8eNYr8MqcCh03hoTxlVrkg4IGaA
+   R8jpvZ4pAKm6h6VwohwkOVUt1J4jWJYdJqLp3kbKkRn8TzcWXfCS9tTiq
+   kwDAg7M9r6EBtNFcYdac6C+VnN+JtIX3KHYHceGSSsKnGUobPTCbPQMJ9
+   CzJZdsvEdsySAbqBMc1eVXZw9EeY1PUQj4pzUb0jAqGL1JUUqHg4d8ABO
+   GGImxIXsSpiRlJhm7JgDoVCSPSY/w3ZLXKgs7F1yi0DD20DTKuB5yryaY
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="310533978"
+X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
+   d="scan'208";a="310533978"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2023 06:37:40 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="777866154"
+X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
+   d="scan'208";a="777866154"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP; 13 Feb 2023 06:37:38 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pRZxY-006PMl-15;
+        Mon, 13 Feb 2023 16:37:36 +0200
+Date:   Mon, 13 Feb 2023 16:37:35 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Werner Sembach <wse@tuxedocomputers.com>,
+        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
+        brgl@bgdev.pl, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Raul E Rangel <rrangel@chromium.org>
+Subject: Re: [PATCH] gpiolib: acpi: Add a ignore wakeup quirk for Clevo NH5xAx
+Message-ID: <Y+pLLzLDotZQLpdA@smile.fi.intel.com>
+References: <20230210164636.628462-1-wse@tuxedocomputers.com>
+ <Y+Z5OSa6hepQBOyc@smile.fi.intel.com>
+ <029b8d80-db28-cdb2-5c39-334be6968fad@tuxedocomputers.com>
+ <Y+owDqifuU9nf+1i@smile.fi.intel.com>
+ <86db79fa-5efb-caad-3310-60928907cc58@amd.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SA1PR12MB7366:EE_
-X-MS-Office365-Filtering-Correlation-Id: d62163be-a814-4432-052e-08db0dcb7d59
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Z6TpYXEx8aJyM7K5cRF88QTl7sFxsa+4YSRMMjSIX1d8cwZJRZXnY0kqj+5COg1FjKioCS7eSHPYz75J2iz6hrZ3FjdFQgYB7FZ0cYIpFGjrwz1wOoVlkea29IgqET4ELxUc+AcA1JFw9G4PYj2LlaiVbKMII69fxufLsT2HmiOKYD8YzyB/EXBuy1c3aWK7UVW7TNyN8LXGGfKFwjJGQengbqWtddrEnxU1/J/zlF3w2x3fqQ3Ay2fK6+4dlslGS+vd1OugzI7+Ox8RkcQ+7kON0sl1SosywSj56yBORuGgQ9n0sq77Tq+uJalNWR7hcQqSkJ8cDqfan0aF6yxA2DSFuBRDg6bD0HKkHNyloo5YdEG9JnGuRv1jifbCRYoYAR2A/OLGPyqOg60s8Zt/YvhytG1k4m9sZzExdgG3KAIDL50TPAAC+IFskvDbIzuMP11zJXwrrQDvX0MQl8AX+J1B8M4VGLVhFN2mpA7vPEawq8sj+Ojj0M4ZeHASQg9MyIDZjNmK8uBW0/4dnB3Gbp9nGYap0adkaujCJM8YlVbk4Gzy5JjtDerO1Gz32YAK1N6wFrdBNFNTZEzobBjTe2KRpDMppDUmlmWGRlHOXMUm6MocKXiTdZPNa9voPDV2VXO63nXsW0t4St6e7X1R09FgEBpmKrvn9+4KoBI/2ZQIJWSf7NjLfTmQYXxmHCnzI261L4Wk5e8c0O0G2mYyGc8vlYKfThtaQM1hHXvtnWbFrwWUpCnQfu0P9Rc/ZvzCjXzfjTQc1ol0N7B6nnsVmaPphYtI7yR4+iiMFPXOQnQiG1d/Rniq6hyB+CynvxXh
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(396003)(39860400002)(346002)(366004)(136003)(376002)(451199018)(31686004)(83380400001)(36756003)(86362001)(31696002)(8676002)(66556008)(66476007)(38100700002)(66946007)(2616005)(6512007)(186003)(478600001)(6486002)(110136005)(53546011)(45080400002)(966005)(5660300002)(316002)(6506007)(41300700001)(8936002)(2906002)(44832011)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aGN6bHdPYlNaTXpNUGRmd2sza3I3ZTFzd2oycmFvVE5sMHQ1ZXBucG16eW96?=
- =?utf-8?B?akRGNFI3RWc5N3dQSytRUzdvWWtwM0I0ZUJBV01PZXg4Vi9jZG80TmUzRVo1?=
- =?utf-8?B?N2tENnBoa1UrSHRtTktDbXJqaVE4KzlJM0pVTzZKVGxSN2RnRVE5NDZHU0hJ?=
- =?utf-8?B?LzFuVjNkK3c0YWdhT2NjdnYyN0JiOVprN2RIV05hTkMyMTZUZURYUmFKUisy?=
- =?utf-8?B?akRVb2lKN2RWMm1JNEVtaVpRTnQ3c0ZUM1ZUOEd6MjdhN0ZkWlhyY1lLdjAx?=
- =?utf-8?B?WU5aMHVJbmRIamdFRm9Yb3pDbWJsUDA3dElYNHc5RFV4VHdZSkhRRkdscmU2?=
- =?utf-8?B?em0zOER2NFcvNk50MDlBdEtFU2ROMUJjWTlSMFFhNXp4YmRvUU5va0t5b1hM?=
- =?utf-8?B?RWxNa0xvYWY1YWUrbWdnenJJTDZOMmZGcjU3RmZ2cmpvRnRDdzJPaGNqdHhF?=
- =?utf-8?B?dXJrYWxKVGZqbHlHeFNwZldCdDlDWXZUOFZXTFNSYjdGbkNhU1hyMi9iWDdQ?=
- =?utf-8?B?cFRzVzl2dExlY1ZkYyt3SUlleXdaMzR0ZU5uV2JmVnRIL2luR1lEY284bW96?=
- =?utf-8?B?blpxbFVPdFlNbWJyM0tWTDlaT2dnTHZGVlFpZTV5enZTWFZKNFhBcFVxQXQ4?=
- =?utf-8?B?VGdnUXFlZ1NNSmgzMjZENmNEYlVXMzFCSkJ1RVU0ckFxYkhPQWpDZExnUWI1?=
- =?utf-8?B?aGd4OVpoMjR4RTRXYVltODVQVHVxTnhIQ3FWbGdIejRubmNxaVBxUFNJNWtG?=
- =?utf-8?B?bjA5ckg2bDFoM2dyaG5kM1JhbW81QjBvSXpFc2Fsa2ZUVzFPUGZ3Q1VKWURF?=
- =?utf-8?B?dGJIaTgyN1lSblIvNlB6a05sYVdIK3FNSFFOaTJFQWIrSXZ4THROb1h2a3pa?=
- =?utf-8?B?LzVLRVM0L1VKL1V4OGhkeGxJK3ZsazBpNTBkcHBtZW9XWGpzcnFEekNXNlV4?=
- =?utf-8?B?bGNvS3R2WGJyVS9HR0o5SlJpZlpMN2xUNDhsYk16YlpKVUtxL3NFMHAvRXlu?=
- =?utf-8?B?eGViZEhOK2hPbm1ZVGhmMGJqRHk2WGkzb0wvQ3F0ZGlYS3lQcStzVk1IZEhU?=
- =?utf-8?B?TTdFMWNiRmFKd0RSMi8yZFVMNTM4MEJxVE1ObVdjeEhsYmhhZFNYSExrV3p1?=
- =?utf-8?B?UEU0RXRETWs5MjJvN3lLZWxLL3pscldvaENrVTd3QjBiRmw3aHVDNTdxUmZn?=
- =?utf-8?B?U3ZYdE1ZUzZBalM2NzNzeVZ5WTB4WUFsVkdLT0pJN0Y2czA3VjFCeHBVWU1m?=
- =?utf-8?B?b2VMK2JpdExBbFZrOTYwNnZXUEUzbVFDcG50djI5R2l4bkc2YzF4MDE3Rkgx?=
- =?utf-8?B?Vno1Ry9qeGNVYldPbDRJM0cyQ0JVY0xFcTlwSlgyU29ERTd3UUhwRlBsTGpS?=
- =?utf-8?B?Ny9jbzl3Y2NBSHY4UEh5cUIreXlPOUNUNWQrenM3RllhbU1CUy9VbkgrSVRa?=
- =?utf-8?B?L2JZM0NFUGl6Mm9Ec1ZSZ2RFaXVMaGxwOWd6c0VyV1p4ZUIvZi80QU01YmNF?=
- =?utf-8?B?NWtQUW5BRmdpMDNrdUNZRzNDbk42Sk1yNjQvaHE5UnBhSkZ4SmRudmx5Y3hW?=
- =?utf-8?B?SnlkNXZyV1l5NSt6czZaeHNxVGVSeUtSOUFSWXN6S3owdEtpRXVUbjNBdWVL?=
- =?utf-8?B?dWRkZ1pVbTlUdGVtOWkxZ1ZXNlBsdUN1Q0xLbG9ydVJoOWs2RDdXbHFKZkU3?=
- =?utf-8?B?WHNKaUcyaXNFRHdOVWtRVnRUTnlUSXpmSUE5NE1GREI1WEFBWFplYkFESFFQ?=
- =?utf-8?B?U0E1NXB6NzAzZlpuM1FvL2xVaXpUVmhSZFQrMzM0RThwaDhwaEgxcGJpbUNi?=
- =?utf-8?B?ekkzK3B2ODBEbVJVc29EQlNmMW9ZeEdDV3RUbDhQOG5ZY1pnZjlwNmkyMHpG?=
- =?utf-8?B?NEMrOWhPS05CK1NqZGxsTit5OC82aGJCQ2RsdUZWRGhYdmVySnpRc0NzMitK?=
- =?utf-8?B?MG9yNHJlTGc3VVU2MGNYVVZxSWtBWExyS2dQbmJZZ2Q3Q1VEYzgxSFFySnRz?=
- =?utf-8?B?bnFLL1d6WTkzZmMzYjlFTmpSNHEwbExiRWI2R1lVVEFpSkVKVHVLRU5mZmh6?=
- =?utf-8?B?VFkyOU1nZTYxbTlrQmhqMzhySW12VUowR3FKQ2tjeW9mbnBiMFpMM3o3S1Rs?=
- =?utf-8?B?WHFadXc1MDJwNXRRcEtCYVpjcXlwWFIzbkdjRWNMUmF5cHlSWXdQRHRmQldC?=
- =?utf-8?Q?ywnTDt3QXRuLjLMxdkNhwPkXnGMY8aAG52tgKSOKl46W?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d62163be-a814-4432-052e-08db0dcb7d59
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2023 14:06:23.7440
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AM/yyu8TBOE+oHstI2h2LoYoS1boptymGBvAtE2MCqkEqXpM84ofnPdLclrPx14844ZCLA7Hlq2jyXTdkOI8kQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7366
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <86db79fa-5efb-caad-3310-60928907cc58@amd.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Mon, Feb 13, 2023 at 07:20:48AM -0600, Mario Limonciello wrote:
+> On 2/13/23 06:41, Andy Shevchenko wrote:
+> > On Mon, Feb 13, 2023 at 12:30:08PM +0100, Werner Sembach wrote:
+> > > Am 10.02.23 um 18:04 schrieb Andy Shevchenko:
+> > > > On Fri, Feb 10, 2023 at 05:46:36PM +0100, Werner Sembach wrote:
+> > > > > commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+> > > > > changed the policy such that I2C touchpads may be able to wake up the
+> > > > > system by default if the system is configured as such.
+> > > > > 
+> > > > > However on Clevo NH5xAx/TUXEDO XA15 Gen10 there is a mistake in the ACPI
+> > > > > tables that the TP_ATTN# signal connected to GPIO 10 is configured as
+> > > > > ActiveLow and level triggered but connected to a pull up.
+> > > > I'm not sure I understand the issue here. From what you say here it seems
+> > > > correct ACPI description.
+> > > TBH I copied the commit description from https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=4cb786180dfb5258ff3111181b5e4ecb1d4a297b
+> > > which is for a different device having the exact same problem.
+> > Yeah, and I reviewed that and seems paid no attention to this detail.
+> > 
+> > So, ActiveLow + PullUp is the _right_ thing to do in ACPI.
+> > The problem seems somewhere else.
+> > 
+> > Mario, can we have an access to the schematics of the affected pin to
+> > understand better what's going on?
+> > 
+> > Or is that description missing some crucial detail?
+> 
+> The schematics were shared by the reporter for the original issue which is
+> how we reached the conclusion there was a mistake.
+> 
+> As they're both Clevo designs it's certainly possible they have the same
+> mistake in two systems.
 
-On 2/13/23 08:04, Shyam Sundar S K wrote:
->
-> On 2/13/2023 6:01 PM, Hans de Goede wrote:
->> Hi Carsten,
->>
->> On 2/13/23 11:43, Carsten Hatger wrote:
->>> Dear all,
->>>
->>> I'd like to have tablet mode support on my system, probably by means
->>> an linux input device such as implemented in the intel platform
->>> specific driver drivers/platform/x86/intel/vbtn.c [0]
->>>
->>> In the end I hope GNOME eventually to rotate the systems display and
->>> to show some virtual keyboard (upon users request), cf. for [3]
->>>
->>> It appears there has already been a patch proposed  by the chromium
->>> team to support device PNP0C60 [1] but not merged to [5].
+Thank you!
+I have looked at the schematics and read discussion.
 
-Does your system support a PNP0C60 device?
+So, the conclusion that this is a BIOS bug is incorrect in my opinion.
+The problem is either in the PMIC/EC firmware that shouldn't shut down 3.3VS
+signal for a while or on the PCB level, so that pull up should be connected
+to another power source that stays on.
 
-Or you're just mentioning this patch existed?
+This means the description on the initial patch with the same issue is
+incorrect.
 
-It might be useful to look at an acpidump.
+Do we know the power sequence on the suspend to see which and how on the
+time line the power sources are off/on?
 
->>> Since the system of interest is a HP Probook, there is already a
->>> driver providing virtual buttons,namely hp-wmi [6]. However, the
->>> driver loads probes and loads successfully but doesn't provide any
->>> additional functionality plus some non critical errors on incorrect
->>> ACPI method calls.
->>>
->>> I've noticed AMD has started to provide platform specific driver(s)
->>> such as pmf [2].
-> PMF is meant for power and thermal management.
->
-> To my knowledge there is no support for CEZANNE/green
->>> sardine based systems (yet).
->>>
->>> What would be recommended practice and subsystem/folder to provide
->>> such capability by means of a (platform specific) driver? At least the
->>> CID PNP0C60 seems to be held by Microsoft [4] and thus be common to
->>> both amd and intel platforms [4]. However, HID INT33D6 is held by
->>> Intel and HID AMDI0081 by AMD. Yet I'm not quite sure if
-> IIRC, AMDI0081 is used by SFH driver as UMDF sensor class extension
-> driver[1][2], but on Linux we have implemented it as HID based driver
-> and is a single driver.
->
->
->>> iio-sensor-proxy [7] needs to be involved, too.
-> you mean to say, amd_sfh driver is not switching to tablet mode?
->
-> Thanks,
-> Shyam
->
-> [1]
-> https://github.com/MicrosoftDocs/windows-driver-docs/blob/staging/windows-driver-docs-pr/sensors/overview-of-converged-sensor-driver-model.md
->
-> [2]
-> https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/continuum
->
->> The first thing to do here is to figure out which (ACPI) device
->> is the right device to get the SW_TABLET_MODE events from on this
->> device.
->>
->> Maybe Jorge (added to the Cc) can help with this ?
->>
->> Regards,
->>
->> Hans
->>
->>
->>
->>
->>> [0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/intel/vbtn.c?h=v6.2-rc8
->>> [1] https://lore.kernel.org/lkml/1472628817-3145-1-git-send-email-wnhuang@google.com/
->>> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/amd/pmf?h=v6.2-rc8
->>> [3] https://gitlab.gnome.org/GNOME/mutter/-/issues/1760
->>> [4] https://learn.microsoft.com/en-us/windows-hardware/drivers/gpiobtn/button-implementation
->>> [5] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/acpi/button.c?h=v6.2-rc8
->>> [6] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/hp/hp-wmi.c?h=v6.2-rc8
->>> [7] https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/
->>>
+> > > > > As soon as the
+> > > > > system suspends the touchpad loses power and then the system wakes up.
+> > > > > 
+> > > > > To avoid this problem, introduce a quirk for this model that will prevent
+> > > > > the wakeup capability for being set for GPIO 10.
+> > > > I'm not against fixing this, but wouldn't be better to actually target the root
+> > > > cause and have a different quirk? Or is it me who didn't get what is the root
+> > > > cause?
+> > > > 
+> > > I missed to reference the original discussion while copying the description:
+> > > https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627 (Note that
+> > > it's a somewhat convoluted issue spanning multiple bugs when you scroll up
+> > > from that particular linked comment, which are however irrelevant for this
+> > > patch)
+> > > 
+> > > I'm not deep into how ACPI defined IRQ work so maybe not a good idea for me
+> > > summing it up, as I might have misunderstood parts of it ^^
+> > The GpioIo() and GpioInt() resources have gaps in them, due to this some
+> > additional information is required or some heuristics is used to deduct
+> > the settings.
+> > 
+> > All this is described in
+> > https://www.kernel.org/doc/html/latest/firmware-guide/acpi/gpio-properties.html
+> > 
+> > > I added the other ones from there to the cc.
+> > Thank you.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
