@@ -2,169 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1F11694593
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 13:15:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 05F3E6945CF
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 13:32:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230050AbjBMMPg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Feb 2023 07:15:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57706 "EHLO
+        id S229604AbjBMMcs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Feb 2023 07:32:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229796AbjBMMPf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 07:15:35 -0500
+        with ESMTP id S229651AbjBMMcr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 07:32:47 -0500
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 012AC7290
-        for <linux-acpi@vger.kernel.org>; Mon, 13 Feb 2023 04:14:22 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30A0676BD
+        for <linux-acpi@vger.kernel.org>; Mon, 13 Feb 2023 04:31:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1676290411;
+        s=mimecast20190719; t=1676291517;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+6v0ooLyeNfzQ7xBgMjxn5omUuyxiJes4sQHKrDWMfg=;
-        b=ZxnYoGNxzmzptVPE43HFzbNn0Pec9BvV5ZqZtdDyTlANJ/SvUuC31OY63gt010QlvWMKRv
-        VXbEImFXEAtWaHAgX57L9Y0M7UxsOXJssXULgEJoNYK0Fhwr5UZZtmQdt7JZTPheBJbRDg
-        f+RB1UqkhJz98RhZIw/dIu0XmfmRlFk=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=zBZ75M4Yenbhu3faYe+Enj0ytlfjFVpVLTtBOwzZfDs=;
+        b=F+CzapJB0MxfxqzNje4uo3y34CqOholLE3cPVchJOGchGR6b3djV2WkIGsFyKBir1e3mlk
+        YIXKLrlSBm/uRdQSdsQsQHzkP6SPyeqcPTlKCDl/zH1FGgKfNIgzRSKyWtntbJPMXN2cHR
+        xjRys24pS3DnRgZLRmvXCPZHlnJRwUk=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-592-zaBwvxWONqqDgaohmySMdw-1; Mon, 13 Feb 2023 07:13:30 -0500
-X-MC-Unique: zaBwvxWONqqDgaohmySMdw-1
-Received: by mail-wr1-f70.google.com with SMTP id g8-20020a5d46c8000000b002c54a27803cso1484220wrs.22
-        for <linux-acpi@vger.kernel.org>; Mon, 13 Feb 2023 04:13:30 -0800 (PST)
+ us-mta-604-33_k5AcVMVm_gLSzufCPvg-1; Mon, 13 Feb 2023 07:31:54 -0500
+X-MC-Unique: 33_k5AcVMVm_gLSzufCPvg-1
+Received: by mail-ej1-f69.google.com with SMTP id he34-20020a1709073da200b00887ced84328so7504517ejc.10
+        for <linux-acpi@vger.kernel.org>; Mon, 13 Feb 2023 04:31:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+6v0ooLyeNfzQ7xBgMjxn5omUuyxiJes4sQHKrDWMfg=;
-        b=PkXWQrGrFvhtYb73SqZV2OrG5lZmE+OOctCUwfI1rssAljy1K2UqEUyhhucRtlM1HX
-         0lrqtAJ6MDIPIZbAv+6JMY1O20AcpYg9HWAIKWHlQtVw9i/CbRqK1krtLHTAdZzORQ3b
-         DhrKt9Nz1FkyzK2L2ki+8VBiPlq33nTGK+TMQMoemmhWNez0Z04RB3ueeDEQLTBWp29O
-         S2w09ihZ+kacBMsLGatrYuIZSILfKT/IQaFCs0ZwlTxpsIPZmOP/RN1TXHKZgNrqNsPO
-         s39kZaIvVEJl9RDUglcoapUYzMSrZTnx2JuheKZVe9CFUDtAdQZi8EGv0IrgoZt85HoC
-         Azuw==
-X-Gm-Message-State: AO0yUKUTjomD463vNnWp8hqXRnyUAlUoTYGLsXVtvxm06wugQnV79XqY
-        x4y+Hj4yBRjimx7l+22/jocMooLsTc+DA4MJ9ZCn63Qu/7TP8K6NEuWAi60uxkmn7XVRvH5/CUL
-        6b224VIydcdce9xOuGTl2Jg==
-X-Received: by 2002:a05:600c:807:b0:3e0:47:66cc with SMTP id k7-20020a05600c080700b003e0004766ccmr19097471wmp.23.1676290409319;
-        Mon, 13 Feb 2023 04:13:29 -0800 (PST)
-X-Google-Smtp-Source: AK7set9UKPGUs5FOatxbxbL/MB4NwZDNS48v4t9kXrFWtKl/EbrfjKpJI1CK4NzxGM8p+c9u9Ic45g==
-X-Received: by 2002:a05:600c:807:b0:3e0:47:66cc with SMTP id k7-20020a05600c080700b003e0004766ccmr19097458wmp.23.1676290409076;
-        Mon, 13 Feb 2023 04:13:29 -0800 (PST)
-Received: from ?IPV6:2003:cb:c705:6d00:5870:9639:1c17:8162? (p200300cbc7056d00587096391c178162.dip0.t-ipconnect.de. [2003:cb:c705:6d00:5870:9639:1c17:8162])
-        by smtp.gmail.com with ESMTPSA id g10-20020a05600c310a00b003e1e8d794e1sm4939993wmo.13.2023.02.13.04.13.28
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zBZ75M4Yenbhu3faYe+Enj0ytlfjFVpVLTtBOwzZfDs=;
+        b=4gzk4u7JzkJ0A3tcyLsHg6xMVvOZBROhR4xuz/DDEqCnabj6msgEhYNMyM6LM/JWLz
+         Lmgk/EVaASF9vst1v9MI3GFZ60lPWx18q9XdJFbcoQg1u2JhJ5itReYWDFOGe04kvxju
+         Wqvz49xqR3B96rB2xC2oFPeA9fJhOYPjdc9hyLGPijG5R5ZqmakXMj0EzOTFvMSL81IU
+         NDStXFZpw4Xt3iOVm+dXMKEyK9YB8MPqIKoe+Xh6NZizQRqZhZcdu3BtZydU/CLSZln8
+         +6BR9yrF2HRskR8jDOkdxnmvGFU6wRA/sEdzZ+LFD7zH/BzdrY2JggD4vc1wMEbsQgn4
+         w1jw==
+X-Gm-Message-State: AO0yUKUMouXRI+ioZdCgylHpbVTkCfrtaPgDa0eMBrikZ/0ePt1SGSCB
+        J3QGVHUr2dq6wnpdlNrkq0WGYWufK2hX/tpn3RUBmbp8W2hA7DJVEzPz/syIqYQh/7IRWeuxufR
+        7tFPAAPBvi/YLQqoTWrUVlg==
+X-Received: by 2002:a17:906:4b0f:b0:886:ec6e:4c1 with SMTP id y15-20020a1709064b0f00b00886ec6e04c1mr23614042eju.59.1676291513085;
+        Mon, 13 Feb 2023 04:31:53 -0800 (PST)
+X-Google-Smtp-Source: AK7set9p5DtT123vpTJkVDqIwud9hwK6Y1HV0n1Q3xwdJBhiSNzZJanBsXflTd+NNYTbVa0PedCLRA==
+X-Received: by 2002:a17:906:4b0f:b0:886:ec6e:4c1 with SMTP id y15-20020a1709064b0f00b00886ec6e04c1mr23614032eju.59.1676291512889;
+        Mon, 13 Feb 2023 04:31:52 -0800 (PST)
+Received: from [10.40.98.142] ([78.108.130.194])
+        by smtp.gmail.com with ESMTPSA id g25-20020a170906349900b0088519b92074sm6728969ejb.128.2023.02.13.04.31.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Feb 2023 04:13:28 -0800 (PST)
-Message-ID: <ed85ee75-1507-3f72-2af7-40ba452402f4@redhat.com>
-Date:   Mon, 13 Feb 2023 13:13:27 +0100
+        Mon, 13 Feb 2023 04:31:52 -0800 (PST)
+Message-ID: <233344ca-5df1-abd9-6fb6-c04634f1b401@redhat.com>
+Date:   Mon, 13 Feb 2023 13:31:51 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH 00/18] CXL RAM and the 'Soft Reserved' => 'System RAM'
- default
+ Thunderbird/102.7.1
+Subject: Re: RFI: Tablet mode support on HP Pro x360 435 G9 w/ AMD Ryzen 7
+ 5825U
 Content-Language: en-US
-To:     Dan Williams <dan.j.williams@intel.com>, linux-cxl@vger.kernel.org
-Cc:     Kees Cook <keescook@chromium.org>, stable@vger.kernel.org,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-        linux-acpi@vger.kernel.org
-References: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Carsten Hatger <xmb8dsv4@gmail.com>, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        Jorge Lopez <jorgealtxwork@gmail.com>
+Cc:     mario.limonciello@amd.com, Shyam-sundar.S-k@amd.com
+References: <CACp=KFQN79Rz0CHP-5kwP9Y5Y9bEAoN0eJzoOpSejg6aF9qnpw@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CACp=KFQN79Rz0CHP-5kwP9Y5Y9bEAoN0eJzoOpSejg6aF9qnpw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 06.02.23 02:02, Dan Williams wrote:
-> Summary:
-> --------
-> 
-> CXL RAM support allows for the dynamic provisioning of new CXL RAM
-> regions, and more routinely, assembling a region from an existing
-> configuration established by platform-firmware. The latter is motivated
-> by CXL memory RAS (Reliability, Availability and Serviceability)
-> support, that requires associating device events with System Physical
-> Address ranges and vice versa.
-> 
-> The 'Soft Reserved' policy rework arranges for performance
-> differentiated memory like CXL attached DRAM, or high-bandwidth memory,
-> to be designated for 'System RAM' by default, rather than the device-dax
-> dedicated access mode. That current device-dax default is confusing and
-> surprising for the Pareto of users that do not expect memory to be
-> quarantined for dedicated access by default. Most users expect all
-> 'System RAM'-capable memory to show up in FREE(1).
-> 
-> 
-> Details:
-> --------
-> 
-> Recall that the Linux 'Soft Reserved' designation for memory is a
-> reaction to platform-firmware, like EFI EDK2, delineating memory with
-> the EFI Specific Purpose Memory attribute (EFI_MEMORY_SP). An
-> alternative way to think of that attribute is that it specifies the
-> *not* general-purpose memory pool. It is memory that may be too precious
-> for general usage or not performant enough for some hot data structures.
-> However, in the absence of explicit policy it should just be 'System
-> RAM' by default.
-> 
-> Rather than require every distribution to ship a udev policy to assign
-> dax devices to dax_kmem (the device-memory hotplug driver) just make
-> that the kernel default. This is similar to the rationale in:
-> 
-> commit 8604d9e534a3 ("memory_hotplug: introduce CONFIG_MEMORY_HOTPLUG_DEFAULT_ONLINE")
-> 
-> With this change the relatively niche use case of accessing this memory
-> via mapping a device-dax instance can be achieved by building with
-> CONFIG_MEMORY_HOTPLUG_DEFAULT_ONLINE=n, or specifying
-> memhp_default_state=offline at boot, and then use:
-> 
->      daxctl reconfigure-device $device -m devdax --force
-> 
-> ...to shift the corresponding address range to device-dax access.
-> 
-> The process of assembling a device-dax instance for a given CXL region
-> device configuration is similar to the process of assembling a
-> Device-Mapper or MDRAID storage-device array. Specifically, asynchronous
-> probing by the PCI and driver core enumerates all CXL endpoints and
-> their decoders. Then, once enough decoders have arrived to a describe a
-> given region, that region is passed to the device-dax subsystem where it
-> is subject to the above 'dax_kmem' policy. This assignment and policy
-> choice is only possible if memory is set aside by the 'Soft Reserved'
-> designation. Otherwise, CXL that is mapped as 'System RAM' becomes
-> immutable by CXL driver mechanisms, but is still enumerated for RAS
-> purposes.
-> 
-> This series is also available via:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl.git/log/?h=for-6.3/cxl-ram-region
-> 
-> ...and has gone through some preview testing in various forms.
-> 
+Hi Carsten,
 
-My concern would be that in setups with a lot of CXL memory 
-(soft-reserved), having that much offline memory during boot might make 
-the kernel run out of memory. After all, offline memory consumes memory 
-for the memmap.
+On 2/13/23 11:43, Carsten Hatger wrote:
+> Dear all,
+> 
+> I'd like to have tablet mode support on my system, probably by means
+> an linux input device such as implemented in the intel platform
+> specific driver drivers/platform/x86/intel/vbtn.c [0]
+> 
+> In the end I hope GNOME eventually to rotate the systems display and
+> to show some virtual keyboard (upon users request), cf. for [3]
+> 
+> It appears there has already been a patch proposed  by the chromium
+> team to support device PNP0C60 [1] but not merged to [5].
+> 
+> Since the system of interest is a HP Probook, there is already a
+> driver providing virtual buttons,namely hp-wmi [6]. However, the
+> driver loads probes and loads successfully but doesn't provide any
+> additional functionality plus some non critical errors on incorrect
+> ACPI method calls.
+> 
+> I've noticed AMD has started to provide platform specific driver(s)
+> such as pmf [2]. To my knowledge there is no support for CEZANNE/green
+> sardine based systems (yet).
+> 
+> What would be recommended practice and subsystem/folder to provide
+> such capability by means of a (platform specific) driver? At least the
+> CID PNP0C60 seems to be held by Microsoft [4] and thus be common to
+> both amd and intel platforms [4]. However, HID INT33D6 is held by
+> Intel and HID AMDI0081 by AMD. Yet I'm not quite sure if
+> iio-sensor-proxy [7] needs to be involved, too.
 
-Is the assumption that something like that cannot happen because we'll 
-never ever have that much soft-reserved memory? :)
+The first thing to do here is to figure out which (ACPI) device
+is the right device to get the SW_TABLET_MODE events from on this
+device.
 
-Note that this is a concern only applies when not using auto-onlining in 
-the kernel during boot, which (IMHO) is or will be the default in the 
-future.
+Maybe Jorge (added to the Cc) can help with this ?
 
--- 
-Thanks,
+Regards,
 
-David / dhildenb
+Hans
+
+
+
+
+> [0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/intel/vbtn.c?h=v6.2-rc8
+> [1] https://lore.kernel.org/lkml/1472628817-3145-1-git-send-email-wnhuang@google.com/
+> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/amd/pmf?h=v6.2-rc8
+> [3] https://gitlab.gnome.org/GNOME/mutter/-/issues/1760
+> [4] https://learn.microsoft.com/en-us/windows-hardware/drivers/gpiobtn/button-implementation
+> [5] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/acpi/button.c?h=v6.2-rc8
+> [6] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/hp/hp-wmi.c?h=v6.2-rc8
+> [7] https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/
+> 
 
