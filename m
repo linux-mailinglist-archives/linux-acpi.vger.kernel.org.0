@@ -2,359 +2,191 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86D7F6946A0
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 14:11:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EA446946D7
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 14:21:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229815AbjBMNLI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Feb 2023 08:11:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51160 "EHLO
+        id S229921AbjBMNV2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Feb 2023 08:21:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229593AbjBMNLG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 08:11:06 -0500
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20F219004;
-        Mon, 13 Feb 2023 05:11:05 -0800 (PST)
-Received: by mail-qt1-f178.google.com with SMTP id z5so13549430qtn.8;
-        Mon, 13 Feb 2023 05:11:05 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SOjXov1or4GUk5t/1BfIn2Aw9t7YTPkMeOlCti1wBS4=;
-        b=IApdMvnNwNmvWBEFqEgvk59/lcc3KqK+I9wcULZv7DLzARLAl4i+xo3gey9qEFMHmz
-         0QMRVovo2cdgUwG2G0k7G33SJjY43FXjD8WWSyqxfH/jeL6t7jrvRuIzoN5OU34gaRwb
-         X/Gwu0NFORoHylDqMxD/RxzHGNrutR2nOCvEyhh+tRrUhOFlThaCkv+tv0sOeOBV3QwI
-         9w6bm4lkER4CR0eeg8UDWBA6FqbXqkl0pFF9jgzgsfXEzaO0uNsmLB9+APd2+Vxf5pAH
-         1yGqr9gJT/L1kECA0FgXrSRaNuU7zWfGEHuDSZNMo8MYR6yPm6LA72AKj7AtQjmr/Vdp
-         JTCw==
-X-Gm-Message-State: AO0yUKVDe8H5GTpMubR0FtP6rap4HWINxky1vViafGzClpMclhx6Irsx
-        ivR0yL0EMkzmMnKYFjhxWsJKu2JK1ePEhw==
-X-Google-Smtp-Source: AK7set9gGBXGqScJxmM0zjTXzV9AMpVNHaxo68Yj4pV4mRzlqOdC5MZzEw5SYhQtIVGAUkbduQFX3g==
-X-Received: by 2002:a05:622a:449:b0:3ab:a047:58ee with SMTP id o9-20020a05622a044900b003aba04758eemr44818570qtx.25.1676293863827;
-        Mon, 13 Feb 2023 05:11:03 -0800 (PST)
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com. [209.85.128.175])
-        by smtp.gmail.com with ESMTPSA id a20-20020ac81094000000b003b9ba2cf068sm9223522qtj.56.2023.02.13.05.11.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Feb 2023 05:11:03 -0800 (PST)
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-51ba4b1b9feso161837967b3.11;
-        Mon, 13 Feb 2023 05:11:03 -0800 (PST)
-X-Received: by 2002:a25:8f82:0:b0:86e:1225:b335 with SMTP id
- u2-20020a258f82000000b0086e1225b335mr3102546ybl.455.1676293852226; Mon, 13
- Feb 2023 05:10:52 -0800 (PST)
+        with ESMTP id S229505AbjBMNV1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 08:21:27 -0500
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2075.outbound.protection.outlook.com [40.107.95.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72B3EBDFB;
+        Mon, 13 Feb 2023 05:21:26 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AGh69TnyJbmv1K6M71ApwctX+PgRDvOHlJkviCwbz/fj+d1bnwLgv6pDOQ/a1UbrFmCZdKjE0ehmgv2xG+6YArL///tFvHjCfh6gafPbOo/CwfI42BDXLTigJvzd4RO/Or9ERA4pmk7OmNv32tha1KeyJV3X0k+E/cMLZD06Cvi/QrAJxjm/zQgS4s5WwPkcBv1OwtuZm4EZitCgTpBjOrX5xGf/REgGRUZpWZYX/E4trWJxY89PYKqRXRW15RdP9i32hgQ7ivJENAvpbAxEl0ofNYjSwgBDSFRdn5upIgQWDb2daI1WQfHcbA0C2toOjV47TOYpyNA4COTPHbBm6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+UNfF0SwzDAgNIE4hkpIGuH2fji34h3X1mUSMNNIeeA=;
+ b=fvYHyDtirX1RU83HUTawLVGdur1TNhKt9SHG8/KWP7Cxi9Uyf2+OUr8vsko752+VAt6kIwaKEWpQV6xnYr9trqx2mgEqePP5dn5uHszDk4G2n2Lfg9uxEpEmtbD27FEhhftf0cRfXXTKDI04Uh15AL/TW2SkIHHMRfifUlTjMlu40MZo5ssF0W5hWS5PVIV/WKA1z9FxuyIgBicp4dR7CYqsoj2VvFNMg6oefUlh+6BBlRDITYx5l+UI2rF3uAwn1lU9kT2mKZGtgC46r7kqBKvUjwvcQFeaMzTdXkFjyl4WGqNkX9UW2rlLIsRnIbhtfb7JGHfjffplpxe02R/D/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+UNfF0SwzDAgNIE4hkpIGuH2fji34h3X1mUSMNNIeeA=;
+ b=Qok8JM9pMi2knA1HVfOxqzzj3bYxeLctmUMazbtEUarYF7/4dXIKg8L5ve8m6naLXy9iL3T97c4LImyLWiBsg1ciRvzbexh18eEJdm44ppKpiro9aAGmxNZLFwpNRmADb4vynOONGampKSneWMHR0HwxtqTh5BkqJLEr7f7mcm4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by DM6PR12MB4185.namprd12.prod.outlook.com (2603:10b6:5:216::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6086.24; Mon, 13 Feb
+ 2023 13:21:20 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::a59e:bafb:f202:313c]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::a59e:bafb:f202:313c%5]) with mapi id 15.20.6086.024; Mon, 13 Feb 2023
+ 13:21:20 +0000
+Message-ID: <86db79fa-5efb-caad-3310-60928907cc58@amd.com>
+Date:   Mon, 13 Feb 2023 07:20:48 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH] gpiolib: acpi: Add a ignore wakeup quirk for Clevo NH5xAx
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Werner Sembach <wse@tuxedocomputers.com>
+Cc:     mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
+        brgl@bgdev.pl, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Raul E Rangel <rrangel@chromium.org>
+References: <20230210164636.628462-1-wse@tuxedocomputers.com>
+ <Y+Z5OSa6hepQBOyc@smile.fi.intel.com>
+ <029b8d80-db28-cdb2-5c39-334be6968fad@tuxedocomputers.com>
+ <Y+owDqifuU9nf+1i@smile.fi.intel.com>
+Content-Language: en-US
+From:   Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <Y+owDqifuU9nf+1i@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA0PR11CA0131.namprd11.prod.outlook.com
+ (2603:10b6:806:131::16) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 MIME-Version: 1.0
-References: <20230207014207.1678715-1-saravanak@google.com>
- <20230207014207.1678715-10-saravanak@google.com> <CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com>
- <CAGETcx8DaZqS7+47PhX4hQOfSk7AzPcTu=2i+4gAgXr6wyDNgg@mail.gmail.com>
- <CAGETcx_bkuFaLCiPrAWCPQz+w79ccDp6=9e881qmK=vx3hBMyg@mail.gmail.com>
- <CAMuHMdVREiVoGp-jvXKAdPSwjio13VgtPXWppnGOB+gSS9op+g@mail.gmail.com> <CAGETcx_+rhHvaC_HJXGrr5_WAd2+k5f=rWYnkCZ6z5bGX-wj4w@mail.gmail.com>
-In-Reply-To: <CAGETcx_+rhHvaC_HJXGrr5_WAd2+k5f=rWYnkCZ6z5bGX-wj4w@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 13 Feb 2023 14:10:41 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUK92+rNdyEGTgK=Aok1dYjHBRLnxokaz50s+MbNW_noA@mail.gmail.com>
-Message-ID: <CAMuHMdUK92+rNdyEGTgK=Aok1dYjHBRLnxokaz50s+MbNW_noA@mail.gmail.com>
-Subject: Re: [PATCH v3 09/12] of: property: Simplify of_link_to_phandle()
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        Abel Vesa <abel.vesa@linaro.org>,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Tony Lindgren <tony@atomide.com>,
-        John Stultz <jstultz@google.com>,
-        Doug Anderson <dianders@chromium.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Maxim Kiselev <bigunclemax@gmail.com>,
-        Maxim Kochetkov <fido_max@inbox.ru>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Colin Foster <colin.foster@in-advantage.com>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Jean-Philippe Brucker <jpb@kernel.org>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        kernel-team@android.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|DM6PR12MB4185:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5ba8e356-4474-4199-e657-08db0dc53221
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 59Wi5MhXUXKav3nxBK2StxVI35w9VD2MgjmDebtCLAjyBC+hRerx4NzRglCCNw82R/NhWLgyKm6klJ6ZwF0G9COtrVjIwOA/trzry/i/kX15IBp0hShXnvjIc6CS3cAqVLJ3oj3NygmEqEpowe5IfETQ4qT0vRhlu86ewYq2LiPlu7VM9HuxlOp8cPE2bWcy07gf5FcXRdZ3AccX3ioXrGp+b7NLrT8djinJhUuNivN5DT0pLp+wsZZqSfi+ZaDt7XvKm7GwIeUlhTSh/IQ0ahAAycsy4mtIuOoIxcj+H1w9HF1JaLdGVQt3X8AxxOJgX2xW4gucGvgpPLs6EMjULp0NfPE1rTxd3pCEGZqOCCq9sqzIM3UuUDLPOAESdh+9QO8QMkWAprcMcWEaL0EHO1fb51VbqPta4XoB5bs4QBRW7dk5vDtzDVTVR5ZdSb5cdnPUzTS27SmEkTMgu4S2OC3ld/N+N4aMmA1zvOVXGRHr6tzKkwd6Zm1Ka0KoniWJKoEI3VwJh6+idqYeesaKp095p8u2rZpcIkQOt1N6ZBayQTH8gM730H+QnZSRgLKrNN2Z0EWTz756EtDRsoWuIkydB4vyoKiky9HYiIuYMR/MDrApyEB9uYIGnvIYSZZgUvBrqyFD5DZOlJQMynpu7TEpJbg1Wr7kyHwvQEO/XL4328hHTuMH8MV6zNXPU54XBfHtqtIBz7UtoarKPwwGURLWSNK+QGGJ9/MUxhGITY6c8aJYRWMgaig3VHyy2C8zh0PJ398zQtNMrlmKq2mex95JqQcjFwwCTprhQceXWZDGa7nIcHNBA4iebwV4ZuR/
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(376002)(396003)(346002)(366004)(136003)(39860400002)(451199018)(44832011)(2906002)(36756003)(5660300002)(31696002)(83380400001)(186003)(2616005)(4326008)(38100700002)(8676002)(66946007)(316002)(54906003)(66476007)(66556008)(8936002)(41300700001)(478600001)(6666004)(6506007)(6512007)(53546011)(110136005)(86362001)(6486002)(966005)(31686004)(32563001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SmVQMzd3ajgrbjM4OTRvOHNmNDRCYXk1clFRTEo0dTdlSjNxbWV3OXNOYUg5?=
+ =?utf-8?B?TGZEbXk4U0FmVmYvMWNNWUs5QWxEYkV6WS8rT2M4WUsyZG1SYUQyOW1Nb2pV?=
+ =?utf-8?B?M0p5dE4rak4vMXlXaU1TYk5OT0RCN1lwSndnSkJvNVhVVVBNWkVaRDBoejlj?=
+ =?utf-8?B?TmFEdDBMRFdxaEtRYWt3elVsOWFXdTY5L0UySDQwQXhQOG9wT2FHSkVIclhx?=
+ =?utf-8?B?enBwbkpNQ0hsTUhEVXUvOHNSUWI5ZytmcDJHcUZvYmJ0SkNrL1dEN3RzVzJz?=
+ =?utf-8?B?eDM1cGJJUHNveUUyMmVyeG5HVXcydG13UmJxUWtlQ05MNXBDT0YrdUZrUGph?=
+ =?utf-8?B?YXRobGFnS0xaNnFvaHVSeHc0RnhtNWNTVnp4TUwwY0pkblVlUmJIV1lkVk1T?=
+ =?utf-8?B?c3RGS0cxZ296NHNVd0pLbW5JQVdicW1Kam4yWUwzUHc1SWtPZDNnWlBFaTM4?=
+ =?utf-8?B?UjU5QnMwTkkvS1dQcEdZZEpWa2xlKy8vQUFtdXVOcmpwK2RQMnRPZVFOb2R1?=
+ =?utf-8?B?TUs2WTI1TzEzVy84TEh0VWZiRVV6em1QeVZrM2pUcVVXNVVIYkFGRTFybGFT?=
+ =?utf-8?B?TFI4aVlxUWptOEp4ZkJJRU9iQTRlWW5IcDExUUFRQjEzblFLbWw3MkVKb0kz?=
+ =?utf-8?B?L3RJenZxOFlVY3B0RTJxSEtWL3NFNGVROEh6TVFHVEpBd2d1bUNsSzE5bFVx?=
+ =?utf-8?B?enZmZi9qZHJNcFdxNDFnZkZBQUo2QXJJREppTGJvanNDQ25VdmlvcksyeUs3?=
+ =?utf-8?B?bURualJjcmFzZVhzVkJ0QWNrdGQxbW05ZWo1RWljam4vODB5SEg5WlJIOVhi?=
+ =?utf-8?B?LzZNempxYVl0blU1Wm53V3Bwcy80NnZ1OEhjcnF4MnA4TkFjS0RwRTVPK2FP?=
+ =?utf-8?B?RjJwd1NIclBHeG5GZlpvRHlIYXV0ZmRSdktaYTgva2VKNnduYnE3SlNsSjdy?=
+ =?utf-8?B?QXFLMk5wSmlYYnJnRG5rK0wvb1NHREdQMmREejYrNW4xY1JNYVFTTnBZVjJo?=
+ =?utf-8?B?dGFwVDNXWnhqSXVBSVBEZ2R0VmpncDh0bUhnN1U4TVluNjZpOHRsendxRVFs?=
+ =?utf-8?B?L1pPT00rcmtQbXpPbXdNWGtHWURaNjQxSTRkOXdIRWVaUVhyK0c5akZjdTIy?=
+ =?utf-8?B?Zjc3Z1hNTXZ6U1BmSnVhcU41eWxhS2MvQ05jZTRGZ1dqdW1wcWhTQ1Npb1ly?=
+ =?utf-8?B?T2ovZnFtQXVEaDJ3VlhrN3hUYjRFOW54aE54ZzcyQ2p3UW5qeko3STVENEd6?=
+ =?utf-8?B?MGNFUm03Y2luS1Rza0tKbkg2UWs0Qlg5aHU0VjJtbEZsNUJUbHM0TGR4OGFT?=
+ =?utf-8?B?aXVROXBseDk5Si9JekRCUU1wSXd0bnFTY2hTZ2FtS0RUNHZJeVNGaGprWlVW?=
+ =?utf-8?B?RWM4dW1PSXpUVy9oYXhHRGY0U1RpSUlldlo5TDFjSTR0MTljbWZqWURCOE14?=
+ =?utf-8?B?bGxaZDhpRkZQcmRqTkVGaStJWmFiNERBQ0UrUGVtWXlXL053TDZ3Z3FaMmlF?=
+ =?utf-8?B?STR4MTNPV0tvWE5ldWlUdnFZd3d6Wk42YUNLRlc0VHVRZTlEOUFmd3F3TThB?=
+ =?utf-8?B?Tm9qRk5HNlVZWjNNczBxelNOQ292OWFqZkd3czVhaDNnbXFueGVhbFUxYlFv?=
+ =?utf-8?B?UGlSc0tad29wcFZJYWdzd2lacGxwWXdVZ29CUzJWQS96WWM3Q1h5d3hGbWM1?=
+ =?utf-8?B?cHdnWFBCWmdiVDFKdlp6SCs1TjNWbmo0ZjlhcklpV3Z6R2hsL2Y0YnUzQXpq?=
+ =?utf-8?B?V1gzYm9jLzZWYlY3U2Z6V1pPaEZNeW5CUzJDZll6eFdQVCtNYzVuRG1GbEUw?=
+ =?utf-8?B?NHM3ZzlidS9mYmk0SU5mZ2dpanJMcVJwQVViTFVsUWl2VlJtTG1yc1RjTXVB?=
+ =?utf-8?B?T0F0WW9XQU1oUWVBcUJuWjNOdmdRdXFRcFJtWXEzOEVWbEZoQ3BCdFZ4VXAz?=
+ =?utf-8?B?S000SFA3eE9QbHNZRGt0MzhxazRoYTUycHNrd2JjcmxhMytvL2Jib2hEYkZ4?=
+ =?utf-8?B?V3R6b1hoYlYrb3NHMVA3bTN6QXNDVE1Cem4vN2V4aXcvdWFVeEpFanJ6bTBl?=
+ =?utf-8?B?V0R3V2Z1bWNlRWlOTEdlZlU4S3BXeXhoaGtsVnR5UUlCM2lSclZsRlA4NENs?=
+ =?utf-8?B?TThTTitpVy95VmFCME9xSkhZSjdKODBkeWZNa2pRS0FtTjIyVDZtQ29tQld5?=
+ =?utf-8?Q?Oeu2NgZ2qMUAVxpQ+4VVuKygbVamJLqibhsxh4D4fN26?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5ba8e356-4474-4199-e657-08db0dc53221
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2023 13:21:20.5108
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yAIew2ckjrXoBUjpjzYxrJMIgT1L5FaSeWAp0+lUyoJmiidnzNsGYmpadjEzDrXK+2y2ohjodfylf24+o4i8bA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4185
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Saravana,
 
-On Wed, Feb 8, 2023 at 9:35 AM Saravana Kannan <saravanak@google.com> wrote:
-> On Tue, Feb 7, 2023 at 11:57 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > On Wed, Feb 8, 2023 at 8:32 AM Saravana Kannan <saravanak@google.com> wrote:
-> > > On Tue, Feb 7, 2023 at 6:08 PM Saravana Kannan <saravanak@google.com> wrote:
-> > > > On Tue, Feb 7, 2023 at 12:57 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > > > > On Tue, Feb 7, 2023 at 2:42 AM Saravana Kannan <saravanak@google.com> wrote:
-> > > > > > The driver core now:
-> > > > > > - Has the parent device of a supplier pick up the consumers if the
-> > > > > >   supplier never has a device created for it.
-> > > > > > - Ignores a supplier if the supplier has no parent device and will never
-> > > > > >   be probed by a driver
-> > > > > >
-> > > > > > And already prevents creating a device link with the consumer as a
-> > > > > > supplier of a parent.
-> > > > > >
-> > > > > > So, we no longer need to find the "compatible" node of the supplier or
-> > > > > > do any other checks in of_link_to_phandle(). We simply need to make sure
-> > > > > > that the supplier is available in DT.
-> > > > > >
-> > > > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > > > >
-> > > > > Thanks for your patch!
-> > > > >
-> > > > > This patch introduces a regression when dynamically loading DT overlays.
-> > > > > Unfortunately this happens when using the out-of-tree OF configfs,
-> > > > > which is not supported upstream.  Still, there may be (obscure)
-> > > > > in-tree users.
-> > > > >
-> > > > > When loading a DT overlay[1] to enable an SPI controller, and
-> > > > > instantiate a connected SPI EEPROM:
-> >
-> > [...]
-> >
-> > > > > The SPI controller and the SPI EEPROM are no longer instantiated.
-> >
-> > > > Sigh... I spent way too long trying to figure out if I caused a memory
-> > > > leak. I should have scrolled down further! Doesn't look like that part
-> > > > is related to anything I did.
-> > > >
-> > > > There are some flags set to avoid re-parsing fwnodes multiple times.
-> > > > My guess is that the issue you are seeing has to do with how many of
-> > > > the in memory structs are reused vs not when an overlay is
-> > > > applied/removed and some of these flags might not be getting cleared
-> > > > and this is having a bigger impact with this patch (because the fwnode
-> > > > links are no longer anchored on "compatible" nodes).
-> > > >
-> > > > With/without this patch (let's keep the series) can you look at how
-> > > > the following things change between each step you do above (add,
-> > > > remove, retry):
-> > > > 1) List of directories under /sys/class/devlink
-> > > > 2) Enable the debug logs inside __fwnode_link_add(),
-> > > > __fwnode_link_del(), device_link_add()
-> > > >
-> > > > My guess is that the final solution would entail clearing
-> > > > FWNODE_FLAG_LINKS_ADDED for some fwnodes.
-> > >
-> > > You replied just as I was about to hit send. So sending this anyway...
-> > >
-> > > Ok, I took a closer look and I think it's a bit of a mess. The fact
-> > > that it even worked for you without this patch is a bit of a
-> > > coincidence.
-> > >
-> > > Let's just take platform devices that are created by
-> > > driver/of/platform.c as an example.
-> > >
-> > > The main problem is that when you add/remove properties to a DT node
-> > > of an existing platform device, nothing is really done about it at the
-> > > device level. We don't even unbind and rebind the driver so the driver
-> > > could make use of the new properties. We don't remove and add back the
-> > > device so whoever might use the new property will use it. And if you
-> > > are adding a new node, it'll only trigger any platform device level
-> > > impact if it's a new node of a "simple-bus" (or similar bus) device.
-> > >
-> > > Problem 1:
-> > > So if you add a new child node to an existing probed device that adds
-> > > its children explicitly (as in, the parent is not a "simple-bus" like
-> > > device), nothing will happen. The newly added child device node will
-> > > get converted into a platform device, not will the parent device
-> > > notice it. So in your case of adding msiof0_pins, it's just that when
-> > > the consumer gets the pins, the driver doesn't get involved much and
-> > > it's the pinctrl framework that reads the DT and figures it out.
-> > >
-> > > With this patch, the fwnode links point to the actual resource and the
-> > > actual parent device inherits them if they don't get converted to a
-> > > struct device. But since we are adding this msiof0_pins after the
-> > > parent device has probed, the fwnode link isn't inherited by the
-> > > parent pinctrl device.
-> > >
-> > > Problem 2:
-> > > So if you add a property to an already bound device, nothing is done
-> > > by the driver. In your overlay example, if you move the status="okay"
-> > > line to be the first property you change in the msiof0 spi device,
-> > > you'll probably see that fw_devlink is no longer the one blocking the
-> > > probe. This is because the platform device will get added as soon as
-> > > the status flips from disabled to enabled and at that point fw_devlink
-> > > will think it has no suppliers and won't do any probe deferring. And
-> > > then as the new properties get added nothing will happen at the device
-> > > or fw_devlink level. If the msiof0's spi driver fails immediately with
-> > > NOT -EPROBE_DEFER when platform device is added because it couldn't
-> > > find any pinctrl property, then msiof0 will never probe (unless you
-> > > remove and add the driver). If it had failed with -EPROBE_DEFER, then
-> > > it might probe again if something else triggers a deferred probe
-> > > attempt. Clearly, things working/not working based on the order of
-> > > properties in DT is not a good implementation.
-> > >
-> > > Problem 3:
-> > > What if you enable a previously disabled supplier. There's no way to
-> > > handle that from a fw_devlink level without re-parsing the entire
-> > > device tree because existing devices might be consumers now.
-> > >
-> > > Anyway, long story short, it's sorta worked due to coincidence and
-> > > it's quite messy to get it to work correctly.
-> >
-> > Several subsystems register notifiers to be informed of the events
-> > above. E.g. drivers/spi/spi.c:
-> >
-> >         if (IS_ENABLED(CONFIG_OF_DYNAMIC))
-> >                 WARN_ON(of_reconfig_notifier_register(&spi_of_notifier));
-> >         if (IS_ENABLED(CONFIG_ACPI))
-> >                 WARN_ON(acpi_reconfig_notifier_register(&spi_acpi_notifier));
-> >
-> > So my issue might be triggered using ACPI, too.
+On 2/13/23 06:41, Andy Shevchenko wrote:
+> On Mon, Feb 13, 2023 at 12:30:08PM +0100, Werner Sembach wrote:
+>> Am 10.02.23 um 18:04 schrieb Andy Shevchenko:
+>>> On Fri, Feb 10, 2023 at 05:46:36PM +0100, Werner Sembach wrote:
+>>>> commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+>>>> changed the policy such that I2C touchpads may be able to wake up the
+>>>> system by default if the system is configured as such.
+>>>>
+>>>> However on Clevo NH5xAx/TUXEDO XA15 Gen10 there is a mistake in the ACPI
+>>>> tables that the TP_ATTN# signal connected to GPIO 10 is configured as
+>>>> ActiveLow and level triggered but connected to a pull up.
+>>> I'm not sure I understand the issue here. From what you say here it seems
+>>> correct ACPI description.
+>> TBH I copied the commit description from https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=4cb786180dfb5258ff3111181b5e4ecb1d4a297b
+>> which is for a different device having the exact same problem.
+> Yeah, and I reviewed that and seems paid no attention to this detail.
 >
-> Yeah, I did notice this before my email. Here's an ugly hack (at end
-> of email) to test my theory about Problem 1. I didn't compile test it
-> (because I should go to bed now), but you get the idea. Can you give
-> this a shot? It should fix your specific case. Basically for all
-> overlays (I hope the function is only used for overlays) we assume all
-> nodes are NOT devices until they actually get added as a device. Don't
-> review the code, it's not meant to be :)
+> So, ActiveLow + PullUp is the _right_ thing to do in ACPI.
+> The problem seems somewhere else.
 >
-> -Saravana
+> Mario, can we have an access to the schematics of the affected pin to
+> understand better what's going on?
 >
-> --- a/drivers/of/dynamic.c
-> +++ b/drivers/of/dynamic.c
-> @@ -226,6 +226,7 @@ static void __of_attach_node(struct device_node *np)
->         np->sibling = np->parent->child;
->         np->parent->child = np;
->         of_node_clear_flag(np, OF_DETACHED);
-> +       np->fwnode.flags |= FWNODE_FLAG_NOT_DEVICE;
->  }
+> Or is that description missing some crucial detail?
+
+The schematics were shared by the reporter for the original issue which 
+is how we reached the conclusion there was a mistake.
+
+As they're both Clevo designs it's certainly possible they have the same 
+mistake in two systems.
+
+>>>> As soon as the
+>>>> system suspends the touchpad loses power and then the system wakes up.
+>>>>
+>>>> To avoid this problem, introduce a quirk for this model that will prevent
+>>>> the wakeup capability for being set for GPIO 10.
+>>> I'm not against fixing this, but wouldn't be better to actually target the root
+>>> cause and have a different quirk? Or is it me who didn't get what is the root
+>>> cause?
+>>>
+>> I missed to reference the original discussion while copying the description:
+>> https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627 (Note that
+>> it's a somewhat convoluted issue spanning multiple bugs when you scroll up
+>> from that particular linked comment, which are however irrelevant for this
+>> patch)
+>>
+>> I'm not deep into how ACPI defined IRQ work so maybe not a good idea for me
+>> summing it up, as I might have misunderstood parts of it ^^
+> The GpioIo() and GpioInt() resources have gaps in them, due to this some
+> additional information is required or some heuristics is used to deduct
+> the settings.
 >
->  /**
-> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> index 81c8c227ab6b..7299cd668e51 100644
-> --- a/drivers/of/platform.c
-> +++ b/drivers/of/platform.c
-> @@ -732,6 +732,7 @@ static int of_platform_notify(struct notifier_block *nb,
->                 if (of_node_check_flag(rd->dn, OF_POPULATED))
->                         return NOTIFY_OK;
+> All this is described in
+> https://www.kernel.org/doc/html/latest/firmware-guide/acpi/gpio-properties.html
 >
-> +               rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
->                 /* pdev_parent may be NULL when no bus platform device */
->                 pdev_parent = of_find_device_by_node(rd->dn->parent);
->                 pdev = of_platform_device_create(rd->dn, NULL,
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 15f174f4e056..1de55561b25d 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -4436,6 +4436,7 @@ static int of_spi_notify(struct notifier_block
-> *nb, unsigned long action,
->                         return NOTIFY_OK;
->                 }
+>> I added the other ones from there to the cc.
+> Thank you.
 >
-> +               rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
->                 spi = of_register_spi_device(ctlr, rd->dn);
->                 put_device(&ctlr->dev);
-
-Thanks, these changes fix my SPI EEPROM in a DT overlay.
-A similar change should be applied to the i2c bus core (and to other
-users of of_reconfig_notifier_register()?).
-
-For reference, the same debug output and /sys/class/devlink
-changes with this fix applied can be found below.
-
-Note that there are still a few remaining issues, for which I do not
-know the full impact:
-  - platform:e6060000.pinctrl--platform:keys link is not recreated
-     on overlay remove,
-  - There is no change in /sys/class/devlink after an add/remove/add
-    cycle.
-Shouldn't removing a DT overlay restore  /sys/class/devlink to
-the exact same state as before adding the DT overlay?
-
-With extra FWNODE_FLAG_NOT_DEVICE handling:
-
-  - Adding overlay:
-
-        spi@e6e90000 Linked as a fwnode consumer to
-interrupt-controller@f1010000
-        spi@e6e90000 Linked as a fwnode consumer to clock-controller@e6150000
-        spi@e6e90000 Linked as a fwnode consumer to system-controller@e6180000
-        spi@e6e90000 Linked as a fwnode consumer to msiof0
-        spi@e6e90000 Linked as a fwnode consumer to gpio@e6055000
-        platform e6e90000.spi: Linked as a consumer to e6055000.gpio
-        spi@e6e90000 Dropping the fwnode link to gpio@e6055000
-        platform e6e90000.spi: Linked as a consumer to e6060000.pinctrl
-        spi@e6e90000 Dropping the fwnode link to msiof0
-        spi@e6e90000 Dropping the fwnode link to system-controller@e6180000
-        platform e6e90000.spi: Linked as a consumer to e6150000.clock-controller
-        spi@e6e90000 Dropping the fwnode link to clock-controller@e6150000
-        platform e6e90000.spi: Linked as a consumer to soc
-        spi@e6e90000 Dropping the fwnode link to interrupt-controller@f1010000
-
-        +platform:e6055000.gpio--platform:e6e90000.spi ->
-../../devices/virtual/devlink/platform:e6055000.gpio--platform:e6e90000.spi
-        +platform:e6060000.pinctrl--platform:e6e90000.spi ->
-../../devices/virtual/devlink/platform:e6060000.pinctrl--platform:e6e90000.spi
-        +platform:e6150000.clock-controller--platform:e6e90000.spi ->
-../../devices/virtual/devlink/platform:e6150000.clock-controller--platform:e6e90000.spi
-        +platform:soc--platform:e6e90000.spi ->
-../../devices/virtual/devlink/platform:soc--platform:e6e90000.spi
-        -platform:e6060000.pinctrl--platform:keys ->
-../../devices/virtual/devlink/platform:e6060000.pinctrl--platform:keys
-
-        SPI EEPROM works
-
-  - Removing overlay:
-
-        platform keys: Linked as a sync state only consumer to e6055000.gpio
-
-        -platform:e6055000.gpio--platform:e6e90000.spi ->
-../../devices/virtual/devlink/platform:e6055000.gpio--platform:e6e90000.spi
-        -platform:e6060000.pinctrl--platform:e6e90000.spi ->
-../../devices/virtual/devlink/platform:e6060000.pinctrl--platform:e6e90000.spi
-        -platform:e6150000.clock-controller--platform:e6e90000.spi ->
-../../devices/virtual/devlink/platform:e6150000.clock-controller--platform:e6e90000.spi
-        -platform:soc--platform:e6e90000.spi ->
-../../devices/virtual/devlink/platform:soc--platform:e6e90000.spi
-
-        platform:e6060000.pinctrl--platform:keys link is not recreated?!?!?
-
-  - Adding overlay again:
-
-        No debug output
-        No change in sys/class/devlink?!?!?
-        SPI EEPROM works
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
