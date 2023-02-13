@@ -2,177 +2,182 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87E96694E42
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 18:42:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE730694E63
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 18:50:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230298AbjBMRmz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Feb 2023 12:42:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56226 "EHLO
+        id S229788AbjBMRuP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Feb 2023 12:50:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230259AbjBMRmy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 12:42:54 -0500
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6D8CB473
-        for <linux-acpi@vger.kernel.org>; Mon, 13 Feb 2023 09:42:51 -0800 (PST)
-Received: by mail-pj1-x1033.google.com with SMTP id gd1so1869604pjb.1
-        for <linux-acpi@vger.kernel.org>; Mon, 13 Feb 2023 09:42:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=63tgpONA5oEu3r5P/vFkJgnRoA403HiDXnWl8FkdsxY=;
-        b=CVfpMPtijfInoSnQpBF8R6F6pOwoURmAmUhAO0Ls5W0RJ19Kqny2+q9xHUtsqxuMFE
-         4VoIyg7DLnr/Kv1UtH8rj/8j/Ef50RH/8nHsHONO1lJ8ORhIQjnSUpnu1Q/i2fJwhJTu
-         dYyCbgxrwmZIZh/+bCnMDaB7q38U9Yb75ltIpkZwIMSUUAmAdPPb+clSG24WmGTeRgV5
-         kkHmwES5ttEJkxeYuw6x5nORJIV2GsQMk0RauPIsYPg/j3ebpXAUGVpTG4REF1wXYfOK
-         AeypvyUChsBD3cBxc5x/hEohE1TT5FpPtaVATqkfdiR29VOpLKsfZTK3tSEArG9s1W80
-         dgnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=63tgpONA5oEu3r5P/vFkJgnRoA403HiDXnWl8FkdsxY=;
-        b=zFIJ5HQBUHOpy3ObY3Gu8ZXHcFwDPtZ3TLmsf/CMdedo/TSk3k8oiGezz3/E3Ly6/3
-         yGcJLHomdDMY/S+IadPSHSgYiyD9SNSt962Dc+MVgDqlSE5RwdXOOmCLEDvn0p2I8yU6
-         7uxab1xwBaRzD1elALuDJ2HUFEfWu4VUZ2dgEV/FzB9UdBxSlhVithfl/NcOfneQv+tY
-         PG6fcqEfb8sdG6xHhqWUYXqvys33k7/Em6JoW5r/HVmo1o5PUnbOpJkiZwmiW4/DhMCd
-         wU5EvZiWoWQAcg12FY/VQbtsuPxg5ttP2AXTqy7ibIlhBpy6asDCPHX9r8GQpgFS4pn0
-         U/Gg==
-X-Gm-Message-State: AO0yUKV8sZ0K9zvismvwtIQPvbXhG9+Ul8yyPMyFV7DrIVNb2MHfxd7p
-        A4WMZycqgOM7VJLC93RyXO7gmw==
-X-Google-Smtp-Source: AK7set86hl+mztS6xB+aIB6Jg2wbDUvNJaUXGkDMvsSk3YuBBmWG2qIWwzDKoxBGkz7EE3uL9bZIbA==
-X-Received: by 2002:a05:6a20:6d27:b0:bc:80bd:462d with SMTP id fv39-20020a056a206d2700b000bc80bd462dmr13919386pzb.46.1676310171263;
-        Mon, 13 Feb 2023 09:42:51 -0800 (PST)
-Received: from sunil-laptop ([49.206.14.226])
-        by smtp.gmail.com with ESMTPSA id u5-20020a17090a890500b0023086d280c5sm7609169pjn.3.2023.02.13.09.42.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Feb 2023 09:42:50 -0800 (PST)
-Date:   Mon, 13 Feb 2023 23:12:40 +0530
-From:   Sunil V L <sunilvl@ventanamicro.com>
-To:     Conor Dooley <conor@kernel.org>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        Anup Patel <apatel@ventanamicro.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Atish Patra <atishp@rivosinc.com>
-Subject: Re: [PATCH 20/24] RISC-V: ACPI: cpu: Enable cpuinfo for ACPI systems
-Message-ID: <Y+p2kKdfogLkhkj2@sunil-laptop>
-References: <20230130182225.2471414-1-sunilvl@ventanamicro.com>
- <20230130182225.2471414-21-sunilvl@ventanamicro.com>
- <Y+ViASnch0Fp1rju@spud>
+        with ESMTP id S229668AbjBMRuN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 12:50:13 -0500
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5F8C1F904;
+        Mon, 13 Feb 2023 09:50:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676310607; x=1707846607;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rEHS2mWzrw0ECvJoqmlHM2NjnN/5dSahkcXiLiVfmY4=;
+  b=GkMqzjQM4cyxaSmcnGd3WVRf7C8QJaAGK2tBuoeUiDdXf4XaRL6c7G+M
+   rU6GW7J3uu9gBbmc3WGsH2ilhOgOVgYihm+g4fcF+SYZHgeZFZsQGuvvR
+   vudrE7WQHxOinoDoJu+O7+PRS7sgjMMFzpMaTePbXHkf3Ajdgqe3lQPSy
+   5O5yDM05LSfVrxHZZN1GlehfS2A35MMk3aEJE3WqH4EPU2Y+w/Szbuv5f
+   /GA6fC1gwpp2vu25qNDdl/v0ad5BbQj1GrJV7406fWz+baCxAENJWNrUU
+   Bpd+na2nYV/ophxAz1nVVP/24LeoNjkxB8gnV4kez87AZSe/8brxY90p9
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="333086275"
+X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
+   d="scan'208";a="333086275"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2023 09:50:07 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="737597774"
+X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
+   d="scan'208";a="737597774"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga004.fm.intel.com with ESMTP; 13 Feb 2023 09:50:04 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pRcxm-006TRX-1P;
+        Mon, 13 Feb 2023 19:50:02 +0200
+Date:   Mon, 13 Feb 2023 19:50:02 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Raul Rangel <rrangel@chromium.org>
+Cc:     Werner Sembach <wse@tuxedocomputers.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
+        brgl@bgdev.pl, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: Re: [PATCH] gpiolib: acpi: Add a ignore wakeup quirk for Clevo NH5xAx
+Message-ID: <Y+p4Sq/WnZ4jAp+F@smile.fi.intel.com>
+References: <20230210164636.628462-1-wse@tuxedocomputers.com>
+ <Y+Z5OSa6hepQBOyc@smile.fi.intel.com>
+ <029b8d80-db28-cdb2-5c39-334be6968fad@tuxedocomputers.com>
+ <Y+owDqifuU9nf+1i@smile.fi.intel.com>
+ <86db79fa-5efb-caad-3310-60928907cc58@amd.com>
+ <Y+pLLzLDotZQLpdA@smile.fi.intel.com>
+ <97026dc5-e92e-62fe-43ae-33533125d900@tuxedocomputers.com>
+ <CAHQZ30Cs+kp82coR10Wat7q3S_8+pFf=5=44kMEMcjBOjmn=6A@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y+ViASnch0Fp1rju@spud>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+In-Reply-To: <CAHQZ30Cs+kp82coR10Wat7q3S_8+pFf=5=44kMEMcjBOjmn=6A@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 09, 2023 at 09:13:37PM +0000, Conor Dooley wrote:
-> On Mon, Jan 30, 2023 at 11:52:21PM +0530, Sunil V L wrote:
-> > On ACPI based platforms, few details like ISA need to be read
-> > from the ACPI table. Enable cpuinfo on ACPI based systems.
-> > 
-> > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> > ---
-> >  arch/riscv/kernel/cpu.c | 36 +++++++++++++++++++++++++++++-------
-> >  1 file changed, 29 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
-> > index 1b9a5a66e55a..bd6c0fcfe4ce 100644
-> > --- a/arch/riscv/kernel/cpu.c
-> > +++ b/arch/riscv/kernel/cpu.c
-> > @@ -3,6 +3,7 @@
-> >   * Copyright (C) 2012 Regents of the University of California
-> >   */
-> >  
-> > +#include <linux/acpi.h>
-> >  #include <linux/cpu.h>
-> >  #include <linux/init.h>
-> >  #include <linux/seq_file.h>
-> > @@ -256,26 +257,47 @@ static void c_stop(struct seq_file *m, void *v)
-> >  {
-> >  }
-> >  
-> > +#ifdef CONFIG_ACPI
-> > +void acpi_print_hart_info(struct seq_file *m,
-> > +			  unsigned long cpu)
+On Mon, Feb 13, 2023 at 10:20:41AM -0700, Raul Rangel wrote:
+> On Mon, Feb 13, 2023 at 7:47 AM Werner Sembach <wse@tuxedocomputers.com> wrote:
+> > Am 13.02.23 um 15:37 schrieb Andy Shevchenko:
+> > > On Mon, Feb 13, 2023 at 07:20:48AM -0600, Mario Limonciello wrote:
+> > >> On 2/13/23 06:41, Andy Shevchenko wrote:
+> > >>> On Mon, Feb 13, 2023 at 12:30:08PM +0100, Werner Sembach wrote:
+> > >>>> Am 10.02.23 um 18:04 schrieb Andy Shevchenko:
+> > >>>>> On Fri, Feb 10, 2023 at 05:46:36PM +0100, Werner Sembach wrote:
+> > >>>>>> commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+> > >>>>>> changed the policy such that I2C touchpads may be able to wake up the
+> > >>>>>> system by default if the system is configured as such.
+> > >>>>>>
+> > >>>>>> However on Clevo NH5xAx/TUXEDO XA15 Gen10 there is a mistake in the ACPI
+> > >>>>>> tables that the TP_ATTN# signal connected to GPIO 10 is configured as
+> > >>>>>> ActiveLow and level triggered but connected to a pull up.
+> > >>>>> I'm not sure I understand the issue here. From what you say here it seems
+> > >>>>> correct ACPI description.
+> > >>>> TBH I copied the commit description from https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=4cb786180dfb5258ff3111181b5e4ecb1d4a297b
+> > >>>> which is for a different device having the exact same problem.
+> > >>> Yeah, and I reviewed that and seems paid no attention to this detail.
+> > >>>
+> > >>> So, ActiveLow + PullUp is the _right_ thing to do in ACPI.
+> > >>> The problem seems somewhere else.
+> > >>>
+> > >>> Mario, can we have an access to the schematics of the affected pin to
+> > >>> understand better what's going on?
+> > >>>
+> > >>> Or is that description missing some crucial detail?
+> >
+> > Schematics for the NH5xAx can also be found on this unofficial clevo mirror
+> > (service manuals, scroll to end for schematics):
+> >
+> > http://repo.palkeo.com/clevo-mirror/NH5xACx_AFx_ADx/NH50AC.zip
+> >
+> > http://repo.palkeo.com/clevo-mirror/NH5xACx_AFx_ADx/NH50AF1.zip
+> >
+> > User: repo
+> >
+> > PW: repo
+> >
+> > >> The schematics were shared by the reporter for the original issue which is
+> > >> how we reached the conclusion there was a mistake.
+> > >>
+> > >> As they're both Clevo designs it's certainly possible they have the same
+> > >> mistake in two systems.
 > 
-> Surely this fits on one line?
+> > > Thank you!
+> > > I have looked at the schematics and read discussion.
+> > >
+> > > So, the conclusion that this is a BIOS bug is incorrect in my opinion.
+> > > The problem is either in the PMIC/EC firmware that shouldn't shut down 3.3VS
+> > > signal for a while or on the PCB level, so that pull up should be connected
+> > > to another power source that stays on.
+> > >
+> > > This means the description on the initial patch with the same issue is
+> > > incorrect.
+> > >
+> > > Do we know the power sequence on the suspend to see which and how on the
+> > > time line the power sources are off/on?
 > 
-Okay
+> If you look at the load switch for 3.3VS, its EN2 pin is connected to
+> SUSB#_EN which is connected to SUSB# which is connected to
+> AND(SUSB#_PCH -> SLP_S3_L, PM_SLP_S0 -> S0A3_GPIO). So there is no
+> PMIC/EC firmware that is incharge of this. I guess I'm not quite sure
+> how they have S0A3_GPIO configured, so maybe I have an invert wrong.
+> 
+> The EC does control DD_ON which controls the 3.3V and 5V rails.
 
-> > +{
-> > +	const char *isa;
-> > +
-> > +	if (!acpi_get_riscv_isa(NULL, get_acpi_id_for_cpu(cpu), &isa))
-> > +		print_isa(m, isa);
-> 
-> Do you really need to guard this function? Aren't there nop'ed versions
-> of acpi_get_riscv_isa() and get_acpi_id_for_cpu() in acpi.h?
-> 
-> IMO, basically any use of ifdeffery you can cleanly remove from a c file
-> is a worthwhile change.
-> 
-You are right. Let me remove ifdef.
+On page 6 of the schematics I see the U7 that forms SUSB# from SUSB#_APU
+(which corresponds to what you said) _and_ EC_EN, which is GPIO from IT5570,
+which is EC.
 
-> > +
-> 
-> Extra blank line here FYI.
-> 
-> > +}
-> > +#endif
-> > +
-> >  static int c_show(struct seq_file *m, void *v)
-> >  {
-> >  	unsigned long cpu_id = (unsigned long)v - 1;
-> > -	struct device_node *node = of_get_cpu_node(cpu_id, NULL);
-> >  	struct riscv_cpuinfo *ci = per_cpu_ptr(&riscv_cpuinfo, cpu_id);
-> > +	struct device_node *node;
-> >  	const char *compat, *isa;
-> >  
-> >  	seq_printf(m, "processor\t: %lu\n", cpu_id);
-> >  	seq_printf(m, "hart\t\t: %lu\n", cpuid_to_hartid_map(cpu_id));
-> > -	if (!of_property_read_string(node, "riscv,isa", &isa))
-> > -		print_isa(m, isa);
-> > +
-> > +	if (acpi_disabled) {
-> > +		node = of_get_cpu_node(cpu_id, NULL);
-> > +		if (!of_property_read_string(node, "riscv,isa", &isa))
-> > +			print_isa(m, isa);
-> > +		if (!of_property_read_string(node, "compatible", &compat)
-> > +		    && strcmp(compat, "riscv"))
->                     ^^ this should be on the line above
-> TBH the whole series is in need of a checkpatch --strict run IMO,
-> there's a bunch of coding style issues throughout.
-> 
-I just moved this line as is. Sure, let me fix it. Thanks.
+Are you using different schematics? I'm using the one from FDO bug report.
 
-> > +			seq_printf(m, "uarch\t\t: %s\n", compat);
-> > +		of_node_put(node);
-> > +	}
-> > +#ifdef CONFIG_ACPI
-> > +	else
-> > +		acpi_print_hart_info(m, cpu_id);
-> 
-> Delete the ifdeffery here too please :)
-> 
-Okay
+> > >>>>>> As soon as the
+> > >>>>>> system suspends the touchpad loses power and then the system wakes up.
+> > >>>>>>
+> > >>>>>> To avoid this problem, introduce a quirk for this model that will prevent
+> > >>>>>> the wakeup capability for being set for GPIO 10.
+> > >>>>> I'm not against fixing this, but wouldn't be better to actually target the root
+> > >>>>> cause and have a different quirk? Or is it me who didn't get what is the root
+> > >>>>> cause?
+> > >>>>>
+> > >>>> I missed to reference the original discussion while copying the description:
+> > >>>> https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627 (Note that
+> > >>>> it's a somewhat convoluted issue spanning multiple bugs when you scroll up
+> > >>>> from that particular linked comment, which are however irrelevant for this
+> > >>>> patch)
+> > >>>>
+> > >>>> I'm not deep into how ACPI defined IRQ work so maybe not a good idea for me
+> > >>>> summing it up, as I might have misunderstood parts of it ^^
+> > >>> The GpioIo() and GpioInt() resources have gaps in them, due to this some
+> > >>> additional information is required or some heuristics is used to deduct
+> > >>> the settings.
+> > >>>
+> > >>> All this is described in
+> > >>> https://www.kernel.org/doc/html/latest/firmware-guide/acpi/gpio-properties.html
+> > >>>
+> > >>>> I added the other ones from there to the cc.
+> > >>> Thank you.
 
-Thanks,
-Sunil
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
