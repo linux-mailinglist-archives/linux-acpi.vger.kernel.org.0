@@ -2,147 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D8D4694F95
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 19:43:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9276E694FFF
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 19:56:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229614AbjBMSnw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Feb 2023 13:43:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37926 "EHLO
+        id S229652AbjBMS4I (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Feb 2023 13:56:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230265AbjBMSnv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 13:43:51 -0500
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E84AF1C58F;
-        Mon, 13 Feb 2023 10:43:50 -0800 (PST)
-Received: by mail-ej1-f50.google.com with SMTP id qb15so32135726ejc.1;
-        Mon, 13 Feb 2023 10:43:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=phypxvDgNwKNv7NnFv4/pvdOv9qJLQHt4mqzGVZcdKI=;
-        b=s026fVsGTurghmPgM3Cg3/r5mpfD33XR5/BGTSbZIyCXKPaHAr/TnzIt9fPmUTyFSB
-         igvWFLw0/oeeYcprSQuWskKUzz5k30FiNVAoARHaae5qXYQ5Zyu9SI+dhXJDmtgYYDmy
-         EZOwT9ajTfK/6aAsqxT2xoLe6g7S38+yvchrr3qGTmxOZAS70G7yyoqi37bc8Bqc3zBi
-         B8ZOi8zKpwxRcGB6bGEay9xYsCG1eWh+dVif/zwW4BTJDRLNRDggFyymrKWGdthRHyPD
-         QsOR+B2ZUDIyhfidTG/Dtg6Bzop/p2hWAsnr6sliKvvs5IE/yzRt25hmgwvjGj4Z8cn/
-         luNA==
-X-Gm-Message-State: AO0yUKVtZ5084sgoB/rTYr9P6kfFWd1K+ElGJ0oWnF1gXDhXti4IBfXk
-        jwY7cLIFAIVa3xHQSxt4ZdukByjGrlXZsSVonllzkgXA
-X-Google-Smtp-Source: AK7set8G4v6X+CkDIWnl8K1TORQBiW3aIDk5lHcKXCWTKM3NePgnu8luSpLzlaX6B2gPuMP6mSAMNIVKhPmnPxrZXqc=
-X-Received: by 2002:a17:906:e28b:b0:8ad:731:592d with SMTP id
- gg11-20020a170906e28b00b008ad0731592dmr5057361ejb.5.1676313829323; Mon, 13
- Feb 2023 10:43:49 -0800 (PST)
+        with ESMTP id S229479AbjBMS4I (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 13:56:08 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07D2B1F5C7;
+        Mon, 13 Feb 2023 10:55:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676314549; x=1707850549;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=vsBZP1hEviGNKOb8Fn2HjPjrYWP3jTqAc4o808JTUSY=;
+  b=QNXBtX8JEgVRBnE/08Dj2Z0SyoM9K6HyWivy08N2Bj5GmwJBINeGzUvK
+   YqEpXjkv74qRQmIm6UeJLIjihU+Eo7bqkkFY9o7N4Bl/ZHxe9AcWU+P1w
+   KamfxSqbWDQChs9fDYM9+wXQBxvr9D4rKS4f+ponCfuMgIGmDIctTaxUa
+   w1xNYs7sWq8TNVtnV9/QGOT8EElA6NrVND9jZcY2SZYU0to1TxzNlQh2l
+   WwVb8WgJguIkyFzFLSo51zZqJs26oFxKnqtCw5vLA3elwe+GWy4H8SAZy
+   AtHZvqsSSTzikaooy08sMkEYFWIRnAUfDzpGq0yag3ykOyQlMRsqVYlHp
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="310602049"
+X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
+   d="scan'208";a="310602049"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2023 10:55:37 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="732589821"
+X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
+   d="scan'208";a="732589821"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga008.fm.intel.com with ESMTP; 13 Feb 2023 10:55:34 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pRdzB-006VG3-12;
+        Mon, 13 Feb 2023 20:55:33 +0200
+Date:   Mon, 13 Feb 2023 20:55:33 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH v1 1/1] Documentation: firmware-guide: gpio-properties:
+ Clarify Explicit and Implicit
+Message-ID: <Y+qHpa0GsIilc59A@smile.fi.intel.com>
+References: <20230213132812.38646-1-andriy.shevchenko@linux.intel.com>
+ <CAJZ5v0jkMez3_7rRqgyvbB9ik55fRxsU6yoLBZ-gVP7djwntmA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230213092429.1167812-1-jpiotrowski@linux.microsoft.com> <20230213092429.1167812-2-jpiotrowski@linux.microsoft.com>
-In-Reply-To: <20230213092429.1167812-2-jpiotrowski@linux.microsoft.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 13 Feb 2023 19:43:38 +0100
-Message-ID: <CAJZ5v0hcyWs49ttGA2sjyWe5f++jvCORLeTX1eiP5O2qOAOGgQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/8] include/acpi: add definition of ASPT table
-To:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kalra, Ashish" <ashish.kalra@amd.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0jkMez3_7rRqgyvbB9ik55fRxsU6yoLBZ-gVP7djwntmA@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 13, 2023 at 10:25 AM Jeremi Piotrowski
-<jpiotrowski@linux.microsoft.com> wrote:
->
-> The AMD Secure Processor ACPI Table provides the memory location of the
-> register window and register offsets necessary to communicate with AMD's
-> PSP (Platform Security Processor). This table is exposed on Hyper-V VMs
-> configured with support for AMD's SNP isolation technology.
->
-> Signed-off-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+On Mon, Feb 13, 2023 at 07:39:10PM +0100, Rafael J. Wysocki wrote:
+> On Mon, Feb 13, 2023 at 2:27 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> >
 
-Please add a Link tag pointing to the corresponding upstream ACPICA
-pull request (or upstream ACPICA commit if already pulled) to this
-patch and analogously for patch [2/8].
+...
 
-Thanks!
+> >  That said, for our above example the both GPIOs, since the bias setting
+> >  is explicit and _DSD is present, will be treated as active with a high
+> 
+> Applied as 6.3 material, thanks!
 
-> ---
->  include/acpi/actbl1.h | 46 +++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 46 insertions(+)
->
-> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
-> index 15c78678c5d3..00d40373df37 100644
-> --- a/include/acpi/actbl1.h
-> +++ b/include/acpi/actbl1.h
-> @@ -26,6 +26,7 @@
->   */
->  #define ACPI_SIG_AEST           "AEST" /* Arm Error Source Table */
->  #define ACPI_SIG_ASF            "ASF!" /* Alert Standard Format table */
-> +#define ACPI_SIG_ASPT           "ASPT" /* AMD Secure Processor Table */
->  #define ACPI_SIG_BERT           "BERT" /* Boot Error Record Table */
->  #define ACPI_SIG_BGRT           "BGRT" /* Boot Graphics Resource Table */
->  #define ACPI_SIG_BOOT           "BOOT" /* Simple Boot Flag Table */
-> @@ -106,6 +107,51 @@ struct acpi_whea_header {
->         u64 mask;               /* Bitmask required for this register instruction */
->  };
->
-> +/* https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/acpitabl/ns-acpitabl-aspt_table */
-> +#define ASPT_REVISION_ID 0x01
-> +struct acpi_table_aspt {
-> +       struct acpi_table_header header;
-> +       u32 num_entries;
-> +};
-> +
-> +struct acpi_aspt_header {
-> +       u16 type;
-> +       u16 length;
-> +};
-> +
-> +enum acpi_aspt_type {
-> +       ACPI_ASPT_TYPE_GLOBAL_REGS = 0,
-> +       ACPI_ASPT_TYPE_SEV_MBOX_REGS = 1,
-> +       ACPI_ASPT_TYPE_ACPI_MBOX_REGS = 2,
-> +};
-> +
-> +/* 0: ASPT Global Registers */
-> +struct acpi_aspt_global_regs {
-> +       struct acpi_aspt_header header;
-> +       u32 reserved;
-> +       u64 feature_reg_addr;
-> +       u64 irq_en_reg_addr;
-> +       u64 irq_st_reg_addr;
-> +};
-> +
-> +/* 1: ASPT SEV Mailbox Registers */
-> +struct acpi_aspt_sev_mbox_regs {
-> +       struct acpi_aspt_header header;
-> +       u8 mbox_irq_id;
-> +       u8 reserved[3];
-> +       u64 cmd_resp_reg_addr;
-> +       u64 cmd_buf_lo_reg_addr;
-> +       u64 cmd_buf_hi_reg_addr;
-> +};
-> +
-> +/* 2: ASPT ACPI Mailbox Registers */
-> +struct acpi_aspt_acpi_mbox_regs {
-> +       struct acpi_aspt_header header;
-> +       u32 reserved1;
-> +       u64 cmd_resp_reg_addr;
-> +       u64 reserved2[2];
-> +};
-> +
->  /*******************************************************************************
->   *
->   * ASF - Alert Standard Format table (Signature "ASF!")
-> --
-> 2.25.1
->
+Can you withdraw it for now, please? It has some formatting issues.
+I will fix and send a new version instead.
+
+Thank you!
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
