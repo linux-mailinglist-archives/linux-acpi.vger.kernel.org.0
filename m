@@ -2,53 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 880D2694E6C
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 18:51:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90C1B694E71
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 18:52:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229567AbjBMRvi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Feb 2023 12:51:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36674 "EHLO
+        id S230079AbjBMRwg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Feb 2023 12:52:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230024AbjBMRvh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 12:51:37 -0500
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 047F51D90B
-        for <linux-acpi@vger.kernel.org>; Mon, 13 Feb 2023 09:51:35 -0800 (PST)
-Received: by mail-pl1-x62b.google.com with SMTP id z1so14272235plg.6
-        for <linux-acpi@vger.kernel.org>; Mon, 13 Feb 2023 09:51:34 -0800 (PST)
+        with ESMTP id S229734AbjBMRwf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 12:52:35 -0500
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 273C514EA1
+        for <linux-acpi@vger.kernel.org>; Mon, 13 Feb 2023 09:52:34 -0800 (PST)
+Received: by mail-pf1-x42b.google.com with SMTP id b1so8488515pft.1
+        for <linux-acpi@vger.kernel.org>; Mon, 13 Feb 2023 09:52:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ventanamicro.com; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=b1rCNA4cuV2MbKCZjKd9ExnkpJbsqU8Ywy+PrX2AtP0=;
-        b=HOAK8lXHxmYUb3rxFNQJbKm81lvDY+PrZpu/7b1GKulxKUZdwMnOETeavjzADWTjLI
-         PWGE2hbSpKuYbzJ0yBI2KwMxIpWhiKU4607wisoAZu1tsgFddylpnpleUotSzQ14I0du
-         44H77whWzlS6Wdo53gcJ+uI1cYJEd7gJ48f0jkC7e8ZRU0UX9fPL68iZfA5tdM3R8ZYt
-         2E3qGpAZKq/oS2D4Pax/DxNyhyEXFvPFY7/rHDyIq9cFU36J/fSzwviFVKmrZ5iLFFzw
-         ZQgCyVUFBW4YRdWeiznP5eaoj2Y4eCH+aWq7I+0v8SPTbpHSfjArdXKIh/4YTIkDokOR
-         FdUg==
+        bh=jlT2nrHv97JEE2ugERQ9alO7/A7bMkftqWFyBvOXtUI=;
+        b=pEaBHwVMb2YtjHC6RClUo8awsFmuS0Ru/0SJyXX8QrgJRN9D+hDCgtwuw+Lf4Q041k
+         BuZF4Mxjg35xZ9xf7vFYYxMFwU/KF5H4MlNMbKGVF3jh54e3bCD7Ju2EEW4rDhcLEbvG
+         +xkqtWj7AGrhPIv6bFc2Ab/mWo6hGTAwMQTTkVwvSEn2vjzT4IbMyZFsSYeNUBmcnJxS
+         d/sHjBEV1PGvCSvD+XZG5jk74Of3zbaDZX07fLYFWs6GgOPX4yPZjaOBM2cftIUXSltR
+         acBQGViAGcWI40++cyXnGnxKadZHJ1Uk0gPpMlIrnYXuFDkkAXE2TG/+tlvxrT80Lada
+         DGYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=b1rCNA4cuV2MbKCZjKd9ExnkpJbsqU8Ywy+PrX2AtP0=;
-        b=JZ/gaFK3wtVxtdhx/V0llsTFTmbamxAl4oRRIpRTY2MQbO/LBC5WU8HOpKZi8z7d1J
-         cQGdJZup82EAxJ7kNyXWaZmcyuqMiW99eFpXf4Mima2A8arcDOWRwz3hiAU7iYnEVXQq
-         YYSnoJaQRwAfQtw02QdT9BlKCw/iwv38NsP48gXFridbiZ7AD9KrBLm+DM0l0NfvaeSM
-         PB1l94RJkN1v6m4wKJrFdAJwWHAcXAjqBgKrSiKWmmqphSJ5cHteYeIrRb6QCQ5P6R0O
-         WJtpDiLOLmlPjvbRbPE2jjdG9zI/gew89lDXyaMdoF93Bc1mbUtwYyc5KcXAXTnhSdxa
-         lYhA==
-X-Gm-Message-State: AO0yUKUVvD4yJlKZY0HLG4o+89BVsWdVRQxRx1Q46NdxKOuz9nawDFLk
-        9WikSM1oK7yPMntiBEV2JNa5bw==
-X-Google-Smtp-Source: AK7set/c2OfW27Z3nu/u/P90OjUPxgBg49c76FMYOxMM8kg+OUSb7WQySsvC8EDCESqLxXpcesj21A==
-X-Received: by 2002:a17:90a:e7cb:b0:233:e4f6:43d1 with SMTP id kb11-20020a17090ae7cb00b00233e4f643d1mr6205167pjb.45.1676310694510;
-        Mon, 13 Feb 2023 09:51:34 -0800 (PST)
+        bh=jlT2nrHv97JEE2ugERQ9alO7/A7bMkftqWFyBvOXtUI=;
+        b=A/kpvoZZZWajf1+4QSVx3sF/y51FWuzF9doOnP8o/ZcOe9gJHkj9pGtVchjYQo18NM
+         arTviKo3/O5X6NeA3IQa+EsmFj0mcSmLAyTP706IMgElmSUY3N+0ZA7XXfJ8NxtkY5QM
+         PjTv9OwbFVO97fatZEGd85iXqynZ+OnHWrzBBt/mmeEKx+kphWMvIb1rfEGV7VLcWyGx
+         YveyKmEk45OAEQs3hxvge6x8mYpckGZo4f6THDgYERQdX+IFlqymvBrILWmH5bRi3Y3S
+         nduu78FdojuOYr/GKtA52Nezj9hZDcLPghpuK04umYJvzubJOyCvmmosZkMLsB7eGMkC
+         zqKg==
+X-Gm-Message-State: AO0yUKWt9ncAlxgOTiwGhu3n+APaf/gf1etY9UkpRtEyMjU0ym4UIQFK
+        iRmMPfE2U9DanIRL8UmPLyZ78A==
+X-Google-Smtp-Source: AK7set8alFg61Xh23doaM5qBMsHqQlpv14xMzuu4uIcLFrgZ7U3iUqMJn6lB0L/b1/5c1PvcPAVyIQ==
+X-Received: by 2002:a62:7915:0:b0:5a8:ab36:d0f7 with SMTP id u21-20020a627915000000b005a8ab36d0f7mr5756776pfc.14.1676310753686;
+        Mon, 13 Feb 2023 09:52:33 -0800 (PST)
 Received: from sunil-laptop ([49.206.14.226])
-        by smtp.gmail.com with ESMTPSA id f17-20020a63f111000000b004fb10399da2sm3108708pgi.56.2023.02.13.09.51.30
+        by smtp.gmail.com with ESMTPSA id u2-20020a62ed02000000b0058bca264253sm8153600pfh.126.2023.02.13.09.52.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Feb 2023 09:51:34 -0800 (PST)
-Date:   Mon, 13 Feb 2023 23:21:27 +0530
+        Mon, 13 Feb 2023 09:52:33 -0800 (PST)
+Date:   Mon, 13 Feb 2023 23:22:26 +0530
 From:   Sunil V L <sunilvl@ventanamicro.com>
 To:     Conor Dooley <conor@kernel.org>
 Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
@@ -64,162 +64,61 @@ Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
         Anup Patel <apatel@ventanamicro.com>,
         Andrew Jones <ajones@ventanamicro.com>,
         Atish Patra <atishp@rivosinc.com>
-Subject: Re: [PATCH 19/24] RISC-V: ACPI: cpufeature: Add ACPI support in
- riscv_fill_hwcap()
-Message-ID: <Y+p4n8CNzLB7em0+@sunil-laptop>
+Subject: Re: [PATCH 21/24] RISC-V: ACPI: Add ACPI initialization in
+ setup_arch()
+Message-ID: <Y+p42n3bm5xkTtSr@sunil-laptop>
 References: <20230130182225.2471414-1-sunilvl@ventanamicro.com>
- <20230130182225.2471414-20-sunilvl@ventanamicro.com>
- <Y+VqCLVETZBRn6iX@spud>
+ <20230130182225.2471414-22-sunilvl@ventanamicro.com>
+ <Y+Vrd88ShoaDc0Pv@spud>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y+VqCLVETZBRn6iX@spud>
+In-Reply-To: <Y+Vrd88ShoaDc0Pv@spud>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 09, 2023 at 09:47:52PM +0000, Conor Dooley wrote:
-> On Mon, Jan 30, 2023 at 11:52:20PM +0530, Sunil V L wrote:
-> > On ACPI based systems, the information about the hart
-> > like ISA, extesions supported are defined in RISC-V Hart
-> > Capabilities Table (RHCT). Enable filling up hwcap structure
-> > based on the information in RHCT.
+On Thu, Feb 09, 2023 at 09:53:59PM +0000, Conor Dooley wrote:
+> On Mon, Jan 30, 2023 at 11:52:22PM +0530, Sunil V L wrote:
+> > Initialize ACPI tables for RISC-V during boot.
 > > 
 > > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 > > ---
-> >  arch/riscv/kernel/cpufeature.c | 45 ++++++++++++++++++++++++++++------
-> >  1 file changed, 38 insertions(+), 7 deletions(-)
+> >  arch/riscv/kernel/setup.c | 19 ++++++++++++++-----
+> >  1 file changed, 14 insertions(+), 5 deletions(-)
 > > 
-> > diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
-> > index 93e45560af30..c10177c608f8 100644
-> > --- a/arch/riscv/kernel/cpufeature.c
-> > +++ b/arch/riscv/kernel/cpufeature.c
-> > @@ -6,12 +6,14 @@
-> >   * Copyright (C) 2017 SiFive
+> > diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+> > index 4335f08ffaf2..5b4ad1baf664 100644
+> > --- a/arch/riscv/kernel/setup.c
+> > +++ b/arch/riscv/kernel/setup.c
+> > @@ -8,6 +8,7 @@
+> >   *  Nick Kossifidis <mick@ics.forth.gr>
 > >   */
 > >  
 > > +#include <linux/acpi.h>
-> >  #include <linux/bitmap.h>
-> >  #include <linux/ctype.h>
-> >  #include <linux/libfdt.h>
-> >  #include <linux/log2.h>
-> >  #include <linux/module.h>
-> >  #include <linux/of.h>
-> > +#include <asm/acpi.h>
-> >  #include <asm/alternative.h>
-> >  #include <asm/cacheflush.h>
-> >  #include <asm/errata_list.h>
-> > @@ -21,6 +23,7 @@
-> >  #include <asm/processor.h>
-> >  #include <asm/smp.h>
-> >  #include <asm/switch_to.h>
-> > +#include <linux/of_device.h>
-> 
-> Is there a reason this header is not added with the other linux ones?
-> 
-No, let me move it.
-
+> >  #include <linux/init.h>
+> >  #include <linux/mm.h>
+> >  #include <linux/memblock.h>
+> > @@ -276,14 +277,22 @@ void __init setup_arch(char **cmdline_p)
 > >  
-> >  #define NUM_ALPHA_EXTS ('z' - 'a' + 1)
-> >  
-> > @@ -93,7 +96,10 @@ void __init riscv_fill_hwcap(void)
-> >  	char print_str[NUM_ALPHA_EXTS + 1];
-> >  	int i, j, rc;
-> >  	unsigned long isa2hwcap[26] = {0};
-> > +	struct acpi_table_header *rhct;
-> > +	acpi_status status;
-> >  	unsigned long hartid;
-> > +	unsigned int cpu;
-> >  
-> >  	isa2hwcap['i' - 'a'] = COMPAT_HWCAP_ISA_I;
-> >  	isa2hwcap['m' - 'a'] = COMPAT_HWCAP_ISA_M;
-> > @@ -106,18 +112,38 @@ void __init riscv_fill_hwcap(void)
-> >  
-> >  	bitmap_zero(riscv_isa, RISCV_ISA_EXT_MAX);
-> >  
-> > -	for_each_of_cpu_node(node) {
-> > +	if (!acpi_disabled) {
+> >  	efi_init();
+> >  	paging_init();
 > > +
+> > +	/* Parse the ACPI tables for possible boot-time configuration */
+> > +	acpi_boot_table_init();
+> > +	if (acpi_disabled) {
+> >  #if IS_ENABLED(CONFIG_BUILTIN_DTB)
 > 
-> Extraneous blank line.
+> I only poked it with a stick, but I think this `#if IS_ENABLED()` can
+> be changed to a normal `if (IS_ENABLED())` while you're already
+> modifying this code.
 > 
-Okay
+Sure,
 
-> > +		status = acpi_get_table(ACPI_SIG_RHCT, 0, &rhct);
-> > +		if (ACPI_FAILURE(status))
-> > +			return;
-> > +	}
-> > +
-> > +	for_each_possible_cpu(cpu) {
-> >  		unsigned long this_hwcap = 0;
-> >  		DECLARE_BITMAP(this_isa, RISCV_ISA_EXT_MAX);
-> >  		const char *temp;
-> >  
-> > -		rc = riscv_of_processor_hartid(node, &hartid);
-> > -		if (rc < 0)
-> > -			continue;
-> > +		if (acpi_disabled) {
-> > +			node = of_cpu_device_node_get(cpu);
-> > +			if (node) {
-> > +				rc = riscv_of_processor_hartid(node, &hartid);
-> > +				if (rc < 0)
-> > +					continue;
-> >  
-> > -		if (of_property_read_string(node, "riscv,isa", &isa)) {
-> > -			pr_warn("Unable to find \"riscv,isa\" devicetree entry\n");
-> > -			continue;
-> > +				if (of_property_read_string(node, "riscv,isa", &isa)) {
-> > +					pr_warn("Unable to find \"riscv,isa\" devicetree entry\n");
-> > +					continue;
-> > +				}
-> > +				of_node_put(node);
-> > +			}
-> > +		} else {
-> > +			rc = acpi_get_riscv_isa(rhct, get_acpi_id_for_cpu(cpu), &isa);
-> > +			if (rc < 0) {
-> > +				pr_warn("Unable to get ISA for the hart - %d\n",
-> > +						cpu);
-> 
-> The alignment here is wrong, but the whole thing fits on a single line.
-> 
-Okay
-
-> > +				continue;
-> > +			}
-> >  		}
-> >  
-> >  		temp = isa;
-> > @@ -248,6 +274,11 @@ void __init riscv_fill_hwcap(void)
-> >  			bitmap_and(riscv_isa, riscv_isa, this_isa, RISCV_ISA_EXT_MAX);
-> >  	}
-> >  
-> > +#ifdef CONFIG_ACPI
-> 
-> Is this guard actually needed, or is acpi_put_table() always available?
-> 
-It can be removed.
-
-Thanks,
+Thanks
 Sunil
-
-> Cheers,
-> Conor.
-> 
-> > +	if (!acpi_disabled)
-> > +		acpi_put_table((struct acpi_table_header *)rhct);
-> > +#endif
-> > +
-> >  	/* We don't support systems with F but without D, so mask those out
-> >  	 * here. */
-> >  	if ((elf_hwcap & COMPAT_HWCAP_ISA_F) && !(elf_hwcap & COMPAT_HWCAP_ISA_D)) {
-> > -- 
-> > 2.38.0
-> > 
-
-
