@@ -2,138 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05F3E6945CF
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 13:32:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61F4F694612
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 13:42:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229604AbjBMMcs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Feb 2023 07:32:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43560 "EHLO
+        id S230162AbjBMMmB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Feb 2023 07:42:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229651AbjBMMcr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 07:32:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30A0676BD
-        for <linux-acpi@vger.kernel.org>; Mon, 13 Feb 2023 04:31:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1676291517;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=zBZ75M4Yenbhu3faYe+Enj0ytlfjFVpVLTtBOwzZfDs=;
-        b=F+CzapJB0MxfxqzNje4uo3y34CqOholLE3cPVchJOGchGR6b3djV2WkIGsFyKBir1e3mlk
-        YIXKLrlSBm/uRdQSdsQsQHzkP6SPyeqcPTlKCDl/zH1FGgKfNIgzRSKyWtntbJPMXN2cHR
-        xjRys24pS3DnRgZLRmvXCPZHlnJRwUk=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-604-33_k5AcVMVm_gLSzufCPvg-1; Mon, 13 Feb 2023 07:31:54 -0500
-X-MC-Unique: 33_k5AcVMVm_gLSzufCPvg-1
-Received: by mail-ej1-f69.google.com with SMTP id he34-20020a1709073da200b00887ced84328so7504517ejc.10
-        for <linux-acpi@vger.kernel.org>; Mon, 13 Feb 2023 04:31:53 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zBZ75M4Yenbhu3faYe+Enj0ytlfjFVpVLTtBOwzZfDs=;
-        b=4gzk4u7JzkJ0A3tcyLsHg6xMVvOZBROhR4xuz/DDEqCnabj6msgEhYNMyM6LM/JWLz
-         Lmgk/EVaASF9vst1v9MI3GFZ60lPWx18q9XdJFbcoQg1u2JhJ5itReYWDFOGe04kvxju
-         Wqvz49xqR3B96rB2xC2oFPeA9fJhOYPjdc9hyLGPijG5R5ZqmakXMj0EzOTFvMSL81IU
-         NDStXFZpw4Xt3iOVm+dXMKEyK9YB8MPqIKoe+Xh6NZizQRqZhZcdu3BtZydU/CLSZln8
-         +6BR9yrF2HRskR8jDOkdxnmvGFU6wRA/sEdzZ+LFD7zH/BzdrY2JggD4vc1wMEbsQgn4
-         w1jw==
-X-Gm-Message-State: AO0yUKUMouXRI+ioZdCgylHpbVTkCfrtaPgDa0eMBrikZ/0ePt1SGSCB
-        J3QGVHUr2dq6wnpdlNrkq0WGYWufK2hX/tpn3RUBmbp8W2hA7DJVEzPz/syIqYQh/7IRWeuxufR
-        7tFPAAPBvi/YLQqoTWrUVlg==
-X-Received: by 2002:a17:906:4b0f:b0:886:ec6e:4c1 with SMTP id y15-20020a1709064b0f00b00886ec6e04c1mr23614042eju.59.1676291513085;
-        Mon, 13 Feb 2023 04:31:53 -0800 (PST)
-X-Google-Smtp-Source: AK7set9p5DtT123vpTJkVDqIwud9hwK6Y1HV0n1Q3xwdJBhiSNzZJanBsXflTd+NNYTbVa0PedCLRA==
-X-Received: by 2002:a17:906:4b0f:b0:886:ec6e:4c1 with SMTP id y15-20020a1709064b0f00b00886ec6e04c1mr23614032eju.59.1676291512889;
-        Mon, 13 Feb 2023 04:31:52 -0800 (PST)
-Received: from [10.40.98.142] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id g25-20020a170906349900b0088519b92074sm6728969ejb.128.2023.02.13.04.31.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Feb 2023 04:31:52 -0800 (PST)
-Message-ID: <233344ca-5df1-abd9-6fb6-c04634f1b401@redhat.com>
-Date:   Mon, 13 Feb 2023 13:31:51 +0100
+        with ESMTP id S230127AbjBMMl7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 07:41:59 -0500
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 614C010C5;
+        Mon, 13 Feb 2023 04:41:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676292116; x=1707828116;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DG7Ke2sciLVu9YsJ/QYtVHzYsvTpCMR4WXEcGmnErso=;
+  b=S6VAexWkM/2uEJfMbmD1LOmPoghTvpTWt/AmOxu9A42pBSPznzPEsOt0
+   uYCn+S2id5hYQW562wp3t3MO+n/qDdpPcOoDfkIpMViobPeIKOOPmvXff
+   25IuhJFg0qRTQpfmPlzsRTgBI5W/xaNjGp5U5NGQKLKeSHT9yjroi9BiE
+   lt58qiHAe1gt3ErZQUnCL7GUhgHjzT2ilCnPJ02JQ3qr/noma2F3dxAFe
+   NCIVuJkmzBFsbTEWVpg6Xwm4Lt00hYOgZppFB6MOtDpttCzcsYROJcM7h
+   9IRzijAeiz21xQip9OHUY4SOf4xZslp47Zxg6SYoOSE1InyNMKV09rFic
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10619"; a="318903728"
+X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
+   d="scan'208";a="318903728"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2023 04:41:55 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10619"; a="811585538"
+X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
+   d="scan'208";a="811585538"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga001.fm.intel.com with ESMTP; 13 Feb 2023 04:41:53 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pRY9X-006Kc5-0W;
+        Mon, 13 Feb 2023 14:41:51 +0200
+Date:   Mon, 13 Feb 2023 14:41:50 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Werner Sembach <wse@tuxedocomputers.com>
+Cc:     mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
+        brgl@bgdev.pl, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Limonciello, Mario" <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Raul E Rangel <rrangel@chromium.org>
+Subject: Re: [PATCH] gpiolib: acpi: Add a ignore wakeup quirk for Clevo NH5xAx
+Message-ID: <Y+owDqifuU9nf+1i@smile.fi.intel.com>
+References: <20230210164636.628462-1-wse@tuxedocomputers.com>
+ <Y+Z5OSa6hepQBOyc@smile.fi.intel.com>
+ <029b8d80-db28-cdb2-5c39-334be6968fad@tuxedocomputers.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: RFI: Tablet mode support on HP Pro x360 435 G9 w/ AMD Ryzen 7
- 5825U
-Content-Language: en-US
-To:     Carsten Hatger <xmb8dsv4@gmail.com>, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        Jorge Lopez <jorgealtxwork@gmail.com>
-Cc:     mario.limonciello@amd.com, Shyam-sundar.S-k@amd.com
-References: <CACp=KFQN79Rz0CHP-5kwP9Y5Y9bEAoN0eJzoOpSejg6aF9qnpw@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CACp=KFQN79Rz0CHP-5kwP9Y5Y9bEAoN0eJzoOpSejg6aF9qnpw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <029b8d80-db28-cdb2-5c39-334be6968fad@tuxedocomputers.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Carsten,
+On Mon, Feb 13, 2023 at 12:30:08PM +0100, Werner Sembach wrote:
+> Am 10.02.23 um 18:04 schrieb Andy Shevchenko:
+> > On Fri, Feb 10, 2023 at 05:46:36PM +0100, Werner Sembach wrote:
+> > > commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+> > > changed the policy such that I2C touchpads may be able to wake up the
+> > > system by default if the system is configured as such.
+> > > 
+> > > However on Clevo NH5xAx/TUXEDO XA15 Gen10 there is a mistake in the ACPI
+> > > tables that the TP_ATTN# signal connected to GPIO 10 is configured as
+> > > ActiveLow and level triggered but connected to a pull up.
+> > I'm not sure I understand the issue here. From what you say here it seems
+> > correct ACPI description.
+> TBH I copied the commit description from https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=4cb786180dfb5258ff3111181b5e4ecb1d4a297b
+> which is for a different device having the exact same problem.
 
-On 2/13/23 11:43, Carsten Hatger wrote:
-> Dear all,
+Yeah, and I reviewed that and seems paid no attention to this detail.
+
+So, ActiveLow + PullUp is the _right_ thing to do in ACPI.
+The problem seems somewhere else.
+
+Mario, can we have an access to the schematics of the affected pin to
+understand better what's going on?
+
+Or is that description missing some crucial detail?
+
+> > > As soon as the
+> > > system suspends the touchpad loses power and then the system wakes up.
+> > > 
+> > > To avoid this problem, introduce a quirk for this model that will prevent
+> > > the wakeup capability for being set for GPIO 10.
+> > I'm not against fixing this, but wouldn't be better to actually target the root
+> > cause and have a different quirk? Or is it me who didn't get what is the root
+> > cause?
+> > 
+> I missed to reference the original discussion while copying the description:
+> https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627 (Note that
+> it's a somewhat convoluted issue spanning multiple bugs when you scroll up
+> from that particular linked comment, which are however irrelevant for this
+> patch)
 > 
-> I'd like to have tablet mode support on my system, probably by means
-> an linux input device such as implemented in the intel platform
-> specific driver drivers/platform/x86/intel/vbtn.c [0]
-> 
-> In the end I hope GNOME eventually to rotate the systems display and
-> to show some virtual keyboard (upon users request), cf. for [3]
-> 
-> It appears there has already been a patch proposed  by the chromium
-> team to support device PNP0C60 [1] but not merged to [5].
-> 
-> Since the system of interest is a HP Probook, there is already a
-> driver providing virtual buttons,namely hp-wmi [6]. However, the
-> driver loads probes and loads successfully but doesn't provide any
-> additional functionality plus some non critical errors on incorrect
-> ACPI method calls.
-> 
-> I've noticed AMD has started to provide platform specific driver(s)
-> such as pmf [2]. To my knowledge there is no support for CEZANNE/green
-> sardine based systems (yet).
-> 
-> What would be recommended practice and subsystem/folder to provide
-> such capability by means of a (platform specific) driver? At least the
-> CID PNP0C60 seems to be held by Microsoft [4] and thus be common to
-> both amd and intel platforms [4]. However, HID INT33D6 is held by
-> Intel and HID AMDI0081 by AMD. Yet I'm not quite sure if
-> iio-sensor-proxy [7] needs to be involved, too.
+> I'm not deep into how ACPI defined IRQ work so maybe not a good idea for me
+> summing it up, as I might have misunderstood parts of it ^^
 
-The first thing to do here is to figure out which (ACPI) device
-is the right device to get the SW_TABLET_MODE events from on this
-device.
+The GpioIo() and GpioInt() resources have gaps in them, due to this some
+additional information is required or some heuristics is used to deduct
+the settings.
 
-Maybe Jorge (added to the Cc) can help with this ?
+All this is described in
+https://www.kernel.org/doc/html/latest/firmware-guide/acpi/gpio-properties.html
 
-Regards,
+> I added the other ones from there to the cc.
 
-Hans
+Thank you.
 
+-- 
+With Best Regards,
+Andy Shevchenko
 
-
-
-> [0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/intel/vbtn.c?h=v6.2-rc8
-> [1] https://lore.kernel.org/lkml/1472628817-3145-1-git-send-email-wnhuang@google.com/
-> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/amd/pmf?h=v6.2-rc8
-> [3] https://gitlab.gnome.org/GNOME/mutter/-/issues/1760
-> [4] https://learn.microsoft.com/en-us/windows-hardware/drivers/gpiobtn/button-implementation
-> [5] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/acpi/button.c?h=v6.2-rc8
-> [6] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/hp/hp-wmi.c?h=v6.2-rc8
-> [7] https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/
-> 
 
