@@ -2,131 +2,337 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61F4F694612
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 13:42:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1B7D69467B
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 14:05:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230162AbjBMMmB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Feb 2023 07:42:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55116 "EHLO
+        id S229939AbjBMNFX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Feb 2023 08:05:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230127AbjBMMl7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 07:41:59 -0500
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 614C010C5;
-        Mon, 13 Feb 2023 04:41:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676292116; x=1707828116;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=DG7Ke2sciLVu9YsJ/QYtVHzYsvTpCMR4WXEcGmnErso=;
-  b=S6VAexWkM/2uEJfMbmD1LOmPoghTvpTWt/AmOxu9A42pBSPznzPEsOt0
-   uYCn+S2id5hYQW562wp3t3MO+n/qDdpPcOoDfkIpMViobPeIKOOPmvXff
-   25IuhJFg0qRTQpfmPlzsRTgBI5W/xaNjGp5U5NGQKLKeSHT9yjroi9BiE
-   lt58qiHAe1gt3ErZQUnCL7GUhgHjzT2ilCnPJ02JQ3qr/noma2F3dxAFe
-   NCIVuJkmzBFsbTEWVpg6Xwm4Lt00hYOgZppFB6MOtDpttCzcsYROJcM7h
-   9IRzijAeiz21xQip9OHUY4SOf4xZslp47Zxg6SYoOSE1InyNMKV09rFic
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10619"; a="318903728"
-X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
-   d="scan'208";a="318903728"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2023 04:41:55 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10619"; a="811585538"
-X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
-   d="scan'208";a="811585538"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga001.fm.intel.com with ESMTP; 13 Feb 2023 04:41:53 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pRY9X-006Kc5-0W;
-        Mon, 13 Feb 2023 14:41:51 +0200
-Date:   Mon, 13 Feb 2023 14:41:50 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Werner Sembach <wse@tuxedocomputers.com>
-Cc:     mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
-        brgl@bgdev.pl, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Limonciello, Mario" <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Raul E Rangel <rrangel@chromium.org>
-Subject: Re: [PATCH] gpiolib: acpi: Add a ignore wakeup quirk for Clevo NH5xAx
-Message-ID: <Y+owDqifuU9nf+1i@smile.fi.intel.com>
-References: <20230210164636.628462-1-wse@tuxedocomputers.com>
- <Y+Z5OSa6hepQBOyc@smile.fi.intel.com>
- <029b8d80-db28-cdb2-5c39-334be6968fad@tuxedocomputers.com>
+        with ESMTP id S229909AbjBMNFW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 08:05:22 -0500
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02EB986B2;
+        Mon, 13 Feb 2023 05:05:20 -0800 (PST)
+Received: by mail-qt1-f182.google.com with SMTP id f10so13569705qtv.1;
+        Mon, 13 Feb 2023 05:05:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1ohQOW8LhW84vMCNSb56DrthzGYUI9jdNgZMzgHCpWY=;
+        b=Zlh5qoAl3fCEcMbEK9rg/9WeDctV4EQGcWR0frTB7c/GBgNCt4+7Ts63zSo1lc4YQV
+         xpgIhm5Rnob1l6SoSUDI+lVt5uqraT5fyKE4153XBUjwc2YWFGFtnpc3bb2heF6JWvQx
+         kyhGc4xgXtep74tlI2SvtxqGBXky9/yzVFF2CSwGCngckPATD4R8j0r1olrIimm1wle4
+         5BxyrW5O68EolFxw82yMUmIKGue6s2DH7BS3/n5SXxO/XO+GnjZ3CKwCuppbo6UuKTR0
+         JKytTk1ZpjZZJvI9LZRXK+wO2+MHRPinR03TzoUmMTH8kNcrKhnmHQjYjqI2u5yNZnwe
+         A6Bg==
+X-Gm-Message-State: AO0yUKWrAgtUMRZhH1uh1kT0ZYcHaPEXmNeH8K4EEAkebwSIqb+SYFVt
+        oZ+zI7SDk0jDRLku6utVozjx0xAYiZcDuw==
+X-Google-Smtp-Source: AK7set+P7Mw2nPhUgmD81nmUUkzW7RbPaVVVlEY2iY7e+ZVZ9hnBFfjJKiamdVKNPXV2/JCLhYYdhQ==
+X-Received: by 2002:a05:622a:20e:b0:3b9:bb27:e11a with SMTP id b14-20020a05622a020e00b003b9bb27e11amr39857696qtx.0.1676293518472;
+        Mon, 13 Feb 2023 05:05:18 -0800 (PST)
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com. [209.85.219.173])
+        by smtp.gmail.com with ESMTPSA id a2-20020aed2782000000b003b9bcd88f7dsm9235333qtd.43.2023.02.13.05.05.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Feb 2023 05:05:18 -0800 (PST)
+Received: by mail-yb1-f173.google.com with SMTP id g2so14229553ybk.8;
+        Mon, 13 Feb 2023 05:05:18 -0800 (PST)
+X-Received: by 2002:a25:8f82:0:b0:86e:1225:b335 with SMTP id
+ u2-20020a258f82000000b0086e1225b335mr3099093ybl.455.1676293506630; Mon, 13
+ Feb 2023 05:05:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <029b8d80-db28-cdb2-5c39-334be6968fad@tuxedocomputers.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230207014207.1678715-1-saravanak@google.com>
+ <20230207014207.1678715-10-saravanak@google.com> <CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com>
+ <CAGETcx8DaZqS7+47PhX4hQOfSk7AzPcTu=2i+4gAgXr6wyDNgg@mail.gmail.com>
+In-Reply-To: <CAGETcx8DaZqS7+47PhX4hQOfSk7AzPcTu=2i+4gAgXr6wyDNgg@mail.gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 13 Feb 2023 14:04:55 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdXNoYH8PJE1xb4PK-vzjXtOzrxNJoZhsHT-H4Ucm=7_ig@mail.gmail.com>
+Message-ID: <CAMuHMdXNoYH8PJE1xb4PK-vzjXtOzrxNJoZhsHT-H4Ucm=7_ig@mail.gmail.com>
+Subject: Re: [PATCH v3 09/12] of: property: Simplify of_link_to_phandle()
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Tony Lindgren <tony@atomide.com>,
+        John Stultz <jstultz@google.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Maxim Kiselev <bigunclemax@gmail.com>,
+        Maxim Kochetkov <fido_max@inbox.ru>,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Colin Foster <colin.foster@in-advantage.com>,
+        Martin Kepplinger <martin.kepplinger@puri.sm>,
+        Jean-Philippe Brucker <jpb@kernel.org>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        kernel-team@android.com, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 13, 2023 at 12:30:08PM +0100, Werner Sembach wrote:
-> Am 10.02.23 um 18:04 schrieb Andy Shevchenko:
-> > On Fri, Feb 10, 2023 at 05:46:36PM +0100, Werner Sembach wrote:
-> > > commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
-> > > changed the policy such that I2C touchpads may be able to wake up the
-> > > system by default if the system is configured as such.
-> > > 
-> > > However on Clevo NH5xAx/TUXEDO XA15 Gen10 there is a mistake in the ACPI
-> > > tables that the TP_ATTN# signal connected to GPIO 10 is configured as
-> > > ActiveLow and level triggered but connected to a pull up.
-> > I'm not sure I understand the issue here. From what you say here it seems
-> > correct ACPI description.
-> TBH I copied the commit description from https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=4cb786180dfb5258ff3111181b5e4ecb1d4a297b
-> which is for a different device having the exact same problem.
+Hi Saravana,
 
-Yeah, and I reviewed that and seems paid no attention to this detail.
+On Wed, Feb 8, 2023 at 3:08 AM Saravana Kannan <saravanak@google.com> wrote:
+> On Tue, Feb 7, 2023 at 12:57 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > On Tue, Feb 7, 2023 at 2:42 AM Saravana Kannan <saravanak@google.com> wrote:
+> > > The driver core now:
+> > > - Has the parent device of a supplier pick up the consumers if the
+> > >   supplier never has a device created for it.
+> > > - Ignores a supplier if the supplier has no parent device and will never
+> > >   be probed by a driver
+> > >
+> > > And already prevents creating a device link with the consumer as a
+> > > supplier of a parent.
+> > >
+> > > So, we no longer need to find the "compatible" node of the supplier or
+> > > do any other checks in of_link_to_phandle(). We simply need to make sure
+> > > that the supplier is available in DT.
+> > >
+> > > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> >
+> > Thanks for your patch!
+> >
+> > This patch introduces a regression when dynamically loading DT overlays.
+> > Unfortunately this happens when using the out-of-tree OF configfs,
+> > which is not supported upstream.  Still, there may be (obscure)
+> > in-tree users.
+> >
+> > When loading a DT overlay[1] to enable an SPI controller, and
+> > instantiate a connected SPI EEPROM:
+> >
+> >     $ overlay add 25lc040
+> >     OF: overlay: WARNING: memory leak will occur if overlay removed,
+> > property: /keys/status
+> >     OF: overlay: WARNING: memory leak will occur if overlay removed,
+> > property: /soc/spi@e6e90000/pinctrl-0
+> >     OF: overlay: WARNING: memory leak will occur if overlay removed,
+> > property: /soc/spi@e6e90000/pinctrl-names
+> >     OF: overlay: WARNING: memory leak will occur if overlay removed,
+> > property: /soc/spi@e6e90000/cs-gpios
+> >     OF: overlay: WARNING: memory leak will occur if overlay removed,
+> > property: /soc/spi@e6e90000/status
+> >     OF: overlay: WARNING: memory leak will occur if overlay removed,
+> > property: /__symbols__/msiof0_pins
+> >
+> > The SPI controller and the SPI EEPROM are no longer instantiated.
+> >
+> >     # cat /sys/kernel/debug/devices_deferred
+> >     e6e90000.spi    platform: wait for supplier msiof0
+> >
+> > Let's remove the overlay again:
+> >
+> >     $ overlay rm 25lc040
+> >     input: keys as /devices/platform/keys/input/input1
+> >
+> > And retry:
+> >
+> >     $ overlay add 25lc040
+> >     OF: overlay: WARNING: memory leak will occur if overlay removed,
+> > property: /keys/status
+> >     OF: overlay: WARNING: memory leak will occur if overlay removed,
+> > property: /soc/spi@e6e90000/pinctrl-0
+> >     OF: overlay: WARNING: memory leak will occur if overlay removed,
+> > property: /soc/spi@e6e90000/pinctrl-names
+> >     OF: overlay: WARNING: memory leak will occur if overlay removed,
+> > property: /soc/spi@e6e90000/cs-gpios
+> >     OF: overlay: WARNING: memory leak will occur if overlay removed,
+> > property: /soc/spi@e6e90000/status
+> >     OF: overlay: WARNING: memory leak will occur if overlay removed,
+> > property: /__symbols__/msiof0_pins
+> >     spi_sh_msiof e6e90000.spi: DMA available
+> >     spi_sh_msiof e6e90000.spi: registered master spi0
+> >     spi spi0.0: setup mode 0, 8 bits/w, 100000 Hz max --> 0
+> >     at25 spi0.0: 512 Byte at25 eeprom, pagesize 16
+> >     spi_sh_msiof e6e90000.spi: registered child spi0.0
+> >
+> > Now it succeeds, and the SPI EEPROM is available, and works.
+> >
+> > Without this patch, or with this patch reverted after applying the
+> > full series:
+> >
+> >     $ overlay add 25lc040
+> >     OF: overlay: WARNING: memory leak will occur if overlay removed,
+> > property: /keys/status
+> >     OF: overlay: WARNING: memory leak will occur if overlay removed,
+> > property: /soc/spi@e6e90000/pinctrl-0
+> >     OF: overlay: WARNING: memory leak will occur if overlay removed,
+> > property: /soc/spi@e6e90000/pinctrl-names
+> >     OF: overlay: WARNING: memory leak will occur if overlay removed,
+> > property: /soc/spi@e6e90000/cs-gpios
+> >     OF: overlay: WARNING: memory leak will occur if overlay removed,
+> > property: /soc/spi@e6e90000/status
+> >     OF: overlay: WARNING: memory leak will occur if overlay removed,
+> > property: /__symbols__/msiof0_pins
+> >     OF: Not linking spi@e6e90000 to interrupt-controller@f1010000 - No
+> > struct device
+> >     spi_sh_msiof e6e90000.spi: DMA available
+> >     spi_sh_msiof e6e90000.spi: registered master spi0
+> >     spi spi0.0: setup mode 0, 8 bits/w, 100000 Hz max --> 0
+> >     at25 spi0.0: 444 bps (2 bytes in 9 ticks)
+> >     at25 spi0.0: 512 Byte at25 eeprom, pagesize 16
+> >     spi_sh_msiof e6e90000.spi: registered child spi0.0
+> >
+> > The SPI EEPROM is available on the first try after boot.
+>
+> Sigh... I spent way too long trying to figure out if I caused a memory
+> leak. I should have scrolled down further! Doesn't look like that part
+> is related to anything I did.
+>
+> There are some flags set to avoid re-parsing fwnodes multiple times.
+> My guess is that the issue you are seeing has to do with how many of
+> the in memory structs are reused vs not when an overlay is
+> applied/removed and some of these flags might not be getting cleared
+> and this is having a bigger impact with this patch (because the fwnode
+> links are no longer anchored on "compatible" nodes).
+>
+> With/without this patch (let's keep the series) can you look at how
+> the following things change between each step you do above (add,
+> remove, retry):
+> 1) List of directories under /sys/class/devlink
+> 2) Enable the debug logs inside __fwnode_link_add(),
+> __fwnode_link_del(), device_link_add()
 
-So, ActiveLow + PullUp is the _right_ thing to do in ACPI.
-The problem seems somewhere else.
+Without "of: property: Simplify of_link_to_phandle()":
 
-Mario, can we have an access to the schematics of the affected pin to
-understand better what's going on?
+  - Adding overlay:
 
-Or is that description missing some crucial detail?
+        spi@e6e90000 Linked as a fwnode consumer to clock-controller@e6150000
+        spi@e6e90000 Linked as a fwnode consumer to system-controller@e6180000
+        spi@e6e90000 Linked as a fwnode consumer to pinctrl@e6060000
+        spi@e6e90000 Linked as a fwnode consumer to gpio@e6055000
+        platform e6e90000.spi: Linked as a consumer to e6055000.gpio
+        spi@e6e90000 Dropping the fwnode link to gpio@e6055000
+        platform e6e90000.spi: Linked as a consumer to e6060000.pinctrl
+        spi@e6e90000 Dropping the fwnode link to pinctrl@e6060000
+        spi@e6e90000 Dropping the fwnode link to system-controller@e6180000
+        platform e6e90000.spi: Linked as a consumer to e6150000.clock-controller
+        spi@e6e90000 Dropping the fwnode link to clock-controller@e6150000
 
-> > > As soon as the
-> > > system suspends the touchpad loses power and then the system wakes up.
-> > > 
-> > > To avoid this problem, introduce a quirk for this model that will prevent
-> > > the wakeup capability for being set for GPIO 10.
-> > I'm not against fixing this, but wouldn't be better to actually target the root
-> > cause and have a different quirk? Or is it me who didn't get what is the root
-> > cause?
-> > 
-> I missed to reference the original discussion while copying the description:
-> https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627 (Note that
-> it's a somewhat convoluted issue spanning multiple bugs when you scroll up
-> from that particular linked comment, which are however irrelevant for this
-> patch)
-> 
-> I'm not deep into how ACPI defined IRQ work so maybe not a good idea for me
-> summing it up, as I might have misunderstood parts of it ^^
+        +platform:e6055000.gpio--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:e6055000.gpio--platform:e6e90000.spi
+        +platform:e6060000.pinctrl--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:e6060000.pinctrl--platform:e6e90000.spi
+        +platform:e6150000.clock-controller--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:e6150000.clock-controller--platform:e6e90000.spi
+        -platform:e6060000.pinctrl--platform:keys ->
+../../devices/virtual/devlink/platform:e6060000.pinctrl--platform:keys
 
-The GpioIo() and GpioInt() resources have gaps in them, due to this some
-additional information is required or some heuristics is used to deduct
-the settings.
+        SPI EEPROM works
 
-All this is described in
-https://www.kernel.org/doc/html/latest/firmware-guide/acpi/gpio-properties.html
+  - Removing overlay:
 
-> I added the other ones from there to the cc.
+        platform keys: Linked as a sync state only consumer to e6055000.gpio
 
-Thank you.
+        -platform:e6055000.gpio--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:e6055000.gpio--platform:e6e90000.spi
+        -platform:e6060000.pinctrl--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:e6060000.pinctrl--platform:e6e90000.spi
+        -platform:e6150000.clock-controller--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:e6150000.clock-controller--platform:e6e90000.spi
+
+        platform:e6060000.pinctrl--platform:keys link is not recreated?!?!?
+
+  - Adding overlay again:
+
+        No debug output
+        No change in sys/class/devlink?!?!?
+        SPI EEPROM works
+
+
+With "of: property: Simplify of_link_to_phandle()":
+
+  - Adding overlay:
+
+        spi@e6e90000 Linked as a fwnode consumer to
+interrupt-controller@f1010000
+        spi@e6e90000 Linked as a fwnode consumer to clock-controller@e6150000
+        spi@e6e90000 Linked as a fwnode consumer to system-controller@e6180000
+        spi@e6e90000 Linked as a fwnode consumer to msiof0
+        spi@e6e90000 Linked as a fwnode consumer to gpio@e6055000
+        platform e6e90000.spi: Linked as a consumer to e6055000.gpio
+        spi@e6e90000 Dropping the fwnode link to gpio@e6055000
+        spi@e6e90000 Dropping the fwnode link to system-controller@e6180000
+        platform e6e90000.spi: Linked as a consumer to e6150000.clock-controller
+        spi@e6e90000 Dropping the fwnode link to clock-controller@e6150000
+        platform e6e90000.spi: Linked as a consumer to soc
+        spi@e6e90000 Dropping the fwnode link to interrupt-controller@f1010000
+
+        +platform:e6055000.gpio--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:e6055000.gpio--platform:e6e90000.spi
+        +platform:e6150000.clock-controller--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:e6150000.clock-controller--platform:e6e90000.spi
+        +platform:soc--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:soc--platform:e6e90000.spi
+
+        -platform:e6060000.pinctrl--platform:keys ->
+../../devices/virtual/devlink/platform:e6060000.pinctrl--platform:keys
+
+        SPI EEPROM does not work
+
+  - Removing overlay:
+
+        platform keys: Linked as a sync state only consumer to e6055000.gpio
+        spi@e6e90000 Dropping the fwnode link to msiof0
+
+        -platform:e6055000.gpio--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:e6055000.gpio--platform:e6e90000.spi
+        -platform:e6150000.clock-controller--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:e6150000.clock-controller--platform:e6e90000.spi
+        -platform:soc--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:soc--platform:e6e90000.spi
+
+        platform:e6060000.pinctrl--platform:keys link is not recreated?!?!?
+
+
+  - Adding overlay again:
+
+        No debug output
+        No change in sys/class/devlink?!?!?
+        SPI EEPROM works
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
