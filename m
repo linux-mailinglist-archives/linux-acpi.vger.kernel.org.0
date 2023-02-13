@@ -2,111 +2,189 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21D65694E75
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 18:53:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8171E694E7A
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 18:58:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230040AbjBMRxZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Feb 2023 12:53:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38970 "EHLO
+        id S229851AbjBMR6C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Feb 2023 12:58:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229801AbjBMRxY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 12:53:24 -0500
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8518E35A9
-        for <linux-acpi@vger.kernel.org>; Mon, 13 Feb 2023 09:53:23 -0800 (PST)
-Received: by mail-pj1-x1029.google.com with SMTP id gd1so1897883pjb.1
-        for <linux-acpi@vger.kernel.org>; Mon, 13 Feb 2023 09:53:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9oVVr3kQ4dvAV/kgzEs7a/6cws3klBr48elRB1k69r0=;
-        b=LgKghyebGOh3bP8hEzFdfwGSMH1cBm60cGIsaZx4fuMF1cE9MKe95/CBSIay+QUiGs
-         K5K6RtfkTuHGEqjv71opafmVuUPM1Nft/EzzyEKVJzTBUNUKnOaRBfq5zjBK3LgJ7fVw
-         OzZi5n1ouKx3lYXXyr4Ci0lh/xE3zl88BMexkD/o8grh8QpNpfJxB67leAlRvdwdTyUP
-         taku6PTjeZisqV4wQzgbj5BhHK48ei4lFfl67jUv16Bloub9IASuBmpue9CPJbJoktbr
-         Ec8HgAJl7XpobYesmC2Bu271Eao9xSQUoxQJDVTEe1yJQKnR3QDoCJ0UisuThdBFETZZ
-         w5eQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9oVVr3kQ4dvAV/kgzEs7a/6cws3klBr48elRB1k69r0=;
-        b=0aKCcAw6xunBViZU1JmzpDnPYSXXESFUyrgLLHbZfPn7bRqyIo76Wp/1qJI8tkl4mx
-         3VcXybh4nmu44S2kkghY6MGZ+qjQ0YUQWcl3OZpMnfQj7fIiwCZJp9ZCBRIIlfT10TEU
-         t6PpOIiYg+/HMVyXD+Dyg8HqbS7PrcPSL3Bn5adV2HCjP/n1/LN/jlqMbtC5kbwlNIGQ
-         kAH+WdoIQe5Kghbq5g7hFWMRfMsiopBLVwuQEt20CPPtzgmdFtBrE3ZgpfNzIWHBQN0I
-         IO1sQBK3gRT0RqKPZ3oxhjzPOVR8HgiTNkJQZlt2+rXgaI2WT1+aOaW7+M4va0x1IFkY
-         aXHQ==
-X-Gm-Message-State: AO0yUKUG17ZghhElUgQe0+OFCuLyKuFxVG/lHlbHcMRa3n8lrtUpHWj4
-        y5f5HYAMQCQauYkE/IrwMqO2qA==
-X-Google-Smtp-Source: AK7set/Qv3EVerw9Rt6XlSc5yNUHkObHYZU2J5Vc5WEa1EMKFQCvEB+ZhzHAg32cootQVX1l5sQS9Q==
-X-Received: by 2002:a17:902:c791:b0:19a:9642:dee8 with SMTP id w17-20020a170902c79100b0019a9642dee8mr5270304pla.0.1676310803091;
-        Mon, 13 Feb 2023 09:53:23 -0800 (PST)
-Received: from sunil-laptop ([49.206.14.226])
-        by smtp.gmail.com with ESMTPSA id d23-20020a170902b71700b001933b4b1a49sm7453935pls.183.2023.02.13.09.53.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Feb 2023 09:53:22 -0800 (PST)
-Date:   Mon, 13 Feb 2023 23:23:16 +0530
-From:   Sunil V L <sunilvl@ventanamicro.com>
-To:     Conor Dooley <conor@kernel.org>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        Anup Patel <apatel@ventanamicro.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Atish Patra <atishp@rivosinc.com>
-Subject: Re: [PATCH 23/24] MAINTAINERS: Add entry for drivers/acpi/riscv
-Message-ID: <Y+p5DL/c12naJotE@sunil-laptop>
-References: <20230130182225.2471414-1-sunilvl@ventanamicro.com>
- <20230130182225.2471414-24-sunilvl@ventanamicro.com>
- <Y+Vroj6CmrL4I9lN@spud>
+        with ESMTP id S229522AbjBMR6B (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 12:58:01 -0500
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58BC515CB6;
+        Mon, 13 Feb 2023 09:58:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676311080; x=1707847080;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=LAlp0VvcVQMFABiiGymze8BcAiZb2vA73KxpVI85N+w=;
+  b=TLytttvvrrFB6L1XASpRrIGqCKR6Blc/ofSjCBrSEEBoyDjWJa3uyNoJ
+   woawi1USvNNKXcyEiOaAF1cPLbt8eK0DsZeWQf+4HZ2W/JAKi3AZHPZii
+   6p/ykiI9E9V0dM1SgPN53wVPEDp1+h9ZPe5wn1JppjlojzAlWkftGf4qk
+   rR17BqbT1s6Z+NKfhXoWveLno1KkCBE+nsetMgtoZSE2f3pfBhkGu33ji
+   JwvTF7jWyx/gTUwf5xzilEgwL9WSAGEfBaFbE8x4+TlwkPai21GlqVfQ+
+   uidiTKngrZrMqXArfk45OYui4NDKUt2RI/DyL2UVGi2qbyOwanBu4rGzH
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="328657666"
+X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
+   d="scan'208";a="328657666"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2023 09:58:00 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="777943843"
+X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
+   d="scan'208";a="777943843"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP; 13 Feb 2023 09:57:57 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pRd5P-006TjW-2Y;
+        Mon, 13 Feb 2023 19:57:55 +0200
+Date:   Mon, 13 Feb 2023 19:57:55 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Raul Rangel <rrangel@chromium.org>
+Cc:     Werner Sembach <wse@tuxedocomputers.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
+        brgl@bgdev.pl, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: Re: [PATCH] gpiolib: acpi: Add a ignore wakeup quirk for Clevo NH5xAx
+Message-ID: <Y+p6I379g+V4vpIc@smile.fi.intel.com>
+References: <20230210164636.628462-1-wse@tuxedocomputers.com>
+ <Y+Z5OSa6hepQBOyc@smile.fi.intel.com>
+ <029b8d80-db28-cdb2-5c39-334be6968fad@tuxedocomputers.com>
+ <Y+owDqifuU9nf+1i@smile.fi.intel.com>
+ <86db79fa-5efb-caad-3310-60928907cc58@amd.com>
+ <Y+pLLzLDotZQLpdA@smile.fi.intel.com>
+ <97026dc5-e92e-62fe-43ae-33533125d900@tuxedocomputers.com>
+ <CAHQZ30Cs+kp82coR10Wat7q3S_8+pFf=5=44kMEMcjBOjmn=6A@mail.gmail.com>
+ <Y+p4Sq/WnZ4jAp+F@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y+Vroj6CmrL4I9lN@spud>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <Y+p4Sq/WnZ4jAp+F@smile.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 09, 2023 at 09:54:42PM +0000, Conor Dooley wrote:
-> On Mon, Jan 30, 2023 at 11:52:24PM +0530, Sunil V L wrote:
-> > ACPI defines few RISC-V specific tables which need
-> > parsing code added in drivers/acpi/riscv. Add maintainer
-> > entries for this newly created folder.
+On Mon, Feb 13, 2023 at 07:50:02PM +0200, Andy Shevchenko wrote:
+> On Mon, Feb 13, 2023 at 10:20:41AM -0700, Raul Rangel wrote:
+> > On Mon, Feb 13, 2023 at 7:47 AM Werner Sembach <wse@tuxedocomputers.com> wrote:
+> > > Am 13.02.23 um 15:37 schrieb Andy Shevchenko:
+> > > > On Mon, Feb 13, 2023 at 07:20:48AM -0600, Mario Limonciello wrote:
+> > > >> On 2/13/23 06:41, Andy Shevchenko wrote:
+> > > >>> On Mon, Feb 13, 2023 at 12:30:08PM +0100, Werner Sembach wrote:
+> > > >>>> Am 10.02.23 um 18:04 schrieb Andy Shevchenko:
+> > > >>>>> On Fri, Feb 10, 2023 at 05:46:36PM +0100, Werner Sembach wrote:
+> > > >>>>>> commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+> > > >>>>>> changed the policy such that I2C touchpads may be able to wake up the
+> > > >>>>>> system by default if the system is configured as such.
+> > > >>>>>>
+> > > >>>>>> However on Clevo NH5xAx/TUXEDO XA15 Gen10 there is a mistake in the ACPI
+> > > >>>>>> tables that the TP_ATTN# signal connected to GPIO 10 is configured as
+> > > >>>>>> ActiveLow and level triggered but connected to a pull up.
+> > > >>>>> I'm not sure I understand the issue here. From what you say here it seems
+> > > >>>>> correct ACPI description.
+> > > >>>> TBH I copied the commit description from https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=4cb786180dfb5258ff3111181b5e4ecb1d4a297b
+> > > >>>> which is for a different device having the exact same problem.
+> > > >>> Yeah, and I reviewed that and seems paid no attention to this detail.
+> > > >>>
+> > > >>> So, ActiveLow + PullUp is the _right_ thing to do in ACPI.
+> > > >>> The problem seems somewhere else.
+> > > >>>
+> > > >>> Mario, can we have an access to the schematics of the affected pin to
+> > > >>> understand better what's going on?
+> > > >>>
+> > > >>> Or is that description missing some crucial detail?
+> > >
+> > > Schematics for the NH5xAx can also be found on this unofficial clevo mirror
+> > > (service manuals, scroll to end for schematics):
+> > >
+> > > http://repo.palkeo.com/clevo-mirror/NH5xACx_AFx_ADx/NH50AC.zip
+> > >
+> > > http://repo.palkeo.com/clevo-mirror/NH5xACx_AFx_ADx/NH50AF1.zip
+> > >
+> > > User: repo
+> > >
+> > > PW: repo
+> > >
+> > > >> The schematics were shared by the reporter for the original issue which is
+> > > >> how we reached the conclusion there was a mistake.
+> > > >>
+> > > >> As they're both Clevo designs it's certainly possible they have the same
+> > > >> mistake in two systems.
 > > 
-> > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> > ---
-> >  MAINTAINERS | 7 +++++++
-> >  1 file changed, 7 insertions(+)
+> > > > Thank you!
+> > > > I have looked at the schematics and read discussion.
+> > > >
+> > > > So, the conclusion that this is a BIOS bug is incorrect in my opinion.
+> > > > The problem is either in the PMIC/EC firmware that shouldn't shut down 3.3VS
+> > > > signal for a while or on the PCB level, so that pull up should be connected
+> > > > to another power source that stays on.
+> > > >
+> > > > This means the description on the initial patch with the same issue is
+> > > > incorrect.
+> > > >
+> > > > Do we know the power sequence on the suspend to see which and how on the
+> > > > time line the power sources are off/on?
 > > 
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 8a5c25c20d00..b14ceb917a81 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -450,6 +450,13 @@ S:	Orphan
-> >  F:	drivers/platform/x86/wmi.c
-> >  F:	include/uapi/linux/wmi.h
-> >  
-> > +ACPI FOR RISC-V (ACPI/riscv)
-> > +M:	Sunil V L <sunilvl@ventanamicro.com>
-> > +L:	linux-acpi@vger.kernel.org
-> > +L:	linux-riscv@lists.infradead.org
-> > +S:	Maintained
+> > If you look at the load switch for 3.3VS, its EN2 pin is connected to
+> > SUSB#_EN which is connected to SUSB# which is connected to
+> > AND(SUSB#_PCH -> SLP_S3_L, PM_SLP_S0 -> S0A3_GPIO). So there is no
+> > PMIC/EC firmware that is incharge of this. I guess I'm not quite sure
+> > how they have S0A3_GPIO configured, so maybe I have an invert wrong.
+> > 
+> > The EC does control DD_ON which controls the 3.3V and 5V rails.
 > 
-> Supported, no?
+> On page 6 of the schematics I see the U7 that forms SUSB# from SUSB#_APU
+> (which corresponds to what you said) _and_ EC_EN, which is GPIO from IT5570,
+> which is EC.
 > 
-I prefer to keep it same as ARM.
+> Are you using different schematics? I'm using the one from FDO bug report.
+
+Just checked this one:
+http://repo.palkeo.com/clevo-mirror/NH5xACx_AFx_ADx/NH50AC.zip
+
+Also uses EC (SUSB_EC#).
+
+> > > >>>>>> As soon as the
+> > > >>>>>> system suspends the touchpad loses power and then the system wakes up.
+> > > >>>>>>
+> > > >>>>>> To avoid this problem, introduce a quirk for this model that will prevent
+> > > >>>>>> the wakeup capability for being set for GPIO 10.
+> > > >>>>> I'm not against fixing this, but wouldn't be better to actually target the root
+> > > >>>>> cause and have a different quirk? Or is it me who didn't get what is the root
+> > > >>>>> cause?
+> > > >>>>>
+> > > >>>> I missed to reference the original discussion while copying the description:
+> > > >>>> https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627 (Note that
+> > > >>>> it's a somewhat convoluted issue spanning multiple bugs when you scroll up
+> > > >>>> from that particular linked comment, which are however irrelevant for this
+> > > >>>> patch)
+> > > >>>>
+> > > >>>> I'm not deep into how ACPI defined IRQ work so maybe not a good idea for me
+> > > >>>> summing it up, as I might have misunderstood parts of it ^^
+> > > >>> The GpioIo() and GpioInt() resources have gaps in them, due to this some
+> > > >>> additional information is required or some heuristics is used to deduct
+> > > >>> the settings.
+> > > >>>
+> > > >>> All this is described in
+> > > >>> https://www.kernel.org/doc/html/latest/firmware-guide/acpi/gpio-properties.html
+> > > >>>
+> > > >>>> I added the other ones from there to the cc.
+> > > >>> Thank you.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
