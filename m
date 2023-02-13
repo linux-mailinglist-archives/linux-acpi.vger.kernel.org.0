@@ -2,60 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D421169520A
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 21:39:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C6171695226
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Feb 2023 21:49:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229607AbjBMUjb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Feb 2023 15:39:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36552 "EHLO
+        id S229648AbjBMUtV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Feb 2023 15:49:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbjBMUja (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 15:39:30 -0500
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 622671284B;
-        Mon, 13 Feb 2023 12:39:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676320769; x=1707856769;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=89B8F9htL6Qei6aB89FjZiKtmN09XvKCxECHkIfzD7U=;
-  b=IVaapr+CmWP5I+LrvCa71OigVxsAwRzBW9xsu3+x3IUhIW/U/zGCpcat
-   PSYSPDvB7n5m4xMlurj9Ut8vEbv9THrQgONulA/zUiJ5fGcKR4sO2UrIU
-   7YC9sGBBprrVFnmgK/3kXgMhvvILqBhXa7OVLc2FzxbjiwtcmRISUVzuR
-   ZYvUeRmj7Ykv8eU14QlL+/XRz2H9q5QGfLaM2ZejnXtrYSdQnElwcaQOD
-   gRP6lAZ+jMngfbaL301cwbfS373usDHSEMytc4aERmXyr1yk7MlJ1XRYf
-   m9ysHqYhJVvD5ztZmJwt/vlyrsxa/6VPrraIu0qkSDlaWcBdbhF0c1rRV
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="358401414"
-X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
-   d="scan'208";a="358401414"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2023 12:39:29 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="914470130"
-X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
-   d="scan'208";a="914470130"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga006.fm.intel.com with ESMTP; 13 Feb 2023 12:39:27 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id D92F51A6; Mon, 13 Feb 2023 22:40:06 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        with ESMTP id S229618AbjBMUtU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 15:49:20 -0500
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F0561F48B;
+        Mon, 13 Feb 2023 12:49:19 -0800 (PST)
+Received: from mercury (unknown [185.209.196.162])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: sre)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 144686600358;
+        Mon, 13 Feb 2023 20:49:18 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1676321358;
+        bh=QYKgYvZ6GSaXguqvtxOuiycRRutWeDESTgJ7qui7vIo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Ihl7zrRyudPiEu0PUyVKqqjUCvCwizFCRh4NJcGhmgklj+bnslWgNHcpYdh9jzlHS
+         hehgG9L6bWBOrSgYkmbQFwSsufTPQeRaY4b8wVLM5UZFib8/Ecfpp0UnYIAid9wdYK
+         q3/ISyBIXGZ7X+SIK7Lm9TfNUwlizl4IL5rcWxXdEIOW+TVbim0s9qswMFHdTwhDzF
+         LzMBRL84vHTYWRwIaj+rHQPWNn+H7FvW5knPnXkbwoh2srfnn85YjvFud/OAGoW0Fs
+         f40SB33aIbf80mb1B7B9wdyQ/0XOALC6180wNOsudIZsidFrdSPtatx9M8T7ILq2OB
+         L/6/CINjvF/sw==
+Received: by mercury (Postfix, from userid 1000)
+        id 8C1521060961; Mon, 13 Feb 2023 21:49:15 +0100 (CET)
+Date:   Mon, 13 Feb 2023 21:49:15 +0100
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     rjw@rjwysocki.net, linux-acpi@vger.kernel.org,
+        linux-pm@vger.kernel.org,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
-Subject: [PATCH v2 1/1] Documentation: firmware-guide: gpio-properties: Clarify Explicit and Implicit
-Date:   Mon, 13 Feb 2023 22:40:05 +0200
-Message-Id: <20230213204005.55483-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.39.1
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Kees Cook <keescook@chromium.org>,
+        "Lee, Chun-Yi" <joeyli.kernel@gmail.com>,
+        Chuansheng Liu <chuansheng.liu@intel.com>,
+        ye xingchen <ye.xingchen@zte.com.cn>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] thermal: Hunt zero trip points thermal zones usage
+Message-ID: <20230213204915.an3khdiczinttp2d@mercury.elektranox.org>
+References: <20230203175832.3406504-1-daniel.lezcano@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="62vjb7bftclszqw3"
+Content-Disposition: inline
+In-Reply-To: <20230203175832.3406504-1-daniel.lezcano@linaro.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,63 +66,85 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Clarify the Explicit and Implicit meanings in the table of Pull Bias.
 
-While at it, distinguish pull bias keywords used in ACPI by using bold
-font in the table of the respective terms.
+--62vjb7bftclszqw3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
-v2: fixed formatting issues
- .../firmware-guide/acpi/gpio-properties.rst   | 35 +++++++++++++------
- 1 file changed, 24 insertions(+), 11 deletions(-)
+Hi,
 
-diff --git a/Documentation/firmware-guide/acpi/gpio-properties.rst b/Documentation/firmware-guide/acpi/gpio-properties.rst
-index eaec732cc77c..db0c0b1f3700 100644
---- a/Documentation/firmware-guide/acpi/gpio-properties.rst
-+++ b/Documentation/firmware-guide/acpi/gpio-properties.rst
-@@ -67,17 +67,30 @@ state of the output pin which driver should use during its initialization.
- Linux tries to use common sense here and derives the state from the bias
- and polarity settings. The table below shows the expectations:
- 
--=========  =============  ==============
--Pull Bias     Polarity     Requested...
--=========  =============  ==============
--Implicit     x            AS IS (assumed firmware configured for us)
--Explicit     x (no _DSD)  as Pull Bias (Up == High, Down == Low),
--                          assuming non-active (Polarity = !Pull Bias)
--Down         Low          as low, assuming active
--Down         High         as low, assuming non-active
--Up           Low          as high, assuming non-active
--Up           High         as high, assuming active
--=========  =============  ==============
-++-------------+-------------+-----------------------------------------------+
-+| Pull Bias   | Polarity    | Requested...                                  |
-++=============+=============+===============================================+
-+| Implicit                                                                  |
-++-------------+-------------+-----------------------------------------------+
-+| **Default** | x           | AS IS (assumed firmware configured it for us) |
-++-------------+-------------+-----------------------------------------------+
-+| Explicit                                                                  |
-++-------------+-------------+-----------------------------------------------+
-+| **None**    | x           | AS IS (assumed firmware configured it for us) |
-+|             |             | with no Pull Bias                             |
-++-------------+-------------+-----------------------------------------------+
-+| **Up**      | x (no _DSD) |                                               |
-+|             +-------------+ as high, assuming non-active                  |
-+|             | Low         |                                               |
-+|             +-------------+-----------------------------------------------+
-+|             | High        | as high, assuming active                      |
-++-------------+-------------+-----------------------------------------------+
-+| **Down**    | x (no _DSD) |                                               |
-+|             +-------------+ as low, assuming non-active                   |
-+|             | High        |                                               |
-+|             +-------------+-----------------------------------------------+
-+|             | Low         | as low, assuming active                       |
-++-------------+-------------+-----------------------------------------------+
- 
- That said, for our above example the both GPIOs, since the bias setting
- is explicit and _DSD is present, will be treated as active with a high
--- 
-2.39.1
+On Fri, Feb 03, 2023 at 06:58:31PM +0100, Daniel Lezcano wrote:
+> Some drivers are declaring a thermal zone without any thermal trip
+> points.
+>=20
+> On the other side, we are introducing the function
+> thermal_zone_device_register_with_trips() which provides an array of
+> generic thermal trip points. When all the drivers will be converted to
+> the generic trip points, keeping two functions will be useless.
+>=20
+> Most of the drivers are now using
+> thermal_zone_device_register_with_trips() with the generic trip
+> points. As soon as the remaining drivers are merged, the
+> thermal_zone_device_register_with_trips() will be renamed to
+> thermal_zone_device_register().
+>=20
+> Obviously this renaming can only happen if there are no more user of
+> the thermal_zone_device_register() function.
+>=20
+> This change uses thermal_zone_device_register_with_trips() with a NULL
+> parameter for the trip point array instead of
+> thermal_zone_device_register().
+>=20
+> No functional change intended.
+>=20
+> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+> ---
+>  drivers/power/supply/power_supply_core.c                | 2 +-
 
+Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+
+[...]
+
+> diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/sup=
+ply/power_supply_core.c
+> index 7c790c41e2fe..208a849a71d9 100644
+> --- a/drivers/power/supply/power_supply_core.c
+> +++ b/drivers/power/supply/power_supply_core.c
+> @@ -1166,7 +1166,7 @@ static int psy_register_thermal(struct power_supply=
+ *psy)
+> =20
+>  	/* Register battery zone device psy reports temperature */
+>  	if (psy_has_property(psy->desc, POWER_SUPPLY_PROP_TEMP)) {
+> -		psy->tzd =3D thermal_zone_device_register(psy->desc->name,
+> +		psy->tzd =3D thermal_zone_device_register_with_trips(psy->desc->name, =
+NULL,
+>  				0, 0, psy, &psy_tzd_ops, NULL, 0, 0);
+>  		if (IS_ERR(psy->tzd))
+>  			return PTR_ERR(psy->tzd);
+
+[...]
+
+-- Sebastian
+
+--62vjb7bftclszqw3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmPqoksACgkQ2O7X88g7
++pqTyQ/9EPWvCJEFUJQtyxA+lb41sYuyN98Q+ACy/eXcxsqkzm7uK9tNsg23oFD2
+MP5vTzSOJ1oQHmmfEpKdso5utu7TysAdjF5b+3hr9INf3Xte+kaIpSkSbWli1Htw
+4uNcuewkAH63LA0iuHpid5RLNCTP5eOIvdOmic66mK2nKHbcu6+PmzIS0yVuh8Y1
+d9TsWrjNYLp9uYNuslAGbLh75ploXXfQNI1gSTbwTr4w/Esqq5B75caIEHOJjRuS
+1LSv3rQecPJDqpkCNRvEVJ2kImWAFoyjKbBrzE81Fb/JRjjgtXDscfuLQUWrzWHb
+Ywyps5wICAfHEn3nNMHbMUiS+nA3eIBY9QWTCREsy2QE/7NQ5qOzAOQSsfGQz85Z
+BRVMaMYQZJZym5RTOD+SfmQClnAbG/vmgysCp/qeTVuPnALZNyM1/abD8cHYWJ+c
+oXqlFv+fxbe5dqg/MBn54x2xWbbSi0UgF8vyDlHEx3nSdeQ5RjqXWlTSRjzWQHFD
+0PIBLYERDkAuPb7Tox6TU5DAUUQzldBncOOPPcKljwam8Z0jBARMG9VCpYoCUb9P
++i2L/mRCicvmn98ZJX0OKyjHsiHRklXqyV9KKedE/yJTxNDly5UlF/up+UtzDcHp
+umqHKLUNDOezlX7XnqYXb16shVlc+6scgMl+Cj5L0G68foOokEE=
+=ZFcY
+-----END PGP SIGNATURE-----
+
+--62vjb7bftclszqw3--
