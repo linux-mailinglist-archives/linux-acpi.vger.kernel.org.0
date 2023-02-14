@@ -2,57 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78159696726
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Feb 2023 15:41:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B7A269674E
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Feb 2023 15:49:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232803AbjBNOlx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Feb 2023 09:41:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37416 "EHLO
+        id S232898AbjBNOs7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Feb 2023 09:48:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232729AbjBNOlw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Feb 2023 09:41:52 -0500
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96B2B21945;
-        Tue, 14 Feb 2023 06:41:51 -0800 (PST)
-Received: by mail-ed1-f46.google.com with SMTP id u21so17742400edv.3;
-        Tue, 14 Feb 2023 06:41:51 -0800 (PST)
+        with ESMTP id S232840AbjBNOs6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Feb 2023 09:48:58 -0500
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F36E72A0;
+        Tue, 14 Feb 2023 06:48:57 -0800 (PST)
+Received: by mail-ej1-f43.google.com with SMTP id jg8so40721396ejc.6;
+        Tue, 14 Feb 2023 06:48:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=CaFJsZLG1yaHAOaVj94M7dknjPMkfjabuH7GLPdGLtw=;
-        b=PiPtjrsWhBpJC66XxDNpvGlHGIaRNjKlV1YUQ74GGkvC4v2xC62dxAsxJKw6TgG+Ye
-         QPxZZfwRKc4E/lzo/xWWe5QNZsTgsFMmdF6HMF4Fy5inUk8Pk//EKgD6Cz3kK14cF795
-         wFGyyShCwbLQlCaJg2w4q9wwxwYBEROcCIriYhfSylJfGYm4hW+rd5c+L8OrRdZ1/550
-         /HTUBwUyEowuyI9AIvHGjKmlwmL+cqzBtj0ezddcwH+HH/nOw9OrJvuzeqyPtu6Luhvf
-         oKx3diUSzZoESipMkynd3EM0bo+Sp03nVlsZ8SBb3rbe87BwPo0ZE71LQQHoBFgUDprl
-         mWlw==
-X-Gm-Message-State: AO0yUKU1DyNNnk0OCcIJ2IcSAkSy0f9trpZyfvEcw9TcFVWhTHyGM2kC
-        WNeqa+lFrIGitweGsJRETySaO+dfCEiCNCqDQ47vFj5V
-X-Google-Smtp-Source: AK7set+liXYYxCabxOryUIc0a0OhOY7VfNtiGWaBEsWMbD2EsukiQxyVWjNBt4a4RunDes+A4nJpYgoYb27/Y8sn7Nk=
-X-Received: by 2002:a50:f691:0:b0:4ac:50e4:1eee with SMTP id
- d17-20020a50f691000000b004ac50e41eeemr1291725edn.3.1676385710090; Tue, 14 Feb
- 2023 06:41:50 -0800 (PST)
+        bh=dO9zQQMF7TMrx+/BjRM6rVVVA5NoHbBHzsXtZkm9yy4=;
+        b=OSGlNb+h0+nVYhvdM0Vu1lMHlReRtnSZwGibjvpDQJYa6mNn0slByHllx1RwhyeQFU
+         iGXPuBgFwbA7qj+GUHhTyNkedbrntfJRPrXpWn+aBJownzqHJfc6YKYtWtKfsQD7d5tm
+         ITZkTWUegoNpd91p8tQEWnajAc8YIE3jxf3OMm9g8nixjISYON44s8UIs3gR+OtXuTnX
+         gs5h70zGe6GrHE8UW/XQ2tJKBE5UXcRSj0axMtlQHxK6k+y5lpxoIvt7k64xiIR7J+8f
+         A/GQGJ1Xt+ySRQNFHGlpZiz9ILIWTnqfxNX6bBRewYrO7i31UYvc7qhHPwBYp/QoIpXq
+         FIhQ==
+X-Gm-Message-State: AO0yUKVaqx1Y520UVcHpoc1yqLNXUGYJW12pc1PxD9NSGB536gICmycz
+        QYwXqcF7Dec7MgTJhguU+yGBgBCGfe2A3rF26xE=
+X-Google-Smtp-Source: AK7set92OL3G8YnrRMKsCXin+A4QvxdoGU7T0cUEjR5WoCpPkZ1BCDK1WZNm/rg+4Uf/k3SHFHNQFN205jo6C8vMSnw=
+X-Received: by 2002:a17:907:10cf:b0:888:6294:a1fd with SMTP id
+ rv15-20020a17090710cf00b008886294a1fdmr1430066ejb.2.1676386135992; Tue, 14
+ Feb 2023 06:48:55 -0800 (PST)
 MIME-Version: 1.0
-References: <12138067.O9o76ZdvQC@kreacher> <12124970.O9o76ZdvQC@kreacher>
- <mafs0sfgybc3q.fsf_-_@amazon.de> <CAJZ5v0hAjKvinPqX2VuCv1jVu50jrnDpECaO=sA2CQZFHZpJdA@mail.gmail.com>
- <mafs0zga0ds30.fsf_-_@amazon.de> <CAJZ5v0j1CBe7Hjhg7Tzm3HkuinA9zgtPffMtd96ZaOds=US+xQ@mail.gmail.com>
- <0f74e16d2a1c5005c342d800445c046b8fe248cb.camel@linux.intel.com>
- <CAJZ5v0g1PiMDFUeVKy3YL4pni6oDDaEVTw-LLYnYMMsF+5uuMQ@mail.gmail.com> <dc9f52c96be1be761177e4d52eae1cd4306abeb4.camel@linux.intel.com>
-In-Reply-To: <dc9f52c96be1be761177e4d52eae1cd4306abeb4.camel@linux.intel.com>
+References: <20230213213537.6121-1-mario.limonciello@amd.com> <20230213213537.6121-2-mario.limonciello@amd.com>
+In-Reply-To: <20230213213537.6121-2-mario.limonciello@amd.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 14 Feb 2023 15:41:38 +0100
-Message-ID: <CAJZ5v0gVHOw-2oyW-x53Ud6vwNKNQyepBptGunb8SXJL1U_ziw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] ACPI: processor: perflib: Use the "no limit"
- frequency QoS
-To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Pratyush Yadav <ptyadav@amazon.de>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
+Date:   Tue, 14 Feb 2023 15:48:44 +0100
+Message-ID: <CAJZ5v0j0GYyrF33=7ginfhYMrNyD=EDUK0RuHHYkKJ2VZAQnsQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] ACPI: x86: Add more systems to quirk list for forcing StorageD3Enable
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org, dbilios@stdio.gr,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -64,45 +55,53 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 14, 2023 at 3:25 PM srinivas pandruvada
-<srinivas.pandruvada@linux.intel.com> wrote:
+On Mon, Feb 13, 2023 at 10:35 PM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
 >
-> On Tue, 2023-02-14 at 14:57 +0100, Rafael J. Wysocki wrote:
-> > On Tue, Feb 14, 2023 at 2:40 PM srinivas pandruvada
-> > <srinivas.pandruvada@linux.intel.com> wrote:
-> > >
-> > > On Mon, 2023-01-30 at 15:58 +0100, Rafael J. Wysocki wrote:
-> > > > On Mon, Jan 30, 2023 at 3:18 PM Pratyush Yadav
-> > > > <ptyadav@amazon.de>
-> > > > wrote:
-> > > > >
-> > > > >
-> > >
-> > > [...]
-> > >
-> > > > > [0]
-> > > > > https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/
-> > > >
-> > > > It's already in the mainline:
-> > > >
-> > > > e8a0e30b742f cpufreq: intel_pstate: Drop ACPI _PSS states table
-> > > > patching
-> > > > 99387b016022 ACPI: processor: perflib: Avoid updating frequency
-> > > > QoS
-> > > > unnecessarily
-> > > > c02d5feb6e2f ACPI: processor: perflib: Use the "no limit"
-> > > > frequency
-> > > > QoS
-> > >
-> > > I am checking 6.2-rc8.
-> > > I don't see these commits.
-> >
-> > You are right, they are in linux-next only, sorry for the confusion.
-> >
-> > I'm going to push them for 6.3-rc1 this week, though.
-> I don't think they are marked for stable. Can we add that?
+> commit 018d6711c26e4 ("ACPI: x86: Add a quirk for Dell Inspiron 14 2-in-1
+> for StorageD3Enable") introduced a quirk to allow a system with ambiguous
+> use of _ADR 0 to force StorageD3Enable.
+>
+> It is reported that Vostro 5626 suffers same symptoms. Add this other
+> system to the list as well.
+>
+> Suggested-by: dbilios@stdio.gr
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217003
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 
-I'd rather not rebase them for that.
+Can you please combine these two patches into one?
 
-It is still possible to send an inclusion request to -stable when then
-get into the mainline.
+Or at least make the subjects differ?
+
+> ---
+>  drivers/acpi/x86/utils.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+> index 3409ce6513afa..b1d24718f73d7 100644
+> --- a/drivers/acpi/x86/utils.c
+> +++ b/drivers/acpi/x86/utils.c
+> @@ -214,6 +214,7 @@ static const struct dmi_system_id force_storage_d3_dmi[] = {
+>                  * but .NVME is needed to get StorageD3Enable node
+>                  * https://bugzilla.kernel.org/show_bug.cgi?id=216440
+>                  * https://bugzilla.kernel.org/show_bug.cgi?id=216773
+> +                * https://bugzilla.kernel.org/show_bug.cgi?id=217003
+>                  */
+>                 .matches = {
+>                         DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> @@ -232,6 +233,12 @@ static const struct dmi_system_id force_storage_d3_dmi[] = {
+>                         DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 16 5625"),
+>                 }
+>         },
+> +       {
+> +               .matches = {
+> +                       DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> +                       DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 5625"),
+> +               }
+> +       },
+>         {}
+>  };
+>
+> --
+> 2.34.1
+>
