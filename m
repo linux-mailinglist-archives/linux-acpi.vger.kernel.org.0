@@ -2,51 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A12F696768
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Feb 2023 15:54:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CAF9696778
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Feb 2023 15:59:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229564AbjBNOyE convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 14 Feb 2023 09:54:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50332 "EHLO
+        id S231143AbjBNO7D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Feb 2023 09:59:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229496AbjBNOyD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Feb 2023 09:54:03 -0500
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCD4F1724;
-        Tue, 14 Feb 2023 06:54:02 -0800 (PST)
-Received: by mail-ed1-f46.google.com with SMTP id dz21so5730081edb.13;
-        Tue, 14 Feb 2023 06:54:02 -0800 (PST)
+        with ESMTP id S231910AbjBNO7C (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Feb 2023 09:59:02 -0500
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0E9925964;
+        Tue, 14 Feb 2023 06:59:01 -0800 (PST)
+Received: by mail-ed1-f41.google.com with SMTP id c1so13995574edt.4;
+        Tue, 14 Feb 2023 06:59:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+fquT604O2VKG0dy0dPb5euckKeSoIjzvnpt9mbYzgo=;
-        b=Fk4Ikyo24Menx9ZptnnqTHaO4rQ3XyunoDPPndBpMGR3oFgbjif4u8rr/9o05diuhP
-         zWxGyIoj7COhC2zV215sJVcPRvRppIZSg+G1q4wEsPux9VCdfh1VDgfqlrqYrtMLCcIX
-         VHep2tCUlAHv9kPqlYogI4c+++tYnl14rPlItrCpgUd+HZvdNjBIp3ECeiiKRkmFl2Lt
-         Zy7FuSRjPGih7GZ5lz+p/E/KqTN2CnwoJnfMUQ8UoG+hd/ncmhhOrjxaU6WsDtkRXT/a
-         7D01qybEpi80bRM5nkuzXYrBeOkttL8z75kZESLcEqpnf86e6frHov5D5SKdQJMcbVrh
-         6PwQ==
-X-Gm-Message-State: AO0yUKWKkrnuOVp2OlndRxA7GJP0XXYWDoaw01nrx5Nr05/mAO8vgFRE
-        e74gItK9UC/BD84uK0lhi3ynYKD9OdxXOQ3wN+M=
-X-Google-Smtp-Source: AK7set8buxZQw0XjmI6afN7MQchlfI8N6hS4XFRBsgIr/41nEv3IJGONREA4D7ADzqoX4aYAor1i6DSlYBzhpFR/+o8=
-X-Received: by 2002:a50:bace:0:b0:4ac:ce81:9c1d with SMTP id
- x72-20020a50bace000000b004acce819c1dmr1108530ede.0.1676386441268; Tue, 14 Feb
- 2023 06:54:01 -0800 (PST)
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=y5ERRhs7nNybC9hIQk0gh7wHgZ+DH1wdkeAx1FnJd7A=;
+        b=nJNTU/UOumuKdQyV859J9L4RcoJ3mpUrBs4TrSa1haaYXwAf9JAoozxtQsjR/NdbGu
+         Opn40i2KhqOY3nV1hYdKs8IwDObfNwv2deNG0mAAc2heiuvv+pYhmQIEdOR/JPTL7Vpk
+         K53TVmmrUTCSrtkNB8DUgypaT4EcWVC62pEol66JKeLndWrBSIdtgG19SdegIsl35ziX
+         qBhYhFR0sSL9Qk04+2cSQpQeTqakQ9+DqbCOL8wxamTWFva/8RN384ey2lotNUooOkdc
+         ADIlmxCR829YYJjrE830D5ZPrCL+S4OSlYkgfp4eLMVM29dQ8v/xi2LqDcHfOYgByWj9
+         0wIg==
+X-Gm-Message-State: AO0yUKXZUWrwGoNt/VkouFgQx9xH15APLbjEYbhHJBeR1/Oy3mSfskVk
+        jS7B80mfc7Lp3+hVR60dQ/bbEtmnWVakSakDnnw=
+X-Google-Smtp-Source: AK7set+JEd2BvRluIpzqCuC0r+CVE5moiUumCYJVW6rR1dq2wAAn3fanAu6QWrYiisDPx6VNe1vhUVWz2vehonmvr4E=
+X-Received: by 2002:a50:c01c:0:b0:4ac:c160:3010 with SMTP id
+ r28-20020a50c01c000000b004acc1603010mr1349587edb.3.1676386740580; Tue, 14 Feb
+ 2023 06:59:00 -0800 (PST)
 MIME-Version: 1.0
-References: <20230214-kobj_type-acpi-v1-1-6dbe3840208b@weissschuh.net>
-In-Reply-To: <20230214-kobj_type-acpi-v1-1-6dbe3840208b@weissschuh.net>
+References: <20230213213537.6121-1-mario.limonciello@amd.com>
+ <20230213213537.6121-2-mario.limonciello@amd.com> <CAJZ5v0j0GYyrF33=7ginfhYMrNyD=EDUK0RuHHYkKJ2VZAQnsQ@mail.gmail.com>
+ <MN0PR12MB61018CBDE5DBBAB7C65F9F4AE2A29@MN0PR12MB6101.namprd12.prod.outlook.com>
+In-Reply-To: <MN0PR12MB61018CBDE5DBBAB7C65F9F4AE2A29@MN0PR12MB6101.namprd12.prod.outlook.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 14 Feb 2023 15:53:50 +0100
-Message-ID: <CAJZ5v0g8UABDmB_ywGGbfMHcW_X7w7wnMi=42=yfPBh71z0J2Q@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: make kobj_type structures constant
-To:     =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Date:   Tue, 14 Feb 2023 15:58:49 +0100
+Message-ID: <CAJZ5v0hD2evYkZFmxv+pwF34UUr4VV1HGBvcjbtW_RMD6a6vpg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] ACPI: x86: Add more systems to quirk list for forcing StorageD3Enable
+To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "dbilios@stdio.gr" <dbilios@stdio.gr>, Len Brown <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
@@ -57,61 +59,55 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 14, 2023 at 4:23 AM Thomas Weißschuh <linux@weissschuh.net> wrote:
+On Tue, Feb 14, 2023 at 3:52 PM Limonciello, Mario
+<Mario.Limonciello@amd.com> wrote:
 >
-> Since commit ee6d3dd4ed48 ("driver core: make kobj_type constant.")
-> the driver core allows the usage of const struct kobj_type.
+> [AMD Official Use Only - General]
 >
-> Take advantage of this to constify the structure definitions to prevent
-> modification at runtime.
 >
-> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-> ---
->  drivers/acpi/cppc_acpi.c    | 2 +-
->  drivers/acpi/device_sysfs.c | 2 +-
->  drivers/acpi/sysfs.c        | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index 0f17b1c32718..a8f58b32d66f 100644
-> --- a/drivers/acpi/cppc_acpi.c
-> +++ b/drivers/acpi/cppc_acpi.c
-> @@ -193,7 +193,7 @@ static struct attribute *cppc_attrs[] = {
->  };
->  ATTRIBUTE_GROUPS(cppc);
+> > -----Original Message-----
+> > From: Rafael J. Wysocki <rafael@kernel.org>
+> > Sent: Tuesday, February 14, 2023 08:49
+> > To: Limonciello, Mario <Mario.Limonciello@amd.com>
+> > Cc: rafael@kernel.org; linux-kernel@vger.kernel.org; dbilios@stdio.gr; Len
+> > Brown <lenb@kernel.org>; linux-acpi@vger.kernel.org
+> > Subject: Re: [PATCH 2/2] ACPI: x86: Add more systems to quirk list for forcing
+> > StorageD3Enable
+> >
+> > On Mon, Feb 13, 2023 at 10:35 PM Mario Limonciello
+> > <mario.limonciello@amd.com> wrote:
+> > >
+> > > commit 018d6711c26e4 ("ACPI: x86: Add a quirk for Dell Inspiron 14 2-in-1
+> > > for StorageD3Enable") introduced a quirk to allow a system with ambiguous
+> > > use of _ADR 0 to force StorageD3Enable.
+> > >
+> > > It is reported that Vostro 5626 suffers same symptoms. Add this other
+> > > system to the list as well.
+> > >
+> > > Suggested-by: dbilios@stdio.gr
+> > > Link: https://bugzilla.kernel.org/show_bug.cgi?id=217003
+> > > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> >
+> > Can you please combine these two patches into one?
+> >
+> > Or at least make the subjects differ?
 >
-> -static struct kobj_type cppc_ktype = {
-> +static const struct kobj_type cppc_ktype = {
->         .sysfs_ops = &kobj_sysfs_ops,
->         .default_groups = cppc_groups,
->  };
-> diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
-> index 120873dad2cc..c3aa15571f16 100644
-> --- a/drivers/acpi/device_sysfs.c
-> +++ b/drivers/acpi/device_sysfs.c
-> @@ -78,7 +78,7 @@ static void acpi_data_node_release(struct kobject *kobj)
->         complete(&dn->kobj_done);
->  }
+> I left them split so that we could revert one if the BIOS is fixed on one
+> in the future.  Happy to respin with separate subjects.
 >
-> -static struct kobj_type acpi_data_node_ktype = {
-> +static const struct kobj_type acpi_data_node_ktype = {
->         .sysfs_ops = &acpi_data_node_sysfs_ops,
->         .default_groups = acpi_data_node_default_groups,
->         .release = acpi_data_node_release,
-> diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-> index 7db3b530279b..7f4ff56c9d42 100644
-> --- a/drivers/acpi/sysfs.c
-> +++ b/drivers/acpi/sysfs.c
-> @@ -953,7 +953,7 @@ static struct attribute *hotplug_profile_attrs[] = {
->  };
->  ATTRIBUTE_GROUPS(hotplug_profile);
+> But before I respin; something else I want to offer as an idea to avoid this list
+> growing.
 >
-> -static struct kobj_type acpi_hotplug_profile_ktype = {
-> +static const struct kobj_type acpi_hotplug_profile_ktype = {
->         .sysfs_ops = &kobj_sysfs_ops,
->         .default_groups = hotplug_profile_groups,
->  };
->
-> ---
+> They all use the same CPU.  So we could just add the CPU model that all of these
+> use to the force StorageD3Enable list and take out the whole (growing) list.
 
-Applied as 6.3 material, thanks!
+Well, I'd rather do this, but in the next cycle.
+
+> Which way would you prefer?
+
+For this merge window, please respin the current patch series and make
+the changes as per the above early after 6.3-rc1.
+
+It may be still necessary to pull them into 6.3-rc later, if more
+instances are reported or discovered, but we'll see.
