@@ -2,48 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B7A269674E
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Feb 2023 15:49:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C5E0769675B
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Feb 2023 15:52:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232898AbjBNOs7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Feb 2023 09:48:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45222 "EHLO
+        id S230410AbjBNOwC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Feb 2023 09:52:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232840AbjBNOs6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Feb 2023 09:48:58 -0500
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F36E72A0;
-        Tue, 14 Feb 2023 06:48:57 -0800 (PST)
-Received: by mail-ej1-f43.google.com with SMTP id jg8so40721396ejc.6;
-        Tue, 14 Feb 2023 06:48:57 -0800 (PST)
+        with ESMTP id S233479AbjBNOwB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Feb 2023 09:52:01 -0500
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16B7C2B2B2;
+        Tue, 14 Feb 2023 06:52:00 -0800 (PST)
+Received: by mail-ed1-f42.google.com with SMTP id dz21so5720335edb.13;
+        Tue, 14 Feb 2023 06:52:00 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=dO9zQQMF7TMrx+/BjRM6rVVVA5NoHbBHzsXtZkm9yy4=;
-        b=OSGlNb+h0+nVYhvdM0Vu1lMHlReRtnSZwGibjvpDQJYa6mNn0slByHllx1RwhyeQFU
-         iGXPuBgFwbA7qj+GUHhTyNkedbrntfJRPrXpWn+aBJownzqHJfc6YKYtWtKfsQD7d5tm
-         ITZkTWUegoNpd91p8tQEWnajAc8YIE3jxf3OMm9g8nixjISYON44s8UIs3gR+OtXuTnX
-         gs5h70zGe6GrHE8UW/XQ2tJKBE5UXcRSj0axMtlQHxK6k+y5lpxoIvt7k64xiIR7J+8f
-         A/GQGJ1Xt+ySRQNFHGlpZiz9ILIWTnqfxNX6bBRewYrO7i31UYvc7qhHPwBYp/QoIpXq
-         FIhQ==
-X-Gm-Message-State: AO0yUKVaqx1Y520UVcHpoc1yqLNXUGYJW12pc1PxD9NSGB536gICmycz
-        QYwXqcF7Dec7MgTJhguU+yGBgBCGfe2A3rF26xE=
-X-Google-Smtp-Source: AK7set92OL3G8YnrRMKsCXin+A4QvxdoGU7T0cUEjR5WoCpPkZ1BCDK1WZNm/rg+4Uf/k3SHFHNQFN205jo6C8vMSnw=
-X-Received: by 2002:a17:907:10cf:b0:888:6294:a1fd with SMTP id
- rv15-20020a17090710cf00b008886294a1fdmr1430066ejb.2.1676386135992; Tue, 14
- Feb 2023 06:48:55 -0800 (PST)
+        bh=PRuG/W8XFFocL2OnJrbaTWAiF5++M94qwm+FKUahD+s=;
+        b=ugo4WguEwCQD9aEVhr4zBOnUdbt/i6dZ4lksq2/AE4NSpTs+XwBVvt5f4eSMfFN5Vz
+         9n9pFooUt09zEc8OJgIObX/bEPJWteWoy8pOVtAKDUNRpO6IqZXurqttC/4lX6VvPebM
+         u1LpDp/Apcxx+fIqj4wDTOhKScnp3NIyblaznZUKEPGstfJQ0EMUwFik6Fubg1E4KeCz
+         Fmbdvw8RR3IJz8zfkDehCHBK3nw2Odh/DZfj2aFkvalWLL8qwK3U9vVeLPBHlAScH3YE
+         Iw+4bY8eb1X9ZFRi1JUavp55vfJUPUYS9FPY3/6cmYMXQ5rbyV3sHSv5Up9yjByeTXpu
+         r/Qg==
+X-Gm-Message-State: AO0yUKXK3+1EigGVulG/K3z4JVNLP/p+EtAAow4Szu3IhrzJpGSXzX8o
+        SlrU7bS1W22lZEHpYzIYoHH4l32JHUxGVlJYo7g=
+X-Google-Smtp-Source: AK7set/WkTy4l+i7Q7geKHty3TCpys2JnFbR5olx6Gb393rDwTz9QEYN640TIaaUqdiD2Pr4Q25llcbgrxmrS16JmlA=
+X-Received: by 2002:a50:c01c:0:b0:4ac:c160:3010 with SMTP id
+ r28-20020a50c01c000000b004acc1603010mr1337008edb.3.1676386318689; Tue, 14 Feb
+ 2023 06:51:58 -0800 (PST)
 MIME-Version: 1.0
-References: <20230213213537.6121-1-mario.limonciello@amd.com> <20230213213537.6121-2-mario.limonciello@amd.com>
-In-Reply-To: <20230213213537.6121-2-mario.limonciello@amd.com>
+References: <20230213204005.55483-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20230213204005.55483-1-andriy.shevchenko@linux.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 14 Feb 2023 15:48:44 +0100
-Message-ID: <CAJZ5v0j0GYyrF33=7ginfhYMrNyD=EDUK0RuHHYkKJ2VZAQnsQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ACPI: x86: Add more systems to quirk list for forcing StorageD3Enable
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org, dbilios@stdio.gr,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Date:   Tue, 14 Feb 2023 15:51:47 +0100
+Message-ID: <CAJZ5v0gTy2UVcoByRdk9LOxyYhAHncHxbeiwHnxGJTLE1Hh=OA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] Documentation: firmware-guide: gpio-properties:
+ Clarify Explicit and Implicit
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -55,53 +59,66 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 13, 2023 at 10:35 PM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
+On Mon, Feb 13, 2023 at 9:39 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> commit 018d6711c26e4 ("ACPI: x86: Add a quirk for Dell Inspiron 14 2-in-1
-> for StorageD3Enable") introduced a quirk to allow a system with ambiguous
-> use of _ADR 0 to force StorageD3Enable.
+> Clarify the Explicit and Implicit meanings in the table of Pull Bias.
 >
-> It is reported that Vostro 5626 suffers same symptoms. Add this other
-> system to the list as well.
+> While at it, distinguish pull bias keywords used in ACPI by using bold
+> font in the table of the respective terms.
 >
-> Suggested-by: dbilios@stdio.gr
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217003
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-
-Can you please combine these two patches into one?
-
-Or at least make the subjects differ?
-
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > ---
->  drivers/acpi/x86/utils.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+> v2: fixed formatting issues
+>  .../firmware-guide/acpi/gpio-properties.rst   | 35 +++++++++++++------
+>  1 file changed, 24 insertions(+), 11 deletions(-)
 >
-> diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-> index 3409ce6513afa..b1d24718f73d7 100644
-> --- a/drivers/acpi/x86/utils.c
-> +++ b/drivers/acpi/x86/utils.c
-> @@ -214,6 +214,7 @@ static const struct dmi_system_id force_storage_d3_dmi[] = {
->                  * but .NVME is needed to get StorageD3Enable node
->                  * https://bugzilla.kernel.org/show_bug.cgi?id=216440
->                  * https://bugzilla.kernel.org/show_bug.cgi?id=216773
-> +                * https://bugzilla.kernel.org/show_bug.cgi?id=217003
->                  */
->                 .matches = {
->                         DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-> @@ -232,6 +233,12 @@ static const struct dmi_system_id force_storage_d3_dmi[] = {
->                         DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 16 5625"),
->                 }
->         },
-> +       {
-> +               .matches = {
-> +                       DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-> +                       DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 5625"),
-> +               }
-> +       },
->         {}
->  };
+> diff --git a/Documentation/firmware-guide/acpi/gpio-properties.rst b/Documentation/firmware-guide/acpi/gpio-properties.rst
+> index eaec732cc77c..db0c0b1f3700 100644
+> --- a/Documentation/firmware-guide/acpi/gpio-properties.rst
+> +++ b/Documentation/firmware-guide/acpi/gpio-properties.rst
+> @@ -67,17 +67,30 @@ state of the output pin which driver should use during its initialization.
+>  Linux tries to use common sense here and derives the state from the bias
+>  and polarity settings. The table below shows the expectations:
 >
+> -=========  =============  ==============
+> -Pull Bias     Polarity     Requested...
+> -=========  =============  ==============
+> -Implicit     x            AS IS (assumed firmware configured for us)
+> -Explicit     x (no _DSD)  as Pull Bias (Up == High, Down == Low),
+> -                          assuming non-active (Polarity = !Pull Bias)
+> -Down         Low          as low, assuming active
+> -Down         High         as low, assuming non-active
+> -Up           Low          as high, assuming non-active
+> -Up           High         as high, assuming active
+> -=========  =============  ==============
+> ++-------------+-------------+-----------------------------------------------+
+> +| Pull Bias   | Polarity    | Requested...                                  |
+> ++=============+=============+===============================================+
+> +| Implicit                                                                  |
+> ++-------------+-------------+-----------------------------------------------+
+> +| **Default** | x           | AS IS (assumed firmware configured it for us) |
+> ++-------------+-------------+-----------------------------------------------+
+> +| Explicit                                                                  |
+> ++-------------+-------------+-----------------------------------------------+
+> +| **None**    | x           | AS IS (assumed firmware configured it for us) |
+> +|             |             | with no Pull Bias                             |
+> ++-------------+-------------+-----------------------------------------------+
+> +| **Up**      | x (no _DSD) |                                               |
+> +|             +-------------+ as high, assuming non-active                  |
+> +|             | Low         |                                               |
+> +|             +-------------+-----------------------------------------------+
+> +|             | High        | as high, assuming active                      |
+> ++-------------+-------------+-----------------------------------------------+
+> +| **Down**    | x (no _DSD) |                                               |
+> +|             +-------------+ as low, assuming non-active                   |
+> +|             | High        |                                               |
+> +|             +-------------+-----------------------------------------------+
+> +|             | Low         | as low, assuming active                       |
+> ++-------------+-------------+-----------------------------------------------+
+>
+>  That said, for our above example the both GPIOs, since the bias setting
+>  is explicit and _DSD is present, will be treated as active with a high
 > --
-> 2.34.1
->
+
+Applied as 6.3 material, thanks!
