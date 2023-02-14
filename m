@@ -2,164 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D8AC6955E7
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Feb 2023 02:24:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61508695760
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Feb 2023 04:23:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230084AbjBNBYV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Feb 2023 20:24:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40160 "EHLO
+        id S229818AbjBNDX5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Feb 2023 22:23:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjBNBYV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 20:24:21 -0500
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84C1C13525;
-        Mon, 13 Feb 2023 17:24:19 -0800 (PST)
-Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.53])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4PG3MY6RmwzRrr5;
-        Tue, 14 Feb 2023 09:21:45 +0800 (CST)
-Received: from [10.67.103.231] (10.67.103.231) by
- kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Tue, 14 Feb 2023 09:24:16 +0800
-Message-ID: <7876ff17-3e16-600e-8ed7-3fcab173618c@huawei.com>
-Date:   Tue, 14 Feb 2023 09:24:16 +0800
+        with ESMTP id S229581AbjBNDX4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 22:23:56 -0500
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1AAB15567;
+        Mon, 13 Feb 2023 19:23:55 -0800 (PST)
+From:   =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=weissschuh.net;
+        s=mail; t=1676345033;
+        bh=TTSAmGKfo5YnaIP4eesYGxg0Xl6iUUUV5EHJZXyVtLA=;
+        h=From:Date:Subject:To:Cc:From;
+        b=h8oQVBcO1hsftab0fR5er/unuOMTuZfxb7MjQ/02yc+IoOLEKZLP189gvvmAOcDOn
+         kdlergwa8ON4hDKA0dlgZtxBSgt24vAPSZcQfFGmOYJm1yZA4VOXi1R60Ylj/ratGU
+         5OtRX4L/RnXtaRXR9yOS7PW2NP19Eck92RuO0jeU=
+Date:   Tue, 14 Feb 2023 03:23:52 +0000
+Subject: [PATCH] ACPI: make kobj_type structures constant
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [RFC-V3 1/2] mailbox: pcc: Add processing platform notification
- for slave subspaces
-To:     Robbie King <robbiek@xsightlabs.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <rafael@kernel.org>, <rafael.j.wysocki@intel.com>,
-        <wanghuiqiang@huawei.com>, <zhangzekun11@huawei.com>,
-        <wangxiongfeng2@huawei.com>, <tanxiaofei@huawei.com>,
-        <guohanjun@huawei.com>, <xiexiuqi@huawei.com>,
-        <wangkefeng.wang@huawei.com>, <huangdaode@huawei.com>
-References: <20221016034043.52227-1-lihuisong@huawei.com>
- <20221203095150.45422-1-lihuisong@huawei.com>
- <20221203095150.45422-2-lihuisong@huawei.com>
- <20230206153940.gcddy3b3znk72yqd@bogus>
- <926bf147-5e93-0104-1bf4-171efcd15c5c@huawei.com>
- <e96474e8-6427-9a80-0e97-de97684b8e40@xsightlabs.com>
-From:   "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <e96474e8-6427-9a80-0e97-de97684b8e40@xsightlabs.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.103.231]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemm600004.china.huawei.com (7.193.23.242)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Message-Id: <20230214-kobj_type-acpi-v1-1-6dbe3840208b@weissschuh.net>
+X-B4-Tracking: v=1; b=H4sIAMf+6mMC/x2N0QrCMAwAf2Xk2UDbDZT9ioyRZtFljq60KsrYv
+ xt8vIPjdqhSVCr0zQ5F3lp1Swb+1ADPlO6COhlDcKF1wXf42OIyPr9ZkDgrtjSJ67xczsxgUaQ
+ qGAslni1Lr3U1mYvc9PO/XIfj+AF/WYMhdQAAAA==
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.12.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1676345031; l=2075;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=TTSAmGKfo5YnaIP4eesYGxg0Xl6iUUUV5EHJZXyVtLA=;
+ b=f8o9s+RsVmovqxd5Tt0zc7aXzGlgXE6+5PnTTW1Zik+cdBVehPkMR6ptYyvNSFftJrAvp7qc8
+ vWPPldJtKYkBNkTY/Ar0SAq1/JJ3ZkDll68Sdh3nfQI2JLl82jhKVto
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Since commit ee6d3dd4ed48 ("driver core: make kobj_type constant.")
+the driver core allows the usage of const struct kobj_type.
 
-在 2023/2/14 5:18, Robbie King 写道:
-> On 2/6/2023 9:27 PM, lihuisong (C) wrote:
->> 在 2023/2/6 23:39, Sudeep Holla 写道:
->>> Hi Huisong,
->>>
->>> Apologies for such a long delay.
->>>
->>> Also I would like to hear from Robbie King who I know is playing around
->>> with this these days 😄. At minimum if this logic works for him as well.
->> @Robbie King,
->> Do you use this patchset to test your requirements?
->> Any other problems? Can you tell us your result?
->>
-> Sorry for the delay.  I have verified the two patches continue to pass the
-> limited stress testing I have done with earlier change sets.
-Thanks Robbie King.
-I will send a formal patch as soon as possible.
->
->>> On Sat, Dec 03, 2022 at 05:51:49PM +0800, Huisong Li wrote:
->>>> Currently, PCC driver doesn't support the processing of platform
->>>> notification for slave PCC subspaces because of the incomplete
->>>> communication flow.
->>>>
->>>> According to ACPI specification, if platform sends a notification
->>>> to OSPM, it must clear the command complete bit and trigger platform
->>>> interrupt. OSPM needs to check whether the command complete bit is
->>>> cleared, clear platform interrupt, process command, and then set the
->>>> command complete and ring doorbell to Platform. But the current judgment
->>>> on the command complete is not applicable to type4 in pcc_mbox_irq().
->>>>
->>>> This patch introduces a communication flow direction field to detect
->>>> whether the interrupt belongs to the master or slave subspace channel.
->>>> And PCC driver needs to add the phase of setting the command complete
->>>> and ring doorbell in pcc_mbox_irq() to complete type4 communication
->>>> flow after processing command from Platform.
->>>>
->>>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
->>>> ---
->>>>    drivers/mailbox/pcc.c | 77 +++++++++++++++++++++++++++++++++++++++----
->>>>    1 file changed, 71 insertions(+), 6 deletions(-)
->>>>
->>>> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
->>>> index 105d46c9801b..ad6d0b7d50fc 100644
->>>> --- a/drivers/mailbox/pcc.c
->>>> +++ b/drivers/mailbox/pcc.c
->>>> @@ -80,6 +80,13 @@ struct pcc_chan_reg {
->>>>        u64 status_mask;
->>>>    };
->>>>    +enum pcc_chan_comm_flow_dir_type {
->>>> +    PCC_ONLY_OSPM_TO_PLATFORM,
->>>> +    PCC_ONLY_PLATFORM_TO_OSPM,
->>>> +    PCC_BIDIRECTIONAL,
->>>> +    PCC_DIR_UNKNOWN,
->>>> +};
->>>> +
->>>>    /**
->>>>     * struct pcc_chan_info - PCC channel specific information
->>>>     *
->>>> @@ -91,6 +98,7 @@ struct pcc_chan_reg {
->>>>     * @cmd_update: PCC register bundle for the command complete update register
->>>>     * @error: PCC register bundle for the error status register
->>>>     * @plat_irq: platform interrupt
->>>> + * @comm_flow_dir: direction of communication flow supported by the channel
->>>>     */
->>>>    struct pcc_chan_info {
->>>>        struct pcc_mbox_chan chan;
->>>> @@ -100,12 +108,15 @@ struct pcc_chan_info {
->>>>        struct pcc_chan_reg cmd_update;
->>>>        struct pcc_chan_reg error;
->>>>        int plat_irq;
->>>> +    u8 comm_flow_dir;
->>> I would rather just save the 'type' as read from the PCCT. We don't know
->>> what future types might be and just identifying them by the direction of
->>> flow of the data, it restricts the usage of this.
->> Ack.
->>>>    };
->>>>      #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
->>>>    static struct pcc_chan_info *chan_info;
->>>>    static int pcc_chan_count;
->>>>    +static int pcc_send_data(struct mbox_chan *chan, void *data);
->>>> +
->>>>    /*
->>>>     * PCC can be used with perf critical drivers such as CPPC
->>>>     * So it makes sense to locally cache the virtual address and
->>>> @@ -221,6 +232,43 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
->>>>        return acpi_register_gsi(NULL, interrupt, trigger, polarity);
->>>>    }
->>>>    +static bool pcc_chan_need_rsp_irq(struct pcc_chan_info *pchan,
->>>> +                  u64 cmd_complete_reg_val)
->>> Probably rename this as pcc_chan_command_complete or something similar.
->> Ack
->>>> +{
->>>> +    bool need_rsp;
->>>> +
->>>> +    if (!pchan->cmd_complete.gas)
->>>> +        return true;
->>>> +
->>>> +    cmd_complete_reg_val &= pchan->cmd_complete.status_mask;
->>>> +
->>>> +    switch (pchan->comm_flow_dir) {
->>> Use the channel type instead here.
->> Ack
-> .
+Take advantage of this to constify the structure definitions to prevent
+modification at runtime.
+
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+---
+ drivers/acpi/cppc_acpi.c    | 2 +-
+ drivers/acpi/device_sysfs.c | 2 +-
+ drivers/acpi/sysfs.c        | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 0f17b1c32718..a8f58b32d66f 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -193,7 +193,7 @@ static struct attribute *cppc_attrs[] = {
+ };
+ ATTRIBUTE_GROUPS(cppc);
+ 
+-static struct kobj_type cppc_ktype = {
++static const struct kobj_type cppc_ktype = {
+ 	.sysfs_ops = &kobj_sysfs_ops,
+ 	.default_groups = cppc_groups,
+ };
+diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
+index 120873dad2cc..c3aa15571f16 100644
+--- a/drivers/acpi/device_sysfs.c
++++ b/drivers/acpi/device_sysfs.c
+@@ -78,7 +78,7 @@ static void acpi_data_node_release(struct kobject *kobj)
+ 	complete(&dn->kobj_done);
+ }
+ 
+-static struct kobj_type acpi_data_node_ktype = {
++static const struct kobj_type acpi_data_node_ktype = {
+ 	.sysfs_ops = &acpi_data_node_sysfs_ops,
+ 	.default_groups = acpi_data_node_default_groups,
+ 	.release = acpi_data_node_release,
+diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
+index 7db3b530279b..7f4ff56c9d42 100644
+--- a/drivers/acpi/sysfs.c
++++ b/drivers/acpi/sysfs.c
+@@ -953,7 +953,7 @@ static struct attribute *hotplug_profile_attrs[] = {
+ };
+ ATTRIBUTE_GROUPS(hotplug_profile);
+ 
+-static struct kobj_type acpi_hotplug_profile_ktype = {
++static const struct kobj_type acpi_hotplug_profile_ktype = {
+ 	.sysfs_ops = &kobj_sysfs_ops,
+ 	.default_groups = hotplug_profile_groups,
+ };
+
+---
+base-commit: f6feea56f66d34259c4222fa02e8171c4f2673d1
+change-id: 20230214-kobj_type-acpi-3ade041e87cc
+
+Best regards,
+-- 
+Thomas Weißschuh <linux@weissschuh.net>
+
