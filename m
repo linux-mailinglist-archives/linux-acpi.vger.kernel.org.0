@@ -2,108 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F27A76964DB
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Feb 2023 14:41:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7949A696583
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Feb 2023 14:57:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231523AbjBNNlB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Feb 2023 08:41:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44144 "EHLO
+        id S232982AbjBNN54 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Feb 2023 08:57:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232795AbjBNNks (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Feb 2023 08:40:48 -0500
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 281B425B8C;
-        Tue, 14 Feb 2023 05:40:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676382044; x=1707918044;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=fox8qfqjUxnSFtXHl7w9GmVt3WYi/aN+a+4IC9ygdKw=;
-  b=NCEBr+3WKSS4hI+tRk1fpiq2c/TTaLyE5i/S5GRFOCLovn7uOCheuIf2
-   sWppUgxs2doA4zWRw0/ib/BAQhSOigTShKVcziRmMnlqNhgzwpD0LPL2x
-   m6feN2PWHZoI7v+IDccT1emF/XpCNGXXwcgxvbBKq2Stoi3VgyHzWpp6L
-   A+MrlOs487LvG3p1FgcKC5GIZ4qg3rnFFpHR8gbAfXYcAByST6Yz2T87S
-   Jhf1aNN2z5+0HzuyFOOAoiuLa2/tCo7g7VtWcd5rY0emxkB44bZkIiVob
-   ksQfRWjN0k00DIXwo+rT2hoV+2j+PWkWzf2u9NX9lzo0EfRbuHeT0RYvY
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="314803099"
-X-IronPort-AV: E=Sophos;i="5.97,296,1669104000"; 
-   d="scan'208";a="314803099"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2023 05:40:40 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="671222003"
-X-IronPort-AV: E=Sophos;i="5.97,296,1669104000"; 
-   d="scan'208";a="671222003"
-Received: from bogasiva-mobl.amr.corp.intel.com ([10.215.122.78])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2023 05:40:35 -0800
-Message-ID: <0f74e16d2a1c5005c342d800445c046b8fe248cb.camel@linux.intel.com>
+        with ESMTP id S233027AbjBNN5y (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Feb 2023 08:57:54 -0500
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA13ABBB7;
+        Tue, 14 Feb 2023 05:57:32 -0800 (PST)
+Received: by mail-ej1-f45.google.com with SMTP id sa10so40233600ejc.9;
+        Tue, 14 Feb 2023 05:57:32 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Nmznzbw1bOIjwDiJ10Y1TrCJXhhnPxVRmXhihKNuSew=;
+        b=JYKP8322sUNLaE9mx2v1oz44Q+ZPldJ+xG/rzylUOR4zjK43BSc9w3ecOViYdzCMpQ
+         tR6kKj4o+F+Aa9QMBXorEqvcKcTxg9qVcqsDHLgY3cz/bBY92W46JWwMWbcVA0Hm7GYP
+         WqGtdcNxq3LbyOShrvK54G9OEGjwD4jYcj3ReUW8F8ZVvnzZWc1JiPgAq3b+p/qeqmQO
+         vrH5swaFugCTTXCNZMIPbal0nLgPGRR5G95BkpmdtN6MjKLf7jqBMvBzL5IkErHqcAJU
+         S6P/wQeF04RdnwmkGGpQ4RKb2P9YVUE3mWkQfdImmVEfQuj9RLAy1P/jtbF/Ht3LGj6+
+         VIFQ==
+X-Gm-Message-State: AO0yUKVozrWqNlrwjSzC1JADsZiAN0c31FgOtC71xxbsxu5Ea6EvGDed
+        FAR4BOQ4Uq618h4mc7Ye+mQk0hAkKJ3kg+5Gapk=
+X-Google-Smtp-Source: AK7set+uH6pcyxWm+CEeJiXxPUp7JSWQ/TgSg6q3J/PDPXX1EWcHvLVs/oUrQCd74L4gVYpt65P1stogFSdSmylmYaM=
+X-Received: by 2002:a17:906:e28a:b0:8b1:3298:c587 with SMTP id
+ gg10-20020a170906e28a00b008b13298c587mr770691ejb.2.1676383033916; Tue, 14 Feb
+ 2023 05:57:13 -0800 (PST)
+MIME-Version: 1.0
+References: <12138067.O9o76ZdvQC@kreacher> <12124970.O9o76ZdvQC@kreacher>
+ <mafs0sfgybc3q.fsf_-_@amazon.de> <CAJZ5v0hAjKvinPqX2VuCv1jVu50jrnDpECaO=sA2CQZFHZpJdA@mail.gmail.com>
+ <mafs0zga0ds30.fsf_-_@amazon.de> <CAJZ5v0j1CBe7Hjhg7Tzm3HkuinA9zgtPffMtd96ZaOds=US+xQ@mail.gmail.com>
+ <0f74e16d2a1c5005c342d800445c046b8fe248cb.camel@linux.intel.com>
+In-Reply-To: <0f74e16d2a1c5005c342d800445c046b8fe248cb.camel@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 14 Feb 2023 14:57:02 +0100
+Message-ID: <CAJZ5v0g1PiMDFUeVKy3YL4pni6oDDaEVTw-LLYnYMMsF+5uuMQ@mail.gmail.com>
 Subject: Re: [PATCH v2 1/3] ACPI: processor: perflib: Use the "no limit"
  frequency QoS
-From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Pratyush Yadav <ptyadav@amazon.de>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Pratyush Yadav <ptyadav@amazon.de>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Linux PM <linux-pm@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Linux ACPI <linux-acpi@vger.kernel.org>
-Date:   Tue, 14 Feb 2023 05:40:32 -0800
-In-Reply-To: <CAJZ5v0j1CBe7Hjhg7Tzm3HkuinA9zgtPffMtd96ZaOds=US+xQ@mail.gmail.com>
-References: <12138067.O9o76ZdvQC@kreacher> <12124970.O9o76ZdvQC@kreacher>
-         <mafs0sfgybc3q.fsf_-_@amazon.de>
-         <CAJZ5v0hAjKvinPqX2VuCv1jVu50jrnDpECaO=sA2CQZFHZpJdA@mail.gmail.com>
-         <mafs0zga0ds30.fsf_-_@amazon.de>
-         <CAJZ5v0j1CBe7Hjhg7Tzm3HkuinA9zgtPffMtd96ZaOds=US+xQ@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu1 
-MIME-Version: 1.0
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 2023-01-30 at 15:58 +0100, Rafael J. Wysocki wrote:
-> On Mon, Jan 30, 2023 at 3:18 PM Pratyush Yadav <ptyadav@amazon.de>
-> wrote:
-> >=20
-> >=20
+On Tue, Feb 14, 2023 at 2:40 PM srinivas pandruvada
+<srinivas.pandruvada@linux.intel.com> wrote:
+>
+> On Mon, 2023-01-30 at 15:58 +0100, Rafael J. Wysocki wrote:
+> > On Mon, Jan 30, 2023 at 3:18 PM Pratyush Yadav <ptyadav@amazon.de>
+> > wrote:
+> > >
+> > >
+>
+> [...]
+>
+> > > [0]
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/
+> >
+> > It's already in the mainline:
+> >
+> > e8a0e30b742f cpufreq: intel_pstate: Drop ACPI _PSS states table
+> > patching
+> > 99387b016022 ACPI: processor: perflib: Avoid updating frequency QoS
+> > unnecessarily
+> > c02d5feb6e2f ACPI: processor: perflib: Use the "no limit" frequency
+> > QoS
+>
+> I am checking 6.2-rc8.
+> I don't see these commits.
 
-[...]
+You are right, they are in linux-next only, sorry for the confusion.
 
-> > [0]
-> > https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/
->=20
-> It's already in the mainline:
->=20
-> e8a0e30b742f cpufreq: intel_pstate: Drop ACPI _PSS states table
-> patching
-> 99387b016022 ACPI: processor: perflib: Avoid updating frequency QoS
-> unnecessarily
-> c02d5feb6e2f ACPI: processor: perflib: Use the "no limit" frequency
-> QoS
-
-I am checking 6.2-rc8.
-I don't see these commits.
-
-The last commit in mainline is
- git log --oneline drivers/acpi/processor_perflib.c
-f1a70bac90ca ACPI: processor: perflib: Adjust
-acpi_processor_notify_smm() return value
-
-Whereas linux-pm tree it is :
-
-git log --oneline drivers/acpi/processor_perflib.c
-99387b016022 ACPI: processor: perflib: Avoid updating frequency QoS
-unnecessarily
-c02d5feb6e2f ACPI: processor: perflib: Use the "no limit" frequency QoS
-f1a70bac90ca ACPI: processor: perflib: Adjust
-acpi_processor_notify_smm() return value
-
-
-Thanks,
-Srinivas
+I'm going to push them for 6.3-rc1 this week, though.
