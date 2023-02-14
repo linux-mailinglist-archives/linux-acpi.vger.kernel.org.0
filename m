@@ -2,65 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50281695551
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Feb 2023 01:24:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D8AC6955E7
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Feb 2023 02:24:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229521AbjBNAYR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Feb 2023 19:24:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45292 "EHLO
+        id S230084AbjBNBYV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Feb 2023 20:24:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbjBNAYQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 19:24:16 -0500
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C67C449E;
-        Mon, 13 Feb 2023 16:24:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676334255; x=1707870255;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Gkhl6ezDlc1ss5YwSYVQ4Gf3h6MQxMz/5wqdYif/WQ0=;
-  b=Hpd1fx5w1ob+bE0s/5PTUgRYs4+Dal4sJiSNZ6FSMnzj3sX+DOguvfwK
-   Cr/AWZrU/Kf0I5zZKEa79NHRzBAeMHHk5GonJ83NRhZPb7K5jCOlzsMar
-   UjK6TJ8qI+O9kHvMKk/rtXnbumHWqE7P+CsFbPbeVcwZTVod5EauecVad
-   k7sidhT7DnIVDuLdcD/4MCycncU/i/Zm1cU+LfUo7SgFIE4fr4AGt1t/e
-   VlL0PryvIt0NQgMTvTy0o/mHp9fXbTdlS/GBk4O9Pn2Qf/WZ6i9v+MMs0
-   RRcUJJ8o8IxCI9fiV8SHBzU5bEpXQGBZ+zvGv7O7o1hNiO2ov3esNnfUk
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="311396686"
-X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
-   d="scan'208";a="311396686"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2023 16:24:15 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="646571961"
-X-IronPort-AV: E=Sophos;i="5.97,294,1669104000"; 
-   d="scan'208";a="646571961"
-Received: from djiang5-mobl3.amr.corp.intel.com (HELO [10.212.99.85]) ([10.212.99.85])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2023 16:24:14 -0800
-Message-ID: <db76a0ac-a597-378c-5f6d-8e358af45cba@intel.com>
-Date:   Mon, 13 Feb 2023 17:24:13 -0700
+        with ESMTP id S229436AbjBNBYV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Feb 2023 20:24:21 -0500
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84C1C13525;
+        Mon, 13 Feb 2023 17:24:19 -0800 (PST)
+Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4PG3MY6RmwzRrr5;
+        Tue, 14 Feb 2023 09:21:45 +0800 (CST)
+Received: from [10.67.103.231] (10.67.103.231) by
+ kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Tue, 14 Feb 2023 09:24:16 +0800
+Message-ID: <7876ff17-3e16-600e-8ed7-3fcab173618c@huawei.com>
+Date:   Tue, 14 Feb 2023 09:24:16 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.6.0
-Subject: Re: [PATCH 07/18] cxl: Add callback to parse the DSLBIS subtable from
- CDAT
-Content-Language: en-US
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, dan.j.williams@intel.com,
-        ira.weiny@intel.com, vishal.l.verma@intel.com,
-        alison.schofield@intel.com, rafael@kernel.org, bhelgaas@google.com,
-        robert.moore@intel.com
-References: <167571650007.587790.10040913293130712882.stgit@djiang5-mobl3.local>
- <167571662248.587790.4362747686454305108.stgit@djiang5-mobl3.local>
- <20230209135007.0000667d@Huawei.com>
-From:   Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20230209135007.0000667d@Huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [RFC-V3 1/2] mailbox: pcc: Add processing platform notification
+ for slave subspaces
+To:     Robbie King <robbiek@xsightlabs.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
+CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <rafael@kernel.org>, <rafael.j.wysocki@intel.com>,
+        <wanghuiqiang@huawei.com>, <zhangzekun11@huawei.com>,
+        <wangxiongfeng2@huawei.com>, <tanxiaofei@huawei.com>,
+        <guohanjun@huawei.com>, <xiexiuqi@huawei.com>,
+        <wangkefeng.wang@huawei.com>, <huangdaode@huawei.com>
+References: <20221016034043.52227-1-lihuisong@huawei.com>
+ <20221203095150.45422-1-lihuisong@huawei.com>
+ <20221203095150.45422-2-lihuisong@huawei.com>
+ <20230206153940.gcddy3b3znk72yqd@bogus>
+ <926bf147-5e93-0104-1bf4-171efcd15c5c@huawei.com>
+ <e96474e8-6427-9a80-0e97-de97684b8e40@xsightlabs.com>
+From:   "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <e96474e8-6427-9a80-0e97-de97684b8e40@xsightlabs.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.103.231]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemm600004.china.huawei.com (7.193.23.242)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,180 +60,106 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
-
-On 2/9/23 6:50 AM, Jonathan Cameron wrote:
-> On Mon, 06 Feb 2023 13:50:23 -0700
-> Dave Jiang <dave.jiang@intel.com> wrote:
-> 
->> Provide a callback to parse the Device Scoped Latency and Bandwidth
->> Information Structure (DSLBIS) in the CDAT structures. The DSLBIS
->> contains the bandwidth and latency information that's tied to a DSMAS
->> handle. The driver will retrieve the read and write latency and
->> bandwidth associated with the DSMAS which is tied to a DPA range.
+在 2023/2/14 5:18, Robbie King 写道:
+> On 2/6/2023 9:27 PM, lihuisong (C) wrote:
+>> 在 2023/2/6 23:39, Sudeep Holla 写道:
+>>> Hi Huisong,
+>>>
+>>> Apologies for such a long delay.
+>>>
+>>> Also I would like to hear from Robbie King who I know is playing around
+>>> with this these days 😄. At minimum if this logic works for him as well.
+>> @Robbie King,
+>> Do you use this patchset to test your requirements?
+>> Any other problems? Can you tell us your result?
 >>
->> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> A few comments inline,
-> 
-> Thanks,
-> 
-> Jonathan
-> 
->> ---
->>   drivers/cxl/core/cdat.c |   34 ++++++++++++++++++++++++++++++++++
->>   drivers/cxl/cxl.h       |    2 ++
->>   drivers/cxl/port.c      |    9 ++++++++-
->>   include/acpi/actbl1.h   |    5 +++++
->>   4 files changed, 49 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
->> index f9a64a0f1ee4..3c8f3956487e 100644
->> --- a/drivers/cxl/core/cdat.c
->> +++ b/drivers/cxl/core/cdat.c
->> @@ -121,3 +121,37 @@ int cxl_dsmas_parse_entry(struct acpi_cdat_header *header, void *arg)
->>   	return 0;
->>   }
->>   EXPORT_SYMBOL_NS_GPL(cxl_dsmas_parse_entry, CXL);
->> +
->> +int cxl_dslbis_parse_entry(struct acpi_cdat_header *header, void *arg)
->> +{
->> +	struct cxl_port *port = (struct cxl_port *)arg;
->> +	struct dsmas_entry *dent;
->> +	struct acpi_cdat_dslbis *dslbis;
-> 
-> Perhaps reorder to maintain the pretty upside-down Christmas trees
-> (I don't care :)
-
-will fix
-> 
->> +	u64 val;
->> +
->> +	if (header->type != ACPI_CDAT_TYPE_DSLBIS)
->> +		return -EINVAL;
-> 
-> Isn't this guaranteed by the caller?  Seems overkill do it twice
-> and I don't think these will ever be called outside of that wrapper that
-> loops over the entries. I could be wrong though!
+> Sorry for the delay.  I have verified the two patches continue to pass the
+> limited stress testing I have done with earlier change sets.
+Thanks Robbie King.
+I will send a formal patch as soon as possible.
 >
-
-ok will remove
-
-
->> +
->> +	dslbis = (struct acpi_cdat_dslbis *)((unsigned long)header + sizeof(*header));
-> header + 1
-> 
->> +	if ((dslbis->flags & ACPI_CEDT_DSLBIS_MEM_MASK) !=
-> 
-> This field 'must be ignored' if the DSMAS handle isn't a match
-> (as it's an initiator only entry) Odd though it may seem I think we
-> might see one of those on a type 3 device and we are probably going to
-> have other users of this function anyway.
-> 
-> I think you need to do the walk below to check we have a DSMAS match, before
-> running this check.
-
-ok, will move down to where entry is matched
-
-> 
->> +	     ACPI_CEDT_DSLBIS_MEM_MEMORY)
->> +		return 0;
->> +
->> +	if (dslbis->data_type > ACPI_HMAT_WRITE_BANDWIDTH)
->> +		return -ENXIO;
-> 
-> This would probably imply a new HMAT spec value, so probably just
-> log it and ignore rather than error out.
-
-ok
-
-> 
->> +
->> +	/* Value calculation with base_unit, see ACPI Spec 6.5 5.2.28.4 */
->> +	val = dslbis->entry[0] * dslbis->entry_base_unit;
-> 
-> In theory this might overflow as u64 * u16.
-> Doubt it will ever happen in reality, but maybe a check and debug print if it does?
-
-ok will use check_mul_overflow()
-> 
->> +
->> +	mutex_lock(&port->cdat.dsmas_lock);
->> +	list_for_each_entry(dent, &port->cdat.dsmas_list, list) {
->> +		if (dslbis->handle == dent->handle) {
->> +			dent->qos[dslbis->data_type] = val;
->> +			break;
->> +		}
->> +	}
->> +	mutex_unlock(&port->cdat.dsmas_lock);
->> +
->> +	return 0;
->> +}
->> +EXPORT_SYMBOL_NS_GPL(cxl_dslbis_parse_entry, CXL);
->> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
->> index 1e5e69f08480..849b22236f1d 100644
->> --- a/drivers/cxl/cxl.h
->> +++ b/drivers/cxl/cxl.h
->> @@ -705,6 +705,7 @@ struct dsmas_entry {
->>   	struct list_head list;
->>   	struct range dpa_range;
->>   	u16 handle;
->> +	u64 qos[ACPI_HMAT_WRITE_BANDWIDTH + 1];
->>   };
->>   
->>   typedef int (*cdat_tbl_entry_handler)(struct acpi_cdat_header *header, void *arg);
->> @@ -716,6 +717,7 @@ int cdat_table_parse_dslbis(void *table, cdat_tbl_entry_handler handler,
->>   			    void *arg);
->>   
->>   int cxl_dsmas_parse_entry(struct acpi_cdat_header *header, void *arg);
->> +int cxl_dslbis_parse_entry(struct acpi_cdat_header *header, void *arg);
->>   
->>   /*
->>    * Unit test builds overrides this to __weak, find the 'strong' version
->> diff --git a/drivers/cxl/port.c b/drivers/cxl/port.c
->> index b1da73e99bab..8de311208b37 100644
->> --- a/drivers/cxl/port.c
->> +++ b/drivers/cxl/port.c
->> @@ -65,8 +65,15 @@ static int cxl_port_probe(struct device *dev)
->>   			rc = cdat_table_parse_dsmas(port->cdat.table,
->>   						    cxl_dsmas_parse_entry,
->>   						    (void *)port);
->> -			if (rc < 0)
->> +			if (rc > 0) {
->> +				rc = cdat_table_parse_dslbis(port->cdat.table,
->> +							     cxl_dslbis_parse_entry,
->> +							     (void *)port);
->> +				if (rc <= 0)
->> +					dev_dbg(dev, "Failed to parse DSLBIS: %d\n", rc);
-> 
-> If we have entries and they won't parse, I think we should be screaming louder.
-> dev_warn() would be my preference for this and the one in the previous patch.
-> Sure we can carry on, but something on the device is not working as expected.
-
-ok will fix this one and previous.
-
-> 
->> +			} else {
->>   				dev_dbg(dev, "Failed to parse DSMAS: %d\n", rc);
->> +			}
->>   		}
->>   
->>   		rc = cxl_hdm_decode_init(cxlds, cxlhdm);
->> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
->> index e8297cefde09..ff6092e45196 100644
->> --- a/include/acpi/actbl1.h
->> +++ b/include/acpi/actbl1.h
->> @@ -369,6 +369,11 @@ struct acpi_cdat_dslbis {
->>   	u16 reserved2;
->>   };
->>   
->> +/* Flags for subtable above */
->> +
->> +#define ACPI_CEDT_DSLBIS_MEM_MASK	GENMASK(3, 0)
->> +#define ACPI_CEDT_DSLBIS_MEM_MEMORY	0
->> +
->>   /* Subtable 2: Device Scoped Memory Side Cache Information Structure (DSMSCIS) */
->>   
->>   struct acpi_cdat_dsmscis {
->>
->>
-> 
+>>> On Sat, Dec 03, 2022 at 05:51:49PM +0800, Huisong Li wrote:
+>>>> Currently, PCC driver doesn't support the processing of platform
+>>>> notification for slave PCC subspaces because of the incomplete
+>>>> communication flow.
+>>>>
+>>>> According to ACPI specification, if platform sends a notification
+>>>> to OSPM, it must clear the command complete bit and trigger platform
+>>>> interrupt. OSPM needs to check whether the command complete bit is
+>>>> cleared, clear platform interrupt, process command, and then set the
+>>>> command complete and ring doorbell to Platform. But the current judgment
+>>>> on the command complete is not applicable to type4 in pcc_mbox_irq().
+>>>>
+>>>> This patch introduces a communication flow direction field to detect
+>>>> whether the interrupt belongs to the master or slave subspace channel.
+>>>> And PCC driver needs to add the phase of setting the command complete
+>>>> and ring doorbell in pcc_mbox_irq() to complete type4 communication
+>>>> flow after processing command from Platform.
+>>>>
+>>>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+>>>> ---
+>>>>    drivers/mailbox/pcc.c | 77 +++++++++++++++++++++++++++++++++++++++----
+>>>>    1 file changed, 71 insertions(+), 6 deletions(-)
+>>>>
+>>>> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+>>>> index 105d46c9801b..ad6d0b7d50fc 100644
+>>>> --- a/drivers/mailbox/pcc.c
+>>>> +++ b/drivers/mailbox/pcc.c
+>>>> @@ -80,6 +80,13 @@ struct pcc_chan_reg {
+>>>>        u64 status_mask;
+>>>>    };
+>>>>    +enum pcc_chan_comm_flow_dir_type {
+>>>> +    PCC_ONLY_OSPM_TO_PLATFORM,
+>>>> +    PCC_ONLY_PLATFORM_TO_OSPM,
+>>>> +    PCC_BIDIRECTIONAL,
+>>>> +    PCC_DIR_UNKNOWN,
+>>>> +};
+>>>> +
+>>>>    /**
+>>>>     * struct pcc_chan_info - PCC channel specific information
+>>>>     *
+>>>> @@ -91,6 +98,7 @@ struct pcc_chan_reg {
+>>>>     * @cmd_update: PCC register bundle for the command complete update register
+>>>>     * @error: PCC register bundle for the error status register
+>>>>     * @plat_irq: platform interrupt
+>>>> + * @comm_flow_dir: direction of communication flow supported by the channel
+>>>>     */
+>>>>    struct pcc_chan_info {
+>>>>        struct pcc_mbox_chan chan;
+>>>> @@ -100,12 +108,15 @@ struct pcc_chan_info {
+>>>>        struct pcc_chan_reg cmd_update;
+>>>>        struct pcc_chan_reg error;
+>>>>        int plat_irq;
+>>>> +    u8 comm_flow_dir;
+>>> I would rather just save the 'type' as read from the PCCT. We don't know
+>>> what future types might be and just identifying them by the direction of
+>>> flow of the data, it restricts the usage of this.
+>> Ack.
+>>>>    };
+>>>>      #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
+>>>>    static struct pcc_chan_info *chan_info;
+>>>>    static int pcc_chan_count;
+>>>>    +static int pcc_send_data(struct mbox_chan *chan, void *data);
+>>>> +
+>>>>    /*
+>>>>     * PCC can be used with perf critical drivers such as CPPC
+>>>>     * So it makes sense to locally cache the virtual address and
+>>>> @@ -221,6 +232,43 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
+>>>>        return acpi_register_gsi(NULL, interrupt, trigger, polarity);
+>>>>    }
+>>>>    +static bool pcc_chan_need_rsp_irq(struct pcc_chan_info *pchan,
+>>>> +                  u64 cmd_complete_reg_val)
+>>> Probably rename this as pcc_chan_command_complete or something similar.
+>> Ack
+>>>> +{
+>>>> +    bool need_rsp;
+>>>> +
+>>>> +    if (!pchan->cmd_complete.gas)
+>>>> +        return true;
+>>>> +
+>>>> +    cmd_complete_reg_val &= pchan->cmd_complete.status_mask;
+>>>> +
+>>>> +    switch (pchan->comm_flow_dir) {
+>>> Use the channel type instead here.
+>> Ack
+> .
