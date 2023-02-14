@@ -2,65 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53FE7696E81
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Feb 2023 21:27:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 00073696E98
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Feb 2023 21:36:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231716AbjBNU1I (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Feb 2023 15:27:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39624 "EHLO
+        id S229622AbjBNUgx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Feb 2023 15:36:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbjBNU1H (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Feb 2023 15:27:07 -0500
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E8392B63D;
-        Tue, 14 Feb 2023 12:27:05 -0800 (PST)
-Received: by mail-lf1-x136.google.com with SMTP id j17so25079219lfr.3;
-        Tue, 14 Feb 2023 12:27:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=gJa5N1j+ZDXx1hMihd0l2gcsgdbA3VwDhWxoSnBYFmw=;
-        b=MZUjRzfTjNOlAO8V/XRmf56fF9wZzXsrktLJ92jLy9axTU16AU0HjJjS8H3GXjuP/q
-         A2NNcC12WBlvTWp/OpfrLxAKzujbCfOaz1nqYCjjLWGKaLpCh4LV3Vsk7uSCv+cR4oZk
-         W6CPxgo1yyVLO9cUCOIefd5I3n/Wq0HVpuuU7YsHDDFeYvt2fWqccDnfr52hAvVJ/Cjg
-         8pdd6ifJ6wqpo91+KW8zpkKdAMZH8FsOLG/zqUpwNlXyDgDuZK8JMSKnfq4GW/vDd8td
-         HyDrqKUYaYazpg8OzlxUs7krQhu/uOW1D6vgyxgy+dyJlRaUjuj0w0BQt2oTX0Y46n8d
-         3uxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gJa5N1j+ZDXx1hMihd0l2gcsgdbA3VwDhWxoSnBYFmw=;
-        b=iyH53+3k67fixaLhjx1ZxsB1epfkUQhvIisPvDuKNRqgCjTvShua64DG1Y9m7b2+nh
-         bk7BiDkxicSwRR/Hmf8DLDU3F5KFcwmLzdt5LGL04peobvelf51jhGbKMrHTOBdVvB9R
-         T4jnyhYiuwj6tKNgfTSntPmwtDAj5Y14MCrJoJUSBeTr0Dbw8SQsf7FCpnOB7wpwPTxJ
-         jThUlqmbPn+NSs/FTUXyOBfwnLJGLEubP6Wzx2AeWqdltdLVE9J+MlaZ+UFwx6mww7rs
-         oF9mBQcN46TMI7uxXqOm7WXSf8pBCi+NV5p0BWj7JQ7thL9W+b17fTGrfDAqrlsde+ao
-         vdng==
-X-Gm-Message-State: AO0yUKVJbnWkBEmaxeXnxMghkSn2e2ocCOW6vQhGCtSAy2qFfY1Ni1EO
-        zB4eXnsMiU0WdCe85v1Uwp8WTn2ES0QvRb4QurU=
-X-Google-Smtp-Source: AK7set9cUKCwZZWmhYvTo58RHa8XKmk7Pd0cKSH8U4QavAc3tSq/CpcSkps99ekSI7GWQPFqSayIuzJgOVHzQiqeI6A=
-X-Received: by 2002:a05:6512:3b91:b0:4d5:ca32:6ed5 with SMTP id
- g17-20020a0565123b9100b004d5ca326ed5mr52890lfv.3.1676406423639; Tue, 14 Feb
- 2023 12:27:03 -0800 (PST)
+        with ESMTP id S229512AbjBNUgw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Feb 2023 15:36:52 -0500
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 600B32B2AD;
+        Tue, 14 Feb 2023 12:36:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676407010; x=1707943010;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=SOL//QdfdM3s9jWC+7EBtWWvXmH7+sm77OJamWGyv5k=;
+  b=PGxwAhDt7r8oFQ1FC1KNpanfAF/ruPa0VfyiZFIsKTuiTgxbaTj2c+qb
+   b6bfbg6WcXkOlUBNlQgMjK8KngSHvBLcj85vX+zY0eXNWyc4oK0LpyZZ7
+   yEk5ttr6ycUyyj5UeSNRpeO1RkMkDXYGh+Yu0UhnmvQc0MYoyLPEnUgOT
+   vKnnzjMZq9KqZKOsl+f98bwrU5AUT30FQ3+oQKsagqe4cIJ+ve4KiR+AX
+   LXFbCfED3/bGFYWKo6COOEFo7vjTX5mCBCOxhqykIM+eiBCpSKj6h8+OU
+   Dw9J5YUXQkIsVzppyNKG1xkOCU0wigvSjVW6cA9JhVaUgIVjvan7qV8cI
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10621"; a="328976623"
+X-IronPort-AV: E=Sophos;i="5.97,297,1669104000"; 
+   d="scan'208";a="328976623"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2023 12:36:50 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10621"; a="758127518"
+X-IronPort-AV: E=Sophos;i="5.97,297,1669104000"; 
+   d="scan'208";a="758127518"
+Received: from djiang5-mobl3.amr.corp.intel.com (HELO [10.212.93.192]) ([10.212.93.192])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2023 12:36:49 -0800
+Message-ID: <7d9321ff-e118-884f-d873-91c141faddfc@intel.com>
+Date:   Tue, 14 Feb 2023 13:36:48 -0700
 MIME-Version: 1.0
-References: <CACp=KFQN79Rz0CHP-5kwP9Y5Y9bEAoN0eJzoOpSejg6aF9qnpw@mail.gmail.com>
- <233344ca-5df1-abd9-6fb6-c04634f1b401@redhat.com>
-In-Reply-To: <233344ca-5df1-abd9-6fb6-c04634f1b401@redhat.com>
-From:   Jorge Lopez <jorgealtxwork@gmail.com>
-Date:   Tue, 14 Feb 2023 14:26:52 -0600
-Message-ID: <CAOOmCE82d6J3Dt2GB2WTYX1UWw-cZfsBWBBGHp--ac+_2Bn_6w@mail.gmail.com>
-Subject: Re: RFI: Tablet mode support on HP Pro x360 435 G9 w/ AMD Ryzen 7 5825U
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Carsten Hatger <xmb8dsv4@gmail.com>, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, mario.limonciello@amd.com,
-        Shyam-sundar.S-k@amd.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.6.0
+Subject: Re: [PATCH 04/18] cxl: Add common helpers for cdat parsing
+Content-Language: en-US
+To:     Lukas Wunner <lukas@wunner.de>
+Cc:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, dan.j.williams@intel.com,
+        ira.weiny@intel.com, vishal.l.verma@intel.com,
+        alison.schofield@intel.com, rafael@kernel.org, bhelgaas@google.com,
+        robert.moore@intel.com
+References: <167571650007.587790.10040913293130712882.stgit@djiang5-mobl3.local>
+ <167571659666.587790.1381783105886436293.stgit@djiang5-mobl3.local>
+ <20230209115803.00002778@Huawei.com>
+ <3c69a080-de0c-3244-cc44-0a187230d203@intel.com>
+ <20230211101833.GA12138@wunner.de>
+From:   Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20230211101833.GA12138@wunner.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,65 +70,105 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Hans,
 
-I am forwarding this question to the BIOS team to identify which ACPI
-device is the right device to get the SW_TABLET_MODE events.
 
-On Mon, Feb 13, 2023 at 6:31 AM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi Carsten,
->
-> On 2/13/23 11:43, Carsten Hatger wrote:
-> > Dear all,
-> >
-> > I'd like to have tablet mode support on my system, probably by means
-> > an linux input device such as implemented in the intel platform
-> > specific driver drivers/platform/x86/intel/vbtn.c [0]
-> >
-> > In the end I hope GNOME eventually to rotate the systems display and
-> > to show some virtual keyboard (upon users request), cf. for [3]
-> >
-> > It appears there has already been a patch proposed  by the chromium
-> > team to support device PNP0C60 [1] but not merged to [5].
-> >
-> > Since the system of interest is a HP Probook, there is already a
-> > driver providing virtual buttons,namely hp-wmi [6]. However, the
-> > driver loads probes and loads successfully but doesn't provide any
-> > additional functionality plus some non critical errors on incorrect
-> > ACPI method calls.
-> >
-> > I've noticed AMD has started to provide platform specific driver(s)
-> > such as pmf [2]. To my knowledge there is no support for CEZANNE/green
-> > sardine based systems (yet).
-> >
-> > What would be recommended practice and subsystem/folder to provide
-> > such capability by means of a (platform specific) driver? At least the
-> > CID PNP0C60 seems to be held by Microsoft [4] and thus be common to
-> > both amd and intel platforms [4]. However, HID INT33D6 is held by
-> > Intel and HID AMDI0081 by AMD. Yet I'm not quite sure if
-> > iio-sensor-proxy [7] needs to be involved, too.
->
-> The first thing to do here is to figure out which (ACPI) device
-> is the right device to get the SW_TABLET_MODE events from on this
-> device.
->
-> Maybe Jorge (added to the Cc) can help with this ?
->
-> Regards,
->
-> Hans
->
->
->
->
-> > [0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/intel/vbtn.c?h=v6.2-rc8
-> > [1] https://lore.kernel.org/lkml/1472628817-3145-1-git-send-email-wnhuang@google.com/
-> > [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/amd/pmf?h=v6.2-rc8
-> > [3] https://gitlab.gnome.org/GNOME/mutter/-/issues/1760
-> > [4] https://learn.microsoft.com/en-us/windows-hardware/drivers/gpiobtn/button-implementation
-> > [5] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/acpi/button.c?h=v6.2-rc8
-> > [6] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/platform/x86/hp/hp-wmi.c?h=v6.2-rc8
-> > [7] https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/
-> >
->
+On 2/11/23 3:18 AM, Lukas Wunner wrote:
+> On Thu, Feb 09, 2023 at 03:57:32PM -0700, Dave Jiang wrote:
+>> On 2/9/23 4:58 AM, Jonathan Cameron wrote:
+>>> On Mon, 06 Feb 2023 13:49:58 -0700 Dave Jiang <dave.jiang@intel.com> wrote:
+>>>> Add helper functions to parse the CDAT table and provide a callback to
+>>>> parse the sub-table. Helpers are provided for DSMAS and DSLBIS sub-table
+>>>> parsing. The code is patterned after the ACPI table parsing helpers.
+> [...]
+>>> Are these all worthwhile given the resulting function name is longer
+>>> than accessing it directly.  If aim is to move the details of the
+>>> struct cdat_subtable_entry away from being exposed at caller, then
+>>> fair enough, but if that is the plan I'd expect to see something about
+>>> that in the patch description.
+>>>
+>>> Feels like some premature abstraction, but I don't feel particularly
+>>> strongly about this.
+>>
+>> I'll drop them. The code was adapted from ACPI table parsing code. But we
+>> can simplify for our usages.
+> 
+> Yes just iterating over the CDAT entries and directly calling the
+> appropriate parser function for the entry seems more straightforward.
+> 
+> 
+>>> Random musing follows...
+>>> We could add a variable length element to that struct
+>>> definition and the magic to associate that with the length parameter
+>>> and get range protection if relevant hardening is turned on.
+>>>
+>>> Structure definition comes (I think) from scripts in acpica so
+>>> would need to push such changes into acpica and I'm not sure
+>>> they will be keen even though it would be good for the kernel
+>>> to have the protections.
+> [...]
+>> I see what you are saying. But I'm not sure how easily we can do this for
+>> the CDAT table due to endieness. Is this what you had in mind?
+>>
+>> From:
+>> struct cdat_entry_header {
+>> 	u8 type;
+>> 	u8 reserved;
+>> 	__le16 length;
+>> } __packed;
+>>
+>> To:
+>> struct cdat_entry_header {
+>> 	u8 type;
+>> 	u8 reserved;
+>> 	__le16 length;
+>> 	DECLARE_BOUNDED_ARRAY(u8, body, le16_to_cpu(length));
+>> } __packed;
+> 
+> I think this is backwards.  I'd suggest creating a struct for each
+> CDAT entry which includes the header.  The kernel switched to
+> -std=gnu11 a while ago, so you should be able to use an unnamed field
+> for the header:
+> 
+> struct cdat_dsmas {
+> 	struct cdat_entry_header;
+> 	u8 dsmad_handle;
+> 	u8 flags;
+> 	u8 reserved[2];
+> 	__le64 dpa_base;
+> 	__le64 dpa_length;
+> }
+
+In file included from drivers/cxl/pci.c:14:
+drivers/cxl/cxlpci.h:109:33: warning: declaration does not declare anything
+   109 |         struct cdat_entry_header;
+       |                                 ^
+
+Does not seem to be happy about the unamed field.
+
+
+> 
+> Note that in my commit "cxl/pci: Handle truncated CDAT entries",
+> I'm only verifying that the number of bytes received via DOE
+> matches the length field in the cdat_entry_header.  I do not
+> verify in cxl_cdat_read_table() whether that length is correct
+> for the specific CDAT structure.  I think that's the job of
+> the function parsing that particular structure type.
+> 
+> In other words, at the top of your DSMAS parsing function,
+> you need to check:
+> 
+> 	struct cdat_dsmas dsmas;
+> 
+> 	if (dsmas->length != sizeof(*dsmas)) {
+> 		dev_err(...);
+> 		return -EINVAL;
+> 	}
+> 
+> 
+> Note how the check is simplified by the header being part of
+> struct cdat_dsmas.  If the header wasn't part of struct cdat_dsmas,
+> an addition would be needed here.
+> 
+> Thanks,
+> 
+> Lukas
