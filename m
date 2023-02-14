@@ -2,108 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01E3C6966B0
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Feb 2023 15:26:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78159696726
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Feb 2023 15:41:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232176AbjBNO0C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Feb 2023 09:26:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49004 "EHLO
+        id S232803AbjBNOlx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Feb 2023 09:41:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232841AbjBNOZw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Feb 2023 09:25:52 -0500
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30787B47C;
-        Tue, 14 Feb 2023 06:25:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676384744; x=1707920744;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=rfaoZsgtkph5tbhQQ3UUnwAFv5xUvSirRQpgUD+R3bQ=;
-  b=OOhZcaW9z6pHRFNWfz0/VfG91fMpM/uOTVdftTGPhZh0FEux46s7RYGA
-   HfrCvmMR8tNYuSEgPPo+mS2ZOdMGOSObJPEu8ZGrHXgzXASNbk1MM0wbX
-   9SPpgUXnRA8H1jRdbMod/+k1UmDbA4ObtHeLF2+GXs2wBXlpRrVbCxhTc
-   cNVNPz4v6epUGFyUcOJIvBYqI12umsV1dHvfmyGRJ9uvveJG7V/85w4a7
-   fzQaASc7BJbJYJHXGCM694ryXFMfkfrOwmH/DRkTAMq++p4SfvCYqKGpq
-   pnKJArAEHx1x6WQs9Gf1NT1Ko8rtKRKHRu9Voh+UB7EPNw9yCOCqe4t3Z
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10621"; a="331166774"
-X-IronPort-AV: E=Sophos;i="5.97,296,1669104000"; 
-   d="scan'208";a="331166774"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2023 06:25:43 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10621"; a="914756323"
-X-IronPort-AV: E=Sophos;i="5.97,296,1669104000"; 
-   d="scan'208";a="914756323"
-Received: from bogasiva-mobl.amr.corp.intel.com ([10.215.122.78])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2023 06:25:41 -0800
-Message-ID: <dc9f52c96be1be761177e4d52eae1cd4306abeb4.camel@linux.intel.com>
+        with ESMTP id S232729AbjBNOlw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Feb 2023 09:41:52 -0500
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96B2B21945;
+        Tue, 14 Feb 2023 06:41:51 -0800 (PST)
+Received: by mail-ed1-f46.google.com with SMTP id u21so17742400edv.3;
+        Tue, 14 Feb 2023 06:41:51 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CaFJsZLG1yaHAOaVj94M7dknjPMkfjabuH7GLPdGLtw=;
+        b=PiPtjrsWhBpJC66XxDNpvGlHGIaRNjKlV1YUQ74GGkvC4v2xC62dxAsxJKw6TgG+Ye
+         QPxZZfwRKc4E/lzo/xWWe5QNZsTgsFMmdF6HMF4Fy5inUk8Pk//EKgD6Cz3kK14cF795
+         wFGyyShCwbLQlCaJg2w4q9wwxwYBEROcCIriYhfSylJfGYm4hW+rd5c+L8OrRdZ1/550
+         /HTUBwUyEowuyI9AIvHGjKmlwmL+cqzBtj0ezddcwH+HH/nOw9OrJvuzeqyPtu6Luhvf
+         oKx3diUSzZoESipMkynd3EM0bo+Sp03nVlsZ8SBb3rbe87BwPo0ZE71LQQHoBFgUDprl
+         mWlw==
+X-Gm-Message-State: AO0yUKU1DyNNnk0OCcIJ2IcSAkSy0f9trpZyfvEcw9TcFVWhTHyGM2kC
+        WNeqa+lFrIGitweGsJRETySaO+dfCEiCNCqDQ47vFj5V
+X-Google-Smtp-Source: AK7set+liXYYxCabxOryUIc0a0OhOY7VfNtiGWaBEsWMbD2EsukiQxyVWjNBt4a4RunDes+A4nJpYgoYb27/Y8sn7Nk=
+X-Received: by 2002:a50:f691:0:b0:4ac:50e4:1eee with SMTP id
+ d17-20020a50f691000000b004ac50e41eeemr1291725edn.3.1676385710090; Tue, 14 Feb
+ 2023 06:41:50 -0800 (PST)
+MIME-Version: 1.0
+References: <12138067.O9o76ZdvQC@kreacher> <12124970.O9o76ZdvQC@kreacher>
+ <mafs0sfgybc3q.fsf_-_@amazon.de> <CAJZ5v0hAjKvinPqX2VuCv1jVu50jrnDpECaO=sA2CQZFHZpJdA@mail.gmail.com>
+ <mafs0zga0ds30.fsf_-_@amazon.de> <CAJZ5v0j1CBe7Hjhg7Tzm3HkuinA9zgtPffMtd96ZaOds=US+xQ@mail.gmail.com>
+ <0f74e16d2a1c5005c342d800445c046b8fe248cb.camel@linux.intel.com>
+ <CAJZ5v0g1PiMDFUeVKy3YL4pni6oDDaEVTw-LLYnYMMsF+5uuMQ@mail.gmail.com> <dc9f52c96be1be761177e4d52eae1cd4306abeb4.camel@linux.intel.com>
+In-Reply-To: <dc9f52c96be1be761177e4d52eae1cd4306abeb4.camel@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 14 Feb 2023 15:41:38 +0100
+Message-ID: <CAJZ5v0gVHOw-2oyW-x53Ud6vwNKNQyepBptGunb8SXJL1U_ziw@mail.gmail.com>
 Subject: Re: [PATCH v2 1/3] ACPI: processor: perflib: Use the "no limit"
  frequency QoS
-From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Pratyush Yadav <ptyadav@amazon.de>,
+To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Pratyush Yadav <ptyadav@amazon.de>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Linux PM <linux-pm@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Linux ACPI <linux-acpi@vger.kernel.org>
-Date:   Tue, 14 Feb 2023 06:25:37 -0800
-In-Reply-To: <CAJZ5v0g1PiMDFUeVKy3YL4pni6oDDaEVTw-LLYnYMMsF+5uuMQ@mail.gmail.com>
-References: <12138067.O9o76ZdvQC@kreacher> <12124970.O9o76ZdvQC@kreacher>
-         <mafs0sfgybc3q.fsf_-_@amazon.de>
-         <CAJZ5v0hAjKvinPqX2VuCv1jVu50jrnDpECaO=sA2CQZFHZpJdA@mail.gmail.com>
-         <mafs0zga0ds30.fsf_-_@amazon.de>
-         <CAJZ5v0j1CBe7Hjhg7Tzm3HkuinA9zgtPffMtd96ZaOds=US+xQ@mail.gmail.com>
-         <0f74e16d2a1c5005c342d800445c046b8fe248cb.camel@linux.intel.com>
-         <CAJZ5v0g1PiMDFUeVKy3YL4pni6oDDaEVTw-LLYnYMMsF+5uuMQ@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu1 
-MIME-Version: 1.0
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 2023-02-14 at 14:57 +0100, Rafael J. Wysocki wrote:
-> On Tue, Feb 14, 2023 at 2:40 PM srinivas pandruvada
-> <srinivas.pandruvada@linux.intel.com> wrote:
-> >=20
-> > On Mon, 2023-01-30 at 15:58 +0100, Rafael J. Wysocki wrote:
-> > > On Mon, Jan 30, 2023 at 3:18 PM Pratyush Yadav
-> > > <ptyadav@amazon.de>
-> > > wrote:
-> > > >=20
-> > > >=20
-> >=20
-> > [...]
-> >=20
-> > > > [0]
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git=
-/
-> > >=20
-> > > It's already in the mainline:
-> > >=20
-> > > e8a0e30b742f cpufreq: intel_pstate: Drop ACPI _PSS states table
-> > > patching
-> > > 99387b016022 ACPI: processor: perflib: Avoid updating frequency
-> > > QoS
-> > > unnecessarily
-> > > c02d5feb6e2f ACPI: processor: perflib: Use the "no limit"
-> > > frequency
-> > > QoS
-> >=20
-> > I am checking 6.2-rc8.
-> > I don't see these commits.
->=20
-> You are right, they are in linux-next only, sorry for the confusion.
->=20
-> I'm going to push them for 6.3-rc1 this week, though.
-I don't think they are marked for stable. Can we add that?
+On Tue, Feb 14, 2023 at 3:25 PM srinivas pandruvada
+<srinivas.pandruvada@linux.intel.com> wrote:
+>
+> On Tue, 2023-02-14 at 14:57 +0100, Rafael J. Wysocki wrote:
+> > On Tue, Feb 14, 2023 at 2:40 PM srinivas pandruvada
+> > <srinivas.pandruvada@linux.intel.com> wrote:
+> > >
+> > > On Mon, 2023-01-30 at 15:58 +0100, Rafael J. Wysocki wrote:
+> > > > On Mon, Jan 30, 2023 at 3:18 PM Pratyush Yadav
+> > > > <ptyadav@amazon.de>
+> > > > wrote:
+> > > > >
+> > > > >
+> > >
+> > > [...]
+> > >
+> > > > > [0]
+> > > > > https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/
+> > > >
+> > > > It's already in the mainline:
+> > > >
+> > > > e8a0e30b742f cpufreq: intel_pstate: Drop ACPI _PSS states table
+> > > > patching
+> > > > 99387b016022 ACPI: processor: perflib: Avoid updating frequency
+> > > > QoS
+> > > > unnecessarily
+> > > > c02d5feb6e2f ACPI: processor: perflib: Use the "no limit"
+> > > > frequency
+> > > > QoS
+> > >
+> > > I am checking 6.2-rc8.
+> > > I don't see these commits.
+> >
+> > You are right, they are in linux-next only, sorry for the confusion.
+> >
+> > I'm going to push them for 6.3-rc1 this week, though.
+> I don't think they are marked for stable. Can we add that?
 
-Thanks,
-Srinivas
+I'd rather not rebase them for that.
+
+It is still possible to send an inclusion request to -stable when then
+get into the mainline.
