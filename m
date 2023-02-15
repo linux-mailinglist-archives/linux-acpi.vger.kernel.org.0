@@ -2,35 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AB2B6985F1
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Feb 2023 21:46:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EC42698622
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Feb 2023 21:48:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229796AbjBOUqh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Feb 2023 15:46:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33170 "EHLO
+        id S229965AbjBOUsP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Feb 2023 15:48:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229794AbjBOUq1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Feb 2023 15:46:27 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4E6941B71;
-        Wed, 15 Feb 2023 12:46:12 -0800 (PST)
+        with ESMTP id S230012AbjBOUrb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Feb 2023 15:47:31 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC08643915;
+        Wed, 15 Feb 2023 12:46:50 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 41E14B823C1;
-        Wed, 15 Feb 2023 20:46:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B44C3C4339C;
-        Wed, 15 Feb 2023 20:46:09 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 540F2CE2707;
+        Wed, 15 Feb 2023 20:46:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F44C4339C;
+        Wed, 15 Feb 2023 20:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676493970;
-        bh=/zloXCJRxoVTnh5ZAKvTgJOmkQBS8OVbWKrLyxTz0RA=;
+        s=k20201202; t=1676494003;
+        bh=B+lJ34fJtr6JYae+SXPoMmqz5fHA87kogxqn90Yo0fw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A4YXoKer2Glw2aBpp0zV1LXfG85Wf6WncoDhQiM0z0T+MXpMffuYhFqfpIJZNEiuz
-         Ev/hCCxZ2PAgPwC/+OVSEv6e1VGwVVBZfpJow70cWjsfeGD8dxe1hQKPnwmGYEH1Yb
-         XKCyqwSyL+6h+0lpUpBFPrRcxWfqiKIkkKOEFqbIgXaBek65c+eit9Y7VjAMZgXlal
-         Xz0KaljbTJfhNXZ0vnSGzx/qdDIRbab9DpanKly+MyvanwGX+cS6aaWJZXlzzOYoqT
-         az7RUaS4apA2Fcb38i6tFkOIpb9odiztbaBWbYBDiBjUoWCrfe7Lr7PiJu0OJUZjba
-         YW8fQ7/N3GRdw==
+        b=IMGUBj7FA9L9ZLNs2azY8tohFt79fLrLnnwHVfQc22WEFw2Ax5I3nA5UEIn6c7aSx
+         Ak93skjiIJ+GczIlAnTzHMsD4zSA1wyes4/WlMLrJ40N2rsU8fGsQnTzGkiGY4tyHA
+         /oFzRbmlKKGP30+SH9laHhcomakvThwZoomtEecQug3fq/TvlaU2tgLBTi5Yr6/WIW
+         /bYiyfp5j/rRqBLpZ/1icC22RPAuYPcLj7hPEFkyD2RPd8Qk+ZsunNPTCQFvPR5f6p
+         xq3wY5geDPAZh8VOCU0RqO19nnj6TZX2wMU8v2cdNaKhCA+BOiWm9kLXwG3ELkygru
+         jHHwutGhCOL3A==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Vishal Verma <vishal.l.verma@intel.com>,
@@ -38,18 +38,18 @@ Cc:     Vishal Verma <vishal.l.verma@intel.com>,
         Sasha Levin <sashal@kernel.org>, dave.jiang@intel.com,
         ira.weiny@intel.com, rafael@kernel.org, nvdimm@lists.linux.dev,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 09/24] ACPI: NFIT: fix a potential deadlock during NFIT teardown
-Date:   Wed, 15 Feb 2023 15:45:32 -0500
-Message-Id: <20230215204547.2760761-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 06/12] ACPI: NFIT: fix a potential deadlock during NFIT teardown
+Date:   Wed, 15 Feb 2023 15:46:28 -0500
+Message-Id: <20230215204637.2761073-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230215204547.2760761-1-sashal@kernel.org>
-References: <20230215204547.2760761-1-sashal@kernel.org>
+In-Reply-To: <20230215204637.2761073-1-sashal@kernel.org>
+References: <20230215204637.2761073-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -111,10 +111,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index ae5f4acf26753..6d4ac934cd499 100644
+index 7dd80acf92c78..2575d6c51f898 100644
 --- a/drivers/acpi/nfit/core.c
 +++ b/drivers/acpi/nfit/core.c
-@@ -3297,8 +3297,8 @@ void acpi_nfit_shutdown(void *data)
+@@ -3676,8 +3676,8 @@ void acpi_nfit_shutdown(void *data)
  
  	mutex_lock(&acpi_desc->init_mutex);
  	set_bit(ARS_CANCEL, &acpi_desc->scrub_flags);
