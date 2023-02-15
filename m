@@ -2,92 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC4CC697777
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Feb 2023 08:39:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E262769797D
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Feb 2023 11:03:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233648AbjBOHjk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Feb 2023 02:39:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59052 "EHLO
+        id S233456AbjBOKDv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Feb 2023 05:03:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229536AbjBOHjj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Feb 2023 02:39:39 -0500
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D950431E37;
-        Tue, 14 Feb 2023 23:39:38 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 30C2680CD;
-        Wed, 15 Feb 2023 07:39:38 +0000 (UTC)
-Date:   Wed, 15 Feb 2023 09:39:36 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        Abel Vesa <abel.vesa@linaro.org>,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        John Stultz <jstultz@google.com>,
-        Doug Anderson <dianders@chromium.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Maxim Kiselev <bigunclemax@gmail.com>,
-        Maxim Kochetkov <fido_max@inbox.ru>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Colin Foster <colin.foster@in-advantage.com>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Jean-Philippe Brucker <jpb@kernel.org>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        kernel-team@android.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v3 00/12] fw_devlink improvements
-Message-ID: <Y+yMOIxM+2Pl5i4z@atomide.com>
-References: <20230207014207.1678715-1-saravanak@google.com>
+        with ESMTP id S233108AbjBOKDp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Feb 2023 05:03:45 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D79BD3757B;
+        Wed, 15 Feb 2023 02:03:31 -0800 (PST)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4PGtp0322Dz6J67P;
+        Wed, 15 Feb 2023 17:59:04 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.17; Wed, 15 Feb
+ 2023 10:03:28 +0000
+Date:   Wed, 15 Feb 2023 10:03:27 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Gregory Price <gregory.price@memverge.com>
+CC:     Dan Williams <dan.j.williams@intel.com>,
+        <linux-cxl@vger.kernel.org>, David Hildenbrand <david@redhat.com>,
+        Kees Cook <keescook@chromium.org>, <stable@vger.kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Michal Hocko <mhocko@suse.com>, <linux-mm@kvack.org>,
+        <linux-acpi@vger.kernel.org>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH 00/18] CXL RAM and the 'Soft Reserved' => 'System RAM'
+ default
+Message-ID: <20230215100327.0000728f@Huawei.com>
+In-Reply-To: <Y+wC+rPRbAc9rudx@memverge.com>
+References: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
+        <Y+vSj8FD6ZaHhfoN@memverge.com>
+        <63ebd56e639e9_32d61294f4@dwillia2-xfh.jf.intel.com.notmuch>
+        <Y+vag3hg3VRNRUti@memverge.com>
+        <20230214211824.00007f91@Huawei.com>
+        <Y+wCeSig++c3ACkj@memverge.com>
+        <Y+wC+rPRbAc9rudx@memverge.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230207014207.1678715-1-saravanak@google.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Tue, 14 Feb 2023 16:54:02 -0500
+Gregory Price <gregory.price@memverge.com> wrote:
 
-* Saravana Kannan <saravanak@google.com> [230207 01:42]:
-> Naresh, Tony, Abel, Geert, Dmitry, Maxim(s), Miquel, Luca, Doug, Martin,
-> Jean-Philippe,
+> On Tue, Feb 14, 2023 at 04:51:53PM -0500, Gregory Price wrote:
+> > On Tue, Feb 14, 2023 at 09:18:24PM +0000, Jonathan Cameron wrote:  
+> > > On Tue, 14 Feb 2023 14:01:23 -0500
+> > > Gregory Price <gregory.price@memverge.com> wrote:
+> > > 
+> > > Could you test it with TCG (just drop --enable-kvm)?  We have a known
+> > > limitation with x86 instructions running out of CXL emulated memory
+> > > (side effect of emulating the interleave).  You'll need a fix even on TCG
+> > > for the corner case of an instruction bridging from normal ram to cxl memory.
+> > > https://lore.kernel.org/qemu-devel/20230206193809.1153124-1-richard.henderson@linaro.org/
+> > > 
+> > > Performance will be bad, but so far this is only way we can do it correctly.
+> > > 
+> > > Jonathan
+> > >   
+> > 
+> > Siiiggghh... i had this patch and dropped --enable-kvm, but forgot to
+> > drop "accel=kvm" from the -machine line
+> > 
+> > This was the issue.
+> > 
+> > And let me tell you, if you numactl --membind=1 python, it is
+> > IMPRESSIVELY slow.  I wonder if it's even hitting a few 100k
+> > instructions a second.
+> > 
+> > 
+> > This appears to be the issue.  When I get a bit more time, try to dive
+> > into the deep dark depths of qemu memory regions to see how difficult
+> > a non-mmio fork might be, unless someone else is already looking at it.
+> > 
+> > ~Gregory  
 > 
-> Can I get your Tested-by's for this v3 series please?
+> Just clarifying one thing:  Even with the patch, KVM blows up.
+> Disabling KVM fixes this entirely.  I haven't tested without KVM but
+> with the patch, i will do that now.
 
-Just FYI, the patches in next-20230215 behave for me.
+yup.  The patch only fixes TCG so that's expected behavior.
 
-Regards,
+Fingers crossed on this 'working'.
 
-Tony
+I'm open to suggestions on how to work around the problem with KVM
+or indeed allow TCG to cache the instructions (right not it has
+to fetch and emulate each instruction on it's own).
+
+I can envision how we might do it for KVM with userspace page fault handling
+used to get a fault up to QEMU which can then stitch in a cache
+of the underlying memory as a stage 2 translation to the page (a little
+bit like how post migration copy works) though I've not prototyped
+anything...
+
+I think it would be complex code that would be little used
+so we may just have to cope with the emulation being slow.
+
+Intent is very much to be able to test the kernel code etc, not
+test it quickly :)
+
+Jonathan
