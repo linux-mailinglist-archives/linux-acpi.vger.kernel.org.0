@@ -2,64 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 992F369718A
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Feb 2023 00:05:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4E9769754E
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Feb 2023 05:20:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232482AbjBNXFH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Feb 2023 18:05:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39452 "EHLO
+        id S229460AbjBOEUZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Feb 2023 23:20:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232625AbjBNXFF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Feb 2023 18:05:05 -0500
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1521D2B0BA;
-        Tue, 14 Feb 2023 15:04:26 -0800 (PST)
+        with ESMTP id S233501AbjBOET7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Feb 2023 23:19:59 -0500
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C02FC367C1;
+        Tue, 14 Feb 2023 20:18:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676415867; x=1707951867;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Zk/24H30V44QTrX0+hioMhDc9nF3HOTa/Kvebga8EGA=;
-  b=DW6xKf447UX6+aCrlFFO24tG0LxhTdG7JEc9312cYiU4R3l+c85fPAz+
-   TRuLHqM2vdMlgdfUaMRP3S6pj0Vn8gCGuwpxR+6QOdJAF51jdKGp//Lpb
-   bzbuqN5g1W7jzxSAEN0nWa7PcpFsCsX8dLcAcCybDsOtL4AEMadLtWLcI
-   xl5dJXaKJOnxQgYVu86wCFTHTc3d6PO7lol7MDRpl3ZuIvDvPE2bBfBcV
-   55lsnM2mHS5Cpw9mLDDZ/wMnBK99/1/ViHAq6U1br9qEmQ4JbWbo/9gde
-   JJIRTjmO5nklOy77cElg/LIzdGPkmaaUscPIx+C8MR0zxcm2cTD717Noq
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10621"; a="329007444"
+  t=1676434699; x=1707970699;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2TPdHhw7PdbshXBC0lHZEEtuPUwAjgSLbN3SAQkFhbE=;
+  b=IjBxfsvxaafeODl1SYxJPKuk0YOox12v1MMfHSlGwKv/bwLifwwAPm4u
+   DiM1s8250hUP03c+/sU4Ta0nDgnHgcPWc5Iq2UfThd+t5RH898Rwkq2AL
+   3I9qmqCOJcbuDcPagriQpm7nVZIl0kPIv+5rDBywfzzwWgJfZMNVPizUH
+   OAkPO2nrrPR3M4TO5qyOmOUQXNhhmQjYAlC+jVD6OmHFr8S2DWxHRIHab
+   UHcujARcay0R+V4ukCoem1KFGT1KOGt8JYS9pxyrX6kTxKY6cK9YJMAoR
+   Q3p0d/9WftAq8SDaQxc7Xa3HRxSLoK2x8+ktK9Sn63YsPF3uhslZkxBdl
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10621"; a="311707122"
 X-IronPort-AV: E=Sophos;i="5.97,298,1669104000"; 
-   d="scan'208";a="329007444"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2023 15:03:29 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10621"; a="669378412"
+   d="scan'208";a="311707122"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2023 20:15:33 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10621"; a="701884218"
 X-IronPort-AV: E=Sophos;i="5.97,298,1669104000"; 
-   d="scan'208";a="669378412"
-Received: from djiang5-mobl3.amr.corp.intel.com (HELO [10.212.93.192]) ([10.212.93.192])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2023 15:03:28 -0800
-Message-ID: <8b2bbf7b-fe3f-c80b-163b-8247e0c47821@intel.com>
-Date:   Tue, 14 Feb 2023 16:03:27 -0700
+   d="scan'208";a="701884218"
+Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 14 Feb 2023 20:15:31 -0800
+Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pS9Cd-00091X-0g;
+        Wed, 15 Feb 2023 04:15:31 +0000
+Date:   Wed, 15 Feb 2023 12:15:08 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 2f07b45d9824b12c8c30d8ace75d15941926cb19
+Message-ID: <63ec5c4c.iFmZUO/jtCyQnvOf%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.6.0
-Subject: Re: [PATCH 13/18] cxl: Add latency and bandwidth calculations for the
- CXL path
-Content-Language: en-US
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, dan.j.williams@intel.com,
-        ira.weiny@intel.com, vishal.l.verma@intel.com,
-        alison.schofield@intel.com, rafael@kernel.org, bhelgaas@google.com,
-        robert.moore@intel.com
-References: <167571650007.587790.10040913293130712882.stgit@djiang5-mobl3.local>
- <167571667794.587790.14172786993094257614.stgit@djiang5-mobl3.local>
- <20230209152417.00007f47@Huawei.com>
-From:   Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20230209152417.00007f47@Huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,LONGWORDS,
         RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -68,79 +64,112 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 2f07b45d9824b12c8c30d8ace75d15941926cb19  Merge branch 'acpi-misc' into bleeding-edge
 
+elapsed time: 732m
 
-On 2/9/23 8:24 AM, Jonathan Cameron wrote:
-> On Mon, 06 Feb 2023 13:51:19 -0700
-> Dave Jiang <dave.jiang@intel.com> wrote:
-> 
->> CXL Memory Device SW Guide rev1.0 2.11.2 provides instruction on how to
->> caluclate latency and bandwidth for CXL memory device. Calculate minimum
-> 
-> Spell check your descriptions (I often forget to do this as well!
-> )
->> bandwidth and total latency for the path from the CXL device to the root
->> port. The calculates values are stored in the cached DSMAS entries attached
->> to the cxl_port of the CXL device.
->>
->> For example for a device that is directly attached to a host bus:
->> Total Latency = Device Latency (from CDAT) + Dev to Host Bus (HB) Link
->> 		Latency
->> Min Bandwidth = Link Bandwidth between Host Bus and CXL device
->>
->> For a device that has a switch in between host bus and CXL device:
->> Total Latency = Device (CDAT) Latency + Dev to Switch Link Latency +
->> 		Switch (CDAT) Latency + Switch to HB Link Latency
-> 
-> For QTG purposes, are we also supposed to take into account HB to
-> system interconnect type latency (or maybe nearest CPU?).
-> That is likely to be non trivial.
+configs tested: 91
+configs skipped: 3
 
-Dan brought this ECN [1] to my attention. We can add this if we can find 
-a BIOS that implements the ECN. Or should we code a place holder for it 
-until this is available?
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-https://lore.kernel.org/linux-cxl/e1a52da9aec90766da5de51b1b839fd95d63a5af.camel@intel.com/
+gcc tested configs:
+alpha                             allnoconfig
+alpha                            allyesconfig
+alpha                               defconfig
+arc                               allnoconfig
+arc                              allyesconfig
+arc                                 defconfig
+arc                  randconfig-r043-20230212
+arc                  randconfig-r043-20230213
+arm                              allmodconfig
+arm                               allnoconfig
+arm                              allyesconfig
+arm                                 defconfig
+arm                            mps2_defconfig
+arm                          pxa910_defconfig
+arm                  randconfig-r046-20230212
+arm64                            allyesconfig
+arm64                               defconfig
+csky                                defconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                              debian-10.3
+i386                                defconfig
+i386                 randconfig-a011-20230213
+i386                 randconfig-a012-20230213
+i386                 randconfig-a013-20230213
+i386                 randconfig-a014-20230213
+i386                 randconfig-a015-20230213
+i386                 randconfig-a016-20230213
+ia64                             allmodconfig
+ia64                                defconfig
+loongarch                        allmodconfig
+loongarch                         allnoconfig
+loongarch                           defconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                       m5275evb_defconfig
+mips                             allmodconfig
+mips                             allyesconfig
+nios2                               defconfig
+parisc                              defconfig
+parisc64                         alldefconfig
+parisc64                            defconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+riscv                            allmodconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                randconfig-r042-20230213
+riscv                          rv32_defconfig
+s390                             allmodconfig
+s390                             allyesconfig
+s390                                defconfig
+s390                 randconfig-r044-20230213
+sh                               allmodconfig
+sh                ecovec24-romimage_defconfig
+sparc                               defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                            allnoconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                                  kexec
+x86_64               randconfig-a011-20230213
+x86_64               randconfig-a012-20230213
+x86_64               randconfig-a013-20230213
+x86_64               randconfig-a014-20230213
+x86_64               randconfig-a015-20230213
+x86_64               randconfig-a016-20230213
+x86_64                               rhel-8.3
 
-> 
->> Min Bandwidth = min(dev to switch bandwidth, switch to HB bandwidth)
->> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> 
-> Stray sign off.
-> 
->>
->> The internal latency for a switch can be retrieved from the CDAT of the
->> switch PCI device. However, since there's no easy way to retrieve that
->> right now on Linux, a guesstimated constant is used per switch to simplify
->> the driver code.
-> 
-> I'd like to see that gap closed asap. I think it is fairly obvious how to do
-> it, so shouldn't be too hard, just needs a dance to get the DOE for a switch
-> port using Lukas' updated handling of DOE mailboxes.
+clang tested configs:
+arm                          ixp4xx_defconfig
+arm                          moxart_defconfig
+arm                  randconfig-r046-20230213
+hexagon              randconfig-r041-20230212
+hexagon              randconfig-r041-20230213
+hexagon              randconfig-r045-20230212
+hexagon              randconfig-r045-20230213
+i386                 randconfig-a001-20230213
+i386                 randconfig-a002-20230213
+i386                 randconfig-a003-20230213
+i386                 randconfig-a004-20230213
+i386                 randconfig-a005-20230213
+i386                 randconfig-a006-20230213
+mips                          rm200_defconfig
+riscv                randconfig-r042-20230212
+s390                 randconfig-r044-20230212
+x86_64               randconfig-a001-20230213
+x86_64               randconfig-a002-20230213
+x86_64               randconfig-a003-20230213
+x86_64               randconfig-a004-20230213
+x86_64               randconfig-a005-20230213
+x86_64               randconfig-a006-20230213
 
-Talked to Lukas and this may not be difficult with his latest changes. I 
-can take a look. Do we support switch CDAT in QEMU yet?
-
-> 
->>
->> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
->> ---
->>   drivers/cxl/core/port.c |   60 +++++++++++++++++++++++++++++++++++++++++++++++
->>   drivers/cxl/cxl.h       |    9 +++++++
->>   drivers/cxl/port.c      |   42 +++++++++++++++++++++++++++++++++
->>   3 files changed, 111 insertions(+)
->>
->> diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
->> index 2b27319cfd42..aa260361ba7d 100644
->> --- a/drivers/cxl/core/port.c
->> +++ b/drivers/cxl/core/port.c
->> @@ -1899,6 +1899,66 @@ bool schedule_cxl_memdev_detach(struct cxl_memdev *cxlmd)
->>   }
->>   EXPORT_SYMBOL_NS_GPL(schedule_cxl_memdev_detach, CXL);
->>   
->> +int cxl_port_get_downstream_qos(struct cxl_port *port, long *bw, long *lat)
->> +{
->> +	long total_lat = 0, latency;
-> 
-> Similar to before, not good for readability to hide asignments in a list all on one line.
-> 
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
