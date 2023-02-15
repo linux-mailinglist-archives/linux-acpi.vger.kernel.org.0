@@ -2,118 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E364697BE1
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Feb 2023 13:35:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 936D3697CF5
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Feb 2023 14:17:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231872AbjBOMfG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Feb 2023 07:35:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52244 "EHLO
+        id S233726AbjBONRO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Feb 2023 08:17:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233934AbjBOMey (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Feb 2023 07:34:54 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9AB038641;
-        Wed, 15 Feb 2023 04:34:39 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6377161B9F;
-        Wed, 15 Feb 2023 12:34:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68EADC433EF;
-        Wed, 15 Feb 2023 12:34:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676464478;
-        bh=UdB5gcZ1ipRdvMF/VYd7e+V0Gy9qLJujvD96WZvS0NA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=DCpoOc8iHx3XcRwBSD1ZDGP40QOJqNIxZTP+CRuJvEBLFgtOvJHb1BxmmVQVfcWPz
-         DPq298F9sCKiTeahJyumwLmhzWr9yLHuVSt/Mq5h78veRLGCdNRsAQHf5/jlKiUChd
-         8no4Zb0DtNaYMe8Larvl6+gOzcfXADoQV3n31OpI37s4NQZPPzZ76+mFaeI75IShx0
-         fBSKmCTTMHdUu/uG4tD/KLRby5vMvJ7nwVoO2+s1CTjifo3P032eI5Pd6K3fCrMyho
-         +7hgd9oQhxO2zo08wGaCj5FxGS2syXQflakHSPJ4CtIOHS5c3xxNQmN6SuEQblgliV
-         KrB2+yr/wTnhQ==
-Date:   Wed, 15 Feb 2023 12:34:30 +0000
-From:   Jean-Philippe Brucker <jpb@kernel.org>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        Abel Vesa <abel.vesa@linaro.org>,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        John Stultz <jstultz@google.com>,
-        Doug Anderson <dianders@chromium.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Maxim Kiselev <bigunclemax@gmail.com>,
-        Maxim Kochetkov <fido_max@inbox.ru>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Colin Foster <colin.foster@in-advantage.com>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        kernel-team@android.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v3 00/12] fw_devlink improvements
-Message-ID: <Y+zRVsyZ2iJlrM8u@myrica>
-References: <20230207014207.1678715-1-saravanak@google.com>
+        with ESMTP id S231476AbjBONRN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Feb 2023 08:17:13 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F340C2528C;
+        Wed, 15 Feb 2023 05:17:09 -0800 (PST)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4PGz8X2tFFz6J9rm;
+        Wed, 15 Feb 2023 21:15:24 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.17; Wed, 15 Feb
+ 2023 13:17:07 +0000
+Date:   Wed, 15 Feb 2023 13:17:06 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Dave Jiang <dave.jiang@intel.com>
+CC:     <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>, <dan.j.williams@intel.com>,
+        <ira.weiny@intel.com>, <vishal.l.verma@intel.com>,
+        <alison.schofield@intel.com>, <rafael@kernel.org>,
+        <bhelgaas@google.com>, <robert.moore@intel.com>
+Subject: Re: [PATCH 13/18] cxl: Add latency and bandwidth calculations for
+ the CXL path
+Message-ID: <20230215131706.0000592d@Huawei.com>
+In-Reply-To: <8b2bbf7b-fe3f-c80b-163b-8247e0c47821@intel.com>
+References: <167571650007.587790.10040913293130712882.stgit@djiang5-mobl3.local>
+        <167571667794.587790.14172786993094257614.stgit@djiang5-mobl3.local>
+        <20230209152417.00007f47@Huawei.com>
+        <8b2bbf7b-fe3f-c80b-163b-8247e0c47821@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230207014207.1678715-1-saravanak@google.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Saravana,
+On Tue, 14 Feb 2023 16:03:27 -0700
+Dave Jiang <dave.jiang@intel.com> wrote:
 
-On Mon, Feb 06, 2023 at 05:41:52PM -0800, Saravana Kannan wrote:
-> Naresh, Tony, Abel, Geert, Dmitry, Maxim(s), Miquel, Luca, Doug, Martin,
-> Jean-Philippe,
+> On 2/9/23 8:24 AM, Jonathan Cameron wrote:
+> > On Mon, 06 Feb 2023 13:51:19 -0700
+> > Dave Jiang <dave.jiang@intel.com> wrote:
+> >   
+> >> CXL Memory Device SW Guide rev1.0 2.11.2 provides instruction on how to
+> >> caluclate latency and bandwidth for CXL memory device. Calculate minimum  
+> > 
+> > Spell check your descriptions (I often forget to do this as well!
+> > )  
+> >> bandwidth and total latency for the path from the CXL device to the root
+> >> port. The calculates values are stored in the cached DSMAS entries attached
+> >> to the cxl_port of the CXL device.
+> >>
+> >> For example for a device that is directly attached to a host bus:
+> >> Total Latency = Device Latency (from CDAT) + Dev to Host Bus (HB) Link
+> >> 		Latency
+> >> Min Bandwidth = Link Bandwidth between Host Bus and CXL device
+> >>
+> >> For a device that has a switch in between host bus and CXL device:
+> >> Total Latency = Device (CDAT) Latency + Dev to Switch Link Latency +
+> >> 		Switch (CDAT) Latency + Switch to HB Link Latency  
+> > 
+> > For QTG purposes, are we also supposed to take into account HB to
+> > system interconnect type latency (or maybe nearest CPU?).
+> > That is likely to be non trivial.  
 > 
-> Can I get your Tested-by's for this v3 series please?
+> Dan brought this ECN [1] to my attention. We can add this if we can find 
+> a BIOS that implements the ECN. Or should we code a place holder for it 
+> until this is available?
+> 
+> https://lore.kernel.org/linux-cxl/e1a52da9aec90766da5de51b1b839fd95d63a5af.camel@intel.com/
 
-Sorry for the delay (I misconfigured my inbox). I tested virtio-iommu with
-these changes, no regression:
+I've had Generic Ports on my list to add to QEMU for a while but not been
+high enough priority to either do it myself, or make it someone else's problem.
+I suspect the biggest barrier in QEMU is going to be the interface to add
+these to the NUMA description.
 
-Tested-by: Jean-Philippe Brucker <jpb@kernel.org>
+It's easy enough to hand build and inject a SRAT /SLIT/HMAT tables with
+these in (that's how we developed the Generic Initiator support in Linux before
+any BIOS support).  
 
+So I'd like to see it soon, but I'm not hugely bothered if that element
+follows this patch set. However, we are potentially going to see different
+decisions made when that detail is added so it 'might' count as ABI
+breakage if it's not there from the start. I think we are fine as probably
+no BIOS' yet though.
 
-Removing driver_deferred_probe_check_state() by reverting [1] breaks
-loading virtio-iommu as a module, as the dependency between PCI devices
-and PCI IOMMU is ignored, and the device probed too early [2]. I'll try to
-figure out how to make that work.
+> 
+> >   
+> >> Min Bandwidth = min(dev to switch bandwidth, switch to HB bandwidth)
+> >> Signed-off-by: Dave Jiang <dave.jiang@intel.com>  
+> > 
+> > Stray sign off.
+> >   
+> >>
+> >> The internal latency for a switch can be retrieved from the CDAT of the
+> >> switch PCI device. However, since there's no easy way to retrieve that
+> >> right now on Linux, a guesstimated constant is used per switch to simplify
+> >> the driver code.  
+> > 
+> > I'd like to see that gap closed asap. I think it is fairly obvious how to do
+> > it, so shouldn't be too hard, just needs a dance to get the DOE for a switch
+> > port using Lukas' updated handling of DOE mailboxes.  
+> 
+> Talked to Lukas and this may not be difficult with his latest changes. I 
+> can take a look. Do we support switch CDAT in QEMU yet?
 
-Thanks,
-Jean
+I started typing no, then thought I'd just check.  Seems I did write support
+for CDAT on switches (and then completely forgot about it ;)
+It's upstream and everything!
+https://elixir.bootlin.com/qemu/latest/source/hw/pci-bridge/cxl_upstream.c#L194
 
-[1] https://lore.kernel.org/lkml/20220819221616.2107893-5-saravanak@google.com/
-[2] https://lore.kernel.org/lkml/Yv+dpeIPvde7oDHi@myrica/
