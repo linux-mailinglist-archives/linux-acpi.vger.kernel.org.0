@@ -2,156 +2,152 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A109069800F
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Feb 2023 17:00:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C78069810A
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Feb 2023 17:39:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229932AbjBOQAE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Feb 2023 11:00:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46802 "EHLO
+        id S229596AbjBOQjD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Feb 2023 11:39:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229940AbjBOQAD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Feb 2023 11:00:03 -0500
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 594FA3A86E;
-        Wed, 15 Feb 2023 07:59:50 -0800 (PST)
+        with ESMTP id S229674AbjBOQjC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Feb 2023 11:39:02 -0500
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C9D03432B;
+        Wed, 15 Feb 2023 08:38:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676476790; x=1708012790;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rFzlPJjklUrRYXlztiXxbWF4vZTLJe24dy5KZSKBFTU=;
-  b=a2QbX3wd6aUC0XQJ2qfsU00tzCVvCSv9F3xqk4Z83a8t6xUnXvoVdf4i
-   NBxzdPdWCGWw2G0+a2FRuc48aS6+5zJjMUsAUU4x7VaRvR1kt0dzcZeE4
-   jHo1zYFgV07HaGAbi4BPBks+qZO9fn82e64Aa8yl7lKBMwgcsv+zV9IxW
-   OiuiwgzZBscUVew/h/YbZuv2dJSiEXos8iy5r5aT66TiKYAAe654m+i11
-   7/wVHEjSAu+ZufvrTjIJdAAaHjX6IYCkPCwqy3u3/8UDxpT3SMTZUn4cD
-   5pGtrG081KVPyAUVsBJtZcBo/nzky/lMvsHKB6yLBlnvLINeQJm0/k0wE
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10622"; a="331461160"
+  t=1676479135; x=1708015135;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=SA6yZ1GuWbNnqcPK4T064NP2+l9OXsQyEUrjHXqnI2Y=;
+  b=QkBPVo1l4eFDIis4xhnGYEzybT9Jxs+beJvW2zOSdFfspbgU/9JmUo3b
+   BeaqZUb4ffdubmU9ooTXm+AcPfndzT4mQpe01UtUhV+NZgm5nXQqd10yv
+   mKw6UG2LuEPAF/EcSCbCnKgn8SoHFxWNJwY72R9FSwzGKTOJAzqZKjI9P
+   yzXDix42CPymBA5daEX/N8iCh79jxRraS7/NKm2hOrHI5EIaL0QqJrbck
+   xfoCT3jyuioCYwrAofPXKmaxkJoRJcJ+jgclnC9ZxrVn88SV+oqEKMWZF
+   N+fHwEJ3hoGSdjcPUVsW3dSlJCTWYZpJx9Db0nAzl40A5VwlJGJdGRSSo
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10622"; a="311838684"
 X-IronPort-AV: E=Sophos;i="5.97,300,1669104000"; 
-   d="scan'208";a="331461160"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2023 07:59:49 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10622"; a="700017813"
+   d="scan'208";a="311838684"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2023 08:38:54 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10622"; a="812525207"
 X-IronPort-AV: E=Sophos;i="5.97,300,1669104000"; 
-   d="scan'208";a="700017813"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga008.jf.intel.com with ESMTP; 15 Feb 2023 07:59:31 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pSKBp-007KF7-0b;
-        Wed, 15 Feb 2023 17:59:25 +0200
-Date:   Wed, 15 Feb 2023 17:59:24 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
-        Devarsh Thakkar <devarsht@ti.com>,
-        Michael Walle <michael@walle.cc>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Dipen Patel <dipenp@nvidia.com>,
-        Thierry Reding <treding@nvidia.com>,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Lee Jones <lee@kernel.org>, linux-gpio@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-doc-tw-discuss@lists.sourceforge.net,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-arch@vger.kernel.org,
-        devicetree@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Alex Shi <alexs@kernel.org>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Hu Haowen <src.res@email.cn>,
-        Russell King <linux@armlinux.org.uk>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Mun Yew Tham <mun.yew.tham@intel.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alexander Aring <alex.aring@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>
-Subject: Re: [PATCH v4 00/18] gpiolib cleanups
-Message-ID: <Y+0BXGLf2n+dAi4v@smile.fi.intel.com>
-References: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com>
- <CAMRc=MdsCZKh12QcqdWk+Zht5UDpA_G1+rx6+_3dzwjDYe6L+Q@mail.gmail.com>
+   d="scan'208";a="812525207"
+Received: from djiang5-mobl3.amr.corp.intel.com (HELO [10.212.39.121]) ([10.212.39.121])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2023 08:38:54 -0800
+Message-ID: <6c15f65d-d007-ff7e-55c7-a1c120ac1c62@intel.com>
+Date:   Wed, 15 Feb 2023 09:38:53 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMRc=MdsCZKh12QcqdWk+Zht5UDpA_G1+rx6+_3dzwjDYe6L+Q@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.6.0
+Subject: Re: [PATCH 13/18] cxl: Add latency and bandwidth calculations for the
+ CXL path
+Content-Language: en-US
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, dan.j.williams@intel.com,
+        ira.weiny@intel.com, vishal.l.verma@intel.com,
+        alison.schofield@intel.com, rafael@kernel.org, bhelgaas@google.com,
+        robert.moore@intel.com
+References: <167571650007.587790.10040913293130712882.stgit@djiang5-mobl3.local>
+ <167571667794.587790.14172786993094257614.stgit@djiang5-mobl3.local>
+ <20230209152417.00007f47@Huawei.com>
+ <8b2bbf7b-fe3f-c80b-163b-8247e0c47821@intel.com>
+ <20230215131706.0000592d@Huawei.com>
+From:   Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20230215131706.0000592d@Huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 15, 2023 at 04:52:29PM +0100, Bartosz Golaszewski wrote:
-> On Wed, Feb 8, 2023 at 6:34 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> >
-> > These are some older patches Arnd did last year, rebased to
-> > linux-next-20230208. On top there are Andy's patches regarding
-> > similar topic. The series starts with Linus Walleij's patches.
-> >
-> > The main goal is to remove some of the legacy bits of the gpiolib
-> > interfaces, where the corner cases are easily avoided or replaced
-> > with gpio descriptor based interfaces.
-> >
-> > The idea is to get an immutable branch and route the whole series
-> > via GPIO tree.
+
+
+On 2/15/23 6:17 AM, Jonathan Cameron wrote:
+> On Tue, 14 Feb 2023 16:03:27 -0700
+> Dave Jiang <dave.jiang@intel.com> wrote:
 > 
-> Andy,
+>> On 2/9/23 8:24 AM, Jonathan Cameron wrote:
+>>> On Mon, 06 Feb 2023 13:51:19 -0700
+>>> Dave Jiang <dave.jiang@intel.com> wrote:
+>>>    
+>>>> CXL Memory Device SW Guide rev1.0 2.11.2 provides instruction on how to
+>>>> caluclate latency and bandwidth for CXL memory device. Calculate minimum
+>>>
+>>> Spell check your descriptions (I often forget to do this as well!
+>>> )
+>>>> bandwidth and total latency for the path from the CXL device to the root
+>>>> port. The calculates values are stored in the cached DSMAS entries attached
+>>>> to the cxl_port of the CXL device.
+>>>>
+>>>> For example for a device that is directly attached to a host bus:
+>>>> Total Latency = Device Latency (from CDAT) + Dev to Host Bus (HB) Link
+>>>> 		Latency
+>>>> Min Bandwidth = Link Bandwidth between Host Bus and CXL device
+>>>>
+>>>> For a device that has a switch in between host bus and CXL device:
+>>>> Total Latency = Device (CDAT) Latency + Dev to Switch Link Latency +
+>>>> 		Switch (CDAT) Latency + Switch to HB Link Latency
+>>>
+>>> For QTG purposes, are we also supposed to take into account HB to
+>>> system interconnect type latency (or maybe nearest CPU?).
+>>> That is likely to be non trivial.
+>>
+>> Dan brought this ECN [1] to my attention. We can add this if we can find
+>> a BIOS that implements the ECN. Or should we code a place holder for it
+>> until this is available?
+>>
+>> https://lore.kernel.org/linux-cxl/e1a52da9aec90766da5de51b1b839fd95d63a5af.camel@intel.com/
 > 
-> looks like this series has all the acks it needs but I decided to not
-> send it in the upcoming merge window, I'd prefer it gets some time in
-> next so I'll let it sit until the next release cycle.
-
-Ah, I forgot to mention that this is for the next cycle (v6.4).
-Hence it's fine. (Moreover it's based on Linux Next, so it will
-fail compilation in any certain tree except that one.)
-
-I will create an immutable branch after v6.3-rc1 is out.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> I've had Generic Ports on my list to add to QEMU for a while but not been
+> high enough priority to either do it myself, or make it someone else's problem.
+> I suspect the biggest barrier in QEMU is going to be the interface to add
+> these to the NUMA description.
+> 
+> It's easy enough to hand build and inject a SRAT /SLIT/HMAT tables with
+> these in (that's how we developed the Generic Initiator support in Linux before
+> any BIOS support).
+> 
+> So I'd like to see it soon, but I'm not hugely bothered if that element
+> follows this patch set. However, we are potentially going to see different
+> decisions made when that detail is added so it 'might' count as ABI
+> breakage if it's not there from the start. I think we are fine as probably
+> no BIOS' yet though.
+> 
+>>
+>>>    
+>>>> Min Bandwidth = min(dev to switch bandwidth, switch to HB bandwidth)
+>>>> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+>>>
+>>> Stray sign off.
+>>>    
+>>>>
+>>>> The internal latency for a switch can be retrieved from the CDAT of the
+>>>> switch PCI device. However, since there's no easy way to retrieve that
+>>>> right now on Linux, a guesstimated constant is used per switch to simplify
+>>>> the driver code.
+>>>
+>>> I'd like to see that gap closed asap. I think it is fairly obvious how to do
+>>> it, so shouldn't be too hard, just needs a dance to get the DOE for a switch
+>>> port using Lukas' updated handling of DOE mailboxes.
+>>
+>> Talked to Lukas and this may not be difficult with his latest changes. I
+>> can take a look. Do we support switch CDAT in QEMU yet?
+> 
+> I started typing no, then thought I'd just check.  Seems I did write support
+> for CDAT on switches (and then completely forgot about it ;)
+> It's upstream and everything!
+> https://elixir.bootlin.com/qemu/latest/source/hw/pci-bridge/cxl_upstream.c#L194
+> 
+Awesome! I'll go poke around a bit. Also it's very helpful to see the 
+creation code. Helped me realize that I need to support parsing of 
+SSLBIS sub-table for switches. Thanks!
