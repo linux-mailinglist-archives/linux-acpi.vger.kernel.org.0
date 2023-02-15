@@ -2,120 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E262769797D
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Feb 2023 11:03:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43EFC6979A6
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Feb 2023 11:17:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233456AbjBOKDv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Feb 2023 05:03:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35726 "EHLO
+        id S233857AbjBOKRk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Feb 2023 05:17:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233108AbjBOKDp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Feb 2023 05:03:45 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D79BD3757B;
-        Wed, 15 Feb 2023 02:03:31 -0800 (PST)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4PGtp0322Dz6J67P;
-        Wed, 15 Feb 2023 17:59:04 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.17; Wed, 15 Feb
- 2023 10:03:28 +0000
-Date:   Wed, 15 Feb 2023 10:03:27 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Gregory Price <gregory.price@memverge.com>
-CC:     Dan Williams <dan.j.williams@intel.com>,
-        <linux-cxl@vger.kernel.org>, David Hildenbrand <david@redhat.com>,
-        Kees Cook <keescook@chromium.org>, <stable@vger.kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Michal Hocko <mhocko@suse.com>, <linux-mm@kvack.org>,
-        <linux-acpi@vger.kernel.org>, <qemu-devel@nongnu.org>
-Subject: Re: [PATCH 00/18] CXL RAM and the 'Soft Reserved' => 'System RAM'
- default
-Message-ID: <20230215100327.0000728f@Huawei.com>
-In-Reply-To: <Y+wC+rPRbAc9rudx@memverge.com>
-References: <167564534874.847146.5222419648551436750.stgit@dwillia2-xfh.jf.intel.com>
-        <Y+vSj8FD6ZaHhfoN@memverge.com>
-        <63ebd56e639e9_32d61294f4@dwillia2-xfh.jf.intel.com.notmuch>
-        <Y+vag3hg3VRNRUti@memverge.com>
-        <20230214211824.00007f91@Huawei.com>
-        <Y+wCeSig++c3ACkj@memverge.com>
-        <Y+wC+rPRbAc9rudx@memverge.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S229578AbjBOKRj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Feb 2023 05:17:39 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BF9CF22A34;
+        Wed, 15 Feb 2023 02:17:37 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D0C981042;
+        Wed, 15 Feb 2023 02:18:19 -0800 (PST)
+Received: from bogus (unknown [10.57.10.143])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2CECC3F663;
+        Wed, 15 Feb 2023 02:17:36 -0800 (PST)
+Date:   Wed, 15 Feb 2023 10:17:32 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Elliot Berman <quic_eberman@quicinc.com>
+Cc:     Jassi Brar <jassisinghbrar@gmail.com>,
+        linux-kernel@vger.kernel.org, Sudeep Holla <sudeep.holla@arm.com>,
+        linux-acpi@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH 0/3] mailbox: Allow direct registration to a channel
+Message-ID: <20230215101732.pbpom3ub3yh75n4w@bogus>
+References: <20230213232537.2040976-1-quic_eberman@quicinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230213232537.2040976-1-quic_eberman@quicinc.com>
 X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 14 Feb 2023 16:54:02 -0500
-Gregory Price <gregory.price@memverge.com> wrote:
-
-> On Tue, Feb 14, 2023 at 04:51:53PM -0500, Gregory Price wrote:
-> > On Tue, Feb 14, 2023 at 09:18:24PM +0000, Jonathan Cameron wrote:  
-> > > On Tue, 14 Feb 2023 14:01:23 -0500
-> > > Gregory Price <gregory.price@memverge.com> wrote:
-> > > 
-> > > Could you test it with TCG (just drop --enable-kvm)?  We have a known
-> > > limitation with x86 instructions running out of CXL emulated memory
-> > > (side effect of emulating the interleave).  You'll need a fix even on TCG
-> > > for the corner case of an instruction bridging from normal ram to cxl memory.
-> > > https://lore.kernel.org/qemu-devel/20230206193809.1153124-1-richard.henderson@linaro.org/
-> > > 
-> > > Performance will be bad, but so far this is only way we can do it correctly.
-> > > 
-> > > Jonathan
-> > >   
-> > 
-> > Siiiggghh... i had this patch and dropped --enable-kvm, but forgot to
-> > drop "accel=kvm" from the -machine line
-> > 
-> > This was the issue.
-> > 
-> > And let me tell you, if you numactl --membind=1 python, it is
-> > IMPRESSIVELY slow.  I wonder if it's even hitting a few 100k
-> > instructions a second.
-> > 
-> > 
-> > This appears to be the issue.  When I get a bit more time, try to dive
-> > into the deep dark depths of qemu memory regions to see how difficult
-> > a non-mmio fork might be, unless someone else is already looking at it.
-> > 
-> > ~Gregory  
+On Mon, Feb 13, 2023 at 03:25:34PM -0800, Elliot Berman wrote:
+> Two mailbox controllers have channel/client binding mechanisms that are
+> controller-specific and not using the devicetree binding mechanisms. Mailbox
+> channel/client is conceptually done in two steps: selecting the channel
+> and binding the selected to channel to a client. Channel selection is sometimes
+> controller specific (pcc and omap are examples). The channel/client binding
+> code is all the same.
 > 
-> Just clarifying one thing:  Even with the patch, KVM blows up.
-> Disabling KVM fixes this entirely.  I haven't tested without KVM but
-> with the patch, i will do that now.
+> This small series de-duplicates and refactors the channel/client binding
+> into a common framework function: "mbox_bind_client" which all of the
+> channel selection mechanisms can use.
+> 
+> I found this duplicate code while working on the support for Gunyah hypervisor
+> message queues [1]. I've only been able to compile-test omap-maiblox and pcc,
+> however it is a straightforward conversion here.
+> 
+> [1]: https://lore.kernel.org/all/20230120224627.4053418-9-quic_eberman@quicinc.com/
+> 
+> Elliot Berman (3):
+>   mailbox: Allow direct registration to a channel
 
-yup.  The patch only fixes TCG so that's expected behavior.
+I am unable to find the above patch either in my inbox or in lore[1].
+Can you please repost the same ? I would like to test/review w.r.t PCC
+driver.
 
-Fingers crossed on this 'working'.
+--
+Regards,
+Sudeep
 
-I'm open to suggestions on how to work around the problem with KVM
-or indeed allow TCG to cache the instructions (right not it has
-to fetch and emulate each instruction on it's own).
+[1] https://lore.kernel.org/all/20230213232537.2040976-1-quic_eberman@quicinc.com/
 
-I can envision how we might do it for KVM with userspace page fault handling
-used to get a fault up to QEMU which can then stitch in a cache
-of the underlying memory as a stage 2 translation to the page (a little
-bit like how post migration copy works) though I've not prototyped
-anything...
-
-I think it would be complex code that would be little used
-so we may just have to cope with the emulation being slow.
-
-Intent is very much to be able to test the kernel code etc, not
-test it quickly :)
-
-Jonathan
