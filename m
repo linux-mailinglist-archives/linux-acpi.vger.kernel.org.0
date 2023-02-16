@@ -2,133 +2,194 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AC44699B8E
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Feb 2023 18:51:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FACF699C05
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Feb 2023 19:20:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229943AbjBPRvB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Feb 2023 12:51:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33064 "EHLO
+        id S229842AbjBPSUy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Feb 2023 13:20:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229932AbjBPRvA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Feb 2023 12:51:00 -0500
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2066.outbound.protection.outlook.com [40.107.92.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 962D54CC86;
-        Thu, 16 Feb 2023 09:50:58 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Zse8E4DK6MNrWnkjl9FSj60BY3huU3rdZwMBBN764xDaG3a/BoiDROn3+CiIb8+j33XoKucCxKTRAutVHH4IV/QRKro3qGsZn6TsO+zIkhV5UG4eaIw/cmz42UMjaABn8Jfb4kDrqNweXsDfYMmZ77a03DGxEn2Z/XIcheIP4mk5rrT5o+SYvQ1+8/4LEuPMKrtYyp/4zGnHo0bKD9X6dFFnIJ8atspyd9LPiIqgKRbMtlOuae+ZlykPxcHCSD2YtR7E5me6d02itQ3fG7FQs7jgnOpf9lh248ti+XuT7+i31t9uyLxr9MjepqbSwG8s2n+gPydfPgniVFoGPhTzXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=17a0sZ/zSE44PKdqss+Gtboc0d3CSx3qBQzzoUPZT/4=;
- b=bOQWwXZc9q1VkE+n+dCfo1sfa5mrGE2Jl/AJ+lZEyUuKQmM+9mZzzo9zbdJHBkK6LwzjRULB3RFa4rUoLavCUiSblxrEtZbwv6051Vmkwn2x6vOlT+nivkeYRyTwvle+gqyxLXeg2P+hVZwrSLJE0MrxZgYhwsV/8HRzgx0CHwfOZyHUuAJAXpTPXI2Mx6fe0eSseSVpa+idWtb6ITJVEBIBFSRU6W8jWRC2zzu6aDpBO7VtkKiSpUqoq7IUY3eCayvWtC+Qj09vThfPTnITH3ZrKhHKvbBRZd2vcId14Zqfl8blE6Pe1J4AAay3XMyaZ6UT7WcFIFeIrk7SrWbbEQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=17a0sZ/zSE44PKdqss+Gtboc0d3CSx3qBQzzoUPZT/4=;
- b=i8xG3FURwDj0Cp+iXnDoZ4lTuKhsJrdCzW2zjMWdLo2rg4EYxB7AZbru1C+CVRmvt0xWtZuZTDuTgEnzD4V73w7pEdfkcl56Jd+7j3ADvI/nzlOD0+IDbukTVswJ4bDxQhOMxBzRDu/JncSjMkuSpqoxXTBmzMppJ6ZZUa5vL2owAaS4i8Khg514OT6Prm2pXg9H8Ds2QxxyaXtUw4gB41OFbw83zXDxOtPEXOYp86W08hLv4bLXpmQGf6iMlzBKSyPBC9X3TlHLaGDEbtVv2uQTo1Lf2Nk7BvjoIBPk4CFYPgt/i7EIsyJRAywQZ6ZhPGZg/WdCCPJ6UsSuMyWZUw==
-Received: from CH2PR12MB3895.namprd12.prod.outlook.com (2603:10b6:610:2a::13)
- by DS7PR12MB6069.namprd12.prod.outlook.com (2603:10b6:8:9f::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6086.24; Thu, 16 Feb
- 2023 17:50:56 +0000
-Received: from CH2PR12MB3895.namprd12.prod.outlook.com
- ([fe80::5f35:2f2d:94a4:f7c3]) by CH2PR12MB3895.namprd12.prod.outlook.com
- ([fe80::5f35:2f2d:94a4:f7c3%4]) with mapi id 15.20.6086.026; Thu, 16 Feb 2023
- 17:50:56 +0000
-From:   Asmaa Mnebhi <asmaa@nvidia.com>
-To:     Andy Shevchenko <andriy.shevchenko@intel.com>
-CC:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: RE: [PATCH v3 2/2] Support NVIDIA BlueField-3 pinctrl driver
-Thread-Topic: [PATCH v3 2/2] Support NVIDIA BlueField-3 pinctrl driver
-Thread-Index: AQHZPWNgHTU9nf1rdE+MpmBAnswWQK7JpLUAgAg7eVA=
-Date:   Thu, 16 Feb 2023 17:50:56 +0000
-Message-ID: <CH2PR12MB38957ADFF0519278F33E9D57D7A09@CH2PR12MB3895.namprd12.prod.outlook.com>
-References: <cover.1676042188.git.asmaa@nvidia.com>
- <acd85e20d3e8d45ce3254e6ffe5ad2b5039b1a34.1676042188.git.asmaa@nvidia.com>
- <Y+eCNEHcmo4qapcI@smile.fi.intel.com>
-In-Reply-To: <Y+eCNEHcmo4qapcI@smile.fi.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH2PR12MB3895:EE_|DS7PR12MB6069:EE_
-x-ms-office365-filtering-correlation-id: 2da473cc-3e16-4595-f5fd-08db10465b22
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Rnmjz1h+BurkvbyUybPnuiL7UHS4LbnudvkG40JFEYM8s/V/rEXYHHnWcvufys+A15fdIkufOsRt+FZlo62RIYvfAAb1VmPMKVH+Duhr6NliFmJQnnF4Z4uCraNdPj6IiWoofZ7P+LHP3GJJG/D2wcAaQ1+aG7H5LQea/+msCLIUIzTQAnoYJMMBdBOVyqMi/q+nvtFlo2Z5b7/w7uQH+0bqZmN+dls3EozJ1Du2A5UH5/aZjl5PfMnwAcxDsXGpxu2SNFFm91UAiTK9B5eLMF2KURnzN1+GF8zlIaFoJj/qrVoUFnsdbbmDXmTULO304MPp5zpqcNraMOyiIw1IJxC6L4opSt0oYpbtfHglf07molK20lHEEwndbycnjs0y6IXRzo066it5HCND3/xE7hL9tVie4G2xsBO7mPZcln3GT4F+FoyDhHNLXU7IRPFITeCgJ3/Tzzm3tjqjie3pjebxaa8O8yOyHrq5oeZ4ZHen6wCBy0MURHkxagPwixbkfSn088uLuxx+iRAwLYdHhn/LlLFxczTFLMGcNZUccCksKuzt5qQ0Xmh8KGW5RLwLxEOXFoQnqVHbv6nCGPLgVzzh+1x+CVQWPK4bgtc4JZorargrjNCAvHgR64K2YXnsuUEYBS2zxyCZ/xLe2bEFrPSNycrx4YdJR6u5OR8djd1QlPTea0a6HvM9VcNRKNKZacV38/nN7+dinNDUe3r26Q==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3895.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(366004)(346002)(136003)(396003)(39860400002)(376002)(451199018)(54906003)(186003)(4326008)(478600001)(8676002)(6916009)(52536014)(26005)(5660300002)(86362001)(9686003)(66476007)(66946007)(8936002)(66556008)(64756008)(76116006)(316002)(66446008)(4744005)(33656002)(38100700002)(38070700005)(55016003)(6506007)(7696005)(41300700001)(71200400001)(122000001)(2906002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?LaPByRHGKORV+WWkRyLKN8UhuZjhGlYkHi2zvQu3weF13jFWkkok5/WmThtj?=
- =?us-ascii?Q?IA0p6lS1hxwmPdmAws3C/A4yxMnYGcou+eww4Qd6nTdERAerG2ZIB0OB6dxN?=
- =?us-ascii?Q?keeE1Pc+zLwEqM7xSSPgBgkLv3LBnFhMJ/QEKVxkTXJHTcXJDMxGghBsImAW?=
- =?us-ascii?Q?UzUuEeLLHQ4hCYwr6XbcxB2Og4rx/SpJe5Qj2Krmmo2ZDYKEbZedZK3Pa+pL?=
- =?us-ascii?Q?TKkC+mvOVwUm5cxW9QsFh4EHkiqK+FzactaJrXAwK4UBDtG/ydyO81OzkJx+?=
- =?us-ascii?Q?Pa+M8yaeJ2WFH/8JSMe3XwZObgS2sUfLt5eReuti2t/4IQVm/nbAS8RVZAR5?=
- =?us-ascii?Q?qBGSWtDlRYg02xn9geU/9ZRMrUMuCwvMdee8oPz9g+n87LrmY1h/rahGpyGv?=
- =?us-ascii?Q?OYVlbRgBR7cOeS9ktcPNIpFu0PdWaqdSX+C0meJB9hfWC76CnP54k78AUl8z?=
- =?us-ascii?Q?vb9dYIT5PRCgJhc6SSOZmmbU+X763CHMGhFWyDhetYfxTZwt3O4YoRpwiIca?=
- =?us-ascii?Q?1/UsZ7d95xF6/vjdW/4AHuUc9ILWNrkjxfV14egRwn/m9YZ81W+kKvJVGceg?=
- =?us-ascii?Q?w9mwvnmK0+sDnkMYOqazYV+PVQpl3jPz5u8cEwxiNKEPBZWojMV+LLiB6gmI?=
- =?us-ascii?Q?vgYbtcU2akwAQiDWrQwLOYpZ46TZ2uLIuKygPVuy3FgB8E3HmANfVh19TbDp?=
- =?us-ascii?Q?VA7F8ur2wqfTI2nNHx3PtnwRCDBqBbhS8o/vBdEQZYH32K135Mbx4mvkT15n?=
- =?us-ascii?Q?3g8YbUNVf4+qLrItitrcP/4vXKXkrrQZw83KXpF+37rT15cI/P++CzUTSRYH?=
- =?us-ascii?Q?9kamJhGnUH9hvjHK1B9N0MRew3Xxb4vUWCvhZG8IU91w9gnOMJELp7VgGbZc?=
- =?us-ascii?Q?9OZKYmARndD0W5SrEYuIoIFQF8nhpov4CEplXuNo5BX0+yfMD/u5LREIDC50?=
- =?us-ascii?Q?W1yetnsH3NkVBQdOeNCJpmQf16XowMomlIdQ4xEkWZeu0SeLURWQRl2WXjzO?=
- =?us-ascii?Q?ptJxL3BTj8a0S2+ETQa2Gl2sYpWzjnSHEEtQxnieuhjT4IMApS0g9cX98iOV?=
- =?us-ascii?Q?LEMQbqoGqWo5SqAkgj4tlOyblTyxWaBQoQ96eait6lWEVPYIwAE2Z5LFaohc?=
- =?us-ascii?Q?Idp6yCsJfwAO8TJEkkOGj3s3raP5MflspQ+q2L4de6Nbbm4Cs++B7Aj7eUGX?=
- =?us-ascii?Q?R4bUalTzliHPyhehDsNV+s995kToTQOuuydKOj7dk1a8tpie7rftQsss0kDN?=
- =?us-ascii?Q?aqWV+zlOSJev41WSU3YqfDfrogYTnvla4BqPWWN2tCysHL3ZuGwiIaD2IsDo?=
- =?us-ascii?Q?E3BqkAmT21vKvWl0JfTyBcPwlxG5BOUOc2A6JJqzpaNitZNBScc2kDGbYvti?=
- =?us-ascii?Q?KRxqit5idHFrXT5XSHT/cCtb2RV81EySC2sXv0aEzPGhHhMrvk+5GPEYKpGm?=
- =?us-ascii?Q?TRe5COXOgPKhGm1OENWbO+nWjmKtATmkxqH9Yp8g5MmR0g9HBwe8aiDyN7NI?=
- =?us-ascii?Q?CVNyX1fDAfu5GFbkjGxjQBon8Rg/ihCM7Mz7dEIOZkhHDITwuF/IR+pHC5Y5?=
- =?us-ascii?Q?j59NuB8/Ca0bmtJQ4K0=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S229699AbjBPSUx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Feb 2023 13:20:53 -0500
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5948B50AD8
+        for <linux-acpi@vger.kernel.org>; Thu, 16 Feb 2023 10:20:52 -0800 (PST)
+Received: by mail-pl1-x62f.google.com with SMTP id r8so2953147pls.2
+        for <linux-acpi@vger.kernel.org>; Thu, 16 Feb 2023 10:20:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MgvYXC/YwJq34AMN9II76hX03Nd4KT2jWXyTADHEnv4=;
+        b=pdNcm8bSgevrSaZy31y3t4t9v1m4YYznVaEm0s/HBgp1I1aMx3aOngBEWd5qngNxDG
+         /AF60Dlr9YvAxjoM/qhbuFnaBjY/diBQAQPsSQ6uTJmZ9I+F61Ki+7BdrNK/j5A4ewhs
+         gywSqXhU1JMXs7GTmVgaASC9eC5Tp7QFdtFRZ+fPLnAB/2KmkUIUJQ2c4TWHMzPPzOq7
+         GiId2YGRBXT5KdqUrIEfj9F92Mw2gNm0gyRKsobkRFw1z1Vb2loISbb6xdLLROKcI64t
+         35sAKjUm/pS00cyYnoSffxHGr2cEeezy00q26I4DuFUSlso3FlcMiuw6Q/eCaRwuArNs
+         MQDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MgvYXC/YwJq34AMN9II76hX03Nd4KT2jWXyTADHEnv4=;
+        b=jIYbOFYw3yBf0I2b0M0xwycJpRqIBkn0IZOBdXDPHcG+N+TKUEdkCetZkipfTbLpxF
+         hkKK+P9qnN96Uxgd1V1ymoyqLLr0HJGk5fLJeTTyGsbifr5fTt/S7mXctD3AbypnUrNx
+         ku4YZmG1e8IC/jZc3NPzapt+jRPBElab1akufptpNNXz0hvehUOQv1vyEhnHgXWjsOzY
+         q3/Uo78OhxztCv4A5n9QNcqLbBJmaIAg16ZurMZbjLEV7RzqACRV8e9I+CfARSRa9WHl
+         m1w1eUXb3YMY8EtWlwVAJdLRCXJqXg279iI1t4gjte04AQQIZ0ALt6hGL0puME3Xl2/N
+         v4nw==
+X-Gm-Message-State: AO0yUKV81LYfXWb8MdZ4D82nEJ2SspeHQ4SU/ndbRc0/hrh2yt+rJrrj
+        vgZfqIHBwNYhcZ06tjcSudLD3w==
+X-Google-Smtp-Source: AK7set9ADd0lkOoShwpMoMr1ZMdv/q6YpixBWzT32AwgiQCDHW12Oh4+5ycBen8zn5TAT5BA/CaSoQ==
+X-Received: by 2002:a17:90a:35d:b0:233:c301:32c5 with SMTP id 29-20020a17090a035d00b00233c30132c5mr7904526pjf.45.1676571651833;
+        Thu, 16 Feb 2023 10:20:51 -0800 (PST)
+Received: from kerodi.Dlink ([49.206.14.226])
+        by smtp.gmail.com with ESMTPSA id n21-20020a637215000000b004dff15fc121sm1517574pgc.36.2023.02.16.10.20.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Feb 2023 10:20:51 -0800 (PST)
+From:   Sunil V L <sunilvl@ventanamicro.com>
+To:     Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+Cc:     linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Andrew Jones <ajones@ventanamicro.com>,
+        Anup Patel <apatel@ventanamicro.com>,
+        Atish Patra <atishp@rivosinc.com>,
+        Sunil V L <sunilvl@ventanamicro.com>
+Subject: [PATCH V2 00/21] Add basic ACPI support for RISC-V
+Date:   Thu, 16 Feb 2023 23:50:22 +0530
+Message-Id: <20230216182043.1946553-1-sunilvl@ventanamicro.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3895.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2da473cc-3e16-4595-f5fd-08db10465b22
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Feb 2023 17:50:56.5361
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: CeJbOfIoruexEJXlUZLByzZrd+C42RfDr4/mdi/NPmKzL8nXbTiSDAO75b2BJXUif55W2k4gA2EQyIsAplFhEA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6069
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> +config PINCTRL_MLXBF
-> +	tristate "NVIDIA BlueField-3 SoC Pinctrl driver"
-> +	depends on (MELLANOX_PLATFORM && ARM64 && ACPI)
+This patch series enables the basic ACPI infrastructure for RISC-V.
+Supporting external interrupt controllers is in progress and hence it is
+tested using poll based HVC SBI console and RAM disk.
 
-This is wrong.
-Please make sure you cover more testing.
-Also, do you really need an ACPI dependency?
+The first patch in this series is one of the patch from Jisheng's
+series [1] which is not merged yet. This patch is required to support
+ACPI since efi_init() which gets called before sbi_init() can enable
+static branches and hits panic.
 
-Could you please provide more details on why this is wrong? All our upstrea=
-med drivers use the same "depends on"
-Our pinctrl driver only applies to Mellanox platforms, ARM64 and use ACPI t=
-ables. =20
+The series depends on Anup's IPI improvement series [2].
 
+[1] https://lore.kernel.org/all/20220821140918.3613-1-jszhang@kernel.org/
+[2] https://lore.kernel.org/lkml/20230103141221.772261-7-apatel@ventanamicro.com/T/
+
+Changes since V1:
+	1) Dropped PCI changes and instead added dummy interfaces just to enable
+	   building ACPI core when CONFIG_PCI is enabled. Actual PCI changes will
+	   be added in future along with external interrupt controller support
+	   in ACPI.
+	2) Squashed couple of patches so that new code added gets built in each
+	   commit.
+	3) Fixed the missing wake_cpu code in timer refactor patch as pointed by
+	   Conor
+	4) Fixed an issue with SMP disabled.
+	5) Addressed other comments from Conor.
+	6) Updated documentation patch as per feedback from Sanjaya.
+	7) Fixed W=1 and checkpatch --strict issues.
+	8) Added ACK/RB tags
+
+These changes are available at
+https://github.com/vlsunil/linux/commits/acpi_b1_us_review_ipi17_V2
+
+Testing:
+1) Build Qemu with ACPI support using below branch
+https://github.com/vlsunil/qemu/tree/acpi_b1_us_review_V3
+
+2) Build EDK2 as per instructions in
+https://github.com/vlsunil/riscv-uefi-edk2-docs/wiki/RISC-V-Qemu-Virt-support
+
+3) Build Linux after enabling SBI HVC and SBI earlycon
+CONFIG_RISCV_SBI_V01=y
+CONFIG_SERIAL_EARLYCON_RISCV_SBI=y
+CONFIG_HVC_RISCV_SBI=y
+
+4) Build buildroot.
+
+Run with below command.
+qemu-system-riscv64   -nographic \
+-drive file=Build/RiscVVirtQemu/RELEASE_GCC5/FV/RISCV_VIRT.fd,if=pflash,format=raw,unit=1 \
+-machine virt,acpi -smp 16 -m 2G \
+-kernel arch/riscv/boot/Image \
+-initrd buildroot/output/images/rootfs.cpio \
+-append "root=/dev/ram ro console=hvc0 earlycon=sbi"
+
+
+Jisheng Zhang (1):
+  riscv: move sbi_init() earlier before jump_label_init()
+
+Sunil V L (20):
+  ACPICA: MADT: Add RISC-V INTC interrupt controller
+  ACPICA: Add structure definitions for RISC-V RHCT
+  RISC-V: Add support to build the ACPI core
+  ACPI: Kconfig: Enable ACPI_PROCESSOR for RISC-V
+  ACPI: OSL: Make should_use_kmap() 0 for RISC-V.
+  ACPI: processor_core: RISC-V: Enable mapping processor to the hartid
+  drivers/acpi: RISC-V: Add RHCT related code
+  RISC-V: smpboot: Create wrapper smp_setup()
+  RISC-V: smpboot: Add ACPI support in smp_setup()
+  RISC-V: ACPI: Add a function to retrieve the hartid
+  RISC-V: cpufeature: Add ACPI support in riscv_fill_hwcap()
+  RISC-V: cpu: Enable cpuinfo for ACPI systems
+  irqchip/riscv-intc: Add ACPI support
+  clocksource/timer-riscv: Refactor riscv_timer_init_dt()
+  clocksource/timer-riscv: Add ACPI support
+  RISC-V: time.c: Add ACPI support for time_init()
+  RISC-V: Add ACPI initialization in setup_arch()
+  RISC-V: Enable ACPI in defconfig
+  MAINTAINERS: Add entry for drivers/acpi/riscv
+  Documentation/kernel-parameters.txt: Add RISC-V for ACPI parameter
+
+ .../admin-guide/kernel-parameters.txt         |   8 +-
+ MAINTAINERS                                   |   7 +
+ arch/riscv/Kconfig                            |   5 +
+ arch/riscv/configs/defconfig                  |   2 +
+ arch/riscv/include/asm/acenv.h                |  11 +
+ arch/riscv/include/asm/acpi.h                 |  87 ++++++
+ arch/riscv/include/asm/cpu.h                  |   8 +
+ arch/riscv/kernel/Makefile                    |   2 +
+ arch/riscv/kernel/acpi.c                      | 248 ++++++++++++++++++
+ arch/riscv/kernel/cpu.c                       |  31 ++-
+ arch/riscv/kernel/cpufeature.c                |  41 ++-
+ arch/riscv/kernel/setup.c                     |  27 +-
+ arch/riscv/kernel/smpboot.c                   |  75 +++++-
+ arch/riscv/kernel/time.c                      |  25 +-
+ drivers/acpi/Kconfig                          |   2 +-
+ drivers/acpi/Makefile                         |   2 +
+ drivers/acpi/osl.c                            |   2 +-
+ drivers/acpi/processor_core.c                 |  29 ++
+ drivers/acpi/riscv/Makefile                   |   2 +
+ drivers/acpi/riscv/rhct.c                     |  92 +++++++
+ drivers/clocksource/timer-riscv.c             |  93 ++++---
+ drivers/irqchip/irq-riscv-intc.c              |  78 +++++-
+ include/acpi/actbl2.h                         |  68 ++++-
+ 23 files changed, 854 insertions(+), 91 deletions(-)
+ create mode 100644 arch/riscv/include/asm/acenv.h
+ create mode 100644 arch/riscv/include/asm/acpi.h
+ create mode 100644 arch/riscv/include/asm/cpu.h
+ create mode 100644 arch/riscv/kernel/acpi.c
+ create mode 100644 drivers/acpi/riscv/Makefile
+ create mode 100644 drivers/acpi/riscv/rhct.c
+
+-- 
+2.34.1
 
