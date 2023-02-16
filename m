@@ -2,267 +2,166 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D398698B04
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Feb 2023 04:12:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B69F698B8A
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Feb 2023 06:06:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229695AbjBPDMY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Feb 2023 22:12:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60164 "EHLO
+        id S229461AbjBPFGV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Feb 2023 00:06:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbjBPDMX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Feb 2023 22:12:23 -0500
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB6C4360B0
-        for <linux-acpi@vger.kernel.org>; Wed, 15 Feb 2023 19:12:21 -0800 (PST)
-Received: by mail-yb1-xb34.google.com with SMTP id 81so699328ybp.5
-        for <linux-acpi@vger.kernel.org>; Wed, 15 Feb 2023 19:12:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=a6Qh8gzOowZwynkUDIeTrWbdl9HaKmQIH+IY+oQdDQU=;
-        b=GxTRfbOsOkLv43UR0CUz7x1DiDyiTVJvIdGXeffaF8FFQkvbj9D0x+wQE5kOHkRmSa
-         o5Ze293BSs4uqy1H1gqCW5XGhgDkX37RsbQ7x0aWqWlmMcdaJUs+BGyiplS9rxwrqXiv
-         K6bKMbWPfIUUmKofh3l39j9SUiIfd1cXN9dxpgAsz4qKncGv3ycwCt+kUEETE074rAuo
-         D+c72FaIo9XCNvkZw7tPOlfU/eTZJCgkzA/o8HErGsataZ/yZEuoJeygab6+mNSkonm7
-         I9+PbCjImVYosZjQsUHQKITYEhXY1hO5y3dKwogaHLW6tVRgprrNxpzAG070BcL/9jFJ
-         kkbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=a6Qh8gzOowZwynkUDIeTrWbdl9HaKmQIH+IY+oQdDQU=;
-        b=aA0XZNrLgGoBu6vbZpIKVpOZe3K43SGpLhLAjJ/KxI8sOmSXudQ2k06pKvEHUHLcy+
-         dKvNaUloYMIER03Z8q6Piuwap9yRQKWZ26aUP/4DY0yTgc6AjSdt7ppAMCb7iFkxBOub
-         9FLGI3eDm9zHoRV9bilKf9zItY0bFQH/FsnyT5rs3VT/XnLLtBp8AR3nLOdxEB+lGYUF
-         LaCsAAYxt/utlZ+S3H/XcL7wBUlaQYLB4XJhNXqGSMp0zQJcfda3AXc4Twm14KCHHLSe
-         WYP6dmEKEKKkZ+28JVB9FwzPBxqMm0fwr3pXRzLvS+NS3qUET4S0bVf5sbaAM794YXRi
-         9gwA==
-X-Gm-Message-State: AO0yUKW5G2UcFGDMQRW4LDinQWq99wdk8G5v5h4/yHMYbM3l/gZZ/J6S
-        vAeYMX3UySu0uXb74xKiDAHGKbj4tm0tv/EWnjX0hA==
-X-Google-Smtp-Source: AK7set+6eIj7MPs4FgpkrHNNRtmcV0fLlWPPAZXRVRf0yyJfRs4rZclaJlYKoRf3mhlsfkcIPq9+D/6ElO/HE/qRcIw=
-X-Received: by 2002:a25:f50c:0:b0:90a:8ba9:3ac3 with SMTP id
- a12-20020a25f50c000000b0090a8ba93ac3mr511192ybe.333.1676517140908; Wed, 15
- Feb 2023 19:12:20 -0800 (PST)
+        with ESMTP id S229462AbjBPFGU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Feb 2023 00:06:20 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9914534F5F;
+        Wed, 15 Feb 2023 21:06:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676523978; x=1708059978;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tJ+xptFAmjCPP9Jd0dJQid9qs2SFDo5eAoG1yy4eCJg=;
+  b=kZ5qREw6UR0dJbnev0dJRxUGHGjjsysKTn1CKxj21rQpMp/pDjyqtBLw
+   fieVZ9siS3VRhU17iwPXW8KX+O4kQPkVK+Z1+3XJALYMYqtpW8SFXAW+b
+   2FoS7kDqMVMyLNYvQleItooS01sC2oJYJ51vE8ssUNTH8drZ4v4/v2de7
+   XEcpYSkEmdK4FZDOGCw/dl8zWRMByx9XQnE45Bpjy3cN/WjgNGJzvNgrp
+   gkA5aUzUp4OZuS2ZQMRBJ0n/4BY7FUcbjVovjQxMbl3m4QOwZZJ9yd9WN
+   hZi2KomxScgQ+pfSAQWi72BNzfDJcrJhKi6tfYgSBOl+j8IZKTxBSnQ6C
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10622"; a="331628296"
+X-IronPort-AV: E=Sophos;i="5.97,301,1669104000"; 
+   d="scan'208";a="331628296"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2023 21:06:18 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10622"; a="738708373"
+X-IronPort-AV: E=Sophos;i="5.97,301,1669104000"; 
+   d="scan'208";a="738708373"
+Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 15 Feb 2023 21:06:16 -0800
+Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pSWTI-000A1x-04;
+        Thu, 16 Feb 2023 05:06:16 +0000
+Date:   Thu, 16 Feb 2023 13:06:11 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ eef8b008d76a4df811b4cc42a50f0130bcade3bd
+Message-ID: <63edb9c3.ChP3syApTRHa/Faz%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20230207014207.1678715-1-saravanak@google.com>
-In-Reply-To: <20230207014207.1678715-1-saravanak@google.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Thu, 16 Feb 2023 05:12:09 +0200
-Message-ID: <CAA8EJprMMh3udsKKwtGJW9kBLfMv=_OXFnnPGobK=dK-raX5ew@mail.gmail.com>
-Subject: Re: [PATCH v3 00/12] fw_devlink improvements
-To:     Saravana Kannan <saravanak@google.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
-Cc:     Abel Vesa <abel.vesa@linaro.org>,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        John Stultz <jstultz@google.com>,
-        Doug Anderson <dianders@chromium.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Maxim Kiselev <bigunclemax@gmail.com>,
-        Maxim Kochetkov <fido_max@inbox.ru>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Colin Foster <colin.foster@in-advantage.com>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Jean-Philippe Brucker <jpb@kernel.org>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        kernel-team@android.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,LONGWORDS,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 07/02/2023 03:41, Saravana Kannan wrote:
-> Naresh, Tony, Abel, Geert, Dmitry, Maxim(s), Miquel, Luca, Doug, Martin,
-> Jean-Philippe,
->
-> Can I get your Tested-by's for this v3 series please?
->
-> Vladimir,
->
-> Ccing you because DSA's and fw_devlink have known/existing problems
-> (still in my TODOs to fix). But I want to make sure this series doesn't
-> cause additional problems for DSA.
->
-> All,
->
-> This patch series improves fw_devlink in the following ways:
->
-> 1. It no longer cares about a fwnode having a "compatible" property. It
->     figures this out more dynamically. The only expectation is that
->     fwnodes that are converted to devices actually get probed by a driver
->     for the dependencies to be enforced correctly.
->
-> 2. Finer grained dependency tracking. fw_devlink will now create device
->     links from the consumer to the actual resource's device (if it has one,
->     Eg: gpio_device) instead of the parent supplier device. This improves
->     things like async suspend/resume ordering, potentially remove the need
->     for frameworks to create device links, more parallelized async probing,
->     and better sync_state() tracking.
->
-> 3. Handle hardware/software quirks where a child firmware node gets
->     populated as a device before its parent firmware node AND actually
->     supplies a non-optional resource to the parent firmware node's
->     device.
->
-> 4. Way more robust at cycle handling (see patch for the insane cases).
->
-> 5. Stops depending on OF_POPULATED to figure out some corner cases.
->
-> 6. Simplifies the work that needs to be done by the firmware specific
->     code.
->
-> The v3 series has gone through my usual testing on my end and looks good
-> to me.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: eef8b008d76a4df811b4cc42a50f0130bcade3bd  Merge branch 'thermal/bleeding-edge' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into bleeding-edge
 
-Saravana,
+elapsed time: 731m
 
-Please excuse me, I was completely overwhelmed with my regular work and
-had no time to properly test the series, while doing just the light
-test would defeat the purpose of testing.
+configs tested: 83
+configs skipped: 3
 
-Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # Qualcomm RB3
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Thanks a lot for going through all the troubles and hunting all the issues!
+gcc tested configs:
+alpha                             allnoconfig
+alpha                            allyesconfig
+alpha                               defconfig
+arc                               allnoconfig
+arc                              allyesconfig
+arc                                 defconfig
+arc                  randconfig-r043-20230212
+arc                  randconfig-r043-20230213
+arm                              allmodconfig
+arm                               allnoconfig
+arm                              allyesconfig
+arm                                 defconfig
+arm                  randconfig-r046-20230212
+arm64                            allyesconfig
+arm64                               defconfig
+csky                                defconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                              debian-10.3
+i386                                defconfig
+i386                 randconfig-a011-20230213
+i386                 randconfig-a012-20230213
+i386                 randconfig-a013-20230213
+i386                 randconfig-a014-20230213
+i386                 randconfig-a015-20230213
+i386                 randconfig-a016-20230213
+ia64                             allmodconfig
+ia64                                defconfig
+loongarch                        allmodconfig
+loongarch                         allnoconfig
+loongarch                           defconfig
+m68k                             allmodconfig
+m68k                                defconfig
+mips                             allmodconfig
+mips                             allyesconfig
+nios2                               defconfig
+parisc                              defconfig
+parisc64                            defconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+riscv                            allmodconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                randconfig-r042-20230213
+riscv                          rv32_defconfig
+s390                             allmodconfig
+s390                             allyesconfig
+s390                                defconfig
+s390                 randconfig-r044-20230213
+sh                               allmodconfig
+sparc                               defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                            allnoconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                                  kexec
+x86_64               randconfig-a011-20230213
+x86_64               randconfig-a012-20230213
+x86_64               randconfig-a013-20230213
+x86_64               randconfig-a014-20230213
+x86_64               randconfig-a015-20230213
+x86_64               randconfig-a016-20230213
+x86_64                               rhel-8.3
 
-Just a note: on an RB3 device (arm64 qcom/sdm845-db845c.dtsi) extended
-with the patch at [3] I got the following messages in dmesg:
+clang tested configs:
+arm                  randconfig-r046-20230213
+hexagon              randconfig-r041-20230212
+hexagon              randconfig-r041-20230213
+hexagon              randconfig-r045-20230212
+hexagon              randconfig-r045-20230213
+i386                 randconfig-a001-20230213
+i386                 randconfig-a002-20230213
+i386                 randconfig-a003-20230213
+i386                 randconfig-a004-20230213
+i386                 randconfig-a005-20230213
+i386                 randconfig-a006-20230213
+riscv                randconfig-r042-20230212
+s390                 randconfig-r044-20230212
+x86_64               randconfig-a001-20230213
+x86_64               randconfig-a002-20230213
+x86_64               randconfig-a003-20230213
+x86_64               randconfig-a004-20230213
+x86_64               randconfig-a005-20230213
+x86_64               randconfig-a006-20230213
 
-[    1.051325] platform ae00000.mdss: Failed to create device link
-with ae00000.mdss
-[    1.059368] platform ae00000.mdss: Failed to create device link
-with ae00000.mdss
-[    1.067174] platform ae00000.mdss: Failed to create device link
-with ae00000.mdss
-[    1.088322] platform c440000.spmi: Failed to create device link
-with c440000.spmi
-[    1.096019] platform c440000.spmi: Failed to create device link
-with c440000.spmi
-[    1.103707] platform c440000.spmi: Failed to create device link
-with c440000.spmi
-[    1.111400] platform c440000.spmi: Failed to create device link
-with c440000.spmi
-[    1.119141] platform c440000.spmi: Failed to create device link
-with c440000.spmi
-[    1.126825] platform c440000.spmi: Failed to create device link
-with c440000.spmi
-[    2.024763] qcom-lab-ibb-regulator c440000.spmi:pmic@3:labibb:
-Failed to create device link with c440000.spmi
-[    2.035026] qcom-lab-ibb-regulator c440000.spmi:pmic@3:labibb:
-Failed to create device link with c440000.spmi
-
-They look to be harmless, but it might be good to filter some of them
-out? Especially the ones which tell about creating a device link
-pointing back to the same device.
-
-[3] https://lore.kernel.org/linux-arm-msm/20230118082048.2198715-1-dmitry.baryshkov@linaro.org/
-
->
-> Thanks,
-> Saravana
->
-> [1] - https://lore.kernel.org/lkml/20220810060040.321697-1-saravanak@google.com/
-> [2] - https://lore.kernel.org/lkml/CAGETcx-JUV1nj8wBJrTPfyvM7=Mre5j_vkVmZojeiumUGG6QZQ@mail.gmail.com/
->
-> v1 -> v2:
-> - Fixed Patch 1 to handle a corner case discussed in [2].
-> - New patch 10 to handle "fsl,imx8mq-gpc" being initialized by 2 drivers.
-> - New patch 11 to add fw_devlink support for SCMI devices.
->
-> v2 -> v3:
-> - Addressed most of Andy's comments in v2
-> - Added Colin and Sudeep's Tested-by for the series (except the imx and
->    renesas patches)
-> - Added Sudeep's Acked-by for the scmi patch.
-> - Added Geert's Reviewed-by for the renesas patch.
-> - Fixed gpiolib crash reported by Naresh.
-> - Patch 6: Fix __fwnode_links_move_consumers() to preserve fwnode link flags.
-> - New Patch 12 to fix nvmem-cells issue reported by Maxim(s)/Miquel.
-> - Deleted some stale function doc in Patch 8
->
-> Cc: Abel Vesa <abel.vesa@linaro.org>
-> Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Cc: Tony Lindgren <tony@atomide.com>
-> Cc: Sudeep Holla <sudeep.holla@arm.com>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: John Stultz <jstultz@google.com>
-> Cc: Doug Anderson <dianders@chromium.org>
-> Cc: Guenter Roeck <linux@roeck-us.net>
-> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Cc: Maxim Kiselev <bigunclemax@gmail.com>
-> Cc: Maxim Kochetkov <fido_max@inbox.ru>
-> Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-> Cc: Luca Weiss <luca.weiss@fairphone.com>
-> Cc: Colin Foster <colin.foster@in-advantage.com>
-> Cc: Martin Kepplinger <martin.kepplinger@puri.sm>
-> Cc: Jean-Philippe Brucker <jpb@kernel.org>
-> Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
->
-> Saravana Kannan (12):
->    driver core: fw_devlink: Don't purge child fwnode's consumer links
->    driver core: fw_devlink: Improve check for fwnode with no
->      device/driver
->    soc: renesas: Move away from using OF_POPULATED for fw_devlink
->    gpiolib: Clear the gpio_device's fwnode initialized flag before adding
->    driver core: fw_devlink: Add DL_FLAG_CYCLE support to device links
->    driver core: fw_devlink: Allow marking a fwnode link as being part of
->      a cycle
->    driver core: fw_devlink: Consolidate device link flag computation
->    driver core: fw_devlink: Make cycle detection more robust
->    of: property: Simplify of_link_to_phandle()
->    irqchip/irq-imx-gpcv2: Mark fwnode device as not initialized
->    firmware: arm_scmi: Set fwnode for the scmi_device
->    mtd: mtdpart: Don't create platform device that'll never probe
->
->   drivers/base/core.c             | 449 +++++++++++++++++++++-----------
->   drivers/firmware/arm_scmi/bus.c |   3 +-
->   drivers/gpio/gpiolib.c          |   7 +
->   drivers/irqchip/irq-imx-gpcv2.c |   1 +
->   drivers/mtd/mtdpart.c           |  10 +
->   drivers/of/property.c           |  84 +-----
->   drivers/soc/imx/gpcv2.c         |   2 +-
->   drivers/soc/renesas/rcar-sysc.c |   2 +-
->   include/linux/device.h          |   1 +
->   include/linux/fwnode.h          |  12 +-
->   10 files changed, 344 insertions(+), 227 deletions(-)
->
-
---
-With best wishes
-
-Dmitry
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
