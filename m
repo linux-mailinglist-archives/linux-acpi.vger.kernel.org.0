@@ -2,133 +2,133 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C59A699A46
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Feb 2023 17:41:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AC44699B8E
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Feb 2023 18:51:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229461AbjBPQlN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Feb 2023 11:41:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39144 "EHLO
+        id S229943AbjBPRvB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Feb 2023 12:51:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229745AbjBPQlM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Feb 2023 11:41:12 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AF4F4CC9E;
-        Thu, 16 Feb 2023 08:41:11 -0800 (PST)
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31GAkVuj002877;
-        Thu, 16 Feb 2023 16:41:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=l4RTo9JGHFcyiRzucLkPnt/T4JgiacY5HHnNjWoul1I=;
- b=hvslx0biV/sZMr4s9kx/9FcH1l/pb3DB9N/qUjsa/kj0N5LjB3J85NHlGrucZSR9dOT1
- dPd8VPyFkJuwwfjWMsb6yPIddXttwX5VNV/zunM0d+9ZLBlV4QTr/EDkQLKlLB5ABjsF
- VKLJzMkrThb7yfNWtXNcrV7YrKVLwSxDt5fUAUoNDKzx9ZeRIsKC61w5WJA9vFzVOvh/
- eEsRtHp7Q/601F6q+vgMx983VW6djMC6VDTrc6d8smGYH0e3w4J3pSGzWjq6NFqqB4SO
- n9ar7MFSALgYUDnriuNYk02ZVdsMzPeMJbDsZwiXZVE4I6I+EqIxaDbeJfpX9esYPByq Iw== 
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ns85kactd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 16 Feb 2023 16:41:08 +0000
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-        by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 31GGf7SB030429
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 16 Feb 2023 16:41:07 GMT
-Received: from [10.110.95.168] (10.80.80.8) by nasanex01b.na.qualcomm.com
- (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Thu, 16 Feb
- 2023 08:41:06 -0800
-Message-ID: <ba567710-8ef5-9a18-4c41-0d1124163215@quicinc.com>
-Date:   Thu, 16 Feb 2023 08:41:05 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH 0/3] mailbox: Allow direct registration to a channel
-To:     Sudeep Holla <sudeep.holla@arm.com>
-CC:     Jassi Brar <jassisinghbrar@gmail.com>,
-        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-arm-msm@vger.kernel.org>
-References: <20230213232537.2040976-1-quic_eberman@quicinc.com>
- <20230215101732.pbpom3ub3yh75n4w@bogus>
- <d35633ea-4049-6f51-3a3a-2a258a4af037@quicinc.com>
- <20230216095816.rzhxa2qdexy3ulrz@bogus>
+        with ESMTP id S229932AbjBPRvA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Feb 2023 12:51:00 -0500
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2066.outbound.protection.outlook.com [40.107.92.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 962D54CC86;
+        Thu, 16 Feb 2023 09:50:58 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Zse8E4DK6MNrWnkjl9FSj60BY3huU3rdZwMBBN764xDaG3a/BoiDROn3+CiIb8+j33XoKucCxKTRAutVHH4IV/QRKro3qGsZn6TsO+zIkhV5UG4eaIw/cmz42UMjaABn8Jfb4kDrqNweXsDfYMmZ77a03DGxEn2Z/XIcheIP4mk5rrT5o+SYvQ1+8/4LEuPMKrtYyp/4zGnHo0bKD9X6dFFnIJ8atspyd9LPiIqgKRbMtlOuae+ZlykPxcHCSD2YtR7E5me6d02itQ3fG7FQs7jgnOpf9lh248ti+XuT7+i31t9uyLxr9MjepqbSwG8s2n+gPydfPgniVFoGPhTzXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=17a0sZ/zSE44PKdqss+Gtboc0d3CSx3qBQzzoUPZT/4=;
+ b=bOQWwXZc9q1VkE+n+dCfo1sfa5mrGE2Jl/AJ+lZEyUuKQmM+9mZzzo9zbdJHBkK6LwzjRULB3RFa4rUoLavCUiSblxrEtZbwv6051Vmkwn2x6vOlT+nivkeYRyTwvle+gqyxLXeg2P+hVZwrSLJE0MrxZgYhwsV/8HRzgx0CHwfOZyHUuAJAXpTPXI2Mx6fe0eSseSVpa+idWtb6ITJVEBIBFSRU6W8jWRC2zzu6aDpBO7VtkKiSpUqoq7IUY3eCayvWtC+Qj09vThfPTnITH3ZrKhHKvbBRZd2vcId14Zqfl8blE6Pe1J4AAay3XMyaZ6UT7WcFIFeIrk7SrWbbEQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=17a0sZ/zSE44PKdqss+Gtboc0d3CSx3qBQzzoUPZT/4=;
+ b=i8xG3FURwDj0Cp+iXnDoZ4lTuKhsJrdCzW2zjMWdLo2rg4EYxB7AZbru1C+CVRmvt0xWtZuZTDuTgEnzD4V73w7pEdfkcl56Jd+7j3ADvI/nzlOD0+IDbukTVswJ4bDxQhOMxBzRDu/JncSjMkuSpqoxXTBmzMppJ6ZZUa5vL2owAaS4i8Khg514OT6Prm2pXg9H8Ds2QxxyaXtUw4gB41OFbw83zXDxOtPEXOYp86W08hLv4bLXpmQGf6iMlzBKSyPBC9X3TlHLaGDEbtVv2uQTo1Lf2Nk7BvjoIBPk4CFYPgt/i7EIsyJRAywQZ6ZhPGZg/WdCCPJ6UsSuMyWZUw==
+Received: from CH2PR12MB3895.namprd12.prod.outlook.com (2603:10b6:610:2a::13)
+ by DS7PR12MB6069.namprd12.prod.outlook.com (2603:10b6:8:9f::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6086.24; Thu, 16 Feb
+ 2023 17:50:56 +0000
+Received: from CH2PR12MB3895.namprd12.prod.outlook.com
+ ([fe80::5f35:2f2d:94a4:f7c3]) by CH2PR12MB3895.namprd12.prod.outlook.com
+ ([fe80::5f35:2f2d:94a4:f7c3%4]) with mapi id 15.20.6086.026; Thu, 16 Feb 2023
+ 17:50:56 +0000
+From:   Asmaa Mnebhi <asmaa@nvidia.com>
+To:     Andy Shevchenko <andriy.shevchenko@intel.com>
+CC:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: RE: [PATCH v3 2/2] Support NVIDIA BlueField-3 pinctrl driver
+Thread-Topic: [PATCH v3 2/2] Support NVIDIA BlueField-3 pinctrl driver
+Thread-Index: AQHZPWNgHTU9nf1rdE+MpmBAnswWQK7JpLUAgAg7eVA=
+Date:   Thu, 16 Feb 2023 17:50:56 +0000
+Message-ID: <CH2PR12MB38957ADFF0519278F33E9D57D7A09@CH2PR12MB3895.namprd12.prod.outlook.com>
+References: <cover.1676042188.git.asmaa@nvidia.com>
+ <acd85e20d3e8d45ce3254e6ffe5ad2b5039b1a34.1676042188.git.asmaa@nvidia.com>
+ <Y+eCNEHcmo4qapcI@smile.fi.intel.com>
+In-Reply-To: <Y+eCNEHcmo4qapcI@smile.fi.intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-From:   Elliot Berman <quic_eberman@quicinc.com>
-In-Reply-To: <20230216095816.rzhxa2qdexy3ulrz@bogus>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: IDsd8l1mKzSoU3nFAtcP9wAlqZCAQCIn
-X-Proofpoint-ORIG-GUID: IDsd8l1mKzSoU3nFAtcP9wAlqZCAQCIn
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-16_12,2023-02-16_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- clxscore=1015 bulkscore=0 priorityscore=1501 phishscore=0 impostorscore=0
- suspectscore=0 spamscore=0 lowpriorityscore=0 adultscore=0 mlxlogscore=548
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2302160145
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH2PR12MB3895:EE_|DS7PR12MB6069:EE_
+x-ms-office365-filtering-correlation-id: 2da473cc-3e16-4595-f5fd-08db10465b22
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Rnmjz1h+BurkvbyUybPnuiL7UHS4LbnudvkG40JFEYM8s/V/rEXYHHnWcvufys+A15fdIkufOsRt+FZlo62RIYvfAAb1VmPMKVH+Duhr6NliFmJQnnF4Z4uCraNdPj6IiWoofZ7P+LHP3GJJG/D2wcAaQ1+aG7H5LQea/+msCLIUIzTQAnoYJMMBdBOVyqMi/q+nvtFlo2Z5b7/w7uQH+0bqZmN+dls3EozJ1Du2A5UH5/aZjl5PfMnwAcxDsXGpxu2SNFFm91UAiTK9B5eLMF2KURnzN1+GF8zlIaFoJj/qrVoUFnsdbbmDXmTULO304MPp5zpqcNraMOyiIw1IJxC6L4opSt0oYpbtfHglf07molK20lHEEwndbycnjs0y6IXRzo066it5HCND3/xE7hL9tVie4G2xsBO7mPZcln3GT4F+FoyDhHNLXU7IRPFITeCgJ3/Tzzm3tjqjie3pjebxaa8O8yOyHrq5oeZ4ZHen6wCBy0MURHkxagPwixbkfSn088uLuxx+iRAwLYdHhn/LlLFxczTFLMGcNZUccCksKuzt5qQ0Xmh8KGW5RLwLxEOXFoQnqVHbv6nCGPLgVzzh+1x+CVQWPK4bgtc4JZorargrjNCAvHgR64K2YXnsuUEYBS2zxyCZ/xLe2bEFrPSNycrx4YdJR6u5OR8djd1QlPTea0a6HvM9VcNRKNKZacV38/nN7+dinNDUe3r26Q==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3895.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(366004)(346002)(136003)(396003)(39860400002)(376002)(451199018)(54906003)(186003)(4326008)(478600001)(8676002)(6916009)(52536014)(26005)(5660300002)(86362001)(9686003)(66476007)(66946007)(8936002)(66556008)(64756008)(76116006)(316002)(66446008)(4744005)(33656002)(38100700002)(38070700005)(55016003)(6506007)(7696005)(41300700001)(71200400001)(122000001)(2906002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?LaPByRHGKORV+WWkRyLKN8UhuZjhGlYkHi2zvQu3weF13jFWkkok5/WmThtj?=
+ =?us-ascii?Q?IA0p6lS1hxwmPdmAws3C/A4yxMnYGcou+eww4Qd6nTdERAerG2ZIB0OB6dxN?=
+ =?us-ascii?Q?keeE1Pc+zLwEqM7xSSPgBgkLv3LBnFhMJ/QEKVxkTXJHTcXJDMxGghBsImAW?=
+ =?us-ascii?Q?UzUuEeLLHQ4hCYwr6XbcxB2Og4rx/SpJe5Qj2Krmmo2ZDYKEbZedZK3Pa+pL?=
+ =?us-ascii?Q?TKkC+mvOVwUm5cxW9QsFh4EHkiqK+FzactaJrXAwK4UBDtG/ydyO81OzkJx+?=
+ =?us-ascii?Q?Pa+M8yaeJ2WFH/8JSMe3XwZObgS2sUfLt5eReuti2t/4IQVm/nbAS8RVZAR5?=
+ =?us-ascii?Q?qBGSWtDlRYg02xn9geU/9ZRMrUMuCwvMdee8oPz9g+n87LrmY1h/rahGpyGv?=
+ =?us-ascii?Q?OYVlbRgBR7cOeS9ktcPNIpFu0PdWaqdSX+C0meJB9hfWC76CnP54k78AUl8z?=
+ =?us-ascii?Q?vb9dYIT5PRCgJhc6SSOZmmbU+X763CHMGhFWyDhetYfxTZwt3O4YoRpwiIca?=
+ =?us-ascii?Q?1/UsZ7d95xF6/vjdW/4AHuUc9ILWNrkjxfV14egRwn/m9YZ81W+kKvJVGceg?=
+ =?us-ascii?Q?w9mwvnmK0+sDnkMYOqazYV+PVQpl3jPz5u8cEwxiNKEPBZWojMV+LLiB6gmI?=
+ =?us-ascii?Q?vgYbtcU2akwAQiDWrQwLOYpZ46TZ2uLIuKygPVuy3FgB8E3HmANfVh19TbDp?=
+ =?us-ascii?Q?VA7F8ur2wqfTI2nNHx3PtnwRCDBqBbhS8o/vBdEQZYH32K135Mbx4mvkT15n?=
+ =?us-ascii?Q?3g8YbUNVf4+qLrItitrcP/4vXKXkrrQZw83KXpF+37rT15cI/P++CzUTSRYH?=
+ =?us-ascii?Q?9kamJhGnUH9hvjHK1B9N0MRew3Xxb4vUWCvhZG8IU91w9gnOMJELp7VgGbZc?=
+ =?us-ascii?Q?9OZKYmARndD0W5SrEYuIoIFQF8nhpov4CEplXuNo5BX0+yfMD/u5LREIDC50?=
+ =?us-ascii?Q?W1yetnsH3NkVBQdOeNCJpmQf16XowMomlIdQ4xEkWZeu0SeLURWQRl2WXjzO?=
+ =?us-ascii?Q?ptJxL3BTj8a0S2+ETQa2Gl2sYpWzjnSHEEtQxnieuhjT4IMApS0g9cX98iOV?=
+ =?us-ascii?Q?LEMQbqoGqWo5SqAkgj4tlOyblTyxWaBQoQ96eait6lWEVPYIwAE2Z5LFaohc?=
+ =?us-ascii?Q?Idp6yCsJfwAO8TJEkkOGj3s3raP5MflspQ+q2L4de6Nbbm4Cs++B7Aj7eUGX?=
+ =?us-ascii?Q?R4bUalTzliHPyhehDsNV+s995kToTQOuuydKOj7dk1a8tpie7rftQsss0kDN?=
+ =?us-ascii?Q?aqWV+zlOSJev41WSU3YqfDfrogYTnvla4BqPWWN2tCysHL3ZuGwiIaD2IsDo?=
+ =?us-ascii?Q?E3BqkAmT21vKvWl0JfTyBcPwlxG5BOUOc2A6JJqzpaNitZNBScc2kDGbYvti?=
+ =?us-ascii?Q?KRxqit5idHFrXT5XSHT/cCtb2RV81EySC2sXv0aEzPGhHhMrvk+5GPEYKpGm?=
+ =?us-ascii?Q?TRe5COXOgPKhGm1OENWbO+nWjmKtATmkxqH9Yp8g5MmR0g9HBwe8aiDyN7NI?=
+ =?us-ascii?Q?CVNyX1fDAfu5GFbkjGxjQBon8Rg/ihCM7Mz7dEIOZkhHDITwuF/IR+pHC5Y5?=
+ =?us-ascii?Q?j59NuB8/Ca0bmtJQ4K0=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3895.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2da473cc-3e16-4595-f5fd-08db10465b22
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Feb 2023 17:50:56.5361
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: CeJbOfIoruexEJXlUZLByzZrd+C42RfDr4/mdi/NPmKzL8nXbTiSDAO75b2BJXUif55W2k4gA2EQyIsAplFhEA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6069
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+> +config PINCTRL_MLXBF
+> +	tristate "NVIDIA BlueField-3 SoC Pinctrl driver"
+> +	depends on (MELLANOX_PLATFORM && ARM64 && ACPI)
+
+This is wrong.
+Please make sure you cover more testing.
+Also, do you really need an ACPI dependency?
+
+Could you please provide more details on why this is wrong? All our upstrea=
+med drivers use the same "depends on"
+Our pinctrl driver only applies to Mellanox platforms, ARM64 and use ACPI t=
+ables. =20
 
 
-On 2/16/2023 1:58 AM, Sudeep Holla wrote:
-> On Wed, Feb 15, 2023 at 08:58:10AM -0800, Elliot Berman wrote:
->>
->>
->> On 2/15/2023 2:17 AM, Sudeep Holla wrote:
->>> On Mon, Feb 13, 2023 at 03:25:34PM -0800, Elliot Berman wrote:
->>>> Two mailbox controllers have channel/client binding mechanisms that are
->>>> controller-specific and not using the devicetree binding mechanisms. Mailbox
->>>> channel/client is conceptually done in two steps: selecting the channel
->>>> and binding the selected to channel to a client. Channel selection is sometimes
->>>> controller specific (pcc and omap are examples). The channel/client binding
->>>> code is all the same.
->>>>
->>>> This small series de-duplicates and refactors the channel/client binding
->>>> into a common framework function: "mbox_bind_client" which all of the
->>>> channel selection mechanisms can use.
->>>>
->>>> I found this duplicate code while working on the support for Gunyah hypervisor
->>>> message queues [1]. I've only been able to compile-test omap-maiblox and pcc,
->>>> however it is a straightforward conversion here.
->>>>
->>>> [1]: https://lore.kernel.org/all/20230120224627.4053418-9-quic_eberman@quicinc.com/
->>>>
->>>> Elliot Berman (3):
->>>>     mailbox: Allow direct registration to a channel
->>>
->>> I am unable to find the above patch either in my inbox or in lore[1].
->>> Can you please repost the same ? I would like to test/review w.r.t PCC
->>> driver.
->>>
->>
->> Hi Sudeep,
->>
->> Not sure why the patch didn't end up your inbox; lore seems to have linked
->> it correctly and indicates you were in To:. If I missed something, let me
->> know and I'll make sure you're properly included if future versions needed.
->>
->> https://lore.kernel.org/all/20230213232537.2040976-4-quic_eberman@quicinc.com/
-> 
-> No, I do have patch 2/3 and 3/3 in my inbox along with the cover letter.
-> Patch 1/3 is missing in both my inbox and lore. Can you send me the lore
-> link for patch 1/3 if you are able to find it ? Or just repost the series
-> if you can't.
-> 
-
-Huh, not sure what happened there. I got a copy of Patch 1/3 but I also 
-don't see it in lore. Resent:
-
-https://lore.kernel.org/all/20230216163804.456714-1-quic_eberman@quicinc.com/
