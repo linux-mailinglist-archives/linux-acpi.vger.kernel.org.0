@@ -2,121 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0803C699C46
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Feb 2023 19:24:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3140E699C70
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Feb 2023 19:39:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230429AbjBPSYH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Feb 2023 13:24:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56508 "EHLO
+        id S229863AbjBPSjA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Feb 2023 13:39:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230337AbjBPSXf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Feb 2023 13:23:35 -0500
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E3A050343
-        for <linux-acpi@vger.kernel.org>; Thu, 16 Feb 2023 10:22:39 -0800 (PST)
-Received: by mail-pl1-x632.google.com with SMTP id c11so2169150ple.9
-        for <linux-acpi@vger.kernel.org>; Thu, 16 Feb 2023 10:22:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Rc+EdRzJ0SRGUPyQRF18IAjDuJpqdPevv1iUeqHNSDY=;
-        b=MT+u6Ji2DSotNL/3ZJ31+4cfLb/HUgIEAzHyb/4A3W3hXKL7CuBMT7DFaf8PRm7cRi
-         hkX1t1QcAn6Fsh4g9bblEZv+ilGLrh4phGy+dWKqmPb5y5cpQtlH3TAu+YOU0SnV0Luk
-         HDucHKXRMGxNFDuLtGBJm3I9tnzVAAQ1MUc6DNMO077XW2R/1eEDaW0Jd2emJHRAWPjM
-         HGm8QIKeax6/ljYPvC/5GtfUEcuV0hqZzqfkU0/3+9ZK0znENu0rEkld1JzriqhbZHHh
-         XyGAE624cdyEKo/bR2ibxnm20fA1861ECmsz+HbEDZY/Me4+oPLiv4hAMXBd3+rQsqSP
-         LmUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Rc+EdRzJ0SRGUPyQRF18IAjDuJpqdPevv1iUeqHNSDY=;
-        b=yyMo/v7X/vuoRHVrBqizkVeVMFjZfpsFobyBsxgY8ydm0SFzlxvLaKu/+sIeGSTvWd
-         m8Xjag6wyIsKiE+06sFcMMDylldCwMDtFZRMZQ7nXT48kCi3Zddat6ClcyX/HEpczqeN
-         qe9DOvbmOblo9Z6m7r91VhRNIjhtx0eR27hh6wjbptGX753dn64oGdDKYwALnaNI65em
-         ElYwm+iUB7Tcpt4CtM7DdLtG2xWVBETQBd21VPUHnoBGQPrE7zoPv0go5PZNPbL/4WIR
-         AH8uQAxionA4q4eEDSeiiiuVIFhVONR3x+pRqvQttZBB3RtILBAzgQ+THbdzsXOdwP6q
-         hG+A==
-X-Gm-Message-State: AO0yUKUgWivm3vxbqToY6z3dTYSmbhKDbV5xth4mw1iB1aUARxOBmSdC
-        dRZyGGc8/+SlpY7QPFUXgN2hRQ==
-X-Google-Smtp-Source: AK7set9M9fF7YNnpHhSlQVgpgwmmQbyWXyDh9qg54yswDsPTDVjsTPAME9mc2ETjA4Y1JYejJYwZog==
-X-Received: by 2002:a05:6a20:d49b:b0:bd:278:f68f with SMTP id im27-20020a056a20d49b00b000bd0278f68fmr6832215pzb.52.1676571753281;
-        Thu, 16 Feb 2023 10:22:33 -0800 (PST)
-Received: from kerodi.Dlink ([49.206.14.226])
-        by smtp.gmail.com with ESMTPSA id n21-20020a637215000000b004dff15fc121sm1517574pgc.36.2023.02.16.10.22.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Feb 2023 10:22:32 -0800 (PST)
-From:   Sunil V L <sunilvl@ventanamicro.com>
-To:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, Jonathan Corbet <corbet@lwn.net>
-Cc:     linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Anup Patel <apatel@ventanamicro.com>,
-        Atish Patra <atishp@rivosinc.com>,
-        Sunil V L <sunilvl@ventanamicro.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH V2 21/21] Documentation/kernel-parameters.txt: Add RISC-V for ACPI parameter
-Date:   Thu, 16 Feb 2023 23:50:43 +0530
-Message-Id: <20230216182043.1946553-22-sunilvl@ventanamicro.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230216182043.1946553-1-sunilvl@ventanamicro.com>
-References: <20230216182043.1946553-1-sunilvl@ventanamicro.com>
+        with ESMTP id S229746AbjBPSi7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Feb 2023 13:38:59 -0500
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9D904B51D;
+        Thu, 16 Feb 2023 10:38:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676572737; x=1708108737;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0YUsWje/AVr75kqDIq2aTKdJn3ilr/9RYGzWerozeV4=;
+  b=O0byJqQyRWwJmXJHHUPDnQLKOMEQQto5Rq9YO5iNc6Q0Vqr8k6bXJ9HJ
+   57WzTSp0i6ZCyQK5YZYmW/Yjg7rOWc+HVn6lS/6ArUrAtGaUCG8r3G8uU
+   +pMS57Ypvn9qEQTtr9ZjMYv/lbd3H88MqbSJu06NZktb3HFYf+JzFlm/f
+   97e4bYWw43WAvjWBNEniq79zkHglTIAfyMABYJqGTPuqiKd09XX0LJVIv
+   nlc/O/FpThQC5TsHYb/7fOssEfVE6dgGD6p/Rn9SgIlZFwT8SQaBomcpP
+   +boR53xtuQozaLkKP+00O2W7BS1B6cOKL6TBGybMh2U0V1QK8MbQFxYgj
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10623"; a="396474691"
+X-IronPort-AV: E=Sophos;i="5.97,302,1669104000"; 
+   d="scan'208";a="396474691"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2023 10:38:57 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10623"; a="647818994"
+X-IronPort-AV: E=Sophos;i="5.97,302,1669104000"; 
+   d="scan'208";a="647818994"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga006.jf.intel.com with ESMTP; 16 Feb 2023 10:38:55 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1pSj9i-007tTP-13;
+        Thu, 16 Feb 2023 20:38:54 +0200
+Date:   Thu, 16 Feb 2023 20:38:54 +0200
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
+To:     Asmaa Mnebhi <asmaa@nvidia.com>
+Cc:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v3 2/2] Support NVIDIA BlueField-3 pinctrl driver
+Message-ID: <Y+54Prj3YiPex5lw@smile.fi.intel.com>
+References: <cover.1676042188.git.asmaa@nvidia.com>
+ <acd85e20d3e8d45ce3254e6ffe5ad2b5039b1a34.1676042188.git.asmaa@nvidia.com>
+ <Y+eCNEHcmo4qapcI@smile.fi.intel.com>
+ <CH2PR12MB38957ADFF0519278F33E9D57D7A09@CH2PR12MB3895.namprd12.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CH2PR12MB38957ADFF0519278F33E9D57D7A09@CH2PR12MB3895.namprd12.prod.outlook.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-With ACPI support added for RISC-V, this kernel parameter is also
-supported on RISC-V. Hence, update the documentation.
+On Thu, Feb 16, 2023 at 05:50:56PM +0000, Asmaa Mnebhi wrote:
+> > +config PINCTRL_MLXBF
+> > +	tristate "NVIDIA BlueField-3 SoC Pinctrl driver"
+> > +	depends on (MELLANOX_PLATFORM && ARM64 && ACPI)
+> 
+> This is wrong.
+> Please make sure you cover more testing.
+> Also, do you really need an ACPI dependency?
+> 
+> Could you please provide more details on why this is wrong? All our upstreamed drivers use the same "depends on"
+> Our pinctrl driver only applies to Mellanox platforms, ARM64 and use ACPI tables.
 
-Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- Documentation/admin-guide/kernel-parameters.txt | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+This is wrong because it narrows down testing coverage.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 6cfa6e3996cf..b3a5a5844daa 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -1,17 +1,17 @@
--	acpi=		[HW,ACPI,X86,ARM64]
-+	acpi=		[HW,ACPI,X86,ARM64,RISC-V]
- 			Advanced Configuration and Power Interface
- 			Format: { force | on | off | strict | noirq | rsdt |
- 				  copy_dsdt }
- 			force -- enable ACPI if default was off
--			on -- enable ACPI but allow fallback to DT [arm64]
-+			on -- enable ACPI but allow fallback to DT [arm64,riscv]
- 			off -- disable ACPI if default was on
- 			noirq -- do not use ACPI for IRQ routing
- 			strict -- Be less tolerant of platforms that are not
- 				strictly ACPI specification compliant.
- 			rsdt -- prefer RSDT over (default) XSDT
- 			copy_dsdt -- copy DSDT to memory
--			For ARM64, ONLY "acpi=off", "acpi=on" or "acpi=force"
--			are available
-+			For ARM64 and RISC-V, ONLY "acpi=off", "acpi=on" or
-+			"acpi=force" are available
- 
- 			See also Documentation/power/runtime_pm.rst, pci=noacpi
- 
+Besides that you need to define functional and build dependencies separately.
+
+ACPI probably is not what you are using in the driver. I do not believe you
+have at all dependency on it.
+
 -- 
-2.34.1
+With Best Regards,
+Andy Shevchenko
+
 
