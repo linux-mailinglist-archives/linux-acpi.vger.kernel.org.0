@@ -2,104 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CF64698E37
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Feb 2023 09:01:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0945C699095
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Feb 2023 10:58:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229704AbjBPIBW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Feb 2023 03:01:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33888 "EHLO
+        id S229578AbjBPJ6Y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Feb 2023 04:58:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229681AbjBPIBV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Feb 2023 03:01:21 -0500
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD47D40F8
-        for <linux-acpi@vger.kernel.org>; Thu, 16 Feb 2023 00:01:20 -0800 (PST)
-Received: by mail-ed1-x534.google.com with SMTP id fj20so1646923edb.1
-        for <linux-acpi@vger.kernel.org>; Thu, 16 Feb 2023 00:01:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1676534479;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=m/m6+VBdUaynOjkvVtFK5UD3A4MliI5pNrcINToMFQY=;
-        b=hrKoKJFhtL1ptLX4WMeBQeM0dBKEE+W96lVbVr5Rfwv2GPbnKfxO1q17nd5sje70gg
-         d7IgH1OoMep7dlWW/d2qUzupXvNafzVYGjqplDjebSQlUyipmh3Fprqe6bu+aWyXBRyP
-         F2ndwHgSbqRsHiW8PB4nOWjWbHM7MxH/kpfzPLqTa9gsjV5Tvf0nz41iwPE7mFaQSxSQ
-         Hgfr2J/GeKDjMFZ37PgkVqKpl0372d/lZXWqaiSeU9MN0LO69/N6zdzZtI5en5bZJAWC
-         xj1F3Ch0XhxjdwduD5iT6N4N1PwSt/518BEGrp4J8k1x4Gq02Qg2GKalFlxWFXU8xgac
-         stYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1676534479;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=m/m6+VBdUaynOjkvVtFK5UD3A4MliI5pNrcINToMFQY=;
-        b=5A9n+wsxM90ryh+F+vwKAZ0IvHHWwEf5M3uhgXMEWyeOzZP6T57CHzRil3+R99cCc5
-         TeMVDfps4Wn7Jbl2j1LQ6dJrPyY1/PXaMowLM8xL3xHS440e9owxn1OOqt5Bagv9Wc/4
-         c3ngQ0+ZxCKT0Wz3zFyjKn1nzTZGwKGiupe+5Yv5tXYpPBBgS+Dv2xaDoRsreeK2z53B
-         fljf+4Re29E7tZdnK3V0dGDSzSAY7rnQZZ07cuGmrbfqWyDdQKvNzzj3ZJwtTyYFfAme
-         AjDiDD7yHLdmMMg5+yiDszSwVQV69NOZh5Ze1NwqLRY050/Iahg/P8/KMFEyL77jY13D
-         clkg==
-X-Gm-Message-State: AO0yUKWRWw5xw/SMgqLhFXkU9Q6WSgvoFomrUGOxlHYoI3ZwP+LfYEk7
-        HyICCn24ZW1dVWCnftKuywg=
-X-Google-Smtp-Source: AK7set9K7aXeV/wdBWnd+A0CC7MSCQgH33ZcjHZgCsdeAsfzl34mPzUzVzT6nrXe0wp1XrmneZG8Pw==
-X-Received: by 2002:a05:6402:2688:b0:49b:67c5:3044 with SMTP id w8-20020a056402268800b0049b67c53044mr5711790edd.4.1676534479257;
-        Thu, 16 Feb 2023 00:01:19 -0800 (PST)
-Received: from hades.lan (host-81-200-60-238.ip.nej.cz. [81.200.60.238])
-        by smtp.gmail.com with ESMTPSA id n25-20020a5099d9000000b004acd3bccb0asm435591edb.10.2023.02.16.00.01.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Feb 2023 00:01:18 -0800 (PST)
-From:   Vojtech Hejsek <hejsekvojtech@gmail.com>
-X-Google-Original-From: Vojtech Hejsek <hejsekvojtech@tutanota.com>
-To:     rafael@kernel.org
-Cc:     linux-acpi@vger.kernel.org,
-        Vojtech Hejsek <hejsekvojtech@gmail.com>
-Subject: [PATCH] ACPI: resource: Skip IRQ override on Asus Expertbook B2402FBA
-Date:   Thu, 16 Feb 2023 09:01:15 +0100
-Message-Id: <20230216080115.36485-1-hejsekvojtech@tutanota.com>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S229462AbjBPJ6X (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Feb 2023 04:58:23 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3A59061BB;
+        Thu, 16 Feb 2023 01:58:22 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 84AA81042;
+        Thu, 16 Feb 2023 01:59:04 -0800 (PST)
+Received: from bogus (unknown [10.57.10.143])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 86AD93F703;
+        Thu, 16 Feb 2023 01:58:20 -0800 (PST)
+Date:   Thu, 16 Feb 2023 09:58:16 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Elliot Berman <quic_eberman@quicinc.com>
+Cc:     Jassi Brar <jassisinghbrar@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH 0/3] mailbox: Allow direct registration to a channel
+Message-ID: <20230216095816.rzhxa2qdexy3ulrz@bogus>
+References: <20230213232537.2040976-1-quic_eberman@quicinc.com>
+ <20230215101732.pbpom3ub3yh75n4w@bogus>
+ <d35633ea-4049-6f51-3a3a-2a258a4af037@quicinc.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d35633ea-4049-6f51-3a3a-2a258a4af037@quicinc.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Vojtech Hejsek <hejsekvojtech@gmail.com>
+On Wed, Feb 15, 2023 at 08:58:10AM -0800, Elliot Berman wrote:
+> 
+> 
+> On 2/15/2023 2:17 AM, Sudeep Holla wrote:
+> > On Mon, Feb 13, 2023 at 03:25:34PM -0800, Elliot Berman wrote:
+> > > Two mailbox controllers have channel/client binding mechanisms that are
+> > > controller-specific and not using the devicetree binding mechanisms. Mailbox
+> > > channel/client is conceptually done in two steps: selecting the channel
+> > > and binding the selected to channel to a client. Channel selection is sometimes
+> > > controller specific (pcc and omap are examples). The channel/client binding
+> > > code is all the same.
+> > > 
+> > > This small series de-duplicates and refactors the channel/client binding
+> > > into a common framework function: "mbox_bind_client" which all of the
+> > > channel selection mechanisms can use.
+> > > 
+> > > I found this duplicate code while working on the support for Gunyah hypervisor
+> > > message queues [1]. I've only been able to compile-test omap-maiblox and pcc,
+> > > however it is a straightforward conversion here.
+> > > 
+> > > [1]: https://lore.kernel.org/all/20230120224627.4053418-9-quic_eberman@quicinc.com/
+> > > 
+> > > Elliot Berman (3):
+> > >    mailbox: Allow direct registration to a channel
+> > 
+> > I am unable to find the above patch either in my inbox or in lore[1].
+> > Can you please repost the same ? I would like to test/review w.r.t PCC
+> > driver.
+> > 
+> 
+> Hi Sudeep,
+> 
+> Not sure why the patch didn't end up your inbox; lore seems to have linked
+> it correctly and indicates you were in To:. If I missed something, let me
+> know and I'll make sure you're properly included if future versions needed.
+> 
+> https://lore.kernel.org/all/20230213232537.2040976-4-quic_eberman@quicinc.com/
 
-The Asus Expertbook B2502FBA has IRQ 1 described as Active_Low
-in its ACPI table. However, the kernel overrides this and sets it to
-Edge_High, which prevents the internal keyboard from working properly.
+No, I do have patch 2/3 and 3/3 in my inbox along with the cover letter.
+Patch 1/3 is missing in both my inbox and lore. Can you send me the lore
+link for patch 1/3 if you are able to find it ? Or just repost the series
+if you can't.
 
-Adding this laptop model to the override_table fixes the issue.
-
-Signed-off-by: Vojtech Hejsek <hejsekvojtech@gmail.com>
----
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 192d1784e..950883799 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -439,6 +439,13 @@ static const struct dmi_system_id asus_laptop[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "B2402CBA"),
- 		},
- 	},
-+	{
-+		.ident = "Asus ExpertBook B2402FBA",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "B2402FBA"),
-+		},
-+	},
- 	{
- 		.ident = "Asus ExpertBook B2502",
- 		.matches = {
 -- 
-2.39.2
-
+Regards,
+Sudeep
