@@ -2,90 +2,152 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0945C699095
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Feb 2023 10:58:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E374699121
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Feb 2023 11:28:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229578AbjBPJ6Y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Feb 2023 04:58:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39762 "EHLO
+        id S229810AbjBPK2F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Feb 2023 05:28:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbjBPJ6X (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Feb 2023 04:58:23 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3A59061BB;
-        Thu, 16 Feb 2023 01:58:22 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 84AA81042;
-        Thu, 16 Feb 2023 01:59:04 -0800 (PST)
-Received: from bogus (unknown [10.57.10.143])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 86AD93F703;
-        Thu, 16 Feb 2023 01:58:20 -0800 (PST)
-Date:   Thu, 16 Feb 2023 09:58:16 +0000
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Elliot Berman <quic_eberman@quicinc.com>
-Cc:     Jassi Brar <jassisinghbrar@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH 0/3] mailbox: Allow direct registration to a channel
-Message-ID: <20230216095816.rzhxa2qdexy3ulrz@bogus>
-References: <20230213232537.2040976-1-quic_eberman@quicinc.com>
- <20230215101732.pbpom3ub3yh75n4w@bogus>
- <d35633ea-4049-6f51-3a3a-2a258a4af037@quicinc.com>
+        with ESMTP id S229725AbjBPK2E (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Feb 2023 05:28:04 -0500
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B9EBA366B0;
+        Thu, 16 Feb 2023 02:28:03 -0800 (PST)
+Received: from [192.168.2.24] (77-166-152-30.fixed.kpn.net [77.166.152.30])
+        by linux.microsoft.com (Postfix) with ESMTPSA id DE5FB20B9C3D;
+        Thu, 16 Feb 2023 02:28:01 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DE5FB20B9C3D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1676543283;
+        bh=TiBxPy2bvn90kEvfNZ1gm0HLB1XTqCcNsA01CVVqYb8=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=JyXq/lCzwM9AJxO1fMQCJmJtleLVhCXG/by6cwTcunoSQAI0tabjzAmYKVuZSwmo9
+         1vfOOjaiahoaeWP40hPJtw3BWp1oIxSHjvLVh6HCQuY3S6Nw3EK8U7FVDsm/0rod8H
+         5nkVviFRLPMchx6Qe9yYktGkwoC36HIfBKgx9YsA=
+Message-ID: <f2632137-3d9f-1ed6-a5b4-f13c67afdaea@linux.microsoft.com>
+Date:   Thu, 16 Feb 2023 11:28:01 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d35633ea-4049-6f51-3a3a-2a258a4af037@quicinc.com>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.2
+Subject: Re: [PATCH v2 1/8] include/acpi: add definition of ASPT table
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+References: <20230213092429.1167812-1-jpiotrowski@linux.microsoft.com>
+ <20230213092429.1167812-2-jpiotrowski@linux.microsoft.com>
+ <CAJZ5v0hcyWs49ttGA2sjyWe5f++jvCORLeTX1eiP5O2qOAOGgQ@mail.gmail.com>
+Content-Language: en-US
+From:   Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+In-Reply-To: <CAJZ5v0hcyWs49ttGA2sjyWe5f++jvCORLeTX1eiP5O2qOAOGgQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-20.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 15, 2023 at 08:58:10AM -0800, Elliot Berman wrote:
-> 
-> 
-> On 2/15/2023 2:17 AM, Sudeep Holla wrote:
-> > On Mon, Feb 13, 2023 at 03:25:34PM -0800, Elliot Berman wrote:
-> > > Two mailbox controllers have channel/client binding mechanisms that are
-> > > controller-specific and not using the devicetree binding mechanisms. Mailbox
-> > > channel/client is conceptually done in two steps: selecting the channel
-> > > and binding the selected to channel to a client. Channel selection is sometimes
-> > > controller specific (pcc and omap are examples). The channel/client binding
-> > > code is all the same.
-> > > 
-> > > This small series de-duplicates and refactors the channel/client binding
-> > > into a common framework function: "mbox_bind_client" which all of the
-> > > channel selection mechanisms can use.
-> > > 
-> > > I found this duplicate code while working on the support for Gunyah hypervisor
-> > > message queues [1]. I've only been able to compile-test omap-maiblox and pcc,
-> > > however it is a straightforward conversion here.
-> > > 
-> > > [1]: https://lore.kernel.org/all/20230120224627.4053418-9-quic_eberman@quicinc.com/
-> > > 
-> > > Elliot Berman (3):
-> > >    mailbox: Allow direct registration to a channel
-> > 
-> > I am unable to find the above patch either in my inbox or in lore[1].
-> > Can you please repost the same ? I would like to test/review w.r.t PCC
-> > driver.
-> > 
-> 
-> Hi Sudeep,
-> 
-> Not sure why the patch didn't end up your inbox; lore seems to have linked
-> it correctly and indicates you were in To:. If I missed something, let me
-> know and I'll make sure you're properly included if future versions needed.
-> 
-> https://lore.kernel.org/all/20230213232537.2040976-4-quic_eberman@quicinc.com/
 
-No, I do have patch 2/3 and 3/3 in my inbox along with the cover letter.
-Patch 1/3 is missing in both my inbox and lore. Can you send me the lore
-link for patch 1/3 if you are able to find it ? Or just repost the series
-if you can't.
 
--- 
-Regards,
-Sudeep
+On 13/02/2023 19:43, Rafael J. Wysocki wrote:
+> On Mon, Feb 13, 2023 at 10:25 AM Jeremi Piotrowski
+> <jpiotrowski@linux.microsoft.com> wrote:
+>>
+>> The AMD Secure Processor ACPI Table provides the memory location of the
+>> register window and register offsets necessary to communicate with AMD's
+>> PSP (Platform Security Processor). This table is exposed on Hyper-V VMs
+>> configured with support for AMD's SNP isolation technology.
+>>
+>> Signed-off-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+> 
+> Please add a Link tag pointing to the corresponding upstream ACPICA
+> pull request (or upstream ACPICA commit if already pulled) to this
+> patch and analogously for patch [2/8].
+> 
+> Thanks!
+> 
+
+Will do when I post v3. I'll poke the ACPICA maintainer again after the specification
+gets published this friday.
+
+Jeremi
+
+>> ---
+>>  include/acpi/actbl1.h | 46 +++++++++++++++++++++++++++++++++++++++++++
+>>  1 file changed, 46 insertions(+)
+>>
+>> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+>> index 15c78678c5d3..00d40373df37 100644
+>> --- a/include/acpi/actbl1.h
+>> +++ b/include/acpi/actbl1.h
+>> @@ -26,6 +26,7 @@
+>>   */
+>>  #define ACPI_SIG_AEST           "AEST" /* Arm Error Source Table */
+>>  #define ACPI_SIG_ASF            "ASF!" /* Alert Standard Format table */
+>> +#define ACPI_SIG_ASPT           "ASPT" /* AMD Secure Processor Table */
+>>  #define ACPI_SIG_BERT           "BERT" /* Boot Error Record Table */
+>>  #define ACPI_SIG_BGRT           "BGRT" /* Boot Graphics Resource Table */
+>>  #define ACPI_SIG_BOOT           "BOOT" /* Simple Boot Flag Table */
+>> @@ -106,6 +107,51 @@ struct acpi_whea_header {
+>>         u64 mask;               /* Bitmask required for this register instruction */
+>>  };
+>>
+>> +/* https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/acpitabl/ns-acpitabl-aspt_table */
+>> +#define ASPT_REVISION_ID 0x01
+>> +struct acpi_table_aspt {
+>> +       struct acpi_table_header header;
+>> +       u32 num_entries;
+>> +};
+>> +
+>> +struct acpi_aspt_header {
+>> +       u16 type;
+>> +       u16 length;
+>> +};
+>> +
+>> +enum acpi_aspt_type {
+>> +       ACPI_ASPT_TYPE_GLOBAL_REGS = 0,
+>> +       ACPI_ASPT_TYPE_SEV_MBOX_REGS = 1,
+>> +       ACPI_ASPT_TYPE_ACPI_MBOX_REGS = 2,
+>> +};
+>> +
+>> +/* 0: ASPT Global Registers */
+>> +struct acpi_aspt_global_regs {
+>> +       struct acpi_aspt_header header;
+>> +       u32 reserved;
+>> +       u64 feature_reg_addr;
+>> +       u64 irq_en_reg_addr;
+>> +       u64 irq_st_reg_addr;
+>> +};
+>> +
+>> +/* 1: ASPT SEV Mailbox Registers */
+>> +struct acpi_aspt_sev_mbox_regs {
+>> +       struct acpi_aspt_header header;
+>> +       u8 mbox_irq_id;
+>> +       u8 reserved[3];
+>> +       u64 cmd_resp_reg_addr;
+>> +       u64 cmd_buf_lo_reg_addr;
+>> +       u64 cmd_buf_hi_reg_addr;
+>> +};
+>> +
+>> +/* 2: ASPT ACPI Mailbox Registers */
+>> +struct acpi_aspt_acpi_mbox_regs {
+>> +       struct acpi_aspt_header header;
+>> +       u32 reserved1;
+>> +       u64 cmd_resp_reg_addr;
+>> +       u64 reserved2[2];
+>> +};
+>> +
+>>  /*******************************************************************************
+>>   *
+>>   * ASF - Alert Standard Format table (Signature "ASF!")
+>> --
+>> 2.25.1
+>>
