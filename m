@@ -2,127 +2,148 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ECEC69AF8A
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Feb 2023 16:32:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3065969B4C0
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Feb 2023 22:27:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230218AbjBQPcC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Feb 2023 10:32:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59352 "EHLO
+        id S229889AbjBQV1C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Feb 2023 16:27:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbjBQPcB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Feb 2023 10:32:01 -0500
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B6856F3E7;
-        Fri, 17 Feb 2023 07:32:00 -0800 (PST)
-Received: from notapiano (unknown [IPv6:2600:4041:5b1a:cd00:524d:e95d:1a9c:492a])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: nfraprado)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id C876666021B3;
-        Fri, 17 Feb 2023 15:31:54 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1676647918;
-        bh=z3neAe3zoYlZjaNu5/O4X7BlXl5dBIVOCRdEyu7SXI8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Nxh4xsmaUDncSMm3Xd4ZUNIVUVCFSZpnwyMMAk2yZk7jPmNwjl9AVlGUgoNWzKlQa
-         di0Umh1TV7gB5sQTQMFJc/rYvKopRkQKCIf9ewVBqA4whnjzZ7KnLgPlS8TyXz3FXv
-         1eKjOVMvbD/u6K1pPw/+6xgUVkeIbpwn3jU3/+yith2Y7Gn19e9LEe3hgj421tJF0x
-         uT8ql0nhsVDl1O10zXEm4IGkS4xrpJZLJjCKe2Wb4/iOk3JEVNUORP9H1iO0Xamr/z
-         WGlGxmhR0TSvn8drY0HIf3cZJ+QBa13Mdn2LrVl4QTgQT4V/O/WZsZ5ElmWvsZKuA1
-         ISNwaECR5P4rg==
-Date:   Fri, 17 Feb 2023 10:31:50 -0500
-From:   =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado 
-        <nfraprado@collabora.com>
-To:     Pin-yen Lin <treapking@chromium.org>
-Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        linux-kernel@vger.kernel.org, Hsin-Yi Wang <hsinyi@chromium.org>,
-        devicetree@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
-        Lyude Paul <lyude@redhat.com>, linux-acpi@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
-        Xin Ji <xji@analogixsemi.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        chrome-platform@lists.linux.dev,
-        =?utf-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>
-Subject: Re: [PATCH v11 6/9] drm/bridge: anx7625: Register Type C mode
- switches
-Message-ID: <20230217153150.tl3zqywvpw6elyg5@notapiano>
-References: <20230204133040.1236799-1-treapking@chromium.org>
- <20230204133040.1236799-7-treapking@chromium.org>
+        with ESMTP id S229635AbjBQV1B (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Feb 2023 16:27:01 -0500
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2044.outbound.protection.outlook.com [40.107.100.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 222C75B778;
+        Fri, 17 Feb 2023 13:27:00 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dQhCD9hkk8/CbwWmYVVO5BQL+uc4HWSetCGJz4qyzmpTzO00XLgnSy9Pdy3YIIlQl32y59E23RqXhXs9ogj704JCU5Zfu7a+R5WFeyHsQS7zZ4Y0dwkQ1jGmuUe1AGaO4SMXIf2Trk1IVyR3226FTr9TBHmlNfWA4JZoCy/e/bDKZD4hIUK95t14hzRbRN1ElsxXvNGwfafDf9JuSVil3dXyuuTlXe78Q88227LxFUTwJbgxScs/0a9g5emHDQtqfgiwuxkL4iLoX7tAzAe5p1ZULbXpkXHHXKH71z5WQGWw0KSvifa0DGxDN01ej59SE/aecaiJ5hOu4XH/nReMfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=q7cBqskYjqRz8gbokM4CNwDnCMkbCjx2zxgQ839T9yQ=;
+ b=bhT8u+XG/rfRSviMsf2CLpak/FVARJHV0epbIFKSao1FuGP4tKog7XUi6Y1grcYkXab4YYzx40QEGOVJ1KqPuPPFgtOVABhb9q8m958J4h+50LQ3+dlJPipGkoLZCk5d2G1A6kInj/ZEPbaz/ROQb7G38fFtjrupIqNqwo5IHnr3bDRVICoOwemzM5vyciPglc4s7DKiCgPOeyh3EWN8zyuCsOqTEIBApYCPS7XijbCIrd6yMe0XqTEu09+wEw/xgEF8mE0pUrmp0WrtElxTiUOF34/5t2FE1TRmKNOzm3cK5Cz6o7qfUz2+O8/QALDlZp7IUJLIM6jIIXC1U00D4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=gmail.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=q7cBqskYjqRz8gbokM4CNwDnCMkbCjx2zxgQ839T9yQ=;
+ b=EUwGw2ttQhcub/7ftct3DNFmaUBq6SEZxcMZ+sL3QU/m7f5dkS/t/SzUOoGDY6zj2A1Y1zNum1ObNNz8j4c3oC7Aq/vsw2Tc330QRZ8UpJT4jaEC6aWPTkx+iyLocDARNItij0dNgMPm7fza3kfIBNJHBsmCaZ+hwsIEl6KxDhSDLea9fByXLmg2gXsKGw0rzsHkmR/mgkmhenk/taLCKwSKbnNvAlAKPzHh9mX9Kk0m6QZ3jt1UavXGJDN7FCd0z0NqEGKmK8A1WZNxAegHCUQTlnfBEzIJbgSJMn5SCTVu9w+qW1i0g6laSJJ1ADRRz4frq3ov5k6M1svXfT7Knw==
+Received: from DM6PR08CA0031.namprd08.prod.outlook.com (2603:10b6:5:80::44) by
+ PH0PR12MB5645.namprd12.prod.outlook.com (2603:10b6:510:140::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6086.24; Fri, 17 Feb
+ 2023 21:26:57 +0000
+Received: from DM6NAM11FT044.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:5:80:cafe::63) by DM6PR08CA0031.outlook.office365.com
+ (2603:10b6:5:80::44) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6111.17 via Frontend
+ Transport; Fri, 17 Feb 2023 21:26:56 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ DM6NAM11FT044.mail.protection.outlook.com (10.13.173.185) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6086.22 via Frontend Transport; Fri, 17 Feb 2023 21:26:56 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Fri, 17 Feb
+ 2023 13:26:55 -0800
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.36; Fri, 17 Feb 2023 13:26:54 -0800
+Received: from vdi.nvidia.com (10.127.8.14) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server id 15.2.986.36 via Frontend
+ Transport; Fri, 17 Feb 2023 13:26:53 -0800
+From:   Asmaa Mnebhi <asmaa@nvidia.com>
+To:     <andy.shevchenko@gmail.com>, <linus.walleij@linaro.org>,
+        <bgolaszewski@baylibre.com>, <linux-gpio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>
+CC:     Asmaa Mnebhi <asmaa@nvidia.com>
+Subject: [PATCH v4 0/2] Support Nvidia BlueField-3 GPIO driver and pin controller
+Date:   Fri, 17 Feb 2023 16:26:49 -0500
+Message-ID: <cover.1676668853.git.asmaa@nvidia.com>
+X-Mailer: git-send-email 2.30.1
+In-Reply-To: <cover.1676042188.git.asmaa@nvidia.com>
+References: <cover.1676042188.git.asmaa@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230204133040.1236799-7-treapking@chromium.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6NAM11FT044:EE_|PH0PR12MB5645:EE_
+X-MS-Office365-Filtering-Correlation-Id: 12a74026-994f-48ea-d32e-08db112db252
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 4LKo5FYpZ2pJdpuc7nwtNnB6/oTmXa7dZ5I8/vN5Zv1/QKUfV/UNxYI+I6DCkXyVLSDd+n/pFaaD6AmPnGlmr9YJ9MhzlJDRbdTKPkszY4K1llVxLk+Mk3FZUO9bvy1RGir/trcjqUVzv3iMVWa7zfWdh+nNm9au4dNhWfHLrf5z6PUJw0Vz3ax2xDAEg+K3nh39olVOa5TwQbP7cz40pHrvI2/E4YuEml/AurxQ3rOHMNlTKEDJaLjlxlCPsALgG2Ry4gozmZqc1b83RZzS81WsPoCCag7n1gkF/XbDW7ZpiPVYJ81y7sx0cT/yn+nRp7YwxkMjOgXUFEZ5N21Rwg/0C56KxbG6Yhq89TG91vLzj8VeErsWoNol9NCbx9DUpTRovKwgVMSj0dDRj7UYK8LOLp1u4bdiLv726k/4QGazQPMkiuhOSaIL99Ibj5fNhmNikdJF+XV2HmkuLzoeo8wmE3Vhf4Pknk3a/sgLTsU9zG9tLk2ehpQYe6STUtOAZn4010EG6fPgaxJoLvA/ovqaxUuI3phI+rdearY0AJ3kj32+KN0Iy319kgado86CXvwAHJmqcSSnjm4097amWTOMVV7M0KyLF5B8cqck57xhk/OZ16ouTOfXZIilHPoLa+2Lxt82FVFgw7EgTL7RerMe/Ol1wxf+fu9YCG6rN+S4SA4u8aq6wieEdSVGQ15mtRbSKhZGOKEWZ3KI6CzJ5g==
+X-Forefront-Antispam-Report: CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230025)(4636009)(376002)(396003)(136003)(346002)(39860400002)(451199018)(40470700004)(36840700001)(46966006)(41300700001)(36756003)(356005)(2906002)(70586007)(82740400003)(36860700001)(7636003)(82310400005)(26005)(4326008)(47076005)(110136005)(478600001)(316002)(8676002)(40460700003)(336012)(426003)(2616005)(7696005)(86362001)(83380400001)(6666004)(70206006)(8936002)(40480700001)(186003)(5660300002)(107886003);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2023 21:26:56.4623
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12a74026-994f-48ea-d32e-08db112db252
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT044.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB5645
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Feb 04, 2023 at 09:30:37PM +0800, Pin-yen Lin wrote:
-[..]
-> --- a/drivers/gpu/drm/bridge/analogix/anx7625.c
-> +++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
-[..]
-> +static void anx7625_set_crosspoint_switch(struct anx7625_data *ctx,
-> +					  enum typec_orientation orientation)
-> +{
-> +	if (orientation == TYPEC_ORIENTATION_NORMAL) {
-> +		anx7625_reg_write(ctx, ctx->i2c.tcpc_client, TCPC_SWITCH_0,
-> +				  SW_SEL1_SSRX_RX1 | SW_SEL1_DPTX0_RX2);
-> +		anx7625_reg_write(ctx, ctx->i2c.tcpc_client, TCPC_SWITCH_1,
-> +				  SW_SEL2_SSTX_TX1 | SW_SEL2_DPTX1_TX2);
+Support the BlueField-3 SoC GPIO driver for handling interrupts and
+providing the option to change the direction and value of a GPIO.
+Support the BlueField-3 SoC pin controller driver for allowing a
+select number of GPIO pins to be manipulated from userspace or
+the kernel.
 
-This seems inverted compared to the binding. Binding says 
+The gpio-mlxbf3.c driver handles hardware registers and logic
+that are different from gpio-mlxbf.c and gpio-mlxbf2.c.
+For that reason, we have separate drivers for each generation.
 
-  0, 1, 2, 3 in "data-lanes" maps to SSRX1, SSTX1, SSRX2, SSTX2, respectively.
+Changes from v3->v4:
+gpio-mlxbf3.c:
+- Update the Kconfig file so that it is conform with checkpatch
+- Remove unncessary headers and add missing header inclusions
+- Make irq_chip struct static and const
+- Replace generic_handle_irq(irq_find_mapping) with
+  generic_handle_domain_irq
+- Simplify logic in irq_set_type
+- Replace valid_mask with gpio-reserved-ranges
+- Cleanup code
 
-But in anx7625_register_typec_switches(), lanes 0-1 mean orientation normal,
-then in this logic, you set RX2 and TX2 to carry the DP signals. So the driver
-is mapping lanes 0-1 to SSRX2/SSTX2 and lanes 2-3 to SSRX1/SSTX1, the opposite
-from the binding.
+pinctrl-mlxbf.c:
+- Cleanup code
+- Update the Kconfig file so that it is conform with checkpatch
+- Remove unncessary headers and add missing header inclusions
 
-Thanks,
-Nícolas
+Asmaa Mnebhi (2):
+  gpio: gpio-mlxbf3: Add gpio driver support
+  pinctrl: pinctrl-mlxbf: Add pinctrl driver support
 
-> +	} else if (orientation == TYPEC_ORIENTATION_REVERSE) {
-> +		anx7625_reg_write(ctx, ctx->i2c.tcpc_client, TCPC_SWITCH_0,
-> +				  SW_SEL1_SSRX_RX2 | SW_SEL1_DPTX0_RX1);
-> +		anx7625_reg_write(ctx, ctx->i2c.tcpc_client, TCPC_SWITCH_1,
-> +				  SW_SEL2_SSTX_TX2 | SW_SEL2_DPTX1_TX1);
-> +	}
-> +}
-> +
-[..]
-> +static int anx7625_register_typec_switches(struct device *dev, struct anx7625_data *ctx)
-> +{
-[..]
-> +		ctx->port_data[i].orientation = (dp_lanes[0] / 2 == 0) ?
-> +			TYPEC_ORIENTATION_NORMAL : TYPEC_ORIENTATION_REVERSE;
-[..]
+ drivers/gpio/Kconfig            |  12 ++
+ drivers/gpio/Makefile           |   1 +
+ drivers/gpio/gpio-mlxbf3.c      | 230 ++++++++++++++++++++++
+ drivers/pinctrl/Kconfig         |  14 ++
+ drivers/pinctrl/Makefile        |   1 +
+ drivers/pinctrl/pinctrl-mlxbf.c | 338 ++++++++++++++++++++++++++++++++
+ 6 files changed, 596 insertions(+)
+ create mode 100644 drivers/gpio/gpio-mlxbf3.c
+ create mode 100644 drivers/pinctrl/pinctrl-mlxbf.c
+
+-- 
+2.30.1
+
