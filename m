@@ -2,61 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5FE869B62B
-	for <lists+linux-acpi@lfdr.de>; Sat, 18 Feb 2023 00:08:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4280069B671
+	for <lists+linux-acpi@lfdr.de>; Sat, 18 Feb 2023 00:25:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229608AbjBQXIA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Feb 2023 18:08:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54638 "EHLO
+        id S230038AbjBQXZf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Feb 2023 18:25:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229681AbjBQXH6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Feb 2023 18:07:58 -0500
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D27CC67D;
-        Fri, 17 Feb 2023 15:07:55 -0800 (PST)
-Received: by mail-qt1-x82c.google.com with SMTP id m11so2162018qtp.7;
-        Fri, 17 Feb 2023 15:07:55 -0800 (PST)
+        with ESMTP id S229933AbjBQXZe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Feb 2023 18:25:34 -0500
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F832460BE;
+        Fri, 17 Feb 2023 15:25:33 -0800 (PST)
+Received: by mail-qv1-xf29.google.com with SMTP id j10so2313972qvc.1;
+        Fri, 17 Feb 2023 15:25:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=dBiTrHReRxmuq/9ozf1YQmOmI8tYHPrT2vLjZ6Of39U=;
-        b=SoMY0E1BvDBjWlixSetu3T3kRtG1qgLRdMDknsr2oJpCO1yU7CtnGNE1w57d0wLaop
-         UMpar1wE0v9jIOuhYeTDB0ZqAlz1pfa2whY+RCpvab/TG0KdG9yLZ1wEchU3IjxaCf4R
-         FfguaD51uN4COGXhaAXgE81XwhD5HYOeszxONbKcJjluweFV9QYgESNCiEtNOz25DXQS
-         4pE0TV/0BhA1hTKjLxsI7e8K8Rf5sSHaW60ETWThSFQnivQpbzvY+hQBfyKra9GhLs5R
-         0q0znVmvLn8fEg0Jwk0OT7ZbeyB8+E9153xQ9HZOv4liSOk1tN7yhDj+vvCY72Rtm4j3
-         gbIg==
+        bh=TmsNLgYThqqbDqovTsshqwVzgjPETc/j5uryPGiIUH8=;
+        b=OMmaWG9sgM1pg7ZuxWuqy9ItMvtfzxRYvR5FdtQOLlFJUBbt3rFNg4PpEboBl8G3n6
+         ReLKa+xNMUicVHSc/QdnWcUFr/H93MGVp/mpCMcCD5LmVVIg18RsQS/psOatVkcFjir7
+         qEsQ3JL2tTWCZCeP5nsxUX9a8NIr+hNpf0/WuGr2Fn2JuQ9ascIRJstzoyFL4pDq8aXD
+         k/xcIuhEghv79JGrpvDZCSF6M0FMDZf34EDFN9RzIyf0+EKVkkzW7CN6qnok7peYHZno
+         OyTkL5FZk8j91UBnex8oMU/KXyA6rR2zZWlEsGgNwfAejhV6PGteWiyd7JG3HxJBXH7K
+         IASQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=dBiTrHReRxmuq/9ozf1YQmOmI8tYHPrT2vLjZ6Of39U=;
-        b=nCjgaqkfRFC7A9FFBA4A2dLofM9LQcfxZ0Vvggztuwhfg7yNWOgKyvuegfOb+72WJZ
-         J7gYS8dF+0lPXWkUbIfDfT3HaHwzE+AL8FXQGKywU5TSJ9J/0NtqLdE3YTm9qjkd83Wa
-         NKHFr3vVOIWkvfcu8AH7DkrlqHxdnbSoy1v8t85k2Pw/jYCltGrg4GnRw+IEFsfO4UgW
-         08JZ8dJjNNl9goy3bScHK0FXRDk1FabARUqSKqSc2/Hxm0oKHx3h/rlRF5CsKhxMt6mr
-         bnz4Tmyfk8d2aPkS8FFF6Z4JI+gA+35u5U+KMuij5jRqRyPEUfYjuqvB5FtfQTOO6qrb
-         5UbA==
-X-Gm-Message-State: AO0yUKU3x35vFvnKvIW6mzS7BsTiDnWeGtF9h5AneqvHEwiwZzk7TdvR
-        J8B92P7g9FJ+3QUl9fxpSQCN97q1x9zX0vsVkVI=
-X-Google-Smtp-Source: AK7set8KADSG2RkScyCX/xeJXgMSvT40fcUuT3yuzruyy+kOj09hhcPpJjAL7+i573SJVGjwsI+aLLsK18WOaC9ZB5k=
-X-Received: by 2002:ac8:1e8a:0:b0:3bd:1428:26b4 with SMTP id
- c10-20020ac81e8a000000b003bd142826b4mr616915qtm.1.1676675274354; Fri, 17 Feb
- 2023 15:07:54 -0800 (PST)
+        bh=TmsNLgYThqqbDqovTsshqwVzgjPETc/j5uryPGiIUH8=;
+        b=wEA82bvfdx+joTBR6iGXBmRAPeNYRjnFJVsi4lAMSMZLB405ni5YSX9ZSKeHw4uRzu
+         nx+e33Ge1+7K0irCl5xI3AFuG6g8M97VTYnLSclKiCRe5UTFdZ729P6K+8o6Jh9B8iz9
+         ME6zRmGfgqBO0oActtH+GCLnZ5bCwoZvnB22Z3F5gQLhV1sdYEwGV0RYaw1dLfpx0iBD
+         MgeuJXh+qqBtX+ODAkF5hTf4oOIkxFCKlk/EP8t/5oeXgxMLjWo20GBpTtMNynKC8jDN
+         DZ/CLZ/PGNN6PEuywxQTh+laXX7c7ARIkyfB2Rmaa7jN3x14T8MrHOg1a2OSVbh8VYqZ
+         G+ZA==
+X-Gm-Message-State: AO0yUKXkYIN1ArtZfasjN9/u3fM2IaAId+dvXtOa55sFyqi0YdD3+/Sl
+        J6vpE5S1pbffKbBGK7qYRwiiMpZkC1WfwXZSQOI=
+X-Google-Smtp-Source: AK7set+ZLr+SMph4nmqoU1TWPRyuD8umUsa4KXW3qosX1xzj+NOi5sn+P3v3yCcLMEEXbtVxwI3C2cV8txFJRzDHZQg=
+X-Received: by 2002:a05:6214:8c1:b0:56e:9ad3:ab9c with SMTP id
+ da1-20020a05621408c100b0056e9ad3ab9cmr314922qvb.1.1676676332192; Fri, 17 Feb
+ 2023 15:25:32 -0800 (PST)
 MIME-Version: 1.0
 References: <cover.1676042188.git.asmaa@nvidia.com> <cover.1676668853.git.asmaa@nvidia.com>
- <28f0d670407c127614b64d9c382b11c795f5077d.1676668853.git.asmaa@nvidia.com>
-In-Reply-To: <28f0d670407c127614b64d9c382b11c795f5077d.1676668853.git.asmaa@nvidia.com>
+ <4cda8cfc37fb15a0c3b180ab4c34a6f6f859fe3c.1676668853.git.asmaa@nvidia.com>
+In-Reply-To: <4cda8cfc37fb15a0c3b180ab4c34a6f6f859fe3c.1676668853.git.asmaa@nvidia.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 18 Feb 2023 01:07:18 +0200
-Message-ID: <CAHp75VdeVpjzg5Y_4Y+Ke9=3wog28vUBN4Fd8zxfa8dWGrqUUA@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] gpio: gpio-mlxbf3: Add gpio driver support
+Date:   Sat, 18 Feb 2023 01:24:56 +0200
+Message-ID: <CAHp75VeTbV7CyVZrXsrm8rqLnYdOunzTDhanqzceyJ3KyPjdwA@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] pinctrl: pinctrl-mlxbf: Add pinctrl driver support
 To:     Asmaa Mnebhi <asmaa@nvidia.com>
 Cc:     linus.walleij@linaro.org, bgolaszewski@baylibre.com,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
+        niyas.sait@linaro.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -70,132 +70,149 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 On Fri, Feb 17, 2023 at 11:27 PM Asmaa Mnebhi <asmaa@nvidia.com> wrote:
 >
-> Add support for the BlueField-3 SoC GPIO driver.
-> This driver configures and handles GPIO interrupts. It also enables a user
-> to manipulate certain GPIO pins via libgpiod tools or other kernel drivers.
-> The usables pins are defined via the gpio-reserved-ranges property.
+> NVIDIA BlueField-3 SoC has a few pins that can be used as GPIOs
+> or take the default hardware functionality. Add a driver for
+> the pinmuxing.
 
-Probably
-
-"gpio-reserved-ranges"
-
-(in double quotes).
+pin muxing
 
 ...
 
-> +       depends on (MELLANOX_PLATFORM && ARM64 && ACPI) || (64BIT && COMPILE_TEST)
+> +++ b/drivers/pinctrl/pinctrl-mlxbf.c
 
-But do you really need the ACPI dependency? I don't see a single bit
-of it in the driver.
-(Yes, I know about IDs.)
-
-Also, how 64BIT is needed for testing?
+Wondering if it would be better to match the GPIO driver naming
+schema, i.e. by adding 3. In this case the additional explanation in
+Kconfig help won't be necessary.
 
 ...
 
-> +#include <linux/version.h>
+> +#define MLXBF_GPIO0_FW_CONTROL_SET   0
+> +#define MLXBF_GPIO0_FW_CONTROL_CLEAR 0x14
+> +#define MLXBF_GPIO1_FW_CONTROL_SET   0x80
+> +#define MLXBF_GPIO1_FW_CONTROL_CLEAR 0x94
 
-I believe it's included automatically. Please, double check the header
-inclusions to make sure you don't have some spurious ones in the list.
+Unclear if these are commands or register offsets. If they are of the
+same type (semantically), make them fixed width, e.g., 0x00.
 
-> +struct mlxbf3_gpio_context {
-> +       struct gpio_chip gc;
-> +
-> +       /* YU GPIO block address */
-> +       void __iomem *gpio_io;
-> +
-> +       /* YU GPIO cause block address */
-> +       void __iomem *gpio_cause_io;
+...
+
+> +enum {
+> +       MLXBF_GPIO_HW_MODE,
+> +       MLXBF_GPIO_SW_MODE
+
+I would leave a comma here as it might be extended in the future.
+
 > +};
 
 ...
 
-> +       int offset = irqd_to_hwirq(irqd);
-
-It returns irq_hw_number_t IIRC. It's an unsigned type. Otherwise you
-may have interesting effects.
-
-...
-
-> +       int offset = irqd_to_hwirq(irqd);
+> +static const char * const mlxbf_pinctrl_single_group_names[] = {
+> +       "gpio0", "gpio1",  "gpio2",  "gpio3",  "gpio4",  "gpio5",  "gpio6",
+> +       "gpio7", "gpio8",  "gpio9",  "gpio10", "gpio11", "gpio12", "gpio13",
+> +       "gpio14", "gpio15", "gpio16", "gpio17", "gpio18", "gpio19", "gpio20",
+> +       "gpio21", "gpio22", "gpio23", "gpio24", "gpio25", "gpio26", "gpio27",
+> +       "gpio28", "gpio29", "gpio30", "gpio31", "gpio32", "gpio33", "gpio34",
+> +       "gpio35", "gpio36", "gpio37", "gpio38", "gpio39", "gpio40", "gpio41",
+> +       "gpio42", "gpio43", "gpio44", "gpio45", "gpio46", "gpio47", "gpio48",
+> +       "gpio49", "gpio50", "gpio51", "gpio52", "gpio53", "gpio54", "gpio55"
 
 Ditto.
+Can you group by 8?
 
-...
-
-> +       raw_spin_lock_irqsave(&gs->gc.bgpio_lock, flags);
+> +};
 > +
-> +       switch (type & IRQ_TYPE_SENSE_MASK) {
-> +       case IRQ_TYPE_EDGE_BOTH:
-> +               val = readl(gs->gpio_io + MLXBF_GPIO_CAUSE_FALL_EN);
-> +               val |= BIT(offset);
-> +               writel(val, gs->gpio_io + MLXBF_GPIO_CAUSE_FALL_EN);
-> +               val = readl(gs->gpio_io + MLXBF_GPIO_CAUSE_RISE_EN);
-> +               val |= BIT(offset);
-> +               writel(val, gs->gpio_io + MLXBF_GPIO_CAUSE_RISE_EN);
-> +               break;
-> +       case IRQ_TYPE_EDGE_RISING:
-> +               val = readl(gs->gpio_io + MLXBF_GPIO_CAUSE_RISE_EN);
-> +               val |= BIT(offset);
-> +               writel(val, gs->gpio_io + MLXBF_GPIO_CAUSE_RISE_EN);
-> +               break;
-> +       case IRQ_TYPE_EDGE_FALLING:
-> +               val = readl(gs->gpio_io + MLXBF_GPIO_CAUSE_FALL_EN);
-> +               val |= BIT(offset);
-> +               writel(val, gs->gpio_io + MLXBF_GPIO_CAUSE_FALL_EN);
-> +               break;
-> +       default:
+> +/* Set of pin numbers for single-pin groups */
+> +static const unsigned int mlxbf_pinctrl_single_group_pins[] = {
+> +       0,  1,  2,  3,  4,  5,  6,
+> +       7,  8,  9, 10, 11, 12, 13,
+> +       14, 15, 16, 17, 18, 19, 20,
+> +       21, 22, 23, 24, 25, 26, 27,
+> +       28, 29, 30, 31, 32, 33, 34,
+> +       35, 36, 37, 38, 39, 40, 41,
+> +       42, 43, 44, 45, 46, 47, 48,
+> +       49, 50, 51, 52, 53, 54, 55,
 
-Dead lock starts here.
+Group by 8 which is the more natural length of subarray per line.
 
-> +               return -EINVAL;
-> +       }
-> +
-> +       raw_spin_unlock_irqrestore(&gs->gc.bgpio_lock, flags);
+Is it just 1:1 to the index? If so, why do you need this table at all?
 
-...
-
-> +       irq_set_handler_locked(irqd, handle_simple_irq);
-
-Why not using propert handler type (edge)?
-
-...
-
-> +static const struct irq_chip gpio_mlxbf3_irqchip = {
-> +       .name = "MLNXBF33",
-> +       .irq_set_type = mlxbf3_gpio_irq_set_type,
-> +       .irq_enable = mlxbf3_gpio_irq_enable,
-> +       .irq_disable = mlxbf3_gpio_irq_disable,
 > +};
 
-Seems missing two things (dunno if bgpio_init() helps with that):
-- IMMUTABLE flag
-- actual calls to enable and disable IRQs for internal GPIO library usage
+...
 
-See other drivers how it's done. There are even plenty of patches to
-enable this thing separately.
+> +static const struct {
+> +       const char *name;
+> +       const char * const *group_names;
+
+Use this instead
+https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl.git/tree/include/linux/pinctrl/pinctrl.h?h=devel#n215
+and this
+https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl.git/tree/include/linux/pinctrl/pinctrl.h?h=devel#n222
+
+> +} mlxbf_pmx_funcs[] = {
+
+> +};
 
 ...
 
-> +static int
-> +mlxbf3_gpio_probe(struct platform_device *pdev)
+> +{
+> +       struct mlxbf_pinctrl *priv = pinctrl_dev_get_drvdata(pctldev);
+> +
+> +       /* disable GPIO functionality by giving control back to hardware */
+> +       if (offset < MLXBF_NGPIOS_GPIO0)
+> +               writel(BIT(offset), priv->base + MLXBF_GPIO0_FW_CONTROL_CLEAR);
+> +       else
+> +               writel(BIT(offset % MLXBF_NGPIOS_GPIO0), priv->base + MLXBF_GPIO1_FW_CONTROL_CLEAR);
 
-Doesn't it perfectly fit one line?
+> +
+
+Redundant blank line.
+
+> +}
 
 ...
 
-> +       npins = MLXBF3_GPIO_MAX_PINS_PER_BLOCK;
-> +       device_property_read_u32(dev, "npins", &npins);
+> +static_assert(ARRAY_SIZE(mlxbf_pinctrl_single_group_names) ==
+> +             ARRAY_SIZE(mlxbf_pinctrl_single_group_pins));
 
-I don't see DT bindings for this property (being added in this
-series). Is it already established one?
+I would put it on a single line, but it's up to you.
 
 ...
 
-> +               girq->default_type = IRQ_TYPE_NONE;
+> +       struct resource *res;
 
-Assigning handle_bad_irq() is missing.
+Useless?
 
--- 
+...
+
+> +       /* This resource is shared so use devm_ioremap */
+
+Can you elaborate on who actually requests the region? And why is it
+not _this_ driver?
+
+> +       res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +       if (!res)
+> +               return -ENODEV;
+
+...
+
+> +       ret = devm_pinctrl_register_and_init(priv->dev,
+
+Is the priv->dev different from dev?
+
+> +                                            &mlxbf_pin_desc,
+> +                                            priv,
+> +                                            &priv->pctl);
+> +       if (ret)
+> +               return dev_err_probe(dev, ret, "Failed to register pinctrl\n");
+
+...
+
+> +       pinctrl_add_gpio_range(priv->pctl, &mlxbf_pinctrl_gpio_ranges[0]);
+> +       pinctrl_add_gpio_range(priv->pctl, &mlxbf_pinctrl_gpio_ranges[1]);
+
+pinctrl_add_gpio_ranges() ?
+
+--
 With Best Regards,
 Andy Shevchenko
