@@ -2,138 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E3A169AA5A
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Feb 2023 12:29:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 902FC69A991
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Feb 2023 12:02:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230160AbjBQL3g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Feb 2023 06:29:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44630 "EHLO
+        id S229632AbjBQLBx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Feb 2023 06:01:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230156AbjBQL3d (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Feb 2023 06:29:33 -0500
-X-Greylist: delayed 1811 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Feb 2023 03:29:24 PST
-Received: from smtp.smtpout.orange.fr (smtp-24.smtpout.orange.fr [80.12.242.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C5ABF656A0
-        for <linux-acpi@vger.kernel.org>; Fri, 17 Feb 2023 03:29:24 -0800 (PST)
-Received: from pop-os.home ([86.243.2.178])
-        by smtp.orange.fr with ESMTPA
-        id SySNpfME7qIOtSySNpIV5M; Fri, 17 Feb 2023 11:59:11 +0100
-X-ME-Helo: pop-os.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 17 Feb 2023 11:59:11 +0100
-X-ME-IP: 86.243.2.178
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH] ACPI: video: Reorder fields in 'struct acpi_video_device'
-Date:   Fri, 17 Feb 2023 11:59:08 +0100
-Message-Id: <6b868520dac20434296b6282496d3234fae01115.1676631473.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S229522AbjBQLBp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Feb 2023 06:01:45 -0500
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0D145E58C;
+        Fri, 17 Feb 2023 03:01:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676631704; x=1708167704;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=IK0jg8/ege2d89PKUbnoI/GAsL+o8k7CQysLNqinG18=;
+  b=hhSkQJvOMgDU81KH+rx7LGZck6hfboMJqU4gsiRaYE0YJwfB3ASbtYyf
+   iUe78iliRam6fqbI5xqz7FliNJkcig1YeuR+XaiPgcsTCzZLRvwZTg8aU
+   J9146+Pe96EXO3fwPBy+hkaL1t3UKNtDYgFjic2rlOllXX06gYxxN1pW9
+   wdnuYRrtAv0nKn+t43A1RuNGMvxQ5jmpSB7+AjLVBzVUmJwVajW6WwTO+
+   6a6g2p6rOmZsv/OM0HgVPi0kyFdyeIqca0zA2JOKQvupg4+NNdOhur1RD
+   kqefJ61v9SADoBcpEOi53Mto+IF+7GT09JeESV4zr8siMrDyg/ZijNUdD
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10623"; a="320068679"
+X-IronPort-AV: E=Sophos;i="5.97,304,1669104000"; 
+   d="scan'208";a="320068679"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2023 03:01:44 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10623"; a="648040359"
+X-IronPort-AV: E=Sophos;i="5.97,304,1669104000"; 
+   d="scan'208";a="648040359"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga006.jf.intel.com with ESMTP; 17 Feb 2023 03:01:41 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pSyUm-008AiW-07;
+        Fri, 17 Feb 2023 13:01:40 +0200
+Date:   Fri, 17 Feb 2023 13:01:39 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Kaehn <kaehndan@gmail.com>
+Subject: Re: [PATCH v1 1/1] device property: Clarify description on returned
+ value in some functions
+Message-ID: <Y+9ek6I0tCMHcHRQ@smile.fi.intel.com>
+References: <20230216205708.13453-1-andriy.shevchenko@linux.intel.com>
+ <Y+9Wqbb+zzvH2Ozb@kekkonen.localdomain>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y+9Wqbb+zzvH2Ozb@kekkonen.localdomain>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Group some variables based on their sizes to reduce hole and avoid padding.
-On x86_64, this shrinks the size of 'struct acpi_video_device'
-from 264 to 256 bytes.
+On Fri, Feb 17, 2023 at 12:27:53PM +0200, Sakari Ailus wrote:
+> On Thu, Feb 16, 2023 at 10:57:08PM +0200, Andy Shevchenko wrote:
 
-This size is much better when the struct is kmalloc()'ed.
+...
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Using pahole
+> >   * fwnode_get_next_child_node - Return the next child node handle for a node
+> >   * @fwnode: Firmware node to find the next child node for.
+> >   * @child: Handle to one of the node's child nodes or a %NULL handle.
+> > + *
+> > + * Caller is responsible to call fwnode_handle_put() on the returned fwnode
+> > + * pointer.
+> 
+> The loop itself will also put the child node, so this is only relevant
+> outside the loop.
 
-Before:
-======
-struct acpi_video_device {
-	long unsigned int          device_id;            /*     0     8 */
-	struct acpi_video_device_flags flags;            /*     8     1 */
-	struct acpi_video_device_cap cap;                /*     9     1 */
+Yes and this is exactly what people stumbled over. Hence this note.
+This call per se doesn't loop, so I didn't get how your comment can
+be transformed to anything here. Care to elaborate a bit more on
+what I have to add here or reword?
 
-	/* XXX 6 bytes hole, try to pack */
+...
 
-	struct list_head           entry;                /*    16    16 */
-	struct delayed_work        switch_brightness_work; /*    32   184 */
+> > + * Among other cases this has to be used when terminating device_for_each_child_node()
+> 
+> I don't think device_for_each_child_node() should be mentioned here. This
+> isn't really related to that in particular.
 
-	/* XXX last struct has 4 bytes of padding */
+Okay, I will drop this change. It's anyway out of the scope of this patch.
 
-	/* --- cacheline 3 boundary (192 bytes) was 24 bytes ago --- */
-	int                        switch_brightness_event; /*   216     4 */
+> With these:
+> 
+> Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-	/* XXX 4 bytes hole, try to pack */
+Thanks, but due to above I can't apply it right away.
 
-	struct acpi_video_bus *    video;                /*   224     8 */
-	struct acpi_device *       dev;                  /*   232     8 */
-	struct acpi_video_device_brightness * brightness; /*   240     8 */
-	struct backlight_device *  backlight;            /*   248     8 */
-	/* --- cacheline 4 boundary (256 bytes) --- */
-	struct thermal_cooling_device * cooling_dev;     /*   256     8 */
-
-	/* size: 264, cachelines: 5, members: 11 */
-	/* sum members: 254, holes: 2, sum holes: 10 */
-	/* paddings: 1, sum paddings: 4 */
-	/* last cacheline: 8 bytes */
-};
-
-
-After:
-=====
-struct acpi_video_device {
-	long unsigned int          device_id;            /*     0     8 */
-	struct list_head           entry;                /*     8    16 */
-	struct acpi_video_device_flags flags;            /*    24     1 */
-	struct acpi_video_device_cap cap;                /*    25     1 */
-
-	/* XXX 2 bytes hole, try to pack */
-
-	int                        switch_brightness_event; /*    28     4 */
-	struct delayed_work        switch_brightness_work; /*    32   184 */
-
-	/* XXX last struct has 4 bytes of padding */
-
-	/* --- cacheline 3 boundary (192 bytes) was 24 bytes ago --- */
-	struct acpi_video_bus *    video;                /*   216     8 */
-	struct acpi_device *       dev;                  /*   224     8 */
-	struct acpi_video_device_brightness * brightness; /*   232     8 */
-	struct backlight_device *  backlight;            /*   240     8 */
-	struct thermal_cooling_device * cooling_dev;     /*   248     8 */
-
-	/* size: 256, cachelines: 4, members: 11 */
-	/* sum members: 254, holes: 1, sum holes: 2 */
-	/* paddings: 1, sum paddings: 4 */
-};
----
- drivers/acpi/acpi_video.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index 97b711e57bff..1118dd7dbf6c 100644
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -202,11 +202,11 @@ struct acpi_video_device_cap {
- 
- struct acpi_video_device {
- 	unsigned long device_id;
-+	struct list_head entry;
- 	struct acpi_video_device_flags flags;
- 	struct acpi_video_device_cap cap;
--	struct list_head entry;
--	struct delayed_work switch_brightness_work;
- 	int switch_brightness_event;
-+	struct delayed_work switch_brightness_work;
- 	struct acpi_video_bus *video;
- 	struct acpi_device *dev;
- 	struct acpi_video_device_brightness *brightness;
 -- 
-2.34.1
+With Best Regards,
+Andy Shevchenko
+
 
