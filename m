@@ -2,61 +2,68 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0179769B974
-	for <lists+linux-acpi@lfdr.de>; Sat, 18 Feb 2023 11:34:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CA5B69BA51
+	for <lists+linux-acpi@lfdr.de>; Sat, 18 Feb 2023 14:58:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229601AbjBRKeT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 18 Feb 2023 05:34:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37654 "EHLO
+        id S229520AbjBRN6Z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 18 Feb 2023 08:58:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229779AbjBRKeQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 18 Feb 2023 05:34:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 386AD3C04
-        for <linux-acpi@vger.kernel.org>; Sat, 18 Feb 2023 02:32:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1676716369;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=3XM0s6Py2s9NABNZsjEwB9EJNT03Us1/96JqO8MWWMA=;
-        b=V42K1ua9VB66T8OKBVtAHguRe0dgpV8jhr7QaIdaft7z/JVKH7gVtt9qIEcBM8lDTMmPQc
-        PChD10nYDzWka0zbK1WK1reN8C1qKFn/U5oHoDUSSdXg7cp6wbIKl5TfOQQmAKtfd1VCCY
-        qqXk/OMK8cYQIBVuBv5QmA5yh8bOrW8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-116-bzUkGqdzOz2_tI2RHRO9KQ-1; Sat, 18 Feb 2023 05:32:42 -0500
-X-MC-Unique: bzUkGqdzOz2_tI2RHRO9KQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 42014811E6E;
-        Sat, 18 Feb 2023 10:32:42 +0000 (UTC)
-Received: from shalem.redhat.com (unknown [10.39.192.45])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id F26552026D4B;
-        Sat, 18 Feb 2023 10:32:40 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andy@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-gpio@vger.kernel.org
-Subject: [PATCH 3/3] power: supply: axp288_charger: Use alt usb-id extcon on some x86 android tablets
-Date:   Sat, 18 Feb 2023 11:32:35 +0100
-Message-Id: <20230218103235.6934-4-hdegoede@redhat.com>
-In-Reply-To: <20230218103235.6934-1-hdegoede@redhat.com>
-References: <20230218103235.6934-1-hdegoede@redhat.com>
+        with ESMTP id S229489AbjBRN6Z (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 18 Feb 2023 08:58:25 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 681AF144AB;
+        Sat, 18 Feb 2023 05:58:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1676728697; i=w_armin@gmx.de;
+        bh=HXc3Ky8K7EeeQh360fRePD6IF/Y8y+pNXQWwmdroHM0=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=VfufjnHT4sWi6RQuB7+0OjSe/wNzY6HPirdM3+tu23Aeo+0TqXmCmQJnLL+YfY8+z
+         wzOjKf3rkuiVjy5huJz1m4h74/TiwmpE8h2PNACKw6/+UbH1FWXExJolTDNrY0G24a
+         sd3MwRgZFGQI3RodnVSXZ0WxnriFprjOfwsKfKdta80bDnhneUyQ0Pw/GucByIs5PN
+         au4UKyZcTsGMkQKAwuEdSzLtnR/JmK8CYeXqxUnQumZM4t0/VP56mdAMmgwfE9B1bj
+         pzj45Kbj59G8LCTAbuoiZp8FALlRMnBz0FBEEEEWIbnAP24nmsBo449iuUlI3Kim4N
+         fc5Yjsih6RsbQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MDQeU-1pMGys43DK-00AUp6; Sat, 18
+ Feb 2023 14:58:17 +0100
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+Cc:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+From:   Armin Wolf <W_Armin@gmx.de>
+Subject: [BUG] sbs module causes lockup upon suspend/shutdown
+Message-ID: <362d19fc-85f6-4bc4-46c5-1933113aec4f@gmx.de>
+Date:   Sat, 18 Feb 2023 14:58:15 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Provags-ID: V03:K1:615DZe+B30EqDRNfKLkx3ehlDorQvPQxu+elYThWjQhe0iNFwgo
+ zj3I3ruoUoYZKmWeLsbZRnTbaIN+OSo8HLXYaCRR8WZj1Uwsxl8bVfKPZztrnEP51ihU3Rg
+ hoWcgGuuL+qqUwF3LQydtnGmTx7P2X+RRqpo6Ul3kHuZYgL3YlgG1FkjhGHYX3o4JqrnCbw
+ KU7kkAYN+7EX2MxNLJG/Q==
+UI-OutboundReport: notjunk:1;M01:P0:nmm+RFcx68I=;yhboy4aTIbFkXeFMvjvxCNhIcmh
+ gR6QHFtDBqv76fpc0AesRVV1WtlkbBUb4O8nYyoVtulGKeZKvobb4lMWSzOp0vGffbtqrz1K4
+ kqwxwcQt2X8P5y9VVcYB85SIe+HAZIBEMyQEmUmGJ5Qtd2gFDYfGRXba9cEVIXmtN6c19tG5E
+ 6YtrEQ6H7Fc3A0iC1wmDwoSuJ+MvFKgmT/cjf/b+CZWOzxqT1uRiteByWbVESyunSpsohOdGR
+ ARAnMhFRk2nnh9H6hB+b92Are3vKpAUJwjRQB5Kt76oZ/RyPkwSwKwyBlrUqJZAlhWFJJrEAh
+ oa5gLA2M+el7C946C1g+WuOELv5gvyq2ZeY5qQ4jW21WpVve+Tkn+897T+1ac5Vjjq6D1Hzrb
+ qxDfeWv1RMN41SmY8Yd93SizJnE/kZfX6KwWXPR15qIf8smNQazxWVX3Jwz5GLIfUlxZC8doD
+ EQSyIUpF47Ysl7pQbys20/tpcltOS4WnRkfGxU0WhoXhPYSCfK9fvUViYJLLGtpy01cgQ+9zj
+ 3kndTi26LvE2rZAHgGDvWXrEmx+DIPrwY32bmk7NASTEsRKalszfJw0DVmRHR5n6CUc33k8xZ
+ CRDFrTr019T0lL7ryIqra5cWKGfjBkTP95FFddqGW9f6N82yaElQ6iG0iuXd4jOibglMzLV72
+ cNXUPZE6/SkDPcsealRmXp5vHz7sV+/rwW4s33GUYrrhRfcI9Uw7TOoJjeqCbe0dydacFki9S
+ 7yxLmbd/B3e5AEglKSQ17WPKFSMahb1bBc9nWkOTcZfXi/xy2geUxsQ5tctcHch3er7V4tVqo
+ 7E7jb701pMhzabWTOjrWLthXRSvUOOn6sX6HY48J+2VZH64qJLYwCSPyz4CQKhU18FI1f+W4V
+ c3J/n71X0hH4b12kaREnt5xHBr4+la9j+jgSUUs5ijfuPQyP5t0A0vs5Kv1mrNHlqeAZM+2OD
+ 5IdeZ569AGDQ1OLw64dVbSF+ZWw=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,66 +71,21 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-x86 ACPI boards which ship with only Android as their factory image may
-have pretty broken ACPI tables. This includes broken _AEI ACPI GPIO event
-handlers, which are normally used to listen to the micro-USB ID pin and:
+Hello,
 
-1. Switch the USB-mux to the host / device USB controllers
-2. Disable Vbus path before enabling the 5V boost (AXP reg 0x30 bit 7)
-3. Turn 5V Vboost on / off
+on my Travelmate 4002WLMI, the sbs module causes a lockup upon suspend/shutdown when loaded.
+Additionally, a kernel oops occurs when unloading the sbs module with "modprobe -r sbs", but
+not with "rmmod sbs".
 
-On non broken systems where this is not done through an ACPI GPIO event
-handler, there is an ACPI INT3496 device describing the involved GPIOs
-which are handled by the extcon-intel-int3496 driver; and axp288-charger.ko
-listens to this extcon-device and disables the Vbus path when necessary.
+While i was able to fix the oops on module removal (a race condition similar to 757c968c4423,
+but now inside the ACPI EC driver), i was unable to find the cause for the lockup.
 
-On x86 Android boards, with broken ACPI GPIO event handlers, these are
-disabled by acpi_quirk_skip_gpio_event_handlers() and an intel-int3496
-extcon device is manually instantiated by x86-android-tablets.ko .
+I did however find out that the lockup does not occur when i reset the EC SMBus alert flag
+before calling the handler function, to i suppose the issue lies inside the sbs alert callback
+(maybe similar to add68d6aa9e2).
 
-Add support to the axp288-charger code for this setup, so that it
-properly disables the Vbus path when necessary. Note this uses
-acpi_quirk_skip_gpio_event_handlers() to identify these systems,
-to avoid the need to add a separate DMI match table for this.
+I created a bug report (https://bugzilla.kernel.org/show_bug.cgi?id=217041) with more information
+attached, such as dmesg logs. Any  ideas on what causes the lockup?
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/power/supply/axp288_charger.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/power/supply/axp288_charger.c b/drivers/power/supply/axp288_charger.c
-index 15219ed43ce9..b5903193e2f9 100644
---- a/drivers/power/supply/axp288_charger.c
-+++ b/drivers/power/supply/axp288_charger.c
-@@ -836,6 +836,7 @@ static int axp288_charger_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct axp20x_dev *axp20x = dev_get_drvdata(pdev->dev.parent);
- 	struct power_supply_config charger_cfg = {};
-+	const char *extcon_name = NULL;
- 	unsigned int val;
- 
- 	/*
-@@ -872,8 +873,18 @@ static int axp288_charger_probe(struct platform_device *pdev)
- 		return PTR_ERR(info->cable.edev);
- 	}
- 
--	if (acpi_dev_present(USB_HOST_EXTCON_HID, NULL, -1)) {
--		info->otg.cable = extcon_get_extcon_dev(USB_HOST_EXTCON_NAME);
-+	/*
-+	 * On devices with broken ACPI GPIO event handlers there also is no ACPI
-+	 * "INT3496" (USB_HOST_EXTCON_HID) device. x86-android-tablets.ko
-+	 * instantiates an "intel-int3496" extcon on these devs as a workaround.
-+	 */
-+	if (acpi_quirk_skip_gpio_event_handlers())
-+		extcon_name = "intel-int3496";
-+	else if (acpi_dev_present(USB_HOST_EXTCON_HID, NULL, -1))
-+		extcon_name = USB_HOST_EXTCON_NAME;
-+
-+	if (extcon_name) {
-+		info->otg.cable = extcon_get_extcon_dev(extcon_name);
- 		if (IS_ERR(info->otg.cable)) {
- 			dev_err_probe(dev, PTR_ERR(info->otg.cable),
- 				      "extcon_get_extcon_dev(%s) failed\n",
--- 
-2.39.1
+Armin Wolf
 
