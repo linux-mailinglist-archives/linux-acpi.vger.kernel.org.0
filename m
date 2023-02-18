@@ -2,217 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4280069B671
-	for <lists+linux-acpi@lfdr.de>; Sat, 18 Feb 2023 00:25:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E46769B74C
+	for <lists+linux-acpi@lfdr.de>; Sat, 18 Feb 2023 02:06:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230038AbjBQXZf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Feb 2023 18:25:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45220 "EHLO
+        id S229779AbjBRBGp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Feb 2023 20:06:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229933AbjBQXZe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Feb 2023 18:25:34 -0500
-Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F832460BE;
-        Fri, 17 Feb 2023 15:25:33 -0800 (PST)
-Received: by mail-qv1-xf29.google.com with SMTP id j10so2313972qvc.1;
-        Fri, 17 Feb 2023 15:25:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=TmsNLgYThqqbDqovTsshqwVzgjPETc/j5uryPGiIUH8=;
-        b=OMmaWG9sgM1pg7ZuxWuqy9ItMvtfzxRYvR5FdtQOLlFJUBbt3rFNg4PpEboBl8G3n6
-         ReLKa+xNMUicVHSc/QdnWcUFr/H93MGVp/mpCMcCD5LmVVIg18RsQS/psOatVkcFjir7
-         qEsQ3JL2tTWCZCeP5nsxUX9a8NIr+hNpf0/WuGr2Fn2JuQ9ascIRJstzoyFL4pDq8aXD
-         k/xcIuhEghv79JGrpvDZCSF6M0FMDZf34EDFN9RzIyf0+EKVkkzW7CN6qnok7peYHZno
-         OyTkL5FZk8j91UBnex8oMU/KXyA6rR2zZWlEsGgNwfAejhV6PGteWiyd7JG3HxJBXH7K
-         IASQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TmsNLgYThqqbDqovTsshqwVzgjPETc/j5uryPGiIUH8=;
-        b=wEA82bvfdx+joTBR6iGXBmRAPeNYRjnFJVsi4lAMSMZLB405ni5YSX9ZSKeHw4uRzu
-         nx+e33Ge1+7K0irCl5xI3AFuG6g8M97VTYnLSclKiCRe5UTFdZ729P6K+8o6Jh9B8iz9
-         ME6zRmGfgqBO0oActtH+GCLnZ5bCwoZvnB22Z3F5gQLhV1sdYEwGV0RYaw1dLfpx0iBD
-         MgeuJXh+qqBtX+ODAkF5hTf4oOIkxFCKlk/EP8t/5oeXgxMLjWo20GBpTtMNynKC8jDN
-         DZ/CLZ/PGNN6PEuywxQTh+laXX7c7ARIkyfB2Rmaa7jN3x14T8MrHOg1a2OSVbh8VYqZ
-         G+ZA==
-X-Gm-Message-State: AO0yUKXkYIN1ArtZfasjN9/u3fM2IaAId+dvXtOa55sFyqi0YdD3+/Sl
-        J6vpE5S1pbffKbBGK7qYRwiiMpZkC1WfwXZSQOI=
-X-Google-Smtp-Source: AK7set+ZLr+SMph4nmqoU1TWPRyuD8umUsa4KXW3qosX1xzj+NOi5sn+P3v3yCcLMEEXbtVxwI3C2cV8txFJRzDHZQg=
-X-Received: by 2002:a05:6214:8c1:b0:56e:9ad3:ab9c with SMTP id
- da1-20020a05621408c100b0056e9ad3ab9cmr314922qvb.1.1676676332192; Fri, 17 Feb
- 2023 15:25:32 -0800 (PST)
+        with ESMTP id S229498AbjBRBGo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Feb 2023 20:06:44 -0500
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DE87457E9;
+        Fri, 17 Feb 2023 17:06:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676682403; x=1708218403;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=r+eTrMw1FB+iDg1fr6ANtkvS4OBgRd5cOlW+TWhGpkc=;
+  b=Zgm/EdLqHV9z3afhAaGWqqLhsj0G1ooVCRt/qWrqqkvvHiabBQ5Aw2op
+   TnBOGw0lME0RZMEhJ/TuU/6i+V9DcJoMDDUBfo7d0fZibAYh9i53SLp3g
+   0V9I6lPGNunZf2aGDoYpyRYB5pO+IeL8hvMD8v2bDjP6LXl5nesWYwt9M
+   q4pFadChFZ8VEvDY19dBOn+UcExAz1az+VrLqimtc6Q+a5fIgGsgb2xDI
+   ZS1ha9j5uZwou5YM7HKm8sDd9m5rTQV5Svb7lEVZJIUjQcT8Sw7GHsOq/
+   ym9YrhZiD8f3GiRC7JzZ3MAIuLPNzE4bcgb3Bf2xGy3IN+Gl13T6bd8Il
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10624"; a="394611756"
+X-IronPort-AV: E=Sophos;i="5.97,306,1669104000"; 
+   d="scan'208";a="394611756"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2023 17:06:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10624"; a="734496291"
+X-IronPort-AV: E=Sophos;i="5.97,306,1669104000"; 
+   d="scan'208";a="734496291"
+Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 17 Feb 2023 17:06:40 -0800
+Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pTBgV-000BxP-27;
+        Sat, 18 Feb 2023 01:06:39 +0000
+Date:   Sat, 18 Feb 2023 09:05:54 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Asmaa Mnebhi <asmaa@nvidia.com>, andy.shevchenko@gmail.com,
+        linus.walleij@linaro.org, bgolaszewski@baylibre.com,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Cc:     oe-kbuild-all@lists.linux.dev, Asmaa Mnebhi <asmaa@nvidia.com>
+Subject: Re: [PATCH v4 1/2] gpio: gpio-mlxbf3: Add gpio driver support
+Message-ID: <202302180821.a8TRkiIS-lkp@intel.com>
+References: <28f0d670407c127614b64d9c382b11c795f5077d.1676668853.git.asmaa@nvidia.com>
 MIME-Version: 1.0
-References: <cover.1676042188.git.asmaa@nvidia.com> <cover.1676668853.git.asmaa@nvidia.com>
- <4cda8cfc37fb15a0c3b180ab4c34a6f6f859fe3c.1676668853.git.asmaa@nvidia.com>
-In-Reply-To: <4cda8cfc37fb15a0c3b180ab4c34a6f6f859fe3c.1676668853.git.asmaa@nvidia.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 18 Feb 2023 01:24:56 +0200
-Message-ID: <CAHp75VeTbV7CyVZrXsrm8rqLnYdOunzTDhanqzceyJ3KyPjdwA@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] pinctrl: pinctrl-mlxbf: Add pinctrl driver support
-To:     Asmaa Mnebhi <asmaa@nvidia.com>
-Cc:     linus.walleij@linaro.org, bgolaszewski@baylibre.com,
-        niyas.sait@linaro.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <28f0d670407c127614b64d9c382b11c795f5077d.1676668853.git.asmaa@nvidia.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Feb 17, 2023 at 11:27 PM Asmaa Mnebhi <asmaa@nvidia.com> wrote:
->
-> NVIDIA BlueField-3 SoC has a few pins that can be used as GPIOs
-> or take the default hardware functionality. Add a driver for
-> the pinmuxing.
+Hi Asmaa,
 
-pin muxing
+I love your patch! Perhaps something to improve:
 
-...
+[auto build test WARNING on linusw-pinctrl/devel]
+[also build test WARNING on linusw-pinctrl/for-next brgl/gpio/for-next linus/master v6.2-rc8 next-20230217]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> +++ b/drivers/pinctrl/pinctrl-mlxbf.c
+url:    https://github.com/intel-lab-lkp/linux/commits/Asmaa-Mnebhi/pinctrl-pinctrl-mlxbf-Add-pinctrl-driver-support/20230218-062744
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl.git devel
+patch link:    https://lore.kernel.org/r/28f0d670407c127614b64d9c382b11c795f5077d.1676668853.git.asmaa%40nvidia.com
+patch subject: [PATCH v4 1/2] gpio: gpio-mlxbf3: Add gpio driver support
+reproduce:
+        make versioncheck
 
-Wondering if it would be better to match the GPIO driver naming
-schema, i.e. by adding 3. In this case the additional explanation in
-Kconfig help won't be necessary.
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202302180821.a8TRkiIS-lkp@intel.com/
 
-...
+versioncheck warnings: (new ones prefixed by >>)
+   INFO PATH=/opt/cross/clang/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   /usr/bin/timeout -k 100 3h /usr/bin/make W=1 --keep-going HOSTCC=gcc-11 CC=gcc-11 -j32 ARCH=x86_64 versioncheck
+   find ./* \( -name SCCS -o -name BitKeeper -o -name .svn -o -name CVS -o -name .pc -o -name .hg -o -name .git \) -prune -o \
+   	-name '*.[hcS]' -type f -print | sort \
+   	| xargs perl -w ./scripts/checkversion.pl
+   ./drivers/accessibility/speakup/genmap.c: 13 linux/version.h not needed.
+   ./drivers/accessibility/speakup/makemapdata.c: 13 linux/version.h not needed.
+>> ./drivers/gpio/gpio-mlxbf3.c: 14 linux/version.h not needed.
+   ./drivers/net/ethernet/qlogic/qede/qede.h: 10 linux/version.h not needed.
+   ./drivers/net/ethernet/qlogic/qede/qede_ethtool.c: 7 linux/version.h not needed.
+   ./drivers/scsi/cxgbi/libcxgbi.h: 27 linux/version.h not needed.
+   ./drivers/scsi/mpi3mr/mpi3mr.h: 32 linux/version.h not needed.
+   ./drivers/scsi/qedi/qedi_dbg.h: 14 linux/version.h not needed.
+   ./drivers/soc/tegra/cbb/tegra-cbb.c: 19 linux/version.h not needed.
+   ./drivers/soc/tegra/cbb/tegra194-cbb.c: 26 linux/version.h not needed.
+   ./drivers/soc/tegra/cbb/tegra234-cbb.c: 27 linux/version.h not needed.
+   ./drivers/staging/media/atomisp/include/linux/atomisp.h: 23 linux/version.h not needed.
+   ./init/version-timestamp.c: 5 linux/version.h not needed.
+   ./samples/trace_events/trace_custom_sched.c: 11 linux/version.h not needed.
+   ./sound/soc/codecs/cs42l42.c: 14 linux/version.h not needed.
+   ./tools/lib/bpf/bpf_helpers.h: 289: need linux/version.h
+   ./tools/perf/tests/bpf-script-example.c: 60: need linux/version.h
+   ./tools/perf/tests/bpf-script-test-kbuild.c: 21: need linux/version.h
+   ./tools/perf/tests/bpf-script-test-prologue.c: 47: need linux/version.h
+   ./tools/perf/tests/bpf-script-test-relocation.c: 51: need linux/version.h
+   ./tools/testing/selftests/bpf/progs/dev_cgroup.c: 9 linux/version.h not needed.
+   ./tools/testing/selftests/bpf/progs/netcnt_prog.c: 3 linux/version.h not needed.
+   ./tools/testing/selftests/bpf/progs/test_map_lock.c: 4 linux/version.h not needed.
+   ./tools/testing/selftests/bpf/progs/test_send_signal_kern.c: 4 linux/version.h not needed.
+   ./tools/testing/selftests/bpf/progs/test_spin_lock.c: 4 linux/version.h not needed.
+   ./tools/testing/selftests/bpf/progs/test_tcp_estats.c: 37 linux/version.h not needed.
+   ./tools/testing/selftests/wireguard/qemu/init.c: 27 linux/version.h not needed.
 
-> +#define MLXBF_GPIO0_FW_CONTROL_SET   0
-> +#define MLXBF_GPIO0_FW_CONTROL_CLEAR 0x14
-> +#define MLXBF_GPIO1_FW_CONTROL_SET   0x80
-> +#define MLXBF_GPIO1_FW_CONTROL_CLEAR 0x94
-
-Unclear if these are commands or register offsets. If they are of the
-same type (semantically), make them fixed width, e.g., 0x00.
-
-...
-
-> +enum {
-> +       MLXBF_GPIO_HW_MODE,
-> +       MLXBF_GPIO_SW_MODE
-
-I would leave a comma here as it might be extended in the future.
-
-> +};
-
-...
-
-> +static const char * const mlxbf_pinctrl_single_group_names[] = {
-> +       "gpio0", "gpio1",  "gpio2",  "gpio3",  "gpio4",  "gpio5",  "gpio6",
-> +       "gpio7", "gpio8",  "gpio9",  "gpio10", "gpio11", "gpio12", "gpio13",
-> +       "gpio14", "gpio15", "gpio16", "gpio17", "gpio18", "gpio19", "gpio20",
-> +       "gpio21", "gpio22", "gpio23", "gpio24", "gpio25", "gpio26", "gpio27",
-> +       "gpio28", "gpio29", "gpio30", "gpio31", "gpio32", "gpio33", "gpio34",
-> +       "gpio35", "gpio36", "gpio37", "gpio38", "gpio39", "gpio40", "gpio41",
-> +       "gpio42", "gpio43", "gpio44", "gpio45", "gpio46", "gpio47", "gpio48",
-> +       "gpio49", "gpio50", "gpio51", "gpio52", "gpio53", "gpio54", "gpio55"
-
-Ditto.
-Can you group by 8?
-
-> +};
-> +
-> +/* Set of pin numbers for single-pin groups */
-> +static const unsigned int mlxbf_pinctrl_single_group_pins[] = {
-> +       0,  1,  2,  3,  4,  5,  6,
-> +       7,  8,  9, 10, 11, 12, 13,
-> +       14, 15, 16, 17, 18, 19, 20,
-> +       21, 22, 23, 24, 25, 26, 27,
-> +       28, 29, 30, 31, 32, 33, 34,
-> +       35, 36, 37, 38, 39, 40, 41,
-> +       42, 43, 44, 45, 46, 47, 48,
-> +       49, 50, 51, 52, 53, 54, 55,
-
-Group by 8 which is the more natural length of subarray per line.
-
-Is it just 1:1 to the index? If so, why do you need this table at all?
-
-> +};
-
-...
-
-> +static const struct {
-> +       const char *name;
-> +       const char * const *group_names;
-
-Use this instead
-https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl.git/tree/include/linux/pinctrl/pinctrl.h?h=devel#n215
-and this
-https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl.git/tree/include/linux/pinctrl/pinctrl.h?h=devel#n222
-
-> +} mlxbf_pmx_funcs[] = {
-
-> +};
-
-...
-
-> +{
-> +       struct mlxbf_pinctrl *priv = pinctrl_dev_get_drvdata(pctldev);
-> +
-> +       /* disable GPIO functionality by giving control back to hardware */
-> +       if (offset < MLXBF_NGPIOS_GPIO0)
-> +               writel(BIT(offset), priv->base + MLXBF_GPIO0_FW_CONTROL_CLEAR);
-> +       else
-> +               writel(BIT(offset % MLXBF_NGPIOS_GPIO0), priv->base + MLXBF_GPIO1_FW_CONTROL_CLEAR);
-
-> +
-
-Redundant blank line.
-
-> +}
-
-...
-
-> +static_assert(ARRAY_SIZE(mlxbf_pinctrl_single_group_names) ==
-> +             ARRAY_SIZE(mlxbf_pinctrl_single_group_pins));
-
-I would put it on a single line, but it's up to you.
-
-...
-
-> +       struct resource *res;
-
-Useless?
-
-...
-
-> +       /* This resource is shared so use devm_ioremap */
-
-Can you elaborate on who actually requests the region? And why is it
-not _this_ driver?
-
-> +       res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +       if (!res)
-> +               return -ENODEV;
-
-...
-
-> +       ret = devm_pinctrl_register_and_init(priv->dev,
-
-Is the priv->dev different from dev?
-
-> +                                            &mlxbf_pin_desc,
-> +                                            priv,
-> +                                            &priv->pctl);
-> +       if (ret)
-> +               return dev_err_probe(dev, ret, "Failed to register pinctrl\n");
-
-...
-
-> +       pinctrl_add_gpio_range(priv->pctl, &mlxbf_pinctrl_gpio_ranges[0]);
-> +       pinctrl_add_gpio_range(priv->pctl, &mlxbf_pinctrl_gpio_ranges[1]);
-
-pinctrl_add_gpio_ranges() ?
-
---
-With Best Regards,
-Andy Shevchenko
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
