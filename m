@@ -2,56 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CFF869C107
-	for <lists+linux-acpi@lfdr.de>; Sun, 19 Feb 2023 15:56:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A7F269C11F
+	for <lists+linux-acpi@lfdr.de>; Sun, 19 Feb 2023 16:07:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230354AbjBSO4l (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 19 Feb 2023 09:56:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53186 "EHLO
+        id S230414AbjBSPH2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 19 Feb 2023 10:07:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230167AbjBSO4k (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 19 Feb 2023 09:56:40 -0500
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36209F76D;
-        Sun, 19 Feb 2023 06:56:39 -0800 (PST)
-Received: by mail-il1-x12d.google.com with SMTP id m18so171164ild.0;
-        Sun, 19 Feb 2023 06:56:39 -0800 (PST)
+        with ESMTP id S230399AbjBSPH1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 19 Feb 2023 10:07:27 -0500
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23E9111172
+        for <linux-acpi@vger.kernel.org>; Sun, 19 Feb 2023 07:07:24 -0800 (PST)
+Received: by mail-lj1-x22f.google.com with SMTP id f16so644120ljq.6
+        for <linux-acpi@vger.kernel.org>; Sun, 19 Feb 2023 07:07:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MRWzUiIkZMN/8VwTf3/WG02TOz303pOTBThE0ISU9KA=;
-        b=OBp/XQAU5Q471JJAcxBMgqa6dD4Dp32mVwrDrvC1tRuFffnp8TdtHAw/E8heX1RCnn
-         mZ0zJ/aWl+G8TXYcKZuS0Gx/77yQV9MyRVZhYGfgTIwQgi1f+S7jIWw21vvn+0IyeUFX
-         rdGxpxTfynV5AOlzLbnmYCLi82W9sEgiqT7rTWjNkuCAl/kE3OPW30GwGFZqwI+/03tU
-         y7wSgIhnwQY0CXiY+UKDIT1n/bfXzXdmCFVT9lWQ/dd9grtj5iw3PduSsmfni1mS1tZT
-         HOvxd60YwrOlZZkXi8ODkZ40ZdpjvMDWGoKx4Vf2pWX9kbUlwTVQq817YlKAqQz5NLhr
-         k9lw==
+        d=ragnatech-se.20210112.gappssmtp.com; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=vfvHBPjFD3fnJEXsEdcPBmeh9w1ZDPtCXMtTzNwUMP4=;
+        b=2MT453GERnVCOXc+pZDXjhNske3WayAQFfKvKJjkTaSXaH9ypTF1xoFmHts7lcs6Tu
+         8awMK4Po/ABZ5dh9w4kEV1FldjJxMrBZVoiOQuoO90QinuTnKOP01zHiWmaOtrj+nQvd
+         F+ZaO4uYXLhJM+VztPHntmkaf7c2ZT1Q0aPQ00s5xppJj7swa9G6CIbKQNlCxZ/w13pb
+         K749pLo5Tg+B9AZJIM2QgMhbSb1PATOb59v0crPXiX4ae6edrBvt+0E1yX/NUh/mJvXP
+         jtQvKiAA2OdtGon53LBFrgDiJMJWAudwD546mUhHoHUTb6TiVX8ddk95TiBrWGbr05LD
+         zGSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MRWzUiIkZMN/8VwTf3/WG02TOz303pOTBThE0ISU9KA=;
-        b=Ci9KNzXAogrq//Vt2pV0W+82Jpia76RWoz8/mqoW+83ArD8ALdbrglpsSsBlKZttFh
-         OFh/IXCf6vWNo1Pcvf1OBSni+9GA7QCt9fZVIg877d2RsSEVSwWQojhOlOSRaPttZFo9
-         xu5g/0TSmJtXYwI+MNyw93tZYNOd8wWizGVFZidUW0UuVc3LTL4WK8Z/1ASN3bF3VJry
-         05uoQ/GBSTmY9n/uEOQsjoUCLSZJydfu2+rX/lbYw3T1gWI+3ieCnlHSJq51XfYxMRgN
-         jKPclnFqd9Wd9UrcTRjqwouZfoHf8E10ckvNguIMjCNNck6w6p4YNNHrHIXZQJLk/Gac
-         QVCA==
-X-Gm-Message-State: AO0yUKXUYtKQ89j9zLM6G16yViPSJXc3Fp02SvBglZloG3z9tAqckvDV
-        sJhDicJXDGAFKRi2ZiG12ag=
-X-Google-Smtp-Source: AK7set/tBdHvgZ9GFY6tgVICfvLzFe6RtqLrm+n2c8aFQ5ip61CmdhaCQUFruBwYDgn3guOUu59kmw==
-X-Received: by 2002:a92:1a41:0:b0:315:4350:9c09 with SMTP id z1-20020a921a41000000b0031543509c09mr1511617ill.16.1676818598543;
-        Sun, 19 Feb 2023 06:56:38 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id c8-20020a92cf08000000b003153cdd03a3sm501663ilo.61.2023.02.19.06.56.37
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vfvHBPjFD3fnJEXsEdcPBmeh9w1ZDPtCXMtTzNwUMP4=;
+        b=K7oxOThz6ZiSLXZpoDEuueriDYOvZDLEfdj/TAacsLheOpjbflCRA+f+Jp1ee1q6mk
+         +fQm39wWxoyYD8OUCHk0k0hHtAqDfz7fLOagONt475tE8zGI7GpPuQ/FOWzUopDKZA24
+         /TACd79e2iwr4SPpbJjcmuSFPyr7FDyMkK7iYop+Zk/uG1ljamb8zHqiyFDYzz5iCzPS
+         PyYY92kMHSS8KYQcuPGj3SNipqc5VoFdD+5iAxDnLnAcMqf3z632LtfbVzDrSqyNagLl
+         qZVL+8utpPqAHvGiocV3Fm2o+DF1l2qEtBRJIDFWZjvq1Jr+K0W9APEZtFY3WQyP+/xJ
+         vhcA==
+X-Gm-Message-State: AO0yUKWZhX1jUjk/iwSjMO+c9ITJzT85op54d1BvUZtdWZppT68r4xIR
+        oJJjz5BIWvi5S5/AYsjLFSZqTA==
+X-Google-Smtp-Source: AK7set9/3IywPw1ycXkXfjTE1BOHzIfMRekgiKErVRCZRj2jjMurZbyZpbHyyTOgbRvkntf1piSbOg==
+X-Received: by 2002:a05:651c:1541:b0:293:14c8:f588 with SMTP id y1-20020a05651c154100b0029314c8f588mr403194ljp.27.1676819242130;
+        Sun, 19 Feb 2023 07:07:22 -0800 (PST)
+Received: from localhost (h-46-59-89-207.A463.priv.bahnhof.se. [46.59.89.207])
+        by smtp.gmail.com with ESMTPSA id f23-20020a2e9517000000b0029355185926sm1245807ljh.137.2023.02.19.07.07.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Feb 2023 06:56:38 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Sun, 19 Feb 2023 06:56:36 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
+        Sun, 19 Feb 2023 07:07:21 -0800 (PST)
+Date:   Sun, 19 Feb 2023 16:07:20 +0100
+From:   Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
 To:     Daniel Lezcano <daniel.lezcano@linaro.org>
 Cc:     rafael@kernel.org, linux-pm@vger.kernel.org,
         linux-kernel@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
@@ -63,6 +62,7 @@ Cc:     rafael@kernel.org, linux-pm@vger.kernel.org,
         Fabio Estevam <festevam@gmail.com>,
         NXP Linux Team <linux-imx@nxp.com>,
         Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Chen-Yu Tsai <wens@csie.org>,
@@ -94,8 +94,7 @@ Cc:     rafael@kernel.org, linux-pm@vger.kernel.org,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Thara Gopinath <thara.gopinath@gmail.com>,
-        Niklas =?iso-8859-1?Q?S=F6derlund?= 
-        <niklas.soderlund@ragnatech.se>, Heiko Stuebner <heiko@sntech.de>,
+        Heiko Stuebner <heiko@sntech.de>,
         Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Alim Akhtar <alim.akhtar@samsung.com>,
@@ -157,25 +156,28 @@ Cc:     rafael@kernel.org, linux-pm@vger.kernel.org,
         <linux-mediatek@lists.infradead.org>
 Subject: Re: [PATCH v1 01/17] thermal/core: Add a thermal zone 'devdata'
  accessor
-Message-ID: <20230219145636.GB4084160@roeck-us.net>
+Message-ID: <Y/I7KA2Uqqk7ib6L@oden.dyn.berto.se>
 References: <20230219143657.241542-1-daniel.lezcano@linaro.org>
  <20230219143657.241542-2-daniel.lezcano@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <20230219143657.241542-2-daniel.lezcano@linaro.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Feb 19, 2023 at 03:36:41PM +0100, Daniel Lezcano wrote:
+Hi Daniel,
+
+Thanks for your work.
+
+On 2023-02-19 15:36:41 +0100, Daniel Lezcano wrote:
 > The thermal zone device structure is exposed to the different drivers
 > and obviously they access the internals while that should be
 > restricted to the core thermal code.
@@ -191,14 +193,40 @@ On Sun, Feb 19, 2023 at 03:36:41PM +0100, Daniel Lezcano wrote:
 > 
 > Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 > ---
+
 ...
->  drivers/hwmon/hwmon.c                            |  4 ++--
->  drivers/hwmon/pmbus/pmbus_core.c                 |  2 +-
->  drivers/hwmon/scmi-hwmon.c                       |  2 +-
->  drivers/hwmon/scpi-hwmon.c                       |  2 +-
 
-For hwmon:
+>  drivers/thermal/rcar_gen3_thermal.c              |  4 ++--
+>  drivers/thermal/rcar_thermal.c                   |  3 +--
 
-Acked-by: Guenter Roeck <linux@roeck-us.net>
+For R-Car,
 
-Guenter
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+
+...
+
+
+> diff --git a/include/linux/thermal.h b/include/linux/thermal.h
+> index 2bb4bf33f4f3..724b95662da9 100644
+> --- a/include/linux/thermal.h
+> +++ b/include/linux/thermal.h
+> @@ -365,6 +365,8 @@ thermal_zone_device_register_with_trips(const char *, struct thermal_trip *, int
+>  					void *, struct thermal_zone_device_ops *,
+>  					struct thermal_zone_params *, int, int);
+>  
+> +void *thermal_zone_device_get_data(struct thermal_zone_device *tzd);
+> +
+
+bikeshedding:
+
+Would it make sens to name this thermal_zone_device_get_priv_data(), 
+thermal_zone_device_get_priv() or something like that? To make it more 
+explicitly when reading the driver code this fetches the drivers private 
+data, and not some data belonging to the zone itself.
+
+>  int thermal_zone_bind_cooling_device(struct thermal_zone_device *, int,
+>  				     struct thermal_cooling_device *,
+
+-- 
+Kind Regards,
+Niklas Söderlund
