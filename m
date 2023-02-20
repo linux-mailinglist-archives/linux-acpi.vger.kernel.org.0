@@ -2,53 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76FB469D460
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Feb 2023 20:58:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E84869D46D
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Feb 2023 21:07:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232211AbjBTT6S (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Feb 2023 14:58:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49878 "EHLO
+        id S229986AbjBTUHv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Feb 2023 15:07:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232096AbjBTT6R (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Feb 2023 14:58:17 -0500
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DB1F1A482
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Feb 2023 11:58:11 -0800 (PST)
-Received: by mail-ed1-x52e.google.com with SMTP id b12so8829837edd.4
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Feb 2023 11:58:11 -0800 (PST)
+        with ESMTP id S232289AbjBTUHs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Feb 2023 15:07:48 -0500
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 311381EBF2
+        for <linux-acpi@vger.kernel.org>; Mon, 20 Feb 2023 12:07:46 -0800 (PST)
+Received: by mail-ed1-x529.google.com with SMTP id ck15so10168972edb.0
+        for <linux-acpi@vger.kernel.org>; Mon, 20 Feb 2023 12:07:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ventanamicro.com; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PrugdTKLSDJwHyjHjZ36D6OjjlvSRka7EpHAWIsGDzo=;
-        b=QaGObWgZc1ovML+WcKgHPHYayMiw6l/d2CRjtcpbEfbU3WzgAUnE4PghRbQkWPZhCM
-         zwvEurQW6YHEL0FCkn1CpJ/jj07Q7eCNa2YSgg2pNjmh1pUnHpCvuSLK4yNijpFaMbai
-         S9ywBG5R312pa2XZa5Adqa3J6Xiy7bPUob7HuIpdMWP3ypMtipsbdPlKgAZt8tD7ptC/
-         sXTBjXSLuLZ4r1SgkbOEfaerw/Q2YoI9/b1B+pF2ossbynGyGeeUQZ2qmW7Dyte/MIot
-         GB3kDCmOuDoVE9cgd1xswfqkNi+BohvzTeeyvrM503kxOUlhoyn6eCkJClNVWs5fFc2A
-         /klg==
+        bh=w5X67HTfkILqEFlfX+HSJPjcXyLvpwqICue55s3QYSw=;
+        b=ljlyerwG96LRAPYltgdfRgo4LNVCAqRoMZ2NyaaBblrOty1DurlpAMzrJO/D/rpIq+
+         d0USN24Mzo/zGlck1ez3BHzoeZelgm2BUMkjGRaGCdwlxNA2rkK3fYo80oX3BrR18gQT
+         R5ncLcuCAdj5TW9fk2g6LRw7SaA49rRVU5H90SplU6ckJt2nX7iNKdPrDkk7948l47ZY
+         GaUYJCgV7COBQbzBssRFT4loF9aJ/nEC0OsGN3LGfwnfW33QYMsnmMnVTHI8E+6bnqHF
+         E+PqBCAIIOoRotkNxnB0aBE40G9pHBug8lv4RWzdutV182W9oFPC9Bdya1PHgIBiYzI4
+         HyEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PrugdTKLSDJwHyjHjZ36D6OjjlvSRka7EpHAWIsGDzo=;
-        b=gGQkUTalKh1uDaf/iaM27nb11n2M3bMXpq9Dis8S8aJ6FPu3Rd/5Rv7qxXPnjormM9
-         YtHLVW3CDqL3JoDCciKZw5hCxf71EOiyibRscGk0A/szVGmzRob+AKKBGQOKzDfiKiK8
-         jCyNCgS8ay9UIZd1i5g+yGdCOQ4GSPiEbMobYwABx23PtMlj3+l88UZSleyyLxkJahVn
-         OdyEiZCpdeTddGYN/lt8/Ycy1va9Inotg7uSYVs3skD/EQ0zSFGgetaaSUziCfFwLsxp
-         mDx6Jb+C2cF50iAZvEOhuqqmLR3TsZkj2658PSkECAkNRfDKAABml961aDLJDZeEFCu1
-         3lZQ==
-X-Gm-Message-State: AO0yUKWOF6yCCnRRJ/yNSdPU0zFTgyLvF1xuDLQ8cUvmRI4x5vHtj/8w
-        xGCl6wBvjltDbGkFWJVFPIGrfFhVEKPi1J+l
-X-Google-Smtp-Source: AK7set//9YBqcSpXyQvjERLB7zb/V6CJ6RVjsiEoNC5DrECGp5WFq8Wo5HkcHQI2vOoive6rCOJFHQ==
-X-Received: by 2002:a17:907:3e87:b0:8af:4969:1bb4 with SMTP id hs7-20020a1709073e8700b008af49691bb4mr13130826ejc.53.1676923090092;
-        Mon, 20 Feb 2023 11:58:10 -0800 (PST)
+        bh=w5X67HTfkILqEFlfX+HSJPjcXyLvpwqICue55s3QYSw=;
+        b=K03Wr3HJcoSIKhnTjipwmoLx0bm0r+q6x/Zzk0PHfM70/0ZIre4a+9DQ3u7QGmBfvL
+         kpevabNuE9yG1R8bQDtY0nVo3eLKgZZUZDQweH0NTyNjZNt4CSeHVDxqehOkiMO/ZzjX
+         TkeAzydR0x3SSr05UHSlCEzp41LDFg88zwPWB/kAd19SUWhuvt2JjhqR1gg1OKRYlrl5
+         R74Y7RkIRO7uOU8D0emLTawtaRXz40yeUdupEZEQy5FpAETWvgw9TqJ1GX62XhosQJ1r
+         S6ZbeO0jV7E1iEGRaGVpEnM8WAEu1tTdJP5dYBKPBITs/vlVVyY2Cu1NGS/TjngLX5rQ
+         pVeA==
+X-Gm-Message-State: AO0yUKUqUuvcG9U+jYBobMusNhZGIIvZ/QVNFc8H1V4An1h4RLb9/sMm
+        16GBR48JEsQrC0vDiGoLCScYkA==
+X-Google-Smtp-Source: AK7set9eZptDBkFAeqjmw/AtYlX3GnpO0T0d2EUlMjozAoScxvArhJpH8B/6tZhR2Uibhf3vdE2NXg==
+X-Received: by 2002:a17:907:9543:b0:8b2:c2fc:178e with SMTP id ex3-20020a170907954300b008b2c2fc178emr9492092ejc.74.1676923664681;
+        Mon, 20 Feb 2023 12:07:44 -0800 (PST)
 Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
-        by smtp.gmail.com with ESMTPSA id w19-20020a170906b19300b008ddf3476c75sm131906ejy.92.2023.02.20.11.58.09
+        by smtp.gmail.com with ESMTPSA id gz17-20020a170907a05100b00882f9130eb3sm6213593ejc.223.2023.02.20.12.07.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Feb 2023 11:58:09 -0800 (PST)
-Date:   Mon, 20 Feb 2023 20:58:08 +0100
+        Mon, 20 Feb 2023 12:07:44 -0800 (PST)
+Date:   Mon, 20 Feb 2023 21:07:43 +0100
 From:   Andrew Jones <ajones@ventanamicro.com>
 To:     Sunil V L <sunilvl@ventanamicro.com>
 Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
@@ -65,90 +65,222 @@ Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
         Anup Patel <apatel@ventanamicro.com>,
         Atish Patra <atishp@rivosinc.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH V2 17/21] RISC-V: time.c: Add ACPI support for time_init()
-Message-ID: <20230220195808.reyuclvefujucpsq@orel>
+Subject: Re: [PATCH V2 18/21] RISC-V: Add ACPI initialization in setup_arch()
+Message-ID: <20230220200743.rev3djzbaa2jcmg6@orel>
 References: <20230216182043.1946553-1-sunilvl@ventanamicro.com>
- <20230216182043.1946553-18-sunilvl@ventanamicro.com>
+ <20230216182043.1946553-19-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230216182043.1946553-18-sunilvl@ventanamicro.com>
+In-Reply-To: <20230216182043.1946553-19-sunilvl@ventanamicro.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 16, 2023 at 11:50:39PM +0530, Sunil V L wrote:
-> On ACPI based platforms, timer related information is
-> available in RHCT. Add ACPI based probe support to the
-> timer initialization.
+On Thu, Feb 16, 2023 at 11:50:40PM +0530, Sunil V L wrote:
+> Initialize the ACPI core for RISC-V during boot.
+> 
+> ACPI tables and interpreter are initialized based on
+> the information passed from the firmware and the value of
+> the kernel parameter 'acpi'.
 > 
 > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > ---
->  arch/riscv/kernel/time.c | 25 +++++++++++++++++++------
->  1 file changed, 19 insertions(+), 6 deletions(-)
+>  arch/riscv/kernel/acpi.c  | 113 ++++++++++++++++++++++++++++++++++++++
+>  arch/riscv/kernel/setup.c |  25 ++++++---
+>  2 files changed, 130 insertions(+), 8 deletions(-)
 > 
-> diff --git a/arch/riscv/kernel/time.c b/arch/riscv/kernel/time.c
-> index 1cf21db4fcc7..e49b897fc657 100644
-> --- a/arch/riscv/kernel/time.c
-> +++ b/arch/riscv/kernel/time.c
-> @@ -4,6 +4,7 @@
->   * Copyright (C) 2017 SiFive
+> diff --git a/arch/riscv/kernel/acpi.c b/arch/riscv/kernel/acpi.c
+> index 13b26c87c136..35e7b24a30c8 100644
+> --- a/arch/riscv/kernel/acpi.c
+> +++ b/arch/riscv/kernel/acpi.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/acpi.h>
+>  #include <linux/io.h>
+>  #include <linux/pci.h>
+> +#include <linux/efi.h>
+>  
+>  int acpi_noirq = 1;		/* skip ACPI IRQ initialization */
+>  int acpi_disabled = 1;
+> @@ -26,6 +27,118 @@ EXPORT_SYMBOL(acpi_pci_disabled);
+>  
+>  static unsigned int intc_count;
+>  static struct acpi_madt_rintc cpu_madt_rintc[NR_CPUS];
+> +static bool param_acpi_off __initdata;
+> +static bool param_acpi_on __initdata;
+> +static bool param_acpi_force __initdata;
+> +
+> +static int __init parse_acpi(char *arg)
+> +{
+> +	if (!arg)
+> +		return -EINVAL;
+> +
+> +	/* "acpi=off" disables both ACPI table parsing and interpreter */
+> +	if (strcmp(arg, "off") == 0)
+> +		param_acpi_off = true;
+> +	else if (strcmp(arg, "on") == 0) /* prefer ACPI over DT */
+> +		param_acpi_on = true;
+> +	else if (strcmp(arg, "force") == 0) /* force ACPI to be enabled */
+> +		param_acpi_force = true;
+> +	else
+> +		return -EINVAL;	/* Core will print when we return error */
+> +
+> +	return 0;
+> +}
+> +early_param("acpi", parse_acpi);
+> +
+> +/*
+> + * acpi_fadt_sanity_check() - Check FADT presence and carry out sanity
+> + *			      checks on it
+> + *
+> + * Return 0 on success,  <0 on failure
+> + */
+> +static int __init acpi_fadt_sanity_check(void)
+> +{
+> +	struct acpi_table_header *table;
+> +	struct acpi_table_fadt *fadt;
+> +	acpi_status status;
+> +	int ret = 0;
+> +
+> +	/*
+> +	 * FADT is required on riscv; retrieve it to check its presence
+> +	 * and carry out revision and ACPI HW reduced compliancy tests
+> +	 */
+> +	status = acpi_get_table(ACPI_SIG_FADT, 0, &table);
+> +	if (ACPI_FAILURE(status)) {
+> +		const char *msg = acpi_format_exception(status);
+> +
+> +		pr_err("Failed to get FADT table, %s\n", msg);
+> +		return -ENODEV;
+> +	}
+> +
+> +	fadt = (struct acpi_table_fadt *)table;
+> +
+> +	if (!(fadt->flags & ACPI_FADT_HW_REDUCED)) {
+
+Do we also need to check for ACPI version 5.0+ when checking for HW
+reduced?
+
+> +		pr_err("FADT not ACPI hardware reduced compliant\n");
+> +		ret = -EINVAL;
+> +	}
+> +
+> +	/*
+> +	 * acpi_get_table() creates FADT table mapping that
+> +	 * should be released after parsing and before resuming boot
+> +	 */
+> +	acpi_put_table(table);
+> +	return ret;
+> +}
+> +
+> +/*
+> + * acpi_boot_table_init() called from setup_arch(), always.
+> + *	1. find RSDP and get its address, and then find XSDT
+> + *	2. extract all tables and checksums them all
+> + *	3. check ACPI FADT HW reduced flag
+> + *
+> + * We can parse ACPI boot-time tables such as MADT after
+> + * this function is called.
+> + *
+> + * On return ACPI is enabled if either:
+> + *
+> + * - ACPI tables are initialized and sanity checks passed
+> + * - acpi=force was passed in the command line and ACPI was not disabled
+> + *   explicitly through acpi=off command line parameter
+> + *
+> + * ACPI is disabled on function return otherwise
+> + */
+> +void __init acpi_boot_table_init(void)
+> +{
+> +	/*
+> +	 * Enable ACPI instead of device tree unless
+> +	 * - ACPI has been disabled explicitly (acpi=off), or
+> +	 * - firmware has not populated ACPI ptr in EFI system table
+> +	 *   and ACPI has not been [force] enabled (acpi=on|force)
+> +	 */
+> +	if (param_acpi_off ||
+> +	    (!param_acpi_on && !param_acpi_force &&
+> +	     efi.acpi20 == EFI_INVALID_TABLE_ADDR))
+> +		return;
+> +
+> +	/*
+> +	 * ACPI is disabled at this point. Enable it in order to parse
+> +	 * the ACPI tables and carry out sanity checks
+> +	 */
+> +	enable_acpi();
+> +
+> +	/*
+> +	 * If ACPI tables are initialized and FADT sanity checks passed,
+> +	 * leave ACPI enabled and carry on booting; otherwise disable ACPI
+> +	 * on initialization error.
+> +	 * If acpi=force was passed on the command line it forces ACPI
+> +	 * to be enabled even if its initialization failed.
+> +	 */
+> +	if (acpi_table_init() || acpi_fadt_sanity_check()) {
+> +		pr_err("Failed to init ACPI tables\n");
+> +		if (!param_acpi_force)
+> +			disable_acpi();
+> +	}
+> +}
+
+A lot of the above code is common with arm64. It'd be nice to share that,
+but maybe refactoring can be done on top of this.
+
+>  
+>  static int acpi_parse_madt_rintc(union acpi_subtable_headers *header, const unsigned long end)
+>  {
+> diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+> index 4335f08ffaf2..c2ee7f4427a1 100644
+> --- a/arch/riscv/kernel/setup.c
+> +++ b/arch/riscv/kernel/setup.c
+> @@ -8,6 +8,7 @@
+>   *  Nick Kossifidis <mick@ics.forth.gr>
 >   */
 >  
 > +#include <linux/acpi.h>
->  #include <linux/of_clk.h>
->  #include <linux/clockchips.h>
->  #include <linux/clocksource.h>
-> @@ -18,17 +19,29 @@ EXPORT_SYMBOL_GPL(riscv_timebase);
->  void __init time_init(void)
->  {
->  	struct device_node *cpu;
-> +	struct acpi_table_rhct *rhct;
-> +	acpi_status status;
->  	u32 prop;
+>  #include <linux/init.h>
+>  #include <linux/mm.h>
+>  #include <linux/memblock.h>
+> @@ -276,14 +277,22 @@ void __init setup_arch(char **cmdline_p)
 >  
-> -	cpu = of_find_node_by_path("/cpus");
-> -	if (!cpu || of_property_read_u32(cpu, "timebase-frequency", &prop))
-> -		panic(KERN_WARNING "RISC-V system with no 'timebase-frequency' in DTS\n");
-> -	of_node_put(cpu);
-> -	riscv_timebase = prop;
-> +	if (acpi_disabled) {
-> +		cpu = of_find_node_by_path("/cpus");
-> +		if (!cpu || of_property_read_u32(cpu, "timebase-frequency", &prop))
-> +			panic("RISC-V system with no 'timebase-frequency' in DTS\n");
-> +		of_node_put(cpu);
-> +		riscv_timebase = prop;
-> +	} else {
-> +		status = acpi_get_table(ACPI_SIG_RHCT, 0, (struct acpi_table_header **)&rhct);
-> +		if (ACPI_FAILURE(status))
-> +			panic("RISC-V ACPI system with no RHCT table\n");
-> +		riscv_timebase = rhct->time_base_freq;
-> +		acpi_put_table((struct acpi_table_header *)rhct);
-> +	}
->  
->  	lpj_fine = riscv_timebase / HZ;
->  
-> -	of_clk_init(NULL);
-> +	if (acpi_disabled)
-> +		of_clk_init(NULL);
-
-I think we should be able to move of_clk_init() up into the acpi_disabled
-arm rather than add another if here.
-
+>  	efi_init();
+>  	paging_init();
+> -#if IS_ENABLED(CONFIG_BUILTIN_DTB)
+> -	unflatten_and_copy_device_tree();
+> -#else
+> -	if (early_init_dt_verify(__va(XIP_FIXUP(dtb_early_pa))))
+> -		unflatten_device_tree();
+> -	else
+> -		pr_err("No DTB found in kernel mappings\n");
+> -#endif
 > +
->  	timer_probe();
+> +	/* Parse the ACPI tables for possible boot-time configuration */
+> +	acpi_boot_table_init();
+> +	if (acpi_disabled) {
+> +		if (IS_ENABLED(CONFIG_BUILTIN_DTB)) {
+> +			unflatten_and_copy_device_tree();
+> +		} else {
+> +			if (early_init_dt_verify(__va(XIP_FIXUP(dtb_early_pa))))
+> +				unflatten_device_tree();
+> +			else
+> +				pr_err("No DTB found in kernel mappings\n");
+> +		}
+> +	} else {
+> +		early_init_dt_verify(__va(XIP_FIXUP(dtb_early_pa)));
+> +	}
+> +
+>  	early_init_fdt_scan_reserved_mem();
+>  	misc_mem_init();
 >  
->  	tick_setup_hrtimer_broadcast();
 > -- 
 > 2.34.1
-> 
+>
 
 Otherwise,
 
