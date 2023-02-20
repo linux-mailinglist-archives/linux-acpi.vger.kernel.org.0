@@ -2,266 +2,183 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A241D69C737
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Feb 2023 10:03:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3516869C759
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Feb 2023 10:09:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231378AbjBTJDa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Feb 2023 04:03:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47128 "EHLO
+        id S231261AbjBTJJ1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Feb 2023 04:09:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231335AbjBTJD3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Feb 2023 04:03:29 -0500
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 443C7B474
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Feb 2023 01:03:02 -0800 (PST)
-Received: by mail-io1-xd33.google.com with SMTP id d73so129421iof.4
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Feb 2023 01:03:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6vK8cWtmG3hyaLbDRLFgpGqrS4p5hCk6+ikOOD3341A=;
-        b=BT2ud7sxoolXPSVz5YqHI7AD9RUl8N77zxnGMFNIRbnYZ5NkGNX9t15jb4JPaWA0gx
-         RjgNyOP62hyyw3LtDM51WRaeDbSW+gmOyX365JR1nV/4MS/DGuN+CxjtV2S82wMFZDkJ
-         APJfi8WJHRCCVh7BpaS6YJFgaYSTVJLIbJWYU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6vK8cWtmG3hyaLbDRLFgpGqrS4p5hCk6+ikOOD3341A=;
-        b=oE/gKbvcwIznePNFYPQZzruGLX6UvlcBAok1HTtuOGh6I56PI56LdH63Qc7j7T6mQP
-         bfrf65tBp8D0LWlUBqGlv6helrFcCH/9LyfSzQMaeIBHphSPxI+dHGsasbNW5orOD6Hr
-         vzbjqtHrlyHObvWMW0vTEyK24SYraVAcWRw4LaMknG45D7oCXjYfTPYLIZOC/XNwIDkW
-         /f/TfjGmANeq4TUeNd4DGDzkyRcwSweKRriW3lQVWGEQSmKxCAq8W7Dv4DUO5z004Ag0
-         RP4+YQ+5wsA6JoMgMSB7TLqeOYfnq2Cyg5AcAX5Yjc/WIlEJMl5IyjCuoE+5Lk56weEC
-         eSvg==
-X-Gm-Message-State: AO0yUKV5jpniK6jU3AoRYjruG2+hkIELOHqPBvhaBWQyO9GPKt7XxQ0+
-        /keI5I9h4v2F5uhcMQd2GAl2hNWDPqXQJ9ge3X5ipg==
-X-Google-Smtp-Source: AK7set/kfz8hhDABr4DJ+44LUPCJEAg1cYsDPb4PwPecz9RynTAejbvde/9b9DWWLC1U8dNQIeThAlbfMv3O8bnKttg=
-X-Received: by 2002:a05:6638:1342:b0:3c2:c1c9:8bca with SMTP id
- u2-20020a056638134200b003c2c1c98bcamr1153386jad.2.1676883781590; Mon, 20 Feb
- 2023 01:03:01 -0800 (PST)
+        with ESMTP id S230040AbjBTJJ0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Feb 2023 04:09:26 -0500
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D04FEB66;
+        Mon, 20 Feb 2023 01:09:25 -0800 (PST)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 3E8BA660213E;
+        Mon, 20 Feb 2023 09:09:19 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1676884163;
+        bh=CcTg7ASDuP93bA3Rq45SQJeq89x8G+dp6U70KNUsMPE=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=hJka8ss87wnQqdZEpCLiQcXMdci2VjXO/ExBxWNd2u3NQv77pVKCv+DGHYQubq0/o
+         jOR1Q9V8fiDUdLUie9ZgAWAm2ZS3SUyTJtxh8d6pVVh99Gr3ejUZL6i9kC3bBz/ibR
+         4leGEmi7b30mDq5fBsiprHv3BwcOXyvhPyjnHM9WLt2ciyCmXLOgawlXk3rZAPCCqO
+         ayFqXWG5eOvRXt8snq6HqCK7P4pk8nwQ8Ekb0YXVJwQKcbaks6FZeHSLPNr2hy20ng
+         rBEuqKxU6Xm2BcKhPUt1DFa6cukGDfP/GXtAZgoeuEt0eguqDnFCt0KOiWbA1373Vz
+         JoFgV86+K/1GA==
+Message-ID: <516d9af5-41cc-94a9-4b35-677672101d9c@collabora.com>
+Date:   Mon, 20 Feb 2023 10:09:16 +0100
 MIME-Version: 1.0
-References: <20230204133040.1236799-1-treapking@chromium.org>
- <20230204133040.1236799-4-treapking@chromium.org> <Y+LBzkP+/j6RQ5Jy@ashyti-mobl2.lan>
- <CAEXTbpfxJVyL_TT7j1J0tbEjWnzj6JYOrEJZLa14OdHZQhYopg@mail.gmail.com>
-In-Reply-To: <CAEXTbpfxJVyL_TT7j1J0tbEjWnzj6JYOrEJZLa14OdHZQhYopg@mail.gmail.com>
-From:   Pin-yen Lin <treapking@chromium.org>
-Date:   Mon, 20 Feb 2023 17:02:50 +0800
-Message-ID: <CAEXTbpe_DGzF+M6Cm041Qkec-FZTXn5G8oCa_P-1cU355MA0JA@mail.gmail.com>
-Subject: Re: [PATCH v11 3/9] drm/display: Add Type-C switch helpers
-To:     Andi Shyti <andi.shyti@linux.intel.com>
-Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.2
+Subject: Re: [PATCH v1 01/17] thermal/core: Add a thermal zone 'devdata'
+ accessor
+Content-Language: en-US
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>, rafael@kernel.org
+Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Chen-Yu Tsai <wens@csie.org>,
         Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        linux-kernel@vger.kernel.org,
-        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
-        <nfraprado@collabora.com>, Hsin-Yi Wang <hsinyi@chromium.org>,
-        devicetree@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
-        Lyude Paul <lyude@redhat.com>, linux-acpi@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
-        Xin Ji <xji@analogixsemi.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        chrome-platform@lists.linux.dev,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Imre Deak <imre.deak@intel.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        Kees Cook <keescook@chromium.org>,
-        Thierry Reding <treding@nvidia.com>,
-        Robert Foss <rfoss@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Samuel Holland <samuel@sholland.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Raju Rangoju <rajur@chelsio.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Markus Mayer <mmayer@broadcom.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Vasily Khoruzhick <anarsoul@gmail.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Talel Shenhar <talel@amazon.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        ye xingchen <ye.xingchen@zte.com.cn>,
+        Zheng Yongjun <zhengyongjun3@huawei.com>,
+        Tim Zimmermann <tim@linux4.de>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+        Jiang Jian <jiangjian@cdjrlc.com>,
+        Daniel Golle <daniel@makrotopia.org>,
+        Balsam CHIHI <bchihi@baylibre.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        "open list:ACPI THERMAL DRIVER" <linux-acpi@vger.kernel.org>,
+        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
+        <linux-ide@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        "open list:ARM/Allwinner sunXi SoC support" 
+        <linux-sunxi@lists.linux.dev>,
+        "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." 
+        <linux-input@vger.kernel.org>,
+        "open list:CXGB4 ETHERNET DRIVER (CXGB4)" <netdev@vger.kernel.org>,
+        "open list:INTEL WIRELESS WIFI LINK (iwlwifi)" 
+        <linux-wireless@vger.kernel.org>,
+        "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" 
+        <linux-rpi-kernel@lists.infradead.org>,
+        "open list:ARM/QUALCOMM SUPPORT" <linux-arm-msm@vger.kernel.org>,
+        "open list:RENESAS R-CAR THERMAL DRIVERS" 
+        <linux-renesas-soc@vger.kernel.org>,
+        "open list:ARM/Rockchip SoC support" 
+        <linux-rockchip@lists.infradead.org>,
+        "open list:SAMSUNG THERMAL DRIVER" 
+        <linux-samsung-soc@vger.kernel.org>,
+        "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
+        "open list:TI BANDGAP AND THERMAL DRIVER" 
+        <linux-omap@vger.kernel.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>
+References: <20230219143657.241542-1-daniel.lezcano@linaro.org>
+ <20230219143657.241542-2-daniel.lezcano@linaro.org>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20230219143657.241542-2-daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-I think I accidentally used HTML mode for the previous email. Sorry about t=
-hat.
+Il 19/02/23 15:36, Daniel Lezcano ha scritto:
+> The thermal zone device structure is exposed to the different drivers
+> and obviously they access the internals while that should be
+> restricted to the core thermal code.
+> 
+> In order to self-encapsulate the thermal core code, we need to prevent
+> the drivers accessing directly the thermal zone structure and provide
+> accessor functions to deal with.
+> 
+> Provide an accessor to the 'devdata' structure and make use of it in
+> the different drivers.
+> 
+> No functional changes intended.
+> 
+> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+> ---
 
-On Mon, Feb 20, 2023 at 4:41 PM Pin-yen Lin <treapking@chromium.org> wrote:
->
-> Hi Andi,
->
-> Thanks for the review.
->
-> On Wed, Feb 8, 2023 at 5:25 AM Andi Shyti <andi.shyti@linux.intel.com> wr=
-ote:
->>
->> Hi Pin-yen,
->>
->> [...]
->>
->> > +static int drm_dp_register_mode_switch(struct device *dev,
->> > +                                    struct fwnode_handle *fwnode,
->> > +                                    struct drm_dp_typec_switch_desc *=
-switch_desc,
->> > +                                    void *data, typec_mux_set_fn_t mu=
-x_set)
->> > +{
->> > +     struct drm_dp_typec_port_data *port_data;
->> > +     struct typec_mux_desc mux_desc =3D {};
->> > +     char name[32];
->> > +     u32 port_num;
->> > +     int ret;
->> > +
->> > +     ret =3D fwnode_property_read_u32(fwnode, "reg", &port_num);
->> > +     if (ret) {
->> > +             dev_err(dev, "Failed to read reg property: %d\n", ret);
->> > +             return ret;
->> > +     }
->> > +
->> > +     port_data =3D &switch_desc->typec_ports[port_num];
->> > +     port_data->data =3D data;
->> > +     port_data->port_num =3D port_num;
->> > +     port_data->fwnode =3D fwnode;
->> > +     mux_desc.fwnode =3D fwnode;
->> > +     mux_desc.drvdata =3D port_data;
->> > +     snprintf(name, sizeof(name), "%pfwP-%u", fwnode, port_num);
->> > +     mux_desc.name =3D name;
->> > +     mux_desc.set =3D mux_set;
->> > +
->> > +     port_data->typec_mux =3D typec_mux_register(dev, &mux_desc);
->> > +     if (IS_ERR(port_data->typec_mux)) {
->> > +             ret =3D PTR_ERR(port_data->typec_mux);
->> > +             dev_err(dev, "Mode switch register for port %d failed: %=
-d\n",
->> > +                     port_num, ret);
->> > +
->> > +             return ret;
->>
->> you don't need this return here...
->>
->> > +     }
->> > +
->> > +     return 0;
->>
->> Just "return ret;" here.
 
-This was actually suggested by Angelo in [1]. I personally don't have
-a strong opinion on either approach.
+>   drivers/thermal/mediatek/auxadc_thermal.c        |  2 +-
+>   drivers/thermal/mediatek/lvts_thermal.c          |  4 ++--
 
-[1]https://lore.kernel.org/all/023519eb-0adb-3b08-71b9-afb92a6cceaf@collabo=
-ra.com/
+For MediaTek auxadc and lvts:
 
-Pin-yen
->>
->>
->> > +}
->> > +
->> > +/**
->> > + * drm_dp_register_typec_switches() - register Type-C switches
->> > + * @dev: Device that registers Type-C switches
->> > + * @port: Device node for the switch
->> > + * @switch_desc: A Type-C switch descriptor
->> > + * @data: Private data for the switches
->> > + * @mux_set: Callback function for typec_mux_set
->> > + *
->> > + * This function registers USB Type-C switches for DP bridges that ca=
-n switch
->> > + * the output signal between their output pins.
->> > + *
->> > + * Currently only mode switches are implemented, and the function ass=
-umes the
->> > + * given @port device node has endpoints with "mode-switch" property.
->> > + * The port number is determined by the "reg" property of the endpoin=
-t.
->> > + */
->> > +int drm_dp_register_typec_switches(struct device *dev, struct fwnode_=
-handle *port,
->> > +                                struct drm_dp_typec_switch_desc *swit=
-ch_desc,
->> > +                                void *data, typec_mux_set_fn_t mux_se=
-t)
->> > +{
->> > +     struct fwnode_handle *sw;
->> > +     int ret;
->> > +
->> > +     fwnode_for_each_child_node(port, sw) {
->> > +             if (fwnode_property_present(sw, "mode-switch"))
->> > +                     switch_desc->num_typec_switches++;
->> > +     }
->>
->> no need for brackets here
->>
->> > +
->> > +     if (!switch_desc->num_typec_switches) {
->> > +             dev_dbg(dev, "No Type-C switches node found\n");
->>
->> dev_warn()?
->
->
-> I used dev_dbg here because the users might call this without checking if=
- there are mode switch endpoints present, and this is the case for the curr=
-ent users (it6505 and anx7625). If we use dev_warn here, there will be warn=
-ings every time even on use cases without Type-C switches.
->
-> Thanks and regards,
-> Pin-yen
->>
->>
->> > +             return 0;
->> > +     }
->> > +
->> > +     switch_desc->typec_ports =3D devm_kcalloc(
->> > +             dev, switch_desc->num_typec_switches,
->> > +             sizeof(struct drm_dp_typec_port_data), GFP_KERNEL);
->> > +
->> > +     if (!switch_desc->typec_ports)
->> > +             return -ENOMEM;
->> > +
->> > +     /* Register switches for each connector. */
->> > +     fwnode_for_each_child_node(port, sw) {
->> > +             if (!fwnode_property_present(sw, "mode-switch"))
->> > +                     continue;
->> > +             ret =3D drm_dp_register_mode_switch(dev, sw, switch_desc=
-, data, mux_set);
->> > +             if (ret)
->> > +                     goto err_unregister_typec_switches;
->> > +     }
->> > +
->> > +     return 0;
->> > +
->> > +err_unregister_typec_switches:
->> > +     fwnode_handle_put(sw);
->> > +     drm_dp_unregister_typec_switches(switch_desc);
->> > +     dev_err(dev, "Failed to register mode switch: %d\n", ret);
->>
->> there is a bit of dmesg spamming. Please choose where you want to
->> print the error, either in this function or in
->> drm_dp_register_mode_switch().
->>
->> Andi
->>
->> > +     return ret;
->> > +}
->> > +EXPORT_SYMBOL(drm_dp_register_typec_switches);
->>
->> [...]
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+
+
