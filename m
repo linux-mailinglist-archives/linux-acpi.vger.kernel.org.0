@@ -2,150 +2,266 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8CED69C684
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Feb 2023 09:22:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A241D69C737
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Feb 2023 10:03:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230187AbjBTIWi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Feb 2023 03:22:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36896 "EHLO
+        id S231378AbjBTJDa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Feb 2023 04:03:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229963AbjBTIWh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Feb 2023 03:22:37 -0500
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2052.outbound.protection.outlook.com [40.107.237.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1EF21258E;
-        Mon, 20 Feb 2023 00:22:32 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jWjlZ4ulAnp0DwKrZCi2CgH10wUyflHFn19IHIKR8YoIzyhKjOSOQjD2X9UPV1+UNEDi6DSH6hAGKeda38bxD9nPdnlIz6R3l8RWv3v9Xrv2nMDmlmbsuxYBnGxtzkXECG9xB//geubZorgWNc55a6bD00gcMFBVWyOWpkI5AACkxKXj6jYcJFK5Dy/p4HFciBI7y60IeYYjCvYGknLSgVchqpQ1IcIugs1XmM+Iwy0mBzee48qHDF1DueFFVBf7bKRu0hwedXLqyZqUgIUcfEwlPi/F8ElN744mVX/kK9LTSiMms3Fiygb8iMjdlXlrawpfaYRYJrRwM4VTV1N1HA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wiBuoVT6cCflWomRymDRCiO7uVmklNqEroZtUhzy/PY=;
- b=iykv7nBQVaPTRIbiLt6YUtHlCdipWYbpXKU+IG5L5YRvQjYmmUi28hp5dDHvmcUBWXgad9XQFo8PGe4V3SFoeY3X5wAScaa5cO4BpV4yeHQ67uDvzdkAAqXa+Dd+Bj/GlnD9Wbd1EL6mesIHzGvlwnMTi+AjRGOB5eqk5X1wEtcsIYAPytNiZGzpWdiD9oLGawjMJW5pC3TT1mv8TtPDQAP+nNEPAV+ah9n8YvJkfuItmj/T4kpH9py4N0LUz+xYHuAFCaCPIHQz9BHPXLaTdAoyk1tLkwZNXKudRh+VkBvllGF/+P6jz0XFnG5XcW3thHt2bfwzEE5woWYwLKFjyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wiBuoVT6cCflWomRymDRCiO7uVmklNqEroZtUhzy/PY=;
- b=mCTq80TjtsAedj5bEnORz+bdjwRuEq7s9WTedmaqN7P6omRNd3f7JV8VPOfj1Frzy69TbBD9znRBHq7/PdVFRrIHpCx47Lak8XGrJqcEaIDs4vFcsCgnoVrYy4kx2001iYuLWckA1kfO8hfbOB93Q47dn4ZWkG2JDjiJ4tdJVocxs9kgOtvKT7VZS3+GrdJ0KARMRPI85wm6tjq7NPZld6q2fExPjN71arxm5lj67xtqThSjKZuYsiktJJqLnts7aDbxDZ6ezGFPf7gT8hSueVwxfdbrwawVOf+qTC11RxkzW75ygj4/wG1rlCn3JEml7S5VnxMP8fEExNOGcccC0w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CY5PR12MB6179.namprd12.prod.outlook.com (2603:10b6:930:24::22)
- by DM4PR12MB5040.namprd12.prod.outlook.com (2603:10b6:5:38b::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6111.19; Mon, 20 Feb
- 2023 08:22:31 +0000
-Received: from CY5PR12MB6179.namprd12.prod.outlook.com
- ([fe80::7d2c:828f:5cae:7eab]) by CY5PR12MB6179.namprd12.prod.outlook.com
- ([fe80::7d2c:828f:5cae:7eab%9]) with mapi id 15.20.6111.019; Mon, 20 Feb 2023
- 08:22:30 +0000
-Date:   Mon, 20 Feb 2023 10:22:25 +0200
-From:   Ido Schimmel <idosch@nvidia.com>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     rafael@kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
-        Len Brown <lenb@kernel.org>, Petr Machata <petrm@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
+        with ESMTP id S231335AbjBTJD3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Feb 2023 04:03:29 -0500
+Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 443C7B474
+        for <linux-acpi@vger.kernel.org>; Mon, 20 Feb 2023 01:03:02 -0800 (PST)
+Received: by mail-io1-xd33.google.com with SMTP id d73so129421iof.4
+        for <linux-acpi@vger.kernel.org>; Mon, 20 Feb 2023 01:03:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6vK8cWtmG3hyaLbDRLFgpGqrS4p5hCk6+ikOOD3341A=;
+        b=BT2ud7sxoolXPSVz5YqHI7AD9RUl8N77zxnGMFNIRbnYZ5NkGNX9t15jb4JPaWA0gx
+         RjgNyOP62hyyw3LtDM51WRaeDbSW+gmOyX365JR1nV/4MS/DGuN+CxjtV2S82wMFZDkJ
+         APJfi8WJHRCCVh7BpaS6YJFgaYSTVJLIbJWYU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6vK8cWtmG3hyaLbDRLFgpGqrS4p5hCk6+ikOOD3341A=;
+        b=oE/gKbvcwIznePNFYPQZzruGLX6UvlcBAok1HTtuOGh6I56PI56LdH63Qc7j7T6mQP
+         bfrf65tBp8D0LWlUBqGlv6helrFcCH/9LyfSzQMaeIBHphSPxI+dHGsasbNW5orOD6Hr
+         vzbjqtHrlyHObvWMW0vTEyK24SYraVAcWRw4LaMknG45D7oCXjYfTPYLIZOC/XNwIDkW
+         /f/TfjGmANeq4TUeNd4DGDzkyRcwSweKRriW3lQVWGEQSmKxCAq8W7Dv4DUO5z004Ag0
+         RP4+YQ+5wsA6JoMgMSB7TLqeOYfnq2Cyg5AcAX5Yjc/WIlEJMl5IyjCuoE+5Lk56weEC
+         eSvg==
+X-Gm-Message-State: AO0yUKV5jpniK6jU3AoRYjruG2+hkIELOHqPBvhaBWQyO9GPKt7XxQ0+
+        /keI5I9h4v2F5uhcMQd2GAl2hNWDPqXQJ9ge3X5ipg==
+X-Google-Smtp-Source: AK7set/kfz8hhDABr4DJ+44LUPCJEAg1cYsDPb4PwPecz9RynTAejbvde/9b9DWWLC1U8dNQIeThAlbfMv3O8bnKttg=
+X-Received: by 2002:a05:6638:1342:b0:3c2:c1c9:8bca with SMTP id
+ u2-20020a056638134200b003c2c1c98bcamr1153386jad.2.1676883781590; Mon, 20 Feb
+ 2023 01:03:01 -0800 (PST)
+MIME-Version: 1.0
+References: <20230204133040.1236799-1-treapking@chromium.org>
+ <20230204133040.1236799-4-treapking@chromium.org> <Y+LBzkP+/j6RQ5Jy@ashyti-mobl2.lan>
+ <CAEXTbpfxJVyL_TT7j1J0tbEjWnzj6JYOrEJZLa14OdHZQhYopg@mail.gmail.com>
+In-Reply-To: <CAEXTbpfxJVyL_TT7j1J0tbEjWnzj6JYOrEJZLa14OdHZQhYopg@mail.gmail.com>
+From:   Pin-yen Lin <treapking@chromium.org>
+Date:   Mon, 20 Feb 2023 17:02:50 +0800
+Message-ID: <CAEXTbpe_DGzF+M6Cm041Qkec-FZTXn5G8oCa_P-1cU355MA0JA@mail.gmail.com>
+Subject: Re: [PATCH v11 3/9] drm/display: Add Type-C switch helpers
+To:     Andi Shyti <andi.shyti@linux.intel.com>
+Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        linux-kernel@vger.kernel.org,
+        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
+        <nfraprado@collabora.com>, Hsin-Yi Wang <hsinyi@chromium.org>,
+        devicetree@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>,
+        Lyude Paul <lyude@redhat.com>, linux-acpi@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
+        Xin Ji <xji@analogixsemi.com>,
+        Stephen Boyd <swboyd@chromium.org>,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>,
-        Balsam CHIHI <bchihi@baylibre.com>,
-        "open list:ACPI THERMAL DRIVER" <linux-acpi@vger.kernel.org>,
-        "open list:MELLANOX ETHERNET SWITCH DRIVERS" <netdev@vger.kernel.org>,
-        "open list:TI BANDGAP AND THERMAL DRIVER" 
-        <linux-omap@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH v1 10/17] thermal: Do not access 'type' field, use the tz
- id instead
-Message-ID: <Y/MtwTIuVDrt8PaP@shredder>
-References: <20230219143657.241542-1-daniel.lezcano@linaro.org>
- <20230219143657.241542-11-daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230219143657.241542-11-daniel.lezcano@linaro.org>
-X-ClientProxiedBy: LO4P123CA0620.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:294::16) To CY5PR12MB6179.namprd12.prod.outlook.com
- (2603:10b6:930:24::22)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR12MB6179:EE_|DM4PR12MB5040:EE_
-X-MS-Office365-Filtering-Correlation-Id: 88fdae44-0087-4777-b125-08db131b9be2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: WGdT1FYYOwWu5p76rw0OAO676W+NnzO5ENZjCEXTZYaqrbz1RbUmdlDZmX8d4fSvR0xFshybJZEFMgBOX1MT4FTg0GHiU59xLoikvjZXySfGTPV/NBQULcjhkbbebhArDS04kGFrmcj7hBBY/IWPJ7MnV0xGwCJspXnihsSRlPldYrCok0QtrOd6VduSPiWf6S+pO39JynXpjbAdOMXuMDzfB7py8jBR+nww0BUDX3qTlscTjtarOZ7zWuT1Jy53I06GusTQZRS2WYk4DAr998M4tqXu+IMdAz5qHwkBMhobCxFAptiu8uUB/MX5HI3uHrlN6aHRkS98MEtRICGRC7XqVZiewGYIzIO6moFMWE9NHnKYNTK2MTngjqGkMob0VzylGRfVhxaxxgwm5IQpg8jhPGsETCEozvLEZND+Yl7sQtfZl8HM7Am5FX0mAZLxuKPIo3sXLMIXptLikMeb/KXEBn+pkF2tcgmdSeMgVSyrU+18cpX+b9KiYs/8VKFs+kHY1ivclg1gPLGINMmoDBn4qg1ziPxnIuR2NdvrmiOcUxxse5yilKbVNLq2M4nGm88S21cv5UdkeG4M0V8w34bS+u7ROuJBTVHi6Q2Gk1mhei8rgHkZgviYG8K8Sop9v85L9ZLpUwUWvDRZREHIkw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR12MB6179.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(7916004)(136003)(39860400002)(346002)(396003)(366004)(376002)(451199018)(9686003)(26005)(8936002)(186003)(33716001)(6512007)(6506007)(86362001)(38100700002)(6666004)(2906002)(4744005)(5660300002)(6486002)(7416002)(4326008)(6916009)(41300700001)(54906003)(66476007)(66556008)(8676002)(66946007)(83380400001)(478600001)(316002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?brvGlaw9nvCsgfmPzQqdGW20NRoT03nuITeV0eGYV2UxcDALvFktdJX22eJh?=
- =?us-ascii?Q?8WYl3CXZP+0tSVe7VOx4plqwXLdUd7DKOwPf+zoJNZVOc9QIUjDCbziAX/u+?=
- =?us-ascii?Q?9kAoBXkTI7/9c87/0vfgTxy06u/QqqSAHousylPWwwgUYpadw1+r6EJwmJ8N?=
- =?us-ascii?Q?CIeIXNvnV+sGdka4LpMyYJIgaEDEPvbRDl1X0Lb/BcsM/u/yThpLl11XA3Me?=
- =?us-ascii?Q?36itsX2tA68Hxyg8BA9gsrgIlMzXJ4H1QxSsRj/oGHoTHqNy69ORa/azJbNC?=
- =?us-ascii?Q?Ya+S5aoovDMyqfPwM/yQoZg6s2H8e7GbWiD1IjnzrkczYPqyRR+w1abeVSWB?=
- =?us-ascii?Q?J9iD3nHvGwCU9Jsud18/5YL+bPF71hbao9BPf4b4OOgS+jXOdGG3IvsgMm2I?=
- =?us-ascii?Q?Tua5j3zZcMJ94SX48DSG6BgJ+i+3hnVYEL/tbqLiZDho6mGvS5xJI+TfkKjH?=
- =?us-ascii?Q?j+d8cQRKPshLQ25HBchv97M3E7jt/rOEjhRxNqDAr+akk+6y5DYU0a0lCd3E?=
- =?us-ascii?Q?+mWtSixyA/4hQbbu6N9/AI8mDdXVwf/S5XwBzj3yDcJbp0FNtia3ZrWwjqVB?=
- =?us-ascii?Q?8AGrwRfgpYyVRicPknezjL0H13iJycPn9qIe0fI4v5DyQd3aOs0V9vY3Isvr?=
- =?us-ascii?Q?0QI4Lj7rSy6J/C6tQMrUcuzlOuKOW+Oeqj4CBtIeTOOzd7Pc2k3reD3+deBz?=
- =?us-ascii?Q?bCDUbRgL0RP8CgAGmh2W37iRI9NS5CRKdX7eAzEPuBjVkY5N2ErdA4YkBIsX?=
- =?us-ascii?Q?wt7PcqbZAYXUKJtcH8LWfoivC0dmp8unzQx1IcHxsJQ23Cy+5/mQ+8Dra/fs?=
- =?us-ascii?Q?J/5BHohDY/XnN4Emg+frTqAzN9/msQtrkWo74zDIGm+YBiMeVzqloF3KVWpE?=
- =?us-ascii?Q?WHXSCEiKolcSl3GK8pA4z4OysJa1+quvUUE2gvxqj/PjMwsvwqcO0Hz3G72U?=
- =?us-ascii?Q?v47oiNBg9a5gGE8RXR5z8SrNpHfTjfxkplN7O4dcEZ9C3yMnEL3+bBIs2nwE?=
- =?us-ascii?Q?1KcPzgYkSq/QH0k1AnrlTObttYjLBPMLyrs7oX1k0EjqhdGGCxSdUWOdLoVc?=
- =?us-ascii?Q?aUF7LzwTQogxmxQ/pPIcAkkcHjbsuS1l7m5ibM1iY2WLJ9I1YQrMUsqTDTty?=
- =?us-ascii?Q?tNOsXJCOXVkvxpiMWbaGWskReGShegz63aEqIQKK+QGP8HWr+K1Aw+ky2viS?=
- =?us-ascii?Q?4sCVPXwJfeVO+bbrtX35El0PtbDiGpc6bBwQcEb4KuciDdDhEazWnx1fh5hi?=
- =?us-ascii?Q?bB8QIyxPJKP5TcAegec77TByyuzv9vDaICbJ8BNldE+1QDm6jw74nKThvWJg?=
- =?us-ascii?Q?LQRHMOpLhs3WakJJ9BIrYRpuqmMu4TKEX/jPKeCejU6rHNdnYWpyxk1ektEJ?=
- =?us-ascii?Q?b4LsP/NdJMpa1ONL1pZiGnJSOoldvwRdy9/Ij2fTkMS/MI1LcT5KrtNPaRUo?=
- =?us-ascii?Q?4n/B5q+sO3OTNM0xIfDQ+p4v1TF5BzaK0kc2PqiithZMpGbg3Jr0XmfJxVz4?=
- =?us-ascii?Q?S9M5czDhP+b41AKli1yoUu21vvTz7TpFW2kGD3spBj76TbtHr6SHW8UhZJHi?=
- =?us-ascii?Q?MLtYmI7hSi2dbF7e/Unck2i7OtOU9pQVWj6t3PvM?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 88fdae44-0087-4777-b125-08db131b9be2
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6179.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2023 08:22:30.5313
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pssYh0A1vBG/2EBCb8vFtsq54jlid6iQ8akX9knHzVmCCf+RYba9MrCn17NmTxAWKL6WH0BSIlP98c8Xj5ffJQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5040
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        chrome-platform@lists.linux.dev,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Imre Deak <imre.deak@intel.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Kees Cook <keescook@chromium.org>,
+        Thierry Reding <treding@nvidia.com>,
+        Robert Foss <rfoss@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Feb 19, 2023 at 03:36:50PM +0100, Daniel Lezcano wrote:
-> The 'type' field is used as a name in the message. However we can have
-> multiple thermal zone with the same type. The information is not
-> accurate.
-> 
-> Moreover, the thermal zone device structure is directly accessed while
-> we want to improve the self-encapsulation of the code.
-> 
-> Replace the 'type' in the message by the thermal zone id.
-> 
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+I think I accidentally used HTML mode for the previous email. Sorry about t=
+hat.
 
-For mlxsw:
+On Mon, Feb 20, 2023 at 4:41 PM Pin-yen Lin <treapking@chromium.org> wrote:
+>
+> Hi Andi,
+>
+> Thanks for the review.
+>
+> On Wed, Feb 8, 2023 at 5:25 AM Andi Shyti <andi.shyti@linux.intel.com> wr=
+ote:
+>>
+>> Hi Pin-yen,
+>>
+>> [...]
+>>
+>> > +static int drm_dp_register_mode_switch(struct device *dev,
+>> > +                                    struct fwnode_handle *fwnode,
+>> > +                                    struct drm_dp_typec_switch_desc *=
+switch_desc,
+>> > +                                    void *data, typec_mux_set_fn_t mu=
+x_set)
+>> > +{
+>> > +     struct drm_dp_typec_port_data *port_data;
+>> > +     struct typec_mux_desc mux_desc =3D {};
+>> > +     char name[32];
+>> > +     u32 port_num;
+>> > +     int ret;
+>> > +
+>> > +     ret =3D fwnode_property_read_u32(fwnode, "reg", &port_num);
+>> > +     if (ret) {
+>> > +             dev_err(dev, "Failed to read reg property: %d\n", ret);
+>> > +             return ret;
+>> > +     }
+>> > +
+>> > +     port_data =3D &switch_desc->typec_ports[port_num];
+>> > +     port_data->data =3D data;
+>> > +     port_data->port_num =3D port_num;
+>> > +     port_data->fwnode =3D fwnode;
+>> > +     mux_desc.fwnode =3D fwnode;
+>> > +     mux_desc.drvdata =3D port_data;
+>> > +     snprintf(name, sizeof(name), "%pfwP-%u", fwnode, port_num);
+>> > +     mux_desc.name =3D name;
+>> > +     mux_desc.set =3D mux_set;
+>> > +
+>> > +     port_data->typec_mux =3D typec_mux_register(dev, &mux_desc);
+>> > +     if (IS_ERR(port_data->typec_mux)) {
+>> > +             ret =3D PTR_ERR(port_data->typec_mux);
+>> > +             dev_err(dev, "Mode switch register for port %d failed: %=
+d\n",
+>> > +                     port_num, ret);
+>> > +
+>> > +             return ret;
+>>
+>> you don't need this return here...
+>>
+>> > +     }
+>> > +
+>> > +     return 0;
+>>
+>> Just "return ret;" here.
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+This was actually suggested by Angelo in [1]. I personally don't have
+a strong opinion on either approach.
+
+[1]https://lore.kernel.org/all/023519eb-0adb-3b08-71b9-afb92a6cceaf@collabo=
+ra.com/
+
+Pin-yen
+>>
+>>
+>> > +}
+>> > +
+>> > +/**
+>> > + * drm_dp_register_typec_switches() - register Type-C switches
+>> > + * @dev: Device that registers Type-C switches
+>> > + * @port: Device node for the switch
+>> > + * @switch_desc: A Type-C switch descriptor
+>> > + * @data: Private data for the switches
+>> > + * @mux_set: Callback function for typec_mux_set
+>> > + *
+>> > + * This function registers USB Type-C switches for DP bridges that ca=
+n switch
+>> > + * the output signal between their output pins.
+>> > + *
+>> > + * Currently only mode switches are implemented, and the function ass=
+umes the
+>> > + * given @port device node has endpoints with "mode-switch" property.
+>> > + * The port number is determined by the "reg" property of the endpoin=
+t.
+>> > + */
+>> > +int drm_dp_register_typec_switches(struct device *dev, struct fwnode_=
+handle *port,
+>> > +                                struct drm_dp_typec_switch_desc *swit=
+ch_desc,
+>> > +                                void *data, typec_mux_set_fn_t mux_se=
+t)
+>> > +{
+>> > +     struct fwnode_handle *sw;
+>> > +     int ret;
+>> > +
+>> > +     fwnode_for_each_child_node(port, sw) {
+>> > +             if (fwnode_property_present(sw, "mode-switch"))
+>> > +                     switch_desc->num_typec_switches++;
+>> > +     }
+>>
+>> no need for brackets here
+>>
+>> > +
+>> > +     if (!switch_desc->num_typec_switches) {
+>> > +             dev_dbg(dev, "No Type-C switches node found\n");
+>>
+>> dev_warn()?
+>
+>
+> I used dev_dbg here because the users might call this without checking if=
+ there are mode switch endpoints present, and this is the case for the curr=
+ent users (it6505 and anx7625). If we use dev_warn here, there will be warn=
+ings every time even on use cases without Type-C switches.
+>
+> Thanks and regards,
+> Pin-yen
+>>
+>>
+>> > +             return 0;
+>> > +     }
+>> > +
+>> > +     switch_desc->typec_ports =3D devm_kcalloc(
+>> > +             dev, switch_desc->num_typec_switches,
+>> > +             sizeof(struct drm_dp_typec_port_data), GFP_KERNEL);
+>> > +
+>> > +     if (!switch_desc->typec_ports)
+>> > +             return -ENOMEM;
+>> > +
+>> > +     /* Register switches for each connector. */
+>> > +     fwnode_for_each_child_node(port, sw) {
+>> > +             if (!fwnode_property_present(sw, "mode-switch"))
+>> > +                     continue;
+>> > +             ret =3D drm_dp_register_mode_switch(dev, sw, switch_desc=
+, data, mux_set);
+>> > +             if (ret)
+>> > +                     goto err_unregister_typec_switches;
+>> > +     }
+>> > +
+>> > +     return 0;
+>> > +
+>> > +err_unregister_typec_switches:
+>> > +     fwnode_handle_put(sw);
+>> > +     drm_dp_unregister_typec_switches(switch_desc);
+>> > +     dev_err(dev, "Failed to register mode switch: %d\n", ret);
+>>
+>> there is a bit of dmesg spamming. Please choose where you want to
+>> print the error, either in this function or in
+>> drm_dp_register_mode_switch().
+>>
+>> Andi
+>>
+>> > +     return ret;
+>> > +}
+>> > +EXPORT_SYMBOL(drm_dp_register_typec_switches);
+>>
+>> [...]
