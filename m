@@ -2,53 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C91A969D224
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Feb 2023 18:34:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B8FC169D247
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Feb 2023 18:45:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231514AbjBTReI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Feb 2023 12:34:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34404 "EHLO
+        id S232413AbjBTRp6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Feb 2023 12:45:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229869AbjBTReI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Feb 2023 12:34:08 -0500
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B495D1ADD8
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Feb 2023 09:34:06 -0800 (PST)
-Received: by mail-ed1-x52e.google.com with SMTP id s26so7545174edw.11
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Feb 2023 09:34:06 -0800 (PST)
+        with ESMTP id S229869AbjBTRp5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Feb 2023 12:45:57 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEAA81EBF2
+        for <linux-acpi@vger.kernel.org>; Mon, 20 Feb 2023 09:45:55 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id cq23so7420096edb.1
+        for <linux-acpi@vger.kernel.org>; Mon, 20 Feb 2023 09:45:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ventanamicro.com; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=w2lPEjmPsu3LYtY8DZxk5vrralnhH+zYWV8cw/aygZg=;
-        b=oN+qyijYHJlUO7+d73fPjJC/vzJxExkcwOeC6kHPx8kPL/nHekvsr9vT/PQhWUEV+B
-         7pwRDd2qaWfGtUFPdZQvgnVyAvrHkohNcXubH+3Cb0SoQUjx0TvHyfgrqFhallZgTk64
-         zunL4GsAEJEUkKeyArSs3gtqmlRH6ZOFS6MS/g9dDEr+nZh7TuhCkIGnkmLeVFmG2qU8
-         HZehIvTKG+CID3zvhzIzoEulLZ/bZvWlGvRrrOn/IP2jw/4juroGQjWZq4GmFY3ywcUA
-         QgPB9fv0Wnprj+5psROiCuENlXNDLj53cr/c3slFOpvNXn5b/j/ti98PB71HlpKcuGE5
-         azRA==
+        bh=0OomCsAtjgTUhc5/uWu5S1Dwt7IqLJYnfNUapR4lMKM=;
+        b=kjf/oxvGkbMEKzaGNdrHdbeiWoXva4Pk5nCrklsjeuHj2z4wb3/4uov8DAo/4LnUXy
+         TFkwKE4iJ96MsNjP9leIlb9A/gkA8q+YV571IN+BdM0KvkQ/upYwuRzTC9O2+TDaFrZJ
+         Nu5GxPoRLn1X0dgr0Y5jZktIPW8bQuAsdaX6/2t1INkSD1yzGgwLNCPt5Wl7T+t7YYUO
+         cwJIrq/WOe02m6B1RRQ/Y09nuRsrHRf8cn0LLszL5dLNC8XU0dfi8aYgquVIEQ70If+u
+         I1YKAZw18wlqUGO2slNs3Ir6H7SpE9QSy5F1Po7mxufcYGnJyWdUnNEPHYYg17xuuQPh
+         SrXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=w2lPEjmPsu3LYtY8DZxk5vrralnhH+zYWV8cw/aygZg=;
-        b=VPfc63a4+tk5Jx/GSkqt99nFHGm0Lcidzx72fVlCFQP/HkBTg1IooFS8sRDHePyN5L
-         FzLuAIZTw2D8UqyDrcmAp998G3qCpGKcjBBTf8uXRg9/4dXTZJvzdhBySqA/jbNBIF3P
-         AujnTv0xsN5ZiYwcKFLS/6t8kCCiR0GAv3UiR8EtK0Ld/Vxqrk5IheKqE38Eg/W4lTP3
-         anxme+TCxmQDf5MK6wKBe08ghrJ7MjQnM/xy+NYTty7g4ZPV3jxd8Kxt3cKE/fnI3Duu
-         TNfwAau+48+PndO1qqUF5fcrAp+q7rzr3GhaxSNGCraJAW2in63HEc1CLdh3kReQQG7S
-         aGrA==
-X-Gm-Message-State: AO0yUKV5jToWBTr9mR025DEJNKRMCR00mAgNS5G0O468Krc9clSpZ0NP
-        oaDdd7a1F0hH+IfV50iVAIvvig==
-X-Google-Smtp-Source: AK7set9H4zV0LUVjLvSVauvnlRDsvf+acSYg6cf8q8+/u488Q6Z3MDYmkhABENzUNnf/V0vpL+34Cg==
-X-Received: by 2002:a17:907:cc97:b0:88f:13f0:4565 with SMTP id up23-20020a170907cc9700b0088f13f04565mr6809782ejc.69.1676914445228;
-        Mon, 20 Feb 2023 09:34:05 -0800 (PST)
+        bh=0OomCsAtjgTUhc5/uWu5S1Dwt7IqLJYnfNUapR4lMKM=;
+        b=RfxxvuF4kVyQQwvE636Kalv4xTwURG7ZaTB3UNaRcS7aP437OQdGUYjx5qbSSUdBmR
+         bhbPSDnRRdYfs6HURQQzMuTTzCiAoB+CtjWh9P3KzethjHCUV7WimVZbcQ5kUOiQMcoK
+         d5cxAQFHOWNnPhJBCU9Ba2qQP/qpcROfkkx0o22y1TTiz7c+OrUndlvr1iJyl1zNeSzV
+         LvXWwTSH60OlptVun+sK7w9FnpCj9DvYajxNz5z4KQSbHgt2qgdxebSf4FuxovTEJ/BP
+         d+lBw57pppNgUCcwKlcJcMphg9964D6bte5zlEERlxFkHjiVPnuuNLPl/Kf32EP6rYbJ
+         4hVA==
+X-Gm-Message-State: AO0yUKUF8lrSVbzWwb6ZOZjZUqdfu9aoc/tKDtZhnka5kLR/hm0HsnJH
+        /OVlARjPgkFT0VJSeKpSnhp6CA==
+X-Google-Smtp-Source: AK7set9OX61vxoMeLX0XmAo8W6cuM4l63PtlvtJ/WQaLpJZ8HMnk+OftyAWykxcf88wjgsFZyCTxkg==
+X-Received: by 2002:a17:906:3e43:b0:88a:2e57:9813 with SMTP id t3-20020a1709063e4300b0088a2e579813mr9571118eji.33.1676915154314;
+        Mon, 20 Feb 2023 09:45:54 -0800 (PST)
 Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
-        by smtp.gmail.com with ESMTPSA id i10-20020a170906a28a00b008bda61ff999sm3477128ejz.130.2023.02.20.09.34.04
+        by smtp.gmail.com with ESMTPSA id e20-20020a1709062c1400b008bbc9115038sm3671028ejh.56.2023.02.20.09.45.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Feb 2023 09:34:04 -0800 (PST)
-Date:   Mon, 20 Feb 2023 18:34:03 +0100
+        Mon, 20 Feb 2023 09:45:54 -0800 (PST)
+Date:   Mon, 20 Feb 2023 18:45:53 +0100
 From:   Andrew Jones <ajones@ventanamicro.com>
 To:     Sunil V L <sunilvl@ventanamicro.com>
 Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
@@ -65,15 +65,15 @@ Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
         Anup Patel <apatel@ventanamicro.com>,
         Atish Patra <atishp@rivosinc.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH V2 11/21] RISC-V: ACPI: Add a function to retrieve the
- hartid
-Message-ID: <20230220173403.avvggi4qhsxgismo@orel>
+Subject: Re: [PATCH V2 12/21] RISC-V: cpufeature: Add ACPI support in
+ riscv_fill_hwcap()
+Message-ID: <20230220174553.pgd53ao5d7wsfrx7@orel>
 References: <20230216182043.1946553-1-sunilvl@ventanamicro.com>
- <20230216182043.1946553-12-sunilvl@ventanamicro.com>
+ <20230216182043.1946553-13-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230216182043.1946553-12-sunilvl@ventanamicro.com>
+In-Reply-To: <20230216182043.1946553-13-sunilvl@ventanamicro.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -83,124 +83,110 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 16, 2023 at 11:50:33PM +0530, Sunil V L wrote:
-> The hartid is in the RINTC structure of the MADT table. Instead of
-> parsing the ACPI table every time, cache it and provide a function
-> to read it.
+On Thu, Feb 16, 2023 at 11:50:34PM +0530, Sunil V L wrote:
+> On ACPI based systems, the information about the hart
+> like ISA is provided by the RISC-V Hart Capabilities Table (RHCT).
+> Enable filling up hwcap structure based on the information in RHCT.
 > 
 > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > ---
->  arch/riscv/include/asm/acpi.h |  8 +++++
->  arch/riscv/kernel/acpi.c      | 55 +++++++++++++++++++++++++++++++++++
->  2 files changed, 63 insertions(+)
+>  arch/riscv/kernel/cpufeature.c | 41 ++++++++++++++++++++++++++++------
+>  1 file changed, 34 insertions(+), 7 deletions(-)
 > 
-> diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acpi.h
-> index 3c3a8ac3b37a..b9d7b713fb43 100644
-> --- a/arch/riscv/include/asm/acpi.h
-> +++ b/arch/riscv/include/asm/acpi.h
-> @@ -67,6 +67,9 @@ int acpi_numa_get_nid(unsigned int cpu);
->  static inline int acpi_numa_get_nid(unsigned int cpu) { return NUMA_NO_NODE; }
->  #endif /* CONFIG_ACPI_NUMA */
+> diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+> index 93e45560af30..cb67d3fcbb56 100644
+> --- a/arch/riscv/kernel/cpufeature.c
+> +++ b/arch/riscv/kernel/cpufeature.c
+> @@ -6,12 +6,15 @@
+>   * Copyright (C) 2017 SiFive
+>   */
 >  
-> +struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu);
-> +
-> +u32 get_acpi_id_for_cpu(int cpu);
->  #else
->  static inline int acpi_get_riscv_isa(struct acpi_table_header *table,
->  				     unsigned int cpu, const char **isa)
-> @@ -74,6 +77,11 @@ static inline int acpi_get_riscv_isa(struct acpi_table_header *table,
->  	return -EINVAL;
->  }
+> +#include <linux/acpi.h>
+>  #include <linux/bitmap.h>
+>  #include <linux/ctype.h>
+>  #include <linux/libfdt.h>
+>  #include <linux/log2.h>
+>  #include <linux/module.h>
+>  #include <linux/of.h>
+> +#include <linux/of_device.h>
+> +#include <asm/acpi.h>
+>  #include <asm/alternative.h>
+>  #include <asm/cacheflush.h>
+>  #include <asm/errata_list.h>
+> @@ -93,7 +96,10 @@ void __init riscv_fill_hwcap(void)
+>  	char print_str[NUM_ALPHA_EXTS + 1];
+>  	int i, j, rc;
+>  	unsigned long isa2hwcap[26] = {0};
+> +	struct acpi_table_header *rhct;
+> +	acpi_status status;
+>  	unsigned long hartid;
+> +	unsigned int cpu;
 >  
-> +static inline u32 get_acpi_id_for_cpu(int cpu)
-> +{
-> +	return -1;
-> +}
-> +
->  #endif /* CONFIG_ACPI */
+>  	isa2hwcap['i' - 'a'] = COMPAT_HWCAP_ISA_I;
+>  	isa2hwcap['m' - 'a'] = COMPAT_HWCAP_ISA_M;
+> @@ -106,18 +112,36 @@ void __init riscv_fill_hwcap(void)
 >  
->  #endif /*_ASM_ACPI_H*/
-> diff --git a/arch/riscv/kernel/acpi.c b/arch/riscv/kernel/acpi.c
-> index 81d448c41714..13b26c87c136 100644
-> --- a/arch/riscv/kernel/acpi.c
-> +++ b/arch/riscv/kernel/acpi.c
-> @@ -24,6 +24,61 @@ EXPORT_SYMBOL(acpi_disabled);
->  int acpi_pci_disabled = 1;	/* skip ACPI PCI scan and IRQ initialization */
->  EXPORT_SYMBOL(acpi_pci_disabled);
+>  	bitmap_zero(riscv_isa, RISCV_ISA_EXT_MAX);
 >  
-> +static unsigned int intc_count;
-> +static struct acpi_madt_rintc cpu_madt_rintc[NR_CPUS];
-> +
-> +static int acpi_parse_madt_rintc(union acpi_subtable_headers *header, const unsigned long end)
-> +{
-> +	struct acpi_madt_rintc *rintc = (struct acpi_madt_rintc *)header;
-> +
-> +	if (!(rintc->flags & ACPI_MADT_ENABLED))
-> +		return 0;
-> +
-> +	cpu_madt_rintc[intc_count++] = *rintc;
-> +
-> +	return 0;
-> +}
-> +
-> +static int acpi_init_rintc_array(void)
-> +{
-> +	if (acpi_table_parse_madt(ACPI_MADT_TYPE_RINTC, acpi_parse_madt_rintc, 0) > 0)
-> +		return 0;
-> +
-> +	pr_info("No valid RINTC entries exist\n");
-
-This pr_info() could be dropped or turned into a comment and the pr_err()
-below moved up here.
-
-> +	return -ENODEV;
-> +}
-> +
-> +struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu)
-> +{
-> +	static bool rintc_init_done;
-> +	unsigned int i;
-> +
-> +	if (!rintc_init_done) {
-> +		if (acpi_init_rintc_array()) {
-> +			pr_err("Failed to initialize RINTC array\n");
-> +			return NULL;
-> +		}
-> +		rintc_init_done = true;
+> -	for_each_of_cpu_node(node) {
+> +	if (!acpi_disabled) {
+> +		status = acpi_get_table(ACPI_SIG_RHCT, 0, &rhct);
+> +		if (ACPI_FAILURE(status))
+> +			return;
 > +	}
 > +
-> +	for (i = 0; i < intc_count; i++) {
-> +		if (cpu_madt_rintc[i].hart_id == cpuid_to_hartid_map(cpu))
-> +			return &cpu_madt_rintc[i];
-> +	}
+> +	for_each_possible_cpu(cpu) {
+>  		unsigned long this_hwcap = 0;
+>  		DECLARE_BITMAP(this_isa, RISCV_ISA_EXT_MAX);
+>  		const char *temp;
+>  
+> -		rc = riscv_of_processor_hartid(node, &hartid);
+> -		if (rc < 0)
+> -			continue;
+> +		if (acpi_disabled) {
+> +			node = of_cpu_device_node_get(cpu);
+> +			if (node) {
+> +				rc = riscv_of_processor_hartid(node, &hartid);
+> +				if (rc < 0)
+> +					continue;
 
-Maybe I'll see the reason in later patches, but it seems odd that this
-patch says we want to cache the cpuid to acpi_processor_id mapping, but
-then we cache each RINTC instead and still have to do a linear search of
-them to determine which one to use.
+This 'continue' and the one below need of_node_put() calls. Or,
+restructure to ensure that the one of_node_put() call added below
+is always called.
 
+>  
+> -		if (of_property_read_string(node, "riscv,isa", &isa)) {
+> -			pr_warn("Unable to find \"riscv,isa\" devicetree entry\n");
+> -			continue;
+> +				if (of_property_read_string(node, "riscv,isa", &isa)) {
+> +					pr_warn("Unable to find \"riscv,isa\" devicetree entry\n");
+> +					continue;
+> +				}
+> +				of_node_put(node);
+> +			}
+> +		} else {
+> +			rc = acpi_get_riscv_isa(rhct, get_acpi_id_for_cpu(cpu), &isa);
+> +			if (rc < 0) {
+> +				pr_warn("Unable to get ISA for the hart - %d\n", cpu);
+> +				continue;
+> +			}
+>  		}
+>  
+>  		temp = isa;
+> @@ -248,6 +272,9 @@ void __init riscv_fill_hwcap(void)
+>  			bitmap_and(riscv_isa, riscv_isa, this_isa, RISCV_ISA_EXT_MAX);
+>  	}
+>  
+> +	if (!acpi_disabled)
+> +		acpi_put_table((struct acpi_table_header *)rhct);
 > +
-> +	return NULL;
-> +}
-> +
-> +u32 get_acpi_id_for_cpu(int cpu)
-> +{
-> +	struct acpi_madt_rintc *rintc = acpi_cpu_get_madt_rintc(cpu);
-> +
-> +	if (!rintc)
-> +		return -1;
-> +
-> +	return  rintc->uid;
-              ^ extra blank here
-> +}
-> +
->  /*
->   * __acpi_map_table() will be called before paging_init(), so early_ioremap()
->   * or early_memremap() should be called here to for ACPI table mapping.
+>  	/* We don't support systems with F but without D, so mask those out
+>  	 * here. */
+>  	if ((elf_hwcap & COMPAT_HWCAP_ISA_F) && !(elf_hwcap & COMPAT_HWCAP_ISA_D)) {
 > -- 
 > 2.34.1
-> 
+>
 
 Thanks,
 drew
