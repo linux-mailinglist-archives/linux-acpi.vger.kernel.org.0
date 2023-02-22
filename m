@@ -2,97 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6380269F206
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Feb 2023 10:43:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91D6669F600
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Feb 2023 15:00:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232252AbjBVJnK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Feb 2023 04:43:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41814 "EHLO
+        id S230246AbjBVOAE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Feb 2023 09:00:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230507AbjBVJmt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Feb 2023 04:42:49 -0500
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C24A38EA1;
-        Wed, 22 Feb 2023 01:40:08 -0800 (PST)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 05EF2660215E;
-        Wed, 22 Feb 2023 09:31:50 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1677058312;
-        bh=1lE1OslcJ9wYx7+VSxskvVNIYTnaQOYKkobjRYQj4dU=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=fNqS92UtTTmnYL44uUoVOXGdbFhawrBTSQwnwKyKZ09UEG7V4dFp6jMil/WtZ6ahq
-         hc4KWcvlNnLOM+opaWBThffBDaRw0ywF66FK4qbN+DNWo4ABvqab1qq4JbUFeXqZfP
-         rid3K50NzV9nVVxRHyu9rw+q/ldFNm5GMM1FTA42SDS6TdSPSh933vmQv8TSjn9lvP
-         mmURzlSOCZGhEVI1V2t4oO9ebr/Y0dfuDKyMWu+ZsYzImYozCz6yDwfYJBJg+1+X4V
-         8nRALLTkyQ89KDYQwLmrcq5sZUsWvLjbPIkuZ9/nE5H5HLt5mwtfVUFSny9Nlhexkc
-         LuB1bOv1DTrlg==
-Message-ID: <11c4f142-793c-3ad4-bb58-1df5b0c5fc3c@collabora.com>
-Date:   Wed, 22 Feb 2023 10:31:48 +0100
+        with ESMTP id S229615AbjBVOAE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Feb 2023 09:00:04 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4A53734333;
+        Wed, 22 Feb 2023 06:00:02 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E832C139F;
+        Wed, 22 Feb 2023 06:00:44 -0800 (PST)
+Received: from bogus (unknown [10.57.10.143])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 017663F881;
+        Wed, 22 Feb 2023 06:00:00 -0800 (PST)
+Date:   Wed, 22 Feb 2023 13:59:56 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Elliot Berman <quic_eberman@quicinc.com>
+Cc:     Jassi Brar <jassisinghbrar@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH 0/3] mailbox: Allow direct registration to a channel
+Message-ID: <20230222135956.onrgpra6ezjx3ian@bogus>
+References: <20230213232537.2040976-1-quic_eberman@quicinc.com>
+ <20230215101732.pbpom3ub3yh75n4w@bogus>
+ <d35633ea-4049-6f51-3a3a-2a258a4af037@quicinc.com>
+ <20230216095816.rzhxa2qdexy3ulrz@bogus>
+ <ba567710-8ef5-9a18-4c41-0d1124163215@quicinc.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v2 09/16] thermal: Do not access 'type' field, use the tz
- id instead
-Content-Language: en-US
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>, rafael@kernel.org
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ido Schimmel <idosch@nvidia.com>,
-        Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
-        Petr Machata <petrm@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Balsam CHIHI <bchihi@baylibre.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        "open list:ACPI THERMAL DRIVER" <linux-acpi@vger.kernel.org>,
-        "open list:MELLANOX ETHERNET SWITCH DRIVERS" <netdev@vger.kernel.org>,
-        "open list:TI BANDGAP AND THERMAL DRIVER" 
-        <linux-omap@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>
-References: <20230221180710.2781027-1-daniel.lezcano@linaro.org>
- <20230221180710.2781027-10-daniel.lezcano@linaro.org>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20230221180710.2781027-10-daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ba567710-8ef5-9a18-4c41-0d1124163215@quicinc.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Il 21/02/23 19:07, Daniel Lezcano ha scritto:
-> The 'type' field is used as a name in the message. However we can have
-> multiple thermal zone with the same type. The information is not
-> accurate.
+On Thu, Feb 16, 2023 at 08:41:05AM -0800, Elliot Berman wrote:
 > 
-> Moreover, the thermal zone device structure is directly accessed while
-> we want to improve the self-encapsulation of the code.
 > 
-> Replace the 'type' in the message by the thermal zone id.
+> On 2/16/2023 1:58 AM, Sudeep Holla wrote:
+> > On Wed, Feb 15, 2023 at 08:58:10AM -0800, Elliot Berman wrote:
+> > > 
+> > > 
+> > > On 2/15/2023 2:17 AM, Sudeep Holla wrote:
+> > > > On Mon, Feb 13, 2023 at 03:25:34PM -0800, Elliot Berman wrote:
+> > > > > Two mailbox controllers have channel/client binding mechanisms that are
+> > > > > controller-specific and not using the devicetree binding mechanisms. Mailbox
+> > > > > channel/client is conceptually done in two steps: selecting the channel
+> > > > > and binding the selected to channel to a client. Channel selection is sometimes
+> > > > > controller specific (pcc and omap are examples). The channel/client binding
+> > > > > code is all the same.
+> > > > > 
+> > > > > This small series de-duplicates and refactors the channel/client binding
+> > > > > into a common framework function: "mbox_bind_client" which all of the
+> > > > > channel selection mechanisms can use.
+> > > > > 
+> > > > > I found this duplicate code while working on the support for Gunyah hypervisor
+> > > > > message queues [1]. I've only been able to compile-test omap-maiblox and pcc,
+> > > > > however it is a straightforward conversion here.
+> > > > > 
+> > > > > [1]: https://lore.kernel.org/all/20230120224627.4053418-9-quic_eberman@quicinc.com/
+> > > > > 
+> > > > > Elliot Berman (3):
+> > > > >     mailbox: Allow direct registration to a channel
+> > > > 
+> > > > I am unable to find the above patch either in my inbox or in lore[1].
+> > > > Can you please repost the same ? I would like to test/review w.r.t PCC
+> > > > driver.
+> > > > 
+> > > 
+> > > Hi Sudeep,
+> > > 
+> > > Not sure why the patch didn't end up your inbox; lore seems to have linked
+> > > it correctly and indicates you were in To:. If I missed something, let me
+> > > know and I'll make sure you're properly included if future versions needed.
+> > > 
+> > > https://lore.kernel.org/all/20230213232537.2040976-4-quic_eberman@quicinc.com/
+> > 
+> > No, I do have patch 2/3 and 3/3 in my inbox along with the cover letter.
+> > Patch 1/3 is missing in both my inbox and lore. Can you send me the lore
+> > link for patch 1/3 if you are able to find it ? Or just repost the series
+> > if you can't.
+> > 
 > 
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Reviewed-by: Ido Schimmel <idosch@nvidia.com> #mlxsw
+> Huh, not sure what happened there. I got a copy of Patch 1/3 but I also
+> don't see it in lore. Resent:
+> 
+> https://lore.kernel.org/all/20230216163804.456714-1-quic_eberman@quicinc.com/
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> 
-#MediaTek LVTS
+Thanks.
 
+You can add(tested PCC driver)
 
+Tested-by: Sudeep Holla <sudeep.holla@arm.com>
 
+-- 
+Regards,
+Sudeep
