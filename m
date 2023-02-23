@@ -2,215 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BA7E6A076A
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Feb 2023 12:29:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A71E6A089A
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Feb 2023 13:29:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234095AbjBWL3Y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Feb 2023 06:29:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60794 "EHLO
+        id S232985AbjBWM3n (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Feb 2023 07:29:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234015AbjBWL3N (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Feb 2023 06:29:13 -0500
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8D13316AD2;
-        Thu, 23 Feb 2023 03:29:11 -0800 (PST)
-Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 0FFC3209A997;
-        Thu, 23 Feb 2023 03:29:10 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0FFC3209A997
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1677151750;
-        bh=JYg745kS1vASF7eG9K2hIgU4GRp8uu3UKT7LpJSKJdk=;
-        h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=XvKRmJxbC5f6yuHZ5QpHX4a8lz6vaIvoZv6Ngo2VO+ltHZpVd7N9y7/GTciJk7L3R
-         bdOjVsHrL+DMIdw2vWWMEJMLSzLSxgF4nd6P1ng/dXXwIZ31w0ONm0yge8ZQMvmfWH
-         EvK4noczrxGjk/wHrokR3SA1QO26g56r23UrLAmI=
-From:   Saurabh Sengar <ssengar@linux.microsoft.com>
-To:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-        decui@microsoft.com, daniel.lezcano@linaro.org, tglx@linutronix.de,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, mikelley@microsoft.com,
-        lenb@kernel.org, rafael@kernel.org, linux-acpi@vger.kernel.org
-Subject: [PATCH v7 5/5] Driver: VMBus: Add Devicetree support
-Date:   Thu, 23 Feb 2023 03:29:05 -0800
-Message-Id: <1677151745-16521-6-git-send-email-ssengar@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1677151745-16521-1-git-send-email-ssengar@linux.microsoft.com>
-References: <1677151745-16521-1-git-send-email-ssengar@linux.microsoft.com>
-X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229745AbjBWM3m (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Feb 2023 07:29:42 -0500
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88EB73B202
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Feb 2023 04:29:40 -0800 (PST)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-5384ff97993so55260897b3.2
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Feb 2023 04:29:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=l27prqAr9h3GZK8RN08FtqLKiroMBi1v9H+IeJ/D4fk=;
+        b=l5qLjcXYM6AuNV6mV4P2Y4b+VgdUFH460IL1VVy54MWjQRE6rQGEYINztLgGRFqTgh
+         whRqElncLV1ytI+eC8jSdHl+vBSJsqRQ42g6hIBn5LMlYTwqXxtFJWMlcPTGdZwK56XR
+         EzGCRpFvFFoxjQSHAteMZv8JLd7tzoAktyolor86l6Mvq1siiGkT6qqS6YcobwCqYPwD
+         8OovUOyyWH2QTJNwOyulQv2T52A+ak1NVaoNC0IXeEGzqlK85iQo/dbACQLzWoJjnQ3q
+         VEDWv9npkWeGroNfweN7SATsof0A0sSewXqAoEY2F9B4p+70b5TV+SyYZvGs93y+DqbA
+         ZqWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=l27prqAr9h3GZK8RN08FtqLKiroMBi1v9H+IeJ/D4fk=;
+        b=s3nnQ3pOpmyYjiizlZtJXaLgplqMERwDeJE7pLKuhexPUtGnL3AMVl987kBOxIgkpm
+         0/IBb+D7vvoNQoFYVi+qlYnwMjlUY8/mcua280zxReQ/A/k0SxQZ8X0IaGCEkLwXi4y4
+         wOgYvAFUhoRQorQvi1Vp6MGK4Ky52oiAsolR8PynA6s6aucG9yhoZOouqPiYsgQ5GJb4
+         WmLDhs6tTdELAkHjQLRbim4aUU8V0pLMfjMZEn9h0qv9SGIknrW3VxYSSwnCyuQj4u2q
+         OX9oCk+pk7RjcEPP7dy6A1Qxizre7THIzaDZeDLjBIvfGTFHfFeiWKkP/OwY76USQ3Da
+         +DbA==
+X-Gm-Message-State: AO0yUKUuy7JTsatex5uVfr96MWyBT613Dx50STHo0mLw0yeqi4pDM3R5
+        +0HbDgFrXaDu3T23/0njt/Exkggx8TbM8useoPjncA==
+X-Google-Smtp-Source: AK7set8qmLU86E6/dgl73UDiOOb9YsQwumSXwVyM1QkgcgWonuRowRvEKw7fc1bI/GuseWbw/VLMNR/bELlSqejTaT0=
+X-Received: by 2002:a25:918c:0:b0:8da:d0ab:258a with SMTP id
+ w12-20020a25918c000000b008dad0ab258amr1927035ybl.5.1677155379491; Thu, 23 Feb
+ 2023 04:29:39 -0800 (PST)
+MIME-Version: 1.0
+References: <cover.1676042188.git.asmaa@nvidia.com> <cover.1676668853.git.asmaa@nvidia.com>
+ <28f0d670407c127614b64d9c382b11c795f5077d.1676668853.git.asmaa@nvidia.com>
+In-Reply-To: <28f0d670407c127614b64d9c382b11c795f5077d.1676668853.git.asmaa@nvidia.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 23 Feb 2023 13:29:28 +0100
+Message-ID: <CACRpkdYgGjqL85CcNw=38_XrzsWPBX8GwhL9t3m_+fSnEjHrdw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] gpio: gpio-mlxbf3: Add gpio driver support
+To:     Asmaa Mnebhi <asmaa@nvidia.com>
+Cc:     andy.shevchenko@gmail.com, bgolaszewski@baylibre.com,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Update the driver to support Devicetree boot as well along with ACPI.
-At present the Devicetree parsing only provides the mmio region info
-and is not the exact copy of ACPI parsing. This is sufficient to cater
-all the current Devicetree usecases for VMBus.
+Hi Asamaa,
 
-Currently Devicetree is supported only for x86 systems.
+thanks for your patch!
 
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
----
-[V7]
-- Use cpu_addr instead of bus_addr
+getting a lot better all the time.
 
- drivers/hv/Kconfig     |  6 +++--
- drivers/hv/vmbus_drv.c | 57 ++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 59 insertions(+), 4 deletions(-)
+On Fri, Feb 17, 2023 at 10:27 PM Asmaa Mnebhi <asmaa@nvidia.com> wrote:
 
-diff --git a/drivers/hv/Kconfig b/drivers/hv/Kconfig
-index 0747a8f1fcee..1a55bf32d195 100644
---- a/drivers/hv/Kconfig
-+++ b/drivers/hv/Kconfig
-@@ -4,11 +4,13 @@ menu "Microsoft Hyper-V guest support"
- 
- config HYPERV
- 	tristate "Microsoft Hyper-V client drivers"
--	depends on ACPI && ((X86 && X86_LOCAL_APIC && HYPERVISOR_GUEST) \
--		|| (ARM64 && !CPU_BIG_ENDIAN))
-+	depends on (X86 && X86_LOCAL_APIC && HYPERVISOR_GUEST) \
-+		|| (ACPI && ARM64 && !CPU_BIG_ENDIAN)
- 	select PARAVIRT
- 	select X86_HV_CALLBACK_VECTOR if X86
- 	select VMAP_PFN
-+	select OF if !ACPI
-+	select OF_EARLY_FLATTREE if !ACPI
- 	help
- 	  Select this option to run Linux as a Hyper-V client operating
- 	  system.
-diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-index 73497157a23a..e370721f334e 100644
---- a/drivers/hv/vmbus_drv.c
-+++ b/drivers/hv/vmbus_drv.c
-@@ -20,6 +20,7 @@
- #include <linux/completion.h>
- #include <linux/hyperv.h>
- #include <linux/kernel_stat.h>
-+#include <linux/of_address.h>
- #include <linux/clockchips.h>
- #include <linux/cpu.h>
- #include <linux/sched/isolation.h>
-@@ -2152,7 +2153,7 @@ void vmbus_device_unregister(struct hv_device *device_obj)
- 	device_unregister(&device_obj->device);
- }
- 
--
-+#ifdef CONFIG_ACPI
- /*
-  * VMBUS is an acpi enumerated device. Get the information we
-  * need from DSDT.
-@@ -2262,6 +2263,7 @@ static acpi_status vmbus_walk_resources(struct acpi_resource *res, void *ctx)
- 
- 	return AE_OK;
- }
-+#endif
- 
- static void vmbus_mmio_remove(void)
- {
-@@ -2282,7 +2284,7 @@ static void vmbus_mmio_remove(void)
- 	}
- }
- 
--static void vmbus_reserve_fb(void)
-+static void __maybe_unused vmbus_reserve_fb(void)
- {
- 	resource_size_t start = 0, size;
- 	struct pci_dev *pdev;
-@@ -2442,6 +2444,7 @@ void vmbus_free_mmio(resource_size_t start, resource_size_t size)
- }
- EXPORT_SYMBOL_GPL(vmbus_free_mmio);
- 
-+#ifdef CONFIG_ACPI
- static int vmbus_acpi_add(struct platform_device *pdev)
- {
- 	acpi_status result;
-@@ -2494,10 +2497,47 @@ static int vmbus_acpi_add(struct platform_device *pdev)
- 		vmbus_mmio_remove();
- 	return ret_val;
- }
-+#endif
-+
-+static int vmbus_device_add(struct platform_device *pdev)
-+{
-+	struct resource **cur_res = &hyperv_mmio;
-+	struct of_range range;
-+	struct of_range_parser parser;
-+	struct device_node *np = pdev->dev.of_node;
-+	int ret;
-+
-+	hv_dev = &pdev->dev;
-+
-+	ret = of_range_parser_init(&parser, np);
-+	if (ret)
-+		return ret;
-+
-+	for_each_of_range(&parser, &range) {
-+		struct resource *res;
-+
-+		res = kzalloc(sizeof(*res), GFP_ATOMIC);
-+		if (!res)
-+			return -ENOMEM;
-+
-+		res->name = "hyperv mmio";
-+		res->flags = IORESOURCE_MEM | IORESOURCE_MEM_64;
-+		res->start = range.cpu_addr;
-+		res->end = range.cpu_addr + range.size;
-+
-+		*cur_res = res;
-+		cur_res = &res->sibling;
-+	}
-+
-+	return ret;
-+}
- 
- static int vmbus_platform_driver_probe(struct platform_device *pdev)
- {
-+#ifdef CONFIG_ACPI
- 	return vmbus_acpi_add(pdev);
-+#endif
-+	return vmbus_device_add(pdev);
- }
- 
- static int vmbus_platform_driver_remove(struct platform_device *pdev)
-@@ -2643,12 +2683,24 @@ static int vmbus_bus_resume(struct device *dev)
- #define vmbus_bus_resume NULL
- #endif /* CONFIG_PM_SLEEP */
- 
-+static const __maybe_unused struct of_device_id vmbus_of_match[] = {
-+	{
-+		.compatible = "microsoft,vmbus",
-+	},
-+	{
-+		/* sentinel */
-+	},
-+};
-+MODULE_DEVICE_TABLE(of, vmbus_of_match);
-+
-+#ifdef CONFIG_ACPI
- static const struct acpi_device_id vmbus_acpi_device_ids[] = {
- 	{"VMBUS", 0},
- 	{"VMBus", 0},
- 	{"", 0},
- };
- MODULE_DEVICE_TABLE(acpi, vmbus_acpi_device_ids);
-+#endif
- 
- /*
-  * Note: we must use the "no_irq" ops, otherwise hibernation can not work with
-@@ -2677,6 +2729,7 @@ static struct platform_driver vmbus_platform_driver = {
- 	.driver = {
- 		.name = "vmbus",
- 		.acpi_match_table = ACPI_PTR(vmbus_acpi_device_ids),
-+		.of_match_table = of_match_ptr(vmbus_of_match),
- 		.pm = &vmbus_bus_pm,
- 		.probe_type = PROBE_FORCE_SYNCHRONOUS,
- 	}
--- 
-2.34.1
+> Add support for the BlueField-3 SoC GPIO driver.
+> This driver configures and handles GPIO interrupts. It also enables a user
+> to manipulate certain GPIO pins via libgpiod tools or other kernel drivers.
+> The usables pins are defined via the gpio-reserved-ranges property.
+>
+> Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
 
+(...)
+> +config GPIO_MLXBF3
+> +       tristate "Mellanox BlueField 3 SoC GPIO"
+> +       depends on (MELLANOX_PLATFORM && ARM64 && ACPI) || (64BIT && COMPILE_TEST)
+> +       select GPIO_GENERIC
+
+select GPIOLIB_IRQCHIP
+
+since you use it.
+
+(...)
+> +static void mlxbf3_gpio_irq_enable(struct irq_data *irqd)
+> +{
+> +       struct gpio_chip *gc = irq_data_get_irq_chip_data(irqd);
+> +       struct mlxbf3_gpio_context *gs = gpiochip_get_data(gc);
+> +       int offset = irqd_to_hwirq(irqd);
+> +       unsigned long flags;
+> +       u32 val;
+> +
+> +       raw_spin_lock_irqsave(&gs->gc.bgpio_lock, flags);
+> +       writel(BIT(offset), gs->gpio_cause_io + MLXBF_GPIO_CAUSE_OR_CLRCAUSE);
+> +
+> +       val = readl(gs->gpio_cause_io + MLXBF_GPIO_CAUSE_OR_EVTEN0);
+> +       val |= BIT(offset);
+> +       writel(val, gs->gpio_cause_io + MLXBF_GPIO_CAUSE_OR_EVTEN0);
+> +       raw_spin_unlock_irqrestore(&gs->gc.bgpio_lock, flags);
+
+Here, at the end (*after* writing registers) call:
+
+gpiochip_disable_irq(gc, offset);
+
+> +static void mlxbf3_gpio_irq_disable(struct irq_data *irqd)
+> +{
+> +       struct gpio_chip *gc = irq_data_get_irq_chip_data(irqd);
+> +       struct mlxbf3_gpio_context *gs = gpiochip_get_data(gc);
+> +       int offset = irqd_to_hwirq(irqd);
+> +       unsigned long flags;
+> +       u32 val;
+> +
+
+Here, at the beginning (*before* writing registers) call:
+
+gpiochip_disable_irq(gc, offset);
+
+> +       raw_spin_lock_irqsave(&gs->gc.bgpio_lock, flags);
+> +       val = readl(gs->gpio_cause_io + MLXBF_GPIO_CAUSE_OR_EVTEN0);
+> +       val &= ~BIT(offset);
+> +       writel(val, gs->gpio_cause_io + MLXBF_GPIO_CAUSE_OR_EVTEN0);
+> +       raw_spin_unlock_irqrestore(&gs->gc.bgpio_lock, flags);
+> +}
+
+(...)
+
+> +static const struct irq_chip gpio_mlxbf3_irqchip = {
+> +       .name = "MLNXBF33",
+> +       .irq_set_type = mlxbf3_gpio_irq_set_type,
+> +       .irq_enable = mlxbf3_gpio_irq_enable,
+> +       .irq_disable = mlxbf3_gpio_irq_disable,
+
+Like Andy said:
+
+.flags = IRQCHIP_IMMUTABLE,
+GPIOCHIP_IRQ_RESOURCE_HELPERS,
+
+Apart from this it looks all right.
+
+Yours,
+Linus Walleij
