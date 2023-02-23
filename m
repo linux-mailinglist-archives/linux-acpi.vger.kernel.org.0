@@ -2,298 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B2B86A04C6
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Feb 2023 10:28:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 888A96A070A
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Feb 2023 12:07:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233955AbjBWJ2x (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Feb 2023 04:28:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56626 "EHLO
+        id S233407AbjBWLHX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Feb 2023 06:07:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233947AbjBWJ2u (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Feb 2023 04:28:50 -0500
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A84F4AFC7
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Feb 2023 01:28:48 -0800 (PST)
-Received: by mail-pj1-x102e.google.com with SMTP id d1-20020a17090a3b0100b00229ca6a4636so12277032pjc.0
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Feb 2023 01:28:48 -0800 (PST)
+        with ESMTP id S233086AbjBWLHW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Feb 2023 06:07:22 -0500
+Received: from mail-qv1-xf30.google.com (mail-qv1-xf30.google.com [IPv6:2607:f8b0:4864:20::f30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06FD754A13;
+        Thu, 23 Feb 2023 03:06:55 -0800 (PST)
+Received: by mail-qv1-xf30.google.com with SMTP id f1so11574684qvx.13;
+        Thu, 23 Feb 2023 03:06:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UjYf5J3J9XUndvOCZh6Z2mddp8OlC3USsn2OpMMQFcQ=;
-        b=fzy43LkRNYzLBqeigNgTlVG3MgLUKnye9UyydsNIaeLaWFKo+evR+6Os+9PGcUOG8G
-         apL/w9t1Uuf57Uo75+X97K7KP2LjXJy93YK3ueA56y02wPibb2CctXAwhOzkfe/zFP5n
-         cNzTMz433bVZosZhDkFI48gQgs0mctxXyc4k4=
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LQ7vDPLjJ4VXk//zkA9jWLslnKwxJvBeT6R5MRjaDbc=;
+        b=kEscro6vEHJDfmpUYCN3NT+Ru5gx2LZPPD6WD5B+zkn6YwSReaVZYmPLIoFgvC80SH
+         GMitZsPJrxwRTkg4Yzr6ckJfDVC2Mpw/L5JbXUODMk/37YnojpsytqFodY6TfdAuhWj8
+         3yZ+/GT24PDxe4itSx2X27RITrkqthJpYFLMYLqfHBEBSaTYYqQxk5F88TZRrRjwu1va
+         g1IyRu8EK90LVHKz9CqqfTjpDgrB+gtVTBLgHkT18BLnPKuu+nSxHi+OVUrhxRgDGsTP
+         uNMHdtTmf6fQjpKda2Baee350m0UPEOz8LhpgcRu8TcEdMYhjH2vmiYwH4Qq1tv4ukz4
+         btPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UjYf5J3J9XUndvOCZh6Z2mddp8OlC3USsn2OpMMQFcQ=;
-        b=3euPrOw0YdTA5slDSvsh3P41O5p5B4aWfv18GRkeq+fVpXZn0E6NyezCjw9o9a9BRW
-         uAbgT/mTZVoOoUl240HW8//QlWeNzay+Xy8WBCHBZHNECr+7LeEbFzDY+rLH1yUiOqLt
-         LqIE6Nnoz+qV6Sd47pkRIXlmPoH8cuaOHrGoU6dD7jHyufXwVj+cdlNveHCStNyXOu5h
-         Ys8QSHYs0T8x+TFlfrzWI1G4XpucT5kTE3tyvHgDpl96cymf4tcyEXD5gWe3XMAyheF4
-         Xetq548ClOMfT0HojFnVoguA7RPoMhnskBrkLkQ4OfKZMzO+vrJ50rZbUiYpYabFaszK
-         Uy8g==
-X-Gm-Message-State: AO0yUKWAFAxhhG+AY2bfTh3aCki/45nMVRUffmQR7hTldzP9I1eXl1WR
-        IRFzRucViF6DlQZNKujgGa1TBg==
-X-Google-Smtp-Source: AK7set8uXHWcK3Hy+r3E1WdhKcS7IcC6e6RewXaM+OA3MLeiDF94C8dGG47KHbC0gVknZdGAQrZdIQ==
-X-Received: by 2002:a05:6a20:7f8a:b0:b8:841d:85bb with SMTP id d10-20020a056a207f8a00b000b8841d85bbmr12167567pzj.0.1677144527784;
-        Thu, 23 Feb 2023 01:28:47 -0800 (PST)
-Received: from google.com ([2401:fa00:1:10:24fe:6a37:3375:c5bc])
-        by smtp.gmail.com with ESMTPSA id c17-20020aa78c11000000b0056d7cc80ea4sm6642222pfd.110.2023.02.23.01.28.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Feb 2023 01:28:47 -0800 (PST)
-Date:   Thu, 23 Feb 2023 17:28:43 +0800
-From:   Chen-Yu Tsai <wenst@chromium.org>
-To:     Mark Rutland <mark.rutland@arm.com>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>, lenb@kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mhiramat@kernel.org, ndesaulniers@google.com, ojeda@kernel.org,
-        peterz@infradead.org, rafael.j.wysocki@intel.com,
-        revest@chromium.org, robert.moore@intel.com, will@kernel.org
-Subject: Re: [PATCH v3 0/8] arm64/ftrace: Add support for
- DYNAMIC_FTRACE_WITH_CALL_OPS
-Message-ID: <Y/cxy1RY+Bex1qzG@google.com>
-References: <20230123134603.1064407-1-mark.rutland@arm.com>
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LQ7vDPLjJ4VXk//zkA9jWLslnKwxJvBeT6R5MRjaDbc=;
+        b=7V/KLrTBBrV+sZbPTeSHLFu3zNsJl+bPkvCM8L6NHGOI49H1+g4cr7mx1uXRz5l13C
+         2YL7wm47oIPF1vGT/Dt6UCdEkkmoNPD2pwJeVwpGmykqB/sRKyjgUIq3UEeRk/3tOf1Q
+         x2Dlx8gNbBvLRwJ4Mh/q5mbNYuNk6d+5nXSxb+8HhqSrkhr1cFfK+x8bxgjg5xCVRuPt
+         UAtWTftU8DY7Wdvb5G049E9WbXrun2UnoKBjlzoJQXjHagOPUmmKdxUc/GsxcN43XVZI
+         5C+2QawsB2WhCdNqkXeHyWduZTxo4RIfpwZnVLY9Lp3vn4XAXeZqwISERBzXYufPeR/U
+         f6Bg==
+X-Gm-Message-State: AO0yUKVWOmhQEGmPaShVm7V4mn4gPgWZph7JNG4wHyWZnp9CvEjiywcc
+        C+9FK70qUTW6Bb9xfsEXAfwT/8Zs/Bql0lWwHgNkFUaa/daAvQ==
+X-Google-Smtp-Source: AK7set9gGwuSb5dhvncPsrYGsaRaMn+mon7HNF1esL8UBBEJEn8sDobopEdnFtMW2Q9y2saxaV6OnLsRyPtQQY1zses=
+X-Received: by 2002:ad4:5588:0:b0:56e:9ad3:ab9c with SMTP id
+ f8-20020ad45588000000b0056e9ad3ab9cmr1670481qvx.1.1677150412153; Thu, 23 Feb
+ 2023 03:06:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230123134603.1064407-1-mark.rutland@arm.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <cover.1676042188.git.asmaa@nvidia.com> <cover.1676668853.git.asmaa@nvidia.com>
+ <28f0d670407c127614b64d9c382b11c795f5077d.1676668853.git.asmaa@nvidia.com>
+ <CAHp75VdeVpjzg5Y_4Y+Ke9=3wog28vUBN4Fd8zxfa8dWGrqUUA@mail.gmail.com> <CH2PR12MB3895520749883D912E5021F1D7AA9@CH2PR12MB3895.namprd12.prod.outlook.com>
+In-Reply-To: <CH2PR12MB3895520749883D912E5021F1D7AA9@CH2PR12MB3895.namprd12.prod.outlook.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 23 Feb 2023 13:06:15 +0200
+Message-ID: <CAHp75Vc+iSt2XvpOYzwZnzX7Qg013e-E27CPjPaO-QmtferWVg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] gpio: gpio-mlxbf3: Add gpio driver support
+To:     Asmaa Mnebhi <asmaa@nvidia.com>
+Cc:     "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+        "bgolaszewski@baylibre.com" <bgolaszewski@baylibre.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 23, 2023 at 01:45:55PM +0000, Mark Rutland wrote:
-> Hi Catalin, Steve,
-> 
-> I'm not sure how we want to merge this, so I've moved the core ftrace
-> patch to the start of the series so that it can more easily be placed on
-> a stable branch if we want that to go via the ftrace tree and the rest
-> to go via arm64.
-> 
-> This is cleanly pasing the ftrace selftests from v6.2-rc3 (results in
-> the final patch).
-> 
-> Aside from that, usual cover letter below.
-> 
-> This series adds a new DYNAMIC_FTRACE_WITH_CALL_OPS mechanism, and
-> enables support for this on arm64. This significantly reduces the
-> overhead of tracing when a callsite/tracee has a single associated
-> tracer, avoids a number of issues that make it undesireably and
-> infeasible to use dynamically-allocated trampolines (e.g. branch range
-> limitations), and makes it possible to implement support for
-> DYNAMIC_FTRACE_WITH_DIRECT_CALLS in future.
-> 
-> The main idea is to give each ftrace callsite an associated pointer to
-> an ftrace_ops. The architecture's ftrace_caller trampoline can recover
-> the ops pointer and invoke ops->func from this without needing to use
-> ftrace_ops_list_func, which has to iterate through all registered ops.
-> 
-> To make this work, we use -fpatchable-function-entry=M,N, there N NOPs
-> are placed before the function entry point. On arm64 NOPs are always 4
-> bytes, so by allocating 2 per-function NOPs, we have enough space to
-> place a 64-bit value. So that we can manipulate the pointer atomically,
-> we need to align instrumented functions to at least 8 bytes, which we
-> can ensure using -falign-functions=8.
+On Wed, Feb 22, 2023 at 8:40 PM Asmaa Mnebhi <asmaa@nvidia.com> wrote:
 
-Does this work all the time? Or is it influenced by other Kconfig
-options?
+First of all, please, please, fix your email client!
+It's so hard to distinguish my own words from yours.
 
-I'm getting random misaligned patch-site warnings like the following:
+> > +static const struct irq_chip gpio_mlxbf3_irqchip =3D {
+> > +       .name =3D "MLNXBF33",
+> > +       .irq_set_type =3D mlxbf3_gpio_irq_set_type,
+> > +       .irq_enable =3D mlxbf3_gpio_irq_enable,
+> > +       .irq_disable =3D mlxbf3_gpio_irq_disable, };
+>
+> Seems missing two things (dunno if bgpio_init() helps with that):
+> - IMMUTABLE flag
+> - actual calls to enable and disable IRQs for internal GPIO library usage
+> See other drivers how it's done. There are even plenty of patches to enab=
+le this thing separately.
+>
+> I saw that in other drivers only irq_enable and irq_disable are defined. =
+Example in gpio-davinci.c:
+> static struct irq_chip gpio_irqchip =3D {
+> .name           =3D "GPIO",
+> .irq_enable     =3D gpio_irq_enable,
+> .irq_disable    =3D gpio_irq_disable,
+> .irq_set_type   =3D gpio_irq_type,
+> .flags          =3D IRQCHIP_SET_TYPE_MASKED,
+> };
+>
+> Which I think is ok due to the following logic:
+>
+> gpiochip_add_irqchip calls
+> gpiochip_set_irq_hooks which contains the following logic:
+>
+> if (irqchip->irq_disable) {
+>                  gc->irq.irq_disable =3D irqchip->irq_disable;
+>                  irqchip->irq_disable =3D gpiochip_irq_disable;
+> } else {
+>                  gc->irq.irq_mask =3D irqchip->irq_mask;
+>                  irqchip->irq_mask =3D gpiochip_irq_mask;
+> }
+> if (irqchip->irq_enable) {
+>                  gc->irq.irq_enable =3D irqchip->irq_enable;
+>                  irqchip->irq_enable =3D gpiochip_irq_enable;
+> } else {
+>                  gc->irq.irq_unmask =3D irqchip->irq_unmask;
+>                  irqchip->irq_unmask =3D gpiochip_irq_unmask;
+> }
 
-Misaligned patch-site gic_handle_irq+0x0/0x12c
-Misaligned patch-site __traceiter_initcall_level+0x0/0x60
-Misaligned patch-site __traceiter_initcall_start+0x0/0x60
-Misaligned patch-site __traceiter_initcall_finish+0x0/0x68
-Misaligned patch-site do_one_initcall+0x0/0x300
-Misaligned patch-site do_one_initcall+0x2b0/0x300
-Misaligned patch-site match_dev_by_label+0x0/0x50
-Misaligned patch-site match_dev_by_uuid+0x0/0x48
-Misaligned patch-site wait_for_initramfs+0x0/0x68
-Misaligned patch-site panic_show_mem+0x0/0x88
-Misaligned patch-site 0xffffffd3b4fef074
-[...]
-(I assume the unresolved symbol(s) are from modules.)
+The chips have another flag there:
 
-The warnings were seen on next-20230223 and many versions before, with
-Debian's GCC 12.2 cross compile toolchain. I also tried next-20230223
-with Linaro's toolchains gcc-linaro-12.2.1-2023.01-x86_64_aarch64-linux-gnu
-and gcc-linaro-13.0.0-2022.11-x86_64_aarch64-linux-gnu and the warnings
-appeared as well.
+        .flags          =3D IRQCHIP_IMMUTABLE,
+       GPIOCHIP_IRQ_RESOURCE_HELPERS,
 
-Checking panic_show_mem in various places from the Debian GCC's build:
+> So it doesn=E2=80=99t seem like we need to define irq_mask/unmask if we h=
+ave irq_enable/disable?
+>
+> > +       npins =3D MLXBF3_GPIO_MAX_PINS_PER_BLOCK;
+> > +       device_property_read_u32(dev, "npins", &npins);
+>
+> I don't see DT bindings for this property (being added in this series). I=
+s it already established one?
+>
+> Ah that=E2=80=99s my bad. The property should be called "ngpios" like in =
+the DT documentation. Will fix.
 
-$ aarch64-linux-gnu-nm init/initramfs.o | grep panic_show_mem
-0000000000000070 t panic_show_mem
-$ aarch64-linux-gnu-nm init/built-in.a | grep panic_show_mem
-0000000000000070 t panic_show_mem
-$ aarch64-linux-gnu-nm built-in.a | grep panic_show_mem
-0000000000000070 t panic_show_mem
-$ aarch64-linux-gnu-nm vmlinux.a | grep panic_show_mem
-0000000000000070 t panic_show_mem
-$ aarch64-linux-gnu-nm vmlinux.o | grep panic_show_mem
-0000000000001534 t panic_show_mem
-$ aarch64-linux-gnu-nm vmlinux | grep panic_show_mem
-ffffffc0080158dc t panic_show_mem
+And why do you need it? What's a corner case that the GPIO library
+doesn't handle yet?
 
-Looks like individual object files do have functions aligned at 8-byte
-boundaries, but when all the object files are collected and linked
-together into vmlinux.o, the higher alignment gets dropped and some
-functions end up on 4-byte boundaries.
-
-
-Regards
-ChenYu
-
-> 
-> Each callsite ends up looking like:
-> 
-> 	# Aligned to 8 bytes
-> 	func - 8:
-> 		< pointer to ops >
-> 	func:
-> 		BTI		// optional
-> 		MOV	X9, LR
-> 		NOP		// patched to `BL ftrace_caller`
-> 	func_body:
-> 
-> When entering ftrace_caller, the LR points at func_body, and the
-> ftrace_ops can be recovered at a negative offset from this the LR value:
-> 
-> 	BIC	<tmp>, LR, 0x7		// Align down (skips BTI)
-> 	LDR	<tmp>, [<tmp>, #-16]	// load ops pointer
-> 
-> The ftrace_ops::func (and any other ftrace_ops fields) can then be
-> recovered from this pointer to the ops.
-> 
-> The first three patches enable the function alignment, working around
-> cases where GCC drops alignment for cold functions or when building with
-> '-Os'.
-> 
-> The final four patches implement support for
-> DYNAMIC_FTRACE_WITH_CALL_OPS on arm64. As noted in the final patch, this
-> results in a significant reduction in overhead:
-> 
->   Before this series:
-> 
->   Number of tracers     || Total time  | Per-call average time (ns)
->   Relevant | Irrelevant || (ns)        | Total        | Overhead
->   =========+============++=============+==============+============
->          0 |          0 ||      94,583 |         0.95 |           -
->          0 |          1 ||      93,709 |         0.94 |           -
->          0 |          2 ||      93,666 |         0.94 |           -
->          0 |         10 ||      93,709 |         0.94 |           -
->          0 |        100 ||      93,792 |         0.94 |           -
->   ---------+------------++-------------+--------------+------------
->          1 |          1 ||   6,467,833 |        64.68 |       63.73
->          1 |          2 ||   7,509,708 |        75.10 |       74.15
->          1 |         10 ||  23,786,792 |       237.87 |      236.92
->          1 |        100 || 106,432,500 |     1,064.43 |     1063.38
->   ---------+------------++-------------+--------------+------------
->          1 |          0 ||   1,431,875 |        14.32 |       13.37
->          2 |          0 ||   6,456,334 |        64.56 |       63.62
->         10 |          0 ||  22,717,000 |       227.17 |      226.22
->        100 |          0 || 103,293,667 |      1032.94 |     1031.99
->   ---------+------------++-------------+--------------+--------------
-> 
->   Note: per-call overhead is estiamated relative to the baseline case
->   with 0 relevant tracers and 0 irrelevant tracers.
-> 
->   After this series:
-> 
->   Number of tracers     || Total time  | Per-call average time (ns)
->   Relevant | Irrelevant || (ns)        | Total        | Overhead
->   =========+============++=============+==============+============
->          0 |          0 ||      94,541 |         0.95 |           -
->          0 |          1 ||      93,666 |         0.94 |           -
->          0 |          2 ||      93,709 |         0.94 |           -
->          0 |         10 ||      93,667 |         0.94 |           -
->          0 |        100 ||      93,792 |         0.94 |           -
->   ---------+------------++-------------+--------------+------------
->          1 |          1 ||     281,000 |         2.81 |        1.86
->          1 |          2 ||     281,042 |         2.81 |        1.87
->          1 |         10 ||     280,958 |         2.81 |        1.86
->          1 |        100 ||     281,250 |         2.81 |        1.87
->   ---------+------------++-------------+--------------+------------
->          1 |          0 ||     280,959 |         2.81 |        1.86
->          2 |          0 ||   6,502,708 |        65.03 |       64.08
->         10 |          0 ||  18,681,209 |       186.81 |      185.87
->        100 |          0 || 103,550,458 |     1,035.50 |     1034.56
->   ---------+------------++-------------+--------------+------------
-> 
->   Note: per-call overhead is estiamated relative to the baseline case
->   with 0 relevant tracers and 0 irrelevant tracers.
-> 
-> 
-> This version of the series can be found in my kernel.org git repo:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git
-> 
-> Tagged as:
-> 
->   arm64-ftrace-per-callsite-ops-20230113
-> 
-> Since v1 [1]:
-> * Fold in Ack from Rafael
-> * Update comments/commits with description of the GCC issue
-> * Move the cold attribute changes to compiler_types.h
-> * Drop the unnecessary changes to the weak attribute
-> * Move declaration of ftrace_ops earlier
-> * Clean up and improve commit messages
-> * Regenerate statistics on misaligned text symbols
-> 
-> Since v2 [2]:
-> * Fold in Steve's Reviewed-by tag
-> * Move core ftrace patch to the start of the series
-> * Add ftrace selftest reults to final patch
-> * Use FUNCTION_ALIGNMENT_4B by default
-> * Fix commit message typos
-> 
-> [1] https://lore.kernel.org/linux-arm-kernel/20230109135828.879136-1-mark.rutland@arm.com/
-> [2] https://lore.kernel.org/linux-arm-kernel/20230113180355.2930042-1-mark.rutland@arm.com/
-> 
-> Thanks,
-> Mark.
-> 
-> Mark Rutland (8):
->   ftrace: Add DYNAMIC_FTRACE_WITH_CALL_OPS
->   Compiler attributes: GCC cold function alignment workarounds
->   ACPI: Don't build ACPICA with '-Os'
->   arm64: Extend support for CONFIG_FUNCTION_ALIGNMENT
->   arm64: insn: Add helpers for BTI
->   arm64: patching: Add aarch64_insn_write_literal_u64()
->   arm64: ftrace: Update stale comment
->   arm64: Implement HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS
-> 
->  arch/arm64/Kconfig                  |   4 +
->  arch/arm64/Makefile                 |   5 +-
->  arch/arm64/include/asm/ftrace.h     |  15 +--
->  arch/arm64/include/asm/insn.h       |   1 +
->  arch/arm64/include/asm/linkage.h    |   4 +-
->  arch/arm64/include/asm/patching.h   |   2 +
->  arch/arm64/kernel/asm-offsets.c     |   4 +
->  arch/arm64/kernel/entry-ftrace.S    |  32 +++++-
->  arch/arm64/kernel/ftrace.c          | 158 +++++++++++++++++++++++++++-
->  arch/arm64/kernel/patching.c        |  17 +++
->  drivers/acpi/acpica/Makefile        |   2 +-
->  include/linux/compiler_attributes.h |   6 --
->  include/linux/compiler_types.h      |  27 +++++
->  include/linux/ftrace.h              |  18 +++-
->  kernel/exit.c                       |   9 +-
->  kernel/trace/Kconfig                |   7 ++
->  kernel/trace/ftrace.c               | 109 ++++++++++++++++++-
->  17 files changed, 380 insertions(+), 40 deletions(-)
-> 
-> -- 
-> 2.30.2
-> 
-> 
+--=20
+With Best Regards,
+Andy Shevchenko
