@@ -2,163 +2,143 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81BD16A1131
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Feb 2023 21:27:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 977AA6A114C
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Feb 2023 21:37:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229731AbjBWU1C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Feb 2023 15:27:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45338 "EHLO
+        id S229500AbjBWUhX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Feb 2023 15:37:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229727AbjBWU0w (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Feb 2023 15:26:52 -0500
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2045.outbound.protection.outlook.com [40.107.92.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52A6C5D45C;
-        Thu, 23 Feb 2023 12:26:51 -0800 (PST)
+        with ESMTP id S229462AbjBWUhW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Feb 2023 15:37:22 -0500
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2082.outbound.protection.outlook.com [40.107.15.82])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C70F1EBCF;
+        Thu, 23 Feb 2023 12:37:21 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iqZrCeIL4rVRGiyAXCV5LQtVp+iugdmWWb1hI4gLISP0DKSSR75S974+b+VI2HKAI/Aipl5mccA3CbMlvHtr8gk+16+v4SX/1BFHnUeQHZ6VVCL9KKtHIxcn5C4H7sa/paACUon2qSdb/vGsSd5J3BTgrpnQx1NIbpHYY/KtbnrnTguH3HLYGGAuiGO8hWHr6D5Y412RRklYnu95B16M4VYIAJ6kuPQYIhpTzyBR9SNfUFSKobC2eZgVVfWerHhxa7ulqNPqiDUS5rtIM/ody5H3FYC3HxJdb+JYs3w/7Mg5wsPMlcOUdcFLucwQokQkAs67iIGSdVi5daPYZMbShw==
+ b=eUoUchVxkDonE6Xt8sErdWBArrKBmssFL57ew062nMv+nM/Gfu+qPCwZFZflL2o56EThFALb8QBoKjsyHEtDELYovx3gQSOd3MBFykQsRjzYRgVZQLZcA7AnrpZqoSy6yLxUDOotfcHeW10BtcpluVq/qNwn/OAt2JnQYJFfS1QY/7FkDmSnJmqMiNYpmpnbL1qpNmxCSd5fCTvIJ4V5Obs0hXJFPXq8Osq9v3NDogukeDsSeADfbmcBDLV95t1mVQBM27mYJipUht25d5eo7UFWwXHHw1n9KImHNPuSg2y9AOtHsZuB4pbhDcSnmjj7lJEjZZgcfT2qMcix1cBoxQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=++Tx6XDo542TxPIx86HEKgSWB2TIKFDWJqXu686uuCw=;
- b=OkOVNFMJT7D2vOu1WH4/+ahs+UTzq+pXCHmeuwvpwLuiWPh53KMG9D/gGMJExpnQutmRw3Dc3lz0t8Cn0Ij2myGSB0Nyc1qjoz6No5yzqcN78tsa4KOiFviW9S4q86hpMgSSEtqWh4KmDKKMy4lZi+E2oKs1uCD2E6FQ7tOCsxjV7po7zWOseJaaLcRDkJzz2HcGqnYok46Ytr1Syuq8p3h5W9lxf5fw9b5XxAosnxbRCxVzJqax0Uk+XsVF7nOe0HPUu5mjCj6UEbp8ItggXtzGwzx8nDsWF1QDuatTz6AYbvKl6wICWBrkTkij7eqw52K3AH2t5LhPr4397s/3Mg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ bh=7gnawgZ+XU9KK6LlOaRjxljs33HPDeuglV52CZZfAbw=;
+ b=NWS+qmoP6bylsjC8caBMONGHZeD5WferDSlCK0tqHhMRV2LcKTklxynfD/Ln1yK8Ti6bejiuhROA2O8qFBMv6GRcQYhAt8ZGPBEuptaIvkmHpy4irhXqh4CEXYyDV06XEVZU8Ih8w2lC0silAv61pMaaN8JuB/zzTuFbx4gBHGAt9YfRnVr95QexL+juxDBdWWNY8EsQfu1laFe+SIjZM+RArs9lW0Po0/66L4NJOCez/jK4WDQqs5PH/PPJybD4FZ6hq2HZJ/GG85KRlqoN9hbb4GNaI1wmu0Osd3+Vza7Y/0+307mJSYRteysX35c+ZBghZgInwE4hqbHfX9IbZg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=++Tx6XDo542TxPIx86HEKgSWB2TIKFDWJqXu686uuCw=;
- b=Mi0pOpwOuBianAotsRk5JWfxdaev7ox90JkHl+2m51e9ps96VJo1EHxDmTi7b29A29FDQEUY6fPogETaWZuWMwbhZbj1aZ7IMJSwj8CZDsdv/iJ1L/3q/e+WwaOwylXz/1kIdZ6lFZsJ5ky63poxvAGwJxJCRYZRr037Fc7XN+s=
-Received: from DM6PR07CA0087.namprd07.prod.outlook.com (2603:10b6:5:337::20)
- by SA3PR12MB7880.namprd12.prod.outlook.com (2603:10b6:806:305::18) with
+ bh=7gnawgZ+XU9KK6LlOaRjxljs33HPDeuglV52CZZfAbw=;
+ b=iQ++wabt3AZf/z2sETEFj5ShTnfnEwWbCf4UBBncF+0F5/dWQwWqtrQiGMllQnOd5yC2m+UNi3P+Er9q+fQxAL31d2sf5/NRnrmNBx2Ara5Zsy30O8W0Zby7KOsi9YahC+nSdx45iAepOX2hwuSN8dKkboATDPs2Ylv985vuz7M=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB6452.eurprd04.prod.outlook.com (2603:10a6:208:16d::21)
+ by VE1PR04MB7486.eurprd04.prod.outlook.com (2603:10a6:800:1b2::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6134.21; Thu, 23 Feb
- 2023 20:26:49 +0000
-Received: from DM6NAM11FT024.eop-nam11.prod.protection.outlook.com
- (2603:10b6:5:337:cafe::7a) by DM6PR07CA0087.outlook.office365.com
- (2603:10b6:5:337::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6134.21 via Frontend
- Transport; Thu, 23 Feb 2023 20:26:49 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DM6NAM11FT024.mail.protection.outlook.com (10.13.172.159) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6134.21 via Frontend Transport; Thu, 23 Feb 2023 20:26:49 +0000
-Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Thu, 23 Feb
- 2023 14:26:48 -0600
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     <rafael@kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <anson.tsao@amd.com>, Kalle Valo <kvalo@kernel.org>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Len Brown <lenb@kernel.org>, <linux-acpi@vger.kernel.org>
-Subject: [PATCH 1/1] ACPI: x86: Drop quirk for HP Elitebook
-Date:   Thu, 23 Feb 2023 14:26:22 -0600
-Message-ID: <20230223202622.9023-2-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230223202622.9023-1-mario.limonciello@amd.com>
-References: <20230223202622.9023-1-mario.limonciello@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6134.19; Thu, 23 Feb
+ 2023 20:37:18 +0000
+Received: from AM0PR04MB6452.eurprd04.prod.outlook.com
+ ([fe80::29a3:120c:7d42:3ca8]) by AM0PR04MB6452.eurprd04.prod.outlook.com
+ ([fe80::29a3:120c:7d42:3ca8%4]) with mapi id 15.20.6134.019; Thu, 23 Feb 2023
+ 20:37:18 +0000
+Date:   Thu, 23 Feb 2023 22:37:13 +0200
+From:   Vladimir Oltean <vladimir.oltean@nxp.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Implementation of fwnode_operations :: device_get_match_data() for
+ software nodes?
+Message-ID: <20230223203713.hcse3mkbq3m6sogb@skbuf>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-ClientProxiedBy: FR2P281CA0103.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9c::13) To AM0PR04MB6452.eurprd04.prod.outlook.com
+ (2603:10a6:208:16d::21)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6NAM11FT024:EE_|SA3PR12MB7880:EE_
-X-MS-Office365-Filtering-Correlation-Id: 87eaf565-426b-4590-783c-08db15dc4aac
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6452:EE_|VE1PR04MB7486:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2823927a-c5dd-41e8-d53d-08db15ddc183
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: I85Svrj1hOYJs5tvhVuPgHCbiVKPWsWgWZtPdb83dvzevs2VqIkw0mKu5N/4jav896FXjwjfXcJK5c4V7TuvrRcZvhtIytqWRaYJyIeArHz7JNLByoq/R3asWstjxLwvxQBYUWaQXQDVQ5PcQ7mQ8XbwgGvPcwLn5+XGSnmlWh+0+fwKR3IK5MRRs/W3qATftAuAgfQIVIqPe4qY+NvWrGo2Xcz02DEf1qgy0yuTjsM5V59swgLMRVNo4UGh2/Gx3f+5zww9W5bIHqFC12I5IXcnOqSkOB3YTnn1pVkPlBnTKBz/ogtIzUFAVgToAdUTkEVf2kR2LygXKjrvprVd5yIKmWo1biStUs6U1x3yqiqLOLvO9Gnycw0ZiUhHTEzklQCyUsiRZZXTwsnejSX7IqycdGOVG/QtsLxz5kB3/Giuj6ReBAiQrUWBDDaJfNp4M4Dsrmqwf+OsWUkz/5tlkrN2HCxCL7ZuxR9fqoc8ybFx1HddCt/7fVxbGL0WIPT9qDga7WKu4FATIatlsU7PqVPzlkINdbKabuxZ1UqS/1+wMA17Ce7rLWNl76xaUHbA27gwfdRh3T+vlNbZjfHZQvXhjSqwXoWHwzlZgX0MTNNuRfHBTYlv39lmCJzBMEjm+Ih7KUiXn2QHi7rYT5FnLqCoYayC/P2fh2C6qlVCvErAmmBvmK2PJ1WwEIxxYOSbWjQ26PsY+U9S6AcsnMi5Tl2BkuzdDIiMR24fcvbOwMY=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230025)(4636009)(39860400002)(346002)(376002)(136003)(396003)(451199018)(36840700001)(46966006)(40470700004)(81166007)(44832011)(5660300002)(36860700001)(41300700001)(8936002)(356005)(82310400005)(36756003)(86362001)(40480700001)(2906002)(82740400003)(26005)(426003)(966005)(2616005)(40460700003)(47076005)(478600001)(45080400002)(7696005)(336012)(186003)(16526019)(6666004)(1076003)(70586007)(70206006)(8676002)(54906003)(316002)(110136005)(4326008)(83380400001)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2023 20:26:49.2081
+X-Microsoft-Antispam-Message-Info: +OlLm5qMjF+m6YTMzt7sPzkngL5TmZUewFmJDm4+A8z88ij3566jWf0EYEBJotNaEJ6ZBHCIdt4TmdtkcR0sm/3dWMjxM4RwQrU7Zh6SwwNU3ZV+be+UujZjAjLZjDtljJMVpnm0dyCPTdroeNYaQyaOxSDpEa1mOoPgVLpnzbm3OIAeSXzwk22Bycu+4GG8Tqj1DszBEZhY1dtmXG8pxxciUay79dJ66It4+IWEZH2dLBla7zhzFmMngA9VOUpIDPOQkFmgJdIxx9oBkIyDZoMm5SCt/Qgymclz61CvsCx8K3nUW3nuSoS2LldRU0xFvjhoI9+7756trzy4S8ZjCyxJcPDgQRncgxepE11U4whqC/ljwIKSJ4oGjfNSve079VPfnAwcj0XWX9fxkS0EXWJRPfx3XzA5BUj/Tqax/Qn3GciVM3fiUoymi56WmtMctIj+fbudVQb3VyazNGAN9NztfecG56jYBkVnZN1WIOazK4UZsSznAOtIAhBIOszkXk6/H4WczK8lIU+2Eh8HgSbeVrspUFBIA7KTm5eeROB5fTcY/8pvb2CUuQzY7jpSvVUYGKcXmwET37bZ79UVeu1lvqEQSn85ist6UC9vbBCbKnD9eHTO6ChIfl/MnDNiOg7KPA5oBZ0QptUALN0guQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6452.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(7916004)(4636009)(376002)(39860400002)(136003)(366004)(346002)(396003)(451199018)(6512007)(9686003)(186003)(6486002)(26005)(8676002)(8936002)(5660300002)(66946007)(66476007)(1076003)(66556008)(6666004)(6506007)(478600001)(316002)(110136005)(41300700001)(33716001)(86362001)(44832011)(4744005)(38100700002)(2906002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?2N0zyjl4BYD0dZy3VrueldZYQEIIdMHMdUqsMS39g1dIvfomKzlsnNoFIEH7?=
+ =?us-ascii?Q?SZckiDsQcyFaytN64mIZp1t/zv+uTzhewuolPXf7VACXgFsqFFOuFHAY4un7?=
+ =?us-ascii?Q?PbGBTPRDyN/BJrDah8n1f24ah4Rh6jIJeKr7p4JK6w5jzJynHctreTgwDVXf?=
+ =?us-ascii?Q?/ALSyXrRczbRfI/sJlRrF48aUzhlwL0iYgrQSs3ng8nmd4c4Z2zvrZiB9bRz?=
+ =?us-ascii?Q?xva7NYY80aciww5icQ02uA9TuVLnzYGBUkflWYFl+jNfIoOOequRZ03Jvt/m?=
+ =?us-ascii?Q?pJ6bSci1L0/q2Wqy5XE8rT34Ek6ykqHY8ZFl9SEcr6o8tClYplRUSU3Zh58z?=
+ =?us-ascii?Q?eIpU8zLebNlmbcn/CpWe+bqPBjG2dAgKe9DcsGN2cY5lmER950YEKDrgu4Y7?=
+ =?us-ascii?Q?CK5LVpcwYpmmsnql3mN4OyFUYrWjEkMX2qGmu12ze9x/QhOkS72NJiRyt+Mz?=
+ =?us-ascii?Q?BUecphXEoKJbbHA6tDzzDRH7ff2Ij74Jo3/+s9HVF5D4dn0Fj+h2WKz2DezF?=
+ =?us-ascii?Q?Nx15an96oWfs+Q27SH+lsINm7+bTOR92BeiTQm1mZ/247qY5JWdNybGD4HpT?=
+ =?us-ascii?Q?CiNxTHnbOBxY1IPt0Xm6odrVDoYRMMgktTvwqPoJ1vbg2Ajs0xx2eMFqjKlZ?=
+ =?us-ascii?Q?yhOJbFW2D/0JkSugR6arfpcdfnLYhj6/NC3hsOWoLV7LBZY3lXyPZ52aTxuA?=
+ =?us-ascii?Q?X3a+km92uoHgCs8Dt/Kl7UB6IjVGP+pFuEa8QAEWGT6KNBqzSK0CjxiiXoKU?=
+ =?us-ascii?Q?s+Wftp4EA4H8R+YbetxbkGCch8bbqlywq3UUsYE9mBoUgzbo/kd431tYM+l8?=
+ =?us-ascii?Q?6sgrGltjTDTgdP3Caed2OJ/kLo21uvWLcvm0l460gA8ediK4zzeCG+PEQJgP?=
+ =?us-ascii?Q?JrbE4nSIMjO3WgnFKlQNaZuubok2rM6Aq4yzRWIQqqvirc9JqNoauyLF/GXE?=
+ =?us-ascii?Q?GB8pu1wbMoATggc1v6dcwDbIIcnwHwV5Dx6ALoCUcTtfd4Fw39eTHXO3jcNl?=
+ =?us-ascii?Q?5MbY5EeE38K1kLhGGTOhI4tLqI+xntt8evu+PoZaXrYGfefXVqe7pffkyLT1?=
+ =?us-ascii?Q?aJvss17x5bmJFWDz89dxyf62b0exXhQhwhc1+0yqalVM/31g4oGlUs3QgEhz?=
+ =?us-ascii?Q?h3zC6fapWbZU3zVo0g3h6dBS0oLisj+dPk4coyN7tmjkH8e/0v5r2xO2fwpb?=
+ =?us-ascii?Q?didmWs+qUIDn0keL+FN28Y0X4UwZdL2bNe0ZYO9H8tusSdXQ380PIbsZ407s?=
+ =?us-ascii?Q?lkEuUrRFPeHDyO3ymKJk6z0+nluwhX5DxQ/Brw/eeyxFYmTZI6MqSmkMMkID?=
+ =?us-ascii?Q?4gNE9mTJ+5YwY3a0C1gNwfNEJHzfBVTkxRJMOF4rC2B+tGdZDTcgxNzNMRfW?=
+ =?us-ascii?Q?4jKkOKf84wrcqNID1vQgk4waAkPNc6wJo0HmBAOaK2Vr++k7lei/VTtNsa5W?=
+ =?us-ascii?Q?Zc4Ykiq75oiRK9RPh/gAScUXET/D2papSkmQiKrD2ismBP6Yzyis0v+8MTUF?=
+ =?us-ascii?Q?9R7i+3A04na9FLg0j/GjjALnsKRt7ZPRuNVRYcp3QCTa43BcjJu9r7DQWEno?=
+ =?us-ascii?Q?yXOVHAo3VJ//gVcOD5GBfMSXWWBcI1S7eX4AvPlsRyERadR+PaelG/ZYTXjn?=
+ =?us-ascii?Q?EQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2823927a-c5dd-41e8-d53d-08db15ddc183
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6452.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2023 20:37:18.3217
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 87eaf565-426b-4590-783c-08db15dc4aac
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT024.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7880
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +3vyRpGJUmRexOOcvBxo+KdsUEdSZIGoyyYlphNOr80MilRLE/HOQ4Lil6Gs4M1wkj4Y+9P9e/sf0N4KM6Sijw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7486
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-There was a quirk in `acpi/x86/s2idle.c` for an HP Elitebook G9
-platforms to force AMD GUID codepath instead of Microsoft codepath.
+Hi,
 
-This was due to a bug with WCN6855 WLAN firmware interaction with
-the system.
+I have a need to instantiate a driver written for OF which calls
+device_get_match_data(dev) to get various information based on the
+compatible string.
 
-This bug is fixed by WCN6855 firmware:
-WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+I am creating a software node based on the following properties:
 
-Remove the quirk as it's no longer necessary with this firmware.
+	struct property_entry props[2] = {
+		PROPERTY_ENTRY_STRING("compatible", compatible),
+		{},
+	};
 
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/?id=c7a57ef688f7d99d8338a5d8edddc8836ff0e6de
-Tested-by: Anson Tsao <anson.tsao@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/acpi/x86/s2idle.c | 24 ------------------------
- 1 file changed, 24 deletions(-)
+(I see I'm not the only one doing this, some drivers/platform/x86/x86-android-tablets.c
+and drivers/platform/chrome/chromeos_laptop.c also do it)
 
-diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-index c7afce465a07..e499c60c4579 100644
---- a/drivers/acpi/x86/s2idle.c
-+++ b/drivers/acpi/x86/s2idle.c
-@@ -384,29 +384,6 @@ static const struct acpi_device_id amd_hid_ids[] = {
- 	{}
- };
- 
--static int lps0_prefer_amd(const struct dmi_system_id *id)
--{
--	pr_debug("Using AMD GUID w/ _REV 2.\n");
--	rev_id = 2;
--	return 0;
--}
--static const struct dmi_system_id s2idle_dmi_table[] __initconst = {
--	{
--		/*
--		 * AMD Rembrandt based HP EliteBook 835/845/865 G9
--		 * Contains specialized AML in AMD/_REV 2 path to avoid
--		 * triggering a bug in Qualcomm WLAN firmware. This may be
--		 * removed in the future if that firmware is fixed.
--		 */
--		.callback = lps0_prefer_amd,
--		.matches = {
--			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
--			DMI_MATCH(DMI_BOARD_NAME, "8990"),
--		},
--	},
--	{}
--};
--
- static int lps0_device_attach(struct acpi_device *adev,
- 			      const struct acpi_device_id *not_used)
- {
-@@ -586,7 +563,6 @@ static const struct platform_s2idle_ops acpi_s2idle_ops_lps0 = {
- 
- void __init acpi_s2idle_setup(void)
- {
--	dmi_check_system(s2idle_dmi_table);
- 	acpi_scan_add_handler(&lps0_handler);
- 	s2idle_set_ops(&acpi_s2idle_ops_lps0);
- }
--- 
-2.34.1
+and the driver in question does begin to probe, but its match_data is
+NULL, because the operation from the title isn't implemented for
+software nodes. So probing ultimately fails.
 
+Is there some sort or reason why this doesn't exist, other than a lack
+of need?
+
+Can someone please help me with an implementation of this feature?
+
+Thanks,
+Vladimir
