@@ -2,201 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 102B66A1327
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Feb 2023 23:57:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BEF9B6A16FF
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Feb 2023 08:18:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229619AbjBWW46 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Feb 2023 17:56:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54448 "EHLO
+        id S229585AbjBXHSp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Feb 2023 02:18:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229675AbjBWW44 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Feb 2023 17:56:56 -0500
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ED315D44F
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Feb 2023 14:56:51 -0800 (PST)
-Received: by mail-wm1-x330.google.com with SMTP id j3so8259694wms.2
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Feb 2023 14:56:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cikNiAl3CsaUVzCtk0AInA3PwE1/TMQnMlzjF1gGdG0=;
-        b=DRN7VfySjUL0rYZq24bKTqYo1a7eMqo07ygSwMFUqHzuTKP65b9sTMEH8VZt0hxwu1
-         dmHGRYaPf3ggH9KZmEyIo+flPWm4zpT9CAN4fb3bb2UwUttx3rmo4vx8zo6F2tPiEUOK
-         kQWqn6QOgf2ZhhgOZ653j1GAMDb6AMca6ljq3tiMi06NSCiMzWp0EPnd6Uvs6JK9LOIe
-         r43kHvJdLLA9VFyPJO6M+KZDTGdMEFaMKztCR+nTATohFgvC9r80+cCMQ12KHZsj+SUY
-         jwwZvlnmtS9kLRvR3sEhulVIN5kRwRQDmQ/AX297OlmgtRWEUsWG1kh7J/OLhfLYqjHy
-         599w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cikNiAl3CsaUVzCtk0AInA3PwE1/TMQnMlzjF1gGdG0=;
-        b=wyqMqTBd0hKoEgtmY6XdcbW9Bkq3Xu+CzpPtEFA2Pi//k46EMIqKbxxPjB7PQeRH7q
-         kxArQ3fgrmHmF1j9DeFqH0LFAzMzNy7vyb8EmpO/1uIc8jsEAOWnKooEnluGV/G48+mF
-         +1pBMuvAJKjG/QDy1/kL+EdMX1vobbDBgFBpAyBAusL93aQqvH8T1kHsjdFNK6hiWwV9
-         W/wKdicrPv2WVSpCa1rcXN8gKZC4365LagIom3fdgj4PGTe/oMwSHpUT7TQ2JJJSndFM
-         iYE+QBWg6o2JLlmN2bRY8fAsMe+HufE4OGQ5tJ7Vp+wlBGi5/DzZADgH/y0ukwOYXfDE
-         Jhng==
-X-Gm-Message-State: AO0yUKVeloI3mMFffE41uXBbAHJZMfUD9NWKluBwctYJpNH7CoGMRqrq
-        gbyCf/wdfj5r2ymcwLRVX3qUBw==
-X-Google-Smtp-Source: AK7set9Z52yxWv52zRMDow6DF+DTZQX7KbVMepo+DRQCwOeMkXAXaJBNJ2zYwaSnuLVGEj/k1hBdjw==
-X-Received: by 2002:a05:600c:a695:b0:3e2:2f9:b8e2 with SMTP id ip21-20020a05600ca69500b003e202f9b8e2mr10908094wmb.35.1677193009641;
-        Thu, 23 Feb 2023 14:56:49 -0800 (PST)
-Received: from ?IPV6:2a05:6e02:1041:c10:3e6f:e90a:1fc9:3708? ([2a05:6e02:1041:c10:3e6f:e90a:1fc9:3708])
-        by smtp.googlemail.com with ESMTPSA id d21-20020a1c7315000000b003b47b80cec3sm662936wmb.42.2023.02.23.14.56.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Feb 2023 14:56:49 -0800 (PST)
-Message-ID: <37b3b835-e992-0090-56e5-bd4d58e547a7@linaro.org>
-Date:   Thu, 23 Feb 2023 23:56:44 +0100
+        with ESMTP id S229462AbjBXHSo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Feb 2023 02:18:44 -0500
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F5721589A;
+        Thu, 23 Feb 2023 23:18:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1677223123; x=1708759123;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=zYbshPl/lsCnWUmVhR/K96jzGok99c8lvegV+Z/ET1s=;
+  b=AzuhrLEKdKP5DVfhO1yaQcCxe0HJoIx5hqkWL9lMxmsvKyvh1SokT/0B
+   JkYM7XYbijEkOi7nmnko/lmqLg1Z6VTW2TMBTOpUDWQVn8WAWGtx8qoDB
+   aMEP/kZxGFq70gNpDY4uxdhOBnEaxdYnpBDPHFpzZtgY3NTxWJbk8ToJc
+   3Y/NzWXshRaIh1NnKjCmTzLzpgNIa/dKWZLipETyvTA1psL3cpaQM7Vp0
+   fvVbK++enyhHh3Wk0vc/3Romw18THPvtiH6+m12ayb/ClRFpe4ZXa53mC
+   gQ2egkUN7Zt43TFXaOPkHJoNEx4Sd/KvXQl0R2CVH6vX95UWnZhI9z2Hl
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10630"; a="334834613"
+X-IronPort-AV: E=Sophos;i="5.97,322,1669104000"; 
+   d="scan'208";a="334834613"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2023 23:18:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10630"; a="815637525"
+X-IronPort-AV: E=Sophos;i="5.97,322,1669104000"; 
+   d="scan'208";a="815637525"
+Received: from lkp-server01.sh.intel.com (HELO 3895f5c55ead) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 23 Feb 2023 23:18:40 -0800
+Received: from kbuild by 3895f5c55ead with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pVSLo-0002E5-0m;
+        Fri, 24 Feb 2023 07:18:40 +0000
+Date:   Fri, 24 Feb 2023 15:18:22 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 56b49cc1d126d558bb976785deb9eeff3160fb47
+Message-ID: <63f864be.JL6UtBJ/6VvtU055%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v3 00/17] Self-encapsulate the thermal zone device
- structure
-Content-Language: en-US
-To:     rafael@kernel.org
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Markus Mayer <mmayer@broadcom.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Vasily Khoruzhick <anarsoul@gmail.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Talel Shenhar <talel@amazon.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Zheng Yongjun <zhengyongjun3@huawei.com>,
-        Yang Li <yang.lee@linux.alibaba.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Daniel Golle <daniel@makrotopia.org>,
-        Balsam CHIHI <bchihi@baylibre.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        linux-acpi@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-sunxi@lists.linux.dev,
-        linux-input@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org
-References: <20230223224844.3491251-1-daniel.lezcano@linaro.org>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20230223224844.3491251-1-daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 23/02/2023 23:48, Daniel Lezcano wrote:
-> The exported thermal headers expose the thermal core structure while those
-> should be private to the framework. The initial idea was the thermal sensor
-> drivers use the thermal zone device structure pointer to pass it around from
-> the ops to the thermal framework API like a handler.
-> 
-> Unfortunately, different drivers are using and abusing the internals of this
-> structure to hook the associated struct device, read the internals values, take
-> the lock, etc ...
-> 
-> rn order to fix this situation, let's encapsulate the structure leaking the
-> more in the different drivers: the thermal_zone_device structure.
-> 
-> This series revisit the existing drivers using the thermal zone private
-> structure internals to change the access to something else. For instance, the
-> get_temp() ops is using the tz->dev to write a debug trace. Despite the trace
-> is not helpful, we can check the return value for the get_temp() ops in the
-> call site and show the message in this place.
-> 
-> With this set of changes, the thermal_zone_device is almost self-encapsulated.
-> As usual, the acpi driver needs a more complex changes, so that will come in a
-> separate series along with the structure moved the private core headers.
-> 
-> Changelog:
-> 	- V3:
-> 	   - Collected more tags
-> 	   - Added missing changes for ->devdata in some drivers
-> 	   - Added a 'type' accessor
-> 	   - Replaced the 'type' to 'id' changes by the 'type' accessor
-> 	   - Used the 'type' accessor in the drivers
-> 	- V2:
-> 	   - Collected tags
-> 	   - Added missing changes for ->devdata for the tsens driver
-> 	   - Renamed thermal_zone_device_get_data() to thermal_zone_priv()
-> 	   - Added stubs when CONFIG_THERMAL is not set
-> 	   - Dropped hwmon change where we remove the tz->lock usage
-> 
-> Thank you all for your comments
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 56b49cc1d126d558bb976785deb9eeff3160fb47  Merge branch 'powercap' into bleeding-edge
 
-The series has been blocked by gsmtp because the next patch has too many 
-Cc. I'll sort out this and resend.
+elapsed time: 720m
 
+configs tested: 24
+configs skipped: 4
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+clang                                   alpha   defconfig
+gcc                                       arc   defconfig
+gcc                                       arm   defconfig
+gcc                                     arm64   defconfig
+gcc                                      csky   defconfig
+gcc                                      i386   defconfig
+gcc                                      ia64   defconfig
+gcc                                 loongarch   defconfig
+gcc                                      m68k   defconfig
+gcc                                      m68k   m5249evb_defconfig
+gcc                                      mips   ip32_defconfig
+gcc                                     nios2   defconfig
+gcc                                    parisc   defconfig
+gcc                                  parisc64   defconfig
+gcc                                     riscv   defconfig
+gcc                                     riscv   rv32_defconfig
+gcc                                      s390   defconfig
+gcc                                        sh   microdev_defconfig
+gcc                                        sh   r7780mp_defconfig
+gcc                                     sparc   defconfig
+gcc                                     sparc   sparc32_defconfig
+gcc                                        um   i386_defconfig
+gcc                                        um   x86_64_defconfig
+gcc                                    x86_64   defconfig
+gcc                                                  
 
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
