@@ -2,63 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6B7F6A18FF
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Feb 2023 10:44:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 00FA76A1902
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Feb 2023 10:48:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229789AbjBXJot (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Feb 2023 04:44:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54932 "EHLO
+        id S229513AbjBXJsW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Feb 2023 04:48:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229651AbjBXJop (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Feb 2023 04:44:45 -0500
+        with ESMTP id S229463AbjBXJsV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Feb 2023 04:48:21 -0500
 Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C18164D4B;
-        Fri, 24 Feb 2023 01:44:44 -0800 (PST)
-Received: by mail-qt1-x834.google.com with SMTP id w42so13875635qtc.2;
-        Fri, 24 Feb 2023 01:44:44 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A57829E34;
+        Fri, 24 Feb 2023 01:48:20 -0800 (PST)
+Received: by mail-qt1-x834.google.com with SMTP id z6so2141750qtv.0;
+        Fri, 24 Feb 2023 01:48:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Rt+vMP0zWCVohfkzCAgJ84Zd+cCLEU9rRAW/Bskx1A8=;
-        b=Y9BCoryJLeoNcTEeJu/HS7BdBfNoncJUyK2y3Tnkh0TgojCWb24G/tfDIT/uopTznQ
-         vCbYRqJMY1LaUL/wf6PPr6X/qYquu//s9MutRyuU3kChW7aKX+RPbdVbad5ghq+4l3Qg
-         YNnM27dpk9csSaldZT4/9z6iFkP/t0Gj7wEf2MonWp2+uvsh/SMInF1LyI9KjIpvGagz
-         YTTc3XNVcbGM/q/YoO3a3cxYVebtwFTOR5zzsiSLLuGbNbr0lCis8U9uf92sY3hbsM9M
-         i1kVYganlYtEJqqD0AqroiGNVsxtdeup+K8HkXsNsa0RpTIVXhoHvcVF0hUXGP3dTfP9
-         gp4w==
+        bh=JVXNCqpApA7ELtFM5W7tXqhzvT3RzGT0ucZSGwR72Fc=;
+        b=dnY0C/s1YZxv6ExAkfxySx7upc3ZK6WcAbur+sTRGiK7sg05e5eNCaezffrO1QBDgS
+         dIx+t4wtuI/ZdoxMkpMaAj3Rf0CNPlogjFI4ABmF2R6edDER3jzplFQbflqkCGKnwX6V
+         SUm0w0O7T/TZQ2qlVv2JFDRNC7kh+sy7bK2HxcPhlj37u+z82i6F2KWV2zOeKm6atQRD
+         /8CMxtBpU/GOHdtCRHmT3CYL2zbIh3pK6Ct//EReDOlU35qx/gB9nOlc0uubIWs4JF5w
+         mNHrkDaInCMKtfFP4HmDyfBekwuBCI2V2F+6FdaYx7oCVlSc0THhnSivN89c4M4GSiy/
+         kYQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Rt+vMP0zWCVohfkzCAgJ84Zd+cCLEU9rRAW/Bskx1A8=;
-        b=rcL5GT8968qnQ4QQglmKToTSLVCs7+96UWtE4yzj4r7g7Ksd4K4YyAdP6w22IQjzxM
-         5wLol1KxwU7Lt4sN0jrOpTM/Tdt1Fx50WcYTjbdIx9qFETqiwf3RjMb+GWrARpNpJUq/
-         U0dIMM3W2n4jmRiRrfV5JuYfvnExG4JfyZam7ePeP3OyOfsccTIUjXe3PIjQTgb7orDM
-         RbVUo+noK+cWLk3VUf4/mOUv+trv6GYx6i/BtG4RqeHDsXQRmQwrym2n0Mgmd/ErkFs/
-         fxqEOX0XMxH/0kv4PEFphpBEDNGQr1rrE2GEs7vOVm89ul8nfzyQy8KNrDVkyX/3ebQ0
-         l3Iw==
-X-Gm-Message-State: AO0yUKVhw9o35/4s5h466dLk7sufasEC7rpt7i7xwYULeC+P6IkGbG2c
-        jFZWnbm1Do0f9s3dKPBFZD6JvSHcROQto8xVqyl4vuAtT6620Q==
-X-Google-Smtp-Source: AK7set9fh1KW1Np7TalK0fGWQE++L1c5qG8u174r7V49YglPixWlm2FvKcrIM8zX4tVvhuIrrllw+k2IcFgU8UugxYo=
-X-Received: by 2002:ac8:4146:0:b0:3b8:6767:eb15 with SMTP id
- e6-20020ac84146000000b003b86767eb15mr2603584qtm.1.1677231883468; Fri, 24 Feb
- 2023 01:44:43 -0800 (PST)
+        bh=JVXNCqpApA7ELtFM5W7tXqhzvT3RzGT0ucZSGwR72Fc=;
+        b=5+SqAccAWHBEMXyVnX6GLwJYpcnwPy7KtXaX9fDw3Fgvm3O+tkfAToft/hPW0Vyat7
+         iuwmu8SGOlUUrfTbvziJeixy+ErgIKJXSmwffvM9P/bgIfwwAN8snniV3ZlKK0uT32pR
+         R68VF8/Oa45sEdLkV6lyGltvD++gKYNr515D3Jfl2dmkC2LtRaMTw9TSZB9N32sacZ8g
+         fDuXbPRfJPJAKtakwxPDWmhktKZt06WMN402QhbrSmUN05010bfRfFRXWvv4FbUfsqHs
+         ohgTxaz0AJ+2tMYA7TLS0u5haDxYPKf0Sd7+SfDs92PnRxyw9fIS7FpZhptyBTTGfnAx
+         Lf0A==
+X-Gm-Message-State: AO0yUKXRzdtE1pixGYZ0JPVzu0+1qjWuv+HhbCm4pPaca+BO4+vKsqJr
+        7/dJD26PECBAuFaOldr4rdafeKBggNNgL+EcADo97OOEqrjkKg==
+X-Google-Smtp-Source: AK7set8q1/ET9SaMohJ7q/8VDfxDX2T3g1CZP+PquoalRpsrVJj+NLUvNDoQfimqIv2A19WNteILS0DnkhT69hSTLQE=
+X-Received: by 2002:aed:2791:0:b0:3bd:1a0b:8ac4 with SMTP id
+ a17-20020aed2791000000b003bd1a0b8ac4mr2683586qtd.1.1677232099416; Fri, 24 Feb
+ 2023 01:48:19 -0800 (PST)
 MIME-Version: 1.0
 References: <cover.1676042188.git.asmaa@nvidia.com> <cover.1676668853.git.asmaa@nvidia.com>
- <4cda8cfc37fb15a0c3b180ab4c34a6f6f859fe3c.1676668853.git.asmaa@nvidia.com>
- <CAHp75VeTbV7CyVZrXsrm8rqLnYdOunzTDhanqzceyJ3KyPjdwA@mail.gmail.com> <CH2PR12MB38959833A5A4073F8B2A84FDD7AB9@CH2PR12MB3895.namprd12.prod.outlook.com>
-In-Reply-To: <CH2PR12MB38959833A5A4073F8B2A84FDD7AB9@CH2PR12MB3895.namprd12.prod.outlook.com>
+ <28f0d670407c127614b64d9c382b11c795f5077d.1676668853.git.asmaa@nvidia.com>
+ <CAHp75VdeVpjzg5Y_4Y+Ke9=3wog28vUBN4Fd8zxfa8dWGrqUUA@mail.gmail.com>
+ <CH2PR12MB3895520749883D912E5021F1D7AA9@CH2PR12MB3895.namprd12.prod.outlook.com>
+ <CAHp75Vc+iSt2XvpOYzwZnzX7Qg013e-E27CPjPaO-QmtferWVg@mail.gmail.com>
+ <CH2PR12MB389509F68E6AFE776C5B0AC6D7AB9@CH2PR12MB3895.namprd12.prod.outlook.com>
+ <CAHp75VdoUDMvVk1uMQcAKQteL6gbYGpoKpFn96ysdS81LjPGCQ@mail.gmail.com> <CH2PR12MB389530C5929100CB54396CF5D7AB9@CH2PR12MB3895.namprd12.prod.outlook.com>
+In-Reply-To: <CH2PR12MB389530C5929100CB54396CF5D7AB9@CH2PR12MB3895.namprd12.prod.outlook.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 24 Feb 2023 11:44:07 +0200
-Message-ID: <CAHp75VdFsxPPnNES0KS2koUGZz1C9dbNZbRtCRQBsFb1csqL7A@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] pinctrl: pinctrl-mlxbf: Add pinctrl driver support
+Date:   Fri, 24 Feb 2023 11:47:43 +0200
+Message-ID: <CAHp75VfZ1r_sNus_qMYumja3YrJawA6hRHUbi-uPFUprorQ_Kw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] gpio: gpio-mlxbf3: Add gpio driver support
 To:     Asmaa Mnebhi <asmaa@nvidia.com>
 Cc:     "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
         "bgolaszewski@baylibre.com" <bgolaszewski@baylibre.com>,
-        "niyas.sait@linaro.org" <niyas.sait@linaro.org>,
         "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
@@ -74,52 +77,43 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 23, 2023 at 11:07 PM Asmaa Mnebhi <asmaa@nvidia.com> wrote:
->
-> > > +static const struct {
-> > > +       const char *name;
-> > > +       const char * const *group_names;
+On Fri, Feb 24, 2023 at 12:51 AM Asmaa Mnebhi <asmaa@nvidia.com> wrote:
+
+...
+
+> > > > > Ah that=E2=80=99s my bad. The property should be called "ngpios" =
+like in
+> > > > > the DT
+> > > > documentation. Will fix.
+> > > >
+> > > > And why do you need it? What's a corner case that the GPIO library
+> > > > doesn't handle yet?
+> > >
+> > > We have 2 gpiochips, gpiochip 0 supports 32 gpio pins and gpiochip 1
+> > supports only 24 pins.
+> > > If I remove the logic from gpio-mlxbf3.c, the gpiolib.c logic will co=
+rrectly set
+> > the ngpios =3D 32 for gpiochip 0 but will wrongly set ngpios=3D32 for g=
+piogchip 1:
 > >
-> > Use this instead
-> > https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-
-> > pinctrl.git/tree/include/linux/pinctrl/pinctrl.h?h=3Ddevel#n215
-> > and this
-> > https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-
-> > pinctrl.git/tree/include/linux/pinctrl/pinctrl.h?h=3Ddevel#n222
+> > So, either you need to have two entries in DT per chip or ngpios should=
+ be 56.
 > >
-> > > +} mlxbf_pmx_funcs[] =3D {
-> >
-> > > +};
->
-> so copy that struct definition and macro to my driver? (I don=E2=80=99t s=
-ee these code changes in master)
+> I already have 2 entries in my ACPI table, in the first entry, ngpios =3D=
+ 32 and in the second entry ngpios =3D 24.
 
-Which master?
+Can you show the DSDT excerpt of this device? (Also including the
+pieces for pin control)
 
-First of all, you should do your development based on the "for-next"
-of the respective subsystem (okay, for pin control Linus Walleij
-called his published branch "devel"). So, the above mentioned
-functionality was there a while ago.
+Is this a table of the device in the wild?
 
-Second, a couple of days ago Linus Torvalds pulled PR, so it's part of
-upstream now.
+> Gpiochip_add_data_with_keys only reads the ngpios property if (ngpios =3D=
+=3D 0) which is not the case when
+> bgpio_init is called. bgpio_init uses "sz" argument to populate the ngpio=
+ in bgpio_init, which is not what we want.
 
-TL;DR: just use those types and macros in your code.
+Maybe bgpio_init() is not a good API for your case?
 
-> > > +       /* This resource is shared so use devm_ioremap */
-> >
-> > Can you elaborate on who actually requests the region? And why is it no=
-t
-> > _this_ driver?
->
-> This resource is shared with the gpio-mlxbf3.c driver. The gpio-mlxbf3.c =
-driver does not access the same offsets as the pinctrl-mlxbf3.c driver, but=
- it accesses several other registers offsets in between.
-
-Okay, so in such a case you need a common denominator that actually
-does this all for you via, for example, regmap. If the region is not
-requested, bad things may happen.
-
---=20
+--
 With Best Regards,
 Andy Shevchenko
