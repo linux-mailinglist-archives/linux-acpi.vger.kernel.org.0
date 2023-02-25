@@ -2,147 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E37296A27D3
-	for <lists+linux-acpi@lfdr.de>; Sat, 25 Feb 2023 09:06:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32B7C6A27F5
+	for <lists+linux-acpi@lfdr.de>; Sat, 25 Feb 2023 09:53:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbjBYIGC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 25 Feb 2023 03:06:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51146 "EHLO
+        id S229471AbjBYIxh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 25 Feb 2023 03:53:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229642AbjBYIFx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 25 Feb 2023 03:05:53 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 997011ACC8;
-        Sat, 25 Feb 2023 00:05:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1677312346; i=w_armin@gmx.de;
-        bh=Kf5tr2Sg9Jqyp+j3xyIw9/QWCzBL3T6tk+vssRythnI=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=K99OKWKHOOzh05TDpZSxJE4GN6wiueUJLo6LO0haukLOys0FpZNus5BsgoIogxz/V
-         k+NUWpPFENWVi5MNRNGIH0MqCmq++w9KTv1hPte4Tvnt6FfMfUXFsD0qXvUFxR+lAl
-         VZlKp4Rq8plMnv4PyaSsvvv1Ct4ubVhBoenahAOfQyPrx3Cs0quL6TzRMBSRBcsLAW
-         IkxCR9v6ubd6O1HtTzyk8zj4H8dmxIU+pozts1YYeWxLiJuMJEK0rYIcDeeFdy/I7B
-         8mvytGFZnplh9I+p9DRRIRdr7blAXGdpRK18+if/PbRJ+E1JGRFZJvAP3/UcAs7/bP
-         usEcy5zKn+nEA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from esprimo-mx.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
- (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1MIMbU-1pJmsX44gO-00ENWP; Sat, 25 Feb 2023 09:05:46 +0100
-From:   Armin Wolf <W_Armin@gmx.de>
-To:     rafael@kernel.org, lenb@kernel.org
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 4/4] ACPI: SBS: Fix handling of Smart Battery Selectors
-Date:   Sat, 25 Feb 2023 09:04:58 +0100
-Message-Id: <20230225080458.1342359-5-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230225080458.1342359-1-W_Armin@gmx.de>
-References: <20230225080458.1342359-1-W_Armin@gmx.de>
+        with ESMTP id S229458AbjBYIxg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 25 Feb 2023 03:53:36 -0500
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B395511EBC;
+        Sat, 25 Feb 2023 00:53:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1677315215; x=1708851215;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=R1HVdYzAo8KnzWiYgUUNAeHRDy1Db+dymDOxtBCl7Uo=;
+  b=Yqzmcm2u4jYHtqZE8NlFCrgdbTI3031NEqtX22HZA2sK1yvN94nYnmG4
+   dPxra1l0pQK+MlqgY5a3z/X2wl6AAJDjXi4q6tYGl2YK/ZYg5WQHYQJ+j
+   AXQykS81W+VeN4b5ADPXArd6DxQxbyO0FAzOY6TRDcgfyXIsA8IjRtNi5
+   20gs8bEjspMjsP5nDKokZM54HGDqx5rlOvok7UM3iljo96awww8jZzLV1
+   qGAK8GwsHKEownehL4yy3uxP6012jlvytVLUVVNaisPWEe+viJqOLd08F
+   /PVV4kQ5BsUpifoNfroFeFg2kddrmfF/wr993wmwfDDFEtwknpNFR6YsN
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10631"; a="332336488"
+X-IronPort-AV: E=Sophos;i="5.97,327,1669104000"; 
+   d="scan'208";a="332336488"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2023 00:53:35 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10631"; a="622984918"
+X-IronPort-AV: E=Sophos;i="5.97,327,1669104000"; 
+   d="scan'208";a="622984918"
+Received: from lkp-server01.sh.intel.com (HELO 3895f5c55ead) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 25 Feb 2023 00:53:24 -0800
+Received: from kbuild by 3895f5c55ead with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pVqJ2-00034V-0E;
+        Sat, 25 Feb 2023 08:53:24 +0000
+Date:   Sat, 25 Feb 2023 16:52:42 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 243d50840e68a096cfe5e136232898cddacb4e9f
+Message-ID: <63f9cc5a.stC8g3D270ijm7Y6%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:2Bj5TWsf+QBe1Q82Bfbxp7fvAaNYpdVIE+7sHR7gg5pI5R2KZ89
- GjKiyw3051qnnEkkMujFls+DULQzloyQ6TTSb5CiWZkMkJVZFTKw9pBo610rbhDv2TM4yGd
- ztSqxkFrnYOfcGZGR/wOMuT5WvHAFsH5Q9/4fqiKPgfdBUrWM0ndgshCxZo2gck3hNuu9KK
- tIRp+9XmMymNx1TEEZdBA==
-UI-OutboundReport: notjunk:1;M01:P0:YkRaH1XJPhs=;4hmhe8YZBtQQPoxtSkBWjWo3gb+
- 4kHbhaTEwcR4ZA8DeiCZnZb5nzpAM4uMPrrEN0+4kxKXzA4Z8K/AHKRmP406obwwew7GUPOsA
- WIifAuWREaZsEr4F0lWWMAtIm6D/Hxm0ta6wacRWeofnLfuOqPwtppyVMKAuhX82QyzY2q5cO
- uRWSAjJFFHiPJNCrE5oYjtPfZkm5ieKo0cNQrmwzRetT4V5i+cWMDgoI9697KGtmIGU/Mu+9h
- 8wZsmz/e/uMmnxzaol18mynTh1XtV7gPaDxzK+KH4VNbrJUOF9K7GQFhq/qNVi4oBk4zqzTf8
- E79KPqizKKKb9dJNOaMA4gCErFgsSFKhbCzrwq+QDJi143i+jVdQycxVx45djmtB50Vo81sIU
- S+jPcfn6iViiyD2ZQ5iobu7J4JFzC3VeIj4fHr40NdmxmvlCl3AmTme2+1Q6APtOocenaK+gR
- 9x8nTqpnd+E1eQNnaPIjtgEh8VYc0Ev4i2aKazy/PlRfUGYaiu8ci0LZfh9ghTPfqLnRh0cO0
- jQJ2oLXamKDRNdq+G2vPxAF9cLQM3UvCYVklac5l4ARYtSwL6NhIjv8mO3vGOTPlQnuW2voR/
- sEVewAOMqsRRPgp1m7R6cHv1AdCbGzPYOtVQemq8nkwlSiF37Qfq+H7U0e7GbnPTJ/1sTQn4Y
- zLIr5RLB0EXMP9qSmchtFqJOpdkkJ2HkhDm0VcNAbeeYcTeCaCum/P4nQyxHGNxIeLLLru/7G
- 0DewxKlAjP9XscQ9ZftRa6dsc7kJeRW06dBCroH6Fb68BB0jjTcrRJfpXs+DapOU4iOoWPlCY
- JYQh4+t05CqH83CK2KIObGgXRON/ZqhdVPHwdJyukKcgiGXO5RJp4yzVd0dDxXVbc/lF3QcS4
- OaP+uQEegNhU46fEoU+nu8i4bDL7SRY1l8vRrTlIXgCoZJT9QTDuRDfbm3GFgAY6EgoNakzmL
- LcYgGNLeaHZA2Xj8FV5S6oFpwss=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The "Smart Battery Selector" standard says that when writing
-SelectorState (0x1), the nibbles which should not be modified
-need to be masked with 0xff. This is necessary since in contrast
-to a "Smart Battery Manager", the last three nibbles are writable.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 243d50840e68a096cfe5e136232898cddacb4e9f  Merge branches 'pm-cpufreq' and 'powercap' into linux-next
 
-Failing to do so might trigger the following cycle:
-1. Host accidentally changes power source of the system (3rd nibble)
-   when selecting a battery.
-2. Power source is invalid, Selector changes to another power source.
-3. Selector notifies host that it changed the power source.
-4. Host re-reads some batteries.
-5. goto 1 for each re-read battery.
+elapsed time: 925m
 
-This loop might also be entered when a battery which is not present
-is selected for SMBus access. In the end some workqueues fill up,
-which causes the system to lockup upon suspend/shutdown.
+configs tested: 24
+configs skipped: 3
 
-Fix this by correctly masking the value to be written, and avoid
-selecting batteries which are absent.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Tested on a Acer Travelmate 4002WLMi.
+tested configs:
+alpha                               defconfig   gcc  
+arc                                 defconfig   gcc  
+arm                                 defconfig   gcc  
+arm64                               defconfig   gcc  
+csky                                defconfig   gcc  
+i386                                defconfig   gcc  
+ia64                                defconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                         amcore_defconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                        bcm47xx_defconfig   gcc  
+mips                           mtx1_defconfig   clang
+nios2                               defconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                                defconfig   gcc  
+sh                           se7343_defconfig   gcc  
+sparc                               defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                              defconfig   gcc  
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- drivers/acpi/sbs.c | 27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/acpi/sbs.c b/drivers/acpi/sbs.c
-index e90752d4f488..94e3c000df2e 100644
-=2D-- a/drivers/acpi/sbs.c
-+++ b/drivers/acpi/sbs.c
-@@ -473,23 +473,32 @@ static const struct device_attribute alarm_attr =3D =
-{
-    ----------------------------------------------------------------------=
----- */
- static int acpi_battery_read(struct acpi_battery *battery)
- {
--	int result =3D 0, saved_present =3D battery->present;
-+	int result, saved_present =3D battery->present;
- 	u16 state;
-
- 	if (battery->sbs->manager_present) {
- 		result =3D acpi_smbus_read(battery->sbs->hc, SMBUS_READ_WORD,
- 				ACPI_SBS_MANAGER, 0x01, (u8 *)&state);
--		if (!result)
--			battery->present =3D state & (1 << battery->id);
--		state &=3D 0x0fff;
-+		if (result)
-+			return result;
-+
-+		battery->present =3D state & (1 << battery->id);
-+		if (!battery->present)
-+			return 0;
-+
-+		/* Masking necessary for Smart Battery Selectors */
-+		state =3D 0x0fff;
- 		state |=3D 1 << (battery->id + 12);
- 		acpi_smbus_write(battery->sbs->hc, SMBUS_WRITE_WORD,
- 				  ACPI_SBS_MANAGER, 0x01, (u8 *)&state, 2);
--	} else if (battery->id =3D=3D 0)
--		battery->present =3D 1;
--
--	if (result || !battery->present)
--		return result;
-+	} else {
-+		if (battery->id =3D=3D 0) {
-+			battery->present =3D 1;
-+		} else {
-+			if (!battery->present)
-+				return 0;
-+		}
-+	}
-
- 	if (saved_present !=3D battery->present) {
- 		battery->update_time =3D 0;
-=2D-
-2.30.2
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
