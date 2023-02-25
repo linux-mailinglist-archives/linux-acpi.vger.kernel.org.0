@@ -2,133 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82F9E6A2933
-	for <lists+linux-acpi@lfdr.de>; Sat, 25 Feb 2023 12:04:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DF826A295F
+	for <lists+linux-acpi@lfdr.de>; Sat, 25 Feb 2023 12:51:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229458AbjBYLEc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 25 Feb 2023 06:04:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40448 "EHLO
+        id S229534AbjBYLvz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 25 Feb 2023 06:51:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbjBYLEb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 25 Feb 2023 06:04:31 -0500
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67F4C166F3;
-        Sat, 25 Feb 2023 03:04:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1677323070; x=1708859070;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SJ8d7/b+hm/w2Rgg1CF8/KUOveDmnjsrQ2mqW2c99HA=;
-  b=fZX5NUCGzgPgRhg8Ouc9FjsONhMtgy0bDU5a21zELgakipmDda8Ulanx
-   oOmFhXWtu+evHQxLi2cjjMOGd16MvOLFon3hSMbMkbQ9VWwa31/sCh+zg
-   q3deJCCplQspRl6U8OtFXrndyALGZBEIYaPDGT7zEgFaG+BFbhrKuFbse
-   XEshQfWP82pEbdKsf+tJzb1WoMZ+IaIZJnBYujZKRPYbqFs3qKj7JmxtA
-   vmZDbDaph+LiyvTMFICCfWjRhQwmzGvDKiy72nMbloOKzIfjGswbR9ndL
-   Q/TzNe8eZ9XguwAoQGTuhtEma2e82IX8BanpEPJQymJbnujYyYu9ZkOAW
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10631"; a="335086384"
-X-IronPort-AV: E=Sophos;i="5.97,327,1669104000"; 
-   d="scan'208";a="335086384"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2023 03:04:29 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10631"; a="703466849"
-X-IronPort-AV: E=Sophos;i="5.97,327,1669104000"; 
-   d="scan'208";a="703466849"
-Received: from lkp-server01.sh.intel.com (HELO 3895f5c55ead) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 25 Feb 2023 03:04:27 -0800
-Received: from kbuild by 3895f5c55ead with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pVsLq-00038R-39;
-        Sat, 25 Feb 2023 11:04:26 +0000
-Date:   Sat, 25 Feb 2023 19:03:56 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Armin Wolf <W_Armin@gmx.de>, rafael@kernel.org, lenb@kernel.org
-Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] ACPI: EC: Make query handlers private
-Message-ID: <202302251803.g3ubvi2K-lkp@intel.com>
-References: <20230225080458.1342359-4-W_Armin@gmx.de>
+        with ESMTP id S229503AbjBYLvy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 25 Feb 2023 06:51:54 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EFE9EB56;
+        Sat, 25 Feb 2023 03:51:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1677325907; i=w_armin@gmx.de;
+        bh=oG+tB6ssXoXEofK3HsqQ2ix++xKtWIxgzJb4QDsF1RA=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=m0kC9ZVcpnUqA4EuBCq+71qCSzBxNegN2ifJFDshV5QtfMY9B0m35XD0mq0saOIOG
+         JYlHWK7ZLf+NilYAaphysJf8b8x0DitineoCnJLg3+It/0h+GOb73rqg0+tFmrpa18
+         7F2jhXjPgrrMn0zhVfn5IfNP2crNapqOGeCGhRnN2XD7nqHWoqi/HewKffyjc9/+3x
+         asEy1temCqygFlIeVVmnMjJtwOUmh7+wnlkZjUBfbhyc5Pn/7yYbDVyQyfbzvKv9QH
+         GK5wK3qNadULlLVWmA3q4ehGF3G06KACvSj2mTAj8Zgb0s7H1OC50mWPwhQGSPGWL6
+         RJvm9+T5KLdQQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from esprimo-mx.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
+ (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1Mo6qp-1ohNvM2pvn-00pdnA; Sat, 25 Feb 2023 12:51:47 +0100
+From:   Armin Wolf <W_Armin@gmx.de>
+To:     rafael@kernel.org, lenb@kernel.org
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/4] ACPI: SBS: Fix various issues
+Date:   Sat, 25 Feb 2023 12:51:40 +0100
+Message-Id: <20230225115144.31212-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230225080458.1342359-4-W_Armin@gmx.de>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:wSdh3QZ5TfA72bLW4j1TVQlYE9Fz2wCZXYtXmxMQ+OHSSgW9vsY
+ dvBM5ju6D46RQJ7mKCFz+vxglSJ4ZGNHZNCPcOnsOPUrwrBBufwxgqJlQWyX7M1aGLDWoEo
+ yKUZdUeTElgtL1lcvCLUWUBEnv5LppkMbuEclIRoo2uJWCQ9v/93WSh5DYcMctx/WcbOmQ0
+ Lvy9g2SUYGZSP3MloojSA==
+UI-OutboundReport: notjunk:1;M01:P0:s79fxxbmHAs=;9AYyQVcWuaWsP5nnzWsb0BVuw85
+ Qw8Ua0fIFB2hymSCIH5ygLwKYdFfIY9GMK7COcqZ3A+42TjxpJr48ueuR0ELjevzmncrb2FF6
+ Vg55uRHJKU1B/3PXWh2ycqPGzVmEog8gBpt+Gu1qZs1YC94FbiGXaH2tPVt6mRzP044qXNMSo
+ CrTf2V8hXGK40Pa4gBvO3sUj1F2nhuy71IdRDkJDyMxsApWdSOJzzhaX6UMroNnduoW8zFSjS
+ dumoE5+85tfp0GqqwKL4aniodU0wMywsuQBkQX7OOYa67t+g8QAmnIjZlb4wAQxfNggH7xTcE
+ nqFlmUK9eOFui5SZf9jVrOoQyXgNu/GOMhdsIZIQu9MzUCqMVUvLKZvuMcZ2cbd9QHxJ3t18F
+ BoxuBlyZvRYreEeNMdrq4ng3Vvu0+k4apWUXhGz36viXif/LlCA9QGEOar+i2t8JU0lFankM5
+ XDmTUYd3Pc/zlW+Fh+LCp/MOPznDDY8DYrb7VewnscWc7sV7Z4y5jLm10xMfOjYZSRSXH/vid
+ zJWIrNGgGVzar6QX2KcEA5aEphUaPkYKmUfxS6tc34KfzxwO0SaQKeZmk6/i8AAATtOJ+bU9T
+ 4dGdQOQAZJe3yZO/xNmvSld9TJnbEk8l2VXYaAAe71xpEpUy4Kjk0ydyYbNvZA8Ui8wyYVlM4
+ BGLx0DNHk0ZjYIzPhwNHGTygXrwhnIzm5SazCKj9aJ/BlB00aoEHZ64F6EV0YReELOqui8TSe
+ 7geq8vYp9A47ckTsj4Lp6z5a9sl6YuZ9eHCL4Jqgsjb/rCAU1dUTX9eLpB5WI5Vt1hQG5iTv+
+ fSLGs+4Sz6qGXZni0CRUumTy7tyKSny+QC438BLXSrvwNzo9dSMYhnwj4wwoKC0R2pYayhxSY
+ Uq7yDPJCPLzxFBpcXK5tKmFaeS18D5+M4/U6zJeOEMTCjYE7WpLDH6TXLRY9xSXBD9ooGHkDN
+ Mhp2+FTXiVUfkLRbJ1d5GZEiaF8=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Armin,
+On my Acer Travelmate 4002WLMi, the system locks up upon
+suspend/shutdown. After a lot of research, it turned out
+that the sbs module was the culprit. The driver would not
+correctly mask out the value used to select a battery using
+the "Smart Battery Selector" (subset of the "Smart Battery Manager").
+This accidentally caused a invalid power source to be selected,
+which was automatically corrected by the selector. Upon
+notifing the host about the corrected power source, some batteries
+would be selected for re-reading, causing a endless loop.
+This would lead to some workqueues filling up, which caused the
+lockup upon suspend/shutdown.
 
-I love your patch! Perhaps something to improve:
+The first three patches fix a stacktrace on module removal caused
+by some locking issues. The last patch finally fixes the
+suspend/shutdown issues.
 
-[auto build test WARNING on rafael-pm/linux-next]
-[also build test WARNING on linus/master v6.2 next-20230225]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+As a side note: This was the first machine on which i installed Linux,
+to finally fixing this took ~5 years of tinkering.
+=2D--
+Changes in v2:
+- make acpi_ec_add_query_handler() static to fix warning
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Armin-Wolf/ACPI-EC-Add-query-notifier-support/20230225-160641
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20230225080458.1342359-4-W_Armin%40gmx.de
-patch subject: [PATCH 3/4] ACPI: EC: Make query handlers private
-config: x86_64-randconfig-a012 (https://download.01.org/0day-ci/archive/20230225/202302251803.g3ubvi2K-lkp@intel.com/config)
-compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project f28c006a5895fc0e329fe15fead81e37457cb1d1)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/a62cb9e29bf040af617070fa775758720d2de12e
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Armin-Wolf/ACPI-EC-Add-query-notifier-support/20230225-160641
-        git checkout a62cb9e29bf040af617070fa775758720d2de12e
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/acpi/
+Armin Wolf (4):
+  ACPI: EC: Add query notifier support
+  ACPI: sbshc: Use ec query notifier call chain
+  ACPI: EC: Make query handlers private
+  ACPI: SBS: Fix handling of Smart Battery Selectors
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202302251803.g3ubvi2K-lkp@intel.com/
+ drivers/acpi/ec.c       | 44 ++++++++++++++++++++--------------------
+ drivers/acpi/internal.h | 10 ++++-----
+ drivers/acpi/sbs.c      | 27 ++++++++++++++++---------
+ drivers/acpi/sbshc.c    | 45 ++++++++++++++++++++++++++---------------
+ 4 files changed, 74 insertions(+), 52 deletions(-)
 
-All warnings (new ones prefixed by >>):
+=2D-
+2.30.2
 
->> drivers/acpi/ec.c:1083:5: warning: no previous prototype for function 'acpi_ec_add_query_handler' [-Wmissing-prototypes]
-   int acpi_ec_add_query_handler(struct acpi_ec *ec, u8 query_bit, acpi_handle handle)
-       ^
-   drivers/acpi/ec.c:1083:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   int acpi_ec_add_query_handler(struct acpi_ec *ec, u8 query_bit, acpi_handle handle)
-   ^
-   static 
-   1 warning generated.
-
-
-vim +/acpi_ec_add_query_handler +1083 drivers/acpi/ec.c
-
-  1082	
-> 1083	int acpi_ec_add_query_handler(struct acpi_ec *ec, u8 query_bit, acpi_handle handle)
-  1084	{
-  1085		struct acpi_ec_query_handler *handler =
-  1086		    kzalloc(sizeof(struct acpi_ec_query_handler), GFP_KERNEL);
-  1087	
-  1088		if (!handler)
-  1089			return -ENOMEM;
-  1090	
-  1091		handler->query_bit = query_bit;
-  1092		handler->handle = handle;
-  1093		mutex_lock(&ec->mutex);
-  1094		kref_init(&handler->kref);
-  1095		list_add(&handler->node, &ec->list);
-  1096		mutex_unlock(&ec->mutex);
-  1097		return 0;
-  1098	}
-  1099	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
