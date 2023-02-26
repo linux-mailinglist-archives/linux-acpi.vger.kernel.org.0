@@ -2,74 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2165A6A2B1E
-	for <lists+linux-acpi@lfdr.de>; Sat, 25 Feb 2023 18:33:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F0636A2E7D
+	for <lists+linux-acpi@lfdr.de>; Sun, 26 Feb 2023 06:54:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229685AbjBYRdH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 25 Feb 2023 12:33:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58610 "EHLO
+        id S229478AbjBZFyf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 26 Feb 2023 00:54:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229762AbjBYRdD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 25 Feb 2023 12:33:03 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD67426AD;
-        Sat, 25 Feb 2023 09:33:02 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D08260B55;
-        Sat, 25 Feb 2023 17:33:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A532DC433EF;
-        Sat, 25 Feb 2023 17:33:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677346381;
-        bh=6NZHfqzfAo19cNKksjq+o/SCM1i/OjyrFCDF9l0TwoA=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=WctzGEymlJyadp8JqsSHP/WF4T9ifp7V2Ncs+kUXh8+9kmhDwylIIg7wMyiowEQug
-         4+rCFJx4oiOJOeci1LKGaaQRgCzs/gJEnNS9y4p3J7BBZkyQYIhiyzhumGI70AVetP
-         dkx1VKZn7poFipoONQRx5nPN5eVJw6K20TWVhUDQvBrYrV0eYkTd1p5Fz6hKJklz/t
-         c8tQY1PpFB/aeNxNoXFPDJkgW7hYNvz6HnH2UC1PMHXqw3g4eb2iI5ydwYG123FLic
-         sAtnhT7YB1W9/7BFeEUKPSBsQV9n4Zfpf5YnWJGREp38Xe+SpAZH1oCZs2xY3keUH6
-         vdLeo5E3dufZQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 93D3FE68D26;
-        Sat, 25 Feb 2023 17:33:01 +0000 (UTC)
-Subject: Re: [GIT PULL] Compute Express Link (CXL) for 6.3
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <63f5a4e2277b1_c94229453@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-References: <63f5a4e2277b1_c94229453@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <63f5a4e2277b1_c94229453@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl tags/cxl-for-6.3
-X-PR-Tracked-Commit-Id: e686c32590f40bffc45f105c04c836ffad3e531a
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 7c3dc440b1f5c75f45e24430f913e561dc82a419
-Message-Id: <167734638160.8970.6794755420865287571.pr-tracker-bot@kernel.org>
-Date:   Sat, 25 Feb 2023 17:33:01 +0000
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     torvalds@linux-foundation.org, linux-cxl@vger.kernel.org,
-        nvdimm@lists.linux.dev, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229379AbjBZFye (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 26 Feb 2023 00:54:34 -0500
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BC8CF766;
+        Sat, 25 Feb 2023 21:54:33 -0800 (PST)
+Received: by mail-pj1-x1029.google.com with SMTP id qa18-20020a17090b4fd200b0023750b675f5so6910100pjb.3;
+        Sat, 25 Feb 2023 21:54:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1KU4UKwDKBhb3LB8IBaolpZP0aXG6lbdDGveHBNcajY=;
+        b=PVkpTdH/j4Zk41D9854onJLUFNleBil8ezXgBr9h7Gq/p/99RCPJPocAQVjvIi6kMc
+         5mpkYl4ZrDkQUtz/XsHaUlx64M3pCaEHGwneocwl03JqI1ZP9a1wI3qD5Ie2dAsy6ECE
+         ii2PmNWEJyZJkOluYxVsGTYf1CvZtEwWdBNYhC5Y9EVhLe4CPbDKlhN2TqpWKNHlRtnq
+         iWR/tBx3KODwMCh3ZG4eDMlbAWAErCsklP/IZNAE8uld51dCtg1Ef5HJZnVMiJHuJ9Hv
+         mkaO5vYXME4Pbtj+GX7iR4uvKkNiP0/29tOXCzWR+2fneZngbwPZ8Evgmy74l2LzNUuz
+         JeiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1KU4UKwDKBhb3LB8IBaolpZP0aXG6lbdDGveHBNcajY=;
+        b=t6eIzJCCoptOjTXzvy7xb5AicML9Pin54ysPBVIhAoFlED/1pb5pa84XLGsmGCeNzd
+         lfYuMDI4kyt2ftSVzD1CzIwf7y0aa4TAZh/ESIImUx9vA2LZ16UTrg85iS6o2XWpd4Vo
+         cF0koM/JbcoNOXo66nVJhQFExYGK7EhR6u0QfogErk+/j1Bt/+IXLkL7Bwb66CgYR+9C
+         5jHqCVFnW+iGidYbjjtk0cggUoC54taDNdRAgI0JTS7sCEsVcqDEHXjUeTCGeK3k9a5S
+         igvkGUCz29XcsKeKWRpdecYk2mQeDYRDUEi7PxTwDdb80nvpBm5eeGyfoyOPv1E8iYzM
+         3Tqw==
+X-Gm-Message-State: AO0yUKWhrdDudtWK3VcBrj2nAVD1fdbuGXMqD2ULo3b52ZL+bmegczyp
+        FDRS2LInYZImJpKJ7MdKlvk=
+X-Google-Smtp-Source: AK7set91V52B1esubCcF+lnxwPQ0rLhC0bc07ISISeNB2K4/mJ+WCFa9kpkQKEujKGIk15AtBGeiAQ==
+X-Received: by 2002:a17:903:8c4:b0:19a:b5cd:6e73 with SMTP id lk4-20020a17090308c400b0019ab5cd6e73mr5051874plb.3.1677390872747;
+        Sat, 25 Feb 2023 21:54:32 -0800 (PST)
+Received: from passwd123-ThinkStation-P920.. ([222.20.94.23])
+        by smtp.gmail.com with ESMTPSA id v1-20020a1709028d8100b00194d2f14ef0sm2095504plo.23.2023.02.25.21.54.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Feb 2023 21:54:32 -0800 (PST)
+From:   Kang Chen <void0red@gmail.com>
+To:     lenb@kernel.org
+Cc:     rafael@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Kang Chen <void0red@gmail.com>
+Subject: [PATCH] acpi: check for null return of devm_kzalloc in fch_misc_setup
+Date:   Sun, 26 Feb 2023 13:54:27 +0800
+Message-Id: <20230226055427.2512453-1-void0red@gmail.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Tue, 21 Feb 2023 21:15:14 -0800:
+devm_kzalloc may fail, clk_data->name might be null and will
+cause illegal address access later.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl tags/cxl-for-6.3
+Signed-off-by: Kang Chen <void0red@gmail.com>
+---
+ drivers/acpi/acpi_apd.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/7c3dc440b1f5c75f45e24430f913e561dc82a419
-
-Thank you!
-
+diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+index 3bbe2276c..80f945cbe 100644
+--- a/drivers/acpi/acpi_apd.c
++++ b/drivers/acpi/acpi_apd.c
+@@ -83,6 +83,8 @@ static int fch_misc_setup(struct apd_private_data *pdata)
+ 	if (!acpi_dev_get_property(adev, "clk-name", ACPI_TYPE_STRING, &obj)) {
+ 		clk_data->name = devm_kzalloc(&adev->dev, obj->string.length,
+ 					      GFP_KERNEL);
++		if (!clk_data->name)
++			return -ENOMEM;
+ 
+ 		strcpy(clk_data->name, obj->string.pointer);
+ 	} else {
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.34.1
+
