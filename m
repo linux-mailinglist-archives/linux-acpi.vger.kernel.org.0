@@ -2,47 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC1756A31A5
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Feb 2023 16:01:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 580306A31D7
+	for <lists+linux-acpi@lfdr.de>; Sun, 26 Feb 2023 16:08:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231616AbjBZPB4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 26 Feb 2023 10:01:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38212 "EHLO
+        id S231778AbjBZPII (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 26 Feb 2023 10:08:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231470AbjBZPBJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 26 Feb 2023 10:01:09 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2B755B97;
-        Sun, 26 Feb 2023 06:52:52 -0800 (PST)
+        with ESMTP id S231784AbjBZPHw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 26 Feb 2023 10:07:52 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84B4216309;
+        Sun, 26 Feb 2023 06:58:14 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4525CB80C0A;
-        Sun, 26 Feb 2023 14:52:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E58C4339C;
-        Sun, 26 Feb 2023 14:52:48 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id D9AB1CE0E83;
+        Sun, 26 Feb 2023 14:51:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA3CC433D2;
+        Sun, 26 Feb 2023 14:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677423168;
-        bh=wtU50NCWIEHFeyCBP+URdE0hqr5zF0Ky8/xvtJ3Vrok=;
+        s=k20201202; t=1677423065;
+        bh=lFFdTfolzuuzNQr67UTjJdNZcdDenh1H9eKsUyNhgLU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HjWrJ2h99gw2sSdD7WjaPF3WE5rnxobJRCGPWkX9+6foL+Balk5Tn6DfHfUi4RTl+
-         hd42zRROVkHkbQmTKF2pum8A6He0m0+8JJWwEZbIhOiFwlM5uHb8eKFvwf/taBIKXK
-         fgeJff56JSigMI0xZ3ZqPHSQShiyhP/eqCcGu7idTAkxABmiGK+7D4o0x2z/m8xAuV
-         V7GKCgIY1/0Giog50ak81XYTUBe7cExmE2Hm6+wkHQs6bc6TvIB7VRX8rLP8aZOUdQ
-         qM1l/k/e22nX/KAVwQllThof+yiSrAMAcgVgwn1DyYB4jAP2qppP/0aIOzhfkvM0xI
-         zoSAr94sDaiCQ==
+        b=c96GKXlegfDtinz4K/ILsfRkmWqnDGK8i5kvdqIYM47GXeycK338zxvL4rEJFa2UZ
+         a8ilYHWVg9MTcasi/w8q5UjpY+tNETs8S25IatZ6CUosZneAniRYax92IzSmvF5B6p
+         a+JknF5xOYP7rnGwFXxwYLwpltfyctVcOfj1GmRyUJyPt8UM48P6Iy2QDskKQlZ9Uj
+         6ALjCETliyPQbDNrYm7CtMMsPuVU68hP2wZKPVa4IIKSeRnfWgXUSnX5QjANX4+dY+
+         062ja35Y1c5gyPEKx8F7jlifnIbtnGa0OOR+x3KTxAPGG5sg+X8coCCk9U+it/DgyW
+         xDIs0p/fEXIgQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Hans de Goede <hdegoede@redhat.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 12/13] ACPI: video: Fix Lenovo Ideapad Z570 DMI match
-Date:   Sun, 26 Feb 2023 09:52:14 -0500
-Message-Id: <20230226145217.829485-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 21/27] ACPI: video: Fix Lenovo Ideapad Z570 DMI match
+Date:   Sun, 26 Feb 2023 09:50:08 -0500
+Message-Id: <20230226145014.828855-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230226145217.829485-1-sashal@kernel.org>
-References: <20230226145217.829485-1-sashal@kernel.org>
+In-Reply-To: <20230226145014.828855-1-sashal@kernel.org>
+References: <20230226145014.828855-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -78,10 +78,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index 0ec74ab2a3995..b4f16073ef432 100644
+index b13713199ad94..038542b3a80a7 100644
 --- a/drivers/acpi/video_detect.c
 +++ b/drivers/acpi/video_detect.c
-@@ -300,7 +300,7 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+@@ -313,7 +313,7 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
  	 .ident = "Lenovo Ideapad Z570",
  	 .matches = {
  		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
