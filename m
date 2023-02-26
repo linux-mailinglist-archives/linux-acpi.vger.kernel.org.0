@@ -2,59 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F0636A2E7D
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Feb 2023 06:54:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C5E6F6A2E94
+	for <lists+linux-acpi@lfdr.de>; Sun, 26 Feb 2023 07:19:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229478AbjBZFyf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 26 Feb 2023 00:54:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39050 "EHLO
+        id S229512AbjBZGTU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 26 Feb 2023 01:19:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229379AbjBZFye (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 26 Feb 2023 00:54:34 -0500
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BC8CF766;
-        Sat, 25 Feb 2023 21:54:33 -0800 (PST)
-Received: by mail-pj1-x1029.google.com with SMTP id qa18-20020a17090b4fd200b0023750b675f5so6910100pjb.3;
-        Sat, 25 Feb 2023 21:54:33 -0800 (PST)
+        with ESMTP id S229504AbjBZGTT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 26 Feb 2023 01:19:19 -0500
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0DE2E070;
+        Sat, 25 Feb 2023 22:19:18 -0800 (PST)
+Received: by mail-pj1-x102c.google.com with SMTP id h17-20020a17090aea9100b0023739b10792so3220259pjz.1;
+        Sat, 25 Feb 2023 22:19:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1KU4UKwDKBhb3LB8IBaolpZP0aXG6lbdDGveHBNcajY=;
-        b=PVkpTdH/j4Zk41D9854onJLUFNleBil8ezXgBr9h7Gq/p/99RCPJPocAQVjvIi6kMc
-         5mpkYl4ZrDkQUtz/XsHaUlx64M3pCaEHGwneocwl03JqI1ZP9a1wI3qD5Ie2dAsy6ECE
-         ii2PmNWEJyZJkOluYxVsGTYf1CvZtEwWdBNYhC5Y9EVhLe4CPbDKlhN2TqpWKNHlRtnq
-         iWR/tBx3KODwMCh3ZG4eDMlbAWAErCsklP/IZNAE8uld51dCtg1Ef5HJZnVMiJHuJ9Hv
-         mkaO5vYXME4Pbtj+GX7iR4uvKkNiP0/29tOXCzWR+2fneZngbwPZ8Evgmy74l2LzNUuz
-         JeiA==
+        bh=qlQpzpDWouCZvN38z8Ys3T/2tl83Rx2ipztrVab6fBs=;
+        b=FuaVkXdy9RUTFUEK2s9yI/PyyjomPXYeixX/+r8NE+dLLPKHAoTBvQpeO04YLasB9F
+         Moe70sy33/4LSYbEV7AM7ldFxXC4x4b1bqrqoSFQGViDw9k0dBgb/fSriMYQ4S0rh5tM
+         mf0HlSbF8aZG1lXVbKtSCrnl9SXLx+qv2Y6Hpz+uNakDBDbUfm58KQW8I/OjdRBRttQ3
+         +ODYZdM/lnJ4GuXhj9MoHFZiYgRy4sAlZ6DriKHnJ9ZBa26t2GQ/dkioCnz5280IGzH9
+         xrvd9e1UbBbCNJDzMCMSFfLtGJb/ovyC+/IB3e4CGTOJV9houv7p22p1u9rhVAqGRUPx
+         1H9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=1KU4UKwDKBhb3LB8IBaolpZP0aXG6lbdDGveHBNcajY=;
-        b=t6eIzJCCoptOjTXzvy7xb5AicML9Pin54ysPBVIhAoFlED/1pb5pa84XLGsmGCeNzd
-         lfYuMDI4kyt2ftSVzD1CzIwf7y0aa4TAZh/ESIImUx9vA2LZ16UTrg85iS6o2XWpd4Vo
-         cF0koM/JbcoNOXo66nVJhQFExYGK7EhR6u0QfogErk+/j1Bt/+IXLkL7Bwb66CgYR+9C
-         5jHqCVFnW+iGidYbjjtk0cggUoC54taDNdRAgI0JTS7sCEsVcqDEHXjUeTCGeK3k9a5S
-         igvkGUCz29XcsKeKWRpdecYk2mQeDYRDUEi7PxTwDdb80nvpBm5eeGyfoyOPv1E8iYzM
-         3Tqw==
-X-Gm-Message-State: AO0yUKWhrdDudtWK3VcBrj2nAVD1fdbuGXMqD2ULo3b52ZL+bmegczyp
-        FDRS2LInYZImJpKJ7MdKlvk=
-X-Google-Smtp-Source: AK7set91V52B1esubCcF+lnxwPQ0rLhC0bc07ISISeNB2K4/mJ+WCFa9kpkQKEujKGIk15AtBGeiAQ==
-X-Received: by 2002:a17:903:8c4:b0:19a:b5cd:6e73 with SMTP id lk4-20020a17090308c400b0019ab5cd6e73mr5051874plb.3.1677390872747;
-        Sat, 25 Feb 2023 21:54:32 -0800 (PST)
+        bh=qlQpzpDWouCZvN38z8Ys3T/2tl83Rx2ipztrVab6fBs=;
+        b=6y+XRG62h23JjKDzI24wpWWwgu6VZGAjrWl2Ua6YFDGAGEYklWFPjQi5NqEfmZE7ks
+         d8Bbui3ABJyAXWmf/mzt9a6QQU34u35WGxbPx11DdnKtKPTTAcdxjYUvjQIqfG1pnNQC
+         ImUpNu2iJgflhOiWQlIRFlaIf5BB63e+QLR4l8qjqdrQmufzFL/eHDaRgxbjWEsx0SA8
+         AhV1Gp0QsxadL0rC25xtbWFeVYhValDY9RWF+RytBUxqONmn9chtEXDOfThSdw4p8dA1
+         oFF26PpDdqet+QQncXXseTDPP34PWfJX5hgGI17A/b3E8BM9VYCFTdbywrB9cxXpR2Ha
+         6BsA==
+X-Gm-Message-State: AO0yUKUIWXewi9N3nQaqrysMBnTJ8JsuNKSe3XDL7bGt7DMViWSvyyLJ
+        Ol2WlPnZsMQSiZW0ISsimFQ=
+X-Google-Smtp-Source: AK7set/EKqP6FWnLNrpTf5XcwQn7K4cjEVb4WoZr3mrH1wYGqISH5Z6nJ5JjU4pWtfsn3dhfNFR2IA==
+X-Received: by 2002:a05:6a20:698c:b0:cc:4118:6605 with SMTP id t12-20020a056a20698c00b000cc41186605mr13747639pzk.6.1677392358329;
+        Sat, 25 Feb 2023 22:19:18 -0800 (PST)
 Received: from passwd123-ThinkStation-P920.. ([222.20.94.23])
-        by smtp.gmail.com with ESMTPSA id v1-20020a1709028d8100b00194d2f14ef0sm2095504plo.23.2023.02.25.21.54.30
+        by smtp.gmail.com with ESMTPSA id c15-20020aa78e0f000000b005e5b11335b3sm1990068pfr.57.2023.02.25.22.19.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Feb 2023 21:54:32 -0800 (PST)
+        Sat, 25 Feb 2023 22:19:17 -0800 (PST)
 From:   Kang Chen <void0red@gmail.com>
 To:     lenb@kernel.org
-Cc:     rafael@kernel.org, linux-acpi@vger.kernel.org,
+Cc:     robert.moore@intel.com, rafael.j.wysocki@intel.com,
+        linux-acpi@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
         linux-kernel@vger.kernel.org, Kang Chen <void0red@gmail.com>
-Subject: [PATCH] acpi: check for null return of devm_kzalloc in fch_misc_setup
-Date:   Sun, 26 Feb 2023 13:54:27 +0800
-Message-Id: <20230226055427.2512453-1-void0red@gmail.com>
+Subject: [PATCH] ACPICA: check null return of ACPI_ALLOCATE_ZEROED in acpi_db_display_objects
+Date:   Sun, 26 Feb 2023 14:19:12 +0800
+Message-Id: <20230226061912.2590679-1-void0red@gmail.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -68,27 +69,28 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-devm_kzalloc may fail, clk_data->name might be null and will
-cause illegal address access later.
+ACPI_ALLOCATE_ZEROED may fails, object_info might be null and will
+cause null pointer dereference later.
 
 Signed-off-by: Kang Chen <void0red@gmail.com>
 ---
- drivers/acpi/acpi_apd.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/acpica/dbnames.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
-index 3bbe2276c..80f945cbe 100644
---- a/drivers/acpi/acpi_apd.c
-+++ b/drivers/acpi/acpi_apd.c
-@@ -83,6 +83,8 @@ static int fch_misc_setup(struct apd_private_data *pdata)
- 	if (!acpi_dev_get_property(adev, "clk-name", ACPI_TYPE_STRING, &obj)) {
- 		clk_data->name = devm_kzalloc(&adev->dev, obj->string.length,
- 					      GFP_KERNEL);
-+		if (!clk_data->name)
-+			return -ENOMEM;
+diff --git a/drivers/acpi/acpica/dbnames.c b/drivers/acpi/acpica/dbnames.c
+index 3615e1a6e..b91155ea9 100644
+--- a/drivers/acpi/acpica/dbnames.c
++++ b/drivers/acpi/acpica/dbnames.c
+@@ -652,6 +652,9 @@ acpi_status acpi_db_display_objects(char *obj_type_arg, char *display_count_arg)
+ 		object_info =
+ 		    ACPI_ALLOCATE_ZEROED(sizeof(struct acpi_object_info));
  
- 		strcpy(clk_data->name, obj->string.pointer);
- 	} else {
++		if (!object_info)
++			return (AE_NO_MEMORY);
++
+ 		/* Walk the namespace from the root */
+ 
+ 		(void)acpi_walk_namespace(ACPI_TYPE_ANY, ACPI_ROOT_OBJECT,
 -- 
 2.34.1
 
