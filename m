@@ -2,52 +2,44 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C45D66A3126
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Feb 2023 15:56:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E55DB6A313E
+	for <lists+linux-acpi@lfdr.de>; Sun, 26 Feb 2023 15:56:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231231AbjBZO4F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 26 Feb 2023 09:56:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57138 "EHLO
+        id S230509AbjBZO4f (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 26 Feb 2023 09:56:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230417AbjBZOyF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 26 Feb 2023 09:54:05 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB52D1ACD9;
-        Sun, 26 Feb 2023 06:50:19 -0800 (PST)
+        with ESMTP id S230447AbjBZOz5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 26 Feb 2023 09:55:57 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9E6D18A80;
+        Sun, 26 Feb 2023 06:51:49 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA06960C5A;
-        Sun, 26 Feb 2023 14:49:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BB6C4339B;
-        Sun, 26 Feb 2023 14:49:24 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 49D67B80C04;
+        Sun, 26 Feb 2023 14:49:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC87C4339C;
+        Sun, 26 Feb 2023 14:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677422966;
-        bh=3cHPdIx8yaZdN9E+LDZt4UvqpNDwAc4yywObzCervkg=;
+        s=k20201202; t=1677422986;
+        bh=lFFdTfolzuuzNQr67UTjJdNZcdDenh1H9eKsUyNhgLU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LT/bP4FXwkzBKFZuMVSmaxRkW03Y2J2Xk3YfX0bBlBOULuvWdqiRuH4WH9lqplgTh
-         wm6Lfb/OQJpxOyGnMOZjUpbTAXgiuvLokWJkrom5QNrIsvQQBv3qs2JlrIUpyB9tKh
-         gZMxh9tde6FIPuiSHCRNn2zzWZypIAskuDwMEBFlkqCrlPBfPIM/ojRY84uswcaDpR
-         zInSvXTuwULHnq7ZIMffXLUdiXEAJrA4JZ0HFJy0dxzXNTALzpS7kdbM7xgpDo0IVH
-         S/9XyqcMfFYN3CsOJKdUu08m63T8QedoSnD9hKURZ0OGBeAGXwPoIAQpZa0ynClvG0
-         alHDaMh/zliYQ==
+        b=gdGRze3I0dD7HdBnrPR7knO5/e4Jk8nr20NC+WIOP/P6TfCjCNtP7aepd01K2uVgH
+         9p6OwqvyDawxup24HH65tuHF85/vV+CpWyku/LWQqK2YoTIRZ3yoP+DhYyGEUvxiDW
+         WWyLTPg9ddSHjvRiCjxItoZmfzi5nw1PdtwkPWzl9XT3rnVGQSW37sW9mf4xwNep5C
+         W5UCyMG6WhdhapxdDhGfCO4BZm6iuIC7XNxJmZlTLlRgqgO9u4T4JkYTqPQVCZ2SG+
+         n8Iwf28reXm12xlBXsxSj0cdfDRNiRtoaY3/13C3kcRrVi6fc3sBuwd/kLSCv52m7c
+         vnV++HvfVddYg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Mark Rutland <mark.rutland@arm.com>,
+Cc:     Hans de Goede <hdegoede@redhat.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Florent Revest <revest@chromium.org>,
-        Len Brown <lenb@kernel.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Will Deacon <will@kernel.org>, linux-acpi@vger.kernel.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Sasha Levin <sashal@kernel.org>,
-        acpica-devel@lists.linuxfoundation.org
-Subject: [PATCH AUTOSEL 5.15 15/36] ACPI: Don't build ACPICA with '-Os'
-Date:   Sun, 26 Feb 2023 09:48:23 -0500
-Message-Id: <20230226144845.827893-15-sashal@kernel.org>
+        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 25/36] ACPI: video: Fix Lenovo Ideapad Z570 DMI match
+Date:   Sun, 26 Feb 2023 09:48:33 -0500
+Message-Id: <20230226144845.827893-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.0
 In-Reply-To: <20230226144845.827893-1-sashal@kernel.org>
 References: <20230226144845.827893-1-sashal@kernel.org>
@@ -64,109 +56,40 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 8f9e0a52810dd83406c768972d022c37e7a18f1f ]
+[ Upstream commit 2d11eae42d52a131f06061015e49dc0f085c5bfc ]
 
-The ACPICA code has been built with '-Os' since the beginning of git
-history, though there's no explanatory comment as to why.
+Multiple Ideapad Z570 variants need acpi_backlight=native to force native
+use on these pre Windows 8 machines since acpi_video backlight control
+does not work here.
 
-This is unfortunate as GCC drops the alignment specificed by
-'-falign-functions=N' when '-Os' is used, as reported in GCC bug 88345:
+The original DMI quirk matches on a product_name of "102434U" but other
+variants may have different product_name-s such as e.g. "1024D9U".
 
-  https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88345
+Move to checking product_version instead as is more or less standard for
+Lenovo DMI quirks for similar reasons.
 
-This prevents CONFIG_FUNCTION_ALIGNMENT and
-CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B from having their expected effect
-on the ACPICA code. This is doubly unfortunate as in subsequent patches
-arm64 will depend upon CONFIG_FUNCTION_ALIGNMENT for its ftrace
-implementation.
-
-Drop the '-Os' flag when building the ACPICA code. With this removed,
-the code builds cleanly and works correctly in testing so far.
-
-I've tested this by selecting CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B=y,
-building and booting a kernel using ACPI, and looking for misaligned
-text symbols:
-
-* arm64:
-
-  Before, v6.2-rc3:
-    # uname -rm
-    6.2.0-rc3 aarch64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    5009
-
-  Before, v6.2-rc3 + fixed __cold:
-    # uname -rm
-    6.2.0-rc3-00001-g2a2bedf8bfa9 aarch64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    919
-
-  After:
-    # uname -rm
-    6.2.0-rc3-00002-g267bddc38572 aarch64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    323
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | grep acpi | wc -l
-    0
-
-* x86_64:
-
-  Before, v6.2-rc3:
-    # uname -rm
-    6.2.0-rc3 x86_64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    11537
-
-  Before, v6.2-rc3 + fixed __cold:
-    # uname -rm
-    6.2.0-rc3-00001-g2a2bedf8bfa9 x86_64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    2805
-
-  After:
-    # uname -rm
-    6.2.0-rc3-00002-g267bddc38572 x86_64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    1357
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | grep acpi | wc -l
-    0
-
-With the patch applied, the remaining unaligned text labels are a
-combination of static call trampolines and labels in assembly, which can
-be dealt with in subsequent patches.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: Florent Revest <revest@chromium.org>
-Cc: Len Brown <lenb@kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Robert Moore <robert.moore@intel.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-Link: https://lore.kernel.org/r/20230123134603.1064407-4-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/Makefile | 2 +-
+ drivers/acpi/video_detect.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/Makefile b/drivers/acpi/acpica/Makefile
-index 59700433a96e5..f919811156b1f 100644
---- a/drivers/acpi/acpica/Makefile
-+++ b/drivers/acpi/acpica/Makefile
-@@ -3,7 +3,7 @@
- # Makefile for ACPICA Core interpreter
- #
- 
--ccflags-y			:= -Os -D_LINUX -DBUILDING_ACPICA
-+ccflags-y			:= -D_LINUX -DBUILDING_ACPICA
- ccflags-$(CONFIG_ACPI_DEBUG)	+= -DACPI_DEBUG_OUTPUT
- 
- # use acpi.o to put all files here into acpi.o modparam namespace
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index b13713199ad94..038542b3a80a7 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -313,7 +313,7 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 	 .ident = "Lenovo Ideapad Z570",
+ 	 .matches = {
+ 		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+-		DMI_MATCH(DMI_PRODUCT_NAME, "102434U"),
++		DMI_MATCH(DMI_PRODUCT_VERSION, "Ideapad Z570"),
+ 		},
+ 	},
+ 	{
 -- 
 2.39.0
 
