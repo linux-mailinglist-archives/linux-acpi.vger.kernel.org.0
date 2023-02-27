@@ -2,377 +2,147 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EAAF6A3A43
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Feb 2023 06:03:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E162A6A4195
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Feb 2023 13:19:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229794AbjB0FDf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Feb 2023 00:03:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46422 "EHLO
+        id S229756AbjB0MTN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Feb 2023 07:19:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229791AbjB0FDb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Feb 2023 00:03:31 -0500
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 564F8CC0F;
-        Sun, 26 Feb 2023 21:03:27 -0800 (PST)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R311e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046056;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0VcW98oE_1677474202;
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VcW98oE_1677474202)
-          by smtp.aliyun-inc.com;
-          Mon, 27 Feb 2023 13:03:23 +0800
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-To:     rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
-        tony.luck@intel.com, bp@alien8.de, dave.hansen@linux.intel.com,
-        jarkko@kernel.org, naoya.horiguchi@nec.com, linmiaohe@huawei.com,
-        akpm@linux-foundation.org
-Cc:     xiexiuqi@huawei.com, lvying6@huawei.com,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        cuibixuan@linux.alibaba.com, baolin.wang@linux.alibaba.com,
-        zhuo.song@linux.alibaba.com, xueshuai@linux.alibaba.com
-Subject: [PATCH v2 2/2] ACPI: APEI: handle synchronous exceptions in task work
-Date:   Mon, 27 Feb 2023 13:03:15 +0800
-Message-Id: <20230227050315.5670-3-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+        with ESMTP id S229512AbjB0MTK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Feb 2023 07:19:10 -0500
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD41B1BACD;
+        Mon, 27 Feb 2023 04:19:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1677500343; x=1709036343;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+e9QEVf6QWwJqpHxYXhKwH6VLsqTxnUQhQzbaZesWQA=;
+  b=Vv+P6qF4gaHoUgBQm2OyHsjKJlRm6BugfIbOVJ0IneaBpKtMJedQ3Mvd
+   3yTUCvillW68qUu/69oWwZyem9m3qcWGi22h1kX9rKJxrx06jF73oRRZW
+   ZihbP7FRS29K0/4nAtufdfo9yVtJ+bJvp9/JVXR4MiYZZ76e2UAdrV/Yv
+   Q8ZrQHg8yqJO2nYDBfkqBCXusU1wH14iJxbefA03OAfUCO7JH7td0WgDA
+   qMixmlXp7zHYSkzWzC4PKuRBsGDjziIa8IPLT3fFBIvVZ8i1iU1JD3OB4
+   BAnj+s+hUQNksu7EWP0aORepK3gkubVpEzMpTe2xuhNlmnm85ufDg5P/X
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10633"; a="420109910"
+X-IronPort-AV: E=Sophos;i="5.97,331,1669104000"; 
+   d="scan'208";a="420109910"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2023 04:19:03 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10633"; a="816624877"
+X-IronPort-AV: E=Sophos;i="5.97,331,1669104000"; 
+   d="scan'208";a="816624877"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 27 Feb 2023 04:19:00 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 27 Feb 2023 14:18:59 +0200
+Date:   Mon, 27 Feb 2023 14:18:59 +0200
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: Implementation of fwnode_operations :: device_get_match_data()
+ for software nodes?
+Message-ID: <Y/yfs3Zo70gV/V9b@kuha.fi.intel.com>
+References: <20230223203713.hcse3mkbq3m6sogb@skbuf>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230223203713.hcse3mkbq3m6sogb@skbuf>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hardware errors could be signaled by synchronous interrupt, e.g.  when an
-error is detected by a background scrubber, or signaled by synchronous
-exception, e.g. when an uncorrected error is consumed. Both synchronous and
-asynchronous error are queued and handled by a dedicated kthread in
-workqueue.
+Hi Vladimir,
 
-commit 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for
-synchronous errors") keep track of whether memory_failure() work was
-queued, and make task_work pending to flush out the workqueue so that the
-work for synchronous error is processed before returning to user-space.
-The trick ensures that the corrupted page is unmapped and poisoned. And
-after returning to user-space, the task starts at current instruction which
-triggering a page fault in which kernel will send SIGBUS to current process
-due to VM_FAULT_HWPOISON.
+On Thu, Feb 23, 2023 at 10:37:13PM +0200, Vladimir Oltean wrote:
+> Hi,
+> 
+> I have a need to instantiate a driver written for OF which calls
+> device_get_match_data(dev) to get various information based on the
+> compatible string.
+> 
+> I am creating a software node based on the following properties:
+> 
+> 	struct property_entry props[2] = {
+> 		PROPERTY_ENTRY_STRING("compatible", compatible),
+> 		{},
+> 	};
+> 
+> (I see I'm not the only one doing this, some drivers/platform/x86/x86-android-tablets.c
+> and drivers/platform/chrome/chromeos_laptop.c also do it)
+> 
+> and the driver in question does begin to probe, but its match_data is
+> NULL, because the operation from the title isn't implemented for
+> software nodes. So probing ultimately fails.
+> 
+> Is there some sort or reason why this doesn't exist, other than a lack
+> of need?
 
-However, the memory failure recovery for hwpoison-aware mechanisms does not
-work as expected. For example, hwpoison-aware user-space processes like
-QEMU register their customized SIGBUS handler and enable early kill mode by
-seting PF_MCE_EARLY at initialization. Then the kernel will directy notify
-the process by sending a SIGBUS signal in memory failure with wrong
-si_code: the actual user-space process accessing the corrupt memory
-location, but its memory failure work is handled in a kthread context, so
-it will send SIGBUS with BUS_MCEERR_AO si_code to the actual user-space
-process instead of BUS_MCEERR_AR in kill_proc().
+There has not been any need for it before.
 
-To this end, separate synchronous and asynchronous error handling into
-different paths like X86 platform does:
+> Can someone please help me with an implementation of this feature?
 
-- task work for synchronous errors.
-- and workqueue for asynchronous errors.
+Try this - I'm sorry, I don't know does it actually work:
 
-Then for synchronous errors, the current context in memory failure is
-exactly belongs to the task consuming poison data and it will send SIBBUS
-with proper si_code.
-
-Fixes: 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for synchronous errors")
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
----
- drivers/acpi/apei/ghes.c | 114 ++++++++++++++++++++++-----------------
- include/acpi/ghes.h      |   3 --
- mm/memory-failure.c      |  13 -----
- 3 files changed, 64 insertions(+), 66 deletions(-)
-
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 5d37fb4bca67..b2fe309f395c 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -451,45 +451,79 @@ static void ghes_clear_estatus(struct ghes *ghes,
+diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+index 1886995a0b3a3..5262b49c7c790 100644
+--- a/drivers/base/swnode.c
++++ b/drivers/base/swnode.c
+@@ -9,6 +9,7 @@
+ #include <linux/device.h>
+ #include <linux/kernel.h>
+ #include <linux/property.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/slab.h>
+ 
+ #include "base.h"
+@@ -379,6 +380,25 @@ static void software_node_put(struct fwnode_handle *fwnode)
+        kobject_put(&swnode->kobj);
  }
  
- /*
-- * Called as task_work before returning to user-space.
-- * Ensure any queued work has been done before we return to the context that
-- * triggered the notification.
-+ * struct mce_task_work - for synchronous RAS event
-+ *
-+ * @twork:                callback_head for task work
-+ * @pfn:                  page frame number of corrupted page
-+ * @flags:                fine tune action taken
-+ *
-+ * Structure to pass task work to be handled before
-+ * ret_to_user via task_work_add().
-  */
--static void ghes_kick_task_work(struct callback_head *head)
-+struct mce_task_work {
-+	struct callback_head twork;
-+	u64 pfn;
-+	int flags;
-+};
++static const void *
++software_node_get_match_data(const struct fwnode_handle *fwnode, const struct device *dev)
++{
++       const struct of_device_id *id;
++       const char *compat;
 +
-+static void memory_failure_cb(struct callback_head *twork)
- {
--	struct acpi_hest_generic_status *estatus;
--	struct ghes_estatus_node *estatus_node;
--	u32 node_len;
-+	int ret;
-+	struct mce_task_work *twcb =
-+		container_of(twork, struct mce_task_work, twork);
- 
--	estatus_node = container_of(head, struct ghes_estatus_node, task_work);
--	if (IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
--		memory_failure_queue_kick(estatus_node->task_work_cpu);
-+	ret = memory_failure(twcb->pfn, twcb->flags);
-+	kfree(twcb);
- 
--	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
--	node_len = GHES_ESTATUS_NODE_LEN(cper_estatus_len(estatus));
--	gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
-+	if (!ret)
-+		return;
++       if (!dev->driver || !dev->driver->of_match_table)
++               return NULL;
 +
-+	/*
-+	 * -EHWPOISON from memory_failure() means that it already sent SIGBUS
-+	 * to the current process with the proper error info,
-+	 * -EOPNOTSUPP means hwpoison_filter() filtered the error event,
-+	 *
-+	 * In both cases, no further processing is required.
-+	 */
-+	if (ret == -EHWPOISON || ret == -EOPNOTSUPP)
-+		return;
++       if (fwnode_property_read_string(fwnode, "compatible", &compat))
++               return NULL;
 +
-+	pr_err("Memory error not recovered");
-+	force_sig(SIGBUS);
- }
- 
--static bool ghes_do_memory_failure(u64 physical_addr, int flags)
-+static void ghes_do_memory_failure(u64 physical_addr, int flags)
- {
- 	unsigned long pfn;
-+	struct mce_task_work *twcb;
- 
- 	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
--		return false;
-+		return;
- 
- 	pfn = PHYS_PFN(physical_addr);
- 	if (!pfn_valid(pfn) && !arch_is_platform_page(physical_addr)) {
- 		pr_warn_ratelimited(FW_WARN GHES_PFX
- 		"Invalid address in generic error data: %#llx\n",
- 		physical_addr);
--		return false;
-+		return;
-+	}
++       for (id = dev->driver->of_match_table; id->compatible[0]; id++)
++               if (!strcmp(compat, id->compatible))
++                       return id->data;
 +
-+	if (flags == MF_ACTION_REQUIRED && current->mm) {
-+		twcb = kmalloc(sizeof(*twcb), GFP_ATOMIC);
-+		if (!twcb)
-+			return;
++       return NULL;
++}
 +
-+		twcb->pfn = pfn;
-+		twcb->flags = flags;
-+		init_task_work(&twcb->twork, memory_failure_cb);
-+		task_work_add(current, &twcb->twork, TWA_RESUME);
-+		return;
- 	}
- 
- 	memory_failure_queue(pfn, flags);
--	return true;
- }
- 
--static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
-+static void ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
- 				       int sev, bool sync)
+ static bool software_node_property_present(const struct fwnode_handle *fwnode,
+                                           const char *propname)
  {
- 	int flags = -1;
-@@ -497,7 +531,7 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
- 	struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
- 
- 	if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
--		return false;
-+		return;
- 
- 	/* iff following two events can be handled properly by now */
- 	if (sec_sev == GHES_SEV_CORRECTED &&
-@@ -507,16 +541,15 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
- 		flags = sync ? MF_ACTION_REQUIRED : 0;
- 
- 	if (flags != -1)
--		return ghes_do_memory_failure(mem_err->physical_addr, flags);
-+		ghes_do_memory_failure(mem_err->physical_addr, flags);
- 
--	return false;
-+	return;
- }
- 
--static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
-+static void ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- 				       int sev, bool sync)
- {
- 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
--	bool queued = false;
- 	int sec_sev, i;
- 	char *p;
- 	int flags = sync ? MF_ACTION_REQUIRED : 0;
-@@ -525,7 +558,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- 
- 	sec_sev = ghes_severity(gdata->error_severity);
- 	if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
--		return false;
-+		return;
- 
- 	p = (char *)(err + 1);
- 	for (i = 0; i < err->err_info_num; i++) {
-@@ -541,7 +574,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- 		 * and don't filter out 'corrected' error here.
- 		 */
- 		if (is_cache && has_pa) {
--			queued = ghes_do_memory_failure(err_info->physical_fault_addr, flags);
-+			ghes_do_memory_failure(err_info->physical_fault_addr, flags);
- 			p += err_info->length;
- 			continue;
- 		}
-@@ -554,8 +587,6 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- 				    error_type);
- 		p += err_info->length;
- 	}
--
--	return queued;
- }
- 
- /*
-@@ -653,7 +684,7 @@ static void ghes_defer_non_standard_event(struct acpi_hest_generic_data *gdata,
- 	schedule_work(&entry->work);
- }
- 
--static bool ghes_do_proc(struct ghes *ghes,
-+static void ghes_do_proc(struct ghes *ghes,
- 			 const struct acpi_hest_generic_status *estatus)
- {
- 	int sev, sec_sev;
-@@ -661,7 +692,6 @@ static bool ghes_do_proc(struct ghes *ghes,
- 	guid_t *sec_type;
- 	const guid_t *fru_id = &guid_null;
- 	char *fru_text = "";
--	bool queued = false;
- 	bool sync = is_hest_sync_notify(ghes);
- 
- 	sev = ghes_severity(estatus->error_severity);
-@@ -680,13 +710,13 @@ static bool ghes_do_proc(struct ghes *ghes,
- 			atomic_notifier_call_chain(&ghes_report_chain, sev, mem_err);
- 
- 			arch_apei_report_mem_error(sev, mem_err);
--			queued = ghes_handle_memory_failure(gdata, sev, sync);
-+			ghes_handle_memory_failure(gdata, sev, sync);
- 		}
- 		else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
- 			ghes_handle_aer(gdata);
- 		}
- 		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
--			queued = ghes_handle_arm_hw_error(gdata, sev, sync);
-+			ghes_handle_arm_hw_error(gdata, sev, sync);
- 		} else {
- 			void *err = acpi_hest_get_payload(gdata);
- 
-@@ -696,8 +726,6 @@ static bool ghes_do_proc(struct ghes *ghes,
- 					       gdata->error_data_length);
- 		}
- 	}
--
--	return queued;
- }
- 
- static void __ghes_print_estatus(const char *pfx,
-@@ -999,9 +1027,7 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
- 	struct ghes_estatus_node *estatus_node;
- 	struct acpi_hest_generic *generic;
- 	struct acpi_hest_generic_status *estatus;
--	bool task_work_pending;
- 	u32 len, node_len;
--	int ret;
- 
- 	llnode = llist_del_all(&ghes_estatus_llist);
- 	/*
-@@ -1016,25 +1042,14 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
- 		estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
- 		len = cper_estatus_len(estatus);
- 		node_len = GHES_ESTATUS_NODE_LEN(len);
--		task_work_pending = ghes_do_proc(estatus_node->ghes, estatus);
-+		ghes_do_proc(estatus_node->ghes, estatus);
- 		if (!ghes_estatus_cached(estatus)) {
- 			generic = estatus_node->generic;
- 			if (ghes_print_estatus(NULL, generic, estatus))
- 				ghes_estatus_cache_add(generic, estatus);
- 		}
--
--		if (task_work_pending && current->mm) {
--			estatus_node->task_work.func = ghes_kick_task_work;
--			estatus_node->task_work_cpu = smp_processor_id();
--			ret = task_work_add(current, &estatus_node->task_work,
--					    TWA_RESUME);
--			if (ret)
--				estatus_node->task_work.func = NULL;
--		}
--
--		if (!estatus_node->task_work.func)
--			gen_pool_free(ghes_estatus_pool,
--				      (unsigned long)estatus_node, node_len);
-+		gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node,
-+			      node_len);
- 
- 		llnode = next;
- 	}
-@@ -1095,7 +1110,6 @@ static int ghes_in_nmi_queue_one_entry(struct ghes *ghes,
- 
- 	estatus_node->ghes = ghes;
- 	estatus_node->generic = ghes->generic;
--	estatus_node->task_work.func = NULL;
- 	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
- 
- 	if (__ghes_read_estatus(estatus, buf_paddr, fixmap_idx, len)) {
-diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
-index 3c8bba9f1114..e5e0c308d27f 100644
---- a/include/acpi/ghes.h
-+++ b/include/acpi/ghes.h
-@@ -35,9 +35,6 @@ struct ghes_estatus_node {
- 	struct llist_node llnode;
- 	struct acpi_hest_generic *generic;
- 	struct ghes *ghes;
--
--	int task_work_cpu;
--	struct callback_head task_work;
- };
- 
- struct ghes_estatus_cache {
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index a1ede7bdce95..d4fd983dfc97 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2355,19 +2355,6 @@ static void memory_failure_work_func(struct work_struct *work)
- 	}
- }
- 
--/*
-- * Process memory_failure work queued on the specified CPU.
-- * Used to avoid return-to-userspace racing with the memory_failure workqueue.
-- */
--void memory_failure_queue_kick(int cpu)
--{
--	struct memory_failure_cpu *mf_cpu;
--
--	mf_cpu = &per_cpu(memory_failure_cpu, cpu);
--	cancel_work_sync(&mf_cpu->work);
--	memory_failure_work_func(&mf_cpu->work);
--}
--
- static int __init memory_failure_init(void)
- {
- 	struct memory_failure_cpu *mf_cpu;
+@@ -662,6 +682,7 @@ software_node_graph_parse_endpoint(const struct fwnode_handle *fwnode,
+ static const struct fwnode_operations software_node_ops = {
+        .get = software_node_get,
+        .put = software_node_put,
++       .device_get_match_data = software_node_get_match_data,
+        .property_present = software_node_property_present,
+        .property_read_int_array = software_node_read_int_array,
+        .property_read_string_array = software_node_read_string_array,
+
 -- 
-2.20.1.12.g72788fdb
-
+heikki
