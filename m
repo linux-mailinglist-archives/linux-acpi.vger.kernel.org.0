@@ -2,43 +2,42 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A5BD6A391F
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Feb 2023 03:56:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B814C6A3A3F
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Feb 2023 06:03:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229933AbjB0C4B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 26 Feb 2023 21:56:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34230 "EHLO
+        id S229618AbjB0FD0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Feb 2023 00:03:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230146AbjB0Cz6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 26 Feb 2023 21:55:58 -0500
-Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8C2612064;
-        Sun, 26 Feb 2023 18:55:49 -0800 (PST)
-Date:   Mon, 27 Feb 2023 02:55:45 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
-        t=1677466548; bh=s+R+iT0x1iNvvwUvUPl39IwKnJPRvBOzNR/yqTatfOE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=g127leCTLJI90j4qbQYmqcH3Kqg/0M9NoCbLMiFFthSAFmoPKahi9a9+XpyTNCOBw
-         gwbO/NoMW5wL2GziqVMZyP6ECAxs2eQQ6xhrx7jx1v2TfcTHlt4F74SMso6ss5mEnA
-         tMZHkZI6YZXfh29V1bbnmfQG8t152oRc5aBWdfOo=
-From:   Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-To:     Shawn Guo <shawn.guo@linaro.org>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: PCI: Add quirk for platforms running Windows
-Message-ID: <67eac531-d808-4fc8-b282-754204b4bad0@t-8ch.de>
-References: <20230227021221.17980-1-shawn.guo@linaro.org>
+        with ESMTP id S229451AbjB0FDZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Feb 2023 00:03:25 -0500
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBF8ABDE7;
+        Sun, 26 Feb 2023 21:03:23 -0800 (PST)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R761e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045168;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0VcW98lz_1677474198;
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VcW98lz_1677474198)
+          by smtp.aliyun-inc.com;
+          Mon, 27 Feb 2023 13:03:20 +0800
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+To:     rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
+        tony.luck@intel.com, bp@alien8.de, dave.hansen@linux.intel.com,
+        jarkko@kernel.org, naoya.horiguchi@nec.com, linmiaohe@huawei.com,
+        akpm@linux-foundation.org
+Cc:     xiexiuqi@huawei.com, lvying6@huawei.com,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        cuibixuan@linux.alibaba.com, baolin.wang@linux.alibaba.com,
+        zhuo.song@linux.alibaba.com, xueshuai@linux.alibaba.com
+Subject: [PATCH v2 0/2] ACPI: APEI: handle synchronous exceptions with proper si_code
+Date:   Mon, 27 Feb 2023 13:03:13 +0800
+Message-Id: <20230227050315.5670-1-xueshuai@linux.alibaba.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230227021221.17980-1-shawn.guo@linaro.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -46,59 +45,59 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+changes since v1:
+- synchronous events by notify type
+- Link: https://lore.kernel.org/lkml/20221206153354.92394-3-xueshuai@linux.alibaba.com/
 
-On Mon, Feb 27, 2023 at 10:12:21AM +0800, Shawn Guo wrote:
-> diff --git a/arch/arm64/kernel/pci.c b/arch/arm64/kernel/pci.c
-> index 2276689b5411..896dbd028b67 100644
-> --- a/arch/arm64/kernel/pci.c
-> +++ b/arch/arm64/kernel/pci.c
-> @@ -109,16 +109,42 @@ int pcibios_root_bridge_prepare(struct pci_host_bridge *bridge)
->  	return 0;
->  }
->  
-> +#define QCOM_DSDT_QUIRK "Host bridge windows in PNP0A03 _CRS"
-> +
-> +static struct acpi_platform_list qcom_platlist[] = {
-        ^^^
-       const
+Currently, both synchronous and asynchronous error are queued and handled
+by a dedicated kthread in workqueue. And Memory failure for synchronous
+error is synced by a cancel_work_sync trick which ensures that the
+corrupted page is unmapped and poisoned. And after returning to user-space,
+the task starts at current instruction which triggering a page fault in
+which kernel will send SIGBUS to current process due to VM_FAULT_HWPOISON.
 
-> +	/* Thinkpad X13s */
-> +	{ "LENOVO", "SDM8280 ", 0, ACPI_SIG_DSDT, all_versions, QCOM_DSDT_QUIRK },
-> +	/* Microsoft Surface Pro 9 (5G) and Windows Dev Kit 2023 */
-> +	{ "QCOMM ", "SDM8280 ", 0, ACPI_SIG_DSDT, all_versions, QCOM_DSDT_QUIRK },
-> +	/* Microsoft Surface Pro X */
-> +	{ "QCOMM ", "SDM8180 ", 0, ACPI_SIG_DSDT, all_versions, QCOM_DSDT_QUIRK },
-> +	{ }
-> +};
-> +
->  static int pci_acpi_root_prepare_resources(struct acpi_pci_root_info *ci)
->  {
->  	struct resource_entry *entry, *tmp;
->  	int status;
-> +	int idx;
->  
->  	status = acpi_pci_probe_root_resources(ci);
-> +
-> +	/*
-> +	 * Most arm64 platforms that do not run Windows describe host bridge
-> +	 * registers in PNP0A03 _CRS resources, but some like Qualcomm
-> +	 * Snapdragon Windows laptops describe host bridge windows in there.
-> +	 * We do not want to destroy the resources for these platforms.
-> +	 */
-> +	idx = acpi_match_platform_list(qcom_platlist);
-> +	if (idx >= 0)
-> +		goto done;
-> +
->  	resource_list_for_each_entry_safe(entry, tmp, &ci->resources) {
->  		if (!(entry->res->flags & IORESOURCE_WINDOW))
->  			resource_list_destroy_entry(entry);
->  	}
-> +
-> +done:
->  	return status;
->  }
->  
-> -- 
-> 2.17.1
-> 
+However, the memory failure recovery for hwpoison-aware mechanisms does not
+work as expected. For example, hwpoison-aware user-space processes like
+QEMU register their customized SIGBUS handler and enable early kill mode by
+seting PF_MCE_EARLY at initialization. Then the kernel will directy notify
+the process by sending a SIGBUS signal in memory failure with wrong
+si_code: BUS_MCEERR_AO si_code to the actual user-space process instead of
+BUS_MCEERR_AR.
+
+To address this problem:
+
+- PATCH 1 sets mf_flags as MF_ACTION_REQUIRED on synchronous events which
+  indicates error happened in current execution context
+- PATCH 2 separates synchronous error handling into task work so that the
+  current context in memory failure is exactly belongs to the task
+  consuming poison data.
+
+Then, kernel will send SIGBUS with proper si_code in kill_proc().
+
+Lv Ying and XiuQi also proposed to address similar problem and we discussed
+about new solution to add a new flag(acpi_hest_generic_data::flags bit 8) to
+distinguish synchronous event. [2][3] The UEFI community still has no response.
+After a deep dive into the SDEI TRM, the SDEI notification should be used for
+asynchronous error. As SDEI TRM[1] describes "the dispatcher can simulate an
+exception-like entry into the client, **with the client providing an additional
+asynchronous entry point similar to an interrupt entry point**". The client
+(kernel) lacks complete synchronous context, e.g. systeam register (ELR, ESR,
+etc). So notify type is enough to distinguish synchronous event.
+
+[1] https://developer.arm.com/documentation/den0054/latest/
+[2] https://lore.kernel.org/linux-arm-kernel/20221205160043.57465-4-xiexiuqi@huawei.com/T/
+[3] https://lore.kernel.org/lkml/20221209095407.383211-1-lvying6@huawei.com/
+
+Shuai Xue (2):
+  ACPI: APEI: set memory failure flags as MF_ACTION_REQUIRED on
+    synchronous events
+  ACPI: APEI: handle synchronous exceptions in task work
+
+ drivers/acpi/apei/ghes.c | 134 ++++++++++++++++++++++++---------------
+ include/acpi/ghes.h      |   3 -
+ mm/memory-failure.c      |  13 ----
+ 3 files changed, 82 insertions(+), 68 deletions(-)
+
+-- 
+2.20.1.12.g72788fdb
+
