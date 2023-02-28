@@ -2,165 +2,230 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6558E6A57E9
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Feb 2023 12:24:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD1256A5A56
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Feb 2023 14:50:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231682AbjB1LYg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Feb 2023 06:24:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44588 "EHLO
+        id S229512AbjB1NuV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Feb 2023 08:50:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231625AbjB1LYK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Feb 2023 06:24:10 -0500
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B585BBBB
-        for <linux-acpi@vger.kernel.org>; Tue, 28 Feb 2023 03:23:41 -0800 (PST)
-Received: by mail-wm1-x32d.google.com with SMTP id o11-20020a05600c4fcb00b003eb33ea29a8so5126175wmq.1
-        for <linux-acpi@vger.kernel.org>; Tue, 28 Feb 2023 03:23:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1677583411;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BXmjkOh9eXvrRm2J04oJvypw5mYaRO/S2JmWwbjlE4k=;
-        b=soFl3x2mfMMF67I1FvokputhjZuMW2otf4WTnRYVuV+k0mQ/OS+fZdLqmnd3H6OG40
-         OkwqOSBW3UecWgcNxcHsSeCNOPkN1GE9jymZncVh/LfB3gXEkvPKtCEDXHmZbBtHL11x
-         Pthf2ZgB5Afbg/MXm18ge1cBvHUlXy9yVwciggl7ITvUnVO6U2Knf767eVqWTuBWrL8Z
-         Iei3Mwbk5rYDseKP50HVTiX9cc1nSZoXlH7oeuJ2Oz7Qpi1n/IPHb1eOsrQDtDPYSz13
-         /AbZBMJaTOhBkSIKA+bULSgW/pDu5a9ttyNypyLnA0wPkjPWc4j/4KkdeUHED+PvokAK
-         mInw==
+        with ESMTP id S229482AbjB1NuU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Feb 2023 08:50:20 -0500
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 819A4B765;
+        Tue, 28 Feb 2023 05:50:18 -0800 (PST)
+Received: by mail-ed1-f50.google.com with SMTP id cq23so40363026edb.1;
+        Tue, 28 Feb 2023 05:50:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677583411;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BXmjkOh9eXvrRm2J04oJvypw5mYaRO/S2JmWwbjlE4k=;
-        b=3Y8yJ2N2D7oSL5oU0eP1wQnqd916IgUZd7FQZqJvAHALmIiaeG7WH+R+mXLaZIpZCf
-         EtwVRaMKMRD5d2f/x/o4kEKygqe3pxDKXWD5V9Re+6WPV4gjmo7Thq1ZycOIQ2gj9Mj8
-         etZd5L7g5/dXulHF9Svn8YjT/C0OwY9BnM63jgcnaS6nljgXzAqKiuJkFWt6Q0uQ/+4r
-         73m8iVmtzj/0YEDLMBOkYVSUw8wF3UAwlGSSFExmet4dHFdaqwRJkg9oqPIoG6pNZbd+
-         gB9cEAG+jezADmGZZg+mTgGPA9bdlZZN/yQPQ7WvmeCwI2FcKm8HZAiO5XAT3QkTT83i
-         mm5Q==
-X-Gm-Message-State: AO0yUKV9Z8OsjozFu6dNHoZolFCICl7XGrkFwmDKYgVgCY/oG2e1XtFp
-        KNm8JLC3NJbp39hf/Y0ymMUOYw==
-X-Google-Smtp-Source: AK7set9dvRwH1Z/L2mUIbhq8bSGuKvT3+MG29F5DU0+ncVgMRWB1EKJBS587C1/MWBMg9p20wtzp4A==
-X-Received: by 2002:a05:600c:1ca3:b0:3ea:e7f6:fc2e with SMTP id k35-20020a05600c1ca300b003eae7f6fc2emr1742726wms.6.1677583411474;
-        Tue, 28 Feb 2023 03:23:31 -0800 (PST)
-Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:6830:6390:2815:b6a5])
-        by smtp.gmail.com with ESMTPSA id z5-20020a5d6545000000b002c5501a5803sm9598130wrv.65.2023.02.28.03.23.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Feb 2023 03:23:31 -0800 (PST)
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     rafael@kernel.org, daniel.lezcano@linaro.org
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        linux-acpi@vger.kernel.org (open list:ACPI THERMAL DRIVER),
-        linux-hwmon@vger.kernel.org (open list:HARDWARE MONITORING)
-Subject: [PATCH v4 12/19] thermal: Add a thermal zone id accessor
-Date:   Tue, 28 Feb 2023 12:22:31 +0100
-Message-Id: <20230228112238.2312273-13-daniel.lezcano@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230228112238.2312273-1-daniel.lezcano@linaro.org>
-References: <20230228112238.2312273-1-daniel.lezcano@linaro.org>
+        d=1e100.net; s=20210112; t=1677592217;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tCxnAj+Q7kSfLUaLTs010WnxrZ5KYykWmnNR3WSnBBw=;
+        b=0GjdbvjV6brpNyr01lKd9RSO5ev+FlUQ50swllTlPaDHNeALybv+74eEX0H/+PsqEc
+         bMsGgIobjd3JDUJIujdDKP2N2qDu+pKiOZIpDUqdKKThIqDOsn8l89qxeo8bX/h8BX8O
+         IkgNImpRysfKHTLlxQrZeSQaYHPLXr4IT2R0cqWGF2XKWBLFdXMKvXbvX86Z2tHaQFNW
+         ayW/e3ALMn2kQUTO28RrBGErD/bKJanpBCvNg6TpdUpQuTcRBZm3taxsMygr+p4qcItc
+         Wsi+T+GFkrh5siwBKBkcVczXTQykXsSBV/vBTy53QdiFS0jLHWkmTS2h1xNsFj6HUHzq
+         LYZQ==
+X-Gm-Message-State: AO0yUKWQr6WQyEOhyBiNummfK41XYPIPHoMzoGMTGhuL65kYMg/IEoTL
+        cC5ppoFVtn2T6Dztpq8Ezz3O5HYWDIkmpUr0WGE=
+X-Google-Smtp-Source: AK7set8S5ezEf2wc4QyBDfF9GX0sz25bCIICWeEW9UY6IYdnuV9vR5N4xHqeSBuAbFFoX9z04lWsqtmBSYzEer3mD94=
+X-Received: by 2002:a17:906:4bc8:b0:8ce:cb8f:3747 with SMTP id
+ x8-20020a1709064bc800b008cecb8f3747mr1274124ejv.5.1677592216859; Tue, 28 Feb
+ 2023 05:50:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+References: <20230220143143.3492-1-petr.pavlu@suse.com> <CAJZ5v0jng3PDPnTKAov0m2KTYKaQuwOdi+jCVwc5BM5duct2Pg@mail.gmail.com>
+ <a75a9e85-5682-1527-2e74-e1f7cf69132e@suse.com>
+In-Reply-To: <a75a9e85-5682-1527-2e74-e1f7cf69132e@suse.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 28 Feb 2023 14:50:05 +0100
+Message-ID: <CAJZ5v0hUh0oEK9DCD7SFWLrW0avfZ5JEgNhO=A1FaBZsOXKC9A@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: cpufreq: use a platform device to load ACPI PPC
+ and PCC drivers
+To:     Petr Pavlu <petr.pavlu@suse.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>, lenb@kernel.org,
+        viresh.kumar@linaro.org, pmladek@suse.com, mcgrof@kernel.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In order to get the thermal zone id but without directly accessing the
-thermal zone device structure, add an accessor.
+On Tue, Feb 28, 2023 at 11:05 AM Petr Pavlu <petr.pavlu@suse.com> wrote:
+>
+> On 2/22/23 16:04, Rafael J. Wysocki wrote:
+> > On Mon, Feb 20, 2023 at 3:32 PM Petr Pavlu <petr.pavlu@suse.com> wrote:
+> >> Both acpi-cpufreq and pcc-cpufreq drivers have their platform firmware
+> >> interface defined by ACPI. Allowed performance states and parameters
+> >> must be same for each CPU.
+> >
+> > This is not a requirement set by the ACPI specification, though, but
+> > the assumption made by the drivers in question AFAICS.  It would be
+> > good to clarify this here.
+>
+> I can simplify this paragraph to:
+> Both acpi-cpufreq and pcc-cpufreq drivers use platform firmware controls
+> which are defined by ACPI. It is possible to treat these interfaces as
+> platform devices.
+>
+> >> This makes it possible to model these
+> >> interfaces as platform devices.
+> >>
+> >> The patch extends the ACPI parsing logic to check the ACPI namespace if
+> >> the PPC or PCC interface is present and creates a virtual platform
+> >> device for each if it is available.
+> >
+> > I'm not sure that this is the best approach.
+> >
+> > The ACPI subsystem already walks the ACPI namespace twice when
+> > enumerating devices and CPUs.  In particular, acpi_processor_add() is
+> > invoked for each of them in the first on these walks, so it might as
+> > well take care of creating the requisite platform device if _PCT is
+> > present, can't it?
+>
+> Makes sense, I see that acpi_processor_get_info() has some logic for handling
+> the first CPU so that looks to me as a good place to hook a check for _PCT.
+>
+> >> The acpi-cpufreq and pcc-cpufreq
+> >> drivers are then updated to map to these devices.
+> >>
+> >> This allows to try loading acpi-cpufreq and pcc-cpufreq only once during
+> >> boot and only if a given interface is available in the firmware.
+> >>
+> >> Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+> >> ---
+> >>
+> >> Changes since v1 [1]:
+> >> - Describe the worst case scenario without the recent fix 0254127ab977e
+> >>   ("module: Don't wait for GOING modules") and refer to its discussion
+> >>   in the commit message.
+> >> - Consider ACPI processor device objects when looking for _PCT, in
+> >>   addition to processor objects.
+> >> - Add a few more comments explaining the code.
+> >>
+> >> [1] https://lore.kernel.org/lkml/20230131130041.629-1-petr.pavlu@suse.com/
+> >>
+> >>  drivers/acpi/Makefile          |  1 +
+> >>  drivers/acpi/acpi_cpufreq.c    | 77 ++++++++++++++++++++++++++++++++++
+> >>  drivers/acpi/bus.c             |  1 +
+> >>  drivers/acpi/internal.h        |  2 +
+> >>  drivers/cpufreq/acpi-cpufreq.c | 39 +++++++++--------
+> >>  drivers/cpufreq/pcc-cpufreq.c  | 34 ++++++++++-----
+> >>  6 files changed, 127 insertions(+), 27 deletions(-)
+> >>  create mode 100644 drivers/acpi/acpi_cpufreq.c
+> >>
+> >> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+> >> index feb36c0b9446..880db1082c3e 100644
+> >> --- a/drivers/acpi/Makefile
+> >> +++ b/drivers/acpi/Makefile
+> >> @@ -57,6 +57,7 @@ acpi-y                                += evged.o
+> >>  acpi-y                         += sysfs.o
+> >>  acpi-y                         += property.o
+> >>  acpi-$(CONFIG_X86)             += acpi_cmos_rtc.o
+> >> +acpi-$(CONFIG_X86)             += acpi_cpufreq.o
+> >>  acpi-$(CONFIG_X86)             += x86/apple.o
+> >>  acpi-$(CONFIG_X86)             += x86/utils.o
+> >>  acpi-$(CONFIG_X86)             += x86/s2idle.o
+> >> diff --git a/drivers/acpi/acpi_cpufreq.c b/drivers/acpi/acpi_cpufreq.c
+> >> new file mode 100644
+> >> index 000000000000..4e4ceb7cd226
+> >> --- /dev/null
+> >> +++ b/drivers/acpi/acpi_cpufreq.c
+> >> @@ -0,0 +1,77 @@
+> >> +// SPDX-License-Identifier: GPL-2.0-only
+> >> +/*
+> >> + * Registration of platform devices for ACPI Processor Performance Control and
+> >> + * Processor Clocking Control.
+> >> + */
+> >> +
+> >> +#include <linux/acpi.h>
+> >> +#include <linux/platform_device.h>
+> >> +
+> >> +#include <acpi/processor.h>
+> >> +
+> >> +#include "internal.h"
+> >> +
+> >> +static void __init cpufreq_add_device(const char *name)
+> >> +{
+> >> +       struct platform_device *pdev;
+> >> +
+> >> +       pdev = platform_device_register_simple(name, PLATFORM_DEVID_NONE, NULL,
+> >> +                                              0);
+> >> +       if (IS_ERR(pdev))
+> >> +               pr_err("%s device creation failed: %ld\n", name, PTR_ERR(pdev));
+> >> +}
+> >> +
+> >> +static acpi_status __init acpi_pct_match(acpi_handle handle, u32 level,
+> >> +                                        void *context, void **return_value)
+> >> +{
+> >> +       bool *pct = context;
+> >> +       acpi_status status;
+> >> +       acpi_object_type acpi_type;
+> >> +       struct acpi_device *acpi_dev;
+> >> +
+> >> +       static const struct acpi_device_id processor_device_ids[] = {
+> >> +               { ACPI_PROCESSOR_OBJECT_HID, 0 },
+> >> +               { ACPI_PROCESSOR_DEVICE_HID, 0 },
+> >> +               { "", 0 },
+> >> +       };
+> >> +
+> >> +       /* Skip nodes that cannot be a processor. */
+> >> +       status = acpi_get_type(handle, &acpi_type);
+> >> +       if (ACPI_FAILURE(status))
+> >> +               return status;
+> >> +       if (acpi_type != ACPI_TYPE_PROCESSOR && acpi_type != ACPI_TYPE_DEVICE)
+> >> +               return AE_OK;
+> >> +
+> >> +       /* Look at the set IDs if it is really a one. */
+> >> +       acpi_dev = acpi_fetch_acpi_dev(handle);
+> >> +       if (acpi_dev == NULL ||
+> >> +           acpi_match_device_ids(acpi_dev, processor_device_ids))
+> >> +               return AE_OK;
+> >> +
+> >> +       /* Check if it has _PCT and stop the walk as all CPUs must be same. */
+> >> +       *pct = acpi_has_method(handle, "_PCT");
+> >> +       return AE_CTRL_TERMINATE;
+> >> +}
+> >> +
+> >> +void __init acpi_cpufreq_init(void)
+> >> +{
+> >> +       bool pct = false;
+> >> +       acpi_status status;
+> >> +       acpi_handle handle;
+> >> +
+> >> +       /*
+> >> +        * Check availability of the PPC by looking at the presence of the _PCT
+> >> +        * object under the first processor definition.
+> >> +        */
+> >> +       acpi_walk_namespace(ACPI_TYPE_ANY, ACPI_ROOT_OBJECT, ACPI_UINT32_MAX,
+> >> +                           acpi_pct_match, NULL, &pct, NULL);
+> >> +       if (pct)
+> >> +               cpufreq_add_device("acpi-cpufreq");
+> >
+> > It should be possible to combine this with CPU enumeration as stated above.
+>
+> Ack.
+>
+> >> +
+> >> +       /* Check availability of the PCC by searching for \_SB.PCCH. */
+> >> +       status = acpi_get_handle(NULL, "\\_SB", &handle);
+> >> +       if (ACPI_FAILURE(status))
+> >> +               return;
+> >> +       if (acpi_has_method(handle, "PCCH"))
+> >> +               cpufreq_add_device("pcc-cpufreq");
+> >
+> > And the remaining part can be called acpi_pcc_cpufreq_init().
+>
+> Ok. I guess it then makes sense to move both PPC and PCC checks to
+> acpi_processor.c instead of adding a new file. Function
+> acpi_pcc_cpufreq_init() can be called from acpi_processor_init().
 
-Use the accessor in the hwmon_scmi and acpi_thermal.
-
-No functional change intented.
-
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Acked-by: Guenter Roeck <linux@roeck-us.net>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/thermal.c         | 2 +-
- drivers/hwmon/scmi-hwmon.c     | 2 +-
- drivers/thermal/thermal_core.c | 6 ++++++
- include/linux/thermal.h        | 6 ++++++
- 4 files changed, 14 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-index 392b73b3e269..255efa73ed70 100644
---- a/drivers/acpi/thermal.c
-+++ b/drivers/acpi/thermal.c
-@@ -842,7 +842,7 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
- 		goto acpi_bus_detach;
- 
- 	dev_info(&tz->device->dev, "registered as thermal_zone%d\n",
--		 tz->thermal_zone->id);
-+		 thermal_zone_device_id(tz->thermal_zone));
- 
- 	return 0;
- 
-diff --git a/drivers/hwmon/scmi-hwmon.c b/drivers/hwmon/scmi-hwmon.c
-index 046ac157749d..364199b332c0 100644
---- a/drivers/hwmon/scmi-hwmon.c
-+++ b/drivers/hwmon/scmi-hwmon.c
-@@ -220,7 +220,7 @@ static int scmi_thermal_sensor_register(struct device *dev,
- 			sensor->name);
- 	} else {
- 		dev_dbg(dev, "Sensor '%s' attached to thermal zone ID:%d\n",
--			sensor->name, tzd->id);
-+			sensor->name, thermal_zone_device_id(tzd));
- 	}
- 
- 	return 0;
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index 913ba9ca9792..46dedfe061df 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -1390,6 +1390,12 @@ const char *thermal_zone_device_type(struct thermal_zone_device *tzd)
- }
- EXPORT_SYMBOL_GPL(thermal_zone_device_type);
- 
-+int thermal_zone_device_id(struct thermal_zone_device *tzd)
-+{
-+	return tzd->id;
-+}
-+EXPORT_SYMBOL_GPL(thermal_zone_device_id);
-+
- /**
-  * thermal_zone_device_unregister - removes the registered thermal zone device
-  * @tz: the thermal zone device to remove
-diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-index 21686e676b3d..eb80cee4f64f 100644
---- a/include/linux/thermal.h
-+++ b/include/linux/thermal.h
-@@ -367,6 +367,7 @@ thermal_zone_device_register_with_trips(const char *, struct thermal_trip *, int
- 
- void *thermal_zone_device_priv(struct thermal_zone_device *tzd);
- const char *thermal_zone_device_type(struct thermal_zone_device *tzd);
-+int thermal_zone_device_id(struct thermal_zone_device *tzd);
- 
- int thermal_zone_bind_cooling_device(struct thermal_zone_device *, int,
- 				     struct thermal_cooling_device *,
-@@ -449,6 +450,11 @@ static inline const char *thermal_zone_device_type(struct thermal_zone_device *t
- 	return NULL;
- }
- 
-+static inline int thermal_zone_device_id(struct thermal_zone_device *tzd)
-+{
-+	return -ENODEV;
-+}
-+
- static inline int thermal_zone_device_enable(struct thermal_zone_device *tz)
- { return -ENODEV; }
- 
--- 
-2.34.1
-
+That's correct.
