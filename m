@@ -2,189 +2,199 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AFD46A6D1B
-	for <lists+linux-acpi@lfdr.de>; Wed,  1 Mar 2023 14:36:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 779986A6E7E
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 Mar 2023 15:33:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229548AbjCANgh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 1 Mar 2023 08:36:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57438 "EHLO
+        id S229817AbjCAOdX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 1 Mar 2023 09:33:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229533AbjCANgh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 Mar 2023 08:36:37 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id ED9B73B875;
-        Wed,  1 Mar 2023 05:36:35 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E85492F4;
-        Wed,  1 Mar 2023 05:37:18 -0800 (PST)
-Received: from bogus (unknown [10.57.16.230])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D6E8F3F587;
-        Wed,  1 Mar 2023 05:36:32 -0800 (PST)
-Date:   Wed, 1 Mar 2023 13:36:26 +0000
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Huisong Li <lihuisong@huawei.com>
-Cc:     robbiek@xsightlabs.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rafael@kernel.org,
-        rafael.j.wysocki@intel.com, wanghuiqiang@huawei.com,
-        zhangzekun11@huawei.com, wangxiongfeng2@huawei.com,
-        tanxiaofei@huawei.com, guohanjun@huawei.com, xiexiuqi@huawei.com,
-        wangkefeng.wang@huawei.com, huangdaode@huawei.com
-Subject: Re: [PATCH 2/2] mailbox: pcc: Support shared interrupt for multiple
- subspaces
-Message-ID: <20230301133626.gchca3fdaqijxwzq@bogus>
-References: <20221016034043.52227-1-lihuisong@huawei.com>
- <20230216063653.1995-1-lihuisong@huawei.com>
- <20230216063653.1995-3-lihuisong@huawei.com>
+        with ESMTP id S229797AbjCAOdW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 Mar 2023 09:33:22 -0500
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D8FBEB4E;
+        Wed,  1 Mar 2023 06:33:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1677681201; x=1709217201;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lUTOeRPA08xBu7g2RTi+QRPmI88RlYfPaGOyBpLRn98=;
+  b=VxnKL29NAtHfhf4g6hrY/CvFsmVYZtL6PzgD+lbQa3w7OOteRzSI3mZZ
+   kpgXrOQvr7uS/nnkPFlZ7ErMYDjeAHDXUEOaYO+O1gjEDAkXHY5bSv9Jo
+   VI4yxKAFKT2ZMOx1QAkjj0oboQv+aW7Nwhf726BDi/rIjKHiFKC7Nzpxn
+   eI932EnGGwzt0n9wZ9WCMl5d2Cx0TP5dvt79nSbriWEFii3snxMlhhN3z
+   csV9No9Pj71HXcUWdzFKg2C1ZDRikrq7eHgYE+qmXVCBbveP1x/kGsSZQ
+   H1/oAUc24+dGxQNy31sBP36jkXCzyiRqVvUhgYpP6oqP56falxuls03aa
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10636"; a="314842544"
+X-IronPort-AV: E=Sophos;i="5.98,225,1673942400"; 
+   d="scan'208";a="314842544"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2023 06:33:20 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10636"; a="667882080"
+X-IronPort-AV: E=Sophos;i="5.98,225,1673942400"; 
+   d="scan'208";a="667882080"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga007.jf.intel.com with ESMTP; 01 Mar 2023 06:33:18 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pXNW8-00Dmwn-1v;
+        Wed, 01 Mar 2023 16:33:16 +0200
+Date:   Wed, 1 Mar 2023 16:33:16 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc:     Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: Implementation of fwnode_operations :: device_get_match_data()
+ for software nodes?
+Message-ID: <Y/9iLBWAO37y6lZZ@smile.fi.intel.com>
+References: <20230223203713.hcse3mkbq3m6sogb@skbuf>
+ <Y/0uC1LgeWR0V0ts@smile.fi.intel.com>
+ <20230227234411.jqmwshzkeyx6iqyo@skbuf>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230216063653.1995-3-lihuisong@huawei.com>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230227234411.jqmwshzkeyx6iqyo@skbuf>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 16, 2023 at 02:36:53PM +0800, Huisong Li wrote:
-> If the platform acknowledge interrupt is level triggered, then it can
-> be shared by multiple subspaces provided each one has a unique platform
-> interrupt ack preserve and ack set masks.
+On Tue, Feb 28, 2023 at 01:44:11AM +0200, Vladimir Oltean wrote:
+> On Tue, Feb 28, 2023 at 12:26:19AM +0200, Andy Shevchenko wrote:
+> > I believe that there are few reasons for that:
+> > 1) (besides that what Heikki mentioned);
+> > 2) the software nodes only for quirks, seems you are trying to implement
+> > something that should have to be implemented as proper DT / ACPI device node.
+> > 
+> > Can you elaborate why do you need that (as you see no other board file requires
+> > this)?
 > 
-> If it can be shared, then we can request the irq with IRQF_SHARED and
-> IRQF_ONESHOT flags. The first one indicating it can be shared and the
-> latter one to keep the interrupt disabled until the hardirq handler
-> finished.
+> Trying to keep the answer short while still answering the question.
+
+Thank you, this is helpful to understand what you want.
+
+Random idea #N+1 based on what you told is: how about DT / ACPI overlays?
+Random idea #N+2 is: have you considered FPGA approach?
+
+So, as far as I got it right the device _can_ be considered as hotpluggable
+blackbox with a lot of hardware onboard. This is very much reminds me FPGA
+sitting behind PCIe hotplug capable interface.
+
+What do we have now there? Can we spread the same approach for your case?
+
+Because to me board files here looks like a hack.
+
+P.S.
+Yeah, I know that SPI is not hotpluggable bus per se. It may be that
+we actually need to reboot machine after plugging in/out the device.
+
+> I'm working with some hardware which is rather complex (a full SoC with
+> many peripherals inside) which is controlled by a larger SoC running
+> Linux, over SPI.
 > 
-> Further, since there is no way to detect if the interrupt is for a given
-> channel as the interrupt ack preserve and ack set masks are for clearing
-> the interrupt and not for reading the status(in case Irq Ack register
-> may be write-only on some platforms), we need a way to identify if the
-> given channel is in use and expecting the interrupt.
+> As you point out, to describe the peripherals inside the SPI-controlled
+> SoC would logically require writing a device tree with their register
+> addresses within the small SoC address space, interrupt routing, clocks,
+> yadda yadda.
 > 
-> PCC type0, type1 and type5 do not support shared level triggered interrupt.
-> The methods of determining whether a given channel for remaining types
-> should respond to an interrupt are as follows:
->  - type2: Whether the interrupt belongs to a given channel is only
->           determined by the status field in Generic Communications Channel
->           Shared Memory Region, which is done in rx_callback of PCC client.
->  - type3: This channel checks chan_in_use flag first and then checks the
->           command complete bit(value '1' indicates that the command has
->           been completed).
->  - type4: Platform ensure that the default value of the command complete
->           bit corresponding to the type4 channel is '1'. This command
->           complete bit is '0' when receive a platform notification.
+> However, this means several hundreds of lines of DT description, but
+> this is a SPI device. So it's not like I could toss this description in
+> some sort of SoC .dtsi which a board file would just include, because
+> this dtsi might need to be instantiated twice or more in a single board
+> DTS (depends on how many SPI devices there are, physically), and there
+> isn't a really good way to parameterize what would be a huge macro
+> (C preprocessor) essentially.
 > 
-> Signed-off-by: Huisong Li <lihuisong@huawei.com>
-> ---
->  drivers/mailbox/pcc.c | 45 ++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 42 insertions(+), 3 deletions(-)
+> This, plus that 90% of that device tree description wouldn't tell the
+> driver something it couldn't know already (nothing board-specific about
+> this information). I'm not a fan of huge device tree descriptions where
+> driver-level knowledge would do just fine. That SoC is currently
+> supported by Linux using some bindings like this (simplifying, of course.
+> There are some board-specific properties inside this node, which I've omitted):
 > 
-> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-> index ecd54f049de3..04c2d73a0473 100644
-> --- a/drivers/mailbox/pcc.c
-> +++ b/drivers/mailbox/pcc.c
-> @@ -92,6 +92,10 @@ struct pcc_chan_reg {
->   * @error: PCC register bundle for the error status register
->   * @plat_irq: platform interrupt
->   * @type: PCC subspace type
-> + * @plat_irq_flags: platform interrupt flags
-> + * @chan_in_use: flag indicating whether the channel is in use or not when use
-> + *		platform interrupt, and only use it for communication from OSPM
-> + *		to Platform, like type 3.
-
-Also add a node that since only one transfer can occur at a time and the
-mailbox takes care of locking, this flag needs no locking and is used just
-to check if the interrupt needs handling when it is shared.
-
->   */
->  struct pcc_chan_info {
->  	struct pcc_mbox_chan chan;
-> @@ -102,6 +106,8 @@ struct pcc_chan_info {
->  	struct pcc_chan_reg error;
->  	int plat_irq;
->  	u8 type;
-> +	unsigned int plat_irq_flags;
-> +	bool chan_in_use;
->  };
->  
->  #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
-> @@ -225,6 +231,12 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
->  	return acpi_register_gsi(NULL, interrupt, trigger, polarity);
->  }
->  
-> +static bool pcc_chan_plat_irq_can_be_shared(struct pcc_chan_info *pchan)
-> +{
-> +	return (pchan->plat_irq_flags & ACPI_PCCT_INTERRUPT_MODE) ==
-> +		ACPI_LEVEL_SENSITIVE;
-> +}
-> +
->  static bool pcc_chan_command_complete(struct pcc_chan_info *pchan,
->  				      u64 cmd_complete_reg_val)
->  {
-> @@ -277,6 +289,9 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
->  	int ret;
->  
->  	pchan = chan->con_priv;
-> +	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE &&
-> +	    !pchan->chan_in_use)
-> +		return IRQ_NONE;
->  
->  	ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
->  	if (ret)
-> @@ -302,9 +317,13 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
->  	/*
->  	 * The PCC slave subspace channel needs to set the command complete bit
->  	 * and ring doorbell after processing message.
-> +	 *
-> +	 * The PCC master subspace channel clears chan_in_use to free channel.
->  	 */
->  	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
->  		pcc_send_data(chan, NULL);
-> +	else if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE)
-> +		pchan->chan_in_use = false;
-
-Just wondering if this has to be for type 3 only. I am trying to avoid
-conditional update of this flag, can we not do it for everything except type4 ?
-(I mean just in unconditional else part)
-
->
->  	return IRQ_HANDLED;
->  }
-> @@ -353,10 +372,13 @@ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
->  	spin_unlock_irqrestore(&chan->lock, flags);
->  
->  	if (pchan->plat_irq > 0) {
-> +		unsigned long irqflags;
->  		int rc;
->  
-> -		rc = devm_request_irq(dev, pchan->plat_irq, pcc_mbox_irq, 0,
-> -				      MBOX_IRQ_NAME, chan);
-> +		irqflags = pcc_chan_plat_irq_can_be_shared(pchan) ?
-> +					IRQF_SHARED | IRQF_ONESHOT : 0;
-> +		rc = devm_request_irq(dev, pchan->plat_irq, pcc_mbox_irq,
-> +				      irqflags, MBOX_IRQ_NAME, chan);
->  		if (unlikely(rc)) {
->  			dev_err(dev, "failed to register PCC interrupt %d\n",
->  				pchan->plat_irq);
-> @@ -418,7 +440,17 @@ static int pcc_send_data(struct mbox_chan *chan, void *data)
->  	if (ret)
->  		return ret;
->  
-> -	return pcc_chan_reg_read_modify_write(&pchan->db);
-> +	ret = pcc_chan_reg_read_modify_write(&pchan->db);
-> +	/*
-> +	 * For the master subspace channel, set chan_in_use flag to true after
-> +	 * ring doorbell, and clear this flag when the reply message is
-> +	 * processed.
-> +	 */
-> +	if (!ret && pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE &&
-> +	    pchan->plat_irq > 0)
-> +		pchan->chan_in_use = true;
-
-Ditto here(for all type except type 4?)
+> &spi {
+> 	ethernet-switch@0 {
+> 		reg = <0>; // chip select
+> 		compatible = "compatible";
+> 	};
+> 
+> 	ethernet-switch@1 {
+> 		reg = <1>; // chip select
+> 		compatible = "compatible";
+> 	};
+> };
+> 
+> To get descriptions for all its peripherals, I'd have to describe it
+> like this:
+> 
+> &spi {
+> 	soc@0 {
+> 		reg = <0>; // chip select
+> 		compatible = "compatible";
+> 		#address-cells = <1>; // address space of the SPI device's memory map
+> 		#size-cells = <1>;
+> 
+> 		ethernet-switch@base-addr-1 {
+> 			reg = <base-address-1>;
+> 			compatible = "compatible";
+> 		};
+> 
+> 		peripheral@base-addr-2 {
+> 			reg = <base-address-2>;
+> 			compatible = "compatible";
+> 		};
+> 
+> 		some-other-peripheral@base-addr-3 {
+> 			reg = <base-address-3>;
+> 			compatible = "compatible";
+> 		};
+> 
+> 		...
+> 	};
+> 
+> 	soc@1 {
+> 		// more of the same
+> 	};
+> };
+> 
+> So random idea #1 is: device trees where "ethernet-switch" is a child of
+> "&spi" (first form) exist in the wild, and that's a fact. To change
+> those device trees to the new format would break forward compatibility,
+> since old kernels will not understand what to do with them (no driver
+> for "soc@0").
+> 
+> Random idea #2: even if I had the option to start fresh, there is just
+> too much boilerplate to put in the device tree, and I'd still go for the
+> minimalist bindings. Otherwise it's a pain for the end user (board
+> device tree author), first of all. Lots of ways to write it wrong and
+> only a single way to get it right. And no reason to let him do it.
+> 
+> With the minimalist bindings, it becomes the responsibility of the
+> "ethernet-switch" driver to have knowledge of the peripherals which are
+> present in that SoC, and instantiate dedicated (not monolithic) drivers
+> for them somehow, at their right base addresses. My current work in
+> progress is to create software nodes + mfd (in the spi device driver),
+> and platform device drivers for peripheral@base-addr-2,
+> some-other-peripheral@base-addr-3 etc, which have no backing OF node.
+> 
+> There are some other variations on this theme which also made me focus
+> on software nodes + mfd as a way to make sub-drivers of a larger
+> OF-based driver more modular, without changing device tree bindings.
 
 -- 
-Regards,
-Sudeep
+With Best Regards,
+Andy Shevchenko
+
+
