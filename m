@@ -2,187 +2,338 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50B556A622B
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Feb 2023 23:11:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AFF566A6946
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 Mar 2023 09:57:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229572AbjB1WLw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Feb 2023 17:11:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33068 "EHLO
+        id S229887AbjCAI5r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 1 Mar 2023 03:57:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229736AbjB1WLv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Feb 2023 17:11:51 -0500
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2040.outbound.protection.outlook.com [40.107.94.40])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D0D3211CF;
-        Tue, 28 Feb 2023 14:11:50 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FdL+V4fef+j/qSXreftDE022We7jL6tfRvvD8TBOK1vol/1Cs//PAPhhYLXtAGlalljNr5J+++dxRQ9QVLkmTtbT1hPGX5BXJux5Ul8cH1ZZY/kw4r06amg0nFQunKa1A032EMyXrdVH1Qh+2HdU5S/Vmqh9TysdOovXUAlOV86QO0Sn8VAcwkkOB+fM0lNEwFETbDbcdS0z5h1a7d+NTMgeIUFabbjX0bL50b5HypJt5MjFfT5/rteUk155kDztA78pseoCxlCCLlzamzoC4cSCkgt/xZbotXSupNuRECnEnJ6VXaxKVnnkCFWmfuSRqZeyTEge2lGNjUwl+mYIUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eMmEQnkm9ZbCrpvcqOdhQLyn5XCUVtaGFZZXNU0CydU=;
- b=EyCD9PPjzmPkZBP8oKoId1wf+wXitSPDPveLSCVVCu2DH1kzyfCknc/onIWO/9JFs6xQjzZk5utQnP9NYm1LigEQjSOa+Jhs3XeVLDmJkQj4R5Y5GqDQ8FHxEXZlZ829rJt1gu4t/1qgIm1coAKvIpaNDhzMNfvkNzZFblMD3SKb4qxCVJXwDQ3lPEnnEcYFZI9RfbgX5rroEDb3M9diUIbjXldMd+sAo4zEdq47xQayT9Hct8hIsTJ99QE6WiiTRt7ckuiwOI0B/nPKafrCJrWPhaFikkjXeLHQVEpT4tkOwCzpiIe+y1o1fxT5ZKdOuNQulshVBKajm3LRetAggQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eMmEQnkm9ZbCrpvcqOdhQLyn5XCUVtaGFZZXNU0CydU=;
- b=OIf9a3awkeKmIGammWtsm2/iuzZxWll2B/667Ej2Vggupm2O2+YD4ZxuIdKzFkpdWX0v3YUO/rh8uZBrcpidzojcLxBm5UGncmFwJAAOICPRczX504eXPv0XTkaK1x8Lqnom8KO1AeXei7tdvrmxiIEOsP7CGCKAEHOEjzqJC0o=
-Received: from BN9PR03CA0403.namprd03.prod.outlook.com (2603:10b6:408:111::18)
- by IA0PR12MB8228.namprd12.prod.outlook.com (2603:10b6:208:402::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6134.30; Tue, 28 Feb
- 2023 22:11:47 +0000
-Received: from BN8NAM11FT045.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:111:cafe::7b) by BN9PR03CA0403.outlook.office365.com
- (2603:10b6:408:111::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6134.30 via Frontend
- Transport; Tue, 28 Feb 2023 22:11:47 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT045.mail.protection.outlook.com (10.13.177.47) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6156.14 via Frontend Transport; Tue, 28 Feb 2023 22:11:47 +0000
-Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Tue, 28 Feb
- 2023 16:11:39 -0600
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     <rafael@kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     Mario Limonciello <mario.limonciello@amd.com>,
-        David Alvarez Lombardi <dqalombardi@proton.me>,
-        <dbilios@stdio.gr>, Elvis Angelaccio <elvis.angelaccio@kde.org>,
-        <victor.bonnelle@proton.me>, <hurricanepootis@protonmail.com>,
-        Len Brown <lenb@kernel.org>, <linux-acpi@vger.kernel.org>
-Subject: [PATCH v2] ACPI: x86: Add Cezanne to the list for forcing StorageD3Enable
-Date:   Tue, 28 Feb 2023 16:11:28 -0600
-Message-ID: <20230228221128.2560-1-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S229882AbjCAI5q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 Mar 2023 03:57:46 -0500
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08BA536FFE;
+        Wed,  1 Mar 2023 00:57:43 -0800 (PST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id B63FD1FE15;
+        Wed,  1 Mar 2023 08:57:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1677661061; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=HLkZ0afM3CZGdGEXT70VAWzTTDCy4lP/er/EgMBEukc=;
+        b=qyYUYTyE1g7XDsVPg/S0/vFuraNkLsvNz2W4WTpwbd0FvMyaOYugK/nzPoF03ySRRXBgCD
+        wcKZCX3st0nKIzX/+HsVRk3bH8KGjhvOgZfHBoExXzF6gz1Z8cdD9m9vRqdvkEB3gA+Hae
+        DBL2gwoRjRYk+3tHS9kLTiihZGE86EQ=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7F71613A3E;
+        Wed,  1 Mar 2023 08:57:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id +3ZHHoUT/2P4dQAAMHmgww
+        (envelope-from <petr.pavlu@suse.com>); Wed, 01 Mar 2023 08:57:41 +0000
+From:   Petr Pavlu <petr.pavlu@suse.com>
+To:     rafael@kernel.org, lenb@kernel.org, viresh.kumar@linaro.org
+Cc:     pmladek@suse.com, mcgrof@kernel.org, linux-acpi@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Petr Pavlu <petr.pavlu@suse.com>
+Subject: [PATCH v3] ACPI: cpufreq: use a platform device to load ACPI PPC and PCC drivers
+Date:   Wed,  1 Mar 2023 09:57:17 +0100
+Message-Id: <20230301085717.10411-1-petr.pavlu@suse.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT045:EE_|IA0PR12MB8228:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4d540ec0-f227-4a4a-5a6f-08db19d8c88e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: +sxBOMDPU8mao/ra0BkpOe3tDe5ffcT+Xsv1MfZBm8FvrdwoRMlubAUDaKmPSoKsR86mUv8emRKjw54GVLZ+NNG4Hen63CmHYGCVFyOUkRBqRrvLG1TdwH7ddwgQeF0Boc2kGllD1xfsjWs5YgghzZvUGahFd9k8wk96Zz8FSt9Dobz+dbOTSxX+gGjPSHW0U4ds5lXQkNzO0DSr5SsWChIZ3L0oGZMLyRZ4Uiv1bbxdQOWVS4FIlOLng/7+QX8hNXE2z3H8zeHSAcd2+vf0HLNZBt5wDkU+L5R0aTXOoT4ciLnVAxXbY78tckwZh9ZpoD8aJZrNZflJpqILiu4BXHhDM318yZn3ETigzt+M8B3ByoSkPk4EuTJ4Mq9CwZepbqt4yWfpNZuq2XnvWLzwC5CkQLVdh4gy7eq0GRD85GHxvLieu/WE4mtjv8Uul7O1PlRVoRzug3Sx9PTEWL8x990izC2M1bbS7ArRNCuVmYi3Afab1vuwaZ/Kt87iZuSFNPEYodfwS33ls/+KhGWjuksvFXlz48WKZ607fFSEcbKrhTqHpyk/VVmJEohcuQ0Gxx1ToLeI4Z65k5Y6GrOjNn4088N/G+EE9H2lhXRKEp/C31diVXa9bdgkv4JWYKX9bKXcYj3CVpl6ZP0uC7b7rpGsyD1+v0A9akIweTh9qRztEIojX62aRTezTF+NY/jyZL6jKJHxVMVqIk4eR+vxQlKEZpofOxI6F9lPlnlY/VhlJDEs8ZRxZs0YnFsiObZmmKT7sL4FhJhzp+a0DeYPbw==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230025)(4636009)(376002)(136003)(346002)(39860400002)(396003)(451199018)(46966006)(40470700004)(36840700001)(36860700001)(356005)(82740400003)(8936002)(41300700001)(81166007)(86362001)(36756003)(44832011)(2906002)(40480700001)(8676002)(70206006)(5660300002)(4326008)(82310400005)(70586007)(2616005)(40460700003)(336012)(16526019)(83380400001)(426003)(110136005)(26005)(186003)(1076003)(47076005)(478600001)(316002)(54906003)(6666004)(7696005)(966005)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2023 22:11:47.0991
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4d540ec0-f227-4a4a-5a6f-08db19d8c88e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT045.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8228
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-commit 018d6711c26e4 ("ACPI: x86: Add a quirk for Dell Inspiron 14 2-in-1
-for StorageD3Enable") introduced a quirk to allow a system with ambiguous
-use of _ADR 0 to force StorageD3Enable.
+The acpi-cpufreq and pcc-cpufreq drivers are loaded through per-CPU
+module aliases. This can result in many unnecessary load requests during
+boot if another frequency module, such as intel_pstate, is already
+active. For instance, on a typical Intel system, one can observe that
+udev makes 2x#CPUs attempts to insert acpi_cpufreq and 1x#CPUs attempts
+for pcc_cpufreq. All these tries then fail if another frequency module
+is already registered.
 
-It was reported that several more Dell systems suffered the same symptoms.
-As the list is continuing to grow but these are all Cezanne systems,
-instead add Cezanne to the CPU list to apply the StorageD3Enable property
-and remove the whole list.
+In the worst case, without the recent fix in commit 0254127ab977e
+("module: Don't wait for GOING modules"), these module loads occupied
+all udev workers and had their initialization attempts ran sequentially.
+Resolving all these loads then on some larger machines took too long,
+prevented other hardware from getting its drivers initialized and
+resulted in a failed boot. Discussion over these duplicate module
+requests ended up with a conclusion that only one load attempt should be
+ideally made.
 
-It was also reported that an HP system only has StorageD3Enable on the ACPI
-device for the first NVME disk, not the second.
+Both acpi-cpufreq and pcc-cpufreq drivers use platform firmware controls
+which are defined by ACPI. It is possible to treat these interfaces as
+platform devices.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217003
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216773
-Reported-by: David Alvarez Lombardi <dqalombardi@proton.me>
-Reported-by: dbilios@stdio.gr
-Reported-and-tested-by: Elvis Angelaccio <elvis.angelaccio@kde.org>
-Tested-by: victor.bonnelle@proton.me
-Tested-by: hurricanepootis@protonmail.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+The patch extends the ACPI parsing logic to check the ACPI namespace if
+the PPC or PCC interface is present and creates a virtual platform
+device for each if it is available. The acpi-cpufreq and pcc-cpufreq
+drivers are then updated to map to these devices.
+
+This allows to try loading acpi-cpufreq and pcc-cpufreq only once during
+boot and only if a given interface is available in the firmware.
+
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
 ---
-v1->v2:
- * Switch to using CPU rather than an ever growing list
 
- drivers/acpi/x86/utils.c | 37 +++++++++++++------------------------
- 1 file changed, 13 insertions(+), 24 deletions(-)
+Changes since v2 [1]:
+- Remove mention about all CPUs needing same clocking parameters from the commit
+  message.
+- Integrate the new logic to detect presence of PPC and PCC with the current
+  ACPI processor code which avoids an additional scan of the ACPI namespace.
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index d7d3f1669d4c..788b29ed9fb3 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -200,39 +200,28 @@ bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *s
-  * a hardcoded allowlist for D3 support, which was used for these platforms.
-  *
-  * This allows quirking on Linux in a similar fashion.
-+ *
-+ * Cezanne systems shouldn't *normally* need this as the BIOS includes
-+ * StorageD3Enable.  But for two reasons we have added it.
-+ * 1) The BIOS on a number of Dell systems have ambiguity
-+ *    between the same value used for _ADR on ACPI nodes GPP1.DEV0 and GPP1.NVME.
-+ *    GPP1.NVME is needed to get StorageD3Enable node set properly.
-+ *    https://bugzilla.kernel.org/show_bug.cgi?id=216440
-+ *    https://bugzilla.kernel.org/show_bug.cgi?id=216773
-+ *    https://bugzilla.kernel.org/show_bug.cgi?id=217003
-+ * 2) On at least one HP system StorageD3Enable is missing on the second NVME
-+      disk in the system.
-  */
- static const struct x86_cpu_id storage_d3_cpu_ids[] = {
- 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),	/* Renoir */
- 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL),	/* Lucienne */
--	{}
--};
--
--static const struct dmi_system_id force_storage_d3_dmi[] = {
--	{
--		/*
--		 * _ADR is ambiguous between GPP1.DEV0 and GPP1.NVME
--		 * but .NVME is needed to get StorageD3Enable node
--		 * https://bugzilla.kernel.org/show_bug.cgi?id=216440
--		 */
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 14 7425 2-in-1"),
--		}
--	},
--	{
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 16 5625"),
--		}
--	},
-+	X86_MATCH_VENDOR_FAM_MODEL(AMD, 25, 80, NULL),	/* Cezanne */
- 	{}
- };
+Changes since v1 [2]:
+- Describe the worst case scenario without the recent fix 0254127ab977e
+  ("module: Don't wait for GOING modules") and refer to its discussion
+  in the commit message.
+- Consider ACPI processor device objects when looking for _PCT, in
+  addition to processor objects.
+- Add a few more comments explaining the code.
+
+[1] https://lore.kernel.org/lkml/20230220143143.3492-1-petr.pavlu@suse.com/
+[2] https://lore.kernel.org/lkml/20230131130041.629-1-petr.pavlu@suse.com/
+
+ drivers/acpi/acpi_processor.c  | 42 ++++++++++++++++++++++++++++++++--
+ drivers/cpufreq/acpi-cpufreq.c | 39 +++++++++++++++++--------------
+ drivers/cpufreq/pcc-cpufreq.c  | 34 +++++++++++++++++++--------
+ 3 files changed, 86 insertions(+), 29 deletions(-)
+
+diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+index 6737b1cbf6d6..9bfb8c34104a 100644
+--- a/drivers/acpi/acpi_processor.c
++++ b/drivers/acpi/acpi_processor.c
+@@ -15,6 +15,7 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/pci.h>
++#include <linux/platform_device.h>
  
- bool force_storage_d3(void)
- {
--	const struct dmi_system_id *dmi_id = dmi_first_match(force_storage_d3_dmi);
--
--	return dmi_id || x86_match_cpu(storage_d3_cpu_ids);
-+	return x86_match_cpu(storage_d3_cpu_ids);
+ #include <acpi/processor.h>
+ 
+@@ -148,6 +149,34 @@ static int acpi_processor_errata(void)
+ 	return result;
  }
  
- /*
++/* Create a platform device to represent a CPU frequency control mechanism. */
++static void cpufreq_add_device(const char *name)
++{
++	struct platform_device *pdev;
++
++	pdev = platform_device_register_simple(name, PLATFORM_DEVID_NONE, NULL,
++					       0);
++	if (IS_ERR(pdev))
++		pr_err("%s device creation failed: %ld\n", name, PTR_ERR(pdev));
++}
++
++#ifdef CONFIG_X86
++/* Check presence of Processor Clocking Control by searching for \_SB.PCCH. */
++void __init acpi_pcc_cpufreq_init(void)
++{
++	acpi_status status;
++	acpi_handle handle;
++
++	status = acpi_get_handle(NULL, "\\_SB", &handle);
++	if (ACPI_FAILURE(status))
++		return;
++	if (acpi_has_method(handle, "PCCH"))
++		cpufreq_add_device("pcc-cpufreq");
++}
++#else
++void __init acpi_pcc_cpufreq_init(void) {}
++#endif /* CONFIG_X86 */
++
+ /* Initialization */
+ #ifdef CONFIG_ACPI_HOTPLUG_CPU
+ int __weak acpi_map_cpu(acpi_handle handle,
+@@ -280,14 +309,22 @@ static int acpi_processor_get_info(struct acpi_device *device)
+ 		dev_dbg(&device->dev, "Failed to get CPU physical ID.\n");
+ 
+ 	pr->id = acpi_map_cpuid(pr->phys_id, pr->acpi_id);
+-	if (!cpu0_initialized && !acpi_has_cpu_in_madt()) {
++	if (!cpu0_initialized) {
+ 		cpu0_initialized = 1;
+ 		/*
+ 		 * Handle UP system running SMP kernel, with no CPU
+ 		 * entry in MADT
+ 		 */
+-		if (invalid_logical_cpuid(pr->id) && (num_online_cpus() == 1))
++		if (!acpi_has_cpu_in_madt() && invalid_logical_cpuid(pr->id) &&
++		    (num_online_cpus() == 1))
+ 			pr->id = 0;
++		/*
++		 * Check availability of Processor Performance Control by
++		 * looking at the presence of the _PCT object under the first
++		 * processor definition.
++		 */
++		if (acpi_has_method(pr->handle, "_PCT"))
++			cpufreq_add_device("acpi-cpufreq");
+ 	}
+ 
+ 	/*
+@@ -686,6 +723,7 @@ void __init acpi_processor_init(void)
+ 	acpi_processor_check_duplicates();
+ 	acpi_scan_add_handler_with_hotplug(&processor_handler, "processor");
+ 	acpi_scan_add_handler(&processor_container_handler);
++	acpi_pcc_cpufreq_init();
+ }
+ 
+ #ifdef CONFIG_ACPI_PROCESSOR_CSTATE
+diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
+index 78adfb2ffff6..e1a5384cf21c 100644
+--- a/drivers/cpufreq/acpi-cpufreq.c
++++ b/drivers/cpufreq/acpi-cpufreq.c
+@@ -965,7 +965,7 @@ static void __init acpi_cpufreq_boost_init(void)
+ 	acpi_cpufreq_driver.boost_enabled = boost_state(0);
+ }
+ 
+-static int __init acpi_cpufreq_init(void)
++static int __init acpi_cpufreq_probe(struct platform_device *pdev)
+ {
+ 	int ret;
+ 
+@@ -1010,13 +1010,32 @@ static int __init acpi_cpufreq_init(void)
+ 	return ret;
+ }
+ 
+-static void __exit acpi_cpufreq_exit(void)
++static int acpi_cpufreq_remove(struct platform_device *pdev)
+ {
+ 	pr_debug("%s\n", __func__);
+ 
+ 	cpufreq_unregister_driver(&acpi_cpufreq_driver);
+ 
+ 	free_acpi_perf_data();
++
++	return 0;
++}
++
++static struct platform_driver acpi_cpufreq_platdrv = {
++	.driver = {
++		.name	= "acpi-cpufreq",
++	},
++	.remove		= acpi_cpufreq_remove,
++};
++
++static int __init acpi_cpufreq_init(void)
++{
++	return platform_driver_probe(&acpi_cpufreq_platdrv, acpi_cpufreq_probe);
++}
++
++static void __exit acpi_cpufreq_exit(void)
++{
++	platform_driver_unregister(&acpi_cpufreq_platdrv);
+ }
+ 
+ module_param(acpi_pstate_strict, uint, 0644);
+@@ -1027,18 +1046,4 @@ MODULE_PARM_DESC(acpi_pstate_strict,
+ late_initcall(acpi_cpufreq_init);
+ module_exit(acpi_cpufreq_exit);
+ 
+-static const struct x86_cpu_id __maybe_unused acpi_cpufreq_ids[] = {
+-	X86_MATCH_FEATURE(X86_FEATURE_ACPI, NULL),
+-	X86_MATCH_FEATURE(X86_FEATURE_HW_PSTATE, NULL),
+-	{}
+-};
+-MODULE_DEVICE_TABLE(x86cpu, acpi_cpufreq_ids);
+-
+-static const struct acpi_device_id __maybe_unused processor_device_ids[] = {
+-	{ACPI_PROCESSOR_OBJECT_HID, },
+-	{ACPI_PROCESSOR_DEVICE_HID, },
+-	{},
+-};
+-MODULE_DEVICE_TABLE(acpi, processor_device_ids);
+-
+-MODULE_ALIAS("acpi");
++MODULE_ALIAS("platform:acpi-cpufreq");
+diff --git a/drivers/cpufreq/pcc-cpufreq.c b/drivers/cpufreq/pcc-cpufreq.c
+index 9f3fc7a073d0..0c362932ca60 100644
+--- a/drivers/cpufreq/pcc-cpufreq.c
++++ b/drivers/cpufreq/pcc-cpufreq.c
+@@ -384,7 +384,7 @@ static int __init pcc_cpufreq_do_osc(acpi_handle *handle)
+ 	return ret;
+ }
+ 
+-static int __init pcc_cpufreq_probe(void)
++static int __init pcc_cpufreq_evaluate(void)
+ {
+ 	acpi_status status;
+ 	struct acpi_buffer output = {ACPI_ALLOCATE_BUFFER, NULL};
+@@ -576,7 +576,7 @@ static struct cpufreq_driver pcc_cpufreq_driver = {
+ 	.name = "pcc-cpufreq",
+ };
+ 
+-static int __init pcc_cpufreq_init(void)
++static int __init pcc_cpufreq_probe(struct platform_device *pdev)
+ {
+ 	int ret;
+ 
+@@ -587,9 +587,9 @@ static int __init pcc_cpufreq_init(void)
+ 	if (acpi_disabled)
+ 		return -ENODEV;
+ 
+-	ret = pcc_cpufreq_probe();
++	ret = pcc_cpufreq_evaluate();
+ 	if (ret) {
+-		pr_debug("pcc_cpufreq_init: PCCH evaluation failed\n");
++		pr_debug("pcc_cpufreq_probe: PCCH evaluation failed\n");
+ 		return ret;
+ 	}
+ 
+@@ -607,21 +607,35 @@ static int __init pcc_cpufreq_init(void)
+ 	return ret;
+ }
+ 
+-static void __exit pcc_cpufreq_exit(void)
++static int pcc_cpufreq_remove(struct platform_device *pdev)
+ {
+ 	cpufreq_unregister_driver(&pcc_cpufreq_driver);
+ 
+ 	pcc_clear_mapping();
+ 
+ 	free_percpu(pcc_cpu_info);
++
++	return 0;
+ }
+ 
+-static const struct acpi_device_id __maybe_unused processor_device_ids[] = {
+-	{ACPI_PROCESSOR_OBJECT_HID, },
+-	{ACPI_PROCESSOR_DEVICE_HID, },
+-	{},
++static struct platform_driver pcc_cpufreq_platdrv = {
++	.driver = {
++		.name	= "pcc-cpufreq",
++	},
++	.remove		= pcc_cpufreq_remove,
+ };
+-MODULE_DEVICE_TABLE(acpi, processor_device_ids);
++
++static int __init pcc_cpufreq_init(void)
++{
++	return platform_driver_probe(&pcc_cpufreq_platdrv, pcc_cpufreq_probe);
++}
++
++static void __exit pcc_cpufreq_exit(void)
++{
++	platform_driver_unregister(&pcc_cpufreq_platdrv);
++}
++
++MODULE_ALIAS("platform:pcc-cpufreq");
+ 
+ MODULE_AUTHOR("Matthew Garrett, Naga Chumbalkar");
+ MODULE_VERSION(PCC_VERSION);
 -- 
-2.34.1
+2.35.3
 
