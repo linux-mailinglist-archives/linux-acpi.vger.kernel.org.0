@@ -2,60 +2,44 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7B976A6B2F
-	for <lists+linux-acpi@lfdr.de>; Wed,  1 Mar 2023 11:58:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E2116A6CFC
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 Mar 2023 14:24:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229893AbjCAK6V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 1 Mar 2023 05:58:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40676 "EHLO
+        id S229606AbjCANYY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 1 Mar 2023 08:24:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229790AbjCAK6S (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 Mar 2023 05:58:18 -0500
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9BE6199DD;
-        Wed,  1 Mar 2023 02:58:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1677668296; x=1709204296;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=mUQT0lCw3o7DsJGEc0FuMpCukS+bnk0PTEmCUUh2KDc=;
-  b=m8MNDGNb3D922yW2iCGbUy/h+q8U1cN0l051sQo2l3dGVcIcPa8uJAJU
-   L/o6ByCO4wtCM4BqkzBPdGTclZQa/T2rq2uNKyKnfL4tBnZwX8bKbZmdy
-   KN9w83kspMr5KX+rA8toeDLD/GhfazbH/+++EO5AXwGjiyr+jTftJgUsi
-   NiYXJ8DMENHtjlt/8XFPH3yxvxlASzmfEOQKmK48FaQF/eJ9GYjLxzNm/
-   jVvcSfUrSZ7a4M3mzBgQKzlUrZ0R3DtvVUbnwAjSDqtL8n7ZO2e95CoZV
-   WtJ8/EkbNtGf44RZ+/XanSacYtOZPU5QbWO1LTulhSi7uiEaM7Gls+3Qf
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10635"; a="336672391"
-X-IronPort-AV: E=Sophos;i="5.98,224,1673942400"; 
-   d="scan'208";a="336672391"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2023 02:58:16 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10635"; a="817517698"
-X-IronPort-AV: E=Sophos;i="5.98,224,1673942400"; 
-   d="scan'208";a="817517698"
-Received: from lkp-server01.sh.intel.com (HELO 3895f5c55ead) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 01 Mar 2023 02:58:14 -0800
-Received: from kbuild by 3895f5c55ead with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pXKA2-000669-0y;
-        Wed, 01 Mar 2023 10:58:14 +0000
-Date:   Wed, 01 Mar 2023 18:57:16 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 020c69c7d16fa3fafeaf05b78967e71baf96154a
-Message-ID: <63ff2f8c.r+g/ChcFCDwBVDZw%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S229437AbjCANYY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 Mar 2023 08:24:24 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6FF371498A;
+        Wed,  1 Mar 2023 05:24:22 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 542862F4;
+        Wed,  1 Mar 2023 05:25:05 -0800 (PST)
+Received: from bogus (unknown [10.57.16.230])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0C68C3F587;
+        Wed,  1 Mar 2023 05:24:18 -0800 (PST)
+Date:   Wed, 1 Mar 2023 13:24:13 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Huisong Li <lihuisong@huawei.com>
+Cc:     robbiek@xsightlabs.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rafael@kernel.org,
+        rafael.j.wysocki@intel.com, wanghuiqiang@huawei.com,
+        zhangzekun11@huawei.com, wangxiongfeng2@huawei.com,
+        tanxiaofei@huawei.com, guohanjun@huawei.com, xiexiuqi@huawei.com,
+        wangkefeng.wang@huawei.com, huangdaode@huawei.com
+Subject: Re: [PATCH 1/2] mailbox: pcc: Add processing platform notification
+ for slave subspaces
+Message-ID: <20230301132413.p6ssnkp76pv2bz5y@bogus>
+References: <20221016034043.52227-1-lihuisong@huawei.com>
+ <20230216063653.1995-1-lihuisong@huawei.com>
+ <20230216063653.1995-2-lihuisong@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Disposition: inline
+In-Reply-To: <20230216063653.1995-2-lihuisong@huawei.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,159 +47,192 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 020c69c7d16fa3fafeaf05b78967e71baf96154a  Merge branch 'powercap' into bleeding-edge
+On Thu, Feb 16, 2023 at 02:36:52PM +0800, Huisong Li wrote:
+> Currently, PCC driver doesn't support the processing of platform
+> notification for slave PCC subspaces because of the incomplete
+> communication flow.
+> 
+> According to ACPI specification, if platform sends a notification
+> to OSPM, it must clear the command complete bit and trigger platform
+> interrupt. OSPM needs to check whether the command complete bit is
+> cleared, clear platform interrupt, process command, and then set the
+> command complete and ring doorbell to Platform. But the current judgment
+> on the command complete is not applicable to type4 in pcc_mbox_irq().
+> 
+> This patch determines whether the PCC driver needs to respond to the
+> interrupt of the channel with the master or slave subspace based on
+> the command complete register. And PCC driver needs to add the phase
+> of setting the command complete and ring doorbell in pcc_mbox_irq()
+> to complete type4 communication flow after processing command from
+> Platform.
+> 
 
-elapsed time: 832m
+I would prefer to reword this a little bit:
 
-configs tested: 140
-configs skipped: 12
+"
+mailbox: pcc: Add support for platform notification handling
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Currently, PCC driver doesn't support the processing of platform
+notification for type 4 PCC subspaces.
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha        buildonly-randconfig-r004-20230227   gcc  
-alpha        buildonly-randconfig-r006-20230227   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r025-20230228   gcc  
-alpha                randconfig-r032-20230226   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r004-20230227   gcc  
-arc                  randconfig-r034-20230226   gcc  
-arc                  randconfig-r043-20230226   gcc  
-arc                  randconfig-r043-20230227   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r026-20230226   gcc  
-arm                  randconfig-r046-20230226   gcc  
-arm                  randconfig-r046-20230227   clang
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r011-20230227   gcc  
-csky                 randconfig-r016-20230227   gcc  
-csky                 randconfig-r022-20230228   gcc  
-csky                 randconfig-r023-20230227   gcc  
-csky                 randconfig-r031-20230227   gcc  
-csky                 randconfig-r035-20230227   gcc  
-hexagon      buildonly-randconfig-r006-20230226   clang
-hexagon              randconfig-r041-20230226   clang
-hexagon              randconfig-r041-20230227   clang
-hexagon              randconfig-r045-20230226   clang
-hexagon              randconfig-r045-20230227   clang
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r002-20230227   clang
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-a001-20230227   clang
-i386                 randconfig-a002-20230227   clang
-i386                 randconfig-a003-20230227   clang
-i386                 randconfig-a004-20230227   clang
-i386                 randconfig-a005-20230227   clang
-i386                 randconfig-a006-20230227   clang
-i386                 randconfig-a011-20230227   gcc  
-i386                 randconfig-a012-20230227   gcc  
-i386                 randconfig-a013-20230227   gcc  
-i386                 randconfig-a014-20230227   gcc  
-i386                 randconfig-a015-20230227   gcc  
-i386                 randconfig-a016-20230227   gcc  
-i386                 randconfig-r022-20230227   gcc  
-ia64                             allmodconfig   gcc  
-ia64                                defconfig   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch    buildonly-randconfig-r002-20230226   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r014-20230226   gcc  
-loongarch            randconfig-r034-20230227   gcc  
-m68k                             allmodconfig   gcc  
-m68k         buildonly-randconfig-r005-20230226   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r012-20230226   gcc  
-m68k                 randconfig-r014-20230227   gcc  
-m68k                 randconfig-r024-20230227   gcc  
-m68k                 randconfig-r036-20230226   gcc  
-microblaze           randconfig-r036-20230227   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips         buildonly-randconfig-r001-20230226   clang
-mips                 randconfig-r005-20230226   clang
-mips                 randconfig-r021-20230226   gcc  
-mips                 randconfig-r023-20230228   gcc  
-mips                 randconfig-r025-20230227   clang
-mips                 randconfig-r035-20230226   clang
-nios2                               defconfig   gcc  
-nios2                randconfig-r025-20230226   gcc  
-openrisc     buildonly-randconfig-r003-20230226   gcc  
-openrisc             randconfig-r004-20230226   gcc  
-openrisc             randconfig-r011-20230226   gcc  
-parisc       buildonly-randconfig-r003-20230227   gcc  
-parisc       buildonly-randconfig-r004-20230226   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r001-20230227   gcc  
-parisc               randconfig-r015-20230226   gcc  
-parisc               randconfig-r024-20230226   gcc  
-parisc               randconfig-r026-20230228   gcc  
-parisc               randconfig-r031-20230226   gcc  
-parisc               randconfig-r033-20230227   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc              randconfig-r021-20230227   gcc  
-powerpc              randconfig-r021-20230228   clang
-powerpc              randconfig-r032-20230227   clang
-powerpc              randconfig-r033-20230226   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r042-20230226   clang
-riscv                randconfig-r042-20230227   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r024-20230228   clang
-s390                 randconfig-r026-20230227   gcc  
-s390                 randconfig-r044-20230226   clang
-s390                 randconfig-r044-20230227   gcc  
-sh                               allmodconfig   gcc  
-sh                   randconfig-r003-20230227   gcc  
-sh                   randconfig-r012-20230227   gcc  
-sh                   randconfig-r013-20230227   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r023-20230226   gcc  
-sparc64              randconfig-r003-20230226   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-a001-20230227   clang
-x86_64               randconfig-a002-20230227   clang
-x86_64               randconfig-a003-20230227   clang
-x86_64               randconfig-a004-20230227   clang
-x86_64               randconfig-a005-20230227   clang
-x86_64               randconfig-a006-20230227   clang
-x86_64               randconfig-a011-20230227   gcc  
-x86_64               randconfig-a012-20230227   gcc  
-x86_64               randconfig-a013-20230227   gcc  
-x86_64               randconfig-a014-20230227   gcc  
-x86_64               randconfig-a015-20230227   gcc  
-x86_64               randconfig-a016-20230227   gcc  
-x86_64               randconfig-r015-20230227   gcc  
-x86_64                               rhel-8.3   gcc  
-xtensa               randconfig-r002-20230226   gcc  
-xtensa               randconfig-r016-20230226   gcc  
+According to ACPI specification, if platform sends a notification
+to OSPM, it must clear the command complete bit and trigger platform
+interrupt. OSPM needs to check whether the command complete bit is
+cleared, clear platform interrupt, process command, and then set the
+command complete and ring doorbell to the Platform.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Let us stash the value of the pcc type and use the same while processing
+the interrupt of the channel. We also need to set the command complete
+bit and ring doorbell in the interrupt handler for the type 4 channel to
+complete the communication flow after processing the notification from
+the Platform.
+"
+
+> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+> ---
+>  drivers/mailbox/pcc.c | 57 ++++++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 51 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+> index 105d46c9801b..ecd54f049de3 100644
+> --- a/drivers/mailbox/pcc.c
+> +++ b/drivers/mailbox/pcc.c
+> @@ -91,6 +91,7 @@ struct pcc_chan_reg {
+>   * @cmd_update: PCC register bundle for the command complete update register
+>   * @error: PCC register bundle for the error status register
+>   * @plat_irq: platform interrupt
+> + * @type: PCC subspace type
+>   */
+>  struct pcc_chan_info {
+>  	struct pcc_mbox_chan chan;
+> @@ -100,12 +101,15 @@ struct pcc_chan_info {
+>  	struct pcc_chan_reg cmd_update;
+>  	struct pcc_chan_reg error;
+>  	int plat_irq;
+> +	u8 type;
+>  };
+>  
+>  #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
+>  static struct pcc_chan_info *chan_info;
+>  static int pcc_chan_count;
+>  
+> +static int pcc_send_data(struct mbox_chan *chan, void *data);
+> +
+>  /*
+>   * PCC can be used with perf critical drivers such as CPPC
+>   * So it makes sense to locally cache the virtual address and
+> @@ -221,6 +225,43 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
+>  	return acpi_register_gsi(NULL, interrupt, trigger, polarity);
+>  }
+>  
+> +static bool pcc_chan_command_complete(struct pcc_chan_info *pchan,
+> +				      u64 cmd_complete_reg_val)
+> +{
+> +	bool complete;
+> +
+> +	if (!pchan->cmd_complete.gas)
+> +		return true;
+> +
+> +	cmd_complete_reg_val &= pchan->cmd_complete.status_mask;
+> +
+> +	switch (pchan->type) {
+> +	case ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE:
+> +		/*
+> +		 * If this channel with the PCC master subspace is in use,
+> +		 * the command complete bit is 1 indicates that the executing
+> +		 * command has been completed by Platform and OSPM needs to
+> +		 * process the response.
+> +		 */
+> +		complete = cmd_complete_reg_val != 0;
+> +		break;
+> +	case ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE:
+> +		/*
+> +		 * If this channel with the PCC slave subspace is in use,
+> +		 * the command complete bit is 0 indicates that Platform is
+> +		 * sending a notification and OSPM needs to response the
+> +		 * interrupt to process this command.
+> +		 */
+> +		complete = cmd_complete_reg_val == 0;
+> +		break;
+> +	default:
+> +		complete = true;
+> +		break;
+> +	}
+> +
+> +	return complete;
+> +}
+> +
+>  /**
+>   * pcc_mbox_irq - PCC mailbox interrupt handler
+>   * @irq:	interrupt number
+> @@ -240,12 +281,8 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+>  	ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
+>  	if (ret)
+>  		return IRQ_NONE;
+> -
+> -	if (val) { /* Ensure GAS exists and value is non-zero */
+> -		val &= pchan->cmd_complete.status_mask;
+> -		if (!val)
+> -			return IRQ_NONE;
+> -	}
+> +	if (!pcc_chan_command_complete(pchan, val))
+> +		return IRQ_NONE;
+>
+
+Can we simplify the above 2 chunks like below ? Does that work for you ?
+I see we already check for presence of complete complete check and update
+registers for type3/4, we can avoid it I think. Let me know if you spot
+any issue with this.
+
+Regards,
+Sudeep
+
+--->8
+
+@@ -221,6 +225,28 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
+        return acpi_register_gsi(NULL, interrupt, trigger, polarity);
+ }
+
++static bool pcc_mbox_cmd_complete_check(struct pcc_chan_info *pchan)
++{
++       u64 val;
++       int ret;
++
++       ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
++       if (ret)
++               return false;
++
++       val &= pchan->cmd_complete.status_mask;
++
++       /*
++        * If this is PCC slave subspace channel, then the command complete
++        * bit 0 indicates that Platform is sending a notification and OSPM
++        * needs to respond this interrupt to process this command.
++        */
++       if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
++               return !val;
++       else
++               return !!val;
++}
++
+ /**
+  * pcc_mbox_irq - PCC mailbox interrupt handler
+  * @irq:       interrupt number
+@@ -237,16 +263,9 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+
+        pchan = chan->con_priv;
+
+-       ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
+-       if (ret)
++       if (!pcc_mbox_cmd_complete_check(pchan))
+                return IRQ_NONE;
+
+-       if (val) { /* Ensure GAS exists and value is non-zero */
+-               val &= pchan->cmd_complete.status_mask;
+-               if (!val)
+-                       return IRQ_NONE;
+-       }
+-
+        ret = pcc_chan_reg_read(&pchan->error, &val);
+        if (ret)
+
