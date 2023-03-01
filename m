@@ -2,135 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 358D06A7660
-	for <lists+linux-acpi@lfdr.de>; Wed,  1 Mar 2023 22:50:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DCBE6A77F8
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Mar 2023 00:48:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229586AbjCAVuN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 1 Mar 2023 16:50:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42950 "EHLO
+        id S229735AbjCAXsz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 1 Mar 2023 18:48:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229668AbjCAVuK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 Mar 2023 16:50:10 -0500
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5266B4BE9D
-        for <linux-acpi@vger.kernel.org>; Wed,  1 Mar 2023 13:50:07 -0800 (PST)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-536e8d6d9ceso294170997b3.12
-        for <linux-acpi@vger.kernel.org>; Wed, 01 Mar 2023 13:50:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112; t=1677707406;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wpj5qaodj5ScmnNVI3rS9lV8D5wtu+qpU9VuY7cTTKw=;
-        b=NhNtT+6dGVHh00iSdAACqfRBFAA8gf6z22UVtLG48MBccW6lc47mdX6u4S3FN+9QmZ
-         mWWKZ5GQQ1LHaoHzaYhg7xIPc9gr9tlfVsFAFUMIlKhSaJEUxwWfZ/Ebk3+Wsu8Nf3hS
-         zafom0jKpVZTLmC/AdVJT01uxzJbu6KIYR0YLBrtu8ZHJ3NA9QefB4xo4T6PunQ5irJr
-         OQjaIKArceRovZJc10UY0aVk5gijhFDZoUVpQh2GwEbo8Bmrkte13+eq5rEb/Vv2hzn+
-         sYInPfBEeQLT2HBq/aAPIGTo82S94stYrqWyb+PqmSh930CFo13uC0ItSG3CpfNv87bV
-         Vttw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677707406;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wpj5qaodj5ScmnNVI3rS9lV8D5wtu+qpU9VuY7cTTKw=;
-        b=ilCXeRmId4+v+a6tHoD8ulLo55z/lovNDeWZTR6gNFIdYymnjgIB3RBOrlmnjTPcRr
-         qSSGQZqZVEW95tNOZ9WdCm0zBtGp/NvdmxcOQAScEe3GcPaS87upr5rXZsCIJ/GVZEii
-         f1Fjm5pCLGy74UkKFtpSowApx5oP6PFAJdyA3RvoyUfVUI+hUhbiPuY9F3VKbiw0HTvS
-         CyOiJ/lc859IZbRr4ZOajy3mLeFyw/egyBejVnhAlpozLNMIrnltvrmW4nRq1ICPwa6W
-         0UygzqM3M+5QtK4ZlR9tgw321TxaL1LPsOdw9wimYKabgO7FTyFl3v2TvoZqDen0PUzG
-         1gjg==
-X-Gm-Message-State: AO0yUKWNlNw73VtNGi28gHjc9UKpg5bh3VZhSF6dXI0vREhvevkQc6bp
-        tfQ/1oO4FgIjfUGQfcJR2OLnfixVrHtMBH4=
-X-Google-Smtp-Source: AK7set81Xd2tYA4JOiqSKDhL+z8UEtfehns/zS6Rq/x95FFMqWM3N6FEq8Q+gfDREO1ct62FNHlpEoore1o1Hvs=
-X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:debf:1aed:5c45:c92])
- (user=saravanak job=sendgmr) by 2002:a05:6902:1003:b0:9f5:af6b:6f69 with SMTP
- id w3-20020a056902100300b009f5af6b6f69mr14719319ybt.5.1677707406553; Wed, 01
- Mar 2023 13:50:06 -0800 (PST)
-Date:   Wed,  1 Mar 2023 13:49:51 -0800
-In-Reply-To: <20230301214952.2190757-1-saravanak@google.com>
-Message-Id: <20230301214952.2190757-5-saravanak@google.com>
-Mime-Version: 1.0
-References: <20230301214952.2190757-1-saravanak@google.com>
-X-Mailer: git-send-email 2.39.2.722.g9855ee24e9-goog
-Subject: [PATCH v1 4/4] driver core: Delete fw_devlink_purge_absent_suppliers()
-From:   Saravana Kannan <saravanak@google.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>
-Cc:     Saravana Kannan <saravanak@google.com>,
-        Yongqin Liu <yongqin.liu@linaro.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Amelie Delaunay <amelie.delaunay@foss.st.com>,
-        kernel-team@android.com, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229813AbjCAXsx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 Mar 2023 18:48:53 -0500
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72FFD4EEA;
+        Wed,  1 Mar 2023 15:48:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1677714523; x=1709250523;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=438mUqu27Pg/8R7tElJ2t97iI5443sfkue+J0vJ5gNg=;
+  b=QHr2xfOXiqxXREcERzwCmn5qwmAlVMwFBKWmyBUlFgsyMRrL+nDSHMrH
+   ddluhJ2+i5+ch/jW5BGc0FGec+1WZdb6J8nt70Al13rVmBa1DxKa3zwwh
+   w48jvOoz73PEvzqu/4TI4vnLZ70LzDgrdVIhNdLSg26bqO6hBugT2TUix
+   +yP0Oa/ucyBB35aXLWG8bH8oKpsDxUZ8DgeG2eidunD73dfrMCwjRH3dA
+   X5uBLJlwvZKy7hFE2MMKE7yy+1z0WjZ1ktLDvnC6Idulu0tc9FEr+k8Mk
+   PdLpZ46/11V6p42Y3R8OgwI8n2qHqJNtFPzeOVLbyiltManmV68NN6hDn
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10636"; a="322831141"
+X-IronPort-AV: E=Sophos;i="5.98,225,1673942400"; 
+   d="scan'208";a="322831141"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2023 15:48:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10636"; a="798604515"
+X-IronPort-AV: E=Sophos;i="5.98,225,1673942400"; 
+   d="scan'208";a="798604515"
+Received: from lkp-server01.sh.intel.com (HELO 3895f5c55ead) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 01 Mar 2023 15:48:39 -0800
+Received: from kbuild by 3895f5c55ead with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pXWBa-0006Vf-2d;
+        Wed, 01 Mar 2023 23:48:38 +0000
+Date:   Thu, 2 Mar 2023 07:48:11 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Petr Pavlu <petr.pavlu@suse.com>, rafael@kernel.org,
+        lenb@kernel.org, viresh.kumar@linaro.org
+Cc:     oe-kbuild-all@lists.linux.dev, pmladek@suse.com, mcgrof@kernel.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Petr Pavlu <petr.pavlu@suse.com>
+Subject: Re: [PATCH v3] ACPI: cpufreq: use a platform device to load ACPI PPC
+ and PCC drivers
+Message-ID: <202303020759.pwVPib0p-lkp@intel.com>
+References: <20230301085717.10411-1-petr.pavlu@suse.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230301085717.10411-1-petr.pavlu@suse.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-After recent changes to fw_devlink that ended with commit 4a032827daa8
-("of: property: Simplify of_link_to_phandle()"), fw_devlink no longer
-cares about the "compatible" property and figures out the correct struct
-device at runtime.
+Hi Petr,
 
-So, there's no need for any driver or framework to call
-fw_devlink_purge_absent_suppliers() anymore and we can delete it.
+Thank you for the patch! Perhaps something to improve:
 
-Signed-off-by: Saravana Kannan <saravanak@google.com>
----
- drivers/base/core.c    | 16 ----------------
- include/linux/fwnode.h |  1 -
- 2 files changed, 17 deletions(-)
+[auto build test WARNING on rafael-pm/linux-next]
+[also build test WARNING on linus/master v6.2 next-20230301]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 6878dfcbf0d6..46364c4d1983 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -186,22 +186,6 @@ void fwnode_links_purge(struct fwnode_handle *fwnode)
- 	fwnode_links_purge_consumers(fwnode);
- }
- 
--void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwnode)
--{
--	struct fwnode_handle *child;
--
--	/* Don't purge consumer links of an added child */
--	if (fwnode->dev)
--		return;
--
--	fwnode->flags |= FWNODE_FLAG_NOT_DEVICE;
--	fwnode_links_purge_consumers(fwnode);
--
--	fwnode_for_each_available_child_node(fwnode, child)
--		fw_devlink_purge_absent_suppliers(child);
--}
--EXPORT_SYMBOL_GPL(fw_devlink_purge_absent_suppliers);
--
- /**
-  * __fwnode_links_move_consumers - Move consumer from @from to @to fwnode_handle
-  * @from: move consumers away from this fwnode
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 5700451b300f..63972c863fcd 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -210,6 +210,5 @@ static inline void fwnode_dev_initialized(struct fwnode_handle *fwnode,
- extern bool fw_devlink_is_strict(void);
- int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup);
- void fwnode_links_purge(struct fwnode_handle *fwnode);
--void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwnode);
- 
- #endif
+url:    https://github.com/intel-lab-lkp/linux/commits/Petr-Pavlu/ACPI-cpufreq-use-a-platform-device-to-load-ACPI-PPC-and-PCC-drivers/20230301-165927
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20230301085717.10411-1-petr.pavlu%40suse.com
+patch subject: [PATCH v3] ACPI: cpufreq: use a platform device to load ACPI PPC and PCC drivers
+config: ia64-allyesconfig (https://download.01.org/0day-ci/archive/20230302/202303020759.pwVPib0p-lkp@intel.com/config)
+compiler: ia64-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/59eb26f9b02165cc5c5fb6514ff4d2a8d7a91356
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Petr-Pavlu/ACPI-cpufreq-use-a-platform-device-to-load-ACPI-PPC-and-PCC-drivers/20230301-165927
+        git checkout 59eb26f9b02165cc5c5fb6514ff4d2a8d7a91356
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=ia64 olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=ia64 SHELL=/bin/bash drivers/
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202303020759.pwVPib0p-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/acpi/acpi_processor.c:177:13: warning: no previous prototype for 'acpi_pcc_cpufreq_init' [-Wmissing-prototypes]
+     177 | void __init acpi_pcc_cpufreq_init(void) {}
+         |             ^~~~~~~~~~~~~~~~~~~~~
+
+
+vim +/acpi_pcc_cpufreq_init +177 drivers/acpi/acpi_processor.c
+
+   162	
+   163	#ifdef CONFIG_X86
+   164	/* Check presence of Processor Clocking Control by searching for \_SB.PCCH. */
+   165	void __init acpi_pcc_cpufreq_init(void)
+   166	{
+   167		acpi_status status;
+   168		acpi_handle handle;
+   169	
+   170		status = acpi_get_handle(NULL, "\\_SB", &handle);
+   171		if (ACPI_FAILURE(status))
+   172			return;
+   173		if (acpi_has_method(handle, "PCCH"))
+   174			cpufreq_add_device("pcc-cpufreq");
+   175	}
+   176	#else
+ > 177	void __init acpi_pcc_cpufreq_init(void) {}
+   178	#endif /* CONFIG_X86 */
+   179	
+
 -- 
-2.39.2.722.g9855ee24e9-goog
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
