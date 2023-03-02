@@ -2,118 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 912556A7BB1
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Mar 2023 08:13:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D99D66A7D82
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Mar 2023 10:21:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229935AbjCBHNz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Mar 2023 02:13:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32838 "EHLO
+        id S229756AbjCBJVW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Mar 2023 04:21:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229937AbjCBHNt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Mar 2023 02:13:49 -0500
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 739D01CACC;
-        Wed,  1 Mar 2023 23:13:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1677741227; x=1709277227;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=UdkTPsx3MTqmp7pHb8Bec5X8LW5Hn5DgBrG6bqKjGQw=;
-  b=QM8M5rYOtgCNJiTyQSYgNvBHyvz7bqT4plRtJ4NkdcYDOSafLP9xMAog
-   WGrZXZAkIbMMgKodRAAolFDIHsdzms0Qf6Pf7zQC9t6wW8BB2Jsooo4Q4
-   9HX9R3xrCbEdUVpMMgruCih4WyaJXqW3Qe1fMps5WMW38IVWXdfNDhZws
-   zz6hmJyf9YjGJnrgu4Dzle3+SpRWobDjvNEPUfj05tqU+CSBIQ+0+36Or
-   JxZgKYbmw45r7s5H7TT/vs0tFlVkvibfeuwwmDh3Dwny2OCMmGN+CbT0n
-   T5uysc9TjU/zowM98FCrS2yjWGF/GzOfBMinfa8uKlfpG3vuqIdyOxQLc
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10636"; a="336937207"
-X-IronPort-AV: E=Sophos;i="5.98,226,1673942400"; 
-   d="scan'208";a="336937207"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2023 23:13:46 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10636"; a="1003999093"
-X-IronPort-AV: E=Sophos;i="5.98,226,1673942400"; 
-   d="scan'208";a="1003999093"
-Received: from htchen-mobl2.amr.corp.intel.com (HELO skuppusw-desk1.amr.corp.intel.com) ([10.212.212.13])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2023 23:13:46 -0800
-From:   Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-To:     Rafael J Wysocki <rjw@rjwysocki.net>
-Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: [PATCH v1] ACPI: sysfs: Enable ACPI sysfs support for CCEL records
-Date:   Wed,  1 Mar 2023 23:13:27 -0800
-Message-Id: <20230302071327.557734-1-sathyanarayanan.kuppuswamy@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S229951AbjCBJUz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Mar 2023 04:20:55 -0500
+X-Greylist: delayed 409 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 02 Mar 2023 01:19:52 PST
+Received: from comms.puri.sm (comms.puri.sm [159.203.221.185])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1942B136D4;
+        Thu,  2 Mar 2023 01:19:51 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id EBA22F26EF;
+        Thu,  2 Mar 2023 01:13:01 -0800 (PST)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id ikHPNBsCrCUU; Thu,  2 Mar 2023 01:13:00 -0800 (PST)
+Message-ID: <2a8e407f4f18c9350f8629a2b5fa18673355b2ae.camel@puri.sm>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=comms;
+        t=1677748380; bh=r48wB6y4CBJwYtBteM3rF7T/sJ4KdxxhAPNNK5Gf/Ec=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=oTNCEeRcVfcNOWLo+JTxt1El60vDjbozFzialHRHif8ZThhebi85cAbmlfjM9g9oY
+         ByM6aVQf7vFb+mzQIJKpOBu3VzzVKjOM2S+iAw4c94Z+uIDm1/R8qipRW6e/0J/R7G
+         kBHPE1h7tcXrYmf5O2nK+4YNEvGxTUQ8nWXWF3g6qGbIjWtse1P64ANqW9aAjFCvSL
+         ewaCdj3PRXSCKbZNrKmvKtM2jvjh34ktPqDl+X7/mEaHjWxKJX12kCqShMj+C//fed
+         SF6g+JLB+Qjj158JpSOr1kWvEaapC+bgYH34zPPR60SIYN9PDBxIaQwnk3taOkYZty
+         uC/xo/AfgJ4Cg==
+Subject: Re: [PATCH v1 0/4] Remove use of fw_devlink_purge_absent_suppliers()
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+To:     Saravana Kannan <saravanak@google.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>
+Cc:     Yongqin Liu <yongqin.liu@linaro.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Amelie Delaunay <amelie.delaunay@foss.st.com>,
+        kernel-team@android.com, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-acpi@vger.kernel.org
+Date:   Thu, 02 Mar 2023 10:12:54 +0100
+In-Reply-To: <20230301214952.2190757-1-saravanak@google.com>
+References: <20230301214952.2190757-1-saravanak@google.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3-1+deb11u1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The Confidential Computing Event Log (CCEL) table provides the address
-and length of the CCEL records area in UEFI reserved memory. To access
-these records, userspace can use /dev/mem to retrieve them. But
-'/dev/mem' is not enabled on many systems for security reasons.
+Am Mittwoch, dem 01.03.2023 um 13:49 -0800 schrieb Saravana Kannan:
+> Yongqin, Martin, Amelie,
+> 
+> We recent refactor of fw_devlink that ends with commit fb42378dcc7f
+> ("mtd: mtdpart: Don't create platform device that'll never probe"),
+> fw_devlink is smarter and doesn't depend on compatible property. So,
+> I
+> don't think these calls are needed anymore. But I don't have these
+> devices to test on and be sure and the hardware I use to test changes
+> doesn't have this issue either.
+> 
+> Can you please test these changes on the hardware where you hit the
+> issue to make sure things work as expected?
+> 
+> Yongqin, If you didn't have the context, this affected hikey960.
+> 
+> Greg,
+> 
+> Let's wait for some tests before we land these.
+> 
+> Thanks,
+> Saravana
 
-So to allow user space access these event log records without the
-/dev/mem interface, add support to access it via sysfs interface. The
-ACPI driver has provided read only access to BERT records area via
-'/sys/firmware/acpi/tables/data/BERT' in sysfs. So follow the same way,
-and add support for /sys/firmware/acpi/tables/data/CCEL to enable
-read-only access to the CCEL recorids area.
+hi Sravana,
 
-More details about the CCEL table can be found in ACPI specification
-r6.5, sec titled "CC Event Log ACPI Table".
+I picked the 12 commits leading up to commit fb42378dcc7f ("mtd:
+mtdpart: Don't create platform device that'll never probe") (
+https://source.puri.sm/martin.kepplinger/linux-next/-/commits/test_fw_devlink
+) and included the tipd patch below to test it.
 
-Original-patch-by: Haibo Xu <haibo1.xu@intel.com>
-[Original patch is for TDEL table, modified it for CCEL support]
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
----
- drivers/acpi/sysfs.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+With that, I get the following errors:
 
-diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-index 7db3b530279b..afeac925b31b 100644
---- a/drivers/acpi/sysfs.c
-+++ b/drivers/acpi/sysfs.c
-@@ -458,11 +458,28 @@ static int acpi_bert_data_init(void *th, struct acpi_data_attr *data_attr)
- 	return sysfs_create_bin_file(tables_data_kobj, &data_attr->attr);
- }
- 
-+static int acpi_ccel_data_init(void *th, struct acpi_data_attr *data_attr)
-+{
-+	struct acpi_table_ccel *ccel = th;
-+
-+	if (ccel->header.length < sizeof(struct acpi_table_ccel) ||
-+	    !(ccel->log_area_start_address) || !(ccel->log_area_minimum_length)) {
-+		kfree(data_attr);
-+		return -EINVAL;
-+	}
-+	data_attr->addr = ccel->log_area_start_address;
-+	data_attr->attr.size = ccel->log_area_minimum_length;
-+	data_attr->attr.attr.name = "CCEL";
-+
-+	return sysfs_create_bin_file(tables_data_kobj, &data_attr->attr);
-+}
-+
- static struct acpi_data_obj {
- 	char *name;
- 	int (*fn)(void *, struct acpi_data_attr *);
- } acpi_data_objs[] = {
- 	{ ACPI_SIG_BERT, acpi_bert_data_init },
-+	{ ACPI_SIG_CCEL, acpi_ccel_data_init },
- };
- 
- #define NUM_ACPI_DATA_OBJS ARRAY_SIZE(acpi_data_objs)
--- 
-2.34.1
+[    0.237931] imx-uart 30890000.serial: Failed to create device link
+with regulator-gnss
+[    0.334054] nwl-dsi 30a00000.mipi-dsi: Failed to create device link
+with regulator-lcd-1v8
+[    0.346964] nwl-dsi 30a00000.mipi-dsi: Failed to create device link
+with backlight-dsi
+
+but they are independent of this final tipd patch below. I'll test a
+real linux-next tree soon, for completeness, maybe I missed something?
+
+Anyways, on that tree, your tipd removal patch breaks type-c still for
+me, imx8mq-librem5.dtsi
+
+just to give a first reply quickly... thanks,
+
+                             martin
+
+
+> 
+> Cc: Yongqin Liu <yongqin.liu@linaro.org>
+> Cc: Sumit Semwal <sumit.semwal@linaro.org>
+> Cc: Martin Kepplinger <martin.kepplinger@puri.sm>
+> Cc: Amelie Delaunay <amelie.delaunay@foss.st.com>
+> 
+> Saravana Kannan (4):
+>   usb: typec: stusb160x: Remove use of
+>     fw_devlink_purge_absent_suppliers()
+>   usb: typec: tipd: Remove use of fw_devlink_purge_absent_suppliers()
+>   usb: typec: tcpm: Remove use of fw_devlink_purge_absent_suppliers()
+>   driver core: Delete fw_devlink_purge_absent_suppliers()
+> 
+>  drivers/base/core.c           | 16 ----------------
+>  drivers/usb/typec/stusb160x.c |  9 ---------
+>  drivers/usb/typec/tcpm/tcpm.c |  9 ---------
+>  drivers/usb/typec/tipd/core.c |  9 ---------
+>  include/linux/fwnode.h        |  1 -
+>  5 files changed, 44 deletions(-)
+> 
+
 
