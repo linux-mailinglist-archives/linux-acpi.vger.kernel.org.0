@@ -2,32 +2,32 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0402D6A7939
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Mar 2023 02:57:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BAAD36A7966
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Mar 2023 03:17:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229804AbjCBB5l (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 1 Mar 2023 20:57:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32834 "EHLO
+        id S229537AbjCBCRN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 1 Mar 2023 21:17:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229803AbjCBB5k (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 Mar 2023 20:57:40 -0500
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BE1F4ECED;
-        Wed,  1 Mar 2023 17:57:39 -0800 (PST)
+        with ESMTP id S229462AbjCBCRN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 Mar 2023 21:17:13 -0500
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D76C22A22;
+        Wed,  1 Mar 2023 18:17:11 -0800 (PST)
 Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.53])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4PRvHn5MSpzKmTC;
-        Thu,  2 Mar 2023 09:52:37 +0800 (CST)
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4PRvn00kjdznWDY;
+        Thu,  2 Mar 2023 10:14:28 +0800 (CST)
 Received: from [10.67.103.231] (10.67.103.231) by
  kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Thu, 2 Mar 2023 09:57:36 +0800
-Message-ID: <de87d0f6-572d-c7be-cf8e-f80914270a9f@huawei.com>
-Date:   Thu, 2 Mar 2023 09:57:35 +0800
+ 15.1.2507.21; Thu, 2 Mar 2023 10:17:07 +0800
+Message-ID: <2a165476-2e96-17b1-a50b-c8749462e8a1@huawei.com>
+Date:   Thu, 2 Mar 2023 10:17:07 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.2.0
-Subject: Re: [PATCH 1/2] mailbox: pcc: Add processing platform notification
- for slave subspaces
+Subject: Re: [PATCH 2/2] mailbox: pcc: Support shared interrupt for multiple
+ subspaces
 To:     Sudeep Holla <sudeep.holla@arm.com>
 CC:     <robbiek@xsightlabs.com>, <linux-acpi@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <rafael@kernel.org>,
@@ -38,14 +38,14 @@ CC:     <robbiek@xsightlabs.com>, <linux-acpi@vger.kernel.org>,
         <huangdaode@huawei.com>
 References: <20221016034043.52227-1-lihuisong@huawei.com>
  <20230216063653.1995-1-lihuisong@huawei.com>
- <20230216063653.1995-2-lihuisong@huawei.com>
- <20230301132413.p6ssnkp76pv2bz5y@bogus>
+ <20230216063653.1995-3-lihuisong@huawei.com>
+ <20230301133626.gchca3fdaqijxwzq@bogus>
 From:   "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <20230301132413.p6ssnkp76pv2bz5y@bogus>
+In-Reply-To: <20230301133626.gchca3fdaqijxwzq@bogus>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.67.103.231]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
  kwepemm600004.china.huawei.com (7.193.23.242)
 X-CFilter-Loop: Reflected
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
@@ -58,202 +58,145 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
-在 2023/3/1 21:24, Sudeep Holla 写道:
-> On Thu, Feb 16, 2023 at 02:36:52PM +0800, Huisong Li wrote:
->> Currently, PCC driver doesn't support the processing of platform
->> notification for slave PCC subspaces because of the incomplete
->> communication flow.
+在 2023/3/1 21:36, Sudeep Holla 写道:
+> On Thu, Feb 16, 2023 at 02:36:53PM +0800, Huisong Li wrote:
+>> If the platform acknowledge interrupt is level triggered, then it can
+>> be shared by multiple subspaces provided each one has a unique platform
+>> interrupt ack preserve and ack set masks.
 >>
->> According to ACPI specification, if platform sends a notification
->> to OSPM, it must clear the command complete bit and trigger platform
->> interrupt. OSPM needs to check whether the command complete bit is
->> cleared, clear platform interrupt, process command, and then set the
->> command complete and ring doorbell to Platform. But the current judgment
->> on the command complete is not applicable to type4 in pcc_mbox_irq().
+>> If it can be shared, then we can request the irq with IRQF_SHARED and
+>> IRQF_ONESHOT flags. The first one indicating it can be shared and the
+>> latter one to keep the interrupt disabled until the hardirq handler
+>> finished.
 >>
->> This patch determines whether the PCC driver needs to respond to the
->> interrupt of the channel with the master or slave subspace based on
->> the command complete register. And PCC driver needs to add the phase
->> of setting the command complete and ring doorbell in pcc_mbox_irq()
->> to complete type4 communication flow after processing command from
->> Platform.
+>> Further, since there is no way to detect if the interrupt is for a given
+>> channel as the interrupt ack preserve and ack set masks are for clearing
+>> the interrupt and not for reading the status(in case Irq Ack register
+>> may be write-only on some platforms), we need a way to identify if the
+>> given channel is in use and expecting the interrupt.
 >>
-> I would prefer to reword this a little bit:
->
-> "
-> mailbox: pcc: Add support for platform notification handling
->
-> Currently, PCC driver doesn't support the processing of platform
-> notification for type 4 PCC subspaces.
->
-> According to ACPI specification, if platform sends a notification
-> to OSPM, it must clear the command complete bit and trigger platform
-> interrupt. OSPM needs to check whether the command complete bit is
-> cleared, clear platform interrupt, process command, and then set the
-> command complete and ring doorbell to the Platform.
->
-> Let us stash the value of the pcc type and use the same while processing
-> the interrupt of the channel. We also need to set the command complete
-> bit and ring doorbell in the interrupt handler for the type 4 channel to
-> complete the communication flow after processing the notification from
-> the Platform.
-> "
-Thanks for your rewording.
+>> PCC type0, type1 and type5 do not support shared level triggered interrupt.
+>> The methods of determining whether a given channel for remaining types
+>> should respond to an interrupt are as follows:
+>>   - type2: Whether the interrupt belongs to a given channel is only
+>>            determined by the status field in Generic Communications Channel
+>>            Shared Memory Region, which is done in rx_callback of PCC client.
+>>   - type3: This channel checks chan_in_use flag first and then checks the
+>>            command complete bit(value '1' indicates that the command has
+>>            been completed).
+>>   - type4: Platform ensure that the default value of the command complete
+>>            bit corresponding to the type4 channel is '1'. This command
+>>            complete bit is '0' when receive a platform notification.
+>>
 >> Signed-off-by: Huisong Li <lihuisong@huawei.com>
 >> ---
->>   drivers/mailbox/pcc.c | 57 ++++++++++++++++++++++++++++++++++++++-----
->>   1 file changed, 51 insertions(+), 6 deletions(-)
+>>   drivers/mailbox/pcc.c | 45 ++++++++++++++++++++++++++++++++++++++++---
+>>   1 file changed, 42 insertions(+), 3 deletions(-)
 >>
 >> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
->> index 105d46c9801b..ecd54f049de3 100644
+>> index ecd54f049de3..04c2d73a0473 100644
 >> --- a/drivers/mailbox/pcc.c
 >> +++ b/drivers/mailbox/pcc.c
->> @@ -91,6 +91,7 @@ struct pcc_chan_reg {
->>    * @cmd_update: PCC register bundle for the command complete update register
+>> @@ -92,6 +92,10 @@ struct pcc_chan_reg {
 >>    * @error: PCC register bundle for the error status register
 >>    * @plat_irq: platform interrupt
->> + * @type: PCC subspace type
+>>    * @type: PCC subspace type
+>> + * @plat_irq_flags: platform interrupt flags
+>> + * @chan_in_use: flag indicating whether the channel is in use or not when use
+>> + *		platform interrupt, and only use it for communication from OSPM
+>> + *		to Platform, like type 3.
+> Also add a node that since only one transfer can occur at a time and the
+> mailbox takes care of locking, this flag needs no locking and is used just
+> to check if the interrupt needs handling when it is shared.
+Add a per-channel lock. Is this your mean?
+>
 >>    */
 >>   struct pcc_chan_info {
 >>   	struct pcc_mbox_chan chan;
->> @@ -100,12 +101,15 @@ struct pcc_chan_info {
->>   	struct pcc_chan_reg cmd_update;
+>> @@ -102,6 +106,8 @@ struct pcc_chan_info {
 >>   	struct pcc_chan_reg error;
 >>   	int plat_irq;
->> +	u8 type;
+>>   	u8 type;
+>> +	unsigned int plat_irq_flags;
+>> +	bool chan_in_use;
 >>   };
 >>   
 >>   #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
->>   static struct pcc_chan_info *chan_info;
->>   static int pcc_chan_count;
->>   
->> +static int pcc_send_data(struct mbox_chan *chan, void *data);
->> +
->>   /*
->>    * PCC can be used with perf critical drivers such as CPPC
->>    * So it makes sense to locally cache the virtual address and
->> @@ -221,6 +225,43 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
+>> @@ -225,6 +231,12 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
 >>   	return acpi_register_gsi(NULL, interrupt, trigger, polarity);
 >>   }
 >>   
->> +static bool pcc_chan_command_complete(struct pcc_chan_info *pchan,
->> +				      u64 cmd_complete_reg_val)
+>> +static bool pcc_chan_plat_irq_can_be_shared(struct pcc_chan_info *pchan)
 >> +{
->> +	bool complete;
->> +
->> +	if (!pchan->cmd_complete.gas)
->> +		return true;
->> +
->> +	cmd_complete_reg_val &= pchan->cmd_complete.status_mask;
->> +
->> +	switch (pchan->type) {
->> +	case ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE:
->> +		/*
->> +		 * If this channel with the PCC master subspace is in use,
->> +		 * the command complete bit is 1 indicates that the executing
->> +		 * command has been completed by Platform and OSPM needs to
->> +		 * process the response.
->> +		 */
->> +		complete = cmd_complete_reg_val != 0;
->> +		break;
->> +	case ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE:
->> +		/*
->> +		 * If this channel with the PCC slave subspace is in use,
->> +		 * the command complete bit is 0 indicates that Platform is
->> +		 * sending a notification and OSPM needs to response the
->> +		 * interrupt to process this command.
->> +		 */
->> +		complete = cmd_complete_reg_val == 0;
->> +		break;
->> +	default:
->> +		complete = true;
->> +		break;
->> +	}
->> +
->> +	return complete;
+>> +	return (pchan->plat_irq_flags & ACPI_PCCT_INTERRUPT_MODE) ==
+>> +		ACPI_LEVEL_SENSITIVE;
 >> +}
 >> +
->>   /**
->>    * pcc_mbox_irq - PCC mailbox interrupt handler
->>    * @irq:	interrupt number
->> @@ -240,12 +281,8 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+>>   static bool pcc_chan_command_complete(struct pcc_chan_info *pchan,
+>>   				      u64 cmd_complete_reg_val)
+>>   {
+>> @@ -277,6 +289,9 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+>>   	int ret;
+>>   
+>>   	pchan = chan->con_priv;
+>> +	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE &&
+>> +	    !pchan->chan_in_use)
+>> +		return IRQ_NONE;
+>>   
 >>   	ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
 >>   	if (ret)
->>   		return IRQ_NONE;
->> -
->> -	if (val) { /* Ensure GAS exists and value is non-zero */
->> -		val &= pchan->cmd_complete.status_mask;
->> -		if (!val)
->> -			return IRQ_NONE;
->> -	}
->> +	if (!pcc_chan_command_complete(pchan, val))
->> +		return IRQ_NONE;
->>
-> Can we simplify the above 2 chunks like below ? Does that work for you ?
-> I see we already check for presence of complete complete check and update
-> registers for type3/4, we can avoid it I think. Let me know if you spot
-> any issue with this.
-Agree using a function to read cmd_complete and check it. But it has a 
-probelm, details as below.
+>> @@ -302,9 +317,13 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+>>   	/*
+>>   	 * The PCC slave subspace channel needs to set the command complete bit
+>>   	 * and ring doorbell after processing message.
+>> +	 *
+>> +	 * The PCC master subspace channel clears chan_in_use to free channel.
+>>   	 */
+>>   	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
+>>   		pcc_send_data(chan, NULL);
+>> +	else if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE)
+>> +		pchan->chan_in_use = false;
+> Just wondering if this has to be for type 3 only. I am trying to avoid
+> conditional update of this flag, can we not do it for everything except type4 ?
+> (I mean just in unconditional else part)
+But type2 do not need this flag.
+For types no need this flag, it is always hard to understand and 
+redundant design.
+If no this condition, we don't know what is the impact on the furture 
+types.
 >
-> Regards,
-> Sudeep
+>>   	return IRQ_HANDLED;
+>>   }
+>> @@ -353,10 +372,13 @@ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
+>>   	spin_unlock_irqrestore(&chan->lock, flags);
+>>   
+>>   	if (pchan->plat_irq > 0) {
+>> +		unsigned long irqflags;
+>>   		int rc;
+>>   
+>> -		rc = devm_request_irq(dev, pchan->plat_irq, pcc_mbox_irq, 0,
+>> -				      MBOX_IRQ_NAME, chan);
+>> +		irqflags = pcc_chan_plat_irq_can_be_shared(pchan) ?
+>> +					IRQF_SHARED | IRQF_ONESHOT : 0;
+>> +		rc = devm_request_irq(dev, pchan->plat_irq, pcc_mbox_irq,
+>> +				      irqflags, MBOX_IRQ_NAME, chan);
+>>   		if (unlikely(rc)) {
+>>   			dev_err(dev, "failed to register PCC interrupt %d\n",
+>>   				pchan->plat_irq);
+>> @@ -418,7 +440,17 @@ static int pcc_send_data(struct mbox_chan *chan, void *data)
+>>   	if (ret)
+>>   		return ret;
+>>   
+>> -	return pcc_chan_reg_read_modify_write(&pchan->db);
+>> +	ret = pcc_chan_reg_read_modify_write(&pchan->db);
+>> +	/*
+>> +	 * For the master subspace channel, set chan_in_use flag to true after
+>> +	 * ring doorbell, and clear this flag when the reply message is
+>> +	 * processed.
+>> +	 */
+>> +	if (!ret && pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE &&
+>> +	    pchan->plat_irq > 0)
+>> +		pchan->chan_in_use = true;
+> Ditto here(for all type except type 4?)
+Above is my concern.
 >
-> --->8
->
-> @@ -221,6 +225,28 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
->          return acpi_register_gsi(NULL, interrupt, trigger, polarity);
->   }
->
-> +static bool pcc_mbox_cmd_complete_check(struct pcc_chan_info *pchan)
-> +{
-> +       u64 val;
-> +       int ret;
-> +
-> +       ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
-> +       if (ret)
-> +               return false;
-> +
-
-we indeed already check if cmd_complete register is exist.
-IMO, it can simply the code logic and reduce the risk of problems if we return true here for the type without this register.
-what do you think?
-
-> +       val &= pchan->cmd_complete.status_mask;
-> +
-> +       /*
-> +        * If this is PCC slave subspace channel, then the command complete
-> +        * bit 0 indicates that Platform is sending a notification and OSPM
-> +        * needs to respond this interrupt to process this command.
-> +        */
-> +       if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
-> +               return !val;
-> +       else
-> +               return !!val;
-This else branch is not applicable to type 3. type 3 will cannot respond 
-interrupt.
-> +}
-> +
->   /**
->    * pcc_mbox_irq - PCC mailbox interrupt handler
->    * @irq:       interrupt number
-> @@ -237,16 +263,9 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
->
->          pchan = chan->con_priv;
->
-> -       ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
-> -       if (ret)
-> +       if (!pcc_mbox_cmd_complete_check(pchan))
->                  return IRQ_NONE;
->
-> -       if (val) { /* Ensure GAS exists and value is non-zero */
-> -               val &= pchan->cmd_complete.status_mask;
-> -               if (!val)
-> -                       return IRQ_NONE;
-> -       }
-> -
->          ret = pcc_chan_reg_read(&pchan->error, &val);
->          if (ret)
->
->
-> .
