@@ -2,201 +2,182 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAAD36A7966
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Mar 2023 03:17:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA5E96A7BA9
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Mar 2023 08:13:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229537AbjCBCRN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 1 Mar 2023 21:17:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46406 "EHLO
+        id S229809AbjCBHNO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Mar 2023 02:13:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbjCBCRN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 Mar 2023 21:17:13 -0500
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D76C22A22;
-        Wed,  1 Mar 2023 18:17:11 -0800 (PST)
-Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.53])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4PRvn00kjdznWDY;
-        Thu,  2 Mar 2023 10:14:28 +0800 (CST)
-Received: from [10.67.103.231] (10.67.103.231) by
- kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Thu, 2 Mar 2023 10:17:07 +0800
-Message-ID: <2a165476-2e96-17b1-a50b-c8749462e8a1@huawei.com>
-Date:   Thu, 2 Mar 2023 10:17:07 +0800
+        with ESMTP id S229624AbjCBHNN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Mar 2023 02:13:13 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15D75125A4;
+        Wed,  1 Mar 2023 23:13:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1677741189; x=1709277189;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=qWpUn32unE2MmDexgZsuvz6IvmhGuAC408RmQ7LNQnE=;
+  b=njLZXa5us4gwFcZcXGWicxonv+IkpI16h1nGTIdpaDBBS+n4BMaAHjhW
+   W7wktVUQpLJ62DJ7xAAbYDgroMAlszL7L+3UysddLWoTRqfkeoif5525G
+   QW/7FFNpA074u91irKnkYr6yw72V6bLfnJp4yaD3RjBUI0YKuUyyr93+q
+   o5+FWeRntOnCn8Aj4IWseAV9vB+N30mgoIYhua062Od3EZyohgNhsqT6H
+   Z3kFF6vArj2fWa1yVdqYNkotuPM0A4dICUrHX5rBATTPk1Rr/Soi0BKni
+   vUVRKH7AfYot/aiEDCyrdQ1rCY8CamdCncNbkLJArR4szABFSp5GvUzKw
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10636"; a="314303160"
+X-IronPort-AV: E=Sophos;i="5.98,226,1673942400"; 
+   d="scan'208";a="314303160"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2023 23:13:08 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10636"; a="707310723"
+X-IronPort-AV: E=Sophos;i="5.98,226,1673942400"; 
+   d="scan'208";a="707310723"
+Received: from lkp-server01.sh.intel.com (HELO 776573491cc5) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 01 Mar 2023 23:13:06 -0800
+Received: from kbuild by 776573491cc5 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pXd7h-0000IH-26;
+        Thu, 02 Mar 2023 07:13:05 +0000
+Date:   Thu, 02 Mar 2023 15:12:07 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 3a6fe66936a0761d48cf4f4c62885abebeafea22
+Message-ID: <64004c47.poNPafX3eoj5dSFB%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH 2/2] mailbox: pcc: Support shared interrupt for multiple
- subspaces
-To:     Sudeep Holla <sudeep.holla@arm.com>
-CC:     <robbiek@xsightlabs.com>, <linux-acpi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <rafael@kernel.org>,
-        <rafael.j.wysocki@intel.com>, <wanghuiqiang@huawei.com>,
-        <zhangzekun11@huawei.com>, <wangxiongfeng2@huawei.com>,
-        <tanxiaofei@huawei.com>, <guohanjun@huawei.com>,
-        <xiexiuqi@huawei.com>, <wangkefeng.wang@huawei.com>,
-        <huangdaode@huawei.com>
-References: <20221016034043.52227-1-lihuisong@huawei.com>
- <20230216063653.1995-1-lihuisong@huawei.com>
- <20230216063653.1995-3-lihuisong@huawei.com>
- <20230301133626.gchca3fdaqijxwzq@bogus>
-From:   "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <20230301133626.gchca3fdaqijxwzq@bogus>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.103.231]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemm600004.china.huawei.com (7.193.23.242)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 3a6fe66936a0761d48cf4f4c62885abebeafea22  Merge branch 'pm-cpufreq' into bleeding-edge
 
-在 2023/3/1 21:36, Sudeep Holla 写道:
-> On Thu, Feb 16, 2023 at 02:36:53PM +0800, Huisong Li wrote:
->> If the platform acknowledge interrupt is level triggered, then it can
->> be shared by multiple subspaces provided each one has a unique platform
->> interrupt ack preserve and ack set masks.
->>
->> If it can be shared, then we can request the irq with IRQF_SHARED and
->> IRQF_ONESHOT flags. The first one indicating it can be shared and the
->> latter one to keep the interrupt disabled until the hardirq handler
->> finished.
->>
->> Further, since there is no way to detect if the interrupt is for a given
->> channel as the interrupt ack preserve and ack set masks are for clearing
->> the interrupt and not for reading the status(in case Irq Ack register
->> may be write-only on some platforms), we need a way to identify if the
->> given channel is in use and expecting the interrupt.
->>
->> PCC type0, type1 and type5 do not support shared level triggered interrupt.
->> The methods of determining whether a given channel for remaining types
->> should respond to an interrupt are as follows:
->>   - type2: Whether the interrupt belongs to a given channel is only
->>            determined by the status field in Generic Communications Channel
->>            Shared Memory Region, which is done in rx_callback of PCC client.
->>   - type3: This channel checks chan_in_use flag first and then checks the
->>            command complete bit(value '1' indicates that the command has
->>            been completed).
->>   - type4: Platform ensure that the default value of the command complete
->>            bit corresponding to the type4 channel is '1'. This command
->>            complete bit is '0' when receive a platform notification.
->>
->> Signed-off-by: Huisong Li <lihuisong@huawei.com>
->> ---
->>   drivers/mailbox/pcc.c | 45 ++++++++++++++++++++++++++++++++++++++++---
->>   1 file changed, 42 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
->> index ecd54f049de3..04c2d73a0473 100644
->> --- a/drivers/mailbox/pcc.c
->> +++ b/drivers/mailbox/pcc.c
->> @@ -92,6 +92,10 @@ struct pcc_chan_reg {
->>    * @error: PCC register bundle for the error status register
->>    * @plat_irq: platform interrupt
->>    * @type: PCC subspace type
->> + * @plat_irq_flags: platform interrupt flags
->> + * @chan_in_use: flag indicating whether the channel is in use or not when use
->> + *		platform interrupt, and only use it for communication from OSPM
->> + *		to Platform, like type 3.
-> Also add a node that since only one transfer can occur at a time and the
-> mailbox takes care of locking, this flag needs no locking and is used just
-> to check if the interrupt needs handling when it is shared.
-Add a per-channel lock. Is this your mean?
->
->>    */
->>   struct pcc_chan_info {
->>   	struct pcc_mbox_chan chan;
->> @@ -102,6 +106,8 @@ struct pcc_chan_info {
->>   	struct pcc_chan_reg error;
->>   	int plat_irq;
->>   	u8 type;
->> +	unsigned int plat_irq_flags;
->> +	bool chan_in_use;
->>   };
->>   
->>   #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
->> @@ -225,6 +231,12 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
->>   	return acpi_register_gsi(NULL, interrupt, trigger, polarity);
->>   }
->>   
->> +static bool pcc_chan_plat_irq_can_be_shared(struct pcc_chan_info *pchan)
->> +{
->> +	return (pchan->plat_irq_flags & ACPI_PCCT_INTERRUPT_MODE) ==
->> +		ACPI_LEVEL_SENSITIVE;
->> +}
->> +
->>   static bool pcc_chan_command_complete(struct pcc_chan_info *pchan,
->>   				      u64 cmd_complete_reg_val)
->>   {
->> @@ -277,6 +289,9 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
->>   	int ret;
->>   
->>   	pchan = chan->con_priv;
->> +	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE &&
->> +	    !pchan->chan_in_use)
->> +		return IRQ_NONE;
->>   
->>   	ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
->>   	if (ret)
->> @@ -302,9 +317,13 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
->>   	/*
->>   	 * The PCC slave subspace channel needs to set the command complete bit
->>   	 * and ring doorbell after processing message.
->> +	 *
->> +	 * The PCC master subspace channel clears chan_in_use to free channel.
->>   	 */
->>   	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
->>   		pcc_send_data(chan, NULL);
->> +	else if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE)
->> +		pchan->chan_in_use = false;
-> Just wondering if this has to be for type 3 only. I am trying to avoid
-> conditional update of this flag, can we not do it for everything except type4 ?
-> (I mean just in unconditional else part)
-But type2 do not need this flag.
-For types no need this flag, it is always hard to understand and 
-redundant design.
-If no this condition, we don't know what is the impact on the furture 
-types.
->
->>   	return IRQ_HANDLED;
->>   }
->> @@ -353,10 +372,13 @@ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
->>   	spin_unlock_irqrestore(&chan->lock, flags);
->>   
->>   	if (pchan->plat_irq > 0) {
->> +		unsigned long irqflags;
->>   		int rc;
->>   
->> -		rc = devm_request_irq(dev, pchan->plat_irq, pcc_mbox_irq, 0,
->> -				      MBOX_IRQ_NAME, chan);
->> +		irqflags = pcc_chan_plat_irq_can_be_shared(pchan) ?
->> +					IRQF_SHARED | IRQF_ONESHOT : 0;
->> +		rc = devm_request_irq(dev, pchan->plat_irq, pcc_mbox_irq,
->> +				      irqflags, MBOX_IRQ_NAME, chan);
->>   		if (unlikely(rc)) {
->>   			dev_err(dev, "failed to register PCC interrupt %d\n",
->>   				pchan->plat_irq);
->> @@ -418,7 +440,17 @@ static int pcc_send_data(struct mbox_chan *chan, void *data)
->>   	if (ret)
->>   		return ret;
->>   
->> -	return pcc_chan_reg_read_modify_write(&pchan->db);
->> +	ret = pcc_chan_reg_read_modify_write(&pchan->db);
->> +	/*
->> +	 * For the master subspace channel, set chan_in_use flag to true after
->> +	 * ring doorbell, and clear this flag when the reply message is
->> +	 * processed.
->> +	 */
->> +	if (!ret && pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE &&
->> +	    pchan->plat_irq > 0)
->> +		pchan->chan_in_use = true;
-> Ditto here(for all type except type 4?)
-Above is my concern.
->
+elapsed time: 728m
+
+configs tested: 102
+configs skipped: 8
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r015-20230302   gcc  
+arc                  randconfig-r043-20230302   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r025-20230302   gcc  
+arm                  randconfig-r046-20230302   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r014-20230302   clang
+csky         buildonly-randconfig-r002-20230302   gcc  
+csky                                defconfig   gcc  
+hexagon              randconfig-r041-20230302   clang
+hexagon              randconfig-r045-20230302   clang
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                          randconfig-a001   gcc  
+i386                          randconfig-a002   clang
+i386                          randconfig-a003   gcc  
+i386                          randconfig-a004   clang
+i386                          randconfig-a005   gcc  
+i386                          randconfig-a006   clang
+i386                          randconfig-a011   clang
+i386                          randconfig-a012   gcc  
+i386                          randconfig-a013   clang
+i386                          randconfig-a014   gcc  
+i386                          randconfig-a015   clang
+i386                          randconfig-a016   gcc  
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+ia64                 randconfig-r036-20230302   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r004-20230302   gcc  
+m68k                             allmodconfig   gcc  
+m68k         buildonly-randconfig-r004-20230302   gcc  
+m68k                                defconfig   gcc  
+microblaze   buildonly-randconfig-r001-20230302   gcc  
+microblaze   buildonly-randconfig-r003-20230302   gcc  
+microblaze           randconfig-r012-20230302   gcc  
+microblaze           randconfig-r023-20230302   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r013-20230302   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r026-20230302   gcc  
+nios2                randconfig-r031-20230302   gcc  
+nios2                randconfig-r033-20230302   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc              randconfig-r006-20230302   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r042-20230302   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r044-20230302   clang
+sh                               allmodconfig   gcc  
+sh                   randconfig-r005-20230302   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r016-20230302   gcc  
+sparc                randconfig-r021-20230302   gcc  
+sparc64              randconfig-r003-20230302   gcc  
+sparc64              randconfig-r011-20230302   gcc  
+sparc64              randconfig-r022-20230302   gcc  
+sparc64              randconfig-r035-20230302   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                        randconfig-a001   clang
+x86_64                        randconfig-a002   gcc  
+x86_64                        randconfig-a003   clang
+x86_64                        randconfig-a004   gcc  
+x86_64                        randconfig-a005   clang
+x86_64                        randconfig-a006   gcc  
+x86_64                        randconfig-a011   gcc  
+x86_64                        randconfig-a012   clang
+x86_64                        randconfig-a013   gcc  
+x86_64                        randconfig-a014   clang
+x86_64                        randconfig-a015   gcc  
+x86_64                        randconfig-a016   clang
+x86_64                               rhel-8.3   gcc  
+xtensa       buildonly-randconfig-r005-20230302   gcc  
+xtensa               randconfig-r001-20230302   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
