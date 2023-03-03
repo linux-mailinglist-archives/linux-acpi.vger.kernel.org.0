@@ -2,104 +2,178 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 036E56A9E40
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 19:16:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A66A36A9E52
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 19:18:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231584AbjCCSQc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Mar 2023 13:16:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34148 "EHLO
+        id S231567AbjCCSSL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Mar 2023 13:18:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231277AbjCCSQc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 13:16:32 -0500
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18B8C11146;
-        Fri,  3 Mar 2023 10:16:31 -0800 (PST)
-Received: by mail-ed1-f52.google.com with SMTP id da10so13856184edb.3;
-        Fri, 03 Mar 2023 10:16:31 -0800 (PST)
+        with ESMTP id S231627AbjCCSSJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 13:18:09 -0500
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E4846EAB
+        for <linux-acpi@vger.kernel.org>; Fri,  3 Mar 2023 10:18:07 -0800 (PST)
+Received: by mail-pl1-x631.google.com with SMTP id i3so3619677plg.6
+        for <linux-acpi@vger.kernel.org>; Fri, 03 Mar 2023 10:18:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1677867486;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=668IMkJ9VCN0OF++MP5t7Oo0nXOWw+hWogxo8w+yeOg=;
+        b=B+fQyvUELFfrROPXXypnqqlZ7q4HthF2DYdEUF8AJmC4q/lXWSA71vfbKbevTqz/Xg
+         0pYJNzLo0KssTzVsdDWr+pXFVwghw/dIqLXto6MzGATWDFjs73CQIDkbnAiv9bEIndx0
+         Fu2yhOEvzD80FFCllVb02RkSz0CUUbfF7YhPXie6dIgXEe9a6WXCZ+18pTwcIjRFqHNw
+         nA4LNIejj5OECwV/Zk8nYpbQeqYRiiqWDuuXSTP3uWQIom5l1RfJlCV1Xg59xEjb+3ek
+         ilCqivi1Uj3RcXgpPP2PD73O49jjRREZ+P1YJHDhx0Jfg/OtU6f4c5pAwixdfDSfVXlW
+         x4Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677867389;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VMX1t05T7QSbYg8k7aZKELcNeVeqU+8hDYgRPVnIUM8=;
-        b=vBgj5rAARjLgRwc3fevhIpYhTmOQR/iDkDE7ETCnTEDxhDZJJqQ0wbrvyJXLOMR+ym
-         nMVjix8KqtruwG+qdjCV70QB0rX6Biy0ul9yGgDVwjOCZ7MNfdtgHpxyz6V6Js5p16z7
-         2fxFercN1rWmvsjStOwz66di1pGqJi2k7Lt5Kw9+wELbbpU9f8JamCf7KvOcDNp0U3Zv
-         PAt/m+3FaRsTwcfxDqrEhKSRDW7FRokAMmEXG7XLz7R24nqGclJp13NxOOC3c/yP+agj
-         IQkFGxXNNpd6V6yV401V/QRmtiM2FLXboRK6sCbmResalS9pyHFa4WS/0icpPuh3w6J7
-         TX9w==
-X-Gm-Message-State: AO0yUKVpBb3B25ZmDF5eCaflrmOYCCukjRVp/zr3kJrx5MFKv3056l0a
-        xtkBdk3ikyHVUQP23y32uSh2TNPl9yu71gsq/CKqw0tPc9s=
-X-Google-Smtp-Source: AK7set8xKLjlEoqACTsPVfVhpc7x6npRrpqzgKZ4vpEajmCtWNfJ40R6hrT1lFbbaZFuX5TWjnSz5ebtNBlVaVFG/Z0=
-X-Received: by 2002:a17:906:618:b0:8a6:91d9:c7ac with SMTP id
- s24-20020a170906061800b008a691d9c7acmr1338676ejb.5.1677867389474; Fri, 03 Mar
- 2023 10:16:29 -0800 (PST)
+        d=1e100.net; s=20210112; t=1677867486;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=668IMkJ9VCN0OF++MP5t7Oo0nXOWw+hWogxo8w+yeOg=;
+        b=jFbaBeUjWLeA48YURsRjnlhch6ZMRjC5k7XgrMdBsD258YvzK223cEcBx4rFqzmGcI
+         qQT+a++Q/1AuLAm8IGULBNwTnCzrfBeie4mNE+s9NSQ4Wa2JUkr0Z75UheTDMTfPxcY6
+         qk7ZWj3HbMIRI+1kL1tvBxEoIm5gMijaUVyQDpAsVb2k9lbjfIJ+2d/t3FtQ7AqGfOm8
+         9pBFN0DmtMe1gWLMMtt4hHRMO34vnPoV0kLiDMspkQu4y0Qw/3gBskKmzximeO/Iuzi2
+         Up9niCDKTcW7TQ01lHBrSi8kgqhNVA5Jj9AxNK8wblZNqePuLFoK6iEEV5CO6zZTSsYL
+         29xA==
+X-Gm-Message-State: AO0yUKV6EkfcJTT08LjK2zbafQ6vTsHRYhZtQXTFklscmbADoOD2WkPX
+        jjF07+wmlFAp1YRItEwKKugCWw==
+X-Google-Smtp-Source: AK7set8OIhn2IJsNuwMRF4I+CfpWQ8X8Z8hSi4/JoVY3kI6gbMnm5DimL4tTlump/mgU2EV0usM82A==
+X-Received: by 2002:a17:902:c1cd:b0:19e:32da:e458 with SMTP id c13-20020a170902c1cd00b0019e32dae458mr2030337plc.63.1677867486583;
+        Fri, 03 Mar 2023 10:18:06 -0800 (PST)
+Received: from sunil-laptop ([49.206.8.117])
+        by smtp.gmail.com with ESMTPSA id kl15-20020a170903074f00b0019945535973sm1820709plb.63.2023.03.03.10.18.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Mar 2023 10:18:06 -0800 (PST)
+Date:   Fri, 3 Mar 2023 23:47:57 +0530
+From:   Sunil V L <sunilvl@ventanamicro.com>
+To:     Andrew Jones <ajones@ventanamicro.com>
+Cc:     linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Anup Patel <apatel@ventanamicro.com>,
+        Atish Patra <atishp@rivosinc.com>,
+        'Conor Dooley ' <conor.dooley@microchip.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH V3 11/20] RISC-V: ACPI: Cache and retrieve the RINTC
+ structure
+Message-ID: <ZAI51YC6N/p6hXkU@sunil-laptop>
+References: <20230303133647.845095-1-sunilvl@ventanamicro.com>
+ <20230303133647.845095-12-sunilvl@ventanamicro.com>
+ <20230303160556.lezccmwa7ymymxws@orel>
+ <ZAI1PbEfo1Gyco1n@sunil-laptop>
+ <20230303180452.qzzjdwpgvqqxdqz5@orel>
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 3 Mar 2023 19:16:18 +0100
-Message-ID: <CAJZ5v0jwa5wpitjs+wf--ndk4k5zpM4iuXV6gzxAoB4UmnKUfQ@mail.gmail.com>
-Subject: [GIT PULL] More ACPI updates for v6.3-rc1
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230303180452.qzzjdwpgvqqxdqz5@orel>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+On Fri, Mar 03, 2023 at 07:04:52PM +0100, Andrew Jones wrote:
+> On Fri, Mar 03, 2023 at 11:28:21PM +0530, Sunil V L wrote:
+> > On Fri, Mar 03, 2023 at 05:05:56PM +0100, Andrew Jones wrote:
+> > > On Fri, Mar 03, 2023 at 07:06:38PM +0530, Sunil V L wrote:
+> > > > RINTC structures in the MADT provide mapping between the hartid
+> > > > and the CPU. This is required many times even at run time like
+> > > > cpuinfo. So, instead of parsing the ACPI table every time, cache
+> > > > the RINTC structures and provide a function to get the correct
+> > > > RINTC structure for a given cpu.
+> > > > 
+> > > > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> > > > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > > ---
+> > > >  arch/riscv/include/asm/acpi.h |  9 ++++++
+> > > >  arch/riscv/kernel/acpi.c      | 56 +++++++++++++++++++++++++++++++++++
+> > > >  2 files changed, 65 insertions(+)
+> > > > 
+> > > > diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acpi.h
+> > > > index 111a8ed10af1..8be16c1ef7da 100644
+> > > > --- a/arch/riscv/include/asm/acpi.h
+> > > > +++ b/arch/riscv/include/asm/acpi.h
+> > > > @@ -61,6 +61,10 @@ static inline void arch_fix_phys_package_id(int num, u32 slot) { }
+> > > >  
+> > > >  int acpi_get_riscv_isa(struct acpi_table_header *table,
+> > > >  		       unsigned int cpu, const char **isa);
+> > > > +
+> > > > +struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu);
+> > > > +
+> > > > +u32 get_acpi_id_for_cpu(int cpu);
+> > > >  #else
+> > > >  static inline int acpi_get_riscv_isa(struct acpi_table_header *table,
+> > > >  				     unsigned int cpu, const char **isa)
+> > > > @@ -68,6 +72,11 @@ static inline int acpi_get_riscv_isa(struct acpi_table_header *table,
+> > > >  	return -EINVAL;
+> > > >  }
+> > > >  
+> > > > +static inline u32 get_acpi_id_for_cpu(int cpu)
+> > > > +{
+> > > > +	return -1;
+> > > > +}
+> > > 
+> > > Why do we need this stub? I wouldn't expect non-ACPI code to need an ACPI
+> > > ID.
+> > > 
+> > > > +
+> > > >  #endif /* CONFIG_ACPI */
+> > > >  
+> > > >  #endif /*_ASM_ACPI_H*/
+> > > > diff --git a/arch/riscv/kernel/acpi.c b/arch/riscv/kernel/acpi.c
+> > > > index 81d448c41714..8b3d68d8225f 100644
+> > > > --- a/arch/riscv/kernel/acpi.c
+> > > > +++ b/arch/riscv/kernel/acpi.c
+> > > > @@ -24,6 +24,62 @@ EXPORT_SYMBOL(acpi_disabled);
+> > > >  int acpi_pci_disabled = 1;	/* skip ACPI PCI scan and IRQ initialization */
+> > > >  EXPORT_SYMBOL(acpi_pci_disabled);
+> > > >  
+> > > > +static struct acpi_madt_rintc cpu_madt_rintc[NR_CPUS];
+> > > > +
+> > > > +static int acpi_parse_madt_rintc(union acpi_subtable_headers *header, const unsigned long end)
+> > > > +{
+> > > > +	struct acpi_madt_rintc *rintc = (struct acpi_madt_rintc *)header;
+> > > > +	int cpuid;
+> > > > +
+> > > > +	if (!(rintc->flags & ACPI_MADT_ENABLED))
+> > > > +		return 0;
+> > > 
+> > > Why not cache the data even when its disabled? We also cache the flags so
+> > > we can always check later too.
+> > > 
+> > Okay, doesn't harm.
+> > 
+On second thought, I would like to keep this check. The reason is, it
+is indexed using logical cpuid and OS will not enumerate disabled CPUs.
 
-Please pull from the tag
+> > > > +
+> > > > +	cpuid = riscv_hartid_to_cpuid(rintc->hart_id);
+> > > > +	if (cpuid >= 0 && cpuid < NR_CPUS)
+> > > 
+> > > What does it mean for the above check to fail? Bad ACPI tables?
+> > > 
+> > This can happen when SMP is disabled but platform has more CPUs.
+> 
+> Ah yes, NR_CPUS can be too small for the platform. Maybe a comment
+> explaining that we ignore all additional cpus in the ACPI tables that
+> we can't manage with the kernel's limits would be helpful here.
+> 
+Sure.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.3-rc1-2
-
-with top-most commit 57b76324c2a03b7b75d2d93f5c83f4340fd9b621
-
- Merge branches 'acpi-pm' and 'acpi-x86'
-
-on top of commit 88af9b164c7a25a71b1a1a699872b869e2e84c77
-
- Merge tag 'acpi-6.3-rc1' of
-git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
-
-to receive more ACPI updates for 6.3-rc1.
-
-These update ACPI quirks for some x86 platforms and add an IRQ override
-quirk for one more system.
-
-Specifics:
-
- - Add an ACPI IRQ override quirk for Asus Expertbook B2402FBA (Vojtech
-   Hejsek).
-
- - Drop a suspend-to-idle quirk for HP Elitebook G9 that is not needed
-   any more after a firmware update (Mario Limonciello).
-
- - Add all Cezanne systems to the list for forcing StorageD3Enable,
-   because they all need the same quirk (Mario Limonciello).
-
-Thanks!
-
-
----------------
-
-Mario Limonciello (2):
-      ACPI: x86: Drop quirk for HP Elitebook
-      ACPI: x86: utils: Add Cezanne to the list for forcing StorageD3Enable
-
-Vojtech Hejsek (1):
-      ACPI: resource: Skip IRQ override on Asus Expertbook B2402FBA
-
----------------
-
- drivers/acpi/resource.c   |  7 +++++++
- drivers/acpi/x86/s2idle.c | 24 ------------------------
- drivers/acpi/x86/utils.c  | 37 +++++++++++++------------------------
- 3 files changed, 20 insertions(+), 48 deletions(-)
+Thanks,
+Sunil
