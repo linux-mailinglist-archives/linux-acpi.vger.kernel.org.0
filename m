@@ -2,53 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE1986A9AC3
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 16:36:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B2EC6A9B1D
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 16:49:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231352AbjCCPgX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Mar 2023 10:36:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49856 "EHLO
+        id S231532AbjCCPt1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Mar 2023 10:49:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231166AbjCCPgW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 10:36:22 -0500
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA8191ADDA
-        for <linux-acpi@vger.kernel.org>; Fri,  3 Mar 2023 07:36:20 -0800 (PST)
-Received: by mail-ed1-x529.google.com with SMTP id cw28so11921753edb.5
-        for <linux-acpi@vger.kernel.org>; Fri, 03 Mar 2023 07:36:20 -0800 (PST)
+        with ESMTP id S231524AbjCCPtZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 10:49:25 -0500
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB62ED50B
+        for <linux-acpi@vger.kernel.org>; Fri,  3 Mar 2023 07:49:23 -0800 (PST)
+Received: by mail-ed1-x530.google.com with SMTP id ay14so8364890edb.11
+        for <linux-acpi@vger.kernel.org>; Fri, 03 Mar 2023 07:49:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ventanamicro.com; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+a4iAObubgdupIx5A13t4eGPRZyH4LhREkXgghv4xxk=;
-        b=Fv49W5DvFygeRCObHLWFGBApnfTmVTZKsuKv5skwkgqTlhwp7y0NVF9S9+JDySWkp5
-         LKcsFR/2x/z/MPF/H4cJv9cHBcnx+1RGn/Ao8mwpc7eYF/j9xKct2/zvql1qvVZlfkTv
-         vpK+Rft5JIrZ3SMip85z3PMYm4JcDepSx35m2Twsq/DaAQaHlJY56kK9N8sXYcsgrsSZ
-         URjrUD/1LA3SHJIlry2EvscmT7O8rmO44+Up79eInIwRKGX8BE1Am1CQkh22MuFQhJrG
-         evvkpHXwpZD+I8PNzhrTcs5U9UinFJfRkLM8tSq4YH6nOu/liOPYUzRDOC8A6hBJjW+v
-         aarg==
+        bh=x+5JbfjZ8Aa/Wy9sFT0uYrAvKsrB7pVmzzINwbowStU=;
+        b=BdAa7enZ9MgSZLdVOPUP7KtdM25yTv5Gt4+UmTEGXb7tjay5ZxpdRRJ5ETYRoBsFni
+         sYRzYsTu7lRj8u1pbH/PIRnyjrBqHsOm4hnYswNP0thheg/2KeuBGaM1mFOaA3VuEA7s
+         /hHlOlrHosFopTpSNTUPWO9kpAsHtEjlUEVgG6aGnoT280yjnwWVjQx5RKnoBSt+Tc51
+         jckjfynl8Uk+9ziSywgoXzTKVfuZPeuTcvBJNcuroVDn8E89+pxP46ZuJje4tWSaJ7IT
+         7uG7+keqhI47E+fSZiRZxmqIDOfrPvU2GdGqwgoF4bGDFTB6JP1zWKoQTClbRT/c/TE5
+         BQ8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+a4iAObubgdupIx5A13t4eGPRZyH4LhREkXgghv4xxk=;
-        b=Ea2ePCLkUbVZ5OrnJUa8aGNe64P7/JQ6cAV2dBpqdwFR0RaUzk8LIL/BtSBGHCtn8+
-         4Trjad3ExVSObIGYY9zXPtRNeDjob6yMbjM9H3rQ1jWgFii3GK9o3ZXaCrfNTnbfP+Kr
-         3mxxGGmx2FB/LEyNnOZcbD+xyqurbntr3I3H2PK/NBQPjQMk3OVN7clbqaf10AqLVAFj
-         srC7NP2sOBQr2eNu08R8jAaeoC7czp/3KjBtpzgkYfYMoHvk5ABpHREAj2v/4JUXhMoO
-         GHLmDsXyc3TFLNcaqcGJVTN58m3en2MHltMu3RUWDk84m6ND4nmzfZhmThKSIruX7dsD
-         NLiw==
-X-Gm-Message-State: AO0yUKXJ34jlytCJqrPj4PBYWIsE5MhYsgI5itRvRCbJiyhVFh2L9Fj6
-        hEquLh3s2ZNNBD2xYdwL9U3LLw==
-X-Google-Smtp-Source: AK7set9EtY0wspQMB4VPYlpSRdJQhEAZ1ryiI5eLWiuIMV0gy5sE2XY9CWySdjcNRf/alEQ/500zsA==
-X-Received: by 2002:a17:907:7f13:b0:884:3174:119d with SMTP id qf19-20020a1709077f1300b008843174119dmr2431543ejc.14.1677857779172;
-        Fri, 03 Mar 2023 07:36:19 -0800 (PST)
+        bh=x+5JbfjZ8Aa/Wy9sFT0uYrAvKsrB7pVmzzINwbowStU=;
+        b=WtOzbVs2JCmqH01Ugcqoe27Ky5NN4J/7P0+kH+rkvZQI+QrUe+OX/a+yJe8iKoZMM8
+         qQdXA1/7pgs4HtCNzghZ9Z4AMyNuAzC9k6b1lbhtyqhFznQDS5xSrxWjoQX37ZVZLdwX
+         YD7v8/pNf3+Gu72r6GOJjw9qXBs6zmDinVp0Xjo5151o4tAm9b2R9pBWR2U1uPEdepTp
+         phhJ1Z0xVd5P++RwKPsrzmMt1HJEGQhu+d/VDX+xZnEGDnYJFo9UxDwUWWmQwfw7PyA7
+         luE6l3xI7xt8KRsjmrqWG6phfGAvkSjZP/+yIDkK0Z4h7FLD2S6+lG1H3CtvZAQFXqD4
+         13Kg==
+X-Gm-Message-State: AO0yUKWdLk8ho04oTi5ypfRxHI6134g+719BjzbTez9Nbek+xA4eFvLa
+        W2unpcuZHYV4EE2eC8tsV2HLWA==
+X-Google-Smtp-Source: AK7set+zOpC3DQ8WQaz+jDiXR0tvMLVKI1MlDuFlw/L+S82YrzsxNoEXEDmTRZn0PNz1SmwhvAcsNg==
+X-Received: by 2002:a17:907:d109:b0:878:78f9:d1be with SMTP id uy9-20020a170907d10900b0087878f9d1bemr1957250ejc.23.1677858562207;
+        Fri, 03 Mar 2023 07:49:22 -0800 (PST)
 Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
-        by smtp.gmail.com with ESMTPSA id z92-20020a509e65000000b004bc11e5f8b9sm1270904ede.83.2023.03.03.07.36.18
+        by smtp.gmail.com with ESMTPSA id n13-20020a170906164d00b008deba75e89csm1080779ejd.66.2023.03.03.07.49.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Mar 2023 07:36:18 -0800 (PST)
-Date:   Fri, 3 Mar 2023 16:36:17 +0100
+        Fri, 03 Mar 2023 07:49:21 -0800 (PST)
+Date:   Fri, 3 Mar 2023 16:49:20 +0100
 From:   Andrew Jones <ajones@ventanamicro.com>
 To:     Sunil V L <sunilvl@ventanamicro.com>
 Cc:     linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
@@ -65,14 +65,14 @@ Cc:     linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
         Atish Patra <atishp@rivosinc.com>,
         'Conor Dooley ' <conor.dooley@microchip.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH V3 06/20] RISC-V: Add support to build the ACPI core
-Message-ID: <20230303153617.ko4duynxjvixy3bf@orel>
+Subject: Re: [PATCH V3 10/20] RISC-V: smpboot: Add ACPI support in smp_setup()
+Message-ID: <20230303154920.dq65hkcivpv7zyev@orel>
 References: <20230303133647.845095-1-sunilvl@ventanamicro.com>
- <20230303133647.845095-7-sunilvl@ventanamicro.com>
+ <20230303133647.845095-11-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230303133647.845095-7-sunilvl@ventanamicro.com>
+In-Reply-To: <20230303133647.845095-11-sunilvl@ventanamicro.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
@@ -83,68 +83,130 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 03, 2023 at 07:06:33PM +0530, Sunil V L wrote:
-> Enable ACPI core for RISC-V after adding architecture-specific
-> interfaces and header files required to build the ACPI core.
-> 
-> 1) Couple of header files are required unconditionally by the ACPI
-> core. Add empty acenv.h and cpu.h header files.
-> 
-> 2) If CONFIG_PCI is enabled, a few PCI related interfaces need to
-> be provided by the architecture. Define dummy interfaces for now
-> so that build succeeds. Actual implementation will be added when
-> PCI support is added for ACPI along with external interrupt
-> controller support.
-> 
-> 3) A few globals and memory mapping related functions specific
-> to the architecture need to be provided.
+On Fri, Mar 03, 2023 at 07:06:37PM +0530, Sunil V L wrote:
+> Enable SMP boot on ACPI based platforms by using the RINTC
+> structures in the MADT table.
 > 
 > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 > ---
->  arch/riscv/Kconfig             |  5 +++
->  arch/riscv/include/asm/acenv.h | 11 +++++
->  arch/riscv/include/asm/acpi.h  | 61 ++++++++++++++++++++++++++
->  arch/riscv/include/asm/cpu.h   |  8 ++++
->  arch/riscv/kernel/Makefile     |  2 +
->  arch/riscv/kernel/acpi.c       | 80 ++++++++++++++++++++++++++++++++++
->  6 files changed, 167 insertions(+)
->  create mode 100644 arch/riscv/include/asm/acenv.h
->  create mode 100644 arch/riscv/include/asm/acpi.h
->  create mode 100644 arch/riscv/include/asm/cpu.h
->  create mode 100644 arch/riscv/kernel/acpi.c
+>  arch/riscv/kernel/smpboot.c | 72 ++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 71 insertions(+), 1 deletion(-)
 > 
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index 71754eb32ee6..f3108c7e19d8 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -12,6 +12,8 @@ config 32BIT
+> diff --git a/arch/riscv/kernel/smpboot.c b/arch/riscv/kernel/smpboot.c
+> index 26214ddefaa4..27047322d3bb 100644
+> --- a/arch/riscv/kernel/smpboot.c
+> +++ b/arch/riscv/kernel/smpboot.c
+> @@ -8,6 +8,7 @@
+>   * Copyright (C) 2017 SiFive
+>   */
 >  
->  config RISCV
->  	def_bool y
-> +	select ACPI_GENERIC_GSI if ACPI
-> +	select ACPI_REDUCED_HARDWARE_ONLY if ACPI
->  	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
->  	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
->  	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
-> @@ -617,6 +619,7 @@ config EFI
->  	depends on OF && !XIP_KERNEL
->  	depends on MMU
->  	default y
-> +	select ARCH_SUPPORTS_ACPI if 64BIT
->  	select EFI_GENERIC_STUB
->  	select EFI_PARAMS_FROM_FDT
->  	select EFI_RUNTIME_WRAPPERS
-> @@ -720,3 +723,5 @@ source "drivers/cpufreq/Kconfig"
->  endmenu # "CPU Power Management"
+> +#include <linux/acpi.h>
+>  #include <linux/arch_topology.h>
+>  #include <linux/module.h>
+>  #include <linux/init.h>
+> @@ -70,6 +71,72 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
+>  	}
+>  }
 >  
->  source "arch/riscv/kvm/Kconfig"
+> +#ifdef CONFIG_ACPI
+> +static unsigned int cpu_count = 1;
 > +
-> +source "drivers/acpi/Kconfig"
+> +static int __init acpi_parse_rintc(union acpi_subtable_headers *header, const unsigned long end)
+> +{
+> +	unsigned long hart;
+> +	static bool found_boot_cpu;
+> +	struct acpi_madt_rintc *processor = (struct acpi_madt_rintc *)header;
+> +
+> +	/*
+> +	 * Each RINTC structure in MADT will have a flag. If ACPI_MADT_ENABLED
+> +	 * bit in the flag is not enabled, it means OS should not try to enable
+> +	 * the cpu to which RINTC belongs.
+> +	 */
+> +	if (!(processor->flags & ACPI_MADT_ENABLED))
+> +		return 0;
+> +
+> +	if (BAD_MADT_ENTRY(processor, end))
+> +		return -EINVAL;
+> +
+> +	acpi_table_print_madt_entry(&header->common);
+> +
+> +	hart = processor->hart_id;
+> +	if (hart == INVALID_HARTID) {
+> +		pr_warn("Invalid hartid\n");
+> +		return 0;
+> +	}
+> +
+> +	if (hart == cpuid_to_hartid_map(0)) {
+> +		BUG_ON(found_boot_cpu);
+> +		found_boot_cpu = true;
+> +		early_map_cpu_to_node(0, NUMA_NO_NODE);
 
-The above Kconfig hunks don't apply on the IPI improvement base. The
-second hunk also looks weird with the select under the default.
+We should have kept
+
+ static inline int acpi_numa_get_nid(unsigned int cpu) { return NUMA_NO_NODE; }
+
+and only dropped the
+
+ #ifdef CONFIG_ACPI_NUMA
+ int acpi_numa_get_nid(unsigned int cpu);
+ #else
+ ...
+ #endif
+
+> +		return 0;
+> +	}
+> +
+> +	if (cpu_count >= NR_CPUS) {
+> +		pr_warn("NR_CPUS is too small for the number of ACPI tables.\n");
+> +		return 0;
+> +	}
+> +
+> +	cpuid_to_hartid_map(cpu_count) = hart;
+> +	early_map_cpu_to_node(cpu_count, NUMA_NO_NODE);
+> +	cpu_count++;
+> +
+> +	return 0;
+> +}
+> +
+> +static void __init acpi_parse_and_init_cpus(void)
+> +{
+> +	int cpuid;
+> +
+> +	cpu_set_ops(0);
+> +
+> +	acpi_table_parse_madt(ACPI_MADT_TYPE_RINTC, acpi_parse_rintc, 0);
+> +
+> +	for (cpuid = 1; cpuid < nr_cpu_ids; cpuid++) {
+> +		if (cpuid_to_hartid_map(cpuid) != INVALID_HARTID) {
+> +			cpu_set_ops(cpuid);
+> +			set_cpu_possible(cpuid, true);
+> +		}
+> +	}
+> +}
+> +#else
+> +#define acpi_parse_and_init_cpus(...)	do { } while (0)
+> +#endif
+> +
+>  static void __init of_parse_and_init_cpus(void)
+>  {
+>  	struct device_node *dn;
+> @@ -118,7 +185,10 @@ static void __init of_parse_and_init_cpus(void)
+>  
+>  void __init setup_smp(void)
+>  {
+> -	of_parse_and_init_cpus();
+> +	if (acpi_disabled)
+> +		of_parse_and_init_cpus();
+> +	else
+> +		acpi_parse_and_init_cpus();
+>  }
+>  
+>  static int start_secondary_cpu(int cpu, struct task_struct *tidle)
+> -- 
+> 2.34.1
+>
 
 Thanks,
 drew
