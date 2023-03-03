@@ -2,53 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE47A6A9B7F
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 17:19:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 197456A9BA7
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 17:23:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230436AbjCCQTA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Mar 2023 11:19:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56534 "EHLO
+        id S230305AbjCCQXM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Mar 2023 11:23:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231278AbjCCQSw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 11:18:52 -0500
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7FF915CAE
-        for <linux-acpi@vger.kernel.org>; Fri,  3 Mar 2023 08:18:48 -0800 (PST)
-Received: by mail-ed1-x52f.google.com with SMTP id da10so12486473edb.3
-        for <linux-acpi@vger.kernel.org>; Fri, 03 Mar 2023 08:18:48 -0800 (PST)
+        with ESMTP id S229766AbjCCQXL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 11:23:11 -0500
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3373013DDC
+        for <linux-acpi@vger.kernel.org>; Fri,  3 Mar 2023 08:23:10 -0800 (PST)
+Received: by mail-ed1-x52c.google.com with SMTP id d30so12517497eda.4
+        for <linux-acpi@vger.kernel.org>; Fri, 03 Mar 2023 08:23:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ventanamicro.com; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OFUF1lBawdy3HQTMvToE8tlc5+s1Z78NHFKh5Xpfejo=;
-        b=dmxu/HtmCT/N/FbMcM0CxEtxN8TIOUKS/d6g5Fw6aH5SNapP6ZtIwiTmzTYiyqwCHF
-         v28/pdBIm8n8TT63ky2K23Esq4AmQbUQ1eJsMJtUUO7OvYQlqP26dP23XVQ5snpjCKT1
-         H/0eH8d0MDugpkwJQzpYeGa5iHJ0ulHki/9MSIiUUAZ82qfhOqJ+GxDmA/3wHAAlfFxf
-         zDVfMz9bR3P/79vrN1umXds3o3Mj+5MTVfmyBwZeoIdWJvRRPOe48lnrDKJrFP44NpXg
-         ceuMMXKg6iVA+kreLoZ1SaiXLk7OvDB8vYcRfTeDAqukj0Ac6jkIzGN9aCKkcinCdjaQ
-         pFgQ==
+        bh=5ryeAsxysbo6DUGxfiuPOI8CvtI+vb6NelPj5oYksPo=;
+        b=EzNCK3RZSJsJUeQFEWK8SnOi6P6PWK6BpIgChisWP1NzSH3VJqAhxv3yOHN49QZqxg
+         V0BotQn335MAGYgJxAnQgTh9LVMsDSCDQ/xWw3H3ctNOmg8JAYT3/m7yFa9i2bJjF+ra
+         ZttoECnbnJngdAr0peRBlCURcv4DOeWZMJr+UQInSQrH5dYL06UB85PPFrccZC8J4Gc5
+         GpnECND/KUp0C2V8VxmBWE1aa+V5hB2gD6L4RrqZCHoc7p7UMC3cQOhZQQWzF3fnvlrH
+         EbZbRFIvnTrDSVhUBd5gKFA+hE6u/UKpArsqB8YWOidtWPdOHOWOxQg2ufuiPbrJWj+4
+         TIYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OFUF1lBawdy3HQTMvToE8tlc5+s1Z78NHFKh5Xpfejo=;
-        b=E95wnHIXlh76UpCgWTg4wEc7E7h5aUyB/07ddgMzNs0PzqSUOJYAQvH3E2lLM0PYLA
-         VIoNy/WF+mhgUkv2LlctIFOeegsqip1qKN9O3nQk2cMhjmLdC8BaGhkVqAPzQAxswCG9
-         lF3+0Ye+669/CcskNBkC2rq00wm2WDZXn4yIGqF4gAjXE1Jmuu+5Fu1wKKtMdTCxfRaF
-         JcHVjWMtZEo0tOsjUeTL53KnRGVa893AmiqOjuE5PaeaOFmYgEDkZzoZgUjyGqAnz3mM
-         p8g3gKpsrh3W1PA4zBe0nyodflYwPnhLfbkM/iFyqjRp9OrjNASlHeKZ8TJkloR0FCcB
-         qhJQ==
-X-Gm-Message-State: AO0yUKVxV06RJa2Bba5smCY3ihDigfQ0UdQLGyYlm4Coy0shZV0a/4KC
-        GgX4Vs/Xums3G06JeSHWS9DOMw==
-X-Google-Smtp-Source: AK7set9KFbKWbHzMH5IwdN7fAabZAjcAVpz6yuy3G52zPbL1ze7nJgA7ll7IYlauO19cTFJaipxlnQ==
-X-Received: by 2002:aa7:d88c:0:b0:4ab:4c36:463c with SMTP id u12-20020aa7d88c000000b004ab4c36463cmr2491680edq.16.1677860327018;
-        Fri, 03 Mar 2023 08:18:47 -0800 (PST)
+        bh=5ryeAsxysbo6DUGxfiuPOI8CvtI+vb6NelPj5oYksPo=;
+        b=mq3KeDegbV0daMrvJ/7/7wuSXlAVvm/xmlNRw0/aZRS9pWZ1vVWQ20IMQP+FWfbQY7
+         b4S2FNZJvEpaH/bQVxmiH8xcjq+jbv9I4LwRCzif7G/i/A3r7FbwQFBKotEtqdJOf5wy
+         nbK5L6WJiRUsmkG2nm/SI8HZzt00XbtvzSA7na17o3eE+NQjrF2Ey2wwc447oVZr6TxD
+         x9fWCenwBS34OUX5B1wbd36KJAeXUYmT9uO49ZtGsfoqYXNRiy3rK3YVWdKdtcCHPqpv
+         SyWFcwQx2d79kh+oGLrQZYuUEHuDcbKtZtdGZOgkB2xtagq4pNcxc0wOOdHyQd1kOzVD
+         h5ig==
+X-Gm-Message-State: AO0yUKVRLcMieeyWWAwoHOTFwplrLKD2qtCvhjnkiHeB/IUF5SEZezoC
+        iAPMDOdQprMNlrOB3+aA8kbDzA==
+X-Google-Smtp-Source: AK7set+GMkAPdilJi56mUnW0fX32evecSe24CxSroekBxpjdNIx8xTEeM5pLsOlf4df3VzOOhkydOg==
+X-Received: by 2002:aa7:cfc2:0:b0:4bf:f9f4:9b1e with SMTP id r2-20020aa7cfc2000000b004bff9f49b1emr2272745edy.4.1677860588730;
+        Fri, 03 Mar 2023 08:23:08 -0800 (PST)
 Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
-        by smtp.gmail.com with ESMTPSA id si9-20020a170906cec900b008c5075f5331sm1083378ejb.165.2023.03.03.08.18.46
+        by smtp.gmail.com with ESMTPSA id b2-20020a50b402000000b004be64b284b2sm1338509edh.3.2023.03.03.08.23.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Mar 2023 08:18:46 -0800 (PST)
-Date:   Fri, 3 Mar 2023 17:18:45 +0100
+        Fri, 03 Mar 2023 08:23:08 -0800 (PST)
+Date:   Fri, 3 Mar 2023 17:23:07 +0100
 From:   Andrew Jones <ajones@ventanamicro.com>
 To:     Sunil V L <sunilvl@ventanamicro.com>
 Cc:     linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
@@ -65,14 +65,14 @@ Cc:     linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
         Atish Patra <atishp@rivosinc.com>,
         'Conor Dooley ' <conor.dooley@microchip.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH V3 13/20] RISC-V: cpu: Enable cpuinfo for ACPI systems
-Message-ID: <20230303161845.rzx2bxmvcij5vrzr@orel>
+Subject: Re: [PATCH V3 19/20] RISC-V: Enable ACPI in defconfig
+Message-ID: <20230303162307.zz5amah65gjme7da@orel>
 References: <20230303133647.845095-1-sunilvl@ventanamicro.com>
- <20230303133647.845095-14-sunilvl@ventanamicro.com>
+ <20230303133647.845095-20-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230303133647.845095-14-sunilvl@ventanamicro.com>
+In-Reply-To: <20230303133647.845095-20-sunilvl@ventanamicro.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -82,74 +82,24 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 03, 2023 at 07:06:40PM +0530, Sunil V L wrote:
-> On ACPI based platforms, few details like ISA need to be read
-> from the ACPI table. Enable cpuinfo on ACPI based systems.
+On Fri, Mar 03, 2023 at 07:06:46PM +0530, Sunil V L wrote:
+> Add support to build ACPI subsystem in defconfig.
 > 
 > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > ---
->  arch/riscv/kernel/cpu.c | 27 +++++++++++++++++++--------
->  1 file changed, 19 insertions(+), 8 deletions(-)
+>  arch/riscv/configs/defconfig | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
-> index 8400f0cc9704..80101bf77dab 100644
-> --- a/arch/riscv/kernel/cpu.c
-> +++ b/arch/riscv/kernel/cpu.c
-> @@ -3,10 +3,12 @@
->   * Copyright (C) 2012 Regents of the University of California
->   */
->  
-> +#include <linux/acpi.h>
->  #include <linux/cpu.h>
->  #include <linux/init.h>
->  #include <linux/seq_file.h>
->  #include <linux/of.h>
-> +#include <asm/acpi.h>
->  #include <asm/csr.h>
->  #include <asm/hwcap.h>
->  #include <asm/sbi.h>
-> @@ -283,23 +285,32 @@ static void c_stop(struct seq_file *m, void *v)
->  static int c_show(struct seq_file *m, void *v)
->  {
->  	unsigned long cpu_id = (unsigned long)v - 1;
-> -	struct device_node *node = of_get_cpu_node(cpu_id, NULL);
->  	struct riscv_cpuinfo *ci = per_cpu_ptr(&riscv_cpuinfo, cpu_id);
-> +	struct device_node *node;
->  	const char *compat, *isa;
->  
->  	seq_printf(m, "processor\t: %lu\n", cpu_id);
->  	seq_printf(m, "hart\t\t: %lu\n", cpuid_to_hartid_map(cpu_id));
-> -	if (!of_property_read_string(node, "riscv,isa", &isa))
-> -		print_isa(m, isa);
-> -	print_mmu(m);
-> -	if (!of_property_read_string(node, "compatible", &compat)
-> -	    && strcmp(compat, "riscv"))
-> -		seq_printf(m, "uarch\t\t: %s\n", compat);
-> +
-> +	if (acpi_disabled) {
-> +		node = of_get_cpu_node(cpu_id, NULL);
-> +		if (!of_property_read_string(node, "riscv,isa", &isa))
-> +			print_isa(m, isa);
-> +		print_mmu(m);
-> +		if (!of_property_read_string(node, "compatible", &compat) &&
-> +		    strcmp(compat, "riscv"))
-> +			seq_printf(m, "uarch\t\t: %s\n", compat);
-> +		of_node_put(node);
-> +	} else {
-> +		if (!acpi_get_riscv_isa(NULL, get_acpi_id_for_cpu(cpu_id), &isa))
-> +			print_isa(m, isa);
-> +		print_mmu(m);
-> +	}
-> +
->  	seq_printf(m, "mvendorid\t: 0x%lx\n", ci->mvendorid);
->  	seq_printf(m, "marchid\t\t: 0x%lx\n", ci->marchid);
->  	seq_printf(m, "mimpid\t\t: 0x%lx\n", ci->mimpid);
->  	seq_puts(m, "\n");
-> -	of_node_put(node);
->  
->  	return 0;
->  }
+> diff --git a/arch/riscv/configs/defconfig b/arch/riscv/configs/defconfig
+> index d98d6e90b2b8..8822b49ddb59 100644
+> --- a/arch/riscv/configs/defconfig
+> +++ b/arch/riscv/configs/defconfig
+> @@ -238,3 +238,4 @@ CONFIG_RCU_EQS_DEBUG=y
+>  # CONFIG_FTRACE is not set
+>  # CONFIG_RUNTIME_TESTING_MENU is not set
+>  CONFIG_MEMTEST=y
+> +CONFIG_ACPI=y
 > -- 
 > 2.34.1
 >
