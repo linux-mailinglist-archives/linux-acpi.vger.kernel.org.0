@@ -2,38 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9570E6A9C8B
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 17:59:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0E916A9D4D
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 18:21:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231265AbjCCQ7D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Mar 2023 11:59:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44560 "EHLO
+        id S231651AbjCCRV2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Mar 2023 12:21:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230420AbjCCQ7C (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 11:59:02 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE32AF774;
-        Fri,  3 Mar 2023 08:59:01 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 68ACEB81991;
-        Fri,  3 Mar 2023 16:59:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B200C433D2;
-        Fri,  3 Mar 2023 16:58:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677862739;
-        bh=z0SfoQpwZEfIQgXPO1rQgO6UNErYjmoidz6DFukMqtI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FjlCgeWiwHNlbeEnXmtpsFTVV2C4SIz9hsbYHcmuxM52cLHlpccEHteOnEj/JNyPc
-         HXC/cjBOnnZWo8qMLUYrSlqAXaI0NdxQg83IVTq385Vq8tvSnWAkXs68g+ewYlFJsC
-         e2KMQq1s2YVPIDrQagmV2R5VNYk2vVKcTYc+7ekR+EMZ7TZpXuCIf5B0RBxhE1KMpQ
-         c5FPkRt8h+iKINzxK3yUgzVCoj4Y+iYP6NaTXKSThyRoGHKszWqQrPiARX1O4G+eOc
-         Cl7TcF94nVg45zsXkJRU8U2Q4pt89ozeO7RnRI/sjH+T9vpKtXFXSkocBctIVEv6Nk
-         Yebh9LFCxe1OQ==
-Date:   Fri, 3 Mar 2023 16:58:53 +0000
-From:   Conor Dooley <conor@kernel.org>
-To:     Andrew Jones <ajones@ventanamicro.com>
+        with ESMTP id S231600AbjCCRV1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 12:21:27 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D415647410
+        for <linux-acpi@vger.kernel.org>; Fri,  3 Mar 2023 09:21:16 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id a25so13410943edb.0
+        for <linux-acpi@vger.kernel.org>; Fri, 03 Mar 2023 09:21:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7+P2Jt1gem1+5/B5CcM4rTOyPV+AeTyxbIp+/3dNo5A=;
+        b=WPye6mZe6O/Y3KmvZJOOqo9FbOHD+uSL2hAl7O6U/eRKKUFOvMUWsgvNScZIWVRC54
+         DwpVvEGp/nxyrPtYQcd5glZaTKkBSkQFtbXf/jChUSn+pim62zgFQLnZwulS0dIbjBw8
+         HY6B5/Nxg1WyR7suWAzlxnhqoFShCFqbjx/FFhgGonYtTHnB1TvkGc6fUnzH0W48NNs2
+         ouktdj7fJnlxWqGLesJoO+KK/MrDq8wTly+giIiuIa3hYYUyta/Hj6GicCFXqohC5f64
+         e1z/CtP9tEXuFnM1QXBcwvY01FdX3hZwn+oK6gh1JOuFYDKqkVoW2dSVbBZlaH+Un+9z
+         FxNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7+P2Jt1gem1+5/B5CcM4rTOyPV+AeTyxbIp+/3dNo5A=;
+        b=qRYsn6eKRYBG75EZ6svH6Y1v8cyuMZM3I37rp066SsmHOs0zSoYq/IKWu26qQ44bkO
+         TJQpSfrke+ZyMkETTnWEcbqgIJSgOz/vBAfcDTJpuRKKgNWa8tJbeijlUDioCxlvSkHu
+         N5hUMFQhCQD73KFUPrKMjYWo0KKR7QRsb2BOBdOBzhvRom7ksFt2gPdI3xdSQgh7IPe9
+         xZv8524rfsvw0j3/aM3Cldau+bZjlosoS/ZG8IfQp0cu24EDqfAUam5Jx/ZzaSSmDKVk
+         T9ErCYAf8NbfscP5Vf/c2Toj9vUneURIeb78C2HxbWqOoH2XRaQcqsfkyjzLFx3t40Ed
+         t78A==
+X-Gm-Message-State: AO0yUKWgvBBX4k42cBL6W7yquS0/U9xNH3ByOC/EHgyJGAon53wf+siP
+        jsHss6/BJzi1qi7a0UXHRK6lyA==
+X-Google-Smtp-Source: AK7set8ZD2J/CsfQlCGk7mFzIWQdBS1dzaQEQ6jA3tE1K1Vw8oYIqCClLWU5JnIns07/oFdwwCC5uQ==
+X-Received: by 2002:a17:907:c60c:b0:7c0:e30a:d3e5 with SMTP id ud12-20020a170907c60c00b007c0e30ad3e5mr3030314ejc.18.1677864075213;
+        Fri, 03 Mar 2023 09:21:15 -0800 (PST)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+        by smtp.gmail.com with ESMTPSA id t26-20020a1709060c5a00b008ec793ac3f4sm1146250ejf.192.2023.03.03.09.21.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Mar 2023 09:21:14 -0800 (PST)
+Date:   Fri, 3 Mar 2023 18:21:13 +0100
+From:   Andrew Jones <ajones@ventanamicro.com>
+To:     Conor Dooley <conor@kernel.org>
 Cc:     Sunil V L <sunilvl@ventanamicro.com>,
         linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
@@ -51,92 +68,80 @@ Cc:     Sunil V L <sunilvl@ventanamicro.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
 Subject: Re: [PATCH V3 11/20] RISC-V: ACPI: Cache and retrieve the RINTC
  structure
-Message-ID: <fdb52973-0cbc-4d7e-88bc-534fe43eec9b@spud>
+Message-ID: <20230303172113.jskripuyr3xx2z7k@orel>
 References: <20230303133647.845095-1-sunilvl@ventanamicro.com>
  <20230303133647.845095-12-sunilvl@ventanamicro.com>
  <20230303160556.lezccmwa7ymymxws@orel>
+ <fdb52973-0cbc-4d7e-88bc-534fe43eec9b@spud>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="AUUK7G7NpwIF2qsL"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230303160556.lezccmwa7ymymxws@orel>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <fdb52973-0cbc-4d7e-88bc-534fe43eec9b@spud>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Fri, Mar 03, 2023 at 04:58:53PM +0000, Conor Dooley wrote:
+> On Fri, Mar 03, 2023 at 05:05:56PM +0100, Andrew Jones wrote:
+> > On Fri, Mar 03, 2023 at 07:06:38PM +0530, Sunil V L wrote:
+> > > RINTC structures in the MADT provide mapping between the hartid
+> > > and the CPU. This is required many times even at run time like
+> > > cpuinfo. So, instead of parsing the ACPI table every time, cache
+> > > the RINTC structures and provide a function to get the correct
+> > > RINTC structure for a given cpu.
+> > > 
+> > > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> > > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > ---
+> > >  arch/riscv/include/asm/acpi.h |  9 ++++++
+> > >  arch/riscv/kernel/acpi.c      | 56 +++++++++++++++++++++++++++++++++++
+> > >  2 files changed, 65 insertions(+)
+> 
+> > > diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acpi.h
+> > > index 111a8ed10af1..8be16c1ef7da 100644
+> > > --- a/arch/riscv/include/asm/acpi.h
+> > > +++ b/arch/riscv/include/asm/acpi.h
+> > > @@ -61,6 +61,10 @@ static inline void arch_fix_phys_package_id(int num, u32 slot) { }
+> > >  
+> > >  int acpi_get_riscv_isa(struct acpi_table_header *table,
+> > >  		       unsigned int cpu, const char **isa);
+> > > +
+> > > +struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu);
+> > > +
+> > > +u32 get_acpi_id_for_cpu(int cpu);
+> > >  #else
+> > >  static inline int acpi_get_riscv_isa(struct acpi_table_header *table,
+> > >  				     unsigned int cpu, const char **isa)
+> > > @@ -68,6 +72,11 @@ static inline int acpi_get_riscv_isa(struct acpi_table_header *table,
+> > >  	return -EINVAL;
+> > >  }
+> > >  
+> > > +static inline u32 get_acpi_id_for_cpu(int cpu)
+> > > +{
+> > > +	return -1;
+> > > +}
+> > 
+> > Why do we need this stub? I wouldn't expect non-ACPI code to need an ACPI
+> > ID.
+> 
+> I think I asked for this (or assumed it existed) in v1, when I requested
+> the removal of #ifdef CONFIG_ACPI stuff in riscv_fill_hwcap().
+> Personally, I'd rather have this stub than the ifdeffery :)
+>
 
---AUUK7G7NpwIF2qsL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yeah, avoiding #ifdefs with stubs is good if we need to call the function
+from non-ACPI code. I'm wondering why we'd need to, though. In all the
+cases introduced with this series, we could pass a 'cpu' to
+acpi_get_riscv_isa() and then have acpi_get_riscv_isa() call
+get_acpi_id_for_cpu() itself, for example.
 
-On Fri, Mar 03, 2023 at 05:05:56PM +0100, Andrew Jones wrote:
-> On Fri, Mar 03, 2023 at 07:06:38PM +0530, Sunil V L wrote:
-> > RINTC structures in the MADT provide mapping between the hartid
-> > and the CPU. This is required many times even at run time like
-> > cpuinfo. So, instead of parsing the ACPI table every time, cache
-> > the RINTC structures and provide a function to get the correct
-> > RINTC structure for a given cpu.
-> >=20
-> > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >  arch/riscv/include/asm/acpi.h |  9 ++++++
-> >  arch/riscv/kernel/acpi.c      | 56 +++++++++++++++++++++++++++++++++++
-> >  2 files changed, 65 insertions(+)
+We also need to be sure -1 truly means "no ACPI ID" in order to stub this.
 
-> > diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acp=
-i.h
-> > index 111a8ed10af1..8be16c1ef7da 100644
-> > --- a/arch/riscv/include/asm/acpi.h
-> > +++ b/arch/riscv/include/asm/acpi.h
-> > @@ -61,6 +61,10 @@ static inline void arch_fix_phys_package_id(int num,=
- u32 slot) { }
-> > =20
-> >  int acpi_get_riscv_isa(struct acpi_table_header *table,
-> >  		       unsigned int cpu, const char **isa);
-> > +
-> > +struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu);
-> > +
-> > +u32 get_acpi_id_for_cpu(int cpu);
-> >  #else
-> >  static inline int acpi_get_riscv_isa(struct acpi_table_header *table,
-> >  				     unsigned int cpu, const char **isa)
-> > @@ -68,6 +72,11 @@ static inline int acpi_get_riscv_isa(struct acpi_tab=
-le_header *table,
-> >  	return -EINVAL;
-> >  }
-> > =20
-> > +static inline u32 get_acpi_id_for_cpu(int cpu)
-> > +{
-> > +	return -1;
-> > +}
->=20
-> Why do we need this stub? I wouldn't expect non-ACPI code to need an ACPI
-> ID.
-
-I think I asked for this (or assumed it existed) in v1, when I requested
-the removal of #ifdef CONFIG_ACPI stuff in riscv_fill_hwcap().
-Personally, I'd rather have this stub than the ifdeffery :)
-
-Cheers,
-Conor.
-
-
---AUUK7G7NpwIF2qsL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZAInSQAKCRB4tDGHoIJi
-0q0kAQCRhhViXko50omZit7Mc2H7+lY6SumTsapcSF6E4s9TSgEA2I1OvC1P0fbJ
-L9+705mVwaQcCRmFffXsNrh8zobzyg8=
-=nTk5
------END PGP SIGNATURE-----
-
---AUUK7G7NpwIF2qsL--
+Thanks,
+drew
