@@ -2,67 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0FAF6AA05E
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 21:00:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E1FF6AA199
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 22:41:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231322AbjCCUAA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Mar 2023 15:00:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55362 "EHLO
+        id S231932AbjCCVlh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Mar 2023 16:41:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231207AbjCCT77 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 14:59:59 -0500
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8B0A60D63
-        for <linux-acpi@vger.kernel.org>; Fri,  3 Mar 2023 11:59:55 -0800 (PST)
-Received: by mail-wm1-x330.google.com with SMTP id o11-20020a05600c4fcb00b003eb33ea29a8so1920400wmq.1
-        for <linux-acpi@vger.kernel.org>; Fri, 03 Mar 2023 11:59:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1677873594;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nLUnfNdm2yVAS1wkgyhep1P3VK/E8L4MHqepWzvtV2A=;
-        b=MBC/2e6spG09Ct78cOKn1e0fkmrSqTbFZ2xtNWbYj1zEb7Se2lGIOm53y56wKcgxe6
-         8l1aZnZO3mgbCTYt59U9p3DpPkAgE7QconRUjGP6igfhETLdKSyonZ+LFHH6s3fqlOnr
-         P5N7qHPtbImyQpSMm9Yagg+ysLv0tB4aZqLnex48Qrm5lyxRxz1SxNu9/LBanVHyLQqM
-         MdUlXmegugeeuH3yWUy6u11YRAY2E4RPK7yRpr6ctRREIAKUTGfuaiySOdgs9Ph/WlCE
-         kjtSjfgWVXxBswox1pTReeblQ1B/tkwVUOUKKdXKvtEcNxhh6dPS9m2t3qV98pJoMzM3
-         kHpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677873594;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nLUnfNdm2yVAS1wkgyhep1P3VK/E8L4MHqepWzvtV2A=;
-        b=GxP0oN99bMYAFCEVl37aFMO/DcJTqxmtiRm8Ys8QMRgt4KeEWLwOqQW4JILRL4yqa2
-         9cDkFhiPBPDjGyEy+mr+NICbCX+1KNke+9X+4LcKunsokFkPacA+OeY2Vuf/x64AQH8I
-         uHrpCGMl1QEcpHITvSe+KYCFxqKzrkpdxQtdaaEv8a7rnv7eKWtYEsVbbPC4dh5ow2nT
-         W9fG3S/TNN4ox5lJkXKvLcbrstduCjt6OuPX6mh/uc8ka2sK02560NSL6NDCGYRrfcy6
-         A0F/yTseq0zNl+qsrbi+C4AqVB678RXjfT6VUyB3I3Dr+qewIw+kj/F018Dn8KvyzhAl
-         CA0w==
-X-Gm-Message-State: AO0yUKWnwY9Z5qouIhlRcVDl3SC/nT5TWVCOUnOdlnAVRYHceNzQ4d2m
-        FAMPiDBK5eAcbxfIfFGMII46Rzca+7OB6tXHvDg=
-X-Google-Smtp-Source: AK7set9uJQopjHXkyijTJljvqFIZIUUrbVSev/wCZaH98Lu1febNf3+LDhmdz7htTAl/Fh5ZBxFjHg==
-X-Received: by 2002:a05:600c:1990:b0:3e2:20c7:6553 with SMTP id t16-20020a05600c199000b003e220c76553mr2721780wmq.13.1677873594171;
-        Fri, 03 Mar 2023 11:59:54 -0800 (PST)
-Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:e474:bda6:c260:d90b])
-        by smtp.gmail.com with ESMTPSA id b5-20020a05600c150500b003e91b9a92c9sm3210862wmg.24.2023.03.03.11.59.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Mar 2023 11:59:53 -0800 (PST)
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     rafael@kernel.org, daniel.lezcano@linaro.org, rui.zhang@intel.com
-Cc:     linux-acpi@vger.kernel.org,
-        Sujith Thomas <sujith.thomas@intel.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        linux-pm@vger.kernel.org (open list:INTEL MENLOW THERMAL DRIVER),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [RFC PATCH] thermal/drivers/intel_menlow: Remove add_one_attribute
-Date:   Fri,  3 Mar 2023 20:59:37 +0100
-Message-Id: <20230303195937.1835735-1-daniel.lezcano@linaro.org>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S231970AbjCCVlf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 16:41:35 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13336637C7;
+        Fri,  3 Mar 2023 13:41:17 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B5AC7B818A4;
+        Fri,  3 Mar 2023 21:41:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A5FC4339E;
+        Fri,  3 Mar 2023 21:41:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1677879674;
+        bh=BR1ZsF7ohZ7DgIixMEok6HY/tjwrYcM1V7+I6aku2rM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=WP0gv+Wb6TlEDR/mzPZF8FBsrRez8VdrjhXAEUUy9l3dLcl9bc2lGM3IyvC9Co4zj
+         Fxy3ZkjnmacVeTnsuLGItXbGac30CwfuyOiMLkSbBQE+plYuVyRP9+gOUQkiTsoJmJ
+         JDgWkYjiV399+eybg0obtzajep62q22S8b8EbivlwDl3CS/DwaBhUg/+yB1M5ZtmBE
+         0hrhwx5EgeJWRV5D1YvT6xX5kkc9Lw5ofbPLaHLhScoxFLwcLvwkiCPq4Y/plx++al
+         GvB2R07mf51WYwQR5NbkV4QF0uXZnRk12Kp4+myB5G2c5LsC223BBOl6ahOB3VFVWI
+         fYDyIZOCY6pVQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
+        robert.moore@intel.com, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, acpica-devel@lists.linuxfoundation.org
+Subject: [PATCH AUTOSEL 6.2 04/64] PCI/ACPI: Account for _S0W of the target bridge in acpi_pci_bridge_d3()
+Date:   Fri,  3 Mar 2023 16:40:06 -0500
+Message-Id: <20230303214106.1446460-4-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230303214106.1446460-1-sashal@kernel.org>
+References: <20230303214106.1446460-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,243 +58,164 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The driver hooks the thermal framework sysfs to add some driver
-specific information. A debatable approach as that may belong the
-device sysfs directory, not the thermal zone directory.
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-As the driver is accessing the thermal internals, we should provide at
-least an API to the thermal framework to add an attribute to the
-existing sysfs thermal zone entry.
+[ Upstream commit 8133844a8f2434be9576850c6978179d7cca5c81 ]
 
-Before doing that and given the age of the driver (2008) may be it is
-worth to double check if these attributes are really needed. So my
-first proposal is to remove them if that does not hurt.
+It is questionable to allow a PCI bridge to go into D3 if it has _S0W
+returning D2 or a shallower power state, so modify acpi_pci_bridge_d3(() to
+always take the return value of _S0W for the target bridge into account.
+That is, make it return 'false' if _S0W returns D2 or a shallower power
+state for the target bridge regardless of its ancestor Root Port
+properties.  Of course, this also causes 'false' to be returned if the Root
+Port itself is the target and its _S0W returns D2 or a shallower power
+state.
 
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+However, still allow bridges without _S0W that are power-manageable via
+ACPI to enter D3 to retain the current code behavior in that case.
+
+This fixes problems where a hotplug notification is missed because a bridge
+is in D3.  That means hot-added devices such as USB4 docks (and the devices
+they contain) and Thunderbolt 3 devices may not work.
+
+Link: https://lore.kernel.org/linux-pci/20221031223356.32570-1-mario.limonciello@amd.com/
+Link: https://lore.kernel.org/r/12155458.O9o76ZdvQC@kreacher
+Reported-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/intel/intel_menlow.c | 193 ---------------------------
- 1 file changed, 193 deletions(-)
+ drivers/acpi/device_pm.c | 19 +++++++++++++++++
+ drivers/pci/pci-acpi.c   | 45 +++++++++++++++++++++++++++-------------
+ include/acpi/acpi_bus.h  |  1 +
+ 3 files changed, 51 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/thermal/intel/intel_menlow.c b/drivers/thermal/intel/intel_menlow.c
-index 5a6ad0552311..5a9738a93083 100644
---- a/drivers/thermal/intel/intel_menlow.c
-+++ b/drivers/thermal/intel/intel_menlow.c
-@@ -230,174 +230,8 @@ struct intel_menlow_attribute {
- static LIST_HEAD(intel_menlow_attr_list);
- static DEFINE_MUTEX(intel_menlow_attr_lock);
+diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
+index 97450f4003cc9..f007116a84276 100644
+--- a/drivers/acpi/device_pm.c
++++ b/drivers/acpi/device_pm.c
+@@ -484,6 +484,25 @@ void acpi_dev_power_up_children_with_adr(struct acpi_device *adev)
+ 	acpi_dev_for_each_child(adev, acpi_power_up_if_adr_present, NULL);
+ }
  
--/*
-- * sensor_get_auxtrip - get the current auxtrip value from sensor
-- * @handle: Object handle
-- * @index : GET_AUX1/GET_AUX0
-- * @value : The address will be fill by the value
-- */
--static int sensor_get_auxtrip(acpi_handle handle, int index,
--							unsigned long long *value)
--{
++/**
++ * acpi_dev_power_state_for_wake - Deepest power state for wakeup signaling
++ * @adev: ACPI companion of the target device.
++ *
++ * Evaluate _S0W for @adev and return the value produced by it or return
++ * ACPI_STATE_UNKNOWN on errors (including _S0W not present).
++ */
++u8 acpi_dev_power_state_for_wake(struct acpi_device *adev)
++{
++	unsigned long long state;
++	acpi_status status;
++
++	status = acpi_evaluate_integer(adev->handle, "_S0W", NULL, &state);
++	if (ACPI_FAILURE(status))
++		return ACPI_STATE_UNKNOWN;
++
++	return state;
++}
++
+ #ifdef CONFIG_PM
+ static DEFINE_MUTEX(acpi_pm_notifier_lock);
+ static DEFINE_MUTEX(acpi_pm_notifier_install_lock);
+diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+index 068d6745bf98c..052a611081ecd 100644
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -976,24 +976,41 @@ bool acpi_pci_power_manageable(struct pci_dev *dev)
+ bool acpi_pci_bridge_d3(struct pci_dev *dev)
+ {
+ 	struct pci_dev *rpdev;
+-	struct acpi_device *adev;
 -	acpi_status status;
--
--	if ((index != 0 && index != 1) || !value)
--		return -EINVAL;
--
--	status = acpi_evaluate_integer(handle, index ? GET_AUX1 : GET_AUX0,
--				       NULL, value);
--	if (ACPI_FAILURE(status))
--		return -EIO;
--
--	return 0;
--}
--
--/*
-- * sensor_set_auxtrip - set the new auxtrip value to sensor
-- * @handle: Object handle
-- * @index : GET_AUX1/GET_AUX0
-- * @value : The value will be set
-- */
--static int sensor_set_auxtrip(acpi_handle handle, int index, int value)
--{
--	acpi_status status;
--	union acpi_object arg = {
--		ACPI_TYPE_INTEGER
--	};
--	struct acpi_object_list args = {
--		1, &arg
--	};
--	unsigned long long temp;
--
--	if (index != 0 && index != 1)
--		return -EINVAL;
--
--	status = acpi_evaluate_integer(handle, index ? GET_AUX0 : GET_AUX1,
--				       NULL, &temp);
--	if (ACPI_FAILURE(status))
--		return -EIO;
--	if ((index && value < temp) || (!index && value > temp))
--		return -EINVAL;
--
--	arg.integer.value = value;
--	status = acpi_evaluate_integer(handle, index ? SET_AUX1 : SET_AUX0,
--				       &args, &temp);
--	if (ACPI_FAILURE(status))
--		return -EIO;
--
--	/* do we need to check the return value of SAX0/SAX1 ? */
--
--	return 0;
--}
--
--#define to_intel_menlow_attr(_attr)	\
--	container_of(_attr, struct intel_menlow_attribute, attr)
--
--static ssize_t aux_show(struct device *dev, struct device_attribute *dev_attr,
--			char *buf, int idx)
--{
--	struct intel_menlow_attribute *attr = to_intel_menlow_attr(dev_attr);
--	unsigned long long value;
--	int result;
--
--	result = sensor_get_auxtrip(attr->handle, idx, &value);
--	if (result)
--		return result;
--
--	return sprintf(buf, "%lu", deci_kelvin_to_celsius(value));
--}
--
--static ssize_t aux0_show(struct device *dev,
--			 struct device_attribute *dev_attr, char *buf)
--{
--	return aux_show(dev, dev_attr, buf, 0);
--}
--
--static ssize_t aux1_show(struct device *dev,
--			 struct device_attribute *dev_attr, char *buf)
--{
--	return aux_show(dev, dev_attr, buf, 1);
--}
--
--static ssize_t aux_store(struct device *dev, struct device_attribute *dev_attr,
--			 const char *buf, size_t count, int idx)
--{
--	struct intel_menlow_attribute *attr = to_intel_menlow_attr(dev_attr);
--	int value;
--	int result;
--
--	/*Sanity check; should be a positive integer */
--	if (!sscanf(buf, "%d", &value))
--		return -EINVAL;
--
--	if (value < 0)
--		return -EINVAL;
--
--	result = sensor_set_auxtrip(attr->handle, idx,
--				    celsius_to_deci_kelvin(value));
--	return result ? result : count;
--}
--
--static ssize_t aux0_store(struct device *dev,
--			  struct device_attribute *dev_attr,
--			  const char *buf, size_t count)
--{
--	return aux_store(dev, dev_attr, buf, count, 0);
--}
--
--static ssize_t aux1_store(struct device *dev,
--			  struct device_attribute *dev_attr,
--			  const char *buf, size_t count)
--{
--	return aux_store(dev, dev_attr, buf, count, 1);
--}
--
- /* BIOS can enable/disable the thermal user application in dabney platform */
- #define BIOS_ENABLED "\\_TZ.GSTS"
--static ssize_t bios_enabled_show(struct device *dev,
--				 struct device_attribute *attr, char *buf)
--{
--	acpi_status status;
--	unsigned long long bios_enabled;
--
--	status = acpi_evaluate_integer(NULL, BIOS_ENABLED, NULL, &bios_enabled);
--	if (ACPI_FAILURE(status))
--		return -ENODEV;
--
--	return sprintf(buf, "%s\n", bios_enabled ? "enabled" : "disabled");
--}
--
--static int intel_menlow_add_one_attribute(char *name, umode_t mode, void *show,
--					  void *store, struct device *dev,
--					  acpi_handle handle)
--{
--	struct intel_menlow_attribute *attr;
--	int result;
--
--	attr = kzalloc(sizeof(struct intel_menlow_attribute), GFP_KERNEL);
--	if (!attr)
--		return -ENOMEM;
--
--	sysfs_attr_init(&attr->attr.attr); /* That is consistent naming :D */
--	attr->attr.attr.name = name;
--	attr->attr.attr.mode = mode;
--	attr->attr.show = show;
--	attr->attr.store = store;
--	attr->device = dev;
--	attr->handle = handle;
--
--	result = device_create_file(dev, &attr->attr);
--	if (result) {
--		kfree(attr);
--		return result;
--	}
--
--	mutex_lock(&intel_menlow_attr_lock);
--	list_add_tail(&attr->node, &intel_menlow_attr_list);
--	mutex_unlock(&intel_menlow_attr_lock);
--
--	return 0;
--}
+-	unsigned long long state;
++	struct acpi_device *adev, *rpadev;
+ 	const union acpi_object *obj;
  
- static acpi_status intel_menlow_register_sensor(acpi_handle handle, u32 lvl,
- 						void *context, void **rv)
-@@ -420,12 +254,6 @@ static acpi_status intel_menlow_register_sensor(acpi_handle handle, u32 lvl,
- 	if (ACPI_FAILURE(status))
- 		return (status == AE_NOT_FOUND) ? AE_OK : status;
+ 	if (acpi_pci_disabled || !dev->is_hotplug_bridge)
+ 		return false;
  
--	result = intel_menlow_add_one_attribute("aux0", 0644,
--						aux0_show, aux0_store,
--						&thermal->device, handle);
--	if (result)
--		return AE_ERROR;
--
- 	status = acpi_get_handle(handle, GET_AUX1, &dummy);
- 	if (ACPI_FAILURE(status))
- 		goto aux1_not_found;
-@@ -434,27 +262,6 @@ static acpi_status intel_menlow_register_sensor(acpi_handle handle, u32 lvl,
- 	if (ACPI_FAILURE(status))
- 		goto aux1_not_found;
+-	/* Assume D3 support if the bridge is power-manageable by ACPI. */
+-	if (acpi_pci_power_manageable(dev))
+-		return true;
++	adev = ACPI_COMPANION(&dev->dev);
++	if (adev) {
++		/*
++		 * If the bridge has _S0W, whether or not it can go into D3
++		 * depends on what is returned by that object.  In particular,
++		 * if the power state returned by _S0W is D2 or shallower,
++		 * entering D3 should not be allowed.
++		 */
++		if (acpi_dev_power_state_for_wake(adev) <= ACPI_STATE_D2)
++			return false;
++
++		/*
++		 * Otherwise, assume that the bridge can enter D3 so long as it
++		 * is power-manageable via ACPI.
++		 */
++		if (acpi_device_power_manageable(adev))
++			return true;
++	}
  
--	result = intel_menlow_add_one_attribute("aux1", 0644,
--						aux1_show, aux1_store,
--						&thermal->device, handle);
--	if (result) {
--		intel_menlow_unregister_sensor();
--		return AE_ERROR;
--	}
--
--	/*
--	 * create the "dabney_enabled" attribute which means the user app
--	 * should be loaded or not
--	 */
--
--	result = intel_menlow_add_one_attribute("bios_enabled", 0444,
--						bios_enabled_show, NULL,
--						&thermal->device, handle);
--	if (result) {
--		intel_menlow_unregister_sensor();
--		return AE_ERROR;
--	}
--
- 	return AE_OK;
+ 	rpdev = pcie_find_root_port(dev);
+ 	if (!rpdev)
+ 		return false;
  
-  aux1_not_found:
+-	adev = ACPI_COMPANION(&rpdev->dev);
+-	if (!adev)
++	if (rpdev == dev)
++		rpadev = adev;
++	else
++		rpadev = ACPI_COMPANION(&rpdev->dev);
++
++	if (!rpadev)
+ 		return false;
+ 
+ 	/*
+@@ -1001,15 +1018,15 @@ bool acpi_pci_bridge_d3(struct pci_dev *dev)
+ 	 * doesn't supply a wakeup GPE via _PRW, it cannot signal hotplug
+ 	 * events from low-power states including D3hot and D3cold.
+ 	 */
+-	if (!adev->wakeup.flags.valid)
++	if (!rpadev->wakeup.flags.valid)
+ 		return false;
+ 
+ 	/*
+-	 * If the Root Port cannot wake itself from D3hot or D3cold, we
+-	 * can't use D3.
++	 * In the bridge-below-a-Root-Port case, evaluate _S0W for the Root Port
++	 * to verify whether or not it can signal wakeup from D3.
+ 	 */
+-	status = acpi_evaluate_integer(adev->handle, "_S0W", NULL, &state);
+-	if (ACPI_SUCCESS(status) && state < ACPI_STATE_D3_HOT)
++	if (rpadev != adev &&
++	    acpi_dev_power_state_for_wake(rpadev) <= ACPI_STATE_D2)
+ 		return false;
+ 
+ 	/*
+@@ -1018,7 +1035,7 @@ bool acpi_pci_bridge_d3(struct pci_dev *dev)
+ 	 * bridges *below* that Root Port can also signal hotplug events
+ 	 * while in D3.
+ 	 */
+-	if (!acpi_dev_get_property(adev, "HotPlugSupportInD3",
++	if (!acpi_dev_get_property(rpadev, "HotPlugSupportInD3",
+ 				   ACPI_TYPE_INTEGER, &obj) &&
+ 	    obj->integer.value == 1)
+ 		return true;
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index e44be31115a67..0584e9f6e3397 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -534,6 +534,7 @@ int acpi_bus_update_power(acpi_handle handle, int *state_p);
+ int acpi_device_update_power(struct acpi_device *device, int *state_p);
+ bool acpi_bus_power_manageable(acpi_handle handle);
+ void acpi_dev_power_up_children_with_adr(struct acpi_device *adev);
++u8 acpi_dev_power_state_for_wake(struct acpi_device *adev);
+ int acpi_device_power_add_dependent(struct acpi_device *adev,
+ 				    struct device *dev);
+ void acpi_device_power_remove_dependent(struct acpi_device *adev,
 -- 
-2.34.1
+2.39.2
 
