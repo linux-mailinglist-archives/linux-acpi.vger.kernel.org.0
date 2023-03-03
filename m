@@ -2,25 +2,25 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE8506A95CC
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 12:07:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ACAA6A95D8
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 12:14:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229771AbjCCLHx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Mar 2023 06:07:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49542 "EHLO
+        id S230198AbjCCLOU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Mar 2023 06:14:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjCCLHx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 06:07:53 -0500
+        with ESMTP id S229447AbjCCLOT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 06:14:19 -0500
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 854355F6DD;
-        Fri,  3 Mar 2023 03:07:50 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 140ED12076;
+        Fri,  3 Mar 2023 03:14:12 -0800 (PST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 643062F4;
-        Fri,  3 Mar 2023 03:08:33 -0800 (PST)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1F9792F4;
+        Fri,  3 Mar 2023 03:14:55 -0800 (PST)
 Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5E5023F93E;
-        Fri,  3 Mar 2023 03:07:48 -0800 (PST)
-Date:   Fri, 3 Mar 2023 11:07:45 +0000
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 193F83F93E;
+        Fri,  3 Mar 2023 03:14:09 -0800 (PST)
+Date:   Fri, 3 Mar 2023 11:14:07 +0000
 From:   Sudeep Holla <sudeep.holla@arm.com>
 To:     "lihuisong (C)" <lihuisong@huawei.com>
 Cc:     robbiek@xsightlabs.com, linux-acpi@vger.kernel.org,
@@ -29,21 +29,21 @@ Cc:     robbiek@xsightlabs.com, linux-acpi@vger.kernel.org,
         zhangzekun11@huawei.com, wangxiongfeng2@huawei.com,
         tanxiaofei@huawei.com, guohanjun@huawei.com, xiexiuqi@huawei.com,
         wangkefeng.wang@huawei.com, huangdaode@huawei.com
-Subject: Re: [PATCH 1/2] mailbox: pcc: Add processing platform notification
- for slave subspaces
-Message-ID: <20230303110745.3c6kihwxkd2i7iwh@bogus>
+Subject: Re: [PATCH 2/2] mailbox: pcc: Support shared interrupt for multiple
+ subspaces
+Message-ID: <20230303111407.zdgqdwqik4spnq2o@bogus>
 References: <20221016034043.52227-1-lihuisong@huawei.com>
  <20230216063653.1995-1-lihuisong@huawei.com>
- <20230216063653.1995-2-lihuisong@huawei.com>
- <20230301132413.p6ssnkp76pv2bz5y@bogus>
- <de87d0f6-572d-c7be-cf8e-f80914270a9f@huawei.com>
- <20230302135201.c2qbvtx6k5mgnobv@bogus>
- <8691e22d-78a0-3a79-4999-3201767f163e@huawei.com>
+ <20230216063653.1995-3-lihuisong@huawei.com>
+ <20230301133626.gchca3fdaqijxwzq@bogus>
+ <2a165476-2e96-17b1-a50b-c8749462e8a1@huawei.com>
+ <20230302140216.m4m3452vexyrnuln@bogus>
+ <020cc964-9938-7ebe-7514-125cd041bfcb@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <8691e22d-78a0-3a79-4999-3201767f163e@huawei.com>
+In-Reply-To: <020cc964-9938-7ebe-7514-125cd041bfcb@huawei.com>
 X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,96 +52,44 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 03, 2023 at 09:50:00AM +0800, lihuisong (C) wrote:
+On Fri, Mar 03, 2023 at 02:33:49PM +0800, lihuisong (C) wrote:
+> Sorry for my resend. Because I found that my last reply email is not in the
+> thread of this patch. I guess it may be send failed.
 > 
-> 在 2023/3/2 21:52, Sudeep Holla 写道:
-> > On Thu, Mar 02, 2023 at 09:57:35AM +0800, lihuisong (C) wrote:
-> > > 在 2023/3/1 21:24, Sudeep Holla 写道:
-> > [...]
-> > 
-> > > > +static bool pcc_mbox_cmd_complete_check(struct pcc_chan_info *pchan)
-> > > > +{
-> > > > +       u64 val;
-> > > > +       int ret;
-> > > > +
-> > > > +       ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
-> > > > +       if (ret)
-> > > > +               return false;
-> > > > +
-> > > we indeed already check if cmd_complete register is exist.
-> > > IMO, it can simply the code logic and reduce the risk of problems if we
-> > > return true here for the type without this register.
-> > > what do you think?
-> > > 
-> > IIUC, your concern is about returning true for type 4 when the register
-> > doesn't exist, right ?
-> Return true in advance for the type without the cmd_complete register.
-> If support the register, we judge if the channel should respond the
-> interrupt based on the value of cmd_complete, like bellow.
+> 在 2023/3/2 22:02, Sudeep Holla 写道:
+> > No. I meant a comment saying it is not need since only one transfer can occur
+> > at a time and mailbox takes care of locking. So chan_in_use can be accessed
+> > without a lock.
+> Got it. Agreed.
 
-Right, sorry for missing that.
+Thanks
 
-> 
-> -->8
-> +static bool pcc_mbox_cmd_complete_check(struct pcc_chan_info *pchan)
-> +{
-> +       u64 val;
-> +       int ret;
-> +
-> +       ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
-> +       if (ret)
-> +               return false;
-> +
-> +        if (!pchan->cmd_complete.gas)
-> +                return true;
-> +
+> > > For types no need this flag, it is always hard to understand and redundant
+> > > design.
+> > But does it matter ? You can even support shared interrupt for type 1&2.
+> BTW, type 1 subspaces do not support a level triggered platform interrupt as
+> no method is provided to clear the interrupt.
 
-Yes we need the above check.
+Agreed but there is no harm using the flag, you can add a comment that it is
+useful only if shared interrupts are supported. That will imply it is dummy
+for type 1. I am avoiding too many type unnecessary checks especially in IRQ
+handler.
 
-> +       /*
-> +         * Judge if the channel respond the interrupt based on the value of
-> +         * command complete.
-> +         */
-> +       val &= pchan->cmd_complete.status_mask;
-> +       /*
-> +        * If this is PCC slave subspace channel, then the command complete
-> +        * bit 0 indicates that Platform is sending a notification and OSPM
-> +        * needs to respond this interrupt to process this command.
-> +        */
-> +       if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
-> +               return !val;
-> +       else
-> +               return !!val;
-> +}
-> > I am saying it won't happen as we bail out if there is no GAS register
-> > from pcc_chan_reg_init(). Or am I missing something here ?
-> Yes, what you say is also ok. Just wondering if it is better to simply the
-> logic.
+> > They support level interrupt, so we can add them too. I understand you can
+> > test only type 3, but this driver caters for all and the code must be generic
+> > as much as possible. I don't see any point in check for type 3 only. Only
+> I understand what you do.
+> But type 2 also supports the communication flow from OSPM to Platfrom.
+> In this case, this flag will get in the way of type 2.
+>
 
-Understood now.
+How ?
 
-> > > > +       val &= pchan->cmd_complete.status_mask;
-> > > > +
-> > > > +       /*
-> > > > +        * If this is PCC slave subspace channel, then the command complete
-> > > > +        * bit 0 indicates that Platform is sending a notification and OSPM
-> > > > +        * needs to respond this interrupt to process this command.
-> > > > +        */
-> > > > +       if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
-> > > > +               return !val;
-> > > > +       else
-> > > > +               return !!val;
-> > > This else branch is not applicable to type 3. type 3 will cannot respond
-> > > interrupt.
-> > Sorry I don't understand what you mean by that.
-> Sorry for my mistake.
-> I meant that the type2 channel always return false in this function and
-> never respond the interrupt if no check for the GAS register.
-> Because the 'val' for the type without the register is zero.
-> >
+> Whether the interrupt belongs to a type2 channel is only determined by
+> the status field in Generic Communications Channel Shared Memory Region,
+> which is done in rx_callback of PCC client.
 
-Agreed as mentioned above, we need to bail out with true return if no GAS is
-found.
+Agreed, but do you see any issue using the flag even if it acts as dummy ?
 
 --
 Regards,
