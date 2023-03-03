@@ -2,35 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E1FF6AA199
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 22:41:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1336C6AA201
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 22:45:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231932AbjCCVlh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Mar 2023 16:41:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54820 "EHLO
+        id S232297AbjCCVoe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Mar 2023 16:44:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231970AbjCCVlf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 16:41:35 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13336637C7;
-        Fri,  3 Mar 2023 13:41:17 -0800 (PST)
+        with ESMTP id S232203AbjCCVoP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 16:44:15 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 666774B809;
+        Fri,  3 Mar 2023 13:43:21 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B5AC7B818A4;
-        Fri,  3 Mar 2023 21:41:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A5FC4339E;
-        Fri,  3 Mar 2023 21:41:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 426BB61924;
+        Fri,  3 Mar 2023 21:43:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8968CC4339B;
+        Fri,  3 Mar 2023 21:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677879674;
-        bh=BR1ZsF7ohZ7DgIixMEok6HY/tjwrYcM1V7+I6aku2rM=;
+        s=k20201202; t=1677879800;
+        bh=mfIcXDpPO+W8Qkey5iQSYrQhQ4Sd5hAVTFGPwhzSU6c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WP0gv+Wb6TlEDR/mzPZF8FBsrRez8VdrjhXAEUUy9l3dLcl9bc2lGM3IyvC9Co4zj
-         Fxy3ZkjnmacVeTnsuLGItXbGac30CwfuyOiMLkSbBQE+plYuVyRP9+gOUQkiTsoJmJ
-         JDgWkYjiV399+eybg0obtzajep62q22S8b8EbivlwDl3CS/DwaBhUg/+yB1M5ZtmBE
-         0hrhwx5EgeJWRV5D1YvT6xX5kkc9Lw5ofbPLaHLhScoxFLwcLvwkiCPq4Y/plx++al
-         GvB2R07mf51WYwQR5NbkV4QF0uXZnRk12Kp4+myB5G2c5LsC223BBOl6ahOB3VFVWI
-         fYDyIZOCY6pVQ==
+        b=MJ/IO4cxwzdkE/7XTVg81sG/VktmCetiqw4WF1BPDUH5Pn90ocmUrnei9+1JVw7mh
+         JZugsq6q65NOVuVi+vqL7ugEbqHK6MtuRG0SknGtc0I12cCBPk8qekRvXL/sWVNWCy
+         OMfWTIrC/CE1JYU5S/32ywoW22dZR0dNHCeph+a62T2+hVVSQuOcNkzFFZtCCgrVrm
+         mZLBOWb4K7wQT9+NfMkRqI66PofDE9SkD0V7LN3uGq15w/AsmJzwWYgQFYKlwgDqJF
+         cVhuTonx2hF8attaooP06AoMtjpVHZxhN1jdDWwlR6GT7HNjeloc/De3uI2shvlpWH
+         gwmEhAyG8WU5g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
@@ -39,18 +39,18 @@ Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
         robert.moore@intel.com, linux-acpi@vger.kernel.org,
         linux-pci@vger.kernel.org, acpica-devel@lists.linuxfoundation.org
-Subject: [PATCH AUTOSEL 6.2 04/64] PCI/ACPI: Account for _S0W of the target bridge in acpi_pci_bridge_d3()
-Date:   Fri,  3 Mar 2023 16:40:06 -0500
-Message-Id: <20230303214106.1446460-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 03/60] PCI/ACPI: Account for _S0W of the target bridge in acpi_pci_bridge_d3()
+Date:   Fri,  3 Mar 2023 16:42:17 -0500
+Message-Id: <20230303214315.1447666-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230303214106.1446460-1-sashal@kernel.org>
-References: <20230303214106.1446460-1-sashal@kernel.org>
+In-Reply-To: <20230303214315.1447666-1-sashal@kernel.org>
+References: <20230303214315.1447666-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -121,7 +121,7 @@ index 97450f4003cc9..f007116a84276 100644
  static DEFINE_MUTEX(acpi_pm_notifier_lock);
  static DEFINE_MUTEX(acpi_pm_notifier_install_lock);
 diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index 068d6745bf98c..052a611081ecd 100644
+index a46fec776ad77..1698205dd73cb 100644
 --- a/drivers/pci/pci-acpi.c
 +++ b/drivers/pci/pci-acpi.c
 @@ -976,24 +976,41 @@ bool acpi_pci_power_manageable(struct pci_dev *dev)
@@ -205,7 +205,7 @@ index 068d6745bf98c..052a611081ecd 100644
  	    obj->integer.value == 1)
  		return true;
 diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index e44be31115a67..0584e9f6e3397 100644
+index ab2d6266038a0..6badc50ec4e66 100644
 --- a/include/acpi/acpi_bus.h
 +++ b/include/acpi/acpi_bus.h
 @@ -534,6 +534,7 @@ int acpi_bus_update_power(acpi_handle handle, int *state_p);
