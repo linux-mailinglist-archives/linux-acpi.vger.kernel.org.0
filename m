@@ -2,56 +2,40 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 197456A9BA7
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 17:23:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9570E6A9C8B
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 17:59:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230305AbjCCQXM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Mar 2023 11:23:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33848 "EHLO
+        id S231265AbjCCQ7D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Mar 2023 11:59:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229766AbjCCQXL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 11:23:11 -0500
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3373013DDC
-        for <linux-acpi@vger.kernel.org>; Fri,  3 Mar 2023 08:23:10 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id d30so12517497eda.4
-        for <linux-acpi@vger.kernel.org>; Fri, 03 Mar 2023 08:23:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5ryeAsxysbo6DUGxfiuPOI8CvtI+vb6NelPj5oYksPo=;
-        b=EzNCK3RZSJsJUeQFEWK8SnOi6P6PWK6BpIgChisWP1NzSH3VJqAhxv3yOHN49QZqxg
-         V0BotQn335MAGYgJxAnQgTh9LVMsDSCDQ/xWw3H3ctNOmg8JAYT3/m7yFa9i2bJjF+ra
-         ZttoECnbnJngdAr0peRBlCURcv4DOeWZMJr+UQInSQrH5dYL06UB85PPFrccZC8J4Gc5
-         GpnECND/KUp0C2V8VxmBWE1aa+V5hB2gD6L4RrqZCHoc7p7UMC3cQOhZQQWzF3fnvlrH
-         EbZbRFIvnTrDSVhUBd5gKFA+hE6u/UKpArsqB8YWOidtWPdOHOWOxQg2ufuiPbrJWj+4
-         TIYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5ryeAsxysbo6DUGxfiuPOI8CvtI+vb6NelPj5oYksPo=;
-        b=mq3KeDegbV0daMrvJ/7/7wuSXlAVvm/xmlNRw0/aZRS9pWZ1vVWQ20IMQP+FWfbQY7
-         b4S2FNZJvEpaH/bQVxmiH8xcjq+jbv9I4LwRCzif7G/i/A3r7FbwQFBKotEtqdJOf5wy
-         nbK5L6WJiRUsmkG2nm/SI8HZzt00XbtvzSA7na17o3eE+NQjrF2Ey2wwc447oVZr6TxD
-         x9fWCenwBS34OUX5B1wbd36KJAeXUYmT9uO49ZtGsfoqYXNRiy3rK3YVWdKdtcCHPqpv
-         SyWFcwQx2d79kh+oGLrQZYuUEHuDcbKtZtdGZOgkB2xtagq4pNcxc0wOOdHyQd1kOzVD
-         h5ig==
-X-Gm-Message-State: AO0yUKVRLcMieeyWWAwoHOTFwplrLKD2qtCvhjnkiHeB/IUF5SEZezoC
-        iAPMDOdQprMNlrOB3+aA8kbDzA==
-X-Google-Smtp-Source: AK7set+GMkAPdilJi56mUnW0fX32evecSe24CxSroekBxpjdNIx8xTEeM5pLsOlf4df3VzOOhkydOg==
-X-Received: by 2002:aa7:cfc2:0:b0:4bf:f9f4:9b1e with SMTP id r2-20020aa7cfc2000000b004bff9f49b1emr2272745edy.4.1677860588730;
-        Fri, 03 Mar 2023 08:23:08 -0800 (PST)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
-        by smtp.gmail.com with ESMTPSA id b2-20020a50b402000000b004be64b284b2sm1338509edh.3.2023.03.03.08.23.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Mar 2023 08:23:08 -0800 (PST)
-Date:   Fri, 3 Mar 2023 17:23:07 +0100
-From:   Andrew Jones <ajones@ventanamicro.com>
-To:     Sunil V L <sunilvl@ventanamicro.com>
-Cc:     linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+        with ESMTP id S230420AbjCCQ7C (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 11:59:02 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE32AF774;
+        Fri,  3 Mar 2023 08:59:01 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 68ACEB81991;
+        Fri,  3 Mar 2023 16:59:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B200C433D2;
+        Fri,  3 Mar 2023 16:58:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1677862739;
+        bh=z0SfoQpwZEfIQgXPO1rQgO6UNErYjmoidz6DFukMqtI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=FjlCgeWiwHNlbeEnXmtpsFTVV2C4SIz9hsbYHcmuxM52cLHlpccEHteOnEj/JNyPc
+         HXC/cjBOnnZWo8qMLUYrSlqAXaI0NdxQg83IVTq385Vq8tvSnWAkXs68g+ewYlFJsC
+         e2KMQq1s2YVPIDrQagmV2R5VNYk2vVKcTYc+7ekR+EMZ7TZpXuCIf5B0RBxhE1KMpQ
+         c5FPkRt8h+iKINzxK3yUgzVCoj4Y+iYP6NaTXKSThyRoGHKszWqQrPiARX1O4G+eOc
+         Cl7TcF94nVg45zsXkJRU8U2Q4pt89ozeO7RnRI/sjH+T9vpKtXFXSkocBctIVEv6Nk
+         Yebh9LFCxe1OQ==
+Date:   Fri, 3 Mar 2023 16:58:53 +0000
+From:   Conor Dooley <conor@kernel.org>
+To:     Andrew Jones <ajones@ventanamicro.com>
+Cc:     Sunil V L <sunilvl@ventanamicro.com>,
+        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
         Palmer Dabbelt <palmer@dabbelt.com>,
         Albert Ou <aou@eecs.berkeley.edu>,
@@ -65,16 +49,19 @@ Cc:     linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
         Atish Patra <atishp@rivosinc.com>,
         'Conor Dooley ' <conor.dooley@microchip.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH V3 19/20] RISC-V: Enable ACPI in defconfig
-Message-ID: <20230303162307.zz5amah65gjme7da@orel>
+Subject: Re: [PATCH V3 11/20] RISC-V: ACPI: Cache and retrieve the RINTC
+ structure
+Message-ID: <fdb52973-0cbc-4d7e-88bc-534fe43eec9b@spud>
 References: <20230303133647.845095-1-sunilvl@ventanamicro.com>
- <20230303133647.845095-20-sunilvl@ventanamicro.com>
+ <20230303133647.845095-12-sunilvl@ventanamicro.com>
+ <20230303160556.lezccmwa7ymymxws@orel>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="AUUK7G7NpwIF2qsL"
 Content-Disposition: inline
-In-Reply-To: <20230303133647.845095-20-sunilvl@ventanamicro.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+In-Reply-To: <20230303160556.lezccmwa7ymymxws@orel>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,26 +69,74 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 03, 2023 at 07:06:46PM +0530, Sunil V L wrote:
-> Add support to build ACPI subsystem in defconfig.
-> 
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
->  arch/riscv/configs/defconfig | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/riscv/configs/defconfig b/arch/riscv/configs/defconfig
-> index d98d6e90b2b8..8822b49ddb59 100644
-> --- a/arch/riscv/configs/defconfig
-> +++ b/arch/riscv/configs/defconfig
-> @@ -238,3 +238,4 @@ CONFIG_RCU_EQS_DEBUG=y
->  # CONFIG_FTRACE is not set
->  # CONFIG_RUNTIME_TESTING_MENU is not set
->  CONFIG_MEMTEST=y
-> +CONFIG_ACPI=y
-> -- 
-> 2.34.1
->
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+--AUUK7G7NpwIF2qsL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Mar 03, 2023 at 05:05:56PM +0100, Andrew Jones wrote:
+> On Fri, Mar 03, 2023 at 07:06:38PM +0530, Sunil V L wrote:
+> > RINTC structures in the MADT provide mapping between the hartid
+> > and the CPU. This is required many times even at run time like
+> > cpuinfo. So, instead of parsing the ACPI table every time, cache
+> > the RINTC structures and provide a function to get the correct
+> > RINTC structure for a given cpu.
+> >=20
+> > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >  arch/riscv/include/asm/acpi.h |  9 ++++++
+> >  arch/riscv/kernel/acpi.c      | 56 +++++++++++++++++++++++++++++++++++
+> >  2 files changed, 65 insertions(+)
+
+> > diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acp=
+i.h
+> > index 111a8ed10af1..8be16c1ef7da 100644
+> > --- a/arch/riscv/include/asm/acpi.h
+> > +++ b/arch/riscv/include/asm/acpi.h
+> > @@ -61,6 +61,10 @@ static inline void arch_fix_phys_package_id(int num,=
+ u32 slot) { }
+> > =20
+> >  int acpi_get_riscv_isa(struct acpi_table_header *table,
+> >  		       unsigned int cpu, const char **isa);
+> > +
+> > +struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu);
+> > +
+> > +u32 get_acpi_id_for_cpu(int cpu);
+> >  #else
+> >  static inline int acpi_get_riscv_isa(struct acpi_table_header *table,
+> >  				     unsigned int cpu, const char **isa)
+> > @@ -68,6 +72,11 @@ static inline int acpi_get_riscv_isa(struct acpi_tab=
+le_header *table,
+> >  	return -EINVAL;
+> >  }
+> > =20
+> > +static inline u32 get_acpi_id_for_cpu(int cpu)
+> > +{
+> > +	return -1;
+> > +}
+>=20
+> Why do we need this stub? I wouldn't expect non-ACPI code to need an ACPI
+> ID.
+
+I think I asked for this (or assumed it existed) in v1, when I requested
+the removal of #ifdef CONFIG_ACPI stuff in riscv_fill_hwcap().
+Personally, I'd rather have this stub than the ifdeffery :)
+
+Cheers,
+Conor.
+
+
+--AUUK7G7NpwIF2qsL
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZAInSQAKCRB4tDGHoIJi
+0q0kAQCRhhViXko50omZit7Mc2H7+lY6SumTsapcSF6E4s9TSgEA2I1OvC1P0fbJ
+L9+705mVwaQcCRmFffXsNrh8zobzyg8=
+=nTk5
+-----END PGP SIGNATURE-----
+
+--AUUK7G7NpwIF2qsL--
