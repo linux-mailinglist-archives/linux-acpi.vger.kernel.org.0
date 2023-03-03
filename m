@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CCD56AA014
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 20:24:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BDBC6AA011
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 20:24:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231652AbjCCTYc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Mar 2023 14:24:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55554 "EHLO
+        id S231624AbjCCTYZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Mar 2023 14:24:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231599AbjCCTYU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 14:24:20 -0500
+        with ESMTP id S231588AbjCCTYR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 14:24:17 -0500
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06B62125BA;
-        Fri,  3 Mar 2023 11:24:17 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3BB85ADF3;
+        Fri,  3 Mar 2023 11:24:15 -0800 (PST)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
- id c9c6336197d2ec2a; Fri, 3 Mar 2023 20:24:16 +0100
+ id fa951605dcb9aaf0; Fri, 3 Mar 2023 20:24:14 +0100
 Received: from kreacher.localnet (unknown [213.134.183.41])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 35F8F20619DE;
-        Fri,  3 Mar 2023 20:24:15 +0100 (CET)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 29E4920619DE;
+        Fri,  3 Mar 2023 20:24:13 +0100 (CET)
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux PM <linux-pm@vger.kernel.org>
 Cc:     Zhang Rui <rui.zhang@intel.com>,
@@ -32,17 +32,19 @@ Cc:     Zhang Rui <rui.zhang@intel.com>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         Viresh Kumar <viresh.kumar@linaro.org>,
         Quanxian Wang <quanxian.wang@intel.com>
-Subject: [PATCH v1 0/4] thermal: core/ACPI: Fix processor cooling device regression
-Date:   Fri, 03 Mar 2023 20:18:30 +0100
-Message-ID: <2148907.irdbgypaU6@kreacher>
+Subject: [PATCH v1 1/4] ACPI: processor: Reorder acpi_processor_driver_init()
+Date:   Fri, 03 Mar 2023 20:19:46 +0100
+Message-ID: <2885079.e9J7NaK4W3@kreacher>
+In-Reply-To: <2148907.irdbgypaU6@kreacher>
+References: <2148907.irdbgypaU6@kreacher>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
 X-CLIENT-IP: 213.134.183.41
 X-CLIENT-HOSTNAME: 213.134.183.41
 X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrudelledguddukecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeegfffhudejlefhtdegffekteduhfethffhieettefhkeevgfdvgfefieekiefgheenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvudefrddufeegrddukeefrdegudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrddukeefrdeguddphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepkedprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdr
- khgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrnhhivghlrdhlvgiitggrnhhosehlihhnrghrohdrohhrghdprhgtphhtthhopehsrhhinhhivhgrshdrphgrnhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghlrdgtohhm
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrudelledguddukecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeefudduuedtuefgleffudeigeeitdeufeelvdejgefftdethffhhfethfeljefgteenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvudefrddufeegrddukeefrdegudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrddukeefrdeguddphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepkedprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgv
+ rhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrnhhivghlrdhlvgiitggrnhhosehlihhnrghrohdrohhrghdprhgtphhtthhopehsrhhinhhivhgrshdrphgrnhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghlrdgtohhm
 X-DCC--Metrics: v370.home.net.pl 1024; Body=8 Fuz1=8 Fuz2=8
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -52,37 +54,58 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi All,
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-As reported by Rui in this thread:
+The cpufreq policy notifier in the ACPI processor driver may as
+well be registered before the driver itself, which causes
+acpi_processor_cpufreq_init to be true (unless the notifier
+registration fails, which is unlikely at that point) when the
+ACPI CPU thermal cooling devices are registered, so the
+processor_get_max_state() result does not change while
+acpi_processor_driver_init() is running.
 
+Change the ordering in acpi_processor_driver_init() accordingly
+to prevent the max_state value from remaining 0 permanently for all
+ACPI CPU cooling devices.
+
+Fixes: a365105c685c("thermal: sysfs: Reuse cdev->max_state")
+Reported-by: Wang, Quanxian <quanxian.wang@intel.com>
 Link: https://lore.kernel.org/linux-pm/53ec1f06f61c984100868926f282647e57ecfb2d.camel@intel.com/
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/processor_driver.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-some recent changes in the thermal core cause the CPU cooling devices
-registered by the ACPI processor driver to become unusable in some cases
-and somewhat crippled in general.
-
-The problem is that the ACPI processor driver changes its ->get_max_state()
-callback return value depending on whether or not cpufreq is available and
-there is a cpufreq policy for a given CPU.  However, the thermal core has
-always assumed that the return value of that callback will not change, which
-in fact is relied on by the cooling device statistics code.  In particular,
-when the ->get_max_state() grows, the memory buffer allocated for storing the
-statistics will be too small and corruption may ensue as a result.
-
-For this reason, the issue needs to be addressed in the ACPI processor driver
-and not in the thermal core, but the core needs to help somewhat too.  Namely,
-it needs to provide a helper allowing an interested driver to update the
-max_state value for an already registered cooling device in certain situations
-which will also cause the statistics to be rebuilt.
-
-This series implements the above and for details please refer to the individual
-patch chagelogs.
-
-Please also note that it has only been lightly tested, so more testing and of
-course review of it is welcome.
-
-Thanks!
+Index: linux-pm/drivers/acpi/processor_driver.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/processor_driver.c
++++ linux-pm/drivers/acpi/processor_driver.c
+@@ -263,6 +263,12 @@ static int __init acpi_processor_driver_
+ 	if (acpi_disabled)
+ 		return 0;
+ 
++	if (!cpufreq_register_notifier(&acpi_processor_notifier_block,
++				       CPUFREQ_POLICY_NOTIFIER)) {
++		acpi_processor_cpufreq_init = true;
++		acpi_processor_ignore_ppc_init();
++	}
++
+ 	result = driver_register(&acpi_processor_driver);
+ 	if (result < 0)
+ 		return result;
+@@ -276,12 +282,6 @@ static int __init acpi_processor_driver_
+ 	cpuhp_setup_state_nocalls(CPUHP_ACPI_CPUDRV_DEAD, "acpi/cpu-drv:dead",
+ 				  NULL, acpi_soft_cpu_dead);
+ 
+-	if (!cpufreq_register_notifier(&acpi_processor_notifier_block,
+-				       CPUFREQ_POLICY_NOTIFIER)) {
+-		acpi_processor_cpufreq_init = true;
+-		acpi_processor_ignore_ppc_init();
+-	}
+-
+ 	acpi_processor_throttling_init();
+ 	return 0;
+ err:
 
 
 
