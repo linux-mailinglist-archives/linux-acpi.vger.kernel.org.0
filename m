@@ -2,49 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FABA6A9978
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 15:34:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D5606A997D
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Mar 2023 15:34:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229734AbjCCOeL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Mar 2023 09:34:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45168 "EHLO
+        id S231331AbjCCOeY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Mar 2023 09:34:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231238AbjCCOeJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 09:34:09 -0500
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BC28144A9
-        for <linux-acpi@vger.kernel.org>; Fri,  3 Mar 2023 06:34:01 -0800 (PST)
-Received: by mail-pf1-x42a.google.com with SMTP id n5so1655329pfv.11
-        for <linux-acpi@vger.kernel.org>; Fri, 03 Mar 2023 06:34:01 -0800 (PST)
+        with ESMTP id S231297AbjCCOeV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Mar 2023 09:34:21 -0500
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E606717CF2
+        for <linux-acpi@vger.kernel.org>; Fri,  3 Mar 2023 06:34:05 -0800 (PST)
+Received: by mail-pf1-x42d.google.com with SMTP id z11so1677676pfh.4
+        for <linux-acpi@vger.kernel.org>; Fri, 03 Mar 2023 06:34:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1677854040;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=duMymk/mzDN15LB3Rx/gzujhsoeHtrbu9znF8/ye9Xs=;
-        b=RWW7qlMpg4pHrj95TxcZcmwsXUBqqsZjfDcXrg1Qwt9rqMQRWPjJ7aT0HnFyond0El
-         7vB3f7X1E2lyASd2rAOA/1nfVT95wYv9NeoN57txDKDyWlMj5QOdM5haz9VrHED7ktAI
-         AoWyZyRLBWxum/L3rGMFxqxdvja1X21++z2RA=
+        d=chromium.org; s=google; t=1677854045;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=79Uwb6iDaWyQVJjZrRJ473QcWA7ttMYiWdGYGLA3qE0=;
+        b=K6DPnUEhwAuq3ZfNxMIvOPR4SUuvBcbDP2j+8IK7g6phQeQaBx40sRrTwGVA5hkuyF
+         gYIzWVSiB+ON2Y/GuvUTmuWTEbZQHKwyQ4KChVELGR2ZT5FzPcxtF8JD4lENhVH3jOj8
+         SEnz34mo0XPVbLXqUo1fl9VNQbZz461GH7YpE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677854040;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=duMymk/mzDN15LB3Rx/gzujhsoeHtrbu9znF8/ye9Xs=;
-        b=vaFbIPx4AzkM7Nsg8gZsGIHX8Es/UD+HxBguhpurALbyHMqYXW77yGefvh8UI9rZut
-         yXJgrp3T2snU32TDnC/lU+axJZ48jOAaV4oO7y6xrSVQTwkUvO9PaxF+VoN9hTQUSxPs
-         8FauSlOVj3AXLnvAoFx9FpCkcGMg3NNaHw6et0bxK2ONpwm51fmSvM8VnaDUE+uBhHK2
-         3FjGP/ntXxTekTZzP0xlI5URJgyObphr310XuvP2+wgcVL8+i9o3ZbA3aDkg3Hu4b4Xc
-         awvayyqVXpm9IB1D0/TiHJaAFytcI+AOkunvKap3jC0yoFJVHbD9UfJb1WKOGs7hjpoL
-         5XwQ==
-X-Gm-Message-State: AO0yUKUkWKXq7OY2XyiqRauvYO/9HNn4cYb8UTdS/8lTCijKcXuOKDXO
-        mZkIn2XP5lw1gclK4M/Pu17aPA==
-X-Google-Smtp-Source: AK7set9UgIwLTc8vF4kt8BaRIrW37yxVEBTi6l64XnH7LXxSZAsVJyKFthmltGf14ulHGdMs9afoJA==
-X-Received: by 2002:a62:7945:0:b0:5a9:b4b4:6911 with SMTP id u66-20020a627945000000b005a9b4b46911mr2292087pfc.25.1677854040088;
-        Fri, 03 Mar 2023 06:34:00 -0800 (PST)
+        d=1e100.net; s=20210112; t=1677854045;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=79Uwb6iDaWyQVJjZrRJ473QcWA7ttMYiWdGYGLA3qE0=;
+        b=B1ajb1qVIW/igPODD4JEA0fqp4ACVbJYZHj43zeAN7/nxIkP7UA9xw+ZEwWonuhwyD
+         uDVg4mrHWpn4VFgMNgj/sCjuBFwEhk0BGQsY8szGtl+Jx0NUgMsuD9fBDso6gyGuPTIC
+         ef7pCuSKlyvfVLTPnfW8E6chrmTml2H/tIoVBVb5TKpxwHb/6H6WuUVqNt0TBbgFXoQE
+         SNSJxys4CcTPMqd958eOCC+1hdmgEsz0riPUGStz5M8NER0LS44cRhL/J9CjH7lYe4rl
+         lJqHkC/RWL4tqOzznuNAI2BjkXiDNnvAHrhOWtBLzXWdh6C/cUuUlAL4v4pi5M8D9S+3
+         t4Ag==
+X-Gm-Message-State: AO0yUKWQukMH6e0Q0DPV0vagMIJVndjvgGrUVoNT73QByslf6VJA6ia7
+        ohQzd+GdndB2KJ+uTeZYLEZPIA==
+X-Google-Smtp-Source: AK7set8h4+hsoLy5T3/JD6xdGPxFqv6a3VOB7IL+KpQMvfnOj+90dWvkkyB4VFJoObht4fS0rgBaOA==
+X-Received: by 2002:a62:38d7:0:b0:5de:7ef1:d03a with SMTP id f206-20020a6238d7000000b005de7ef1d03amr2054923pfa.19.1677854045367;
+        Fri, 03 Mar 2023 06:34:05 -0800 (PST)
 Received: from treapking.tpe.corp.google.com ([2401:fa00:1:10:55e5:8423:31ee:83dd])
-        by smtp.gmail.com with ESMTPSA id c18-20020aa781d2000000b005a8b4dcd21asm1767214pfn.15.2023.03.03.06.33.54
+        by smtp.gmail.com with ESMTPSA id c18-20020aa781d2000000b005a8b4dcd21asm1767214pfn.15.2023.03.03.06.34.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Mar 2023 06:33:59 -0800 (PST)
+        Fri, 03 Mar 2023 06:34:05 -0800 (PST)
 From:   Pin-yen Lin <treapking@chromium.org>
 To:     Andrzej Hajda <andrzej.hajda@intel.com>,
         Neil Armstrong <neil.armstrong@linaro.org>,
@@ -78,21 +79,14 @@ Cc:     Xin Ji <xji@analogixsemi.com>,
         Allen Chen <allen.chen@ite.com.tw>,
         dri-devel@lists.freedesktop.org,
         Thomas Zimmermann <tzimmermann@suse.de>,
-        Stephen Boyd <swboyd@chromium.org>, linux-acpi@vger.kernel.org,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Imre Deak <imre.deak@intel.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>
-Subject: [PATCH v13 00/10] Register Type-C mode-switch in DP bridge endpoints
-Date:   Fri,  3 Mar 2023 22:33:40 +0800
-Message-Id: <20230303143350.815623-1-treapking@chromium.org>
+        Stephen Boyd <swboyd@chromium.org>, linux-acpi@vger.kernel.org
+Subject: [PATCH v13 01/10] device property: Add remote endpoint to devcon matcher
+Date:   Fri,  3 Mar 2023 22:33:41 +0800
+Message-Id: <20230303143350.815623-2-treapking@chromium.org>
 X-Mailer: git-send-email 2.40.0.rc0.216.gc4246ad0f0-goog
+In-Reply-To: <20230303143350.815623-1-treapking@chromium.org>
+References: <20230303143350.815623-1-treapking@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -104,144 +98,99 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+From: Prashant Malani <pmalani@chromium.org>
 
-This series introduces bindings for anx7625/it6505 to register Type-C
-mode-switch in their output endpoints, and use data-lanes property to
-describe the pin connections.
+When searching the device graph for device matches, check the
+remote-endpoint itself for a match.
 
-This series is not directly related to the built-in mux in anx7625,
-which automatically switches between the two orientations of a single
-Type-C connector. This series adds support of registering mode switches
-for two downstream devices, while we use orientation switches for two
-orientations of the Type-C connector.
+Some drivers register devices for individual endpoints. This allows
+the matcher code to evaluate those for a match too, instead
+of only looking at the remote parent devices. This is required when a
+device supports two mode switches in its endpoints, so we can't simply
+register the mode switch with the parent node.
 
-The first two patch modifies fwnode_graph_devcon_matches and
-cros_typec_init_ports to enable the registration of the switches.
+Signed-off-by: Prashant Malani <pmalani@chromium.org>
+Signed-off-by: Pin-yen Lin <treapking@chromium.org>
 
-Patch 4~6 introduce the bindings for anx7625 and the corresponding driver
-modifications.
-
-Patch 7~9 add similar bindings and driver changes for it6505.
-
-v12: https://lore.kernel.org/all/20230221095054.1868277-1-treapking@chromium.org/
-v11: https://lore.kernel.org/all/20230204133040.1236799-1-treapking@chromium.org/
-v10: https://lore.kernel.org/all/20230112042104.4107253-1-treapking@chromium.org/
-v9: https://lore.kernel.org/all/20230109084101.265664-1-treapking@chromium.org/
-v8: https://lore.kernel.org/all/20230107102231.23682-1-treapking@chromium.org/
-v7: https://lore.kernel.org/all/20230105132457.4125372-1-treapking@chromium.org/
-v6: https://lore.kernel.org/all/20221124102056.393220-1-treapking@chromium.org/
-v5: https://lore.kernel.org/linux-usb/20220622173605.1168416-1-pmalani@chromium.org/
+---
 
 Changes in v13:
 - Update the kernel doc of fwnode_connection_find_match
-- Add typec_mode_switch_node_count helper
-- Fix style issues
-- Update a typo in the commit message
-- Collect Reviewed-by tag
 
 Changes in v12:
 - Check the availability of the device node in fwnode_graph_devcon_matches
 - Ensured valid access to "matches" in fwnode_graph_devcon_matches
 - Updated the documentation in fwnode_connection_find_match(es)
-- Add fwnode_for_each_typec_mode_switch macro
-- Remove a duplicated dmesg in the helper
-- Used IS_REACHABLE instead to guard the function signatures
-- Removed the 4-lane binding in analogix,anx7625.yaml
-- Reworded the description for the mode-switch property
-- Fixed style issues in anx7625 driver
-- Fixed the inverted orientation setting in anx7625 driver
-- Changed "&ctx->client->dev" to "ctx->dev"
-- Fixed the schema of "data-lanes" property for it6505
-- Fixes style issues in it6505 driver
-- Replaced &it6505->client->dev with it6505->dev
-- Updated the error logs when parsing data-lanes property
+- Dropped collected tags due to the new changes
 
 Changes in v11:
 - Added missing fwnode_handle_put in drivers/base/property.c
-- Collected Acked-by tag
-- Use fwnode helpers instead of DT
-- Moved the helpers to a new file
-- Use "reg" instead of "data-lanes" to determine the port number
-- Updated the description of the endpoints in the bindings
-- Referenced video-interfaces.yaml instead for the endpoints binding
-- Removed duplicated definitions from inherited schema
-- Moved the "data-lanes" parsing logics to bridge drivers
-- Removed Kconfig dependencies for the bridge drivers
-- Updated the usage of the private bridge driver data
-- Added a clarification on the anx7625 built-in mux in the cover letter
 
 Changes in v10:
 - Collected Reviewed-by and Tested-by tags
-- Replaced "void *" with "typec_mux_set_fn_t" for mux_set callbacks
-- Print out the node name when errors on parsing DT
-- Use dev_dbg instead of dev_warn when no Type-C switch nodes available
-- Made the return path of drm_dp_register_mode_switch clearer
-- Added a TODO for implementing orientation switch for anx7625
-- Updated the commit message for the absence of orientation switch
-- Fixed typo in the commit message
-
-Changes in v9:
-- Collected Reviewed-by tag
-- Fixed subject prefix again
-- Changed the naming of the example node for it6505
-
-Changes in v8:
-- Fixed the build issue when CONFIG_TYPEC=m
-- Fixed some style issues
-- Fixed the subject prefixes for the bindings patch
-- Fixed the bindings for data-lanes properties
-
-Changes in v7:
-- Fix the long comment lines
-- Extracted the common codes to a helper function
-- Fixed style issues in anx7625 driver
-- Removed DT property validation in anx7625 driver.
-- Fixed style issues in it6505 driver
-- Removed the redundant sleep in it6505 driver
-- Removed DT property validation in it6505 driver
-- Rebased to drm-misc-next
-- Fixed indentations in bindings patches
-- Added a new patch to fix indentations in Kconfig
 
 Changes in v6:
-- Changed it6505_typec_mux_set callback function to accommodate with
-  the latest drm-misc patches
-- Changed the driver implementation to accommodate with the new binding
-- Dropped typec-switch binding and use endpoints and data-lanes properties
-  to describe the pin connections
-- Added new patches (patch 1,2,4) to fix probing issues
-- Changed the bindings of it6505/anx7625 and modified the drivers
-  accordingly
-- Merged it6505/anx7625 driver changes into a single patch
+- New in v6
 
-Pin-yen Lin (8):
-  drm/display: Add Type-C switch helpers
-  dt-bindings: display: bridge: anx7625: Add mode-switch support
-  drm/bridge: anx7625: Check for Type-C during panel registration
-  drm/bridge: Remove redundant i2c_client in anx7625/it6505
-  drm/bridge: anx7625: Register Type C mode switches
-  dt-bindings: display: bridge: it6505: Add mode-switch support
-  drm/bridge: it6505: Fix Kconfig indentation
-  drm/bridge: it6505: Register Type C mode switches
+ drivers/base/property.c | 31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
 
-Prashant Malani (2):
-  device property: Add remote endpoint to devcon matcher
-  platform/chrome: cros_ec_typec: Purge blocking switch devlinks
-
- .../display/bridge/analogix,anx7625.yaml      |  88 ++++-
- .../bindings/display/bridge/ite,it6505.yaml   | 101 +++++-
- drivers/base/property.c                       |  31 +-
- drivers/gpu/drm/bridge/Kconfig                |  20 +-
- drivers/gpu/drm/bridge/analogix/anx7625.c     | 257 +++++++++++---
- drivers/gpu/drm/bridge/analogix/anx7625.h     |  22 +-
- drivers/gpu/drm/bridge/ite-it6505.c           | 313 ++++++++++++++----
- drivers/gpu/drm/display/Makefile              |   1 +
- drivers/gpu/drm/display/drm_dp_typec_helper.c | 105 ++++++
- drivers/platform/chrome/cros_ec_typec.c       |  10 +
- include/drm/display/drm_dp_helper.h           |  46 +++
- 11 files changed, 845 insertions(+), 149 deletions(-)
- create mode 100644 drivers/gpu/drm/display/drm_dp_typec_helper.c
-
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 083a95791d3b..4426ac2b16ca 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -1243,6 +1243,23 @@ static unsigned int fwnode_graph_devcon_matches(const struct fwnode_handle *fwno
+ 			continue;
+ 		}
+ 
++		ret = match(node, con_id, data);
++		fwnode_handle_put(node);
++		if (ret) {
++			if (matches)
++				matches[count] = ret;
++			count++;
++
++			if (matches && count >= matches_len)
++				break;
++		}
++
++		/*
++		 * Some drivers may register devices for endpoints. Check
++		 * the remote-endpoints for matches in addition to the remote
++		 * port parent.
++		 */
++		node = fwnode_graph_get_remote_endpoint(ep);
+ 		ret = match(node, con_id, data);
+ 		fwnode_handle_put(node);
+ 		if (ret) {
+@@ -1293,8 +1310,11 @@ static unsigned int fwnode_devcon_matches(const struct fwnode_handle *fwnode,
+  * @match: Function to check and convert the connection description
+  *
+  * Find a connection with unique identifier @con_id between @fwnode and another
+- * device node. @match will be used to convert the connection description to
+- * data the caller is expecting to be returned.
++ * device node. For fwnode graph connections, the graph endpoints are also
++ * checked. @match will be used to convert the connection description to data
++ * the caller is expecting to be returned.
++ *
++ * Return: The pointer to the matched node, or NULL on error.
+  */
+ void *fwnode_connection_find_match(const struct fwnode_handle *fwnode,
+ 				   const char *con_id, void *data,
+@@ -1325,9 +1345,10 @@ EXPORT_SYMBOL_GPL(fwnode_connection_find_match);
+  * @matches_len: Length of @matches
+  *
+  * Find up to @matches_len connections with unique identifier @con_id between
+- * @fwnode and other device nodes. @match will be used to convert the
+- * connection description to data the caller is expecting to be returned
+- * through the @matches array.
++ * @fwnode and other device nodes. For fwnode graph connections, the graph
++ * endpoints are also checked. @match will be used to convert the connection
++ * description to data the caller is expecting to be returned through the
++ * @matches array.
+  * If @matches is NULL @matches_len is ignored and the total number of resolved
+  * matches is returned.
+  *
 -- 
 2.40.0.rc0.216.gc4246ad0f0-goog
 
