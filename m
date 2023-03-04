@@ -2,191 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E801D6AA95D
-	for <lists+linux-acpi@lfdr.de>; Sat,  4 Mar 2023 12:58:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E8B16AAA77
+	for <lists+linux-acpi@lfdr.de>; Sat,  4 Mar 2023 15:38:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229452AbjCDL64 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 4 Mar 2023 06:58:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52618 "EHLO
+        id S229701AbjCDOic (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 4 Mar 2023 09:38:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjCDL6z (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 4 Mar 2023 06:58:55 -0500
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 704FB12BF7;
-        Sat,  4 Mar 2023 03:58:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1677931134; x=1709467134;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Ako5J9CYepDw5EwS9NbT0VXZwW1xRcZ6y7ksICdAAEc=;
-  b=RFrXghSETiQX65mahoyeAaJ5tBHd9mKDs26JqiNgCDAkFREH9PZpTWS/
-   9cT5BRh+tJ1wxAbUaF2GQvyzEOKt41ZnZ7CkZ4tC0izf1/lYbYpyJxC47
-   BFtRl+hU+oEJMdMCVRH7YT1LmdZ4J51PG90kEs3POX9kKCQFCZc11emc7
-   uU0mUg0UV5qJvSLNjpmoAjPwfsOwWrpbny6GmTsxyn8MUnNsdCMJQ6CA9
-   k56MlJgHFvk1MxWu+Nxlx52+aMt1vfsaVEtybJxvXIG82uPvBALHRHRaJ
-   ygtmoFQdyzl74hfMW+57toZeuuRabk3005wFpDcCXnw1O60D9oNLF66Yk
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10638"; a="323558299"
-X-IronPort-AV: E=Sophos;i="5.98,233,1673942400"; 
-   d="scan'208";a="323558299"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2023 03:58:54 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10638"; a="744528169"
-X-IronPort-AV: E=Sophos;i="5.98,233,1673942400"; 
-   d="scan'208";a="744528169"
-Received: from lkp-server01.sh.intel.com (HELO 776573491cc5) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 04 Mar 2023 03:58:52 -0800
-Received: from kbuild by 776573491cc5 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pYQXL-00027w-1Y;
-        Sat, 04 Mar 2023 11:58:51 +0000
-Date:   Sat, 04 Mar 2023 19:57:53 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 1362ac91d50346341026f84ff352f4b5504d07f9
-Message-ID: <64033241.LbK0oUX3IXw8/o21%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S229669AbjCDOic (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 4 Mar 2023 09:38:32 -0500
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63BDA11652
+        for <linux-acpi@vger.kernel.org>; Sat,  4 Mar 2023 06:38:30 -0800 (PST)
+Received: by mail-ed1-x531.google.com with SMTP id s11so21264921edy.8
+        for <linux-acpi@vger.kernel.org>; Sat, 04 Mar 2023 06:38:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eUAgGXgRJv+laJqNVXMEReHwclDFkLvFtLnzR72uPrw=;
+        b=dIVQYAwN0oY6GneEdKUwezanImjswih8kPJ1Hk7y+unDqTtkY8DJ56+T7nzP/leXQS
+         bh1YNEuYIDW8d01I+YbSNf/D7NRvv6cKg3KSzMNIjQMhrMd/XwG+YXh063tMMl1gJtS/
+         jWUwmPcnIg6hLyQy/yBBnYyG29z7elYzz3FQvDmYnBANKll8Rake9Px1391rCXfcy+l4
+         QuvQ3jU025f6JnPVol8kPSrtRrDzpsdxwbTKxWx+Fyvb1wCOdG5UPR75wnE0OxViPhPr
+         MS6Tg5ONjHalcocp7UciaHZ17zRJ+T2HloS7ugVdM2+HIToQigNv4z/5bxXOJLAHrm6G
+         1SCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eUAgGXgRJv+laJqNVXMEReHwclDFkLvFtLnzR72uPrw=;
+        b=2X5AJ15Kbm06RoLNbky/iq1eSa1jVXCNTeXlNR1PYMELOh2iFDFPKbqVwuSgti7dyV
+         BTYsf9D+OY6lZz8MMVXGFWU99YadOiMdzx/LKtaEj89cBG5hHVej6iguCmbm71ENBRrA
+         hkafQoJ1JehjvxxyxHd5C/xW+V2LMTr+sKAwazGWVwaDm1QoCgpEDTiTMHKs8v1Wfemp
+         19yIjmkQTCVeZFsTgMocatyeQGZnUVi2aAanQYhCrARj/mkl1zdDu1pFd+uIBlpfxldS
+         veFCxz/EzWlq7mM0vkwlNVBrkHvwCBLSzMi9OW8ua8jsGUad5df62UlarN2UhId17jl3
+         nBRQ==
+X-Gm-Message-State: AO0yUKU9Uxwa0m4ZU+BffsKzDfmlBcSNpLCjX/qXh/N4xVRHdZlF/yaf
+        fyQuuxZjf8SCi0N4+yb3NGZ2Ksdzj7jD5XCCveA=
+X-Google-Smtp-Source: AK7set8ioNcJPp/YawVWhmtAJLjQLjVLhXcs+aVHAAieiYpxHxPO/0j30k2MStzTMMBS7PIbvmXdjg==
+X-Received: by 2002:aa7:c551:0:b0:4a3:43c1:8430 with SMTP id s17-20020aa7c551000000b004a343c18430mr8483606edr.4.1677940708917;
+        Sat, 04 Mar 2023 06:38:28 -0800 (PST)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+        by smtp.gmail.com with ESMTPSA id r29-20020a50d69d000000b004af70c546dasm2470291edi.87.2023.03.04.06.38.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 04 Mar 2023 06:38:28 -0800 (PST)
+Date:   Sat, 4 Mar 2023 15:38:27 +0100
+From:   Andrew Jones <ajones@ventanamicro.com>
+To:     Sunil V L <sunilvl@ventanamicro.com>
+Cc:     linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Anup Patel <apatel@ventanamicro.com>,
+        Atish Patra <atishp@rivosinc.com>,
+        'Conor Dooley ' <conor.dooley@microchip.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH V3 06/20] RISC-V: Add support to build the ACPI core
+Message-ID: <20230304143827.mcampnt3ehkgwu26@orel>
+References: <20230303133647.845095-1-sunilvl@ventanamicro.com>
+ <20230303133647.845095-7-sunilvl@ventanamicro.com>
+ <20230303153617.ko4duynxjvixy3bf@orel>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Disposition: inline
+In-Reply-To: <20230303153617.ko4duynxjvixy3bf@orel>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 1362ac91d50346341026f84ff352f4b5504d07f9  Merge branch 'thermal-core' into bleeding-edge
+On Fri, Mar 03, 2023 at 04:36:17PM +0100, Andrew Jones wrote:
+> On Fri, Mar 03, 2023 at 07:06:33PM +0530, Sunil V L wrote:
+> > Enable ACPI core for RISC-V after adding architecture-specific
+> > interfaces and header files required to build the ACPI core.
+> > 
+> > 1) Couple of header files are required unconditionally by the ACPI
+> > core. Add empty acenv.h and cpu.h header files.
+> > 
+> > 2) If CONFIG_PCI is enabled, a few PCI related interfaces need to
+> > be provided by the architecture. Define dummy interfaces for now
+> > so that build succeeds. Actual implementation will be added when
+> > PCI support is added for ACPI along with external interrupt
+> > controller support.
+> > 
+> > 3) A few globals and memory mapping related functions specific
+> > to the architecture need to be provided.
+> > 
+> > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+> > ---
+> >  arch/riscv/Kconfig             |  5 +++
+> >  arch/riscv/include/asm/acenv.h | 11 +++++
+> >  arch/riscv/include/asm/acpi.h  | 61 ++++++++++++++++++++++++++
+> >  arch/riscv/include/asm/cpu.h   |  8 ++++
+> >  arch/riscv/kernel/Makefile     |  2 +
+> >  arch/riscv/kernel/acpi.c       | 80 ++++++++++++++++++++++++++++++++++
+> >  6 files changed, 167 insertions(+)
+> >  create mode 100644 arch/riscv/include/asm/acenv.h
+> >  create mode 100644 arch/riscv/include/asm/acpi.h
+> >  create mode 100644 arch/riscv/include/asm/cpu.h
+> >  create mode 100644 arch/riscv/kernel/acpi.c
+> > 
+> > diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> > index 71754eb32ee6..f3108c7e19d8 100644
+> > --- a/arch/riscv/Kconfig
+> > +++ b/arch/riscv/Kconfig
+> > @@ -12,6 +12,8 @@ config 32BIT
+> >  
+> >  config RISCV
+> >  	def_bool y
+> > +	select ACPI_GENERIC_GSI if ACPI
+> > +	select ACPI_REDUCED_HARDWARE_ONLY if ACPI
+> >  	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
+> >  	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
+> >  	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
+> > @@ -617,6 +619,7 @@ config EFI
+> >  	depends on OF && !XIP_KERNEL
+> >  	depends on MMU
+> >  	default y
+> > +	select ARCH_SUPPORTS_ACPI if 64BIT
+> >  	select EFI_GENERIC_STUB
+> >  	select EFI_PARAMS_FROM_FDT
+> >  	select EFI_RUNTIME_WRAPPERS
+> > @@ -720,3 +723,5 @@ source "drivers/cpufreq/Kconfig"
+> >  endmenu # "CPU Power Management"
+> >  
+> >  source "arch/riscv/kvm/Kconfig"
+> > +
+> > +source "drivers/acpi/Kconfig"
+> 
+> The above Kconfig hunks don't apply on the IPI improvement base. The
+> second hunk also looks weird with the select under the default.
+> 
 
-elapsed time: 962m
+Just following up here; as Sunil pointed out in chat, the base is
+latest master with the IPI improvement rebased. I was using the
+last IPI improvement branch. So that explains the problem I had
+applying this and the weirdness I was seeing with the Kconfig
+lines (select/default) as compared to v2.
 
-configs tested: 110
-configs skipped: 6
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha        buildonly-randconfig-r003-20230302   gcc  
-alpha        buildonly-randconfig-r006-20230302   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r015-20230302   gcc  
-alpha                randconfig-r015-20230303   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r043-20230302   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r001-20230302   clang
-arm                  randconfig-r013-20230303   clang
-arm                  randconfig-r036-20230302   clang
-arm                  randconfig-r046-20230302   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r021-20230302   clang
-csky                                defconfig   gcc  
-csky                 randconfig-r014-20230302   gcc  
-hexagon              randconfig-r041-20230302   clang
-hexagon              randconfig-r045-20230302   clang
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                          randconfig-a001   gcc  
-i386                          randconfig-a002   clang
-i386                          randconfig-a003   gcc  
-i386                          randconfig-a004   clang
-i386                          randconfig-a005   gcc  
-i386                          randconfig-a006   clang
-i386                          randconfig-a011   clang
-i386                          randconfig-a012   gcc  
-i386                          randconfig-a013   clang
-i386                          randconfig-a014   gcc  
-i386                          randconfig-a015   clang
-i386                          randconfig-a016   gcc  
-ia64                             allmodconfig   gcc  
-ia64         buildonly-randconfig-r004-20230302   gcc  
-ia64                                defconfig   gcc  
-ia64                 randconfig-r023-20230302   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r016-20230303   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r011-20230303   gcc  
-m68k                 randconfig-r016-20230302   gcc  
-microblaze           randconfig-r032-20230302   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r034-20230302   gcc  
-openrisc     buildonly-randconfig-r001-20230302   gcc  
-openrisc             randconfig-r012-20230302   gcc  
-openrisc             randconfig-r013-20230302   gcc  
-openrisc             randconfig-r014-20230303   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r004-20230302   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc      buildonly-randconfig-r005-20230302   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r002-20230302   gcc  
-riscv                randconfig-r022-20230302   clang
-riscv                randconfig-r042-20230302   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r024-20230302   clang
-s390                 randconfig-r031-20230302   gcc  
-s390                 randconfig-r044-20230302   clang
-sh                               allmodconfig   gcc  
-sh                   randconfig-r035-20230302   gcc  
-sparc        buildonly-randconfig-r002-20230302   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r003-20230302   gcc  
-sparc                randconfig-r011-20230302   gcc  
-sparc                randconfig-r025-20230302   gcc  
-sparc64              randconfig-r005-20230302   gcc  
-sparc64              randconfig-r033-20230302   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64                        randconfig-a001   clang
-x86_64                        randconfig-a002   gcc  
-x86_64                        randconfig-a003   clang
-x86_64                        randconfig-a004   gcc  
-x86_64                        randconfig-a005   clang
-x86_64                        randconfig-a006   gcc  
-x86_64                        randconfig-a011   gcc  
-x86_64                        randconfig-a012   clang
-x86_64                        randconfig-a013   gcc  
-x86_64                        randconfig-a014   clang
-x86_64                        randconfig-a015   gcc  
-x86_64                        randconfig-a016   clang
-x86_64                               rhel-8.3   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Thanks,
+drew
