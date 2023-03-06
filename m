@@ -2,36 +2,36 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29F036ACFCD
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Mar 2023 22:06:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 955B46ACFD6
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Mar 2023 22:09:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229874AbjCFVGd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Mar 2023 16:06:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56376 "EHLO
+        id S229726AbjCFVJU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Mar 2023 16:09:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229680AbjCFVG1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Mar 2023 16:06:27 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CA9B4FA9C;
-        Mon,  6 Mar 2023 13:06:20 -0800 (PST)
+        with ESMTP id S229559AbjCFVJT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Mar 2023 16:09:19 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85AAC206BF;
+        Mon,  6 Mar 2023 13:09:18 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F3A3F60A10;
-        Mon,  6 Mar 2023 21:06:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E8FC433D2;
-        Mon,  6 Mar 2023 21:06:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 22E3F60B84;
+        Mon,  6 Mar 2023 21:09:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5523C433EF;
+        Mon,  6 Mar 2023 21:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678136779;
-        bh=idi/6s5Qo9QDBdVMI12wKo77YC0Au3UM5k9rnmjlsKQ=;
+        s=k20201202; t=1678136957;
+        bh=D7hWlHPkxCHLmVrT+DiT6xkGdDskW5thK7niBxeh04M=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Jadhch3R6vjQ+nSfoA7Uwab3TYTynSl6yBMobTbxxx6m/03OWG9QugHFMZ4oeq/p9
-         677UGJFLAPZN5A5yAggWck4JZfPvZmwgYBaa5B4LRBVQAjopUy9Qq0os5fW71fwZuY
-         D5jAPnNOtvbi0GUxZ8FZqCPeF+1mT9VS9NMxv0inkqkPkSf2Zhy36NDRo4fM7h7UPN
-         5SXmsxCytFSw7VpK6OiVeGdt61CVLt8dms+iGw4gCb1gKj4tmRsdL5EYySh/zK0LKS
-         vGQpvv3COzj4Pt4AE3OruZHCsHCALMVcrIYy8YEkriYV+6dLIZsMB32fIeSnhl3d2c
-         7DZ+wW9B2jVPQ==
-Date:   Mon, 6 Mar 2023 21:06:13 +0000
+        b=mJWPEujZmIUYE6OUHwuuyaWs5gYoiX4mwLmxqbrcHALw1Ox54QKIpzoH9FueSBEGh
+         /DthUfR3FQvRQExHZWC8w3zsDF8GuKihsyq6/+UGMI+E1SKQr8rzjz4dwuPc+Bt+vG
+         ZsY9Ll9URemzFEKiU2ctO3x9wG1m0YzHJEW7lxr9Rw1HejeoBf5h2WORWwofq9wC3Z
+         LRVcKmO7vapRRHJgCmEQO/HusrwP0bnR4rKRTWaK2JQdkO97QAojCUOfQjA4iH7A+9
+         TeEWxynFs1m+xVi9yPWPXd+7DPjrFhqmYnUowWzhc7MNPI1BiPPvBK4fkPD1bHuqzl
+         EtBoSD8wWFh5Q==
+Date:   Mon, 6 Mar 2023 21:09:11 +0000
 From:   Conor Dooley <conor@kernel.org>
 To:     Sunil V L <sunilvl@ventanamicro.com>
 Cc:     linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
@@ -49,17 +49,17 @@ Cc:     linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
         Atish Patra <atishp@rivosinc.com>,
         'Conor Dooley ' <conor.dooley@microchip.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH V3 16/20] clocksource/timer-riscv: Add ACPI support
-Message-ID: <567aac52-8b84-47a9-9faf-b27ff1a1963e@spud>
+Subject: Re: [PATCH V3 17/20] RISC-V: time.c: Add ACPI support for time_init()
+Message-ID: <0cceafc3-522b-4ce0-9016-e931c818adec@spud>
 References: <20230303133647.845095-1-sunilvl@ventanamicro.com>
- <20230303133647.845095-17-sunilvl@ventanamicro.com>
+ <20230303133647.845095-18-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="KUsNw6CACrWxwcHM"
+        protocol="application/pgp-signature"; boundary="9ueEUgWWOucslAoO"
 Content-Disposition: inline
-In-Reply-To: <20230303133647.845095-17-sunilvl@ventanamicro.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+In-Reply-To: <20230303133647.845095-18-sunilvl@ventanamicro.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,73 +68,93 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
---KUsNw6CACrWxwcHM
+--9ueEUgWWOucslAoO
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 03, 2023 at 07:06:43PM +0530, Sunil V L wrote:
-> Initialize the timer driver based on RHCT table on ACPI based
-> platforms.
+On Fri, Mar 03, 2023 at 07:06:44PM +0530, Sunil V L wrote:
+> On ACPI based platforms, timer related information is
+> available in RHCT. Add ACPI based probe support to the
+> timer initialization.
 >=20
 > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-
-The SBI spec allows for implementations where the timer cannot wake the
-cpu. You previously said "We have plans to add a flag in RHCT. But that
-still needs approval.", so could you please convert this to a more
-concrete wording and put the explanation for why this is missing into
-the commit message?
-
-Cheers,
-Conor.
-
 > ---
->  drivers/clocksource/timer-riscv.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+>  arch/riscv/kernel/time.c | 23 +++++++++++++++++------
+>  1 file changed, 17 insertions(+), 6 deletions(-)
 >=20
-> diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/time=
-r-riscv.c
-> index cecc4662293b..da3071b387eb 100644
-> --- a/drivers/clocksource/timer-riscv.c
-> +++ b/drivers/clocksource/timer-riscv.c
-> @@ -10,6 +10,7 @@
-> =20
->  #define pr_fmt(fmt) "riscv-timer: " fmt
+> diff --git a/arch/riscv/kernel/time.c b/arch/riscv/kernel/time.c
+> index babaf3b48ba8..2c29543549c3 100644
+> --- a/arch/riscv/kernel/time.c
+> +++ b/arch/riscv/kernel/time.c
+> @@ -4,6 +4,7 @@
+>   * Copyright (C) 2017 SiFive
+>   */
 > =20
 > +#include <linux/acpi.h>
->  #include <linux/clocksource.h>
+>  #include <linux/of_clk.h>
 >  #include <linux/clockchips.h>
->  #include <linux/cpu.h>
-> @@ -207,3 +208,13 @@ static int __init riscv_timer_init_dt(struct device_=
-node *n)
->  }
+>  #include <linux/clocksource.h>
+> @@ -18,17 +19,27 @@ EXPORT_SYMBOL_GPL(riscv_timebase);
+>  void __init time_init(void)
+>  {
+>  	struct device_node *cpu;
+> +	struct acpi_table_rhct *rhct;
+> +	acpi_status status;
+>  	u32 prop;
 > =20
->  TIMER_OF_DECLARE(riscv_timer, "riscv", riscv_timer_init_dt);
-> +
-> +#ifdef CONFIG_ACPI
-> +static int __init riscv_timer_acpi_init(struct acpi_table_header *table)
-> +{
-> +	return riscv_timer_init_common();
-> +}
-> +
-> +TIMER_ACPI_DECLARE(aclint_mtimer, ACPI_SIG_RHCT, riscv_timer_acpi_init);
-> +
-> +#endif
+> -	cpu =3D of_find_node_by_path("/cpus");
+> -	if (!cpu || of_property_read_u32(cpu, "timebase-frequency", &prop))
+> -		panic(KERN_WARNING "RISC-V system with no 'timebase-frequency' in DTS\=
+n");
+> -	of_node_put(cpu);
+> -	riscv_timebase =3D prop;
+> +	if (acpi_disabled) {
+> +		cpu =3D of_find_node_by_path("/cpus");
+> +		if (!cpu || of_property_read_u32(cpu, "timebase-frequency", &prop))
+> +			panic("RISC-V system with no 'timebase-frequency' in DTS\n");
+
+I appreciate that it was like this before, but a newline here (and in
+the corresponding spot below) would be nice.
+That's a minor nit though, so:
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+
+Thanks,
+Conor.
+
+> +		of_node_put(cpu);
+> +		riscv_timebase =3D prop;
+> +		of_clk_init(NULL);
+> +	} else {
+> +		status =3D acpi_get_table(ACPI_SIG_RHCT, 0, (struct acpi_table_header =
+**)&rhct);
+> +		if (ACPI_FAILURE(status))
+> +			panic("RISC-V ACPI system with no RHCT table\n");
+> +		riscv_timebase =3D rhct->time_base_freq;
+> +		acpi_put_table((struct acpi_table_header *)rhct);
+> +	}
+> =20
+>  	lpj_fine =3D riscv_timebase / HZ;
+> =20
+> -	of_clk_init(NULL);
+>  	timer_probe();
+> =20
+>  	tick_setup_hrtimer_broadcast();
 > --=20
 > 2.34.1
 >=20
 
---KUsNw6CACrWxwcHM
+--9ueEUgWWOucslAoO
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZAZVxQAKCRB4tDGHoIJi
-0ghAAP4lpF2feMoFrQxas6vkJHXKFiI7ARMvhKONsSV8xUNn7wEAkI8McxF1J2fl
-c4aLJfk6KJvLtcvGqjczoc+H9X2Rfw0=
-=A6TU
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZAZWdwAKCRB4tDGHoIJi
+0tRbAP9sV9/i+Nt5TFgt3D3dQu0MRkMmaWwMmRuG9k6Af62B0QD/cYMZAGC8XVRw
+vGCpsH5Ygi+gGrH6Cok66aQs9RTt+wU=
+=S8pz
 -----END PGP SIGNATURE-----
 
---KUsNw6CACrWxwcHM--
+--9ueEUgWWOucslAoO--
