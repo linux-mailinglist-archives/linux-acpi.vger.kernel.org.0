@@ -2,50 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4722C6AE020
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Mar 2023 14:16:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A8D86AE03F
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Mar 2023 14:20:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230371AbjCGNQB convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 7 Mar 2023 08:16:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50300 "EHLO
+        id S229527AbjCGNUN convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 7 Mar 2023 08:20:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231443AbjCGNPb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Mar 2023 08:15:31 -0500
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CC8182377;
-        Tue,  7 Mar 2023 05:14:11 -0800 (PST)
-Received: by mail-ed1-f41.google.com with SMTP id k10so28140041edk.13;
-        Tue, 07 Mar 2023 05:14:10 -0800 (PST)
+        with ESMTP id S230519AbjCGNTu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Mar 2023 08:19:50 -0500
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BED6E4E5DE
+        for <linux-acpi@vger.kernel.org>; Tue,  7 Mar 2023 05:19:06 -0800 (PST)
+Received: by mail-ed1-f49.google.com with SMTP id ec29so21274444edb.6
+        for <linux-acpi@vger.kernel.org>; Tue, 07 Mar 2023 05:19:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678194830;
+        d=1e100.net; s=20210112; t=1678195145;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=R0kTh8GpSOrCD/QzZe6o1QalI7Guavzm9BMKg6WwDYY=;
-        b=4Z8UQlOxQwJqhcA234Yfy0K9yeDa92gG1FWc6V8pNL8Ovava/pC8+uFtNjW4h8HTli
-         Bhe4NA4doWdubf5eBzadrjP5+u83oRiQk9YV5oCy28lWPMK17wkK3QFcMZe6CR6GhlNJ
-         8gCtQwGUKBdfcjKvf6nTe+a1/LuO8at8fbBUTL82jHonqG1SlLjn5Erb0rxljlMk99my
-         DYCgWz/L2+ZUFoGwgfOxVZR+yFX/iVAHhrq4L59i0RfXFLjeeUutJiNIQI8J1ncxbSuW
-         2s2+scYAsbTqt7TD6iZJ++yjcwqrbJku4FkzF16XwsQLMEjEXo9iT5fuKvWJgbt6G5Rp
-         qVnw==
-X-Gm-Message-State: AO0yUKWx0FRmLu3G/o/YSMr1wr/DA1tJ27zVGQii/CCa+neb+r7sDJdW
-        F8GZS2YFfMYt/Z4GFI8TCWwNaCYSWp6IkWIv43c=
-X-Google-Smtp-Source: AK7set+kfev+dzm2OeyflBAhH2bGsUKOJ4c9bABWt1mkXcoP4YWDWU9/CVezyRCraVM7zYHauTj3v57NpuUF6YV+vRw=
-X-Received: by 2002:a17:906:a05a:b0:8b2:23fb:dfd1 with SMTP id
- bg26-20020a170906a05a00b008b223fbdfd1mr7236633ejb.2.1678194830511; Tue, 07
- Mar 2023 05:13:50 -0800 (PST)
+        bh=JFkqgBIKONRKBd87rtkxImCMW+GSjICF8co1ANeAkVI=;
+        b=h4I7g55l8PeeYOdlsZivIzrTuEbZSrF7YYChjaEGRu2djWvu1EZlEQpHzozL1iOKps
+         NLRr7xIVIod7zeZBms3RBJsp8agdgTkLYE9uIkC09NeGirjXUpHzjjNcBuIBHQHHYJ9n
+         nZ5oVKTf/fejCJnfrCAljN/4wCFpFJTq5CGOXbBZiY7JgRV/Muto9MO3lRdoITj6dbGQ
+         SIxQFAEIaAq/muiYGI+b3lJA79Svc7PrHJsF70Tc33xDn4QCrcxBdFFhdYC+icFtZkt/
+         k3q8neSQz0grQFUgmdd/n/yszrd8x2MBoSsJdSTJh1x9ajfp91nWIScHUQjiTblaMTSS
+         fKAg==
+X-Gm-Message-State: AO0yUKXD++QVVk0PZvBVDBXwCAfroy0h3ozD3Jg49fSAuH31rfRLVacb
+        OZOJzSkDirns1G3xYdvZYLmHwzU/C5VCps1M8RhQBYzFJEg=
+X-Google-Smtp-Source: AK7set98oMDmX78mdJ/9Ma+GMq6niXjOGwtnwujvS6iz/XhSpb/kIVnUVA7m/POtfnXJey6ZPAYbwZyMD+wlJbTtJoM=
+X-Received: by 2002:a17:906:64d:b0:8d1:57cf:ef3c with SMTP id
+ t13-20020a170906064d00b008d157cfef3cmr6832748ejb.2.1678195145134; Tue, 07 Mar
+ 2023 05:19:05 -0800 (PST)
 MIME-Version: 1.0
-References: <20230302093300.62098-1-acelan.kao@canonical.com>
-In-Reply-To: <20230302093300.62098-1-acelan.kao@canonical.com>
+References: <20230301100436.132521-1-hdegoede@redhat.com>
+In-Reply-To: <20230301100436.132521-1-hdegoede@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 7 Mar 2023 14:13:39 +0100
-Message-ID: <CAJZ5v0gDne=4SdMRzZw-r7jZ4rftXQ4XpVHVBytmJLotPy+azA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: video: Add backlight=native DMI quirk for Dell
- Vostro 15 3535
-To:     AceLan Kao <acelan.kao@canonical.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+Date:   Tue, 7 Mar 2023 14:18:54 +0100
+Message-ID: <CAJZ5v0iddxVg=P59E4iFoo1ZG8+oBd6YBT2m5M_KJZHaGEj-yQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] ACPI: x86: Introduce an acpi_quirk_skip_gpio_event_handlers()
+ + 2 quirks
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+        linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -58,37 +58,17 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 2, 2023 at 10:33 AM AceLan Kao <acelan.kao@canonical.com> wrote:
+On Wed, Mar 1, 2023 at 11:04 AM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> From: "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>
+> Hi All,
 >
-> Sometimes the system boots up with a acpi_video0 backlight interface
-> which doesn't work. So add Dell Vostro 15 3535 into the
-> video_detect_dmi_table to set it to native explicitly.
+> Here is v2 (more of a resend really) of my patch series to allow
+> the existing quirk mechanism in drivers/acpi/x86/utils.c to
+> disable ACPI GPIO event handlers on systems where these are totally
+> broken (typically systems which use Android as factory OS with a
+> heavily patched linux kernel).
 >
-> Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-> ---
->  drivers/acpi/video_detect.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-> index 710ac640267d..14d6d81e536f 100644
-> --- a/drivers/acpi/video_detect.c
-> +++ b/drivers/acpi/video_detect.c
-> @@ -716,6 +716,13 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
->                 DMI_MATCH(DMI_PRODUCT_NAME, "Dell G15 5515"),
->                 },
->         },
-> +       {
-> +        .callback = video_detect_force_native,
-> +        .matches = {
-> +               DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-> +               DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 15 3535"),
-> +               },
-> +       },
->
->         /*
->          * Desktops which falsely report a backlight and which our heuristics
-> --
+> New in this version of the series is the addition of a second new quirk
+> using this.
 
-Applied as 6.3-rc material, thanks!
+Series applied (with the ACK from Andy) as 6.3-rc material, thanks!
