@@ -2,269 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D32316AE096
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Mar 2023 14:31:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E83E6AE0D3
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Mar 2023 14:38:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231186AbjCGNbn convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 7 Mar 2023 08:31:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54790 "EHLO
+        id S231276AbjCGNih (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Mar 2023 08:38:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231147AbjCGNbb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Mar 2023 08:31:31 -0500
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6A3C7C957;
-        Tue,  7 Mar 2023 05:31:08 -0800 (PST)
-Received: by mail-ed1-f49.google.com with SMTP id x3so52166072edb.10;
-        Tue, 07 Mar 2023 05:31:07 -0800 (PST)
+        with ESMTP id S231194AbjCGNiQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Mar 2023 08:38:16 -0500
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3859D168BA
+        for <linux-acpi@vger.kernel.org>; Tue,  7 Mar 2023 05:38:06 -0800 (PST)
+Received: by mail-wr1-x432.google.com with SMTP id f11so12137295wrv.8
+        for <linux-acpi@vger.kernel.org>; Tue, 07 Mar 2023 05:38:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678196285;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r31ohlDpv5otoAeD1bVOzDiFSts1H09pvgDJbkHz6kE=;
+        b=TrUavH00tT8Tlc+XRCN+f0574vfg/jdmj2Iyd/dME2zutf2oub0jR4gbiET5ga102A
+         HyoDuym9ddEz4WOlG7ymyFBAaTKtxu+JAFJi5Z7z+L0cp/yEFhaHHLbYheaxkxzuUXPy
+         /MP2+UF36Miaj3r6lQxR2JuGjCQFo5LhpOEWKBzraqBuzEtNIz6qoqHylZVuvqIHHqkV
+         ZFAsAGbVOyNoQOH739V4xtKjtdSnEIDUf6hL9ZlHLf79ausXxl3+oAdbr9E5ZtRbSV8T
+         4PHv71I2DWaXwgT1BbkhdL++T6oHDj8AniwXTJRSSBTVdBLohG05y+6BJ2+okXwyF/UX
+         vBdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678195856;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20210112; t=1678196285;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3Yfy1FqfOLTU+SCXhwV/aBsHgrNM7HH0u0r8sxJmhO8=;
-        b=cxnyhjUu0PFXCDB6nM08JQ8oNhBWC6MOciII4s6H6OiSNgot07b6Eltwj5x6W9CnN4
-         dNTM5y6U1W0NRed2rG9fpss3iAJsTaU+VSW/yB++6kh/LciVYGQlIFQ6QJCYWZFfa5zd
-         mhYDw60UpUYIUh4LQ/CKGUk4huyrr7uwElEOl1fe6DRj9pfXUvAZfbBp22G7DbN3BkFi
-         XaSvSo5ei8M2dhZWlUiWASs52pT6kcre1VjbvWIVYU3j8I/vTcgPC7bFVONJvZWxNBS8
-         K/1W6Vg21GytK2dKPLtEec+1DfrhJ2paQIq18wv0QK22iPM1IMMYQFQm/ldVSYK64R1v
-         FYxg==
-X-Gm-Message-State: AO0yUKWhbphZVISe5AROjHkkinovo/z/DFJay37/CDqIuW+psUQneH8V
-        6fadiOV0yB9qC+NVLkfAAIPa4NTLSDmbD0dZfdM=
-X-Google-Smtp-Source: AK7set+GLk6lTQvfsci20w1N4x9V0F64Hc1DiadO8wDRWfJm5ls5fThItPgEbf5zC+svGIloWVq540KllrshG/eTKi4=
-X-Received: by 2002:a05:6402:c17:b0:4bc:edde:1508 with SMTP id
- co23-20020a0564020c1700b004bcedde1508mr9643819edb.0.1678195856352; Tue, 07
- Mar 2023 05:30:56 -0800 (PST)
+        bh=r31ohlDpv5otoAeD1bVOzDiFSts1H09pvgDJbkHz6kE=;
+        b=My0aARx7vhyuA5z0KxTz9PeVFZV4qm3gyrNglrxJF57/nD5zTePeSxfJOxxoBGIYZX
+         bz0LI9MbsuyaIqOaEBzi0xlQC22aJ/VCMPuN2eUiEE5ed1XMIM8923h7leW9AFf3PZnp
+         4AR6hxMTpoA0J9/DooTo6lmltU/zuM8gZlSlbcOwDrY17i9dIywIJ6vIkmfP2yqA6ag0
+         4UBzE9sMvIN/NcO4GDAD0eRRPfn2CwElEgipl847y0WjU5tJIhfd+BOTwkdlB3wAGozF
+         hrLZk9QIVIzV9hiYIIHj1k1gV3X/O4qD/ujBDT/p5cAIpV/WUdIUXyuwf0qygN1U4rnL
+         IysQ==
+X-Gm-Message-State: AO0yUKW1EjkDE0M5uxiHO0/vVwgW1kdMMZ/bum5wIQkmsGBLSVUhSv8e
+        lbMgXy+RB4qAzSaf5OynYGdoQQ==
+X-Google-Smtp-Source: AK7set+Tx3PciiUAChxOXg06dWYuz/nGFE4lhye4WaWUJHVZ6BSEpSWXgQBpiWbJ17Umzi/bfQDSOA==
+X-Received: by 2002:adf:e30f:0:b0:2c8:309d:77b0 with SMTP id b15-20020adfe30f000000b002c8309d77b0mr9443409wrj.0.1678196285292;
+        Tue, 07 Mar 2023 05:38:05 -0800 (PST)
+Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:5ab9:1ac6:870d:35c])
+        by smtp.gmail.com with ESMTPSA id v5-20020a5d43c5000000b002c55de1c72bsm12311477wrr.62.2023.03.07.05.38.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Mar 2023 05:38:04 -0800 (PST)
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+To:     daniel.lezcano@linaro.org, rafael@kernel.org
+Cc:     rui.zhang@intel.com, amitk@kernel.org, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org (open list:ACPI THERMAL DRIVER),
+        linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v1 11/11] thermal/acpi: Use the thermal zone parameter to specify the device link
+Date:   Tue,  7 Mar 2023 14:37:35 +0100
+Message-Id: <20230307133735.90772-12-daniel.lezcano@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230307133735.90772-1-daniel.lezcano@linaro.org>
+References: <20230307133735.90772-1-daniel.lezcano@linaro.org>
 MIME-Version: 1.0
-References: <20230208212712.3184953-1-sakari.ailus@linux.intel.com> <20230208212712.3184953-2-sakari.ailus@linux.intel.com>
-In-Reply-To: <20230208212712.3184953-2-sakari.ailus@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 7 Mar 2023 14:30:45 +0100
-Message-ID: <CAJZ5v0jNVUEmxpFaLen-ssRqWz_r_HXP2wnzsEavBZnrneTs4g@mail.gmail.com>
-Subject: Re: [PATCH v5 1/8] ACPI: property: Parse data node string references
- in properties
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        rafael@kernel.org, andriy.shevchenko@linux.intel.com,
-        heikki.krogerus@linux.intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 8, 2023 at 10:27 PM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
->
-> Add support for parsing property references using strings, besides
-> reference objects that were previously supported. This allows also
-> referencing data nodes which was not possible with reference objects.
->
-> Also add pr_fmt() macro to prefix printouts.
->
-> While at it, update copyright.
->
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> ---
->  drivers/acpi/property.c | 110 ++++++++++++++++++++++++++++++++++------
->  1 file changed, 94 insertions(+), 16 deletions(-)
->
-> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-> index b8d9eb9a433ed..4db7701aeaf5c 100644
-> --- a/drivers/acpi/property.c
-> +++ b/drivers/acpi/property.c
-> @@ -2,14 +2,17 @@
->  /*
->   * ACPI device specific properties support.
->   *
-> - * Copyright (C) 2014, Intel Corporation
-> + * Copyright (C) 2014-2023, Intel Corporation
->   * All rights reserved.
->   *
->   * Authors: Mika Westerberg <mika.westerberg@linux.intel.com>
-> - *          Darren Hart <dvhart@linux.intel.com>
-> - *          Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> + *         Darren Hart <dvhart@linux.intel.com>
-> + *         Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The thermal framework can create a cyclic link between the driver and
+the device via the thermal zone parameters when registering the
+thermal zone.
 
-Is the above change really that useful?
+As this option is supported by the thermal core code, let's use it and
+remove the specific code in the ACPI driver. This change has the
+benefit of self-encapsulate the thermal zone device structure.
 
-> + *         Sakari Ailus <sakari.ailus@linux.intel.com>
->   */
->
-> +#define pr_fmt(fmt) "ACPI: " fmt
-> +
->  #include <linux/acpi.h>
->  #include <linux/device.h>
->  #include <linux/export.h>
-> @@ -795,7 +798,8 @@ acpi_fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
->  static int acpi_get_ref_args(struct fwnode_reference_args *args,
->                              struct fwnode_handle *ref_fwnode,
->                              const union acpi_object **element,
-> -                            const union acpi_object *end, size_t num_args)
-> +                            const union acpi_object *end, size_t num_args,
-> +                            bool subnode_string)
->  {
->         u32 nargs = 0, i;
->
-> @@ -803,13 +807,16 @@ static int acpi_get_ref_args(struct fwnode_reference_args *args,
->          * Find the referred data extension node under the
->          * referred device node.
->          */
-> -       for (; *element < end && (*element)->type == ACPI_TYPE_STRING;
-> -            (*element)++) {
-> -               const char *child_name = (*element)->string.pointer;
-> -
-> -               ref_fwnode = acpi_fwnode_get_named_child_node(ref_fwnode, child_name);
-> -               if (!ref_fwnode)
-> -                       return -EINVAL;
-> +       if (subnode_string) {
-> +               for (; *element < end && (*element)->type == ACPI_TYPE_STRING;
-> +                    (*element)++) {
-> +                       const char *child_name = (*element)->string.pointer;
-> +
-> +                       ref_fwnode = acpi_fwnode_get_named_child_node(ref_fwnode,
-> +                                                                     child_name);
-> +                       if (!ref_fwnode)
-> +                               return -EINVAL;
-> +               }
->         }
->
->         /*
-> @@ -820,7 +827,8 @@ static int acpi_get_ref_args(struct fwnode_reference_args *args,
->         for (i = 0; (*element) + i < end && i < num_args; i++) {
->                 acpi_object_type type = (*element)[i].type;
->
-> -               if (type == ACPI_TYPE_LOCAL_REFERENCE)
-> +               if (type == ACPI_TYPE_LOCAL_REFERENCE ||
-> +                   (!subnode_string && type == ACPI_TYPE_STRING))
->                         break;
->
->                 if (type == ACPI_TYPE_INTEGER)
-> @@ -844,6 +852,43 @@ static int acpi_get_ref_args(struct fwnode_reference_args *args,
->         return 0;
->  }
->
-> +static struct fwnode_handle *
-> +acpi_parse_string_ref(const struct fwnode_handle *fwnode, const char *refstring)
-> +{
-> +       acpi_handle scope, handle;
-> +       struct acpi_data_node *dn;
-> +       struct acpi_device *device;
-> +       acpi_status status;
-> +
-> +       if (is_acpi_device_node(fwnode)) {
-> +               scope = to_acpi_device_node(fwnode)->handle;
-> +       } else if (is_acpi_data_node(fwnode)) {
-> +               scope = to_acpi_data_node(fwnode)->handle;
-> +       } else {
-> +               pr_err("bad node type for node %pfw\n", fwnode);
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+---
+ drivers/acpi/thermal.c | 24 ++++--------------------
+ 1 file changed, 4 insertions(+), 20 deletions(-)
 
-Is the log level here adequate?
+diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+index 255efa73ed70..7d5c56564556 100644
+--- a/drivers/acpi/thermal.c
++++ b/drivers/acpi/thermal.c
+@@ -789,6 +789,7 @@ static struct thermal_zone_device_ops acpi_thermal_zone_ops = {
+ 
+ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
+ {
++	struct thermal_zone_params tzp = { .linked_dev = &tz->device->dev };
+ 	int trips = 0;
+ 	int result;
+ 	acpi_status status;
+@@ -808,33 +809,23 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
+ 
+ 	if (tz->trips.passive.flags.valid)
+ 		tz->thermal_zone = thermal_zone_device_register("acpitz", trips, 0, tz,
+-								&acpi_thermal_zone_ops, NULL,
++								&acpi_thermal_zone_ops, &tzp,
+ 								tz->trips.passive.tsp * 100,
+ 								tz->polling_frequency * 100);
+ 	else
+ 		tz->thermal_zone =
+ 			thermal_zone_device_register("acpitz", trips, 0, tz,
+-						     &acpi_thermal_zone_ops, NULL,
++						     &acpi_thermal_zone_ops, &tzp,
+ 						     0, tz->polling_frequency * 100);
+ 
+ 	if (IS_ERR(tz->thermal_zone))
+ 		return -ENODEV;
+ 
+-	result = sysfs_create_link(&tz->device->dev.kobj,
+-				   &tz->thermal_zone->device.kobj, "thermal_zone");
+-	if (result)
+-		goto unregister_tzd;
+-
+-	result = sysfs_create_link(&tz->thermal_zone->device.kobj,
+-				   &tz->device->dev.kobj, "device");
+-	if (result)
+-		goto remove_tz_link;
+-
+ 	status =  acpi_bus_attach_private_data(tz->device->handle,
+ 					       tz->thermal_zone);
+ 	if (ACPI_FAILURE(status)) {
+ 		result = -ENODEV;
+-		goto remove_dev_link;
++		goto unregister_tzd;
+ 	}
+ 
+ 	result = thermal_zone_device_enable(tz->thermal_zone);
+@@ -848,20 +839,13 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
+ 
+ acpi_bus_detach:
+ 	acpi_bus_detach_private_data(tz->device->handle);
+-remove_dev_link:
+-	sysfs_remove_link(&tz->thermal_zone->device.kobj, "device");
+-remove_tz_link:
+-	sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
+ unregister_tzd:
+ 	thermal_zone_device_unregister(tz->thermal_zone);
+-
+ 	return result;
+ }
+ 
+ static void acpi_thermal_unregister_thermal_zone(struct acpi_thermal *tz)
+ {
+-	sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
+-	sysfs_remove_link(&tz->thermal_zone->device.kobj, "device");
+ 	thermal_zone_device_unregister(tz->thermal_zone);
+ 	tz->thermal_zone = NULL;
+ 	acpi_bus_detach_private_data(tz->device->handle);
+-- 
+2.34.1
 
-I mean, what is a sysadmin seeing this message in the log expected to
-do about it?
-
-> +               return ERR_PTR(-EINVAL);
-> +       }
-> +
-> +       status = acpi_get_handle(scope, refstring, &handle);
-> +       if (ACPI_FAILURE(status)) {
-> +               acpi_handle_debug(scope, "can't get handle for %s", refstring);
-> +               return ERR_PTR(-EINVAL);
-> +       }
-> +
-> +       device = acpi_fetch_acpi_dev(handle);
-> +       if (device)
-> +               return acpi_fwnode_handle(device);
-> +
-> +       status = acpi_get_data_full(handle, acpi_nondev_subnode_tag,
-> +                                   (void **)&dn, NULL);
-> +       if (ACPI_FAILURE(status) || !dn) {
-> +               acpi_handle_debug(handle, "can't find subnode");
-> +               return ERR_PTR(-EINVAL);
-> +       }
-> +
-> +       return &dn->fwnode;
-> +}
-> +
->  /**
->   * __acpi_node_get_property_reference - returns handle to the referenced object
->   * @fwnode: Firmware node to get the property from
-> @@ -886,6 +931,7 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
->         const union acpi_object *element, *end;
->         const union acpi_object *obj;
->         const struct acpi_device_data *data;
-> +       struct fwnode_handle *ref_fwnode;
->         struct acpi_device *device;
->         int ret, idx = 0;
->
-> @@ -909,16 +955,29 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
->
->                 args->fwnode = acpi_fwnode_handle(device);
->                 args->nargs = 0;
-> +               return 0;
-> +       case ACPI_TYPE_STRING:
-> +               if (index)
-> +                       return -ENOENT;
-> +
-> +               ref_fwnode = acpi_parse_string_ref(fwnode, obj->string.pointer);
-> +               if (IS_ERR(ref_fwnode))
-> +                       return PTR_ERR(ref_fwnode);
-> +
-> +               args->fwnode = ref_fwnode;
-> +               args->nargs = 0;
-> +
->                 return 0;
->         case ACPI_TYPE_PACKAGE:
->                 /*
->                  * If it is not a single reference, then it is a package of
-> -                * references followed by number of ints as follows:
-> +                * references, followed by number of ints as follows:
->                  *
->                  *  Package () { REF, INT, REF, INT, INT }
->                  *
-> -                * The index argument is then used to determine which reference
-> -                * the caller wants (along with the arguments).
-> +                * Here, REF may be either a local reference or a string. The
-> +                * index argument is then used to determine which reference the
-> +                * caller wants (along with the arguments).
->                  */
->                 break;
->         default:
-> @@ -942,7 +1001,26 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
->
->                         ret = acpi_get_ref_args(idx == index ? args : NULL,
->                                                 acpi_fwnode_handle(device),
-> -                                               &element, end, num_args);
-> +                                               &element, end, num_args, true);
-> +                       if (ret < 0)
-> +                               return ret;
-> +
-> +                       if (idx == index)
-> +                               return 0;
-> +
-> +                       break;
-> +               case ACPI_TYPE_STRING:
-> +                       ref_fwnode =
-> +                               acpi_parse_string_ref(fwnode,
-> +                                                     element->string.pointer);
-> +                       if (IS_ERR(ref_fwnode))
-> +                               return PTR_ERR(ref_fwnode);
-> +
-> +                       element++;
-> +
-> +                       ret = acpi_get_ref_args(idx == index ? args : NULL,
-> +                                               ref_fwnode, &element, end,
-> +                                               num_args, false);
->                         if (ret < 0)
->                                 return ret;
->
-> --
-> 2.30.2
->
