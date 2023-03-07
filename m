@@ -2,65 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D82416AD72F
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Mar 2023 07:13:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE0F66ADA6D
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Mar 2023 10:33:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230406AbjCGGNd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Mar 2023 01:13:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47736 "EHLO
+        id S229967AbjCGJdQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Mar 2023 04:33:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230405AbjCGGNc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Mar 2023 01:13:32 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B27F301B1;
-        Mon,  6 Mar 2023 22:13:31 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0981961215;
-        Tue,  7 Mar 2023 06:13:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF63C433D2;
-        Tue,  7 Mar 2023 06:13:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678169610;
-        bh=xf0x6cqpQmmfZLNlygDl/x3UlC8DENzrRv3kNRhpTTc=;
-        h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-        b=bgFYdTVrcrjW7ir3dhuVSDPLPmyjfBGF1o1lFWTz4SeyRWK7ZU3emLUBvv8kFE+kD
-         WhvYY0xXn/KizUTQJJ/i5PQ9ZW11Pa2P6W4U69CtAIZtFgMSO70hJa078RAj9o6tQr
-         KM9FDEJHmIys5arjV6eHobRMaNiKaf75TrW3vmMki47wrM/om+6WXFsl6FbIU3wfRP
-         MVJ7yEDPLT5mz+j5krb2R47f4B/Ovu+3oJfcd+E1wb69yh7WNKNVZRQkEkYbgCvpmr
-         IIeLptbdOSKsFGzsaxUIpUmdLaTwXTljxw98zGvqe8SbG1NejE6ETv5HfMxROaMW9T
-         H0H30Rs+hEuZQ==
-Date:   Tue, 07 Mar 2023 06:13:22 +0000
-From:   Conor Dooley <conor@kernel.org>
-To:     Sunil V L <sunilvl@ventanamicro.com>
-CC:     linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Anup Patel <apatel@ventanamicro.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Atish Patra <atishp@rivosinc.com>,
-        'Conor Dooley ' <conor.dooley@microchip.com>,
-        llvm@lists.linux.dev
-Subject: Re: [PATCH V3 00/20] Add basic ACPI support for RISC-V
-User-Agent: K-9 Mail for Android
-In-Reply-To: <ZAbGSA6F0kfv9YYw@sunil-laptop>
-References: <20230303133647.845095-1-sunilvl@ventanamicro.com> <16007014-c5f2-4b07-baec-e19952236aa5@spud> <ZAbGSA6F0kfv9YYw@sunil-laptop>
-Message-ID: <E7FB4927-1FE6-435A-914E-9615C2AD9D34@kernel.org>
+        with ESMTP id S229734AbjCGJdP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Mar 2023 04:33:15 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5021B76E
+        for <linux-acpi@vger.kernel.org>; Tue,  7 Mar 2023 01:33:13 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pZTh2-0007l7-0d; Tue, 07 Mar 2023 10:33:12 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pZTgz-002RxZ-P9; Tue, 07 Mar 2023 10:33:09 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pZTgy-002wzY-QJ; Tue, 07 Mar 2023 10:33:08 +0100
+Date:   Tue, 7 Mar 2023 10:33:08 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Pierre Asselin <pa@panix.com>
+Cc:     linux-acpi@vger.kernel.org, regressions@lists.linux.dev,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [Regression] acpi: laptop panics early in boot
+Message-ID: <20230307093308.m5enhuegm3r4qwvo@pengutronix.de>
+References: <9f6cba7a8a57e5a687c934e8e406e28c.squirrel@mail.panix.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="5xwoizhnk7z6op77"
+Content-Disposition: inline
+In-Reply-To: <9f6cba7a8a57e5a687c934e8e406e28c.squirrel@mail.panix.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -68,64 +53,74 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
+--5xwoizhnk7z6op77
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 7 March 2023 05:06:16 GMT, Sunil V L <sunilvl@ventanamicro=2Ecom> wrote=
-:
->On Mon, Mar 06, 2023 at 09:51:09PM +0000, Conor Dooley wrote:
->> Hey Sunil,
->>=20
->> On Fri, Mar 03, 2023 at 07:06:27PM +0530, Sunil V L wrote:
->> > This patch series enables the basic ACPI infrastructure for RISC-V=2E
->> > Supporting external interrupt controllers is in progress and hence it=
- is
->> > tested using poll based HVC SBI console and RAM disk=2E
->> >=20
->> > The first patch in this series is one of the patch from Jisheng's
->> > series [1] which is not merged yet=2E This patch is required to suppo=
-rt
->> > ACPI since efi_init() which gets called before sbi_init() can enable
->> > static branches and hits a panic=2E
->> >=20
->> > Patch 2 and 3 are ACPICA patches which are not merged into acpica yet
->> > but a PR is raised already=2E
->> >=20
->> > Below are two ECRs approved by ASWG=2E
->> > RINTC - https://drive=2Egoogle=2Ecom/file/d/1R6k4MshhN3WTT-hwqAquu5nX=
-6xSEqK2l/view
->> > RHCT - https://drive=2Egoogle=2Ecom/file/d/1nP3nFiH4jkPMp6COOxP6123DC=
-ZKR-tia/view
->> >=20
->> > The series depends on Anup's IPI improvement series [2]=2E
->> >=20
->> > [1] https://lore=2Ekernel=2Eorg/all/20220821140918=2E3613-1-jszhang@k=
-ernel=2Eorg/
->> > [2] https://lore=2Ekernel=2Eorg/lkml/20230103141221=2E772261-7-apatel=
-@ventanamicro=2Ecom/T/
->>=20
->> Building a clang-15 allmodconfig (I didn't try gcc) with this series, a=
-nd
->> Anup's IPI bits, results in a broken build, due to failings in cmpxchg:
->>=20
->> /stuff/linux/drivers/platform/surface/aggregator/controller=2Ec:61:25: =
-error: call to __compiletime_assert_335 declared with 'error' attribute: BU=
-ILD_BUG failed
->>         while (unlikely((ret =3D cmpxchg(&c->value, old, new)) !=3D old=
-)) {
->>                                ^
->Hi Conor,
->
->I am able to build without any of these issues using clang-15=2E I am
->wondering whether the base is proper=2E I had rebased on top of the maste=
-r
->and couple of patches from IPI series were already merged in the master=
-=2E
->
->Do you mind verifying with my branch
->https://github=2Ecom/vlsunil/linux/commits/acpi_b1_us_review_ipi17_V3?
+Hello,
 
-I can check that later I suppose=2E
+> Problem is still present in 6.3-rc1 .  Bisecting, the first bad commit
+> is d6fb6ee1820c .
 
->
->Or if you could provide me your branch details, I can look further=2E
+There is a small timeframe where the (now deleted) struct
+acpi_device::driver is different from acpi_device::dev->driver. That's
+because the latter is assigned to in drivers/base/dd.c's really_probe()
+before the acpi probe function is called, while the former is assigned
+only later.
 
-6=2E3-rc1, with both series applied, sans Anups applied patches=2E
+So acpi_drv->ops.add(acpi_dev) is called with the driver set while that
+was not true before d6fb6ee1820c.
+
+To test if this is the culprit, can you please try a 5.19 kernel plus
+the following patch?:
+
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index e2db1bdd9dd2..657a2520a3e1 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -1022,6 +1022,8 @@ static int acpi_device_probe(struct device *dev)
+ 	struct acpi_driver *acpi_drv =3D to_acpi_driver(dev->driver);
+ 	int ret;
+=20
++	acpi_dev->driver =3D acpi_drv;
++
+ 	if (acpi_dev->handler && !acpi_is_pnp_device(acpi_dev))
+ 		return -EINVAL;
+=20
+@@ -1032,8 +1034,6 @@ static int acpi_device_probe(struct device *dev)
+ 	if (ret)
+ 		return ret;
+=20
+-	acpi_dev->driver =3D acpi_drv;
+-
+ 	pr_debug("Driver [%s] successfully bound to device [%s]\n",
+ 		 acpi_drv->name, acpi_dev->pnp.bus_id);
+=20
+
+If the above patch breaks 5.19 that's the trail we have to follow. That
+this is timing-related is strange though.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--5xwoizhnk7z6op77
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmQHBNEACgkQwfwUeK3K
+7AmcAwf/cgXNS274mBJJlX1uA2cv9j3AFPcMGzLPZ6dKO06ergAcVpboCOiEZ/xG
+OSu/i+awxSCld8dlaiIgmRqjWKL1UGGZz0rcY6h1UucqyS5o5TLaO9bpks3DFUi5
+RZ0wjCB9SEdxoJu7p+LlpC3EJr/17k57U86szOpzXi3V9W1K424w3eS30AEkzw6U
+W81vmf2Asaya3Qv3DVgcG9yqIIOf8fmJiNQJ9n1p6BkyH/TivkQ7QynXjgiTXoFX
+wNJgeA2FT+/K5ZHUGiE3kPCmIhyLA3QkeASg89co+UyCVh//0OsYK7C6Uq0hHeze
+PZ7K79UigClZ9YdZWZvKhnoVYtatvA==
+=H4CK
+-----END PGP SIGNATURE-----
+
+--5xwoizhnk7z6op77--
