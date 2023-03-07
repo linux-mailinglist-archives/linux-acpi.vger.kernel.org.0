@@ -2,167 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43A916AD5D3
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Mar 2023 04:46:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15C466AD6AB
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Mar 2023 06:06:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230106AbjCGDqH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Mar 2023 22:46:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37476 "EHLO
+        id S230001AbjCGFG3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Mar 2023 00:06:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230127AbjCGDqF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Mar 2023 22:46:05 -0500
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADFD753DB7;
-        Mon,  6 Mar 2023 19:46:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678160760; x=1709696760;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=JH6KUnXca9l7Kkc7BEHwMFneDb27PRNKErnVL7Y0kNU=;
-  b=ibDmv/bAnBdUxeW6lNvtMWX69AIR7XoS3f5Qks2WHeEVTUSDF3nRknEF
-   nMrROAPTehgP8z9WQqOAULPZq8kw8aa5YvyxvzEURaKaoBtXX167rx5e+
-   mH7kGqWrwnZUW0ttMkGP88b84AAbFBHRu0szw1hFMpLbDhkKvBXYYXleU
-   WSq1POFtRHI9XAKR2skqnx8VV4zLsJHmxNeXGzqv4b3vtC7KpGlRpfXDz
-   NgbeTcxjfCwMJI2BUnh2W8SQQKaKipd/PMwZVddOt4iVDmuQwn4sDrA3o
-   sxGrGdR1Da4bX/EtCGa8Dp9kS+U1qh+plzk78/4LJIltPTLgvXtq+lslP
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10641"; a="337274278"
-X-IronPort-AV: E=Sophos;i="5.98,238,1673942400"; 
-   d="scan'208";a="337274278"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2023 19:46:00 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10641"; a="800260349"
-X-IronPort-AV: E=Sophos;i="5.98,238,1673942400"; 
-   d="scan'208";a="800260349"
-Received: from chenyu-dev.sh.intel.com ([10.239.158.170])
-  by orsmga004.jf.intel.com with ESMTP; 06 Mar 2023 19:45:57 -0800
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        with ESMTP id S230119AbjCGFG2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Mar 2023 00:06:28 -0500
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1048A43476
+        for <linux-acpi@vger.kernel.org>; Mon,  6 Mar 2023 21:06:25 -0800 (PST)
+Received: by mail-pj1-x102c.google.com with SMTP id m20-20020a17090ab79400b00239d8e182efso15384054pjr.5
+        for <linux-acpi@vger.kernel.org>; Mon, 06 Mar 2023 21:06:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1678165584;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+ncIZQ84lksEd9kxqzUc4pmHzurSPn3jNUdkAVBVakM=;
+        b=ZDrVtKw9CQtz5i5Rktk/5VuDFClMgI+RB514CO50h6TX40umhQQXF+3Al7jnCCXMPJ
+         hrdzIs41xbHE6KDgEtj/FfBi18Vz5YkbagBEP6N1wmOxeuTjjivdwCKZh2RTzJE6loC/
+         lzhACyYDd0OCcrXkO/T81CHBNKACaz6nsAf6E15zew/yj3OMUhPwVatN5ZAb4hrVTWYV
+         PukVc2HJaWAVSRfl24P98E1EoRxJbXH9KoIQB96TlLPVCFVN7/vgZuRVwQuMwdfUf7zx
+         Es9WWh7t1O9vTOsoSAQUcyz/3cIxhnas9VN7Q9VWGaXwdBAaf6eSR7rTquhMN3wr/6YP
+         skLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678165584;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+ncIZQ84lksEd9kxqzUc4pmHzurSPn3jNUdkAVBVakM=;
+        b=Un1AfixAz8+ZqBT/i6Tc+pZmsytdAFRBPmGqtEpJQiPhYM+DJGtrnKOVeq79htav8G
+         CSXl1WVpuqufJ90MJEvMoIwNs4UOLVD5Tg8Z+R0Ekz9l1ONK/8VbnIOycAuENLVBZ4xi
+         gZ//BmyA55I77Sform+xAu7pdz5NAvFITmGGNWF7ftM63kZm2eWb8X4BPkIZ/taU5w74
+         qGHrxL4akCljU/hcfGNl2D6miMBLUFidYbhoQIuTRpWSCz9bYnwgqt0llpSXLQAd0z/t
+         o/qI0X/zQPUa/LS+BzI/QosYNgL2Wci9U1EoKq3vDGA0EbhKCbpQidYW3IQrkVOOfD+I
+         bziQ==
+X-Gm-Message-State: AO0yUKXaTEPqVgTrFvIo2XlgrWLJziNin5PYx5/00DC+LBY/4y0LHL7a
+        5iZ+HQSfa4DtwiC0IivK2ELpVA==
+X-Google-Smtp-Source: AK7set+lsGeOZJEFKPysrv4y2Wbb94M1eNKlJPEGR3INGjRdcW5GKTB4n9YlJ3volc2UF6gUqL7yYQ==
+X-Received: by 2002:a17:902:f693:b0:19d:e11:32de with SMTP id l19-20020a170902f69300b0019d0e1132demr16517253plg.34.1678165584256;
+        Mon, 06 Mar 2023 21:06:24 -0800 (PST)
+Received: from sunil-laptop ([49.206.8.117])
+        by smtp.gmail.com with ESMTPSA id le3-20020a170902fb0300b0019edf582a95sm470363plb.20.2023.03.06.21.06.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Mar 2023 21:06:23 -0800 (PST)
+Date:   Tue, 7 Mar 2023 10:36:16 +0530
+From:   Sunil V L <sunilvl@ventanamicro.com>
+To:     Conor Dooley <conor@kernel.org>
+Cc:     linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>
-Cc:     linux-acpi@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
-        linux-kernel@vger.kernel.org, Chen Yu <yu.c.chen@intel.com>,
-        Hariganesh Govindarajulu <hariganesh.govindarajulu@intel.com>
-Subject: [PATCH] ACPI: tools: pfrut: Check if the input of level and type is in the right numeric range
-Date:   Tue,  7 Mar 2023 19:41:45 +0800
-Message-Id: <20230307114145.8933-1-yu.c.chen@intel.com>
-X-Mailer: git-send-email 2.25.1
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Anup Patel <apatel@ventanamicro.com>,
+        Andrew Jones <ajones@ventanamicro.com>,
+        Atish Patra <atishp@rivosinc.com>,
+        'Conor Dooley ' <conor.dooley@microchip.com>,
+        llvm@lists.linux.dev
+Subject: Re: [PATCH V3 00/20] Add basic ACPI support for RISC-V
+Message-ID: <ZAbGSA6F0kfv9YYw@sunil-laptop>
+References: <20230303133647.845095-1-sunilvl@ventanamicro.com>
+ <16007014-c5f2-4b07-baec-e19952236aa5@spud>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_06_12,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <16007014-c5f2-4b07-baec-e19952236aa5@spud>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The user can provide arbitrary non-numeic value to level and type, which
-brings unexpected behavior:
+On Mon, Mar 06, 2023 at 09:51:09PM +0000, Conor Dooley wrote:
+> Hey Sunil,
+> 
+> On Fri, Mar 03, 2023 at 07:06:27PM +0530, Sunil V L wrote:
+> > This patch series enables the basic ACPI infrastructure for RISC-V.
+> > Supporting external interrupt controllers is in progress and hence it is
+> > tested using poll based HVC SBI console and RAM disk.
+> > 
+> > The first patch in this series is one of the patch from Jisheng's
+> > series [1] which is not merged yet. This patch is required to support
+> > ACPI since efi_init() which gets called before sbi_init() can enable
+> > static branches and hits a panic.
+> > 
+> > Patch 2 and 3 are ACPICA patches which are not merged into acpica yet
+> > but a PR is raised already.
+> > 
+> > Below are two ECRs approved by ASWG.
+> > RINTC - https://drive.google.com/file/d/1R6k4MshhN3WTT-hwqAquu5nX6xSEqK2l/view
+> > RHCT - https://drive.google.com/file/d/1nP3nFiH4jkPMp6COOxP6123DCZKR-tia/view
+> > 
+> > The series depends on Anup's IPI improvement series [2].
+> > 
+> > [1] https://lore.kernel.org/all/20220821140918.3613-1-jszhang@kernel.org/
+> > [2] https://lore.kernel.org/lkml/20230103141221.772261-7-apatel@ventanamicro.com/T/
+> 
+> Building a clang-15 allmodconfig (I didn't try gcc) with this series, and
+> Anup's IPI bits, results in a broken build, due to failings in cmpxchg:
+> 
+> /stuff/linux/drivers/platform/surface/aggregator/controller.c:61:25: error: call to __compiletime_assert_335 declared with 'error' attribute: BUILD_BUG failed
+>         while (unlikely((ret = cmpxchg(&c->value, old, new)) != old)) {
+>                                ^
+Hi Conor,
 
- pfrut -h
-usage: pfrut [OPTIONS]
-code injection:
--l, --load
--s, --stage
--a, --activate
--u, --update [stage and activate]
--q, --query
--d, --revid
-update telemetry:
--G, --getloginfo
--T, --type(0:execution, 1:history)
--L, --level(0, 1, 2, 4)
--R, --read
--D, --revid log
+I am able to build without any of these issues using clang-15. I am
+wondering whether the base is proper. I had rebased on top of the master
+and couple of patches from IPI series were already merged in the master.
 
- pfrut -T A
- pfrut -G
-log_level:0
-log_type:0
-log_revid:2
-max_data_size:65536
-chunk1_size:0
-chunk2_size:1530
-rollover_cnt:0
-reset_cnt:17
+Do you mind verifying with my branch
+https://github.com/vlsunil/linux/commits/acpi_b1_us_review_ipi17_V3?
 
-Fix this by restricting the input is in the expected range.
+Or if you could provide me your branch details, I can look further.
 
-Reported-by: Hariganesh Govindarajulu <hariganesh.govindarajulu@intel.com>
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
----
- tools/power/acpi/tools/pfrut/pfrut.c | 33 ++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
-
-diff --git a/tools/power/acpi/tools/pfrut/pfrut.c b/tools/power/acpi/tools/pfrut/pfrut.c
-index 52aa0351533c..ed672efef83b 100644
---- a/tools/power/acpi/tools/pfrut/pfrut.c
-+++ b/tools/power/acpi/tools/pfrut/pfrut.c
-@@ -22,6 +22,7 @@
- #include <sys/ioctl.h>
- #include <sys/mman.h>
- #include <uuid/uuid.h>
-+#include <ctype.h>
- #include PFRUT_HEADER
- 
- char *capsule_name;
-@@ -77,6 +78,18 @@ static void help(void)
- 		progname);
- }
- 
-+static int is_digit_input(char *str)
-+{
-+	char *scan;
-+
-+	for (scan = str; *scan != '\0'; scan++) {
-+		if (!isdigit(*scan))
-+			return 0;
-+	}
-+
-+	return 1;
-+}
-+
- char *option_string = "l:sauqd:GT:L:RD:h";
- static struct option long_options[] = {
- 	{"load", required_argument, 0, 'l'},
-@@ -125,11 +138,31 @@ static void parse_options(int argc, char **argv)
- 			log_getinfo = 1;
- 			break;
- 		case 'T':
-+			if (!is_digit_input(optarg)) {
-+				printf("Please provide numeric value for type (0:execution, 1:history) - Exiting.\n");
-+				exit(1);
-+			}
-+
- 			log_type = atoi(optarg);
-+			if (log_type != 0 && log_type != 1) {
-+				printf("Please provide numeric value for type (0:execution, 1:history) - Exiting.\n");
-+				exit(1);
-+			}
-+
- 			set_log_type = 1;
- 			break;
- 		case 'L':
-+			if (!is_digit_input(optarg)) {
-+				printf("Please provide numeric value for level (0, 1, 2, 4) - Exiting.\n");
-+				exit(1);
-+			}
-+
- 			log_level = atoi(optarg);
-+			if (log_level > 4) {
-+				printf("Please provide numeric value for level (0, 1, 2, 4) - Exiting.\n");
-+				exit(1);
-+			}
-+
- 			set_log_level = 1;
- 			break;
- 		case 'R':
--- 
-2.25.1
-
+Thanks!
+Sunil
