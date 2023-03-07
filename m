@@ -2,171 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 969276AF0C8
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Mar 2023 19:36:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71B046AF2F3
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Mar 2023 19:57:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229955AbjCGSgj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Mar 2023 13:36:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42008 "EHLO
+        id S233364AbjCGS5z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Mar 2023 13:57:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233062AbjCGSfF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Mar 2023 13:35:05 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1481B8629;
-        Tue,  7 Mar 2023 10:27:11 -0800 (PST)
+        with ESMTP id S233519AbjCGS5h (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Mar 2023 13:57:37 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1DCBB6D36;
+        Tue,  7 Mar 2023 10:45:06 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D7CA6154C;
-        Tue,  7 Mar 2023 18:26:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD54C433EF;
-        Tue,  7 Mar 2023 18:26:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1678213614;
-        bh=9Rd0waOKcoTHm8nXq0CQ+JjvJSAFcyFasPghAfRA24Q=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PWoErDlS171rDZXBk8GIXjkcm8vU1120CCDp7w4cMTwr8Wo/lk0sdT/oL0/wuZfnM
-         NQD9sBWE7quFexzQEO43LK6axMVy3DXnTK1rPP+4K7s/PNuzx6kFgEyAvA2p0JryuE
-         HlrXsNe+D/pQrxpqcRxM1c7VeJEmp2UutL+PcNGY=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Rutland <mark.rutland@arm.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Florent Revest <revest@chromium.org>,
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7F68AB819CB;
+        Tue,  7 Mar 2023 18:44:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2A7C433D2;
+        Tue,  7 Mar 2023 18:44:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678214681;
+        bh=98GSn9Nd5lbsZB8GQDRpBCln3pvxy2GNE1Kh/iUgG4E=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ci9N7xCRe3wAWKGx/fHN59ZdShHG3aGjM0ECdLco4W7QTTaolajEJDHRwxvUfIbl2
+         JEdttpeYOYKITpWFhrQ8yqGYNxjMeIspbBV7yKxPZAQK3I5HeeJEKokX3QBFsITDmW
+         9V8fMq3OnQktdbltjtKV1bfjg11yg2ZQvNHVgB9RuKE1fSY7Orgz/DmJeDCIadnSAi
+         Rrp5S+qhFFAb7qkLDwhwzqdlBSZHO5aIyprEzfJ3x0t2e4euG1/C/Vp9wBJ17qEr/w
+         iHo/7rodCX7H5a6n6XPg12/FabuzP9TBNbJ4Nww8tewlRAbmb1il3mvTUy2TpzQyHC
+         3DzJX5Sv83O4w==
+Date:   Tue, 7 Mar 2023 18:44:35 +0000
+From:   Conor Dooley <conor@kernel.org>
+To:     Sunil V L <sunilvl@ventanamicro.com>
+Cc:     linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Will Deacon <will@kernel.org>, linux-acpi@vger.kernel.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 563/885] ACPI: Dont build ACPICA with -Os
-Date:   Tue,  7 Mar 2023 17:58:17 +0100
-Message-Id: <20230307170026.914609218@linuxfoundation.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230307170001.594919529@linuxfoundation.org>
-References: <20230307170001.594919529@linuxfoundation.org>
-User-Agent: quilt/0.67
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Anup Patel <apatel@ventanamicro.com>,
+        Andrew Jones <ajones@ventanamicro.com>,
+        Atish Patra <atishp@rivosinc.com>,
+        'Conor Dooley ' <conor.dooley@microchip.com>,
+        llvm@lists.linux.dev
+Subject: Re: [PATCH V3 00/20] Add basic ACPI support for RISC-V
+Message-ID: <a9823561-2e32-49e8-b6c9-73e4b8f8cf8d@spud>
+References: <20230303133647.845095-1-sunilvl@ventanamicro.com>
+ <16007014-c5f2-4b07-baec-e19952236aa5@spud>
+ <ZAbGSA6F0kfv9YYw@sunil-laptop>
+ <E7FB4927-1FE6-435A-914E-9615C2AD9D34@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Syeh4y7IR+Jnz+iK"
+Content-Disposition: inline
+In-Reply-To: <E7FB4927-1FE6-435A-914E-9615C2AD9D34@kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 8f9e0a52810dd83406c768972d022c37e7a18f1f ]
+--Syeh4y7IR+Jnz+iK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The ACPICA code has been built with '-Os' since the beginning of git
-history, though there's no explanatory comment as to why.
+On Tue, Mar 07, 2023 at 06:13:22AM +0000, Conor Dooley wrote:
+>=20
+>=20
+> On 7 March 2023 05:06:16 GMT, Sunil V L <sunilvl@ventanamicro.com> wrote:
+> >On Mon, Mar 06, 2023 at 09:51:09PM +0000, Conor Dooley wrote:
+> >> Hey Sunil,
+> >>=20
+> >> On Fri, Mar 03, 2023 at 07:06:27PM +0530, Sunil V L wrote:
+> >> > This patch series enables the basic ACPI infrastructure for RISC-V.
+> >> > Supporting external interrupt controllers is in progress and hence i=
+t is
+> >> > tested using poll based HVC SBI console and RAM disk.
+> >> >=20
+> >> > The first patch in this series is one of the patch from Jisheng's
+> >> > series [1] which is not merged yet. This patch is required to support
+> >> > ACPI since efi_init() which gets called before sbi_init() can enable
+> >> > static branches and hits a panic.
+> >> >=20
+> >> > Patch 2 and 3 are ACPICA patches which are not merged into acpica yet
+> >> > but a PR is raised already.
+> >> >=20
+> >> > Below are two ECRs approved by ASWG.
+> >> > RINTC - https://drive.google.com/file/d/1R6k4MshhN3WTT-hwqAquu5nX6xS=
+EqK2l/view
+> >> > RHCT - https://drive.google.com/file/d/1nP3nFiH4jkPMp6COOxP6123DCZKR=
+-tia/view
+> >> >=20
+> >> > The series depends on Anup's IPI improvement series [2].
+> >> >=20
+> >> > [1] https://lore.kernel.org/all/20220821140918.3613-1-jszhang@kernel=
+=2Eorg/
+> >> > [2] https://lore.kernel.org/lkml/20230103141221.772261-7-apatel@vent=
+anamicro.com/T/
+> >>=20
+> >> Building a clang-15 allmodconfig (I didn't try gcc) with this series, =
+and
+> >> Anup's IPI bits, results in a broken build, due to failings in cmpxchg:
+> >>=20
+> >> /stuff/linux/drivers/platform/surface/aggregator/controller.c:61:25: e=
+rror: call to __compiletime_assert_335 declared with 'error' attribute: BUI=
+LD_BUG failed
+> >>         while (unlikely((ret =3D cmpxchg(&c->value, old, new)) !=3D ol=
+d)) {
+> >>                                ^
 
-This is unfortunate as GCC drops the alignment specificed by
-'-falign-functions=N' when '-Os' is used, as reported in GCC bug 88345:
+> > I am able to build without any of these issues using clang-15. I am
+> > wondering whether the base is proper. I had rebased on top of the master
+> > and couple of patches from IPI series were already merged in the master.
+> >=20
+> > Do you mind verifying with my branch
+> > https://github.com/vlsunil/linux/commits/acpi_b1_us_review_ipi17_V3?
+>=20
+> I can check that later I suppose.
 
-  https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88345
+That's broken too.
 
-This prevents CONFIG_FUNCTION_ALIGNMENT and
-CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B from having their expected effect
-on the ACPICA code. This is doubly unfortunate as in subsequent patches
-arm64 will depend upon CONFIG_FUNCTION_ALIGNMENT for its ftrace
-implementation.
+> > Or if you could provide me your branch details, I can look further.
+>=20
+> 6.3-rc1, with both series applied, sans Anups applied patches.
 
-Drop the '-Os' flag when building the ACPICA code. With this removed,
-the code builds cleanly and works correctly in testing so far.
+I've pushed my stuff here, but unlikely that it makes any odds since
+your branch experiences the same build issue.
+https://git.kernel.org/pub/scm/linux/kernel/git/conor/linux.git/ borked-acp=
+i-surface
 
-I've tested this by selecting CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B=y,
-building and booting a kernel using ACPI, and looking for misaligned
-text symbols:
+My build commands are wrapped in a script, but it's an LLVM=3D1
+allmodconfig run w/ clang-15(.0.7) etc.
 
-* arm64:
+Chees,
+Conor.
 
-  Before, v6.2-rc3:
-    # uname -rm
-    6.2.0-rc3 aarch64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    5009
+--Syeh4y7IR+Jnz+iK
+Content-Type: application/pgp-signature; name="signature.asc"
 
-  Before, v6.2-rc3 + fixed __cold:
-    # uname -rm
-    6.2.0-rc3-00001-g2a2bedf8bfa9 aarch64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    919
+-----BEGIN PGP SIGNATURE-----
 
-  After:
-    # uname -rm
-    6.2.0-rc3-00002-g267bddc38572 aarch64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    323
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | grep acpi | wc -l
-    0
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZAeGEwAKCRB4tDGHoIJi
+0pBJAQC6eUPL8agYJlDStZNq2bNTc9yH0rw+9QH9WnR5mdEIxwD+Ikx1pSDTQT/o
+2vHNHYLroiHM+zN28aBpih7YsooWjQI=
+=4gdL
+-----END PGP SIGNATURE-----
 
-* x86_64:
-
-  Before, v6.2-rc3:
-    # uname -rm
-    6.2.0-rc3 x86_64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    11537
-
-  Before, v6.2-rc3 + fixed __cold:
-    # uname -rm
-    6.2.0-rc3-00001-g2a2bedf8bfa9 x86_64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    2805
-
-  After:
-    # uname -rm
-    6.2.0-rc3-00002-g267bddc38572 x86_64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    1357
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | grep acpi | wc -l
-    0
-
-With the patch applied, the remaining unaligned text labels are a
-combination of static call trampolines and labels in assembly, which can
-be dealt with in subsequent patches.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: Florent Revest <revest@chromium.org>
-Cc: Len Brown <lenb@kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Robert Moore <robert.moore@intel.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-Link: https://lore.kernel.org/r/20230123134603.1064407-4-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/acpica/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/acpica/Makefile b/drivers/acpi/acpica/Makefile
-index 59700433a96e5..f919811156b1f 100644
---- a/drivers/acpi/acpica/Makefile
-+++ b/drivers/acpi/acpica/Makefile
-@@ -3,7 +3,7 @@
- # Makefile for ACPICA Core interpreter
- #
- 
--ccflags-y			:= -Os -D_LINUX -DBUILDING_ACPICA
-+ccflags-y			:= -D_LINUX -DBUILDING_ACPICA
- ccflags-$(CONFIG_ACPI_DEBUG)	+= -DACPI_DEBUG_OUTPUT
- 
- # use acpi.o to put all files here into acpi.o modparam namespace
--- 
-2.39.2
-
-
-
+--Syeh4y7IR+Jnz+iK--
