@@ -2,141 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 925DF6C71D0
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 21:47:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86F016C72D7
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 23:14:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231504AbjCWUrU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Mar 2023 16:47:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34980 "EHLO
+        id S230213AbjCWWOf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 18:14:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231499AbjCWUrS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 16:47:18 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69D92193EC;
-        Thu, 23 Mar 2023 13:47:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=eUkdv6Q7/eqKCd6rPmBFDOxJKcz0jZzE3fT0VIR99q4=; b=zPuIimfBQ66Vy5fFRLviudlFfZ
-        a5WdKzqpM8Jsze/rSjK2ng1dUoPsstUiJYsnqepINeCS/QSNMjT9CZWSoDM14lgrTzLNwoqhZ1/t8
-        tNsnOcm9HcVnxKVuo/iw30lxW6yDgwwHS5erx4ByZHPYNcfycvvHHOK6WXDVCpFHvRj3rtjPB7aEE
-        6fVGta9PNtcCYWJQXAUGGa12NCwsgGNXjIDrrqF4IJN+Je7rJqKV0EFAIMqMyyS8qBvuErsaINYAF
-        R+nRlZJC+tZwNiHhv0hls+fIxucuPgCqZ5t/g+jIpRTsg9YmTU9QGmeZi8FHtApvV/nWxsDXABzSL
-        crweK91g==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:43804)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1pfRpn-0005p4-OW; Thu, 23 Mar 2023 20:46:55 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1pfRpj-0001ip-Ug; Thu, 23 Mar 2023 20:46:52 +0000
-Date:   Thu, 23 Mar 2023 20:46:51 +0000
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jakub Kicinski <kuba@kernel.org>, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Vladimir Oltean <olteanv@gmail.com>
-Subject: Re: [PATCH RFC net-next 3/7] net: dsa: use fwnode_get_phy_mode() to
- get phy interface mode
-Message-ID: <ZBy6u/8HhaPbWXA9@shell.armlinux.org.uk>
-References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
- <E1pex8Q-00Dvnr-5y@rmk-PC.armlinux.org.uk>
- <ZBxcGXSVe0dlzKZb@smile.fi.intel.com>
- <ZBxiqJo470A7bkig@shell.armlinux.org.uk>
- <ZBxkZYXrfugz0gYw@smile.fi.intel.com>
- <ZBxm3XrQAfnmbHoF@shell.armlinux.org.uk>
- <ZBxpeLOmTMzqVTRV@smile.fi.intel.com>
- <ZBySKoHh25AMMBVg@shell.armlinux.org.uk>
- <ZByUvVGRhpFUYrVq@smile.fi.intel.com>
+        with ESMTP id S231196AbjCWWOe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 18:14:34 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1223B2
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Mar 2023 15:14:32 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pfTCZ-0006f9-DG
+        for linux-acpi@vger.kernel.org; Thu, 23 Mar 2023 23:14:31 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pfTCY-006FNv-P6
+        for linux-acpi@vger.kernel.org; Thu, 23 Mar 2023 23:14:30 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pfTCY-007S91-3I
+        for linux-acpi@vger.kernel.org; Thu, 23 Mar 2023 23:14:30 +0100
+Date:   Tue, 7 Mar 2023 21:08:55 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Pierre Asselin <pa@panix.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc:     linux-acpi@vger.kernel.org, regressions@lists.linux.dev,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Robert =?utf-8?B?xZp3acSZY2tp?= <robert@swiecki.net>
+Subject: Re: [Regression] acpi: laptop panics early in boot
+Message-ID: <20230307200843.yxhvnb23tpecjjng@pengutronix.de>
+References: <9f6cba7a8a57e5a687c934e8e406e28c.squirrel@mail.panix.com>
+ <20230307093308.m5enhuegm3r4qwvo@pengutronix.de>
+ <220898e2276e4cae2572eb8f006f3a7b.squirrel@mail.panix.com>
+ <20230307161005.6m6fpi3oxa3jn2wg@pengutronix.de>
+ <6d97df76de719871c90fb59726f2d6b0.squirrel@mail.panix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="hsqfbqawerymh7o7"
 Content-Disposition: inline
-In-Reply-To: <ZByUvVGRhpFUYrVq@smile.fi.intel.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <6d97df76de719871c90fb59726f2d6b0.squirrel@mail.panix.com>
+Tags:   inbox
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 23, 2023 at 08:04:45PM +0200, Andy Shevchenko wrote:
-> On Thu, Mar 23, 2023 at 05:53:46PM +0000, Russell King (Oracle) wrote:
-> > On Thu, Mar 23, 2023 at 05:00:08PM +0200, Andy Shevchenko wrote:
-> > > On Thu, Mar 23, 2023 at 02:49:01PM +0000, Russell King (Oracle) wrote:
-> > > > Let's start here. We pass this fwnode to fwnode_get_phy_mode():
-> > > > 
-> > > > include/linux/property.h:int fwnode_get_phy_mode(struct fwnode_handle *fwnode);
-> > > > 
-> > > > Does fwnode_get_phy_mode() alter the contents of the fwnode? Probably
-> > > > not, but it doesn't take a const pointer. Therefore, to declare my
-> > > > fwnode as const, I'd need to cast the const-ness away before calling
-> > > > this.
-> > > 
-> > > So, fix the fwnode_get_phy_mode(). Is it a problem?
-> > > 
-> > > > Then there's phylink_create(). Same problem.
-> > > 
-> > > So, fix that. Is it a problem?
-> > 
-> > To do both of these creates a five patch series, because there are so
-> > many things that need to be constified:
-> > 
-> > fwnode_get_phy_mode() is the trivial one.
-> > 
-> > sfp_bus_find_fwnode(), and the sfp-bus internal fwnode uses.
-> > 
-> > fwnode_get_phy_node().
-> > 
-> > phylink_create(), phylink_parse_fixedlink(), phylink_parse_mode(),
-> > phylink_fwnode_phy_connect().
-> > 
-> > Hopefully nothing breaks as a result of changing all those - but that
-> > can hardly be "tacked" on to the start of my series as a trivial
-> > change - and clearly such a change should _not_ be part of this
-> > series.
-> 
-> Thank you for doing that!
-> 
-> > Those five patches do not include moving fwnode_get_phy_mode(), whose
-> > location remains undecided.
-> 
-> No problem, we like iterative work.
 
-Oh, and what a waste of time that was.
+--hsqfbqawerymh7o7
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-You request that the fwnode should be declared const, but now I
-realise that you never looked at patch 4, where we call
-fwnode_remove_software_node() on this fwnode (so that the swnodes
-returned by ->port_get_fwnode are released).
+Hello Pierre,
 
-Since fwnode_remove_software_node() modifies the swnode containing
-the fwnode, and therefore does not take a const fwnode pointer, we
-also can't make _this_ fwnode pointer const - even with all those
-changes.
+On Tue, Mar 07, 2023 at 02:31:49PM -0500, Pierre Asselin wrote:
+> > Maybe the following patch helps (on top of v6.3-rc1):
+> >
+> > diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> > index 9531dd0fef50..a5a8f82981ce 100644
+> > --- a/drivers/acpi/bus.c
+> > +++ b/drivers/acpi/bus.c
+> > @@ -518,7 +518,7 @@ static void acpi_bus_notify(acpi_handle handle, u32
+> > type, void *data)
+> >  	if (!adev)
+> >  		goto err;
+> >
+> > -	if (adev->dev.driver) {
+> > +	if (device_is_bound(&adev->dev)) {
+> >  		struct acpi_driver *driver =3D to_acpi_driver(adev->dev.driver);
+> >
+> >  		if (driver && driver->ops.notify &&
+> >
+>=20
+> It does indeed "fix" 6.3-rc1.  Modulo locking issues, which I am
+> not qualified to evaluate.
 
-So, I feel like I've been on a wild goose chase and what a needless
-effort it has been to concoct patches that I don't even need for
-this.
+Thanks for your prompt test feedback.
 
-So again, rmk was right! Sigh.
+The locked variant could look as follows:
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index 9531dd0fef50..fddca263ac40 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -518,13 +518,15 @@ static void acpi_bus_notify(acpi_handle handle, u32 t=
+ype, void *data)
+ 	if (!adev)
+ 		goto err;
+=20
+-	if (adev->dev.driver) {
++	device_lock(&adev->dev);
++	if (device_is_bound(&adev->dev)) {
+ 		struct acpi_driver *driver =3D to_acpi_driver(adev->dev.driver);
+=20
+ 		if (driver && driver->ops.notify &&
+ 		    (driver->flags & ACPI_DRIVER_ALL_NOTIFY_EVENTS))
+ 			driver->ops.notify(adev, type);
+ 	}
++	device_unlock(&adev->dev);
+=20
+ 	if (!hotplug_event) {
+ 		acpi_put_acpi_dev(adev);
+
+Pierre: If you want to test that, I suggest to also enable
+PROVE_LOCKING.
+
+Rafael: I don't know if this would work and I hope you're able to judge
+this better than I do. The change without the lock is for sure better
+than the status quo.
+
+I did a similar conversion as the blamed commit for pci that got
+reverted for similiar reasons. See
+68da4e0eaaab421f228eac57cbe7505b136464af. (Added Bjorn and Robert to
+Cc:) I think the pci code suffers from a similar race even after
+reverting my change. If someone is able to find the right fix for one of
+them, that might be transferable to the other?!
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--hsqfbqawerymh7o7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmQHmcQACgkQwfwUeK3K
+7AnTSggAkUBRc0n48iblda/hp6Dv0wnYOAqN+8zDVzS2QOEbXZb6kZi2LrPuiaWt
+Av2385jgsaunop6Zvjbt3h8TTQ7AXsVaVcLL7axK7qrMjh8DipyWTOz+2fePHEH7
+T917bSJfHlOYw1cp7haKnZFdwKAKnxCLPYvgfeM0ebcdJXttZoUpiU0WAqfTkMTs
+bjxpLnoDC6tDD2+he7wSadEGPyG3P81cuzhCk46n948C0olcaumkCGakKnKvdzvz
+p/VIp8irlxo+1DvrmqbRwptl3qz4PSxS45zjZhkR1HsxGG/R3QqkCyo2J/1ZEKSY
+kib9nrJ3zuREhZLY1pb+W74fkJ0lMA==
+=dibI
+-----END PGP SIGNATURE-----
+
+--hsqfbqawerymh7o7--
