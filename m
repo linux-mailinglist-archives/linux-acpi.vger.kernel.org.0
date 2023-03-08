@@ -2,56 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 893D26B09DC
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Mar 2023 14:51:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4F426B0CAD
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Mar 2023 16:29:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231625AbjCHNvw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Mar 2023 08:51:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51546 "EHLO
+        id S231983AbjCHP3e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Mar 2023 10:29:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231253AbjCHNvj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Mar 2023 08:51:39 -0500
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01987BE5D4
-        for <linux-acpi@vger.kernel.org>; Wed,  8 Mar 2023 05:51:30 -0800 (PST)
-Received: by mail-io1-xd30.google.com with SMTP id e11so6789073ioe.3
-        for <linux-acpi@vger.kernel.org>; Wed, 08 Mar 2023 05:51:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1678283490;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O2ScB8i7PrG39DRTErC7kF+bBBVGcw9XNhNSA0VqouI=;
-        b=imkqhCCosUh66ifIsRQPbANxZXdmJpEwCj2rF7iSVxboMb7R9EE2AFrdMjLL16Y/Kw
-         ooGlAR2bIPsm2FI/6N4VeIN+MSDg7j79K5/3wNTcuCOl8Gx8dM0twquGzlpwCcPl1klq
-         NicNIX+rKLK1R+g/ECbCTeA/17uvvBo5G2SJU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678283490;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O2ScB8i7PrG39DRTErC7kF+bBBVGcw9XNhNSA0VqouI=;
-        b=0x9v304uDa47NScxyTOx7+xmNsVV4PtSv5TU7Ax6PrSTJga7I0FPGQMRrMaeF/7QVw
-         n9Vc9DigYBj5Er4oH4OtBdE7/8SzJ4WO0v9WUMPvGRrjmqADQlfI70+ojE9ZtwC1w16F
-         OpjbUwKNr5gBTsJlvq2BKCighTDgwOYSpfXzPAExXANKn3xaQ6fVzdI/Wqw22B24Edxo
-         p4Nkrav38VamsepP4f5BJTn23kqRDA6tWfydvQ+3khd/dTiWgWDnQvHNxkig4ksXTN0N
-         1A24DF1qoVwT4vpIFtER0KkJoDdMsFoNkX3jeF+YXQIFQPXxuEnlMOt0iO8GkyLtuC0H
-         OORQ==
-X-Gm-Message-State: AO0yUKVX2MpQ9SUU8Z4uui2Tmd82hVKwVSufM6nH5r+tJ6PxNcicE82O
-        GaSBnl7d+wHJ/iY3BcAcGLsb8mPwMuehPfC4riZ0+Q==
-X-Google-Smtp-Source: AK7set8VM1H7ES454XkYoww9M66+Aop3lkGBIArzYN2bvLHb4IHDHyckUz3PiQcAOs/tKbPekPyLMzsgcHMc8Vkk8wo=
-X-Received: by 2002:a6b:dc0c:0:b0:743:5fb0:2ca8 with SMTP id
- s12-20020a6bdc0c000000b007435fb02ca8mr8414193ioc.4.1678283490142; Wed, 08 Mar
- 2023 05:51:30 -0800 (PST)
-MIME-Version: 1.0
-References: <20230303143350.815623-1-treapking@chromium.org>
- <20230303143350.815623-11-treapking@chromium.org> <ZAXWbkq4oLfrWUR7@smile.fi.intel.com>
-In-Reply-To: <ZAXWbkq4oLfrWUR7@smile.fi.intel.com>
-From:   Pin-yen Lin <treapking@chromium.org>
-Date:   Wed, 8 Mar 2023 21:51:19 +0800
-Message-ID: <CAEXTbpe=e1iA7cnzuTtcsyFxpG37YCWSK_SqZb2A8hxcyCnJBg@mail.gmail.com>
-Subject: Re: [PATCH v13 10/10] drm/bridge: it6505: Register Type C mode switches
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        with ESMTP id S231996AbjCHP33 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Mar 2023 10:29:29 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3830D867EC;
+        Wed,  8 Mar 2023 07:29:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678289368; x=1709825368;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=owSbRjkEpcd2ZX2bKJCsdkpjfymuIBaOdUaiCK1wEwU=;
+  b=lylGnXRpci5vQfeLyKv2vpHuPKcA5kQjLNoaBFVaFrmv0grFDqRYHP6K
+   +nsceagFce+d3vejkdkhi4ObhZYs+L3wi+DmBXBQ1boevO9EzPjBrtF5n
+   GoqhP8ge3E0sC9t/Kd2nsZtgl0KUtfB3RLhf2bp8wrsgI2emigc60kuyd
+   E4DB6j0Ek0LHEfulnxA8nNjrIftYEtp6axK9hnp6A8L5EtK7FfApKx9CY
+   F7Nx8FFdU64HqPjBu2kKamwlwJ84Ipxj2d2JJCUtY/BMaaIrE7ax+qqGc
+   HGiV05IkY95+QREouLGBCHJKDJRHeil+oUT6oZTYuKJwZbSdBbPBtkhqY
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10642"; a="315840376"
+X-IronPort-AV: E=Sophos;i="5.98,244,1673942400"; 
+   d="scan'208";a="315840376"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2023 07:29:07 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10642"; a="922819997"
+X-IronPort-AV: E=Sophos;i="5.98,244,1673942400"; 
+   d="scan'208";a="922819997"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga006.fm.intel.com with ESMTP; 08 Mar 2023 07:28:58 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pZvip-00HUHL-09;
+        Wed, 08 Mar 2023 17:28:55 +0200
+Date:   Wed, 8 Mar 2023 17:28:54 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Pin-yen Lin <treapking@chromium.org>
 Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
         Neil Armstrong <neil.armstrong@linaro.org>,
         Robert Foss <rfoss@kernel.org>,
@@ -76,123 +69,65 @@ Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>,
         chrome-platform@lists.linux.dev,
-        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
+        =?iso-8859-1?Q?N=EDcolas_F_=2E_R_=2E_A_=2E?= Prado 
         <nfraprado@collabora.com>, Marek Vasut <marex@denx.de>,
         Hsin-Yi Wang <hsinyi@chromium.org>, devicetree@vger.kernel.org,
         Allen Chen <allen.chen@ite.com.tw>,
         dri-devel@lists.freedesktop.org,
         Thomas Zimmermann <tzimmermann@suse.de>,
-        Stephen Boyd <swboyd@chromium.org>, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        Stephen Boyd <swboyd@chromium.org>, linux-acpi@vger.kernel.org,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Imre Deak <imre.deak@intel.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
+        <ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH v13 03/10] drm/display: Add Type-C switch helpers
+Message-ID: <ZAiptm03HzQila0M@smile.fi.intel.com>
+References: <20230303143350.815623-1-treapking@chromium.org>
+ <20230303143350.815623-4-treapking@chromium.org>
+ <ZAXTVCAQpHvSj+6C@smile.fi.intel.com>
+ <CAEXTbpf4zM+70BCef6rdfz35TQnQ+ozaXAvOaEZVnqqe6MDOOg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAEXTbpf4zM+70BCef6rdfz35TQnQ+ozaXAvOaEZVnqqe6MDOOg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+On Wed, Mar 08, 2023 at 06:20:14PM +0800, Pin-yen Lin wrote:
+> On Mon, Mar 6, 2023 at 7:49 PM Andy Shevchenko
+> > On Fri, Mar 03, 2023 at 10:33:43PM +0800, Pin-yen Lin wrote:
 
-Thanks for the review.
+...
 
-On Mon, Mar 6, 2023 at 8:03=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Fri, Mar 03, 2023 at 10:33:50PM +0800, Pin-yen Lin wrote:
-> > Register USB Type-C mode switches when the "mode-switch" property and
-> > relevant port are available in Device Tree. Configure the "lane_swap"
-> > state based on the entered alternate mode for a specific Type-C
-> > connector, which ends up updating the lane swap registers of the it6505
-> > chip.
->
-> ...
->
-> > +     it6505->port_data =3D devm_kcalloc(dev, switch_desc->num_typec_sw=
-itches,
-> > +                                      sizeof(struct it6505_typec_port_=
-data),
-> > +                                      GFP_KERNEL);
->
-> > +
->
-> Same, no need for a blank line here.
->
-I'll fix this in the next version.
-> > +     if (!it6505->port_data) {
-> > +             ret =3D -ENOMEM;
-> > +             goto unregister_mux;
-> > +     }
->
-> ...
->
-> > +             it6505->port_data[i].lane_swap =3D (dp_lanes[0] / 2 =3D=
-=3D 1);
->
-> ' % 2 =3D=3D 0' ?
->
-Per another patch, I'll update this into `< 2`
-> ...
->
-> Wouldn't be better to have
->
->         ret =3D PTR_ERR_OR_ZERO(extcon);
->
-> here and amend the following accordingly?
->
-> >       if (PTR_ERR(extcon) =3D=3D -EPROBE_DEFER)
-> >               return -EPROBE_DEFER;
-> >       if (IS_ERR(extcon)) {
-> > -             dev_err(dev, "can not get extcon device!");
-> > -             return PTR_ERR(extcon);
-> > +             if (PTR_ERR(extcon) !=3D -ENODEV)
-> > +                     dev_warn(dev, "Cannot get extcon device: %ld\n",
-> > +                              PTR_ERR(extcon));
-> > +             it6505->extcon =3D NULL;
-> > +     } else {
-> > +             it6505->extcon =3D extcon;
-> >       }
+> > > +     switch_desc->typec_ports = devm_kcalloc(dev, switch_desc->num_typec_switches,
+> > > +                                             sizeof(struct drm_dp_typec_port_data),
+> > > +                                             GFP_KERNEL);
+> > > +     if (!switch_desc->typec_ports)
+> > > +             return -ENOMEM;
 > >
-> > -     it6505->extcon =3D extcon;
-> > +     init_completion(&it6505->mux_register);
-> > +     ret =3D it6505_register_typec_switches(dev, it6505);
-> > +     if (ret) {
-> > +             if (ret !=3D -ENODEV)
-> > +                     dev_warn(dev, "Didn't register Type-C switches, e=
-rr: %d\n",
-> > +                              ret);
-> > +             if (!it6505->extcon) {
-> > +                     dev_err(dev, "Both extcon and typec-switch are no=
-t registered.\n");
-> > +                     return -EINVAL;
-> > +             }
-> > +     }
->
->
-> Perhaps
->
->         if (ret !=3D -ENODEV)
->                 dev_warn(dev, "Didn't register Type-C switches, err: %d\n=
-", ret);
->
->         if (ret && !it6505->extcon) {
->                 dev_err(dev, "Both extcon and typec-switch are not regist=
-ered.\n");
->                 return ret;
->         }
->
-> ?
+> > How often this function _can_ be called during the runtime?
+> > If it's _possible_ to call it infinite times, consider *not* using devm.
+> 
+> I would expect this function to be only called during driver probing,
+> and this is the case for the current users in this series. So I think
+> this is only called once if EPROBDE_DEFER doesn't count.
+
+No, deferred probe is not counted.
+
+Can you add a word somewhere in the comment(?) to make this clear?
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-Thanks for the suggestion! I'll update this in v14.
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
-Best regards,
-Pin-yen
