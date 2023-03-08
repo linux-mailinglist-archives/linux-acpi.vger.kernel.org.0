@@ -2,148 +2,193 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61DC06AFE59
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Mar 2023 06:27:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D0F26AFFAF
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Mar 2023 08:30:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229483AbjCHF14 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Mar 2023 00:27:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39460 "EHLO
+        id S229778AbjCHHai (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Mar 2023 02:30:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229702AbjCHF1y (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Mar 2023 00:27:54 -0500
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AECEAA90BC;
-        Tue,  7 Mar 2023 21:27:06 -0800 (PST)
+        with ESMTP id S229468AbjCHHag (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Mar 2023 02:30:36 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54E7E8F700;
+        Tue,  7 Mar 2023 23:30:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678253226; x=1709789226;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=qri/KVEiSHHJhydbIzI6u5FWz67X2UhCthcZ5Ix9To8=;
-  b=Jdv80soCb/2DAT/ZFBjZWWwPxgt8kTE35lMzEb5awbk5/pf1caG+d0Mc
-   hPcDBBuCnQlxeCBOGm86cxaAK5TmtwTbtbrjOGweyVEfAz8v/vUf0T+0j
-   U//yUSMwGOIvfFwgsD7b1d4dD25LrDk5Emlk7Bm2Zvb9t/WAUqgUpLqWZ
-   D+oFTiuQ/boElS8bPDn2yAJ+0mfCyPZ5Tlim078IERpprCFGnSCVh94GK
-   8vkve6dCOVF0PDz2gtxNwoTT3lMNEFHIz3GWZQznIuXpWqtepcHiH/wCl
-   A9lr21MtBNtuZ/MNPP96nTRI2yK2719O7CHmckZV5CNk2i7IMqw6W9M/N
+  t=1678260635; x=1709796635;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ZIms8kfPWeqbx83sb+lLiKBV1UwyL551me+2WJu+04Y=;
+  b=HBNX0m6Crxc1n5WKFOchIxCbFVnclrbWxDne6Y4S/d5I7MKTHR4+HOjL
+   WvkmufDdBjY8N1/AMe791PFCSgOAwJfxt1qcQQBqdcIBD5RYLAUjDh8wd
+   ru6gPTiWwlYDIjWl8zLPo0uVq4m7zY2OLtAAD6TDcm4Ayk2OTXkBnFeDQ
+   +eME0F3qSOjg6EbbqL8Zj/k6lj33/iDgq6ClwIfEa+1YmMxU5qH+TdRom
+   qUyWvBXV3suDtgOfvKB864z2J/Ih9bQfotlx/gTwzUscfleOGEmJHL9vg
+   F8Y+vwuvuvHrJFr0foNQr4mGWKZE2kDU6h914qMyBP4JAh2+jBTe3cmsv
    A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10642"; a="398643933"
-X-IronPort-AV: E=Sophos;i="5.98,242,1673942400"; 
-   d="scan'208";a="398643933"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2023 21:27:06 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10642"; a="336104122"
+X-IronPort-AV: E=Sophos;i="5.98,243,1673942400"; 
+   d="scan'208";a="336104122"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2023 23:30:32 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10642"; a="626786296"
-X-IronPort-AV: E=Sophos;i="5.98,242,1673942400"; 
-   d="scan'208";a="626786296"
-Received: from chenyu-dev.sh.intel.com ([10.239.158.170])
-  by orsmga003.jf.intel.com with ESMTP; 07 Mar 2023 21:27:04 -0800
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chen Yu <yu.c.chen@intel.com>,
-        Hariganesh Govindarajulu <hariganesh.govindarajulu@intel.com>
-Subject: [PATCH v2] ACPI: tools: pfrut: Check if the input of level and type is in the right numeric range
-Date:   Wed,  8 Mar 2023 21:23:09 +0800
-Message-Id: <20230308132309.18827-1-yu.c.chen@intel.com>
-X-Mailer: git-send-email 2.25.1
+X-IronPort-AV: E=McAfee;i="6500,9779,10642"; a="820094514"
+X-IronPort-AV: E=Sophos;i="5.98,243,1673942400"; 
+   d="scan'208";a="820094514"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 07 Mar 2023 23:30:20 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 08 Mar 2023 09:30:19 +0200
+Date:   Wed, 8 Mar 2023 09:30:19 +0200
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Pin-yen Lin <treapking@chromium.org>
+Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Xin Ji <xji@analogixsemi.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Lyude Paul <lyude@redhat.com>, linux-kernel@vger.kernel.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        chrome-platform@lists.linux.dev,
+        =?iso-8859-1?Q?N=EDcolas_F_=2E_R_=2E_A_=2E?= Prado 
+        <nfraprado@collabora.com>, Marek Vasut <marex@denx.de>,
+        Hsin-Yi Wang <hsinyi@chromium.org>, devicetree@vger.kernel.org,
+        Allen Chen <allen.chen@ite.com.tw>,
+        dri-devel@lists.freedesktop.org,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Stephen Boyd <swboyd@chromium.org>, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v13 01/10] device property: Add remote endpoint to devcon
+ matcher
+Message-ID: <ZAg5i0thWrx6gf7B@kuha.fi.intel.com>
+References: <20230303143350.815623-1-treapking@chromium.org>
+ <20230303143350.815623-2-treapking@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_06_12,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230303143350.815623-2-treapking@chromium.org>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The user provides arbitrary non-numeic value to level and type,
-which could bring expected behavior. In this case the expected
-behavior would be to throw an error.
+On Fri, Mar 03, 2023 at 10:33:41PM +0800, Pin-yen Lin wrote:
+> From: Prashant Malani <pmalani@chromium.org>
+> 
+> When searching the device graph for device matches, check the
+> remote-endpoint itself for a match.
+> 
+> Some drivers register devices for individual endpoints. This allows
+> the matcher code to evaluate those for a match too, instead
+> of only looking at the remote parent devices. This is required when a
+> device supports two mode switches in its endpoints, so we can't simply
+> register the mode switch with the parent node.
+> 
+> Signed-off-by: Prashant Malani <pmalani@chromium.org>
+> Signed-off-by: Pin-yen Lin <treapking@chromium.org>
 
- pfrut -h
-usage: pfrut [OPTIONS]
-code injection:
--l, --load
--s, --stage
--a, --activate
--u, --update [stage and activate]
--q, --query
--d, --revid
-update telemetry:
--G, --getloginfo
--T, --type(0:execution, 1:history)
--L, --level(0, 1, 2, 4)
--R, --read
--D, --revid log
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
- pfrut -T A
- pfrut -G
-log_level:0
-log_type:0
-log_revid:2
-max_data_size:65536
-chunk1_size:0
-chunk2_size:1530
-rollover_cnt:0
-reset_cnt:17
+> ---
+> 
+> Changes in v13:
+> - Update the kernel doc of fwnode_connection_find_match
+> 
+> Changes in v12:
+> - Check the availability of the device node in fwnode_graph_devcon_matches
+> - Ensured valid access to "matches" in fwnode_graph_devcon_matches
+> - Updated the documentation in fwnode_connection_find_match(es)
+> - Dropped collected tags due to the new changes
+> 
+> Changes in v11:
+> - Added missing fwnode_handle_put in drivers/base/property.c
+> 
+> Changes in v10:
+> - Collected Reviewed-by and Tested-by tags
+> 
+> Changes in v6:
+> - New in v6
+> 
+>  drivers/base/property.c | 31 ++++++++++++++++++++++++++-----
+>  1 file changed, 26 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index 083a95791d3b..4426ac2b16ca 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -1243,6 +1243,23 @@ static unsigned int fwnode_graph_devcon_matches(const struct fwnode_handle *fwno
+>  			continue;
+>  		}
+>  
+> +		ret = match(node, con_id, data);
+> +		fwnode_handle_put(node);
+> +		if (ret) {
+> +			if (matches)
+> +				matches[count] = ret;
+> +			count++;
+> +
+> +			if (matches && count >= matches_len)
+> +				break;
+> +		}
+> +
+> +		/*
+> +		 * Some drivers may register devices for endpoints. Check
+> +		 * the remote-endpoints for matches in addition to the remote
+> +		 * port parent.
+> +		 */
+> +		node = fwnode_graph_get_remote_endpoint(ep);
+>  		ret = match(node, con_id, data);
+>  		fwnode_handle_put(node);
+>  		if (ret) {
+> @@ -1293,8 +1310,11 @@ static unsigned int fwnode_devcon_matches(const struct fwnode_handle *fwnode,
+>   * @match: Function to check and convert the connection description
+>   *
+>   * Find a connection with unique identifier @con_id between @fwnode and another
+> - * device node. @match will be used to convert the connection description to
+> - * data the caller is expecting to be returned.
+> + * device node. For fwnode graph connections, the graph endpoints are also
+> + * checked. @match will be used to convert the connection description to data
+> + * the caller is expecting to be returned.
+> + *
+> + * Return: The pointer to the matched node, or NULL on error.
+>   */
+>  void *fwnode_connection_find_match(const struct fwnode_handle *fwnode,
+>  				   const char *con_id, void *data,
+> @@ -1325,9 +1345,10 @@ EXPORT_SYMBOL_GPL(fwnode_connection_find_match);
+>   * @matches_len: Length of @matches
+>   *
+>   * Find up to @matches_len connections with unique identifier @con_id between
+> - * @fwnode and other device nodes. @match will be used to convert the
+> - * connection description to data the caller is expecting to be returned
+> - * through the @matches array.
+> + * @fwnode and other device nodes. For fwnode graph connections, the graph
+> + * endpoints are also checked. @match will be used to convert the connection
+> + * description to data the caller is expecting to be returned through the
+> + * @matches array.
+>   * If @matches is NULL @matches_len is ignored and the total number of resolved
+>   * matches is returned.
+>   *
+> -- 
+> 2.40.0.rc0.216.gc4246ad0f0-goog
 
-Fix this by restricting the input to be in the expected range.
-
-Reported-by: Hariganesh Govindarajulu <hariganesh.govindarajulu@intel.com>
-Suggested-by: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
----
-v2: Replace atoi() with strtol() to filter the number. (Rafael)
-
----
- tools/power/acpi/tools/pfrut/pfrut.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
-
-diff --git a/tools/power/acpi/tools/pfrut/pfrut.c b/tools/power/acpi/tools/pfrut/pfrut.c
-index 52aa0351533c..388c9e3ad040 100644
---- a/tools/power/acpi/tools/pfrut/pfrut.c
-+++ b/tools/power/acpi/tools/pfrut/pfrut.c
-@@ -97,7 +97,7 @@ static struct option long_options[] = {
- static void parse_options(int argc, char **argv)
- {
- 	int option_index = 0;
--	char *pathname;
-+	char *pathname, *endptr;
- 	int opt;
- 
- 	pathname = strdup(argv[0]);
-@@ -125,11 +125,23 @@ static void parse_options(int argc, char **argv)
- 			log_getinfo = 1;
- 			break;
- 		case 'T':
--			log_type = atoi(optarg);
-+			log_type = strtol(optarg, &endptr, 0);
-+			if (*endptr || (log_type != 0 && log_type != 1)) {
-+				printf("Number expected: type(0:execution, 1:history) - Quit.\n");
-+				exit(1);
-+			}
-+
- 			set_log_type = 1;
- 			break;
- 		case 'L':
--			log_level = atoi(optarg);
-+			log_level = strtol(optarg, &endptr, 0);
-+			if (*endptr ||
-+			    (log_level != 0 && log_level != 1 &&
-+			     log_level != 2 && log_level != 4)) {
-+				printf("Number expected: level(0, 1, 2, 4) - Quit.\n");
-+				exit(1);
-+			}
-+
- 			set_log_level = 1;
- 			break;
- 		case 'R':
 -- 
-2.25.1
-
+heikki
