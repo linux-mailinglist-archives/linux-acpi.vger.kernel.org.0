@@ -2,55 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89DDB6B09B0
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Mar 2023 14:46:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 893D26B09DC
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Mar 2023 14:51:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230388AbjCHNqH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Mar 2023 08:46:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39386 "EHLO
+        id S231625AbjCHNvw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Mar 2023 08:51:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231326AbjCHNpp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Mar 2023 08:45:45 -0500
-Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FFE61040C
-        for <linux-acpi@vger.kernel.org>; Wed,  8 Mar 2023 05:45:10 -0800 (PST)
-Received: by mail-io1-xd2b.google.com with SMTP id d12so6767452ioe.10
-        for <linux-acpi@vger.kernel.org>; Wed, 08 Mar 2023 05:45:10 -0800 (PST)
+        with ESMTP id S231253AbjCHNvj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Mar 2023 08:51:39 -0500
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01987BE5D4
+        for <linux-acpi@vger.kernel.org>; Wed,  8 Mar 2023 05:51:30 -0800 (PST)
+Received: by mail-io1-xd30.google.com with SMTP id e11so6789073ioe.3
+        for <linux-acpi@vger.kernel.org>; Wed, 08 Mar 2023 05:51:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1678283110;
+        d=chromium.org; s=google; t=1678283490;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8Gz/Fal0kRuGQs4te+QLHZr2SvmaC9a9yoIN2O4rmEs=;
-        b=FzOehmgGzILhkooEFO0biilFd7kiTA0NZcKrhcfEw83BGlvb/DRX3HApX0gd0asQu+
-         zXYldxA3v4VRudBB014jDadWTIgo79RaVquXI8m+ip2DXj5WS98GeAQOpgEvrX+7tpbU
-         SWqY8TrecDN3LvK2tWghCzQbSw+b/IEJKg1ys=
+        bh=O2ScB8i7PrG39DRTErC7kF+bBBVGcw9XNhNSA0VqouI=;
+        b=imkqhCCosUh66ifIsRQPbANxZXdmJpEwCj2rF7iSVxboMb7R9EE2AFrdMjLL16Y/Kw
+         ooGlAR2bIPsm2FI/6N4VeIN+MSDg7j79K5/3wNTcuCOl8Gx8dM0twquGzlpwCcPl1klq
+         NicNIX+rKLK1R+g/ECbCTeA/17uvvBo5G2SJU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678283110;
+        d=1e100.net; s=20210112; t=1678283490;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8Gz/Fal0kRuGQs4te+QLHZr2SvmaC9a9yoIN2O4rmEs=;
-        b=ZkT7nbVNFAq2KwDQ7AofVeCmApBg15/8NjWfeSokplsSW5rdNcb2W3ypj9gOW+5GDF
-         f71oN84SKUTOR7Tf/vFy9zuMsiWBBtZf0g+2FByspXDN6CxZJ37QDV3v6Xe2wv6N84qj
-         PY/ih7ULx5hrAL5W9DA7IJyx8WjrKLN43RwS5D3pQMqkcbNKn2sYwF4J0FX00o+tb5sK
-         bykbQOeEsNDNuLH6go0063iOxE+S6NX96KC8AgEJ5DEc93hZhTsE+rjljYAP5qjqVjex
-         piZclCpMIwo+ebrvme35TMc20PvNeYLKlRl5YHFGNxmIqCJSu77B51HM8KvVIyxvgghf
-         yNjw==
-X-Gm-Message-State: AO0yUKVEm00K8cR5IYU7xDTrcVYyBn6J0MRYol9Hm8ORUajYIdHH5KFq
-        xtOV/UFSwdNgDWc1RS4iHs/ZVJLEWre2+qlI0NlUGQ==
-X-Google-Smtp-Source: AK7set9vEwKu1Idu63ibGwE2iFEiZ7o1hncWOqoEWkYY6ycvzgr26jaWtmtsgD0Zy8mBVQpsXMl2fE6U84RedlItoHs=
-X-Received: by 2002:a05:6602:4287:b0:745:50e5:c861 with SMTP id
- cd7-20020a056602428700b0074550e5c861mr8454903iob.4.1678283109499; Wed, 08 Mar
- 2023 05:45:09 -0800 (PST)
+        bh=O2ScB8i7PrG39DRTErC7kF+bBBVGcw9XNhNSA0VqouI=;
+        b=0x9v304uDa47NScxyTOx7+xmNsVV4PtSv5TU7Ax6PrSTJga7I0FPGQMRrMaeF/7QVw
+         n9Vc9DigYBj5Er4oH4OtBdE7/8SzJ4WO0v9WUMPvGRrjmqADQlfI70+ojE9ZtwC1w16F
+         OpjbUwKNr5gBTsJlvq2BKCighTDgwOYSpfXzPAExXANKn3xaQ6fVzdI/Wqw22B24Edxo
+         p4Nkrav38VamsepP4f5BJTn23kqRDA6tWfydvQ+3khd/dTiWgWDnQvHNxkig4ksXTN0N
+         1A24DF1qoVwT4vpIFtER0KkJoDdMsFoNkX3jeF+YXQIFQPXxuEnlMOt0iO8GkyLtuC0H
+         OORQ==
+X-Gm-Message-State: AO0yUKVX2MpQ9SUU8Z4uui2Tmd82hVKwVSufM6nH5r+tJ6PxNcicE82O
+        GaSBnl7d+wHJ/iY3BcAcGLsb8mPwMuehPfC4riZ0+Q==
+X-Google-Smtp-Source: AK7set8VM1H7ES454XkYoww9M66+Aop3lkGBIArzYN2bvLHb4IHDHyckUz3PiQcAOs/tKbPekPyLMzsgcHMc8Vkk8wo=
+X-Received: by 2002:a6b:dc0c:0:b0:743:5fb0:2ca8 with SMTP id
+ s12-20020a6bdc0c000000b007435fb02ca8mr8414193ioc.4.1678283490142; Wed, 08 Mar
+ 2023 05:51:30 -0800 (PST)
 MIME-Version: 1.0
 References: <20230303143350.815623-1-treapking@chromium.org>
- <20230303143350.815623-8-treapking@chromium.org> <ZAXUrJDtHmm7+50H@smile.fi.intel.com>
-In-Reply-To: <ZAXUrJDtHmm7+50H@smile.fi.intel.com>
+ <20230303143350.815623-11-treapking@chromium.org> <ZAXWbkq4oLfrWUR7@smile.fi.intel.com>
+In-Reply-To: <ZAXWbkq4oLfrWUR7@smile.fi.intel.com>
 From:   Pin-yen Lin <treapking@chromium.org>
-Date:   Wed, 8 Mar 2023 21:44:58 +0800
-Message-ID: <CAEXTbpftCVFBQK0bNiWvF0NnbNoMoF=dFStHy1HXOq8LvWYjsA@mail.gmail.com>
-Subject: Re: [PATCH v13 07/10] drm/bridge: anx7625: Register Type C mode switches
+Date:   Wed, 8 Mar 2023 21:51:19 +0800
+Message-ID: <CAEXTbpe=e1iA7cnzuTtcsyFxpG37YCWSK_SqZb2A8hxcyCnJBg@mail.gmail.com>
+Subject: Re: [PATCH v13 10/10] drm/bridge: it6505: Register Type C mode switches
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
         Neil Armstrong <neil.armstrong@linaro.org>,
@@ -87,8 +87,8 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -99,54 +99,96 @@ Hi Andy,
 
 Thanks for the review.
 
-On Mon, Mar 6, 2023 at 7:55=E2=80=AFPM Andy Shevchenko
+On Mon, Mar 6, 2023 at 8:03=E2=80=AFPM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 >
-> On Fri, Mar 03, 2023 at 10:33:47PM +0800, Pin-yen Lin wrote:
+> On Fri, Mar 03, 2023 at 10:33:50PM +0800, Pin-yen Lin wrote:
 > > Register USB Type-C mode switches when the "mode-switch" property and
-> > relevant ports are available in Device Tree. Configure the crosspoint
-> > switch based on the entered alternate mode for a specific Type-C
-> > connector.
-> >
-> > Crosspoint switch can also be used for switching the output signal for
-> > different orientations of a single USB Type-C connector, but the
-> > orientation switch is not implemented yet. A TODO is added for this.
+> > relevant port are available in Device Tree. Configure the "lane_swap"
+> > state based on the entered alternate mode for a specific Type-C
+> > connector, which ends up updating the lane swap registers of the it6505
+> > chip.
 >
 > ...
 >
-> > +     ctx->port_data =3D devm_kcalloc(
-> > +             dev, switch_desc->num_typec_switches,
-> > +             sizeof(struct anx7625_typec_port_data), GFP_KERNEL);
->
-> I believe I have commented on this (indentation)...
+> > +     it6505->port_data =3D devm_kcalloc(dev, switch_desc->num_typec_sw=
+itches,
+> > +                                      sizeof(struct it6505_typec_port_=
+data),
+> > +                                      GFP_KERNEL);
 >
 > > +
 >
-> ...and this (blank line).
-
-Sorry for missing this one. I'll fix this in v14.
+> Same, no need for a blank line here.
 >
-> > +     if (!ctx->port_data) {
+I'll fix this in the next version.
+> > +     if (!it6505->port_data) {
 > > +             ret =3D -ENOMEM;
 > > +             goto unregister_mux;
 > > +     }
 >
 > ...
 >
-> > +             ctx->port_data[i].orientation =3D (dp_lanes[0] / 2 =3D=3D=
- 0) ?
-> > +                     TYPEC_ORIENTATION_REVERSE : TYPEC_ORIENTATION_NOR=
-MAL;
+> > +             it6505->port_data[i].lane_swap =3D (dp_lanes[0] / 2 =3D=
+=3D 1);
 >
-> I believe that this is an error prone check, you should rather do the opp=
-osite,
-> i.e.  ' % 2  =3D=3D 0'.
+> ' % 2 =3D=3D 0' ?
 >
-The orientation should be TYPEC_ORIENTATION_REVERSE when the
-data-lanes value is 0/1, so ` / 2` is what I meant here.
+Per another patch, I'll update this into `< 2`
+> ...
+>
+> Wouldn't be better to have
+>
+>         ret =3D PTR_ERR_OR_ZERO(extcon);
+>
+> here and amend the following accordingly?
+>
+> >       if (PTR_ERR(extcon) =3D=3D -EPROBE_DEFER)
+> >               return -EPROBE_DEFER;
+> >       if (IS_ERR(extcon)) {
+> > -             dev_err(dev, "can not get extcon device!");
+> > -             return PTR_ERR(extcon);
+> > +             if (PTR_ERR(extcon) !=3D -ENODEV)
+> > +                     dev_warn(dev, "Cannot get extcon device: %ld\n",
+> > +                              PTR_ERR(extcon));
+> > +             it6505->extcon =3D NULL;
+> > +     } else {
+> > +             it6505->extcon =3D extcon;
+> >       }
+> >
+> > -     it6505->extcon =3D extcon;
+> > +     init_completion(&it6505->mux_register);
+> > +     ret =3D it6505_register_typec_switches(dev, it6505);
+> > +     if (ret) {
+> > +             if (ret !=3D -ENODEV)
+> > +                     dev_warn(dev, "Didn't register Type-C switches, e=
+rr: %d\n",
+> > +                              ret);
+> > +             if (!it6505->extcon) {
+> > +                     dev_err(dev, "Both extcon and typec-switch are no=
+t registered.\n");
+> > +                     return -EINVAL;
+> > +             }
+> > +     }
+>
+>
+> Perhaps
+>
+>         if (ret !=3D -ENODEV)
+>                 dev_warn(dev, "Didn't register Type-C switches, err: %d\n=
+", ret);
+>
+>         if (ret && !it6505->extcon) {
+>                 dev_err(dev, "Both extcon and typec-switch are not regist=
+ered.\n");
+>                 return ret;
+>         }
+>
+> ?
 
-Though, after second thought, I think it would be clearer if I use
-`dp_lanes[0] < 2`. I'll update this in v14 as well.
+
+Thanks for the suggestion! I'll update this in v14.
+>
 > --
 > With Best Regards,
 > Andy Shevchenko
