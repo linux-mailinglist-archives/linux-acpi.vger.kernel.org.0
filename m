@@ -2,101 +2,148 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 730966B03F2
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Mar 2023 11:21:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 979E86B03F5
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Mar 2023 11:21:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229735AbjCHKVN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Mar 2023 05:21:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50622 "EHLO
+        id S230118AbjCHKVT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Mar 2023 05:21:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230422AbjCHKVG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Mar 2023 05:21:06 -0500
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD57BB5B44
-        for <linux-acpi@vger.kernel.org>; Wed,  8 Mar 2023 02:21:03 -0800 (PST)
-Received: by mail-pj1-x102a.google.com with SMTP id q31-20020a17090a17a200b0023750b69614so1405859pja.5
-        for <linux-acpi@vger.kernel.org>; Wed, 08 Mar 2023 02:21:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678270863;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=QuQtN7l7cYNGvF48ROOn8pSwVGBDKCA5nMJmOxI2ceQ=;
-        b=WOFIPFnZFAQ5wGSpjHiqbBqUhkYNUoEiUOQD/MmEGcrYDryKdIIe9Kvnv+wpWkTyyA
-         E6u2YwGBhp/EGV8C3MsZi5Zb8XkdHpqKjpXVXICG2KE5LCsTpEQQP09rraTCYejLFuA2
-         KwOZgN+T70wfsgh+7UR3OJHBA/6Gqv3EwTXycEXSodC7S44JrN7hpc5PDUmu2glNbiU6
-         7VZJJwKQMraBN2Itpjuas9QTfbG+AOerLDzX3C4IqmKgGVzSVq1EAcX0ovYhGsTN+e79
-         vL2jqRMUuvQHUd2LHT0NyF0koG+dUAXoSwvEe1x/YH3X7RT4OPtAxtkVzjP75kq8Aplr
-         bHdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678270863;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QuQtN7l7cYNGvF48ROOn8pSwVGBDKCA5nMJmOxI2ceQ=;
-        b=C5UCIlBECYl1Stjh77Ca7WgiLJPEgZ8CWGvl0y6vlnbBcvBPzbPkyPJOqGNR6GUYcz
-         282cEE34DPkyL28F0BCsmf9zSwQ/dBzzmshDRuVk6DgxL8dChUCAThFZO2mxKr+x5hl6
-         ymRo1cn7dHtv/gkQEcIzHgxWLPdu53wXtTjbJtoXJt9d7WcbiekgnoxC4oof20OrIQ4M
-         wdsZ016xUPCciCOgMw/prJr4ron3ZGGl5KhcOzOonv3EL873nBetTNkSd3uZaEysTtLP
-         fhVwpqgZtFowKq3wNA0p4W7knV4DIb5PD5aWFJpAblHvy5W/RVhvGSIbsoXMmwlYUPFg
-         PBHg==
-X-Gm-Message-State: AO0yUKWfWAJhjJdvosJF14n0RVdYHco70Lol13JqqL5pjZkYMOgmjNxr
-        0ekuwyRYyARHw2YbastMZyl4ZruTW8DZdHRgeAw=
-X-Google-Smtp-Source: AK7set/DlvVm3AfPwAzDOUJPKbdnwzdEq+ym8kTzS+KWW7v+JoXAazMRerH+kS8RHvyv4vfMWFSvNIki98qDpjYl2yA=
-X-Received: by 2002:a17:902:bd81:b0:19a:b98f:46a0 with SMTP id
- q1-20020a170902bd8100b0019ab98f46a0mr9281571pls.0.1678270863109; Wed, 08 Mar
- 2023 02:21:03 -0800 (PST)
+        with ESMTP id S230004AbjCHKVP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Mar 2023 05:21:15 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD2D060AAF;
+        Wed,  8 Mar 2023 02:21:13 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 86148B81B29;
+        Wed,  8 Mar 2023 10:21:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C23C433D2;
+        Wed,  8 Mar 2023 10:21:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678270871;
+        bh=4KQBiX+zBplgwRl6rTGlLz+7p9lJaG6/YAbBfam9ax8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=b3OAOeSrAu1FcFxJNz/WU3Ux4YtOS5a3Fx2RygOGxk+DJzfs8TFol4Sg6TYBVuT1I
+         qnC+XjChuawvxf6EWUZF/3TNWZaVP4E1H+g1QsFXE9gwqeCzClVt4dJl977eoVcP4d
+         fZyhsGFpYIyDNH/EcAykYFi2zt/YUJ/HetK4QvZLGG4u6lBhfpruY5BeuXwwWbOaUQ
+         l0Yxm8UD78gawFw9DwkKRQxx66E6q0fpA/N8UrGZrgFun+KpTN+cn0A7q16uJ0u4T+
+         9zFTZdEM3dF5KzelHUYY7KtjGW9X3fzTVtl0m6q3TIBONW5XthXSQ1uwzx3Xjx5Mv/
+         HwHpr7QJw8rzQ==
+Date:   Wed, 8 Mar 2023 10:21:05 +0000
+From:   Conor Dooley <conor@kernel.org>
+To:     Sunil V L <sunilvl@ventanamicro.com>
+Cc:     linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Anup Patel <apatel@ventanamicro.com>,
+        Andrew Jones <ajones@ventanamicro.com>,
+        Atish Patra <atishp@rivosinc.com>,
+        'Conor Dooley ' <conor.dooley@microchip.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH V3 18/20] RISC-V: Add ACPI initialization in setup_arch()
+Message-ID: <e1cf9976-17a1-4096-b497-08985c1f8e0f@spud>
+References: <20230303133647.845095-1-sunilvl@ventanamicro.com>
+ <20230303133647.845095-19-sunilvl@ventanamicro.com>
+ <b38179fe-f1b8-4146-ae22-11e8bbbd500e@spud>
+ <ZAhYeuCmdYAnanNv@sunil-laptop>
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:2a87:b0:412:b9b5:6174 with HTTP; Wed, 8 Mar 2023
- 02:21:02 -0800 (PST)
-From:   Kazim Taylor <kazimtaylor005@gmail.com>
-Date:   Wed, 8 Mar 2023 10:21:02 +0000
-Message-ID: <CAEyL0dphQgTMf0pLO7Xrg1VBMQSUJWdnpTeBViPuncRAcZH9eA@mail.gmail.com>
-Subject: Business Investment
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.3 required=5.0 tests=ADVANCE_FEE_3_NEW,BAYES_50,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:102a listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5160]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [kazimtaylor005[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [kazimtaylor005[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  1.0 FREEMAIL_REPLY From and body contain different freemails
-        *  3.5 ADVANCE_FEE_3_NEW Appears to be advance fee fraud (Nigerian
-        *      419)
-        *  2.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="63+IG2qcJZyEQHTv"
+Content-Disposition: inline
+In-Reply-To: <ZAhYeuCmdYAnanNv@sunil-laptop>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Good day,
 
-Please I need your assistance for investment in any good business in
-your country, My interest is in CONSTRUCTION, REAL ESTATES,
-AGRICULTURE ,TRANSPORTATION  or any business you got more knowledge in
-it, if you are interested kindly contact me through email
-(kazimtaylor05@gmail.com) or phone number +27736394004.
+--63+IG2qcJZyEQHTv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Yours faithfully,
-Mr. Kazim Taylor.
+On Wed, Mar 08, 2023 at 03:12:18PM +0530, Sunil V L wrote:
+> On Mon, Mar 06, 2023 at 09:17:34PM +0000, Conor Dooley wrote:
+> > On Fri, Mar 03, 2023 at 07:06:45PM +0530, Sunil V L wrote:
+> > > Initialize the ACPI core for RISC-V during boot.
+> > >=20
+> > > ACPI tables and interpreter are initialized based on
+> > > the information passed from the firmware and the value of
+> > > the kernel parameter 'acpi'.
+> > >=20
+> > > With ACPI support added for RISC-V, the kernel parameter 'acpi'
+> > > is also supported on RISC-V. Hence, update the documentation.
+> > >=20
+> > > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> > > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+> > > ---
+> >=20
+> > > +static int __init acpi_fadt_sanity_check(void)
+> > > +{
+> > > +	struct acpi_table_header *table;
+> > > +	struct acpi_table_fadt *fadt;
+> > > +	acpi_status status;
+> > > +	int ret =3D 0;
+> > > +
+> > > +	/*
+> > > +	 * FADT is required on riscv; retrieve it to check its presence
+> > > +	 * and carry out revision and ACPI HW reduced compliancy tests
+> > > +	 */
+> > > +	status =3D acpi_get_table(ACPI_SIG_FADT, 0, &table);
+> > > +	if (ACPI_FAILURE(status)) {
+> > > +		const char *msg =3D acpi_format_exception(status);
+> > > +
+> > > +		pr_err("Failed to get FADT table, %s\n", msg);
+> > > +		return -ENODEV;
+> > > +	}
+> > > +
+> > > +	fadt =3D (struct acpi_table_fadt *)table;
+> > > +
+> > > +	/*
+> > > +	 * Revision in table header is the FADT Major revision, and there
+> > > +	 * is a minor revision of FADT.
+> >=20
+> > What is the point of this part of the comment? Isn't it obvious from the
+> > below code that you expect a major and minor revision?
+> > If feel like you're trying to make a point in it, but the point has been
+> > lost :/
+> >=20
+> It just highlights that major and minor revision fields are in two
+> different places.=20
+
+I thought that that was what you meant, but only because the code does
+it. The comment doesn't actually say so!
+
+Instead of deleting it, something like the following?
+/*
+ * The revision in the table header is the FADT's Major revision. The
+ * FADT also has a minor revision, which is stored in the FADT itself.
+ * <snip>
+
+
+--63+IG2qcJZyEQHTv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZAhhkQAKCRB4tDGHoIJi
+0krvAP0eBw+cdEVFy8lgx9EsKqFkr7cLWq8k9aDC+5LghJ2RuQD/ZnzN20QyBPC1
+imyxaNv7BcEyf8CQlBw+HH7hKVgtYQ4=
+=2b/3
+-----END PGP SIGNATURE-----
+
+--63+IG2qcJZyEQHTv--
