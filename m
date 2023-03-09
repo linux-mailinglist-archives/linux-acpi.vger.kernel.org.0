@@ -2,159 +2,174 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42C906B2D31
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Mar 2023 19:53:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC8306B2F6A
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Mar 2023 22:16:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230009AbjCISxU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Mar 2023 13:53:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36050 "EHLO
+        id S231273AbjCIVQf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Mar 2023 16:16:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231165AbjCISxL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Mar 2023 13:53:11 -0500
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83E612A9BF
-        for <linux-acpi@vger.kernel.org>; Thu,  9 Mar 2023 10:53:08 -0800 (PST)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-536c02c9dfbso51861527b3.11
-        for <linux-acpi@vger.kernel.org>; Thu, 09 Mar 2023 10:53:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678387987;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Fc1im8WIXCLJ3aPuivNhaqWtiUsYGYkccGBgkVEOYUY=;
-        b=x6CDd5mP5J/JBVh4mnPCHLqh8hQWA28uorc+A/RWDI1ZVEFG7QIm6K4Zws1Mw6VljT
-         stcYK5OfjQiiNtVP9o1XRdTP+/ZpQPbX9cqfNXTN7iOP0tPZUSxj/t134hduT4pPjv9z
-         p8aSyMXlJ6lNMZm/5wH67RyBwMui0IZWN1ItqoakktmbR2Ly+ZtBBG4UdZOgogFaBr6C
-         cVpjCO6GdrxuThuBeeTqlOwc4draaD1eLj9pryQVPT831GYqmQt1yCupnjtopoBBy57h
-         bW4eMuWPQTYernzLmQxsC+rwkeHzznl+ljl2QmWejZo1R7EvrtEPTFWeVNWGDTg5iAK/
-         xRLA==
+        with ESMTP id S231266AbjCIVQe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Mar 2023 16:16:34 -0500
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08CC6F9D04;
+        Thu,  9 Mar 2023 13:16:33 -0800 (PST)
+Received: by mail-wr1-f48.google.com with SMTP id h11so3248510wrm.5;
+        Thu, 09 Mar 2023 13:16:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678387987;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Fc1im8WIXCLJ3aPuivNhaqWtiUsYGYkccGBgkVEOYUY=;
-        b=RV5vVLs+11fbVcK3F3ENxc1Biju8nm1CF+izI89Gmspy0UOQkfgHGIvSdzka5KY1bZ
-         0tpQM3o7LDLdYe7X/fbHNAu3aWgow2uxedy0zOzVpwP0Xuf9H9fWrEdLGapNqmH6KXBQ
-         oY7HNvLucGEmCqgvgId9QxOv4ckZlXlUv5OeAmD6jT/qo3D/epFpF/e1NKYmjuXEzRMG
-         oHSkp7XhHNWvDDJInQXqDazD2TT1ZRC3oMKWu4OTJJg2DZ9c+VGmKuO3M4v6WK3xpfjD
-         +J3X1KmusfwuAzFFL2G1+lajBPDuRJ0KA0hZQkKUTCgsSQ5mYRc+0DpYd5RTl9vGcKZC
-         n1pA==
-X-Gm-Message-State: AO0yUKWuY3yZLBiZTTnQdrikrKFy/uZWK1isdguMJwWwgUulDsfoR95H
-        0pOISIR03uhZ3+b56WSYUfnf6+z96et9fHZZATxunQ==
-X-Google-Smtp-Source: AK7set8h6m/poIJaA1MSLpGytsT0tAbgxqFVpSfZhGBN7LyhbfaAFg6sbwjUUfvQLIAFIBRZ02I8DXPipcyzpkjgOXg=
-X-Received: by 2002:a81:af59:0:b0:535:5e8c:65ef with SMTP id
- x25-20020a81af59000000b005355e8c65efmr14048163ywj.6.1678387987553; Thu, 09
- Mar 2023 10:53:07 -0800 (PST)
+        d=1e100.net; s=20210112; t=1678396591;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=spuAz/D/2gjibtqyeZd9Pa/cQy0mMO2RnLxbt9UDOmc=;
+        b=QP8eVrKAR038W7bR45jQNpursR6M5YHWxc1seVJa3tJk+OLLUHeAOKqN/0J+Azb268
+         kPcEet+G2VtxE2B0iZ/VDUvWPghYUZW4IpuzJf5oVdcJLp+3g+KnOQ3wXSnuvnTSOCzh
+         0NKE/YeAnPWLr4J+ewgb+zdUHR9Atflmlor26eZ5UzUsV1FrkqULZWVMEmHGiNvUENBw
+         foRRNhQEG2lhdUwrq5/jTEJRWyA1awnHdPh6rSEaRpaOL7Nj19CCFFlDUBY8pI0TdUsM
+         Zqs2xQo17QwWbqTENPlCSUn4w1BDCp0ITgYHf4rMMDsJog5mQ9SU/7Na04UZrTbXpv0N
+         SxaA==
+X-Gm-Message-State: AO0yUKUbUfsYUkqAnHdZ/uRsUWuLVPKY14Lxf9DBu1+iXdaSizS4VSq2
+        npgZhgKwoYd9jJ5t6qnBvho=
+X-Google-Smtp-Source: AK7set9pxUBrjqufXVK26H2B7tEkbEgAZjbqWdPzgFFFDJIC74mNBMCvti0sl2eKWp72fUbhk67FQA==
+X-Received: by 2002:a5d:6108:0:b0:2c5:4c9f:cf3b with SMTP id v8-20020a5d6108000000b002c54c9fcf3bmr61188wrt.7.1678396591357;
+        Thu, 09 Mar 2023 13:16:31 -0800 (PST)
+Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
+        by smtp.gmail.com with ESMTPSA id e11-20020a5d65cb000000b002c71d206329sm369584wrw.55.2023.03.09.13.16.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Mar 2023 13:16:30 -0800 (PST)
+Date:   Thu, 9 Mar 2023 21:16:25 +0000
+From:   Wei Liu <wei.liu@kernel.org>
+To:     Saurabh Sengar <ssengar@linux.microsoft.com>
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+        decui@microsoft.com, daniel.lezcano@linaro.org, tglx@linutronix.de,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, mikelley@microsoft.com,
+        lenb@kernel.org, rafael@kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v7 5/5] Driver: VMBus: Add Devicetree support
+Message-ID: <ZApMqWPWgWXIju/g@liuwe-devbox-debian-v2>
+References: <1677151745-16521-1-git-send-email-ssengar@linux.microsoft.com>
+ <1677151745-16521-6-git-send-email-ssengar@linux.microsoft.com>
 MIME-Version: 1.0
-References: <20230301214952.2190757-1-saravanak@google.com> <CAGETcx_DTHW4-WMK4qRhvhxiunUB2f79cpXSfQ1x-hifZQ+tgw@mail.gmail.com>
-In-Reply-To: <CAGETcx_DTHW4-WMK4qRhvhxiunUB2f79cpXSfQ1x-hifZQ+tgw@mail.gmail.com>
-From:   Yongqin Liu <yongqin.liu@linaro.org>
-Date:   Fri, 10 Mar 2023 02:52:56 +0800
-Message-ID: <CAMSo37XuNaV4Y3+ExrUjNzPDRD_BNSn1258Ve3We+qtbsO7qEw@mail.gmail.com>
-Subject: Re: [PATCH v1 0/4] Remove use of fw_devlink_purge_absent_suppliers()
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Amelie Delaunay <amelie.delaunay@foss.st.com>,
-        kernel-team@android.com, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1677151745-16521-6-git-send-email-ssengar@linux.microsoft.com>
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Saravana
+On Thu, Feb 23, 2023 at 03:29:05AM -0800, Saurabh Sengar wrote:
+[...]
+> +#ifdef CONFIG_ACPI
+>  static int vmbus_acpi_add(struct platform_device *pdev)
+>  {
+>  	acpi_status result;
+> @@ -2494,10 +2497,47 @@ static int vmbus_acpi_add(struct platform_device *pdev)
+>  		vmbus_mmio_remove();
+>  	return ret_val;
+>  }
+> +#endif
+> +
+> +static int vmbus_device_add(struct platform_device *pdev)
+> +{
+> +	struct resource **cur_res = &hyperv_mmio;
+> +	struct of_range range;
+> +	struct of_range_parser parser;
+> +	struct device_node *np = pdev->dev.of_node;
+> +	int ret;
+> +
+> +	hv_dev = &pdev->dev;
+> +
+> +	ret = of_range_parser_init(&parser, np);
+> +	if (ret)
+> +		return ret;
+> +
+> +	for_each_of_range(&parser, &range) {
+> +		struct resource *res;
+> +
+> +		res = kzalloc(sizeof(*res), GFP_ATOMIC);
 
-Sorry for the lateness, I was just aware of this today.
+Why GFP_ATOMIC here? I don't think this function will be called in
+atomic context, right?
 
-I tested with the ACK android-mainline branch + the 12 commits ending
-with fb42378dcc7f
-+ the 4 commits of this series + hikey960 AOSP Master userspace.
-The hikey960 Android build could boot to the home screen, no stuck there,
+> +		if (!res)
+> +			return -ENOMEM;
+> +
+> +		res->name = "hyperv mmio";
+> +		res->flags = IORESOURCE_MEM | IORESOURCE_MEM_64;
 
-Here is the link of the logat in case you want to check some message here:
-https://gist.github.com/liuyq/6525af08c547cd2e494af5d1c8b181b5
+Are you sure IORESOURCE_MEM_64 is correct or required? The ACPI method
+does not set this flag.
+
+> +		res->start = range.cpu_addr;
+> +		res->end = range.cpu_addr + range.size;
+> +
+> +		*cur_res = res;
+> +		cur_res = &res->sibling;
+> +	}
+> +
+> +	return ret;
+> +}
+>  
+>  static int vmbus_platform_driver_probe(struct platform_device *pdev)
+>  {
+> +#ifdef CONFIG_ACPI
+>  	return vmbus_acpi_add(pdev);
+> +#endif
+
+Please use #else here.
+
+> +	return vmbus_device_add(pdev);
+
+Is there going to be a configuration that ACPI and OF are available at
+the same time? I don't see they are marked as mutually exclusive in the
+proposed KConfig.
 
 Thanks,
-Yongqin Liu
-On Fri, 10 Mar 2023 at 02:05, Saravana Kannan <saravanak@google.com> wrote:
->
-> Greg,
->
-> Don't pull in this series please. It needs more testing from the folks
-> I cc'ed and it's already breaking things for Martin. This needs more
-> revisions.
->
-> -Saravana
->
-> On Wed, Mar 1, 2023 at 1:49=E2=80=AFPM Saravana Kannan <saravanak@google.=
-com> wrote:
-> >
-> > Yongqin, Martin, Amelie,
-> >
-> > We recent refactor of fw_devlink that ends with commit fb42378dcc7f
-> > ("mtd: mtdpart: Don't create platform device that'll never probe"),
-> > fw_devlink is smarter and doesn't depend on compatible property. So, I
-> > don't think these calls are needed anymore. But I don't have these
-> > devices to test on and be sure and the hardware I use to test changes
-> > doesn't have this issue either.
-> >
-> > Can you please test these changes on the hardware where you hit the
-> > issue to make sure things work as expected?
-> >
-> > Yongqin, If you didn't have the context, this affected hikey960.
-> >
-> > Greg,
-> >
-> > Let's wait for some tests before we land these.
-> >
-> > Thanks,
-> > Saravana
-> >
-> > Cc: Yongqin Liu <yongqin.liu@linaro.org>
-> > Cc: Sumit Semwal <sumit.semwal@linaro.org>
-> > Cc: Martin Kepplinger <martin.kepplinger@puri.sm>
-> > Cc: Amelie Delaunay <amelie.delaunay@foss.st.com>
-> >
-> > Saravana Kannan (4):
-> >   usb: typec: stusb160x: Remove use of
-> >     fw_devlink_purge_absent_suppliers()
-> >   usb: typec: tipd: Remove use of fw_devlink_purge_absent_suppliers()
-> >   usb: typec: tcpm: Remove use of fw_devlink_purge_absent_suppliers()
-> >   driver core: Delete fw_devlink_purge_absent_suppliers()
-> >
-> >  drivers/base/core.c           | 16 ----------------
-> >  drivers/usb/typec/stusb160x.c |  9 ---------
-> >  drivers/usb/typec/tcpm/tcpm.c |  9 ---------
-> >  drivers/usb/typec/tipd/core.c |  9 ---------
-> >  include/linux/fwnode.h        |  1 -
-> >  5 files changed, 44 deletions(-)
-> >
-> > --
-> > 2.39.2.722.g9855ee24e9-goog
-> >
+Wei.
 
-
-
---=20
-Best Regards,
-Yongqin Liu
----------------------------------------------------------------
-#mailing list
-linaro-android@lists.linaro.org
-http://lists.linaro.org/mailman/listinfo/linaro-android
+>  }
+>  
+>  static int vmbus_platform_driver_remove(struct platform_device *pdev)
+> @@ -2643,12 +2683,24 @@ static int vmbus_bus_resume(struct device *dev)
+>  #define vmbus_bus_resume NULL
+>  #endif /* CONFIG_PM_SLEEP */
+>  
+> +static const __maybe_unused struct of_device_id vmbus_of_match[] = {
+> +	{
+> +		.compatible = "microsoft,vmbus",
+> +	},
+> +	{
+> +		/* sentinel */
+> +	},
+> +};
+> +MODULE_DEVICE_TABLE(of, vmbus_of_match);
+> +
+> +#ifdef CONFIG_ACPI
+>  static const struct acpi_device_id vmbus_acpi_device_ids[] = {
+>  	{"VMBUS", 0},
+>  	{"VMBus", 0},
+>  	{"", 0},
+>  };
+>  MODULE_DEVICE_TABLE(acpi, vmbus_acpi_device_ids);
+> +#endif
+>  
+>  /*
+>   * Note: we must use the "no_irq" ops, otherwise hibernation can not work with
+> @@ -2677,6 +2729,7 @@ static struct platform_driver vmbus_platform_driver = {
+>  	.driver = {
+>  		.name = "vmbus",
+>  		.acpi_match_table = ACPI_PTR(vmbus_acpi_device_ids),
+> +		.of_match_table = of_match_ptr(vmbus_of_match),
+>  		.pm = &vmbus_bus_pm,
+>  		.probe_type = PROBE_FORCE_SYNCHRONOUS,
+>  	}
+> -- 
+> 2.34.1
+> 
