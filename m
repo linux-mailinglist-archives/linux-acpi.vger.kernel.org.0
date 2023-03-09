@@ -2,152 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 020CE6B199B
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Mar 2023 03:52:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD6B36B1E35
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Mar 2023 09:32:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229825AbjCICwe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Mar 2023 21:52:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57478 "EHLO
+        id S230325AbjCIIcb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Mar 2023 03:32:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229706AbjCICwZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Mar 2023 21:52:25 -0500
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F223C984D7
-        for <linux-acpi@vger.kernel.org>; Wed,  8 Mar 2023 18:52:23 -0800 (PST)
-Received: by mail-pl1-x632.google.com with SMTP id a2so587665plm.4
-        for <linux-acpi@vger.kernel.org>; Wed, 08 Mar 2023 18:52:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678330343;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b5Th4ezi2JLIwi7eXgKdUNLkPeZJxmBPYFrzOKORyYI=;
-        b=zshNKuLrllaWY+2TQVkDsSi6bkHt2ZAnqw5shYeTatNjWSWHQFxu/6ctZJ/P1BDPNE
-         8OdvScnv9ovgnQpjMxPfHN7bGd86ZU/XTVlBM2bDJCJogsXWYnzC54rfGZrTidh1Zjwd
-         SBPp0MpO+G9BbchFcJfcU/zb7MNWQWbB7EHOlMUVijztPdTeRGj2EZNckhtEuLx+mC6W
-         z/OCfK24jblkBtS5kRjYzhqpQEzTUskI/1toc1RoXg89GvC0CQaSVV9AQoIrmujIzi02
-         JLhl1bOW8Bj64YA4RJMHvsqJaRF0wSxD8hHH+EWHGaDc3UmvtzEJ5L5FJOOt+F4XxtVe
-         baAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678330343;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b5Th4ezi2JLIwi7eXgKdUNLkPeZJxmBPYFrzOKORyYI=;
-        b=JdEK9MVp+nsh0xp1plYOLwQD44ig4EbscornPVMlf4mvBfEDLLg9x+vnLdkJL+NTXg
-         Gxp4R8522cQsWcw1Odnvp9IQZNfrLcPiXw8DGi3dPAgezZ3vU9+hanUC3ZpeFf9cmUF5
-         gO8kWFeW6czkhe0aNo3zJ4mbnKqOnWKCsmS0AUxieDYR1y/CnwgZP9iXOot9pE2wvJ4I
-         OqASbO6bnaPLQaPiTqbuTwPzAl9u20mjdj99oW1lv8a1G1kc9zvBu51fv3O78Akx36ME
-         PjAas651YxvS0kWK19sQLI36zKD5j2IcLtPZS4BDtpNFO0tk40BwtnbUF+QuXvlMgFkT
-         egmw==
-X-Gm-Message-State: AO0yUKVNw5Aeift/FVaYP1zMN+0wefO1ZLNe2HYcsS/8Kd3ybwgBdjEw
-        YHwoKPZGKvjbrn0XBl8bOae98g==
-X-Google-Smtp-Source: AK7set/506rAh498pfYZpAHNlgO/8W9KnvcLLm96NcVxAazQSKNg9B8FzpR+Y9lB+gbmoIWJZCqb6Q==
-X-Received: by 2002:a17:903:441:b0:19e:7d51:3a41 with SMTP id iw1-20020a170903044100b0019e7d513a41mr18047647plb.69.1678330343429;
-        Wed, 08 Mar 2023 18:52:23 -0800 (PST)
-Received: from T480 (80.251.214.228.16clouds.com. [80.251.214.228])
-        by smtp.gmail.com with ESMTPSA id f2-20020a170902ab8200b0019e60c645b1sm10395624plr.305.2023.03.08.18.52.18
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 08 Mar 2023 18:52:22 -0800 (PST)
-Date:   Thu, 9 Mar 2023 10:52:13 +0800
-From:   Shawn Guo <shawn.guo@linaro.org>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Bjorn Andersson <quic_bjorande@quicinc.com>,
-        linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: PCI: Add quirk for platforms running Windows
-Message-ID: <20230309025212.GB18319@T480>
-References: <20230227021221.17980-1-shawn.guo@linaro.org>
- <20230308185310.GA1030878@bhelgaas>
+        with ESMTP id S230382AbjCIIcG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Mar 2023 03:32:06 -0500
+Received: from mail.amblevebiz.com (mail.amblevebiz.com [80.211.239.97])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5FA61ABEC
+        for <linux-acpi@vger.kernel.org>; Thu,  9 Mar 2023 00:30:56 -0800 (PST)
+Received: by mail.amblevebiz.com (Postfix, from userid 1002)
+        id 3715382E42; Thu,  9 Mar 2023 09:30:51 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=amblevebiz.com;
+        s=mail; t=1678350653;
+        bh=mG5KF9rXIT2hCcIXZaMY449X9Ndwb1czFhgZLlqDg7A=;
+        h=Date:From:To:Subject:From;
+        b=PD1fxLGX+uyFguUJW/Qgi4xtPfMzTxa7t+vNiwce6DXYbN/lpbHZPApNVISI+plf0
+         YPqYn3kiP3C/J2GZ6PiorqOtjYylOF9/fBsUtLPtL1bZovmG2bRMtRWPSJ6gFo8gpB
+         or7xc7LD/pl8CDCXyO1DJ1f2bA9bOKwk10VhNsdN0aiwxNEbEtwZiEK2m/xiUBDVdF
+         VpNu4atUnhGJidVDtDAVYxNIuZxyQbh2eywEyLTqnkH5D10BKnNlQJMOHSfd3qAQpS
+         EEBLWUXPFqoOr9cIGsFEM5T88uRysgmPYhi1zDMQDHgGD2hNhbWdexVf9CgDiCqnhd
+         2gdCo+d2t7emA==
+Received: by mail.amblevebiz.com for <linux-acpi@vger.kernel.org>; Thu,  9 Mar 2023 08:30:42 GMT
+Message-ID: <20230309084500-0.1.l.15b5.0.g1jg7fbr7m@amblevebiz.com>
+Date:   Thu,  9 Mar 2023 08:30:42 GMT
+From:   =?UTF-8?Q? "Luk=C3=A1=C5=A1_Horv=C3=A1th" ?= 
+        <lukas.horvath@amblevebiz.com>
+To:     <linux-acpi@vger.kernel.org>
+Subject: =?UTF-8?Q?Technick=C3=BD_audit_podlah?=
+X-Mailer: mail.amblevebiz.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230308185310.GA1030878@bhelgaas>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=4.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FROM_FMBLA_NEWDOM28,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_CSS_A,URIBL_DBL_SPAM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-+ linux-arm-msm and MSM maintainer Bjorn
+Dobr=C3=A9 r=C3=A1no,
 
-On Wed, Mar 08, 2023 at 12:53:10PM -0600, Bjorn Helgaas wrote:
-> On Mon, Feb 27, 2023 at 10:12:21AM +0800, Shawn Guo wrote:
-> > Commit 8fd4391ee717 ("arm64: PCI: Exclude ACPI "consumer" resources from
-> > host bridge windows") introduced a check to remove host bridge register
-> > resources for all arm64 platforms, with the assumption that the PNP0A03
-> > _CRS resources would always be host bridge registers and never as windows
-> > on arm64.
-> > 
-> > The assumption stands true until Qualcomm Snapdragon Windows laptops
-> > emerge.  These laptops describe host bridge windows in PNP0A03 _CRS
-> > resources instead.  For example, the Microsoft Surface Pro X has host
-> > bridges defined as
-> > 
-> >     Name (_HID, EisaId ("PNP0A08") /* PCI Express Bus */)  // _HID: Hardware ID
-> >     Name (_CID, EisaId ("PNP0A03") /* PCI Bus */)  // _CID: Compatible ID
-> > 
-> >     Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
-> >     {
-> >         Name (RBUF, ResourceTemplate ()
-> >         {
-> >             Memory32Fixed (ReadWrite,
-> >                 0x60200000,         // Address Base
-> >                 0x01DF0000,         // Address Length
-> >                 )
-> >             WordBusNumber (ResourceProducer, MinFixed, MaxFixed, PosDecode,
-> >                 0x0000,             // Granularity
-> >                 0x0000,             // Range Minimum
-> >                 0x0001,             // Range Maximum
-> >                 0x0000,             // Translation Offset
-> >                 0x0002,             // Length
-> >                 ,, )
-> >         })
-> >         Return (RBUF) /* \_SB_.PCI0._CRS.RBUF */
-> >     }
-> > 
-> > The Memory32Fixed holds a host bridge window, but it's not properly
-> > defined as a "producer" resource.  Consequently the resource gets
-> > removed by kernel, and the BAR allocation fails later on:
-> > 
-> >     [ 0.150731] pci 0002:00:00.0: BAR 14: no space for [mem size 0x00100000]
-> >     [ 0.150744] pci 0002:00:00.0: BAR 14: failed to assign [mem size 0x00100000]
-> >     [ 0.150758] pci 0002:01:00.0: BAR 0: no space for [mem size 0x00004000 64bit]
-> >     [ 0.150769] pci 0002:01:00.0: BAR 0: failed to assign [mem size 0x00004000 64bit]
-> > 
-> > This eventually prevents the PCIe NVME drive from being accessible.
-> > 
-> > Add a quirk for these platforms to avoid the resource being removed.
-> > 
-> > Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
-> > ---
-> > We are running into the issue on more devices than just Surface Pro X
-> > now, so trying to sort it out with a quirk as suggested by Lorenzo [1].
-> 
-> One thing I don't like about this application of quirks is that the
-> list of affected platforms is likely to grow, which is an ongoing
-> burden for users and developers.
+uva=C5=BEujete o bezesp=C3=A1rov=C3=A9 podlaze pro v=C3=BDrobn=C3=AD prov=
+oz?
 
-It's a very reasonable concern.  I really hope that Qualcomm will start
-thinking about Linux support on these machines in the future not too far
-away, so that the list will not grow too long.
+Jako sv=C4=9Btov=C3=BD l=C3=ADdr ve v=C3=BDrob=C4=9B a pokl=C3=A1dce podl=
+ah =C5=99e=C5=A1=C3=ADme probl=C3=A9my vypl=C3=BDvaj=C3=ADc=C3=AD z vlivu=
+ chemick=C3=BDch slou=C4=8Denin, ot=C4=9Bru, n=C3=A1raz=C5=AF, vlhkosti n=
+ebo n=C3=A1hl=C3=BDch zm=C4=9Bn teplot - na=C5=A1e podlahov=C3=A9 syst=C3=
+=A9my jsou p=C5=99izp=C5=AFsobeny nejt=C4=9B=C5=BE=C5=A1=C3=ADm podm=C3=AD=
+nk=C3=A1m prost=C5=99ed=C3=AD.
 
-> Can we have a conversation with Qualcomm about how they *intend* this
-> to work?  Linux is probably doing something wrong (interpreting
-> something differently than Windows does), and if we could fix that, we
-> have a better chance of future platforms working without quirks.
+Garantujeme v=C3=A1m =C5=99e=C5=A1en=C3=AD, kter=C3=A1 jsou =C5=A1etrn=C3=
+=A1 k =C5=BEivotn=C3=ADmu prost=C5=99ed=C3=AD, odoln=C3=A1 a snadno se =C4=
+=8Dist=C3=AD, hygienick=C3=A1, protiskluzov=C3=A1 a bezpe=C4=8Dn=C3=A1 pr=
+o zam=C4=9Bstnance.
 
-Today Qualcomm only ships and cares about Windows on these machines, but
-I believe it will change sooner or later.
+Poskytujeme kr=C3=A1tkou dobu instalace a nep=C5=99etr=C5=BEit=C3=BD prov=
+oz i o v=C3=ADkendech a sv=C3=A1tc=C3=ADch, =C4=8D=C3=ADm=C5=BE eliminuje=
+me riziko prostoj=C5=AF.
 
-Shawn
+Mohu V=C3=A1m zdarma nab=C3=ADdnout technick=C3=BD audit podlah s komplex=
+n=C3=ADm rozborem podkladu.
+
+M=C5=AF=C5=BEeme pro v=C3=A1s mluvit o =C5=99e=C5=A1en=C3=ADch?
+
+
+Luk=C3=A1=C5=A1 Horv=C3=A1th
