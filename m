@@ -2,136 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15C976B2C2A
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Mar 2023 18:38:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDB346B2C9B
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Mar 2023 19:05:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230007AbjCIRiu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Mar 2023 12:38:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39564 "EHLO
+        id S230173AbjCISFe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Mar 2023 13:05:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230434AbjCIRiq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Mar 2023 12:38:46 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9EA9F31FB;
-        Thu,  9 Mar 2023 09:38:38 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 88B0361CA5;
-        Thu,  9 Mar 2023 17:38:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A326BC433EF;
-        Thu,  9 Mar 2023 17:38:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678383518;
-        bh=iajjPMk40xiWGEaEZlqlsOqiEOpuHw6FDCZfmoz0Cv8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=pDuWk9tubZCqcPaxKqF6b8uZ97kOMw/Lj7YS0Mz468atWYwDN+pVQ21mFE7UyRH7q
-         0xMwnZjji/6LfjYtrMqLMiIEKt4iuyOkXZMBEChyzSzCU3FTxgKUPOHY4vGXUJML/P
-         0zxalYawcdsV9Bn+ekkIVTjJQ7Ih8jZxNPso87vm3sTnCivcQAoL+NUXRAd1hGbOSa
-         4k80nczkm8imqt0nP0BK6sLV9wTMx99xcGi/EwsjoAUp+4I0X8AYQ0aeC8mdGfKSU4
-         4E4xOpQ/ppbwIw6FY/gUyMzyB3jGOG9vxMJ5t85CDqNARtS5yEs3Q4M3VbEa8Gggtf
-         5hiJrJKwdV/HA==
-Date:   Thu, 9 Mar 2023 11:38:36 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Shawn Guo <shawn.guo@linaro.org>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Bjorn Andersson <quic_bjorande@quicinc.com>,
-        linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: PCI: Add quirk for platforms running Windows
-Message-ID: <20230309173836.GA1148798@bhelgaas>
+        with ESMTP id S230016AbjCISF3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Mar 2023 13:05:29 -0500
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC6AD61A9A
+        for <linux-acpi@vger.kernel.org>; Thu,  9 Mar 2023 10:05:26 -0800 (PST)
+Received: by mail-pg1-x531.google.com with SMTP id d6so1588835pgu.2
+        for <linux-acpi@vger.kernel.org>; Thu, 09 Mar 2023 10:05:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112; t=1678385125;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F0ABrZm/laoJveDOwjUgnffZfJ7ABmuxocnfWkNK1LQ=;
+        b=Ib5A+VKJ9AXsDTMUML0lAyCo2bqRQgJEGgzIdcZWg56TYbo0NjME+67h1B+jIoRgTH
+         9nF9p9VxDberc1h0DAdi1WUNp48qKLqCIegf14XI2/Ve+tb/+NJRNikf8Thlyt4aMARU
+         P2Em94wS8lmVGlodo8MuPf7/Kv83aZQbN3B0tuvcMvtsimwK2zX4UXZ/0VKmQ3/6Iuyu
+         48SQZcaJGgXEBIH3+5o6IFFV8PGbTBxjS7qO2zJnevwsVNMuGR3E9fzZWXa17/QkdiIZ
+         ouCLVIXOBJDckdSU6DG3uWBcM4tlri+npZrhfyPhPny6i2hTzHdvb7giNhR+MBeJviVb
+         S03g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678385125;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=F0ABrZm/laoJveDOwjUgnffZfJ7ABmuxocnfWkNK1LQ=;
+        b=Nht1ACNdH8MUmQe8+a2vmi9Bce0oPGfjVPCmMw6gc0ARvChvqw7meTpdY7gqIOftF1
+         5PAMTjg9ElQkSyjjZ/i0g4Gw3D6FzXuTVaMJjHyW7f3a/d5+qKNwY92lbcUm1lOSyLkB
+         DtPGF8/k200/Ddr8TBtuX2Q5d8sO/9BHTETLth/3dHR4CA2pOs/CRza4n7gvBFzyirkU
+         7p+v4TiXXJ2KpBzZYRV4yqJdXvzv56mQIJGbsn5LfOO5IrTzfMNaqpV7SFrAg5PlywjT
+         D4pj98YqjeZL+3lI9NY5e+eaoQJW0aHFxV5r5sBcFdLR9s88qDikqjz9mK4WQZVVW+Q4
+         8QxA==
+X-Gm-Message-State: AO0yUKUks07NQzkbQmLFSLoGKM0X6dYus4aSwPk+D1iPHp6B5zvts1JW
+        9MIjmXjxYU9AksCymrY19S4xQhVUCkGLku9QhZCRfg==
+X-Google-Smtp-Source: AK7set92xctTDshGXs7o6XU97WD5hd+EVosmSQEaNti+rPIQop4SET3skwXSjtatn9JSUpARwMLWeA2lKCRK0bniSTE=
+X-Received: by 2002:a65:680e:0:b0:503:912f:d116 with SMTP id
+ l14-20020a65680e000000b00503912fd116mr743400pgt.3.1678385125388; Thu, 09 Mar
+ 2023 10:05:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230309025212.GB18319@T480>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230301214952.2190757-1-saravanak@google.com>
+In-Reply-To: <20230301214952.2190757-1-saravanak@google.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Thu, 9 Mar 2023 10:04:49 -0800
+Message-ID: <CAGETcx_DTHW4-WMK4qRhvhxiunUB2f79cpXSfQ1x-hifZQ+tgw@mail.gmail.com>
+Subject: Re: [PATCH v1 0/4] Remove use of fw_devlink_purge_absent_suppliers()
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>
+Cc:     Yongqin Liu <yongqin.liu@linaro.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Martin Kepplinger <martin.kepplinger@puri.sm>,
+        Amelie Delaunay <amelie.delaunay@foss.st.com>,
+        kernel-team@android.com, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 09, 2023 at 10:52:13AM +0800, Shawn Guo wrote:
-> + linux-arm-msm and MSM maintainer Bjorn
-> 
-> On Wed, Mar 08, 2023 at 12:53:10PM -0600, Bjorn Helgaas wrote:
-> > On Mon, Feb 27, 2023 at 10:12:21AM +0800, Shawn Guo wrote:
-> > > Commit 8fd4391ee717 ("arm64: PCI: Exclude ACPI "consumer" resources from
-> > > host bridge windows") introduced a check to remove host bridge register
-> > > resources for all arm64 platforms, with the assumption that the PNP0A03
-> > > _CRS resources would always be host bridge registers and never as windows
-> > > on arm64.
-> > > 
-> > > The assumption stands true until Qualcomm Snapdragon Windows laptops
-> > > emerge.  These laptops describe host bridge windows in PNP0A03 _CRS
-> > > resources instead.  For example, the Microsoft Surface Pro X has host
-> > > bridges defined as
-> > > 
-> > >     Name (_HID, EisaId ("PNP0A08") /* PCI Express Bus */)  // _HID: Hardware ID
-> > >     Name (_CID, EisaId ("PNP0A03") /* PCI Bus */)  // _CID: Compatible ID
-> > > 
-> > >     Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
-> > >     {
-> > >         Name (RBUF, ResourceTemplate ()
-> > >         {
-> > >             Memory32Fixed (ReadWrite,
-> > >                 0x60200000,         // Address Base
-> > >                 0x01DF0000,         // Address Length
-> > >                 )
-> > >             WordBusNumber (ResourceProducer, MinFixed, MaxFixed, PosDecode,
-> > >                 0x0000,             // Granularity
-> > >                 0x0000,             // Range Minimum
-> > >                 0x0001,             // Range Maximum
-> > >                 0x0000,             // Translation Offset
-> > >                 0x0002,             // Length
-> > >                 ,, )
-> > >         })
-> > >         Return (RBUF) /* \_SB_.PCI0._CRS.RBUF */
-> > >     }
-> > > 
-> > > The Memory32Fixed holds a host bridge window, but it's not properly
-> > > defined as a "producer" resource.  Consequently the resource gets
-> > > removed by kernel, and the BAR allocation fails later on:
-> > > 
-> > >     [ 0.150731] pci 0002:00:00.0: BAR 14: no space for [mem size 0x00100000]
-> > >     [ 0.150744] pci 0002:00:00.0: BAR 14: failed to assign [mem size 0x00100000]
-> > >     [ 0.150758] pci 0002:01:00.0: BAR 0: no space for [mem size 0x00004000 64bit]
-> > >     [ 0.150769] pci 0002:01:00.0: BAR 0: failed to assign [mem size 0x00004000 64bit]
-> > > 
-> > > This eventually prevents the PCIe NVME drive from being accessible.
-> > > 
-> > > Add a quirk for these platforms to avoid the resource being removed.
-> > > 
-> > > Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
-> > > ---
-> > > We are running into the issue on more devices than just Surface Pro X
-> > > now, so trying to sort it out with a quirk as suggested by Lorenzo [1].
-> > 
-> > One thing I don't like about this application of quirks is that the
-> > list of affected platforms is likely to grow, which is an ongoing
-> > burden for users and developers.
-> 
-> It's a very reasonable concern.  I really hope that Qualcomm will start
-> thinking about Linux support on these machines in the future not too far
-> away, so that the list will not grow too long.
-> 
-> > Can we have a conversation with Qualcomm about how they *intend* this
-> > to work?  Linux is probably doing something wrong (interpreting
-> > something differently than Windows does), and if we could fix that, we
-> > have a better chance of future platforms working without quirks.
-> 
-> Today Qualcomm only ships and cares about Windows on these machines, but
-> I believe it will change sooner or later.
+Greg,
 
-I don't maintain arch/arm64/kernel/pci.c, but my opinion is that we
-should not pursue quirks like this until we've tried really hard to
-figure out a generic approach.
+Don't pull in this series please. It needs more testing from the folks
+I cc'ed and it's already breaking things for Martin. This needs more
+revisions.
 
-Bjorn
+-Saravana
+
+On Wed, Mar 1, 2023 at 1:49=E2=80=AFPM Saravana Kannan <saravanak@google.co=
+m> wrote:
+>
+> Yongqin, Martin, Amelie,
+>
+> We recent refactor of fw_devlink that ends with commit fb42378dcc7f
+> ("mtd: mtdpart: Don't create platform device that'll never probe"),
+> fw_devlink is smarter and doesn't depend on compatible property. So, I
+> don't think these calls are needed anymore. But I don't have these
+> devices to test on and be sure and the hardware I use to test changes
+> doesn't have this issue either.
+>
+> Can you please test these changes on the hardware where you hit the
+> issue to make sure things work as expected?
+>
+> Yongqin, If you didn't have the context, this affected hikey960.
+>
+> Greg,
+>
+> Let's wait for some tests before we land these.
+>
+> Thanks,
+> Saravana
+>
+> Cc: Yongqin Liu <yongqin.liu@linaro.org>
+> Cc: Sumit Semwal <sumit.semwal@linaro.org>
+> Cc: Martin Kepplinger <martin.kepplinger@puri.sm>
+> Cc: Amelie Delaunay <amelie.delaunay@foss.st.com>
+>
+> Saravana Kannan (4):
+>   usb: typec: stusb160x: Remove use of
+>     fw_devlink_purge_absent_suppliers()
+>   usb: typec: tipd: Remove use of fw_devlink_purge_absent_suppliers()
+>   usb: typec: tcpm: Remove use of fw_devlink_purge_absent_suppliers()
+>   driver core: Delete fw_devlink_purge_absent_suppliers()
+>
+>  drivers/base/core.c           | 16 ----------------
+>  drivers/usb/typec/stusb160x.c |  9 ---------
+>  drivers/usb/typec/tcpm/tcpm.c |  9 ---------
+>  drivers/usb/typec/tipd/core.c |  9 ---------
+>  include/linux/fwnode.h        |  1 -
+>  5 files changed, 44 deletions(-)
+>
+> --
+> 2.39.2.722.g9855ee24e9-goog
+>
