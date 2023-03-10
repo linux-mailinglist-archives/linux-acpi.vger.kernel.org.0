@@ -2,163 +2,208 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AF146B5190
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 21:15:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 404C16B539A
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 22:59:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231469AbjCJUPX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Mar 2023 15:15:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39530 "EHLO
+        id S232187AbjCJV7g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Mar 2023 16:59:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231392AbjCJUPQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Mar 2023 15:15:16 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7CC4912D40B;
-        Fri, 10 Mar 2023 12:15:04 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 57AE2AD7;
-        Fri, 10 Mar 2023 12:15:47 -0800 (PST)
-Received: from bogus (unknown [10.57.16.230])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7DF273F71A;
-        Fri, 10 Mar 2023 12:15:00 -0800 (PST)
-Date:   Fri, 10 Mar 2023 20:14:53 +0000
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     "lihuisong (C)" <lihuisong@huawei.com>
-Cc:     robbiek@xsightlabs.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rafael@kernel.org,
-        rafael.j.wysocki@intel.com, wanghuiqiang@huawei.com,
-        zhangzekun11@huawei.com, wangxiongfeng2@huawei.com,
-        tanxiaofei@huawei.com, guohanjun@huawei.com, xiexiuqi@huawei.com,
-        wangkefeng.wang@huawei.com, huangdaode@huawei.com
-Subject: Re: [PATCH 2/2] mailbox: pcc: Support shared interrupt for multiple
- subspaces
-Message-ID: <20230310201453.5fd3wv4ydarq5yin@bogus>
-References: <20221016034043.52227-1-lihuisong@huawei.com>
- <20230216063653.1995-1-lihuisong@huawei.com>
- <20230216063653.1995-3-lihuisong@huawei.com>
- <20230301133626.gchca3fdaqijxwzq@bogus>
- <2a165476-2e96-17b1-a50b-c8749462e8a1@huawei.com>
- <20230302140216.m4m3452vexyrnuln@bogus>
- <020cc964-9938-7ebe-7514-125cd041bfcb@huawei.com>
- <20230303111407.zdgqdwqik4spnq2o@bogus>
- <718da090-bc58-0762-c901-cbbfc3b78d5f@huawei.com>
+        with ESMTP id S232041AbjCJV7M (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Mar 2023 16:59:12 -0500
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3474234EB;
+        Fri, 10 Mar 2023 13:55:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678485351; x=1710021351;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9ZQRLQu84HAORpFHSfVd3rSzKA87bHH+2cYOQb+pAc8=;
+  b=cKPvoFCu3BHq4Pj1XLkiqTzU5+baBfqFmaICWrGJ5F5DSZ6FnLUF8Fzk
+   eEB6IDjLBbTeGhZw2lEq2SfMzedAfpa06OZ1muQ59vx/UTJGPDaKnKNGh
+   0hnkRFbupNX9RsUoOLcHHXf0B0N9OUW0AOHxDhxL6cDPOPfH23Z2Pn9I8
+   h2nwa2+uKY5HFJFz5bxWRV/FJsPJXS9kz8ha1mIrLNibmfEvDj8BpDxUf
+   wwiSz0sJ9AgeCkrPScusq4YABbEp7PfSbnPsHHE71I58FNpV26E9J7pBp
+   LVou8L7Z8M0+d+z5vo+G0j3XsxNn4tYjfiJb9GjpKzxg638sSYmLHMhDM
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10645"; a="335534002"
+X-IronPort-AV: E=Sophos;i="5.98,250,1673942400"; 
+   d="scan'208";a="335534002"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2023 13:52:36 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10645"; a="677977037"
+X-IronPort-AV: E=Sophos;i="5.98,250,1673942400"; 
+   d="scan'208";a="677977037"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 10 Mar 2023 13:52:29 -0800
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pakf7-000471-0G;
+        Fri, 10 Mar 2023 21:52:29 +0000
+Date:   Sat, 11 Mar 2023 05:51:50 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        "Maciej W. Rozycki" <macro@orcam.me.uk>,
+        Juergen Gross <jgross@suse.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org
+Cc:     oe-kbuild-all@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Andrew Lunn <andrew@lunn.ch>
+Subject: Re: [PATCH v4 1/4] PCI: Introduce pci_dev_for_each_resource()
+Message-ID: <202303110550.BLo6P5dS-lkp@intel.com>
+References: <20230310171416.23356-2-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <718da090-bc58-0762-c901-cbbfc3b78d5f@huawei.com>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230310171416.23356-2-andriy.shevchenko@linux.intel.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Mar 04, 2023 at 05:47:28PM +0800, lihuisong (C) wrote:
-> 
-> 在 2023/3/3 19:14, Sudeep Holla 写道:
-> > On Fri, Mar 03, 2023 at 02:33:49PM +0800, lihuisong (C) wrote:
-> > > Sorry for my resend. Because I found that my last reply email is not in the
-> > > thread of this patch. I guess it may be send failed.
-> > > 
-> > > 在 2023/3/2 22:02, Sudeep Holla 写道:
-> > > > No. I meant a comment saying it is not need since only one transfer can occur
-> > > > at a time and mailbox takes care of locking. So chan_in_use can be accessed
-> > > > without a lock.
-> > > Got it. Agreed.
-> > Thanks
-> already modify this comment as below.
-> > 
-> > > > > For types no need this flag, it is always hard to understand and redundant
-> > > > > design.
-> > > > But does it matter ? You can even support shared interrupt for type 1&2.
-> > > BTW, type 1 subspaces do not support a level triggered platform interrupt as
-> > > no method is provided to clear the interrupt.
-> > Agreed but there is no harm using the flag, you can add a comment that it is
-> > useful only if shared interrupts are supported. That will imply it is dummy
-> > for type 1. I am avoiding too many type unnecessary checks especially in IRQ
-> > handler.
-> 
-> Understood.
-> 
-> > 
-> > > > They support level interrupt, so we can add them too. I understand you can
-> > > > test only type 3, but this driver caters for all and the code must be generic
-> > > > as much as possible. I don't see any point in check for type 3 only. Only
-> > > I understand what you do.
-> > > But type 2 also supports the communication flow from OSPM to Platfrom.
-> > > In this case, this flag will get in the way of type 2.
-> > > 
-> > How ?
-> It should be ok if all types except for type 3 do not check this flag in
-> interrupt handle.
-> Namely, these types consider it as dummy, and do not use it, anywhere,
-> Right?
-> > 
-> > > Whether the interrupt belongs to a type2 channel is only determined by
-> > > the status field in Generic Communications Channel Shared Memory Region,
-> > > which is done in rx_callback of PCC client.
-> > Agreed, but do you see any issue using the flag even if it acts as dummy ?
-> 
-> I think it can work well if these types completely ignore this flag, like below.
-> what do you think?
-> 
-> -->8
-> 
-> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-> index ecd54f049de3..14405e99193d 100755
-> --- a/drivers/mailbox/pcc.c
-> +++ b/drivers/mailbox/pcc.c
-> @@ -92,6 +92,13 @@ struct pcc_chan_reg {
->   * @error: PCC register bundle for the error status register
->   * @plat_irq: platform interrupt
->   * @type: PCC subspace type
-> + * @plat_irq_flags: platform interrupt flags
-> + * @chan_in_use: this flag is used just to check if the interrupt needs
-> + *             handling when it is shared. Since only one transfer can
-> occur
-> + *             at a time and mailbox takes care of locking, this flag can
-> be
-> + *             accessed without a lock. Note: the type only support the
-> + *             communication from OSPM to Platform, like type3, use it, and
-> + *             other types completely ignore it.
->   */
->  struct pcc_chan_info {
->         struct pcc_mbox_chan chan;
-> @@ -102,6 +109,8 @@ struct pcc_chan_info {
->         struct pcc_chan_reg error;
->         int plat_irq;
->         u8 type;
-> +       unsigned int plat_irq_flags;
-> +       bool chan_in_use;
->  };
-> 
->  #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
-> @@ -225,6 +234,12 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
->         return acpi_register_gsi(NULL, interrupt, trigger, polarity);
->  }
-> 
-> +static bool pcc_chan_plat_irq_can_be_shared(struct pcc_chan_info *pchan)
-> +{
-> +       return (pchan->plat_irq_flags & ACPI_PCCT_INTERRUPT_MODE) ==
-> +               ACPI_LEVEL_SENSITIVE;
-> +}
-> +
->  static bool pcc_chan_command_complete(struct pcc_chan_info *pchan,
->                                       u64 cmd_complete_reg_val)
->  {
-> @@ -277,6 +292,9 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
->         int ret;
-> 
->         pchan = chan->con_priv;
-> +       if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE &&
-> +           !pchan->chan_in_use)
+Hi Andy,
 
-I would have avoided the type check above but I understand your concern
-so let us keep it like this for now.
+I love your patch! Yet something to improve:
 
-Please submit non-RFC patch as some maintainers may not look at RFC.
+[auto build test ERROR on pci/next]
+[also build test ERROR on pci/for-linus powerpc/next powerpc/fixes linus/master v6.3-rc1 next-20230310]
+[cannot apply to soc/for-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/PCI-Introduce-pci_dev_for_each_resource/20230311-011642
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
+patch link:    https://lore.kernel.org/r/20230310171416.23356-2-andriy.shevchenko%40linux.intel.com
+patch subject: [PATCH v4 1/4] PCI: Introduce pci_dev_for_each_resource()
+config: m68k-allyesconfig (https://download.01.org/0day-ci/archive/20230311/202303110550.BLo6P5dS-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/059b4a086017fbf2baacdbe0cc454f569f618ffd
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Andy-Shevchenko/PCI-Introduce-pci_dev_for_each_resource/20230311-011642
+        git checkout 059b4a086017fbf2baacdbe0cc454f569f618ffd
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash drivers/
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202303110550.BLo6P5dS-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/pnp/quirks.c: In function 'quirk_system_pci_resources':
+>> drivers/pnp/quirks.c:245:17: error: implicit declaration of function 'pci_dev_for_each_resource' [-Werror=implicit-function-declaration]
+     245 |                 pci_dev_for_each_resource(pdev, r, i) {
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/pnp/quirks.c:245:54: error: expected ';' before '{' token
+     245 |                 pci_dev_for_each_resource(pdev, r, i) {
+         |                                                      ^~
+         |                                                      ;
+   drivers/pnp/quirks.c:233:16: warning: unused variable 'j' [-Wunused-variable]
+     233 |         int i, j;
+         |                ^
+   drivers/pnp/quirks.c:232:26: warning: unused variable 'res' [-Wunused-variable]
+     232 |         struct resource *res, *r;
+         |                          ^~~
+   cc1: some warnings being treated as errors
+
+
+vim +/pci_dev_for_each_resource +245 drivers/pnp/quirks.c
+
+   228	
+   229	static void quirk_system_pci_resources(struct pnp_dev *dev)
+   230	{
+   231		struct pci_dev *pdev = NULL;
+   232		struct resource *res, *r;
+   233		int i, j;
+   234	
+   235		/*
+   236		 * Some BIOSes have PNP motherboard devices with resources that
+   237		 * partially overlap PCI BARs.  The PNP system driver claims these
+   238		 * motherboard resources, which prevents the normal PCI driver from
+   239		 * requesting them later.
+   240		 *
+   241		 * This patch disables the PNP resources that conflict with PCI BARs
+   242		 * so they won't be claimed by the PNP system driver.
+   243		 */
+   244		for_each_pci_dev(pdev) {
+ > 245			pci_dev_for_each_resource(pdev, r, i) {
+   246				unsigned long type = resource_type(r);
+   247	
+   248				if (type != IORESOURCE_IO || type != IORESOURCE_MEM ||
+   249				    resource_size(r) == 0)
+   250					continue;
+   251	
+   252				if (r->flags & IORESOURCE_UNSET)
+   253					continue;
+   254	
+   255				for (j = 0;
+   256				     (res = pnp_get_resource(dev, type, j)); j++) {
+   257					if (res->start == 0 && res->end == 0)
+   258						continue;
+   259	
+   260					/*
+   261					 * If the PNP region doesn't overlap the PCI
+   262					 * region at all, there's no problem.
+   263					 */
+   264					if (!resource_overlaps(res, r))
+   265						continue;
+   266	
+   267					/*
+   268					 * If the PNP region completely encloses (or is
+   269					 * at least as large as) the PCI region, that's
+   270					 * also OK.  For example, this happens when the
+   271					 * PNP device describes a bridge with PCI
+   272					 * behind it.
+   273					 */
+   274					if (res->start <= r->start && res->end >= r->end)
+   275						continue;
+   276	
+   277					/*
+   278					 * Otherwise, the PNP region overlaps *part* of
+   279					 * the PCI region, and that might prevent a PCI
+   280					 * driver from requesting its resources.
+   281					 */
+   282					dev_warn(&dev->dev,
+   283						 "disabling %pR because it overlaps %s BAR %d %pR\n",
+   284						 res, pci_name(pdev), i, r);
+   285					res->flags |= IORESOURCE_DISABLED;
+   286				}
+   287			}
+   288		}
+   289	}
+   290	
 
 -- 
-Regards,
-Sudeep
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
