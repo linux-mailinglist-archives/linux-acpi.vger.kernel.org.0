@@ -2,32 +2,32 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96EA26B4102
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 14:48:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0CEC6B45D7
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 15:37:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230363AbjCJNsh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Mar 2023 08:48:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49602 "EHLO
+        id S232678AbjCJOhz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Mar 2023 09:37:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230355AbjCJNsg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Mar 2023 08:48:36 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CCB465A8;
-        Fri, 10 Mar 2023 05:48:35 -0800 (PST)
+        with ESMTP id S232637AbjCJOhw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Mar 2023 09:37:52 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C21711EEBF;
+        Fri, 10 Mar 2023 06:37:26 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 21FD2B822B7;
-        Fri, 10 Mar 2023 13:48:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFACC433D2;
-        Fri, 10 Mar 2023 13:48:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E6B1E6195F;
+        Fri, 10 Mar 2023 14:36:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3ECDC4339B;
+        Fri, 10 Mar 2023 14:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1678456112;
-        bh=Lcin+PWWD2Cp8v5D6uL8i4SvRp38SWJIYhLtOuDNmqc=;
+        s=korg; t=1678459010;
+        bh=9Rd0waOKcoTHm8nXq0CQ+JjvJSAFcyFasPghAfRA24Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=utFSI/2Wc1M41wduMz2fev8ln5Vrx2q/pQYPZgY8KKr84WgRIybSDlRwTEt4XSv6E
-         99q/+lB/ByhWg5Ah3TP6U4H4XWhkHyxSNZG2o+Xx7H100ZgeH5BkxqHiCJA7Mufva+
-         gxJietv7FOeOQtKIA3Riv1jr/tkgv1kmyWnitNlc=
+        b=UhVV+97OkEH2tuePGAJFC/ATCaYGuiaIN+/8faK5P2kqfRWrWImLui8ms/8zgj2iB
+         3XqZuzUKKSpUJkjMfKBKjqwQg3EF+xDSD1opaWpNZX3b6Ti2++e5H/C+drKvhMQRJA
+         5nlqhbCpwZgy/l79GsBloRkXdVnDUQcHbr6C6MDA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -42,12 +42,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Will Deacon <will@kernel.org>, linux-acpi@vger.kernel.org,
         Catalin Marinas <catalin.marinas@arm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 084/193] ACPI: Dont build ACPICA with -Os
-Date:   Fri, 10 Mar 2023 14:37:46 +0100
-Message-Id: <20230310133713.887712145@linuxfoundation.org>
+Subject: [PATCH 5.4 188/357] ACPI: Dont build ACPICA with -Os
+Date:   Fri, 10 Mar 2023 14:37:57 +0100
+Message-Id: <20230310133743.032877291@linuxfoundation.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230310133710.926811681@linuxfoundation.org>
-References: <20230310133710.926811681@linuxfoundation.org>
+In-Reply-To: <20230310133733.973883071@linuxfoundation.org>
+References: <20230310133733.973883071@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -153,7 +153,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/acpi/acpica/Makefile b/drivers/acpi/acpica/Makefile
-index e05232da05888..1e8e4e7a29cb3 100644
+index 59700433a96e5..f919811156b1f 100644
 --- a/drivers/acpi/acpica/Makefile
 +++ b/drivers/acpi/acpica/Makefile
 @@ -3,7 +3,7 @@
