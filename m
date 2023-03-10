@@ -2,171 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8E966B443E
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 15:22:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 087E76B40A2
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 14:41:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232271AbjCJOWa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Mar 2023 09:22:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40646 "EHLO
+        id S230000AbjCJNk7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Mar 2023 08:40:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232117AbjCJOWK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Mar 2023 09:22:10 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDA3411AB97;
-        Fri, 10 Mar 2023 06:21:18 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 85118B82291;
-        Fri, 10 Mar 2023 14:21:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D80C433EF;
-        Fri, 10 Mar 2023 14:21:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1678458076;
-        bh=kDOj8ESPmA7xKbqWcp1HPEdDSwfeDbVxLFdjEIVQRb4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ldRyfzaoVbs3loJMiU9lC4kTTGFbtCPdAyWYPMFnOsX96ZfPNG/HJ2sWVNbz23WVy
-         mJBaAqJiO/CVFB3uGvwDX32sE0bOCkznQMjMzYN8FlkLeU7F/FXefEzEE4MbLB4iKB
-         k9WQC/RDdqJBWDEdc/j1cWjzLsP6DT0bsriibtNI=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Rutland <mark.rutland@arm.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Florent Revest <revest@chromium.org>,
-        Len Brown <lenb@kernel.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Will Deacon <will@kernel.org>, linux-acpi@vger.kernel.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 124/252] ACPI: Dont build ACPICA with -Os
-Date:   Fri, 10 Mar 2023 14:38:14 +0100
-Message-Id: <20230310133722.557512488@linuxfoundation.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230310133718.803482157@linuxfoundation.org>
-References: <20230310133718.803482157@linuxfoundation.org>
-User-Agent: quilt/0.67
+        with ESMTP id S229907AbjCJNk6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Mar 2023 08:40:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B59F10D33F
+        for <linux-acpi@vger.kernel.org>; Fri, 10 Mar 2023 05:40:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1678455604;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Ec5XfNjxgy0+peAVSlU3DabxggNLNiWQ6hIV8ILc0ww=;
+        b=YYRmkBo9A2BPq70tI9+WQ6i6D3CB3O2URzSZvR2tfZUI9NPKLvUGobG3U/NtG3CNtImavu
+        eNFSKcTVn6QbTIhKOrj3Z8r0vXT9SAr6z/cwJaBbZUHvu9uvg8zAcLSW9nVPfDLtVBSc38
+        Gp7R9K7HE05xUuxXR/J15l435I8q0zM=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-538-ZzgISAObPue6zag75iG5DQ-1; Fri, 10 Mar 2023 08:40:03 -0500
+X-MC-Unique: ZzgISAObPue6zag75iG5DQ-1
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-536c525d470so54259267b3.18
+        for <linux-acpi@vger.kernel.org>; Fri, 10 Mar 2023 05:40:02 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678455602;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ec5XfNjxgy0+peAVSlU3DabxggNLNiWQ6hIV8ILc0ww=;
+        b=DM9uMeCDtirHWTRDtIOK26ZXhSTHwN66TWcFuAGA1yedSjim/XmXmT6k2B8LuGeZqg
+         D44vt9JqSVcle3scLBUPKHFk9Sk/lUOkLGbddPrISUxH/FgcBVny52IuZrVXI7gSDEJw
+         5HYA/0JCYfNj3nC7POovPQRE34fNZMYUw21tfhBPZxTx/Sh0G0uFdrN/7TZL2w8pfPug
+         OtzvRPo2oaoaX/QulnFvog6Rss6vxhSb1Q69sc9vPKA3tLSm87AP49ad3YOKAVBfpzPl
+         tcB8ynqw/WiyQZrS+CCn1Ch5hXVydb/RYpzOY1d2cdcxNph9ek0StHr8XWw79TkF57OQ
+         JW+Q==
+X-Gm-Message-State: AO0yUKVq491hldlaNTn2OllGBD1WRE3Iu+VX7Tmu5UN+rZ75+0zKH4ht
+        lDo6ThZldx+YzWpFJ3pOiZ1v0D7C9Sr1EdBiJz0p0kcfeyfoJtCBpDFiv9/3gfk2IqmlXfHwZRv
+        g86kFun86VTklLuwmH5DfRWfYnxbMhuvzoU94DA==
+X-Received: by 2002:a81:ac09:0:b0:535:8cb8:6ae9 with SMTP id k9-20020a81ac09000000b005358cb86ae9mr16625686ywh.4.1678455602597;
+        Fri, 10 Mar 2023 05:40:02 -0800 (PST)
+X-Google-Smtp-Source: AK7set/5VI1jqwwIL95f7E9ael6l5fc39fVSnt5yYua59iTmCvE+HObP8/dA4tH6a8PyRPfheRlOalbqTQhZQilnc9k=
+X-Received: by 2002:a81:ac09:0:b0:535:8cb8:6ae9 with SMTP id
+ k9-20020a81ac09000000b005358cb86ae9mr16625674ywh.4.1678455602386; Fri, 10 Mar
+ 2023 05:40:02 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20230309-fix-acpi-gpio-v1-1-b392d225efe8@redhat.com>
+ <20230310114150.GA62143@black.fi.intel.com> <CAO-hwJK+yF+0u6cbw4CoV8vS80Vx5xkC2vwPjOQvnUox2SMdTA@mail.gmail.com>
+ <ZAsyaNzhbcWuJS2q@smile.fi.intel.com>
+In-Reply-To: <ZAsyaNzhbcWuJS2q@smile.fi.intel.com>
+From:   Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Date:   Fri, 10 Mar 2023 14:39:51 +0100
+Message-ID: <CAO-hwJL1YA0MnYkQ5pOgCoOd0Kga3+F2nnzkLu=9PdggrB=y6w@mail.gmail.com>
+Subject: Re: [PATCH] gpiolib: acpi: use the fwnode in acpi_gpiochip_find()
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Daniel Kaehn <kaehndan@gmail.com>, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Mark Rutland <mark.rutland@arm.com>
+On Fri, Mar 10, 2023 at 2:36=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Fri, Mar 10, 2023 at 01:51:38PM +0100, Benjamin Tissoires wrote:
+> > On Fri, Mar 10, 2023 at 12:42=E2=80=AFPM Mika Westerberg
+> > <mika.westerberg@linux.intel.com> wrote:
+>
+> ...
+>
+>
+> > > Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> >
+> > Thanks to both of you for the reviews.
+> >
+> > Andy, should I resend a v2 with the rev-by from Mika and the Ice Lake c=
+hanges?
+>
+> Yes, please.
+>
 
-[ Upstream commit 8f9e0a52810dd83406c768972d022c37e7a18f1f ]
+Alright, v2 sent just now :)
 
-The ACPICA code has been built with '-Os' since the beginning of git
-history, though there's no explanatory comment as to why.
-
-This is unfortunate as GCC drops the alignment specificed by
-'-falign-functions=N' when '-Os' is used, as reported in GCC bug 88345:
-
-  https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88345
-
-This prevents CONFIG_FUNCTION_ALIGNMENT and
-CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B from having their expected effect
-on the ACPICA code. This is doubly unfortunate as in subsequent patches
-arm64 will depend upon CONFIG_FUNCTION_ALIGNMENT for its ftrace
-implementation.
-
-Drop the '-Os' flag when building the ACPICA code. With this removed,
-the code builds cleanly and works correctly in testing so far.
-
-I've tested this by selecting CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B=y,
-building and booting a kernel using ACPI, and looking for misaligned
-text symbols:
-
-* arm64:
-
-  Before, v6.2-rc3:
-    # uname -rm
-    6.2.0-rc3 aarch64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    5009
-
-  Before, v6.2-rc3 + fixed __cold:
-    # uname -rm
-    6.2.0-rc3-00001-g2a2bedf8bfa9 aarch64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    919
-
-  After:
-    # uname -rm
-    6.2.0-rc3-00002-g267bddc38572 aarch64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    323
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | grep acpi | wc -l
-    0
-
-* x86_64:
-
-  Before, v6.2-rc3:
-    # uname -rm
-    6.2.0-rc3 x86_64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    11537
-
-  Before, v6.2-rc3 + fixed __cold:
-    # uname -rm
-    6.2.0-rc3-00001-g2a2bedf8bfa9 x86_64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    2805
-
-  After:
-    # uname -rm
-    6.2.0-rc3-00002-g267bddc38572 x86_64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    1357
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | grep acpi | wc -l
-    0
-
-With the patch applied, the remaining unaligned text labels are a
-combination of static call trampolines and labels in assembly, which can
-be dealt with in subsequent patches.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: Florent Revest <revest@chromium.org>
-Cc: Len Brown <lenb@kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Robert Moore <robert.moore@intel.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-Link: https://lore.kernel.org/r/20230123134603.1064407-4-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/acpica/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/acpica/Makefile b/drivers/acpi/acpica/Makefile
-index 71f6f2624debc..8ce51f0f40ce5 100644
---- a/drivers/acpi/acpica/Makefile
-+++ b/drivers/acpi/acpica/Makefile
-@@ -3,7 +3,7 @@
- # Makefile for ACPICA Core interpreter
- #
- 
--ccflags-y			:= -Os -D_LINUX -DBUILDING_ACPICA
-+ccflags-y			:= -D_LINUX -DBUILDING_ACPICA
- ccflags-$(CONFIG_ACPI_DEBUG)	+= -DACPI_DEBUG_OUTPUT
- 
- # use acpi.o to put all files here into acpi.o modparam namespace
--- 
-2.39.2
-
-
+Cheers,
+Benjamin
 
