@@ -2,145 +2,181 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25E2C6B2F9B
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Mar 2023 22:32:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 373BB6B32AA
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 01:17:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231416AbjCIVcI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Mar 2023 16:32:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43252 "EHLO
+        id S231414AbjCJARq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Mar 2023 19:17:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231424AbjCIVcD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Mar 2023 16:32:03 -0500
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 713DBFAD75;
-        Thu,  9 Mar 2023 13:31:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678397509; x=1709933509;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xqEU/xpQmG3XBT8UvsTkfueNh2v0rzg7v9y9ON6CO28=;
-  b=jyLZCX8jxmOVukunuLTOfqfmVOEtoKMHqi3kavhAd8cn0RbFSZH0a0cu
-   fOC2cZZUwFk2O51B9Li/zjBQHgXEKnfXwBCN7YfkHZtlWH7490dpCDJUM
-   YyIuRFkYpgMf4mJc8o7mzdIb0TzW4uYtBoj3IsZso1BcivMO99F+07RLm
-   QVv26/4AETkBPHif24OeYx9qFaFsZAkB8zEGgIlhc2ll1fQl30ONnrjHA
-   09LCtM0uiKQWG9K7NVzvA1psAyGN3KTQJYMJjAN5yZU4EBlCSeCFb5D7Z
-   URk9iXjjk2LJj1dOypm5d6Ub4QCLVzqoDdyZWxq0ly28PURJWn8nV6cto
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10644"; a="324924278"
-X-IronPort-AV: E=Sophos;i="5.98,247,1673942400"; 
-   d="scan'208";a="324924278"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2023 13:31:44 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10644"; a="746474015"
-X-IronPort-AV: E=Sophos;i="5.98,247,1673942400"; 
-   d="scan'208";a="746474015"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 09 Mar 2023 13:31:41 -0800
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1paNrQ-0003ER-0D;
-        Thu, 09 Mar 2023 21:31:40 +0000
-Date:   Fri, 10 Mar 2023 05:31:04 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Tony Lindgren <tony@atomide.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>
-Cc:     oe-kbuild-all@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH v6 1/1] serial: core: Start managing serial controllers
- to enable runtime PM
-Message-ID: <202303100516.22vtkWv4-lkp@intel.com>
-References: <20230309085713.57700-1-tony@atomide.com>
+        with ESMTP id S231261AbjCJARp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Mar 2023 19:17:45 -0500
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A995BF34FB
+        for <linux-acpi@vger.kernel.org>; Thu,  9 Mar 2023 16:17:43 -0800 (PST)
+Received: by mail-pg1-x532.google.com with SMTP id 16so2110879pge.11
+        for <linux-acpi@vger.kernel.org>; Thu, 09 Mar 2023 16:17:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112; t=1678407463;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y55T+l/IfTjCYszzbPp698Fcr0D4XjtGiCIDgfvFkg0=;
+        b=GGGeBw2uMvUsuHTfssHrt4nvsmcKhgr6GdOHAcn/hs/w9MS1XDg5m2UFoEwevuoWk/
+         kZdzjwJq4ithAYy23mDIw9hMEqffNHpveWr0U0BCi3LaIpOPvtDRazQA2adwLL3xVEuI
+         4xbw3w36l7Tc/gFvZ7ADzoY1elod9gEJeNmunQYw0juQAf3PPK8wuI8FYUOu3aUTXT3d
+         XUMq31BTX2Xtji31A0mvwEVauTtkRccAmsGIl2QH9TqsGitvxc+QNIP67pOMQ83qYl+W
+         1l/SYEdz+QFPmr+sGDi+bORjjVaFFbdzgQe2/bRauvIBKwqfnFPNMZoRLEfK3+B8jLUm
+         yA0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678407463;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y55T+l/IfTjCYszzbPp698Fcr0D4XjtGiCIDgfvFkg0=;
+        b=XDXJgaoazoyEcXtp2aGOjlHybc13WDqBVYTjRhW7ppV7Dhx1nqkQOGP9qLWfkO8cCS
+         cAthwf1HU3rGKf9DX0Cd0lKKI+prsLMOC2qZ4CIQh4klrlkk3SuccOMVUT5lkZgSzJa2
+         rkjInXh+aQdKB+nIqeW6RYUi0pjJdrXMFK1arN6ZhaRRbJ38Bv3C+fL0TY+5O2/pOVIg
+         dIE2Xeh97VsTw0O9R2HxOi2EJBP1C3YKfTG7HsJzv4JWALLFp9rOZPflEgPsoedQCUI2
+         1nfQiOtbSt/1rep7+Zqw14aed/6wMG8I0sCUJuH9UG0VvYAqQY9qBZbSBloW3tLjtJeJ
+         ayrg==
+X-Gm-Message-State: AO0yUKWJgj7q0ieXC6Ce5SJYmm66e8yIR3pYN2rTe8L+So1ZlCKYRuTU
+        ISv9Z2xO9oE8c87yHa2zyp9RLoBd3JoqsvVtnM/+UQ==
+X-Google-Smtp-Source: AK7set92DDVjOWKfeLKwM45A4T+HyVX6lNUCVfNJW8njYHTduRXJDj6gJmYe1OxHGI6KMdngasI1DOiBRQUQ5WAWPJo=
+X-Received: by 2002:a62:1cc6:0:b0:620:1f4c:4b9f with SMTP id
+ c189-20020a621cc6000000b006201f4c4b9fmr795319pfc.6.1678407462746; Thu, 09 Mar
+ 2023 16:17:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230309085713.57700-1-tony@atomide.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230301214952.2190757-1-saravanak@google.com>
+ <CAGETcx_DTHW4-WMK4qRhvhxiunUB2f79cpXSfQ1x-hifZQ+tgw@mail.gmail.com> <CAMSo37XuNaV4Y3+ExrUjNzPDRD_BNSn1258Ve3We+qtbsO7qEw@mail.gmail.com>
+In-Reply-To: <CAMSo37XuNaV4Y3+ExrUjNzPDRD_BNSn1258Ve3We+qtbsO7qEw@mail.gmail.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Thu, 9 Mar 2023 16:17:06 -0800
+Message-ID: <CAGETcx8qKCNuD5p=e-f-T93VstptPWHq2gVzmghkQucNyhwocA@mail.gmail.com>
+Subject: Re: [PATCH v1 0/4] Remove use of fw_devlink_purge_absent_suppliers()
+To:     Yongqin Liu <yongqin.liu@linaro.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Martin Kepplinger <martin.kepplinger@puri.sm>,
+        Amelie Delaunay <amelie.delaunay@foss.st.com>,
+        kernel-team@android.com, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Tony,
+On Thu, Mar 9, 2023 at 10:53=E2=80=AFAM Yongqin Liu <yongqin.liu@linaro.org=
+> wrote:
+>
+> Hi, Saravana
+>
+> Sorry for the lateness, I was just aware of this today.
 
-I love your patch! Perhaps something to improve:
+No worries.
 
-[auto build test WARNING on tty/tty-testing]
-[also build test WARNING on tty/tty-next tty/tty-linus rafael-pm/linux-next usb/usb-testing usb/usb-next usb/usb-linus linus/master v6.3-rc1 next-20230309]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> I tested with the ACK android-mainline branch + the 12 commits ending
+> with fb42378dcc7f
+> + the 4 commits of this series + hikey960 AOSP Master userspace.
+> The hikey960 Android build could boot to the home screen, no stuck there,
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Tony-Lindgren/serial-core-Start-managing-serial-controllers-to-enable-runtime-PM/20230309-170149
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git tty-testing
-patch link:    https://lore.kernel.org/r/20230309085713.57700-1-tony%40atomide.com
-patch subject: [PATCH v6 1/1] serial: core: Start managing serial controllers to enable runtime PM
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20230310/202303100516.22vtkWv4-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-8) 11.3.0
-reproduce (this is a W=1 build):
-        # https://github.com/intel-lab-lkp/linux/commit/08f76f28e32bcd3c093e4af349b0e1b60328395e
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Tony-Lindgren/serial-core-Start-managing-serial-controllers-to-enable-runtime-PM/20230309-170149
-        git checkout 08f76f28e32bcd3c093e4af349b0e1b60328395e
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        make W=1 O=build_dir ARCH=x86_64 olddefconfig
-        make W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/tty/serial/
+Thanks for testing! Can you confirm what happens if you drop the "12
+commits ending with fb42378dcc7f" ? Does it get stuck at boot or have
+some limited functionality?
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202303100516.22vtkWv4-lkp@intel.com/
+It's surprising that for the same type of DT node, in your case
+fw_devlink is able to handle it
+correctly, but no so for Martin's case.
 
-All warnings (new ones prefixed by >>):
+-Saravana
 
-   In file included from include/linux/device.h:25,
-                    from include/linux/pm_runtime.h:11,
-                    from drivers/tty/serial/serial_ctrl.c:12:
->> drivers/tty/serial/serial_ctrl.c:17:34: warning: 'serial_ctrl_pm' defined but not used [-Wunused-const-variable=]
-      17 | static DEFINE_RUNTIME_DEV_PM_OPS(serial_ctrl_pm, NULL, NULL, NULL);
-         |                                  ^~~~~~~~~~~~~~
-   include/linux/pm.h:372:25: note: in definition of macro '_DEFINE_DEV_PM_OPS'
-     372 | const struct dev_pm_ops name = { \
-         |                         ^~~~
-   drivers/tty/serial/serial_ctrl.c:17:8: note: in expansion of macro 'DEFINE_RUNTIME_DEV_PM_OPS'
-      17 | static DEFINE_RUNTIME_DEV_PM_OPS(serial_ctrl_pm, NULL, NULL, NULL);
-         |        ^~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-vim +/serial_ctrl_pm +17 drivers/tty/serial/serial_ctrl.c
-
-     2	
-     3	/*
-     4	 * Serial core controller driver
-     5	 *
-     6	 * This driver manages the serial core controller struct device instances.
-     7	 * The serial core controller devices are children of the physical serial
-     8	 * port device.
-     9	 */
-    10	
-    11	#include <linux/module.h>
-  > 12	#include <linux/pm_runtime.h>
-    13	#include <linux/serial_core.h>
-    14	
-    15	#include "serial_base.h"
-    16	
-  > 17	static DEFINE_RUNTIME_DEV_PM_OPS(serial_ctrl_pm, NULL, NULL, NULL);
-    18	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+>
+> Here is the link of the logat in case you want to check some message here=
+:
+> https://gist.github.com/liuyq/6525af08c547cd2e494af5d1c8b181b5
+>
+> Thanks,
+> Yongqin Liu
+> On Fri, 10 Mar 2023 at 02:05, Saravana Kannan <saravanak@google.com> wrot=
+e:
+> >
+> > Greg,
+> >
+> > Don't pull in this series please. It needs more testing from the folks
+> > I cc'ed and it's already breaking things for Martin. This needs more
+> > revisions.
+> >
+> > -Saravana
+> >
+> > On Wed, Mar 1, 2023 at 1:49=E2=80=AFPM Saravana Kannan <saravanak@googl=
+e.com> wrote:
+> > >
+> > > Yongqin, Martin, Amelie,
+> > >
+> > > We recent refactor of fw_devlink that ends with commit fb42378dcc7f
+> > > ("mtd: mtdpart: Don't create platform device that'll never probe"),
+> > > fw_devlink is smarter and doesn't depend on compatible property. So, =
+I
+> > > don't think these calls are needed anymore. But I don't have these
+> > > devices to test on and be sure and the hardware I use to test changes
+> > > doesn't have this issue either.
+> > >
+> > > Can you please test these changes on the hardware where you hit the
+> > > issue to make sure things work as expected?
+> > >
+> > > Yongqin, If you didn't have the context, this affected hikey960.
+> > >
+> > > Greg,
+> > >
+> > > Let's wait for some tests before we land these.
+> > >
+> > > Thanks,
+> > > Saravana
+> > >
+> > > Cc: Yongqin Liu <yongqin.liu@linaro.org>
+> > > Cc: Sumit Semwal <sumit.semwal@linaro.org>
+> > > Cc: Martin Kepplinger <martin.kepplinger@puri.sm>
+> > > Cc: Amelie Delaunay <amelie.delaunay@foss.st.com>
+> > >
+> > > Saravana Kannan (4):
+> > >   usb: typec: stusb160x: Remove use of
+> > >     fw_devlink_purge_absent_suppliers()
+> > >   usb: typec: tipd: Remove use of fw_devlink_purge_absent_suppliers()
+> > >   usb: typec: tcpm: Remove use of fw_devlink_purge_absent_suppliers()
+> > >   driver core: Delete fw_devlink_purge_absent_suppliers()
+> > >
+> > >  drivers/base/core.c           | 16 ----------------
+> > >  drivers/usb/typec/stusb160x.c |  9 ---------
+> > >  drivers/usb/typec/tcpm/tcpm.c |  9 ---------
+> > >  drivers/usb/typec/tipd/core.c |  9 ---------
+> > >  include/linux/fwnode.h        |  1 -
+> > >  5 files changed, 44 deletions(-)
+> > >
+> > > --
+> > > 2.39.2.722.g9855ee24e9-goog
+> > >
+>
+>
+>
+> --
+> Best Regards,
+> Yongqin Liu
+> ---------------------------------------------------------------
+> #mailing list
+> linaro-android@lists.linaro.org
+> http://lists.linaro.org/mailman/listinfo/linaro-android
