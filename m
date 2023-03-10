@@ -2,132 +2,163 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6A1D6B501E
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 19:32:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AF146B5190
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 21:15:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231284AbjCJScM convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 10 Mar 2023 13:32:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33208 "EHLO
+        id S231469AbjCJUPX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Mar 2023 15:15:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229835AbjCJScK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Mar 2023 13:32:10 -0500
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AEEB1091CD;
-        Fri, 10 Mar 2023 10:32:09 -0800 (PST)
-Received: by mail-ed1-f49.google.com with SMTP id j11so24240616edq.4;
-        Fri, 10 Mar 2023 10:32:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678473127;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Vhle+6K5lcSTVeYkIgUr8IwNgitz8cHVNEe9xDNhtKw=;
-        b=t7GGuj+gAyT6IZst+XTW2Bq87kc0WteWbAV9Zgqadi6D3r/Dt6r4q7MajvTcwi8Uqm
-         a2LXSu+utTKclBMmJh2EWrDiqgJI0EU7xgBh6zBYjGPMC2gg9m1miXeLqwdlszpYMwJ9
-         zLIRa9ed0cPekTy890z7lEYzHITUyVKPH7RfxyKXFuehcgNlSnSsvlqzIDJdVmGjAEFM
-         faYBudiltUGgRSYQt+oQiF/r/WAYcVtCxd8ergKnt3MvtN8HSEuRMK3x8XhNxHKosXoM
-         NMCbG3auQ/0Zsa2SNyONdY7RQqdrTCaRQOeIwPQntriH7ylaAWkRHJuoeQr+wfoJ4zn6
-         C6Qg==
-X-Gm-Message-State: AO0yUKX9QCO/YAgUc1DISEWcrs1XqtqkxbvtXEHfz+92N1BSyBXi8YTH
-        0XSwoscL+O0/1fmpRvbuq5BleaAR4kSe7NqNrZw=
-X-Google-Smtp-Source: AK7set8Whgyw4XUn06Ie6C7aHXNffp2O5UAX9qlCbbLhSjkBhgPqRnkIbFbzNXrcEToa7euMtB6x0qdP2xqxCruvhJU=
-X-Received: by 2002:a50:d758:0:b0:4bd:ce43:9ee8 with SMTP id
- i24-20020a50d758000000b004bdce439ee8mr15032900edj.6.1678473127483; Fri, 10
- Mar 2023 10:32:07 -0800 (PST)
+        with ESMTP id S231392AbjCJUPQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Mar 2023 15:15:16 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7CC4912D40B;
+        Fri, 10 Mar 2023 12:15:04 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 57AE2AD7;
+        Fri, 10 Mar 2023 12:15:47 -0800 (PST)
+Received: from bogus (unknown [10.57.16.230])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7DF273F71A;
+        Fri, 10 Mar 2023 12:15:00 -0800 (PST)
+Date:   Fri, 10 Mar 2023 20:14:53 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     "lihuisong (C)" <lihuisong@huawei.com>
+Cc:     robbiek@xsightlabs.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rafael@kernel.org,
+        rafael.j.wysocki@intel.com, wanghuiqiang@huawei.com,
+        zhangzekun11@huawei.com, wangxiongfeng2@huawei.com,
+        tanxiaofei@huawei.com, guohanjun@huawei.com, xiexiuqi@huawei.com,
+        wangkefeng.wang@huawei.com, huangdaode@huawei.com
+Subject: Re: [PATCH 2/2] mailbox: pcc: Support shared interrupt for multiple
+ subspaces
+Message-ID: <20230310201453.5fd3wv4ydarq5yin@bogus>
+References: <20221016034043.52227-1-lihuisong@huawei.com>
+ <20230216063653.1995-1-lihuisong@huawei.com>
+ <20230216063653.1995-3-lihuisong@huawei.com>
+ <20230301133626.gchca3fdaqijxwzq@bogus>
+ <2a165476-2e96-17b1-a50b-c8749462e8a1@huawei.com>
+ <20230302140216.m4m3452vexyrnuln@bogus>
+ <020cc964-9938-7ebe-7514-125cd041bfcb@huawei.com>
+ <20230303111407.zdgqdwqik4spnq2o@bogus>
+ <718da090-bc58-0762-c901-cbbfc3b78d5f@huawei.com>
 MIME-Version: 1.0
-References: <2148907.irdbgypaU6@kreacher> <2885079.e9J7NaK4W3@kreacher> <bdafdb137ec992cee592606bc025f8f3e2cf3677.camel@intel.com>
-In-Reply-To: <bdafdb137ec992cee592606bc025f8f3e2cf3677.camel@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 10 Mar 2023 19:31:56 +0100
-Message-ID: <CAJZ5v0i+7AbFg1s8Bc+WA7ywOeFDcbrTVnJD8_1_DsY3abZVNA@mail.gmail.com>
-Subject: Re: [PATCH v1 1/4] ACPI: processor: Reorder acpi_processor_driver_init()
-To:     "Zhang, Rui" <rui.zhang@intel.com>
-Cc:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "srinivas.pandruvada@linux.intel.com" 
-        <srinivas.pandruvada@linux.intel.com>,
-        "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
-        "Wang, Quanxian" <quanxian.wang@intel.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <718da090-bc58-0762-c901-cbbfc3b78d5f@huawei.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Mar 7, 2023 at 5:55 PM Zhang, Rui <rui.zhang@intel.com> wrote:
->
-> On Fri, 2023-03-03 at 20:19 +0100, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > The cpufreq policy notifier in the ACPI processor driver may as
-> > well be registered before the driver itself, which causes
-> > acpi_processor_cpufreq_init to be true (unless the notifier
-> > registration fails, which is unlikely at that point) when the
-> > ACPI CPU thermal cooling devices are registered, so the
-> > processor_get_max_state() result does not change while
-> > acpi_processor_driver_init() is running.
-> >
-> > Change the ordering in acpi_processor_driver_init() accordingly
-> > to prevent the max_state value from remaining 0 permanently for all
-> > ACPI CPU cooling devices.
-> >
-> > Fixes: a365105c685c("thermal: sysfs: Reuse cdev->max_state")
-> > Reported-by: Wang, Quanxian <quanxian.wang@intel.com>
-> > Link:
-> > https://lore.kernel.org/linux-pm/53ec1f06f61c984100868926f282647e57ecfb2d.camel@intel.com/
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >  drivers/acpi/processor_driver.c |   12 ++++++------
-> >  1 file changed, 6 insertions(+), 6 deletions(-)
-> >
-> > Index: linux-pm/drivers/acpi/processor_driver.c
-> > ===================================================================
-> > --- linux-pm.orig/drivers/acpi/processor_driver.c
-> > +++ linux-pm/drivers/acpi/processor_driver.c
-> > @@ -263,6 +263,12 @@ static int __init acpi_processor_driver_
-> >       if (acpi_disabled)
-> >               return 0;
-> >
-> > +     if (!cpufreq_register_notifier(&acpi_processor_notifier_block,
-> > +                                    CPUFREQ_POLICY_NOTIFIER)) {
-> > +             acpi_processor_cpufreq_init = true;
-> > +             acpi_processor_ignore_ppc_init();
-> > +     }
-> > +
-> >       result = driver_register(&acpi_processor_driver);
-> >       if (result < 0)
-> >               return result;
-> > @@ -276,12 +282,6 @@ static int __init acpi_processor_driver_
-> >       cpuhp_setup_state_nocalls(CPUHP_ACPI_CPUDRV_DEAD, "acpi/cpu-
-> > drv:dead",
-> >                                 NULL, acpi_soft_cpu_dead);
-> >
-> > -     if (!cpufreq_register_notifier(&acpi_processor_notifier_block,
-> > -                                    CPUFREQ_POLICY_NOTIFIER)) {
-> > -             acpi_processor_cpufreq_init = true;
-> > -             acpi_processor_ignore_ppc_init();
-> > -     }
-> > -
-> >       acpi_processor_throttling_init();
-> >       return 0;
-> >  err:
-> >
-> Just FYI.
-> I need some time to ramp up on the ordering here to double confirm this
-> does not break any dependency, too many things are involved here :p.
+On Sat, Mar 04, 2023 at 05:47:28PM +0800, lihuisong (C) wrote:
+> 
+> 在 2023/3/3 19:14, Sudeep Holla 写道:
+> > On Fri, Mar 03, 2023 at 02:33:49PM +0800, lihuisong (C) wrote:
+> > > Sorry for my resend. Because I found that my last reply email is not in the
+> > > thread of this patch. I guess it may be send failed.
+> > > 
+> > > 在 2023/3/2 22:02, Sudeep Holla 写道:
+> > > > No. I meant a comment saying it is not need since only one transfer can occur
+> > > > at a time and mailbox takes care of locking. So chan_in_use can be accessed
+> > > > without a lock.
+> > > Got it. Agreed.
+> > Thanks
+> already modify this comment as below.
+> > 
+> > > > > For types no need this flag, it is always hard to understand and redundant
+> > > > > design.
+> > > > But does it matter ? You can even support shared interrupt for type 1&2.
+> > > BTW, type 1 subspaces do not support a level triggered platform interrupt as
+> > > no method is provided to clear the interrupt.
+> > Agreed but there is no harm using the flag, you can add a comment that it is
+> > useful only if shared interrupts are supported. That will imply it is dummy
+> > for type 1. I am avoiding too many type unnecessary checks especially in IRQ
+> > handler.
+> 
+> Understood.
+> 
+> > 
+> > > > They support level interrupt, so we can add them too. I understand you can
+> > > > test only type 3, but this driver caters for all and the code must be generic
+> > > > as much as possible. I don't see any point in check for type 3 only. Only
+> > > I understand what you do.
+> > > But type 2 also supports the communication flow from OSPM to Platfrom.
+> > > In this case, this flag will get in the way of type 2.
+> > > 
+> > How ?
+> It should be ok if all types except for type 3 do not check this flag in
+> interrupt handle.
+> Namely, these types consider it as dummy, and do not use it, anywhere,
+> Right?
+> > 
+> > > Whether the interrupt belongs to a type2 channel is only determined by
+> > > the status field in Generic Communications Channel Shared Memory Region,
+> > > which is done in rx_callback of PCC client.
+> > Agreed, but do you see any issue using the flag even if it acts as dummy ?
+> 
+> I think it can work well if these types completely ignore this flag, like below.
+> what do you think?
+> 
+> -->8
+> 
+> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+> index ecd54f049de3..14405e99193d 100755
+> --- a/drivers/mailbox/pcc.c
+> +++ b/drivers/mailbox/pcc.c
+> @@ -92,6 +92,13 @@ struct pcc_chan_reg {
+>   * @error: PCC register bundle for the error status register
+>   * @plat_irq: platform interrupt
+>   * @type: PCC subspace type
+> + * @plat_irq_flags: platform interrupt flags
+> + * @chan_in_use: this flag is used just to check if the interrupt needs
+> + *             handling when it is shared. Since only one transfer can
+> occur
+> + *             at a time and mailbox takes care of locking, this flag can
+> be
+> + *             accessed without a lock. Note: the type only support the
+> + *             communication from OSPM to Platform, like type3, use it, and
+> + *             other types completely ignore it.
+>   */
+>  struct pcc_chan_info {
+>         struct pcc_mbox_chan chan;
+> @@ -102,6 +109,8 @@ struct pcc_chan_info {
+>         struct pcc_chan_reg error;
+>         int plat_irq;
+>         u8 type;
+> +       unsigned int plat_irq_flags;
+> +       bool chan_in_use;
+>  };
+> 
+>  #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
+> @@ -225,6 +234,12 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
+>         return acpi_register_gsi(NULL, interrupt, trigger, polarity);
+>  }
+> 
+> +static bool pcc_chan_plat_irq_can_be_shared(struct pcc_chan_info *pchan)
+> +{
+> +       return (pchan->plat_irq_flags & ACPI_PCCT_INTERRUPT_MODE) ==
+> +               ACPI_LEVEL_SENSITIVE;
+> +}
+> +
+>  static bool pcc_chan_command_complete(struct pcc_chan_info *pchan,
+>                                       u64 cmd_complete_reg_val)
+>  {
+> @@ -277,6 +292,9 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+>         int ret;
+> 
+>         pchan = chan->con_priv;
+> +       if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE &&
+> +           !pchan->chan_in_use)
 
-Unless I've overlooked something tricky, it should be fine, but of
-course verifying this independently won't hurt.
+I would have avoided the type check above but I understand your concern
+so let us keep it like this for now.
 
-> I will test the whole patch series later this week.
+Please submit non-RFC patch as some maintainers may not look at RFC.
 
-Thank you!
+-- 
+Regards,
+Sudeep
