@@ -2,171 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0CEC6B45D7
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 15:37:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B561D6B4099
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 14:39:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232678AbjCJOhz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Mar 2023 09:37:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48540 "EHLO
+        id S230246AbjCJNjP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Mar 2023 08:39:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232637AbjCJOhw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Mar 2023 09:37:52 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C21711EEBF;
-        Fri, 10 Mar 2023 06:37:26 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S230161AbjCJNjJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Mar 2023 08:39:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFE4D5A1B0
+        for <linux-acpi@vger.kernel.org>; Fri, 10 Mar 2023 05:38:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1678455505;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=j2OR9fIPJYHr1cJflr+8XvQFdV93TGp9o5m8EX8cFoI=;
+        b=ZsT6edn/8cf+eX0MBtQ9ldBv+oR3wTKV+Lz55uEmbkKtsCGyHDzNbaBr1LTUPSshvdaAqa
+        3mNZPo4vk/ZD+KV2aTYl2QlFsBgBXb+2uuCi8WHHHUZwI3POUZojhStpCniA7NrAVSQeEy
+        MdF8QtvLX2XX+hsgfRKJQlHB8CHkl1I=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-587-O4uCNK7HNYGvW62_WP5abw-1; Fri, 10 Mar 2023 08:38:22 -0500
+X-MC-Unique: O4uCNK7HNYGvW62_WP5abw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E6B1E6195F;
-        Fri, 10 Mar 2023 14:36:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3ECDC4339B;
-        Fri, 10 Mar 2023 14:36:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1678459010;
-        bh=9Rd0waOKcoTHm8nXq0CQ+JjvJSAFcyFasPghAfRA24Q=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UhVV+97OkEH2tuePGAJFC/ATCaYGuiaIN+/8faK5P2kqfRWrWImLui8ms/8zgj2iB
-         3XqZuzUKKSpUJkjMfKBKjqwQg3EF+xDSD1opaWpNZX3b6Ti2++e5H/C+drKvhMQRJA
-         5nlqhbCpwZgy/l79GsBloRkXdVnDUQcHbr6C6MDA=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Rutland <mark.rutland@arm.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Florent Revest <revest@chromium.org>,
-        Len Brown <lenb@kernel.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Will Deacon <will@kernel.org>, linux-acpi@vger.kernel.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 188/357] ACPI: Dont build ACPICA with -Os
-Date:   Fri, 10 Mar 2023 14:37:57 +0100
-Message-Id: <20230310133743.032877291@linuxfoundation.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230310133733.973883071@linuxfoundation.org>
-References: <20230310133733.973883071@linuxfoundation.org>
-User-Agent: quilt/0.67
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6DD24185A78B;
+        Fri, 10 Mar 2023 13:38:20 +0000 (UTC)
+Received: from xps-13.local (unknown [10.39.194.103])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 21B1E492C3E;
+        Fri, 10 Mar 2023 13:38:19 +0000 (UTC)
+From:   Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Date:   Fri, 10 Mar 2023 14:38:10 +0100
+Subject: [PATCH v2] gpiolib: acpi: use the fwnode in acpi_gpiochip_find()
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230309-fix-acpi-gpio-v2-1-9eb20a1fd42c@redhat.com>
+X-B4-Tracking: v=1; b=H4sIAMEyC2QC/3WNMQ6DMAxFr4Iy1xU4VC2deo+KwQmGeIAgB6FWi
+ Ls3sHd8/+vpbSaxCifzLDajvEqSOGXAS2F8oGlgkC6zwRJtacsGevkA+VlgmCUCOaTe2rrmuzP
+ ZcZQYnNLkw2GNlBbW45iVs3mG3m3mIGmJ+j27a3Ws/xJrBRU422CHeOOeHy/lLtBy9XE07b7vP
+ 2hmkJzEAAAA
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Daniel Kaehn <kaehndan@gmail.com>, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1678455498; l=2737;
+ i=benjamin.tissoires@redhat.com; s=20230215; h=from:subject:message-id;
+ bh=flBfYltySue3KVmhGsoXQ/zcqrinrRTi7aXDpYk9Y7E=;
+ b=F+hEj5C3qLWtzIjuLE97GOReGRIFFpR+wpJj1q0vcQyJybqnS1E8wYsk7ubcnt5EK565IQCBe
+ o4StTHgOZhyCvj6X1OK3S3CqRl1p0P1AT0Tn2+n3I7mygPOVPXWbWj4
+X-Developer-Key: i=benjamin.tissoires@redhat.com; a=ed25519;
+ pk=7D1DyAVh6ajCkuUTudt/chMuXWIJHlv2qCsRkIizvFw=
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Mark Rutland <mark.rutland@arm.com>
+While trying to set up an SSDT override for a USB-2-I2C chip [0],
+I realized that the function acpi_gpiochip_find() was using the parent
+of the gpio_chip to do the ACPI matching.
 
-[ Upstream commit 8f9e0a52810dd83406c768972d022c37e7a18f1f ]
+This works fine on my Ice Lake laptop because AFAICT, the DSDT presents
+the PCI device INT3455 as the "Device (GPI0)", but is in fact handled
+by the pinctrl driver in Linux.
+The pinctrl driver then creates a gpio_chip device. This means that the
+gc->parent device in that case is the GPI0 device from ACPI and everything
+works.
 
-The ACPICA code has been built with '-Os' since the beginning of git
-history, though there's no explanatory comment as to why.
+However, in the hid-cp2112 case, the parent is the USB device, and the
+gpio_chip is directly under that USB device. Which means that in this case
+gc->parent points at the USB device, and so we can not do an ACPI match
+towards the GPIO device.
 
-This is unfortunate as GCC drops the alignment specificed by
-'-falign-functions=N' when '-Os' is used, as reported in GCC bug 88345:
+I think it is safe to resolve the ACPI matching through the fwnode
+because when we call gpiochip_add_data(), the first thing it does is
+setting a proper gc->fwnode: if it is not there, it borrows the fwnode
+of the parent.
 
-  https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88345
+So in my Ice Lake case, gc->fwnode is the one from the parent, meaning
+that the ACPI handle we will get is the one from the GPI0 in the DSDT
+(the pincrtl one). And in the hid-cp2112 case, we get the actual
+fwnode from the gpiochip we created in the HID device, making it working.
 
-This prevents CONFIG_FUNCTION_ALIGNMENT and
-CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B from having their expected effect
-on the ACPICA code. This is doubly unfortunate as in subsequent patches
-arm64 will depend upon CONFIG_FUNCTION_ALIGNMENT for its ftrace
-implementation.
-
-Drop the '-Os' flag when building the ACPICA code. With this removed,
-the code builds cleanly and works correctly in testing so far.
-
-I've tested this by selecting CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B=y,
-building and booting a kernel using ACPI, and looking for misaligned
-text symbols:
-
-* arm64:
-
-  Before, v6.2-rc3:
-    # uname -rm
-    6.2.0-rc3 aarch64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    5009
-
-  Before, v6.2-rc3 + fixed __cold:
-    # uname -rm
-    6.2.0-rc3-00001-g2a2bedf8bfa9 aarch64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    919
-
-  After:
-    # uname -rm
-    6.2.0-rc3-00002-g267bddc38572 aarch64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    323
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | grep acpi | wc -l
-    0
-
-* x86_64:
-
-  Before, v6.2-rc3:
-    # uname -rm
-    6.2.0-rc3 x86_64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    11537
-
-  Before, v6.2-rc3 + fixed __cold:
-    # uname -rm
-    6.2.0-rc3-00001-g2a2bedf8bfa9 x86_64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    2805
-
-  After:
-    # uname -rm
-    6.2.0-rc3-00002-g267bddc38572 x86_64
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | wc -l
-    1357
-    # grep ' [Tt] ' /proc/kallsyms | grep -iv '[048c]0 [Tt] ' | grep acpi | wc -l
-    0
-
-With the patch applied, the remaining unaligned text labels are a
-combination of static call trampolines and labels in assembly, which can
-be dealt with in subsequent patches.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: Florent Revest <revest@chromium.org>
-Cc: Len Brown <lenb@kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Robert Moore <robert.moore@intel.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-Link: https://lore.kernel.org/r/20230123134603.1064407-4-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://lore.kernel.org/linux-input/20230227140758.1575-1-kaehndan@gmail.com/T/#m592f18081ef3b95b618694a612ff864420c5aaf3 [0]
+Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
 ---
- drivers/acpi/acpica/Makefile | 2 +-
+Hi,
+
+As mentioned on the commit, I believe there is a bug on
+the gpiolib-acpi matching. It relies on the parent of the gpiochip
+when it should IMO trust the fwnode that was given to it.
+
+Tested on both the hid-cp2112 I am refering in the commit
+description and my XPS on Intel Icelake.
+
+Cheers,
+Benjamin
+---
+Changes in v2:
+- Fix commit description
+- Link to v1: https://lore.kernel.org/r/20230309-fix-acpi-gpio-v1-1-b392d225efe8@redhat.com
+---
+ drivers/gpio/gpiolib-acpi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/Makefile b/drivers/acpi/acpica/Makefile
-index 59700433a96e5..f919811156b1f 100644
---- a/drivers/acpi/acpica/Makefile
-+++ b/drivers/acpi/acpica/Makefile
-@@ -3,7 +3,7 @@
- # Makefile for ACPICA Core interpreter
- #
+diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+index d8a421ce26a8..5aebc266426b 100644
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -126,7 +126,7 @@ static bool acpi_gpio_deferred_req_irqs_done;
  
--ccflags-y			:= -Os -D_LINUX -DBUILDING_ACPICA
-+ccflags-y			:= -D_LINUX -DBUILDING_ACPICA
- ccflags-$(CONFIG_ACPI_DEBUG)	+= -DACPI_DEBUG_OUTPUT
+ static int acpi_gpiochip_find(struct gpio_chip *gc, void *data)
+ {
+-	return gc->parent && device_match_acpi_handle(gc->parent, data);
++	return ACPI_HANDLE_FWNODE(gc->fwnode) == data;
+ }
  
- # use acpi.o to put all files here into acpi.o modparam namespace
+ /**
+
+---
+base-commit: 6c71297eaf713ece684a367ce9aff06069d715b9
+change-id: 20230309-fix-acpi-gpio-ab2af3344e7b
+
+Best regards,
 -- 
-2.39.2
-
-
+Benjamin Tissoires <benjamin.tissoires@redhat.com>
 
