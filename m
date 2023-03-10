@@ -2,126 +2,190 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBBE76B3FB0
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 13:52:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27ABC6B4062
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 14:27:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230195AbjCJMwl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Mar 2023 07:52:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40886 "EHLO
+        id S229659AbjCJN1M (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Mar 2023 08:27:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229999AbjCJMwi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Mar 2023 07:52:38 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AA2310B1E1
-        for <linux-acpi@vger.kernel.org>; Fri, 10 Mar 2023 04:51:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1678452711;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=rZIld3XXwjg/5OVDJp8fJcoorSqaGBrbmPgeKtcFSHg=;
-        b=AfG1nnjnebMBCbxovyJJGk70s16SxAVdag/+yGT0e8/8lSD3aJ0LZ1S3X3SVPOkm8fvBuI
-        VXJtExj2kaQwTsPk1tCGOdSj/aMhH8dD/exMpp4982WfJ+oQt4uLd6fhOzv/3Pp1qyTAty
-        ZALF/0kJadaLe5yowlFE90pQvhhQ0HE=
-Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
- [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-212-b8RT0TRHM2GwBQQh5rQ_HQ-1; Fri, 10 Mar 2023 07:51:50 -0500
-X-MC-Unique: b8RT0TRHM2GwBQQh5rQ_HQ-1
-Received: by mail-yb1-f197.google.com with SMTP id o3-20020a257303000000b00a131264017aso5706837ybc.20
-        for <linux-acpi@vger.kernel.org>; Fri, 10 Mar 2023 04:51:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678452709;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rZIld3XXwjg/5OVDJp8fJcoorSqaGBrbmPgeKtcFSHg=;
-        b=2LPmVTl7NOLG0CNCYvbHYXe8GtCCMgjffYGNdkg5KPeBdGw9m1HleiOpKtjOkn/12i
-         1qXXsGxjdm8ayaUjJcftNkmOsssm0WHsHRIqeOa7Ge4RMVvppgPzsssgfH0lZyuapmjS
-         eFwFLSWEzIXm/q/0XkQZvqPBT2jDLcwzceaEKTx9E7o0L7HWGu4Zp94CuTkz0O2k0l3s
-         jsfRveKcxyDEADDUQigYRTSwNcByuATvf7aKb5Kw3H2NjrNcNpOaPnoQQLjm/9laW7/w
-         iw59jK2uMNnqSt9rweGeEIPHhrd3v6kKHdSXp4AaI2Ek6N+LqtrZ8Y7PsY8D5FsA5ZoM
-         ALRQ==
-X-Gm-Message-State: AO0yUKWYUhg+712twLAZOaaq+tpLaawJUq/Ss9nEi9wr2rujxYcmMxZ4
-        TMdVnc2pIxZQpMvTyvrz8WxNrbn5F/LKV3ltgNp7E2NN3RU45JDJJQN15xYS1W4OCu9HbWTIqz6
-        khJZtYVIve6/5WzckUQLQcIlK4u6samF81V2Xxw==
-X-Received: by 2002:a81:ae18:0:b0:52e:b22b:f99 with SMTP id m24-20020a81ae18000000b0052eb22b0f99mr16398143ywh.4.1678452709623;
-        Fri, 10 Mar 2023 04:51:49 -0800 (PST)
-X-Google-Smtp-Source: AK7set/EKPoJpsaQ6jTGPO8ZcwOExwc+c/U5tEMzDhx6YbPVnFyVYh1GTuwqNC6IUjl6U7VfvbNFIQkaXa/4X29Luic=
-X-Received: by 2002:a81:ae18:0:b0:52e:b22b:f99 with SMTP id
- m24-20020a81ae18000000b0052eb22b0f99mr16398129ywh.4.1678452709262; Fri, 10
- Mar 2023 04:51:49 -0800 (PST)
+        with ESMTP id S229453AbjCJN1L (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Mar 2023 08:27:11 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FF4B3C06;
+        Fri, 10 Mar 2023 05:27:04 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 40930B822AB;
+        Fri, 10 Mar 2023 13:27:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E15FC433EF;
+        Fri, 10 Mar 2023 13:26:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678454821;
+        bh=1fevsLWDSygfQVCGJ0gejYAP/iPQR1DJXPBRLgwub5A=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=YZ9djVPO9O9RVXaRK81zFJza+wLcKtwndrNkdJ9Zn2JE1TAn7CBPWuyTwHWJqExFz
+         jC1FmCzmQUw45IKAZm0ZC3jJ8JnnXIacUjkzDkc0Z2pRTPPH57cClleCNoKzKj1DwL
+         NHyLRml5GBpaIJ/F727SA9BADk+mI8KY0AtqUKPns5t7gn7JPL9TE9u6XesrKjT07m
+         RuT0YYM9X9Eh4A3SuRZgs9ZMSK932suN9l3LfSjUGZdWv0zWMIhplbLM+isQEeU/ZI
+         /ORhY67EtKL/47+lGK8srv4Qiy3bqYty92ox95oiNIUX7VHrW6oNrK4/ldIVBr0yJo
+         QVJZfJ/UJHkHA==
+Date:   Fri, 10 Mar 2023 14:26:55 +0100
+From:   Lorenzo Pieralisi <lpieralisi@kernel.org>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Shawn Guo <shawn.guo@linaro.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm64: PCI: Add quirk for platforms running Windows
+Message-ID: <ZAswHyaYjeqjW/+A@lpieralisi>
+References: <20230227021221.17980-1-shawn.guo@linaro.org>
+ <20230308185310.GA1030878@bhelgaas>
 MIME-Version: 1.0
-References: <20230309-fix-acpi-gpio-v1-1-b392d225efe8@redhat.com> <20230310114150.GA62143@black.fi.intel.com>
-In-Reply-To: <20230310114150.GA62143@black.fi.intel.com>
-From:   Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Date:   Fri, 10 Mar 2023 13:51:38 +0100
-Message-ID: <CAO-hwJK+yF+0u6cbw4CoV8vS80Vx5xkC2vwPjOQvnUox2SMdTA@mail.gmail.com>
-Subject: Re: [PATCH] gpiolib: acpi: use the fwnode in acpi_gpiochip_find()
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Daniel Kaehn <kaehndan@gmail.com>, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230308185310.GA1030878@bhelgaas>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 10, 2023 at 12:42=E2=80=AFPM Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
->
-> On Thu, Mar 09, 2023 at 02:40:51PM +0100, Benjamin Tissoires wrote:
-> > While trying to set up an SSDT override for a USB-2-I2C chip [0],
-> > I realized that the function acpi_gpiochip_find() was using the parent
-> > of the gpio_chip to do the ACPI matching.
-> >
-> > This works fine on my icelake laptop because AFAICT, the DSDT presents
-> > the PCI device INT3455 as the "Device (GPI0)", but is in fact handled
-> > by the pinctrl driver in Linux.
-> > The pinctrl driver then creates a gpio_chip device. This means that the
-> > gc->parent device in that case is the GPI0 device from ACPI and everyth=
-ing
-> > works.
-> >
-> > However, in the hid-cp2112 case, the parent is the USB device, and the
-> > gpio_chip is directly under that USB device. Which means that in this c=
-ase
-> > gc->parent points at the USB device, and so we can not do an ACPI match
-> > towards the GPIO device.
-> >
-> > I think it is safe to resolve the ACPI matching through the fwnode
-> > because when we call gpiochip_add_data(), the first thing it does is
-> > setting a proper gc->fwnode: if it is not there, it borrows the fwnode
-> > of the parent.
-> >
-> > So in my icelake case, gc->fwnode is the one from the parent, meaning
-> > that the ACPI handle we will get is the one from the GPI0 in the DSDT
-> > (the pincrtl one). And in the hid-cp2112 case, we get the actual
-> > fwnode from the gpiochip we created in the HID device, making it workin=
-g.
-> >
-> > Link: https://lore.kernel.org/linux-input/20230227140758.1575-1-kaehnda=
-n@gmail.com/T/#m592f18081ef3b95b618694a612ff864420c5aaf3 [0]
-> > Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
->
-> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
->
+On Wed, Mar 08, 2023 at 12:53:10PM -0600, Bjorn Helgaas wrote:
+> On Mon, Feb 27, 2023 at 10:12:21AM +0800, Shawn Guo wrote:
+> > Commit 8fd4391ee717 ("arm64: PCI: Exclude ACPI "consumer" resources from
+> > host bridge windows") introduced a check to remove host bridge register
+> > resources for all arm64 platforms, with the assumption that the PNP0A03
+> > _CRS resources would always be host bridge registers and never as windows
+> > on arm64.
+> > 
+> > The assumption stands true until Qualcomm Snapdragon Windows laptops
+> > emerge.  These laptops describe host bridge windows in PNP0A03 _CRS
+> > resources instead.  For example, the Microsoft Surface Pro X has host
+> > bridges defined as
+> > 
+> >     Name (_HID, EisaId ("PNP0A08") /* PCI Express Bus */)  // _HID: Hardware ID
+> >     Name (_CID, EisaId ("PNP0A03") /* PCI Bus */)  // _CID: Compatible ID
+> > 
+> >     Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+> >     {
+> >         Name (RBUF, ResourceTemplate ()
+> >         {
+> >             Memory32Fixed (ReadWrite,
+> >                 0x60200000,         // Address Base
+> >                 0x01DF0000,         // Address Length
+> >                 )
+> >             WordBusNumber (ResourceProducer, MinFixed, MaxFixed, PosDecode,
+> >                 0x0000,             // Granularity
+> >                 0x0000,             // Range Minimum
+> >                 0x0001,             // Range Maximum
+> >                 0x0000,             // Translation Offset
+> >                 0x0002,             // Length
+> >                 ,, )
+> >         })
+> >         Return (RBUF) /* \_SB_.PCI0._CRS.RBUF */
+> >     }
+> > 
+> > The Memory32Fixed holds a host bridge window, but it's not properly
+> > defined as a "producer" resource.  Consequently the resource gets
+> > removed by kernel, and the BAR allocation fails later on:
+> > 
+> >     [ 0.150731] pci 0002:00:00.0: BAR 14: no space for [mem size 0x00100000]
+> >     [ 0.150744] pci 0002:00:00.0: BAR 14: failed to assign [mem size 0x00100000]
+> >     [ 0.150758] pci 0002:01:00.0: BAR 0: no space for [mem size 0x00004000 64bit]
+> >     [ 0.150769] pci 0002:01:00.0: BAR 0: failed to assign [mem size 0x00004000 64bit]
+> > 
+> > This eventually prevents the PCIe NVME drive from being accessible.
+> > 
+> > Add a quirk for these platforms to avoid the resource being removed.
+> > 
+> > Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+> > ---
+> > We are running into the issue on more devices than just Surface Pro X
+> > now, so trying to sort it out with a quirk as suggested by Lorenzo [1].
+> 
+> One thing I don't like about this application of quirks is that the
+> list of affected platforms is likely to grow, which is an ongoing
+> burden for users and developers.
+> 
+> Can we have a conversation with Qualcomm about how they *intend* this
+> to work?  Linux is probably doing something wrong (interpreting
+> something differently than Windows does), and if we could fix that, we
+> have a better chance of future platforms working without quirks.
 
-Thanks to both of you for the reviews.
+Catch-22. What if some firmware would add host bridge MMIO register
+space (marked as consumer) in the _CRS ? We would end up allocating
+BAR regions in there, which is not right, so your commit:
 
-Andy, should I resend a v2 with the rev-by from Mika and the Ice Lake chang=
-es?
+8fd4391ee717 ("arm64: PCI: Exclude ACPI "consumer" resources from host bridge windows")
 
-Cheers,
-Benjamin
+is correct and if we revert it we would trigger regressions on some
+arm64 platforms for the reason I mention above.
 
+We can look for clarification at ACPI specs level but for firmware
+that is out there I am not sure what options we have.
+
+Lorenzo
+
+> > [1] https://lore.kernel.org/all/20210527093200.GA16444@lpieralisi/
+> > 
+> >  arch/arm64/kernel/pci.c | 26 ++++++++++++++++++++++++++
+> >  1 file changed, 26 insertions(+)
+> > 
+> > diff --git a/arch/arm64/kernel/pci.c b/arch/arm64/kernel/pci.c
+> > index 2276689b5411..896dbd028b67 100644
+> > --- a/arch/arm64/kernel/pci.c
+> > +++ b/arch/arm64/kernel/pci.c
+> > @@ -109,16 +109,42 @@ int pcibios_root_bridge_prepare(struct pci_host_bridge *bridge)
+> >  	return 0;
+> >  }
+> >  
+> > +#define QCOM_DSDT_QUIRK "Host bridge windows in PNP0A03 _CRS"
+> > +
+> > +static struct acpi_platform_list qcom_platlist[] = {
+> > +	/* Thinkpad X13s */
+> > +	{ "LENOVO", "SDM8280 ", 0, ACPI_SIG_DSDT, all_versions, QCOM_DSDT_QUIRK },
+> > +	/* Microsoft Surface Pro 9 (5G) and Windows Dev Kit 2023 */
+> > +	{ "QCOMM ", "SDM8280 ", 0, ACPI_SIG_DSDT, all_versions, QCOM_DSDT_QUIRK },
+> > +	/* Microsoft Surface Pro X */
+> > +	{ "QCOMM ", "SDM8180 ", 0, ACPI_SIG_DSDT, all_versions, QCOM_DSDT_QUIRK },
+> > +	{ }
+> > +};
+> > +
+> >  static int pci_acpi_root_prepare_resources(struct acpi_pci_root_info *ci)
+> >  {
+> >  	struct resource_entry *entry, *tmp;
+> >  	int status;
+> > +	int idx;
+> >  
+> >  	status = acpi_pci_probe_root_resources(ci);
+> > +
+> > +	/*
+> > +	 * Most arm64 platforms that do not run Windows describe host bridge
+> > +	 * registers in PNP0A03 _CRS resources, but some like Qualcomm
+> > +	 * Snapdragon Windows laptops describe host bridge windows in there.
+> > +	 * We do not want to destroy the resources for these platforms.
+> > +	 */
+> > +	idx = acpi_match_platform_list(qcom_platlist);
+> > +	if (idx >= 0)
+> > +		goto done;
+> > +
+> >  	resource_list_for_each_entry_safe(entry, tmp, &ci->resources) {
+> >  		if (!(entry->res->flags & IORESOURCE_WINDOW))
+> >  			resource_list_destroy_entry(entry);
+> >  	}
+> > +
+> > +done:
+> >  	return status;
+> >  }
+> >  
+> > -- 
+> > 2.17.1
+> > 
