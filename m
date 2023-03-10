@@ -2,125 +2,185 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 997E66B32F2
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 01:55:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3F8B6B361F
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 06:34:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229799AbjCJAzy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Mar 2023 19:55:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55738 "EHLO
+        id S229523AbjCJFe6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Mar 2023 00:34:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229798AbjCJAzx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Mar 2023 19:55:53 -0500
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4229F9ECD;
-        Thu,  9 Mar 2023 16:55:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678409749; x=1709945749;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=XJDOWmOut4ZXXjw7sNXN4UkiEOpV03u/nwp04SW+1Bc=;
-  b=VxENGKlszkbr0YK1BzAuAU7svG3kAu3XrjViF0qcC/qiCDt7ooBqP+DI
-   c/7CKNzZPVMx6sLJXXK2dYK+WshyhMai2ai1wAhXrAB66/G3a6uNVwgl9
-   AlPL8CCWCOCcJ+WGhKhSLybT5fQSlXkCMjX47sunMKjhZ1XiNorNiieMP
-   K6gIBNnQM9AtxpqLIWGm1Ft9n4zv8J5KLjMU231H5yTUKUKjs4JQqZqmL
-   bdEXXWZyV1/7h2Xh4urEO8jxYDQN1vfSWKz/rTw7sflSDuaZnioBWnffl
-   fs264ZUEEakglvsRJ5r76ofByfYaBibltOo3idX50lGQVbGZla++LIvpF
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10644"; a="324963929"
-X-IronPort-AV: E=Sophos;i="5.98,248,1673942400"; 
-   d="scan'208";a="324963929"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2023 16:55:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10644"; a="741766393"
-X-IronPort-AV: E=Sophos;i="5.98,248,1673942400"; 
-   d="scan'208";a="741766393"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 09 Mar 2023 16:55:44 -0800
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1paR2t-0003KN-2t;
-        Fri, 10 Mar 2023 00:55:43 +0000
-Date:   Fri, 10 Mar 2023 08:55:24 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Tony Lindgren <tony@atomide.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>
-Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH v6 1/1] serial: core: Start managing serial controllers
- to enable runtime PM
-Message-ID: <202303100833.lk1UVhcR-lkp@intel.com>
-References: <20230309085713.57700-1-tony@atomide.com>
+        with ESMTP id S229772AbjCJFe5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Mar 2023 00:34:57 -0500
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3E662E3CFF;
+        Thu,  9 Mar 2023 21:34:52 -0800 (PST)
+Received: by linux.microsoft.com (Postfix, from userid 1127)
+        id 3FF782057662; Thu,  9 Mar 2023 21:34:51 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3FF782057662
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1678426491;
+        bh=RYAtr5AItIk0C9/lG/qyF6GRmWRU77CYa4oa7R3ouTU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=gPoDWeoXafskvnthBqHWlyDs2sdEug8p1Wg6HIknr1ITib/yu3RQhUgGIlCCLPBed
+         38koamXI28BB9SuuTT0yN3FDi1YSsZlzoZdLFPEdTgqFcYLA/74wCbNDG+x4D7RmZw
+         HNU6uyOobPvzENVomoq5UafOwbb4K7e6GCQUTOsM=
+Date:   Thu, 9 Mar 2023 21:34:51 -0800
+From:   Saurabh Singh Sengar <ssengar@linux.microsoft.com>
+To:     Wei Liu <wei.liu@kernel.org>
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        kys@microsoft.com, haiyangz@microsoft.com, decui@microsoft.com,
+        daniel.lezcano@linaro.org, tglx@linutronix.de,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, mikelley@microsoft.com,
+        lenb@kernel.org, rafael@kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v7 5/5] Driver: VMBus: Add Devicetree support
+Message-ID: <20230310053451.GA9705@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <1677151745-16521-1-git-send-email-ssengar@linux.microsoft.com>
+ <1677151745-16521-6-git-send-email-ssengar@linux.microsoft.com>
+ <ZApMqWPWgWXIju/g@liuwe-devbox-debian-v2>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230309085713.57700-1-tony@atomide.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <ZApMqWPWgWXIju/g@liuwe-devbox-debian-v2>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Tony,
+On Thu, Mar 09, 2023 at 09:16:25PM +0000, Wei Liu wrote:
+> On Thu, Feb 23, 2023 at 03:29:05AM -0800, Saurabh Sengar wrote:
+> [...]
+> > +#ifdef CONFIG_ACPI
+> >  static int vmbus_acpi_add(struct platform_device *pdev)
+> >  {
+> >  	acpi_status result;
+> > @@ -2494,10 +2497,47 @@ static int vmbus_acpi_add(struct platform_device *pdev)
+> >  		vmbus_mmio_remove();
+> >  	return ret_val;
+> >  }
+> > +#endif
+> > +
+> > +static int vmbus_device_add(struct platform_device *pdev)
+> > +{
+> > +	struct resource **cur_res = &hyperv_mmio;
+> > +	struct of_range range;
+> > +	struct of_range_parser parser;
+> > +	struct device_node *np = pdev->dev.of_node;
+> > +	int ret;
+> > +
+> > +	hv_dev = &pdev->dev;
+> > +
+> > +	ret = of_range_parser_init(&parser, np);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	for_each_of_range(&parser, &range) {
+> > +		struct resource *res;
+> > +
+> > +		res = kzalloc(sizeof(*res), GFP_ATOMIC);
+> 
+> Why GFP_ATOMIC here? I don't think this function will be called in
+> atomic context, right?
 
-I love your patch! Perhaps something to improve:
+Thanks for pointing this. I will fix this in next version.
+Moreover, although there is a similar flag in the ACPI flow,
+I am contemplating whether that also requires fixing.
 
-[auto build test WARNING on tty/tty-testing]
-[also build test WARNING on tty/tty-next tty/tty-linus rafael-pm/linux-next usb/usb-testing usb/usb-next usb/usb-linus linus/master v6.3-rc1 next-20230309]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> > +		if (!res)
+> > +			return -ENOMEM;
+> > +
+> > +		res->name = "hyperv mmio";
+> > +		res->flags = IORESOURCE_MEM | IORESOURCE_MEM_64;
+> 
+> Are you sure IORESOURCE_MEM_64 is correct or required? The ACPI method
+> does not set this flag.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Tony-Lindgren/serial-core-Start-managing-serial-controllers-to-enable-runtime-PM/20230309-170149
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git tty-testing
-patch link:    https://lore.kernel.org/r/20230309085713.57700-1-tony%40atomide.com
-patch subject: [PATCH v6 1/1] serial: core: Start managing serial controllers to enable runtime PM
-config: i386-allnoconfig (https://download.01.org/0day-ci/archive/20230310/202303100833.lk1UVhcR-lkp@intel.com/config)
-compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project f28c006a5895fc0e329fe15fead81e37457cb1d1)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/08f76f28e32bcd3c093e4af349b0e1b60328395e
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Tony-Lindgren/serial-core-Start-managing-serial-controllers-to-enable-runtime-PM/20230309-170149
-        git checkout 08f76f28e32bcd3c093e4af349b0e1b60328395e
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 SHELL=/bin/bash drivers/tty/serial/
+Yes IORESOURCE_MEM_64 is required as there are cases where we are mapping
+64 bit resources. But now I realize its better to fetch this info from range
+struct only (range.flags), as for_each_of_range populates this flag.
+I will fix this up as well.
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202303100833.lk1UVhcR-lkp@intel.com/
+> 
+> > +		res->start = range.cpu_addr;
+> > +		res->end = range.cpu_addr + range.size;
+> > +
+> > +		*cur_res = res;
+> > +		cur_res = &res->sibling;
+> > +	}
+> > +
+> > +	return ret;
+> > +}
+> >  
+> >  static int vmbus_platform_driver_probe(struct platform_device *pdev)
+> >  {
+> > +#ifdef CONFIG_ACPI
+> >  	return vmbus_acpi_add(pdev);
+> > +#endif
+> 
+> Please use #else here.
+> 
+> > +	return vmbus_device_add(pdev);
+> 
+> Is there going to be a configuration that ACPI and OF are available at
+> the same time? I don't see they are marked as mutually exclusive in the
+> proposed KConfig.
 
-All warnings (new ones prefixed by >>):
+Initially, the device tree functions was included in "#else" section after
+the "#ifdef CONFIG_ACPI" section. However, it was subsequently removed to
+increase the coverage for CI builds.
 
->> drivers/tty/serial/serial_ctrl.c:17:34: warning: unused variable 'serial_ctrl_pm' [-Wunused-const-variable]
-   static DEFINE_RUNTIME_DEV_PM_OPS(serial_ctrl_pm, NULL, NULL, NULL);
-                                    ^
-   1 warning generated.
+Ref: https://lkml.org/lkml/2023/2/7/910
 
+Regards,
+Saurabh
 
-vim +/serial_ctrl_pm +17 drivers/tty/serial/serial_ctrl.c
-
-    16	
-  > 17	static DEFINE_RUNTIME_DEV_PM_OPS(serial_ctrl_pm, NULL, NULL, NULL);
-    18	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+> 
+> Thanks,
+> Wei.
+> 
+> >  }
+> >  
+> >  static int vmbus_platform_driver_remove(struct platform_device *pdev)
+> > @@ -2643,12 +2683,24 @@ static int vmbus_bus_resume(struct device *dev)
+> >  #define vmbus_bus_resume NULL
+> >  #endif /* CONFIG_PM_SLEEP */
+> >  
+> > +static const __maybe_unused struct of_device_id vmbus_of_match[] = {
+> > +	{
+> > +		.compatible = "microsoft,vmbus",
+> > +	},
+> > +	{
+> > +		/* sentinel */
+> > +	},
+> > +};
+> > +MODULE_DEVICE_TABLE(of, vmbus_of_match);
+> > +
+> > +#ifdef CONFIG_ACPI
+> >  static const struct acpi_device_id vmbus_acpi_device_ids[] = {
+> >  	{"VMBUS", 0},
+> >  	{"VMBus", 0},
+> >  	{"", 0},
+> >  };
+> >  MODULE_DEVICE_TABLE(acpi, vmbus_acpi_device_ids);
+> > +#endif
+> >  
+> >  /*
+> >   * Note: we must use the "no_irq" ops, otherwise hibernation can not work with
+> > @@ -2677,6 +2729,7 @@ static struct platform_driver vmbus_platform_driver = {
+> >  	.driver = {
+> >  		.name = "vmbus",
+> >  		.acpi_match_table = ACPI_PTR(vmbus_acpi_device_ids),
+> > +		.of_match_table = of_match_ptr(vmbus_of_match),
+> >  		.pm = &vmbus_bus_pm,
+> >  		.probe_type = PROBE_FORCE_SYNCHRONOUS,
+> >  	}
+> > -- 
+> > 2.34.1
+> > 
