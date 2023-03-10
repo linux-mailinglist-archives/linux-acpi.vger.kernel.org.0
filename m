@@ -2,185 +2,142 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3F8B6B361F
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 06:34:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC3866B36C1
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 07:42:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229523AbjCJFe6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Mar 2023 00:34:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60870 "EHLO
+        id S229997AbjCJGmc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Mar 2023 01:42:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229772AbjCJFe5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Mar 2023 00:34:57 -0500
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3E662E3CFF;
-        Thu,  9 Mar 2023 21:34:52 -0800 (PST)
-Received: by linux.microsoft.com (Postfix, from userid 1127)
-        id 3FF782057662; Thu,  9 Mar 2023 21:34:51 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3FF782057662
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1678426491;
-        bh=RYAtr5AItIk0C9/lG/qyF6GRmWRU77CYa4oa7R3ouTU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gPoDWeoXafskvnthBqHWlyDs2sdEug8p1Wg6HIknr1ITib/yu3RQhUgGIlCCLPBed
-         38koamXI28BB9SuuTT0yN3FDi1YSsZlzoZdLFPEdTgqFcYLA/74wCbNDG+x4D7RmZw
-         HNU6uyOobPvzENVomoq5UafOwbb4K7e6GCQUTOsM=
-Date:   Thu, 9 Mar 2023 21:34:51 -0800
-From:   Saurabh Singh Sengar <ssengar@linux.microsoft.com>
-To:     Wei Liu <wei.liu@kernel.org>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        kys@microsoft.com, haiyangz@microsoft.com, decui@microsoft.com,
-        daniel.lezcano@linaro.org, tglx@linutronix.de,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, mikelley@microsoft.com,
-        lenb@kernel.org, rafael@kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v7 5/5] Driver: VMBus: Add Devicetree support
-Message-ID: <20230310053451.GA9705@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <1677151745-16521-1-git-send-email-ssengar@linux.microsoft.com>
- <1677151745-16521-6-git-send-email-ssengar@linux.microsoft.com>
- <ZApMqWPWgWXIju/g@liuwe-devbox-debian-v2>
+        with ESMTP id S229995AbjCJGm2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Mar 2023 01:42:28 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57D42DCA45;
+        Thu,  9 Mar 2023 22:42:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678430546; x=1709966546;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HqgvZtjOayYUzOC46Z2VKVj5sGkB2Yka1uFwzIGH5Fg=;
+  b=YtMvM/LGsNnimBfaA+kgGc6q3cJiYIaK9FtJsXQ6r1VUwiRzRn01Mfyg
+   NOJEsWNV43pfrBLeOm/cxo7kgIs0Nn0hay+t9EINRsJs06oWrniQx1MI5
+   dlfTUydosf7KKjDAVrhW2Dh2yibMLjtqfGdGvvNUFsaULJctiGW9wEOS/
+   k4WNMl//tgN30SftJIB+UIsyk85ONSDTg4K4rTqqDOlNJZtoWJ5ImT+jG
+   lh8RLjpJI5ljSWhV/wtCw0YLIuMTFfy+CFIix8zyUN0doC+hYqoVr7xpO
+   uuA0BX08AM5AZMkypz8W2n0E1JyQQ56c/meU75pU1Rf49J5h6Ag3xGkAT
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10644"; a="316313744"
+X-IronPort-AV: E=Sophos;i="5.98,248,1673942400"; 
+   d="scan'208";a="316313744"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2023 22:42:25 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10644"; a="923555136"
+X-IronPort-AV: E=Sophos;i="5.98,248,1673942400"; 
+   d="scan'208";a="923555136"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga006.fm.intel.com with ESMTP; 09 Mar 2023 22:42:23 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id 2B529143; Fri, 10 Mar 2023 08:43:08 +0200 (EET)
+Date:   Fri, 10 Mar 2023 08:43:08 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Daniel Kaehn <kaehndan@gmail.com>, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] gpiolib: acpi: use the fwnode in acpi_gpiochip_find()
+Message-ID: <20230310064308.GW62143@black.fi.intel.com>
+References: <20230309-fix-acpi-gpio-v1-1-b392d225efe8@redhat.com>
+ <ZAnnJpdtlEOS4tiS@smile.fi.intel.com>
+ <ZAnxgooAixXAJvDn@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ZApMqWPWgWXIju/g@liuwe-devbox-debian-v2>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <ZAnxgooAixXAJvDn@smile.fi.intel.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 09, 2023 at 09:16:25PM +0000, Wei Liu wrote:
-> On Thu, Feb 23, 2023 at 03:29:05AM -0800, Saurabh Sengar wrote:
-> [...]
-> > +#ifdef CONFIG_ACPI
-> >  static int vmbus_acpi_add(struct platform_device *pdev)
-> >  {
-> >  	acpi_status result;
-> > @@ -2494,10 +2497,47 @@ static int vmbus_acpi_add(struct platform_device *pdev)
-> >  		vmbus_mmio_remove();
-> >  	return ret_val;
-> >  }
-> > +#endif
-> > +
-> > +static int vmbus_device_add(struct platform_device *pdev)
-> > +{
-> > +	struct resource **cur_res = &hyperv_mmio;
-> > +	struct of_range range;
-> > +	struct of_range_parser parser;
-> > +	struct device_node *np = pdev->dev.of_node;
-> > +	int ret;
-> > +
-> > +	hv_dev = &pdev->dev;
-> > +
-> > +	ret = of_range_parser_init(&parser, np);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	for_each_of_range(&parser, &range) {
-> > +		struct resource *res;
-> > +
-> > +		res = kzalloc(sizeof(*res), GFP_ATOMIC);
-> 
-> Why GFP_ATOMIC here? I don't think this function will be called in
-> atomic context, right?
+Hi,
 
-Thanks for pointing this. I will fix this in next version.
-Moreover, although there is a similar flag in the ACPI flow,
-I am contemplating whether that also requires fixing.
-
-> 
-> > +		if (!res)
-> > +			return -ENOMEM;
-> > +
-> > +		res->name = "hyperv mmio";
-> > +		res->flags = IORESOURCE_MEM | IORESOURCE_MEM_64;
-> 
-> Are you sure IORESOURCE_MEM_64 is correct or required? The ACPI method
-> does not set this flag.
-
-Yes IORESOURCE_MEM_64 is required as there are cases where we are mapping
-64 bit resources. But now I realize its better to fetch this info from range
-struct only (range.flags), as for_each_of_range populates this flag.
-I will fix this up as well.
-
-> 
-> > +		res->start = range.cpu_addr;
-> > +		res->end = range.cpu_addr + range.size;
-> > +
-> > +		*cur_res = res;
-> > +		cur_res = &res->sibling;
-> > +	}
-> > +
-> > +	return ret;
-> > +}
-> >  
-> >  static int vmbus_platform_driver_probe(struct platform_device *pdev)
-> >  {
-> > +#ifdef CONFIG_ACPI
-> >  	return vmbus_acpi_add(pdev);
-> > +#endif
-> 
-> Please use #else here.
-> 
-> > +	return vmbus_device_add(pdev);
-> 
-> Is there going to be a configuration that ACPI and OF are available at
-> the same time? I don't see they are marked as mutually exclusive in the
-> proposed KConfig.
-
-Initially, the device tree functions was included in "#else" section after
-the "#ifdef CONFIG_ACPI" section. However, it was subsequently removed to
-increase the coverage for CI builds.
-
-Ref: https://lkml.org/lkml/2023/2/7/910
-
-Regards,
-Saurabh
-
-> 
-> Thanks,
-> Wei.
-> 
-> >  }
-> >  
-> >  static int vmbus_platform_driver_remove(struct platform_device *pdev)
-> > @@ -2643,12 +2683,24 @@ static int vmbus_bus_resume(struct device *dev)
-> >  #define vmbus_bus_resume NULL
-> >  #endif /* CONFIG_PM_SLEEP */
-> >  
-> > +static const __maybe_unused struct of_device_id vmbus_of_match[] = {
-> > +	{
-> > +		.compatible = "microsoft,vmbus",
-> > +	},
-> > +	{
-> > +		/* sentinel */
-> > +	},
-> > +};
-> > +MODULE_DEVICE_TABLE(of, vmbus_of_match);
-> > +
-> > +#ifdef CONFIG_ACPI
-> >  static const struct acpi_device_id vmbus_acpi_device_ids[] = {
-> >  	{"VMBUS", 0},
-> >  	{"VMBus", 0},
-> >  	{"", 0},
-> >  };
-> >  MODULE_DEVICE_TABLE(acpi, vmbus_acpi_device_ids);
-> > +#endif
-> >  
-> >  /*
-> >   * Note: we must use the "no_irq" ops, otherwise hibernation can not work with
-> > @@ -2677,6 +2729,7 @@ static struct platform_driver vmbus_platform_driver = {
-> >  	.driver = {
-> >  		.name = "vmbus",
-> >  		.acpi_match_table = ACPI_PTR(vmbus_acpi_device_ids),
-> > +		.of_match_table = of_match_ptr(vmbus_of_match),
-> >  		.pm = &vmbus_bus_pm,
-> >  		.probe_type = PROBE_FORCE_SYNCHRONOUS,
-> >  	}
-> > -- 
-> > 2.34.1
+On Thu, Mar 09, 2023 at 04:47:30PM +0200, Andy Shevchenko wrote:
+> On Thu, Mar 09, 2023 at 04:03:19PM +0200, Andy Shevchenko wrote:
+> > On Thu, Mar 09, 2023 at 02:40:51PM +0100, Benjamin Tissoires wrote:
+> > > While trying to set up an SSDT override for a USB-2-I2C chip [0],
+> > > I realized that the function acpi_gpiochip_find() was using the parent
+> > > of the gpio_chip to do the ACPI matching.
+> > > 
+> > > This works fine on my icelake laptop because AFAICT, the DSDT presents
 > > 
+> > Ice Lake
+> > 
+> > > the PCI device INT3455 as the "Device (GPI0)", but is in fact handled
+> > > by the pinctrl driver in Linux.
+> > > The pinctrl driver then creates a gpio_chip device. This means that the
+> > > gc->parent device in that case is the GPI0 device from ACPI and everything
+> > > works.
+> > > 
+> > > However, in the hid-cp2112 case, the parent is the USB device, and the
+> > > gpio_chip is directly under that USB device. Which means that in this case
+> > > gc->parent points at the USB device, and so we can not do an ACPI match
+> > > towards the GPIO device.
+> > > 
+> > > I think it is safe to resolve the ACPI matching through the fwnode
+> > > because when we call gpiochip_add_data(), the first thing it does is
+> > > setting a proper gc->fwnode: if it is not there, it borrows the fwnode
+> > > of the parent.
+> > > 
+> > > So in my icelake case, gc->fwnode is the one from the parent, meaning
+> > 
+> > Ice Lake
+> > 
+> > > that the ACPI handle we will get is the one from the GPI0 in the DSDT
+> > > (the pincrtl one). And in the hid-cp2112 case, we get the actual
+> > > fwnode from the gpiochip we created in the HID device, making it working.
+> > 
+> > Thinking more about it. In ACPI we have those nodes defined as devices, right?
+> > So, strictly speaking the platform tells us that they _are_ devices.
+> > 
+> > The question here is what this device node in ACPI means:
+> > 1) the physical device or subdevice of the physical device OR
+> > 2) the physical device even if it's a part of combined (Multi-Functional)
+> >    device.
+> > 
+> > Second question is, does Device Tree specification allows something
+> > that is not a device node, but can be enumerated as a subdevice of
+> > a physical one?
+> > 
+> > P.S. I don't have objections against the patch, but I would like to
+> > have a clear picture on what the semantics of the two specifications
+> > WRT possibilities of device enumeration. It might be that we actually
+> > abuse ACPI specification in cases of Diolan DLN-2 or other way around
+> > trying to abuse it with this patch.
+> 
+> I have read the ACPI specification and it doesn't tell that Device is allowed
+> to describe non-hardware entity. It means that in the Linux driver model,
+> whenever we use Device() in the ACPI, we have an accompanying struct device.
+> 
+> For GPIO chip case, we have physical device (parent) and GPIO device, which
+> is Linux internal representation. So, physical device should have a description
+> in the ACPI table, or other way around: any Device() in ACPI has to be
+> considered as physical. That said, I think that Daniel was right and we need
+> to have parent properly assigned (to the Device(GPI0) node).
+> 
+> Another way, is to drop children from the descripton and use a single device
+> node for entire box.
+> 
+> TL;DR: if Device() is present we must use it as a parent to Linux
+> representation.
+> 
+> I would like also to hear Mika's opinion on this.
+
+Agree with the patch. We should be using whatever the gc->fwnode points
+to.
