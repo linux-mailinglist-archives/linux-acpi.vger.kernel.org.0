@@ -2,60 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CCF16B36E2
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 07:52:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F41C6B3829
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 09:09:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230052AbjCJGws (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Mar 2023 01:52:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47612 "EHLO
+        id S230136AbjCJIJG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Mar 2023 03:09:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230082AbjCJGwk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Mar 2023 01:52:40 -0500
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0B983F34D3;
-        Thu,  9 Mar 2023 22:52:40 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 7E74680F5;
-        Fri, 10 Mar 2023 06:52:39 +0000 (UTC)
-Date:   Fri, 10 Mar 2023 08:52:38 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     kernel test robot <lkp@intel.com>
+        with ESMTP id S230236AbjCJIIi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Mar 2023 03:08:38 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65546F7847;
+        Fri, 10 Mar 2023 00:08:19 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id EDDB7B821E4;
+        Fri, 10 Mar 2023 08:07:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1627DC433D2;
+        Fri, 10 Mar 2023 08:07:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1678435673;
+        bh=20jRrDHXaZ3rBIwvwboTw1gW/cNg6j8dkFSEzJUteqU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=dVtOuyRzFz/2WpPdNx6/oKhxHdSfEMPc9wehDshkU8U5JpUty6J5wCo5d3w3be8xR
+         QLRCD3E9wEKDnsn1GqFi0tBxnQbUmuZcUjzUTAOza5KoOWI9zBLCJ0W9I23Jahn6KN
+         C2NTebaWQN087knjgByMYAxdnGFbqWuTFzTXS6B0=
+Date:   Fri, 10 Mar 2023 09:07:50 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Saravana Kannan <saravanak@google.com>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
         Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        oe-kbuild-all@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH v6 1/1] serial: core: Start managing serial controllers
- to enable runtime PM
-Message-ID: <20230310065238.GJ7501@atomide.com>
-References: <20230309085713.57700-1-tony@atomide.com>
- <202303100516.22vtkWv4-lkp@intel.com>
+        Yongqin Liu <yongqin.liu@linaro.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Martin Kepplinger <martin.kepplinger@puri.sm>,
+        Amelie Delaunay <amelie.delaunay@foss.st.com>,
+        kernel-team@android.com, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v1 0/4] Remove use of fw_devlink_purge_absent_suppliers()
+Message-ID: <ZArlVu4LLtGoIcDU@kroah.com>
+References: <20230301214952.2190757-1-saravanak@google.com>
+ <CAGETcx_DTHW4-WMK4qRhvhxiunUB2f79cpXSfQ1x-hifZQ+tgw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <202303100516.22vtkWv4-lkp@intel.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CAGETcx_DTHW4-WMK4qRhvhxiunUB2f79cpXSfQ1x-hifZQ+tgw@mail.gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-* kernel test robot <lkp@intel.com> [230309 21:31]:
-> >> drivers/tty/serial/serial_ctrl.c:17:34: warning: 'serial_ctrl_pm' defined but not used [-Wunused-const-variable=]
->       17 | static DEFINE_RUNTIME_DEV_PM_OPS(serial_ctrl_pm, NULL, NULL, NULL);
->          |                                  ^~~~~~~~~~~~~~
+On Thu, Mar 09, 2023 at 10:04:49AM -0800, Saravana Kannan wrote:
+> Greg,
+> 
+> Don't pull in this series please. It needs more testing from the folks
+> I cc'ed and it's already breaking things for Martin. This needs more
+> revisions.
 
-Thanks I'll tag it with __maybe_unused.
+Ah, missed that, sorry.  I've dropped all 4 of these from my tree now,
+please resend a new version when you all have it worked out.
 
-Regards,
+thanks,
 
-Tony
+greg k-h
