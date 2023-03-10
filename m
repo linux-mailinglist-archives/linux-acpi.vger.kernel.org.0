@@ -2,59 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 373BB6B32AA
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 01:17:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B74A46B32C1
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Mar 2023 01:24:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231414AbjCJARq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Mar 2023 19:17:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34722 "EHLO
+        id S231480AbjCJAYo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Mar 2023 19:24:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231261AbjCJARp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Mar 2023 19:17:45 -0500
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A995BF34FB
-        for <linux-acpi@vger.kernel.org>; Thu,  9 Mar 2023 16:17:43 -0800 (PST)
-Received: by mail-pg1-x532.google.com with SMTP id 16so2110879pge.11
-        for <linux-acpi@vger.kernel.org>; Thu, 09 Mar 2023 16:17:43 -0800 (PST)
+        with ESMTP id S231450AbjCJAYn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Mar 2023 19:24:43 -0500
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B0C6E41D5
+        for <linux-acpi@vger.kernel.org>; Thu,  9 Mar 2023 16:24:42 -0800 (PST)
+Received: by mail-pg1-x52c.google.com with SMTP id s17so2141563pgv.4
+        for <linux-acpi@vger.kernel.org>; Thu, 09 Mar 2023 16:24:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112; t=1678407463;
+        d=google.com; s=20210112; t=1678407881;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Y55T+l/IfTjCYszzbPp698Fcr0D4XjtGiCIDgfvFkg0=;
-        b=GGGeBw2uMvUsuHTfssHrt4nvsmcKhgr6GdOHAcn/hs/w9MS1XDg5m2UFoEwevuoWk/
-         kZdzjwJq4ithAYy23mDIw9hMEqffNHpveWr0U0BCi3LaIpOPvtDRazQA2adwLL3xVEuI
-         4xbw3w36l7Tc/gFvZ7ADzoY1elod9gEJeNmunQYw0juQAf3PPK8wuI8FYUOu3aUTXT3d
-         XUMq31BTX2Xtji31A0mvwEVauTtkRccAmsGIl2QH9TqsGitvxc+QNIP67pOMQ83qYl+W
-         1l/SYEdz+QFPmr+sGDi+bORjjVaFFbdzgQe2/bRauvIBKwqfnFPNMZoRLEfK3+B8jLUm
-         yA0A==
+        bh=l+V3aYlmwqb5X0ONYtzyuh6v2xQDgHWPmfFHQGk3o8g=;
+        b=hR+qhxvvS3eP36MtryvpNULln5F1Yw4KWdRZ6I9J38LvCOg2aWXhv+uSpCy0/bg6jA
+         RNlV8WtFbYxVJbPjnJuC4dsHEdxYp0G8DO/SPhpM9UePjnvActuq8JBYvqhTp7Vwc5u6
+         F23dLvj9l4WuEk5x4ZNSnkcwzzgxJ0N//KeCNR5Mzni9ZvXU3OS8h7/a2GtKXw4/Mk9g
+         QBD3BZctdd5RNbkubQZC0JBLFkPhFCJH6zP0lSVPZVjLPCMP4ezmnWv9lwxkTaVIFMYo
+         bd8YlwSORTpsUk6Cf8ybmH8gT4Qy8S6G4Qnn1NJYF5vF/Ay2SkI5ZH1mGwe93QmzSy3f
+         2tiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678407463;
+        d=1e100.net; s=20210112; t=1678407881;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Y55T+l/IfTjCYszzbPp698Fcr0D4XjtGiCIDgfvFkg0=;
-        b=XDXJgaoazoyEcXtp2aGOjlHybc13WDqBVYTjRhW7ppV7Dhx1nqkQOGP9qLWfkO8cCS
-         cAthwf1HU3rGKf9DX0Cd0lKKI+prsLMOC2qZ4CIQh4klrlkk3SuccOMVUT5lkZgSzJa2
-         rkjInXh+aQdKB+nIqeW6RYUi0pjJdrXMFK1arN6ZhaRRbJ38Bv3C+fL0TY+5O2/pOVIg
-         dIE2Xeh97VsTw0O9R2HxOi2EJBP1C3YKfTG7HsJzv4JWALLFp9rOZPflEgPsoedQCUI2
-         1nfQiOtbSt/1rep7+Zqw14aed/6wMG8I0sCUJuH9UG0VvYAqQY9qBZbSBloW3tLjtJeJ
-         ayrg==
-X-Gm-Message-State: AO0yUKWJgj7q0ieXC6Ce5SJYmm66e8yIR3pYN2rTe8L+So1ZlCKYRuTU
-        ISv9Z2xO9oE8c87yHa2zyp9RLoBd3JoqsvVtnM/+UQ==
-X-Google-Smtp-Source: AK7set92DDVjOWKfeLKwM45A4T+HyVX6lNUCVfNJW8njYHTduRXJDj6gJmYe1OxHGI6KMdngasI1DOiBRQUQ5WAWPJo=
-X-Received: by 2002:a62:1cc6:0:b0:620:1f4c:4b9f with SMTP id
- c189-20020a621cc6000000b006201f4c4b9fmr795319pfc.6.1678407462746; Thu, 09 Mar
- 2023 16:17:42 -0800 (PST)
+        bh=l+V3aYlmwqb5X0ONYtzyuh6v2xQDgHWPmfFHQGk3o8g=;
+        b=fbPFACNi1ak9i/QOTu7zN16kffYNfZisBDKa/JcbFlOh0TcwOSdL3Z4unuWbhUARjO
+         1S70+vHe9szyI5M/aqrGczeJr0flFTCTJ2IEYmChYuTkXSpq9WtZX56GrZt/BRJReXqq
+         2BA3VBMChaAZUVR1khfDVQqfdMEl9MTu4qk4q7qnzsEjyUmx0QhkyyyJaPl3mxiToRwu
+         LyQc6pd/QZp663ZmE7F2MnpvpTIJdTp+J/BZkPkxu2D1PvJ09JpSjhQT84gAj8cUozsh
+         6wNmZL2yJX3YvEkibD7orSiOwaKMDf2irf+xoDxnA92PgPvv+jxoCTbNvMZm3MrDYlOA
+         /QvQ==
+X-Gm-Message-State: AO0yUKXeMS2VDbeNph2sWcimLmDa7Lv0Wjqihc0K8t4YZUDq7zjf+QDy
+        9uVnrp7V3xdP22DzVEoVTt2Cd2SC59pKVmKG2NIajw==
+X-Google-Smtp-Source: AK7set9ORvroYLFAXYpfLQXjWnnjDaxY+n0btSLbGMHX5m3kutUt6364A93lcXxwEwJIKyvmvltfUJuODMWNMCE7GaI=
+X-Received: by 2002:a63:2950:0:b0:4fd:5105:eb93 with SMTP id
+ bu16-20020a632950000000b004fd5105eb93mr7766307pgb.3.1678407881336; Thu, 09
+ Mar 2023 16:24:41 -0800 (PST)
 MIME-Version: 1.0
 References: <20230301214952.2190757-1-saravanak@google.com>
- <CAGETcx_DTHW4-WMK4qRhvhxiunUB2f79cpXSfQ1x-hifZQ+tgw@mail.gmail.com> <CAMSo37XuNaV4Y3+ExrUjNzPDRD_BNSn1258Ve3We+qtbsO7qEw@mail.gmail.com>
-In-Reply-To: <CAMSo37XuNaV4Y3+ExrUjNzPDRD_BNSn1258Ve3We+qtbsO7qEw@mail.gmail.com>
+ <2a8e407f4f18c9350f8629a2b5fa18673355b2ae.camel@puri.sm> <e65e08c13885468675af527ffa2ab882cc9e682d.camel@puri.sm>
+In-Reply-To: <e65e08c13885468675af527ffa2ab882cc9e682d.camel@puri.sm>
 From:   Saravana Kannan <saravanak@google.com>
-Date:   Thu, 9 Mar 2023 16:17:06 -0800
-Message-ID: <CAGETcx8qKCNuD5p=e-f-T93VstptPWHq2gVzmghkQucNyhwocA@mail.gmail.com>
+Date:   Thu, 9 Mar 2023 16:24:05 -0800
+Message-ID: <CAGETcx93K1VjAosX9NDEyLVLPK2utPSUV6dwzdAT-Dc5BfmhzQ@mail.gmail.com>
 Subject: Re: [PATCH v1 0/4] Remove use of fw_devlink_purge_absent_suppliers()
-To:     Yongqin Liu <yongqin.liu@linaro.org>
+To:     Martin Kepplinger <martin.kepplinger@puri.sm>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
@@ -63,8 +63,8 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Daniel Scally <djrscally@gmail.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
         Len Brown <lenb@kernel.org>,
+        Yongqin Liu <yongqin.liu@linaro.org>,
         Sumit Semwal <sumit.semwal@linaro.org>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
         Amelie Delaunay <amelie.delaunay@foss.st.com>,
         kernel-team@android.com, linux-kernel@vger.kernel.org,
         linux-usb@vger.kernel.org, linux-acpi@vger.kernel.org
@@ -73,67 +73,29 @@ Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 9, 2023 at 10:53=E2=80=AFAM Yongqin Liu <yongqin.liu@linaro.org=
-> wrote:
+On Thu, Mar 2, 2023 at 1:41=E2=80=AFAM Martin Kepplinger
+<martin.kepplinger@puri.sm> wrote:
 >
-> Hi, Saravana
->
-> Sorry for the lateness, I was just aware of this today.
-
-No worries.
-
-> I tested with the ACK android-mainline branch + the 12 commits ending
-> with fb42378dcc7f
-> + the 4 commits of this series + hikey960 AOSP Master userspace.
-> The hikey960 Android build could boot to the home screen, no stuck there,
-
-Thanks for testing! Can you confirm what happens if you drop the "12
-commits ending with fb42378dcc7f" ? Does it get stuck at boot or have
-some limited functionality?
-
-It's surprising that for the same type of DT node, in your case
-fw_devlink is able to handle it
-correctly, but no so for Martin's case.
-
--Saravana
-
->
-> Here is the link of the logat in case you want to check some message here=
-:
-> https://gist.github.com/liuyq/6525af08c547cd2e494af5d1c8b181b5
->
-> Thanks,
-> Yongqin Liu
-> On Fri, 10 Mar 2023 at 02:05, Saravana Kannan <saravanak@google.com> wrot=
-e:
-> >
-> > Greg,
-> >
-> > Don't pull in this series please. It needs more testing from the folks
-> > I cc'ed and it's already breaking things for Martin. This needs more
-> > revisions.
-> >
-> > -Saravana
-> >
-> > On Wed, Mar 1, 2023 at 1:49=E2=80=AFPM Saravana Kannan <saravanak@googl=
-e.com> wrote:
-> > >
+> Am Donnerstag, dem 02.03.2023 um 10:12 +0100 schrieb Martin Kepplinger:
+> > Am Mittwoch, dem 01.03.2023 um 13:49 -0800 schrieb Saravana Kannan:
 > > > Yongqin, Martin, Amelie,
 > > >
 > > > We recent refactor of fw_devlink that ends with commit fb42378dcc7f
 > > > ("mtd: mtdpart: Don't create platform device that'll never probe"),
-> > > fw_devlink is smarter and doesn't depend on compatible property. So, =
-I
+> > > fw_devlink is smarter and doesn't depend on compatible property.
+> > > So,
+> > > I
 > > > don't think these calls are needed anymore. But I don't have these
-> > > devices to test on and be sure and the hardware I use to test changes
+> > > devices to test on and be sure and the hardware I use to test
+> > > changes
 > > > doesn't have this issue either.
 > > >
 > > > Can you please test these changes on the hardware where you hit the
@@ -147,36 +109,55 @@ I
 > > >
 > > > Thanks,
 > > > Saravana
-> > >
-> > > Cc: Yongqin Liu <yongqin.liu@linaro.org>
-> > > Cc: Sumit Semwal <sumit.semwal@linaro.org>
-> > > Cc: Martin Kepplinger <martin.kepplinger@puri.sm>
-> > > Cc: Amelie Delaunay <amelie.delaunay@foss.st.com>
-> > >
-> > > Saravana Kannan (4):
-> > >   usb: typec: stusb160x: Remove use of
-> > >     fw_devlink_purge_absent_suppliers()
-> > >   usb: typec: tipd: Remove use of fw_devlink_purge_absent_suppliers()
-> > >   usb: typec: tcpm: Remove use of fw_devlink_purge_absent_suppliers()
-> > >   driver core: Delete fw_devlink_purge_absent_suppliers()
-> > >
-> > >  drivers/base/core.c           | 16 ----------------
-> > >  drivers/usb/typec/stusb160x.c |  9 ---------
-> > >  drivers/usb/typec/tcpm/tcpm.c |  9 ---------
-> > >  drivers/usb/typec/tipd/core.c |  9 ---------
-> > >  include/linux/fwnode.h        |  1 -
-> > >  5 files changed, 44 deletions(-)
-> > >
-> > > --
-> > > 2.39.2.722.g9855ee24e9-goog
-> > >
+> >
+> > hi Sravana,
+> >
+> > I picked the 12 commits leading up to commit fb42378dcc7f ("mtd:
+> > mtdpart: Don't create platform device that'll never probe") (
+> > https://source.puri.sm/martin.kepplinger/linux-next/-/commits/test_fw_d=
+evlink
+> > ) and included the tipd patch below to test it.
+> >
+> > With that, I get the following errors:
+> >
+> > [    0.237931] imx-uart 30890000.serial: Failed to create device link
+> > with regulator-gnss
+> > [    0.334054] nwl-dsi 30a00000.mipi-dsi: Failed to create device
+> > link
+> > with regulator-lcd-1v8
+> > [    0.346964] nwl-dsi 30a00000.mipi-dsi: Failed to create device
+> > link
+> > with backlight-dsi
+> >
+> > but they are independent of this final tipd patch below. I'll test a
+> > real linux-next tree soon, for completeness, maybe I missed
+> > something?
+> >
+> > Anyways, on that tree, your tipd removal patch breaks type-c still
+> > for
+> > me, imx8mq-librem5.dtsi
+> >
+> > just to give a first reply quickly... thanks,
+> >
+> >                              martin
+> >
 >
->
->
-> --
-> Best Regards,
-> Yongqin Liu
-> ---------------------------------------------------------------
-> #mailing list
-> linaro-android@lists.linaro.org
-> http://lists.linaro.org/mailman/listinfo/linaro-android
+> just confirming: it's the same as above on next-20230302 + this patch (
+> https://source.puri.sm/martin.kepplinger/linux-next/-/commits/test_fw_dev=
+link_next-20230302
+> ) with the errors already independent from the patch. I should have
+> tested earlier patches -.-
+
+Thanks a lot for testing Martin!
+
+Your email is a little ambiguous to me. With the 12 refactor commits +
+the 4 patches in this series, things are breaking for you. But if you
+drop the 4 patches in this series, things work again. Is that right?
+
+Let's ignore the "Failed to create device link" errors for now -- it's
+not related to this usb-c-connector series. It's basically pointing
+out issues that we ignored silently in the past -- it's basically
+pointing out holes in fw_devlink's visibility of devices. I'll get to
+them later.
+
+-Saravana
