@@ -2,68 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0438A6B68B1
-	for <lists+linux-acpi@lfdr.de>; Sun, 12 Mar 2023 18:15:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8CDA6B68D6
+	for <lists+linux-acpi@lfdr.de>; Sun, 12 Mar 2023 18:39:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229909AbjCLRPc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 12 Mar 2023 13:15:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39846 "EHLO
+        id S229876AbjCLRjh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 12 Mar 2023 13:39:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229819AbjCLRPc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 12 Mar 2023 13:15:32 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB07F2BF0E;
-        Sun, 12 Mar 2023 10:15:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1678641323; i=w_armin@gmx.de;
-        bh=bT0qbOKNV3PxF+7AOrJHLJameeroN49w62tBkUP56So=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=eGd8CQI8fwOTWqi14wklO9zDC6A9f/6b2qhS8Ldqo6kmq7rykyAYQV7DQAoU/F5Q1
-         EdkW/AreEw2w8M9unxyAs/LJhe0VJbUIJmGd4OMNMSrpCE/1CmvC5EwWb6RnLSDcBx
-         vjAw+f/rpjxyRlWolBFOReh1tJ4XGin2vUdpBD13OBCG0QafDebgG+y+b/c0jTxCGh
-         fTwQGqRUD4vUhj0WEXWCMzaQDtEo+Stl6aoL/C3hVac8rulS58MMN5GwAY8wvcCMj9
-         /kPI2Nf1BYE7SFavhClwmG4ITs4dcrypo4kaef6QGITcR+UFgihvhx9oA6eOeRt7Zh
-         8QKBEFjK2A6tw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MaJ7v-1q5VQU2pyn-00WIja; Sun, 12
- Mar 2023 18:15:23 +0100
-Subject: Re: [PATCH v2 0/4] ACPI: SBS: Fix various issues
-From:   Armin Wolf <W_Armin@gmx.de>
-To:     rafael@kernel.org, lenb@kernel.org
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230225115144.31212-1-W_Armin@gmx.de>
-Message-ID: <d2660362-dc25-e75f-394b-1997bd062933@gmx.de>
-Date:   Sun, 12 Mar 2023 18:15:20 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        with ESMTP id S229550AbjCLRjh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 12 Mar 2023 13:39:37 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D565D3A98;
+        Sun, 12 Mar 2023 10:39:35 -0700 (PDT)
+Received: by linux.microsoft.com (Postfix, from userid 1127)
+        id EB31D20C56BB; Sun, 12 Mar 2023 10:39:34 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com EB31D20C56BB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1678642774;
+        bh=Tgiw+sidUqBaEVObKi6x2FEJj/MiSGaWlJc+aPcKHhY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=C2t6SkW9varvhF8aHA0IDcgMe9SNSJsGevu+rssAyDtVxTvBbQlLVSSqb7ZuuVlI8
+         9E7BbvnvZXsC3E21ngMkovLUaSVqjrow12S7DvrcVF0BdJ+rNxKipqMGMSOnLrhtNI
+         FC7fswKNpPfWa29Osx5fbk7uMVOGIxtgxX2xPkc8=
+Date:   Sun, 12 Mar 2023 10:39:34 -0700
+From:   Saurabh Singh Sengar <ssengar@linux.microsoft.com>
+To:     "Michael Kelley (LINUX)" <mikelley@microsoft.com>
+Cc:     Wei Liu <wei.liu@kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "krzysztof.kozlowski+dt@linaro.org" 
+        <krzysztof.kozlowski+dt@linaro.org>,
+        KY Srinivasan <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Dexuan Cui <decui@microsoft.com>,
+        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v7 5/5] Driver: VMBus: Add Devicetree support
+Message-ID: <20230312173934.GA32212@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <1677151745-16521-1-git-send-email-ssengar@linux.microsoft.com>
+ <1677151745-16521-6-git-send-email-ssengar@linux.microsoft.com>
+ <ZApMqWPWgWXIju/g@liuwe-devbox-debian-v2>
+ <20230310053451.GA9705@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <BYAPR21MB1688FD8EA30E876F22560645D7B89@BYAPR21MB1688.namprd21.prod.outlook.com>
 MIME-Version: 1.0
-In-Reply-To: <20230225115144.31212-1-W_Armin@gmx.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Provags-ID: V03:K1:p/v1vP6rhEUaDRQt24WPBBTE+TzHL/cTwCeGIsmH7i2ur2hOuQJ
- 6v0lKw5EqsV8vi9v0pJ45WflZ4gyHyGkOEIZhGp1VQ0LgR7P4kkQaea2mqs0IgTFDYLCEpo
- uqhr0Ari3KmTl2sgA2Fp5zZ0eRYWQf8xytpTC2jH5/kxhE9TVbvW3/yqtGgMD85HAN5jm3G
- CRPHtZ+1xULAeqWXLq30g==
-UI-OutboundReport: notjunk:1;M01:P0:xSrQQc2HOUo=;/EybnV2+tZEtmVoq1UExYavqUdM
- KQcdpoPjG9Yzf+yeFw0RwkakIq6zi9wHbG+QsFjD/h1zqY02rgvm6B6pvGX3lwHlgKI5EQv6s
- dSvFoYsLGUf3US+5RE6Wd42ke/1uTnmuxiarmimUAw99onAqboZlaC3sbJv6/hjaQeBc2kvk+
- OjeBCrFgoa2l7MSibvKA4RvCqJ3spAI/98ti+GJSR0lYCusq0wtPyIUCObKKO8ps3s6GkvYl/
- MLqab+bB5KWdZsnMC7HrtjgIOaypqaJK0nX5U8OCxdPZHdU2HqXz7tQchwQ3kmaLYOWuBhzpj
- 46TJQy1Bp+VK0KcbyV06TYJ2HgOfz0MTHM/pbkKFNE9UXEp0hW9r28cWFVTCxWgn0E82xLiP0
- KuFniRaKwQeNnIRIZHm4Y/n9DQltu5tTH4UN/BiNtrczcZAX/pykTDD1VytcmieH7tT5PUI7K
- VxGVOAqvyv6w5eFK/F/EYhQ4Z+HQRr8CP0oB9WZOReGh9H/O85prVaBVLaQC3kTyVzvhCBBPb
- k4U/9z98+rEQx1Lyx2hOtPUutwHdHIrnOnA7TbG3XuhgnYHZVGCW5cgc2Q9i6/bN6ACPd2OiV
- JgjF6be5O/A7E2Hzb20CcSHFxsTO1ge9TTisnZXOx6TnS9rl+V52nxMtysRLakLvxfnIE9h0m
- i7CpIgSEYsm5rN5ikmzMxLt9bNx8gsi2L7bxYpRnASJonVMlOFsA+mOBt27TzB1uwaAJN7A6D
- Qr3UnhHGPRc75GODBMgYRcHCbTcfD8JobHeS7x2HmFEP9tZIHnxPZlrScsnCABzh+Cqdh2XfF
- jDAzUrYASI+m4nb5Y87mqA7hNGh3C8Z93OXr+p6M1llxS647TpU76wqiDHUbXGteBrUPzGjrW
- c/IgLom0adpzqFvq1WwdyK5Jou/AxkCdqlPnKlKQ0VdE4mXEVc3YHfsNtFVOp0a1HZEZVGbXN
- Kf81t0B2PuC4mKlrW+Sjd6cvyqU=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BYAPR21MB1688FD8EA30E876F22560645D7B89@BYAPR21MB1688.namprd21.prod.outlook.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,50 +64,119 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Am 25.02.23 um 12:51 schrieb Armin Wolf:
+On Sun, Mar 12, 2023 at 01:08:02PM +0000, Michael Kelley (LINUX) wrote:
+> From: Saurabh Singh Sengar <ssengar@linux.microsoft.com> Sent: Thursday, March 9, 2023 9:35 PM
+> > 
+> > On Thu, Mar 09, 2023 at 09:16:25PM +0000, Wei Liu wrote:
+> > > On Thu, Feb 23, 2023 at 03:29:05AM -0800, Saurabh Sengar wrote:
+> 
+> [snip]
+> 
+> > > >
+> > > >  static int vmbus_platform_driver_probe(struct platform_device *pdev)
+> > > >  {
+> > > > +#ifdef CONFIG_ACPI
+> > > >  	return vmbus_acpi_add(pdev);
+> > > > +#endif
+> > >
+> > > Please use #else here.
+> > >
+> > > > +	return vmbus_device_add(pdev);
+> > >
+> > > Is there going to be a configuration that ACPI and OF are available at
+> > > the same time? I don't see they are marked as mutually exclusive in the
+> > > proposed KConfig.
+> > 
+> > Initially, the device tree functions was included in "#else" section after
+> > the "#ifdef CONFIG_ACPI" section. However, it was subsequently removed to
+> > increase the coverage for CI builds.
+> > 
+> > Ref: https://lkml.org/lkml/2023/2/7/910
+> > 
+> 
+> I think the point here is that it is possible (and even likely on ARM64?) to
+> build a kernel where CONFIG_ACPI and CONFIG_OF are both "Y".   So the
+> code for ACPI and OF is compiled and present in the kernel image.  However,
+> for a particular Linux boot on a particular hardware or virtual platform,
+> only one of the two will be enabled.   I specifically mention a particular Linux
+> kernel boot because there's a kernel boot line option that can force disabling
+> ACPI.  Ideally, the VMBus code should work if both CONFIG_ACPI and
+> CONFIG_OF are enabled in the kernel image, and it would determine at
+> runtime which to use. This approach meets the goals Rob spells out.
+> 
+> There's an exported global variable "acpi_disabled" that is set correctly
+> depending on CONFIG_ACPI and the kernel boot line option (and perhaps if
+> ACPI is not detected at runtime during boot -- I didn't check all the details).
+> So the above could be written as:
+> 
+> 	if (!acpi_disabled)
+> 		return vmbus_acpi_add(pdev); 
+> 	else
+> 		return vmbus_device_add(pdev);
+> 
+> This avoids the weird "two return statements in a row" while preferring
+> ACPI over OF if ACPI is enabled for a particular boot of Linux.
+> 
+> I'm not sure if you'll need a stub for vmbus_acpi_add() when CONFIG_ACPI=n.
+> In that case, acpi_disabled is #defined to be 1, so the compiler should just
+> drop the call to vmbus_acpi_add() entirely and no stub will be needed.  But
+> you'll need to confirm.
 
-> On my Acer Travelmate 4002WLMi, the system locks up upon
-> suspend/shutdown. After a lot of research, it turned out
-> that the sbs module was the culprit. The driver would not
-> correctly mask out the value used to select a battery using
-> the "Smart Battery Selector" (subset of the "Smart Battery Manager").
-> This accidentally caused a invalid power source to be selected,
-> which was automatically corrected by the selector. Upon
-> notifing the host about the corrected power source, some batteries
-> would be selected for re-reading, causing a endless loop.
-> This would lead to some workqueues filling up, which caused the
-> lockup upon suspend/shutdown.
->
-> The first three patches fix a stacktrace on module removal caused
-> by some locking issues. The last patch finally fixes the
-> suspend/shutdown issues.
->
-> As a side note: This was the first machine on which i installed Linux,
-> to finally fixing this took ~5 years of tinkering.
+Thanks for suggesting acpi_disabled, definitely this looks better. However,
+we need a dummy stub for vmbus_acpi_add in case of CONFIG_ACPI=n, as compiler
+doesn't take out vmbus_acpi_add reference completely for CONFIG_ACPI=n.
 
-What is the status of this patchset? Should i use a SRCU notifier chain
-for the query notifiers? I would really like to see this getting fixed,
-as it prevents me from using linux on this machine.
+> 
+> Also just confirming, it looks like vmbus_device_add() compiles correctly if
+> CONFIG_OF=n.  There are enough stubs in places so that you don't need an
+> #ifdef CONFIG_OF around vmbus_device_add() like is needed for
+> vmbus_acpi_add().
 
-Armin Wolf
+Yes, I tested this scenario.
 
-> ---
-> Changes in v2:
-> - make acpi_ec_add_query_handler() static to fix warning
->
-> Armin Wolf (4):
->    ACPI: EC: Add query notifier support
->    ACPI: sbshc: Use ec query notifier call chain
->    ACPI: EC: Make query handlers private
->    ACPI: SBS: Fix handling of Smart Battery Selectors
->
->   drivers/acpi/ec.c       | 44 ++++++++++++++++++++--------------------
->   drivers/acpi/internal.h | 10 ++++-----
->   drivers/acpi/sbs.c      | 27 ++++++++++++++++---------
->   drivers/acpi/sbshc.c    | 45 ++++++++++++++++++++++++++---------------
->   4 files changed, 74 insertions(+), 52 deletions(-)
->
-> --
-> 2.30.2
->
->
+> 
+> > > >
+> > > > +static const __maybe_unused struct of_device_id vmbus_of_match[] = {
+> > > > +	{
+> > > > +		.compatible = "microsoft,vmbus",
+> > > > +	},
+> > > > +	{
+> > > > +		/* sentinel */
+> > > > +	},
+> > > > +};
+> > > > +MODULE_DEVICE_TABLE(of, vmbus_of_match);
+> > > > +
+> > > > +#ifdef CONFIG_ACPI
+> > > >  static const struct acpi_device_id vmbus_acpi_device_ids[] = {
+> > > >  	{"VMBUS", 0},
+> > > >  	{"VMBus", 0},
+> > > >  	{"", 0},
+> > > >  };
+> > > >  MODULE_DEVICE_TABLE(acpi, vmbus_acpi_device_ids);
+> > > > +#endif
+> 
+> Couldn't the bracketing #ifdef be dropped and add __maybe_unused, just
+> as you've done with vmbus_of_match?   ACPI_PTR() is defined to return NULL
+> if CONFIG_ACPI=n, just like with of_match_ptr() and CONFIG_OF.
+
+I kept #ifdef so that all the acpi code is treated equally. However, I am
+fine to use __maybe_unused, will fix this in next version.
+
+Regards,
+Saurabh
+
+> 
+> > > >
+> > > >  /*
+> > > >   * Note: we must use the "no_irq" ops, otherwise hibernation can not work with
+> > > > @@ -2677,6 +2729,7 @@ static struct platform_driver vmbus_platform_driver = {
+> > > >  	.driver = {
+> > > >  		.name = "vmbus",
+> > > >  		.acpi_match_table = ACPI_PTR(vmbus_acpi_device_ids),
+> > > > +		.of_match_table = of_match_ptr(vmbus_of_match),
+> > > >  		.pm = &vmbus_bus_pm,
+> > > >  		.probe_type = PROBE_FORCE_SYNCHRONOUS,
+> > > >  	}
+> > > > --
+> > > > 2.34.1
+> > > >
