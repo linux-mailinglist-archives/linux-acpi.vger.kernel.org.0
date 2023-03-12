@@ -2,185 +2,247 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E33E06B5C7D
-	for <lists+linux-acpi@lfdr.de>; Sat, 11 Mar 2023 14:54:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 265CA6B661B
+	for <lists+linux-acpi@lfdr.de>; Sun, 12 Mar 2023 14:08:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229550AbjCKNyx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 11 Mar 2023 08:54:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58700 "EHLO
+        id S229578AbjCLNIO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 12 Mar 2023 09:08:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230131AbjCKNyu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 11 Mar 2023 08:54:50 -0500
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A10964224;
-        Sat, 11 Mar 2023 05:54:39 -0800 (PST)
-Received: by mail-wm1-x333.google.com with SMTP id p23-20020a05600c1d9700b003ead4835046so5863478wms.0;
-        Sat, 11 Mar 2023 05:54:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678542877;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=w6VNgsWjX3Wuvimz8g5dmkPK1Cy/m4ikAbDoLw6beJQ=;
-        b=EgpADp9mPyWPriOHQHt/ftRejPRpNulP0dfOXzeleBhIPgj1NGQIJbytBzJ2k1iF4R
-         CyITUZOvJLHKAPxgRdheh7BTJmNg+LH8xo7nE4cpnK/TrtstTxkyuMZEe6QB0uKZbsho
-         bha6cNC4l0ab+HfNrdxjVgcV4nNCXjrWHLvd5AgmtK0unzXSSZWpk338fqWEaWfbfDXc
-         gS8s4MTSvK5KviuS4DzupSZgdAs7GDKSC97xY/DJNQkr+LExD4sU3rKuRX3/o8kJ1rWj
-         n5Cc6BbMqxbQX9xXF/Ai+zkDgJk3y+PUHE9rOyhjFvIaxai7o22SnhvFxKXJxhQbJB/I
-         C2Xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678542877;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=w6VNgsWjX3Wuvimz8g5dmkPK1Cy/m4ikAbDoLw6beJQ=;
-        b=a3dkdY3JHp9tA+W/1PBX+HQ4G+w2k6Gn7htDt/LSL7i5cOuFA52jsR6r+T5H0egSEU
-         A27J63ae2kPlly/hpy1k4kofYGA9ah7D5WTNu2Y3phHZNMNOEiOfQKIwHvBCi/YDyFCq
-         gTO78UlUeBjlN3rfA8FAOc0nMw/HOMcT2Cg1l2OHbrch61YkZs9ZHTFqMmUNsP4snO8J
-         ggF3UFYjVtKKYnhEI5mmk3pgrBgRZlKaiZvg/kwV9phXVqRi42EHo0L5GKb8RoCCSXxK
-         cr+owDq1kgTomiZdpIexbxwOMhBR/R3kh3ShAfU/xFVu2MsVMDRPvrtqTlWfWTAlqwgz
-         XIuw==
-X-Gm-Message-State: AO0yUKXk9tihcJGnRJqdVqbSKj9/D62g4LHTh1qtqfpqtghXyOp4ozed
-        gRoXUQn88X/9NiZLHTIOaVY=
-X-Google-Smtp-Source: AK7set8Q/kmI9mpEEdXrr7E14surqp2hrZc9WFbOGPYrv2F11V19h1lecKjCq/bjwK7VwWka+od15A==
-X-Received: by 2002:a05:600c:4e8c:b0:3eb:4cb5:dfa with SMTP id f12-20020a05600c4e8c00b003eb4cb50dfamr5440417wmq.31.1678542877399;
-        Sat, 11 Mar 2023 05:54:37 -0800 (PST)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id hn4-20020a05600ca38400b003dc1d668866sm2899772wmb.10.2023.03.11.05.54.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Mar 2023 05:54:37 -0800 (PST)
-Date:   Sat, 11 Mar 2023 16:54:32 +0300
-From:   Dan Carpenter <error27@gmail.com>
-To:     oe-kbuild@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-        "Maciej W. Rozycki" <macro@orcam.me.uk>,
-        Juergen Gross <jgross@suse.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org
-Cc:     lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCH v4 1/4] PCI: Introduce pci_dev_for_each_resource()
-Message-ID: <d057ac5c-5947-41e1-abc7-9428fbd2fbe2@kili.mountain>
+        with ESMTP id S229609AbjCLNIN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 12 Mar 2023 09:08:13 -0400
+Received: from DM5PR00CU002-vft-obe.outbound.protection.outlook.com (mail-centralusazon11021019.outbound.protection.outlook.com [52.101.62.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BBF110AAD;
+        Sun, 12 Mar 2023 06:08:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DjPmnWqp5Y6aSNToNzHq8/i0GDRyzssVvls4PxYDo7jGgaAFP06sP0rp0aoXyNMIQl2oh6XxzVgAIKyr4MiF1zOh8aDJhNVtzFXCiCSz0B5V3PbwZbj8Ry9Yiee9Ik5kNthObCy1a/JnSbxfD4gfXuDoePLw5o+4/3DuWzKy5XScuKQb3al1LZjV0KmxfQIixm+UW/N4PASNuNQzMd68j2gRSS+lI4gmTIomLmb/aWmGokNHPC0WClEoCUc7hkpD2Mko2awPFyU5Pt2UE01GPy5mDDAiCubDzpThLDlDjJm/gMg+CrAptanaLVrl3d8A2Djs3tVZzQOQA89FTZhmmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2oPoIzOgjJYw4tbeySKfkJlZuOfToVlJeK55sh0ayUc=;
+ b=OxSPoMYVZJT5UyD+ddaJmXJhCXlp9rTbYCvzzUuGoIGrP/ysH3hrgxAoTl3vn+xOwR9nQju+YiUzM5xAioccoFGl1YfFcNVRXFcORyHrHd+Z/9oJL/WgcDK/1M65dAYzLEeXYQTbHx9CsyrvKmiKa/zK2QpuUbAYvlLT5A1HcTiPvid4RtfsmUtgX9+CKXskkqmGEduW59Q/p9zxy3Sk0VYuWx+oE4pS2TLX6Gk/9Jy2caPXM2leI+/rcdqsEe3InAzGv9DGhh+oH6yy/CN+/ClGH22W6noSrSapuhdjMsgYmXntzODTTpDh7R/x80kjgSN7xmPU7BQileySSw8phw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2oPoIzOgjJYw4tbeySKfkJlZuOfToVlJeK55sh0ayUc=;
+ b=bSE29UQ1CUiHaLJ78TbOnlKIENG0aNZ7OidB5yXPUp595vgZ+Qks2eU6wz1BVl5FMb1UrCsoCsStYKJhcpY3pDlqpnfiT+mGSfWuZKHRIjdNxhhFslYg9yuzPM64TUYq8hFAmqA0khaU67Y/XOWmdgjjqxO9h4vMvxI33QZUmCw=
+Received: from BYAPR21MB1688.namprd21.prod.outlook.com (2603:10b6:a02:bf::26)
+ by BY5PR21MB1476.namprd21.prod.outlook.com (2603:10b6:a03:21d::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6222.3; Sun, 12 Mar
+ 2023 13:08:06 +0000
+Received: from BYAPR21MB1688.namprd21.prod.outlook.com
+ ([fe80::629a:b75a:482e:2d4a]) by BYAPR21MB1688.namprd21.prod.outlook.com
+ ([fe80::629a:b75a:482e:2d4a%4]) with mapi id 15.20.6178.024; Sun, 12 Mar 2023
+ 13:08:03 +0000
+From:   "Michael Kelley (LINUX)" <mikelley@microsoft.com>
+To:     Saurabh Singh Sengar <ssengar@linux.microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>
+CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "krzysztof.kozlowski+dt@linaro.org" 
+        <krzysztof.kozlowski+dt@linaro.org>,
+        KY Srinivasan <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Dexuan Cui <decui@microsoft.com>,
+        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: RE: [PATCH v7 5/5] Driver: VMBus: Add Devicetree support
+Thread-Topic: [PATCH v7 5/5] Driver: VMBus: Add Devicetree support
+Thread-Index: AQHZR3oO8XCRAJVOTEyd9eleCYLxd67zCduAgACLQoCAA5rBkA==
+Date:   Sun, 12 Mar 2023 13:08:02 +0000
+Message-ID: <BYAPR21MB1688FD8EA30E876F22560645D7B89@BYAPR21MB1688.namprd21.prod.outlook.com>
+References: <1677151745-16521-1-git-send-email-ssengar@linux.microsoft.com>
+ <1677151745-16521-6-git-send-email-ssengar@linux.microsoft.com>
+ <ZApMqWPWgWXIju/g@liuwe-devbox-debian-v2>
+ <20230310053451.GA9705@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+In-Reply-To: <20230310053451.GA9705@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=31ca5762-7f8c-4f27-9ec5-e88eec527d92;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2023-03-12T12:37:30Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BYAPR21MB1688:EE_|BY5PR21MB1476:EE_
+x-ms-office365-filtering-correlation-id: 7c8c48d2-d179-47f8-8081-08db22facffc
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: fV2AWllID0p6O8ukWXP000pbGoFarQ01K6XE5JEWTr8wRWS08AdYr6IaNuHofxJF6t8W1BrhU8m685ziZlQHqEW9ZKInuY8mcW7ccxItk4l7vmyTdI1GJDxLN7vSrm7m0OAAKHiw8tDYGk7sXLhzyquqez9SSdXMYS7aCOHZMe7vnilz+I1oMxmwTK5xVF4yiJ4dcviQPbnyjVLtxOJaaf46eRvbLisE8ikoqwu7VG5U/ciBACVB3wX7GT7301eaDe4knDq/BZoGfHIDzlnfh466ZY/JAUJRsjKeZaOBO+sHcSh9IrKW1N66JajUqY3aG62Ub/XAM+yrCWHJCv3OOF7rAQOYU+T18p2PYdhtOrsJkYouNmHJzd6xWMfr3gBu/7FTrm61tC074TSE+E2Z39et8uaQUtGuInStRIfet9xr3ywsJxUCC58aF8EhSWhEY8vsK4ZsTtC/c+gP5gmL/NQx+3PXI95ySGxQEwNs5iwcg/Ivy4/sEsLDlWn93S0e4paAVKFcrJkj0cOuX7rckKIE/bGj5JAHIPgj+fuTOb5eC/WGbCKXQfh1MTeb2SK5bdVflWgLMnv+y2U3PeDwAObJCJOl4uXKLQ9CtxCyy3XKaO8EC04lI8qgvSDM0Z+axfETdIkti5+kc0WbgInwdNsayq8+oGezSa+r0ysZ0W4VAtlldf3/AwYCvFJcqqUT2k3TBXhWkz3CwWyyG+nbGnKjJDSKBfEhTiAR10fq5YY=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR21MB1688.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(346002)(366004)(396003)(376002)(39860400002)(136003)(451199018)(5660300002)(7416002)(41300700001)(8936002)(52536014)(55016003)(33656002)(86362001)(38070700005)(122000001)(2906002)(82950400001)(82960400001)(38100700002)(8990500004)(10290500003)(6506007)(9686003)(478600001)(83380400001)(7696005)(71200400001)(966005)(76116006)(8676002)(66946007)(4326008)(66556008)(66476007)(66446008)(64756008)(110136005)(54906003)(316002)(186003)(66899018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?lXkBU93mrgR5bLCLc3B7PScXSCs8OgUzQD0h62lTduSq8h+SqqbyKltdKOTe?=
+ =?us-ascii?Q?QxHZ4TtE6tsvsMTvHV/SDtFfsroVZ6xwELy0EuoQppT/J03N039Kw1z73iBh?=
+ =?us-ascii?Q?rd6BS/Al8fN52COGQA88Ssq3PTT8Dkx6gGqgwKLKgGZLg6bBB0RnWbYXkLEp?=
+ =?us-ascii?Q?SPrQbzJ2rPc9cb9yDYsJH8y23jPg2AGktd8GRTHiQHDerO9hsEHYL09rHFDj?=
+ =?us-ascii?Q?o/Qg38ACx5R0xySMOlpPkla8pLvOyCAFr0RlgxFhbuhVPMyxuifmVrw+Uybi?=
+ =?us-ascii?Q?AU5JJJUIHcCTCOLk4JJgpWhsW+6vJD0RIJquu8FZqKY5IoYJjyV2FoskqYEA?=
+ =?us-ascii?Q?DvIKoTdzyNQ2EmRwd29+A72iD/A97j5ZYFEUR1aSIkHjGAkE98UKfewdlokb?=
+ =?us-ascii?Q?DSmBPn+fmKSNkFvehUeeCXnhdPmc/UR0CN9Mj6OhWGS9l9GmHBJmuMS4fzS+?=
+ =?us-ascii?Q?JUd9fjRc1qVnG/Xba0VymJDN+Nd+w0O5EYff6hovNuWBeyqFXC+xbE912wr1?=
+ =?us-ascii?Q?tx9Bw1KQMjKNmy02rMocobbK+uDeboZnti21kyobZcf15y7NdGpru4NfR4HD?=
+ =?us-ascii?Q?jQJErbl5RaWDUN39H9p6kPHOy8kWyDuyukFZEw5hcXRAENdLNPvKA2d90RqK?=
+ =?us-ascii?Q?Bx3GzvRnthSbKwHL2i8tfpEhc4E13l/T0H1uPtQIf6F1VzHcj7Guty0wQuR+?=
+ =?us-ascii?Q?Cd7HABfNd0G16wTyUf7zrROt+HRtLpYTy4QBcljn4u02DURviUdNgV1gA6+5?=
+ =?us-ascii?Q?LPBpplbwEgrYwB4LtPevSAQK4BuIn3lZHpDeVQ8vvzH835msMzEfqJRKFfrs?=
+ =?us-ascii?Q?RrBGO4a3LvurxCeUp2WKf7fHLeJgzNucvDbGifYd/IzPNe12zHjNzg/dhIdc?=
+ =?us-ascii?Q?Kya38WIHwwzvCXyGEfcvTz4ooJnMqZiB5l13MGKKB21lPpfZKky9by2nk5sU?=
+ =?us-ascii?Q?+4tSGk+kvlaLleHWAp3uCoayAJvSjx+5ZSZVbbyJ0QovEqgJcCvIxtDUDjUG?=
+ =?us-ascii?Q?/S/layKey+r4AEceFZdgwGnL9Et6tRg+DB+VUVIjnRZ/fzHGg14tB0rMk/Ag?=
+ =?us-ascii?Q?FZKSVlRKgu/1ItYq/5NzeDRhU9M5rgCsLF7PILE7M7pZd7aevDoH5+ZcuwBD?=
+ =?us-ascii?Q?bHxiqg8SfZckMloBTFS1ajvWdIZMPxA3QTSmd3h9OgO1fLWvH0RkIQhFIpMR?=
+ =?us-ascii?Q?t6/nA7CY5anm1nNaAn4QO+oPbjH7FvTiR13BKtiNVIqRo2iKyNGSJQVJQ6Lz?=
+ =?us-ascii?Q?e2spr8edW/tccsEmchOEzk+ay4a5JPGgTLQiNnDCZCSLEZCteD7H9avqYKD0?=
+ =?us-ascii?Q?RWBkIsPueQ5usW6IUWKEDPfI2Wf2KRqgzg4wJb4/YbIZypxlGJj81rCjVflS?=
+ =?us-ascii?Q?Hk7XkHh1/ljyzfNhsKe+gkRNm7mqU7B2LpzVnrPOCINYzbxm0zK9RASodYkx?=
+ =?us-ascii?Q?vR/AFReSWK03cVAGaG66GJkUIsSWfyuaj3EfNEDO67FjhRuyMCoQlj3y+7K+?=
+ =?us-ascii?Q?Z94tuoO4ouctj7rHgaFL/ybA+LvA2RY+Cqdt3kH2PwNWoYpv6nHG+iVqGpOL?=
+ =?us-ascii?Q?mvmWgQL8BDgiJ9QbJ596iVgxS7QTjAdxDJljBNJ2XjsvU6aL0Rmo96CA/RLL?=
+ =?us-ascii?Q?B2Dk5Dos5nYsG3CW6UZ1qp8qaYtFX/VLg3BtafKIqG09rB8t50jg5YwxbGyR?=
+ =?us-ascii?Q?SHyDhw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230310171416.23356-2-andriy.shevchenko@linux.intel.com>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR21MB1688.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c8c48d2-d179-47f8-8081-08db22facffc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Mar 2023 13:08:02.9032
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: wIOEOJaB+v1GFsou7pbXi1X3N5bkyW2SQLtdZUx56CbfvyYlzgxsRpbpNl/UALzIobpXfJmZntmPMrQpvK18QwPaUyFJDNhM8Pe1qhJ0PQ4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR21MB1476
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+From: Saurabh Singh Sengar <ssengar@linux.microsoft.com> Sent: Thursday, Ma=
+rch 9, 2023 9:35 PM
+>=20
+> On Thu, Mar 09, 2023 at 09:16:25PM +0000, Wei Liu wrote:
+> > On Thu, Feb 23, 2023 at 03:29:05AM -0800, Saurabh Sengar wrote:
 
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+[snip]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/PCI-Introduce-pci_dev_for_each_resource/20230311-011642
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
-patch link:    https://lore.kernel.org/r/20230310171416.23356-2-andriy.shevchenko%40linux.intel.com
-patch subject: [PATCH v4 1/4] PCI: Introduce pci_dev_for_each_resource()
-config: x86_64-randconfig-m001 (https://download.01.org/0day-ci/archive/20230311/202303112149.xD47qKOY-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-8) 11.3.0
+> > >
+> > >  static int vmbus_platform_driver_probe(struct platform_device *pdev)
+> > >  {
+> > > +#ifdef CONFIG_ACPI
+> > >  	return vmbus_acpi_add(pdev);
+> > > +#endif
+> >
+> > Please use #else here.
+> >
+> > > +	return vmbus_device_add(pdev);
+> >
+> > Is there going to be a configuration that ACPI and OF are available at
+> > the same time? I don't see they are marked as mutually exclusive in the
+> > proposed KConfig.
+>=20
+> Initially, the device tree functions was included in "#else" section afte=
+r
+> the "#ifdef CONFIG_ACPI" section. However, it was subsequently removed to
+> increase the coverage for CI builds.
+>=20
+> Ref: https://lkml.org/lkml/2023/2/7/910
+>=20
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <error27@gmail.com>
-| Link: https://lore.kernel.org/r/202303112149.xD47qKOY-lkp@intel.com/
+I think the point here is that it is possible (and even likely on ARM64?) t=
+o
+build a kernel where CONFIG_ACPI and CONFIG_OF are both "Y".   So the
+code for ACPI and OF is compiled and present in the kernel image.  However,
+for a particular Linux boot on a particular hardware or virtual platform,
+only one of the two will be enabled.   I specifically mention a particular =
+Linux
+kernel boot because there's a kernel boot line option that can force disabl=
+ing
+ACPI.  Ideally, the VMBus code should work if both CONFIG_ACPI and
+CONFIG_OF are enabled in the kernel image, and it would determine at
+runtime which to use. This approach meets the goals Rob spells out.
 
-smatch warnings:
-drivers/pnp/quirks.c:248 quirk_system_pci_resources() warn: was && intended here instead of ||?
+There's an exported global variable "acpi_disabled" that is set correctly
+depending on CONFIG_ACPI and the kernel boot line option (and perhaps if
+ACPI is not detected at runtime during boot -- I didn't check all the detai=
+ls).
+So the above could be written as:
 
-vim +248 drivers/pnp/quirks.c
+	if (!acpi_disabled)
+		return vmbus_acpi_add(pdev);=20
+	else
+		return vmbus_device_add(pdev);
 
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  229  static void quirk_system_pci_resources(struct pnp_dev *dev)
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  230  {
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  231  	struct pci_dev *pdev = NULL;
-059b4a086017fb Mika Westerberg 2023-03-10  232  	struct resource *res, *r;
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  233  	int i, j;
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  234  
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  235  	/*
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  236  	 * Some BIOSes have PNP motherboard devices with resources that
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  237  	 * partially overlap PCI BARs.  The PNP system driver claims these
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  238  	 * motherboard resources, which prevents the normal PCI driver from
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  239  	 * requesting them later.
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  240  	 *
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  241  	 * This patch disables the PNP resources that conflict with PCI BARs
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  242  	 * so they won't be claimed by the PNP system driver.
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  243  	 */
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  244  	for_each_pci_dev(pdev) {
-059b4a086017fb Mika Westerberg 2023-03-10  245  		pci_dev_for_each_resource(pdev, r, i) {
-059b4a086017fb Mika Westerberg 2023-03-10  246  			unsigned long type = resource_type(r);
-999ed65ad12e37 Rene Herman     2008-07-25  247  
-059b4a086017fb Mika Westerberg 2023-03-10 @248  			if (type != IORESOURCE_IO || type != IORESOURCE_MEM ||
-                                                                                                  ^^
-This || needs to be &&.  This loop will always hit the continue path
-without doing anything.
+This avoids the weird "two return statements in a row" while preferring
+ACPI over OF if ACPI is enabled for a particular boot of Linux.
 
-059b4a086017fb Mika Westerberg 2023-03-10  249  			    resource_size(r) == 0)
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  250  				continue;
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  251  
-059b4a086017fb Mika Westerberg 2023-03-10  252  			if (r->flags & IORESOURCE_UNSET)
-f7834c092c4299 Bjorn Helgaas   2015-03-03  253  				continue;
-f7834c092c4299 Bjorn Helgaas   2015-03-03  254  
-95ab3669f78306 Bjorn Helgaas   2008-04-28  255  			for (j = 0;
-999ed65ad12e37 Rene Herman     2008-07-25  256  			     (res = pnp_get_resource(dev, type, j)); j++) {
-aee3ad815dd291 Bjorn Helgaas   2008-06-27  257  				if (res->start == 0 && res->end == 0)
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  258  					continue;
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  259  
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  260  				/*
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  261  				 * If the PNP region doesn't overlap the PCI
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  262  				 * region at all, there's no problem.
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  263  				 */
-059b4a086017fb Mika Westerberg 2023-03-10  264  				if (!resource_overlaps(res, r))
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  265  					continue;
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  266  
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  267  				/*
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  268  				 * If the PNP region completely encloses (or is
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  269  				 * at least as large as) the PCI region, that's
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  270  				 * also OK.  For example, this happens when the
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  271  				 * PNP device describes a bridge with PCI
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  272  				 * behind it.
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  273  				 */
-059b4a086017fb Mika Westerberg 2023-03-10  274  				if (res->start <= r->start && res->end >= r->end)
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  275  					continue;
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  276  
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  277  				/*
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  278  				 * Otherwise, the PNP region overlaps *part* of
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  279  				 * the PCI region, and that might prevent a PCI
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  280  				 * driver from requesting its resources.
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  281  				 */
-c7dabef8a2c59e Bjorn Helgaas   2009-10-27  282  				dev_warn(&dev->dev,
-059b4a086017fb Mika Westerberg 2023-03-10  283  					 "disabling %pR because it overlaps %s BAR %d %pR\n",
-059b4a086017fb Mika Westerberg 2023-03-10  284  					 res, pci_name(pdev), i, r);
-4b34fe156455d2 Bjorn Helgaas   2008-06-02  285  				res->flags |= IORESOURCE_DISABLED;
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  286  			}
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  287  		}
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  288  	}
-0509ad5e1a7d92 Bjorn Helgaas   2008-03-11  289  }
+I'm not sure if you'll need a stub for vmbus_acpi_add() when CONFIG_ACPI=3D=
+n.
+In that case, acpi_disabled is #defined to be 1, so the compiler should jus=
+t
+drop the call to vmbus_acpi_add() entirely and no stub will be needed.  But
+you'll need to confirm.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Also just confirming, it looks like vmbus_device_add() compiles correctly i=
+f
+CONFIG_OF=3Dn.  There are enough stubs in places so that you don't need an
+#ifdef CONFIG_OF around vmbus_device_add() like is needed for
+vmbus_acpi_add().
 
+> > >
+> > > +static const __maybe_unused struct of_device_id vmbus_of_match[] =3D=
+ {
+> > > +	{
+> > > +		.compatible =3D "microsoft,vmbus",
+> > > +	},
+> > > +	{
+> > > +		/* sentinel */
+> > > +	},
+> > > +};
+> > > +MODULE_DEVICE_TABLE(of, vmbus_of_match);
+> > > +
+> > > +#ifdef CONFIG_ACPI
+> > >  static const struct acpi_device_id vmbus_acpi_device_ids[] =3D {
+> > >  	{"VMBUS", 0},
+> > >  	{"VMBus", 0},
+> > >  	{"", 0},
+> > >  };
+> > >  MODULE_DEVICE_TABLE(acpi, vmbus_acpi_device_ids);
+> > > +#endif
+
+Couldn't the bracketing #ifdef be dropped and add __maybe_unused, just
+as you've done with vmbus_of_match?   ACPI_PTR() is defined to return NULL
+if CONFIG_ACPI=3Dn, just like with of_match_ptr() and CONFIG_OF.
+
+> > >
+> > >  /*
+> > >   * Note: we must use the "no_irq" ops, otherwise hibernation can not=
+ work with
+> > > @@ -2677,6 +2729,7 @@ static struct platform_driver vmbus_platform_dr=
+iver =3D {
+> > >  	.driver =3D {
+> > >  		.name =3D "vmbus",
+> > >  		.acpi_match_table =3D ACPI_PTR(vmbus_acpi_device_ids),
+> > > +		.of_match_table =3D of_match_ptr(vmbus_of_match),
+> > >  		.pm =3D &vmbus_bus_pm,
+> > >  		.probe_type =3D PROBE_FORCE_SYNCHRONOUS,
+> > >  	}
+> > > --
+> > > 2.34.1
+> > >
