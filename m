@@ -2,124 +2,170 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9196A6B7892
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Mar 2023 14:13:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2DF96B7919
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Mar 2023 14:37:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229768AbjCMNNG convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 13 Mar 2023 09:13:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45862 "EHLO
+        id S229928AbjCMNh3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Mar 2023 09:37:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230130AbjCMNNF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Mar 2023 09:13:05 -0400
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 086C5268E;
-        Mon, 13 Mar 2023 06:13:01 -0700 (PDT)
-Received: by mail-ed1-f45.google.com with SMTP id ek18so17392239edb.6;
-        Mon, 13 Mar 2023 06:13:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678713179;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7kbugMu59+voxwo0pZv00WwvJOfGL2olexh1yeovl2g=;
-        b=CyFzHVau9ItsYN2AywHIsLSQGHUQtWpFfZvpYJljeIxxM54x3R86a2S91t8hXD610U
-         ygNlAVcouzn4B0n2XxhVZLnfjh4nZuJehRxgi/g7u0JT5jiRcc3gvr6v4c3hGDfVWASE
-         6wBUzmIiW20vcFCTnIAnaAznSXWaGB2RGt7GNpEbvuxVaqoYO7gG7AUVtKtdYn0RFS2M
-         L5jfs9SNKEy6oXnw+2Btl474kxjAmO6c1pPoNoEgzdbf1XMOAmTRRtdSRfRdHhhx8GG1
-         e81VplA6eZ8274H6rM2A431mMNi09ZbxAprfklJDzZpbxwC52VrZ/K2Q/SXVeTllG9rD
-         wSlA==
-X-Gm-Message-State: AO0yUKWOgIawlv1Ed2c1CHqJ4gO2E2fbgpK1/Sy/BXfVQ2rB5550V4wX
-        c5fJfSoH7BAvIkACsijttffZxM18v+U57RcUJe0=
-X-Google-Smtp-Source: AK7set9iYgLCphYV3E3ZfzciQDuoUKFHKSdKnEEB+ZfErmcBsRtLwjVEpjALojIlxTqt9MROnLmmSz/1nlam6TeAkLo=
-X-Received: by 2002:a17:906:13c2:b0:8b1:7aec:c8e6 with SMTP id
- g2-20020a17090613c200b008b17aecc8e6mr17974239ejc.2.1678713179451; Mon, 13 Mar
- 2023 06:12:59 -0700 (PDT)
+        with ESMTP id S229791AbjCMNh2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Mar 2023 09:37:28 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8BE85618B6;
+        Mon, 13 Mar 2023 06:37:27 -0700 (PDT)
+Received: by linux.microsoft.com (Postfix, from userid 1127)
+        id 05B2D204DE9D; Mon, 13 Mar 2023 06:37:27 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 05B2D204DE9D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1678714647;
+        bh=mu87N414716r7lGE+91jVsaK9HmE6dXBcZU9c+oht9A=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=aba7oqVGnjYnYppobv7WDRrE6mLzhXvx4Oqhb4+K0C7ncTNJMa+PJSK/Ay37fLVNx
+         UjC0tWAQN978AhfSAWWcDK1mZ8ALQYRpZ2xAuzsH+OE1LjWJJGKEcB8lThPpdMI3vB
+         VRTgEq6JOfa4nkI5VHqd7bQcf9jwn1dM5bjWy5k0=
+Date:   Mon, 13 Mar 2023 06:37:26 -0700
+From:   Saurabh Singh Sengar <ssengar@linux.microsoft.com>
+To:     "Michael Kelley (LINUX)" <mikelley@microsoft.com>
+Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "krzysztof.kozlowski+dt@linaro.org" 
+        <krzysztof.kozlowski+dt@linaro.org>,
+        KY Srinivasan <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        "wei.liu@kernel.org" <wei.liu@kernel.org>,
+        Dexuan Cui <decui@microsoft.com>,
+        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v7 5/5] Driver: VMBus: Add Devicetree support
+Message-ID: <20230313133726.GA10298@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <1677151745-16521-1-git-send-email-ssengar@linux.microsoft.com>
+ <1677151745-16521-6-git-send-email-ssengar@linux.microsoft.com>
+ <BYAPR21MB1688B84E25DD2173B6023737D7B99@BYAPR21MB1688.namprd21.prod.outlook.com>
+ <20230313061603.GA8934@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <BYAPR21MB16888AD9A473CF15250B59C7D7B99@BYAPR21MB1688.namprd21.prod.outlook.com>
 MIME-Version: 1.0
-References: <20230313125344.2893-1-simon@invisiblethingslab.com>
-In-Reply-To: <20230313125344.2893-1-simon@invisiblethingslab.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 13 Mar 2023 14:12:45 +0100
-Message-ID: <CAJZ5v0jahjt58nP6P5+xRdtD_ndYPvq4ecMVz6nfGu9tf5iaUw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: s2idle: Don't ignore error when enabling wakeup IRQ
-To:     Simon Gaiser <simon@invisiblethingslab.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BYAPR21MB16888AD9A473CF15250B59C7D7B99@BYAPR21MB1688.namprd21.prod.outlook.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 13, 2023 at 1:54 PM Simon Gaiser
-<simon@invisiblethingslab.com> wrote:
->
-> enable_irq_wake() can fail. Previously acpi_s2idle_prepare() silently
-> ignored it's return code, potentially leaving a system that never wakes
-> up.
->
-> Discovered when trying to go into s2idle under Xen. This leads to a
-> system that can't be woken, since xen-pirq currently doesn't support
-> setting wakeup IRQs. Real s2idle support for Xen is another topic, but
-> now at least the user gets an error and the system doesn't needs an hard
-> reset.
->
-> Signed-off-by: Simon Gaiser <simon@invisiblethingslab.com>
-> ---
->
-> Note that I'm unfamiliar with the code so when reviewing please
-> carefully check if ignoring the error was indeed unintended.
+On Mon, Mar 13, 2023 at 12:26:56PM +0000, Michael Kelley (LINUX) wrote:
+> From: Saurabh Singh Sengar <ssengar@linux.microsoft.com> Sent: Sunday, March 12, 2023 11:16 PM
+> > 
+> > On Mon, Mar 13, 2023 at 02:33:53AM +0000, Michael Kelley (LINUX) wrote:
+> > > From: Saurabh Sengar <ssengar@linux.microsoft.com> Sent: Thursday, February 23,
+> > 2023 3:29 AM
+> > > >
+> > > > Update the driver to support Devicetree boot as well along with ACPI.
+> > > > At present the Devicetree parsing only provides the mmio region info
+> > > > and is not the exact copy of ACPI parsing. This is sufficient to cater
+> > > > all the current Devicetree usecases for VMBus.
+> > > >
+> > > > Currently Devicetree is supported only for x86 systems.
+> > > >
+> > > > Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+> > > > ---
+> > > > [V7]
+> > > > - Use cpu_addr instead of bus_addr
+> > > >
+> > > >  drivers/hv/Kconfig     |  6 +++--
+> > > >  drivers/hv/vmbus_drv.c | 57 ++++++++++++++++++++++++++++++++++++++++--
+> > > >  2 files changed, 59 insertions(+), 4 deletions(-)
+> > > >
+> > > > diff --git a/drivers/hv/Kconfig b/drivers/hv/Kconfig
+> > > > index 0747a8f1fcee..1a55bf32d195 100644
+> > > > --- a/drivers/hv/Kconfig
+> > > > +++ b/drivers/hv/Kconfig
+> > > > @@ -4,11 +4,13 @@ menu "Microsoft Hyper-V guest support"
+> > > >
+> > > >  config HYPERV
+> > > >  	tristate "Microsoft Hyper-V client drivers"
+> > > > -	depends on ACPI && ((X86 && X86_LOCAL_APIC && HYPERVISOR_GUEST) \
+> > > > -		|| (ARM64 && !CPU_BIG_ENDIAN))
+> > > > +	depends on (X86 && X86_LOCAL_APIC && HYPERVISOR_GUEST) \
+> > > > +		|| (ACPI && ARM64 && !CPU_BIG_ENDIAN)
+> > > >  	select PARAVIRT
+> > > >  	select X86_HV_CALLBACK_VECTOR if X86
+> > > >  	select VMAP_PFN
+> > > > +	select OF if !ACPI
+> > > > +	select OF_EARLY_FLATTREE if !ACPI
+> > > >  	help
+> > > >  	  Select this option to run Linux as a Hyper-V client operating
+> > > >  	  system.
+> > >
+> > > One further thing occurred to me.  OF_EARLY_FLATTREE really depends
+> > > on OF instead of ACPI.   The ACPI dependency is indirect through OF.  So
+> > > I'd suggest doing
+> > >
+> > > 	select OF_EARLY_FLATTRE if OF
+> > >
+> > > to express the direct dependency.
+> > 
+> > As you pointed out OF_EARLY_FLATTRE is anyway dependent on OF, and thus I
+> > feel this check is redundant. I see all the Kconfig options which enables
+> > both of these flags don't explicitly mention this dependency.
+> > 
+> > >
+> > > Separately, I wonder if the "select OF if !ACPI" is even needed.  It doesn't
+> > > hurt anything to leave it, but it seems like any config that doesn't
+> > > independently select either ACPI or OF is broken for reasons unrelated
+> > > to Hyper-V.  I'm OK with leaving the select of OF if you want, so I'm
+> > > more just wondering than asserting it should be removed.   I didn't
+> > > see "select OF if !ACPI" anywhere else in the Kconfig files, and it
+> > > seems like Hyper-V would not be the only environment where this
+> > > is the expectation.
+> > 
+> > Ok I can remove the !ACPI dependency. Hope kernel size increase due to both
+> > the code compiled in shouldn't be problem for ACPI systems.
+> > And here if config doesn't select ACPI or OF it will assume OF, which is
+> > better then selecting none of them.
+> > 
+> > 
+> > To address both of your comments I feel below will be sufficient:
+> > select OF
+> > select OF_EARLY_FLATTRE
+> 
+> Actually, that's not what I was thinking. :-)   I was thinking for the Hyper-V
+> Kconfig to be silent on selecting OF, just like it is silent on selecting ACPI.
+> Whoever is configuring the kernel build would separately be selecting
+> ACPI, or OF, or both, depending on their needs.   I don't think the Hyper-V
+> Kconfig should always be selecting OF, because of the reason you noted --
+> it drags in code that is not needed for normal VTL 0 usage.  If you take
+> that approach, then
+> 
+> 	select OF_EARLY_FLATTREE if OF
+> 
+> is appropriate.
 
-No, it wasn't.
+Thanks for clarifying, I will fix this in next vesrion.
 
-First, in the majority of cases in which ACPI SCI is used, the IRQ
-chip in question has IRQCHIP_SKIP_SET_WAKE set, so enable_irq_wake()
-cannot fail for it.
+Regards,
+Saurabh
 
-Second, even if it could fail, it is preferred to let the system
-suspend anyway, as long as there is at least one other wakeup source
-in it and that is the case as a rule (for example, wakeup is enabled
-for the PS/2 keyboard IRQ for all systems that have it).
-
-> If there are indeed cases where the error should be ignored I would
-> submit a patch that at least logs the error, although the error message
-> would be hard to see with broken wakeup.
-
-Logging an error would be fine, but failing suspend may not be.  Of
-course, suspend should be aborted if there are no other usable (and
-enabled) wakeup sources, but currently there's no infrastructure for
-verifying that.
-
->  drivers/acpi/sleep.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-> index 4ca667251272..c69dd3731126 100644
-> --- a/drivers/acpi/sleep.c
-> +++ b/drivers/acpi/sleep.c
-> @@ -714,7 +714,15 @@ int acpi_s2idle_begin(void)
->  int acpi_s2idle_prepare(void)
->  {
->         if (acpi_sci_irq_valid()) {
-> -               enable_irq_wake(acpi_sci_irq);
-> +               int error;
-> +
-> +               error = enable_irq_wake(acpi_sci_irq);
-> +               if (error) {
-> +                       pr_err("Failed to enable wakeup from IRQ %d: %d\n",
-> +                              acpi_sci_irq,
-> +                              error);
-> +                       return error;
-> +               }
->                 acpi_ec_set_gpe_wake_mask(ACPI_GPE_ENABLE);
->         }
->
-> --
-> 2.39.2
->
+> 
+> Michael
+> 
+> 
+> 
+> > 
+> > 
+> > Regards,
+> > Saurabh
+> > 
+> > >
+> > > Michael
