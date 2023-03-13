@@ -2,55 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2D826B796B
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Mar 2023 14:48:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AAF06B7976
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Mar 2023 14:51:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229722AbjCMNs6 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 13 Mar 2023 09:48:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52692 "EHLO
+        id S230119AbjCMNvJ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 13 Mar 2023 09:51:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229669AbjCMNs5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Mar 2023 09:48:57 -0400
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550AB222DD;
-        Mon, 13 Mar 2023 06:48:56 -0700 (PDT)
-Received: by mail-ed1-f54.google.com with SMTP id j11so48976115edq.4;
-        Mon, 13 Mar 2023 06:48:56 -0700 (PDT)
+        with ESMTP id S230209AbjCMNvI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Mar 2023 09:51:08 -0400
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79E452384C;
+        Mon, 13 Mar 2023 06:51:07 -0700 (PDT)
+Received: by mail-ed1-f42.google.com with SMTP id j11so49002964edq.4;
+        Mon, 13 Mar 2023 06:51:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678715335;
+        d=1e100.net; s=20210112; t=1678715466;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cOWyGFTY/xJlQJMCFh16k9w4f6amBshkfJRcKKZky/8=;
-        b=KCVdx7mCUphng3VirAgMyh7eJMJg9KRXdoyFPOjVpWtHbGc1HF8XPBuuqwj7H42Y3j
-         laoSivZSr+AMWyXSnGfJOISX1lcS3nSQQYUqj7DMPtroF5zZorL3MfHqpfoWZflGFnpS
-         w8dcPoJD2r/ckCY7DdU9sQ42/EP9DeifFvdMZYyQLEG5/mFIYmA++uWGR6dTBzhUMy4v
-         8UaxyDVaJq2pgRnqqNZwtsJ6Ta5pRxfD5xD2GOVOA04thz63liEJkcUaeCcuQD0V8Lpi
-         uz0TjW8c/kSrnZ4cLbIrCLVGp3n9OyeedBfJfQ6eiMUoywfaVhJ1X01ArGRurfbsj7MG
-         jG5Q==
-X-Gm-Message-State: AO0yUKXUAkddlcQTUR72lVWr+yKEPPSuMsR4z5iE1y4cJ3VWYc38q9Z2
-        mNKKQ5yGQ2msUEOBAKn14/v9RNfUYaaA4Nh7Gc4u48JcJMA=
-X-Google-Smtp-Source: AK7set8LqlRBfErMcK1miWLcFwwW6Y59eFcKui8BVGayriWaMc9CbRy6ix5DOViNcRdx53/NmNkzr3a6ssLzALSD/WM=
-X-Received: by 2002:a17:906:13c2:b0:8b1:7aec:c8e6 with SMTP id
- g2-20020a17090613c200b008b17aecc8e6mr18041172ejc.2.1678715334857; Mon, 13 Mar
- 2023 06:48:54 -0700 (PDT)
+        bh=g1hTnZU4cvdt47U5xnDD3Ay69C4uLQZXNpsW2S+4FWE=;
+        b=C57W/ix/Qotkyq657nbKVD0DVfPtj3gUxIx4GapbohxJzRK8uOboTBfpOVsZrmZnXN
+         VLj4/SmC0v65v4oa8qU5vEO666O6IEn1DUVLBT1CKswFbCTaXztfVqfPwi9z8+MrDkI5
+         H51izzISw3Oi5zS3+0pB/xWcPyqeYXiAL11pVgD3E1S/sYlgEyOJk+kDCwAaEQE/D+tt
+         EPuVno5ulT9tC79M0SNnw3XgON1TKa0OHcES7jVXRO/623sqs4EVTfy8d//RGDSikvhf
+         aywvS6qsKfVfrARgudsy/7bWBtHVPpRAuFS1dPvpeu/aF7gBGN3WQ/6Be9ajqe9Z3XcO
+         sF8g==
+X-Gm-Message-State: AO0yUKVb/aVR6qlYtJgmaY1Rp9cZreHJRORD12q1RwZA8zoS898CS4kg
+        Rw1YQtMO5WxPPJq3Qg7pibprUlUvRqFhGbeSkig5yFQiWjA=
+X-Google-Smtp-Source: AK7set8hwQHTFjvhuQeoG+olLyCmW0wqrl7IMkgOQIN+zOJPPCDgZ9CZnfgzmAaK2M7IZKPujn63mvdyI7FI/t43gBo=
+X-Received: by 2002:a50:d59a:0:b0:4fb:f19:881 with SMTP id v26-20020a50d59a000000b004fb0f190881mr3027368edi.3.1678715465878;
+ Mon, 13 Mar 2023 06:51:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <2148907.irdbgypaU6@kreacher> <2885079.e9J7NaK4W3@kreacher> <49cefdcb5d50c1920b9c9533d30e886e368f3fe7.camel@intel.com>
-In-Reply-To: <49cefdcb5d50c1920b9c9533d30e886e368f3fe7.camel@intel.com>
+References: <2148907.irdbgypaU6@kreacher> <1936685.PYKUYFuaPT@kreacher>
+ <f8c87ea7a1fd8f763ff4ccf3c43706ae43f81ede.camel@intel.com>
+ <CAJZ5v0i=EL_1ZFyqH4C3cWEVtagL4BB2gg7Xdj4Li1iRjMyM6A@mail.gmail.com> <8d1441fb730cb1ead3316fb5eb8651c2ce991dd8.camel@intel.com>
+In-Reply-To: <8d1441fb730cb1ead3316fb5eb8651c2ce991dd8.camel@intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 13 Mar 2023 14:48:23 +0100
-Message-ID: <CAJZ5v0hm3S_3eOsVm5vTUX23ynPXhY469ctZUpLdHZFt+b2KHA@mail.gmail.com>
-Subject: Re: [PATCH v1 1/4] ACPI: processor: Reorder acpi_processor_driver_init()
+Date:   Mon, 13 Mar 2023 14:50:54 +0100
+Message-ID: <CAJZ5v0hMRsGZdYVhY_n3ePbpGbj-qeWtKUi20sShjCQ-qN5DVw@mail.gmail.com>
+Subject: Re: [PATCH v1 4/4] ACPI: processor: thermal: Update CPU cooling
+ devices on cpufreq policy changes
 To:     "Zhang, Rui" <rui.zhang@intel.com>
-Cc:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+Cc:     "rafael@kernel.org" <rafael@kernel.org>,
+        "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
+        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+        "Wang, Quanxian" <quanxian.wang@intel.com>,
         "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
         "srinivas.pandruvada@linux.intel.com" 
         <srinivas.pandruvada@linux.intel.com>,
-        "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
-        "Wang, Quanxian" <quanxian.wang@intel.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -63,97 +66,72 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Mar 12, 2023 at 5:09 PM Zhang, Rui <rui.zhang@intel.com> wrote:
+On Sun, Mar 12, 2023 at 3:44 PM Zhang, Rui <rui.zhang@intel.com> wrote:
 >
-> On Fri, 2023-03-03 at 20:19 +0100, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> On Fri, 2023-03-10 at 19:29 +0100, Rafael J. Wysocki wrote:
+> > On Tue, Mar 7, 2023 at 5:47 PM Zhang, Rui <rui.zhang@intel.com>
+> > wrote:
+> > > On Fri, 2023-03-03 at 20:23 +0100, Rafael J. Wysocki wrote:
+> > > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > >
+> > > > When a cpufreq policy appears or goes away, the CPU cooling
+> > > > devices
+> > > > for
+> > > > the CPUs covered by that policy need to be updated so that the
+> > > > new
+> > > > processor_get_max_state() value is stored as max_state and the
+> > > > statistics in sysfs are rearranged for each of them.
+> > > >
+> > > > Do that accordingly in acpi_thermal_cpufreq_init() and
+> > > > acpi_thermal_cpufreq_exit().
+> > > >
+> > > > Fixes: a365105c685c("thermal: sysfs: Reuse cdev->max_state")
+> > > > Reported-by: Wang, Quanxian <quanxian.wang@intel.com>
+> > > > Link:
+> > > > https://lore.kernel.org/linux-pm/53ec1f06f61c984100868926f282647e57ecfb2d.camel@intel.com/
+> > > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > > ---
+> > > >  drivers/acpi/processor_thermal.c |   16 +++++++++++++---
+> > > >  1 file changed, 13 insertions(+), 3 deletions(-)
+> > > >
+> > > > Index: linux-pm/drivers/acpi/processor_thermal.c
+> > > > =================================================================
+> > > > ==
+> > > > --- linux-pm.orig/drivers/acpi/processor_thermal.c
+> > > > +++ linux-pm/drivers/acpi/processor_thermal.c
+> > > > @@ -140,9 +140,14 @@ void acpi_thermal_cpufreq_init(struct cp
+> > > >               ret = freq_qos_add_request(&policy->constraints,
+> > > >                                          &pr->thermal_req,
+> > > >                                          FREQ_QOS_MAX, INT_MAX);
+> > > > -             if (ret < 0)
+> > > > +             if (ret < 0) {
+> > > >                       pr_err("Failed to add freq constraint for
+> > > > CPU%d
+> > > > (%d)\n",
+> > > >                              cpu, ret);
+> > > > +                     continue;
+> > > > +             }
+> > > > +
+> > > > +             if (!IS_ERR(pr->cdev))
+> > > > +                     thermal_cooling_device_update(pr->cdev);
+> > >
+> > > Although thermal_cooling_device_update() handles "pr->cdev == NULL"
+> > > case, I think it is better to use !IS_ERR_OR_NULL() here.
 > >
-> > The cpufreq policy notifier in the ACPI processor driver may as
-> > well be registered before the driver itself, which causes
-> > acpi_processor_cpufreq_init to be true (unless the notifier
-> > registration fails, which is unlikely at that point) when the
-> > ACPI CPU thermal cooling devices are registered, so the
-> > processor_get_max_state() result does not change while
-> > acpi_processor_driver_init() is running.
+> > Why is it?
 > >
-> > Change the ordering in acpi_processor_driver_init() accordingly
-> > to prevent the max_state value from remaining 0 permanently for all
-> > ACPI CPU cooling devices.
-> >
-> > Fixes: a365105c685c("thermal: sysfs: Reuse cdev->max_state")
-> > Reported-by: Wang, Quanxian <quanxian.wang@intel.com>
-> > Link:
-> > https://lore.kernel.org/linux-pm/53ec1f06f61c984100868926f282647e57ecfb2d.camel@intel.com/
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > I was thinking about doing that, but then I realized that the NULL
+> > case had been covered and that's why I went for the change above.  If
+> > there is a particular reason to check for NULL here, I can do that,
+> > but I'm not sure what it is.
 >
-> The full patch series fixes the problem but this one does not.
+> I don't have a strong objection here.
+>
+> I thought this was a code bug at first glance, until I double checked t
+> hermal_cooling_device_update().
+>
+> So I think the latter would be more straight forward without
+> introducing code complexity.
 
-That is a correct observation, but the $subject patch fixes part of
-the problem (which is not addressed by the rest of the series AFAICS)
-and so it deserves a Fixes tag of its own IMO.
-
-I guess I should clarify that in the changelog.
-
-> This is because,
->
-> static int cpu_has_cpufreq(unsigned int cpu)
-> {
->         struct
-> cpufreq_policy *policy;
->
->         if (!acpi_processor_cpufreq_init)
->                 return 0;
->
->         policy = cpufreq_cpu_get(cpu);
->         if (policy) {
->                 cpufreq_cpu_put(policy);
->                 return 1;
->         }
->         return 0;
-> }
->
-> Although acpi_processor_cpufreq_init is set to true with patch 1/4, but
-> we don't have cpufreq driver registered, thus cpufreq_cpu_get() return
-> NULL.
-> so acpi_processor_cpufreq_init is not the only dependency here. :(
-
-Right.  That's why the other patches in the series are needed too.
-
-> > ---
-> >  drivers/acpi/processor_driver.c |   12 ++++++------
-> >  1 file changed, 6 insertions(+), 6 deletions(-)
-> >
-> > Index: linux-pm/drivers/acpi/processor_driver.c
-> > ===================================================================
-> > --- linux-pm.orig/drivers/acpi/processor_driver.c
-> > +++ linux-pm/drivers/acpi/processor_driver.c
-> > @@ -263,6 +263,12 @@ static int __init acpi_processor_driver_
-> >       if (acpi_disabled)
-> >               return 0;
-> >
-> > +     if (!cpufreq_register_notifier(&acpi_processor_notifier_block,
-> > +                                    CPUFREQ_POLICY_NOTIFIER)) {
-> > +             acpi_processor_cpufreq_init = true;
-> > +             acpi_processor_ignore_ppc_init();
-> > +     }
-> > +
-> >       result = driver_register(&acpi_processor_driver);
-> >       if (result < 0)
-> >               return result;
-> > @@ -276,12 +282,6 @@ static int __init acpi_processor_driver_
-> >       cpuhp_setup_state_nocalls(CPUHP_ACPI_CPUDRV_DEAD, "acpi/cpu-
-> > drv:dead",
-> >                                 NULL, acpi_soft_cpu_dead);
-> >
-> > -     if (!cpufreq_register_notifier(&acpi_processor_notifier_block,
-> > -                                    CPUFREQ_POLICY_NOTIFIER)) {
-> > -             acpi_processor_cpufreq_init = true;
-> > -             acpi_processor_ignore_ppc_init();
-> > -     }
-> > -
-> >       acpi_processor_throttling_init();
-> >       return 0;
-> >  err:
-> >
-> >
-> >
+Alternatively, thermal_cooling_device_update() can be made to do the
+full check instead.
