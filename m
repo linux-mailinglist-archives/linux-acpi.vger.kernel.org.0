@@ -2,217 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFF8B6B80F2
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Mar 2023 19:43:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 387016B80FE
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Mar 2023 19:45:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231219AbjCMSnU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Mar 2023 14:43:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33722 "EHLO
+        id S230173AbjCMSp5 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 13 Mar 2023 14:45:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231352AbjCMSnO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Mar 2023 14:43:14 -0400
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDEBC64215
-        for <linux-acpi@vger.kernel.org>; Mon, 13 Mar 2023 11:42:47 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id j7so2185450ybg.4
-        for <linux-acpi@vger.kernel.org>; Mon, 13 Mar 2023 11:42:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678732947;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hc4qD0dBROAsSu6VxDvfykn2MYkacMKgknIXt+XjvfU=;
-        b=saN7elFeQznmtibfBOSiIjhNuxMhg6FimCIcq7r61bXo9mayiTUp8DD1+iJU3EYbku
-         GbAGT2GRb4pp97mkR59CDQm7f0/WR08TKmAQ27JQCQtUrvvsDirBdCLyeNOouJ7YPLvx
-         Fc2bQ+Aym34eOGQeZnPM4vp4Sf6J+XX6cpaYCyH+3SW+b8zMfVRCdBXu/nSSSVoSYrr9
-         eOcnpfaYqgqMFPDFPOJaGwMiZNUD9qT+p3SVy/cxflC2BF1zYKq0XgMD03ITU1yaurZq
-         PWtFPq6B5fAt8O2VK5uha7qGmM6sUWOU43l534/ddSPiElS377MFfIcVGvEnHfDQA2F0
-         qo8g==
+        with ESMTP id S229831AbjCMSp4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Mar 2023 14:45:56 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57F4D2E81E;
+        Mon, 13 Mar 2023 11:45:21 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id x3so52552909edb.10;
+        Mon, 13 Mar 2023 11:45:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678732947;
+        d=1e100.net; s=20210112; t=1678733013;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hc4qD0dBROAsSu6VxDvfykn2MYkacMKgknIXt+XjvfU=;
-        b=uL4bMhWUGccsHt+U8WXPGP3aKQh/aK6T1OPuGV46GpY9Xj9nV4HcIyZXth/wFtMfOk
-         /m1IGzGnda9bPxZ7ApR9u5WB976hB/ZugySWFVA+fqKFKHh7lh8OvpOBf+HtzmE5xIvC
-         5wsfsj+5OTSw8vD/ZHblp6b7ekE1YkRdWiNqEz0KxI98tU5G922NCxY/nGQ4LpA8pLT8
-         ENythxpedVzdidL/eQZIzWMMnsq1albcEl9fFu3ZbiJ3n12aYnzPNy6wKHEfr0gJBQhl
-         HqjdnYhIuTu7nocgr3Lv6BN7Lc8iNEA4eCVXGe+s45ZTEAuzw7DOZnjICyiv84Xtmu/b
-         SHWg==
-X-Gm-Message-State: AO0yUKUAZwqUrnED+vKWqLgZA7+qnqdbiRJJqHDSvyiLl+Vc9XgVZCKU
-        7ipLX9wMSGdZuzhb8GaA2GhODT1r2fzAbcfccxWLuw==
-X-Google-Smtp-Source: AK7set+75k/6wpJlLHYeLR6WsdbBWu8a19iQ5MMCLCjF+dE6M/z3ppb7dxMGbQzvpWjm9q+hhYVvtEFgNX9klTn9usU=
-X-Received: by 2002:a05:6902:cf:b0:a02:a44e:585c with SMTP id
- i15-20020a05690200cf00b00a02a44e585cmr21945010ybs.1.1678732947713; Mon, 13
- Mar 2023 11:42:27 -0700 (PDT)
+        bh=AS/WyNiPbCZftoU6jgkGbodsREzbGi5V+aiW+aiHpfA=;
+        b=L2zhJEiOkmGDymsZjBs+793MRdgIfMPYM6EP9R10kjvxHwtrYF+EGlFP/SuG7x/rD7
+         qrODHLPtywPjZeDtb9DhOJu/Du6VIliBwhMgxfhG7DLaBcL9DYY9zNlDv4KKkSBbxKAd
+         CX4Gt8+gaJaJDO2EJVTQs8+LpYmkBT11Fv0yAi1Pqulteamu0RS90cTlKMMpL6aBZKw2
+         1aJCDwKz8WpQ18jqZht722aIlwjKcCM6LDhtPKc1mP1sXtDqwK5LgFtNCSHXwuu+r1Rs
+         Fg7A0XoIUj9CEPJMjGOaT00XHwcEuKq1lAXGWGHKQPbEdP9ca8SFhqMhjfKLndemN9zA
+         EQsw==
+X-Gm-Message-State: AO0yUKU4CwT+j0FoHuK3Xi1O6FmEs9wjSbBBSOFNTCWsgCbxfApwnwNg
+        fN/fegrD+Z+Ftm4yJ1x8K3ueG29GV9ERRxbzXQ5s39R24pQ=
+X-Google-Smtp-Source: AK7set/9f3wmhPrJ2AbY8kRIKM7r2Mh0TR/vaBbfcqgioIPTgCA78PHXksCgzdFKVdangTjqQPxoNfQjQE3moFrkiPM=
+X-Received: by 2002:a50:d59a:0:b0:4fb:f19:881 with SMTP id v26-20020a50d59a000000b004fb0f190881mr3581486edi.3.1678733013460;
+ Mon, 13 Mar 2023 11:43:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230301214952.2190757-1-saravanak@google.com>
- <CAGETcx_DTHW4-WMK4qRhvhxiunUB2f79cpXSfQ1x-hifZQ+tgw@mail.gmail.com>
- <CAMSo37XuNaV4Y3+ExrUjNzPDRD_BNSn1258Ve3We+qtbsO7qEw@mail.gmail.com> <CAGETcx8qKCNuD5p=e-f-T93VstptPWHq2gVzmghkQucNyhwocA@mail.gmail.com>
-In-Reply-To: <CAGETcx8qKCNuD5p=e-f-T93VstptPWHq2gVzmghkQucNyhwocA@mail.gmail.com>
-From:   Yongqin Liu <yongqin.liu@linaro.org>
-Date:   Tue, 14 Mar 2023 02:42:16 +0800
-Message-ID: <CAMSo37UyDWB5dfTo91Y_de3de1gYActdKj4fsu==eW90kuHjyw@mail.gmail.com>
-Subject: Re: [PATCH v1 0/4] Remove use of fw_devlink_purge_absent_suppliers()
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Amelie Delaunay <amelie.delaunay@foss.st.com>,
-        kernel-team@android.com, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-acpi@vger.kernel.org
+References: <20230313182918.1312597-1-gregkh@linuxfoundation.org> <20230313182918.1312597-2-gregkh@linuxfoundation.org>
+In-Reply-To: <20230313182918.1312597-2-gregkh@linuxfoundation.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 13 Mar 2023 19:43:22 +0100
+Message-ID: <CAJZ5v0goaS5O1_Hds2DnWsw_G-Dg4fU9NEY0=chyn5ECTcBmDw@mail.gmail.com>
+Subject: Re: [PATCH 02/36] ACPI: LPIT: move to use bus_get_dev_root()
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org, rafael@kernel.org,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Saravana
-
-On Fri, 10 Mar 2023 at 08:17, Saravana Kannan <saravanak@google.com> wrote:
+On Mon, Mar 13, 2023 at 7:29 PM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> On Thu, Mar 9, 2023 at 10:53=E2=80=AFAM Yongqin Liu <yongqin.liu@linaro.o=
-rg> wrote:
-> >
-> > Hi, Saravana
-> >
-> > Sorry for the lateness, I was just aware of this today.
+> Direct access to the struct bus_type dev_root pointer is going away soon
+> so replace that with a call to bus_get_dev_root() instead, which is what
+> it is there for.
 >
-> No worries.
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: linux-acpi@vger.kernel.org
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+> Note, this is a patch that is a prepatory cleanup as part of a larger
+> series of patches that is working on resolving some old driver core
+> design mistakes.  It will build and apply cleanly on top of 6.3-rc2 on
+> its own, but I'd prefer if I could take it through my driver-core tree
+> so that the driver core changes can be taken through there for 6.4-rc1.
 >
-> > I tested with the ACK android-mainline branch + the 12 commits ending
-> > with fb42378dcc7f
-> > + the 4 commits of this series + hikey960 AOSP Master userspace.
-> > The hikey960 Android build could boot to the home screen, no stuck ther=
-e,
+>  drivers/acpi/acpi_lpit.c | 17 +++++++++++------
+>  1 file changed, 11 insertions(+), 6 deletions(-)
 >
-> Thanks for testing! Can you confirm what happens if you drop the "12
-> commits ending with fb42378dcc7f" ? Does it get stuck at boot or have
-> some limited functionality?
+> diff --git a/drivers/acpi/acpi_lpit.c b/drivers/acpi/acpi_lpit.c
+> index 3843d2576d3f..73b5c4800150 100644
+> --- a/drivers/acpi/acpi_lpit.c
+> +++ b/drivers/acpi/acpi_lpit.c
+> @@ -98,6 +98,8 @@ EXPORT_SYMBOL_GPL(lpit_read_residency_count_address);
+>  static void lpit_update_residency(struct lpit_residency_info *info,
+>                                  struct acpi_lpit_native *lpit_native)
+>  {
+> +       struct device *dev_root = bus_get_dev_root(&cpu_subsys);
+> +
 
-I tried to only apply the 4 commits of this series, but that would cause bu=
-ild
-error as the commit here:
-https://lore.kernel.org/all/20210205222644.2357303-2-saravanak@google.com/
+This can return here right away if dev_root is NULL, because it will
+not do anything useful in that case anyway.
 
-so I need to apply the first commit of the "12 commits ending with fb42378d=
-cc7f"
-here as well:
-https://lore.kernel.org/all/20230207014207.1678715-2-saravanak@google.com/
-
-With the 5 commits applied on the android-mainline branch, the build could =
-boot
-to the home screen, but the adb connection could not be created.
-For details please check here https://termbin.com/wf9hj.
-
-Thanks,
-Yongqin Liu
+>         info->frequency = lpit_native->counter_frequency ?
+>                                 lpit_native->counter_frequency : tsc_khz * 1000;
+>         if (!info->frequency)
+> @@ -111,15 +113,18 @@ static void lpit_update_residency(struct lpit_residency_info *info,
+>                         return;
 >
-> It's surprising that for the same type of DT node, in your case
-> fw_devlink is able to handle it
-> correctly, but no so for Martin's case.
+>                 /* Silently fail, if cpuidle attribute group is not present */
+> -               sysfs_add_file_to_group(&cpu_subsys.dev_root->kobj,
+> -                                       &dev_attr_low_power_idle_system_residency_us.attr,
+> -                                       "cpuidle");
+> +               if (dev_root)
+> +                       sysfs_add_file_to_group(&dev_root->kobj,
+> +                                               &dev_attr_low_power_idle_system_residency_us.attr,
+> +                                               "cpuidle");
+>         } else if (info->gaddr.space_id == ACPI_ADR_SPACE_FIXED_HARDWARE) {
+>                 /* Silently fail, if cpuidle attribute group is not present */
+> -               sysfs_add_file_to_group(&cpu_subsys.dev_root->kobj,
+> -                                       &dev_attr_low_power_idle_cpu_residency_us.attr,
+> -                                       "cpuidle");
+> +               if (dev_root)
+> +                       sysfs_add_file_to_group(&dev_root->kobj,
+> +                                               &dev_attr_low_power_idle_cpu_residency_us.attr,
+> +                                               "cpuidle");
+>         }
+> +       put_device(dev_root);
+>  }
 >
-> -Saravana
+>  static void lpit_process(u64 begin, u64 end)
+> --
+> 2.39.2
 >
-> >
-> > Here is the link of the logat in case you want to check some message he=
-re:
-> > https://gist.github.com/liuyq/6525af08c547cd2e494af5d1c8b181b5
-> >
-> > Thanks,
-> > Yongqin Liu
-> > On Fri, 10 Mar 2023 at 02:05, Saravana Kannan <saravanak@google.com> wr=
-ote:
-> > >
-> > > Greg,
-> > >
-> > > Don't pull in this series please. It needs more testing from the folk=
-s
-> > > I cc'ed and it's already breaking things for Martin. This needs more
-> > > revisions.
-> > >
-> > > -Saravana
-> > >
-> > > On Wed, Mar 1, 2023 at 1:49=E2=80=AFPM Saravana Kannan <saravanak@goo=
-gle.com> wrote:
-> > > >
-> > > > Yongqin, Martin, Amelie,
-> > > >
-> > > > We recent refactor of fw_devlink that ends with commit fb42378dcc7f
-> > > > ("mtd: mtdpart: Don't create platform device that'll never probe"),
-> > > > fw_devlink is smarter and doesn't depend on compatible property. So=
-, I
-> > > > don't think these calls are needed anymore. But I don't have these
-> > > > devices to test on and be sure and the hardware I use to test chang=
-es
-> > > > doesn't have this issue either.
-> > > >
-> > > > Can you please test these changes on the hardware where you hit the
-> > > > issue to make sure things work as expected?
-> > > >
-> > > > Yongqin, If you didn't have the context, this affected hikey960.
-> > > >
-> > > > Greg,
-> > > >
-> > > > Let's wait for some tests before we land these.
-> > > >
-> > > > Thanks,
-> > > > Saravana
-> > > >
-> > > > Cc: Yongqin Liu <yongqin.liu@linaro.org>
-> > > > Cc: Sumit Semwal <sumit.semwal@linaro.org>
-> > > > Cc: Martin Kepplinger <martin.kepplinger@puri.sm>
-> > > > Cc: Amelie Delaunay <amelie.delaunay@foss.st.com>
-> > > >
-> > > > Saravana Kannan (4):
-> > > >   usb: typec: stusb160x: Remove use of
-> > > >     fw_devlink_purge_absent_suppliers()
-> > > >   usb: typec: tipd: Remove use of fw_devlink_purge_absent_suppliers=
-()
-> > > >   usb: typec: tcpm: Remove use of fw_devlink_purge_absent_suppliers=
-()
-> > > >   driver core: Delete fw_devlink_purge_absent_suppliers()
-> > > >
-> > > >  drivers/base/core.c           | 16 ----------------
-> > > >  drivers/usb/typec/stusb160x.c |  9 ---------
-> > > >  drivers/usb/typec/tcpm/tcpm.c |  9 ---------
-> > > >  drivers/usb/typec/tipd/core.c |  9 ---------
-> > > >  include/linux/fwnode.h        |  1 -
-> > > >  5 files changed, 44 deletions(-)
-> > > >
-> > > > --
-> > > > 2.39.2.722.g9855ee24e9-goog
-> > > >
-> >
-> >
-> >
-> > --
-> > Best Regards,
-> > Yongqin Liu
-> > ---------------------------------------------------------------
-> > #mailing list
-> > linaro-android@lists.linaro.org
-> > http://lists.linaro.org/mailman/listinfo/linaro-android
-
-
-
---
-Best Regards,
-Yongqin Liu
----------------------------------------------------------------
-#mailing list
-linaro-android@lists.linaro.org
-http://lists.linaro.org/mailman/listinfo/linaro-android
