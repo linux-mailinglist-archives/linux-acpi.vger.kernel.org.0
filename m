@@ -2,59 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D9EB6B6F70
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Mar 2023 07:16:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 400F16B7213
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Mar 2023 10:08:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229774AbjCMGQO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Mar 2023 02:16:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38528 "EHLO
+        id S231148AbjCMJI3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Mar 2023 05:08:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229776AbjCMGQM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Mar 2023 02:16:12 -0400
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E4D1348E36;
-        Sun, 12 Mar 2023 23:16:03 -0700 (PDT)
-Received: by linux.microsoft.com (Postfix, from userid 1127)
-        id 580FF204B51E; Sun, 12 Mar 2023 23:16:03 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 580FF204B51E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1678688163;
-        bh=bBzVq6Vu2i/wsIWWu3PzRRzKof7G7yA2dj2lTYoClD0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=bfpi3IoaJCC0q7dHUpJvJauZ6PK5P3bQ0z+z8iYgXKwbfIdQ4BVTvBQddd8jFW/JJ
-         cMZgyG0kTQYTeDsrTuXdDd7YalwkJOn33wyBQHK5C2hRr9GAOE8RKrcDpSnt8R2Ocv
-         BvHP+kmDmcWcw7JRfg+fOTQgiLgt7nU/kFUstV9k=
-Date:   Sun, 12 Mar 2023 23:16:03 -0700
-From:   Saurabh Singh Sengar <ssengar@linux.microsoft.com>
-To:     "Michael Kelley (LINUX)" <mikelley@microsoft.com>
-Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "krzysztof.kozlowski+dt@linaro.org" 
-        <krzysztof.kozlowski+dt@linaro.org>,
-        KY Srinivasan <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        "wei.liu@kernel.org" <wei.liu@kernel.org>,
-        Dexuan Cui <decui@microsoft.com>,
-        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v7 5/5] Driver: VMBus: Add Devicetree support
-Message-ID: <20230313061603.GA8934@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <1677151745-16521-1-git-send-email-ssengar@linux.microsoft.com>
- <1677151745-16521-6-git-send-email-ssengar@linux.microsoft.com>
- <BYAPR21MB1688B84E25DD2173B6023737D7B99@BYAPR21MB1688.namprd21.prod.outlook.com>
+        with ESMTP id S230005AbjCMJIC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Mar 2023 05:08:02 -0400
+Received: from comms.puri.sm (comms.puri.sm [159.203.221.185])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA0E010EB;
+        Mon, 13 Mar 2023 02:06:01 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id 3B852E0FCB;
+        Mon, 13 Mar 2023 02:06:01 -0700 (PDT)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id KqaR6nthGCF3; Mon, 13 Mar 2023 02:06:00 -0700 (PDT)
+Message-ID: <2f84f3196c426a3957d479d8fe0d1440a82932af.camel@puri.sm>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=comms;
+        t=1678698360; bh=9qC4noDrLpgjlr1iZhfPnQ3ESFPoh887kUgfzjHtjxE=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=HSS91jrM3hyPc+Dl5XjezZ167iBV5U/CnKzyOub10LefaW7CBFRP0A9++3fOmgskh
+         xr0KnhKRm/fzPio0y7XuxPSQaYV+95RKhwYJmUZhZlcqC4/1o+Xj0xmFnRDyOyeKA0
+         Igih7K/LQWX0d3CdCHB1GIib6GpAOsFY6USTrrv/z1Kt9IpFD5eZ7nH/KFbOZCWUEe
+         GnzSEvzxUVf6jMLbsYUE5Xf0tQaQ9qU3rBvtPB2s0TfL9nNcDL2GwfOuXlZGjcYvnT
+         U36GM3BD16QeTKBh9sANnlBA2aaE/nyeTnhMO8+OMdoACv5dn9Q/SUPjIFlIp75K04
+         IldTTgL8gOu3g==
+Subject: Re: [PATCH v1 0/4] Remove use of fw_devlink_purge_absent_suppliers()
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Yongqin Liu <yongqin.liu@linaro.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Amelie Delaunay <amelie.delaunay@foss.st.com>,
+        kernel-team@android.com, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-acpi@vger.kernel.org
+Date:   Mon, 13 Mar 2023 10:05:52 +0100
+In-Reply-To: <cd70891320aab38f5c085c67c4651e0f4f6d8ed8.camel@puri.sm>
+References: <20230301214952.2190757-1-saravanak@google.com>
+         <2a8e407f4f18c9350f8629a2b5fa18673355b2ae.camel@puri.sm>
+         <e65e08c13885468675af527ffa2ab882cc9e682d.camel@puri.sm>
+         <CAGETcx93K1VjAosX9NDEyLVLPK2utPSUV6dwzdAT-Dc5BfmhzQ@mail.gmail.com>
+         <4e8d00617de0c25dcf84847c3d3ad3f2d76ee5b9.camel@puri.sm>
+         <CAGETcx_CDBf3eTgTkUCwYoyvXk4L7hJBDKj6rwow6k=EdbZpqA@mail.gmail.com>
+         <cd70891320aab38f5c085c67c4651e0f4f6d8ed8.camel@puri.sm>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3-1+deb11u1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BYAPR21MB1688B84E25DD2173B6023737D7B99@BYAPR21MB1688.namprd21.prod.outlook.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,81 +68,170 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 13, 2023 at 02:33:53AM +0000, Michael Kelley (LINUX) wrote:
-> From: Saurabh Sengar <ssengar@linux.microsoft.com> Sent: Thursday, February 23, 2023 3:29 AM
+Am Sonntag, dem 12.03.2023 um 15:41 +0100 schrieb Martin Kepplinger:
+> Am Freitag, dem 10.03.2023 um 14:18 -0800 schrieb Saravana Kannan:
+> > On Fri, Mar 10, 2023 at 2:07 AM Martin Kepplinger
+> > <martin.kepplinger@puri.sm> wrote:
+> > > 
+> > > Am Donnerstag, dem 09.03.2023 um 16:24 -0800 schrieb Saravana
+> > > Kannan:
+> > > > On Thu, Mar 2, 2023 at 1:41 AM Martin Kepplinger
+> > > > <martin.kepplinger@puri.sm> wrote:
+> > > > > 
+> > > > > Am Donnerstag, dem 02.03.2023 um 10:12 +0100 schrieb Martin
+> > > > > Kepplinger:
+> > > > > > Am Mittwoch, dem 01.03.2023 um 13:49 -0800 schrieb Saravana
+> > > > > > Kannan:
+> > > > > > > Yongqin, Martin, Amelie,
+> > > > > > > 
+> > > > > > > We recent refactor of fw_devlink that ends with commit
+> > > > > > > fb42378dcc7f
+> > > > > > > ("mtd: mtdpart: Don't create platform device that'll
+> > > > > > > never
+> > > > > > > probe"),
+> > > > > > > fw_devlink is smarter and doesn't depend on compatible
+> > > > > > > property.
+> > > > > > > So,
+> > > > > > > I
+> > > > > > > don't think these calls are needed anymore. But I don't
+> > > > > > > have
+> > > > > > > these
+> > > > > > > devices to test on and be sure and the hardware I use to
+> > > > > > > test
+> > > > > > > changes
+> > > > > > > doesn't have this issue either.
+> > > > > > > 
+> > > > > > > Can you please test these changes on the hardware where
+> > > > > > > you
+> > > > > > > hit
+> > > > > > > the
+> > > > > > > issue to make sure things work as expected?
+> > > > > > > 
+> > > > > > > Yongqin, If you didn't have the context, this affected
+> > > > > > > hikey960.
+> > > > > > > 
+> > > > > > > Greg,
+> > > > > > > 
+> > > > > > > Let's wait for some tests before we land these.
+> > > > > > > 
+> > > > > > > Thanks,
+> > > > > > > Saravana
+> > > > > > 
+> > > > > > hi Sravana,
+> > > > > > 
+> > > > > > I picked the 12 commits leading up to commit fb42378dcc7f
+> > > > > > ("mtd:
+> > > > > > mtdpart: Don't create platform device that'll never probe")
+> > > > > > (
+> > > > > > https://source.puri.sm/martin.kepplinger/linux-next/-/commits/test_fw_devlink
+> > > > > > ) and included the tipd patch below to test it.
+> > > > > > 
+> > > > > > With that, I get the following errors:
+> > > > > > 
+> > > > > > [    0.237931] imx-uart 30890000.serial: Failed to create
+> > > > > > device
+> > > > > > link
+> > > > > > with regulator-gnss
+> > > > > > [    0.334054] nwl-dsi 30a00000.mipi-dsi: Failed to create
+> > > > > > device
+> > > > > > link
+> > > > > > with regulator-lcd-1v8
+> > > > > > [    0.346964] nwl-dsi 30a00000.mipi-dsi: Failed to create
+> > > > > > device
+> > > > > > link
+> > > > > > with backlight-dsi
+> > > > > > 
+> > > > > > but they are independent of this final tipd patch below.
+> > > > > > I'll
+> > > > > > test a
+> > > > > > real linux-next tree soon, for completeness, maybe I missed
+> > > > > > something?
+> > > > > > 
+> > > > > > Anyways, on that tree, your tipd removal patch breaks type-
+> > > > > > c
+> > > > > > still
+> > > > > > for
+> > > > > > me, imx8mq-librem5.dtsi
+> > > > > > 
+> > > > > > just to give a first reply quickly... thanks,
+> > > > > > 
+> > > > > >                              martin
+> > > > > > 
+> > > > > 
+> > > > > just confirming: it's the same as above on next-20230302 +
+> > > > > this
+> > > > > patch (
+> > > > > https://source.puri.sm/martin.kepplinger/linux-next/-/commits/test_fw_devlink_next-20230302
+> > > > > ) with the errors already independent from the patch. I
+> > > > > should
+> > > > > have
+> > > > > tested earlier patches -.-
+> > > > 
+> > > > Thanks a lot for testing Martin!
+> > > > 
+> > > > Your email is a little ambiguous to me. With the 12 refactor
+> > > > commits
+> > > > +
+> > > > the 4 patches in this series, things are breaking for you. But
+> > > > if
+> > > > you
+> > > > drop the 4 patches in this series, things work again. Is that
+> > > > right?
+> > > 
+> > > no. Sorry if I wasn't clear. I can't justify to block these 4
+> > > patches.
+> > > they *themselves* don't break anything.
+> > > 
+> > > Something broke *earlier* than these 4 patches in one of the
+> > > other
+> > > 12.
 > > 
-> > Update the driver to support Devicetree boot as well along with ACPI.
-> > At present the Devicetree parsing only provides the mmio region info
-> > and is not the exact copy of ACPI parsing. This is sufficient to cater
-> > all the current Devicetree usecases for VMBus.
+> > If you find out it's one of the other 12 patches in the refactor
+> > that
+> > broke things for you, can you please reply to the right email in
+> > that
+> > series[1] and let me know which patch broke things for you and
+> > provide
+> > the debug details there? I don't want to mix issues with unrelated
+> > threads -- I want them to be easy to find in the future.
 > > 
-> > Currently Devicetree is supported only for x86 systems.
+> > [1] -  
+> > https://lore.kernel.org/lkml/20230207014207.1678715-1-saravanak@google.com/
 > > 
-> > Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-> > ---
-> > [V7]
-> > - Use cpu_addr instead of bus_addr
-> > 
-> >  drivers/hv/Kconfig     |  6 +++--
-> >  drivers/hv/vmbus_drv.c | 57 ++++++++++++++++++++++++++++++++++++++++--
-> >  2 files changed, 59 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/hv/Kconfig b/drivers/hv/Kconfig
-> > index 0747a8f1fcee..1a55bf32d195 100644
-> > --- a/drivers/hv/Kconfig
-> > +++ b/drivers/hv/Kconfig
-> > @@ -4,11 +4,13 @@ menu "Microsoft Hyper-V guest support"
-> > 
-> >  config HYPERV
-> >  	tristate "Microsoft Hyper-V client drivers"
-> > -	depends on ACPI && ((X86 && X86_LOCAL_APIC && HYPERVISOR_GUEST) \
-> > -		|| (ARM64 && !CPU_BIG_ENDIAN))
-> > +	depends on (X86 && X86_LOCAL_APIC && HYPERVISOR_GUEST) \
-> > +		|| (ACPI && ARM64 && !CPU_BIG_ENDIAN)
-> >  	select PARAVIRT
-> >  	select X86_HV_CALLBACK_VECTOR if X86
-> >  	select VMAP_PFN
-> > +	select OF if !ACPI
-> > +	select OF_EARLY_FLATTREE if !ACPI
-> >  	help
-> >  	  Select this option to run Linux as a Hyper-V client operating
-> >  	  system.
+> > For all my questions below, you don't need to reply here. Just
+> > reply
+> > to the right thread.
 > 
-> One further thing occurred to me.  OF_EARLY_FLATTREE really depends
-> on OF instead of ACPI.   The ACPI dependency is indirect through OF.  So
-> I'd suggest doing
+> Thanks. I'll have to reply here though - I'm puzzled how, but I got
+> it
+> wrong - I must have seen the "Failed to create device link" messages
+> without checking broken drivers: The 12 patches you linked above are
+> fine. (In a way that's good as I saw them in a stable kernel
+> already).
 > 
-> 	select OF_EARLY_FLATTRE if OF
-> 
-> to express the direct dependency.
-
-As you pointed out OF_EARLY_FLATTRE is anyway dependent on OF, and thus I
-feel this check is redundant. I see all the Kconfig options which enables
-both of these flags don't explicitly mention this dependency.
-
-> 
-> Separately, I wonder if the "select OF if !ACPI" is even needed.  It doesn't
-> hurt anything to leave it, but it seems like any config that doesn't
-> independently select either ACPI or OF is broken for reasons unrelated
-> to Hyper-V.  I'm OK with leaving the select of OF if you want, so I'm
-> more just wondering than asserting it should be removed.   I didn't
-> see "select OF if !ACPI" anywhere else in the Kconfig files, and it
-> seems like Hyper-V would not be the only environment where this
-> is the expectation.
-
-Ok I can remove the !ACPI dependency. Hope kernel size increase due to both
-the code compiled in shouldn't be problem for ACPI systems.
-And here if config doesn't select ACPI or OF it will assume OF, which is
-better then selecting none of them.
+> commit ("usb: typec: tipd: Remove use of
+> fw_devlink_purge_absent_suppliers()") breaks things for me. That is
+> patch 2 of this series. That's for sure now.
 
 
-To address both of your comments I feel below will be sufficient:
-select OF
-select OF_EARLY_FLATTRE
+this thing is this: I have downstream patches against tipd, among
+others. And I don't know yet but we might very well do something wrong
+in our downstream tree that is now not compatible anymore with this
+removal...
+
+I switched to a tree without any downstream stuff: For the 12 earlier
+patches, I there see the follwing which is NOT your fault and we need
+to fix upstream (we fix that in our downstream tree):
+
+root@pureos:/home/purism# cat /sys/kernel/debug/devices_deferred 
+3-0036
+
+And then I add patch 2 of this series (removing the call from tipd), it
+becomes:
+
+root@pureos:/home/purism# cat /sys/kernel/debug/devices_deferred 
+0-003f	
+38100000.usb	platform: wait for supplier endpoint
+3-0036	
 
 
-Regards,
-Saurabh
-
-> 
-> Michael
