@@ -2,170 +2,158 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2DF96B7919
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Mar 2023 14:37:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D2D826B796B
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Mar 2023 14:48:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229928AbjCMNh3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Mar 2023 09:37:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58184 "EHLO
+        id S229722AbjCMNs6 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 13 Mar 2023 09:48:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229791AbjCMNh2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Mar 2023 09:37:28 -0400
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8BE85618B6;
-        Mon, 13 Mar 2023 06:37:27 -0700 (PDT)
-Received: by linux.microsoft.com (Postfix, from userid 1127)
-        id 05B2D204DE9D; Mon, 13 Mar 2023 06:37:27 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 05B2D204DE9D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1678714647;
-        bh=mu87N414716r7lGE+91jVsaK9HmE6dXBcZU9c+oht9A=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=aba7oqVGnjYnYppobv7WDRrE6mLzhXvx4Oqhb4+K0C7ncTNJMa+PJSK/Ay37fLVNx
-         UjC0tWAQN978AhfSAWWcDK1mZ8ALQYRpZ2xAuzsH+OE1LjWJJGKEcB8lThPpdMI3vB
-         VRTgEq6JOfa4nkI5VHqd7bQcf9jwn1dM5bjWy5k0=
-Date:   Mon, 13 Mar 2023 06:37:26 -0700
-From:   Saurabh Singh Sengar <ssengar@linux.microsoft.com>
-To:     "Michael Kelley (LINUX)" <mikelley@microsoft.com>
-Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "krzysztof.kozlowski+dt@linaro.org" 
-        <krzysztof.kozlowski+dt@linaro.org>,
-        KY Srinivasan <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        "wei.liu@kernel.org" <wei.liu@kernel.org>,
-        Dexuan Cui <decui@microsoft.com>,
-        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v7 5/5] Driver: VMBus: Add Devicetree support
-Message-ID: <20230313133726.GA10298@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <1677151745-16521-1-git-send-email-ssengar@linux.microsoft.com>
- <1677151745-16521-6-git-send-email-ssengar@linux.microsoft.com>
- <BYAPR21MB1688B84E25DD2173B6023737D7B99@BYAPR21MB1688.namprd21.prod.outlook.com>
- <20230313061603.GA8934@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <BYAPR21MB16888AD9A473CF15250B59C7D7B99@BYAPR21MB1688.namprd21.prod.outlook.com>
+        with ESMTP id S229669AbjCMNs5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Mar 2023 09:48:57 -0400
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550AB222DD;
+        Mon, 13 Mar 2023 06:48:56 -0700 (PDT)
+Received: by mail-ed1-f54.google.com with SMTP id j11so48976115edq.4;
+        Mon, 13 Mar 2023 06:48:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678715335;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cOWyGFTY/xJlQJMCFh16k9w4f6amBshkfJRcKKZky/8=;
+        b=KCVdx7mCUphng3VirAgMyh7eJMJg9KRXdoyFPOjVpWtHbGc1HF8XPBuuqwj7H42Y3j
+         laoSivZSr+AMWyXSnGfJOISX1lcS3nSQQYUqj7DMPtroF5zZorL3MfHqpfoWZflGFnpS
+         w8dcPoJD2r/ckCY7DdU9sQ42/EP9DeifFvdMZYyQLEG5/mFIYmA++uWGR6dTBzhUMy4v
+         8UaxyDVaJq2pgRnqqNZwtsJ6Ta5pRxfD5xD2GOVOA04thz63liEJkcUaeCcuQD0V8Lpi
+         uz0TjW8c/kSrnZ4cLbIrCLVGp3n9OyeedBfJfQ6eiMUoywfaVhJ1X01ArGRurfbsj7MG
+         jG5Q==
+X-Gm-Message-State: AO0yUKXUAkddlcQTUR72lVWr+yKEPPSuMsR4z5iE1y4cJ3VWYc38q9Z2
+        mNKKQ5yGQ2msUEOBAKn14/v9RNfUYaaA4Nh7Gc4u48JcJMA=
+X-Google-Smtp-Source: AK7set8LqlRBfErMcK1miWLcFwwW6Y59eFcKui8BVGayriWaMc9CbRy6ix5DOViNcRdx53/NmNkzr3a6ssLzALSD/WM=
+X-Received: by 2002:a17:906:13c2:b0:8b1:7aec:c8e6 with SMTP id
+ g2-20020a17090613c200b008b17aecc8e6mr18041172ejc.2.1678715334857; Mon, 13 Mar
+ 2023 06:48:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BYAPR21MB16888AD9A473CF15250B59C7D7B99@BYAPR21MB1688.namprd21.prod.outlook.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <2148907.irdbgypaU6@kreacher> <2885079.e9J7NaK4W3@kreacher> <49cefdcb5d50c1920b9c9533d30e886e368f3fe7.camel@intel.com>
+In-Reply-To: <49cefdcb5d50c1920b9c9533d30e886e368f3fe7.camel@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 13 Mar 2023 14:48:23 +0100
+Message-ID: <CAJZ5v0hm3S_3eOsVm5vTUX23ynPXhY469ctZUpLdHZFt+b2KHA@mail.gmail.com>
+Subject: Re: [PATCH v1 1/4] ACPI: processor: Reorder acpi_processor_driver_init()
+To:     "Zhang, Rui" <rui.zhang@intel.com>
+Cc:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "srinivas.pandruvada@linux.intel.com" 
+        <srinivas.pandruvada@linux.intel.com>,
+        "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
+        "Wang, Quanxian" <quanxian.wang@intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 13, 2023 at 12:26:56PM +0000, Michael Kelley (LINUX) wrote:
-> From: Saurabh Singh Sengar <ssengar@linux.microsoft.com> Sent: Sunday, March 12, 2023 11:16 PM
-> > 
-> > On Mon, Mar 13, 2023 at 02:33:53AM +0000, Michael Kelley (LINUX) wrote:
-> > > From: Saurabh Sengar <ssengar@linux.microsoft.com> Sent: Thursday, February 23,
-> > 2023 3:29 AM
-> > > >
-> > > > Update the driver to support Devicetree boot as well along with ACPI.
-> > > > At present the Devicetree parsing only provides the mmio region info
-> > > > and is not the exact copy of ACPI parsing. This is sufficient to cater
-> > > > all the current Devicetree usecases for VMBus.
-> > > >
-> > > > Currently Devicetree is supported only for x86 systems.
-> > > >
-> > > > Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-> > > > ---
-> > > > [V7]
-> > > > - Use cpu_addr instead of bus_addr
-> > > >
-> > > >  drivers/hv/Kconfig     |  6 +++--
-> > > >  drivers/hv/vmbus_drv.c | 57 ++++++++++++++++++++++++++++++++++++++++--
-> > > >  2 files changed, 59 insertions(+), 4 deletions(-)
-> > > >
-> > > > diff --git a/drivers/hv/Kconfig b/drivers/hv/Kconfig
-> > > > index 0747a8f1fcee..1a55bf32d195 100644
-> > > > --- a/drivers/hv/Kconfig
-> > > > +++ b/drivers/hv/Kconfig
-> > > > @@ -4,11 +4,13 @@ menu "Microsoft Hyper-V guest support"
-> > > >
-> > > >  config HYPERV
-> > > >  	tristate "Microsoft Hyper-V client drivers"
-> > > > -	depends on ACPI && ((X86 && X86_LOCAL_APIC && HYPERVISOR_GUEST) \
-> > > > -		|| (ARM64 && !CPU_BIG_ENDIAN))
-> > > > +	depends on (X86 && X86_LOCAL_APIC && HYPERVISOR_GUEST) \
-> > > > +		|| (ACPI && ARM64 && !CPU_BIG_ENDIAN)
-> > > >  	select PARAVIRT
-> > > >  	select X86_HV_CALLBACK_VECTOR if X86
-> > > >  	select VMAP_PFN
-> > > > +	select OF if !ACPI
-> > > > +	select OF_EARLY_FLATTREE if !ACPI
-> > > >  	help
-> > > >  	  Select this option to run Linux as a Hyper-V client operating
-> > > >  	  system.
-> > >
-> > > One further thing occurred to me.  OF_EARLY_FLATTREE really depends
-> > > on OF instead of ACPI.   The ACPI dependency is indirect through OF.  So
-> > > I'd suggest doing
-> > >
-> > > 	select OF_EARLY_FLATTRE if OF
-> > >
-> > > to express the direct dependency.
-> > 
-> > As you pointed out OF_EARLY_FLATTRE is anyway dependent on OF, and thus I
-> > feel this check is redundant. I see all the Kconfig options which enables
-> > both of these flags don't explicitly mention this dependency.
-> > 
-> > >
-> > > Separately, I wonder if the "select OF if !ACPI" is even needed.  It doesn't
-> > > hurt anything to leave it, but it seems like any config that doesn't
-> > > independently select either ACPI or OF is broken for reasons unrelated
-> > > to Hyper-V.  I'm OK with leaving the select of OF if you want, so I'm
-> > > more just wondering than asserting it should be removed.   I didn't
-> > > see "select OF if !ACPI" anywhere else in the Kconfig files, and it
-> > > seems like Hyper-V would not be the only environment where this
-> > > is the expectation.
-> > 
-> > Ok I can remove the !ACPI dependency. Hope kernel size increase due to both
-> > the code compiled in shouldn't be problem for ACPI systems.
-> > And here if config doesn't select ACPI or OF it will assume OF, which is
-> > better then selecting none of them.
-> > 
-> > 
-> > To address both of your comments I feel below will be sufficient:
-> > select OF
-> > select OF_EARLY_FLATTRE
-> 
-> Actually, that's not what I was thinking. :-)   I was thinking for the Hyper-V
-> Kconfig to be silent on selecting OF, just like it is silent on selecting ACPI.
-> Whoever is configuring the kernel build would separately be selecting
-> ACPI, or OF, or both, depending on their needs.   I don't think the Hyper-V
-> Kconfig should always be selecting OF, because of the reason you noted --
-> it drags in code that is not needed for normal VTL 0 usage.  If you take
-> that approach, then
-> 
-> 	select OF_EARLY_FLATTREE if OF
-> 
-> is appropriate.
+On Sun, Mar 12, 2023 at 5:09 PM Zhang, Rui <rui.zhang@intel.com> wrote:
+>
+> On Fri, 2023-03-03 at 20:19 +0100, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > The cpufreq policy notifier in the ACPI processor driver may as
+> > well be registered before the driver itself, which causes
+> > acpi_processor_cpufreq_init to be true (unless the notifier
+> > registration fails, which is unlikely at that point) when the
+> > ACPI CPU thermal cooling devices are registered, so the
+> > processor_get_max_state() result does not change while
+> > acpi_processor_driver_init() is running.
+> >
+> > Change the ordering in acpi_processor_driver_init() accordingly
+> > to prevent the max_state value from remaining 0 permanently for all
+> > ACPI CPU cooling devices.
+> >
+> > Fixes: a365105c685c("thermal: sysfs: Reuse cdev->max_state")
+> > Reported-by: Wang, Quanxian <quanxian.wang@intel.com>
+> > Link:
+> > https://lore.kernel.org/linux-pm/53ec1f06f61c984100868926f282647e57ecfb2d.camel@intel.com/
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>
+> The full patch series fixes the problem but this one does not.
 
-Thanks for clarifying, I will fix this in next vesrion.
+That is a correct observation, but the $subject patch fixes part of
+the problem (which is not addressed by the rest of the series AFAICS)
+and so it deserves a Fixes tag of its own IMO.
 
-Regards,
-Saurabh
+I guess I should clarify that in the changelog.
 
-> 
-> Michael
-> 
-> 
-> 
-> > 
-> > 
-> > Regards,
-> > Saurabh
-> > 
-> > >
-> > > Michael
+> This is because,
+>
+> static int cpu_has_cpufreq(unsigned int cpu)
+> {
+>         struct
+> cpufreq_policy *policy;
+>
+>         if (!acpi_processor_cpufreq_init)
+>                 return 0;
+>
+>         policy = cpufreq_cpu_get(cpu);
+>         if (policy) {
+>                 cpufreq_cpu_put(policy);
+>                 return 1;
+>         }
+>         return 0;
+> }
+>
+> Although acpi_processor_cpufreq_init is set to true with patch 1/4, but
+> we don't have cpufreq driver registered, thus cpufreq_cpu_get() return
+> NULL.
+> so acpi_processor_cpufreq_init is not the only dependency here. :(
+
+Right.  That's why the other patches in the series are needed too.
+
+> > ---
+> >  drivers/acpi/processor_driver.c |   12 ++++++------
+> >  1 file changed, 6 insertions(+), 6 deletions(-)
+> >
+> > Index: linux-pm/drivers/acpi/processor_driver.c
+> > ===================================================================
+> > --- linux-pm.orig/drivers/acpi/processor_driver.c
+> > +++ linux-pm/drivers/acpi/processor_driver.c
+> > @@ -263,6 +263,12 @@ static int __init acpi_processor_driver_
+> >       if (acpi_disabled)
+> >               return 0;
+> >
+> > +     if (!cpufreq_register_notifier(&acpi_processor_notifier_block,
+> > +                                    CPUFREQ_POLICY_NOTIFIER)) {
+> > +             acpi_processor_cpufreq_init = true;
+> > +             acpi_processor_ignore_ppc_init();
+> > +     }
+> > +
+> >       result = driver_register(&acpi_processor_driver);
+> >       if (result < 0)
+> >               return result;
+> > @@ -276,12 +282,6 @@ static int __init acpi_processor_driver_
+> >       cpuhp_setup_state_nocalls(CPUHP_ACPI_CPUDRV_DEAD, "acpi/cpu-
+> > drv:dead",
+> >                                 NULL, acpi_soft_cpu_dead);
+> >
+> > -     if (!cpufreq_register_notifier(&acpi_processor_notifier_block,
+> > -                                    CPUFREQ_POLICY_NOTIFIER)) {
+> > -             acpi_processor_cpufreq_init = true;
+> > -             acpi_processor_ignore_ppc_init();
+> > -     }
+> > -
+> >       acpi_processor_throttling_init();
+> >       return 0;
+> >  err:
+> >
+> >
+> >
