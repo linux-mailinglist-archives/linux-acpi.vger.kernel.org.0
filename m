@@ -2,63 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 957576B7B5A
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Mar 2023 16:00:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CAEF26B7C8E
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Mar 2023 16:51:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231650AbjCMPAi convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 13 Mar 2023 11:00:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44712 "EHLO
+        id S231297AbjCMPv5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Mar 2023 11:51:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230460AbjCMPAY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Mar 2023 11:00:24 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D6D45AB69;
-        Mon, 13 Mar 2023 07:59:46 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id y4so20409555edo.2;
-        Mon, 13 Mar 2023 07:59:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678719523;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i02P5ataXv/WIcmNp45CNsGdsz6XbuPwbFbqKbd3wps=;
-        b=7Be2/OZw1OoDWuhXsJlOWQPRDGRPmCodv4KohcABlLHYFEbqldKxZ+SbDmC15qeUhe
-         8dI/Ek6YdtCcn+dLsvkXLWWIrjgmUy/XXWePj/RcaCQsYFYWbv53mmjHhnkMoVHu65eC
-         xfxnlO6cVJ26NId5SIE9xFWRnPJ0sOHz/Y5ls/q17qRrvSYqqQPr3gMXDDe1Knmmn7fJ
-         4OFhY5twlNhOykC1nBUxdS8EM/iNxId51fNrNFgVa5Toub+wnOPKbvUWImg/tgdnyR9w
-         l3PNShDkLxulUQPljBUcbW3nuapOTRxMVf8F8ysWAXVbPLrh517iEreB4+jjVB8Der/a
-         k2QQ==
-X-Gm-Message-State: AO0yUKWPRZxm0gMwpz2wR960itabUsLTF4UY+DkPthy/xkvllg9IZ3Et
-        qLGBNnxB62OOFDUzB4vc2aFx+SMg/L3rNBMsHpvwZ6Hg
-X-Google-Smtp-Source: AK7set9xN+eHg7+H6zPIHDwWACMtSISETGGrfN66v/i18u1amy9ku+gp8Q/MhuuLsvrS0KKfxqJdEfrrQVjaia7z0RA=
-X-Received: by 2002:a50:f684:0:b0:4fa:3c0b:74b with SMTP id
- d4-20020a50f684000000b004fa3c0b074bmr4126916edn.3.1678719522937; Mon, 13 Mar
- 2023 07:58:42 -0700 (PDT)
+        with ESMTP id S231314AbjCMPvm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Mar 2023 11:51:42 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6EA0878C8C;
+        Mon, 13 Mar 2023 08:51:16 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C9C932F4;
+        Mon, 13 Mar 2023 08:51:46 -0700 (PDT)
+Received: from [10.1.196.177] (eglon.cambridge.arm.com [10.1.196.177])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 74FC33F71A;
+        Mon, 13 Mar 2023 08:50:56 -0700 (PDT)
+Message-ID: <1f21673e-e5e6-a158-94a4-6ae6724c1f93@arm.com>
+Date:   Mon, 13 Mar 2023 15:50:52 +0000
 MIME-Version: 1.0
-References: <2148907.irdbgypaU6@kreacher> <2885079.e9J7NaK4W3@kreacher>
- <49cefdcb5d50c1920b9c9533d30e886e368f3fe7.camel@intel.com>
- <CAJZ5v0hm3S_3eOsVm5vTUX23ynPXhY469ctZUpLdHZFt+b2KHA@mail.gmail.com> <ff9d343113b184f08877952608d3424d87687a42.camel@intel.com>
-In-Reply-To: <ff9d343113b184f08877952608d3424d87687a42.camel@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 13 Mar 2023 15:58:31 +0100
-Message-ID: <CAJZ5v0g_560Rwm6owHxX0L0NrSy4H3MvL9JfGShzXmvihgGtdw@mail.gmail.com>
-Subject: Re: [PATCH v1 1/4] ACPI: processor: Reorder acpi_processor_driver_init()
-To:     "Zhang, Rui" <rui.zhang@intel.com>
-Cc:     "rafael@kernel.org" <rafael@kernel.org>,
-        "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
-        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-        "Wang, Quanxian" <quanxian.wang@intel.com>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "srinivas.pandruvada@linux.intel.com" 
-        <srinivas.pandruvada@linux.intel.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: [RFC PATCH 00/32] ACPI/arm64: add support for virtual cpuhotplug
+Content-Language: en-GB
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+        kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Borislav Petkov <bp@alien8.de>, H Peter Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Oliver Upton <oliver.upton@linux.dev>,
+        Len Brown <lenb@kernel.org>,
+        Rafael Wysocki <rafael@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        kangkang.shen@futurewei.com
+References: <20230203135043.409192-1-james.morse@arm.com>
+ <20230307120050.000032f1@Huawei.com>
+From:   James Morse <james.morse@arm.com>
+In-Reply-To: <20230307120050.000032f1@Huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,126 +67,70 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 13, 2023 at 3:54 PM Zhang, Rui <rui.zhang@intel.com> wrote:
->
-> On Mon, 2023-03-13 at 14:48 +0100, Rafael J. Wysocki wrote:
-> > On Sun, Mar 12, 2023 at 5:09 PM Zhang, Rui <rui.zhang@intel.com>
-> > wrote:
-> > > On Fri, 2023-03-03 at 20:19 +0100, Rafael J. Wysocki wrote:
-> > > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > >
-> > > > The cpufreq policy notifier in the ACPI processor driver may as
-> > > > well be registered before the driver itself, which causes
-> > > > acpi_processor_cpufreq_init to be true (unless the notifier
-> > > > registration fails, which is unlikely at that point) when the
-> > > > ACPI CPU thermal cooling devices are registered, so the
-> > > > processor_get_max_state() result does not change while
-> > > > acpi_processor_driver_init() is running.
-> > > >
-> > > > Change the ordering in acpi_processor_driver_init() accordingly
-> > > > to prevent the max_state value from remaining 0 permanently for
-> > > > all
-> > > > ACPI CPU cooling devices.
-> > > >
-> > > > Fixes: a365105c685c("thermal: sysfs: Reuse cdev->max_state")
-> > > > Reported-by: Wang, Quanxian <quanxian.wang@intel.com>
-> > > > Link:
-> > > > https://lore.kernel.org/linux-pm/53ec1f06f61c984100868926f282647e57ecfb2d.camel@intel.com/
-> > > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > >
-> > > The full patch series fixes the problem but this one does not.
-> >
-> > That is a correct observation, but the $subject patch fixes part of
-> > the problem (which is not addressed by the rest of the series AFAICS)
-> > and so it deserves a Fixes tag of its own IMO.
->
-> Am I understanding this correctly that this patch helps in below case?
->
-> cpufreq driver like intel_pstate is registered before we register the
-> notifier callback in processor_driver. In this case, we are not able to
-> catch the CPUFREQ_CREATE_POLICY notification and cpufreq should be
-> counted as part of cooling states when registering the ACPI CPU cooling
-> device. (acpi_processor_cpufreq_init must be set at this time)
+Hi Jonathan,
 
-Yes.
+On 07/03/2023 12:00, Jonathan Cameron wrote:
+> On Fri,  3 Feb 2023 13:50:11 +0000
+> James Morse <james.morse@arm.com> wrote:
 
-> Or else, in normal case, the ACPI CPU cdev->max_state always return 0
-> (when t-state not available) until we receive the CPUFREQ_CREATE_POLICY
-> notification and call thermal_cooling_device_update(), both with and
-> without this patch.
->
-> Patch 2,3,4 works on my test platform, without applying patch 1/4.
+>> On a system that supports cpuhotplug the MADT has to describe every possible
+>> CPU at boot. Under KVM, the vGIC needs to know about every possible vCPU before
+>> the guest is started.
+>> With these constraints, virtual-cpuhotplug is really just a hypervisor/firmware
+>> policy about which CPUs can be brought online.
+>>
+>> This series adds support for virtual-cpuhotplug as exactly that: firmware
+>> policy. This may even work on a physical machine too; for a guest the part of
+>> firmware is played by the VMM. (typically Qemu).
+>>
+>> PSCI support is modified to return 'DENIED' if the CPU can't be brought
+>> online/enabled yet. The CPU object's _STA method's enabled bit is used to
+>> indicate firmware's current disposition. If the CPU has its enabled bit clear,
+>> it will not be registered with sysfs, and attempts to bring it online will
+>> fail. The notifications that _STA has changed its value then work in the same
+>> way as physical hotplug, and firmware can cause the CPU to be registered some
+>> time later, allowing it to be brought online.
 
-OK
+> As we discussed on an LOD call a while back, I think that we need some path to
+> find out if the guest supports vCPU HP or not so that info can be queried by
+> an orchestrator / libvirt etc.  In general the entity responsible for allocating
+> extra vCPUs may not know what support the VM has for this feature.
 
-> > I guess I should clarify that in the changelog.
-> >
-> > > This is because,
-> > >
-> > > static int cpu_has_cpufreq(unsigned int cpu)
-> > > {
-> > >         struct
-> > > cpufreq_policy *policy;
-> > >
-> > >         if (!acpi_processor_cpufreq_init)
-> > >                 return 0;
-> > >
-> > >         policy = cpufreq_cpu_get(cpu);
-> > >         if (policy) {
-> > >                 cpufreq_cpu_put(policy);
-> > >                 return 1;
-> > >         }
-> > >         return 0;
-> > > }
-> > >
-> > > Although acpi_processor_cpufreq_init is set to true with patch 1/4,
-> > > but
-> > > we don't have cpufreq driver registered, thus cpufreq_cpu_get()
-> > > return
-> > > NULL.
-> > > so acpi_processor_cpufreq_init is not the only dependency here. :(
-> >
-> > Right.  That's why the other patches in the series are needed too.
-> >
-> > > > ---
-> > > >  drivers/acpi/processor_driver.c |   12 ++++++------
-> > > >  1 file changed, 6 insertions(+), 6 deletions(-)
-> > > >
-> > > > Index: linux-pm/drivers/acpi/processor_driver.c
-> > > > =================================================================
-> > > > ==
-> > > > --- linux-pm.orig/drivers/acpi/processor_driver.c
-> > > > +++ linux-pm/drivers/acpi/processor_driver.c
-> > > > @@ -263,6 +263,12 @@ static int __init acpi_processor_driver_
-> > > >       if (acpi_disabled)
-> > > >               return 0;
-> > > >
-> > > > +     if
-> > > > (!cpufreq_register_notifier(&acpi_processor_notifier_block,
-> > > > +                                    CPUFREQ_POLICY_NOTIFIER)) {
-> > > > +             acpi_processor_cpufreq_init = true;
-> > > > +             acpi_processor_ignore_ppc_init();
-> > > > +     }
-> > > > +
-> > > >       result = driver_register(&acpi_processor_driver);
-> > > >       if (result < 0)
-> > > >               return result;
-> > > > @@ -276,12 +282,6 @@ static int __init acpi_processor_driver_
-> > > >       cpuhp_setup_state_nocalls(CPUHP_ACPI_CPUDRV_DEAD,
-> > > > "acpi/cpu-
-> > > > drv:dead",
-> > > >                                 NULL, acpi_soft_cpu_dead);
-> > > >
-> > > > -     if
-> > > > (!cpufreq_register_notifier(&acpi_processor_notifier_block,
-> > > > -                                    CPUFREQ_POLICY_NOTIFIER)) {
-> > > > -             acpi_processor_cpufreq_init = true;
-> > > > -             acpi_processor_ignore_ppc_init();
-> > > > -     }
-> > > > -
-> > > >       acpi_processor_throttling_init();
-> > > >       return 0;
-> > > >  err:
-> > > >
-> > > >
-> > > >
+I agree. For arm64 this is going to be important if/when there are machines that do
+physical hotplug of CPUs too.
+
+
+> There are various ways we could get this information into the VMM.
+> My immediate thought is to use one of the ACPI interfaces that lets us write
+> AML that can set an emulated register. A query to the VMM can check if this
+> register is set.
+> 
+> So options.
+> 
+> _OSI() - Deprecated on ARM64 so lets not use that ;)
+
+News to me, I've only just discovered it!
+
+
+> _OSC() - Could add a bit to Table 6.13 Platform-Wide Capabilites in ACPI 6.5 spec.
+>          Given x86 has a similar online capable bit perhaps this is the best option
+>          though it is the one that requires a formal code first proposal to ASWG.
+
+I've had a go at writing this one:
+https://gitlab.arm.com/linux-arm/linux-jm/-/commit/220b0d8b0261d7467c8705e6f614d57325798859
+
+It'll appear in the v1 of the series once the kernel and qemu bits are all lined up again.
+
+
+Thanks,
+
+James
+
+
+> _OSC() - Could add a new UUID and put it under a suitable device - maybe all CPUs?
+>          You could definitely argue this feature is an operating system property.
+> _DSM() - Similar to OSC but always under a device.
+>          Whilst can be used for this I'm not sure it really matches intended usecase.
+> 
+> Assuming everyone agrees this bit of introspection is useful,
+> Rafael / other ACPI specialists: Any suggestions on how best to do this?
