@@ -2,177 +2,190 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2086D6B7B42
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Mar 2023 15:57:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 957576B7B5A
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Mar 2023 16:00:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230232AbjCMO5W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Mar 2023 10:57:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37926 "EHLO
+        id S231650AbjCMPAi convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 13 Mar 2023 11:00:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230291AbjCMO5V (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Mar 2023 10:57:21 -0400
-Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA85074322;
-        Mon, 13 Mar 2023 07:56:37 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.west.internal (Postfix) with ESMTP id 28B473200950;
-        Mon, 13 Mar 2023 10:55:45 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Mon, 13 Mar 2023 10:55:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        invisiblethingslab.com; h=cc:cc:content-type:content-type:date
-        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm1; t=
-        1678719344; x=1678805744; bh=/9rmj+X4kyyPjr1ToYiOfSGGJWOhFJxQ0AY
-        AN3zcuF8=; b=Z30vp8pjhtPsUTh33yZDWWjEYIhgMJUC5fCJaHRS8bFVH9NS6V9
-        KdxSCrOIUhl/9uj6XvBmcckbpQN0aspwOq02Y+c4rjyBKwTmWIhH9Ewxq8s7FLI0
-        gAREDAhhvzxzJ6hp5JHuP22GF6FjpmkXt3g32Nt7A2h90qSrne0O2XqbVn3NOhlF
-        gEUlUfk8VIJNP7SgnJAVwdL2jXhlZETQ5LZ2mOA1T73OAAzBEASaJ5YZ9pDZK7Ho
-        fJS9IKna98iCWl2AEMr57BWrpzYBGTzKm8b8GJrDyEfi+e/tfIalyGjjunVfy1Yf
-        V+Ozg5t9dhNeeFJPCifFvKYyeUoHSOiLCxQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1678719344; x=1678805744; bh=/9rmj+X4kyyPj
-        r1ToYiOfSGGJWOhFJxQ0AYAN3zcuF8=; b=cByl0WwZ2OV5bDnoA+JbcKRUnnVrD
-        op7gLDuT2Kpr+3Cfm9s+0DTWVP3YRcJT5cmQ/nIqHjTUhf0jaULqpTC9/CapU/49
-        IwfLKuIcUO0+hwfQBKIY9GOBYw1np9SolAtD6/RzOOPe6QlMUni8ANhJ8UbArRnG
-        pFd/YMwstcXqrHHCbrZpc2N+145vgdgpriPzeGlCfQJYIyljfuZIfmKfXNAXB/HJ
-        P0V5fqYarVzLcMIopXolnTG4njSLl+OBQa/MaigjygUu12VVBrqFCtxcRyJGcl/L
-        MFqmmXxqA9ocI4oLwjoucjgsDyBC8hY+LGxq8/4hqoCYgvpmoEgBZEcBQ==
-X-ME-Sender: <xms:cDkPZIVTpz9LyD43duvsMoLfpjFgVwI17N57732HCGfStqiQ3XYLxQ>
-    <xme:cDkPZMkp2gsQ_29YKFQk8EXfQOXJ59AwXn8rZBNQ0BVeRDyBAr7DdWt12jt4jmq8z
-    qI0fUlB83huzFo>
-X-ME-Received: <xmr:cDkPZMa4GtitvxSfxhgIyDXcMz7r1gN9UHmOpxF99Ul2Gu1BrU97b-nqZ4rmYOZdmiYsTJsJ-lyViyfLi2RFEbAS0Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvddvgedgieelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkfffggfuvfevfhfhjggtsehgtderredttdejnecuhfhrohhmpefuihhmohhn
-    ucfirghishgvrhcuoehsihhmohhnsehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtg
-    homheqnecuggftrfgrthhtvghrnhepfedtfeduledtvefhheekfefhuedthfffudegteff
-    vdfgheefkefhteegvdeugffgnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlh
-    hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehsihhmohhnsehi
-    nhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
-X-ME-Proxy: <xmx:cDkPZHX8zVT1hFDBk1Qfjm_RL-w_crwcZJgqk2OU4Y1zPyJexKgESA>
-    <xmx:cDkPZClgpZoDZzPjaLaEfyaY3F3rdmkCy3ytHR8bj9lsessDAotcRg>
-    <xmx:cDkPZMdjgSFI0IcGaoe8B32qTBV_OSgXDftKmgK6qjlY5OzCXKydhQ>
-    <xmx:cDkPZGtBmiEw8MBcn821x5PaVFv0fXQLa4WJ4PG7nwJzU-_haGBqtA>
-Feedback-ID: idc5945a3:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Mar 2023 10:55:42 -0400 (EDT)
-Message-ID: <dd9d2291-8452-0f9e-d7b1-cef14c6c667f@invisiblethingslab.com>
-Date:   Mon, 13 Mar 2023 15:56:10 +0100
+        with ESMTP id S230460AbjCMPAY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Mar 2023 11:00:24 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D6D45AB69;
+        Mon, 13 Mar 2023 07:59:46 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id y4so20409555edo.2;
+        Mon, 13 Mar 2023 07:59:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678719523;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=i02P5ataXv/WIcmNp45CNsGdsz6XbuPwbFbqKbd3wps=;
+        b=7Be2/OZw1OoDWuhXsJlOWQPRDGRPmCodv4KohcABlLHYFEbqldKxZ+SbDmC15qeUhe
+         8dI/Ek6YdtCcn+dLsvkXLWWIrjgmUy/XXWePj/RcaCQsYFYWbv53mmjHhnkMoVHu65eC
+         xfxnlO6cVJ26NId5SIE9xFWRnPJ0sOHz/Y5ls/q17qRrvSYqqQPr3gMXDDe1Knmmn7fJ
+         4OFhY5twlNhOykC1nBUxdS8EM/iNxId51fNrNFgVa5Toub+wnOPKbvUWImg/tgdnyR9w
+         l3PNShDkLxulUQPljBUcbW3nuapOTRxMVf8F8ysWAXVbPLrh517iEreB4+jjVB8Der/a
+         k2QQ==
+X-Gm-Message-State: AO0yUKWPRZxm0gMwpz2wR960itabUsLTF4UY+DkPthy/xkvllg9IZ3Et
+        qLGBNnxB62OOFDUzB4vc2aFx+SMg/L3rNBMsHpvwZ6Hg
+X-Google-Smtp-Source: AK7set9xN+eHg7+H6zPIHDwWACMtSISETGGrfN66v/i18u1amy9ku+gp8Q/MhuuLsvrS0KKfxqJdEfrrQVjaia7z0RA=
+X-Received: by 2002:a50:f684:0:b0:4fa:3c0b:74b with SMTP id
+ d4-20020a50f684000000b004fa3c0b074bmr4126916edn.3.1678719522937; Mon, 13 Mar
+ 2023 07:58:42 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [PATCH] ACPI: s2idle: Don't ignore error when enabling wakeup IRQ
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230313125344.2893-1-simon@invisiblethingslab.com>
- <CAJZ5v0jahjt58nP6P5+xRdtD_ndYPvq4ecMVz6nfGu9tf5iaUw@mail.gmail.com>
-Content-Language: en-US
-From:   Simon Gaiser <simon@invisiblethingslab.com>
-In-Reply-To: <CAJZ5v0jahjt58nP6P5+xRdtD_ndYPvq4ecMVz6nfGu9tf5iaUw@mail.gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------N09i4IsF07IhZeoawzn9TkNo"
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <2148907.irdbgypaU6@kreacher> <2885079.e9J7NaK4W3@kreacher>
+ <49cefdcb5d50c1920b9c9533d30e886e368f3fe7.camel@intel.com>
+ <CAJZ5v0hm3S_3eOsVm5vTUX23ynPXhY469ctZUpLdHZFt+b2KHA@mail.gmail.com> <ff9d343113b184f08877952608d3424d87687a42.camel@intel.com>
+In-Reply-To: <ff9d343113b184f08877952608d3424d87687a42.camel@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 13 Mar 2023 15:58:31 +0100
+Message-ID: <CAJZ5v0g_560Rwm6owHxX0L0NrSy4H3MvL9JfGShzXmvihgGtdw@mail.gmail.com>
+Subject: Re: [PATCH v1 1/4] ACPI: processor: Reorder acpi_processor_driver_init()
+To:     "Zhang, Rui" <rui.zhang@intel.com>
+Cc:     "rafael@kernel.org" <rafael@kernel.org>,
+        "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
+        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+        "Wang, Quanxian" <quanxian.wang@intel.com>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "srinivas.pandruvada@linux.intel.com" 
+        <srinivas.pandruvada@linux.intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------N09i4IsF07IhZeoawzn9TkNo
-Content-Type: multipart/mixed; boundary="------------eYSF43eSJSkFS83Zjm0T0Q8d";
- protected-headers="v1"
-From: Simon Gaiser <simon@invisiblethingslab.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Message-ID: <dd9d2291-8452-0f9e-d7b1-cef14c6c667f@invisiblethingslab.com>
-Subject: Re: [PATCH] ACPI: s2idle: Don't ignore error when enabling wakeup IRQ
-References: <20230313125344.2893-1-simon@invisiblethingslab.com>
- <CAJZ5v0jahjt58nP6P5+xRdtD_ndYPvq4ecMVz6nfGu9tf5iaUw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0jahjt58nP6P5+xRdtD_ndYPvq4ecMVz6nfGu9tf5iaUw@mail.gmail.com>
+On Mon, Mar 13, 2023 at 3:54 PM Zhang, Rui <rui.zhang@intel.com> wrote:
+>
+> On Mon, 2023-03-13 at 14:48 +0100, Rafael J. Wysocki wrote:
+> > On Sun, Mar 12, 2023 at 5:09 PM Zhang, Rui <rui.zhang@intel.com>
+> > wrote:
+> > > On Fri, 2023-03-03 at 20:19 +0100, Rafael J. Wysocki wrote:
+> > > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > >
+> > > > The cpufreq policy notifier in the ACPI processor driver may as
+> > > > well be registered before the driver itself, which causes
+> > > > acpi_processor_cpufreq_init to be true (unless the notifier
+> > > > registration fails, which is unlikely at that point) when the
+> > > > ACPI CPU thermal cooling devices are registered, so the
+> > > > processor_get_max_state() result does not change while
+> > > > acpi_processor_driver_init() is running.
+> > > >
+> > > > Change the ordering in acpi_processor_driver_init() accordingly
+> > > > to prevent the max_state value from remaining 0 permanently for
+> > > > all
+> > > > ACPI CPU cooling devices.
+> > > >
+> > > > Fixes: a365105c685c("thermal: sysfs: Reuse cdev->max_state")
+> > > > Reported-by: Wang, Quanxian <quanxian.wang@intel.com>
+> > > > Link:
+> > > > https://lore.kernel.org/linux-pm/53ec1f06f61c984100868926f282647e57ecfb2d.camel@intel.com/
+> > > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > >
+> > > The full patch series fixes the problem but this one does not.
+> >
+> > That is a correct observation, but the $subject patch fixes part of
+> > the problem (which is not addressed by the rest of the series AFAICS)
+> > and so it deserves a Fixes tag of its own IMO.
+>
+> Am I understanding this correctly that this patch helps in below case?
+>
+> cpufreq driver like intel_pstate is registered before we register the
+> notifier callback in processor_driver. In this case, we are not able to
+> catch the CPUFREQ_CREATE_POLICY notification and cpufreq should be
+> counted as part of cooling states when registering the ACPI CPU cooling
+> device. (acpi_processor_cpufreq_init must be set at this time)
 
---------------eYSF43eSJSkFS83Zjm0T0Q8d
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Yes.
 
-Rafael J. Wysocki:
-> On Mon, Mar 13, 2023 at 1:54=E2=80=AFPM Simon Gaiser
-> <simon@invisiblethingslab.com> wrote:
->>
->> enable_irq_wake() can fail. Previously acpi_s2idle_prepare() silently
->> ignored it's return code, potentially leaving a system that never
->> wakes up.
->>
->> Discovered when trying to go into s2idle under Xen. This leads to a
->> system that can't be woken, since xen-pirq currently doesn't support
->> setting wakeup IRQs. Real s2idle support for Xen is another topic,
->> but now at least the user gets an error and the system doesn't needs
->> an hard reset.
->>
->> Signed-off-by: Simon Gaiser <simon@invisiblethingslab.com>
->> ---
->>
->> Note that I'm unfamiliar with the code so when reviewing please
->> carefully check if ignoring the error was indeed unintended.
->=20
-> No, it wasn't.
->=20
-> First, in the majority of cases in which ACPI SCI is used, the IRQ
-> chip in question has IRQCHIP_SKIP_SET_WAKE set, so enable_irq_wake()
-> cannot fail for it.
->=20
-> Second, even if it could fail, it is preferred to let the system
-> suspend anyway, as long as there is at least one other wakeup source
-> in it and that is the case as a rule (for example, wakeup is enabled
-> for the PS/2 keyboard IRQ for all systems that have it).
->=20
->> If there are indeed cases where the error should be ignored I would
->> submit a patch that at least logs the error, although the error
->> message would be hard to see with broken wakeup.
->=20
-> Logging an error would be fine, but failing suspend may not be.  Of
-> course, suspend should be aborted if there are no other usable (and
-> enabled) wakeup sources, but currently there's no infrastructure for
-> verifying that.
+> Or else, in normal case, the ACPI CPU cdev->max_state always return 0
+> (when t-state not available) until we receive the CPUFREQ_CREATE_POLICY
+> notification and call thermal_cooling_device_update(), both with and
+> without this patch.
+>
+> Patch 2,3,4 works on my test platform, without applying patch 1/4.
 
-Ah, ok, that's a bit unfortunate. Anyway sent a v2 that only logs. That
-way it should at least make debugging for someone else that runs into
-such a case a bit easier.
+OK
 
-https://lore.kernel.org/linux-acpi/20230313144710.3516-1-simon@invisiblet=
-hingslab.com/
-
---------------eYSF43eSJSkFS83Zjm0T0Q8d--
-
---------------N09i4IsF07IhZeoawzn9TkNo
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE3E8ezGzG3N1CTQ//kO9xfO/xly8FAmQPOYwACgkQkO9xfO/x
-ly9jlRAAjheJOjaRxkimwJT/iKwkr4L8vS2/aViD/b6meODbO3HE7hLtf2jff4sh
-aUxwZXalP30Py7XGj0txkRKe4bGvNtUi3vHkVuB3bE2Ld9aJj277RrOeLsTvSUO2
-cxob/dhnacbSOrNFrEzT76UmXMdpPJdN7wlZH9m4ZgvURA+rfrNoQDgenmHkfYj+
-WnhHBsX6wRjVEtLE3Vo4zwqcOj6ghVAEEC5YkLpmDbV2ay4JgDkoAe9N7E8s1SvS
-5/OU43orb2gw/tyDHJVWGtjV/aNyMcwz7IswULHTFQuwVHeYDwgyd2Mdsf8y5kTU
-n84+8sfoiOmtIYR481EW5nqAmvlQuBwCEYrG8eojMmQ3uR8t677b8Gzi5fw+MPXy
-Q01R7DrxMVvo98l+K1LrTnV1o+Jac/qzP3cHR+eJad7Jy7UpyMrpZ4vd0Y1W3lsK
-6DdCqlpnk8Xp/IifE/6I3KzkWMbZq0oZ35OKL3aXUXJueTXPyTGHt//HMVangMZU
-RcpnMkm2bh0sUvqbwK+7Gf686PvtefedsbhpE1Fft8xlJVIxLDZIvhOOF5oVVMnD
-8xRyL8n7cDYZUkk6TUecNapeeoeDPDIYEcyIvhKAA67cBe1hgdzMGelxO7hLGshk
-j83aiKGVuCLzB0+p8CsxrS91iKqXBpUXqnJMm4YrE4/t6BIi0XE=
-=pbfw
------END PGP SIGNATURE-----
-
---------------N09i4IsF07IhZeoawzn9TkNo--
+> > I guess I should clarify that in the changelog.
+> >
+> > > This is because,
+> > >
+> > > static int cpu_has_cpufreq(unsigned int cpu)
+> > > {
+> > >         struct
+> > > cpufreq_policy *policy;
+> > >
+> > >         if (!acpi_processor_cpufreq_init)
+> > >                 return 0;
+> > >
+> > >         policy = cpufreq_cpu_get(cpu);
+> > >         if (policy) {
+> > >                 cpufreq_cpu_put(policy);
+> > >                 return 1;
+> > >         }
+> > >         return 0;
+> > > }
+> > >
+> > > Although acpi_processor_cpufreq_init is set to true with patch 1/4,
+> > > but
+> > > we don't have cpufreq driver registered, thus cpufreq_cpu_get()
+> > > return
+> > > NULL.
+> > > so acpi_processor_cpufreq_init is not the only dependency here. :(
+> >
+> > Right.  That's why the other patches in the series are needed too.
+> >
+> > > > ---
+> > > >  drivers/acpi/processor_driver.c |   12 ++++++------
+> > > >  1 file changed, 6 insertions(+), 6 deletions(-)
+> > > >
+> > > > Index: linux-pm/drivers/acpi/processor_driver.c
+> > > > =================================================================
+> > > > ==
+> > > > --- linux-pm.orig/drivers/acpi/processor_driver.c
+> > > > +++ linux-pm/drivers/acpi/processor_driver.c
+> > > > @@ -263,6 +263,12 @@ static int __init acpi_processor_driver_
+> > > >       if (acpi_disabled)
+> > > >               return 0;
+> > > >
+> > > > +     if
+> > > > (!cpufreq_register_notifier(&acpi_processor_notifier_block,
+> > > > +                                    CPUFREQ_POLICY_NOTIFIER)) {
+> > > > +             acpi_processor_cpufreq_init = true;
+> > > > +             acpi_processor_ignore_ppc_init();
+> > > > +     }
+> > > > +
+> > > >       result = driver_register(&acpi_processor_driver);
+> > > >       if (result < 0)
+> > > >               return result;
+> > > > @@ -276,12 +282,6 @@ static int __init acpi_processor_driver_
+> > > >       cpuhp_setup_state_nocalls(CPUHP_ACPI_CPUDRV_DEAD,
+> > > > "acpi/cpu-
+> > > > drv:dead",
+> > > >                                 NULL, acpi_soft_cpu_dead);
+> > > >
+> > > > -     if
+> > > > (!cpufreq_register_notifier(&acpi_processor_notifier_block,
+> > > > -                                    CPUFREQ_POLICY_NOTIFIER)) {
+> > > > -             acpi_processor_cpufreq_init = true;
+> > > > -             acpi_processor_ignore_ppc_init();
+> > > > -     }
+> > > > -
+> > > >       acpi_processor_throttling_init();
+> > > >       return 0;
+> > > >  err:
+> > > >
+> > > >
+> > > >
