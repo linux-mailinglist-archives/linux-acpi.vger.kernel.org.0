@@ -2,51 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 121FA6B9FD9
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Mar 2023 20:37:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B8BDE6B9FE4
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Mar 2023 20:40:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229870AbjCNThM convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 14 Mar 2023 15:37:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53288 "EHLO
+        id S229538AbjCNTkJ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 14 Mar 2023 15:40:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230035AbjCNThL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Mar 2023 15:37:11 -0400
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FAE32A6DE;
-        Tue, 14 Mar 2023 12:37:02 -0700 (PDT)
-Received: by mail-ed1-f54.google.com with SMTP id cn21so36408414edb.0;
-        Tue, 14 Mar 2023 12:37:01 -0700 (PDT)
+        with ESMTP id S230109AbjCNTkI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Mar 2023 15:40:08 -0400
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 155CC193E0;
+        Tue, 14 Mar 2023 12:40:07 -0700 (PDT)
+Received: by mail-ed1-f46.google.com with SMTP id x13so19264319edd.1;
+        Tue, 14 Mar 2023 12:40:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678822620;
+        d=1e100.net; s=20210112; t=1678822805;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QcgqrEEeAkKKOQl82NDw/a48a4KrmvHxuMGEj//jCFE=;
-        b=lGiGWfynM/jBFGYSd8NhCjaCVRbtUAtZ9ujELBNN3qzirSf1mOBQVw9cCibQ2bdsY1
-         8sY0thj/GODYvedi9rQfeDM8WReZsVVMqovz2IG1fzFOO+AfjvREPA8m47cpkn9fPOvB
-         jJRarDG3mkeFE5NEjYgjMyu08uXb3i91veX42zNQ0ypwt9AvVwZC8NZk5Yju3ok57LL6
-         J7h8EYqkYY+/CHtzFIHSnLOEbebopWK0vNmmz/MRk3IClunlIjL1efvRk/eoHpn2NJKk
-         QZlhxRJvN6/ExAURyPpjMmCQrMe/TD7NYyH0cKv/A0tuoO/hEMhg2zlqV6eg/L2MnXEd
-         +jOg==
-X-Gm-Message-State: AO0yUKV/4hpAru5O0xa46wn1TiWq3cfenUt5odl+Z0SKFkH/hitWG8so
-        7qdXVcTXmebqOhqdd35PrjT2UebB7jed29XdXRc=
-X-Google-Smtp-Source: AK7set+cMfoe4bsEnRmrY5E8XZQiF35wuilUo433PUun4G3b9dikVzXxdDU1zSSwxhJLUHQRdYf+f05lopA3NNj34t8=
-X-Received: by 2002:a50:8754:0:b0:4fb:c8e3:1adb with SMTP id
- 20-20020a508754000000b004fbc8e31adbmr138552edv.3.1678822620191; Tue, 14 Mar
- 2023 12:37:00 -0700 (PDT)
+        bh=lngV1SBJchusWtrK2aOr9VYqvqXEEwJ9k8SBgXaHbrk=;
+        b=Z8RFCd5x5piC/w/qZE85f2CA6aRmQqPjxEHb87Ph5o4TLioJyhuUysH8oYtn5zT00i
+         N2WQKiXCIEQyTLYWRb8B/LEHRMl6myFJ6MuxrCw1O+DykyEw9JZbi6UKaOivp+xgsuU3
+         50sEF5oZak9lbmyVLUVmPwUjjfLYBQjKbklumVPNcykHTq6J5Kud+o6jjjAh6+EkWng3
+         W6Esu085h1rnxQ+03rbWWqAx5EIispjjL8kjl1Nh7gClHwtaP6Gh2xLWdJGFtC76Tr2E
+         yafmRzmvnu2zaNBkOfuhgnHaTV1qZHzzYdOtRZLC0DKFJBfBf5y7lUMWfggH4+DJ4OSR
+         Sfbg==
+X-Gm-Message-State: AO0yUKWuILM7u4Onb0SEhrOqWt/NIRGBODj6Y1cSeVkLt8bwtYDC5XY1
+        NnGM3Em7IaSE/E7guiww3v4KzquO8rm+cKOeB/8=
+X-Google-Smtp-Source: AK7set/lJc5Pr883/nO0O+8ECRQFHtff91e6HCCh3sc0wnAQLJZk6QiDSRlN/qBx2oOymxYCdUYTCiZHrpVq94ilq9g=
+X-Received: by 2002:a17:906:58c6:b0:8b1:7aec:c8e6 with SMTP id
+ e6-20020a17090658c600b008b17aecc8e6mr2049482ejs.2.1678822805425; Tue, 14 Mar
+ 2023 12:40:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230308112632.1908748-1-sudeep.holla@arm.com> <d9e5fdc4-3db0-4aa7-147c-c3c6bfbeac84@arm.com>
-In-Reply-To: <d9e5fdc4-3db0-4aa7-147c-c3c6bfbeac84@arm.com>
+References: <20230308132309.18827-1-yu.c.chen@intel.com>
+In-Reply-To: <20230308132309.18827-1-yu.c.chen@intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 14 Mar 2023 20:36:48 +0100
-Message-ID: <CAJZ5v0h36OPPZ4tFy0cnfcYcKipGXVcRGH9dSbQDNtUd4pKVLQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: PPTT: Fix to avoid sleep in the atomic context when
- PPTT is absent
-To:     Pierre Gondois <pierre.gondois@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Aishwarya TCV <aishwarya.tcv@arm.com>
+Date:   Tue, 14 Mar 2023 20:39:54 +0100
+Message-ID: <CAJZ5v0hgKifYp=5L4XVVnDDZ_JDvizQWu5CvAFP1eb5xK0+XMA@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: tools: pfrut: Check if the input of level and
+ type is in the right numeric range
+To:     Chen Yu <yu.c.chen@intel.com>
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Hariganesh Govindarajulu <hariganesh.govindarajulu@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -59,92 +60,90 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 8, 2023 at 2:34 PM Pierre Gondois <pierre.gondois@arm.com> wrote:
+On Wed, Mar 8, 2023 at 6:28 AM Chen Yu <yu.c.chen@intel.com> wrote:
 >
-> Tested-by: Pierre Gondois <pierre.gondois@arm.com>
+> The user provides arbitrary non-numeic value to level and type,
+> which could bring expected behavior. In this case the expected
+> behavior would be to throw an error.
 >
-> On 3/8/23 12:26, Sudeep Holla wrote:
-> > Commit 0c80f9e165f8 ("ACPI: PPTT: Leave the table mapped for the runtime usage")
-> > enabled to map PPTT once on the first invocation of acpi_get_pptt() and
-> > never unmapped the same allowing it to be used at runtime with out the
-> > hassle of mapping and unmapping the table. This was needed to fetch LLC
-> > information from the PPTT in the cpuhotplug path which is executed in
-> > the atomic context as the acpi_get_table() might sleep waiting for a
-> > mutex.
-> >
-> > However it missed to handle the case when there is no PPTT on the system
-> > which results in acpi_get_pptt() being called from all the secondary
-> > CPUs attempting to fetch the LLC information in the atomic context
-> > without knowing the absence of PPTT resulting in the splat like below:
-> >
-> >   | BUG: sleeping function called from invalid context at kernel/locking/semaphore.c:164
-> >   | in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
-> >   | preempt_count: 1, expected: 0
-> >   | RCU nest depth: 0, expected: 0
-> >   | no locks held by swapper/1/0.
-> >   | irq event stamp: 0
-> >   | hardirqs last  enabled at (0): 0x0
-> >   | hardirqs last disabled at (0): copy_process+0x61c/0x1b40
-> >   | softirqs last  enabled at (0): copy_process+0x61c/0x1b40
-> >   | softirqs last disabled at (0): 0x0
-> >   | CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.3.0-rc1 #1
-> >   | Call trace:
-> >   |  dump_backtrace+0xac/0x138
-> >   |  show_stack+0x30/0x48
-> >   |  dump_stack_lvl+0x60/0xb0
-> >   |  dump_stack+0x18/0x28
-> >   |  __might_resched+0x160/0x270
-> >   |  __might_sleep+0x58/0xb0
-> >   |  down_timeout+0x34/0x98
-> >   |  acpi_os_wait_semaphore+0x7c/0xc0
-> >   |  acpi_ut_acquire_mutex+0x58/0x108
-> >   |  acpi_get_table+0x40/0xe8
-> >   |  acpi_get_pptt+0x48/0xa0
-> >   |  acpi_get_cache_info+0x38/0x140
-> >   |  init_cache_level+0xf4/0x118
-> >   |  detect_cache_attributes+0x2e4/0x640
-> >   |  update_siblings_masks+0x3c/0x330
-> >   |  store_cpu_topology+0x88/0xf0
-> >   |  secondary_start_kernel+0xd0/0x168
-> >   |  __secondary_switched+0xb8/0xc0
-> >
-> > Update acpi_get_pptt() to consider the fact that PPTT is once checked and
-> > is not available on the system and return NULL avoiding any attempts to
-> > fetch PPTT and thereby avoiding any possible sleep waiting for a mutex
-> > in the atomic context.
-> >
-> > Fixes: 0c80f9e165f8 ("ACPI: PPTT: Leave the table mapped for the runtime usage")
-> > Reported-by: Aishwarya TCV <aishwarya.tcv@arm.com>
-> > Cc: Pierre Gondois <pierre.gondois@arm.com>
-> > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-> > ---
-> >   drivers/acpi/pptt.c | 5 ++++-
-> >   1 file changed, 4 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-> > index 10975bb603fb..a35dd0e41c27 100644
-> > --- a/drivers/acpi/pptt.c
-> > +++ b/drivers/acpi/pptt.c
-> > @@ -536,16 +536,19 @@ static int topology_get_acpi_cpu_tag(struct acpi_table_header *table,
-> >   static struct acpi_table_header *acpi_get_pptt(void)
-> >   {
-> >       static struct acpi_table_header *pptt;
-> > +     static bool is_pptt_checked;
-> >       acpi_status status;
-> >
-> >       /*
-> >        * PPTT will be used at runtime on every CPU hotplug in path, so we
-> >        * don't need to call acpi_put_table() to release the table mapping.
-> >        */
-> > -     if (!pptt) {
-> > +     if (!pptt && !is_pptt_checked) {
-> >               status = acpi_get_table(ACPI_SIG_PPTT, 0, &pptt);
-> >               if (ACPI_FAILURE(status))
-> >                       acpi_pptt_warn_missing();
-> > +
-> > +             is_pptt_checked = true;
-> >       }
-> >
-> >       return pptt;
+>  pfrut -h
+> usage: pfrut [OPTIONS]
+> code injection:
+> -l, --load
+> -s, --stage
+> -a, --activate
+> -u, --update [stage and activate]
+> -q, --query
+> -d, --revid
+> update telemetry:
+> -G, --getloginfo
+> -T, --type(0:execution, 1:history)
+> -L, --level(0, 1, 2, 4)
+> -R, --read
+> -D, --revid log
+>
+>  pfrut -T A
+>  pfrut -G
+> log_level:0
+> log_type:0
+> log_revid:2
+> max_data_size:65536
+> chunk1_size:0
+> chunk2_size:1530
+> rollover_cnt:0
+> reset_cnt:17
+>
+> Fix this by restricting the input to be in the expected range.
+>
+> Reported-by: Hariganesh Govindarajulu <hariganesh.govindarajulu@intel.com>
+> Suggested-by: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+> Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+> ---
+> v2: Replace atoi() with strtol() to filter the number. (Rafael)
+>
+> ---
+>  tools/power/acpi/tools/pfrut/pfrut.c | 18 +++++++++++++++---
+>  1 file changed, 15 insertions(+), 3 deletions(-)
+>
+> diff --git a/tools/power/acpi/tools/pfrut/pfrut.c b/tools/power/acpi/tools/pfrut/pfrut.c
+> index 52aa0351533c..388c9e3ad040 100644
+> --- a/tools/power/acpi/tools/pfrut/pfrut.c
+> +++ b/tools/power/acpi/tools/pfrut/pfrut.c
+> @@ -97,7 +97,7 @@ static struct option long_options[] = {
+>  static void parse_options(int argc, char **argv)
+>  {
+>         int option_index = 0;
+> -       char *pathname;
+> +       char *pathname, *endptr;
+>         int opt;
+>
+>         pathname = strdup(argv[0]);
+> @@ -125,11 +125,23 @@ static void parse_options(int argc, char **argv)
+>                         log_getinfo = 1;
+>                         break;
+>                 case 'T':
+> -                       log_type = atoi(optarg);
+> +                       log_type = strtol(optarg, &endptr, 0);
+> +                       if (*endptr || (log_type != 0 && log_type != 1)) {
+> +                               printf("Number expected: type(0:execution, 1:history) - Quit.\n");
+> +                               exit(1);
+> +                       }
+> +
+>                         set_log_type = 1;
+>                         break;
+>                 case 'L':
+> -                       log_level = atoi(optarg);
+> +                       log_level = strtol(optarg, &endptr, 0);
+> +                       if (*endptr ||
+> +                           (log_level != 0 && log_level != 1 &&
+> +                            log_level != 2 && log_level != 4)) {
+> +                               printf("Number expected: level(0, 1, 2, 4) - Quit.\n");
+> +                               exit(1);
+> +                       }
+> +
+>                         set_log_level = 1;
+>                         break;
+>                 case 'R':
+> --
 
 Applied as 6.3-rc material, thanks!
