@@ -2,212 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F5E46BDF43
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Mar 2023 04:07:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 355066BE201
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Mar 2023 08:39:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229971AbjCQDHW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Mar 2023 23:07:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56018 "EHLO
+        id S229955AbjCQHjm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Mar 2023 03:39:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229986AbjCQDG2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Mar 2023 23:06:28 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 77FFAB1B03;
-        Thu, 16 Mar 2023 20:06:09 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F0B3F1480;
-        Thu, 16 Mar 2023 20:06:49 -0700 (PDT)
-Received: from a077893.blr.arm.com (unknown [10.162.40.17])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 53D3E3F64C;
-        Thu, 16 Mar 2023 20:06:00 -0700 (PDT)
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-To:     linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org,
-        suzuki.poulose@arm.com
-Cc:     scclevenger@os.amperecomputing.com,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Mike Leach <mike.leach@linaro.org>,
-        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 7/7] coresight: etm4x: Drop the AMBA driver
-Date:   Fri, 17 Mar 2023 08:35:01 +0530
-Message-Id: <20230317030501.1811905-8-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230317030501.1811905-1-anshuman.khandual@arm.com>
-References: <20230317030501.1811905-1-anshuman.khandual@arm.com>
+        with ESMTP id S229648AbjCQHjl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Mar 2023 03:39:41 -0400
+Received: from sragenkab.go.id (mail.sragenkab.go.id [103.172.109.4])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id DEF5E97FD5
+        for <linux-acpi@vger.kernel.org>; Fri, 17 Mar 2023 00:39:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sragenkab.go.id;
+         h=mime-version:content-type:content-transfer-encoding:date:from
+        :to:subject:reply-to:message-id; q=dns/txt; s=dkim1; bh=QGcIAmD5
+        O/Y9qXzDV8MxyimbsW3+rMaQ/kz75GzBHbk=; b=yGs9UbCRAJkpkIfMVcLN4tp0
+        fix0j1GBo1PhR7LE4ZJkKAIi2CShteDLu9jE8Q0E9U1i3CsMsGkeiECnMMWCer1u
+        gXyXgijOjZRYycgODFdTdgHCh64AKMan5awhrIOStKqcTGwW1iddPWWkp/Jbhial
+        MnoUHhZ5Qp6e7qtgphqKSwXl3dSjBdKpvteQJ/+m7l+1P4TUWww25GLXvR/dRX0+
+        bq+nl24+GFyTHe+jRz6UJsoaa2jHVA95DKwMACWd6+WXdU8mK4+qCejK7XSlO16L
+        W1KfOKIyEgmbom4dEpeETeOu4nB7fA+PFXx0Y+PiKRiFJkxtFcbMazp9zP5T9w==
+Received: (qmail 67236 invoked from network); 14 Mar 2023 20:02:41 -0000
+Received: from localhost (HELO mail2.sragenkab.go.id) (127.0.0.1)
+  by localhost with SMTP; 14 Mar 2023 20:02:41 -0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 14 Mar 2023 13:02:40 -0700
+From:   Ibrahim Tafa <jurnalsukowati@sragenkab.go.id>
+To:     undisclosed-recipients:;
+Subject: LOAN OPPORTUNITY AT LOW-INTEREST RATE
+Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
+Mail-Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
+Message-ID: <a5fe96d58a9596f72b8375f4041000e7@sragenkab.go.id>
+X-Sender: jurnalsukowati@sragenkab.go.id
+User-Agent: Roundcube Webmail/0.8.1
+X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_PASS,SUBJ_ALL_CAPS,UNDISC_MONEY,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-MMIO based etm4x devices, represented with AMBA device tree entries are now
-detected and operated via the common platform driver. An explicit dedicated
-AMBA driver is no longer required, this just drops that off completely.
 
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: coresight@lists.linaro.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
- .../coresight/coresight-etm4x-core.c          | 89 -------------------
- 1 file changed, 89 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index fe494c9c6bad..e15551355975 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -2119,32 +2119,6 @@ static int etm4_probe(struct device *dev)
- 	return etm4_add_coresight_dev(&init_arg);
- }
- 
--static int etm4_probe_amba(struct amba_device *adev, const struct amba_id *id)
--{
--	struct etmv4_drvdata *drvdata;
--	void __iomem *base;
--	struct device *dev = &adev->dev;
--	struct resource *res = &adev->res;
--	int ret;
--
--	/* Validity for the resource is already checked by the AMBA core */
--	base = devm_ioremap_resource(dev, res);
--	if (IS_ERR(base))
--		return PTR_ERR(base);
--
--	drvdata = devm_kzalloc(dev, sizeof(*drvdata), GFP_KERNEL);
--	if (!drvdata)
--		return -ENOMEM;
--
--	drvdata->base = base;
--	dev_set_drvdata(dev, drvdata);
--	ret = etm4_probe(dev);
--	if (!ret)
--		pm_runtime_put(&adev->dev);
--
--	return ret;
--}
--
- static int etm4_probe_platform_dev(struct platform_device *pdev)
- {
- 	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-@@ -2205,15 +2179,6 @@ static int etm4_probe_cpu(unsigned int cpu)
- 	return 0;
- }
- 
--static struct amba_cs_uci_id uci_id_etm4[] = {
--	{
--		/*  ETMv4 UCI data */
--		.devarch	= ETM_DEVARCH_ETMv4x_ARCH,
--		.devarch_mask	= ETM_DEVARCH_ID_MASK,
--		.devtype	= ETM_DEVTYPE_ETMv4x_ARCH,
--	}
--};
--
- static void clear_etmdrvdata(void *info)
- {
- 	int cpu = *(int *)info;
-@@ -2253,14 +2218,6 @@ static int __exit etm4_remove_dev(struct etmv4_drvdata *drvdata)
- 	return 0;
- }
- 
--static void __exit etm4_remove_amba(struct amba_device *adev)
--{
--	struct etmv4_drvdata *drvdata = dev_get_drvdata(&adev->dev);
--
--	if (drvdata)
--		etm4_remove_dev(drvdata);
--}
--
- static int __exit etm4_remove_platform_dev(struct platform_device *pdev)
- {
- 	int ret = 0;
-@@ -2276,42 +2233,6 @@ static int __exit etm4_remove_platform_dev(struct platform_device *pdev)
- 	return ret;
- }
- 
--static const struct amba_id etm4_ids[] = {
--	CS_AMBA_ID(0x000bb95d),			/* Cortex-A53 */
--	CS_AMBA_ID(0x000bb95e),			/* Cortex-A57 */
--	CS_AMBA_ID(0x000bb95a),			/* Cortex-A72 */
--	CS_AMBA_ID(0x000bb959),			/* Cortex-A73 */
--	CS_AMBA_UCI_ID(0x000bb9da, uci_id_etm4),/* Cortex-A35 */
--	CS_AMBA_UCI_ID(0x000bbd05, uci_id_etm4),/* Cortex-A55 */
--	CS_AMBA_UCI_ID(0x000bbd0a, uci_id_etm4),/* Cortex-A75 */
--	CS_AMBA_UCI_ID(0x000bbd0c, uci_id_etm4),/* Neoverse N1 */
--	CS_AMBA_UCI_ID(0x000bbd41, uci_id_etm4),/* Cortex-A78 */
--	CS_AMBA_UCI_ID(0x000f0205, uci_id_etm4),/* Qualcomm Kryo */
--	CS_AMBA_UCI_ID(0x000f0211, uci_id_etm4),/* Qualcomm Kryo */
--	CS_AMBA_UCI_ID(0x000bb802, uci_id_etm4),/* Qualcomm Kryo 385 Cortex-A55 */
--	CS_AMBA_UCI_ID(0x000bb803, uci_id_etm4),/* Qualcomm Kryo 385 Cortex-A75 */
--	CS_AMBA_UCI_ID(0x000bb805, uci_id_etm4),/* Qualcomm Kryo 4XX Cortex-A55 */
--	CS_AMBA_UCI_ID(0x000bb804, uci_id_etm4),/* Qualcomm Kryo 4XX Cortex-A76 */
--	CS_AMBA_UCI_ID(0x000bbd0d, uci_id_etm4),/* Qualcomm Kryo 5XX Cortex-A77 */
--	CS_AMBA_UCI_ID(0x000cc0af, uci_id_etm4),/* Marvell ThunderX2 */
--	CS_AMBA_UCI_ID(0x000b6d01, uci_id_etm4),/* HiSilicon-Hip08 */
--	CS_AMBA_UCI_ID(0x000b6d02, uci_id_etm4),/* HiSilicon-Hip09 */
--	{},
--};
--
--MODULE_DEVICE_TABLE(amba, etm4_ids);
--
--static struct amba_driver etm4x_amba_driver = {
--	.drv = {
--		.name   = "coresight-etm4x",
--		.owner  = THIS_MODULE,
--		.suppress_bind_attrs = true,
--	},
--	.probe		= etm4_probe_amba,
--	.remove         = etm4_remove_amba,
--	.id_table	= etm4_ids,
--};
--
- #ifdef CONFIG_PM
- static int etm4_runtime_suspend(struct device *dev)
- {
-@@ -2374,27 +2295,17 @@ static int __init etm4x_init(void)
- 	if (ret)
- 		return ret;
- 
--	ret = amba_driver_register(&etm4x_amba_driver);
--	if (ret) {
--		pr_err("Error registering etm4x AMBA driver\n");
--		goto clear_pm;
--	}
--
- 	ret = platform_driver_register(&etm4_platform_driver);
- 	if (!ret)
- 		return 0;
- 
- 	pr_err("Error registering etm4x platform driver\n");
--	amba_driver_unregister(&etm4x_amba_driver);
--
--clear_pm:
- 	etm4_pm_clear();
- 	return ret;
- }
- 
- static void __exit etm4x_exit(void)
- {
--	amba_driver_unregister(&etm4x_amba_driver);
- 	platform_driver_unregister(&etm4_platform_driver);
- 	etm4_pm_clear();
- }
 -- 
-2.25.1
+Greetings,
+   I am contacting you based on the Investment/Loan opportunity for 
+companies in need of financing a project/business, We have developed a 
+new method of financing that doesn't take long to receive financing from 
+our clients.
+    If you are looking for funds to finance your project/Business or if 
+you are willing to work as our agent in your country to find clients in 
+need of financing and earn commissions, then get back to me for more 
+details.
 
+Regards,
+Ibrahim Tafa
+ABIENCE INVESTMENT GROUP FZE, United Arab Emirates
