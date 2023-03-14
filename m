@@ -2,52 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8BDE6B9FE4
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Mar 2023 20:40:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D74C66BA000
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Mar 2023 20:50:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229538AbjCNTkJ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 14 Mar 2023 15:40:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59144 "EHLO
+        id S229988AbjCNTuK convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 14 Mar 2023 15:50:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230109AbjCNTkI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Mar 2023 15:40:08 -0400
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 155CC193E0;
-        Tue, 14 Mar 2023 12:40:07 -0700 (PDT)
-Received: by mail-ed1-f46.google.com with SMTP id x13so19264319edd.1;
-        Tue, 14 Mar 2023 12:40:06 -0700 (PDT)
+        with ESMTP id S229704AbjCNTuJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Mar 2023 15:50:09 -0400
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77E1055B6;
+        Tue, 14 Mar 2023 12:50:08 -0700 (PDT)
+Received: by mail-ed1-f53.google.com with SMTP id x13so19372438edd.1;
+        Tue, 14 Mar 2023 12:50:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678822805;
+        d=1e100.net; s=20210112; t=1678823407;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lngV1SBJchusWtrK2aOr9VYqvqXEEwJ9k8SBgXaHbrk=;
-        b=Z8RFCd5x5piC/w/qZE85f2CA6aRmQqPjxEHb87Ph5o4TLioJyhuUysH8oYtn5zT00i
-         N2WQKiXCIEQyTLYWRb8B/LEHRMl6myFJ6MuxrCw1O+DykyEw9JZbi6UKaOivp+xgsuU3
-         50sEF5oZak9lbmyVLUVmPwUjjfLYBQjKbklumVPNcykHTq6J5Kud+o6jjjAh6+EkWng3
-         W6Esu085h1rnxQ+03rbWWqAx5EIispjjL8kjl1Nh7gClHwtaP6Gh2xLWdJGFtC76Tr2E
-         yafmRzmvnu2zaNBkOfuhgnHaTV1qZHzzYdOtRZLC0DKFJBfBf5y7lUMWfggH4+DJ4OSR
-         Sfbg==
-X-Gm-Message-State: AO0yUKWuILM7u4Onb0SEhrOqWt/NIRGBODj6Y1cSeVkLt8bwtYDC5XY1
-        NnGM3Em7IaSE/E7guiww3v4KzquO8rm+cKOeB/8=
-X-Google-Smtp-Source: AK7set/lJc5Pr883/nO0O+8ECRQFHtff91e6HCCh3sc0wnAQLJZk6QiDSRlN/qBx2oOymxYCdUYTCiZHrpVq94ilq9g=
-X-Received: by 2002:a17:906:58c6:b0:8b1:7aec:c8e6 with SMTP id
- e6-20020a17090658c600b008b17aecc8e6mr2049482ejs.2.1678822805425; Tue, 14 Mar
- 2023 12:40:05 -0700 (PDT)
+        bh=pWbK/M0x77Xrv3ybj/Re+cbFQtzYq8yEvXF3k1BEmvY=;
+        b=4RJRfPd5RPNkJJj5YwJTo8rGmEB0qCDxCLTVv+B12w+cqQrnmu2rcdv/qFiJCnhD5K
+         M4INv1+0ApxINpoDFm0idTskbCRa//LitkRPT8A54VIHCr0N7P+UGfu5VZOZDf/O0lTW
+         TVzDPENCLROXJ6YO7aa49w4kvw7CwD/FQsJ1R/x4HtWr+OUsVm9fD1EWm6mdy0MI8/we
+         6/BdAPkKIquo5NQ+/+CyzIeTtEYSofoAcNwjBHISUrOwxJvAw1Jq0qDZ+1Ir3DSvABpm
+         IQe+DtYcGCJy5axzZUpuw4Prmiuj53m9C1ykFAhZr3xUfb9BCcDl3OxR1TvsDwh+5/Qe
+         HPeA==
+X-Gm-Message-State: AO0yUKXDTeEIOstL/d2ay3kUAz5hWBR7JG0HuWh8JQ/OJJCwpyA0q9v2
+        0ZzqhnrY5hzIaCNsylF0aqn4rZmDJQff/CvB+GE=
+X-Google-Smtp-Source: AK7set/Djlb4zJE6lSC+TyP7Pdyu5bPVjgQ1dFa2g2As+v6CEIyqKFqSzUCxjq+autyjSQRQArE2iqolCK3vDD2exTY=
+X-Received: by 2002:a50:874e:0:b0:4fb:2593:846 with SMTP id
+ 14-20020a50874e000000b004fb25930846mr155813edv.3.1678823406946; Tue, 14 Mar
+ 2023 12:50:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230308132309.18827-1-yu.c.chen@intel.com>
-In-Reply-To: <20230308132309.18827-1-yu.c.chen@intel.com>
+References: <20230225115144.31212-1-W_Armin@gmx.de> <d2660362-dc25-e75f-394b-1997bd062933@gmx.de>
+In-Reply-To: <d2660362-dc25-e75f-394b-1997bd062933@gmx.de>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 14 Mar 2023 20:39:54 +0100
-Message-ID: <CAJZ5v0hgKifYp=5L4XVVnDDZ_JDvizQWu5CvAFP1eb5xK0+XMA@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: tools: pfrut: Check if the input of level and
- type is in the right numeric range
-To:     Chen Yu <yu.c.chen@intel.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Hariganesh Govindarajulu <hariganesh.govindarajulu@intel.com>
+Date:   Tue, 14 Mar 2023 20:49:55 +0100
+Message-ID: <CAJZ5v0itUSnsxgdvw39e+YZWe4jTHA1fLjw3HZSKHTkp+eLHwQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] ACPI: SBS: Fix various issues
+To:     Armin Wolf <W_Armin@gmx.de>
+Cc:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -60,90 +56,31 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 8, 2023 at 6:28 AM Chen Yu <yu.c.chen@intel.com> wrote:
+On Sun, Mar 12, 2023 at 6:15 PM Armin Wolf <W_Armin@gmx.de> wrote:
 >
-> The user provides arbitrary non-numeic value to level and type,
-> which could bring expected behavior. In this case the expected
-> behavior would be to throw an error.
+> Am 25.02.23 um 12:51 schrieb Armin Wolf:
 >
->  pfrut -h
-> usage: pfrut [OPTIONS]
-> code injection:
-> -l, --load
-> -s, --stage
-> -a, --activate
-> -u, --update [stage and activate]
-> -q, --query
-> -d, --revid
-> update telemetry:
-> -G, --getloginfo
-> -T, --type(0:execution, 1:history)
-> -L, --level(0, 1, 2, 4)
-> -R, --read
-> -D, --revid log
+> > On my Acer Travelmate 4002WLMi, the system locks up upon
+> > suspend/shutdown. After a lot of research, it turned out
+> > that the sbs module was the culprit. The driver would not
+> > correctly mask out the value used to select a battery using
+> > the "Smart Battery Selector" (subset of the "Smart Battery Manager").
+> > This accidentally caused a invalid power source to be selected,
+> > which was automatically corrected by the selector. Upon
+> > notifing the host about the corrected power source, some batteries
+> > would be selected for re-reading, causing a endless loop.
+> > This would lead to some workqueues filling up, which caused the
+> > lockup upon suspend/shutdown.
+> >
+> > The first three patches fix a stacktrace on module removal caused
+> > by some locking issues. The last patch finally fixes the
+> > suspend/shutdown issues.
+> >
+> > As a side note: This was the first machine on which i installed Linux,
+> > to finally fixing this took ~5 years of tinkering.
 >
->  pfrut -T A
->  pfrut -G
-> log_level:0
-> log_type:0
-> log_revid:2
-> max_data_size:65536
-> chunk1_size:0
-> chunk2_size:1530
-> rollover_cnt:0
-> reset_cnt:17
->
-> Fix this by restricting the input to be in the expected range.
->
-> Reported-by: Hariganesh Govindarajulu <hariganesh.govindarajulu@intel.com>
-> Suggested-by: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-> ---
-> v2: Replace atoi() with strtol() to filter the number. (Rafael)
->
-> ---
->  tools/power/acpi/tools/pfrut/pfrut.c | 18 +++++++++++++++---
->  1 file changed, 15 insertions(+), 3 deletions(-)
->
-> diff --git a/tools/power/acpi/tools/pfrut/pfrut.c b/tools/power/acpi/tools/pfrut/pfrut.c
-> index 52aa0351533c..388c9e3ad040 100644
-> --- a/tools/power/acpi/tools/pfrut/pfrut.c
-> +++ b/tools/power/acpi/tools/pfrut/pfrut.c
-> @@ -97,7 +97,7 @@ static struct option long_options[] = {
->  static void parse_options(int argc, char **argv)
->  {
->         int option_index = 0;
-> -       char *pathname;
-> +       char *pathname, *endptr;
->         int opt;
->
->         pathname = strdup(argv[0]);
-> @@ -125,11 +125,23 @@ static void parse_options(int argc, char **argv)
->                         log_getinfo = 1;
->                         break;
->                 case 'T':
-> -                       log_type = atoi(optarg);
-> +                       log_type = strtol(optarg, &endptr, 0);
-> +                       if (*endptr || (log_type != 0 && log_type != 1)) {
-> +                               printf("Number expected: type(0:execution, 1:history) - Quit.\n");
-> +                               exit(1);
-> +                       }
-> +
->                         set_log_type = 1;
->                         break;
->                 case 'L':
-> -                       log_level = atoi(optarg);
-> +                       log_level = strtol(optarg, &endptr, 0);
-> +                       if (*endptr ||
-> +                           (log_level != 0 && log_level != 1 &&
-> +                            log_level != 2 && log_level != 4)) {
-> +                               printf("Number expected: level(0, 1, 2, 4) - Quit.\n");
-> +                               exit(1);
-> +                       }
-> +
->                         set_log_level = 1;
->                         break;
->                 case 'R':
-> --
+> What is the status of this patchset? Should i use a SRCU notifier chain
+> for the query notifiers? I would really like to see this getting fixed,
+> as it prevents me from using linux on this machine.
 
-Applied as 6.3-rc material, thanks!
+I'm not entirely convinced about the query notifiers idea TBH.
