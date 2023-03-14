@@ -2,166 +2,205 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E51C46B8764
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Mar 2023 02:06:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 626A56B87F3
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Mar 2023 03:02:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229621AbjCNBFr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Mar 2023 21:05:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46118 "EHLO
+        id S229685AbjCNCCt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Mar 2023 22:02:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230083AbjCNBF1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Mar 2023 21:05:27 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26F5486DDF;
-        Mon, 13 Mar 2023 18:05:26 -0700 (PDT)
-Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.57])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4PbFby02gXz17L0h;
-        Tue, 14 Mar 2023 09:02:05 +0800 (CST)
-Received: from [10.67.103.231] (10.67.103.231) by
- kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
+        with ESMTP id S229573AbjCNCCs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 13 Mar 2023 22:02:48 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A8729225A;
+        Mon, 13 Mar 2023 19:02:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678759367; x=1710295367;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=FhvydaUvuKCXqujXNH78NZKLwD3BUaym82M58Z5/iJk=;
+  b=WiivE01wK/sk6cT89VZRPEQH9RJLnMw2r0A+0AIBRkiIPZE2l6SjRmRs
+   MYFUbyN6QbNwrM0BJOEkdnrHsu6CPE2d7NgPeamSKV5To2bJT3dhxTVdi
+   V2wisaXHO3i5gKk+0u2jt2ed/AVIN87EBTHSwNCJ9F315szphiBveIgQM
+   z828J//mTvW7uueP8/b6FYs9fLLDvcM6uG4XgicxRwK0ffqbYrBt0B1qh
+   GzDNmtvSgkcC0dVahtEggN9TJPV28ygtaX4jdqYAUCaHCcvZk56fUm6dN
+   YTFr+UCQHA2wX/aai23Qa1PFBFWdtTdLRCDQ6pcleQJ9ZVVHJmt8jW7Jl
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="402179747"
+X-IronPort-AV: E=Sophos;i="5.98,258,1673942400"; 
+   d="scan'208";a="402179747"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2023 19:02:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="678915414"
+X-IronPort-AV: E=Sophos;i="5.98,258,1673942400"; 
+   d="scan'208";a="678915414"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by orsmga002.jf.intel.com with ESMTP; 13 Mar 2023 19:02:46 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Tue, 14 Mar 2023 09:05:00 +0800
-Message-ID: <a66f99e2-256c-e4e5-09aa-7c5c5d9ed0eb@huawei.com>
-Date:   Tue, 14 Mar 2023 09:05:00 +0800
+ 15.1.2507.21; Mon, 13 Mar 2023 19:02:45 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Mon, 13 Mar 2023 19:02:45 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21 via Frontend Transport; Mon, 13 Mar 2023 19:02:45 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.42) by
+ edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.21; Mon, 13 Mar 2023 19:02:43 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GX2DTz2xoO15ZOmDK3OlLF1n77SMuBspapAxptqZ39TWG8meCfUE+I9AO3ubkESHIn1Nhr1AoiQWqjIn2gxbNj3/BL3KKchgqTOSlDLfRz97GXKgn4sgQgilm6ku8x6djLz6YeVwpOtbiMzvFp/witCXvhEgtI5Np1VsQIvOORaPAJ8qlDfnkKBYtahxon/uIGu6G5CG3FQ2lo/tOEtmeieEo9+QI2uCXijdd2mA8Vw3dA8gHCPf+5Ip0Rx517L/lnzbEWgN/9+fU3OkQg6k9vSDP8hPGdodAa0rKDkzZGly5wQAP7PwkAftNYi3ZmXQhUEkztHcXgQOc5GCL2doOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FhvydaUvuKCXqujXNH78NZKLwD3BUaym82M58Z5/iJk=;
+ b=VY4is+ligeFbQMpErbh62k/DCTs5Z3ylWf+i1SIROFWVq+yT5Ypbh1bUwzxzTPtu6ovctQpNNpPrkzideg+KPg76hsDInFMhxJbdU+f5xlNLGjUKiajnSVdyv4qCkArwwYmzDda2kz1TAVWYb5WZpfWcYxKmnt9n1wN9SehKXQmSoGSDwnZiEZitX7OpdVL/GPNKm/KLQqpUHWxJLzSt+qfZUuIE3pSYpPRdMSJQEs1uSy+j+lsxVs+s8oJXO9YC377q67bUisWuTKNbXO/7pk78NNUtxHEQnxHwTXuH7bw2KdNBCebQfBsjjPWpRdrYX+VT29ix5ocTmvdN3UtfJw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6605.namprd11.prod.outlook.com (2603:10b6:510:1b0::16)
+ by PH7PR11MB6452.namprd11.prod.outlook.com (2603:10b6:510:1f3::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6156.23; Tue, 14 Mar
+ 2023 02:02:42 +0000
+Received: from PH7PR11MB6605.namprd11.prod.outlook.com
+ ([fe80::968d:9383:aae6:175c]) by PH7PR11MB6605.namprd11.prod.outlook.com
+ ([fe80::968d:9383:aae6:175c%2]) with mapi id 15.20.6178.024; Tue, 14 Mar 2023
+ 02:02:42 +0000
+From:   "Zhang, Rui" <rui.zhang@intel.com>
+To:     "rafael@kernel.org" <rafael@kernel.org>
+CC:     "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
+        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+        "Wang, Quanxian" <quanxian.wang@intel.com>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "srinivas.pandruvada@linux.intel.com" 
+        <srinivas.pandruvada@linux.intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH v2 0/4] thermal: core/ACPI: Fix processor cooling device
+ regression
+Thread-Topic: [PATCH v2 0/4] thermal: core/ACPI: Fix processor cooling device
+ regression
+Thread-Index: AQHZVbj8FTvJKZhXvkW+gLYgFo6Pa67463eAgAAU8wCAAIZAAA==
+Date:   Tue, 14 Mar 2023 02:02:41 +0000
+Message-ID: <aa98c0c6e6154f007de0e42c246c129de0af9854.camel@intel.com>
+References: <2692681.mvXUDI8C0e@kreacher>
+         <043b2c3e3024ffaeca69046ae546303ff65694ed.camel@intel.com>
+         <CAJZ5v0hwe0ctNU2hLwTorp=JQT_Q3cePw0JQLvcrvQaD5jc5Tg@mail.gmail.com>
+In-Reply-To: <CAJZ5v0hwe0ctNU2hLwTorp=JQT_Q3cePw0JQLvcrvQaD5jc5Tg@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.5-0ubuntu1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB6605:EE_|PH7PR11MB6452:EE_
+x-ms-office365-filtering-correlation-id: f20d4719-93de-423f-c095-08db243031eb
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: xnPBACXFKjBUAocblGBS4xK/acKhrQw0abHxfqQg8/BfgAk4gMksCeswkkIhZikUlRFAhGDSoBtfbjM4DS3j/F/8whYAeRl1MECHIAOAEtdqcjiWvsQlLvLQjIhxwG/5B6Zp0mD5+raUSDu9RxNtWX66LhWbbKbLjCsOXJY/rk/i8b7+SH/mii0XMo8lirZ01tcInkdxqoo1LIf4p3Qoo0fjFSWiwpa5Ha8QmxGtMGtCg6iOvQVaHa2FCDiAuraLmAWQdSQF+rwrM16JdVGpFWpvq5WyY5Yt27ACrzL+YyywbfVJPGJb9RfiKe09ZGx8ad5J3/7yqtk0bZ9odNUdVcLZiPfqzv6t0DrE2K8AMky/IzSfw1CXNmJDOj+EEEMyw4CdpoPQ0iYlwa+OAcZRGl29u5QSmevZ6nK7L1fM85q7o6MQ8Wma9YFgXHa3VbEhT7murJ2wrkT95nfP2Foi0WrdJ3P8U5hQfBR/dZ8d1+jfC7a3tc+PC1VV5yS0KfUDlv9cgsuqFO6Ip9o7BESOWQTG3QpRx0C/Po45ieZQAk+XTJBZqgVq1KbFVbZkViId8J6Ful1HBOkTbGDVgOGAQ8FoYlY3mxwyPk9zFTUxhmPgCjQK3PPus54g6S34MkRqRLMM5+o8aZWDMZeKWOA5HSw5yU+bf9UvZk8OmLd6FM4Z4w2dZcdcMcsVEHW9Shn0xRpQ0N14FfMFvbg11c5VxQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6605.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(396003)(366004)(346002)(376002)(39860400002)(136003)(451199018)(2616005)(2906002)(186003)(38100700002)(122000001)(82960400001)(26005)(6512007)(41300700001)(38070700005)(6506007)(53546011)(83380400001)(5660300002)(478600001)(316002)(8936002)(64756008)(54906003)(36756003)(66476007)(6486002)(91956017)(86362001)(8676002)(6916009)(66946007)(66556008)(66446008)(76116006)(71200400001)(4326008);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Qi9KckFoT0hhQTRLaVZBVzhnN2R5WkExOVlwdTZlVDRtbDFGdElMS294WHBh?=
+ =?utf-8?B?eGZTeDhzU3dadHdJMy9xNkJ5Z1Jad054aU1xa2NnWFdrbEw0a3JadUhhVVQ0?=
+ =?utf-8?B?NzQwUEtQNFhFN0VIZitVSVU2c2IzNWhVRTJ5Vy9tUkR2UTdERnBNRUtsV04r?=
+ =?utf-8?B?TzU2VkYxeDhMTEl5R0RQcUEyU0hkcnFTQ1pQT1FQUGNCYXpIU3gyNnFWbEpL?=
+ =?utf-8?B?M2JJM2RkYTVqZlNTMEYyTC9EcWF1VXNsUm9xNGZuVGp6Yis1V0RKYUs4cnEy?=
+ =?utf-8?B?aHJndXV0aDhsdDl0dkFBTlpuSmZGakVwZWxwUi93TEFIaEFmR2lZYVZJbWh2?=
+ =?utf-8?B?Sm1pbERFTlJEaWtybE11UmVQWmZEU0tYallkMU96czI2dlZEVkpaZFE3ZG5P?=
+ =?utf-8?B?SnRCT1VwYTkyMDE3UjBhQVdaSVoydDVLTjJUU1hzMXJRSXljS052Z3ZYVzEv?=
+ =?utf-8?B?c2pqV3lsZ2tsSzNYWFI4K3lRcFNDOURrZGJOaHlsWlQ4cjNBbldtUDBidmFq?=
+ =?utf-8?B?eTlYRml5SU13dW8raDdoRWRpQU1iNmdCbkp0blVoZWtpNVFxcGdrbDhZT0xF?=
+ =?utf-8?B?WGptS09iRFVJQ0d3dk1kYXJ3dDk3WGhHSnZVeEU0eEkvUnliRzVmaVE0V1F0?=
+ =?utf-8?B?TU4rOTVDTUlpK01tZFEreC9MdHFpbjZJeWVUUVByejIzOGh5dUVvV294MGJE?=
+ =?utf-8?B?eTdLMUNPMXlSd1BmR3AxSWZ4QmlITFJvakpLQUhuUTJ6Qmo1YzY0Q05ycm50?=
+ =?utf-8?B?UlozZ3Z5Nm5IZkJ4Tk5hcHdqdDdkUm9IRVpRZ29tejQ5bEJXWlZ3R1JaMWZH?=
+ =?utf-8?B?R0xGd3hUd3hKRzI2T1cyaUN4amgxTDV3Vkg4QVRoM3lwOTJxeUlqUkxqbnNx?=
+ =?utf-8?B?UmxVT090TFNzSkdVRjcvUy9oaXVGSTFsSEtOKzhLTGlVTytJOFoxRFh0NDBS?=
+ =?utf-8?B?bEEvVTY4dEgwMlZlc1prRjNET2NTbEJERG1mVXZQK0NCeU0wcDI5dkREYWRs?=
+ =?utf-8?B?MWdoNnJBblNhMkdQbkVqUEpoMHFvNkVUc0xUa0s4QkpySGc0YVpNaDRHU3Zr?=
+ =?utf-8?B?UURaOURlWWMweWY3RXZSS2UzSDRtZ2owbDJLTnlCOHdrT1N2bW1BTnVCdGcw?=
+ =?utf-8?B?Uit4cTR1RXBlWWFGZkJvZnlUTFViT3B1cUF1S215dStia2RpUEFCelR4SVA3?=
+ =?utf-8?B?bXppVXhWWmMvYTVFemRnNTcvUFdSWi9KV0ZBK0dnSk5DZlhTM0twWnRoa3RJ?=
+ =?utf-8?B?VldVKzB2UnVVeXZMZmMyRER2bXJjUmhCMGhsUHFUTzhZWnlNNkZUNVNGQmVy?=
+ =?utf-8?B?UUlTT2JWOWExclBzV1k1UUM5OWw3SHcramFTL0pUYXRmRzB4b05nbXpDWDRC?=
+ =?utf-8?B?UjducHVJK1BJUEcrbktxc3dvV3VJZnFBVlZsVkpYeFdSOElicVUvRGliZHZq?=
+ =?utf-8?B?ZkpydTV4djhPbkZDNWlabERTMUh2Nlk0cWdFMUM3NlU4NTNXaXJOSlpZTEF4?=
+ =?utf-8?B?MmUyd0ZJdmZqSzJEWmZmVUVYZWI4WHFKMUFtRnlld0NPcmlENS9xcFJ1VmJM?=
+ =?utf-8?B?RkVjL3ViMzdWRmdKR2hoMmRHRkZITXgvbE53aG1EUFpGZGE5KzV6ZDlCSll0?=
+ =?utf-8?B?dUhhdnU4VTNKMU5wOEFmcGxUbTZmY1NYTXg3MUhzcThiUVdQY2E5RUpzR1Jp?=
+ =?utf-8?B?RGFydWRtMXpvUmRwRWhBcnYyTVhYYlFRQzR4ZjlkUEFiMVhDMVcvNlZTbCtu?=
+ =?utf-8?B?cUpLOWRkay9kVjZJaEFsVjBOS2xuZEVmRWZvdVpxYnhTUmNOQnFRRTIwb3h3?=
+ =?utf-8?B?NHpPOS9xWmRzZkkxNlA0L2l6UmlNTVhncWNxSGFYdFdYY3ZkVTN4cktTNTUz?=
+ =?utf-8?B?R2NQNlFHcE9mR0J2MFZMQUROVWJ4VzA3K2gzMXcybDFnRVdDNzdveXpXYlVa?=
+ =?utf-8?B?WmpJNnZwZWZoMVdxMEwzaUk0OUNnNGEvanI1K0lHcDl3WHQzMTFCMnJmdEcr?=
+ =?utf-8?B?MmpJU2o2WlBZOXFsOWN4L05MUFNMMjVyOHFEUGQ0ajlWcmdSSE1nc1UrUW5R?=
+ =?utf-8?B?dURPakg4MXdDbEhVV2RjQkdqc2ZkbDdPYTdCdFF3WWFhV0hyRXQ3UkdMVXkw?=
+ =?utf-8?Q?YQhJkIJA1T7+BEOl362xKnI2P?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <C59FAA76A02EB240BD3B5D9A2E5E8693@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH 2/2] mailbox: pcc: Support shared interrupt for multiple
- subspaces
-To:     Sudeep Holla <sudeep.holla@arm.com>
-CC:     <robbiek@xsightlabs.com>, <linux-acpi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <rafael@kernel.org>,
-        <rafael.j.wysocki@intel.com>, <wanghuiqiang@huawei.com>,
-        <zhangzekun11@huawei.com>, <wangxiongfeng2@huawei.com>,
-        <tanxiaofei@huawei.com>, <guohanjun@huawei.com>,
-        <xiexiuqi@huawei.com>, <wangkefeng.wang@huawei.com>,
-        <huangdaode@huawei.com>
-References: <20221016034043.52227-1-lihuisong@huawei.com>
- <20230216063653.1995-1-lihuisong@huawei.com>
- <20230216063653.1995-3-lihuisong@huawei.com>
- <20230301133626.gchca3fdaqijxwzq@bogus>
- <2a165476-2e96-17b1-a50b-c8749462e8a1@huawei.com>
- <20230302140216.m4m3452vexyrnuln@bogus>
- <020cc964-9938-7ebe-7514-125cd041bfcb@huawei.com>
- <20230303111407.zdgqdwqik4spnq2o@bogus>
- <718da090-bc58-0762-c901-cbbfc3b78d5f@huawei.com>
- <20230310201453.5fd3wv4ydarq5yin@bogus>
-From:   "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <20230310201453.5fd3wv4ydarq5yin@bogus>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.103.231]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemm600004.china.huawei.com (7.193.23.242)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6605.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f20d4719-93de-423f-c095-08db243031eb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Mar 2023 02:02:41.7464
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Kl1yM2dyXXOVOca7EAOOJJOYhuaYC+4W6mBdRS1iEkh12MHw4wTskA0rLx2ihofaeKMb624ML8CcJqT+fTpz/Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6452
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-在 2023/3/11 4:14, Sudeep Holla 写道:
-> On Sat, Mar 04, 2023 at 05:47:28PM +0800, lihuisong (C) wrote:
->> 在 2023/3/3 19:14, Sudeep Holla 写道:
->>> On Fri, Mar 03, 2023 at 02:33:49PM +0800, lihuisong (C) wrote:
->>>> Sorry for my resend. Because I found that my last reply email is not in the
->>>> thread of this patch. I guess it may be send failed.
->>>>
->>>> 在 2023/3/2 22:02, Sudeep Holla 写道:
->>>>> No. I meant a comment saying it is not need since only one transfer can occur
->>>>> at a time and mailbox takes care of locking. So chan_in_use can be accessed
->>>>> without a lock.
->>>> Got it. Agreed.
->>> Thanks
->> already modify this comment as below.
->>>>>> For types no need this flag, it is always hard to understand and redundant
->>>>>> design.
->>>>> But does it matter ? You can even support shared interrupt for type 1&2.
->>>> BTW, type 1 subspaces do not support a level triggered platform interrupt as
->>>> no method is provided to clear the interrupt.
->>> Agreed but there is no harm using the flag, you can add a comment that it is
->>> useful only if shared interrupts are supported. That will imply it is dummy
->>> for type 1. I am avoiding too many type unnecessary checks especially in IRQ
->>> handler.
->> Understood.
->>
->>>>> They support level interrupt, so we can add them too. I understand you can
->>>>> test only type 3, but this driver caters for all and the code must be generic
->>>>> as much as possible. I don't see any point in check for type 3 only. Only
->>>> I understand what you do.
->>>> But type 2 also supports the communication flow from OSPM to Platfrom.
->>>> In this case, this flag will get in the way of type 2.
->>>>
->>> How ?
->> It should be ok if all types except for type 3 do not check this flag in
->> interrupt handle.
->> Namely, these types consider it as dummy, and do not use it, anywhere,
->> Right?
->>>> Whether the interrupt belongs to a type2 channel is only determined by
->>>> the status field in Generic Communications Channel Shared Memory Region,
->>>> which is done in rx_callback of PCC client.
->>> Agreed, but do you see any issue using the flag even if it acts as dummy ?
->> I think it can work well if these types completely ignore this flag, like below.
->> what do you think?
->>
->> -->8
->>
->> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
->> index ecd54f049de3..14405e99193d 100755
->> --- a/drivers/mailbox/pcc.c
->> +++ b/drivers/mailbox/pcc.c
->> @@ -92,6 +92,13 @@ struct pcc_chan_reg {
->>    * @error: PCC register bundle for the error status register
->>    * @plat_irq: platform interrupt
->>    * @type: PCC subspace type
->> + * @plat_irq_flags: platform interrupt flags
->> + * @chan_in_use: this flag is used just to check if the interrupt needs
->> + *             handling when it is shared. Since only one transfer can
->> occur
->> + *             at a time and mailbox takes care of locking, this flag can
->> be
->> + *             accessed without a lock. Note: the type only support the
->> + *             communication from OSPM to Platform, like type3, use it, and
->> + *             other types completely ignore it.
->>    */
->>   struct pcc_chan_info {
->>          struct pcc_mbox_chan chan;
->> @@ -102,6 +109,8 @@ struct pcc_chan_info {
->>          struct pcc_chan_reg error;
->>          int plat_irq;
->>          u8 type;
->> +       unsigned int plat_irq_flags;
->> +       bool chan_in_use;
->>   };
->>
->>   #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
->> @@ -225,6 +234,12 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
->>          return acpi_register_gsi(NULL, interrupt, trigger, polarity);
->>   }
->>
->> +static bool pcc_chan_plat_irq_can_be_shared(struct pcc_chan_info *pchan)
->> +{
->> +       return (pchan->plat_irq_flags & ACPI_PCCT_INTERRUPT_MODE) ==
->> +               ACPI_LEVEL_SENSITIVE;
->> +}
->> +
->>   static bool pcc_chan_command_complete(struct pcc_chan_info *pchan,
->>                                        u64 cmd_complete_reg_val)
->>   {
->> @@ -277,6 +292,9 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
->>          int ret;
->>
->>          pchan = chan->con_priv;
->> +       if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE &&
->> +           !pchan->chan_in_use)
-> I would have avoided the type check above but I understand your concern
-> so let us keep it like this for now.
-Thanks for your unstanding.
->
-> Please submit non-RFC patch as some maintainers may not look at RFC.
-I will send V2 ASAP.
->
+T24gTW9uLCAyMDIzLTAzLTEzIGF0IDE5OjAyICswMTAwLCBSYWZhZWwgSi4gV3lzb2NraSB3cm90
+ZToNCj4gT24gTW9uLCBNYXIgMTMsIDIwMjMgYXQgNTo0N+KAr1BNIFpoYW5nLCBSdWkgPHJ1aS56
+aGFuZ0BpbnRlbC5jb20+DQo+IHdyb3RlOg0KPiA+IEhpLCBSYWZhZWwsDQo+ID4gDQo+ID4gVGhl
+IG9ubHkgY29uY2VybiB0byBtZSBpcyB0aGF0LCBpbiB0aGVybWFsX2Nvb2xpbmdfZGV2aWNlX3Vw
+ZGF0ZSgpLA0KPiA+IHdlDQo+ID4gc2hvdWxkIGhhbmRsZSB0aGUgY2FzZXMgdGhhdCB0aGUgY29v
+bGluZyBkZXZpY2UgaXMgY3VycmVudCB1c2VkIGJ5DQo+ID4gb25lL21vcmUgdGhlcm1hbCB6b25l
+LiBzYXksIHNvbWV0aGluZyBsaWtlDQo+ID4gDQo+ID4gbGlzdF9mb3JfZWFjaF9lbnRyeShwb3Ms
+ICZjZGV2LT50aGVybWFsX2luc3RhbmNlcywgY2Rldl9ub2RlKSB7DQo+ID4gICAgICAgICAvKiBl
+LmcuIHdoYXQgdG8gZG8gaWYgdHoxIHNldCBpdCB0byBzdGF0ZSAxIHByZXZpb3VzbHkgKi8NCj4g
+PiB9DQo+ID4gSSBoYXZlIG5vdCBnb3QgYSBjbGVhciBpZGVhIHdoYXQgd2Ugc2hvdWxkIGRvIGhl
+cmUuDQo+IA0KPiBGb3IgZWFjaCBpbnN0YW5jZSwgc2V0IHVwcGVyIHRvIG1heF9zdGF0ZSBpZiBh
+Ym92ZSBpdCBhbmQgc2V0IHRhcmdldA0KPiB0byB1cHBlciBpZiBhYm92ZSBpdCBJJ2Qgc2F5Lg0K
+PiANCg0KU2F5LCBiZWZvcmUgdXBkYXRlLA0KbWF4X3N0YXRlOiAzDQp0YXJnZXQ6IDENCnVwcGVy
+IGlzIHNldCB0byAzIGJlY2F1c2UgdXBwZXIgPT0gVEhFUk1BTF9OT19MSU1JVCBkdXJpbmcgYmlu
+ZGluZw0KDQp0aGVuLCBhZnRlciB1cGRhdGUNCm1heF9zdGF0ZTogNw0KdGFyZ2V0OiA/DQp1cHBl
+cjogPw0KDQpNYXliZSB3ZSBzaG91bGQgZG8gdW5iaW5kIGFuZCByZWJpbmQsIGFuZCB0aGVuIHNl
+dCB0YXJnZXQNCnRvIFRIRVJNQUxfTk9fVEFSR0VUPyBpdCBpcyByZWFsbHkgdGhlIGdvdmVybm9y
+IHRoYXQgc2hvdWxkIHNldCB0aGUNCnRhcmdldC4NCg0KPiBJIGd1ZXNzIG90aGVyd2lzZSB0aGVy
+ZSBtYXkgYmUgc29tZSBjb25mdXNpb24gaW4gcHJpbmNpcGxlIGFuZCBJIGhhdmUNCj4gbWlzc2Vk
+IHRoYXQgcGllY2UsIHNvIHRoYW5rcyBmb3IgcG9pbnRpbmcgaXQgb3V0IQ0KPiANCj4gPiBCdXQg
+Z2l2ZW4gdGhhdCBJIGhhdmUgY29uZmlybWVkIHRoYXQgdGhpcyBwYXRjaCBzZXJpZXMgZml4ZXMg
+dGhlDQo+ID4gb3JpZ2luYWwgcHJvYmxlbSwgYW5kIHRoZSBBQ1BJIHBhc3NpdmUgY29vbGluZyBp
+cyB1bmxpa2VseSB0byBiZQ0KPiA+IHRyaWdnZXJlZCBiZWZvcmUgQ1BVRlJFUV9DUkVBVEVfUE9M
+SUNZIG5vdGlmaWNhdGlvbiwgcHJvYmFibHkgd2UNCj4gPiBjYW4NCj4gPiBhZGRyZXNzIHRoYXQg
+cHJvYmxlbSBsYXRlci4NCj4gPiANCj4gPiBUZXN0ZWQtYnk6IFpoYW5nIFJ1aSA8cnVpLnpoYW5n
+QGludGVsLmNvbT4NCj4gPiBSZXZpZXdlZC1ieTogWmhhbmcgUnVpIDxydWkuemhhbmdAaW50ZWwu
+Y29tPg0KPiANCj4gDQpJIHJlY2FsbGVkIHRoYXQgcGF0Y2h3b3JrIHVzZWQgdG8gY2F0Y2ggdGhl
+c2UgdGFncyBoZXJlIGFuZCBhcHBseSB0aGVtDQp0byBldmVyeSBwYXRjaGVzIGluIHRoZSBzZXJp
+ZXMsIHNvIHRoZSB0YWdzIGFyZSBhcHBlbmRlZCBhdXRvbWF0aWNhbGx5DQp3aGVuIGFwcGx5aW5n
+IHRoZSBwYXRjaGVzLiBCdXQgaXQgYXBwYXJlbnRseSBkb2VzIG5vdCB3b3JrIG5vdy4NCg0KTGV0
+IG1lIHJlcGx5IHRvIHRoZSBwYXRjaGVzIG9uZSBieSBvbmUuDQoNCnRoYW5rcywNCnJ1aQ0K
