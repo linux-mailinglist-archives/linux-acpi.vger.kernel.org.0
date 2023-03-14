@@ -2,157 +2,149 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 728BB6B9F99
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Mar 2023 20:26:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 121FA6B9FD9
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Mar 2023 20:37:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230117AbjCNT0L (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Mar 2023 15:26:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35580 "EHLO
+        id S229870AbjCNThM convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 14 Mar 2023 15:37:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbjCNT0J (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Mar 2023 15:26:09 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D27AF979;
-        Tue, 14 Mar 2023 12:26:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678821964; x=1710357964;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3Bu5KEQ7VbEZVFxJWJ3dCxTl63qFR3TMO6ewhBoLJ+8=;
-  b=m7I5cnQz5VqgaSgmnP+VYIVf1FMaqPRo8a6woO+CmvxnxqSmYyBusbWM
-   r5cufTyZ39Z/H4U4fIzzKYZCnBBBtlfwUo5sP1YG1qSlNY6HYAoORTLRY
-   nKYcygVLwVVpTUhyFCu73z33iRFI2st1WCxcI2UA716YtjJbK6dglMKZU
-   VQiFfBZHQ53KMtygpqWfYcOYF60nK69OcjKknJVJ0ZdjzAutS0WmFNLM0
-   zRMyyAg6m/yObM3L3hmcA8o+xhHIbkVDhahZ9ik9o9NiztHv6eQ+/IIPl
-   KpUdrkB8/lioQDa4K2D37MqALzsNrD9bNuNMVhJfleiJZU6mb3wf35FQk
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="402389722"
-X-IronPort-AV: E=Sophos;i="5.98,260,1673942400"; 
-   d="scan'208";a="402389722"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 12:26:02 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="656474978"
-X-IronPort-AV: E=Sophos;i="5.98,260,1673942400"; 
-   d="scan'208";a="656474978"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga006.jf.intel.com with ESMTP; 14 Mar 2023 12:25:52 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id BC9AF3B8; Tue, 14 Mar 2023 21:26:37 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-        "Maciej W. Rozycki" <macro@orcam.me.uk>,
-        Juergen Gross <jgross@suse.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Anatolij Gustschin <agust@denx.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Subject: [PATCH v5 4/4] pcmcia: Convert to use pci_bus_for_each_resource_p()
-Date:   Tue, 14 Mar 2023 21:26:34 +0200
-Message-Id: <20230314192634.63531-5-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230314192634.63531-1-andriy.shevchenko@linux.intel.com>
-References: <20230314192634.63531-1-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S230035AbjCNThL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Mar 2023 15:37:11 -0400
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FAE32A6DE;
+        Tue, 14 Mar 2023 12:37:02 -0700 (PDT)
+Received: by mail-ed1-f54.google.com with SMTP id cn21so36408414edb.0;
+        Tue, 14 Mar 2023 12:37:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678822620;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QcgqrEEeAkKKOQl82NDw/a48a4KrmvHxuMGEj//jCFE=;
+        b=lGiGWfynM/jBFGYSd8NhCjaCVRbtUAtZ9ujELBNN3qzirSf1mOBQVw9cCibQ2bdsY1
+         8sY0thj/GODYvedi9rQfeDM8WReZsVVMqovz2IG1fzFOO+AfjvREPA8m47cpkn9fPOvB
+         jJRarDG3mkeFE5NEjYgjMyu08uXb3i91veX42zNQ0ypwt9AvVwZC8NZk5Yju3ok57LL6
+         J7h8EYqkYY+/CHtzFIHSnLOEbebopWK0vNmmz/MRk3IClunlIjL1efvRk/eoHpn2NJKk
+         QZlhxRJvN6/ExAURyPpjMmCQrMe/TD7NYyH0cKv/A0tuoO/hEMhg2zlqV6eg/L2MnXEd
+         +jOg==
+X-Gm-Message-State: AO0yUKV/4hpAru5O0xa46wn1TiWq3cfenUt5odl+Z0SKFkH/hitWG8so
+        7qdXVcTXmebqOhqdd35PrjT2UebB7jed29XdXRc=
+X-Google-Smtp-Source: AK7set+cMfoe4bsEnRmrY5E8XZQiF35wuilUo433PUun4G3b9dikVzXxdDU1zSSwxhJLUHQRdYf+f05lopA3NNj34t8=
+X-Received: by 2002:a50:8754:0:b0:4fb:c8e3:1adb with SMTP id
+ 20-20020a508754000000b004fbc8e31adbmr138552edv.3.1678822620191; Tue, 14 Mar
+ 2023 12:37:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230308112632.1908748-1-sudeep.holla@arm.com> <d9e5fdc4-3db0-4aa7-147c-c3c6bfbeac84@arm.com>
+In-Reply-To: <d9e5fdc4-3db0-4aa7-147c-c3c6bfbeac84@arm.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 14 Mar 2023 20:36:48 +0100
+Message-ID: <CAJZ5v0h36OPPZ4tFy0cnfcYcKipGXVcRGH9dSbQDNtUd4pKVLQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: PPTT: Fix to avoid sleep in the atomic context when
+ PPTT is absent
+To:     Pierre Gondois <pierre.gondois@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Aishwarya TCV <aishwarya.tcv@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pci_bus_for_each_resource_p() hides the iterator loop since
-it may be not used otherwise. With this, we may drop that iterator
-variable definition.
+On Wed, Mar 8, 2023 at 2:34 PM Pierre Gondois <pierre.gondois@arm.com> wrote:
+>
+> Tested-by: Pierre Gondois <pierre.gondois@arm.com>
+>
+> On 3/8/23 12:26, Sudeep Holla wrote:
+> > Commit 0c80f9e165f8 ("ACPI: PPTT: Leave the table mapped for the runtime usage")
+> > enabled to map PPTT once on the first invocation of acpi_get_pptt() and
+> > never unmapped the same allowing it to be used at runtime with out the
+> > hassle of mapping and unmapping the table. This was needed to fetch LLC
+> > information from the PPTT in the cpuhotplug path which is executed in
+> > the atomic context as the acpi_get_table() might sleep waiting for a
+> > mutex.
+> >
+> > However it missed to handle the case when there is no PPTT on the system
+> > which results in acpi_get_pptt() being called from all the secondary
+> > CPUs attempting to fetch the LLC information in the atomic context
+> > without knowing the absence of PPTT resulting in the splat like below:
+> >
+> >   | BUG: sleeping function called from invalid context at kernel/locking/semaphore.c:164
+> >   | in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
+> >   | preempt_count: 1, expected: 0
+> >   | RCU nest depth: 0, expected: 0
+> >   | no locks held by swapper/1/0.
+> >   | irq event stamp: 0
+> >   | hardirqs last  enabled at (0): 0x0
+> >   | hardirqs last disabled at (0): copy_process+0x61c/0x1b40
+> >   | softirqs last  enabled at (0): copy_process+0x61c/0x1b40
+> >   | softirqs last disabled at (0): 0x0
+> >   | CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.3.0-rc1 #1
+> >   | Call trace:
+> >   |  dump_backtrace+0xac/0x138
+> >   |  show_stack+0x30/0x48
+> >   |  dump_stack_lvl+0x60/0xb0
+> >   |  dump_stack+0x18/0x28
+> >   |  __might_resched+0x160/0x270
+> >   |  __might_sleep+0x58/0xb0
+> >   |  down_timeout+0x34/0x98
+> >   |  acpi_os_wait_semaphore+0x7c/0xc0
+> >   |  acpi_ut_acquire_mutex+0x58/0x108
+> >   |  acpi_get_table+0x40/0xe8
+> >   |  acpi_get_pptt+0x48/0xa0
+> >   |  acpi_get_cache_info+0x38/0x140
+> >   |  init_cache_level+0xf4/0x118
+> >   |  detect_cache_attributes+0x2e4/0x640
+> >   |  update_siblings_masks+0x3c/0x330
+> >   |  store_cpu_topology+0x88/0xf0
+> >   |  secondary_start_kernel+0xd0/0x168
+> >   |  __secondary_switched+0xb8/0xc0
+> >
+> > Update acpi_get_pptt() to consider the fact that PPTT is once checked and
+> > is not available on the system and return NULL avoiding any attempts to
+> > fetch PPTT and thereby avoiding any possible sleep waiting for a mutex
+> > in the atomic context.
+> >
+> > Fixes: 0c80f9e165f8 ("ACPI: PPTT: Leave the table mapped for the runtime usage")
+> > Reported-by: Aishwarya TCV <aishwarya.tcv@arm.com>
+> > Cc: Pierre Gondois <pierre.gondois@arm.com>
+> > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> > ---
+> >   drivers/acpi/pptt.c | 5 ++++-
+> >   1 file changed, 4 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> > index 10975bb603fb..a35dd0e41c27 100644
+> > --- a/drivers/acpi/pptt.c
+> > +++ b/drivers/acpi/pptt.c
+> > @@ -536,16 +536,19 @@ static int topology_get_acpi_cpu_tag(struct acpi_table_header *table,
+> >   static struct acpi_table_header *acpi_get_pptt(void)
+> >   {
+> >       static struct acpi_table_header *pptt;
+> > +     static bool is_pptt_checked;
+> >       acpi_status status;
+> >
+> >       /*
+> >        * PPTT will be used at runtime on every CPU hotplug in path, so we
+> >        * don't need to call acpi_put_table() to release the table mapping.
+> >        */
+> > -     if (!pptt) {
+> > +     if (!pptt && !is_pptt_checked) {
+> >               status = acpi_get_table(ACPI_SIG_PPTT, 0, &pptt);
+> >               if (ACPI_FAILURE(status))
+> >                       acpi_pptt_warn_missing();
+> > +
+> > +             is_pptt_checked = true;
+> >       }
+> >
+> >       return pptt;
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Krzysztof Wilczyński <kw@linux.com>
-Acked-by: Dominik Brodowski <linux@dominikbrodowski.net>
----
- drivers/pcmcia/rsrc_nonstatic.c | 9 +++------
- drivers/pcmcia/yenta_socket.c   | 3 +--
- 2 files changed, 4 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/pcmcia/rsrc_nonstatic.c b/drivers/pcmcia/rsrc_nonstatic.c
-index ad1141fddb4c..9d92d4bb6239 100644
---- a/drivers/pcmcia/rsrc_nonstatic.c
-+++ b/drivers/pcmcia/rsrc_nonstatic.c
-@@ -934,7 +934,7 @@ static int adjust_io(struct pcmcia_socket *s, unsigned int action, unsigned long
- static int nonstatic_autoadd_resources(struct pcmcia_socket *s)
- {
- 	struct resource *res;
--	int i, done = 0;
-+	int done = 0;
- 
- 	if (!s->cb_dev || !s->cb_dev->bus)
- 		return -ENODEV;
-@@ -960,12 +960,9 @@ static int nonstatic_autoadd_resources(struct pcmcia_socket *s)
- 	 */
- 	if (s->cb_dev->bus->number == 0)
- 		return -EINVAL;
--
--	for (i = 0; i < PCI_BRIDGE_RESOURCE_NUM; i++) {
--		res = s->cb_dev->bus->resource[i];
--#else
--	pci_bus_for_each_resource(s->cb_dev->bus, res, i) {
- #endif
-+
-+	pci_bus_for_each_resource_p(s->cb_dev->bus, res) {
- 		if (!res)
- 			continue;
- 
-diff --git a/drivers/pcmcia/yenta_socket.c b/drivers/pcmcia/yenta_socket.c
-index 1365eaa20ff4..2e5bdf3db0ba 100644
---- a/drivers/pcmcia/yenta_socket.c
-+++ b/drivers/pcmcia/yenta_socket.c
-@@ -673,9 +673,8 @@ static int yenta_search_res(struct yenta_socket *socket, struct resource *res,
- 			    u32 min)
- {
- 	struct resource *root;
--	int i;
- 
--	pci_bus_for_each_resource(socket->dev->bus, root, i) {
-+	pci_bus_for_each_resource_p(socket->dev->bus, root) {
- 		if (!root)
- 			continue;
- 
--- 
-2.39.2
-
+Applied as 6.3-rc material, thanks!
