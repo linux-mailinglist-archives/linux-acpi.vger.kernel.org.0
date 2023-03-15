@@ -2,61 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7890E6BAC09
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Mar 2023 10:23:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5CFF6BAC12
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Mar 2023 10:24:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231731AbjCOJXH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Mar 2023 05:23:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51746 "EHLO
+        id S231669AbjCOJYQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Mar 2023 05:24:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231669AbjCOJXF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Mar 2023 05:23:05 -0400
-Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88137233FE;
-        Wed, 15 Mar 2023 02:23:04 -0700 (PDT)
-Received: by mail-qv1-xf34.google.com with SMTP id 97so2605340qvb.6;
-        Wed, 15 Mar 2023 02:23:04 -0700 (PDT)
+        with ESMTP id S231881AbjCOJYK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Mar 2023 05:24:10 -0400
+Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0A9E34C35;
+        Wed, 15 Mar 2023 02:24:08 -0700 (PDT)
+Received: by mail-qv1-xf35.google.com with SMTP id t13so8692384qvn.2;
+        Wed, 15 Mar 2023 02:24:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678872183;
+        d=gmail.com; s=20210112; t=1678872247;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xI8+SZdZGTfMjh40WQniyR0RGVqLdMP+WWCFapsHzyE=;
-        b=hXtoEBTpdWVu5PhHp7XdS8adDNmxmbzIjyylNE4fzdY25t6FaI6zlEwE4Qef469Ioq
-         Il8KTH/xBgUecDyB5Zt2gSkeqgNpNdpFRPH8uoJMWjrfr4KdsVRl459tElfFrmNLe/cT
-         sY6ACG2NpPSnqWKCSMGp91+G5Nx/ppm/FmOdDdVbMMjXZS0WNaELZtsE3ISceb0IC4rW
-         m+bdwE4M1boLijHTjZ/EEF6LYKYe9In/FoEKMP8FRIm9T5hP3lJwKJhmMIOqnNREvZjU
-         aO1mebsQlQ0KhvD1tEp8qQCqUttLTyFus/AbEzjDesE0f/+UziFlOyjnTxlcydrnz7WS
-         e41w==
+        bh=ctWTceq67BQqT/ahbjMi0pgtgv0rjXdzqZhTL7tmzsw=;
+        b=Ctc7Rj+dSZCN3KhAqhyb16sDdB9ZnZZc01TmQNLAMrMTk3ZXN56xJzMzQJlY0S/yrm
+         SG5fIlbFPtemX2P4G0egy1WbAkaXybN1WdyO/BtDSO/o4lFBCijTbcWabyOKxHy5p8ih
+         7d5iBHgrUvkGw20mdrNmBIdoaOnD6FPvYeKmdQC0OPW+AggK21GwagOgZW4AqzLUeec+
+         FS7ut6HpV69+02iC9S39ewB5P+XJQNtithqjgZ7RGyhN3NXV6fuwaZ28gUQ1db6zOYwI
+         tgHY+m6ihhRLrQxdtcluIQwczTmTg2upGI+DTlPQm05iO5is4/ELgZKBQmPvexCWhuK7
+         D2Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678872183;
+        d=1e100.net; s=20210112; t=1678872247;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xI8+SZdZGTfMjh40WQniyR0RGVqLdMP+WWCFapsHzyE=;
-        b=OTVPoOKBx7ENt/UusfdKLz310TdHK9X5rEYziwNz/PVmbe26udyTAzxBniDzlDJJ2Y
-         ZVwWw9g2rfGIWhm4+3FfBypXWG81I4t+oRcPpthdAlFlYaaNhxgLH7jmvSLOgDuKVJjL
-         9XP9mi5zEYK72zrlDXIkSpKb16eQvo1koaXfIHmpWEX/SWRV1KHbFScPibIMccOc7sXy
-         8XYm5F6Lkd0iNfuJhMOtpsDm16NLcq1o3I2OxnJUjd2OMQsd33U7PQk6637bafHubv+N
-         YEckVNX4uw9AlcAqNPiBwXEaN7GxM8CxG7Py/NgmTZXbhuvFWqCBvIfen8hR3smxEOf9
-         aH9g==
-X-Gm-Message-State: AO0yUKXQjX9nxSmuBCv9TEUdm4bAr56ZB8/L4Y+SWOdOSyEvT7uOuCJQ
-        IUKnQrUAQ9KYsezsN+D5ZP1pU2KjLEUzr1+nv0KrgeBUbPQ=
-X-Google-Smtp-Source: AK7set+kY+opVMNHIGgJ/3whVcS7+M1lO4e5/zTAEnbRmWkCwMS5We1BCfiBcA/DtsfKcmkahE8td9rCIy0wYGEq8/E=
-X-Received: by 2002:ad4:48c8:0:b0:56e:fbbe:515f with SMTP id
- v8-20020ad448c8000000b0056efbbe515fmr3539335qvx.10.1678872183697; Wed, 15 Mar
- 2023 02:23:03 -0700 (PDT)
+        bh=ctWTceq67BQqT/ahbjMi0pgtgv0rjXdzqZhTL7tmzsw=;
+        b=Tjbr4yFILILC6jNcvg/3/iQYHhlYCWwPEIoSrz27yfuk4KpVjUrGQP6c4gwWT5rkvL
+         nc2V7rADGrMqsRbbc6eAJesiPcIlb2sHyBYz3dwcrtwSpM9neTS4NsLFXPmaO8eo8R27
+         BmqEmK/HX0nNqILqgDGbhQZTg1XRGjzfBO5BHhyGSvejJwX1v+fWDP0GCBegsyJ3qUaZ
+         ObqJjftOicYKbg5sm8pEPa3NEhajW0FqLqlows8TWHzt6YZLiVi+yoPeU/PceNLAx+Fn
+         VVCwEPvak33SVYbx1B1a2ozrOQj1slNu0Vq2QgYB8pbJkeFOBi3q5mee0+1T46itdyHZ
+         jDCQ==
+X-Gm-Message-State: AO0yUKWW4QpqPCmLVWo88LD3rSO9ZA67O6AoJVSII6nrPoFUDwzhmzpI
+        UReH9yqfeWWIMCUvqhv/2jsSITwE3n8NI4Qy+nU=
+X-Google-Smtp-Source: AK7set/7kbTkUcqW3E49Zgn5wo17wfaKjlp0wPxUUmY//N29SmJCL51ZjjmpiaY8tkQJVfwiDyF14ns64oeUqPjAeRw=
+X-Received: by 2002:ac8:5c48:0:b0:3d3:6fb6:abbe with SMTP id
+ j8-20020ac85c48000000b003d36fb6abbemr972162qtj.0.1678872244095; Wed, 15 Mar
+ 2023 02:24:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230314221609.22433-1-asmaa@nvidia.com>
-In-Reply-To: <20230314221609.22433-1-asmaa@nvidia.com>
+References: <20230314221609.22433-1-asmaa@nvidia.com> <20230314221609.22433-3-asmaa@nvidia.com>
+ <CAHp75VeMWvywh1PmA5SxStqM17e4KjU1voPr2rdYCyZVdEsRPA@mail.gmail.com>
+In-Reply-To: <CAHp75VeMWvywh1PmA5SxStqM17e4KjU1voPr2rdYCyZVdEsRPA@mail.gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 15 Mar 2023 11:22:27 +0200
-Message-ID: <CAHp75VcDR88K0snx_DJa4NX1GYjbMda8ALmmuDoCQCHqEYbX_g@mail.gmail.com>
-Subject: Re: [PATCH v5 0/2] Support Nvidia BlueField-3 GPIO driver and pin controller
+Date:   Wed, 15 Mar 2023 11:23:28 +0200
+Message-ID: <CAHp75VekqZhEYd35XWWH4W_qUDfknwm_ouzqkjsgFkUrMeODyQ@mail.gmail.com>
+Subject: Re: [PATCH v5 2/2] pinctrl: pinctrl-mlxbf: Add pinctrl driver support
 To:     Asmaa Mnebhi <asmaa@nvidia.com>
 Cc:     linus.walleij@linaro.org, bgolaszewski@baylibre.com,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
+        niyas.sait@linaro.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -69,21 +70,18 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 15, 2023 at 12:16=E2=80=AFAM Asmaa Mnebhi <asmaa@nvidia.com> wr=
-ote:
->
-> Support the BlueField-3 SoC GPIO driver for handling interrupts and
-> providing the option to change the direction and value of a GPIO.
-> Support the BlueField-3 SoC pin controller driver for allowing a
-> select number of GPIO pins to be manipulated from userspace or
-> the kernel.
->
-> The gpio-mlxbf3.c driver handles hardware registers and logic
-> that are different from gpio-mlxbf.c and gpio-mlxbf2.c.
-> For that reason, we have separate drivers for each generation.
+On Wed, Mar 15, 2023 at 11:21=E2=80=AFAM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+> On Wed, Mar 15, 2023 at 12:16=E2=80=AFAM Asmaa Mnebhi <asmaa@nvidia.com> =
+wrote:
 
-This one is in pretty good shape, a few minor things to be addressed
-and the v6 I believe will be ready to go.
+...
+
+> >  drivers/pinctrl/pinctrl-mlxbf3.c | 318 +++++++++++++++++++++++++++++++
+>
+> Ah, cool, so it's a typo in the GPIO driver then.
+
+And Subject here should be "pinctrl: mlxbf3: ...".
 
 --=20
 With Best Regards,
