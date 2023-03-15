@@ -2,303 +2,278 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A37016BB616
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Mar 2023 15:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 247106BBA11
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Mar 2023 17:43:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231465AbjCOOdl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Mar 2023 10:33:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32950 "EHLO
+        id S232462AbjCOQnc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Mar 2023 12:43:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230212AbjCOOdj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Mar 2023 10:33:39 -0400
-Received: from esa4.hc3370-68.iphmx.com (esa4.hc3370-68.iphmx.com [216.71.155.144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D0E3F751;
-        Wed, 15 Mar 2023 07:33:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=citrix.com; s=securemail; t=1678890818;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=EBbTrYjhN2Kr5AVtPGXMgm/fUG61JwkEEbYsSKN7wlY=;
-  b=CkTrJs2GeSF3Xgmip1hWUWZx7U+7IIKaVVKa3ie3VNCQgqcKFSWkxExn
-   hV2+WnuA03QTc9ImK4VROuisdk4LV5SwNMfe+0FHzQ4loCmfqwB5zt/Wl
-   beYNZWDk2EMRVO99mqhYVrgUGK5GoCcs8hujoVr3CndCHb/+FnrpqEz7L
-   s=;
-X-IronPort-RemoteIP: 104.47.57.168
-X-IronPort-MID: 103382471
-X-IronPort-Reputation: None
-X-IronPort-Listener: OutboundMail
-X-IronPort-SenderGroup: RELAY_O365
-X-IronPort-MailFlowPolicy: $RELAYED
-IronPort-Data: A9a23:wnQHUajdrD9GjbBcu73xUS7NX161SxAKZh0ujC45NGQN5FlHY01je
- htvDGmEPa6Namr1eY12bozg8UlTscODydcxGVQ4pCAxRHkb9cadCdqndUqhZCn6wu8v7q5Ex
- 55HNoSfdpBcolv0/ErF3m3J9CEkvU2wbuOgTrWCYmYpHlUMpB4J0XpLg/Q+jpNjne+3CgaMv
- cKai8DEMRqu1iUc3lg8sspvkzsy+qWi0N8klgZmP6sT5waDzyB94K83fsldEVOpGuG4IcbiL
- wrz5OnR1n/U+R4rFuSknt7TGqHdauePVeQmoiM+t5mK2nCulARrukoIHKN0hXNsoyeIh7hMJ
- OBl7vRcf+uL0prkw4zxWzEAe8130DYvFLXveRBTuuTLp6HKnueFL1yDwyjaMKVBktubD12i+
- tRDeBNSMQqqutmT6++HcONmieEnB8b0adZ3VnFIlVk1DN4AaLWaGuDmwIEd2z09wMdTAfzZe
- swVLyJ1awjNaAFOPVFRD48imOCvhT/0dDgwRFC9/PJrpTSMilEuluGzYLI5efTTLSlRtlyfq
- W/cuXzwHzkRNcCFyCrD+XWp7gPKtXqjA9lCTuHnr5aGhnWd/VwqLEYQf2eJsNO9s3+DV+xCN
- Wgbr39GQa8asRbDosPGdx+3unmfpTYHRsFdVeY97WmlzqvS/hbcBWUeSDNFQMIpudVwRjEw0
- FKN2dTzClRHoLCTDH6Q6LqQhTezIjQOa38PYzceSgkI6MWlp5s85jrFScxiC+iylcHvHi/rw
- CGiqzI3jLEey8UM0s2T4V/Dkxqop57UUhQy4ATHGG6ohit8ZYiqYKSy5FTb5OoGJ4GcJnGLp
- FANn8mT6rBIAZzlvCCEXuhLHLiv/PuDGDndh0N/WZgn6zmpvXWkeOh48GEgDERkKMAJfXnue
- kC7kQNJ7bdBLWetd+l8ZIfZI94jw6HtEfzmW+rSY94IZYJ+HCeD8SdkTU2dxWbglA4ri65XE
- YmWd8WlEXsBCeJ/xT6yRv8U3b4DxyYiyGeVTpf+pzyu2rqfbXiaYbcddlCJa4gR6KKCvRWQ+
- t1HNuOUxBhFFu7zeC/a9cgUN19iEJQgLZX/qsgSeuvdJANjQTglE6WIn+NnfJF5laNIkOuO5
- mu6RkJT1Fv4gzvANBmObXdgLrjoWP6TsE4GAMDlBn7ws1BLXGplxPx3m0cfFVX/yNFe8A==
-IronPort-HdrOrdr: A9a23:5DBA1q4nmB6GjwJCSwPXwAzXdLJyesId70hD6qkQc3Fom62j5q
- WTdZEgvyMc5wx/ZJhNo7690cq7MBHhHPxOgbX5VI3KNGXbUQOTR72KhrGSoAEIdReeygZcv5
- 0QCZSXCrfLfCVHZRCR2njFLz4iquP3j5xBnY3lvhNQpZkBUdAZ0+9+YDzrdXFedU19KrcSMo
- GT3cZDryrIQwVtUizqbkN1OdQqvrfw5evbXSI=
-X-IronPort-AV: E=Sophos;i="5.98,262,1673931600"; 
-   d="scan'208";a="103382471"
-Received: from mail-dm6nam11lp2168.outbound.protection.outlook.com (HELO NAM11-DM6-obe.outbound.protection.outlook.com) ([104.47.57.168])
-  by ob1.hc3370-68.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 15 Mar 2023 10:33:35 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bPtVbLfOXl8NLL5Yt6flw/lBKLWcwR9sOAAZfYOB29ZtjoBl7pS6Nc9ENQNQ8ucqgkPH6wHo7jZ/wzcTMdU6SdKfcRgm9t6Zw3xcuoBHuOYncdJGYWkGL3eI4M/Jnu+WD6tYLsMVWf9SXRaUZnDcS3ss4MbOw4Bfy7SSkCLX49RhyNAd+wn2tqZn1me6++ZrfIxvfxDstRI97nWOxrfuw3Md469ijPKLK+yr+DBc6gO9Nx3/72WSP73NuVQLsg27A1VzqDEdXDmC9CUI5MZ+id4Ud/BMB6zjIdTLiEpScrJtAH08DJidyRYM9/e0XsUfnpZFEInOCrMVQozQKri2ew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rPb1dFw727l7l7t5cvQNUTxsDNS6+upcubb7EeQzli8=;
- b=hJlcBrCFW/JFLBRRru7WWfLYBwFqYN+Ttl7M358vmAciGCay/E5134lGmkd3P9tsYr0wfuGU4V1WeHJ0pW+0drbdG4XfaNLr4fMVL9fwA6Pmfa7dPFgwj9RiHzrzHXp7senxtD9Cy6nAWNXh1octsNHYKuQBADUBxVGq+kxKAHsQmawP8kc33GDns1jcbTDAS0+TyvViL/EYhl5xAOftOHlOjFYpaC8YKM+JcZ62iikPtQM3Pwxz6rzeEzkESoG9YbKPuTWPnT+zc2xd8ci4gH8Ehrvo/DsEWrx2qAyIuDZZYjcbkyBb9MU4GJE7MC6gEqwZFPISgLegJeZODaYBmg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=citrix.com; dmarc=pass action=none header.from=citrix.com;
- dkim=pass header.d=citrix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=citrix.onmicrosoft.com; s=selector2-citrix-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rPb1dFw727l7l7t5cvQNUTxsDNS6+upcubb7EeQzli8=;
- b=cKiyhAwklq5RVJRKTVbHaPgBNEaxwkT9JzHiOF6fm/bK2UvQ74XVpwXG8eMlOc0D1uGjq6U+8r6/UC+izUAF1iIN8wthPTYtG5vv+wMzw8qeJo1EI0zhtwOgcJgM1srgLpLNOpDc2wyaASJCZP4gmIhSXYkSKF8NJ4lb0/LWSTY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=citrix.com;
-Received: from PH0PR03MB6368.namprd03.prod.outlook.com (2603:10b6:510:aa::21)
- by SA0PR03MB5644.namprd03.prod.outlook.com (2603:10b6:806:b7::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.29; Wed, 15 Mar
- 2023 14:33:33 +0000
-Received: from PH0PR03MB6368.namprd03.prod.outlook.com
- ([fe80::4fdc:e60c:b790:d034]) by PH0PR03MB6368.namprd03.prod.outlook.com
- ([fe80::4fdc:e60c:b790:d034%5]) with mapi id 15.20.6178.019; Wed, 15 Mar 2023
- 14:33:33 +0000
-Date:   Wed, 15 Mar 2023 15:33:27 +0100
-From:   Roger Pau =?utf-8?B?TW9ubsOp?= <roger.pau@citrix.com>
-To:     Juergen Gross <jgross@suse.com>
-Cc:     linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>,
-        Alex Chiang <achiang@hp.com>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2] acpi/processor: fix evaluating _PDC method when
- running as Xen dom0
-Message-ID: <ZBHXN/tgrQFghG4O@Air-de-Roger>
-References: <20230315121031.22450-1-roger.pau@citrix.com>
- <c9eec213-3c93-62ba-1f46-1e502f121eac@suse.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c9eec213-3c93-62ba-1f46-1e502f121eac@suse.com>
-X-ClientProxiedBy: LO4P265CA0273.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:37a::10) To PH0PR03MB6368.namprd03.prod.outlook.com
- (2603:10b6:510:aa::21)
+        with ESMTP id S232364AbjCOQnQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Mar 2023 12:43:16 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D8E29F23F;
+        Wed, 15 Mar 2023 09:42:07 -0700 (PDT)
+Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32FER3DD013012;
+        Wed, 15 Mar 2023 17:39:51 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=MQWjDBXejnfbBkpJj9p19emeBobj1+hKsaERuT0aCjo=;
+ b=g5mzqg/XRUPbwqKMwB8TSETGKtuKZQBAMcLw+nlgp4PMHoC7ZEuJv2vxCFu7FJAMMqFz
+ aojvoRBrwFmGKTjMYMa9sLwVsw49wzxTKgfbGB8EB2XJ7/bAg6vPAtGcbgpGEbPUnz7u
+ 5wt8POxVG1+h18kmN1zxHyRXhKicu8e+qrrALLKXWAUH/5WNClejhjYLNowqhxGah9bM
+ y+jgAV74hI57J+A/fXbFNT+DKKfPISvQyyyyDEVEbXI+VoreOzycwWbS+9pPJMkOR1i0
+ k9pOIWxqZI6cU1tQ4+R9JVEmKmZEmR0sGs3Qq/kyx5lqzRFH9+Y2LolMNpIQ90oWdPuv WA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3pb2bawy7b-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 15 Mar 2023 17:39:51 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 4EE5310002A;
+        Wed, 15 Mar 2023 17:39:49 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 3171421FE9D;
+        Wed, 15 Mar 2023 17:39:49 +0100 (CET)
+Received: from [10.48.1.102] (10.48.1.102) by SHFDAG1NODE2.st.com
+ (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.17; Wed, 15 Mar
+ 2023 17:39:48 +0100
+Message-ID: <48b8c84c-b2f6-5876-4855-2f9d70ac5e3e@foss.st.com>
+Date:   Wed, 15 Mar 2023 17:39:47 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR03MB6368:EE_|SA0PR03MB5644:EE_
-X-MS-Office365-Filtering-Correlation-Id: cda26bdb-f20a-4ea9-b118-08db25624103
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 6dCrtoh8YBSoL2vpROJGDIgQkbQD6zbULIUt+bExIni/Dv0A51IwnVnb9sK1HPgABO2YIUNtcYFxrrDrGxRIUqJy+LPSPR+73VZG/2NNqsSRM7LiHKtlChFHRtq8XFfpUXyD0IhnU+N0iFAP2kd4KAYVkvkgi4KlU4cyev8vAhy+DYkbcD5q5Yqe72Xig7psoCqo5pJbUijY0sbkbg4mZOPuju+jf6Q2KTmIs4/giuL6BDXYGspn33723vXDtl2IWy1jBsm2ZhPhqjNMaIyHL2cHGp6uYAkH84R6n2lrB9FXdYnjpF/qvdLHlGrxz6qDP9QCmWTv2usayu+OfH4ngnkkryTlPuWAZR/zp+iF+UJW7x0Zz+RsDZp15xghnltpNokC9SEo/mIRIXWtQeM7rIOFSTErMFypE0ubba+i/iSXPzVK7CNqWcQQldOlW8Ta6Ic8UOBWu8BFPhpB9T7FCDUJN94O4/k1L/cxaUeYjuClmmIQX5PxE8mO9ByR0M6+b6J8wQVY2DLaNY5q8M8ckqc/M6mCPdz05y8OUps4VhQpU/KmjSCleQlB6y+GQn2PGp41vq0V4RLQXx6jw9mZDtkSJPB3mYrhBXYE1lqliiGeSFn/MNIHsUdAKCgggeuWYMXWW4Q7Cq1SeBHo5u30GA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB6368.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(7916004)(346002)(39860400002)(366004)(396003)(376002)(136003)(451199018)(478600001)(66476007)(66946007)(316002)(66556008)(8676002)(5660300002)(41300700001)(4326008)(7416002)(6916009)(8936002)(85182001)(86362001)(54906003)(6486002)(6506007)(6512007)(2906002)(82960400001)(53546011)(6666004)(186003)(26005)(9686003)(33716001)(38100700002)(83380400001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UDB6YWlVU2NGTTc1UndlSG9jczkxREUzL1p5QXkzS0tiMVowYkdBYUhPejhR?=
- =?utf-8?B?bi8vV1JRWGpVNnNST1pEUkRJS0dzRkNMSStvZVd5cmd4bmprbUpNZ1dnY24v?=
- =?utf-8?B?eTlJQ2sza2tBd3VyMk1kTWVyaWZlaGh3Q1JsTXFRWUVkbWlZcWtYWWgvOUJG?=
- =?utf-8?B?TEpodVBDVHpUdDFHRGhuWUR2VVVDVGc1akgvN0lIUEloYnlnZ0l2SERrcFRI?=
- =?utf-8?B?MnFaQ2JralFKQ2FtUFBReVdLclZLaUZwR2VzRitsaFl6V29ESjltandHOEJz?=
- =?utf-8?B?dmJSTDh4MzBWbmdLSDl0Vm0zdFkxd3hLV2F1SE9DNUtibkw3NGhYT0ttNEF1?=
- =?utf-8?B?TmQrbGV0bVJhMFNka3BRUWtlSjFwVkRjVnpwTFVUSWhXbHYvK1labVE4a0lU?=
- =?utf-8?B?bkxhNE9EK01nTlgrQXBleDBZWVhuQWluVEtoVVYwR2U2eTNES3VpU1JTdTZx?=
- =?utf-8?B?bmN3Tk9CMndHTmxDeFkrT1VwbWkxODdrZll0NXFUTDBMZUduUy92UzI1QjFk?=
- =?utf-8?B?S0ZkcmVVU2s2cjFNai9zYnA3VkZERHBscy9kMGpZaW4wN2NxbUhOT0pLalJ5?=
- =?utf-8?B?R1NSaEUwdTdoQmtndUZ5VlNxMnFkcjk5a1BwdThNcHcvdHZzdWo1ZmdUdE9h?=
- =?utf-8?B?anl5eDEyeURoYzFxY0kyWWV4YVdzUVFaR3pxSnRZcHJMWHZ6Wjl0REVrMXdQ?=
- =?utf-8?B?Z2I2bmhIMmRRQjZoaGxDL3VUTnFHbUpESWd6c1BGNThpcVcxdlhJYmlzTXRv?=
- =?utf-8?B?M3dGN1lmQmtNdWhpMXJKVkpNeWlkcnVucytwNlZHdTNTd2NXcXJGa2dFZzJR?=
- =?utf-8?B?WDEyQ1doalMzVFhpcGU3MzFMLzYvYjFMMklUQ1dFT013WEFXckJERWtXTHJz?=
- =?utf-8?B?WDJaZFdwOTBUazkvWmpCdG1GWEEwVDFYZXVtN296V0VxYWRncG5SM0hDTGdR?=
- =?utf-8?B?ZG85MHJqYVl0akt4REtXeHhnRVhwUzRKZUpqOURrNXpKMHVaS1d1bWpEY25n?=
- =?utf-8?B?RUtaekNGbjdoZDB0QjlHa2ovV21yNlhlQnBENHpEd1ROdzBTZDN6QkxUUytt?=
- =?utf-8?B?SERWRmx6azVaaGIxRXZFMG5XbDNIRkJKSGQxZ3hHNFFoSjVQWlB3QTR1L2I2?=
- =?utf-8?B?aFYySlF0b2NlaUNtTWF4V3VVSUtiRXVRb3k0S1d6YU9FT3M0OGk0TGRYa09w?=
- =?utf-8?B?MkpCOHBWNjl1SlFJcFFMNS8rVnlzclQyZkdhUnV1VGsyVzFhd1FUdFg1RkVJ?=
- =?utf-8?B?OXRxTGhnOXBpK1JmMVE3SWxIMGphTDFVY1pkZjVrRHZQTkFpYlJIaGxQRXcw?=
- =?utf-8?B?b3RNazlMUElDODBFVk9pRS82bldYUkdOZkJEU2pwZWRVMHNYeXUwbDlWc1hw?=
- =?utf-8?B?TGRiQ0hIUXVqVGt3NnM5M0t2bmdEM1p0ako1V1hoNTlsNE93U3lLKzY2ZW80?=
- =?utf-8?B?WDBYMUpYUERXM1RvTHZJQ3JNOFFyRXl0VHhmNUJIWWZUT3c3WjRNNGN0TUVq?=
- =?utf-8?B?VitrWGZEWk1scVN4RjNHMkFTQ2VhTWNCNGJxa3hnVWoreXZmcCtzb2xFeTZk?=
- =?utf-8?B?bGFESEZMTzg0dGxrR2Y5RUM5WTN6OHB2RnozYUNGWnNKZ0FLdGtsNzQ2ZzNG?=
- =?utf-8?B?UXlQTFpwV2xWTXVMTTZnT3d5ZVBUNXpqT3k5Rm12UUwwbW1wbTBDQWZUOGFJ?=
- =?utf-8?B?dGFBbytxVVNPRWlpcFRzWFhHRVBqczNsUTd0ZnZMc2kyZ29iQ2U0SXRTWGt3?=
- =?utf-8?B?ek9YelRXU1NEenZkVEJ1MlQ2UlgyWnhxSWVGSDRxK3ZIdUI5UkpvYXFxVER0?=
- =?utf-8?B?KzZyS2lmc1JTQ0RpL1ZQU0JHVXNKZUUvUy9lcGc5b2krT0IvSWtUazJDYndV?=
- =?utf-8?B?eUJ6U1RRdUNZb1JESlo1US9YVUt3ZndNc0pYS1d3ZjJDcjc4a29nMkorYmRx?=
- =?utf-8?B?c2lVU0l3UEFCSkF2bS9qNjdRSW1XTE56Rno1dk0xNzExVlJUQmxlSXQ4U2hG?=
- =?utf-8?B?SFpkTUdWSHowWDd5MnJkN0pIa3F6amdQcFR2bHhrZGdQamMybDU0cmpMSHBH?=
- =?utf-8?B?SVE5VW5LS0U0Q0E2VlVlOXVacWJxL21MUDZJb1ZEcWFZRWJ3R2NtaGV3TGIx?=
- =?utf-8?B?M0ZDeTFhNEtXYnBzZkNUaTRMQUVvVjIyR2toWDhCSWNETzJYYUtkTzNyenNi?=
- =?utf-8?B?Zmc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?utf-8?B?eU51M0VYSDZ0R0VJcFhjSi90ZmRiSDQrZDdaWmdjeE5vOFI1dWVUS2R3T0xY?=
- =?utf-8?B?WkFIcHdTalVMVHA1R0tDMG9Ec2FkU0tiUnkvR3JFNnZsdldWaENiQVdWNnZT?=
- =?utf-8?B?eXhrVEdWMDVEN3BYUDhvVkp1b1pjRlk2ZU5jcGdBRXJ0MDIwNDU1dThNbmkr?=
- =?utf-8?B?VVRHR0FkSTY1NngwL0pvNTh1Qzh1YUZFWVNROFNISzFnRE4raUFNZy9kVmJr?=
- =?utf-8?B?TzdjclJVTzA0N2lBOThtc0Z2c2NWZkVZTkpWS0lGNko2V3JqeHBrTUlBeHFT?=
- =?utf-8?B?UTVsR1hvZi9ONjJ0Z1ltc20vd3hOQ3g4YldZUWJkRUY4ZnA1UG9RTHBVVUtB?=
- =?utf-8?B?MFdBRENQWVVxU081bmg4cktGQ3Yvb28zU3RKYmQrcmZiMkxzbmNZanlUeW1G?=
- =?utf-8?B?bFFlb1FkOWZzT0ZVM2Q1NlpKb3NIaFZVaEYzMk0ycGlDLzVSZHNOTnJtaDAx?=
- =?utf-8?B?RHFWenZOMzJoTVFEWHVESkJqY1p4eUxxR2x1ZkFWY3lQNmZ1MWZBT2FLY3c3?=
- =?utf-8?B?d1p2RDgrdVBCR0NMcGREeXBGS255Y3RoSWp6eExHUGp2K2hHMDEwY0NqcUxT?=
- =?utf-8?B?Ym1HcWloU3c4VmhzblNZZ3hxUi85ZmJNNFlvUktObCtJQmdpd1U0aDBwUGU3?=
- =?utf-8?B?RUhFU0hCSHgrUDdpcVJ5K0Q2SVVPWXMySFNKa2pxQ3RkNkJGb0lFc1YxRG91?=
- =?utf-8?B?VWowWVRuZXVEd0xNZDFjZHNwYjc2azBtVHJsQ1JqODVqaHZWQUNsWHR6NmVr?=
- =?utf-8?B?L1ZOOE9GRlgwdzVqeVJMQmt0VlBYVjd3NlU5ZTlpSFF6ZG9ybk9zbHZDU3dO?=
- =?utf-8?B?L0lDMi9kTFVTZHJ5emtkall6WU9uQlZsaVBTQ2ZrQlNGbUR6VTlwMENVc1RX?=
- =?utf-8?B?czllRWN6eERnMmZkWEM1ZXJqZThnallFeXBFREU4QXpickcxenErTXRpbDdz?=
- =?utf-8?B?U0J6YTZFTktSU3FHRDBZcUZIQjdJV3lDN3ZzY01yakJlQjJxQXh6TVNJU3F0?=
- =?utf-8?B?NExmRmhSTGpnZkdEWWFCZG1wbWtWVFQ5MTk1eGFZWXJzWmVzK1pSUHJzTkhu?=
- =?utf-8?B?anBCaVJ5NXV1aGxDcTFCVVgxck0xQzFDQXBvMmJsNDZxM1FYQ3V6cGpxSDZ3?=
- =?utf-8?B?QTcrcFlHdkIxcHpFWVRmVTMzZVFHbTU3b2tORWg0eWpIWndaT29qOWxIOHlF?=
- =?utf-8?B?OHN4WU1FdTVQbmpSNlRVVkpnUzFVbnVpb2JTZkwvMVZvWVR4VERDMWxGaTJJ?=
- =?utf-8?B?MnpCTnh6QW52QkwzelZucSt1ZS92TVdUK0VaQUIvbEJkTy82dENIK3JNUFAy?=
- =?utf-8?B?UUVHbXY3NjllNk9XWlhDVUtUQzN3WU41eElDUzlTVENTeU5Md2lDOVBPYmNX?=
- =?utf-8?B?MkdheDk3c2xNbFlkK2tiY050M2ZVZ0xzazVudmxrVFg5aHY4UVFhSnoybXNP?=
- =?utf-8?B?S3ArMEFrS1VyQVRiNGZHakpSWEpvL3gwZXF4TjlZcm54SldCTHhpYkdzeDYz?=
- =?utf-8?Q?tdzvdA=3D?=
-X-OriginatorOrg: citrix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cda26bdb-f20a-4ea9-b118-08db25624103
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB6368.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Mar 2023 14:33:33.3809
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 335836de-42ef-43a2-b145-348c2ee9ca5b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: o6wFZglq4zZuUHKDsUONYhVyH/qz+zLKENV2hu25mXwHdy8bsZqIZJJzL5LWV5JFkMPzeO4oqSe8OAfDqNB0fA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR03MB5644
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v1 0/4] Remove use of fw_devlink_purge_absent_suppliers()
+Content-Language: en-US
+To:     Saravana Kannan <saravanak@google.com>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Yongqin Liu <yongqin.liu@linaro.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Martin Kepplinger <martin.kepplinger@puri.sm>,
+        Amelie Delaunay <amelie.delaunay@foss.st.com>,
+        <kernel-team@android.com>, <linux-kernel@vger.kernel.org>,
+        <linux-usb@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+References: <20230301214952.2190757-1-saravanak@google.com>
+ <aca28784-c526-566b-dd7c-9cfda17e697a@foss.st.com>
+ <CAGETcx8K47t6X4biCYq+m8NcQFrUMyXvHknCRYUkuUbkw1_i6g@mail.gmail.com>
+From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+In-Reply-To: <CAGETcx8K47t6X4biCYq+m8NcQFrUMyXvHknCRYUkuUbkw1_i6g@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.48.1.102]
+X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE2.st.com
+ (10.75.129.70)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-15_08,2023-03-15_01,2023-02-09_01
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 15, 2023 at 01:38:18PM +0100, Juergen Gross wrote:
-> On 15.03.23 13:10, Roger Pau Monne wrote:
-> > In ACPI systems, the OS can direct power management, as opposed to the
-> > firmware.  This OS-directed Power Management is called OSPM.  Part of
-> > telling the firmware that the OS going to direct power management is
-> > making ACPI "_PDC" (Processor Driver Capabilities) calls.  These _PDC
-> > methods must be evaluated for every processor object.  If these _PDC
-> > calls are not completed for every processor it can lead to
-> > inconsistency and later failures in things like the CPU frequency
-> > driver.
-> > 
-> > In a Xen system, the dom0 kernel is responsible for system-wide power
-> > management.  The dom0 kernel is in charge of OSPM.  However, the
-> > number of CPUs available to dom0 can be different than the number of
-> > CPUs physically present on the system.
-> > 
-> > This leads to a problem: the dom0 kernel needs to evaluate _PDC for
-> > all the processors, but it can't always see them.
-> > 
-> > In dom0 kernels, ignore the existing ACPI method for determining if a
-> > processor is physically present because it might not be accurate.
-> > Instead, ask the hypervisor for this information.
-> > 
-> > Fix this by introducing a custom function to use when running as Xen
-> > dom0 in order to check whether a processor object matches a CPU that's
-> > online.
-> > 
-> > This ensures that _PDC method gets evaluated for all physically online
-> > CPUs, regardless of the number of CPUs made available to dom0.
-> > 
-> > Fixes: 5d554a7bb064 ('ACPI: processor: add internal processor_physically_present()')
-> > Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
-> > ---
-> > Changes since v1:
-> >   - Reword commit message.
-> > ---
-> >   arch/x86/include/asm/xen/hypervisor.h | 10 ++++++++++
-> >   arch/x86/xen/enlighten.c              | 27 +++++++++++++++++++++++++++
-> >   drivers/acpi/processor_pdc.c          | 11 +++++++++++
-> >   3 files changed, 48 insertions(+)
-> > 
-> > diff --git a/arch/x86/include/asm/xen/hypervisor.h b/arch/x86/include/asm/xen/hypervisor.h
-> > index 5fc35f889cd1..f14e39bce2cb 100644
-> > --- a/arch/x86/include/asm/xen/hypervisor.h
-> > +++ b/arch/x86/include/asm/xen/hypervisor.h
-> > @@ -63,4 +63,14 @@ void __init xen_pvh_init(struct boot_params *boot_params);
-> >   void __init mem_map_via_hcall(struct boot_params *boot_params_p);
-> >   #endif
-> > +#ifdef CONFIG_XEN_DOM0
-> > +bool __init xen_processor_present(uint32_t acpi_id);
-> > +#else
-> > +static inline bool xen_processor_present(uint32_t acpi_id)
-> > +{
-> > +	BUG();
-> > +	return false;
-> > +}
-> > +#endif
-> > +
-> >   #endif /* _ASM_X86_XEN_HYPERVISOR_H */
-> > diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
-> > index b8db2148c07d..d4c44361a26c 100644
-> > --- a/arch/x86/xen/enlighten.c
-> > +++ b/arch/x86/xen/enlighten.c
-> > @@ -346,3 +346,30 @@ void xen_arch_unregister_cpu(int num)
-> >   }
-> >   EXPORT_SYMBOL(xen_arch_unregister_cpu);
-> >   #endif
-> > +
-> > +#ifdef CONFIG_XEN_DOM0
-> > +bool __init xen_processor_present(uint32_t acpi_id)
-> > +{
-> > +	unsigned int i, maxid;
-> > +	struct xen_platform_op op = {
-> > +		.cmd = XENPF_get_cpuinfo,
-> > +		.interface_version = XENPF_INTERFACE_VERSION,
-> > +	};
-> > +	int ret = HYPERVISOR_platform_op(&op);
-> > +
-> > +	if (ret)
-> > +		return false;
-> > +
-> > +	maxid = op.u.pcpu_info.max_present;
-> > +	for (i = 0; i <= maxid; i++) {
-> > +		op.u.pcpu_info.xen_cpuid = i;
-> > +		ret = HYPERVISOR_platform_op(&op);
-> > +		if (ret)
-> > +			continue;
-> > +		if (op.u.pcpu_info.acpi_id == acpi_id)
-> > +			return op.u.pcpu_info.flags & XEN_PCPU_FLAGS_ONLINE;
-> > +	}
-> > +
-> > +	return false;
-> > +}
-> > +#endif
+On 3/10/23 18:40, Saravana Kannan wrote:
+> On Fri, Mar 10, 2023 at 9:21 AM Fabrice Gasnier
+> <fabrice.gasnier@foss.st.com> wrote:
+>>
+>> On 3/1/23 22:49, Saravana Kannan wrote:
+>>> Yongqin, Martin, Amelie,
+>>>
+>>> We recent refactor of fw_devlink that ends with commit fb42378dcc7f
+>>> ("mtd: mtdpart: Don't create platform device that'll never probe"),
+>>> fw_devlink is smarter and doesn't depend on compatible property. So, I
+>>> don't think these calls are needed anymore. But I don't have these
+>>> devices to test on and be sure and the hardware I use to test changes
+>>> doesn't have this issue either.
+>>>
+>>> Can you please test these changes on the hardware where you hit the
+>>> issue to make sure things work as expected?
+>>
+>>
+>> Hi Saravana,
+>>
+>> Sorry for the late reply,
 > 
-> Did you consider not to do the hypercall again and again, but to reuse the
-> pcpu list from drivers/xen/pcpu.c instead? You'd need to store the acpi_id
-> in this list, of course.
+> Thanks for testing!
+> 
+>> On behalf of Amelie, I did some testing on STM32MP15 DK2 board, on top
+>> of commit fb42378dcc7f, and also with your series applied.
+>> For reference, it's based on: arch/arm/boot/dts/stm32mp15xx-dkx.dtsi
+>>
+>> I noticed some error messages on this board, since the 12 patch series,
+>> around the I2C PMIC device links:
+>>
+>> [    3.585514] i2c 1-0033: Failed to create device link with 1-0033
+>> [    3.590115] i2c 1-0033: Failed to create device link with 1-0033
+>> [    3.596278] i2c 1-0033: Failed to create device link with 1-0033
+>> [    3.602188] i2c 1-0033: Failed to create device link with 1-0033
+>> [    3.608165] i2c 1-0033: Failed to create device link with 1-0033
+>> [    3.614278] i2c 1-0033: Failed to create device link with 1-0033
+>> [    3.620256] i2c 1-0033: Failed to create device link with 1-0033
+>> [    3.626253] i2c 1-0033: Failed to create device link with 1-0033
+>> [    3.632252] i2c 1-0033: Failed to create device link with 1-0033
+>> [    3.639001] stpmic1 1-0033: PMIC Chip Version: 0x10
+>> [    3.645398] platform 5c002000.i2c:stpmic@33:regulators: Fixed
+>> dependency cycle(s) with /soc/i2c@5c00200
+>> 0/stpmic@33/regulators/boost
+>> [    3.655937] platform 5c002000.i2c:stpmic@33:regulators: Fixed
+>> dependency cycle(s) with /soc/i2c@5c00200
+>> 0/stpmic@33/regulators/buck2
+>> [    3.667824] platform 5c002000.i2c:stpmic@33:regulators: Fixed
+>> dependency cycle(s) with /soc/i2c@5c00200
+>> 0/stpmic@33/regulators/buck4
+>> [    3.719751] stpmic1-regulator 5c002000.i2c:stpmic@33:regulators:
+>> Failed to create device link with 1-0033
+>> [    3.728099] stpmic1-regulator 5c002000.i2c:stpmic@33:regulators:
+>> Failed to create device link with 1-0033
+>> [    3.737576] stpmic1-regulator 5c002000.i2c:stpmic@33:regulators:
+>> Failed to create device link with 1-0033
+>> [    3.747216] stpmic1-regulator 5c002000.i2c:stpmic@33:regulators:
+>> Failed to create device link with 1-0033
+>> [    3.756750] stpmic1-regulator 5c002000.i2c:stpmic@33:regulators:
+>> Failed to create device link with 1-0033
+>> [    3.766382] stpmic1-regulator 5c002000.i2c:stpmic@33:regulators:
+>> Failed to create device link with 1-0033
+>> [    3.775914] stpmic1-regulator 5c002000.i2c:stpmic@33:regulators:
+>> Failed to create device link with 1-0033
+>> [    3.785545] stpmic1-regulator 5c002000.i2c:stpmic@33:regulators:
+>> Failed to create device link with 1-0033
+> 
+> You can ignore all the "Failed to create device link" errors. They are
+> just error logs for stuff that was being ignored silently before. So
+> that's no functional regression AFAIK. I'll fix them separately if
+> necessary. And I'm sure you'll see these messages even without my
+> fw_devlink refactor series.
 
-Oh, didn't know this was available.  Seems to be initialized before
-the _PDC evaluation, so I can give it a try.
+Hi Saravana,
 
-Thanks, Roger.
+Thanks for the information.
+
+I tested without the 12 patch series, just before commit 3a2dbc510c43
+"driver core: fw_devlink: Don't purge child fwnode's consumer links".
+
+I don't see the messages here. But I can see these on top of fb42378dcc7f.
+
+
+> 
+>> Strangely some of the regulators seems to have "Fixed dependency", but
+>> not all.
+> 
+> Yeah, that's fine too -- that's just fw_devlink being verbose about
+> not enforcing probe ordering between devices in that cycle because it
+> can't tell which one of the dependencies is not a probe requirement.
+> Maybe I'll make it a dbg log if it's confusing people.
+> 
+>> Regarding the typec stusb160x I noticed the message below. It seems
+>> correct, right ?
+>>
+>> [   15.962771] typec port0: Fixed dependency cycle(s) with
+>> /soc/usb-otg@49000000/port/endpoint
+> 
+> I don't know if there is a cyclic dependency in your DT or not. But
+> this message itself is not an issue.
+
+Ack,
+
+> 
+>> But sometimes (lets say 1/5 times) during boot, when I have a cable
+>> already plugged in, it looks like there's some race condition. The dwc2
+>> driver reports some error logs in a loop, indefinitely, up to the
+>> watchdog resets the platform :-(.
+> 
+> Can you try this series (the one you are testing) without my
+> fw_devlink refactor that ends with commit fb42378dcc7f? Trying to make
+> sure we can reproduce the issue Amelie was fixing before I claim my
+> refactor series fixes it.
+
+Strangely, I tested without the series, and removed earlier patch from
+Amelie. I don't reproduce the issue she used to hit.
+
+> 
+>> [   16.288458] dwc2 49000000.usb-otg: Mode Mismatch Interrupt: currently
+>> in Host mode
+>> [   16.288490] dwc2 49000000.usb-otg: Mode Mismatch Interrupt: currently
+>> in Host mode
+>> [   16.310429] dwc2 49000000.usb-otg: Mode Mismatch Interrupt: currently
+>> in Host mode
+>>
+>> It probably just points some already existing race condition here. Maybe
+>> it isn't even linked to this patch. But I have no evidence at this
+>> stage. I hope I can investigate further on this one, hopefully I can
+>> free up some time for that.
+> 
+> If you never pick up this series, are you not having any of these 1/5
+> times boot issues? I wouldn't expect my changes to add any races, but
+> I'll wait to see what you find here.
+
+Some good news here is, I've identified a recent change [1], that
+creates the issue pointed above. I just sent a separate patch [2] for this.
+So, it's not related to this series. (I managed to reproduce without
+picking it).
+
+[1]
+https://lore.kernel.org/r/20221206-dwc2-gadget-dual-role-v1-2-36515e1092cd@theobroma-systems.com
+[2]
+https://lore.kernel.org/lkml/20230315144433.3095859-1-fabrice.gasnier@foss.st.com/
+
+So for stusb160x: e.g. PATCH 1, feel free to add on my:
+Tested-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+
+Best Regards,
+Fabrice
+
+> 
+> Thanks,
+> Saravana
+> 
+>>
+>> Best Regards,
+>> Fabrice
+>>
+>>>
+>>> Yongqin, If you didn't have the context, this affected hikey960.
+>>>
+>>> Greg,
+>>>
+>>> Let's wait for some tests before we land these.
+>>>
+>>> Thanks,
+>>> Saravana
+>>>
+>>> Cc: Yongqin Liu <yongqin.liu@linaro.org>
+>>> Cc: Sumit Semwal <sumit.semwal@linaro.org>
+>>> Cc: Martin Kepplinger <martin.kepplinger@puri.sm>
+>>> Cc: Amelie Delaunay <amelie.delaunay@foss.st.com>
+>>>
+>>> Saravana Kannan (4):
+>>>   usb: typec: stusb160x: Remove use of
+>>>     fw_devlink_purge_absent_suppliers()
+>>>   usb: typec: tipd: Remove use of fw_devlink_purge_absent_suppliers()
+>>>   usb: typec: tcpm: Remove use of fw_devlink_purge_absent_suppliers()
+>>>   driver core: Delete fw_devlink_purge_absent_suppliers()
+>>>
+>>>  drivers/base/core.c           | 16 ----------------
+>>>  drivers/usb/typec/stusb160x.c |  9 ---------
+>>>  drivers/usb/typec/tcpm/tcpm.c |  9 ---------
+>>>  drivers/usb/typec/tipd/core.c |  9 ---------
+>>>  include/linux/fwnode.h        |  1 -
+>>>  5 files changed, 44 deletions(-)
+>>>
+>>
+>> --
+>> To unsubscribe from this group and stop receiving emails from it, send an email to kernel-team+unsubscribe@android.com.
+>>
