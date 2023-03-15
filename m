@@ -2,88 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A80A96BAFF2
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Mar 2023 13:10:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FEA16BB2E7
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Mar 2023 13:39:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231343AbjCOMKy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Mar 2023 08:10:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60048 "EHLO
+        id S232829AbjCOMjp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Mar 2023 08:39:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231143AbjCOMKx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Mar 2023 08:10:53 -0400
-Received: from esa5.hc3370-68.iphmx.com (esa5.hc3370-68.iphmx.com [216.71.155.168])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2FB86780B;
-        Wed, 15 Mar 2023 05:10:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=citrix.com; s=securemail; t=1678882249;
-  h=from:to:cc:subject:date:message-id:
-   content-transfer-encoding:mime-version;
-  bh=aqkVxyu9mb2CIcFjBgNSXExcR5FLmw8gCXy/rXJj/54=;
-  b=Hftgd/QFtfcFJ4kLZsNBIpfs1tuyWzWJwQmI2shEbia0YtLYkzwg0FNk
-   uqVQS6vQ4zKQjMiifpvJmIzPFUvXv9vbALY+RrY6OAiG3jt1oAMArS1YN
-   FRHKvViw7fPGLqhJStXtvfBrtUsHxbCO6ADZETgSk/3XM6yWynVDnsNwc
-   c=;
-X-IronPort-RemoteIP: 104.47.73.44
-X-IronPort-MID: 99744542
-X-IronPort-Reputation: None
-X-IronPort-Listener: OutboundMail
-X-IronPort-SenderGroup: RELAY_O365
-X-IronPort-MailFlowPolicy: $RELAYED
-IronPort-Data: A9a23:JlXsDa1a+RGez1EQj/bD5fpxkn2cJEfYwER7XKvMYLTBsI5bpzEAn
- GMbDz/SP/mIYDOnft11YYnio0sAuMPcy9EyQFNppC1hF35El5HIVI+TRqvS04F+DeWYFR46s
- J9OAjXkBJppJpMJjk71atANlVEliefTAOK6ULWeUsxIbVcMYD87jh5+kPIOjIdtgNyoayuAo
- tq3qMDEULOf82cc3lk8tuTS+HuDgNyo4GlD5gdnOKgS1LPjvyJ94Kw3dPnZw0TQGuG4LsbiL
- 87fwbew+H/u/htFIrtJRZ6iLyXm6paLVeS/oiI+t5qK23CulQRrukoPD9IOaF8/ttm8t4sZJ
- OOhF3CHYVxB0qXkwIzxWvTDes10FfUuFLTveRBTvSEPpqFvnrSFL/hGVSkL0YMkFulfGl8J9
- P4nNRs0dgGAreauyr2HSrZKiZF2RCXrFNt3VnBI6xj8VapjbbWdBqLA6JlfwSs6gd1IEbDGf
- c0FZDFzbRPGJRpSJlMQD5F4l+Ct7pX9W2QA9BTJ+uxouC6PkGSd05C0WDbRUsaNSshP2F6Ru
- 0rN/njjAwFcP9uaodaA2iP92bOTwH+hMG4UPOHkqtdN3Vec+i8WJAMUREGEgdOeqUHrDrqzL
- GRRoELCt5Ma8E2tU8m4XBCipnOAlgATVsAWEOAg7gyJjK3O7G6xFmUCCzJMdtEinMs3XiAxk
- E+EmcvzAj5iu6HTTmiSnp+Woim1IjM9NnIZaGkPSg5ty9PkuoAoyBXUUsxkDrW2n/XyAzj7x
- z3Mpy87750Pgsob/6G6+03bmTWqp4iPQgNdzgDWWG2ixhl0aI6se8qj7l2zxfxYBI+dT1SH7
- D4IlqC24OkQANeNnSqWTeMlGLCv+ubDMTvAjFopFJ4knxy9qyCLfo1K5jx6YkBzPa4seSfgS
- F3CpQRLopRUOROCd6Z5ao+1I8cn167tEZLiTP+8Rt5DZJJZdwKd+ixqI0mK0AjFjkUqkqgjN
- IybN96lCXIbEa1rzRK3QfsQ1fkgwSVW7WrYRZHyyRuP0aLYb3mQIZ8BMV2TfqUw57uFiBva/
- swZNMaQzRhbFurkbUHqHZU7KFkLKT03AM7woskPKuqbeFI6RCcmFuPbxq4nd8p9haNJm+zU/
- 3a7HEhF1F74gn6BIgKPApx+VI7SsV9EhSpTFUQR0ZyAgRDPva7HAH8jSqYK
-IronPort-HdrOrdr: A9a23:gCa/ia5SxqiHt5l3wAPXwOXXdLJyesId70hD6qkRc20uTiX8ra
- vFoB1173PJYUkqKRQdcLy7VZVoOEmskaKduLNhWotKPzOWw1dAUrsN0WKK+VSJJ8SZzJ8k6U
- 4JSdkGNDSaNzdHZKjBgTVRBL4bsbq6GdiT5ds2OE0dLz2DXctbnmFENjo=
-X-IronPort-AV: E=Sophos;i="5.98,262,1673931600"; 
-   d="scan'208";a="99744542"
-Received: from mail-dm6nam04lp2044.outbound.protection.outlook.com (HELO NAM04-DM6-obe.outbound.protection.outlook.com) ([104.47.73.44])
-  by ob1.hc3370-68.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 15 Mar 2023 08:10:47 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WT2h/FhWyybNcqT5n38ZNK+X/8EOSRJpyVN+Sqrmyqmn40X5kWkfgd7rBYrSuRQ44oNJrsG/yG2YYx8ybcalj2A6UXUB0XPD1R6j7eHYd89nofm/Q1oNnu815ZnzUil+Bhr/rFIGbgVwHPw+bXkBJDjkUZXt4HA8O3KE6wTm5+YUmI36g+/Tt51H7qQ8tykHu4LuCgstAxCN2pY03vDS9Bf4UnSPX4iLTjdPowiKhDXP4XizCtWyXcr7QuYg2BqOx4j3QjwXfUOwmlqrTMaV8hzq+ODDb0a0kRPt7YJ1V4BOYi7WFqd0iAl+VIp4UFLIxzjWRdcSfvpHSpp3lP1Q4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=m5e4zN1sBKK/gJ5Rl1MgO3iQPc7bxKnquNyN2vp5zIs=;
- b=XhuPyu7FAUdzP2+cBZGPhodPBLPUfn7NzQBoWD7JCsnpG+VOdVwQxAYgIZitdWW7HPOF0HAuA4/UQtAKd1Q+P0Ok5ad6znsdLUnllYlWRvKOJ0YVraeFh7TLQu4j/F4Jw/LZU+Mod37lp2+dqpThG7FGp/iT4xGKw6JxpC9ni2tAyWEzo6lNUobtH6pXRA1PZ9ufUFNhuTbNArn1hgPwltxqqGDR5GccLXEsjXdwOtxfFdoquOc13eHFoh5EfKp+1Ish7W5f0xhmky84krIMRSP+/KK0OAP0hAtz4HGDv/WrlnRNHd80jFvL9ycw1VM05aQv7QkQKva+CCrjVXHs1w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=citrix.com; dmarc=pass action=none header.from=citrix.com;
- dkim=pass header.d=citrix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=citrix.onmicrosoft.com; s=selector2-citrix-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=m5e4zN1sBKK/gJ5Rl1MgO3iQPc7bxKnquNyN2vp5zIs=;
- b=JZvcmDMbeAlSKkOv14IBID7RzSaBilGOSewnZDBC631ZI1NX1iO+xNY98w+jTUIHcT0Gzb8lrb8PNlZqnHQ9BoI7UKMYPqUAHEjtDQIsHE4KIu+XuHI8Hby6SdpHQBsuN/52bdAVuChPOou/3EbD3Xe3aKxhtvIFBscVtdONL8k=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=citrix.com;
-Received: from PH0PR03MB6368.namprd03.prod.outlook.com (2603:10b6:510:aa::21)
- by SJ0PR03MB6777.namprd03.prod.outlook.com (2603:10b6:a03:40c::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.24; Wed, 15 Mar
- 2023 12:10:40 +0000
-Received: from PH0PR03MB6368.namprd03.prod.outlook.com
- ([fe80::4fdc:e60c:b790:d034]) by PH0PR03MB6368.namprd03.prod.outlook.com
- ([fe80::4fdc:e60c:b790:d034%5]) with mapi id 15.20.6178.019; Wed, 15 Mar 2023
- 12:10:39 +0000
-From:   Roger Pau Monne <roger.pau@citrix.com>
-To:     linux-kernel@vger.kernel.org
+        with ESMTP id S232746AbjCOMjb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Mar 2023 08:39:31 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FC6CA4027;
+        Wed, 15 Mar 2023 05:38:22 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 568A9218FC;
+        Wed, 15 Mar 2023 12:38:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1678883899; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=fz1UYNHzB0o6BXo5GffcomeCEXsJ+DMQo9fO9Q6cdIc=;
+        b=qsUE1t8TiSjAdgzXhEM46HRYZzrxCp9OTGOxb3nFWun9nRqatd0hi3flsSWFq9XO8+aKTQ
+        yUfHpiNqqlMuTvdoZFsmfIDt+hilwP4DfcvLV4t1x2PSZj9dDOJul+kKlB9G3RIgfjsBlh
+        Q7ArBtnrKvTltt2wg17c5e8F3wbGyxk=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E1C9C13A00;
+        Wed, 15 Mar 2023 12:38:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id BL+JNTq8EWRvDwAAMHmgww
+        (envelope-from <jgross@suse.com>); Wed, 15 Mar 2023 12:38:18 +0000
+Message-ID: <c9eec213-3c93-62ba-1f46-1e502f121eac@suse.com>
+Date:   Wed, 15 Mar 2023 13:38:18 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v2] acpi/processor: fix evaluating _PDC method when
+ running as Xen dom0
+Content-Language: en-US
+To:     Roger Pau Monne <roger.pau@citrix.com>,
+        linux-kernel@vger.kernel.org
 Cc:     xen-devel@lists.xenproject.org,
-        Roger Pau Monne <roger.pau@citrix.com>,
-        Juergen Gross <jgross@suse.com>,
         Boris Ostrovsky <boris.ostrovsky@oracle.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
@@ -93,232 +58,195 @@ Cc:     xen-devel@lists.xenproject.org,
         Len Brown <lenb@kernel.org>,
         Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>,
         Alex Chiang <achiang@hp.com>, linux-acpi@vger.kernel.org
-Subject: [PATCH v2] acpi/processor: fix evaluating _PDC method when running as Xen dom0
-Date:   Wed, 15 Mar 2023 13:10:30 +0100
-Message-Id: <20230315121031.22450-1-roger.pau@citrix.com>
-X-Mailer: git-send-email 2.39.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO4P123CA0564.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:33b::17) To PH0PR03MB6368.namprd03.prod.outlook.com
- (2603:10b6:510:aa::21)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR03MB6368:EE_|SJ0PR03MB6777:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0723d817-1ddf-4442-e3ca-08db254e4ac0
-X-LD-Processed: 335836de-42ef-43a2-b145-348c2ee9ca5b,ExtAddr,ExtFwd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: azroRDWnbs3O+AEmwVxmTzyMKKsSbUBV6omBTjpa3SVM6N5HrQCnp9KyR0JEi+U4XWBKZUoGZjO6xIoaoM4lAciNcu+WPx0mjWOJeafu378AaJOv3t55LJ/k5DF02HlEpwPkf/LnDzjgOqVvNfKKqR0k7DKOjQnLT2i8C79XYN+1Jzvc3gknjx/Atm9tDCDr0Usb6cXhZMaQ8MIvytb8ZWhR0uwUvJ/vyD0Stigb0lcpAGoarlDu3ji/OI6EOuG0tcd2qPi6kdTTsmeU8dKhOEQXKEj9qyjpnSfyesWRrMRhKmpBKj6ZUSzqlfOxXAipc/o4XbEGzskFQFusglNOYDiE/xvPVwbUwYEkS8d+MfGaglGqRklI1I5YoLeISvznUmV/Q8zj2T0N5SDk/W/k2NaNpsOtkn+VAk3Bf0Utf7sT8rvU4agKJbTdyeZoCWCkjn9ARMSDDpEbBs6wQ1SoD4GkO675otLrm0Km6/jHUnAlKgke3vVY1Qlg0+5RW39kf1ErrltGqwS+fbYfbF4ttox3z+R7tNzQ1Fo/0YAHabqoINdEe+Gm3TIdasU4z9pHdfNhz5OjhTTqzvowZVtmxfjppwN9LlL75nG6QAyfQlieFqPedVCbHQbEGvst7SXew7vkOZApthNerrruqiQXyw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB6368.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(376002)(396003)(346002)(136003)(366004)(39860400002)(451199018)(36756003)(5660300002)(7416002)(83380400001)(66556008)(478600001)(26005)(1076003)(2616005)(6512007)(186003)(6666004)(6486002)(6506007)(4326008)(8676002)(6916009)(41300700001)(8936002)(66946007)(54906003)(86362001)(66476007)(316002)(38100700002)(82960400001)(2906002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NVRKYWYvMU84ay9HcklFTzlINyszUmF5NzdGRnRBNExudTNwMmZVWUpQdUxX?=
- =?utf-8?B?NXRGNFozOTJkL3RBa2pUdFVrZkk4N21NMHJXUFZqaG12MHBVOGt2VFJZaDl4?=
- =?utf-8?B?czZZODFIeW55cEFTemVLOGJ5WHRVQnpvQTEzMGY4emRlRXZtWDYwelczRHR2?=
- =?utf-8?B?UE5sa1N3a3NOdG9SZEx6NkZWbEpZdVI0VlhtNndFSUZFRDdYS1RiVFBiUmkw?=
- =?utf-8?B?cmVVOHNCSTQ5R2ZBNW9aRnFHV0RjMkVVeDd2RFUwRnZibFdyVCtXeVNvZTV3?=
- =?utf-8?B?aUlCSFNkSXNGTGQ1SFlHeFZlTDhpRWVBdEFxU093cXovS1loc1ZCVmc3OFpt?=
- =?utf-8?B?UWpuN3ZJb21iY0VuWkhIK1VMN0xvbk95M2o4NXd6VHltUzdTb1cxS3IzTllp?=
- =?utf-8?B?Y2RYeStQa1V2eVZPQnovWThLR1VxMmRCN1ZHQXRxU2FWNnU3Qm9QdjJ4ZUNR?=
- =?utf-8?B?M0FQQ1daOWdlRkUrWXFDcE9YSm9GSHUzL3ZlN0VDTC94UjRXcHZLbVpzM2h5?=
- =?utf-8?B?aDZjSFFycEpMUVp0aExGeml0aFd4TlF1bWk3bUJJOUJyODR4R3FiTDV0NWk0?=
- =?utf-8?B?bHZMdy85NFY4QjdFdHk3N1gwbXpIakR3QWhlcWtqTXBab2VUZ2ZDSU4rYTM4?=
- =?utf-8?B?YzNIOS9aTTJxcHhYd1c3Zjk1RHljeWVHVkhmc1NwZkc3T2dSVzRSU0xJV1gw?=
- =?utf-8?B?dGlxWGFjeVpqUHBESk1HVE1uN1JnOW82c0FqUmY0bXNZUGNpbko5aU1OTmFl?=
- =?utf-8?B?WDlVK1lVVTcxeXRHT2w4MVlveXl1YUxNTHlnMHN1dFI4RTZkQ2NRdExnaFd5?=
- =?utf-8?B?L3hRV24yYXZOa1Y3VUZBMExmcXplNnVoU0V2VmpRaXJoMEFuMjlnbFFhQUIy?=
- =?utf-8?B?K01oelUyUnZiMENmTWJ2U0xxWHcyMGE0Umx2eDdMR2pYQndsSUo1bE5hb3Vr?=
- =?utf-8?B?VzhkYW1pbmgybE5SQ1psTCttbDdzSlBjMVJLYnVmRzNlZ0d2OFJpbUlPL0Mw?=
- =?utf-8?B?YS80cnBjQ3lLNWlQRzJlSUtWb3dZNzJVajh3cERkckQ5WDRKNDd4eldFRnE2?=
- =?utf-8?B?VWhkaGI3Ykxsb1F4ME5hc1FZYkxPWjRONVV5NmwxV0hTQWRRTVZneEpEcHRo?=
- =?utf-8?B?NDZrZjcxTGFwbW1zMlRzKzVyT1FqMmQ0ZmtOWCtBbjB2N3YvajA3OXV4NjFC?=
- =?utf-8?B?UTNKaFlsa2labVVSU2kzSUZlN2x5NWRLTWZKTHVONXhIbVIrc1cwQlE2djls?=
- =?utf-8?B?dlZnU0dkaDBreGt5WWxINmhVa25xajZsWldGZDBKTjNxenRHTDRWZUV0bHRv?=
- =?utf-8?B?TzZaZGZZTy9kWUYzSFFRZi9jSFZBa1lhRzFBaEtUN1pGa09rQ1oyYnIyM0wv?=
- =?utf-8?B?WUx1T0VaSWJQb1FCSVNwazlFMXdXUCtuQWEvSW5vR08vajRBNlVOSW5CV1J6?=
- =?utf-8?B?a2tUak5ZQnVtV1g1ekN6dGJWdWs2RWJtRzYxWVk2UzFPZFcvRHNpOXY5cnQw?=
- =?utf-8?B?ZHFZdGRRNThURHhjcnZvRHlTY2k0dGt0aTNGd0IycGlscGJ4Y0hxclBsY09F?=
- =?utf-8?B?cHZiTm5QQS9FMi9SMmswT3JQMUE1Z1RjWjV6aThNTmZlanlIOGhpSmgwMUVB?=
- =?utf-8?B?SnVBQU82SnRiaHRSZFZNeHBDdUFIeDlUVnEySGF6dzFPYzVYQkJrWUYyazJB?=
- =?utf-8?B?WVBIT1hoMGloSFJXSC92MGpXU2VMREUwMkdBbGErRXU2K0xwMmI1RFFJZDhE?=
- =?utf-8?B?NWRqajFTekU0MHJheTJQTTI5bXExN2ZJc3p1WjRMNmpMQktCUjQzRktvNDU4?=
- =?utf-8?B?ZjFWenlBalN1RVI1amU3d3NxLzR0bzhyeGYzT0xqTEpIS3QxWFNIQ1ZoNDF3?=
- =?utf-8?B?empxOWlhOEY4R0lCNk00MjVNdEpKVXNXV2F2NlVnOFY4TlNoZTFnQ2p2VHBm?=
- =?utf-8?B?M2orVnBYR2dyL0NhV2d0c2ZpdURrTkpLS0NLMWNPVHMyRTlKUmNWTVhBQzdt?=
- =?utf-8?B?NDhRamRiVkxTMm5pWTNMQkN4OGRUckx4amdLT2tJVVA5VWZzS2hKTXZRWlIw?=
- =?utf-8?B?VDJKREIwQUZISXhzSCtvN3JubmNLNlBheW4vcTlTYjFQNEZ2K0Z4ems5ZHdr?=
- =?utf-8?B?VENucUI2ME5zYnQ3QS9FeDZpTC9Ka2RzSkRVWG4xV3l3Y01ObTZodXRlbEll?=
- =?utf-8?B?QWc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?utf-8?B?aTRIcDFYSmVrR2w5QXFnWFpzS0JTWVJDTllEQmJxTXg3LyswaWFqY2RnMFFr?=
- =?utf-8?B?anpyekIxMVdOTzVwbmRUOHN4OFIxcFQ0YUhaaUJON1VnN3hoMkgvUkJ5SjVs?=
- =?utf-8?B?dGhvbXdpK1ZLaGJMQkVqWktOUFYvVDRqN3hycUZUOE1NRENUT1Y0eVQzTW92?=
- =?utf-8?B?WXpZejVZMjlOa3U3WTMzMFlOMEVRY0pMdUFLc3VaQ2p3RlhWOUJiWG53VDh2?=
- =?utf-8?B?ekpGWmhscVlYVlVyRExucVRrMGFyS0RjZ1hTWHpxSG5sd2dTa2VxRENVTEtS?=
- =?utf-8?B?c0M4SWxuU0IwaW9PSHQ4SWhkaWZyeW51eFA0R25naDYvZnEwUktOaitPdm9F?=
- =?utf-8?B?cGhUd2JyQjUxZDVSemx4SzJEUGQyRnhXMDNKVnQ2Z3JlS3A5Y21sejJERzdM?=
- =?utf-8?B?RndodlFPNWR2R1VNZ1pCMUlJN2VXakcxaGRpMFdmNmlpRnU4bVJ6dFVPQlNT?=
- =?utf-8?B?VzFrbGxTY2RwZi9RSDQyZ0JEaVZjbHB0bitOY2xQT0xEblduakFEc2l5UzNa?=
- =?utf-8?B?MTNPdXowN2NFbWRudFFDem5YQXlFS0VUNHMxdHpEazVrR09jNEptWlBVb0VJ?=
- =?utf-8?B?bkZEUVpMWWpNVWIwaDFKU1pKdXVLWVpsenBleTB5cTI3UUR6UXFJT2I0bkIv?=
- =?utf-8?B?c1IzZGozUEhKcEdaKy9DRWxaaDdoNzZ3YnRiN3hRbUl1Z2JPSnVGcTdiSmVl?=
- =?utf-8?B?RlUzWnNnbFNXdnRKTkhKNzZPUEJSQWgzRTdBN3BNNmlvMFNKQ2dEOXNGL3Ex?=
- =?utf-8?B?QUJXdkV1eXhTVE5BM09LNExTaUdGcXJ1d2trZyt4ZytMc01XUG5QM1MwSk14?=
- =?utf-8?B?bDd6V3hwTzZYTHR5dWlJRVNhQm9iOW9zR25maUdhcG1TdkJ0Y3NvdVlIWmgx?=
- =?utf-8?B?YlFMeWo2TDlYRG9nRlNmNEhvTW05S2F3SktTNWhWSjFROUFoWHRlcmhXa3k1?=
- =?utf-8?B?eVRoTHFHZWk5WkRDRFE3TmZpUW85R2lsd2F1eHpuQ0dObStJb1lSWSs4QlR4?=
- =?utf-8?B?RzVFQjNzSlp6Q1F4K0szNGthY3IxUUxBV1JvN1FYemtaSTE4UU02VUZaU2JK?=
- =?utf-8?B?MUhMWnVVRnlkRkhOYjRSbHhqNjcvdFc5R3J0WklkMlJwZ2UyS205UkJscG1V?=
- =?utf-8?B?RDgyTlNNNVFMai94WG9ZMHJ6Kzdrc1kra0lhUThpRXRCeVBER3pBYmNlbUVG?=
- =?utf-8?B?eExQZmMzR2NnYUVMamlMTjAwWEV3V1lRZGR5d2xOZDFIYjNSK1ErblJvVk8v?=
- =?utf-8?B?blFiWFdOekpQaytaUWw5QmVPRG1SdjJZa3l0ZVlDQ1d6QjBMT2ZUUWx4UFNv?=
- =?utf-8?B?Zis3Q1VNUWhSQlBPcmVDbXBEajBXWElIYm5KUUdXV3dtc3I1K2YxUkpsa1gv?=
- =?utf-8?B?MW9OWU40WExHMXN5a3Y5YjBsM0U1WGR0MnVvcjZyaHh2RDR1bytsWEZyOVZ5?=
- =?utf-8?B?Um9yUHFtZUVMWEJLdEpwVDlGVkp0UnZaVStWMExoWExrc2NBQmpnWVF1Nzhu?=
- =?utf-8?Q?aOEHfc=3D?=
-X-OriginatorOrg: citrix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0723d817-1ddf-4442-e3ca-08db254e4ac0
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB6368.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Mar 2023 12:10:39.7371
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 335836de-42ef-43a2-b145-348c2ee9ca5b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4hHgAi1j4o6fzzbbBx9CY5v/J5IsRVEr8uKDT2t+dDld3d5nRsSJvbGS2qHNqzxlRWWDikNr2i6LRch4Gm+BbA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR03MB6777
+References: <20230315121031.22450-1-roger.pau@citrix.com>
+From:   Juergen Gross <jgross@suse.com>
+In-Reply-To: <20230315121031.22450-1-roger.pau@citrix.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------gWtvAgNznabXuhhlhnZWKwSs"
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In ACPI systems, the OS can direct power management, as opposed to the
-firmware.  This OS-directed Power Management is called OSPM.  Part of
-telling the firmware that the OS going to direct power management is
-making ACPI "_PDC" (Processor Driver Capabilities) calls.  These _PDC
-methods must be evaluated for every processor object.  If these _PDC
-calls are not completed for every processor it can lead to
-inconsistency and later failures in things like the CPU frequency
-driver.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------gWtvAgNznabXuhhlhnZWKwSs
+Content-Type: multipart/mixed; boundary="------------uYrqKpVGnLGwiBL102kr3Hq0";
+ protected-headers="v1"
+From: Juergen Gross <jgross@suse.com>
+To: Roger Pau Monne <roger.pau@citrix.com>, linux-kernel@vger.kernel.org
+Cc: xen-devel@lists.xenproject.org,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>,
+ Alex Chiang <achiang@hp.com>, linux-acpi@vger.kernel.org
+Message-ID: <c9eec213-3c93-62ba-1f46-1e502f121eac@suse.com>
+Subject: Re: [PATCH v2] acpi/processor: fix evaluating _PDC method when
+ running as Xen dom0
+References: <20230315121031.22450-1-roger.pau@citrix.com>
+In-Reply-To: <20230315121031.22450-1-roger.pau@citrix.com>
 
-In a Xen system, the dom0 kernel is responsible for system-wide power
-management.  The dom0 kernel is in charge of OSPM.  However, the
-number of CPUs available to dom0 can be different than the number of
-CPUs physically present on the system.
+--------------uYrqKpVGnLGwiBL102kr3Hq0
+Content-Type: multipart/mixed; boundary="------------teTPZZU0EqzfsCNfmTdsoPkW"
 
-This leads to a problem: the dom0 kernel needs to evaluate _PDC for
-all the processors, but it can't always see them.
+--------------teTPZZU0EqzfsCNfmTdsoPkW
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-In dom0 kernels, ignore the existing ACPI method for determining if a
-processor is physically present because it might not be accurate.
-Instead, ask the hypervisor for this information.
+T24gMTUuMDMuMjMgMTM6MTAsIFJvZ2VyIFBhdSBNb25uZSB3cm90ZToNCj4gSW4gQUNQSSBz
+eXN0ZW1zLCB0aGUgT1MgY2FuIGRpcmVjdCBwb3dlciBtYW5hZ2VtZW50LCBhcyBvcHBvc2Vk
+IHRvIHRoZQ0KPiBmaXJtd2FyZS4gIFRoaXMgT1MtZGlyZWN0ZWQgUG93ZXIgTWFuYWdlbWVu
+dCBpcyBjYWxsZWQgT1NQTS4gIFBhcnQgb2YNCj4gdGVsbGluZyB0aGUgZmlybXdhcmUgdGhh
+dCB0aGUgT1MgZ29pbmcgdG8gZGlyZWN0IHBvd2VyIG1hbmFnZW1lbnQgaXMNCj4gbWFraW5n
+IEFDUEkgIl9QREMiIChQcm9jZXNzb3IgRHJpdmVyIENhcGFiaWxpdGllcykgY2FsbHMuICBU
+aGVzZSBfUERDDQo+IG1ldGhvZHMgbXVzdCBiZSBldmFsdWF0ZWQgZm9yIGV2ZXJ5IHByb2Nl
+c3NvciBvYmplY3QuICBJZiB0aGVzZSBfUERDDQo+IGNhbGxzIGFyZSBub3QgY29tcGxldGVk
+IGZvciBldmVyeSBwcm9jZXNzb3IgaXQgY2FuIGxlYWQgdG8NCj4gaW5jb25zaXN0ZW5jeSBh
+bmQgbGF0ZXIgZmFpbHVyZXMgaW4gdGhpbmdzIGxpa2UgdGhlIENQVSBmcmVxdWVuY3kNCj4g
+ZHJpdmVyLg0KPiANCj4gSW4gYSBYZW4gc3lzdGVtLCB0aGUgZG9tMCBrZXJuZWwgaXMgcmVz
+cG9uc2libGUgZm9yIHN5c3RlbS13aWRlIHBvd2VyDQo+IG1hbmFnZW1lbnQuICBUaGUgZG9t
+MCBrZXJuZWwgaXMgaW4gY2hhcmdlIG9mIE9TUE0uICBIb3dldmVyLCB0aGUNCj4gbnVtYmVy
+IG9mIENQVXMgYXZhaWxhYmxlIHRvIGRvbTAgY2FuIGJlIGRpZmZlcmVudCB0aGFuIHRoZSBu
+dW1iZXIgb2YNCj4gQ1BVcyBwaHlzaWNhbGx5IHByZXNlbnQgb24gdGhlIHN5c3RlbS4NCj4g
+DQo+IFRoaXMgbGVhZHMgdG8gYSBwcm9ibGVtOiB0aGUgZG9tMCBrZXJuZWwgbmVlZHMgdG8g
+ZXZhbHVhdGUgX1BEQyBmb3INCj4gYWxsIHRoZSBwcm9jZXNzb3JzLCBidXQgaXQgY2FuJ3Qg
+YWx3YXlzIHNlZSB0aGVtLg0KPiANCj4gSW4gZG9tMCBrZXJuZWxzLCBpZ25vcmUgdGhlIGV4
+aXN0aW5nIEFDUEkgbWV0aG9kIGZvciBkZXRlcm1pbmluZyBpZiBhDQo+IHByb2Nlc3NvciBp
+cyBwaHlzaWNhbGx5IHByZXNlbnQgYmVjYXVzZSBpdCBtaWdodCBub3QgYmUgYWNjdXJhdGUu
+DQo+IEluc3RlYWQsIGFzayB0aGUgaHlwZXJ2aXNvciBmb3IgdGhpcyBpbmZvcm1hdGlvbi4N
+Cj4gDQo+IEZpeCB0aGlzIGJ5IGludHJvZHVjaW5nIGEgY3VzdG9tIGZ1bmN0aW9uIHRvIHVz
+ZSB3aGVuIHJ1bm5pbmcgYXMgWGVuDQo+IGRvbTAgaW4gb3JkZXIgdG8gY2hlY2sgd2hldGhl
+ciBhIHByb2Nlc3NvciBvYmplY3QgbWF0Y2hlcyBhIENQVSB0aGF0J3MNCj4gb25saW5lLg0K
+PiANCj4gVGhpcyBlbnN1cmVzIHRoYXQgX1BEQyBtZXRob2QgZ2V0cyBldmFsdWF0ZWQgZm9y
+IGFsbCBwaHlzaWNhbGx5IG9ubGluZQ0KPiBDUFVzLCByZWdhcmRsZXNzIG9mIHRoZSBudW1i
+ZXIgb2YgQ1BVcyBtYWRlIGF2YWlsYWJsZSB0byBkb20wLg0KPiANCj4gRml4ZXM6IDVkNTU0
+YTdiYjA2NCAoJ0FDUEk6IHByb2Nlc3NvcjogYWRkIGludGVybmFsIHByb2Nlc3Nvcl9waHlz
+aWNhbGx5X3ByZXNlbnQoKScpDQo+IFNpZ25lZC1vZmYtYnk6IFJvZ2VyIFBhdSBNb25uw6kg
+PHJvZ2VyLnBhdUBjaXRyaXguY29tPg0KPiAtLS0NCj4gQ2hhbmdlcyBzaW5jZSB2MToNCj4g
+ICAtIFJld29yZCBjb21taXQgbWVzc2FnZS4NCj4gLS0tDQo+ICAgYXJjaC94ODYvaW5jbHVk
+ZS9hc20veGVuL2h5cGVydmlzb3IuaCB8IDEwICsrKysrKysrKysNCj4gICBhcmNoL3g4Ni94
+ZW4vZW5saWdodGVuLmMgICAgICAgICAgICAgIHwgMjcgKysrKysrKysrKysrKysrKysrKysr
+KysrKysrDQo+ICAgZHJpdmVycy9hY3BpL3Byb2Nlc3Nvcl9wZGMuYyAgICAgICAgICB8IDEx
+ICsrKysrKysrKysrDQo+ICAgMyBmaWxlcyBjaGFuZ2VkLCA0OCBpbnNlcnRpb25zKCspDQo+
+IA0KPiBkaWZmIC0tZ2l0IGEvYXJjaC94ODYvaW5jbHVkZS9hc20veGVuL2h5cGVydmlzb3Iu
+aCBiL2FyY2gveDg2L2luY2x1ZGUvYXNtL3hlbi9oeXBlcnZpc29yLmgNCj4gaW5kZXggNWZj
+MzVmODg5Y2QxLi5mMTRlMzliY2UyY2IgMTAwNjQ0DQo+IC0tLSBhL2FyY2gveDg2L2luY2x1
+ZGUvYXNtL3hlbi9oeXBlcnZpc29yLmgNCj4gKysrIGIvYXJjaC94ODYvaW5jbHVkZS9hc20v
+eGVuL2h5cGVydmlzb3IuaA0KPiBAQCAtNjMsNCArNjMsMTQgQEAgdm9pZCBfX2luaXQgeGVu
+X3B2aF9pbml0KHN0cnVjdCBib290X3BhcmFtcyAqYm9vdF9wYXJhbXMpOw0KPiAgIHZvaWQg
+X19pbml0IG1lbV9tYXBfdmlhX2hjYWxsKHN0cnVjdCBib290X3BhcmFtcyAqYm9vdF9wYXJh
+bXNfcCk7DQo+ICAgI2VuZGlmDQo+ICAgDQo+ICsjaWZkZWYgQ09ORklHX1hFTl9ET00wDQo+
+ICtib29sIF9faW5pdCB4ZW5fcHJvY2Vzc29yX3ByZXNlbnQodWludDMyX3QgYWNwaV9pZCk7
+DQo+ICsjZWxzZQ0KPiArc3RhdGljIGlubGluZSBib29sIHhlbl9wcm9jZXNzb3JfcHJlc2Vu
+dCh1aW50MzJfdCBhY3BpX2lkKQ0KPiArew0KPiArCUJVRygpOw0KPiArCXJldHVybiBmYWxz
+ZTsNCj4gK30NCj4gKyNlbmRpZg0KPiArDQo+ICAgI2VuZGlmIC8qIF9BU01fWDg2X1hFTl9I
+WVBFUlZJU09SX0ggKi8NCj4gZGlmZiAtLWdpdCBhL2FyY2gveDg2L3hlbi9lbmxpZ2h0ZW4u
+YyBiL2FyY2gveDg2L3hlbi9lbmxpZ2h0ZW4uYw0KPiBpbmRleCBiOGRiMjE0OGMwN2QuLmQ0
+YzQ0MzYxYTI2YyAxMDA2NDQNCj4gLS0tIGEvYXJjaC94ODYveGVuL2VubGlnaHRlbi5jDQo+
+ICsrKyBiL2FyY2gveDg2L3hlbi9lbmxpZ2h0ZW4uYw0KPiBAQCAtMzQ2LDMgKzM0NiwzMCBA
+QCB2b2lkIHhlbl9hcmNoX3VucmVnaXN0ZXJfY3B1KGludCBudW0pDQo+ICAgfQ0KPiAgIEVY
+UE9SVF9TWU1CT0woeGVuX2FyY2hfdW5yZWdpc3Rlcl9jcHUpOw0KPiAgICNlbmRpZg0KPiAr
+DQo+ICsjaWZkZWYgQ09ORklHX1hFTl9ET00wDQo+ICtib29sIF9faW5pdCB4ZW5fcHJvY2Vz
+c29yX3ByZXNlbnQodWludDMyX3QgYWNwaV9pZCkNCj4gK3sNCj4gKwl1bnNpZ25lZCBpbnQg
+aSwgbWF4aWQ7DQo+ICsJc3RydWN0IHhlbl9wbGF0Zm9ybV9vcCBvcCA9IHsNCj4gKwkJLmNt
+ZCA9IFhFTlBGX2dldF9jcHVpbmZvLA0KPiArCQkuaW50ZXJmYWNlX3ZlcnNpb24gPSBYRU5Q
+Rl9JTlRFUkZBQ0VfVkVSU0lPTiwNCj4gKwl9Ow0KPiArCWludCByZXQgPSBIWVBFUlZJU09S
+X3BsYXRmb3JtX29wKCZvcCk7DQo+ICsNCj4gKwlpZiAocmV0KQ0KPiArCQlyZXR1cm4gZmFs
+c2U7DQo+ICsNCj4gKwltYXhpZCA9IG9wLnUucGNwdV9pbmZvLm1heF9wcmVzZW50Ow0KPiAr
+CWZvciAoaSA9IDA7IGkgPD0gbWF4aWQ7IGkrKykgew0KPiArCQlvcC51LnBjcHVfaW5mby54
+ZW5fY3B1aWQgPSBpOw0KPiArCQlyZXQgPSBIWVBFUlZJU09SX3BsYXRmb3JtX29wKCZvcCk7
+DQo+ICsJCWlmIChyZXQpDQo+ICsJCQljb250aW51ZTsNCj4gKwkJaWYgKG9wLnUucGNwdV9p
+bmZvLmFjcGlfaWQgPT0gYWNwaV9pZCkNCj4gKwkJCXJldHVybiBvcC51LnBjcHVfaW5mby5m
+bGFncyAmIFhFTl9QQ1BVX0ZMQUdTX09OTElORTsNCj4gKwl9DQo+ICsNCj4gKwlyZXR1cm4g
+ZmFsc2U7DQo+ICt9DQo+ICsjZW5kaWYNCg0KRGlkIHlvdSBjb25zaWRlciBub3QgdG8gZG8g
+dGhlIGh5cGVyY2FsbCBhZ2FpbiBhbmQgYWdhaW4sIGJ1dCB0byByZXVzZSB0aGUNCnBjcHUg
+bGlzdCBmcm9tIGRyaXZlcnMveGVuL3BjcHUuYyBpbnN0ZWFkPyBZb3UnZCBuZWVkIHRvIHN0
+b3JlIHRoZSBhY3BpX2lkDQppbiB0aGlzIGxpc3QsIG9mIGNvdXJzZS4NCg0KDQpKdWVyZ2Vu
+DQo=
+--------------teTPZZU0EqzfsCNfmTdsoPkW
+Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
 
-Fix this by introducing a custom function to use when running as Xen
-dom0 in order to check whether a processor object matches a CPU that's
-online.
+-----BEGIN PGP PUBLIC KEY BLOCK-----
 
-This ensures that _PDC method gets evaluated for all physically online
-CPUs, regardless of the number of CPUs made available to dom0.
+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
+jR/i1DG86lem3iBDXzXsZDn8R38=3D
+=3D2wuH
+-----END PGP PUBLIC KEY BLOCK-----
 
-Fixes: 5d554a7bb064 ('ACPI: processor: add internal processor_physically_present()')
-Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
----
-Changes since v1:
- - Reword commit message.
----
- arch/x86/include/asm/xen/hypervisor.h | 10 ++++++++++
- arch/x86/xen/enlighten.c              | 27 +++++++++++++++++++++++++++
- drivers/acpi/processor_pdc.c          | 11 +++++++++++
- 3 files changed, 48 insertions(+)
+--------------teTPZZU0EqzfsCNfmTdsoPkW--
 
-diff --git a/arch/x86/include/asm/xen/hypervisor.h b/arch/x86/include/asm/xen/hypervisor.h
-index 5fc35f889cd1..f14e39bce2cb 100644
---- a/arch/x86/include/asm/xen/hypervisor.h
-+++ b/arch/x86/include/asm/xen/hypervisor.h
-@@ -63,4 +63,14 @@ void __init xen_pvh_init(struct boot_params *boot_params);
- void __init mem_map_via_hcall(struct boot_params *boot_params_p);
- #endif
- 
-+#ifdef CONFIG_XEN_DOM0
-+bool __init xen_processor_present(uint32_t acpi_id);
-+#else
-+static inline bool xen_processor_present(uint32_t acpi_id)
-+{
-+	BUG();
-+	return false;
-+}
-+#endif
-+
- #endif /* _ASM_X86_XEN_HYPERVISOR_H */
-diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
-index b8db2148c07d..d4c44361a26c 100644
---- a/arch/x86/xen/enlighten.c
-+++ b/arch/x86/xen/enlighten.c
-@@ -346,3 +346,30 @@ void xen_arch_unregister_cpu(int num)
- }
- EXPORT_SYMBOL(xen_arch_unregister_cpu);
- #endif
-+
-+#ifdef CONFIG_XEN_DOM0
-+bool __init xen_processor_present(uint32_t acpi_id)
-+{
-+	unsigned int i, maxid;
-+	struct xen_platform_op op = {
-+		.cmd = XENPF_get_cpuinfo,
-+		.interface_version = XENPF_INTERFACE_VERSION,
-+	};
-+	int ret = HYPERVISOR_platform_op(&op);
-+
-+	if (ret)
-+		return false;
-+
-+	maxid = op.u.pcpu_info.max_present;
-+	for (i = 0; i <= maxid; i++) {
-+		op.u.pcpu_info.xen_cpuid = i;
-+		ret = HYPERVISOR_platform_op(&op);
-+		if (ret)
-+			continue;
-+		if (op.u.pcpu_info.acpi_id == acpi_id)
-+			return op.u.pcpu_info.flags & XEN_PCPU_FLAGS_ONLINE;
-+	}
-+
-+	return false;
-+}
-+#endif
-diff --git a/drivers/acpi/processor_pdc.c b/drivers/acpi/processor_pdc.c
-index 8c3f82c9fff3..18fb04523f93 100644
---- a/drivers/acpi/processor_pdc.c
-+++ b/drivers/acpi/processor_pdc.c
-@@ -14,6 +14,8 @@
- #include <linux/acpi.h>
- #include <acpi/processor.h>
- 
-+#include <xen/xen.h>
-+
- #include "internal.h"
- 
- static bool __init processor_physically_present(acpi_handle handle)
-@@ -47,6 +49,15 @@ static bool __init processor_physically_present(acpi_handle handle)
- 		return false;
- 	}
- 
-+	if (xen_initial_domain())
-+		/*
-+		 * When running as a Xen dom0 the number of processors Linux
-+		 * sees can be different from the real number of processors on
-+		 * the system, and we still need to execute _PDC for all of
-+		 * them.
-+		 */
-+		return xen_processor_present(acpi_id);
-+
- 	type = (acpi_type == ACPI_TYPE_DEVICE) ? 1 : 0;
- 	cpuid = acpi_get_cpuid(handle, type, acpi_id);
- 
--- 
-2.39.0
+--------------uYrqKpVGnLGwiBL102kr3Hq0--
 
+--------------gWtvAgNznabXuhhlhnZWKwSs
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmQRvDoFAwAAAAAACgkQsN6d1ii/Ey+H
+eAf9F/IC8YDKBqY8EV61gkEqzpoZdao/jB/5rFKUHMJRV9VvvYn8sRHPnnCevJPl0G77QRK6uM5R
+J9ZZ5jwTQzsymS1maQS/Vr58GFBWPBt8FquF18CAZrPoyPzsV6CP7zJvfgvCEgFflUr3+5iw1BWG
+hf+MnyDc0h6XsWo+6g0YJfHji016AuGeQ8gBE55xWpzGEfdlgTkyh98U1blwEPHeo+0RZFxfn9M/
+52fhyhTFN/pHNE+eUFv3iSIadmfcepWATPyv/nnVi6/JknUHENp0cwn1vNmgUVmc0VEhjc6RH0tv
+d9ipryWfVN62skmBjLlOcxpIzg/fuPWBWT5Pzz/eUQ==
+=xp4g
+-----END PGP SIGNATURE-----
+
+--------------gWtvAgNznabXuhhlhnZWKwSs--
