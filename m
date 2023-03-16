@@ -2,169 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86CD76BD629
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Mar 2023 17:45:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C16F6BD886
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Mar 2023 20:04:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231231AbjCPQpt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Mar 2023 12:45:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38920 "EHLO
+        id S229991AbjCPTEA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Mar 2023 15:04:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231267AbjCPQpp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Mar 2023 12:45:45 -0400
+        with ESMTP id S229890AbjCPTD6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Mar 2023 15:03:58 -0400
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02B15AA70B;
-        Thu, 16 Mar 2023 09:45:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E882E2517;
+        Thu, 16 Mar 2023 12:03:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678985128; x=1710521128;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=kBzQFDnzlzjmhfrtwk6wyzdC2C9olURu0EQGhFgucnI=;
-  b=CHYHgakzoL74gmI0ai+rdA1y5U8y7xGs86qUifo31lo672Kpd09HPBJv
-   gSogBoLqPOwvWh/7OPKORwrONAgK6Cm9oODS+UToURYdpQQbBRZz3kKvt
-   NwtlgVSjkNmXFVue3yvkmQbzEnxGxWBIOz/aaIgZyQzaeyJJcbl7vp5e2
-   U32bOHEWkJZdAsKyO0B+/0n8v+6kiuc6OCDN1sM1UAU1ZRCbMSNU3Ghc3
-   a1smU1f+wxqDZPYPLN1L/7dtqVadbb9ZWrAMzob7hUZ+6Dp5kC583KIti
-   WPU67oePdXlavDQ4xJtsB/W+Feuj9vZXBUIYihsqoPP+oDweO/rHPfOF/
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="321904498"
+  t=1678993428; x=1710529428;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zUzkGxrqKDPR6SroJseKwSx7MVAGnpL/Grdhlw6b7UE=;
+  b=GGGcwcWFhVNUPqlV5cS7jhSo++oAJJeSo+qf8YGM9dLprFCOO90c7NMm
+   e8AhBjSiTxfCcsA0O81ZpHm5F4j+gpsUAI9H1C81Sv7zAKj5/fHr1lai4
+   hEbgqNKOh6T2ENt2DM/sliOpWhZNXF1cX+UNrAZYnmO59Wa+ehb4oCZJd
+   bQ6irRFzgXO/MfQ1FFy326yiwnl/C2t1daZQ4tx/KhKcHBV7DzcLjin0g
+   3ddESbDNI/pjbsLY+8U2qN/0vrXedmDzmX7lS/nykk7GfmB6WVFfSiZmh
+   zoOpHKx6VD5zBdoQp5tLxiS4ZMFiN3xNtXzlWPkv8RD4F3aXnH27TcJ5N
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="321944554"
 X-IronPort-AV: E=Sophos;i="5.98,265,1673942400"; 
-   d="scan'208";a="321904498"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2023 09:45:25 -0700
+   d="scan'208";a="321944554"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2023 12:03:47 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="629951467"
+X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="925864625"
 X-IronPort-AV: E=Sophos;i="5.98,265,1673942400"; 
-   d="scan'208";a="629951467"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orsmga003.jf.intel.com with ESMTP; 16 Mar 2023 09:45:25 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Thu, 16 Mar 2023 09:45:24 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21 via Frontend Transport; Thu, 16 Mar 2023 09:45:24 -0700
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.103)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.21; Thu, 16 Mar 2023 09:45:24 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CQ4z0ORpjZCl1v9lGhhaWRDFKZ/nGKsZS7pdIIGkRu+/AEr3VbIfOggZv2docbXl3tbJzVioUXDg+ndSPTa/SZlLm+FLyGkExPiQQ/9inuzNNqNNKrlLMjcgMhULt6drPEImxwEjKsAE5dcXK0aNb22DTWq11RKZTqlipFM1Q/X96K+rrDqg9NlfEk2yMR1OWEJjYGuZqVf1qDKmWGwG+iIC9QyHMeBSwcapj8rS8Dt847D4lJRn+n7LtarnKk+FeujVwOBGdlQZViewMnV7Y0IjhMAbFaZj6SWMz0E9l+HPrCcpNnbCJTe/Bf8ppLTPI6kh6Uv1llwhd5lSS6iHqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kBzQFDnzlzjmhfrtwk6wyzdC2C9olURu0EQGhFgucnI=;
- b=Ji+JdUU6c1TfSyvASTV3xjqu2EL5mETBX343x/rhgjM9HY/ljDMTRHvH35pqyzLvuSS2VCuEffu4+Qvlo+eB25NOnE8EXvWVar9sTdR6JrrQEPsfn/pRL0XYr/pCqXfj51psyl3/StGpzN/SkPWnkNvL7tebmqTVYBRmD6jAbVVsglerot2GZGtYPS3emuxUL09qqpLl6k9ihIgDW3XW5FQIneZJxGA9YSfuOO4dMKXsGhsnvwX/Pxw3BlPdzyRlmz+ZI+1w3rgrlpSMT9bSVcAE8oeszfiwXxwoyANmucpZf6srW+NQY/LRPR2su4a3DRlpFiWFSmwKztsS+uCegA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ1PR11MB6083.namprd11.prod.outlook.com (2603:10b6:a03:48a::9)
- by SJ0PR11MB4989.namprd11.prod.outlook.com (2603:10b6:a03:2d9::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.24; Thu, 16 Mar
- 2023 16:45:22 +0000
-Received: from SJ1PR11MB6083.namprd11.prod.outlook.com
- ([fe80::a47:481:d644:a8b5]) by SJ1PR11MB6083.namprd11.prod.outlook.com
- ([fe80::a47:481:d644:a8b5%7]) with mapi id 15.20.6178.024; Thu, 16 Mar 2023
- 16:45:22 +0000
-From:   "Luck, Tony" <tony.luck@intel.com>
-To:     Shuai Xue <xueshuai@linux.alibaba.com>,
-        =?utf-8?B?SE9SSUdVQ0hJIE5BT1lBKOWggOWPoyDnm7TkuZ8p?= 
-        <naoya.horiguchi@nec.com>
-CC:     "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-        "jarkko@kernel.org" <jarkko@kernel.org>,
-        "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "xiexiuqi@huawei.com" <xiexiuqi@huawei.com>,
-        "lvying6@huawei.com" <lvying6@huawei.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "cuibixuan@linux.alibaba.com" <cuibixuan@linux.alibaba.com>,
-        "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
-        "zhuo.song@linux.alibaba.com" <zhuo.song@linux.alibaba.com>
-Subject: RE: [PATCH v2 1/2] ACPI: APEI: set memory failure flags as
- MF_ACTION_REQUIRED on synchronous events
-Thread-Topic: [PATCH v2 1/2] ACPI: APEI: set memory failure flags as
- MF_ACTION_REQUIRED on synchronous events
-Thread-Index: AQHZSmjiVCucCwT260yjlP7/yRNd6q79GvgAgAArvwCAAHEREA==
-Date:   Thu, 16 Mar 2023 16:45:22 +0000
-Message-ID: <SJ1PR11MB608394E7F78D116D09CAC26CFCBC9@SJ1PR11MB6083.namprd11.prod.outlook.com>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20230227050315.5670-2-xueshuai@linux.alibaba.com>
- <20230316072031.GA354196@hori.linux.bs1.fc.nec.co.jp>
- <c1040a40-239b-f8c1-13b3-37b40a90ddee@linux.alibaba.com>
-In-Reply-To: <c1040a40-239b-f8c1-13b3-37b40a90ddee@linux.alibaba.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ1PR11MB6083:EE_|SJ0PR11MB4989:EE_
-x-ms-office365-filtering-correlation-id: d0cf9601-91a3-44d5-ae6d-08db263dd587
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Q9TlV1yy+J2gKTvaKvI95lRGEI4M8rLmVFuic8q7ushABdY5GNwyPAbeKrdlKwifj3cuKKxuNz/Pd30qlQGiab3rOrDPax9OjVak/29+qAj8+oS0PELNvmws1g/iNt1/4ZiJsySH/cEy9JPNROdsOhgu+U9nHH8f8wQjDoE/HTvuN48icemVtwr3XRgfjRv9KwzdWeafvI63cukTGSR8ASL3//xBpOQ5ZGqu7li17d0x2mmRQWAc1qpHqFfy95IFbf/byhRjno2Jj2egu4AJKMJbZbQiekX9SSSyvL2D0u0aAENF9rWm+rSo8a3UKPYZCHScUbCF8TpAef+n9w5gXBRMn8dQRKjmv+6K95yrwf49+Rg3zINU8VodWE2qt8ABsfgS1UObnJ51q2HL8IT5UoYsDfD4anlr7sL+5d6cFD6X7kdZlAPASbbEqnIf+/AwbcC4DamC8Ep0ryW/U2C5q41XcrqBCFNiIfrRhT9G+3wZdg7A5JrX+PoQ7LG/zpeh5a5J6Xr9zhEXiF9Pue0JATZtz8+AZJLPZDCb3JLOuDKXAJXJRgUqzMWE8QFxdmtMPAxXeW48GY4qUjrEUX2IQU+M3ye2O5zthjCIBlNeV4WKcIgeJJ2YKDn5uJWwK2X5qvmuHbCD87Q9b9LUmLXxSCoUbqlU5Jo+zTHVaQ7ZQJGjaZUeOMPV0fcg2X8pVPhTCmqK96RZu0zau0cOL63NNw==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR11MB6083.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(39860400002)(396003)(376002)(346002)(136003)(366004)(451199018)(66946007)(38070700005)(86362001)(38100700002)(33656002)(82960400001)(55016003)(122000001)(110136005)(64756008)(54906003)(66476007)(66556008)(52536014)(8676002)(8936002)(76116006)(41300700001)(66446008)(478600001)(316002)(2906002)(4744005)(6506007)(83380400001)(5660300002)(71200400001)(4326008)(7416002)(26005)(9686003)(186003)(7696005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Ykx1WWRjZnc4bnlhcWRQZXp2TDlURHV0VDNYRk1hWnBPb05PcWRMMGJNL21L?=
- =?utf-8?B?M0ZJSVJBWW1RTzNOZXkvWHRMdm9KeFdUUWRmUjU2c0FXbTNKZmdBYTZ3TFVX?=
- =?utf-8?B?SnpLZDAwV2JWWFkzZm40N0EyOTNVRmZUaVdBQ1VrSDVxYmpzVGdObGZMd243?=
- =?utf-8?B?bWRKaHY0QVV5VjQ2ZnJVUVdQbC8zZXZzcFdIbmg1YlN1MjIxelBNaEZyM3Zo?=
- =?utf-8?B?dFp1czR2RkVQdVhCTVNuS3Rrb0lQYk9hSjZ4NnJMVU1lV2RQTFp1YXpXbisz?=
- =?utf-8?B?YVo5UVlOMVBHVWJlUXBRdlZRbHpCM0tQazRXbEgyL3I4cGIzRU5jSjRhVG40?=
- =?utf-8?B?WUw3VG5ENWxsYTFzR0JNRS9nQlpDYlVORFpmQXFPN2tNZGxBSVNjWm5EZ0R0?=
- =?utf-8?B?UW53T0I1SFdybzJUbk5YYXYxR0ZrS0p6ZkgxaVJBZmtETWh4cEs3eDlvZ2Zi?=
- =?utf-8?B?NkJNY29BQStxcVkyb25FUnc5NWZ5SjZxR0dHSElkV3VmUFJLUC94OFJvaXZy?=
- =?utf-8?B?WHR0YnFsaGxkVlVNMDQ4S2dDOWJyTTRmSzBia1dpNGdlb0V6dExNbUJOWUtU?=
- =?utf-8?B?YjFYMGdIYTNrR3I4R0xPVSt3UXJ4ZEsybVhYT0FHc0hVd0I5UFBFbkIySGVE?=
- =?utf-8?B?UGgwbElTaDB2RzVma0NKM2dVUU4zQnNnQmd2WkNPZllJYU1ZOHdwdDArMW1F?=
- =?utf-8?B?ZldNc0Q1NkhvU2RqdkQ1VnB5OEdHYVlQOTczRWd3L0xMOHhLRmlyWFZiZzMv?=
- =?utf-8?B?U095QnIrTG5VMXFxaENZQ3kzNHlwNkl5QVZPcnZlcFVmNFE4NUNPakxUbFB5?=
- =?utf-8?B?OW1hY0c5aStWbGsyWVdHWjZ4cEZVZ1RJYzBZaThlNmJTWjZPR2VkWjRSSVh3?=
- =?utf-8?B?c2dka3JMTEFXbEJGdlZCRVA4bGFGMHd0OGx2bFAzQXJvaTYvbW9oRTVnd080?=
- =?utf-8?B?b0RKbHVaNE1rVHlGcFNTbEJ4ZTVXN0s5K0IyN2FCcEtHZDJ4SGMvRTZ4UVNY?=
- =?utf-8?B?SUEvb1VnZTIzNG4vT1k1TlJ0SkxUdzhPbkxqcUpXc2lZY2ZtYURGbWxIR21Y?=
- =?utf-8?B?R0JLZCtMNTMzQ3FaVUwwMHozS08xeVdvUFN0Q3JzcnUzTGFKelZkaEpuZXV3?=
- =?utf-8?B?ZWsvS0ZsdHZsRVVVa2piN1I2VjdpdkhmSVFkQklwQ1ZCRWQzY0lsU0pQZDNV?=
- =?utf-8?B?TVF3MHgwVWxZbTJSVnVyRUozQzVNc2J1aVZvbnZ0TTkwNUlycFhHUlJDekxl?=
- =?utf-8?B?NFBHNnRES252RmhldVQvSmRFbmtuc09ZY2IxY0pKalE2VEFqQ3RqczkzTlVM?=
- =?utf-8?B?NG8rSXJ5QXlHaWlMTS9TcG14MTJhZzVZTWhPYVFaa0RIWS9Kb3Rab1RyVlQ0?=
- =?utf-8?B?NGZGRXJXS0VHTTB4eTc2dWxya2RQMnpyWFZvcUZmZm5iRmZ5elBBVlhCUEVt?=
- =?utf-8?B?T3dqRWllcmpxSlI0Nm0vbFY5YUtZY2toUUI4ViswWVpiTTZyazNNOU5DeTYw?=
- =?utf-8?B?LzExNTJMWDh1bG5sVjZzWVpQdE9wUUJwRmVraWZpdVh4MlFzYnFLbkJhZ0hS?=
- =?utf-8?B?djlDYWx3cnZSSFQ1eGhCMEtDYWo0aVJNcjJWSHFnUHlSd1dXVVdtL1VTVlVp?=
- =?utf-8?B?enR3bkFzMCt5MVd0RGZoRGNzdmNoQzJkZmtJdGNuMll3SDd0ZThuMUhxbGpa?=
- =?utf-8?B?dUtheURRMkQvM0pCYUNPMzhzT09Mbk0xZkMwaW1RaksveTd4Sy81MTJpQlZO?=
- =?utf-8?B?SlRFcnAvOEVhZGJ5MEJtczMxdzIvY2J0MkdKZDBleVIyMGJLdngyT0tCQU9J?=
- =?utf-8?B?TmM4c1VpakhHb0YrUGFqc1cwRXF2ekhzeEhaV1dseDJMUmtRWHpVWW1PaFRp?=
- =?utf-8?B?ZGZOSlRWaVZOcFAxUklOMzhTMU5xQWhkbWdWMkIybStSK3BZaDNLUThzUHdR?=
- =?utf-8?B?OEhmdnNJb0pTblpObzBmdTlyVmNNQXFxdVh3dWVhaU9WSXpvTGI3MTlseDk2?=
- =?utf-8?B?VDBGY3lXLzVwd0RPKzRSeklCUkNVcVFiUVBhM3hmNnJPT3NaQjNqc0xGTVBy?=
- =?utf-8?B?Z2xtK21GMkFzZUx2NTczN1NlQU1hUzd0eUsyNlVpcU8raXlVZW9VTDN2YmZV?=
- =?utf-8?Q?PODJbkNe2MFjG31hn2t867S8l?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+   d="scan'208";a="925864625"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 16 Mar 2023 12:03:40 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pcst1-0008hW-1B;
+        Thu, 16 Mar 2023 19:03:39 +0000
+Date:   Fri, 17 Mar 2023 03:03:04 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        "Maciej W. Rozycki" <macro@orcam.me.uk>,
+        Juergen Gross <jgross@suse.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org
+Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Andrew Lunn <andrew@lunn.ch>
+Subject: Re: [PATCH v5 1/4] PCI: Introduce pci_dev_for_each_resource()
+Message-ID: <202303170223.V0xQhs1V-lkp@intel.com>
+References: <20230314192634.63531-2-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6083.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d0cf9601-91a3-44d5-ae6d-08db263dd587
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Mar 2023 16:45:22.0200
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 4MgwFe/pVJWG1rOReBWs0jBXr546sZl9Zu4c5MVcSTyUoXWIXsXQ1Y3+7rOzmJLx8HH0B3rRUN8c9WiVrpdT2g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4989
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230314192634.63531-2-andriy.shevchenko@linux.intel.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
@@ -174,18 +86,81 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-PiBPbiB4ODYgcGxhdGZvcm0gd2l0aCBNQ0EsIHBhdHJvbCBzY3J1YiBlcnJvcnMgYXJlIGFzeW5j
-aHJvbm91cyBlcnJvciwgd2hpY2ggYXJlDQo+IGJ5IGRlZmF1bHQgc2lnbmFsZWQgd2l0aCBNQ0Uu
-IEl0IGlzIHBvc3NpYmxlIHRvIGRvd25ncmFkZSB0aGUgcGF0cm9sIHNjcnViIFNSQU8NCj4gdG8g
-VUNOQSBvciBvdGhlciBjb3JyZWN0YWJsZSBlcnJvciBpbiB0aGUgbG9nZ2luZy9zaWduYWxpbmcg
-YmVoYXZpb3IgYW5kIHNpZ25hbA0KPiBDTUNJIG9ubHkuDQo+DQo+IEFzIGZhciBhcyBJIGtub3cs
-IG9uIFg4NiBwbGF0Zm9ybSwgTUNFIGlzIGhhbmRsZWQgaW4gZG9fbWFjaGNoZV9jaGVjaygpIGFu
-ZCBvbmx5DQo+IGFzeW5jaHJvbm91cyBlcnJvciBpcyBub3RpZmllZCB0aHJvdWdoIEhFU1QuIENh
-biB3ZSBzYWZlbHkgZHJvcCBBQ1BJX0hFU1RfTk9USUZZX01DRQ0KPiBhbmQgb25seSBjb25zaWRl
-ciBBQ1BJX0hFU1RfTk9USUZZX1NFQSBhcyBzeW5jaHJvbm91cyBub3RpZmljYXRpb24/DQo+DQo+
-IFRvbnksIGRvIHlvdSBoYXZlIGFueSBjb21tZW50cyBvbiB0aGlzPyBQbGVhc2UgcG9pbnQgb3V0
-IGlmIEkgYW0gd3JvbmcuIFRoYW5rIHlvdS4NCg0KWW91IGFyZSBjb3JyZWN0LiBPbiB4ODYgdGhl
-IEhFU1Qgbm90aWZpY2F0aW9ucyBhcmUgYWx3YXlzIGFzeW5jaHJvbm91cy4gVGhlIG9ubHkNCnN5
-bmNocm9ub3VzIGV2ZW50cyBhcmUgbWFjaGluZSBjaGVjayB3aXRoIElBMzJfTUNpX1NUQVRVUy5B
-UiA9PSAxIChwYXRyb2wNCnNjcnViIGFuZCBjYWNoZSBldmljdGlvbiBtYWNoaW5lIGNoZWNrcyBh
-cmUgYXN5bmMgYW5kIGRvIG5vdCBzZXQgdGhpcyBiaXQpLg0KDQotVG9ueQ0K
+Hi Andy,
+
+I love your patch! Yet something to improve:
+
+[auto build test ERROR on pci/next]
+[also build test ERROR on pci/for-linus powerpc/next powerpc/fixes linus/master v6.3-rc2 next-20230316]
+[cannot apply to soc/for-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/PCI-Introduce-pci_dev_for_each_resource/20230315-032821
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
+patch link:    https://lore.kernel.org/r/20230314192634.63531-2-andriy.shevchenko%40linux.intel.com
+patch subject: [PATCH v5 1/4] PCI: Introduce pci_dev_for_each_resource()
+config: powerpc-randconfig-r032-20230312 (https://download.01.org/0day-ci/archive/20230317/202303170223.V0xQhs1V-lkp@intel.com/config)
+compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project 67409911353323ca5edf2049ef0df54132fa1ca7)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # install powerpc cross compiling tool for clang build
+        # apt-get install binutils-powerpc-linux-gnu
+        # https://github.com/intel-lab-lkp/linux/commit/85cdf4746b716f7b6c14d7dc5cd907c3c2a1fb0c
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Andy-Shevchenko/PCI-Introduce-pci_dev_for_each_resource/20230315-032821
+        git checkout 85cdf4746b716f7b6c14d7dc5cd907c3c2a1fb0c
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=powerpc olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202303170223.V0xQhs1V-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> arch/powerpc/platforms/52xx/mpc52xx_pci.c:331:6: error: unused variable 'i' [-Werror,-Wunused-variable]
+           int i;
+               ^
+   1 error generated.
+
+
+vim +/i +331 arch/powerpc/platforms/52xx/mpc52xx_pci.c
+
+f42963f8646540 Grant Likely    2006-12-12  326  
+f42963f8646540 Grant Likely    2006-12-12  327  static void
+f42963f8646540 Grant Likely    2006-12-12  328  mpc52xx_pci_fixup_resources(struct pci_dev *dev)
+f42963f8646540 Grant Likely    2006-12-12  329  {
+85cdf4746b716f Mika Westerberg 2023-03-14  330  	struct resource *res;
+f42963f8646540 Grant Likely    2006-12-12 @331  	int i;
+f42963f8646540 Grant Likely    2006-12-12  332  
+59510820fff76f Randy Dunlap    2021-04-28  333  	pr_debug("%s() %.4x:%.4x\n", __func__, dev->vendor, dev->device);
+f42963f8646540 Grant Likely    2006-12-12  334  
+f42963f8646540 Grant Likely    2006-12-12  335  	/* We don't rely on boot loader for PCI and resets all
+f42963f8646540 Grant Likely    2006-12-12  336  	   devices */
+85cdf4746b716f Mika Westerberg 2023-03-14  337  	pci_dev_for_each_resource_p(dev, res) {
+f42963f8646540 Grant Likely    2006-12-12  338  		if (res->end > res->start) {	/* Only valid resources */
+f42963f8646540 Grant Likely    2006-12-12  339  			res->end -= res->start;
+f42963f8646540 Grant Likely    2006-12-12  340  			res->start = 0;
+f42963f8646540 Grant Likely    2006-12-12  341  			res->flags |= IORESOURCE_UNSET;
+f42963f8646540 Grant Likely    2006-12-12  342  		}
+f42963f8646540 Grant Likely    2006-12-12  343  	}
+f42963f8646540 Grant Likely    2006-12-12  344  
+f42963f8646540 Grant Likely    2006-12-12  345  	/* The PCI Host bridge of MPC52xx has a prefetch memory resource
+f42963f8646540 Grant Likely    2006-12-12  346  	   fixed to 1Gb. Doesn't fit in the resource system so we remove it */
+f42963f8646540 Grant Likely    2006-12-12  347  	if ( (dev->vendor == PCI_VENDOR_ID_MOTOROLA) &&
+f42963f8646540 Grant Likely    2006-12-12  348  	     (   dev->device == PCI_DEVICE_ID_MOTOROLA_MPC5200
+f42963f8646540 Grant Likely    2006-12-12  349  	      || dev->device == PCI_DEVICE_ID_MOTOROLA_MPC5200B) ) {
+f42963f8646540 Grant Likely    2006-12-12  350  		struct resource *res = &dev->resource[1];
+f42963f8646540 Grant Likely    2006-12-12  351  		res->start = res->end = res->flags = 0;
+f42963f8646540 Grant Likely    2006-12-12  352  	}
+f42963f8646540 Grant Likely    2006-12-12  353  }
+f42963f8646540 Grant Likely    2006-12-12  354  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
