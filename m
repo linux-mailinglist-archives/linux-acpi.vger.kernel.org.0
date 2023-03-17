@@ -2,206 +2,137 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6384E6BDE21
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Mar 2023 02:24:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9182C6BDF28
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Mar 2023 04:05:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229473AbjCQBY1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Mar 2023 21:24:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50758 "EHLO
+        id S229617AbjCQDFZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Mar 2023 23:05:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjCQBYZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Mar 2023 21:24:25 -0400
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 709D3199C6;
-        Thu, 16 Mar 2023 18:24:22 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0Ve0nrhc_1679016257;
-Received: from 30.240.112.205(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Ve0nrhc_1679016257)
-          by smtp.aliyun-inc.com;
-          Fri, 17 Mar 2023 09:24:18 +0800
-Message-ID: <335fe2c8-1ed7-c945-a158-181154bdea79@linux.alibaba.com>
-Date:   Fri, 17 Mar 2023 09:24:14 +0800
+        with ESMTP id S229542AbjCQDFY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Mar 2023 23:05:24 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1D8D426B1;
+        Thu, 16 Mar 2023 20:05:21 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1582A4B3;
+        Thu, 16 Mar 2023 20:06:05 -0700 (PDT)
+Received: from a077893.blr.arm.com (unknown [10.162.40.17])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id DC2623F64C;
+        Thu, 16 Mar 2023 20:05:15 -0700 (PDT)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+To:     linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org,
+        suzuki.poulose@arm.com
+Cc:     scclevenger@os.amperecomputing.com,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Mike Leach <mike.leach@linaro.org>,
+        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/7] coresight: etm4x: Migrate AMBA devices to platform driver
+Date:   Fri, 17 Mar 2023 08:34:54 +0530
+Message-Id: <20230317030501.1811905-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.8.0
-Subject: Re: [PATCH v2 2/2] ACPI: APEI: handle synchronous exceptions in task
- work
-Content-Language: en-US
-To:     =?UTF-8?B?SE9SSUdVQ0hJIE5BT1lBKOWggOWPoyDnm7TkuZ8p?= 
-        <naoya.horiguchi@nec.com>
-Cc:     "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-        "jarkko@kernel.org" <jarkko@kernel.org>,
-        "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "xiexiuqi@huawei.com" <xiexiuqi@huawei.com>,
-        "lvying6@huawei.com" <lvying6@huawei.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "cuibixuan@linux.alibaba.com" <cuibixuan@linux.alibaba.com>,
-        "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
-        "zhuo.song@linux.alibaba.com" <zhuo.song@linux.alibaba.com>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20230227050315.5670-3-xueshuai@linux.alibaba.com>
- <20230316072148.GA364378@hori.linux.bs1.fc.nec.co.jp>
- <8cd8688e-99f9-0696-c6bc-1c3ce44eec55@linux.alibaba.com>
- <20230317002922.GA407956@hori.linux.bs1.fc.nec.co.jp>
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20230317002922.GA407956@hori.linux.bs1.fc.nec.co.jp>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
-        URIBL_BLOCKED,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+CoreSight ETM4x devices could be accessed either via MMIO (handled via
+amba_driver) or CPU system instructions (handled via platform driver). But
+this has the following issues :
 
+  - Each new CPU comes up with its own PID and thus we need to keep on
+    adding the "known" PIDs to get it working with AMBA driver. While
+    the ETM4 architecture (and CoreSight architecture) defines way to
+    identify a device as ETM4. Thus older kernels  won't be able to
+    "discover" a newer CPU, unless we add the PIDs.
 
-On 2023/3/17 AM8:29, HORIGUCHI NAOYA(堀口 直也) wrote:
-> On Thu, Mar 16, 2023 at 07:10:56PM +0800, Shuai Xue wrote:
->>
->>
->> On 2023/3/16 PM3:21, HORIGUCHI NAOYA(堀口 直也) wrote:
->>> On Mon, Feb 27, 2023 at 01:03:15PM +0800, Shuai Xue wrote:
->>>> Hardware errors could be signaled by synchronous interrupt, e.g.  when an
->>>> error is detected by a background scrubber, or signaled by synchronous
->>>> exception, e.g. when an uncorrected error is consumed. Both synchronous and
->>>> asynchronous error are queued and handled by a dedicated kthread in
->>>> workqueue.
->>>>
->>>> commit 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for
->>>> synchronous errors") keep track of whether memory_failure() work was
->>>> queued, and make task_work pending to flush out the workqueue so that the
->>>> work for synchronous error is processed before returning to user-space.
->>>> The trick ensures that the corrupted page is unmapped and poisoned. And
->>>> after returning to user-space, the task starts at current instruction which
->>>> triggering a page fault in which kernel will send SIGBUS to current process
->>>> due to VM_FAULT_HWPOISON.
->>>>
->>>> However, the memory failure recovery for hwpoison-aware mechanisms does not
->>>> work as expected. For example, hwpoison-aware user-space processes like
->>>> QEMU register their customized SIGBUS handler and enable early kill mode by
->>>> seting PF_MCE_EARLY at initialization. Then the kernel will directy notify
->>>> the process by sending a SIGBUS signal in memory failure with wrong
->>>> si_code: the actual user-space process accessing the corrupt memory
->>>> location, but its memory failure work is handled in a kthread context, so
->>>> it will send SIGBUS with BUS_MCEERR_AO si_code to the actual user-space
->>>> process instead of BUS_MCEERR_AR in kill_proc().
->>>>
->>>> To this end, separate synchronous and asynchronous error handling into
->>>> different paths like X86 platform does:
->>>>
->>>> - task work for synchronous errors.
->>>> - and workqueue for asynchronous errors.
->>>>
->>>> Then for synchronous errors, the current context in memory failure is
->>>> exactly belongs to the task consuming poison data and it will send SIBBUS
->>>> with proper si_code.
->>>>
->>>> Fixes: 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for synchronous errors")
->>>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
->>> ...
->>>>  
->>>>  /*
->>>> - * Called as task_work before returning to user-space.
->>>> - * Ensure any queued work has been done before we return to the context that
->>>> - * triggered the notification.
->>>> + * struct mce_task_work - for synchronous RAS event
->>>
->>> This seems to handle synchronous memory errors, not limited to MCE?
->>> So naming this struct as such (more generally) might be better.
->>
->> Yes. How about `sync_task_work`?
-> 
-> Sounds better to me.
+  - With ACPI, the ETM4x devices have the same HID to identify the device
+    irrespective of the mode of access. This creates a problem where two
+    different drivers (both AMBA based driver and platform driver) would
+    hook into the "HID" and could conflict. e.g., if AMBA driver gets
+    hold of a non-MMIO device, the probe fails. If we have single driver
+    hooked into the given "HID", we could handle them seamlessly,
+    irrespective of the mode of access.
 
-Fine, I will change it in next version.
+  - CoreSight is heavily dependent on the runtime power management. With
+    ACPI, amba_driver doesn't get us anywhere with handling the power
+    and thus one need to always turn the power ON to use them. Moving to
+    platform driver gives us the power management for free.
 
->>
->>>
->>>> + *
->>>> + * @twork:                callback_head for task work
->>>> + * @pfn:                  page frame number of corrupted page
->>>> + * @flags:                fine tune action taken
->>>> + *
->>>> + * Structure to pass task work to be handled before
->>>> + * ret_to_user via task_work_add().
->>>>   */
->>> ...
->>>
->>>>  }
->>>>  
->>>> -static bool ghes_do_memory_failure(u64 physical_addr, int flags)
->>>> +static void ghes_do_memory_failure(u64 physical_addr, int flags)
->>>>  {
->>>>  	unsigned long pfn;
->>>> +	struct mce_task_work *twcb;
->>>>  
->>>>  	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
->>>> -		return false;
->>>> +		return;
->>>>  
->>>>  	pfn = PHYS_PFN(physical_addr);
->>>>  	if (!pfn_valid(pfn) && !arch_is_platform_page(physical_addr)) {
->>>>  		pr_warn_ratelimited(FW_WARN GHES_PFX
->>>>  		"Invalid address in generic error data: %#llx\n",
->>>>  		physical_addr);
->>>> -		return false;
->>>> +		return;
->>>> +	}
->>>> +
->>>> +	if (flags == MF_ACTION_REQUIRED && current->mm) {
->>>> +		twcb = kmalloc(sizeof(*twcb), GFP_ATOMIC);
->>>> +		if (!twcb)
->>>> +			return;
->>>
->>> When this kmalloc() fails, the error event might be silently dropped?
->>> If so, some warning messages could be helpful.
->>
->> Yes, I was going to add a warning messages like:
->>
->>     pr_err("Failed to handle memory failure due to out of memory\n");
->>
->> But got a warning about patch when checked by checkpatch.pl.
->>
->>    WARNING: Possible unnecessary 'out of memory' message
->>
->> I will add it back in next version :)
-> 
-> Oh, I didn't know about this warning.  I checked the commit log introduced
-> this meesages, and the justification makes sense to me. So I'd like to
-> withdraw my comment about this (I mean you don't have to add it back).
-> 
->   commit ebfdc40969f24fc0cdd1349835d36e8ebae05374                            
->   Author: Joe Perches <joe@perches.com>                                      
->   Date:   Wed Aug 6 16:10:27 2014 -0700                                      
->                                                                              
->       checkpatch: attempt to find unnecessary 'out of memory' messages       
->                                                                              
->       Logging messages that show some type of "out of memory" error are      
->       generally unnecessary as there is a generic message and a stack dump   
->       done by the memory subsystem.                                          
->                                                                              
->       These messages generally increase kernel size without much added value.
+Due to all of the above, we are moving the MMIO based etm4x devices to be
+supported via platform driver. The series makes the existing platform
+driver generic to handle both type of the access modes. With that we can
+also remove the etm4x amba driver.
 
-Haha, that's exactly the patch I was referring to (Sorry for forgetting to
-attach a link in last reply). So I will not add the warning messages back.
+Finally, we need a way to make sure the new driver gets control of the
+ETM4x device on a DT based system. CoreSight devices have always had the
+"arm,primecell" in the compatible list. But the way this is handled
+currently in OF code is a bit messy. The ETM4x devices are identified by
+"arm,coresight-etm4x". The platform driver can never get a chance to probe
+these devices, since the "arm,primecell" takes priority and is hard-coded
+in the OF code. We have two options here :
 
-> 
-> Thanks,
-> Naoya Horiguchi
+1) Remove the arm,primecell from all DTS. This is fine for "new" kernels
+with this change. But, for existing boards, using an older kernel will
+break. Thus, is not preferred.
 
-Thank you for comments.
+2) Add a white list of "compatibles" where the "priority" of the
+"arm,primecell" can be ignored.
 
-Cheers.
-Shuai
+The series implements (2) above and applies on 6.3-rc2.
+
+Cc: Steve Clevenger <scclevenger@os.amperecomputing.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: Russell King (Oracle) <linux@armlinux.org.uk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Mike Leach <mike.leach@linaro.org>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: devicetree@vger.kernel.org
+Cc: linux-acpi@vger.kernel.org
+Cc: coresight@lists.linaro.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+
+Anshuman Khandual (6):
+  coresight: etm4x: Allocate and device assign 'struct etmv4_drvdata' earlier
+  coresight: etm4x: Drop iomem 'base' argument from etm4_probe()
+  coresight: etm4x: Drop pid argument from etm4_probe()
+  coresight: etm4x: Change etm4_platform_driver driver for MMIO devices
+  of/platform: Skip coresight etm4x devices from AMBA bus
+  coresight: etm4x: Drop the AMBA driver
+
+Suzuki Poulose (1):
+  coresight: etm4x: Add ACPI support in platform driver
+
+ drivers/acpi/acpi_amba.c                      |   1 -
+ .../coresight/coresight-etm4x-core.c          | 171 ++++++++----------
+ drivers/hwtracing/coresight/coresight-etm4x.h |   3 +
+ drivers/of/platform.c                         |  10 +-
+ include/linux/coresight.h                     |  56 ++++++
+ 5 files changed, 143 insertions(+), 98 deletions(-)
+
+-- 
+2.25.1
 
