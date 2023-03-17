@@ -2,169 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CAED6BEDA2
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Mar 2023 17:04:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AF536BEDC3
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Mar 2023 17:11:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231475AbjCQQEU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Mar 2023 12:04:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33296 "EHLO
+        id S229868AbjCQQLj convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 17 Mar 2023 12:11:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231396AbjCQQES (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Mar 2023 12:04:18 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3AA3213DFA;
-        Fri, 17 Mar 2023 09:03:54 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AD85213D5;
-        Fri, 17 Mar 2023 09:04:37 -0700 (PDT)
-Received: from [10.57.53.217] (unknown [10.57.53.217])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4832A3F885;
-        Fri, 17 Mar 2023 09:03:51 -0700 (PDT)
-Message-ID: <b1518e16-d74b-719c-a0fc-bc172a6011c4@arm.com>
-Date:   Fri, 17 Mar 2023 16:03:49 +0000
+        with ESMTP id S229654AbjCQQLj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Mar 2023 12:11:39 -0400
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21A4F3FBA1;
+        Fri, 17 Mar 2023 09:11:38 -0700 (PDT)
+Received: by mail-ed1-f48.google.com with SMTP id x3so22337681edb.10;
+        Fri, 17 Mar 2023 09:11:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679069496;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+UuCf1PJrLrKxIyaFZnzsznvIqEjzKrZTS2+zfLkrvo=;
+        b=OsjUPyKkLqc8ePxtbGuhJN1+e65dAUXglNyL6AqLweZgKNYfhFSiB2I/Dl7Cee1vLh
+         EuAOtjVvN79QBGGZT0wedEuNegbVZkI3YYPyBZZfupQXGPYBH5ay/rENqF6zJvVIfNeJ
+         ZQ8pyzuO2AhzHslqD5luDtdU+pIf08pqJ1NNqTdx98EJpWuC3ThGzJJYfaczqO8aLSnz
+         Vb3FlrCIQV4DOLOKxFtfbo7eNSzh5wK+oTP6HPWunuOjePF23/eRGOV3HctN0OGEiDw6
+         8osH4MGgH3GO6VgQMBXdgBbuzvBjIProvd0DaNZePD/1H/cfAkHHXvCn3yQb4H/bqC5G
+         A/3Q==
+X-Gm-Message-State: AO0yUKXiDoe7+NgY1+BAotUHQWo8K33hozZp5PnAYyiIiYTPrWD4uYYn
+        DttLep4+p/CDgG24NUjfjcEvb8Nn20VjNMt6E9HaFx1HpQo=
+X-Google-Smtp-Source: AK7set/XlV/hK+svbmdvfHJLFqE5tbYJnuPdfxiFpfDtsjGq+4WkW2g5cdrxn50qVpzpdKjZtUvhgHIObXZNKqjpUeo=
+X-Received: by 2002:a50:9ecf:0:b0:4fa:b302:6168 with SMTP id
+ a73-20020a509ecf000000b004fab3026168mr738078edf.3.1679069496484; Fri, 17 Mar
+ 2023 09:11:36 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.8.0
-Subject: Re: [PATCH 6/7] of/platform: Skip coresight etm4x devices from AMBA
- bus
-To:     Rob Herring <robh+dt@kernel.org>,
-        Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org,
-        scclevenger@os.amperecomputing.com,
-        Frank Rowand <frowand.list@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Mike Leach <mike.leach@linaro.org>,
-        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230317030501.1811905-1-anshuman.khandual@arm.com>
- <20230317030501.1811905-7-anshuman.khandual@arm.com>
- <CAL_JsqK8vnwTZ3-nTd-S+dpCrQebAUm-NRiaJBE6KkoAVq=Ovg@mail.gmail.com>
-From:   Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <CAL_JsqK8vnwTZ3-nTd-S+dpCrQebAUm-NRiaJBE6KkoAVq=Ovg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 17 Mar 2023 17:11:25 +0100
+Message-ID: <CAJZ5v0gOXYVLXkPmk6_9r+Gwa+FXMdVXZBvjJsY--KW2MOC_tg@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v6.3-rc3
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rob
+Hi Linus,
 
-Thanks for your response.
+Please pull from the tag
 
-On 17/03/2023 14:52, Rob Herring wrote:
-> On Thu, Mar 16, 2023 at 10:06 PM Anshuman Khandual
-> <anshuman.khandual@arm.com> wrote:
->>
->> Allow other drivers to claim a device, disregarding the "priority" of
->> "arm,primecell". e.g., CoreSight ETM4x devices could be accessed via MMIO
->> (AMBA Bus) or via CPU system instructions.
-> 
-> The OS can pick which one, use both, or this is a system integration
-> time decision?
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.3-rc3
 
-Not an OS choice. Historically, this has always been MMIO accessed but
-with v8.4 TraceFiltering support, CPUs are encouraged to use system
-instructions and obsolete MMIO. So, yes, MMIO is still possible but
-something that is discouraged and have to be decided at system
-integration time.
+with top-most commit f36cc6cd65204352815640a34e37ef39e56fbd42
 
-> 
->> The CoreSight ETM4x platform
->> driver can now handle both types of devices. In order to make sure the
->> driver gets to handle the "MMIO based" devices, which always had the
->> "arm,primecell" compatible, we have two options :
->>
->> 1) Remove the "arm,primecell" from the DTS. But this may be problematic
->>   for an older kernel without the support.
->>
->> 2) The other option is to allow OF code to "ignore" the arm,primecell
->> priority for a selected list of compatibles. This would make sure that
->> both older kernels and the new kernels work fine without breaking
->> the functionality. The new DTS could always have the "arm,primecell"
->> removed.
-> 
-> 3) Drop patches 6 and 7 and just register as both AMBA and platform
-> drivers. It's just some extra boilerplate. I would also do different
-> compatible strings for CPU system instruction version (assuming this
-> is an integration time decision).
+ Merge branches 'acpi-video', 'acpi-x86', 'acpi-tools' and 'acpi-docs'
 
-The system instruction (and the reigster layouts) are all part of the
-ETMv4/ETE architecture and specific capabilities/features are
-discoverable, just like the Arm CPUs. Thus we don't need special
-versions within the ETMv4x or ETE minor versions. As of now, we have
-one for etm4x and another for ete.
+on top of commit eeac8ede17557680855031c6f305ece2378af326
 
-One problem with the AMBA driver in place is having to keep on adding
-new PIDs for the CPUs. The other option is to have a blanket mask
-for matching the PIDs with AMBA_UCI_ID checks.
+ Linux 6.3-rc2
+
+to receive ACPI fixes for 6.3-rc3.
+
+These add some new quirks, fix PPTT handling, fix an ACPI utility and correct a
+mistake in the ACPI documentation.
+
+Specifics:
+
+ - Fix ACPI PPTT handling to avoid sleep in the atomic context when it
+   is not present (Sudeep Holla).
+
+ - Add backlight=native DMI quirk for Dell Vostro 15 3535 to the ACPI
+   video driver (Chia-Lin Kao).
+
+ - Add ACPI quirks for I2C device enumeration on Lenovo Yoga Book X90
+   and Acer Iconia One 7 B1-750 (Hans de Goede).
+
+ - Fix handling of invalid command line option values in the ACPI pfrut
+   utility (Chen Yu).
+
+ - Fix references to I2C device data type in the ACPI documentation for
+   device enumeration (Andy Shevchenko).
+
+Thanks!
 
 
-> 
->>
->> This patch implements Option (2).
->>
->> Cc: Rob Herring <robh+dt@kernel.org>
->> Cc: Frank Rowand <frowand.list@gmail.com>
->> Cc: Russell King (Oracle) <linux@armlinux.org.uk>
->> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->> Cc: devicetree@vger.kernel.org
->> Cc: linux-kernel@vger.kernel.org
->> Co-developed-by: Suzuki Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Suzuki Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>   drivers/of/platform.c | 10 +++++++++-
->>   1 file changed, 9 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
->> index b2bd2e783445..59ff1a38ccaa 100644
->> --- a/drivers/of/platform.c
->> +++ b/drivers/of/platform.c
->> @@ -325,6 +325,13 @@ static const struct of_dev_auxdata *of_dev_lookup(const struct of_dev_auxdata *l
->>          return NULL;
->>   }
->>
->> +static const struct of_device_id of_ignore_amba_table[] = {
->> +#ifdef CONFIG_CORESIGHT_SOURCE_ETM4X
->> +       { .compatible = "arm,coresight-etm4x" },
->> +#endif
->> +       {}    /* NULL terminated */
->> +};
->> +
->>   /**
->>    * of_platform_bus_create() - Create a device for a node and its children.
->>    * @bus: device node of the bus to instantiate
->> @@ -373,7 +380,8 @@ static int of_platform_bus_create(struct device_node *bus,
->>                  platform_data = auxdata->platform_data;
->>          }
->>
->> -       if (of_device_is_compatible(bus, "arm,primecell")) {
->> +       if (of_device_is_compatible(bus, "arm,primecell") &&
->> +           unlikely(!of_match_node(of_ignore_amba_table, bus))) {
-> 
-> of_match_node is going to take orders of magnitude longer than any
-> difference unlikely() would make. Drop it.
+---------------
 
-Agreed.
+Andy Shevchenko (1):
+      ACPI: docs: enumeration: Correct reference to the I²C device data type
 
-Suzuki
+Chen Yu (1):
+      ACPI: tools: pfrut: Check if the input of level and type is in
+the right numeric range
 
-> 
->>                  /*
->>                   * Don't return an error here to keep compatibility with older
->>                   * device tree files.
->> --
->> 2.25.1
->>
+Chia-Lin Kao (AceLan) (1):
+      ACPI: video: Add backlight=native DMI quirk for Dell Vostro 15 3535
 
+Hans de Goede (3):
+      ACPI: x86: Introduce an acpi_quirk_skip_gpio_event_handlers() helper
+      ACPI: x86: Add skip i2c clients quirk for Acer Iconia One 7 B1-750
+      ACPI: x86: Add skip i2c clients quirk for Lenovo Yoga Book X90
+
+Sudeep Holla (1):
+      ACPI: PPTT: Fix to avoid sleep in the atomic context when PPTT is absent
+
+---------------
+
+ Documentation/firmware-guide/acpi/enumeration.rst |  2 +-
+ drivers/acpi/pptt.c                               |  5 ++-
+ drivers/acpi/video_detect.c                       |  7 ++++
+ drivers/acpi/x86/utils.c                          | 45 +++++++++++++++++++++--
+ drivers/gpio/gpiolib-acpi.c                       |  3 ++
+ include/acpi/acpi_bus.h                           |  5 +++
+ tools/power/acpi/tools/pfrut/pfrut.c              | 18 +++++++--
+ 7 files changed, 77 insertions(+), 8 deletions(-)
