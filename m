@@ -2,91 +2,84 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E32986BFFC0
-	for <lists+linux-acpi@lfdr.de>; Sun, 19 Mar 2023 08:21:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1D606C053F
+	for <lists+linux-acpi@lfdr.de>; Sun, 19 Mar 2023 22:08:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229508AbjCSHVH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 19 Mar 2023 03:21:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54096 "EHLO
+        id S230182AbjCSVIy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 19 Mar 2023 17:08:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbjCSHVG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 19 Mar 2023 03:21:06 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 671AE132DB;
-        Sun, 19 Mar 2023 00:21:05 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1pdnLf-0005MO-Hj; Sun, 19 Mar 2023 08:20:59 +0100
-Message-ID: <53e8b4db-e8dd-4dfa-f873-7dcbeac09149@leemhuis.info>
-Date:   Sun, 19 Mar 2023 08:20:59 +0100
+        with ESMTP id S230180AbjCSVIx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 19 Mar 2023 17:08:53 -0400
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 908A216AFA
+        for <linux-acpi@vger.kernel.org>; Sun, 19 Mar 2023 14:08:50 -0700 (PDT)
+Received: by mail-yb1-xb35.google.com with SMTP id y5so10867310ybu.3
+        for <linux-acpi@vger.kernel.org>; Sun, 19 Mar 2023 14:08:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679260130;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PfSyRT4jJwd9W24svxQ9EDCyYtC7di4+g/hlpe+rd8o=;
+        b=m0FmP+q5r0iJovOIyHQxjLzwz38FdQRSCWtfuPSD1WNLnjtq5oN4693rM4zrxwObKS
+         N0RcuBNpe/1iR7NZX5H5M/1HAmX+BHI1v4Y0RXCQ0/PUeleczBC2xA7RIhStCDLQZZ5U
+         H1NYuudO+FSVB0zEJOAjIGc0kdGbHK7Pl/c2hRX6G6+X/k9xSGVsnJriV8ZoTtZY4JQG
+         nvpys8YMPPa4If+tz/DQrMaRS4n1GpX7YQW8yveZEkTu5Zpd4VBPgwWLuqS5PZU7ammX
+         4cDogbDh0tL+pdpxP2Bh6uumAWIb5pC2f1ikXP+2CI4J1bxg1KnQZYhhDg/f63dQNoW+
+         Gwhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679260130;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PfSyRT4jJwd9W24svxQ9EDCyYtC7di4+g/hlpe+rd8o=;
+        b=L3r9WYgNmkvf1f1RIjnwRRfWzcPWRjekMkt0jvAQZf5uiNUvarkSTWJWGKknHBZY5o
+         l3dfF+mEmOEMUWVC6KUy2Xk5DZkvQYwJVjZMhKUrMc2VBZ77rD3+pfczgtUpzhdMX5fz
+         VsWqHDMwBh1Nm9z3rppPqAkApen+gPMalsiiLPeZyc0YdEaAtzEcMWM1g3TEMszCZFys
+         136PtgM3D/klq8LMv6xb4cbnw6xHN+oSKdi8TKWU9xVIw1Vb/2OyiGqLikd2Qtnk2zLF
+         DaKdf8uK601RVdEMsfhK+SnMkw2dv8/5hXCSrkQm/nmQ4LVxm1ksJjYITCQSdFAKvlUg
+         6W7g==
+X-Gm-Message-State: AO0yUKWHsBrHN5gu1Cx7wNJVes/ZatmP19ambNBRDKqq+ubKX+SAaV/r
+        U2q7iaBIKyG0O+kK9muEuJET9FoaoWl4UxdzIwJmTrPfoJXpsZ3c
+X-Google-Smtp-Source: AK7set8tqfgMfikrp6PWWSvzsGlguYVorCR3NvJYNPvGZiy72l1HII+50LrB3R7O02q5Sw+NRIUpn5WvZUN4F9ZBpDQ=
+X-Received: by 2002:a05:6902:102d:b0:a6b:bc64:a0af with SMTP id
+ x13-20020a056902102d00b00a6bbc64a0afmr4120603ybt.4.1679260129834; Sun, 19 Mar
+ 2023 14:08:49 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Content-Language: en-US, de-DE
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-To:     Huacai Chen <chenhuacai@kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        Jianmin Lv <lvjianmin@loongson.cn>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Bob Moore <robert.moore@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        acpica-devel@lists.linuxfoundation.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-References: <e6aaddb9-afec-e77d-be33-570f9f10a9c2@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: [regression] Bug 217069 - Wake on Lan is broken on r8169 since
- 6.2
-In-Reply-To: <e6aaddb9-afec-e77d-be33-570f9f10a9c2@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1679210465;b172227a;
-X-HE-SMSGID: 1pdnLf-0005MO-Hj
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230315215027.30685-1-asmaa@nvidia.com> <20230315215027.30685-3-asmaa@nvidia.com>
+In-Reply-To: <20230315215027.30685-3-asmaa@nvidia.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sun, 19 Mar 2023 22:08:38 +0100
+Message-ID: <CACRpkdaayJ6aO4weq8uAJqOcahQ16PW1Xez6pwgeapB6e0feYg@mail.gmail.com>
+Subject: Re: [PATCH v6 2/2] pinctrl: mlxbf3: Add pinctrl driver support
+To:     Asmaa Mnebhi <asmaa@nvidia.com>
+Cc:     andy.shevchenko@gmail.com, bgolaszewski@baylibre.com,
+        niyas.sait@linaro.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Thorsten here, the Linux kernel's regression tracker.
+On Wed, Mar 15, 2023 at 10:50=E2=80=AFPM Asmaa Mnebhi <asmaa@nvidia.com> wr=
+ote:
 
-On 22.02.23 08:57, Thorsten Leemhuis wrote:
-> 
-> I noticed a regression report in bugzilla.kernel.org. As many (most?)
-> kernel developer don't keep an eye on it, I decided to forward it by
-> mail. Quoting from https://bugzilla.kernel.org/show_bug.cgi?id=217069 :
+> NVIDIA BlueField-3 SoC has a few pins that can be used as GPIOs
+> or take the default hardware functionality. Add a driver for
+> the pin muxing.
+>
+> Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
 
-An issue that looked like a network bug was now bisected and it turns
-out it's cause by 5c62d5aab875 ("ACPICA: Events: Support fixed PCIe wake
-event") which Huacai Chen provided. Could you take a look at the ticket
-linked above?
+Patch applied! As stated earlier there is no build time dependency
+between the GPIO and pinctrl patches so they can go in separately.
 
-FWIW, the whole story started like this:
-
->> Ivan Ivanich 2023-02-22 00:51:52 UTC
->>
->> After upgrade to 6.2 having issues with wake on lan on 2 systems: -
->> first is an old lenovo laptop from 2012(Ivy Bridge) with realtek
->> network adapter - second is a PC(Haswell refresh) with PCIE realtek
->> network adapter
->>
->> Both uses r8169 driver for network.
->>
->> On laptop it's not possible to wake on lan after poweroff On PC it's
->> not possible to wake on lan up after hibernate but works after
->> poweroff
->>
->> In both cases downgrade to 6.1.x kernel fixes the issue.
-
-Meanwhile a few others that ran into the same problem with NICs from
-different vendors joined the ticket
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+Yours,
+Linus Walleij
