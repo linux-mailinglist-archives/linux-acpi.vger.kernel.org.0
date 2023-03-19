@@ -2,57 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C609F6BFF08
-	for <lists+linux-acpi@lfdr.de>; Sun, 19 Mar 2023 03:12:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E32986BFFC0
+	for <lists+linux-acpi@lfdr.de>; Sun, 19 Mar 2023 08:21:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229640AbjCSCMU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 18 Mar 2023 22:12:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43502 "EHLO
+        id S229508AbjCSHVH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 19 Mar 2023 03:21:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbjCSCMT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 18 Mar 2023 22:12:19 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DF4C1CF5D
-        for <linux-acpi@vger.kernel.org>; Sat, 18 Mar 2023 19:12:18 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id eg48so34238468edb.13
-        for <linux-acpi@vger.kernel.org>; Sat, 18 Mar 2023 19:12:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679191936;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=GXkYcxtWGmwPECKilkYLw0ANEYfSD0wpvJZycpobCR4=;
-        b=hhJKBNpavJUiOpFyNNavhif8fOBPoI3N8Rk7ER+vkzEGXGQqqvxP/409AvqEGu+R2z
-         7ZOh4/rByS8LEIlaX0L1uOvOi/ILZsYJRmi01pj6XUZlvMI+ufAtIfEuzDd4v4S86rZt
-         50N/AJt0nHJV0UHPk8tP8A9QBDkkKCyqBhyMh/LiygGiNaLBPKSZXylwVUMFZgsu8GC/
-         Z2245Yfc9vlwBCyYAoprJBK/F5lhAGNx4aAOnrL4uK1EQ4fhDu2+xf9ItoGWqvdcm4Po
-         EaB9sfP3Zvt/Ex5QLEhpK6ar7be27jwVYyaIs3nEqyMEHmO/x9lBxaAUx63zZH76VFPN
-         QhRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679191936;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GXkYcxtWGmwPECKilkYLw0ANEYfSD0wpvJZycpobCR4=;
-        b=nfYEANvKLh9oVtJc82DY3T4s7c7+m+0VWd0liKSG1wIuwLKvFvArd0L/pbgtI449DO
-         ubZ/t8L0HS7v6VvnhjQogBP/oqx4LKbK7Ocr+0nCiDy/IfRj/zxcg9OgIz3dqepB+hQr
-         uzWR3sS+W89XUEf9u3ny9F+XOd189b382M5de4PqhAFsR0ZMHSjrKKOewEoaeEPxZD/0
-         FJpIb5EcTI4PG/zrLlIZOKEUfFVDam0+dCRb8SllR1YUVnPjES6+37KpaXH58XXr0ilk
-         RMXlKaMDH63YWNkbIbHQ0Rl6FN7E0i0aMZ6bPWV4RNT29ZVPLXWEPGEwFHeh4y8U7UPA
-         lrPA==
-X-Gm-Message-State: AO0yUKXPrG+WCwO6SwBJ5ujlkGWBOk1CMyihOMDWn7Ypq1ZR2fKf57o1
-        3zHjMowYYdhJWQhblX8/R+dZBH642BjoNvic0He2Iy3A1Qc=
-X-Google-Smtp-Source: AK7set8rRW5URFXj5t33IK0pW5Tgl6VUPAyWoEApH2Ysvvd5ptqkoPh+JknAIMWfkJGgX6nsLQX24ipVvGXiUm0EFtw=
-X-Received: by 2002:a17:906:8a75:b0:930:4944:c2c with SMTP id
- hy21-20020a1709068a7500b0093049440c2cmr1966075ejc.12.1679191936547; Sat, 18
- Mar 2023 19:12:16 -0700 (PDT)
+        with ESMTP id S229481AbjCSHVG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 19 Mar 2023 03:21:06 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 671AE132DB;
+        Sun, 19 Mar 2023 00:21:05 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1pdnLf-0005MO-Hj; Sun, 19 Mar 2023 08:20:59 +0100
+Message-ID: <53e8b4db-e8dd-4dfa-f873-7dcbeac09149@leemhuis.info>
+Date:   Sun, 19 Mar 2023 08:20:59 +0100
 MIME-Version: 1.0
-From:   obiwac <obiwac@gmail.com>
-Date:   Sun, 19 Mar 2023 03:12:05 +0100
-Message-ID: <CAN8-kNUhnWxLoAGF7tXsknxRKztNT_fSBUgULLhDyyp4388yBg@mail.gmail.com>
-Subject: [PATCH] ACPI: resource: Add Medion S17413 to IRQ override quirk
-To:     linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Content-Language: en-US, de-DE
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+To:     Huacai Chen <chenhuacai@kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux kernel regressions list <regressions@lists.linux.dev>,
+        Jianmin Lv <lvjianmin@loongson.cn>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Bob Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        acpica-devel@lists.linuxfoundation.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+References: <e6aaddb9-afec-e77d-be33-570f9f10a9c2@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Subject: Re: [regression] Bug 217069 - Wake on Lan is broken on r8169 since
+ 6.2
+In-Reply-To: <e6aaddb9-afec-e77d-be33-570f9f10a9c2@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1679210465;b172227a;
+X-HE-SMSGID: 1pdnLf-0005MO-Hj
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,32 +52,41 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Add DMI info of the Medion S17413 (board M1xA) to the IRQ override
-quirk table. This fixes the keyboard not working on these laptops.
+Hi, Thorsten here, the Linux kernel's regression tracker.
 
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213031
-Signed-off-by: Aymeric Wibo <obiwac@gmail.com>
----
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+On 22.02.23 08:57, Thorsten Leemhuis wrote:
+> 
+> I noticed a regression report in bugzilla.kernel.org. As many (most?)
+> kernel developer don't keep an eye on it, I decided to forward it by
+> mail. Quoting from https://bugzilla.kernel.org/show_bug.cgi?id=217069 :
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 192d1784e..9e1ab01d4 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -400,6 +400,13 @@ static const struct dmi_system_id medion_laptop[] = {
-                        DMI_MATCH(DMI_BOARD_NAME, "M17T"),
-                },
-        },
-+       {
-+               .ident = "MEDION S17413",
-+               .matches = {
-+                       DMI_MATCH(DMI_SYS_VENDOR, "MEDION"),
-+                       DMI_MATCH(DMI_BOARD_NAME, "M1xA"),
-+               },
-+       },
-        { }
- };
+An issue that looked like a network bug was now bisected and it turns
+out it's cause by 5c62d5aab875 ("ACPICA: Events: Support fixed PCIe wake
+event") which Huacai Chen provided. Could you take a look at the ticket
+linked above?
 
+FWIW, the whole story started like this:
+
+>> Ivan Ivanich 2023-02-22 00:51:52 UTC
+>>
+>> After upgrade to 6.2 having issues with wake on lan on 2 systems: -
+>> first is an old lenovo laptop from 2012(Ivy Bridge) with realtek
+>> network adapter - second is a PC(Haswell refresh) with PCIE realtek
+>> network adapter
+>>
+>> Both uses r8169 driver for network.
+>>
+>> On laptop it's not possible to wake on lan after poweroff On PC it's
+>> not possible to wake on lan up after hibernate but works after
+>> poweroff
+>>
+>> In both cases downgrade to 6.1.x kernel fixes the issue.
+
+Meanwhile a few others that ran into the same problem with NICs from
+different vendors joined the ticket
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
 --
-2.25.1
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
