@@ -2,144 +2,167 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F29BB6C0F15
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Mar 2023 11:38:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 229566C12F9
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Mar 2023 14:17:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230308AbjCTKiZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Mar 2023 06:38:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54372 "EHLO
+        id S231755AbjCTNRT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Mar 2023 09:17:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230376AbjCTKiB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Mar 2023 06:38:01 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EF0B3EB6B;
-        Mon, 20 Mar 2023 03:37:16 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9C7DDFEC;
-        Mon, 20 Mar 2023 03:37:58 -0700 (PDT)
-Received: from [10.57.53.93] (unknown [10.57.53.93])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 03C043F67D;
-        Mon, 20 Mar 2023 03:37:11 -0700 (PDT)
-Message-ID: <aa4090eb-4d9a-3c3b-afab-94d7132af0c7@arm.com>
-Date:   Mon, 20 Mar 2023 10:37:10 +0000
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.9.0
-Subject: Re: [PATCH 6/7] of/platform: Skip coresight etm4x devices from AMBA
- bus
-To:     Rob Herring <robh+dt@kernel.org>
-Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
-        linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org,
-        scclevenger@os.amperecomputing.com,
-        Frank Rowand <frowand.list@gmail.com>,
+        with ESMTP id S231750AbjCTNRL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Mar 2023 09:17:11 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4706A19F17;
+        Mon, 20 Mar 2023 06:17:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679318220; x=1710854220;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=KxlXRVH7N+45zvim8tIjdmWaRb89rG1+XDN/qvGgUbg=;
+  b=UsqpqAhuJbdQTfkguPAG7jLqQP2xkzvlUhZxax2n/vPfv7U796DYxqJ2
+   nvkqJwWyWU9qL0tmOhnnLGypW27KJEybMRJ0jhIwmGVvH9P9wnHebiCx5
+   50y3jpv6ScGLdNZzTi4fAPx1iQAxVTMcJ3PPT62w3THUMSsREe5vZDQK9
+   kPjsyJuzhWCMQRtUyxSE5zH7uMg0ZKtkX6dsuTOD5NARQ0geMiEDnZqzN
+   oMoNBcLciWL5tFuqJOIzogXRolMPyDaFRpEq9hehGgfJjBeXknCxfR9+S
+   xk8M2f2HF/D88e13KshrGMfsQuyQrIPELYz0GbK+B8gWI20ySC2LwTqpS
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10655"; a="424932297"
+X-IronPort-AV: E=Sophos;i="5.98,274,1673942400"; 
+   d="scan'208";a="424932297"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2023 06:16:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10654"; a="674382652"
+X-IronPort-AV: E=Sophos;i="5.98,274,1673942400"; 
+   d="scan'208";a="674382652"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga007.jf.intel.com with ESMTP; 20 Mar 2023 06:15:58 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id E4F3A4FF; Mon, 20 Mar 2023 15:16:43 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+        "Maciej W. Rozycki" <macro@orcam.me.uk>,
+        Juergen Gross <jgross@suse.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
         Russell King <linux@armlinux.org.uk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Mike Leach <mike.leach@linaro.org>,
-        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230317030501.1811905-1-anshuman.khandual@arm.com>
- <20230317030501.1811905-7-anshuman.khandual@arm.com>
- <CAL_JsqK8vnwTZ3-nTd-S+dpCrQebAUm-NRiaJBE6KkoAVq=Ovg@mail.gmail.com>
- <b1518e16-d74b-719c-a0fc-bc172a6011c4@arm.com>
- <CAL_JsqKQWL4Y9zZj5x11QUB=8N9GLKo26EX=fVxXes_gShYf7Q@mail.gmail.com>
-From:   Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <CAL_JsqKQWL4Y9zZj5x11QUB=8N9GLKo26EX=fVxXes_gShYf7Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Anatolij Gustschin <agust@denx.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Subject: [PATCH v6 0/4] Add pci_dev_for_each_resource() helper and update users
+Date:   Mon, 20 Mar 2023 15:16:29 +0200
+Message-Id: <20230320131633.61680-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Provide two new helper macros to iterate over PCI device resources and
+convert users.
 
-On 17/03/2023 20:06, Rob Herring wrote:
-> On Fri, Mar 17, 2023 at 11:03 AM Suzuki K Poulose
-> <suzuki.poulose@arm.com> wrote:
->>
->> Hi Rob
->>
->> Thanks for your response.
->>
->> On 17/03/2023 14:52, Rob Herring wrote:
->>> On Thu, Mar 16, 2023 at 10:06 PM Anshuman Khandual
->>> <anshuman.khandual@arm.com> wrote:
->>>>
->>>> Allow other drivers to claim a device, disregarding the "priority" of
->>>> "arm,primecell". e.g., CoreSight ETM4x devices could be accessed via MMIO
->>>> (AMBA Bus) or via CPU system instructions.
->>>
->>> The OS can pick which one, use both, or this is a system integration
->>> time decision?
->>
->> Not an OS choice. Historically, this has always been MMIO accessed but
->> with v8.4 TraceFiltering support, CPUs are encouraged to use system
->> instructions and obsolete MMIO. So, yes, MMIO is still possible but
->> something that is discouraged and have to be decided at system
->> integration time.
->>
->>>
->>>> The CoreSight ETM4x platform
->>>> driver can now handle both types of devices. In order to make sure the
->>>> driver gets to handle the "MMIO based" devices, which always had the
->>>> "arm,primecell" compatible, we have two options :
->>>>
->>>> 1) Remove the "arm,primecell" from the DTS. But this may be problematic
->>>>    for an older kernel without the support.
->>>>
->>>> 2) The other option is to allow OF code to "ignore" the arm,primecell
->>>> priority for a selected list of compatibles. This would make sure that
->>>> both older kernels and the new kernels work fine without breaking
->>>> the functionality. The new DTS could always have the "arm,primecell"
->>>> removed.
->>>
->>> 3) Drop patches 6 and 7 and just register as both AMBA and platform
->>> drivers. It's just some extra boilerplate. I would also do different
->>> compatible strings for CPU system instruction version (assuming this
->>> is an integration time decision).
->>
->> The system instruction (and the reigster layouts) are all part of the
->> ETMv4/ETE architecture and specific capabilities/features are
->> discoverable, just like the Arm CPUs. Thus we don't need special
->> versions within the ETMv4x or ETE minor versions. As of now, we have
->> one for etm4x and another for ete.
-> 
-> I just meant 2 new compatible strings. One each for ETMv4x and ETE,
-> but different from the 2 existing ones. It is different h/w presented
-> to the OS, so different compatible.
-> 
+Looking at it, refactor existing pci_bus_for_each_resource() and convert
+users accordingly.
 
-Sorry, was not very clear here.
+Changelog v6:
+- dropped unused variable in PPC code (LKP)
 
-Right now, we have :
+Changelog v5:
+- renamed loop variable to minimize the clash (Keith)
+- addressed smatch warning (Dan)
+- addressed 0-day bot findings (LKP)
 
-1) arm,coresight-etm4x && arm,primecell - For AMBA based devices
-2) arm,coresight-etm4x-sysreg	- For system instruction based
-3) arm,embedded-trace-extension - For ETE
+Changelog v4:
+- rebased on top of v6.3-rc1
+- added tag (Krzysztof)
 
+Changelog v3:
+- rebased on top of v2 by Mika, see above
+- added tag to pcmcia patch (Dominik)
 
->> One problem with the AMBA driver in place is having to keep on adding
->> new PIDs for the CPUs. The other option is to have a blanket mask
->> for matching the PIDs with AMBA_UCI_ID checks.
-> 
-> But if MMIO access is discouraged, then new h/w would use the platform
-> driver(s), not the amba driver, and you won't have to add PIDs.
+Changelog v2:
+- refactor to have two macros
+- refactor existing pci_bus_for_each_resource() in the same way and
+  convert users
 
-Yes for v8.4 onwards. Alternatively, the newer DTS could skip 
-arm,primecell in the entry and that would kick the platform driver
-in. So, that should be fine I guess.
+Andy Shevchenko (3):
+  PCI: Split pci_bus_for_each_resource_p() out of
+    pci_bus_for_each_resource()
+  EISA: Convert to use pci_bus_for_each_resource_p()
+  pcmcia: Convert to use pci_bus_for_each_resource_p()
 
-Kind regards
-Suzuki
+Mika Westerberg (1):
+  PCI: Introduce pci_dev_for_each_resource()
 
-> 
-> Rob
+ .clang-format                             |  3 ++
+ arch/alpha/kernel/pci.c                   |  5 ++-
+ arch/arm/kernel/bios32.c                  | 16 +++++-----
+ arch/arm/mach-dove/pcie.c                 | 10 +++---
+ arch/arm/mach-mv78xx0/pcie.c              | 10 +++---
+ arch/arm/mach-orion5x/pci.c               | 10 +++---
+ arch/mips/pci/ops-bcm63xx.c               |  8 ++---
+ arch/mips/pci/pci-legacy.c                |  3 +-
+ arch/powerpc/kernel/pci-common.c          | 21 +++++++------
+ arch/powerpc/platforms/4xx/pci.c          |  8 ++---
+ arch/powerpc/platforms/52xx/mpc52xx_pci.c |  5 ++-
+ arch/powerpc/platforms/pseries/pci.c      | 16 +++++-----
+ arch/sh/drivers/pci/pcie-sh7786.c         | 10 +++---
+ arch/sparc/kernel/leon_pci.c              |  5 ++-
+ arch/sparc/kernel/pci.c                   | 10 +++---
+ arch/sparc/kernel/pcic.c                  |  5 ++-
+ drivers/eisa/pci_eisa.c                   |  4 +--
+ drivers/pci/bus.c                         |  7 ++---
+ drivers/pci/hotplug/shpchp_sysfs.c        |  8 ++---
+ drivers/pci/pci.c                         |  5 ++-
+ drivers/pci/probe.c                       |  2 +-
+ drivers/pci/remove.c                      |  5 ++-
+ drivers/pci/setup-bus.c                   | 37 +++++++++--------------
+ drivers/pci/setup-res.c                   |  4 +--
+ drivers/pci/vgaarb.c                      | 17 +++--------
+ drivers/pci/xen-pcifront.c                |  4 +--
+ drivers/pcmcia/rsrc_nonstatic.c           |  9 ++----
+ drivers/pcmcia/yenta_socket.c             |  3 +-
+ drivers/pnp/quirks.c                      | 29 ++++++------------
+ include/linux/pci.h                       | 29 ++++++++++++++----
+ 30 files changed, 142 insertions(+), 166 deletions(-)
+
+-- 
+2.39.2
 
