@@ -2,232 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C2F76C215C
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Mar 2023 20:28:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8011C6C237C
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Mar 2023 22:20:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229934AbjCTT2p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Mar 2023 15:28:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39148 "EHLO
+        id S229972AbjCTVU3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Mar 2023 17:20:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229939AbjCTT2P (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Mar 2023 15:28:15 -0400
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4C2A44DBCA;
-        Mon, 20 Mar 2023 12:20:39 -0700 (PDT)
-Received: from vm02.corp.microsoft.com (unknown [167.220.197.27])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 13D3A20FAEFE;
-        Mon, 20 Mar 2023 12:20:22 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 13D3A20FAEFE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1679340024;
-        bh=5BR0f6PrkO2ZuCv3kzx8IsqaHLeKQ2EwX1QEDZefxrY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UVBn9ynWsu5EEl41Ch9x59ghkmiYuQwTFGsIQTdRxgfKS6ybWbXZ10Wc4UTEgIdAw
-         hqp1jpwGZ52hjOzpcsH9vswOMXbvqKyNemXqPOh2NpFLZsotXf5xF/46fmL6gPklwt
-         bIqP+aDsurNEzApM1gjIab7W7hOz0OdU/xA9CM1E=
-From:   Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
-        "Brijesh Singh" <brijesh.singh@amd.com>,
-        "Tom Lendacky" <thomas.lendacky@amd.com>,
-        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        with ESMTP id S229949AbjCTVU2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Mar 2023 17:20:28 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A22FF27D61;
+        Mon, 20 Mar 2023 14:20:26 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id eh3so52177380edb.11;
+        Mon, 20 Mar 2023 14:20:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679347225;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wnqyD8RmQzvkYX7wOFvo1E4JUh7LYwrEe0pQvUYqgq8=;
+        b=OMb/UAsVxy8Rg203eWnmzDoBUU19ufkggfUFz4Fxls5xlKcieP5DAe5fzdyJwZUe+S
+         kgPWUSNXhvNG0aLaGBVZVzBgb31YXb+NfdPbVKxc/iwVlU0lScSCBKrPr9ipZe+gcdjs
+         2xiXaUIRJauRplbDIPjdtumdMLjgmi5Ta/+5z3wNjG8+0ilUEza8FD6tYvItbI/tTWtX
+         FNdj0LggZDFosWVHqRn3wdMJ0H6+lo6hzVR7irbeCwaXGFGZhN40QdmCOzqPqGqXgk5u
+         DBkhuPYAKGDF8yvqcnMKSwJLf81UrOWoBwCogOjhV+qrzEtaffl/svxhJF31xtk4FabA
+         l3+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679347225;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wnqyD8RmQzvkYX7wOFvo1E4JUh7LYwrEe0pQvUYqgq8=;
+        b=M3cq3TvQpPOYxrd5USXCRRQ/CwNQvTanV4UACZxAZGz93WNdYrHxY081bCiDnvmzXv
+         g9s5XAwfI6DxtDLMXkJxpMlLFMeIB91MNWKthpH+EdsFdL+A5HttXbXt4IgfPEfi7P3V
+         0Et7Ou0g5v9TMqYBpjcSxWNcOqqmHsL14cHxxKE5XVbUlma6FJM+idNWaoHMQENDNKI+
+         0WhXmNFZEJ222YSk8yMzQMnFX3BgC9hF3o7MSDZk3Ea235ALTK9ZRWZeseX2xzqNGxGM
+         /M4JMzMR/Dcd9jGz8kqaHRJ0A/V8edKtE+98F/8IbwpCqL/klQ5P92OwiFTmKyWKyyxc
+         2yIQ==
+X-Gm-Message-State: AO0yUKW/d8aFFJg6EabAcw+XBI6E2d/mv5Dp+09vhtrVsasXMBBAGqdP
+        J1xgJ6EctzIoGu8/cHzysl44c5b03ibKnA==
+X-Google-Smtp-Source: AK7set9sUKcWrD+oHlhGhdrIF7i2vzCBsNuf2Y+0YQe1oM1ZNnY1Gxgbzfga6fx4hKrTWshl6nF4jw==
+X-Received: by 2002:a17:906:5fd4:b0:931:51c0:7300 with SMTP id k20-20020a1709065fd400b0093151c07300mr468394ejv.77.1679347224778;
+        Mon, 20 Mar 2023 14:20:24 -0700 (PDT)
+Received: from localhost.localdomain ([46.248.82.114])
+        by smtp.gmail.com with ESMTPSA id z26-20020a17090674da00b009310d4dece9sm4875965ejl.62.2023.03.20.14.20.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Mar 2023 14:20:24 -0700 (PDT)
+From:   Uros Bizjak <ubizjak@gmail.com>
+To:     x86@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Uros Bizjak <ubizjak@gmail.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Len Brown" <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH v3 2/8] ACPI: ASPT: Add helper to parse table
-Date:   Mon, 20 Mar 2023 19:19:50 +0000
-Message-Id: <20230320191956.1354602-3-jpiotrowski@linux.microsoft.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230320191956.1354602-1-jpiotrowski@linux.microsoft.com>
-References: <20230320191956.1354602-1-jpiotrowski@linux.microsoft.com>
+        Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>
+Subject: [PATCH v2] x86/ACPI/boot: Improve __acpi_acquire_global_lock
+Date:   Mon, 20 Mar 2023 22:20:12 +0100
+Message-Id: <20230320212012.12704-1-ubizjak@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The ASP table indicates the presence of a Platform Security Processor
-with a register window and registers to configure interrupt delivery.
-The helper checks for the presence of the table and returns a resource
-and struct with register offsets.
+Improve __acpi_acquire_global_lock by using a temporary variable.
+This enables compiler to perform if-conversion and improves generated
+code from:
 
-Link: https://github.com/acpica/acpica/commit/15b939b034ab41a864b4e7647b8e2233780bb0c7
-Link: https://www.amd.com/system/files/TechDocs/58028_1.00-PUB.pdf
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+ ...
+ 72a:	d1 ea                	shr    %edx
+ 72c:	83 e1 fc             	and    $0xfffffffc,%ecx
+ 72f:	83 e2 01             	and    $0x1,%edx
+ 732:	09 ca                	or     %ecx,%edx
+ 734:	83 c2 02             	add    $0x2,%edx
+ 737:	f0 0f b1 17          	lock cmpxchg %edx,(%rdi)
+ 73b:	75 e9                	jne    726 <__acpi_acquire_global_lock+0x6>
+ 73d:	83 e2 03             	and    $0x3,%edx
+ 740:	31 c0                	xor    %eax,%eax
+ 742:	83 fa 03             	cmp    $0x3,%edx
+ 745:	0f 95 c0             	setne  %al
+ 748:	f7 d8                	neg    %eax
+
+to:
+
+ ...
+ 72a:	d1 e9                	shr    %ecx
+ 72c:	83 e2 fc             	and    $0xfffffffc,%edx
+ 72f:	83 e1 01             	and    $0x1,%ecx
+ 732:	09 ca                	or     %ecx,%edx
+ 734:	83 c2 02             	add    $0x2,%edx
+ 737:	f0 0f b1 17          	lock cmpxchg %edx,(%rdi)
+ 73b:	75 e9                	jne    726 <__acpi_acquire_global_lock+0x6>
+ 73d:	8d 41 ff             	lea    -0x1(%rcx),%eax
+
+BTW: the compiler could generate:
+
+	lea 0x2(%rcx,%rdx,1),%edx
+
+instead of:
+
+	or     %ecx,%edx
+	add    $0x2,%edx
+
+but unwated conversion from add to or when bits are known to be zero
+prevents this improvement. This is GCC PR108477.
+
+No functional change intended.
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
 ---
- drivers/acpi/Makefile             |   1 +
- drivers/acpi/aspt.c               | 104 ++++++++++++++++++++++++++++++
- include/linux/platform_data/psp.h |  32 +++++++++
- 3 files changed, 137 insertions(+)
- create mode 100644 drivers/acpi/aspt.c
- create mode 100644 include/linux/platform_data/psp.h
+v2: Expand return statement.
+---
+ arch/x86/kernel/acpi/boot.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-index feb36c0b9446..831d7a12b522 100644
---- a/drivers/acpi/Makefile
-+++ b/drivers/acpi/Makefile
-@@ -57,6 +57,7 @@ acpi-y				+= evged.o
- acpi-y				+= sysfs.o
- acpi-y				+= property.o
- acpi-$(CONFIG_X86)		+= acpi_cmos_rtc.o
-+acpi-$(CONFIG_X86)		+= aspt.o
- acpi-$(CONFIG_X86)		+= x86/apple.o
- acpi-$(CONFIG_X86)		+= x86/utils.o
- acpi-$(CONFIG_X86)		+= x86/s2idle.o
-diff --git a/drivers/acpi/aspt.c b/drivers/acpi/aspt.c
-new file mode 100644
-index 000000000000..cf629db35036
---- /dev/null
-+++ b/drivers/acpi/aspt.c
-@@ -0,0 +1,104 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#define pr_fmt(fmt) "ACPI: ASPT: " fmt
-+#include <linux/acpi.h>
-+#include <linux/kernel.h>
-+#include <linux/platform_data/psp.h>
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 1c38174b5f01..a08a4a7a03f8 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -1853,13 +1853,18 @@ early_param("acpi_sci", setup_acpi_sci);
+ 
+ int __acpi_acquire_global_lock(unsigned int *lock)
+ {
+-	unsigned int old, new;
++	unsigned int old, new, val;
+ 
+ 	old = READ_ONCE(*lock);
+ 	do {
+-		new = (((old & ~0x3) + 2) + ((old >> 1) & 0x1));
++		val = (old >> 1) & 0x1;
++		new = (old & ~0x3) + 2 + val;
+ 	} while (!try_cmpxchg(lock, &old, new));
+-	return ((new & 0x3) < 3) ? -1 : 0;
 +
-+static int __init psp_validate_regs(const struct acpi_aspt_global_regs *gregs,
-+	const struct acpi_aspt_sev_mbox_regs *sevregs,
-+	const struct acpi_aspt_acpi_mbox_regs *acpiregs)
-+{
-+	u64 pfn;
-+	int idx;
-+	u64 regs[] = {
-+		gregs->feature_reg_addr,
-+		gregs->irq_en_reg_addr,
-+		gregs->irq_st_reg_addr,
-+		sevregs->cmd_resp_reg_addr,
-+		sevregs->cmd_buf_lo_reg_addr,
-+		sevregs->cmd_buf_hi_reg_addr,
-+		acpiregs->cmd_resp_reg_addr
-+	};
-+	pfn = regs[0] >> PAGE_SHIFT;
-+	for (idx = 1; idx < ARRAY_SIZE(regs); idx++) {
-+		if (regs[idx] >> PAGE_SHIFT != pfn)
-+			return -EINVAL;
-+	}
-+	return 0;
-+}
++	if (val)
++		return 0;
 +
-+/**
-+ * acpi_parse_aspt - Parse ASPT table and return contained information
-+ * @res: will be filled with the address and size of the ASP register window
-+ * @pdata: will be filled with the register offsets parsed from the ASPT table
-+ */
-+int __init acpi_parse_aspt(struct resource *res, struct psp_platform_data *pdata)
-+{
-+	struct acpi_aspt_acpi_mbox_regs acpiregs = {};
-+	struct acpi_aspt_sev_mbox_regs sevregs = {};
-+	struct acpi_aspt_global_regs gregs = {};
-+	struct acpi_aspt_header *entry, *end;
-+	struct acpi_table_aspt *aspt;
-+	unsigned long base;
-+	acpi_status status;
-+	int err = 0;
-+
-+	status = acpi_get_table(ACPI_SIG_ASPT, 0, (struct acpi_table_header **)&aspt);
-+	if (ACPI_FAILURE(status))
-+		return -ENODEV;
-+	if (aspt->header.revision != ASPT_REVISION_ID) {
-+		pr_err("unsupported table revision: %d\n", (int)aspt->header.revision);
-+		err = -ENODEV;
-+		goto exit;
-+	}
-+	entry = (struct acpi_aspt_header *)(aspt + 1);
-+	end = (struct acpi_aspt_header *)((void *)aspt + aspt->header.length);
-+	while (entry < end) {
-+		if (((void *)entry + entry->length) > (void *)end) {
-+			pr_err("error during parsing\n");
-+			err = -EINVAL;
-+			goto exit;
-+		}
-+		switch (entry->type) {
-+		case ACPI_ASPT_TYPE_GLOBAL_REGS:
-+			memcpy(&gregs, entry, entry->length);
-+			break;
-+		case ACPI_ASPT_TYPE_SEV_MBOX_REGS:
-+			memcpy(&sevregs, entry, entry->length);
-+			break;
-+		case ACPI_ASPT_TYPE_ACPI_MBOX_REGS:
-+			memcpy(&acpiregs, entry, entry->length);
-+			break;
-+		}
-+		entry = (struct acpi_aspt_header *)((void *)entry + entry->length);
-+	}
-+	if (!gregs.header.length || !sevregs.header.length || !acpiregs.header.length) {
-+		pr_err("missing ASPT table entry: %u %u %u\n", gregs.header.length,
-+			sevregs.header.length,
-+			acpiregs.header.length);
-+		err = -EINVAL;
-+		goto exit;
-+	}
-+	/* All registers are expected to be within the same page */
-+	err = psp_validate_regs(&gregs, &sevregs, &acpiregs);
-+	if (err) {
-+		pr_err("ASPT registers span multiple pages\n");
-+		goto exit;
-+	}
-+
-+	base = ALIGN_DOWN(gregs.feature_reg_addr, PAGE_SIZE);
-+	*res = (struct resource)DEFINE_RES_MEM(base, PAGE_SIZE);
-+
-+	pdata->sev_cmd_resp_reg = sevregs.cmd_resp_reg_addr & ~PAGE_MASK;
-+	pdata->sev_cmd_buf_lo_reg = sevregs.cmd_buf_lo_reg_addr & ~PAGE_MASK;
-+	pdata->sev_cmd_buf_hi_reg = sevregs.cmd_buf_hi_reg_addr & ~PAGE_MASK;
-+	pdata->feature_reg = gregs.feature_reg_addr & ~PAGE_MASK;
-+	pdata->irq_en_reg = gregs.irq_en_reg_addr & ~PAGE_MASK;
-+	pdata->irq_st_reg = gregs.irq_st_reg_addr & ~PAGE_MASK;
-+	pdata->mbox_irq_id = sevregs.mbox_irq_id;
-+	pdata->acpi_cmd_resp_reg = acpiregs.cmd_resp_reg_addr & ~PAGE_MASK;
-+
-+exit:
-+	acpi_put_table((struct acpi_table_header *)aspt);
-+	return err;
-+}
-diff --git a/include/linux/platform_data/psp.h b/include/linux/platform_data/psp.h
-new file mode 100644
-index 000000000000..b761f72168d6
---- /dev/null
-+++ b/include/linux/platform_data/psp.h
-@@ -0,0 +1,32 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * psp.h - PSP register offsets parsed from ASPT ACPI table
-+ */
-+
-+#ifndef __LINUX_PSP_H
-+#define __LINUX_PSP_H
-+
-+#include <linux/types.h>
-+#include <linux/ioport.h>
-+
-+struct psp_platform_data {
-+	int sev_cmd_resp_reg;
-+	int sev_cmd_buf_lo_reg;
-+	int sev_cmd_buf_hi_reg;
-+	int feature_reg;
-+	int irq_en_reg;
-+	int irq_st_reg;
-+	int mbox_irq_id;
-+	int acpi_cmd_resp_reg;
-+};
-+
-+#if IS_ENABLED(CONFIG_ACPI)
-+int acpi_parse_aspt(struct resource *res, struct psp_platform_data *pdata);
-+#else
-+static inline acpi_parse_aspt(struct resource *res, struct psp_platform_data *pdata)
-+{
-+	return -ENODEV;
-+}
-+#endif
-+
-+#endif /* __LINUX_PSP_H */
++	return -1;
+ }
+ 
+ int __acpi_release_global_lock(unsigned int *lock)
 -- 
-2.34.1
+2.39.2
 
