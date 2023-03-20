@@ -2,115 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7FD66C1485
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Mar 2023 15:17:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C1CD6C1B44
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Mar 2023 17:22:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229665AbjCTORk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Mar 2023 10:17:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42294 "EHLO
+        id S230016AbjCTQWK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Mar 2023 12:22:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231663AbjCTORg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Mar 2023 10:17:36 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9315927D67;
-        Mon, 20 Mar 2023 07:17:33 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S232075AbjCTQVq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Mar 2023 12:21:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C66FAC671
+        for <linux-acpi@vger.kernel.org>; Mon, 20 Mar 2023 09:13:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1679328783;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=FjiBYtKIW9PEe2MIQHjUtN2ET/X3WYegoPO7Dau7mT8=;
+        b=D30j7+cOXpy3OHIA8JGJk0zXzc8FFfrg7ptgbwJIjPnqe717sekJL7NGMEwxdKOSeu99/Q
+        BTRZgajTlhxpQH1M7ytQ5x0sms+5Y0WBx3FnSE10sVJ7xMxHxFt2rtEnn3SwcucRPd7n+y
+        u/+vGR7YlQ4mjB5lafeDNqXqRmXWrmM=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-226-Me841i5_MVeLh42EzOpvDw-1; Mon, 20 Mar 2023 11:59:48 -0400
+X-MC-Unique: Me841i5_MVeLh42EzOpvDw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 774DFCE12B0;
-        Mon, 20 Mar 2023 14:17:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F98C433A8;
-        Mon, 20 Mar 2023 14:17:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679321849;
-        bh=aKMxejypqYGtstTSZaALmz6QKeR6kRQMkXNt7PN5Rqo=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=HeeQW3bmMhNgQRTD1yzFc05O7cqd4QMqRZbOzM6RVy0l/OU6l/B2M098aPIYWHFnZ
-         w1syANmqkE/2tE2lE3GWwohKchzVNNmDRN6FHgGitTW7i8i18rT96Ttr6/03jU9qtj
-         /EJ5tt773bkfCEYA3i0Gx4DH7J88hIVkWG4C5RNOo1XExBGt2goYmuZitboZnMxBUb
-         FFwx9fmYla8b2S6wwMIlYqg543d/D6dC5dSh8PhbP7/IczhB3OUxgL+tZ9U1VNG0GH
-         hYtpngaP+u8NYfB2T8V2Q3yWI5wSOI950eHFR/8lVz3CZUypC1kCafMfeS81l2tUtw
-         Xig94ETO/6ZPg==
-Received: by mail-ua1-f50.google.com with SMTP id ay14so7979144uab.13;
-        Mon, 20 Mar 2023 07:17:29 -0700 (PDT)
-X-Gm-Message-State: AO0yUKUR/5UXYlUpWtSAvqm36VcEyBk/6BmDI0v2OSWTe0UWGlYKgWZ7
-        Gid3ddDYhmr+u9UTON2s/m2B70h6uHf/R75Yfg==
-X-Google-Smtp-Source: AK7set/6eiFW2xFlHjvRE53ibb1vDYufRHrv7hCBpS4QB9kFF8AO/fAfVdO8LHihe5D01sI28nuWjz4W3poi8n3cClc=
-X-Received: by 2002:a1f:9ed3:0:b0:418:4529:a308 with SMTP id
- h202-20020a1f9ed3000000b004184529a308mr3939800vke.3.1679321848147; Mon, 20
- Mar 2023 07:17:28 -0700 (PDT)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 125863815EE3;
+        Mon, 20 Mar 2023 15:59:48 +0000 (UTC)
+Received: from x1.localdomain.com (unknown [10.39.194.130])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 22363C15BA0;
+        Mon, 20 Mar 2023 15:59:47 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI: video: Add backlight=native DMI quirk for Acer Aspire 3830TG
+Date:   Mon, 20 Mar 2023 16:59:46 +0100
+Message-Id: <20230320155946.489863-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-References: <20230317030501.1811905-1-anshuman.khandual@arm.com>
-In-Reply-To: <20230317030501.1811905-1-anshuman.khandual@arm.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 20 Mar 2023 09:17:16 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqKsnq0d-x3m3xQe8m0pnk_Jeh9J1oFBtPAn3LV8-MFH0w@mail.gmail.com>
-Message-ID: <CAL_JsqKsnq0d-x3m3xQe8m0pnk_Jeh9J1oFBtPAn3LV8-MFH0w@mail.gmail.com>
-Subject: Re: [PATCH 0/7] coresight: etm4x: Migrate AMBA devices to platform driver
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org,
-        suzuki.poulose@arm.com, scclevenger@os.amperecomputing.com,
-        Frank Rowand <frowand.list@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Mike Leach <mike.leach@linaro.org>,
-        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 16, 2023 at 10:05=E2=80=AFPM Anshuman Khandual
-<anshuman.khandual@arm.com> wrote:
->
-> CoreSight ETM4x devices could be accessed either via MMIO (handled via
-> amba_driver) or CPU system instructions (handled via platform driver). Bu=
-t
-> this has the following issues :
->
->   - Each new CPU comes up with its own PID and thus we need to keep on
->     adding the "known" PIDs to get it working with AMBA driver. While
->     the ETM4 architecture (and CoreSight architecture) defines way to
->     identify a device as ETM4. Thus older kernels  won't be able to
->     "discover" a newer CPU, unless we add the PIDs.
+The Acer Aspire 3830TG predates Windows 8, so it defaults to using
+acpi_video# for backlight control, but this is non functional on
+this model.
 
-But v8.4 discourages MMIO access, so this problem will go away on its
-own. Even if not, adding IDs to stable kernels is standard practice
-whether it is PCI VID/PID, compatible string or AMBA PID.
+Add a DMI quirk to use the native backlight interface which does
+work properly.
 
->   - With ACPI, the ETM4x devices have the same HID to identify the device
->     irrespective of the mode of access. This creates a problem where two
->     different drivers (both AMBA based driver and platform driver) would
->     hook into the "HID" and could conflict. e.g., if AMBA driver gets
->     hold of a non-MMIO device, the probe fails. If we have single driver
->     hooked into the given "HID", we could handle them seamlessly,
->     irrespective of the mode of access.
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Why are we changing DT for ACPI? Just always use the platform driver
-for ACPI and leave DT systems alone.
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index 710ac640267d..c69b42a60427 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -495,6 +495,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Precision 7510"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_native,
++	 /* Acer Aspire 3830TG */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "Aspire 3830TG"),
++		},
++	},
+ 	{
+ 	 .callback = video_detect_force_native,
+ 	 /* Acer Aspire 4810T */
+-- 
+2.39.1
 
->   - CoreSight is heavily dependent on the runtime power management. With
->     ACPI, amba_driver doesn't get us anywhere with handling the power
->     and thus one need to always turn the power ON to use them. Moving to
->     platform driver gives us the power management for free.
-
-This sounds like an issue for any amba driver. If this is an issue,
-solve it for everyone, not just work around it in one driver.
-
-When someone puts another primecell device into an ACPI system, are we
-going to go do the same one-off change in that driver too? (We kind of
-already did with SBSA UART...)
-
-Rob
