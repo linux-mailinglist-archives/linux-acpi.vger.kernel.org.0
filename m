@@ -2,84 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1D606C053F
-	for <lists+linux-acpi@lfdr.de>; Sun, 19 Mar 2023 22:08:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D4FB6C08E6
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Mar 2023 03:25:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230182AbjCSVIy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 19 Mar 2023 17:08:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52638 "EHLO
+        id S229514AbjCTCZV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 19 Mar 2023 22:25:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230180AbjCSVIx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 19 Mar 2023 17:08:53 -0400
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 908A216AFA
-        for <linux-acpi@vger.kernel.org>; Sun, 19 Mar 2023 14:08:50 -0700 (PDT)
-Received: by mail-yb1-xb35.google.com with SMTP id y5so10867310ybu.3
-        for <linux-acpi@vger.kernel.org>; Sun, 19 Mar 2023 14:08:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1679260130;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PfSyRT4jJwd9W24svxQ9EDCyYtC7di4+g/hlpe+rd8o=;
-        b=m0FmP+q5r0iJovOIyHQxjLzwz38FdQRSCWtfuPSD1WNLnjtq5oN4693rM4zrxwObKS
-         N0RcuBNpe/1iR7NZX5H5M/1HAmX+BHI1v4Y0RXCQ0/PUeleczBC2xA7RIhStCDLQZZ5U
-         H1NYuudO+FSVB0zEJOAjIGc0kdGbHK7Pl/c2hRX6G6+X/k9xSGVsnJriV8ZoTtZY4JQG
-         nvpys8YMPPa4If+tz/DQrMaRS4n1GpX7YQW8yveZEkTu5Zpd4VBPgwWLuqS5PZU7ammX
-         4cDogbDh0tL+pdpxP2Bh6uumAWIb5pC2f1ikXP+2CI4J1bxg1KnQZYhhDg/f63dQNoW+
-         Gwhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679260130;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PfSyRT4jJwd9W24svxQ9EDCyYtC7di4+g/hlpe+rd8o=;
-        b=L3r9WYgNmkvf1f1RIjnwRRfWzcPWRjekMkt0jvAQZf5uiNUvarkSTWJWGKknHBZY5o
-         l3dfF+mEmOEMUWVC6KUy2Xk5DZkvQYwJVjZMhKUrMc2VBZ77rD3+pfczgtUpzhdMX5fz
-         VsWqHDMwBh1Nm9z3rppPqAkApen+gPMalsiiLPeZyc0YdEaAtzEcMWM1g3TEMszCZFys
-         136PtgM3D/klq8LMv6xb4cbnw6xHN+oSKdi8TKWU9xVIw1Vb/2OyiGqLikd2Qtnk2zLF
-         DaKdf8uK601RVdEMsfhK+SnMkw2dv8/5hXCSrkQm/nmQ4LVxm1ksJjYITCQSdFAKvlUg
-         6W7g==
-X-Gm-Message-State: AO0yUKWHsBrHN5gu1Cx7wNJVes/ZatmP19ambNBRDKqq+ubKX+SAaV/r
-        U2q7iaBIKyG0O+kK9muEuJET9FoaoWl4UxdzIwJmTrPfoJXpsZ3c
-X-Google-Smtp-Source: AK7set8tqfgMfikrp6PWWSvzsGlguYVorCR3NvJYNPvGZiy72l1HII+50LrB3R7O02q5Sw+NRIUpn5WvZUN4F9ZBpDQ=
-X-Received: by 2002:a05:6902:102d:b0:a6b:bc64:a0af with SMTP id
- x13-20020a056902102d00b00a6bbc64a0afmr4120603ybt.4.1679260129834; Sun, 19 Mar
- 2023 14:08:49 -0700 (PDT)
+        with ESMTP id S229473AbjCTCZU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 19 Mar 2023 22:25:20 -0400
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48D2A14495;
+        Sun, 19 Mar 2023 19:25:18 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R491e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045176;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0Ve9mrKl_1679279113;
+Received: from 30.240.114.229(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Ve9mrKl_1679279113)
+          by smtp.aliyun-inc.com;
+          Mon, 20 Mar 2023 10:25:14 +0800
+Message-ID: <91796ce2-2f63-4b07-3e44-dc2a2a98615e@linux.alibaba.com>
+Date:   Mon, 20 Mar 2023 10:25:12 +0800
 MIME-Version: 1.0
-References: <20230315215027.30685-1-asmaa@nvidia.com> <20230315215027.30685-3-asmaa@nvidia.com>
-In-Reply-To: <20230315215027.30685-3-asmaa@nvidia.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 19 Mar 2023 22:08:38 +0100
-Message-ID: <CACRpkdaayJ6aO4weq8uAJqOcahQ16PW1Xez6pwgeapB6e0feYg@mail.gmail.com>
-Subject: Re: [PATCH v6 2/2] pinctrl: mlxbf3: Add pinctrl driver support
-To:     Asmaa Mnebhi <asmaa@nvidia.com>
-Cc:     andy.shevchenko@gmail.com, bgolaszewski@baylibre.com,
-        niyas.sait@linaro.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.8.0
+Subject: Re: [PATCH] ACPI: APEI: EINJ: warn on invalid argument when
+ explicitly indicated by platform
+Content-Language: en-US
+To:     "Luck, Tony" <tony.luck@intel.com>
+Cc:     "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+        "benjamin.cheatham@amd.com" <benjamin.cheatham@amd.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "Williams, Dan J" <dan.j.williams@intel.com>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "jaylu102@amd.com" <jaylu102@amd.com>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "zhuo.song@linux.alibaba.com" <zhuo.song@linux.alibaba.com>
+References: <20230317073310.4237-1-xueshuai@linux.alibaba.com>
+ <SJ1PR11MB60836145DD10108B1FE13A4FFCBD9@SJ1PR11MB6083.namprd11.prod.outlook.com>
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <SJ1PR11MB60836145DD10108B1FE13A4FFCBD9@SJ1PR11MB6083.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 15, 2023 at 10:50=E2=80=AFPM Asmaa Mnebhi <asmaa@nvidia.com> wr=
-ote:
 
-> NVIDIA BlueField-3 SoC has a few pins that can be used as GPIOs
-> or take the default hardware functionality. Add a driver for
-> the pin muxing.
->
-> Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
 
-Patch applied! As stated earlier there is no build time dependency
-between the GPIO and pinctrl patches so they can go in separately.
+On 2023/3/18 AM5:24, Luck, Tony wrote:
+> -	if (val != EINJ_STATUS_SUCCESS)
+> +	if (val == EINJ_STATUS_FAIL)
+>  		return -EBUSY;
+> +	else if (val == EINJ_STATUS_INVAL)
+> +		return -EINVAL;
+> 
+> The ACPI Specification is really vague here. Documented error codes are
+> 
+> 0 = Success (Linux #define EINJ_STATUS_SUCCESS)
+> 1 = Unknown failure (Linux #define EINJ_STATUS_FAIL)
+> 2 = Invalid Access (Linux #define EINJ_STATUS_INVAL)
 
-Yours,
-Linus Walleij
+Absolutely right.
+
+> 
+> I don't see how reporting -EBUSY for the "Unknown Failure" case is
+> actually better.
+
+Tony, did you misunderstand this patch?
+
+The original code report -EBUSY for both "Unknown Failure" and
+"Invalid Access" cases.
+
+This patch intends to report -EINVAL for "Invalid Access" case
+and keeps reporting -EBUSY for "Unknown Failure" case unchanged.
+Although -EBUSY for "Unknown Failure" case is not a good choice.
+Will -EIO for "Unknown failure" case be better?
+
+By the way, do you think -EIO for time out case is suitable.
+
+	for (;;) {
+		rc = apei_exec_run(&ctx, ACPI_EINJ_CHECK_BUSY_STATUS);
+		if (rc)
+			return rc;
+		val = apei_exec_ctx_get_output(&ctx);
+		if (!(val & EINJ_OP_BUSY))
+			break;
+		if (einj_timedout(&timeout))
+			return -EIO;
+
+For example, the OSPM will may warn:
+
+    Firmware does not respond in time.
+
+And a message is printed on the console:
+    echo: write error: Input/output error
+
+Will -EBUSY or -ETIME for timeout be better?
+
+> 
+> -Tony
+
+Thank you for comments.
+
+Best Regards.
+Shuai
