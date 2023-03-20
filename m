@@ -2,58 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFFA86C1450
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Mar 2023 15:06:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7FD66C1485
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Mar 2023 15:17:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231453AbjCTOF7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Mar 2023 10:05:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59366 "EHLO
+        id S229665AbjCTORk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Mar 2023 10:17:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231440AbjCTOF5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Mar 2023 10:05:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B6DA3C15;
-        Mon, 20 Mar 2023 07:05:56 -0700 (PDT)
+        with ESMTP id S231663AbjCTORg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Mar 2023 10:17:36 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9315927D67;
+        Mon, 20 Mar 2023 07:17:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F21B96151A;
-        Mon, 20 Mar 2023 14:05:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A8AC433AA;
-        Mon, 20 Mar 2023 14:05:55 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 774DFCE12B0;
+        Mon, 20 Mar 2023 14:17:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F98C433A8;
+        Mon, 20 Mar 2023 14:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679321155;
-        bh=BQx8aUl7GLoq/qgDAS8nVwKZ9Vn7FKwuFxwItO3PCP0=;
+        s=k20201202; t=1679321849;
+        bh=aKMxejypqYGtstTSZaALmz6QKeR6kRQMkXNt7PN5Rqo=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=mayXoqmJjcxaDkUKWupUUGhvhO9+cCSHMV2JNu8Ku/A0Mfnm8T5TSQrUni5J85nyt
-         QqOXImkzYfuBXg3JjwHBufuQoWkov8eNYHviaCWHkrdh24Xi+SImYK1uBd5dyWWbHH
-         Tz8EI7767ikZmooyCorp1Ru+nejcnJBRk0BX4kG9kEwafELIOMZo7ZsbwV+2wh5SLA
-         TNzaqtUy+gXS84soB/z4ew6LwMk/dEG9tXCiyU1HXCa0fkC/IeRaNzWEVsw4GwJTge
-         rGWtol9+r39Ql5Z9ttR7575hEB53/X+TMsvKl0C2OXW2hC8EOkiCA6G0vvtf5wh+om
-         ev2iJpSPWFkfA==
-Received: by mail-ua1-f44.google.com with SMTP id 89so7996520uao.0;
-        Mon, 20 Mar 2023 07:05:55 -0700 (PDT)
-X-Gm-Message-State: AO0yUKVUHMoSqAtIKxWbFi9fbKTP3zov6O5jVNEluSDNypyD/gB4g22e
-        VjNzV3kPe8V4Vg6RtWP18eeTJd7TL1LR71WLKg==
-X-Google-Smtp-Source: AK7set8KpE3+llxGpjySVigXjI5p31ZGTqkP+0UwGIrVC3LsLtO04RucwbkyTavWeO9OiCygzYpQ8IOMAOBgRZidHCs=
-X-Received: by 2002:a1f:1690:0:b0:432:95d0:abaf with SMTP id
- 138-20020a1f1690000000b0043295d0abafmr3969353vkw.3.1679321153900; Mon, 20 Mar
- 2023 07:05:53 -0700 (PDT)
+        b=HeeQW3bmMhNgQRTD1yzFc05O7cqd4QMqRZbOzM6RVy0l/OU6l/B2M098aPIYWHFnZ
+         w1syANmqkE/2tE2lE3GWwohKchzVNNmDRN6FHgGitTW7i8i18rT96Ttr6/03jU9qtj
+         /EJ5tt773bkfCEYA3i0Gx4DH7J88hIVkWG4C5RNOo1XExBGt2goYmuZitboZnMxBUb
+         FFwx9fmYla8b2S6wwMIlYqg543d/D6dC5dSh8PhbP7/IczhB3OUxgL+tZ9U1VNG0GH
+         hYtpngaP+u8NYfB2T8V2Q3yWI5wSOI950eHFR/8lVz3CZUypC1kCafMfeS81l2tUtw
+         Xig94ETO/6ZPg==
+Received: by mail-ua1-f50.google.com with SMTP id ay14so7979144uab.13;
+        Mon, 20 Mar 2023 07:17:29 -0700 (PDT)
+X-Gm-Message-State: AO0yUKUR/5UXYlUpWtSAvqm36VcEyBk/6BmDI0v2OSWTe0UWGlYKgWZ7
+        Gid3ddDYhmr+u9UTON2s/m2B70h6uHf/R75Yfg==
+X-Google-Smtp-Source: AK7set/6eiFW2xFlHjvRE53ibb1vDYufRHrv7hCBpS4QB9kFF8AO/fAfVdO8LHihe5D01sI28nuWjz4W3poi8n3cClc=
+X-Received: by 2002:a1f:9ed3:0:b0:418:4529:a308 with SMTP id
+ h202-20020a1f9ed3000000b004184529a308mr3939800vke.3.1679321848147; Mon, 20
+ Mar 2023 07:17:28 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230317030501.1811905-1-anshuman.khandual@arm.com>
- <20230317030501.1811905-7-anshuman.khandual@arm.com> <CAL_JsqK8vnwTZ3-nTd-S+dpCrQebAUm-NRiaJBE6KkoAVq=Ovg@mail.gmail.com>
- <b1518e16-d74b-719c-a0fc-bc172a6011c4@arm.com> <CAL_JsqKQWL4Y9zZj5x11QUB=8N9GLKo26EX=fVxXes_gShYf7Q@mail.gmail.com>
- <aa4090eb-4d9a-3c3b-afab-94d7132af0c7@arm.com>
-In-Reply-To: <aa4090eb-4d9a-3c3b-afab-94d7132af0c7@arm.com>
+In-Reply-To: <20230317030501.1811905-1-anshuman.khandual@arm.com>
 From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 20 Mar 2023 09:05:42 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+bJJBi++tpqPMoNTVUswvwFJq=kQj5zHuf-rDphbDwkQ@mail.gmail.com>
-Message-ID: <CAL_Jsq+bJJBi++tpqPMoNTVUswvwFJq=kQj5zHuf-rDphbDwkQ@mail.gmail.com>
-Subject: Re: [PATCH 6/7] of/platform: Skip coresight etm4x devices from AMBA bus
-To:     Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
-        linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org,
-        scclevenger@os.amperecomputing.com,
+Date:   Mon, 20 Mar 2023 09:17:16 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKsnq0d-x3m3xQe8m0pnk_Jeh9J1oFBtPAn3LV8-MFH0w@mail.gmail.com>
+Message-ID: <CAL_JsqKsnq0d-x3m3xQe8m0pnk_Jeh9J1oFBtPAn3LV8-MFH0w@mail.gmail.com>
+Subject: Re: [PATCH 0/7] coresight: etm4x: Migrate AMBA devices to platform driver
+To:     Anshuman Khandual <anshuman.khandual@arm.com>
+Cc:     linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org,
+        suzuki.poulose@arm.com, scclevenger@os.amperecomputing.com,
         Frank Rowand <frowand.list@gmail.com>,
         Russell King <linux@armlinux.org.uk>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -76,98 +72,45 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 20, 2023 at 5:37=E2=80=AFAM Suzuki K Poulose <suzuki.poulose@ar=
-m.com> wrote:
+On Thu, Mar 16, 2023 at 10:05=E2=80=AFPM Anshuman Khandual
+<anshuman.khandual@arm.com> wrote:
 >
+> CoreSight ETM4x devices could be accessed either via MMIO (handled via
+> amba_driver) or CPU system instructions (handled via platform driver). Bu=
+t
+> this has the following issues :
 >
-> On 17/03/2023 20:06, Rob Herring wrote:
-> > On Fri, Mar 17, 2023 at 11:03=E2=80=AFAM Suzuki K Poulose
-> > <suzuki.poulose@arm.com> wrote:
-> >>
-> >> Hi Rob
-> >>
-> >> Thanks for your response.
-> >>
-> >> On 17/03/2023 14:52, Rob Herring wrote:
-> >>> On Thu, Mar 16, 2023 at 10:06=E2=80=AFPM Anshuman Khandual
-> >>> <anshuman.khandual@arm.com> wrote:
-> >>>>
-> >>>> Allow other drivers to claim a device, disregarding the "priority" o=
-f
-> >>>> "arm,primecell". e.g., CoreSight ETM4x devices could be accessed via=
- MMIO
-> >>>> (AMBA Bus) or via CPU system instructions.
-> >>>
-> >>> The OS can pick which one, use both, or this is a system integration
-> >>> time decision?
-> >>
-> >> Not an OS choice. Historically, this has always been MMIO accessed but
-> >> with v8.4 TraceFiltering support, CPUs are encouraged to use system
-> >> instructions and obsolete MMIO. So, yes, MMIO is still possible but
-> >> something that is discouraged and have to be decided at system
-> >> integration time.
-> >>
-> >>>
-> >>>> The CoreSight ETM4x platform
-> >>>> driver can now handle both types of devices. In order to make sure t=
-he
-> >>>> driver gets to handle the "MMIO based" devices, which always had the
-> >>>> "arm,primecell" compatible, we have two options :
-> >>>>
-> >>>> 1) Remove the "arm,primecell" from the DTS. But this may be problema=
-tic
-> >>>>    for an older kernel without the support.
-> >>>>
-> >>>> 2) The other option is to allow OF code to "ignore" the arm,primecel=
-l
-> >>>> priority for a selected list of compatibles. This would make sure th=
-at
-> >>>> both older kernels and the new kernels work fine without breaking
-> >>>> the functionality. The new DTS could always have the "arm,primecell"
-> >>>> removed.
-> >>>
-> >>> 3) Drop patches 6 and 7 and just register as both AMBA and platform
-> >>> drivers. It's just some extra boilerplate. I would also do different
-> >>> compatible strings for CPU system instruction version (assuming this
-> >>> is an integration time decision).
-> >>
-> >> The system instruction (and the reigster layouts) are all part of the
-> >> ETMv4/ETE architecture and specific capabilities/features are
-> >> discoverable, just like the Arm CPUs. Thus we don't need special
-> >> versions within the ETMv4x or ETE minor versions. As of now, we have
-> >> one for etm4x and another for ete.
-> >
-> > I just meant 2 new compatible strings. One each for ETMv4x and ETE,
-> > but different from the 2 existing ones. It is different h/w presented
-> > to the OS, so different compatible.
-> >
->
-> Sorry, was not very clear here.
->
-> Right now, we have :
->
-> 1) arm,coresight-etm4x && arm,primecell - For AMBA based devices
-> 2) arm,coresight-etm4x-sysreg   - For system instruction based
-> 3) arm,embedded-trace-extension - For ETE
+>   - Each new CPU comes up with its own PID and thus we need to keep on
+>     adding the "known" PIDs to get it working with AMBA driver. While
+>     the ETM4 architecture (and CoreSight architecture) defines way to
+>     identify a device as ETM4. Thus older kernels  won't be able to
+>     "discover" a newer CPU, unless we add the PIDs.
 
-Ah, so we already have that...
+But v8.4 discourages MMIO access, so this problem will go away on its
+own. Even if not, adding IDs to stable kernels is standard practice
+whether it is PCI VID/PID, compatible string or AMBA PID.
 
->
->
-> >> One problem with the AMBA driver in place is having to keep on adding
-> >> new PIDs for the CPUs. The other option is to have a blanket mask
-> >> for matching the PIDs with AMBA_UCI_ID checks.
-> >
-> > But if MMIO access is discouraged, then new h/w would use the platform
-> > driver(s), not the amba driver, and you won't have to add PIDs.
->
-> Yes for v8.4 onwards. Alternatively, the newer DTS could skip
-> arm,primecell in the entry and that would kick the platform driver
-> in. So, that should be fine I guess.
+>   - With ACPI, the ETM4x devices have the same HID to identify the device
+>     irrespective of the mode of access. This creates a problem where two
+>     different drivers (both AMBA based driver and platform driver) would
+>     hook into the "HID" and could conflict. e.g., if AMBA driver gets
+>     hold of a non-MMIO device, the probe fails. If we have single driver
+>     hooked into the given "HID", we could handle them seamlessly,
+>     irrespective of the mode of access.
 
-Except that the new dts would not work with older kernels.
+Why are we changing DT for ACPI? Just always use the platform driver
+for ACPI and leave DT systems alone.
 
-I'm now lost as to what problem this series is trying to solve. Will
-reply further on cover letter...
+>   - CoreSight is heavily dependent on the runtime power management. With
+>     ACPI, amba_driver doesn't get us anywhere with handling the power
+>     and thus one need to always turn the power ON to use them. Moving to
+>     platform driver gives us the power management for free.
+
+This sounds like an issue for any amba driver. If this is an issue,
+solve it for everyone, not just work around it in one driver.
+
+When someone puts another primecell device into an ACPI system, are we
+going to go do the same one-off change in that driver too? (We kind of
+already did with SBSA UART...)
 
 Rob
