@@ -2,83 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 659066C1FAD
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Mar 2023 19:27:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB8DC6C2157
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Mar 2023 20:28:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231371AbjCTS1Y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Mar 2023 14:27:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41278 "EHLO
+        id S230488AbjCTT20 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Mar 2023 15:28:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231376AbjCTS1F (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Mar 2023 14:27:05 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14D18193C1
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Mar 2023 11:19:59 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id o12so50355216edb.9
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Mar 2023 11:19:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1679336388;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4yzAtbjstrZsUjwjpCw/bfjEIUoFPHmyawonL0u7Vnw=;
-        b=ANETRw6VcPN8s7WEVSeoInImC6YG854DnxRHzElZcb2lgYa+1x/0GtrJSycpnMLEsq
-         I1G05dTfuaFibZZ6PLiicxYrBEQ8+t6MdhDdgRmdpWgeK0XyalhSw7iXjR1mLE/w0oRy
-         MZyQ55cf/hxlrg8z8KNX/IHMqbCjMxRSrwqHgOyyQm0WLYhGpi5pc1t/Up2HaQTVGX2+
-         1E0jotyqpAoJCVWmhTaxZZNSkDJXwTBJLd95jnqalu3s6P6QwfLqBAFqDAr+ShX9K1p5
-         Li/5qhxgiLa75Sz/bYhWt6/Mg7giiYdktzdUYBBs6SEGcu/IJX6/NeKgAjoQPUwKl7Ag
-         x2KA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679336388;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4yzAtbjstrZsUjwjpCw/bfjEIUoFPHmyawonL0u7Vnw=;
-        b=PTiKmqAewSNyccDmwJasyoL8kick2tVetMa2uCGmA1TUOZP4ollvSzW92XM3GqaMoy
-         PpF7uL9FEEGndotGiRpk95Qyurjl7VVuRsSVNv1hcGhOqEyFzCFhTu2kGcviY5yHio6k
-         Pq4IEL238Ny8f3n0rFYw/9VLDGPkE0+L7J1sGR8tdvhxZxDe5cTKRgf05mQuSi2jeM0h
-         HAHdy7CWhCasZouLWs7aNJlIH4ooemamEMVI5cg/GRzX8+u302I34ABKa25TM0J3ymOV
-         2wNoqfCRZ1pOdKuuIcANKCdbJ7BxzFiYKNivOvOSdSMD8bEqO7LxEDghjVJf3yvrm32+
-         k6Ug==
-X-Gm-Message-State: AO0yUKU3kYkDBSUtQTiOVcS9j6bkHkdoR2S3/vrRAUYIuQTP68tvFgKy
-        WrG6omCIUEx5xVKBZH/yoOcEFA==
-X-Google-Smtp-Source: AK7set9xAfo43i63Uq0DS6R9gBuA0Ce77YCStFPMj2hTG6DUCRrm5bRlcvH59L6TzpbWGMa4pcLOJQ==
-X-Received: by 2002:a17:906:2b0a:b0:92f:efdc:610e with SMTP id a10-20020a1709062b0a00b0092fefdc610emr9657574ejg.66.1679336388438;
-        Mon, 20 Mar 2023 11:19:48 -0700 (PDT)
-Received: from myrica (054592b0.skybroadband.com. [5.69.146.176])
-        by smtp.gmail.com with ESMTPSA id b4-20020a17090630c400b0092b5384d6desm4722243ejb.153.2023.03.20.11.19.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Mar 2023 11:19:48 -0700 (PDT)
-Date:   Mon, 20 Mar 2023 18:19:50 +0000
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     eric.auger@redhat.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        iommu@lists.linux.dev, Linux PCI <linux-pci@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [PATCH] ACPI: VIOT: Initialize the correct IOMMU fwspec
-Message-ID: <20230320181950.GA168730@myrica>
-References: <20230314164416.2219829-1-jean-philippe@linaro.org>
- <CAJZ5v0jS_YAR8kwEVsi4XZ6Qd2Y1O2nMjaUSaj=NXLPMgw2O0g@mail.gmail.com>
+        with ESMTP id S231131AbjCTT2I (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Mar 2023 15:28:08 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0D80E4D290;
+        Mon, 20 Mar 2023 12:20:23 -0700 (PDT)
+Received: from vm02.corp.microsoft.com (unknown [167.220.197.27])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 514A420FAEEE;
+        Mon, 20 Mar 2023 12:20:15 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 514A420FAEEE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1679340017;
+        bh=A8MP232mgpqFknsi5z1EHp/um0O9piNlnFXZ1XPwixI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=fvw2Zl5oKSgTwYWfPzF5A6yUj+hii+FAxGG5HK+xZinQlv3/sUBicgu5/GwvdEeSp
+         9JyslSRpSMuSmdlgKJEDGFESJRgdJe+C2h5CMsnPqK6zLy7FfAARcIXbFDsi+/XzYy
+         pdy+rrTQqfnTu9YVtkEOjoS9Um63p6tB3Cu5kr68=
+From:   Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
+        "Brijesh Singh" <brijesh.singh@amd.com>,
+        "Tom Lendacky" <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        linux-crypto@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Len Brown" <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
+        "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org
+Subject: [PATCH v3 0/8] Support ACPI PSP on Hyper-V
+Date:   Mon, 20 Mar 2023 19:19:48 +0000
+Message-Id: <20230320191956.1354602-1-jpiotrowski@linux.microsoft.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0jS_YAR8kwEVsi4XZ6Qd2Y1O2nMjaUSaj=NXLPMgw2O0g@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 20, 2023 at 06:41:09PM +0100, Rafael J. Wysocki wrote:
-> This should have been posted with a CC to linux-pci really (now added).
-> 
-> I would recommend resending afresh with linux-pci in the CC list, so
-> that the people on it don't miss this.
+This patch series introduces support for discovering AMD's PSP from an ACPI
+table and extends the CCP driver to allow binding to that device on x86. This
+method of PSP discovery is used on Hyper-V when SNP isolation support is
+exposed to the guest. There is no ACPI node associated with this PSP, so after
+parsing the ASPT it is registered with the system as a platform_device.
 
-Sure, I resent it with the PCI list
-https://lore.kernel.org/linux-pci/20230320180528.281755-1-jean-philippe@linaro.org/
+I thought about putting psp.c in arch/x86/coco, but that directory is meant for
+the (confidential) guest side of CoCo, not the supporting host side code.
+It was kept in arch/x86/kernel because configuring the irq for the PSP through
+the ACPI interface requires poking at bits from the architectural vector
+domain.
 
-Thanks,
-Jean
+This series is a prerequisite for nested SNP-host support on Hyper-V but is
+independent of the SNP-host support patch set. Hyper-V only supports nested
+SEV-SNP (not SEV or SEV-ES) so the PSP only supports a subset of the full PSP
+command set. Without SNP-host support (which is not upstream yet), the only
+PSP command that will succeed is SEV_PLATFORM_STATUS.
+
+Changes since v2:
+* Added links to ASPT spec and ACPICA commit
+* Added acked-by Tom to all commits
+Changes since v1:
+* move platform_device_add_data() call to commit that introduces psp device
+* change psp dependency from CONFIG_AMD_MEM_ENCRYPT to CONFIG_KVM_AMD_SEV
+* add blank lines, s/plat/platform/, remove variable initializers before first
+  use, remove masking/shifting where not needed
+* dynamically allocate sev_vdata/psp_vdata structs instead of overwriting static
+  variables
+
+Jeremi Piotrowski (8):
+  include/acpi: add definition of ASPT table
+  ACPI: ASPT: Add helper to parse table
+  x86/psp: Register PSP platform device when ASP table is present
+  x86/psp: Add IRQ support
+  crypto: cpp - Bind to psp platform device on x86
+  crypto: ccp - Add vdata for platform device
+  crypto: ccp - Skip DMA coherency check for platform psp
+  crypto: ccp - Allow platform device to be psp master device
+
+ arch/x86/kernel/Makefile          |   1 +
+ arch/x86/kernel/psp.c             | 219 ++++++++++++++++++++++++++++++
+ drivers/acpi/Makefile             |   1 +
+ drivers/acpi/aspt.c               | 104 ++++++++++++++
+ drivers/crypto/ccp/sp-dev.c       |  65 +++++++++
+ drivers/crypto/ccp/sp-dev.h       |   4 +
+ drivers/crypto/ccp/sp-pci.c       |  48 -------
+ drivers/crypto/ccp/sp-platform.c  |  76 ++++++++++-
+ include/acpi/actbl1.h             |  46 +++++++
+ include/linux/platform_data/psp.h |  32 +++++
+ 10 files changed, 547 insertions(+), 49 deletions(-)
+ create mode 100644 arch/x86/kernel/psp.c
+ create mode 100644 drivers/acpi/aspt.c
+ create mode 100644 include/linux/platform_data/psp.h
+
+-- 
+2.34.1
+
