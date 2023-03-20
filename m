@@ -2,49 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CD446C1DA3
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Mar 2023 18:21:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FA026C1E2D
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Mar 2023 18:37:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232653AbjCTRVF convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 20 Mar 2023 13:21:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42564 "EHLO
+        id S233357AbjCTRhU convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 20 Mar 2023 13:37:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232674AbjCTRUr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Mar 2023 13:20:47 -0400
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0160C31E33;
-        Mon, 20 Mar 2023 10:16:36 -0700 (PDT)
-Received: by mail-ed1-f46.google.com with SMTP id x3so49577734edb.10;
-        Mon, 20 Mar 2023 10:16:36 -0700 (PDT)
+        with ESMTP id S232784AbjCTRgt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Mar 2023 13:36:49 -0400
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F4D221963;
+        Mon, 20 Mar 2023 10:32:57 -0700 (PDT)
+Received: by mail-ed1-f45.google.com with SMTP id cn12so4209337edb.4;
+        Mon, 20 Mar 2023 10:32:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679332544;
+        d=1e100.net; s=20210112; t=1679333533;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=k87jmpjlNLfn6Eu0wWSVrI81rlQ/q/jsPiIAGLWAuyA=;
-        b=Pb6NaKdbPR6zXij/zmyd3+Gxu0xpeguQARTNicpsRXG/TRP2eoBCW0ANT6xURxFu4J
-         x+189dYnP6pEFgkOdnLcja3bzx3w1gKV13trA2omx6oI/yfYN7XFJ0Mx13Bx+YQvHGkL
-         aQkm/LJLPIuPeCObGxbQQ0mC/71/l1Shs/hvXAuCZc2gj//xv0jeY6XBqXtr8PWepUxo
-         MijahzKf8myMa6u+ZqaMyagmIB3xg/1TN08kZGS1lp2S4Dkn2wlkJDv0s+yKMJYc1pPb
-         WWPPwO9odrmmFeHe8X1oixnsthq9MI26Xih6isuMUYSMYT4lSgbgQS+YXpzxCZEFSJjo
-         BWHg==
-X-Gm-Message-State: AO0yUKV2KnmgECXkqSF9eAuC2U4s4mK5wygW1lJfxyLLpZaQeoVdddhO
-        T5ON5MSvZmeTZPELJnJdg2MYNlVYivVsr+x/AWY=
-X-Google-Smtp-Source: AK7set9KDcXIH6JRWcUJXsHj6hNrkEL2ZM830wmLgVeOVdVzvlpOwMsIPDvNyLssiFAy9ageTzPSCFJ1P5Zpq8qN8w4=
-X-Received: by 2002:a17:906:228b:b0:931:6921:bdbb with SMTP id
- p11-20020a170906228b00b009316921bdbbmr4081391eja.2.1679332543822; Mon, 20 Mar
- 2023 10:15:43 -0700 (PDT)
+        bh=y/gEhKA00bjwamqnWg3JcLBNsDvdrIyq5BZphTgJnKs=;
+        b=jDnnFsknTXFlzj/rrd1tdtyxQ6Kmo7ndg0nalJ/oaRvVmWPpkOg0pB0RVAe2PMzX0e
+         ao/gTsOE80bX+wHe7XLj6FSYhKvVQ7HuSnbH+PArBz/bhY6Clm1Z2t30cVheID2YXmnS
+         Dg0wLIHgT2wZcm1mAcGcpdyqAjJ3HUImicQQZRc6otjn/FUxJ4jq0zsPx76aYMukJGW0
+         3BEyhuFbGTrRrd1IhZcLppj60qHoKHZXDKPD/qePE4RP/HECCZANlNvh9JzFHxBFnsu9
+         I3lzsHNs8KXVwQg50EjofphmlaoJNCI8mgzbMUikdq4hRHH0LZJDsfxGQ0+wCFWjVeoE
+         ifKQ==
+X-Gm-Message-State: AO0yUKUA72A0wdSNlnNLbDpgi7N+i6e8CSvE6pgyeQ6UygY7tNi5GXHR
+        t196nOFSESFKWhC+TKKUMipUIL94lw60wKY2iB5vVn6M
+X-Google-Smtp-Source: AK7set8/uEUjjJH2FQiJmYi0oMT1AU+uX+FiCxy7coDWOYgUH8lJnf4+Xp5ufdqBCug28iqCCH+Pfn1RQ2/hOmgm/bw=
+X-Received: by 2002:a50:c3cf:0:b0:4fb:2593:846 with SMTP id
+ i15-20020a50c3cf000000b004fb25930846mr173009edf.3.1679333533209; Mon, 20 Mar
+ 2023 10:32:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230302071327.557734-1-sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20230302071327.557734-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+References: <20230313144710.3516-1-simon@invisiblethingslab.com>
+In-Reply-To: <20230313144710.3516-1-simon@invisiblethingslab.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 20 Mar 2023 18:15:32 +0100
-Message-ID: <CAJZ5v0gB7WSB3F3+kTnB-r83xO9G7Sk1Vyh2os0=AeYNvHK_Mw@mail.gmail.com>
-Subject: Re: [PATCH v1] ACPI: sysfs: Enable ACPI sysfs support for CCEL records
-To:     Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc:     Rafael J Wysocki <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 20 Mar 2023 18:32:02 +0100
+Message-ID: <CAJZ5v0idjCBRWU2SuOmoVgR847zNisPX65dqycoHdEO0W+C9zA@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: s2idle: Log when enabling wakeup IRQ fails
+To:     Simon Gaiser <simon@invisiblethingslab.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -57,67 +57,49 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 2, 2023 at 8:13 AM Kuppuswamy Sathyanarayanan
-<sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
+On Mon, Mar 13, 2023 at 3:47 PM Simon Gaiser
+<simon@invisiblethingslab.com> wrote:
 >
-> The Confidential Computing Event Log (CCEL) table provides the address
-> and length of the CCEL records area in UEFI reserved memory. To access
-> these records, userspace can use /dev/mem to retrieve them. But
-> '/dev/mem' is not enabled on many systems for security reasons.
+> enable_irq_wake() can fail. Previously acpi_s2idle_prepare() silently
+> ignored it's return code. Based on [1] we should try to continue even in
+> case of an error, so just log a warning for now.
 >
-> So to allow user space access these event log records without the
-> /dev/mem interface, add support to access it via sysfs interface. The
-> ACPI driver has provided read only access to BERT records area via
-> '/sys/firmware/acpi/tables/data/BERT' in sysfs. So follow the same way,
-> and add support for /sys/firmware/acpi/tables/data/CCEL to enable
-> read-only access to the CCEL recorids area.
+> Discovered when trying to go into s2idle under Xen. This leads to a
+> system that can't be woken, since xen-pirq currently doesn't support
+> setting wakeup IRQs [2]. With this you get at least some helpful log
+> message if you have access to console messages.
 >
-> More details about the CCEL table can be found in ACPI specification
-> r6.5, sec titled "CC Event Log ACPI Table".
->
-> Original-patch-by: Haibo Xu <haibo1.xu@intel.com>
-> [Original patch is for TDEL table, modified it for CCEL support]
-> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> Link: https://lore.kernel.org/linux-acpi/20230313125344.2893-1-simon@invisiblethingslab.com/ # v1
+> Link: https://lore.kernel.org/linux-acpi/CAJZ5v0jahjt58nP6P5+xRdtD_ndYPvq4ecMVz6nfGu9tf5iaUw@mail.gmail.com/ # [1]
+> Link: https://lore.kernel.org/xen-devel/20230313134102.3157-1-simon@invisiblethingslab.com/ # [2]
+> Signed-off-by: Simon Gaiser <simon@invisiblethingslab.com>
 > ---
->  drivers/acpi/sysfs.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
+> v2:
+>  - Based on feedback switched to only logging a warning instead of
+>    returning an error.
+> ---
+>  drivers/acpi/sleep.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-> index 7db3b530279b..afeac925b31b 100644
-> --- a/drivers/acpi/sysfs.c
-> +++ b/drivers/acpi/sysfs.c
-> @@ -458,11 +458,28 @@ static int acpi_bert_data_init(void *th, struct acpi_data_attr *data_attr)
->         return sysfs_create_bin_file(tables_data_kobj, &data_attr->attr);
->  }
+> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+> index 4ca667251272..6b30dea94fae 100644
+> --- a/drivers/acpi/sleep.c
+> +++ b/drivers/acpi/sleep.c
+> @@ -714,7 +714,13 @@ int acpi_s2idle_begin(void)
+>  int acpi_s2idle_prepare(void)
+>  {
+>         if (acpi_sci_irq_valid()) {
+> -               enable_irq_wake(acpi_sci_irq);
+> +               int error;
+> +
+> +               error = enable_irq_wake(acpi_sci_irq);
+> +               if (error)
+> +                       pr_warn("Warning: Failed to enable wakeup from IRQ %d: %d\n",
+> +                               acpi_sci_irq,
+> +                               error);
+>                 acpi_ec_set_gpe_wake_mask(ACPI_GPE_ENABLE);
+>         }
 >
-> +static int acpi_ccel_data_init(void *th, struct acpi_data_attr *data_attr)
-> +{
-> +       struct acpi_table_ccel *ccel = th;
-> +
-> +       if (ccel->header.length < sizeof(struct acpi_table_ccel) ||
-> +           !(ccel->log_area_start_address) || !(ccel->log_area_minimum_length)) {
-
-The inner parens in this line are not necessary AFAICS.
-
-Otherwise I have no objections.
-
-> +               kfree(data_attr);
-> +               return -EINVAL;
-> +       }
-> +       data_attr->addr = ccel->log_area_start_address;
-> +       data_attr->attr.size = ccel->log_area_minimum_length;
-> +       data_attr->attr.attr.name = "CCEL";
-> +
-> +       return sysfs_create_bin_file(tables_data_kobj, &data_attr->attr);
-> +}
-> +
->  static struct acpi_data_obj {
->         char *name;
->         int (*fn)(void *, struct acpi_data_attr *);
->  } acpi_data_objs[] = {
->         { ACPI_SIG_BERT, acpi_bert_data_init },
-> +       { ACPI_SIG_CCEL, acpi_ccel_data_init },
->  };
->
->  #define NUM_ACPI_DATA_OBJS ARRAY_SIZE(acpi_data_objs)
 > --
+
+Applied (with a minor white space adjustment) as 6.4 material, thanks!
