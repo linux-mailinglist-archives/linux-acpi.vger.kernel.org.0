@@ -2,389 +2,192 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A05656C3683
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Mar 2023 17:04:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 034166C36A1
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Mar 2023 17:12:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231545AbjCUQD7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Mar 2023 12:03:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57430 "EHLO
+        id S229583AbjCUQMe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Mar 2023 12:12:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231533AbjCUQD6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Mar 2023 12:03:58 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E5F8975B
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Mar 2023 09:03:36 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id r29so14220393wra.13
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Mar 2023 09:03:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1679414614;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OBFhkieZr9DcuH6OJpwJsbd/MbRISB1FzuiRurd/kIk=;
-        b=IL3ZCoCYj4B/O3srxixE3h6c05Wfxg3mSFLufKAApxNlqelq27jWZxS5gMci89s4r5
-         lXfCScam1X7em3wQJJCJgliEaPBCUD/z5dUyZiElUIgVcHA+gk5fj7fSwJMCGEMFUZqf
-         3aANDmHHwHU6hVOs7oq5R5k/V1zK1YmZBBc4oVGwQbkjjoAaQn4PRg/TztBsa+ZqRsgY
-         F9T6DYPHZaHwAz42Cf0loScdz9KTt/diC5sVybKwsfcHJ2qaurT49HWFvS2cphGogA9t
-         MoeQx0HXbzqkNgTFcM+oTL5wKw+N12sHaI0I8Qa6PXr48/URvzsk8vBh6Te+R+D8rTWL
-         WK8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679414614;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=OBFhkieZr9DcuH6OJpwJsbd/MbRISB1FzuiRurd/kIk=;
-        b=b52zcXUjEKAtz8cqClA7qr4IuBnfGEt+6yqwZ1PocgOORkCkSNIEQ/fQTmF+Ih3KK+
-         QzHxG0keG3tvFkUqhQTWO3PiWI2WPEC7/gza/7NeZ9GLSV8Za5ovcaWWxrru2WE+P8cq
-         pEIdsgdT/s4tM97PpmGwsQlwbInnk0eoOHZkVKz2FpDL+tFq12leqSF2vuHChBfU7pcb
-         PO9puohGL/zmTzLz5GTyDBnr+ombysmh5Npa/SaPyonI3ErCclN/5fW8QHr3bfKfE4wf
-         RbIP2/qp0dDUm8zUkGfs59CLvdc3U0KxFbPUdyxFRjjoFcpcTPsPA8tW/j9BT8E5/m57
-         p1Ig==
-X-Gm-Message-State: AO0yUKWrBHN9qqjujyHkVn7NFOguQ+x/IT6M5OpsWwKItbEhOa7K89zQ
-        19iv0mMWIUfgUZ2VL/lu2m9D2g==
-X-Google-Smtp-Source: AK7set95EfyofHHtmSWBMscXwg5vI+T4k/84bdeGYxo+YyXaCgq00QA7D8cd3DcaKmvFISBI6jcJ+Q==
-X-Received: by 2002:a5d:5685:0:b0:2ce:a835:83d4 with SMTP id f5-20020a5d5685000000b002cea83583d4mr2804100wrv.27.1679414613718;
-        Tue, 21 Mar 2023 09:03:33 -0700 (PDT)
-Received: from localhost.localdomain ([90.243.20.231])
-        by smtp.gmail.com with ESMTPSA id v6-20020a5d6106000000b002c55521903bsm11611094wrt.51.2023.03.21.09.03.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Mar 2023 09:03:33 -0700 (PDT)
-From:   Niyas Sait <niyas.sait@linaro.org>
-To:     andriy.shevchenko@linux.intel.com, mika.westerberg@linux.intel.com,
-        vkoul@kernel.org, dmaengine@vger.kernel.org,
-        linux-acpi@vger.kernel.org, Sudeep.Holla@arm.com,
-        Souvik.Chakravarty@arm.com, Sunny.Wang@arm.com,
-        lorenzo.pieralisi@linaro.org, bob.zhang@cixtech.com,
-        fugang.duan@cixtech.com
-Cc:     Niyas Sait <niyas.sait@linaro.org>
-Subject: [RFC v1 1/1] Refactor ACPI DMA to support platforms without shared info descriptor in CSRT
-Date:   Tue, 21 Mar 2023 16:02:41 +0000
-Message-Id: <20230321160241.1339538-1-niyas.sait@linaro.org>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S229911AbjCUQMd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Mar 2023 12:12:33 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E9CD4DE04;
+        Tue, 21 Mar 2023 09:12:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679415147; x=1710951147;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=pZdQOpO8vxc06mXMvkrjHfkYfVJW2R6PdFZQxCMylXk=;
+  b=mLmYVyWGNw/8Ku07o22pyyY9r/mtav6lK8pwlJsR+rsVJUrYgcZf1Zj/
+   3QTKBp4m6RvEs9/CLsauZYTpDvKfnVS+AbuySrP4o+FQqMZI49XJjioRV
+   bX85b5+btTZZyQ6RZklsRnnb30+l6eP5CRHcjNTH6aR3M0c7U1A5/yfPX
+   86SWxf7yX8V0q/lmnmq+DU2DsXuBSLSPU/0/158ZIk+9g2wBT+7kg0pic
+   LWj2KLIyiV0vi/a0+cltwMhyrR4dnn+5Q9aGyeZwAym+jpDVarrWbzCxr
+   tZXpVIG+rXQgUVZ/UGcfnXC/UNnZHAvM1Fa6dH8YH9FeUh9BDudXRuwdg
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10656"; a="366717498"
+X-IronPort-AV: E=Sophos;i="5.98,279,1673942400"; 
+   d="scan'208";a="366717498"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2023 09:09:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10656"; a="658818930"
+X-IronPort-AV: E=Sophos;i="5.98,279,1673942400"; 
+   d="scan'208";a="658818930"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by orsmga006.jf.intel.com with ESMTP; 21 Mar 2023 09:09:23 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Tue, 21 Mar 2023 09:09:23 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Tue, 21 Mar 2023 09:09:22 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21 via Frontend Transport; Tue, 21 Mar 2023 09:09:22 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.21; Tue, 21 Mar 2023 09:09:21 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iEJH/WlzJWa23T2uQ/RVTJwu56OnzBdyGctPp+sF2cWpmzC8ukoQJstvHF6cI2G/2QyZGIAGt0FZfckorY2F9TsvSe6r9Y9SDxs/kPx1cSeb2v6MC1Ru2YA5oUVtwW7LBBfK2txodexFguiagFR9ajXT7whOOig4XZhSDDTqeeoCA3V/9ShQ+KU5rWZeKRYZ3t8GXQPLMIAtLOb2xBa/0dc1zuS58CPSytK09MQFFOIIMYqwgUTtUf/OE/1rzUD6KdgBVM2vdkZ2Te8v/GVkwWTmNzxci03XIR+W7GAnSz7+i3TymnqICYe6lN2kDZ92Z54G518+o5BgZf1quvGbIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pZdQOpO8vxc06mXMvkrjHfkYfVJW2R6PdFZQxCMylXk=;
+ b=nY7L3+F0BHWF54ij/uGcaN5gzGv9wIrUG9Y9o5QXDv/gx31xBlcQom06ct6Ao6huMqkB2cwz/FM5kWPYMEFLi9x8gUdKO9ocJEXTiOObI+TvB5L1wWZ5pKltjKF8OpqrAsdos4PKHKrIQ56bd9Q+HHklwm8AUi5XWHIbPYWLK6oUwh02QyyMydzpLGBBHomxsReS4zRIuLmS6/3xfm8ke5KBkIZHdvNkSUuElmLmEb3KtMR6wV+jiiHDZlcBV/JfkZJUAtlclk7rrhFEyepX1YAkfVJBM8RJjM4R1FQUMgTSnerK8t8wBKbPrq0FNUA5J0LPGJV4hnTnWhgT6e049Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ1PR11MB6083.namprd11.prod.outlook.com (2603:10b6:a03:48a::9)
+ by CH3PR11MB7939.namprd11.prod.outlook.com (2603:10b6:610:131::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.37; Tue, 21 Mar
+ 2023 16:09:19 +0000
+Received: from SJ1PR11MB6083.namprd11.prod.outlook.com
+ ([fe80::a47:481:d644:a8b5]) by SJ1PR11MB6083.namprd11.prod.outlook.com
+ ([fe80::a47:481:d644:a8b5%7]) with mapi id 15.20.6178.037; Tue, 21 Mar 2023
+ 16:09:19 +0000
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     Shuai Xue <xueshuai@linux.alibaba.com>
+CC:     "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+        "benjamin.cheatham@amd.com" <benjamin.cheatham@amd.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "Williams, Dan J" <dan.j.williams@intel.com>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "jaylu102@amd.com" <jaylu102@amd.com>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "zhuo.song@linux.alibaba.com" <zhuo.song@linux.alibaba.com>
+Subject: RE: [PATCH] ACPI: APEI: EINJ: warn on invalid argument when
+ explicitly indicated by platform
+Thread-Topic: [PATCH] ACPI: APEI: EINJ: warn on invalid argument when
+ explicitly indicated by platform
+Thread-Index: AQHZWKLi/0R39JELJU+i6OTnfLpOoa7/fDzwgAN44wCAAOuOAIAAn9wAgADk2YA=
+Date:   Tue, 21 Mar 2023 16:09:19 +0000
+Message-ID: <SJ1PR11MB6083C029A3C014DD5D09A30BFC819@SJ1PR11MB6083.namprd11.prod.outlook.com>
+References: <20230317073310.4237-1-xueshuai@linux.alibaba.com>
+ <SJ1PR11MB60836145DD10108B1FE13A4FFCBD9@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <91796ce2-2f63-4b07-3e44-dc2a2a98615e@linux.alibaba.com>
+ <SJ1PR11MB60831F4A66DB77095B4314FDFC809@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <93bbc216-9ae5-c22f-b6a8-f6591aa92c2a@linux.alibaba.com>
+In-Reply-To: <93bbc216-9ae5-c22f-b6a8-f6591aa92c2a@linux.alibaba.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ1PR11MB6083:EE_|CH3PR11MB7939:EE_
+x-ms-office365-filtering-correlation-id: 1778dd92-b4d2-4d81-3c0a-08db2a26a066
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Gf4oro0CmGOEdheY9b2taurqtf5SfDUSzYjy+7vFfVBpSLxsrQ7viqrfRcfrmCBrddSTwJTaa2+umQoMHnoyTbKWrh++gjYeVauxJpEzs9b1161ufvMhb1ds1uAHoVTO+EOLSMFfWMoSsntvIAz9TMoGGc34hW8SiTzqrBZ0pdK6Wn2uscZo6gdyit0gc1zEytqUgQ0aK8TlUJ1JUChOwkAbeG8KcaLkKye/eCY3NikguGs+RtKnObCzb6Vmk4rv4N2vzC8W2j0hFzuVPpzuqK8BMRSB0o2qMTbJ99XSyUcAd6b98w4XS8AMU7Olbz0Jg5cX6DdYX7Eyo1X6grWIJtUkkW4oD5UbZwF9ssKttufjfHOjOQWmY941moZaFSK5sWe7fZVTdAHHLtvOiZqxLOM/Mq4J77uvKyiyip9v6x96DSAm8CB3WPlP+yUveQWIYqZvmhKYKahgh3S9rmN/M3QW1GFbdyrS+TGj8Men0b4/wdx5/RzcRHZf6WVGP64nWofm7PflYgPpZiMzEdKLa1ccG2XInAOtQjir+pbcd3Z5umhHVs06t7ZA2qt7KTJbVr5bXBkWgHyA1TsJA+0Vn/tu+5a5tddWWHJKS9ldBCF3o9mf+jxWervt/B1bMEL+qTdWXHb5ox9upunch7e4iU/Fhxsb4fg9bDygXcl/c5CxEKUIG/oBfEltIjCwtyznig70Hcavk2b1HPzgbIZpTg==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR11MB6083.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(346002)(136003)(39860400002)(396003)(376002)(366004)(451199018)(41300700001)(7696005)(71200400001)(186003)(4326008)(83380400001)(478600001)(8676002)(316002)(64756008)(66446008)(66476007)(66556008)(76116006)(6916009)(66946007)(26005)(6506007)(9686003)(54906003)(7416002)(52536014)(8936002)(4744005)(5660300002)(122000001)(38100700002)(2906002)(82960400001)(55016003)(38070700005)(86362001)(33656002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?bVR1YlkvZllSL1lIQnJzS2NBUzlBNDJQSUFFd1hXQkFnTFUvQ3RQT2F4eHlk?=
+ =?utf-8?B?T3pUQ3NXMzhUSFRDZmNmbjkvRno0MzBQTDN0TUkwOW5OSTVKSXpFZGRQRHB6?=
+ =?utf-8?B?VlIxQ3FPdXdXdmFaampkd3FCWkxrTGNBVzFRUVh6TEkrNUtzNHI4ZXFNYk82?=
+ =?utf-8?B?UENuYmlvREl6dVkxNnNhczJOcVdrUVBsTDdmQThjZTZ6UkZaQXNQc1RiTyt2?=
+ =?utf-8?B?N0k2eXNJNlQwdEowRHZjaVNYdGFIRDB1UTR0eUdMOGgzaWpKS2pYYmNRQjd0?=
+ =?utf-8?B?clp3R21CdXQ3WlIzdDlxVERnOUhsR0h6Ym1ocWVNbW9mSFloN2NPU1J6MjBK?=
+ =?utf-8?B?Vmg0ZzdBazNnb3BGRGNvZWp6eHdsVWJHdWY4L3JEaGJBN00xYUoyQlYwQ05m?=
+ =?utf-8?B?RkEwd1ZZOTZHaFB3andmQXp1TXpLQlNGSE02Uzl2ZFp4WU9YcSs0c21HOEph?=
+ =?utf-8?B?UUVwdGZYRWxnNWphejBTdTFKcFZydnJvRkZJYTJ4MjgrTEMrNWxsOTBRdUdW?=
+ =?utf-8?B?T0Fnb1NYVUErK2luRFArMFZvSm9lU0ZGdWIyUjFPSEZtS3RpUGlteGVMbHcx?=
+ =?utf-8?B?ZUZIT0xHSDljYTQzRlRndWI5Tis1YVBwNmJIem41ZWNteDVUN1pFdGNBSVVB?=
+ =?utf-8?B?cEIzL29QdkI3eU9MdWJRbyt3eEJneFY3dldXS0VMNEplQnRKL04yUUR5N01o?=
+ =?utf-8?B?WEVIeEhaQUJ1Y3FHbGdXemN0R2RXRUJUQjJaL0M5eUpocDJsKytrUVBsamJo?=
+ =?utf-8?B?c1JkcWdtUmJ1LzhCUGJHaHZFWUJVWnVBMyszNGw2ZDNLVlVEOG00R08zQ1pB?=
+ =?utf-8?B?UDhQanlNRC8zQnFGdytGcjBNU24yZXZqbjRUNUFlam1wVE95K3VWWktKWFZX?=
+ =?utf-8?B?Q0Qzb3ZSWVZId1R5Tmc1eTVZTG9lUVdrRGt2ZXNTY0Q0QlMvRjZEekFxZ2Iv?=
+ =?utf-8?B?d2lQQThWcE5IWlk5N2ttQ1JjVnVCdzNmSitzcEY5NFNzNEg0RUVXWE5QUnVp?=
+ =?utf-8?B?N3RBc3B0em1XekNGUFNKd0NtdktUbEJwMFEyWTM0UURFcW00ckQ1dHhQV2lz?=
+ =?utf-8?B?c2tpWXVTMXVBdXBwNC9MZEM1WFFMMDJSajRPQlY5N093MkVVNWVPUVR1UWdR?=
+ =?utf-8?B?aCtGTUYwWStqZGs2THVhY0k4NThjSWZqZ1lXTDFkYytPNWVJNGhHbUd6MTF5?=
+ =?utf-8?B?RXhkY1NMTktsWi9nU0M3aUxyN0JsTFd4YmtPNU9UWkN0V0dsU2hhdGg1Z004?=
+ =?utf-8?B?cWkrV1MvcW82Vi9MSWZrdWxaVU5mV2RVZW4xMWE3djVORERVeEJ2YVVYdU5X?=
+ =?utf-8?B?THFsbkpCY2I1L2xBTmxsalJhejJMREVqZjBCSWFwYXIzd1dqUzZhaCtWUXpo?=
+ =?utf-8?B?T0FVanRzM3BXakdVQys2ZGVkTGNDSzRLeVJrTDBZR2tabEJsWThQTWJUcXMy?=
+ =?utf-8?B?dFhOYVZNaTRlZjRpVGNWc2VpTGxESnQ0TzNrTzIwc0QvU0IwTm9VdHpOZStr?=
+ =?utf-8?B?aXV0a3pVYkp6MUpZOGxLaW5OaUJ4SzlCR0tibFhzbWxFblM2VWtJVXdmMGZV?=
+ =?utf-8?B?L0RrTjYxaVhoWW5PdXBoQ1BPSURHT3RmRGM1SGVlSmtsb0ZNaFIyTk8ySjFp?=
+ =?utf-8?B?bC9acS9YeXMwck5mUXBqdlRQSG9WUFhzRlhSTVZpVTFVRzdRQm5CdmdqcnZi?=
+ =?utf-8?B?RlpWZFh0UVlOcm43SWNsemFGQ2RFMzZnY3REUm9ndi9FMDVKYUtsSEdZakdr?=
+ =?utf-8?B?elExUFJPTC85NUlwRmUyUFQzNnE2QW5IUFlURlJrbWRjU0VxcTFYMk94eVE3?=
+ =?utf-8?B?UTB1Sm5BU3p0Q2RxYjF5MzJRMGZPa05senNPbE5oWHVmN2FtY3ljRGFQWG1D?=
+ =?utf-8?B?UVFlRXdFVDUxV0pYM3JWa0lxK2RnUkQ3c1NkZ3VMaU1wYk9yWTd6Y2xtL0tj?=
+ =?utf-8?B?OXR3RU9rZWx2WHJFNTlNRlBXRk1jUlpvYlJ6dk5pMUQ1YzlJR1ZvalF2bm5X?=
+ =?utf-8?B?bnh3ZGxoS1NaWWIvbzFHbFNNLzg3Q0RFT3RVQVc3SnMzMjk2VXk1NzVTZG1R?=
+ =?utf-8?B?VDJ3YUNwc2MzWkRvc1BmYko0MXdsSWhsUjVJNDdQTjFxOElGZXI2WlFySE5D?=
+ =?utf-8?Q?vJ0Zsc/0kg2F/ZTKrw4lABWc1?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6083.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1778dd92-b4d2-4d81-3c0a-08db2a26a066
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Mar 2023 16:09:19.0766
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: nAYikDjvm/suqIh+MtldzXVYe7REXwtOgQVcC963dYAmCAZeVyGwnZ7PUsXUqt57dm4imb82JcW2Rzpm0r8hTA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7939
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This patch refactors the ACPI DMA layer to support platforms without
-shared info descriptor in CSRT.
-
-Shared info descriptor is optional and vendor specific (not
-standardized) and not used by Arm platforms.
----
-
-The main changes in this patch are as follows:
-
-- Renamed acpi_dma_controller_register to acpi_dma_controller_register_with_csrt_shared_desc to reflect its new functionality. 
-- Refactored acpi_dma_controller_register to allow DMA controllers to be registered without CSRT walk. 
-- Introduced acpi_dma_get_csrt_dma_descriptors_by_uid function to retrieve DMA descriptors from the CSRT table. 
-
-An example usage is given below:
-
-desc = acpi_dma_get_csrt_dma_descriptors_by_uid(adev, uid);
-
-extract data from desc and populate the acpi dma descriptor
-
-struct acpi_dma *adma = kzalloc(sizeof(*adma), GFP_KERNEL);
-
-adma->dev = ...;
-adma->acpi_dma_xlate = ...;
-adma->data = ...;
-adma->base_request_line = ...;
-adma->end_request_line = ...;
-
-ret = acpi_dma_controller_register(dev, adma);
-
-
- drivers/dma/acpi-dma.c   | 121 +++++++++++++++++++++++++++++++--------
- drivers/dma/dw/acpi.c    |   3 +-
- include/linux/acpi_dma.h |  44 +++++++++-----
- 3 files changed, 128 insertions(+), 40 deletions(-)
-
-diff --git a/drivers/dma/acpi-dma.c b/drivers/dma/acpi-dma.c
-index 5906eae26e2a..4337e724d386 100644
---- a/drivers/dma/acpi-dma.c
-+++ b/drivers/dma/acpi-dma.c
-@@ -112,7 +112,7 @@ static int acpi_dma_parse_resource_group(const struct acpi_csrt_group *grp,
- }
- 
- /**
-- * acpi_dma_parse_csrt - parse CSRT to exctract additional DMA resources
-+ * acpi_dma_parse_csrt_shared_info - parse CSRT shared info to extract additional DMA resources
-  * @adev:	ACPI device to match with
-  * @adma:	struct acpi_dma of the given DMA controller
-  *
-@@ -124,7 +124,7 @@ static int acpi_dma_parse_resource_group(const struct acpi_csrt_group *grp,
-  * We are using this table to get the request line range of the specific DMA
-  * controller to be used later.
-  */
--static void acpi_dma_parse_csrt(struct acpi_device *adev, struct acpi_dma *adma)
-+static void acpi_dma_parse_csrt_shared_info(struct acpi_device *adev, struct acpi_dma *adma)
- {
- 	struct acpi_csrt_group *grp, *end;
- 	struct acpi_table_csrt *csrt;
-@@ -157,12 +157,64 @@ static void acpi_dma_parse_csrt(struct acpi_device *adev, struct acpi_dma *adma)
- }
- 
- /**
-- * acpi_dma_controller_register - Register a DMA controller to ACPI DMA helpers
-- * @dev:		struct device of DMA controller
-- * @acpi_dma_xlate:	translation function which converts a dma specifier
-- *			into a dma_chan structure
-- * @data:		pointer to controller specific data to be used by
-- *			translation function
-+ * acpi_dma_get_csrt_dma_descriptors_by_uid - Get DMA descriptor from CSRT table for given id
-+ * @adev:		ACPI device node
-+ * @uid:		Unique ID for look up
-+ *
-+ * Parse CSRT table and look for DMA descriptors matching the given ID
-+ *
-+ * Return:
-+ * Pointer to DMA descriptor on success or NULL on error/no match.
-+ */
-+struct acpi_csrt_descriptor *
-+acpi_dma_get_csrt_dma_descriptors_by_uid(struct acpi_device *adev, uint32_t uid)
-+{
-+	struct acpi_csrt_descriptor *desc, *desc_end, *desc_found = NULL;
-+	struct acpi_csrt_group *grp, *grp_end;
-+	struct acpi_table_csrt *csrt;
-+	acpi_status status;
-+
-+	status = acpi_get_table(ACPI_SIG_CSRT, 0,
-+				(struct acpi_table_header **)&csrt);
-+	if (ACPI_FAILURE(status)) {
-+		if (status != AE_NOT_FOUND)
-+			dev_warn(&adev->dev, "failed to get the CSRT table\n");
-+		return NULL;
-+	}
-+
-+	grp = (struct acpi_csrt_group *)(csrt + 1);
-+	grp_end =
-+		(struct acpi_csrt_group *)((void *)csrt + csrt->header.length);
-+
-+	while (grp < grp_end) {
-+		desc = (struct acpi_csrt_descriptor *)((void *)(grp + 1) +
-+						       grp->shared_info_length);
-+		desc_end = (struct acpi_csrt_descriptor *)((void *)grp +
-+							   grp->length);
-+		while (desc < desc_end) {
-+			if (desc->uid == uid) {
-+				desc_found = desc;
-+				goto found;
-+			}
-+			desc = (struct acpi_csrt_descriptor *)(((void *)desc) +
-+							       desc->length);
-+		}
-+		grp = (struct acpi_csrt_group *)((void *)grp + grp->length);
-+	}
-+
-+found:
-+	acpi_put_table((struct acpi_table_header *)csrt);
-+
-+	return desc_found;
-+}
-+
-+/**
-+ * acpi_dma_controller_register_with_csrt_shared_desc - Register a DMA controller to ACPI DMA helpers
-+ * @dev:                struct device of DMA controller
-+ * @acpi_dma_xlate:     translation function which converts a dma specifier
-+ *                      into a dma_chan structure
-+ * @data:               pointer to controller specific data to be used by
-+ *                      translation function
-  *
-  * Allocated memory should be freed with appropriate acpi_dma_controller_free()
-  * call.
-@@ -170,16 +222,14 @@ static void acpi_dma_parse_csrt(struct acpi_device *adev, struct acpi_dma *adma)
-  * Return:
-  * 0 on success or appropriate errno value on error.
-  */
--int acpi_dma_controller_register(struct device *dev,
--		struct dma_chan *(*acpi_dma_xlate)
--		(struct acpi_dma_spec *, struct acpi_dma *),
--		void *data)
-+int acpi_dma_controller_register_with_csrt_shared_desc(
-+	struct device *dev,
-+	struct dma_chan *(*acpi_dma_xlate)(struct acpi_dma_spec *,
-+					   struct acpi_dma *),
-+	void *data)
- {
- 	struct acpi_device *adev;
--	struct acpi_dma	*adma;
--
--	if (!dev || !acpi_dma_xlate)
--		return -EINVAL;
-+	struct acpi_dma *adma;
- 
- 	/* Check if the device was enumerated by ACPI */
- 	adev = ACPI_COMPANION(dev);
-@@ -194,7 +244,34 @@ int acpi_dma_controller_register(struct device *dev,
- 	adma->acpi_dma_xlate = acpi_dma_xlate;
- 	adma->data = data;
- 
--	acpi_dma_parse_csrt(adev, adma);
-+	acpi_dma_parse_csrt_shared_info(adev, adma);
-+
-+	return acpi_dma_controller_register(dev, adma);
-+}
-+EXPORT_SYMBOL_GPL(acpi_dma_controller_register_with_csrt_shared_desc);
-+
-+/**
-+ * acpi_dma_controller_register - Register a DMA controller to ACPI DMA helpers
-+ * @dev:		struct device of DMA controller
-+ * @adma:		ACPI DMA descriptor
-+ *
-+ * Allocated memory should be freed with appropriate acpi_dma_controller_free()
-+ * call.
-+ *
-+ * Return:
-+ * 0 on success or appropriate errno value on error.
-+ */
-+int acpi_dma_controller_register(struct device *dev, struct acpi_dma *adma)
-+{
-+	struct acpi_device *adev;
-+
-+	if (!dev || !adma || !adma->acpi_dma_xlate)
-+		return -EINVAL;
-+
-+	/* Check if the device was enumerated by ACPI */
-+	adev = ACPI_COMPANION(dev);
-+	if (!adev)
-+		return -EINVAL;
- 
- 	/* Now queue acpi_dma controller structure in list */
- 	mutex_lock(&acpi_dma_lock);
-@@ -244,8 +321,7 @@ static void devm_acpi_dma_release(struct device *dev, void *res)
- /**
-  * devm_acpi_dma_controller_register - resource managed acpi_dma_controller_register()
-  * @dev:		device that is registering this DMA controller
-- * @acpi_dma_xlate:	translation function
-- * @data:		pointer to controller specific data
-+ * @adma:		ACPI specific DMA descriptor
-  *
-  * Managed acpi_dma_controller_register(). DMA controller registered by this
-  * function are automatically freed on driver detach. See
-@@ -254,10 +330,7 @@ static void devm_acpi_dma_release(struct device *dev, void *res)
-  * Return:
-  * 0 on success or appropriate errno value on error.
-  */
--int devm_acpi_dma_controller_register(struct device *dev,
--		struct dma_chan *(*acpi_dma_xlate)
--		(struct acpi_dma_spec *, struct acpi_dma *),
--		void *data)
-+int devm_acpi_dma_controller_register(struct device *dev, struct acpi_dma *adma)
- {
- 	void *res;
- 	int ret;
-@@ -266,7 +339,7 @@ int devm_acpi_dma_controller_register(struct device *dev,
- 	if (!res)
- 		return -ENOMEM;
- 
--	ret = acpi_dma_controller_register(dev, acpi_dma_xlate, data);
-+	ret = acpi_dma_controller_register(dev, adma);
- 	if (ret) {
- 		devres_free(res);
- 		return ret;
-diff --git a/drivers/dma/dw/acpi.c b/drivers/dma/dw/acpi.c
-index c510c109d2c3..45d2707f4843 100644
---- a/drivers/dma/dw/acpi.c
-+++ b/drivers/dma/dw/acpi.c
-@@ -37,7 +37,8 @@ void dw_dma_acpi_controller_register(struct dw_dma *dw)
- 	dma_cap_set(DMA_SLAVE, info->dma_cap);
- 	info->filter_fn = dw_dma_acpi_filter;
- 
--	ret = acpi_dma_controller_register(dev, acpi_dma_simple_xlate, info);
-+	ret = acpi_dma_controller_register_with_csrt_shared_desc(
-+		dev, acpi_dma_simple_xlate, info);
- 	if (ret)
- 		dev_err(dev, "could not register acpi_dma_controller\n");
- }
-diff --git a/include/linux/acpi_dma.h b/include/linux/acpi_dma.h
-index 72cedb916a9c..c2c50dcc9c07 100644
---- a/include/linux/acpi_dma.h
-+++ b/include/linux/acpi_dma.h
-@@ -56,15 +56,10 @@ struct acpi_dma_filter_info {
- 
- #ifdef CONFIG_DMA_ACPI
- 
--int acpi_dma_controller_register(struct device *dev,
--		struct dma_chan *(*acpi_dma_xlate)
--		(struct acpi_dma_spec *, struct acpi_dma *),
--		void *data);
-+int acpi_dma_controller_register(struct device *dev, struct acpi_dma *adma);
- int acpi_dma_controller_free(struct device *dev);
- int devm_acpi_dma_controller_register(struct device *dev,
--		struct dma_chan *(*acpi_dma_xlate)
--		(struct acpi_dma_spec *, struct acpi_dma *),
--		void *data);
-+				      struct acpi_dma *adma);
- void devm_acpi_dma_controller_free(struct device *dev);
- 
- struct dma_chan *acpi_dma_request_slave_chan_by_index(struct device *dev,
-@@ -74,23 +69,36 @@ struct dma_chan *acpi_dma_request_slave_chan_by_name(struct device *dev,
- 
- struct dma_chan *acpi_dma_simple_xlate(struct acpi_dma_spec *dma_spec,
- 				       struct acpi_dma *adma);
-+struct acpi_csrt_descriptor *
-+acpi_dma_get_csrt_dma_descriptors_by_uid(struct acpi_device *adev,
-+					 uint32_t uid);
-+int acpi_dma_controller_register_with_csrt_shared_desc(
-+	struct device *dev,
-+	struct dma_chan *(*acpi_dma_xlate)(struct acpi_dma_spec *,
-+					   struct acpi_dma *),
-+	void *data);
- #else
- 
--static inline int acpi_dma_controller_register(struct device *dev,
--		struct dma_chan *(*acpi_dma_xlate)
--		(struct acpi_dma_spec *, struct acpi_dma *),
--		void *data)
-+static inline int acpi_dma_controller_register(struct device *dev, struct acpi_dma *adma)
- {
- 	return -ENODEV;
- }
-+
-+static inline int acpi_dma_controller_register_with_csrt_shared_desc(
-+	struct device *dev,
-+	struct dma_chan *(*acpi_dma_xlate)(struct acpi_dma_spec *,
-+					   struct acpi_dma *),
-+	void *data)
-+{
-+	return -ENODEV;
-+}
-+
- static inline int acpi_dma_controller_free(struct device *dev)
- {
- 	return -ENODEV;
- }
- static inline int devm_acpi_dma_controller_register(struct device *dev,
--		struct dma_chan *(*acpi_dma_xlate)
--		(struct acpi_dma_spec *, struct acpi_dma *),
--		void *data)
-+						    struct acpi_dma *adma)
- {
- 	return -ENODEV;
- }
-@@ -109,7 +117,13 @@ static inline struct dma_chan *acpi_dma_request_slave_chan_by_name(
- 	return ERR_PTR(-ENODEV);
- }
- 
--#define acpi_dma_simple_xlate	NULL
-+static inline struct acpi_csrt_descriptor *
-+acpi_dma_get_csrt_dma_descriptors_by_uid(struct acpi_device *adev, uint32_t uid)
-+{
-+	return ERR_PTR(-ENODEV);
-+}
-+
-+#define acpi_dma_simple_xlate NULL
- 
- #endif
- 
--- 
-2.25.1
-
+PiBBY3R1YWxseSwgZmlybXdhcmUgd2lsbCBkbyBzb21lIHBsYXRmb3JtIGRlcGVuZGVudCBzYW5p
+dHkgY2hlY2tzIGFuZCByZXR1cm5zDQo+IGRpZmZlcmVudCBlcnJvciBjb2Rlcy4gSW4gdGhpcyBj
+YXNlLCB1c2VyIGluamVjdHMgdG8gYSBpbnZhbGlkIGRldmljZSwgcGxhdGZvcm0NCj4gcmV0dXJu
+cyAiSW52YWxpZCBBY2Nlc3MiLiBBbmQgdXNlciBpcyBleHBlY3RlZCB0byBzZWU6DQo+DQo+CSMg
+c2VsZWN0IGEgaW52YWxpZCBjb3JlIG9yIGRldmljZSB0byBpbmplY3QNCj4JIyBlY2hvIDEgPiBl
+cnJvcl9pbmplY3QNCj4JZWNobzogd3JpdGUgZXJyb3I6IEludmFsaWQgYXJndW1lbnQNCj4NCj4g
+VGhlbiB1c2VyIGlzIGV4cGVjdGVkIHRvIGNoZWNrIGhpcyBpbmplY3Rpb24gYXJndW1lbnQgZmly
+c3QuDQoNClRoYW5rcy4gVGhpcyBtYWtlcyBzZW5zZS4gWW91IHdhbnQgRUlOVkFMIHdoZW4gdGhl
+IHVzZXIgY2hvc2UNCmJhZCBhcmd1bWVudHMsIGFuZCBzb21lIG90aGVyIGNvZGUgZm9yIHByb2Js
+ZW0gaW4gQklPUy4NCg0KSWYgdGhlIEJJT1MgaGFzIGFuIGlzc3VlLCBpcyBpdCBwb3NzaWJsZSwg
+b3IgbGlrZWx5LCB0aGF0IGl0IGlzIGEgdGVtcG9yYXJ5DQpwcm9ibGVtPyBJZiBzbywgRUJVU1kg
+bWF5IGJlIE9LLiBUaGUgbWVzc2FnZSAiIERldmljZSBvciByZXNvdXJjZSBidXN5Ig0KbWlnaHQg
+ZW5jb3VyYWdlIHRoZSB1c2VyIHRvIHdhaXQgYW5kIHRyeSBhZ2Fpbi4NCg0KSWYgaXQgaXMgbm90
+IGdvaW5nIHRvIGdldCBiZXR0ZXIgYnkgaXRzZWxmLCB0aGVuIG9uZSBvZjoNCg0KI2RlZmluZSBF
+SU8gICAgICAgICAgICAgIDUgICAgICAvKiBJL08gZXJyb3IgKi8NCiNkZWZpbmUgRU5YSU8gICAg
+ICAgICAgICA2ICAgICAgLyogTm8gc3VjaCBkZXZpY2Ugb3IgYWRkcmVzcyAqLw0KDQptaWdodCBi
+ZSBhIGJldHRlciBjaG9pY2UuDQoNCi1Ub255DQo=
