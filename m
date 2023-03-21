@@ -2,182 +2,247 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3D476C2B3B
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Mar 2023 08:17:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5538E6C2F69
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Mar 2023 11:48:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229782AbjCUHRj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Mar 2023 03:17:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41370 "EHLO
+        id S230385AbjCUKsd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Mar 2023 06:48:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230266AbjCUHRi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Mar 2023 03:17:38 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9097F3E085;
-        Tue, 21 Mar 2023 00:17:07 -0700 (PDT)
-Received: from dggpemm500014.china.huawei.com (unknown [172.30.72.54])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4PgjWq3xFsz17Lb0;
-        Tue, 21 Mar 2023 15:13:59 +0800 (CST)
-Received: from [10.174.178.120] (10.174.178.120) by
- dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Tue, 21 Mar 2023 15:17:03 +0800
-Message-ID: <3b7e99a5-de65-67a5-4f74-d0d8d40fa9f2@huawei.com>
-Date:   Tue, 21 Mar 2023 15:17:03 +0800
+        with ESMTP id S230401AbjCUKsa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Mar 2023 06:48:30 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1FD99029;
+        Tue, 21 Mar 2023 03:48:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679395706; x=1710931706;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ozkBxyLK7jmIpwekhGiHrLbDv0ojsvvroOPkxk7rBBI=;
+  b=PjXptzBfCMdrcHxn7IzYYIelryQmOYSMK4iGW8XY47fFxKVuFDnMHw6A
+   ZOvnfaz+q6cmOvnzDMjdCeesWpYTmPWLbgT7eYP/Z2VV3Ezfh7P5oc5dr
+   0XTN+P+qrdBYBS5Frz053dO6441R/BNKb30u/P2o9Mu9gAgk/mxuCmRDy
+   aQw1x+U0ddOHEB7zZIluoWlP57oBf+dn1pybo/dVnZnXu/KeVaHs5l6Iw
+   VDXoxrtHr+mDd6YMPVFGMvf5CWBHlOsz1A+WwP8K30eEWiqnXubG09kBB
+   Pgpj3YZaiNhhnrzISQjjH6itUOswuG4pXjnk9/2cQx8jGvvT1kIXeopdu
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10655"; a="318559111"
+X-IronPort-AV: E=Sophos;i="5.98,278,1673942400"; 
+   d="scan'208";a="318559111"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2023 03:48:26 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10655"; a="711759485"
+X-IronPort-AV: E=Sophos;i="5.98,278,1673942400"; 
+   d="scan'208";a="711759485"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 21 Mar 2023 03:48:24 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1peZXU-000Bp2-0E;
+        Tue, 21 Mar 2023 10:48:24 +0000
+Date:   Tue, 21 Mar 2023 18:48:00 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD REGRESSION
+ 226ec3112c6fa4db1188828f76319f7eb6eb85ee
+Message-ID: <64198b60.bO+m9o5w+Hd8hcF3%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-From:   mawupeng <mawupeng1@huawei.com>
-Subject: Re: [PATCH v3 0/2] ACPI: APEI: handle synchronous exceptions with
- proper si_code
-To:     <xueshuai@linux.alibaba.com>, <tony.luck@intel.com>,
-        <naoya.horiguchi@nec.com>
-CC:     <mawupeng1@huawei.com>, <linux-acpi@vger.kernel.org>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <justin.he@arm.com>, <akpm@linux-foundation.org>,
-        <ardb@kernel.org>, <ashish.kalra@amd.com>,
-        <baolin.wang@linux.alibaba.com>, <bp@alien8.de>,
-        <cuibixuan@linux.alibaba.com>, <dave.hansen@linux.intel.com>,
-        <james.morse@arm.com>, <jarkko@kernel.org>, <lenb@kernel.org>,
-        <linmiaohe@huawei.com>, <lvying6@huawei.com>, <rafael@kernel.org>,
-        <xiexiuqi@huawei.com>, <zhuo.song@linux.alibaba.com>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20230317072443.3189-1-xueshuai@linux.alibaba.com>
-Content-Language: en-US
-In-Reply-To: <20230317072443.3189-1-xueshuai@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.120]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm500014.china.huawei.com (7.185.36.153)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Test-by: Ma Wupeng <mawupeng1@huawei.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 226ec3112c6fa4db1188828f76319f7eb6eb85ee  Merge branch 'thermal/bleeding-edge' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into bleeding-edge
 
-I have test this on arm64 with following steps:
-  1. make memory failure return EBUSY
-  2. force a UCE with einj
+Error/Warning reports:
 
-Without this patchset, user task will not be kill since memory_failure can
-not handle this UCE properly and user task is in D state. The stack can
-be found in the end.
-With this patchset, user task can be killed even memory_failure return
--EBUSY without doing anything.
+https://lore.kernel.org/oe-kbuild-all/202303210729.DvRvIUla-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303210858.dZnSlO11-lkp@intel.com
 
-Here is the stack of user task with D state:
+Error/Warning: (recently discovered and may have been fixed)
 
-  # cat /proc/7001/stack
-  [<0>] __flush_work.isra.0+0x80/0xa8
-  [<0>] __cancel_work_timer+0x144/0x1c8
-  [<0>] cancel_work_sync+0x1c/0x30
-  [<0>] memory_failure_queue_kick+0x3c/0x88
-  [<0>] ghes_kick_task_work+0x28/0x78
-  [<0>] task_work_run+0xb8/0x188
-  [<0>] do_notify_resume+0x1e0/0x280
-  [<0>] el0_da+0x130/0x138
-  [<0>] el0t_64_sync_handler+0x68/0xc0
-  [<0>] el0t_64_sync+0x188/0x190
+drivers/acpi/processor_pdc.c:59:10: error: implicit declaration of function 'xen_processor_present' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
+drivers/acpi/processor_pdc.c:59:24: error: implicit declaration of function 'xen_processor_present' [-Werror=implicit-function-declaration]
 
-On 2023/3/17 15:24, Shuai Xue wrote:
-> changes since v2 by addressing comments from Naoya:
-> - rename mce_task_work to sync_task_work
-> - drop ACPI_HEST_NOTIFY_MCE case in is_hest_sync_notify()
-> - add steps to reproduce this problem in cover letter
-> - Link: https://lore.kernel.org/lkml/1aa0ca90-d44c-aa99-1e2d-bd2ae610b088@linux.alibaba.com/T/#mb3dede6b7a6d189dc8de3cf9310071e38a192f8e
-> 
-> changes since v1:
-> - synchronous events by notify type
-> - Link: https://lore.kernel.org/lkml/20221206153354.92394-3-xueshuai@linux.alibaba.com/
-> 
-> Currently, both synchronous and asynchronous error are queued and handled
-> by a dedicated kthread in workqueue. And Memory failure for synchronous
-> error is synced by a cancel_work_sync trick which ensures that the
-> corrupted page is unmapped and poisoned. And after returning to user-space,
-> the task starts at current instruction which triggering a page fault in
-> which kernel will send SIGBUS to current process due to VM_FAULT_HWPOISON.
-> 
-> However, the memory failure recovery for hwpoison-aware mechanisms does not
-> work as expected. For example, hwpoison-aware user-space processes like
-> QEMU register their customized SIGBUS handler and enable early kill mode by
-> seting PF_MCE_EARLY at initialization. Then the kernel will directy notify
-> the process by sending a SIGBUS signal in memory failure with wrong
-> si_code: BUS_MCEERR_AO si_code to the actual user-space process instead of
-> BUS_MCEERR_AR.
-> 
-> To address this problem:
-> 
-> - PATCH 1 sets mf_flags as MF_ACTION_REQUIRED on synchronous events which
->   indicates error happened in current execution context
-> - PATCH 2 separates synchronous error handling into task work so that the
->   current context in memory failure is exactly belongs to the task
->   consuming poison data.
-> 
-> Then, kernel will send SIGBUS with proper si_code in kill_proc().
-> 
-> Lv Ying and XiuQi also proposed to address similar problem and we discussed
-> about new solution to add a new flag(acpi_hest_generic_data::flags bit 8) to
-> distinguish synchronous event. [2][3] The UEFI community still has no response.
-> After a deep dive into the SDEI TRM, the SDEI notification should be used for
-> asynchronous error. As SDEI TRM[1] describes "the dispatcher can simulate an
-> exception-like entry into the client, **with the client providing an additional
-> asynchronous entry point similar to an interrupt entry point**". The client
-> (kernel) lacks complete synchronous context, e.g. systeam register (ELR, ESR,
-> etc). So notify type is enough to distinguish synchronous event.
-> 
-> To reproduce this problem:
-> 
-> 	# STEP1: enable early kill mode
-> 	#sysctl -w vm.memory_failure_early_kill=1
-> 	vm.memory_failure_early_kill = 1
-> 
-> 	# STEP2: inject an UCE error and consume it to trigger a synchronous error
-> 	#einj_mem_uc single
-> 	0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
-> 	injecting ...
-> 	triggering ...
-> 	signal 7 code 5 addr 0xffffb0d75000
-> 	page not present
-> 	Test passed
-> 
-> The si_code (code 5) from einj_mem_uc indicates that it is BUS_MCEERR_AO error
-> and it is not fact.
-> 
-> After this patch set:
-> 
-> 	# STEP1: enable early kill mode
-> 	#sysctl -w vm.memory_failure_early_kill=1
-> 	vm.memory_failure_early_kill = 1
-> 
-> 	# STEP2: inject an UCE error and consume it to trigger a synchronous error
-> 	#einj_mem_uc single
-> 	0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
-> 	injecting ...
-> 	triggering ...
-> 	signal 7 code 4 addr 0xffffb0d75000
-> 	page not present
-> 	Test passed
-> 
-> The si_code (code 4) from einj_mem_uc indicates that it is BUS_MCEERR_AR error
-> as we expected.
-> 
-> [1] https://developer.arm.com/documentation/den0054/latest/
-> [2] https://lore.kernel.org/linux-arm-kernel/20221205160043.57465-4-xiexiuqi@huawei.com/T/
-> [3] https://lore.kernel.org/lkml/20221209095407.383211-1-lvying6@huawei.com/
-> 
-> Shuai Xue (2):
->   ACPI: APEI: set memory failure flags as MF_ACTION_REQUIRED on
->     synchronous events
->   ACPI: APEI: handle synchronous exceptions in task work
-> 
->  drivers/acpi/apei/ghes.c | 135 ++++++++++++++++++++++++---------------
->  include/acpi/ghes.h      |   3 -
->  mm/memory-failure.c      |  13 ----
->  3 files changed, 83 insertions(+), 68 deletions(-)
-> 
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- i386-allyesconfig
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present
+|-- i386-debian-10.3
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present
+|-- i386-defconfig
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present
+|-- i386-randconfig-a012
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present
+|-- i386-randconfig-a014
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present
+|-- i386-randconfig-a016
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present
+|-- ia64-allmodconfig
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present
+|-- ia64-allyesconfig
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present
+|-- ia64-buildonly-randconfig-r004-20230320
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present
+|-- ia64-defconfig
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present
+|-- ia64-randconfig-r033-20230319
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present
+|-- ia64-randconfig-r036-20230320
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present
+|-- x86_64-defconfig
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present
+|-- x86_64-kexec
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present
+|-- x86_64-randconfig-a011
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present
+|-- x86_64-randconfig-a013
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present
+|-- x86_64-randconfig-a015
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present
+`-- x86_64-rhel-8.3
+    `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present
+clang_recent_errors
+|-- i386-randconfig-a001-20230320
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present-is-invalid-in-C99-Werror-Wimplicit-function-declaration
+|-- i386-randconfig-a002-20230320
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present-is-invalid-in-C99-Werror-Wimplicit-function-declaration
+|-- i386-randconfig-a003-20230320
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present-is-invalid-in-C99-Werror-Wimplicit-function-declaration
+|-- i386-randconfig-a004-20230320
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present-is-invalid-in-C99-Werror-Wimplicit-function-declaration
+|-- i386-randconfig-a005-20230320
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present-is-invalid-in-C99-Werror-Wimplicit-function-declaration
+|-- i386-randconfig-a006-20230320
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present-is-invalid-in-C99-Werror-Wimplicit-function-declaration
+|-- i386-randconfig-a011
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present-is-invalid-in-C99-Werror-Wimplicit-function-declaration
+|-- i386-randconfig-a013
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present-is-invalid-in-C99-Werror-Wimplicit-function-declaration
+|-- i386-randconfig-a015
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present-is-invalid-in-C99-Werror-Wimplicit-function-declaration
+|-- x86_64-randconfig-a012
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present-is-invalid-in-C99-Werror-Wimplicit-function-declaration
+|-- x86_64-randconfig-a014
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present-is-invalid-in-C99-Werror-Wimplicit-function-declaration
+|-- x86_64-randconfig-a016
+|   `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present-is-invalid-in-C99-Werror-Wimplicit-function-declaration
+`-- x86_64-randconfig-r032-20230320
+    `-- drivers-acpi-processor_pdc.c:error:implicit-declaration-of-function-xen_processor_present-is-invalid-in-C99-Werror-Wimplicit-function-declaration
+
+elapsed time: 727m
+
+configs tested: 92
+configs skipped: 6
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc          buildonly-randconfig-r002-20230320   gcc  
+arc                                 defconfig   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm          buildonly-randconfig-r003-20230320   clang
+arm                                 defconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64        buildonly-randconfig-r004-20230319   gcc  
+arm64        buildonly-randconfig-r006-20230319   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r011-20230320   gcc  
+arm64                randconfig-r016-20230320   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r035-20230320   gcc  
+hexagon      buildonly-randconfig-r001-20230319   clang
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-a001-20230320   clang
+i386                 randconfig-a002-20230320   clang
+i386                 randconfig-a003-20230320   clang
+i386                 randconfig-a004-20230320   clang
+i386                 randconfig-a005-20230320   clang
+i386                 randconfig-a006-20230320   clang
+i386                          randconfig-a011   clang
+i386                          randconfig-a012   gcc  
+i386                          randconfig-a013   clang
+i386                          randconfig-a014   gcc  
+i386                          randconfig-a015   clang
+i386                          randconfig-a016   gcc  
+ia64                             allmodconfig   gcc  
+ia64         buildonly-randconfig-r004-20230320   gcc  
+ia64                                defconfig   gcc  
+ia64                 randconfig-r033-20230319   gcc  
+ia64                 randconfig-r036-20230320   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k         buildonly-randconfig-r005-20230319   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r014-20230320   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips         buildonly-randconfig-r001-20230320   gcc  
+mips         buildonly-randconfig-r002-20230319   clang
+mips                 randconfig-r034-20230320   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r036-20230319   gcc  
+openrisc             randconfig-r035-20230319   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390         buildonly-randconfig-r003-20230319   clang
+s390         buildonly-randconfig-r006-20230320   gcc  
+s390                                defconfig   gcc  
+sh                               allmodconfig   gcc  
+sh                   randconfig-r032-20230319   gcc  
+sparc        buildonly-randconfig-r005-20230320   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r015-20230320   gcc  
+sparc                randconfig-r031-20230319   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                        randconfig-a011   gcc  
+x86_64                        randconfig-a012   clang
+x86_64                        randconfig-a013   gcc  
+x86_64                        randconfig-a014   clang
+x86_64                        randconfig-a015   gcc  
+x86_64                        randconfig-a016   clang
+x86_64               randconfig-r032-20230320   clang
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r012-20230320   gcc  
+xtensa               randconfig-r033-20230320   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
