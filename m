@@ -2,60 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A9846C3332
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Mar 2023 14:48:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9583E6C337B
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Mar 2023 14:56:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231167AbjCUNsC convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 21 Mar 2023 09:48:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44050 "EHLO
+        id S229873AbjCUN4r convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 21 Mar 2023 09:56:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbjCUNsB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Mar 2023 09:48:01 -0400
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51D0B43469;
-        Tue, 21 Mar 2023 06:47:59 -0700 (PDT)
-Received: by mail-ed1-f50.google.com with SMTP id r11so59914962edd.5;
-        Tue, 21 Mar 2023 06:47:59 -0700 (PDT)
+        with ESMTP id S229696AbjCUN4q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Mar 2023 09:56:46 -0400
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC5A55590;
+        Tue, 21 Mar 2023 06:56:44 -0700 (PDT)
+Received: by mail-ed1-f51.google.com with SMTP id h8so59994636ede.8;
+        Tue, 21 Mar 2023 06:56:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679406478;
+        d=1e100.net; s=20210112; t=1679407003;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vvR60g3tFXEBQYgwVwbIXJyQcGxQhx5VhvptYm3eERQ=;
-        b=lB4+cmzGe4Aon1YQpwAZly0x5SkZfgvy92MYuRQPGOHlOM2cFx3UV+hlVJwCC+eSEH
-         GsPkk29IE4lZPBXNbcz2aO5xMelb5G1tUOpX01AiV79BrF0Tsr4rS2PkmEIDeWe2WaP9
-         nTcsx+lKyStaDpFNq/BwS2gw5b0vBFmnp3Sv0ufhJ28670+J63XjcMN8G++wbyt6N86t
-         ivoiabKwxoOm6qt6uLLbhVScoyio/8IkDlf5xMWCwGBlyyONaScMh/4hD86Zol6vz75A
-         EK4BOeUvUKN1/u3cR5oWsUUa8gtwWsQhiavz6Qil/2gOgAxXO24em3fvUti/IOEhBL7M
-         mYHQ==
-X-Gm-Message-State: AO0yUKVTIG1KBTkmgURRK0CemURiy55PC6PinoPZn36ClJVUEbf88lAj
-        qfSup2aFhFBGRjvMinZ+yumyIBg+1aJupPWB+ag=
-X-Google-Smtp-Source: AK7set/h/NZ/VGvn4gefABgUQDp9XIpghr+brUfqQ2nYQUkGxKqbJrSGm8oBcbUzqE6/gClu2VFHaojfHaqc9llz62M=
-X-Received: by 2002:a50:cd1d:0:b0:4fc:8749:cd77 with SMTP id
- z29-20020a50cd1d000000b004fc8749cd77mr1690914edi.3.1679406477635; Tue, 21 Mar
- 2023 06:47:57 -0700 (PDT)
+        bh=EGKyyYu0r/T+bSCiaFmZ4I80Q/b6usA2+yHs/LvdWnM=;
+        b=AUPFeS+yPQGJabeAXGIkHfAPgQH6CUdtfAVROCK60OYYVvYu6hCVmMJz4dJx5pZaLD
+         dvPoO8rTnyQ/DS8yNiJLoiC4f/GMuwIG1vmbQ1rQV5tiQGRnf1cKPVGeE3V/mcJ+biV/
+         sok95Eah5pfGc8EgGS492bgl1kMnTF2nJNazorTZ2+j3o5k8FYx88mnlAyNkP66o/c3i
+         IJjd3mGr6bD0SbSvga/cMz4RWaz57dz2hBRb5PN8mIdmYNv6rXF+gwJYfit7Ldf89AN0
+         3PItQvHDY2Qm/bt8JZxI7AE78RBK6OV6QByN+HNLHmNJ9EdPRaEU7vSIF4idwdVrvZ5k
+         Hmbw==
+X-Gm-Message-State: AO0yUKVq3yOJU3y69Ixev5sQW7nieNJQIqdDjj9qWwaOe6j8+Tv7xTz1
+        4zpw59f6oZKQ7RhlUDGPtLFwux5H8jZs6XjKzog=
+X-Google-Smtp-Source: AK7set/k6WoORjORHs6M4iK+1Hc2u+78bc+7pEGYc2plMIKbgMU60VSzGqDxYz89I1KDD29963CkwTnmIMIcsrJDH1A=
+X-Received: by 2002:a50:c389:0:b0:4fb:f19:881 with SMTP id h9-20020a50c389000000b004fb0f190881mr1689546edf.3.1679407003328;
+ Tue, 21 Mar 2023 06:56:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230316164257.42590-1-roger.pau@citrix.com>
-In-Reply-To: <20230316164257.42590-1-roger.pau@citrix.com>
+References: <20230314121216.413434-1-schnelle@linux.ibm.com>
+ <20230314121216.413434-27-schnelle@linux.ibm.com> <CAJZ5v0gYGkbUk4uFXgidMaRBniwiXpizZWwMGixeNNejeZjPzg@mail.gmail.com>
+In-Reply-To: <CAJZ5v0gYGkbUk4uFXgidMaRBniwiXpizZWwMGixeNNejeZjPzg@mail.gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 21 Mar 2023 14:47:46 +0100
-Message-ID: <CAJZ5v0jskeE8nJt04vyEkDO3rOwOHp36mcKcV=L9LGXD0HL6Mw@mail.gmail.com>
-Subject: Re: [PATCH v4] acpi/processor: fix evaluating _PDC method when
- running as Xen dom0
-To:     Roger Pau Monne <roger.pau@citrix.com>
-Cc:     linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
-        josef@oderland.se, Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
+Date:   Tue, 21 Mar 2023 14:56:32 +0100
+Message-ID: <CAJZ5v0gHFA_BgLuCx=Eb3J5D7f7j8kV3Pthqy3jAfpavY6UMuQ@mail.gmail.com>
+Subject: Re: [PATCH v3 26/38] pnp: add HAS_IOPORT dependencies
+To:     Niklas Schnelle <schnelle@linux.ibm.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Jaroslav Kysela <perex@perex.cz>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>,
-        Alex Chiang <achiang@hp.com>, linux-acpi@vger.kernel.org
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
+        linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -68,153 +70,40 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 16, 2023 at 5:43 PM Roger Pau Monne <roger.pau@citrix.com> wrote:
+On Mon, Mar 20, 2023 at 6:37 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> In ACPI systems, the OS can direct power management, as opposed to the
-> firmware.  This OS-directed Power Management is called OSPM.  Part of
-> telling the firmware that the OS going to direct power management is
-> making ACPI "_PDC" (Processor Driver Capabilities) calls.  These _PDC
-> methods must be evaluated for every processor object.  If these _PDC
-> calls are not completed for every processor it can lead to
-> inconsistency and later failures in things like the CPU frequency
-> driver.
->
-> In a Xen system, the dom0 kernel is responsible for system-wide power
-> management.  The dom0 kernel is in charge of OSPM.  However, the
-> number of CPUs available to dom0 can be different than the number of
-> CPUs physically present on the system.
->
-> This leads to a problem: the dom0 kernel needs to evaluate _PDC for
-> all the processors, but it can't always see them.
->
-> In dom0 kernels, ignore the existing ACPI method for determining if a
-> processor is physically present because it might not be accurate.
-> Instead, ask the hypervisor for this information.
->
-> Fix this by introducing a custom function to use when running as Xen
-> dom0 in order to check whether a processor object matches a CPU that's
-> online.  Such checking is done using the existing information fetched
-> by the Xen pCPU subsystem, extending it to also store the ACPI ID.
->
-> This ensures that _PDC method gets evaluated for all physically online
-> CPUs, regardless of the number of CPUs made available to dom0.
->
-> Fixes: 5d554a7bb064 ('ACPI: processor: add internal processor_physically_present()')
-> Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
-> ---
-> Changes since v3:
->  - Protect xen_processor_present() definition with CONFIG_ACPI.
->
-> Changes since v2:
->  - Extend and use the existing pcpu functionality.
->
-> Changes since v1:
->  - Reword commit message.
-> ---
->  arch/x86/include/asm/xen/hypervisor.h | 10 ++++++++++
->  drivers/acpi/processor_pdc.c          | 11 +++++++++++
->  drivers/xen/pcpu.c                    | 21 +++++++++++++++++++++
->  3 files changed, 42 insertions(+)
->
-> diff --git a/arch/x86/include/asm/xen/hypervisor.h b/arch/x86/include/asm/xen/hypervisor.h
-> index 5fc35f889cd1..990a1609677e 100644
-> --- a/arch/x86/include/asm/xen/hypervisor.h
-> +++ b/arch/x86/include/asm/xen/hypervisor.h
-> @@ -63,4 +63,14 @@ void __init xen_pvh_init(struct boot_params *boot_params);
->  void __init mem_map_via_hcall(struct boot_params *boot_params_p);
->  #endif
->
-> +#if defined(CONFIG_XEN_DOM0) && defined(CONFIG_ACPI)
-> +bool __init xen_processor_present(uint32_t acpi_id);
-> +#else
-> +static inline bool xen_processor_present(uint32_t acpi_id)
-> +{
-> +       BUG();
-> +       return false;
-> +}
-> +#endif
-> +
->  #endif /* _ASM_X86_XEN_HYPERVISOR_H */
-> diff --git a/drivers/acpi/processor_pdc.c b/drivers/acpi/processor_pdc.c
-> index 8c3f82c9fff3..18fb04523f93 100644
-> --- a/drivers/acpi/processor_pdc.c
-> +++ b/drivers/acpi/processor_pdc.c
-> @@ -14,6 +14,8 @@
->  #include <linux/acpi.h>
->  #include <acpi/processor.h>
->
-> +#include <xen/xen.h>
+> On Tue, Mar 14, 2023 at 1:13 PM Niklas Schnelle <schnelle@linux.ibm.com> wrote:
+> >
+> > In a future patch HAS_IOPORT=n will result in inb()/outb() and friends
+> > not being declared. We thus need to depend on HAS_IOPORT even when
+> > compile testing only.
+> >
+> > Co-developed-by: Arnd Bergmann <arnd@kernel.org>
+> > Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+> > ---
+> >  drivers/pnp/isapnp/Kconfig | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/pnp/isapnp/Kconfig b/drivers/pnp/isapnp/Kconfig
+> > index d0479a563123..79bd48f1dd94 100644
+> > --- a/drivers/pnp/isapnp/Kconfig
+> > +++ b/drivers/pnp/isapnp/Kconfig
+> > @@ -4,7 +4,7 @@
+> >  #
+> >  config ISAPNP
+> >         bool "ISA Plug and Play support"
+> > -       depends on ISA || COMPILE_TEST
+> > +       depends on ISA || (HAS_IOPORT && COMPILE_TEST)
 
-This along with the definition above is evidently insufficient for
-xen_processor_present() to always be defined.  See
-https://lore.kernel.org/linux-acpi/64198b60.bO+m9o5w+Hd8hcF3%25lkp@intel.com/T/#u
+This breaks code selecting ISAPNP and not depending on it.  See
+https://lore.kernel.org/linux-acpi/202303211932.5gtCVHCz-lkp@intel.com/T/#u
 for example.
 
 I'm dropping the patch now, please fix and resend.
 
-> +
->  #include "internal.h"
+> >         help
+> >           Say Y here if you would like support for ISA Plug and Play devices.
+> >           Some information is in <file:Documentation/driver-api/isapnp.rst>.
+> > --
 >
->  static bool __init processor_physically_present(acpi_handle handle)
-> @@ -47,6 +49,15 @@ static bool __init processor_physically_present(acpi_handle handle)
->                 return false;
->         }
->
-> +       if (xen_initial_domain())
-> +               /*
-> +                * When running as a Xen dom0 the number of processors Linux
-> +                * sees can be different from the real number of processors on
-> +                * the system, and we still need to execute _PDC for all of
-> +                * them.
-> +                */
-> +               return xen_processor_present(acpi_id);
-> +
->         type = (acpi_type == ACPI_TYPE_DEVICE) ? 1 : 0;
->         cpuid = acpi_get_cpuid(handle, type, acpi_id);
->
-> diff --git a/drivers/xen/pcpu.c b/drivers/xen/pcpu.c
-> index fd3a644b0855..034d05e56507 100644
-> --- a/drivers/xen/pcpu.c
-> +++ b/drivers/xen/pcpu.c
-> @@ -58,6 +58,7 @@ struct pcpu {
->         struct list_head list;
->         struct device dev;
->         uint32_t cpu_id;
-> +       uint32_t acpi_id;
->         uint32_t flags;
->  };
->
-> @@ -249,6 +250,7 @@ static struct pcpu *create_and_register_pcpu(struct xenpf_pcpuinfo *info)
->
->         INIT_LIST_HEAD(&pcpu->list);
->         pcpu->cpu_id = info->xen_cpuid;
-> +       pcpu->acpi_id = info->acpi_id;
->         pcpu->flags = info->flags;
->
->         /* Need hold on xen_pcpu_lock before pcpu list manipulations */
-> @@ -381,3 +383,22 @@ static int __init xen_pcpu_init(void)
->         return ret;
->  }
->  arch_initcall(xen_pcpu_init);
-> +
-> +#ifdef CONFIG_ACPI
-> +bool __init xen_processor_present(uint32_t acpi_id)
-> +{
-> +       struct pcpu *pcpu;
-> +       bool online = false;
-> +
-> +       mutex_lock(&xen_pcpu_lock);
-> +       list_for_each_entry(pcpu, &xen_pcpus, list)
-> +               if (pcpu->acpi_id == acpi_id) {
-> +                       online = pcpu->flags & XEN_PCPU_FLAGS_ONLINE;
-> +                       break;
-> +               }
-> +
-> +       mutex_unlock(&xen_pcpu_lock);
-> +
-> +       return online;
-> +}
-> +#endif
-> --
-> 2.39.0
->
+> Applied as 6.4 material, thanks!
