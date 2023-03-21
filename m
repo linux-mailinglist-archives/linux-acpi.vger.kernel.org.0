@@ -2,154 +2,389 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AA436C3679
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Mar 2023 17:02:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A05656C3683
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Mar 2023 17:04:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231515AbjCUQCx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Mar 2023 12:02:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54542 "EHLO
+        id S231545AbjCUQD7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Mar 2023 12:03:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231433AbjCUQCs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Mar 2023 12:02:48 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ED0816893;
-        Tue, 21 Mar 2023 09:02:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C59F1B817AC;
-        Tue, 21 Mar 2023 16:02:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C845C4339E;
-        Tue, 21 Mar 2023 16:02:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679414564;
-        bh=StOHEPmor4jYKvr+q4St39xCQUBPMkifFyG37jrsrNQ=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=eGlPJEUGU8PKFGYQnnIQI/qsm78RQx68SkCCpD1yu44YkWdpakfLzyFV7I7oVuTti
-         /m6UNU4xqtyZbr1qLENAv9Y6lz1Ht/t2VJkhQOYefW/ahTv5uwveDLzyPl9nTITD5q
-         A/dlBXMGC3e9ckW3PP7NJq3t+PXI7YeBEQcYa02huNYj1Docp5NVAII4JsilVQiG19
-         StQLVn0Xm5io2fbrGiSdzf5vGjN0Djt4+nOU6SiOk/Eo6rKiTj6PNIeXiKEFOTmDNC
-         VJv7U4Ya3QJql6UWlPpkcexvKv4gTpVHfl3cc37eyKj6Tj/UsuaAcl8LDafpqBWwf4
-         4m18toKCYJI3w==
-Received: by mail-yb1-f169.google.com with SMTP id y5so17751019ybu.3;
-        Tue, 21 Mar 2023 09:02:44 -0700 (PDT)
-X-Gm-Message-State: AAQBX9cbGBmCbk8rlYhFnhMl1x/8SgWRHOaUoyKdRhLfH4/CIvnIik4h
-        BnXEziKmcMm4Q7ZK86x9ZkCfiIJKpI/fmhxnlg==
-X-Google-Smtp-Source: AKy350Znf5nfgXC5pAz/FzEgm8ixvOwGbBCNSV3kCkz2S7tE88NH6KVsczZv5n55zuXpUgoXBHA6SOIgtC3TZvoykbw=
-X-Received: by 2002:a05:6902:1083:b0:98e:6280:74ca with SMTP id
- v3-20020a056902108300b0098e628074camr1884852ybu.1.1679414563294; Tue, 21 Mar
- 2023 09:02:43 -0700 (PDT)
+        with ESMTP id S231533AbjCUQD6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Mar 2023 12:03:58 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E5F8975B
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Mar 2023 09:03:36 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id r29so14220393wra.13
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Mar 2023 09:03:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679414614;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OBFhkieZr9DcuH6OJpwJsbd/MbRISB1FzuiRurd/kIk=;
+        b=IL3ZCoCYj4B/O3srxixE3h6c05Wfxg3mSFLufKAApxNlqelq27jWZxS5gMci89s4r5
+         lXfCScam1X7em3wQJJCJgliEaPBCUD/z5dUyZiElUIgVcHA+gk5fj7fSwJMCGEMFUZqf
+         3aANDmHHwHU6hVOs7oq5R5k/V1zK1YmZBBc4oVGwQbkjjoAaQn4PRg/TztBsa+ZqRsgY
+         F9T6DYPHZaHwAz42Cf0loScdz9KTt/diC5sVybKwsfcHJ2qaurT49HWFvS2cphGogA9t
+         MoeQx0HXbzqkNgTFcM+oTL5wKw+N12sHaI0I8Qa6PXr48/URvzsk8vBh6Te+R+D8rTWL
+         WK8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679414614;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OBFhkieZr9DcuH6OJpwJsbd/MbRISB1FzuiRurd/kIk=;
+        b=b52zcXUjEKAtz8cqClA7qr4IuBnfGEt+6yqwZ1PocgOORkCkSNIEQ/fQTmF+Ih3KK+
+         QzHxG0keG3tvFkUqhQTWO3PiWI2WPEC7/gza/7NeZ9GLSV8Za5ovcaWWxrru2WE+P8cq
+         pEIdsgdT/s4tM97PpmGwsQlwbInnk0eoOHZkVKz2FpDL+tFq12leqSF2vuHChBfU7pcb
+         PO9puohGL/zmTzLz5GTyDBnr+ombysmh5Npa/SaPyonI3ErCclN/5fW8QHr3bfKfE4wf
+         RbIP2/qp0dDUm8zUkGfs59CLvdc3U0KxFbPUdyxFRjjoFcpcTPsPA8tW/j9BT8E5/m57
+         p1Ig==
+X-Gm-Message-State: AO0yUKWrBHN9qqjujyHkVn7NFOguQ+x/IT6M5OpsWwKItbEhOa7K89zQ
+        19iv0mMWIUfgUZ2VL/lu2m9D2g==
+X-Google-Smtp-Source: AK7set95EfyofHHtmSWBMscXwg5vI+T4k/84bdeGYxo+YyXaCgq00QA7D8cd3DcaKmvFISBI6jcJ+Q==
+X-Received: by 2002:a5d:5685:0:b0:2ce:a835:83d4 with SMTP id f5-20020a5d5685000000b002cea83583d4mr2804100wrv.27.1679414613718;
+        Tue, 21 Mar 2023 09:03:33 -0700 (PDT)
+Received: from localhost.localdomain ([90.243.20.231])
+        by smtp.gmail.com with ESMTPSA id v6-20020a5d6106000000b002c55521903bsm11611094wrt.51.2023.03.21.09.03.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Mar 2023 09:03:33 -0700 (PDT)
+From:   Niyas Sait <niyas.sait@linaro.org>
+To:     andriy.shevchenko@linux.intel.com, mika.westerberg@linux.intel.com,
+        vkoul@kernel.org, dmaengine@vger.kernel.org,
+        linux-acpi@vger.kernel.org, Sudeep.Holla@arm.com,
+        Souvik.Chakravarty@arm.com, Sunny.Wang@arm.com,
+        lorenzo.pieralisi@linaro.org, bob.zhang@cixtech.com,
+        fugang.duan@cixtech.com
+Cc:     Niyas Sait <niyas.sait@linaro.org>
+Subject: [RFC v1 1/1] Refactor ACPI DMA to support platforms without shared info descriptor in CSRT
+Date:   Tue, 21 Mar 2023 16:02:41 +0000
+Message-Id: <20230321160241.1339538-1-niyas.sait@linaro.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20230317030501.1811905-1-anshuman.khandual@arm.com>
- <CAL_JsqKsnq0d-x3m3xQe8m0pnk_Jeh9J1oFBtPAn3LV8-MFH0w@mail.gmail.com> <20230321143356.w5era7et6lzxpte3@bogus>
-In-Reply-To: <20230321143356.w5era7et6lzxpte3@bogus>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Tue, 21 Mar 2023 11:02:31 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJJZC8AqjpUuK_Z0Nauc1Z-MAKH7ZbXCJrSguUvw70+7Q@mail.gmail.com>
-Message-ID: <CAL_JsqJJZC8AqjpUuK_Z0Nauc1Z-MAKH7ZbXCJrSguUvw70+7Q@mail.gmail.com>
-Subject: Re: [PATCH 0/7] coresight: etm4x: Migrate AMBA devices to platform driver
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
-        linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org,
-        suzuki.poulose@arm.com, scclevenger@os.amperecomputing.com,
-        Frank Rowand <frowand.list@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Mike Leach <mike.leach@linaro.org>,
-        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Mar 21, 2023 at 9:34=E2=80=AFAM Sudeep Holla <sudeep.holla@arm.com>=
- wrote:
->
-> On Mon, Mar 20, 2023 at 09:17:16AM -0500, Rob Herring wrote:
-> >
-> > This sounds like an issue for any amba driver. If this is an issue,
-> > solve it for everyone, not just work around it in one driver.
-> >
->
-> Well it is an issue in general for power management. ACPI has specific
-> methods that can be executed for entering specific states.
->
-> The way AMBA was glue into ACPI bus scan IMO was a hack and PM wasn't
-> considered at the time. It was just hack to get AMBA drivers to work
-> with ACPI without any consideration about runtime PM or any methods that
-> comes as part of ACPI device. There is even some dummy clock handler to
-> deal with AMBA requesting APB clocks. AMBA device is added as companion
-> to the ACPI device created as part of the normal bus scan in ACPI which
-> adds its own PM callbacks and rely on clocks and power domains independen=
-t
-> of the ACPI standard methods(_ON/_OFF).
+This patch refactors the ACPI DMA layer to support platforms without
+shared info descriptor in CSRT.
 
-I thought only DT had hacks... ;)
+Shared info descriptor is optional and vendor specific (not
+standardized) and not used by Arm platforms.
+---
 
-> The default enumeration adds platform devices which adds no extra PM
-> callbacks and allows normal acpi_device probe flow.
->
-> > When someone puts another primecell device into an ACPI system, are we
-> > going to go do the same one-off change in that driver too? (We kind of
-> > already did with SBSA UART...)
-> >
->
-> I would prefer to move all the existing users of ACPI + AMBA to move away
-> from it and just use platform device. This list is not big today, bunch
-> of coresight, PL061/GPIO and PL330/DMA. And all these are assumed to be
-> working or actually working if there is no need for any power management.
-> E.g. on juno coresight needs PM to turn on before probing and AMBA fails
-> as dummy clocks are added but no power domains attached as ACPI doesn't
-> need deal with power domains in the OSPM if it is all well abstracted in
-> methods like _ON/_OFF. They are dealt with explicit power domain in the
-> DT which needs to be turned on and AMBA relies on that.
->
-> One possible further hacky solution is to add dummy genpd to satisfy AMBA
-> but not sure if we can guarantee ordering between ACPI device calling ON
-> and its companion AMBA device probing so that the power domain is ON befo=
-re
-> AMBA uses the dummy clock and power domains in its pm callback hooks.
+The main changes in this patch are as follows:
 
-What if we made AMBA skip its usual matching by ID and only use
-DT/ACPI style matching? We have specific compatibles, but they have
-never been used by the kernel. The only reason the bus code needs to
-do PM is reading the IDs which could be pushed into the drivers that
-need to match on specific IDs (I suspect we have some where the
-compatible is not specific enough (old ST stuff)).
+- Renamed acpi_dma_controller_register to acpi_dma_controller_register_with_csrt_shared_desc to reflect its new functionality. 
+- Refactored acpi_dma_controller_register to allow DMA controllers to be registered without CSRT walk. 
+- Introduced acpi_dma_get_csrt_dma_descriptors_by_uid function to retrieve DMA descriptors from the CSRT table. 
 
-Looks like we only have 2 platforms left not using DT:
-arch/arm/mach-ep93xx/core.c:    amba_device_register(&uart1_device,
-&iomem_resource);
-arch/arm/mach-ep93xx/core.c:    amba_device_register(&uart2_device,
-&iomem_resource);
-arch/arm/mach-ep93xx/core.c:    amba_device_register(&uart3_device,
-&iomem_resource);
-arch/arm/mach-s3c/pl080.c:
-amba_device_register(&s3c64xx_dma0_device, &iomem_resource);
-arch/arm/mach-s3c/pl080.c:
-amba_device_register(&s3c64xx_dma1_device, &iomem_resource);
+An example usage is given below:
 
-Get rid of these cases and we don't have to worry about non-DT or ACPI matc=
-hing.
+desc = acpi_dma_get_csrt_dma_descriptors_by_uid(adev, uid);
 
-> Even the UART would fail if it needed any PM methods, we just don't happe=
-n
-> to need that for SBSA and may be we could have made it work as amba devic=
-e
-> (can't recollect the exact reason for not doing so now).
+extract data from desc and populate the acpi dma descriptor
 
-SBSA doesn't require ID registers. SBSA UART is a "great" example of
-none of the existing 2 standards work, so let's create a 3rd.
+struct acpi_dma *adma = kzalloc(sizeof(*adma), GFP_KERNEL);
 
-Rob
+adma->dev = ...;
+adma->acpi_dma_xlate = ...;
+adma->data = ...;
+adma->base_request_line = ...;
+adma->end_request_line = ...;
+
+ret = acpi_dma_controller_register(dev, adma);
+
+
+ drivers/dma/acpi-dma.c   | 121 +++++++++++++++++++++++++++++++--------
+ drivers/dma/dw/acpi.c    |   3 +-
+ include/linux/acpi_dma.h |  44 +++++++++-----
+ 3 files changed, 128 insertions(+), 40 deletions(-)
+
+diff --git a/drivers/dma/acpi-dma.c b/drivers/dma/acpi-dma.c
+index 5906eae26e2a..4337e724d386 100644
+--- a/drivers/dma/acpi-dma.c
++++ b/drivers/dma/acpi-dma.c
+@@ -112,7 +112,7 @@ static int acpi_dma_parse_resource_group(const struct acpi_csrt_group *grp,
+ }
+ 
+ /**
+- * acpi_dma_parse_csrt - parse CSRT to exctract additional DMA resources
++ * acpi_dma_parse_csrt_shared_info - parse CSRT shared info to extract additional DMA resources
+  * @adev:	ACPI device to match with
+  * @adma:	struct acpi_dma of the given DMA controller
+  *
+@@ -124,7 +124,7 @@ static int acpi_dma_parse_resource_group(const struct acpi_csrt_group *grp,
+  * We are using this table to get the request line range of the specific DMA
+  * controller to be used later.
+  */
+-static void acpi_dma_parse_csrt(struct acpi_device *adev, struct acpi_dma *adma)
++static void acpi_dma_parse_csrt_shared_info(struct acpi_device *adev, struct acpi_dma *adma)
+ {
+ 	struct acpi_csrt_group *grp, *end;
+ 	struct acpi_table_csrt *csrt;
+@@ -157,12 +157,64 @@ static void acpi_dma_parse_csrt(struct acpi_device *adev, struct acpi_dma *adma)
+ }
+ 
+ /**
+- * acpi_dma_controller_register - Register a DMA controller to ACPI DMA helpers
+- * @dev:		struct device of DMA controller
+- * @acpi_dma_xlate:	translation function which converts a dma specifier
+- *			into a dma_chan structure
+- * @data:		pointer to controller specific data to be used by
+- *			translation function
++ * acpi_dma_get_csrt_dma_descriptors_by_uid - Get DMA descriptor from CSRT table for given id
++ * @adev:		ACPI device node
++ * @uid:		Unique ID for look up
++ *
++ * Parse CSRT table and look for DMA descriptors matching the given ID
++ *
++ * Return:
++ * Pointer to DMA descriptor on success or NULL on error/no match.
++ */
++struct acpi_csrt_descriptor *
++acpi_dma_get_csrt_dma_descriptors_by_uid(struct acpi_device *adev, uint32_t uid)
++{
++	struct acpi_csrt_descriptor *desc, *desc_end, *desc_found = NULL;
++	struct acpi_csrt_group *grp, *grp_end;
++	struct acpi_table_csrt *csrt;
++	acpi_status status;
++
++	status = acpi_get_table(ACPI_SIG_CSRT, 0,
++				(struct acpi_table_header **)&csrt);
++	if (ACPI_FAILURE(status)) {
++		if (status != AE_NOT_FOUND)
++			dev_warn(&adev->dev, "failed to get the CSRT table\n");
++		return NULL;
++	}
++
++	grp = (struct acpi_csrt_group *)(csrt + 1);
++	grp_end =
++		(struct acpi_csrt_group *)((void *)csrt + csrt->header.length);
++
++	while (grp < grp_end) {
++		desc = (struct acpi_csrt_descriptor *)((void *)(grp + 1) +
++						       grp->shared_info_length);
++		desc_end = (struct acpi_csrt_descriptor *)((void *)grp +
++							   grp->length);
++		while (desc < desc_end) {
++			if (desc->uid == uid) {
++				desc_found = desc;
++				goto found;
++			}
++			desc = (struct acpi_csrt_descriptor *)(((void *)desc) +
++							       desc->length);
++		}
++		grp = (struct acpi_csrt_group *)((void *)grp + grp->length);
++	}
++
++found:
++	acpi_put_table((struct acpi_table_header *)csrt);
++
++	return desc_found;
++}
++
++/**
++ * acpi_dma_controller_register_with_csrt_shared_desc - Register a DMA controller to ACPI DMA helpers
++ * @dev:                struct device of DMA controller
++ * @acpi_dma_xlate:     translation function which converts a dma specifier
++ *                      into a dma_chan structure
++ * @data:               pointer to controller specific data to be used by
++ *                      translation function
+  *
+  * Allocated memory should be freed with appropriate acpi_dma_controller_free()
+  * call.
+@@ -170,16 +222,14 @@ static void acpi_dma_parse_csrt(struct acpi_device *adev, struct acpi_dma *adma)
+  * Return:
+  * 0 on success or appropriate errno value on error.
+  */
+-int acpi_dma_controller_register(struct device *dev,
+-		struct dma_chan *(*acpi_dma_xlate)
+-		(struct acpi_dma_spec *, struct acpi_dma *),
+-		void *data)
++int acpi_dma_controller_register_with_csrt_shared_desc(
++	struct device *dev,
++	struct dma_chan *(*acpi_dma_xlate)(struct acpi_dma_spec *,
++					   struct acpi_dma *),
++	void *data)
+ {
+ 	struct acpi_device *adev;
+-	struct acpi_dma	*adma;
+-
+-	if (!dev || !acpi_dma_xlate)
+-		return -EINVAL;
++	struct acpi_dma *adma;
+ 
+ 	/* Check if the device was enumerated by ACPI */
+ 	adev = ACPI_COMPANION(dev);
+@@ -194,7 +244,34 @@ int acpi_dma_controller_register(struct device *dev,
+ 	adma->acpi_dma_xlate = acpi_dma_xlate;
+ 	adma->data = data;
+ 
+-	acpi_dma_parse_csrt(adev, adma);
++	acpi_dma_parse_csrt_shared_info(adev, adma);
++
++	return acpi_dma_controller_register(dev, adma);
++}
++EXPORT_SYMBOL_GPL(acpi_dma_controller_register_with_csrt_shared_desc);
++
++/**
++ * acpi_dma_controller_register - Register a DMA controller to ACPI DMA helpers
++ * @dev:		struct device of DMA controller
++ * @adma:		ACPI DMA descriptor
++ *
++ * Allocated memory should be freed with appropriate acpi_dma_controller_free()
++ * call.
++ *
++ * Return:
++ * 0 on success or appropriate errno value on error.
++ */
++int acpi_dma_controller_register(struct device *dev, struct acpi_dma *adma)
++{
++	struct acpi_device *adev;
++
++	if (!dev || !adma || !adma->acpi_dma_xlate)
++		return -EINVAL;
++
++	/* Check if the device was enumerated by ACPI */
++	adev = ACPI_COMPANION(dev);
++	if (!adev)
++		return -EINVAL;
+ 
+ 	/* Now queue acpi_dma controller structure in list */
+ 	mutex_lock(&acpi_dma_lock);
+@@ -244,8 +321,7 @@ static void devm_acpi_dma_release(struct device *dev, void *res)
+ /**
+  * devm_acpi_dma_controller_register - resource managed acpi_dma_controller_register()
+  * @dev:		device that is registering this DMA controller
+- * @acpi_dma_xlate:	translation function
+- * @data:		pointer to controller specific data
++ * @adma:		ACPI specific DMA descriptor
+  *
+  * Managed acpi_dma_controller_register(). DMA controller registered by this
+  * function are automatically freed on driver detach. See
+@@ -254,10 +330,7 @@ static void devm_acpi_dma_release(struct device *dev, void *res)
+  * Return:
+  * 0 on success or appropriate errno value on error.
+  */
+-int devm_acpi_dma_controller_register(struct device *dev,
+-		struct dma_chan *(*acpi_dma_xlate)
+-		(struct acpi_dma_spec *, struct acpi_dma *),
+-		void *data)
++int devm_acpi_dma_controller_register(struct device *dev, struct acpi_dma *adma)
+ {
+ 	void *res;
+ 	int ret;
+@@ -266,7 +339,7 @@ int devm_acpi_dma_controller_register(struct device *dev,
+ 	if (!res)
+ 		return -ENOMEM;
+ 
+-	ret = acpi_dma_controller_register(dev, acpi_dma_xlate, data);
++	ret = acpi_dma_controller_register(dev, adma);
+ 	if (ret) {
+ 		devres_free(res);
+ 		return ret;
+diff --git a/drivers/dma/dw/acpi.c b/drivers/dma/dw/acpi.c
+index c510c109d2c3..45d2707f4843 100644
+--- a/drivers/dma/dw/acpi.c
++++ b/drivers/dma/dw/acpi.c
+@@ -37,7 +37,8 @@ void dw_dma_acpi_controller_register(struct dw_dma *dw)
+ 	dma_cap_set(DMA_SLAVE, info->dma_cap);
+ 	info->filter_fn = dw_dma_acpi_filter;
+ 
+-	ret = acpi_dma_controller_register(dev, acpi_dma_simple_xlate, info);
++	ret = acpi_dma_controller_register_with_csrt_shared_desc(
++		dev, acpi_dma_simple_xlate, info);
+ 	if (ret)
+ 		dev_err(dev, "could not register acpi_dma_controller\n");
+ }
+diff --git a/include/linux/acpi_dma.h b/include/linux/acpi_dma.h
+index 72cedb916a9c..c2c50dcc9c07 100644
+--- a/include/linux/acpi_dma.h
++++ b/include/linux/acpi_dma.h
+@@ -56,15 +56,10 @@ struct acpi_dma_filter_info {
+ 
+ #ifdef CONFIG_DMA_ACPI
+ 
+-int acpi_dma_controller_register(struct device *dev,
+-		struct dma_chan *(*acpi_dma_xlate)
+-		(struct acpi_dma_spec *, struct acpi_dma *),
+-		void *data);
++int acpi_dma_controller_register(struct device *dev, struct acpi_dma *adma);
+ int acpi_dma_controller_free(struct device *dev);
+ int devm_acpi_dma_controller_register(struct device *dev,
+-		struct dma_chan *(*acpi_dma_xlate)
+-		(struct acpi_dma_spec *, struct acpi_dma *),
+-		void *data);
++				      struct acpi_dma *adma);
+ void devm_acpi_dma_controller_free(struct device *dev);
+ 
+ struct dma_chan *acpi_dma_request_slave_chan_by_index(struct device *dev,
+@@ -74,23 +69,36 @@ struct dma_chan *acpi_dma_request_slave_chan_by_name(struct device *dev,
+ 
+ struct dma_chan *acpi_dma_simple_xlate(struct acpi_dma_spec *dma_spec,
+ 				       struct acpi_dma *adma);
++struct acpi_csrt_descriptor *
++acpi_dma_get_csrt_dma_descriptors_by_uid(struct acpi_device *adev,
++					 uint32_t uid);
++int acpi_dma_controller_register_with_csrt_shared_desc(
++	struct device *dev,
++	struct dma_chan *(*acpi_dma_xlate)(struct acpi_dma_spec *,
++					   struct acpi_dma *),
++	void *data);
+ #else
+ 
+-static inline int acpi_dma_controller_register(struct device *dev,
+-		struct dma_chan *(*acpi_dma_xlate)
+-		(struct acpi_dma_spec *, struct acpi_dma *),
+-		void *data)
++static inline int acpi_dma_controller_register(struct device *dev, struct acpi_dma *adma)
+ {
+ 	return -ENODEV;
+ }
++
++static inline int acpi_dma_controller_register_with_csrt_shared_desc(
++	struct device *dev,
++	struct dma_chan *(*acpi_dma_xlate)(struct acpi_dma_spec *,
++					   struct acpi_dma *),
++	void *data)
++{
++	return -ENODEV;
++}
++
+ static inline int acpi_dma_controller_free(struct device *dev)
+ {
+ 	return -ENODEV;
+ }
+ static inline int devm_acpi_dma_controller_register(struct device *dev,
+-		struct dma_chan *(*acpi_dma_xlate)
+-		(struct acpi_dma_spec *, struct acpi_dma *),
+-		void *data)
++						    struct acpi_dma *adma)
+ {
+ 	return -ENODEV;
+ }
+@@ -109,7 +117,13 @@ static inline struct dma_chan *acpi_dma_request_slave_chan_by_name(
+ 	return ERR_PTR(-ENODEV);
+ }
+ 
+-#define acpi_dma_simple_xlate	NULL
++static inline struct acpi_csrt_descriptor *
++acpi_dma_get_csrt_dma_descriptors_by_uid(struct acpi_device *adev, uint32_t uid)
++{
++	return ERR_PTR(-ENODEV);
++}
++
++#define acpi_dma_simple_xlate NULL
+ 
+ #endif
+ 
+-- 
+2.25.1
+
