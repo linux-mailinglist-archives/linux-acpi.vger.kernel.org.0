@@ -2,115 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8A9C6C4528
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 09:37:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4C906C4686
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 10:34:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229648AbjCVIhN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Mar 2023 04:37:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42592 "EHLO
+        id S230145AbjCVJeu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Mar 2023 05:34:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjCVIhM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 04:37:12 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17EB05D89A;
-        Wed, 22 Mar 2023 01:36:53 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BFA49B81B8B;
-        Wed, 22 Mar 2023 08:36:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35703C433D2;
-        Wed, 22 Mar 2023 08:36:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1679474210;
-        bh=WUxmnRvTd0FvURbgK1vrDNjlJjS1QMteze29duvTQlM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ug0Xo6ptb8cXZCjg0bvriKbTToHXMFAko5RoPZUFXg74hC8e9pU20mV/GsLnO5IzA
-         wZDjEHdrAdxqcguMYWQHthnTBLXjqPP9Gk4YAZaqIQtVfmoq/y0uRgcffu+RXn9iDh
-         nv31Vvb3ezs3ezV7bQ5P5f9T0qiK3teuq2CZamBs=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH v2 02/19] ACPI: LPIT: move to use bus_get_dev_root()
-Date:   Wed, 22 Mar 2023 09:36:46 +0100
-Message-Id: <20230322083646.2937580-1-gregkh@linuxfoundation.org>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <CAJZ5v0goaS5O1_Hds2DnWsw_G-Dg4fU9NEY0=chyn5ECTcBmDw@mail.gmail.com>
-References: <CAJZ5v0goaS5O1_Hds2DnWsw_G-Dg4fU9NEY0=chyn5ECTcBmDw@mail.gmail.com>
+        with ESMTP id S229764AbjCVJeq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 05:34:46 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5ED55B5EB;
+        Wed, 22 Mar 2023 02:34:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679477685; x=1711013685;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fK4x/+YRfUIRtZ+pvcmEGyczE+hU9nK++OpjJJk8DUk=;
+  b=IfMrtFNdLu6GGHMWXh0tioOFSdmyeJ8BIHRbvBPEPUXRo/4GuvDNFxwm
+   Covi3dbABIAiSM/VS9//UnjbizYQHEMBlVRiCmcn2bxlMhSMGe7SFYHtH
+   CPKRfEVQGNAI93AfUalsyLmfoUuh8Z4AwITdiikOQ1ZKrjc3MXNVP7rjs
+   D+ER90a8i05YHRDDa69cft6dxor/z7jFkY0bj7myHgwvwAa17FonbZXf6
+   qhyyw8Jk5x6f/1Oea7ErCxfXZj2sA2WYjXFLRNhLK95mInVe8aG8i9Ill
+   YnZzHvH0vZ988+vKPebhS3ZwHeb3VbTjkjSz7ijhTaSDJIaqtq4KzymOn
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10656"; a="323011291"
+X-IronPort-AV: E=Sophos;i="5.98,281,1673942400"; 
+   d="scan'208";a="323011291"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2023 02:34:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10656"; a="770982993"
+X-IronPort-AV: E=Sophos;i="5.98,281,1673942400"; 
+   d="scan'208";a="770982993"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by FMSMGA003.fm.intel.com with ESMTP; 22 Mar 2023 02:34:42 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1peurg-00757N-0c;
+        Wed, 22 Mar 2023 11:34:40 +0200
+Date:   Wed, 22 Mar 2023 11:34:39 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Niyas Sait <niyas.sait@linaro.org>
+Cc:     mika.westerberg@linux.intel.com, vkoul@kernel.org,
+        dmaengine@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Sudeep.Holla@arm.com, Souvik.Chakravarty@arm.com,
+        Sunny.Wang@arm.com, lorenzo.pieralisi@linaro.org,
+        bob.zhang@cixtech.com, fugang.duan@cixtech.com
+Subject: Re: [RFC v1 1/1] Refactor ACPI DMA to support platforms without
+ shared info descriptor in CSRT
+Message-ID: <ZBrLr4QDdZpgs3RV@smile.fi.intel.com>
+References: <20230321160241.1339538-1-niyas.sait@linaro.org>
+ <ZBnvHSmHVvgsumlM@smile.fi.intel.com>
+ <6e90881b-ba24-7f5a-e80d-1ae7fc9d9382@linaro.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2262; i=gregkh@linuxfoundation.org; h=from:subject; bh=WUxmnRvTd0FvURbgK1vrDNjlJjS1QMteze29duvTQlM=; b=owGbwMvMwCRo6H6F97bub03G02pJDClS++QKCxKDdEo//Uyrurjk0ZIrv5xckoN3/RF+U22Vt yi2fsKVjlgWBkEmBlkxRZYv23iO7q84pOhlaHsaZg4rE8gQBi5OAZjIlycMC/o7pvxlvOiSN81t VeT9/o17D0/eepRhroy1RWq46BkmaRWh2RJLbf/uEgqdBgA=
-X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6e90881b-ba24-7f5a-e80d-1ae7fc9d9382@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-0.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Direct access to the struct bus_type dev_root pointer is going away soon
-so replace that with a call to bus_get_dev_root() instead, which is what
-it is there for.
+On Wed, Mar 22, 2023 at 07:56:11AM +0000, Niyas Sait wrote:
+> On 21/03/2023 17:53, Andy Shevchenko wrote:
+> 
+> > can_we_avoid_long_name_of_the_functions_please() ?
+> 
+> Sure, will do that.
+> 
+> > Also is this renaming is a must?
+> 
+> It is not a must. I considered the existing method with shared info
+> as a special case as it uses non standard descriptors from CSRT table
+> and introduced the new function to handle it.
+> 
+> > Btw, what is the real argument of not using this table?
+> > 
+> > Yes, I know that this is an MS extension, but why ARM needs something else and
+> > why even that is needed at all? CSRT is only for the _shared_ DMA resources
+> > and I think most of the IPs nowadays are using private DMA engines (or
+> > semi-private when driver based on ID can know which channel services which
+> > device).
+> 
+> The issue is that shared info descriptor is not part of CSRT definition [1]
+> and I think it is not standardized or documented anywhere.
+> 
+> I was specifically looking at NXP I.MX8MP platform and the DMA lines for
+> devices are specified using FixedDMA resource descriptor. I think other Arm
+> platforms like RPi have similar requirement.
 
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
-v2: - change logic to test for dev_root at the beginning of the function
-      and error out then based on review comments from Rafael.
-    - fix error handling for ioremap() call to properly drop the
-      reference on dev_root if it failed.
+Perhaps, but my question is _why_ is it so?
+I.o.w. what is the technical background for this solution.
 
- drivers/acpi/acpi_lpit.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+> [1] https://uefi.org/sites/default/files/resources/CSRT%20v2.pdf
 
-diff --git a/drivers/acpi/acpi_lpit.c b/drivers/acpi/acpi_lpit.c
-index 3843d2576d3f..c5598b6d5db8 100644
---- a/drivers/acpi/acpi_lpit.c
-+++ b/drivers/acpi/acpi_lpit.c
-@@ -98,6 +98,12 @@ EXPORT_SYMBOL_GPL(lpit_read_residency_count_address);
- static void lpit_update_residency(struct lpit_residency_info *info,
- 				 struct acpi_lpit_native *lpit_native)
- {
-+	struct device *dev_root = bus_get_dev_root(&cpu_subsys);
-+
-+	/* Silently fail, if cpuidle attribute group is not present */
-+	if (!dev_root)
-+		return;
-+
- 	info->frequency = lpit_native->counter_frequency ?
- 				lpit_native->counter_frequency : tsc_khz * 1000;
- 	if (!info->frequency)
-@@ -108,18 +114,18 @@ static void lpit_update_residency(struct lpit_residency_info *info,
- 		info->iomem_addr = ioremap(info->gaddr.address,
- 						   info->gaddr.bit_width / 8);
- 		if (!info->iomem_addr)
--			return;
-+			goto exit;
- 
--		/* Silently fail, if cpuidle attribute group is not present */
--		sysfs_add_file_to_group(&cpu_subsys.dev_root->kobj,
-+		sysfs_add_file_to_group(&dev_root->kobj,
- 					&dev_attr_low_power_idle_system_residency_us.attr,
- 					"cpuidle");
- 	} else if (info->gaddr.space_id == ACPI_ADR_SPACE_FIXED_HARDWARE) {
--		/* Silently fail, if cpuidle attribute group is not present */
--		sysfs_add_file_to_group(&cpu_subsys.dev_root->kobj,
-+		sysfs_add_file_to_group(&dev_root->kobj,
- 					&dev_attr_low_power_idle_cpu_residency_us.attr,
- 					"cpuidle");
- 	}
-+exit:
-+	put_device(dev_root);
- }
- 
- static void lpit_process(u64 begin, u64 end)
 -- 
-2.40.0
+With Best Regards,
+Andy Shevchenko
+
 
