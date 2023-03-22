@@ -2,69 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4BA26C4FA8
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 16:47:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5502C6C4FB8
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 16:51:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229589AbjCVPrD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Mar 2023 11:47:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40000 "EHLO
+        id S229668AbjCVPvu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Mar 2023 11:51:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229766AbjCVPrC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 11:47:02 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA90A23847;
-        Wed, 22 Mar 2023 08:47:00 -0700 (PDT)
-Received: from zn.tnic (p5de8e687.dip0.t-ipconnect.de [93.232.230.135])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 16F7A1EC0531;
-        Wed, 22 Mar 2023 16:46:59 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1679500019;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=+4vSBeySAyyGWQbS6E21bGMaFAXtRHmEtedZQgdBxdw=;
-        b=dzJrZ9KNOZdSZiC7UafF/CuDm202FLouWgsfcY4LdfqlFUNMkcD/4MFwNZFs8pK7jXUhws
-        3HwXPC4EWVKFbnX97vLVDI/APEQrmstZQjapbHrXy21cTdkVTJcjDDLuIoTespiIlcOkUd
-        jy56ZkdpFn/CK+NS/9VmLE2nRcmsYko=
-Date:   Wed, 22 Mar 2023 16:46:55 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kalra, Ashish" <ashish.kalra@amd.com>,
-        linux-crypto@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
-Subject: Re: [PATCH v3 0/8] Support ACPI PSP on Hyper-V
-Message-ID: <20230322154655.GDZBsi75f6LnQStxSp@fat_crate.local>
-References: <20230320191956.1354602-1-jpiotrowski@linux.microsoft.com>
+        with ESMTP id S229927AbjCVPvt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 11:51:49 -0400
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B617C23C56
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Mar 2023 08:51:47 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id y14so17595297wrq.4
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Mar 2023 08:51:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679500306;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=D5Eifdopw31mjfKmNF1NMYE89orTEit7qkJMshxV+uw=;
+        b=dbT4LveGU1bLON7XsTtGelepOrg4v4dLGAwXKqrR7fj53K7GbBBUml9XAJHdQkSOHd
+         18DO/l7qXakDMRX7UUvVbZxXnzQIdQYPKoYl7l0q0D6JJUKRR4NIgDhgVqOLLe+yZGNP
+         icG0yfPdcW1NhtIxSrzK0ig7Yifth5vja0UNXSiFO++ylwOYBSnbEtB2FOk6cOfNGghK
+         rb/vhVAiSo0myvDlN+HTesYoefKzT7BYFLeudEZasov5NjWxqw1lPlTtD96vmkHO3nbH
+         4h5MzA5n/8cJEFd3BCcdlGpfxucU3FGKjxsVifIzwRaiTm9MRwnrl9h4trI9gp3Ayz+n
+         2kAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679500306;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=D5Eifdopw31mjfKmNF1NMYE89orTEit7qkJMshxV+uw=;
+        b=Cv2Ce53Mrls4kggFREoN/Op6mJ99wLApgqdqLCajLjw4pOkO6P4iwlYeNPzDGqxvRH
+         I0lcIxcyQa1hZbcP93DxkiZXtuQdGwR70IA3GwP3VHACs7nhl9/BivKlnDq7orOkIIZ5
+         SXRaznhoxlUJiU++PccWXA+gY44bSGCkMrrtiQxJYp3gq9Yji+l4SrnD+fMp/3BmQFIV
+         dqvt2W/SwszbkuW18SsTUbHf/NXi47bM0aPehm9gBJuStyCQfF45aAmjPN5CxtBx3iov
+         7NheFKdbHOTW95L1PVSDm/xAmvKKZXZHXvGxXYi98Jq+hatmBBThjAv0MZnanHgAmLLv
+         p3yg==
+X-Gm-Message-State: AAQBX9edyQWHbpEErmTLUTVepnOA7OHzZvtfPtNBDNTEWE0UrTz2sI94
+        TAE8o4APREIaW9EN5u0kt1Cc9g==
+X-Google-Smtp-Source: AKy350Z8MX5a3aiUvzxaVIYlRVTlRp5zcr4AR3+hu+yYqzrTYE34UO5bdIIAe9nmPE5Mp9qxgFIcCQ==
+X-Received: by 2002:adf:f552:0:b0:2cf:f0c3:79ba with SMTP id j18-20020adff552000000b002cff0c379bamr176772wrp.67.1679500306203;
+        Wed, 22 Mar 2023 08:51:46 -0700 (PDT)
+Received: from [192.168.1.166] ([90.243.20.231])
+        by smtp.gmail.com with ESMTPSA id x2-20020a5d60c2000000b002cfe71153b4sm14112893wrt.60.2023.03.22.08.51.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Mar 2023 08:51:45 -0700 (PDT)
+Message-ID: <635f5ad4-9360-eb22-3780-d91a04cc0768@linaro.org>
+Date:   Wed, 22 Mar 2023 15:51:45 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230320191956.1354602-1-jpiotrowski@linux.microsoft.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.9.0
+Subject: Re: [RFC v1 1/1] Refactor ACPI DMA to support platforms without
+ shared info descriptor in CSRT
+Content-Language: en-US
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     mika.westerberg@linux.intel.com, vkoul@kernel.org,
+        dmaengine@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Sudeep.Holla@arm.com, Souvik.Chakravarty@arm.com,
+        Sunny.Wang@arm.com, lorenzo.pieralisi@linaro.org,
+        bob.zhang@cixtech.com, fugang.duan@cixtech.com
+References: <20230321160241.1339538-1-niyas.sait@linaro.org>
+ <ZBnvHSmHVvgsumlM@smile.fi.intel.com>
+ <6e90881b-ba24-7f5a-e80d-1ae7fc9d9382@linaro.org>
+ <ZBrLr4QDdZpgs3RV@smile.fi.intel.com>
+ <7ecf4fbf-392e-7c55-b731-2d61f962ddeb@linaro.org>
+ <ZBsRlJ0o9Amf402f@smile.fi.intel.com>
+From:   Niyas Sait <niyas.sait@linaro.org>
+In-Reply-To: <ZBsRlJ0o9Amf402f@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 20, 2023 at 07:19:48PM +0000, Jeremi Piotrowski wrote:
-> This series is a prerequisite for nested SNP-host support on Hyper-V
 
-I'm curious: what in the *world* is a sensible use case for doing this
-thing at all?
+On 22/03/2023 14:32, Andy Shevchenko wrote:
+> SPCR is not standard either. So, that's to show that this is not an argument.
+> 
+> Are those firmwares already in the wild? Why they can't be fixed and why
+> existing CSRT shared info data structure can't be used.
+
+Few arm platform ACPI tables without shared info
+
+NXP I.MX8 EVK:
+
+https://github.com/ms-iot/MU_SILICON_NXP/blob/master/iMX8Pkg/AcpiTables/Csrt.aslc
+
+Raspberry Pi:
+
+https://github.com/tianocore/edk2-platforms/blob/master/Platform/RaspberryPi/AcpiTables/Csrt.aslc
+
+Windows Dev Kit (Qualcomm 8cx Gen 3)
+
+https://github.com/linux-surface/acpidumps/blob/master/windows_dev_kit_2023/csrt.dsl
+
+
+Do you know where is the shared info data structure defined ?
+I couldn't find any reference to it.
+
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Niyas
