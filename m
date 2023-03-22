@@ -2,115 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 441116C4DD6
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 15:34:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4D9D6C4EA6
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 15:56:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230258AbjCVOeE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Mar 2023 10:34:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55632 "EHLO
+        id S231209AbjCVO4R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Mar 2023 10:56:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231577AbjCVOeA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 10:34:00 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2192A27497;
-        Wed, 22 Mar 2023 07:33:20 -0700 (PDT)
+        with ESMTP id S230144AbjCVOzz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 10:55:55 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7189B7D98;
+        Wed, 22 Mar 2023 07:55:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679495600; x=1711031600;
+  t=1679496934; x=1711032934;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=z1iRri0eBPqvUL2gJgBO1g46Y4Dzoqj6rLL+2BQRDQs=;
-  b=aq2NsDGwQKAEQFw8eK5UbTdz7kqNm4Hef8X8sOy5dUvHCUafuroTrelm
-   SQ4jEcWZltW3BL04z1xHQsd0BxAmjUS3ylGscJfF/XnFz6dG1EjO3za8S
-   xXaxDq9Of1ea7IJ1SxHtrs2ct1Wb+pjvSyCtQjYMv3UWzOynbyQ/vsKjM
-   bXjd6QQkf4O4M+2I4v2H8d4LqUQlX4oHJdBwwpLEe6gR04maZvTSKwZt4
-   GipmFEdu/CHRaGtDX+adAvcl6Cga/9mBiI6GGO4OFEyBh2TCA1QPDjc08
-   Znu0lKSHw9y9wrJsGmJglw0DE3wsAMRI6aIH5v0Rq2kSgefDA5auhkk+i
+  bh=h6hskFbHw7KYbk2YVxQW62X04Lp2hb/hxK+OlVrcXP4=;
+  b=Rxxgqsu8UAdQnb1h6K303HVluCyVmnz5D30/nhwmcJpyS2ZenbrSU+gm
+   xor7pUpiJDVctjX0QEwTy3seq0xPXoPnUc9sMuncpewpEuXtcL3mniXxA
+   msnsVqGNYn7nCZ7Sb7m0sbzmR7G+1u+K8Ye68+b+MN+95fXd1m8ubkisk
+   u6eIYjWQwJILL7weXKA2jg/GiseLs3iwxvzB/QC89bJUxcQarhb9UI8mQ
+   WSqCikoydSgBJNovxKH/rIJ6w9qeLtAJLQCgQ5NFTPq52bsQ0vtRPuAyj
+   0MwEwHlTehZrvJvtw4bvhQe8b/XPKlVafmzQygqFre+2ip37Y4pdHvYKi
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="341587315"
+X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="327613246"
 X-IronPort-AV: E=Sophos;i="5.98,282,1673942400"; 
-   d="scan'208";a="341587315"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2023 07:32:57 -0700
+   d="scan'208";a="327613246"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2023 07:55:34 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="746345583"
+X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="792583313"
 X-IronPort-AV: E=Sophos;i="5.98,282,1673942400"; 
-   d="scan'208";a="746345583"
+   d="scan'208";a="792583313"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga008.fm.intel.com with ESMTP; 22 Mar 2023 07:32:54 -0700
+  by fmsmga002.fm.intel.com with ESMTP; 22 Mar 2023 07:55:32 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pezWG-007AJ8-1o;
-        Wed, 22 Mar 2023 16:32:52 +0200
-Date:   Wed, 22 Mar 2023 16:32:52 +0200
+        id 1pezsA-007Agk-0e;
+        Wed, 22 Mar 2023 16:55:30 +0200
+Date:   Wed, 22 Mar 2023 16:55:29 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Niyas Sait <niyas.sait@linaro.org>
-Cc:     mika.westerberg@linux.intel.com, vkoul@kernel.org,
-        dmaengine@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Sudeep.Holla@arm.com, Souvik.Chakravarty@arm.com,
-        Sunny.Wang@arm.com, lorenzo.pieralisi@linaro.org,
-        bob.zhang@cixtech.com, fugang.duan@cixtech.com
-Subject: Re: [RFC v1 1/1] Refactor ACPI DMA to support platforms without
- shared info descriptor in CSRT
-Message-ID: <ZBsRlJ0o9Amf402f@smile.fi.intel.com>
-References: <20230321160241.1339538-1-niyas.sait@linaro.org>
- <ZBnvHSmHVvgsumlM@smile.fi.intel.com>
- <6e90881b-ba24-7f5a-e80d-1ae7fc9d9382@linaro.org>
- <ZBrLr4QDdZpgs3RV@smile.fi.intel.com>
- <7ecf4fbf-392e-7c55-b731-2d61f962ddeb@linaro.org>
+To:     Werner Sembach <wse@tuxedocomputers.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] gpiolib: acpi: Add a ignore wakeup quirk for Clevo NL5xNU
+Message-ID: <ZBsW4XzDvBXNSy2C@smile.fi.intel.com>
+References: <20230322121547.14997-1-wse@tuxedocomputers.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7ecf4fbf-392e-7c55-b731-2d61f962ddeb@linaro.org>
+In-Reply-To: <20230322121547.14997-1-wse@tuxedocomputers.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 22, 2023 at 12:00:36PM +0000, Niyas Sait wrote:
-> On 22/03/2023 09:34, Andy Shevchenko wrote:
-
-...
-
-> > > > Btw, what is the real argument of not using this table?
-> > > > 
-> > > > Yes, I know that this is an MS extension, but why ARM needs something else and
-> > > > why even that is needed at all? CSRT is only for the_shared_  DMA resources
-> > > > and I think most of the IPs nowadays are using private DMA engines (or
-> > > > semi-private when driver based on ID can know which channel services which
-> > > > device).
-> > > The issue is that shared info descriptor is not part of CSRT definition [1]
-> > > and I think it is not standardized or documented anywhere.
-> > > 
-> > > I was specifically looking at NXP I.MX8MP platform and the DMA lines for
-> > > devices are specified using FixedDMA resource descriptor. I think other Arm
-> > > platforms like RPi have similar requirement.
-> > Perhaps, but my question is_why_  is it so?
-> > I.o.w. what is the technical background for this solution.
-> > 
+On Wed, Mar 22, 2023 at 01:15:47PM +0100, Werner Sembach wrote:
+> commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+> changed the policy such that I2C touchpads may be able to wake up the
+> system by default if the system is configured as such.
 > 
-> NXP I.MX8MP board uses shared DMA controller and the current ACPI firmware
-> describes DMA request lines for devices using ACPI FixedDMA descriptors.
+> However on Clevo NL5xNU there is a mistake in the ACPI tables that the
+> TP_ATTN# signal connected to GPIO 9 is configured as ActiveLow and level
+> triggered but connected to a pull up. As soon as the system suspends the
+> touchpad loses power and then the system wakes up.
 > 
-> > JFYI: ARM platform(s) use SPCR, which is also not a part of the specification.
+> To avoid this problem, introduce a quirk for this model that will prevent
+> the wakeup capability for being set for GPIO 9.
 > 
-> SPCR and CSRT tables have permissive licensing and probably okay to use
-> them.
+> This patch is analoge to a very similar patch for NL5xRU, just the DMI
+> string changed.
+
+Fine,
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
+> Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+> Cc: stable@vger.kernel.org
+> ---
+>  drivers/gpio/gpiolib-acpi.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
 > 
-> The main issue is that the shared info descriptor in the CSRT table is not a
-> standard and none of the arm platforms uses them.
-
-SPCR is not standard either. So, that's to show that this is not an argument.
-
-Are those firmwares already in the wild? Why they can't be fixed and why
-existing CSRT shared info data structure can't be used.
-
-> >> [1]https://uefi.org/sites/default/files/resources/CSRT%20v2.pdf
+> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+> index 34ff048e70d0e..055013f959b25 100644
+> --- a/drivers/gpio/gpiolib-acpi.c
+> +++ b/drivers/gpio/gpiolib-acpi.c
+> @@ -1624,6 +1624,19 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
+>  			.ignore_interrupt = "AMDI0030:00@18",
+>  		},
+>  	},
+> +	{
+> +		/*
+> +		 * Spurious wakeups from TP_ATTN# pin
+> +		 * Found in BIOS 1.7.8
+> +		 * https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627
+> +		 */
+> +		.matches = {
+> +			DMI_MATCH(DMI_BOARD_NAME, "NL5xNU"),
+> +		},
+> +		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+> +			.ignore_wake = "ELAN0415:00@9",
+> +		},
+> +	},
+>  	{
+>  		/*
+>  		 * Spurious wakeups from TP_ATTN# pin
+> -- 
+> 2.34.1
+> 
 
 -- 
 With Best Regards,
