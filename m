@@ -2,51 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A58686C5604
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 21:02:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54ABB6C567B
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 21:06:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231546AbjCVUCn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Mar 2023 16:02:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59792 "EHLO
+        id S230430AbjCVUGs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Mar 2023 16:06:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231513AbjCVUCK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 16:02:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D06B06BC25;
-        Wed, 22 Mar 2023 12:59:06 -0700 (PDT)
+        with ESMTP id S231706AbjCVUGO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 16:06:14 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAAC174A54;
+        Wed, 22 Mar 2023 13:01:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AF99B62276;
-        Wed, 22 Mar 2023 19:59:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14074C433D2;
-        Wed, 22 Mar 2023 19:59:04 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id EEDB4B81DF0;
+        Wed, 22 Mar 2023 20:00:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE61C433A0;
+        Wed, 22 Mar 2023 20:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679515146;
-        bh=UgHQf1efIHBgU4uG2r7B5JWlDxv2+s1TXxnzspAXBoo=;
+        s=k20201202; t=1679515222;
+        bh=J8GKrg4aO8fIPLrHH3wbFzd1mUfN+opVwytvi9zLVUo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b1Q/jEYlGkQ+f4jM7md3oa4a+wDHkauElMlagZDT54QFqXQ5B2yY9dfrRnnNCmS72
-         bVRGKZuxWZfxEYZ/83n6Rz2QSDf363kWYnunvnOwCIUJtICfktoGwyISneFs+b2ISR
-         LVxc/2NMlmDX495wtaXvu04PdVs0zNLy1k9ZnbOIZ4cz1cU2poo0Smp7WZzMcWLcYQ
-         AnUBaUMgvOxiC6SJfvFs1K8Ksa58/LjNHJ9M3BLbVYMnjobef0i17mvDoGMVXKey6N
-         mPZ30SYrMA3HzMUuVKCPTjahdpO9u2OdWhN8066AZ1DAzF/5xLgjtZictZRsBIJVgU
-         8o3ZTvNqGSlnA==
+        b=Omikanzftp9K1GZKaGZyEj7qOedPDWuwPfhNxYGYeOvkTpNCylC8wEXdGLx1skSq8
+         4ND2NkNlnpWkOAM05eD2U9Zu/DRuqgScVXtvj4EGqVPBwZYdMCZu2j1klgPu2EPGdc
+         suHW7mFlhTdllUv9ixE52a8cvtK2to3L1nqf54a4xfiyKdUfUCb0+ujTn5OGUu93eH
+         5RirDW5v19sT2/kDsrnm0Kuf5Sp/9X64CG39rE49gZfR7LzcDHkzm4b9u4iSV00L5n
+         Nq/MCo5HqDL4VnuO7GsgVVQrhxcBMf8JjWc8klkb3Uy4gWqIANRZyilmkDQKjtCmKA
+         bwZRNbOl8muOA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Chen Yu <yu.c.chen@intel.com>,
-        Hariganesh Govindarajulu <hariganesh.govindarajulu@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, robert.moore@intel.com,
-        junming@nfschina.com, linux-acpi@vger.kernel.org,
-        acpica-devel@lists.linuxfoundation.org
-Subject: [PATCH AUTOSEL 6.2 33/45] ACPI: tools: pfrut: Check if the input of level and type is in the right numeric range
-Date:   Wed, 22 Mar 2023 15:56:27 -0400
-Message-Id: <20230322195639.1995821-33-sashal@kernel.org>
+Cc:     "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 08/34] ACPI: video: Add backlight=native DMI quirk for Dell Vostro 15 3535
+Date:   Wed, 22 Mar 2023 15:59:00 -0400
+Message-Id: <20230322195926.1996699-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230322195639.1995821-1-sashal@kernel.org>
-References: <20230322195639.1995821-1-sashal@kernel.org>
+In-Reply-To: <20230322195926.1996699-1-sashal@kernel.org>
+References: <20230322195926.1996699-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -59,91 +56,39 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Chen Yu <yu.c.chen@intel.com>
+From: "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>
 
-[ Upstream commit 0bc23d8b2237a104d7f8379d687aa4cb82e2968b ]
+[ Upstream commit 89b0411481967a2e8c91190a211a359966cfcf4b ]
 
-The user provides arbitrary non-numeic value to level and type,
-which could bring unexpected behavior. In this case the expected
-behavior would be to throw an error.
+Sometimes the system boots up with a acpi_video0 backlight interface
+which doesn't work. So add Dell Vostro 15 3535 into the
+video_detect_dmi_table to set it to native explicitly.
 
- pfrut -h
-usage: pfrut [OPTIONS]
-code injection:
--l, --load
--s, --stage
--a, --activate
--u, --update [stage and activate]
--q, --query
--d, --revid
-update telemetry:
--G, --getloginfo
--T, --type(0:execution, 1:history)
--L, --level(0, 1, 2, 4)
--R, --read
--D, --revid log
-
- pfrut -T A
- pfrut -G
-log_level:0
-log_type:0
-log_revid:2
-max_data_size:65536
-chunk1_size:0
-chunk2_size:1530
-rollover_cnt:0
-reset_cnt:17
-
-Fix this by restricting the input to be in the expected range.
-
-Reported-by: Hariganesh Govindarajulu <hariganesh.govindarajulu@intel.com>
-Suggested-by: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Signed-off-by: Rafael J. Wysocki <rjw@rjwysocki.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/acpi/tools/pfrut/pfrut.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/acpi/video_detect.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tools/power/acpi/tools/pfrut/pfrut.c b/tools/power/acpi/tools/pfrut/pfrut.c
-index 52aa0351533c3..388c9e3ad0407 100644
---- a/tools/power/acpi/tools/pfrut/pfrut.c
-+++ b/tools/power/acpi/tools/pfrut/pfrut.c
-@@ -97,7 +97,7 @@ static struct option long_options[] = {
- static void parse_options(int argc, char **argv)
- {
- 	int option_index = 0;
--	char *pathname;
-+	char *pathname, *endptr;
- 	int opt;
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index 7f0ed845cd6ad..f06b3d3556710 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -714,6 +714,13 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Dell G15 5515"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_native,
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++		DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 15 3535"),
++		},
++	},
  
- 	pathname = strdup(argv[0]);
-@@ -125,11 +125,23 @@ static void parse_options(int argc, char **argv)
- 			log_getinfo = 1;
- 			break;
- 		case 'T':
--			log_type = atoi(optarg);
-+			log_type = strtol(optarg, &endptr, 0);
-+			if (*endptr || (log_type != 0 && log_type != 1)) {
-+				printf("Number expected: type(0:execution, 1:history) - Quit.\n");
-+				exit(1);
-+			}
-+
- 			set_log_type = 1;
- 			break;
- 		case 'L':
--			log_level = atoi(optarg);
-+			log_level = strtol(optarg, &endptr, 0);
-+			if (*endptr ||
-+			    (log_level != 0 && log_level != 1 &&
-+			     log_level != 2 && log_level != 4)) {
-+				printf("Number expected: level(0, 1, 2, 4) - Quit.\n");
-+				exit(1);
-+			}
-+
- 			set_log_level = 1;
- 			break;
- 		case 'R':
+ 	/*
+ 	 * Desktops which falsely report a backlight and which our heuristics
 -- 
 2.39.2
 
