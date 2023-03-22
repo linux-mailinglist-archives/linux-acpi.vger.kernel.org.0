@@ -2,54 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 074F26C53C0
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 19:31:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 541F26C53C4
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 19:34:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229682AbjCVSbk convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 22 Mar 2023 14:31:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33492 "EHLO
+        id S229747AbjCVSeK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Mar 2023 14:34:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229672AbjCVSbj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 14:31:39 -0400
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41CE05FA55;
-        Wed, 22 Mar 2023 11:31:37 -0700 (PDT)
-Received: by mail-ed1-f43.google.com with SMTP id cn12so31073086edb.4;
-        Wed, 22 Mar 2023 11:31:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679509896;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YMBGzMix3e1+wn1UGktWXWRXSZYz21zAxjtu3HzbOV4=;
-        b=7K72JhSzss92vWMJ4dYGRDlJg2yQtio83uVhY9OQsxVAYsONgNK+mzRoByaXDqqZ6g
-         uG5bUD8n0J3VcOFeIatCihgY0C+VjSPqEVTpKDdW3ajHUsFNwL4vmG49CYJaXr9aHTfA
-         9qyZ63alPLTK7g68QPcp6hpQKSMAcPdTSsd35o+Nx00m19j+iK106UzuKeM3Ny7tdNTB
-         eDyF/xz6gbfPDe8VQyTL2j93U+qmNlixO/Ew6IKwkxFW6Ub4hELbz8bsGEgDYYtV7zgk
-         Bo9rq6qANi8wivTqbKSnnrS3lLtOyLTueEFhUBFKL2PybFba4nUGTigzPKlVGhOV27yI
-         oq8g==
-X-Gm-Message-State: AO0yUKX2rjXihNL/AMgxoah9KCVHJ6KvolVLakC+PmbqDUYLb1Oq9ruV
-        CyyL4CKCeIxmX4TF1ZVpj8rD1L2L2N7fIngnwRc=
-X-Google-Smtp-Source: AK7set+2KxH6n18hcPwVNha2Ag6dVKcUR1tjNRWOlqfYxJpiI2NWnBQpIv/s6BPGzTRDhYBr78WNcn0nxi3e2u7JXaI=
-X-Received: by 2002:a17:907:d9f:b0:931:6921:bdbb with SMTP id
- go31-20020a1709070d9f00b009316921bdbbmr3760891ejc.2.1679509895830; Wed, 22
- Mar 2023 11:31:35 -0700 (PDT)
+        with ESMTP id S229684AbjCVSeK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 14:34:10 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CFBC1B565;
+        Wed, 22 Mar 2023 11:34:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679510049; x=1711046049;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=9NAyFsvY5+wb9A+DTRm5DkiLvM20CJJWJW3U7Px2UqU=;
+  b=RrSdMyED94YwKI9ngRKOU56iCNM9vLOZRIbti95Ed9ZYO/qlvPVzA9Fu
+   xN4BtslWsfpkZ57jIZjDt/G5cr3K2bg34+gtXgFcsFyqSGDz5qmOqXDVm
+   bF2dwQDON0f64ArcMYTC3lmdUYxwefBpGa92VDS5qGEYpNx/vwFxBxTF/
+   4/OHkfvcS0Wnnvh68SL4K77JgpvjCEOWtt+sYUlovFQQYngtWfXD/nizH
+   bxzlV7mObGH4PdjAMEy1mUVpSbk+d70xv9HGmDrc13BSSJS+KGPCdPZcp
+   JM1W5u0VqLz4ZyJWCzh4jixOw1Ad/DGxzWQC13gKuBAmpIX1fUSU1i8H8
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="341660702"
+X-IronPort-AV: E=Sophos;i="5.98,282,1673942400"; 
+   d="scan'208";a="341660702"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2023 11:34:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="712359834"
+X-IronPort-AV: E=Sophos;i="5.98,282,1673942400"; 
+   d="scan'208";a="712359834"
+Received: from mtfreder-mobl1.amr.corp.intel.com (HELO [10.209.35.23]) ([10.209.35.23])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2023 11:34:08 -0700
+Message-ID: <18431bad-8595-143b-e8af-14e448af871c@intel.com>
+Date:   Wed, 22 Mar 2023 11:34:08 -0700
 MIME-Version: 1.0
-References: <20230320212019.2479101-1-sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20230320212019.2479101-1-sathyanarayanan.kuppuswamy@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 22 Mar 2023 19:31:24 +0100
-Message-ID: <CAJZ5v0ggn6q5WJsK7jP7EbxnRq6xxwzj2PwOMxhV6L6Rb5iSJw@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: sysfs: Enable ACPI sysfs support for CCEL records
-To:     Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc:     Rafael J Wysocki <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH v2] x86/ACPI/boot: Improve __acpi_acquire_global_lock
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Uros Bizjak <ubizjak@gmail.com>
+Cc:     x86@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>
+References: <20230320212012.12704-1-ubizjak@gmail.com>
+ <CAJZ5v0jAysMPb180tMMmoGBEewENKn-fW7bwzGyMVv4wUrX=LA@mail.gmail.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <CAJZ5v0jAysMPb180tMMmoGBEewENKn-fW7bwzGyMVv4wUrX=LA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,81 +69,11 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 20, 2023 at 10:21 PM Kuppuswamy Sathyanarayanan
-<sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
->
-> The Confidential Computing Event Log (CCEL) table provides the address
-> and length of the CCEL records area in UEFI reserved memory.
+On 3/22/23 11:24, Rafael J. Wysocki wrote:
+> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> or please let me know if you want me to pick this up (in which case it
+> will require an ACK from one of the x86 maintainers).
 
-The rest of this paragraph can be omitted.
-
-> To access
-> these records, userspace can use /dev/mem to retrieve them. But
-> '/dev/mem' is not enabled on many systems for security reasons.
->
-> So to allow user space access these event log records without the
-> /dev/mem interface, add support to access it via sysfs interface. The
-> ACPI driver has provided read only access to BERT records area via
-> '/sys/firmware/acpi/tables/data/BERT' in sysfs. So follow the same way,
-> and add support for /sys/firmware/acpi/tables/data/CCEL to enable
-> read-only access to the CCEL recorids area.
->
-> More details about the CCEL table can be found in ACPI specification
-> r6.5, sec titled "CC Event Log ACPI Table".
-
-Please provide a proper section number here and a Link: tag pointing
-to the relevant section of the spec (which is
-https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Model.html#cc-event-log-acpi-table
-I think).
-
-> Original-patch-by: Haibo Xu <haibo1.xu@intel.com>
-
-If the original patch has been signed-off by that developer, you can
-use a Co-developed-by: along with the original S-o-b tag here.
-
-> [Original patch is for TDEL table, modified it for CCEL support]
-> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> ---
->
-> Changes since v1:
->  * Removed unnecessary parenthesis as per Rafael's suggestion..
->
->  drivers/acpi/sysfs.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
->
-> diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-> index 7f4ff56c9d42..687524b50085 100644
-> --- a/drivers/acpi/sysfs.c
-> +++ b/drivers/acpi/sysfs.c
-> @@ -458,11 +458,28 @@ static int acpi_bert_data_init(void *th, struct acpi_data_attr *data_attr)
->         return sysfs_create_bin_file(tables_data_kobj, &data_attr->attr);
->  }
->
-> +static int acpi_ccel_data_init(void *th, struct acpi_data_attr *data_attr)
-> +{
-> +       struct acpi_table_ccel *ccel = th;
-> +
-> +       if (ccel->header.length < sizeof(struct acpi_table_ccel) ||
-> +           !ccel->log_area_start_address || !ccel->log_area_minimum_length) {
-> +               kfree(data_attr);
-> +               return -EINVAL;
-> +       }
-> +       data_attr->addr = ccel->log_area_start_address;
-> +       data_attr->attr.size = ccel->log_area_minimum_length;
-> +       data_attr->attr.attr.name = "CCEL";
-> +
-> +       return sysfs_create_bin_file(tables_data_kobj, &data_attr->attr);
-> +}
-> +
->  static struct acpi_data_obj {
->         char *name;
->         int (*fn)(void *, struct acpi_data_attr *);
->  } acpi_data_objs[] = {
->         { ACPI_SIG_BERT, acpi_bert_data_init },
-> +       { ACPI_SIG_CCEL, acpi_ccel_data_init },
->  };
->
->  #define NUM_ACPI_DATA_OBJS ARRAY_SIZE(acpi_data_objs)
-> --
-> 2.34.1
->
+I'll pull it into x86/acpi.  I'm kinda shocked the compiler is so
+clueless, but this makes the C code more readable anyway.  Win/win, I guess.
