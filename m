@@ -2,113 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E30BB6C46A6
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 10:38:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D1546C4732
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 11:05:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230242AbjCVJi3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Mar 2023 05:38:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41178 "EHLO
+        id S229513AbjCVKFh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Mar 2023 06:05:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230479AbjCVJi0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 05:38:26 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6FB11989;
-        Wed, 22 Mar 2023 02:38:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679477905; x=1711013905;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=BQ0ma1DS/5QZs63ZmlAiWW5xtbmloqfCkaH7fe2xda8=;
-  b=c1uPOVREdRuJWag0YmrbLfp/5OZb2vW4Pi9Zp/XhDYHi869dF822MIj/
-   hQQdsVMEUTUPrBOjtgJs5ysO3xItK3jCgnJ/2uaz4fvgjwGJFa/ryF6b2
-   JsMg9bLjkw57UduBlCOpcudfbxNM9h6Ib0JeyGv2aKgLB5jNtR/9vnOdf
-   0HGY1ZjFrFg5cVKYT/+qSJTlr28yCDyUeS28EN++q5AwlB73rHO55osDW
-   JW6zO7lVN5nE87MCqztFlMh59cHei+2YHHzl68uoBlf/4V44FhXjtrAZD
-   68ylPM9BZs2IhUPCnQtJkuRobeqSaIp9SdlZZgwtraQDXPeAjvUkHNdJe
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10656"; a="319562297"
-X-IronPort-AV: E=Sophos;i="5.98,281,1673942400"; 
-   d="scan'208";a="319562297"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2023 02:38:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10656"; a="684237136"
-X-IronPort-AV: E=Sophos;i="5.98,281,1673942400"; 
-   d="scan'208";a="684237136"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga007.fm.intel.com with ESMTP; 22 Mar 2023 02:38:22 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1peuvF-0075Az-0P;
-        Wed, 22 Mar 2023 11:38:21 +0200
-Date:   Wed, 22 Mar 2023 11:38:20 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Niyas Sait <niyas.sait@linaro.org>
-Cc:     mika.westerberg@linux.intel.com, vkoul@kernel.org,
-        dmaengine@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Sudeep.Holla@arm.com, Souvik.Chakravarty@arm.com,
-        Sunny.Wang@arm.com, lorenzo.pieralisi@linaro.org,
-        bob.zhang@cixtech.com, fugang.duan@cixtech.com
-Subject: Re: [RFC v1 1/1] Refactor ACPI DMA to support platforms without
- shared info descriptor in CSRT
-Message-ID: <ZBrMjLVpJRfj7Hx9@smile.fi.intel.com>
-References: <20230321160241.1339538-1-niyas.sait@linaro.org>
- <ZBnvHSmHVvgsumlM@smile.fi.intel.com>
- <6e90881b-ba24-7f5a-e80d-1ae7fc9d9382@linaro.org>
- <ZBrLr4QDdZpgs3RV@smile.fi.intel.com>
+        with ESMTP id S229595AbjCVKFg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 06:05:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A477D193F0
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Mar 2023 03:04:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1679479493;
+        h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=UlzXqLaiFJqutr/ifAilPZ+K+vBBAuY2KbY33ds/cHU=;
+        b=MajMBT9zF9h81mj37OGtTieTEP4yzTU9IXut1dPXc8XVT+LaYkjn8ZuD+on2gF7MHUZxE7
+        ZjQiWym6mZ0o+0kWywV+yASFNuwLII7cLwes7MkmW1527dfqcTZIOeDVqK9p1Zf65H4ycM
+        vL48AEVpZYFKSToT/8o2Ak8Rq2rJ+pY=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-397-MxjLgk6tNoSlrv3u6Iw5Ow-1; Wed, 22 Mar 2023 06:04:52 -0400
+X-MC-Unique: MxjLgk6tNoSlrv3u6Iw5Ow-1
+Received: by mail-qv1-f71.google.com with SMTP id f3-20020a0cc303000000b005c9966620daso4455703qvi.4
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Mar 2023 03:04:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679479492;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:reply-to:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UlzXqLaiFJqutr/ifAilPZ+K+vBBAuY2KbY33ds/cHU=;
+        b=UaRP+nFaeIOYeLiZF7iWOh+oaCqD8nr/razayjMQBj/YRthvdNJywAH798xOGxpP9D
+         vv9ogdIVmAIDQ+el2UuaU6peJUxgHGThncQ5EUpvYGh2Nci4FSlXN8LM5px6d1GLLs2C
+         MZRI6evIQYLhTRJylc0TzcC+yInTFLEm1idbK0KO5+6KX8La0hX1BzAU70urxWfl6V+R
+         4v6e+vOeSM3mge0agWlQUGy8R279xW4he2UHRH3OwBWioF99UVz2uEMAJZjds+SKC0CJ
+         Jh6DmVDGbs6pLt3665mG6gphOClcnCl1G1+WacVH2Ob8pXswSZWkOZJqrfSDM57CLG3h
+         CHRA==
+X-Gm-Message-State: AO0yUKVBi9KJJvowhnywMpllgO9RtMKROEcr/x672noWuhP/iGnd5lu+
+        /DT3txcbiKmOMQOUG+cHuWnbfcvTYKHlGUReDXechE7/4/ffe39YkTMjj6N04ArI9y9krhjraXc
+        3z05uZdpweteM4h6SG1lBVQ==
+X-Received: by 2002:ac8:4e83:0:b0:3bb:88e2:7625 with SMTP id 3-20020ac84e83000000b003bb88e27625mr4875206qtp.24.1679479492328;
+        Wed, 22 Mar 2023 03:04:52 -0700 (PDT)
+X-Google-Smtp-Source: AK7set+MdvA2FH9NCy5hSRE5kdbgRKa8XU3K3oS6KEMykktU5okAu5JCYZ0efXr+GMZF3/gdAkmxJg==
+X-Received: by 2002:ac8:4e83:0:b0:3bb:88e2:7625 with SMTP id 3-20020ac84e83000000b003bb88e27625mr4875177qtp.24.1679479492048;
+        Wed, 22 Mar 2023 03:04:52 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874? ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+        by smtp.gmail.com with ESMTPSA id w8-20020a05620a148800b0073bb0ef3a8esm11009302qkj.21.2023.03.22.03.04.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Mar 2023 03:04:51 -0700 (PDT)
+Message-ID: <1a227cc4-217b-01aa-ecee-9819160d9a44@redhat.com>
+Date:   Wed, 22 Mar 2023 11:04:48 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZBrLr4QDdZpgs3RV@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Reply-To: eric.auger@redhat.com
+Subject: Re: [RESEND PATCH] ACPI: VIOT: Initialize the correct IOMMU fwspec
+Content-Language: en-US
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>, rafael@kernel.org
+Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org, iommu@lists.linux.dev,
+        linux-pci@vger.kernel.org, helgaas@kernel.org
+References: <20230320180528.281755-1-jean-philippe@linaro.org>
+From:   Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20230320180528.281755-1-jean-philippe@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 22, 2023 at 11:34:40AM +0200, Andy Shevchenko wrote:
-> On Wed, Mar 22, 2023 at 07:56:11AM +0000, Niyas Sait wrote:
-> > On 21/03/2023 17:53, Andy Shevchenko wrote:
-> > 
-> > > can_we_avoid_long_name_of_the_functions_please() ?
-> > 
-> > Sure, will do that.
-> > 
-> > > Also is this renaming is a must?
-> > 
-> > It is not a must. I considered the existing method with shared info
-> > as a special case as it uses non standard descriptors from CSRT table
-> > and introduced the new function to handle it.
-> > 
-> > > Btw, what is the real argument of not using this table?
-> > > 
-> > > Yes, I know that this is an MS extension, but why ARM needs something else and
-> > > why even that is needed at all? CSRT is only for the _shared_ DMA resources
-> > > and I think most of the IPs nowadays are using private DMA engines (or
-> > > semi-private when driver based on ID can know which channel services which
-> > > device).
-> > 
-> > The issue is that shared info descriptor is not part of CSRT definition [1]
-> > and I think it is not standardized or documented anywhere.
-> > 
-> > I was specifically looking at NXP I.MX8MP platform and the DMA lines for
-> > devices are specified using FixedDMA resource descriptor. I think other Arm
-> > platforms like RPi have similar requirement.
-> 
-> Perhaps, but my question is _why_ is it so?
-> I.o.w. what is the technical background for this solution.
-> 
-> > [1] https://uefi.org/sites/default/files/resources/CSRT%20v2.pdf
+Hi Jean,
 
-JFYI: ARM platform(s) use SPCR, which is also not a part of the specification.
+On 3/20/23 19:05, Jean-Philippe Brucker wrote:
+> When setting up DMA for a PCI device, we need to initialize its
+> iommu_fwspec with all possible alias RIDs (such as PCI bridges). To do
+> this we use pci_for_each_dma_alias() which calls
+> viot_pci_dev_iommu_init(). This function incorrectly initializes the
+> fwspec of the bridge instead of the device being configured. Fix it by
+> passing the original device as context to pci_for_each_dma_alias().
+>
+> Fixes: 3cf485540e7b ("ACPI: Add driver for the VIOT table")
+> Reported-by: Eric Auger <eric.auger@redhat.com>
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
--- 
-With Best Regards,
-Andy Shevchenko
+Tested-by: Eric Auger <eric.auger@redhat.com>
 
+With this patch the pcie-to-pci bridge is assigned an iommu group.
+The iommu group topology is not yet correct (ie. end points downstream
+to the pcie-to-pci bridge are put in a separate iommu group) however
+this is not related to that patch and not supposed to be fixed here
+(https://lore.kernel.org/all/4fead092-1058-198a-b430-3dee0fffcd51@arm.com/)
+
+Thanks
+
+Eric
+
+> ---
+> This fixes issue (1) reported here:
+> https://lore.kernel.org/all/Y8qzOKm6kvhGWG1T@myrica/
+>
+> resend: Added linux-pci list
+> ---
+>  drivers/acpi/viot.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/acpi/viot.c b/drivers/acpi/viot.c
+> index ed752cbbe636..c8025921c129 100644
+> --- a/drivers/acpi/viot.c
+> +++ b/drivers/acpi/viot.c
+> @@ -328,6 +328,7 @@ static int viot_pci_dev_iommu_init(struct pci_dev *pdev, u16 dev_id, void *data)
+>  {
+>  	u32 epid;
+>  	struct viot_endpoint *ep;
+> +	struct device *aliased_dev = data;
+>  	u32 domain_nr = pci_domain_nr(pdev->bus);
+>  
+>  	list_for_each_entry(ep, &viot_pci_ranges, list) {
+> @@ -338,7 +339,7 @@ static int viot_pci_dev_iommu_init(struct pci_dev *pdev, u16 dev_id, void *data)
+>  			epid = ((domain_nr - ep->segment_start) << 16) +
+>  				dev_id - ep->bdf_start + ep->endpoint_id;
+>  
+> -			return viot_dev_iommu_init(&pdev->dev, ep->viommu,
+> +			return viot_dev_iommu_init(aliased_dev, ep->viommu,
+>  						   epid);
+>  		}
+>  	}
+> @@ -372,7 +373,7 @@ int viot_iommu_configure(struct device *dev)
+>  {
+>  	if (dev_is_pci(dev))
+>  		return pci_for_each_dma_alias(to_pci_dev(dev),
+> -					      viot_pci_dev_iommu_init, NULL);
+> +					      viot_pci_dev_iommu_init, dev);
+>  	else if (dev_is_platform(dev))
+>  		return viot_mmio_dev_iommu_init(to_platform_device(dev));
+>  	return -ENODEV;
 
