@@ -2,123 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6AD76C50AF
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 17:29:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83B526C514F
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 17:53:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229476AbjCVQ3D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Mar 2023 12:29:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35882 "EHLO
+        id S231215AbjCVQxb convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 22 Mar 2023 12:53:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229990AbjCVQ3B (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 12:29:01 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9782453739;
-        Wed, 22 Mar 2023 09:28:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679502509; x=1711038509;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=KfUvgiz4DVLzFaYO7oEOLPOOhMl2JyBbYso8oKRbz/4=;
-  b=iBLxbnttfPgbBL+Hn6mJCMQwPWgQpUpPd8Hu1O9g9KJ3fRzidD/eoUsX
-   G1h8DhvoAZZGvVFzc4dLyYtAB1T87PHCnnsKqxkVCSJLHs0hWEJEkIu6b
-   3+YtPCHMfLH6JrboGeoay2c7wzI1E//R9skB6CHyUJ4zFpN+C2wzpnQhd
-   kXeMePv2JwUGsEoz5qvh54z8gevBFFuXb8VN9JKVp6iP64zyH6KqswbrL
-   v2wzPX5hLMAHaxYZwjlSfpZiErMoopSQJNbFdMkxZ4fJHKZUo+chgmWV+
-   QnvxLNVTIJg06YD+HFLMNg/M+F17ShfwMfZYgKLZBh71dlwb+6y5n4e8P
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="339300029"
-X-IronPort-AV: E=Sophos;i="5.98,282,1673942400"; 
-   d="scan'208";a="339300029"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2023 09:28:09 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="771102926"
-X-IronPort-AV: E=Sophos;i="5.98,282,1673942400"; 
-   d="scan'208";a="771102926"
-Received: from jprokopo-mobl2.ger.corp.intel.com (HELO localhost) ([10.252.61.221])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2023 09:27:59 -0700
-From:   Jani Nikula <jani.nikula@intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Pin-yen Lin <treapking@chromium.org>
-Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <rfoss@kernel.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Xin Ji <xji@analogixsemi.com>, linux-kernel@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-acpi@vger.kernel.org,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        Lyude Paul <lyude@redhat.com>,
-        =?utf-8?Q?N=C3=ADco?= =?utf-8?Q?las_F_=2E_R_=2E_A_=2E_Prado?= 
-        <nfraprado@collabora.com>, Allen Chen <allen.chen@ite.com.tw>,
-        dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
-        Stephen Boyd <swboyd@chromium.org>,
-        chrome-platform@lists.linux.dev, devicetree@vger.kernel.org,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Imre Deak <imre.deak@intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        YueHaibing <yuehaibing@huawei.com>
-Subject: Re: [PATCH v14 03/10] drm/display: Add Type-C switch helpers
-In-Reply-To: <ZBrgD61p/p17IOJL@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20230322104639.221402-1-treapking@chromium.org>
- <20230322104639.221402-4-treapking@chromium.org>
- <ZBrgD61p/p17IOJL@smile.fi.intel.com>
-Date:   Wed, 22 Mar 2023 18:27:56 +0200
-Message-ID: <87edpg7nub.fsf@intel.com>
+        with ESMTP id S231217AbjCVQxR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 12:53:17 -0400
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54CAC37544;
+        Wed, 22 Mar 2023 09:53:06 -0700 (PDT)
+Received: by mail-ed1-f49.google.com with SMTP id w9so75654274edc.3;
+        Wed, 22 Mar 2023 09:53:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679503984;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+7yquCZhQA+v+ZfD35IzWGLK6PA2Qn2UgbWOUR3WcIs=;
+        b=sH/zWVez9i1nUFlMRDqDAyWKwb5hO0jAOPMTA0UnJ6pPuxygyxRYorgFxzVd1T99Jb
+         nwfsm3ImHnXqY9f5xZZtTq5FneFfKbgm0P/NQIMvFT1SVM7c3khmqlIdkWi7wxEWAcX8
+         x+1CnGXi+fb11WS3Hg2hIlHeu5dvALcLVt3KdMjQDR9h7pbitGb9LAYZMiU5a2e1j1Eb
+         o8S9ZQ3g9JimxqJKRLO+eVLUSgAy8yrB+tXysjmYEuUyP3wQgZ1afyjBUZIDdV7SF+r1
+         DkY+fxVNo3oVYdVkxLK5oYdbg6f8vcGhl8Pu6aZW+BRPBtfx5tYfKFdYMVQW4iYbJZ7j
+         u8DQ==
+X-Gm-Message-State: AO0yUKVxISqgYzC8DOm0+N0Gy4hLeeM902uLz9sI4Zddyl2qKH6Que5/
+        J/3x4JKK09vJmAN2yos0wkwNSEOKY5k1kEgXgr71dM9W
+X-Google-Smtp-Source: AK7set8/U60E58wa9luxEtwbEFbm4h7J+Ws/lQ2rT0SBr67D3TPjBoIhkbHYwTDOLKSWzmL0nL2s0QhkEqMLOI8IkVU=
+X-Received: by 2002:a17:906:c413:b0:92f:7c42:863d with SMTP id
+ u19-20020a170906c41300b0092f7c42863dmr3408827ejz.2.1679503984146; Wed, 22 Mar
+ 2023 09:53:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-        version=3.4.6
+References: <20230317073310.4237-1-xueshuai@linux.alibaba.com> <SJ1PR11MB6083FE558641F0E57FF1F5A4FC869@SJ1PR11MB6083.namprd11.prod.outlook.com>
+In-Reply-To: <SJ1PR11MB6083FE558641F0E57FF1F5A4FC869@SJ1PR11MB6083.namprd11.prod.outlook.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 22 Mar 2023 17:52:53 +0100
+Message-ID: <CAJZ5v0iX8N9G7yMC3f90JDuHXvdDRcwepcusp0bEctGBhGSnCg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: APEI: EINJ: warn on invalid argument when
+ explicitly indicated by platform
+To:     "Luck, Tony" <tony.luck@intel.com>,
+        Shuai Xue <xueshuai@linux.alibaba.com>
+Cc:     "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+        "benjamin.cheatham@amd.com" <benjamin.cheatham@amd.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "Williams, Dan J" <dan.j.williams@intel.com>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "jaylu102@amd.com" <jaylu102@amd.com>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "zhuo.song@linux.alibaba.com" <zhuo.song@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 22 Mar 2023, Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> On Wed, Mar 22, 2023 at 06:46:32PM +0800, Pin-yen Lin wrote:
->> +#ifdef CONFIG_DRM_DISPLAY_DP_TYPEC_HELPER
+On Wed, Mar 22, 2023 at 5:13 PM Luck, Tony <tony.luck@intel.com> wrote:
 >
-> Ah, maybe this should use IS_REACHABLE() ?
+> > Fix to return -EINVAL in the __einj_error_inject() error handling case
+> > instead of -EBUSY, when explicitly indicated by the platform in the status
+> > of the completed operation.
+>
+> Needs a bit longer description on the use case based on follow up discussion.
+> Key information is the EINVAL is an indicator to the user that the parameters they
+> supplied cannot be used for injection.
 
-Personally, I think IS_REACHABLE() is a build-time band-aid solution to
-a problem that should be solved in Kconfig. :p
+Right.
 
-I think it always means there's a configuration combo that shouldn't
-exist, and it's a surprise to the user when they've configured
-something, Kconfig has deemed it a valid configuration, but they don't
-get the feature they want.
+So Shuai, please resend the patch with a more elaborate changelog.
 
-As a user, how would they even debug that case? Double check configs,
-don't see anything wrong.
+> But for the code:
+>
+> Reviewed-by: Tony Luck <tony.luck@intel.com>
 
-
-BR,
-Jani.
-
-
--- 
-Jani Nikula, Intel Open Source Graphics Center
+And add the above tag to it when resending.
