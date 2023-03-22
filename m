@@ -2,92 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B26D6C48D4
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 12:16:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF4A26C49C3
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 12:59:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229975AbjCVLQI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Mar 2023 07:16:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60414 "EHLO
+        id S230295AbjCVL7w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Mar 2023 07:59:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229620AbjCVLQG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 07:16:06 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFCA2457C5;
-        Wed, 22 Mar 2023 04:16:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679483763; x=1711019763;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wzqzOip5nRM30jduumeE01e2CiTZUbRO+8j67GEvMOk=;
-  b=Qc1t9qTRfTDSqdGJQ5SXNPY7+4iu9tHHYIy0ZNJxn19DXp/fqO677Dv4
-   WFkwg8MiSH/cDEgHIkXUy0wudxGW8aAg1fMAWICZRUHgr4RWPr6+djVWE
-   RdKiC5A7Q9+ppwjZ1DgPlsiwv/eHbtNUb1SPyEiPUs42w6qBPyt5Ao/hR
-   O59DLqx4x3pEkGUlvRZqUvEnh7YX5XOCwxddQxgTuXaqt8gAT1HCoIhyb
-   cu3pg7zbShXRgtfnkO2XXGrUndX/vSR4+kihs8oUjRz/L8iHknmEm5nl7
-   Zo2sf/LtpmfAiPoZH1bkabtU6Tlas1qJbDEMHkNj5sLDgfiAhWySkjTzB
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10656"; a="337908532"
-X-IronPort-AV: E=Sophos;i="5.98,281,1673942400"; 
-   d="scan'208";a="337908532"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2023 04:16:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10656"; a="675226677"
-X-IronPort-AV: E=Sophos;i="5.98,281,1673942400"; 
-   d="scan'208";a="675226677"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga007.jf.intel.com with ESMTP; 22 Mar 2023 04:15:54 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pewRa-007752-29;
-        Wed, 22 Mar 2023 13:15:50 +0200
-Date:   Wed, 22 Mar 2023 13:15:50 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Pin-yen Lin <treapking@chromium.org>
-Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <rfoss@kernel.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        with ESMTP id S230316AbjCVL7t (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 07:59:49 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 867A0570B2;
+        Wed, 22 Mar 2023 04:59:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+        Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=js6wrcSboZp6fwXx17fVuydPet14APg414QbExASmX4=; b=On/jQ7qsZf3BuTxUJeQZPWpgYP
+        UQCuAtAOcwCJWwCXahZGnC0pwmo6myigtM0UXirMiGcGsanafNLfEGk8eyqEYGGfaG6NCP+o3A2/l
+        QLk8m2pkdZ6nk89J0aHpQxF2Bij6fKIeol65BgjwzJbvz5B3rrhI6GuY6Z45iIoZHbW9BubIi8NYa
+        fkz8Q/1RuUiTCTfFESw0KfQfYZ23vVNdFb41xRx8ml8HA6nOHCCDwEnh+xx6orAK8TSplZUvCMmo2
+        gsfIKYkZ7dF1vOE4Am26r80o8r26fA3WYAL5biKNPl2nZtHOhUgE+nYW6NHZ9ux54kAwaJhGvJwau
+        GO4F3/LQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:60718)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1pex7z-00034v-Fj; Wed, 22 Mar 2023 11:59:39 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1pex7w-0000KZ-H6; Wed, 22 Mar 2023 11:59:36 +0000
+Date:   Wed, 22 Mar 2023 11:59:36 +0000
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Xin Ji <xji@analogixsemi.com>, linux-kernel@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-acpi@vger.kernel.org,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        Lyude Paul <lyude@redhat.com>,
-        =?iso-8859-1?Q?N=EDcolas_F_=2E_R_=2E_A_=2E?= Prado 
-        <nfraprado@collabora.com>, Allen Chen <allen.chen@ite.com.tw>,
-        dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
-        Stephen Boyd <swboyd@chromium.org>,
-        chrome-platform@lists.linux.dev, devicetree@vger.kernel.org
-Subject: Re: [PATCH v14 07/10] drm/bridge: anx7625: Register Type C mode
- switches
-Message-ID: <ZBrjZj0VL20y1MUC@smile.fi.intel.com>
-References: <20230322104639.221402-1-treapking@chromium.org>
- <20230322104639.221402-8-treapking@chromium.org>
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jakub Kicinski <kuba@kernel.org>, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Vladimir Oltean <olteanv@gmail.com>
+Subject: [PATCH RFC net-next 0/7] Another attempt at moving mv88e6xxx forward
+Message-ID: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230322104639.221402-8-treapking@chromium.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
         URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -95,110 +65,36 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 22, 2023 at 06:46:36PM +0800, Pin-yen Lin wrote:
-> Register USB Type-C mode switches when the "mode-switch" property and
-> relevant ports are available in Device Tree. Configure the crosspoint
-> switch based on the entered alternate mode for a specific Type-C
-> connector.
-> 
-> Crosspoint switch can also be used for switching the output signal for
-> different orientations of a single USB Type-C connector, but the
-> orientation switch is not implemented yet. A TODO is added for this.
+Hi,
 
-...
+This is another attempt to move the mv88e6xxx driver forward so that we
+can eventually switch it to use phylink_pcs and become a non-legacy
+driver.
 
-> +static int anx7625_typec_mux_set(struct typec_mux_dev *mux,
-> +				 struct typec_mux_state *state)
-> +{
-> +	struct drm_dp_typec_port_data *port = typec_mux_get_drvdata(mux);
-> +	struct anx7625_data *ctx = port->data;
-> +	struct device *dev = ctx->dev;
-> +	struct drm_dp_typec_switch_desc switch_desc = ctx->switch_desc;
-> +	bool new_dp_connected, old_dp_connected;
-> +
-> +	if (switch_desc.num_typec_switches == 1)
-> +		return 0;
+The issue is that in order to switch to phylink_pcs, we need DSA and CPU
+ports to be known to phylink, otherwise the PCS code will not be called.
+In order for such ports to be known to phylink, we need to provide
+phylink with a configuration, and mv88e6xxx has a history of not
+specifying the configuration in firmware, but the driver internally
+handling that. This is fine, but it means we can't use phylink for such
+ports - and thus converting them to phylink_pcs can cause regressions.
 
-> +	wait_for_completion(&ctx->mux_register);
+Therefore, this series provides a way for a software-node configuration
+to be provided to DSA by the driver, which will then be used only for
+phylink to parse.
 
-How do we guarantee this won't become an infinite waiting?
-Perhaps a comment explaining that?
+Some of this patch set comes from an idea from Vladimir, but
+re-implemented in a substantially different way.
 
-> +	old_dp_connected = ctx->port_data[0].dp_connected ||
-> +			   ctx->port_data[1].dp_connected;
-> +
-> +	ctx->port_data[port->port_num].dp_connected =
-> +		state->alt &&
-> +		state->alt->svid == USB_TYPEC_DP_SID &&
-> +		state->alt->mode == USB_TYPEC_DP_MODE;
-> +
-> +	dev_dbg(dev, "mux_set dp_connected: c0=%d, c1=%d\n",
-> +		ctx->port_data[0].dp_connected, ctx->port_data[1].dp_connected);
-> +
-> +	new_dp_connected = ctx->port_data[0].dp_connected ||
-> +			   ctx->port_data[1].dp_connected;
-> +
-> +	/* DP on, power on first */
-> +	if (!old_dp_connected && new_dp_connected)
-> +		pm_runtime_get_sync(dev);
-> +
-> +	anx7625_typec_two_ports_update(ctx);
-> +
-> +	/* DP off, power off last */
-> +	if (old_dp_connected && !new_dp_connected)
-> +		pm_runtime_put_sync(dev);
-> +
-> +	return 0;
-> +}
-
-...
-
-> +	struct device_node *port_node = of_graph_get_port_by_id(dev->of_node, 1);
-
-You use fwnode below, so why not fwnode_graph_...(dev_fwnode(dev), ...) ?
-
-> +	struct drm_dp_typec_switch_desc *switch_desc = &ctx->switch_desc;
-> +	int ret;
-> +	u32 dp_lanes[4];
-> +	unsigned int i, num_lanes;
-> +
-> +	/*
-> +	 * Currently, only mode switch is implemented.
-> +	 * TODO: Implement Type-C orientation switch for anx7625.
-> +	 */
-> +	ret = drm_dp_register_typec_switches(dev, &port_node->fwnode,
-> +					     &ctx->switch_desc, ctx,
-> +					     anx7625_typec_mux_set);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ctx->port_data = devm_kcalloc(dev, switch_desc->num_typec_switches,
-> +				      sizeof(struct anx7625_typec_port_data),
-
-				      sizeof(*ctx->port_data),
-
-?
-
-> +				      GFP_KERNEL);
-> +	if (!ctx->port_data) {
-> +		ret = -ENOMEM;
-> +		goto unregister_mux;
-> +	}
-
-...
-
-> +struct anx7625_typec_port_data {
-> +	bool dp_connected;
-> +	enum typec_orientation orientation;
-
-Most likely enum will be 32-bit and bool 8-bit. Which means that the data type
-size become 8 bytes for no reason. Can you swap the lines and perhaps check this
-with `pahole` tool?
-
-> +};
+ drivers/base/swnode.c            |  14 +++-
+ drivers/net/dsa/mv88e6xxx/chip.c | 157 ++++++++++++++++++++++++++++-----------
+ drivers/net/phy/phylink.c        |  32 ++++++++
+ include/linux/phylink.h          |   1 +
+ include/linux/property.h         |   4 +
+ include/net/dsa.h                |   3 +
+ net/dsa/port.c                   |  33 ++++++--
+ 7 files changed, 191 insertions(+), 53 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
