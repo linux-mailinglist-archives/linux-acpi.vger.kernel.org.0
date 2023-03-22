@@ -2,117 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF6F56C49D5
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 13:01:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E20626C4A1D
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 13:16:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230416AbjCVMBD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Mar 2023 08:01:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47382 "EHLO
+        id S229747AbjCVMQ0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Mar 2023 08:16:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230415AbjCVMAs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 08:00:48 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 924705F6C1
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Mar 2023 05:00:39 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id d17so8315042wrb.11
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Mar 2023 05:00:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1679486438;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wpYhPbFNmhWZbxQ+2pcfKt9iFKv1OlqjHaycSTExZk4=;
-        b=T3+P58p7TtpSXyY3ZycUB/vhlz41Yj1CfMNVjOWonYKasqKMq9b8QMuOhuwGy7DcwD
-         Bwu9VRMcvxYt+2Er3PEVwKUkveKla8rLhghJRYHGb9eWLMvfoGmiXlB77k8RLeHq4HzH
-         4jIVTb4eQOIBz83B0X/g4N4kb0RRmDvN3+gqfS3Ybtpst74o4BdX1ncTx0aspd4FlfGT
-         AlgkXYY1OLI6r8WRDofTgbINQ1YR4RC+fdNWji1n2LSPaR51/ZOCOJX9eUEBEZJ7M9dS
-         c7oIDNYzGJAvpPuhIvdoKwDc+kyi1eaFNkNJyBpw0Rmo09B+N5wIyyFOUUUZ81r0NCI5
-         5puw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679486438;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wpYhPbFNmhWZbxQ+2pcfKt9iFKv1OlqjHaycSTExZk4=;
-        b=1zVWbflXZwZFWZNFZw0nFS3APgFvzAW5WWPeXBzeB6jNa4S15K/tGLpJS0FdGyUNhW
-         GdAL643v8pTlpJ5zg4tPi+l7u4a23u4j5QLKDzagi2VpAGKF8uP1yfIEPzBWpDO1znVI
-         ELyeAJM4Ydw+sntL5LCiZ1Z7pVpD8tbaPk7bjoI1N6qE8dy5VYBiDphH0epWAcNlHj3u
-         FuXiGiHZZbqWfpdRuhvUQ55+tmmt+N+7TFsjW8dC/sbmReRBl2SGjAARYap11xBWZOAy
-         oeFTDzpg2aj6JD4Y0GapMl3cE3TxS3ISthLj9P0tqsFPINPAxIuOMvTSHceJt4yIEWe0
-         M6jQ==
-X-Gm-Message-State: AO0yUKVEt2kDsPOPdUqrlrsJQfNZrSnNramHSmbSoWaMFxt+dhK2iyeN
-        ZWzCg61uefza2U4Wax/UmsSTXA==
-X-Google-Smtp-Source: AK7set8/yTqjcXgh/0/3dEkcHOUGMYrnXUP5s6INEQiSDvFROBDrAK59IhLwG+g/Y6jATAukLqfvKQ==
-X-Received: by 2002:a5d:6ace:0:b0:2d8:908c:8fa0 with SMTP id u14-20020a5d6ace000000b002d8908c8fa0mr5270114wrw.9.1679486438062;
-        Wed, 22 Mar 2023 05:00:38 -0700 (PDT)
-Received: from [192.168.1.166] ([90.243.20.231])
-        by smtp.gmail.com with ESMTPSA id d9-20020adfe889000000b002d97529b3bbsm3362583wrm.96.2023.03.22.05.00.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Mar 2023 05:00:37 -0700 (PDT)
-Message-ID: <7ecf4fbf-392e-7c55-b731-2d61f962ddeb@linaro.org>
-Date:   Wed, 22 Mar 2023 12:00:36 +0000
+        with ESMTP id S230182AbjCVMQ0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 08:16:26 -0400
+Received: from srv6.fidu.org (srv6.fidu.org [IPv6:2a01:4f8:231:de0::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9594D3BC7B;
+        Wed, 22 Mar 2023 05:16:23 -0700 (PDT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by srv6.fidu.org (Postfix) with ESMTP id 549E9C80099;
+        Wed, 22 Mar 2023 13:16:21 +0100 (CET)
+Authentication-Results: srv6.fidu.org (amavisd-new); dkim=pass (1024-bit key)
+        reason="pass (just generated, assumed good)"
+        header.d=tuxedocomputers.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
+        tuxedocomputers.com; h=content-transfer-encoding:mime-version
+        :x-mailer:message-id:date:date:subject:subject:from:from; s=
+        default; t=1679487381; x=1681301782; bh=IRZoqkpa2JHwbYME4Oy9ZTuc
+        3HU99D7pCB2zpCPss9g=; b=HUiSPVimsdwzqqgpGNVkAxhU9SSw36QmXd9dGOEG
+        U2+4Ld2RN/fvLQwxZ0nYzMfI5kG0syWimHSDYd73jGaB0/NftgLME0861khpxFVE
+        eJH2MpZDwyNiTLUMpSXD6Vyz/tYTFu4HwVGac4U9ZplWoEKoJQyEsBCbInhGXdDZ
+        +9w=
+X-Virus-Scanned: Debian amavisd-new at srv6.fidu.org
+Received: from srv6.fidu.org ([127.0.0.1])
+        by localhost (srv6.fidu.org [127.0.0.1]) (amavisd-new, port 10026)
+        with LMTP id iWhx4iGhRRD5; Wed, 22 Mar 2023 13:16:21 +0100 (CET)
+Received: from wsembach-tuxedo.fritz.box (host-212-18-30-247.customer.m-online.net [212.18.30.247])
+        (Authenticated sender: wse@tuxedocomputers.com)
+        by srv6.fidu.org (Postfix) with ESMTPA id B7372C80091;
+        Wed, 22 Mar 2023 13:16:20 +0100 (CET)
+From:   Werner Sembach <wse@tuxedocomputers.com>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Werner Sembach <wse@tuxedocomputers.com>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] gpiolib: acpi: Add a ignore wakeup quirk for Clevo NL5xNU
+Date:   Wed, 22 Mar 2023 13:15:47 +0100
+Message-Id: <20230322121547.14997-1-wse@tuxedocomputers.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.9.0
-Subject: Re: [RFC v1 1/1] Refactor ACPI DMA to support platforms without
- shared info descriptor in CSRT
-Content-Language: en-US
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     mika.westerberg@linux.intel.com, vkoul@kernel.org,
-        dmaengine@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Sudeep.Holla@arm.com, Souvik.Chakravarty@arm.com,
-        Sunny.Wang@arm.com, lorenzo.pieralisi@linaro.org,
-        bob.zhang@cixtech.com, fugang.duan@cixtech.com
-References: <20230321160241.1339538-1-niyas.sait@linaro.org>
- <ZBnvHSmHVvgsumlM@smile.fi.intel.com>
- <6e90881b-ba24-7f5a-e80d-1ae7fc9d9382@linaro.org>
- <ZBrLr4QDdZpgs3RV@smile.fi.intel.com>
-From:   Niyas Sait <niyas.sait@linaro.org>
-In-Reply-To: <ZBrLr4QDdZpgs3RV@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 22/03/2023 09:34, Andy Shevchenko wrote:
+commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+changed the policy such that I2C touchpads may be able to wake up the
+system by default if the system is configured as such.
 
->>> Btw, what is the real argument of not using this table?
->>>
->>> Yes, I know that this is an MS extension, but why ARM needs something else and
->>> why even that is needed at all? CSRT is only for the_shared_  DMA resources
->>> and I think most of the IPs nowadays are using private DMA engines (or
->>> semi-private when driver based on ID can know which channel services which
->>> device).
->> The issue is that shared info descriptor is not part of CSRT definition [1]
->> and I think it is not standardized or documented anywhere.
->>
->> I was specifically looking at NXP I.MX8MP platform and the DMA lines for
->> devices are specified using FixedDMA resource descriptor. I think other Arm
->> platforms like RPi have similar requirement.
-> Perhaps, but my question is_why_  is it so?
-> I.o.w. what is the technical background for this solution.
-> 
+However on Clevo NL5xNU there is a mistake in the ACPI tables that the
+TP_ATTN# signal connected to GPIO 9 is configured as ActiveLow and level
+triggered but connected to a pull up. As soon as the system suspends the
+touchpad loses power and then the system wakes up.
 
-NXP I.MX8MP board uses shared DMA controller and the current ACPI 
-firmware describes DMA request lines for devices using ACPI FixedDMA 
-descriptors.
+To avoid this problem, introduce a quirk for this model that will prevent
+the wakeup capability for being set for GPIO 9.
 
-> JFYI: ARM platform(s) use SPCR, which is also not a part of the specification.
+This patch is analoge to a very similar patch for NL5xRU, just the DMI
+string changed.
 
-SPCR and CSRT tables have permissive licensing and probably okay to use 
-them.
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/gpio/gpiolib-acpi.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-The main issue is that the shared info descriptor in the CSRT table is 
-not a standard and none of the arm platforms uses them.
-
- >> [1]https://uefi.org/sites/default/files/resources/CSRT%20v2.pdf
-
+diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+index 34ff048e70d0e..055013f959b25 100644
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -1624,6 +1624,19 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
+ 			.ignore_interrupt = "AMDI0030:00@18",
+ 		},
+ 	},
++	{
++		/*
++		 * Spurious wakeups from TP_ATTN# pin
++		 * Found in BIOS 1.7.8
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627
++		 */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "NL5xNU"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "ELAN0415:00@9",
++		},
++	},
+ 	{
+ 		/*
+ 		 * Spurious wakeups from TP_ATTN# pin
 -- 
-Niyas
+2.34.1
+
