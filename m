@@ -2,52 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0148C6C4836
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 11:49:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB02A6C486B
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 12:01:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230494AbjCVKtX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Mar 2023 06:49:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40870 "EHLO
+        id S229820AbjCVLBw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Mar 2023 07:01:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230498AbjCVKs1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 06:48:27 -0400
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4248F62B5D
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Mar 2023 03:47:46 -0700 (PDT)
-Received: by mail-pj1-x102e.google.com with SMTP id mp3-20020a17090b190300b0023fcc8ce113so8223360pjb.4
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Mar 2023 03:47:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1679482063;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+FF2ESmiiihfdUKZ1gHccbyU50W0AbxwPHMUw+YJ4po=;
-        b=nfLgwSYCb6c8k79DrPtmV/SnDKXeLf/SKbimoDCIuB9DzO+ChXJZp0SJ7NLDZL6aes
-         PCUUEnUHd8ePkTydG75UrPkpsXgNp9vW5OAGozkn4XjPWoyrEhEaqx+nnscCaLNN2q/O
-         nMZMU0IOrkSM7450xgpev38xoUB/TVGcA1HeE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679482063;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+FF2ESmiiihfdUKZ1gHccbyU50W0AbxwPHMUw+YJ4po=;
-        b=npl//1DV4NDZUBkIj6mIrZjzmQVvMgWsR4VXHPlJry0lQ+7Afa/m3AaU/cirKF5v/s
-         bI0OwWRjkCiHMoYjnXeD8su+KZMM0SmTu81C5FxJ3pMmd4fmNzvZI2UYAqCNjsyYJiGg
-         QYvJrcfmJmwaRhNDNrivGNDdo1ZKE3tlMGYuX42fX4zVBZdsVVVAEH9V88yZ4VZVoyiW
-         H34oeGjJhAyGt4/072HsMvq7j+dk3euPe/6GWv2qkVTEPwA5R7zMtVOd1fWziGciz272
-         V8XvfN9EDhcpHz+N3XLZUAu4xhAqli68dGUc81Xs7neqPGFANNUr0UiP8+PkpbS9ZK7A
-         VUbQ==
-X-Gm-Message-State: AO0yUKXM21q4NsBEw3eXf2uH7aLMJjQdkGYNiKjSnjj4I1EPY/pEzB8g
-        PWI32yQyJGPj09xYh6bKlmYCEA==
-X-Google-Smtp-Source: AK7set95cBQsa0keVL6mVamcmGVinLOyF+09EHb16w+HRk9NSY7l9YPI2xwhYoVj3l1Hu5DSdYYBAA==
-X-Received: by 2002:a17:90a:56:b0:23f:ebf2:d3de with SMTP id 22-20020a17090a005600b0023febf2d3demr3016122pjb.27.1679482063289;
-        Wed, 22 Mar 2023 03:47:43 -0700 (PDT)
-Received: from treapking.tpe.corp.google.com ([2401:fa00:1:10:343d:79bf:55f9:1da5])
-        by smtp.gmail.com with ESMTPSA id hg4-20020a17090b300400b002340d317f3esm9508742pjb.52.2023.03.22.03.47.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Mar 2023 03:47:43 -0700 (PDT)
-From:   Pin-yen Lin <treapking@chromium.org>
-To:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        with ESMTP id S229662AbjCVLBv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 07:01:51 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94225618BB;
+        Wed, 22 Mar 2023 04:01:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679482910; x=1711018910;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lLkmv9Lb2TsOKy5ARez9rxBCQWWL/7A4qexM0edagOM=;
+  b=bmlHiu7STW25n8vTIXakcyuJ08/hZ0o8H3ZXSpjRTXx9JOuQCuE9yYWs
+   hH7QfX/cP/liRGknfx8uEOaWIuFAg0iaHiO9hrDGPhctpilqblUAl2Lg1
+   6gQRN/XEmnuDQpEAWksWaC3VAgCoK9WfMniF6GgBnp3ehLYltOP6oeOvS
+   LvpdqjB2HQ7R7GTi84fIO3996cvE6KNwFf9QL2hDP5tm1rOg4P44Z9pLb
+   BqI6Cwq/z2FP/XL9W8dJl70LPAny4gBeiEFXrf7C/aYa03/mDO8ow+fWW
+   lkGMMpVuD9FFO/XodGnQgdQnMjD5LsLgJjnxOVJDu/NzhJOHZMwEhP/K8
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10656"; a="318828680"
+X-IronPort-AV: E=Sophos;i="5.98,281,1673942400"; 
+   d="scan'208";a="318828680"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2023 04:01:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10656"; a="712162151"
+X-IronPort-AV: E=Sophos;i="5.98,281,1673942400"; 
+   d="scan'208";a="712162151"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga008.jf.intel.com with ESMTP; 22 Mar 2023 04:01:39 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pewDo-0076qg-0a;
+        Wed, 22 Mar 2023 13:01:36 +0200
+Date:   Wed, 22 Mar 2023 13:01:35 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Pin-yen Lin <treapking@chromium.org>
+Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
         Neil Armstrong <neil.armstrong@linaro.org>,
         Robert Foss <rfoss@kernel.org>,
         Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
@@ -57,7 +55,6 @@ To:     Andrzej Hajda <andrzej.hajda@intel.com>,
         Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Daniel Scally <djrscally@gmail.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
@@ -65,332 +62,135 @@ To:     Andrzej Hajda <andrzej.hajda@intel.com>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
         Prashant Malani <pmalani@chromium.org>,
         Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>
-Cc:     Xin Ji <xji@analogixsemi.com>, linux-kernel@vger.kernel.org,
+        Guenter Roeck <groeck@chromium.org>,
+        Xin Ji <xji@analogixsemi.com>, linux-kernel@vger.kernel.org,
         Thomas Zimmermann <tzimmermann@suse.de>,
         linux-acpi@vger.kernel.org,
         Javier Martinez Canillas <javierm@redhat.com>,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>,
-        Pin-yen Lin <treapking@chromium.org>,
         Hsin-Yi Wang <hsinyi@chromium.org>,
         Lyude Paul <lyude@redhat.com>,
-        =?UTF-8?q?N=C3=ADcolas=20F=20=2E=20R=20=2E=20A=20=2E=20Prado?= 
+        =?iso-8859-1?Q?N=EDcolas_F_=2E_R_=2E_A_=2E?= Prado 
         <nfraprado@collabora.com>, Allen Chen <allen.chen@ite.com.tw>,
         dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
         Stephen Boyd <swboyd@chromium.org>,
-        chrome-platform@lists.linux.dev, devicetree@vger.kernel.org
-Subject: [PATCH v14 10/10] drm/bridge: it6505: Register Type C mode switches
-Date:   Wed, 22 Mar 2023 18:46:39 +0800
-Message-Id: <20230322104639.221402-11-treapking@chromium.org>
-X-Mailer: git-send-email 2.40.0.rc1.284.g88254d51c5-goog
-In-Reply-To: <20230322104639.221402-1-treapking@chromium.org>
+        chrome-platform@lists.linux.dev, devicetree@vger.kernel.org,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Imre Deak <imre.deak@intel.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        YueHaibing <yuehaibing@huawei.com>
+Subject: Re: [PATCH v14 03/10] drm/display: Add Type-C switch helpers
+Message-ID: <ZBrgD61p/p17IOJL@smile.fi.intel.com>
 References: <20230322104639.221402-1-treapking@chromium.org>
+ <20230322104639.221402-4-treapking@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230322104639.221402-4-treapking@chromium.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Register USB Type-C mode switches when the "mode-switch" property and
-relevant port are available in Device Tree. Configure the "lane_swap"
-state based on the entered alternate mode for a specific Type-C
-connector, which ends up updating the lane swap registers of the it6505
-chip.
+On Wed, Mar 22, 2023 at 06:46:32PM +0800, Pin-yen Lin wrote:
+> Add helpers to register and unregister Type-C "switches" for bridges
+> capable of switching their output between two downstream devices.
+> 
+> The helper registers USB Type-C mode switches when the "mode-switch"
+> and the "reg" properties are available in Device Tree.
 
-Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+...
 
----
+> +config DRM_DISPLAY_DP_TYPEC_HELPER
 
-Changes in v14:
-- Fix style issues
+> +	bool
+> +	default y
 
-Changes in v13:
-- Fix style issues
+	def_bool y
 
-Changes in v12:
-- Fixes style issues in it6505 driver
-- Replaced &it6505->client->dev with it6505->dev
-- Updated the error logs when parsing data-lanes property
+> +	depends on DRM_DISPLAY_HELPER
+> +	depends on DRM_DISPLAY_HELPER=TYPEC || TYPEC=y
+> +	help
+> +	  DRM display helpers for USB Type-C Displayport Alternate mode.
 
-Changes in v11:
-- Added back "data-lanes" parsing logics
-- Removed Kconfig dependency
-- Updated the usage of the private data
+Hmm... Dunno if this help is enough.
 
-Changes in v7:
-- Fixed style issues in it6505 driver
-- Removed the redundant sleep in it6505 driver
-- Removed DT property validation in it6505 driver
-- Rebased to drm-misc-next
-- Extracted common codes to another commit
+...
 
-Changes in v6:
-- Changed it6505_typec_mux_set callback function to accommodate with
-  the latest drm-misc patches
-- Changed the driver implementation to accommodate with the new binding
-- Squashed to a single patch
+> +	snprintf(name, sizeof(name), "%pfwP-%u", fwnode, port_num);
 
- drivers/gpu/drm/bridge/ite-it6505.c | 190 +++++++++++++++++++++++++++-
- 1 file changed, 183 insertions(+), 7 deletions(-)
+Would it be possible to have a dup in name and would it be a problem if so?
 
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index d4bc388b68ac..28d07fd7486b 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -17,6 +17,8 @@
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- #include <linux/types.h>
-+#include <linux/usb/typec_dp.h>
-+#include <linux/usb/typec_mux.h>
- #include <linux/wait.h>
- 
- #include <crypto/hash.h>
-@@ -27,6 +29,7 @@
- #include <drm/drm_bridge.h>
- #include <drm/drm_crtc.h>
- #include <drm/drm_edid.h>
-+#include <drm/drm_of.h>
- #include <drm/drm_print.h>
- #include <drm/drm_probe_helper.h>
- 
-@@ -401,6 +404,11 @@ struct debugfs_entries {
- 	const struct file_operations *fops;
- };
- 
-+struct it6505_typec_port_data {
-+	bool dp_connected;
-+	bool lane_swap;
-+};
-+
- struct it6505 {
- 	struct drm_dp_aux aux;
- 	struct drm_bridge bridge;
-@@ -454,6 +462,9 @@ struct it6505 {
- 	struct delayed_work delayed_audio;
- 	struct it6505_audio_data audio;
- 	struct dentry *debugfs;
-+	struct completion mux_register;
-+	struct drm_dp_typec_switch_desc switch_desc;
-+	struct it6505_typec_port_data *port_data;
- 
- 	/* it6505 driver hold option */
- 	bool enable_drv_hold;
-@@ -3345,12 +3356,162 @@ static void it6505_shutdown(struct i2c_client *client)
- 		it6505_lane_off(it6505);
- }
- 
-+static void it6505_typec_ports_update(struct it6505 *it6505)
-+{
-+	unsigned int i;
-+
-+	/* Check if both ports available and do nothing to retain the current one */
-+	if (it6505->port_data[0].dp_connected && it6505->port_data[1].dp_connected)
-+		return;
-+
-+	for (i = 0; i < 2; i++) {
-+		if (it6505->port_data[i].dp_connected)
-+			it6505->lane_swap = it6505->port_data[i].lane_swap;
-+	}
-+}
-+
-+static int it6505_typec_mux_set(struct typec_mux_dev *mux,
-+				struct typec_mux_state *state)
-+{
-+	struct drm_dp_typec_port_data *port = typec_mux_get_drvdata(mux);
-+	struct it6505 *it6505 = port->data;
-+	struct device *dev = it6505->dev;
-+	struct drm_dp_typec_switch_desc switch_desc = it6505->switch_desc;
-+	bool old_dp_connected, new_dp_connected;
-+
-+	if (switch_desc.num_typec_switches == 1)
-+		return 0;
-+
-+	mutex_lock(&it6505->extcon_lock);
-+	wait_for_completion(&it6505->mux_register);
-+
-+	old_dp_connected = it6505->port_data[0].dp_connected ||
-+			   it6505->port_data[1].dp_connected;
-+
-+	it6505->port_data[port->port_num].dp_connected =
-+		state->alt &&
-+		state->alt->svid == USB_TYPEC_DP_SID &&
-+		state->alt->mode == USB_TYPEC_DP_MODE;
-+
-+	dev_dbg(dev, "mux_set dp_connected: c0=%d, c1=%d\n",
-+		it6505->port_data[0].dp_connected, it6505->port_data[1].dp_connected);
-+
-+	new_dp_connected = it6505->port_data[0].dp_connected ||
-+			   it6505->port_data[1].dp_connected;
-+
-+	if (it6505->enable_drv_hold) {
-+		dev_dbg(dev, "enable driver hold\n");
-+		goto unlock;
-+	}
-+
-+	it6505_typec_ports_update(it6505);
-+
-+	if (!old_dp_connected && new_dp_connected) {
-+		int ret = pm_runtime_get_sync(dev);
-+
-+		/*
-+		 * pm_runtime_force_suspend() disables runtime PM when the
-+		 * system enters suspend state. But on system resume, mux_set
-+		 * can be triggered before pm_runtime_force_resume() re-enables
-+		 * runtime PM. This makes the bridge stay powered off if the
-+		 * downstream display is connected when the system is suspended.
-+		 * Handling the error here to make sure the bridge is powered
-+		 * on, and leave the PM runtime usage count incremented so
-+		 * the future runtime PM calls is balanced.
-+		 */
-+		if (ret < 0)
-+			it6505_poweron(it6505);
-+
-+		complete_all(&it6505->extcon_completion);
-+	}
-+
-+	if (old_dp_connected && !new_dp_connected) {
-+		reinit_completion(&it6505->extcon_completion);
-+		pm_runtime_put_sync(dev);
-+		if (it6505->bridge.dev)
-+			drm_helper_hpd_irq_event(it6505->bridge.dev);
-+		memset(it6505->dpcd, 0, sizeof(it6505->dpcd));
-+	}
-+
-+unlock:
-+	mutex_unlock(&it6505->extcon_lock);
-+	return 0;
-+}
-+
-+static void it6505_unregister_typec_switches(struct it6505 *it6505)
-+{
-+	drm_dp_unregister_typec_switches(&it6505->switch_desc);
-+}
-+
-+static int it6505_register_typec_switches(struct device *dev, struct it6505 *it6505)
-+{
-+	struct device_node *port_node = of_graph_get_port_by_id(dev->of_node, 1);
-+	struct drm_dp_typec_switch_desc *switch_desc = &it6505->switch_desc;
-+	int ret;
-+	u32 dp_lanes[4];
-+	unsigned int i, num_lanes;
-+
-+	ret = drm_dp_register_typec_switches(dev, &port_node->fwnode,
-+					     &it6505->switch_desc, it6505,
-+					     it6505_typec_mux_set);
-+	if (ret)
-+		return ret;
-+
-+	it6505->port_data = devm_kcalloc(dev, switch_desc->num_typec_switches,
-+					 sizeof(struct it6505_typec_port_data),
-+					 GFP_KERNEL);
-+	if (!it6505->port_data) {
-+		ret = -ENOMEM;
-+		goto unregister_mux;
-+	}
-+
-+	for (i = 0; i < switch_desc->num_typec_switches; i++) {
-+		struct drm_dp_typec_port_data *port = &switch_desc->typec_ports[i];
-+		struct fwnode_handle *fwnode = port->fwnode;
-+
-+		ret = fwnode_property_count_u32(fwnode, "data-lanes");
-+		if (ret < 0) {
-+			dev_err(dev,
-+				"Error on getting data lanes count from %pfwP: %d\n",
-+				fwnode, ret);
-+			goto unregister_mux;
-+		}
-+		if (ret > 2) {
-+			dev_err(dev,
-+				"Invalid data lanes count for mode switches from %pfwP: %d\n",
-+				fwnode, ret);
-+			ret = -EINVAL;
-+			goto unregister_mux;
-+		}
-+		num_lanes = ret;
-+
-+		ret = fwnode_property_read_u32_array(fwnode, "data-lanes",
-+						     dp_lanes, num_lanes);
-+		if (ret) {
-+			dev_err(dev,
-+				"Failed to read the data-lanes variable: %d\n",
-+				ret);
-+			goto unregister_mux;
-+		}
-+
-+		it6505->port_data[i].lane_swap = (dp_lanes[0] >= 2);
-+	}
-+	complete_all(&it6505->mux_register);
-+
-+	return 0;
-+
-+unregister_mux:
-+	complete_all(&it6505->mux_register);
-+	it6505_unregister_typec_switches(it6505);
-+	return ret;
-+}
-+
- static int it6505_i2c_probe(struct i2c_client *client)
- {
- 	struct it6505 *it6505;
- 	struct device *dev = &client->dev;
- 	struct extcon_dev *extcon;
--	int err, intp_irq;
-+	int err, intp_irq, ret;
- 
- 	it6505 = devm_kzalloc(&client->dev, sizeof(*it6505), GFP_KERNEL);
- 	if (!it6505)
-@@ -3367,14 +3528,28 @@ static int it6505_i2c_probe(struct i2c_client *client)
- 
- 	/* get extcon device from DTS */
- 	extcon = extcon_get_edev_by_phandle(dev, 0);
--	if (PTR_ERR(extcon) == -EPROBE_DEFER)
--		return -EPROBE_DEFER;
--	if (IS_ERR(extcon)) {
--		dev_err(dev, "can not get extcon device!");
--		return PTR_ERR(extcon);
-+	ret = PTR_ERR_OR_ZERO(extcon);
-+	if (ret == -EPROBE_DEFER)
-+		return ret;
-+
-+	if (ret) {
-+		if (ret != -ENODEV)
-+			dev_warn(dev, "Cannot get extcon device: %d\n", ret);
-+
-+		it6505->extcon = NULL;
-+	} else {
-+		it6505->extcon = extcon;
- 	}
- 
--	it6505->extcon = extcon;
-+	init_completion(&it6505->mux_register);
-+	ret = it6505_register_typec_switches(dev, it6505);
-+	if (ret != -ENODEV)
-+		dev_warn(dev, "Didn't register Type-C switches, err: %d\n", ret);
-+
-+	if (ret && !it6505->extcon) {
-+		dev_err(dev, "Both extcon and Type-C switch are not registered.\n");
-+		return -EINVAL;
-+	}
- 
- 	it6505->regmap = devm_regmap_init_i2c(client, &it6505_regmap_config);
- 	if (IS_ERR(it6505->regmap)) {
-@@ -3446,6 +3621,7 @@ static void it6505_i2c_remove(struct i2c_client *client)
- 	it6505_debugfs_remove(it6505);
- 	it6505_poweroff(it6505);
- 	it6505_remove_edid(it6505);
-+	it6505_unregister_typec_switches(it6505);
- }
- 
- static const struct i2c_device_id it6505_id[] = {
+...
+
+> +/**
+> + * drm_dp_register_typec_switches() - register Type-C switches
+> + * @dev: Device that registers Type-C switches
+> + * @port: Device node for the switch
+> + * @switch_desc: A Type-C switch descriptor
+> + * @data: Private data for the switches
+> + * @mux_set: Callback function for typec_mux_set
+> + *
+> + * This function registers USB Type-C switches for DP bridges that can switch
+> + * the output signal between their output pins. This function uses devm_kcalloc
+> + * to allocate memory, so it is expected to only call this in the driver probe
+> + * functions.
+> + *
+> + * Currently only mode switches are implemented, and the function assumes the
+> + * given @port device node has endpoints with "mode-switch" property.
+> + * The port number is determined by the "reg" property of the endpoint.
+
+`kernel-doc -v ...` should complain on absence of "Return" section.
+
+> + */
+
+...
+
+> +	switch_desc->typec_ports = devm_kcalloc(dev, switch_desc->num_typec_switches,
+> +						sizeof(struct drm_dp_typec_port_data),
+
+						sizeof(*switch_desc_typec_ports),
+
+?
+
+> +						GFP_KERNEL);
+> +	if (!switch_desc->typec_ports)
+> +		return -ENOMEM;
+
+...
+
+> +#ifdef CONFIG_DRM_DISPLAY_DP_TYPEC_HELPER
+
+Ah, maybe this should use IS_REACHABLE() ?
+
+> +void drm_dp_unregister_typec_switches(struct drm_dp_typec_switch_desc *switch_desc);
+> +int drm_dp_register_typec_switches(struct device *dev, struct fwnode_handle *port,
+> +				   struct drm_dp_typec_switch_desc *switch_desc,
+> +				   void *data, typec_mux_set_fn_t mux_set);
+> +#else
+> +static inline void drm_dp_unregister_typec_switches(struct drm_dp_typec_switch_desc *switch_desc)
+> +{
+> +}
+> +static inline int drm_dp_register_typec_switches(
+> +		struct device *dev, struct fwnode_handle *port,
+> +		struct drm_dp_typec_switch_desc *switch_desc, void *data,
+> +		typec_mux_set_fn_t mux_set)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +#endif
+
 -- 
-2.40.0.rc1.284.g88254d51c5-goog
+With Best Regards,
+Andy Shevchenko
+
 
