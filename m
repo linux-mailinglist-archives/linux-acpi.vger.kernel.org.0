@@ -2,172 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A08C6C4DB3
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 15:30:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 441116C4DD6
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 15:34:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229937AbjCVOaw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Mar 2023 10:30:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46846 "EHLO
+        id S230258AbjCVOeE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Mar 2023 10:34:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229638AbjCVOaw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 10:30:52 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 175DC6285F;
-        Wed, 22 Mar 2023 07:30:51 -0700 (PDT)
+        with ESMTP id S231577AbjCVOeA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 10:34:00 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2192A27497;
+        Wed, 22 Mar 2023 07:33:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679495451; x=1711031451;
+  t=1679495600; x=1711031600;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=YpXIfF5+mJiCxg+eDEG0Br0ZjXo5m0PVri6m2PIOARM=;
-  b=LkqY6WJ69UJBtkxdyOO6T/hlBDk73xFZ+AZU0BTzh5VfYiZr1pLMGLgJ
-   pIWpJhs0AzxDzxA1TYftpn4/7r4DdVqeO9P8otjRkmSq7L3P92+A5oO8E
-   a4yiu7KIntACscMNc9P623qHQ/v9XnALvJfi+iCzQuMKr8sVJLIeXtqa9
-   irphi4o6hSmYOWlmjgJuqz05vZ5FUF2BFZHB7f6NtuLXa2LUKrfpkGBwF
-   pALw8F2SMlExRhsIahv3/35p3fDt+f6lER9pP8sXtnMmrxzCPkJpsn9g/
-   4MV+IjjTs2SpWcNdzicW33jL24pmgiJIVMIskYefg2LS8Jg1jqnT8gBM0
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="323070997"
+  bh=z1iRri0eBPqvUL2gJgBO1g46Y4Dzoqj6rLL+2BQRDQs=;
+  b=aq2NsDGwQKAEQFw8eK5UbTdz7kqNm4Hef8X8sOy5dUvHCUafuroTrelm
+   SQ4jEcWZltW3BL04z1xHQsd0BxAmjUS3ylGscJfF/XnFz6dG1EjO3za8S
+   xXaxDq9Of1ea7IJ1SxHtrs2ct1Wb+pjvSyCtQjYMv3UWzOynbyQ/vsKjM
+   bXjd6QQkf4O4M+2I4v2H8d4LqUQlX4oHJdBwwpLEe6gR04maZvTSKwZt4
+   GipmFEdu/CHRaGtDX+adAvcl6Cga/9mBiI6GGO4OFEyBh2TCA1QPDjc08
+   Znu0lKSHw9y9wrJsGmJglw0DE3wsAMRI6aIH5v0Rq2kSgefDA5auhkk+i
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="341587315"
 X-IronPort-AV: E=Sophos;i="5.98,282,1673942400"; 
-   d="scan'208";a="323070997"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2023 07:30:41 -0700
+   d="scan'208";a="341587315"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2023 07:32:57 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="632010777"
+X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="746345583"
 X-IronPort-AV: E=Sophos;i="5.98,282,1673942400"; 
-   d="scan'208";a="632010777"
+   d="scan'208";a="746345583"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga003.jf.intel.com with ESMTP; 22 Mar 2023 07:30:33 -0700
+  by fmsmga008.fm.intel.com with ESMTP; 22 Mar 2023 07:32:54 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pezTy-007AGy-0O;
-        Wed, 22 Mar 2023 16:30:30 +0200
-Date:   Wed, 22 Mar 2023 16:30:29 +0200
+        id 1pezWG-007AJ8-1o;
+        Wed, 22 Mar 2023 16:32:52 +0200
+Date:   Wed, 22 Mar 2023 16:32:52 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Pin-yen Lin <treapking@chromium.org>
-Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <rfoss@kernel.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Xin Ji <xji@analogixsemi.com>, linux-kernel@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-acpi@vger.kernel.org,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        Lyude Paul <lyude@redhat.com>,
-        =?iso-8859-1?Q?N=EDcolas_F_=2E_R_=2E_A_=2E?= Prado 
-        <nfraprado@collabora.com>, Allen Chen <allen.chen@ite.com.tw>,
-        dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
-        Stephen Boyd <swboyd@chromium.org>,
-        chrome-platform@lists.linux.dev, devicetree@vger.kernel.org
-Subject: Re: [PATCH v14 10/10] drm/bridge: it6505: Register Type C mode
- switches
-Message-ID: <ZBsRBV9dw+mb5ZxZ@smile.fi.intel.com>
-References: <20230322104639.221402-1-treapking@chromium.org>
- <20230322104639.221402-11-treapking@chromium.org>
+To:     Niyas Sait <niyas.sait@linaro.org>
+Cc:     mika.westerberg@linux.intel.com, vkoul@kernel.org,
+        dmaengine@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Sudeep.Holla@arm.com, Souvik.Chakravarty@arm.com,
+        Sunny.Wang@arm.com, lorenzo.pieralisi@linaro.org,
+        bob.zhang@cixtech.com, fugang.duan@cixtech.com
+Subject: Re: [RFC v1 1/1] Refactor ACPI DMA to support platforms without
+ shared info descriptor in CSRT
+Message-ID: <ZBsRlJ0o9Amf402f@smile.fi.intel.com>
+References: <20230321160241.1339538-1-niyas.sait@linaro.org>
+ <ZBnvHSmHVvgsumlM@smile.fi.intel.com>
+ <6e90881b-ba24-7f5a-e80d-1ae7fc9d9382@linaro.org>
+ <ZBrLr4QDdZpgs3RV@smile.fi.intel.com>
+ <7ecf4fbf-392e-7c55-b731-2d61f962ddeb@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230322104639.221402-11-treapking@chromium.org>
+In-Reply-To: <7ecf4fbf-392e-7c55-b731-2d61f962ddeb@linaro.org>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-0.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 22, 2023 at 06:46:39PM +0800, Pin-yen Lin wrote:
-> Register USB Type-C mode switches when the "mode-switch" property and
-> relevant port are available in Device Tree. Configure the "lane_swap"
-> state based on the entered alternate mode for a specific Type-C
-> connector, which ends up updating the lane swap registers of the it6505
-> chip.
+On Wed, Mar 22, 2023 at 12:00:36PM +0000, Niyas Sait wrote:
+> On 22/03/2023 09:34, Andy Shevchenko wrote:
 
 ...
 
-> +	struct device_node *port_node = of_graph_get_port_by_id(dev->of_node, 1);
-> +	struct drm_dp_typec_switch_desc *switch_desc = &it6505->switch_desc;
-> +	int ret;
-> +	u32 dp_lanes[4];
-> +	unsigned int i, num_lanes;
-> +
-> +	ret = drm_dp_register_typec_switches(dev, &port_node->fwnode,
-> +					     &it6505->switch_desc, it6505,
-> +					     it6505_typec_mux_set);
-> +	if (ret)
-> +		return ret;
-> +
-> +	it6505->port_data = devm_kcalloc(dev, switch_desc->num_typec_switches,
-> +					 sizeof(struct it6505_typec_port_data),
-> +					 GFP_KERNEL);
-> +	if (!it6505->port_data) {
-> +		ret = -ENOMEM;
-> +		goto unregister_mux;
-> +	}
+> > > > Btw, what is the real argument of not using this table?
+> > > > 
+> > > > Yes, I know that this is an MS extension, but why ARM needs something else and
+> > > > why even that is needed at all? CSRT is only for the_shared_  DMA resources
+> > > > and I think most of the IPs nowadays are using private DMA engines (or
+> > > > semi-private when driver based on ID can know which channel services which
+> > > > device).
+> > > The issue is that shared info descriptor is not part of CSRT definition [1]
+> > > and I think it is not standardized or documented anywhere.
+> > > 
+> > > I was specifically looking at NXP I.MX8MP platform and the DMA lines for
+> > > devices are specified using FixedDMA resource descriptor. I think other Arm
+> > > platforms like RPi have similar requirement.
+> > Perhaps, but my question is_why_  is it so?
+> > I.o.w. what is the technical background for this solution.
+> > 
+> 
+> NXP I.MX8MP board uses shared DMA controller and the current ACPI firmware
+> describes DMA request lines for devices using ACPI FixedDMA descriptors.
+> 
+> > JFYI: ARM platform(s) use SPCR, which is also not a part of the specification.
+> 
+> SPCR and CSRT tables have permissive licensing and probably okay to use
+> them.
+> 
+> The main issue is that the shared info descriptor in the CSRT table is not a
+> standard and none of the arm platforms uses them.
 
-A couple of the similar comments as per previous similar patch.
+SPCR is not standard either. So, that's to show that this is not an argument.
 
-...
+Are those firmwares already in the wild? Why they can't be fixed and why
+existing CSRT shared info data structure can't be used.
 
->  	/* get extcon device from DTS */
->  	extcon = extcon_get_edev_by_phandle(dev, 0);
-> -	if (PTR_ERR(extcon) == -EPROBE_DEFER)
-> -		return -EPROBE_DEFER;
-> -	if (IS_ERR(extcon)) {
-> -		dev_err(dev, "can not get extcon device!");
-> -		return PTR_ERR(extcon);
-> +	ret = PTR_ERR_OR_ZERO(extcon);
-> +	if (ret == -EPROBE_DEFER)
-> +		return ret;
-
-> +
-
-Unnecessary blank line.
-
-> +	if (ret) {
-> +		if (ret != -ENODEV)
-> +			dev_warn(dev, "Cannot get extcon device: %d\n", ret);
-> +
-> +		it6505->extcon = NULL;
-> +	} else {
-> +		it6505->extcon = extcon;
-
-...
-
-> +	ret = it6505_register_typec_switches(dev, it6505);
-> +	if (ret != -ENODEV)
-> +		dev_warn(dev, "Didn't register Type-C switches, err: %d\n", ret);
-
-> +
-
-Unnecessary blank line.
-
-> +	if (ret && !it6505->extcon) {
-> +		dev_err(dev, "Both extcon and Type-C switch are not registered.\n");
-> +		return -EINVAL;
-
-Why not return ret here?
-
-> +	}
+> >> [1]https://uefi.org/sites/default/files/resources/CSRT%20v2.pdf
 
 -- 
 With Best Regards,
