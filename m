@@ -2,66 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFB7C6C53FA
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 19:45:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA6716C541E
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 19:51:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229784AbjCVSpu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Mar 2023 14:45:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33766 "EHLO
+        id S230367AbjCVSvU convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 22 Mar 2023 14:51:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230124AbjCVSpt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 14:45:49 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E02694E5FE;
-        Wed, 22 Mar 2023 11:45:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=AG2nFeNzBGIGAmkF7WYSDv5/ELQI6V3BW2MOiGCCqaQ=; b=RQM2zAycXzhTmtjh9tkww0up06
-        mgt32I315cZyHVUyifh5fOquWHjUp/XsSvGHdVHb3nRosXIIQgkXf7YdDU6BtBp4EBH1wtjc1SVQ8
-        8v9Ws2ZhMiFx5B4udu2+DMzylyWA6XlCYn5FUwWs9Bt5unnML3g+XqGa8tjHIzxCpbok=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1pf3Ro-0085uW-7p; Wed, 22 Mar 2023 19:44:32 +0100
-Date:   Wed, 22 Mar 2023 19:44:32 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jakub Kicinski <kuba@kernel.org>, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Vladimir Oltean <olteanv@gmail.com>
-Subject: Re: [PATCH RFC net-next 2/7] net: phylink: provide
- phylink_find_max_speed()
-Message-ID: <3135baba-8da8-437f-ba17-cff107ccf056@lunn.ch>
-References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
- <E1pex8L-00Dvnl-1F@rmk-PC.armlinux.org.uk>
+        with ESMTP id S230305AbjCVSvO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 14:51:14 -0400
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4904D66D15;
+        Wed, 22 Mar 2023 11:51:11 -0700 (PDT)
+Received: by mail-ed1-f45.google.com with SMTP id r11so76969456edd.5;
+        Wed, 22 Mar 2023 11:51:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679511069;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hYKTAnSN7pbus8iof2Mz7rGDiYWbcSTkY7UHD5fskOc=;
+        b=J7Heyw3rpxLPfKLnDR3ESnEvOEvWhf24Yy/1dsCrIkNbQIaNABovxgqw915hR3crEL
+         Pe77jYhfUQbOrY7ahPfwt82N67naHZ16IGJfbTIWbgFBSg9XCsQVqJchnQ6Nup/N2PTc
+         Jd6IN075+rLNB6Mowjrvi97DsMtiNnNX+rjl90fYLfyzDM68RWtvdCvEJhoPEVyP3oSL
+         3s8oj8hWYCMySkeKmyy2Dlfe5jrLSDsmoDCaBZTFHOhu0naA+KqMTL92tKvhYbxn7YpO
+         oLduEowZs/HI8LZgR0aatnfkZkz2x1JtUDJZ/Of3p0asYPge7kHchzKw7FXosyH9Jinz
+         YlQQ==
+X-Gm-Message-State: AO0yUKXSHu5iJwgVoqvSZJfPXtJMsFyLQwW2HvOzLZneFAZhElO+dxTM
+        9gzuoA3fid2jyAqZ/gyhUscKAxJvBkoHFKVViJI=
+X-Google-Smtp-Source: AK7set+9k2U6FEIVVkuQ7Lw+N/Q498NWJrjsFs1IJF0Gg7Ix5G7cy5vtrIU/fJU4L7kxpk9Mk5ZdyjlRkOZ6txwX/Fg=
+X-Received: by 2002:a50:9995:0:b0:4fa:3c0b:74b with SMTP id
+ m21-20020a509995000000b004fa3c0b074bmr4088147edb.3.1679511069277; Wed, 22 Mar
+ 2023 11:51:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E1pex8L-00Dvnl-1F@rmk-PC.armlinux.org.uk>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+References: <20230322102258.27390-1-andriy.shevchenko@linux.intel.com> <20230322102258.27390-2-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20230322102258.27390-2-andriy.shevchenko@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 22 Mar 2023 19:50:55 +0100
+Message-ID: <CAJZ5v0imGNb8pETxdJmjJ9cSJQedeb=w2dcG6huDB=SpL-ufqA@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] ACPI: SPCR: Amend indentation
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 22, 2023 at 12:00:01PM +0000, Russell King (Oracle) wrote:
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+On Wed, Mar 22, 2023 at 11:26 AM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> 1) Remove unnecessary blank lines.
+> 2) Remove double spaces for consistency.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+I don't quite agree with this.
 
-    Andrew
+Double spaces after a period are recognized as end-of-sentence markers
+by some editors (notably vi), so if they have been used intentionally,
+I see no reason to replace them.
+
+> 3) Reformat one comment for consistency.
+>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/acpi/spcr.c | 15 ++++++---------
+>  1 file changed, 6 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/acpi/spcr.c b/drivers/acpi/spcr.c
+> index 01d29ebdb9c2..3d242c746d10 100644
+> --- a/drivers/acpi/spcr.c
+> +++ b/drivers/acpi/spcr.c
+> @@ -71,18 +71,16 @@ static bool xgene_8250_erratum_present(struct acpi_table_spcr *tb)
+>
+>  /**
+>   * acpi_parse_spcr() - parse ACPI SPCR table and add preferred console
+> - *
+>   * @enable_earlycon: set up earlycon for the console specified by the table
+>   * @enable_console: setup the console specified by the table.
+>   *
+>   * For the architectures with support for ACPI, CONFIG_ACPI_SPCR_TABLE may be
+> - * defined to parse ACPI SPCR table.  As a result of the parsing preferred
+> + * defined to parse ACPI SPCR table. As a result of the parsing preferred
+>   * console is registered and if @enable_earlycon is true, earlycon is set up.
+>   * If @enable_console is true the system console is also configured.
+>   *
+>   * When CONFIG_ACPI_SPCR_TABLE is defined, this function should be called
+>   * from arch initialization code as soon as the DT/ACPI decision is made.
+> - *
+>   */
+>  int __init acpi_parse_spcr(bool enable_earlycon, bool enable_console)
+>  {
+> @@ -97,9 +95,7 @@ int __init acpi_parse_spcr(bool enable_earlycon, bool enable_console)
+>         if (acpi_disabled)
+>                 return -ENODEV;
+>
+> -       status = acpi_get_table(ACPI_SIG_SPCR, 0,
+> -                               (struct acpi_table_header **)&table);
+> -
+> +       status = acpi_get_table(ACPI_SIG_SPCR, 0, (struct acpi_table_header **)&table);
+>         if (ACPI_FAILURE(status))
+>                 return -ENOENT;
+>
+> @@ -184,10 +180,10 @@ int __init acpi_parse_spcr(bool enable_earlycon, bool enable_console)
+>          *
+>          * If the user specifies "traditional" earlycon, the qdf2400_e44
+>          * console name matches the EARLYCON_DECLARE() statement, and
+> -        * SPCR is not used.  Parameter "earlycon" is false.
+> +        * SPCR is not used. Parameter "earlycon" is false.
+>          *
+>          * If the user specifies "SPCR" earlycon, then we need to update
+> -        * the console name so that it also says "qdf2400_e44".  Parameter
+> +        * the console name so that it also says "qdf2400_e44". Parameter
+>          * "earlycon" is true.
+>          *
+>          * For consistency, if we change the console name, then we do it
+> @@ -202,7 +198,8 @@ int __init acpi_parse_spcr(bool enable_earlycon, bool enable_console)
+>         if (xgene_8250_erratum_present(table)) {
+>                 iotype = "mmio32";
+>
+> -               /* for xgene v1 and v2 we don't know the clock rate of the
+> +               /*
+> +                * For xgene v1 and v2 we don't know the clock rate of the
+>                  * UART so don't attempt to change to the baud rate state
+>                  * in the table because driver cannot calculate the dividers
+>                  */
+> --
+> 2.40.0.1.gaa8946217a0b
+>
