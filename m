@@ -2,116 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 286EE6C4A2A
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 13:17:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DB0F6C4D3D
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 15:15:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230219AbjCVMRo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Mar 2023 08:17:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45366 "EHLO
+        id S230163AbjCVOPZ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 22 Mar 2023 10:15:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229955AbjCVMRn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 08:17:43 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A50EA60AA9;
-        Wed, 22 Mar 2023 05:17:42 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 389CE66030ED;
-        Wed, 22 Mar 2023 12:17:39 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1679487461;
-        bh=Y/ViFHF+5ivXcB2oIYzIPVmCLMqimwaue47WFt0l5lw=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=U0BpYf8r5D1sTxdz4HbVYYErfotKO7ueqc1imuNp+BqvyZDaWF8+vpYvHJokG7ljz
-         +3CrIcyBy8Gy1l1Mvu9+8cy3QDyYvIXcnPSKOQ4sJeTqskA6mCp1BjuW4trXxY3Yfi
-         jq9nE7z2GMHpLzrNs/kwLgddTznBTwGtMwoAXm4a+OBE8V3ez8McJzXLpiCe5BnfTB
-         Of4cHHPBMDS5Ix2/Iv2TY/SWSj6tZIMCFtizNF3j+/s0WbgrVucDVRe7nPxIBZhDif
-         AhQZfjji55lsLtf7CF4ksmE9pmxQ7vzGc+tf05UvLEZ4W1IolvsVTjPJ7eYMQmvaru
-         xetIjb87blQWA==
-Message-ID: <4607ead5-66c2-ab43-5053-6dfbbac7feef@collabora.com>
-Date:   Wed, 22 Mar 2023 13:17:36 +0100
+        with ESMTP id S231137AbjCVOPZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 10:15:25 -0400
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BEE161523;
+        Wed, 22 Mar 2023 07:15:19 -0700 (PDT)
+Received: by mail-ed1-f48.google.com with SMTP id eh3so73561261edb.11;
+        Wed, 22 Mar 2023 07:15:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679494518;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oc9u0QRSHAZ1FQIFQqSfH1qMlFht2R0YM5EtqXriUHE=;
+        b=kE7kA8ZSuPB0wF57vRNvAJo+ai6Y5j/BRN1T9KJI14hye2dvMEI/1HS9gKH39jw7gS
+         EcRbk+h/N8AaR1+h220Td5wYrDAwA05BrVf41COOC93zjIYVW+mU7VJzpDIIHDzgnomF
+         NuUrgNeRBmnGYAi/cvek1Tf3QGMk2Kn1AoQbeGLZXSZVtt9HznDpW7Q3tyBoq7FHmtTd
+         8Nps6u5Pp799c1xsHRzw3pzFctU/JLpmy3FmBGSPfcYu/KFiypy56qHysuLVZou/93w0
+         ZvX4bjZ5wpjxKumbp6+f2O9Rqv4jdij9SZwv0W2E7aSJAgljUJZ9pBDcEjb7qfg0R7YK
+         3VwA==
+X-Gm-Message-State: AO0yUKWowRMV+JCClC/6q6BAVkhibOprMPcON86lQR/3NQ+wGT9mkl5u
+        F4P78hIdu2nXu8MWvpjOxPeyIDCUWTnw1RP+JRM=
+X-Google-Smtp-Source: AK7set+sFvi2b9JHlrh82lzop6CBs+RArXGCZqOerIKmyfaW5wrAJy2Jcf3NeARQruIklHezo9aFnjJyye6iajCp1m0=
+X-Received: by 2002:a17:907:7da7:b0:8b1:3298:c587 with SMTP id
+ oz39-20020a1709077da700b008b13298c587mr3405064ejc.2.1679494517779; Wed, 22
+ Mar 2023 07:15:17 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v14 02/10] platform/chrome: cros_ec_typec: Purge blocking
- switch devlinks
-Content-Language: en-US
-To:     Pin-yen Lin <treapking@chromium.org>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <rfoss@kernel.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>
-Cc:     Xin Ji <xji@analogixsemi.com>, linux-kernel@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-acpi@vger.kernel.org,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        Lyude Paul <lyude@redhat.com>,
-        =?UTF-8?Q?N=c3=adcolas_F_=2e_R_=2e_A_=2e_Prado?= 
-        <nfraprado@collabora.com>, Allen Chen <allen.chen@ite.com.tw>,
-        dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
-        Stephen Boyd <swboyd@chromium.org>,
-        chrome-platform@lists.linux.dev, devicetree@vger.kernel.org,
-        Chen-Yu Tsai <wenst@chromium.org>
-References: <20230322104639.221402-1-treapking@chromium.org>
- <20230322104639.221402-3-treapking@chromium.org>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20230322104639.221402-3-treapking@chromium.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+References: <CAJZ5v0goaS5O1_Hds2DnWsw_G-Dg4fU9NEY0=chyn5ECTcBmDw@mail.gmail.com>
+ <20230322083646.2937580-1-gregkh@linuxfoundation.org>
+In-Reply-To: <20230322083646.2937580-1-gregkh@linuxfoundation.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 22 Mar 2023 15:15:06 +0100
+Message-ID: <CAJZ5v0jk=Kow_YrB5HgO2gd-bHcNx+6GKTXThf5js_ZjxaAM8w@mail.gmail.com>
+Subject: Re: [PATCH v2 02/19] ACPI: LPIT: move to use bus_get_dev_root()
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Il 22/03/23 11:46, Pin-yen Lin ha scritto:
-> From: Prashant Malani <pmalani@chromium.org>
-> 
-> When using OF graph, the fw_devlink code will create links between the
-> individual port driver (cros-ec-typec here) and the parent device for
-> a Type-C switch (like mode-switch). Since the mode-switch will in turn
-> have the usb-c-connector (i.e the child of the port driver) as a
-> supplier, fw_devlink will not be able to resolve the cyclic dependency
-> correctly.
-> 
-> As a result, the mode-switch driver probe() never runs, so mode-switches
-> are never registered. Because of that, the port driver probe constantly
-> fails with -EPROBE_DEFER, because the Type-C connector class requires all
-> switch devices to be registered prior to port registration.
-> 
-> To break this deadlock and allow the mode-switch registration to occur,
-> purge all the usb-c-connector nodes' absent suppliers. This eliminates
-> the connector as a supplier for a switch and allows it to be probed.
-> 
-> Signed-off-by: Prashant Malani <pmalani@chromium.org>
-> Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-> Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-> Tested-by: Chen-Yu Tsai <wenst@chromium.org>
-> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+On Wed, Mar 22, 2023 at 9:36 AM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> Direct access to the struct bus_type dev_root pointer is going away soon
+> so replace that with a call to bus_get_dev_root() instead, which is what
+> it is there for.
+>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: linux-acpi@vger.kernel.org
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-
+> ---
+> v2: - change logic to test for dev_root at the beginning of the function
+>       and error out then based on review comments from Rafael.
+>     - fix error handling for ioremap() call to properly drop the
+>       reference on dev_root if it failed.
+>
+>  drivers/acpi/acpi_lpit.c | 16 +++++++++++-----
+>  1 file changed, 11 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/acpi/acpi_lpit.c b/drivers/acpi/acpi_lpit.c
+> index 3843d2576d3f..c5598b6d5db8 100644
+> --- a/drivers/acpi/acpi_lpit.c
+> +++ b/drivers/acpi/acpi_lpit.c
+> @@ -98,6 +98,12 @@ EXPORT_SYMBOL_GPL(lpit_read_residency_count_address);
+>  static void lpit_update_residency(struct lpit_residency_info *info,
+>                                  struct acpi_lpit_native *lpit_native)
+>  {
+> +       struct device *dev_root = bus_get_dev_root(&cpu_subsys);
+> +
+> +       /* Silently fail, if cpuidle attribute group is not present */
+> +       if (!dev_root)
+> +               return;
+> +
+>         info->frequency = lpit_native->counter_frequency ?
+>                                 lpit_native->counter_frequency : tsc_khz * 1000;
+>         if (!info->frequency)
+> @@ -108,18 +114,18 @@ static void lpit_update_residency(struct lpit_residency_info *info,
+>                 info->iomem_addr = ioremap(info->gaddr.address,
+>                                                    info->gaddr.bit_width / 8);
+>                 if (!info->iomem_addr)
+> -                       return;
+> +                       goto exit;
+>
+> -               /* Silently fail, if cpuidle attribute group is not present */
+> -               sysfs_add_file_to_group(&cpu_subsys.dev_root->kobj,
+> +               sysfs_add_file_to_group(&dev_root->kobj,
+>                                         &dev_attr_low_power_idle_system_residency_us.attr,
+>                                         "cpuidle");
+>         } else if (info->gaddr.space_id == ACPI_ADR_SPACE_FIXED_HARDWARE) {
+> -               /* Silently fail, if cpuidle attribute group is not present */
+> -               sysfs_add_file_to_group(&cpu_subsys.dev_root->kobj,
+> +               sysfs_add_file_to_group(&dev_root->kobj,
+>                                         &dev_attr_low_power_idle_cpu_residency_us.attr,
+>                                         "cpuidle");
+>         }
+> +exit:
+> +       put_device(dev_root);
+>  }
+>
+>  static void lpit_process(u64 begin, u64 end)
+> --
+> 2.40.0
+>
