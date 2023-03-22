@@ -2,54 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0825E6C55A4
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 21:00:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A58686C5604
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 21:02:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230421AbjCVT74 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Mar 2023 15:59:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44414 "EHLO
+        id S231546AbjCVUCn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Mar 2023 16:02:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230409AbjCVT72 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 15:59:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19E8662FE2;
-        Wed, 22 Mar 2023 12:58:06 -0700 (PDT)
+        with ESMTP id S231513AbjCVUCK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 16:02:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D06B06BC25;
+        Wed, 22 Mar 2023 12:59:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3FD46622B0;
-        Wed, 22 Mar 2023 19:58:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0880C433D2;
-        Wed, 22 Mar 2023 19:58:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AF99B62276;
+        Wed, 22 Mar 2023 19:59:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14074C433D2;
+        Wed, 22 Mar 2023 19:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679515082;
-        bh=Tn66IFL7Td3Mux1UE6o01BUXTDt1Mkbu7IlLgwR2btk=;
+        s=k20201202; t=1679515146;
+        bh=UgHQf1efIHBgU4uG2r7B5JWlDxv2+s1TXxnzspAXBoo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o7pu5BWiA31KGxpRJX6sIDdM2Q0YDhP5wiStpYeGbxBSHq/BY6AUwT5Fh72Ak3e43
-         c0eE1RvbZMb+o4+A13GFeMxLgjEyi9pWwZ9ea3VgRBUDDzBSPWs2ZdWGqwDCZe15zu
-         jJ3TsRiBQmLpXsNkj6pmHypVKaHYiuy58osaBZBT68aAeiIcEqH8Gz/3l2902DBPLh
-         da6kH5eVURgC7ZBaMj1tu0+pgdy/5Cx8/zRkeP+jdT5p6Bd1znj1ve4p/CWVsJBaIp
-         D53GJ8/8IjOYBh46R+FoZx9luqhEvw7CF/CRs9E7aOBarOHn7i+t03OHvOC/FUWp3z
-         NVg9dUFy3JhPw==
+        b=b1Q/jEYlGkQ+f4jM7md3oa4a+wDHkauElMlagZDT54QFqXQ5B2yY9dfrRnnNCmS72
+         bVRGKZuxWZfxEYZ/83n6Rz2QSDf363kWYnunvnOwCIUJtICfktoGwyISneFs+b2ISR
+         LVxc/2NMlmDX495wtaXvu04PdVs0zNLy1k9ZnbOIZ4cz1cU2poo0Smp7WZzMcWLcYQ
+         AnUBaUMgvOxiC6SJfvFs1K8Ksa58/LjNHJ9M3BLbVYMnjobef0i17mvDoGMVXKey6N
+         mPZ30SYrMA3HzMUuVKCPTjahdpO9u2OdWhN8066AZ1DAzF/5xLgjtZictZRsBIJVgU
+         8o3ZTvNqGSlnA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
-        andriy.shevchenko@linux.intel.com, mario.limonciello@amd.com,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.2 13/45] ACPI: x86: Add skip i2c clients quirk for Lenovo Yoga Book X90
-Date:   Wed, 22 Mar 2023 15:56:07 -0400
-Message-Id: <20230322195639.1995821-13-sashal@kernel.org>
+Cc:     Chen Yu <yu.c.chen@intel.com>,
+        Hariganesh Govindarajulu <hariganesh.govindarajulu@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, robert.moore@intel.com,
+        junming@nfschina.com, linux-acpi@vger.kernel.org,
+        acpica-devel@lists.linuxfoundation.org
+Subject: [PATCH AUTOSEL 6.2 33/45] ACPI: tools: pfrut: Check if the input of level and type is in the right numeric range
+Date:   Wed, 22 Mar 2023 15:56:27 -0400
+Message-Id: <20230322195639.1995821-33-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230322195639.1995821-1-sashal@kernel.org>
 References: <20230322195639.1995821-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,50 +59,91 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Chen Yu <yu.c.chen@intel.com>
 
-[ Upstream commit 1a1e7540cf501dd5c8b57a577a155cdd13c7e202 ]
+[ Upstream commit 0bc23d8b2237a104d7f8379d687aa4cb82e2968b ]
 
-The Lenovo Yoga Book X90 is a x86 tablet which ships with Android x86
-as factory OS. The Android x86 kernel fork ignores I2C devices described
-in the DSDT, except for the PMIC and Audio codecs.
+The user provides arbitrary non-numeic value to level and type,
+which could bring unexpected behavior. In this case the expected
+behavior would be to throw an error.
 
-As usual the Lenovo Yoga Book X90's DSDT contains a bunch of extra I2C
-devices which are not actually there, causing various resource conflicts.
-Add an ACPI_QUIRK_SKIP_I2C_CLIENTS quirk for the Lenovo Yoga Book X90
-to the acpi_quirk_skip_dmi_ids table to woraround this.
+ pfrut -h
+usage: pfrut [OPTIONS]
+code injection:
+-l, --load
+-s, --stage
+-a, --activate
+-u, --update [stage and activate]
+-q, --query
+-d, --revid
+update telemetry:
+-G, --getloginfo
+-T, --type(0:execution, 1:history)
+-L, --level(0, 1, 2, 4)
+-R, --read
+-D, --revid log
 
-The DSDT also contains broken ACPI GPIO event handlers, disable those too.
+ pfrut -T A
+ pfrut -G
+log_level:0
+log_type:0
+log_revid:2
+max_data_size:65536
+chunk1_size:0
+chunk2_size:1530
+rollover_cnt:0
+reset_cnt:17
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rjw@rjwysocki.net>
+Fix this by restricting the input to be in the expected range.
+
+Reported-by: Hariganesh Govindarajulu <hariganesh.govindarajulu@intel.com>
+Suggested-by: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tools/power/acpi/tools/pfrut/pfrut.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index 644e2a7f4213b..4973a37843819 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -311,6 +311,17 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
- 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
- 	},
-+	{
-+		/* Lenovo Yoga Book X90F/L */
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
-+		},
-+		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
-+					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
-+					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
-+	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+diff --git a/tools/power/acpi/tools/pfrut/pfrut.c b/tools/power/acpi/tools/pfrut/pfrut.c
+index 52aa0351533c3..388c9e3ad0407 100644
+--- a/tools/power/acpi/tools/pfrut/pfrut.c
++++ b/tools/power/acpi/tools/pfrut/pfrut.c
+@@ -97,7 +97,7 @@ static struct option long_options[] = {
+ static void parse_options(int argc, char **argv)
+ {
+ 	int option_index = 0;
+-	char *pathname;
++	char *pathname, *endptr;
+ 	int opt;
+ 
+ 	pathname = strdup(argv[0]);
+@@ -125,11 +125,23 @@ static void parse_options(int argc, char **argv)
+ 			log_getinfo = 1;
+ 			break;
+ 		case 'T':
+-			log_type = atoi(optarg);
++			log_type = strtol(optarg, &endptr, 0);
++			if (*endptr || (log_type != 0 && log_type != 1)) {
++				printf("Number expected: type(0:execution, 1:history) - Quit.\n");
++				exit(1);
++			}
++
+ 			set_log_type = 1;
+ 			break;
+ 		case 'L':
+-			log_level = atoi(optarg);
++			log_level = strtol(optarg, &endptr, 0);
++			if (*endptr ||
++			    (log_level != 0 && log_level != 1 &&
++			     log_level != 2 && log_level != 4)) {
++				printf("Number expected: level(0, 1, 2, 4) - Quit.\n");
++				exit(1);
++			}
++
+ 			set_log_level = 1;
+ 			break;
+ 		case 'R':
 -- 
 2.39.2
 
