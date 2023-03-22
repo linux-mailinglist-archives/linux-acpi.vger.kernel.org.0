@@ -2,158 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EC246C49D1
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 13:00:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF6F56C49D5
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 13:01:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230076AbjCVMAx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Mar 2023 08:00:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46800 "EHLO
+        id S230416AbjCVMBD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Mar 2023 08:01:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230454AbjCVMAn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 08:00:43 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 710F85D898;
-        Wed, 22 Mar 2023 05:00:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-        Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-        In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=C/XopkrHSruhQua4EDHj5yjjnPImZ/En/wTRBJCzjiY=; b=bcDjKlwK2fma6eRRmDN8WLysZm
-        KhymViMWNAaIPFvvwU5jseL+izR7nP421pn/joDGoStk94T5MK1T8rCdBqsgPkYkHh8FmaQS+0Uq/
-        FdxlBpHRyk/0oxduiK6AMupkEXEAEUekwlwgHaEYd9QuPEr/EkPtWxhTMEV4uZCBSY900kxk1qc/K
-        WuwJN4OGcCNvhOJJbaZbPEQz2VaVrCKVAb6DGCWIlUD6WfdsMY/sxReC/x4ZgAPGwmjddXvm0zQDs
-        TrjbXoH251GLjdgPqC2EttgMAr4dGKMpcyAnBSLiIY1gizqCJjE2vOSRt54eH8a6YkelAN/DYFkje
-        wQkCzGIw==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:45962 helo=rmk-PC.armlinux.org.uk)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <rmk@armlinux.org.uk>)
-        id 1pex8l-00037L-Ey; Wed, 22 Mar 2023 12:00:27 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-        id 1pex8k-00DvoF-PF; Wed, 22 Mar 2023 12:00:26 +0000
-In-Reply-To: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
-References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
-From:   "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To:     Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jakub Kicinski <kuba@kernel.org>, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Vladimir Oltean <olteanv@gmail.com>
-Subject: [PATCH RFC net-next 7/7] net: dsa: mv88e6xxx: remove handling for DSA
- and CPU ports
+        with ESMTP id S230415AbjCVMAs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 08:00:48 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 924705F6C1
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Mar 2023 05:00:39 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id d17so8315042wrb.11
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Mar 2023 05:00:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679486438;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wpYhPbFNmhWZbxQ+2pcfKt9iFKv1OlqjHaycSTExZk4=;
+        b=T3+P58p7TtpSXyY3ZycUB/vhlz41Yj1CfMNVjOWonYKasqKMq9b8QMuOhuwGy7DcwD
+         Bwu9VRMcvxYt+2Er3PEVwKUkveKla8rLhghJRYHGb9eWLMvfoGmiXlB77k8RLeHq4HzH
+         4jIVTb4eQOIBz83B0X/g4N4kb0RRmDvN3+gqfS3Ybtpst74o4BdX1ncTx0aspd4FlfGT
+         AlgkXYY1OLI6r8WRDofTgbINQ1YR4RC+fdNWji1n2LSPaR51/ZOCOJX9eUEBEZJ7M9dS
+         c7oIDNYzGJAvpPuhIvdoKwDc+kyi1eaFNkNJyBpw0Rmo09B+N5wIyyFOUUUZ81r0NCI5
+         5puw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679486438;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wpYhPbFNmhWZbxQ+2pcfKt9iFKv1OlqjHaycSTExZk4=;
+        b=1zVWbflXZwZFWZNFZw0nFS3APgFvzAW5WWPeXBzeB6jNa4S15K/tGLpJS0FdGyUNhW
+         GdAL643v8pTlpJ5zg4tPi+l7u4a23u4j5QLKDzagi2VpAGKF8uP1yfIEPzBWpDO1znVI
+         ELyeAJM4Ydw+sntL5LCiZ1Z7pVpD8tbaPk7bjoI1N6qE8dy5VYBiDphH0epWAcNlHj3u
+         FuXiGiHZZbqWfpdRuhvUQ55+tmmt+N+7TFsjW8dC/sbmReRBl2SGjAARYap11xBWZOAy
+         oeFTDzpg2aj6JD4Y0GapMl3cE3TxS3ISthLj9P0tqsFPINPAxIuOMvTSHceJt4yIEWe0
+         M6jQ==
+X-Gm-Message-State: AO0yUKVEt2kDsPOPdUqrlrsJQfNZrSnNramHSmbSoWaMFxt+dhK2iyeN
+        ZWzCg61uefza2U4Wax/UmsSTXA==
+X-Google-Smtp-Source: AK7set8/yTqjcXgh/0/3dEkcHOUGMYrnXUP5s6INEQiSDvFROBDrAK59IhLwG+g/Y6jATAukLqfvKQ==
+X-Received: by 2002:a5d:6ace:0:b0:2d8:908c:8fa0 with SMTP id u14-20020a5d6ace000000b002d8908c8fa0mr5270114wrw.9.1679486438062;
+        Wed, 22 Mar 2023 05:00:38 -0700 (PDT)
+Received: from [192.168.1.166] ([90.243.20.231])
+        by smtp.gmail.com with ESMTPSA id d9-20020adfe889000000b002d97529b3bbsm3362583wrm.96.2023.03.22.05.00.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Mar 2023 05:00:37 -0700 (PDT)
+Message-ID: <7ecf4fbf-392e-7c55-b731-2d61f962ddeb@linaro.org>
+Date:   Wed, 22 Mar 2023 12:00:36 +0000
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1pex8k-00DvoF-PF@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date:   Wed, 22 Mar 2023 12:00:26 +0000
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.9.0
+Subject: Re: [RFC v1 1/1] Refactor ACPI DMA to support platforms without
+ shared info descriptor in CSRT
+Content-Language: en-US
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     mika.westerberg@linux.intel.com, vkoul@kernel.org,
+        dmaengine@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Sudeep.Holla@arm.com, Souvik.Chakravarty@arm.com,
+        Sunny.Wang@arm.com, lorenzo.pieralisi@linaro.org,
+        bob.zhang@cixtech.com, fugang.duan@cixtech.com
+References: <20230321160241.1339538-1-niyas.sait@linaro.org>
+ <ZBnvHSmHVvgsumlM@smile.fi.intel.com>
+ <6e90881b-ba24-7f5a-e80d-1ae7fc9d9382@linaro.org>
+ <ZBrLr4QDdZpgs3RV@smile.fi.intel.com>
+From:   Niyas Sait <niyas.sait@linaro.org>
+In-Reply-To: <ZBrLr4QDdZpgs3RV@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-As we now always use a fixed-link for DSA and CPU ports, we no longer
-need the hack in the Marvell code to make this work. Remove it.
+On 22/03/2023 09:34, Andy Shevchenko wrote:
 
-This is especially important with the conversion of DSA drivers to
-phylink_pcs, as the PCS code only gets called if we are using
-phylink for the port.
+>>> Btw, what is the real argument of not using this table?
+>>>
+>>> Yes, I know that this is an MS extension, but why ARM needs something else and
+>>> why even that is needed at all? CSRT is only for the_shared_  DMA resources
+>>> and I think most of the IPs nowadays are using private DMA engines (or
+>>> semi-private when driver based on ID can know which channel services which
+>>> device).
+>> The issue is that shared info descriptor is not part of CSRT definition [1]
+>> and I think it is not standardized or documented anywhere.
+>>
+>> I was specifically looking at NXP I.MX8MP platform and the DMA lines for
+>> devices are specified using FixedDMA resource descriptor. I think other Arm
+>> platforms like RPi have similar requirement.
+> Perhaps, but my question is_why_  is it so?
+> I.o.w. what is the technical background for this solution.
+> 
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/dsa/mv88e6xxx/chip.c | 48 ++++----------------------------
- 1 file changed, 5 insertions(+), 43 deletions(-)
+NXP I.MX8MP board uses shared DMA controller and the current ACPI 
+firmware describes DMA request lines for devices using ACPI FixedDMA 
+descriptors.
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index dde0c306fb3a..35dcfe86bdc4 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3395,56 +3395,17 @@ static int mv88e6xxx_setup_port(struct mv88e6xxx_chip *chip, int port)
- {
- 	struct device_node *phy_handle = NULL;
- 	struct dsa_switch *ds = chip->ds;
--	phy_interface_t mode;
- 	struct dsa_port *dp;
--	int tx_amp, speed;
-+	int tx_amp;
- 	int err;
- 	u16 reg;
- 
- 	chip->ports[port].chip = chip;
- 	chip->ports[port].port = port;
- 
--	dp = dsa_to_port(ds, port);
--
--	/* MAC Forcing register: don't force link, speed, duplex or flow control
--	 * state to any particular values on physical ports, but force the CPU
--	 * port and all DSA ports to their maximum bandwidth and full duplex.
--	 */
--	if (dsa_is_cpu_port(ds, port) || dsa_is_dsa_port(ds, port)) {
--		struct phylink_config pl_config = {};
--		unsigned long caps;
--
--		chip->info->ops->phylink_get_caps(chip, port, &pl_config);
--
--		caps = pl_config.mac_capabilities;
--
--		if (chip->info->ops->port_max_speed_mode)
--			mode = chip->info->ops->port_max_speed_mode(port);
--		else
--			mode = PHY_INTERFACE_MODE_NA;
--
--		if (caps & MAC_10000FD)
--			speed = SPEED_10000;
--		else if (caps & MAC_5000FD)
--			speed = SPEED_5000;
--		else if (caps & MAC_2500FD)
--			speed = SPEED_2500;
--		else if (caps & MAC_1000)
--			speed = SPEED_1000;
--		else if (caps & MAC_100)
--			speed = SPEED_100;
--		else
--			speed = SPEED_10;
--
--		err = mv88e6xxx_port_setup_mac(chip, port, LINK_FORCED_UP,
--					       speed, DUPLEX_FULL,
--					       PAUSE_OFF, mode);
--	} else {
--		err = mv88e6xxx_port_setup_mac(chip, port, LINK_UNFORCED,
--					       SPEED_UNFORCED, DUPLEX_UNFORCED,
--					       PAUSE_ON,
--					       PHY_INTERFACE_MODE_NA);
--	}
-+	err = mv88e6xxx_port_setup_mac(chip, port, LINK_UNFORCED,
-+				       SPEED_UNFORCED, DUPLEX_UNFORCED,
-+				       PAUSE_ON, PHY_INTERFACE_MODE_NA);
- 	if (err)
- 		return err;
- 
-@@ -3616,6 +3577,7 @@ static int mv88e6xxx_setup_port(struct mv88e6xxx_chip *chip, int port)
- 	}
- 
- 	if (chip->info->ops->serdes_set_tx_amplitude) {
-+		dp = dsa_to_port(ds, port);
- 		if (dp)
- 			phy_handle = of_parse_phandle(dp->dn, "phy-handle", 0);
- 
+> JFYI: ARM platform(s) use SPCR, which is also not a part of the specification.
+
+SPCR and CSRT tables have permissive licensing and probably okay to use 
+them.
+
+The main issue is that the shared info descriptor in the CSRT table is 
+not a standard and none of the arm platforms uses them.
+
+ >> [1]https://uefi.org/sites/default/files/resources/CSRT%20v2.pdf
+
 -- 
-2.30.2
-
+Niyas
