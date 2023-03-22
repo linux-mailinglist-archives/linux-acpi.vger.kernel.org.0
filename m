@@ -2,126 +2,175 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DB0F6C4D3D
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 15:15:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A08C6C4DB3
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 15:30:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230163AbjCVOPZ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 22 Mar 2023 10:15:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46982 "EHLO
+        id S229937AbjCVOaw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Mar 2023 10:30:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231137AbjCVOPZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 10:15:25 -0400
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BEE161523;
-        Wed, 22 Mar 2023 07:15:19 -0700 (PDT)
-Received: by mail-ed1-f48.google.com with SMTP id eh3so73561261edb.11;
-        Wed, 22 Mar 2023 07:15:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679494518;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oc9u0QRSHAZ1FQIFQqSfH1qMlFht2R0YM5EtqXriUHE=;
-        b=kE7kA8ZSuPB0wF57vRNvAJo+ai6Y5j/BRN1T9KJI14hye2dvMEI/1HS9gKH39jw7gS
-         EcRbk+h/N8AaR1+h220Td5wYrDAwA05BrVf41COOC93zjIYVW+mU7VJzpDIIHDzgnomF
-         NuUrgNeRBmnGYAi/cvek1Tf3QGMk2Kn1AoQbeGLZXSZVtt9HznDpW7Q3tyBoq7FHmtTd
-         8Nps6u5Pp799c1xsHRzw3pzFctU/JLpmy3FmBGSPfcYu/KFiypy56qHysuLVZou/93w0
-         ZvX4bjZ5wpjxKumbp6+f2O9Rqv4jdij9SZwv0W2E7aSJAgljUJZ9pBDcEjb7qfg0R7YK
-         3VwA==
-X-Gm-Message-State: AO0yUKWowRMV+JCClC/6q6BAVkhibOprMPcON86lQR/3NQ+wGT9mkl5u
-        F4P78hIdu2nXu8MWvpjOxPeyIDCUWTnw1RP+JRM=
-X-Google-Smtp-Source: AK7set+sFvi2b9JHlrh82lzop6CBs+RArXGCZqOerIKmyfaW5wrAJy2Jcf3NeARQruIklHezo9aFnjJyye6iajCp1m0=
-X-Received: by 2002:a17:907:7da7:b0:8b1:3298:c587 with SMTP id
- oz39-20020a1709077da700b008b13298c587mr3405064ejc.2.1679494517779; Wed, 22
- Mar 2023 07:15:17 -0700 (PDT)
+        with ESMTP id S229638AbjCVOaw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 10:30:52 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 175DC6285F;
+        Wed, 22 Mar 2023 07:30:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679495451; x=1711031451;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YpXIfF5+mJiCxg+eDEG0Br0ZjXo5m0PVri6m2PIOARM=;
+  b=LkqY6WJ69UJBtkxdyOO6T/hlBDk73xFZ+AZU0BTzh5VfYiZr1pLMGLgJ
+   pIWpJhs0AzxDzxA1TYftpn4/7r4DdVqeO9P8otjRkmSq7L3P92+A5oO8E
+   a4yiu7KIntACscMNc9P623qHQ/v9XnALvJfi+iCzQuMKr8sVJLIeXtqa9
+   irphi4o6hSmYOWlmjgJuqz05vZ5FUF2BFZHB7f6NtuLXa2LUKrfpkGBwF
+   pALw8F2SMlExRhsIahv3/35p3fDt+f6lER9pP8sXtnMmrxzCPkJpsn9g/
+   4MV+IjjTs2SpWcNdzicW33jL24pmgiJIVMIskYefg2LS8Jg1jqnT8gBM0
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="323070997"
+X-IronPort-AV: E=Sophos;i="5.98,282,1673942400"; 
+   d="scan'208";a="323070997"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2023 07:30:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="632010777"
+X-IronPort-AV: E=Sophos;i="5.98,282,1673942400"; 
+   d="scan'208";a="632010777"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga003.jf.intel.com with ESMTP; 22 Mar 2023 07:30:33 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pezTy-007AGy-0O;
+        Wed, 22 Mar 2023 16:30:30 +0200
+Date:   Wed, 22 Mar 2023 16:30:29 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Pin-yen Lin <treapking@chromium.org>
+Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Xin Ji <xji@analogixsemi.com>, linux-kernel@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        linux-acpi@vger.kernel.org,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Hsin-Yi Wang <hsinyi@chromium.org>,
+        Lyude Paul <lyude@redhat.com>,
+        =?iso-8859-1?Q?N=EDcolas_F_=2E_R_=2E_A_=2E?= Prado 
+        <nfraprado@collabora.com>, Allen Chen <allen.chen@ite.com.tw>,
+        dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
+        Stephen Boyd <swboyd@chromium.org>,
+        chrome-platform@lists.linux.dev, devicetree@vger.kernel.org
+Subject: Re: [PATCH v14 10/10] drm/bridge: it6505: Register Type C mode
+ switches
+Message-ID: <ZBsRBV9dw+mb5ZxZ@smile.fi.intel.com>
+References: <20230322104639.221402-1-treapking@chromium.org>
+ <20230322104639.221402-11-treapking@chromium.org>
 MIME-Version: 1.0
-References: <CAJZ5v0goaS5O1_Hds2DnWsw_G-Dg4fU9NEY0=chyn5ECTcBmDw@mail.gmail.com>
- <20230322083646.2937580-1-gregkh@linuxfoundation.org>
-In-Reply-To: <20230322083646.2937580-1-gregkh@linuxfoundation.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 22 Mar 2023 15:15:06 +0100
-Message-ID: <CAJZ5v0jk=Kow_YrB5HgO2gd-bHcNx+6GKTXThf5js_ZjxaAM8w@mail.gmail.com>
-Subject: Re: [PATCH v2 02/19] ACPI: LPIT: move to use bus_get_dev_root()
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230322104639.221402-11-treapking@chromium.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-0.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 22, 2023 at 9:36 AM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> Direct access to the struct bus_type dev_root pointer is going away soon
-> so replace that with a call to bus_get_dev_root() instead, which is what
-> it is there for.
->
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: Len Brown <lenb@kernel.org>
-> Cc: linux-acpi@vger.kernel.org
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+On Wed, Mar 22, 2023 at 06:46:39PM +0800, Pin-yen Lin wrote:
+> Register USB Type-C mode switches when the "mode-switch" property and
+> relevant port are available in Device Tree. Configure the "lane_swap"
+> state based on the entered alternate mode for a specific Type-C
+> connector, which ends up updating the lane swap registers of the it6505
+> chip.
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+...
 
-> ---
-> v2: - change logic to test for dev_root at the beginning of the function
->       and error out then based on review comments from Rafael.
->     - fix error handling for ioremap() call to properly drop the
->       reference on dev_root if it failed.
->
->  drivers/acpi/acpi_lpit.c | 16 +++++++++++-----
->  1 file changed, 11 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/acpi/acpi_lpit.c b/drivers/acpi/acpi_lpit.c
-> index 3843d2576d3f..c5598b6d5db8 100644
-> --- a/drivers/acpi/acpi_lpit.c
-> +++ b/drivers/acpi/acpi_lpit.c
-> @@ -98,6 +98,12 @@ EXPORT_SYMBOL_GPL(lpit_read_residency_count_address);
->  static void lpit_update_residency(struct lpit_residency_info *info,
->                                  struct acpi_lpit_native *lpit_native)
->  {
-> +       struct device *dev_root = bus_get_dev_root(&cpu_subsys);
+> +	struct device_node *port_node = of_graph_get_port_by_id(dev->of_node, 1);
+> +	struct drm_dp_typec_switch_desc *switch_desc = &it6505->switch_desc;
+> +	int ret;
+> +	u32 dp_lanes[4];
+> +	unsigned int i, num_lanes;
 > +
-> +       /* Silently fail, if cpuidle attribute group is not present */
-> +       if (!dev_root)
-> +               return;
+> +	ret = drm_dp_register_typec_switches(dev, &port_node->fwnode,
+> +					     &it6505->switch_desc, it6505,
+> +					     it6505_typec_mux_set);
+> +	if (ret)
+> +		return ret;
 > +
->         info->frequency = lpit_native->counter_frequency ?
->                                 lpit_native->counter_frequency : tsc_khz * 1000;
->         if (!info->frequency)
-> @@ -108,18 +114,18 @@ static void lpit_update_residency(struct lpit_residency_info *info,
->                 info->iomem_addr = ioremap(info->gaddr.address,
->                                                    info->gaddr.bit_width / 8);
->                 if (!info->iomem_addr)
-> -                       return;
-> +                       goto exit;
->
-> -               /* Silently fail, if cpuidle attribute group is not present */
-> -               sysfs_add_file_to_group(&cpu_subsys.dev_root->kobj,
-> +               sysfs_add_file_to_group(&dev_root->kobj,
->                                         &dev_attr_low_power_idle_system_residency_us.attr,
->                                         "cpuidle");
->         } else if (info->gaddr.space_id == ACPI_ADR_SPACE_FIXED_HARDWARE) {
-> -               /* Silently fail, if cpuidle attribute group is not present */
-> -               sysfs_add_file_to_group(&cpu_subsys.dev_root->kobj,
-> +               sysfs_add_file_to_group(&dev_root->kobj,
->                                         &dev_attr_low_power_idle_cpu_residency_us.attr,
->                                         "cpuidle");
->         }
-> +exit:
-> +       put_device(dev_root);
->  }
->
->  static void lpit_process(u64 begin, u64 end)
-> --
-> 2.40.0
->
+> +	it6505->port_data = devm_kcalloc(dev, switch_desc->num_typec_switches,
+> +					 sizeof(struct it6505_typec_port_data),
+> +					 GFP_KERNEL);
+> +	if (!it6505->port_data) {
+> +		ret = -ENOMEM;
+> +		goto unregister_mux;
+> +	}
+
+A couple of the similar comments as per previous similar patch.
+
+...
+
+>  	/* get extcon device from DTS */
+>  	extcon = extcon_get_edev_by_phandle(dev, 0);
+> -	if (PTR_ERR(extcon) == -EPROBE_DEFER)
+> -		return -EPROBE_DEFER;
+> -	if (IS_ERR(extcon)) {
+> -		dev_err(dev, "can not get extcon device!");
+> -		return PTR_ERR(extcon);
+> +	ret = PTR_ERR_OR_ZERO(extcon);
+> +	if (ret == -EPROBE_DEFER)
+> +		return ret;
+
+> +
+
+Unnecessary blank line.
+
+> +	if (ret) {
+> +		if (ret != -ENODEV)
+> +			dev_warn(dev, "Cannot get extcon device: %d\n", ret);
+> +
+> +		it6505->extcon = NULL;
+> +	} else {
+> +		it6505->extcon = extcon;
+
+...
+
+> +	ret = it6505_register_typec_switches(dev, it6505);
+> +	if (ret != -ENODEV)
+> +		dev_warn(dev, "Didn't register Type-C switches, err: %d\n", ret);
+
+> +
+
+Unnecessary blank line.
+
+> +	if (ret && !it6505->extcon) {
+> +		dev_err(dev, "Both extcon and Type-C switch are not registered.\n");
+> +		return -EINVAL;
+
+Why not return ret here?
+
+> +	}
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
