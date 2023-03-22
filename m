@@ -2,148 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DCD46C5683
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 21:07:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B793D6C57AB
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Mar 2023 21:33:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230411AbjCVUG7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Mar 2023 16:06:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60954 "EHLO
+        id S231400AbjCVUdB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Mar 2023 16:33:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231724AbjCVUGV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 16:06:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E19D06A1C6;
-        Wed, 22 Mar 2023 13:01:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AF172622C0;
-        Wed, 22 Mar 2023 20:01:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C64DC433A1;
-        Wed, 22 Mar 2023 20:00:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679515260;
-        bh=UgHQf1efIHBgU4uG2r7B5JWlDxv2+s1TXxnzspAXBoo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UAi9C7QmlxTc7ZRlhLvPRtyTk7wWDJIeHsEpD+DsZFReniQKm8hRHFUpTe5SMuqmj
-         aEz7PbscZVw618Ld+t9H88QyHULAZdNYWqh8AyqHTj9550pOwsdgz4Wq4jt+TG/XCL
-         dHBcQkYJSdHFH1Pgbtcd0wLnpStx4S85j0cq1Hn4/d1H1549V/0hCBoa3di5778JYf
-         AhdJKL4ybNPyzSl9OoBxch2pSenupIixTqyrPh/CNWgREEwWWxSnmkhKdPSJfzmqdu
-         Dw5M5vVfoLy8EvuQj7bztwzzns8eIqC0kT2OGoQ/hqTFbrzel4cmfWQBQtyraZPk4y
-         0QTn/qdyex4pA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Chen Yu <yu.c.chen@intel.com>,
-        Hariganesh Govindarajulu <hariganesh.govindarajulu@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, robert.moore@intel.com,
-        junming@nfschina.com, linux-acpi@vger.kernel.org,
-        acpica-devel@lists.linuxfoundation.org
-Subject: [PATCH AUTOSEL 6.1 23/34] ACPI: tools: pfrut: Check if the input of level and type is in the right numeric range
-Date:   Wed, 22 Mar 2023 15:59:15 -0400
-Message-Id: <20230322195926.1996699-23-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230322195926.1996699-1-sashal@kernel.org>
-References: <20230322195926.1996699-1-sashal@kernel.org>
+        with ESMTP id S231693AbjCVUcs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 16:32:48 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F7497DFB1;
+        Wed, 22 Mar 2023 13:23:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=FJqzfMELp3aHXabyFcLYx72JXlBinAe4aH0QSo1TiCY=; b=qPJARAFsrEBJcdOL+b8XAAK0Y1
+        zgzx827W7EHC5/g91D9yTxbgW78sCRyfyl6ZZQJsIBdA8dsAkZT2QEndVkOtLxw7OI0DFWUbQBIKl
+        r/fMA2vyanj/lPjGvQdL5e5FIQ7bVNTYGEZ8USCv+sOxDQEd0hcO0doXkd/pop79Rn/lPX8+p/54l
+        J2xFFLyod3UwvBPcKuoulukpxXXI/d0x1jSQswr1aKgaIAmMyHRzLPSEyxhbUzU3x0PW4HC2alHc5
+        cO+O64saW+Ivt8Nq9L6ck6cW0sJ73aIcSJD3c3GEfMcEStGXXTdtHixz+vaJZneXiTNJwp5wSII6j
+        4vu7G6BA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:42306)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1pf4lo-0003qQ-Ao; Wed, 22 Mar 2023 20:09:16 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1pf4lk-0000de-SY; Wed, 22 Mar 2023 20:09:12 +0000
+Date:   Wed, 22 Mar 2023 20:09:12 +0000
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jakub Kicinski <kuba@kernel.org>, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH RFC net-next 5/7] net: dsa: avoid DT validation for
+ drivers which provide default config
+Message-ID: <ZBtgaAGkqQ7JVvoP@shell.armlinux.org.uk>
+References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
+ <E1pex8a-00Dvo3-G7@rmk-PC.armlinux.org.uk>
+ <db06c9d7-9ad7-42f0-9b40-6e325f6bcc62@lunn.ch>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <db06c9d7-9ad7-42f0-9b40-6e325f6bcc62@lunn.ch>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Chen Yu <yu.c.chen@intel.com>
+On Wed, Mar 22, 2023 at 07:51:22PM +0100, Andrew Lunn wrote:
+> On Wed, Mar 22, 2023 at 12:00:16PM +0000, Russell King (Oracle) wrote:
+> > When a DSA driver (e.g. mv88e6xxx) provides a default configuration,
+> > avoid validating the DT description as missing elements will be
+> > provided by the DSA driver.
+> > 
+> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > ---
+> >  net/dsa/port.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/net/dsa/port.c b/net/dsa/port.c
+> > index c30e3a7d2145..23d9970c02d3 100644
+> > --- a/net/dsa/port.c
+> > +++ b/net/dsa/port.c
+> > @@ -1951,6 +1951,9 @@ static void dsa_shared_port_validate_of(struct dsa_port *dp,
+> >  	*missing_phy_mode = false;
+> >  	*missing_link_description = false;
+> >  
+> > +	if (dp->ds->ops->port_get_fwnode)
+> > +		return;
+> 
+> I wounder if you should actually call it for the given port, and
+> ensure it does not return -EOPNOTSUPP, or -EINVAL, etc, because it is
+> not going to override that port? Then the DT values should be
+> validated?
 
-[ Upstream commit 0bc23d8b2237a104d7f8379d687aa4cb82e2968b ]
+Won't that mean that we need to implement the method for all DSA
+drivers?
 
-The user provides arbitrary non-numeic value to level and type,
-which could bring unexpected behavior. In this case the expected
-behavior would be to throw an error.
-
- pfrut -h
-usage: pfrut [OPTIONS]
-code injection:
--l, --load
--s, --stage
--a, --activate
--u, --update [stage and activate]
--q, --query
--d, --revid
-update telemetry:
--G, --getloginfo
--T, --type(0:execution, 1:history)
--L, --level(0, 1, 2, 4)
--R, --read
--D, --revid log
-
- pfrut -T A
- pfrut -G
-log_level:0
-log_type:0
-log_revid:2
-max_data_size:65536
-chunk1_size:0
-chunk2_size:1530
-rollover_cnt:0
-reset_cnt:17
-
-Fix this by restricting the input to be in the expected range.
-
-Reported-by: Hariganesh Govindarajulu <hariganesh.govindarajulu@intel.com>
-Suggested-by: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- tools/power/acpi/tools/pfrut/pfrut.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
-
-diff --git a/tools/power/acpi/tools/pfrut/pfrut.c b/tools/power/acpi/tools/pfrut/pfrut.c
-index 52aa0351533c3..388c9e3ad0407 100644
---- a/tools/power/acpi/tools/pfrut/pfrut.c
-+++ b/tools/power/acpi/tools/pfrut/pfrut.c
-@@ -97,7 +97,7 @@ static struct option long_options[] = {
- static void parse_options(int argc, char **argv)
- {
- 	int option_index = 0;
--	char *pathname;
-+	char *pathname, *endptr;
- 	int opt;
- 
- 	pathname = strdup(argv[0]);
-@@ -125,11 +125,23 @@ static void parse_options(int argc, char **argv)
- 			log_getinfo = 1;
- 			break;
- 		case 'T':
--			log_type = atoi(optarg);
-+			log_type = strtol(optarg, &endptr, 0);
-+			if (*endptr || (log_type != 0 && log_type != 1)) {
-+				printf("Number expected: type(0:execution, 1:history) - Quit.\n");
-+				exit(1);
-+			}
-+
- 			set_log_type = 1;
- 			break;
- 		case 'L':
--			log_level = atoi(optarg);
-+			log_level = strtol(optarg, &endptr, 0);
-+			if (*endptr ||
-+			    (log_level != 0 && log_level != 1 &&
-+			     log_level != 2 && log_level != 4)) {
-+				printf("Number expected: level(0, 1, 2, 4) - Quit.\n");
-+				exit(1);
-+			}
-+
- 			set_log_level = 1;
- 			break;
- 		case 'R':
 -- 
-2.39.2
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
