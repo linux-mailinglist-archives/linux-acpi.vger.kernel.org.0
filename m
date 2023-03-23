@@ -2,160 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D5F16C68F7
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 13:56:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CD426C6954
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 14:16:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231887AbjCWM4Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Mar 2023 08:56:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45636 "EHLO
+        id S229877AbjCWNQ4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 09:16:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230267AbjCWM4N (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 08:56:13 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A47902CFD7;
-        Thu, 23 Mar 2023 05:56:12 -0700 (PDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32NBKSXK022815;
-        Thu, 23 Mar 2023 12:55:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=WGvt1tA3Zdk26SSxIzJUKoKuqvx3KwswYKcjn4Jb9Fc=;
- b=jzUlyZ4ozowNa1iwb3IUhj06Kbwh25fZs9qfyi4AfHJmQx44pwFBuZHKt95nFhu19q1U
- GTIJ6BVuBHmdJSQusFTpIAHLBZfhZggk29QCblYNYDsCs/yZgr8WzL7TnmVj6radzth6
- IDWkFQi80yr94v0r74lzeAPjH3QGXj0JLOQZE8zRvfvwEZlWJUqXo3lQAKIlM7JvqTPU
- QI2OjED50v3BVENpYqrQ6eZ8iWtXKKoqKyNUKL677VFfiABImwuqN3lXGVLBLuLKl4p8
- uvjn+n33ihWRbUfzX9u+ICKkqbQ3pVtiSj2cHR/DZsCEQi5jh9PY4E/7sVfFRfUSkgk/ 2g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pge77mu2d-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 23 Mar 2023 12:55:44 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32NBS1O5026870;
-        Thu, 23 Mar 2023 12:55:43 GMT
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pge77mu10-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 23 Mar 2023 12:55:43 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-        by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32N4XRlf018070;
-        Thu, 23 Mar 2023 12:55:40 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-        by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3pd4x6e7u3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 23 Mar 2023 12:55:40 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-        by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32NCtbLw32244458
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 23 Mar 2023 12:55:37 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id B963B20043;
-        Thu, 23 Mar 2023 12:55:37 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 81F3C20049;
-        Thu, 23 Mar 2023 12:55:36 +0000 (GMT)
-Received: from [9.171.87.16] (unknown [9.171.87.16])
-        by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-        Thu, 23 Mar 2023 12:55:36 +0000 (GMT)
-Message-ID: <2bcabfceab658ae62bf854e5fdaf5bc916481359.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 26/38] pnp: add HAS_IOPORT dependencies
-From:   Niklas Schnelle <schnelle@linux.ibm.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Jaroslav Kysela <perex@perex.cz>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
-        linux-acpi@vger.kernel.org
-Date:   Thu, 23 Mar 2023 13:55:36 +0100
-In-Reply-To: <CAJZ5v0gHFA_BgLuCx=Eb3J5D7f7j8kV3Pthqy3jAfpavY6UMuQ@mail.gmail.com>
-References: <20230314121216.413434-1-schnelle@linux.ibm.com>
-         <20230314121216.413434-27-schnelle@linux.ibm.com>
-         <CAJZ5v0gYGkbUk4uFXgidMaRBniwiXpizZWwMGixeNNejeZjPzg@mail.gmail.com>
-         <CAJZ5v0gHFA_BgLuCx=Eb3J5D7f7j8kV3Pthqy3jAfpavY6UMuQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: AodznXdTibR-B5qDAN4iAweHV8OlJvjO
-X-Proofpoint-ORIG-GUID: VqiraoOxe_Uj9DZ687OluBDOrMzSML3q
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+        with ESMTP id S229672AbjCWNQz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 09:16:55 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5889EB442
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Mar 2023 06:16:54 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pfKoD-0006DB-1d; Thu, 23 Mar 2023 14:16:49 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pfKoB-006A60-QI; Thu, 23 Mar 2023 14:16:47 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pfKoB-007LDY-3Q; Thu, 23 Mar 2023 14:16:47 +0100
+Date:   Thu, 23 Mar 2023 14:16:46 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     Pierre Asselin <pa@panix.com>, linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [Regression] acpi: laptop panics early in boot
+Message-ID: <20230323131646.xp3m2qvb7wp2wsqb@pengutronix.de>
+References: <9f6cba7a8a57e5a687c934e8e406e28c.squirrel@mail.panix.com>
+ <20230307093308.m5enhuegm3r4qwvo@pengutronix.de>
+ <220898e2276e4cae2572eb8f006f3a7b.squirrel@mail.panix.com>
+ <20230307161005.6m6fpi3oxa3jn2wg@pengutronix.de>
+ <6d97df76de719871c90fb59726f2d6b0.squirrel@mail.panix.com>
+ <47a90870-8a71-a28f-bd8a-032a69cda596@leemhuis.info>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-22_21,2023-03-22_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- clxscore=1015 adultscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
- malwarescore=0 priorityscore=1501 suspectscore=0 mlxlogscore=851
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303150002 definitions=main-2303230094
-X-Spam-Status: No, score=-0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="jtnsbqy6se7cszif"
+Content-Disposition: inline
+In-Reply-To: <47a90870-8a71-a28f-bd8a-032a69cda596@leemhuis.info>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 2023-03-21 at 14:56 +0100, Rafael J. Wysocki wrote:
-> On Mon, Mar 20, 2023 at 6:37=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.=
-org> wrote:
+
+--jtnsbqy6se7cszif
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Mar 23, 2023 at 01:31:37PM +0100, Linux regression tracking (Thorst=
+en Leemhuis) wrote:
+> On 07.03.23 20:31, Pierre Asselin wrote:
+> >> Maybe the following patch helps (on top of v6.3-rc1):
+> >>
+> >> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> >> index 9531dd0fef50..a5a8f82981ce 100644
+> >> --- a/drivers/acpi/bus.c
+> >> +++ b/drivers/acpi/bus.c
+> >> @@ -518,7 +518,7 @@ static void acpi_bus_notify(acpi_handle handle, u32
+> >> type, void *data)
+> >>  	if (!adev)
+> >>  		goto err;
+> >>
+> >> -	if (adev->dev.driver) {
+> >> +	if (device_is_bound(&adev->dev)) {
+> >>  		struct acpi_driver *driver =3D to_acpi_driver(adev->dev.driver);
+> >>
+> >>  		if (driver && driver->ops.notify &&
+> >>
 > >=20
-> > On Tue, Mar 14, 2023 at 1:13=E2=80=AFPM Niklas Schnelle <schnelle@linux=
-.ibm.com> wrote:
-> > >=20
-> > > In a future patch HAS_IOPORT=3Dn will result in inb()/outb() and frie=
-nds
-> > > not being declared. We thus need to depend on HAS_IOPORT even when
-> > > compile testing only.
-> > >=20
-> > > Co-developed-by: Arnd Bergmann <arnd@kernel.org>
-> > > Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-> > > ---
-> > >  drivers/pnp/isapnp/Kconfig | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >=20
-> > > diff --git a/drivers/pnp/isapnp/Kconfig b/drivers/pnp/isapnp/Kconfig
-> > > index d0479a563123..79bd48f1dd94 100644
-> > > --- a/drivers/pnp/isapnp/Kconfig
-> > > +++ b/drivers/pnp/isapnp/Kconfig
-> > > @@ -4,7 +4,7 @@
-> > >  #
-> > >  config ISAPNP
-> > >         bool "ISA Plug and Play support"
-> > > -       depends on ISA || COMPILE_TEST
-> > > +       depends on ISA || (HAS_IOPORT && COMPILE_TEST)
+> > It does indeed "fix" 6.3-rc1.  Modulo locking issues, which I am
+> > not qualified to evaluate.
 >=20
-> This breaks code selecting ISAPNP and not depending on it.  See
-> https://lore.kernel.org/linux-acpi/202303211932.5gtCVHCz-lkp@intel.com/T/=
-#u
-> for example.
->=20
-> I'm dropping the patch now, please fix and resend.
->=20
-> >=20
+> Uwe, what happens to this regression fix? It looks like it didn't make
+> any progress towards mainline, but maybe I missed something in my brief
+> search on lore.
 
-Sorry if this wasn't super clear but all patches in this series depend
-on patch 1 which introduces the HAS_IOPORT Kconfig option. There's
-really two options, either the whole series goes via e.g. Arnd's tree
-at once or we first only merge patch 1 and then add the rest per
-subsystem until finally the last patch can remove inb()/outb() when
-HAS_IOPORT is unset.
+If you missed something then so did I. From my POV the patch is not
+known to lead to a correct handling, but for sure it's better than the
+status quo.
 
-That said I'm a little unsure about the linked error if that is just
-due to missing HAS_IOPORT or something else. I'll still have to try
-with the instructions in that mail and will report back if it is
-something else.
+I didn't create a proper patch because I thought someone might want to
+do a deeper dive and check the logging. If that doesn't happen, I can
+followup with a patch.
 
-Thanks,
-Niklas
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--jtnsbqy6se7cszif
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmQcUT4ACgkQj4D7WH0S
+/k4BrAf/eTy4iJinpXgEBmbkNhRYShxnyM6jIPwHt0SxA31/ay5SOAqotbXAOGPl
+Cb7J4CxKuuxMXFk5rYPYW8G6+xzUdpvMvAKjJ9ykyu1u68FgTVDUehvkO8PyTIlU
+iEiDBdt+1Kq51vTSHWLAWhSij1QAku/fXE9+lmLkoIcFP6n4K9fkAOj8HiZeTxNh
+Nk4I2UXbZpYDUAGLAwbWYAXrUHzyhHqiLJKRnY/Qgs7gBB17ueYfsy9zk2pYolTj
+i1jG3PXb2J09Vojg02DT2bHBiTb0YplQJ5QxSr/uvLoDmPlD/6oeTw3lUrP/X2US
+NkloZFmHMRRtwIfXIrDWzN8zgWMWaA==
+=f2gj
+-----END PGP SIGNATURE-----
+
+--jtnsbqy6se7cszif--
