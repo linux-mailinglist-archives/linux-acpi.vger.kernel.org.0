@@ -2,85 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 099636C6C03
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 16:15:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 269FD6C6C34
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 16:23:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229702AbjCWPPD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Mar 2023 11:15:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59098 "EHLO
+        id S232051AbjCWPXe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 11:23:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231594AbjCWPPC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 11:15:02 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 972D29001;
-        Thu, 23 Mar 2023 08:15:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679584501; x=1711120501;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=eeRabBK6QPfoQ8luPUQT5zoPHyjCVC0mZMDpYDE/5Fg=;
-  b=WrIMxlmkThg+4MSMrMzKLcY64wHrGRRl0UWxvjQTC+lOpfr/6QM0+wyF
-   JZWc2Hqkvsl+vkBYs74I7U8Wh8d7I1HmVhDr09Ouv4mb+QWHKqxLAWrt+
-   WfPknh7tlZ0s67p3xg3FMrfRHzDTAta5pI0RXKn4rbGgB5crknUj9fwll
-   T7LKy3uC8qoyVkSV4l87qhNHvYoOFWL6FGsa/qJNYBpCdm3a2yCGsQvfS
-   jvWi5V++qeTTtE8J0pGTp12DNGYMsaiJombIeQv3N7NQQZPq1Vh9TQTw8
-   EV5lF0c/AT0+xL+t6To5QJJjR7ZxJAqc5K3s5fwIhIQ18SgcSnFVfuXIg
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="323378828"
-X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
-   d="scan'208";a="323378828"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2023 08:14:40 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="746746088"
-X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
-   d="scan'208";a="746746088"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga008.fm.intel.com with ESMTP; 23 Mar 2023 08:14:38 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id D34ECD0; Thu, 23 Mar 2023 17:15:24 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Daniel Scally <djrscally@gmail.com>,
+        with ESMTP id S232109AbjCWPXe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 11:23:34 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C478E1B574;
+        Thu, 23 Mar 2023 08:23:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=Q02dgDTZnKhUjHALrPflsrfzjCe90yPs2MlkZua0PAM=; b=qTYFy6CfiPjnMSYYQTt9XWi6BN
+        QYRMb0DlP/471Fujd7JRxlYxBZUbxzKSYQAwzIelpIyKQX9IEVCoQbL5t2e3v3KUDww1Q7Eud0nAJ
+        vkchgqSKoag0TcHsaWfyBg/73W5HLurSCz/D106NlOW9QJpJa0bbqm6yTaA+HaNeYqly3i9XM8Djw
+        tzGObO0U+oiUuuoJFH8B96nQi+H/QP7e2otClRR5YXqgonkAMEHkcefX5LZKW+lA0OzIzJJNi9rKK
+        Duq9nQ2KRqAxzlUUz9R2S7cEr4cA3uceh2xzMDIvCLQIwZYSvPksQHTDmztVg7gPR4GWtn+ZREy7w
+        XO5mhNdg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:37482)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1pfMmY-0005MF-LX; Thu, 23 Mar 2023 15:23:16 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1pfMmW-0001UO-A7; Thu, 23 Mar 2023 15:23:12 +0000
+Date:   Thu, 23 Mar 2023 15:23:12 +0000
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [PATCH v1 1/1] device property: Remove unused struct net_device forward declaration
-Date:   Thu, 23 Mar 2023 17:15:19 +0200
-Message-Id: <20230323151519.58479-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
+        Jakub Kicinski <kuba@kernel.org>, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH RFC net-next 3/7] net: dsa: use fwnode_get_phy_mode() to
+ get phy interface mode
+Message-ID: <ZBxu4FvyO2JDwmMq@shell.armlinux.org.uk>
+References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
+ <E1pex8Q-00Dvnr-5y@rmk-PC.armlinux.org.uk>
+ <ZBxcGXSVe0dlzKZb@smile.fi.intel.com>
+ <ZBxiqJo470A7bkig@shell.armlinux.org.uk>
+ <ZBxkZYXrfugz0gYw@smile.fi.intel.com>
+ <ZBxm3XrQAfnmbHoF@shell.armlinux.org.uk>
+ <ZBxpeLOmTMzqVTRV@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZBxpeLOmTMzqVTRV@smile.fi.intel.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-There is no users in the property.h for the struct net_device.
-Remove the latter for good.
+On Thu, Mar 23, 2023 at 05:00:08PM +0200, Andy Shevchenko wrote:
+> On Thu, Mar 23, 2023 at 02:49:01PM +0000, Russell King (Oracle) wrote:
+> > On Thu, Mar 23, 2023 at 04:38:29PM +0200, Andy Shevchenko wrote:
+> > > On Thu, Mar 23, 2023 at 02:31:04PM +0000, Russell King (Oracle) wrote:
+> > > > On Thu, Mar 23, 2023 at 04:03:05PM +0200, Andy Shevchenko wrote:
+> > > > > On Wed, Mar 22, 2023 at 12:00:06PM +0000, Russell King (Oracle) wrote:
+> 
+> ...
+> 
+> > > > > > +	struct fwnode_handle *fwnode;
+> > > > > 
+> > > > > > +	fwnode = of_fwnode_handle(dp->dn);
+> > > > > 
+> > > > > 	const struct fwnode_handle *fwnode = of_fwnode_handle(dp->dn);
+> > > > > 
+> > > > > ?
+> > > > 
+> > > > Why const?
+> > > 
+> > > Do you modify its content on the fly?
+> > 
+> > Do you want to litter code with casts to get rid of the const?
+> > 
+> > > For fwnode as a basic object type we want to reduce the scope of the possible
+> > > modifications. If you don't modify and APIs you call do not require non-const
+> > > object, use const for fwnode.
+> > 
+> > Let's start here. We pass this fwnode to fwnode_get_phy_mode():
+> > 
+> > include/linux/property.h:int fwnode_get_phy_mode(struct fwnode_handle *fwnode);
+> > 
+> > Does fwnode_get_phy_mode() alter the contents of the fwnode? Probably
+> > not, but it doesn't take a const pointer. Therefore, to declare my
+> > fwnode as const, I'd need to cast the const-ness away before calling
+> > this.
+> 
+> So, fix the fwnode_get_phy_mode(). Is it a problem?
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- include/linux/property.h | 1 -
- 1 file changed, 1 deletion(-)
+No, I refuse. That's for a different patch set.
 
-diff --git a/include/linux/property.h b/include/linux/property.h
-index ee9cc1710d82..1dff38e930fc 100644
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -16,7 +16,6 @@
- #include <linux/types.h>
- 
- struct device;
--struct net_device;
- 
- enum dev_prop_type {
- 	DEV_PROP_U8,
+> > Then there's phylink_create(). Same problem.
+> 
+> So, fix that. Is it a problem?
+
+No for the same reason.
+
+> > So NAK to this const - until such time that we have a concerted effort
+> > to making functions we call which do not modify the "fwnode" argument
+> > constify that argument. Otherwise it's just rediculously crazy to
+> > declare a variable const only to then litter the code with casts to get
+> > rid of it at every call site.
+> > 
+> > Please do a bit of research before making suggestions. Thanks.
+> 
+> So, MAK to your patch. You can fix that, and you know that.
+
+Sorry, I don't accept your NAK. While you have a valid point about
+these things being const, that is not the fault of this patch series,
+and is something that should be addressed separately.
+
+The lack of const-ness that has been there for quite some time is no
+reason to NAK a patch that has nothing to do with this.
+
+> P.S. Please, move that phy thingy away from property.h, it doesn't belong
+> there.
+
+Again, that's a subject for a separate patch.
+
+I will re-post this in due course and ignore your NAK (due to your
+lack of research, and confrontational nature.)
+
+Thanks.
+
 -- 
-2.40.0.1.gaa8946217a0b
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
