@@ -2,166 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B06F6C6D02
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 17:11:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F06C26C6D09
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 17:11:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231608AbjCWQLX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Mar 2023 12:11:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35574 "EHLO
+        id S229708AbjCWQLk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 12:11:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229948AbjCWQLW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 12:11:22 -0400
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B204A32CCF;
-        Thu, 23 Mar 2023 09:10:55 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046056;MF=renyu.zj@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0VeUu73m_1679587840;
-Received: from srmbuffer011165236051.sqa.net(mailfrom:renyu.zj@linux.alibaba.com fp:SMTPD_---0VeUu73m_1679587840)
-          by smtp.aliyun-inc.com;
-          Fri, 24 Mar 2023 00:10:53 +0800
-From:   Jing Zhang <renyu.zj@linux.alibaba.com>
-To:     Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-perf-users@vger.kernel.org,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Zhuo Song <zhuo.song@linux.alibaba.com>,
-        Jing Zhang <renyu.zj@linux.alibaba.com>
-Subject: [RESEND PATCH] driver/perf: arm-cmn: support ACPI probe
-Date:   Fri, 24 Mar 2023 00:10:38 +0800
-Message-Id: <1679587838-80000-1-git-send-email-renyu.zj@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
-X-Spam-Status: No, score=-8.0 required=5.0 tests=ENV_AND_HDR_SPF_MATCH,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        with ESMTP id S231709AbjCWQLg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 12:11:36 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EF2D734315;
+        Thu, 23 Mar 2023 09:11:31 -0700 (PDT)
+Received: from [192.168.2.39] (77-166-152-30.fixed.kpn.net [77.166.152.30])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 6CDBB20FBE82;
+        Thu, 23 Mar 2023 09:11:28 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6CDBB20FBE82
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1679587891;
+        bh=tx2cEB9GJm5+/OdRlhz52+qKRfsxPBtxTkKK5gBk9rY=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=D0fDDhKbyTZ1n0mKv4XsiPv/YNR7QQQ41GxJ2NKkoXjynXP03g+x+g1vuCONT4Nfv
+         Eu6L8TvTykhJNyY3rB1zGs5yT6TC2iJJSBFgOgOMLc3Ti2vciP+G4BGaDAjlqyDdXF
+         SbZx4gfuY/G6dIN/nUvhIkuomFZ47Qjh7n6FsN3k=
+Message-ID: <105d019c-2249-5dfd-e032-95944ea6dc8c@linux.microsoft.com>
+Date:   Thu, 23 Mar 2023 17:11:26 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v3 0/8] Support ACPI PSP on Hyper-V
+Content-Language: en-US
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     linux-kernel@vger.kernel.org,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        linux-crypto@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
+References: <20230320191956.1354602-1-jpiotrowski@linux.microsoft.com>
+ <20230322154655.GDZBsi75f6LnQStxSp@fat_crate.local>
+ <1d25221c-eaab-0f97-83aa-8b4fbe3a53ed@linux.microsoft.com>
+ <20230322181541.GEZBtFzRAMcH9BAzUe@fat_crate.local>
+ <ecf005b1-ddb9-da4c-4526-28df4806426c@linux.microsoft.com>
+ <20230323152342.GFZBxu/m3u6aFUDY/7@fat_crate.local>
+From:   Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+In-Reply-To: <20230323152342.GFZBxu/m3u6aFUDY/7@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-17.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-ACPI companion devices call insert_resource() in platform_device_add()
-to claim the device resources. If the resources are claimed again before
-ioremap(), and the addresses of multiple resources overlap, it will
-return -BUSY, causing the driver to fail to load.
+On 3/23/2023 4:23 PM, Borislav Petkov wrote:
+> On Thu, Mar 23, 2023 at 03:46:22PM +0100, Jeremi Piotrowski wrote:
+>> Not at all. Just to be clear: this lights up all the same bits of SNP
+>> as it does on bare-metal, none of it is emulated away. On bare-metal the
+>> hypervisor underneath the SNP guest is unencrypted as well. Here the stack
+>> is: L0 (Hyper-V), L1 (KVM) and L2 (SNP guest).
+> 
+> Yeah, I talked to folks after sending that email yesterday. Apparently
+> it is ok to do that without compromising SNP guest security but I, in my
+> eternal paranoia, somehow don't have the warm and fuzzy feeling about
+> it.
+> 
+>> ... The communication channel between L2 guest and PSP is secured
+>> using keys that the PSP injects into the SNP guest's address space at
+>> launch time.
+> 
+> Yeah, all the levels below L2 are required to do it set up env properly
+> so that L2 SNP guests can run.
+> 
+>> Honestly, I find it pretty cool that you can stuff a whole extra hypervisor
+>> underneath the SNP guest,
+> 
+> Whatever floats your boat. :-)
+> 
+> As long as it doesn't mess up my interrupt setup code with crazy hacks.
+> 
+>> Not sure I follow you here. The quoted paragraph talks about what the L1
+>> VM (KVM) sees. The L1 VM needs to issue PSP commands to bring up an L2 SNP
+>> guest, and later the L1 VM relays SNP guest commands to the PSP. The
+>> PSP commands are multiplexed to the physical PSP by the L0 hypervisor
+>> (Hyper-V).
+>>
+>> So Hyper-V exposes a PSP to the L1 VM because it is needed and it is
+>> compatible with the existing Linux driver that handles the PSP. The way
+>> it is exposed (ACPI table) follows how it was specified by AMD.
+> 
+> No no, it was specified by Microsoft architects.
+> > So, that same interface to the PSP can be done by L0 emulating
+> a standard ACPI device for the KVM L1 HV and then L1 can use the normal
+> ACPI interrupt #9.
+> 
 
-For example, the CMN700 on my machine is set with two resources similar
-to CMN600, and the overlap of resource addresses makes the CMN driver
-unable to match my CMN700. The error log:
+That same interface is exposed by physical hardware+firmware to the underlying
+Hyper-V. So it wasn't a matter of Microsoft architects coming up with a
+guest-host interface but rather exposing the virtual hardware in the same
+way as on a physical server.
 
-[  12.016837] arm-cmn ARMHC700:00: can't request region for resource [mem 0x40000000-0x4fffffff]
-[  12.028230] arm-cmn: probe of ARMHC700:00 failed with error -16
-[  12.036832] arm-cmn ARMHC700:01: can't request region for resource [mem 0x40040000000-0x4004fffffff]
-[  12.051289] arm-cmn: probe of ARMHC700:01 failed with error -16
+> What's the need for supplying all that other gunk like destination ID,
+> interrupt vector and so on?
 
-So let ACPI companion devices call arm_cmn_acpi_probe() and not claim
-resource again. In addition, the arm_cmn_acpi_probe() and
-arm_cmn_of_probe() functions are refactored to make them compatible
-with both CMN600 and CMN-ANY.
+I'm not sure what drove the design decisions that led to the interface looking
+the way it does.
+What I can do is put in the work to map it into kernel constructs in the most
+native way possible and in a way that doesn't look or feel like a crazy hack.
 
-Fixes: 61ec1d875812 ("perf/arm-cmn: Demarcate CMN-600 specifics")
-Signed-off-by: Jing Zhang <renyu.zj@linux.alibaba.com>
----
- drivers/perf/arm-cmn.c | 57 ++++++++++++++++++++++++++++++++------------------
- 1 file changed, 37 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
-index 1deb61b..beb3b37 100644
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -2206,7 +2206,7 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
- 	return 0;
- }
- 
--static int arm_cmn600_acpi_probe(struct platform_device *pdev, struct arm_cmn *cmn)
-+static int arm_cmn_acpi_probe(struct platform_device *pdev, struct arm_cmn *cmn)
- {
- 	struct resource *cfg, *root;
- 
-@@ -2214,12 +2214,21 @@ static int arm_cmn600_acpi_probe(struct platform_device *pdev, struct arm_cmn *c
- 	if (!cfg)
- 		return -EINVAL;
- 
--	root = platform_get_resource(pdev, IORESOURCE_MEM, 1);
--	if (!root)
--		return -EINVAL;
-+	/* If ACPI defines more than one resource, such as cmn-600, then there may be
-+	 * a deviation between ROOTNODEBASE and PERIPHBASE, and ROOTNODEBASE can
-+	 * be obtained from the second resource. Otherwise, it can be considered that
-+	 * ROOT NODE BASE is PERIPHBASE. This is compatible with cmn-600 and cmn-any.
-+	 */
-+	if (pdev->num_resources > 1) {
-+		root = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-+		if (!root)
-+			return -EINVAL;
- 
--	if (!resource_contains(cfg, root))
--		swap(cfg, root);
-+		if (!resource_contains(cfg, root))
-+			swap(cfg, root);
-+	} else {
-+		root = cfg;
-+	}
- 	/*
- 	 * Note that devm_ioremap_resource() is dumb and won't let the platform
- 	 * device claim cfg when the ACPI companion device has already claimed
-@@ -2227,17 +2236,30 @@ static int arm_cmn600_acpi_probe(struct platform_device *pdev, struct arm_cmn *c
- 	 * appropriate name, we don't really need to do it again here anyway.
- 	 */
- 	cmn->base = devm_ioremap(cmn->dev, cfg->start, resource_size(cfg));
--	if (!cmn->base)
--		return -ENOMEM;
-+	if (IS_ERR(cmn->base))
-+		return PTR_ERR(cmn->base);
- 
- 	return root->start - cfg->start;
- }
- 
--static int arm_cmn600_of_probe(struct device_node *np)
-+static int arm_cmn_of_probe(struct platform_device *pdev, struct arm_cmn *cmn)
- {
- 	u32 rootnode;
-+	int ret;
-+
-+	cmn->base = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(cmn->base))
-+		return PTR_ERR(cmn->base);
- 
--	return of_property_read_u32(np, "arm,root-node", &rootnode) ?: rootnode;
-+	/* If of_property_read_u32() return -EINVAL, it means that device tree has
-+	 * not define root-node, and root-node will return 0, which is compatible
-+	 * with cmn-600 and cmn-any.
-+	 */
-+	ret = of_property_read_u32(pdev->dev.of_node, "arm,root-node", &rootnode);
-+	if (ret == -EINVAL)
-+		return 0;
-+
-+	return rootnode;
- }
- 
- static int arm_cmn_probe(struct platform_device *pdev)
-@@ -2255,16 +2277,11 @@ static int arm_cmn_probe(struct platform_device *pdev)
- 	cmn->model = (unsigned long)device_get_match_data(cmn->dev);
- 	platform_set_drvdata(pdev, cmn);
- 
--	if (cmn->model == CMN600 && has_acpi_companion(cmn->dev)) {
--		rootnode = arm_cmn600_acpi_probe(pdev, cmn);
--	} else {
--		rootnode = 0;
--		cmn->base = devm_platform_ioremap_resource(pdev, 0);
--		if (IS_ERR(cmn->base))
--			return PTR_ERR(cmn->base);
--		if (cmn->model == CMN600)
--			rootnode = arm_cmn600_of_probe(pdev->dev.of_node);
--	}
-+	if (has_acpi_companion(cmn->dev))
-+		rootnode = arm_cmn_acpi_probe(pdev, cmn);
-+	else
-+		rootnode = arm_cmn_of_probe(pdev, cmn);
-+
- 	if (rootnode < 0)
- 		return rootnode;
- 
--- 
-1.8.3.1
+> 
+> Thx.
+> 
 
