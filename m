@@ -2,141 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C78F6C6BBD
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 16:00:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C21646C6BD9
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 16:04:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231845AbjCWPAe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Mar 2023 11:00:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38092 "EHLO
+        id S230010AbjCWPEK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 11:04:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231923AbjCWPA2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 11:00:28 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69D851912A;
-        Thu, 23 Mar 2023 08:00:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679583626; x=1711119626;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=p1yP5VaKxRh8aNw09SSnNje/p5ZzINNB14cTYNhYeLc=;
-  b=SNloEObLSCun2Eo6EjENRT8JmSgWjzzslSc8LKjEFgnUNGkJQGgv2ceb
-   Ipu5besLcZUG3NS+SlnxS+oNjGqi8IACvBRYqJXKdzqN9RtXBxnCOBSed
-   GCI8kea4OpwDk3yxgacjJeMWW4oHKGIdx99zi67GMshtHL6UT7/xyx1a+
-   PJ00Jq5KUhw4hLb9w2YGvPQSTLcM2N/b/rHoq8f9TY1B+3/ftX/QNCcEH
-   PjVn+3kLd4uKTXjvJuanmWNI+2W2Ob1K6CMcHRvCHDZypFxHNRm5IdCWo
-   NTh1rppr3MOltBXKMOM+ieZkCwRZwIsiwQt4tT1PdXYwx4hJq2kd5LAcJ
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="323372199"
-X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
-   d="scan'208";a="323372199"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2023 08:00:15 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="746739875"
-X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
-   d="scan'208";a="746739875"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga008.fm.intel.com with ESMTP; 23 Mar 2023 08:00:11 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pfMQC-007Y3R-2S;
-        Thu, 23 Mar 2023 17:00:08 +0200
-Date:   Thu, 23 Mar 2023 17:00:08 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Daniel Scally <djrscally@gmail.com>,
+        with ESMTP id S231604AbjCWPEJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 11:04:09 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04E3528E74;
+        Thu, 23 Mar 2023 08:02:52 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id F2957B8215E;
+        Thu, 23 Mar 2023 15:02:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7276DC4339E;
+        Thu, 23 Mar 2023 15:02:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1679583760;
+        bh=A4cz5sAtdGojClghNnzslTTn+0telsrqWPrc7ZEY92A=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=QZ2KDQiDLNeolamz/rBZXmXKaml10w90GcGwB6l5yO87qYFqQPDIQgKZ80zht8Qsc
+         Xeoi/zLrt2EtH3nbngx/R5sYZx0Xwf4JkO9knqHSrKtOYd2+7MSeapV8B/zw9rxmZf
+         9UhNHPKZpA1ucTpj/VgulfE/ACFQnVZP8YBw36pan4Gf8wwyvTOnEEDjDM2KPQPTQp
+         ZGCnVZCISmiqwx5zKNrKd8Mk7Zh6u/0oYwI8LPRfc1PEUXu67DDtdxfqNx9ryyF1pw
+         4cNq1h1H67JIwrFngX1Sl9ypuAP/OCB5kx8wJtxg7nOzQYMGU2gbmFC/O67YEr6JCJ
+         aHqE0tG0UVQoQ==
+Date:   Thu, 23 Mar 2023 10:02:38 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        "Maciej W. Rozycki" <macro@orcam.me.uk>,
+        Juergen Gross <jgross@suse.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Anatolij Gustschin <agust@denx.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jakub Kicinski <kuba@kernel.org>, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Vladimir Oltean <olteanv@gmail.com>
-Subject: Re: [PATCH RFC net-next 3/7] net: dsa: use fwnode_get_phy_mode() to
- get phy interface mode
-Message-ID: <ZBxpeLOmTMzqVTRV@smile.fi.intel.com>
-References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
- <E1pex8Q-00Dvnr-5y@rmk-PC.armlinux.org.uk>
- <ZBxcGXSVe0dlzKZb@smile.fi.intel.com>
- <ZBxiqJo470A7bkig@shell.armlinux.org.uk>
- <ZBxkZYXrfugz0gYw@smile.fi.intel.com>
- <ZBxm3XrQAfnmbHoF@shell.armlinux.org.uk>
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Subject: Re: [PATCH v6 1/4] PCI: Introduce pci_dev_for_each_resource()
+Message-ID: <20230323150238.GA2550157@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZBxm3XrQAfnmbHoF@shell.armlinux.org.uk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-0.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+In-Reply-To: <ZBxiaflGTeK8Jlgx@smile.fi.intel.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 23, 2023 at 02:49:01PM +0000, Russell King (Oracle) wrote:
-> On Thu, Mar 23, 2023 at 04:38:29PM +0200, Andy Shevchenko wrote:
-> > On Thu, Mar 23, 2023 at 02:31:04PM +0000, Russell King (Oracle) wrote:
-> > > On Thu, Mar 23, 2023 at 04:03:05PM +0200, Andy Shevchenko wrote:
-> > > > On Wed, Mar 22, 2023 at 12:00:06PM +0000, Russell King (Oracle) wrote:
-
-...
-
-> > > > > +	struct fwnode_handle *fwnode;
-> > > > 
-> > > > > +	fwnode = of_fwnode_handle(dp->dn);
-> > > > 
-> > > > 	const struct fwnode_handle *fwnode = of_fwnode_handle(dp->dn);
-> > > > 
-> > > > ?
-> > > 
-> > > Why const?
+On Thu, Mar 23, 2023 at 04:30:01PM +0200, Andy Shevchenko wrote:
+> On Wed, Mar 22, 2023 at 02:28:04PM -0500, Bjorn Helgaas wrote:
+> > On Mon, Mar 20, 2023 at 03:16:30PM +0200, Andy Shevchenko wrote:
+> ...
+> 
+> > > +	pci_dev_for_each_resource_p(dev, r) {
+> > >  		/* zap the 2nd function of the winbond chip */
+> > > -		if (dev->resource[i].flags & IORESOURCE_IO
+> > > -		    && dev->bus->number == 0 && dev->devfn == 0x81)
+> > > -			dev->resource[i].flags &= ~IORESOURCE_IO;
+> > > -		if (dev->resource[i].start == 0 && dev->resource[i].end) {
+> > > -			dev->resource[i].flags = 0;
+> > > -			dev->resource[i].end = 0;
+> > > +		if (dev->bus->number == 0 && dev->devfn == 0x81 &&
+> > > +		    r->flags & IORESOURCE_IO)
 > > 
-> > Do you modify its content on the fly?
+> > This is a nice literal conversion, but it's kind of lame to test
+> > bus->number and devfn *inside* the loop here, since they can't change
+> > inside the loop.
 > 
-> Do you want to litter code with casts to get rid of the const?
+> Hmm... why are you asking me, even if I may agree on that? It's
+> in the original code and out of scope of this series.
+
+Yeah, I don't think it would be *unreasonable* to clean this up at the
+same time so the maintainers can look at both at the same time (this
+is arch/powerpc/platforms/pseries/pci.c, so Michael, et al), but no
+need for you to do anything, certainly.  I can post a follow-up patch.
+
+> > but
+> > since we're converging on the "(dev, res)" style, I think we should
+> > reverse the names so we have something like:
+> > 
+> >   pci_dev_for_each_resource(dev, res)
+> >   pci_dev_for_each_resource_idx(dev, res, i)
 > 
-> > For fwnode as a basic object type we want to reduce the scope of the possible
-> > modifications. If you don't modify and APIs you call do not require non-const
-> > object, use const for fwnode.
-> 
-> Let's start here. We pass this fwnode to fwnode_get_phy_mode():
-> 
-> include/linux/property.h:int fwnode_get_phy_mode(struct fwnode_handle *fwnode);
-> 
-> Does fwnode_get_phy_mode() alter the contents of the fwnode? Probably
-> not, but it doesn't take a const pointer. Therefore, to declare my
-> fwnode as const, I'd need to cast the const-ness away before calling
-> this.
+> Wouldn't it be more churn, including pci_bus_for_each_resource() correction?
 
-So, fix the fwnode_get_phy_mode(). Is it a problem?
+Yes, it definitely is a little more churn because we already have
+pci_bus_for_each_resource() that would have to be changed.
 
-> Then there's phylink_create(). Same problem.
+I poked around looking for similar patterns elsewhere with:
 
-So, fix that. Is it a problem?
+  git grep "#define.*for_each_.*_p("
+  git grep "#define.*for_each_.*_idx("
 
-> So NAK to this const - until such time that we have a concerted effort
-> to making functions we call which do not modify the "fwnode" argument
-> constify that argument. Otherwise it's just rediculously crazy to
-> declare a variable const only to then litter the code with casts to get
-> rid of it at every call site.
-> 
-> Please do a bit of research before making suggestions. Thanks.
+I didn't find any other "_p" iterators and just a few "_idx" ones, so
+my hope is to follow what little precedent there is, as well as
+converge on the basic "*_for_each_resource()" iterators and remove the
+"_idx()" versions over time by doing things like the
+pci_claim_resource() change.
 
-So, MAK to your patch. You can fix that, and you know that.
+What do you think?  If it seems like excessive churn, we can do it
+as-is and still try to reduce the use of the index variable over time.
 
-P.S. Please, move that phy thingy away from property.h, it doesn't belong
-there.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Bjorn
