@@ -2,49 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3454B6C6DF1
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 17:42:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93FD26C6E64
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 18:07:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231796AbjCWQmv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Mar 2023 12:42:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41784 "EHLO
+        id S229823AbjCWRHF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 13:07:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231770AbjCWQmh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 12:42:37 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6E522B60D;
-        Thu, 23 Mar 2023 09:40:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679589618; x=1711125618;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=QnRaJIF3EpOb8hSEiYlIAUUJVc3HnkQOIqPjAmEqYKY=;
-  b=gLz28SjhdADxMmrWTwlUtPeKUIjyewnYCRdmmgzX9TKMydBIf69emfN+
-   GbMPy2xKh/uHQLHh5h9T+llBD0sm9pRMNLF0CAn6B52AvJCU0tM8Sk/9I
-   tZGx3YIze8lSRuLAe9bVy9Fs82uD0kZmD7SrhjGA4W/yQBZ8/LeFEDiVq
-   lvNq1OdrZBpwLOOAwk8PBkb3aGaqqAv1hzSGEKQdJnGdqGBBKvUWSyPbE
-   /6AGN1Yp97txUEYOyq0LpLZYlaClzUJAs6KPxoJ+vbaG/4XLNzGH+0IXu
-   bM7AUVxICRxQ0FKRAgqKvG4K9Wp/lcwKRHV++c1q+fUpDhC5x4Sva4G/c
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="339585564"
-X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
-   d="scan'208";a="339585564"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2023 09:39:57 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="682371092"
-X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
-   d="scan'208";a="682371092"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga002.jf.intel.com with ESMTP; 23 Mar 2023 09:39:53 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pfNyg-007Zsq-33;
-        Thu, 23 Mar 2023 18:39:50 +0200
-Date:   Thu, 23 Mar 2023 18:39:50 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
+        with ESMTP id S229644AbjCWRHE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 13:07:04 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BD4B13D77;
+        Thu, 23 Mar 2023 10:07:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=r/Kemcrwa5sxfGwwJvKyvHrjf3CpCTAqFgWDXvk5hxI=; b=sF6tv6FWmXFWcELUVqtSaWlkCQ
+        GkpAo65LsIt3IinGbmAgjQ9qL1QAIXuxO5FHAo6SlpQV9+f1s2/VXu/KJJSQETw03gM0Pm48L7QBi
+        VMRipDgEk2N/flLlEO4oaAmiXdkaKZf//6+E3Rq8vErNan/0ksVJw56bJW3EgM/o+mx2vUzxXlYXQ
+        wpn2C4TQExOJqeSV+tRwikCCNilB58TMtvDWuEQdQe6tUoRksgqcY9nsyt/hZjAAYw/H5bGp651dq
+        jltWxSocsztHXHK++qoLyKtWRSEoN9vbCX2oyj06xk+PixxE9yOTOQhu60mZVpThA/dLhQIQTvcse
+        q4w601Uw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39602)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1pfOOp-0005Vl-SN; Thu, 23 Mar 2023 17:06:51 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1pfOOn-0001Y9-8s; Thu, 23 Mar 2023 17:06:49 +0000
+Date:   Thu, 23 Mar 2023 17:06:49 +0000
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Andrew Lunn <andrew@lunn.ch>,
         Heiner Kallweit <hkallweit1@gmail.com>,
         Daniel Scally <djrscally@gmail.com>,
@@ -60,7 +52,7 @@ Cc:     Andrew Lunn <andrew@lunn.ch>,
         Vladimir Oltean <olteanv@gmail.com>
 Subject: Re: [PATCH RFC net-next 3/7] net: dsa: use fwnode_get_phy_mode() to
  get phy interface mode
-Message-ID: <ZByA1jZybGE6MXkc@smile.fi.intel.com>
+Message-ID: <ZByHKXgIuNI683kN@shell.armlinux.org.uk>
 References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
  <E1pex8Q-00Dvnr-5y@rmk-PC.armlinux.org.uk>
  <ZBxcGXSVe0dlzKZb@smile.fi.intel.com>
@@ -75,9 +67,9 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <ZBx/mO/z3t3dQCAx@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -144,8 +136,12 @@ On Thu, Mar 23, 2023 at 06:34:32PM +0200, Andy Shevchenko wrote:
 > > gives 134 instances. Of those, only five are const, which means 129
 > > aren't. So I question - why are you singling mine out for what appears
 > > to be special treatment.
-> > 
-> > 
+
+You failed to answer this. I can only assume you don't have an answer
+for why you are singling out my use compared to all the 129 other
+uses in the kernel that follow this pattern. Given the number of them,
+that is no basis to NAK this patch.
+
 > > Let's look at other parts of the fwnode API.
 > > 
 > > void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index);
@@ -164,18 +160,14 @@ On Thu, Mar 23, 2023 at 06:34:32PM +0200, Andy Shevchenko wrote:
 > > bool fwnode_is_ancestor_of(struct fwnode_handle *ancestor, struct fwnode_handle *child);
 > > 
 > > I'd be surprised if that modifies either of those fwnodes.
-
+> 
 > It does. Now your time to be surprised.
 
-Oops, I put it into a wrong place. The above does not touch them, but...
+I believe you are mistaken.
 
 > > It seems
 > > to use fwnode_for_each_parent_node() from the child, which passes
-> > "child" to fwnode_get_parent(),
-
-...this one touches.
-
-> >	which itself is const. Therefore, it
+> > "child" to fwnode_get_parent(), which itself is const. Therefore, it
 > > seems there's no reason not to make "child" const. "ancestor" can
 > > also be made const since it's only being used for pointer-compares.
 > 
@@ -183,7 +175,67 @@ Oops, I put it into a wrong place. The above does not touch them, but...
 > of the _returned_ fwnode.
 > 
 > Do a bit of investigation, please. Thanks.
-> 
+
+I did exactly that, and I included the research in my email. How is
+fwnode_is_ancestor_of() a "getter" when it returns a _boolean_?
+
+Did you read my fully researched explanation? "child" is *not* modified,
+it is merely passed to another function that accepts a *const* pointer.
+
+Here's teaching you to suck eggs, because that's clearly what it's
+going to take to make you see sense:
+
+bool fwnode_is_ancestor_of(struct fwnode_handle *ancestor, struct fwnode_handle *child)
+{
+        struct fwnode_handle *parent;
+
+        if (IS_ERR_OR_NULL(ancestor))
+                return false;
+
+        if (child == ancestor)
+                return true;
+
+        fwnode_for_each_parent_node(child, parent) {
+                if (parent == ancestor) {
+                        fwnode_handle_put(parent);
+                        return true;
+                }
+        }
+        return false;
+}
+
+"child" is only used by the if() "child == ancestor" and
+fwnode_for_each_parent_node(). fwnode_for_each_parent_node() is:
+
+#define fwnode_for_each_parent_node(fwnode, parent)             \
+        for (parent = fwnode_get_parent(fwnode); parent;        \
+             parent = fwnode_get_next_parent(parent))
+
+so child is passed in as fwnode there, and gets passed to
+fwnode_get_parent(). fwnode_get_parent() is declared as:
+
+struct fwnode_handle *fwnode_get_parent(const struct fwnode_handle *fwnode);
+
+So "child" ends up passed into this function, which takes a const
+pointer. At no point is "child" assigned to in fwnode_is_ancestor_of().
+It is only used in situations where it can be a const pointer.
+
+Now, if we look at "ancestor" then there are three locations it is used:
+
+        if (IS_ERR_OR_NULL(ancestor))
+
+        if (child == ancestor)
+
+                if (parent == ancestor) {
+
+All of these can cope with ancestor being const.
+
+I will grant you that "parent" can't be const, but then I *never* said
+it would be as I was only taking about the functions arguments.
+
+So, I think you need to revise your comment on this, because clearly it
+was incorrect.
+
 > > unsigned int fwnode_graph_get_endpoint_count(struct fwnode_handle *fwnode,
 > >                                              unsigned long flags);
 > > 
@@ -203,12 +255,11 @@ Oops, I put it into a wrong place. The above does not touch them, but...
 > I started doing something about this as you may easily check with `git log`.
 > Now, instead of playing a good citizen of the community you are trying to
 > diminish the others' asks.
-> 
-> I think the further continuation of this discussion doesn't make much sense.
-> But thank you for your opinion.
+
+No, I'm finding your requests to be rather inconsistent, lacking
+in useful value, and lacking an appreciation of how other parts of
+the kernel's development process works.
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
