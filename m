@@ -2,49 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7C836C68B8
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 13:45:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52D926C68C4
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 13:47:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231901AbjCWMp1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Mar 2023 08:45:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55452 "EHLO
+        id S231362AbjCWMrK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 08:47:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229990AbjCWMpW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 08:45:22 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29CBE298DF;
-        Thu, 23 Mar 2023 05:45:21 -0700 (PDT)
+        with ESMTP id S229904AbjCWMrJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 08:47:09 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB7CFF5;
+        Thu, 23 Mar 2023 05:47:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679575521; x=1711111521;
+  t=1679575628; x=1711111628;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=z034CEWDZWzBHQVHZYtVHoLpxMyCoA3kXaDvrv1Q98w=;
-  b=XR4GbRRxOLhhGzwBKbILpOX2956u5kEKM+CllvviJ4Jy3MIGM93tW+TZ
-   mSkinGjVbUsmmlOF8Or0B+wAS0kdxXGh9OigJWr3C+UrE63ERJ79538Nt
-   hJczlBfMoR2s4il6/2qlHSll8Y8SXvoUq0g//i6PjhuyKr2VZ9UMZ+HJ0
-   LkQBmAOfb7uG5K1lsRJ9HFUO1SEz2mJZolQn8KdCyyuWVMXWoXHh8G3kg
-   t2Z0Bc7kiFCbnNPz9/wyrA/YxWexLzaedr5iinOnLE//A7O3rkPxkMVuD
-   TeO6DUipnZurcsVfb9HlHeEgjifMzkAXnClXpSYht2/X5cUHrrrNW3Ov7
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="338196404"
+  bh=30e+iacdeNDPi27w7ie3RbTMuGmuD+8WwfFs1tSEjl4=;
+  b=ariwPPxpmrykYm93sHDD9/VPYMC3eeHl/AEnzIdq2QvzbM8wjwxhP3eY
+   Pn5PuWch7y1gD0oV13jQ9TJukbfT9NfWNNH3WnJK6y5kLbrutTujLkSc9
+   3kj0mL2oZpbt7XcjZkQAmPvraZHLtY8SRB4O1z+frgGk4LiEcdg+LPpEb
+   UNqgbtY/YzDlsKsR1nktD2zfSnbudyMUAjpMM+vtBOg56uNc6MaJSy1el
+   9xqh66Dwmf0BxrRXrWVG51Ljs5zxM0eJEVbjzPBzTE9Jg1k2JalL9vRA0
+   ayHcsuLC+AsD6BvIc5D8tnDKVmVBMiiCjHBtxS4R0QJvw9o7YCfbOxJ+g
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="341013528"
 X-IronPort-AV: E=Sophos;i="5.98,283,1673942400"; 
-   d="scan'208";a="338196404"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2023 05:45:17 -0700
+   d="scan'208";a="341013528"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2023 05:47:08 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="632383474"
+X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="682292594"
 X-IronPort-AV: E=Sophos;i="5.98,283,1673942400"; 
-   d="scan'208";a="632383474"
+   d="scan'208";a="682292594"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga003.jf.intel.com with ESMTP; 23 Mar 2023 05:45:07 -0700
+  by orsmga002.jf.intel.com with ESMTP; 23 Mar 2023 05:46:58 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pfKJU-007VlG-0v;
-        Thu, 23 Mar 2023 14:45:04 +0200
-Date:   Thu, 23 Mar 2023 14:45:03 +0200
+        id 1pfKLG-007VoD-1R;
+        Thu, 23 Mar 2023 14:46:54 +0200
+Date:   Thu, 23 Mar 2023 14:46:54 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jani Nikula <jani.nikula@intel.com>
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Cc:     Pin-yen Lin <treapking@chromium.org>,
         Andrzej Hajda <andrzej.hajda@intel.com>,
         Neil Armstrong <neil.armstrong@linaro.org>,
@@ -78,51 +78,51 @@ Cc:     Pin-yen Lin <treapking@chromium.org>,
         Stephen Boyd <swboyd@chromium.org>,
         chrome-platform@lists.linux.dev, devicetree@vger.kernel.org,
         Andi Shyti <andi.shyti@linux.intel.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Douglas Anderson <dianders@chromium.org>,
         Imre Deak <imre.deak@intel.com>,
+        Jani Nikula <jani.nikula@intel.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         YueHaibing <yuehaibing@huawei.com>
 Subject: Re: [PATCH v14 03/10] drm/display: Add Type-C switch helpers
-Message-ID: <ZBxJz4ESBocICA/L@smile.fi.intel.com>
+Message-ID: <ZBxKPiduTQ2A49Dy@smile.fi.intel.com>
 References: <20230322104639.221402-1-treapking@chromium.org>
  <20230322104639.221402-4-treapking@chromium.org>
- <ZBrgD61p/p17IOJL@smile.fi.intel.com>
- <87edpg7nub.fsf@intel.com>
+ <CAA8EJpqFuhAtTaTJNMmfaQoYaKF_t6N2QMgbOS1c9XVey8Jf3w@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87edpg7nub.fsf@intel.com>
+In-Reply-To: <CAA8EJpqFuhAtTaTJNMmfaQoYaKF_t6N2QMgbOS1c9XVey8Jf3w@mail.gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 22, 2023 at 06:27:56PM +0200, Jani Nikula wrote:
-> On Wed, 22 Mar 2023, Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > On Wed, Mar 22, 2023 at 06:46:32PM +0800, Pin-yen Lin wrote:
-> >> +#ifdef CONFIG_DRM_DISPLAY_DP_TYPEC_HELPER
-> >
-> > Ah, maybe this should use IS_REACHABLE() ?
-> 
-> Personally, I think IS_REACHABLE() is a build-time band-aid solution to
-> a problem that should be solved in Kconfig. :p
-> 
-> I think it always means there's a configuration combo that shouldn't
-> exist, and it's a surprise to the user when they've configured
-> something, Kconfig has deemed it a valid configuration, but they don't
-> get the feature they want.
-> 
-> As a user, how would they even debug that case? Double check configs,
-> don't see anything wrong.
+On Thu, Mar 23, 2023 at 12:38:49AM +0200, Dmitry Baryshkov wrote:
+> On Wed, 22 Mar 2023 at 12:47, Pin-yen Lin <treapking@chromium.org> wrote:
 
-Usual pairing is 'imply FOO' in Kconfig & 'IS_REACHEABLE(CONFIG_FOO)' in the
-code. And I believe it's not an abnormal.
+...
+
+> > +config DRM_DISPLAY_DP_TYPEC_HELPER
+> > +       bool
+> > +       default y
+> > +       depends on DRM_DISPLAY_HELPER
+> > +       depends on DRM_DISPLAY_HELPER=TYPEC || TYPEC=y
+> 
+> If it is a select'able option, it doesn't make sense to use "depends"
+> here. Select will override depends.
+
+He-he, not so easy. This will help to find configurations that miss these
+dependencies. Arnd taught me that. IIRC the ASoC subsystem has a lot of
+such cases.
+
+> > +       help
+> > +         DRM display helpers for USB Type-C Displayport Alternate mode.
 
 -- 
 With Best Regards,
