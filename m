@@ -2,140 +2,191 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CD546C6D80
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 17:29:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A78A6C6D88
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 17:30:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232069AbjCWQ3a convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 23 Mar 2023 12:29:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41524 "EHLO
+        id S232046AbjCWQaR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 12:30:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231793AbjCWQ3R (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 12:29:17 -0400
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 551FC28D3D;
-        Thu, 23 Mar 2023 09:29:10 -0700 (PDT)
-Received: by mail-qt1-f171.google.com with SMTP id s12so27185997qtq.11;
-        Thu, 23 Mar 2023 09:29:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679588949;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UL3/4GqvmmUqfCC6k4K5nIi6sLrnnlUEco09johNyxg=;
-        b=mPE+X7sf5GgBnYeWLJT5ij4OD/Qrcn0L8bl7nuAMN8UzvgLTkLpuVjDeOykQV1TkRm
-         hPg2iG0gmbl59AA5wduA7eQXiacfKbvQXuwnSUUEc/TIs6+VsLplD32T6bgVpy+s/DJD
-         2felFsO7BIu7BE+xnC4W2Yx3kideFeEGxvUc9v2qctdkp2Ixgc5W4adXg9fELtqv62sp
-         zxX2Ygo5/AUzsh6QTOKt/FgrUaHxaNvN20zn8zD8Rzvn9KUoUJmBOIwtTgXJWW2jl9UM
-         ObGZj3zlG/AYmInMe0Pp4LI6WOK/PmFV4yLk4sR1PgVL/ELxvbqXrQD4mTtBsT1RTGtO
-         OP9A==
-X-Gm-Message-State: AO0yUKUgl+f5W2MwM3cI2A7eApnMNLra0B30IhUsk56uY1KPnwfjbXMF
-        BElXuFyIkevT79b8AGMWCOaHgsqE6GNa1zgW
-X-Google-Smtp-Source: AK7set9RfytlRTXKzAv+fZH9ZgrVhu3Wp0W+Ws4B1kgrWy260ylYOtE3lquBI4C5T7SOzjaDMTf1Yg==
-X-Received: by 2002:ac8:5c0c:0:b0:3bf:c407:10ca with SMTP id i12-20020ac85c0c000000b003bfc40710camr10679877qti.10.1679588949012;
-        Thu, 23 Mar 2023 09:29:09 -0700 (PDT)
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com. [209.85.219.175])
-        by smtp.gmail.com with ESMTPSA id 66-20020a370b45000000b0071eddd3bebbsm5146565qkl.81.2023.03.23.09.29.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Mar 2023 09:29:08 -0700 (PDT)
-Received: by mail-yb1-f175.google.com with SMTP id e71so25578812ybc.0;
-        Thu, 23 Mar 2023 09:29:07 -0700 (PDT)
-X-Received: by 2002:a05:6902:728:b0:a09:314f:a3ef with SMTP id
- l8-20020a056902072800b00a09314fa3efmr2603297ybt.12.1679588947338; Thu, 23 Mar
- 2023 09:29:07 -0700 (PDT)
-MIME-Version: 1.0
-References: <ZBxiaflGTeK8Jlgx@smile.fi.intel.com> <20230323150238.GA2550157@bhelgaas>
- <ZBxrfy83MRjnReAs@smile.fi.intel.com>
-In-Reply-To: <ZBxrfy83MRjnReAs@smile.fi.intel.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 23 Mar 2023 17:28:55 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWkavUwZrfuJ5YSsb2kkHVZ0TCzcme5o6CkYGcSDVt+jw@mail.gmail.com>
-Message-ID: <CAMuHMdWkavUwZrfuJ5YSsb2kkHVZ0TCzcme5o6CkYGcSDVt+jw@mail.gmail.com>
-Subject: Re: [PATCH v6 1/4] PCI: Introduce pci_dev_for_each_resource()
+        with ESMTP id S232302AbjCWQ3w (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 12:29:52 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC24A29413;
+        Thu, 23 Mar 2023 09:29:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=TsjIJlHCr6RHkaUXi8Zsa2mLTRFAwmW9uSJPS9QodsY=; b=PLPKgya13Ye0I193Mm7ypYz1Sh
+        gHEoR+t54KikNxB29i+nD/MEbjw6QSsn4uPBWtTGovlxzpCi4N3mW80gXCYfuIbfatZsZGExGZRMd
+        nkxXxguxgGBS6hNiF+0+0S5tB+/31O/cUTIk+5SVQ7WGHiF3CCTHQmivyMyyqbOuUevK8EohkK59A
+        MWxop4LfcVGNxrsRhdxPNAqZwopN8sWogiDlJc0NRHhPTXXeMWjBtGWOylTawaDWiJdICXDhiK4Ys
+        G40q/5gBGxdpNuAbgAuvO6sLhfiKzm7qFVj5RmtIBGzx6Xv2LfCLrQn5hlezxVROZuqYmUkW6rtE3
+        CNJmLnuA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:37188)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1pfNop-0005S9-A7; Thu, 23 Mar 2023 16:29:39 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1pfNon-0001Wp-N6; Thu, 23 Mar 2023 16:29:37 +0000
+Date:   Thu, 23 Mar 2023 16:29:37 +0000
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
-        "Maciej W. Rozycki" <macro@orcam.me.uk>,
-        Juergen Gross <jgross@suse.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Anatolij Gustschin <agust@denx.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Daniel Scally <djrscally@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+        Eric Dumazet <edumazet@google.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jakub Kicinski <kuba@kernel.org>, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH RFC net-next 3/7] net: dsa: use fwnode_get_phy_mode() to
+ get phy interface mode
+Message-ID: <ZBx+cUbdSPxCRK2H@shell.armlinux.org.uk>
+References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
+ <E1pex8Q-00Dvnr-5y@rmk-PC.armlinux.org.uk>
+ <ZBxcGXSVe0dlzKZb@smile.fi.intel.com>
+ <ZBxiqJo470A7bkig@shell.armlinux.org.uk>
+ <ZBxkZYXrfugz0gYw@smile.fi.intel.com>
+ <ZBxm3XrQAfnmbHoF@shell.armlinux.org.uk>
+ <ZBxpeLOmTMzqVTRV@smile.fi.intel.com>
+ <ZBxu4FvyO2JDwmMq@shell.armlinux.org.uk>
+ <ZBxxPYyNZrOQ6aVN@smile.fi.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZBxxPYyNZrOQ6aVN@smile.fi.intel.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+On Thu, Mar 23, 2023 at 05:33:17PM +0200, Andy Shevchenko wrote:
+> On Thu, Mar 23, 2023 at 03:23:12PM +0000, Russell King (Oracle) wrote:
+> > On Thu, Mar 23, 2023 at 05:00:08PM +0200, Andy Shevchenko wrote:
+> > > On Thu, Mar 23, 2023 at 02:49:01PM +0000, Russell King (Oracle) wrote:
+> > > > On Thu, Mar 23, 2023 at 04:38:29PM +0200, Andy Shevchenko wrote:
+> > > > > On Thu, Mar 23, 2023 at 02:31:04PM +0000, Russell King (Oracle) wrote:
+> > > > > > On Thu, Mar 23, 2023 at 04:03:05PM +0200, Andy Shevchenko wrote:
+> > > > > > > On Wed, Mar 22, 2023 at 12:00:06PM +0000, Russell King (Oracle) wrote:
+> 
+> ...
+> 
+> > > > > > > > +	struct fwnode_handle *fwnode;
+> > > > > > > 
+> > > > > > > > +	fwnode = of_fwnode_handle(dp->dn);
+> > > > > > > 
+> > > > > > > 	const struct fwnode_handle *fwnode = of_fwnode_handle(dp->dn);
+> > > > > > > 
+> > > > > > > ?
+> > > > > > 
+> > > > > > Why const?
+> > > > > 
+> > > > > Do you modify its content on the fly?
+> > > > 
+> > > > Do you want to litter code with casts to get rid of the const?
+> > > > 
+> > > > > For fwnode as a basic object type we want to reduce the scope of the possible
+> > > > > modifications. If you don't modify and APIs you call do not require non-const
+> > > > > object, use const for fwnode.
+> > > > 
+> > > > Let's start here. We pass this fwnode to fwnode_get_phy_mode():
+> > > > 
+> > > > include/linux/property.h:int fwnode_get_phy_mode(struct fwnode_handle *fwnode);
+> > > > 
+> > > > Does fwnode_get_phy_mode() alter the contents of the fwnode? Probably
+> > > > not, but it doesn't take a const pointer. Therefore, to declare my
+> > > > fwnode as const, I'd need to cast the const-ness away before calling
+> > > > this.
+> > > 
+> > > So, fix the fwnode_get_phy_mode(). Is it a problem?
+> > 
+> > No, I refuse. That's for a different patch set.
+> 
+> I don't disagree, but it can be done as a precursor to your RFC.
 
-On Thu, Mar 23, 2023 at 4:15 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
-> On Thu, Mar 23, 2023 at 10:02:38AM -0500, Bjorn Helgaas wrote:
-> > I poked around looking for similar patterns elsewhere with:
-> >   git grep "#define.*for_each_.*_p("
-> >   git grep "#define.*for_each_.*_idx("
-> >
-> > I didn't find any other "_p" iterators and just a few "_idx" ones, so
-> > my hope is to follow what little precedent there is, as well as
-> > converge on the basic "*_for_each_resource()" iterators and remove the
-> > "_idx()" versions over time by doing things like the
-> > pci_claim_resource() change.
->
-> The p is heavily used in the byte order conversion helpers.
+And you want that merged through net-next?
 
-I can't seem to find them. Example?
+> > > > Then there's phylink_create(). Same problem.
+> > > 
+> > > So, fix that. Is it a problem?
+> > 
+> > No for the same reason.
+> > 
+> > > > So NAK to this const - until such time that we have a concerted effort
+> > > > to making functions we call which do not modify the "fwnode" argument
+> > > > constify that argument. Otherwise it's just rediculously crazy to
+> > > > declare a variable const only to then litter the code with casts to get
+> > > > rid of it at every call site.
+> > > > 
+> > > > Please do a bit of research before making suggestions. Thanks.
+> > > 
+> > > So, MAK to your patch. You can fix that, and you know that.
+> > 
+> > Sorry, I don't accept your NAK. While you have a valid point about
+> > these things being const, that is not the fault of this patch series,
+> > and is something that should be addressed separately.
+> 
+> Yes, and since it's not a big deal it can be done as a precursor work.
+> 
+> > The lack of const-ness that has been there for quite some time is no
+> > reason to NAK a patch that has nothing to do with this.
+> 
+> Instead of saying politely that you didn't agree of the necessity of the asked
+> changes, you shoowed your confrontational manner with a strong NAK. Let's not
+> escalate it further, it won't play well with a nervous system.
+> 
+> > > P.S. Please, move that phy thingy away from property.h, it doesn't belong
+> > > there.
+> > 
+> > Again, that's a subject for a separate patch.
+> > 
+> > I will re-post this in due course and ignore your NAK (due to your
+> > lack of research, and confrontational nature.)
+> 
+> Don't make a drama out of it. Many maintainers are asking for a small cleanups
+> before applying a feature.
+> 
+> Nevertheless, since I'm neither a net nor a DSA maintainer, I have only thing
+> to push is to move the PHY APIs out from the property.h. The rest is up to you.
 
-Or do you mean cpu_to_be32p()? There "p" means pointer,
-which is something completely different.
+Really? In your previous message, you were NAKing the patch based on the
+lack of "const"ness. So you've changed your tune to something that was
+a request in a post-script (PS).
 
-> > What do you think?  If it seems like excessive churn, we can do it
-> > as-is and still try to reduce the use of the index variable over time.
->
-> I think _p has a precedent as well. But I can think about it a bit, maybe
-> we can come up with something smarter.
+If you had done due diligence, you would have realised that its
+implementation is in property.c, so presumably if you had known that
+either (a) you wouldn't be making the request or (b) you would be
+asking for that to be moved as well.
 
-Gr{oetje,eeting}s,
+Now, where do you expect it to be moved to? There is nowhere convenient
+in net/ nor drivers/net/ for it today. It's corresponding DT equivalent
+is in net/core/of_net.c, but that is only built if CONFIG_OF is enabled
+which is unsuitable for the fwnode version. I guess we could have a
+net/core/fwnode.c just for this single function... then where do we put
+the prototype? include/linux/fwnode_net.h (which would be a new header
+just for this), and updating the five drivers for this change.
 
-                        Geert
+In any case, due to the way netdev works, this should *not* be part
+of this patch series, because if there's a reason to revert this
+series, we wouldn't want the move of fwnode_get_phy_mode() to also
+get reverted - that would potentially cause chaos.
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
