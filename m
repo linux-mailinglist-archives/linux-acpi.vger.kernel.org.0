@@ -2,71 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35C6A6C6222
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 09:42:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4825C6C630E
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 10:15:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229642AbjCWImr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Mar 2023 04:42:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60648 "EHLO
+        id S229849AbjCWJPY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 05:15:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231512AbjCWImc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 04:42:32 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03AF210420;
-        Thu, 23 Mar 2023 01:41:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=fwpxPxavMF9pRmW3FZBqnX/hq3q3T11OticmIkCRIgg=; b=J7BaWbJwUn8sQUJ4PD5uq/rdgK
-        Bzepqzx5FM96OjmF4BoxIYszCLkFgctwfqNz0/buly/c/pscWaE4YgPDtrmPtD+oYnSEZ6tQ6sNeS
-        Zh+HV8SnEwdD9P9GTFK6lsUWc4JhZBZJtrIXXOI0a9qzYCBSbaruPJ6tfWTTuviCoACvbkX68DkLZ
-        jzHhBxJJ2aKg3fugMVkp5ZvH6gTEp1vmmovn4ckb0Z8F3v/18StlZEiL3dZ3LRdusNO6XdeEY1hv6
-        Ua6Xb8exG17QAs4Jr9FiFGz6DsSLEjOilIjDY5F3odm+i8pKDl3P/Z2s5IaD1nfkGUjlFlI/YwdLd
-        JDvDMcKQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:53138)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1pfGVQ-0004i1-U6; Thu, 23 Mar 2023 08:41:08 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1pfGVN-0001F1-HO; Thu, 23 Mar 2023 08:41:05 +0000
-Date:   Thu, 23 Mar 2023 08:41:05 +0000
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jakub Kicinski <kuba@kernel.org>, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Vladimir Oltean <olteanv@gmail.com>
-Subject: Re: [PATCH RFC net-next 6/7] net: dsa: mv88e6xxx: provide software
- node for default settings
-Message-ID: <ZBwQoU4Mw6egvCEl@shell.armlinux.org.uk>
-References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
- <E1pex8f-00Dvo9-KT@rmk-PC.armlinux.org.uk>
- <04869523-3711-41a6-81ba-ddf2b12fd22e@lunn.ch>
- <ZBthf8EsnQIttGdI@shell.armlinux.org.uk>
- <5922c650-0ef3-4e60-84e6-0bfe535e5a98@lunn.ch>
- <ZBtjl9+bhtpKPmjr@shell.armlinux.org.uk>
- <8133635f-8d19-4899-83e2-0bf9b7b644b2@lunn.ch>
+        with ESMTP id S229615AbjCWJPX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 05:15:23 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FAF0C1;
+        Thu, 23 Mar 2023 02:15:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679562922; x=1711098922;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=b6rqFNC52piarpxOmD7Eups7KIrMwGmsquHzaNOdNaE=;
+  b=lRDYVBwkH5jBt7WCO3oGaVOrSPAgQNOcUQ5fNDMQwaQdPmjfUX0EPb47
+   y8N4ogVEEKMpNMDNZ7Lp1v3yxcvF0q40w36QJtVzjMQ9hwDv/5A3SjnnI
+   cOIpKh6sJly/4K5E5xJz6hzJqvVbuibQNJAH9nfHFjPc2nnVW3LyLFKTK
+   k959033rgSx9wYqoj6HPfX94teITjS/Blgpu5t1i0VNE5aJPmhxYwscG3
+   DS0Dn4tte7fS2Vf7t87/pu8Qia7/MSNUnmi5OKyraEI0hiyvpGqL6KiyR
+   pNootql2+6NxbUp8M9UGqYLp90mufuiG/HS84MMG3+b8wfPIb3Tm1tc3W
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="340976421"
+X-IronPort-AV: E=Sophos;i="5.98,283,1673942400"; 
+   d="scan'208";a="340976421"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2023 02:15:21 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="632323063"
+X-IronPort-AV: E=Sophos;i="5.98,283,1673942400"; 
+   d="scan'208";a="632323063"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 23 Mar 2023 02:15:20 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pfH2V-000ECo-12;
+        Thu, 23 Mar 2023 09:15:19 +0000
+Date:   Thu, 23 Mar 2023 17:14:38 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 68611940d0f307cff16552aa920496418935205c
+Message-ID: <641c187e.A5OM6RNreWZFvW7P%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8133635f-8d19-4899-83e2-0bf9b7b644b2@lunn.ch>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,52 +64,119 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 22, 2023 at 10:40:26PM +0100, Andrew Lunn wrote:
-> > What I'm trying to find out is what you think the behaviour should be
-> > in this case. Are you suggesting we should fall back to what we do now
-> > which is let the driver do it internally without phylink.
-> > 
-> > The problem is that if we don't go down the phylink route for everything
-> > then we /can't/ convert mv88e6xxx to phylink_pcs, because the "serdes"
-> > stuff will be gone, and the absence of phylink will mean those won't be
-> > called e.g. to power up the serdes.
-> 
-> I'm pretty sure non-DT systems have never used SERDES. They are using
-> a back to back PHY, or maybe RGMII. So long as this keeps working, we
-> can convert to phylink.
-> 
-> And i have such a amd64 system, using back to back PHYs so i can test
-> it does not regress.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 68611940d0f307cff16552aa920496418935205c  Merge branch 'pm-cpufreq' into bleeding-edge
 
-Reading the code, I don't think we have any issue with the DSA and CPU
-ports, as these check whether dp->dn is not NULL before calling
-dsa_shared_port_link_register_of() and the validator. This means these
-paths will only be used for setups that have DT.
+elapsed time: 823m
 
-For the user ports, we can end up calling dsa_port_phylink_create()
-with a NULL dp->dn, and must not fail.
+configs tested: 100
+configs skipped: 10
 
-So, given that this is only supposed to be used for mv88e6xxx because
-of it's legacy, maybe the check in dsa_port_phylink_create() should
-be:
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-        fwnode = of_fwnode_handle(dp->dn);
-        if (fwnode && ds->ops->port_get_fwnode) {
-
-In other words, we only allow the replacement of the firmware
-description if one already existed.
-
-Alternatively, we could use:
-
-	if (!dsa_port_is_user(dp) && ds->ops->port_get_fwnode) {
-
-since mv88e6xxx today only does this "max speed" thing for CPU and
-DSA ports, and thus we only need to replace the firmware description
-for these ports - and we can document that port_get_fwnode is only
-for CPU and DSA ports.
-
-Hmm?
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r002-20230322   gcc  
+arc                  randconfig-r023-20230322   gcc  
+arc                  randconfig-r024-20230322   gcc  
+arc                  randconfig-r043-20230322   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r046-20230322   clang
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r003-20230322   clang
+arm64                randconfig-r004-20230322   clang
+csky                                defconfig   gcc  
+csky                 randconfig-r013-20230322   gcc  
+csky                 randconfig-r035-20230322   gcc  
+hexagon              randconfig-r011-20230322   clang
+hexagon              randconfig-r015-20230322   clang
+hexagon              randconfig-r041-20230322   clang
+hexagon              randconfig-r045-20230322   clang
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                          randconfig-a001   gcc  
+i386                          randconfig-a002   clang
+i386                          randconfig-a003   gcc  
+i386                          randconfig-a004   clang
+i386                          randconfig-a005   gcc  
+i386                          randconfig-a006   clang
+i386                          randconfig-a011   clang
+i386                          randconfig-a012   gcc  
+i386                          randconfig-a013   clang
+i386                          randconfig-a014   gcc  
+i386                          randconfig-a015   clang
+i386                          randconfig-a016   gcc  
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch    buildonly-randconfig-r001-20230322   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r033-20230322   gcc  
+m68k                             allmodconfig   gcc  
+m68k         buildonly-randconfig-r003-20230322   gcc  
+m68k                                defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips         buildonly-randconfig-r005-20230322   gcc  
+mips                 randconfig-r006-20230322   gcc  
+mips                 randconfig-r036-20230322   gcc  
+nios2        buildonly-randconfig-r002-20230322   gcc  
+nios2                               defconfig   gcc  
+openrisc             randconfig-r026-20230322   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r012-20230322   gcc  
+parisc               randconfig-r016-20230322   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r042-20230322   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r044-20230322   gcc  
+sh                               allmodconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r001-20230322   gcc  
+sparc64              randconfig-r031-20230322   gcc  
+sparc64              randconfig-r034-20230322   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                        randconfig-a001   clang
+x86_64                        randconfig-a002   gcc  
+x86_64                        randconfig-a003   clang
+x86_64                        randconfig-a004   gcc  
+x86_64                        randconfig-a005   clang
+x86_64                        randconfig-a006   gcc  
+x86_64                        randconfig-a011   gcc  
+x86_64                        randconfig-a012   clang
+x86_64                        randconfig-a013   gcc  
+x86_64                        randconfig-a014   clang
+x86_64                        randconfig-a015   gcc  
+x86_64                        randconfig-a016   clang
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r032-20230322   gcc  
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
