@@ -2,160 +2,237 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 720136C7240
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 22:22:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 578866C7266
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 22:39:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230078AbjCWVWg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Mar 2023 17:22:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54932 "EHLO
+        id S231356AbjCWVjK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 17:39:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229734AbjCWVWg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 17:22:36 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86CF22CC70
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Mar 2023 14:22:34 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pfSOD-0001nn-RV; Thu, 23 Mar 2023 22:22:29 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pfSOA-006Eq4-TW; Thu, 23 Mar 2023 22:22:26 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pfSOA-007RVl-2u; Thu, 23 Mar 2023 22:22:26 +0100
-Date:   Thu, 23 Mar 2023 22:22:12 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Pierre Asselin <pa@panix.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc:     linux-acpi@vger.kernel.org, regressions@lists.linux.dev,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Robert =?utf-8?B?xZp3acSZY2tp?= <robert@swiecki.net>
-Subject: Re: [Regression] acpi: laptop panics early in boot
-Message-ID: <20230323212212.udho2htrhd2vlzxm@pengutronix.de>
-References: <9f6cba7a8a57e5a687c934e8e406e28c.squirrel@mail.panix.com>
- <20230307093308.m5enhuegm3r4qwvo@pengutronix.de>
- <220898e2276e4cae2572eb8f006f3a7b.squirrel@mail.panix.com>
- <20230307161005.6m6fpi3oxa3jn2wg@pengutronix.de>
- <6d97df76de719871c90fb59726f2d6b0.squirrel@mail.panix.com>
- <20230307200843.yxhvnb23tpecjjng@pengutronix.de>
+        with ESMTP id S231426AbjCWVjG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 17:39:06 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32938EB51;
+        Thu, 23 Mar 2023 14:38:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679607528; x=1711143528;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=WbZoo6Nx4M16QxR5wA5IqaUYENCf1sS0pRgdIgX11Mk=;
+  b=R5OM3Dch61D184eYNZefittdoi0f8an/jGX9qtx9lEHNwzFjHQY8lOXp
+   v5Upo4UtcVnTwHTURRSb/cjVSffOkgvuZh6/wNlHhgpPFLkc9atKmZjba
+   REPjUm65aDFohfanTxRFuUSEAQmD/6fs48kO3cxGPbJQEcajX69RX0mrH
+   wQnY1vamBErQgXCK7pVLMOyL7UJUrbijzbUkCg6MsKmZ83pERjPMoWYIx
+   C7Nn6khy6UZp9NhS/M+SKLyMveBgIexNn2tMfKX2bqr98pjW57ifI8o1k
+   mqW+JJzoOGIQQjbqIrVW5EBnPzsZsqmpfh1ZPnGqwCfCreU08yNRAe+8W
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="341190008"
+X-IronPort-AV: E=Sophos;i="5.98,286,1673942400"; 
+   d="scan'208";a="341190008"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2023 14:38:47 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="675882682"
+X-IronPort-AV: E=Sophos;i="5.98,286,1673942400"; 
+   d="scan'208";a="675882682"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 23 Mar 2023 14:38:45 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pfSdw-000Ej2-2K;
+        Thu, 23 Mar 2023 21:38:44 +0000
+Date:   Fri, 24 Mar 2023 05:38:33 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Elliot Berman <quic_eberman@quicinc.com>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
+Cc:     oe-kbuild-all@lists.linux.dev,
+        Elliot Berman <quic_eberman@quicinc.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] mailbox: pcc: Use mbox_bind_client
+Message-ID: <202303240551.fGGqFGmo-lkp@intel.com>
+References: <20230323191527.1472695-4-quic_eberman@quicinc.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="u5k4ghwxe22skqfn"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230307200843.yxhvnb23tpecjjng@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230323191527.1472695-4-quic_eberman@quicinc.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi Elliot,
 
---u5k4ghwxe22skqfn
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thank you for the patch! Perhaps something to improve:
 
-Hello Pierre,
+[auto build test WARNING on 6ccbe33a39523f6d62b22c5ee99c6695993c935e]
 
-On Tue, Mar 07, 2023 at 09:08:55PM +0100, Uwe Kleine-K=F6nig wrote:
-> On Tue, Mar 07, 2023 at 02:31:49PM -0500, Pierre Asselin wrote:
-> > > Maybe the following patch helps (on top of v6.3-rc1):
-> > >
-> > > diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> > > index 9531dd0fef50..a5a8f82981ce 100644
-> > > --- a/drivers/acpi/bus.c
-> > > +++ b/drivers/acpi/bus.c
-> > > @@ -518,7 +518,7 @@ static void acpi_bus_notify(acpi_handle handle, u=
-32
-> > > type, void *data)
-> > >  	if (!adev)
-> > >  		goto err;
-> > >
-> > > -	if (adev->dev.driver) {
-> > > +	if (device_is_bound(&adev->dev)) {
-> > >  		struct acpi_driver *driver =3D to_acpi_driver(adev->dev.driver);
-> > >
-> > >  		if (driver && driver->ops.notify &&
-> > >
-> >=20
-> > It does indeed "fix" 6.3-rc1.  Modulo locking issues, which I am
-> > not qualified to evaluate.
->=20
-> Thanks for your prompt test feedback.
->=20
-> The locked variant could look as follows:
->=20
-> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> index 9531dd0fef50..fddca263ac40 100644
-> --- a/drivers/acpi/bus.c
-> +++ b/drivers/acpi/bus.c
-> @@ -518,13 +518,15 @@ static void acpi_bus_notify(acpi_handle handle, u32=
- type, void *data)
->  	if (!adev)
->  		goto err;
-> =20
-> -	if (adev->dev.driver) {
-> +	device_lock(&adev->dev);
-> +	if (device_is_bound(&adev->dev)) {
->  		struct acpi_driver *driver =3D to_acpi_driver(adev->dev.driver);
-> =20
->  		if (driver && driver->ops.notify &&
->  		    (driver->flags & ACPI_DRIVER_ALL_NOTIFY_EVENTS))
->  			driver->ops.notify(adev, type);
->  	}
-> +	device_unlock(&adev->dev);
-> =20
->  	if (!hotplug_event) {
->  		acpi_put_acpi_dev(adev);
->=20
-> Pierre: If you want to test that, I suggest to also enable
-> PROVE_LOCKING.
->=20
-> Rafael: I don't know if this would work and I hope you're able to judge
-> this better than I do. The change without the lock is for sure better
-> than the status quo.
->=20
-> I did a similar conversion as the blamed commit for pci that got
-> reverted for similiar reasons. See
-> 68da4e0eaaab421f228eac57cbe7505b136464af. (Added Bjorn and Robert to
-> Cc:) I think the pci code suffers from a similar race even after
-> reverting my change. If someone is able to find the right fix for one of
-> them, that might be transferable to the other?!
+url:    https://github.com/intel-lab-lkp/linux/commits/Elliot-Berman/mailbox-Allow-direct-registration-to-a-channel/20230324-031813
+base:   6ccbe33a39523f6d62b22c5ee99c6695993c935e
+patch link:    https://lore.kernel.org/r/20230323191527.1472695-4-quic_eberman%40quicinc.com
+patch subject: [PATCH v2 3/3] mailbox: pcc: Use mbox_bind_client
+config: ia64-allyesconfig (https://download.01.org/0day-ci/archive/20230324/202303240551.fGGqFGmo-lkp@intel.com/config)
+compiler: ia64-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/5db6edf9f393224193ab13e82d63e0d7616c74c9
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Elliot-Berman/mailbox-Allow-direct-registration-to-a-channel/20230324-031813
+        git checkout 5db6edf9f393224193ab13e82d63e0d7616c74c9
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=ia64 olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=ia64 SHELL=/bin/bash drivers/
 
-This mail didn't make it into the archive on lore.kernel.org. Did
-someone receive it? If not, that would explain why I didn't get any
-feedback on it ...
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202303240551.fGGqFGmo-lkp@intel.com/
 
-Best regards
-Uwe
+All warnings (new ones prefixed by >>):
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+   drivers/mailbox/pcc.c: In function 'pcc_mbox_request_channel':
+>> drivers/mailbox/pcc.c:285:24: warning: variable 'dev' set but not used [-Wunused-but-set-variable]
+     285 |         struct device *dev;
+         |                        ^~~
+   drivers/mailbox/pcc.c: At top level:
+>> drivers/mailbox/pcc.c:355:5: warning: no previous prototype for 'pcc_startup' [-Wmissing-prototypes]
+     355 | int pcc_startup(struct mbox_chan *chan)
+         |     ^~~~~~~~~~~
+>> drivers/mailbox/pcc.c:378:6: warning: no previous prototype for 'pcc_shutdown' [-Wmissing-prototypes]
+     378 | void pcc_shutdown(struct mbox_chan *chan)
+         |      ^~~~~~~~~~~~
 
---u5k4ghwxe22skqfn
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+vim +/dev +285 drivers/mailbox/pcc.c
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmQcwwMACgkQj4D7WH0S
-/k5XkAf/ZfasOzLyUM6ldekxbkJ7mwVaqCbHLlp0iQWcZWCkuHqJ8qFaU2S6L2Rh
-6Fhi+ujxpp0pIX34so9t5CQtzWAoUrjOeEBAUuAjJ4d+Pc7vzGj6WzPefvzv3KmQ
-k8wskb+daozDmkQn2tpNjSz7Miqb12nB1LvKgF8mxHVJjjx5jcLhZdN1an1o7u7v
-wBGDKSKPrzOOjNIkCjEgtAZXcNiVmfgAbEyxKLFiiUk7+psigRFtXsT/aq38+aaO
-JatZ1DWRu2T/KeqRmHc38Msu4057amaZuYt0wiCd5W++4nS2H4gmweVIpTdBqcYQ
-1Ncx1QIpkwio+Z2YrxwYFyKB9l0Xuw==
-=uwlA
------END PGP SIGNATURE-----
+aca314efb177274 hotran             2016-08-15  267  
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  268  /**
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  269   * pcc_mbox_request_channel - PCC clients call this function to
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  270   *		request a pointer to their PCC subspace, from which they
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  271   *		can get the details of communicating with the remote.
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  272   * @cl: Pointer to Mailbox client, so we know where to bind the
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  273   *		Channel.
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  274   * @subspace_id: The PCC Subspace index as parsed in the PCC client
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  275   *		ACPI package. This is used to lookup the array of PCC
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  276   *		subspaces as parsed by the PCC Mailbox controller.
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  277   *
+7b6da7fe7bba1cd Sudeep Holla       2021-09-17  278   * Return: Pointer to the PCC Mailbox Channel if successful or ERR_PTR.
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  279   */
+7b6da7fe7bba1cd Sudeep Holla       2021-09-17  280  struct pcc_mbox_chan *
+7b6da7fe7bba1cd Sudeep Holla       2021-09-17  281  pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  282  {
+80b2bdde002c521 Sudeep Holla       2021-09-17  283  	struct pcc_chan_info *pchan;
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  284  	struct mbox_chan *chan;
+ce028702ddbc697 Sudeep Holla       2021-09-17 @285  	struct device *dev;
+5db6edf9f393224 Elliot Berman      2023-03-23  286  	int rc;
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  287  
+ce028702ddbc697 Sudeep Holla       2021-09-17  288  	if (subspace_id < 0 || subspace_id >= pcc_chan_count)
+7b6da7fe7bba1cd Sudeep Holla       2021-09-17  289  		return ERR_PTR(-ENOENT);
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  290  
+7b6da7fe7bba1cd Sudeep Holla       2021-09-17  291  	pchan = chan_info + subspace_id;
+7b6da7fe7bba1cd Sudeep Holla       2021-09-17  292  	chan = pchan->chan.mchan;
+d311a28a5853857 Sudip Mukherjee    2015-09-16  293  	if (IS_ERR(chan) || chan->cl) {
+960c4056aadcf61 Sudeep Holla       2021-12-09  294  		pr_err("Channel not found for idx: %d\n", subspace_id);
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  295  		return ERR_PTR(-EBUSY);
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  296  	}
+ce028702ddbc697 Sudeep Holla       2021-09-17  297  	dev = chan->mbox->dev;
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  298  
+5db6edf9f393224 Elliot Berman      2023-03-23  299  	rc = mbox_bind_client(chan, cl);
+5db6edf9f393224 Elliot Berman      2023-03-23  300  	if (rc)
+7b6da7fe7bba1cd Sudeep Holla       2021-09-17  301  		return ERR_PTR(rc);
+aca314efb177274 hotran             2016-08-15  302  
+7b6da7fe7bba1cd Sudeep Holla       2021-09-17  303  	return &pchan->chan;
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  304  }
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  305  EXPORT_SYMBOL_GPL(pcc_mbox_request_channel);
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  306  
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  307  /**
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  308   * pcc_mbox_free_channel - Clients call this to free their Channel.
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  309   *
+7b6da7fe7bba1cd Sudeep Holla       2021-09-17  310   * @pchan: Pointer to the PCC mailbox channel as returned by
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  311   *	   pcc_mbox_request_channel()
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  312   */
+7b6da7fe7bba1cd Sudeep Holla       2021-09-17  313  void pcc_mbox_free_channel(struct pcc_mbox_chan *pchan)
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  314  {
+7b6da7fe7bba1cd Sudeep Holla       2021-09-17  315  	struct mbox_chan *chan = pchan->mchan;
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  316  
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  317  	if (!chan || !chan->cl)
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  318  		return;
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  319  
+5db6edf9f393224 Elliot Berman      2023-03-23  320  	mbox_free_channel(chan);
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  321  }
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  322  EXPORT_SYMBOL_GPL(pcc_mbox_free_channel);
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  323  
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  324  /**
+33350e6b1833b15 Ashwin Chaugule    2015-01-27  325   * pcc_send_data - Called from Mailbox Controller code. Used
+33350e6b1833b15 Ashwin Chaugule    2015-01-27  326   *		here only to ring the channel doorbell. The PCC client
+33350e6b1833b15 Ashwin Chaugule    2015-01-27  327   *		specific read/write is done in the client driver in
+33350e6b1833b15 Ashwin Chaugule    2015-01-27  328   *		order to maintain atomicity over PCC channel once
+33350e6b1833b15 Ashwin Chaugule    2015-01-27  329   *		OS has control over it. See above for flow of operations.
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  330   * @chan: Pointer to Mailbox channel over which to send data.
+33350e6b1833b15 Ashwin Chaugule    2015-01-27  331   * @data: Client specific data written over channel. Used here
+33350e6b1833b15 Ashwin Chaugule    2015-01-27  332   *		only for debug after PCC transaction completes.
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  333   *
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  334   * Return: Err if something failed else 0 for success.
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  335   */
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  336  static int pcc_send_data(struct mbox_chan *chan, void *data)
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  337  {
+c45ded7e11352d7 Sudeep Holla       2021-09-17  338  	int ret;
+bf18123e78f4d13 Sudeep Holla       2021-09-17  339  	struct pcc_chan_info *pchan = chan->con_priv;
+8b0f57889843af6 Prakash, Prashanth 2016-02-17  340  
+c45ded7e11352d7 Sudeep Holla       2021-09-17  341  	ret = pcc_chan_reg_read_modify_write(&pchan->cmd_update);
+c45ded7e11352d7 Sudeep Holla       2021-09-17  342  	if (ret)
+c45ded7e11352d7 Sudeep Holla       2021-09-17  343  		return ret;
+c45ded7e11352d7 Sudeep Holla       2021-09-17  344  
+bf18123e78f4d13 Sudeep Holla       2021-09-17  345  	return pcc_chan_reg_read_modify_write(&pchan->db);
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  346  }
+86c22f8c9a3b71d Ashwin Chaugule    2014-11-12  347  
+5db6edf9f393224 Elliot Berman      2023-03-23  348  /**
+5db6edf9f393224 Elliot Berman      2023-03-23  349   * pcc_startup - Called from Mailbox Controller code. Used here
+5db6edf9f393224 Elliot Berman      2023-03-23  350   *		to request the interrupt.
+5db6edf9f393224 Elliot Berman      2023-03-23  351   * @chan: Pointer to Mailbox channel to startup.
+5db6edf9f393224 Elliot Berman      2023-03-23  352   *
+5db6edf9f393224 Elliot Berman      2023-03-23  353   * Return: Err if something failed else 0 for success.
+5db6edf9f393224 Elliot Berman      2023-03-23  354   */
+5db6edf9f393224 Elliot Berman      2023-03-23 @355  int pcc_startup(struct mbox_chan *chan)
+5db6edf9f393224 Elliot Berman      2023-03-23  356  {
+5db6edf9f393224 Elliot Berman      2023-03-23  357  	struct pcc_chan_info *pchan = chan->con_priv;
+5db6edf9f393224 Elliot Berman      2023-03-23  358  	int rc;
+5db6edf9f393224 Elliot Berman      2023-03-23  359  
+5db6edf9f393224 Elliot Berman      2023-03-23  360  	if (pchan->plat_irq > 0) {
+5db6edf9f393224 Elliot Berman      2023-03-23  361  		rc = devm_request_irq(chan->mbox->dev, pchan->plat_irq, pcc_mbox_irq, 0,
+5db6edf9f393224 Elliot Berman      2023-03-23  362  				      MBOX_IRQ_NAME, chan);
+5db6edf9f393224 Elliot Berman      2023-03-23  363  		if (unlikely(rc)) {
+5db6edf9f393224 Elliot Berman      2023-03-23  364  			dev_err(chan->mbox->dev, "failed to register PCC interrupt %d\n",
+5db6edf9f393224 Elliot Berman      2023-03-23  365  				pchan->plat_irq);
+5db6edf9f393224 Elliot Berman      2023-03-23  366  			return rc;
+5db6edf9f393224 Elliot Berman      2023-03-23  367  		}
+5db6edf9f393224 Elliot Berman      2023-03-23  368  	}
+5db6edf9f393224 Elliot Berman      2023-03-23  369  
+5db6edf9f393224 Elliot Berman      2023-03-23  370  	return 0;
+5db6edf9f393224 Elliot Berman      2023-03-23  371  }
+5db6edf9f393224 Elliot Berman      2023-03-23  372  
+5db6edf9f393224 Elliot Berman      2023-03-23  373  /**
+5db6edf9f393224 Elliot Berman      2023-03-23  374   * pcc_shutdown - Called from Mailbox Controller code. Used here
+5db6edf9f393224 Elliot Berman      2023-03-23  375   *		to free the interrupt.
+5db6edf9f393224 Elliot Berman      2023-03-23  376   * @chan: Pointer to Mailbox channel to shutdown.
+5db6edf9f393224 Elliot Berman      2023-03-23  377   */
+5db6edf9f393224 Elliot Berman      2023-03-23 @378  void pcc_shutdown(struct mbox_chan *chan)
+5db6edf9f393224 Elliot Berman      2023-03-23  379  {
+5db6edf9f393224 Elliot Berman      2023-03-23  380  	struct pcc_chan_info *pchan = chan->con_priv;
+5db6edf9f393224 Elliot Berman      2023-03-23  381  
+5db6edf9f393224 Elliot Berman      2023-03-23  382  	if (pchan->plat_irq > 0)
+5db6edf9f393224 Elliot Berman      2023-03-23  383  		devm_free_irq(chan->mbox->dev, pchan->plat_irq, chan);
+5db6edf9f393224 Elliot Berman      2023-03-23  384  }
+5db6edf9f393224 Elliot Berman      2023-03-23  385  
 
---u5k4ghwxe22skqfn--
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
