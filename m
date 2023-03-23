@@ -2,98 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 200956C5C63
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 02:54:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35C6A6C6222
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 09:42:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229881AbjCWByK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Mar 2023 21:54:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34478 "EHLO
+        id S229642AbjCWImr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 04:42:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229496AbjCWByK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Mar 2023 21:54:10 -0400
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FCA735B5;
-        Wed, 22 Mar 2023 18:54:08 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046051;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0VeSOjFT_1679536441;
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VeSOjFT_1679536441)
-          by smtp.aliyun-inc.com;
-          Thu, 23 Mar 2023 09:54:04 +0800
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-To:     tony.luck@intel.com
-Cc:     xueshuai@linux.alibaba.com, baolin.wang@linux.alibaba.com,
-        benjamin.cheatham@amd.com, bp@alien8.de, dan.j.williams@intel.com,
-        james.morse@arm.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rafael@kernel.org,
-        zhuo.song@linux.alibaba.com
-Subject: [PATCH v2] ACPI: APEI: EINJ: warn on invalid argument when explicitly indicated by platform
-Date:   Thu, 23 Mar 2023 09:53:57 +0800
-Message-Id: <20230323015357.8481-1-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230317073310.4237-1-xueshuai@linux.alibaba.com>
-References: <20230317073310.4237-1-xueshuai@linux.alibaba.com>
+        with ESMTP id S231512AbjCWImc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 04:42:32 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03AF210420;
+        Thu, 23 Mar 2023 01:41:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=fwpxPxavMF9pRmW3FZBqnX/hq3q3T11OticmIkCRIgg=; b=J7BaWbJwUn8sQUJ4PD5uq/rdgK
+        Bzepqzx5FM96OjmF4BoxIYszCLkFgctwfqNz0/buly/c/pscWaE4YgPDtrmPtD+oYnSEZ6tQ6sNeS
+        Zh+HV8SnEwdD9P9GTFK6lsUWc4JhZBZJtrIXXOI0a9qzYCBSbaruPJ6tfWTTuviCoACvbkX68DkLZ
+        jzHhBxJJ2aKg3fugMVkp5ZvH6gTEp1vmmovn4ckb0Z8F3v/18StlZEiL3dZ3LRdusNO6XdeEY1hv6
+        Ua6Xb8exG17QAs4Jr9FiFGz6DsSLEjOilIjDY5F3odm+i8pKDl3P/Z2s5IaD1nfkGUjlFlI/YwdLd
+        JDvDMcKQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:53138)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1pfGVQ-0004i1-U6; Thu, 23 Mar 2023 08:41:08 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1pfGVN-0001F1-HO; Thu, 23 Mar 2023 08:41:05 +0000
+Date:   Thu, 23 Mar 2023 08:41:05 +0000
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jakub Kicinski <kuba@kernel.org>, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH RFC net-next 6/7] net: dsa: mv88e6xxx: provide software
+ node for default settings
+Message-ID: <ZBwQoU4Mw6egvCEl@shell.armlinux.org.uk>
+References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
+ <E1pex8f-00Dvo9-KT@rmk-PC.armlinux.org.uk>
+ <04869523-3711-41a6-81ba-ddf2b12fd22e@lunn.ch>
+ <ZBthf8EsnQIttGdI@shell.armlinux.org.uk>
+ <5922c650-0ef3-4e60-84e6-0bfe535e5a98@lunn.ch>
+ <ZBtjl9+bhtpKPmjr@shell.armlinux.org.uk>
+ <8133635f-8d19-4899-83e2-0bf9b7b644b2@lunn.ch>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.0 required=5.0 tests=ENV_AND_HDR_SPF_MATCH,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8133635f-8d19-4899-83e2-0bf9b7b644b2@lunn.ch>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-OSPM executes an EXECUTE_OPERATION action to instruct the platform to begin
-the injection operation, then executes a GET_COMMAND_STATUS action to
-determine the status of the completed operation. The ACPI Specification
-documented error codes[1] are:
+On Wed, Mar 22, 2023 at 10:40:26PM +0100, Andrew Lunn wrote:
+> > What I'm trying to find out is what you think the behaviour should be
+> > in this case. Are you suggesting we should fall back to what we do now
+> > which is let the driver do it internally without phylink.
+> > 
+> > The problem is that if we don't go down the phylink route for everything
+> > then we /can't/ convert mv88e6xxx to phylink_pcs, because the "serdes"
+> > stuff will be gone, and the absence of phylink will mean those won't be
+> > called e.g. to power up the serdes.
+> 
+> I'm pretty sure non-DT systems have never used SERDES. They are using
+> a back to back PHY, or maybe RGMII. So long as this keeps working, we
+> can convert to phylink.
+> 
+> And i have such a amd64 system, using back to back PHYs so i can test
+> it does not regress.
 
-	0 = Success (Linux #define EINJ_STATUS_SUCCESS)
-	1 = Unknown failure (Linux #define EINJ_STATUS_FAIL)
-	2 = Invalid Access (Linux #define EINJ_STATUS_INVAL)
+Reading the code, I don't think we have any issue with the DSA and CPU
+ports, as these check whether dp->dn is not NULL before calling
+dsa_shared_port_link_register_of() and the validator. This means these
+paths will only be used for setups that have DT.
 
-The original code report -EBUSY for both "Unknown Failure" and "Invalid
-Access" cases. Actually, firmware could do some platform dependent sanity
-checks and returns different error codes, e.g. "Invalid Access" to indicate
-to the user that the parameters they supplied cannot be used for injection.
+For the user ports, we can end up calling dsa_port_phylink_create()
+with a NULL dp->dn, and must not fail.
 
-To this end, fix to return -EINVAL in the __einj_error_inject() error
-handling case instead of always -EBUSY, when explicitly indicated by the
-platform in the status of the completed operation.
+So, given that this is only supposed to be used for mv88e6xxx because
+of it's legacy, maybe the check in dsa_port_phylink_create() should
+be:
 
-[1] ACPI Specification 6.5 18.6.1. Error Injection Table
+        fwnode = of_fwnode_handle(dp->dn);
+        if (fwnode && ds->ops->port_get_fwnode) {
 
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
----
-changelog since v1:
-- elaborate commit log based on follow up discussion with Tony
-- pick up Reviewed-by tag of Tony
----
- drivers/acpi/apei/einj.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+In other words, we only allow the replacement of the firmware
+description if one already existed.
 
-diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
-index b4373e575660..fa0b4320312e 100644
---- a/drivers/acpi/apei/einj.c
-+++ b/drivers/acpi/apei/einj.c
-@@ -489,9 +489,15 @@ static int __einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
- 	if (rc)
- 		return rc;
- 	val = apei_exec_ctx_get_output(&ctx);
--	if (val != EINJ_STATUS_SUCCESS)
-+	if (val == EINJ_STATUS_FAIL)
- 		return -EBUSY;
-+	else if (val == EINJ_STATUS_INVAL)
-+		return -EINVAL;
- 
-+	/*
-+	 * The error is injected into the platform successfully, then it needs
-+	 * to trigger the error.
-+	 */
- 	rc = apei_exec_run(&ctx, ACPI_EINJ_GET_TRIGGER_TABLE);
- 	if (rc)
- 		return rc;
+Alternatively, we could use:
+
+	if (!dsa_port_is_user(dp) && ds->ops->port_get_fwnode) {
+
+since mv88e6xxx today only does this "max speed" thing for CPU and
+DSA ports, and thus we only need to replace the firmware description
+for these ports - and we can document that port_get_fwnode is only
+for CPU and DSA ports.
+
+Hmm?
+
 -- 
-2.20.1.12.g72788fdb
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
