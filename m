@@ -2,41 +2,32 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B11516C7026
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 19:25:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A86236C704B
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 19:34:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229625AbjCWSZq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Mar 2023 14:25:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48310 "EHLO
+        id S230011AbjCWSeX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 14:34:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229489AbjCWSZp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 14:25:45 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A17E1212B8;
-        Thu, 23 Mar 2023 11:25:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=wsJuB1mGkf26mbLdBUS/cSW1mH+r9hLTNZ2z3JvPoEc=; b=CP54IJuZeYCkONyPf8ZkSxVcgs
-        mwVDrHGdsGXUzywTL1QO8ouL5KPl4OR9CBExXkJLXz7LRbVQ4pVjI0gfkt5Eq409yC7Ylq22V8plX
-        SUzmaVqAaTekx8qFYtkFQmdQol4b2Vyh23sME7LEJDqmRyaidJDewDcJli2nAF4axbhiFwsGaGDzr
-        vrk8lKm7z7Dqe0kct79AZU0XCvuGml+PUMul6nNGEg0XakpP4+s6S1SDCw4CCncpzqLbQtgQO4Hji
-        OitU5BwNUEQL9d+Mz4/e1AV7mjcC6sRE3rHSNSqYUsgY7m4FNf79Qmfs3VYdzf9DtACYJiRyVl3+a
-        MXwrax7Q==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:45254)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1pfPcw-0005dW-FL; Thu, 23 Mar 2023 18:25:30 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1pfPct-0001bd-TB; Thu, 23 Mar 2023 18:25:27 +0000
-Date:   Thu, 23 Mar 2023 18:25:27 +0000
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Andrew Lunn <andrew@lunn.ch>
+        with ESMTP id S229708AbjCWSeW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 14:34:22 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A174B198;
+        Thu, 23 Mar 2023 11:34:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=EkgXa4LbtKe9EYXdk7Nr7qLbD2iXeKROTlB8XV5vCSU=; b=hre3GqRLaIait/u360Eblyea/3
+        bR7/JuP1M4S7h5YpCxtren9ZOxdTXvk/pEl7vMfoK1ftGcm+Wof4aY7R5Bk8pCNam1gFBnyzyyyGx
+        BIKfDVXgcb/EDypxZlViXS1wk7n7ulE9928CB0ZCYhT3oF3n2i2Dpl+OEWrzaJgHClYA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1pfPlP-008ECH-Qj; Thu, 23 Mar 2023 19:34:15 +0100
+Date:   Thu, 23 Mar 2023 19:34:15 +0100
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
 Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Daniel Scally <djrscally@gmail.com>,
@@ -52,7 +43,7 @@ Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
         Vladimir Oltean <olteanv@gmail.com>
 Subject: Re: [PATCH RFC net-next 6/7] net: dsa: mv88e6xxx: provide software
  node for default settings
-Message-ID: <ZByZl181eQZ24nwd@shell.armlinux.org.uk>
+Message-ID: <47bb2b55-2269-4c7b-9a21-e74f08277481@lunn.ch>
 References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
  <E1pex8f-00Dvo9-KT@rmk-PC.armlinux.org.uk>
  <04869523-3711-41a6-81ba-ddf2b12fd22e@lunn.ch>
@@ -62,13 +53,13 @@ References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
  <8133635f-8d19-4899-83e2-0bf9b7b644b2@lunn.ch>
  <ZBwQoU4Mw6egvCEl@shell.armlinux.org.uk>
  <4ae939e1-8d11-4308-ace3-7e862f0bd24a@lunn.ch>
+ <ZByZl181eQZ24nwd@shell.armlinux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4ae939e1-8d11-4308-ace3-7e862f0bd24a@lunn.ch>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+In-Reply-To: <ZByZl181eQZ24nwd@shell.armlinux.org.uk>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,44 +67,16 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 23, 2023 at 07:17:27PM +0100, Andrew Lunn wrote:
-> > So, given that this is only supposed to be used for mv88e6xxx because
-> > of it's legacy, maybe the check in dsa_port_phylink_create() should
-> > be:
-> > 
-> >         fwnode = of_fwnode_handle(dp->dn);
-> >         if (fwnode && ds->ops->port_get_fwnode) {
-> > 
-> > In other words, we only allow the replacement of the firmware
-> > description if one already existed.
+> To be clear, you're suggesting:
 > 
-> That sounds reasonable.
+> 	if (!dsa_port_is_user(dp) && fwnode && ds->ops->port_get_fwnode) {
 > 
-> > Alternatively, we could use:
-> > 
-> > 	if (!dsa_port_is_user(dp) && ds->ops->port_get_fwnode) {
-> > 
-> > since mv88e6xxx today only does this "max speed" thing for CPU and
-> > DSA ports, and thus we only need to replace the firmware description
-> > for these ports - and we can document that port_get_fwnode is only
-> > for CPU and DSA ports.
+> ?
 > 
-> Also reasonable.
-> 
-> The first seems better for the Non-DT, where as the second makes it
-> clear it is supposed to be for CPU and DSA ports only.
-> 
-> Is it over the top to combine them?
+> If so, yes - you know better than I how these bits are supposed to work.
+> Thanks.
 
-To be clear, you're suggesting:
+Yes, that is what i was thinking.
 
-	if (!dsa_port_is_user(dp) && fwnode && ds->ops->port_get_fwnode) {
-
-?
-
-If so, yes - you know better than I how these bits are supposed to work.
-Thanks.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+Thanks
+	Andrew
