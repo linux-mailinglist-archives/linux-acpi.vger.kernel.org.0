@@ -2,41 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B06C46C6FBC
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 18:54:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2383B6C6FEC
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 19:05:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229913AbjCWRyL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Mar 2023 13:54:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60486 "EHLO
+        id S231260AbjCWSEz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 14:04:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230009AbjCWRyJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 13:54:09 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74C9335B1;
-        Thu, 23 Mar 2023 10:54:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=54YsC8XzqQpsB2UsHYA2SFE4Iu7ECpACpg/2TdxhMVA=; b=mSl1ILCEhcP+6TYKUcje1z0Fzy
-        wuc4Oz1++D3ao2BjWUfe685253N24840brNWQXjmH+BCmMbuaLYB6qUTiKDcOoAoiL3ZbHmmXJx7f
-        YSke0rpz8MVYWjNNV2seNzbBckCUYJsN4iavlYtMuqqx4haUArtM3/N3t1cdNnIYHhjyyCX2/Aw1R
-        ZTINd144IjD8Glo6y7ghDaem7E/eHrTjBTz5EvoDHD4HCR6x9dYM7AOuJ83AUnKt1vquhYizKeE/Q
-        hJwKIdKa9hdCg7YKOjz1X3Yovwa2IJm9utO3STotzcIc8UDbq4x6Otvx1naOB9h0/T1ffXSGDl3JY
-        tp3hKDKA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:55298)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1pfP8I-0005bK-Dp; Thu, 23 Mar 2023 17:53:50 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1pfP8E-0001aL-Pf; Thu, 23 Mar 2023 17:53:46 +0000
-Date:   Thu, 23 Mar 2023 17:53:46 +0000
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        with ESMTP id S231240AbjCWSEy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 14:04:54 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEC03A270;
+        Thu, 23 Mar 2023 11:04:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679594693; x=1711130693;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=t/igcvPmGEkBTn/4UAPcnfoY2ioHhWapkDNqA0L1LpQ=;
+  b=N7fKtmt9QK7zOyt/VEIa9+WTWTe6x33PEpzldYkWtRytCmqbt/QL9oC5
+   b69bkObHAh74Qh3NxH+CB+jhvLLUn3sTHm+SDJsdyFz3c/sLzOULEJLQR
+   il6H7B8piEtm3v7AvXZllgO+PbxsCQJ8Oyy8xvgJhC96gVb3spr3mZcPx
+   uDgSplzs/CjDtOTjOYlyBJTgMvolqzz4XIJsUFXMsgU2Zptxp7TonPLN8
+   RBcSZZsNKC2GqRr1llHX66hBNZcdgkXZ/pB6qdtAP5xFHR53j9NVXE8ct
+   wUeVBz1RmDdG6yRIxJaI9k+8z64uRT046M/VVe8EgSueIOOl7HNVERXXg
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="327977712"
+X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
+   d="scan'208";a="327977712"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2023 11:04:52 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="675800262"
+X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
+   d="scan'208";a="675800262"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga007.jf.intel.com with ESMTP; 23 Mar 2023 11:04:47 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pfPIr-007bN5-1R;
+        Thu, 23 Mar 2023 20:04:45 +0200
+Date:   Thu, 23 Mar 2023 20:04:45 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
 Cc:     Andrew Lunn <andrew@lunn.ch>,
         Heiner Kallweit <hkallweit1@gmail.com>,
         Daniel Scally <djrscally@gmail.com>,
@@ -52,7 +60,7 @@ Cc:     Andrew Lunn <andrew@lunn.ch>,
         Vladimir Oltean <olteanv@gmail.com>
 Subject: Re: [PATCH RFC net-next 3/7] net: dsa: use fwnode_get_phy_mode() to
  get phy interface mode
-Message-ID: <ZBySKoHh25AMMBVg@shell.armlinux.org.uk>
+Message-ID: <ZByUvVGRhpFUYrVq@smile.fi.intel.com>
 References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
  <E1pex8Q-00Dvnr-5y@rmk-PC.armlinux.org.uk>
  <ZBxcGXSVe0dlzKZb@smile.fi.intel.com>
@@ -60,57 +68,66 @@ References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
  <ZBxkZYXrfugz0gYw@smile.fi.intel.com>
  <ZBxm3XrQAfnmbHoF@shell.armlinux.org.uk>
  <ZBxpeLOmTMzqVTRV@smile.fi.intel.com>
+ <ZBySKoHh25AMMBVg@shell.armlinux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZBxpeLOmTMzqVTRV@smile.fi.intel.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <ZBySKoHh25AMMBVg@shell.armlinux.org.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 23, 2023 at 05:00:08PM +0200, Andy Shevchenko wrote:
-> On Thu, Mar 23, 2023 at 02:49:01PM +0000, Russell King (Oracle) wrote:
-> > Let's start here. We pass this fwnode to fwnode_get_phy_mode():
+On Thu, Mar 23, 2023 at 05:53:46PM +0000, Russell King (Oracle) wrote:
+> On Thu, Mar 23, 2023 at 05:00:08PM +0200, Andy Shevchenko wrote:
+> > On Thu, Mar 23, 2023 at 02:49:01PM +0000, Russell King (Oracle) wrote:
+> > > Let's start here. We pass this fwnode to fwnode_get_phy_mode():
+> > > 
+> > > include/linux/property.h:int fwnode_get_phy_mode(struct fwnode_handle *fwnode);
+> > > 
+> > > Does fwnode_get_phy_mode() alter the contents of the fwnode? Probably
+> > > not, but it doesn't take a const pointer. Therefore, to declare my
+> > > fwnode as const, I'd need to cast the const-ness away before calling
+> > > this.
 > > 
-> > include/linux/property.h:int fwnode_get_phy_mode(struct fwnode_handle *fwnode);
+> > So, fix the fwnode_get_phy_mode(). Is it a problem?
 > > 
-> > Does fwnode_get_phy_mode() alter the contents of the fwnode? Probably
-> > not, but it doesn't take a const pointer. Therefore, to declare my
-> > fwnode as const, I'd need to cast the const-ness away before calling
-> > this.
+> > > Then there's phylink_create(). Same problem.
+> > 
+> > So, fix that. Is it a problem?
 > 
-> So, fix the fwnode_get_phy_mode(). Is it a problem?
+> To do both of these creates a five patch series, because there are so
+> many things that need to be constified:
 > 
-> > Then there's phylink_create(). Same problem.
+> fwnode_get_phy_mode() is the trivial one.
 > 
-> So, fix that. Is it a problem?
+> sfp_bus_find_fwnode(), and the sfp-bus internal fwnode uses.
+> 
+> fwnode_get_phy_node().
+> 
+> phylink_create(), phylink_parse_fixedlink(), phylink_parse_mode(),
+> phylink_fwnode_phy_connect().
+> 
+> Hopefully nothing breaks as a result of changing all those - but that
+> can hardly be "tacked" on to the start of my series as a trivial
+> change - and clearly such a change should _not_ be part of this
+> series.
 
-To do both of these creates a five patch series, because there are so
-many things that need to be constified:
+Thank you for doing that!
 
-fwnode_get_phy_mode() is the trivial one.
+> Those five patches do not include moving fwnode_get_phy_mode(), whose
+> location remains undecided.
 
-sfp_bus_find_fwnode(), and the sfp-bus internal fwnode uses.
-
-fwnode_get_phy_node().
-
-phylink_create(), phylink_parse_fixedlink(), phylink_parse_mode(),
-phylink_fwnode_phy_connect().
-
-Hopefully nothing breaks as a result of changing all those - but that
-can hardly be "tacked" on to the start of my series as a trivial
-change - and clearly such a change should _not_ be part of this
-series.
-
-Those five patches do not include moving fwnode_get_phy_mode(), whose
-location remains undecided.
+No problem, we like iterative work.
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+With Best Regards,
+Andy Shevchenko
+
+
