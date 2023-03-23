@@ -2,134 +2,202 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D10946C6AEE
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 15:29:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0272E6C6AF2
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 15:30:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231504AbjCWO3r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Mar 2023 10:29:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49578 "EHLO
+        id S230486AbjCWOaX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 10:30:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229729AbjCWO3n (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 10:29:43 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51B549756;
-        Thu, 23 Mar 2023 07:29:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=lxEWxpzOY4LJygvTGhMtmdDomHrkMWj+mRCVORlP7MM=; b=oWIULdi7Ub0sSWYxf1dm4bhvgm
-        X3lvYtpFVGQH0FQM3ZEZkuErNQhyF29b1LbRA+A4V9m4jI78+oaZMpo+6XH8suQWZeb6APsQGLDXN
-        vhjn32TAfIZ+R+mRIpJSzeCdojeO8PaD9uUBTBfiqJVEZTXrN6D9LijTq8+Hc5gUmkdt8omqByAly
-        fSDf9XSRbCGnixBiy5TVDHfW8/gl0vNcFbbxLTEQ0pSEpLvQ8OY+YdMXm2y1nT/CrS/MXw0ZXiKGv
-        tCn1EbhPQNcDHt9X5xD2Kzyhmcz+3NKSXYGdWU1zGvcPTyf9ZxOwovA1Z60TSffCn5+9PUgjlfEzb
-        xAcnGCsA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:50744)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1pfLwW-0005G3-EE; Thu, 23 Mar 2023 14:29:28 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1pfLwS-0001Rp-Ts; Thu, 23 Mar 2023 14:29:24 +0000
-Date:   Thu, 23 Mar 2023 14:29:24 +0000
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Daniel Scally <djrscally@gmail.com>,
+        with ESMTP id S229842AbjCWOaV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 10:30:21 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16ECA1EBD2;
+        Thu, 23 Mar 2023 07:30:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679581820; x=1711117820;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=yycxH1AeGogQsiHx6KGAN/nQ6jWFX888/jtMkSYZfjo=;
+  b=dEv1rEs9jwcv0QKQ5fGqOQOtSuoN4whzoRgOjeCKSDY3D6oZNBkeEt13
+   1025Deb/A24ZhYf5mk2euVhtstLL0HLDIezQMK5oWWJafOwYZrNLZm30b
+   3Jhd7a0QYfxsqDctZuDh+V0J0mNNx7nGWAcFmxZRljitCCCFz3QtTEOuD
+   zsBaRQNfNBkr0CptfGUDRVFDrI63KYSCNF8HiNMLOkEbeOWuN1fD9WJDr
+   b9UXIP0ZIPBgcY1pnh9/V7ygiHwGQuhthDdha8AmQGVMoLt4MQLxCDuJk
+   TSSQNEaWjr3AfUs9Myhm9Lg2F7kpDXJVZGQaXdTh5ummbFiCiHNYJaxa1
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="367241191"
+X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
+   d="scan'208";a="367241191"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2023 07:30:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="684752720"
+X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
+   d="scan'208";a="684752720"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007.fm.intel.com with ESMTP; 23 Mar 2023 07:30:06 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pfLx3-007XTh-2N;
+        Thu, 23 Mar 2023 16:30:01 +0200
+Date:   Thu, 23 Mar 2023 16:30:01 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        "Maciej W. Rozycki" <macro@orcam.me.uk>,
+        Juergen Gross <jgross@suse.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Anatolij Gustschin <agust@denx.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jakub Kicinski <kuba@kernel.org>, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Vladimir Oltean <olteanv@gmail.com>
-Subject: Re: [PATCH RFC net-next 1/7] software node: allow named software
- node to be created
-Message-ID: <ZBxiRJXMqjrOl9TE@shell.armlinux.org.uk>
-References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
- <E1pex8F-00Dvnf-Sm@rmk-PC.armlinux.org.uk>
- <ZBxbKxAcAKznIVJ2@smile.fi.intel.com>
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Subject: Re: [PATCH v6 1/4] PCI: Introduce pci_dev_for_each_resource()
+Message-ID: <ZBxiaflGTeK8Jlgx@smile.fi.intel.com>
+References: <20230320131633.61680-2-andriy.shevchenko@linux.intel.com>
+ <20230322192804.GA2485349@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZBxbKxAcAKznIVJ2@smile.fi.intel.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <20230322192804.GA2485349@bhelgaas>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 23, 2023 at 03:59:07PM +0200, Andy Shevchenko wrote:
-> On Wed, Mar 22, 2023 at 11:59:55AM +0000, Russell King wrote:
-> > From: Vladimir Oltean <vladimir.oltean@nxp.com>
-> > 
-> > Allow a named software node to be created, which is needed for software
-> > nodes for a fixed-link specification for DSA.
+On Wed, Mar 22, 2023 at 02:28:04PM -0500, Bjorn Helgaas wrote:
+> On Mon, Mar 20, 2023 at 03:16:30PM +0200, Andy Shevchenko wrote:
+
+...
+
+> > +	pci_dev_for_each_resource_p(dev, r) {
+> >  		/* zap the 2nd function of the winbond chip */
+> > -		if (dev->resource[i].flags & IORESOURCE_IO
+> > -		    && dev->bus->number == 0 && dev->devfn == 0x81)
+> > -			dev->resource[i].flags &= ~IORESOURCE_IO;
+> > -		if (dev->resource[i].start == 0 && dev->resource[i].end) {
+> > -			dev->resource[i].flags = 0;
+> > -			dev->resource[i].end = 0;
+> > +		if (dev->bus->number == 0 && dev->devfn == 0x81 &&
+> > +		    r->flags & IORESOURCE_IO)
 > 
-> ...
+> This is a nice literal conversion, but it's kind of lame to test
+> bus->number and devfn *inside* the loop here, since they can't change
+> inside the loop.
+
+Hmm... why are you asking me, even if I may agree on that? It's
+in the original code and out of scope of this series.
+
+> > +			r->flags &= ~IORESOURCE_IO;
+> > +		if (r->start == 0 && r->end) {
+> > +			r->flags = 0;
+> > +			r->end = 0;
+> >  		}
+> >  	}
+
+...
+
+> >  #define pci_resource_len(dev,bar) \
+> >  	((pci_resource_end((dev), (bar)) == 0) ? 0 :	\
+> >  							\
+> > -	 (pci_resource_end((dev), (bar)) -		\
+> > -	  pci_resource_start((dev), (bar)) + 1))
+> > +	 resource_size(pci_resource_n((dev), (bar))))
 > 
-> > +fwnode_create_named_software_node(const struct property_entry *properties,
-> > +				  const struct fwnode_handle *parent,
-> > +				  const char *name)
-> >  {
-> >  	struct fwnode_handle *fwnode;
-> >  	struct software_node *node;
-> > @@ -930,6 +931,7 @@ fwnode_create_software_node(const struct property_entry *properties,
-> >  		return ERR_CAST(node);
-> >  
-> >  	node->parent = p ? p->node : NULL;
-> > +	node->name = name;
+> I like this change, but it's unrelated to pci_dev_for_each_resource()
+> and unmentioned in the commit log.
+
+And as you rightfully noticed this either. I can split it to a separate one.
+
+...
+
+> > +#define __pci_dev_for_each_resource(dev, res, __i, vartype)		\
+> > +	for (vartype __i = 0;						\
+> > +	     res = pci_resource_n(dev, __i), __i < PCI_NUM_RESOURCES;	\
+> > +	     __i++)
+> > +
+> > +#define pci_dev_for_each_resource(dev, res, i)				\
+> > +       __pci_dev_for_each_resource(dev, res, i, )
+> > +
+> > +#define pci_dev_for_each_resource_p(dev, res)				\
+> > +	__pci_dev_for_each_resource(dev, res, __i, unsigned int)
 > 
-> The same question stays as before: how can we be sure that the name is unique
-> and we won't have a collision?
+> This series converts many cases to drop the iterator variable ("i"),
+> which is fantastic.
+> 
+> Several of the remaining places need the iterator variable only to
+> call pci_claim_resource(), which could be converted to take a "struct
+> resource *" directly without much trouble.
+> 
+> We don't have to do that pci_claim_resource() conversion now,
 
-This got discussed at length last time around, starting here:
+Exactly, it's definitely should be separate change.
 
-https://lore.kernel.org/all/YtHGwz4v7VWKhIXG@smile.fi.intel.com/
+> but
+> since we're converging on the "(dev, res)" style, I think we should
+> reverse the names so we have something like:
+> 
+>   pci_dev_for_each_resource(dev, res)
+>   pci_dev_for_each_resource_idx(dev, res, i)
 
-My conclusion is that your concern is invalid, because we're creating
-this tree:
+Wouldn't it be more churn, including pci_bus_for_each_resource() correction?
 
-	node%d
-	+- phy-mode property
-	`- fixed-link node
-	   +- speed property
-	   `- full-duplex (optional) property
+...
 
-Given that node%d will be allocated against the swnode_root_ids IDA,
-then how can there possibly be a naming collision.
+> Not sure __pci_dev_for_each_resource() is worthwhile since it only
+> avoids repeating that single "for" statement, and passing in "vartype"
+> (sometimes empty to implicitly avoid the declaration) is a little
+> complicated to read.  I think it'd be easier to read like this:
 
-You would be correct if the "fixed-link" node were to be created at
-root level, or if we were intentionally creating two swnodes under
-the same parent with the same name, but we aren't.
+No objections here.
 
-Plus, the code _already_ allows for e.g. multiple "node1" names - for
-example, one in root and one as a child node, since the code uses
-separate IDAs to allocate those.
-
-Hence, I do not recognise the conern you are raising, and I believe
-your concern is not valid.
-
-Your concern would be valid if it was a general concern about
-fwnode_create_named_software_node() being used to create the same
-named node under the same parent, but that IMHO is a programming
-bug, no different from trying to create two devices under the same
-parent with the same name.
-
-So, unless you can be more expansive about _precisely_ what your
-concern is, then I don't think there exists any problem with this.
+>   #define pci_dev_for_each_resource(dev, res)                      \
+>     for (unsigned int __i = 0;                                     \
+>          res = pci_resource_n(dev, __i), __i < PCI_NUM_RESOURCES;  \
+>          __i++)
+> 
+>   #define pci_dev_for_each_resource_idx(dev, res, idx)             \
+>     for (idx = 0;                                                  \
+>          res = pci_resource_n(dev, idx), idx < PCI_NUM_RESOURCES;  \
+>          idx++)
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+With Best Regards,
+Andy Shevchenko
+
+
