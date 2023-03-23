@@ -2,41 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A78A6C6D88
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 17:30:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA2206C6DCC
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 17:37:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232046AbjCWQaR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Mar 2023 12:30:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41578 "EHLO
+        id S232297AbjCWQhR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 12:37:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232302AbjCWQ3w (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 12:29:52 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC24A29413;
-        Thu, 23 Mar 2023 09:29:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=TsjIJlHCr6RHkaUXi8Zsa2mLTRFAwmW9uSJPS9QodsY=; b=PLPKgya13Ye0I193Mm7ypYz1Sh
-        gHEoR+t54KikNxB29i+nD/MEbjw6QSsn4uPBWtTGovlxzpCi4N3mW80gXCYfuIbfatZsZGExGZRMd
-        nkxXxguxgGBS6hNiF+0+0S5tB+/31O/cUTIk+5SVQ7WGHiF3CCTHQmivyMyyqbOuUevK8EohkK59A
-        MWxop4LfcVGNxrsRhdxPNAqZwopN8sWogiDlJc0NRHhPTXXeMWjBtGWOylTawaDWiJdICXDhiK4Ys
-        G40q/5gBGxdpNuAbgAuvO6sLhfiKzm7qFVj5RmtIBGzx6Xv2LfCLrQn5hlezxVROZuqYmUkW6rtE3
-        CNJmLnuA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:37188)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1pfNop-0005S9-A7; Thu, 23 Mar 2023 16:29:39 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1pfNon-0001Wp-N6; Thu, 23 Mar 2023 16:29:37 +0000
-Date:   Thu, 23 Mar 2023 16:29:37 +0000
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        with ESMTP id S231245AbjCWQgh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 12:36:37 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71DBD28E72;
+        Thu, 23 Mar 2023 09:35:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679589313; x=1711125313;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6dmk7dESK06bL7bYbgjdANZzXihd1W0ybweFM1q6ffQ=;
+  b=BIedNtzkq8bEEekwXagTwsO2WBaOlHwEZFxRrm7qEPizn3ViFwfXil+c
+   LwJ3DYFoaSk2P1RzjBlV3OPRW1zjA2dAtH922mNbJM6XxJIKaeYJEGs9f
+   sReg8bnbZui8+5wqdGzucZh/5waS/kJA8gq2MaqU5X+zQj2JZ/YAlZDN7
+   MIvAn0Zx//u9VWfhKmFYfbytmryXcv0b9xdioM6xiUwvTwfUujg0u9PZx
+   AoIa2Fk67T5r/KWPO6O/W+JKPIsaYVbECYq67U2aOOb8pohHI20pNsTj5
+   PXW7avr3nJNV5Llou2ohs6i1mkPAqEkb1cmagrpcIHOfTslUblyoTGrX3
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="323411054"
+X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
+   d="scan'208";a="323411054"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2023 09:34:39 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="1011885195"
+X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
+   d="scan'208";a="1011885195"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga005.fm.intel.com with ESMTP; 23 Mar 2023 09:34:35 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pfNtY-007Znn-28;
+        Thu, 23 Mar 2023 18:34:32 +0200
+Date:   Thu, 23 Mar 2023 18:34:32 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
 Cc:     Andrew Lunn <andrew@lunn.ch>,
         Heiner Kallweit <hkallweit1@gmail.com>,
         Daniel Scally <djrscally@gmail.com>,
@@ -52,7 +60,7 @@ Cc:     Andrew Lunn <andrew@lunn.ch>,
         Vladimir Oltean <olteanv@gmail.com>
 Subject: Re: [PATCH RFC net-next 3/7] net: dsa: use fwnode_get_phy_mode() to
  get phy interface mode
-Message-ID: <ZBx+cUbdSPxCRK2H@shell.armlinux.org.uk>
+Message-ID: <ZBx/mO/z3t3dQCAx@smile.fi.intel.com>
 References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
  <E1pex8Q-00Dvnr-5y@rmk-PC.armlinux.org.uk>
  <ZBxcGXSVe0dlzKZb@smile.fi.intel.com>
@@ -61,42 +69,26 @@ References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
  <ZBxm3XrQAfnmbHoF@shell.armlinux.org.uk>
  <ZBxpeLOmTMzqVTRV@smile.fi.intel.com>
  <ZBxu4FvyO2JDwmMq@shell.armlinux.org.uk>
- <ZBxxPYyNZrOQ6aVN@smile.fi.intel.com>
+ <ZBx7xxs0NQV25cFn@shell.armlinux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZBxxPYyNZrOQ6aVN@smile.fi.intel.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <ZBx7xxs0NQV25cFn@shell.armlinux.org.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-0.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 23, 2023 at 05:33:17PM +0200, Andy Shevchenko wrote:
+On Thu, Mar 23, 2023 at 04:18:15PM +0000, Russell King (Oracle) wrote:
 > On Thu, Mar 23, 2023 at 03:23:12PM +0000, Russell King (Oracle) wrote:
 > > On Thu, Mar 23, 2023 at 05:00:08PM +0200, Andy Shevchenko wrote:
 > > > On Thu, Mar 23, 2023 at 02:49:01PM +0000, Russell King (Oracle) wrote:
 > > > > On Thu, Mar 23, 2023 at 04:38:29PM +0200, Andy Shevchenko wrote:
-> > > > > On Thu, Mar 23, 2023 at 02:31:04PM +0000, Russell King (Oracle) wrote:
-> > > > > > On Thu, Mar 23, 2023 at 04:03:05PM +0200, Andy Shevchenko wrote:
-> > > > > > > On Wed, Mar 22, 2023 at 12:00:06PM +0000, Russell King (Oracle) wrote:
-> 
-> ...
-> 
-> > > > > > > > +	struct fwnode_handle *fwnode;
-> > > > > > > 
-> > > > > > > > +	fwnode = of_fwnode_handle(dp->dn);
-> > > > > > > 
-> > > > > > > 	const struct fwnode_handle *fwnode = of_fwnode_handle(dp->dn);
-> > > > > > > 
-> > > > > > > ?
-> > > > > > 
-> > > > > > Why const?
-> > > > > 
 > > > > > Do you modify its content on the fly?
 > > > > 
 > > > > Do you want to litter code with casts to get rid of the const?
@@ -117,11 +109,7 @@ On Thu, Mar 23, 2023 at 05:33:17PM +0200, Andy Shevchenko wrote:
 > > > So, fix the fwnode_get_phy_mode(). Is it a problem?
 > > 
 > > No, I refuse. That's for a different patch set.
-> 
-> I don't disagree, but it can be done as a precursor to your RFC.
-
-And you want that merged through net-next?
-
+> > 
 > > > > Then there's phylink_create(). Same problem.
 > > > 
 > > > So, fix that. Is it a problem?
@@ -141,52 +129,78 @@ And you want that merged through net-next?
 > > Sorry, I don't accept your NAK. While you have a valid point about
 > > these things being const, that is not the fault of this patch series,
 > > and is something that should be addressed separately.
-> 
-> Yes, and since it's not a big deal it can be done as a precursor work.
-> 
+> > 
 > > The lack of const-ness that has been there for quite some time is no
 > > reason to NAK a patch that has nothing to do with this.
 > 
-> Instead of saying politely that you didn't agree of the necessity of the asked
-> changes, you shoowed your confrontational manner with a strong NAK. Let's not
-> escalate it further, it won't play well with a nervous system.
+> To illustrate how rediculous this is:
+
+It's not. But does it make difference?
+
+> $ git grep 'struct fwnode_handle \*.*='
 > 
-> > > P.S. Please, move that phy thingy away from property.h, it doesn't belong
-> > > there.
-> > 
-> > Again, that's a subject for a separate patch.
-> > 
-> > I will re-post this in due course and ignore your NAK (due to your
-> > lack of research, and confrontational nature.)
+> gives 134 instances. Of those, only five are const, which means 129
+> aren't. So I question - why are you singling mine out for what appears
+> to be special treatment.
 > 
-> Don't make a drama out of it. Many maintainers are asking for a small cleanups
-> before applying a feature.
 > 
-> Nevertheless, since I'm neither a net nor a DSA maintainer, I have only thing
-> to push is to move the PHY APIs out from the property.h. The rest is up to you.
+> Let's look at other parts of the fwnode API.
+> 
+> void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index);
+> 
+> Does that modify the fwnode it was passed? It calls:
+> 
+>         void __iomem *(*iomap)(struct fwnode_handle *fwnode, int index);
+> 
+> in struct fwnode_operations, so that would need to be made const as well.
+> The only implementation of that which I can find is of_fwnode_iomap()
+> which uses to_of_node() on that, which casts away the const-ness. So
+> this would be a candidate to making const.
 
-Really? In your previous message, you were NAKing the patch based on the
-lack of "const"ness. So you've changed your tune to something that was
-a request in a post-script (PS).
+Correct.
 
-If you had done due diligence, you would have realised that its
-implementation is in property.c, so presumably if you had known that
-either (a) you wouldn't be making the request or (b) you would be
-asking for that to be moved as well.
+> bool fwnode_is_ancestor_of(struct fwnode_handle *ancestor, struct fwnode_handle *child);
+> 
+> I'd be surprised if that modifies either of those fwnodes.
 
-Now, where do you expect it to be moved to? There is nowhere convenient
-in net/ nor drivers/net/ for it today. It's corresponding DT equivalent
-is in net/core/of_net.c, but that is only built if CONFIG_OF is enabled
-which is unsuitable for the fwnode version. I guess we could have a
-net/core/fwnode.c just for this single function... then where do we put
-the prototype? include/linux/fwnode_net.h (which would be a new header
-just for this), and updating the five drivers for this change.
+It does. Now your time to be surprised.
 
-In any case, due to the way netdev works, this should *not* be part
-of this patch series, because if there's a reason to revert this
-series, we wouldn't want the move of fwnode_get_phy_mode() to also
-get reverted - that would potentially cause chaos.
+> It seems
+> to use fwnode_for_each_parent_node() from the child, which passes
+> "child" to fwnode_get_parent(), which itself is const. Therefore, it
+> seems there's no reason not to make "child" const. "ancestor" can
+> also be made const since it's only being used for pointer-compares.
+
+All getters return _different_ fwnode which is not const due to modification
+of the _returned_ fwnode.
+
+Do a bit of investigation, please. Thanks.
+
+> unsigned int fwnode_graph_get_endpoint_count(struct fwnode_handle *fwnode,
+>                                              unsigned long flags);
+> 
+> Similar story with this, although it uses
+> fwnode_graph_for_each_endpoint(), which seems to mean that "fwnode"
+> can also be const.
+
+Correct.
+
+> My point is that there are several things in the fwnode API that
+> should be made const but that aren't, but which should likely be
+> fixed before requiring const-ness of those fwnode_handle
+> declarations in people's code.
+
+OK.
+
+I started doing something about this as you may easily check with `git log`.
+Now, instead of playing a good citizen of the community you are trying to
+diminish the others' asks.
+
+I think the further continuation of this discussion doesn't make much sense.
+But thank you for your opinion.
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+With Best Regards,
+Andy Shevchenko
+
+
