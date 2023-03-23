@@ -2,150 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78F8F6C6B3E
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 15:39:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F6936C6B6B
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 15:46:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231580AbjCWOji (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Mar 2023 10:39:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37092 "EHLO
+        id S231831AbjCWOqj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 10:46:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231527AbjCWOjh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 10:39:37 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 837F5FF15;
-        Thu, 23 Mar 2023 07:39:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679582376; x=1711118376;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1IHKYvoqQNAlPTL/CEWVc+xiON1bwXfO7wjKBlDVmnQ=;
-  b=ECcF/AIZd6KfKaIdy8zHGxmrfwq/0C338kykzHgio/P/ImCA3NmF4LWv
-   9EtRQhHwh34630BXFq7ijNntQeNeriD0+EcZU5xjgreLPN/8cfHE27AyE
-   MO55EApOFb4qxTf6LLHeh5pSvNbHxWe103bQMXMciskDHCDpAdKd56tRH
-   b7y2VqTmo9fAqvn/WkTvq/rP5I7RFxkWdM9RWI/QDdkPGW9yocabQHE/1
-   LM7etlYo/IQ1kOBwDZwNzDrHYw97H/9A60m1tpp3KEgYbfwe00XkUE2jY
-   V60OSRuSeMmFMapdVLpjfrD+86kAqdmUcMijWvfrZ0kwd5iDfPXHMLiN4
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="323367084"
-X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
-   d="scan'208";a="323367084"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2023 07:39:36 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="714833537"
-X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
-   d="scan'208";a="714833537"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga001.jf.intel.com with ESMTP; 23 Mar 2023 07:39:31 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pfM6D-007Xe4-1d;
-        Thu, 23 Mar 2023 16:39:29 +0200
-Date:   Thu, 23 Mar 2023 16:39:29 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jakub Kicinski <kuba@kernel.org>, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Vladimir Oltean <olteanv@gmail.com>
-Subject: Re: [PATCH RFC net-next 1/7] software node: allow named software
- node to be created
-Message-ID: <ZBxkoSEgVR3jmK72@smile.fi.intel.com>
-References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
- <E1pex8F-00Dvnf-Sm@rmk-PC.armlinux.org.uk>
- <ZBxbKxAcAKznIVJ2@smile.fi.intel.com>
- <ZBxiRJXMqjrOl9TE@shell.armlinux.org.uk>
+        with ESMTP id S231646AbjCWOqe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 10:46:34 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6C23E24730;
+        Thu, 23 Mar 2023 07:46:26 -0700 (PDT)
+Received: from [192.168.2.39] (77-166-152-30.fixed.kpn.net [77.166.152.30])
+        by linux.microsoft.com (Postfix) with ESMTPSA id B267820FC068;
+        Thu, 23 Mar 2023 07:46:23 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B267820FC068
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1679582785;
+        bh=M39nxlqXkoyUrlklh46rqj7I8AqHEUzbGTrOkDu6MUk=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=BbR54qJcpPIqdDFc8GoIEc90FLeMzU9Oh0pqv/i4xyh8yJ6QkWZTuEy147ludwpQ7
+         5g5QRFSpSBDtGNwdl4MSky+N1wnYeFFQEgyvRll8xjLawuGFP8qUM7+EagaX7rHOet
+         keqnY1InTIWg+M2CrfepNr84M8wMxaKsWROyJ/C0=
+Message-ID: <ecf005b1-ddb9-da4c-4526-28df4806426c@linux.microsoft.com>
+Date:   Thu, 23 Mar 2023 15:46:22 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZBxiRJXMqjrOl9TE@shell.armlinux.org.uk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-0.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v3 0/8] Support ACPI PSP on Hyper-V
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     linux-kernel@vger.kernel.org,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        linux-crypto@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
+References: <20230320191956.1354602-1-jpiotrowski@linux.microsoft.com>
+ <20230322154655.GDZBsi75f6LnQStxSp@fat_crate.local>
+ <1d25221c-eaab-0f97-83aa-8b4fbe3a53ed@linux.microsoft.com>
+ <20230322181541.GEZBtFzRAMcH9BAzUe@fat_crate.local>
+Content-Language: en-US
+From:   Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+In-Reply-To: <20230322181541.GEZBtFzRAMcH9BAzUe@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-17.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 23, 2023 at 02:29:24PM +0000, Russell King (Oracle) wrote:
-> On Thu, Mar 23, 2023 at 03:59:07PM +0200, Andy Shevchenko wrote:
-> > On Wed, Mar 22, 2023 at 11:59:55AM +0000, Russell King wrote:
-> > > From: Vladimir Oltean <vladimir.oltean@nxp.com>
-> > > 
-> > > Allow a named software node to be created, which is needed for software
-> > > nodes for a fixed-link specification for DSA.
+On 3/22/2023 7:15 PM, Borislav Petkov wrote:
+> On Wed, Mar 22, 2023 at 06:33:37PM +0100, Jeremi Piotrowski wrote:
+>> What this does is it allows a normal (non-SNP) VM to host confidential (SNP)
+>> VMs. I say "normal" but not every VM is going to be able to do this, it needs
+> 
+> If you say "non-SNP" VM then this sounds like purely for development.
+> Because I cannot see how you're going to give the confidentiality
+> guarantee to the SNP guests if the lower level is unencrypted, non-SNP
+> and so on...
 
-...
+Not at all. Just to be clear: this lights up all the same bits of SNP
+as it does on bare-metal, none of it is emulated away. On bare-metal the
+hypervisor underneath the SNP guest is unencrypted as well. Here the stack
+is: L0 (Hyper-V), L1 (KVM) and L2 (SNP guest).
 
-> > > +fwnode_create_named_software_node(const struct property_entry *properties,
-> > > +				  const struct fwnode_handle *parent,
-> > > +				  const char *name)
-> > >  {
-> > >  	struct fwnode_handle *fwnode;
-> > >  	struct software_node *node;
-> > > @@ -930,6 +931,7 @@ fwnode_create_software_node(const struct property_entry *properties,
-> > >  		return ERR_CAST(node);
-> > >  
-> > >  	node->parent = p ? p->node : NULL;
-> > > +	node->name = name;
-> > 
-> > The same question stays as before: how can we be sure that the name is unique
-> > and we won't have a collision?
-> 
-> This got discussed at length last time around, starting here:
-> 
-> https://lore.kernel.org/all/YtHGwz4v7VWKhIXG@smile.fi.intel.com/
-> 
-> My conclusion is that your concern is invalid, because we're creating
-> this tree:
-> 
-> 	node%d
-> 	+- phy-mode property
-> 	`- fixed-link node
-> 	   +- speed property
-> 	   `- full-duplex (optional) property
-> 
-> Given that node%d will be allocated against the swnode_root_ids IDA,
-> then how can there possibly be a naming collision.
-> 
-> You would be correct if the "fixed-link" node were to be created at
-> root level, or if we were intentionally creating two swnodes under
-> the same parent with the same name, but we aren't.
-> 
-> Plus, the code _already_ allows for e.g. multiple "node1" names - for
-> example, one in root and one as a child node, since the code uses
-> separate IDAs to allocate those.
-> 
-> Hence, I do not recognise the conern you are raising, and I believe
-> your concern is not valid.
-> 
-> Your concern would be valid if it was a general concern about
-> fwnode_create_named_software_node() being used to create the same
-> named node under the same parent, but that IMHO is a programming
-> bug, no different from trying to create two devices under the same
-> parent with the same name.
-> 
-> So, unless you can be more expansive about _precisely_ what your
-> concern is, then I don't think there exists any problem with this.
+Starting an SNP guest is the same and involves sending commands to the PSP:
+* SNP_GCTX_CREATE
+* SNP_LAUNCH_START
+* SNP_LAUNCH_UPDATE
+* SNP_LAUNCH_FINISH
 
-OK.
+Pages need to be assigned to a specific L2 SNP guest in the system-wide
+"reverse map table", at which point neither L0 nor L1 hypervisor can touch
+them. Every L2 SNP guests memory is encrypted with a different key, and the
+SNP guest can fetch a hardware signed attestation report from the PSP that
+includes a hash of all the pages that were loaded (and encrypted) into the
+VM address space at the time the VM was launched. The communication channel
+between L2 guest and PSP is secured using keys that the PSP injects into the
+SNP guest's address space at launch time.
 
-I leave it to others to review. I have nothing to add.
+Honestly, I find it pretty cool that you can stuff a whole extra hypervisor
+underneath the SNP guest, and the hardware will still ensure and attest to
+the fact that neither hypervisor is able to compromise the integrity and
+confidentiality of the VM enclave. And you can verify this claim independently.
 
--- 
-With Best Regards,
-Andy Shevchenko
+> 
+>> to be running on AMD hardware and configured to have access to
+>> VirtualizationExtensions, a "HardwareIsolation" capability, and given a number
+>> of "hardware isolated guests" that it is allowed to spawn. In practice this
+>> will result in the VM seeing a PSP device, SEV-SNP related CPUID
+>> leafs, and have access to additional memory management instructions
+>> (rmpadjust/psmash).  This allows the rest of the of KVM-SNP support to
+>> work.
+> 
+> So why don't you emulate the PSP in KVM instead of doing some BIOS hack?
+> And multiplex the access to it between all the parties needing it?
+> 
 
+Not sure I follow you here. The quoted paragraph talks about what the L1
+VM (KVM) sees. The L1 VM needs to issue PSP commands to bring up an L2 SNP
+guest, and later the L1 VM relays SNP guest commands to the PSP. The
+PSP commands are multiplexed to the physical PSP by the L0 hypervisor
+(Hyper-V).
+
+So Hyper-V exposes a PSP to the L1 VM because it is needed and it is
+compatible with the existing Linux driver that handles the PSP. The way
+it is exposed (ACPI table) follows how it was specified by AMD.
 
