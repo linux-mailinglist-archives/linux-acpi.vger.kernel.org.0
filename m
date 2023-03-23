@@ -2,41 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2D106C6B02
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 15:31:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10EFA6C6B37
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 15:38:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229738AbjCWObR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Mar 2023 10:31:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53600 "EHLO
+        id S231220AbjCWOir (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 10:38:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230498AbjCWObQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 10:31:16 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D8021EBFA;
-        Thu, 23 Mar 2023 07:31:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Zoc3J9NgFLjB0ATS9BzpKxrQklksXAoihpHo0uKZNK8=; b=l1oXk9uDrL7IzexBx75aiGsTnq
-        fuHmFr/Oel9UZMyfBQZCE+cDPz49mzU/BUp0TwKLdUEnkp/cGxO4HzCPvrYLg34ondRmWRGsF/68Z
-        JfJXSqh12urdSETl2ymm3kdxxYsai/LhTKE06NPmhZJmdPRvoVYIJbA7r3zFqrHq4sJNHWAxvrnDr
-        uk9bAaVj/wfFuCP/uZVuKj+kOTCY7j9OA4U1+WGrxUJ04oV9zgeb6FvgcyFjMRgfSigV32mzDx5OY
-        S+m9NjGy36jQvu45TnPwa0JKTvW2XAz10jjLs/1RWw754RTM2JgEOzFcbD7aQjwIiM6MgZKIkUFdF
-        myl7DUQg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:35276)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1pfLy5-0005GV-9I; Thu, 23 Mar 2023 14:31:05 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1pfLy4-0001Rx-F9; Thu, 23 Mar 2023 14:31:04 +0000
-Date:   Thu, 23 Mar 2023 14:31:04 +0000
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        with ESMTP id S231580AbjCWOiq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 10:38:46 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAB51E062;
+        Thu, 23 Mar 2023 07:38:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679582326; x=1711118326;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mI4OADSSiI62N+WyiwOKPAYpaQgNtnikwIrzT/dzZ0Y=;
+  b=QlDRthpE2tPw3OsmbviKMIWnDNYg+XVr2DFpRQF23yQGnM9ouIDjrmRv
+   6M3TLhRuKsp7ZgevWF3uxxMaP0r4qxOp/c0npClD1xPC+ML2DsM2CYfbl
+   8t5LsTVKSW9VqsapqhZC/4ZR/KxjBvpjHytmO7EgeOysKN59PZUYerzfz
+   D82GspkU40lUTUZTesVV/rG1KsCMQNnmTLaNb1KJ8pBfrneZeby69kIzh
+   kZHQKanmy7xtARF6s6Pte4Fq/kBk/chirxF/uMTbCoV0SxzZzW0B2zr1k
+   IoqEADgSyKstL174Uj9nXAoJ7C2nMMJKJoWMHM/3YMHJ//jRCJ6OV0m9p
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="323366806"
+X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
+   d="scan'208";a="323366806"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2023 07:38:36 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="714833200"
+X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
+   d="scan'208";a="714833200"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001.jf.intel.com with ESMTP; 23 Mar 2023 07:38:32 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pfM5G-007XdD-10;
+        Thu, 23 Mar 2023 16:38:30 +0200
+Date:   Thu, 23 Mar 2023 16:38:29 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
 Cc:     Andrew Lunn <andrew@lunn.ch>,
         Heiner Kallweit <hkallweit1@gmail.com>,
         Daniel Scally <djrscally@gmail.com>,
@@ -52,49 +60,58 @@ Cc:     Andrew Lunn <andrew@lunn.ch>,
         Vladimir Oltean <olteanv@gmail.com>
 Subject: Re: [PATCH RFC net-next 3/7] net: dsa: use fwnode_get_phy_mode() to
  get phy interface mode
-Message-ID: <ZBxiqJo470A7bkig@shell.armlinux.org.uk>
+Message-ID: <ZBxkZYXrfugz0gYw@smile.fi.intel.com>
 References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
  <E1pex8Q-00Dvnr-5y@rmk-PC.armlinux.org.uk>
  <ZBxcGXSVe0dlzKZb@smile.fi.intel.com>
+ <ZBxiqJo470A7bkig@shell.armlinux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZBxcGXSVe0dlzKZb@smile.fi.intel.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <ZBxiqJo470A7bkig@shell.armlinux.org.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-0.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 23, 2023 at 04:03:05PM +0200, Andy Shevchenko wrote:
-> On Wed, Mar 22, 2023 at 12:00:06PM +0000, Russell King (Oracle) wrote:
-> > In preparation for supporting the use of software nodes to setup
-> > phylink, switch DSA to use fwnode_get_phy_mode() to retrieve the
-> > phy interface mode, rather than using of_get_phy_mode() which is
-> > DT specific.
-> 
-> ...
-> 
-> > +	struct fwnode_handle *fwnode;
-> 
-> > +	fwnode = of_fwnode_handle(dp->dn);
-> 
-> 	const struct fwnode_handle *fwnode = of_fwnode_handle(dp->dn);
-> 
-> ?
+On Thu, Mar 23, 2023 at 02:31:04PM +0000, Russell King (Oracle) wrote:
+> On Thu, Mar 23, 2023 at 04:03:05PM +0200, Andy Shevchenko wrote:
+> > On Wed, Mar 22, 2023 at 12:00:06PM +0000, Russell King (Oracle) wrote:
 
-Why const?
+...
 
-Why do you want it on one line? The code as written conforms to
-netdev coding standards which as you well know are different from
-the rest of the kernel.
+> > > +	struct fwnode_handle *fwnode;
+> > 
+> > > +	fwnode = of_fwnode_handle(dp->dn);
+> > 
+> > 	const struct fwnode_handle *fwnode = of_fwnode_handle(dp->dn);
+> > 
+> > ?
+> 
+> Why const?
 
-Thanks.
+Do you modify its content on the fly?
+
+For fwnode as a basic object type we want to reduce the scope of the possible
+modifications. If you don't modify and APIs you call do not require non-const
+object, use const for fwnode.
+
+...
+
+> Why do you want it on one line? The code as written conforms to
+> netdev coding standards which as you well know are different from
+> the rest of the kernel.
+
+This is up to you. I don't care.
+
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+With Best Regards,
+Andy Shevchenko
+
+
