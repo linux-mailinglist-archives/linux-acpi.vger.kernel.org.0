@@ -2,49 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62CF16C6A62
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 15:04:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D10946C6AEE
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 15:29:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229680AbjCWOES (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Mar 2023 10:04:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34016 "EHLO
+        id S231504AbjCWO3r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 10:29:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229990AbjCWOER (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 10:04:17 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 732515B87;
-        Thu, 23 Mar 2023 07:03:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679580193; x=1711116193;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=w1iJnhrbjO7fEVtRH9WTuWf5xNORLGNEgeXpHdhkKlU=;
-  b=jZCCAv3MvmPWen/ACFY4Dafet2ovzCCwoLoRZ8jmsLQcxl6PqQrJZQdn
-   oifxetQXYczAu3UNb9JFd1i+lavBvTkKmhIkRHr92WSkFPZ+HFVQxMCLG
-   66/y3F1pgTnjj4Ybu83QCHpPRLy5r82188NOWsvnf3dV1hzjvyvWY/w3g
-   u2+6uC7Vu95ejnN0NIjd+IntfJPmoP6tq6m6+yxM/iGlW9A3uDDmcfZuq
-   nV6kl2eIx1psqjCHnT7S7vL0cC1Zn5bJt7ANcjtdmbG2byx/5tPXzGYF2
-   wyiC5YzPG1HWvRKdrUteRxuSh5aK/I1kedCvsVSP8DBKEXpjAO9Rp5mrt
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="425774278"
-X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
-   d="scan'208";a="425774278"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2023 07:03:12 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="675719703"
-X-IronPort-AV: E=Sophos;i="5.98,285,1673942400"; 
-   d="scan'208";a="675719703"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga007.jf.intel.com with ESMTP; 23 Mar 2023 07:03:07 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pfLWz-007X3w-1o;
-        Thu, 23 Mar 2023 16:03:05 +0200
-Date:   Thu, 23 Mar 2023 16:03:05 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+        with ESMTP id S229729AbjCWO3n (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 10:29:43 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51B549756;
+        Thu, 23 Mar 2023 07:29:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=lxEWxpzOY4LJygvTGhMtmdDomHrkMWj+mRCVORlP7MM=; b=oWIULdi7Ub0sSWYxf1dm4bhvgm
+        X3lvYtpFVGQH0FQM3ZEZkuErNQhyF29b1LbRA+A4V9m4jI78+oaZMpo+6XH8suQWZeb6APsQGLDXN
+        vhjn32TAfIZ+R+mRIpJSzeCdojeO8PaD9uUBTBfiqJVEZTXrN6D9LijTq8+Hc5gUmkdt8omqByAly
+        fSDf9XSRbCGnixBiy5TVDHfW8/gl0vNcFbbxLTEQ0pSEpLvQ8OY+YdMXm2y1nT/CrS/MXw0ZXiKGv
+        tCn1EbhPQNcDHt9X5xD2Kzyhmcz+3NKSXYGdWU1zGvcPTyf9ZxOwovA1Z60TSffCn5+9PUgjlfEzb
+        xAcnGCsA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:50744)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1pfLwW-0005G3-EE; Thu, 23 Mar 2023 14:29:28 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1pfLwS-0001Rp-Ts; Thu, 23 Mar 2023 14:29:24 +0000
+Date:   Thu, 23 Mar 2023 14:29:24 +0000
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Andrew Lunn <andrew@lunn.ch>,
         Heiner Kallweit <hkallweit1@gmail.com>,
         Daniel Scally <djrscally@gmail.com>,
@@ -58,18 +50,19 @@ Cc:     Andrew Lunn <andrew@lunn.ch>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
         Vladimir Oltean <olteanv@gmail.com>
-Subject: Re: [PATCH RFC net-next 3/7] net: dsa: use fwnode_get_phy_mode() to
- get phy interface mode
-Message-ID: <ZBxcGXSVe0dlzKZb@smile.fi.intel.com>
+Subject: Re: [PATCH RFC net-next 1/7] software node: allow named software
+ node to be created
+Message-ID: <ZBxiRJXMqjrOl9TE@shell.armlinux.org.uk>
 References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
- <E1pex8Q-00Dvnr-5y@rmk-PC.armlinux.org.uk>
+ <E1pex8F-00Dvnf-Sm@rmk-PC.armlinux.org.uk>
+ <ZBxbKxAcAKznIVJ2@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <E1pex8Q-00Dvnr-5y@rmk-PC.armlinux.org.uk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+In-Reply-To: <ZBxbKxAcAKznIVJ2@smile.fi.intel.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,24 +70,66 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 22, 2023 at 12:00:06PM +0000, Russell King (Oracle) wrote:
-> In preparation for supporting the use of software nodes to setup
-> phylink, switch DSA to use fwnode_get_phy_mode() to retrieve the
-> phy interface mode, rather than using of_get_phy_mode() which is
-> DT specific.
+On Thu, Mar 23, 2023 at 03:59:07PM +0200, Andy Shevchenko wrote:
+> On Wed, Mar 22, 2023 at 11:59:55AM +0000, Russell King wrote:
+> > From: Vladimir Oltean <vladimir.oltean@nxp.com>
+> > 
+> > Allow a named software node to be created, which is needed for software
+> > nodes for a fixed-link specification for DSA.
+> 
+> ...
+> 
+> > +fwnode_create_named_software_node(const struct property_entry *properties,
+> > +				  const struct fwnode_handle *parent,
+> > +				  const char *name)
+> >  {
+> >  	struct fwnode_handle *fwnode;
+> >  	struct software_node *node;
+> > @@ -930,6 +931,7 @@ fwnode_create_software_node(const struct property_entry *properties,
+> >  		return ERR_CAST(node);
+> >  
+> >  	node->parent = p ? p->node : NULL;
+> > +	node->name = name;
+> 
+> The same question stays as before: how can we be sure that the name is unique
+> and we won't have a collision?
 
-...
+This got discussed at length last time around, starting here:
 
-> +	struct fwnode_handle *fwnode;
+https://lore.kernel.org/all/YtHGwz4v7VWKhIXG@smile.fi.intel.com/
 
-> +	fwnode = of_fwnode_handle(dp->dn);
+My conclusion is that your concern is invalid, because we're creating
+this tree:
 
-	const struct fwnode_handle *fwnode = of_fwnode_handle(dp->dn);
+	node%d
+	+- phy-mode property
+	`- fixed-link node
+	   +- speed property
+	   `- full-duplex (optional) property
 
-?
+Given that node%d will be allocated against the swnode_root_ids IDA,
+then how can there possibly be a naming collision.
+
+You would be correct if the "fixed-link" node were to be created at
+root level, or if we were intentionally creating two swnodes under
+the same parent with the same name, but we aren't.
+
+Plus, the code _already_ allows for e.g. multiple "node1" names - for
+example, one in root and one as a child node, since the code uses
+separate IDAs to allocate those.
+
+Hence, I do not recognise the conern you are raising, and I believe
+your concern is not valid.
+
+Your concern would be valid if it was a general concern about
+fwnode_create_named_software_node() being used to create the same
+named node under the same parent, but that IMHO is a programming
+bug, no different from trying to create two devices under the same
+parent with the same name.
+
+So, unless you can be more expansive about _precisely_ what your
+concern is, then I don't think there exists any problem with this.
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
