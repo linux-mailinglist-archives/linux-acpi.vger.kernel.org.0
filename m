@@ -2,91 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B0BC6C6831
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 13:25:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01B2E6C685A
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Mar 2023 13:31:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231269AbjCWMZE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Mar 2023 08:25:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44686 "EHLO
+        id S229996AbjCWMbn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Mar 2023 08:31:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231376AbjCWMYs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 08:24:48 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ABCC26CFA;
-        Thu, 23 Mar 2023 05:24:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679574286; x=1711110286;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=hdELLoi3Y38QEaItXzUyqQG5Ep4EpLLrnUbgP0dSIQs=;
-  b=ChSx1ZvdBGeMrvclGTBA/VlGL/X8XU1A4+F2ft3lQHAydbc6c0cN+9In
-   XuaRYoBVneFxA6oG37hmHgwu3FUmHRI4DjV90GtGXxuj2zWJFOv6gzCSk
-   gWKuAgoBflpJ7yKb6AThHusLFiJ0FBKJOJHcBUiru3PdTUQo57UXvDk0r
-   M+TFu53c4nC3845VP06+A6rNdJZhlAUw4PEdoeGN/sgL8QSrnDL59OuFh
-   7QW2sQ94QVFMs/uUjH0SuRiwvXP/xqRibbpUmPMbMm+ViNlm6ejyJ164v
-   UjSNQVbWyATlcNgVUQ98894/6yYeUnOUmIhn398BAfJn4gxZmlQ1o2+/N
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="319859561"
-X-IronPort-AV: E=Sophos;i="5.98,283,1673942400"; 
-   d="scan'208";a="319859561"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2023 05:24:46 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="793000027"
-X-IronPort-AV: E=Sophos;i="5.98,283,1673942400"; 
-   d="scan'208";a="793000027"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP; 23 Mar 2023 05:24:44 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pfJzn-007VQ1-14;
-        Thu, 23 Mar 2023 14:24:43 +0200
-Date:   Thu, 23 Mar 2023 14:24:43 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v1 2/2] ACPI: SPCR: Amend indentation
-Message-ID: <ZBxFC6prEE5p4Wu1@smile.fi.intel.com>
-References: <20230322102258.27390-1-andriy.shevchenko@linux.intel.com>
- <20230322102258.27390-2-andriy.shevchenko@linux.intel.com>
- <CAJZ5v0imGNb8pETxdJmjJ9cSJQedeb=w2dcG6huDB=SpL-ufqA@mail.gmail.com>
+        with ESMTP id S229913AbjCWMbm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Mar 2023 08:31:42 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A7B416AD6
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Mar 2023 05:31:41 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1pfK6T-0005ns-TJ; Thu, 23 Mar 2023 13:31:38 +0100
+Message-ID: <47a90870-8a71-a28f-bd8a-032a69cda596@leemhuis.info>
+Date:   Thu, 23 Mar 2023 13:31:37 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0imGNb8pETxdJmjJ9cSJQedeb=w2dcG6huDB=SpL-ufqA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Subject: Re: [Regression] acpi: laptop panics early in boot
+To:     Pierre Asselin <pa@panix.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=83=c2=b6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     linux-acpi@vger.kernel.org, regressions@lists.linux.dev,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Linux kernel regressions list <regressions@lists.linux.dev>
+References: <9f6cba7a8a57e5a687c934e8e406e28c.squirrel@mail.panix.com>
+ <20230307093308.m5enhuegm3r4qwvo@pengutronix.de>
+ <220898e2276e4cae2572eb8f006f3a7b.squirrel@mail.panix.com>
+ <20230307161005.6m6fpi3oxa3jn2wg@pengutronix.de>
+ <6d97df76de719871c90fb59726f2d6b0.squirrel@mail.panix.com>
+Content-Language: en-US, de-DE
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+In-Reply-To: <6d97df76de719871c90fb59726f2d6b0.squirrel@mail.panix.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1679574701;03bd1af3;
+X-HE-SMSGID: 1pfK6T-0005ns-TJ
+X-Spam-Status: No, score=-0.0 required=5.0 tests=NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 22, 2023 at 07:50:55PM +0100, Rafael J. Wysocki wrote:
-> On Wed, Mar 22, 2023 at 11:26 AM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-
-...
-
-> > 2) Remove double spaces for consistency.
+On 07.03.23 20:31, Pierre Asselin wrote:
+>> Maybe the following patch helps (on top of v6.3-rc1):
+>>
+>> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+>> index 9531dd0fef50..a5a8f82981ce 100644
+>> --- a/drivers/acpi/bus.c
+>> +++ b/drivers/acpi/bus.c
+>> @@ -518,7 +518,7 @@ static void acpi_bus_notify(acpi_handle handle, u32
+>> type, void *data)
+>>  	if (!adev)
+>>  		goto err;
+>>
+>> -	if (adev->dev.driver) {
+>> +	if (device_is_bound(&adev->dev)) {
+>>  		struct acpi_driver *driver = to_acpi_driver(adev->dev.driver);
+>>
+>>  		if (driver && driver->ops.notify &&
+>>
 > 
-> I don't quite agree with this.
-> 
-> Double spaces after a period are recognized as end-of-sentence markers
-> by some editors (notably vi), so if they have been used intentionally,
-> I see no reason to replace them.
+> It does indeed "fix" 6.3-rc1.  Modulo locking issues, which I am
+> not qualified to evaluate.
 
-For the sake of consistency. There places in very same file which do not
-follow this. I can invert and add a space to the rest. Do you prefer that?
-The reasoning will be kept the same, though.
+Uwe, what happens to this regression fix? It looks like it didn't make
+any progress towards mainline, but maybe I missed something in my brief
+search on lore.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
-
+#regzbot poke
