@@ -2,87 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 340DF6C7E10
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 13:31:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B69F6C7D11
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 12:14:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231236AbjCXMad convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 24 Mar 2023 08:30:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57888 "EHLO
+        id S229919AbjCXLOw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Mar 2023 07:14:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231866AbjCXMaR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 08:30:17 -0400
-X-Greylist: delayed 7683 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 24 Mar 2023 05:30:14 PDT
-Received: from mail.inea.gob.ve (mail.inea.gob.ve [201.248.92.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 094733581;
-        Fri, 24 Mar 2023 05:30:13 -0700 (PDT)
-Received: from mail.inea.gob.ve (localhost.localdomain [127.0.0.1])
-        by mail.inea.gob.ve (Proxmox) with ESMTP id B938B45F43;
-        Fri, 24 Mar 2023 05:21:48 -0400 (-04)
-Received: from correo.inea.gob.ve (unknown [10.10.0.61])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.inea.gob.ve (Proxmox) with ESMTPS id 81A4D45EAA;
-        Fri, 24 Mar 2023 05:21:48 -0400 (-04)
-Received: from localhost (localhost [127.0.0.1])
-        by correo.inea.gob.ve (Postfix) with ESMTP id 0C2AD6E4051E;
-        Fri, 24 Mar 2023 05:21:48 -0400 (EDT)
-Received: from correo.inea.gob.ve ([127.0.0.1])
-        by localhost (correo.inea.gob.ve [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id FWd9RuKWr2Bh; Fri, 24 Mar 2023 05:21:47 -0400 (EDT)
-Received: from localhost (localhost [127.0.0.1])
-        by correo.inea.gob.ve (Postfix) with ESMTP id 37E336E40523;
-        Fri, 24 Mar 2023 05:21:47 -0400 (EDT)
-X-Virus-Scanned: amavisd-new at inea.gob.ve
-Received: from correo.inea.gob.ve ([127.0.0.1])
-        by localhost (correo.inea.gob.ve [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id mIMaT_CCqGI8; Fri, 24 Mar 2023 05:21:47 -0400 (EDT)
-Received: from correo.inea.gob.ve (correo.inea.gob.ve [10.10.0.61])
-        by correo.inea.gob.ve (Postfix) with ESMTP id 523226E40514;
-        Fri, 24 Mar 2023 05:21:45 -0400 (EDT)
-Date:   Fri, 24 Mar 2023 05:21:45 -0400 (EDT)
-From:   Euro Millions <pledezma@inea.gob.ve>
-Reply-To: Euro Millions <3249735289@qq.com>
-Message-ID: <252123914.723735.1679649705313.JavaMail.zimbra@inea.gob.ve>
-Subject: Lottogewinn
+        with ESMTP id S229536AbjCXLOv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 07:14:51 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C1E3244BC
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 04:14:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679656490; x=1711192490;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Ws8XGVO4Gh0ORy6wwh4rfX8IiGkhnjj0jTQLSw4IBjw=;
+  b=TI4tfE0V3Ztfliu1j+6QOfaqR8NASWmNfsWzTYRivlwykSlmco2zUZ65
+   +j6pPPAPaDNGEhrjBx3KVpJAlX46nRSAfOunA8puG5Pi8Fa+OZkzQzOGC
+   QMQgHO8WSxyY7dwlWXUhv/dufa4cjJZD4xw6ooCtWTwD+LU3mmXOv3wXS
+   YNikKHVaP9aLpqUAfVoCH9gJyxTsQI6Vo5cJR0QWnmVYcvwMqrVPxSHDZ
+   fVC0WDErAILNFWJ1DeqfXEr4foKMrwq0q3/OWTH6Zby7F3xdTuoVqKpZQ
+   QVw5QJevTWbWthJh3oQDsCNVOQMio0I5yvNc1ZPNp8nDQtZ1r/8x887o/
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="320146787"
+X-IronPort-AV: E=Sophos;i="5.98,287,1673942400"; 
+   d="scan'208";a="320146787"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2023 04:14:49 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="715192338"
+X-IronPort-AV: E=Sophos;i="5.98,287,1673942400"; 
+   d="scan'208";a="715192338"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001.jf.intel.com with ESMTP; 24 Mar 2023 04:14:47 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pffNd-007sQJ-2G;
+        Fri, 24 Mar 2023 13:14:45 +0200
+Date:   Fri, 24 Mar 2023 13:14:45 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Cc:     Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH] device property: constify fwnode_get_phy_mode() argument
+Message-ID: <ZB2GJZMAQC4CTy9E@smile.fi.intel.com>
+References: <E1pfdh9-00EQ8t-HB@rmk-PC.armlinux.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [176.42.137.72]
-X-Mailer: Zimbra 8.8.15_GA_4101 (zclient/8.8.15_GA_4101)
-Thread-Index: w+xXl2mCYlwNkQEi4wF9SOBxNe3vcg==
-Thread-Topic: Lottogewinn
-X-Spam-Status: Yes, score=6.8 required=5.0 tests=FREEMAIL_FORGED_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,MISSING_HEADERS,REPLYTO_WITHOUT_TO_CC,
-        SPF_HELO_SOFTFAIL,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.9 SPF_HELO_SOFTFAIL SPF: HELO does not match SPF record
-        *      (softfail)
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [3249735289[at]qq.com]
-        *  1.2 MISSING_HEADERS Missing To: header
-        *  1.9 REPLYTO_WITHOUT_TO_CC No description available.
-        *  2.5 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: ******
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <E1pfdh9-00EQ8t-HB@rmk-PC.armlinux.org.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Herzlichen Glückwunsch, Sie haben €650.000,00 bei den monatlichen Gewinnspielen von Euro Millions / Google Promo am 23.März 2023 gewonnen.
+On Fri, Mar 24, 2023 at 09:26:47AM +0000, Russell King (Oracle) wrote:
+> fwnode_get_phy_mode() does not modify the fwnode argument, merely
+> using it to obtain the phy-mode property value. Therefore, it can
+> be made const.
 
-Bitte geben Sie die folgenden Informationen ein, damit Ihr Gewinnbetrag an Sie überwiesen werden kann.
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Vollständiger Name:
-Heimatadresse:
-Geschlecht:
-Alter:
-Telefon:
+Thank you!
 
-John Andrew
-Online-Koordinator
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> ---
+> Patch generated against net-next tree as that was where it was used and
+> tested.
+> 
+>  drivers/base/property.c  | 2 +-
+>  include/linux/property.h | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index 083a95791d3b..fcc0687f5529 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -895,7 +895,7 @@ EXPORT_SYMBOL_GPL(device_get_dma_attr);
+>   * 'phy-connection-type', and return its index in phy_modes table, or errno in
+>   * error case.
+>   */
+> -int fwnode_get_phy_mode(struct fwnode_handle *fwnode)
+> +int fwnode_get_phy_mode(const struct fwnode_handle *fwnode)
+>  {
+>  	const char *pm;
+>  	int err, i;
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index f7100e836eb4..d18c8cc17315 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -396,7 +396,7 @@ enum dev_dma_attr device_get_dma_attr(const struct device *dev);
+>  const void *device_get_match_data(const struct device *dev);
+>  
+>  int device_get_phy_mode(struct device *dev);
+> -int fwnode_get_phy_mode(struct fwnode_handle *fwnode);
+> +int fwnode_get_phy_mode(const struct fwnode_handle *fwnode);
+>  
+>  void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index);
+>  
+> -- 
+> 2.30.2
+> 
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
