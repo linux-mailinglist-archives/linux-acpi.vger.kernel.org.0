@@ -2,99 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D5C76C7B23
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 10:22:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ECC576C7B47
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 10:26:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231307AbjCXJV4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Mar 2023 05:21:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51968 "EHLO
+        id S230117AbjCXJ0y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Mar 2023 05:26:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231949AbjCXJVz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 05:21:55 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38C75233DE;
-        Fri, 24 Mar 2023 02:21:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679649689; x=1711185689;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=Zv6p5PxBUIwRGR/FQTKCtRGfcJDPVTzeoNo7mhbkHhY=;
-  b=PxRGiXTN6YBrH7uOleNvHOd8rB72J+4Q2yPZ0B6bIgU1pGI5oLsKcUnR
-   N8IOmGHHOzoifXTutOmGi93xQUOT2/R+WV60Xut0UN4taXyZosJPESPnx
-   RIBj3kthGQNoGA2XQ0l/LEIYhzaXATqBcBP5Z37Bkqu+DhStx4R6x5Y+R
-   vQYOuMU26Moz8COz9eXSflZGu2AARC54Cy0MFqjFZACGV+J1TnXsSoN/h
-   iIF2aCYzgknrrPEyrK0/hlFrLCM4+9iMUeNskvxgqzhni2j7pRGRax60L
-   8CLYisxfLm85EmrzhZJVJvbRcmJnjb4WLuDDQUl0cRPM46Yx6vAmE4byS
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="320129732"
-X-IronPort-AV: E=Sophos;i="5.98,287,1673942400"; 
-   d="scan'208";a="320129732"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2023 02:21:09 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="771814725"
-X-IronPort-AV: E=Sophos;i="5.98,287,1673942400"; 
-   d="scan'208";a="771814725"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by FMSMGA003.fm.intel.com with ESMTP; 24 Mar 2023 02:20:59 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pfdbS-007qWb-1l;
-        Fri, 24 Mar 2023 11:20:54 +0200
-Date:   Fri, 24 Mar 2023 11:20:54 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc:     =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-        "Maciej W. Rozycki" <macro@orcam.me.uk>,
-        Juergen Gross <jgross@suse.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Anatolij Gustschin <agust@denx.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Subject: Re: [PATCH v7 6/6] PCI: Make use of pci_resource_n()
-Message-ID: <ZB1rdkOgwwSC2Pxf@smile.fi.intel.com>
-References: <20230323173610.60442-1-andriy.shevchenko@linux.intel.com>
- <20230323173610.60442-7-andriy.shevchenko@linux.intel.com>
- <1722e75c-bc06-4a34-5e12-fa3622ed86a3@linaro.org>
+        with ESMTP id S229938AbjCXJ0w (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 05:26:52 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6985EDBE8
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 02:26:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+        Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
+        :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+        Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=ml+kmVPMubRY5uhlZ7rdPEbjmfqKV4xbSPDK0az76Dk=; b=sz83DAVoAM+qVzqAlluxVa0kET
+        qLZq/PQymRj2x8jS3OwusybuzF+3R2Nf6sybGWJeFr0sSAuw1zxmBINB+hBDMWCxYCrheKtUhtUqH
+        cIcajeIIVPSMt9yVjCatXqB7FeOfa3zzhR0BMLHtN+HDDd+U5tkSCI9SJNZRh59FthDyudWmtt4T+
+        2xGYokP1/zfXqGN/MohHE5mI79rQUdh2S+YLzl3j4yunMpjL0YiKIU/jPwBqkvJnDmkwOwKOK6txR
+        CDavurmse37HW23jkG8cOkp2Fsb9Oxo0CPuEdGUubvZY5CNb+mLtkacp6REhJ7j7rSvJxG8sNDTFk
+        BJForzsg==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:55740 helo=rmk-PC.armlinux.org.uk)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <rmk@armlinux.org.uk>)
+        id 1pfdhA-0006kQ-6S; Fri, 24 Mar 2023 09:26:48 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+        id 1pfdh9-00EQ8t-HB; Fri, 24 Mar 2023 09:26:47 +0000
+From:   "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org
+Subject: [PATCH] device property: constify fwnode_get_phy_mode()
+ argument
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1722e75c-bc06-4a34-5e12-fa3622ed86a3@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1pfdh9-00EQ8t-HB@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date:   Fri, 24 Mar 2023 09:26:47 +0000
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -102,41 +59,45 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 24, 2023 at 10:08:39AM +0100, Philippe Mathieu-Daudé wrote:
-> On 23/3/23 18:36, Andy Shevchenko wrote:
-> > Replace open-coded implementations of pci_resource_n() in pci.h.
+fwnode_get_phy_mode() does not modify the fwnode argument, merely
+using it to obtain the phy-mode property value. Therefore, it can
+be made const.
 
-...
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+Patch generated against net-next tree as that was where it was used and
+tested.
 
-> >   #define pci_resource_n(dev, bar)	(&(dev)->resource[(bar)])
-> > -#define pci_resource_start(dev, bar)	((dev)->resource[(bar)].start)
-> > -#define pci_resource_end(dev, bar)	((dev)->resource[(bar)].end)
-> > -#define pci_resource_flags(dev, bar)	((dev)->resource[(bar)].flags)
-> > -#define pci_resource_len(dev,bar) \
-> > -	((pci_resource_end((dev), (bar)) == 0) ? 0 :	\
-> > -							\
-> > -	 (pci_resource_end((dev), (bar)) -		\
-> > -	  pci_resource_start((dev), (bar)) + 1))
-> > +#define pci_resource_start(dev, bar)	(pci_resource_n(dev, bar)->start)
-> > +#define pci_resource_end(dev, bar)	(pci_resource_n(dev, bar)->end)
-> > +#define pci_resource_flags(dev, bar)	(pci_resource_n(dev, bar)->flags)
-> > +#define pci_resource_len(dev,bar)					\
-> > +	(pci_resource_end((dev), (bar)) ? 				\
-> > +	 resource_size(pci_resource_n((dev), (bar))) : 0)
-> 
-> Seems (to me) more logical to have this patch as "PCI: Introduce
-> pci_resource_n()" ordered before your patch #2 "PCI: Introduce
-> pci_dev_for_each_resource()".
+ drivers/base/property.c  | 2 +-
+ include/linux/property.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Either way works for me. Bjorn, what do you like?
-
-> Here as #6 or as #2:
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-Thank you!
-
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 083a95791d3b..fcc0687f5529 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -895,7 +895,7 @@ EXPORT_SYMBOL_GPL(device_get_dma_attr);
+  * 'phy-connection-type', and return its index in phy_modes table, or errno in
+  * error case.
+  */
+-int fwnode_get_phy_mode(struct fwnode_handle *fwnode)
++int fwnode_get_phy_mode(const struct fwnode_handle *fwnode)
+ {
+ 	const char *pm;
+ 	int err, i;
+diff --git a/include/linux/property.h b/include/linux/property.h
+index f7100e836eb4..d18c8cc17315 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -396,7 +396,7 @@ enum dev_dma_attr device_get_dma_attr(const struct device *dev);
+ const void *device_get_match_data(const struct device *dev);
+ 
+ int device_get_phy_mode(struct device *dev);
+-int fwnode_get_phy_mode(struct fwnode_handle *fwnode);
++int fwnode_get_phy_mode(const struct fwnode_handle *fwnode);
+ 
+ void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index);
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.30.2
 
