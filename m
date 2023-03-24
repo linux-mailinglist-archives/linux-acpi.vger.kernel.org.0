@@ -2,173 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E8DD6C7D5F
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 12:41:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59F3C6C7D81
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 12:54:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231776AbjCXLlN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Mar 2023 07:41:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46844 "EHLO
+        id S230075AbjCXLyZ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 24 Mar 2023 07:54:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231735AbjCXLlK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 07:41:10 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 638951D931;
-        Fri, 24 Mar 2023 04:41:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679658065; x=1711194065;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=YBqhQIVyMkXm+tDKkdwns6cbJW/akWTveT/HtiqwXGU=;
-  b=hhxcXfpEAeFDTvAIJ06D0gmy2ylHNtAvO3Kk4KVo4488ACUNyxD3N3/t
-   7L9+i284KeHT4tiD2j7ynWe5B3tyhtG6Gy0TpI0RLJlCSwVuLh33TsTPJ
-   QnuVtSx7BW+1ClyiG1enT/NIboKd19PmHIa90BShGgYttFiaMe+2tfP2T
-   altMiCkB7XDFbwWxdQ1MJq5tG1Ny8U8RnHml0t8vD1IfWi8UG2gULsmhF
-   j+YhzAc9IzeGT7jBVZfMqNf2W2dJYBY+nigF68djbYn+3CcUga+jOJQv5
-   qQAwbP8eLWGHTsz7aM+v42MyY/EZFCyNZRblk4tfF0lvB/gvvCA8ScoZL
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="402343901"
-X-IronPort-AV: E=Sophos;i="5.98,287,1673942400"; 
-   d="scan'208";a="402343901"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2023 04:41:05 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="715201455"
-X-IronPort-AV: E=Sophos;i="5.98,287,1673942400"; 
-   d="scan'208";a="715201455"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga001.jf.intel.com with ESMTP; 24 Mar 2023 04:41:03 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 7BD83176; Fri, 24 Mar 2023 13:41:49 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/1] ACPI: property: Refactor acpi_data_prop_read_single()
-Date:   Fri, 24 Mar 2023 13:41:46 +0200
-Message-Id: <20230324114146.4037-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
+        with ESMTP id S229945AbjCXLyY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 07:54:24 -0400
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BF1F1024F
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 04:54:23 -0700 (PDT)
+Received: by mail-ed1-f48.google.com with SMTP id y4so7017598edo.2
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 04:54:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679658861;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=twlyF/fy6hvnHt+ATj2MsbMo4ryoSk0xaykxnuj4cWo=;
+        b=0ny3kO6yg38AlO6aKu8LMSDRh5j+9dWggGw0Z6LAFW1I1pFDUpyayqEkH3Kp8cQfZo
+         Wrj1GzJPLqI9iQjbwLaNFqHkM64GQ0ukCUTB2hwXbmhyCodrofkA76da6dVTfffZC3t8
+         4L1LLKvZJu3+HgJqST4tWGyt0a3YxzejxE9rVuDNj9Sh9ZrtF5a6AXyXQncnO0OYgGJ6
+         mZKzKxgjcTQspYAE3CMQPigOQSyVvAmbw8v8Uj2gV9AeNWtDcWfOF9n7pTTOP2gK1EeA
+         ufwAnq9Tjm6Vcql9VeaTmfJQ4/6Jatog1ML5cruayopKwIQOELTVusAn8lRJiAuddSac
+         i+lA==
+X-Gm-Message-State: AAQBX9f10PxKzu2HgE9xgSx79KHVP0Hnzvq4ZjjMZbrGr5BSoOgzyJrt
+        Et9icnJ6S/BCVdwYUlY18nsWgsOj0FMiG9zDX9s=
+X-Google-Smtp-Source: AKy350YsX3a9vaoIryHu9YZxOjJCWiBzGVSdKAbHAkaWJkG2KR1n6Dd6mLg1BKi7iQFKhtRsJ0kv6Ll3xOLJArJGXjs=
+X-Received: by 2002:a17:907:3e8b:b0:931:ce20:db6e with SMTP id
+ hs11-20020a1709073e8b00b00931ce20db6emr1369209ejc.2.1679658861493; Fri, 24
+ Mar 2023 04:54:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+References: <9f6cba7a8a57e5a687c934e8e406e28c.squirrel@mail.panix.com>
+ <20230307093308.m5enhuegm3r4qwvo@pengutronix.de> <220898e2276e4cae2572eb8f006f3a7b.squirrel@mail.panix.com>
+ <20230307161005.6m6fpi3oxa3jn2wg@pengutronix.de> <6d97df76de719871c90fb59726f2d6b0.squirrel@mail.panix.com>
+ <20230307200843.yxhvnb23tpecjjng@pengutronix.de>
+In-Reply-To: <20230307200843.yxhvnb23tpecjjng@pengutronix.de>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 24 Mar 2023 12:54:10 +0100
+Message-ID: <CAJZ5v0j5Fx84Yq4AN=PWWF8iMRwh_Qism=PwYVhuC6B95=UZdw@mail.gmail.com>
+Subject: Re: [Regression] acpi: laptop panics early in boot
+To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Pierre Asselin <pa@panix.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, regressions@lists.linux.dev,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?B?Um9iZXJ0IMWad2nEmWNraQ==?= <robert@swiecki.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Refactor acpi_data_prop_read_single() for decreased indentation
-and better structure. No functional changes intended.
+On Thu, Mar 23, 2023 at 11:14 PM Uwe Kleine-König
+<u.kleine-koenig@pengutronix.de> wrote:
+>
+> Hello Pierre,
+>
+> On Tue, Mar 07, 2023 at 02:31:49PM -0500, Pierre Asselin wrote:
+> > > Maybe the following patch helps (on top of v6.3-rc1):
+> > >
+> > > diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> > > index 9531dd0fef50..a5a8f82981ce 100644
+> > > --- a/drivers/acpi/bus.c
+> > > +++ b/drivers/acpi/bus.c
+> > > @@ -518,7 +518,7 @@ static void acpi_bus_notify(acpi_handle handle, u32
+> > > type, void *data)
+> > >     if (!adev)
+> > >             goto err;
+> > >
+> > > -   if (adev->dev.driver) {
+> > > +   if (device_is_bound(&adev->dev)) {
+> > >             struct acpi_driver *driver = to_acpi_driver(adev->dev.driver);
+> > >
+> > >             if (driver && driver->ops.notify &&
+> > >
+> >
+> > It does indeed "fix" 6.3-rc1.  Modulo locking issues, which I am
+> > not qualified to evaluate.
+>
+> Thanks for your prompt test feedback.
+>
+> The locked variant could look as follows:
+>
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index 9531dd0fef50..fddca263ac40 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -518,13 +518,15 @@ static void acpi_bus_notify(acpi_handle handle, u32 type, void *data)
+>         if (!adev)
+>                 goto err;
+>
+> -       if (adev->dev.driver) {
+> +       device_lock(&adev->dev);
+> +       if (device_is_bound(&adev->dev)) {
+>                 struct acpi_driver *driver = to_acpi_driver(adev->dev.driver);
+>
+>                 if (driver && driver->ops.notify &&
+>                     (driver->flags & ACPI_DRIVER_ALL_NOTIFY_EVENTS))
+>                         driver->ops.notify(adev, type);
+>         }
+> +       device_unlock(&adev->dev);
+>
+>         if (!hotplug_event) {
+>                 acpi_put_acpi_dev(adev);
+>
+> Pierre: If you want to test that, I suggest to also enable
+> PROVE_LOCKING.
+>
+> Rafael: I don't know if this would work and I hope you're able to judge
+> this better than I do. The change without the lock is for sure better
+> than the status quo.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/acpi/property.c | 80 ++++++++++++++++++-----------------------
- 1 file changed, 34 insertions(+), 46 deletions(-)
+It is better than the status quo, but it is not ideal either.
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index b8d9eb9a433e..413e4fcadcaf 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -971,60 +971,48 @@ static int acpi_data_prop_read_single(const struct acpi_device_data *data,
- 				      enum dev_prop_type proptype, void *val)
- {
- 	const union acpi_object *obj;
--	int ret;
-+	int ret = 0;
- 
--	if (proptype >= DEV_PROP_U8 && proptype <= DEV_PROP_U64) {
-+	if (proptype >= DEV_PROP_U8 && proptype <= DEV_PROP_U64)
- 		ret = acpi_data_get_property(data, propname, ACPI_TYPE_INTEGER, &obj);
--		if (ret)
--			return ret;
--
--		switch (proptype) {
--		case DEV_PROP_U8:
--			if (obj->integer.value > U8_MAX)
--				return -EOVERFLOW;
--
--			if (val)
--				*(u8 *)val = obj->integer.value;
--
--			break;
--		case DEV_PROP_U16:
--			if (obj->integer.value > U16_MAX)
--				return -EOVERFLOW;
--
--			if (val)
--				*(u16 *)val = obj->integer.value;
--
--			break;
--		case DEV_PROP_U32:
--			if (obj->integer.value > U32_MAX)
--				return -EOVERFLOW;
--
--			if (val)
--				*(u32 *)val = obj->integer.value;
--
--			break;
--		default:
--			if (val)
--				*(u64 *)val = obj->integer.value;
--
--			break;
--		}
--
--		if (!val)
--			return 1;
--	} else if (proptype == DEV_PROP_STRING) {
-+	else if (proptype == DEV_PROP_STRING)
- 		ret = acpi_data_get_property(data, propname, ACPI_TYPE_STRING, &obj);
--		if (ret)
--			return ret;
-+	if (ret)
-+		return ret;
- 
-+	switch (proptype) {
-+	case DEV_PROP_U8:
-+		if (obj->integer.value > U8_MAX)
-+			return -EOVERFLOW;
-+		if (val)
-+			*(u8 *)val = obj->integer.value;
-+		break;
-+	case DEV_PROP_U16:
-+		if (obj->integer.value > U16_MAX)
-+			return -EOVERFLOW;
-+		if (val)
-+			*(u16 *)val = obj->integer.value;
-+		break;
-+	case DEV_PROP_U32:
-+		if (obj->integer.value > U32_MAX)
-+			return -EOVERFLOW;
-+		if (val)
-+			*(u32 *)val = obj->integer.value;
-+		break;
-+	case DEV_PROP_U64:
-+		if (val)
-+			*(u64 *)val = obj->integer.value;
-+		break;
-+	case DEV_PROP_STRING:
- 		if (val)
- 			*(char **)val = obj->string.pointer;
--
- 		return 1;
--	} else {
--		ret = -EINVAL;
-+	default:
-+		return -EINVAL;
- 	}
--	return ret;
-+
-+	/* When no storage provided return number of available values */
-+	return val ? 0 : 1;
- }
- 
- #define acpi_copy_property_array_uint(items, val, nval)			\
--- 
-2.40.0.1.gaa8946217a0b
+It appears to me that it is a mistake to invoke the driver's
+->notify() callback from acpi_bus_notify(), because there is no
+synchronization between this and the driver probe/remove, so basically
+all drivers setting ACPI_DRIVER_ALL_NOTIFY_EVENTS in flags need to
+synchronize their ->notify() callbacks with probe and remove by hand.
+The AC driver evidently doesn't do that and I have not looked at the
+other ones yet, but chances are that they don't do that either.
 
+However, this is readily avoidable if the handler installed by
+acpi_device_install_notify_handler() is installed for all events.
+
+I'll send a patch along these lines shortly.
+
+> I did a similar conversion as the blamed commit for pci that got
+> reverted for similiar reasons. See
+> 68da4e0eaaab421f228eac57cbe7505b136464af. (Added Bjorn and Robert to
+> Cc:) I think the pci code suffers from a similar race even after
+> reverting my change.
+
+It is very likely that there is a race, but it may be very hard to trigger.
+
+> If someone is able to find the right fix for one of
+> them, that might be transferable to the other?!
+
+I don't think so.
