@@ -2,60 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A3C46C7A99
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 10:00:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 353A66C7AA7
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 10:02:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232021AbjCXJAY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Mar 2023 05:00:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39526 "EHLO
+        id S229484AbjCXJCY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Mar 2023 05:02:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231364AbjCXJAW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 05:00:22 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BBCE10D9
-        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 02:00:17 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id j18-20020a05600c1c1200b003ee5157346cso2689727wms.1
-        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 02:00:17 -0700 (PDT)
+        with ESMTP id S231411AbjCXJCX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 05:02:23 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 966D710F9
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 02:02:21 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id e18so978468wra.9
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 02:02:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1679648415;
+        d=linaro.org; s=google; t=1679648540;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=5xxjybCBQ7FBka5nE6E8+uHXCIz/6b/SCGTHJfPcbCM=;
-        b=a1FBd8hdYt0yM0X/QMw5JK93/6fmZkvcvOaCpGAhllGD9kZY3ocWprh/fBfy2T2rod
-         YkjH4UdxH2uedUuCvo+EkF57N3c7HVf3QBOceSd07Mza5R+OpESBolPUbeS2d8fEsBnh
-         OQSDXwfd2956PoRvrlESlWmo04/2c61Xl/bDa7ICS7G31P3ZvNNxX5D0+ZOcZrZ5tdVJ
-         2S9NsPv6/2vlegpFew239TZL4Ndvj2ZSLHjydzAhHLKc0SUYXBptCAACw1ytjJlvXLD2
-         ngcfW35TYBHM51xRfg++jvURD69Dmc0jU2GT+32k16t0vBRoghLroNVWI9Q6WKBRZRnc
-         Sc/A==
+        bh=n243IrPXTdbsIKu5fMm4CD6r1EOzF5PeneoBpB/y4a4=;
+        b=WdoFuibSoYq7PItUra7h1o7dNN+dLoO5akaOdiXzNB0GAE6fZrgXjLHEQ59DSfNlbF
+         cgR9upm2UnMKp/K2iMTwYQO21eNLlcZA3VTjTQNcOKl6oB0YptTJSukTiMpZuSldqpht
+         hT88zEf4E+gJCKG8bgBmZ3XtNmerD2XLEjORhA0Q/BXrUscdTef1dpRx9JDa6Bv504ko
+         b2kwoYvEBcdXwhSFs2mCJx6XhNHoIVhKWvY4ugN0Krhnhx9JD7Gr1ZRwtzNsp6GxXu5W
+         oQsFCmuvbtw0zcJ+Dg4t9K3RUmnMmVMxySl96IxGJYoNSUSPaDNY3cwVaR2TYMM/uF88
+         /2CQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679648415;
+        d=1e100.net; s=20210112; t=1679648540;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5xxjybCBQ7FBka5nE6E8+uHXCIz/6b/SCGTHJfPcbCM=;
-        b=gpFe9rKvhocBRpe6mgOyel479SiNf2l3jbH7Q3zM/xg+Zuilka0US2b8/FtJulbFEV
-         ZWiuR8lQRPVdEB5AyB5uafNuTCCMnu7IaG2tjvQy0/R7J1sl97wL4gX4eLqstzTJyWZM
-         NAdD4LmLSh03E6sjAIQwlJ5UWPjzJe0j/5uROsNauXg4cHiU/7oHgnMzDzM7LCrZoWAT
-         tRq6XXtOpEmp177eq2H+0e0UnnlEL9PY8lV/TXWL0kxauvXiyoC2uKSMXZfUL3HfdEO3
-         6cFYE2/SklM5KE6el6SGbc/eqZ3RQSWA0gj376wqUdzvW3a2fCcSTgORhzbH5RQTDw8l
-         PMnA==
-X-Gm-Message-State: AO0yUKX4YysV2xanU9PZ/0GaWAmag1MghRCLz5RE20+M8I0EiA6V5iSd
-        Pa8fxaj/YrUKBJPue7HlimfjVw==
-X-Google-Smtp-Source: AK7set/G+BrnIBHzdKAcJLIchyTJ1+8LJ+VqEzbQ4F0KmkhucSNebeQVHkqJ+K4tuv21EwA1IHVe7Q==
-X-Received: by 2002:a7b:c459:0:b0:3eb:a4e:a2b2 with SMTP id l25-20020a7bc459000000b003eb0a4ea2b2mr1815337wmi.4.1679648415689;
-        Fri, 24 Mar 2023 02:00:15 -0700 (PDT)
+        bh=n243IrPXTdbsIKu5fMm4CD6r1EOzF5PeneoBpB/y4a4=;
+        b=RnsGium581G/jpWhuBQzcR6GHiI5lXnnjT0fDA5gMKcLE6Pbh9m1Z+UlKC+rkAE3d6
+         xBdXsZuHrLEmqjgAqt3KFuulzvZw6V8d6Sh4hNKx/IosjHVQJ/Y/eHBTYqcFxp2a3MJI
+         P/7S9S11WC+acGbs6m2sRXg0VFnpYLHUBdjjmggkHuuy4+A8q37xFOrD9F1pIdYXY9TV
+         5ptnUIPa8FI1FUQ7NatC8ZM4gjtjJvnQAglGjp8+59fRwDs1sACb0FOGmO9uJXuTfhTF
+         nDm1Na6PdsIFV1Tl4rFgMAPNIwz+PFZ46wE6rR9Mz5iQxgVYMakmcfs6vRAS4CE6zpk7
+         yXXQ==
+X-Gm-Message-State: AAQBX9foZIM+ChgTahwgANKuiP7Djh6jf03QhKEG3+CaVotpV+mvHCFf
+        KZeJGro3BXKu+WW6FBtAukzmzA==
+X-Google-Smtp-Source: AKy350aF129LEbgPcrIERVDHzRV5kt9ClGRmiJzKHj2gDZXa1XzF6XQWfa0OQK6y0J9EwCOi2YJQVA==
+X-Received: by 2002:a05:6000:1192:b0:2c7:17a4:4ece with SMTP id g18-20020a056000119200b002c717a44ecemr1496737wrx.26.1679648540094;
+        Fri, 24 Mar 2023 02:02:20 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.152.149])
-        by smtp.gmail.com with ESMTPSA id n20-20020a7bc5d4000000b003ee10fb56ebsm4302953wmk.9.2023.03.24.02.00.12
+        by smtp.gmail.com with ESMTPSA id t6-20020adff606000000b002d828a9f9ddsm9869841wrp.115.2023.03.24.02.02.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Mar 2023 02:00:15 -0700 (PDT)
-Message-ID: <78a9e002-ba18-c580-fe89-46f5653ea49d@linaro.org>
-Date:   Fri, 24 Mar 2023 10:00:10 +0100
+        Fri, 24 Mar 2023 02:02:19 -0700 (PDT)
+Message-ID: <43e7ef6d-6248-4ee5-7144-70809e5c93e0@linaro.org>
+Date:   Fri, 24 Mar 2023 10:02:15 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.9.0
-Subject: Re: [PATCH v7 3/6] PCI: Allow pci_bus_for_each_resource() to take
- less arguments
+Subject: Re: [PATCH v7 4/6] EISA: Convert to use less arguments in
+ pci_bus_for_each_resource()
 Content-Language: en-US
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>,
@@ -96,9 +96,9 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Stefano Stabellini <sstabellini@kernel.org>,
         Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
 References: <20230323173610.60442-1-andriy.shevchenko@linux.intel.com>
- <20230323173610.60442-4-andriy.shevchenko@linux.intel.com>
+ <20230323173610.60442-5-andriy.shevchenko@linux.intel.com>
 From:   =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230323173610.60442-4-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20230323173610.60442-5-andriy.shevchenko@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -112,24 +112,19 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 On 23/3/23 18:36, Andy Shevchenko wrote:
-> Refactor pci_bus_for_each_resource() in the same way as it's done in
-> pci_dev_for_each_resource() case. This will allow to hide iterator
-> inside the loop, where it's not used otherwise.
-> 
-> No functional changes intended.
+> The pci_bus_for_each_resource() can hide the iterator loop since
+> it may be not used otherwise. With this, we may drop that iterator
+> variable definition.
 > 
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > Reviewed-by: Krzysztof Wilczyński <kw@linux.com>
 > ---
->   drivers/pci/bus.c                  |  7 +++----
->   drivers/pci/hotplug/shpchp_sysfs.c |  8 ++++----
->   drivers/pci/pci.c                  |  3 +--
->   drivers/pci/probe.c                |  2 +-
->   drivers/pci/setup-bus.c            | 10 ++++------
->   include/linux/pci.h                | 17 +++++++++++++----
->   6 files changed, 26 insertions(+), 21 deletions(-)
+>   drivers/eisa/pci_eisa.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/eisa/pci_eisa.c b/drivers/eisa/pci_eisa.c
 
-Nice.
+Since this is *PCI* EISA, could be squashed into previous patch.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
