@@ -2,284 +2,128 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D5926C7EDD
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 14:33:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B5396C7F78
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 15:04:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231422AbjCXNdx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Mar 2023 09:33:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35226 "EHLO
+        id S232173AbjCXOEn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Mar 2023 10:04:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231773AbjCXNdv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 09:33:51 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A0112139;
-        Fri, 24 Mar 2023 06:33:47 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
- id 7f6f03f90c81f149; Fri, 24 Mar 2023 14:33:44 +0100
-Received: from kreacher.localnet (unknown [213.134.163.171])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id ED3F522A0B14;
-        Fri, 24 Mar 2023 14:33:42 +0100 (CET)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        Pierre Asselin <pa@panix.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Uwe =?ISO-8859-1?Q?Kleine=2DK=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Subject: [PATCH v1] ACPI: bus: Rework system-level device notification handling
-Date:   Fri, 24 Mar 2023 14:33:42 +0100
-Message-ID: <5687037.DvuYhMxLoT@kreacher>
+        with ESMTP id S231919AbjCXOET (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 10:04:19 -0400
+Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com [IPv6:2607:f8b0:4864:20::934])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4732622114
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 07:03:20 -0700 (PDT)
+Received: by mail-ua1-x934.google.com with SMTP id p2so1478355uap.1
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 07:03:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20210112.gappssmtp.com; s=20210112; t=1679666590;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PnbpfcqGanbrwxTimMfIRYuXDJDuBG+s0gPnBVVk/Bo=;
+        b=vHBto2XQMyBoDyv2V3lWV93YknLET2STEkfA7BDeD0Rib/Bfn9J/fWb2Ikjp1f+TuE
+         TJpJR1VryraL97ejyEKLYhaYXWaEzKTVZ4B5fA5fXspfeiCFjpX1GheQOvw1+qoaX1zN
+         P7B0fsSpK0OV4Neu8d1gEnVoKPkHKcZDKAeqyz1G4UEv5CdQaN0MvHzPT3jGwDcuIt/K
+         PS7bOPrJ+HgAXeBSYTywBwveDk93HLiiGJc6mI3pb7iP3ZcucuJcbhNYb8Xw/cUYkOGv
+         DAp9Gw3TQddBAz4EfEnKG1f2xq+PyZOJv5Yrjv8Z7MdWU+blpCox61DdDcatzW9+3lEr
+         ydMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679666590;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PnbpfcqGanbrwxTimMfIRYuXDJDuBG+s0gPnBVVk/Bo=;
+        b=MNIOqba3tkN+wFh1RC5+PlpGruGZcXoAM1xRpps/v6w6Zpf15Xm7amsq0k3t5Yq4Z4
+         aBq7huEXo623+e210XkUH8ZuDYAegGKzidk4qqI1eu4jq4SqCg+28ZpZVpUJ8RD5b9de
+         vDz18RDx/o940SYhvtyy9WFh6gdFHJFQIiHWHDjmHI1FO/5Jh/frysq6baj05DjropN7
+         fQvIlUOlC1nGUUnVDNY+UPjW4AdadproWlpy2rYhSMq8g0wrEOz0DZexA+jOMjK1q981
+         LIkS2UEVPxEgSyGHSHmGhj4dLZiTswUh3JkqOyKflGF+kcJU46UtfT3d8C9peEW5GEWy
+         iT8A==
+X-Gm-Message-State: AO0yUKXZaJbRcJbGuz6z9UjDfY09Uw8UOD49wDyuQ43fZj0woboIPnoE
+        NnXdGcONlUZQNnqcnmRBR7pTP/jR127oK4rcmOentA==
+X-Google-Smtp-Source: AK7set+9WcFXpz0boVN0YWBQl1e+e1tBYWi5noB1uxTlSy+gP+ccbS/F9Q5p1wp+yz7yqVLFoA39hP/gmG3hBXX6Wt0=
+X-Received: by 2002:a05:6122:11af:b0:401:d1f4:bccf with SMTP id
+ y15-20020a05612211af00b00401d1f4bccfmr5291512vkn.0.1679666590340; Fri, 24 Mar
+ 2023 07:03:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+References: <20230322121547.14997-1-wse@tuxedocomputers.com>
+In-Reply-To: <20230322121547.14997-1-wse@tuxedocomputers.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Fri, 24 Mar 2023 15:02:59 +0100
+Message-ID: <CAMRc=MfOPiG9cbxqZLN53uEizW50ey4dH28oY47qR0BhmMFnPg@mail.gmail.com>
+Subject: Re: [PATCH] gpiolib: acpi: Add a ignore wakeup quirk for Clevo NL5xNU
+To:     Werner Sembach <wse@tuxedocomputers.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.163.171
-X-CLIENT-HOSTNAME: 213.134.163.171
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrvdegiedgheefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepgeffhfdujeelhfdtgeffkeetudfhtefhhfeiteethfekvefgvdfgfeeikeeigfehnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvddufedrudefgedrudeifedrudejudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrdduieefrddujedupdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeehpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsehprghnihigrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuhdrkhhlvghinhgvqdhkohgvnhhighesphgvnhhg
- uhhtrhhonhhigidruggvpdhrtghpthhtoheprhgvghhrvghsshhiohhnsheslhgvvghmhhhuihhsrdhinhhfoh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Wed, Mar 22, 2023 at 1:16=E2=80=AFPM Werner Sembach <wse@tuxedocomputers=
+.com> wrote:
+>
+> commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+> changed the policy such that I2C touchpads may be able to wake up the
+> system by default if the system is configured as such.
+>
+> However on Clevo NL5xNU there is a mistake in the ACPI tables that the
+> TP_ATTN# signal connected to GPIO 9 is configured as ActiveLow and level
+> triggered but connected to a pull up. As soon as the system suspends the
+> touchpad loses power and then the system wakes up.
+>
+> To avoid this problem, introduce a quirk for this model that will prevent
+> the wakeup capability for being set for GPIO 9.
+>
+> This patch is analoge to a very similar patch for NL5xRU, just the DMI
+> string changed.
+>
+> Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+> Cc: stable@vger.kernel.org
+> ---
+>  drivers/gpio/gpiolib-acpi.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+>
+> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+> index 34ff048e70d0e..055013f959b25 100644
+> --- a/drivers/gpio/gpiolib-acpi.c
+> +++ b/drivers/gpio/gpiolib-acpi.c
+> @@ -1624,6 +1624,19 @@ static const struct dmi_system_id gpiolib_acpi_qui=
+rks[] __initconst =3D {
+>                         .ignore_interrupt =3D "AMDI0030:00@18",
+>                 },
+>         },
+> +       {
+> +               /*
+> +                * Spurious wakeups from TP_ATTN# pin
+> +                * Found in BIOS 1.7.8
+> +                * https://gitlab.freedesktop.org/drm/amd/-/issues/1722#n=
+ote_1720627
+> +                */
+> +               .matches =3D {
+> +                       DMI_MATCH(DMI_BOARD_NAME, "NL5xNU"),
+> +               },
+> +               .driver_data =3D &(struct acpi_gpiolib_dmi_quirk) {
+> +                       .ignore_wake =3D "ELAN0415:00@9",
+> +               },
+> +       },
+>         {
+>                 /*
+>                  * Spurious wakeups from TP_ATTN# pin
+> --
+> 2.34.1
+>
 
-For ACPI drivers that provide a ->notify() callback and set
-ACPI_DRIVER_ALL_NOTIFY_EVENTS in their flags, that callback can be
-invoked while either the ->add() or the ->remove() callback is running
-without any synchronization at the bus type level which is counter to
-the common-sense expectation that notification handling should only be
-enabled when the driver is actually bound to the device.  As a result,
-if the driver is not careful enough, it's ->notify() callback may crash
-when it is invoked too early or too late [1].
+Queued for fixes.
 
-This issue has been amplified by commit d6fb6ee1820c ("ACPI: bus: Drop
-driver member of struct acpi_device") that made acpi_bus_notify() check
-for the presence of the driver and its ->notify() callback directly
-instead of using an extra driver pointer that was only set and cleared
-by the bus type code, but it was present before that commit although
-it was harder to reproduce then.
-
-It can be addressed by using the observation that
-acpi_device_install_notify_handler() can be modified to install the
-handler for all types of events when ACPI_DRIVER_ALL_NOTIFY_EVENTS is
-set in the driver flags, in which case acpi_bus_notify() will not need
-to invoke the driver's ->notify() callback any more and that callback
-will only be invoked after acpi_device_install_notify_handler() has run
-and before acpi_device_remove_notify_handler() runs, which implies the
-correct ordering with respect to the other ACPI driver callbacks.
-
-Modify the code accordingly and while at it, drop two redundant local
-variables from acpi_bus_notify() and turn its description comment into
-a proper kerneldoc one.
-
-Fixes: d6fb6ee1820c ("ACPI: bus: Drop driver member of struct acpi_device")
-Link: https://lore.kernel.org/linux-acpi/9f6cba7a8a57e5a687c934e8e406e28c.squirrel@mail.panix.com # [1]
-Reported-by: Pierre Asselin <pa@panix.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
-
-Pierre, testing this would be much appreciated!
-
----
- drivers/acpi/bus.c |   83 +++++++++++++++++++++++------------------------------
- 1 file changed, 37 insertions(+), 46 deletions(-)
-
-Index: linux-pm/drivers/acpi/bus.c
-===================================================================
---- linux-pm.orig/drivers/acpi/bus.c
-+++ linux-pm/drivers/acpi/bus.c
-@@ -459,85 +459,67 @@ out_free:
-                              Notification Handling
-    -------------------------------------------------------------------------- */
- 
--/*
-- * acpi_bus_notify
-- * ---------------
-- * Callback for all 'system-level' device notifications (values 0x00-0x7F).
-+/**
-+ * acpi_bus_notify - Global system-level (0x00-0x7F) notifications handler
-+ * @handle: Target ACPI object.
-+ * @type: Notification type.
-+ * @data: Ignored.
-+ *
-+ * This only handles notifications related to device hotplug.
-  */
- static void acpi_bus_notify(acpi_handle handle, u32 type, void *data)
- {
- 	struct acpi_device *adev;
--	u32 ost_code = ACPI_OST_SC_NON_SPECIFIC_FAILURE;
--	bool hotplug_event = false;
- 
- 	switch (type) {
- 	case ACPI_NOTIFY_BUS_CHECK:
- 		acpi_handle_debug(handle, "ACPI_NOTIFY_BUS_CHECK event\n");
--		hotplug_event = true;
- 		break;
- 
- 	case ACPI_NOTIFY_DEVICE_CHECK:
- 		acpi_handle_debug(handle, "ACPI_NOTIFY_DEVICE_CHECK event\n");
--		hotplug_event = true;
- 		break;
- 
- 	case ACPI_NOTIFY_DEVICE_WAKE:
- 		acpi_handle_debug(handle, "ACPI_NOTIFY_DEVICE_WAKE event\n");
--		break;
-+		return;
- 
- 	case ACPI_NOTIFY_EJECT_REQUEST:
- 		acpi_handle_debug(handle, "ACPI_NOTIFY_EJECT_REQUEST event\n");
--		hotplug_event = true;
- 		break;
- 
- 	case ACPI_NOTIFY_DEVICE_CHECK_LIGHT:
- 		acpi_handle_debug(handle, "ACPI_NOTIFY_DEVICE_CHECK_LIGHT event\n");
- 		/* TBD: Exactly what does 'light' mean? */
--		break;
-+		return;
- 
- 	case ACPI_NOTIFY_FREQUENCY_MISMATCH:
- 		acpi_handle_err(handle, "Device cannot be configured due "
- 				"to a frequency mismatch\n");
--		break;
-+		return;
- 
- 	case ACPI_NOTIFY_BUS_MODE_MISMATCH:
- 		acpi_handle_err(handle, "Device cannot be configured due "
- 				"to a bus mode mismatch\n");
--		break;
-+		return;
- 
- 	case ACPI_NOTIFY_POWER_FAULT:
- 		acpi_handle_err(handle, "Device has suffered a power fault\n");
--		break;
-+		return;
- 
- 	default:
- 		acpi_handle_debug(handle, "Unknown event type 0x%x\n", type);
--		break;
-+		return;
- 	}
- 
- 	adev = acpi_get_acpi_dev(handle);
--	if (!adev)
--		goto err;
--
--	if (adev->dev.driver) {
--		struct acpi_driver *driver = to_acpi_driver(adev->dev.driver);
--
--		if (driver && driver->ops.notify &&
--		    (driver->flags & ACPI_DRIVER_ALL_NOTIFY_EVENTS))
--			driver->ops.notify(adev, type);
--	}
--
--	if (!hotplug_event) {
--		acpi_put_acpi_dev(adev);
--		return;
--	}
- 
--	if (ACPI_SUCCESS(acpi_hotplug_schedule(adev, type)))
-+	if (adev && ACPI_SUCCESS(acpi_hotplug_schedule(adev, type)))
- 		return;
- 
- 	acpi_put_acpi_dev(adev);
- 
-- err:
--	acpi_evaluate_ost(handle, type, ost_code, NULL);
-+	acpi_evaluate_ost(handle, type, ACPI_OST_SC_NON_SPECIFIC_FAILURE, NULL);
- }
- 
- static void acpi_notify_device(acpi_handle handle, u32 event, void *data)
-@@ -562,42 +544,51 @@ static u32 acpi_device_fixed_event(void
- 	return ACPI_INTERRUPT_HANDLED;
- }
- 
--static int acpi_device_install_notify_handler(struct acpi_device *device)
-+static int acpi_device_install_notify_handler(struct acpi_device *device,
-+					      struct acpi_driver *acpi_drv)
- {
- 	acpi_status status;
- 
--	if (device->device_type == ACPI_BUS_TYPE_POWER_BUTTON)
-+	if (device->device_type == ACPI_BUS_TYPE_POWER_BUTTON) {
- 		status =
- 		    acpi_install_fixed_event_handler(ACPI_EVENT_POWER_BUTTON,
- 						     acpi_device_fixed_event,
- 						     device);
--	else if (device->device_type == ACPI_BUS_TYPE_SLEEP_BUTTON)
-+	} else if (device->device_type == ACPI_BUS_TYPE_SLEEP_BUTTON) {
- 		status =
- 		    acpi_install_fixed_event_handler(ACPI_EVENT_SLEEP_BUTTON,
- 						     acpi_device_fixed_event,
- 						     device);
--	else
--		status = acpi_install_notify_handler(device->handle,
--						     ACPI_DEVICE_NOTIFY,
-+	} else {
-+		u32 type = acpi_drv->flags & ACPI_DRIVER_ALL_NOTIFY_EVENTS ?
-+				ACPI_ALL_NOTIFY : ACPI_DEVICE_NOTIFY;
-+
-+		status = acpi_install_notify_handler(device->handle, type,
- 						     acpi_notify_device,
- 						     device);
-+	}
- 
- 	if (ACPI_FAILURE(status))
- 		return -EINVAL;
- 	return 0;
- }
- 
--static void acpi_device_remove_notify_handler(struct acpi_device *device)
-+static void acpi_device_remove_notify_handler(struct acpi_device *device,
-+					      struct acpi_driver *acpi_drv)
- {
--	if (device->device_type == ACPI_BUS_TYPE_POWER_BUTTON)
-+	if (device->device_type == ACPI_BUS_TYPE_POWER_BUTTON) {
- 		acpi_remove_fixed_event_handler(ACPI_EVENT_POWER_BUTTON,
- 						acpi_device_fixed_event);
--	else if (device->device_type == ACPI_BUS_TYPE_SLEEP_BUTTON)
-+	} else if (device->device_type == ACPI_BUS_TYPE_SLEEP_BUTTON) {
- 		acpi_remove_fixed_event_handler(ACPI_EVENT_SLEEP_BUTTON,
- 						acpi_device_fixed_event);
--	else
--		acpi_remove_notify_handler(device->handle, ACPI_DEVICE_NOTIFY,
-+	} else {
-+		u32 type = acpi_drv->flags & ACPI_DRIVER_ALL_NOTIFY_EVENTS ?
-+				ACPI_ALL_NOTIFY : ACPI_DEVICE_NOTIFY;
-+
-+		acpi_remove_notify_handler(device->handle, type,
- 					   acpi_notify_device);
-+	}
- }
- 
- /* Handle events targeting \_SB device (at present only graceful shutdown) */
-@@ -1039,7 +1030,7 @@ static int acpi_device_probe(struct devi
- 		 acpi_drv->name, acpi_dev->pnp.bus_id);
- 
- 	if (acpi_drv->ops.notify) {
--		ret = acpi_device_install_notify_handler(acpi_dev);
-+		ret = acpi_device_install_notify_handler(acpi_dev, acpi_drv);
- 		if (ret) {
- 			if (acpi_drv->ops.remove)
- 				acpi_drv->ops.remove(acpi_dev);
-@@ -1062,7 +1053,7 @@ static void acpi_device_remove(struct de
- 	struct acpi_driver *acpi_drv = to_acpi_driver(dev->driver);
- 
- 	if (acpi_drv->ops.notify)
--		acpi_device_remove_notify_handler(acpi_dev);
-+		acpi_device_remove_notify_handler(acpi_dev, acpi_drv);
- 
- 	if (acpi_drv->ops.remove)
- 		acpi_drv->ops.remove(acpi_dev);
-
-
-
+Bart
