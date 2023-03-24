@@ -2,64 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD8196C81DE
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 16:54:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FD896C8262
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 17:31:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229900AbjCXPyF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Mar 2023 11:54:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43756 "EHLO
+        id S232107AbjCXQbc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Mar 2023 12:31:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229938AbjCXPyF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 11:54:05 -0400
-Received: from mailbackend.panix.com (mailbackend.panix.com [166.84.1.89])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 027DD15147;
-        Fri, 24 Mar 2023 08:54:03 -0700 (PDT)
-Received: from mail.panix.com (localhost [127.0.0.1])
-        by mailbackend.panix.com (Postfix) with ESMTPA id 4PjmwV5V7Vz48TK;
-        Fri, 24 Mar 2023 11:54:02 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=panix.com; s=panix;
-        t=1679673243; bh=cpWNQV1BBSDO58L8+KL5nGd6M14YxtXoIXU6SBKTF5U=;
-        h=In-Reply-To:References:Date:Subject:From:To:Cc;
-        b=m7rcBRod9vU/C2TwISSn57ePAR/arM7FJD9tn29MqQLATz5TNBd91uWPJ7SAOWE11
-         QDw/m04U/qAzy04x9it3bq3d6Mtmt3fJGG4j5dbpyA35kjxe7y/nWWIzj413pi0Ij6
-         Nqy40AsAuj6+3l1EjV+1MS+bx3lny+8JXk3H5paQ=
-X-Panix-Received: from 166.84.1.3
-        (SquirrelMail authenticated user pa@panix.com)
-        by mail.panix.com with HTTP;
-        Fri, 24 Mar 2023 11:54:02 -0400
-Message-ID: <11fab8f24f976112aa4d025d03f0f322.squirrel@mail.panix.com>
-In-Reply-To: <5687037.DvuYhMxLoT@kreacher>
-References: <5687037.DvuYhMxLoT@kreacher>
-Date:   Fri, 24 Mar 2023 11:54:02 -0400
-Subject: Re: [PATCH v1] ACPI: bus: Rework system-level device notification
- handling
-From:   "Pierre Asselin" <pa@panix.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     "Linux ACPI" <linux-acpi@vger.kernel.org>,
-        "Pierre Asselin" <pa@panix.com>,
-        "LKML" <linux-kernel@vger.kernel.org>,
-        =?iso-8859-1?Q?=22Uwe_Kleine-K=F6nig=22?= 
-        <u.kleine-koenig@pengutronix.de>,
-        "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-User-Agent: SquirrelMail/1.4.23-p1
+        with ESMTP id S231668AbjCXQbV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 12:31:21 -0400
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 113C01F5DE;
+        Fri, 24 Mar 2023 09:31:19 -0700 (PDT)
+Received: by mail-ed1-f42.google.com with SMTP id ek18so10165708edb.6;
+        Fri, 24 Mar 2023 09:31:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679675478;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RK97WHvnbSxeF31vPM+iWGsfGGAagPtgVuDMTujX4W8=;
+        b=uEDzyF6n4IVDWKksAD0DCtv/kVd3EmnDFrMAV7uyMUkB5Hd5RQg2KbtCpJY7NImEqh
+         j5FRQ61ph5xlyO1zWZMEEvGVORGV5LHQom+rM3B8Yuk5ruR+nJ+Nom0aa4Yv6eJVbQsm
+         EbeEl2wQixD1+/s+kAZUJfUYL+PRcMfhO+Oel6Xe1IQU/dW0sLJ0dl5qo6/BpD/aruYR
+         xrIJ4Y/V4qbsknIPPSSOwGRHc4Q8ZcMsUSwHNU4ooVkW3UboSyMWM5gmUeqfZuzdy/OS
+         N6RS7Dl5G2lB4S1xTSDAJcSxO+nX0pi9i6ZgNkolpzIsQJ0bY/X47ICFzE3LPHkx5nSj
+         gL4w==
+X-Gm-Message-State: AAQBX9eFpvAFE634ano9ce5/U3SKnL4OQHL+upwUbeNr9KrF6CwA6O9x
+        GJhU4DUWWd6Q1Qdp0xo5vKkRB3lFRXDXy6yy/OOtjfSq8fY=
+X-Google-Smtp-Source: AKy350ZbkphKyXdA397q1rltyqMH2ly45EQFFhEEWmOtxkpsRskS2kMgaGRycE1AmZFe8ADEYTWWqB+AXSVubQt8Od4=
+X-Received: by 2002:a17:907:d687:b0:93d:a14f:c9b4 with SMTP id
+ wf7-20020a170907d68700b0093da14fc9b4mr1749567ejc.2.1679675478193; Fri, 24 Mar
+ 2023 09:31:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-X-Priority: 3 (Normal)
-Importance: Normal
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 24 Mar 2023 17:31:07 +0100
+Message-ID: <CAJZ5v0i6K644j=JzU+uDcreEzv6KxFHav_MHw1TZvQNzvyoU1w@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v6.3-rc4
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Rafael, the patch is good for 6.3-rc1 (boots to early userspace).
-I'll try a full install now.
+Hi Linus,
 
---PA
+Please pull from the tag
 
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.3-rc4
+
+with top-most commit 8dbfa057b3f8e8402f639c0bf5fcbc4e43a8b3da
+
+ Merge branch 'acpi-video'
+
+on top of commit e8d018dd0257f744ca50a729e3d042cf2ec9da65
+
+ Linux 6.3-rc3
+
+to receive ACPI fixes for 6.3-rc4.
+
+These add new ACPI IRQ override and backlight detection quirks.
+
+Specifics:
+
+ - Add backlight=native DMI quirk for Acer Aspire 3830TG to the ACPI
+   backlight driver (Hans de Goede).
+
+ - Add an ACPI IRQ override quirk for Medion S17413 (Aymeric Wibo).
+
+Thanks!
+
+
+---------------
+
+Hans de Goede (1):
+      ACPI: video: Add backlight=native DMI quirk for Acer Aspire 3830TG
+
+Aymeric Wibo (1):
+      ACPI: resource: Add Medion S17413 to IRQ override quirk
+
+---------------
+
+ drivers/acpi/resource.c     | 7 +++++++
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 2 files changed, 15 insertions(+)
