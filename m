@@ -2,62 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B69F6C7D11
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 12:14:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 324FA6C7D2B
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 12:26:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229919AbjCXLOw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Mar 2023 07:14:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34538 "EHLO
+        id S231127AbjCXL0m (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Mar 2023 07:26:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229536AbjCXLOv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 07:14:51 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C1E3244BC
-        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 04:14:50 -0700 (PDT)
+        with ESMTP id S229830AbjCXL0l (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 07:26:41 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C0EA132C0;
+        Fri, 24 Mar 2023 04:26:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679656490; x=1711192490;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Ws8XGVO4Gh0ORy6wwh4rfX8IiGkhnjj0jTQLSw4IBjw=;
-  b=TI4tfE0V3Ztfliu1j+6QOfaqR8NASWmNfsWzTYRivlwykSlmco2zUZ65
-   +j6pPPAPaDNGEhrjBx3KVpJAlX46nRSAfOunA8puG5Pi8Fa+OZkzQzOGC
-   QMQgHO8WSxyY7dwlWXUhv/dufa4cjJZD4xw6ooCtWTwD+LU3mmXOv3wXS
-   YNikKHVaP9aLpqUAfVoCH9gJyxTsQI6Vo5cJR0QWnmVYcvwMqrVPxSHDZ
-   fVC0WDErAILNFWJ1DeqfXEr4foKMrwq0q3/OWTH6Zby7F3xdTuoVqKpZQ
-   QVw5QJevTWbWthJh3oQDsCNVOQMio0I5yvNc1ZPNp8nDQtZ1r/8x887o/
+  t=1679657200; x=1711193200;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=aAHxWdgA6KNADXX0NKzDGmq9HK2lk7j3n4Q3pe8f6K8=;
+  b=SzCKJSpMLPGl4xwboSPuApStC/sZm/n0oR19iP0Urpehh2kNfZgtdPBK
+   QfZuiSAu56ducjVPInb1+eBw2f6w9H1OREGy8J6l0WlgjnnCq2iC7/1yv
+   AMj9gUDHkoCcL+Tpo0lCL4Hw64fhLVnXnlNZfT6u4RDkOHqcHnmrdplBc
+   mAAHT6FGvPKUfBfKCmtjI5N6x25KlYe4hOAEqpO1HZhAZapQ8v4LexKwk
+   U6aqs11m0gut3VgaQoEA9Vpvq7MAqyLCSpH6WFh/Vi8lViheg3+H44HxO
+   +BYbeYcBRheIoac7AE4gWKdTQKIL/a69yGGAIZeztXzORqW3+38lFRoRr
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="320146787"
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="342143989"
 X-IronPort-AV: E=Sophos;i="5.98,287,1673942400"; 
-   d="scan'208";a="320146787"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2023 04:14:49 -0700
+   d="scan'208";a="342143989"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2023 04:26:39 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="715192338"
+X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="1012225742"
 X-IronPort-AV: E=Sophos;i="5.98,287,1673942400"; 
-   d="scan'208";a="715192338"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga001.jf.intel.com with ESMTP; 24 Mar 2023 04:14:47 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pffNd-007sQJ-2G;
-        Fri, 24 Mar 2023 13:14:45 +0200
-Date:   Fri, 24 Mar 2023 13:14:45 +0200
+   d="scan'208";a="1012225742"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga005.fm.intel.com with ESMTP; 24 Mar 2023 04:26:37 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id E427C176; Fri, 24 Mar 2023 13:27:23 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc:     Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] device property: constify fwnode_get_phy_mode() argument
-Message-ID: <ZB2GJZMAQC4CTy9E@smile.fi.intel.com>
-References: <E1pfdh9-00EQ8t-HB@rmk-PC.armlinux.org.uk>
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Russell King <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH v1 1/1] device property: Constify a few fwnode APIs
+Date:   Fri, 24 Mar 2023 13:27:20 +0200
+Message-Id: <20230324112720.71315-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E1pfdh9-00EQ8t-HB@rmk-PC.armlinux.org.uk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.6
@@ -67,56 +64,79 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 24, 2023 at 09:26:47AM +0000, Russell King (Oracle) wrote:
-> fwnode_get_phy_mode() does not modify the fwnode argument, merely
-> using it to obtain the phy-mode property value. Therefore, it can
-> be made const.
+The fwnode parameter is not altered in the following APIs:
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+- fwnode_get_next_parent_dev()
+- fwnode_is_ancestor_of()
+- fwnode_graph_get_endpoint_count()
 
-Thank you!
+so constify them.
 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> ---
-> Patch generated against net-next tree as that was where it was used and
-> tested.
-> 
->  drivers/base/property.c  | 2 +-
->  include/linux/property.h | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/base/property.c b/drivers/base/property.c
-> index 083a95791d3b..fcc0687f5529 100644
-> --- a/drivers/base/property.c
-> +++ b/drivers/base/property.c
-> @@ -895,7 +895,7 @@ EXPORT_SYMBOL_GPL(device_get_dma_attr);
->   * 'phy-connection-type', and return its index in phy_modes table, or errno in
->   * error case.
->   */
-> -int fwnode_get_phy_mode(struct fwnode_handle *fwnode)
-> +int fwnode_get_phy_mode(const struct fwnode_handle *fwnode)
->  {
->  	const char *pm;
->  	int err, i;
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index f7100e836eb4..d18c8cc17315 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -396,7 +396,7 @@ enum dev_dma_attr device_get_dma_attr(const struct device *dev);
->  const void *device_get_match_data(const struct device *dev);
->  
->  int device_get_phy_mode(struct device *dev);
-> -int fwnode_get_phy_mode(struct fwnode_handle *fwnode);
-> +int fwnode_get_phy_mode(const struct fwnode_handle *fwnode);
->  
->  void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index);
->  
-> -- 
-> 2.30.2
-> 
+Reported-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/base/property.c  | 6 +++---
+ include/linux/property.h | 6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 3fc25e568598..b19ca8f752a8 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -648,7 +648,7 @@ EXPORT_SYMBOL_GPL(fwnode_get_next_parent);
+  *
+  * Return: a pointer to the device of the @fwnode's closest ancestor.
+  */
+-struct device *fwnode_get_next_parent_dev(struct fwnode_handle *fwnode)
++struct device *fwnode_get_next_parent_dev(const struct fwnode_handle *fwnode)
+ {
+ 	struct fwnode_handle *parent;
+ 	struct device *dev;
+@@ -718,7 +718,7 @@ EXPORT_SYMBOL_GPL(fwnode_get_nth_parent);
+  *
+  * Return: true if @ancestor is an ancestor of @child. Otherwise, returns false.
+  */
+-bool fwnode_is_ancestor_of(struct fwnode_handle *ancestor, struct fwnode_handle *child)
++bool fwnode_is_ancestor_of(const struct fwnode_handle *ancestor, const struct fwnode_handle *child)
+ {
+ 	struct fwnode_handle *parent;
+ 
+@@ -1235,7 +1235,7 @@ EXPORT_SYMBOL_GPL(fwnode_graph_get_endpoint_by_id);
+  * If FWNODE_GRAPH_DEVICE_DISABLED flag is specified, also unconnected endpoints
+  * and endpoints connected to disabled devices are counted.
+  */
+-unsigned int fwnode_graph_get_endpoint_count(struct fwnode_handle *fwnode,
++unsigned int fwnode_graph_get_endpoint_count(const struct fwnode_handle *fwnode,
+ 					     unsigned long flags)
+ {
+ 	struct fwnode_handle *ep;
+diff --git a/include/linux/property.h b/include/linux/property.h
+index 9c774b0fe5bd..8ba804721fdf 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -104,11 +104,11 @@ struct fwnode_handle *fwnode_get_next_parent(struct fwnode_handle *fwnode);
+ 	for (parent = fwnode_get_parent(fwnode); parent;	\
+ 	     parent = fwnode_get_next_parent(parent))
+ 
+-struct device *fwnode_get_next_parent_dev(struct fwnode_handle *fwnode);
++struct device *fwnode_get_next_parent_dev(const struct fwnode_handle *fwnode);
+ unsigned int fwnode_count_parents(const struct fwnode_handle *fwn);
+ struct fwnode_handle *fwnode_get_nth_parent(struct fwnode_handle *fwn,
+ 					    unsigned int depth);
+-bool fwnode_is_ancestor_of(struct fwnode_handle *ancestor, struct fwnode_handle *child);
++bool fwnode_is_ancestor_of(const struct fwnode_handle *ancestor, const struct fwnode_handle *child);
+ struct fwnode_handle *fwnode_get_next_child_node(
+ 	const struct fwnode_handle *fwnode, struct fwnode_handle *child);
+ struct fwnode_handle *fwnode_get_next_available_child_node(
+@@ -432,7 +432,7 @@ static inline bool fwnode_graph_is_endpoint(const struct fwnode_handle *fwnode)
+ struct fwnode_handle *
+ fwnode_graph_get_endpoint_by_id(const struct fwnode_handle *fwnode,
+ 				u32 port, u32 endpoint, unsigned long flags);
+-unsigned int fwnode_graph_get_endpoint_count(struct fwnode_handle *fwnode,
++unsigned int fwnode_graph_get_endpoint_count(const struct fwnode_handle *fwnode,
+ 					     unsigned long flags);
+ 
+ #define fwnode_graph_for_each_endpoint(fwnode, child)				\
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.40.0.1.gaa8946217a0b
 
