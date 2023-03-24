@@ -2,120 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E03DD6C7CF1
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 12:00:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 340DF6C7E10
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 13:31:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230377AbjCXLAY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Mar 2023 07:00:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52144 "EHLO
+        id S231236AbjCXMad convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 24 Mar 2023 08:30:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230213AbjCXLAX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 07:00:23 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F96C244A6
-        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 04:00:22 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pff95-0002EU-MN; Fri, 24 Mar 2023 11:59:43 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pff91-006MVr-R6; Fri, 24 Mar 2023 11:59:39 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pff91-007aB1-3G; Fri, 24 Mar 2023 11:59:39 +0100
-Date:   Fri, 24 Mar 2023 11:59:38 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        linux-acpi@vger.kernel.org, kernel@pengutronix.de,
-        acpica-devel@lists.linuxfoundation.org, Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH] ACPICA: Make check to install handler more obviously
- correct
-Message-ID: <20230324105938.p4olsh27uy5zdbbv@pengutronix.de>
-References: <20230324075854.458341-1-u.kleine-koenig@pengutronix.de>
- <20230324095329.3oat5nuqhuqqycsr@bogus>
+        with ESMTP id S231866AbjCXMaR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 08:30:17 -0400
+X-Greylist: delayed 7683 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 24 Mar 2023 05:30:14 PDT
+Received: from mail.inea.gob.ve (mail.inea.gob.ve [201.248.92.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 094733581;
+        Fri, 24 Mar 2023 05:30:13 -0700 (PDT)
+Received: from mail.inea.gob.ve (localhost.localdomain [127.0.0.1])
+        by mail.inea.gob.ve (Proxmox) with ESMTP id B938B45F43;
+        Fri, 24 Mar 2023 05:21:48 -0400 (-04)
+Received: from correo.inea.gob.ve (unknown [10.10.0.61])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.inea.gob.ve (Proxmox) with ESMTPS id 81A4D45EAA;
+        Fri, 24 Mar 2023 05:21:48 -0400 (-04)
+Received: from localhost (localhost [127.0.0.1])
+        by correo.inea.gob.ve (Postfix) with ESMTP id 0C2AD6E4051E;
+        Fri, 24 Mar 2023 05:21:48 -0400 (EDT)
+Received: from correo.inea.gob.ve ([127.0.0.1])
+        by localhost (correo.inea.gob.ve [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id FWd9RuKWr2Bh; Fri, 24 Mar 2023 05:21:47 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+        by correo.inea.gob.ve (Postfix) with ESMTP id 37E336E40523;
+        Fri, 24 Mar 2023 05:21:47 -0400 (EDT)
+X-Virus-Scanned: amavisd-new at inea.gob.ve
+Received: from correo.inea.gob.ve ([127.0.0.1])
+        by localhost (correo.inea.gob.ve [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id mIMaT_CCqGI8; Fri, 24 Mar 2023 05:21:47 -0400 (EDT)
+Received: from correo.inea.gob.ve (correo.inea.gob.ve [10.10.0.61])
+        by correo.inea.gob.ve (Postfix) with ESMTP id 523226E40514;
+        Fri, 24 Mar 2023 05:21:45 -0400 (EDT)
+Date:   Fri, 24 Mar 2023 05:21:45 -0400 (EDT)
+From:   Euro Millions <pledezma@inea.gob.ve>
+Reply-To: Euro Millions <3249735289@qq.com>
+Message-ID: <252123914.723735.1679649705313.JavaMail.zimbra@inea.gob.ve>
+Subject: Lottogewinn
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="6obh4u7kdvvmvoef"
-Content-Disposition: inline
-In-Reply-To: <20230324095329.3oat5nuqhuqqycsr@bogus>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [176.42.137.72]
+X-Mailer: Zimbra 8.8.15_GA_4101 (zclient/8.8.15_GA_4101)
+Thread-Index: w+xXl2mCYlwNkQEi4wF9SOBxNe3vcg==
+Thread-Topic: Lottogewinn
+X-Spam-Status: Yes, score=6.8 required=5.0 tests=FREEMAIL_FORGED_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,MISSING_HEADERS,REPLYTO_WITHOUT_TO_CC,
+        SPF_HELO_SOFTFAIL,SPF_PASS autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Report: * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.9 SPF_HELO_SOFTFAIL SPF: HELO does not match SPF record
+        *      (softfail)
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [3249735289[at]qq.com]
+        *  1.2 MISSING_HEADERS Missing To: header
+        *  1.9 REPLYTO_WITHOUT_TO_CC No description available.
+        *  2.5 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Herzlichen Glückwunsch, Sie haben €650.000,00 bei den monatlichen Gewinnspielen von Euro Millions / Google Promo am 23.März 2023 gewonnen.
 
---6obh4u7kdvvmvoef
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Bitte geben Sie die folgenden Informationen ein, damit Ihr Gewinnbetrag an Sie überwiesen werden kann.
 
-Hello,
+Vollständiger Name:
+Heimatadresse:
+Geschlecht:
+Alter:
+Telefon:
 
-On Fri, Mar 24, 2023 at 09:53:29AM +0000, Sudeep Holla wrote:
-> On Fri, Mar 24, 2023 at 08:58:54AM +0100, Uwe Kleine-K=F6nig wrote:
-> > The loop
-> >=20
-> > 	for (i =3D 0; i < ACPI_NUM_NOTIFY_TYPES; i++) {
-> > 		if (handler_type & (i + 1)) {
-> > 			...
-> > 		}
-> > 	}
-> >=20
-> > looks strange. Only with knowing that ACPI_NUM_NOTIFY_TYPES =3D=3D 2 yo=
-u can
-> > see that the two least significant bits are checked. Still replace
-> >=20
-> > 	i + 1
-> >=20
-> > by
-> >=20
-> > 	1 << i
-> >=20
-> > which shouldn't make a relevant difference to compiler and compiled
-> > code, but is easier to understand for a human code reader.
-> >=20
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
->=20
-> You need to submit this to ACPICA project first.
-> Documentation/driver-api/acpi/linuxized-acpica.rst explains the process.
-> Refer [1] for details for similar suggestion by Rafael.
+John Andrew
+Online-Koordinator
 
-My motivation isn't big enough to even read that. If the usual kernel
-workflow doesn't work for ACPICA, let's drop the patch.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---6obh4u7kdvvmvoef
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmQdgpkACgkQj4D7WH0S
-/k7gkQgAp3/vWYTAeTxJdQBeEcQRLdOX0d0ON7QnL/VDoCTGQ1owOjd1/8/p9Xeg
-PvpCIH0KcUGqiKCTrKXKPWaSAlfWZpk3CrwDgY2XxYOVVV5tzepEzrACvI2gxIIn
-XjhemOYqnJ6varurw2UdgbTjpxQGGBAu5fswmo+gYchBqsnGqL/b23dH9n2IS4Ru
-6Ng16VbiinNydejRKn9FWTH+p1/FCsO4qUIopwJPNrQaM1XW6VyeLW5QOA1fJ3zy
-lskkWBSzT9iMsp6gDbLMo2v8IunYcuZi6Tz/rp4B/JmBfIkdR/UE3+rx6I901rCc
-MEm0487K3lXqudOj8ZiDwn0I17Nc4Q==
-=Ii3L
------END PGP SIGNATURE-----
-
---6obh4u7kdvvmvoef--
