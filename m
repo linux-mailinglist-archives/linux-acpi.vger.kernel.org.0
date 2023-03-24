@@ -2,67 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D5316C82D1
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 18:04:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36BC86C82EB
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 18:10:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230043AbjCXREq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Mar 2023 13:04:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54176 "EHLO
+        id S230360AbjCXRKP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Mar 2023 13:10:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229729AbjCXREp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 13:04:45 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A97A51815C;
-        Fri, 24 Mar 2023 10:04:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=YZTvo4re7ukycagR5LNjBgnmgr5GpRxpdGMsq3Xv67c=; b=kh34JUjDbQxLs/xBxq75Puf/ts
-        f8PxI4lo6IOWLC9CMbESFCU5XCfy6v3vEV/lZlmJtdqZTSjXilgLgrhhB+Mhw10yS1xIS5lVclD4O
-        oUokrCd+URgeTHQq5ClBKQbwB0Xjom7NbHfTwIQOrnwnk0hwPvCH71blIk5ySCyDwuDQlmZEzTgyZ
-        Nnk5hpAs5TAvyDkIRJ8qQ22D02ayeRn/LJhGE19um9f0pVCNog6VwpXDKLJg8vDD9RDEAsAoAh8IP
-        yyhfj2KKqPLW8VntEKEaGVFIIJm4RcecYbaZW9UGbN1ZtJzY980bvMss1Tss4/8ZGT9M8ScBSRyzD
-        rJAEy9bw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39534)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1pfkq5-0007Ra-5C; Fri, 24 Mar 2023 17:04:29 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1pfkq1-0002av-Ns; Fri, 24 Mar 2023 17:04:25 +0000
-Date:   Fri, 24 Mar 2023 17:04:25 +0000
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jakub Kicinski <kuba@kernel.org>, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Vladimir Oltean <olteanv@gmail.com>
-Subject: Re: [PATCH RFC net-next 6/7] net: dsa: mv88e6xxx: provide software
- node for default settings
-Message-ID: <ZB3YGWTWLYyecgw7@shell.armlinux.org.uk>
-References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
- <E1pex8f-00Dvo9-KT@rmk-PC.armlinux.org.uk>
- <ZB24fDEqwx53Rthm@kuha.fi.intel.com>
+        with ESMTP id S229505AbjCXRKO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 13:10:14 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C5E3B212BD;
+        Fri, 24 Mar 2023 10:10:13 -0700 (PDT)
+Received: from [192.168.2.41] (77-166-152-30.fixed.kpn.net [77.166.152.30])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 301FA20FC447;
+        Fri, 24 Mar 2023 10:10:11 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 301FA20FC447
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1679677813;
+        bh=bgmIaw8wMSWsss3W40BPK0PE6LwvUlJau2CCprtxb5E=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=ApLRO3o9k0dlJ9d76y1Wc0ezRYgX7lkHSFHT0b0W3AVxDVbYjkE+0L20p6ZqCiAND
+         AclxT9+NdVy9U0QBpsJwdUDbIsT9vV2MFj2DmzBIz5nOB/WshsW4k/NdkL9ivJKLii
+         8nMzoS7XjfpVUgq4kjpdEKqE6J92EjCBr85yCf5g=
+Message-ID: <c8458bfa-0985-f6a5-52a3-ef96c7669fe6@linux.microsoft.com>
+Date:   Fri, 24 Mar 2023 18:10:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZB24fDEqwx53Rthm@kuha.fi.intel.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v3 0/8] Support ACPI PSP on Hyper-V
+Content-Language: en-US
+To:     Borislav Petkov <bp@alien8.de>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     linux-kernel@vger.kernel.org,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        linux-crypto@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
+References: <20230320191956.1354602-1-jpiotrowski@linux.microsoft.com>
+ <20230322154655.GDZBsi75f6LnQStxSp@fat_crate.local>
+ <1d25221c-eaab-0f97-83aa-8b4fbe3a53ed@linux.microsoft.com>
+ <20230322181541.GEZBtFzRAMcH9BAzUe@fat_crate.local>
+ <ecf005b1-ddb9-da4c-4526-28df4806426c@linux.microsoft.com>
+ <20230323152342.GFZBxu/m3u6aFUDY/7@fat_crate.local>
+ <105d019c-2249-5dfd-e032-95944ea6dc8c@linux.microsoft.com>
+ <20230323163450.GGZBx/qpnclFnMaf7e@fat_crate.local>
+From:   Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+In-Reply-To: <20230323163450.GGZBx/qpnclFnMaf7e@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-17.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,115 +65,66 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 24, 2023 at 04:49:32PM +0200, Heikki Krogerus wrote:
-> Hi Russell,
+On 3/23/2023 5:34 PM, Borislav Petkov wrote:
+> On Thu, Mar 23, 2023 at 05:11:26PM +0100, Jeremi Piotrowski wrote:
+>> That same interface is exposed by physical hardware+firmware to the underlying
+>> Hyper-V.
 > 
-> On Wed, Mar 22, 2023 at 12:00:21PM +0000, Russell King (Oracle) wrote:
-> > +static struct fwnode_handle *mv88e6xxx_create_fixed_swnode(struct fwnode_handle *parent,
-> > +							   int speed,
-> > +							   int duplex)
-> > +{
-> > +	struct property_entry fixed_link_props[3] = { };
-> > +
-> > +	fixed_link_props[0] = PROPERTY_ENTRY_U32("speed", speed);
-> > +	if (duplex == DUPLEX_FULL)
-> > +		fixed_link_props[1] = PROPERTY_ENTRY_BOOL("full-duplex");
-> > +
-> > +	return fwnode_create_named_software_node(fixed_link_props, parent,
-> > +						 "fixed-link");
-> > +}
-> > +
-> > +static struct fwnode_handle *mv88e6xxx_create_port_swnode(phy_interface_t mode,
-> > +							  int speed,
-> > +							  int duplex)
-> > +{
-> > +	struct property_entry port_props[2] = {};
-> > +	struct fwnode_handle *fixed_link_fwnode;
-> > +	struct fwnode_handle *new_port_fwnode;
-> > +
-> > +	port_props[0] = PROPERTY_ENTRY_STRING("phy-mode", phy_modes(mode));
-> > +	new_port_fwnode = fwnode_create_software_node(port_props, NULL);
-> > +	if (IS_ERR(new_port_fwnode))
-> > +		return new_port_fwnode;
-> > +
-> > +	fixed_link_fwnode = mv88e6xxx_create_fixed_swnode(new_port_fwnode,
-> > +							  speed, duplex);
-> > +	if (IS_ERR(fixed_link_fwnode)) {
-> > +		fwnode_remove_software_node(new_port_fwnode);
-> > +		return fixed_link_fwnode;
-> > +	}
-> > +
-> > +	return new_port_fwnode;
-> > +}
+> Let me see if I understand it correctly: Hyper-V *baremetal* is using
+> the same ASPT spec to to talk to the *physical* PSP device?
 > 
-> That new fwnode_create_named_software_node() function looks like a
-> conflict waiting to happen - if a driver adds a node to the root level
-> (does not have to be root level), all the tests will pass because
-> there is only a single device, but when a user later tries the driver
-> with two devices, it fails, because the node already exist. But you
-> don't need that function at all.
 
-I think you're totally failing to explain how this can fail.
+Yes
 
-Let me reiterate what thestructure of the swnodes here is:
+> Is that ASPT interface to talk to the PSP used by the L0 hypervisor?
+> 
 
-	root
-	`- node%d (%d allocated by root IDA)
-	   +- phy-mode property
-	   `- fixed-link
-	      +- speed property
-	      `- optional full-duplex property
+Yes (unless I am mistaken, this is the same statement as above).
 
-If we have two different devices creating these nodes, then at the
-root level, they will end up having different root names. The
-"fixed-link" is a child of this node.
+> Or does the L0 HV have a normal driver, similar to the Linux one,
+> without the functionality this ASPT spec provides?
+> 
+The L0 HV relies on the ASPT spec/interface to map registers and setup
+interrupts and then uses a protocol driver to handle the PSP command set
+(like the Linux one).
 
-swnode already allows multiple identical names at the sub-node
-level - each node ends up with its own IDA to allocate the generic
-"node%d" names from. So as soon as we have multiple nodes, they
-end up as this:
+>> So it wasn't a matter of Microsoft architects coming up with a
+>> guest-host interface but rather exposing the virtual hardware in the same
+>> way as on a physical server.
+> 
+> So if you want to expose the same interface to the L1 guest, why isn't
+> Hyper-V emulating an ACPI device just like any other functionality? Why
+> does it need to reach into the interrupt handling internals?
+> 
 
-	root
-	+- node0
-	|  `- node 0
-	+- node1
-	|  `- node 0
-	+- node2
-	|  `- node 0
-	etc
+The primary stack for nested SNP support is Hyper-V-on-Hyper-V. 
+By exposing the PSP device to the L1 guest in the same way (as the L0),
+everything can done in the exact same way as on bare-metal.
 
-So, if we end up with two devices creating these at the same time,
-we end up with:
+I just really want nested SNP support to work in KVM-on-Hyper-V as well so
+that's why I'm adding support for these things.
 
-	root
-	+- nodeA (A allocated by root IDA)
-	|  +- phy-mode property
-	|  `- fixed-link
-	|     +- speed property
-	|     `- optional full-duplex property
-	`- nodeB (B allocated by root IDA, different from above)
-	   +- phy-mode property
-	   `- fixed-link
-	      +- speed property
-	      `- optional full-duplex property
+Also: if Linux were to run bare-metal on that hardware it would need to be
+able to handle the PSP through the ASPT interface as well.
 
-Since the kobject is parented to the parent's kobject, what we
-end up with in sysfs is:
+> I'd expect that the L0 HV would emulate a PSP device, the L1 would
+> simply load the Linux PSP device driver and everything should just work.
+> 
+> What's the point of that alternate access at all?
+> 
 
-	.../nodeA/fixed-link/speed
-	.../nodeB/fixed-link/speed
+So it's actually great that you made me ask around because I learned something that
+will help:
 
-Thus, the "fixed-link" ndoes can _not_ conflict.
+Since the AMD PSP is a privileged device, there is a desire to not have to trust the
+ACPI stack, and instead rely fully on static ACPI tables for discovery and configuration.
+This also applies to the AMD IOMMU. If you look at iommu_setup_intcapxt() in
+drivers/iommu/amd/init.c, it does exactly the things that are needed to setup the
+PSP interrupt too. Here's a link to the patch that added that:
+https://lore.kernel.org/all/20201111144322.1659970-3-dwmw2@infradead.org/#t
 
-Please explain in detail where you think the conflict is, because
-so far no one has been able to counter my assertions that this is
-_safe_ with a proper full technical description of the problem.
-All I get is hand-wavey "this conflicts".
+So my plan now is to post a v4 with proper irq_domain handling.
+Ok Thomas?
 
-Honestly, I'm getting sick of poor quality reviews... the next
-poor review that claims there's a conflict here without properly
-explain it will be told where to go.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+Best wishes,
+Jeremi
