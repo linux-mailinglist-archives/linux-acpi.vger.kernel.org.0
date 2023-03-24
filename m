@@ -2,112 +2,148 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 626CC6C7ABD
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 10:05:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66EC66C7ACF
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 10:09:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231127AbjCXJFx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Mar 2023 05:05:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50768 "EHLO
+        id S231811AbjCXJJH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Mar 2023 05:09:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230102AbjCXJFw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 05:05:52 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A426E136CA;
-        Fri, 24 Mar 2023 02:05:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679648751; x=1711184751;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=8lGzd2l365WJAtOkQ45lcxnK6kVGkUm4YJQ0Jombmr8=;
-  b=PQWLRXVl6g4DWQ1OovyZu5b4J0w9RRW7aFtkSTpEcYj6RztkbIm00Q9F
-   aEMgvLqBIZojP2qsIkyKsxf0Lm9xG2st2SQQ9hYhzQRmgU2rBTmn33zmJ
-   CZiwFuDHnPC4c4wCqCXQH2RGWqdpsf0nUXp4Xua6QutqUCVpVYnfnPiM7
-   bpIe3vZwTBaGIpI5GVq4RL9m2cVKwYjlME4RXLTSmPH9CqilIcyHE3Cy0
-   syWLemhOJS1/qJHA3sLAZr4eCCr1EkTMZSqlTCaedlxCTkdlu8gv+vUeR
-   TDm0fr7fhBhAHmQKQHd8N4JrImwZJwQ8xoqIryER9zDOue6QPTVR0dll+
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="402317625"
-X-IronPort-AV: E=Sophos;i="5.98,287,1673942400"; 
-   d="scan'208";a="402317625"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2023 02:05:51 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10658"; a="856804545"
-X-IronPort-AV: E=Sophos;i="5.98,287,1673942400"; 
-   d="scan'208";a="856804545"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga005.jf.intel.com with ESMTP; 24 Mar 2023 02:05:50 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pfdMq-007q8m-2l;
-        Fri, 24 Mar 2023 11:05:48 +0200
-Date:   Fri, 24 Mar 2023 11:05:48 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v1 2/2] ACPI: SPCR: Amend indentation
-Message-ID: <ZB1n7Om3oqE0eRo6@smile.fi.intel.com>
-References: <20230322102258.27390-1-andriy.shevchenko@linux.intel.com>
- <20230322102258.27390-2-andriy.shevchenko@linux.intel.com>
- <CAJZ5v0imGNb8pETxdJmjJ9cSJQedeb=w2dcG6huDB=SpL-ufqA@mail.gmail.com>
- <ZBxFC6prEE5p4Wu1@smile.fi.intel.com>
- <CAJZ5v0g3iJ+QL=mL0a8cfoN9qT_FgM_j803ZWgcYn2AOpCN6AQ@mail.gmail.com>
+        with ESMTP id S232050AbjCXJI4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 05:08:56 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE96211667
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 02:08:45 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id m6-20020a05600c3b0600b003ee6e324b19so507342wms.1
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 02:08:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679648924;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Tl24kxujrDRhD/Pw1VxqIQuGTyFCOtjGuHoJAXogeUQ=;
+        b=KF7vhgGUy9iSCVz/2JMV95cnXXiwuET9tU7Rc7Ha4nCWlEtjrRR52AkRL3JFzV31N8
+         FvBvjTemrQpnvLLevT/7WRHrnq6vQTjJaal/zyxaU9lnhkPgeE4ZxxrwnrSeYP5XXpBc
+         4V7jndgKaulVRlh2NX+8aC2vQ132DHHauBUvo9d076iWPZ097+573LyCG57UyqnF/weQ
+         Wl0cANOGoKc/C+uNjEJ93bVBXPTZ7IkGYmTVHGwGkHxXXK4MlPEb6KAWoXYRQNmd8+4H
+         wQFnUqtZsqyWz/Sra/sxWYXnULQ6q5z/LE5eyV19WnrETSaXYW26jzEB3xzi7XfnA3JF
+         5cvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679648924;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tl24kxujrDRhD/Pw1VxqIQuGTyFCOtjGuHoJAXogeUQ=;
+        b=BHFK6F03D3DKZq8QdGSyx0wC4Gwo4NKbICONaE87LxWnYy+ibh20DAxoTHDkA+/fuI
+         z0W2x9AwMbKUa6Vq8aP8znyTz33i2cMQCMk/hIPIB2IRNtX34txnXZPX6dj3xIPpNBI7
+         wAnUUtmqMYsucb+ky/evhyGd+sCUk/z/YZAsdZjggQGyhClcPuTzYGJym2QYCUx9yylg
+         iilWsCHIMTVnHuhcWJI2cMa/p0AX9oGuY2DTwguk7jv6cM1bKsS+zac68Hy5hz48K5L/
+         QvMF52rrBapAkQ1wo+mVHG5+Sh0KNUwxQz/4ffuQQnGMz9x4oDR8BjLR63qCw26EMlSo
+         L/GA==
+X-Gm-Message-State: AO0yUKXJtAbFodp9Z4i5ciRPSZtQaCTZ6rOe+8fAJzSTYOW1QkzNqvYU
+        5n8+bTO42ZtaFPUJxnf+Vy3H0A==
+X-Google-Smtp-Source: AK7set/vvjAUaOTR5nW6O5SRtNoHqTNaeTjKsckBwHxq1C38GOKprexc3eF5NaIoYwtOC0bG/ZduEw==
+X-Received: by 2002:a05:600c:c4:b0:3ed:b048:73f4 with SMTP id u4-20020a05600c00c400b003edb04873f4mr1903820wmm.5.1679648924434;
+        Fri, 24 Mar 2023 02:08:44 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.152.149])
+        by smtp.gmail.com with ESMTPSA id z5-20020a7bc7c5000000b003ee1b2ab9a0sm4306039wmk.11.2023.03.24.02.08.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Mar 2023 02:08:43 -0700 (PDT)
+Message-ID: <1722e75c-bc06-4a34-5e12-fa3622ed86a3@linaro.org>
+Date:   Fri, 24 Mar 2023 10:08:39 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.9.0
+Subject: Re: [PATCH v7 6/6] PCI: Make use of pci_resource_n()
+Content-Language: en-US
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+        "Maciej W. Rozycki" <macro@orcam.me.uk>,
+        Juergen Gross <jgross@suse.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Anatolij Gustschin <agust@denx.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+References: <20230323173610.60442-1-andriy.shevchenko@linux.intel.com>
+ <20230323173610.60442-7-andriy.shevchenko@linux.intel.com>
+From:   =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230323173610.60442-7-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0g3iJ+QL=mL0a8cfoN9qT_FgM_j803ZWgcYn2AOpCN6AQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 23, 2023 at 09:31:11PM +0100, Rafael J. Wysocki wrote:
-> On Thu, Mar 23, 2023 at 1:24 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-
-> > On Wed, Mar 22, 2023 at 07:50:55PM +0100, Rafael J. Wysocki wrote:
-> > > On Wed, Mar 22, 2023 at 11:26 AM Andy Shevchenko
-> > > <andriy.shevchenko@linux.intel.com> wrote:
-
-...
-
-> > > > 2) Remove double spaces for consistency.
-> > >
-> > > I don't quite agree with this.
-> > >
-> > > Double spaces after a period are recognized as end-of-sentence markers
-> > > by some editors (notably vi), so if they have been used intentionally,
-> > > I see no reason to replace them.
-> >
-> > For the sake of consistency. There places in very same file which do not
-> > follow this. I can invert and add a space to the rest. Do you prefer that?
+On 23/3/23 18:36, Andy Shevchenko wrote:
+> Replace open-coded implementations of pci_resource_n() in pci.h.
 > 
-> Not really.  I just don't think that this is worth the churn.
-
-Ah, that's fine.
-
-> > The reasoning will be kept the same, though.
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>   include/linux/pci.h | 14 ++++++--------
+>   1 file changed, 6 insertions(+), 8 deletions(-)
 > 
-> Is the lack of consistency in this particular respect really an issue?
-> 
-> I guess you can argue that if there are mixed sentence ending styles
-> in one and the same comment, it is better to make them consistent,
-> which I can agree with.  Otherwise I'm not convinced.
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index 70a4684d5f26..9539cf63fe5e 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -2006,14 +2006,12 @@ int pci_iobar_pfn(struct pci_dev *pdev, int bar, struct vm_area_struct *vma);
+>    * for accessing popular PCI BAR info
+>    */
+>   #define pci_resource_n(dev, bar)	(&(dev)->resource[(bar)])
+> -#define pci_resource_start(dev, bar)	((dev)->resource[(bar)].start)
+> -#define pci_resource_end(dev, bar)	((dev)->resource[(bar)].end)
+> -#define pci_resource_flags(dev, bar)	((dev)->resource[(bar)].flags)
+> -#define pci_resource_len(dev,bar) \
+> -	((pci_resource_end((dev), (bar)) == 0) ? 0 :	\
+> -							\
+> -	 (pci_resource_end((dev), (bar)) -		\
+> -	  pci_resource_start((dev), (bar)) + 1))
+> +#define pci_resource_start(dev, bar)	(pci_resource_n(dev, bar)->start)
+> +#define pci_resource_end(dev, bar)	(pci_resource_n(dev, bar)->end)
+> +#define pci_resource_flags(dev, bar)	(pci_resource_n(dev, bar)->flags)
+> +#define pci_resource_len(dev,bar)					\
+> +	(pci_resource_end((dev), (bar)) ? 				\
+> +	 resource_size(pci_resource_n((dev), (bar))) : 0)
 
-Okay, do you agree with the first patch in the series?
-Then I can redo this one by dropping these particular
-changes.
+Seems (to me) more logical to have this patch as "PCI: Introduce 
+pci_resource_n()" ordered before your patch #2 "PCI: Introduce 
+pci_dev_for_each_resource()".
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Here as #6 or as #2:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
