@@ -2,54 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85B176C8085
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 15:57:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F19D86C809E
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 16:02:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232278AbjCXO5g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Mar 2023 10:57:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36208 "EHLO
+        id S230015AbjCXPCS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Mar 2023 11:02:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232292AbjCXO5e (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 10:57:34 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DDDBAF0B
-        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 07:57:29 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pfir2-0002Eo-G7; Fri, 24 Mar 2023 15:57:20 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pfir0-006PLU-5C; Fri, 24 Mar 2023 15:57:18 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pfiqz-007e2N-1o; Fri, 24 Mar 2023 15:57:17 +0100
-Date:   Fri, 24 Mar 2023 15:57:16 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        linux-acpi@vger.kernel.org, kernel@pengutronix.de,
-        acpica-devel@lists.linuxfoundation.org, Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH] ACPICA: Make check to install handler more obviously
- correct
-Message-ID: <20230324145716.irqgescu3pvnjobt@pengutronix.de>
-References: <20230324075854.458341-1-u.kleine-koenig@pengutronix.de>
- <20230324095329.3oat5nuqhuqqycsr@bogus>
- <20230324105938.p4olsh27uy5zdbbv@pengutronix.de>
- <20230324143849.2y4rdnes3irhw2b2@bogus>
+        with ESMTP id S231868AbjCXPCR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 11:02:17 -0400
+Received: from mailbackend.panix.com (mailbackend.panix.com [166.84.1.89])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3214619F2E
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 08:02:14 -0700 (PDT)
+Received: from mail.panix.com (localhost [127.0.0.1])
+        by mailbackend.panix.com (Postfix) with ESMTPA id 4Pjlmh6l9Vz43yD;
+        Fri, 24 Mar 2023 11:02:12 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=panix.com; s=panix;
+        t=1679670133; bh=ChfbjGRiFL92LPJtGpRt/wgijRzpCQ49RN1Njtbwtpw=;
+        h=In-Reply-To:References:Date:Subject:From:To:Cc;
+        b=UvwCvjmdQ/cxywq865blRBmHCngJBPk2hr0y+EEPzlnkN1EDlDBwawIsvLiuJ23Et
+         fJfgKVLt3+yWvldmOcDVfPK3nwBnw0iP0owRgQaqDZXV3BFNAtC/DiQCp/GyMde9oe
+         szQCP0uREPrrxpC0BWcbM/73EDeQWMMmLZOi7Tl0=
+X-Panix-Received: from 166.84.1.3
+        (SquirrelMail authenticated user pa@panix.com)
+        by mail.panix.com with HTTP;
+        Fri, 24 Mar 2023 11:02:13 -0400
+Message-ID: <8ac89f507c8e5c14635d215284f2f2b1.squirrel@mail.panix.com>
+In-Reply-To: <20230323212212.udho2htrhd2vlzxm@pengutronix.de>
+References: <9f6cba7a8a57e5a687c934e8e406e28c.squirrel@mail.panix.com>
+    <20230307093308.m5enhuegm3r4qwvo@pengutronix.de>
+    <220898e2276e4cae2572eb8f006f3a7b.squirrel@mail.panix.com>
+    <20230307161005.6m6fpi3oxa3jn2wg@pengutronix.de>
+    <6d97df76de719871c90fb59726f2d6b0.squirrel@mail.panix.com>
+    <20230307200843.yxhvnb23tpecjjng@pengutronix.de>
+    <20230323212212.udho2htrhd2vlzxm@pengutronix.de>
+Date:   Fri, 24 Mar 2023 11:02:13 -0400
+Subject: Re: [Regression] acpi: laptop panics early in boot
+From:   "Pierre Asselin" <pa@panix.com>
+To:     =?iso-8859-1?Q?=22Uwe_Kleine-K=C3=B6nig=22?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     "Pierre Asselin" <pa@panix.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, regressions@lists.linux.dev,
+        "Bjorn Helgaas" <bhelgaas@google.com>,
+        =?iso-8859-1?Q?=22Robert_=C5=9Awi=C4=99cki=22?= 
+        <robert@swiecki.net>
+User-Agent: SquirrelMail/1.4.23-p1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="icdv5bytu7kohzlb"
-Content-Disposition: inline
-In-Reply-To: <20230324143849.2y4rdnes3irhw2b2@bogus>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,46 +63,84 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+> This mail didn't make it into the archive on lore.kernel.org. Did
+> someone receive it? If not, that would explain why I didn't get any
+> feedback on it ...
 
---icdv5bytu7kohzlb
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+First time I see it.
 
-Hello,
+>> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+>> index 9531dd0fef50..fddca263ac40 100644
+>> --- a/drivers/acpi/bus.c
+>> +++ b/drivers/acpi/bus.c
+>> @@ -518,13 +518,15 @@ static void acpi_bus_notify(acpi_handle handle,
+>> u32 type, void *data)
+>>  	if (!adev)
+>>  		goto err;
+>>
+>> -	if (adev->dev.driver) {
+>> +	device_lock(&adev->dev);
+>> +	if (device_is_bound(&adev->dev)) {
+>>  		struct acpi_driver *driver = to_acpi_driver(adev->dev.driver);
+>>
+>>  		if (driver && driver->ops.notify &&
+>>  		    (driver->flags & ACPI_DRIVER_ALL_NOTIFY_EVENTS))
+>>  			driver->ops.notify(adev, type);
+>>  	}
+>> +	device_unlock(&adev->dev);
+>>
+>>  	if (!hotplug_event) {
+>>  		acpi_put_acpi_dev(adev);
+>>
 
-On Fri, Mar 24, 2023 at 02:38:49PM +0000, Sudeep Holla wrote:
-> On Fri, Mar 24, 2023 at 11:59:38AM +0100, Uwe Kleine-K=F6nig wrote:
-> >
-> > My motivation isn't big enough to even read that. If the usual kernel
-> > workflow doesn't work for ACPICA, let's drop the patch.
->=20
-> :(, but ACPICA is reused on other OSes and hence the need to be a separate
-> project. It is very similar to the way DTC changes are done elsewhere and
-> imported into the kernel.
+This patch works, in that the kernel reaches early userspace reliably.
+I would want to test it more extensively, i.e. install the modules and
+run it for real instead of just kexec-ing the bzImage.  I'll test Rafael's
+patch first.
 
-Feel free to pick up my patch.
+Full disclosure: I made small changes to the starting .config, see below.
+6.3-rc1 is still bad with the new .config, the patch makes it good.
+The changes:
+  1) PROVE_LOCKING=y
+  2) CONFIG_DEBUG_ATOMIC_SLEEP=y  (why not, what could go wrong :)
+  3) radeon driver modular instead of built-in.
+I don't think it matters.  Here is the diffconfig, just in case.
 
-Best regards
-Uwe
+-EXTRA_FIRMWARE_DIR "/lib/firmware"
+ CEC_CORE y -> m
+ DEBUG_ATOMIC_SLEEP n -> y
+ DEBUG_LOCK_ALLOC n -> y
+ DEBUG_MUTEXES n -> y
+ DEBUG_RT_MUTEXES n -> y
+ DEBUG_RWSEMS n -> y
+ DEBUG_SPINLOCK n -> y
+ DEBUG_WW_MUTEX_SLOWPATH n -> y
+ DRM_DISPLAY_HELPER y -> m
+ DRM_KMS_HELPER y -> m
+ DRM_RADEON y -> m
+ DRM_TTM y -> m
+ DRM_TTM_HELPER y -> m
+ EXTRA_FIRMWARE "radeon/R300_cp.bin" -> ""
+ FB_CFB_COPYAREA y -> m
+ FB_CFB_FILLRECT y -> m
+ FB_CFB_IMAGEBLIT y -> m
+ FB_SYS_COPYAREA y -> m
+ FB_SYS_FILLRECT y -> m
+ FB_SYS_FOPS y -> m
+ FB_SYS_IMAGEBLIT y -> m
+ I2C_ALGOBIT y -> m
+ PROVE_LOCKING n -> y
++DEBUG_LOCKDEP n
++LOCKDEP y
++LOCKDEP_BITS 15
++LOCKDEP_CHAINS_BITS 16
++LOCKDEP_CIRCULAR_QUEUE_BITS 12
++LOCKDEP_STACK_TRACE_BITS 19
++LOCKDEP_STACK_TRACE_HASH_BITS 14
++PREEMPTIRQ_TRACEPOINTS y
++PROVE_RAW_LOCK_NESTING n
++PROVE_RCU y
++TRACE_IRQFLAGS y
++TRACE_IRQFLAGS_NMI y
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
---icdv5bytu7kohzlb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmQduksACgkQj4D7WH0S
-/k5iEAf/WFpLa/DLOX6wun2sCZzWLLazByHJx6+oUS7i3vD8dcSylkI8SYrDtmju
-XUqNM1mX0TfJX0U8WY66OoaJhMIXnAzRr+qhqOP1SbuP6JOU1NuuoC2wKIHzohCK
-TNmzoOPa84bhhBio4A4QF9P6Eqd64WAGhOCsE0uR33ml3QoFvv6eAd2Tt2uOGScv
-aU/I9Dhln5l7xLt6gcMFtWXosYY+6V8g7IOIAecja8WrWg2duzbNVkT8PMN+mSoS
-gjMnp/vxQCa+NyXHTN1ja8k6IMaIjm20s4OZCLJJwHQ60KLPFubIRS0aG3n3VAIz
-ScLkmf/rehsF6mmgb9oZ7bZZQKAFrA==
-=aiOU
------END PGP SIGNATURE-----
-
---icdv5bytu7kohzlb--
