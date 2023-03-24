@@ -2,108 +2,183 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E6336C8274
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 17:36:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D5316C82D1
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 18:04:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229917AbjCXQgQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Mar 2023 12:36:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49448 "EHLO
+        id S230043AbjCXREq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Mar 2023 13:04:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230157AbjCXQgP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 12:36:15 -0400
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA31A1ADE5;
-        Fri, 24 Mar 2023 09:35:55 -0700 (PDT)
-Received: by mail-ed1-f52.google.com with SMTP id w9so10278034edc.3;
-        Fri, 24 Mar 2023 09:35:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679675753;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MrnVY7/JvbPqM6S2QNIaAO6FxZevsd4diMztBpYJlLU=;
-        b=mHpBQ1G5eprQRwSzwrwz3W0KK8/D1fh/rMMWIehNcO9FFYunZcb4i6pA2e6cH0xWhj
-         /apEHZs+5fiUCeJ2X3YTpxLZQdtvbhyL1tICbdxX8dz5hI1ovP8KLDDDY57y7gKHbBj7
-         Wv5Pi/8OOwTpDsxa//p58hNN5Wn3jgkr4aE+SQ+fxmpdEt3wgBv+vrdjowfp3vubWEiE
-         3Jvhnpm7YyEeZiqjxPhk1NKHiO68wWHhBKZFehQBbPYoeWqFv68+3IcOCN1ngpfkVOEy
-         Q3GH5GEQEN1j2FEfblNVwlruW0C6zz4QMhFdSqFu7RHdbPRsw2OwysChLCjunAAC2+aK
-         9deQ==
-X-Gm-Message-State: AAQBX9cvd41u4PVWIRK9LVvuQTjGYxu8llct5lk19mlm+lhCNMZCd4y0
-        ymzOk8Jp4oWVgzqjG0jLQloP1kF/czEtldTEd9nqe36FlyY=
-X-Google-Smtp-Source: AKy350bNkSHhwx2cbeDDe2roSx62l83DEWCfBLdnkVQ8HBwziYqo1eNVsJ+2YUorFLRaCht11FzjGydAHLizy4JLsBI=
-X-Received: by 2002:a17:907:d687:b0:93d:a14f:c9b4 with SMTP id
- wf7-20020a170907d68700b0093da14fc9b4mr1756331ejc.2.1679675753447; Fri, 24 Mar
- 2023 09:35:53 -0700 (PDT)
+        with ESMTP id S229729AbjCXREp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 13:04:45 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A97A51815C;
+        Fri, 24 Mar 2023 10:04:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=YZTvo4re7ukycagR5LNjBgnmgr5GpRxpdGMsq3Xv67c=; b=kh34JUjDbQxLs/xBxq75Puf/ts
+        f8PxI4lo6IOWLC9CMbESFCU5XCfy6v3vEV/lZlmJtdqZTSjXilgLgrhhB+Mhw10yS1xIS5lVclD4O
+        oUokrCd+URgeTHQq5ClBKQbwB0Xjom7NbHfTwIQOrnwnk0hwPvCH71blIk5ySCyDwuDQlmZEzTgyZ
+        Nnk5hpAs5TAvyDkIRJ8qQ22D02ayeRn/LJhGE19um9f0pVCNog6VwpXDKLJg8vDD9RDEAsAoAh8IP
+        yyhfj2KKqPLW8VntEKEaGVFIIJm4RcecYbaZW9UGbN1ZtJzY980bvMss1Tss4/8ZGT9M8ScBSRyzD
+        rJAEy9bw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39534)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1pfkq5-0007Ra-5C; Fri, 24 Mar 2023 17:04:29 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1pfkq1-0002av-Ns; Fri, 24 Mar 2023 17:04:25 +0000
+Date:   Fri, 24 Mar 2023 17:04:25 +0000
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jakub Kicinski <kuba@kernel.org>, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH RFC net-next 6/7] net: dsa: mv88e6xxx: provide software
+ node for default settings
+Message-ID: <ZB3YGWTWLYyecgw7@shell.armlinux.org.uk>
+References: <ZBrtqPW29NnxVoEc@shell.armlinux.org.uk>
+ <E1pex8f-00Dvo9-KT@rmk-PC.armlinux.org.uk>
+ <ZB24fDEqwx53Rthm@kuha.fi.intel.com>
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 24 Mar 2023 17:35:42 +0100
-Message-ID: <CAJZ5v0iQq07J-DPcwFWndfASgQdb1dgm=3buJ9cDYer9rJ4Cug@mail.gmail.com>
-Subject: [GIT PULL] Thermal control fixes for v6.3-rc4
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZB24fDEqwx53Rthm@kuha.fi.intel.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+On Fri, Mar 24, 2023 at 04:49:32PM +0200, Heikki Krogerus wrote:
+> Hi Russell,
+> 
+> On Wed, Mar 22, 2023 at 12:00:21PM +0000, Russell King (Oracle) wrote:
+> > +static struct fwnode_handle *mv88e6xxx_create_fixed_swnode(struct fwnode_handle *parent,
+> > +							   int speed,
+> > +							   int duplex)
+> > +{
+> > +	struct property_entry fixed_link_props[3] = { };
+> > +
+> > +	fixed_link_props[0] = PROPERTY_ENTRY_U32("speed", speed);
+> > +	if (duplex == DUPLEX_FULL)
+> > +		fixed_link_props[1] = PROPERTY_ENTRY_BOOL("full-duplex");
+> > +
+> > +	return fwnode_create_named_software_node(fixed_link_props, parent,
+> > +						 "fixed-link");
+> > +}
+> > +
+> > +static struct fwnode_handle *mv88e6xxx_create_port_swnode(phy_interface_t mode,
+> > +							  int speed,
+> > +							  int duplex)
+> > +{
+> > +	struct property_entry port_props[2] = {};
+> > +	struct fwnode_handle *fixed_link_fwnode;
+> > +	struct fwnode_handle *new_port_fwnode;
+> > +
+> > +	port_props[0] = PROPERTY_ENTRY_STRING("phy-mode", phy_modes(mode));
+> > +	new_port_fwnode = fwnode_create_software_node(port_props, NULL);
+> > +	if (IS_ERR(new_port_fwnode))
+> > +		return new_port_fwnode;
+> > +
+> > +	fixed_link_fwnode = mv88e6xxx_create_fixed_swnode(new_port_fwnode,
+> > +							  speed, duplex);
+> > +	if (IS_ERR(fixed_link_fwnode)) {
+> > +		fwnode_remove_software_node(new_port_fwnode);
+> > +		return fixed_link_fwnode;
+> > +	}
+> > +
+> > +	return new_port_fwnode;
+> > +}
+> 
+> That new fwnode_create_named_software_node() function looks like a
+> conflict waiting to happen - if a driver adds a node to the root level
+> (does not have to be root level), all the tests will pass because
+> there is only a single device, but when a user later tries the driver
+> with two devices, it fails, because the node already exist. But you
+> don't need that function at all.
 
-Please pull from the tag
+I think you're totally failing to explain how this can fail.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- thermal-6.3-rc4
+Let me reiterate what thestructure of the swnodes here is:
 
-with top-most commit 6babf38d894bec696761c10fbfccafceae76f4eb
+	root
+	`- node%d (%d allocated by root IDA)
+	   +- phy-mode property
+	   `- fixed-link
+	      +- speed property
+	      `- optional full-duplex property
 
- Merge branch 'thermal-acpi'
+If we have two different devices creating these nodes, then at the
+root level, they will end up having different root names. The
+"fixed-link" is a child of this node.
 
-on top of commit e8d018dd0257f744ca50a729e3d042cf2ec9da65
+swnode already allows multiple identical names at the sub-node
+level - each node ends up with its own IDA to allocate the generic
+"node%d" names from. So as soon as we have multiple nodes, they
+end up as this:
 
- Linux 6.3-rc3
+	root
+	+- node0
+	|  `- node 0
+	+- node1
+	|  `- node 0
+	+- node2
+	|  `- node 0
+	etc
 
-to receive thermal control fixes for 6.3-rc4.
+So, if we end up with two devices creating these at the same time,
+we end up with:
 
-These address two recent regressions related to thermal control.
+	root
+	+- nodeA (A allocated by root IDA)
+	|  +- phy-mode property
+	|  `- fixed-link
+	|     +- speed property
+	|     `- optional full-duplex property
+	`- nodeB (B allocated by root IDA, different from above)
+	   +- phy-mode property
+	   `- fixed-link
+	      +- speed property
+	      `- optional full-duplex property
 
-Specifics:
+Since the kobject is parented to the parent's kobject, what we
+end up with in sysfs is:
 
- - Restore the thermal core behavior regarding zero-temperature trip
-   points to avoid a driver regression (Ido Schimmel).
+	.../nodeA/fixed-link/speed
+	.../nodeB/fixed-link/speed
 
- - Fix a recent regression in the ACPI processor driver preventing it
-   from changing the number of CPU cooling device states exposed via
-   sysfs after the given CPU cooling device has been registered (Rafael
-   Wysocki).
+Thus, the "fixed-link" ndoes can _not_ conflict.
 
-Thanks!
+Please explain in detail where you think the conflict is, because
+so far no one has been able to counter my assertions that this is
+_safe_ with a proper full technical description of the problem.
+All I get is hand-wavey "this conflicts".
 
+Honestly, I'm getting sick of poor quality reviews... the next
+poor review that claims there's a conflict here without properly
+explain it will be told where to go.
 
----------------
-
-Ido Schimmel (1):
-      thermal: core: Restore behavior regarding invalid trip points
-
-Rafael J. Wysocki (4):
-      ACPI: processor: Reorder acpi_processor_driver_init()
-      thermal: core: Introduce thermal_cooling_device_present()
-      thermal: core: Introduce thermal_cooling_device_update()
-      ACPI: processor: thermal: Update CPU cooling devices on cpufreq
-policy changes
-
----------------
-
- drivers/acpi/processor_driver.c  |  12 ++---
- drivers/acpi/processor_thermal.c |  14 ++++--
- drivers/thermal/thermal_core.c   | 106 ++++++++++++++++++++++++++++++++++++---
- drivers/thermal/thermal_core.h   |   2 +
- drivers/thermal/thermal_sysfs.c  |  74 +++++++++++++++++++++++----
- include/linux/thermal.h          |   1 +
- 6 files changed, 183 insertions(+), 26 deletions(-)
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
