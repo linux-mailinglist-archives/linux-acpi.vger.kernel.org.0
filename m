@@ -2,50 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59ACF6C7949
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 09:01:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A3C46C7A99
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 10:00:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231231AbjCXIBB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Mar 2023 04:01:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47146 "EHLO
+        id S232021AbjCXJAY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Mar 2023 05:00:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231127AbjCXIBA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 04:01:00 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEF151E1EE
-        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 01:00:58 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pfcKK-0006Av-JZ; Fri, 24 Mar 2023 08:59:08 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pfcKG-006KZd-O5; Fri, 24 Mar 2023 08:59:04 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pfcKG-007XxX-0z; Fri, 24 Mar 2023 08:59:04 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Robert Moore <robert.moore@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        acpica-devel@lists.linuxfoundation.org, kernel@pengutronix.de
-Subject: [PATCH] ACPICA: Make check to install handler more obviously correct
-Date:   Fri, 24 Mar 2023 08:58:54 +0100
-Message-Id: <20230324075854.458341-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S231364AbjCXJAW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 05:00:22 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BBCE10D9
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 02:00:17 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id j18-20020a05600c1c1200b003ee5157346cso2689727wms.1
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 02:00:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679648415;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5xxjybCBQ7FBka5nE6E8+uHXCIz/6b/SCGTHJfPcbCM=;
+        b=a1FBd8hdYt0yM0X/QMw5JK93/6fmZkvcvOaCpGAhllGD9kZY3ocWprh/fBfy2T2rod
+         YkjH4UdxH2uedUuCvo+EkF57N3c7HVf3QBOceSd07Mza5R+OpESBolPUbeS2d8fEsBnh
+         OQSDXwfd2956PoRvrlESlWmo04/2c61Xl/bDa7ICS7G31P3ZvNNxX5D0+ZOcZrZ5tdVJ
+         2S9NsPv6/2vlegpFew239TZL4Ndvj2ZSLHjydzAhHLKc0SUYXBptCAACw1ytjJlvXLD2
+         ngcfW35TYBHM51xRfg++jvURD69Dmc0jU2GT+32k16t0vBRoghLroNVWI9Q6WKBRZRnc
+         Sc/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679648415;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5xxjybCBQ7FBka5nE6E8+uHXCIz/6b/SCGTHJfPcbCM=;
+        b=gpFe9rKvhocBRpe6mgOyel479SiNf2l3jbH7Q3zM/xg+Zuilka0US2b8/FtJulbFEV
+         ZWiuR8lQRPVdEB5AyB5uafNuTCCMnu7IaG2tjvQy0/R7J1sl97wL4gX4eLqstzTJyWZM
+         NAdD4LmLSh03E6sjAIQwlJ5UWPjzJe0j/5uROsNauXg4cHiU/7oHgnMzDzM7LCrZoWAT
+         tRq6XXtOpEmp177eq2H+0e0UnnlEL9PY8lV/TXWL0kxauvXiyoC2uKSMXZfUL3HfdEO3
+         6cFYE2/SklM5KE6el6SGbc/eqZ3RQSWA0gj376wqUdzvW3a2fCcSTgORhzbH5RQTDw8l
+         PMnA==
+X-Gm-Message-State: AO0yUKX4YysV2xanU9PZ/0GaWAmag1MghRCLz5RE20+M8I0EiA6V5iSd
+        Pa8fxaj/YrUKBJPue7HlimfjVw==
+X-Google-Smtp-Source: AK7set/G+BrnIBHzdKAcJLIchyTJ1+8LJ+VqEzbQ4F0KmkhucSNebeQVHkqJ+K4tuv21EwA1IHVe7Q==
+X-Received: by 2002:a7b:c459:0:b0:3eb:a4e:a2b2 with SMTP id l25-20020a7bc459000000b003eb0a4ea2b2mr1815337wmi.4.1679648415689;
+        Fri, 24 Mar 2023 02:00:15 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.152.149])
+        by smtp.gmail.com with ESMTPSA id n20-20020a7bc5d4000000b003ee10fb56ebsm4302953wmk.9.2023.03.24.02.00.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Mar 2023 02:00:15 -0700 (PDT)
+Message-ID: <78a9e002-ba18-c580-fe89-46f5653ea49d@linaro.org>
+Date:   Fri, 24 Mar 2023 10:00:10 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1162; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=yff8pJaSr2OOYqnudyAyXa+Ae+DvLs0YIYVHJWEVNEY=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBkHVg9+pNcCROv4lht0GMJvsBW8dN8DeisSpVHd hRZrRoE6wmJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZB1YPQAKCRCPgPtYfRL+ TiZbCAC6nqmRBRpIDbewDZx+i9jVtdSIsovIcGVys9Pz3HcVr+4q3uEN1I2J5LV1AO1tAXRXUCK VpcCprSBvEg88by6UjMk1QLyEN2MJYz8sMXNvoVSIqAmadm8u6fKFxPuhJs2BV1J9awB2IjJcZh MqKHCh/rhS2xa+LMI+cVzEtfm1K1NC0fBkvFrk2TNLjsblmHNYu3sI37gCwDdnXH357QH8WggS6 5jF2nFI5Pf7Sbcy11ZlaMBXZpSpIPiMtbNlEFxvmArF92tGRpjSsHji5YqDqRIaToGAj6OcDx0b /gDtFEsmcMyCBV0brySpSwS2fGsqg6MK8ql8udzeedPqlIYQ
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.9.0
+Subject: Re: [PATCH v7 3/6] PCI: Allow pci_bus_for_each_resource() to take
+ less arguments
+Content-Language: en-US
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+        "Maciej W. Rozycki" <macro@orcam.me.uk>,
+        Juergen Gross <jgross@suse.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Anatolij Gustschin <agust@denx.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+References: <20230323173610.60442-1-andriy.shevchenko@linux.intel.com>
+ <20230323173610.60442-4-andriy.shevchenko@linux.intel.com>
+From:   =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230323173610.60442-4-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,46 +111,25 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The loop
+On 23/3/23 18:36, Andy Shevchenko wrote:
+> Refactor pci_bus_for_each_resource() in the same way as it's done in
+> pci_dev_for_each_resource() case. This will allow to hide iterator
+> inside the loop, where it's not used otherwise.
+> 
+> No functional changes intended.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Reviewed-by: Krzysztof Wilczyński <kw@linux.com>
+> ---
+>   drivers/pci/bus.c                  |  7 +++----
+>   drivers/pci/hotplug/shpchp_sysfs.c |  8 ++++----
+>   drivers/pci/pci.c                  |  3 +--
+>   drivers/pci/probe.c                |  2 +-
+>   drivers/pci/setup-bus.c            | 10 ++++------
+>   include/linux/pci.h                | 17 +++++++++++++----
+>   6 files changed, 26 insertions(+), 21 deletions(-)
 
-	for (i = 0; i < ACPI_NUM_NOTIFY_TYPES; i++) {
-		if (handler_type & (i + 1)) {
-			...
-		}
-	}
+Nice.
 
-looks strange. Only with knowing that ACPI_NUM_NOTIFY_TYPES == 2 you can
-see that the two least significant bits are checked. Still replace
-
-	i + 1
-
-by
-
-	1 << i
-
-which shouldn't make a relevant difference to compiler and compiled
-code, but is easier to understand for a human code reader.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/acpi/acpica/evxface.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/acpica/evxface.c b/drivers/acpi/acpica/evxface.c
-index 18219abba108..d1b3411d2449 100644
---- a/drivers/acpi/acpica/evxface.c
-+++ b/drivers/acpi/acpica/evxface.c
-@@ -170,7 +170,7 @@ acpi_install_notify_handler(acpi_handle device,
- 	/* Install the handler at the list head(s) */
- 
- 	for (i = 0; i < ACPI_NUM_NOTIFY_TYPES; i++) {
--		if (handler_type & (i + 1)) {
-+		if (handler_type & (1 << i)) {
- 			handler_obj->notify.next[i] =
- 			    obj_desc->common_notify.notify_list[i];
- 
-
-base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
--- 
-2.39.2
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
