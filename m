@@ -2,106 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66EC66C7ACF
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 10:09:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56B826C7AE3
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Mar 2023 10:11:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231811AbjCXJJH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Mar 2023 05:09:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56926 "EHLO
+        id S232054AbjCXJKb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Mar 2023 05:10:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232050AbjCXJI4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 05:08:56 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE96211667
-        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 02:08:45 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id m6-20020a05600c3b0600b003ee6e324b19so507342wms.1
-        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 02:08:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1679648924;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Tl24kxujrDRhD/Pw1VxqIQuGTyFCOtjGuHoJAXogeUQ=;
-        b=KF7vhgGUy9iSCVz/2JMV95cnXXiwuET9tU7Rc7Ha4nCWlEtjrRR52AkRL3JFzV31N8
-         FvBvjTemrQpnvLLevT/7WRHrnq6vQTjJaal/zyxaU9lnhkPgeE4ZxxrwnrSeYP5XXpBc
-         4V7jndgKaulVRlh2NX+8aC2vQ132DHHauBUvo9d076iWPZ097+573LyCG57UyqnF/weQ
-         Wl0cANOGoKc/C+uNjEJ93bVBXPTZ7IkGYmTVHGwGkHxXXK4MlPEb6KAWoXYRQNmd8+4H
-         wQFnUqtZsqyWz/Sra/sxWYXnULQ6q5z/LE5eyV19WnrETSaXYW26jzEB3xzi7XfnA3JF
-         5cvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679648924;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tl24kxujrDRhD/Pw1VxqIQuGTyFCOtjGuHoJAXogeUQ=;
-        b=BHFK6F03D3DKZq8QdGSyx0wC4Gwo4NKbICONaE87LxWnYy+ibh20DAxoTHDkA+/fuI
-         z0W2x9AwMbKUa6Vq8aP8znyTz33i2cMQCMk/hIPIB2IRNtX34txnXZPX6dj3xIPpNBI7
-         wAnUUtmqMYsucb+ky/evhyGd+sCUk/z/YZAsdZjggQGyhClcPuTzYGJym2QYCUx9yylg
-         iilWsCHIMTVnHuhcWJI2cMa/p0AX9oGuY2DTwguk7jv6cM1bKsS+zac68Hy5hz48K5L/
-         QvMF52rrBapAkQ1wo+mVHG5+Sh0KNUwxQz/4ffuQQnGMz9x4oDR8BjLR63qCw26EMlSo
-         L/GA==
-X-Gm-Message-State: AO0yUKXJtAbFodp9Z4i5ciRPSZtQaCTZ6rOe+8fAJzSTYOW1QkzNqvYU
-        5n8+bTO42ZtaFPUJxnf+Vy3H0A==
-X-Google-Smtp-Source: AK7set/vvjAUaOTR5nW6O5SRtNoHqTNaeTjKsckBwHxq1C38GOKprexc3eF5NaIoYwtOC0bG/ZduEw==
-X-Received: by 2002:a05:600c:c4:b0:3ed:b048:73f4 with SMTP id u4-20020a05600c00c400b003edb04873f4mr1903820wmm.5.1679648924434;
-        Fri, 24 Mar 2023 02:08:44 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.152.149])
-        by smtp.gmail.com with ESMTPSA id z5-20020a7bc7c5000000b003ee1b2ab9a0sm4306039wmk.11.2023.03.24.02.08.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Mar 2023 02:08:43 -0700 (PDT)
-Message-ID: <1722e75c-bc06-4a34-5e12-fa3622ed86a3@linaro.org>
-Date:   Fri, 24 Mar 2023 10:08:39 +0100
+        with ESMTP id S231282AbjCXJKW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Mar 2023 05:10:22 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF4D11D931
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Mar 2023 02:10:15 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pfdQx-00028X-M7; Fri, 24 Mar 2023 10:10:03 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pfdQw-006Lek-87; Fri, 24 Mar 2023 10:10:02 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pfdQv-007Yh5-Hq; Fri, 24 Mar 2023 10:10:01 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        kernel@pengutronix.de, Pierre Asselin <pa@panix.com>
+Subject: [PATCH] ACPI: bus: Only call notify for a completely bound ACPI device
+Date:   Fri, 24 Mar 2023 10:09:55 +0100
+Message-Id: <20230324090955.462581-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.9.0
-Subject: Re: [PATCH v7 6/6] PCI: Make use of pci_resource_n()
-Content-Language: en-US
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
-        "Maciej W. Rozycki" <macro@orcam.me.uk>,
-        Juergen Gross <jgross@suse.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Anatolij Gustschin <agust@denx.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-References: <20230323173610.60442-1-andriy.shevchenko@linux.intel.com>
- <20230323173610.60442-7-andriy.shevchenko@linux.intel.com>
-From:   =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230323173610.60442-7-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2492; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=+1ASVMWYoTJJSET7TofNOtXqzWIt5AluaMDYWDrOPD4=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBkHWjixgPHIDwmgaWGQ05L4PDc9Q/Ph/JZPTshl 2FUBHH2isqJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZB1o4gAKCRCPgPtYfRL+ TvkOCACILlEc+n2fYlG9XAPm3ulSluBx3L7CSaq4P8Q14cE0YQEJj/CedZ+6JfMakolnAiSUfA6 1lL6Tppqpd1Ue7CQX79YsWG+W/kWarIM/tPVOe7VOejqOnOZRf0DCbRWr4t2pxIH/2l5X5oyQWP tc9TiMcj3ZJ4dPS3HCEokGsifTTWC0/R5jIE+PneMUF0JrxjLe34n9rIzfmSAWpX28xxxwFc1rw cf0WLsMNK4NJtz4xjQjGmIMKPAb0VdQj3oJbnlfmJK6nltWRhhkNtpp/E1hiPCxg2mEVfjywLs7 mdBcYL2O6GFQ9OJw5qjJESI06dj0URRkb92phcLioVxQiIH0
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -110,40 +53,62 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 23/3/23 18:36, Andy Shevchenko wrote:
-> Replace open-coded implementations of pci_resource_n() in pci.h.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->   include/linux/pci.h | 14 ++++++--------
->   1 file changed, 6 insertions(+), 8 deletions(-)
-> 
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index 70a4684d5f26..9539cf63fe5e 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -2006,14 +2006,12 @@ int pci_iobar_pfn(struct pci_dev *pdev, int bar, struct vm_area_struct *vma);
->    * for accessing popular PCI BAR info
->    */
->   #define pci_resource_n(dev, bar)	(&(dev)->resource[(bar)])
-> -#define pci_resource_start(dev, bar)	((dev)->resource[(bar)].start)
-> -#define pci_resource_end(dev, bar)	((dev)->resource[(bar)].end)
-> -#define pci_resource_flags(dev, bar)	((dev)->resource[(bar)].flags)
-> -#define pci_resource_len(dev,bar) \
-> -	((pci_resource_end((dev), (bar)) == 0) ? 0 :	\
-> -							\
-> -	 (pci_resource_end((dev), (bar)) -		\
-> -	  pci_resource_start((dev), (bar)) + 1))
-> +#define pci_resource_start(dev, bar)	(pci_resource_n(dev, bar)->start)
-> +#define pci_resource_end(dev, bar)	(pci_resource_n(dev, bar)->end)
-> +#define pci_resource_flags(dev, bar)	(pci_resource_n(dev, bar)->flags)
-> +#define pci_resource_len(dev,bar)					\
-> +	(pci_resource_end((dev), (bar)) ? 				\
-> +	 resource_size(pci_resource_n((dev), (bar))) : 0)
+Commit d6fb6ee1820c ("ACPI: bus: Drop driver member of struct
+acpi_device") removed acpi_device::driver in favour of struct
+acpi_device::dev.driver.
 
-Seems (to me) more logical to have this patch as "PCI: Introduce 
-pci_resource_n()" ordered before your patch #2 "PCI: Introduce 
-pci_dev_for_each_resource()".
+However there is a problem: While the two pointers are equivalent after
+the device is completely probed, there is a small time frame where
+acpi_device::dev->driver is already set but acpi_device::driver wasn't.
 
-Here as #6 or as #2:
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+The function acpi_bus_notify() used to have a check for
+acpi_device::driver that was changed to a check for adev->dev.driver in
+Commit d6fb6ee1820c.
+
+Pierre Asselin reports that starting with above change his laptop
+crashed during boot when on AC power. That's because acpi_bus_notify()
+is called in that small time frame (triggered by acpi_ac_add()) which
+results in a call to acpi_ac_notify while this function isn't ready yet.
+
+So in acpi_bus_notify() check for the device being bound (which becomes
+true only after the acpi probe call succeeds) instead of for
+acpi_device::dev.driver.
+
+Note that usually you have to hold the device lock to call
+device_is_bound(). I don't think this is the case here, so there likely
+is a race condition. The problem might be that the driver unbinds after
+the check but before adev->dev.driver is evaluated. However this race
+already existed before commit d6fb6ee1820c, so the change here is a net
+improvement even though it might not result in a completely correct
+handling.
+
+A similar check in the acpi sysfs code is also converted. This is less
+critical as it happens in code that is run when a sysfs file is
+accessed. That shouldn't happen for a device that isn't bound.
+
+Fixes: d6fb6ee1820c ("ACPI: bus: Drop driver member of struct acpi_device")
+Reported-by: Pierre Asselin <pa@panix.com>
+Link: https://lore.kernel.org/linux-acpi/9f6cba7a8a57e5a687c934e8e406e28c.squirrel@mail.panix.com
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/acpi/bus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index 9531dd0fef50..a5a8f82981ce 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -518,7 +518,7 @@ static void acpi_bus_notify(acpi_handle handle, u32 type, void *data)
+ 	if (!adev)
+ 		goto err;
+ 
+-	if (adev->dev.driver) {
++	if (device_is_bound(&adev->dev)) {
+ 		struct acpi_driver *driver = to_acpi_driver(adev->dev.driver);
+ 
+ 		if (driver && driver->ops.notify &&
+
+base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+-- 
+2.39.2
+
