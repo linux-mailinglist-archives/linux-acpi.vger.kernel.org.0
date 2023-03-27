@@ -2,49 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01F726CADB4
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Mar 2023 20:45:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A75506CADC7
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Mar 2023 20:47:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229479AbjC0Sph convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 27 Mar 2023 14:45:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33486 "EHLO
+        id S229655AbjC0Sre convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 27 Mar 2023 14:47:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229525AbjC0Spf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Mar 2023 14:45:35 -0400
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B57D511B;
-        Mon, 27 Mar 2023 11:45:29 -0700 (PDT)
-Received: by mail-ed1-f41.google.com with SMTP id w9so40211343edc.3;
-        Mon, 27 Mar 2023 11:45:29 -0700 (PDT)
+        with ESMTP id S229611AbjC0Sre (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Mar 2023 14:47:34 -0400
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C7B7A3;
+        Mon, 27 Mar 2023 11:47:33 -0700 (PDT)
+Received: by mail-ed1-f53.google.com with SMTP id cn12so40216323edb.4;
+        Mon, 27 Mar 2023 11:47:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679942728;
+        d=1e100.net; s=20210112; t=1679942852;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=N+foyrv0NPxQYFYNXu1z87ZeyW7A9es9zcBbNUhhtzU=;
-        b=ILG6XqMfhx1dSbFz5TG5AyzDdV/dwa0eaB4P2rouIf/ena71aCNGRemyfx1k4Hb4aT
-         CjebUQQ6vTLcstGMPYdtLDUj1CBV6Snz3JqNBPHqREs5jH/ncWytxzUk2vBSTgiN4SSp
-         WvusyphhLV80WD5ZlnyDQYqWfayAkiK74o0CiRBYAWlrF5cL6o0lxLtl+KwqcW6dNjXG
-         pIyjjKArIcrb2MOZV3gX6I3IuherGQQklHOfiDwHNnjmm3saWb/Uo5XNB6orFh3/X4/o
-         aZFJ92/94i9QOEvtj8cbwyx1z2Z7y0JZwojwp3uyJeKFWwKW9j4KK+5uy/MpSla9Pg58
-         nWog==
-X-Gm-Message-State: AAQBX9eZvGRTqGd1W9M6FV7l66iGQZukXfeecGrJEcGlYK/XNVp/31AD
-        9dx8Dy4EkuDSEOfhxRPyQ6k70tR/j+hhYHg1vCU=
-X-Google-Smtp-Source: AKy350btpilZc+iXong2/3h7WtnYlg9nGYoTCcoNTiL94NlUGLd0H767OuFoyxdjPvme5UCSEBwunl/LvXIuVMg2Rcg=
-X-Received: by 2002:a50:d49e:0:b0:502:148d:9e1e with SMTP id
- s30-20020a50d49e000000b00502148d9e1emr6362846edi.3.1679942728143; Mon, 27 Mar
- 2023 11:45:28 -0700 (PDT)
+        bh=4cCHTNdmx+dCtz9EDkrSJRp3w3F7nMooVAktpNgobt0=;
+        b=AlCJl78ee+sraSMqlpUqnbt0xyexkjssZmbS6CABhyt3XxzfVOAWqusCCn34PQB5JK
+         p+V8/IvL6bHM7Pm2obXh92VOkVs4yh8+gG9V8sYDw5bQPnoKlD+x5zF8rNbH2zu6kgm7
+         65KFL/S0c+kwlGwdHB6mZ9jCIkh5G4VYt26QT3yVY1fH+90PzikEdjBYGZpugUQjZX7O
+         92laK148dLZjVGABTJm3IQAdAoQEAZCbjahALVElR5hqelRe4ebFSbciDw8f8lqBHclx
+         z+QWoKnBZpmhFykinNyiO7K/i7Fx3LtFIVejq4uEkOY5f7/LJjQNdXiOXUAp5oYov75T
+         XpqA==
+X-Gm-Message-State: AAQBX9edCbzx1B7McH92j0rIgWBiGrWuwYg3Hls3HARuAv4yV7eBAfb9
+        uJvitoGYnRamNapxGqC+hUFyLbSBaC6nW7j7T/Y=
+X-Google-Smtp-Source: AKy350YI4IY1e3atIoHZawwZ9Y8RzJaMpgrAZR/oQkFZadXFcUZijCDpD+pzAQUHz4OHz1J1p06YSbN2Jha/46qeXm8=
+X-Received: by 2002:a17:907:d48d:b0:93e:c1ab:ae67 with SMTP id
+ vj13-20020a170907d48d00b0093ec1abae67mr5274858ejc.2.1679942851520; Mon, 27
+ Mar 2023 11:47:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230322191313.22804-1-sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20230322191313.22804-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+References: <20230317073310.4237-1-xueshuai@linux.alibaba.com> <20230323015357.8481-1-xueshuai@linux.alibaba.com>
+In-Reply-To: <20230323015357.8481-1-xueshuai@linux.alibaba.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 27 Mar 2023 20:45:16 +0200
-Message-ID: <CAJZ5v0i3TWajRr1bMOVj7o7aCEEurt4b_SnyPCndJL8r3Mad7Q@mail.gmail.com>
-Subject: Re: [PATCH v3] ACPI: sysfs: Enable ACPI sysfs support for CCEL records
-To:     Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc:     Rafael J Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 27 Mar 2023 20:47:20 +0200
+Message-ID: <CAJZ5v0hKGVKt=Nks+74C79CQy2ofBO_rhrPUMxJiohTsYgTHcA@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: APEI: EINJ: warn on invalid argument when
+ explicitly indicated by platform
+To:     Shuai Xue <xueshuai@linux.alibaba.com>
+Cc:     tony.luck@intel.com, baolin.wang@linux.alibaba.com,
+        benjamin.cheatham@amd.com, bp@alien8.de, dan.j.williams@intel.com,
+        james.morse@arm.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rafael@kernel.org,
+        zhuo.song@linux.alibaba.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
@@ -57,66 +60,59 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 22, 2023 at 8:13 PM Kuppuswamy Sathyanarayanan
-<sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
+On Thu, Mar 23, 2023 at 2:54 AM Shuai Xue <xueshuai@linux.alibaba.com> wrote:
 >
-> The Confidential Computing Event Log (CCEL) table provides the address
-> and length of the CCEL records area in UEFI reserved memory.
+> OSPM executes an EXECUTE_OPERATION action to instruct the platform to begin
+> the injection operation, then executes a GET_COMMAND_STATUS action to
+> determine the status of the completed operation. The ACPI Specification
+> documented error codes[1] are:
 >
-> To allow user space access to these records, expose a sysfs interface
-> similar to the BERT table.
+>         0 = Success (Linux #define EINJ_STATUS_SUCCESS)
+>         1 = Unknown failure (Linux #define EINJ_STATUS_FAIL)
+>         2 = Invalid Access (Linux #define EINJ_STATUS_INVAL)
 >
-> More details about the CCEL table can be found in the ACPI specification
-> r6.5 [1], sec 5.2.34.
+> The original code report -EBUSY for both "Unknown Failure" and "Invalid
+> Access" cases. Actually, firmware could do some platform dependent sanity
+> checks and returns different error codes, e.g. "Invalid Access" to indicate
+> to the user that the parameters they supplied cannot be used for injection.
 >
-> Link: https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Model.html#cc-event-log-acpi-table # [1]
-> Co-developed-by: Haibo Xu <haibo1.xu@intel.com>
-> Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
-> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> To this end, fix to return -EINVAL in the __einj_error_inject() error
+> handling case instead of always -EBUSY, when explicitly indicated by the
+> platform in the status of the completed operation.
+>
+> [1] ACPI Specification 6.5 18.6.1. Error Injection Table
+>
+> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+> Reviewed-by: Tony Luck <tony.luck@intel.com>
 > ---
+> changelog since v1:
+> - elaborate commit log based on follow up discussion with Tony
+> - pick up Reviewed-by tag of Tony
+> ---
+>  drivers/acpi/apei/einj.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 >
-> Changes since v2:
->  * Fixed the commit log as per review suggestion.
->
-> Changes since v1:
->  * Removed unnecessary parenthesis as per Rafael's suggestion.
->
->  drivers/acpi/sysfs.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
->
-> diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-> index 7f4ff56c9d42..687524b50085 100644
-> --- a/drivers/acpi/sysfs.c
-> +++ b/drivers/acpi/sysfs.c
-> @@ -458,11 +458,28 @@ static int acpi_bert_data_init(void *th, struct acpi_data_attr *data_attr)
->         return sysfs_create_bin_file(tables_data_kobj, &data_attr->attr);
->  }
->
-> +static int acpi_ccel_data_init(void *th, struct acpi_data_attr *data_attr)
-> +{
-> +       struct acpi_table_ccel *ccel = th;
-> +
-> +       if (ccel->header.length < sizeof(struct acpi_table_ccel) ||
-> +           !ccel->log_area_start_address || !ccel->log_area_minimum_length) {
-> +               kfree(data_attr);
+> diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
+> index b4373e575660..fa0b4320312e 100644
+> --- a/drivers/acpi/apei/einj.c
+> +++ b/drivers/acpi/apei/einj.c
+> @@ -489,9 +489,15 @@ static int __einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
+>         if (rc)
+>                 return rc;
+>         val = apei_exec_ctx_get_output(&ctx);
+> -       if (val != EINJ_STATUS_SUCCESS)
+> +       if (val == EINJ_STATUS_FAIL)
+>                 return -EBUSY;
+> +       else if (val == EINJ_STATUS_INVAL)
 > +               return -EINVAL;
-> +       }
-> +       data_attr->addr = ccel->log_area_start_address;
-> +       data_attr->attr.size = ccel->log_area_minimum_length;
-> +       data_attr->attr.attr.name = "CCEL";
-> +
-> +       return sysfs_create_bin_file(tables_data_kobj, &data_attr->attr);
-> +}
-> +
->  static struct acpi_data_obj {
->         char *name;
->         int (*fn)(void *, struct acpi_data_attr *);
->  } acpi_data_objs[] = {
->         { ACPI_SIG_BERT, acpi_bert_data_init },
-> +       { ACPI_SIG_CCEL, acpi_ccel_data_init },
->  };
 >
->  #define NUM_ACPI_DATA_OBJS ARRAY_SIZE(acpi_data_objs)
+> +       /*
+> +        * The error is injected into the platform successfully, then it needs
+> +        * to trigger the error.
+> +        */
+>         rc = apei_exec_run(&ctx, ACPI_EINJ_GET_TRIGGER_TABLE);
+>         if (rc)
+>                 return rc;
 > --
 
 Applied as 6.4 material, thanks!
