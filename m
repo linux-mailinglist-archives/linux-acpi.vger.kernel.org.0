@@ -2,80 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 946C16CA08A
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Mar 2023 11:54:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C85596CA0F1
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Mar 2023 12:11:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232953AbjC0JyA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Mar 2023 05:54:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50066 "EHLO
+        id S233455AbjC0KLb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Mar 2023 06:11:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230017AbjC0JyA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Mar 2023 05:54:00 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6741F49EB;
-        Mon, 27 Mar 2023 02:53:59 -0700 (PDT)
+        with ESMTP id S233461AbjC0KLa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Mar 2023 06:11:30 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A4FD49E2;
+        Mon, 27 Mar 2023 03:11:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679910839; x=1711446839;
+  t=1679911886; x=1711447886;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=S5NORdcXrq6M/oYcEA9ATUWhbN5J7ZlrbX5LXy6ouC8=;
-  b=Ef9AMlMQ6a0/w7VQ0QNrJrYw9ucieHQm2KHKC3jQT7SjOnwMVjeCol8K
-   R2fIYK2dKruuDK4bGMBi31ZJXd1YdG5cZRwxDeTWjbXR2KYX26XtO0e+B
-   uKCk7aRliEej0/oqR1CoosCU9wErdBZ01H8t4IymryGLt8HWrdY3n7DOx
-   pmpSGxxUx+7DF9Fd+Iaa4W8zpnQjvbKOGHh77AQl1M9d+9HW38Yxtz/Ix
-   v93NKpKcUD+sOVKgv3GHg3HlASZZB29ZmZyS5YOrduOXP+c7A7qb+9hB6
-   yo3oHK5Kt9qotFThYg7QlNKLCW87gjbgEaBp9bwUXLaDwnPIZ1g2ryvP9
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10661"; a="320626103"
+  bh=AFVzYvVscPBltqD3h18pegQlgEPHmun/Xuta2F8qlQs=;
+  b=HyFWB70bCHkRkdLVYyl67ybl5NQNsX112NadxemVSCmN0DE6CblvtmGG
+   3b9lL8kSzl9c0Xf6WuGYuL1mUK7ZJ7nNgFPqiXF0Gu9HKMEJuH9M7t8TY
+   MP9NClOL9nS4+2c1+dIIGWJKJTosGGd3o0B7uylF0aLodgjOQgXGN65lu
+   6WHCyBHKyVP4L5+AdPv0KzmucQuIp5fwTKrTki+XZ5G5GpN55PHUMYpBD
+   nhptd+jcuMMvTNeYbxG9aYZAZ61xYyfaqV2wg25ChsOsf1YU1pY3g5giQ
+   4AMGvD0rO3ZgdvsaDKpyW8eo9pBRB1Tmv7DDVLKFR9EXSJmyX71BjJtZ+
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10661"; a="367972839"
 X-IronPort-AV: E=Sophos;i="5.98,294,1673942400"; 
-   d="scan'208";a="320626103"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2023 02:53:59 -0700
+   d="scan'208";a="367972839"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2023 03:11:24 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10661"; a="683407714"
+X-IronPort-AV: E=McAfee;i="6600,9927,10661"; a="716025223"
 X-IronPort-AV: E=Sophos;i="5.98,294,1673942400"; 
-   d="scan'208";a="683407714"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2023 02:53:57 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-        by kekkonen.fi.intel.com (Postfix) with SMTP id 4071511F930;
-        Mon, 27 Mar 2023 12:53:54 +0300 (EEST)
-Date:   Mon, 27 Mar 2023 12:53:54 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v1 1/1] ACPI: property: Refactor
- acpi_data_prop_read_single()
-Message-ID: <ZCFnssNwMgjKCX9L@kekkonen.localdomain>
-References: <20230324114146.4037-1-andriy.shevchenko@linux.intel.com>
+   d="scan'208";a="716025223"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001.jf.intel.com with ESMTP; 27 Mar 2023 03:11:22 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pgjou-009Af5-2v;
+        Mon, 27 Mar 2023 13:11:20 +0300
+Date:   Mon, 27 Mar 2023 13:11:20 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: Re: [PATCH v1 1/1] device property: Remove unused struct net_device
+ forward declaration
+Message-ID: <ZCFryP+yZ7w38Ix9@smile.fi.intel.com>
+References: <20230323151519.58479-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230324114146.4037-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20230323151519.58479-1-andriy.shevchenko@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+On Thu, Mar 23, 2023 at 05:15:19PM +0200, Andy Shevchenko wrote:
+> There is no users in the property.h for the struct net_device.
+> Remove the latter for good.
 
-Thanks for the patch.
+Oh, this seems unfortunate as it doesn't Cc Greg. Folks, shall we add
+the header to "DRIVER CORE, KOBJECTS, DEBUGFS AND SYSFS"?
 
-On Fri, Mar 24, 2023 at 01:41:46PM +0200, Andy Shevchenko wrote:
-> Refactor acpi_data_prop_read_single() for decreased indentation
-> and better structure. No functional changes intended.
-> 
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> ---
+>  include/linux/property.h | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index ee9cc1710d82..1dff38e930fc 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -16,7 +16,6 @@
+>  #include <linux/types.h>
+>  
+>  struct device;
+> -struct net_device;
+>  
+>  enum dev_prop_type {
+>  	DEV_PROP_U8,
 
 -- 
-Sakari Ailus
+With Best Regards,
+Andy Shevchenko
+
+
