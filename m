@@ -2,57 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 533876CB02A
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Mar 2023 22:57:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A16DA6CB0D5
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Mar 2023 23:44:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229862AbjC0U55 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Mar 2023 16:57:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46580 "EHLO
+        id S229658AbjC0VoF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Mar 2023 17:44:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbjC0U54 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Mar 2023 16:57:56 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 921FA83;
-        Mon, 27 Mar 2023 13:57:55 -0700 (PDT)
+        with ESMTP id S229501AbjC0VoE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Mar 2023 17:44:04 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52C751FF2;
+        Mon, 27 Mar 2023 14:44:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679950675; x=1711486675;
-  h=date:from:to:cc:subject:message-id:reply-to:mime-version:
-   in-reply-to;
-  bh=JvMjkqlYjyn1Sy3gcj9zhxlhSqvZYPWbGY9kN9VOl/w=;
-  b=ghBNBfiosNRkw2Q4ntqrv3uD5BQR2QehUNYPy7jb4DnbeYnWqsYpkQ6X
-   9tJEadJemmcEvmviOeYo+wln4j45TBT+btIs44ax8XDDljufEwesji+CO
-   02HPW8WzEqI1mXB0CCyfkTOsKIQnHY60zaPzeER+wV38M7f3jEoyJ9DX4
-   r2qGPYJUMnAt3sqPLxTy2WVc6Z8L3I6sA7dMumL47S7Yudld/HmV9y8+q
-   TD2HklbEKqd7LrvptVukbEQN/EzW1EcXPpVkB7DH2WBkW6peZ/37OndgS
-   iOL4Mk7PdtPIVaglq9iamGyFeA1SRElFzntJIFaMms97OYASwRfQkgadh
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10662"; a="320789119"
+  t=1679953443; x=1711489443;
+  h=subject:from:to:cc:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=CtKXQqajNNgRhkF3MayJ//12i6vxPvwBv2iZSQaYSmI=;
+  b=TcTOl7CSOqtAzmz2zd5o/0ofEAHFoTWQX80O2A0YpnvrLbvYIlyUjx5w
+   SxKTCL+hyNfcobsNELbH4ib5NexVIcMYKsXOaUsW98yoZkUdPbYr9UvQ4
+   3z3Hx22TJ2bKNewDz4jc+kLNDculeBGwHlwfnV9tfpPD9g/aCB0hbf6Xf
+   ksJTzW7ky3J5ETUBj5G8LFbMQz1duReZXO3mu0AYcMy+3fW23Chqnmj/A
+   qg4KFc/1pH3whO1hfgvm2CwMv8DTBX8FgllEGfZRfASX81Bfm21NfWZPH
+   A3PgauGwLIXytBjGL8rOPbNw0t0D4o71w3YZd8Syu+uEMPTUWRFlMHEnR
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10662"; a="339120526"
 X-IronPort-AV: E=Sophos;i="5.98,295,1673942400"; 
-   d="scan'208";a="320789119"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2023 13:57:55 -0700
+   d="scan'208";a="339120526"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2023 14:44:03 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10662"; a="677105645"
+X-IronPort-AV: E=McAfee;i="6600,9927,10662"; a="772883194"
 X-IronPort-AV: E=Sophos;i="5.98,295,1673942400"; 
-   d="scan'208";a="677105645"
-Received: from ideak-desk.fi.intel.com ([10.237.72.58])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2023 13:57:52 -0700
-Date:   Mon, 27 Mar 2023 23:57:48 +0300
-From:   Imre Deak <imre.deak@intel.com>
-To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>
-Subject: Re: [PATCH v1 3/4] thermal: core: Introduce
- thermal_cooling_device_update()
-Message-ID: <ZCIDTLFt27Ei7+V6@ideak-desk.fi.intel.com>
-Reply-To: imre.deak@intel.com
+   d="scan'208";a="772883194"
+Received: from djiang5-mobl3.amr.corp.intel.com (HELO [192.168.1.177]) ([10.212.91.66])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2023 14:44:02 -0700
+Subject: [PATCH v2 00/21] cxl: Add support for QTG ID retrieval for CXL
+ subsystem
+From:   Dave Jiang <dave.jiang@intel.com>
+To:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org
+Cc:     Dan Williams <dan.j.williams@intel.com>, dan.j.williams@intel.com,
+        ira.weiny@intel.com, vishal.l.verma@intel.com,
+        alison.schofield@intel.com, rafael@kernel.org, lukas@wunner.de
+Date:   Mon, 27 Mar 2023 14:44:02 -0700
+Message-ID: <167995336797.2857312.539473939839316778.stgit@djiang5-mobl3>
+User-Agent: StGit/1.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <10247847.nUPlyArG6x@kreacher>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
@@ -62,79 +60,146 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+v2:
+- Please see specific patches for log entries addressing comments from v1.
+- Removed ACPICA code usages.
+- Removed PCI subsystem helpers for latency and bandwidth.
+- Add CXL switch CDAT parsing support (SSLBIS)
+- Add generic port SRAT+HMAT support (ACPI)
+- Export a single QTG ID via sysfs per memory device (Dan)
+- Provide rest of DSMAS range info in debugfs (Dan)
 
-this leads to the stacktrace below triggered by
-lockdep_assert_held(&cdev->lock) in cooling_device_stats_setup(), and
 
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index 566df4522b885..132175b14814f 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -918,7 +918,9 @@ __thermal_cooling_device_register(struct device_node *np,
- 	if (ret)
- 		goto out_cdev_type;
- 
-+	mutex_lock(&cdev->lock);
- 	thermal_cooling_device_setup_sysfs(cdev);
-+	mutex_unlock(&cdev->lock);
- 
- 	ret = dev_set_name(&cdev->device, "cooling_device%d", cdev->id);
- 	if (ret)
+Hi Rafael, please review the relevant patches to ACPI: 13/18, 14/18. Thank you!
+If they are ok, Dan can take them through the CXL tree for upstream merging.
+These patches are different than what was posted in v1. I've removed ACPICA usages
+from v1. The two new patches adds the SRAT Generic Port Affinity Structure parsing
+in order to store the device handle that correlates to the proximity domains
+exported by the SRAT table and ties that to the performance data that's exported by
+the HMAT.
 
-fixed it up for me, but not sure if it's the correct fix.
+This series adds the retrieval of QoS Throttling Group (QTG) IDs for the CXL Fixed
+Memory Window Structure (CFMWS) and the CXL memory device. It provides the QTG IDs
+to user space to provide some guidance with putting the proper DPA range under the
+appropriate CFMWS window for a hot-plugged CXL memory device.
 
---Imre
+The CFMWS structure contains a QTG ID that is associated with the memory window that the
+structure exports. On Linux, the CFMWS is represented as a CXL root decoder. The QTG
+ID will be attached to the CXL root decoder and exported as a sysfs attribute (qtg_id).
 
-[    4.662358] ------------[ cut here ]------------
-[    4.662361] WARNING: CPU: 3 PID: 1 at drivers/thermal/thermal_sysfs.c:879 cooling_device_stats_setup+0xb4/0xc0
-[    4.662370] Modules linked in:
-[    4.662375] CPU: 3 PID: 1 Comm: swapper/0 Tainted: G          I        6.3.0-rc4-imre+ #771
-[    4.662379] Hardware name: Intel Corporation Shark Bay Client platform/Flathead Creek Crb, BIOS HSWLPTU1.86C.0109.R03.1301282055 01/28/2013
-[    4.662382] RIP: 0010:cooling_device_stats_setup+0xb4/0xc0
-[    4.662387] Code: 89 1d 58 52 36 01 5b 41 5c 41 5d 5d c3 cc cc cc cc 48 8d bf 18 05 00 00 be ff ff ff ff e8 f4 d2 3e 00 85 c0 0f 85 6f ff ff ff <0f> 0b e9 68 ff ff ff 0f 1f 44 00 00 90 90 90 90 90 90 90 90 90 90
-[    4.662390] RSP: 0000:ffff9f48c0057b30 EFLAGS: 00010246
-[    4.662395] RAX: 0000000000000000 RBX: ffff8fc381ca9800 RCX: 0000000000000000
-[    4.662398] RDX: 0000000000000000 RSI: ffffffff94ad1d28 RDI: ffffffff94b58cc6
-[    4.662401] RBP: ffff9f48c0057b48 R08: 0000000000000004 R09: 0000000000000000
-[    4.662404] R10: ffff8fc381c77cd0 R11: 0000000000000000 R12: 0000000000000002
-[    4.662406] R13: ffff8fc381ca9800 R14: ffff8fc381b0a000 R15: 0000000000000000
-[    4.662409] FS:  0000000000000000(0000) GS:ffff8fc6b5580000(0000) knlGS:0000000000000000
-[    4.662412] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    4.662415] CR2: 0000000000000000 CR3: 0000000283856001 CR4: 00000000001706e0
-[    4.662418] Call Trace:
-[    4.662421]  <TASK>
-[    4.662427]  thermal_cooling_device_setup_sysfs+0x12/0x30
-[    4.662433]  __thermal_cooling_device_register+0x195/0x410
-[    4.662442]  thermal_cooling_device_register+0x19/0x20
-[    4.662446]  acpi_fan_probe+0xd7/0x5a0
-[    4.662458]  ? acpi_match_device_ids+0x12/0x20
-[    4.662464]  ? acpi_dev_pm_attach+0x41/0x110
-[    4.662473]  platform_probe+0x48/0xc0
-[    4.662481]  really_probe+0x1be/0x420
-[    4.662487]  __driver_probe_device+0x8c/0x190
-[    4.662493]  driver_probe_device+0x24/0x90
-[    4.662498]  __driver_attach+0xf7/0x200
-[    4.662503]  ? __pfx___driver_attach+0x10/0x10
-[    4.662507]  bus_for_each_dev+0x80/0xd0
-[    4.662516]  driver_attach+0x1e/0x30
-[    4.662522]  bus_add_driver+0x11f/0x230
-[    4.662530]  driver_register+0x5e/0x120
-[    4.662534]  ? __pfx_acpi_fan_driver_init+0x10/0x10
-[    4.662540]  __platform_driver_register+0x1e/0x30
-[    4.662545]  acpi_fan_driver_init+0x17/0x20
-[    4.662549]  do_one_initcall+0x61/0x280
-[    4.662559]  ? debug_smp_processor_id+0x17/0x20
-[    4.662568]  kernel_init_freeable+0x411/0x640
-[    4.662582]  ? __pfx_kernel_init+0x10/0x10
-[    4.662589]  kernel_init+0x1b/0x1f0
-[    4.662594]  ? __pfx_kernel_init+0x10/0x10
-[    4.662599]  ret_from_fork+0x2c/0x50
-[    4.662615]  </TASK>
-[    4.662618] irq event stamp: 506869
-[    4.662620] hardirqs last  enabled at (506875): [<ffffffff9338e2d8>] __up_console_sem+0x68/0x80
-[    4.662625] hardirqs last disabled at (506880): [<ffffffff9338e2bd>] __up_console_sem+0x4d/0x80
-[    4.662628] softirqs last  enabled at (504698): [<ffffffff932de49f>] __irq_exit_rcu+0xbf/0x140
-[    4.662633] softirqs last disabled at (504689): [<ffffffff932de49f>] __irq_exit_rcu+0xbf/0x140
-[    4.662636] ---[ end trace 0000000000000000 ]---
-[    4.662779] ------------[ cut here ]------------
+The QTG ID for a device is retrieved via sending a _DSM method to the ACPI0017 device.
+The _DSM expects an input package of 4 DWORDS that contains the read latency, write
+latency, read bandwidth, and write banwidth. These are the caluclated numbers for the
+path between the CXL device and the CXL host bridge (HB). The QTG ID is also exported
+as a sysfs attribute under the mem device memory type:
+/sys/bus/cxl/devices/memX/qtg_id
+Only the first QTG ID is exported. The rest of the information can be found under
+/sys/kernel/debug/cxl/memX/qtgmap where all the DPA ranges with the correlated QTG ID
+are displayed. Each DSMAS from the device CDAT will provide a DPA range.
+
+The latency numbers are the aggregated latencies for the path between the CXL device and
+the CPU. If a CXL device is directly attached to the CXL HB, the latency
+would be the aggregated latencies from the device Coherent Device Attribute Table (CDAT),
+the caluclated PCIe link latency between the device and the HB, and the generic port data
+from ACPI SRAT+HMAT. The bandwidth in this configuration would be the minimum between the
+CDAT bandwidth number, link bandwidth between the device and the HB, and the bandwidth data
+from the generic port data via ACPI SRAT+HMAT.
+
+If a configuration has a switch in between then the latency would be the aggregated
+latencies from the device CDAT, the link latency between device and switch, the
+latency from the switch CDAT, the link latency between switch and the HB, and the
+generic port latency between the CPU and the CXL HB. The bandwidth calculation would be the
+min of device CDAT bandwidth, link bandwith between device and switch, switch CDAT
+bandwidth, the link bandwidth between switch and HB, and the generic port bandwidth
+
+There can be 0 or more switches between the CXL device and the CXL HB. There are detailed
+examples on calculating bandwidth and latency in the CXL Memory Device Software Guide [4].
+
+The CDAT provides Device Scoped Memory Affinity Structures (DSMAS) that contains the
+Device Physical Address (DPA) range and the related Device Scoped Latency and Bandwidth
+Informat Stuctures (DSLBIS). Each DSLBIS provides a latency or bandwidth entry that is
+tied to a DSMAS entry via a per DSMAS unique DSMAD handle.
+
+This series is based on Lukas's latest DOE changes [5]. Kernel branch with all the code can
+be retrieved here [6] for convenience.
+
+Test setup is done with runqemu genport support branch [6]. The setup provides 2 CXL HBs
+with one HB having a CXL switch underneath. It also provides generic port support detailed
+below.
+
+A hacked up qemu branch is used to support generic port SRAT and HMAT [7].
+
+To create the appropriate HMAT entries for generic port, the following qemu paramters must
+be added:
+
+-object genport,id=$X -numa node,genport=genport$X,nodeid=$Y,initiator=$Z
+-numa hmat-lb,initiator=$Z,target=$X,hierarchy=memory,data-type=access-latency,latency=$latency
+-numa hmat-lb,initiator=$Z,target=$X,hierarchy=memory,data-type=access-bandwidth,bandwidth=$bandwidthM
+for ((i = 0; i < total_nodes; i++)); do
+	for ((j = 0; j < cxl_hbs; j++ )); do	# 2 CXL HBs
+		-numa dist,src=$i,dst=$X,val=$dist
+	done
+done
+
+See the genport run_qemu branch for full details.
+
+[1]: https://www.computeexpresslink.org/download-the-specification
+[2]: https://uefi.org/sites/default/files/resources/Coherent%20Device%20Attribute%20Table_1.01.pdf
+[3]: https://uefi.org/sites/default/files/resources/ACPI_Spec_6_5_Aug29.pdf
+[4]: https://cdrdv2-public.intel.com/643805/643805_CXL%20Memory%20Device%20SW%20Guide_Rev1p0.pdf
+[5]: https://lore.kernel.org/linux-cxl/20230313195530.GA1532686@bhelgaas/T/#t
+[6]: https://git.kernel.org/pub/scm/linux/kernel/git/djiang/linux.git/log/?h=cxl-qtg
+[7]: https://github.com/pmem/run_qemu/tree/djiang/genport
+[8]: https://github.com/davejiang/qemu/tree/genport
+
+---
+
+Dave Jiang (21):
+      cxl: Export QTG ids from CFMWS to sysfs
+      cxl: Add checksum verification to CDAT from CXL
+      cxl: Add support for reading CXL switch CDAT table
+      cxl: Add common helpers for cdat parsing
+      cxl: Add callback to parse the DSMAS subtables from CDAT
+      cxl: Add callback to parse the DSLBIS subtable from CDAT
+      cxl: Add callback to parse the SSLBIS subtable from CDAT
+      cxl: Add support for _DSM Function for retrieving QTG ID
+      cxl: Add helper function to retrieve ACPI handle of CXL root device
+      cxl: Add helpers to calculate pci latency for the CXL device
+      cxl: Add helper function that calculates QoS values for switches
+      cxl: Add helper function that calculate QoS values for PCI path
+      ACPI: NUMA: Add genport target allocation to the HMAT parsing
+      ACPI: NUMA: Add helper function to retrieve the performance attributes
+      cxl: Add helper function to retrieve generic port QoS
+      cxl: Add latency and bandwidth calculations for the CXL path
+      cxl: Wait Memory_Info_Valid before access memory related info
+      cxl: Move identify and partition query from pci probe to port probe
+      cxl: Store QTG IDs and related info to the CXL memory device context
+      cxl: Export sysfs attributes for memory device QTG ID
+      cxl/mem: Add debugfs output for QTG related data
+
+
+ Documentation/ABI/testing/sysfs-bus-cxl |  20 ++
+ drivers/acpi/numa/hmat.c                |  95 +++++++++
+ drivers/cxl/acpi.c                      |   3 +
+ drivers/cxl/core/Makefile               |   2 +
+ drivers/cxl/core/acpi.c                 | 180 ++++++++++++++++++
+ drivers/cxl/core/cdat.c                 | 243 ++++++++++++++++++++++++
+ drivers/cxl/core/memdev.c               |  16 ++
+ drivers/cxl/core/pci.c                  | 187 ++++++++++++++++--
+ drivers/cxl/core/port.c                 | 169 ++++++++++++++++
+ drivers/cxl/cxl.h                       |  27 +++
+ drivers/cxl/cxlmem.h                    |  14 ++
+ drivers/cxl/cxlpci.h                    | 121 ++++++++++++
+ drivers/cxl/mem.c                       |  16 ++
+ drivers/cxl/pci.c                       |  21 --
+ drivers/cxl/port.c                      | 130 ++++++++++++-
+ include/acpi/actbl3.h                   |   2 +
+ include/linux/acpi.h                    |   6 +
+ tools/testing/cxl/Kbuild                |   1 +
+ tools/testing/cxl/test/mock.c           |   5 +
+ 19 files changed, 1221 insertions(+), 37 deletions(-)
+ create mode 100644 drivers/cxl/core/acpi.c
+ create mode 100644 drivers/cxl/core/cdat.c
+
+--
+
