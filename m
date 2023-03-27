@@ -2,134 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56D7F6CA5E2
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Mar 2023 15:29:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 084166CA601
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Mar 2023 15:33:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232526AbjC0N24 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Mar 2023 09:28:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46424 "EHLO
+        id S232554AbjC0Ndw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Mar 2023 09:33:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232127AbjC0N2e (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Mar 2023 09:28:34 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 553A55260;
-        Mon, 27 Mar 2023 06:28:33 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 214201042;
-        Mon, 27 Mar 2023 06:29:17 -0700 (PDT)
-Received: from bogus (unknown [10.57.52.160])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F07183F663;
-        Mon, 27 Mar 2023 06:28:29 -0700 (PDT)
-Date:   Mon, 27 Mar 2023 14:27:55 +0100
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     "lihuisong (C)" <lihuisong@huawei.com>
-Cc:     robbiek@xsightlabs.com, linux-acpi@vger.kernel.org,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        linux-kernel@vger.kernel.org, rafael@kernel.org,
-        rafael.j.wysocki@intel.com, wanghuiqiang@huawei.com,
-        zhangzekun11@huawei.com, wangxiongfeng2@huawei.com,
-        tanxiaofei@huawei.com, guohanjun@huawei.com, xiexiuqi@huawei.com,
-        wangkefeng.wang@huawei.com, huangdaode@huawei.com
-Subject: Re: [PATCH v2 1/2] mailbox: pcc: Add support for platform
- notification handling
-Message-ID: <20230327132755.tzflaqxp2cwsgs63@bogus>
-References: <20221016034043.52227-1-lihuisong@huawei.com>
- <20230314111135.16520-1-lihuisong@huawei.com>
- <20230314111135.16520-2-lihuisong@huawei.com>
- <20230327113057.cc2ufila5z25mgic@bogus>
- <4bf0da8a-008a-7363-d1cd-53e4296e3436@huawei.com>
+        with ESMTP id S230107AbjC0Ndv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Mar 2023 09:33:51 -0400
+Received: from mailbackend.panix.com (mailbackend.panix.com [166.84.1.89])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BF7840F6;
+        Mon, 27 Mar 2023 06:33:39 -0700 (PDT)
+Received: from mail.panix.com (localhost [127.0.0.1])
+        by mailbackend.panix.com (Postfix) with ESMTPA id 4PlYg55F43z3ylY;
+        Mon, 27 Mar 2023 09:33:37 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=panix.com; s=panix;
+        t=1679924018; bh=XICY4RRKygbQi2CVdXFQeV33XyQxJ7V0bluLpAxLDNA=;
+        h=In-Reply-To:References:Date:Subject:From:To:Cc;
+        b=NMHCBGphWj2m+reulHlyOnuQ0TJi9yFvpAQr/VqpFST6E+oZWJ9CeyLhJXcFL9Vmk
+         aUaL6pjGuJowrbRV5sjVQVHH8QM+rzR1tG5u1BSkSgCOMud6t14/XawsfH9wXkryft
+         x0YZqb83+QO4rewtqMDlz+rLwi/Tj41jzfyrxPSc=
+X-Panix-Received: from 166.84.1.3
+        (SquirrelMail authenticated user pa@panix.com)
+        by mail.panix.com with HTTP;
+        Mon, 27 Mar 2023 09:33:37 -0400
+Message-ID: <bd57500b3900e5cce3f1a65de59959bc.squirrel@mail.panix.com>
+In-Reply-To: <CAJZ5v0gAyGNAT-t=pQ9wEbNAqzixEfm5dKZuRJVv-YQ=1=LbFw@mail.gmail.com>
+References: <5687037.DvuYhMxLoT@kreacher>
+    <11fab8f24f976112aa4d025d03f0f322.squirrel@mail.panix.com>
+    <CAJZ5v0gAyGNAT-t=pQ9wEbNAqzixEfm5dKZuRJVv-YQ=1=LbFw@mail.gmail.com>
+Date:   Mon, 27 Mar 2023 09:33:37 -0400
+Subject: Re: [PATCH v1] ACPI: bus: Rework system-level device notification
+ handling
+From:   "Pierre Asselin" <pa@panix.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Pierre Asselin" <pa@panix.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Linux ACPI" <linux-acpi@vger.kernel.org>,
+        "LKML" <linux-kernel@vger.kernel.org>,
+        =?iso-8859-1?Q?=22Uwe_Kleine-K=C3=B6nig=22?= 
+        <u.kleine-koenig@pengutronix.de>,
+        "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+User-Agent: SquirrelMail/1.4.23-p1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain;charset=iso-8859-1
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <4bf0da8a-008a-7363-d1cd-53e4296e3436@huawei.com>
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Priority: 3 (Normal)
+Importance: Normal
+X-Spam-Status: No, score=0.2 required=5.0 tests=DKIM_INVALID,DKIM_SIGNED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 27, 2023 at 08:25:04PM +0800, lihuisong (C) wrote:
-> 
-> 在 2023/3/27 19:30, Sudeep Holla 写道:
-> > On Tue, Mar 14, 2023 at 07:11:34PM +0800, Huisong Li wrote:
-> > > Currently, PCC driver doesn't support the processing of platform
-> > > notification for type 4 PCC subspaces.
-> > > 
-> > > According to ACPI specification, if platform sends a notification
-> > > to OSPM, it must clear the command complete bit and trigger platform
-> > > interrupt. OSPM needs to check whether the command complete bit is
-> > > cleared, clear platform interrupt, process command, and then set the
-> > > command complete and ring doorbell to the Platform.
-> > > 
-> > > Let us stash the value of the pcc type and use the same while processing
-> > > the interrupt of the channel. We also need to set the command complete
-> > > bit and ring doorbell in the interrupt handler for the type 4 channel to
-> > > complete the communication flow after processing the notification from
-> > > the Platform.
-> > > 
-> > > Signed-off-by: Huisong Li <lihuisong@huawei.com>
-> > > ---
-> > >   drivers/mailbox/pcc.c | 50 +++++++++++++++++++++++++++++++++++--------
-> > >   1 file changed, 41 insertions(+), 9 deletions(-)
-> > > 
-> > > diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-> > > index 105d46c9801b..a0a87c480d8b 100644
-> > > --- a/drivers/mailbox/pcc.c
-> > > +++ b/drivers/mailbox/pcc.c
-> > > @@ -91,6 +91,7 @@ struct pcc_chan_reg {
-> > >    * @cmd_update: PCC register bundle for the command complete update register
-> > >    * @error: PCC register bundle for the error status register
-> > >    * @plat_irq: platform interrupt
-> > > + * @type: PCC subspace type
-> > >    */
-> > >   struct pcc_chan_info {
-> > >   	struct pcc_mbox_chan chan;
-> > > @@ -100,12 +101,15 @@ struct pcc_chan_info {
-> > >   	struct pcc_chan_reg cmd_update;
-> > >   	struct pcc_chan_reg error;
-> > >   	int plat_irq;
-> > > +	u8 type;
-> > >   };
-> > >   #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
-> > >   static struct pcc_chan_info *chan_info;
-> > >   static int pcc_chan_count;
-> > > +static int pcc_send_data(struct mbox_chan *chan, void *data);
-> > > +
-> > >   /*
-> > >    * PCC can be used with perf critical drivers such as CPPC
-> > >    * So it makes sense to locally cache the virtual address and
-> > > @@ -221,6 +225,34 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
-> > >   	return acpi_register_gsi(NULL, interrupt, trigger, polarity);
-> > >   }
-> > > +static bool pcc_mbox_cmd_complete_check(struct pcc_chan_info *pchan)
-> > > +{
-> > > +	u64 val;
-> > > +	int ret;
-> > > +
-> > > +	ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
-> > > +	if (ret)
-> > > +		return false;
-> > > +
-> > > +	if (!pchan->cmd_complete.gas)
-> > > +		return true;
-> > > +
-> > > +	/*
-> > > +	 * Judge if the channel respond the interrupt based on the value of
-> > > +	 * command complete.
-> > > +	 */
-> > > +	val &= pchan->cmd_complete.status_mask;
-> > [super nit] Would prefer an blank line here.
-> > 
-> Yeah, it would be better if there is an blank line here.
-> Is it necessary to send v3 for this?
+> On Fri, Mar 24, 2023 at 4:54 PM Pierre Asselin <pa@panix.com> wrote:
+>>
+>> Rafael, the patch is good for 6.3-rc1 (boots to early userspace).
+>> I'll try a full install now.
+>
+> I'm wondering if this has succeeded?
 
-Let us see once you have Robbie's tested-by. Depending on who picks up we can
-check with them.
+Yes.  I've been running 6.3-rc1 + Rafael's patch for a few days now
+and all is well.
 
--- 
-Regards,
-Sudeep
+(Okay, the simple framebuffer has psychedelic color effects but that too
+has a workaround.  One bug at a time.)
+
+Are these emails getting through ?  I see them on patchwork but not
+on linux-acpi or regressions.
+
+--PA
+
