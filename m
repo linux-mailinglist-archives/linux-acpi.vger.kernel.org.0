@@ -2,46 +2,46 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 346426CA809
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Mar 2023 16:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46B706CA80D
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Mar 2023 16:46:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232666AbjC0Op3 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 27 Mar 2023 10:45:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47708 "EHLO
+        id S229511AbjC0OqM convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 27 Mar 2023 10:46:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232755AbjC0Op1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Mar 2023 10:45:27 -0400
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA7C130F6;
-        Mon, 27 Mar 2023 07:45:26 -0700 (PDT)
-Received: by mail-ed1-f43.google.com with SMTP id x3so37142063edb.10;
-        Mon, 27 Mar 2023 07:45:26 -0700 (PDT)
+        with ESMTP id S229705AbjC0OqL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Mar 2023 10:46:11 -0400
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E592830DA;
+        Mon, 27 Mar 2023 07:46:09 -0700 (PDT)
+Received: by mail-ed1-f49.google.com with SMTP id r11so37253487edd.5;
+        Mon, 27 Mar 2023 07:46:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679928325;
+        d=1e100.net; s=20210112; t=1679928368;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xqx7BG6DbrJV5wVYNqu1sizTrODp1YIAvlx1rxv/dHw=;
-        b=Xdc8Z3heKdPTdf1g/dMXyUPRJG187y8yVAlRlh35zKhLhlwDuPVjBrld71Z+4wyyPa
-         IW/W5joYsn0QFpTyUO7qEDXJC3RjJQ/OW4coYHaRE67MDFpRoJ9KI0pUz0Skkdve0AUp
-         ObruFi4P+lewh1AMTpAFpNgSB6Zpb14XE+3/inkRFRC/mypAvzaAJE+J5P/KfkZdm2HY
-         4jFEn1KQBAvkjLj0oia1hJA2PoLZnSSgVkfTS28kUZb0RYv11XuBV3OFkXV6LEKQ+L9B
-         +q6OO3h3fS0/1KUsi4xSYoMcvio7BVxhxxE6qIoFBvv/Wv6L16/oBvt2McUVFi8XWSC6
-         +gCA==
-X-Gm-Message-State: AAQBX9eQI5/yM6fdL3Klw25MiVoK3UjljrhZB7vaN+sMBiBNyNy9DXvs
-        +gVuPrOre1QoHqC7V8r/5IyITkvubLVvkSeuXIg=
-X-Google-Smtp-Source: AKy350ZuKxgSHHk6NQd8hY3qoPJQjzqVVe6ZP3MC4ic80UsNRvDg38SM04k6AzTGcFnW3UxmshoSo0AHdTW7K+E9pG0=
-X-Received: by 2002:a50:d6d6:0:b0:4fb:c8e3:1adb with SMTP id
- l22-20020a50d6d6000000b004fbc8e31adbmr5776908edj.3.1679928324869; Mon, 27 Mar
- 2023 07:45:24 -0700 (PDT)
+        bh=Ft6/VFhBqMAajm7d7DHE8dyXMfMvTu+AETmhZe8sB7g=;
+        b=X3ImNx8qrcq2C+Wp1bJ3OtNn30KQ4YzuGjlUf5SW03prJWqMaEEB7f2ZZChXNTDINn
+         6Kq0hx2c+zSERsow5LqVEVTribr5feuah4rcoTCPthS3E0LUGX/MO/HYTjQN9UCs4qPK
+         NnL2APiOTe6XIxgbWl8XdC+L49j9Iki+lTxW7DBpSXrfc3E0YnVz/OaRw8HZAUK60iCR
+         fcYrpsk+QwHQOV+lAvwdIQXy1NQBWo25LwRzrG0t0DiMJjwKZRElBfVVZ9KYR+h6eaWj
+         TrsWogoYPYHm3EPyfSYEGEkjg6ddXOYTorPsGX5FZGeWRsvlaL5bh797HulReIyriNdT
+         jPqg==
+X-Gm-Message-State: AAQBX9cQTUlpmk9Ck7D4Fk3OdVhRsNACaNZkTEjxWjpd6AOSpRyRgptr
+        9EA1yeWQTRlhrxkQf3aZ553F1rpBaytfdHWQZyA=
+X-Google-Smtp-Source: AKy350ZogeZg4OxiejM2Ru310GtbPn0+xRwZfnpamPM6UpyHEErFM6of/dWIJS+flsX2Cf15tbz/5K2ON1SAFLSw/TI=
+X-Received: by 2002:a50:cc94:0:b0:4fb:c8e3:1ae2 with SMTP id
+ q20-20020a50cc94000000b004fbc8e31ae2mr6172808edi.3.1679928368373; Mon, 27 Mar
+ 2023 07:46:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230327130150.84114-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20230327130150.84114-1-andriy.shevchenko@linux.intel.com>
+References: <20230327130150.84114-1-andriy.shevchenko@linux.intel.com> <20230327130150.84114-2-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20230327130150.84114-2-andriy.shevchenko@linux.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 27 Mar 2023 16:45:13 +0200
-Message-ID: <CAJZ5v0jodw=LME60q39V4+6NVStNjmmTF80VyQMGo+iwWngDLw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] device property: Add headers to the Driver Core
- entry in MAINTAINERS
+Date:   Mon, 27 Mar 2023 16:45:57 +0200
+Message-ID: <CAJZ5v0i_VMS-2=cMaGU9kbS-eCsGqmOXm_nGvhz4B9ZAa7tLfQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] device property: Remove unused struct net_device
+ forward declaration
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
@@ -64,32 +64,30 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 On Mon, Mar 27, 2023 at 3:02 PM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 >
-> The header files (fwnode.h and property.h) are part of the device
-> property API, which in its turn is part of driver core. Add the
-> missed headers to the corresponding record in the MAINTAINERS database.
+> There is no users in the property.h for the struct net_device.
+> Remove the latter for good.
 >
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
-> v2: new patch
->  MAINTAINERS | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 93fb4e5a2814..aa61d9ede78b 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -6316,7 +6316,9 @@ F:        drivers/base/
->  F:     fs/debugfs/
->  F:     fs/sysfs/
->  F:     include/linux/debugfs.h
-> +F:     include/linux/fwnode.h
->  F:     include/linux/kobj*
-> +F:     include/linux/property.h
->  F:     lib/kobj*
 
 Acked-by: Rafael J. Wysocki <rafael@kernel.org>
 
->  DRIVERS FOR OMAP ADAPTIVE VOLTAGE SCALING (AVS)
+> ---
+> v2: no changes (just Cc'ed accordingly)
+>  include/linux/property.h | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index 4a536548606b..59f452198c64 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -16,7 +16,6 @@
+>  #include <linux/types.h>
+>
+>  struct device;
+> -struct net_device;
+>
+>  enum dev_prop_type {
+>         DEV_PROP_U8,
 > --
 > 2.40.0.1.gaa8946217a0b
 >
