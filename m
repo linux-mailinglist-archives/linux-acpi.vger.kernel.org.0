@@ -2,114 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 386BA6CA5CC
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Mar 2023 15:28:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56D7F6CA5E2
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Mar 2023 15:29:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232699AbjC0N2a (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Mar 2023 09:28:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35976 "EHLO
+        id S232526AbjC0N24 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Mar 2023 09:28:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232716AbjC0N2Q (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Mar 2023 09:28:16 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CCFC3593;
-        Mon, 27 Mar 2023 06:27:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679923632; x=1711459632;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=eq405EaOHdHE2FSFIsfAvwBxXc9cVFwBElpq0o2L8/0=;
-  b=hBOgTTpucDrMB6s/NuiiojcZ5Qyqt0Oq9DJxjLlDGczHKCxsJkMk2qLO
-   5UgAWAZ6bgo8Zt4YJ0I/MWMJf0x+w/vXP6JR2uLcoO4SI7ZlYxQWEjm8z
-   p/Ysi3TJlYjaITzH+5VhJi6yqfnAQGxvIkWwz0vlTF0CJirhAFTnpVV6X
-   DZjNioTqPxHky+D+3YcVIOTUGmRXrt7F60g+XlL2Oo1iPiM6ax9taiw5X
-   qeZvfFnjTmeF0w4hhKm0sqJmukLH9d0+PdwnFBaaYloRqyCDjpwDJwD35
-   HOGPZ8XxsiRTU/sXTVKeBzHNtKVGWqh4c/6Jzb2xXfje2ffTsX+lpdxAT
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10661"; a="324142963"
-X-IronPort-AV: E=Sophos;i="5.98,294,1673942400"; 
-   d="scan'208";a="324142963"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2023 06:25:15 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10661"; a="748001509"
-X-IronPort-AV: E=Sophos;i="5.98,294,1673942400"; 
-   d="scan'208";a="748001509"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga008.fm.intel.com with ESMTP; 27 Mar 2023 06:25:13 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 2A01E79C; Mon, 27 Mar 2023 16:25:14 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
-Subject: [PATCH v2 1/1] ACPI: SPCR: Amend indentation
-Date:   Mon, 27 Mar 2023 16:25:12 +0300
-Message-Id: <20230327132512.84540-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
+        with ESMTP id S232127AbjC0N2e (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Mar 2023 09:28:34 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 553A55260;
+        Mon, 27 Mar 2023 06:28:33 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 214201042;
+        Mon, 27 Mar 2023 06:29:17 -0700 (PDT)
+Received: from bogus (unknown [10.57.52.160])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F07183F663;
+        Mon, 27 Mar 2023 06:28:29 -0700 (PDT)
+Date:   Mon, 27 Mar 2023 14:27:55 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     "lihuisong (C)" <lihuisong@huawei.com>
+Cc:     robbiek@xsightlabs.com, linux-acpi@vger.kernel.org,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        linux-kernel@vger.kernel.org, rafael@kernel.org,
+        rafael.j.wysocki@intel.com, wanghuiqiang@huawei.com,
+        zhangzekun11@huawei.com, wangxiongfeng2@huawei.com,
+        tanxiaofei@huawei.com, guohanjun@huawei.com, xiexiuqi@huawei.com,
+        wangkefeng.wang@huawei.com, huangdaode@huawei.com
+Subject: Re: [PATCH v2 1/2] mailbox: pcc: Add support for platform
+ notification handling
+Message-ID: <20230327132755.tzflaqxp2cwsgs63@bogus>
+References: <20221016034043.52227-1-lihuisong@huawei.com>
+ <20230314111135.16520-1-lihuisong@huawei.com>
+ <20230314111135.16520-2-lihuisong@huawei.com>
+ <20230327113057.cc2ufila5z25mgic@bogus>
+ <4bf0da8a-008a-7363-d1cd-53e4296e3436@huawei.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+In-Reply-To: <4bf0da8a-008a-7363-d1cd-53e4296e3436@huawei.com>
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-1) Remove unnecessary blank lines.
-2) Reformat one comment for consistency.
+On Mon, Mar 27, 2023 at 08:25:04PM +0800, lihuisong (C) wrote:
+> 
+> 在 2023/3/27 19:30, Sudeep Holla 写道:
+> > On Tue, Mar 14, 2023 at 07:11:34PM +0800, Huisong Li wrote:
+> > > Currently, PCC driver doesn't support the processing of platform
+> > > notification for type 4 PCC subspaces.
+> > > 
+> > > According to ACPI specification, if platform sends a notification
+> > > to OSPM, it must clear the command complete bit and trigger platform
+> > > interrupt. OSPM needs to check whether the command complete bit is
+> > > cleared, clear platform interrupt, process command, and then set the
+> > > command complete and ring doorbell to the Platform.
+> > > 
+> > > Let us stash the value of the pcc type and use the same while processing
+> > > the interrupt of the channel. We also need to set the command complete
+> > > bit and ring doorbell in the interrupt handler for the type 4 channel to
+> > > complete the communication flow after processing the notification from
+> > > the Platform.
+> > > 
+> > > Signed-off-by: Huisong Li <lihuisong@huawei.com>
+> > > ---
+> > >   drivers/mailbox/pcc.c | 50 +++++++++++++++++++++++++++++++++++--------
+> > >   1 file changed, 41 insertions(+), 9 deletions(-)
+> > > 
+> > > diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+> > > index 105d46c9801b..a0a87c480d8b 100644
+> > > --- a/drivers/mailbox/pcc.c
+> > > +++ b/drivers/mailbox/pcc.c
+> > > @@ -91,6 +91,7 @@ struct pcc_chan_reg {
+> > >    * @cmd_update: PCC register bundle for the command complete update register
+> > >    * @error: PCC register bundle for the error status register
+> > >    * @plat_irq: platform interrupt
+> > > + * @type: PCC subspace type
+> > >    */
+> > >   struct pcc_chan_info {
+> > >   	struct pcc_mbox_chan chan;
+> > > @@ -100,12 +101,15 @@ struct pcc_chan_info {
+> > >   	struct pcc_chan_reg cmd_update;
+> > >   	struct pcc_chan_reg error;
+> > >   	int plat_irq;
+> > > +	u8 type;
+> > >   };
+> > >   #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
+> > >   static struct pcc_chan_info *chan_info;
+> > >   static int pcc_chan_count;
+> > > +static int pcc_send_data(struct mbox_chan *chan, void *data);
+> > > +
+> > >   /*
+> > >    * PCC can be used with perf critical drivers such as CPPC
+> > >    * So it makes sense to locally cache the virtual address and
+> > > @@ -221,6 +225,34 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
+> > >   	return acpi_register_gsi(NULL, interrupt, trigger, polarity);
+> > >   }
+> > > +static bool pcc_mbox_cmd_complete_check(struct pcc_chan_info *pchan)
+> > > +{
+> > > +	u64 val;
+> > > +	int ret;
+> > > +
+> > > +	ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
+> > > +	if (ret)
+> > > +		return false;
+> > > +
+> > > +	if (!pchan->cmd_complete.gas)
+> > > +		return true;
+> > > +
+> > > +	/*
+> > > +	 * Judge if the channel respond the interrupt based on the value of
+> > > +	 * command complete.
+> > > +	 */
+> > > +	val &= pchan->cmd_complete.status_mask;
+> > [super nit] Would prefer an blank line here.
+> > 
+> Yeah, it would be better if there is an blank line here.
+> Is it necessary to send v3 for this?
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
-v2: avoided changind double spaces (Rafael)
- drivers/acpi/spcr.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+Let us see once you have Robbie's tested-by. Depending on who picks up we can
+check with them.
 
-diff --git a/drivers/acpi/spcr.c b/drivers/acpi/spcr.c
-index 01d29ebdb9c2..cd36a97b0ea2 100644
---- a/drivers/acpi/spcr.c
-+++ b/drivers/acpi/spcr.c
-@@ -71,7 +71,6 @@ static bool xgene_8250_erratum_present(struct acpi_table_spcr *tb)
- 
- /**
-  * acpi_parse_spcr() - parse ACPI SPCR table and add preferred console
-- *
-  * @enable_earlycon: set up earlycon for the console specified by the table
-  * @enable_console: setup the console specified by the table.
-  *
-@@ -82,7 +81,6 @@ static bool xgene_8250_erratum_present(struct acpi_table_spcr *tb)
-  *
-  * When CONFIG_ACPI_SPCR_TABLE is defined, this function should be called
-  * from arch initialization code as soon as the DT/ACPI decision is made.
-- *
-  */
- int __init acpi_parse_spcr(bool enable_earlycon, bool enable_console)
- {
-@@ -97,9 +95,7 @@ int __init acpi_parse_spcr(bool enable_earlycon, bool enable_console)
- 	if (acpi_disabled)
- 		return -ENODEV;
- 
--	status = acpi_get_table(ACPI_SIG_SPCR, 0,
--				(struct acpi_table_header **)&table);
--
-+	status = acpi_get_table(ACPI_SIG_SPCR, 0, (struct acpi_table_header **)&table);
- 	if (ACPI_FAILURE(status))
- 		return -ENOENT;
- 
-@@ -202,7 +198,8 @@ int __init acpi_parse_spcr(bool enable_earlycon, bool enable_console)
- 	if (xgene_8250_erratum_present(table)) {
- 		iotype = "mmio32";
- 
--		/* for xgene v1 and v2 we don't know the clock rate of the
-+		/*
-+		 * For xgene v1 and v2 we don't know the clock rate of the
- 		 * UART so don't attempt to change to the baud rate state
- 		 * in the table because driver cannot calculate the dividers
- 		 */
 -- 
-2.40.0.1.gaa8946217a0b
-
+Regards,
+Sudeep
