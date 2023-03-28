@@ -2,47 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C8076CCA27
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Mar 2023 20:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7767B6CCA77
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Mar 2023 21:12:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229638AbjC1Sny (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Mar 2023 14:43:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44966 "EHLO
+        id S229536AbjC1TMF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Mar 2023 15:12:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229511AbjC1Sny (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Mar 2023 14:43:54 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71E402121;
-        Tue, 28 Mar 2023 11:43:30 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
- id 81b377ba140dd037; Tue, 28 Mar 2023 20:43:28 +0200
-Received: from kreacher.localnet (unknown [213.134.169.43])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 72F1578215F;
-        Tue, 28 Mar 2023 20:43:27 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux PM <linux-pm@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Imre Deak <imre.deak@intel.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Subject: [PATCH v1] thermal: core: Drop excessive lockdep_assert_held() calls
-Date:   Tue, 28 Mar 2023 20:43:26 +0200
-Message-ID: <2681615.mvXUDI8C0e@kreacher>
+        with ESMTP id S229617AbjC1TME (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Mar 2023 15:12:04 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D36730D5;
+        Tue, 28 Mar 2023 12:12:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1680030723; x=1711566723;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=F28h8BboTlD4hxAMQwVSAaJn2J0QV00xO/MfRS2Fz/U=;
+  b=PFHkgPIbAq2Euz983/YaAi8Ugx5FGCSTPB2ZN1JQ/uzWRanCrzZPbNLB
+   IYcF+6yNrD24pxE4aRSAWSrPwZRUruAnuGJiTIJvRggwP1e0vK6yk/Wp9
+   6tc8oZhejfBObsxwHTxFSqUznxqwGyAKczemklahFb/Tb51Qo6RKqoQN8
+   lKAb3exzC0H+jRDlF+2p2rO0miZBtpvC1RR0r/nbIrxnH5GxmceVO47bW
+   aNu+BoYXkamOI/5cYfytwLb/XJcZQO3jnxV67lt1cOwvJTGKnSss+vOoh
+   mxpsnifOKBBLxLg4iwWi7iOG+pQvLajx60ExlfHm03BWL7bCSNKvE8vA2
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10663"; a="340689653"
+X-IronPort-AV: E=Sophos;i="5.98,297,1673942400"; 
+   d="scan'208";a="340689653"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2023 12:12:03 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10663"; a="807930517"
+X-IronPort-AV: E=Sophos;i="5.98,297,1673942400"; 
+   d="scan'208";a="807930517"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2023 12:12:01 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+        by kekkonen.fi.intel.com (Postfix) with SMTP id 6C83611F937;
+        Tue, 28 Mar 2023 22:11:58 +0300 (EEST)
+Date:   Tue, 28 Mar 2023 22:11:58 +0300
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
+        rafael@kernel.org, heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH v7 06/10] ACPI: scan: Generate software nodes based on
+ MIPI DisCo for Imaging
+Message-ID: <ZCM7/nmXMlCawrwr@kekkonen.localdomain>
+References: <20230328101303.1458570-1-sakari.ailus@linux.intel.com>
+ <20230328101303.1458570-7-sakari.ailus@linux.intel.com>
+ <ZCMNAR3VJAzOZww3@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.169.43
-X-CLIENT-HOSTNAME: 213.134.169.43
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrvdehgedguddvkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeegfffhudejlefhtdegffekteduhfethffhieettefhkeevgfdvgfefieekiefgheenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvudefrddufeegrdduieelrdegfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrdduieelrdegfedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepiedprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepuggrnhhivghlrdhlvgiitggrnhhosehl
- ihhnrghrohdrohhrghdprhgtphhtthhopehimhhrvgdruggvrghksehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZCMNAR3VJAzOZww3@smile.fi.intel.com>
+X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,58 +65,59 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi Adnry,
 
-The lockdep_assert_held() calls added to cooling_device_stats_setup()
-and cooling_device_stats_destroy() by commit 790930f44289 ("thermal:
-core: Introduce thermal_cooling_device_update()") trigger false-positive
-lockdep reports in code paths that are not subject to race conditions
-(before cooling device registration and after cooling device removal).
+On Tue, Mar 28, 2023 at 06:51:29PM +0300, Andy Shevchenko wrote:
+> On Tue, Mar 28, 2023 at 01:12:59PM +0300, Sakari Ailus wrote:
+> > Generate software nodes for driver use, based on MIPI DisCo for Imaging
+> > definitions.
+> > 
+> > During the (sub-)namespace walk, ACPI device nodes are created but the
+> > drivers aren't probed for the devices yet. A convenient way to determine
+> > which ACPI devices this applies to is to find a hierarchical data node that
+> > begins with "mipi-img-port-". These devices need software nodes that need
+> > to be present before probing, and can only be constructed once the related
+> > _CRS CSI2 records have been parsed.
+> 
+> ...
+> 
+> > -	static const char mipi_port_prefix[] = "mipi-img-port-";
+> > -	char mipi_port_name[sizeof(mipi_port_prefix) + 2];
+> > +	char mipi_port_name[sizeof(MIPI_IMG_PORT_PREFIX) + 2];
+> >  
+> >  	if (snprintf(mipi_port_name, sizeof(mipi_port_name), "%s%u",
+> > -		     mipi_port_prefix, port) >= sizeof(mipi_port_name)) {
+> > +		     MIPI_IMG_PORT_PREFIX, port) >= sizeof(mipi_port_name)) {
+> 
+> You are modifying lines you just brought by the previous patch. Why this mess?
+> 
+> ...
+> 
+> > -static void acpi_bus_handle_postpone(acpi_handle handle,
+> > -				     struct list_head *head)
+> > +static void acpi_bus_handle_postpone(acpi_handle handle, struct list_head *head)
+> 
+> Unrelated change?
+> 
+> ...
+> 
+> > +/**
+> > + * acpi_bus_device_postpone - Add an ACPI device to a given postponed list
+> > + * @device: The ACPI device
+> > + * @head: Postponed list head
+> > + *
+> > + * Add a given ACPI device to a list of ACPI objects for which the creation
+> > + * of the device objects is to be postponed.
+> > + */
+> > +void acpi_bus_device_postpone(struct acpi_device *device,
+> > +			      struct list_head *head)
+> 
+> Taking into account above indentation, why not to have them on one line to
+> begin with?
 
-For this reason, remove the lockdep_assert_held() calls from both
-cooling_device_stats_setup() and cooling_device_stats_destroy() and
-add one to thermal_cooling_device_stats_reinit() that has to be called
-under the cdev lock.
+I'll address these for v8.
 
-Fixes: 790930f44289 ("thermal: core: Introduce thermal_cooling_device_update()")
-Link: https://lore.kernel.org/linux-acpi/ZCIDTLFt27Ei7+V6@ideak-desk.fi.intel.com
-Reported-by: Imre Deak <imre.deak@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/thermal/thermal_sysfs.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+-- 
+Kind regards,
 
-Index: linux-pm/drivers/thermal/thermal_sysfs.c
-===================================================================
---- linux-pm.orig/drivers/thermal/thermal_sysfs.c
-+++ linux-pm/drivers/thermal/thermal_sysfs.c
-@@ -876,8 +876,6 @@ static void cooling_device_stats_setup(s
- 	unsigned long states = cdev->max_state + 1;
- 	int var;
- 
--	lockdep_assert_held(&cdev->lock);
--
- 	var = sizeof(*stats);
- 	var += sizeof(*stats->time_in_state) * states;
- 	var += sizeof(*stats->trans_table) * states * states;
-@@ -903,8 +901,6 @@ out:
- 
- static void cooling_device_stats_destroy(struct thermal_cooling_device *cdev)
- {
--	lockdep_assert_held(&cdev->lock);
--
- 	kfree(cdev->stats);
- 	cdev->stats = NULL;
- }
-@@ -931,6 +927,8 @@ void thermal_cooling_device_destroy_sysf
- 
- void thermal_cooling_device_stats_reinit(struct thermal_cooling_device *cdev)
- {
-+	lockdep_assert_held(&cdev->lock);
-+
- 	cooling_device_stats_destroy(cdev);
- 	cooling_device_stats_setup(cdev);
- }
-
-
-
+Sakari Ailus
