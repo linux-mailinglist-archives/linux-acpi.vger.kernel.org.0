@@ -2,61 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07C5F6CC64D
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Mar 2023 17:29:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0FAC6CC67A
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Mar 2023 17:35:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234053AbjC1P3i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Mar 2023 11:29:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33260 "EHLO
+        id S232868AbjC1Pfg convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 28 Mar 2023 11:35:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230280AbjC1P3X (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Mar 2023 11:29:23 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 626E8FF03;
-        Tue, 28 Mar 2023 08:28:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680017290; x=1711553290;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rWzmYaZOEqfDUK9iwpHFpSX6GO5J3KqMZk9wrDzikz4=;
-  b=XZ5CDz27XSFOA1Ikg2JoG73FO5HnL04WGGLFZyh7k+2+4VkMB0Bigq3D
-   X8fKaBv2YNebEHawqxw5IjLZhzofYFA0uQxKVPAsYNTGNe4PqK2/W16R1
-   Z52mkhYJKOzunbtUiD6tPEnwXqfa2mgzEW0pG/1I/guaJaD0Fj7/FVUfN
-   NIYlzB3zVJofBZkaweAqPVoA+0aRoCADb/OF2gTf3eaNZBMlQazs2BfY/
-   FkBEBUNfiZwsQ8K2zV0ur5B2PpRAI/hO+8Q5zBh5tde0owzdA8jQ34vWl
-   Q2JB26mJP/u2+H5aRvUEOoELvW48TiekxhrmPmDKydS9pmWNZNq6FeAnf
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10663"; a="324495848"
-X-IronPort-AV: E=Sophos;i="5.98,297,1673942400"; 
-   d="scan'208";a="324495848"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2023 08:27:18 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10663"; a="929954251"
-X-IronPort-AV: E=Sophos;i="5.98,297,1673942400"; 
-   d="scan'208";a="929954251"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2023 08:27:12 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-        by kekkonen.fi.intel.com (Postfix) with SMTP id C017411F937;
-        Tue, 28 Mar 2023 18:27:09 +0300 (EEST)
-Date:   Tue, 28 Mar 2023 18:27:09 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        rafael@kernel.org, heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH v7 03/10] ACPI: property: Parse _CRS CSI-2 descriptor
-Message-ID: <ZCMHTZgXnLCWjCje@kekkonen.localdomain>
-References: <20230328101303.1458570-1-sakari.ailus@linux.intel.com>
- <20230328101303.1458570-4-sakari.ailus@linux.intel.com>
- <ZCMDyVoFWizx+tOp@smile.fi.intel.com>
+        with ESMTP id S232991AbjC1Pff (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Mar 2023 11:35:35 -0400
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C7259C;
+        Tue, 28 Mar 2023 08:35:34 -0700 (PDT)
+Received: by mail-ed1-f46.google.com with SMTP id h8so51410578ede.8;
+        Tue, 28 Mar 2023 08:35:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680017732;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=S03XGyw3tSneSt4wS8/md52lGSHJdyFmoRVLM1Uorzo=;
+        b=FFl1hCrR4IPqPxcyFVUrUn9Z4V8OLPVrwxglKQ0DA05itj1q/87Um9Z5MdQTztp1OG
+         FxYa2zM85Lm1eWlaKqF1TrKqMnJWuu2XlTOjI1zHlwhEjxaqqcjEW8QiS31vSVydfJi6
+         EQ/G9sOtTTXrlIU/gcc8aZBp5nP+ZR6IcYaIV2ovcCUtV6b5egaoVcDI0q5wTxv/4bfk
+         KU3HT/6K0GdbLYIKV1+g0yvG98KyPoAc75v1F+3VaRcNvlk1RPi1qqVUWOlDrEXlOaRC
+         Z6y9ySuZ1hcY0WTMG9g1MkoR5nVdrpKGhPajgdMJVe/Nd+nD9HWyC4ik+6DnjLNYahw+
+         QBrQ==
+X-Gm-Message-State: AAQBX9clY0Yaai1I/rQpaaFBJUnshlZmsJaWomELpAHzNsMqtxRYXxXF
+        NgprDp9GSkaNN4A41Fd9y81Ib49E3Pii+IvHPp90Ckcm8jA=
+X-Google-Smtp-Source: AKy350Ycdnkt0zM+ZjM612jMXQa+FSmfgRrY8JDpwsCJ5kSu/cdrdhPLqh+KB3+ZxDLWkKd3fcN6PsiIUXpbjFVzapI=
+X-Received: by 2002:a17:906:fe49:b0:8b1:3298:c587 with SMTP id
+ wz9-20020a170906fe4900b008b13298c587mr8617564ejb.2.1680017732662; Tue, 28 Mar
+ 2023 08:35:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZCMDyVoFWizx+tOp@smile.fi.intel.com>
-X-Spam-Status: No, score=-0.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+References: <10247847.nUPlyArG6x@kreacher> <ZCIDTLFt27Ei7+V6@ideak-desk.fi.intel.com>
+In-Reply-To: <ZCIDTLFt27Ei7+V6@ideak-desk.fi.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 28 Mar 2023 17:35:21 +0200
+Message-ID: <CAJZ5v0iguCBqJCkMTMWzkfak5cBryvuA0+9QyurO308n0pJA6g@mail.gmail.com>
+Subject: Re: [PATCH v1 3/4] thermal: core: Introduce thermal_cooling_device_update()
+To:     imre.deak@intel.com
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,89 +59,90 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+On Mon, Mar 27, 2023 at 10:58 PM Imre Deak <imre.deak@intel.com> wrote:
+>
+> Hi,
+>
+> this leads to the stacktrace below triggered by
+> lockdep_assert_held(&cdev->lock) in cooling_device_stats_setup(),
 
-Thank you for the review.
+Thanks for the report!
 
-On Tue, Mar 28, 2023 at 06:12:09PM +0300, Andy Shevchenko wrote:
-> On Tue, Mar 28, 2023 at 01:12:56PM +0300, Sakari Ailus wrote:
-> > Parse newly added ACPI _CRS CSI-2 descriptor for CSI-2 and camera
-> > configuration, associate it with appropriate devices and allocate memory for
-> > software nodes needed to create a DT-like data structure for drivers.
-> 
-> ...
-> 
-> > +struct acpi_scan_context {
-> > +	struct acpi_device *device;
-> > +	struct list_head postponed_head;
-> 
-> Make it first?
+> and
+>
+> diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+> index 566df4522b885..132175b14814f 100644
+> --- a/drivers/thermal/thermal_core.c
+> +++ b/drivers/thermal/thermal_core.c
+> @@ -918,7 +918,9 @@ __thermal_cooling_device_register(struct device_node *np,
+>         if (ret)
+>                 goto out_cdev_type;
+>
+> +       mutex_lock(&cdev->lock);
+>         thermal_cooling_device_setup_sysfs(cdev);
+> +       mutex_unlock(&cdev->lock);
+>
+>         ret = dev_set_name(&cdev->device, "cooling_device%d", cdev->id);
+>         if (ret)
+>
+> fixed it up for me, but not sure if it's the correct fix.
 
-Soon this isn't the only list here, only one of them can be first. But I
-guess there is some benefit nonetheless.
+There are other cases when the lockdep_assert_held() annotations may
+trigger, so it is better to remove them from
+cooling_device_stats_setup() and cooling_device_stats_destroy() and to
+put one into thermal_cooling_device_stats_reinit().
 
-> 
-> > +	struct acpi_scan_context_csi2 csi2;
-> > +};
-> 
-> ...
-> 
-> > +void acpi_bus_scan_check_crs_csi2(acpi_handle handle, struct acpi_scan_context *ctx)
-> > +{
-> > +	struct scan_check_crs_csi2_context inst_context = {
-> > +		.handle = handle,
-> > +		.res_head = LIST_HEAD_INIT(inst_context.res_head),
-> > +	};
-> > +	struct crs_csi2 *csi2;
-> > +
-> > +	acpi_walk_resources(handle, METHOD_NAME__CRS,
-> > +			    scan_check_crs_csi2_instance, &inst_context);
-> > +
-> > +	if (list_empty(&inst_context.res_head))
-> > +		return;
-> > +
-> > +	/*
-> > +	 * Found entry, so allocate memory for it, fill it and add it to the
-> > +	 * list.
-> > +	 */
-> > +	csi2 = kmalloc(sizeof(*csi2), GFP_KERNEL);
-> > +	if (!csi2)
-> 
-> Who is going to release resources allocated in the callback above?
+I'll send a patch to do that later today.
 
-This is done by crs_csi2_release(), called from acpi_bus_scan_crs_csi2().
-
-> 
-> > +		return; /* There's nothing we really can do about this. */
-> > +
-> > +	csi2->handle = handle;
-> > +	list_replace(&inst_context.res_head, &csi2->buses);
-> > +	list_add(&csi2->list, &ctx->csi2.crs_csi2_head);
-> > +
-> > +	/* This handle plus remote handles in _CRS CSI2 resource descriptors */
-> > +	ctx->csi2.handle_count += 1 + inst_context.handle_count;
-> > +}
-> 
-> ...
-> 
-> > +	/*
-> > +	 * Allocate memory for ports, node pointers (number of nodes +
-> > +	 * 1 (guardian), nodes (root + number of ports * 2 (for for
-> > +	 * every port there is an endpoint)).
-> > +	 */
-> 
-> for for ?
-> 
-> I am a bit lost here. Can you put the above in more mathematical language?
-
-The first "for" is in the sense of "because". I can replace it if you think
-it'd be clearer that way. 
-
-There is simply a single endpoint for every port, as DisCo for Imaging does
-not support the notion of endpoints (where you could have multiple
-connections with more endpoints).
-
--- 
-Kind regards,
-
-Sakari Ailus
+> [    4.662358] ------------[ cut here ]------------
+> [    4.662361] WARNING: CPU: 3 PID: 1 at drivers/thermal/thermal_sysfs.c:879 cooling_device_stats_setup+0xb4/0xc0
+> [    4.662370] Modules linked in:
+> [    4.662375] CPU: 3 PID: 1 Comm: swapper/0 Tainted: G          I        6.3.0-rc4-imre+ #771
+> [    4.662379] Hardware name: Intel Corporation Shark Bay Client platform/Flathead Creek Crb, BIOS HSWLPTU1.86C.0109.R03.1301282055 01/28/2013
+> [    4.662382] RIP: 0010:cooling_device_stats_setup+0xb4/0xc0
+> [    4.662387] Code: 89 1d 58 52 36 01 5b 41 5c 41 5d 5d c3 cc cc cc cc 48 8d bf 18 05 00 00 be ff ff ff ff e8 f4 d2 3e 00 85 c0 0f 85 6f ff ff ff <0f> 0b e9 68 ff ff ff 0f 1f 44 00 00 90 90 90 90 90 90 90 90 90 90
+> [    4.662390] RSP: 0000:ffff9f48c0057b30 EFLAGS: 00010246
+> [    4.662395] RAX: 0000000000000000 RBX: ffff8fc381ca9800 RCX: 0000000000000000
+> [    4.662398] RDX: 0000000000000000 RSI: ffffffff94ad1d28 RDI: ffffffff94b58cc6
+> [    4.662401] RBP: ffff9f48c0057b48 R08: 0000000000000004 R09: 0000000000000000
+> [    4.662404] R10: ffff8fc381c77cd0 R11: 0000000000000000 R12: 0000000000000002
+> [    4.662406] R13: ffff8fc381ca9800 R14: ffff8fc381b0a000 R15: 0000000000000000
+> [    4.662409] FS:  0000000000000000(0000) GS:ffff8fc6b5580000(0000) knlGS:0000000000000000
+> [    4.662412] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [    4.662415] CR2: 0000000000000000 CR3: 0000000283856001 CR4: 00000000001706e0
+> [    4.662418] Call Trace:
+> [    4.662421]  <TASK>
+> [    4.662427]  thermal_cooling_device_setup_sysfs+0x12/0x30
+> [    4.662433]  __thermal_cooling_device_register+0x195/0x410
+> [    4.662442]  thermal_cooling_device_register+0x19/0x20
+> [    4.662446]  acpi_fan_probe+0xd7/0x5a0
+> [    4.662458]  ? acpi_match_device_ids+0x12/0x20
+> [    4.662464]  ? acpi_dev_pm_attach+0x41/0x110
+> [    4.662473]  platform_probe+0x48/0xc0
+> [    4.662481]  really_probe+0x1be/0x420
+> [    4.662487]  __driver_probe_device+0x8c/0x190
+> [    4.662493]  driver_probe_device+0x24/0x90
+> [    4.662498]  __driver_attach+0xf7/0x200
+> [    4.662503]  ? __pfx___driver_attach+0x10/0x10
+> [    4.662507]  bus_for_each_dev+0x80/0xd0
+> [    4.662516]  driver_attach+0x1e/0x30
+> [    4.662522]  bus_add_driver+0x11f/0x230
+> [    4.662530]  driver_register+0x5e/0x120
+> [    4.662534]  ? __pfx_acpi_fan_driver_init+0x10/0x10
+> [    4.662540]  __platform_driver_register+0x1e/0x30
+> [    4.662545]  acpi_fan_driver_init+0x17/0x20
+> [    4.662549]  do_one_initcall+0x61/0x280
+> [    4.662559]  ? debug_smp_processor_id+0x17/0x20
+> [    4.662568]  kernel_init_freeable+0x411/0x640
+> [    4.662582]  ? __pfx_kernel_init+0x10/0x10
+> [    4.662589]  kernel_init+0x1b/0x1f0
+> [    4.662594]  ? __pfx_kernel_init+0x10/0x10
+> [    4.662599]  ret_from_fork+0x2c/0x50
+> [    4.662615]  </TASK>
+> [    4.662618] irq event stamp: 506869
+> [    4.662620] hardirqs last  enabled at (506875): [<ffffffff9338e2d8>] __up_console_sem+0x68/0x80
+> [    4.662625] hardirqs last disabled at (506880): [<ffffffff9338e2bd>] __up_console_sem+0x4d/0x80
+> [    4.662628] softirqs last  enabled at (504698): [<ffffffff932de49f>] __irq_exit_rcu+0xbf/0x140
+> [    4.662633] softirqs last disabled at (504689): [<ffffffff932de49f>] __irq_exit_rcu+0xbf/0x140
+> [    4.662636] ---[ end trace 0000000000000000 ]---
+> [    4.662779] ------------[ cut here ]------------
