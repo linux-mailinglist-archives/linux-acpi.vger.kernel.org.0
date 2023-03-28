@@ -2,60 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86A816CC717
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Mar 2023 17:51:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C0746CC727
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Mar 2023 17:54:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233038AbjC1Pvf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Mar 2023 11:51:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45990 "EHLO
+        id S233954AbjC1PyD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Mar 2023 11:54:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230269AbjC1Pve (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Mar 2023 11:51:34 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6F9312B;
-        Tue, 28 Mar 2023 08:51:33 -0700 (PDT)
+        with ESMTP id S233502AbjC1Pxv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Mar 2023 11:53:51 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73A21E07E;
+        Tue, 28 Mar 2023 08:53:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680018693; x=1711554693;
+  t=1680018814; x=1711554814;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=0nSoSNXiaFDFfSdf6u5PpJmJLoPPXYLu7h/jJYM39go=;
-  b=BSZfwXBH/yZCou7vrkYhUfxtKfmNq2TOzIbNy3Ym533okekTkOEiVtkK
-   0ZNYIbEdDXeXon19iLJOO2Tc3oLUY723pOgXuljTg2JdbipBDNYnERZKw
-   3jwGjxN8M1RPeoo9x/jWNarA3cfQ6mEnbJYLFA2BrQCqWjWKWRHgaWKSn
-   Y2fH/jI9yxdgeI+Ko/kcVANfV50YHvBAPQrE3ioECcVpvZYKhD8oR8cVL
-   PtOeGKywgNUqmhOtM8IxNKdlc7Vnvmqs9MmNXa23F/dGJbsQpON1/LhqA
-   PcIuIYVIN+lVFYdMtdfVW5nuzRBIA18vM9/hJQKkxYHtXQuf3FjQwR0rb
+  bh=8XFKOae6uPzdUjobd8irY9Q2YB4mHOqUzbdqMlqGg0s=;
+  b=n/T43Ee+M2yXtFiojcPewn/vFWU51GN3od1OiaYZN1qds2reoJeadT5h
+   MKZQyG1e6BPHH7YrtxnLQgNoIkC1WDsNMK6jlbFQxkqCA7xD1YWvesTiv
+   4Is2gPucq80Kklmi5VAfQuLE7NPpz5r/A2OMRqh1paUAXWOT+28Z6RFMY
+   1cQ5ZWbmS/XuHPLNh5bRnZYj7m4Y35B9No0NX3wOfcUKsv45c4/+cQLc5
+   JEagy6nnxH/8lAQEEMyW/FzVS3C6BKsl9NA167g3PzB1QDA5a3cSZWMIZ
+   VP7jtfdwhH0iPwCm/6cqcPFfyOQW4nc6D9RJTHboO/K33GpdJtgT8OTve
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10663"; a="426879013"
+X-IronPort-AV: E=McAfee;i="6600,9927,10663"; a="339329964"
 X-IronPort-AV: E=Sophos;i="5.98,297,1673942400"; 
-   d="scan'208";a="426879013"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2023 08:51:33 -0700
+   d="scan'208";a="339329964"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2023 08:53:18 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10663"; a="714295226"
+X-IronPort-AV: E=McAfee;i="6600,9927,10663"; a="858145982"
 X-IronPort-AV: E=Sophos;i="5.98,297,1673942400"; 
-   d="scan'208";a="714295226"
+   d="scan'208";a="858145982"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga008.jf.intel.com with ESMTP; 28 Mar 2023 08:51:30 -0700
+  by orsmga005.jf.intel.com with ESMTP; 28 Mar 2023 08:53:16 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1phBbd-009gMH-2h;
-        Tue, 28 Mar 2023 18:51:29 +0300
-Date:   Tue, 28 Mar 2023 18:51:29 +0300
+        id 1phBdL-009gOw-1R;
+        Tue, 28 Mar 2023 18:53:15 +0300
+Date:   Tue, 28 Mar 2023 18:53:15 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Sakari Ailus <sakari.ailus@linux.intel.com>
 Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
         rafael@kernel.org, heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH v7 06/10] ACPI: scan: Generate software nodes based on
- MIPI DisCo for Imaging
-Message-ID: <ZCMNAR3VJAzOZww3@smile.fi.intel.com>
+Subject: Re: [PATCH v7 03/10] ACPI: property: Parse _CRS CSI-2 descriptor
+Message-ID: <ZCMNa0sGvu1Qmzgw@smile.fi.intel.com>
 References: <20230328101303.1458570-1-sakari.ailus@linux.intel.com>
- <20230328101303.1458570-7-sakari.ailus@linux.intel.com>
+ <20230328101303.1458570-4-sakari.ailus@linux.intel.com>
+ <ZCMDyVoFWizx+tOp@smile.fi.intel.com>
+ <ZCMHTZgXnLCWjCje@kekkonen.localdomain>
+ <ZCMLz4M37vrE5XJZ@smile.fi.intel.com>
+ <ZCMMQp9iaB2Q+f26@kekkonen.localdomain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230328101303.1458570-7-sakari.ailus@linux.intel.com>
+In-Reply-To: <ZCMMQp9iaB2Q+f26@kekkonen.localdomain>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
@@ -66,52 +69,49 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Mar 28, 2023 at 01:12:59PM +0300, Sakari Ailus wrote:
-> Generate software nodes for driver use, based on MIPI DisCo for Imaging
-> definitions.
+On Tue, Mar 28, 2023 at 06:48:18PM +0300, Sakari Ailus wrote:
+> On Tue, Mar 28, 2023 at 06:46:23PM +0300, Andy Shevchenko wrote:
+> > On Tue, Mar 28, 2023 at 06:27:09PM +0300, Sakari Ailus wrote:
+> > > On Tue, Mar 28, 2023 at 06:12:09PM +0300, Andy Shevchenko wrote:
+> > > > On Tue, Mar 28, 2023 at 01:12:56PM +0300, Sakari Ailus wrote:
+
+...
+
+> > > > > +	struct scan_check_crs_csi2_context inst_context = {
+> > > > > +		.handle = handle,
+> > > > > +		.res_head = LIST_HEAD_INIT(inst_context.res_head),
+> > > > > +	};
+> > > > > +	struct crs_csi2 *csi2;
+> > > > > +
+> > > > > +	acpi_walk_resources(handle, METHOD_NAME__CRS,
+> > > > > +			    scan_check_crs_csi2_instance, &inst_context);
+> > > > > +
+> > > > > +	if (list_empty(&inst_context.res_head))
+> > > > > +		return;
+> > > > > +
+> > > > > +	/*
+> > > > > +	 * Found entry, so allocate memory for it, fill it and add it to the
+> > > > > +	 * list.
+> > > > > +	 */
+> > > > > +	csi2 = kmalloc(sizeof(*csi2), GFP_KERNEL);
+> > > > > +	if (!csi2)
+> > > > 
+> > > > Who is going to release resources allocated in the callback above?
+> > > 
+> > > This is done by crs_csi2_release(), called from acpi_bus_scan_crs_csi2().
+> > 
+> > Isn't it a bit counter intuitive?
 > 
-> During the (sub-)namespace walk, ACPI device nodes are created but the
-> drivers aren't probed for the devices yet. A convenient way to determine
-> which ACPI devices this applies to is to find a hierarchical data node that
-> begins with "mipi-img-port-". These devices need software nodes that need
-> to be present before probing, and can only be constructed once the related
-> _CRS CSI2 records have been parsed.
+> Are you suggesting changing something?
+> 
+> Basically we're gathering the information during an ACPI namespace walk.
+> Once the information has been processed and used, the memory can be
+> released.
 
-...
+Release allocated memory in the function which allocates it. Since it's called
+via callback, the closest one is the one that calls acpi_walk_resources().
 
-> -	static const char mipi_port_prefix[] = "mipi-img-port-";
-> -	char mipi_port_name[sizeof(mipi_port_prefix) + 2];
-> +	char mipi_port_name[sizeof(MIPI_IMG_PORT_PREFIX) + 2];
->  
->  	if (snprintf(mipi_port_name, sizeof(mipi_port_name), "%s%u",
-> -		     mipi_port_prefix, port) >= sizeof(mipi_port_name)) {
-> +		     MIPI_IMG_PORT_PREFIX, port) >= sizeof(mipi_port_name)) {
-
-You are modifying lines you just brought by the previous patch. Why this mess?
-
-...
-
-> -static void acpi_bus_handle_postpone(acpi_handle handle,
-> -				     struct list_head *head)
-> +static void acpi_bus_handle_postpone(acpi_handle handle, struct list_head *head)
-
-Unrelated change?
-
-...
-
-> +/**
-> + * acpi_bus_device_postpone - Add an ACPI device to a given postponed list
-> + * @device: The ACPI device
-> + * @head: Postponed list head
-> + *
-> + * Add a given ACPI device to a list of ACPI objects for which the creation
-> + * of the device objects is to be postponed.
-> + */
-> +void acpi_bus_device_postpone(struct acpi_device *device,
-> +			      struct list_head *head)
-
-Taking into account above indentation, why not to have them on one line to
-begin with?
+Can't we free them here?
 
 -- 
 With Best Regards,
