@@ -2,56 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0FAC6CC67A
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Mar 2023 17:35:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFE476CC6F1
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Mar 2023 17:45:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232868AbjC1Pfg convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 28 Mar 2023 11:35:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44584 "EHLO
+        id S233791AbjC1Ppo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Mar 2023 11:45:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232991AbjC1Pff (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Mar 2023 11:35:35 -0400
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C7259C;
-        Tue, 28 Mar 2023 08:35:34 -0700 (PDT)
-Received: by mail-ed1-f46.google.com with SMTP id h8so51410578ede.8;
-        Tue, 28 Mar 2023 08:35:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680017732;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=S03XGyw3tSneSt4wS8/md52lGSHJdyFmoRVLM1Uorzo=;
-        b=FFl1hCrR4IPqPxcyFVUrUn9Z4V8OLPVrwxglKQ0DA05itj1q/87Um9Z5MdQTztp1OG
-         FxYa2zM85Lm1eWlaKqF1TrKqMnJWuu2XlTOjI1zHlwhEjxaqqcjEW8QiS31vSVydfJi6
-         EQ/G9sOtTTXrlIU/gcc8aZBp5nP+ZR6IcYaIV2ovcCUtV6b5egaoVcDI0q5wTxv/4bfk
-         KU3HT/6K0GdbLYIKV1+g0yvG98KyPoAc75v1F+3VaRcNvlk1RPi1qqVUWOlDrEXlOaRC
-         Z6y9ySuZ1hcY0WTMG9g1MkoR5nVdrpKGhPajgdMJVe/Nd+nD9HWyC4ik+6DnjLNYahw+
-         QBrQ==
-X-Gm-Message-State: AAQBX9clY0Yaai1I/rQpaaFBJUnshlZmsJaWomELpAHzNsMqtxRYXxXF
-        NgprDp9GSkaNN4A41Fd9y81Ib49E3Pii+IvHPp90Ckcm8jA=
-X-Google-Smtp-Source: AKy350Ycdnkt0zM+ZjM612jMXQa+FSmfgRrY8JDpwsCJ5kSu/cdrdhPLqh+KB3+ZxDLWkKd3fcN6PsiIUXpbjFVzapI=
-X-Received: by 2002:a17:906:fe49:b0:8b1:3298:c587 with SMTP id
- wz9-20020a170906fe4900b008b13298c587mr8617564ejb.2.1680017732662; Tue, 28 Mar
- 2023 08:35:32 -0700 (PDT)
+        with ESMTP id S233410AbjC1Pp1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Mar 2023 11:45:27 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDA2CA5C5;
+        Tue, 28 Mar 2023 08:45:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1680018307; x=1711554307;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=yjwcvbrE0LatVPMR8h6pQwwZImyW4TofRG3h7cfvXgA=;
+  b=XO9jcgd12PsMuK3EHdTDWUy7NZ4clGAMExhxjqIQvFbeQ997EFSCgQAg
+   0Vpi4WtRn0r2+N3j2ma/UMqUPxr/fGkn9w3H3MN1dHbjmVX5agyH0jFO0
+   s1lVKsaksTGuk3m9RrpF//lC5po34EDmCjzcGWRPHdBCwUcQjrvR6UMdb
+   GuWdLiUbc6j/RX7fUBwh28WBRFGrt/RYNFT9j1dBE7IjLc0ziKoeHTnsJ
+   aSwLfEHYGdVkv8/Kd7m9jOH37npVCOhajM2JSXM8F1VYBDSpRNB4CgkYi
+   xdsqh2iidnS8wuxUaB4gcotTZ9MY6F0NeXE2AvTCa+jXNFbj+qiGTRc76
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10663"; a="324501561"
+X-IronPort-AV: E=Sophos;i="5.98,297,1673942400"; 
+   d="scan'208";a="324501561"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2023 08:44:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10663"; a="827506050"
+X-IronPort-AV: E=Sophos;i="5.98,297,1673942400"; 
+   d="scan'208";a="827506050"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga001.fm.intel.com with ESMTP; 28 Mar 2023 08:44:42 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1phBV3-009gDi-0k;
+        Tue, 28 Mar 2023 18:44:41 +0300
+Date:   Tue, 28 Mar 2023 18:44:40 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
+        rafael@kernel.org, heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH v7 05/10] ACPI: property: Prepare generating swnodes for
+ ACPI and DisCo for Imaging
+Message-ID: <ZCMLaKpPrdl6kDIT@smile.fi.intel.com>
+References: <20230328101303.1458570-1-sakari.ailus@linux.intel.com>
+ <20230328101303.1458570-6-sakari.ailus@linux.intel.com>
 MIME-Version: 1.0
-References: <10247847.nUPlyArG6x@kreacher> <ZCIDTLFt27Ei7+V6@ideak-desk.fi.intel.com>
-In-Reply-To: <ZCIDTLFt27Ei7+V6@ideak-desk.fi.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 28 Mar 2023 17:35:21 +0200
-Message-ID: <CAJZ5v0iguCBqJCkMTMWzkfak5cBryvuA0+9QyurO308n0pJA6g@mail.gmail.com>
-Subject: Re: [PATCH v1 3/4] thermal: core: Introduce thermal_cooling_device_update()
-To:     imre.deak@intel.com
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230328101303.1458570-6-sakari.ailus@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-0.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,90 +66,86 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Mar 27, 2023 at 10:58 PM Imre Deak <imre.deak@intel.com> wrote:
->
-> Hi,
->
-> this leads to the stacktrace below triggered by
-> lockdep_assert_held(&cdev->lock) in cooling_device_stats_setup(),
+On Tue, Mar 28, 2023 at 01:12:58PM +0300, Sakari Ailus wrote:
+> Prepare generating software nodes for information parsed from ACPI _CRS for
+> CSI-2 as well as MIPI DisCo for Imaging spec. The software nodes are
+> compliant with existing ACPI or DT definitions and are parsed by relevant
+> drivers without changes.
 
-Thanks for the report!
+...
 
-> and
->
-> diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-> index 566df4522b885..132175b14814f 100644
-> --- a/drivers/thermal/thermal_core.c
-> +++ b/drivers/thermal/thermal_core.c
-> @@ -918,7 +918,9 @@ __thermal_cooling_device_register(struct device_node *np,
->         if (ret)
->                 goto out_cdev_type;
->
-> +       mutex_lock(&cdev->lock);
->         thermal_cooling_device_setup_sysfs(cdev);
-> +       mutex_unlock(&cdev->lock);
->
->         ret = dev_set_name(&cdev->device, "cooling_device%d", cdev->id);
->         if (ret)
->
-> fixed it up for me, but not sure if it's the correct fix.
+>  #define NO_CSI2_PORT (UINT_MAX - 1)
 
-There are other cases when the lockdep_assert_held() annotations may
-trigger, so it is better to remove them from
-cooling_device_stats_setup() and cooling_device_stats_destroy() and to
-put one into thermal_cooling_device_stats_reinit().
+Has it been used before this patch?
 
-I'll send a patch to do that later today.
+...
 
-> [    4.662358] ------------[ cut here ]------------
-> [    4.662361] WARNING: CPU: 3 PID: 1 at drivers/thermal/thermal_sysfs.c:879 cooling_device_stats_setup+0xb4/0xc0
-> [    4.662370] Modules linked in:
-> [    4.662375] CPU: 3 PID: 1 Comm: swapper/0 Tainted: G          I        6.3.0-rc4-imre+ #771
-> [    4.662379] Hardware name: Intel Corporation Shark Bay Client platform/Flathead Creek Crb, BIOS HSWLPTU1.86C.0109.R03.1301282055 01/28/2013
-> [    4.662382] RIP: 0010:cooling_device_stats_setup+0xb4/0xc0
-> [    4.662387] Code: 89 1d 58 52 36 01 5b 41 5c 41 5d 5d c3 cc cc cc cc 48 8d bf 18 05 00 00 be ff ff ff ff e8 f4 d2 3e 00 85 c0 0f 85 6f ff ff ff <0f> 0b e9 68 ff ff ff 0f 1f 44 00 00 90 90 90 90 90 90 90 90 90 90
-> [    4.662390] RSP: 0000:ffff9f48c0057b30 EFLAGS: 00010246
-> [    4.662395] RAX: 0000000000000000 RBX: ffff8fc381ca9800 RCX: 0000000000000000
-> [    4.662398] RDX: 0000000000000000 RSI: ffffffff94ad1d28 RDI: ffffffff94b58cc6
-> [    4.662401] RBP: ffff9f48c0057b48 R08: 0000000000000004 R09: 0000000000000000
-> [    4.662404] R10: ffff8fc381c77cd0 R11: 0000000000000000 R12: 0000000000000002
-> [    4.662406] R13: ffff8fc381ca9800 R14: ffff8fc381b0a000 R15: 0000000000000000
-> [    4.662409] FS:  0000000000000000(0000) GS:ffff8fc6b5580000(0000) knlGS:0000000000000000
-> [    4.662412] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [    4.662415] CR2: 0000000000000000 CR3: 0000000283856001 CR4: 00000000001706e0
-> [    4.662418] Call Trace:
-> [    4.662421]  <TASK>
-> [    4.662427]  thermal_cooling_device_setup_sysfs+0x12/0x30
-> [    4.662433]  __thermal_cooling_device_register+0x195/0x410
-> [    4.662442]  thermal_cooling_device_register+0x19/0x20
-> [    4.662446]  acpi_fan_probe+0xd7/0x5a0
-> [    4.662458]  ? acpi_match_device_ids+0x12/0x20
-> [    4.662464]  ? acpi_dev_pm_attach+0x41/0x110
-> [    4.662473]  platform_probe+0x48/0xc0
-> [    4.662481]  really_probe+0x1be/0x420
-> [    4.662487]  __driver_probe_device+0x8c/0x190
-> [    4.662493]  driver_probe_device+0x24/0x90
-> [    4.662498]  __driver_attach+0xf7/0x200
-> [    4.662503]  ? __pfx___driver_attach+0x10/0x10
-> [    4.662507]  bus_for_each_dev+0x80/0xd0
-> [    4.662516]  driver_attach+0x1e/0x30
-> [    4.662522]  bus_add_driver+0x11f/0x230
-> [    4.662530]  driver_register+0x5e/0x120
-> [    4.662534]  ? __pfx_acpi_fan_driver_init+0x10/0x10
-> [    4.662540]  __platform_driver_register+0x1e/0x30
-> [    4.662545]  acpi_fan_driver_init+0x17/0x20
-> [    4.662549]  do_one_initcall+0x61/0x280
-> [    4.662559]  ? debug_smp_processor_id+0x17/0x20
-> [    4.662568]  kernel_init_freeable+0x411/0x640
-> [    4.662582]  ? __pfx_kernel_init+0x10/0x10
-> [    4.662589]  kernel_init+0x1b/0x1f0
-> [    4.662594]  ? __pfx_kernel_init+0x10/0x10
-> [    4.662599]  ret_from_fork+0x2c/0x50
-> [    4.662615]  </TASK>
-> [    4.662618] irq event stamp: 506869
-> [    4.662620] hardirqs last  enabled at (506875): [<ffffffff9338e2d8>] __up_console_sem+0x68/0x80
-> [    4.662625] hardirqs last disabled at (506880): [<ffffffff9338e2bd>] __up_console_sem+0x4d/0x80
-> [    4.662628] softirqs last  enabled at (504698): [<ffffffff932de49f>] __irq_exit_rcu+0xbf/0x140
-> [    4.662633] softirqs last disabled at (504689): [<ffffffff932de49f>] __irq_exit_rcu+0xbf/0x140
-> [    4.662636] ---[ end trace 0000000000000000 ]---
-> [    4.662779] ------------[ cut here ]------------
+> +/* Print graph port name into a buffer, return non-zero if failed. */
+> +#define GRAPH_PORT_NAME(var, num)					    \
+> +	(snprintf((var), sizeof(var), SWNODE_GRAPH_PORT_NAME_FMT, (num)) >= \
+> +	 sizeof(var))
+
+This macro evaluates sizeof(var) twice. Is it a problem?
+
+...
+
+> +#define NEXT_PROPERTY(index, max)				\
+> +	(WARN_ON(++(index) > ACPI_DEVICE_SWNODE_##max + 1) ?	\
+> +	 ACPI_DEVICE_SWNODE_##max : (index) - 1)
+
+This macro full of interesting effects. On top of that it's written in
+hard-to-read form.
+
+Why not at least
+
+#define NEXT_PROPERTY(index, max)				\
+	(WARN_ON((index) > ACPI_DEVICE_SWNODE_##max) ?	\
+	 ACPI_DEVICE_SWNODE_##max : (index)++)
+
+?
+
+...
+
+> +	ret = fwnode_property_count_u8(mipi_port_fwnode, "mipi-img-lane-polarities");
+> +	if (ret > 0) {
+> +		unsigned int bytes = min_t(unsigned int, ret, sizeof(val));
+> +
+> +		fwnode_property_read_u8_array(mipi_port_fwnode,
+> +					      "mipi-img-lane-polarities",
+> +					      val, bytes);
+> +
+> +		/* Total number of lanes here is clock lane + data lanes */
+> +		if (bytes * BITS_PER_TYPE(u8) >= 1 + num_lanes) {
+> +			unsigned int i;
+> +
+> +			/* Move polarity bits to the lane polarity u32 array */
+> +			for (i = 0; i < 1 + num_lanes; i++)
+> +				port->lane_polarities[i] =
+> +					(bool)(val[i >> 3] & (1 << (i & 7)));
+
+Casting to bool?!
+
+Can we read the array and convert it to bitmap, then this voodoo-ish code can
+be simplified to
+
+	for_each_set_bit(i, ...)
+		..._polarities[i] = 1;
+
+(assuming initially they are 0:s)?
+
+> +			port->ep_props[NEXT_PROPERTY(*ep_prop_index, EP_LANE_POLARITIES)] =
+> +				PROPERTY_ENTRY_U32_ARRAY_LEN("lane-polarities",
+> +							     port->lane_polarities,
+> +							     1 + num_lanes);
+> +		} else {
+> +			acpi_handle_warn(acpi_device_handle(device),
+> +					 "too few lane polarity bytes (%u)\n",
+> +					 bytes);
+> +		}
+> +	}
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
