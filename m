@@ -2,52 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5DFE6CD764
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Mar 2023 12:10:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41F286CD769
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Mar 2023 12:10:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231520AbjC2KKP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Mar 2023 06:10:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48128 "EHLO
+        id S231544AbjC2KKj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Mar 2023 06:10:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231506AbjC2KKL (ORCPT
+        with ESMTP id S231530AbjC2KKL (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Mar 2023 06:10:11 -0400
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02D67469C;
-        Wed, 29 Mar 2023 03:10:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CF0E1BFE;
+        Wed, 29 Mar 2023 03:10:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680084606; x=1711620606;
+  t=1680084607; x=1711620607;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=h64xUav8wBcQemeG9qzU+lo83YD2+PtgrOwwLLWQClw=;
-  b=cRb0OoqFUN/mGBXyO8+YT/kseJv8T0f/2cnrIgZoNlQoQBKDX7qe6Ty2
-   l/pb28UFC289An2S2VYHkLzxPi/OufkDWWTu7Y7TqgVE7yXzWr3t58Bth
-   ssPVH0nceRZ+bjJPqgSYRLoUTsM+8EZXf1UXKSiQdkH2g9NyHYhqnPHFa
-   d6gZwdFZ9EvsWdO8i8eG4EewNDkRZ4VgRa9ry+wk+L+n/U2T1ykc0uF0V
-   5yrWMwOMCUnesFVmKQNhxx5UuB9M2/Dje+nb9ROsFnGTRNExx1jVemp4d
-   Z4CyvjHEag2hRlAamNkvUpX6DXz+YGC/YQF3D7eNeZZB5egmuBwv1RIul
+  bh=IfGacDFJLLqr9f6JjzSb6VFnxUdNv5+L5s27tHa+Ivg=;
+  b=dKVyXU7aNRHhyklrRWeIQ13EgP4B7jB30AQqYMk5QDrDRX3rjVhpONSl
+   90RhbuVQG2vW4d5Iw+7qbut7eXMaVYZ0r4K6njADkoo2dw25j+XpMZx3J
+   GnGG5YNHn5Dmg2hHVTvGwCz8fMtS2dBc/BfuTTVyKPzi6AuEqVCmoCHHB
+   ynQYTDscpcEBii6SLYNurRoub6jCA6TmekQFhPGxod56C34NQ0JDcmruz
+   Y9t3h9tX+WpbrVcVhToMOdmZe6S0i1Yj4vP6cUU0sYyJzwTJKlJrhV8Te
+   3vxBbVHkOLj7JQxpJicmwq5WLUoLQfWbm9h20mqU27G0KXXMQo4INu3Jm
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10663"; a="343256266"
+X-IronPort-AV: E=McAfee;i="6600,9927,10663"; a="343256269"
 X-IronPort-AV: E=Sophos;i="5.98,300,1673942400"; 
-   d="scan'208";a="343256266"
+   d="scan'208";a="343256269"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2023 03:10:05 -0700
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2023 03:10:06 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10663"; a="773517745"
+X-IronPort-AV: E=McAfee;i="6600,9927,10663"; a="773517755"
 X-IronPort-AV: E=Sophos;i="5.98,300,1673942400"; 
-   d="scan'208";a="773517745"
+   d="scan'208";a="773517755"
 Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2023 03:10:04 -0700
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2023 03:10:05 -0700
 Received: from svinhufvud.ger.corp.intel.com (localhost [IPv6:::1])
-        by kekkonen.fi.intel.com (Postfix) with ESMTP id 3371B1227DF;
-        Wed, 29 Mar 2023 13:10:00 +0300 (EEST)
+        by kekkonen.fi.intel.com (Postfix) with ESMTP id 2E0A8122809;
+        Wed, 29 Mar 2023 13:10:02 +0300 (EEST)
 From:   Sakari Ailus <sakari.ailus@linux.intel.com>
 To:     linux-acpi@vger.kernel.org
 Cc:     linux-media@vger.kernel.org, rafael@kernel.org,
         andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com
-Subject: [PATCH v8 09/10] ACPI: property: Skip MIPI property table without "mipi-img" prefix
-Date:   Wed, 29 Mar 2023 13:09:50 +0300
-Message-Id: <20230329100951.1522322-10-sakari.ailus@linux.intel.com>
+Subject: [PATCH v8 10/10] ACPI: property: Document _CRS CSI-2 and DisCo for Imaging support
+Date:   Wed, 29 Mar 2023 13:09:51 +0300
+Message-Id: <20230329100951.1522322-11-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230329100951.1522322-1-sakari.ailus@linux.intel.com>
 References: <20230329100951.1522322-1-sakari.ailus@linux.intel.com>
@@ -62,38 +62,62 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-For all _DSD properties, skip going through the MIPI DisCo for Imaging
-property name substitution table if the property doesn't have "mipi-img-"
-prefix.
+Document how ACPI _CRS CSI-2 and DisCo for Imaging works. It's non-trivial
+so such documentation can be useful.
 
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 ---
- drivers/acpi/mipi.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/acpi/mipi.c | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
 diff --git a/drivers/acpi/mipi.c b/drivers/acpi/mipi.c
-index 576301b9bb89..90ad4b43f008 100644
+index 90ad4b43f008..926d39948268 100644
 --- a/drivers/acpi/mipi.c
 +++ b/drivers/acpi/mipi.c
-@@ -715,6 +715,8 @@ void acpi_init_swnodes(struct acpi_device *device)
- 	primary->secondary = software_node_fwnode(ads->nodes);
- }
+@@ -9,6 +9,43 @@
+  * Also see <URL:https://www.mipi.org/specifications/mipi-disco-imaging>.
+  *
+  * Copyright (C) 2023 Intel Corporation
++ *
++ * _CRS CSI-2 descriptors, as defined starting from ACPI 6.4 [1], contain
++ * information on cross-device CSI-2 bus configuration. The descriptors are
++ * located under transmitter devices, and the receiver devices have no direct
++ * way to access them even if the information in these descriptors is equally
++ * important for receivers. This information is amended with MIPI DisCo for
++ * Imaging [2] specification that defines _DSD data nodes and properties.
++ *
++ * The support for these is based on two-fold approach, firstly renaming
++ * properties where semantics matches and secondly gathering information to
++ * generate properties using information gathered from various sources. The
++ * former is trivial (see acpi_properties_prepare_mipi() at the end of the
++ * file) whereas the latter requires a more elaborate explanation.
++ *
++ * acpi_bus_scan_crs_csi2() scans an ACPI bus for devices with _CRS CSI-2
++ * descriptors and stores them to a linked list. This is done as traversing just
++ * this list is much smaller task than the entire DSDT. This list is then used
++ * to figure out how much memory is needed for swnodes related to a given ACPI
++ * device (handle). Further on, the same function sets the property values for
++ * the properties the values of which are obtained from the _CRS CSI-2
++ * descriptor. The information is stored into another list where the information
++ * can be looked up based on device's acpi_handle as the struct acpi_device
++ * isn't available yet at this point (and could not, as cross-device references
++ * need to be set up before the devices are available for drivers to probe).
++ *
++ * For each struct acpi_device, acpi_init_swnodes() further obtains information
++ * required to find out the values for the rest of the properties needed by
++ * drivers. This includes all port and endpoint properties as the node
++ * structures used by DT graphs and DisCo for Imaging are different. Finally the
++ * function registers software nodes for the device and sets the secondary
++ * pointer for the ACPI device's fwnode.
++ *
++ * Access to data the structures is serialised using acpi_scan_lock in scan.c.
++ *
++ * [1] https://uefi.org/sites/default/files/resources/ACPI_Spec_6_4_Jan22.pdf
++ *
++ * [2] https://www.mipi.org/specifications/mipi-disco-imaging
+  */
  
-+#define MIPI_IMG_PREFIX "mipi-img-"
-+
- static const struct mipi_disco_prop {
- 	const char *mipi_prop;
- 	const char *dt_prop;
-@@ -741,6 +743,9 @@ void acpi_properties_prepare_mipi(union acpi_object *elements)
- 	char *e0 = elements[0].string.pointer;
- 	unsigned int i;
- 
-+	if (!str_has_prefix(elements[0].string.pointer, MIPI_IMG_PREFIX))
-+		return;
-+
- 	/* Replace MIPI DisCo for Imaging property names with DT equivalents. */
- 	for (i = 0; i < ARRAY_SIZE(mipi_disco_props); i++) {
- 		if (!strcmp(mipi_disco_props[i].mipi_prop, e0)) {
+ #include <linux/acpi.h>
 -- 
 2.30.2
 
