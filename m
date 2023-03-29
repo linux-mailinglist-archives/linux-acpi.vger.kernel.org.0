@@ -2,120 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2787F6CCA94
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Mar 2023 21:26:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 513006CCE75
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Mar 2023 02:03:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229500AbjC1T0x (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Mar 2023 15:26:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42924 "EHLO
+        id S229452AbjC2ADJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Mar 2023 20:03:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229759AbjC1T0u (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Mar 2023 15:26:50 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 113FF35B7;
-        Tue, 28 Mar 2023 12:26:50 -0700 (PDT)
+        with ESMTP id S229530AbjC2ADI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Mar 2023 20:03:08 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAAA41B5;
+        Tue, 28 Mar 2023 17:03:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680031610; x=1711567610;
+  t=1680048187; x=1711584187;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=wIr8LxkLZt0vjaMMTHuDCE4qyrKUT2FzVj4TUTIrZ/w=;
-  b=f7SWPiqPZeD/tQIku72Iwe7p0DnAamLQThPC6haeAd/J7OSY1ezfMWA7
-   i6Ncm/jPhtFBSW09TRfkh8Ai0Tf9acTjdo+en1Bjq+CBqa9khlBs3d+zA
-   eiLiXWZHMwLns6Vk0GCJkcGmKStPPvhIMlWYTbzWqcUUtfjVH86a5xOzg
-   3qsCrNEmkIbuYuJJqpG6xF3XdCJsd4DBwY9ImN9qGkvC5DlV3ZlcGwHpj
-   deIOgglMaDRH5gD0fFB0a7mx+xJokRMZhILDQMmaP0sioLUowxDs3gUm6
-   ZIIRNC2aN96w2CZ8DF6y4JCuCNNCnTSjPqU53h9i3izGh8qFaXcWjWyFf
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10663"; a="340692682"
-X-IronPort-AV: E=Sophos;i="5.98,297,1673942400"; 
-   d="scan'208";a="340692682"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2023 12:26:48 -0700
+  bh=u9tjAHk2BuHxmeOup3K9tkBHA+3dtAQ/YC0iJe8ULYQ=;
+  b=jXum6ue3kSzct2La5Jt2lgzkcE8ZDktHkNTR8qNB3dcWKIffAm5duBuE
+   POZUQ9+v0p1s9AllEuIPIXzs8PMzvLW/m5AR7sTSY7PtAvslnAc4KQLkv
+   qHJirUVcK49ebohiCKeLshebOrPrr/IN39ddXhMBzCT6KEiR7Yp8W14rO
+   HkluFpCScnSBlGg0cbgwA+8SB//XOGeIHazigSk7Wn7Zu6SvJZ4YZt2VZ
+   J88duqScXqT9YOSEMhhmBxHlQ/CMfQ8+SrtlGtIqz5mHLvjrIwEXQauFD
+   BcLszDKM6p8UYx5u0PAw5KD+HxbbWY8A+6vULf/+4dso/1BWflAfaMwbU
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10663"; a="427005291"
+X-IronPort-AV: E=Sophos;i="5.98,299,1673942400"; 
+   d="scan'208";a="427005291"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2023 17:03:07 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10663"; a="807936838"
-X-IronPort-AV: E=Sophos;i="5.98,297,1673942400"; 
-   d="scan'208";a="807936838"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2023 12:26:46 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-        by kekkonen.fi.intel.com (Postfix) with SMTP id 941A911F937;
-        Tue, 28 Mar 2023 22:26:42 +0300 (EEST)
-Date:   Tue, 28 Mar 2023 22:26:42 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        rafael@kernel.org, heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH v7 03/10] ACPI: property: Parse _CRS CSI-2 descriptor
-Message-ID: <ZCM/cgiPq3g9LeQc@kekkonen.localdomain>
-References: <20230328101303.1458570-1-sakari.ailus@linux.intel.com>
- <20230328101303.1458570-4-sakari.ailus@linux.intel.com>
- <ZCMDyVoFWizx+tOp@smile.fi.intel.com>
- <ZCMHTZgXnLCWjCje@kekkonen.localdomain>
- <ZCMLz4M37vrE5XJZ@smile.fi.intel.com>
- <ZCMMQp9iaB2Q+f26@kekkonen.localdomain>
- <ZCMNa0sGvu1Qmzgw@smile.fi.intel.com>
+X-IronPort-AV: E=McAfee;i="6600,9927,10663"; a="753364452"
+X-IronPort-AV: E=Sophos;i="5.98,299,1673942400"; 
+   d="scan'208";a="753364452"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2) ([10.209.62.61])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2023 17:03:04 -0700
+Date:   Tue, 28 Mar 2023 17:03:02 -0700
+From:   Alison Schofield <alison.schofield@intel.com>
+To:     Dave Jiang <dave.jiang@intel.com>
+Cc:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+        dan.j.williams@intel.com, ira.weiny@intel.com,
+        vishal.l.verma@intel.com, rafael@kernel.org, lukas@wunner.de
+Subject: Re: [PATCH v2 02/21] cxl: Add checksum verification to CDAT from CXL
+Message-ID: <ZCOANlmHyhJ0hDGn@aschofie-mobl2>
+References: <167995336797.2857312.539473939839316778.stgit@djiang5-mobl3>
+ <167995345388.2857312.2421270054519644444.stgit@djiang5-mobl3>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZCMNa0sGvu1Qmzgw@smile.fi.intel.com>
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <167995345388.2857312.2421270054519644444.stgit@djiang5-mobl3>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Mar 28, 2023 at 06:53:15PM +0300, Andy Shevchenko wrote:
-> On Tue, Mar 28, 2023 at 06:48:18PM +0300, Sakari Ailus wrote:
-> > On Tue, Mar 28, 2023 at 06:46:23PM +0300, Andy Shevchenko wrote:
-> > > On Tue, Mar 28, 2023 at 06:27:09PM +0300, Sakari Ailus wrote:
-> > > > On Tue, Mar 28, 2023 at 06:12:09PM +0300, Andy Shevchenko wrote:
-> > > > > On Tue, Mar 28, 2023 at 01:12:56PM +0300, Sakari Ailus wrote:
+On Mon, Mar 27, 2023 at 02:44:13PM -0700, Dave Jiang wrote:
+> A CDAT table is available from a CXL device. The table is read by the
+> driver and cached in software. With the CXL subsystem needing to parse the
+> CDAT table, the checksum should be verified. Add checksum verification
+> after the CDAT table is read from device.
 > 
-> ...
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 > 
-> > > > > > +	struct scan_check_crs_csi2_context inst_context = {
-> > > > > > +		.handle = handle,
-> > > > > > +		.res_head = LIST_HEAD_INIT(inst_context.res_head),
-> > > > > > +	};
-> > > > > > +	struct crs_csi2 *csi2;
-> > > > > > +
-> > > > > > +	acpi_walk_resources(handle, METHOD_NAME__CRS,
-> > > > > > +			    scan_check_crs_csi2_instance, &inst_context);
-> > > > > > +
-> > > > > > +	if (list_empty(&inst_context.res_head))
-> > > > > > +		return;
-> > > > > > +
-> > > > > > +	/*
-> > > > > > +	 * Found entry, so allocate memory for it, fill it and add it to the
-> > > > > > +	 * list.
-> > > > > > +	 */
-> > > > > > +	csi2 = kmalloc(sizeof(*csi2), GFP_KERNEL);
-> > > > > > +	if (!csi2)
-> > > > > 
-> > > > > Who is going to release resources allocated in the callback above?
-> > > > 
-> > > > This is done by crs_csi2_release(), called from acpi_bus_scan_crs_csi2().
-> > > 
-> > > Isn't it a bit counter intuitive?
-> > 
-> > Are you suggesting changing something?
-> > 
-> > Basically we're gathering the information during an ACPI namespace walk.
-> > Once the information has been processed and used, the memory can be
-> > released.
+> ---
+> v2:
+> - Drop ACPI checksum export and just use local verification. (Dan)
+> ---
+>  drivers/cxl/core/pci.c |   16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
 > 
-> Release allocated memory in the function which allocates it. Since it's called
-> via callback, the closest one is the one that calls acpi_walk_resources().
-> 
-> Can't we free them here?
+> diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
+> index 25b7e8125d5d..e0d5e6525c0d 100644
+> --- a/drivers/cxl/core/pci.c
+> +++ b/drivers/cxl/core/pci.c
+> @@ -528,6 +528,16 @@ static int cxl_cdat_read_table(struct device *dev,
+>  	return 0;
+>  }
+>  
+> +static unsigned char cdat_checksum(void *buf, size_t size)
+> +{
+> +	unsigned char sum, *data = buf;
+> +	size_t i;
+> +
+> +	for (sum = 0, i = 0; i < size; i++)
+> +		sum += data[i];
+> +	return 0 - sum;
 
-Ah, I get your point now.
+This return value isn't obvious to me. What's happening here?
+Thanks for explaining,
 
-I'll change this for v8.
+Alison
 
--- 
-Sakari Ailus
+> +}
+> +
+>  /**
+>   * read_cdat_data - Read the CDAT data on this port
+>   * @port: Port to read data from
+> @@ -573,6 +583,12 @@ void read_cdat_data(struct cxl_port *port)
+>  	}
+>  
+>  	port->cdat.table = cdat_table + sizeof(__le32);
+> +	if (cdat_checksum(port->cdat.table, cdat_length)) {
+> +		/* Don't leave table data allocated on error */
+> +		devm_kfree(dev, cdat_table);
+> +		dev_err(dev, "CDAT data checksum error\n");
+> +	}
+> +
+>  	port->cdat.length = cdat_length;
+>  }
+>  EXPORT_SYMBOL_NS_GPL(read_cdat_data, CXL);
+> 
+> 
