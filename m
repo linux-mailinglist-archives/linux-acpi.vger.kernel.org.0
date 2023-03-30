@@ -2,98 +2,183 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0D906D0153
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Mar 2023 12:34:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACB026D05D4
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Mar 2023 15:04:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229563AbjC3Kem (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 30 Mar 2023 06:34:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55054 "EHLO
+        id S230015AbjC3NEU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 Mar 2023 09:04:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229807AbjC3Kel (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Mar 2023 06:34:41 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B40CB211C;
-        Thu, 30 Mar 2023 03:34:31 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 488202F4;
-        Thu, 30 Mar 2023 03:35:15 -0700 (PDT)
-Received: from [10.57.54.254] (unknown [10.57.54.254])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3FED43F663;
-        Thu, 30 Mar 2023 03:34:29 -0700 (PDT)
-Message-ID: <3b95e362-300a-12af-0d55-76672c60be9f@arm.com>
-Date:   Thu, 30 Mar 2023 11:34:22 +0100
+        with ESMTP id S231474AbjC3NEU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Mar 2023 09:04:20 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A662B74E;
+        Thu, 30 Mar 2023 06:03:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1680181438; x=1711717438;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=aDjU7TSjjDXKbPBumCsWd1O8J4lu6X9/16uNJHbLemA=;
+  b=J+UNWFnGPh+8F1csKnpstV6bvzRQKYAoijfbt4YLMgLGbheOOk7nnvQK
+   oNUyti28RMLgBwMQfoySDGTAzCMYxPeL7pPDK3jMLEVeqf48nDXOHuukx
+   g0L9cGDaNUBm3Z5IG1Zn4QWxO4u9TW0m/3rgPp9mHJpb9zExMU7eweGqj
+   PKyYuH4cBcfQsa1jGtwF5y74GWyGpmMj9DouEaQEbLSQj6PkVJdGgh99W
+   gJh9v5RJf3BluURWC4srqNtLkpTkXTqm/6xjMaXMaOIZc6ni15CSY+GuC
+   PtU6XmlPi5hrISGVJm0T9hRlpscH8FxqCgYYkIshWEhCRU6UvDw5CCiau
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="403814172"
+X-IronPort-AV: E=Sophos;i="5.98,303,1673942400"; 
+   d="scan'208";a="403814172"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 06:03:57 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="714966368"
+X-IronPort-AV: E=Sophos;i="5.98,303,1673942400"; 
+   d="scan'208";a="714966368"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 30 Mar 2023 06:03:54 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1phrwY-000KsI-2M;
+        Thu, 30 Mar 2023 13:03:54 +0000
+Date:   Thu, 30 Mar 2023 21:03:42 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 86506ae8e8d0a0cfebd3eabc77feb25abe92d364
+Message-ID: <642588ae.9jtvDsK4LC1ln8a3%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH] perf/arm-cmn: fix regitster offset of
- CMN_MXP__CONNECT_INFO_P2-5
-To:     Jing Zhang <renyu.zj@linux.alibaba.com>,
-        Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-perf-users@vger.kernel.org,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Zhuo Song <zhuo.song@linux.alibaba.com>,
-        Ruidong Tian <tianruidong@linux.alibaba.com>
-References: <1680169620-26012-1-git-send-email-renyu.zj@linux.alibaba.com>
-Content-Language: en-GB
-From:   Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <1680169620-26012-1-git-send-email-renyu.zj@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.3 required=5.0 tests=NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2023-03-30 10:47, Jing Zhang wrote:
-> In the CMN700 specification, it is described that the address offset
-> of the mxp_device_connect_info_p0-5 register is 16'h8 + #{8*index}.
-> Therefore, the address offset of the CMN_MXP__CONNECT_INFO_P2-5 macro
-> defined in the code is wrong, which causes the cmn700 topology map
-> incorrect printed in debugfs.
-> 
-> So correct the address offset value to make the cmn700 topology map
-> correct in debugfs.
-> 
-> Fixes: 60d1504070c2 ("perf/arm-cmn: Support new IP features")
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 86506ae8e8d0a0cfebd3eabc77feb25abe92d364  Merge branch 'thermal-intel-fixes' into bleeding-edge
 
-Ugh, these offsets are correct for CI-700, so strictly that commit is 
-fine. What I failed to notice is that CMN-700 shuffled the 
-mesh_port_connect_info registers out of the way, so it's commit 
-23760a014417 which should have added more handling for this difference.
+elapsed time: 1069m
 
-Thanks,
-Robin.
+configs tested: 103
+configs skipped: 7
 
-> Signed-off-by: Jing Zhang <renyu.zj@linux.alibaba.com>
-> Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
-> ---
->   drivers/perf/arm-cmn.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
-> index 1deb61b..e9f844b 100644
-> --- a/drivers/perf/arm-cmn.c
-> +++ b/drivers/perf/arm-cmn.c
-> @@ -59,10 +59,10 @@
->   /* XPs also have some local topology info which has uses too */
->   #define CMN_MXP__CONNECT_INFO_P0	0x0008
->   #define CMN_MXP__CONNECT_INFO_P1	0x0010
-> -#define CMN_MXP__CONNECT_INFO_P2	0x0028
-> -#define CMN_MXP__CONNECT_INFO_P3	0x0030
-> -#define CMN_MXP__CONNECT_INFO_P4	0x0038
-> -#define CMN_MXP__CONNECT_INFO_P5	0x0040
-> +#define CMN_MXP__CONNECT_INFO_P2	0x0018
-> +#define CMN_MXP__CONNECT_INFO_P3	0x0020
-> +#define CMN_MXP__CONNECT_INFO_P4	0x0028
-> +#define CMN_MXP__CONNECT_INFO_P5	0x0030
->   #define CMN__CONNECT_INFO_DEVICE_TYPE	GENMASK_ULL(4, 0)
->   
->   /* PMU registers occupy the 3rd 4KB page of each node's region */
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha        buildonly-randconfig-r002-20230329   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r014-20230329   gcc  
+alpha                randconfig-r031-20230329   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r004-20230329   gcc  
+arc                  randconfig-r034-20230329   gcc  
+arc                  randconfig-r043-20230329   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r046-20230329   gcc  
+arm64                            allyesconfig   gcc  
+arm64        buildonly-randconfig-r005-20230329   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r025-20230329   clang
+csky                                defconfig   gcc  
+csky                 randconfig-r003-20230329   gcc  
+hexagon              randconfig-r002-20230329   clang
+hexagon              randconfig-r041-20230329   clang
+hexagon              randconfig-r045-20230329   clang
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                          randconfig-a001   gcc  
+i386                          randconfig-a002   clang
+i386                          randconfig-a003   gcc  
+i386                          randconfig-a004   clang
+i386                          randconfig-a005   gcc  
+i386                          randconfig-a006   clang
+i386                          randconfig-a011   clang
+i386                          randconfig-a012   gcc  
+i386                          randconfig-a013   clang
+i386                          randconfig-a014   gcc  
+i386                          randconfig-a015   clang
+i386                          randconfig-a016   gcc  
+ia64                             allmodconfig   gcc  
+ia64         buildonly-randconfig-r003-20230329   gcc  
+ia64                                defconfig   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r001-20230329   gcc  
+m68k                             allmodconfig   gcc  
+m68k         buildonly-randconfig-r004-20230329   gcc  
+m68k         buildonly-randconfig-r006-20230329   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r033-20230329   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r006-20230329   gcc  
+nios2                randconfig-r012-20230329   gcc  
+openrisc             randconfig-r032-20230329   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc      buildonly-randconfig-r001-20230329   clang
+powerpc              randconfig-r011-20230329   clang
+powerpc              randconfig-r024-20230329   clang
+powerpc              randconfig-r026-20230329   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r013-20230329   clang
+riscv                randconfig-r016-20230329   clang
+riscv                randconfig-r042-20230329   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r022-20230329   clang
+s390                 randconfig-r044-20230329   clang
+sh                               allmodconfig   gcc  
+sh                   randconfig-r021-20230329   gcc  
+sh                   randconfig-r023-20230329   gcc  
+sparc                               defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                        randconfig-a001   clang
+x86_64                        randconfig-a002   gcc  
+x86_64                        randconfig-a003   clang
+x86_64                        randconfig-a004   gcc  
+x86_64                        randconfig-a005   clang
+x86_64                        randconfig-a006   gcc  
+x86_64                        randconfig-a011   gcc  
+x86_64                        randconfig-a012   clang
+x86_64                        randconfig-a013   gcc  
+x86_64                        randconfig-a014   clang
+x86_64                        randconfig-a015   gcc  
+x86_64                        randconfig-a016   clang
+x86_64                               rhel-8.3   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
