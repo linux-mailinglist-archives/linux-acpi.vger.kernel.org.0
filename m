@@ -2,114 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D24686D0DA8
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Mar 2023 20:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9507C6D0DEF
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Mar 2023 20:40:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231144AbjC3SXx convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 30 Mar 2023 14:23:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55130 "EHLO
+        id S231252AbjC3SkZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 Mar 2023 14:40:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231127AbjC3SXw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Mar 2023 14:23:52 -0400
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E48FE072;
-        Thu, 30 Mar 2023 11:23:51 -0700 (PDT)
-Received: by mail-ed1-f48.google.com with SMTP id h8so80064264ede.8;
-        Thu, 30 Mar 2023 11:23:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680200629;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7j0TodEruv5k2n+iGGvRH1vWLP1TxquIM08eT58r8/Q=;
-        b=5UvL5CP/I7WM9GYFG43B89kFuu0ZP/q30aTUBJiMeli/BjR3km4YNxFw+1IMT/EyOT
-         oNijtVWs2IHGKpXrz59rj7wT1ZIGt+/2kmam5nRpR1CCvI8AdDD6znH0djVB4allHigz
-         aPmdFFNQfnEVZ8FdARLNrJPpa9PbMoAtQRzkoFE0f8VxE7Y6u0bpU8bcubuU5aD5qG1D
-         Lq1tjXrMmnODtdHpx34goP1IkikzbQ/z8vHaeJnq9goJoFpmun+NYtz9lcoPGEZV/JBD
-         KM+ZVtWmOhPoOig3Jm3TwWGgO3yn3G7nw99NcZGGCx3sSUl65uE3Di+Q5uh8NjAGYvrj
-         jsGg==
-X-Gm-Message-State: AAQBX9fJU85XgF13Ow2LFPj7d+cQb6sHAw5FoXVuqH//sYHZZUctK9Vj
-        ToCdh8efsdjjYJ4qpzUSV3UzrsJh5DxQSMn3eoo=
-X-Google-Smtp-Source: AKy350YUmI7pvkib+YOeWqKmPdNHv1IjhaEHQ3mMtxgcVfxAUucYlvMka6PCp1v3i7+U+XfRFPV6J+bmBvYrlk88s4c=
-X-Received: by 2002:a17:907:d48d:b0:93e:c1ab:ae67 with SMTP id
- vj13-20020a170907d48d00b0093ec1abae67mr11209201ejc.2.1680200629495; Thu, 30
- Mar 2023 11:23:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230329174536.6931-1-mario.limonciello@amd.com>
-In-Reply-To: <20230329174536.6931-1-mario.limonciello@amd.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 30 Mar 2023 20:23:38 +0200
-Message-ID: <CAJZ5v0i-ypLb9oPO8RqdQ6Vm3yD1ohP1sFei_BPNgiHZibdoQg@mail.gmail.com>
-Subject: Re: [PATCH] x86/ACPI/boot: Use FADT version to check support for
- online capable
-To:     Mario Limonciello <mario.limonciello@amd.com>, x86@kernel.org
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        with ESMTP id S231194AbjC3SkY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Mar 2023 14:40:24 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA495B47F;
+        Thu, 30 Mar 2023 11:40:00 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-046-114-214-160.46.114.pool.telefonica.de [46.114.214.160])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 72A721EC0691;
+        Thu, 30 Mar 2023 20:39:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1680201592;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=8jtW7KDarWhIMVdL7PQou8uaSWKERsvcswoP5qV/aBw=;
+        b=q+TX0CaXxsGHd0sHE2PsvD5ggkhl+PitCglUBq2sZcSld8M0tfYmAzDCj+RLUQhbjQnh82
+        mdJxbSbzwC9DUjklXhoq7WrX7F9B2F/kl8s+qq+DGlbDQRbKwiAmN1kuIATE1EfXI3zeTr
+        rmB+Wc5n8hhF+R10XP1k9S/e2GGHRQk=
+Date:   Thu, 30 Mar 2023 20:39:51 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>, x86@kernel.org
+CC:     Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
         Eric DeVolder <eric.devolder@oracle.com>,
-        Borislav Petkob <bp@alien8.de>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         "H. Peter Anvin" <hpa@zytor.com>, linux-pm@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_x86/ACPI/boot=3A_Use_FADT_ver?= =?US-ASCII?Q?sion_to_check_support_for_online_capable?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <CAJZ5v0i-ypLb9oPO8RqdQ6Vm3yD1ohP1sFei_BPNgiHZibdoQg@mail.gmail.com>
+References: <20230329174536.6931-1-mario.limonciello@amd.com> <CAJZ5v0i-ypLb9oPO8RqdQ6Vm3yD1ohP1sFei_BPNgiHZibdoQg@mail.gmail.com>
+Message-ID: <D72D9855-2264-466C-8705-B8E8BF398B10@alien8.de>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 29, 2023 at 7:46 PM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
->
-> ACPI 6.3 introduced the online capable bit, and also introduced MADT
-> version 5.
->
-> This was used to distinguish whether the offset storing online capable
-> could be used. However ACPI 6.2b has MADT version "45" which is for
-> an errata version of the ACPI 6.2 spec.  This means that the Linux code
-> for detecting availability of MADT will mistakingly flag ACPI 6.2b as
-> supporting online capable which is inaccurate as it's an ACPI 6.3 feature.
->
-> Instead use the FADT major and minor revision fields to distingush this.
->
-> Reported-by: Eric DeVolder <eric.devolder@oracle.com>
-> Reported-by: Borislav Petkob <bp@alien8.de>
+On March 30, 2023 8:23:38 PM GMT+02:00, "Rafael J=2E Wysocki" <rafael@kerne=
+l=2Eorg> wrote:
+>s/Petkob/Petkov/ I suppose?
 
-s/Petkob/Petkov/ I suppose?
+Fixed=2E
 
-Would have been nice to CC this to linux-acpi (done now).
+>Would have been nice to CC this to linux-acpi (done now)=2E
 
-Anyway, x86 guys, are you going to handle this or do you want me to do that?
+Sorry about that=2E
 
-> Fixes: aa06e20f1be6 ("x86/ACPI: Don't add CPUs that are not online capable")
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  arch/x86/kernel/acpi/boot.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-> index 1c38174b5f01..e92e3292fef7 100644
-> --- a/arch/x86/kernel/acpi/boot.c
-> +++ b/arch/x86/kernel/acpi/boot.c
-> @@ -146,7 +146,10 @@ static int __init acpi_parse_madt(struct acpi_table_header *table)
->
->                 pr_debug("Local APIC address 0x%08x\n", madt->address);
->         }
-> -       if (madt->header.revision >= 5)
-> +
-> +       if (acpi_gbl_FADT.header.revision > 6 ||
-> +           (acpi_gbl_FADT.header.revision == 6 &&
-> +            acpi_gbl_FADT.minor_revision >= 3))
->                 acpi_support_online_capable = true;
->
->         default_acpi_madt_oem_check(madt->header.oem_id,
-> --
-> 2.34.1
->
+>Anyway, x86 guys, are you going to handle this or do you want me to do th=
+at?
+
+Yeah, all queued into tip:x86/urgent=2E  Holler if something's still missi=
+ng=2E The whole situation got on my nerves so I queued both fixes and am ho=
+ping all is fixed now=2E Ufff=2E
+
+--=20
+Sent from a small device: formatting sucks and brevity is inevitable=2E 
