@@ -2,265 +2,185 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 052866D0AD0
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Mar 2023 18:14:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0C0F6D0B06
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Mar 2023 18:28:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231270AbjC3QOw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 30 Mar 2023 12:14:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44994 "EHLO
+        id S230391AbjC3Q2Y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 Mar 2023 12:28:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231565AbjC3QOk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Mar 2023 12:14:40 -0400
+        with ESMTP id S229486AbjC3Q2X (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Mar 2023 12:28:23 -0400
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA94693DD;
-        Thu, 30 Mar 2023 09:14:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 195AA1BD2;
+        Thu, 30 Mar 2023 09:28:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680192864; x=1711728864;
-  h=date:from:to:cc:subject:message-id:mime-version:
+  t=1680193702; x=1711729702;
+  h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=7ElYsMNT+HJxJYO4GGzC6zAdpQ1oT6NK5jOdZEm5or4=;
-  b=S/9hDV7XWHadTo9n4LVeHRADhjnpUO60hKXS10B1nW4biEKJF3xqcX4N
-   f435TuQSXDko6idG2vuMSc6+Ba2cltjqxLo8sX5I+Wust3NewLZwVrfJx
-   mbQJ318Lfl7okPu9VpJClyN9ZOburkSUYlXdOPBE9XxofFfMmOlB2iWKg
-   q1a0UdMWjLw9K1rcPBHYtwZglNCac54hhCbS+xgGHGfYE4QbgEhHURyUu
-   0x5xAi300E9hI+aS7i3qYuhTOmIkVZVevKJQijRZrkJjRLS0+ROlgYuef
-   BcaD19IMeRVaf1pChl5UTv78clqltaXeSm6pRkGPUPhD+0/qK3O97STm2
+  bh=+jsYsz3z4S0KxQURpz+5dUW16i3yUqiq6XHaWQFPwWw=;
+  b=KWNB/Hf/Mddj+X+FG8MXxwdRk0lROCdGGZ8DanJF0pqjpZs6o7bNuN5M
+   8xnc72VYeLN+leEaMzgtRNWVtF++N+S6pYj8tEHuwxLmcGhRIthrb1dXM
+   03nRWjVRniJS/ZmHUpqJc2qsr/nFP9+Bp2aiqilAb8746dhoLhqGxl+1I
+   /n5KqFD9t6BawYqDa2NwmZ7qJ3TS0RhT9lilxabFaZV1D2qMZj665eH2T
+   NnMgDgEk7etfoURkFlGhbiUH5kpwawFUohzQ7fflpTfWfFWR45vmiU5Ko
+   mFFibbT90qbD3BRjtwYCMXncaS+tRltPvCqetuWDPo6mTqR0wMhCRchg+
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="427491643"
+X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="427495915"
 X-IronPort-AV: E=Sophos;i="5.98,305,1673942400"; 
-   d="scan'208";a="427491643"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 09:14:03 -0700
+   d="scan'208";a="427495915"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 09:28:21 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="795715444"
+X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="858971536"
 X-IronPort-AV: E=Sophos;i="5.98,305,1673942400"; 
-   d="scan'208";a="795715444"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 30 Mar 2023 09:14:00 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1phuuV-000KzO-3D;
-        Thu, 30 Mar 2023 16:13:59 +0000
-Date:   Fri, 31 Mar 2023 00:13:51 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-wireless@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        io-uring@vger.kernel.org, bpf@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, alsa-devel@alsa-project.org,
-        Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master] BUILD REGRESSION
- a6d9e3034536ba4b68ac34490c02267e6eec9c05
-Message-ID: <6425b53f.mjvjApBCFlusUbza%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+   d="scan'208";a="858971536"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga005.jf.intel.com with ESMTP; 30 Mar 2023 09:28:11 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 9DDDB13A; Thu, 30 Mar 2023 19:24:42 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+        "Maciej W. Rozycki" <macro@orcam.me.uk>,
+        Juergen Gross <jgross@suse.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-pci@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Anatolij Gustschin <agust@denx.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Subject: [PATCH v8 0/7] Add pci_dev_for_each_resource() helper and update users
+Date:   Thu, 30 Mar 2023 19:24:27 +0300
+Message-Id: <20230330162434.35055-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: a6d9e3034536ba4b68ac34490c02267e6eec9c05  Add linux-next specific files for 20230330
+Provide two new helper macros to iterate over PCI device resources and
+convert users.
 
-Error/Warning reports:
+Looking at it, refactor existing pci_bus_for_each_resource() and convert
+users accordingly.
 
-https://lore.kernel.org/oe-kbuild-all/202303161521.jbGbaFjJ-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202303301712.i4ddVa9j-lkp@intel.com
+Note, the amount of lines grew due to the documentation update.
 
-Error/Warning: (recently discovered and may have been fixed)
+Changelog v8:
+- fixed issue with pci_bus_for_each_resource() macro (LKP)
+- due to above added a new patch to document how it works
+- moved the last patch to be #2 (Philippe)
+- added tags (Philippe)
 
-drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:351:13: warning: variable 'bw_needed' set but not used [-Wunused-but-set-variable]
-drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:352:25: warning: variable 'link' set but not used [-Wunused-but-set-variable]
-drivers/net/wireless/legacy/ray_cs.c:628:17: warning: 'strncpy' specified bound 32 equals destination size [-Wstringop-truncation]
-kernel/bpf/verifier.c:18485: undefined reference to `find_kallsyms_symbol_value'
-sound/pci/ymfpci/ymfpci_main.c:2259:9: error: implicit declaration of function 'snd_ac97_suspend'; did you mean 'snd_ac97_reset'? [-Werror=implicit-function-declaration]
-sound/pci/ymfpci/ymfpci_main.c:2288:9: error: implicit declaration of function 'snd_ac97_resume'; did you mean 'snd_ac97_reset'? [-Werror=implicit-function-declaration]
+Changelog v7:
+- made both macros to share same name (Bjorn)
+- split out the pci_resource_n() conversion (Bjorn)
 
-Unverified Error/Warning (likely false positive, please contact us if interested):
+Changelog v6:
+- dropped unused variable in PPC code (LKP)
 
-drivers/acpi/property.c:985 acpi_data_prop_read_single() error: potentially dereferencing uninitialized 'obj'.
-drivers/pinctrl/pinctrl-mlxbf3.c:162:20: sparse: sparse: symbol 'mlxbf3_pmx_funcs' was not declared. Should it be static?
-drivers/watchdog/imx2_wdt.c:442:22: sparse: sparse: symbol 'imx_wdt' was not declared. Should it be static?
-drivers/watchdog/imx2_wdt.c:446:22: sparse: sparse: symbol 'imx_wdt_legacy' was not declared. Should it be static?
-io_uring/io_uring.c:432 io_prep_async_work() error: we previously assumed 'req->file' could be null (see line 425)
-io_uring/kbuf.c:221 __io_remove_buffers() warn: variable dereferenced before check 'bl->buf_ring' (see line 219)
-net/mac80211/mesh_pathtbl.c:616:24: warning: Value stored to 'cache' during its initialization is never read [clang-analyzer-deadcode.DeadStores]
+Changelog v5:
+- renamed loop variable to minimize the clash (Keith)
+- addressed smatch warning (Dan)
+- addressed 0-day bot findings (LKP)
 
-Error/Warning ids grouped by kconfigs:
+Changelog v4:
+- rebased on top of v6.3-rc1
+- added tag (Krzysztof)
 
-gcc_recent_errors
-|-- alpha-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
-|-- arc-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- arm-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- arm-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- arm-randconfig-r024-20230329
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- arm-randconfig-s031-20230329
-|   `-- drivers-pinctrl-pinctrl-mlxbf3.c:sparse:sparse:symbol-mlxbf3_pmx_funcs-was-not-declared.-Should-it-be-static
-|-- arm64-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- i386-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- ia64-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
-|-- loongarch-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- loongarch-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- loongarch-defconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- microblaze-buildonly-randconfig-r001-20230329
-|   |-- sound-pci-ymfpci-ymfpci_main.c:error:implicit-declaration-of-function-snd_ac97_resume
-|   `-- sound-pci-ymfpci-ymfpci_main.c:error:implicit-declaration-of-function-snd_ac97_suspend
-|-- mips-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- mips-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- mips-randconfig-s032-20230329
-|   |-- drivers-watchdog-imx2_wdt.c:sparse:sparse:symbol-imx_wdt-was-not-declared.-Should-it-be-static
-|   `-- drivers-watchdog-imx2_wdt.c:sparse:sparse:symbol-imx_wdt_legacy-was-not-declared.-Should-it-be-static
-|-- nios2-buildonly-randconfig-r005-20230329
-clang_recent_errors
-`-- riscv-randconfig-c006-20230326
-    `-- net-mac80211-mesh_pathtbl.c:warning:Value-stored-to-cache-during-its-initialization-is-never-read-clang-analyzer-deadcode.DeadStores
+Changelog v3:
+- rebased on top of v2 by Mika, see above
+- added tag to pcmcia patch (Dominik)
 
-elapsed time: 722m
+Changelog v2:
+- refactor to have two macros
+- refactor existing pci_bus_for_each_resource() in the same way and
+  convert users
 
-configs tested: 104
-configs skipped: 7
+Andy Shevchenko (6):
+  kernel.h: Split out COUNT_ARGS() and CONCATENATE()
+  PCI: Introduce pci_resource_n()
+  PCI: Document pci_bus_for_each_resource() to avoid confusion
+  PCI: Allow pci_bus_for_each_resource() to take less arguments
+  EISA: Convert to use less arguments in pci_bus_for_each_resource()
+  pcmcia: Convert to use less arguments in pci_bus_for_each_resource()
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allyesconfig   gcc  
-arc          buildonly-randconfig-r002-20230329   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r013-20230329   gcc  
-arc                  randconfig-r043-20230329   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                         axm55xx_defconfig   gcc  
-arm                                 defconfig   gcc  
-arm                         lpc18xx_defconfig   gcc  
-arm                  randconfig-r003-20230329   clang
-arm                  randconfig-r024-20230329   gcc  
-arm                  randconfig-r046-20230329   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r026-20230329   gcc  
-hexagon              randconfig-r033-20230329   clang
-hexagon              randconfig-r041-20230329   clang
-hexagon              randconfig-r045-20230329   clang
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                          randconfig-a001   gcc  
-i386                          randconfig-a002   clang
-i386                          randconfig-a003   gcc  
-i386                          randconfig-a004   clang
-i386                          randconfig-a005   gcc  
-i386                          randconfig-a006   clang
-i386                          randconfig-a011   clang
-i386                          randconfig-a012   gcc  
-i386                          randconfig-a013   clang
-i386                          randconfig-a014   gcc  
-i386                          randconfig-a015   clang
-i386                          randconfig-a016   gcc  
-ia64                             allmodconfig   gcc  
-ia64                                defconfig   gcc  
-ia64                 randconfig-r005-20230329   gcc  
-ia64                 randconfig-r016-20230329   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch    buildonly-randconfig-r003-20230329   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r006-20230329   gcc  
-loongarch            randconfig-r011-20230329   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r004-20230329   gcc  
-microblaze   buildonly-randconfig-r004-20230329   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                 randconfig-r012-20230329   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r015-20230329   gcc  
-openrisc             randconfig-r032-20230329   gcc  
-parisc       buildonly-randconfig-r005-20230329   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r021-20230329   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                       holly_defconfig   gcc  
-powerpc              randconfig-r031-20230329   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r022-20230329   clang
-riscv                randconfig-r036-20230329   gcc  
-riscv                randconfig-r042-20230329   clang
-riscv                          rv32_defconfig   gcc  
-s390                             alldefconfig   clang
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r014-20230329   clang
-s390                 randconfig-r023-20230329   clang
-s390                 randconfig-r034-20230329   gcc  
-s390                 randconfig-r044-20230329   clang
-sh                               allmodconfig   gcc  
-sh                         microdev_defconfig   gcc  
-sparc        buildonly-randconfig-r006-20230329   gcc  
-sparc                               defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64                        randconfig-a001   clang
-x86_64                        randconfig-a002   gcc  
-x86_64                        randconfig-a003   clang
-x86_64                        randconfig-a004   gcc  
-x86_64                        randconfig-a005   clang
-x86_64                        randconfig-a006   gcc  
-x86_64                        randconfig-a011   gcc  
-x86_64                        randconfig-a012   clang
-x86_64                        randconfig-a013   gcc  
-x86_64                        randconfig-a014   clang
-x86_64                        randconfig-a015   gcc  
-x86_64                        randconfig-a016   clang
-x86_64                               rhel-8.3   gcc  
-xtensa               randconfig-r025-20230329   gcc  
+Mika Westerberg (1):
+  PCI: Introduce pci_dev_for_each_resource()
+
+ .clang-format                             |  1 +
+ arch/alpha/kernel/pci.c                   |  5 +-
+ arch/arm/kernel/bios32.c                  | 16 +++--
+ arch/arm/mach-dove/pcie.c                 | 10 ++--
+ arch/arm/mach-mv78xx0/pcie.c              | 10 ++--
+ arch/arm/mach-orion5x/pci.c               | 10 ++--
+ arch/mips/pci/ops-bcm63xx.c               |  8 +--
+ arch/mips/pci/pci-legacy.c                |  3 +-
+ arch/powerpc/kernel/pci-common.c          | 21 +++----
+ arch/powerpc/platforms/4xx/pci.c          |  8 +--
+ arch/powerpc/platforms/52xx/mpc52xx_pci.c |  5 +-
+ arch/powerpc/platforms/pseries/pci.c      | 16 ++---
+ arch/sh/drivers/pci/pcie-sh7786.c         | 10 ++--
+ arch/sparc/kernel/leon_pci.c              |  5 +-
+ arch/sparc/kernel/pci.c                   | 10 ++--
+ arch/sparc/kernel/pcic.c                  |  5 +-
+ drivers/eisa/pci_eisa.c                   |  4 +-
+ drivers/pci/bus.c                         |  7 +--
+ drivers/pci/hotplug/shpchp_sysfs.c        |  8 +--
+ drivers/pci/pci.c                         |  3 +-
+ drivers/pci/probe.c                       |  2 +-
+ drivers/pci/remove.c                      |  5 +-
+ drivers/pci/setup-bus.c                   | 37 +++++-------
+ drivers/pci/setup-res.c                   |  4 +-
+ drivers/pci/vgaarb.c                      | 17 ++----
+ drivers/pci/xen-pcifront.c                |  4 +-
+ drivers/pcmcia/rsrc_nonstatic.c           |  9 +--
+ drivers/pcmcia/yenta_socket.c             |  3 +-
+ drivers/pnp/quirks.c                      | 29 ++++-----
+ include/linux/args.h                      | 13 ++++
+ include/linux/kernel.h                    |  8 +--
+ include/linux/pci.h                       | 72 +++++++++++++++++++----
+ 32 files changed, 190 insertions(+), 178 deletions(-)
+ create mode 100644 include/linux/args.h
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.40.0.1.gaa8946217a0b
+
