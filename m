@@ -2,183 +2,200 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACB026D05D4
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Mar 2023 15:04:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7CC76D07C6
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Mar 2023 16:12:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230015AbjC3NEU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 30 Mar 2023 09:04:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34648 "EHLO
+        id S232024AbjC3OMe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 Mar 2023 10:12:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231474AbjC3NEU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Mar 2023 09:04:20 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A662B74E;
-        Thu, 30 Mar 2023 06:03:58 -0700 (PDT)
+        with ESMTP id S230427AbjC3OMd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Mar 2023 10:12:33 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C35049753;
+        Thu, 30 Mar 2023 07:12:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680181438; x=1711717438;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=aDjU7TSjjDXKbPBumCsWd1O8J4lu6X9/16uNJHbLemA=;
-  b=J+UNWFnGPh+8F1csKnpstV6bvzRQKYAoijfbt4YLMgLGbheOOk7nnvQK
-   oNUyti28RMLgBwMQfoySDGTAzCMYxPeL7pPDK3jMLEVeqf48nDXOHuukx
-   g0L9cGDaNUBm3Z5IG1Zn4QWxO4u9TW0m/3rgPp9mHJpb9zExMU7eweGqj
-   PKyYuH4cBcfQsa1jGtwF5y74GWyGpmMj9DouEaQEbLSQj6PkVJdGgh99W
-   gJh9v5RJf3BluURWC4srqNtLkpTkXTqm/6xjMaXMaOIZc6ni15CSY+GuC
-   PtU6XmlPi5hrISGVJm0T9hRlpscH8FxqCgYYkIshWEhCRU6UvDw5CCiau
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="403814172"
+  t=1680185549; x=1711721549;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kO4E2os91lsLJi4GETLgzZoX+IuPasmc8YqBoRB7b00=;
+  b=YjmVZbB9p8GOqedbjsJWgP5gK4UzjooKWaQ5jHxbMfBMwIkGfr7CDHt5
+   i4MDk2mGjtNCZam3vNk9mTEZwKqBYDwQ1ODciIxUf+upwS4f+loWLFV0P
+   /YUwR+g/dZLkywCzFHqvdvMJS6JG6Hfap5szhRDxXTbdWNaCcJeQSbSQA
+   NwScCxiX9LJ4iPv8AdVKlf/eu8gaTC8fuwUvZ2933E6kvryWMjDECmcSH
+   bzaQlmsPjFUu4R5dfb9Pts+LqfgLmrg350CY6riomvqwk4QKAuClRRXNa
+   HZPjkkOpXog5AO/ofRQhdw2bpP3vHlueqSTe9UY3jJLZoI+l6KdqvyvFF
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="343651670"
 X-IronPort-AV: E=Sophos;i="5.98,303,1673942400"; 
-   d="scan'208";a="403814172"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 06:03:57 -0700
+   d="scan'208";a="343651670"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 06:54:57 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="714966368"
+X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="828344122"
 X-IronPort-AV: E=Sophos;i="5.98,303,1673942400"; 
-   d="scan'208";a="714966368"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 30 Mar 2023 06:03:54 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1phrwY-000KsI-2M;
-        Thu, 30 Mar 2023 13:03:54 +0000
-Date:   Thu, 30 Mar 2023 21:03:42 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 86506ae8e8d0a0cfebd3eabc77feb25abe92d364
-Message-ID: <642588ae.9jtvDsK4LC1ln8a3%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+   d="scan'208";a="828344122"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 30 Mar 2023 06:54:52 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Thu, 30 Mar 2023 16:54:51 +0300
+Date:   Thu, 30 Mar 2023 16:54:51 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jakub Kicinski <kuba@kernel.org>, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH RFC net-next 6/7] net: dsa: mv88e6xxx: provide software
+ node for default settings
+Message-ID: <ZCWUq3yEn74JRW0w@kuha.fi.intel.com>
+References: <ZB3YGWTWLYyecgw7@shell.armlinux.org.uk>
+ <ZCFvtuyelA+WoeqK@kuha.fi.intel.com>
+ <ZCF2BLvGoaD/RGCS@shell.armlinux.org.uk>
+ <ZCGkhUh20OK6rEck@kuha.fi.intel.com>
+ <ZCGpDlaJ7+HmPQiB@shell.armlinux.org.uk>
+ <ZCG6D7KV/0W0FUoI@shell.armlinux.org.uk>
+ <ZCLZFA964zu/otQJ@kuha.fi.intel.com>
+ <ZCLqXRKHh+VjCg8v@shell.armlinux.org.uk>
+ <ZCRGHlERlLNuPHgE@kuha.fi.intel.com>
+ <ZCRMTP1QJ0deQhOH@shell.armlinux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Disposition: inline
+In-Reply-To: <ZCRMTP1QJ0deQhOH@shell.armlinux.org.uk>
+X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 86506ae8e8d0a0cfebd3eabc77feb25abe92d364  Merge branch 'thermal-intel-fixes' into bleeding-edge
+On Wed, Mar 29, 2023 at 03:33:48PM +0100, Russell King (Oracle) wrote:
+> On Wed, Mar 29, 2023 at 05:07:26PM +0300, Heikki Krogerus wrote:
+> > On Tue, Mar 28, 2023 at 02:23:41PM +0100, Russell King (Oracle) wrote:
+> > > On Tue, Mar 28, 2023 at 03:09:56PM +0300, Heikki Krogerus wrote:
+> > > > The problem is that the function you are proposing will be exploited
+> > > > silently - people will use NULL as the parent without anybody
+> > > > noticing. Everything will work for a while, because everybody will
+> > > > first only have a single device for that driver. But as time goes by
+> > > > and new hardware appears, suddenly there are multiple devices for
+> > > > those drivers, and the conflict start to appear.
+> > > 
+> > > So, an easy solution would be to reject a call to
+> > > fwnode_create_named_software_node() when parent is NULL, thereby
+> > > preventing named nodes at the root level.
+> > > 
+> > > > At that point the changes that added the function call will have
+> > > > trickled down to the stable trees, so the distros are affected. Now we
+> > > > are no longer talking about a simple cleanup that fixes the issue. In
+> > > > the unlikely, but possible case, this will turn into ABI problem if
+> > > 
+> > > There is no such thing as stable APIs for internal kernel interfaces.
+> > > 
+> > > Documentation/process/stable-api-nonsense.rst
+> > > 
+> > > > As you pointed out, this kind of risks we have to live with kbojects,
+> > > > struct device stuff and many others, but the thing is, with the
+> > > > software node and device property APIs right now we don't. So the fact
+> > > > that a risk exists in one place just isn't justification to accept the
+> > > > same risk absolutely everywhere.
+> > > 
+> > > Meanwhile, firmware descriptions explicitly permit looking up nodes by
+> > > their names, but here we are, with the software node maintainers
+> > > basically stating that they don't wish to support creating software
+> > > nodes with explicit names.
+> > 
+> > If you want to name the nodes then you just go ahead and name them,
+> > nobody is preventing you and you can already do that, but if you do
+> > so, then you will take full responsibility of the entire software node
+> > - that is what you are naming here - instead of just the fwnode that
+> > it contains. The users of the node can deal with the fwnode alone, but
+> > you as the creator of the software node have to take proper ownership
+> > of it.
+> > 
+> > > > Russell, if you have some good arguments for accepting your proposal,
+> > > > I assure you I will agree with you, but so far all you have given are
+> > > > attacks on a sketch details and statements like that "I think you're
+> > > > making a mountain out of a mole". Those just are not good enough.
+> > > 
+> > > Basically, I think you are outright wrong for all the reasons I have
+> > > given in all my emails on this subject.
+> > > 
+> > > Yes, I accept there is a *slight* risk of abuse, but I see it as no
+> > > different from the risk from incorrect usage of any other kernel
+> > > internal interface. Therefore I just do not accept your argument
+> > > that we should not have this function, and I do not accept your
+> > > reasoning.
+> > 
+> > I would not be so against the function if there wasn't any other way
+> > to handle your case, but there is.
+> > 
+> > You really can not claim that the existing API is in any way inferior,
+> > or even more complex, compared to your function before you actually
+> > try it. You simply can not make judgement based on a sketch that is
+> > basically just showing you the functions and structures that you need.
+> > 
+> > If there are issues with the API, then we need to of course fix those
+> > issues, but please keep in mind that still does not mean we have any
+> > need for the function you are proposing.
+> > 
+> > Please also note that helpers are welcome if you feel we need them. If
+> > you want to add for example an allocation routine that duplicates also
+> > the properties in one go, then that alone would reduce the complexity
+> > needed in the drivers that create the nodes. I think in most cases,
+> > possibly also in yours, that alone would allow most stuff to be
+> > handled from stack memory.
+> > 
+> > fwnode_create_software_node() is there just to support the legacy
+> > device properties. You really should not be using even that. If you
+> > need to deal with software nodes then you deal with them with struct
+> > software_node.
+> 
+> You forgot to explain how to free them once they're done, because
+> struct swnode will contain a pointer to the struct software_node
+> which can be a dangling stale reference - and there's no way for
+> code outside swnode.c to know when that reference has gone.
+> 
+> That is another reason why I prefer my existing solution. That
+> problem is taken care of already by the existing code - and as
+> it's taken care of there, and properly, there's less possibilities
+> for users of swnode to get it wrong.
 
-elapsed time: 1069m
+We need an improved release mechanism, yes.
 
-configs tested: 103
-configs skipped: 7
+My idea with the new dynamic allocation routine was that it could be
+introduced together with a release callback that we add to the struct
+software_node.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The idea of adding the release callback to the structure was actually
+considered already some time ago - I think it was discussed at least
+shortly also on the public ACPI mailing list. The idea back then
+included a default release function that simply frees the struct
+software_node instance. That default release function we could then
+assign to the release callback in that new software node
+allocation/creation routine. That way the drivers should be able to
+continue to rely on the underlying code to take care of freeing the
+node instance.
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha        buildonly-randconfig-r002-20230329   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r014-20230329   gcc  
-alpha                randconfig-r031-20230329   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r004-20230329   gcc  
-arc                  randconfig-r034-20230329   gcc  
-arc                  randconfig-r043-20230329   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r046-20230329   gcc  
-arm64                            allyesconfig   gcc  
-arm64        buildonly-randconfig-r005-20230329   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r025-20230329   clang
-csky                                defconfig   gcc  
-csky                 randconfig-r003-20230329   gcc  
-hexagon              randconfig-r002-20230329   clang
-hexagon              randconfig-r041-20230329   clang
-hexagon              randconfig-r045-20230329   clang
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                          randconfig-a001   gcc  
-i386                          randconfig-a002   clang
-i386                          randconfig-a003   gcc  
-i386                          randconfig-a004   clang
-i386                          randconfig-a005   gcc  
-i386                          randconfig-a006   clang
-i386                          randconfig-a011   clang
-i386                          randconfig-a012   gcc  
-i386                          randconfig-a013   clang
-i386                          randconfig-a014   gcc  
-i386                          randconfig-a015   clang
-i386                          randconfig-a016   gcc  
-ia64                             allmodconfig   gcc  
-ia64         buildonly-randconfig-r003-20230329   gcc  
-ia64                                defconfig   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r001-20230329   gcc  
-m68k                             allmodconfig   gcc  
-m68k         buildonly-randconfig-r004-20230329   gcc  
-m68k         buildonly-randconfig-r006-20230329   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r033-20230329   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r006-20230329   gcc  
-nios2                randconfig-r012-20230329   gcc  
-openrisc             randconfig-r032-20230329   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc      buildonly-randconfig-r001-20230329   clang
-powerpc              randconfig-r011-20230329   clang
-powerpc              randconfig-r024-20230329   clang
-powerpc              randconfig-r026-20230329   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r013-20230329   clang
-riscv                randconfig-r016-20230329   clang
-riscv                randconfig-r042-20230329   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r022-20230329   clang
-s390                 randconfig-r044-20230329   clang
-sh                               allmodconfig   gcc  
-sh                   randconfig-r021-20230329   gcc  
-sh                   randconfig-r023-20230329   gcc  
-sparc                               defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64                        randconfig-a001   clang
-x86_64                        randconfig-a002   gcc  
-x86_64                        randconfig-a003   clang
-x86_64                        randconfig-a004   gcc  
-x86_64                        randconfig-a005   clang
-x86_64                        randconfig-a006   gcc  
-x86_64                        randconfig-a011   gcc  
-x86_64                        randconfig-a012   clang
-x86_64                        randconfig-a013   gcc  
-x86_64                        randconfig-a014   clang
-x86_64                        randconfig-a015   gcc  
-x86_64                        randconfig-a016   clang
-x86_64                               rhel-8.3   gcc  
+Back then there was nobody who really needed that functionality, so
+nobody even tried to implement it. Now we of course clearly do need
+something like it.
+
+I think the release callback together with the default release
+function should work. Let me know what you guys think.
+
+thanks,
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+heikki
