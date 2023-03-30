@@ -2,48 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F3B66D0C22
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Mar 2023 19:03:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93A706D0C61
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Mar 2023 19:11:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231354AbjC3RDO convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 30 Mar 2023 13:03:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54232 "EHLO
+        id S231310AbjC3RL5 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 30 Mar 2023 13:11:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230385AbjC3RDO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Mar 2023 13:03:14 -0400
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9068CDE1;
-        Thu, 30 Mar 2023 10:03:02 -0700 (PDT)
-Received: by mail-ed1-f53.google.com with SMTP id b20so79164073edd.1;
-        Thu, 30 Mar 2023 10:03:02 -0700 (PDT)
+        with ESMTP id S229655AbjC3RLy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Mar 2023 13:11:54 -0400
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96581EC43;
+        Thu, 30 Mar 2023 10:11:45 -0700 (PDT)
+Received: by mail-ed1-f54.google.com with SMTP id x3so79163266edb.10;
+        Thu, 30 Mar 2023 10:11:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680195781;
+        d=1e100.net; s=20210112; t=1680196304;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=f/KbnSxhnq7r/BJGaT2uIIZ7/VijfJAKOcA2Wk4mxY8=;
-        b=efh2A2J6K0fg2CWZsByICa9dOJY/YVhaghE6X/q+LX/OtmrBXK6GUknJlYcBw4NaY0
-         5D9B0PlLw/teAjXwt8H/vYi7M5oL2xDfxrUnxW7PPt7oDSz5Qbgya7wMP/VC3S7V5+wK
-         zY5eXQLvCMZC4QVliOK6E47ta8HVCKEt6gEmHj03d0bycMqZJM1/rsXg2dpW2ZgwdMBH
-         UpNRfWJ6XtGkVb5Yfi4XQNKs5YccWm/vvuxIDZn9SUiqGrp+E9r5j2Yvxk87gY52o2rq
-         E5UWWfTKEk6wRLlaJhtihTSL10Ly1f/rwsmg1xeEtazCDtzM/dtDfSQE1tNlLQSGNM9T
-         AY3A==
-X-Gm-Message-State: AAQBX9fuESeWbc+9wNHALKF8yOnxSpaZdBNI/yCeYhtA04ukYjhbBLX3
-        Rin5QNPpHSwtnNqyrNAmKvUHhiQkXDQn3k66Lc/2TCKv
-X-Google-Smtp-Source: AKy350ZyXCC/zSpvuF5XryWC5RMUG12fz1RjKDNv6lkip14/Z3rT1hNMfr/ntxZvIUirn+EF/rtOdvtrfcx5qJVhq/4=
-X-Received: by 2002:a17:907:6b8e:b0:8d7:edbc:a7b6 with SMTP id
- rg14-20020a1709076b8e00b008d7edbca7b6mr4264181ejc.2.1680195781199; Thu, 30
- Mar 2023 10:03:01 -0700 (PDT)
+        bh=OCMgmjS8UFODcJkt3kQqePHkaAGXDwpBFfXsthPJWVE=;
+        b=6AqLo7oyinTlwYtuBjkTD2rmHnp/tTidJhQQBP+82ypMWw6nkItfazgxyFEYxxB8Zc
+         P/EkyO/Gk0kGNFUY7dFlGuevUhGsyJF//AOUvAghdh4qbWpg+J2NQuvdUL67sUUWjeKj
+         TRSXJHCBpdg6MOJV6HOsu9/XobeynCoAvCLw36VbpyhJJOUd2Fc9VudIo/zRK3riWaoG
+         UnOdsjcD/OveAiIwpk+3buDoDSljp6+SMIekoWvsJlkiv7hNAKMvitVnwP0XE2T7OjeJ
+         Aa0w5i21JPPchL1K6t9BTpWDtOyQP+jZuxf75KvSKT6MZUKCa7ewPdH9PAwoaKFy9qXO
+         0QBA==
+X-Gm-Message-State: AAQBX9fqZ/blFWaFNYxEAtpPhFDG3/RLDxqDRF4JnapcUITyrZ0rTQAf
+        G0qwwE60e+0ELgHhajhzxkx4g2OdjhmbtMmMH30=
+X-Google-Smtp-Source: AKy350YBLRVolaiG33XGszgunLQdNg89+CaDaO897cYvuvF61kL6SrANpgugsvFce4XT0ADWSXp1bAr/WzCrjymkPxw=
+X-Received: by 2002:a50:9fe3:0:b0:502:62ba:865b with SMTP id
+ c90-20020a509fe3000000b0050262ba865bmr3180693edf.3.1680196303944; Thu, 30 Mar
+ 2023 10:11:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230324202628.76966-1-W_Armin@gmx.de>
-In-Reply-To: <20230324202628.76966-1-W_Armin@gmx.de>
+References: <20230328031629.202268-1-yijiangshan@kylinos.cn>
+In-Reply-To: <20230328031629.202268-1-yijiangshan@kylinos.cn>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 30 Mar 2023 19:02:50 +0200
-Message-ID: <CAJZ5v0g8K6wHpefig=2RNspp018FqYiZQoCP3hEScJwM4HY7qw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] ACPI: SBS: Fix various issues
-To:     Armin Wolf <W_Armin@gmx.de>
-Cc:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+Date:   Thu, 30 Mar 2023 19:11:32 +0200
+Message-ID: <CAJZ5v0hPbH9BMOLbrGOKcy1sGAXbq=7OTyFECA966i37wBp_AQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: thermal: replace ternary operator with min_t()
+To:     Jiangshan Yi <yijiangshan@kylinos.cn>
+Cc:     rafael@kernel.org, rui.zhang@intel.com, lenb@kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        13667453960@163.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
@@ -56,48 +57,49 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 24, 2023 at 9:26 PM Armin Wolf <W_Armin@gmx.de> wrote:
+On Tue, Mar 28, 2023 at 5:17 AM Jiangshan Yi <yijiangshan@kylinos.cn> wrote:
 >
-> On my Acer Travelmate 4002WLMi, the system locks up upon
-> suspend/shutdown. After a lot of research, it turned out
-> that the sbs module was the culprit. The driver would not
-> correctly mask out the value used to select a battery using
-> the "Smart Battery Selector" (subset of the "Smart Battery Manager").
-> This accidentally caused a invalid power source to be selected,
-> which was automatically corrected by the selector. Upon
-> notifing the host about the corrected power source, some batteries
-> would be selected for re-reading, causing a endless loop.
-> This would lead to some workqueues filling up, which caused the
-> lockup upon suspend/shutdown.
->
-> The first patch fixes an issue inside the ec driver regarding the
-> removal of query handlers discovered thru ACPI. The second patch fixes
-> a kernel oops on module removal caused by a race condition when removing
-> custom EC query handlers. The last patch finally fixes the
-> suspend/shutdown issues.
->
-> As a side note: This was the first machine on which i installed Linux,
-> to finally fixing this took ~5 years of tinkering.
->
-> Tested on a Acer Travelmate 4002WLMi.
-> ---
-> Changes in v3:
-> - Rework solution for the kernel oops on module removal
-> Changes in v2:
-> - make acpi_ec_add_query_handler() static to fix warning
->
-> Armin Wolf (3):
->   ACPI: EC: Limit explicit removal of query handlers to custom query
->     handlers
->   ACPI: EC: Fix oops when removing custom query handlers
->   ACPI: SBS: Fix handling of Smart Battery Selectors
->
->  drivers/acpi/ec.c  | 17 ++++++++++++++---
->  drivers/acpi/sbs.c | 27 ++++++++++++++++++---------
->  2 files changed, 32 insertions(+), 12 deletions(-)
->
-> --
+> Fix the following coccicheck warning:
 
-All applied as 6.4 material with a minor comment adjustment in the first patch.
+This is not a fix, because the current code is correct AFAICS.
+
+It merely makes the code follow the coccicheck recommendation, which
+is a cleanup (although arguably a good one).
+
+But because the new code is way more readable, I've applied this as
+6.4 material (with edits in the changelog).
 
 Thanks!
+
+> drivers/acpi/thermal.c:422: WARNING opportunity for min().
+>
+> min_t() macro is defined in include/linux/minmax.h. It avoids multiple
+> evaluations of the arguments when non-constant and performs strict
+> type-checking.
+>
+> Signed-off-by: Jiangshan Yi <yijiangshan@kylinos.cn>
+> ---
+>  drivers/acpi/thermal.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+> index 0b4b844f9d4c..179f41196a9d 100644
+> --- a/drivers/acpi/thermal.c
+> +++ b/drivers/acpi/thermal.c
+> @@ -419,10 +419,9 @@ static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
+>                                          * the next higher trip point
+>                                          */
+>                                         tz->trips.active[i-1].temperature =
+> -                                               (tz->trips.active[i-2].temperature <
+> -                                               celsius_to_deci_kelvin(act) ?
+> -                                               tz->trips.active[i-2].temperature :
+> -                                               celsius_to_deci_kelvin(act));
+> +                                               min_t(unsigned long,
+> +                                                     tz->trips.active[i-2].temperature,
+> +                                                     celsius_to_deci_kelvin(act));
+>
+>                                 break;
+>                         } else {
+> --
+> 2.25.1
+>
