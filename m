@@ -2,223 +2,265 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A74C6D0A44
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Mar 2023 17:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 052866D0AD0
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Mar 2023 18:14:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233184AbjC3PqA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 30 Mar 2023 11:46:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58720 "EHLO
+        id S231270AbjC3QOw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 Mar 2023 12:14:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233179AbjC3Pp7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Mar 2023 11:45:59 -0400
+        with ESMTP id S231565AbjC3QOk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Mar 2023 12:14:40 -0400
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41E67E07C;
-        Thu, 30 Mar 2023 08:45:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA94693DD;
+        Thu, 30 Mar 2023 09:14:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680191126; x=1711727126;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=RN1Cm2GCZcQoGRox1xfibo73ByCq1sHqhaRH51BCVwY=;
-  b=gC1H+X9Q14u2d0b5psMgLKoMAkYsgD5qRJ3sLeexdqtYgSccbWVKF964
-   RlJnP6LYmHTxgACHpEhUMbU11Yoga90PlTOYdia18K2Nb+EAdcRofytn2
-   1WCW5CtPUIp0QsFnPDBB1YV53mpHUVqEFtjY+QxvkOcQfNaC1XdGlBUZA
-   oJIU+VmtiabNHF8tB4+IkpRm6rpJ/AkTlXrSjthXEbkKsWg8INJeVjfxK
-   GOz8k/j6Dxax1ToGiG1+l4OSz6gEV/hMaAqKNbmP88hT6jTu2Xs+kf/3Q
-   imRUuoebJCnKnBTkdKtKUYo8TmrC5mYoZwIN+h7rjx9HHLnykB1wGnLow
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="427481263"
+  t=1680192864; x=1711728864;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=7ElYsMNT+HJxJYO4GGzC6zAdpQ1oT6NK5jOdZEm5or4=;
+  b=S/9hDV7XWHadTo9n4LVeHRADhjnpUO60hKXS10B1nW4biEKJF3xqcX4N
+   f435TuQSXDko6idG2vuMSc6+Ba2cltjqxLo8sX5I+Wust3NewLZwVrfJx
+   mbQJ318Lfl7okPu9VpJClyN9ZOburkSUYlXdOPBE9XxofFfMmOlB2iWKg
+   q1a0UdMWjLw9K1rcPBHYtwZglNCac54hhCbS+xgGHGfYE4QbgEhHURyUu
+   0x5xAi300E9hI+aS7i3qYuhTOmIkVZVevKJQijRZrkJjRLS0+ROlgYuef
+   BcaD19IMeRVaf1pChl5UTv78clqltaXeSm6pRkGPUPhD+0/qK3O97STm2
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="427491643"
 X-IronPort-AV: E=Sophos;i="5.98,305,1673942400"; 
-   d="scan'208";a="427481263"
+   d="scan'208";a="427491643"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 08:43:07 -0700
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 09:14:03 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="795702613"
+X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="795715444"
 X-IronPort-AV: E=Sophos;i="5.98,305,1673942400"; 
-   d="scan'208";a="795702613"
-Received: from djiang5-mobl3.amr.corp.intel.com (HELO [10.212.117.86]) ([10.212.117.86])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 08:43:06 -0700
-Message-ID: <ae2e391e-996b-a6c1-1a2b-1210cc7d1b14@intel.com>
-Date:   Thu, 30 Mar 2023 08:43:05 -0700
+   d="scan'208";a="795715444"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 30 Mar 2023 09:14:00 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1phuuV-000KzO-3D;
+        Thu, 30 Mar 2023 16:13:59 +0000
+Date:   Fri, 31 Mar 2023 00:13:51 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-wireless@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        io-uring@vger.kernel.org, bpf@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, alsa-devel@alsa-project.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ a6d9e3034536ba4b68ac34490c02267e6eec9c05
+Message-ID: <6425b53f.mjvjApBCFlusUbza%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.9.0
-Subject: Re: [PATCH v2 05/21] cxl: Add callback to parse the DSMAS subtables
- from CDAT
-Content-Language: en-US
-From:   Dave Jiang <dave.jiang@intel.com>
-To:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc:     dan.j.williams@intel.com, ira.weiny@intel.com,
-        vishal.l.verma@intel.com, alison.schofield@intel.com,
-        rafael@kernel.org, lukas@wunner.de
-References: <167995336797.2857312.539473939839316778.stgit@djiang5-mobl3>
- <167995347254.2857312.246180486952683569.stgit@djiang5-mobl3>
-In-Reply-To: <167995347254.2857312.246180486952683569.stgit@djiang5-mobl3>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: a6d9e3034536ba4b68ac34490c02267e6eec9c05  Add linux-next specific files for 20230330
 
+Error/Warning reports:
 
-On 3/27/23 2:44 PM, Dave Jiang wrote:
-> Provide a callback function to the CDAT parser in order to parse the Device
-> Scoped Memory Affinity Structure (DSMAS). Each DSMAS structure contains the
-> DPA range and its associated attributes in each entry. See the CDAT
-> specification for details.
-> 
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> 
-> ---
-> v2:
-> - Add DSMAS table size check. (Lukas)
-> - Use local DSMAS header for LE handling.
-> - Remove dsmas lock. (Jonathan)
-> - Fix handle size (Jonathan)
-> - Add LE to host conversion for DSMAS address and length.
-> - Make dsmas_list local
-> ---
->   drivers/cxl/core/cdat.c |   26 ++++++++++++++++++++++++++
->   drivers/cxl/cxl.h       |    1 +
->   drivers/cxl/cxlpci.h    |   18 ++++++++++++++++++
->   drivers/cxl/port.c      |   24 ++++++++++++++++++++++++
->   4 files changed, 69 insertions(+)
-> 
-> diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
-> index 210f4499bddb..d068609fb6f9 100644
-> --- a/drivers/cxl/core/cdat.c
-> +++ b/drivers/cxl/core/cdat.c
-> @@ -98,3 +98,29 @@ int cdat_table_parse_sslbis(struct cdat_header *table,
->   	return cdat_table_parse_entries(CDAT_TYPE_SSLBIS, table, &proc);
->   }
->   EXPORT_SYMBOL_NS_GPL(cdat_table_parse_sslbis, CXL);
-> +
-> +int cxl_dsmas_parse_entry(struct cdat_entry_header *header, void *arg)
-> +{
-> +	struct cdat_dsmas *dsmas = (struct cdat_dsmas *)(header);
-> +	struct list_head *dsmas_list = (struct list_head *)arg;
-> +	struct dsmas_entry *dent;
-> +
-> +	if (dsmas->hdr.length != sizeof(*dsmas)) {
-> +		pr_warn("Malformed DSMAS table length: (%lu:%u)\n",
-> +			 (unsigned long)sizeof(*dsmas), dsmas->hdr.length);
-> +		return -EINVAL;
-> +	}
-> +
-> +	dent = kzalloc(sizeof(*dent), GFP_KERNEL);
-> +	if (!dent)
-> +		return -ENOMEM;
-> +
-> +	dent->handle = dsmas->dsmad_handle;
-> +	dent->dpa_range.start = le64_to_cpu(dsmas->dpa_base_address);
-> +	dent->dpa_range.end = le64_to_cpu(dsmas->dpa_base_address) +
-> +			      le64_to_cpu(dsmas->dpa_length) - 1;
-> +	list_add_tail(&dent->list, dsmas_list);
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_dsmas_parse_entry, CXL);
-> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-> index cc3309794b45..9d0e22fe72c0 100644
-> --- a/drivers/cxl/cxl.h
-> +++ b/drivers/cxl/cxl.h
-> @@ -8,6 +8,7 @@
->   #include <linux/bitfield.h>
->   #include <linux/bitops.h>
->   #include <linux/log2.h>
-> +#include <linux/list.h>
->   #include <linux/io.h>
->   
->   /**
-> diff --git a/drivers/cxl/cxlpci.h b/drivers/cxl/cxlpci.h
-> index 45e2f2bf5ef8..9a2468a93d83 100644
-> --- a/drivers/cxl/cxlpci.h
-> +++ b/drivers/cxl/cxlpci.h
-> @@ -104,6 +104,22 @@ struct cdat_subtable_entry {
->   	enum cdat_type type;
->   };
->   
-> +struct dsmas_entry {
-> +	struct list_head list;
-> +	struct range dpa_range;
-> +	u8 handle;
-> +};
-> +
-> +/* Sub-table 0: Device Scoped Memory Affinity Structure (DSMAS) */
-> +struct cdat_dsmas {
-> +	struct cdat_entry_header hdr;
-> +	u8 dsmad_handle;
-> +	u8 flags;
-> +	__u16 reserved;
-> +	__le64 dpa_base_address;
-> +	__le64 dpa_length;
-> +} __packed;
-> +
->   int devm_cxl_port_enumerate_dports(struct cxl_port *port);
->   struct cxl_dev_state;
->   int cxl_hdm_decode_init(struct cxl_dev_state *cxlds, struct cxl_hdm *cxlhdm,
-> @@ -119,4 +135,6 @@ int cdat_table_parse_##x(struct cdat_header *table, \
->   cdat_table_parse(dsmas);
->   cdat_table_parse(dslbis);
->   cdat_table_parse(sslbis);
-> +
-> +int cxl_dsmas_parse_entry(struct cdat_entry_header *header, void *arg);
->   #endif /* __CXL_PCI_H__ */
-> diff --git a/drivers/cxl/port.c b/drivers/cxl/port.c
-> index 60a865680e22..c8136797d528 100644
-> --- a/drivers/cxl/port.c
-> +++ b/drivers/cxl/port.c
-> @@ -57,6 +57,16 @@ static int discover_region(struct device *dev, void *root)
->   	return 0;
->   }
->   
-> +static void dsmas_list_destroy(struct list_head *dsmas_list)
-> +{
-> +	struct dsmas_entry *dentry, *n;
-> +
-> +	list_for_each_entry_safe(dentry, n, dsmas_list, list) {
-> +		list_del(&dentry->list);
-> +		kfree(dentry);
-> +	}
-> +}
-> +
->   static int cxl_switch_port_probe(struct cxl_port *port)
->   {
->   	struct cxl_hdm *cxlhdm;
-> @@ -131,9 +141,23 @@ static int cxl_endpoint_port_probe(struct cxl_port *port)
->   static int cxl_port_probe(struct device *dev)
->   {
->   	struct cxl_port *port = to_cxl_port(dev);
-> +	int rc;
->   
->   	/* Cache the data early to ensure is_visible() works */
->   	read_cdat_data(port);
-> +	if (port->cdat.table) {
-> +		if (is_cxl_endpoint(port)) {
-> +			LIST_HEAD(dsmas_list);
-> +
-> +			rc = cdat_table_parse_dsmas(port->cdat.table,
-> +						    cxl_dsmas_parse_entry,
-> +						    (void *)&dsmas_list);
-> +			if (rc < 0)
-> +				dev_warn(dev, "Failed to parse DSMAS: %d\n", rc);
-> +
-> +			dsmas_list_destroy(&dsmas_list);
-> +		}
-> +	}
+https://lore.kernel.org/oe-kbuild-all/202303161521.jbGbaFjJ-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303301712.i4ddVa9j-lkp@intel.com
 
-This block needs to be moved to cxl_endpoint_port_probe() after media is 
-ready.
+Error/Warning: (recently discovered and may have been fixed)
 
->   
->   	if (is_cxl_endpoint(port))
->   		return cxl_endpoint_port_probe(port);
-> 
-> 
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:351:13: warning: variable 'bw_needed' set but not used [-Wunused-but-set-variable]
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:352:25: warning: variable 'link' set but not used [-Wunused-but-set-variable]
+drivers/net/wireless/legacy/ray_cs.c:628:17: warning: 'strncpy' specified bound 32 equals destination size [-Wstringop-truncation]
+kernel/bpf/verifier.c:18485: undefined reference to `find_kallsyms_symbol_value'
+sound/pci/ymfpci/ymfpci_main.c:2259:9: error: implicit declaration of function 'snd_ac97_suspend'; did you mean 'snd_ac97_reset'? [-Werror=implicit-function-declaration]
+sound/pci/ymfpci/ymfpci_main.c:2288:9: error: implicit declaration of function 'snd_ac97_resume'; did you mean 'snd_ac97_reset'? [-Werror=implicit-function-declaration]
+
+Unverified Error/Warning (likely false positive, please contact us if interested):
+
+drivers/acpi/property.c:985 acpi_data_prop_read_single() error: potentially dereferencing uninitialized 'obj'.
+drivers/pinctrl/pinctrl-mlxbf3.c:162:20: sparse: sparse: symbol 'mlxbf3_pmx_funcs' was not declared. Should it be static?
+drivers/watchdog/imx2_wdt.c:442:22: sparse: sparse: symbol 'imx_wdt' was not declared. Should it be static?
+drivers/watchdog/imx2_wdt.c:446:22: sparse: sparse: symbol 'imx_wdt_legacy' was not declared. Should it be static?
+io_uring/io_uring.c:432 io_prep_async_work() error: we previously assumed 'req->file' could be null (see line 425)
+io_uring/kbuf.c:221 __io_remove_buffers() warn: variable dereferenced before check 'bl->buf_ring' (see line 219)
+net/mac80211/mesh_pathtbl.c:616:24: warning: Value stored to 'cache' during its initialization is never read [clang-analyzer-deadcode.DeadStores]
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
+|-- arc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm-randconfig-r024-20230329
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm-randconfig-s031-20230329
+|   `-- drivers-pinctrl-pinctrl-mlxbf3.c:sparse:sparse:symbol-mlxbf3_pmx_funcs-was-not-declared.-Should-it-be-static
+|-- arm64-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- i386-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- ia64-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
+|-- loongarch-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- loongarch-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- loongarch-defconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- microblaze-buildonly-randconfig-r001-20230329
+|   |-- sound-pci-ymfpci-ymfpci_main.c:error:implicit-declaration-of-function-snd_ac97_resume
+|   `-- sound-pci-ymfpci-ymfpci_main.c:error:implicit-declaration-of-function-snd_ac97_suspend
+|-- mips-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- mips-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- mips-randconfig-s032-20230329
+|   |-- drivers-watchdog-imx2_wdt.c:sparse:sparse:symbol-imx_wdt-was-not-declared.-Should-it-be-static
+|   `-- drivers-watchdog-imx2_wdt.c:sparse:sparse:symbol-imx_wdt_legacy-was-not-declared.-Should-it-be-static
+|-- nios2-buildonly-randconfig-r005-20230329
+clang_recent_errors
+`-- riscv-randconfig-c006-20230326
+    `-- net-mac80211-mesh_pathtbl.c:warning:Value-stored-to-cache-during-its-initialization-is-never-read-clang-analyzer-deadcode.DeadStores
+
+elapsed time: 722m
+
+configs tested: 104
+configs skipped: 7
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allyesconfig   gcc  
+arc          buildonly-randconfig-r002-20230329   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r013-20230329   gcc  
+arc                  randconfig-r043-20230329   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                         axm55xx_defconfig   gcc  
+arm                                 defconfig   gcc  
+arm                         lpc18xx_defconfig   gcc  
+arm                  randconfig-r003-20230329   clang
+arm                  randconfig-r024-20230329   gcc  
+arm                  randconfig-r046-20230329   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r026-20230329   gcc  
+hexagon              randconfig-r033-20230329   clang
+hexagon              randconfig-r041-20230329   clang
+hexagon              randconfig-r045-20230329   clang
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                          randconfig-a001   gcc  
+i386                          randconfig-a002   clang
+i386                          randconfig-a003   gcc  
+i386                          randconfig-a004   clang
+i386                          randconfig-a005   gcc  
+i386                          randconfig-a006   clang
+i386                          randconfig-a011   clang
+i386                          randconfig-a012   gcc  
+i386                          randconfig-a013   clang
+i386                          randconfig-a014   gcc  
+i386                          randconfig-a015   clang
+i386                          randconfig-a016   gcc  
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+ia64                 randconfig-r005-20230329   gcc  
+ia64                 randconfig-r016-20230329   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch    buildonly-randconfig-r003-20230329   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r006-20230329   gcc  
+loongarch            randconfig-r011-20230329   gcc  
+m68k                             allmodconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r004-20230329   gcc  
+microblaze   buildonly-randconfig-r004-20230329   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r012-20230329   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r015-20230329   gcc  
+openrisc             randconfig-r032-20230329   gcc  
+parisc       buildonly-randconfig-r005-20230329   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r021-20230329   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                       holly_defconfig   gcc  
+powerpc              randconfig-r031-20230329   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r022-20230329   clang
+riscv                randconfig-r036-20230329   gcc  
+riscv                randconfig-r042-20230329   clang
+riscv                          rv32_defconfig   gcc  
+s390                             alldefconfig   clang
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r014-20230329   clang
+s390                 randconfig-r023-20230329   clang
+s390                 randconfig-r034-20230329   gcc  
+s390                 randconfig-r044-20230329   clang
+sh                               allmodconfig   gcc  
+sh                         microdev_defconfig   gcc  
+sparc        buildonly-randconfig-r006-20230329   gcc  
+sparc                               defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                        randconfig-a001   clang
+x86_64                        randconfig-a002   gcc  
+x86_64                        randconfig-a003   clang
+x86_64                        randconfig-a004   gcc  
+x86_64                        randconfig-a005   clang
+x86_64                        randconfig-a006   gcc  
+x86_64                        randconfig-a011   gcc  
+x86_64                        randconfig-a012   clang
+x86_64                        randconfig-a013   gcc  
+x86_64                        randconfig-a014   clang
+x86_64                        randconfig-a015   gcc  
+x86_64                        randconfig-a016   clang
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r025-20230329   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
