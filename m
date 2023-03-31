@@ -2,56 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 857096D17AE
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Mar 2023 08:44:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B945B6D199F
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Mar 2023 10:18:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230215AbjCaGoA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 Mar 2023 02:44:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60578 "EHLO
+        id S231267AbjCaIS3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 Mar 2023 04:18:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230151AbjCaGn7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 Mar 2023 02:43:59 -0400
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F21D5B458
-        for <linux-acpi@vger.kernel.org>; Thu, 30 Mar 2023 23:43:43 -0700 (PDT)
-Received: by mail-io1-xd32.google.com with SMTP id q6so9357787iot.2
-        for <linux-acpi@vger.kernel.org>; Thu, 30 Mar 2023 23:43:43 -0700 (PDT)
+        with ESMTP id S230492AbjCaIS2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 Mar 2023 04:18:28 -0400
+Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB7A5269A
+        for <linux-acpi@vger.kernel.org>; Fri, 31 Mar 2023 01:18:27 -0700 (PDT)
+Received: by mail-il1-x12d.google.com with SMTP id q5so5771924ilg.12
+        for <linux-acpi@vger.kernel.org>; Fri, 31 Mar 2023 01:18:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1680245023;
+        d=chromium.org; s=google; t=1680250707;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TJMiIBnIOha8INMf/aKt6n4a45jL1+cW2jXTn14ItTU=;
-        b=NpfpugV6wKsgTbPpOaWm54+nfos2fguzyrvBG1BEwsGGsQPnuppnKYbIC4GWGdcZoW
-         jZYwkukueXAmwAc/sXqgRgVX603AGnSpVaV/lkwM8NxqsweY8JQpf+/+LwoUFHBTr8BA
-         VOCkuekSuf67GI8TQDNSd1Ei5xaOvqVOWwRmU=
+        bh=15rDcrIff0PTvVCq0tQDwJDEOeJZgLwD9Ed2/S9KM9c=;
+        b=CsrdmNsZwi1KGRE7i+x82HeVKBUi7m/OpmIM3Th+keNveYpbwuAO0CD177mDO3OcgC
+         EnvFU72NaWpiWT94z3NnDqBNGQpW0p9cWPMIWbcZCHP7vD5/iSZEAjyI+3X4oo4zYzRU
+         GtHGkepUcXXaaYU0H2SO0r8Xou2lVWX0vr668=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680245023;
+        d=1e100.net; s=20210112; t=1680250707;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TJMiIBnIOha8INMf/aKt6n4a45jL1+cW2jXTn14ItTU=;
-        b=O7mfobzy6G7zDTfBWL3xLfNJZN17zFtjIJ/ECtjG2KDdBeM8A881/5iZa0TzpxVmrj
-         xbwiNPDqEbGYmGoxJgnYqaSlAjS8CmxDzA+mlhAi1GBs/jL1J5z5ajyYhwQUwEoQCoob
-         ky3n7Y+sYI4QSG+QTU6DXIjKLf7EO3YGQP8n0rzmngQqdZ8zFlr4HaAczKhwVO5ssbQc
-         MRYq9TKcHTSrR3Z09spNZ7iZRDCcij08cgC/jlmLk2dtuVdXaMzj0qcqgglLLUxafZRj
-         YtU9FuByozw6LXGMvoEabWGRjKldmRKJfnJrVJASGW4t5Mx7BwXZQbfZYUFiWYjyQGK/
-         3vdQ==
-X-Gm-Message-State: AO0yUKWvfjYQ20W94k2jIspOhYNsEu4Wc9dtSdbrcJYbbtR4dZxymV0s
-        aoMRQESUa2tJB72q59muyl6lIabfKXc6D8LWeXrhTA==
-X-Google-Smtp-Source: AK7set+SXmn8wNLCLzHsExgu0fibwth1DHdBynRwGrcMxlN2IJdRta9xWzqdv5f7mEqipgjZ8W0DCENK8hCl2a3ZWj8=
-X-Received: by 2002:a02:95a1:0:b0:3ec:dc1f:12dd with SMTP id
- b30-20020a0295a1000000b003ecdc1f12ddmr10175738jai.6.1680245023333; Thu, 30
- Mar 2023 23:43:43 -0700 (PDT)
+        bh=15rDcrIff0PTvVCq0tQDwJDEOeJZgLwD9Ed2/S9KM9c=;
+        b=slzw6vRSTnD0fUwlwLiI8gd4RkN3bUsAYidavSVUbUmJ/mbWtc1umOgizMkyldzIpf
+         AJ5oWHyh01Vkf+akTd/tp36UCDy5B7yjmeeyDg2rk29aYNYAiCt6+2CGMLWI3z4Gh1bp
+         YcCHnAtyoQPi6RWND/u6tYuqYgKIiyzeGpV/psUXkjXntXdX+fdsKhlL0PREOL8XWQkJ
+         c6fI5rnQ8ygAeDE9B4SyDrMEj9II2KdNE/yFOx7DJRU5P6ldU58mcpq7KBrWWS4iHtgR
+         sl/RphxrZd/71QOeeNNTFcGczrOef2/zuTVGFiW6gTTi5+Ma754P4p/0hPHVyuuV4CAy
+         9dpQ==
+X-Gm-Message-State: AAQBX9dnjexIJj+ILe4960pOl3KF1P0OQEDA64l2K6pypPUaT6UQ4ONj
+        1ys8A0e7rQfrXBKcQQwDm3C3vbaT4qHSAVRjpYGlrQ==
+X-Google-Smtp-Source: AKy350Z3p01NgJ4vdkP75NR5+P4+C3oTh8ECvyef/jQWRCRu0D9MDV65Ai5oehSlp4QQBqxR3znKFnqONmw9lPWNA8Y=
+X-Received: by 2002:a92:c54b:0:b0:316:f93f:6f83 with SMTP id
+ a11-20020a92c54b000000b00316f93f6f83mr13750083ilj.6.1680250707090; Fri, 31
+ Mar 2023 01:18:27 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230322104639.221402-1-treapking@chromium.org>
- <20230322104639.221402-4-treapking@chromium.org> <ZBrgD61p/p17IOJL@smile.fi.intel.com>
- <CAEXTbpcLU6jr2MoDEhZCz3wWzXmJATwHU+Tird-3Q9bXrGeTnA@mail.gmail.com>
-In-Reply-To: <CAEXTbpcLU6jr2MoDEhZCz3wWzXmJATwHU+Tird-3Q9bXrGeTnA@mail.gmail.com>
+ <20230322104639.221402-8-treapking@chromium.org> <ZBrjZj0VL20y1MUC@smile.fi.intel.com>
+In-Reply-To: <ZBrjZj0VL20y1MUC@smile.fi.intel.com>
 From:   Pin-yen Lin <treapking@chromium.org>
-Date:   Fri, 31 Mar 2023 15:43:32 +0900
-Message-ID: <CAEXTbpf8JXRYv-5nA_sNEM_D2jP6Hv_kp9o1vkrsEXjyKuOS6g@mail.gmail.com>
-Subject: Re: [PATCH v14 03/10] drm/display: Add Type-C switch helpers
+Date:   Fri, 31 Mar 2023 17:18:16 +0900
+Message-ID: <CAEXTbpd1kQWbJazRSvLabH26teiWvo75+rKOTL0A9Jm3eXeACQ@mail.gmail.com>
+Subject: Re: [PATCH v14 07/10] drm/bridge: anx7625: Register Type C mode switches
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
         Neil Armstrong <neil.armstrong@linaro.org>,
@@ -80,17 +79,10 @@ Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
         Hsin-Yi Wang <hsinyi@chromium.org>,
         Lyude Paul <lyude@redhat.com>,
         =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
-        <nfraprado@collabora.com>, dri-devel@lists.freedesktop.org,
-        Marek Vasut <marex@denx.de>,
+        <nfraprado@collabora.com>, Allen Chen <allen.chen@ite.com.tw>,
+        dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
         Stephen Boyd <swboyd@chromium.org>,
-        chrome-platform@lists.linux.dev, devicetree@vger.kernel.org,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Imre Deak <imre.deak@intel.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        YueHaibing <yuehaibing@huawei.com>
+        chrome-platform@lists.linux.dev, devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -103,140 +95,132 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 31, 2023 at 11:36=E2=80=AFAM Pin-yen Lin <treapking@chromium.or=
-g> wrote:
->
-> Hi Andy,
->
-> Thanks for the review.
->
-> On Wed, Mar 22, 2023 at 8:01=E2=80=AFPM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> >
-> > On Wed, Mar 22, 2023 at 06:46:32PM +0800, Pin-yen Lin wrote:
-> > > Add helpers to register and unregister Type-C "switches" for bridges
-> > > capable of switching their output between two downstream devices.
-> > >
-> > > The helper registers USB Type-C mode switches when the "mode-switch"
-> > > and the "reg" properties are available in Device Tree.
-> >
-> > ...
-> >
-> > > +config DRM_DISPLAY_DP_TYPEC_HELPER
-> >
-> > > +     bool
-> > > +     default y
-> >
-> >         def_bool y
-> >
-> > > +     depends on DRM_DISPLAY_HELPER
-> > > +     depends on DRM_DISPLAY_HELPER=3DTYPEC || TYPEC=3Dy
-> > > +     help
-> > > +       DRM display helpers for USB Type-C Displayport Alternate mode=
-.
-> >
-> > Hmm... Dunno if this help is enough.
->
-> Okay I'll add more detail in the next version.
-> >
-> > ...
-> >
-> > > +     snprintf(name, sizeof(name), "%pfwP-%u", fwnode, port_num);
-> >
-> > Would it be possible to have a dup in name and would it be a problem if=
- so?
-> >
-> The port_num is included in the name, so the names should be unique.
-> Also, the fwnode name actually contains the reg property, so this name
-> looks like "endpoint@0-1" now... I'll change the name from fwnode name
+Hi Andy,
 
-This should be "endpoint@0-0", or "endpoint@1-1@. The `port_num` value
-has the same number as the `reg` property
+Thanks for the review.
 
-> to dev_name() per Dmitry's comment.
-> > ...
-> >
-> > > +/**
-> > > + * drm_dp_register_typec_switches() - register Type-C switches
-> > > + * @dev: Device that registers Type-C switches
-> > > + * @port: Device node for the switch
-> > > + * @switch_desc: A Type-C switch descriptor
-> > > + * @data: Private data for the switches
-> > > + * @mux_set: Callback function for typec_mux_set
-> > > + *
-> > > + * This function registers USB Type-C switches for DP bridges that c=
-an switch
-> > > + * the output signal between their output pins. This function uses d=
-evm_kcalloc
-> > > + * to allocate memory, so it is expected to only call this in the dr=
-iver probe
-> > > + * functions.
-> > > + *
-> > > + * Currently only mode switches are implemented, and the function as=
-sumes the
-> > > + * given @port device node has endpoints with "mode-switch" property=
-.
-> > > + * The port number is determined by the "reg" property of the endpoi=
-nt.
-> >
-> > `kernel-doc -v ...` should complain on absence of "Return" section.
-> >
-> > > + */
-> >
-> > ...
-> >
-> > > +     switch_desc->typec_ports =3D devm_kcalloc(dev, switch_desc->num=
-_typec_switches,
-> > > +                                             sizeof(struct drm_dp_ty=
-pec_port_data),
-> >
-> >                                                 sizeof(*switch_desc_typ=
-ec_ports),
-> >
-> > ?
-> >
-> > > +                                             GFP_KERNEL);
-> > > +     if (!switch_desc->typec_ports)
-> > > +             return -ENOMEM;
-> >
-> > ...
-> >
-> > > +#ifdef CONFIG_DRM_DISPLAY_DP_TYPEC_HELPER
-> >
-> > Ah, maybe this should use IS_REACHABLE() ?
+On Wed, Mar 22, 2023 at 8:16=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> CONFIG_DRM_DISPLAY_DP_TYPEC_HELPER is a boolean. Is there any
-> difference between IS_REACHABLE and ifdef when the given config is a
-> boolean?
+> On Wed, Mar 22, 2023 at 06:46:36PM +0800, Pin-yen Lin wrote:
+> > Register USB Type-C mode switches when the "mode-switch" property and
+> > relevant ports are available in Device Tree. Configure the crosspoint
+> > switch based on the entered alternate mode for a specific Type-C
+> > connector.
 > >
-> > > +void drm_dp_unregister_typec_switches(struct drm_dp_typec_switch_des=
-c *switch_desc);
-> > > +int drm_dp_register_typec_switches(struct device *dev, struct fwnode=
-_handle *port,
-> > > +                                struct drm_dp_typec_switch_desc *swi=
-tch_desc,
-> > > +                                void *data, typec_mux_set_fn_t mux_s=
-et);
-> > > +#else
-> > > +static inline void drm_dp_unregister_typec_switches(struct drm_dp_ty=
-pec_switch_desc *switch_desc)
-> > > +{
-> > > +}
-> > > +static inline int drm_dp_register_typec_switches(
-> > > +             struct device *dev, struct fwnode_handle *port,
-> > > +             struct drm_dp_typec_switch_desc *switch_desc, void *dat=
-a,
-> > > +             typec_mux_set_fn_t mux_set)
-> > > +{
-> > > +     return -EOPNOTSUPP;
-> > > +}
-> > > +#endif
-> >
-> > --
-> > With Best Regards,
-> > Andy Shevchenko
-> >
+> > Crosspoint switch can also be used for switching the output signal for
+> > different orientations of a single USB Type-C connector, but the
+> > orientation switch is not implemented yet. A TODO is added for this.
 >
-> Best regards,
-> Pin-yen
-> >
+> ...
+>
+> > +static int anx7625_typec_mux_set(struct typec_mux_dev *mux,
+> > +                              struct typec_mux_state *state)
+> > +{
+> > +     struct drm_dp_typec_port_data *port =3D typec_mux_get_drvdata(mux=
+);
+> > +     struct anx7625_data *ctx =3D port->data;
+> > +     struct device *dev =3D ctx->dev;
+> > +     struct drm_dp_typec_switch_desc switch_desc =3D ctx->switch_desc;
+> > +     bool new_dp_connected, old_dp_connected;
+> > +
+> > +     if (switch_desc.num_typec_switches =3D=3D 1)
+> > +             return 0;
+>
+> > +     wait_for_completion(&ctx->mux_register);
+>
+> How do we guarantee this won't become an infinite waiting?
+> Perhaps a comment explaining that?
+>
+> > +     old_dp_connected =3D ctx->port_data[0].dp_connected ||
+> > +                        ctx->port_data[1].dp_connected;
+> > +
+> > +     ctx->port_data[port->port_num].dp_connected =3D
+> > +             state->alt &&
+> > +             state->alt->svid =3D=3D USB_TYPEC_DP_SID &&
+> > +             state->alt->mode =3D=3D USB_TYPEC_DP_MODE;
+> > +
+> > +     dev_dbg(dev, "mux_set dp_connected: c0=3D%d, c1=3D%d\n",
+> > +             ctx->port_data[0].dp_connected, ctx->port_data[1].dp_conn=
+ected);
+> > +
+> > +     new_dp_connected =3D ctx->port_data[0].dp_connected ||
+> > +                        ctx->port_data[1].dp_connected;
+> > +
+> > +     /* DP on, power on first */
+> > +     if (!old_dp_connected && new_dp_connected)
+> > +             pm_runtime_get_sync(dev);
+> > +
+> > +     anx7625_typec_two_ports_update(ctx);
+> > +
+> > +     /* DP off, power off last */
+> > +     if (old_dp_connected && !new_dp_connected)
+> > +             pm_runtime_put_sync(dev);
+> > +
+> > +     return 0;
+> > +}
+>
+> ...
+>
+> > +     struct device_node *port_node =3D of_graph_get_port_by_id(dev->of=
+_node, 1);
+>
+> You use fwnode below, so why not fwnode_graph_...(dev_fwnode(dev), ...) ?
+
+There is no existing helper like `fwnode_graph_get_port_by_id`, so
+using of_graph variant is easier here. Should I add a
+`fwnode_graph_get_port_by_id` helper for this?
+>
+> > +     struct drm_dp_typec_switch_desc *switch_desc =3D &ctx->switch_des=
+c;
+> > +     int ret;
+> > +     u32 dp_lanes[4];
+> > +     unsigned int i, num_lanes;
+> > +
+> > +     /*
+> > +      * Currently, only mode switch is implemented.
+> > +      * TODO: Implement Type-C orientation switch for anx7625.
+> > +      */
+> > +     ret =3D drm_dp_register_typec_switches(dev, &port_node->fwnode,
+> > +                                          &ctx->switch_desc, ctx,
+> > +                                          anx7625_typec_mux_set);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     ctx->port_data =3D devm_kcalloc(dev, switch_desc->num_typec_switc=
+hes,
+> > +                                   sizeof(struct anx7625_typec_port_da=
+ta),
+>
+>                                       sizeof(*ctx->port_data),
+>
+> ?
+>
+> > +                                   GFP_KERNEL);
+> > +     if (!ctx->port_data) {
+> > +             ret =3D -ENOMEM;
+> > +             goto unregister_mux;
+> > +     }
+>
+> ...
+>
+> > +struct anx7625_typec_port_data {
+> > +     bool dp_connected;
+> > +     enum typec_orientation orientation;
+>
+> Most likely enum will be 32-bit and bool 8-bit. Which means that the data=
+ type
+> size become 8 bytes for no reason. Can you swap the lines and perhaps che=
+ck this
+> with `pahole` tool?
+>
+> > +};
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
+
+Best regards,
+Pin-yen
