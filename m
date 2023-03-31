@@ -2,91 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B945B6D199F
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Mar 2023 10:18:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A8E76D1AFF
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Mar 2023 10:59:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231267AbjCaIS3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 Mar 2023 04:18:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39332 "EHLO
+        id S230228AbjCaI66 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 31 Mar 2023 04:58:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230492AbjCaIS2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 Mar 2023 04:18:28 -0400
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB7A5269A
-        for <linux-acpi@vger.kernel.org>; Fri, 31 Mar 2023 01:18:27 -0700 (PDT)
-Received: by mail-il1-x12d.google.com with SMTP id q5so5771924ilg.12
-        for <linux-acpi@vger.kernel.org>; Fri, 31 Mar 2023 01:18:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1680250707;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=15rDcrIff0PTvVCq0tQDwJDEOeJZgLwD9Ed2/S9KM9c=;
-        b=CsrdmNsZwi1KGRE7i+x82HeVKBUi7m/OpmIM3Th+keNveYpbwuAO0CD177mDO3OcgC
-         EnvFU72NaWpiWT94z3NnDqBNGQpW0p9cWPMIWbcZCHP7vD5/iSZEAjyI+3X4oo4zYzRU
-         GtHGkepUcXXaaYU0H2SO0r8Xou2lVWX0vr668=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680250707;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=15rDcrIff0PTvVCq0tQDwJDEOeJZgLwD9Ed2/S9KM9c=;
-        b=slzw6vRSTnD0fUwlwLiI8gd4RkN3bUsAYidavSVUbUmJ/mbWtc1umOgizMkyldzIpf
-         AJ5oWHyh01Vkf+akTd/tp36UCDy5B7yjmeeyDg2rk29aYNYAiCt6+2CGMLWI3z4Gh1bp
-         YcCHnAtyoQPi6RWND/u6tYuqYgKIiyzeGpV/psUXkjXntXdX+fdsKhlL0PREOL8XWQkJ
-         c6fI5rnQ8ygAeDE9B4SyDrMEj9II2KdNE/yFOx7DJRU5P6ldU58mcpq7KBrWWS4iHtgR
-         sl/RphxrZd/71QOeeNNTFcGczrOef2/zuTVGFiW6gTTi5+Ma754P4p/0hPHVyuuV4CAy
-         9dpQ==
-X-Gm-Message-State: AAQBX9dnjexIJj+ILe4960pOl3KF1P0OQEDA64l2K6pypPUaT6UQ4ONj
-        1ys8A0e7rQfrXBKcQQwDm3C3vbaT4qHSAVRjpYGlrQ==
-X-Google-Smtp-Source: AKy350Z3p01NgJ4vdkP75NR5+P4+C3oTh8ECvyef/jQWRCRu0D9MDV65Ai5oehSlp4QQBqxR3znKFnqONmw9lPWNA8Y=
-X-Received: by 2002:a92:c54b:0:b0:316:f93f:6f83 with SMTP id
- a11-20020a92c54b000000b00316f93f6f83mr13750083ilj.6.1680250707090; Fri, 31
- Mar 2023 01:18:27 -0700 (PDT)
+        with ESMTP id S230151AbjCaI64 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 Mar 2023 04:58:56 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D53C7DAF
+        for <linux-acpi@vger.kernel.org>; Fri, 31 Mar 2023 01:58:49 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-244-VN9U7afANy2G9I0ztqm7nA-1; Fri, 31 Mar 2023 09:58:44 +0100
+X-MC-Unique: VN9U7afANy2G9I0ztqm7nA-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Fri, 31 Mar
+ 2023 09:58:43 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Fri, 31 Mar 2023 09:58:43 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     "'Rafael J. Wysocki'" <rafael@kernel.org>,
+        Jiangshan Yi <yijiangshan@kylinos.cn>
+CC:     "rui.zhang@intel.com" <rui.zhang@intel.com>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "13667453960@163.com" <13667453960@163.com>
+Subject: RE: [PATCH] ACPI: thermal: replace ternary operator with min_t()
+Thread-Topic: [PATCH] ACPI: thermal: replace ternary operator with min_t()
+Thread-Index: AQHZYyq+oyUap8XuYUy0mbivn7h4t68UlpOA
+Date:   Fri, 31 Mar 2023 08:58:42 +0000
+Message-ID: <8781eb11ce42448aa9cd206168cb22db@AcuMS.aculab.com>
+References: <20230328031629.202268-1-yijiangshan@kylinos.cn>
+ <CAJZ5v0hPbH9BMOLbrGOKcy1sGAXbq=7OTyFECA966i37wBp_AQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0hPbH9BMOLbrGOKcy1sGAXbq=7OTyFECA966i37wBp_AQ@mail.gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-References: <20230322104639.221402-1-treapking@chromium.org>
- <20230322104639.221402-8-treapking@chromium.org> <ZBrjZj0VL20y1MUC@smile.fi.intel.com>
-In-Reply-To: <ZBrjZj0VL20y1MUC@smile.fi.intel.com>
-From:   Pin-yen Lin <treapking@chromium.org>
-Date:   Fri, 31 Mar 2023 17:18:16 +0900
-Message-ID: <CAEXTbpd1kQWbJazRSvLabH26teiWvo75+rKOTL0A9Jm3eXeACQ@mail.gmail.com>
-Subject: Re: [PATCH v14 07/10] drm/bridge: anx7625: Register Type C mode switches
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <rfoss@kernel.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Xin Ji <xji@analogixsemi.com>, linux-kernel@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-acpi@vger.kernel.org,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        Lyude Paul <lyude@redhat.com>,
-        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
-        <nfraprado@collabora.com>, Allen Chen <allen.chen@ite.com.tw>,
-        dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>,
-        Stephen Boyd <swboyd@chromium.org>,
-        chrome-platform@lists.linux.dev, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=0.0 required=5.0 tests=RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -95,132 +60,48 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+RnJvbTogUmFmYWVsIEouIFd5c29ja2kNCj4gU2VudDogMzAgTWFyY2ggMjAyMyAxODoxMg0KPiAN
+Cj4gT24gVHVlLCBNYXIgMjgsIDIwMjMgYXQgNToxN+KAr0FNIEppYW5nc2hhbiBZaSA8eWlqaWFu
+Z3NoYW5Aa3lsaW5vcy5jbj4gd3JvdGU6DQo+ID4NCj4gPiBGaXggdGhlIGZvbGxvd2luZyBjb2Nj
+aWNoZWNrIHdhcm5pbmc6DQo+IA0KPiBUaGlzIGlzIG5vdCBhIGZpeCwgYmVjYXVzZSB0aGUgY3Vy
+cmVudCBjb2RlIGlzIGNvcnJlY3QgQUZBSUNTLg0KPiANCj4gSXQgbWVyZWx5IG1ha2VzIHRoZSBj
+b2RlIGZvbGxvdyB0aGUgY29jY2ljaGVjayByZWNvbW1lbmRhdGlvbiwgd2hpY2gNCj4gaXMgYSBj
+bGVhbnVwIChhbHRob3VnaCBhcmd1YWJseSBhIGdvb2Qgb25lKS4NCj4gDQo+IEJ1dCBiZWNhdXNl
+IHRoZSBuZXcgY29kZSBpcyB3YXkgbW9yZSByZWFkYWJsZSwgSSd2ZSBhcHBsaWVkIHRoaXMgYXMN
+Cj4gNi40IG1hdGVyaWFsICh3aXRoIGVkaXRzIGluIHRoZSBjaGFuZ2Vsb2cpLg0KDQpBbHNvIGlm
+IHlvdSBuZWVkIHRvIHVzZSBtaW5fdCgpIHRoZXJlIGlzIHJlYWxseSBzb21ldGhpbmcgd3JvbmcN
+CndpdGggeW91ciB0eXBlcy4NCg0KPiA+IGRyaXZlcnMvYWNwaS90aGVybWFsLmM6NDIyOiBXQVJO
+SU5HIG9wcG9ydHVuaXR5IGZvciBtaW4oKS4NCj4gPg0KPiA+IG1pbl90KCkgbWFjcm8gaXMgZGVm
+aW5lZCBpbiBpbmNsdWRlL2xpbnV4L21pbm1heC5oLiBJdCBhdm9pZHMgbXVsdGlwbGUNCj4gPiBl
+dmFsdWF0aW9ucyBvZiB0aGUgYXJndW1lbnRzIHdoZW4gbm9uLWNvbnN0YW50IGFuZCBwZXJmb3Jt
+cyBzdHJpY3QNCj4gPiB0eXBlLWNoZWNraW5nLg0KDQptaW5fdCgpIGNhc3RzIHRoZSBhcmd1bWVu
+dHMgYW5kIHBlcmZvcm1zIGFic29sdXRlbHkgbm8gdHlwZS1jaGVja2luZy4NClRoZSBjYXN0cyBj
+YW4gZXZlbiBtYXNrIG9mZiBoaWdoIGJpdHMgdGhhdCBvdWdodCB0byBiZSBjaGVja2VkLg0KDQoJ
+RGF2aWQNCg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogSmlhbmdzaGFuIFlpIDx5aWppYW5nc2hh
+bkBreWxpbm9zLmNuPg0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL2FjcGkvdGhlcm1hbC5jIHwgNyAr
+KystLS0tDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25z
+KC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL3RoZXJtYWwuYyBiL2RyaXZl
+cnMvYWNwaS90aGVybWFsLmMNCj4gPiBpbmRleCAwYjRiODQ0ZjlkNGMuLjE3OWY0MTE5NmE5ZCAx
+MDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL2FjcGkvdGhlcm1hbC5jDQo+ID4gKysrIGIvZHJpdmVy
+cy9hY3BpL3RoZXJtYWwuYw0KPiA+IEBAIC00MTksMTAgKzQxOSw5IEBAIHN0YXRpYyBpbnQgYWNw
+aV90aGVybWFsX3RyaXBzX3VwZGF0ZShzdHJ1Y3QgYWNwaV90aGVybWFsICp0eiwgaW50IGZsYWcp
+DQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAqIHRoZSBuZXh0
+IGhpZ2hlciB0cmlwIHBvaW50DQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAqLw0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0
+ei0+dHJpcHMuYWN0aXZlW2ktMV0udGVtcGVyYXR1cmUgPQ0KPiA+IC0gICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICh0ei0+dHJpcHMuYWN0aXZlW2ktMl0udGVt
+cGVyYXR1cmUgPA0KPiA+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIGNlbHNpdXNfdG9fZGVjaV9rZWx2aW4oYWN0KSA/DQo+ID4gLSAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHotPnRyaXBzLmFjdGl2ZVtpLTJdLnRl
+bXBlcmF0dXJlIDoNCj4gPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICBjZWxzaXVzX3RvX2RlY2lfa2VsdmluKGFjdCkpOw0KPiA+ICsgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG1pbl90KHVuc2lnbmVkIGxvbmcsDQo+
+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+dHotPnRyaXBzLmFjdGl2ZVtpLTJdLnRlbXBlcmF0dXJlLA0KPiA+ICsgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNlbHNpdXNfdG9fZGVjaV9rZWx2
+aW4oYWN0KSk7DQo+ID4NCj4gPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJyZWFr
+Ow0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgIH0gZWxzZSB7DQo+ID4gLS0NCj4gPiAyLjI1
+LjENCj4gPg0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwg
+TW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzog
+MTM5NzM4NiAoV2FsZXMpDQo=
 
-Thanks for the review.
-
-On Wed, Mar 22, 2023 at 8:16=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Wed, Mar 22, 2023 at 06:46:36PM +0800, Pin-yen Lin wrote:
-> > Register USB Type-C mode switches when the "mode-switch" property and
-> > relevant ports are available in Device Tree. Configure the crosspoint
-> > switch based on the entered alternate mode for a specific Type-C
-> > connector.
-> >
-> > Crosspoint switch can also be used for switching the output signal for
-> > different orientations of a single USB Type-C connector, but the
-> > orientation switch is not implemented yet. A TODO is added for this.
->
-> ...
->
-> > +static int anx7625_typec_mux_set(struct typec_mux_dev *mux,
-> > +                              struct typec_mux_state *state)
-> > +{
-> > +     struct drm_dp_typec_port_data *port =3D typec_mux_get_drvdata(mux=
-);
-> > +     struct anx7625_data *ctx =3D port->data;
-> > +     struct device *dev =3D ctx->dev;
-> > +     struct drm_dp_typec_switch_desc switch_desc =3D ctx->switch_desc;
-> > +     bool new_dp_connected, old_dp_connected;
-> > +
-> > +     if (switch_desc.num_typec_switches =3D=3D 1)
-> > +             return 0;
->
-> > +     wait_for_completion(&ctx->mux_register);
->
-> How do we guarantee this won't become an infinite waiting?
-> Perhaps a comment explaining that?
->
-> > +     old_dp_connected =3D ctx->port_data[0].dp_connected ||
-> > +                        ctx->port_data[1].dp_connected;
-> > +
-> > +     ctx->port_data[port->port_num].dp_connected =3D
-> > +             state->alt &&
-> > +             state->alt->svid =3D=3D USB_TYPEC_DP_SID &&
-> > +             state->alt->mode =3D=3D USB_TYPEC_DP_MODE;
-> > +
-> > +     dev_dbg(dev, "mux_set dp_connected: c0=3D%d, c1=3D%d\n",
-> > +             ctx->port_data[0].dp_connected, ctx->port_data[1].dp_conn=
-ected);
-> > +
-> > +     new_dp_connected =3D ctx->port_data[0].dp_connected ||
-> > +                        ctx->port_data[1].dp_connected;
-> > +
-> > +     /* DP on, power on first */
-> > +     if (!old_dp_connected && new_dp_connected)
-> > +             pm_runtime_get_sync(dev);
-> > +
-> > +     anx7625_typec_two_ports_update(ctx);
-> > +
-> > +     /* DP off, power off last */
-> > +     if (old_dp_connected && !new_dp_connected)
-> > +             pm_runtime_put_sync(dev);
-> > +
-> > +     return 0;
-> > +}
->
-> ...
->
-> > +     struct device_node *port_node =3D of_graph_get_port_by_id(dev->of=
-_node, 1);
->
-> You use fwnode below, so why not fwnode_graph_...(dev_fwnode(dev), ...) ?
-
-There is no existing helper like `fwnode_graph_get_port_by_id`, so
-using of_graph variant is easier here. Should I add a
-`fwnode_graph_get_port_by_id` helper for this?
->
-> > +     struct drm_dp_typec_switch_desc *switch_desc =3D &ctx->switch_des=
-c;
-> > +     int ret;
-> > +     u32 dp_lanes[4];
-> > +     unsigned int i, num_lanes;
-> > +
-> > +     /*
-> > +      * Currently, only mode switch is implemented.
-> > +      * TODO: Implement Type-C orientation switch for anx7625.
-> > +      */
-> > +     ret =3D drm_dp_register_typec_switches(dev, &port_node->fwnode,
-> > +                                          &ctx->switch_desc, ctx,
-> > +                                          anx7625_typec_mux_set);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     ctx->port_data =3D devm_kcalloc(dev, switch_desc->num_typec_switc=
-hes,
-> > +                                   sizeof(struct anx7625_typec_port_da=
-ta),
->
->                                       sizeof(*ctx->port_data),
->
-> ?
->
-> > +                                   GFP_KERNEL);
-> > +     if (!ctx->port_data) {
-> > +             ret =3D -ENOMEM;
-> > +             goto unregister_mux;
-> > +     }
->
-> ...
->
-> > +struct anx7625_typec_port_data {
-> > +     bool dp_connected;
-> > +     enum typec_orientation orientation;
->
-> Most likely enum will be 32-bit and bool 8-bit. Which means that the data=
- type
-> size become 8 bytes for no reason. Can you swap the lines and perhaps che=
-ck this
-> with `pahole` tool?
->
-> > +};
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
-
-Best regards,
-Pin-yen
