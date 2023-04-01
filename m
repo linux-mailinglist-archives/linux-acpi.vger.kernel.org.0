@@ -2,270 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E25756D2E83
-	for <lists+linux-acpi@lfdr.de>; Sat,  1 Apr 2023 08:10:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF0366D2F6F
+	for <lists+linux-acpi@lfdr.de>; Sat,  1 Apr 2023 11:38:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231667AbjDAGKV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 1 Apr 2023 02:10:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41270 "EHLO
+        id S229708AbjDAJir (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 1 Apr 2023 05:38:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229537AbjDAGKV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 1 Apr 2023 02:10:21 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E57A9EFA4;
-        Fri, 31 Mar 2023 23:10:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680329419; x=1711865419;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=HOtQD7ZPfsOf7TOI69bCnNRQYpD2YQR1BygyIIRe10c=;
-  b=hevScNG/h36+DUlMkGS9l4d9KlX+/bLMx9tFk+iLXjJ7kr19Z4iGkPWZ
-   IyGT/c2YTb+Vh4Hq5o5moiZeY80MN2+OUJz5y7cUnhD6dHa1m1tkNmIl/
-   KvHtCB7VXI3rC5LtVFOagVgX7VRL2H8qmpzYSHkF0cSdCejvpgT1yf5Qa
-   137BanT7qO40yVXagZg9Wt5FrhP86j4Oh2cu+rraUUtTH7561bTEo6kTf
-   fbf1lBi3PUNkyJFkUv8pQEMJ5Nc7BU6lVp9mt76we5tjk6a9jJq27c6f7
-   iokbGqaNeYRNQvm4vRpsan4VQwklTmLClZkDELxNOO/e4TXqzPF/0sIaa
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10666"; a="330180584"
-X-IronPort-AV: E=Sophos;i="5.98,308,1673942400"; 
-   d="scan'208";a="330180584"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2023 23:10:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10666"; a="1015084021"
-X-IronPort-AV: E=Sophos;i="5.98,308,1673942400"; 
-   d="scan'208";a="1015084021"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 31 Mar 2023 23:10:17 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1piURM-000MYG-2N;
-        Sat, 01 Apr 2023 06:10:16 +0000
-Date:   Sat, 01 Apr 2023 14:10:14 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD REGRESSION
- 56fb1399ba81f8f6db1e9d667538fc0210660e55
-Message-ID: <6427cac6.vwLpuevHHkfpERh1%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S229462AbjDAJiq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 1 Apr 2023 05:38:46 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E82F63A97;
+        Sat,  1 Apr 2023 02:38:41 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 07E71106F;
+        Sat,  1 Apr 2023 02:39:26 -0700 (PDT)
+Received: from [10.57.54.53] (unknown [10.57.54.53])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E43D53F73F;
+        Sat,  1 Apr 2023 02:38:38 -0700 (PDT)
+Message-ID: <4660d44b-a53c-7323-0e0b-2a285e1a8c76@arm.com>
+Date:   Sat, 1 Apr 2023 10:38:37 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.9.0
+Subject: Re: [PATCH V2 3/5] coresight: etm4x: Drop pid argument from
+ etm4_probe()
+To:     scclevenger@os.amperecomputing.com,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Mike Leach <mike.leach@linaro.org>,
+        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230327050537.30861-1-anshuman.khandual@arm.com>
+ <20230327050537.30861-4-anshuman.khandual@arm.com>
+ <d995fec6-1d3f-df37-724e-67d929e9e0db@arm.com>
+ <a69dfdc6-31da-f813-858a-fdf246dea4fe@os.amperecomputing.com>
+From:   Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <a69dfdc6-31da-f813-858a-fdf246dea4fe@os.amperecomputing.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.3 required=5.0 tests=NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 56fb1399ba81f8f6db1e9d667538fc0210660e55  Merge branches 'acpi-sbs', 'acpi-thermal', 'acpi-misc' and 'acpi-tables' into linux-next
+On 31/03/2023 22:24, Steve Clevenger wrote:
+> 
+> 
+> On 3/31/2023 4:06 AM, Suzuki K Poulose wrote:
+>> On 27/03/2023 06:05, Anshuman Khandual wrote:
+>>> Coresight device pid can be retrieved from its iomem base address,
+>>> which is
+>>> stored in 'struct etm4x_drvdata'. This drops pid argument from
+>>> etm4_probe()
+>>> and 'struct etm4_init_arg'. Instead etm4_check_arch_features() derives
+>>> the
+>>> coresight device pid with a new helper coresight_get_pid(), right
+>>> before it
+>>> is consumed in etm4_hisi_match_pid().
+>>>
+>>> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+>>> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>> Cc: Mike Leach <mike.leach@linaro.org>
+>>> Cc: Leo Yan <leo.yan@linaro.org>
+>>> Cc: coresight@lists.linaro.org
+>>> Cc: linux-arm-kernel@lists.infradead.org
+>>> Cc: linux-kernel@vger.kernel.org
+>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>>> ---
+>>>    .../coresight/coresight-etm4x-core.c          | 21 +++++++------------
+>>>    include/linux/coresight.h                     | 12 +++++++++++
+>>>    2 files changed, 20 insertions(+), 13 deletions(-)
+>>>
+>>> diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c
+>>> b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+>>> index 5d77571a8df9..3521838ab4fb 100644
+>>> --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
+>>> +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+>>> @@ -66,7 +66,6 @@ static u64 etm4_get_access_type(struct etmv4_config
+>>> *config);
+>>>    static enum cpuhp_state hp_online;
+>>>      struct etm4_init_arg {
+>>> -    unsigned int        pid;
+>>>        struct device        *dev;
+>>>        struct csdev_access    *csa;
+>>>    };
+>>> @@ -370,8 +369,10 @@ static void etm4_disable_arch_specific(struct
+>>> etmv4_drvdata *drvdata)
+>>>    }
+>>>      static void etm4_check_arch_features(struct etmv4_drvdata *drvdata,
+>>> -                      unsigned int id)
+>>> +                     struct csdev_access *csa)
+>>>    {
+>>> +    unsigned int id = coresight_get_pid(csa);
+>>> +
+>>
+>> This throws up the following error on an ETE.
+>>
+>> ete: trying to read unsupported register @fe0
+>>
+>> So, I guess this must be performed only for iomem based
+>> devices. System instruction based device must be identified
+>> by MIDR_EL1/REVIDR_EL1 if needed for specific erratum.
+>> This is not required now. So, we could bail out early
+>> if we are system instruction based device.
+> 
+> Besides this, the PID is limited to (I think) 4 bits of ID. TRCIDRs
+> offer revision information, but nothing manufacturer specific save for
+> the designer. Register fields like MIDR_EL1 Variant + PartNum + Revision
+> and TRCPIDR3 REVAND offer help. It may be a combination of registers are
+> needed for a manufacturer to adequately ID a part to apply an erratum.
+> Perhaps you could at least cache MIDR_EL1 for possible future use?
 
-Error/Warning: (recently discovered and may have been fixed)
+Like I said, if we ever need them, we could add it. I don't see a point
+in storing it right now, if we don't use it.
 
-drivers/ata/pata_ixp4xx_cf.c:254:46: error: invalid use of undefined type 'struct device_node'
-drivers/ata/pata_ixp4xx_cf.c:258:15: error: implicit declaration of function 'of_property_read_u32_index'; did you mean 'fwnode_property_read_u32_array'? [-Werror=implicit-function-declaration]
-drivers/fpga/lattice-sysconfig-spi.c:146:35: error: implicit declaration of function 'of_match_ptr' [-Werror=implicit-function-declaration]
-drivers/fpga/lattice-sysconfig-spi.c:146:35: error: initializer element is not constant
-drivers/virtio/virtio_mmio.c:492:13: error: implicit declaration of function 'of_property_read_bool'; did you mean 'fwnode_property_read_bool'? [-Werror=implicit-function-declaration]
-
-Error/Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- arc-randconfig-r043-20230329
-|   |-- drivers-fpga-lattice-sysconfig-spi.c:error:implicit-declaration-of-function-of_match_ptr
-|   `-- drivers-fpga-lattice-sysconfig-spi.c:error:initializer-element-is-not-constant
-|-- csky-randconfig-r004-20230329
-|   `-- drivers-virtio-virtio_mmio.c:error:implicit-declaration-of-function-of_property_read_bool
-|-- loongarch-allyesconfig
-|   |-- drivers-fpga-lattice-sysconfig-spi.c:error:implicit-declaration-of-function-of_match_ptr
-|   `-- drivers-fpga-lattice-sysconfig-spi.c:error:initializer-element-is-not-constant
-|-- mips-allyesconfig
-|   |-- drivers-fpga-lattice-sysconfig-spi.c:error:implicit-declaration-of-function-of_match_ptr
-|   `-- drivers-fpga-lattice-sysconfig-spi.c:error:initializer-element-is-not-constant
-`-- sh-allmodconfig
-    |-- drivers-ata-pata_ixp4xx_cf.c:error:implicit-declaration-of-function-of_property_read_u32_index
-    `-- drivers-ata-pata_ixp4xx_cf.c:error:invalid-use-of-undefined-type-struct-device_node
-
-elapsed time: 723m
-
-configs tested: 166
-configs skipped: 6
-
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha        buildonly-randconfig-r002-20230329   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r015-20230329   gcc  
-alpha                randconfig-r016-20230329   gcc  
-alpha                randconfig-r036-20230329   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r005-20230329   gcc  
-arc                  randconfig-r033-20230329   gcc  
-arc                  randconfig-r043-20230329   gcc  
-arc                  randconfig-r043-20230331   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm          buildonly-randconfig-r003-20230329   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r001-20230329   clang
-arm                  randconfig-r002-20230329   clang
-arm                  randconfig-r003-20230329   clang
-arm                  randconfig-r026-20230329   gcc  
-arm                  randconfig-r034-20230329   clang
-arm                  randconfig-r035-20230329   clang
-arm                  randconfig-r046-20230329   gcc  
-arm                  randconfig-r046-20230331   clang
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r001-20230329   gcc  
-arm64                randconfig-r025-20230329   clang
-arm64                randconfig-r036-20230329   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r004-20230329   gcc  
-csky                 randconfig-r034-20230329   gcc  
-hexagon      buildonly-randconfig-r002-20230329   clang
-hexagon              randconfig-r041-20230329   clang
-hexagon              randconfig-r041-20230331   clang
-hexagon              randconfig-r045-20230329   clang
-hexagon              randconfig-r045-20230331   clang
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                          randconfig-a001   gcc  
-i386                          randconfig-a002   clang
-i386                          randconfig-a003   gcc  
-i386                          randconfig-a004   clang
-i386                          randconfig-a005   gcc  
-i386                          randconfig-a006   clang
-i386                          randconfig-a011   clang
-i386                          randconfig-a012   gcc  
-i386                          randconfig-a013   clang
-i386                          randconfig-a014   gcc  
-i386                          randconfig-a015   clang
-i386                          randconfig-a016   gcc  
-ia64                             allmodconfig   gcc  
-ia64         buildonly-randconfig-r001-20230329   gcc  
-ia64         buildonly-randconfig-r003-20230329   gcc  
-ia64                                defconfig   gcc  
-ia64                 randconfig-r002-20230329   gcc  
-ia64                 randconfig-r012-20230329   gcc  
-ia64                 randconfig-r023-20230329   gcc  
-ia64                 randconfig-r025-20230329   gcc  
-ia64                 randconfig-r033-20230329   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch    buildonly-randconfig-r004-20230329   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r002-20230330   gcc  
-loongarch            randconfig-r005-20230330   gcc  
-loongarch            randconfig-r013-20230329   gcc  
-loongarch            randconfig-r021-20230329   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r001-20230330   gcc  
-m68k                 randconfig-r004-20230329   gcc  
-m68k                 randconfig-r013-20230329   gcc  
-m68k                 randconfig-r014-20230329   gcc  
-m68k                 randconfig-r031-20230329   gcc  
-microblaze   buildonly-randconfig-r005-20230329   gcc  
-microblaze   buildonly-randconfig-r006-20230329   gcc  
-microblaze           randconfig-r023-20230329   gcc  
-microblaze           randconfig-r024-20230329   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                 randconfig-r012-20230329   gcc  
-mips                 randconfig-r036-20230329   clang
-nios2                               defconfig   gcc  
-nios2                randconfig-r004-20230330   gcc  
-nios2                randconfig-r011-20230329   gcc  
-nios2                randconfig-r031-20230329   gcc  
-nios2                randconfig-r033-20230329   gcc  
-nios2                randconfig-r035-20230329   gcc  
-openrisc     buildonly-randconfig-r002-20230331   gcc  
-openrisc             randconfig-r006-20230330   gcc  
-openrisc             randconfig-r022-20230329   gcc  
-openrisc             randconfig-r034-20230329   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r003-20230330   gcc  
-parisc               randconfig-r006-20230329   gcc  
-parisc               randconfig-r015-20230329   gcc  
-parisc               randconfig-r022-20230329   gcc  
-parisc               randconfig-r025-20230329   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc      buildonly-randconfig-r004-20230331   gcc  
-powerpc              randconfig-r003-20230329   gcc  
-powerpc              randconfig-r032-20230329   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv        buildonly-randconfig-r004-20230329   clang
-riscv        buildonly-randconfig-r006-20230329   clang
-riscv                               defconfig   gcc  
-riscv                randconfig-r006-20230329   gcc  
-riscv                randconfig-r016-20230329   clang
-riscv                randconfig-r021-20230329   clang
-riscv                randconfig-r032-20230329   gcc  
-riscv                randconfig-r035-20230329   gcc  
-riscv                randconfig-r042-20230329   clang
-riscv                randconfig-r042-20230331   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390         buildonly-randconfig-r006-20230331   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r005-20230329   gcc  
-s390                 randconfig-r026-20230329   clang
-s390                 randconfig-r044-20230329   clang
-s390                 randconfig-r044-20230331   gcc  
-sh                               allmodconfig   gcc  
-sh           buildonly-randconfig-r005-20230329   gcc  
-sh                   randconfig-r005-20230329   gcc  
-sh                   randconfig-r014-20230329   gcc  
-sh                   randconfig-r024-20230329   gcc  
-sparc        buildonly-randconfig-r001-20230329   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r004-20230329   gcc  
-sparc                randconfig-r006-20230329   gcc  
-sparc                randconfig-r022-20230329   gcc  
-sparc64      buildonly-randconfig-r001-20230331   gcc  
-sparc64              randconfig-r002-20230329   gcc  
-sparc64              randconfig-r003-20230329   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64                        randconfig-a001   clang
-x86_64                        randconfig-a002   gcc  
-x86_64                        randconfig-a003   clang
-x86_64                        randconfig-a004   gcc  
-x86_64                        randconfig-a005   clang
-x86_64                        randconfig-a006   gcc  
-x86_64                        randconfig-a011   gcc  
-x86_64                        randconfig-a012   clang
-x86_64                        randconfig-a013   gcc  
-x86_64                        randconfig-a014   clang
-x86_64                        randconfig-a015   gcc  
-x86_64                        randconfig-a016   clang
-x86_64                               rhel-8.3   gcc  
-xtensa       buildonly-randconfig-r003-20230331   gcc  
-xtensa               randconfig-r026-20230329   gcc  
-xtensa               randconfig-r031-20230329   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Suzuki
