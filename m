@@ -2,204 +2,184 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D50966D452A
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Apr 2023 15:03:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F9386D4BA5
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Apr 2023 17:19:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231532AbjDCNDc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 3 Apr 2023 09:03:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56970 "EHLO
+        id S232598AbjDCPTF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Apr 2023 11:19:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231889AbjDCNDb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Apr 2023 09:03:31 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A5AC44A8;
-        Mon,  3 Apr 2023 06:03:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=2DRBUCZH+jVtNgISzJ13ck0l7m/crCLW8IZss/heJ9U=; b=XZuBfy2JViX4KtnmXF1tZtC8sR
-        ON7U58VwbpHb56SNOLFkIuUVoCGNH54CnBoc8r1jX1G8Uv3KONoYQIQGQFF8xU06LCvxV9OyztRzM
-        rYYFNXeQzg6iFtLr02FMUynpNwPxBsoMrU9D2KzZjVHQ8uY006Mp5SIDZ0XhXwRZ0j6xwiLmEwS/z
-        eWulASqSjSWASPFYWUmmXE1WyYLUknRzYJQkBBwEdq/ZVKM1uO5B9F9sbU0JeSg9OFCZcYIOtBjUZ
-        hl4xQMHufqEcQJUnQFgKymwRmPP3rTsCAsB6YLn9Eh3sQ7HTK54c9GZ9eXkzboDzbqClYZUh19ku/
-        vUonPdjg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:43956)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1pjJpk-0002nG-6v; Mon, 03 Apr 2023 14:02:52 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1pjJpg-0004FV-4D; Mon, 03 Apr 2023 14:02:48 +0100
-Date:   Mon, 3 Apr 2023 14:02:48 +0100
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>, linux-acpi@vger.kernel.org,
-        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Vladimir Oltean <olteanv@gmail.com>
-Subject: Re: [PATCH RFC net-next 6/7] net: dsa: mv88e6xxx: provide software
- node for default settings
-Message-ID: <ZCrOeC+tYfQiBuoY@shell.armlinux.org.uk>
-References: <ZCFvtuyelA+WoeqK@kuha.fi.intel.com>
- <ZCF2BLvGoaD/RGCS@shell.armlinux.org.uk>
- <ZCGkhUh20OK6rEck@kuha.fi.intel.com>
- <ZCGpDlaJ7+HmPQiB@shell.armlinux.org.uk>
- <ZCG6D7KV/0W0FUoI@shell.armlinux.org.uk>
- <ZCLZFA964zu/otQJ@kuha.fi.intel.com>
- <ZCLqXRKHh+VjCg8v@shell.armlinux.org.uk>
- <ZCRGHlERlLNuPHgE@kuha.fi.intel.com>
- <ZCRMTP1QJ0deQhOH@shell.armlinux.org.uk>
- <ZCWUq3yEn74JRW0w@kuha.fi.intel.com>
+        with ESMTP id S232508AbjDCPTE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Apr 2023 11:19:04 -0400
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2060.outbound.protection.outlook.com [40.107.95.60])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57E9110EC;
+        Mon,  3 Apr 2023 08:19:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Bd9gvF0Ouot4CUc+quE6jUMihd74MuPB1jcmz8qUgH73mcw5WYAPmKkkBm1a0E7FZwH5NJosMFS8rXSdg7r2wlvJmPwo+M0zaGho645mnjstJUKSLN91bN4/gGCZCDLG03qMI3sxs47Cn1K4qgX3yoYAttuk76pR0V5GG9jQ50iGMuHk80Ri+12o79JJGt1M2pKz7Y9DB0LkwZTMpwrGAKnX4xb03XdFdFblvJXqIcCZZrDBQQfqAn30Mco1yJcuJrtfNASmi5NSMerH1S8F/jGljB09HWSoM/Dqo1NmmRUMXjWu45uGISjmhhRNO0dElqFc9tQ0YIyw3IHLSJ8eOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WYcGyNnrNB0terW7sh19ex2GgrzJNQ4v508hQn8rhd0=;
+ b=MUrz37ik8Q0z5g1UwcNf7OB1SlNvgJ5UPsc25/+CiyZ+akBxPeXyF6PaBo24SMi8Wy1GbB6E3TlDx5QHS23E28AFaopTgS3hdCjgckdbLf7uQ1a3dr0yD0tgtDpqGHKtkymz7Z3fRaiG0J8rJZYaxrUrpbNtL1axCQcqR/bf4kxPWfObgBrveXjylu/wO37tGpFw8qE5BSGYFkH1f2SxU4ILxX44hMDqpYl02Zg7XsObTv+XLC9W89Tx7ibfRk7F8TpbsBbTZZx09HIZHv8Ow6CKounRcjJkNMwmRYyAoWCSMU3XSB6zX2Bgv6AmyjvEqAcz3bzRNmmpFruOjUqymA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WYcGyNnrNB0terW7sh19ex2GgrzJNQ4v508hQn8rhd0=;
+ b=ii5lAK7V8K42eHbY9C85sGWUof6/HDuDUrAjWhHi85CIB+tuoMO6NB7ye24ncAMBNRHaEOnYC23hkgDdckmAFcDNkV6g2fAJIoBt6aIUv2fE0zE+n1vDfUyn9REcw854cFcMf0Xp2pNg84Iag9/vD62UI5rLUUmwNWFwTlEuASE=
+Received: from MW3PR05CA0015.namprd05.prod.outlook.com (2603:10b6:303:2b::20)
+ by PH7PR12MB6977.namprd12.prod.outlook.com (2603:10b6:510:1b7::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.33; Mon, 3 Apr
+ 2023 15:19:00 +0000
+Received: from CO1NAM11FT049.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:303:2b:cafe::c9) by MW3PR05CA0015.outlook.office365.com
+ (2603:10b6:303:2b::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6277.26 via Frontend
+ Transport; Mon, 3 Apr 2023 15:19:00 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1NAM11FT049.mail.protection.outlook.com (10.13.175.50) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6277.18 via Frontend Transport; Mon, 3 Apr 2023 15:19:00 +0000
+Received: from bcheatha-HP-EliteBook-845-G8-Notebook-PC.amd.com
+ (10.180.168.240) by SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Mon, 3 Apr 2023 10:18:57 -0500
+From:   Ben Cheatham <Benjamin.Cheatham@amd.com>
+To:     <rafael@kernel.org>, <dan.j.williams@intel.com>,
+        <ira.weiny@intel.com>, <alison.schofield@intel.com>,
+        <vishal.l.verma@intel.com>
+CC:     <yazen.ghannam@amd.com>, <benjamin.cheatham@amd.com>,
+        <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>
+Subject: [PATCH v2] ACPI, APEI, EINJ: Remove memory range validation for CXL error types
+Date:   Mon, 3 Apr 2023 10:18:49 -0500
+Message-ID: <20230403151849.43408-1-Benjamin.Cheatham@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZCWUq3yEn74JRW0w@kuha.fi.intel.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1NAM11FT049:EE_|PH7PR12MB6977:EE_
+X-MS-Office365-Filtering-Correlation-Id: c7a449a1-440d-4072-9eb8-08db3456c064
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Ydfj2hl4ZQDGWwLFQtSuMxXVtHozl8LdPDw+6pBfmMKB1h3P2hVdcWi1RaVhPVxBZLV3IrnUF/MNHi04BfkEMot7QFLkO9rG8CNqcIiAGD+ItWhzlSGjQQS82HmVHvbayh3/s50sdZTE9TQsXQN54Wq8J7CQRyvwzHUa8nIrrLYFwnG9P07bfcwpIHcEVFE/LVV8JLIKcTtO1x+dazpV8pzSw8bInbv59UsR5KqaqmIoQ+y8/H9g4bzBWcJbQ4KtEAo1Sm40xyjOdQkApBdgu/vByTcvlLPYQvozFeflLoGJViSqEG/4DiS7kacXq8IzgJcUynYChEb9+uHGua5VH1oUP7YL6g1cRCo5RA4qmAQxXGwJWLF/ZwHoHom1qkub7PDfDC3uhdcLIIM9Obu/Fs8dpf3uJ8OQl2ENwA5Qs1FEpR0NFs7PGNj28Up2wT9HQjvFPWhifj23MpIYoZ6GHqZnfiG4Vp2OKKVZkLgJXQQmLKKVJBz7YMMFRyUgqxhZzjubtfzNEKO4XcJhhXtT2IOVo4/oEfKtIKGA2CoyGHf2tY5Oy+coYc96rYNv3QB0MFTdEqrLYRj2vj5o6e502s4PngFZimpexvcs9CUZGqOFD+f6fAetT9qE5A3fPCcJ968CLMhl5YvD6A1UBrenWwn+jbSExOUN+6hZ11IDKNaKbfIovIc7VPSgMl5N9DDfFzFrQv5ZJmg86xOfnNXwkMp4eAAZVwau8cnHl6lcu+PLiocGeaqso1PIM5Fii52JWfpK5W8Ulad9K9bW85zGBw==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(136003)(39860400002)(396003)(346002)(376002)(451199021)(40470700004)(46966006)(36840700001)(40480700001)(70586007)(70206006)(40460700003)(36860700001)(478600001)(8676002)(110136005)(316002)(54906003)(8936002)(81166007)(356005)(5660300002)(82740400003)(41300700001)(4326008)(426003)(186003)(16526019)(47076005)(83380400001)(2616005)(7696005)(336012)(6666004)(966005)(1076003)(26005)(86362001)(82310400005)(2906002)(36756003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2023 15:19:00.1302
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c7a449a1-440d-4072-9eb8-08db3456c064
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT049.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6977
+X-Spam-Status: No, score=0.8 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 30, 2023 at 04:54:51PM +0300, Heikki Krogerus wrote:
-> On Wed, Mar 29, 2023 at 03:33:48PM +0100, Russell King (Oracle) wrote:
-> > On Wed, Mar 29, 2023 at 05:07:26PM +0300, Heikki Krogerus wrote:
-> > > On Tue, Mar 28, 2023 at 02:23:41PM +0100, Russell King (Oracle) wrote:
-> > > > On Tue, Mar 28, 2023 at 03:09:56PM +0300, Heikki Krogerus wrote:
-> > > > > The problem is that the function you are proposing will be exploited
-> > > > > silently - people will use NULL as the parent without anybody
-> > > > > noticing. Everything will work for a while, because everybody will
-> > > > > first only have a single device for that driver. But as time goes by
-> > > > > and new hardware appears, suddenly there are multiple devices for
-> > > > > those drivers, and the conflict start to appear.
-> > > > 
-> > > > So, an easy solution would be to reject a call to
-> > > > fwnode_create_named_software_node() when parent is NULL, thereby
-> > > > preventing named nodes at the root level.
-> > > > 
-> > > > > At that point the changes that added the function call will have
-> > > > > trickled down to the stable trees, so the distros are affected. Now we
-> > > > > are no longer talking about a simple cleanup that fixes the issue. In
-> > > > > the unlikely, but possible case, this will turn into ABI problem if
-> > > > 
-> > > > There is no such thing as stable APIs for internal kernel interfaces.
-> > > > 
-> > > > Documentation/process/stable-api-nonsense.rst
-> > > > 
-> > > > > As you pointed out, this kind of risks we have to live with kbojects,
-> > > > > struct device stuff and many others, but the thing is, with the
-> > > > > software node and device property APIs right now we don't. So the fact
-> > > > > that a risk exists in one place just isn't justification to accept the
-> > > > > same risk absolutely everywhere.
-> > > > 
-> > > > Meanwhile, firmware descriptions explicitly permit looking up nodes by
-> > > > their names, but here we are, with the software node maintainers
-> > > > basically stating that they don't wish to support creating software
-> > > > nodes with explicit names.
-> > > 
-> > > If you want to name the nodes then you just go ahead and name them,
-> > > nobody is preventing you and you can already do that, but if you do
-> > > so, then you will take full responsibility of the entire software node
-> > > - that is what you are naming here - instead of just the fwnode that
-> > > it contains. The users of the node can deal with the fwnode alone, but
-> > > you as the creator of the software node have to take proper ownership
-> > > of it.
-> > > 
-> > > > > Russell, if you have some good arguments for accepting your proposal,
-> > > > > I assure you I will agree with you, but so far all you have given are
-> > > > > attacks on a sketch details and statements like that "I think you're
-> > > > > making a mountain out of a mole". Those just are not good enough.
-> > > > 
-> > > > Basically, I think you are outright wrong for all the reasons I have
-> > > > given in all my emails on this subject.
-> > > > 
-> > > > Yes, I accept there is a *slight* risk of abuse, but I see it as no
-> > > > different from the risk from incorrect usage of any other kernel
-> > > > internal interface. Therefore I just do not accept your argument
-> > > > that we should not have this function, and I do not accept your
-> > > > reasoning.
-> > > 
-> > > I would not be so against the function if there wasn't any other way
-> > > to handle your case, but there is.
-> > > 
-> > > You really can not claim that the existing API is in any way inferior,
-> > > or even more complex, compared to your function before you actually
-> > > try it. You simply can not make judgement based on a sketch that is
-> > > basically just showing you the functions and structures that you need.
-> > > 
-> > > If there are issues with the API, then we need to of course fix those
-> > > issues, but please keep in mind that still does not mean we have any
-> > > need for the function you are proposing.
-> > > 
-> > > Please also note that helpers are welcome if you feel we need them. If
-> > > you want to add for example an allocation routine that duplicates also
-> > > the properties in one go, then that alone would reduce the complexity
-> > > needed in the drivers that create the nodes. I think in most cases,
-> > > possibly also in yours, that alone would allow most stuff to be
-> > > handled from stack memory.
-> > > 
-> > > fwnode_create_software_node() is there just to support the legacy
-> > > device properties. You really should not be using even that. If you
-> > > need to deal with software nodes then you deal with them with struct
-> > > software_node.
-> > 
-> > You forgot to explain how to free them once they're done, because
-> > struct swnode will contain a pointer to the struct software_node
-> > which can be a dangling stale reference - and there's no way for
-> > code outside swnode.c to know when that reference has gone.
-> > 
-> > That is another reason why I prefer my existing solution. That
-> > problem is taken care of already by the existing code - and as
-> > it's taken care of there, and properly, there's less possibilities
-> > for users of swnode to get it wrong.
-> 
-> We need an improved release mechanism, yes.
-> 
-> My idea with the new dynamic allocation routine was that it could be
-> introduced together with a release callback that we add to the struct
-> software_node.
-> 
-> The idea of adding the release callback to the structure was actually
-> considered already some time ago - I think it was discussed at least
-> shortly also on the public ACPI mailing list. The idea back then
-> included a default release function that simply frees the struct
-> software_node instance. That default release function we could then
-> assign to the release callback in that new software node
-> allocation/creation routine. That way the drivers should be able to
-> continue to rely on the underlying code to take care of freeing the
-> node instance.
-> 
-> Back then there was nobody who really needed that functionality, so
-> nobody even tried to implement it. Now we of course clearly do need
-> something like it.
-> 
-> I think the release callback together with the default release
-> function should work. Let me know what you guys think.
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-Thinking about this more, no. This is utterly vile, and I will not
-create code that is vile.
+V2 Changes:
+ - Added Link tags for links
+ - removed stray unused variable
 
-Greg, please can you take a look at this, and give your opinion on
-how named software nodes (which are required to describe things in
-specific ways by firmware descriptions) should be handled? Is my
-proposal reasonable in your eyes? Thanks.
+This patch is a follow up to the discussion at [1], and builds on Tony's
+CXL error patch at [2].
 
+The new CXL error types will use the Memory Address field in the
+SET_ERROR_TYPE_WITH_ADDRESS structure in order to target a CXL 1.1
+compliant memory-mapped Downstream port. The value of the Memory Address
+will be in the port's MMIO range, and it will not represent physical
+(normal or persistent) memory.
+
+Allow error injection for CXL 1.1 systems by skipping memory range
+validation for CXL error injection types.
+
+Output trying to inject CXL.mem error without patch:
+
+-bash: echo: write error: Invalid argument
+
+[1]:
+Link: https://lore.kernel.org/linux-acpi/20221206205234.606073-1-Benjamin.Cheatham@amd.com/
+[2]:
+Link: https://lore.kernel.org/linux-cxl/CAJZ5v0hNQUfWViqxbJ5B4JCGJUuHpWWSpqpCFWPNpGuagoFbsQ@mail.gmail.com/T/#t
+
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Ben Cheatham <benjamin.cheatham@amd.com>
+---
+ drivers/acpi/apei/einj.c | 12 +++++++++++-
+ include/acpi/actbl1.h    |  6 ++++++
+ 2 files changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
+index 013eb621dc92..68a20326ed7c 100644
+--- a/drivers/acpi/apei/einj.c
++++ b/drivers/acpi/apei/einj.c
+@@ -37,6 +37,13 @@
+ 				ACPI_EINJ_MEMORY_UNCORRECTABLE | \
+ 				ACPI_EINJ_MEMORY_FATAL)
+ 
++#define CXL_ERROR_MASK		(ACPI_EINJ_CXL_CACHE_CORRECTABLE	| \
++				ACPI_EINJ_CXL_CACHE_UNCORRECTABLE	| \
++				ACPI_EINJ_CXL_CACHE_FATAL		| \
++				ACPI_EINJ_CXL_MEM_CORRECTABLE		| \
++				ACPI_EINJ_CXL_MEM_UNCORRECTABLE		| \
++				ACPI_EINJ_CXL_MEM_FATAL)
++
+ /*
+  * ACPI version 5 provides a SET_ERROR_TYPE_WITH_ADDRESS action.
+  */
+@@ -537,8 +544,11 @@ static int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
+ 	if (type & ACPI5_VENDOR_BIT) {
+ 		if (vendor_flags != SETWA_FLAGS_MEM)
+ 			goto inject;
+-	} else if (!(type & MEM_ERROR_MASK) && !(flags & SETWA_FLAGS_MEM))
++	} else if (!(type & MEM_ERROR_MASK) && !(flags & SETWA_FLAGS_MEM)) {
++		goto inject;
++	} else if (type & CXL_ERROR_MASK) {
+ 		goto inject;
++	}
+ 
+ 	/*
+ 	 * Disallow crazy address masks that give BIOS leeway to pick
+diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+index 81b9e794424d..c39837266414 100644
+--- a/include/acpi/actbl1.h
++++ b/include/acpi/actbl1.h
+@@ -1044,6 +1044,12 @@ enum acpi_einj_command_status {
+ #define ACPI_EINJ_PLATFORM_CORRECTABLE      (1<<9)
+ #define ACPI_EINJ_PLATFORM_UNCORRECTABLE    (1<<10)
+ #define ACPI_EINJ_PLATFORM_FATAL            (1<<11)
++#define ACPI_EINJ_CXL_CACHE_CORRECTABLE     BIT(12)
++#define ACPI_EINJ_CXL_CACHE_UNCORRECTABLE   BIT(13)
++#define ACPI_EINJ_CXL_CACHE_FATAL           BIT(14)
++#define ACPI_EINJ_CXL_MEM_CORRECTABLE       BIT(15)
++#define ACPI_EINJ_CXL_MEM_UNCORRECTABLE     BIT(16)
++#define ACPI_EINJ_CXL_MEM_FATAL             BIT(17)
+ #define ACPI_EINJ_VENDOR_DEFINED            (1<<31)
+ 
+ /*******************************************************************************
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.34.1
+
