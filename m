@@ -2,220 +2,204 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88FA66D4200
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Apr 2023 12:28:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D50966D452A
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Apr 2023 15:03:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232109AbjDCK23 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 3 Apr 2023 06:28:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48664 "EHLO
+        id S231532AbjDCNDc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Apr 2023 09:03:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232224AbjDCK21 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Apr 2023 06:28:27 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9746849DE
-        for <linux-acpi@vger.kernel.org>; Mon,  3 Apr 2023 03:28:21 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id v1so28787671wrv.1
-        for <linux-acpi@vger.kernel.org>; Mon, 03 Apr 2023 03:28:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680517700;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IbYw3BcOTVr2vYhRZ5kcfhDg4Aj2okCKbHzUaqITdJ0=;
-        b=vpYIu8vv5RQlDe51YqL4pyLVV9yKIOxRirsKGqXxk5UruYtnK55UbCTVHd9uhkNnKs
-         7f00qU2pMymYbYzq1SEzJ+LMXKexScBaD1pZrVf3zR/PCQsgX1jEU84J0BjeosKgQPuo
-         jJeb+1ow+Z/FL3Kqp7m9lA2vOme1fol+d2+kuX3PNEqtNKF8v5fqxciotbzzNMIUeiIQ
-         XI/vievUtO8vwPtbSe/Z8k0ide950seKi6YqxqnD78adxydbXdW8fwNbxqi8KV07JDcN
-         cnQj7u2Yh91TnKvinPz88XNLVgIkZ0yIHPNy3lOzTYZHgyY29NaoxoG6vifxrgTKvN1X
-         pXhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680517700;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IbYw3BcOTVr2vYhRZ5kcfhDg4Aj2okCKbHzUaqITdJ0=;
-        b=Kw8BtKD+8rM8AeA8J5UVZEcLCF+3REQqwBbw1RhJIXCOtEXJkd+lw29esME38LWVUS
-         vY7f1eMJpMVpmejJGNqoSXAH+Gq1R9JuWPWzRWX140dEUcfhtiEeinH3CTyr0Styvt8i
-         wapH3XBOyJ9YgcpWH9G+s/cyz7TDtAZvDwWjvTWdyY36ReQrKkXVy2MgkNGbO++gMBEG
-         f4Q+C4Q/eonEBkXBHlTMQo3fD0klh7HMBgWPb7NRGZOuES57y+e/qiyO1euabIhxuN8U
-         IBJrDzskXxwOIWUA880fQ731IgVhbjhBVkezxQ3binHu+T5E0EZWHOpjC1u9AE231aFi
-         eHyA==
-X-Gm-Message-State: AAQBX9fVp2QJgZ31wUO7cHbQ4vu0Yeq6Gb/UMYSuthqxH/NbqbUT2wgJ
-        GnHsQJ6q65KkypknsmTRc+1HBLAE5wqgZVMhDhM=
-X-Google-Smtp-Source: AKy350Ym8q6iCQz7IACYnjf8nMBRh3FCcRF5gQHC6QtL5ZQW0E5F3j1CcmyZ2hA/rIzNr5GHxnwESw==
-X-Received: by 2002:adf:e7c2:0:b0:2cf:ea5f:6de with SMTP id e2-20020adfe7c2000000b002cfea5f06demr3426533wrn.14.1680517699957;
-        Mon, 03 Apr 2023 03:28:19 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:8052:c9eb:6b69:e69a? ([2a05:6e02:1041:c10:8052:c9eb:6b69:e69a])
-        by smtp.googlemail.com with ESMTPSA id c13-20020adffb0d000000b002e5e7ee11besm8922298wrr.94.2023.04.03.03.28.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Apr 2023 03:28:19 -0700 (PDT)
-Message-ID: <38a5a6e0-2af8-8365-b20e-8494a4efcb0c@linaro.org>
-Date:   Mon, 3 Apr 2023 12:28:18 +0200
+        with ESMTP id S231889AbjDCNDb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Apr 2023 09:03:31 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A5AC44A8;
+        Mon,  3 Apr 2023 06:03:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=2DRBUCZH+jVtNgISzJ13ck0l7m/crCLW8IZss/heJ9U=; b=XZuBfy2JViX4KtnmXF1tZtC8sR
+        ON7U58VwbpHb56SNOLFkIuUVoCGNH54CnBoc8r1jX1G8Uv3KONoYQIQGQFF8xU06LCvxV9OyztRzM
+        rYYFNXeQzg6iFtLr02FMUynpNwPxBsoMrU9D2KzZjVHQ8uY006Mp5SIDZ0XhXwRZ0j6xwiLmEwS/z
+        eWulASqSjSWASPFYWUmmXE1WyYLUknRzYJQkBBwEdq/ZVKM1uO5B9F9sbU0JeSg9OFCZcYIOtBjUZ
+        hl4xQMHufqEcQJUnQFgKymwRmPP3rTsCAsB6YLn9Eh3sQ7HTK54c9GZ9eXkzboDzbqClYZUh19ku/
+        vUonPdjg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:43956)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1pjJpk-0002nG-6v; Mon, 03 Apr 2023 14:02:52 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1pjJpg-0004FV-4D; Mon, 03 Apr 2023 14:02:48 +0100
+Date:   Mon, 3 Apr 2023 14:02:48 +0100
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH RFC net-next 6/7] net: dsa: mv88e6xxx: provide software
+ node for default settings
+Message-ID: <ZCrOeC+tYfQiBuoY@shell.armlinux.org.uk>
+References: <ZCFvtuyelA+WoeqK@kuha.fi.intel.com>
+ <ZCF2BLvGoaD/RGCS@shell.armlinux.org.uk>
+ <ZCGkhUh20OK6rEck@kuha.fi.intel.com>
+ <ZCGpDlaJ7+HmPQiB@shell.armlinux.org.uk>
+ <ZCG6D7KV/0W0FUoI@shell.armlinux.org.uk>
+ <ZCLZFA964zu/otQJ@kuha.fi.intel.com>
+ <ZCLqXRKHh+VjCg8v@shell.armlinux.org.uk>
+ <ZCRGHlERlLNuPHgE@kuha.fi.intel.com>
+ <ZCRMTP1QJ0deQhOH@shell.armlinux.org.uk>
+ <ZCWUq3yEn74JRW0w@kuha.fi.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v1 00/11] Generic trip points for ACPI
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     rjw@rjwysocki.net, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org
-References: <20230203173331.3322089-1-daniel.lezcano@linaro.org>
- <CAJZ5v0gkOfbWZWzsTKLBD9C8TaAp0qmTv0L0X7E3fBSLyMUEcQ@mail.gmail.com>
- <a4da1cb6-80a5-a3a9-72e6-62e5ad810509@linaro.org>
- <CAJZ5v0hWE_gRHj7_zZmu=firwTOnF1X4j59hrV_iy045R8GeeQ@mail.gmail.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <CAJZ5v0hWE_gRHj7_zZmu=firwTOnF1X4j59hrV_iy045R8GeeQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZCWUq3yEn74JRW0w@kuha.fi.intel.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-Hi Rafael,
-
-thanks for taking the time to go through the series.
-
-On 31/03/2023 18:04, Rafael J. Wysocki wrote:
-> On Fri, Feb 3, 2023 at 10:47 PM Daniel Lezcano
-> <daniel.lezcano@linaro.org> wrote:
->>
->> On 03/02/2023 19:46, Rafael J. Wysocki wrote:
->>> On Fri, Feb 3, 2023 at 6:34 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
->>>>
->>>> This series introduces the generic trip points usage in the thermal ACPI
->>>> driver. It provides a step by step changes to move the current code the
->>>> generic trip points.
->>>>
->>>> I don't have an ACPI platform, the code is not tested.
->>>
->>> What's the purpose of sending this now, then?  Should it be an RFC?
->>> I'm certainly going to treat it this way.
->>
->> I did basic testing on a x86 laptop having critical trip points but
->> nothing else.
->>
->> I understand it can be treated as RFC.
+On Thu, Mar 30, 2023 at 04:54:51PM +0300, Heikki Krogerus wrote:
+> On Wed, Mar 29, 2023 at 03:33:48PM +0100, Russell King (Oracle) wrote:
+> > On Wed, Mar 29, 2023 at 05:07:26PM +0300, Heikki Krogerus wrote:
+> > > On Tue, Mar 28, 2023 at 02:23:41PM +0100, Russell King (Oracle) wrote:
+> > > > On Tue, Mar 28, 2023 at 03:09:56PM +0300, Heikki Krogerus wrote:
+> > > > > The problem is that the function you are proposing will be exploited
+> > > > > silently - people will use NULL as the parent without anybody
+> > > > > noticing. Everything will work for a while, because everybody will
+> > > > > first only have a single device for that driver. But as time goes by
+> > > > > and new hardware appears, suddenly there are multiple devices for
+> > > > > those drivers, and the conflict start to appear.
+> > > > 
+> > > > So, an easy solution would be to reject a call to
+> > > > fwnode_create_named_software_node() when parent is NULL, thereby
+> > > > preventing named nodes at the root level.
+> > > > 
+> > > > > At that point the changes that added the function call will have
+> > > > > trickled down to the stable trees, so the distros are affected. Now we
+> > > > > are no longer talking about a simple cleanup that fixes the issue. In
+> > > > > the unlikely, but possible case, this will turn into ABI problem if
+> > > > 
+> > > > There is no such thing as stable APIs for internal kernel interfaces.
+> > > > 
+> > > > Documentation/process/stable-api-nonsense.rst
+> > > > 
+> > > > > As you pointed out, this kind of risks we have to live with kbojects,
+> > > > > struct device stuff and many others, but the thing is, with the
+> > > > > software node and device property APIs right now we don't. So the fact
+> > > > > that a risk exists in one place just isn't justification to accept the
+> > > > > same risk absolutely everywhere.
+> > > > 
+> > > > Meanwhile, firmware descriptions explicitly permit looking up nodes by
+> > > > their names, but here we are, with the software node maintainers
+> > > > basically stating that they don't wish to support creating software
+> > > > nodes with explicit names.
+> > > 
+> > > If you want to name the nodes then you just go ahead and name them,
+> > > nobody is preventing you and you can already do that, but if you do
+> > > so, then you will take full responsibility of the entire software node
+> > > - that is what you are naming here - instead of just the fwnode that
+> > > it contains. The users of the node can deal with the fwnode alone, but
+> > > you as the creator of the software node have to take proper ownership
+> > > of it.
+> > > 
+> > > > > Russell, if you have some good arguments for accepting your proposal,
+> > > > > I assure you I will agree with you, but so far all you have given are
+> > > > > attacks on a sketch details and statements like that "I think you're
+> > > > > making a mountain out of a mole". Those just are not good enough.
+> > > > 
+> > > > Basically, I think you are outright wrong for all the reasons I have
+> > > > given in all my emails on this subject.
+> > > > 
+> > > > Yes, I accept there is a *slight* risk of abuse, but I see it as no
+> > > > different from the risk from incorrect usage of any other kernel
+> > > > internal interface. Therefore I just do not accept your argument
+> > > > that we should not have this function, and I do not accept your
+> > > > reasoning.
+> > > 
+> > > I would not be so against the function if there wasn't any other way
+> > > to handle your case, but there is.
+> > > 
+> > > You really can not claim that the existing API is in any way inferior,
+> > > or even more complex, compared to your function before you actually
+> > > try it. You simply can not make judgement based on a sketch that is
+> > > basically just showing you the functions and structures that you need.
+> > > 
+> > > If there are issues with the API, then we need to of course fix those
+> > > issues, but please keep in mind that still does not mean we have any
+> > > need for the function you are proposing.
+> > > 
+> > > Please also note that helpers are welcome if you feel we need them. If
+> > > you want to add for example an allocation routine that duplicates also
+> > > the properties in one go, then that alone would reduce the complexity
+> > > needed in the drivers that create the nodes. I think in most cases,
+> > > possibly also in yours, that alone would allow most stuff to be
+> > > handled from stack memory.
+> > > 
+> > > fwnode_create_software_node() is there just to support the legacy
+> > > device properties. You really should not be using even that. If you
+> > > need to deal with software nodes then you deal with them with struct
+> > > software_node.
+> > 
+> > You forgot to explain how to free them once they're done, because
+> > struct swnode will contain a pointer to the struct software_node
+> > which can be a dangling stale reference - and there's no way for
+> > code outside swnode.c to know when that reference has gone.
+> > 
+> > That is another reason why I prefer my existing solution. That
+> > problem is taken care of already by the existing code - and as
+> > it's taken care of there, and properly, there's less possibilities
+> > for users of swnode to get it wrong.
 > 
-> So I've gone through this series now and I'm not entirely convinced.
+> We need an improved release mechanism, yes.
 > 
-> While I agree with the general direction (using a generically-defined
-> trip point representation instead of a home-grown one is definitely an
-> improvement IMV and I understand the idea of putting all trip points
-> into an array which then will allow the overhead in the core to be
-> reduced), I don't quite like the way the change is carried out in the
-> series.  In particular, I'd prefer to avoid introducing "temporary"
-> structures that get removed entirely by subsequent patches in the
-> series - this makes the intermediate steps sort of pointless and
-> doesn't really help to understand what's going on (quite on the
-> contrary even, AFAIAC).
-
-I'm surprised it is less understandable. The ACPI trip points structure 
-have nested and duplicated descriptions. The resulting code goes through 
-these structures depending on the type.
-
-In order to convert the code to deal with the same structure, the first 
-patches are moving the structures into a single one, so can more easily 
-replace one by another.
-
-Before doing a full conversion to the trip point changes, they co-exist.
-
-> I also don't quite like changes like the
-> temperature unit conversion in patch 9.
-
-Is it the conversion itself or how the changes are done?
-
-> Personally, I would do it differently.  I would start with changing
-> the ACPI thermal driver to use the generic trip point definition (with
-> possible extensions) 
-
-Do you mean the adding a 'private' field in the trip point structure:
-
-struct thermal_trip {
-         int temperature;
-         int hysteresis;
-         enum thermal_trip_type type;
-	void *data;
-};
-
-?
-
-> instead of the home-grown one and continue from
-> there.  I think that this would be more straightforward, but I guess I
-> just need to try it out myself.
+> My idea with the new dynamic allocation routine was that it could be
+> introduced together with a release callback that we add to the struct
+> software_node.
 > 
-> Beyond that, there is a question regarding the desired behavior of the
-> whole framework in some cases, like when the trip points get modified
-> by firmware and the kernel gets a notification to re-enumerate them.
+> The idea of adding the release callback to the structure was actually
+> considered already some time ago - I think it was discussed at least
+> shortly also on the public ACPI mailing list. The idea back then
+> included a default release function that simply frees the struct
+> software_node instance. That default release function we could then
+> assign to the release callback in that new software node
+> allocation/creation routine. That way the drivers should be able to
+> continue to rely on the underlying code to take care of freeing the
+> node instance.
+> 
+> Back then there was nobody who really needed that functionality, so
+> nobody even tried to implement it. Now we of course clearly do need
+> something like it.
+> 
+> I think the release callback together with the default release
+> function should work. Let me know what you guys think.
 
-Yes, I think we should introduce a new function:
+Thinking about this more, no. This is utterly vile, and I will not
+create code that is vile.
 
-thermal_zone_device_trips_update(struct thermal_zone_device *tz,
-	struct thermal_trip *trips, int nr_trips);
-
-> This may happen in ACPI-enabled systems in general, so the ACPI
-> thermal driver needs to be prepared for it, but not just the driver -
-> the thermal core needs to be prepared for it too.  So the question is
-> how it all should work in principle.
-
-I recently sent a patch when passing the thermal zone parameters where 
-the structure is kmemdup'ed and stored in the thermal zone device 
-structure [1].
-
-[1] 
-https://lore.kernel.org/all/20230307133735.90772-11-daniel.lezcano@linaro.org/
-
-That allows to initialize the thermal zone device and let the core code 
-thermal framework to do stuff with it.
-
-The caller does not have to keep the thermal zone device parameter 
-structure, it can create it on the stack and the forget it.
-
-IMO, we should do the same for the thermal trip array. So the thermal 
-framework kmemdups it, reorders it if needed. The thermal trip array is 
-then just an initialization array and once it is passed to 
-thermal_zone_device_register_with_trips(), the driver should not use it 
-anymore but use the thermal framework API.
-
-Having the private data in the thermal trip structure will allow the 
-ACPI to store the trip id, so the trip array can be reordered.
-
->  AFAICS, not only the trip
-> temperature can change, but the ordering of them can change as well
-> such that the passive trip point lies between the active ones, for
-> example.  So when this happens, is the core going to tear down all of
-> the trip point representation in sysfs and re-create it from scratch,
-> even if it may be used by user space (that may not be prepared for the
-> re-enumeration) at that point, or is it sufficient to simply make the
-> trip point attributes return different values when the corresponding
-> trip points change?
-
-IMO, the function thermal_zone_device_trips_update() can take care of:
-  - delete the sysfs entries
-  - reorder the trip points,
-  - create the sysfs entries
-  - notify THERMAL_ZONE_TRIP_CHANGED
-  - update the thermal zone
-
-Probably we can move part of the code from 
-thermal_zone_device_register() into this function
-
-The userspace should be aware of the THERMAL_ZONE_TRIP_CHANGED event.
-
-However, I'm not sure there is an trip update leading to a change of the 
-number of trip points as well as changing the order.
-
+Greg, please can you take a look at this, and give your opinion on
+how named software nodes (which are required to describe things in
+specific ways by firmware descriptions) should be handled? Is my
+proposal reasonable in your eyes? Thanks.
 
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
