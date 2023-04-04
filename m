@@ -2,36 +2,36 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED58C6D6F10
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Apr 2023 23:39:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3F336D6F27
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Apr 2023 23:43:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236397AbjDDVjH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Apr 2023 17:39:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45454 "EHLO
+        id S236274AbjDDVnM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Apr 2023 17:43:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236454AbjDDVjG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Apr 2023 17:39:06 -0400
+        with ESMTP id S234988AbjDDVnL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Apr 2023 17:43:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2218D3A8C;
-        Tue,  4 Apr 2023 14:39:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37977173A;
+        Tue,  4 Apr 2023 14:43:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A9C226375E;
-        Tue,  4 Apr 2023 21:39:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B6EC433D2;
-        Tue,  4 Apr 2023 21:38:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C681563A45;
+        Tue,  4 Apr 2023 21:43:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C79E2C433EF;
+        Tue,  4 Apr 2023 21:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680644344;
-        bh=XOaw+ianizkDnYdonJkTw/dihp/a3DtdF6mVStpByng=;
+        s=k20201202; t=1680644590;
+        bh=PjJPojfcUjqJJox/x1lbJeILeHhYrsUho9i6rxGtkMI=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hgNvRurcBL7n/ioKUCt9Nw9UtdE4zMZA4C94FXvLwsgHcT+kZpgBSUWQr+G/zO270
-         XWWgEKhJ6H3Dgo0+h5GDZDEZ9S+NIaSQFpRMpu4aXDrqmohup0CdgaAfVHdQ9BplhV
-         mfMqX8ZIhHE2Zmy8IxCFYlI5Ul6GeEUhV3ilxBg1RIeGvXN3ICXZQDx77KYAaT2kPf
-         IJ4n8Td/i9q8bKNSQPWBlHF9SHdIVnyfqhLNmPHk6yPWkW/mEE2+Fbu4dCEb9IdbFv
-         CcYO1+2/7ApcZLHCvAL05nDlVi+MLMJexbYt/UVK06s+AjO/nHQNF5TVsyM90l8b07
-         b9QgBLaaCOIOQ==
-Date:   Tue, 4 Apr 2023 22:38:56 +0100
+        b=hvtcrlyDyrJgbyP/hU+1naLzCdpe+w1xMfRtWKIN0ZDFDyd0ejQiqOsFkXOu9YyRe
+         K6PtKVGQoDF15fbosO3sdi+OhH4Tt7WsxsGIIkoEB7mpzZwpeCjn7HnPbInjoBO/R9
+         H64WH5iJJWA0ER+4zFBrnNPzh9370zzAKJUWncbprk9frzeakUAEj3n2y4T4cW3On2
+         w0kDLgKYqonRvtSWt0WqiRV90dSrOLEd7ukF9AuhtwcM5/sXb27HwygJ08xZ57A9rA
+         6sbcT3wxM//hefzbHCRKL/IjR5clWX+bJ0K4er2zhrUJXY1Xy3L5PDTPd4PQeEqTgd
+         coU9lvXtoVNBA==
+Date:   Tue, 4 Apr 2023 22:43:02 +0100
 From:   Conor Dooley <conor@kernel.org>
 To:     Sunil V L <sunilvl@ventanamicro.com>
 Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -40,9 +40,7 @@ Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         llvm@lists.linux.dev,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
-        Tom Rix <trix@redhat.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Weili Qian <qianweili@huawei.com>,
+        Tom Rix <trix@redhat.com>, Weili Qian <qianweili@huawei.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         Jonathan Corbet <corbet@lwn.net>,
         Marc Zyngier <maz@kernel.org>,
@@ -60,15 +58,15 @@ Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         Len Brown <lenb@kernel.org>,
         Maximilian Luz <luzmaximilian@gmail.com>,
         "David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH V4 19/23] RISC-V: Add ACPI initialization in setup_arch()
-Message-ID: <20230404-escalator-fridge-daf9aaffad12@spud>
+Subject: Re: [PATCH V4 20/23] RISC-V: Enable ACPI in defconfig
+Message-ID: <20230404-dimmed-verbally-3597dcaaf106@spud>
 References: <20230404182037.863533-1-sunilvl@ventanamicro.com>
- <20230404182037.863533-20-sunilvl@ventanamicro.com>
+ <20230404182037.863533-21-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="DDYTghOmxEGb/QCp"
+        protocol="application/pgp-signature"; boundary="ytcuK2YeaS0BDwL+"
 Content-Disposition: inline
-In-Reply-To: <20230404182037.863533-20-sunilvl@ventanamicro.com>
+In-Reply-To: <20230404182037.863533-21-sunilvl@ventanamicro.com>
 X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
@@ -79,62 +77,63 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
---DDYTghOmxEGb/QCp
+--ytcuK2YeaS0BDwL+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 04, 2023 at 11:50:33PM +0530, Sunil V L wrote:
-> Initialize the ACPI core for RISC-V during boot.
->=20
-> ACPI tables and interpreter are initialized based on
-> the information passed from the firmware and the value of
-> the kernel parameter 'acpi'.
->=20
-> With ACPI support added for RISC-V, the kernel parameter 'acpi'
-> is also supported on RISC-V. Hence, update the documentation.
+On Tue, Apr 04, 2023 at 11:50:34PM +0530, Sunil V L wrote:
+> Add support to build ACPI subsystem in defconfig.
 >=20
 > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-> +	/* Parse the ACPI tables for possible boot-time configuration */
-> +	acpi_boot_table_init();
-> +	if (acpi_disabled) {
-> +		if (IS_ENABLED(CONFIG_BUILTIN_DTB)) {
-> +			unflatten_and_copy_device_tree();
-> +		} else {
-> +			if (early_init_dt_verify(__va(XIP_FIXUP(dtb_early_pa))))
-> +				unflatten_device_tree();
-> +			else
-> +				pr_err("No DTB found in kernel mappings\n");
-> +		}
-> +	} else {
-> +		early_init_dt_verify(__va(XIP_FIXUP(dtb_early_pa)));
+Dropped another R-b?
+https://lore.kernel.org/linux-riscv/91cf4ebd-f22c-4cf9-9fb4-fa6349ea00ab@sp=
+ud/
 
-I'm probably forgetting something, but this seems very non-obvious to
-me:
-Why are you running early_init_dt_verify() when ACPI is enabled?
-I think that one deserves a comment so that next time someone looks at
-this (that doesn't live in ACPI land) they've know exactly why this is
-like it is.
+That said...
 
-Doubly so since this is likely to change with some of Alex's bits moving
-the dtb back into the fixmap.
+> ---
+>  arch/riscv/configs/defconfig | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/arch/riscv/configs/defconfig b/arch/riscv/configs/defconfig
+> index d98d6e90b2b8..8822b49ddb59 100644
+> --- a/arch/riscv/configs/defconfig
+> +++ b/arch/riscv/configs/defconfig
+> @@ -238,3 +238,4 @@ CONFIG_RCU_EQS_DEBUG=3Dy
+>  # CONFIG_FTRACE is not set
+>  # CONFIG_RUNTIME_TESTING_MENU is not set
+>  CONFIG_MEMTEST=3Dy
+> +CONFIG_ACPI=3Dy
 
-Cheers,
+=2E..this is not where savedefconfig puts this for me.
+Please move it there & then:
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+
+Thanks,
 Conor.
 
---DDYTghOmxEGb/QCp
+> --=20
+> 2.34.1
+>=20
+>=20
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
+
+--ytcuK2YeaS0BDwL+
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZCyY7wAKCRB4tDGHoIJi
-0ineAP9dZt8LzP73Mz2ZBF25vpCS8jxlJLO9KoLcg8eN+crkiwD+JxJx2myjXj1D
-jLO/jiH2JZVRpKsN4XE2HwxmyjOrxwQ=
-=T2nq
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZCyZ5gAKCRB4tDGHoIJi
+0m1qAQDX9mpCl/eYsoI1vETpvGNq/isf52jwbJv77xDmWnc+BAD+N6jSxPyUDZnh
+yfzLVxZyMNfyuaCMv86iHjbrd/BpSwo=
+=xVWT
 -----END PGP SIGNATURE-----
 
---DDYTghOmxEGb/QCp--
+--ytcuK2YeaS0BDwL+--
