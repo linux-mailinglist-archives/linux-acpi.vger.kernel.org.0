@@ -2,36 +2,36 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F4136D6EF0
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Apr 2023 23:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED58C6D6F10
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Apr 2023 23:39:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235855AbjDDV1l (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Apr 2023 17:27:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39058 "EHLO
+        id S236397AbjDDVjH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Apr 2023 17:39:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229748AbjDDV1k (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Apr 2023 17:27:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2D0A19BD;
-        Tue,  4 Apr 2023 14:27:39 -0700 (PDT)
+        with ESMTP id S236454AbjDDVjG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Apr 2023 17:39:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2218D3A8C;
+        Tue,  4 Apr 2023 14:39:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 54B15634D1;
-        Tue,  4 Apr 2023 21:27:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B025C433D2;
-        Tue,  4 Apr 2023 21:27:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A9C226375E;
+        Tue,  4 Apr 2023 21:39:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B6EC433D2;
+        Tue,  4 Apr 2023 21:38:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680643658;
-        bh=bnJKYz7hgPr/gLu9S3FIC84wJhIzGVDpgOk24YANfKs=;
+        s=k20201202; t=1680644344;
+        bh=XOaw+ianizkDnYdonJkTw/dihp/a3DtdF6mVStpByng=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LIS/Q3mMub53GidGokOOeIViscA6jtGr1sMYGURfpsX6xV/m1BRPYyhxQXt4EeWgb
-         eMSWubsJ0xf8gWtuZ1vkQQOzfrfaTA4Gi6zpiab4zLL22ZxKX7aOsg78Ow8LVEtc4k
-         K/ljs9ow2aZhlwj5+m5qJ1mHt9/8fTm7MnjigqmrMkMgQAjxmACuLN6tenc2H8vYU2
-         LefxSUuTSHHbJnGPnTeUhILZVEYCgjbLH5ol58YxddtBaxQFhVZzIjY2AeEOyEXtJI
-         tl0kRwvht81sb86zIZLXOlfOktUYrfjxCcZs1lWrSWcW4a1GvpmP7QSASSBRxBBMS2
-         hmfTXggrYq5rQ==
-Date:   Tue, 4 Apr 2023 22:27:30 +0100
+        b=hgNvRurcBL7n/ioKUCt9Nw9UtdE4zMZA4C94FXvLwsgHcT+kZpgBSUWQr+G/zO270
+         XWWgEKhJ6H3Dgo0+h5GDZDEZ9S+NIaSQFpRMpu4aXDrqmohup0CdgaAfVHdQ9BplhV
+         mfMqX8ZIhHE2Zmy8IxCFYlI5Ul6GeEUhV3ilxBg1RIeGvXN3ICXZQDx77KYAaT2kPf
+         IJ4n8Td/i9q8bKNSQPWBlHF9SHdIVnyfqhLNmPHk6yPWkW/mEE2+Fbu4dCEb9IdbFv
+         CcYO1+2/7ApcZLHCvAL05nDlVi+MLMJexbYt/UVK06s+AjO/nHQNF5TVsyM90l8b07
+         b9QgBLaaCOIOQ==
+Date:   Tue, 4 Apr 2023 22:38:56 +0100
 From:   Conor Dooley <conor@kernel.org>
 To:     Sunil V L <sunilvl@ventanamicro.com>
 Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -40,7 +40,9 @@ Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         llvm@lists.linux.dev,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
-        Tom Rix <trix@redhat.com>, Weili Qian <qianweili@huawei.com>,
+        Tom Rix <trix@redhat.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Weili Qian <qianweili@huawei.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         Jonathan Corbet <corbet@lwn.net>,
         Marc Zyngier <maz@kernel.org>,
@@ -58,17 +60,17 @@ Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         Len Brown <lenb@kernel.org>,
         Maximilian Luz <luzmaximilian@gmail.com>,
         "David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH V4 17/23] clocksource/timer-riscv: Add ACPI support
-Message-ID: <20230404-ammonium-cradle-a5bb0e4d4d3e@spud>
+Subject: Re: [PATCH V4 19/23] RISC-V: Add ACPI initialization in setup_arch()
+Message-ID: <20230404-escalator-fridge-daf9aaffad12@spud>
 References: <20230404182037.863533-1-sunilvl@ventanamicro.com>
- <20230404182037.863533-18-sunilvl@ventanamicro.com>
+ <20230404182037.863533-20-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="sQmAUn5NMdxQBCz+"
+        protocol="application/pgp-signature"; boundary="DDYTghOmxEGb/QCp"
 Content-Disposition: inline
-In-Reply-To: <20230404182037.863533-18-sunilvl@ventanamicro.com>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+In-Reply-To: <20230404182037.863533-20-sunilvl@ventanamicro.com>
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,80 +79,62 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
---sQmAUn5NMdxQBCz+
+--DDYTghOmxEGb/QCp
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 04, 2023 at 11:50:31PM +0530, Sunil V L wrote:
-> Initialize the timer driver based on RHCT table on ACPI based
-> platforms.
+On Tue, Apr 04, 2023 at 11:50:33PM +0530, Sunil V L wrote:
+> Initialize the ACPI core for RISC-V during boot.
 >=20
-> Currently, ACPI doesn't support a flag to indicate that the
-> timer interrupt can wake up the cpu irrespective of its
-> power state. It will be added in future update.
+> ACPI tables and interpreter are initialized based on
+> the information passed from the firmware and the value of
+> the kernel parameter 'acpi'.
+>=20
+> With ACPI support added for RISC-V, the kernel parameter 'acpi'
+> is also supported on RISC-V. Hence, update the documentation.
 >=20
 > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-My only comment on v3 was about the commit message & mentioning why
-there was no handling of the timer's ability to wake the cpu, so:
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> +	/* Parse the ACPI tables for possible boot-time configuration */
+> +	acpi_boot_table_init();
+> +	if (acpi_disabled) {
+> +		if (IS_ENABLED(CONFIG_BUILTIN_DTB)) {
+> +			unflatten_and_copy_device_tree();
+> +		} else {
+> +			if (early_init_dt_verify(__va(XIP_FIXUP(dtb_early_pa))))
+> +				unflatten_device_tree();
+> +			else
+> +				pr_err("No DTB found in kernel mappings\n");
+> +		}
+> +	} else {
+> +		early_init_dt_verify(__va(XIP_FIXUP(dtb_early_pa)));
 
-Thanks,
+I'm probably forgetting something, but this seems very non-obvious to
+me:
+Why are you running early_init_dt_verify() when ACPI is enabled?
+I think that one deserves a comment so that next time someone looks at
+this (that doesn't live in ACPI land) they've know exactly why this is
+like it is.
+
+Doubly so since this is likely to change with some of Alex's bits moving
+the dtb back into the fixmap.
+
+Cheers,
 Conor.
 
-> ---
->  drivers/clocksource/timer-riscv.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
->=20
-> diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/time=
-r-riscv.c
-> index cecc4662293b..da3071b387eb 100644
-> --- a/drivers/clocksource/timer-riscv.c
-> +++ b/drivers/clocksource/timer-riscv.c
-> @@ -10,6 +10,7 @@
-> =20
->  #define pr_fmt(fmt) "riscv-timer: " fmt
-> =20
-> +#include <linux/acpi.h>
->  #include <linux/clocksource.h>
->  #include <linux/clockchips.h>
->  #include <linux/cpu.h>
-> @@ -207,3 +208,13 @@ static int __init riscv_timer_init_dt(struct device_=
-node *n)
->  }
-> =20
->  TIMER_OF_DECLARE(riscv_timer, "riscv", riscv_timer_init_dt);
-> +
-> +#ifdef CONFIG_ACPI
-> +static int __init riscv_timer_acpi_init(struct acpi_table_header *table)
-> +{
-> +	return riscv_timer_init_common();
-> +}
-> +
-> +TIMER_ACPI_DECLARE(aclint_mtimer, ACPI_SIG_RHCT, riscv_timer_acpi_init);
-> +
-> +#endif
-> --=20
-> 2.34.1
->=20
->=20
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
-
---sQmAUn5NMdxQBCz+
+--DDYTghOmxEGb/QCp
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZCyWQgAKCRB4tDGHoIJi
-0rT7AQCGUlB0daUlvZlotXE9AX4dUyeEfJS6O7vxjF94PE3b8QEAib+YSnkdmpOM
-ROSIWdBZztUmg+3YEDkEHx8u7yv+GAE=
-=n76y
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZCyY7wAKCRB4tDGHoIJi
+0ineAP9dZt8LzP73Mz2ZBF25vpCS8jxlJLO9KoLcg8eN+crkiwD+JxJx2myjXj1D
+jLO/jiH2JZVRpKsN4XE2HwxmyjOrxwQ=
+=T2nq
 -----END PGP SIGNATURE-----
 
---sQmAUn5NMdxQBCz+--
+--DDYTghOmxEGb/QCp--
