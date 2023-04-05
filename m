@@ -2,34 +2,34 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BD536D7E72
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 16:03:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B22336D7E70
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 16:03:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238347AbjDEODf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Apr 2023 10:03:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42288 "EHLO
+        id S237972AbjDEODQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Apr 2023 10:03:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238371AbjDEOCW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 10:02:22 -0400
+        with ESMTP id S238019AbjDEOCS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 10:02:18 -0400
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FA556EAC;
-        Wed,  5 Apr 2023 07:01:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E34086E9D;
+        Wed,  5 Apr 2023 07:01:15 -0700 (PDT)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
- id 86045bb57f15bc7f; Wed, 5 Apr 2023 16:01:14 +0200
+ id 90603c724ad88f93; Wed, 5 Apr 2023 16:01:12 +0200
 Received: from kreacher.localnet (unknown [213.134.163.219])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id A96F61B4E9E1;
-        Wed,  5 Apr 2023 16:01:13 +0200 (CEST)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 351E71B4E9E1;
+        Wed,  5 Apr 2023 16:01:12 +0200 (CEST)
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux ACPI <linux-acpi@vger.kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Bob Moore <robert.moore@intel.com>
-Subject: [PATCH 10/32] ACPICA: MADT: Add RISC-V INTC interrupt controller
-Date:   Wed, 05 Apr 2023 15:40:12 +0200
-Message-ID: <1782750.VLH7GnMWUR@kreacher>
+Subject: [PATCH 11/32] ACPICA: Add structure definitions for RISC-V RHCT
+Date:   Wed, 05 Apr 2023 15:40:57 +0200
+Message-ID: <1973202.usQuhbGJ8B@kreacher>
 In-Reply-To: <4845957.31r3eYUQgx@kreacher>
 References: <4845957.31r3eYUQgx@kreacher>
 MIME-Version: 1.0
@@ -50,59 +50,86 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Sunil V L <sunilvl@ventanamicro.com>
 
-ACPICA commit bd6d1ae1e13abe78e149c8b61b4bc7bc7feab015
+ACPICA commit 82afd0434e79f74b96a6be88115ddc8343a1ba40
 
-The ECR to add RISC-V INTC interrupt controller is approved by
-the UEFI forum and will be available in the next revision of
-the ACPI specification.
+RISC-V Hart Capabilities Table (RHCT) is a new static table.
+The ECR to add RHCT is approved by the UEFI forum and will be
+available in the next version of the ACPI spec.
 
-Link: https://github.com/acpica/acpica/commit/bd6d1ae1
+Link: https://github.com/acpica/acpica/commit/82afd043
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 Signed-off-by: Bob Moore <robert.moore@intel.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- include/acpi/actbl2.h | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ include/acpi/actbl2.h | 48 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
 diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
-index e0f205f9ab4c..9af17cb66faa 100644
+index 9af17cb66faa..db292f325696 100644
 --- a/include/acpi/actbl2.h
 +++ b/include/acpi/actbl2.h
-@@ -891,7 +891,8 @@ enum acpi_madt_type {
- 	ACPI_MADT_TYPE_MSI_PIC = 21,
- 	ACPI_MADT_TYPE_BIO_PIC = 22,
- 	ACPI_MADT_TYPE_LPC_PIC = 23,
--	ACPI_MADT_TYPE_RESERVED = 24,	/* 24 to 0x7F are reserved */
-+	ACPI_MADT_TYPE_RINTC = 24,
-+	ACPI_MADT_TYPE_RESERVED = 25,	/* 25 to 0x7F are reserved */
- 	ACPI_MADT_TYPE_OEM_RESERVED = 0x80	/* 0x80 to 0xFF are reserved for OEM use */
+@@ -48,6 +48,7 @@
+ #define ACPI_SIG_PRMT           "PRMT"	/* Platform Runtime Mechanism Table */
+ #define ACPI_SIG_RASF           "RASF"	/* RAS Feature table */
+ #define ACPI_SIG_RGRT           "RGRT"	/* Regulatory Graphics Resource Table */
++#define ACPI_SIG_RHCT           "RHCT"	/* RISC-V Hart Capabilities Table */
+ #define ACPI_SIG_SBST           "SBST"	/* Smart Battery Specification Table */
+ #define ACPI_SIG_SDEI           "SDEI"	/* Software Delegated Exception Interface Table */
+ #define ACPI_SIG_SDEV           "SDEV"	/* Secure Devices table */
+@@ -2720,6 +2721,53 @@ enum acpi_rgrt_image_type {
+ 	ACPI_RGRT_TYPE_RESERVED = 2	/* 2 and greater are reserved */
  };
  
-@@ -1251,6 +1252,24 @@ enum acpi_madt_lpc_pic_version {
- 	ACPI_MADT_LPC_PIC_VERSION_RESERVED = 2	/* 2 and greater are reserved */
- };
- 
-+/* 24: RISC-V INTC */
-+struct acpi_madt_rintc {
-+	struct acpi_subtable_header header;
-+	u8 version;
-+	u8 reserved;
-+	u32 flags;
-+	u64 hart_id;
++/*******************************************************************************
++ *
++ * RHCT - RISC-V Hart Capabilities Table
++ *        Version 1
++ *
++ ******************************************************************************/
++
++struct acpi_table_rhct {
++	struct acpi_table_header header;	/* Common ACPI table header */
++	u32 reserved;
++	u64 time_base_freq;
++	u32 node_count;
++	u32 node_offset;
++};
++
++/*
++ * RHCT subtables
++ */
++struct acpi_rhct_node_header {
++	u16 type;
++	u16 length;
++	u16 revision;
++};
++
++/* Values for RHCT subtable Type above */
++
++enum acpi_rhct_node_type {
++	ACPI_RHCT_NODE_TYPE_ISA_STRING = 0x0000,
++	ACPI_RHCT_NODE_TYPE_HART_INFO = 0xFFFF,
++};
++
++/*
++ * RHCT node specific subtables
++ */
++
++/* ISA string node structure */
++struct acpi_rhct_isa_string {
++	u16 isa_length;
++	char isa[];
++};
++
++/* Hart Info node structure */
++struct acpi_rhct_hart_info {
++	u16 num_offsets;
 +	u32 uid;		/* ACPI processor UID */
 +};
 +
-+/* Values for RISC-V INTC Version field above */
-+
-+enum acpi_madt_rintc_version {
-+	ACPI_MADT_RINTC_VERSION_NONE = 0,
-+	ACPI_MADT_RINTC_VERSION_V1 = 1,
-+	ACPI_MADT_RINTC_VERSION_RESERVED = 2	/* 2 and greater are reserved */
-+};
-+
- /* 80: OEM data */
- 
- struct acpi_madt_oem_data {
+ /*******************************************************************************
+  *
+  * SBST - Smart Battery Specification Table
 -- 
 2.35.3
 
