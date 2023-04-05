@@ -2,30 +2,30 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8566C6D7C58
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 14:23:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9C446D7C91
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 14:28:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237912AbjDEMXU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Apr 2023 08:23:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58476 "EHLO
+        id S237705AbjDEM2C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Apr 2023 08:28:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237438AbjDEMXS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 08:23:18 -0400
+        with ESMTP id S238036AbjDEM1y (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 08:27:54 -0400
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39F1246B2;
-        Wed,  5 Apr 2023 05:23:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08CAE4ECF;
+        Wed,  5 Apr 2023 05:27:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
         s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
         References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
         Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
         Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=lU7svaiswKHSynUrMk/7luYxKwuxn6hkYss2TudorTE=; b=5WuK6jgb2zcW+n3daLQ3QLR4DT
-        9y+T9eU6neOC7QhRU+JNbiBsfC6LjALDRSO1uxX8PNa2qHkUPtB9u7dJ81m+zINHEmaY6ru7BH2Q3
-        hF/Tgqcazu3qTO/hmaxlY+g+aVaKa3yRx0Kqpy3Sojzh5iY1zgbc3EZ1oFFZjoY1bNi8=;
+        bh=XMhGMpvRCw9ZdTDV2vCr97P+WoVe706J2XlL4hwYhII=; b=EegSUHRUQBVSxhxSK6puYe5k07
+        pC01JJ6PYaTWSo+WfyAzrRtI/fIJEg3TkL3jcTzNlNibC+42oJGjX23WhJJYwjShuKJh17JnhQ1oS
+        mL2fOO9oawb7XAJKD60Z0iXLEBm7dy7QpYMKkXkMFjq1uvpH4IEu+xaWxl4OZawZA6Wg=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
         (envelope-from <andrew@lunn.ch>)
-        id 1pk2AB-009WBV-DM; Wed, 05 Apr 2023 14:22:55 +0200
-Date:   Wed, 5 Apr 2023 14:22:55 +0200
+        id 1pk2ES-009WEM-Dx; Wed, 05 Apr 2023 14:27:20 +0200
+Date:   Wed, 5 Apr 2023 14:27:20 +0200
 From:   Andrew Lunn <andrew@lunn.ch>
 To:     Marco Felsch <m.felsch@pengutronix.de>
 Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
@@ -52,14 +52,14 @@ Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
         Frank Rowand <frowand.list@gmail.com>, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
         devicetree@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH 06/12] net: phy: add phy_device_atomic_register helper
-Message-ID: <ad0b0d90-04bf-457c-9bdf-a747d66871b5@lunn.ch>
+Subject: Re: [PATCH 05/12] net: phy: add phy_id_broken support
+Message-ID: <6461467c-8f9d-41b6-b060-08190126e81f@lunn.ch>
 References: <20230405-net-next-topic-net-phy-reset-v1-0-7e5329f08002@pengutronix.de>
- <20230405-net-next-topic-net-phy-reset-v1-6-7e5329f08002@pengutronix.de>
+ <20230405-net-next-topic-net-phy-reset-v1-5-7e5329f08002@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230405-net-next-topic-net-phy-reset-v1-6-7e5329f08002@pengutronix.de>
+In-Reply-To: <20230405-net-next-topic-net-phy-reset-v1-5-7e5329f08002@pengutronix.de>
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
         DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
@@ -69,15 +69,14 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> To bundle the phy firmware parsing step within phx_device.c the commit
-> copies the required code from fwnode_mdio.c. After we converterd all
-> callers of fwnode_mdiobus_* to this new API we can remove the support
-> from fwnode_mdio.c.
+On Wed, Apr 05, 2023 at 11:26:56AM +0200, Marco Felsch wrote:
+> Some phy's don't report the correct phy-id, e.g. the TJA1102 dual-port
+> report 0 for the 2nd port. To fix this a driver needs to supply the
+> phyid instead and tell the phy framework to not try to readout the
+> phyid. The latter case is done via the new 'phy_id_broken' flag which
+> tells the phy framework to skip phyid readout for the corresponding phy.
 
-Why bundle the code? Why not call it in fwnode_mdio.c?
+In general, we try to avoid work around for broken hardware in the
+core. Please try to solve this within nxp-tja11xx.c.
 
-The bundling in this patch makes it harder to see the interesting part
-of this patch, how the reset is handled. That is what this whole
-patchset is about, so you want the review focus to be on that.
-
-	 Andrew
+      Andrew
