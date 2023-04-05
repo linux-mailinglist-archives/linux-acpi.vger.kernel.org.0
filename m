@@ -2,114 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74E786D8005
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 16:50:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 226146D802B
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 16:59:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232507AbjDEOut (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Apr 2023 10:50:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37598 "EHLO
+        id S232502AbjDEO7D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Apr 2023 10:59:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238618AbjDEOum (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 10:50:42 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B63EE60
-        for <linux-acpi@vger.kernel.org>; Wed,  5 Apr 2023 07:50:41 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1pk4SX-0001Cb-Ce; Wed, 05 Apr 2023 16:50:01 +0200
-Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1pk4SV-0007PB-33; Wed, 05 Apr 2023 16:49:59 +0200
-Date:   Wed, 5 Apr 2023 16:49:59 +0200
-From:   Marco Felsch <m.felsch@pengutronix.de>
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Radu Pirea <radu-nicolae.pirea@oss.nxp.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-        Keyur Chudgar <keyur@os.amperecomputing.com>,
-        Quan Nguyen <quan@os.amperecomputing.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        devicetree@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH 03/12] net: phy: add phy_device_set_miits helper
-Message-ID: <20230405144959.t2vledwhwzyahyuk@pengutronix.de>
-References: <20230405-net-next-topic-net-phy-reset-v1-0-7e5329f08002@pengutronix.de>
- <20230405-net-next-topic-net-phy-reset-v1-3-7e5329f08002@pengutronix.de>
- <d00dab9f-7678-4ef3-be51-c31cdb9564d1@lunn.ch>
+        with ESMTP id S237481AbjDEO7C (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 10:59:02 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8F4849F9
+        for <linux-acpi@vger.kernel.org>; Wed,  5 Apr 2023 07:58:58 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id r29so36481996wra.13
+        for <linux-acpi@vger.kernel.org>; Wed, 05 Apr 2023 07:58:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1680706737;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=22RndxDAcYTUmY2kPiSUATZV+V86fIqA8CXijZRxME0=;
+        b=ZqGBQ9vNPVA+48EQUhzwUp+/WM53IeOgdUq3ewaCaqBbb8KK+ZrgBqGqifDz5crZgH
+         /CleaEnxpWFOwffvcRE4PaNDqGEkHcmG0OnVDXABv3fNoyuPYsmlu61jRwXJVRT+0413
+         mj3JxSMHJ4zfndN1qkJQtOlXmiTBVil5f75tStkVD9R/uslQhGH8H1MqAJOwCBRPjH+m
+         pPbqDNNVAlFvGYVNAj6it/vbzhHsRPjyqEeiisOWJDq8uQmtwvTmIABAQmyolRpXrQlx
+         u4jHzID07wGJh+JOI1MOMTs/Slm2YMjD7pi+6pusqv7u8uoeOcLu5iBDA0Y978a8Lfpj
+         Bm+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680706737;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=22RndxDAcYTUmY2kPiSUATZV+V86fIqA8CXijZRxME0=;
+        b=tdFskgxTbh32Lem/Z/ABUlTKqs/prYe/LFx4XQT6hrhUmRcWcoSbdrolHxdmc7ZWne
+         G6bQVaUesafwZDXa3DpLfT3QaZoyMjPBn8+jEec0MkCqpPRGbinTdXzyUrzG819aQQTG
+         pO9cKwqIvYQCQyRdgrR7lhhLF7+YmxpnmN2ApBhCjdCBHrEiycXsDQvGq/neBxYw1E+X
+         LqvUreAiCVZnIJS1IkQreblhmZ8Pxkq5EY125EbIuhikCtFBvG/I+r/Bxz6GMOHp3uk4
+         42FQxSSi8ImRNcvi7NOYZgEbMlDyAmvRDLmE4liW5/0ZNtJN2Fzs49HyAOqgbHMMoN75
+         NVMw==
+X-Gm-Message-State: AAQBX9cUFqbX69JdIGvork1Uq0BAbyhphItqQuUTip8Bd37LMBpy6XnJ
+        Bw8tRMFvPRO9PIhy0vof+hNCEg==
+X-Google-Smtp-Source: AKy350bfWb7Q1dmeYeMrl784mM8dxuKi/bAHVMH6KYjH4SSAhIOa0dR3y/3E8flmAsd88iA8B0uhtw==
+X-Received: by 2002:a5d:4283:0:b0:2e5:8874:d883 with SMTP id k3-20020a5d4283000000b002e58874d883mr2297075wrq.8.1680706737309;
+        Wed, 05 Apr 2023 07:58:57 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+        by smtp.gmail.com with ESMTPSA id o15-20020a5d474f000000b002d7a75a2c20sm15255777wrs.80.2023.04.05.07.58.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Apr 2023 07:58:56 -0700 (PDT)
+Date:   Wed, 5 Apr 2023 16:58:55 +0200
+From:   Andrew Jones <ajones@ventanamicro.com>
+To:     Sunil V L <sunilvl@ventanamicro.com>
+Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+        linux-crypto@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        llvm@lists.linux.dev,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Tom Rix <trix@redhat.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Weili Qian <qianweili@huawei.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Marc Zyngier <maz@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Len Brown <lenb@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
+        Mark Gross <markgross@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>
+Subject: Re: [PATCH V4 11/23] RISC-V: smpboot: Add ACPI support in smp_setup()
+Message-ID: <yqged6rmz4qb6sxhjfmypnjx3tmmoramynt45rszr2dk5awlmr@ovhlptchhv7t>
+References: <20230404182037.863533-1-sunilvl@ventanamicro.com>
+ <20230404182037.863533-12-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d00dab9f-7678-4ef3-be51-c31cdb9564d1@lunn.ch>
-User-Agent: NeoMutt/20180716
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230404182037.863533-12-sunilvl@ventanamicro.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 23-04-05, Andrew Lunn wrote:
-> > +void phy_device_set_miits(struct phy_device *phydev,
-> > +			  struct mii_timestamper *mii_ts)
-> > +{
-> > +	if (!phydev)
-> > +		return;
-> > +
-> > +	if (phydev->mii_ts) {
-> > +		phydev_dbg(phydev,
-> > +			   "MII timestamper already set -> skip set\n");
-> > +		return;
-> > +	}
-> > +
-> > +	phydev->mii_ts = mii_ts;
-> > +}
+On Tue, Apr 04, 2023 at 11:50:25PM +0530, Sunil V L wrote:
+> Enable SMP boot on ACPI based platforms by using the RINTC
+> structures in the MADT table.
 > 
-> We tend to be less paranoid. Few, if any, other functions test that
-> phydev is not NULL. And the current code allows overwriting of an
-> existing stamper. If you think overwriting should not be allowed
-> return -EINVAL, and change all the callers to test for it.
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> ---
+>  arch/riscv/include/asm/acpi.h |  2 +
+>  arch/riscv/kernel/smpboot.c   | 72 ++++++++++++++++++++++++++++++++++-
+>  2 files changed, 73 insertions(+), 1 deletion(-)
+>
 
-I can drop the 'if (!phydev)' check if you want. Return -EINVAL is
-possible too.
-
-> > +EXPORT_SYMBOL(phy_device_set_miits);
-> 
-> _GPL please. The code is a bit inconsistent, but new symbols should be
-> EXPORT_SYMBOL_GPL.
-
-Sure! Don't know why I added it as EXPORT_SYMBOL in the first place.
-
-> I do however like this patch, hiding away the internals of phydev.
-
-Thanks for the fast response.
-
-Regards,
-  Marco
-
-> 
->   Andrew
-> 
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
