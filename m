@@ -2,91 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9EBE6D734C
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 06:19:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCE8C6D75EE
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 09:56:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236819AbjDEETn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Apr 2023 00:19:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37370 "EHLO
+        id S236881AbjDEH4i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Apr 2023 03:56:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236793AbjDEETm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 00:19:42 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8CAD1702
-        for <linux-acpi@vger.kernel.org>; Tue,  4 Apr 2023 21:19:38 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id d17so34820675wrb.11
-        for <linux-acpi@vger.kernel.org>; Tue, 04 Apr 2023 21:19:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jrtc27.com; s=gmail.jrtc27.user; t=1680668377;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/BjpitaAtSgkqnnZepwdAnWUHtXKGCm4ypPOIBhTYG4=;
-        b=e4BiLC+K4OYu8TIu0STxll21APg+0MALOyXN2SMFNO5cMHrJpvXOAIvzfiUxo2q+V5
-         WDvHh+QslH4AhH+2TjZuYkNkEaTLztytVL2f0UYCH/TmJEd/0TAAlr//N84HDPO+XfkD
-         bvPR0eoq113cOieEQrQOeDXLnxrzu4Jx3aEwesqPJ349gVeRWz3Da6iqV4pSU/2Y4iNt
-         MnRmqCgCxV0aZLY7aaRW/N/kl8M1sH1Tu+WzfPMLUDgArZTNBjGppJ3nUd1FX9TI0JaZ
-         seEVGGKFa1LrcmSBIBRzX4kFY1havHXXvqCKrIitnLfe41G3TACDVnWYFtLdpqNQBFsi
-         ii4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680668377;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/BjpitaAtSgkqnnZepwdAnWUHtXKGCm4ypPOIBhTYG4=;
-        b=o3y2buBazq3gYUWVEJvw5t1uq5wh6uwRbmJX1iNfsAN7Y1K0c70x+GtqdpQtpdJ7wn
-         gMLmiSdBYH3HZnoiwm+MiIws51Hsiphn/enc+YlsO2YQpGf93bD62T98Gy27ZpEehUGN
-         9lDfoV04yYqffsWyL2XNGcxOJaI4ZY1XyuGQX+AnwTyMU4qMThAF3klVJdR54600mXj1
-         ajabld5HGjbl9vRGQ/3kfGZTWfR1kzja7Jw3R/srXBJre1886Ywa9/ESjY+x46Nwve6C
-         8Ik6LdPaOZf3M6bBgHTVCJU+PnSAGEsYHtjOeqbub3Q2Id+v4Q9cKe4hNXXJAE26to5D
-         sn6w==
-X-Gm-Message-State: AAQBX9eb3SItxfnX4bmRE0M2YNY4lNK68uIC3Pmj0BkoL4MUFEsS140/
-        O2bP9SkwLNo6ziNUUArElS6bDQ==
-X-Google-Smtp-Source: AKy350blw7YP4lnrKWGeXu58qdeqpEXA8gM8aenLdDfKqAQOydoUR5t2gTdnK43PxXcc1htfiqIEPA==
-X-Received: by 2002:a5d:6b91:0:b0:2e5:9101:e3af with SMTP id n17-20020a5d6b91000000b002e59101e3afmr3411038wrx.31.1680668377340;
-        Tue, 04 Apr 2023 21:19:37 -0700 (PDT)
-Received: from smtpclient.apple (global-5-142.n-2.net.cam.ac.uk. [131.111.5.142])
-        by smtp.gmail.com with ESMTPSA id t12-20020a7bc3cc000000b003ee42696acesm797550wmj.16.2023.04.04.21.19.36
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 04 Apr 2023 21:19:36 -0700 (PDT)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
-Subject: Re: [PATCH V4 22/23] platform/surface: Disable for RISC-V
-From:   Jessica Clarke <jrtc27@jrtc27.com>
-In-Reply-To: <20230404182037.863533-23-sunilvl@ventanamicro.com>
-Date:   Wed, 5 Apr 2023 05:19:35 +0100
-Cc:     linux-doc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        linux-acpi@vger.kernel.org, linux-crypto@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, llvm@lists.linux.dev,
-        Weili Qian <qianweili@huawei.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Tom Rix <trix@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
-        Marc Zyngier <maz@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Mark Gross <markgross@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Len Brown <lenb@kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <EAC85F14-B1DA-4358-9042-A607436D582A@jrtc27.com>
-References: <20230404182037.863533-1-sunilvl@ventanamicro.com>
- <20230404182037.863533-23-sunilvl@ventanamicro.com>
-To:     Sunil V L <sunilvl@ventanamicro.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.1)
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        with ESMTP id S237041AbjDEH4h (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 03:56:37 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DC50F30ED;
+        Wed,  5 Apr 2023 00:56:35 -0700 (PDT)
+Received: from [192.168.2.41] (77-166-152-30.fixed.kpn.net [77.166.152.30])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 27A40210DEC6;
+        Wed,  5 Apr 2023 00:56:33 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 27A40210DEC6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1680681395;
+        bh=egqdAV4kdd4zNtqfpyFgRnX5D2obdbt5vjBGu/pAukg=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=D+25i0yDYLpCIJ/YBM9SNd9uQlmVXmidaOufFyZqtV31fx3il+atpwL7iIac0YPKB
+         dnaowxVR8WqIefn4i8lHUEGLmic9T7PQvIHou4sRaUmXj/T18tzeWyZW9DVRnLPfBi
+         Cf+PG1MyCAbSGCJ7UmRTN2898Bv6P5yvTUpeLS/4=
+Message-ID: <8d39a9a1-4b7b-08fe-7b09-2ff0a419468f@linux.microsoft.com>
+Date:   Wed, 5 Apr 2023 09:56:31 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: [PATCH v3 0/8] Support ACPI PSP on Hyper-V
+Content-Language: en-US
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>
+Cc:     linux-kernel@vger.kernel.org,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        linux-crypto@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
+References: <20230320191956.1354602-1-jpiotrowski@linux.microsoft.com>
+ <20230322154655.GDZBsi75f6LnQStxSp@fat_crate.local>
+ <1d25221c-eaab-0f97-83aa-8b4fbe3a53ed@linux.microsoft.com>
+ <20230322181541.GEZBtFzRAMcH9BAzUe@fat_crate.local>
+ <ecf005b1-ddb9-da4c-4526-28df4806426c@linux.microsoft.com>
+ <20230323152342.GFZBxu/m3u6aFUDY/7@fat_crate.local>
+ <105d019c-2249-5dfd-e032-95944ea6dc8c@linux.microsoft.com>
+ <20230323163450.GGZBx/qpnclFnMaf7e@fat_crate.local>
+ <c8458bfa-0985-f6a5-52a3-ef96c7669fe6@linux.microsoft.com>
+ <20230402154425.GCZCmi2eiKYO2yYhNs@fat_crate.local> <877cutsczn.ffs@tglx>
+From:   Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+In-Reply-To: <877cutsczn.ffs@tglx>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-19.8 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -94,108 +67,138 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 4 Apr 2023, at 19:20, Sunil V L <sunilvl@ventanamicro.com> wrote:
->=20
-> With CONFIG_ACPI enabled for RISC-V, this driver gets enabled
-> in allmodconfig build. However, RISC-V doesn't support sub-word
-> atomics which is used by this driver.
+On 4/3/2023 8:20 AM, Thomas Gleixner wrote:
+> On Sun, Apr 02 2023 at 17:44, Borislav Petkov wrote:
+>> On Fri, Mar 24, 2023 at 06:10:09PM +0100, Jeremi Piotrowski wrote:
+>>> Since the AMD PSP is a privileged device, there is a desire to not have to trust the
+>>> ACPI stack,
+>>
+>> And yet you do:
+>>
+>> +	err = acpi_parse_aspt(&res[0], &pdata);
+>> +	if (err)
+>> +		return err;
+>>
+>> You don't trust the ACPI stack, and yet you're parsing an ACPI table?!?!
+>> You have to make up your mind here.
+>>
+>> Btw, you still haven't answered my question about doing:
+>>
+>> 	devm_request_irq(dev, 9, ..)
+>>
+>> where 9 is the default ACPI interrupt.
+>>
+>> You can have some silly table tell you what to map or you can simply map
+>> IRQ 9 and be done with it. In this second case you can *really* not
+>> trust ACPI because you know which IRQ it is
 
-Why not? Compilers and libatomic do, so surely the Linux kernel should
-too.
+Will respond to this mail directly.
 
-> Due to this, the build fails
-> with below error.
->=20
-> In function =C3=A2=E2=82=AC=CB=9Cssh_seq_next=C3=A2=E2=82=AC=E2=84=A2,
->    inlined from =C3=A2=E2=82=AC=CB=9Cssam_request_write_data=C3=A2=E2=82=
-=AC=E2=84=A2 at drivers/platform/surface/aggregator/controller.c:1483:8:
-> ././include/linux/compiler_types.h:399:45: error: call to =
-=C3=A2=E2=82=AC=CB=9C__compiletime_assert_335=C3=A2=E2=82=AC=E2=84=A2 =
-declared with attribute error: BUILD_BUG failed
->  399 |         _compiletime_assert(condition, msg, =
-__compiletime_assert_, __COUNTER__)
->      |                                             ^
-> ./include/linux/compiler.h:78:45: note: in definition of macro =
-=C3=A2=E2=82=AC=CB=9Cunlikely=C3=A2=E2=82=AC=E2=84=A2
->   78 | # define unlikely(x)    __builtin_expect(!!(x), 0)
->      |                                             ^
-> ././include/linux/compiler_types.h:387:9: note: in expansion of macro =
-=C3=A2=E2=82=AC=CB=9C__compiletime_assert=C3=A2=E2=82=AC=E2=84=A2
->  387 |         __compiletime_assert(condition, msg, prefix, suffix)
->      |         ^~~~~~~~~~~~~~~~~~~~
-> ././include/linux/compiler_types.h:399:9: note: in expansion of macro =
-=C3=A2=E2=82=AC=CB=9C_compiletime_assert=C3=A2=E2=82=AC=E2=84=A2
->  399 |         _compiletime_assert(condition, msg, =
-__compiletime_assert_, __COUNTER__)
->      |         ^~~~~~~~~~~~~~~~~~~
-> ./include/linux/build_bug.h:39:37: note: in expansion of macro =
-=C3=A2=E2=82=AC=CB=9Ccompiletime_assert=C3=A2=E2=82=AC=E2=84=A2
->   39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), =
-msg)
->      |                                     ^~~~~~~~~~~~~~~~~~
-> ./include/linux/build_bug.h:59:21: note: in expansion of macro =
-=C3=A2=E2=82=AC=CB=9CBUILD_BUG_ON_MSG=C3=A2=E2=82=AC=E2=84=A2
->   59 | #define BUILD_BUG() BUILD_BUG_ON_MSG(1, "BUILD_BUG failed")
->      |                     ^~~~~~~~~~~~~~~~
-> ./arch/riscv/include/asm/cmpxchg.h:335:17: note: in expansion of macro =
-=C3=A2=E2=82=AC=CB=9CBUILD_BUG=C3=A2=E2=82=AC=E2=84=A2
->  335 |                 BUILD_BUG();                                    =
-        \
->      |                 ^~~~~~~~~
-> ./arch/riscv/include/asm/cmpxchg.h:344:30: note: in expansion of macro =
-=C3=A2=E2=82=AC=CB=9C__cmpxchg=C3=A2=E2=82=AC=E2=84=A2
->  344 |         (__typeof__(*(ptr))) __cmpxchg((ptr),                   =
-        \
->      |                              ^~~~~~~~~
-> ./include/linux/atomic/atomic-instrumented.h:1916:9: note: in =
-expansion of macro =C3=A2=E2=82=AC=CB=9Carch_cmpxchg=C3=A2=E2=82=AC=E2=84=A2=
+> 
+> The real problem here is that the information provided about the overall
+> design and requirements is close to zero. All we heard so far is hand
+> waving about not trusting PCI and ACPI.
 
-> 1916 |         arch_cmpxchg(__ai_ptr, __VA_ARGS__); \
->      |         ^~~~~~~~~~~~
-> drivers/platform/surface/aggregator/controller.c:61:32: note: in =
-expansion of macro =C3=A2=E2=82=AC=CB=9Ccmpxchg=C3=A2=E2=82=AC=E2=84=A2
->   61 |         while (unlikely((ret =3D cmpxchg(&c->value, old, new)) =
-!=3D old)) {
->      |                                ^~~~~~~
->=20
-> So, disable this driver for RISC-V even when ACPI is enabled for now.
->=20
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> ---
-> drivers/platform/surface/aggregator/Kconfig | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/platform/surface/aggregator/Kconfig =
-b/drivers/platform/surface/aggregator/Kconfig
-> index c114f9dd5fe1..88afc38ffdc5 100644
-> --- a/drivers/platform/surface/aggregator/Kconfig
-> +++ b/drivers/platform/surface/aggregator/Kconfig
-> @@ -4,7 +4,7 @@
-> menuconfig SURFACE_AGGREGATOR
-> 	tristate "Microsoft Surface System Aggregator Module Subsystem =
-and Drivers"
-> 	depends on SERIAL_DEV_BUS
-> -	depends on ACPI
-> +	depends on ACPI && !RISCV
+That's not a fair characterization Thomas, but I will turn the other cheek.
 
-If you insist on doing this, at least make it some new config variable
-that=E2=80=99s self-documenting and means this automatically gets =
-re-enabled
-when arch/riscv fixes this deficiency? Hard-coding arch lists like this
-seems like a terrible anti-pattern.
+> 
+> Jeremi, can you please describe exactly what the design and constraints
+> are in understandable and coherent sentences?
+> 
 
-Jess
+Here goes, I will keep it as simple as I can.
 
-> 	select CRC_CCITT
-> 	help
-> 	  The Surface System Aggregator Module (Surface SAM or SSAM) is =
-an
-> --=20
-> 2.34.1
->=20
->=20
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+The goal of these patches is to operate all the hardware interfaces required
+to run AMD SEV-SNP VMs, but in the context of a Linux VM running on top of
+Hyper-V. This Linux VM is called the SNP-host VM. All the patches I submit 
+target the SNP-host VM kernel, which uses KVM to bring up SEV-SNP VMs. To get
+SEV-SNP working you need to combine this work with AMD's KVM SEV-SNP patches.
+I posted two patch sets: one that extends AMD's patches, and one that is
+independent of them (this one here) that could be merged sooner.
 
+Here are the design constraints:
+1. the interfaces exposed to the SNP-host VM to operate SEV-SNP match real
+   hardware interface specifications defined by AMD. This is because we are
+   emulating/virtualizing a hardware feature, and not some made up virtual
+   thing.
+
+2. the SNP-host VM may run either Windows(Hyper-V) or Linux, so the SEV-SNP
+   interfaces need to be supported by both.
+
+3. Hyper-V Generation 2 VMs do not have a PCI bus. The SNP-host VM must be a
+   Hyper-V Gen 2 VM.
+
+One of the components needed to operate SEV-SNP is the Platform Security
+Processor (PSP), aka AMD Secure Processor (ASP). The PSP is the root-of-trust on
+AMD systems. The PSP is specified as being discoverable either on the PCI bus,
+or through the presence of an ACPI table with the "ASPT" (AMD Secure Processor
+Table) signature.
+
+Here goes the design:
+Constraint 1 means that only the two specified ways of discovering and
+configuring a PSP inside the SNP-host VM were in the running: PCI or ASPT.
+Constraint 3 means that the PCI version of the PSP is not a viable option.
+Additionally, the ASPT is used on AMD hardware in Microsoft datacenters, which
+means it is supported in Hyper-V (constraint 2). The outcome is that the
+SNP-host VM sees an ASPT.
+
+The ASPT provides the following information: memory range of PSP registers and
+offsets of individual PSP registers inside that memory range. There are 7
+registers:
+- 6 are related to the "command submission" portion of the PSP; the ccp module
+  knows how to operate those.
+- the last one, "ACPI CmdResp" register, is used to configure the PSP interrupt
+  to the OS.
+
+The PSP interrupt configuration through the "ACPI CmdResp" register takes the
+following information:
+- APIC ID
+- interrupt vector
+- destination mode (physical/logical)
+- message type (fixed/lowest priority)
+
+So to hook this up with the Linux device model I wrote patches that do the
+following:
+Detect the ASPT table, extract information and register a "psp" platform_device
+for the "ccp" module to bind to.
+Create an irq_domain and encapsulate dealing with the PSP interrupt register
+there, so that the "ccp" module has an irq number that it passes to
+request_irq().
+
+There is an "if (hypervisor == Hyper-V)" check before the ASPT table detection.
+Here is the reasoning behind that:
+According to AMD specifications the *same* PSP may be discoverable both through
+ASPT and on the PCI bus. In that case, if the ASPT is to be used the OS is supposed
+to disable the "PCI interface" through the "ACPI CmdResp" register, which will
+result in no PCI-MSI interrupts, BAR writes ignored, BAR reads return all 0xF's.
+I can't verify whether that would work correctly, so in the interest of not
+breaking other users, the ASPT handling is hidden behind the hypervisor check.
+There is nothing Hyper-V specific about any of this code, it supports a hardware
+interface present in server grade hardware and would work on physical hardware if
+when (not if) someone removes the condition.
+
+That's all there is to it.
+
+All the other information I gave is background information that I hoped would
+help better understand the setting. The most relevant piece of information is the
+one that I came across last. You asked "what makes this PSP device special". The PSP
+is the root-of-trust on the system, it controls memory encryption keys, it can
+encrypt/decrypt individual memory pages. SEV-SNP ties together a lot of system components
+and requires enabling support for it in the AMD IOMMU too, which is presumably why
+the PSP gets the same special treatment (as the AMD IOMMU). The ASPT and AMD PSP interrupt
+configuration through the "ACPI CmdResp" register is based on a similar design of the AMD IOMMU.
+The AMD IOMMU is:
+- discovered through the presence of the IVRS ACPI table
+- the MMIO address of the IOMMU is parsed out of the IVRS table
+- if x2APIC support is enabled, the IOMMU interrupts are delivered based on
+  programming APIC-ID+vector+destination mode into an interrupt control register
+  in IOMMU MMIO space. This causes any PCI-MSI configuration present for the
+  IOMMU to   be ignored.
+- Linux supports and uses that interrupt delivery mechanism. It is implemented
+  as an irq_domain.
+
+Do you think it makes sense to include parts of the above description in cover letter
+commit message?
+
+Thanks,
+Jeremi
