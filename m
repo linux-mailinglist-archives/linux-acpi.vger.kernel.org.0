@@ -2,36 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCE8C6D75EE
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 09:56:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55B9D6D7687
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 10:11:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236881AbjDEH4i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Apr 2023 03:56:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36508 "EHLO
+        id S237385AbjDEILs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Apr 2023 04:11:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237041AbjDEH4h (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 03:56:37 -0400
+        with ESMTP id S237485AbjDEILc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 04:11:32 -0400
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DC50F30ED;
-        Wed,  5 Apr 2023 00:56:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1DC2149D8;
+        Wed,  5 Apr 2023 01:11:14 -0700 (PDT)
 Received: from [192.168.2.41] (77-166-152-30.fixed.kpn.net [77.166.152.30])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 27A40210DEC6;
-        Wed,  5 Apr 2023 00:56:33 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 27A40210DEC6
+        by linux.microsoft.com (Postfix) with ESMTPSA id EDD69210DECB;
+        Wed,  5 Apr 2023 01:10:58 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com EDD69210DECB
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1680681395;
-        bh=egqdAV4kdd4zNtqfpyFgRnX5D2obdbt5vjBGu/pAukg=;
+        s=default; t=1680682261;
+        bh=dOEo2EG+hg+F81Lh9lwEURZ0dL7IZCs7WplCBPaibvo=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=D+25i0yDYLpCIJ/YBM9SNd9uQlmVXmidaOufFyZqtV31fx3il+atpwL7iIac0YPKB
-         dnaowxVR8WqIefn4i8lHUEGLmic9T7PQvIHou4sRaUmXj/T18tzeWyZW9DVRnLPfBi
-         Cf+PG1MyCAbSGCJ7UmRTN2898Bv6P5yvTUpeLS/4=
-Message-ID: <8d39a9a1-4b7b-08fe-7b09-2ff0a419468f@linux.microsoft.com>
-Date:   Wed, 5 Apr 2023 09:56:31 +0200
+        b=YC8cjMJ20KxMNhpu8rYiufuNP1UOoAx+dj565ZmzCfHdtTygT+Tx/FCmslVgL76R4
+         /uTKCk2TSXlGpvDPp/mb36P1ZniAUsgYM5srfr+ZsKiQ0I7Mf7hMuiLZ8uuQ1F6M8q
+         bcxqRa5cWCqV/eThGBPjjg96SP7QR9wsD2CVeGH8=
+Message-ID: <35f6b321-1668-2b62-cb47-3f3760be2e1d@linux.microsoft.com>
+Date:   Wed, 5 Apr 2023 10:10:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.1
 Subject: Re: [PATCH v3 0/8] Support ACPI PSP on Hyper-V
-Content-Language: en-US
 To:     Thomas Gleixner <tglx@linutronix.de>,
         Borislav Petkov <bp@alien8.de>
 Cc:     linux-kernel@vger.kernel.org,
@@ -53,6 +52,7 @@ References: <20230320191956.1354602-1-jpiotrowski@linux.microsoft.com>
  <20230323163450.GGZBx/qpnclFnMaf7e@fat_crate.local>
  <c8458bfa-0985-f6a5-52a3-ef96c7669fe6@linux.microsoft.com>
  <20230402154425.GCZCmi2eiKYO2yYhNs@fat_crate.local> <877cutsczn.ffs@tglx>
+Content-Language: en-US
 From:   Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
 In-Reply-To: <877cutsczn.ffs@tglx>
 Content-Type: text/plain; charset=UTF-8
@@ -81,7 +81,22 @@ On 4/3/2023 8:20 AM, Thomas Gleixner wrote:
 >>
 >> You don't trust the ACPI stack, and yet you're parsing an ACPI table?!?!
 >> You have to make up your mind here.
->>
+
+I gave you background on why Microsoft system designers like to use the ASPT on
+*physical hardware* in our datacenters. It is because it allows them to setup a
+highly privileged system component through an isolated ACPI table, without
+needing to depend on the *rest of the ACPI stack* (other ACPI tables and/or the
+ACPI interpreter). The same reason they use IVRS for AMD IOMMU.
+
+I thought it might be good to write this down, as this shows that the ASPT is a
+hardware interface that has *some* value. I don't think further discussion on
+this point helps us make forward progress.
+
+We're trying to adhere to a specification for a physical device when modeling
+that same device in a virtual environment. Yes, this requires parsing an ACPI
+table.
+
+>> 
 >> Btw, you still haven't answered my question about doing:
 >>
 >> 	devm_request_irq(dev, 9, ..)
@@ -90,115 +105,52 @@ On 4/3/2023 8:20 AM, Thomas Gleixner wrote:
 >>
 >> You can have some silly table tell you what to map or you can simply map
 >> IRQ 9 and be done with it. In this second case you can *really* not
->> trust ACPI because you know which IRQ it is
-
-Will respond to this mail directly.
-
-> 
-> The real problem here is that the information provided about the overall
-> design and requirements is close to zero. All we heard so far is hand
-> waving about not trusting PCI and ACPI.
-
-That's not a fair characterization Thomas, but I will turn the other cheek.
-
-> 
-> Jeremi, can you please describe exactly what the design and constraints
-> are in understandable and coherent sentences?
+>> trust ACPI because you know which IRQ it is.
 > 
 
-Here goes, I will keep it as simple as I can.
+So I originally thought I answered when i said "because we're trying to not
+deviate from the hardware specification for the PSP". Interrupt configuration
+is part of that specification.
 
-The goal of these patches is to operate all the hardware interfaces required
-to run AMD SEV-SNP VMs, but in the context of a Linux VM running on top of
-Hyper-V. This Linux VM is called the SNP-host VM. All the patches I submit 
-target the SNP-host VM kernel, which uses KVM to bring up SEV-SNP VMs. To get
-SEV-SNP working you need to combine this work with AMD's KVM SEV-SNP patches.
-I posted two patch sets: one that extends AMD's patches, and one that is
-independent of them (this one here) that could be merged sooner.
+But when I think about what you're suggesting, I can interpret it two ways:
 
-Here are the design constraints:
-1. the interfaces exposed to the SNP-host VM to operate SEV-SNP match real
-   hardware interface specifications defined by AMD. This is because we are
-   emulating/virtualizing a hardware feature, and not some made up virtual
-   thing.
+1. Configure the PSP to raise the vector corresponding to ACPI IRQ 9.
+This might work and would look similar to the first version I posted.
+I'd fetch 'struct irq_cfg' for acpi_sci_irq, write the corresponding
+APIC-ID/vector into the PSP, enable PSP interrupt generation and then
+probe the "ccp" driver so that it can call "devm_request_irq(9)".
+I assume this would also require registering an irq affinity notifier,
+much like drivers/iommu/amd/init.c did before commit d1adcfbb520c.
 
-2. the SNP-host VM may run either Windows(Hyper-V) or Linux, so the SEV-SNP
-   interfaces need to be supported by both.
+2. Deviate from the hardware specification.
+From reading acpi code (not at all an expert on this), that "9" does not
+look like a static value to me, so it requires either:
+a) passing a GSI number in an ACPI table
+b) defining it as being the same interrupt as the SCI, which comes from
+   the FADT table.
+c) using the GPE mechanism of the ACPI SCI interrupt.
 
-3. Hyper-V Generation 2 VMs do not have a PCI bus. The SNP-host VM must be a
-   Hyper-V Gen 2 VM.
+So I'd need to define a third way for the PSP to interrupt the OS, one that
+would only be supported on Hyper-V. Work with our hypervisor and/or virtual
+firmware teams to make sure that the PSP model supports generating the interrupt
+in this way. Work with the Windows team to make Windows support it
+(the same virtual hardware model/virtual firmware is used regardless of the OS).
 
-One of the components needed to operate SEV-SNP is the Platform Security
-Processor (PSP), aka AMD Secure Processor (ASP). The PSP is the root-of-trust on
-AMD systems. The PSP is specified as being discoverable either on the PCI bus,
-or through the presence of an ACPI table with the "ASPT" (AMD Secure Processor
-Table) signature.
+I have no objection to doing "1." if it works. I don't see it as a big win over
+using an irq_domain.
 
-Here goes the design:
-Constraint 1 means that only the two specified ways of discovering and
-configuring a PSP inside the SNP-host VM were in the running: PCI or ASPT.
-Constraint 3 means that the PCI version of the PSP is not a viable option.
-Additionally, the ASPT is used on AMD hardware in Microsoft datacenters, which
-means it is supported in Hyper-V (constraint 2). The outcome is that the
-SNP-host VM sees an ASPT.
+I don't think "2." is a reasonable thing to ask. We do regularly make suggestions
+to hypervisor/firmware teams on how to make things better supported in Linux
+without requiring hacks. But modelling a piece of hardware in a custom way to avoid
+following hardware specs is questionable.
 
-The ASPT provides the following information: memory range of PSP registers and
-offsets of individual PSP registers inside that memory range. There are 7
-registers:
-- 6 are related to the "command submission" portion of the PSP; the ccp module
-  knows how to operate those.
-- the last one, "ACPI CmdResp" register, is used to configure the PSP interrupt
-  to the OS.
+I also think that soon, when other people deploy more SEV-SNP hardware in their
+datacenters, they will also want to rely on the ASPT for the reasons listed at the
+top of the email, so we'll be adding support for it anyway.
 
-The PSP interrupt configuration through the "ACPI CmdResp" register takes the
-following information:
-- APIC ID
-- interrupt vector
-- destination mode (physical/logical)
-- message type (fixed/lowest priority)
-
-So to hook this up with the Linux device model I wrote patches that do the
-following:
-Detect the ASPT table, extract information and register a "psp" platform_device
-for the "ccp" module to bind to.
-Create an irq_domain and encapsulate dealing with the PSP interrupt register
-there, so that the "ccp" module has an irq number that it passes to
-request_irq().
-
-There is an "if (hypervisor == Hyper-V)" check before the ASPT table detection.
-Here is the reasoning behind that:
-According to AMD specifications the *same* PSP may be discoverable both through
-ASPT and on the PCI bus. In that case, if the ASPT is to be used the OS is supposed
-to disable the "PCI interface" through the "ACPI CmdResp" register, which will
-result in no PCI-MSI interrupts, BAR writes ignored, BAR reads return all 0xF's.
-I can't verify whether that would work correctly, so in the interest of not
-breaking other users, the ASPT handling is hidden behind the hypervisor check.
-There is nothing Hyper-V specific about any of this code, it supports a hardware
-interface present in server grade hardware and would work on physical hardware if
-when (not if) someone removes the condition.
-
-That's all there is to it.
-
-All the other information I gave is background information that I hoped would
-help better understand the setting. The most relevant piece of information is the
-one that I came across last. You asked "what makes this PSP device special". The PSP
-is the root-of-trust on the system, it controls memory encryption keys, it can
-encrypt/decrypt individual memory pages. SEV-SNP ties together a lot of system components
-and requires enabling support for it in the AMD IOMMU too, which is presumably why
-the PSP gets the same special treatment (as the AMD IOMMU). The ASPT and AMD PSP interrupt
-configuration through the "ACPI CmdResp" register is based on a similar design of the AMD IOMMU.
-The AMD IOMMU is:
-- discovered through the presence of the IVRS ACPI table
-- the MMIO address of the IOMMU is parsed out of the IVRS table
-- if x2APIC support is enabled, the IOMMU interrupts are delivered based on
-  programming APIC-ID+vector+destination mode into an interrupt control register
-  in IOMMU MMIO space. This causes any PCI-MSI configuration present for the
-  IOMMU to   be ignored.
-- Linux supports and uses that interrupt delivery mechanism. It is implemented
-  as an irq_domain.
-
-Do you think it makes sense to include parts of the above description in cover letter
-commit message?
+Which way do you suggest we go Boris? I'm not attached to the code at all but I am
+attached to adhering to hardware specifications. I can try to do "1." or stick with
+the irq_domain approach that i posted.
 
 Thanks,
 Jeremi
