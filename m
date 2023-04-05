@@ -2,42 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 500976D6F80
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Apr 2023 23:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9EBE6D734C
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 06:19:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236276AbjDDV7w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Apr 2023 17:59:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37898 "EHLO
+        id S236819AbjDEETn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Apr 2023 00:19:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233001AbjDDV7v (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Apr 2023 17:59:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AEA610DF;
-        Tue,  4 Apr 2023 14:59:50 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A95BA63A3D;
-        Tue,  4 Apr 2023 21:59:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15FBDC433D2;
-        Tue,  4 Apr 2023 21:59:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680645589;
-        bh=oVb/3Yv6tCP2RVhr47u84gv2ub6ZCrD3LzM01ty7vrk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=srKJzP4unsO7VCYXuoEw/yp2w/Da1xNjdL6eqfAk4O4BXMGD2eDCasq2ri+OolkBN
-         +GLaCazAspMZrawj5jRSVVbHh/ydzuyqxqlNRhly+PDdZoGwVCd7uh0tqPkODHY0ME
-         gIlPw1yX+155k4I850he81of9BweX0/iu3+xLsqqymbfQEJ/J7hYXwqaTx+2f4r9m4
-         0f6vOhJfrDXrQVgMUMOyd1w3HFg0/LW8qj8fftiRTNPyttBrosP2Cg8nb6j8nxaNLs
-         8rN7SYSWMf9zpCBnQ73B2PG8sF9Szly9Ro0J7A+wOXpUf9iwAvolFdy2TgSWY7Vz6w
-         gHTAwvOsIsnPw==
-Date:   Tue, 4 Apr 2023 22:59:41 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Sunil V L <sunilvl@ventanamicro.com>
-Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux-crypto@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        llvm@lists.linux.dev, Weili Qian <qianweili@huawei.com>,
+        with ESMTP id S236793AbjDEETm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 00:19:42 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8CAD1702
+        for <linux-acpi@vger.kernel.org>; Tue,  4 Apr 2023 21:19:38 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id d17so34820675wrb.11
+        for <linux-acpi@vger.kernel.org>; Tue, 04 Apr 2023 21:19:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jrtc27.com; s=gmail.jrtc27.user; t=1680668377;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/BjpitaAtSgkqnnZepwdAnWUHtXKGCm4ypPOIBhTYG4=;
+        b=e4BiLC+K4OYu8TIu0STxll21APg+0MALOyXN2SMFNO5cMHrJpvXOAIvzfiUxo2q+V5
+         WDvHh+QslH4AhH+2TjZuYkNkEaTLztytVL2f0UYCH/TmJEd/0TAAlr//N84HDPO+XfkD
+         bvPR0eoq113cOieEQrQOeDXLnxrzu4Jx3aEwesqPJ349gVeRWz3Da6iqV4pSU/2Y4iNt
+         MnRmqCgCxV0aZLY7aaRW/N/kl8M1sH1Tu+WzfPMLUDgArZTNBjGppJ3nUd1FX9TI0JaZ
+         seEVGGKFa1LrcmSBIBRzX4kFY1havHXXvqCKrIitnLfe41G3TACDVnWYFtLdpqNQBFsi
+         ii4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680668377;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/BjpitaAtSgkqnnZepwdAnWUHtXKGCm4ypPOIBhTYG4=;
+        b=o3y2buBazq3gYUWVEJvw5t1uq5wh6uwRbmJX1iNfsAN7Y1K0c70x+GtqdpQtpdJ7wn
+         gMLmiSdBYH3HZnoiwm+MiIws51Hsiphn/enc+YlsO2YQpGf93bD62T98Gy27ZpEehUGN
+         9lDfoV04yYqffsWyL2XNGcxOJaI4ZY1XyuGQX+AnwTyMU4qMThAF3klVJdR54600mXj1
+         ajabld5HGjbl9vRGQ/3kfGZTWfR1kzja7Jw3R/srXBJre1886Ywa9/ESjY+x46Nwve6C
+         8Ik6LdPaOZf3M6bBgHTVCJU+PnSAGEsYHtjOeqbub3Q2Id+v4Q9cKe4hNXXJAE26to5D
+         sn6w==
+X-Gm-Message-State: AAQBX9eb3SItxfnX4bmRE0M2YNY4lNK68uIC3Pmj0BkoL4MUFEsS140/
+        O2bP9SkwLNo6ziNUUArElS6bDQ==
+X-Google-Smtp-Source: AKy350blw7YP4lnrKWGeXu58qdeqpEXA8gM8aenLdDfKqAQOydoUR5t2gTdnK43PxXcc1htfiqIEPA==
+X-Received: by 2002:a5d:6b91:0:b0:2e5:9101:e3af with SMTP id n17-20020a5d6b91000000b002e59101e3afmr3411038wrx.31.1680668377340;
+        Tue, 04 Apr 2023 21:19:37 -0700 (PDT)
+Received: from smtpclient.apple (global-5-142.n-2.net.cam.ac.uk. [131.111.5.142])
+        by smtp.gmail.com with ESMTPSA id t12-20020a7bc3cc000000b003ee42696acesm797550wmj.16.2023.04.04.21.19.36
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 04 Apr 2023 21:19:36 -0700 (PDT)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
+Subject: Re: [PATCH V4 22/23] platform/surface: Disable for RISC-V
+From:   Jessica Clarke <jrtc27@jrtc27.com>
+In-Reply-To: <20230404182037.863533-23-sunilvl@ventanamicro.com>
+Date:   Wed, 5 Apr 2023 05:19:35 +0100
+Cc:     linux-doc@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-acpi@vger.kernel.org, linux-crypto@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, llvm@lists.linux.dev,
+        Weili Qian <qianweili@huawei.com>,
         Albert Ou <aou@eecs.berkeley.edu>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         Tom Rix <trix@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
@@ -55,114 +79,117 @@ Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         Maximilian Luz <luzmaximilian@gmail.com>,
         "David S . Miller" <davem@davemloft.net>,
         Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH V4 23/23] crypto: hisilicon/qm: Workaround to enable
- build with RISC-V clang
-Message-ID: <20230404-viewpoint-shank-674a8940809a@spud>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <EAC85F14-B1DA-4358-9042-A607436D582A@jrtc27.com>
 References: <20230404182037.863533-1-sunilvl@ventanamicro.com>
- <20230404182037.863533-24-sunilvl@ventanamicro.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="g2rJHKXDBniPI9UF"
-Content-Disposition: inline
-In-Reply-To: <20230404182037.863533-24-sunilvl@ventanamicro.com>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+ <20230404182037.863533-23-sunilvl@ventanamicro.com>
+To:     Sunil V L <sunilvl@ventanamicro.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On 4 Apr 2023, at 19:20, Sunil V L <sunilvl@ventanamicro.com> wrote:
+>=20
+> With CONFIG_ACPI enabled for RISC-V, this driver gets enabled
+> in allmodconfig build. However, RISC-V doesn't support sub-word
+> atomics which is used by this driver.
 
---g2rJHKXDBniPI9UF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Why not? Compilers and libatomic do, so surely the Linux kernel should
+too.
 
-Hey Sunil,
+> Due to this, the build fails
+> with below error.
+>=20
+> In function =C3=A2=E2=82=AC=CB=9Cssh_seq_next=C3=A2=E2=82=AC=E2=84=A2,
+>    inlined from =C3=A2=E2=82=AC=CB=9Cssam_request_write_data=C3=A2=E2=82=
+=AC=E2=84=A2 at drivers/platform/surface/aggregator/controller.c:1483:8:
+> ././include/linux/compiler_types.h:399:45: error: call to =
+=C3=A2=E2=82=AC=CB=9C__compiletime_assert_335=C3=A2=E2=82=AC=E2=84=A2 =
+declared with attribute error: BUILD_BUG failed
+>  399 |         _compiletime_assert(condition, msg, =
+__compiletime_assert_, __COUNTER__)
+>      |                                             ^
+> ./include/linux/compiler.h:78:45: note: in definition of macro =
+=C3=A2=E2=82=AC=CB=9Cunlikely=C3=A2=E2=82=AC=E2=84=A2
+>   78 | # define unlikely(x)    __builtin_expect(!!(x), 0)
+>      |                                             ^
+> ././include/linux/compiler_types.h:387:9: note: in expansion of macro =
+=C3=A2=E2=82=AC=CB=9C__compiletime_assert=C3=A2=E2=82=AC=E2=84=A2
+>  387 |         __compiletime_assert(condition, msg, prefix, suffix)
+>      |         ^~~~~~~~~~~~~~~~~~~~
+> ././include/linux/compiler_types.h:399:9: note: in expansion of macro =
+=C3=A2=E2=82=AC=CB=9C_compiletime_assert=C3=A2=E2=82=AC=E2=84=A2
+>  399 |         _compiletime_assert(condition, msg, =
+__compiletime_assert_, __COUNTER__)
+>      |         ^~~~~~~~~~~~~~~~~~~
+> ./include/linux/build_bug.h:39:37: note: in expansion of macro =
+=C3=A2=E2=82=AC=CB=9Ccompiletime_assert=C3=A2=E2=82=AC=E2=84=A2
+>   39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), =
+msg)
+>      |                                     ^~~~~~~~~~~~~~~~~~
+> ./include/linux/build_bug.h:59:21: note: in expansion of macro =
+=C3=A2=E2=82=AC=CB=9CBUILD_BUG_ON_MSG=C3=A2=E2=82=AC=E2=84=A2
+>   59 | #define BUILD_BUG() BUILD_BUG_ON_MSG(1, "BUILD_BUG failed")
+>      |                     ^~~~~~~~~~~~~~~~
+> ./arch/riscv/include/asm/cmpxchg.h:335:17: note: in expansion of macro =
+=C3=A2=E2=82=AC=CB=9CBUILD_BUG=C3=A2=E2=82=AC=E2=84=A2
+>  335 |                 BUILD_BUG();                                    =
+        \
+>      |                 ^~~~~~~~~
+> ./arch/riscv/include/asm/cmpxchg.h:344:30: note: in expansion of macro =
+=C3=A2=E2=82=AC=CB=9C__cmpxchg=C3=A2=E2=82=AC=E2=84=A2
+>  344 |         (__typeof__(*(ptr))) __cmpxchg((ptr),                   =
+        \
+>      |                              ^~~~~~~~~
+> ./include/linux/atomic/atomic-instrumented.h:1916:9: note: in =
+expansion of macro =C3=A2=E2=82=AC=CB=9Carch_cmpxchg=C3=A2=E2=82=AC=E2=84=A2=
 
-This one made me scratch my head for a bit..
-
-On Tue, Apr 04, 2023 at 11:50:37PM +0530, Sunil V L wrote:
-> With CONFIG_ACPI enabled for RISC-V, this driver gets enabled in
-> allmodconfig build. The gcc tool chain builds this driver removing the
-> inline arm64 assembly code. However, clang for RISC-V tries to build
-> the arm64 assembly and below error is seen.
-
-There's actually nothing RISC-V specific about that behaviour, that's
-just how clang works. Quoting Nathan:
-"Clang performs semantic analysis (i.e., validates assembly) before
-dead code elimination, so IS_ENABLED() is not sufficient for avoiding
-that error."
-
-> drivers/crypto/hisilicon/qm.c:627:10: error: invalid output constraint '+=
-Q' in asm
->                        "+Q" (*((char __iomem *)fun_base))
->                        ^
-> It appears that RISC-V clang is not smart enough to detect
-> IS_ENABLED(CONFIG_ARM64) and remove the dead code.
-
-So I think this statement is just not true, it can remove dead code, but
-only after it has done the semantic analysis.
-
-The reason that this has not been seen before, again quoting Nathan, is:
-"arm64 and x86_64 both support the Q constraint, we cannot build
-LoongArch yet (although it does not have support for Q either so same
-boat as RISC-V), and ia64 is dead/unsupported in LLVM. Those are the
-only architectures that support ACPI, so I guess that explains why we
-have seen no issues aside from RISC-V so far."
-
-> As a workaround, move this check to preprocessing stage which works
-> with the RISC-V clang tool chain.
-
-I don't think there's much else you can do!
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-
-Perhaps it is also worth adding:
-Link: https://github.com/ClangBuiltLinux/linux/issues/999
-
-Cheers,
-Conor.
-
+> 1916 |         arch_cmpxchg(__ai_ptr, __VA_ARGS__); \
+>      |         ^~~~~~~~~~~~
+> drivers/platform/surface/aggregator/controller.c:61:32: note: in =
+expansion of macro =C3=A2=E2=82=AC=CB=9Ccmpxchg=C3=A2=E2=82=AC=E2=84=A2
+>   61 |         while (unlikely((ret =3D cmpxchg(&c->value, old, new)) =
+!=3D old)) {
+>      |                                ^~~~~~~
+>=20
+> So, disable this driver for RISC-V even when ACPI is enabled for now.
+>=20
 > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 > ---
->  drivers/crypto/hisilicon/qm.c | 13 +++++++------
->  1 file changed, 7 insertions(+), 6 deletions(-)
+> drivers/platform/surface/aggregator/Kconfig | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
 >=20
-> diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
-> index e4c84433a88a..a5f521529ab2 100644
-> --- a/drivers/crypto/hisilicon/qm.c
-> +++ b/drivers/crypto/hisilicon/qm.c
-> @@ -611,13 +611,9 @@ EXPORT_SYMBOL_GPL(hisi_qm_wait_mb_ready);
->  static void qm_mb_write(struct hisi_qm *qm, const void *src)
->  {
->  	void __iomem *fun_base =3D qm->io_base + QM_MB_CMD_SEND_BASE;
-> -	unsigned long tmp0 =3D 0, tmp1 =3D 0;
-> =20
-> -	if (!IS_ENABLED(CONFIG_ARM64)) {
-> -		memcpy_toio(fun_base, src, 16);
-> -		dma_wmb();
-> -		return;
-> -	}
-> +#if IS_ENABLED(CONFIG_ARM64)
-> +	unsigned long tmp0 =3D 0, tmp1 =3D 0;
-> =20
->  	asm volatile("ldp %0, %1, %3\n"
->  		     "stp %0, %1, %2\n"
-> @@ -627,6 +623,11 @@ static void qm_mb_write(struct hisi_qm *qm, const vo=
-id *src)
->  		       "+Q" (*((char __iomem *)fun_base))
->  		     : "Q" (*((char *)src))
->  		     : "memory");
-> +#else
-> +	memcpy_toio(fun_base, src, 16);
-> +	dma_wmb();
-> +#endif
-> +
->  }
-> =20
->  static int qm_mb_nolock(struct hisi_qm *qm, struct qm_mailbox *mailbox)
+> diff --git a/drivers/platform/surface/aggregator/Kconfig =
+b/drivers/platform/surface/aggregator/Kconfig
+> index c114f9dd5fe1..88afc38ffdc5 100644
+> --- a/drivers/platform/surface/aggregator/Kconfig
+> +++ b/drivers/platform/surface/aggregator/Kconfig
+> @@ -4,7 +4,7 @@
+> menuconfig SURFACE_AGGREGATOR
+> 	tristate "Microsoft Surface System Aggregator Module Subsystem =
+and Drivers"
+> 	depends on SERIAL_DEV_BUS
+> -	depends on ACPI
+> +	depends on ACPI && !RISCV
+
+If you insist on doing this, at least make it some new config variable
+that=E2=80=99s self-documenting and means this automatically gets =
+re-enabled
+when arch/riscv fixes this deficiency? Hard-coding arch lists like this
+seems like a terrible anti-pattern.
+
+Jess
+
+> 	select CRC_CCITT
+> 	help
+> 	  The Surface System Aggregator Module (Surface SAM or SSAM) is =
+an
 > --=20
 > 2.34.1
 >=20
@@ -172,15 +199,3 @@ id *src)
 > linux-riscv@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/linux-riscv
 
---g2rJHKXDBniPI9UF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZCydzQAKCRB4tDGHoIJi
-0kS+APwI9urufiYlmUkAYkyAnD4XxPqkVAgS1QApjqn9spoehQD9GoxZzTCmlOmj
-V0HIsqbbKh/l2SrUpOETJlfKaSTkhwE=
-=P4m+
------END PGP SIGNATURE-----
-
---g2rJHKXDBniPI9UF--
