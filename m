@@ -2,106 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7093F6D81FC
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 17:33:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 552636D820E
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 17:37:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238668AbjDEPdJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Apr 2023 11:33:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38662 "EHLO
+        id S238624AbjDEPhG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Apr 2023 11:37:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238118AbjDEPdC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 11:33:02 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 761CC171D
-        for <linux-acpi@vger.kernel.org>; Wed,  5 Apr 2023 08:32:59 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1pk56z-0008CX-OP; Wed, 05 Apr 2023 17:31:49 +0200
-Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1pk56y-0001Ro-IB; Wed, 05 Apr 2023 17:31:48 +0200
-Date:   Wed, 5 Apr 2023 17:31:48 +0200
-From:   Marco Felsch <m.felsch@pengutronix.de>
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Radu Pirea <radu-nicolae.pirea@oss.nxp.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-        Keyur Chudgar <keyur@os.amperecomputing.com>,
-        Quan Nguyen <quan@os.amperecomputing.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        devicetree@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH 00/12] Rework PHY reset handling
-Message-ID: <20230405153148.f2pk2tya67uyweki@pengutronix.de>
-References: <20230405-net-next-topic-net-phy-reset-v1-0-7e5329f08002@pengutronix.de>
- <da635af8-2052-40d5-846f-eda14af8c69b@lunn.ch>
+        with ESMTP id S231799AbjDEPhF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 11:37:05 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0892730F9
+        for <linux-acpi@vger.kernel.org>; Wed,  5 Apr 2023 08:37:04 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id j18-20020a05600c1c1200b003ee5157346cso23997251wms.1
+        for <linux-acpi@vger.kernel.org>; Wed, 05 Apr 2023 08:37:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1680709022;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=T5c+mNA6XY8wWRzkfZN072IgeaVS0xxX0AuG9Rc8s3Y=;
+        b=hxKiJK155vYGbPwdzRmDCUiWyNZbG3wukTsi0I6XWU1DKdfAnkq5nWIAm3DB4EHZU1
+         hirqMIbrtM5n61hEYk2ikAcX1fckKmRWVnKXogyDi7RnUYcodZWpte/nbyhVpCDMzzXU
+         /QcLUWksBNjDMT8zYtMqtFv0QPFkZiqzGEI6fjgwWIURijiUBJUIdp5eJVEqIUh6ADuU
+         8qBGePxy0bgwur+kNXliiyRCD9so9ZDfN7yG+Le+ZkUPJ/iPAGYbbT7ufog5IAKFtaKE
+         crVgIE49ef3OQ4wz2me77wt9zM9ZryNZw+pXCpIiFaWduEdNywug/sDDujT48AXZN0P+
+         JPyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680709022;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T5c+mNA6XY8wWRzkfZN072IgeaVS0xxX0AuG9Rc8s3Y=;
+        b=uniKiv91O2wB4JsZZVFPI5x6egBkQsA45DZbvDpDX989PBOj8QqU6cmX4obMaIGS8k
+         /kozr1v4mbQE1qTQnm/eizblmDmsbDClp4GEo+35VZDvs2+0tcYXzzwvUP2C6WSt7cVq
+         wUG6/YTS4ZIhT7H18tE9QHmSnuoedYgTFXPqFZyhA5jvwGYn/dLSVmqp4z3P0HyREd9u
+         uq9Payv1sWAzciCxxBaxtf0pv//CoCBAqKxRbwq1disvGXF91bZsB73xUyFg07BFVBEE
+         B3vemuQ5Zz9PV9X2TE61bhAuVfDaqMEdKycCDHx8mF9BViQbPnURgJCriHGzJQuqQKwj
+         orlg==
+X-Gm-Message-State: AAQBX9fkFjVTX8WG3mKL+5OaogqPT2T/XtRj9/KBlMrbvHDpt/e+CETx
+        CUN51wP87/SiZ8xUVvdEXJgEig==
+X-Google-Smtp-Source: AKy350a3Rz0tEpg+tSdGOZ4GFjJ3hB0PumjkJW94dJW2rUvZU2nc+5RfxVg2opTda9VASWMRks1Myg==
+X-Received: by 2002:a1c:7501:0:b0:3dc:433a:e952 with SMTP id o1-20020a1c7501000000b003dc433ae952mr4664257wmc.33.1680709022536;
+        Wed, 05 Apr 2023 08:37:02 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+        by smtp.gmail.com with ESMTPSA id r6-20020a05600c35c600b003ede03e4369sm2582875wmq.33.2023.04.05.08.37.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Apr 2023 08:37:02 -0700 (PDT)
+Date:   Wed, 5 Apr 2023 17:37:01 +0200
+From:   Andrew Jones <ajones@ventanamicro.com>
+To:     Conor Dooley <conor@kernel.org>
+Cc:     Sunil V L <sunilvl@ventanamicro.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-acpi@vger.kernel.org, linux-crypto@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, llvm@lists.linux.dev,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Tom Rix <trix@redhat.com>, Weili Qian <qianweili@huawei.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Marc Zyngier <maz@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Mark Gross <markgross@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Len Brown <lenb@kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>
+Subject: Re: [PATCH V4 13/23] RISC-V: cpufeature: Add ACPI support in
+ riscv_fill_hwcap()
+Message-ID: <fajw3nx5d6u32qvsb2uaysayiadqf5eelfjxc4lokjcrsvddad@cfyp2gwviocd>
+References: <20230404182037.863533-1-sunilvl@ventanamicro.com>
+ <20230404182037.863533-14-sunilvl@ventanamicro.com>
+ <20230404-promotion-scarce-7c69ff7e5f99@spud>
+ <ZC15LqYqLzmiVdcr@sunil-laptop>
+ <20230405-compel-slinky-2fe11b4bf0b3@spud>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <da635af8-2052-40d5-846f-eda14af8c69b@lunn.ch>
-User-Agent: NeoMutt/20180716
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230405-compel-slinky-2fe11b4bf0b3@spud>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andrew,
-
-On 23-04-05, Andrew Lunn wrote:
-> On Wed, Apr 05, 2023 at 11:26:51AM +0200, Marco Felsch wrote:
-> > The current phy reset handling is broken in a way that it needs
-> > pre-running firmware to setup the phy initially. Since the very first
-> > step is to readout the PHYID1/2 registers before doing anything else.
-> > 
-> > The whole dection logic will fall apart if the pre-running firmware
-> > don't setup the phy accordingly or the kernel boot resets GPIOs states
-> > or disables clocks. In such cases the PHYID1/2 read access will fail and
-> > so the whole detection will fail.
-> > 
-> > I fixed this via this series, the fix will include a new kernel API
-> > called phy_device_atomic_register() which will do all necessary things
-> > and return a 'struct phy_device' on success. So setting up a phy and the
-> > phy state machine is more convenient.
+On Wed, Apr 05, 2023 at 03:31:24PM +0100, Conor Dooley wrote:
+> On Wed, Apr 05, 2023 at 07:05:42PM +0530, Sunil V L wrote:
+> > On Tue, Apr 04, 2023 at 09:57:19PM +0100, Conor Dooley wrote:
+> > > On Tue, Apr 04, 2023 at 11:50:27PM +0530, Sunil V L wrote:
+...
+> > > > -		if (of_property_read_string(node, "riscv,isa", &isa)) {
+> > > > -			pr_warn("Unable to find \"riscv,isa\" devicetree entry\n");
+> > > > -			continue;
+> > > > +		if (acpi_disabled) {
+> > > > +			node = of_cpu_device_node_get(cpu);
+> > > > +			if (node) {
+> > > > +				rc = of_property_read_string(node, "riscv,isa", &isa);
+> > > 
+> > > Hmm, after digging in the previous patch, I think this is actually not
+> > > possible to fail? We already validated it when setting up the mask of
+> > > possible cpus, but I think leaving the error handling here makes things
+> > > a lot more obvious.
+> > > 
+> > Yeah, do you prefer to merge these patches again since only in this
+> > patch, we change the loop to for_each_possible_cpu() from
+> > for_each_of_cpu_node() which actually makes riscv_of_processor_hartid()
+> > not useful?
 > 
-> Please add a section explaining why the current API is broken beyond
-> repair.  You need to justify adding a new call, rather than fixing the
-> existing code to just do what is necessary to allow the PHY to be
-> found.
+> Yah, all 3 of us mistakenly thought that that was an unrelated cleanup
+> on the last revision, but clearly it is not.
+> Squash it back IMO, sorry for my part in the extra work generated.
 
-TIL from Florian that you use the cover-letter information in your merge
-commits. I will adapt the cover-letter accordingly and mention why this
-PR introduces a new API.
+Yup, please squash back in. Sorry about that, Sunil!
 
-Regards,
-  Marco
-
-
-> 
-> 	Andrew
-> 
+drew
