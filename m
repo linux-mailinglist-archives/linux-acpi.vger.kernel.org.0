@@ -2,127 +2,187 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C1926D863B
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 20:47:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE0086D8725
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 21:44:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233003AbjDESrO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Apr 2023 14:47:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42452 "EHLO
+        id S233015AbjDEToi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Apr 2023 15:44:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233927AbjDESrO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 14:47:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E1EB1B1
-        for <linux-acpi@vger.kernel.org>; Wed,  5 Apr 2023 11:46:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1680720387;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=lpEtsmuQMoNLAOkH1WmlpqkaQbYklvZVRp/WaxOPMlk=;
-        b=OKZ5K7l6/W7DUrMYTtc4sSci6RJljTou0VzM/DzTqMfBUJVnLR6/qfdQv10W8S23N6g6ly
-        PRHwhm3xVHzKOSMQFFiKFEYvD/rjXuLBmVJ1x/UFL9LHXeZ3z/8SLUDLhvmZF6KXoXcbU3
-        9+f7CCLVIy15rFUxYbnMWsThFy/+oro=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-12-zTwT4wlFOfiIQ13lGvYR8w-1; Wed, 05 Apr 2023 14:46:26 -0400
-X-MC-Unique: zTwT4wlFOfiIQ13lGvYR8w-1
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-501d484e26aso2244673a12.0
-        for <linux-acpi@vger.kernel.org>; Wed, 05 Apr 2023 11:46:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680720385;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lpEtsmuQMoNLAOkH1WmlpqkaQbYklvZVRp/WaxOPMlk=;
-        b=NzemZg56hKAgkGn/luKOSwOFmnU23gzihKqqCJHCiAb1v5LB7eV2lh076h+7tRn85I
-         ggXaNx7S5ZekV/tpArTzmC2vopEOAowO+a6ltDKHh7YeB4ShvCp1X4rqteGKrOCua6Ky
-         A3XEJUF94P6ojfZyT5YV8Lr1dAEhU+BCq+Qlta7QiCt33djjOz86hYGUHviayESiS+gf
-         iww4TphI1c3BwMWcMTxaFBMVGrVS7YE0maKEnFIqOEL/nerAMmsrEQ+s7MD7Fix9RBXR
-         C6fz4C48Fym9ely6SnS4fURPF7HkoYu0vSqfTq587DbVd2gDJFR34HVRkTTfdWpA3UJD
-         In+Q==
-X-Gm-Message-State: AAQBX9dvjYSU5W50ZUzQxT4q3l3b30zQ1ZNTVp6ukBXmmJGVzUxBGCZ/
-        fkgA7mpVT3DcTR5sJAMYTzbGNTMDqIg+VEirRHrk7M+bl5ze/II/mA+P2TLWyAvLE+LduljHE4d
-        7XNHuR9TTiKg8bNLk+bP9Cg==
-X-Received: by 2002:a05:6402:35d2:b0:4fd:21a6:832d with SMTP id z18-20020a05640235d200b004fd21a6832dmr2721987edc.11.1680720385607;
-        Wed, 05 Apr 2023 11:46:25 -0700 (PDT)
-X-Google-Smtp-Source: AKy350Z7iIzXV2aIUykyJ3n8+u6KsqseD3eGsKrgE2xrfeprRQhYr/6fs1A5fZauwIdAMKs4CjDQPw==
-X-Received: by 2002:a05:6402:35d2:b0:4fd:21a6:832d with SMTP id z18-20020a05640235d200b004fd21a6832dmr2721973edc.11.1680720385364;
-        Wed, 05 Apr 2023 11:46:25 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id e9-20020a50a689000000b004fd2a7aa1ecsm7662258edc.32.2023.04.05.11.46.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Apr 2023 11:46:22 -0700 (PDT)
-Message-ID: <a2ebf2a1-af88-8b6b-3496-00075f1a4534@redhat.com>
-Date:   Wed, 5 Apr 2023 20:46:20 +0200
+        with ESMTP id S232978AbjDETog (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 15:44:36 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5941D109
+        for <linux-acpi@vger.kernel.org>; Wed,  5 Apr 2023 12:44:35 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mfe@pengutronix.de>)
+        id 1pk930-00087L-Th; Wed, 05 Apr 2023 21:43:58 +0200
+Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <mfe@pengutronix.de>)
+        id 1pk92v-0005ZW-QA; Wed, 05 Apr 2023 21:43:53 +0200
+Date:   Wed, 5 Apr 2023 21:43:53 +0200
+From:   Marco Felsch <m.felsch@pengutronix.de>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Radu Pirea <radu-nicolae.pirea@oss.nxp.com>,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+        Keyur Chudgar <keyur@os.amperecomputing.com>,
+        Quan Nguyen <quan@os.amperecomputing.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        devicetree@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH 06/12] net: phy: add phy_device_atomic_register helper
+Message-ID: <20230405194353.pwuk7e6rxnha3uqi@pengutronix.de>
+References: <20230405-net-next-topic-net-phy-reset-v1-0-7e5329f08002@pengutronix.de>
+ <20230405-net-next-topic-net-phy-reset-v1-6-7e5329f08002@pengutronix.de>
+ <ad0b0d90-04bf-457c-9bdf-a747d66871b5@lunn.ch>
+ <20230405152225.tu3wmbcvchuugs5u@pengutronix.de>
+ <a5a4e735-7b24-4933-b431-f36305689a79@lunn.ch>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v2 0/6] ACPI: video: Fix missing acpi_video# devices on
- some systems
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Mario Limonciello <mario.limonciello@amd.com>,
-        Daniel Dadap <ddadap@nvidia.com>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org
-References: <20230404110251.42449-1-hdegoede@redhat.com>
- <CAJZ5v0jNjj2RhJo59hc+u7LOksq5kNPvYurnPnHF_OR_0zy18A@mail.gmail.com>
-Content-Language: en-US, nl
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAJZ5v0jNjj2RhJo59hc+u7LOksq5kNPvYurnPnHF_OR_0zy18A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a5a4e735-7b24-4933-b431-f36305689a79@lunn.ch>
+User-Agent: NeoMutt/20180716
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+On 23-04-05, Andrew Lunn wrote:
+> > The current fwnode_mdio.c don't provide the proper helper functions yet.
+> > Instead the parsing is spread between fwnode_mdiobus_register_phy() and
+> > fwnode_mdiobus_phy_device_register(). Of course these can be extracted
+> > and exported but I don't see the benefit. IMHO it just cause jumping
+> > around files and since fwnode is a proper firmware abstraction we could
+> > use is directly wihin core/lib files.
+> 
+> No, assuming fwnode is the proper firmware abstraction is wrong. You
+> need to be very careful any time you convert of_ to fwnode_ and look
+> at the history of every property. Look at the number of deprecated OF
+> properties in Documentation/devicetree/bindings. They should never be
+> moved to fwnode_ because then you are moving deprecated properties to
+> ACPI, which never had them in the first place! 
 
-On 4/5/23 20:27, Rafael J. Wysocki wrote:
-> Hi Hans,
-> 
-> On Tue, Apr 4, 2023 at 1:03 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> Hi Rafael,
->>
->> Here is my v2 of this series, changes in v2:
->>
->> - Add Mario's Reviewed-by to the series
->> - Fix typo in commit-message for 5/6
->> - Drop no longer used video_detect_force_none() in 6/6
->>
->> This patch series consists of 2 parts:
->>
->> 1. Fix missing acpi_video# devices on some systems, currently in kernels
->>    >= 6.1.5 and >= 6.2.0 acpi_video# backlight class devices will only
->>    get registered (by default) when a GPU driver asks for this by calling
->>    acpi_video_register_backlight(). This is causing backlight control to
->>    be missing on some systems.
->>
->>    Patches 1-4 fix this and ideally these should be send to Linus for
->>    an upcoming 6.3-rc# release.
-> 
-> So I've applied these for now.
-> 
-> Note that I generally hate to do things like this so late in the
-> cycle, so this generally is an exception AFAIAC.
+The handling of deprecated properties is always a pain. Drivers handling
+deprecated properties correctly for of_ should handle it correctly for
+fwnode_ too. IMHO it would be driver bug if not existing deprecated
+properties cause an error.  Of course there will be properties which
+need special attention for ACPI case but I don't see a problem for
+deprecated properties since those must be handled correctly for of_ case
+too.
 
-Ok, thank you for taking them now.
+> You cannot assume DT and ACPI are the same thing, have the same
+> binding. And the same is true, in theory, in the opposite direction.
+> We don't want the DT properties polluted with ACPI only properties.
+> Not that anybody takes ACPI seriously in networking.
 
->> 2. Now that the dust has settled a bit on the backlight refactor we can
->>    do some further cleanups. This is done in patches 5 + 6. Note that
->>    patch 5 depends on patch 2.
+My assumption was that ACPI is becoming more closer to OF and the
+fwnode/device abstraction is the abstraction to have one driver
+interacting correctly with OF and ACPI. As I said above there will be
+some corner-cases which need special attention of course :/
+
+Also while answering this mail, I noticed that there are already some
+'small' fwnode/device_ helpers within phy_device.c. So why not bundling
+everything within phy_device.c?
+
+> > I know and I thought about adding the firmware parsing helpers first but
+> > than I went this way. I can split this of course to make the patch
+> > smaller.
 > 
-> And I will queue up these 2 for 6.4 later.
+> Please do. Also, i read your commit message thinking it was a straight
+> copy of the code, and hence i did not need to review the code. But in
+> fact it is new code. So i need to take a close look at it.
+> 
+> But what i think is most important for this patchset is the
+> justification for not fixing the current API. Why is it broken beyond
+> repair?
+
+Currently we have one API which creates/allocates the 'struct
+phy_device' and intialize the state which is:
+   - phy_device_create()
+
+This function requests a driver based on the phy_id/c45_ids. The ID have
+to come from somewhere if autodection is used. For autodetection case
+   - get_phy_device()
+
+is called. This function try to access the phy without taken possible
+hardware dependencies into account. These dependecies can be reset-lines
+(in my case), clocks, supplies, ...
+
+For taking fwnode (and possible dependencies) into account fwnode_mdio.c
+was written which provides two helpers:
+   - fwnode_mdiobus_register_phy()
+   - fwnode_mdiobus_phy_device_register().
+
+The of_mdio.c and of_mdiobus_register_phy() is just a wrapper around
+fwnode_mdiobus_register_phy().
+
+fwnode_mdiobus_register_phy():
+   1st) calls get_phy_device() in case of autodection or c45. If phy_id
+        is provided and !c45 case phy_device_create() is called to get a
+	'struct phy_device'
+        - The autodection/c45 case try to access the PHYID registers
+	  which is not possible, please see above.
+   2nd) call fwnode_mdiobus_phy_device_register() or
+        phy_device_register() directly.
+	- phy_device_register() is the first time we taking the possible
+	  hardware reset line into account, which is far to late.
+
+fwnode_mdiobus_phy_device_register():
+   - takes a 'struct phy_device' as parameter, again this have to come
+     from somewhere.
+   - calls phy_device_register() which is taken the possibel hardware
+     reset into account, again to late.
+
+Why do I need the autodection? Because PHYs can be changed due to EOL,
+cheaper device, ... I don't wanna have a new devicetree/firmware for the
+updated product, just let the magic happen :)
+
+Why do I introduce a new API?
+  1st) There are working users of get_phy_device() and I don't wanna
+       break their systems, so I left this logic untouched. 
+  2nd) The fwnode API is replaced by this new one, since it is
+       broken (please see above). 
+  3rd) IMHO the 'phy request/phy create' handling is far to complex
+       therefore I introduced a single API which:
+       - intialize all structures and states
+       - prepare the device for interaction by using fwnode
+       - initialize/detect the device and requests the coorect phy
+	 module
+       - applies the fixups
+       - add the device to the kernel
+       - finally return the 'struct phy_device' to the user, so the
+	 driver can do $stuff.
+  4th) The new 'struct phy_device_config' makes it easier to
+       adapt/extend the API.
+
+Thanks a lot for your fast response and feedback :)
 
 Regards,
-
-Hans
-
+  Marco
