@@ -2,36 +2,36 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D96D6D7FCE
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 16:43:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74E786D8005
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 16:50:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238442AbjDEOnR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Apr 2023 10:43:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54992 "EHLO
+        id S232507AbjDEOut (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Apr 2023 10:50:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238437AbjDEOnF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 10:43:05 -0400
+        with ESMTP id S238618AbjDEOum (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 10:50:42 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ECDA30CD
-        for <linux-acpi@vger.kernel.org>; Wed,  5 Apr 2023 07:43:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B63EE60
+        for <linux-acpi@vger.kernel.org>; Wed,  5 Apr 2023 07:50:41 -0700 (PDT)
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <mfe@pengutronix.de>)
-        id 1pk4L8-0000GF-Oh; Wed, 05 Apr 2023 16:42:22 +0200
+        id 1pk4SX-0001Cb-Ce; Wed, 05 Apr 2023 16:50:01 +0200
 Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
         (envelope-from <mfe@pengutronix.de>)
-        id 1pk4L4-0007Dh-7f; Wed, 05 Apr 2023 16:42:18 +0200
-Date:   Wed, 5 Apr 2023 16:42:18 +0200
+        id 1pk4SV-0007PB-33; Wed, 05 Apr 2023 16:49:59 +0200
+Date:   Wed, 5 Apr 2023 16:49:59 +0200
 From:   Marco Felsch <m.felsch@pengutronix.de>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
         Russell King <linux@armlinux.org.uk>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         Broadcom internal kernel review list 
         <bcm-kernel-feedback-list@broadcom.com>,
         Richard Cochran <richardcochran@gmail.com>,
@@ -49,14 +49,15 @@ Cc:     Andrew Lunn <andrew@lunn.ch>,
         Frank Rowand <frowand.list@gmail.com>, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
         devicetree@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH 00/12] Rework PHY reset handling
-Message-ID: <20230405144218.kl7dqtms4x534jvi@pengutronix.de>
+Subject: Re: [PATCH 03/12] net: phy: add phy_device_set_miits helper
+Message-ID: <20230405144959.t2vledwhwzyahyuk@pengutronix.de>
 References: <20230405-net-next-topic-net-phy-reset-v1-0-7e5329f08002@pengutronix.de>
- <03ed8642-e521-f079-05b8-de9ffa97237a@gmail.com>
+ <20230405-net-next-topic-net-phy-reset-v1-3-7e5329f08002@pengutronix.de>
+ <d00dab9f-7678-4ef3-be51-c31cdb9564d1@lunn.ch>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <03ed8642-e521-f079-05b8-de9ffa97237a@gmail.com>
+In-Reply-To: <d00dab9f-7678-4ef3-be51-c31cdb9564d1@lunn.ch>
 User-Agent: NeoMutt/20180716
 X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
 X-SA-Exim-Mail-From: mfe@pengutronix.de
@@ -71,41 +72,44 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Florian,
-
-On 23-04-05, Florian Fainelli wrote:
-> Hi Marco,
+On 23-04-05, Andrew Lunn wrote:
+> > +void phy_device_set_miits(struct phy_device *phydev,
+> > +			  struct mii_timestamper *mii_ts)
+> > +{
+> > +	if (!phydev)
+> > +		return;
+> > +
+> > +	if (phydev->mii_ts) {
+> > +		phydev_dbg(phydev,
+> > +			   "MII timestamper already set -> skip set\n");
+> > +		return;
+> > +	}
+> > +
+> > +	phydev->mii_ts = mii_ts;
+> > +}
 > 
-> On 4/5/2023 2:26 AM, Marco Felsch wrote:
-> > The current phy reset handling is broken in a way that it needs
-> > pre-running firmware to setup the phy initially. Since the very first
-> > step is to readout the PHYID1/2 registers before doing anything else.
-> > 
-> > The whole dection logic will fall apart if the pre-running firmware
-> > don't setup the phy accordingly or the kernel boot resets GPIOs states
-> > or disables clocks. In such cases the PHYID1/2 read access will fail and
-> > so the whole detection will fail.
+> We tend to be less paranoid. Few, if any, other functions test that
+> phydev is not NULL. And the current code allows overwriting of an
+> existing stamper. If you think overwriting should not be allowed
+> return -EINVAL, and change all the callers to test for it.
+
+I can drop the 'if (!phydev)' check if you want. Return -EINVAL is
+possible too.
+
+> > +EXPORT_SYMBOL(phy_device_set_miits);
 > 
-> PHY reset is a bit too broad and should need some clarifications between:
-> 
-> - external reset to the PHY whereby a hardware pin on the PHY IC may be used
-> 
-> - internal reset to the PHY whereby we call into the PHY driver soft_reset
-> function to have the PHY software reset itself
-> 
-> You are changing the way the former happens, not the latter, at least not
-> changing the latter intentionally if at all.
+> _GPL please. The code is a bit inconsistent, but new symbols should be
+> EXPORT_SYMBOL_GPL.
 
-Yes.
+Sure! Don't know why I added it as EXPORT_SYMBOL in the first place.
 
-> This is important because your cover letter will be in the merge commit in
-> the networking tree.
+> I do however like this patch, hiding away the internals of phydev.
 
-Ah okay, I didn't know that. I will adapt the cover letter accordingly.
-
-> Will do a more thorough review on a patch by patch basis. Thanks.
-
-Thanks a lot, looking forward to it.
+Thanks for the fast response.
 
 Regards,
   Marco
+
+> 
+>   Andrew
+> 
