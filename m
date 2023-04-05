@@ -2,191 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38D2A6D7F8C
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 16:31:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D96D6D7FCE
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 16:43:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238266AbjDEObk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Apr 2023 10:31:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39592 "EHLO
+        id S238442AbjDEOnR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Apr 2023 10:43:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238037AbjDEObj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 10:31:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2ED2C1;
-        Wed,  5 Apr 2023 07:31:33 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F8C762685;
-        Wed,  5 Apr 2023 14:31:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACCAC4339B;
-        Wed,  5 Apr 2023 14:31:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680705092;
-        bh=zSAJvHpnJ4t5+N5rlPStNtw8kt3Pvqahl38JBpYY8G0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UA05BQCDFOlATRVQf6u1KpRp0bUorSfIjan7xcEWrovcLCtG6gNGf4096NaaFpr2s
-         /NErwGnTgYtFy7ZdM1i3tquxq7hjpC7wmlV/TgnIJRKIV1zF9lu4CP5c8oe5KWAPHQ
-         77r0V/i0nWcoazrEjCoyt7/BUVuUxRkvmgtkAr2FDL554YVLCeL8LL8MAUxVvd56xW
-         HSEjZG/XTAXMZ8qANPYHf87Ju78DBpuPGv0tiGZtDTnsJuQVELo9YGtEi7XFG0cTuO
-         7prRmTBPrYhuaCNo5CQeQaue1Clx1elgq7OvAyjF9XJ8U7qcdmsWp05Vs6w78hkng0
-         eI+P4ShYUl+zQ==
-Date:   Wed, 5 Apr 2023 15:31:24 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Sunil V L <sunilvl@ventanamicro.com>
-Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux-crypto@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        llvm@lists.linux.dev,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Tom Rix <trix@redhat.com>, Weili Qian <qianweili@huawei.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Marc Zyngier <maz@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Mark Gross <markgross@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Len Brown <lenb@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH V4 13/23] RISC-V: cpufeature: Add ACPI support in
- riscv_fill_hwcap()
-Message-ID: <20230405-compel-slinky-2fe11b4bf0b3@spud>
-References: <20230404182037.863533-1-sunilvl@ventanamicro.com>
- <20230404182037.863533-14-sunilvl@ventanamicro.com>
- <20230404-promotion-scarce-7c69ff7e5f99@spud>
- <ZC15LqYqLzmiVdcr@sunil-laptop>
+        with ESMTP id S238437AbjDEOnF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 10:43:05 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ECDA30CD
+        for <linux-acpi@vger.kernel.org>; Wed,  5 Apr 2023 07:43:03 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mfe@pengutronix.de>)
+        id 1pk4L8-0000GF-Oh; Wed, 05 Apr 2023 16:42:22 +0200
+Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <mfe@pengutronix.de>)
+        id 1pk4L4-0007Dh-7f; Wed, 05 Apr 2023 16:42:18 +0200
+Date:   Wed, 5 Apr 2023 16:42:18 +0200
+From:   Marco Felsch <m.felsch@pengutronix.de>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Radu Pirea <radu-nicolae.pirea@oss.nxp.com>,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+        Keyur Chudgar <keyur@os.amperecomputing.com>,
+        Quan Nguyen <quan@os.amperecomputing.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        devicetree@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH 00/12] Rework PHY reset handling
+Message-ID: <20230405144218.kl7dqtms4x534jvi@pengutronix.de>
+References: <20230405-net-next-topic-net-phy-reset-v1-0-7e5329f08002@pengutronix.de>
+ <03ed8642-e521-f079-05b8-de9ffa97237a@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="G5/7scijW3x9IuES"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZC15LqYqLzmiVdcr@sunil-laptop>
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <03ed8642-e521-f079-05b8-de9ffa97237a@gmail.com>
+User-Agent: NeoMutt/20180716
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi Florian,
 
---G5/7scijW3x9IuES
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 23-04-05, Florian Fainelli wrote:
+> Hi Marco,
+> 
+> On 4/5/2023 2:26 AM, Marco Felsch wrote:
+> > The current phy reset handling is broken in a way that it needs
+> > pre-running firmware to setup the phy initially. Since the very first
+> > step is to readout the PHYID1/2 registers before doing anything else.
+> > 
+> > The whole dection logic will fall apart if the pre-running firmware
+> > don't setup the phy accordingly or the kernel boot resets GPIOs states
+> > or disables clocks. In such cases the PHYID1/2 read access will fail and
+> > so the whole detection will fail.
+> 
+> PHY reset is a bit too broad and should need some clarifications between:
+> 
+> - external reset to the PHY whereby a hardware pin on the PHY IC may be used
+> 
+> - internal reset to the PHY whereby we call into the PHY driver soft_reset
+> function to have the PHY software reset itself
+> 
+> You are changing the way the former happens, not the latter, at least not
+> changing the latter intentionally if at all.
 
-On Wed, Apr 05, 2023 at 07:05:42PM +0530, Sunil V L wrote:
-> On Tue, Apr 04, 2023 at 09:57:19PM +0100, Conor Dooley wrote:
-> > On Tue, Apr 04, 2023 at 11:50:27PM +0530, Sunil V L wrote:
-> > > On ACPI based systems, the information about the hart
-> > > like ISA is provided by the RISC-V Hart Capabilities Table (RHCT).
-> > > Enable filling up hwcap structure based on the information in RHCT.
-> > >=20
-> > > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> > > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-> > > ---
-> > >  arch/riscv/kernel/cpufeature.c | 39 ++++++++++++++++++++++++++++++--=
---
-> > >  1 file changed, 35 insertions(+), 4 deletions(-)
-> > >=20
-> > > diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufe=
-ature.c
-> > > index 63e56ce04162..5d2065b937e5 100644
-> > > --- a/arch/riscv/kernel/cpufeature.c
-> > > +++ b/arch/riscv/kernel/cpufeature.c
-> > > @@ -6,6 +6,7 @@
-> > >   * Copyright (C) 2017 SiFive
-> > >   */
-> > > =20
-> > > +#include <linux/acpi.h>
-> > >  #include <linux/bitmap.h>
-> > >  #include <linux/ctype.h>
-> > >  #include <linux/libfdt.h>
-> > > @@ -13,6 +14,8 @@
-> > >  #include <linux/memory.h>
-> > >  #include <linux/module.h>
-> > >  #include <linux/of.h>
-> > > +#include <linux/of_device.h>
-> > > +#include <asm/acpi.h>
-> > >  #include <asm/alternative.h>
-> > >  #include <asm/cacheflush.h>
-> > >  #include <asm/errata_list.h>
-> > > @@ -91,6 +94,9 @@ void __init riscv_fill_hwcap(void)
-> > >  	char print_str[NUM_ALPHA_EXTS + 1];
-> > >  	int i, j, rc;
-> > >  	unsigned long isa2hwcap[26] =3D {0};
-> > > +	struct acpi_table_header *rhct;
-> > > +	acpi_status status;
-> > > +	unsigned int cpu;
-> > > =20
-> > >  	isa2hwcap['i' - 'a'] =3D COMPAT_HWCAP_ISA_I;
-> > >  	isa2hwcap['m' - 'a'] =3D COMPAT_HWCAP_ISA_M;
-> > > @@ -103,14 +109,36 @@ void __init riscv_fill_hwcap(void)
-> > > =20
-> > >  	bitmap_zero(riscv_isa, RISCV_ISA_EXT_MAX);
-> > > =20
-> > > -	for_each_of_cpu_node(node) {
-> > > +	if (!acpi_disabled) {
-> > > +		status =3D acpi_get_table(ACPI_SIG_RHCT, 0, &rhct);
-> > > +		if (ACPI_FAILURE(status))
-> > > +			return;
-> > > +	}
-> > > +
-> > > +	for_each_possible_cpu(cpu) {
-> > >  		unsigned long this_hwcap =3D 0;
-> > >  		DECLARE_BITMAP(this_isa, RISCV_ISA_EXT_MAX);
-> > >  		const char *temp;
-> > > =20
-> > > -		if (of_property_read_string(node, "riscv,isa", &isa)) {
-> > > -			pr_warn("Unable to find \"riscv,isa\" devicetree entry\n");
-> > > -			continue;
-> > > +		if (acpi_disabled) {
-> > > +			node =3D of_cpu_device_node_get(cpu);
-> > > +			if (node) {
-> > > +				rc =3D of_property_read_string(node, "riscv,isa", &isa);
-> >=20
-> > Hmm, after digging in the previous patch, I think this is actually not
-> > possible to fail? We already validated it when setting up the mask of
-> > possible cpus, but I think leaving the error handling here makes things
-> > a lot more obvious.
-> >=20
-> Yeah, do you prefer to merge these patches again since only in this
-> patch, we change the loop to for_each_possible_cpu() from
-> for_each_of_cpu_node() which actually makes riscv_of_processor_hartid()
-> not useful?
+Yes.
 
-Yah, all 3 of us mistakenly thought that that was an unrelated cleanup
-on the last revision, but clearly it is not.
-Squash it back IMO, sorry for my part in the extra work generated.
+> This is important because your cover letter will be in the merge commit in
+> the networking tree.
 
-Cheers,
-Conor.
+Ah okay, I didn't know that. I will adapt the cover letter accordingly.
 
->=20
-> > I'd swear I gave you a (conditional) R-b on v3 though, no?
-> > Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> Will do a more thorough review on a patch by patch basis. Thanks.
 
+Thanks a lot, looking forward to it.
 
---G5/7scijW3x9IuES
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZC2GOAAKCRB4tDGHoIJi
-0rnsAP0cgFLWkLbUrSntzAuLfoBAltCrodxxTLrayMe+WsSAOgEA0umoMwKzM2ox
-W+uIW/1axAfQExBp1IRIgO1BnHHRKAE=
-=CYcq
------END PGP SIGNATURE-----
-
---G5/7scijW3x9IuES--
+Regards,
+  Marco
