@@ -2,35 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57CB86D7E4C
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 16:00:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 177446D7E4B
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 16:00:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238203AbjDEOA5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Apr 2023 10:00:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41848 "EHLO
+        id S238195AbjDEOAz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Apr 2023 10:00:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238199AbjDEOAq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 10:00:46 -0400
+        with ESMTP id S238151AbjDEOAp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 10:00:45 -0400
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFDBD1BDD;
-        Wed,  5 Apr 2023 07:00:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A4E04C19;
+        Wed,  5 Apr 2023 07:00:43 -0700 (PDT)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
- id 942f2422d11c465e; Wed, 5 Apr 2023 16:00:43 +0200
+ id 1a7314477c9562e1; Wed, 5 Apr 2023 16:00:41 +0200
 Received: from kreacher.localnet (unknown [213.134.163.219])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 8BB6E1B4EA5B;
-        Wed,  5 Apr 2023 16:00:42 +0200 (CEST)
+        by v370.home.net.pl (Postfix) with ESMTPSA id E3CF01B4EA57;
+        Wed,  5 Apr 2023 16:00:40 +0200 (CEST)
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux ACPI <linux-acpi@vger.kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Bob Moore <robert.moore@intel.com>,
         Kees Cook <kees@outflux.net>
-Subject: [PATCH 28/32] ACPICA: acpi_madt_oem_data: Fix flexible array member definition
-Date:   Wed, 05 Apr 2023 15:56:06 +0200
-Message-ID: <2094939.KlZ2vcFHjT@kreacher>
+Subject: [PATCH 29/32] ACPICA: acpi_resource_irq: Replace 1-element arrays with flexible array
+Date:   Wed, 05 Apr 2023 15:56:59 +0200
+Message-ID: <2105135.bB369e8A3T@kreacher>
 In-Reply-To: <4845957.31r3eYUQgx@kreacher>
 References: <4845957.31r3eYUQgx@kreacher>
 MIME-Version: 1.0
@@ -52,33 +52,71 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Kees Cook <kees@outflux.net>
 
-ACPICA commit e7f6d8c1b7f79eb4b9b07f1bc09c549a2acbd6e8
+ACPICA commit bfdd3446e7caf795c85c70326c137023942972c5
 
-Use ACPI_FLEX_ARRAY() helper to define flexible array member alone in a
-struct. Fixes issue #812.
+Similar to "Replace one-element array with flexible-array", replace the
+1-element array with a proper flexible array member as defined by C99.
 
-No binary changes appear in the .text nor .data sections.
+This allows the code to operate without tripping compile-time and run-
+time bounds checkers (e.g. via __builtin_object_size(), -fsanitize=bounds,
+and/or -fstrict-flex-arrays=3). Note that the spec requires there be at
+least one interrupt, so use a union to keep space allocated for this.
 
-Link: https://github.com/acpica/acpica/commit/e7f6d8c1
+The only binary change in .text and .data sections is some rearrangement
+by the compiler of acpi_dm_address_common(), but appears to be harmless.
+
+Link: https://github.com/acpica/acpica/commit/bfdd3446
 Signed-off-by: Bob Moore <robert.moore@intel.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- include/acpi/actbl2.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/amlresrc.h |  5 ++++-
+ include/acpi/acrestyp.h        | 10 ++++++++--
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
-index a51fd4090d27..0029336775a9 100644
---- a/include/acpi/actbl2.h
-+++ b/include/acpi/actbl2.h
-@@ -1274,7 +1274,7 @@ enum acpi_madt_rintc_version {
- /* 80: OEM data */
- 
- struct acpi_madt_oem_data {
--	u8 oem_data[0];
-+	ACPI_FLEX_ARRAY(u8, oem_data);
+diff --git a/drivers/acpi/acpica/amlresrc.h b/drivers/acpi/acpica/amlresrc.h
+index 48df447ef5bb..4e88f9fc2a28 100644
+--- a/drivers/acpi/acpica/amlresrc.h
++++ b/drivers/acpi/acpica/amlresrc.h
+@@ -261,7 +261,10 @@ struct aml_resource_address16 {
+ struct aml_resource_extended_irq {
+ 	AML_RESOURCE_LARGE_HEADER_COMMON u8 flags;
+ 	u8 interrupt_count;
+-	u32 interrupts[1];
++	union {
++		u32 interrupt;
++		 ACPI_FLEX_ARRAY(u32, interrupts);
++	};
+ 	/* res_source_index, res_source optional fields follow */
  };
  
- /*
+diff --git a/include/acpi/acrestyp.h b/include/acpi/acrestyp.h
+index 4c3b7b393f82..b84cd316217f 100644
+--- a/include/acpi/acrestyp.h
++++ b/include/acpi/acrestyp.h
+@@ -142,7 +142,10 @@ struct acpi_resource_irq {
+ 	u8 shareable;
+ 	u8 wake_capable;
+ 	u8 interrupt_count;
+-	u8 interrupts[1];
++	union {
++		u8 interrupt;
++		 ACPI_FLEX_ARRAY(u8, interrupts);
++	};
+ };
+ 
+ struct acpi_resource_dma {
+@@ -335,7 +338,10 @@ struct acpi_resource_extended_irq {
+ 	u8 wake_capable;
+ 	u8 interrupt_count;
+ 	struct acpi_resource_source resource_source;
+-	u32 interrupts[1];
++	union {
++		u32 interrupt;
++		 ACPI_FLEX_ARRAY(u32, interrupts);
++	};
+ };
+ 
+ struct acpi_resource_generic_register {
 -- 
 2.35.3
 
