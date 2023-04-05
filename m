@@ -2,116 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91CC06D7E9A
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 16:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79B0B6D7E99
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 16:05:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238395AbjDEOFY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Apr 2023 10:05:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42996 "EHLO
+        id S238455AbjDEOFX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Apr 2023 10:05:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238409AbjDEOEo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 10:04:44 -0400
+        with ESMTP id S238472AbjDEOEn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 10:04:43 -0400
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E6B876B4;
-        Wed,  5 Apr 2023 07:02:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FF0876A3;
+        Wed,  5 Apr 2023 07:02:07 -0700 (PDT)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
- id 7cba445b858272b9; Wed, 5 Apr 2023 16:01:34 +0200
+ id 2e12dc83af149271; Wed, 5 Apr 2023 16:01:33 +0200
 Received: from kreacher.localnet (unknown [213.134.163.219])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id CB79D1B4EA6F;
-        Wed,  5 Apr 2023 16:01:33 +0200 (CEST)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 512971B4EA6F;
+        Wed,  5 Apr 2023 16:01:32 +0200 (CEST)
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux ACPI <linux-acpi@vger.kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Bob Moore <robert.moore@intel.com>
-Subject: [PATCH 00/32] ACPICA: ACPICA 20230331
-Date:   Wed, 05 Apr 2023 15:29:49 +0200
-Message-ID: <4845957.31r3eYUQgx@kreacher>
+Subject: [PATCH 01/32] ACPICA: Headers: Delete bogus node_array array of pointers from AEST table
+Date:   Wed, 05 Apr 2023 15:32:06 +0200
+Message-ID: <4818517.GXAFRqVoOG@kreacher>
+In-Reply-To: <4845957.31r3eYUQgx@kreacher>
+References: <4845957.31r3eYUQgx@kreacher>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
 X-CLIENT-IP: 213.134.163.219
 X-CLIENT-HOSTNAME: 213.134.163.219
 X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrvdejuddgjedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnheptefgiedtfeeuheegtdfhleeltdeuledugfehfeekkeekudffgeegtdeufeekvdeunecuffhomhgrihhnpegrtghpihgtrgdrohhrghenucfkphepvddufedrudefgedrudeifedrvdduleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrdduieefrddvudelpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeefpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosggvrhhtrdhmohhorhgvsehinhhtvghlrdgtohhm
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrvdejuddgjedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepledtieekkeekveeikeetgffgteeuteefjeevjeegudelvdduheeiuedvieehieevnecuffhomhgrihhnpehgihhthhhusgdrtghomhenucfkphepvddufedrudefgedrudeifedrvdduleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrdduieefrddvudelpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeefpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosggvrhhtrdhmohhorhgvsehinhhtvghlrdgtohhm
 X-DCC--Metrics: v370.home.net.pl 1024; Body=3 Fuz1=3 Fuz2=3
-X-Spam-Status: No, score=0.5 required=5.0 tests=SPF_HELO_NONE,SPF_PASS,
-        SUBJ_ALL_CAPS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi All,
+From: Jessica Clarke <jrtc27@jrtc27.com>
 
-This series of patches is a set of ACPICA 20230331 changes described at
-https://acpica.org/sites/acpica/files/changes_64.txt ported to Linux.
+ACPICA commit f0c4a06f1dfc4886d4e0c2aa30bc57b10c5a8c53
 
-It contains the following material:
+Like many tables, this is a header followed by multiple subtables of
+varying self-identifying types, and ACPICA does not normally add a field
+for the subtables, instead relying on pointer arithmetic past the end of
+the first header struct, since indexing a flexible array member is
+meaningless for variable-length entries. If we really wanted a field for
+this, we could use a u8 flexible array member, but it contradicts the
+current style. Using void *, however, is categorically wrong, as ACPI
+tables never contain native C-language pointers.
 
-Bob Moore (2):
-      ACPICA: Update all copyrights/signons to 2023
-      ACPICA: Update version to 20230331
+Link: https://github.com/acpica/acpica/commit/f0c4a06f
+Signed-off-by: Bob Moore <robert.moore@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ include/acpi/actbl2.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-Hesham Almatary (1):
-      ACPICA: Add support for Arm's MPAM ACPI table version 2
+diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+index b2973dbe37ee..2e7e0d5674f6 100644
+--- a/include/acpi/actbl2.h
++++ b/include/acpi/actbl2.h
+@@ -82,7 +82,6 @@
+ 
+ struct acpi_table_aest {
+ 	struct acpi_table_header header;
+-	void *node_array[];
+ };
+ 
+ /* Common Subtable header - one per Node Structure (Subtable) */
+-- 
+2.35.3
 
-Huacai Chen (1):
-      ACPICA: Add support for 64 bit loong_arch compilation
-
-Jeremi Piotrowski (1):
-      ACPICA: Add support for ASPT table in disassembler
-
-Jessica Clarke (1):
-      ACPICA: Headers: Delete bogus node_array array of pointers from AEST table
-
-Kees Cook (10):
-      ACPICA: struct acpi_resource_vendor: Replace 1-element array with flexible array
-      ACPICA: actbl1: Replace 1-element arrays with flexible arrays
-      ACPICA: actbl2: Replace 1-element arrays with flexible arrays
-      ACPICA: struct acpi_nfit_interleave: Replace 1-element array with flexible array
-      ACPICA: Introduce ACPI_FLEX_ARRAY
-      ACPICA: struct acpi_resource_dma: Replace 1-element array with flexible array
-      ACPICA: acpi_pci_routing_table: Replace fixed-size array with flex array member
-      ACPICA: acpi_dmar_andd: Replace 1-element array with flexible array
-      ACPICA: acpi_madt_oem_data: Fix flexible array member definition
-      ACPICA: acpi_resource_irq: Replace 1-element arrays with flexible array
-
-Najumon (1):
-      ACPICA: add os specific support for Zephyr RTOS
-
-Niyas Sait (1):
-      ACPICA: add support for ClockInput resource (v6.5)
-
-Pedro Falcato (1):
-      ACPICA: acpisrc: Add missing tables to astable
-
-Sunil V L (2):
-      ACPICA: MADT: Add RISC-V INTC interrupt controller
-      ACPICA: Add structure definitions for RISC-V RHCT
-
-Tamir Duberstein (8):
-      ACPICA: Avoid undefined behavior: load of misaligned address
-      ACPICA: Avoid undefined behavior: applying zero offset to null pointer
-      ACPICA: Avoid undefined behavior: member access within null pointer
-      ACPICA: Avoid undefined behavior: member access within misaligned address
-      ACPICA: Avoid undefined behavior: member access within misaligned address
-      ACPICA: Avoid undefined behavior: member access within misaligned address
-      ACPICA: Avoid undefined behavior: member access within misaligned address
-      ACPICA: Avoid undefined behavior: load of misaligned address
-
-Xiongfeng Wang (2):
-      ACPICA: ACPI 6.5: MADT: add support for trace buffer extension in GICC
-      ACPICA: Add missing macro ACPI_FUNCTION_TRACE() for acpi_ns_repair_HID()
-
-void0red (1):
-      ACPICA: ACPICA: check null return of ACPI_ALLOCATE_ZEROED in acpi_db_display_objects
-
-Thanks!
 
 
 
