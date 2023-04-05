@@ -2,53 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96D7C6D7A79
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 12:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD5716D7A82
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Apr 2023 12:58:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237665AbjDEK4M (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Apr 2023 06:56:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37632 "EHLO
+        id S237672AbjDEK63 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Apr 2023 06:58:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237672AbjDEK4H (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 06:56:07 -0400
+        with ESMTP id S230313AbjDEK62 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 06:58:28 -0400
 Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 203BD59C8
-        for <linux-acpi@vger.kernel.org>; Wed,  5 Apr 2023 03:56:04 -0700 (PDT)
-Received: by mail-pj1-x1036.google.com with SMTP id fy10-20020a17090b020a00b0023b4bcf0727so36881628pjb.0
-        for <linux-acpi@vger.kernel.org>; Wed, 05 Apr 2023 03:56:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11B892691
+        for <linux-acpi@vger.kernel.org>; Wed,  5 Apr 2023 03:58:27 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id fy10-20020a17090b020a00b0023b4bcf0727so36887206pjb.0
+        for <linux-acpi@vger.kernel.org>; Wed, 05 Apr 2023 03:58:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1680692164;
+        d=ventanamicro.com; s=google; t=1680692306;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qHjNmNubtW1m6x/ZHSROLzC6UE26oZx7ZrLiozJA6N0=;
-        b=cDCnQAlVg9wphWyj020XoXu348UrwEHznmRRm3HENM8CHxPrsB4ftiLhtCukY5QAS1
-         CwBBjAHsCSYAMx2GgBoncQw7+9YyR71AMr2GaaRR1lRn7sqbWtNwZfzyNbyrEJTIWSeP
-         lpvajki5RiSaNzESIU3JMJZqDQcCUfxS4Nw351KgGTvAex3xD9lBOO/ZlgPSdCLXZQWE
-         yt4H/DUHQl8arz3OuSIFiy9Y9v0m5Ve3DxDtYTut/wSWZ0NOL44uMcCpCzSgL/p5n0Ao
-         d+rZSPbZuqfD52fpeaM2haOafL/rVPiGAqsWfMj9b+EVyRJk7i0D2c2bvyVZAlW2jOEM
-         hjtA==
+        bh=gzqvLefolrwy3WdKYUZXiVUA/OQTcVAscLkW8tJWOwA=;
+        b=jO0Y2EOFEKMw2F8LH2z0jbWyH6iiWiC/WyITb2ZxshiuO7irSikeEstwWIMuLeE5yA
+         BPh+X2qBVfn2w7PNRyONoDHq4qyuphVGfxsKV3e/0QU3AOf+JDEg5UjfGkf7x9y//lfd
+         95o8tRXJFCbhxM6DMHsP9/3yvlAGjZaoH2DIzAlWnd11KLPiFpyJ9BLtFvkpmEe1t9lL
+         IRvUmgSle+koJjWBDlPqB4K5Vf1nadckacYET91rTHhrtwJd8l73IWetohGmCobodQ4Q
+         MyttWJtt1sliGHRvEc0zh9Ef2SlGnYje0yYqq69dzGW8capGmFjaQtDzTEhvIFF8mCV8
+         PCAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680692164;
+        d=1e100.net; s=20210112; t=1680692306;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qHjNmNubtW1m6x/ZHSROLzC6UE26oZx7ZrLiozJA6N0=;
-        b=DOANVAwQad513lY7KS+pucRTf5CAWS5Y14fvnIk5qrfFQ75c/RuoQvmjZnUUQyRSb3
-         0244jGbm1UbxiN2BycOQFWf/wWutpgW5wIKv/vwpk0tLzL/GsjrA0IRONUevXRSTtKrR
-         QvNOVqvC8mcBbFdn9/rzU6RM2SQHfxk251k3yw6Z3Ntn0uhsYEmAL2f4rNJ6rz+vPidA
-         htpFbKajNuxZdpPd+8iZ7s4BItKoF4tIGsUuoZx/VNNeoIKf/Eb0JgsfBTkYP8M4mtIK
-         Nl1Ksg1wEIH8dqT6LcxPIwkf0w5NH/xkaAIJrmFRZXWjy4/DaxhbCCrZVveNugdOHl59
-         sZcQ==
-X-Gm-Message-State: AAQBX9clHhMCUrOH2J0k2W+SVUCu7VknJnbEgOYHMwf6RH9Ai7oiXYFD
-        GlGHGL8hHAmUjQWqo29/o+fu4Q==
-X-Google-Smtp-Source: AKy350brsIvQ17YKEK+9sMHxvtlGFWTIhRtaYlWAqmfzPxrLO54umhrjiJOK/GO6T6r+7/92elotug==
-X-Received: by 2002:a17:90b:4b46:b0:23b:4614:6f84 with SMTP id mi6-20020a17090b4b4600b0023b46146f84mr6472024pjb.28.1680692164415;
-        Wed, 05 Apr 2023 03:56:04 -0700 (PDT)
+        bh=gzqvLefolrwy3WdKYUZXiVUA/OQTcVAscLkW8tJWOwA=;
+        b=LdSaWXrlcGedLPYxX9qi8YbWcwy3KQadDMJBP8Bke+lnKXiM26ahKa7ZFsA51KTeob
+         ZQMLoeblCyiesuDPgwdU/CAk9TaxcqWQuWUO1P9jcKXHNzdPDB1Xor3QsXdum66Xhpf0
+         lqjPVXf0efpawlV/2IWO1UyUm8z5/MCeWOZtUQiECFEWx16t9k9xIQQkzKGeS3mAUoAh
+         LAfqeW+Rsn61pprTws51EwwL6Ef8LrWHerGDNMjHt4fNYfFZbfdpwxeSKNHrhGvxWGWY
+         soMI350NhkarJ43Lm/c0aRGTE5SEpim7X0fk3O8fDzMuNJbmNBy5rPNQ7FYeRmbZC/KB
+         PNcA==
+X-Gm-Message-State: AAQBX9cHOzUB1TebOT7tTUKy3g7sb/nb8LsUhQOq6KhzUHnnAdfQ6ivY
+        HMJq4Oc7gQmc0gjiyHfyL8j4MA==
+X-Google-Smtp-Source: AKy350Z45D9tpgWEug4uJiwUcpQ/wzKxDo0vLJTHod9wnTI8mK/+badfYEZMzMbpbs5SYRl87Y9j8w==
+X-Received: by 2002:a17:90b:388b:b0:241:13bb:8303 with SMTP id mu11-20020a17090b388b00b0024113bb8303mr6409630pjb.42.1680692306536;
+        Wed, 05 Apr 2023 03:58:26 -0700 (PDT)
 Received: from sunil-laptop ([106.51.184.50])
-        by smtp.gmail.com with ESMTPSA id d14-20020a17090a498e00b00234afca2498sm1077701pjh.28.2023.04.05.03.55.53
+        by smtp.gmail.com with ESMTPSA id on13-20020a17090b1d0d00b0023493354f37sm1123694pjb.26.2023.04.05.03.58.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Apr 2023 03:56:04 -0700 (PDT)
-Date:   Wed, 5 Apr 2023 16:25:49 +0530
+        Wed, 05 Apr 2023 03:58:26 -0700 (PDT)
+Date:   Wed, 5 Apr 2023 16:28:13 +0530
 From:   Sunil V L <sunilvl@ventanamicro.com>
 To:     Conor Dooley <conor@kernel.org>
 Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -62,29 +62,28 @@ Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         Jonathan Corbet <corbet@lwn.net>,
         Marc Zyngier <maz@kernel.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Len Brown <lenb@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
+        Andrew Jones <ajones@ventanamicro.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
         Mark Gross <markgross@kernel.org>,
         Hans de Goede <hdegoede@redhat.com>,
         Paul Walmsley <paul.walmsley@sifive.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Anup Patel <apatel@ventanamicro.com>,
         Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
         Zhou Wang <wangzhou1@hisilicon.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
+        Len Brown <lenb@kernel.org>,
         Maximilian Luz <luzmaximilian@gmail.com>,
         "David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH V4 16/23] clocksource/timer-riscv: Refactor
- riscv_timer_init_dt()
-Message-ID: <ZC1TtYAELzHtTJTu@sunil-laptop>
+Subject: Re: [PATCH V4 20/23] RISC-V: Enable ACPI in defconfig
+Message-ID: <ZC1URXKq7rrUlrXl@sunil-laptop>
 References: <20230404182037.863533-1-sunilvl@ventanamicro.com>
- <20230404182037.863533-17-sunilvl@ventanamicro.com>
- <20230404-flatware-ditto-e5c71d5a36c2@spud>
+ <20230404182037.863533-21-sunilvl@ventanamicro.com>
+ <20230404-dimmed-verbally-3597dcaaf106@spud>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230404-flatware-ditto-e5c71d5a36c2@spud>
+In-Reply-To: <20230404-dimmed-verbally-3597dcaaf106@spud>
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
         DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
@@ -94,22 +93,40 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Apr 04, 2023 at 10:25:38PM +0100, Conor Dooley wrote:
-> On Tue, Apr 04, 2023 at 11:50:30PM +0530, Sunil V L wrote:
-> > Refactor the timer init function such that few things can be
-> > shared by both DT and ACPI based platforms.
+On Tue, Apr 04, 2023 at 10:43:02PM +0100, Conor Dooley wrote:
+> On Tue, Apr 04, 2023 at 11:50:34PM +0530, Sunil V L wrote:
+> > Add support to build ACPI subsystem in defconfig.
 > > 
-> > Co-developed-by: Anup Patel <apatel@ventanamicro.com>
-> > Signed-off-by: Anup Patel <apatel@ventanamicro.com>
 > > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 > > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > > Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 > 
-> Forget an R-b or drop it intentionally from v3?
-> https://lore.kernel.org/linux-riscv/c2c1bdb5-aee6-4f4c-9f7d-073917e75b88@spud/
-> Please say why if you drop or ignore tags between versions.
+> Dropped another R-b?
+> https://lore.kernel.org/linux-riscv/91cf4ebd-f22c-4cf9-9fb4-fa6349ea00ab@spud/
 > 
-Sorry, missed those tags. Not intentional. Will update in next revision.
+Yeah, missed updating....
+
+> That said...
+> 
+> > ---
+> >  arch/riscv/configs/defconfig | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/arch/riscv/configs/defconfig b/arch/riscv/configs/defconfig
+> > index d98d6e90b2b8..8822b49ddb59 100644
+> > --- a/arch/riscv/configs/defconfig
+> > +++ b/arch/riscv/configs/defconfig
+> > @@ -238,3 +238,4 @@ CONFIG_RCU_EQS_DEBUG=y
+> >  # CONFIG_FTRACE is not set
+> >  # CONFIG_RUNTIME_TESTING_MENU is not set
+> >  CONFIG_MEMTEST=y
+> > +CONFIG_ACPI=y
+> 
+> ...this is not where savedefconfig puts this for me.
+> Please move it there & then:
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> 
+Okay. Will update.
 
 Thanks!
 Sunil
