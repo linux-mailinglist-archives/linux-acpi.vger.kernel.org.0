@@ -2,415 +2,284 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C4776D971B
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Apr 2023 14:39:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B35F26D98D4
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Apr 2023 16:00:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236387AbjDFMjc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Apr 2023 08:39:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39474 "EHLO
+        id S238363AbjDFOAB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Apr 2023 10:00:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229597AbjDFMjb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Apr 2023 08:39:31 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6529F7A84;
-        Thu,  6 Apr 2023 05:39:29 -0700 (PDT)
-Received: from dggpemm500001.china.huawei.com (unknown [172.30.72.57])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Psgx45BDdzKrYd;
-        Thu,  6 Apr 2023 20:36:56 +0800 (CST)
-Received: from [10.67.100.236] (10.67.100.236) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Thu, 6 Apr 2023 20:39:26 +0800
-Message-ID: <ec40f516-cdd4-85a6-81c2-0da27252c5ca@huawei.com>
-Date:   Thu, 6 Apr 2023 20:39:26 +0800
+        with ESMTP id S238806AbjDFN7r (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Apr 2023 09:59:47 -0400
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C73A08A4D
+        for <linux-acpi@vger.kernel.org>; Thu,  6 Apr 2023 06:59:29 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id z11so25850710pfh.4
+        for <linux-acpi@vger.kernel.org>; Thu, 06 Apr 2023 06:59:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=semihalf.com; s=google; t=1680789560;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=D62uxIrnRdLIJ/0FC1wLMU5NxXl2TZq4mxa+MvGVH2I=;
+        b=ep4um+9SshODUF+wBrCFzrXH1dy9eFmb9qXjk/h54/YrbGpDP04/j7Oc4hs3985wzM
+         3QeD+8vjiNdv/MwOB1yO8rN8BlCOdoI2WAAShmDhQ/1OWWsi1hzpaPItmeFvK99EGiiN
+         gAPiYvfaB1UZyaQ041mZGeRPAmJ3YYu5xFMUuqT+3T+58FV0uBwpNTFfLFQ77AZe85er
+         ERzx3znqXBUVdSpjGr4btsrEUuoYJ89RYaejHWSdwpkreSaB359Q2Rso+SRfAf0WsgVt
+         BW2CX1PPYFKH2JRoIqgbg2/ag81DIVEK58CLUaRdsJeDk3KrHQnZPqsrWQtowqDh8pfb
+         7GPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680789560;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=D62uxIrnRdLIJ/0FC1wLMU5NxXl2TZq4mxa+MvGVH2I=;
+        b=JgE3uRfbpSddT3ltaKOcIc/N36Eqz0iVEHRS9OjUHv9E3SqvnkhlidLn4A0QdxzzN7
+         +KsgzA6mgCOoMDMBRrHQ2E4Z7ll+Qtc48LbQcjsyBc3buotVcxyl/OrPX92xXvXPth7i
+         1dJwAxNwE7FkaLETgfGFCXjAQkHAKvPwF+K3R2sv5Mw36M130pjBnbEgKFqdy/DJZqVD
+         c/M4JhYvY6f4XbOPH2cn+tEr9zGWKtkWnAp953DWA7e44xXYXu/X3+CCLyLOEzUlcAOI
+         Y3q0W1aiGD8ot8SKlOnVXelSb+BYaEWNPTmVsuo/h0DUyTs4O2mImo5ixbv3M3lPo61F
+         ZVHA==
+X-Gm-Message-State: AAQBX9eCx+4aYnETOqvCAN0TtA3PaxLmWYPf3D+H22tBmWbI+ef3p2hB
+        i7AofS/PBY3Y1x3sdejXZzYa1U9P7ZLl53HBspAA0A==
+X-Google-Smtp-Source: AKy350awhzhXo5L1KzV0UcjmcDPDHA0lMbG00SZClLPQXXYhpDBMAKS6jF2tBEd2EBkZ3sWL3hcPOLnpoD4HJQosRMw=
+X-Received: by 2002:a63:d30b:0:b0:513:6f5:7dda with SMTP id
+ b11-20020a63d30b000000b0051306f57ddamr3239284pgg.10.1680789560598; Thu, 06
+ Apr 2023 06:59:20 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.2
-Subject: Re: [PATCH v3 2/2] ACPI: APEI: handle synchronous exceptions in task
- work
-To:     Shuai Xue <xueshuai@linux.alibaba.com>, <tony.luck@intel.com>,
-        <naoya.horiguchi@nec.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <justin.he@arm.com>,
-        <akpm@linux-foundation.org>, <ardb@kernel.org>,
-        <ashish.kalra@amd.com>, <baolin.wang@linux.alibaba.com>,
-        <bp@alien8.de>, <cuibixuan@linux.alibaba.com>,
-        <dave.hansen@linux.intel.com>, <james.morse@arm.com>,
-        <jarkko@kernel.org>, <lenb@kernel.org>, <linmiaohe@huawei.com>,
-        <lvying6@huawei.com>, <rafael@kernel.org>, <xiexiuqi@huawei.com>,
-        <zhuo.song@linux.alibaba.com>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20230317072443.3189-3-xueshuai@linux.alibaba.com>
-From:   Xiaofei Tan <tanxiaofei@huawei.com>
-In-Reply-To: <20230317072443.3189-3-xueshuai@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.100.236]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemm500001.china.huawei.com (7.185.36.107)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.5 required=5.0 tests=NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+References: <20230213100921.268770-1-jaz@semihalf.com> <20230213100921.268770-2-jaz@semihalf.com>
+ <CAH76GKOHMtwE7rLTPKUZJ_7xUUdHmHnGyZOsh8pFWoHCiWQynw@mail.gmail.com> <c5455226-1d51-1d3d-0b67-78a0473a9e8c@redhat.com>
+In-Reply-To: <c5455226-1d51-1d3d-0b67-78a0473a9e8c@redhat.com>
+From:   Grzegorz Jaszczyk <jaz@semihalf.com>
+Date:   Thu, 6 Apr 2023 15:59:09 +0200
+Message-ID: <CAH76GKPkgUsXQpsBxgSaQ_qz+bGyZ-Sxu-xRMBJaQ67BZG4jsQ@mail.gmail.com>
+Subject: Re: [RFCv3 1/1] platform/x86: Add virtual PMC driver used for S2Idle
+To:     Hans de Goede <hdegoede@redhat.com>, rafael@kernel.org
+Cc:     linux-kernel@vger.kernel.org, dmy@semihalf.com, tn@semihalf.com,
+        dbehr@google.com, zide.chen@intel.corp-partner.google.com,
+        seanjc@google.com, upstream@semihalf.com, markgross@kernel.org,
+        dtor@google.com, mario.limonciello@amd.com,
+        linux-pm@vger.kernel.org, x86@kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Shuai,
++linux-acpi@vger.kernel.org
 
-Thanks for your this effort, and it's great.
-Some comments below.
+Hi Hans, Rafael
 
-在 2023/3/17 15:24, Shuai Xue 写道:
-> Hardware errors could be signaled by synchronous interrupt, e.g.  when an
-> error is detected by a background scrubber, or signaled by synchronous
-> exception, e.g. when an uncorrected error is consumed. Both synchronous and
-> asynchronous error are queued and handled by a dedicated kthread in
-> workqueue.
+czw., 6 kwi 2023 o 12:53 Hans de Goede <hdegoede@redhat.com> napisa=C5=82(a=
+):
 >
-> commit 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for
-> synchronous errors") keep track of whether memory_failure() work was
-> queued, and make task_work pending to flush out the workqueue so that the
-> work for synchronous error is processed before returning to user-space.
-> The trick ensures that the corrupted page is unmapped and poisoned. And
-> after returning to user-space, the task starts at current instruction which
-> triggering a page fault in which kernel will send SIGBUS to current process
-> due to VM_FAULT_HWPOISON.
+> Hi Grzegorz,
 >
-> However, the memory failure recovery for hwpoison-aware mechanisms does not
-> work as expected. For example, hwpoison-aware user-space processes like
-> QEMU register their customized SIGBUS handler and enable early kill mode by
-> seting PF_MCE_EARLY at initialization. Then the kernel will directy notify
-> the process by sending a SIGBUS signal in memory failure with wrong
-> si_code: the actual user-space process accessing the corrupt memory
-> location, but its memory failure work is handled in a kthread context, so
-> it will send SIGBUS with BUS_MCEERR_AO si_code to the actual user-space
-> process instead of BUS_MCEERR_AR in kill_proc().
+> On 3/29/23 14:33, Grzegorz Jaszczyk wrote:
+> > Hi Hans,
+> >
+> > Do you think that this RFC is in good enough state to start the ACPI
+> > ID registration process so after it will be completed we could land
+> > this solution? Or maybe we could land it (of course if there are no
+> > other remarks) even before and adjust if needed?
 >
-> To this end, separate synchronous and asynchronous error handling into
-> different paths like X86 platform does:
+> I see from the links in the cover-letter that most of
+> the previous discussion has happened on the linux-pm list
+> and I believe that the linux-pm folks are in a better place
+> to answer this question then I am.
 >
-> - task work for synchronous errors.
-> - and workqueue for asynchronous errors.
+> I have no objections against the suggested approach,
+> but I don't really feel that it is my call to make if
+> we should move forward with this.
+
+Hans: I see and thank you for your feedback.
+
+Rafael: Could you please comment above?
+
+Thank you in advance,
+Grzegorz
+
 >
-> Then for synchronous errors, the current context in memory failure is
-> exactly belongs to the task consuming poison data and it will send SIBBUS
-> with proper si_code.
+> Regards,
 >
-> Fixes: 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for synchronous errors")
-> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-> ---
->   drivers/acpi/apei/ghes.c | 114 ++++++++++++++++++++++-----------------
->   include/acpi/ghes.h      |   3 --
->   mm/memory-failure.c      |  13 -----
->   3 files changed, 64 insertions(+), 66 deletions(-)
+> Hans
 >
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index cccd96596efe..1901ee3498c4 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -452,45 +452,79 @@ static void ghes_clear_estatus(struct ghes *ghes,
->   }
->   
->   /*
-> - * Called as task_work before returning to user-space.
-> - * Ensure any queued work has been done before we return to the context that
-> - * triggered the notification.
-> + * struct sync_task_work - for synchronous RAS event
-> + *
-> + * @twork:                callback_head for task work
-> + * @pfn:                  page frame number of corrupted page
-> + * @flags:                fine tune action taken
-> + *
-> + * Structure to pass task work to be handled before
-> + * ret_to_user via task_work_add().
->    */
-> -static void ghes_kick_task_work(struct callback_head *head)
-> +struct sync_task_work {
-> +	struct callback_head twork;
-> +	u64 pfn;
-> +	int flags;
-> +};
-> +
-> +static void memory_failure_cb(struct callback_head *twork)
->   {
-> -	struct acpi_hest_generic_status *estatus;
-> -	struct ghes_estatus_node *estatus_node;
-> -	u32 node_len;
-> +	int ret;
-> +	struct sync_task_work *twcb =
-> +		container_of(twork, struct sync_task_work, twork);
->   
-> -	estatus_node = container_of(head, struct ghes_estatus_node, task_work);
-> -	if (IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
-> -		memory_failure_queue_kick(estatus_node->task_work_cpu);
-> +	ret = memory_failure(twcb->pfn, twcb->flags);
-> +	kfree(twcb);
->   
-> -	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
-> -	node_len = GHES_ESTATUS_NODE_LEN(cper_estatus_len(estatus));
-> -	gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
-> +	if (!ret)
-> +		return;
-> +
-> +	/*
-> +	 * -EHWPOISON from memory_failure() means that it already sent SIGBUS
-> +	 * to the current process with the proper error info,
-> +	 * -EOPNOTSUPP means hwpoison_filter() filtered the error event,
-> +	 *
-> +	 * In both cases, no further processing is required.
-> +	 */
-> +	if (ret == -EHWPOISON || ret == -EOPNOTSUPP)
-> +		return;
-> +
-> +	pr_err("Memory error not recovered");
-> +	force_sig(SIGBUS);
->   }
->   
-> -static bool ghes_do_memory_failure(u64 physical_addr, int flags)
-> +static void ghes_do_memory_failure(u64 physical_addr, int flags)
->   {
->   	unsigned long pfn;
-> +	struct sync_task_work *twcb;
->   
->   	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
-> -		return false;
-> +		return;
->   
->   	pfn = PHYS_PFN(physical_addr);
->   	if (!pfn_valid(pfn) && !arch_is_platform_page(physical_addr)) {
->   		pr_warn_ratelimited(FW_WARN GHES_PFX
->   		"Invalid address in generic error data: %#llx\n",
->   		physical_addr);
-> -		return false;
-> +		return;
-
-For synchronous errors, we need send SIGBUS to the current task if not recovered,
-as the behavior of this patch  in the function memory_failure_cb().
-Such abnormal branches should also be taken as not recovered.
-
-
-> +	}
-> +
-> +	if (flags == MF_ACTION_REQUIRED && current->mm) {
-> +		twcb = kmalloc(sizeof(*twcb), GFP_ATOMIC);
-> +		if (!twcb)
-> +			return;
-
-It's the same here.
-
-
-> +
-> +		twcb->pfn = pfn;
-> +		twcb->flags = flags;
-> +		init_task_work(&twcb->twork, memory_failure_cb);
-> +		task_work_add(current, &twcb->twork, TWA_RESUME);
-> +		return;
->   	}
->   
->   	memory_failure_queue(pfn, flags);
-> -	return true;
->   }
->   
-> -static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
-> +static void ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
->   				       int sev, bool sync)
->   {
->   	int flags = -1;
-> @@ -498,7 +532,7 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
->   	struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
->   
->   	if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
-> -		return false;
-> +		return;
-
-and here.
-
-
->   
->   	/* iff following two events can be handled properly by now */
->   	if (sec_sev == GHES_SEV_CORRECTED &&
-> @@ -508,16 +542,15 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
->   		flags = sync ? MF_ACTION_REQUIRED : 0;
->   
->   	if (flags != -1)
-> -		return ghes_do_memory_failure(mem_err->physical_addr, flags);
-> +		ghes_do_memory_failure(mem_err->physical_addr, flags);
->   
-> -	return false;
-> +	return;
->   }
->   
-> -static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
-> +static void ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
->   				       int sev, bool sync)
->   {
->   	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
-> -	bool queued = false;
->   	int sec_sev, i;
->   	char *p;
->   	int flags = sync ? MF_ACTION_REQUIRED : 0;
-> @@ -526,7 +559,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
->   
->   	sec_sev = ghes_severity(gdata->error_severity);
->   	if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
-> -		return false;
-> +		return;
-
-and here.
-
-
->   
->   	p = (char *)(err + 1);
->   	for (i = 0; i < err->err_info_num; i++) {
-> @@ -542,7 +575,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
->   		 * and don't filter out 'corrected' error here.
->   		 */
->   		if (is_cache && has_pa) {
-> -			queued = ghes_do_memory_failure(err_info->physical_fault_addr, flags);
-> +			ghes_do_memory_failure(err_info->physical_fault_addr, flags);
->   			p += err_info->length;
->   			continue;
->   		}
-> @@ -555,8 +588,6 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
->   				    error_type);
->   		p += err_info->length;
->   	}
-
-and here, for the case that memory failure is not done, as PA is invalid.
-
-
-> -
-> -	return queued;
->   }
->   
->   /*
-> @@ -654,7 +685,7 @@ static void ghes_defer_non_standard_event(struct acpi_hest_generic_data *gdata,
->   	schedule_work(&entry->work);
->   }
->   
-> -static bool ghes_do_proc(struct ghes *ghes,
-> +static void ghes_do_proc(struct ghes *ghes,
->   			 const struct acpi_hest_generic_status *estatus)
->   {
->   	int sev, sec_sev;
-> @@ -662,7 +693,6 @@ static bool ghes_do_proc(struct ghes *ghes,
->   	guid_t *sec_type;
->   	const guid_t *fru_id = &guid_null;
->   	char *fru_text = "";
-> -	bool queued = false;
->   	bool sync = is_hest_sync_notify(ghes);
->   
->   	sev = ghes_severity(estatus->error_severity);
-> @@ -681,13 +711,13 @@ static bool ghes_do_proc(struct ghes *ghes,
->   			atomic_notifier_call_chain(&ghes_report_chain, sev, mem_err);
->   
->   			arch_apei_report_mem_error(sev, mem_err);
-> -			queued = ghes_handle_memory_failure(gdata, sev, sync);
-> +			ghes_handle_memory_failure(gdata, sev, sync);
->   		}
->   		else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
->   			ghes_handle_aer(gdata);
->   		}
->   		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
-> -			queued = ghes_handle_arm_hw_error(gdata, sev, sync);
-> +			ghes_handle_arm_hw_error(gdata, sev, sync);
->   		} else {
->   			void *err = acpi_hest_get_payload(gdata);
->   
-> @@ -697,8 +727,6 @@ static bool ghes_do_proc(struct ghes *ghes,
->   					       gdata->error_data_length);
->   		}
->   	}
-> -
-> -	return queued;
->   }
->   
->   static void __ghes_print_estatus(const char *pfx,
-> @@ -1000,9 +1028,7 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
->   	struct ghes_estatus_node *estatus_node;
->   	struct acpi_hest_generic *generic;
->   	struct acpi_hest_generic_status *estatus;
-> -	bool task_work_pending;
->   	u32 len, node_len;
-> -	int ret;
->   
->   	llnode = llist_del_all(&ghes_estatus_llist);
->   	/*
-> @@ -1017,25 +1043,14 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
->   		estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
->   		len = cper_estatus_len(estatus);
->   		node_len = GHES_ESTATUS_NODE_LEN(len);
-> -		task_work_pending = ghes_do_proc(estatus_node->ghes, estatus);
-> +		ghes_do_proc(estatus_node->ghes, estatus);
->   		if (!ghes_estatus_cached(estatus)) {
->   			generic = estatus_node->generic;
->   			if (ghes_print_estatus(NULL, generic, estatus))
->   				ghes_estatus_cache_add(generic, estatus);
->   		}
-> -
-> -		if (task_work_pending && current->mm) {
-> -			estatus_node->task_work.func = ghes_kick_task_work;
-> -			estatus_node->task_work_cpu = smp_processor_id();
-> -			ret = task_work_add(current, &estatus_node->task_work,
-> -					    TWA_RESUME);
-> -			if (ret)
-> -				estatus_node->task_work.func = NULL;
-> -		}
-> -
-> -		if (!estatus_node->task_work.func)
-> -			gen_pool_free(ghes_estatus_pool,
-> -				      (unsigned long)estatus_node, node_len);
-> +		gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node,
-> +			      node_len);
->   
->   		llnode = next;
->   	}
-> @@ -1096,7 +1111,6 @@ static int ghes_in_nmi_queue_one_entry(struct ghes *ghes,
->   
->   	estatus_node->ghes = ghes;
->   	estatus_node->generic = ghes->generic;
-> -	estatus_node->task_work.func = NULL;
->   	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
->   
->   	if (__ghes_read_estatus(estatus, buf_paddr, fixmap_idx, len)) {
-> diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
-> index 3c8bba9f1114..e5e0c308d27f 100644
-> --- a/include/acpi/ghes.h
-> +++ b/include/acpi/ghes.h
-> @@ -35,9 +35,6 @@ struct ghes_estatus_node {
->   	struct llist_node llnode;
->   	struct acpi_hest_generic *generic;
->   	struct ghes *ghes;
-> -
-> -	int task_work_cpu;
-> -	struct callback_head task_work;
->   };
->   
->   struct ghes_estatus_cache {
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index fae9baf3be16..6ea8c325acb3 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -2355,19 +2355,6 @@ static void memory_failure_work_func(struct work_struct *work)
->   	}
->   }
->   
-> -/*
-> - * Process memory_failure work queued on the specified CPU.
-> - * Used to avoid return-to-userspace racing with the memory_failure workqueue.
-> - */
-> -void memory_failure_queue_kick(int cpu)
-> -{
-> -	struct memory_failure_cpu *mf_cpu;
-> -
-> -	mf_cpu = &per_cpu(memory_failure_cpu, cpu);
-> -	cancel_work_sync(&mf_cpu->work);
-> -	memory_failure_work_func(&mf_cpu->work);
-> -}
-> -
->   static int __init memory_failure_init(void)
->   {
->   	struct memory_failure_cpu *mf_cpu;
+>
+>
+> > pon., 13 lut 2023 o 11:11 Grzegorz Jaszczyk <jaz@semihalf.com> napisa=
+=C5=82(a):
+> >>
+> >> Virtual PMC driver is meant for the guest VMs for the S2Idle
+> >> notification. Its purpose is to register S2Idle dev ops check handler,
+> >> which will evaluate ACPI _DSM just before the guest enters S2Idle powe=
+r
+> >> state.
+> >>
+> >> This allows to trap on MMIO access done as a consequence of _DSM
+> >> evaluation and therefore notify the VMM about the guest entering S2Idl=
+e
+> >> state.
+> >>
+> >> Signed-off-by: Grzegorz Jaszczyk <jaz@semihalf.com>
+> >> ---
+> >> Changelog v1..v2:
+> >> - Take advantage of acpi_s2idle_dev_ops's check() instead of notify()
+> >>
+> >> Changelog v2..v3:
+> >> - Add MODULE_LICENSE
+> >> - Remove "amd" prefixes
+> >> - Be more verbose in VIRT_PMC config description and make it
+> >>   HYPERVISOR_GUEST dependent
+> >> - Add extra check ensuring that DSM method supports ACPI_VIRT_PMC_NOTI=
+FY function
+> >> ---
+> >>  drivers/platform/x86/Kconfig    |  7 +++
+> >>  drivers/platform/x86/Makefile   |  3 ++
+> >>  drivers/platform/x86/virt_pmc.c | 83 ++++++++++++++++++++++++++++++++=
++
+> >>  3 files changed, 93 insertions(+)
+> >>  create mode 100644 drivers/platform/x86/virt_pmc.c
+> >>
+> >> diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconf=
+ig
+> >> index 5692385e2d26..837ce201b68b 100644
+> >> --- a/drivers/platform/x86/Kconfig
+> >> +++ b/drivers/platform/x86/Kconfig
+> >> @@ -1099,6 +1099,13 @@ config WINMATE_FM07_KEYS
+> >>           buttons below the display. This module adds an input device
+> >>           that delivers key events when these buttons are pressed.
+> >>
+> >> +config VIRT_PMC
+> >> +       tristate "Virtual Power Management Controller"
+> >> +       depends on ACPI && SUSPEND && HYPERVISOR_GUEST
+> >> +       help
+> >> +         The Virtual PMC driver is meant for the guest VMs and its ma=
+in
+> >> +         purpose is to notify about guest entering s2idle state.
+> >> +
+> >>  endif # X86_PLATFORM_DEVICES
+> >>
+> >>  config P2SB
+> >> diff --git a/drivers/platform/x86/Makefile b/drivers/platform/x86/Make=
+file
+> >> index 1d3d1b02541b..c4d3056cf4ea 100644
+> >> --- a/drivers/platform/x86/Makefile
+> >> +++ b/drivers/platform/x86/Makefile
+> >> @@ -129,6 +129,9 @@ obj-$(CONFIG_INTEL_SCU_WDT)         +=3D intel_scu=
+_wdt.o
+> >>  obj-$(CONFIG_INTEL_SCU_IPC_UTIL)       +=3D intel_scu_ipcutil.o
+> >>  obj-$(CONFIG_X86_INTEL_LPSS)           +=3D pmc_atom.o
+> >>
+> >> +# Virtual PMC
+> >> +obj-$(CONFIG_VIRT_PMC)                 +=3D virt_pmc.o
+> >> +
+> >>  # Siemens Simatic Industrial PCs
+> >>  obj-$(CONFIG_SIEMENS_SIMATIC_IPC)      +=3D simatic-ipc.o
+> >>
+> >> diff --git a/drivers/platform/x86/virt_pmc.c b/drivers/platform/x86/vi=
+rt_pmc.c
+> >> new file mode 100644
+> >> index 000000000000..a5966bb9048f
+> >> --- /dev/null
+> >> +++ b/drivers/platform/x86/virt_pmc.c
+> >> @@ -0,0 +1,83 @@
+> >> +// SPDX-License-Identifier: GPL-2.0-only
+> >> +/*
+> >> + * Virtual Power Management Controller Driver
+> >> + *
+> >> + * Author: Grzegorz Jaszczyk <jaz@semihalf.com>
+> >> + */
+> >> +
+> >> +#include <linux/acpi.h>
+> >> +#include <linux/platform_device.h>
+> >> +
+> >> +#define ACPI_VIRT_PMC_DSM_UUID "9ea49ba3-434a-49a6-be30-37cc55c4d397"
+> >> +#define ACPI_VIRT_PMC_NOTIFY 1
+> >> +
+> >> +static acpi_handle virt_pmc_handle;
+> >> +
+> >> +static void virt_pmc_s2idle_notify(void)
+> >> +{
+> >> +       union acpi_object *out_obj;
+> >> +       guid_t dsm_guid;
+> >> +
+> >> +       guid_parse(ACPI_VIRT_PMC_DSM_UUID, &dsm_guid);
+> >> +
+> >> +       out_obj =3D acpi_evaluate_dsm(virt_pmc_handle, &dsm_guid,
+> >> +                                       0, ACPI_VIRT_PMC_NOTIFY, NULL)=
+;
+> >> +
+> >> +       acpi_handle_debug(virt_pmc_handle, "_DSM function %u evaluatio=
+n %s\n",
+> >> +                         ACPI_VIRT_PMC_NOTIFY, out_obj ? "successful"=
+ : "failed");
+> >> +
+> >> +       ACPI_FREE(out_obj);
+> >> +}
+> >> +
+> >> +static struct acpi_s2idle_dev_ops pmc_s2idle_dev_ops =3D {
+> >> +       .check =3D virt_pmc_s2idle_notify,
+> >> +};
+> >> +
+> >> +static int virt_pmc_probe(struct platform_device *pdev)
+> >> +{
+> >> +       int err =3D 0;
+> >> +       guid_t dsm_guid;
+> >> +
+> >> +       virt_pmc_handle =3D ACPI_HANDLE(&pdev->dev);
+> >> +
+> >> +       guid_parse(ACPI_VIRT_PMC_DSM_UUID, &dsm_guid);
+> >> +
+> >> +       if (!acpi_check_dsm(virt_pmc_handle, &dsm_guid, 0,
+> >> +                           1 << ACPI_VIRT_PMC_NOTIFY)) {
+> >> +               dev_err(&pdev->dev, "DSM method doesn't support ACPI_V=
+IRT_PMC_NOTIFY\n");
+> >> +               return -ENODEV;
+> >> +       }
+> >> +
+> >> +       err =3D acpi_register_lps0_dev(&pmc_s2idle_dev_ops);
+> >> +       if (err)
+> >> +               dev_err(&pdev->dev, "failed to register LPS0 sleep han=
+dler\n");
+> >> +
+> >> +       return err;
+> >> +}
+> >> +
+> >> +static int virt_pmc_remove(struct platform_device *pdev)
+> >> +{
+> >> +       acpi_unregister_lps0_dev(&pmc_s2idle_dev_ops);
+> >> +
+> >> +       return 0;
+> >> +}
+> >> +
+> >> +static const struct acpi_device_id virt_pmc_acpi_ids[] =3D {
+> >> +       {"HYPE0001", 0}, /* _HID for XXX Power Engine, _CID PNP0D80*/
+> >> +       { }
+> >> +};
+> >> +MODULE_DEVICE_TABLE(acpi, virt_pmc_acpi_ids);
+> >> +
+> >> +static struct platform_driver virt_pmc_driver =3D {
+> >> +       .driver =3D {
+> >> +               .name =3D "virtual_pmc",
+> >> +               .acpi_match_table =3D ACPI_PTR(virt_pmc_acpi_ids),
+> >> +       },
+> >> +       .probe =3D virt_pmc_probe,
+> >> +       .remove =3D virt_pmc_remove,
+> >> +};
+> >> +
+> >> +module_platform_driver(virt_pmc_driver);
+> >> +
+> >> +MODULE_LICENSE("GPL");
+> >> +MODULE_DESCRIPTION("Virtual PMC Driver");
+> >> --
+> >> 2.39.1.581.gbfd45094c4-goog
+> >>
+> >
+>
