@@ -2,46 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02A1D6D9C04
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Apr 2023 17:18:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89D116D9CAF
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Apr 2023 17:50:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239084AbjDFPS3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Apr 2023 11:18:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46686 "EHLO
+        id S236973AbjDFPuc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Apr 2023 11:50:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238614AbjDFPS2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Apr 2023 11:18:28 -0400
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D097D9740;
-        Thu,  6 Apr 2023 08:18:27 -0700 (PDT)
-Received: by mail-oi1-f169.google.com with SMTP id r16so29228513oij.5;
-        Thu, 06 Apr 2023 08:18:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680794307;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        with ESMTP id S230041AbjDFPu3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Apr 2023 11:50:29 -0400
+Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 257394C16
+        for <linux-acpi@vger.kernel.org>; Thu,  6 Apr 2023 08:50:28 -0700 (PDT)
+Received: by mail-il1-x12f.google.com with SMTP id v5so18227095ilj.4
+        for <linux-acpi@vger.kernel.org>; Thu, 06 Apr 2023 08:50:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1680796227;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tMVZO08lvHqEqzOhCjWBkw6cuH10x2lvDXMm8yPnUHA=;
-        b=yiJMa0taOeoOSLTdHTM7DiN81lVUQBhacbtq68X1Bnv7rTDlOet+eow4GitTydRTyC
-         BH2oRJbDJjU6FOLxy/HXxYKxGmIlKjteMEUj96DG+eKsiQm8Cg4bDBO9pbPNkyJEkKcJ
-         Q7qKU1ioFWUNdMY4DWaqMI8qEGlcfPJbf7o8uxIMh9iwzYjwRfexzLRIKFU4xrZzin6d
-         w0Z8NS1VPX5cmAWwW1dGFcI5rnfe27aDWr7FsfKi+Fk/nNn7KOJ805W0S+/ZaRY2CYJo
-         8DzUavMxslj27NX1V9iCm8bjxb1ZMfZ8C1Wjmf75KsPcDF7Wf3F5I7D3R56NO+/zjgO5
-         M1ug==
-X-Gm-Message-State: AAQBX9fGt57noXEkqm1jS/y5XU8VtG5LsFYhrO0t+/PrvdZlHbH0INcu
-        +s29cHG3rIA+L6PjoZDPpw==
-X-Google-Smtp-Source: AKy350bdKh87MJnB+T/f5MC1AljIe85YEewpcZpqURUk+MxBLINdqR5LYyGaTKMJtGlA2H+WoQ6W0g==
-X-Received: by 2002:a05:6808:289:b0:389:50f2:4ab0 with SMTP id z9-20020a056808028900b0038950f24ab0mr3866508oic.10.1680794306969;
-        Thu, 06 Apr 2023 08:18:26 -0700 (PDT)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id e4-20020a4a5504000000b0054156478f2esm639755oob.44.2023.04.06.08.18.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Apr 2023 08:18:26 -0700 (PDT)
-Received: (nullmailer pid 3117135 invoked by uid 1000);
-        Thu, 06 Apr 2023 15:18:25 -0000
-Date:   Thu, 6 Apr 2023 10:18:25 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Pin-yen Lin <treapking@chromium.org>
+        bh=0vw0nTdNNDBdzuVwl43PcGSuAabOdNNAGw61ZkrRkbk=;
+        b=Dtaox/tAdrkSpD669sTOy5nmorhEWtnr2dEZhlXAIztSf8/6EGk9IhwTcZdL7c/db2
+         u6lLo0Y8U87ixfZ8UekNOlIlfm43vhfpljRczsbpKkEj3Mbc67SuOZfWOnjS+GpHflXK
+         KHsDapHN2Z+wChVdC81Qj+SyTaL/1CyjiZFO4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680796227;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0vw0nTdNNDBdzuVwl43PcGSuAabOdNNAGw61ZkrRkbk=;
+        b=z/xfHSq0Y7Q2q8bj4NoD8MGKkee91LavcI6ebgdd9SZgp9vj0CwSLCDu9GH75/Vunp
+         ZhA/4QFhBJlczDrWZ+6BFGkbIgr6F/AQ5OZUATd5jzI3Jh9nNcU+814WJpkoDiJSVRHv
+         kgYPDePiSH1YR0x0l3sXv61AMUEaewD3Cf2zBkd48oQWKeqnawVv2DU47WOXDFi0nrLj
+         cd7Zc/Ir2YUneAL9I17+xVGRaIP+taJPzHf0cd9FmoziRhoB2PfR+OP+KEEZ6MOIH7OK
+         Y7l2cF6jBUfpOxsZpPAu2OCJJmNBdh6gARCH+q5SlIUIbtLc2R6SQGvwajeErZfa3spo
+         ZBnQ==
+X-Gm-Message-State: AAQBX9fxD37aMW2/Ytv10S3sUfmde2+mLJ2oJTUqq/BkTuOMbludXCu/
+        sio2G75Wxn0kFwuljFpIRy25n1JFxPAZZFgLs5tZgg==
+X-Google-Smtp-Source: AKy350ahTRwqxB32fuHDEhVOj2irSRSGAPqf/lRVAs2lliq4tse2KYN9S3pr/GdI7YCuZClMvusqhNNTlPDqjQeaHO0=
+X-Received: by 2002:a05:6e02:1208:b0:325:e737:9d62 with SMTP id
+ a8-20020a056e02120800b00325e7379d62mr6445519ilq.6.1680796227515; Thu, 06 Apr
+ 2023 08:50:27 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230331091145.737305-1-treapking@chromium.org>
+ <20230331091145.737305-9-treapking@chromium.org> <20230406151543.GA3098002-robh@kernel.org>
+In-Reply-To: <20230406151543.GA3098002-robh@kernel.org>
+From:   Pin-yen Lin <treapking@chromium.org>
+Date:   Fri, 7 Apr 2023 00:50:16 +0900
+Message-ID: <CAEXTbpfwMBOTSe3Vp8arTGK1hanrS7qZTFeaN+qN148XcZ4-Fg@mail.gmail.com>
+Subject: Re: [PATCH v15 08/10] dt-bindings: display: bridge: it6505: Add
+ mode-switch support
+To:     Rob Herring <robh@kernel.org>
 Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
         Neil Armstrong <neil.armstrong@linaro.org>,
         Robert Foss <rfoss@kernel.org>,
@@ -72,204 +83,202 @@ Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
         =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
         <nfraprado@collabora.com>,
         Javier Martinez Canillas <javierm@redhat.com>,
-        linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Chen-Yu Tsai <wenst@chromium.org>
-Subject: Re: [PATCH v15 04/10] dt-bindings: display: bridge: anx7625: Add
- mode-switch support
-Message-ID: <20230406151825.GB3098002-robh@kernel.org>
-References: <20230331091145.737305-1-treapking@chromium.org>
- <20230331091145.737305-5-treapking@chromium.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230331091145.737305-5-treapking@chromium.org>
-X-Spam-Status: No, score=0.7 required=5.0 tests=FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Mar 31, 2023 at 05:11:39PM +0800, Pin-yen Lin wrote:
-> Analogix 7625 can be used in systems to switch the DP traffic between
-> two downstreams, which can be USB Type-C DisplayPort alternate mode
-> lane or regular DisplayPort output ports.
-> 
-> Update the binding to accommodate this usage by introducing a
-> data-lanes and a mode-switch property on endpoints.
-> 
-> Also include the link to the product brief in the bindings.
-> 
-> Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-> Tested-by: Chen-Yu Tsai <wenst@chromium.org>
-> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> 
-> ---
-> 
-> (no changes since v12)
-> 
-> Changes in v12:
-> - Removed the 4-lane binding in analogix,anx7625.yaml
-> - Reworded the description for the mode-switch property
-> 
-> Changes in v11:
-> - Updated the description of the endpoints
-> - Referenced video-interfaces.yaml instead for the endpoints
-> 
-> Changes in v10:
-> - Collected Reviewed-by and Tested-by tags
-> 
-> Changes in v9:
-> - Collected Reviewed-by tag
-> 
-> Changes in v8:
-> - Updated anx7625 bindings for data-lane property
-> - Fixed the subject prefix
-> 
-> Changes in v7:
-> - Fixed issues reported by dt_binding_check
-> - Updated the schema and the example dts for data-lanes.
-> - Changed to generic naming for the example dts node.
-> 
-> Changes in v6:
-> - Remove switches node and use endpoints and data-lanes property to
->   describe the connections.
-> 
->  .../display/bridge/analogix,anx7625.yaml      | 88 ++++++++++++++++++-
->  1 file changed, 85 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml b/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml
-> index b42553ac505c..604c7391d74f 100644
-> --- a/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml
-> +++ b/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml
-> @@ -12,7 +12,8 @@ maintainers:
->  
->  description: |
->    The ANX7625 is an ultra-low power 4K Mobile HD Transmitter
-> -  designed for portable devices.
-> +  designed for portable devices. Product brief is available at
-> +  https://www.analogix.com/en/system/files/AA-002291-PB-6-ANX7625_ProductBrief.pdf
->  
->  properties:
->    compatible:
-> @@ -112,9 +113,40 @@ properties:
->                data-lanes: true
->  
->        port@1:
-> -        $ref: /schemas/graph.yaml#/properties/port
-> +        $ref: /schemas/graph.yaml#/$defs/port-base
->          description:
-> -          Video port for panel or connector.
-> +          Video port for panel or connector. Each endpoint connects to a video
-> +          output downstream, and the "data-lanes" property is used to describe
-> +          the pin connections. 0, 1, 2, 3 in "data-lanes" maps to SSRX1, SSTX1,
-> +          SSRX2, SSTX2, respectively.
-> +
-> +        patternProperties:
-> +          "^endpoint@[01]$":
-> +            $ref: /schemas/media/video-interfaces.yaml#
+Hi Rob,
 
-               unevaluatedProperties: false
+Thanks for the review.
 
-> +            properties:
-> +              reg: true
-> +
-> +              remote-endpoint: true
+On Fri, Apr 7, 2023 at 12:15=E2=80=AFAM Rob Herring <robh@kernel.org> wrote=
+:
+>
+> On Fri, Mar 31, 2023 at 05:11:43PM +0800, Pin-yen Lin wrote:
+> > ITE IT6505 can be used in systems to switch the DP traffic between
+> > two downstreams, which can be USB Type-C DisplayPort alternate mode
+> > lane or regular DisplayPort output ports.
+> >
+> > Update the binding to accommodate this usage by introducing a
+> > data-lanes and a mode-switch property on endpoints.
+> >
+> > Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+> >
+> > ---
+> >
+> > (no changes since v12)
+> >
+> > Changes in v12:
+> > - Fixed the schema of "data-lanes" property for it6505
+> > - Reworded the description of the mode-switch property
+> >
+> > Changes in v11:
+> > - Updated the description of the endpoints in the bindings
+> > - Referenced video-interfaces.yaml instead for the endpoints binding
+> > - Removed duplicated definitions from inherited schema
+> >
+> > Changes in v9:
+> > - Fixed subject prefix again
+> > - Changed the naming of the example node for it6505
+> >
+> > Changes in v8:
+> > - Updated bindings for data-lanes property
+> > - Fixed subject prefix
+> >
+> > Changes in v7:
+> > - Fixed issues reported by dt_binding_check.
+> > - Updated the schema and the example dts for data-lanes.
+> > - Changed to generic naming for the example dts node.
+> >
+> > Changes in v6:
+> > - Remove switches node and use endpoints and data-lanes property to
+> >   describe the connections.
+> >
+> >  .../bindings/display/bridge/ite,it6505.yaml   | 101 +++++++++++++++---
+> >  1 file changed, 88 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/display/bridge/ite,it650=
+5.yaml b/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
+> > index c9a882ee6d98..348b02f26041 100644
+> > --- a/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
+> > +++ b/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
+> > @@ -75,22 +75,49 @@ properties:
+> >        port@1:
+> >          $ref: /schemas/graph.yaml#/$defs/port-base
+> >          unevaluatedProperties: false
+> > -        description: Video port for DP output
+> > +        description:
+> > +          Video port for DP output. Each endpoint connects to a video =
+output
+> > +          downstream, and the "data-lanes" property is used to describ=
+e the pin
+> > +          connections. 0, 1, 2, 3 in "data-lanes" maps to TX0, TX1, TX=
+2, TX3,
+> > +          respectively.
+> >
+> > -        properties:
+> > -          endpoint:
+> > -            $ref: /schemas/graph.yaml#/$defs/endpoint-base
+> > +
+> > +        patternProperties:
+> > +          "^endpoint@[01]$":
+> > +            $ref: /schemas/media/video-interfaces.yaml#
+> >              unevaluatedProperties: false
+> >
+> >              properties:
+> > +              reg: true
+> > +
+> > +              remote-endpoint: true
+>
+> You don't need to list these 2.
+>
+> > +
+> >                data-lanes:
+> > -                minItems: 1
+> > -                uniqueItems: true
+> > -                items:
+> > -                  - enum: [ 0, 1 ]
+> > -                  - const: 1
+> > -                  - const: 2
+> > -                  - const: 3
+> > +                oneOf:
+> > +                  - items:
+> > +                      - enum: [0, 3]
+>
+> Only lane 1 wasn't valid? If so, mention that in the commit message.
 
-Don't need to list these 2.
+Tha IT6505 bridge only supports "lane swapping" that reverses the
+output pins, so only lane 1 or lane 2 is not valid. I'll update this
+in the commit message as well.
+>
+> > +
+> > +                  - items:
+> > +                      - const: 0
+> > +                      - const: 1
+> > +
+> > +                  - items:
+> > +                      - const: 3
+> > +                      - const: 2
+> > +
+> > +                  - items:
+> > +                      - const: 0
+> > +                      - const: 1
+> > +                      - const: 2
+> > +                      - const: 3
+>
+> Isn't this the default if 'data-lanes' is omitted.
 
-> +
-> +              data-lanes:
-> +                oneOf:
-> +                  - items:
-> +                      - enum: [0, 1, 2, 3]
-> +
-> +                  - items:
-> +                      - const: 0
-> +                      - const: 1
-> +
-> +                  - items:
-> +                      - const: 2
-> +                      - const: 3
-> +
-> +              mode-switch:
-> +                type: boolean
-> +                description: Serves as Type-C mode switch if present.
-> +
-> +            required:
-> +              - remote-endpoint
+I don't think we have a "default" in the IT6505 driver because it
+currently doesn't have any use case that has all 4 pins described in
+an output node. The old use case uses an extcon node to describe the
+output, and a 4-pin connection makes no sense for mode switches.
 
-Don't need required.
+However, we can drop this binding and make it the default when
+'data-lanes' is omitted. This will be useful when we migrate the
+extcon description to the an output port node.
+>
+> > +
+> > +              mode-switch:
+> > +                type: boolean
+> > +                description: Serves as Type-C mode switch if present.
+> > +
+> > +            required:
+> > +              - reg
+> > +              - remote-endpoint
+>
+> required can be dropped.
+>
+> >
+> >      required:
+> >        - port@0
+> > @@ -102,7 +129,6 @@ required:
+> >    - pwr18-supply
+> >    - interrupts
+> >    - reset-gpios
+> > -  - extcon
+> >    - ports
+> >
+> >  additionalProperties: false
+> > @@ -139,8 +165,11 @@ examples:
+> >                  };
+> >
+> >                  port@1 {
+> > +                    #address-cells =3D <1>;
+> > +                    #size-cells =3D <0>;
+> >                      reg =3D <1>;
+> > -                    it6505_out: endpoint {
+> > +                    it6505_out: endpoint@0 {
+> > +                        reg =3D <0>;
+> >                          remote-endpoint =3D <&dp_in>;
+> >                          data-lanes =3D <0 1>;
+> >                      };
+> > @@ -148,3 +177,49 @@ examples:
+> >              };
+> >          };
+> >      };
+> > +  - |
+> > +    #include <dt-bindings/interrupt-controller/irq.h>
+> > +
+> > +    i2c {
+>
+> Why do we need a whole new example? Just extend the existing example
+> with new properties/nodes.
 
->  
->      required:
->        - port@0
-> @@ -186,3 +218,53 @@ examples:
->              };
->          };
->      };
-> +  - |
-> +    i2c3 {
+I added a new example because I don't think extcon and mode switches
+can co-exist. Should I merge the examples to one anyway?
+>
+> Rob
 
-i2c-3
+I'll address other comments in the next version.
 
-But better yet, just expand the existing example rather than a whole new 
-one.
-
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        encoder@58 {
-> +            compatible = "analogix,anx7625";
-> +            reg = <0x58>;
-> +            pinctrl-names = "default";
-> +            pinctrl-0 = <&anx7625_dp_pins>;
-> +            enable-gpios = <&pio 176 GPIO_ACTIVE_HIGH>;
-> +            reset-gpios = <&pio 177 GPIO_ACTIVE_HIGH>;
-> +            vdd10-supply = <&pp1100_dpbrdg>;
-> +            vdd18-supply = <&pp1800_dpbrdg_dx>;
-> +            vdd33-supply = <&pp3300_dpbrdg_dx>;
-> +            analogix,audio-enable;
-> +
-> +            ports {
-> +                #address-cells = <1>;
-> +                #size-cells = <0>;
-> +
-> +                port@0 {
-> +                    reg = <0>;
-> +                    anx7625_dp_in: endpoint {
-> +                        bus-type = <7>;
-> +                        remote-endpoint = <&dpi_out>;
-> +                    };
-> +                };
-> +
-> +                port@1 {
-> +                    #address-cells = <1>;
-> +                    #size-cells = <0>;
-> +
-> +                    reg = <1>;
-> +                    anx_typec0: endpoint@0 {
-> +                        reg = <0>;
-> +                        mode-switch;
-> +                        data-lanes = <0 1>;
-> +                        remote-endpoint = <&typec_port0>;
-> +                    };
-> +                    anx_typec1: endpoint@1 {
-> +                        reg = <1>;
-> +                        mode-switch;
-> +                        data-lanes = <2 3>;
-> +                        remote-endpoint = <&typec_port1>;
-> +                    };
-> +                };
-> +            };
-> +        };
-> +    };
-> -- 
-> 2.40.0.348.gf938b09366-goog
-> 
+Best regards,
+Pin-yen
