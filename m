@@ -2,284 +2,247 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B35F26D98D4
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Apr 2023 16:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9A956D9BEF
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Apr 2023 17:15:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238363AbjDFOAB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Apr 2023 10:00:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41802 "EHLO
+        id S238523AbjDFPPv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Apr 2023 11:15:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238806AbjDFN7r (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Apr 2023 09:59:47 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C73A08A4D
-        for <linux-acpi@vger.kernel.org>; Thu,  6 Apr 2023 06:59:29 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id z11so25850710pfh.4
-        for <linux-acpi@vger.kernel.org>; Thu, 06 Apr 2023 06:59:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google; t=1680789560;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=D62uxIrnRdLIJ/0FC1wLMU5NxXl2TZq4mxa+MvGVH2I=;
-        b=ep4um+9SshODUF+wBrCFzrXH1dy9eFmb9qXjk/h54/YrbGpDP04/j7Oc4hs3985wzM
-         3QeD+8vjiNdv/MwOB1yO8rN8BlCOdoI2WAAShmDhQ/1OWWsi1hzpaPItmeFvK99EGiiN
-         gAPiYvfaB1UZyaQ041mZGeRPAmJ3YYu5xFMUuqT+3T+58FV0uBwpNTFfLFQ77AZe85er
-         ERzx3znqXBUVdSpjGr4btsrEUuoYJ89RYaejHWSdwpkreSaB359Q2Rso+SRfAf0WsgVt
-         BW2CX1PPYFKH2JRoIqgbg2/ag81DIVEK58CLUaRdsJeDk3KrHQnZPqsrWQtowqDh8pfb
-         7GPg==
+        with ESMTP id S238190AbjDFPPu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Apr 2023 11:15:50 -0400
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECFA87EC9;
+        Thu,  6 Apr 2023 08:15:45 -0700 (PDT)
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-177b78067ffso42688284fac.7;
+        Thu, 06 Apr 2023 08:15:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680789560;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=D62uxIrnRdLIJ/0FC1wLMU5NxXl2TZq4mxa+MvGVH2I=;
-        b=JgE3uRfbpSddT3ltaKOcIc/N36Eqz0iVEHRS9OjUHv9E3SqvnkhlidLn4A0QdxzzN7
-         +KsgzA6mgCOoMDMBRrHQ2E4Z7ll+Qtc48LbQcjsyBc3buotVcxyl/OrPX92xXvXPth7i
-         1dJwAxNwE7FkaLETgfGFCXjAQkHAKvPwF+K3R2sv5Mw36M130pjBnbEgKFqdy/DJZqVD
-         c/M4JhYvY6f4XbOPH2cn+tEr9zGWKtkWnAp953DWA7e44xXYXu/X3+CCLyLOEzUlcAOI
-         Y3q0W1aiGD8ot8SKlOnVXelSb+BYaEWNPTmVsuo/h0DUyTs4O2mImo5ixbv3M3lPo61F
-         ZVHA==
-X-Gm-Message-State: AAQBX9eCx+4aYnETOqvCAN0TtA3PaxLmWYPf3D+H22tBmWbI+ef3p2hB
-        i7AofS/PBY3Y1x3sdejXZzYa1U9P7ZLl53HBspAA0A==
-X-Google-Smtp-Source: AKy350awhzhXo5L1KzV0UcjmcDPDHA0lMbG00SZClLPQXXYhpDBMAKS6jF2tBEd2EBkZ3sWL3hcPOLnpoD4HJQosRMw=
-X-Received: by 2002:a63:d30b:0:b0:513:6f5:7dda with SMTP id
- b11-20020a63d30b000000b0051306f57ddamr3239284pgg.10.1680789560598; Thu, 06
- Apr 2023 06:59:20 -0700 (PDT)
+        d=1e100.net; s=20210112; t=1680794145;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DaH4L1i/JuWu0RboKl6tYhjCF4zs4iv94Q8hNFPaJg4=;
+        b=Ni32ixHq/ooPoHREelgq4e9FUcf0mKIMeRT8G2bvQcJlNUt2xwHCmJphM/teKS1Dhp
+         myRr1PKo/U8frsVp+kBUJvVa3P/gittQWykcxS9SzDNQA2fcbzBhWdPOgjMeuEmqaEAk
+         d+DDv0Q7fnMr9UgqI2VZHopEIbUorZa9aDWlqThoyts8wUb1HK2D4eA0pxqm2pT0G749
+         Qgv82Qg6M5ig7hSMRUkWVG6N+dOmknGZOhelcgxjMJ8i7Uw5fzmYZ1zO4HNFsFE5B1DV
+         9UqgpHF+ll3Vzwr+TPYiXYWSgTLB0iHrCmrPbsJIa0B3i3zSHApqSz99UYdrXrDZVa8x
+         HTlw==
+X-Gm-Message-State: AAQBX9duozU6YGZ9aA5e/2bhg+idMq9njIK3RFfmvp1H9nnx6L5JZp4d
+        x/37r4hgfXxsIkedvkSl4g==
+X-Google-Smtp-Source: AKy350ab6kYansrJ3l5RjxAfs2sJ/EBZU6O1HI4iQMiG6ufcJX2X+MYT39U+pMtntzqTGpOBuRaX9Q==
+X-Received: by 2002:a05:6871:14d:b0:17a:f6df:7f21 with SMTP id z13-20020a056871014d00b0017af6df7f21mr5346178oab.2.1680794144957;
+        Thu, 06 Apr 2023 08:15:44 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id f11-20020a9d7b4b000000b0069d602841e7sm755208oto.72.2023.04.06.08.15.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Apr 2023 08:15:44 -0700 (PDT)
+Received: (nullmailer pid 3114304 invoked by uid 1000);
+        Thu, 06 Apr 2023 15:15:43 -0000
+Date:   Thu, 6 Apr 2023 10:15:43 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Pin-yen Lin <treapking@chromium.org>
+Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Xin Ji <xji@analogixsemi.com>, Marek Vasut <marex@denx.de>,
+        Hsin-Yi Wang <hsinyi@chromium.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Lyude Paul <lyude@redhat.com>, devicetree@vger.kernel.org,
+        Stephen Boyd <swboyd@chromium.org>,
+        dri-devel@lists.freedesktop.org, linux-acpi@vger.kernel.org,
+        chrome-platform@lists.linux.dev,
+        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
+        <nfraprado@collabora.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        linux-kernel@vger.kernel.org, Allen Chen <allen.chen@ite.com.tw>
+Subject: Re: [PATCH v15 08/10] dt-bindings: display: bridge: it6505: Add
+ mode-switch support
+Message-ID: <20230406151543.GA3098002-robh@kernel.org>
+References: <20230331091145.737305-1-treapking@chromium.org>
+ <20230331091145.737305-9-treapking@chromium.org>
 MIME-Version: 1.0
-References: <20230213100921.268770-1-jaz@semihalf.com> <20230213100921.268770-2-jaz@semihalf.com>
- <CAH76GKOHMtwE7rLTPKUZJ_7xUUdHmHnGyZOsh8pFWoHCiWQynw@mail.gmail.com> <c5455226-1d51-1d3d-0b67-78a0473a9e8c@redhat.com>
-In-Reply-To: <c5455226-1d51-1d3d-0b67-78a0473a9e8c@redhat.com>
-From:   Grzegorz Jaszczyk <jaz@semihalf.com>
-Date:   Thu, 6 Apr 2023 15:59:09 +0200
-Message-ID: <CAH76GKPkgUsXQpsBxgSaQ_qz+bGyZ-Sxu-xRMBJaQ67BZG4jsQ@mail.gmail.com>
-Subject: Re: [RFCv3 1/1] platform/x86: Add virtual PMC driver used for S2Idle
-To:     Hans de Goede <hdegoede@redhat.com>, rafael@kernel.org
-Cc:     linux-kernel@vger.kernel.org, dmy@semihalf.com, tn@semihalf.com,
-        dbehr@google.com, zide.chen@intel.corp-partner.google.com,
-        seanjc@google.com, upstream@semihalf.com, markgross@kernel.org,
-        dtor@google.com, mario.limonciello@amd.com,
-        linux-pm@vger.kernel.org, x86@kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230331091145.737305-9-treapking@chromium.org>
+X-Spam-Status: No, score=0.7 required=5.0 tests=FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-+linux-acpi@vger.kernel.org
+On Fri, Mar 31, 2023 at 05:11:43PM +0800, Pin-yen Lin wrote:
+> ITE IT6505 can be used in systems to switch the DP traffic between
+> two downstreams, which can be USB Type-C DisplayPort alternate mode
+> lane or regular DisplayPort output ports.
+> 
+> Update the binding to accommodate this usage by introducing a
+> data-lanes and a mode-switch property on endpoints.
+> 
+> Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+> 
+> ---
+> 
+> (no changes since v12)
+> 
+> Changes in v12:
+> - Fixed the schema of "data-lanes" property for it6505
+> - Reworded the description of the mode-switch property
+> 
+> Changes in v11:
+> - Updated the description of the endpoints in the bindings
+> - Referenced video-interfaces.yaml instead for the endpoints binding
+> - Removed duplicated definitions from inherited schema
+> 
+> Changes in v9:
+> - Fixed subject prefix again
+> - Changed the naming of the example node for it6505
+> 
+> Changes in v8:
+> - Updated bindings for data-lanes property
+> - Fixed subject prefix
+> 
+> Changes in v7:
+> - Fixed issues reported by dt_binding_check.
+> - Updated the schema and the example dts for data-lanes.
+> - Changed to generic naming for the example dts node.
+> 
+> Changes in v6:
+> - Remove switches node and use endpoints and data-lanes property to
+>   describe the connections.
+> 
+>  .../bindings/display/bridge/ite,it6505.yaml   | 101 +++++++++++++++---
+>  1 file changed, 88 insertions(+), 13 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml b/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
+> index c9a882ee6d98..348b02f26041 100644
+> --- a/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
+> +++ b/Documentation/devicetree/bindings/display/bridge/ite,it6505.yaml
+> @@ -75,22 +75,49 @@ properties:
+>        port@1:
+>          $ref: /schemas/graph.yaml#/$defs/port-base
+>          unevaluatedProperties: false
+> -        description: Video port for DP output
+> +        description:
+> +          Video port for DP output. Each endpoint connects to a video output
+> +          downstream, and the "data-lanes" property is used to describe the pin
+> +          connections. 0, 1, 2, 3 in "data-lanes" maps to TX0, TX1, TX2, TX3,
+> +          respectively.
+>  
+> -        properties:
+> -          endpoint:
+> -            $ref: /schemas/graph.yaml#/$defs/endpoint-base
+> +
+> +        patternProperties:
+> +          "^endpoint@[01]$":
+> +            $ref: /schemas/media/video-interfaces.yaml#
+>              unevaluatedProperties: false
+>  
+>              properties:
+> +              reg: true
+> +
+> +              remote-endpoint: true
 
-Hi Hans, Rafael
+You don't need to list these 2.
 
-czw., 6 kwi 2023 o 12:53 Hans de Goede <hdegoede@redhat.com> napisa=C5=82(a=
-):
->
-> Hi Grzegorz,
->
-> On 3/29/23 14:33, Grzegorz Jaszczyk wrote:
-> > Hi Hans,
-> >
-> > Do you think that this RFC is in good enough state to start the ACPI
-> > ID registration process so after it will be completed we could land
-> > this solution? Or maybe we could land it (of course if there are no
-> > other remarks) even before and adjust if needed?
->
-> I see from the links in the cover-letter that most of
-> the previous discussion has happened on the linux-pm list
-> and I believe that the linux-pm folks are in a better place
-> to answer this question then I am.
->
-> I have no objections against the suggested approach,
-> but I don't really feel that it is my call to make if
-> we should move forward with this.
+> +
+>                data-lanes:
+> -                minItems: 1
+> -                uniqueItems: true
+> -                items:
+> -                  - enum: [ 0, 1 ]
+> -                  - const: 1
+> -                  - const: 2
+> -                  - const: 3
+> +                oneOf:
+> +                  - items:
+> +                      - enum: [0, 3]
 
-Hans: I see and thank you for your feedback.
+Only lane 1 wasn't valid? If so, mention that in the commit message.
 
-Rafael: Could you please comment above?
+> +
+> +                  - items:
+> +                      - const: 0
+> +                      - const: 1
+> +
+> +                  - items:
+> +                      - const: 3
+> +                      - const: 2
+> +
+> +                  - items:
+> +                      - const: 0
+> +                      - const: 1
+> +                      - const: 2
+> +                      - const: 3
 
-Thank you in advance,
-Grzegorz
+Isn't this the default if 'data-lanes' is omitted.
 
->
-> Regards,
->
-> Hans
->
->
->
-> > pon., 13 lut 2023 o 11:11 Grzegorz Jaszczyk <jaz@semihalf.com> napisa=
-=C5=82(a):
-> >>
-> >> Virtual PMC driver is meant for the guest VMs for the S2Idle
-> >> notification. Its purpose is to register S2Idle dev ops check handler,
-> >> which will evaluate ACPI _DSM just before the guest enters S2Idle powe=
-r
-> >> state.
-> >>
-> >> This allows to trap on MMIO access done as a consequence of _DSM
-> >> evaluation and therefore notify the VMM about the guest entering S2Idl=
-e
-> >> state.
-> >>
-> >> Signed-off-by: Grzegorz Jaszczyk <jaz@semihalf.com>
-> >> ---
-> >> Changelog v1..v2:
-> >> - Take advantage of acpi_s2idle_dev_ops's check() instead of notify()
-> >>
-> >> Changelog v2..v3:
-> >> - Add MODULE_LICENSE
-> >> - Remove "amd" prefixes
-> >> - Be more verbose in VIRT_PMC config description and make it
-> >>   HYPERVISOR_GUEST dependent
-> >> - Add extra check ensuring that DSM method supports ACPI_VIRT_PMC_NOTI=
-FY function
-> >> ---
-> >>  drivers/platform/x86/Kconfig    |  7 +++
-> >>  drivers/platform/x86/Makefile   |  3 ++
-> >>  drivers/platform/x86/virt_pmc.c | 83 ++++++++++++++++++++++++++++++++=
-+
-> >>  3 files changed, 93 insertions(+)
-> >>  create mode 100644 drivers/platform/x86/virt_pmc.c
-> >>
-> >> diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconf=
-ig
-> >> index 5692385e2d26..837ce201b68b 100644
-> >> --- a/drivers/platform/x86/Kconfig
-> >> +++ b/drivers/platform/x86/Kconfig
-> >> @@ -1099,6 +1099,13 @@ config WINMATE_FM07_KEYS
-> >>           buttons below the display. This module adds an input device
-> >>           that delivers key events when these buttons are pressed.
-> >>
-> >> +config VIRT_PMC
-> >> +       tristate "Virtual Power Management Controller"
-> >> +       depends on ACPI && SUSPEND && HYPERVISOR_GUEST
-> >> +       help
-> >> +         The Virtual PMC driver is meant for the guest VMs and its ma=
-in
-> >> +         purpose is to notify about guest entering s2idle state.
-> >> +
-> >>  endif # X86_PLATFORM_DEVICES
-> >>
-> >>  config P2SB
-> >> diff --git a/drivers/platform/x86/Makefile b/drivers/platform/x86/Make=
-file
-> >> index 1d3d1b02541b..c4d3056cf4ea 100644
-> >> --- a/drivers/platform/x86/Makefile
-> >> +++ b/drivers/platform/x86/Makefile
-> >> @@ -129,6 +129,9 @@ obj-$(CONFIG_INTEL_SCU_WDT)         +=3D intel_scu=
-_wdt.o
-> >>  obj-$(CONFIG_INTEL_SCU_IPC_UTIL)       +=3D intel_scu_ipcutil.o
-> >>  obj-$(CONFIG_X86_INTEL_LPSS)           +=3D pmc_atom.o
-> >>
-> >> +# Virtual PMC
-> >> +obj-$(CONFIG_VIRT_PMC)                 +=3D virt_pmc.o
-> >> +
-> >>  # Siemens Simatic Industrial PCs
-> >>  obj-$(CONFIG_SIEMENS_SIMATIC_IPC)      +=3D simatic-ipc.o
-> >>
-> >> diff --git a/drivers/platform/x86/virt_pmc.c b/drivers/platform/x86/vi=
-rt_pmc.c
-> >> new file mode 100644
-> >> index 000000000000..a5966bb9048f
-> >> --- /dev/null
-> >> +++ b/drivers/platform/x86/virt_pmc.c
-> >> @@ -0,0 +1,83 @@
-> >> +// SPDX-License-Identifier: GPL-2.0-only
-> >> +/*
-> >> + * Virtual Power Management Controller Driver
-> >> + *
-> >> + * Author: Grzegorz Jaszczyk <jaz@semihalf.com>
-> >> + */
-> >> +
-> >> +#include <linux/acpi.h>
-> >> +#include <linux/platform_device.h>
-> >> +
-> >> +#define ACPI_VIRT_PMC_DSM_UUID "9ea49ba3-434a-49a6-be30-37cc55c4d397"
-> >> +#define ACPI_VIRT_PMC_NOTIFY 1
-> >> +
-> >> +static acpi_handle virt_pmc_handle;
-> >> +
-> >> +static void virt_pmc_s2idle_notify(void)
-> >> +{
-> >> +       union acpi_object *out_obj;
-> >> +       guid_t dsm_guid;
-> >> +
-> >> +       guid_parse(ACPI_VIRT_PMC_DSM_UUID, &dsm_guid);
-> >> +
-> >> +       out_obj =3D acpi_evaluate_dsm(virt_pmc_handle, &dsm_guid,
-> >> +                                       0, ACPI_VIRT_PMC_NOTIFY, NULL)=
-;
-> >> +
-> >> +       acpi_handle_debug(virt_pmc_handle, "_DSM function %u evaluatio=
-n %s\n",
-> >> +                         ACPI_VIRT_PMC_NOTIFY, out_obj ? "successful"=
- : "failed");
-> >> +
-> >> +       ACPI_FREE(out_obj);
-> >> +}
-> >> +
-> >> +static struct acpi_s2idle_dev_ops pmc_s2idle_dev_ops =3D {
-> >> +       .check =3D virt_pmc_s2idle_notify,
-> >> +};
-> >> +
-> >> +static int virt_pmc_probe(struct platform_device *pdev)
-> >> +{
-> >> +       int err =3D 0;
-> >> +       guid_t dsm_guid;
-> >> +
-> >> +       virt_pmc_handle =3D ACPI_HANDLE(&pdev->dev);
-> >> +
-> >> +       guid_parse(ACPI_VIRT_PMC_DSM_UUID, &dsm_guid);
-> >> +
-> >> +       if (!acpi_check_dsm(virt_pmc_handle, &dsm_guid, 0,
-> >> +                           1 << ACPI_VIRT_PMC_NOTIFY)) {
-> >> +               dev_err(&pdev->dev, "DSM method doesn't support ACPI_V=
-IRT_PMC_NOTIFY\n");
-> >> +               return -ENODEV;
-> >> +       }
-> >> +
-> >> +       err =3D acpi_register_lps0_dev(&pmc_s2idle_dev_ops);
-> >> +       if (err)
-> >> +               dev_err(&pdev->dev, "failed to register LPS0 sleep han=
-dler\n");
-> >> +
-> >> +       return err;
-> >> +}
-> >> +
-> >> +static int virt_pmc_remove(struct platform_device *pdev)
-> >> +{
-> >> +       acpi_unregister_lps0_dev(&pmc_s2idle_dev_ops);
-> >> +
-> >> +       return 0;
-> >> +}
-> >> +
-> >> +static const struct acpi_device_id virt_pmc_acpi_ids[] =3D {
-> >> +       {"HYPE0001", 0}, /* _HID for XXX Power Engine, _CID PNP0D80*/
-> >> +       { }
-> >> +};
-> >> +MODULE_DEVICE_TABLE(acpi, virt_pmc_acpi_ids);
-> >> +
-> >> +static struct platform_driver virt_pmc_driver =3D {
-> >> +       .driver =3D {
-> >> +               .name =3D "virtual_pmc",
-> >> +               .acpi_match_table =3D ACPI_PTR(virt_pmc_acpi_ids),
-> >> +       },
-> >> +       .probe =3D virt_pmc_probe,
-> >> +       .remove =3D virt_pmc_remove,
-> >> +};
-> >> +
-> >> +module_platform_driver(virt_pmc_driver);
-> >> +
-> >> +MODULE_LICENSE("GPL");
-> >> +MODULE_DESCRIPTION("Virtual PMC Driver");
-> >> --
-> >> 2.39.1.581.gbfd45094c4-goog
-> >>
-> >
->
+> +
+> +              mode-switch:
+> +                type: boolean
+> +                description: Serves as Type-C mode switch if present.
+> +
+> +            required:
+> +              - reg
+> +              - remote-endpoint
+
+required can be dropped.
+
+>  
+>      required:
+>        - port@0
+> @@ -102,7 +129,6 @@ required:
+>    - pwr18-supply
+>    - interrupts
+>    - reset-gpios
+> -  - extcon
+>    - ports
+>  
+>  additionalProperties: false
+> @@ -139,8 +165,11 @@ examples:
+>                  };
+>  
+>                  port@1 {
+> +                    #address-cells = <1>;
+> +                    #size-cells = <0>;
+>                      reg = <1>;
+> -                    it6505_out: endpoint {
+> +                    it6505_out: endpoint@0 {
+> +                        reg = <0>;
+>                          remote-endpoint = <&dp_in>;
+>                          data-lanes = <0 1>;
+>                      };
+> @@ -148,3 +177,49 @@ examples:
+>              };
+>          };
+>      };
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    i2c {
+
+Why do we need a whole new example? Just extend the existing example 
+with new properties/nodes.
+
+Rob
