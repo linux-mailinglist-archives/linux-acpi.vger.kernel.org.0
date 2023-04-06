@@ -2,205 +2,173 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5CFB6D8DA4
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Apr 2023 04:47:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D47F6D8E0E
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Apr 2023 05:46:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235070AbjDFCrw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Apr 2023 22:47:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38840 "EHLO
+        id S235295AbjDFDqt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Apr 2023 23:46:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233776AbjDFCqp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 22:46:45 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3F059EC7
-        for <linux-acpi@vger.kernel.org>; Wed,  5 Apr 2023 19:45:28 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id l9-20020a17090a3f0900b0023d32684e7fso5064599pjc.1
-        for <linux-acpi@vger.kernel.org>; Wed, 05 Apr 2023 19:45:28 -0700 (PDT)
+        with ESMTP id S235292AbjDFDqr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Apr 2023 23:46:47 -0400
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D634183F7
+        for <linux-acpi@vger.kernel.org>; Wed,  5 Apr 2023 20:46:44 -0700 (PDT)
+Received: by mail-oi1-x229.google.com with SMTP id w133so28209297oib.1
+        for <linux-acpi@vger.kernel.org>; Wed, 05 Apr 2023 20:46:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1680749128; x=1683341128;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JdNJO4mfN64m2Db82GYHXGm3NSR4lZ1G8dlNVBocSIQ=;
-        b=ll2bMfcK89gAizgPPSIn5T8e949Q/JnqEcpbsQeH1VY1J/1iiYgC9aALL2CEf2+ES4
-         ZEfM5usiEug7lR0+bioA+yXiHLk0FoNBuiyQPCe6cp18ck+MXIAA4O6uAZP7vSNm18fI
-         6XQu02i5KwSFYotIxb6lE9G70vRd285inqAelYvMppyeO4qHqhrDZnvLg4p3Z/StW5ry
-         sZ1TjWivLeTE7tQ1e5vH6hFsdArzA7VVTxqGGiztJjaGJ0qw2i24+Kd+nnRCEkjj/vTb
-         Jem7EpjPp+9NRxyKrKOVITzJ3bMS+uYgyJ6VqhKZhh5SwSEbk4Ct3Lo7TzFbAznDeiQk
-         OEIA==
+        d=ventanamicro.com; s=google; t=1680752803; x=1683344803;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=e2HC8P/hmf80QzMRLst56jAGHCnOy19Nb1SfXkyKnng=;
+        b=OdCYn4+VByG1SRoySM17nK1AXgMbZVRXlJ5uIqR+tfwGuKggZw222F7duYA9Vb89YK
+         27pnFjed1vkAWjIH3w9kqNNxzyvrRs3I40xpJc8gABvfqFbm84Ah6fCAVV+EpDcHKNEM
+         T6LqevGxh7v6QeMq8lX+Fn0O2uSvDEMaPjduq6COs02ZgwWQq7TWFyzEWjpUoxp8g7/W
+         HeDHWwDs5YlngSYn9Y4eEcJFWPL1d9LCI5B4h6ljv4T9xfXx5ZEmdJDMYKPLEVyc5Sh4
+         e44ljucW2T/N/BZX5bfGqLHRrTCgxLP8TCM5oFflHLmQC3TPZL8Zpd5lDO1iSTWcWsjf
+         DH2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680749128; x=1683341128;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JdNJO4mfN64m2Db82GYHXGm3NSR4lZ1G8dlNVBocSIQ=;
-        b=E4mzqFZAjaVkWkTUsFp4aENTrMEBaRfg6eysXxWyrC8t0+AHDVMhK89NKZc7vTTeEW
-         NikncYddlu3gTzjqRN/xb++5VjnlsDnSUWB8EpL25YAJMB2yWa29MlHOg1p8clTXv50o
-         sybxYuz963MvKDwka0HrX8vliSLFSQYF7I6+m2h5+wmmzrtbUOjwOg25oWMTbcj0L1Nd
-         npQmM3b8q1ieC+psjluhl0gBGXUuv4ekwPH7rMWqA6MhR3hvWsW4LeeJW1PyQygUq6bL
-         JDzVioz7d4Sm1ieGYwtMVqvRaYpntmaAaTFwCeNAR1vTK4q9pupguDeITpvA5+2AROSp
-         l6MQ==
-X-Gm-Message-State: AAQBX9fGFxBeDzfapMdbgqrU0PHNcyxnK7BrPsVAUeJ0ioZJLV8gB65S
-        tSUjcs7ijIuy3uddK0UMuT2lv45zfffvRqroWywBEQ==
-X-Google-Smtp-Source: AKy350YjCKHwdcmt1MAwwhk34guKHZvpB05RdPBqo7FPZRGnCR0kw248IBXLZjoyZJA7B5VFYot4iQ1xdvgYwcXR1cE=
-X-Received: by 2002:a17:903:248:b0:19f:3b0f:4d8d with SMTP id
- j8-20020a170903024800b0019f3b0f4d8dmr3546362plh.7.1680749127966; Wed, 05 Apr
- 2023 19:45:27 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230303133647.845095-1-sunilvl@ventanamicro.com>
- <16007014-c5f2-4b07-baec-e19952236aa5@spud> <ZAbGSA6F0kfv9YYw@sunil-laptop>
- <E7FB4927-1FE6-435A-914E-9615C2AD9D34@kernel.org> <a9823561-2e32-49e8-b6c9-73e4b8f8cf8d@spud>
- <ZAfeaO52pnYhiyLN@sunil-laptop> <CAFiDJ58bRo6R1qOFaSSNgAdbQJZ3xDY6Wth-t8M8XKRFbig2hA@mail.gmail.com>
- <ZCvJpnNZYzrIcfPe@sunil-laptop>
-In-Reply-To: <ZCvJpnNZYzrIcfPe@sunil-laptop>
-From:   Atish Kumar Patra <atishp@rivosinc.com>
-Date:   Thu, 6 Apr 2023 08:15:16 +0530
-Message-ID: <CAHBxVyHA8ZouSUnqHaZTa=uMQxx61RqZuSBHx15Hg8+AVYLXZg@mail.gmail.com>
-Subject: Re: [PATCH V3 00/20] Add basic ACPI support for RISC-V
-To:     Sunil V L <sunilvl@ventanamicro.com>
-Cc:     Ley Foon Tan <lftan@kernel.org>, Conor Dooley <conor@kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        linux-acpi@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-doc@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>,
+        d=1e100.net; s=20210112; t=1680752803; x=1683344803;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e2HC8P/hmf80QzMRLst56jAGHCnOy19Nb1SfXkyKnng=;
+        b=HppeAQ0MlNveieE4Zyq2RxIzAshd/qcLMt61xcW3pf6dMQLhFbVUL41sb7WqR2xMjX
+         uRFcw1IGBtcgy+hZMkUmfQw31RBn1cw9g9s5akZKs0CCmrTDRJRoMRrrjDlP8omAP7j1
+         yqY4oAYU2+pArF3LUf1Jan6mOyVMrDQgQJ9LBYsw1imcU9Q8rd84Ulpl3Bl3h26mp0x1
+         Ik2uSIHMkal34d24Lx2po79LAwq+nPEFdwSgVSFku9+zTsq672UABRiIc10Gr7r/uoTp
+         5rdXRWUKzmttSr08xJClemH3Z9WGp7VXuduBpvVv5o7mUn8rN2V20/31f+SYXNuaD1Pa
+         SdVg==
+X-Gm-Message-State: AAQBX9eZnwj5FTKMvgNdbZf95ZQC+E2vUAjms+RebccaDjKFjk4fOvCo
+        nWGoy6c4q4fqcjlSo4CYvX1FlA==
+X-Google-Smtp-Source: AKy350aAm5JE1r76kf6Lxl9p5V+N5sZaj6KFuUrSbX6DgQQJMad992E4+fIEGKxtn2iiwPmCcOOrnA==
+X-Received: by 2002:aca:d17:0:b0:388:f4de:1ed7 with SMTP id 23-20020aca0d17000000b00388f4de1ed7mr3555483oin.1.1680752803481;
+        Wed, 05 Apr 2023 20:46:43 -0700 (PDT)
+Received: from sunil-laptop ([106.51.83.242])
+        by smtp.gmail.com with ESMTPSA id en12-20020a056808394c00b003898ebb8be0sm215967oib.48.2023.04.05.20.46.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Apr 2023 20:46:43 -0700 (PDT)
+Date:   Thu, 6 Apr 2023 09:16:31 +0530
+From:   Sunil V L <sunilvl@ventanamicro.com>
+To:     Andrew Jones <ajones@ventanamicro.com>
+Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+        linux-crypto@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        llvm@lists.linux.dev, Jonathan Corbet <corbet@lwn.net>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Len Brown <lenb@kernel.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Anup Patel <apatel@ventanamicro.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Conor Dooley <conor.dooley@microchip.com>, llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        Thomas Gleixner <tglx@linutronix.de>,
+        Weili Qian <qianweili@huawei.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Marc Zyngier <maz@kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH V4 08/23] RISC-V: ACPI: Cache and retrieve the RINTC
+ structure
+Message-ID: <ZC5Al3swBGK1WP0g@sunil-laptop>
+References: <20230404182037.863533-1-sunilvl@ventanamicro.com>
+ <20230404182037.863533-9-sunilvl@ventanamicro.com>
+ <h4wgl5pc4bptxsmlmf7ggohq2y2uwk6ecaoytyywbwhf2ubnzj@ojanwytq5lrk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <h4wgl5pc4bptxsmlmf7ggohq2y2uwk6ecaoytyywbwhf2ubnzj@ojanwytq5lrk>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Apr 4, 2023 at 12:24=E2=80=AFPM Sunil V L <sunilvl@ventanamicro.com=
-> wrote:
->
-> On Tue, Apr 04, 2023 at 02:35:19PM +0800, Ley Foon Tan wrote:
-> > On Wed, Mar 8, 2023 at 9:08=E2=80=AFAM Sunil V L <sunilvl@ventanamicro.=
-com> wrote:
-> > >
-> > > On Tue, Mar 07, 2023 at 06:44:35PM +0000, Conor Dooley wrote:
-> > > > On Tue, Mar 07, 2023 at 06:13:22AM +0000, Conor Dooley wrote:
-> > > > >
-> > > > >
-> > > > > On 7 March 2023 05:06:16 GMT, Sunil V L <sunilvl@ventanamicro.com=
-> wrote:
-> > > > > >On Mon, Mar 06, 2023 at 09:51:09PM +0000, Conor Dooley wrote:
-> > > > > >> Hey Sunil,
-> > > > > >>
-> > > > > >> On Fri, Mar 03, 2023 at 07:06:27PM +0530, Sunil V L wrote:
-> > > > > >> > This patch series enables the basic ACPI infrastructure for =
-RISC-V.
-> > > > > >> > Supporting external interrupt controllers is in progress and=
- hence it is
-> > > > > >> > tested using poll based HVC SBI console and RAM disk.
-> > > > > >> >
-> > > > > >> > The first patch in this series is one of the patch from Jish=
-eng's
-> > > > > >> > series [1] which is not merged yet. This patch is required t=
-o support
-> > > > > >> > ACPI since efi_init() which gets called before sbi_init() ca=
-n enable
-> > > > > >> > static branches and hits a panic.
-> > > > > >> >
-> > > > > >> > Patch 2 and 3 are ACPICA patches which are not merged into a=
-cpica yet
-> > > > > >> > but a PR is raised already.
-> > > > > >> >
-> > > > > >> > Below are two ECRs approved by ASWG.
-> > > > > >> > RINTC - https://drive.google.com/file/d/1R6k4MshhN3WTT-hwqAq=
-uu5nX6xSEqK2l/view
-> > > > > >> > RHCT - https://drive.google.com/file/d/1nP3nFiH4jkPMp6COOxP6=
-123DCZKR-tia/view
-> > > > > >> >
-> > > > > >> > The series depends on Anup's IPI improvement series [2].
-> > > > > >> >
-> > > > > >> > [1] https://lore.kernel.org/all/20220821140918.3613-1-jszhan=
-g@kernel.org/
-> > > > > >> > [2] https://lore.kernel.org/lkml/20230103141221.772261-7-apa=
-tel@ventanamicro.com/T/
-> > > > > >>
-> > > > > >> Building a clang-15 allmodconfig (I didn't try gcc) with this =
-series, and
-> > > > > >> Anup's IPI bits, results in a broken build, due to failings in=
- cmpxchg:
-> > > > > >>
-> > > > > >> /stuff/linux/drivers/platform/surface/aggregator/controller.c:=
-61:25: error: call to __compiletime_assert_335 declared with 'error' attrib=
-ute: BUILD_BUG failed
-> > > > > >>         while (unlikely((ret =3D cmpxchg(&c->value, old, new))=
- !=3D old)) {
-> > > > > >>                                ^
-> > > >
-> > > > > > I am able to build without any of these issues using clang-15. =
-I am
-> > > > > > wondering whether the base is proper. I had rebased on top of t=
-he master
-> > > > > > and couple of patches from IPI series were already merged in th=
-e master.
-> > > > > >
-> > > > > > Do you mind verifying with my branch
-> > > > > > https://github.com/vlsunil/linux/commits/acpi_b1_us_review_ipi1=
-7_V3?
-> > > > >
-> > > > > I can check that later I suppose.
-> > > >
-> > > > That's broken too.
-> > > >
-> > > > > > Or if you could provide me your branch details, I can look furt=
-her.
-> > > > >
-> > > > > 6.3-rc1, with both series applied, sans Anups applied patches.
-> > > >
-> > > > I've pushed my stuff here, but unlikely that it makes any odds sinc=
-e
-> > > > your branch experiences the same build issue.
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/conor/linux.git/ bo=
-rked-acpi-surface
-> > > >
-> > > > My build commands are wrapped in a script, but it's an LLVM=3D1
-> > > > allmodconfig run w/ clang-15(.0.7) etc.
-> > > >
-> > > Ahh allmodconfig. Thank you very much!. I can reproduce the failure. =
-Let
-> > > me look further and fix in next revision.
-> > >
-> > > Thanks!
-> > > Sunil
-> >
-> > Hi Sunil
-> >
-> > One question regarding PMU in ACPI flow.
-> >
-> > We use DT to decode the supported HPM counters/events for the
-> > different platforms now.
-> > How do we enable PMU (drivers/perf/riscv_pmu_sbi.c) when using ACPI met=
-hod?
-> > Note, this might be in separate patch series.
-> >
-> Hi Lay Foon,
->
-> This driver uses SBI calls and hence should work in case of ACPI also.
->
-> There is one minor change required in this driver for overflow
-> interrupt. I have a patch for that in future series.
+On Wed, Apr 05, 2023 at 05:17:48PM +0200, Andrew Jones wrote:
+> On Tue, Apr 04, 2023 at 11:50:22PM +0530, Sunil V L wrote:
+> > RINTC structures in the MADT provide mapping between the hartid
+> > and the CPU. This is required many times even at run time like
+> > cpuinfo. So, instead of parsing the ACPI table every time, cache
+> > the RINTC structures and provide a function to get the correct
+> > RINTC structure for a given cpu.
+> > 
+> > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >  arch/riscv/include/asm/acpi.h |  2 ++
+> >  arch/riscv/kernel/acpi.c      | 60 +++++++++++++++++++++++++++++++++++
+> >  2 files changed, 62 insertions(+)
+> > 
+> > diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acpi.h
+> > index 9be52b6ffae1..1606dce8992e 100644
+> > --- a/arch/riscv/include/asm/acpi.h
+> > +++ b/arch/riscv/include/asm/acpi.h
+> > @@ -59,6 +59,8 @@ static inline bool acpi_has_cpu_in_madt(void)
+> >  
+> >  static inline void arch_fix_phys_package_id(int num, u32 slot) { }
+> >  
+> > +struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu);
+> > +u32 get_acpi_id_for_cpu(int cpu);
+> >  #endif /* CONFIG_ACPI */
+> >  
+> >  #endif /*_ASM_ACPI_H*/
+> > diff --git a/arch/riscv/kernel/acpi.c b/arch/riscv/kernel/acpi.c
+> > index 81d448c41714..40ab55309c70 100644
+> > --- a/arch/riscv/kernel/acpi.c
+> > +++ b/arch/riscv/kernel/acpi.c
+> > @@ -24,6 +24,66 @@ EXPORT_SYMBOL(acpi_disabled);
+> >  int acpi_pci_disabled = 1;	/* skip ACPI PCI scan and IRQ initialization */
+> >  EXPORT_SYMBOL(acpi_pci_disabled);
+> >  
+> > +static struct acpi_madt_rintc cpu_madt_rintc[NR_CPUS];
+> > +
+> > +static int acpi_parse_madt_rintc(union acpi_subtable_headers *header, const unsigned long end)
+> > +{
+> > +	struct acpi_madt_rintc *rintc = (struct acpi_madt_rintc *)header;
+> > +	int cpuid;
+> > +
+> > +	if (!(rintc->flags & ACPI_MADT_ENABLED))
+> > +		return 0;
+> > +
+> > +	cpuid = riscv_hartid_to_cpuid(rintc->hart_id);
+> > +	/*
+> > +	 * When CONFIG_SMP is disabled, mapping won't be created for
+> > +	 * all cpus.
+> > +	 * CPUs more than NR_CPUS, will be ignored.
+> > +	 */
+> > +	if (cpuid >= 0 && cpuid < NR_CPUS)
+> > +		cpu_madt_rintc[cpuid] = *rintc;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int acpi_init_rintc_array(void)
+> > +{
+> > +	if (acpi_table_parse_madt(ACPI_MADT_TYPE_RINTC, acpi_parse_madt_rintc, 0) > 0)
+> > +		return 0;
+> > +
+> > +	return -ENODEV;
+> 
+> As Conor pointed out, the errors could be propagated from
+> acpi_table_parse_madt(), which could reduce this function to
+> 
+>  return acpi_table_parse_madt(ACPI_MADT_TYPE_RINTC, acpi_parse_madt_rintc, 0);
+> 
+> where the '< 0' check would be in the caller below. That sounds good to
+> me, but then I'd take that a step further and just drop this helper
+> altogether.
+> 
+Thanks, Conor, Drew. I used similar to how others have used
+acpi_table_parse_madt(). But your suggestion makes sense. Will remove
+the wrapper function also.
 
-Just to add further clarification: OpenSBI will continue to use the
-device tree so that
-the firmware will have access to all the PMU details.
-
->
-> Thanks,
-> Sunil
+Thanks,
+Sunil
