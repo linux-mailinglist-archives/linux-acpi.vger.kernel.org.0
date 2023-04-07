@@ -2,51 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07F466DB14F
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Apr 2023 19:13:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91E8E6DB150
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Apr 2023 19:13:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230137AbjDGRNo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 7 Apr 2023 13:13:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48936 "EHLO
+        id S230151AbjDGRNu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 7 Apr 2023 13:13:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230094AbjDGRNm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 Apr 2023 13:13:42 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE0C1AD13;
-        Fri,  7 Apr 2023 10:13:40 -0700 (PDT)
+        with ESMTP id S230144AbjDGRNp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 Apr 2023 13:13:45 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CFF07A8F;
+        Fri,  7 Apr 2023 10:13:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680887620; x=1712423620;
+  t=1680887623; x=1712423623;
   h=subject:from:to:cc:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=5tvzis9vZH6ocAk1I9hJKqp0bsV1H0EBYTkN66XhAdA=;
-  b=PlZaRIDcnmIK0rRUsrMlSfCPhS/VjipYLYF/8tUNk7zVFIpTTErgBg5f
-   VgpJxfE7dOKWKmUdGEz18FlYJlrW7Alf9YY54e08jab14EFBx4OFbGnbp
-   jOELNUgos0Cn+zkwp+qQlE6CzT5ClmMbgu8xyJ8JUuu8jG5Ovq6TMCeRZ
-   +DQA+AY4mHGR55Ff6BGO7y1C0ys87n0B1YoYW+0huCnTyL2eeNW+LbC3e
-   YzCnM8FRU20iPUx8/g3F2g80yxTtXU7mAzu/uyAfBMAd0BIW964lrfXvR
-   ZyZC94SRErIWEH+/WPr2jcK9geiIQg2txqQpdSJt9UWQIA11aR2wlLVBD
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10673"; a="340520004"
+  bh=3D19eVA6StizRDQ3Hc2AQXS3EISK8uXQhS4ITUho+hg=;
+  b=AdV7yd/x+OIh2qvp6S0Ocx7lfiNUY1tPwyKlWb1eTVHGhjGj9y9XMzXo
+   H0Q7azxxpthkFdncmNBLJoMFXp59pn4OqsL6AbdG3VQrGxUov04wrvACn
+   3U/T+JIYmUZrqXsgVj9VlH3PbDNxhczHXYKP450PFjn61gdXO16T8bnmj
+   Vda/2iwjwTkG1sMMvnegPtUz1Z0aHRwO8KQk6j4uqERspwxDL0ZWO/05g
+   eCmu6Mfk2PCHNM3M9EkrJ6E7fxCthET+XaCLQ9hJN1fXuDKLSPr4fpX0p
+   IETFHYvt5OpIU6bwb2VpLmvXfGzp7ZqB/VgUinZj3+emVyJcgbzpusQ3C
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10673"; a="345682042"
 X-IronPort-AV: E=Sophos;i="5.98,327,1673942400"; 
-   d="scan'208";a="340520004"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2023 10:13:38 -0700
+   d="scan'208";a="345682042"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2023 10:13:42 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10673"; a="690119162"
+X-IronPort-AV: E=McAfee;i="6600,9927,10673"; a="831251741"
 X-IronPort-AV: E=Sophos;i="5.98,327,1673942400"; 
-   d="scan'208";a="690119162"
+   d="scan'208";a="831251741"
 Received: from djiang5-mobl3.amr.corp.intel.com (HELO [192.168.1.177]) ([10.209.160.172])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2023 10:13:36 -0700
-Subject: [PATCH 3 16/23] ACPI: NUMA: Add helper function to retrieve the
- performance attributes
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2023 10:13:42 -0700
+Subject: [PATCH 3 17/23] cxl: Add helper function to retrieve generic port QoS
 From:   Dave Jiang <dave.jiang@intel.com>
 To:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org
 Cc:     dan.j.williams@intel.com, ira.weiny@intel.com,
         vishal.l.verma@intel.com, alison.schofield@intel.com,
         rafael@kernel.org, lukas@wunner.de, Jonathan.Cameron@huawei.com
-Date:   Fri, 07 Apr 2023 10:13:36 -0700
-Message-ID: <168088761615.1441063.15822678926474147168.stgit@djiang5-mobl3>
+Date:   Fri, 07 Apr 2023 10:13:41 -0700
+Message-ID: <168088762190.1441063.16189131969173431967.stgit@djiang5-mobl3>
 In-Reply-To: <168088732996.1441063.10107817505475386072.stgit@djiang5-mobl3>
 References: <168088732996.1441063.10107817505475386072.stgit@djiang5-mobl3>
 User-Agent: StGit/1.5
@@ -62,98 +61,66 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Add helper to retrieve the performance attributes based on the device
-handle.  The helper function is exported so the CXL driver can use that
-to acquire the performance data between the CPU and the CXL host bridge.
+Add CXL helper function that retrieves the bandwidth and latency data of a
+generic port by calling acpi_get_genport_attrs() function. A device handle
+is passed in constructed from the ACPI HID and UID of the CXL host bridge
+(ACPI0016) device.
 
 Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-
 ---
-v3:
-- Fix 0-day report on extra ';'
----
- drivers/acpi/numa/hmat.c |   44 ++++++++++++++++++++++++++++++++++++++++++++
- include/linux/acpi.h     |    6 ++++++
- 2 files changed, 50 insertions(+)
+ drivers/cxl/core/acpi.c |   30 ++++++++++++++++++++++++++++++
+ drivers/cxl/cxl.h       |    1 +
+ 2 files changed, 31 insertions(+)
 
-diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-index 2596eb9eb419..c3598ddeed1c 100644
---- a/drivers/acpi/numa/hmat.c
-+++ b/drivers/acpi/numa/hmat.c
-@@ -107,6 +107,50 @@ static struct memory_target *find_mem_target(unsigned int mem_pxm)
- 	return NULL;
+diff --git a/drivers/cxl/core/acpi.c b/drivers/cxl/core/acpi.c
+index 191644d0ca6d..41eeaa8c272e 100644
+--- a/drivers/cxl/core/acpi.c
++++ b/drivers/cxl/core/acpi.c
+@@ -148,3 +148,33 @@ struct qtg_dsm_output *cxl_acpi_evaluate_qtg_dsm(acpi_handle handle,
+ 	return ERR_PTR(rc);
  }
- 
-+static struct memory_target *acpi_find_genport_target(u8 *device_handle)
+ EXPORT_SYMBOL_NS_GPL(cxl_acpi_evaluate_qtg_dsm, CXL);
++
++/**
++ * cxl_acpi_get_hb_qos - retrieve QoS data for generic port
++ * @host: 'struct device' of the CXL host bridge
++ * @latency: genport latency data
++ * @bandwidth: genport bandwidth data
++ *
++ * Return: Errno on failure, 0 on success.
++ */
++int cxl_acpi_get_hb_qos(struct device *host, u64 *latency, u64 *bandwidth)
 +{
-+	struct memory_target *target;
++	u8 handle[ACPI_SRAT_DEVICE_HANDLE_SIZE] = { 0 };
++	struct acpi_device *adev = ACPI_COMPANION(host);
++	int rc;
 +
-+	list_for_each_entry(target, &targets, node) {
-+		if (!strncmp(target->device_handle, device_handle,
-+			     ACPI_SRAT_DEVICE_HANDLE_SIZE))
-+			return target;
-+	}
++	/* ACPI spec 6.5 Table 5.65 */
++	memcpy(handle, acpi_device_hid(adev), 8);
++	memcpy(&handle[8], acpi_device_uid(adev), 4);
 +
-+	return NULL;
-+}
++	rc = acpi_get_genport_attrs(handle, latency, ACPI_HMAT_ACCESS_LATENCY);
++	if (rc)
++		return rc;
 +
-+int acpi_get_genport_attrs(u8 *device_handle, u64 *val, int type)
-+{
-+	struct memory_target *target;
-+
-+	target = acpi_find_genport_target(device_handle);
-+	if (!target)
-+		return -ENOENT;
-+
-+	switch (type) {
-+	case ACPI_HMAT_ACCESS_LATENCY:
-+	case ACPI_HMAT_READ_LATENCY:
-+		*val = target->hmem_attrs[ACCESS_NODE_GENPORT].read_latency;
-+		break;
-+	case ACPI_HMAT_WRITE_LATENCY:
-+		*val = target->hmem_attrs[ACCESS_NODE_GENPORT].write_latency;
-+		break;
-+	case ACPI_HMAT_ACCESS_BANDWIDTH:
-+	case ACPI_HMAT_READ_BANDWIDTH:
-+		*val = target->hmem_attrs[ACCESS_NODE_GENPORT].read_bandwidth;
-+		break;
-+	case ACPI_HMAT_WRITE_BANDWIDTH:
-+		*val = target->hmem_attrs[ACCESS_NODE_GENPORT].write_bandwidth;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
++	rc = acpi_get_genport_attrs(handle, bandwidth, ACPI_HMAT_ACCESS_BANDWIDTH);
++	if (rc)
++		return rc;
 +
 +	return 0;
 +}
-+EXPORT_SYMBOL_GPL(acpi_get_genport_attrs);
-+
- static __init void alloc_memory_initiator(unsigned int cpu_pxm)
- {
- 	struct memory_initiator *initiator;
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index efff750f326d..2dc49ef3e28a 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -451,6 +451,7 @@ extern bool acpi_osi_is_win8(void);
- #ifdef CONFIG_ACPI_NUMA
- int acpi_map_pxm_to_node(int pxm);
- int acpi_get_node(acpi_handle handle);
-+int acpi_get_genport_attrs(u8 *device_handle, u64 *val, int type);
++EXPORT_SYMBOL_NS_GPL(cxl_acpi_get_hb_qos, CXL);
+diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+index 67e844645ef6..56bcf144eede 100644
+--- a/drivers/cxl/cxl.h
++++ b/drivers/cxl/cxl.h
+@@ -811,6 +811,7 @@ int cxl_port_get_switch_qos(struct cxl_port *port, u64 *rd_bw, u64 *rd_lat,
+ 			    u64 *wr_bw, u64 *wr_lat);
+ int cxl_port_get_downstream_qos(struct cxl_port *port, u64 *bandwidth,
+ 				u64 *latency);
++int cxl_acpi_get_hb_qos(struct device *host, u64 *latency, u64 *bandwidth);
  
- /**
-  * pxm_to_online_node - Map proximity ID to online node
-@@ -485,6 +486,11 @@ static inline int acpi_get_node(acpi_handle handle)
- {
- 	return 0;
- }
-+
-+static inline int acpi_get_genport_attrs(u8 *device_handle, u64 *val, int type)
-+{
-+	return -EOPNOTSUPP;
-+}
- #endif
- extern int acpi_paddr_to_node(u64 start_addr, u64 size);
- 
+ /*
+  * Unit test builds overrides this to __weak, find the 'strong' version
 
 
