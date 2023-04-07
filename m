@@ -2,128 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28D376DB156
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Apr 2023 19:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DCA56DB585
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Apr 2023 22:57:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229587AbjDGROZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 7 Apr 2023 13:14:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49354 "EHLO
+        id S230285AbjDGU5Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 7 Apr 2023 16:57:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230189AbjDGROU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 Apr 2023 13:14:20 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87BFAB752;
-        Fri,  7 Apr 2023 10:14:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680887658; x=1712423658;
-  h=subject:from:to:cc:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=s+EXZVJ1JkQIsvOgC4hoYVQTXB71iThB2DX8P+RuUtI=;
-  b=VpgOWcKKEtXIOMCRMAyijZEpOWJHgbGCwG6brKz1z8KikGvEBSjfdFCF
-   WGE0SkX8vzprryHlxcPHIma8hFm5r9x+URCvkAk4lyS5J/BI3Aw16JDzJ
-   VMK5SAOOh8QBd4XX2QqTKLQPFOr7UhG79RAQ/PLB92+r/rrNHGlnXIEKs
-   ReZ5fDx3OQiTzfNa3D928SbEynYj0IVO078xus7t2Zn+C0eVs8xM9kbxv
-   /VDaT/kuEnWg1WwSyo4Jl96fgb7EBdnq4o83f5AeZI3R6UOGV92oowYZL
-   ALkiJAwoFHmnwgVkj2w/mKDdtOHYuhB6Wdgm4Y++bHXzndMnOO6zBoq/C
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10673"; a="343037457"
-X-IronPort-AV: E=Sophos;i="5.98,327,1673942400"; 
-   d="scan'208";a="343037457"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2023 10:14:18 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10673"; a="933648814"
-X-IronPort-AV: E=Sophos;i="5.98,327,1673942400"; 
-   d="scan'208";a="933648814"
-Received: from djiang5-mobl3.amr.corp.intel.com (HELO [192.168.1.177]) ([10.209.160.172])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2023 10:14:17 -0700
-Subject: [PATCH 3 23/23] cxl/mem: Add debugfs output for QTG related data
-From:   Dave Jiang <dave.jiang@intel.com>
-To:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc:     Dan Williams <dan.j.williams@intel.com>, dan.j.williams@intel.com,
-        ira.weiny@intel.com, vishal.l.verma@intel.com,
-        alison.schofield@intel.com, rafael@kernel.org, lukas@wunner.de,
-        Jonathan.Cameron@huawei.com
-Date:   Fri, 07 Apr 2023 10:14:17 -0700
-Message-ID: <168088765758.1441063.3077950661602680130.stgit@djiang5-mobl3>
-In-Reply-To: <168088732996.1441063.10107817505475386072.stgit@djiang5-mobl3>
-References: <168088732996.1441063.10107817505475386072.stgit@djiang5-mobl3>
-User-Agent: StGit/1.5
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S230234AbjDGU5L (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 Apr 2023 16:57:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 722B3CC2F;
+        Fri,  7 Apr 2023 13:56:57 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6531665489;
+        Fri,  7 Apr 2023 20:56:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CC9DFC4339B;
+        Fri,  7 Apr 2023 20:56:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1680901012;
+        bh=dU79tieKM4VC67oKiVBYZQaEtEoiZte3V/l8FFakNJs=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=VHzRtc2eZ648VeR4nFIhGpDRwTw6ORDq48ds/nutZleCX/V3uS7AqlZAuzb0c3S0c
+         jTn79T51Ul5p/Ltfi5H5awE02UABb/jOMtQbyZr7cG6URZSeBqBREPC+aP+szbieNy
+         QDnvSQ4YWdwyKETyUWjcwHWlmfvXPAtANZAQPeIPDOlpeo/R1rIjtUFB/+x8vRqBJF
+         nboDE6znj/6EhIizqV3sJEVVKNCVqv3td8uiYuaEf3LadLqOCeWcN1e7Bk8va1wLSU
+         f8OC7lcoV3NgVWY9i9Z9j0OCLP/G7CfiIvtWjk7eq3yQ6DOQlNPFoF9I71dNps1A7f
+         0Z57SmnjArkUg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id B7E3DE4D029;
+        Fri,  7 Apr 2023 20:56:52 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI fixes for v6.3-rc6
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0hE_eVO0S_MSfB=X287XZR+Cisa1f5nKU5VAEwTtxdnOA@mail.gmail.com>
+References: <CAJZ5v0hE_eVO0S_MSfB=X287XZR+Cisa1f5nKU5VAEwTtxdnOA@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0hE_eVO0S_MSfB=X287XZR+Cisa1f5nKU5VAEwTtxdnOA@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.3-rc6
+X-PR-Tracked-Commit-Id: a5b2781dcab2c77979a4b8adda781d2543580901
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: c9797dba13141de7d7211aacfadb4cdba67a4716
+Message-Id: <168090101274.23908.6826872717398010960.pr-tracker-bot@kernel.org>
+Date:   Fri, 07 Apr 2023 20:56:52 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Add debugfs output to /sys/kernel/debug/cxl/memX/qtgmap
-The debugfs attribute will dump out all the DSMAS ranges and the associated
-QTG ID exported by the CXL device CDAT.
+The pull request you sent on Fri, 7 Apr 2023 13:32:28 +0200:
 
-Suggested-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
----
- Documentation/ABI/testing/debugfs-cxl |   11 +++++++++++
- drivers/cxl/mem.c                     |   16 ++++++++++++++++
- 2 files changed, 27 insertions(+)
- create mode 100644 Documentation/ABI/testing/debugfs-cxl
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.3-rc6
 
-diff --git a/Documentation/ABI/testing/debugfs-cxl b/Documentation/ABI/testing/debugfs-cxl
-new file mode 100644
-index 000000000000..0f36eeb7e59b
---- /dev/null
-+++ b/Documentation/ABI/testing/debugfs-cxl
-@@ -0,0 +1,11 @@
-+What:		/sys/kernel/debug/cxl/memX/qtg_map
-+Date:		Mar, 2023
-+KernelVersion:	v6.4
-+Contact:	linux-cxl@vger.kernel.org
-+Description:
-+		(RO) Entries of all Device Physical Address (DPA) ranges
-+		provided by the device Coherent Device Attributes Table (CDAT)
-+		Device Scoped Memory Affinity Structure (DSMAS) entries with
-+		the matching QoS Throttling Group (QTG) id calculated from the
-+		latency and bandwidth of the CXL path from the memory device
-+		to the CPU.
-diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-index 39c4b54f0715..bf2cb5a54a7f 100644
---- a/drivers/cxl/mem.c
-+++ b/drivers/cxl/mem.c
-@@ -45,6 +45,21 @@ static int cxl_mem_dpa_show(struct seq_file *file, void *data)
- 	return 0;
- }
- 
-+static int cxl_mem_qtg_show(struct seq_file *file, void *data)
-+{
-+	struct device *dev = file->private;
-+	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
-+	struct qos_prop_entry *qos;
-+
-+	list_for_each_entry(qos, &cxlmd->qos_list, list) {
-+		seq_printf(file, "%08llx-%08llx : QTG ID %u\n",
-+			   qos->dpa_range.start, qos->dpa_range.end,
-+			   qos->qtg_id);
-+	}
-+
-+	return 0;
-+}
-+
- static int devm_cxl_add_endpoint(struct device *host, struct cxl_memdev *cxlmd,
- 				 struct cxl_dport *parent_dport)
- {
-@@ -117,6 +132,7 @@ static int cxl_mem_probe(struct device *dev)
- 
- 	dentry = cxl_debugfs_create_dir(dev_name(dev));
- 	debugfs_create_devm_seqfile(dev, "dpamem", dentry, cxl_mem_dpa_show);
-+	debugfs_create_devm_seqfile(dev, "qtgmap", dentry, cxl_mem_qtg_show);
- 	rc = devm_add_action_or_reset(dev, remove_debugfs, dentry);
- 	if (rc)
- 		return rc;
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/c9797dba13141de7d7211aacfadb4cdba67a4716
 
+Thank you!
 
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
