@@ -2,93 +2,224 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B3506DAF2D
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Apr 2023 17:02:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 276BD6DB13E
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Apr 2023 19:11:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240718AbjDGPCz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 7 Apr 2023 11:02:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34064 "EHLO
+        id S229768AbjDGRL5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 7 Apr 2023 13:11:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231732AbjDGPC2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 Apr 2023 11:02:28 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E774BB9D;
-        Fri,  7 Apr 2023 08:01:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=WRzNxQq7iHXhn9Ubgg3RUKDCXQ7dwh7bEyStAdZAbEE=; b=ho9wvwF9mTKdejPMkw+bekkpr1
-        CLy+tTvTpwZUd6Sef6jFWbERD4OWBGoGJ8YiUnu/nqmRsWVBXukIzBGg0BH7Ys9KVnoFdp/zXa6Vv
-        yj4o3fSgv1GCasJTw70ZyJrQmtxe4etiUxNEoVEthOG5Sd014e4YIXqDnU+r6NJiuzyo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1pkna2-009jTP-V9; Fri, 07 Apr 2023 17:00:46 +0200
-Date:   Fri, 7 Apr 2023 17:00:46 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Marco Felsch <m.felsch@pengutronix.de>
-Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Radu Pirea <radu-nicolae.pirea@oss.nxp.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-        Keyur Chudgar <keyur@os.amperecomputing.com>,
-        Quan Nguyen <quan@os.amperecomputing.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        devicetree@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH 06/12] net: phy: add phy_device_atomic_register helper
-Message-ID: <f033e357-4277-4ce0-b187-b9032dd26919@lunn.ch>
-References: <20230405-net-next-topic-net-phy-reset-v1-0-7e5329f08002@pengutronix.de>
- <20230405-net-next-topic-net-phy-reset-v1-6-7e5329f08002@pengutronix.de>
+        with ESMTP id S229767AbjDGRL5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 Apr 2023 13:11:57 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25167A5D5;
+        Fri,  7 Apr 2023 10:11:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1680887516; x=1712423516;
+  h=subject:from:to:cc:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=EQQP7MhMf/g6avsqC+abLzuoUP/K9ntw3fTCNeavB4k=;
+  b=WhTs3Y9BJX1fGZXcsWeFhnGh16N+hbkn4nqmnAumkno5NCQXOB8BJV/u
+   IjkAP0zL4HMHnSGEIzkjAprai9R1F8qLx3NXXjIlGXZTsCR5QPKT7oLLh
+   vd7IhXV0SGpRLIPKCo7Isp2tICb5BTpR+PmtK5gwQ8rokq3WCqODHtTOB
+   8wl0zaqNnUhkL91x0Icbli7IOSbgr6dB0Fx9W1ZfwzOSekSsI4ZHa5CON
+   hJcnvfGIB0FT2V2Llrs5PHgWFG01W7VeCD9ohRYP960u7zTz8/IVy0Dfv
+   rVaPyP2ESW/DA+TvS0bhyA2bnqwx8lGTfVUUgNPWd/zBQsYBzFWYkZDaB
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10673"; a="323402020"
+X-IronPort-AV: E=Sophos;i="5.98,327,1673942400"; 
+   d="scan'208";a="323402020"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2023 10:11:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10673"; a="717902592"
+X-IronPort-AV: E=Sophos;i="5.98,327,1673942400"; 
+   d="scan'208";a="717902592"
+Received: from rramanna-mobl1.amr.corp.intel.com (HELO [192.168.1.177]) ([10.209.160.172])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2023 10:11:54 -0700
+Subject: [PATCH 3 00/23] cxl: Add support for QTG ID retrieval for CXL
+ subsystem
+From:   Dave Jiang <dave.jiang@intel.com>
+To:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org
+Cc:     Dan Williams <dan.j.williams@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>, dan.j.williams@intel.com,
+        ira.weiny@intel.com, vishal.l.verma@intel.com,
+        alison.schofield@intel.com, rafael@kernel.org, lukas@wunner.de,
+        Jonathan.Cameron@huawei.com
+Date:   Fri, 07 Apr 2023 10:11:54 -0700
+Message-ID: <168088732996.1441063.10107817505475386072.stgit@djiang5-mobl3>
+User-Agent: StGit/1.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230405-net-next-topic-net-phy-reset-v1-6-7e5329f08002@pengutronix.de>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Lets try again....
+v3:
+- Please see specific patches for log entries addressing comments from v2.
+- Refactor cxl_port_probe() additions. (Alison)
+- Convert to use 'struct node_hmem_attrs'
+- Refactor to use common code for genport target allocation.
+- Add third array entry for target hmem_attrs to store genport locality data.
+- Go back to per partition QTG ID. (Dan)
 
-There are a number of things i don't like about this patchset.
+v2:
+- Please see specific patches for log entries addressing comments from v1.
+- Removed ACPICA code usages.
+- Removed PCI subsystem helpers for latency and bandwidth.
+- Add CXL switch CDAT parsing support (SSLBIS)
+- Add generic port SRAT+HMAT support (ACPI)
+- Export a single QTG ID via sysfs per memory device (Dan)
+- Provide rest of DSMAS range info in debugfs (Dan)
 
-It does too many different things.
 
-It pulls workarounds into the core.
+Hi Rafael,
+please review the relevant patches to ACPI: 13/23-16/23. Thank you!
+If they are ok, Dan can take them through the CXL tree for upstream merging.
+13 - Adds enum for memory_target hmem_attrs in order to enumerate the array index.
+14 - Add generic port target allocation for SRAT parsing during HMAT init in order
+to extract and store the device handle.
+15 - Add a new index for hmem_attrs and save the locality data to the new hmem_attrs
+array element with generic port data. The old array elements are preserved for later
+when we want to store the calculated CXL memory target locality data.
+16 - Add ACPI helper function to retrieve the locality data for generic port. Used by
+CXL driver to calculate the full locality data for the CXL memory device.
 
-I don't like the phy_device_config. It would make sense if there were
-more than 6 arguments to pass to a function, but not for less.
+This series adds the retrieval of QoS Throttling Group (QTG) IDs for the CXL Fixed
+Memory Window Structure (CFMWS) and the CXL memory device. It provides the QTG IDs
+to user space to provide some guidance with putting the proper DPA range under the
+appropriate CFMWS window for a hot-plugged CXL memory device.
 
-I don't like the name phy_device_atomic_register(), but that is bike
-shedding.
+The CFMWS structure contains a QTG ID that is associated with the memory window that the
+structure exports. On Linux, the CFMWS is represented as a CXL root decoder. The QTG
+ID will be attached to the CXL root decoder and exported as a sysfs attribute (qtg_id).
 
-There is no really strong argument to change the API.
+The QTG ID for a device is retrieved via sending a _DSM method to the ACPI0017 device.
+The _DSM expects an input package of 4 DWORDS that contains the read latency, write
+latency, read bandwidth, and write banwidth. These are the caluclated numbers for the
+path between the CXL device and the CXL host bridge (HB). The QTG ID is also exported
+as a sysfs attribute under the mem device memory partition type:
+/sys/bus/cxl/devices/memX/ram/qtg_id
+/sys/bus/cxl/devices/memX/pmem/qtg_id
+Only the first QTG ID is exported. The rest of the information can be found under
+/sys/kernel/debug/cxl/memX/qtgmap where all the DPA ranges with the correlated QTG ID
+are displayed. Each DSMAS from the device CDAT will provide a DPA range.
 
-There is no really strong argument to move to fwnode.
+The latency numbers are the aggregated latencies for the path between the CXL device and
+the CPU. If a CXL device is directly attached to the CXL HB, the latency
+would be the aggregated latencies from the device Coherent Device Attribute Table (CDAT),
+the caluclated PCIe link latency between the device and the HB, and the generic port data
+from ACPI SRAT+HMAT. The bandwidth in this configuration would be the minimum between the
+CDAT bandwidth number, link bandwidth between the device and the HB, and the bandwidth data
+from the generic port data via ACPI SRAT+HMAT.
 
-The problem you are trying to solve is to call phy_device_reset()
-earlier, before reading the ID registers. Please produce a patchset
-which is only focused on that. Nothing else.
+If a configuration has a switch in between then the latency would be the aggregated
+latencies from the device CDAT, the link latency between device and switch, the
+latency from the switch CDAT, the link latency between switch and the HB, and the
+generic port latency between the CPU and the CXL HB. The bandwidth calculation would be the
+min of device CDAT bandwidth, link bandwith between device and switch, switch CDAT
+bandwidth, the link bandwidth between switch and HB, and the generic port bandwidth
 
-      Andrew
+There can be 0 or more switches between the CXL device and the CXL HB. There are detailed
+examples on calculating bandwidth and latency in the CXL Memory Device Software Guide [4].
+
+The CDAT provides Device Scoped Memory Affinity Structures (DSMAS) that contains the
+Device Physical Address (DPA) range and the related Device Scoped Latency and Bandwidth
+Informat Stuctures (DSLBIS). Each DSLBIS provides a latency or bandwidth entry that is
+tied to a DSMAS entry via a per DSMAS unique DSMAD handle.
+
+This series is based on Lukas's latest DOE changes [5]. Kernel branch with all the code can
+be retrieved here [6] for convenience.
+
+Test setup is done with runqemu genport support branch [6]. The setup provides 2 CXL HBs
+with one HB having a CXL switch underneath. It also provides generic port support detailed
+below.
+
+A hacked up qemu branch is used to support generic port SRAT and HMAT [7].
+
+To create the appropriate HMAT entries for generic port, the following qemu paramters must
+be added:
+
+-object genport,id=$X -numa node,genport=genport$X,nodeid=$Y,initiator=$Z
+-numa hmat-lb,initiator=$Z,target=$X,hierarchy=memory,data-type=access-latency,latency=$latency
+-numa hmat-lb,initiator=$Z,target=$X,hierarchy=memory,data-type=access-bandwidth,bandwidth=$bandwidthM
+for ((i = 0; i < total_nodes; i++)); do
+	for ((j = 0; j < cxl_hbs; j++ )); do	# 2 CXL HBs
+		-numa dist,src=$i,dst=$X,val=$dist
+	done
+done
+
+See the genport run_qemu branch for full details.
+
+[1]: https://www.computeexpresslink.org/download-the-specification
+[2]: https://uefi.org/sites/default/files/resources/Coherent%20Device%20Attribute%20Table_1.01.pdf
+[3]: https://uefi.org/sites/default/files/resources/ACPI_Spec_6_5_Aug29.pdf
+[4]: https://cdrdv2-public.intel.com/643805/643805_CXL%20Memory%20Device%20SW%20Guide_Rev1p0.pdf
+[5]: https://lore.kernel.org/linux-cxl/20230313195530.GA1532686@bhelgaas/T/#t
+[6]: https://git.kernel.org/pub/scm/linux/kernel/git/djiang/linux.git/log/?h=cxl-qtg
+[7]: https://github.com/pmem/run_qemu/tree/djiang/genport
+[8]: https://github.com/davejiang/qemu/tree/genport
+
+---
+
+Dave Jiang (23):
+      cxl: Export QTG ids from CFMWS to sysfs
+      cxl: Add checksum verification to CDAT from CXL
+      cxl: Add support for reading CXL switch CDAT table
+      cxl: Add common helpers for cdat parsing
+      cxl: Add callback to parse the DSMAS subtables from CDAT
+      cxl: Add callback to parse the DSLBIS subtable from CDAT
+      cxl: Add callback to parse the SSLBIS subtable from CDAT
+      cxl: Add support for _DSM Function for retrieving QTG ID
+      cxl: Add helper function to retrieve ACPI handle of CXL root device
+      cxl: Add helpers to calculate pci latency for the CXL device
+      cxl: Add helper function that calculates QoS values for switches
+      cxl: Add helper function that calculate QoS values for PCI path
+      ACPI: NUMA: Create enum for memory_target hmem_attrs indexing
+      ACPI: NUMA: Add genport target allocation to the HMAT parsing
+      ACPI: NUMA: Add setting of generic port locality attributes
+      ACPI: NUMA: Add helper function to retrieve the performance attributes
+      cxl: Add helper function to retrieve generic port QoS
+      cxl: Add latency and bandwidth calculations for the CXL path
+      cxl: Wait Memory_Info_Valid before access memory related info
+      cxl: Move identify and partition query from pci probe to port probe
+      cxl: Store QTG IDs and related info to the CXL memory device context
+      cxl: Export sysfs attributes for memory device QTG ID
+      cxl/mem: Add debugfs output for QTG related data
+
+
+ Documentation/ABI/testing/debugfs-cxl   |  11 +
+ Documentation/ABI/testing/sysfs-bus-cxl |  31 +++
+ drivers/acpi/numa/hmat.c                | 138 ++++++++++--
+ drivers/cxl/acpi.c                      |   3 +
+ drivers/cxl/core/Makefile               |   2 +
+ drivers/cxl/core/acpi.c                 | 180 ++++++++++++++++
+ drivers/cxl/core/cdat.c                 | 270 ++++++++++++++++++++++++
+ drivers/cxl/core/mbox.c                 |   3 +
+ drivers/cxl/core/memdev.c               |  26 +++
+ drivers/cxl/core/pci.c                  | 187 ++++++++++++++--
+ drivers/cxl/core/port.c                 | 161 ++++++++++++++
+ drivers/cxl/cxl.h                       |  27 +++
+ drivers/cxl/cxlmem.h                    |  20 ++
+ drivers/cxl/cxlpci.h                    | 117 ++++++++++
+ drivers/cxl/mem.c                       |  16 ++
+ drivers/cxl/pci.c                       |  21 --
+ drivers/cxl/port.c                      | 155 +++++++++++++-
+ include/acpi/actbl3.h                   |   2 +
+ include/linux/acpi.h                    |   6 +
+ tools/testing/cxl/Kbuild                |   1 +
+ tools/testing/cxl/test/mock.c           |   5 +
+ 21 files changed, 1330 insertions(+), 52 deletions(-)
+ create mode 100644 Documentation/ABI/testing/debugfs-cxl
+ create mode 100644 drivers/cxl/core/acpi.c
+ create mode 100644 drivers/cxl/core/cdat.c
+
+--
+
