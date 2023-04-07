@@ -2,93 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1780E6DAC3C
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Apr 2023 13:32:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B3506DAF2D
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Apr 2023 17:02:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230492AbjDGLcm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 7 Apr 2023 07:32:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51188 "EHLO
+        id S240718AbjDGPCz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 7 Apr 2023 11:02:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230346AbjDGLcm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 Apr 2023 07:32:42 -0400
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F4AF98;
-        Fri,  7 Apr 2023 04:32:41 -0700 (PDT)
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-93071f06a9fso194953766b.2;
-        Fri, 07 Apr 2023 04:32:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680867159;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EPck9/RMxy4jyPiJYGjTgAHCPnx6IvyaRc0h3FaEPYY=;
-        b=S/xTdJcvkFud0aloQyZKLXhsbn9bCtf830CSppPjFNVrPObG1q0tyj6GknOlGBl2hF
-         /lPOMjyqv8DzklZjb3gPluSYv9P5KMt5rlPvlBd6ZPJH/txG8x6pebIZ9rBJ3BRNMrji
-         r8YdQy2v36/OC9xzL8nFHfnDKE425HX/BhnS9ArepmE8+U3IHa8TlsMk291dUZDuNFnO
-         38jbCznJx/mRcYk+E2SxCRlWk6nAC1W/HhRYhMFISaZI+S+PSmtaCU1iukK5IvGDPy/A
-         xemQOx2sd9CULJ+mHE8lCVKc+JzwckKjCGB1kQ5RQmnoJmJovQwf1gXkst53Yg1pwy/Z
-         xaAg==
-X-Gm-Message-State: AAQBX9fi0rE4YT/TfaK89zKo8fgL+3y+CRHsIAKQNWsbxU5C0QRW10SV
-        sIPpT0lljb6XPQTYrM6i3cRDXB0Z+/cTyCsxjRpqdiPqcWo=
-X-Google-Smtp-Source: AKy350aE6nCEVttNGDDJhwpXMd1FBOzc0QIyCs7EoCDmbZyd8PnCdvZkzeH6A7NlIz9OFmsn0mXtiMFzuioSTZAUdog=
-X-Received: by 2002:a50:a6d5:0:b0:4fb:c8e3:1ae2 with SMTP id
- f21-20020a50a6d5000000b004fbc8e31ae2mr1326676edc.3.1680867159654; Fri, 07 Apr
- 2023 04:32:39 -0700 (PDT)
+        with ESMTP id S231732AbjDGPC2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 Apr 2023 11:02:28 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E774BB9D;
+        Fri,  7 Apr 2023 08:01:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=WRzNxQq7iHXhn9Ubgg3RUKDCXQ7dwh7bEyStAdZAbEE=; b=ho9wvwF9mTKdejPMkw+bekkpr1
+        CLy+tTvTpwZUd6Sef6jFWbERD4OWBGoGJ8YiUnu/nqmRsWVBXukIzBGg0BH7Ys9KVnoFdp/zXa6Vv
+        yj4o3fSgv1GCasJTw70ZyJrQmtxe4etiUxNEoVEthOG5Sd014e4YIXqDnU+r6NJiuzyo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1pkna2-009jTP-V9; Fri, 07 Apr 2023 17:00:46 +0200
+Date:   Fri, 7 Apr 2023 17:00:46 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Marco Felsch <m.felsch@pengutronix.de>
+Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Radu Pirea <radu-nicolae.pirea@oss.nxp.com>,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+        Keyur Chudgar <keyur@os.amperecomputing.com>,
+        Quan Nguyen <quan@os.amperecomputing.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        devicetree@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH 06/12] net: phy: add phy_device_atomic_register helper
+Message-ID: <f033e357-4277-4ce0-b187-b9032dd26919@lunn.ch>
+References: <20230405-net-next-topic-net-phy-reset-v1-0-7e5329f08002@pengutronix.de>
+ <20230405-net-next-topic-net-phy-reset-v1-6-7e5329f08002@pengutronix.de>
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 7 Apr 2023 13:32:28 +0200
-Message-ID: <CAJZ5v0hE_eVO0S_MSfB=X287XZR+Cisa1f5nKU5VAEwTtxdnOA@mail.gmail.com>
-Subject: [GIT PULL] ACPI fixes for v6.3-rc6
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230405-net-next-topic-net-phy-reset-v1-6-7e5329f08002@pengutronix.de>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+Lets try again....
 
-Please pull from the tag
+There are a number of things i don't like about this patchset.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.3-rc6
+It does too many different things.
 
-with top-most commit a5b2781dcab2c77979a4b8adda781d2543580901
+It pulls workarounds into the core.
 
- ACPI: video: Add acpi_backlight=video quirk for Lenovo ThinkPad W530
+I don't like the phy_device_config. It would make sense if there were
+more than 6 arguments to pass to a function, but not for less.
 
-on top of commit 7e364e56293bb98cae1b55fd835f5991c4e96e7d
+I don't like the name phy_device_atomic_register(), but that is bike
+shedding.
 
- Linux 6.3-rc5
+There is no really strong argument to change the API.
 
-to receive ACPI fixes for 6.3-rc6.
+There is no really strong argument to move to fwnode.
 
-These fix the ACPI backlight override mechanism for the cases when
-acpi_backlight=video is set through the kernel command line or a DMI
-quirk and add backlight quirks for Apple iMac14,1 and iMac14,2 and
-Lenovo ThinkPad W530 (Hans de Goede).
+The problem you are trying to solve is to call phy_device_reset()
+earlier, before reading the ID registers. Please produce a patchset
+which is only focused on that. Nothing else.
 
-Thanks!
-
-
----------------
-
-Hans de Goede (4):
-      ACPI: video: Add auto_detect arg to __acpi_video_get_backlight_type()
-      ACPI: video: Make acpi_backlight=video work independent from GPU driver
-      ACPI: video: Add acpi_backlight=video quirk for Apple iMac14,1
-and iMac14,2
-      ACPI: video: Add acpi_backlight=video quirk for Lenovo ThinkPad W530
-
----------------
-
- drivers/acpi/acpi_video.c   | 15 ++++++++++--
- drivers/acpi/video_detect.c | 58 +++++++++++++++++++++++++++++++++++----------
- include/acpi/video.h        | 15 ++++++++++--
- 3 files changed, 71 insertions(+), 17 deletions(-)
+      Andrew
