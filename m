@@ -2,159 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56B716DC80B
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Apr 2023 16:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D13A46DC91C
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Apr 2023 18:17:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229670AbjDJOtA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Apr 2023 10:49:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46928 "EHLO
+        id S229725AbjDJQRX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Apr 2023 12:17:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229571AbjDJOs7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Apr 2023 10:48:59 -0400
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8864246BD
-        for <linux-acpi@vger.kernel.org>; Mon, 10 Apr 2023 07:48:57 -0700 (PDT)
-X-UUID: 2260605f64954643974359d3ae911bf8-20230410
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.22,REQID:d03f9483-32d4-45d0-b4ef-0610e5ae5e5e,IP:10,
-        URL:0,TC:0,Content:-25,EDM:25,RT:0,SF:-9,FILE:0,BULK:0,RULE:Release_Ham,AC
-        TION:release,TS:1
-X-CID-INFO: VERSION:1.1.22,REQID:d03f9483-32d4-45d0-b4ef-0610e5ae5e5e,IP:10,UR
-        L:0,TC:0,Content:-25,EDM:25,RT:0,SF:-9,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-        ON:release,TS:1
-X-CID-META: VersionHash:120426c,CLOUDID:1bdbd8a0-8fcb-430b-954a-ba3f00fa94a5,B
-        ulkID:2304102248470A3S0IBV,BulkQuantity:0,Recheck:0,SF:45|38|24|17|19|102,
-        TC:nil,Content:0,EDM:5,IP:-2,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,
-        OSI:0,OSA:0,AV:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-UUID: 2260605f64954643974359d3ae911bf8-20230410
-X-User: guodongtai@kylinos.cn
-Received: from localhost.localdomain [(210.12.40.82)] by mailgw
-        (envelope-from <guodongtai@kylinos.cn>)
-        (Generic MTA)
-        with ESMTP id 110705115; Mon, 10 Apr 2023 22:48:46 +0800
-From:   George Guo <guodongtai@kylinos.cn>
-To:     robert.moore@intel.com, rafael.j.wysocki@intel.com,
-        lenb@kernel.org, linux-acpi@vger.kernel.org
-Subject: [PATCH] ACPICA: Modify ACPI_STATE_COMMON and put it in a single line
-Date:   Mon, 10 Apr 2023 22:48:46 +0800
-Message-Id: <20230410144846.1959224-1-guodongtai@kylinos.cn>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S229669AbjDJQRW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Apr 2023 12:17:22 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 006F5E74;
+        Mon, 10 Apr 2023 09:17:20 -0700 (PDT)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33ABgfSg013580;
+        Mon, 10 Apr 2023 16:17:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=UexAOkJHNJ4msc1Ix/hS5H7CGjrnU8Mihj2dQUk1RPQ=;
+ b=VyLeC3kvdRXx2Zca0nU0RxiRB6FfNqKWqn9OJ4Scoz7IDXmIljQC+D4oHgXoLqfaNtKO
+ jjyU7qfixwVE4WldGVkoxkKd6KjTJGZbqxQ9YQ3eM22ZU6lC3M72yU0qm+GycAaJCyC+
+ CsbtUaDp230tGq6R8XlSJpziyqT45yc/8HcWLukZWCD0Vo5DprwgjosgmYqYU/AdJo0w
+ 9cmXW7R3xuPO4hU1BN+9pn1xxiECtcZIVLCkq2EQtCvqzZ8fxiWsoado4j90GVR2T5TL
+ 0yKwHwqxVgBSjqnVvA4NyVc6IH6DtNsT6juWNDJGTpiaF8/yK6RzdsRfCJYWDH5ZGGP3 vA== 
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pvgkggp1n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 10 Apr 2023 16:17:16 +0000
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+        by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 33AGHGn0029773
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 10 Apr 2023 16:17:16 GMT
+Received: from hu-eberman-lv.qualcomm.com (10.49.16.6) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.42; Mon, 10 Apr 2023 09:17:15 -0700
+From:   Elliot Berman <quic_eberman@quicinc.com>
+To:     Jassi Brar <jassisinghbrar@gmail.com>
+CC:     Elliot Berman <quic_eberman@quicinc.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>
+Subject: [PATCH v3 0/3] mailbox: Allow direct registration to a channel
+Date:   Mon, 10 Apr 2023 09:16:51 -0700
+Message-ID: <20230410161654.1660757-1-quic_eberman@quicinc.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS,
-        UNPARSEABLE_RELAY autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: S9sBbu2aKvxjqHE_lwKeNdUKpe-WPJAH
+X-Proofpoint-ORIG-GUID: S9sBbu2aKvxjqHE_lwKeNdUKpe-WPJAH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-10_12,2023-04-06_03,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
+ mlxscore=0 suspectscore=0 spamscore=0 priorityscore=1501 malwarescore=0
+ adultscore=0 bulkscore=0 mlxlogscore=729 phishscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303200000
+ definitions=main-2304100139
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Avoid trailing semicolons in macro, and it's not readable to put the macro 
-ACPI_STATE_COMMON with other variables in the same line.
-So modify the macro and just put it in a single line.
+Two mailbox controllers have channel/client binding mechanisms that are
+controller-specific and not using the devicetree binding mechanisms. Mailbox
+channel/client is conceptually done in two steps: selecting the channel
+and binding the selected to channel to a client. Channel selection is sometimes
+controller specific (pcc and omap are examples). The channel/client binding
+code is all the same.
 
-Signed-off-by: George Guo <guodongtai@kylinos.cn>
----
- drivers/acpi/acpica/aclocal.h | 30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+This small series de-duplicates and refactors the channel/client binding
+into a common framework function: "mbox_bind_client" which all of the
+channel selection mechanisms can use.
 
-diff --git a/drivers/acpi/acpica/aclocal.h b/drivers/acpi/acpica/aclocal.h
-index 901b1543b869..cb757ac2c22e 100644
---- a/drivers/acpi/acpica/aclocal.h
-+++ b/drivers/acpi/acpica/aclocal.h
-@@ -560,25 +560,28 @@ struct acpi_field_info {
- 	u8                              descriptor_type; /* To differentiate various internal objs */\
- 	u8                              flags; \
- 	u16                             value; \
--	u16                             state;
-+	u16                             state
- 
- 	/* There are 2 bytes available here until the next natural alignment boundary */
- 
- struct acpi_common_state {
--ACPI_STATE_COMMON};
-+	ACPI_STATE_COMMON;
-+};
- 
- /*
-  * Update state - used to traverse complex objects such as packages
-  */
- struct acpi_update_state {
--	ACPI_STATE_COMMON union acpi_operand_object *object;
-+	ACPI_STATE_COMMON;
-+	union acpi_operand_object *object;
- };
- 
- /*
-  * Pkg state - used to traverse nested package structures
-  */
- struct acpi_pkg_state {
--	ACPI_STATE_COMMON u32 index;
-+	ACPI_STATE_COMMON;
-+	u32 index;
- 	union acpi_operand_object *source_object;
- 	union acpi_operand_object *dest_object;
- 	struct acpi_walk_state *walk_state;
-@@ -591,7 +594,8 @@ struct acpi_pkg_state {
-  * Allows nesting of these constructs
-  */
- struct acpi_control_state {
--	ACPI_STATE_COMMON u16 opcode;
-+	ACPI_STATE_COMMON;
-+	u16 opcode;
- 	union acpi_parse_object *predicate_op;
- 	u8 *aml_predicate_start;	/* Start of if/while predicate */
- 	u8 *package_end;	/* End of if/while block */
-@@ -602,11 +606,13 @@ struct acpi_control_state {
-  * Scope state - current scope during namespace lookups
-  */
- struct acpi_scope_state {
--	ACPI_STATE_COMMON struct acpi_namespace_node *node;
-+	ACPI_STATE_COMMON;
-+	struct acpi_namespace_node *node;
- };
- 
- struct acpi_pscope_state {
--	ACPI_STATE_COMMON u32 arg_count;	/* Number of fixed arguments */
-+	ACPI_STATE_COMMON;
-+	u32 arg_count;	/* Number of fixed arguments */
- 	union acpi_parse_object *op;	/* Current op being parsed */
- 	u8 *arg_end;		/* Current argument end */
- 	u8 *pkg_end;		/* Current package end */
-@@ -618,7 +624,8 @@ struct acpi_pscope_state {
-  * states are created when there are nested control methods executing.
-  */
- struct acpi_thread_state {
--	ACPI_STATE_COMMON u8 current_sync_level;	/* Mutex Sync (nested acquire) level */
-+	ACPI_STATE_COMMON;
-+	u8 current_sync_level;	/* Mutex Sync (nested acquire) level */
- 	struct acpi_walk_state *walk_state_list;	/* Head of list of walk_states for this thread */
- 	union acpi_operand_object *acquired_mutex_list;	/* List of all currently acquired mutexes */
- 	acpi_thread_id thread_id;	/* Running thread ID */
-@@ -629,8 +636,8 @@ struct acpi_thread_state {
-  * AML arguments
-  */
- struct acpi_result_values {
--	ACPI_STATE_COMMON
--	    union acpi_operand_object *obj_desc[ACPI_RESULTS_FRAME_OBJ_NUM];
-+	ACPI_STATE_COMMON;
-+	union acpi_operand_object *obj_desc[ACPI_RESULTS_FRAME_OBJ_NUM];
- };
- 
- typedef
-@@ -652,7 +659,8 @@ struct acpi_global_notify_handler {
-  * handler/dispatcher.
-  */
- struct acpi_notify_info {
--	ACPI_STATE_COMMON u8 handler_list_id;
-+	ACPI_STATE_COMMON;
-+	u8 handler_list_id;
- 	struct acpi_namespace_node *node;
- 	union acpi_operand_object *handler_list_head;
- 	struct acpi_global_notify_handler *global;
+I found this duplicate code while working on the support for Gunyah hypervisor
+message queues [1]. I've only been able to compile-test omap-mailbox and pcc,
+however it is a straightforward conversion here.
+
+[1]: https://lore.kernel.org/all/20230120224627.4053418-9-quic_eberman@quicinc.com/
+
+Chagnes since v2:
+ - Fix warnings in drivers/mailbox/pcc.c reported by lkp@intel.com
+
+Changes since v1:
+ - Rebase to https://git.linaro.org/landing-teams/working/fujitsu/integration.git/log/?h=mailbox-for-next
+ - Add Tested-By from Sudeep (thanks!)
+
+Elliot Berman (3):
+  mailbox: Allow direct registration to a channel
+  mailbox: omap: Use mbox_bind_client
+  mailbox: pcc: Use mbox_bind_client
+
+ drivers/mailbox/mailbox.c      | 96 ++++++++++++++++++++++++----------
+ drivers/mailbox/omap-mailbox.c | 22 ++------
+ drivers/mailbox/pcc.c          | 84 +++++++++++++++--------------
+ include/linux/mailbox_client.h |  1 +
+ 4 files changed, 118 insertions(+), 85 deletions(-)
+
+
+base-commit: 6ccbe33a39523f6d62b22c5ee99c6695993c935e
 -- 
-2.34.1
+2.39.2
 
