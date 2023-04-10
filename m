@@ -2,73 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5F366DC523
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Apr 2023 11:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56B716DC80B
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Apr 2023 16:49:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229535AbjDJJhV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Apr 2023 05:37:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54740 "EHLO
+        id S229670AbjDJOtA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Apr 2023 10:49:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229526AbjDJJhU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Apr 2023 05:37:20 -0400
-Received: from hust.edu.cn (unknown [202.114.0.240])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1955430E2;
-        Mon, 10 Apr 2023 02:37:18 -0700 (PDT)
-Received: from passwd123-ThinkStation-P920.. ([222.20.94.23])
-        (user=void0red@hust.edu.cn mech=LOGIN bits=0)
-        by mx1.hust.edu.cn  with ESMTP id 33A9a3KL017631-33A9a3KM017631
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Mon, 10 Apr 2023 17:36:03 +0800
-From:   Kang Chen <void0red@hust.edu.cn>
-To:     rafael@kernel.org
-Cc:     acpica-devel@lists.linuxfoundation.org, lenb@kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rafael.j.wysocki@intel.com, robert.moore@intel.com,
-        void0red@gmail.com
-Subject: [PATCH v2] ACPICA: check null return of ACPI_ALLOCATE_ZEROED in acpi_db_display_objects
-Date:   Mon, 10 Apr 2023 17:36:01 +0800
-Message-Id: <20230410093601.3945712-1-void0red@hust.edu.cn>
+        with ESMTP id S229571AbjDJOs7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Apr 2023 10:48:59 -0400
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8864246BD
+        for <linux-acpi@vger.kernel.org>; Mon, 10 Apr 2023 07:48:57 -0700 (PDT)
+X-UUID: 2260605f64954643974359d3ae911bf8-20230410
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.22,REQID:d03f9483-32d4-45d0-b4ef-0610e5ae5e5e,IP:10,
+        URL:0,TC:0,Content:-25,EDM:25,RT:0,SF:-9,FILE:0,BULK:0,RULE:Release_Ham,AC
+        TION:release,TS:1
+X-CID-INFO: VERSION:1.1.22,REQID:d03f9483-32d4-45d0-b4ef-0610e5ae5e5e,IP:10,UR
+        L:0,TC:0,Content:-25,EDM:25,RT:0,SF:-9,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+        ON:release,TS:1
+X-CID-META: VersionHash:120426c,CLOUDID:1bdbd8a0-8fcb-430b-954a-ba3f00fa94a5,B
+        ulkID:2304102248470A3S0IBV,BulkQuantity:0,Recheck:0,SF:45|38|24|17|19|102,
+        TC:nil,Content:0,EDM:5,IP:-2,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,
+        OSI:0,OSA:0,AV:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-UUID: 2260605f64954643974359d3ae911bf8-20230410
+X-User: guodongtai@kylinos.cn
+Received: from localhost.localdomain [(210.12.40.82)] by mailgw
+        (envelope-from <guodongtai@kylinos.cn>)
+        (Generic MTA)
+        with ESMTP id 110705115; Mon, 10 Apr 2023 22:48:46 +0800
+From:   George Guo <guodongtai@kylinos.cn>
+To:     robert.moore@intel.com, rafael.j.wysocki@intel.com,
+        lenb@kernel.org, linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPICA: Modify ACPI_STATE_COMMON and put it in a single line
+Date:   Mon, 10 Apr 2023 22:48:46 +0800
+Message-Id: <20230410144846.1959224-1-guodongtai@kylinos.cn>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CAJZ5v0gPUBFzuFiRWW8KHAwB1Agy+Le=CWuRD0RTr4MkNeEmQw@mail.gmail.com>
-References: <CAJZ5v0gPUBFzuFiRWW8KHAwB1Agy+Le=CWuRD0RTr4MkNeEmQw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-FEAS-AUTH-USER: void0red@hust.edu.cn
-X-Spam-Status: No, score=-0.0 required=5.0 tests=SPF_HELO_PASS,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS,
+        UNPARSEABLE_RELAY autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Kang Chen <void0red@gmail.com>
+Avoid trailing semicolons in macro, and it's not readable to put the macro 
+ACPI_STATE_COMMON with other variables in the same line.
+So modify the macro and just put it in a single line.
 
-ACPI_ALLOCATE_ZEROED may fails, object_info might be null and will
-cause null pointer dereference later.
-
-Link: https://github.com/acpica/acpica/commit/84b3752cfa0ce4b0ebecae5e193c937b8ed6e278
-Signed-off-by: Kang Chen <void0red@gmail.com>
+Signed-off-by: George Guo <guodongtai@kylinos.cn>
 ---
-v2 -> v1: add a github link
+ drivers/acpi/acpica/aclocal.h | 30 +++++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
 
- drivers/acpi/acpica/dbnames.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/acpi/acpica/dbnames.c b/drivers/acpi/acpica/dbnames.c
-index 3615e1a6e..b91155ea9 100644
---- a/drivers/acpi/acpica/dbnames.c
-+++ b/drivers/acpi/acpica/dbnames.c
-@@ -652,6 +652,9 @@ acpi_status acpi_db_display_objects(char *obj_type_arg, char *display_count_arg)
- 		object_info =
- 		    ACPI_ALLOCATE_ZEROED(sizeof(struct acpi_object_info));
+diff --git a/drivers/acpi/acpica/aclocal.h b/drivers/acpi/acpica/aclocal.h
+index 901b1543b869..cb757ac2c22e 100644
+--- a/drivers/acpi/acpica/aclocal.h
++++ b/drivers/acpi/acpica/aclocal.h
+@@ -560,25 +560,28 @@ struct acpi_field_info {
+ 	u8                              descriptor_type; /* To differentiate various internal objs */\
+ 	u8                              flags; \
+ 	u16                             value; \
+-	u16                             state;
++	u16                             state
  
-+		if (!object_info)
-+			return (AE_NO_MEMORY);
-+
- 		/* Walk the namespace from the root */
+ 	/* There are 2 bytes available here until the next natural alignment boundary */
  
- 		(void)acpi_walk_namespace(ACPI_TYPE_ANY, ACPI_ROOT_OBJECT,
+ struct acpi_common_state {
+-ACPI_STATE_COMMON};
++	ACPI_STATE_COMMON;
++};
+ 
+ /*
+  * Update state - used to traverse complex objects such as packages
+  */
+ struct acpi_update_state {
+-	ACPI_STATE_COMMON union acpi_operand_object *object;
++	ACPI_STATE_COMMON;
++	union acpi_operand_object *object;
+ };
+ 
+ /*
+  * Pkg state - used to traverse nested package structures
+  */
+ struct acpi_pkg_state {
+-	ACPI_STATE_COMMON u32 index;
++	ACPI_STATE_COMMON;
++	u32 index;
+ 	union acpi_operand_object *source_object;
+ 	union acpi_operand_object *dest_object;
+ 	struct acpi_walk_state *walk_state;
+@@ -591,7 +594,8 @@ struct acpi_pkg_state {
+  * Allows nesting of these constructs
+  */
+ struct acpi_control_state {
+-	ACPI_STATE_COMMON u16 opcode;
++	ACPI_STATE_COMMON;
++	u16 opcode;
+ 	union acpi_parse_object *predicate_op;
+ 	u8 *aml_predicate_start;	/* Start of if/while predicate */
+ 	u8 *package_end;	/* End of if/while block */
+@@ -602,11 +606,13 @@ struct acpi_control_state {
+  * Scope state - current scope during namespace lookups
+  */
+ struct acpi_scope_state {
+-	ACPI_STATE_COMMON struct acpi_namespace_node *node;
++	ACPI_STATE_COMMON;
++	struct acpi_namespace_node *node;
+ };
+ 
+ struct acpi_pscope_state {
+-	ACPI_STATE_COMMON u32 arg_count;	/* Number of fixed arguments */
++	ACPI_STATE_COMMON;
++	u32 arg_count;	/* Number of fixed arguments */
+ 	union acpi_parse_object *op;	/* Current op being parsed */
+ 	u8 *arg_end;		/* Current argument end */
+ 	u8 *pkg_end;		/* Current package end */
+@@ -618,7 +624,8 @@ struct acpi_pscope_state {
+  * states are created when there are nested control methods executing.
+  */
+ struct acpi_thread_state {
+-	ACPI_STATE_COMMON u8 current_sync_level;	/* Mutex Sync (nested acquire) level */
++	ACPI_STATE_COMMON;
++	u8 current_sync_level;	/* Mutex Sync (nested acquire) level */
+ 	struct acpi_walk_state *walk_state_list;	/* Head of list of walk_states for this thread */
+ 	union acpi_operand_object *acquired_mutex_list;	/* List of all currently acquired mutexes */
+ 	acpi_thread_id thread_id;	/* Running thread ID */
+@@ -629,8 +636,8 @@ struct acpi_thread_state {
+  * AML arguments
+  */
+ struct acpi_result_values {
+-	ACPI_STATE_COMMON
+-	    union acpi_operand_object *obj_desc[ACPI_RESULTS_FRAME_OBJ_NUM];
++	ACPI_STATE_COMMON;
++	union acpi_operand_object *obj_desc[ACPI_RESULTS_FRAME_OBJ_NUM];
+ };
+ 
+ typedef
+@@ -652,7 +659,8 @@ struct acpi_global_notify_handler {
+  * handler/dispatcher.
+  */
+ struct acpi_notify_info {
+-	ACPI_STATE_COMMON u8 handler_list_id;
++	ACPI_STATE_COMMON;
++	u8 handler_list_id;
+ 	struct acpi_namespace_node *node;
+ 	union acpi_operand_object *handler_list_head;
+ 	struct acpi_global_notify_handler *global;
 -- 
 2.34.1
 
