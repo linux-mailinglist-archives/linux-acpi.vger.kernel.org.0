@@ -2,310 +2,167 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21B146DDDEC
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Apr 2023 16:29:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C25FE6DDE65
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Apr 2023 16:47:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230302AbjDKO3a (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 11 Apr 2023 10:29:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36316 "EHLO
+        id S229661AbjDKOrH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 11 Apr 2023 10:47:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230081AbjDKO3R (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Apr 2023 10:29:17 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E2D85FD0;
-        Tue, 11 Apr 2023 07:28:52 -0700 (PDT)
-Received: from dggpemm500001.china.huawei.com (unknown [172.30.72.57])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Pwp7d5JQYzrZK3;
-        Tue, 11 Apr 2023 22:26:53 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Tue, 11 Apr 2023 22:28:15 +0800
-Message-ID: <84fd1fad-604e-0835-2813-199195aaab69@huawei.com>
-Date:   Tue, 11 Apr 2023 22:28:14 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [PATCH v5 2/2] ACPI: APEI: handle synchronous exceptions in task
- work
+        with ESMTP id S229776AbjDKOrG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Apr 2023 10:47:06 -0400
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2045.outbound.protection.outlook.com [40.107.247.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24EF6199C;
+        Tue, 11 Apr 2023 07:47:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=b6Rxk9CPsbQqp1FCsZ8hPvAoN7vqNb0MYGAPZUs8rGPBeoPT/OIAl6cRbIuvB62tXY3Q5Vkr/AL3Aq25kQRx+qvO6siAop6d5esLluuqueeulQvlnDtYZS43q5lEU0LhAFHmnslbycYEFhUMgZxQj46h0KDlKUzGktt3Xq0tJOskEvTnBowUwhREe9OcPmLxUdcNh70ZMkgW2Wmk3EAP80YYQ9dqL+2NshkAlWlDJfnX1KpKBsjGS+FzCDkMAQtZSsLvDXl5fYJ0z6BsaG+ZFF7G44HCZvamK07Vi4JNLodSgEvfio+G2MGQsrgYkeJY1tEZzKi1TEAWRW8cIiV12Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=J8JP8R3/gZAgauwlYWn+T8pdGKliJa2KhO6T7sDEoyA=;
+ b=CxWAdaZDaqXrb6PZxs5o5FvRWuKR/K9+HSwWmA+wRg/7ezlc7UIRauKRXcTT55Ce1h8x9qZe1dnsZE0d5Ja0oUhEydn3/+4URlES0uZt6tcXVvsgCGEpRDFGfVRYGC/xW72IOJn5rETa2NbPdXgv+zt9fo5WSP0h1WnvEyh4fdQ/Lgc2wyP2MNt9yq2TfAG/zYl89pkWRnS8ehBzpYeVhimvRGPaZB2Ww1YWeAaZdaIlZVk6Zm2eHIOW2sun4YKz7XrZmwJOhO6EzZHoMkkFgSyPXjs2W60Hx7Gw1hRTQwOvO4FIekvfEcPE9dprG67toSo5ttXHzU/BcM0T+XLlKg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=xsightlabs.com; dmarc=pass action=none
+ header.from=xsightlabs.com; dkim=pass header.d=xsightlabs.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xsightlabs.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=J8JP8R3/gZAgauwlYWn+T8pdGKliJa2KhO6T7sDEoyA=;
+ b=hoK1LVlgBoEu7T+1Tbf0Rykd66VlNunpRyumbU93UHtoK/kRIx2hVfVlSCoEfVpCYkW4+kHy2EPWr2p5NGqjFE28eliBiZs8aZaBxfOvykqki8g+3hYoK9c8cqVDA5TsZF3hM5Qj27Lp6SFWR80895I1Vom4165US0Rh8sEf8bE=
+Received: from AS8P193MB2335.EURP193.PROD.OUTLOOK.COM (2603:10a6:20b:446::5)
+ by PR3P193MB0877.EURP193.PROD.OUTLOOK.COM (2603:10a6:102:94::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6277.38; Tue, 11 Apr
+ 2023 14:47:01 +0000
+Received: from AS8P193MB2335.EURP193.PROD.OUTLOOK.COM
+ ([fe80::fd74:ebbb:46ac:8a82]) by AS8P193MB2335.EURP193.PROD.OUTLOOK.COM
+ ([fe80::fd74:ebbb:46ac:8a82%4]) with mapi id 15.20.6277.036; Tue, 11 Apr 2023
+ 14:47:01 +0000
+From:   Robbie King <robbiek@xsightlabs.com>
+To:     "lihuisong (C)" <lihuisong@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
+CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "rafael.j.wysocki@intel.com" <rafael.j.wysocki@intel.com>,
+        "wanghuiqiang@huawei.com" <wanghuiqiang@huawei.com>,
+        "zhangzekun11@huawei.com" <zhangzekun11@huawei.com>,
+        "wangxiongfeng2@huawei.com" <wangxiongfeng2@huawei.com>,
+        "tanxiaofei@huawei.com" <tanxiaofei@huawei.com>,
+        "guohanjun@huawei.com" <guohanjun@huawei.com>,
+        "xiexiuqi@huawei.com" <xiexiuqi@huawei.com>,
+        "wangkefeng.wang@huawei.com" <wangkefeng.wang@huawei.com>,
+        "huangdaode@huawei.com" <huangdaode@huawei.com>
+Subject: RE: [PATCH v2 0/2] mailbox: pcc: Support platform notification for
+ type4 and shared interrupt
+Thread-Topic: [PATCH v2 0/2] mailbox: pcc: Support platform notification for
+ type4 and shared interrupt
+Thread-Index: AQHZVmXrfTRFQyNc3E2WN8mIgww8bK8OkxgAgAAQQYCAFUbqgIACccaw
+Date:   Tue, 11 Apr 2023 14:47:01 +0000
+Message-ID: <AS8P193MB2335FA58943B305F97D2BACCCA9A9@AS8P193MB2335.EURP193.PROD.OUTLOOK.COM>
+References: <20221016034043.52227-1-lihuisong@huawei.com>
+ <20230314111135.16520-1-lihuisong@huawei.com>
+ <20230327113326.dgrb5ainl6mv7wr5@bogus>
+ <570a6f6d-87cb-48ca-3bbc-cd1221bfa88c@huawei.com>
+ <7ef4eec4-2cfb-6f66-a9b9-9c130a1b71d8@huawei.com>
+In-Reply-To: <7ef4eec4-2cfb-6f66-a9b9-9c130a1b71d8@huawei.com>
+Accept-Language: en-US
 Content-Language: en-US
-To:     Shuai Xue <xueshuai@linux.alibaba.com>, <tanxiaofei@huawei.com>,
-        <mawupeng1@huawei.com>, <tony.luck@intel.com>,
-        <naoya.horiguchi@nec.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <justin.he@arm.com>,
-        <akpm@linux-foundation.org>, <ardb@kernel.org>,
-        <ashish.kalra@amd.com>, <baolin.wang@linux.alibaba.com>,
-        <bp@alien8.de>, <cuibixuan@linux.alibaba.com>,
-        <dave.hansen@linux.intel.com>, <james.morse@arm.com>,
-        <jarkko@kernel.org>, <lenb@kernel.org>, <linmiaohe@huawei.com>,
-        <lvying6@huawei.com>, <rafael@kernel.org>, <xiexiuqi@huawei.com>,
-        <zhuo.song@linux.alibaba.com>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20230411104842.37079-3-xueshuai@linux.alibaba.com>
-From:   Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <20230411104842.37079-3-xueshuai@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm500001.china.huawei.com (7.185.36.107)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.5 required=5.0 tests=NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-bromium-msgid: dfe9e309-f0e0-47f4-b731-0818a78a7ce0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=xsightlabs.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8P193MB2335:EE_|PR3P193MB0877:EE_
+x-ms-office365-filtering-correlation-id: 77784394-05b5-4c90-13d9-08db3a9b9c02
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: pNF9O1xIwrt6euIxSRTCZB6G+ykFv05MP5eLHYkLljnMupCBagRKwS7huyjKm7Z001uR4fjSres3aY4Z4Bh2DQ7WnwJgkE93HVXPgNFjunsfF30sas5Nh0kw1ZucZKoQqjqDRwO+oL0sCMX1v91rWJ6RRAs97AL/FWePatVqCnAJpkx4HIn7o5erdrw6lyACbaobftd30oGusR7ann3DAe9/klC03eVm1+/e85kNJNEA/jzkB2wJOZqYsfD3BsjmgxMqtV2s4Us0jGJCyh6Az/HZuGmT2bda8IYXyqJk7SWEbrSMKAyv/vGj2infXjaZawBOk+GvnjWGKYpY1PtQntOVd1jrontKCO1CTHfAFzDaalSK6AL1nS6XFqua5OpnQy9iG5b9ahMgFCWYUQzu1Cr0jHruSt4Amdh+d+wgTrNsiF/olOVfXtz+tcVMtkaCqU9zfxKwv37fJylBABlFedRM5UwDcDXkvSBEXWPfShmjaPcU13Sa1MhtABZAk9swiKl/7/M/L+yLmTKeg+jg9mfsIPSCAjHBA8wIM7W4Q82oBK1o7AnCsvIOgh4igdsS880EFqzyaZvxOHf8WnpqjzLbhWJpa/HxcaFsY8IjiH0LldFAWQvaa2xSAybkG3Kc
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8P193MB2335.EURP193.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(366004)(346002)(136003)(39840400004)(396003)(451199021)(2906002)(54906003)(478600001)(26005)(52536014)(8936002)(38100700002)(38070700005)(122000001)(15650500001)(9686003)(53546011)(6506007)(83380400001)(86362001)(7416002)(5660300002)(186003)(55016003)(66476007)(66556008)(64756008)(76116006)(66946007)(8676002)(4326008)(66446008)(33656002)(7696005)(110136005)(71200400001)(316002)(41300700001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TnEvZk1LYXUxR3pJTUJXbW1NZW1mV1FlLzl4TXVmNXNwc2diT3NWSGxaUEtu?=
+ =?utf-8?B?UGorcU9nM2padzArd1dSNFhtZjlVZVlqWjdKd0hkSFZjdzFveGlWVjVvWDg2?=
+ =?utf-8?B?T1dvZFgwWmFvL0dnZ0cxN3FpdUtibG1JcGE4czhvR3BDamJVVWpRQjc1T1Nk?=
+ =?utf-8?B?eUlVcS8wUFdFT0NRRTc4SnNjS1lTV2VMNGFpMU0yOFIrTGQvRG1kdktwVWEv?=
+ =?utf-8?B?N2tkYWlYejE1andWWnFWTnF4cndEU2RQMUttSU9NclRJTTcwblRTeTUvcEdk?=
+ =?utf-8?B?UktmRTlVMm56ZGlLMElMeHNQa2djUTRGcFQ1L3JGK2s3K09IMWltUkoxRjJ4?=
+ =?utf-8?B?SFR2RGpDMC9JOEV1L0lkeTJQOGJmUS83bmdTWVNxR0FaaHhKN3RKUGVOV21C?=
+ =?utf-8?B?RUgyTktaQlByZzhTd2VJVlFRVmdGeEFTd0FKc0JJdjZ1czM1M2kxQS8ydzJh?=
+ =?utf-8?B?RSs4QTU4RXdNN0tkTVJGMjNoS1lNVVdRZW5XeFRoeGsxMHpZOGU0cER0LzIx?=
+ =?utf-8?B?cXBENkd1bEY5MDJhcXMvblZGTmJUclRiRlEwd25ad0FHd1lUL0xVdC83R012?=
+ =?utf-8?B?YkJGdy9JVHpwTlYwTDdUMUdydVNTbkxsMmV6L0VaK3NQS2ltS2l0MGlEdXdy?=
+ =?utf-8?B?ZjNIWWNENVZZQjZka0ZvQmhTcjVwTXpKUS9TWTNKRjdJSDJRakxmcEViMUJs?=
+ =?utf-8?B?SUtacmcrOFRvdW11b0xhNURKOVFySFFXS2FvWHg2ZEtqOUZLYkprVFFoRUd4?=
+ =?utf-8?B?bmErd1NyWER0Z3BYWTY1QjE0WXU4Qi9NdUhrOGh4UGp0MEhkK1o5aVJ4aVhz?=
+ =?utf-8?B?ZXJKSi9rVmc2SkZmZHg1WHBrUmQyOGVCWGp6LzBLL3hxWlVHc3NsVXNSeG8w?=
+ =?utf-8?B?NU1ycFRnb1Z3UGVxS2VTVEZUeTgvaFM4R3dOSnV2azJNM3JHTXUya2IyVE54?=
+ =?utf-8?B?c3NEdHBLRjJSNEJJcUxVaUdRL2MyN09jQnMrcHE5d2Q2NWZwbVVVYkw4VndM?=
+ =?utf-8?B?MlVFM3RsMit2eHdXNldjem1LczRrc1I3RGhzeVBiSEFmOVorN3Y2Rmlqdm9s?=
+ =?utf-8?B?d0cvNUZkMEpxeEU3WlNSMkRUTS9qYWhvRTNLUkxlYWtZRWV3MFJOQWwzWXBx?=
+ =?utf-8?B?VkV1L21paEtnSE5SRk5oOEo4Tk50Y1psVmdPSjB4R1dPZklxTDQ0R2x1dWRW?=
+ =?utf-8?B?Q2ZCajAyOU1lSFJiaHVqR0krZWM2YW5xM1FkWFZKNTdPSngzVjJLOXMrUWQy?=
+ =?utf-8?B?T3VkMEJSMkc1bXpITFJhcy8vTFZzeWdYUzYyL2RhZnF0TnArMnJWRmphT3VQ?=
+ =?utf-8?B?TVRpQlFlMWlVemEySC9OdUpyNDMzbUJTVlhVZ0JVSUJrdWFOUG4rWGtzcFpv?=
+ =?utf-8?B?MnVVdWFXZ1QzMG5mcG1ydm1YMVJ2MEJ4UmU0OFFKUjNYRUM4VW5waHROa0xn?=
+ =?utf-8?B?Z3NRQXRoT0RpeDdSNEFtNm1nWkRqOXdFZnJKVFRiUjVGandLM2NYaEVUdmox?=
+ =?utf-8?B?QUVTSjlJcUtIcHhUMTZHYjQ5QzJTc3JXNVFQSVVBcjI4ZjFHVEpZZzVQRGdU?=
+ =?utf-8?B?RElEVG5Uais4MzRuV3hKdXB5Yi9rbHNRVGJJSjlzUmJ3ckkyMjE3NUkyN1Ay?=
+ =?utf-8?B?QkZ4SVFQUDhLeWpzRDl5c0FvZ1Z4MkJrQ3lXQTZycDZnSWdJR1h4eFFYbjlx?=
+ =?utf-8?B?NnVBOWdlamI2T041cHBnTkdiYUFNbE1sb1EwSC9HMGFUbE9Xei9lR2x2Unho?=
+ =?utf-8?B?RGpzbXJzVVpRRWYzM2cvSGFPNHNvVkx4Lzh0QlRac0VKemNrS09ZQzRSaXV6?=
+ =?utf-8?B?QlpDdzFBNzRTcWZ6dmJ4WlhrWTN5Q2FJaTVYSWt6WHgzWi9FakVmNEc5eTQx?=
+ =?utf-8?B?STVJS25MYjhGL2kvYWdNZFJBbXk1YjVzdXJpZm1XS3o2d1dUYmxveElmOXZY?=
+ =?utf-8?B?Y0JHUjlJWExySExrdXJIbmFFTTRKR3A3VnZZMmVMRGxuUUVsMjV3NkZETGZz?=
+ =?utf-8?B?TXFnd1oxem1mWHFqNzc3anhXcG5pK3VmT01SRXY1TkNZT1NnSkVLekt0TXRO?=
+ =?utf-8?B?MHVKUDdMSS9pcWZiNFB5b3d3ZHFOSGFieHJrUDhLWms0cDZaTlcvejROdjk5?=
+ =?utf-8?Q?R3wC2WhIBimb8h366EYnrCoWN?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: xsightlabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS8P193MB2335.EURP193.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 77784394-05b5-4c90-13d9-08db3a9b9c02
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Apr 2023 14:47:01.4464
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 646a3e34-83ea-4273-9177-ab01923abaa9
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Sd9zWzoozpWsegiCfDIqqaTQ8zueAnNqUsnr6NpVXymNBxvAOh4JSqLczXJnVdPBSGFOvvfjefp25gKdNgtXyg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3P193MB0877
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-
-On 2023/4/11 18:48, Shuai Xue wrote:
-> Hardware errors could be signaled by synchronous interrupt, e.g.  when an
-> error is detected by a background scrubber, or signaled by synchronous
-> exception, e.g. when an uncorrected error is consumed. Both synchronous and
-> asynchronous error are queued and handled by a dedicated kthread in
-> workqueue.
-> 
-> commit 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for
-> synchronous errors") keep track of whether memory_failure() work was
-> queued, and make task_work pending to flush out the workqueue so that the
-> work for synchronous error is processed before returning to user-space.
-> The trick ensures that the corrupted page is unmapped and poisoned. And
-> after returning to user-space, the task starts at current instruction which
-> triggering a page fault in which kernel will send SIGBUS to current process
-> due to VM_FAULT_HWPOISON.
-> 
-> However, the memory failure recovery for hwpoison-aware mechanisms does not
-> work as expected. For example, hwpoison-aware user-space processes like
-> QEMU register their customized SIGBUS handler and enable early kill mode by
-> seting PF_MCE_EARLY at initialization. Then the kernel will directy notify
-> the process by sending a SIGBUS signal in memory failure with wrong
-> si_code: the actual user-space process accessing the corrupt memory
-> location, but its memory failure work is handled in a kthread context, so
-> it will send SIGBUS with BUS_MCEERR_AO si_code to the actual user-space
-> process instead of BUS_MCEERR_AR in kill_proc().
-> 
-> To this end, separate synchronous and asynchronous error handling into
-> different paths like X86 platform does:
-> 
-> - valid synchronous errors: queue a task_work to synchronously send SIGBUS
->    before ret_to_user.
-> - valid asynchronous errors: queue a work into workqueue to asynchronously
->    handle memory failure.
-> - abnormal branches such as invalid PA, unexpected severity, no memory
->    failure config support, invalid GUID section, OOM, etc.
-> 
-> Then for valid synchronous errors, the current context in memory failure is
-> exactly belongs to the task consuming poison data and it will send SIBBUS
-> with proper si_code.
-> 
-> Fixes: 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for synchronous errors")
-> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
-> ---
->   drivers/acpi/apei/ghes.c | 91 +++++++++++++++++++++++++++-------------
->   include/acpi/ghes.h      |  3 --
->   mm/memory-failure.c      | 13 ------
->   3 files changed, 61 insertions(+), 46 deletions(-)
-> 
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index c479b85899f5..4b70955e25f9 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -452,28 +452,51 @@ static void ghes_clear_estatus(struct ghes *ghes,
->   }
->   
->   /*
-> - * Called as task_work before returning to user-space.
-> - * Ensure any queued work has been done before we return to the context that
-> - * triggered the notification.
-> + * struct sync_task_work - for synchronous RAS event
-> + *
-> + * @twork:                callback_head for task work
-> + * @pfn:                  page frame number of corrupted page
-> + * @flags:                fine tune action taken
-> + *
-> + * Structure to pass task work to be handled before
-> + * ret_to_user via task_work_add().
->    */
-> -static void ghes_kick_task_work(struct callback_head *head)
-> +struct sync_task_work {
-> +	struct callback_head twork;
-> +	u64 pfn;
-> +	int flags;
-> +};
-> +
-> +static void memory_failure_cb(struct callback_head *twork)
->   {
-> -	struct acpi_hest_generic_status *estatus;
-> -	struct ghes_estatus_node *estatus_node;
-> -	u32 node_len;
-> +	int ret;
-> +	struct sync_task_work *twcb =
-> +		container_of(twork, struct sync_task_work, twork);
->   
-> -	estatus_node = container_of(head, struct ghes_estatus_node, task_work);
-> -	if (IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
-> -		memory_failure_queue_kick(estatus_node->task_work_cpu);
-> +	ret = memory_failure(twcb->pfn, twcb->flags);
-> +	kfree(twcb);
->   
-> -	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
-> -	node_len = GHES_ESTATUS_NODE_LEN(cper_estatus_len(estatus));
-> -	gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
-> +	if (!ret)
-> +		return;
-> +
-> +	/*
-> +	 * -EHWPOISON from memory_failure() means that it already sent SIGBUS
-> +	 * to the current process with the proper error info,
-
-This should be part of the comments of function memory_failure(),
-
-> +	 * -EOPNOTSUPP means hwpoison_filter() filtered the error event,
-> +	 *
-and this part is already there
-> +	 * In both cases, no further processing is required.
-> +	 */
-so, after that, I think we could drop this comment, also the same 
-comment in x86's kill_me_maybe().
-
-> +	if (ret == -EHWPOISON || ret == -EOPNOTSUPP)
-> +		return;
-> +
-> +	pr_err("Memory error not recovered");
-> +	force_sig(SIGBUS);
->   }
->   
->   static bool ghes_do_memory_failure(u64 physical_addr, int flags)
->   {
->   	unsigned long pfn;
-> +	struct sync_task_work *twcb;
->   
->   	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
->   		return false;
-> @@ -486,6 +509,18 @@ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
->   		return false;
->   	}
->   
-> +	if (flags == MF_ACTION_REQUIRED && current->mm) {
-> +		twcb = kmalloc(sizeof(*twcb), GFP_ATOMIC);
-> +		if (!twcb)
-> +			return false;
-> +
-> +		twcb->pfn = pfn;
-> +		twcb->flags = flags;
-> +		init_task_work(&twcb->twork, memory_failure_cb);
-> +		task_work_add(current, &twcb->twork, TWA_RESUME);
-> +		return true;
-> +	}
-> +
->   	memory_failure_queue(pfn, flags);
->   	return true;
->   }
-> @@ -1000,9 +1035,8 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
->   	struct ghes_estatus_node *estatus_node;
->   	struct acpi_hest_generic *generic;
->   	struct acpi_hest_generic_status *estatus;
-> -	bool task_work_pending;
-> +	bool queued, sync;
->   	u32 len, node_len;
-> -	int ret;
->   
->   	llnode = llist_del_all(&ghes_estatus_llist);
->   	/*
-> @@ -1015,27 +1049,25 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
->   		estatus_node = llist_entry(llnode, struct ghes_estatus_node,
->   					   llnode);
->   		estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
-> +		sync = is_hest_sync_notify(estatus_node->ghes);
->   		len = cper_estatus_len(estatus);
->   		node_len = GHES_ESTATUS_NODE_LEN(len);
-> -		task_work_pending = ghes_do_proc(estatus_node->ghes, estatus);
-> +
-> +		queued = ghes_do_proc(estatus_node->ghes, estatus) > +		/*
-> +		 * If no memory failure work is queued for abnormal synchronous
-> +		 * errors, do a force kill.
-> +		 */
-> +		if (sync && !queued)
-> +			force_sig(SIGBUS);
-
-It's better to move this part into function ghes_do_proc(), because 
-there is already an is_hest_sync_notify(), and no need return value,
-so make ghes_do_proc() a void function, Apart from this,
-
-Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-
-> +
->   		if (!ghes_estatus_cached(estatus)) {
->   			generic = estatus_node->generic;
->   			if (ghes_print_estatus(NULL, generic, estatus))
->   				ghes_estatus_cache_add(generic, estatus);
->   		}
-> -
-> -		if (task_work_pending && current->mm) {
-> -			estatus_node->task_work.func = ghes_kick_task_work;
-> -			estatus_node->task_work_cpu = smp_processor_id();
-> -			ret = task_work_add(current, &estatus_node->task_work,
-> -					    TWA_RESUME);
-> -			if (ret)
-> -				estatus_node->task_work.func = NULL;
-> -		}
-> -
-> -		if (!estatus_node->task_work.func)
-> -			gen_pool_free(ghes_estatus_pool,
-> -				      (unsigned long)estatus_node, node_len);
-> +		gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node,
-> +			      node_len);
->   
->   		llnode = next;
->   	}
-> @@ -1096,7 +1128,6 @@ static int ghes_in_nmi_queue_one_entry(struct ghes *ghes,
->   
->   	estatus_node->ghes = ghes;
->   	estatus_node->generic = ghes->generic;
-> -	estatus_node->task_work.func = NULL;
->   	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
->   
->   	if (__ghes_read_estatus(estatus, buf_paddr, fixmap_idx, len)) {
-> diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
-> index 3c8bba9f1114..e5e0c308d27f 100644
-> --- a/include/acpi/ghes.h
-> +++ b/include/acpi/ghes.h
-> @@ -35,9 +35,6 @@ struct ghes_estatus_node {
->   	struct llist_node llnode;
->   	struct acpi_hest_generic *generic;
->   	struct ghes *ghes;
-> -
-> -	int task_work_cpu;
-> -	struct callback_head task_work;
->   };
->   
->   struct ghes_estatus_cache {
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index fae9baf3be16..6ea8c325acb3 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -2355,19 +2355,6 @@ static void memory_failure_work_func(struct work_struct *work)
->   	}
->   }
->   
-> -/*
-> - * Process memory_failure work queued on the specified CPU.
-> - * Used to avoid return-to-userspace racing with the memory_failure workqueue.
-> - */
-> -void memory_failure_queue_kick(int cpu)
-> -{
-> -	struct memory_failure_cpu *mf_cpu;
-> -
-> -	mf_cpu = &per_cpu(memory_failure_cpu, cpu);
-> -	cancel_work_sync(&mf_cpu->work);
-> -	memory_failure_work_func(&mf_cpu->work);
-> -}
-> -
->   static int __init memory_failure_init(void)
->   {
->   	struct memory_failure_cpu *mf_cpu;
+QXBvbG9naWVzLCBtaXNzZWQgZWFybGllciBlbWFpbHMuICBXaWxsIG1ha2UgdGhpcyBhIHByaW9y
+aXR5IGZvciB0aGUgd2Vlay4NCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IGxp
+aHVpc29uZyAoQykgPGxpaHVpc29uZ0BodWF3ZWkuY29tPiANClNlbnQ6IFN1bmRheSwgQXByaWwg
+OSwgMjAyMyA5OjI3IFBNDQpUbzogU3VkZWVwIEhvbGxhIDxzdWRlZXAuaG9sbGFAYXJtLmNvbT47
+IFJvYmJpZSBLaW5nIDxyb2JiaWVrQHhzaWdodGxhYnMuY29tPg0KQ2M6IGxpbnV4LWFjcGlAdmdl
+ci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyByYWZhZWxAa2VybmVs
+Lm9yZzsgcmFmYWVsLmoud3lzb2NraUBpbnRlbC5jb207IHdhbmdodWlxaWFuZ0BodWF3ZWkuY29t
+OyB6aGFuZ3pla3VuMTFAaHVhd2VpLmNvbTsgd2FuZ3hpb25nZmVuZzJAaHVhd2VpLmNvbTsgdGFu
+eGlhb2ZlaUBodWF3ZWkuY29tOyBndW9oYW5qdW5AaHVhd2VpLmNvbTsgeGlleGl1cWlAaHVhd2Vp
+LmNvbTsgd2FuZ2tlZmVuZy53YW5nQGh1YXdlaS5jb207IGh1YW5nZGFvZGVAaHVhd2VpLmNvbQ0K
+U3ViamVjdDogUmU6IFtQQVRDSCB2MiAwLzJdIG1haWxib3g6IHBjYzogU3VwcG9ydCBwbGF0Zm9y
+bSBub3RpZmljYXRpb24gZm9yIHR5cGU0IGFuZCBzaGFyZWQgaW50ZXJydXB0DQoNCg0K5ZyoIDIw
+MjMvMy8yNyAyMDozMSwgbGlodWlzb25nIChDKSDlhpnpgZM6DQo+DQo+IOWcqCAyMDIzLzMvMjcg
+MTk6MzMsIFN1ZGVlcCBIb2xsYSDlhpnpgZM6DQo+PiBPbiBUdWUsIE1hciAxNCwgMjAyMyBhdCAw
+NzoxMTozM1BNICswODAwLCBIdWlzb25nIExpIHdyb3RlOg0KPj4+IFBDQyBzdXBwb3J0cyBwcm9j
+ZXNzaW5nIHBsYXRmb3JtIG5vdGlmaWNhdGlvbiBmb3Igc2xhdmUgc3Vic3BhY2VzIA0KPj4+IGFu
+ZCBzaGFyZWQgaW50ZXJydXB0IGZvciBtdWx0aXBsZSBzdWJzcGFjZXMuDQo+Pj4NCj4+IE90aGVy
+IHRoYW4gYSBzdXBlciBtaW5vciBuaXQgaW4gdGhlIHBhdGNoIDEvMiwgdGhpcyBsb29rcyBnb29k
+IHRvIG1lLg0KPj4gSXQgd291bGQgYmUgZ29vZCBpZiB3ZSBjYW4gZ2V0IHRlc3RlZC1ieSBmcm9t
+IFJvYmJpZSBLaW5nIA0KPj4gPHJvYmJpZWtAeHNpZ2h0bGFicy5jb20+DQo+Pg0KPj4gUmV2aWV3
+ZWQtYnk6IFN1ZGVlcCBIb2xsYSA8c3VkZWVwLmhvbGxhQGFybS5jb20+DQo+IFRoYW5rcyBmb3Ig
+eW91ciByZXZpZXcu8J+YgQ0KPg0KPiBAUm9iYmllIEtpbmcsIGNhbiB5b3UgZ2l2ZSB1cyBzb21l
+IGZlZWRiYWNrPw0KPiBMb29raW5nIGZvcndhcmQgdG8geW91IHJlcGx5Lg0KPg0KPg0KQFJvYmJp
+ZSBLaW5nLCBraW5kbHkgcGluZy4NCg==
