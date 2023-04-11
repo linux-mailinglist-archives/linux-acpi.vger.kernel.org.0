@@ -2,32 +2,32 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC4C96DDD87
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Apr 2023 16:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21B146DDDEC
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Apr 2023 16:29:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230302AbjDKORp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 11 Apr 2023 10:17:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50042 "EHLO
+        id S230302AbjDKO3a (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 11 Apr 2023 10:29:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230255AbjDKOR2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Apr 2023 10:17:28 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47F6FE4C;
-        Tue, 11 Apr 2023 07:17:19 -0700 (PDT)
-Received: from dggpemm500001.china.huawei.com (unknown [172.30.72.53])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4PwnrR0L0Qz16NWS;
-        Tue, 11 Apr 2023 22:13:43 +0800 (CST)
+        with ESMTP id S230081AbjDKO3R (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Apr 2023 10:29:17 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E2D85FD0;
+        Tue, 11 Apr 2023 07:28:52 -0700 (PDT)
+Received: from dggpemm500001.china.huawei.com (unknown [172.30.72.57])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Pwp7d5JQYzrZK3;
+        Tue, 11 Apr 2023 22:26:53 +0800 (CST)
 Received: from [10.174.177.243] (10.174.177.243) by
  dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Tue, 11 Apr 2023 22:17:15 +0800
-Message-ID: <eb7f13ad-6e7b-65c5-72c8-d5a4be88e943@huawei.com>
-Date:   Tue, 11 Apr 2023 22:17:14 +0800
+ 15.1.2507.23; Tue, 11 Apr 2023 22:28:15 +0800
+Message-ID: <84fd1fad-604e-0835-2813-199195aaab69@huawei.com>
+Date:   Tue, 11 Apr 2023 22:28:14 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.5.1
-Subject: Re: [PATCH v5 1/2] ACPI: APEI: set memory failure flags as
- MF_ACTION_REQUIRED on synchronous events
+Subject: Re: [PATCH v5 2/2] ACPI: APEI: handle synchronous exceptions in task
+ work
 Content-Language: en-US
 To:     Shuai Xue <xueshuai@linux.alibaba.com>, <tanxiaofei@huawei.com>,
         <mawupeng1@huawei.com>, <tony.luck@intel.com>,
@@ -42,158 +42,270 @@ CC:     <linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
         <lvying6@huawei.com>, <rafael@kernel.org>, <xiexiuqi@huawei.com>,
         <zhuo.song@linux.alibaba.com>
 References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20230411104842.37079-2-xueshuai@linux.alibaba.com>
+ <20230411104842.37079-3-xueshuai@linux.alibaba.com>
 From:   Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <20230411104842.37079-2-xueshuai@linux.alibaba.com>
+In-Reply-To: <20230411104842.37079-3-xueshuai@linux.alibaba.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
  dggpemm500001.china.huawei.com (7.185.36.107)
 X-CFilter-Loop: Reflected
 X-Spam-Status: No, score=-4.5 required=5.0 tests=NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Shuai Xue，
+
 
 On 2023/4/11 18:48, Shuai Xue wrote:
-> There are two major types of uncorrected recoverable (UCR) errors :
+> Hardware errors could be signaled by synchronous interrupt, e.g.  when an
+> error is detected by a background scrubber, or signaled by synchronous
+> exception, e.g. when an uncorrected error is consumed. Both synchronous and
+> asynchronous error are queued and handled by a dedicated kthread in
+> workqueue.
 > 
-> - Action Required (AR): The error is detected and the processor already
->    consumes the memory. OS requires to take action (for example, offline
->    failure page/kill failure thread) to recover this uncorrectable error.
+> commit 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for
+> synchronous errors") keep track of whether memory_failure() work was
+> queued, and make task_work pending to flush out the workqueue so that the
+> work for synchronous error is processed before returning to user-space.
+> The trick ensures that the corrupted page is unmapped and poisoned. And
+> after returning to user-space, the task starts at current instruction which
+> triggering a page fault in which kernel will send SIGBUS to current process
+> due to VM_FAULT_HWPOISON.
 > 
-> - Action Optional (AO): The error is detected out of processor execution
->    context. Some data in the memory are corrupted. But the data have not
->    been consumed. OS is optional to take action to recover this
->    uncorrectable error.
+> However, the memory failure recovery for hwpoison-aware mechanisms does not
+> work as expected. For example, hwpoison-aware user-space processes like
+> QEMU register their customized SIGBUS handler and enable early kill mode by
+> seting PF_MCE_EARLY at initialization. Then the kernel will directy notify
+> the process by sending a SIGBUS signal in memory failure with wrong
+> si_code: the actual user-space process accessing the corrupt memory
+> location, but its memory failure work is handled in a kthread context, so
+> it will send SIGBUS with BUS_MCEERR_AO si_code to the actual user-space
+> process instead of BUS_MCEERR_AR in kill_proc().
 > 
-> The essential difference between AR and AO errors is that AR is a
-> synchronous event, while AO is an asynchronous event. The hardware will
-> signal a synchronous exception (Machine Check Exception on X86 and
-> Synchronous External Abort on Arm64) when an error is detected and the
-> memory access has been architecturally executed.
+> To this end, separate synchronous and asynchronous error handling into
+> different paths like X86 platform does:
 > 
-> When APEI firmware first is enabled, a platform may describe one error
-> source for the handling of synchronous errors (e.g. MCE or SEA notification
-> ), or for handling asynchronous errors (e.g. SCI or External Interrupt
-> notification). In other words, we can distinguish synchronous errors by
-> APEI notification. For AR errors, kernel will kill current process
-> accessing the poisoned page by sending SIGBUS with BUS_MCEERR_AR. In
-> addition, for AO errors, kernel will notify the process who owns the
-> poisoned page by sending SIGBUS with BUS_MCEERR_AO in early kill mode.
-> However, the GHES driver always sets mf_flags to 0 so that all UCR errors
-> are handled as AO errors in memory failure.
+> - valid synchronous errors: queue a task_work to synchronously send SIGBUS
+>    before ret_to_user.
+> - valid asynchronous errors: queue a work into workqueue to asynchronously
+>    handle memory failure.
+> - abnormal branches such as invalid PA, unexpected severity, no memory
+>    failure config support, invalid GUID section, OOM, etc.
 > 
-> To this end, set memory failure flags as MF_ACTION_REQUIRED on synchronous
-> events.
-
-As your mentioned in cover-letter, we met same issue, and hope it could 
-be fixed ASAP, this patch looks good to me,
-
-Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-
-
+> Then for valid synchronous errors, the current context in memory failure is
+> exactly belongs to the task consuming poison data and it will send SIBBUS
+> with proper si_code.
 > 
-> Fixes: ba61ca4aab47 ("ACPI, APEI, GHES: Add hardware memory error recovery support")'
+> Fixes: 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for synchronous errors")
 > Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
 > Tested-by: Ma Wupeng <mawupeng1@huawei.com>
 > ---
->   drivers/acpi/apei/ghes.c | 29 +++++++++++++++++++++++------
->   1 file changed, 23 insertions(+), 6 deletions(-)
+>   drivers/acpi/apei/ghes.c | 91 +++++++++++++++++++++++++++-------------
+>   include/acpi/ghes.h      |  3 --
+>   mm/memory-failure.c      | 13 ------
+>   3 files changed, 61 insertions(+), 46 deletions(-)
 > 
 > diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 34ad071a64e9..c479b85899f5 100644
+> index c479b85899f5..4b70955e25f9 100644
 > --- a/drivers/acpi/apei/ghes.c
 > +++ b/drivers/acpi/apei/ghes.c
-> @@ -101,6 +101,20 @@ static inline bool is_hest_type_generic_v2(struct ghes *ghes)
->   	return ghes->generic->header.type == ACPI_HEST_TYPE_GENERIC_ERROR_V2;
+> @@ -452,28 +452,51 @@ static void ghes_clear_estatus(struct ghes *ghes,
 >   }
 >   
-> +/*
-> + * A platform may describe one error source for the handling of synchronous
-> + * errors (e.g. MCE or SEA), or for handling asynchronous errors (e.g. SCI
-> + * or External Interrupt). On x86, the HEST notifications are always
-> + * asynchronous, so only SEA on ARM is delivered as a synchronous
-> + * notification.
-> + */
-> +static inline bool is_hest_sync_notify(struct ghes *ghes)
-> +{
-> +	u8 notify_type = ghes->generic->notify.type;
-> +
-> +	return notify_type == ACPI_HEST_NOTIFY_SEA;
-> +}
-> +
 >   /*
->    * This driver isn't really modular, however for the time being,
->    * continuing to use module_param is the easiest way to remain
-> @@ -477,7 +491,7 @@ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
+> - * Called as task_work before returning to user-space.
+> - * Ensure any queued work has been done before we return to the context that
+> - * triggered the notification.
+> + * struct sync_task_work - for synchronous RAS event
+> + *
+> + * @twork:                callback_head for task work
+> + * @pfn:                  page frame number of corrupted page
+> + * @flags:                fine tune action taken
+> + *
+> + * Structure to pass task work to be handled before
+> + * ret_to_user via task_work_add().
+>    */
+> -static void ghes_kick_task_work(struct callback_head *head)
+> +struct sync_task_work {
+> +	struct callback_head twork;
+> +	u64 pfn;
+> +	int flags;
+> +};
+> +
+> +static void memory_failure_cb(struct callback_head *twork)
+>   {
+> -	struct acpi_hest_generic_status *estatus;
+> -	struct ghes_estatus_node *estatus_node;
+> -	u32 node_len;
+> +	int ret;
+> +	struct sync_task_work *twcb =
+> +		container_of(twork, struct sync_task_work, twork);
+>   
+> -	estatus_node = container_of(head, struct ghes_estatus_node, task_work);
+> -	if (IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
+> -		memory_failure_queue_kick(estatus_node->task_work_cpu);
+> +	ret = memory_failure(twcb->pfn, twcb->flags);
+> +	kfree(twcb);
+>   
+> -	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
+> -	node_len = GHES_ESTATUS_NODE_LEN(cper_estatus_len(estatus));
+> -	gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
+> +	if (!ret)
+> +		return;
+> +
+> +	/*
+> +	 * -EHWPOISON from memory_failure() means that it already sent SIGBUS
+> +	 * to the current process with the proper error info,
+
+This should be part of the comments of function memory_failure(),
+
+> +	 * -EOPNOTSUPP means hwpoison_filter() filtered the error event,
+> +	 *
+and this part is already there
+> +	 * In both cases, no further processing is required.
+> +	 */
+so, after that, I think we could drop this comment, also the same 
+comment in x86's kill_me_maybe().
+
+> +	if (ret == -EHWPOISON || ret == -EOPNOTSUPP)
+> +		return;
+> +
+> +	pr_err("Memory error not recovered");
+> +	force_sig(SIGBUS);
 >   }
 >   
->   static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
-> -				       int sev)
-> +				       int sev, bool sync)
+>   static bool ghes_do_memory_failure(u64 physical_addr, int flags)
 >   {
->   	int flags = -1;
->   	int sec_sev = ghes_severity(gdata->error_severity);
-> @@ -491,7 +505,7 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
->   	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
->   		flags = MF_SOFT_OFFLINE;
->   	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
-> -		flags = 0;
-> +		flags = sync ? MF_ACTION_REQUIRED : 0;
+>   	unsigned long pfn;
+> +	struct sync_task_work *twcb;
 >   
->   	if (flags != -1)
->   		return ghes_do_memory_failure(mem_err->physical_addr, flags);
-> @@ -499,9 +513,11 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
->   	return false;
+>   	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
+>   		return false;
+> @@ -486,6 +509,18 @@ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
+>   		return false;
+>   	}
+>   
+> +	if (flags == MF_ACTION_REQUIRED && current->mm) {
+> +		twcb = kmalloc(sizeof(*twcb), GFP_ATOMIC);
+> +		if (!twcb)
+> +			return false;
+> +
+> +		twcb->pfn = pfn;
+> +		twcb->flags = flags;
+> +		init_task_work(&twcb->twork, memory_failure_cb);
+> +		task_work_add(current, &twcb->twork, TWA_RESUME);
+> +		return true;
+> +	}
+> +
+>   	memory_failure_queue(pfn, flags);
+>   	return true;
+>   }
+> @@ -1000,9 +1035,8 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
+>   	struct ghes_estatus_node *estatus_node;
+>   	struct acpi_hest_generic *generic;
+>   	struct acpi_hest_generic_status *estatus;
+> -	bool task_work_pending;
+> +	bool queued, sync;
+>   	u32 len, node_len;
+> -	int ret;
+>   
+>   	llnode = llist_del_all(&ghes_estatus_llist);
+>   	/*
+> @@ -1015,27 +1049,25 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
+>   		estatus_node = llist_entry(llnode, struct ghes_estatus_node,
+>   					   llnode);
+>   		estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
+> +		sync = is_hest_sync_notify(estatus_node->ghes);
+>   		len = cper_estatus_len(estatus);
+>   		node_len = GHES_ESTATUS_NODE_LEN(len);
+> -		task_work_pending = ghes_do_proc(estatus_node->ghes, estatus);
+> +
+> +		queued = ghes_do_proc(estatus_node->ghes, estatus) > +		/*
+> +		 * If no memory failure work is queued for abnormal synchronous
+> +		 * errors, do a force kill.
+> +		 */
+> +		if (sync && !queued)
+> +			force_sig(SIGBUS);
+
+It's better to move this part into function ghes_do_proc(), because 
+there is already an is_hest_sync_notify(), and no need return value,
+so make ghes_do_proc() a void function, Apart from this,
+
+Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+
+> +
+>   		if (!ghes_estatus_cached(estatus)) {
+>   			generic = estatus_node->generic;
+>   			if (ghes_print_estatus(NULL, generic, estatus))
+>   				ghes_estatus_cache_add(generic, estatus);
+>   		}
+> -
+> -		if (task_work_pending && current->mm) {
+> -			estatus_node->task_work.func = ghes_kick_task_work;
+> -			estatus_node->task_work_cpu = smp_processor_id();
+> -			ret = task_work_add(current, &estatus_node->task_work,
+> -					    TWA_RESUME);
+> -			if (ret)
+> -				estatus_node->task_work.func = NULL;
+> -		}
+> -
+> -		if (!estatus_node->task_work.func)
+> -			gen_pool_free(ghes_estatus_pool,
+> -				      (unsigned long)estatus_node, node_len);
+> +		gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node,
+> +			      node_len);
+>   
+>   		llnode = next;
+>   	}
+> @@ -1096,7 +1128,6 @@ static int ghes_in_nmi_queue_one_entry(struct ghes *ghes,
+>   
+>   	estatus_node->ghes = ghes;
+>   	estatus_node->generic = ghes->generic;
+> -	estatus_node->task_work.func = NULL;
+>   	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
+>   
+>   	if (__ghes_read_estatus(estatus, buf_paddr, fixmap_idx, len)) {
+> diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
+> index 3c8bba9f1114..e5e0c308d27f 100644
+> --- a/include/acpi/ghes.h
+> +++ b/include/acpi/ghes.h
+> @@ -35,9 +35,6 @@ struct ghes_estatus_node {
+>   	struct llist_node llnode;
+>   	struct acpi_hest_generic *generic;
+>   	struct ghes *ghes;
+> -
+> -	int task_work_cpu;
+> -	struct callback_head task_work;
+>   };
+>   
+>   struct ghes_estatus_cache {
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index fae9baf3be16..6ea8c325acb3 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -2355,19 +2355,6 @@ static void memory_failure_work_func(struct work_struct *work)
+>   	}
 >   }
 >   
-> -static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
-> +static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
-> +				       int sev, bool sync)
+> -/*
+> - * Process memory_failure work queued on the specified CPU.
+> - * Used to avoid return-to-userspace racing with the memory_failure workqueue.
+> - */
+> -void memory_failure_queue_kick(int cpu)
+> -{
+> -	struct memory_failure_cpu *mf_cpu;
+> -
+> -	mf_cpu = &per_cpu(memory_failure_cpu, cpu);
+> -	cancel_work_sync(&mf_cpu->work);
+> -	memory_failure_work_func(&mf_cpu->work);
+> -}
+> -
+>   static int __init memory_failure_init(void)
 >   {
->   	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
-> +	int flags = sync ? MF_ACTION_REQUIRED : 0;
->   	bool queued = false;
->   	int sec_sev, i;
->   	char *p;
-> @@ -526,7 +542,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int s
->   		 * and don't filter out 'corrected' error here.
->   		 */
->   		if (is_cache && has_pa) {
-> -			queued = ghes_do_memory_failure(err_info->physical_fault_addr, 0);
-> +			queued = ghes_do_memory_failure(err_info->physical_fault_addr, flags);
->   			p += err_info->length;
->   			continue;
->   		}
-> @@ -647,6 +663,7 @@ static bool ghes_do_proc(struct ghes *ghes,
->   	const guid_t *fru_id = &guid_null;
->   	char *fru_text = "";
->   	bool queued = false;
-> +	bool sync = is_hest_sync_notify(ghes);
->   
->   	sev = ghes_severity(estatus->error_severity);
->   	apei_estatus_for_each_section(estatus, gdata) {
-> @@ -664,13 +681,13 @@ static bool ghes_do_proc(struct ghes *ghes,
->   			atomic_notifier_call_chain(&ghes_report_chain, sev, mem_err);
->   
->   			arch_apei_report_mem_error(sev, mem_err);
-> -			queued = ghes_handle_memory_failure(gdata, sev);
-> +			queued = ghes_handle_memory_failure(gdata, sev, sync);
->   		}
->   		else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
->   			ghes_handle_aer(gdata);
->   		}
->   		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
-> -			queued = ghes_handle_arm_hw_error(gdata, sev);
-> +			queued = ghes_handle_arm_hw_error(gdata, sev, sync);
->   		} else {
->   			void *err = acpi_hest_get_payload(gdata);
->   
+>   	struct memory_failure_cpu *mf_cpu;
