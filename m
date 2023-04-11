@@ -2,213 +2,194 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1B1C6DDF12
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Apr 2023 17:10:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96B706DE3D4
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Apr 2023 20:26:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230375AbjDKPKz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 11 Apr 2023 11:10:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40736 "EHLO
+        id S229831AbjDKS0T convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 11 Apr 2023 14:26:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230403AbjDKPKv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Apr 2023 11:10:51 -0400
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 564D14495;
-        Tue, 11 Apr 2023 08:10:33 -0700 (PDT)
-Received: from [192.168.2.41] (77-166-152-30.fixed.kpn.net [77.166.152.30])
-        by linux.microsoft.com (Postfix) with ESMTPSA id A332A21779A6;
-        Tue, 11 Apr 2023 08:10:30 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A332A21779A6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1681225832;
-        bh=ycSrEC7pWGdXdxu/mHL3bp2nfLVB5gxF2Cjrm5Myx3A=;
-        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-        b=LNfMFQ7JFl3NwcSGGn8t6uSoHrq/WrIVsz0bJ5FAnWhVdYE8wju+R0MoQK+Nyfa1u
-         tuTIRQcFhXFlcQxTDzzqi5sHA0iJO5MjXLV1MqWV3pKFPic/kP6pdlCHFMbY5RHwpc
-         UljOU3pac8RsS7LNCNQrkTaTMlSPiVXGBm6VZoes=
-Message-ID: <fc6a807a-1bbe-d56d-caa9-ec0687ef6cff@linux.microsoft.com>
-Date:   Tue, 11 Apr 2023 17:10:29 +0200
+        with ESMTP id S229810AbjDKS0P (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Apr 2023 14:26:15 -0400
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C40FA59DA;
+        Tue, 11 Apr 2023 11:26:13 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id sh8so22639311ejc.10;
+        Tue, 11 Apr 2023 11:26:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1681237572;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gilSqaLH75Kwn14U7AXuNMAb4A5ZtykHNo56iDEJFIA=;
+        b=EFAvvZz413DuUrhdtwBKgtr0ZAHs262Pcgoq2DYWAhBUgeTAw28COZQqcNjA+7mcIW
+         V/ne1FrLTsHHkUSbnlOmiUBaeug6fJu41AqvQUfujpbrnrDRcAqrtKA42sVgk2nPVAW+
+         JmdEhxv3v7CfflIib246fQSjvRC/ad+WD9xaLPyK7sDn6o2UavD3+xi0Un2Qt51f559A
+         reACMtj/krELGR2Ldhjdfy6Jh2qhvig087XEI1OE9y0MKWRgTtO9ifd34AxVGaxk7cwY
+         B+T1Wx6riFzKmyeY4vL1w5Yy+yZI4ORWiJ0n1ZM+G8E/MTnwy4DDbC/V6hUUHsC3b9kR
+         Fncg==
+X-Gm-Message-State: AAQBX9dMq9MD0SmmCTuixh/EIbSQGEZfSh/Ri7qSKvhISysZIw/hiEeJ
+        1gWHzqf5XqKQGB9TzeQ50P/SDGy/qZJCwqHQ67A=
+X-Google-Smtp-Source: AKy350YPEGwlG7daNVXhqJ7zE2BNiigplLpGV1d3lMesj/7tDeyYfGr4+pA14AYOz8D1FWVo67pP1KES3pCacHC8Uhw=
+X-Received: by 2002:a17:907:6287:b0:93e:c1ab:ae67 with SMTP id
+ nd7-20020a170907628700b0093ec1abae67mr6094508ejc.2.1681237572089; Tue, 11 Apr
+ 2023 11:26:12 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH v3 0/8] Support ACPI PSP on Hyper-V
-Content-Language: en-US
-From:   Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>
-Cc:     linux-kernel@vger.kernel.org,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kalra, Ashish" <ashish.kalra@amd.com>,
-        linux-crypto@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
-References: <20230320191956.1354602-1-jpiotrowski@linux.microsoft.com>
- <20230322154655.GDZBsi75f6LnQStxSp@fat_crate.local>
- <1d25221c-eaab-0f97-83aa-8b4fbe3a53ed@linux.microsoft.com>
- <20230322181541.GEZBtFzRAMcH9BAzUe@fat_crate.local>
- <ecf005b1-ddb9-da4c-4526-28df4806426c@linux.microsoft.com>
- <20230323152342.GFZBxu/m3u6aFUDY/7@fat_crate.local>
- <105d019c-2249-5dfd-e032-95944ea6dc8c@linux.microsoft.com>
- <20230323163450.GGZBx/qpnclFnMaf7e@fat_crate.local>
- <c8458bfa-0985-f6a5-52a3-ef96c7669fe6@linux.microsoft.com>
- <20230402154425.GCZCmi2eiKYO2yYhNs@fat_crate.local> <877cutsczn.ffs@tglx>
- <8d39a9a1-4b7b-08fe-7b09-2ff0a419468f@linux.microsoft.com>
-In-Reply-To: <8d39a9a1-4b7b-08fe-7b09-2ff0a419468f@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-20.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+References: <20230410205305.1649678-1-daniel.lezcano@linaro.org> <20230410205305.1649678-7-daniel.lezcano@linaro.org>
+In-Reply-To: <20230410205305.1649678-7-daniel.lezcano@linaro.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 11 Apr 2023 20:26:01 +0200
+Message-ID: <CAJZ5v0hqqPQ0xQqt3KgyQ5b-xTRjPicgkKgyo=+p7jgB9BuZaQ@mail.gmail.com>
+Subject: Re: [PATCH v2 6/7] thermal/drivers/acpi: Make cross dev link optional
+ by configuration
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     rafael@kernel.org, rui.zhang@intel.com,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        Len Brown <lenb@kernel.org>,
+        "open list:ACPI THERMAL DRIVER" <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 4/5/2023 9:56 AM, Jeremi Piotrowski wrote:
-> On 4/3/2023 8:20 AM, Thomas Gleixner wrote:
->> On Sun, Apr 02 2023 at 17:44, Borislav Petkov wrote:
->>> On Fri, Mar 24, 2023 at 06:10:09PM +0100, Jeremi Piotrowski wrote:
->>>> Since the AMD PSP is a privileged device, there is a desire to not have to trust the
->>>> ACPI stack,
->>>
->>> And yet you do:
->>>
->>> +	err = acpi_parse_aspt(&res[0], &pdata);
->>> +	if (err)
->>> +		return err;
->>>
->>> You don't trust the ACPI stack, and yet you're parsing an ACPI table?!?!
->>> You have to make up your mind here.
->>>
->>> Btw, you still haven't answered my question about doing:
->>>
->>> 	devm_request_irq(dev, 9, ..)
->>>
->>> where 9 is the default ACPI interrupt.
->>>
->>> You can have some silly table tell you what to map or you can simply map
->>> IRQ 9 and be done with it. In this second case you can *really* not
->>> trust ACPI because you know which IRQ it is
-> 
-> Will respond to this mail directly.
-> 
->>
->> The real problem here is that the information provided about the overall
->> design and requirements is close to zero. All we heard so far is hand
->> waving about not trusting PCI and ACPI.
-> 
-> That's not a fair characterization Thomas, but I will turn the other cheek.
-> 
->>
->> Jeremi, can you please describe exactly what the design and constraints
->> are in understandable and coherent sentences?
->>
-> 
-> Here goes, I will keep it as simple as I can.
-> 
-> The goal of these patches is to operate all the hardware interfaces required
-> to run AMD SEV-SNP VMs, but in the context of a Linux VM running on top of
-> Hyper-V. This Linux VM is called the SNP-host VM. All the patches I submit 
-> target the SNP-host VM kernel, which uses KVM to bring up SEV-SNP VMs. To get
-> SEV-SNP working you need to combine this work with AMD's KVM SEV-SNP patches.
-> I posted two patch sets: one that extends AMD's patches, and one that is
-> independent of them (this one here) that could be merged sooner.
-> 
-> Here are the design constraints:
-> 1. the interfaces exposed to the SNP-host VM to operate SEV-SNP match real
->    hardware interface specifications defined by AMD. This is because we are
->    emulating/virtualizing a hardware feature, and not some made up virtual
->    thing.
-> 
-> 2. the SNP-host VM may run either Windows(Hyper-V) or Linux, so the SEV-SNP
->    interfaces need to be supported by both.
-> 
-> 3. Hyper-V Generation 2 VMs do not have a PCI bus. The SNP-host VM must be a
->    Hyper-V Gen 2 VM.
-> 
-> One of the components needed to operate SEV-SNP is the Platform Security
-> Processor (PSP), aka AMD Secure Processor (ASP). The PSP is the root-of-trust on
-> AMD systems. The PSP is specified as being discoverable either on the PCI bus,
-> or through the presence of an ACPI table with the "ASPT" (AMD Secure Processor
-> Table) signature.
-> 
-> Here goes the design:
-> Constraint 1 means that only the two specified ways of discovering and
-> configuring a PSP inside the SNP-host VM were in the running: PCI or ASPT.
-> Constraint 3 means that the PCI version of the PSP is not a viable option.
-> Additionally, the ASPT is used on AMD hardware in Microsoft datacenters, which
-> means it is supported in Hyper-V (constraint 2). The outcome is that the
-> SNP-host VM sees an ASPT.
-> 
-> The ASPT provides the following information: memory range of PSP registers and
-> offsets of individual PSP registers inside that memory range. There are 7
-> registers:
-> - 6 are related to the "command submission" portion of the PSP; the ccp module
->   knows how to operate those.
-> - the last one, "ACPI CmdResp" register, is used to configure the PSP interrupt
->   to the OS.
-> 
-> The PSP interrupt configuration through the "ACPI CmdResp" register takes the
-> following information:
-> - APIC ID
-> - interrupt vector
-> - destination mode (physical/logical)
-> - message type (fixed/lowest priority)
-> 
-> So to hook this up with the Linux device model I wrote patches that do the
-> following:
-> Detect the ASPT table, extract information and register a "psp" platform_device
-> for the "ccp" module to bind to.
-> Create an irq_domain and encapsulate dealing with the PSP interrupt register
-> there, so that the "ccp" module has an irq number that it passes to
-> request_irq().
-> 
-> There is an "if (hypervisor == Hyper-V)" check before the ASPT table detection.
-> Here is the reasoning behind that:
-> According to AMD specifications the *same* PSP may be discoverable both through
-> ASPT and on the PCI bus. In that case, if the ASPT is to be used the OS is supposed
-> to disable the "PCI interface" through the "ACPI CmdResp" register, which will
-> result in no PCI-MSI interrupts, BAR writes ignored, BAR reads return all 0xF's.
-> I can't verify whether that would work correctly, so in the interest of not
-> breaking other users, the ASPT handling is hidden behind the hypervisor check.
-> There is nothing Hyper-V specific about any of this code, it supports a hardware
-> interface present in server grade hardware and would work on physical hardware if
-> when (not if) someone removes the condition.
-> 
-> That's all there is to it.
-> 
-> All the other information I gave is background information that I hoped would
-> help better understand the setting. The most relevant piece of information is the
-> one that I came across last. You asked "what makes this PSP device special". The PSP
-> is the root-of-trust on the system, it controls memory encryption keys, it can
-> encrypt/decrypt individual memory pages. SEV-SNP ties together a lot of system components
-> and requires enabling support for it in the AMD IOMMU too, which is presumably why
-> the PSP gets the same special treatment (as the AMD IOMMU). The ASPT and AMD PSP interrupt
-> configuration through the "ACPI CmdResp" register is based on a similar design of the AMD IOMMU.
-> The AMD IOMMU is:
-> - discovered through the presence of the IVRS ACPI table
-> - the MMIO address of the IOMMU is parsed out of the IVRS table
-> - if x2APIC support is enabled, the IOMMU interrupts are delivered based on
->   programming APIC-ID+vector+destination mode into an interrupt control register
->   in IOMMU MMIO space. This causes any PCI-MSI configuration present for the
->   IOMMU to   be ignored.
-> - Linux supports and uses that interrupt delivery mechanism. It is implemented
->   as an irq_domain.
-> 
-> Do you think it makes sense to include parts of the above description in cover letter
-> commit message?
-> 
-> Thanks,
-> Jeremi
+On Mon, Apr 10, 2023 at 10:53 PM Daniel Lezcano
+<daniel.lezcano@linaro.org> wrote:
+>
+> The ACPI thermal driver creates a link in the thermal zone device
+> sysfs directory pointing to the device sysfs directory. At the same
+> time, it creates a back pointer link from the device to the thermal
+> zone device sysfs directory.
+>
+> From a generic perspective, having a device pointer in the sysfs
+> thermal zone directory may make sense. But the opposite is not true as
+> the same driver can be related to multiple thermal zones.
+>
+> The usage of these information is very specific to ACPI and it is
+> questionable if they are really needed.
+>
+> Let's make the code optional and disable it by default.
+>
+> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+> ---
+>  drivers/acpi/thermal.c | 62 ++++++++++++++++++++++++++++--------------
+>  1 file changed, 42 insertions(+), 20 deletions(-)
+>
+> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+> index 5763db4528b8..70f1d28810f2 100644
+> --- a/drivers/acpi/thermal.c
+> +++ b/drivers/acpi/thermal.c
+> @@ -787,9 +787,44 @@ static struct thermal_zone_device_ops acpi_thermal_zone_ops = {
+>         .critical = acpi_thermal_zone_device_critical,
+>  };
+>
+> +#ifdef CONFIG_THERMAL_SYSFS_OBSOLETE_SINGULARITY
 
-Hi Thomas,
+It is OK to move the code to the separate functions below, but it is
+not OK to make it depend on the Kconfig option above.
 
-Have you had a chance to review this?
+The extra sysfs things were added in different drivers for different
+reasons.  Making them all depend on one Kconfig option is just wrong.
 
-Thanks,
-Jeremi
-
+> +static int acpi_thermal_zone_sysfs_add(struct acpi_thermal *tz)
+> +{
+> +       struct device *tzdev = thermal_zone_device(tz->thermal_zone);
+> +       int ret;
+> +
+> +       ret = sysfs_create_link(&tz->device->dev.kobj,
+> +                               &tzdev->kobj, "thermal_zone");
+> +       if (ret)
+> +               return ret;
+> +
+> +       ret = sysfs_create_link(&tzdev->kobj,
+> +                                  &tz->device->dev.kobj, "device");
+> +       if (ret)
+> +               sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
+> +
+> +       return ret;
+> +}
+> +
+> +static void acpi_thermal_zone_sysfs_remove(struct acpi_thermal *tz)
+> +{
+> +       struct device *tzdev = thermal_zone_device(tz->thermal_zone);
+> +
+> +       sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
+> +       sysfs_remove_link(&tzdev->kobj, "device");
+> +}
+> +#else
+> +static inline int acpi_thermal_zone_sysfs_add(struct acpi_thermal *tz)
+> +{
+> +       return 0;
+> +}
+> +static inline void acpi_thermal_zone_sysfs_remove(struct acpi_thermal *tz)
+> +{
+> +}
+> +#endif
+> +
+>  static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
+>  {
+> -       struct device *tzdev;
+>         int trips = 0;
+>         int result;
+>         acpi_status status;
+> @@ -821,23 +856,15 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
+>         if (IS_ERR(tz->thermal_zone))
+>                 return -ENODEV;
+>
+> -       tzdev = thermal_zone_device(tz->thermal_zone);
+> -
+> -       result = sysfs_create_link(&tz->device->dev.kobj,
+> -                                  &tzdev->kobj, "thermal_zone");
+> +       result = acpi_thermal_zone_sysfs_add(tz);
+>         if (result)
+>                 goto unregister_tzd;
+> -
+> -       result = sysfs_create_link(&tzdev->kobj,
+> -                                  &tz->device->dev.kobj, "device");
+> -       if (result)
+> -               goto remove_tz_link;
+> -
+> +
+>         status =  acpi_bus_attach_private_data(tz->device->handle,
+>                                                tz->thermal_zone);
+>         if (ACPI_FAILURE(status)) {
+>                 result = -ENODEV;
+> -               goto remove_dev_link;
+> +               goto remove_links;
+>         }
+>
+>         result = thermal_zone_device_enable(tz->thermal_zone);
+> @@ -851,10 +878,8 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
+>
+>  acpi_bus_detach:
+>         acpi_bus_detach_private_data(tz->device->handle);
+> -remove_dev_link:
+> -       sysfs_remove_link(&tzdev->kobj, "device");
+> -remove_tz_link:
+> -       sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
+> +remove_links:
+> +       acpi_thermal_zone_sysfs_remove(tz);
+>  unregister_tzd:
+>         thermal_zone_device_unregister(tz->thermal_zone);
+>
+> @@ -863,10 +888,7 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
+>
+>  static void acpi_thermal_unregister_thermal_zone(struct acpi_thermal *tz)
+>  {
+> -       struct device *tzdev = thermal_zone_device(tz->thermal_zone);
+> -
+> -       sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
+> -       sysfs_remove_link(&tzdev->kobj, "device");
+> +       acpi_thermal_zone_sysfs_remove(tz);
+>         thermal_zone_device_unregister(tz->thermal_zone);
+>         tz->thermal_zone = NULL;
+>         acpi_bus_detach_private_data(tz->device->handle);
+> --
+> 2.34.1
+>
