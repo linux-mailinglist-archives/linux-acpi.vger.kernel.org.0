@@ -2,167 +2,213 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C25FE6DDE65
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Apr 2023 16:47:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1B1C6DDF12
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Apr 2023 17:10:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229661AbjDKOrH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 11 Apr 2023 10:47:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38456 "EHLO
+        id S230375AbjDKPKz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 11 Apr 2023 11:10:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229776AbjDKOrG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Apr 2023 10:47:06 -0400
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2045.outbound.protection.outlook.com [40.107.247.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24EF6199C;
-        Tue, 11 Apr 2023 07:47:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=b6Rxk9CPsbQqp1FCsZ8hPvAoN7vqNb0MYGAPZUs8rGPBeoPT/OIAl6cRbIuvB62tXY3Q5Vkr/AL3Aq25kQRx+qvO6siAop6d5esLluuqueeulQvlnDtYZS43q5lEU0LhAFHmnslbycYEFhUMgZxQj46h0KDlKUzGktt3Xq0tJOskEvTnBowUwhREe9OcPmLxUdcNh70ZMkgW2Wmk3EAP80YYQ9dqL+2NshkAlWlDJfnX1KpKBsjGS+FzCDkMAQtZSsLvDXl5fYJ0z6BsaG+ZFF7G44HCZvamK07Vi4JNLodSgEvfio+G2MGQsrgYkeJY1tEZzKi1TEAWRW8cIiV12Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J8JP8R3/gZAgauwlYWn+T8pdGKliJa2KhO6T7sDEoyA=;
- b=CxWAdaZDaqXrb6PZxs5o5FvRWuKR/K9+HSwWmA+wRg/7ezlc7UIRauKRXcTT55Ce1h8x9qZe1dnsZE0d5Ja0oUhEydn3/+4URlES0uZt6tcXVvsgCGEpRDFGfVRYGC/xW72IOJn5rETa2NbPdXgv+zt9fo5WSP0h1WnvEyh4fdQ/Lgc2wyP2MNt9yq2TfAG/zYl89pkWRnS8ehBzpYeVhimvRGPaZB2Ww1YWeAaZdaIlZVk6Zm2eHIOW2sun4YKz7XrZmwJOhO6EzZHoMkkFgSyPXjs2W60Hx7Gw1hRTQwOvO4FIekvfEcPE9dprG67toSo5ttXHzU/BcM0T+XLlKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=xsightlabs.com; dmarc=pass action=none
- header.from=xsightlabs.com; dkim=pass header.d=xsightlabs.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xsightlabs.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J8JP8R3/gZAgauwlYWn+T8pdGKliJa2KhO6T7sDEoyA=;
- b=hoK1LVlgBoEu7T+1Tbf0Rykd66VlNunpRyumbU93UHtoK/kRIx2hVfVlSCoEfVpCYkW4+kHy2EPWr2p5NGqjFE28eliBiZs8aZaBxfOvykqki8g+3hYoK9c8cqVDA5TsZF3hM5Qj27Lp6SFWR80895I1Vom4165US0Rh8sEf8bE=
-Received: from AS8P193MB2335.EURP193.PROD.OUTLOOK.COM (2603:10a6:20b:446::5)
- by PR3P193MB0877.EURP193.PROD.OUTLOOK.COM (2603:10a6:102:94::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6277.38; Tue, 11 Apr
- 2023 14:47:01 +0000
-Received: from AS8P193MB2335.EURP193.PROD.OUTLOOK.COM
- ([fe80::fd74:ebbb:46ac:8a82]) by AS8P193MB2335.EURP193.PROD.OUTLOOK.COM
- ([fe80::fd74:ebbb:46ac:8a82%4]) with mapi id 15.20.6277.036; Tue, 11 Apr 2023
- 14:47:01 +0000
-From:   Robbie King <robbiek@xsightlabs.com>
-To:     "lihuisong (C)" <lihuisong@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "rafael.j.wysocki@intel.com" <rafael.j.wysocki@intel.com>,
-        "wanghuiqiang@huawei.com" <wanghuiqiang@huawei.com>,
-        "zhangzekun11@huawei.com" <zhangzekun11@huawei.com>,
-        "wangxiongfeng2@huawei.com" <wangxiongfeng2@huawei.com>,
-        "tanxiaofei@huawei.com" <tanxiaofei@huawei.com>,
-        "guohanjun@huawei.com" <guohanjun@huawei.com>,
-        "xiexiuqi@huawei.com" <xiexiuqi@huawei.com>,
-        "wangkefeng.wang@huawei.com" <wangkefeng.wang@huawei.com>,
-        "huangdaode@huawei.com" <huangdaode@huawei.com>
-Subject: RE: [PATCH v2 0/2] mailbox: pcc: Support platform notification for
- type4 and shared interrupt
-Thread-Topic: [PATCH v2 0/2] mailbox: pcc: Support platform notification for
- type4 and shared interrupt
-Thread-Index: AQHZVmXrfTRFQyNc3E2WN8mIgww8bK8OkxgAgAAQQYCAFUbqgIACccaw
-Date:   Tue, 11 Apr 2023 14:47:01 +0000
-Message-ID: <AS8P193MB2335FA58943B305F97D2BACCCA9A9@AS8P193MB2335.EURP193.PROD.OUTLOOK.COM>
-References: <20221016034043.52227-1-lihuisong@huawei.com>
- <20230314111135.16520-1-lihuisong@huawei.com>
- <20230327113326.dgrb5ainl6mv7wr5@bogus>
- <570a6f6d-87cb-48ca-3bbc-cd1221bfa88c@huawei.com>
- <7ef4eec4-2cfb-6f66-a9b9-9c130a1b71d8@huawei.com>
-In-Reply-To: <7ef4eec4-2cfb-6f66-a9b9-9c130a1b71d8@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-bromium-msgid: dfe9e309-f0e0-47f4-b731-0818a78a7ce0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=xsightlabs.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS8P193MB2335:EE_|PR3P193MB0877:EE_
-x-ms-office365-filtering-correlation-id: 77784394-05b5-4c90-13d9-08db3a9b9c02
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: pNF9O1xIwrt6euIxSRTCZB6G+ykFv05MP5eLHYkLljnMupCBagRKwS7huyjKm7Z001uR4fjSres3aY4Z4Bh2DQ7WnwJgkE93HVXPgNFjunsfF30sas5Nh0kw1ZucZKoQqjqDRwO+oL0sCMX1v91rWJ6RRAs97AL/FWePatVqCnAJpkx4HIn7o5erdrw6lyACbaobftd30oGusR7ann3DAe9/klC03eVm1+/e85kNJNEA/jzkB2wJOZqYsfD3BsjmgxMqtV2s4Us0jGJCyh6Az/HZuGmT2bda8IYXyqJk7SWEbrSMKAyv/vGj2infXjaZawBOk+GvnjWGKYpY1PtQntOVd1jrontKCO1CTHfAFzDaalSK6AL1nS6XFqua5OpnQy9iG5b9ahMgFCWYUQzu1Cr0jHruSt4Amdh+d+wgTrNsiF/olOVfXtz+tcVMtkaCqU9zfxKwv37fJylBABlFedRM5UwDcDXkvSBEXWPfShmjaPcU13Sa1MhtABZAk9swiKl/7/M/L+yLmTKeg+jg9mfsIPSCAjHBA8wIM7W4Q82oBK1o7AnCsvIOgh4igdsS880EFqzyaZvxOHf8WnpqjzLbhWJpa/HxcaFsY8IjiH0LldFAWQvaa2xSAybkG3Kc
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8P193MB2335.EURP193.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(366004)(346002)(136003)(39840400004)(396003)(451199021)(2906002)(54906003)(478600001)(26005)(52536014)(8936002)(38100700002)(38070700005)(122000001)(15650500001)(9686003)(53546011)(6506007)(83380400001)(86362001)(7416002)(5660300002)(186003)(55016003)(66476007)(66556008)(64756008)(76116006)(66946007)(8676002)(4326008)(66446008)(33656002)(7696005)(110136005)(71200400001)(316002)(41300700001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TnEvZk1LYXUxR3pJTUJXbW1NZW1mV1FlLzl4TXVmNXNwc2diT3NWSGxaUEtu?=
- =?utf-8?B?UGorcU9nM2padzArd1dSNFhtZjlVZVlqWjdKd0hkSFZjdzFveGlWVjVvWDg2?=
- =?utf-8?B?T1dvZFgwWmFvL0dnZ0cxN3FpdUtibG1JcGE4czhvR3BDamJVVWpRQjc1T1Nk?=
- =?utf-8?B?eUlVcS8wUFdFT0NRRTc4SnNjS1lTV2VMNGFpMU0yOFIrTGQvRG1kdktwVWEv?=
- =?utf-8?B?N2tkYWlYejE1andWWnFWTnF4cndEU2RQMUttSU9NclRJTTcwblRTeTUvcEdk?=
- =?utf-8?B?UktmRTlVMm56ZGlLMElMeHNQa2djUTRGcFQ1L3JGK2s3K09IMWltUkoxRjJ4?=
- =?utf-8?B?SFR2RGpDMC9JOEV1L0lkeTJQOGJmUS83bmdTWVNxR0FaaHhKN3RKUGVOV21C?=
- =?utf-8?B?RUgyTktaQlByZzhTd2VJVlFRVmdGeEFTd0FKc0JJdjZ1czM1M2kxQS8ydzJh?=
- =?utf-8?B?RSs4QTU4RXdNN0tkTVJGMjNoS1lNVVdRZW5XeFRoeGsxMHpZOGU0cER0LzIx?=
- =?utf-8?B?cXBENkd1bEY5MDJhcXMvblZGTmJUclRiRlEwd25ad0FHd1lUL0xVdC83R012?=
- =?utf-8?B?YkJGdy9JVHpwTlYwTDdUMUdydVNTbkxsMmV6L0VaK3NQS2ltS2l0MGlEdXdy?=
- =?utf-8?B?ZjNIWWNENVZZQjZka0ZvQmhTcjVwTXpKUS9TWTNKRjdJSDJRakxmcEViMUJs?=
- =?utf-8?B?SUtacmcrOFRvdW11b0xhNURKOVFySFFXS2FvWHg2ZEtqOUZLYkprVFFoRUd4?=
- =?utf-8?B?bmErd1NyWER0Z3BYWTY1QjE0WXU4Qi9NdUhrOGh4UGp0MEhkK1o5aVJ4aVhz?=
- =?utf-8?B?ZXJKSi9rVmc2SkZmZHg1WHBrUmQyOGVCWGp6LzBLL3hxWlVHc3NsVXNSeG8w?=
- =?utf-8?B?NU1ycFRnb1Z3UGVxS2VTVEZUeTgvaFM4R3dOSnV2azJNM3JHTXUya2IyVE54?=
- =?utf-8?B?c3NEdHBLRjJSNEJJcUxVaUdRL2MyN09jQnMrcHE5d2Q2NWZwbVVVYkw4VndM?=
- =?utf-8?B?MlVFM3RsMit2eHdXNldjem1LczRrc1I3RGhzeVBiSEFmOVorN3Y2Rmlqdm9s?=
- =?utf-8?B?d0cvNUZkMEpxeEU3WlNSMkRUTS9qYWhvRTNLUkxlYWtZRWV3MFJOQWwzWXBx?=
- =?utf-8?B?VkV1L21paEtnSE5SRk5oOEo4Tk50Y1psVmdPSjB4R1dPZklxTDQ0R2x1dWRW?=
- =?utf-8?B?Q2ZCajAyOU1lSFJiaHVqR0krZWM2YW5xM1FkWFZKNTdPSngzVjJLOXMrUWQy?=
- =?utf-8?B?T3VkMEJSMkc1bXpITFJhcy8vTFZzeWdYUzYyL2RhZnF0TnArMnJWRmphT3VQ?=
- =?utf-8?B?TVRpQlFlMWlVemEySC9OdUpyNDMzbUJTVlhVZ0JVSUJrdWFOUG4rWGtzcFpv?=
- =?utf-8?B?MnVVdWFXZ1QzMG5mcG1ydm1YMVJ2MEJ4UmU0OFFKUjNYRUM4VW5waHROa0xn?=
- =?utf-8?B?Z3NRQXRoT0RpeDdSNEFtNm1nWkRqOXdFZnJKVFRiUjVGandLM2NYaEVUdmox?=
- =?utf-8?B?QUVTSjlJcUtIcHhUMTZHYjQ5QzJTc3JXNVFQSVVBcjI4ZjFHVEpZZzVQRGdU?=
- =?utf-8?B?RElEVG5Uais4MzRuV3hKdXB5Yi9rbHNRVGJJSjlzUmJ3ckkyMjE3NUkyN1Ay?=
- =?utf-8?B?QkZ4SVFQUDhLeWpzRDl5c0FvZ1Z4MkJrQ3lXQTZycDZnSWdJR1h4eFFYbjlx?=
- =?utf-8?B?NnVBOWdlamI2T041cHBnTkdiYUFNbE1sb1EwSC9HMGFUbE9Xei9lR2x2Unho?=
- =?utf-8?B?RGpzbXJzVVpRRWYzM2cvSGFPNHNvVkx4Lzh0QlRac0VKemNrS09ZQzRSaXV6?=
- =?utf-8?B?QlpDdzFBNzRTcWZ6dmJ4WlhrWTN5Q2FJaTVYSWt6WHgzWi9FakVmNEc5eTQx?=
- =?utf-8?B?STVJS25MYjhGL2kvYWdNZFJBbXk1YjVzdXJpZm1XS3o2d1dUYmxveElmOXZY?=
- =?utf-8?B?Y0JHUjlJWExySExrdXJIbmFFTTRKR3A3VnZZMmVMRGxuUUVsMjV3NkZETGZz?=
- =?utf-8?B?TXFnd1oxem1mWHFqNzc3anhXcG5pK3VmT01SRXY1TkNZT1NnSkVLekt0TXRO?=
- =?utf-8?B?MHVKUDdMSS9pcWZiNFB5b3d3ZHFOSGFieHJrUDhLWms0cDZaTlcvejROdjk5?=
- =?utf-8?Q?R3wC2WhIBimb8h366EYnrCoWN?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S230403AbjDKPKv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Apr 2023 11:10:51 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 564D14495;
+        Tue, 11 Apr 2023 08:10:33 -0700 (PDT)
+Received: from [192.168.2.41] (77-166-152-30.fixed.kpn.net [77.166.152.30])
+        by linux.microsoft.com (Postfix) with ESMTPSA id A332A21779A6;
+        Tue, 11 Apr 2023 08:10:30 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A332A21779A6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1681225832;
+        bh=ycSrEC7pWGdXdxu/mHL3bp2nfLVB5gxF2Cjrm5Myx3A=;
+        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+        b=LNfMFQ7JFl3NwcSGGn8t6uSoHrq/WrIVsz0bJ5FAnWhVdYE8wju+R0MoQK+Nyfa1u
+         tuTIRQcFhXFlcQxTDzzqi5sHA0iJO5MjXLV1MqWV3pKFPic/kP6pdlCHFMbY5RHwpc
+         UljOU3pac8RsS7LNCNQrkTaTMlSPiVXGBm6VZoes=
+Message-ID: <fc6a807a-1bbe-d56d-caa9-ec0687ef6cff@linux.microsoft.com>
+Date:   Tue, 11 Apr 2023 17:10:29 +0200
 MIME-Version: 1.0
-X-OriginatorOrg: xsightlabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS8P193MB2335.EURP193.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 77784394-05b5-4c90-13d9-08db3a9b9c02
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Apr 2023 14:47:01.4464
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 646a3e34-83ea-4273-9177-ab01923abaa9
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Sd9zWzoozpWsegiCfDIqqaTQ8zueAnNqUsnr6NpVXymNBxvAOh4JSqLczXJnVdPBSGFOvvfjefp25gKdNgtXyg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3P193MB0877
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: [PATCH v3 0/8] Support ACPI PSP on Hyper-V
+Content-Language: en-US
+From:   Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>
+Cc:     linux-kernel@vger.kernel.org,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        linux-crypto@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
+References: <20230320191956.1354602-1-jpiotrowski@linux.microsoft.com>
+ <20230322154655.GDZBsi75f6LnQStxSp@fat_crate.local>
+ <1d25221c-eaab-0f97-83aa-8b4fbe3a53ed@linux.microsoft.com>
+ <20230322181541.GEZBtFzRAMcH9BAzUe@fat_crate.local>
+ <ecf005b1-ddb9-da4c-4526-28df4806426c@linux.microsoft.com>
+ <20230323152342.GFZBxu/m3u6aFUDY/7@fat_crate.local>
+ <105d019c-2249-5dfd-e032-95944ea6dc8c@linux.microsoft.com>
+ <20230323163450.GGZBx/qpnclFnMaf7e@fat_crate.local>
+ <c8458bfa-0985-f6a5-52a3-ef96c7669fe6@linux.microsoft.com>
+ <20230402154425.GCZCmi2eiKYO2yYhNs@fat_crate.local> <877cutsczn.ffs@tglx>
+ <8d39a9a1-4b7b-08fe-7b09-2ff0a419468f@linux.microsoft.com>
+In-Reply-To: <8d39a9a1-4b7b-08fe-7b09-2ff0a419468f@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-20.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-QXBvbG9naWVzLCBtaXNzZWQgZWFybGllciBlbWFpbHMuICBXaWxsIG1ha2UgdGhpcyBhIHByaW9y
-aXR5IGZvciB0aGUgd2Vlay4NCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IGxp
-aHVpc29uZyAoQykgPGxpaHVpc29uZ0BodWF3ZWkuY29tPiANClNlbnQ6IFN1bmRheSwgQXByaWwg
-OSwgMjAyMyA5OjI3IFBNDQpUbzogU3VkZWVwIEhvbGxhIDxzdWRlZXAuaG9sbGFAYXJtLmNvbT47
-IFJvYmJpZSBLaW5nIDxyb2JiaWVrQHhzaWdodGxhYnMuY29tPg0KQ2M6IGxpbnV4LWFjcGlAdmdl
-ci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyByYWZhZWxAa2VybmVs
-Lm9yZzsgcmFmYWVsLmoud3lzb2NraUBpbnRlbC5jb207IHdhbmdodWlxaWFuZ0BodWF3ZWkuY29t
-OyB6aGFuZ3pla3VuMTFAaHVhd2VpLmNvbTsgd2FuZ3hpb25nZmVuZzJAaHVhd2VpLmNvbTsgdGFu
-eGlhb2ZlaUBodWF3ZWkuY29tOyBndW9oYW5qdW5AaHVhd2VpLmNvbTsgeGlleGl1cWlAaHVhd2Vp
-LmNvbTsgd2FuZ2tlZmVuZy53YW5nQGh1YXdlaS5jb207IGh1YW5nZGFvZGVAaHVhd2VpLmNvbQ0K
-U3ViamVjdDogUmU6IFtQQVRDSCB2MiAwLzJdIG1haWxib3g6IHBjYzogU3VwcG9ydCBwbGF0Zm9y
-bSBub3RpZmljYXRpb24gZm9yIHR5cGU0IGFuZCBzaGFyZWQgaW50ZXJydXB0DQoNCg0K5ZyoIDIw
-MjMvMy8yNyAyMDozMSwgbGlodWlzb25nIChDKSDlhpnpgZM6DQo+DQo+IOWcqCAyMDIzLzMvMjcg
-MTk6MzMsIFN1ZGVlcCBIb2xsYSDlhpnpgZM6DQo+PiBPbiBUdWUsIE1hciAxNCwgMjAyMyBhdCAw
-NzoxMTozM1BNICswODAwLCBIdWlzb25nIExpIHdyb3RlOg0KPj4+IFBDQyBzdXBwb3J0cyBwcm9j
-ZXNzaW5nIHBsYXRmb3JtIG5vdGlmaWNhdGlvbiBmb3Igc2xhdmUgc3Vic3BhY2VzIA0KPj4+IGFu
-ZCBzaGFyZWQgaW50ZXJydXB0IGZvciBtdWx0aXBsZSBzdWJzcGFjZXMuDQo+Pj4NCj4+IE90aGVy
-IHRoYW4gYSBzdXBlciBtaW5vciBuaXQgaW4gdGhlIHBhdGNoIDEvMiwgdGhpcyBsb29rcyBnb29k
-IHRvIG1lLg0KPj4gSXQgd291bGQgYmUgZ29vZCBpZiB3ZSBjYW4gZ2V0IHRlc3RlZC1ieSBmcm9t
-IFJvYmJpZSBLaW5nIA0KPj4gPHJvYmJpZWtAeHNpZ2h0bGFicy5jb20+DQo+Pg0KPj4gUmV2aWV3
-ZWQtYnk6IFN1ZGVlcCBIb2xsYSA8c3VkZWVwLmhvbGxhQGFybS5jb20+DQo+IFRoYW5rcyBmb3Ig
-eW91ciByZXZpZXcu8J+YgQ0KPg0KPiBAUm9iYmllIEtpbmcsIGNhbiB5b3UgZ2l2ZSB1cyBzb21l
-IGZlZWRiYWNrPw0KPiBMb29raW5nIGZvcndhcmQgdG8geW91IHJlcGx5Lg0KPg0KPg0KQFJvYmJp
-ZSBLaW5nLCBraW5kbHkgcGluZy4NCg==
+On 4/5/2023 9:56 AM, Jeremi Piotrowski wrote:
+> On 4/3/2023 8:20 AM, Thomas Gleixner wrote:
+>> On Sun, Apr 02 2023 at 17:44, Borislav Petkov wrote:
+>>> On Fri, Mar 24, 2023 at 06:10:09PM +0100, Jeremi Piotrowski wrote:
+>>>> Since the AMD PSP is a privileged device, there is a desire to not have to trust the
+>>>> ACPI stack,
+>>>
+>>> And yet you do:
+>>>
+>>> +	err = acpi_parse_aspt(&res[0], &pdata);
+>>> +	if (err)
+>>> +		return err;
+>>>
+>>> You don't trust the ACPI stack, and yet you're parsing an ACPI table?!?!
+>>> You have to make up your mind here.
+>>>
+>>> Btw, you still haven't answered my question about doing:
+>>>
+>>> 	devm_request_irq(dev, 9, ..)
+>>>
+>>> where 9 is the default ACPI interrupt.
+>>>
+>>> You can have some silly table tell you what to map or you can simply map
+>>> IRQ 9 and be done with it. In this second case you can *really* not
+>>> trust ACPI because you know which IRQ it is
+> 
+> Will respond to this mail directly.
+> 
+>>
+>> The real problem here is that the information provided about the overall
+>> design and requirements is close to zero. All we heard so far is hand
+>> waving about not trusting PCI and ACPI.
+> 
+> That's not a fair characterization Thomas, but I will turn the other cheek.
+> 
+>>
+>> Jeremi, can you please describe exactly what the design and constraints
+>> are in understandable and coherent sentences?
+>>
+> 
+> Here goes, I will keep it as simple as I can.
+> 
+> The goal of these patches is to operate all the hardware interfaces required
+> to run AMD SEV-SNP VMs, but in the context of a Linux VM running on top of
+> Hyper-V. This Linux VM is called the SNP-host VM. All the patches I submit 
+> target the SNP-host VM kernel, which uses KVM to bring up SEV-SNP VMs. To get
+> SEV-SNP working you need to combine this work with AMD's KVM SEV-SNP patches.
+> I posted two patch sets: one that extends AMD's patches, and one that is
+> independent of them (this one here) that could be merged sooner.
+> 
+> Here are the design constraints:
+> 1. the interfaces exposed to the SNP-host VM to operate SEV-SNP match real
+>    hardware interface specifications defined by AMD. This is because we are
+>    emulating/virtualizing a hardware feature, and not some made up virtual
+>    thing.
+> 
+> 2. the SNP-host VM may run either Windows(Hyper-V) or Linux, so the SEV-SNP
+>    interfaces need to be supported by both.
+> 
+> 3. Hyper-V Generation 2 VMs do not have a PCI bus. The SNP-host VM must be a
+>    Hyper-V Gen 2 VM.
+> 
+> One of the components needed to operate SEV-SNP is the Platform Security
+> Processor (PSP), aka AMD Secure Processor (ASP). The PSP is the root-of-trust on
+> AMD systems. The PSP is specified as being discoverable either on the PCI bus,
+> or through the presence of an ACPI table with the "ASPT" (AMD Secure Processor
+> Table) signature.
+> 
+> Here goes the design:
+> Constraint 1 means that only the two specified ways of discovering and
+> configuring a PSP inside the SNP-host VM were in the running: PCI or ASPT.
+> Constraint 3 means that the PCI version of the PSP is not a viable option.
+> Additionally, the ASPT is used on AMD hardware in Microsoft datacenters, which
+> means it is supported in Hyper-V (constraint 2). The outcome is that the
+> SNP-host VM sees an ASPT.
+> 
+> The ASPT provides the following information: memory range of PSP registers and
+> offsets of individual PSP registers inside that memory range. There are 7
+> registers:
+> - 6 are related to the "command submission" portion of the PSP; the ccp module
+>   knows how to operate those.
+> - the last one, "ACPI CmdResp" register, is used to configure the PSP interrupt
+>   to the OS.
+> 
+> The PSP interrupt configuration through the "ACPI CmdResp" register takes the
+> following information:
+> - APIC ID
+> - interrupt vector
+> - destination mode (physical/logical)
+> - message type (fixed/lowest priority)
+> 
+> So to hook this up with the Linux device model I wrote patches that do the
+> following:
+> Detect the ASPT table, extract information and register a "psp" platform_device
+> for the "ccp" module to bind to.
+> Create an irq_domain and encapsulate dealing with the PSP interrupt register
+> there, so that the "ccp" module has an irq number that it passes to
+> request_irq().
+> 
+> There is an "if (hypervisor == Hyper-V)" check before the ASPT table detection.
+> Here is the reasoning behind that:
+> According to AMD specifications the *same* PSP may be discoverable both through
+> ASPT and on the PCI bus. In that case, if the ASPT is to be used the OS is supposed
+> to disable the "PCI interface" through the "ACPI CmdResp" register, which will
+> result in no PCI-MSI interrupts, BAR writes ignored, BAR reads return all 0xF's.
+> I can't verify whether that would work correctly, so in the interest of not
+> breaking other users, the ASPT handling is hidden behind the hypervisor check.
+> There is nothing Hyper-V specific about any of this code, it supports a hardware
+> interface present in server grade hardware and would work on physical hardware if
+> when (not if) someone removes the condition.
+> 
+> That's all there is to it.
+> 
+> All the other information I gave is background information that I hoped would
+> help better understand the setting. The most relevant piece of information is the
+> one that I came across last. You asked "what makes this PSP device special". The PSP
+> is the root-of-trust on the system, it controls memory encryption keys, it can
+> encrypt/decrypt individual memory pages. SEV-SNP ties together a lot of system components
+> and requires enabling support for it in the AMD IOMMU too, which is presumably why
+> the PSP gets the same special treatment (as the AMD IOMMU). The ASPT and AMD PSP interrupt
+> configuration through the "ACPI CmdResp" register is based on a similar design of the AMD IOMMU.
+> The AMD IOMMU is:
+> - discovered through the presence of the IVRS ACPI table
+> - the MMIO address of the IOMMU is parsed out of the IVRS table
+> - if x2APIC support is enabled, the IOMMU interrupts are delivered based on
+>   programming APIC-ID+vector+destination mode into an interrupt control register
+>   in IOMMU MMIO space. This causes any PCI-MSI configuration present for the
+>   IOMMU to   be ignored.
+> - Linux supports and uses that interrupt delivery mechanism. It is implemented
+>   as an irq_domain.
+> 
+> Do you think it makes sense to include parts of the above description in cover letter
+> commit message?
+> 
+> Thanks,
+> Jeremi
+
+Hi Thomas,
+
+Have you had a chance to review this?
+
+Thanks,
+Jeremi
+
