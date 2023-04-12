@@ -2,70 +2,68 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFE736DF03E
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Apr 2023 11:26:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D6CB6DF0FB
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Apr 2023 11:50:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229980AbjDLJ0D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Apr 2023 05:26:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40050 "EHLO
+        id S229661AbjDLJuL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Apr 2023 05:50:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229749AbjDLJ0C (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Apr 2023 05:26:02 -0400
-X-Greylist: delayed 866 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 12 Apr 2023 02:26:00 PDT
+        with ESMTP id S230315AbjDLJuB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Apr 2023 05:50:01 -0400
 Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [203.110.167.99])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D20461B5
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Apr 2023 02:26:00 -0700 (PDT)
-X-ASG-Debug-ID: 1681290690-1eb14e6d796f090001-I98ny2
-Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by mx2.zhaoxin.com with ESMTP id 07ib5wqwrvL7hREm (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Wed, 12 Apr 2023 17:11:30 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A4EB30CB
+        for <linux-acpi@vger.kernel.org>; Wed, 12 Apr 2023 02:49:59 -0700 (PDT)
+X-ASG-Debug-ID: 1681292997-1eb14e6d7a6f5b0001-I98ny2
+Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by mx2.zhaoxin.com with ESMTP id 4kBpg2Oifq8Tdx6B (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Wed, 12 Apr 2023 17:49:57 +0800 (CST)
 X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-Received: from ZXBJMBX03.zhaoxin.com (10.29.252.7) by ZXSHMBX3.zhaoxin.com
- (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+Received: from ZXBJMBX03.zhaoxin.com (10.29.252.7) by ZXSHMBX2.zhaoxin.com
+ (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Wed, 12 Apr
- 2023 17:11:30 +0800
+ 2023 17:49:56 +0800
 Received: from [10.32.64.2] (10.32.64.2) by ZXBJMBX03.zhaoxin.com
  (10.29.252.7) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Wed, 12 Apr
- 2023 17:11:28 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-Message-ID: <433ad19a-8286-ff58-9fd8-d7dd13547032@zhaoxin.com>
+ 2023 17:49:55 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+Message-ID: <f3c4f38c-d45b-cf68-33e5-2e73dd73213d@zhaoxin.com>
 X-Barracuda-RBL-Trusted-Forwarder: 10.32.64.2
-Date:   Wed, 12 Apr 2023 17:11:28 +0800
+Date:   Wed, 12 Apr 2023 17:49:55 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.1
-Subject: Re: [PATCH v2 0/5] Parse the PCIe AER and set to relevant registers
+Subject: Re: [PATCH v2 3/5] ACPI/PCI: Add AER bits #defines for PCIe to
+ PCI/PCI-X Bridge
 To:     Bjorn Helgaas <helgaas@kernel.org>
-X-ASG-Orig-Subj: Re: [PATCH v2 0/5] Parse the PCIe AER and set to relevant registers
+X-ASG-Orig-Subj: Re: [PATCH v2 3/5] ACPI/PCI: Add AER bits #defines for PCIe to
+ PCI/PCI-X Bridge
 CC:     <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
         <tony.luck@intel.com>, <bp@alien8.de>, <robert.moore@intel.com>,
         <ying.huang@intel.com>, <rdunlap@infradead.org>,
         <bhelgaas@google.com>, <linux-acpi@vger.kernel.org>,
         <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <devel@acpica.org>, <CobeChen@zhaoxin.com>,
-        <TonyWWang@zhaoxin.com>, <ErosZhang@zhaoxin.com>,
-        Sathyanarayanan Kuppuswamy 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "Li, Ming" <ming4.li@intel.com>
-References: <20230407231821.GA3831711@bhelgaas>
+        <TonyWWang@zhaoxin.com>, <ErosZhang@zhaoxin.com>
+References: <20230407232220.GA3830804@bhelgaas>
 From:   LeoLiuoc <LeoLiu-oc@zhaoxin.com>
-In-Reply-To: <20230407231821.GA3831711@bhelgaas>
+In-Reply-To: <20230407232220.GA3830804@bhelgaas>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.32.64.2]
 X-ClientProxiedBy: ZXSHCAS2.zhaoxin.com (10.28.252.162) To
  ZXBJMBX03.zhaoxin.com (10.29.252.7)
-X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
-X-Barracuda-Start-Time: 1681290690
+X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
+X-Barracuda-Start-Time: 1681292997
 X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
 X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
 X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 2887
+X-Barracuda-Scan-Msg-Size: 3198
 X-Barracuda-BRTS-Status: 1
 X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
 X-Barracuda-Spam-Score: -2.02
 X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.107308
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.107310
         Rule breakdown below
          pts rule name              description
         ---- ---------------------- --------------------------------------------------
@@ -79,64 +77,84 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 
 
-在 2023/4/8 7:18, Bjorn Helgaas 写道:
-> [+cc Sathy, Ming, since they commented on the previous version]
+在 2023/4/8 7:22, Bjorn Helgaas 写道:
+> Since this patch has nothing to do with ACPI, update subject line to:
 > 
-> On Tue, Nov 15, 2022 at 11:11:15AM +0800, LeoLiu-oc wrote:
->> From: leoliu-oc <leoliu-oc@zhaoxin.com>
->>
->> According to the sec 18.3.2.4, 18.3.2.5 and 18.3.2.6 in ACPI r6.5, the
->> register values form HEST PCI Express AER Structure should be written to
->> relevant PCIe Device's AER Capabilities. So the purpose of the patch set
->> is to extract register values from HEST PCI Express AER structures and
->> program them into AER Capabilities. Refer to the ACPI Spec r6.5 for a more
->> detailed description.
-> 
-> I wasn't involved in this part of the ACPI spec, and I don't
-> understand how this is intended to work.
-> 
-> I see that this series extracts AER mask, severity, and control
-> information from the ACPI HEST table and uses it to configure PCIe
-> devices as they are enumerated.
-> 
-> What I don't understand is how this relates to ownership of the AER
-> capability as negotiated by the _OSC method.  Firmware can configure
-> the AER capability itself, and if it retains control of the AER
-> capability, the OS can't write to it (with the exception of clearing
-> EDR error status), so this wouldn't be necessary.
-
-There is no relationship between the ownership of the AER related 
-register and the ownership of the AER capability in the OS or Firmware. 
-The processing here is to initialize the AER related register, not the 
-AER event. If Firmware is configured with AER register, it will not be 
-able to handle the runtime hot reset and link retrain cases in addition 
-to the hotplug case you mentioned below.
-
-> 
-> If the OS owns the AER capability, I assume it gets to decide for
-> itself how to configure AER, no matter what the ACPI HEST says.
+>    PCI: Add PCIe to PCI/PCI-X Bridge AER fields
 > 
 
-What information does the OS use to decide how to configure AER? The 
-ACPI Spec has the following description: PCI Express (PCIe) root ports 
-may implement PCIe Advanced Error Reporting (AER) support. This 
-table(HEST) contains  information platform firmware supplies to OSPM for 
-configuring AER support on a given root port. We understand that HEST 
-stands for user to express expectations.
-
-In the current implementation, the OS already configures a PCIE device 
-based on _HPP/_HPX method when configuring a PCI device inserted into a 
-hot-plug slot or initial configuration of a PCI device at system boot. 
-HEST is just another way to express the desired configuration of the user.
+Your description is more reasonable and I will update the header of this 
+patch later.
 
 Yours sincerely,
 Leoliu-oc
 
-> Maybe this is intended for the case where firmware retains AER
-> ownership but the OS uses native hotplug (pciehp), and this is a way
-> for the OS to configure new devices as the firmware expects?  But in
-> that case, we still have the problem that the OS can't write to the
-> AER capability to do this configuration.
+> On Tue, Nov 15, 2022 at 11:12:44AM +0800, LeoLiu-oc wrote:
+>> From: leoliu-oc <leoliu-oc@zhaoxin.com>
+>>
+>> Define secondary uncorrectable error mask register, secondary
+>> uncorrectable error severity register and secondary error capabilities and
+>> control register bits in AER capability for PCIe to PCI/PCI-X Bridge.
+>> Please refer to PCIe to PCI/PCI-X Bridge Specification, sec 5.2.3.2,
+>> 5.2.3.3 and 5.2.3.4.
 > 
-> Bjorn
+> Capitalize register names to match the spec usage.
+> 
+Your suggestion is right, I'll update this in the next release.
 
+Yours sincerely,
+Leoliu-oc
+>> Signed-off-by: leoliu-oc <leoliu-oc@zhaoxin.com>
+> 
+> Assuming this goes along with a patch series that adds uses of these
+> definitions:
+> 
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> 
+>> ---
+>>   include/uapi/linux/pci_regs.h | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>
+>> diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
+>> index 57b8e2ffb1dd..37f3baa336d7 100644
+>> --- a/include/uapi/linux/pci_regs.h
+>> +++ b/include/uapi/linux/pci_regs.h
+>> @@ -799,6 +799,11 @@
+>>   #define  PCI_ERR_ROOT_AER_IRQ		0xf8000000 /* Advanced Error Interrupt Message Number */
+>>   #define PCI_ERR_ROOT_ERR_SRC	0x34	/* Error Source Identification */
+>>   
+>> +/* PCIe advanced error reporting extended capabilities for PCIe to PCI/PCI-X Bridge */
+>> +#define PCI_ERR_UNCOR_MASK2		0x30	/* Secondary Uncorrectable Error Mask */
+>> +#define PCI_ERR_UNCOR_SEVER2	0x34	/* Secondary Uncorrectable Error Severit */
+>> +#define PCI_ERR_CAP2			0x38	/* Secondary Advanced Error Capabilities */
+> 
+> Please squash these right up next to the other PCI_ERR_* definitions
+> so it's obvious that they overlap PCI_ERR_ROOT_STATUS and
+> PCI_ERR_ROOT_ERR_SRC (which is fine since one device can't have both),
+> e.g.,
+> 
+>    #define PCI_ERR_ROOT_STATUS     0x30
+>    #define  PCI_ERR_ROOT_COR_RCV           0x00000001 /* ERR_COR Received */
+>    ...
+>    #define PCI_ERR_ROOT_ERR_SRC    0x34    /* Error Source Identification */
+>    #define PCI_ERR_UNCOR_MASK2     0x30    /* PCIe to PCI/PCI-X bridge */
+>    #define PCI_ERR_UNCOR_SEVER2    0x34    /* PCIe to PCI/PCI-X bridge */
+>    #define PCI_ERR_CAP2            0x38    /* PCIe to PCI/PCI-X bridge */
+> 
+
+I don't seem to understand what you mean. PCI_ERR_UNCOR_MASK2, 
+PCI_ERR_UNCOR_SEVER2, and PCI_ERR_CAP2 represent the control and 
+handling of individual errors that occur on traditional PCI or PCI-x 
+secondary bus interfaces, these registers are valid only for Bridge. 
+Although PCI_ERR_ROOT_ERR_SRC and PCI_ERR_UNCOR_SEVER2 have the same 
+value, they represent register definitions for different device types.
+
+Yours sincerely,
+Leoliu-oc
+
+>>   /* Virtual Channel */
+>>   #define PCI_VC_PORT_CAP1	0x04
+>>   #define  PCI_VC_CAP1_EVCC	0x00000007	/* extended VC count */
+>> -- 
+>> 2.20.1
+>>
