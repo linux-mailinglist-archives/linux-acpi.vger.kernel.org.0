@@ -2,339 +2,230 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B26C6DE714
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Apr 2023 00:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCF9D6DE907
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Apr 2023 03:38:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229580AbjDKWQi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 11 Apr 2023 18:16:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33842 "EHLO
+        id S229634AbjDLBia (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 11 Apr 2023 21:38:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbjDKWQh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Apr 2023 18:16:37 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29DE7469F;
-        Tue, 11 Apr 2023 15:16:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681251395; x=1712787395;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=fQLMTnjfHbBtpS3wVaJG8n//jtfGFSW3ytiF4IF29rY=;
-  b=M0JmuEXRW9k4fJiyrEzNwBIb8+Lsxj296WPpAb7WTnhc7cgfJ/nbp51G
-   ZCWpcks1HV1BJhwywDqj/LnYoVYZPmXxahfNhVlFWL6MJP/2HnJfmBhMQ
-   r+rABDdlygSGP9bSiIfz0L+9MWGh/IZgjuIMHvlEBfzHh4yQM8k3MlejR
-   B5sknCX8CrOQW28YSZ6uPMNL5mHQGmaXw0KuwFIO05UW6aYpz3arJmBCg
-   C5/i5jwo1gkHj2GLoxP10A6JgkT04y/a58YvIgZoJP/Pad2aAefdqr3vA
-   1Z2Cab1M8R9XSHeWL+ZCS04YYkyUsH66aidP+7kecW2wpBZH4KrApD0iF
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10677"; a="323375008"
-X-IronPort-AV: E=Sophos;i="5.98,336,1673942400"; 
-   d="scan'208";a="323375008"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2023 15:16:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10677"; a="832495167"
-X-IronPort-AV: E=Sophos;i="5.98,336,1673942400"; 
-   d="scan'208";a="832495167"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 11 Apr 2023 15:16:31 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pmMHu-000WlZ-0f;
-        Tue, 11 Apr 2023 22:16:30 +0000
-Date:   Wed, 12 Apr 2023 06:15:54 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-wireless@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        io-uring@vger.kernel.org, intel-gfx@lists.freedesktop.org,
-        amd-gfx@lists.freedesktop.org,
-        acpica-devel@lists.linuxfoundation.org,
-        Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master] BUILD REGRESSION
- 009795d283d1f9f043e5a4ff97d4140cde17e2d3
-Message-ID: <6435dc1a.aQwN6VdTBlgeBpuw%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S229659AbjDLBi3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Apr 2023 21:38:29 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 290913594
+        for <linux-acpi@vger.kernel.org>; Tue, 11 Apr 2023 18:38:27 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id a3so4847798ljr.11
+        for <linux-acpi@vger.kernel.org>; Tue, 11 Apr 2023 18:38:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1681263505; x=1683855505;
+        h=cc:to:subject:message-id:date:user-agent:from:references
+         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=x4I7A7fTrqw2RjiH+FANl1pHUb1mo4v70F1ZP1YYmH0=;
+        b=eddehjaxa279W/YrUOmm1WgvC8vDX4Tc3sYAKlXKYyV36fw4dQ/qyq+r8+UTYIVkmA
+         9+nD3VH5DqzPAN3u0aJka1TzhZNJ0Mozj2KrChdbZxyRaHskhIAL2Yl4+XW3MpxGifyX
+         TewzYAl4ZckxEtP5KKFLTI/6fnR6+sgtt05Cw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1681263505; x=1683855505;
+        h=cc:to:subject:message-id:date:user-agent:from:references
+         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x4I7A7fTrqw2RjiH+FANl1pHUb1mo4v70F1ZP1YYmH0=;
+        b=U9syomspSFoOPV6RRHFWHXBCFnltj98CHgRyc4pA/JgpRAEXgyFTRFm6mwfhoD3lW6
+         tDc0SZ742jkGGBR7KaUbqiT499/fn6YDMIP+XV+Hu7QJ3ePlBSdsb58dxJIXjdOJsWvr
+         be9sXPmg+8Aiia8IbdXLzxTVifoyQj24tg/r1NKajRRAR9k+4QDDmBTPiTNdFtg2ag3b
+         nPGkj/c2QIe9d8D/xhmezSRpd/qaYRm2/SgF8N7an3Me6qsKGpdRcqX5ys6Hk5HxpKZI
+         RZnvjoTJnrNRXH2vmKl/+elzIA9pEjlyvEfiwc7LOuFPDc3g4ua8d69tRZKQ3llSKqQb
+         Z0QA==
+X-Gm-Message-State: AAQBX9fcQbpmECEyl0hmZ5BtdOHWqJywrY3i2I/Y32gQ8Y7439H00OdR
+        y72Toa93RcLlzZr6FWDNsUx/BdAdg3Gk1EXYxwVi0g==
+X-Google-Smtp-Source: AKy350ZrQD2Vb2BW3i4nlZswnqh11mfvwRG/pRKEBtPfKm06ImQY4Wy4cFsAYomIBa6rGCRvOo5AoNfsAyZRUXeax+8=
+X-Received: by 2002:a2e:8e96:0:b0:2a7:8402:c934 with SMTP id
+ z22-20020a2e8e96000000b002a78402c934mr1460102ljk.10.1681263505347; Tue, 11
+ Apr 2023 18:38:25 -0700 (PDT)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 11 Apr 2023 18:38:24 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230331091145.737305-5-treapking@chromium.org>
+References: <20230331091145.737305-1-treapking@chromium.org> <20230331091145.737305-5-treapking@chromium.org>
+From:   Stephen Boyd <swboyd@chromium.org>
+User-Agent: alot/0.10
+Date:   Tue, 11 Apr 2023 18:38:24 -0700
+Message-ID: <CAE-0n51E5foFWQAsA73662_5e6XP426wuUCVVmcS5UWwiYpDmw@mail.gmail.com>
+Subject: Re: [PATCH v15 04/10] dt-bindings: display: bridge: anx7625: Add
+ mode-switch support
+To:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Benson Leung <bleung@chromium.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Pin-yen Lin <treapking@chromium.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     Xin Ji <xji@analogixsemi.com>, Marek Vasut <marex@denx.de>,
+        Hsin-Yi Wang <hsinyi@chromium.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Lyude Paul <lyude@redhat.com>, devicetree@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-acpi@vger.kernel.org,
+        chrome-platform@lists.linux.dev,
+        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
+        <nfraprado@collabora.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Chen-Yu Tsai <wenst@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 009795d283d1f9f043e5a4ff97d4140cde17e2d3  Add linux-next specific files for 20230411
+Quoting Pin-yen Lin (2023-03-31 02:11:39)
+> diff --git a/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml b/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml
+> index b42553ac505c..604c7391d74f 100644
+> --- a/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml
+> +++ b/Documentation/devicetree/bindings/display/bridge/analogix,anx7625.yaml
+> @@ -12,7 +12,8 @@ maintainers:
+>
+>  description: |
+>    The ANX7625 is an ultra-low power 4K Mobile HD Transmitter
+> -  designed for portable devices.
+> +  designed for portable devices. Product brief is available at
+> +  https://www.analogix.com/en/system/files/AA-002291-PB-6-ANX7625_ProductBrief.pdf
+>
+>  properties:
+>    compatible:
+> @@ -112,9 +113,40 @@ properties:
+>                data-lanes: true
+>
+>        port@1:
+> -        $ref: /schemas/graph.yaml#/properties/port
+> +        $ref: /schemas/graph.yaml#/$defs/port-base
+>          description:
+> -          Video port for panel or connector.
+> +          Video port for panel or connector. Each endpoint connects to a video
+> +          output downstream, and the "data-lanes" property is used to describe
+> +          the pin connections. 0, 1, 2, 3 in "data-lanes" maps to SSRX1, SSTX1,
+> +          SSRX2, SSTX2, respectively.
+> +
+> +        patternProperties:
+> +          "^endpoint@[01]$":
+> +            $ref: /schemas/media/video-interfaces.yaml#
+> +            properties:
+> +              reg: true
+> +
+> +              remote-endpoint: true
+> +
+> +              data-lanes:
+> +                oneOf:
+> +                  - items:
+> +                      - enum: [0, 1, 2, 3]
+> +
+> +                  - items:
+> +                      - const: 0
+> +                      - const: 1
+> +
+> +                  - items:
+> +                      - const: 2
+> +                      - const: 3
+> +
+> +              mode-switch:
 
-Error/Warning reports:
+Is it possible to not have this property? Can we have the driver for
+this anx device look at the remote-endpoint and if it sees that it is
+not a drm_bridge or panel on the other end, or a DP connector, that it
+should register a typec mode switch (or two depending on the number of
+endpoints in port@1)? Is there any case where that doesn't hold true?
 
-https://lore.kernel.org/oe-kbuild-all/202303161521.jbGbaFjJ-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202304011449.XFV6lLwh-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202304061839.hi01VPl1-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202304102354.Q4VOXGTE-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202304112044.8NzKpvxM-lkp@intel.com
+I see these possible scenarios:
 
-Error/Warning: (recently discovered and may have been fixed)
+1. DPI to DP bridge steering DP to one of two usb-c-connectors
 
-Warning: arch/x86/Kconfig references a file that doesn't exist: Documentation/x86/shstk.rst
-arch/csky/abiv2/cacheflush.c:15:9: error: implicit declaration of function 'flush_tlb_page'; did you mean 'flush_anon_page'? [-Werror=implicit-function-declaration]
-drivers/bluetooth/hci_qca.c:1894:37: warning: unused variable 'qca_soc_data_wcn6855' [-Wunused-const-variable]
-drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:351:13: warning: variable 'bw_needed' set but not used [-Wunused-but-set-variable]
-drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:352:25: warning: variable 'link' set but not used [-Wunused-but-set-variable]
-drivers/gpu/drm/i915/gt/uc/guc_capture_fwif.h:62: warning: wrong kernel-doc identifier on line:
-drivers/gpu/drm/i915/i915_pmu.h:41: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
-drivers/gpu/drm/i915/i915_request.h:176: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
-drivers/gpu/drm/i915/i915_vma.h:145: warning: expecting prototype for i915_vma_offset(). Prototype was for i915_vma_size() instead
-drivers/net/wireless/legacy/ray_cs.c:628:17: warning: 'strncpy' specified bound 32 equals destination size [-Wstringop-truncation]
-drivers/tty/serial/samsung_tty.c:2034:24: error: implicit declaration of function 'of_device_get_match_data'; did you mean 'device_get_match_data'? [-Werror=implicit-function-declaration]
-drivers/tty/serial/samsung_tty.c:2034:24: warning: returning 'int' from a function with return type 'const struct s3c24xx_serial_drv_data *' makes pointer from integer without a cast [-Wint-conversion]
+In this case, endpoint@0 is connected to one usb-c-connector and
+endpoint@1 is connected to another usb-c-connector. The input endpoint
+is only connected to DPI. The USB endpoint is not present (although I
+don't see this described in the binding either, so we would need a
+port@2, entirely optional to describe USB3 input). The driver will
+register two mode switches.
 
-Unverified Error/Warning (likely false positive, please contact us if interested):
+2. DPI to DP bridge with USB3 to one usb-c-connector
 
-drivers/acpi/acpica/tbutils.c:181 acpi_tb_get_root_table_entry() error: uninitialized symbol 'address32'.
-drivers/acpi/property.c:985 acpi_data_prop_read_single() error: potentially dereferencing uninitialized 'obj'.
-io_uring/io_uring.c:432 io_prep_async_work() error: we previously assumed 'req->file' could be null (see line 425)
-io_uring/kbuf.c:221 __io_remove_buffers() warn: variable dereferenced before check 'bl->buf_ring' (see line 219)
+In this case, endpoint@1 doesn't exist. The SSTX1/2 and SSRX1/2 pins are
+all connected to a usb-c-connector node. The input ports (0 and 2) are
+connected to both DPI and USB. The device acts as both a mode-switch and
+an orientation-switch. It registers both switches. I wonder if there is
+any benefit to describing SBU connections or CC connections? Maybe we
+don't register the orientation-switch if the SBU or CC connection isn't
+described?
 
-Error/Warning ids grouped by kconfigs:
+3. DPI to DP bridge connected to eDP panel
 
-gcc_recent_errors
-|-- alpha-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
-|-- alpha-randconfig-c023-20230409
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- arc-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- arm-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- arm-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- arm64-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- csky-defconfig
-|   `-- arch-csky-abiv2-cacheflush.c:error:implicit-declaration-of-function-flush_tlb_page
-|-- csky-randconfig-m031-20230411
-|   `-- arch-csky-abiv2-cacheflush.c:error:implicit-declaration-of-function-flush_tlb_page
-|-- i386-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- i386-randconfig-m021
-|   `-- drivers-acpi-property.c-acpi_data_prop_read_single()-error:potentially-dereferencing-uninitialized-obj-.
-|-- ia64-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
-|-- ia64-buildonly-randconfig-r005-20230409
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- ia64-randconfig-m031-20230410
-|   `-- drivers-acpi-acpica-tbutils.c-acpi_tb_get_root_table_entry()-error:uninitialized-symbol-address32-.
-|-- loongarch-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- loongarch-defconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- mips-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- mips-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- mips-randconfig-r034-20230409
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- openrisc-randconfig-r002-20230409
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- parisc-buildonly-randconfig-r003-20230410
-|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
-|-- parisc-randconfig-r014-20230409
-|   |-- drivers-tty-serial-samsung_tty.c:error:implicit-declaration-of-function-of_device_get_match_data
-|   `-- drivers-tty-serial-samsung_tty.c:warning:returning-int-from-a-function-with-return-type-const-struct-s3c24xx_serial_drv_data-makes-pointer-from-integer-without-a-cast
-|-- powerpc-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- powerpc-randconfig-c44-20230409
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- powerpc-randconfig-r016-20230409
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- riscv-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- riscv-randconfig-r042-20230410
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- s390-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- sparc-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
-|-- x86_64-allnoconfig
-|   `-- Warning:arch-x86-Kconfig-references-a-file-that-doesn-t-exist:Documentation-x86-shstk.rst
-|-- x86_64-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-`-- x86_64-randconfig-m001
-    |-- drivers-acpi-property.c-acpi_data_prop_read_single()-error:potentially-dereferencing-uninitialized-obj-.
-    |-- io_uring-io_uring.c-io_prep_async_work()-error:we-previously-assumed-req-file-could-be-null-(see-line-)
-    `-- io_uring-kbuf.c-__io_remove_buffers()-warn:variable-dereferenced-before-check-bl-buf_ring-(see-line-)
-clang_recent_errors
-|-- x86_64-randconfig-a003-20230410
-|   `-- drivers-bluetooth-hci_qca.c:warning:unused-variable-qca_soc_data_wcn6855
-`-- x86_64-randconfig-a005-20230410
-    |-- drivers-gpu-drm-i915-gt-uc-guc_capture_fwif.h:warning:wrong-kernel-doc-identifier-on-line:
-    |-- drivers-gpu-drm-i915-i915_pmu.h:warning:This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
-    |-- drivers-gpu-drm-i915-i915_request.h:warning:This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
-    `-- drivers-gpu-drm-i915-i915_vma.h:warning:expecting-prototype-for-i915_vma_offset().-Prototype-was-for-i915_vma_size()-instead
+In this case, endpoint@1 doesn't exist. The USB endpoint is not present
+(port@2). Depending on how the crosspoint should be configured, we'll
+need to use data-lanes in the port@1 endpoint to describe which SSTRX
+pair to use (1 or 2). Or we'll have to use the endpoint's reg property
+to describe which pair to drive DP on. Presumably the default
+configuration is SSRX2/SSTX2 providing 2 lanes of DP to an eDP panel.
+The endpoint@0 in port@1 will be connected to a drm_panel, and the
+driver will be able to detect this properly by checking for the
+existence of an aux-bus node or the return value of
+of_dp_aux_populate_bus().
 
-elapsed time: 883m
+4. DPI to DP bridge connected to DP connector
 
-configs tested: 124
-configs skipped: 12
+This is similar to the eDP panel scenario #3. In this case, endpoint@1
+doesn't exist. The USB endpoint is not present (port@2). Same story
+about port@1 and lane configuration, but we don't have an aux-bus node.
+In this case, the drivers/gpu/drm/bridge/display-connector.c driver will
+probe for the dp-connector node and add a drm_bridge. This anx driver
+will similarly add a drm_bridge, but it needs to look at the node
+connected on port@1:endpoint@0 with drm_of_get_bridge() and check if it
+is a drm_bridge (DP connector) or if it is some type-c thing (connector
+or orientation-switch).
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r003-20230410   gcc  
-alpha                randconfig-r013-20230410   gcc  
-arc                              allyesconfig   gcc  
-arc          buildonly-randconfig-r003-20230409   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r005-20230410   gcc  
-arc                  randconfig-r015-20230409   gcc  
-arc                  randconfig-r033-20230410   gcc  
-arc                  randconfig-r043-20230409   gcc  
-arc                  randconfig-r043-20230410   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r012-20230410   clang
-arm                  randconfig-r046-20230409   clang
-arm                  randconfig-r046-20230410   clang
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r003-20230409   clang
-csky                                defconfig   gcc  
-hexagon              randconfig-r025-20230411   clang
-hexagon              randconfig-r026-20230411   clang
-hexagon              randconfig-r041-20230409   clang
-hexagon              randconfig-r041-20230410   clang
-hexagon              randconfig-r045-20230409   clang
-hexagon              randconfig-r045-20230410   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r006-20230410   clang
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-a001-20230410   clang
-i386                 randconfig-a002-20230410   clang
-i386                 randconfig-a003-20230410   clang
-i386                 randconfig-a004-20230410   clang
-i386                 randconfig-a005-20230410   clang
-i386                 randconfig-a006-20230410   clang
-i386                 randconfig-a011-20230410   gcc  
-i386                 randconfig-a012-20230410   gcc  
-i386                 randconfig-a013-20230410   gcc  
-i386                 randconfig-a014-20230410   gcc  
-i386                 randconfig-a015-20230410   gcc  
-i386                 randconfig-a016-20230410   gcc  
-i386                 randconfig-r006-20230410   clang
-ia64                             allmodconfig   gcc  
-ia64         buildonly-randconfig-r001-20230410   gcc  
-ia64         buildonly-randconfig-r002-20230409   gcc  
-ia64         buildonly-randconfig-r005-20230409   gcc  
-ia64                                defconfig   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r004-20230409   gcc  
-loongarch            randconfig-r023-20230411   gcc  
-loongarch            randconfig-r033-20230409   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r005-20230409   gcc  
-m68k                 randconfig-r012-20230409   gcc  
-microblaze   buildonly-randconfig-r004-20230410   gcc  
-microblaze           randconfig-r032-20230410   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips         buildonly-randconfig-r001-20230409   gcc  
-mips         buildonly-randconfig-r006-20230409   gcc  
-mips                 randconfig-r001-20230409   gcc  
-mips                 randconfig-r001-20230410   gcc  
-mips                 randconfig-r032-20230409   gcc  
-mips                 randconfig-r034-20230409   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r022-20230411   gcc  
-openrisc             randconfig-r002-20230409   gcc  
-parisc       buildonly-randconfig-r003-20230410   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r014-20230409   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc              randconfig-r002-20230410   clang
-powerpc              randconfig-r006-20230409   clang
-powerpc              randconfig-r016-20230409   gcc  
-powerpc              randconfig-r016-20230410   gcc  
-powerpc              randconfig-r035-20230409   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv        buildonly-randconfig-r002-20230410   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r014-20230410   gcc  
-riscv                randconfig-r042-20230409   gcc  
-riscv                randconfig-r042-20230410   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r013-20230409   gcc  
-s390                 randconfig-r044-20230409   gcc  
-s390                 randconfig-r044-20230410   gcc  
-sh                               allmodconfig   gcc  
-sh                   randconfig-r011-20230409   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r015-20230410   gcc  
-sparc                randconfig-r021-20230411   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-a001-20230410   clang
-x86_64               randconfig-a002-20230410   clang
-x86_64               randconfig-a003-20230410   clang
-x86_64               randconfig-a004-20230410   clang
-x86_64               randconfig-a005-20230410   clang
-x86_64               randconfig-a006-20230410   clang
-x86_64               randconfig-a011-20230410   gcc  
-x86_64               randconfig-a012-20230410   gcc  
-x86_64               randconfig-a013-20230410   gcc  
-x86_64               randconfig-a014-20230410   gcc  
-x86_64               randconfig-a015-20230410   gcc  
-x86_64               randconfig-a016-20230410   gcc  
-x86_64                               rhel-8.3   gcc  
-xtensa       buildonly-randconfig-r004-20230409   gcc  
-xtensa               randconfig-r036-20230410   gcc  
+I think having this mode-switch property here lets us avoid calling
+drm_of_get_bridge() unconditionally in anx7625_parse_dt().
+drm_of_get_bridge() will always return -EPROBE_DEFER when this is the
+last drm_bridge in the chain and the other side of the endpoint is a
+type-c thing (scenarios #1 and #2). Maybe we should teach
+drm_of_get_bridge() that a drm_bridge might be connected to a type-c
+device and have it not return -EPROBE_DEFER in that case. Or make some
+new API like drm_of_get_bridge_typec() that checks if the typec
+framework knows about the endpoint in question (as either a typec switch
+or a connector) and returns a NULL bridge pointer. If we had that then I
+think this property is not necessary.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Hopefully the usb-c-connector can always be registered with the typec
+framework? I'm worried that the driver that registers the
+usb-c-connector node may want to form a struct typec_port with
+typec_register_port() and that will get stuck in a similar -EPROBE_DEFER
+loop waiting for this mode-switch to appear. So having this property
+also avoids that problem by telling typec framework to wait until this
+driver can register a mode-switch.
+
+TL;DR: Is this mode-switch property a workaround for probe defer? Can we
+figure out where the mode switch is in software and not have the
+property in DT? If we can it would certainly improve things because
+forgetting to add the property can lead to broken behavior, and we don't
+do anything like this for chains of drm_bridge devices. We just describe
+the display chain and let the kernel figure out which bridge should
+handle hpd, edid reading, or mode detection, etc.
