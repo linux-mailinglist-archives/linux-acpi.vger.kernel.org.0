@@ -2,102 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4861E6DED33
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Apr 2023 10:05:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFE736DF03E
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Apr 2023 11:26:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229888AbjDLIFK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Apr 2023 04:05:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49270 "EHLO
+        id S229980AbjDLJ0D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Apr 2023 05:26:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229719AbjDLIFJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Apr 2023 04:05:09 -0400
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62581C4
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Apr 2023 01:05:07 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id sh8so26579703ejc.10
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Apr 2023 01:05:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681286706; x=1683878706;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HJLlk5da4L8Ltn8jDx/W/MCW09bm52RtkanOa7KHQUw=;
-        b=DfTgWotzSDN79aPLF0yJwQxlU6YpisvmmkU8dxUWBBD9+wbXgTUbZ8tNuPqV2l1yDK
-         JjLXvegVVsmqyeJ3ThZp1XsJM6RxIEWAq6uo7WcLO4Vq3ixvt5Avy41FFaLYxRKPs4oD
-         jG8cfa8Yys/9IzZqoa9VpN5N+MEoRhA6y3uC4hv88qtFGObL6dikA6dXC6bgDxBlBK/q
-         T8LCzF1Ujmosxl+MBImt4uGL2V13csyyuOpRJWFVTZuzCQcleB3vzSn2rWQ6ivU6XtK2
-         zfDTyVcDDF6AVXRbIeXR/qLVQmhimsGRjEMOQxQtngCeLJAJQTuKvVVBYghUJa/2oa1e
-         70xQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681286706; x=1683878706;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HJLlk5da4L8Ltn8jDx/W/MCW09bm52RtkanOa7KHQUw=;
-        b=xJpanC550izPGNpG+lBlYBjGE68BlIypZ93JjBI5tIJK8yt5ymzxmyVuCg0mIz6MJ5
-         bmeIIji0tk50oEiW/APV9y+YmbPYBUnrXqLEy08VJt4iRstMApPdPwZx2THE7vJi653q
-         sDKfRBquAnQlL1Mi4DVgF4I6aOGhVxWQ2WJGhT6s4P2ML3jD3YXKKZYFv5px5AVTVxWF
-         FyRez9gxomhMzbyEm6yX40B8495tgrwrnw8Z7QZUWbLC2roNEjcWk3kIUryNO1tp3RvI
-         h4M8jCWY+xVzsLnXNICH1TXv68/yng8pbzuYwzYUebygadgb7e7F15bVzYRa/lWZGPvj
-         yhdw==
-X-Gm-Message-State: AAQBX9cpcUqRwIFVWeCg1iJ7Zr1WxpWeSrEAp+TxvwC3+HtDUdNw3l7i
-        X8S9oNY1EmezA+wyY9CDHwBO4IcCjfy7c8D/zoY=
-X-Google-Smtp-Source: AKy350ZsMEeYXqWc3YO6suPENHKbLe0ksL4tyDBKIRCTaRurMQH2nROSOZ7A0PPIxWB0GmYSRTevN07zGbCVWFUtB9s=
-X-Received: by 2002:a17:907:d603:b0:8f1:4cc5:f14c with SMTP id
- wd3-20020a170907d60300b008f14cc5f14cmr2714921ejc.0.1681286705360; Wed, 12 Apr
- 2023 01:05:05 -0700 (PDT)
+        with ESMTP id S229749AbjDLJ0C (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Apr 2023 05:26:02 -0400
+X-Greylist: delayed 866 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 12 Apr 2023 02:26:00 PDT
+Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [203.110.167.99])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D20461B5
+        for <linux-acpi@vger.kernel.org>; Wed, 12 Apr 2023 02:26:00 -0700 (PDT)
+X-ASG-Debug-ID: 1681290690-1eb14e6d796f090001-I98ny2
+Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by mx2.zhaoxin.com with ESMTP id 07ib5wqwrvL7hREm (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Wed, 12 Apr 2023 17:11:30 +0800 (CST)
+X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from ZXBJMBX03.zhaoxin.com (10.29.252.7) by ZXSHMBX3.zhaoxin.com
+ (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Wed, 12 Apr
+ 2023 17:11:30 +0800
+Received: from [10.32.64.2] (10.32.64.2) by ZXBJMBX03.zhaoxin.com
+ (10.29.252.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Wed, 12 Apr
+ 2023 17:11:28 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Message-ID: <433ad19a-8286-ff58-9fd8-d7dd13547032@zhaoxin.com>
+X-Barracuda-RBL-Trusted-Forwarder: 10.32.64.2
+Date:   Wed, 12 Apr 2023 17:11:28 +0800
 MIME-Version: 1.0
-Received: by 2002:a05:7208:708a:b0:65:ee9e:4d5f with HTTP; Wed, 12 Apr 2023
- 01:05:04 -0700 (PDT)
-Reply-To: avamedicinemed1@gmail.com
-From:   Dr Ava Smith <avamedicinemed10@gmail.com>
-Date:   Wed, 12 Apr 2023 01:05:04 -0700
-Message-ID: <CAARwTG+23BFXGvtPE-vRebTNFOdM3BdvAfTg=1JC6pC+0kYT8g@mail.gmail.com>
-Subject: HI DEAR
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM,UNDISC_MONEY
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
-        *      [score: 0.0000]
-        * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:630 listed in]
-        [list.dnswl.org]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [avamedicinemed1[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [avamedicinemed10[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [avamedicinemed10[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  3.0 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  3.1 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *****
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: [PATCH v2 0/5] Parse the PCIe AER and set to relevant registers
+To:     Bjorn Helgaas <helgaas@kernel.org>
+X-ASG-Orig-Subj: Re: [PATCH v2 0/5] Parse the PCIe AER and set to relevant registers
+CC:     <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
+        <tony.luck@intel.com>, <bp@alien8.de>, <robert.moore@intel.com>,
+        <ying.huang@intel.com>, <rdunlap@infradead.org>,
+        <bhelgaas@google.com>, <linux-acpi@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devel@acpica.org>, <CobeChen@zhaoxin.com>,
+        <TonyWWang@zhaoxin.com>, <ErosZhang@zhaoxin.com>,
+        Sathyanarayanan Kuppuswamy 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Li, Ming" <ming4.li@intel.com>
+References: <20230407231821.GA3831711@bhelgaas>
+From:   LeoLiuoc <LeoLiu-oc@zhaoxin.com>
+In-Reply-To: <20230407231821.GA3831711@bhelgaas>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.32.64.2]
+X-ClientProxiedBy: ZXSHCAS2.zhaoxin.com (10.28.252.162) To
+ ZXBJMBX03.zhaoxin.com (10.29.252.7)
+X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
+X-Barracuda-Start-Time: 1681290690
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 2887
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.107308
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------------------------
+X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello Dear,
-how are you today?hope you are fine.
-My name is Dr Ava Smith ,Am an English and French nationalities.
-I will give you pictures and more details about me as soon as i hear from you
-Reply me through my official email (avamedicinemed1@gmail.com)
-Thanks
-Ava
+
+
+在 2023/4/8 7:18, Bjorn Helgaas 写道:
+> [+cc Sathy, Ming, since they commented on the previous version]
+> 
+> On Tue, Nov 15, 2022 at 11:11:15AM +0800, LeoLiu-oc wrote:
+>> From: leoliu-oc <leoliu-oc@zhaoxin.com>
+>>
+>> According to the sec 18.3.2.4, 18.3.2.5 and 18.3.2.6 in ACPI r6.5, the
+>> register values form HEST PCI Express AER Structure should be written to
+>> relevant PCIe Device's AER Capabilities. So the purpose of the patch set
+>> is to extract register values from HEST PCI Express AER structures and
+>> program them into AER Capabilities. Refer to the ACPI Spec r6.5 for a more
+>> detailed description.
+> 
+> I wasn't involved in this part of the ACPI spec, and I don't
+> understand how this is intended to work.
+> 
+> I see that this series extracts AER mask, severity, and control
+> information from the ACPI HEST table and uses it to configure PCIe
+> devices as they are enumerated.
+> 
+> What I don't understand is how this relates to ownership of the AER
+> capability as negotiated by the _OSC method.  Firmware can configure
+> the AER capability itself, and if it retains control of the AER
+> capability, the OS can't write to it (with the exception of clearing
+> EDR error status), so this wouldn't be necessary.
+
+There is no relationship between the ownership of the AER related 
+register and the ownership of the AER capability in the OS or Firmware. 
+The processing here is to initialize the AER related register, not the 
+AER event. If Firmware is configured with AER register, it will not be 
+able to handle the runtime hot reset and link retrain cases in addition 
+to the hotplug case you mentioned below.
+
+> 
+> If the OS owns the AER capability, I assume it gets to decide for
+> itself how to configure AER, no matter what the ACPI HEST says.
+> 
+
+What information does the OS use to decide how to configure AER? The 
+ACPI Spec has the following description: PCI Express (PCIe) root ports 
+may implement PCIe Advanced Error Reporting (AER) support. This 
+table(HEST) contains  information platform firmware supplies to OSPM for 
+configuring AER support on a given root port. We understand that HEST 
+stands for user to express expectations.
+
+In the current implementation, the OS already configures a PCIE device 
+based on _HPP/_HPX method when configuring a PCI device inserted into a 
+hot-plug slot or initial configuration of a PCI device at system boot. 
+HEST is just another way to express the desired configuration of the user.
+
+Yours sincerely,
+Leoliu-oc
+
+> Maybe this is intended for the case where firmware retains AER
+> ownership but the OS uses native hotplug (pciehp), and this is a way
+> for the OS to configure new devices as the firmware expects?  But in
+> that case, we still have the problem that the OS can't write to the
+> AER capability to do this configuration.
+> 
+> Bjorn
+
