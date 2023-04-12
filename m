@@ -2,170 +2,145 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91EAB6DFB45
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Apr 2023 18:25:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AD476DFB66
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Apr 2023 18:32:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229593AbjDLQZD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Apr 2023 12:25:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56758 "EHLO
+        id S229829AbjDLQcG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Apr 2023 12:32:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229797AbjDLQZC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Apr 2023 12:25:02 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1468E359E
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Apr 2023 09:24:59 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pmdHE-0002hw-Rj; Wed, 12 Apr 2023 18:24:56 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pmdHA-00AmMu-U5; Wed, 12 Apr 2023 18:24:52 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pmdHA-00Cemi-AC; Wed, 12 Apr 2023 18:24:52 +0200
-Date:   Wed, 12 Apr 2023 18:24:52 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     James Morse <james.morse@arm.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        linux-acpi@vger.kernel.org, kernel@pengutronix.de,
-        Hanjun Guo <guohanjun@huawei.com>,
-        linux-arm-kernel@lists.infradead.org, Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH] ACPI: AGDI: Improve error reporting for problems during
- .remove()
-Message-ID: <20230412162452.g7rjljqysbqxmspw@pengutronix.de>
-References: <20221014160623.467195-1-u.kleine-koenig@pengutronix.de>
- <Y05zSNDbt94ejpzm@lpieralisi>
- <e5080938-11e5-44c0-0434-f8d06a0cd953@arm.com>
- <20221026172335.6zdpe3iqyajgowrn@pengutronix.de>
- <20221219221819.uikp73gq3vs2t4k5@pengutronix.de>
- <20230214163623.j3hakvxk23rk26ha@pengutronix.de>
+        with ESMTP id S229492AbjDLQcF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Apr 2023 12:32:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADEA14228;
+        Wed, 12 Apr 2023 09:32:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 473AF63592;
+        Wed, 12 Apr 2023 16:32:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 651A1C433D2;
+        Wed, 12 Apr 2023 16:32:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681317123;
+        bh=Jd0KP9Be/J1eYVNg6f3gA2o2GR5IxjU2odxONAUvHX8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=u3Vq97gr0+butPSYqTNSkWT/rZLFJQ88FtvnlAQyeWnm/lM8+fP9AXhdEXCyyD9DB
+         hVDvIpCBNigVD8QggkamOvcnbvtoAHF9BnUXdFEY+EKuGg4K18DLYNWQ8e10I/21Ss
+         MCpe6yLCFLDGQXsLJdiVhInimXjMXfWhvKenerNUX6rALwfxcHptpa5RrqkPlmw/fI
+         bjiKp1HcUkDHTkXjdDtlp1rKVIH7uLlm+qJXpSkORwl+48ZbOwAMwylryCXB++cR31
+         hC09GskgKbrtJCcPvCfW44azJMVPAwXMH7gNueiLuB4NUMkVJNr3axDUUnNC/+1S8d
+         dhJoSr91G29kA==
+Date:   Wed, 12 Apr 2023 11:32:01 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     LeoLiuoc <LeoLiu-oc@zhaoxin.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
+        tony.luck@intel.com, bp@alien8.de, robert.moore@intel.com,
+        ying.huang@intel.com, rdunlap@infradead.org, bhelgaas@google.com,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devel@acpica.org,
+        CobeChen@zhaoxin.com, TonyWWang@zhaoxin.com, ErosZhang@zhaoxin.com,
+        Sathyanarayanan Kuppuswamy 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Li, Ming" <ming4.li@intel.com>
+Subject: Re: [PATCH v2 0/5] Parse the PCIe AER and set to relevant registers
+Message-ID: <20230412163201.GA49069@bhelgaas>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="vthdhdml2nwbxycy"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230214163623.j3hakvxk23rk26ha@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <433ad19a-8286-ff58-9fd8-d7dd13547032@zhaoxin.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Wed, Apr 12, 2023 at 05:11:28PM +0800, LeoLiuoc wrote:
+> 在 2023/4/8 7:18, Bjorn Helgaas 写道:
+> > On Tue, Nov 15, 2022 at 11:11:15AM +0800, LeoLiu-oc wrote:
+> > > From: leoliu-oc <leoliu-oc@zhaoxin.com>
+> > > 
+> > > According to the sec 18.3.2.4, 18.3.2.5 and 18.3.2.6 in ACPI r6.5, the
+> > > register values form HEST PCI Express AER Structure should be written to
+> > > relevant PCIe Device's AER Capabilities. So the purpose of the patch set
+> > > is to extract register values from HEST PCI Express AER structures and
+> > > program them into AER Capabilities. Refer to the ACPI Spec r6.5 for a more
+> > > detailed description.
+> > 
+> > I wasn't involved in this part of the ACPI spec, and I don't
+> > understand how this is intended to work.
+> > 
+> > I see that this series extracts AER mask, severity, and control
+> > information from the ACPI HEST table and uses it to configure PCIe
+> > devices as they are enumerated.
+> > 
+> > What I don't understand is how this relates to ownership of the AER
+> > capability as negotiated by the _OSC method.  Firmware can configure
+> > the AER capability itself, and if it retains control of the AER
+> > capability, the OS can't write to it (with the exception of clearing
+> > EDR error status), so this wouldn't be necessary.
+> 
+> There is no relationship between the ownership of the AER related
+> register and the ownership of the AER capability in the OS or
+> Firmware.
 
---vthdhdml2nwbxycy
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I don't understand this; can you say it another way?  "Ownership of
+the AER related register" and "ownership of the AER capability" sound
+exactly the same to me.
 
-On Tue, Feb 14, 2023 at 05:36:23PM +0100, Uwe Kleine-K=F6nig wrote:
-> Hello,
->=20
-> On Mon, Dec 19, 2022 at 11:18:19PM +0100, Uwe Kleine-K=F6nig wrote:
-> > On Wed, Oct 26, 2022 at 07:23:35PM +0200, Uwe Kleine-K=F6nig wrote:
-> > > On Wed, Oct 26, 2022 at 05:09:40PM +0100, James Morse wrote:
-> > > > On 18/10/2022 10:35, Lorenzo Pieralisi wrote:
-> > > > > On Fri, Oct 14, 2022 at 06:06:23PM +0200, Uwe Kleine-K=EF=BF=BDni=
-g wrote:
-> > > > >> Returning an error value in a platform driver's remove callback =
-results in
-> > > > >> a generic error message being emitted by the driver core, but ot=
-herwise it
-> > > > >> doesn't make a difference. The device goes away anyhow.
-> > > > >>
-> > > > >> So instead of triggering the generic platform error message, emi=
-t a more
-> > > > >> helpful message if a problem occurs and return 0 to suppress the=
- generic
-> > > > >> message.
-> > > > >>
-> > > > >> This patch is a preparation for making platform remove callbacks=
- return
-> > > > >> void.
-> > > > >=20
-> > > > > If that's the plan - I don't have anything against this patch.
-> > > > >=20
-> > > > >> Signed-off-by: Uwe Kleine-K=EF=BF=BDnig <u.kleine-koenig@pengutr=
-onix.de>
-> > > > >> ---
-> > > > >> Hello,
-> > > > >>
-> > > > >> note that in the situations where the driver returned an error b=
-efore
-> > > > >> and now emits a message, there is a resource leak. Someone who k=
-nows
-> > > > >> more about this driver and maybe even can test stuff, might want=
- to
-> > > > >> address this. This might not only be about non-freed memory, the=
- device
-> > > > >> disappears but it is kept in sdei_list and so might be used afte=
-r being
-> > > > >> gone.
-> > > >=20
-> > > > > I'd need James' input on this. I guess we may ignore
-> > > > > sdei_event_disable() return value and continue anyway in agdi_rem=
-ove(),
-> > > > > whether that's the right thing to do it is a different question.
-> > > >=20
-> > > > The unregister stuff is allowed to fail if the event is 'in progres=
-s' on another CPU.
-> > > > Given the handler panic()s the machine, if an event is in progress,=
- the resource leak
-> > > > isn't something worth worrying about. The real problem is that the =
-handler code may be
-> > > > free()d while another CPU is still executing it, which is only a pr=
-oblem for modules.
-> > > >=20
-> > > > As this thing can't be built as a module, and the handler panic()s =
-the machine, I don't
-> > > > think there is going to be a problem here.
-> > >=20
-> > > Is that an Ack?
-> >=20
-> > This patch wasn't applied anywhere (at least it didn't appear in next
-> > since October). Did it fell through the cracks? Is there anything
-> > missing?
->=20
-> gentle ping!
->=20
-> Working on making struct platform_driver::remove() return void, I'd like
-> to base another patch on top of this one. For that it would be great if
-> it entered the mainline ...
+> The processing here is to initialize the AER related register, not
+> the AER event. If Firmware is configured with AER register, it will
+> not be able to handle the runtime hot reset and link retrain cases
+> in addition to the hotplug case you mentioned below.
+>
+> > If the OS owns the AER capability, I assume it gets to decide for
+> > itself how to configure AER, no matter what the ACPI HEST says.
+> 
+> What information does the OS use to decide how to configure AER? The
+> ACPI Spec has the following description: PCI Express (PCIe) root
+> ports may implement PCIe Advanced Error Reporting (AER) support.
+> This table(HEST) contains  information platform firmware supplies to
+> OSPM for configuring AER support on a given root port. We understand
+> that HEST stands for user to express expectations.
+> 
+> In the current implementation, the OS already configures a PCIE
+> device based on _HPP/_HPX method when configuring a PCI device
+> inserted into a hot-plug slot or initial configuration of a PCI
+> device at system boot. HEST is just another way to express the
+> desired configuration of the user.
 
-gentle ping ++
+Why was the HEST mechanism added if the functionality is equivalent
+to the existing _HPP/_HPX?  There must be something that HEST supplies
+that _HPP/_HPX did not.
 
-Would it help to resend?
+I think we need some things in the commit log (and short comments in
+the code) to help maintain this in the future:
 
-Best regards
-Uwe
+  - What problem does this solve, e.g., is there some bug that happens
+    because we lack this functionality?
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+  - How is this HEST mechanism related to _HPP/_HPX?  What are the
+    differences?
 
---vthdhdml2nwbxycy
-Content-Type: application/pgp-signature; name="signature.asc"
+  - How is this related to _OSC AER ownership?
 
------BEGIN PGP SIGNATURE-----
+I think we ignore _OSC ownership in the existing _HPP/_HPX code, but
+that seems like a potential problem.  The PCI Firmware spec (r3.3, sec
+4.5.1) is pretty clear:
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmQ221MACgkQj4D7WH0S
-/k4ndQf/aPPCVMwcr7EPrjXfKNYvM0xxhS2J7vUxgHSOPjUK7BnnMPZPaA48h8xU
-G/AcxumI35vPAlIs/yMdHrBy9GmGP/up+FlDK7bMnxfLZQGU6aHit9GEZw2WQ0SK
-0xwkcthxp0IX6JyzPq2fsI501V9DDjyFiRcaWzVKSlql63E7ZPTwUykJ8z7V+h1e
-I+fl1032nzb5NyhSzVweBAG7RaO336MdNZ0GmCwEOzTY3ka+ji/W1w/7eSuufNQC
-myEgSwtTPwHnfCfPRd2OOpbDZuyA4+CqfwmjEvhy3gIknAXGFQAmJFCa2AkAhehe
-FpF5ztfoxqkMQflpqVDYHkej1uRCXQ==
-=gZC6
------END PGP SIGNATURE-----
+  If control of this feature was requested and denied or was not
+  requested, firmware returns this bit set to 0, and the operating
+  system must not modify the Advanced Error Reporting Capability or
+  the other error enable/status bits listed above.
 
---vthdhdml2nwbxycy--
+> > Maybe this is intended for the case where firmware retains AER
+> > ownership but the OS uses native hotplug (pciehp), and this is a way
+> > for the OS to configure new devices as the firmware expects?  But in
+> > that case, we still have the problem that the OS can't write to the
+> > AER capability to do this configuration.
+> > 
+> > Bjorn
