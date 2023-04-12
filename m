@@ -2,90 +2,148 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E21BE6DF7B6
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Apr 2023 15:52:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A38506DF922
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Apr 2023 16:55:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229602AbjDLNwe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Apr 2023 09:52:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54686 "EHLO
+        id S230450AbjDLOzt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Apr 2023 10:55:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229549AbjDLNwd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Apr 2023 09:52:33 -0400
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C87819BE;
-        Wed, 12 Apr 2023 06:52:31 -0700 (PDT)
-Received: from [192.168.0.2] (ip5f5aebd0.dynamic.kabel-deutschland.de [95.90.235.208])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: pmenzel)
-        by mx.molgen.mpg.de (Postfix) with ESMTPSA id E4B1960027FE8;
-        Wed, 12 Apr 2023 15:52:27 +0200 (CEST)
-Message-ID: <9f1fd864-8b8e-72a9-abad-0f9eeffcbdc3@molgen.mpg.de>
-Date:   Wed, 12 Apr 2023 15:52:27 +0200
+        with ESMTP id S231218AbjDLOzj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Apr 2023 10:55:39 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 775D4131
+        for <linux-acpi@vger.kernel.org>; Wed, 12 Apr 2023 07:55:23 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pmbsW-0004p8-9j; Wed, 12 Apr 2023 16:55:20 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pmbsU-00AlGz-5Z; Wed, 12 Apr 2023 16:55:18 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pmbsT-00CcuF-6D; Wed, 12 Apr 2023 16:55:17 +0200
+Date:   Wed, 12 Apr 2023 16:55:17 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Tony Luck <tony.luck@intel.com>, linux-acpi@vger.kernel.org,
+        Borislav Petkov <bp@alien8.de>, kernel@pengutronix.de,
+        James Morse <james.morse@arm.com>,
+        linux-arm-kernel@lists.infradead.org, Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH v2] firmware: arm_sdei: Make sdei_unregister_ghes()
+ return void
+Message-ID: <20230412145517.6vozcdkhcg6xd5xh@pengutronix.de>
+References: <20221220154447.12341-1-u.kleine-koenig@pengutronix.de>
+ <CAJZ5v0inEMEQ1NJwjNboDokL_35-yG8o6QwVb5po2qKW8LRLWA@mail.gmail.com>
+ <20221221182138.aqupmjom5kixvvsu@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH] ACPI: resource: Skip IRQ override on ASUS ExpertBook
- B1502CBA
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
-Cc:     Lorenzo Grasso <lore982@yahoo.com>, Tamim Khan <tamim@fusetak.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230411183144.6932-1-pmenzel@molgen.mpg.de>
-Content-Language: en-US
-From:   Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20230411183144.6932-1-pmenzel@molgen.mpg.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="4nuwsjszo7xjvhmp"
+Content-Disposition: inline
+In-Reply-To: <20221221182138.aqupmjom5kixvvsu@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dear Linux folks,
 
+--4nuwsjszo7xjvhmp
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Just for the record, I am adding the Tested-by line. Lorenzo tried to 
-send it themselves, but even text/plain were rejected by LKML as they 
-are using Yahoo Mail.
+Hello Rafael,
 
-     linux-kernel@vger.kernel.org>: host 23.128.96.18[23.128.96.18] 
-said: 553 5.7.1
-         Hello [23.128.96.19], for your MAIL FROM address 
-<lore982@yahoo.com> policy
-         analysis reported: Your address is not liked source for email 
-(in reply to
-         MAIL FROM command)
+On Wed, Dec 21, 2022 at 07:21:38PM +0100, Uwe Kleine-K=F6nig wrote:
+> On Wed, Dec 21, 2022 at 02:53:05PM +0100, Rafael J. Wysocki wrote:
+> > On Tue, Dec 20, 2022 at 4:45 PM Uwe Kleine-K=F6nig
+> > <u.kleine-koenig@pengutronix.de> wrote:
+> > > [...]
+> > > diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> > > index 066dc1f5c235..7d705930e21b 100644
+> > > --- a/drivers/acpi/apei/ghes.c
+> > > +++ b/drivers/acpi/apei/ghes.c
+> > > @@ -1275,12 +1275,20 @@ static int apei_sdei_register_ghes(struct ghe=
+s *ghes)
+> > >                                  ghes_sdei_critical_callback);
+> > >  }
+> > >
+> > > -static int apei_sdei_unregister_ghes(struct ghes *ghes)
+> > > +static void apei_sdei_unregister_ghes(struct ghes *ghes)
+> > >  {
+> > > +       /*
+> > > +        * If CONFIG_ARM_SDE_INTERFACE isn't enabled apei_sdei_regist=
+er_ghes()
+> > > +        * cannot have been called successfully. So ghes_remove() won=
+'t be
+> > > +        * called because either ghes_probe() failed or the notify ty=
+pe isn't
+> > > +        * ACPI_HEST_NOTIFY_SOFTWARE_DELEGATED.
+> > > +        * Note the if statement below is necessary to prevent a link=
+er error as
+> > > +        * the compiler has no chance to understand the above correla=
+tion.
+> > > +        */
+> > >         if (!IS_ENABLED(CONFIG_ARM_SDE_INTERFACE))
+> > > -               return -EOPNOTSUPP;
+> > > +               BUG();
+> >=20
+> > Well, you could just provide an empty stub for the !CONFIG_ARM_SDE_INTE=
+RFACE.
+> >=20
+> > It would be cleaner and probably fewer lines of code too.
+>=20
+> It's you who cares for this code, but I'd prefer my option. If we assume
+> the describing comment would have a similar length, we're saving 3 or
+> four lines of code here but need 3 lines for the #if / #else / #endif
+> plus the stub definition. And compared to my suggested solution we don't
+> catch someone introducing a (bogus) call to apei_sdei_unregister_ghes()
+> (or sdei_unregister_ghes()). And (again IMHO) two different
+> implementations are harder to grasp than a single with an if.
+>=20
+> If you don't like the BUG, a plain return is in my eyes the next best
+> option which is semantically equivalent to an empty stub.
+>=20
+> If you still like the stub better (or a return instead of the BUG), I
+> can send a v3, just tell me your preference.
 
-Am 11.04.23 um 20:31 schrieb Paul Menzel:
-> Like the ASUS ExpertBook B2502CBA and various ASUS Vivobook laptops, the
-> ASUS ExpertBook B1502CBA has an ACPI DSDT table that describes IRQ 1 as
-> ActiveLow while the kernel overrides it to Edge_High.
-> 
->      $ sudo dmesg | grep DMI
->      DMI: ASUSTeK COMPUTER INC. ASUS EXPERTBOOK B1502CBA_B1502CBA/B1502CBA, BIOS B1502CBA.300 01/18/2023
->      $ grep -A 40 PS2K dsdt.dsl | grep IRQ -A 1
->                      IRQ (Level, ActiveLow, Exclusive, )
->                          {1}
-> 
-> This prevents the keyboard from working. To fix this issue, add this laptop
-> to the skip_override_table so that the kernel does not override IRQ 1.
-> 
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217323
-> Cc: lore982@yahoo.com
-> Cc: Tamim Khan <tamim@fusetak.com>
-> Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+I work on changes that depend on a solution here. However you didn't
+tell me your preference here. I'm unsure if this means that this
+discussion fell through the cracks, or if it annoys you and you still
+prefer the cpp #ifdef solution. A note from your side would be very
+welcome.
 
-Tested-by: Lorenzo Grasso <lore982@yahoo.com>
+Best regards
+Uwe
 
-[…]
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
+--4nuwsjszo7xjvhmp
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Kind regards,
+-----BEGIN PGP SIGNATURE-----
 
-Paul
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmQ2xlQACgkQj4D7WH0S
+/k6XlQf/WYEprpxjjJUkhIn2+IVelpsJR3aE0CEiP1AioUfZ99DZUEtfVW62/K9g
+QDjTX0JAAzF5lqt40irFYL2C0vUEBoTN6otvGlUf6NM9HTAucY8L1sM4eU7XIC0O
+AwCTk1Q1+CleRbZSYFainvl1Ke9xKRTM4wzZxmKUkfvoP06sVf3YxDYI1SDhlhze
+3/uijHtfrdULGc40fLWW88L+DTaPtB2pkFl7z/67Jq4FJiTTBAN7S6fxJEZ/P/Qv
+UZSa6WnV3an0tfTqSJhn0ZrFpOTg2/FhHDrJmQ8IoQG4ErhUX6ay3mXDNGxo0oBI
+GYfIDr5BGEGJ+jtysjsA/k/WJQGtMA==
+=hGIY
+-----END PGP SIGNATURE-----
+
+--4nuwsjszo7xjvhmp--
