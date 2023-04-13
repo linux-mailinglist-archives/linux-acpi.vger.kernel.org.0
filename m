@@ -2,161 +2,264 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A2026E08DC
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Apr 2023 10:24:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D09E66E0A95
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Apr 2023 11:51:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229696AbjDMIYA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Apr 2023 04:24:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33052 "EHLO
+        id S229541AbjDMJu7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Apr 2023 05:50:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbjDMIX7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Apr 2023 04:23:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5372F98
-        for <linux-acpi@vger.kernel.org>; Thu, 13 Apr 2023 01:23:58 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E381B63C5C
-        for <linux-acpi@vger.kernel.org>; Thu, 13 Apr 2023 08:23:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9AF7C433EF;
-        Thu, 13 Apr 2023 08:23:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681374237;
-        bh=YwBtyp5u0T+H72IrutmXiT238Xv6PUZCuhLHx1bE7QE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OJoSREGMgLZGneaJDW9UzfQH0eGaOHn/6TAaVIlGegS6pUm9dkBv9NWRU8ENuZQQf
-         R2/Ii7YDhaOXvuZv+QL6OyF9iMD0/97ROpjsJG9+WHaakYhpxtCTVWgUr8plITc/fy
-         7YNQrfKTJad/B6VrjcuZv5mVZ6pw6IOKsp6tkHFzBQTvaAO/GGn0Y+4s/3cjpdhYOD
-         uEwHBY5Tdzu2fjew+dewk9d4yeIdC63vrA2TdloGNXuFlaudcctqROBdZYuwu0dmOU
-         WF1pE22NNx6fztK3k/tcx5lJ3jPMvYwnRpjbgekiO1U6U1OM13e0Vbq7we/BmPCgg7
-         RRbe1YyG1tbtw==
-Date:   Thu, 13 Apr 2023 10:23:50 +0200
-From:   Lorenzo Pieralisi <lpieralisi@kernel.org>
-To:     James Morse <james.morse@arm.com>
-Cc:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
-        catalin.marinas@arm.com, will@kernel.org
-Subject: Re: [PATCH] ACPI: AGDI: Improve error reporting for problems during
- .remove()
-Message-ID: <ZDe8FpBlHRbQkS7m@lpieralisi>
-References: <20221014160623.467195-1-u.kleine-koenig@pengutronix.de>
- <Y05zSNDbt94ejpzm@lpieralisi>
- <e5080938-11e5-44c0-0434-f8d06a0cd953@arm.com>
+        with ESMTP id S229711AbjDMJu6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Apr 2023 05:50:58 -0400
+Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEA183C21
+        for <linux-acpi@vger.kernel.org>; Thu, 13 Apr 2023 02:50:55 -0700 (PDT)
+Received: by mail-il1-x12d.google.com with SMTP id e9e14a558f8ab-329518648ebso2072265ab.0
+        for <linux-acpi@vger.kernel.org>; Thu, 13 Apr 2023 02:50:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1681379455; x=1683971455;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dL7RXszTwl3tWYCqDnlZ/0M+VW4TE/OYlCTVcW3Fizw=;
+        b=OZCLuONnhpVUw+ouXWcwATwLdSgo2Ccez85OEpH4qGtsFb/Xwjd69EWMaj8vdeU4QT
+         AMARb2wLMMcxVtzGKHqq4cT6FZtGWPQaSgIysE3v4KUhB2dsGTTKY9MCrp0gX3hK4Xwk
+         LUOYG1jTeCZH//fvUjMX+ZlzayLM0iiMU2rsM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681379455; x=1683971455;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dL7RXszTwl3tWYCqDnlZ/0M+VW4TE/OYlCTVcW3Fizw=;
+        b=B5nCvWoMH2S49f2RG42R7qIJG2XjAItkjtmxhvOoTIaaHUKY+4jOOhwuOsJAKi+KA/
+         lkajm8co32er9KZrZvO4chmvIqTSPLJCLrMfOjy70ecutupj8I96i8S5nN4RrwXDJjey
+         RkffEHO3YUvpiBtn8845FMgu7+dzDQlYRBtvZiAJgucBWPtokqcCL9TpZxG4pKy+fat2
+         u+h9HcNvsAY8hS3TTO/J+zPhAZpXA/NQqV3bjh0JpIwuE4DyK7iefiKsjmVRc+9H4ic3
+         F6ho1r+wDGCAZ/GWbWQ6K56pIAS+G5vsYVMtUYHugQgqxyz8PdM0OKz6mE59Q0RRa4sb
+         Y9ow==
+X-Gm-Message-State: AAQBX9dA+aPulKOHJ+AUUbcKAJ0SgnxJavNZb2alGo4kHPXfDudvTdQv
+        Z+2PoQgPUwITqQ3Q3XlkL3GeKr2I9IaIKyDxZBynsw==
+X-Google-Smtp-Source: AKy350bxQ09gUsUhos5IrYrCCoE/uVEAz2HLzWomfX73unodlYIHo5VgDH6iXIfg0Mc9wy4HFN++atjznGCfSKtAlIE=
+X-Received: by 2002:a05:6e02:6c9:b0:316:f93f:6f83 with SMTP id
+ p9-20020a056e0206c900b00316f93f6f83mr590699ils.6.1681379455141; Thu, 13 Apr
+ 2023 02:50:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e5080938-11e5-44c0-0434-f8d06a0cd953@arm.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20230331091145.737305-1-treapking@chromium.org>
+ <20230331091145.737305-5-treapking@chromium.org> <CAE-0n51E5foFWQAsA73662_5e6XP426wuUCVVmcS5UWwiYpDmw@mail.gmail.com>
+In-Reply-To: <CAE-0n51E5foFWQAsA73662_5e6XP426wuUCVVmcS5UWwiYpDmw@mail.gmail.com>
+From:   Pin-yen Lin <treapking@chromium.org>
+Date:   Thu, 13 Apr 2023 18:50:44 +0900
+Message-ID: <CAEXTbpdcbB_z4ZGCGzc-cM74ECKyxekbroKCWFnhH8eR=4HmvA@mail.gmail.com>
+Subject: Re: [PATCH v15 04/10] dt-bindings: display: bridge: anx7625: Add
+ mode-switch support
+To:     Stephen Boyd <swboyd@chromium.org>
+Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Benson Leung <bleung@chromium.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Xin Ji <xji@analogixsemi.com>, Marek Vasut <marex@denx.de>,
+        Hsin-Yi Wang <hsinyi@chromium.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Lyude Paul <lyude@redhat.com>, devicetree@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-acpi@vger.kernel.org,
+        chrome-platform@lists.linux.dev,
+        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
+        <nfraprado@collabora.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Chen-Yu Tsai <wenst@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-[+Catalin, Will: ACPI arm64 changes are sent through arm64 tree]
+Hi Stephen,
 
-On Wed, Oct 26, 2022 at 05:09:40PM +0100, James Morse wrote:
-> Hi guys,
-> 
-> On 18/10/2022 10:35, Lorenzo Pieralisi wrote:
-> > On Fri, Oct 14, 2022 at 06:06:23PM +0200, Uwe Kleine-K�nig wrote:
-> >> Returning an error value in a platform driver's remove callback results in
-> >> a generic error message being emitted by the driver core, but otherwise it
-> >> doesn't make a difference. The device goes away anyhow.
-> >>
-> >> So instead of triggering the generic platform error message, emit a more
-> >> helpful message if a problem occurs and return 0 to suppress the generic
-> >> message.
-> >>
-> >> This patch is a preparation for making platform remove callbacks return
-> >> void.
-> > 
-> > If that's the plan - I don't have anything against this patch.
-> > 
-> >> Signed-off-by: Uwe Kleine-K�nig <u.kleine-koenig@pengutronix.de>
-> >> ---
-> >> Hello,
-> >>
-> >> note that in the situations where the driver returned an error before
-> >> and now emits a message, there is a resource leak. Someone who knows
-> >> more about this driver and maybe even can test stuff, might want to
-> >> address this. This might not only be about non-freed memory, the device
-> >> disappears but it is kept in sdei_list and so might be used after being
-> >> gone.
-> 
-> > I'd need James' input on this. I guess we may ignore
-> > sdei_event_disable() return value and continue anyway in agdi_remove(),
-> > whether that's the right thing to do it is a different question.
-> 
-> The unregister stuff is allowed to fail if the event is 'in progress' on another CPU.
-> Given the handler panic()s the machine, if an event is in progress, the resource leak
-> isn't something worth worrying about. The real problem is that the handler code may be
-> free()d while another CPU is still executing it, which is only a problem for modules.
-> 
-> As this thing can't be built as a module, and the handler panic()s the machine, I don't
-> think there is going to be a problem here.
+On Wed, Apr 12, 2023 at 10:38=E2=80=AFAM Stephen Boyd <swboyd@chromium.org>=
+ wrote:
+>
+> Quoting Pin-yen Lin (2023-03-31 02:11:39)
+> > diff --git a/Documentation/devicetree/bindings/display/bridge/analogix,=
+anx7625.yaml b/Documentation/devicetree/bindings/display/bridge/analogix,an=
+x7625.yaml
+> > index b42553ac505c..604c7391d74f 100644
+> > --- a/Documentation/devicetree/bindings/display/bridge/analogix,anx7625=
+.yaml
+> > +++ b/Documentation/devicetree/bindings/display/bridge/analogix,anx7625=
+.yaml
+> > @@ -12,7 +12,8 @@ maintainers:
+> >
+> >  description: |
+> >    The ANX7625 is an ultra-low power 4K Mobile HD Transmitter
+> > -  designed for portable devices.
+> > +  designed for portable devices. Product brief is available at
+> > +  https://www.analogix.com/en/system/files/AA-002291-PB-6-ANX7625_Prod=
+uctBrief.pdf
+> >
+> >  properties:
+> >    compatible:
+> > @@ -112,9 +113,40 @@ properties:
+> >                data-lanes: true
+> >
+> >        port@1:
+> > -        $ref: /schemas/graph.yaml#/properties/port
+> > +        $ref: /schemas/graph.yaml#/$defs/port-base
+> >          description:
+> > -          Video port for panel or connector.
+> > +          Video port for panel or connector. Each endpoint connects to=
+ a video
+> > +          output downstream, and the "data-lanes" property is used to =
+describe
+> > +          the pin connections. 0, 1, 2, 3 in "data-lanes" maps to SSRX=
+1, SSTX1,
+> > +          SSRX2, SSTX2, respectively.
+> > +
+> > +        patternProperties:
+> > +          "^endpoint@[01]$":
+> > +            $ref: /schemas/media/video-interfaces.yaml#
+> > +            properties:
+> > +              reg: true
+> > +
+> > +              remote-endpoint: true
+> > +
+> > +              data-lanes:
+> > +                oneOf:
+> > +                  - items:
+> > +                      - enum: [0, 1, 2, 3]
+> > +
+> > +                  - items:
+> > +                      - const: 0
+> > +                      - const: 1
+> > +
+> > +                  - items:
+> > +                      - const: 2
+> > +                      - const: 3
+> > +
+> > +              mode-switch:
+>
+> Is it possible to not have this property? Can we have the driver for
+> this anx device look at the remote-endpoint and if it sees that it is
+> not a drm_bridge or panel on the other end, or a DP connector, that it
+> should register a typec mode switch (or two depending on the number of
+> endpoints in port@1)? Is there any case where that doesn't hold true?
+>
+> I see these possible scenarios:
+>
+> 1. DPI to DP bridge steering DP to one of two usb-c-connectors
+>
+> In this case, endpoint@0 is connected to one usb-c-connector and
+> endpoint@1 is connected to another usb-c-connector. The input endpoint
+> is only connected to DPI. The USB endpoint is not present (although I
+> don't see this described in the binding either, so we would need a
+> port@2, entirely optional to describe USB3 input). The driver will
+> register two mode switches.
+>
+> 2. DPI to DP bridge with USB3 to one usb-c-connector
+>
+> In this case, endpoint@1 doesn't exist. The SSTX1/2 and SSRX1/2 pins are
+> all connected to a usb-c-connector node. The input ports (0 and 2) are
+> connected to both DPI and USB. The device acts as both a mode-switch and
+> an orientation-switch. It registers both switches. I wonder if there is
+> any benefit to describing SBU connections or CC connections? Maybe we
+> don't register the orientation-switch if the SBU or CC connection isn't
+> described?
+>
+> 3. DPI to DP bridge connected to eDP panel
+>
+> In this case, endpoint@1 doesn't exist. The USB endpoint is not present
+> (port@2). Depending on how the crosspoint should be configured, we'll
+> need to use data-lanes in the port@1 endpoint to describe which SSTRX
+> pair to use (1 or 2). Or we'll have to use the endpoint's reg property
+> to describe which pair to drive DP on. Presumably the default
+> configuration is SSRX2/SSTX2 providing 2 lanes of DP to an eDP panel.
+> The endpoint@0 in port@1 will be connected to a drm_panel, and the
+> driver will be able to detect this properly by checking for the
+> existence of an aux-bus node or the return value of
+> of_dp_aux_populate_bus().
 
-Thanks James, I think though that's something we may want to handle in a
-separate patch.
+Can we assume that the eDP panel always stays behind an `aux-bus`
+node? Can't the panel be connected to the bridge directly in the
+graph? Though this might not matter if we only register mode switches
+when there are usb-c-connectors connected.
+>
+> 4. DPI to DP bridge connected to DP connector
+>
+> This is similar to the eDP panel scenario #3. In this case, endpoint@1
+> doesn't exist. The USB endpoint is not present (port@2). Same story
+> about port@1 and lane configuration, but we don't have an aux-bus node.
+> In this case, the drivers/gpu/drm/bridge/display-connector.c driver will
+> probe for the dp-connector node and add a drm_bridge. This anx driver
+> will similarly add a drm_bridge, but it needs to look at the node
+> connected on port@1:endpoint@0 with drm_of_get_bridge() and check if it
+> is a drm_bridge (DP connector) or if it is some type-c thing (connector
+> or orientation-switch).
+>
+> I think having this mode-switch property here lets us avoid calling
+> drm_of_get_bridge() unconditionally in anx7625_parse_dt().
+> drm_of_get_bridge() will always return -EPROBE_DEFER when this is the
+> last drm_bridge in the chain and the other side of the endpoint is a
+> type-c thing (scenarios #1 and #2). Maybe we should teach
+> drm_of_get_bridge() that a drm_bridge might be connected to a type-c
+> device and have it not return -EPROBE_DEFER in that case. Or make some
+> new API like drm_of_get_bridge_typec() that checks if the typec
+> framework knows about the endpoint in question (as either a typec switch
+> or a connector) and returns a NULL bridge pointer. If we had that then I
+> think this property is not necessary.
+>
+> Hopefully the usb-c-connector can always be registered with the typec
+> framework? I'm worried that the driver that registers the
+> usb-c-connector node may want to form a struct typec_port with
+> typec_register_port() and that will get stuck in a similar -EPROBE_DEFER
+> loop waiting for this mode-switch to appear. So having this property
+> also avoids that problem by telling typec framework to wait until this
+> driver can register a mode-switch.
+>
+> TL;DR: Is this mode-switch property a workaround for probe defer? Can we
+> figure out where the mode switch is in software and not have the
+> property in DT? If we can it would certainly improve things because
+> forgetting to add the property can lead to broken behavior, and we don't
+> do anything like this for chains of drm_bridge devices. We just describe
+> the display chain and let the kernel figure out which bridge should
+> handle hpd, edid reading, or mode detection, etc.
 
-This one looks fine to merge to me:
+Actually the `mode-switch` property here is mainly because
+`fwnode_typec_mux_get`[1] and `typec_mux_match`[2] only return matches
+when the property is present. I am not sure what side effects would be
+if I remove the ID-matching condition in `typec_mux_match`, so I added
+the property here.
 
-Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Is it feasible to remove the `mode-switch` property here given the
+existing implementation of the Type-C framework?
 
-> Thanks,
-> 
-> James
-> 
-> 
-> >> diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
-> >> index cf31abd0ed1b..f605302395c3 100644
-> >> --- a/drivers/acpi/arm64/agdi.c
-> >> +++ b/drivers/acpi/arm64/agdi.c
-> >> @@ -64,8 +64,11 @@ static int agdi_remove(struct platform_device *pdev)
-> >>  	int err, i;
-> >>  
-> >>  	err = sdei_event_disable(adata->sdei_event);
-> >> -	if (err)
-> >> -		return err;
-> >> +	if (err) {
-> >> +		dev_err(&pdev->dev, "Failed to disable sdei-event #%d (%pe)\n",
-> >> +			adata->sdei_event, ERR_PTR(err));
-> >> +		return 0;
-> >> +	}
-> >>  
-> >>  	for (i = 0; i < 3; i++) {
-> >>  		err = sdei_event_unregister(adata->sdei_event);
-> >> @@ -75,7 +78,11 @@ static int agdi_remove(struct platform_device *pdev)
-> >>  		schedule();
-> >>  	}
-> >>  
-> >> -	return err;
-> >> +	if (err)
-> >> +		dev_err(&pdev->dev, "Failed to unregister sdei-event #%d (%pe)\n",
-> >> +			adata->sdei_event, ERR_PTR(err));
-> >> +
-> >> +	return 0;
-> >>  }
-> >>  
-> >>  static struct platform_driver agdi_driver = {
-> >>
-> >> base-commit: 4fe89d07dcc2804c8b562f6c7896a45643d34b2f
-> >> -- 
-> >> 2.37.2
-> >>
-> >>
-> >> _______________________________________________
-> >> linux-arm-kernel mailing list
-> >> linux-arm-kernel@lists.infradead.org
-> >> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-> 
+[1]: https://elixir.bootlin.com/linux/latest/source/drivers/usb/typec/mux.c=
+#L351
+[2]: https://elixir.bootlin.com/linux/latest/source/drivers/usb/typec/mux.c=
+#L290
+
+Best regards,
+Pin-yen
