@@ -2,264 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D09E66E0A95
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Apr 2023 11:51:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B9F16E0CEF
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Apr 2023 13:47:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229541AbjDMJu7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Apr 2023 05:50:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40658 "EHLO
+        id S230361AbjDMLrC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Apr 2023 07:47:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229711AbjDMJu6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Apr 2023 05:50:58 -0400
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEA183C21
-        for <linux-acpi@vger.kernel.org>; Thu, 13 Apr 2023 02:50:55 -0700 (PDT)
-Received: by mail-il1-x12d.google.com with SMTP id e9e14a558f8ab-329518648ebso2072265ab.0
-        for <linux-acpi@vger.kernel.org>; Thu, 13 Apr 2023 02:50:55 -0700 (PDT)
+        with ESMTP id S230270AbjDMLrA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Apr 2023 07:47:00 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F0BF9ED0
+        for <linux-acpi@vger.kernel.org>; Thu, 13 Apr 2023 04:46:57 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id hg25-20020a05600c539900b003f05a99a841so15788497wmb.3
+        for <linux-acpi@vger.kernel.org>; Thu, 13 Apr 2023 04:46:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1681379455; x=1683971455;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1681386415; x=1683978415;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dL7RXszTwl3tWYCqDnlZ/0M+VW4TE/OYlCTVcW3Fizw=;
-        b=OZCLuONnhpVUw+ouXWcwATwLdSgo2Ccez85OEpH4qGtsFb/Xwjd69EWMaj8vdeU4QT
-         AMARb2wLMMcxVtzGKHqq4cT6FZtGWPQaSgIysE3v4KUhB2dsGTTKY9MCrp0gX3hK4Xwk
-         LUOYG1jTeCZH//fvUjMX+ZlzayLM0iiMU2rsM=
+        bh=+VZk/Xuf/BecNwwdsFB/838vQVCvaje2TQnFopmd7IM=;
+        b=gESRsna9XWyk/KwQX0XbxJviRAtaQKcmohShrQT1B9JAbemafdpAFiajo6uaJgXmVQ
+         kxxRmTB5tyvFwBhkyuwwnM80F1Y38VkgRr+JbOVFoEvedQtsdX6INun5wSS3kQREpXG8
+         CDuc/Zb6XtHVaGQumBYbJU7BeRv13BB3l8IbswZmSLih6IuGtu4oogjkww4bO+CLOpas
+         TevDdIeetR3MSi20N0cErhAwGW+xYJm/orRNAkT40mj14IPZ7XqRGqQ3WPA+n97OgG9g
+         3iCuE/n8cT0j95rF/bu4Ma49lJtzpcOqae/Yi9oVnlk22k3/sh3Fb4K3dy6hmc6awB3L
+         07Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681379455; x=1683971455;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1681386415; x=1683978415;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dL7RXszTwl3tWYCqDnlZ/0M+VW4TE/OYlCTVcW3Fizw=;
-        b=B5nCvWoMH2S49f2RG42R7qIJG2XjAItkjtmxhvOoTIaaHUKY+4jOOhwuOsJAKi+KA/
-         lkajm8co32er9KZrZvO4chmvIqTSPLJCLrMfOjy70ecutupj8I96i8S5nN4RrwXDJjey
-         RkffEHO3YUvpiBtn8845FMgu7+dzDQlYRBtvZiAJgucBWPtokqcCL9TpZxG4pKy+fat2
-         u+h9HcNvsAY8hS3TTO/J+zPhAZpXA/NQqV3bjh0JpIwuE4DyK7iefiKsjmVRc+9H4ic3
-         F6ho1r+wDGCAZ/GWbWQ6K56pIAS+G5vsYVMtUYHugQgqxyz8PdM0OKz6mE59Q0RRa4sb
-         Y9ow==
-X-Gm-Message-State: AAQBX9dA+aPulKOHJ+AUUbcKAJ0SgnxJavNZb2alGo4kHPXfDudvTdQv
-        Z+2PoQgPUwITqQ3Q3XlkL3GeKr2I9IaIKyDxZBynsw==
-X-Google-Smtp-Source: AKy350bxQ09gUsUhos5IrYrCCoE/uVEAz2HLzWomfX73unodlYIHo5VgDH6iXIfg0Mc9wy4HFN++atjznGCfSKtAlIE=
-X-Received: by 2002:a05:6e02:6c9:b0:316:f93f:6f83 with SMTP id
- p9-20020a056e0206c900b00316f93f6f83mr590699ils.6.1681379455141; Thu, 13 Apr
- 2023 02:50:55 -0700 (PDT)
+        bh=+VZk/Xuf/BecNwwdsFB/838vQVCvaje2TQnFopmd7IM=;
+        b=VBjCz/HrhMYVsL4aW6dNDcR1B6oCMldchojshrkeMfBFKoh8vazg7VpqlKJ4LaIzEP
+         bScMywTvT++6EHYw+hhQlGsl8Wi0W9LzSbn1A/aKdTHBzrBEjo16vO8D7aU6WhucBloj
+         hLvWsPqVPaYLhasStSgSssR1J7cC2uUR66Gai0O0ifi7tbWQjU773MvS7W+IdT6F2VRc
+         EQRUBITrbgTuf4fViJ+tr3yKcrqIbrH6YsI74e/X7fJocxBmCrq/3sA3+pme6iV8RLHa
+         ZyXAElAJIpiQjDOzDoVtCCK+Btt1PYxJbsZ62mBWBfs29gLbvCdZG1d+QWTux1qgxCYP
+         JmYA==
+X-Gm-Message-State: AAQBX9cX0BDUqyShQ63kCNrBMTn8mXtYbD0S310FS1/rNkDox6eC7l+v
+        8M3p30gaWI/8dMPm5yvyKJO8Vg==
+X-Google-Smtp-Source: AKy350YxZp+fPhGbbaN0y386+hnQogP+/sUyBMs69Hoj71y1o/R0i2nrWldz/jrTXhMhX8Q46B9McQ==
+X-Received: by 2002:a1c:f302:0:b0:3ed:b048:73f4 with SMTP id q2-20020a1cf302000000b003edb04873f4mr1626368wmq.5.1681386415664;
+        Thu, 13 Apr 2023 04:46:55 -0700 (PDT)
+Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:6418:c878:b0e:d11b])
+        by smtp.gmail.com with ESMTPSA id iz11-20020a05600c554b00b003f09aaf547asm6730590wmb.1.2023.04.13.04.46.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Apr 2023 04:46:55 -0700 (PDT)
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+To:     daniel.lezcano@linaro.org, rafael@kernel.org
+Cc:     rui.zhang@intel.com, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org (open list:ACPI THERMAL DRIVER)
+Subject: [PATCH v3 3/6] thermal/drivers/acpi: Use thermal_zone_device()
+Date:   Thu, 13 Apr 2023 13:46:44 +0200
+Message-Id: <20230413114647.3878792-4-daniel.lezcano@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230413114647.3878792-1-daniel.lezcano@linaro.org>
+References: <20230413114647.3878792-1-daniel.lezcano@linaro.org>
 MIME-Version: 1.0
-References: <20230331091145.737305-1-treapking@chromium.org>
- <20230331091145.737305-5-treapking@chromium.org> <CAE-0n51E5foFWQAsA73662_5e6XP426wuUCVVmcS5UWwiYpDmw@mail.gmail.com>
-In-Reply-To: <CAE-0n51E5foFWQAsA73662_5e6XP426wuUCVVmcS5UWwiYpDmw@mail.gmail.com>
-From:   Pin-yen Lin <treapking@chromium.org>
-Date:   Thu, 13 Apr 2023 18:50:44 +0900
-Message-ID: <CAEXTbpdcbB_z4ZGCGzc-cM74ECKyxekbroKCWFnhH8eR=4HmvA@mail.gmail.com>
-Subject: Re: [PATCH v15 04/10] dt-bindings: display: bridge: anx7625: Add
- mode-switch support
-To:     Stephen Boyd <swboyd@chromium.org>
-Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Benson Leung <bleung@chromium.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Robert Foss <rfoss@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Xin Ji <xji@analogixsemi.com>, Marek Vasut <marex@denx.de>,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Lyude Paul <lyude@redhat.com>, devicetree@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-acpi@vger.kernel.org,
-        chrome-platform@lists.linux.dev,
-        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
-        <nfraprado@collabora.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Chen-Yu Tsai <wenst@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Stephen,
+In order to get the device associated with the thermal zone, let's use
+the wrapper thermal_zone_device() instead of accessing directly the
+content of the thermal zone device structure.
 
-On Wed, Apr 12, 2023 at 10:38=E2=80=AFAM Stephen Boyd <swboyd@chromium.org>=
- wrote:
->
-> Quoting Pin-yen Lin (2023-03-31 02:11:39)
-> > diff --git a/Documentation/devicetree/bindings/display/bridge/analogix,=
-anx7625.yaml b/Documentation/devicetree/bindings/display/bridge/analogix,an=
-x7625.yaml
-> > index b42553ac505c..604c7391d74f 100644
-> > --- a/Documentation/devicetree/bindings/display/bridge/analogix,anx7625=
-.yaml
-> > +++ b/Documentation/devicetree/bindings/display/bridge/analogix,anx7625=
-.yaml
-> > @@ -12,7 +12,8 @@ maintainers:
-> >
-> >  description: |
-> >    The ANX7625 is an ultra-low power 4K Mobile HD Transmitter
-> > -  designed for portable devices.
-> > +  designed for portable devices. Product brief is available at
-> > +  https://www.analogix.com/en/system/files/AA-002291-PB-6-ANX7625_Prod=
-uctBrief.pdf
-> >
-> >  properties:
-> >    compatible:
-> > @@ -112,9 +113,40 @@ properties:
-> >                data-lanes: true
-> >
-> >        port@1:
-> > -        $ref: /schemas/graph.yaml#/properties/port
-> > +        $ref: /schemas/graph.yaml#/$defs/port-base
-> >          description:
-> > -          Video port for panel or connector.
-> > +          Video port for panel or connector. Each endpoint connects to=
- a video
-> > +          output downstream, and the "data-lanes" property is used to =
-describe
-> > +          the pin connections. 0, 1, 2, 3 in "data-lanes" maps to SSRX=
-1, SSTX1,
-> > +          SSRX2, SSTX2, respectively.
-> > +
-> > +        patternProperties:
-> > +          "^endpoint@[01]$":
-> > +            $ref: /schemas/media/video-interfaces.yaml#
-> > +            properties:
-> > +              reg: true
-> > +
-> > +              remote-endpoint: true
-> > +
-> > +              data-lanes:
-> > +                oneOf:
-> > +                  - items:
-> > +                      - enum: [0, 1, 2, 3]
-> > +
-> > +                  - items:
-> > +                      - const: 0
-> > +                      - const: 1
-> > +
-> > +                  - items:
-> > +                      - const: 2
-> > +                      - const: 3
-> > +
-> > +              mode-switch:
->
-> Is it possible to not have this property? Can we have the driver for
-> this anx device look at the remote-endpoint and if it sees that it is
-> not a drm_bridge or panel on the other end, or a DP connector, that it
-> should register a typec mode switch (or two depending on the number of
-> endpoints in port@1)? Is there any case where that doesn't hold true?
->
-> I see these possible scenarios:
->
-> 1. DPI to DP bridge steering DP to one of two usb-c-connectors
->
-> In this case, endpoint@0 is connected to one usb-c-connector and
-> endpoint@1 is connected to another usb-c-connector. The input endpoint
-> is only connected to DPI. The USB endpoint is not present (although I
-> don't see this described in the binding either, so we would need a
-> port@2, entirely optional to describe USB3 input). The driver will
-> register two mode switches.
->
-> 2. DPI to DP bridge with USB3 to one usb-c-connector
->
-> In this case, endpoint@1 doesn't exist. The SSTX1/2 and SSRX1/2 pins are
-> all connected to a usb-c-connector node. The input ports (0 and 2) are
-> connected to both DPI and USB. The device acts as both a mode-switch and
-> an orientation-switch. It registers both switches. I wonder if there is
-> any benefit to describing SBU connections or CC connections? Maybe we
-> don't register the orientation-switch if the SBU or CC connection isn't
-> described?
->
-> 3. DPI to DP bridge connected to eDP panel
->
-> In this case, endpoint@1 doesn't exist. The USB endpoint is not present
-> (port@2). Depending on how the crosspoint should be configured, we'll
-> need to use data-lanes in the port@1 endpoint to describe which SSTRX
-> pair to use (1 or 2). Or we'll have to use the endpoint's reg property
-> to describe which pair to drive DP on. Presumably the default
-> configuration is SSRX2/SSTX2 providing 2 lanes of DP to an eDP panel.
-> The endpoint@0 in port@1 will be connected to a drm_panel, and the
-> driver will be able to detect this properly by checking for the
-> existence of an aux-bus node or the return value of
-> of_dp_aux_populate_bus().
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+---
+ drivers/acpi/thermal.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-Can we assume that the eDP panel always stays behind an `aux-bus`
-node? Can't the panel be connected to the bridge directly in the
-graph? Though this might not matter if we only register mode switches
-when there are usb-c-connectors connected.
->
-> 4. DPI to DP bridge connected to DP connector
->
-> This is similar to the eDP panel scenario #3. In this case, endpoint@1
-> doesn't exist. The USB endpoint is not present (port@2). Same story
-> about port@1 and lane configuration, but we don't have an aux-bus node.
-> In this case, the drivers/gpu/drm/bridge/display-connector.c driver will
-> probe for the dp-connector node and add a drm_bridge. This anx driver
-> will similarly add a drm_bridge, but it needs to look at the node
-> connected on port@1:endpoint@0 with drm_of_get_bridge() and check if it
-> is a drm_bridge (DP connector) or if it is some type-c thing (connector
-> or orientation-switch).
->
-> I think having this mode-switch property here lets us avoid calling
-> drm_of_get_bridge() unconditionally in anx7625_parse_dt().
-> drm_of_get_bridge() will always return -EPROBE_DEFER when this is the
-> last drm_bridge in the chain and the other side of the endpoint is a
-> type-c thing (scenarios #1 and #2). Maybe we should teach
-> drm_of_get_bridge() that a drm_bridge might be connected to a type-c
-> device and have it not return -EPROBE_DEFER in that case. Or make some
-> new API like drm_of_get_bridge_typec() that checks if the typec
-> framework knows about the endpoint in question (as either a typec switch
-> or a connector) and returns a NULL bridge pointer. If we had that then I
-> think this property is not necessary.
->
-> Hopefully the usb-c-connector can always be registered with the typec
-> framework? I'm worried that the driver that registers the
-> usb-c-connector node may want to form a struct typec_port with
-> typec_register_port() and that will get stuck in a similar -EPROBE_DEFER
-> loop waiting for this mode-switch to appear. So having this property
-> also avoids that problem by telling typec framework to wait until this
-> driver can register a mode-switch.
->
-> TL;DR: Is this mode-switch property a workaround for probe defer? Can we
-> figure out where the mode switch is in software and not have the
-> property in DT? If we can it would certainly improve things because
-> forgetting to add the property can lead to broken behavior, and we don't
-> do anything like this for chains of drm_bridge devices. We just describe
-> the display chain and let the kernel figure out which bridge should
-> handle hpd, edid reading, or mode detection, etc.
+diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+index 255efa73ed70..5763db4528b8 100644
+--- a/drivers/acpi/thermal.c
++++ b/drivers/acpi/thermal.c
+@@ -789,6 +789,7 @@ static struct thermal_zone_device_ops acpi_thermal_zone_ops = {
+ 
+ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
+ {
++	struct device *tzdev;
+ 	int trips = 0;
+ 	int result;
+ 	acpi_status status;
+@@ -820,12 +821,14 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
+ 	if (IS_ERR(tz->thermal_zone))
+ 		return -ENODEV;
+ 
++	tzdev = thermal_zone_device(tz->thermal_zone);
++	
+ 	result = sysfs_create_link(&tz->device->dev.kobj,
+-				   &tz->thermal_zone->device.kobj, "thermal_zone");
++				   &tzdev->kobj, "thermal_zone");
+ 	if (result)
+ 		goto unregister_tzd;
+ 
+-	result = sysfs_create_link(&tz->thermal_zone->device.kobj,
++	result = sysfs_create_link(&tzdev->kobj,
+ 				   &tz->device->dev.kobj, "device");
+ 	if (result)
+ 		goto remove_tz_link;
+@@ -849,7 +852,7 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
+ acpi_bus_detach:
+ 	acpi_bus_detach_private_data(tz->device->handle);
+ remove_dev_link:
+-	sysfs_remove_link(&tz->thermal_zone->device.kobj, "device");
++	sysfs_remove_link(&tzdev->kobj, "device");
+ remove_tz_link:
+ 	sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
+ unregister_tzd:
+@@ -860,8 +863,10 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
+ 
+ static void acpi_thermal_unregister_thermal_zone(struct acpi_thermal *tz)
+ {
++	struct device *tzdev = thermal_zone_device(tz->thermal_zone);
++	
+ 	sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
+-	sysfs_remove_link(&tz->thermal_zone->device.kobj, "device");
++	sysfs_remove_link(&tzdev->kobj, "device");
+ 	thermal_zone_device_unregister(tz->thermal_zone);
+ 	tz->thermal_zone = NULL;
+ 	acpi_bus_detach_private_data(tz->device->handle);
+-- 
+2.34.1
 
-Actually the `mode-switch` property here is mainly because
-`fwnode_typec_mux_get`[1] and `typec_mux_match`[2] only return matches
-when the property is present. I am not sure what side effects would be
-if I remove the ID-matching condition in `typec_mux_match`, so I added
-the property here.
-
-Is it feasible to remove the `mode-switch` property here given the
-existing implementation of the Type-C framework?
-
-[1]: https://elixir.bootlin.com/linux/latest/source/drivers/usb/typec/mux.c=
-#L351
-[2]: https://elixir.bootlin.com/linux/latest/source/drivers/usb/typec/mux.c=
-#L290
-
-Best regards,
-Pin-yen
