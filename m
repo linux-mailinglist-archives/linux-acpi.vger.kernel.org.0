@@ -2,223 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF2F76E0CF4
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Apr 2023 13:47:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D39496E1056
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Apr 2023 16:48:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230493AbjDMLrO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Apr 2023 07:47:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46532 "EHLO
+        id S229638AbjDMOsh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Apr 2023 10:48:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230270AbjDMLrD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Apr 2023 07:47:03 -0400
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 029F82737
-        for <linux-acpi@vger.kernel.org>; Thu, 13 Apr 2023 04:46:59 -0700 (PDT)
-Received: by mail-wm1-x335.google.com with SMTP id v10so1669269wmn.5
-        for <linux-acpi@vger.kernel.org>; Thu, 13 Apr 2023 04:46:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681386417; x=1683978417;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qbml5Nrapy5QlhDSKkv8bYmTatCmq94onluE6T97zsI=;
-        b=oUIsocyL2eyfnEeDvSc9kP3wwycSa02zBdAcFMEkP/t0DZN9lw5k6CW9PCJNHY+nsc
-         Yf8BlS6E3qC63VRrIcs7fY6N5QxIYG4QDW3GxIxROJ7WDVEkUnbvp+s+b4mjgPFwjRHc
-         AYgzoBLIpFoOtunYrxgbZCrl0ebWWqzZrqlw0/BFPaX7rTYzQlboPUAejctfBGcJpQ3s
-         YKqCShVRSa73RDqO8GXZDQAxcT7teUem1aD8t7kz84AxySvwiMcsl/LY/MnVsdX+KP4v
-         wFL2a0ES9TgYKi0+4nnh+AzU+DbB+r/uHYFOJqY2nr+hB2ydVpM2RpW2jC5rJCNg593s
-         ymEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681386417; x=1683978417;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Qbml5Nrapy5QlhDSKkv8bYmTatCmq94onluE6T97zsI=;
-        b=Qm+ZdkDrCxYsqADF5VKucIXp+Pyoy9DJgmolhReAhImPQvR6b+9S0hywEMon6mv/Bl
-         SlziUAENmGv6cyyl6QliyBW1hC4ooGkYS9JyVDXwFjKG7IdC12cfUWfFb8Ffv0O82d8V
-         jO05wYCzwyeQBihXUUqECyS5TpPdpIxY0KECJjbpKSBP6sd+DPkB8BWXzo5If1lv8Rp8
-         ++7r6gp4X96hLetpbQgVzA7/tYHHbY6zP5p6D2Wc8gTPkMJ/OGwvJ9q6e27JsY9ItHtL
-         GmlKwwZdQlc2fqi4qhip0GGepyokTHknLh2Wej8eF3xZA1+2sKHBXkMW6bh9AoSjRSUE
-         NZ1Q==
-X-Gm-Message-State: AAQBX9e98WJYDCNaULj7ITxK5j7bWLfwcgCvNTMN/bk7x5ELjTafkGnm
-        7QsLd39QzTvMCJOvn+G2HCEVUg==
-X-Google-Smtp-Source: AKy350bIGUoozacl+l+8gvBRdFdOz3o88Qdy24W8pggqTU9BDd8RDdYNFJ6KeFxbEwXg7xB1OL3lCw==
-X-Received: by 2002:a1c:6a14:0:b0:3f0:3ce6:9b0e with SMTP id f20-20020a1c6a14000000b003f03ce69b0emr1683021wmc.13.1681386417430;
-        Thu, 13 Apr 2023 04:46:57 -0700 (PDT)
-Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:6418:c878:b0e:d11b])
-        by smtp.gmail.com with ESMTPSA id iz11-20020a05600c554b00b003f09aaf547asm6730590wmb.1.2023.04.13.04.46.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Apr 2023 04:46:57 -0700 (PDT)
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     daniel.lezcano@linaro.org, rafael@kernel.org
-Cc:     rui.zhang@intel.com, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org (open list:ACPI)
-Subject: [PATCH v3 5/6] thermal/drivers/acpi: Make cross dev link optional by configuration
-Date:   Thu, 13 Apr 2023 13:46:46 +0200
-Message-Id: <20230413114647.3878792-6-daniel.lezcano@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230413114647.3878792-1-daniel.lezcano@linaro.org>
-References: <20230413114647.3878792-1-daniel.lezcano@linaro.org>
+        with ESMTP id S231178AbjDMOsg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Apr 2023 10:48:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61F62A250
+        for <linux-acpi@vger.kernel.org>; Thu, 13 Apr 2023 07:48:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 179AC63F27
+        for <linux-acpi@vger.kernel.org>; Thu, 13 Apr 2023 14:48:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E9F0C433EF;
+        Thu, 13 Apr 2023 14:48:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681397288;
+        bh=ugl8yGbnDmkq/AT/cxdFkf+RlcznXX7JwIhOX/bHntc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=LtTfVHi6EGEWOf6Ef8F+4GLCKXltYxpcZ1vzc2p8nl04IBXpLXpF7LuvmVusxLjLb
+         8/CllB7GUHeKvyoWtRPH4JwrE8kfouU7snTx0eBfGbkxOVb4spAB8fuXToi+bSkcFL
+         6WFl1lEWZUOtgsCX8xKAAJpHPA0EdJfJgIvQEHT6hPVzoQI96FIvUHU0pZz+lOaPlI
+         F1ZX3/R3B4s3XzFblxNFakqtqC8BCfPKES6iFFDPLJ8xkscGd8xNW+wHHYLf5b4UCT
+         LW8clz7NBfjUZNWK+nMTE5+XnBQOOuMp4j0EmRWQPWQHGeG5riLTS7qrGtfZ9qHeSS
+         B1XV93+R4faCQ==
+Date:   Thu, 13 Apr 2023 15:48:03 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc:     James Morse <james.morse@arm.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
+        catalin.marinas@arm.com
+Subject: Re: [PATCH] ACPI: AGDI: Improve error reporting for problems during
+ .remove()
+Message-ID: <20230413144802.GB26421@willie-the-truck>
+References: <20221014160623.467195-1-u.kleine-koenig@pengutronix.de>
+ <Y05zSNDbt94ejpzm@lpieralisi>
+ <e5080938-11e5-44c0-0434-f8d06a0cd953@arm.com>
+ <ZDe8FpBlHRbQkS7m@lpieralisi>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <ZDe8FpBlHRbQkS7m@lpieralisi>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The ACPI thermal driver creates a link in the thermal zone device
-sysfs directory pointing to the device sysfs directory. At the same
-time, it creates a back pointer link from the device to the thermal
-zone device sysfs directory.
+On Thu, Apr 13, 2023 at 10:23:50AM +0200, Lorenzo Pieralisi wrote:
+> [+Catalin, Will: ACPI arm64 changes are sent through arm64 tree]
+> 
+> On Wed, Oct 26, 2022 at 05:09:40PM +0100, James Morse wrote:
+> > Hi guys,
+> > 
+> > On 18/10/2022 10:35, Lorenzo Pieralisi wrote:
+> > > On Fri, Oct 14, 2022 at 06:06:23PM +0200, Uwe Kleine-K�nig wrote:
+> > >> Returning an error value in a platform driver's remove callback results in
+> > >> a generic error message being emitted by the driver core, but otherwise it
+> > >> doesn't make a difference. The device goes away anyhow.
+> > >>
+> > >> So instead of triggering the generic platform error message, emit a more
+> > >> helpful message if a problem occurs and return 0 to suppress the generic
+> > >> message.
+> > >>
+> > >> This patch is a preparation for making platform remove callbacks return
+> > >> void.
+> > > 
+> > > If that's the plan - I don't have anything against this patch.
+> > > 
+> > >> Signed-off-by: Uwe Kleine-K�nig <u.kleine-koenig@pengutronix.de>
+> > >> ---
+> > >> Hello,
+> > >>
+> > >> note that in the situations where the driver returned an error before
+> > >> and now emits a message, there is a resource leak. Someone who knows
+> > >> more about this driver and maybe even can test stuff, might want to
+> > >> address this. This might not only be about non-freed memory, the device
+> > >> disappears but it is kept in sdei_list and so might be used after being
+> > >> gone.
+> > 
+> > > I'd need James' input on this. I guess we may ignore
+> > > sdei_event_disable() return value and continue anyway in agdi_remove(),
+> > > whether that's the right thing to do it is a different question.
+> > 
+> > The unregister stuff is allowed to fail if the event is 'in progress' on another CPU.
+> > Given the handler panic()s the machine, if an event is in progress, the resource leak
+> > isn't something worth worrying about. The real problem is that the handler code may be
+> > free()d while another CPU is still executing it, which is only a problem for modules.
+> > 
+> > As this thing can't be built as a module, and the handler panic()s the machine, I don't
+> > think there is going to be a problem here.
+> 
+> Thanks James, I think though that's something we may want to handle in a
+> separate patch.
+> 
+> This one looks fine to merge to me:
+> 
+> Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
 
-From a generic perspective, having a device pointer in the sysfs
-thermal zone directory may make sense. But the opposite is not true as
-the same driver can be related to multiple thermal zones.
+Cheers, Lorenzo. I'll pick this one up.
 
-The usage of these information is very specific to ACPI and it is
-questionable if they are really needed.
-
-Let's make the code optional and disable it by default. If it hurts,
-we will revert this change.
-
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
----
- drivers/acpi/Kconfig   | 13 +++++++++
- drivers/acpi/thermal.c | 62 ++++++++++++++++++++++++++++--------------
- 2 files changed, 55 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index ccbeab9500ec..7df4e18f06ef 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -336,6 +336,19 @@ config ACPI_THERMAL
- 	  To compile this driver as a module, choose M here:
- 	  the module will be called thermal.
- 
-+config ACPI_THERMAL_SYSFS_ADDON
-+       bool "Enable thermal sysfs addon"
-+       depends on ACPI_THERMAL
-+       def_bool n
-+       help
-+	 Enable sysfs extra information added in the thermal zone and
-+	 the driver specific sysfs directories. That could be a link
-+	 to the associated thermal zone as well as a link pointing to
-+	 the device from the thermal zone. By default those are
-+	 disabled and are candidate for removal, if you need these
-+	 information anyway, enable the option or upgrade the
-+	 userspace program using them.
-+
- config ACPI_PLATFORM_PROFILE
- 	tristate
- 
-diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-index 5763db4528b8..30fe189d04f8 100644
---- a/drivers/acpi/thermal.c
-+++ b/drivers/acpi/thermal.c
-@@ -787,9 +787,44 @@ static struct thermal_zone_device_ops acpi_thermal_zone_ops = {
- 	.critical = acpi_thermal_zone_device_critical,
- };
- 
-+#ifdef CONFIG_ACPI_THERMAL_SYSFS_ADDON
-+static int acpi_thermal_zone_sysfs_add(struct acpi_thermal *tz)
-+{
-+	struct device *tzdev = thermal_zone_device(tz->thermal_zone);
-+	int ret;
-+	
-+	ret = sysfs_create_link(&tz->device->dev.kobj,
-+				&tzdev->kobj, "thermal_zone");
-+	if (ret)
-+		return ret;
-+
-+	ret = sysfs_create_link(&tzdev->kobj,
-+				   &tz->device->dev.kobj, "device");
-+	if (ret)
-+		sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
-+
-+	return ret;
-+}
-+
-+static void acpi_thermal_zone_sysfs_remove(struct acpi_thermal *tz)
-+{
-+	struct device *tzdev = thermal_zone_device(tz->thermal_zone);
-+	
-+	sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
-+	sysfs_remove_link(&tzdev->kobj, "device");
-+}
-+#else
-+static inline int acpi_thermal_zone_sysfs_add(struct acpi_thermal *tz)
-+{
-+	return 0;
-+}
-+static inline void acpi_thermal_zone_sysfs_remove(struct acpi_thermal *tz)
-+{
-+}
-+#endif
-+
- static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
- {
--	struct device *tzdev;
- 	int trips = 0;
- 	int result;
- 	acpi_status status;
-@@ -821,23 +856,15 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
- 	if (IS_ERR(tz->thermal_zone))
- 		return -ENODEV;
- 
--	tzdev = thermal_zone_device(tz->thermal_zone);
--	
--	result = sysfs_create_link(&tz->device->dev.kobj,
--				   &tzdev->kobj, "thermal_zone");
-+	result = acpi_thermal_zone_sysfs_add(tz);
- 	if (result)
- 		goto unregister_tzd;
--
--	result = sysfs_create_link(&tzdev->kobj,
--				   &tz->device->dev.kobj, "device");
--	if (result)
--		goto remove_tz_link;
--
-+	
- 	status =  acpi_bus_attach_private_data(tz->device->handle,
- 					       tz->thermal_zone);
- 	if (ACPI_FAILURE(status)) {
- 		result = -ENODEV;
--		goto remove_dev_link;
-+		goto remove_links;
- 	}
- 
- 	result = thermal_zone_device_enable(tz->thermal_zone);
-@@ -851,10 +878,8 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
- 
- acpi_bus_detach:
- 	acpi_bus_detach_private_data(tz->device->handle);
--remove_dev_link:
--	sysfs_remove_link(&tzdev->kobj, "device");
--remove_tz_link:
--	sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
-+remove_links:
-+	acpi_thermal_zone_sysfs_remove(tz);
- unregister_tzd:
- 	thermal_zone_device_unregister(tz->thermal_zone);
- 
-@@ -863,10 +888,7 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
- 
- static void acpi_thermal_unregister_thermal_zone(struct acpi_thermal *tz)
- {
--	struct device *tzdev = thermal_zone_device(tz->thermal_zone);
--	
--	sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
--	sysfs_remove_link(&tzdev->kobj, "device");
-+	acpi_thermal_zone_sysfs_remove(tz);
- 	thermal_zone_device_unregister(tz->thermal_zone);
- 	tz->thermal_zone = NULL;
- 	acpi_bus_detach_private_data(tz->device->handle);
--- 
-2.34.1
-
+Will
