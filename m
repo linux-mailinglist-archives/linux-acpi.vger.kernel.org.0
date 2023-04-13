@@ -2,302 +2,207 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C41C26E03D8
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Apr 2023 03:50:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94E3D6E03E7
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Apr 2023 03:57:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229760AbjDMBuD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Apr 2023 21:50:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45130 "EHLO
+        id S229578AbjDMB54 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Apr 2023 21:57:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjDMBuC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Apr 2023 21:50:02 -0400
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 104AC5599;
-        Wed, 12 Apr 2023 18:49:59 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045176;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0Vfy7mto_1681350593;
-Received: from 30.240.113.14(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vfy7mto_1681350593)
-          by smtp.aliyun-inc.com;
-          Thu, 13 Apr 2023 09:49:55 +0800
-Message-ID: <cdf60454-c026-def4-b582-0ff894f98acf@linux.alibaba.com>
-Date:   Thu, 13 Apr 2023 09:49:53 +0800
+        with ESMTP id S229532AbjDMB54 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Apr 2023 21:57:56 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1B3D5599;
+        Wed, 12 Apr 2023 18:57:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1681351074; x=1712887074;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=MUCI6BLrEyRJSU7ofwiAQyDVIoFZyGzbKfGgkBpAG18=;
+  b=Prkv4PoQ2/Lbs08mfg+kwcsWUMo1L/FuOkdytqbjp1bIhRxAnyK2rdfZ
+   KLAXFUkAswpKqQnD2RhBeXDCxXBfT8WGY1DjZ4ijIjXvIilBqCnEGWBvD
+   DDU3Pp0zGsp9S0P8uPIiD8cu3fJjHS2uhCU5msjpMJpYEjaZRDP3ooalF
+   hQTjyKkSY6GFHH+HevKcQIsjdWM2wYTqjb1i+1GnDX5MidqfAWIVQQPCa
+   7LXowYmTP5l2HhBn3U6D3nxz6mwtt6+Ijudf1icfWkViPifQZqMaW17HN
+   vb/hQPkcxNTe93MKtsf/xSrHBqWKhDtsQOnqdvuCwFTuLmcLVHB9ZrM0b
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="324423217"
+X-IronPort-AV: E=Sophos;i="5.98,339,1673942400"; 
+   d="scan'208";a="324423217"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2023 18:57:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="1018953996"
+X-IronPort-AV: E=Sophos;i="5.98,339,1673942400"; 
+   d="scan'208";a="1018953996"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmsmga005.fm.intel.com with ESMTP; 12 Apr 2023 18:57:40 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Wed, 12 Apr 2023 18:57:40 -0700
+Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Wed, 12 Apr 2023 18:57:40 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23 via Frontend Transport; Wed, 12 Apr 2023 18:57:40 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.108)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.23; Wed, 12 Apr 2023 18:57:39 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HKWy8tGMKnObCcHlwm+5U0TKIDaQGH1hWATR2Xf46Ujg59v7hkOg8/m5rBvkRCpDuhefih4c1vLolN/5X3vYzZMAIniUlClJn1370vb+Au9hcWvx68dhK7iDbKPYBYLmfTogEo/4AmXS84dztfzrhplvbAZVlonHA2stgaqSVgHqhKsYW8k5DNCv5L1jw82nISf9RAwVxwWRs85v8XHnaHDt9jMUJuD0+svcQUslq7tkrQKtzy6wUnt3fcWLd9dKyU5zSGtLqO4F1qstHtqQL31tgLNitu3wa5AP+AJQP2cRxptGfRLyYC/j0kU2qomrwGLTcFEE9DWXNxHHvlXTpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GzvvDMEwPSaaDTgNDxpR4EgEu/XqZwpn0QJqRKpz07k=;
+ b=iPqL2qSs9hsJ2FE6+0TR25QgaRH0Uqai3wZkBpuZTc9cW4Hv+jnKNLLKxnTLuh04JyuC+yDf81BCv40pnRr6OhqHMzFcQaZAVNTy1yptQkeY+qci/ny3SOu3jhexxE8aLVqlgicCKRh4gjIVq2+a7rOnyFKraQ2wpD8zU6xJ4LQkkXkTQZnurYFv+9Y4eGPYwZH9Hg4wkwda5AHNgNoQJreotEBhLB7kQoQOZX4GO54JM4ihldAYs8J1YIAp6raRA7cLNvaDr90yynD0zRJ7GUsEENDGEvT9wdRXOsmPOywHSME65yTmNWeyAt27wMZ53NQ47WhZo0UuKgnhtNv+Cw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY5PR11MB6392.namprd11.prod.outlook.com (2603:10b6:930:37::15)
+ by PH7PR11MB6523.namprd11.prod.outlook.com (2603:10b6:510:211::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6277.36; Thu, 13 Apr
+ 2023 01:57:36 +0000
+Received: from CY5PR11MB6392.namprd11.prod.outlook.com
+ ([fe80::5ac7:aae0:92aa:74f0]) by CY5PR11MB6392.namprd11.prod.outlook.com
+ ([fe80::5ac7:aae0:92aa:74f0%8]) with mapi id 15.20.6298.030; Thu, 13 Apr 2023
+ 01:57:36 +0000
+Date:   Thu, 13 Apr 2023 09:54:26 +0800
+From:   Yujie Liu <yujie.liu@intel.com>
+To:     Catalin Marinas <catalin.marinas@arm.com>
+CC:     kernel test robot <lkp@intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        <oe-kbuild-all@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>
+Subject: Re: drivers/acpi/acpica/tbfind.c:60:9: error: 'strncpy' specified
+ bound 6 equals destination size
+Message-ID: <ZDdg0hfJQeQh/2SZ@yujie-X299>
+References: <202304071552.CeeIBr5P-lkp@intel.com>
+ <ZDVA8ykiKaXSzJdM@arm.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ZDVA8ykiKaXSzJdM@arm.com>
+X-ClientProxiedBy: SG2PR06CA0229.apcprd06.prod.outlook.com
+ (2603:1096:4:ac::13) To CY5PR11MB6392.namprd11.prod.outlook.com
+ (2603:10b6:930:37::15)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.9.0
-Subject: Re: [PATCH v5 2/2] ACPI: APEI: handle synchronous exceptions in task
- work
-Content-Language: en-US
-To:     Xiaofei Tan <tanxiaofei@huawei.com>, mawupeng1@huawei.com,
-        tony.luck@intel.com, naoya.horiguchi@nec.com
-Cc:     linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, justin.he@arm.com,
-        akpm@linux-foundation.org, ardb@kernel.org, ashish.kalra@amd.com,
-        baolin.wang@linux.alibaba.com, bp@alien8.de,
-        cuibixuan@linux.alibaba.com, dave.hansen@linux.intel.com,
-        james.morse@arm.com, jarkko@kernel.org, lenb@kernel.org,
-        linmiaohe@huawei.com, lvying6@huawei.com, rafael@kernel.org,
-        xiexiuqi@huawei.com, zhuo.song@linux.alibaba.com
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20230411104842.37079-3-xueshuai@linux.alibaba.com>
- <e52f39f9-3a36-869e-b321-55dfc8a44ad0@huawei.com>
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <e52f39f9-3a36-869e-b321-55dfc8a44ad0@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-11.0 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6392:EE_|PH7PR11MB6523:EE_
+X-MS-Office365-Filtering-Correlation-Id: e57d00f5-2b70-4fc7-77b6-08db3bc273ec
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: VfAELE3dnolJaBmOHsOgNB06B6tvmvyxsHzwzEZYHcPGRVg0pDuy64OAALneI+IIgikffbtlFg7zJAIpQEQf1pEIOQDDZuhmnjO/zPc3pdqZYP6YtQgh/BKzrFBmk6pwT8GTmHAgvXyIQxm6HCT4RGH/mdKlL6u3sooN9llFjeV8rpFxIU5XEPZVgPUvPNiUjn4E8HbUk4Jo7pBpeD5OXvZQ1YR8a+0hjaECGMt0R4dz+idpMnjnpD3VdrT+Zv5CKIp4rbLstyMHydym6kwcGojAL8lRESG/2jgwAnUgWVz8/Q1gNzwirlAASrsCPpZKG8XeCdzEH/rKQfj1epkXssLLDXfC7sf8RrnwXaFokLoZRuHkUi29OuFa2i++NGIxMzChCnDMCqAgOqZWYlzZKr20X74E7ci+HVDbs6KLMJtcmYD6l6XAPXT3L26/T3mBTVBpvKaYFbWP+0UhqmFtUjrtDMdFtkh1WGlYakbroNVSEjHFiqakqyjDLkC68jo9+P9N0dcHbKDJrOzbFJ9b/6GlicvqKZpqaya9KCL3kh0p5ssA8ypb90XrE6/SSy70fd7TBGPNmhPjKb/hvVcYWQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6392.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(7916004)(366004)(376002)(39860400002)(136003)(346002)(396003)(451199021)(41300700001)(66476007)(54906003)(66946007)(966005)(478600001)(8676002)(6486002)(4326008)(6916009)(66556008)(316002)(86362001)(6506007)(6512007)(9686003)(83380400001)(6666004)(26005)(44832011)(2906002)(5660300002)(82960400001)(33716001)(8936002)(38100700002)(186003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?WbPtfiL8l2klLncz/pXPi6k+OnSMA9qRen6OO3yfZTb/bJvFg9wvxpTJiela?=
+ =?us-ascii?Q?esUlBOnoS9ZtjY2dO4OnGlNtkRKf6XOTxbHPWHxNXCmcKL1E5ZfOfP02i3wH?=
+ =?us-ascii?Q?ngYhyPMzojE/sQJiXYJg5tFJYV7khROoRh269gCv8747D2wczCWiJj2GWihQ?=
+ =?us-ascii?Q?n0glyprLN43TtAdH3ZNqz6ZgZzI/nZSRTEvoBkZw5uoPTJqhzoe8byvm595a?=
+ =?us-ascii?Q?jhe3AXoOL9OOPBcVqHPFt9vboqATVkETzO60hMuZD5Rtjlcd/q1g4d/nWFe0?=
+ =?us-ascii?Q?3NUkPwSct6Nlpzs8oDfFAGCxRknRHMOVETTNTPYAP17taetS7nrBITkqF5D2?=
+ =?us-ascii?Q?QYbOBv+gm2YJEhWdZ/jyQnTlRuSG9ZWT3Z0ObVdYI5E0aZUVrNt07gxcAR0t?=
+ =?us-ascii?Q?juWuGX4ZoyJNkUMmKy6jGoekGxCirQmhpzdDI5l8xYJvs7A3iosCWx+JH2IH?=
+ =?us-ascii?Q?/UpstlO8YPL0NdjWwo4DKxeNyYL+1TbywUjbizUcMGjYKsGsi6RH79b7M6LL?=
+ =?us-ascii?Q?ziZO5n2fk3Bgr08ZLFrZGDAxsJBksGhqbtPWzevGNdUsFMig3MZSq6nqh0Fd?=
+ =?us-ascii?Q?6eBE0ZUdOnu0efChsiW1JwFpYqlBNC0j6UC9LfXHeaFUVNNpE+vuEkZpNlpU?=
+ =?us-ascii?Q?9cS5jZxer0G0kpi4jsObM8/+ss6oSLdyiQUPIibNRW6KSmA89Q69teOjfI6x?=
+ =?us-ascii?Q?e4xm/5BxSC90kQ2uR8izwrw97XSMGsRmmk/Tqjp10ZhJUuSZBFOIIsEy/QZx?=
+ =?us-ascii?Q?Z39tvbIBAfwxE42GM7rSVVzBNaejKo/6TKyZJkzjPao4fJXKw+f/YteSSinT?=
+ =?us-ascii?Q?RRJ2SwSmq+zoTFaYrw7f30iLe6PvtQ8sqcs0tgiXp1I8XjcqlqeR+fM4LnHY?=
+ =?us-ascii?Q?bkzJ4INsxf0ZFi8hwEr/UMnJWs14kxyeHjgo0eKtxAuLfnj83SZZ0/7iZ308?=
+ =?us-ascii?Q?coIPKvcjHdExz76jOEs1ABNsK/QGZl5dQ7v06+lbmte/mZCIWAogJNtbx18m?=
+ =?us-ascii?Q?adUl/5AVh+PkFBh7EJZ/L9R754oyHfjMcHHBKGwfblQI+2KQDbPvy8kyqfml?=
+ =?us-ascii?Q?MfBCfQlci/7sFjqkceZGqtkhxlRxo/O4uAZP+shyWs+xWKipPGMyhJscQlsx?=
+ =?us-ascii?Q?drGOZD2U8vNeXuND58Hz17WAobfPNqe6vPtoLPRREXAY9VvDLQ9iH+Kby3DI?=
+ =?us-ascii?Q?LT4Uze67EzRuHd1l8ub9vHEsFrY2//jFcPYoVWfoiRPWnVxBbMJyb9Ky7Zzn?=
+ =?us-ascii?Q?hNwhkD6NJN3Gg7gJ3M0rtVRjcRxEU1Zk8TQCTJ1dFRc1f0MpehR2DPgF/6uh?=
+ =?us-ascii?Q?d6vBtnRaTVAWZ/IHhBlAlBn3z8muPir7XU8n9teCbo7ljXUMwVUata6rYx0O?=
+ =?us-ascii?Q?MLRTewL9Eorpc8xzcZSIcMKKR1vSO93lytxDMjJevpRPGJBeBtDk/od//yFr?=
+ =?us-ascii?Q?qxiO4oLsF4qSsW6XlIbr2RFYcYeSGO4N/wgrBZZzuON5Ek4ko96a1qX24qkr?=
+ =?us-ascii?Q?YpntiGaYhp20Spq0o2AZBqvDw4EhcJCd/a/PgT/H9YH/Z7O6x56TANS36gvA?=
+ =?us-ascii?Q?hXH+UCZdcl6Q5Qkuh7YcsK6akyWonnMbntgN+l7l?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e57d00f5-2b70-4fc7-77b6-08db3bc273ec
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6392.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Apr 2023 01:57:35.9649
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IVEwKab5BwHrGJxza0atTcHhZF7OdcYVSg1glIQFYRlrWWfnlhYVUbimlUwZZd+NGrVHY5Skys5uj9+0nbHSIA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6523
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-
-On 2023/4/12 PM12:05, Xiaofei Tan wrote:
+On Tue, Apr 11, 2023 at 12:13:55PM +0100, Catalin Marinas wrote:
+> On Fri, Apr 07, 2023 at 03:02:15PM +0800, kernel test robot wrote:
+> > FYI, the error/warning still remains.
+> > 
+> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+> > head:   f2afccfefe7be1f7346564fe619277110d341f9b
+> > commit: 8f9e0a52810dd83406c768972d022c37e7a18f1f ACPI: Don't build ACPICA with '-Os'
+> > date:   2 months ago
+> > config: x86_64-sof-customedconfig-fuzz-defconfig (https://download.01.org/0day-ci/archive/20230407/202304071552.CeeIBr5P-lkp@intel.com/config)
+> > compiler: gcc-11 (Debian 11.3.0-8) 11.3.0
+> > reproduce (this is a W=1 build):
+> >         # https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=8f9e0a52810dd83406c768972d022c37e7a18f1f
+> >         git remote add linus https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+> >         git fetch --no-tags linus master
+> >         git checkout 8f9e0a52810dd83406c768972d022c37e7a18f1f
+> >         # save the config file
+> >         mkdir build_dir && cp config build_dir/.config
+> >         make W=1 O=build_dir ARCH=x86_64 olddefconfig
+> >         make W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash
+> > 
+> > If you fix the issue, kindly add following tag where applicable
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Link: https://lore.kernel.org/oe-kbuild-all/202304071552.CeeIBr5P-lkp@intel.com/
+> > 
+> > All errors (new ones prefixed by >>):
+> > 
+> >    drivers/acpi/acpica/tbfind.c: In function 'acpi_tb_find_table':
+> > >> drivers/acpi/acpica/tbfind.c:60:9: error: 'strncpy' specified bound 6 equals destination size [-Werror=stringop-truncation]
+> >       60 |         strncpy(header.oem_id, oem_id, ACPI_OEM_ID_SIZE);
+> >          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >    drivers/acpi/acpica/tbfind.c:61:9: error: 'strncpy' specified bound 8 equals destination size [-Werror=stringop-truncation]
+> >       61 |         strncpy(header.oem_table_id, oem_table_id, ACPI_OEM_TABLE_ID_SIZE);
+> >          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >    cc1: all warnings being treated as errors
 > 
-> 在 2023/4/11 18:48, Shuai Xue 写道:
->> Hardware errors could be signaled by synchronous interrupt, e.g.  when an
->> error is detected by a background scrubber, or signaled by synchronous
->> exception, e.g. when an uncorrected error is consumed. Both synchronous and
->> asynchronous error are queued and handled by a dedicated kthread in
->> workqueue.
->>
->> commit 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for
->> synchronous errors") keep track of whether memory_failure() work was
->> queued, and make task_work pending to flush out the workqueue so that the
->> work for synchronous error is processed before returning to user-space.
->> The trick ensures that the corrupted page is unmapped and poisoned. And
->> after returning to user-space, the task starts at current instruction which
->> triggering a page fault in which kernel will send SIGBUS to current process
->> due to VM_FAULT_HWPOISON.
->>
->> However, the memory failure recovery for hwpoison-aware mechanisms does not
->> work as expected. For example, hwpoison-aware user-space processes like
->> QEMU register their customized SIGBUS handler and enable early kill mode by
->> seting PF_MCE_EARLY at initialization. Then the kernel will directy notify
->> the process by sending a SIGBUS signal in memory failure with wrong
->> si_code: the actual user-space process accessing the corrupt memory
->> location, but its memory failure work is handled in a kthread context, so
->> it will send SIGBUS with BUS_MCEERR_AO si_code to the actual user-space
->> process instead of BUS_MCEERR_AR in kill_proc().
->>
->> To this end, separate synchronous and asynchronous error handling into
->> different paths like X86 platform does:
->>
->> - valid synchronous errors: queue a task_work to synchronously send SIGBUS
->>    before ret_to_user.
->> - valid asynchronous errors: queue a work into workqueue to asynchronously
->>    handle memory failure.
->> - abnormal branches such as invalid PA, unexpected severity, no memory
->>    failure config support, invalid GUID section, OOM, etc.
->>
->> Then for valid synchronous errors, the current context in memory failure is
->> exactly belongs to the task consuming poison data and it will send SIBBUS
->> with proper si_code.
->>
->> Fixes: 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for synchronous errors")
->> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
->> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
->> ---
->>   drivers/acpi/apei/ghes.c | 91 +++++++++++++++++++++++++++-------------
->>   include/acpi/ghes.h      |  3 --
->>   mm/memory-failure.c      | 13 ------
->>   3 files changed, 61 insertions(+), 46 deletions(-)
->>
->> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
->> index c479b85899f5..4b70955e25f9 100644
->> --- a/drivers/acpi/apei/ghes.c
->> +++ b/drivers/acpi/apei/ghes.c
->> @@ -452,28 +452,51 @@ static void ghes_clear_estatus(struct ghes *ghes,
->>   }
->>     /*
->> - * Called as task_work before returning to user-space.
->> - * Ensure any queued work has been done before we return to the context that
->> - * triggered the notification.
->> + * struct sync_task_work - for synchronous RAS event
->> + *
->> + * @twork:                callback_head for task work
->> + * @pfn:                  page frame number of corrupted page
->> + * @flags:                fine tune action taken
->> + *
->> + * Structure to pass task work to be handled before
->> + * ret_to_user via task_work_add().
->>    */
->> -static void ghes_kick_task_work(struct callback_head *head)
->> +struct sync_task_work {
->> +    struct callback_head twork;
->> +    u64 pfn;
->> +    int flags;
->> +};
->> +
->> +static void memory_failure_cb(struct callback_head *twork)
->>   {
->> -    struct acpi_hest_generic_status *estatus;
->> -    struct ghes_estatus_node *estatus_node;
->> -    u32 node_len;
->> +    int ret;
->> +    struct sync_task_work *twcb =
->> +        container_of(twork, struct sync_task_work, twork);
->>   -    estatus_node = container_of(head, struct ghes_estatus_node, task_work);
->> -    if (IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
->> -        memory_failure_queue_kick(estatus_node->task_work_cpu);
->> +    ret = memory_failure(twcb->pfn, twcb->flags);
->> +    kfree(twcb);
->>   -    estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
->> -    node_len = GHES_ESTATUS_NODE_LEN(cper_estatus_len(estatus));
->> -    gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
->> +    if (!ret)
->> +        return;
->> +
->> +    /*
->> +     * -EHWPOISON from memory_failure() means that it already sent SIGBUS
->> +     * to the current process with the proper error info,
->> +     * -EOPNOTSUPP means hwpoison_filter() filtered the error event,
->> +     *
->> +     * In both cases, no further processing is required.
->> +     */
->> +    if (ret == -EHWPOISON || ret == -EOPNOTSUPP)
->> +        return;
->> +
->> +    pr_err("Memory error not recovered");
+> I think the kernel test robot should filter out any reports related to
+> this commit. The warning has nothing to do with the -O2 vs -Os change.
+> It's simply that the compiler now warns if strncpy() has the destination
+> size equal to the bound parameter (for some reason it doesn't do this
+> with -Os). I mentioned it on a different report here:
 > 
-> The print could add the following SIGBUS signal sending.
-> Such as "Sending SIGBUS to current task due to memory error not recovered"
+> https://lore.kernel.org/all/Y%2FdM77YdzDKRDdj1@arm.com/
 > 
->> +    force_sig(SIGBUS);
->>   }
->>     static bool ghes_do_memory_failure(u64 physical_addr, int flags)
->>   {
->>       unsigned long pfn;
->> +    struct sync_task_work *twcb;
->>         if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
->>           return false;
->> @@ -486,6 +509,18 @@ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
->>           return false;
->>       }
->>   +    if (flags == MF_ACTION_REQUIRED && current->mm) {
->> +        twcb = kmalloc(sizeof(*twcb), GFP_ATOMIC);
->> +        if (!twcb)
->> +            return false;
->> +
->> +        twcb->pfn = pfn;
->> +        twcb->flags = flags;
->> +        init_task_work(&twcb->twork, memory_failure_cb);
->> +        task_work_add(current, &twcb->twork, TWA_RESUME);
->> +        return true;
->> +    }
->> +
->>       memory_failure_queue(pfn, flags);
->>       return true;
->>   }
->> @@ -1000,9 +1035,8 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
->>       struct ghes_estatus_node *estatus_node;
->>       struct acpi_hest_generic *generic;
->>       struct acpi_hest_generic_status *estatus;
->> -    bool task_work_pending;
->> +    bool queued, sync;
->>       u32 len, node_len;
->> -    int ret;
->>         llnode = llist_del_all(&ghes_estatus_llist);
->>       /*
->> @@ -1015,27 +1049,25 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
->>           estatus_node = llist_entry(llnode, struct ghes_estatus_node,
->>                          llnode);
->>           estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
->> +        sync = is_hest_sync_notify(estatus_node->ghes);
->>           len = cper_estatus_len(estatus);
->>           node_len = GHES_ESTATUS_NODE_LEN(len);
->> -        task_work_pending = ghes_do_proc(estatus_node->ghes, estatus);
->> +
->> +        queued = ghes_do_proc(estatus_node->ghes, estatus);
->> +        /*
->> +         * If no memory failure work is queued for abnormal synchronous
->> +         * errors, do a force kill.
->> +         */
->> +        if (sync && !queued)
->> +            force_sig(SIGBUS);
-> 
-> Could also add one similar print here as above
-> Apart from this,
-> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
+> A potential solution to silence the compiler is to go through the ACPI
+> code and change those strncpy() instances to memcpy(). I don't think
+> those strings are even null-terminated in the APCI spec, so using
+> strncpy() doesn't make sense.
 
-Thanks :)
+Sorry for making this noise. We've configured the robot to filter out
+the reports related to this commit.
 
-Sorry, I missed your replies, because Thunderbird marks an email as Junk,
-just move it to the Junk folder.
-
-I'd like to add above warning message and pick up your reviewed-by tag.
-
-Cheers,
-Shuai
-
-
-
-> 
->> +
->>           if (!ghes_estatus_cached(estatus)) {
->>               generic = estatus_node->generic;
->>               if (ghes_print_estatus(NULL, generic, estatus))
->>                   ghes_estatus_cache_add(generic, estatus);
->>           }
->> -
->> -        if (task_work_pending && current->mm) {
->> -            estatus_node->task_work.func = ghes_kick_task_work;
->> -            estatus_node->task_work_cpu = smp_processor_id();
->> -            ret = task_work_add(current, &estatus_node->task_work,
->> -                        TWA_RESUME);
->> -            if (ret)
->> -                estatus_node->task_work.func = NULL;
->> -        }
->> -
->> -        if (!estatus_node->task_work.func)
->> -            gen_pool_free(ghes_estatus_pool,
->> -                      (unsigned long)estatus_node, node_len);
->> +        gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node,
->> +                  node_len);
->>             llnode = next;
->>       }
->> @@ -1096,7 +1128,6 @@ static int ghes_in_nmi_queue_one_entry(struct ghes *ghes,
->>         estatus_node->ghes = ghes;
->>       estatus_node->generic = ghes->generic;
->> -    estatus_node->task_work.func = NULL;
->>       estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
->>         if (__ghes_read_estatus(estatus, buf_paddr, fixmap_idx, len)) {
->> diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
->> index 3c8bba9f1114..e5e0c308d27f 100644
->> --- a/include/acpi/ghes.h
->> +++ b/include/acpi/ghes.h
->> @@ -35,9 +35,6 @@ struct ghes_estatus_node {
->>       struct llist_node llnode;
->>       struct acpi_hest_generic *generic;
->>       struct ghes *ghes;
->> -
->> -    int task_work_cpu;
->> -    struct callback_head task_work;
->>   };
->>     struct ghes_estatus_cache {
->> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->> index fae9baf3be16..6ea8c325acb3 100644
->> --- a/mm/memory-failure.c
->> +++ b/mm/memory-failure.c
->> @@ -2355,19 +2355,6 @@ static void memory_failure_work_func(struct work_struct *work)
->>       }
->>   }
->>   -/*
->> - * Process memory_failure work queued on the specified CPU.
->> - * Used to avoid return-to-userspace racing with the memory_failure workqueue.
->> - */
->> -void memory_failure_queue_kick(int cpu)
->> -{
->> -    struct memory_failure_cpu *mf_cpu;
->> -
->> -    mf_cpu = &per_cpu(memory_failure_cpu, cpu);
->> -    cancel_work_sync(&mf_cpu->work);
->> -    memory_failure_work_func(&mf_cpu->work);
->> -}
->> -
->>   static int __init memory_failure_init(void)
->>   {
->>       struct memory_failure_cpu *mf_cpu;
+--
+Best Regards,
+Yujie
