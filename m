@@ -2,120 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D39496E1056
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Apr 2023 16:48:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32EDA6E1555
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Apr 2023 21:42:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229638AbjDMOsh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Apr 2023 10:48:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44966 "EHLO
+        id S229636AbjDMTmi convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 13 Apr 2023 15:42:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231178AbjDMOsg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Apr 2023 10:48:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61F62A250
-        for <linux-acpi@vger.kernel.org>; Thu, 13 Apr 2023 07:48:10 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S229498AbjDMTmh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Apr 2023 15:42:37 -0400
+X-Greylist: delayed 400 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 13 Apr 2023 12:42:34 PDT
+Received: from tilde.cafe (tilde.cafe [51.222.161.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D04B6A48;
+        Thu, 13 Apr 2023 12:42:34 -0700 (PDT)
+Received: from localhost (124.250.94.80.dyn.idknet.com [80.94.250.124])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 179AC63F27
-        for <linux-acpi@vger.kernel.org>; Thu, 13 Apr 2023 14:48:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E9F0C433EF;
-        Thu, 13 Apr 2023 14:48:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681397288;
-        bh=ugl8yGbnDmkq/AT/cxdFkf+RlcznXX7JwIhOX/bHntc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LtTfVHi6EGEWOf6Ef8F+4GLCKXltYxpcZ1vzc2p8nl04IBXpLXpF7LuvmVusxLjLb
-         8/CllB7GUHeKvyoWtRPH4JwrE8kfouU7snTx0eBfGbkxOVb4spAB8fuXToi+bSkcFL
-         6WFl1lEWZUOtgsCX8xKAAJpHPA0EdJfJgIvQEHT6hPVzoQI96FIvUHU0pZz+lOaPlI
-         F1ZX3/R3B4s3XzFblxNFakqtqC8BCfPKES6iFFDPLJ8xkscGd8xNW+wHHYLf5b4UCT
-         LW8clz7NBfjUZNWK+nMTE5+XnBQOOuMp4j0EmRWQPWQHGeG5riLTS7qrGtfZ9qHeSS
-         B1XV93+R4faCQ==
-Date:   Thu, 13 Apr 2023 15:48:03 +0100
-From:   Will Deacon <will@kernel.org>
-To:     Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc:     James Morse <james.morse@arm.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
-        catalin.marinas@arm.com
-Subject: Re: [PATCH] ACPI: AGDI: Improve error reporting for problems during
- .remove()
-Message-ID: <20230413144802.GB26421@willie-the-truck>
-References: <20221014160623.467195-1-u.kleine-koenig@pengutronix.de>
- <Y05zSNDbt94ejpzm@lpieralisi>
- <e5080938-11e5-44c0-0434-f8d06a0cd953@arm.com>
- <ZDe8FpBlHRbQkS7m@lpieralisi>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZDe8FpBlHRbQkS7m@lpieralisi>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        by tilde.cafe (Postfix) with ESMTPSA id 016EA20703;
+        Thu, 13 Apr 2023 15:35:51 -0400 (EDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=UTF-8
+Date:   Thu, 13 Apr 2023 22:35:50 +0300
+Cc:     <stable@vger.kernel.org>, <linux-acpi@vger.kernel.org>
+From:   "Acid Bong" <acidbong@tilde.cafe>
+To:     <regressions@lists.linux.dev>
+Subject: [REGRESSION] Asus X541UAK hangs on suspend and poweroff (v6.1.6
+ onward)
+Message-Id: <CRVU11I7JJWF.367PSO4YAQQEI@bong>
+X-Mailer: aerc 0.14.0-126-g6d59ad3f02bc
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 13, 2023 at 10:23:50AM +0200, Lorenzo Pieralisi wrote:
-> [+Catalin, Will: ACPI arm64 changes are sent through arm64 tree]
-> 
-> On Wed, Oct 26, 2022 at 05:09:40PM +0100, James Morse wrote:
-> > Hi guys,
-> > 
-> > On 18/10/2022 10:35, Lorenzo Pieralisi wrote:
-> > > On Fri, Oct 14, 2022 at 06:06:23PM +0200, Uwe Kleine-K�nig wrote:
-> > >> Returning an error value in a platform driver's remove callback results in
-> > >> a generic error message being emitted by the driver core, but otherwise it
-> > >> doesn't make a difference. The device goes away anyhow.
-> > >>
-> > >> So instead of triggering the generic platform error message, emit a more
-> > >> helpful message if a problem occurs and return 0 to suppress the generic
-> > >> message.
-> > >>
-> > >> This patch is a preparation for making platform remove callbacks return
-> > >> void.
-> > > 
-> > > If that's the plan - I don't have anything against this patch.
-> > > 
-> > >> Signed-off-by: Uwe Kleine-K�nig <u.kleine-koenig@pengutronix.de>
-> > >> ---
-> > >> Hello,
-> > >>
-> > >> note that in the situations where the driver returned an error before
-> > >> and now emits a message, there is a resource leak. Someone who knows
-> > >> more about this driver and maybe even can test stuff, might want to
-> > >> address this. This might not only be about non-freed memory, the device
-> > >> disappears but it is kept in sdei_list and so might be used after being
-> > >> gone.
-> > 
-> > > I'd need James' input on this. I guess we may ignore
-> > > sdei_event_disable() return value and continue anyway in agdi_remove(),
-> > > whether that's the right thing to do it is a different question.
-> > 
-> > The unregister stuff is allowed to fail if the event is 'in progress' on another CPU.
-> > Given the handler panic()s the machine, if an event is in progress, the resource leak
-> > isn't something worth worrying about. The real problem is that the handler code may be
-> > free()d while another CPU is still executing it, which is only a problem for modules.
-> > 
-> > As this thing can't be built as a module, and the handler panic()s the machine, I don't
-> > think there is going to be a problem here.
-> 
-> Thanks James, I think though that's something we may want to handle in a
-> separate patch.
-> 
-> This one looks fine to merge to me:
-> 
-> Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Hi there, hello,
 
-Cheers, Lorenzo. I'll pick this one up.
+Sometimes when I suspend (by closing the lid, less often - by pressing
+Fn+F1 (sleep key combo)) or poweroff my laptop (both by pressing powerit
+button and running "loginctl poweroff"), it goes in such a state when it
+doesn't respond to opening/closing the lid, power button nor
+Ctrl+Alt+Del, but, unlike in sleep mode, the fan is rotating and the
+"awake status" LED is on. I checked /var/log/kern.log, but it didn't
+report suspend at that moment at all: went straight from [UFW BLOCK] to
+"Microcode updated" on force reboot (marked with an arrow):
 
-Will
+	Apr 13 10:40:32 bong kernel: asus_wmi: Unknown key code 0xcf
+	Apr 13 10:44:05 bong kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=/*confidential*/
+	Apr 13 10:47:45 bong kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=/*confidential*/
+	Apr 13 10:47:46 bong kernel: ICMPv6: NA: /*router*/ advertised our address /*ipv6*/ on wlan0!
+	Apr 13 10:47:48 bong last message buffered 2 times
+->	Apr 13 10:49:11 bong kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=/*confidential*/
+	Apr 13 10:52:34 bong kernel: microcode: microcode updated early to revision 0xf0, date = 2021-11-12
+	Apr 13 10:52:34 bong kernel: Linux version 6.1.23-bong+ (acid@bong) (gcc (Gentoo Hardened 12.2.1_p20230121-r1 p10) 12.2.1 20230121, GNU ld (Gentoo 2.39 p5) 2.39.0) #1 SMP PREEMPT_DYNAMIC Tue Apr 11 15:21:57 EEST 2023
+	Apr 13 10:52:34 bong kernel: Command line: root=/dev/genston/root ro loglevel=4 rd.lvm.vg=genston rd.luks.uuid=97d10669-2da1-452d-a372-887e420b2ad4 rd.luks.allow-discards pci=nomsi initrd=\x5cinitramfs-6.1.23-bong+.img
+	Apr 13 10:52:34 bong kernel: x86/fpu: Supporting XSAVE feature 0x001: 'x87 floating point registers'
+	Apr 13 10:52:34 bong kernel: x86/fpu: Supporting XSAVE feature 0x002: 'SSE registers'
+	Apr 13 10:52:34 bong kernel: x86/fpu: Supporting XSAVE feature 0x004: 'AVX registers'
+
+Normally it starts like this (taken from dmesg to sync with elogind messages)
+
+	[ 7835.869228] elogind-daemon[2033]: Lid closed.
+	[ 7835.872875] elogind-daemon[2033]: Suspending...
+	[ 7835.873955] elogind-daemon[2033]: Suspending system...
+	[ 7835.873970] PM: suspend entry (deep)
+	[ 7835.902814] Filesystems sync: 0.028 seconds
+	[ 7835.920362] Freezing user space processes
+	[ 7835.923030] Freezing user space processes completed (elapsed 0.002 seconds)
+	[ 7835.923046] OOM killer disabled.
+	[ 7835.923049] Freezing remaining freezable tasks
+	[ 7835.924445] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
+	[ 7835.924624] printk: Suspending console(s) (use no_console_suspend to debug)
+
+The issue appeared when I was using pf-kernel with genpatches and
+updated from 6.1-pf2 to 6.1-pf3 (corresponding to vanilla versions 6.1.3
+-> 6.1.6). I used that fork until 6.2-pf2, but since then (early March)
+moved to vanilla sources and started following the 6.1.y branch when it
+was declared LTS. And the issue was present on all of them.
+
+The hang was last detected 3 days ago on 6.1.22 and today on 6.1.23.
+
+I'd like to bisect it, but it could take ages for a couple of reasons:
+
+1) I don't know exact patterns it follows. One of the scenarios I've
+noticed was this one (sorry if too ridiculous):
+	- put the laptop on the nearby couch and simultaneously close
+	  the lid; the loose charger jack might disconnect;
+	- lay the mouse upside down (so it doesn't wake up when I
+	  reconnect the charger),
+but it's not a 100% guarantee of the bug and, as I said earlier, the
+laptop also misbehaves on shutdown.
+
+2) The issue happens rarely, once in a few days (sometimes up to a week;
+I haven't measured it precisely back then).
+
+Hardware: https://tilde.cafe/u/acidbong/kernel/lspci (`lspci -vvnn`)
+Config (latest vanilla): https://git.sr.ht/~acid-bong/kernel/tree/806e6639da610952798e1b5d8c0d700062f915de/item/.config
+Built with KCFLAGS="-march=native"
+Isolated cmdline: root=/dev/genston/root ro loglevel=4 rd.lvm.vg=genston rd.luks.uuid=97d10669-2da1-452d-a372-887e420b2ad4 rd.luks.allow-discards pci=nomsi initrd=\initramfs-6.1.23-bong+.img
+
+# regzbot introduced v6.1.3..v6.1.6
+
+---
+Regards,
+~acidbong
