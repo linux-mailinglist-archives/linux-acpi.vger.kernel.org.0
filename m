@@ -2,51 +2,43 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBB4B6E24D4
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Apr 2023 15:55:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4334A6E24ED
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Apr 2023 16:00:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230017AbjDNNzS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Apr 2023 09:55:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44546 "EHLO
+        id S229542AbjDNN77 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Apr 2023 09:59:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229954AbjDNNzR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Apr 2023 09:55:17 -0400
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9F09E56;
-        Fri, 14 Apr 2023 06:55:16 -0700 (PDT)
-Received: by mail-ej1-f46.google.com with SMTP id q23so36270950ejz.3;
-        Fri, 14 Apr 2023 06:55:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681480515; x=1684072515;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=E29rUimY6KHJCkSPS7CK4bBCLE3cMI8/M2AydXqPWoI=;
-        b=NeR82GZZabXuc3GPH1/eMO6cqPc/PtzqRbYdPfrShii7afOrzLb7EGcj/3tMtAElM6
-         SZdgcmH/OPTOZeeUY23ejFYrrLiQqxMSwofupu9SMj1KGu9EgXo/e+i3wHFoq/IsHKI2
-         342+M/rWlPwGwbqjUG0jZ0AiDT/w9Ml8UwJPbZ4a9706hWVHMPjpMFViSL9DCIybAJOi
-         HB4Be0yPzTMSRW6AIHhuFE8/Vq8TYiBXkFaKUgjJsi3j6wvUJXIcwRhV2CgD7Yk4u4IC
-         Ee9jZNGNRTW/2z/AeqNKjojFQXnEtNqurdB4s12wf8v/MKvImix4lU/crU5nY1EhQ4ZU
-         kGbw==
-X-Gm-Message-State: AAQBX9cPQjXjmOZHj3NpIsPc4oFPczNgNjbPRnPQXAq1ljbtyNYtTpEZ
-        lQ6XL3BK1VU84q0t2IPnk2XebUA4wbqf8YqoHbekZ6OGPF0=
-X-Google-Smtp-Source: AKy350aNsfNFxe6baQpYHFWdqtN2faHb0Y/dkSnmf8jKHylwMnYDnR8DPOanMX9nzReVZlfkdVoIlgv6BO2mUXeqvBo=
-X-Received: by 2002:a17:907:a409:b0:94e:7ce:4d1f with SMTP id
- sg9-20020a170907a40900b0094e07ce4d1fmr3159577ejc.2.1681480514929; Fri, 14 Apr
- 2023 06:55:14 -0700 (PDT)
+        with ESMTP id S229493AbjDNN76 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Apr 2023 09:59:58 -0400
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C43E9180;
+        Fri, 14 Apr 2023 06:59:56 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
+ id b3cb597020401824; Fri, 14 Apr 2023 15:59:53 +0200
+Received: from kreacher.localnet (unknown [213.134.188.177])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id DA29681B369;
+        Fri, 14 Apr 2023 15:59:52 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>
+Subject: [PATCH v1] ACPI: bus: Add missing braces to acpi_sb_notify()
+Date:   Fri, 14 Apr 2023 15:59:52 +0200
+Message-ID: <2700142.mvXUDI8C0e@kreacher>
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 14 Apr 2023 15:55:04 +0200
-Message-ID: <CAJZ5v0jfYRyiMzu2S3KXueGvrux=5082SAsz81pN6zwDVvFDUA@mail.gmail.com>
-Subject: [GIT PULL] ACPI fixes for v6.3-rc7
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+X-CLIENT-IP: 213.134.188.177
+X-CLIENT-HOSTNAME: 213.134.188.177
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeltddgjedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepffffffekgfehheffleetieevfeefvefhleetjedvvdeijeejledvieehueevueffnecukfhppedvudefrddufeegrddukeekrddujeejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudekkedrudejjedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepvddprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=2 Fuz1=2 Fuz2=2
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,44 +46,33 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Subject: 
 
-Please pull from the tag
+As per the kernel coding style.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.3-rc7
+No functional impact.
 
-with top-most commit a3babdb7a8f73c3d8965b245fe1b758b87538912
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/bus.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- Merge branch 'acpi-x86'
-
-on top of commit 09a9639e56c01c7a00d6c0ca63f4c7c41abe075d
-
- Linux 6.3-rc6
-
-to receive ACPI fixes for 6.3-rc7.
-
-These add two ACPI-related quirks:
-
- - Add a quirk to force StorageD3Enable on AMD Picasso systems (Mario
-   Limonciello).
-
- - Add an ACPI IRQ override quirk for ASUS ExpertBook B1502CBA (Paul
-   Menzel).
-
-Thanks!
+Index: linux-pm/drivers/acpi/bus.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/bus.c
++++ linux-pm/drivers/acpi/bus.c
+@@ -624,8 +624,9 @@ static void acpi_sb_notify(acpi_handle h
+ 	if (event == ACPI_SB_NOTIFY_SHUTDOWN_REQUEST) {
+ 		if (!work_busy(&acpi_sb_work))
+ 			schedule_work(&acpi_sb_work);
+-	} else
++	} else {
+ 		pr_warn("event %x is not supported by \\_SB device\n", event);
++	}
+ }
+ 
+ static int __init acpi_setup_sb_notify_handler(void)
 
 
----------------
 
-Mario Limonciello (1):
-      ACPI: x86: utils: Add Picasso to the list for forcing StorageD3Enable
-
-Paul Menzel (1):
-      ACPI: resource: Skip IRQ override on ASUS ExpertBook B1502CBA
-
----------------
-
- drivers/acpi/resource.c  | 7 +++++++
- drivers/acpi/x86/utils.c | 1 +
- 2 files changed, 8 insertions(+)
