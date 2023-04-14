@@ -2,79 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4684A6E2502
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Apr 2023 16:01:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 980CD6E298E
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Apr 2023 19:40:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230111AbjDNOBq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Apr 2023 10:01:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51036 "EHLO
+        id S230218AbjDNRk1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Apr 2023 13:40:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230137AbjDNOBl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Apr 2023 10:01:41 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95FABB440;
-        Fri, 14 Apr 2023 07:01:16 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
- id 6fe70f731cfbdbc4; Fri, 14 Apr 2023 16:00:49 +0200
-Received: from kreacher.localnet (unknown [213.134.188.177])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        with ESMTP id S229933AbjDNRk0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Apr 2023 13:40:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CFB776B3;
+        Fri, 14 Apr 2023 10:40:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id CD86681B369;
-        Fri, 14 Apr 2023 16:00:48 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH v1] ACPI: bus: Ensure that notify handlers are not running after removal
-Date:   Fri, 14 Apr 2023 16:00:48 +0200
-Message-ID: <5688433.DvuYhMxLoT@kreacher>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.188.177
-X-CLIENT-HOSTNAME: 213.134.188.177
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeltddgjedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepffffffekgfehheffleetieevfeefvefhleetjedvvdeijeejledvieehueevueffnecukfhppedvudefrddufeegrddukeekrddujeejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudekkedrudejjedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepfedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehhuggvghhovgguvgesrhgvughhrghtrdgtohhm
-X-DCC--Metrics: v370.home.net.pl 1024; Body=3 Fuz1=3 Fuz2=3
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F0BB261C01;
+        Fri, 14 Apr 2023 17:40:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 609BEC433D2;
+        Fri, 14 Apr 2023 17:40:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681494025;
+        bh=82uf7++NyS+0xhq50Zd47LDn8+0vWBh0FIVRWtFzemk=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=VyZNI8o7EL23gdI6U2H2XhnGE/gTGteub9YwxYUHVcVNDRIzV9VNvuy2SD7c83cy9
+         MpZ30/Tlx8arYVblWv3CdORPRZWxTn0mfJwA2vGZ3P3ysVMn4LzuAVuQGGclswRiPm
+         sopeVlFd8iQp/lUVWcDDT31W5hJb6l3bJM0clr4Iv0dPrDiUaXCiuZw+kVqkDydZFu
+         wfXSQXh607b3FNsO73F/XjiY3wCWp7dhrL51WSmDwGfhmEhHTsabJXeppOsvlVbGt2
+         PmOmRLtPB5kafU+jrKN4Bfnj5CZBkXj5sizfo6fSlsXKHFPRTKjWpGCukPQb+/8/SB
+         LoN2eS/Q2gkIg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 42227E52446;
+        Fri, 14 Apr 2023 17:40:25 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI fixes for v6.3-rc7
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0jfYRyiMzu2S3KXueGvrux=5082SAsz81pN6zwDVvFDUA@mail.gmail.com>
+References: <CAJZ5v0jfYRyiMzu2S3KXueGvrux=5082SAsz81pN6zwDVvFDUA@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0jfYRyiMzu2S3KXueGvrux=5082SAsz81pN6zwDVvFDUA@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.3-rc7
+X-PR-Tracked-Commit-Id: a3babdb7a8f73c3d8965b245fe1b758b87538912
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 95abc817ab3a5af57cc0b522f72225307fa6333f
+Message-Id: <168149402525.11053.13917106051901098071.pr-tracker-bot@kernel.org>
+Date:   Fri, 14 Apr 2023 17:40:25 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The pull request you sent on Fri, 14 Apr 2023 15:55:04 +0200:
 
-Currently, acpi_device_remove_notify_handler() may return while the
-notify handler being removed is still running which may allow the
-module holding that handler to be torn down prematurely.
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.3-rc7
 
-Address this issue by making acpi_device_remove_notify_handler() wait
-for the handling of all the ACPI events in progress to complete before
-returning.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/95abc817ab3a5af57cc0b522f72225307fa6333f
 
-Fixes: 5894b0c46e49 ("ACPI / scan: Move bus operations and notification routines to bus.c")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/bus.c |    1 +
- 1 file changed, 1 insertion(+)
+Thank you!
 
-Index: linux-pm/drivers/acpi/bus.c
-===================================================================
---- linux-pm.orig/drivers/acpi/bus.c
-+++ linux-pm/drivers/acpi/bus.c
-@@ -589,6 +589,7 @@ static void acpi_device_remove_notify_ha
- 		acpi_remove_notify_handler(device->handle, type,
- 					   acpi_notify_device);
- 	}
-+	acpi_os_wait_events_complete();
- }
- 
- /* Handle events targeting \_SB device (at present only graceful shutdown) */
-
-
-
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
