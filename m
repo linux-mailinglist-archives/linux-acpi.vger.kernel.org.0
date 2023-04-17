@@ -2,151 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8F1E6E3D04
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Apr 2023 02:54:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A803A6E3D22
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Apr 2023 03:14:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229518AbjDQAy4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 16 Apr 2023 20:54:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55930 "EHLO
+        id S229636AbjDQBOU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 16 Apr 2023 21:14:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbjDQAyz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 16 Apr 2023 20:54:55 -0400
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F26992136;
-        Sun, 16 Apr 2023 17:54:52 -0700 (PDT)
-Received: from loongson.cn (unknown [10.20.42.153])
-        by gateway (Coremail) with SMTP id _____8BxEJXbmDxkP7EdAA--.46057S3;
-        Mon, 17 Apr 2023 08:54:51 +0800 (CST)
-Received: from [10.20.42.153] (unknown [10.20.42.153])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8DxB73WmDxkfSoqAA--.47967S3;
-        Mon, 17 Apr 2023 08:54:46 +0800 (CST)
-Subject: Re: [regression] Bug 217069 - Wake on Lan is broken on r8169 since
- 6.2
-To:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Bob Moore <robert.moore@intel.com>,
-        acpica-devel@lists.linuxfoundation.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Huacai Chen <chenhuacai@kernel.org>
-References: <e6aaddb9-afec-e77d-be33-570f9f10a9c2@leemhuis.info>
- <53e8b4db-e8dd-4dfa-f873-7dcbeac09149@leemhuis.info>
- <13aea525-108a-e018-987d-2447ff1d42df@leemhuis.info>
- <754225a2-95a9-2c36-1886-7da1a78308c2@loongson.cn>
- <2d9b786b-ed1f-0687-ea6f-575faa6036a3@leemhuis.info>
-From:   Jianmin Lv <lvjianmin@loongson.cn>
-Message-ID: <653dbfb0-da67-8d1b-9efc-f4e0d67fe9fd@loongson.cn>
-Date:   Mon, 17 Apr 2023 08:54:46 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        with ESMTP id S229458AbjDQBOT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 16 Apr 2023 21:14:19 -0400
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F25CA1FE0;
+        Sun, 16 Apr 2023 18:14:17 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046056;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=25;SR=0;TI=SMTPD_---0VgBQJ7A_1681694050;
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VgBQJ7A_1681694050)
+          by smtp.aliyun-inc.com;
+          Mon, 17 Apr 2023 09:14:12 +0800
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+To:     rafael@kernel.org, wangkefeng.wang@huawei.com,
+        tanxiaofei@huawei.com, mawupeng1@huawei.com, tony.luck@intel.com,
+        naoya.horiguchi@nec.com
+Cc:     linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, xueshuai@linux.alibaba.com,
+        justin.he@arm.com, akpm@linux-foundation.org, ardb@kernel.org,
+        ashish.kalra@amd.com, baolin.wang@linux.alibaba.com, bp@alien8.de,
+        cuibixuan@linux.alibaba.com, dave.hansen@linux.intel.com,
+        james.morse@arm.com, jarkko@kernel.org, lenb@kernel.org,
+        linmiaohe@huawei.com, lvying6@huawei.com, xiexiuqi@huawei.com,
+        zhuo.song@linux.alibaba.com
+Subject: [PATCH v7 0/2] ACPI: APEI: handle synchronous exceptions with proper si_code
+Date:   Mon, 17 Apr 2023 09:14:05 +0800
+Message-Id: <20230417011407.58319-1-xueshuai@linux.alibaba.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
 MIME-Version: 1.0
-In-Reply-To: <2d9b786b-ed1f-0687-ea6f-575faa6036a3@leemhuis.info>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxB73WmDxkfSoqAA--.47967S3
-X-CM-SenderInfo: 5oymxthqpl0qxorr0wxvrqhubq/
-X-Coremail-Antispam: 1Uk129KBjvJXoWxCF1fCr1DuFy5ZrWfAF1fZwb_yoW5uryxpF
-        WrKan8Xr4DJr1xJws7Kw109FWjvwn8Jr909r9rXr4rJF90va4FvF4Igr43uFyjyr97Ca1a
-        qF43ZrySgryUAaDanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-        qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
-        bxxYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s
-        1l1IIY67AEw4v_JrI_Jryl8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
-        wVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwA2z4
-        x0Y4vEx4A2jsIE14v26r4j6F4UM28EF7xvwVC2z280aVCY1x0267AKxVW8JVW8Jr1le2I2
-        62IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4xG64xvF2IEw4
-        CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r1j6r4UMcvj
-        eVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67vIY487MxAIw2
-        8IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4l
-        x2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrw
-        CI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI
-        42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z2
-        80aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU7XTmDUUUU
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+changes since v6:
+- add more explicty error message suggested by Xiaofei
+- pick up reviewed-by tag from Xiaofei
+- pick up internal reviewed-by tag from Baolin
 
+changes since v5 by addressing comments from Kefeng:
+- document return value of memory_failure()
+- drop redundant comments in call site of memory_failure() 
+- make ghes_do_proc void and handle abnormal case within it
+- pick up reviewed-by tag from Kefeng Wang 
 
-On 2023/4/16 下午8:52, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 16.04.23 14:35, Jianmin Lv wrote:
->>  From the feedbacks, the WOL issue has been fixed, and I have submitted a
->> fixed patch to ACPICA, which has been reviewing in last week (Rafael
->> also looked into the fixed patch).
-> 
-> Great, many thx. I looked for something like that, but failed to find it.
-> 
-> FWIW, a link to the patch submission would have been nice. I tried to
-> find it just now, but maybe it's not on lore.kernel.org or I did
-> something stupid. And
-> https://lists.linuxfoundation.org/pipermail/acpica-devel/ seems to lack
-> behind or might not be the list you submitted the patch to. Whatever.
-> 
-The link is here: https://github.com/acpica/acpica/pull/866
+changes since v4 by addressing comments from Xiaofei:
+- do a force kill only for abnormal sync errors
 
->> There are two kinds of issues in the bug, one is WOL failed in kexec
->> reboot, another is WOL failed in cold reboot. The former one still exist
->> after reverted patch(5c62d5aab8752e5ee7bfbe75ed6060db1c787f98),
->> so this issue is not caused by the reverted patch. The second is caused
->> by the reverted patch, and has been fixed with my provided patch.
->>
->> Please see:
->> https://bugzilla.kernel.org/show_bug.cgi?id=217069#c54
->> https://bugzilla.kernel.org/show_bug.cgi?id=217069#c59
-> 
-> I'll post a quick update there.
-> 
-> Thx again.
-> 
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-> --
-> Everything you wanna know about Linux kernel regression tracking:
-> https://linux-regtracking.leemhuis.info/about/#tldr
-> If I did something stupid, please tell me, as explained on that page.
-> 
->> On 2023/4/14 下午8:48, Thorsten Leemhuis wrote:
->>> On 19.03.23 08:20, Linux regression tracking (Thorsten Leemhuis) wrote:
->>>> On 22.02.23 08:57, Thorsten Leemhuis wrote:
->>>>>
->>>>> I noticed a regression report in bugzilla.kernel.org. As many (most?)
->>>>> kernel developer don't keep an eye on it, I decided to forward it by
->>>>> mail. Quoting from https://bugzilla.kernel.org/show_bug.cgi?id=217069 :
->>>>
->>>> An issue that looked like a network bug was now bisected and it turns
->>>> out it's cause by 5c62d5aab875 ("ACPICA: Events: Support fixed PCIe wake
->>>> event") which Huacai Chen provided. Could you take a look at the ticket
->>>> linked above?
->>>
->>> Jianmin did get close to a proper fix a while ago
->>> (https://bugzilla.kernel.org/show_bug.cgi?id=217069#c46 ), but it
->>> appears there wasn't any progress to fix this during the last week. Or
->>> did I miss it?
->>>
->>> This is kinda unsatisfying, as the culprit is now known for nearly four
->>> weeks; especially as this is a issue that is present in 6.2 since it was
->>> released and would have been possible to fix there and in mainline with
->>> a simple revert. We even got close to one two weeks ago already
->>> (https://bugzilla.kernel.org/show_bug.cgi?id=217069#c49 ).
->>>
->>> #sigh
->>>
->>> I'd say we should revert this. Rafael, what's your opinion here?
->>>
->>> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
->>> -- 
->>> Everything you wanna know about Linux kernel regression tracking:
->>> https://linux-regtracking.leemhuis.info/about/#tldr
->>> If I did something stupid, please tell me, as explained on that page.
->>>
->>> #regzbot poke
->>>
->>
->>
->>
+changes since v3 by addressing comments from Xiaofei:
+- do a force kill for abnormal memory failure error such as invalid PA,
+unexpected severity, OOM, etc
+- pcik up tested-by tag from Ma Wupeng
+
+changes since v2 by addressing comments from Naoya:
+- rename mce_task_work to sync_task_work
+- drop ACPI_HEST_NOTIFY_MCE case in is_hest_sync_notify()
+- add steps to reproduce this problem in cover letter
+
+changes since v1:
+- synchronous events by notify type
+- Link: https://lore.kernel.org/lkml/20221206153354.92394-3-xueshuai@linux.alibaba.com/
+
+Shuai Xue (2):
+  ACPI: APEI: set memory failure flags as MF_ACTION_REQUIRED on
+    synchronous events
+  ACPI: APEI: handle synchronous exceptions in task work
+
+ arch/x86/kernel/cpu/mce/core.c |   9 +--
+ drivers/acpi/apei/ghes.c       | 113 ++++++++++++++++++++++-----------
+ include/acpi/ghes.h            |   3 -
+ mm/memory-failure.c            |  17 +----
+ 4 files changed, 79 insertions(+), 63 deletions(-)
+
+-- 
+2.20.1.12.g72788fdb
 
