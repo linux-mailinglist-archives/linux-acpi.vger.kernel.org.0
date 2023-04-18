@@ -2,117 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A90E6E5C83
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Apr 2023 10:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 561506E5CA5
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Apr 2023 10:55:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230173AbjDRIv0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 18 Apr 2023 04:51:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58492 "EHLO
+        id S231147AbjDRIzl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 18 Apr 2023 04:55:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229515AbjDRIvZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Apr 2023 04:51:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 289C95FCD
-        for <linux-acpi@vger.kernel.org>; Tue, 18 Apr 2023 01:50:38 -0700 (PDT)
+        with ESMTP id S230317AbjDRIzk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Apr 2023 04:55:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29ED17D91
+        for <linux-acpi@vger.kernel.org>; Tue, 18 Apr 2023 01:54:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1681807837;
+        s=mimecast20190719; t=1681808087;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding;
-        bh=1WwxFs09OLlUItADw/QKnx4w5DftEkyjXgAu+IIu1zg=;
-        b=SIQtI2kbULB5P4SLBvc+Mmcp9gdZllblQSs4sqYdEkaHQ8te8IDZgfH1XxQeywiPd61aHP
-        TrMYIZUENcWetpArb+NFg1vJxn4dSUSt/xhvrWAK2eFZHb6DByjTys7XtHtqXzR9Qe5AzV
-        Q3Uf3t6+Ll9Eh4x8e5O7LJqvwh5Vwk8=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=17aqH1+HCJmGSkcNTIqJ1oqIL8eVz7Y1VAmURsLgMAo=;
+        b=ge8ZvUl7lhdVv3Uv4V+STMcWEddcHEDjKIqi6VMP4s7dhIBFWj85FrdrVk4my6l2HD0u65
+        aTodb2e9gqaekDBgiGWhzw8mt8+rtS3u1yaJ7AIZ/Cc0fd2LRmp68JYw2iERbwIlO7D35h
+        PT6BDSWuv5wa3gJpj4mhbjQuVHBkwuQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-583-lXK-dijyMHW-PykYl1MBOQ-1; Tue, 18 Apr 2023 04:50:34 -0400
-X-MC-Unique: lXK-dijyMHW-PykYl1MBOQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+ us-mta-672-nLgouwwPNwauVUfUeX-pjw-1; Tue, 18 Apr 2023 04:54:44 -0400
+X-MC-Unique: nLgouwwPNwauVUfUeX-pjw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 86AFA3815F6D;
-        Tue, 18 Apr 2023 08:50:33 +0000 (UTC)
-Received: from dell-r430-03.lab.eng.brq2.redhat.com (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 811DF40C6E6E;
-        Tue, 18 Apr 2023 08:50:32 +0000 (UTC)
-From:   Igor Mammedov <imammedo@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     mst@redhat.com, rafael@kernel.org, lenb@kernel.org,
-        bhelgaas@google.com, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org
-Subject: [PATCH] pci: acpiphp: try to reassign resources on bridge if necessary
-Date:   Tue, 18 Apr 2023 10:50:30 +0200
-Message-Id: <20230418085030.2154918-1-imammedo@redhat.com>
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B736A88F4CF;
+        Tue, 18 Apr 2023 08:54:43 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.195.90])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id E14F52027044;
+        Tue, 18 Apr 2023 08:54:42 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH v2] ACPI: LPSS: Add 80862289 ACPI _HID for second PWM controller on Cherry Trail
+Date:   Tue, 18 Apr 2023 10:54:37 +0200
+Message-Id: <20230418085437.4579-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When using ACPI PCI hotplug, hotplugging a device with
-large BARs may fail if bridge windows programmed by
-firmware are not large enough.
+On some Cherry Trail devices the second PWM controller uses
+80862289 as ACPI _HID, rather then using 80862288 as is done
+for both controllers on most models.
 
-Reproducer:
-  $ qemu-kvm -monitor stdio -M q35  -m 4G \
-      -global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=on \
-      -device id=rp1,pcie-root-port,bus=pcie.0,chassis=4 \
-      disk_image
+Add the missing 80862289 ACPI _HID, note this uses its own
+lpss_device_desc, without ".setup = bsw_pwm_setup" so that
+the pwm_lookup is not added for it.
+On devices where both controllers use the 80862288 _HID bsw_pwm_setup()
+does a UID check to avoid registering the lookup for the second
+controller but that will not work here.
 
- wait till linux guest boots, then hotplug device
-   (qemu) device_add qxl,bus=rp1
+Adding the missing id fixes the second PWM controller no longer
+working after the entire LPSS1 island has been in D3 at least
+once, which causes the contents of the LPSS private registers
+to get lost. Adding the _HID makes acpi_lpss restore these
+when the controller moves from D3 to D0.
 
- hotplug on guest side fails with:
-   pci 0000:01:00.0: [1b36:0100] type 00 class 0x038000
-   pci 0000:01:00.0: reg 0x10: [mem 0x00000000-0x03ffffff]
-   pci 0000:01:00.0: reg 0x14: [mem 0x00000000-0x03ffffff]
-   pci 0000:01:00.0: reg 0x18: [mem 0x00000000-0x00001fff]
-   pci 0000:01:00.0: reg 0x1c: [io  0x0000-0x001f]
-   pci 0000:01:00.0: BAR 0: no space for [mem size 0x04000000]
-   pci 0000:01:00.0: BAR 0: failed to assign [mem size 0x04000000]
-   pci 0000:01:00.0: BAR 1: no space for [mem size 0x04000000]
-   pci 0000:01:00.0: BAR 1: failed to assign [mem size 0x04000000]
-   pci 0000:01:00.0: BAR 2: assigned [mem 0xfe800000-0xfe801fff]
-   pci 0000:01:00.0: BAR 3: assigned [io  0x1000-0x101f]
-   qxl 0000:01:00.0: enabling device (0000 -> 0003)
-   Unable to create vram_mapping
-   qxl: probe of 0000:01:00.0 failed with error -12
-
-However when using native PCIe hotplug
-  '-global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off'
-it works fine, since kernel attempts to reassign unused resources.
-Use the same machinery as native PCIe hotplug to (re)assign resources.
-
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
-tested in QEMU with Q35 machine on PCIE root port and also
-with nested conventional bridge attached to root port.
+Changes in v2:
+- s/HID/_HID/
+- Add Mika's Reviewed-by
 ---
- drivers/pci/hotplug/acpiphp_glue.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpi_lpss.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
-index 5b1f271c6034..9aebde28a92f 100644
---- a/drivers/pci/hotplug/acpiphp_glue.c
-+++ b/drivers/pci/hotplug/acpiphp_glue.c
-@@ -517,7 +517,7 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
- 				}
- 			}
- 		}
--		__pci_bus_assign_resources(bus, &add_list, NULL);
-+		pci_assign_unassigned_bridge_resources(bus->self);
- 	}
+diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
+index f08ffa75f4a7..77186f084d3a 100644
+--- a/drivers/acpi/acpi_lpss.c
++++ b/drivers/acpi/acpi_lpss.c
+@@ -271,6 +271,12 @@ static const struct lpss_device_desc bsw_pwm_dev_desc = {
+ 	.resume_from_noirq = true,
+ };
  
- 	acpiphp_sanitize_bus(bus);
++static const struct lpss_device_desc bsw_pwm2_dev_desc = {
++	.flags = LPSS_SAVE_CTX_ONCE | LPSS_NO_D3_DELAY,
++	.prv_offset = 0x800,
++	.resume_from_noirq = true,
++};
++
+ static const struct lpss_device_desc byt_uart_dev_desc = {
+ 	.flags = LPSS_CLK | LPSS_CLK_GATE | LPSS_CLK_DIVIDER | LPSS_SAVE_CTX,
+ 	.clk_con_id = "baudclk",
+@@ -368,6 +374,7 @@ static const struct acpi_device_id acpi_lpss_device_ids[] = {
+ 	/* Braswell LPSS devices */
+ 	{ "80862286", LPSS_ADDR(lpss_dma_desc) },
+ 	{ "80862288", LPSS_ADDR(bsw_pwm_dev_desc) },
++	{ "80862289", LPSS_ADDR(bsw_pwm2_dev_desc) },
+ 	{ "8086228A", LPSS_ADDR(bsw_uart_dev_desc) },
+ 	{ "8086228E", LPSS_ADDR(bsw_spi_dev_desc) },
+ 	{ "808622C0", LPSS_ADDR(lpss_dma_desc) },
 -- 
-2.39.1
+2.39.2
 
