@@ -2,55 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA4646E53B5
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Apr 2023 23:12:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AEB76E5773
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Apr 2023 04:22:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229589AbjDQVMQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 Apr 2023 17:12:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56824 "EHLO
+        id S231146AbjDRCWB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 Apr 2023 22:22:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbjDQVMQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Apr 2023 17:12:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E4599F
-        for <linux-acpi@vger.kernel.org>; Mon, 17 Apr 2023 14:11:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1681765894;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=mrmHL/W9leQZcWjC6zj6pObkTe7JZmif6y+8UtIh14Y=;
-        b=L/iDAZM5KuDkqbi2YDQAuWz+b/Bdu1pTl5N9DY49S5rjr3VUmmEgURMtLepCDr3GIIV7EN
-        C11By0ClKo52ThTxXNB+wMV8DSh3vxdvTFOb8RwpnpcHvuT/O1d3ynxVzCX6vK3eU+dQL7
-        R4MlMiV+gLShITgeq4i2RlIraVdvBaM=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-515-zhkuaacfMaqruB5uzjhYYw-1; Mon, 17 Apr 2023 17:11:30 -0400
-X-MC-Unique: zhkuaacfMaqruB5uzjhYYw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 717DE1C0514F;
-        Mon, 17 Apr 2023 21:11:30 +0000 (UTC)
-Received: from shalem.redhat.com (unknown [10.39.192.14])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A1A202166B26;
-        Mon, 17 Apr 2023 21:11:29 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andy@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH] ACPI: LPSS: Add 80862289 ACPI HID for second PWM controller on Cherry Trail
-Date:   Mon, 17 Apr 2023 23:11:28 +0200
-Message-Id: <20230417211128.588008-1-hdegoede@redhat.com>
+        with ESMTP id S229621AbjDRCWA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Apr 2023 22:22:00 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7D34E7E;
+        Mon, 17 Apr 2023 19:21:57 -0700 (PDT)
+Received: from kwepemm600004.china.huawei.com (unknown [7.193.23.242])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Q0nhB5NKWzsR94;
+        Tue, 18 Apr 2023 10:20:26 +0800 (CST)
+Received: from [10.67.103.231] (10.67.103.231) by
+ kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Tue, 18 Apr 2023 10:21:55 +0800
+Message-ID: <3d8e8817-12b9-62bc-4c04-34d8822d366f@huawei.com>
+Date:   Tue, 18 Apr 2023 10:21:54 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2 0/2] mailbox: pcc: Support platform notification for
+ type4 and shared interrupt
+To:     Robbie King <robbiek@xsightlabs.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
+CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "rafael.j.wysocki@intel.com" <rafael.j.wysocki@intel.com>,
+        "wanghuiqiang@huawei.com" <wanghuiqiang@huawei.com>,
+        "zhangzekun11@huawei.com" <zhangzekun11@huawei.com>,
+        "wangxiongfeng2@huawei.com" <wangxiongfeng2@huawei.com>,
+        "tanxiaofei@huawei.com" <tanxiaofei@huawei.com>,
+        "guohanjun@huawei.com" <guohanjun@huawei.com>,
+        "xiexiuqi@huawei.com" <xiexiuqi@huawei.com>,
+        "wangkefeng.wang@huawei.com" <wangkefeng.wang@huawei.com>,
+        "huangdaode@huawei.com" <huangdaode@huawei.com>
+References: <20221016034043.52227-1-lihuisong@huawei.com>
+ <20230314111135.16520-1-lihuisong@huawei.com>
+ <20230327113326.dgrb5ainl6mv7wr5@bogus>
+ <570a6f6d-87cb-48ca-3bbc-cd1221bfa88c@huawei.com>
+ <7ef4eec4-2cfb-6f66-a9b9-9c130a1b71d8@huawei.com>
+ <AS8P193MB2335FA58943B305F97D2BACCCA9A9@AS8P193MB2335.EURP193.PROD.OUTLOOK.COM>
+ <57c537d8-6728-2ffc-3421-accd79c1eddf@huawei.com>
+ <AS8P193MB2335F1954BC345575A2C8829CA999@AS8P193MB2335.EURP193.PROD.OUTLOOK.COM>
+From:   "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <AS8P193MB2335F1954BC345575A2C8829CA999@AS8P193MB2335.EURP193.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+X-Originating-IP: [10.67.103.231]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemm600004.china.huawei.com (7.193.23.242)
+X-Spam-Status: No, score=-6.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,53 +66,75 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On some Cherry Trail devices the second PWM controller uses
-80862289 as ACPI HID, rather then using 80862288 as is done
-for both controllers on most models.
 
-Add the missing 80862289 ACPI HID, note this uses its own
-lpss_device_desc, without ".setup = bsw_pwm_setup" so that
-the pwm_lookup is not added for it.
-On devices where both controllers use the 80862288 HID bsw_pwm_setup()
-does a UID check to avoid registering the lookup for the second
-controller but that will not work here.
+在 2023/4/14 21:48, Robbie King 写道:
+> Sorry for the delay.  I ran my simple stress test against the patch set and
+> saw no issues.  For the record it is by no means a thorough regression, but it
+> has illuminated issues in the past.
+Thanks for your testing.
+>
+> The test itself uses a "heartbeat" module in the SCP firmware that generates
+> notifications at a programmable interval.  The stress test is simply generating
+> these heartbeats (SCP to AP notifications) while also generating protocol version
+> queries (AP to SCP).  The notifications are sequence numbered to verify none are
+> lost, however SCP to AP notification support does not support SCP generating
+> notifications faster than the AP can process them, so the heartbeat rate must be
+> reasonably slow (on the order of 10s of millliseconds).
+I understand your concern. I think this doesn't get int the way of what 
+we are doing.
 
-Adding the missing id fixes the second PWM controller no longer
-working after the entire LPSS1 island has been in D3 at least
-once, which causes the contents of the LPSS private registers
-to get lost. Adding the HID makes acpi_lpss restore these
-when the controller moves from D3 to D0.
+My stress tests were also run in type3 and type4 concurrent scenarios.
+There were two drivers using type3 to send command looply on platform.
+In the firmware terminal window,
+there were two channels for type4 to generate notifications from 
+platform at the 1ms(even shorter) interval.
+I didn't find anything issues in this stress after running a couple of 
+hours.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/acpi/acpi_lpss.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+@Robbie King and @Sudeep, what do you think of my test?
 
-diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
-index f08ffa75f4a7..77186f084d3a 100644
---- a/drivers/acpi/acpi_lpss.c
-+++ b/drivers/acpi/acpi_lpss.c
-@@ -271,6 +271,12 @@ static const struct lpss_device_desc bsw_pwm_dev_desc = {
- 	.resume_from_noirq = true,
- };
- 
-+static const struct lpss_device_desc bsw_pwm2_dev_desc = {
-+	.flags = LPSS_SAVE_CTX_ONCE | LPSS_NO_D3_DELAY,
-+	.prv_offset = 0x800,
-+	.resume_from_noirq = true,
-+};
-+
- static const struct lpss_device_desc byt_uart_dev_desc = {
- 	.flags = LPSS_CLK | LPSS_CLK_GATE | LPSS_CLK_DIVIDER | LPSS_SAVE_CTX,
- 	.clk_con_id = "baudclk",
-@@ -368,6 +374,7 @@ static const struct acpi_device_id acpi_lpss_device_ids[] = {
- 	/* Braswell LPSS devices */
- 	{ "80862286", LPSS_ADDR(lpss_dma_desc) },
- 	{ "80862288", LPSS_ADDR(bsw_pwm_dev_desc) },
-+	{ "80862289", LPSS_ADDR(bsw_pwm2_dev_desc) },
- 	{ "8086228A", LPSS_ADDR(bsw_uart_dev_desc) },
- 	{ "8086228E", LPSS_ADDR(bsw_spi_dev_desc) },
- 	{ "808622C0", LPSS_ADDR(lpss_dma_desc) },
--- 
-2.39.2
-
+>
+> -----Original Message-----
+> From: lihuisong (C) <lihuisong@huawei.com>
+> Sent: Thursday, April 13, 2023 9:05 PM
+> To: Robbie King <robbiek@xsightlabs.com>; Sudeep Holla <sudeep.holla@arm.com>
+> Cc: linux-acpi@vger.kernel.org; linux-kernel@vger.kernel.org; rafael@kernel.org; rafael.j.wysocki@intel.com; wanghuiqiang@huawei.com; zhangzekun11@huawei.com; wangxiongfeng2@huawei.com; tanxiaofei@huawei.com; guohanjun@huawei.com; xiexiuqi@huawei.com; wangkefeng.wang@huawei.com; huangdaode@huawei.com
+> Subject: Re: [PATCH v2 0/2] mailbox: pcc: Support platform notification for type4 and shared interrupt
+>
+>
+> 在 2023/4/11 22:47, Robbie King 写道:
+>> Apologies, missed earlier emails.  Will make this a priority for the week.
+> Thanks. Looking forward to you reply.
+>> -----Original Message-----
+>> From: lihuisong (C) <lihuisong@huawei.com>
+>> Sent: Sunday, April 9, 2023 9:27 PM
+>> To: Sudeep Holla <sudeep.holla@arm.com>; Robbie King
+>> <robbiek@xsightlabs.com>
+>> Cc: linux-acpi@vger.kernel.org; linux-kernel@vger.kernel.org;
+>> rafael@kernel.org; rafael.j.wysocki@intel.com;
+>> wanghuiqiang@huawei.com; zhangzekun11@huawei.com;
+>> wangxiongfeng2@huawei.com; tanxiaofei@huawei.com;
+>> guohanjun@huawei.com; xiexiuqi@huawei.com; wangkefeng.wang@huawei.com;
+>> huangdaode@huawei.com
+>> Subject: Re: [PATCH v2 0/2] mailbox: pcc: Support platform
+>> notification for type4 and shared interrupt
+>>
+>>
+>> 在 2023/3/27 20:31, lihuisong (C) 写道:
+>>> 在 2023/3/27 19:33, Sudeep Holla 写道:
+>>>> On Tue, Mar 14, 2023 at 07:11:33PM +0800, Huisong Li wrote:
+>>>>> PCC supports processing platform notification for slave subspaces
+>>>>> and shared interrupt for multiple subspaces.
+>>>>>
+>>>> Other than a super minor nit in the patch 1/2, this looks good to me.
+>>>> It would be good if we can get tested-by from Robbie King
+>>>> <robbiek@xsightlabs.com>
+>>>>
+>>>> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+>>> Thanks for your review.😁
+>>>
+>>> @Robbie King, can you give us some feedback?
+>>> Looking forward to you reply.
+>>>
+>>>
+>> @Robbie King, kindly ping.
