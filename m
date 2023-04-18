@@ -2,49 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47BBE6E650D
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Apr 2023 14:55:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 609926E65AF
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Apr 2023 15:19:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232290AbjDRMzq convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 18 Apr 2023 08:55:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49860 "EHLO
+        id S230376AbjDRNS6 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 18 Apr 2023 09:18:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232267AbjDRMzp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Apr 2023 08:55:45 -0400
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF636CC25;
-        Tue, 18 Apr 2023 05:55:42 -0700 (PDT)
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-95227e5164dso15161166b.1;
-        Tue, 18 Apr 2023 05:55:42 -0700 (PDT)
+        with ESMTP id S232386AbjDRNS6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Apr 2023 09:18:58 -0400
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48D3C15460
+        for <linux-acpi@vger.kernel.org>; Tue, 18 Apr 2023 06:18:48 -0700 (PDT)
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-94a34c299d8so124480266b.1
+        for <linux-acpi@vger.kernel.org>; Tue, 18 Apr 2023 06:18:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681822541; x=1684414541;
+        d=1e100.net; s=20221208; t=1681823927; x=1684415927;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Jdb0w+jEfZkSk+3SmG8wtFklZfay3JZ0XkSQ6zMoTbs=;
-        b=X/gZFai55uFeiF9bEbYoxncxzKgJUlmwQNw5ag7MzPRjAGkT/xlNfYvhy4AshsbIZi
-         MQUL+fE9UM7dmKLET/nTZtMzglC3yIPwW3r5ux/0rjATNJb3ZRsKIFDf9LlJNkmJOFef
-         f2Q6rQPLB5uCEy7ShW+iKvXLrOSPqDeGpr/PPQfc8Spx+dyqbAmtcnBxJVM6fqUPqLZQ
-         44qrSpbYrzGh6sWJs33Ndk0wvy8DwR3KLqX60j6zN4YnXcG2nxWYFrruQD9+QckeIAaK
-         JFvsDrE8FDCEuY3ezDoYmMpiKDgR92kTMouFp/Xgkm5KMQwUKes1v2n/rAccTdcvovtQ
-         6H/w==
-X-Gm-Message-State: AAQBX9e7z12sTtRm1Y5OcKh/4binTifT7sl1863L6NnceTXyZ9VJRspI
-        HQ1FvHsq5MYojLwewEgR1lk5Z2SbMEDXANlIb/GQ+4yE
-X-Google-Smtp-Source: AKy350bLfOyZ9Ie3U225HmWjoFoX38ib+ugrt8e5BtaILw2UAjlpIwX2quIGIFifup4AhjRGOqyfFVD/0daX42HkUNs=
-X-Received: by 2002:a17:906:535d:b0:94f:4ec3:f0e8 with SMTP id
- j29-20020a170906535d00b0094f4ec3f0e8mr6553646ejo.4.1681822541141; Tue, 18 Apr
- 2023 05:55:41 -0700 (PDT)
+        bh=eFIQVXrLFd7q4ga14HgwT435U/mDvwbB8UGP7WQnl88=;
+        b=HTa9hSVrer9zt66UDdcrcqcdn69tVMMPibmMNb2r6IfTsytCVHp+/C8FU1oMOntEh0
+         OJxbk030y2UWbWn1jknS6++oGziPCiVq0xQ/m106+MxYE1xi0S5n0iFhssTk2+/NhopC
+         lW4tnwAaU3sW/3cRoX2AzWjim3RbrqNacpbqgIe1ib8JY89I+rYTnrVTXpout2cuUVW4
+         ACbJ11VzDS2IDo6T0NzVg+0AZHyOvbL1p6zQvIuCWPRp8P2AlDs0Da14yLfQHmrcltdF
+         RFdAlFb3Tx8DBDYrF8NJbWfaTqCJzbO4CyLJfAaPnpLz1bkmPGRQVPSWb8VUOQFySZG7
+         iTtA==
+X-Gm-Message-State: AAQBX9c2FQFK7Z4q6EIchs5OA74j1Jvb4p9kFpFwgAIdIAiR8ksZOiGY
+        TpbO0jCGodfCiqzc/S5GpdQgfUYkYyldoNjiP5va8aN5
+X-Google-Smtp-Source: AKy350YRNEU73tdEqaP7TGNwcUwZ5kxySJqtcBNM4+etDSz+v1Qm5SC+G8dBXXMa+y/h/OlUh8nPnCFM3iTfK3p2g1o=
+X-Received: by 2002:a17:906:72dd:b0:92f:27c2:13c0 with SMTP id
+ m29-20020a17090672dd00b0092f27c213c0mr12808558ejl.6.1681823926547; Tue, 18
+ Apr 2023 06:18:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230418085030.2154918-1-imammedo@redhat.com>
-In-Reply-To: <20230418085030.2154918-1-imammedo@redhat.com>
+References: <20230410144846.1959224-1-guodongtai@kylinos.cn>
+In-Reply-To: <20230410144846.1959224-1-guodongtai@kylinos.cn>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 18 Apr 2023 14:55:29 +0200
-Message-ID: <CAJZ5v0geYujyXKv9mG_i+2rjcdrMVh+jmE1ffJ79_oFr8GNoMg@mail.gmail.com>
-Subject: Re: [PATCH] pci: acpiphp: try to reassign resources on bridge if necessary
-To:     Igor Mammedov <imammedo@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, mst@redhat.com, rafael@kernel.org,
-        lenb@kernel.org, bhelgaas@google.com, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org
+Date:   Tue, 18 Apr 2023 15:18:35 +0200
+Message-ID: <CAJZ5v0iZ4Vf+-SBaUHY7aYg6tJ74wFLWm3y3=XALxrusW8raqg@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: Modify ACPI_STATE_COMMON and put it in a single line
+To:     George Guo <guodongtai@kylinos.cn>
+Cc:     robert.moore@intel.com, rafael.j.wysocki@intel.com,
+        lenb@kernel.org, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -58,68 +57,121 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Apr 18, 2023 at 10:50 AM Igor Mammedov <imammedo@redhat.com> wrote:
+On Mon, Apr 10, 2023 at 4:49 PM George Guo <guodongtai@kylinos.cn> wrote:
 >
-> When using ACPI PCI hotplug, hotplugging a device with
-> large BARs may fail if bridge windows programmed by
-> firmware are not large enough.
+> Avoid trailing semicolons in macro, and it's not readable to put the macro
+> ACPI_STATE_COMMON with other variables in the same line.
+> So modify the macro and just put it in a single line.
 >
-> Reproducer:
->   $ qemu-kvm -monitor stdio -M q35  -m 4G \
->       -global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=on \
->       -device id=rp1,pcie-root-port,bus=pcie.0,chassis=4 \
->       disk_image
->
->  wait till linux guest boots, then hotplug device
->    (qemu) device_add qxl,bus=rp1
->
->  hotplug on guest side fails with:
->    pci 0000:01:00.0: [1b36:0100] type 00 class 0x038000
->    pci 0000:01:00.0: reg 0x10: [mem 0x00000000-0x03ffffff]
->    pci 0000:01:00.0: reg 0x14: [mem 0x00000000-0x03ffffff]
->    pci 0000:01:00.0: reg 0x18: [mem 0x00000000-0x00001fff]
->    pci 0000:01:00.0: reg 0x1c: [io  0x0000-0x001f]
->    pci 0000:01:00.0: BAR 0: no space for [mem size 0x04000000]
->    pci 0000:01:00.0: BAR 0: failed to assign [mem size 0x04000000]
->    pci 0000:01:00.0: BAR 1: no space for [mem size 0x04000000]
->    pci 0000:01:00.0: BAR 1: failed to assign [mem size 0x04000000]
->    pci 0000:01:00.0: BAR 2: assigned [mem 0xfe800000-0xfe801fff]
->    pci 0000:01:00.0: BAR 3: assigned [io  0x1000-0x101f]
->    qxl 0000:01:00.0: enabling device (0000 -> 0003)
->    Unable to create vram_mapping
->    qxl: probe of 0000:01:00.0 failed with error -12
->
-> However when using native PCIe hotplug
->   '-global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off'
-> it works fine, since kernel attempts to reassign unused resources.
-> Use the same machinery as native PCIe hotplug to (re)assign resources.
->
-> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+> Signed-off-by: George Guo <guodongtai@kylinos.cn>
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+ACPICA changes need to be submitted to the upstream project on GitHub
+in the first place.
 
-or please let me know if you want me to pick this up.
+When you have an upstream ACPICA pull request corresponding to this
+patch, please resend the patch with a Link: tag pointing to that pull
+request.
+
+Thanks!
 
 > ---
-> tested in QEMU with Q35 machine on PCIE root port and also
-> with nested conventional bridge attached to root port.
-> ---
->  drivers/pci/hotplug/acpiphp_glue.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/acpi/acpica/aclocal.h | 30 +++++++++++++++++++-----------
+>  1 file changed, 19 insertions(+), 11 deletions(-)
 >
-> diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
-> index 5b1f271c6034..9aebde28a92f 100644
-> --- a/drivers/pci/hotplug/acpiphp_glue.c
-> +++ b/drivers/pci/hotplug/acpiphp_glue.c
-> @@ -517,7 +517,7 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
->                                 }
->                         }
->                 }
-> -               __pci_bus_assign_resources(bus, &add_list, NULL);
-> +               pci_assign_unassigned_bridge_resources(bus->self);
->         }
+> diff --git a/drivers/acpi/acpica/aclocal.h b/drivers/acpi/acpica/aclocal.h
+> index 901b1543b869..cb757ac2c22e 100644
+> --- a/drivers/acpi/acpica/aclocal.h
+> +++ b/drivers/acpi/acpica/aclocal.h
+> @@ -560,25 +560,28 @@ struct acpi_field_info {
+>         u8                              descriptor_type; /* To differentiate various internal objs */\
+>         u8                              flags; \
+>         u16                             value; \
+> -       u16                             state;
+> +       u16                             state
 >
->         acpiphp_sanitize_bus(bus);
+>         /* There are 2 bytes available here until the next natural alignment boundary */
+>
+>  struct acpi_common_state {
+> -ACPI_STATE_COMMON};
+> +       ACPI_STATE_COMMON;
+> +};
+>
+>  /*
+>   * Update state - used to traverse complex objects such as packages
+>   */
+>  struct acpi_update_state {
+> -       ACPI_STATE_COMMON union acpi_operand_object *object;
+> +       ACPI_STATE_COMMON;
+> +       union acpi_operand_object *object;
+>  };
+>
+>  /*
+>   * Pkg state - used to traverse nested package structures
+>   */
+>  struct acpi_pkg_state {
+> -       ACPI_STATE_COMMON u32 index;
+> +       ACPI_STATE_COMMON;
+> +       u32 index;
+>         union acpi_operand_object *source_object;
+>         union acpi_operand_object *dest_object;
+>         struct acpi_walk_state *walk_state;
+> @@ -591,7 +594,8 @@ struct acpi_pkg_state {
+>   * Allows nesting of these constructs
+>   */
+>  struct acpi_control_state {
+> -       ACPI_STATE_COMMON u16 opcode;
+> +       ACPI_STATE_COMMON;
+> +       u16 opcode;
+>         union acpi_parse_object *predicate_op;
+>         u8 *aml_predicate_start;        /* Start of if/while predicate */
+>         u8 *package_end;        /* End of if/while block */
+> @@ -602,11 +606,13 @@ struct acpi_control_state {
+>   * Scope state - current scope during namespace lookups
+>   */
+>  struct acpi_scope_state {
+> -       ACPI_STATE_COMMON struct acpi_namespace_node *node;
+> +       ACPI_STATE_COMMON;
+> +       struct acpi_namespace_node *node;
+>  };
+>
+>  struct acpi_pscope_state {
+> -       ACPI_STATE_COMMON u32 arg_count;        /* Number of fixed arguments */
+> +       ACPI_STATE_COMMON;
+> +       u32 arg_count;  /* Number of fixed arguments */
+>         union acpi_parse_object *op;    /* Current op being parsed */
+>         u8 *arg_end;            /* Current argument end */
+>         u8 *pkg_end;            /* Current package end */
+> @@ -618,7 +624,8 @@ struct acpi_pscope_state {
+>   * states are created when there are nested control methods executing.
+>   */
+>  struct acpi_thread_state {
+> -       ACPI_STATE_COMMON u8 current_sync_level;        /* Mutex Sync (nested acquire) level */
+> +       ACPI_STATE_COMMON;
+> +       u8 current_sync_level;  /* Mutex Sync (nested acquire) level */
+>         struct acpi_walk_state *walk_state_list;        /* Head of list of walk_states for this thread */
+>         union acpi_operand_object *acquired_mutex_list; /* List of all currently acquired mutexes */
+>         acpi_thread_id thread_id;       /* Running thread ID */
+> @@ -629,8 +636,8 @@ struct acpi_thread_state {
+>   * AML arguments
+>   */
+>  struct acpi_result_values {
+> -       ACPI_STATE_COMMON
+> -           union acpi_operand_object *obj_desc[ACPI_RESULTS_FRAME_OBJ_NUM];
+> +       ACPI_STATE_COMMON;
+> +       union acpi_operand_object *obj_desc[ACPI_RESULTS_FRAME_OBJ_NUM];
+>  };
+>
+>  typedef
+> @@ -652,7 +659,8 @@ struct acpi_global_notify_handler {
+>   * handler/dispatcher.
+>   */
+>  struct acpi_notify_info {
+> -       ACPI_STATE_COMMON u8 handler_list_id;
+> +       ACPI_STATE_COMMON;
+> +       u8 handler_list_id;
+>         struct acpi_namespace_node *node;
+>         union acpi_operand_object *handler_list_head;
+>         struct acpi_global_notify_handler *global;
 > --
-> 2.39.1
+> 2.34.1
 >
