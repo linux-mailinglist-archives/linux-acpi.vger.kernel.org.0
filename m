@@ -2,159 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D9916E66EF
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Apr 2023 16:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A90C6E6864
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Apr 2023 17:38:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231273AbjDROSJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 18 Apr 2023 10:18:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54912 "EHLO
+        id S230377AbjDRPia convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 18 Apr 2023 11:38:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231658AbjDROSI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Apr 2023 10:18:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1E6311A
-        for <linux-acpi@vger.kernel.org>; Tue, 18 Apr 2023 07:17:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1681827442;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=D7E0f97enKWeGm4kBxYLE/5HBvfl7WhJLhN+ZbF/ZnM=;
-        b=V7mLYTSSd/zZi4GtNkM5ACmgJfdrKTgwdTqmPYCPiWB/yvh2GU8Vd+JpafmHKgYVyKKeku
-        at8+AzKbwHUOuLKHvWiOnclez4kqCcga1l7qvyW5Q3LhVpm5MPSuyBZAKLfnQ2LF5kY1RY
-        aMBxeliHbcIGdC4QQceyyEJElRDpg6s=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-651-zrp91appPreSjCgpUQ3dmA-1; Tue, 18 Apr 2023 10:17:20 -0400
-X-MC-Unique: zrp91appPreSjCgpUQ3dmA-1
-Received: by mail-wm1-f70.google.com with SMTP id l32-20020a05600c1d2000b003f17b89ddfcso349403wms.1
-        for <linux-acpi@vger.kernel.org>; Tue, 18 Apr 2023 07:17:19 -0700 (PDT)
+        with ESMTP id S229978AbjDRPi3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Apr 2023 11:38:29 -0400
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CACD8A7C;
+        Tue, 18 Apr 2023 08:38:28 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-94a342f4c8eso123033766b.0;
+        Tue, 18 Apr 2023 08:38:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681827423; x=1684419423;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1681832306; x=1684424306;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=D7E0f97enKWeGm4kBxYLE/5HBvfl7WhJLhN+ZbF/ZnM=;
-        b=bxjF3t44Pn5q1SfiQDl3LBkDfhrfvxBtBglIC1WKomwHI7uj83Jdx3wL3ls9OgkW0o
-         tygXD5bj1P0xn0HK4C8aEoUUt+QHqOnWFJi0PR1gE1p1KL4y/M8W0wGDGTMZWgBVRpzx
-         vGuiPCO4VA1b0sgtTB26g+X8D9SsvL7TsfkKoq1cXaYukjaj3w6S4HhNhvmT6YufJ4v5
-         PgL7pbyFWwN1a5Nw6/sATW0bUMQdxd4cfuOnPOHU9ne099mu2aO3vxjshDl0Reugq4ly
-         UCw24cvKgXOscwE1KneLxbI30IJXZ0DVIAu+Y4WOyp72K2tDEAc4BbrxQFmUgYYzbQts
-         +jUg==
-X-Gm-Message-State: AAQBX9fMPxlCm8WNiNkJ3qS693xGuXWGitnpi88H9iR7KLiT4T07hAdi
-        US5aZy8NEIohrGmZrl1H76rTTPD8AyeP6mzjRAcWBYTXfjIFYQ5opdjrPLBM2EdPHD2eFxUsGBG
-        BOBetc2LRHKo+SvRnh6vE8w==
-X-Received: by 2002:a05:600c:24e:b0:3ef:71d5:41d8 with SMTP id 14-20020a05600c024e00b003ef71d541d8mr14882514wmj.32.1681827423682;
-        Tue, 18 Apr 2023 07:17:03 -0700 (PDT)
-X-Google-Smtp-Source: AKy350Z4k5mZUQ0YlvrUPDg3GmVXRk4kB6wqO8dr86TybU23pVcwkwl7iUHnmRW6t9oXDtel+NfwTA==
-X-Received: by 2002:a05:600c:24e:b0:3ef:71d5:41d8 with SMTP id 14-20020a05600c024e00b003ef71d541d8mr14882495wmj.32.1681827423366;
-        Tue, 18 Apr 2023 07:17:03 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id k21-20020a05600c1c9500b003ee74c25f12sm18904809wms.35.2023.04.18.07.17.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Apr 2023 07:17:02 -0700 (PDT)
-Date:   Tue, 18 Apr 2023 16:17:02 +0200
-From:   Igor Mammedov <imammedo@redhat.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, mst@redhat.com, lenb@kernel.org,
+        bh=bX5JtbWnAvg+crNo/UlGoA1FN4ablS2htBjudS2jtMo=;
+        b=GDUvhDaHPSnMxziI3jNN156QyI3HNTNgboUKhtMCog4kI5IUbhm+XNkkTrZO/EhtV5
+         tklNdK1hn/KUvQ01pj2OrTq18CQeTWfxFq84eHx9Ap6TK262xiJhm2V/dPlsIHhTRBEw
+         UXp2BnGXK/2IVsWKT94PpAJtwqE6kwZhFgWMgNLs2tttnyjCJZgAoZWT1EBKfqB5lpza
+         EPqLnLnXzPoe5Q13AJJANNNR5eA5KF/V77tsa/IJoEbleCnthr/qpsCaNX0yPy0PmGdK
+         k30cMz7u/aIB27obmn+90j4Tguo4yYKltt7IUQx/uDKCz7hXYkSGbawBUEEjvSWt8TvF
+         CfJA==
+X-Gm-Message-State: AAQBX9er/ZdHYM1jZ2SwMqA3+gQWIiP9i6TAI2S1Mhcg+wJWH4pAkOH6
+        qJLo66TIXrpz5sfSpTJh4WGGRSkPraLhtR4W3uI=
+X-Google-Smtp-Source: AKy350bOR+SkKVHFACawhYxJyGdkhcr5ebtHYNhLwYmkmp/x3f4p9QSi7Bor8nUNJ+sPa7CYzQ1UqhTQTK7VhoVK4GM=
+X-Received: by 2002:a17:906:7a45:b0:94e:9235:d77e with SMTP id
+ i5-20020a1709067a4500b0094e9235d77emr10972251ejo.3.1681832306558; Tue, 18 Apr
+ 2023 08:38:26 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230418085030.2154918-1-imammedo@redhat.com> <CAJZ5v0geYujyXKv9mG_i+2rjcdrMVh+jmE1ffJ79_oFr8GNoMg@mail.gmail.com>
+ <20230418161702.0945fc67@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230418161702.0945fc67@imammedo.users.ipa.redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 18 Apr 2023 17:38:15 +0200
+Message-ID: <CAJZ5v0gWKwOiACmK9=ru5W15Kydv6JqKJ8d4ngzKC7jqAjjcpQ@mail.gmail.com>
+Subject: Re: [PATCH] pci: acpiphp: try to reassign resources on bridge if necessary
+To:     Igor Mammedov <imammedo@redhat.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-kernel@vger.kernel.org, mst@redhat.com, lenb@kernel.org,
         bhelgaas@google.com, linux-acpi@vger.kernel.org,
         linux-pci@vger.kernel.org
-Subject: Re: [PATCH] pci: acpiphp: try to reassign resources on bridge if
- necessary
-Message-ID: <20230418161702.0945fc67@imammedo.users.ipa.redhat.com>
-In-Reply-To: <CAJZ5v0geYujyXKv9mG_i+2rjcdrMVh+jmE1ffJ79_oFr8GNoMg@mail.gmail.com>
-References: <20230418085030.2154918-1-imammedo@redhat.com>
-        <CAJZ5v0geYujyXKv9mG_i+2rjcdrMVh+jmE1ffJ79_oFr8GNoMg@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-redhat-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 18 Apr 2023 14:55:29 +0200
-"Rafael J. Wysocki" <rafael@kernel.org> wrote:
+On Tue, Apr 18, 2023 at 4:17 PM Igor Mammedov <imammedo@redhat.com> wrote:
+>
+> On Tue, 18 Apr 2023 14:55:29 +0200
+> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+>
+> > On Tue, Apr 18, 2023 at 10:50 AM Igor Mammedov <imammedo@redhat.com> wrote:
+> > >
+> > > When using ACPI PCI hotplug, hotplugging a device with
+> > > large BARs may fail if bridge windows programmed by
+> > > firmware are not large enough.
+> > >
+> > > Reproducer:
+> > >   $ qemu-kvm -monitor stdio -M q35  -m 4G \
+> > >       -global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=on \
+> > >       -device id=rp1,pcie-root-port,bus=pcie.0,chassis=4 \
+> > >       disk_image
+> > >
+> > >  wait till linux guest boots, then hotplug device
+> > >    (qemu) device_add qxl,bus=rp1
+> > >
+> > >  hotplug on guest side fails with:
+> > >    pci 0000:01:00.0: [1b36:0100] type 00 class 0x038000
+> > >    pci 0000:01:00.0: reg 0x10: [mem 0x00000000-0x03ffffff]
+> > >    pci 0000:01:00.0: reg 0x14: [mem 0x00000000-0x03ffffff]
+> > >    pci 0000:01:00.0: reg 0x18: [mem 0x00000000-0x00001fff]
+> > >    pci 0000:01:00.0: reg 0x1c: [io  0x0000-0x001f]
+> > >    pci 0000:01:00.0: BAR 0: no space for [mem size 0x04000000]
+> > >    pci 0000:01:00.0: BAR 0: failed to assign [mem size 0x04000000]
+> > >    pci 0000:01:00.0: BAR 1: no space for [mem size 0x04000000]
+> > >    pci 0000:01:00.0: BAR 1: failed to assign [mem size 0x04000000]
+> > >    pci 0000:01:00.0: BAR 2: assigned [mem 0xfe800000-0xfe801fff]
+> > >    pci 0000:01:00.0: BAR 3: assigned [io  0x1000-0x101f]
+> > >    qxl 0000:01:00.0: enabling device (0000 -> 0003)
+> > >    Unable to create vram_mapping
+> > >    qxl: probe of 0000:01:00.0 failed with error -12
+> > >
+> > > However when using native PCIe hotplug
+> > >   '-global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off'
+> > > it works fine, since kernel attempts to reassign unused resources.
+> > > Use the same machinery as native PCIe hotplug to (re)assign resources.
+> > >
+> > > Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+> >
+> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > or please let me know if you want me to pick this up.
+>
+> It would be nice if you could pick it up.
 
-> On Tue, Apr 18, 2023 at 10:50=E2=80=AFAM Igor Mammedov <imammedo@redhat.c=
-om> wrote:
-> >
-> > When using ACPI PCI hotplug, hotplugging a device with
-> > large BARs may fail if bridge windows programmed by
-> > firmware are not large enough.
-> >
-> > Reproducer:
-> >   $ qemu-kvm -monitor stdio -M q35  -m 4G \
-> >       -global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=3Don \
-> >       -device id=3Drp1,pcie-root-port,bus=3Dpcie.0,chassis=3D4 \
-> >       disk_image
-> >
-> >  wait till linux guest boots, then hotplug device
-> >    (qemu) device_add qxl,bus=3Drp1
-> >
-> >  hotplug on guest side fails with:
-> >    pci 0000:01:00.0: [1b36:0100] type 00 class 0x038000
-> >    pci 0000:01:00.0: reg 0x10: [mem 0x00000000-0x03ffffff]
-> >    pci 0000:01:00.0: reg 0x14: [mem 0x00000000-0x03ffffff]
-> >    pci 0000:01:00.0: reg 0x18: [mem 0x00000000-0x00001fff]
-> >    pci 0000:01:00.0: reg 0x1c: [io  0x0000-0x001f]
-> >    pci 0000:01:00.0: BAR 0: no space for [mem size 0x04000000]
-> >    pci 0000:01:00.0: BAR 0: failed to assign [mem size 0x04000000]
-> >    pci 0000:01:00.0: BAR 1: no space for [mem size 0x04000000]
-> >    pci 0000:01:00.0: BAR 1: failed to assign [mem size 0x04000000]
-> >    pci 0000:01:00.0: BAR 2: assigned [mem 0xfe800000-0xfe801fff]
-> >    pci 0000:01:00.0: BAR 3: assigned [io  0x1000-0x101f]
-> >    qxl 0000:01:00.0: enabling device (0000 -> 0003)
-> >    Unable to create vram_mapping
-> >    qxl: probe of 0000:01:00.0 failed with error -12
-> >
-> > However when using native PCIe hotplug
-> >   '-global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=3Doff'
-> > it works fine, since kernel attempts to reassign unused resources.
-> > Use the same machinery as native PCIe hotplug to (re)assign resources.
-> >
-> > Signed-off-by: Igor Mammedov <imammedo@redhat.com> =20
->=20
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->=20
-> or please let me know if you want me to pick this up.
+OK, I'll do that unless Bjorn tells me that he prefers to take it via
+the PCI tree.
 
-It would be nice if you could pick it up.
 Thanks!
 
->=20
-> > ---
-> > tested in QEMU with Q35 machine on PCIE root port and also
-> > with nested conventional bridge attached to root port.
-> > ---
-> >  drivers/pci/hotplug/acpiphp_glue.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
 > >
-> > diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/a=
-cpiphp_glue.c
-> > index 5b1f271c6034..9aebde28a92f 100644
-> > --- a/drivers/pci/hotplug/acpiphp_glue.c
-> > +++ b/drivers/pci/hotplug/acpiphp_glue.c
-> > @@ -517,7 +517,7 @@ static void enable_slot(struct acpiphp_slot *slot, =
-bool bridge)
-> >                                 }
-> >                         }
-> >                 }
-> > -               __pci_bus_assign_resources(bus, &add_list, NULL);
-> > +               pci_assign_unassigned_bridge_resources(bus->self);
-> >         }
+> > > ---
+> > > tested in QEMU with Q35 machine on PCIE root port and also
+> > > with nested conventional bridge attached to root port.
+> > > ---
+> > >  drivers/pci/hotplug/acpiphp_glue.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
+> > > index 5b1f271c6034..9aebde28a92f 100644
+> > > --- a/drivers/pci/hotplug/acpiphp_glue.c
+> > > +++ b/drivers/pci/hotplug/acpiphp_glue.c
+> > > @@ -517,7 +517,7 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
+> > >                                 }
+> > >                         }
+> > >                 }
+> > > -               __pci_bus_assign_resources(bus, &add_list, NULL);
+> > > +               pci_assign_unassigned_bridge_resources(bus->self);
+> > >         }
+> > >
+> > >         acpiphp_sanitize_bus(bus);
+> > > --
+> > > 2.39.1
+> > >
 > >
-> >         acpiphp_sanitize_bus(bus);
-> > --
-> > 2.39.1
-> > =20
->=20
-
+>
