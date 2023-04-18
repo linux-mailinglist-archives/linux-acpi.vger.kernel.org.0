@@ -2,346 +2,230 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 540BA6E59EC
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Apr 2023 08:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2CED6E5B12
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Apr 2023 09:58:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230252AbjDRG4g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 18 Apr 2023 02:56:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51066 "EHLO
+        id S229824AbjDRH63 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 18 Apr 2023 03:58:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231136AbjDRG4a (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Apr 2023 02:56:30 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27FB16A52;
-        Mon, 17 Apr 2023 23:56:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681800965; x=1713336965;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=cxF13p8SCEtnlzosb7qH6VytQ/OvmdwB769JK2OzYAg=;
-  b=BbmQ+zivQBU9BF5aghO9MXtCJSitIf8vVz3A6cZQr2NAV6f/vz1lMo5J
-   WVQgdK3nbMe6bq03wbsMbL/x0S/MBdBBc+hBKT9UDaVX1u+6HviJVjdaB
-   P6mCOgbQq5vMO+l//MT/FdG1m2+Ie1Ue/9j+CuAuBM0f9CaiBh8vEPxye
-   PRCdh41s56ORDvh9wdsVIhucVECutkgUWbIQTVWkMpdgDEUetE4gSiHbm
-   0QNc8SwIJGKK+kgzOCB079EXHJO8F3S4FNgdFNuHWO7Bt8dZ0RPy/lXJX
-   RpDaj6c6VGqUJZU/0rgamXjxzXp+4npXJq4eH43Kimfx3zHbppN49nu2w
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10683"; a="325432671"
-X-IronPort-AV: E=Sophos;i="5.99,206,1677571200"; 
-   d="scan'208";a="325432671"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2023 23:55:28 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10683"; a="815096197"
-X-IronPort-AV: E=Sophos;i="5.99,206,1677571200"; 
-   d="scan'208";a="815096197"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 17 Apr 2023 23:55:24 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pofFL-000d4p-2b;
-        Tue, 18 Apr 2023 06:55:23 +0000
-Date:   Tue, 18 Apr 2023 14:55:11 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Mark Brown <broonie@kernel.org>, linux-xfs@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-clk@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
-        Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master] BUILD REGRESSION
- 4aa1da8d99724f6c0b762b58a71cee7c5e2e109b
-Message-ID: <643e3ecf.IXV1BGGBUFf0iS6O%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S230036AbjDRH62 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Apr 2023 03:58:28 -0400
+Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4910421B
+        for <linux-acpi@vger.kernel.org>; Tue, 18 Apr 2023 00:58:25 -0700 (PDT)
+X-ASG-Debug-ID: 1681804699-086e237e501b070001-I98ny2
+Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by mx1.zhaoxin.com with ESMTP id eORz1bmA4TLqDKLD (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Tue, 18 Apr 2023 15:58:19 +0800 (CST)
+X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from ZXBJMBX03.zhaoxin.com (10.29.252.7) by ZXSHMBX3.zhaoxin.com
+ (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Tue, 18 Apr
+ 2023 15:58:19 +0800
+Received: from [10.32.64.2] (10.32.64.2) by ZXBJMBX03.zhaoxin.com
+ (10.29.252.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Tue, 18 Apr
+ 2023 15:58:16 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Message-ID: <b0581bb8-b31d-2841-3d75-cad28d503707@zhaoxin.com>
+X-Barracuda-RBL-Trusted-Forwarder: 10.32.64.2
+Date:   Tue, 18 Apr 2023 15:58:15 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 0/5] Parse the PCIe AER and set to relevant registers
+To:     Bjorn Helgaas <helgaas@kernel.org>
+X-ASG-Orig-Subj: Re: [PATCH v2 0/5] Parse the PCIe AER and set to relevant registers
+CC:     <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
+        <tony.luck@intel.com>, <bp@alien8.de>, <robert.moore@intel.com>,
+        <ying.huang@intel.com>, <rdunlap@infradead.org>,
+        <bhelgaas@google.com>, <linux-acpi@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devel@acpica.org>, <CobeChen@zhaoxin.com>,
+        <TonyWWang@zhaoxin.com>, <ErosZhang@zhaoxin.com>,
+        Sathyanarayanan Kuppuswamy 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Li, Ming" <ming4.li@intel.com>, <leoliu@zhaoxin.com>
+References: <20230412163201.GA49069@bhelgaas>
+From:   LeoLiuoc <LeoLiu-oc@zhaoxin.com>
+In-Reply-To: <20230412163201.GA49069@bhelgaas>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.32.64.2]
+X-ClientProxiedBy: ZXSHCAS2.zhaoxin.com (10.28.252.162) To
+ ZXBJMBX03.zhaoxin.com (10.29.252.7)
+X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
+X-Barracuda-Start-Time: 1681804699
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 7685
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.107579
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------------------------
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 4aa1da8d99724f6c0b762b58a71cee7c5e2e109b  Add linux-next specific files for 20230417
 
-Error/Warning reports:
 
-https://lore.kernel.org/oe-kbuild-all/202304102354.Q4VOXGTE-lkp@intel.com
+在 2023/4/13 0:32, Bjorn Helgaas 写道:
+> On Wed, Apr 12, 2023 at 05:11:28PM +0800, LeoLiuoc wrote:
+>> 在 2023/4/8 7:18, Bjorn Helgaas 写道:
+>>> On Tue, Nov 15, 2022 at 11:11:15AM +0800, LeoLiu-oc wrote:
+>>>> From: leoliu-oc <leoliu-oc@zhaoxin.com>
+>>>>
+>>>> According to the sec 18.3.2.4, 18.3.2.5 and 18.3.2.6 in ACPI r6.5, the
+>>>> register values form HEST PCI Express AER Structure should be written to
+>>>> relevant PCIe Device's AER Capabilities. So the purpose of the patch set
+>>>> is to extract register values from HEST PCI Express AER structures and
+>>>> program them into AER Capabilities. Refer to the ACPI Spec r6.5 for a more
+>>>> detailed description.
+>>>
+>>> I wasn't involved in this part of the ACPI spec, and I don't
+>>> understand how this is intended to work.
+>>>
+>>> I see that this series extracts AER mask, severity, and control
+>>> information from the ACPI HEST table and uses it to configure PCIe
+>>> devices as they are enumerated.
+>>>
+>>> What I don't understand is how this relates to ownership of the AER
+>>> capability as negotiated by the _OSC method.  Firmware can configure
+>>> the AER capability itself, and if it retains control of the AER
+>>> capability, the OS can't write to it (with the exception of clearing
+>>> EDR error status), so this wouldn't be necessary.
+>>
+>> There is no relationship between the ownership of the AER related
+>> register and the ownership of the AER capability in the OS or
+>> Firmware.
+> 
+> I don't understand this; can you say it another way?  "Ownership of
+> the AER related register" and "ownership of the AER capability" sound
+> exactly the same to me.
+> 
 
-Error/Warning: (recently discovered and may have been fixed)
+I would like to state that the operation of writing the AER capability 
+register of the relevant PCIe device through the HEST PCI Express AER 
+structure has nothing to do with the ownership of the AER.
 
-drivers/clk/clk-sp7021.c:316:8: warning: result of comparison of constant 18446744073709551615 with expression of type 'typeof (_Generic((_m), char: (unsigned char)0, unsigned char: (unsigned char)0, signed char: (unsigned char)0, unsigned short: (unsigned short)0, short: (unsigned short)0, unsigned int: (unsigned int)0, int: (unsigned int)0, unsigned long: (unsigned long)0, long: (unsigned long)0, unsigned long long: (unsigned long long)0, long long: (unsigned long long)0, default: (_m)))' (aka 'unsigned int') is always false [-Wtautological-constant-out-of-range-compare]
-drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:351:13: warning: variable 'bw_needed' set but not used [-Wunused-but-set-variable]
-drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:352:25: warning: variable 'link' set but not used [-Wunused-but-set-variable]
-drivers/gpu/drm/i915/gt/uc/guc_capture_fwif.h:62: warning: wrong kernel-doc identifier on line:
-drivers/gpu/drm/i915/i915_pmu.h:41: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
-drivers/gpu/drm/i915/i915_request.h:176: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
-drivers/gpu/drm/i915/i915_vma.h:145: warning: expecting prototype for i915_vma_offset(). Prototype was for i915_vma_size() instead
-drivers/phy/mediatek/phy-mtk-hdmi-mt8195.c:298:6: warning: variable 'ret' is uninitialized when used here [-Wuninitialized]
-nios2-linux-ld: phy-mtk-hdmi-mt8195.c:(.text+0x564): undefined reference to `__gesf2'
-nios2-linux-ld: phy-mtk-hdmi-mt8195.c:(.text+0x584): undefined reference to `__ltsf2'
-phy-mtk-hdmi-mt8195.c:(.text+0x550): undefined reference to `__floatunsisf'
+I do not find a direct statement from ACPI Spec r6.5 that allows the OS 
+to write the value of the HEST AER register to the AER register of the 
+corresponding device without AER control but I looked in ACPI Spec for a 
+description of the relationship between writing to the AER register 
+through the _HPP/_HPX method and whether the OS requires AER control：
+The expression are as follows:
+1. OSPM uses the information returned by _HPX to determine how ①to 
+configure PCI Functions that are hot- plugged into the system, ②to 
+configure Functions not configured by the platform firmware during 
+initial system boot, ③and to configure Functions any time they lose 
+configuration space settings (e.g. OSPM issues a Secondary Bus 
+Reset/Function Level Reset or Downstream Port Containment is triggered).
 
-Unverified Error/Warning (likely false positive, please contact us if interested):
+2. _HPX may return multiple types or Record Settings (each setting in a 
+single sub-package.) OSPM is responsible for detecting the type of 
+Function and for applying the appropriate settings. OSPM is also 
+responsible for detecting the device / port type of the PCI Express 
+Function and applying the appropriate settings provided. For example, 
+the Secondary Uncorrectable Error Severity and Secondary Uncorrectable 
+Error Mask settings of Type 2 record are only applicable to PCI Express 
+to PCI-X/PCI Bridge whose device / port type is 1000b. Similarly, AER 
+settings are only applicable to hot plug PCI Express devices that 
+support the optional AER capability.
 
-drivers/acpi/property.c:985 acpi_data_prop_read_single() error: potentially dereferencing uninitialized 'obj'.
-fs/xfs/scrub/refcount.c: xfs_mount.h is included more than once.
-fs/xfs/scrub/refcount.c: xfs_trans_resv.h is included more than once.
+3. Note: OSPM may override the settings provided by the _HPX object’s 
+Type2 record (PCI Express Settings) or Type3 record (PCI Express 
+Descriptor Settings) when OSPM has assumed native control of the 
+corresponding feature. For example, if OSPM has assumed ownership of AER 
+(via _OSC), OSPM may override AER related settings returned by _HPX.
 
-Error/Warning ids grouped by kconfigs:
+This means that writing the AER register value by _HPX does not require 
+the OS to gain control of the AER. Also from the usage description of 
+_HPX, I think ownership of AER means who decides the configuration value 
+of the AER register rather than who can write the configuration value. 
+Even though the OS does not have control or ownership of the AER, it 
+should still write the configuration values determined by the firmware 
+to the AER register at the request of the firmware. Therefore, 
+considering that HEST AER patch is an effective supplement to _HPP/_HPX 
+method when the Firmware does not support the _HPP/_HPX method, I think 
+the question about whether OS has control of AER to write the 
+information in the HEST AER structure to the AER register of the 
+corresponding device is similar to the question about _HPX/_HPP method 
+to write the AER information to the AER register of the corresponding 
+device. Therefore, the ownership of AER is not considered in this patch.
 
-gcc_recent_errors
-|-- alpha-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- arc-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- arm-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- arm-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- arm64-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- i386-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- i386-randconfig-m021-20230417
-|   `-- drivers-acpi-property.c-acpi_data_prop_read_single()-error:potentially-dereferencing-uninitialized-obj-.
-|-- ia64-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- ia64-randconfig-r002-20230416
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- loongarch-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- loongarch-defconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- loongarch-randconfig-r015-20230411
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- microblaze-randconfig-r001-20230416
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- mips-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- mips-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- mips-randconfig-c032-20230416
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- mips-randconfig-r015-20230417
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- nios2-randconfig-r014-20230413
-|   |-- nios2-linux-ld:phy-mtk-hdmi-mt8195.c:(.text):undefined-reference-to-__gesf2
-|   |-- nios2-linux-ld:phy-mtk-hdmi-mt8195.c:(.text):undefined-reference-to-__ltsf2
-|   `-- phy-mtk-hdmi-mt8195.c:(.text):undefined-reference-to-__floatunsisf
-|-- powerpc-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- riscv-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- s390-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- sparc-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- sparc64-randconfig-r004-20230417
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- x86_64-allnoconfig
-|   |-- fs-xfs-scrub-refcount.c:xfs_mount.h-is-included-more-than-once.
-|   `-- fs-xfs-scrub-refcount.c:xfs_trans_resv.h-is-included-more-than-once.
-|-- x86_64-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-`-- x86_64-randconfig-m001-20230417
-    `-- drivers-acpi-property.c-acpi_data_prop_read_single()-error:potentially-dereferencing-uninitialized-obj-.
-clang_recent_errors
-|-- arm-randconfig-r022-20230416
-|   `-- drivers-phy-mediatek-phy-mtk-hdmi-mt8195.c:warning:variable-ret-is-uninitialized-when-used-here
-|-- arm-randconfig-r024-20230416
-|   |-- drivers-clk-clk-sp7021.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((_m)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:(unsigned-char)-unsigned-
-|   `-- drivers-phy-mediatek-phy-mtk-hdmi-mt8195.c:warning:variable-ret-is-uninitialized-when-used-here
-|-- arm64-buildonly-randconfig-r005-20230416
-|   `-- drivers-phy-mediatek-phy-mtk-hdmi-mt8195.c:warning:variable-ret-is-uninitialized-when-used-here
-|-- powerpc-randconfig-r032-20230416
-|   `-- drivers-phy-mediatek-phy-mtk-hdmi-mt8195.c:warning:variable-ret-is-uninitialized-when-used-here
-|-- powerpc-randconfig-r033-20230416
-|   `-- drivers-phy-mediatek-phy-mtk-hdmi-mt8195.c:warning:variable-ret-is-uninitialized-when-used-here
-`-- x86_64-randconfig-a011-20230417
-    |-- drivers-gpu-drm-i915-gt-uc-guc_capture_fwif.h:warning:wrong-kernel-doc-identifier-on-line:
-    |-- drivers-gpu-drm-i915-i915_pmu.h:warning:This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
-    |-- drivers-gpu-drm-i915-i915_request.h:warning:This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
-    `-- drivers-gpu-drm-i915-i915_vma.h:warning:expecting-prototype-for-i915_vma_offset().-Prototype-was-for-i915_vma_size()-instead
+>> The processing here is to initialize the AER related register, not
+>> the AER event. If Firmware is configured with AER register, it will
+>> not be able to handle the runtime hot reset and link retrain cases
+>> in addition to the hotplug case you mentioned below.
+>>
+>>> If the OS owns the AER capability, I assume it gets to decide for
+>>> itself how to configure AER, no matter what the ACPI HEST says.
+>>
+>> What information does the OS use to decide how to configure AER? The
+>> ACPI Spec has the following description: PCI Express (PCIe) root
+>> ports may implement PCIe Advanced Error Reporting (AER) support.
+>> This table(HEST) contains  information platform firmware supplies to
+>> OSPM for configuring AER support on a given root port. We understand
+>> that HEST stands for user to express expectations.
+>>
+>> In the current implementation, the OS already configures a PCIE
+>> device based on _HPP/_HPX method when configuring a PCI device
+>> inserted into a hot-plug slot or initial configuration of a PCI
+>> device at system boot. HEST is just another way to express the
+>> desired configuration of the user.
+> 
+> Why was the HEST mechanism added if the functionality is equivalent
+> to the existing _HPP/_HPX?  There must be something that HEST supplies
+> that _HPP/_HPX did not.
+> 
+> I think we need some things in the commit log (and short comments in
+> the code) to help maintain this in the future:
+> 
+>    - What problem does this solve, e.g., is there some bug that happens
+>      because we lack this functionality?
+> 
+>    - How is this HEST mechanism related to _HPP/_HPX?  What are the
+>      differences?
+> 
+>    - How is this related to _OSC AER ownership?
+> 
 
-elapsed time: 724m
+Yes, I'll add explanations of these issues to the commit log in the next 
+release.
 
-configs tested: 143
-configs skipped: 17
+> I think we ignore _OSC ownership in the existing _HPP/_HPX code, but
+> that seems like a potential problem.  The PCI Firmware spec (r3.3, sec
+> 4.5.1) is pretty clear:
+> 
+>    If control of this feature was requested and denied or was not
+>    requested, firmware returns this bit set to 0, and the operating
+>    system must not modify the Advanced Error Reporting Capability or
+>    the other error enable/status bits listed above.
+> 
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r001-20230417   gcc  
-alpha                randconfig-r016-20230415   gcc  
-alpha                randconfig-r036-20230417   gcc  
-arc                              allyesconfig   gcc  
-arc          buildonly-randconfig-r001-20230417   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r034-20230417   gcc  
-arc                  randconfig-r036-20230416   gcc  
-arc                  randconfig-r043-20230416   gcc  
-arc                  randconfig-r043-20230417   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r012-20230413   gcc  
-arm                  randconfig-r022-20230416   clang
-arm                  randconfig-r024-20230416   clang
-arm                  randconfig-r046-20230416   clang
-arm                  randconfig-r046-20230417   gcc  
-arm                           sama5_defconfig   gcc  
-arm                        shmobile_defconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64        buildonly-randconfig-r005-20230416   clang
-arm64        buildonly-randconfig-r005-20230417   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r031-20230417   gcc  
-csky         buildonly-randconfig-r006-20230416   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r025-20230416   gcc  
-hexagon              randconfig-r012-20230411   clang
-hexagon              randconfig-r014-20230415   clang
-hexagon              randconfig-r032-20230417   clang
-hexagon              randconfig-r041-20230416   clang
-hexagon              randconfig-r041-20230417   clang
-hexagon              randconfig-r045-20230416   clang
-hexagon              randconfig-r045-20230417   clang
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-a001-20230417   gcc  
-i386                 randconfig-a002-20230417   gcc  
-i386                 randconfig-a003-20230417   gcc  
-i386                 randconfig-a004-20230417   gcc  
-i386                 randconfig-a005-20230417   gcc  
-i386                 randconfig-a006-20230417   gcc  
-i386                 randconfig-a011-20230417   clang
-i386                 randconfig-a012-20230417   clang
-i386                 randconfig-a013-20230417   clang
-i386                 randconfig-a014-20230417   clang
-i386                 randconfig-a015-20230417   clang
-i386                 randconfig-a016-20230417   clang
-ia64                             allmodconfig   gcc  
-ia64                                defconfig   gcc  
-ia64                 randconfig-r002-20230416   gcc  
-ia64                 randconfig-r016-20230411   gcc  
-ia64                 randconfig-r024-20230417   gcc  
-ia64                 randconfig-r033-20230417   gcc  
-ia64                 randconfig-r035-20230416   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r012-20230417   gcc  
-loongarch            randconfig-r015-20230411   gcc  
-loongarch            randconfig-r022-20230417   gcc  
-m68k                             allmodconfig   gcc  
-m68k         buildonly-randconfig-r003-20230416   gcc  
-m68k         buildonly-randconfig-r006-20230417   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r011-20230413   gcc  
-microblaze           randconfig-r001-20230416   gcc  
-microblaze           randconfig-r011-20230417   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                  maltasmvp_eva_defconfig   gcc  
-mips                 randconfig-r015-20230417   gcc  
-mips                 randconfig-r026-20230417   gcc  
-nios2        buildonly-randconfig-r003-20230417   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r012-20230415   gcc  
-nios2                randconfig-r014-20230413   gcc  
-nios2                randconfig-r014-20230417   gcc  
-nios2                randconfig-r015-20230413   gcc  
-nios2                randconfig-r015-20230415   gcc  
-nios2                randconfig-r023-20230416   gcc  
-openrisc             randconfig-r006-20230416   gcc  
-openrisc             randconfig-r013-20230415   gcc  
-openrisc             randconfig-r021-20230416   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r013-20230411   gcc  
-parisc               randconfig-r026-20230416   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                        cell_defconfig   gcc  
-powerpc              randconfig-r031-20230416   clang
-powerpc              randconfig-r032-20230416   clang
-powerpc              randconfig-r033-20230416   clang
-powerpc              randconfig-r034-20230416   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r003-20230417   gcc  
-riscv                randconfig-r035-20230417   gcc  
-riscv                randconfig-r042-20230416   gcc  
-riscv                randconfig-r042-20230417   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390         buildonly-randconfig-r001-20230416   gcc  
-s390         buildonly-randconfig-r002-20230416   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r013-20230413   clang
-s390                 randconfig-r044-20230416   gcc  
-s390                 randconfig-r044-20230417   clang
-sh                               allmodconfig   gcc  
-sh           buildonly-randconfig-r002-20230417   gcc  
-sh           buildonly-randconfig-r004-20230416   gcc  
-sh                        dreamcast_defconfig   gcc  
-sparc                            alldefconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64              randconfig-r004-20230417   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-a001-20230417   gcc  
-x86_64               randconfig-a002-20230417   gcc  
-x86_64               randconfig-a003-20230417   gcc  
-x86_64               randconfig-a004-20230417   gcc  
-x86_64               randconfig-a005-20230417   gcc  
-x86_64               randconfig-a006-20230417   gcc  
-x86_64               randconfig-a011-20230417   clang
-x86_64               randconfig-a012-20230417   clang
-x86_64               randconfig-a013-20230417   clang
-x86_64               randconfig-a014-20230417   clang
-x86_64               randconfig-a015-20230417   clang
-x86_64               randconfig-a016-20230417   clang
-x86_64               randconfig-r016-20230417   clang
-x86_64                               rhel-8.3   gcc  
-xtensa               randconfig-r021-20230417   gcc  
+PCI Firmware Spec is not very clear about the relationship between 
+configuring the AER register and the ownership of the AER. ACPI Spec 
+v6.5 does specify the use of _HPP or _HPX: writing to the AER register 
+through the _HPP/HPX method does not require the OS to acquire control 
+of the AER.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Your Sincerely,
+LeoLiu-oc
+
+>>> Maybe this is intended for the case where firmware retains AER
+>>> ownership but the OS uses native hotplug (pciehp), and this is a way
+>>> for the OS to configure new devices as the firmware expects?  But in
+>>> that case, we still have the problem that the OS can't write to the
+>>> AER capability to do this configuration.
+>>>
+>>> Bjorn
