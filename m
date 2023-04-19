@@ -2,282 +2,275 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B6466E7F44
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Apr 2023 18:12:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D579A6E7FCE
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Apr 2023 18:41:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233453AbjDSQMj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Apr 2023 12:12:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59114 "EHLO
+        id S232772AbjDSQlc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Apr 2023 12:41:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232626AbjDSQM0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Apr 2023 12:12:26 -0400
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2075.outbound.protection.outlook.com [40.107.237.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AE1E3ABF
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Apr 2023 09:12:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k3wim9rOk9KyxqVLuVMW3k9gx1Zf1fpIFiC0xx54Q2Dzt2eId5YMVtQl40nr6uDO+j8YBksI0Z/lm0iw03mx7yxrkQxV22USWLDcAQyGyCU3l7xINrVBzJcOSxOjDhxYc1JWnU/8rQyJKKnhF4UvH4/rUvniy9EiylEkXhYTtA1J2gT5lLKiw6GyMyOF/aVuBKy0nqoHRCyUjCBQ1B4Z5ZP4fPB8jfQ/s/K+bkIgierg9D4LGCPF7p0Gz6IK1SDkjaY9lqWwa3SIrrL6rj/b83QiUQImgGd84vNQTWbz36z+uniYu/bKmX+0liFu3sLJXl9VjBJn42UdUuYmPy5iUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aQqb0UgFmuJH8irX2bNc4c5jSYqG6xBHUQ56qzVTFPw=;
- b=aDUiblCq258p5Qt0RPr2sKMpxcoB4rLqtJf23bbNDROyECVg2F5cRdCHsXZHLytpKcRC5dNWDsvTxg1Y9ne2U6ojn1mjeQ0hm0h8KdmiPk1J9/FFvpgOzxQLTHBDngs11icmA9hFdptolVw3tN/PP2IkmpTWzIeY2UPrOd9AflhE7vbwYXwZ2DFMoDZ+FXn9XcMIOFNuBMzmFUTtbTEov5JoOx6yhN8o1ZmR78ICNXOcXtBp5jQqIounSlolLNtkFcqt7p+i8CrUgTLNc68X2tuT+c/H8sYgmlUwT+vd/cNb3CsFBt7ZZjPs5+ZtTBJ0VU/55iuzdDAcWvFMDWvzig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aQqb0UgFmuJH8irX2bNc4c5jSYqG6xBHUQ56qzVTFPw=;
- b=gMi0pJbrbphIWaZxxEg3MQXejjh5EB22UQNzp0f7fiWLSW1HhJNHRzQQ0/WkGGbi+MjDeeJN0MR8ZGWBcducNLeWgMyjMN3e0wy2NCTbcHBz1YAqIY1bOrnLbKNpNQ3E9NRj+pikU/DItgiJIMHu2+6NXrvOwHxK/k4KqsjV16pkaVJzfEy8XZrZzNuVYbW8Z4cbEabRo1BtjxSHV+xeEsOky6WSa8k8GRU1sQrBGf+lTTW+voyT16z4XAz27ugJt//W4k4OAioWQBNrCUxt9wh+/nuqLd6OW3/Ox9CqvFlC2HlXWhOjqQ5uIcAshVhcFxM0im5NBXAl6CJirygUSw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
- by MN0PR12MB6342.namprd12.prod.outlook.com (2603:10b6:208:3c1::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6319.20; Wed, 19 Apr
- 2023 16:12:02 +0000
-Received: from LV2PR12MB5869.namprd12.prod.outlook.com
- ([fe80::f7a7:a561:87e9:5fab]) by LV2PR12MB5869.namprd12.prod.outlook.com
- ([fe80::f7a7:a561:87e9:5fab%6]) with mapi id 15.20.6319.020; Wed, 19 Apr 2023
- 16:12:02 +0000
-From:   Jason Gunthorpe <jgg@nvidia.com>
-To:     Lu Baolu <baolu.lu@linux.intel.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        David Woodhouse <dwmw2@infradead.org>, iommu@lists.linux.dev,
-        Joerg Roedel <joro@8bytes.org>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Will Deacon <will@kernel.org>
-Cc:     Kevin Tian <kevin.tian@intel.com>,
-        Nicolin Chen <nicolinc@nvidia.com>
-Subject: [PATCH 11/11] iommu: Avoid locking/unlocking for iommu_probe_device()
-Date:   Wed, 19 Apr 2023 13:11:57 -0300
-Message-Id: <11-v1-8aecc628b904+2f42-iommu_probe_jgg@nvidia.com>
-In-Reply-To: <0-v1-8aecc628b904+2f42-iommu_probe_jgg@nvidia.com>
-References: 
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR05CA0167.namprd05.prod.outlook.com
- (2603:10b6:a03:339::22) To LV2PR12MB5869.namprd12.prod.outlook.com
- (2603:10b6:408:176::16)
+        with ESMTP id S231532AbjDSQlb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Apr 2023 12:41:31 -0400
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D832524B;
+        Wed, 19 Apr 2023 09:41:30 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1a50cb65c92so1632655ad.0;
+        Wed, 19 Apr 2023 09:41:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1681922490; x=1684514490;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=vyMfPF2gxAgCeN6ITGwi3dqFXBGQyZzAkaQLIvlrtX4=;
+        b=iIBBfxpcVZ9hPGf4EdtiA0Twt/1qxf0xd6v8GbFrkCqt0LVRYNVjQXvuzDe43XebWH
+         IEdGztNOGqp0XcTr01bbgSdcW96QaEZVpd6Whaed2Egg/QvsHHuUKRaQj1E1EyeVCpc+
+         boDp5qxQAmIIcdaoMgSV53e7c7QrR9kDTwTrncOHaQOxumMeqseBl7PbhuDysshJ8uG7
+         fvapgzF/73G7l2wSBitynZal6pPVpvmP8jTk0XpPDUb7ENGyw9gptzb2QSic7RCU/T+K
+         bK+deiznUY68zo/SA2izzxorPg+V6S/lcW956NmU6/KEPIVqM2h40C/6GBvvcMGpEOOc
+         aYyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681922490; x=1684514490;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vyMfPF2gxAgCeN6ITGwi3dqFXBGQyZzAkaQLIvlrtX4=;
+        b=fOVqbF/KLaEr0/YIIB6Lbux5smBNZTHeAHNnZMZBogt3RuSGXS5xAz7gD3N7zso/Ob
+         eon0yCOXBZ91DsDiD/ZJLm5J7YSujeqX8mhc69C4586L9KEHuFfMghgdbkRcQbni09CK
+         MH24Nc+VpUKP41DFErEmgG5+xg8HDOGq9tQeKGxzIwi5hLKii2+jHZVVT1u49oim6iC7
+         PtioCq7Ii88dQFwqSMSOW3kIlbfZcCaFkTPWzBHiuoJL73UOV7TGpMAt9mo09VroF1PZ
+         nsa0KwrdTF8hJc8F5deLvGMcRk0brEH1E6yiMVOugZFx7tGBu/pMaUmDD2/iEIxoYp6I
+         sGtA==
+X-Gm-Message-State: AAQBX9d3+LmiybzAG2MpLRw1Q6TvYxmJmxUFVG2oBnSMwNS+gf2xw+v0
+        DJjmik/oY8VXXPemZ+IA/4s=
+X-Google-Smtp-Source: AKy350Z7Ku8gGUEiOw9RWlsc1Lxp4Q2kZkri37pmsY68Z1GRdfJDYUyQtaXWx+Ka7p7ShLk5GSODbw==
+X-Received: by 2002:a17:902:ec8f:b0:1a1:b137:4975 with SMTP id x15-20020a170902ec8f00b001a1b1374975mr7311334plg.49.1681922490008;
+        Wed, 19 Apr 2023 09:41:30 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id y13-20020a170902b48d00b001a68991e1b3sm11329809plr.263.2023.04.19.09.41.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Apr 2023 09:41:29 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Guenter Roeck <linux@roeck-us.net>,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH] device property: make device_property functions take const device *
+Date:   Wed, 19 Apr 2023 09:41:27 -0700
+Message-Id: <20230419164127.3773278-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|MN0PR12MB6342:EE_
-X-MS-Office365-Filtering-Correlation-Id: 56d559e8-7f11-4551-0cdb-08db40f0ceb8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: TO/quZaleEzdGIZUYgKK96MbmNSuG90LyxpnZJNPO3f6jQQdB5vmfKF1dkukTzVIhwTKjLnqjT/xrBMlDVScUGhwwnPpGHBhYJcDsMPVmfEqtAiPzSi0pfm0Sw3PI2jEhBuJd6lg+JbHkOayN8dIBwrH8n/Z9TGCnj4dlhxcBT67ZkbAOd+Yq1zaGQPK5Fi1zy+yR+vR95mvNmy7zHDuoKb3uUlLybVbkw6oHiTOVoq0oDiX3IRJBZYQSJB+bKo4qgMRPwRPlsFGBGUpaV13xu9+gBtUYyOhVIXFE2hXhCgQlX9AeUnSV442kBtgMmDs/CcSOSGpZf/iz+0UhabN3M6lpCGFvIyA/GZMtfdgnmQG7Bfqo1UkvCC0742k+jS2TxzLVLHIPHw2meq80wb03jfX3NVSifBcupqPNU8TKVJiE+2HW7PnIeoBsRd5FtPI3rCXcLl+2aCt2A2jfVIjzdBifyISUQxV3RfTpGr2nTFiJvp6eG/RdjoA6vjBSDGhU0a1wXvoU3bVhu3mT/AEjgxnNEIjL2QioBBOvyHHeOuC9n107CBYoU/wxCUC5HZ+XR4sThw2xf2gswTcIwSHE5o8yeZpgTGuEW6N2eHwAVs=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(39860400002)(366004)(346002)(136003)(451199021)(6666004)(6486002)(478600001)(110136005)(86362001)(36756003)(2616005)(83380400001)(107886003)(6512007)(186003)(6506007)(26005)(38100700002)(316002)(921005)(66946007)(66476007)(66556008)(2906002)(8676002)(5660300002)(8936002)(7416002)(41300700001)(4326008)(54906003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?2ztZWjsUIPpPJ26h5meE2waatIcYVvtktRBRA5LDH7voDmz5pvJXvOK+MRug?=
- =?us-ascii?Q?t0NvYL8ARu9mkuRS86TirP8FEmr1YU5vTHw7kf9jt4jw9aRO9J6Jl7/tvAb3?=
- =?us-ascii?Q?fTLCbdpEyqo2l0miMsdY/+0RMJmDZx6PNw9vr1+NOxLkEBs7K0df/T5L6qF0?=
- =?us-ascii?Q?uOdhegjLGQdlW9h0NkHXUaoPMmXeXz+3E6kUBEXUS4KddhQEZsAB/Qa6/OIs?=
- =?us-ascii?Q?WXzcQBIShpjvowUYY/UliSSmCgqWDE9FTfKCZ6j9sRyfumgeROmFVCyuhDFR?=
- =?us-ascii?Q?GPouRn/pjgYIP8v/MJOFG1KmE3uix8gTBKLti/i3wBfiCF7CP11O5rRn9cle?=
- =?us-ascii?Q?60LJJXmX0zTl/bE8DZCuUJvfi261yVRQ5iMU7BqgOK6kjPxTrIxhM7JGth7P?=
- =?us-ascii?Q?ZovNu/F2SaAwhtl/PsrX/3z59rJHbJORWBObv9ZPCWdshkv55lyqpd29S+rG?=
- =?us-ascii?Q?90k/pd54Xp5KhwyGyC+6BAXJ/SePEzVZC1dIa4RKaj3uc1ghWWseGaUTAm+E?=
- =?us-ascii?Q?jUe7lvfz9I4iAcvPYMN1UVo1gHXX7NXwzzaZIvtv8RhSafQE96SWL+0BLMcX?=
- =?us-ascii?Q?Li3clbgVHpaY6Rymgp4c56Wqyhv53zVuKyIn2h3uxf4R3c/e7ALsktwyQA6A?=
- =?us-ascii?Q?pBPjoNvPEzTEftOjURvnUWwgP4W/br2AbeA2Mrhy09mMdBgQmEjruFFhElgW?=
- =?us-ascii?Q?+VH+bNATP1kyVxNWN1/u/cKMvDSf5VR6RQ4aPf9+F0JOAbPEfkC686Sct7vb?=
- =?us-ascii?Q?wPbU24hiElWz/C9hJXgVWYfXAfAx6pH6BxyYPSGfTGuU7cXp5Gvttbbd+cuh?=
- =?us-ascii?Q?O9D3Jtv9aC3zEeuLXQxyLY1sFkKgEDxlkuvpKS6OUwsPAZQm8GTcAT8GnfNh?=
- =?us-ascii?Q?PrEJVC5ri4fGS1+rIh3zsFtLLSDzGdO8bmKZwpeDc+qohmFvvEqY98hJdATz?=
- =?us-ascii?Q?Qy1hrRzuG3KyOqBxcra7q7O5gbAui41TnXmD1JIJuAIXeFqTWrL2JDs02jp2?=
- =?us-ascii?Q?w/UW80JPdc+RLUxOX3ZNCt4kPJkmcnwvJ1986dUSGVEMApHvtnpxu98UP8Dq?=
- =?us-ascii?Q?giU25lbL0s9U9m9kjGnuN8VofgRI79JSHGuIem+mCVnrgJKmAwNe7CapBib9?=
- =?us-ascii?Q?zTllqRgU3mONgz1aPsz0Q645kWg8aCnGAV/tZsD4VORiyO02hlopmwWRnYJW?=
- =?us-ascii?Q?/amoYGrpIZtRwVZclbWXCy0E/Mb/spj+aE8KKJSMC8NqSUqrTevvxyLw2hNI?=
- =?us-ascii?Q?tYUdTzUObpOZW4Fzx9B3X24RSJ7FQmPt6sIIUtgx/3rMy33O+qikSt5BFkcH?=
- =?us-ascii?Q?HCKXgbulL7G/qgDKrQW26R2v5zF6IxC+kCJ5WauayZ/zpO/o+ru/72SaUmOs?=
- =?us-ascii?Q?qzFODI/6ufceSZSEz+aaomT4cmTD7Xrv6U/b7Ks4dZEiHWXSyxdPaR9HV+35?=
- =?us-ascii?Q?bMzbE0z6ZmAy5Fz/7N6fKm0Lsnrxh9z1nsfZuUB4nvs147T9ZaQh7sfBREOX?=
- =?us-ascii?Q?x72ylHBoNyyjDSvpe2f1tf4Rbc4nBJeCdvk9WA1kw6lrVcNj9hQP0P67in7r?=
- =?us-ascii?Q?nq+erzYHdYZCq0Vidua+z4XWrirMxxQXwrRc2lDs?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 56d559e8-7f11-4551-0cdb-08db40f0ceb8
-X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2023 16:12:00.8861
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GqSX/dpJVQ8UztCjzRUyVHxbWyo3V89BUGQcUxOu6K6HVqbL/O+gthwpdazUvyL1
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6342
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Remove the race where a hotplug of a device into an existing group will
-have the device installed in the group->devices, but not yet attached to
-the group's current domain.
+device_property functions do not modify the device pointer passed to them.
+The underlying of_device and fwnode_ functions actually already take
+const * arguments. Mark the parameter constant to simplify conversion
+from of_property to device_property functions, and to let the calling code
+use const device pointers where possible.
 
-Move the group attachment logic from iommu_probe_device() and put it under
-the same mutex that updates the group->devices list so everything is
-atomic under the lock.
-
-We retain the two step setup of the default domain for the
-bus_iommu_probe() case solely so that we have a more complete view of the
-group when creating the default domain for boot time devices. This is not
-generally necessary with the current code structure but seems to be
-supporting some odd corner cases like alias RID's and IOMMU_RESV_DIRECT or
-driver bugs returning different default_domain types for the same group.
-
-During bus_iommu_probe() the group will have a device list but both
-group->default_domain and group->domain will be NULL.
-
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- drivers/iommu/iommu.c | 78 +++++++++++++++++++------------------------
- 1 file changed, 35 insertions(+), 43 deletions(-)
+Found by Chris when trying to convert a driver from of_property_ to
+device_property_ functions. I don't really see a reason why the device
+parameter to device_property functions should not be const.
+Please let me know if I am missing sonething.
 
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 5ebff82041f2d1..8fc230eb36d65f 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -130,6 +130,8 @@ static ssize_t iommu_group_store_type(struct iommu_group *group,
- 				      const char *buf, size_t count);
- static struct group_device *iommu_group_alloc_device(struct iommu_group *group,
- 						     struct device *dev);
-+static void __iommu_group_free_device(struct iommu_group *group,
-+				      struct group_device *grp_dev);
- 
- #define IOMMU_GROUP_ATTR(_name, _mode, _show, _store)		\
- struct iommu_group_attribute iommu_group_attr_##_name =		\
-@@ -461,14 +463,39 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
- 		goto err_put_group;
- 	}
- 
-+	/*
-+	 * The gdev must be in the list before calling
-+	 * iommu_setup_default_domain()
-+	 */
- 	list_add_tail(&gdev->list, &group->devices);
--	if (group_list && !group->default_domain && list_empty(&group->entry))
--		list_add_tail(&group->entry, group_list);
-+	WARN_ON(group->default_domain && !group->domain);
-+	if (group->default_domain)
-+		iommu_create_device_direct_mappings(group->default_domain, dev);
-+	if (group->domain) {
-+		ret = __iommu_device_set_domain(group, dev, group->domain, 0);
-+		if (ret)
-+			goto err_remove_gdev;
-+	} else if (!group->default_domain && !group_list) {
-+		ret = iommu_setup_default_domain(group, 0);
-+		if (ret)
-+			goto err_remove_gdev;
-+	} else if (!group->default_domain) {
-+		/*
-+		 * With a group_list argument we defer the default_domain setup
-+		 * to the caller by providing a de-duplicated list of groups
-+		 * that need further setup.
-+		 */
-+		if (list_empty(&group->entry))
-+			list_add_tail(&group->entry, group_list);
-+	}
- 	mutex_unlock(&group->mutex);
- 	mutex_unlock(&iommu_probe_device_lock);
- 
- 	return 0;
- 
-+err_remove_gdev:
-+	list_del(&gdev->list);
-+	__iommu_group_free_device(group, gdev);
- err_put_group:
- 	iommu_deinit_driver(dev);
- 	mutex_unlock(&group->mutex);
-@@ -482,52 +509,17 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
- int iommu_probe_device(struct device *dev)
+ drivers/base/property.c  | 16 ++++++++--------
+ include/linux/property.h | 36 ++++++++++++++++++------------------
+ 2 files changed, 26 insertions(+), 26 deletions(-)
+
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 083a95791d3b..21d7a5d13e05 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -38,7 +38,7 @@ EXPORT_SYMBOL_GPL(__dev_fwnode_const);
+  *
+  * Check if property @propname is present in the device firmware description.
+  */
+-bool device_property_present(struct device *dev, const char *propname)
++bool device_property_present(const struct device *dev, const char *propname)
  {
- 	const struct iommu_ops *ops;
--	struct iommu_group *group;
- 	int ret;
+ 	return fwnode_property_present(dev_fwnode(dev), propname);
+ }
+@@ -86,7 +86,7 @@ EXPORT_SYMBOL_GPL(fwnode_property_present);
+  *	   %-EOVERFLOW if the size of the property is not as expected.
+  *	   %-ENXIO if no suitable firmware interface is present.
+  */
+-int device_property_read_u8_array(struct device *dev, const char *propname,
++int device_property_read_u8_array(const struct device *dev, const char *propname,
+ 				  u8 *val, size_t nval)
+ {
+ 	return fwnode_property_read_u8_array(dev_fwnode(dev), propname, val, nval);
+@@ -114,7 +114,7 @@ EXPORT_SYMBOL_GPL(device_property_read_u8_array);
+  *	   %-EOVERFLOW if the size of the property is not as expected.
+  *	   %-ENXIO if no suitable firmware interface is present.
+  */
+-int device_property_read_u16_array(struct device *dev, const char *propname,
++int device_property_read_u16_array(const struct device *dev, const char *propname,
+ 				   u16 *val, size_t nval)
+ {
+ 	return fwnode_property_read_u16_array(dev_fwnode(dev), propname, val, nval);
+@@ -142,7 +142,7 @@ EXPORT_SYMBOL_GPL(device_property_read_u16_array);
+  *	   %-EOVERFLOW if the size of the property is not as expected.
+  *	   %-ENXIO if no suitable firmware interface is present.
+  */
+-int device_property_read_u32_array(struct device *dev, const char *propname,
++int device_property_read_u32_array(const struct device *dev, const char *propname,
+ 				   u32 *val, size_t nval)
+ {
+ 	return fwnode_property_read_u32_array(dev_fwnode(dev), propname, val, nval);
+@@ -170,7 +170,7 @@ EXPORT_SYMBOL_GPL(device_property_read_u32_array);
+  *	   %-EOVERFLOW if the size of the property is not as expected.
+  *	   %-ENXIO if no suitable firmware interface is present.
+  */
+-int device_property_read_u64_array(struct device *dev, const char *propname,
++int device_property_read_u64_array(const struct device *dev, const char *propname,
+ 				   u64 *val, size_t nval)
+ {
+ 	return fwnode_property_read_u64_array(dev_fwnode(dev), propname, val, nval);
+@@ -198,7 +198,7 @@ EXPORT_SYMBOL_GPL(device_property_read_u64_array);
+  *	   %-EOVERFLOW if the size of the property is not as expected.
+  *	   %-ENXIO if no suitable firmware interface is present.
+  */
+-int device_property_read_string_array(struct device *dev, const char *propname,
++int device_property_read_string_array(const struct device *dev, const char *propname,
+ 				      const char **val, size_t nval)
+ {
+ 	return fwnode_property_read_string_array(dev_fwnode(dev), propname, val, nval);
+@@ -220,7 +220,7 @@ EXPORT_SYMBOL_GPL(device_property_read_string_array);
+  *	   %-EPROTO or %-EILSEQ if the property type is not a string.
+  *	   %-ENXIO if no suitable firmware interface is present.
+  */
+-int device_property_read_string(struct device *dev, const char *propname,
++int device_property_read_string(const struct device *dev, const char *propname,
+ 				const char **val)
+ {
+ 	return fwnode_property_read_string(dev_fwnode(dev), propname, val);
+@@ -242,7 +242,7 @@ EXPORT_SYMBOL_GPL(device_property_read_string);
+  *	   %-EPROTO if the property is not an array of strings,
+  *	   %-ENXIO if no suitable firmware interface is present.
+  */
+-int device_property_match_string(struct device *dev, const char *propname,
++int device_property_match_string(const struct device *dev, const char *propname,
+ 				 const char *string)
+ {
+ 	return fwnode_property_match_string(dev_fwnode(dev), propname, string);
+diff --git a/include/linux/property.h b/include/linux/property.h
+index 0a29db15ff34..66fe73ee430d 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -40,20 +40,20 @@ struct fwnode_handle *__dev_fwnode(struct device *dev);
+ 		 const struct device *: __dev_fwnode_const,	\
+ 		 struct device *: __dev_fwnode)(dev)
  
- 	ret = __iommu_probe_device(dev, NULL);
- 	if (ret)
--		goto err_out;
--
--	group = iommu_group_get(dev);
--	if (!group) {
--		ret = -ENODEV;
--		goto err_release;
--	}
--
--	mutex_lock(&group->mutex);
--
--	if (group->default_domain)
--		iommu_create_device_direct_mappings(group->default_domain, dev);
--
--	if (group->domain) {
--		ret = __iommu_device_set_domain(group, dev, group->domain, 0);
--		if (ret)
--			goto err_unlock;
--	} else if (!group->default_domain) {
--		ret = iommu_setup_default_domain(group, 0);
--		if (ret)
--			goto err_unlock;
--	}
--
--	mutex_unlock(&group->mutex);
--	iommu_group_put(group);
-+		return ret;
+-bool device_property_present(struct device *dev, const char *propname);
+-int device_property_read_u8_array(struct device *dev, const char *propname,
++bool device_property_present(const struct device *dev, const char *propname);
++int device_property_read_u8_array(const struct device *dev, const char *propname,
+ 				  u8 *val, size_t nval);
+-int device_property_read_u16_array(struct device *dev, const char *propname,
++int device_property_read_u16_array(const struct device *dev, const char *propname,
+ 				   u16 *val, size_t nval);
+-int device_property_read_u32_array(struct device *dev, const char *propname,
++int device_property_read_u32_array(const struct device *dev, const char *propname,
+ 				   u32 *val, size_t nval);
+-int device_property_read_u64_array(struct device *dev, const char *propname,
++int device_property_read_u64_array(const struct device *dev, const char *propname,
+ 				   u64 *val, size_t nval);
+-int device_property_read_string_array(struct device *dev, const char *propname,
++int device_property_read_string_array(const struct device *dev, const char *propname,
+ 				      const char **val, size_t nval);
+-int device_property_read_string(struct device *dev, const char *propname,
++int device_property_read_string(const struct device *dev, const char *propname,
+ 				const char **val);
+-int device_property_match_string(struct device *dev,
++int device_property_match_string(const struct device *dev,
+ 				 const char *propname, const char *string);
  
- 	ops = dev_iommu_ops(dev);
- 	if (ops->probe_finalize)
- 		ops->probe_finalize(dev);
+ bool fwnode_property_present(const struct fwnode_handle *fwnode,
+@@ -143,57 +143,57 @@ int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
  
- 	return 0;
--
--err_unlock:
--	mutex_unlock(&group->mutex);
--	iommu_group_put(group);
--err_release:
--	iommu_release_device(dev);
--
--err_out:
--	return ret;
--
+ unsigned int device_get_child_node_count(const struct device *dev);
+ 
+-static inline bool device_property_read_bool(struct device *dev,
++static inline bool device_property_read_bool(const struct device *dev,
+ 					     const char *propname)
+ {
+ 	return device_property_present(dev, propname);
  }
  
- static void __iommu_group_free_device(struct iommu_group *group,
-@@ -1809,11 +1801,6 @@ int bus_iommu_probe(struct bus_type *bus)
- 	LIST_HEAD(group_list);
- 	int ret;
+-static inline int device_property_read_u8(struct device *dev,
++static inline int device_property_read_u8(const struct device *dev,
+ 					  const char *propname, u8 *val)
+ {
+ 	return device_property_read_u8_array(dev, propname, val, 1);
+ }
  
--	/*
--	 * This code-path does not allocate the default domain when
--	 * creating the iommu group, so do it after the groups are
--	 * created.
--	 */
- 	ret = bus_for_each_dev(bus, NULL, &group_list, probe_iommu_group);
- 	if (ret)
- 		return ret;
-@@ -1826,6 +1813,11 @@ int bus_iommu_probe(struct bus_type *bus)
- 		/* Remove item from the list */
- 		list_del_init(&group->entry);
+-static inline int device_property_read_u16(struct device *dev,
++static inline int device_property_read_u16(const struct device *dev,
+ 					   const char *propname, u16 *val)
+ {
+ 	return device_property_read_u16_array(dev, propname, val, 1);
+ }
  
-+		/*
-+		 * We go to the trouble of deferred default domain creation so
-+		 * that the cross-group default domain type and the setup of the
-+		 * IOMMU_RESV_DIRECT will work correctly in non-hotpug scenarios.
-+		 */
- 		ret = iommu_setup_default_domain(group, 0);
- 		if (ret) {
- 			mutex_unlock(&group->mutex);
+-static inline int device_property_read_u32(struct device *dev,
++static inline int device_property_read_u32(const struct device *dev,
+ 					   const char *propname, u32 *val)
+ {
+ 	return device_property_read_u32_array(dev, propname, val, 1);
+ }
+ 
+-static inline int device_property_read_u64(struct device *dev,
++static inline int device_property_read_u64(const struct device *dev,
+ 					   const char *propname, u64 *val)
+ {
+ 	return device_property_read_u64_array(dev, propname, val, 1);
+ }
+ 
+-static inline int device_property_count_u8(struct device *dev, const char *propname)
++static inline int device_property_count_u8(const struct device *dev, const char *propname)
+ {
+ 	return device_property_read_u8_array(dev, propname, NULL, 0);
+ }
+ 
+-static inline int device_property_count_u16(struct device *dev, const char *propname)
++static inline int device_property_count_u16(const struct device *dev, const char *propname)
+ {
+ 	return device_property_read_u16_array(dev, propname, NULL, 0);
+ }
+ 
+-static inline int device_property_count_u32(struct device *dev, const char *propname)
++static inline int device_property_count_u32(const struct device *dev, const char *propname)
+ {
+ 	return device_property_read_u32_array(dev, propname, NULL, 0);
+ }
+ 
+-static inline int device_property_count_u64(struct device *dev, const char *propname)
++static inline int device_property_count_u64(const struct device *dev, const char *propname)
+ {
+ 	return device_property_read_u64_array(dev, propname, NULL, 0);
+ }
+ 
+-static inline int device_property_string_array_count(struct device *dev,
++static inline int device_property_string_array_count(const struct device *dev,
+ 						     const char *propname)
+ {
+ 	return device_property_read_string_array(dev, propname, NULL, 0);
 -- 
-2.40.0
+2.39.2
 
