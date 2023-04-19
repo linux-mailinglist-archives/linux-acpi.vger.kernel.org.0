@@ -2,190 +2,170 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B2456E7CD2
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Apr 2023 16:35:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C864C6E7F40
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Apr 2023 18:12:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232753AbjDSOff (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Apr 2023 10:35:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36774 "EHLO
+        id S233079AbjDSQMZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Apr 2023 12:12:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232587AbjDSOfd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Apr 2023 10:35:33 -0400
-Received: from wnew3-smtp.messagingengine.com (wnew3-smtp.messagingengine.com [64.147.123.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA48E2703;
-        Wed, 19 Apr 2023 07:35:30 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailnew.west.internal (Postfix) with ESMTP id 91D492B06805;
-        Wed, 19 Apr 2023 10:35:25 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Wed, 19 Apr 2023 10:35:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm2; t=1681914925; x=1681922125; bh=Ut
-        qJg87sclxB8kmKKjm1dWi2X4vfjejVvTPZmHeTPGw=; b=G/roXKLhk54CD8O/zz
-        DKOt+KTNmyPZq5TIMil3xkVjiJd4gTK4vjA1iahL90dev069v5N6GP6D4X6S6QHQ
-        WvYaQZRGXnUiawwq3737yfdLPM2FOqs0nwDb7kNkl5nEB+zj4GrWnuK/Kpldb/Q/
-        KnMEA8pt7JkCJ+uTC/cvsYNEDCBt4czLcz09XIeWKn6tV59dg5QJLPtoBdbmT/EY
-        n6ATaxC8nX7Gmf3KCQDLWQWIxVie3bO/EC39/Hz6xlFqWSSNQRyKJ2f6pdFxgHR4
-        MhmcUGyiZMhTk52DLlrVJJosS9E95J7dPuHvPLnK8g4ANCtUf10ccU/yv1WcWyVC
-        yKWw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1681914925; x=1681922125; bh=UtqJg87sclxB8
-        kmKKjm1dWi2X4vfjejVvTPZmHeTPGw=; b=Ayoqp8BoVyIaTqYKSvWcxI+q7xXHr
-        U+07R4ERCxUYUq9YFS4IqW+Gp+PHOE9ohJpaIuy3LN0j+q7mtre99MEphni+CUi9
-        GtHvEkeMTNUO4uqC9evL9j2oAnCozJ6LR8DD3f/kodBPsj2ygXPb1r+HDejWXVn7
-        4LAysEHDz3DVFtZL89xxbtsWqphFWxgpWNewdaa1+F1eebn0gCrxeDdXX8yCuouy
-        u75OYXRGMFXHyqklWYD2DE7ZEOLnRrGJ0S0bdwI/TDq59f97r0HzBBFAjIzg6ZxM
-        MvrlEEl3DLz6yob+G9qptjb/YVCkVWlk99w394m3NYhW9ZlG5SBEnnSMw==
-X-ME-Sender: <xms:K_w_ZAAcnt0IFxlEu-sWYxxCFj4E5HCrdO6gr4X0MJfFAiGmxaV84w>
-    <xme:K_w_ZCgIcIHgK9Z_PsDoB7b-8pvkx6wG9Mbj9U1d8bQhT3GT-hf-oSqbx10GP8B9f
-    Jhbjv9YwQGYOZs3ACg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfedttddgjeelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:K_w_ZDnBR_BAFwoanwfv8B7_PSBstC3_JVczRuVfTB6V2PuNb39qew>
-    <xmx:K_w_ZGznlZkjeBrmRL2dmDP6FxH9drM_zy3lWKa4ZN2-MD9ep5xGag>
-    <xmx:K_w_ZFRVkk5niRZjuNrSLjU3rJcwPSBhzMaC4kF6tovakEg27aFodQ>
-    <xmx:Lfw_ZOCz7NLW2Y2zhw3Ebr9-jzkAqBwZ7jwfeV0CSme0H9PGF0Ss2-wPCx8>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 04D1AB60086; Wed, 19 Apr 2023 10:35:22 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-372-g43825cb665-fm-20230411.003-g43825cb6
-Mime-Version: 1.0
-Message-Id: <d0cf8fa6-d1d2-4a61-ac54-1a268030febc@app.fastmail.com>
-In-Reply-To: <487a20e7-2894-218a-47e9-b222aef4ec6e@huawei.com>
-References: <20230404182037.863533-1-sunilvl@ventanamicro.com>
- <20230404182037.863533-24-sunilvl@ventanamicro.com>
- <dcd04005-2dba-4ccc-a235-a809220f9dbd@app.fastmail.com>
- <487a20e7-2894-218a-47e9-b222aef4ec6e@huawei.com>
-Date:   Wed, 19 Apr 2023 16:34:34 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Weili Qian" <qianweili@huawei.com>,
-        "Sunil V L" <sunilvl@ventanamicro.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-acpi@vger.kernel.org, linux-crypto@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, llvm@lists.linux.dev
-Cc:     "Jonathan Corbet" <corbet@lwn.net>,
-        "Paul Walmsley" <paul.walmsley@sifive.com>,
-        "Palmer Dabbelt" <palmer@dabbelt.com>,
-        "Albert Ou" <aou@eecs.berkeley.edu>, "Len Brown" <lenb@kernel.org>,
-        "Daniel Lezcano" <daniel.lezcano@linaro.org>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        "Zhou Wang" <wangzhou1@hisilicon.com>,
-        "Herbert Xu" <herbert@gondor.apana.org.au>,
-        "Marc Zyngier" <maz@kernel.org>,
-        "Maximilian Luz" <luzmaximilian@gmail.com>,
-        "Hans de Goede" <hdegoede@redhat.com>,
-        "Mark Gross" <markgross@kernel.org>,
-        "Nathan Chancellor" <nathan@kernel.org>,
-        "Nick Desaulniers" <ndesaulniers@google.com>,
-        "Tom Rix" <trix@redhat.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH V4 23/23] crypto: hisilicon/qm: Workaround to enable build with
- RISC-V clang
+        with ESMTP id S233097AbjDSQMW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Apr 2023 12:12:22 -0400
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2075.outbound.protection.outlook.com [40.107.237.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 912AC9778
+        for <linux-acpi@vger.kernel.org>; Wed, 19 Apr 2023 09:12:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Bqj0wCssbCBTdTWx6Rwjf5/n2R7GorjXlmXXhJFwd7PHRfqaZcxPwsrIo8ht3ajASmzerZgt3UTGDVX1PxiHrln61S1Nwrh9um+Dj8embUpqEMAB8IkEehJy1n/W3PA+f69T/ujusRrtuXmq/dFkVrYk4OBulXRLzTi9LnVx68PLwa1TkJ49tVhpA4lzAoY7PbtdLLLUmTeTV5pninNwT+M9vlC1NET3DEbP4OKFz5wBF7/oASk7WVsZVpcA4AFZ6QwzXHZtkgYyLZ2eh3Hv9e0e5sxdhpdYiV2rbb2ePmyT0wEmWnkWlWE7fNp13CrGjaihJEP55j9HoJeVfstuEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aQPUsuK5vGIaJef6f4S7pYnI8VbCHe+jPeaMkcbKN88=;
+ b=BE4F9+JmCdLZwAGoXPCtvg70K9I+wC/RfklCsKfw7MFFxUEWv5CyUTkRrmX5qYH/tjhkk9l/1ADJjTeAp1f8zuHHIytuOFg8Wxa5mlw3X4dXbf2fogRWc+Dx/nF1Zo6NFynI7t78lSfJ1P42mT6i3RvXFQPfvuIy9f0+YVNcS5hJnqEdR7FBmp5wfl6PoeYjOCO+3bNjAqMI6ZIGf3DYBSmo1EVJHXVmUnkEr3bz69T5sw+2/bY/qL+FS71lEZQ6ys3qasD1zxLheeIhwFHpYhfMIcl4LSyKJuKct7zHIAefOhsVPoe99+A4q6IVyWELGHOE33SFWGIPHtlM6ArmBA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aQPUsuK5vGIaJef6f4S7pYnI8VbCHe+jPeaMkcbKN88=;
+ b=TF55AK3Gxx6yRL4yPrEFCV+jOsPT97yYEdqcqaYxGIHLvMYHc6H4+i44csoiPt7NsN8nlNKocovRtWDkEBut34DSOygVFZOaUN1YkaT0Od2zQvZ5Bx9Fqjind0oMXQfiC2YFNCv7gdfee95FTMjUxNOAyVZwXjEmaM2EAJq9rnSK5qKCwwhHOoWOOgXBHUJ67Lh79WkKMzrpVody1c2eDTMinhBdEj+XepIkIgfdYT7yJ6m9hCTkIrl8AIq8Rr4ZLuuqPzRFYelLwIs2gX0aeoV90Ht7DGTtQQ5gG2VN/83mogXltkWluibcD74h47peO5bX5jcdtdSOLOEd2U4CYA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by MN0PR12MB6342.namprd12.prod.outlook.com (2603:10b6:208:3c1::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6319.20; Wed, 19 Apr
+ 2023 16:12:01 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f7a7:a561:87e9:5fab]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f7a7:a561:87e9:5fab%6]) with mapi id 15.20.6319.020; Wed, 19 Apr 2023
+ 16:12:01 +0000
+From:   Jason Gunthorpe <jgg@nvidia.com>
+To:     Lu Baolu <baolu.lu@linux.intel.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        David Woodhouse <dwmw2@infradead.org>, iommu@lists.linux.dev,
+        Joerg Roedel <joro@8bytes.org>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>
+Cc:     Kevin Tian <kevin.tian@intel.com>,
+        Nicolin Chen <nicolinc@nvidia.com>
+Subject: [PATCH 00/11] Consolidate the probe_device path
+Date:   Wed, 19 Apr 2023 13:11:46 -0300
+Message-Id: <0-v1-8aecc628b904+2f42-iommu_probe_jgg@nvidia.com>
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-ClientProxiedBy: SJ0PR03CA0075.namprd03.prod.outlook.com
+ (2603:10b6:a03:331::20) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|MN0PR12MB6342:EE_
+X-MS-Office365-Filtering-Correlation-Id: 57a38f5e-94e5-4491-89f4-08db40f0ce70
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: DW/kT7uMag8c+B27SsbUJnkUYSCuedVkcLtfFylulA+2IfyYn4GBGBzk1YKDvaz3h3RhNcSxMQ27sAQT+V3qz07VqmpvZbe4WdwYdyRHJ6+d4tK9gMDPPDc3uNYwB4CkAncvLHIAEjDiC50u6dHsYXxrlDG3Ne9vmOUaFqLbXjY1DQoHxEDjkpmBDrA773ri5yvjHTZ1bIfqbf+jyoahMCT6nY9jEGgA5lIPTO6zwz/j1nmUpNx9r1Lpn6Rbr57RXIRYzVPoa5Kp64iWEr+UNjnIe9/avkLscDxzvgafnX7RTKGwDIMvwWZHiTbGtT1wnMnfHB4fAVkU0WbWwXiZa/kBeaAPDHLVuOenvMdjCt6Suz6KGK4FcXEEPb3kafQFt0igUdJ3jn9zGhoONSEB0kjYHNSBRxloSOTWXeKOgSQEddqpxPX7o+Vsn8606YGFtPQsV4wcw1Vmhu6ytrjlyAuieIUWwziA6VT7EGN7q8cwFHA+qjcD68IoTJ6a5DaSuTWNCcmgLbas6g9XOrjwKLHQRhLs0rDq77vQtgUaySTJlYOUspfaNLtkgOw0JcA1a/NCGSthkVH1qvTswo8ywwWE17Xw8xIWbxCfkS0C/jUicHlRuPFwzv/RV7ucVirbDRNnoJoWDWqBmwNsnPHa2hDr0p2Pc+LNyRASRXkEqQE=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(39860400002)(366004)(346002)(136003)(451199021)(6666004)(6486002)(966005)(478600001)(110136005)(86362001)(36756003)(2616005)(83380400001)(107886003)(6512007)(186003)(6506007)(26005)(38100700002)(316002)(921005)(66946007)(66476007)(66556008)(2906002)(8676002)(5660300002)(8936002)(7416002)(41300700001)(4326008)(54906003)(4216001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+tJkyBwa+yAE0snvrJu/q2oVxxl92WDqmZOHhKU6c/AqlpReN2q8pOCm3E9g?=
+ =?us-ascii?Q?mkhMWtWiZr6EEsF+C6YONClMo7HD/x+u8Sn+L9oSw27TfFXWlZBM+Gyc8FcD?=
+ =?us-ascii?Q?KffTGbV/HIXwgM7gUiarUBATOCtDVvRuvg0pRyWYFOOUwetp9GSpfzLuoynp?=
+ =?us-ascii?Q?SWbpik6SVP2zPpyIRzWAYDxASlYcwXhIGfocU1cvz6A60wWFF6x1YwYi07kJ?=
+ =?us-ascii?Q?+umZTTZQeqMUs7gIzV7iWI9NQvFnp85i2zvUkTQNtPvqJ8CAM4GQguaOT20c?=
+ =?us-ascii?Q?jcDWchFZyQRTCRO/fI9wF5eKplgznWtmU+n6I2+53daTaYSpOp2/wnREb0j1?=
+ =?us-ascii?Q?Sb6ypsFs6ycVJduv+MFVdNpHG2rRlO0PpKSgNSMpNVroHZPdBS87GntZr+En?=
+ =?us-ascii?Q?KMZ0ZrcB0verGc3u4ih3tZAEbOpppgUQvqAX3u1pGLZN5BRybwUWrntrfMD6?=
+ =?us-ascii?Q?fimXG7FfOCzCLHp+n01cZAn84EsLGHQCR9DVnOceJ9ZBJX9nFzo29D2oEwOY?=
+ =?us-ascii?Q?FRpfC/hTVciEyhw78vEu9ZCgh7uidjt58BbrR+TsPTzfiusLNBFxLfNU+XIG?=
+ =?us-ascii?Q?Lm6uo9DcXMRKjjX9jAchUQ4SCpDLf6kBH0EN8wqw29tlgQJWkr56iixYwkKh?=
+ =?us-ascii?Q?jFzWxl7ut0/4RbcShpmhwI3AQI8TD2ktFzlDygmgCpGOUUf2MvTi3OQIhzHA?=
+ =?us-ascii?Q?OCinRgPymhLLT6FXgToLCFWK+o2puViJ37JoZOS88g4lBICHCZ47nI5inFVk?=
+ =?us-ascii?Q?JDgh+dpsWywNGvxM3Xo3T6iZKcjgGrq9zmULnB1rZTNX43/tyknOthdPscvS?=
+ =?us-ascii?Q?v9sUYUQlmEpwU51KJ6BjuJkaFVSiaQmV0osoTVSLR9ZiugYCTnNd4qiibjDn?=
+ =?us-ascii?Q?F4GvTjNF63a7OCHF9sh/DWlLfQRlH8CnoARiej2EP9LgXmHuyIiq+ovyZh6Z?=
+ =?us-ascii?Q?8wUGghwm8yS+3Yu1nrZX8kZ6vph8wexdgyDuWSClZXKXik7ioU4PrzyDB30d?=
+ =?us-ascii?Q?uh4JAeOR62NSESUC6lFTXyN0gKFVgGQRVk87E7HNIQbKaYqR/9RjPEYCBCUS?=
+ =?us-ascii?Q?ZQsX2VAicWtZ0kssqRWa8xXXZ/6tWPsi2667/QhzYYhDPnKvi2Beb88KJV2P?=
+ =?us-ascii?Q?rzEvqn5BXprDySWic50NpWhybbkSJgnUuGyaFj/K9twBCxObHyDTwmyTQaGG?=
+ =?us-ascii?Q?+O/YkOioUeAxCcv8BOhB9D6h0tAy9Ae+1R83rZwuYlVPJ7TNlUnKsQmAUP2Z?=
+ =?us-ascii?Q?zdwm9+ae/5qtTpCAFnNVLOsPYTtmQmF6mWS1+QNO9fOONJSAbO8OwNKV3kt0?=
+ =?us-ascii?Q?OuhkRcQ8a3k04IFpFpqhFLD/zyrgdQmXTbH1MErTwgNCpHkxX1IdR3miXCEo?=
+ =?us-ascii?Q?bbMV1Pf1PwcEmub+wke3KIllMRPwU6B7BrYtEvZbB4Oq/myqkLfEeFIWJqN3?=
+ =?us-ascii?Q?U7HBNnFK+5oP5UGd2sSInDvx+4qhvXgdc2UH3f/bEa6fy/zFXR+kLzEbzyBl?=
+ =?us-ascii?Q?4YdfZScBvByfjfMocnWY/ojmJZgjz3zXA05dovrMxBLH6+/jQ64izwNjgIRH?=
+ =?us-ascii?Q?yOxGS+ioRAF72A1JcqaUJ+y/nGpCb8G+bLJLg8Xb?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 57a38f5e-94e5-4491-89f4-08db40f0ce70
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2023 16:12:00.3939
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: v2VqTJHf00M+7EE/lGpTL8bUGyGgnwfoi8Qqey4qPqShZ8zd7QMvpTh8sbnzqN3l
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6342
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Apr 11, 2023, at 13:42, Weili Qian wrote:
-> On 2023/4/5 16:16, Arnd Bergmann wrote:
->> On Tue, Apr 4, 2023, at 20:20, Sunil V L wrote:
->>> With CONFIG_ACPI enabled for RISC-V, this driver gets enabled in
->>> allmodconfig build. The gcc tool chain builds this driver removing the
->>> inline arm64 assembly code. However, clang for RISC-V tries to build
->>> the arm64 assembly and below error is seen.
->>>
->>> drivers/crypto/hisilicon/qm.c:627:10: error: invalid output constraint 
->>> '+Q' in asm
->>>                        "+Q" (*((char __iomem *)fun_base))
->>>                        ^
->>> It appears that RISC-V clang is not smart enough to detect
->>> IS_ENABLED(CONFIG_ARM64) and remove the dead code.
->>>
->>> As a workaround, move this check to preprocessing stage which works
->>> with the RISC-V clang tool chain.
->>>
->>> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
->> 
->> Your patch looks correct for this particular problem, but I
->> see that there are a couple of other issues in the same function:
->> 
->>> -	}
->>> +#if IS_ENABLED(CONFIG_ARM64)
->>> +	unsigned long tmp0 = 0, tmp1 = 0;
->>>
->>>  	asm volatile("ldp %0, %1, %3\n"
->>>  		     "stp %0, %1, %2\n"
->>> @@ -627,6 +623,11 @@ static void qm_mb_write(struct hisi_qm *qm, const 
->>> void *src)
->>>  		       "+Q" (*((char __iomem *)fun_base))
->>>  		     : "Q" (*((char *)src))
->>>  		     : "memory");
->> 
->> For the arm64 version:
->> 
->> - the "dmb oshst" barrier needs to come before the stp, not after
->>   it,  otherwise there is no guarantee that data written to memory
->>   is visible by the device when the mailbox gets triggered
->> - The input/output arguments need to be pointers to 128-bit types,
->>   either a struct or a __uint128_t
->> - this lacks a byteswap on big-endian kernels
-> Sorry for the late reply.
->
-> - the execution order relies on the data dependency between ldp and stp:
->   load "src" to "tmp0" and "tmp1", then
->   store "tmp0" and "tmp1" to "fun_base";
+Now that the domain allocation path is less duplicated we can tackle the
+probe_device path. Details of this are spread across several functions,
+broadly move most of the code into __iommu_probe_device() and organize it
+more strictly in terms of paired do/undo functions.
 
-Not entirely sure how that data dependency would help serialize
-the store into the DMA buffer against the device access. The problem
-here is not the qm_mailbox structure but the data pointed to by the
-'u64 base' (e.g. struct qm_eqc *eqc) which may still be in a store
-buffer waiting to make it to physical memory at the time the mailbox
-store triggers the DMA from the device.
+Make the locking simpler by obtaining the group->mutex fewer times and
+avoiding adding a half-initialized device to an initialized
+group. Previously we would lock/unlock the group three times on these
+paths.
 
->   The "dmb oshst" is used to ensure that the stp instruction has been executed
->   before CPU checking mailbox status. Whether the execution order
->   cannot be guaranteed via data dependency?
+This locking change is the primary point of the series, creating the
+paired do/undo functions is a path to being able to organize the setup
+code under a single lock and still have a logical, not duplicated, error
+unwind.
 
-There is no need to have barriers between MMIO operations, they
-are implicitly serialized already. In this case specifically,
-the read is even on the same address as the write. Note that the
-"dmb oshst" does not actually guarantee that the store has made it
-to the device, as (at least on PCIe semantics) it can be posted,
-but the read from the same address does guarantee that the write
-is completed first, and this may be required to ensure that it does
-not complete after the mutex_unlock().
+This follows the prior series:
 
-> - The input argument "src" is struct "struct qm_mailbox".
-> - Before call this funcion, the data has been byteswapped.
->
-> 	mailbox->w0 = cpu_to_le16((cmd) |
-> 		((op) ? 0x1 << QM_MB_OP_SHIFT : 0) |
-> 		(0x1 << QM_MB_BUSY_SHIFT));
-> 	mailbox->queue_num = cpu_to_le16(queue);
-> 	mailbox->base_l = cpu_to_le32(lower_32_bits(base));
-> 	mailbox->base_h = cpu_to_le32(upper_32_bits(base));
-> 	mailbox->rsvd = 0;
+https://lore.kernel.org/r/0-v4-79d0c229580a+650-iommu_err_unwind_jgg@nvidia.com
 
-Right, this bit does look correct.
+Jason Gunthorpe (11):
+  iommu: Have __iommu_probe_device() check for already probed devices
+  iommu: Use iommu_group_ref_get/put() for dev->iommu_group
+  iommu: Inline iommu_group_get_for_dev() into __iommu_probe_device()
+  iommu: Simplify the __iommu_group_remove_device() flow
+  iommu: Add iommu_init/deinit_driver() paired functions
+  iommu: Move the iommu driver sysfs setup into
+    iommu_init/deinit_driver()
+  iommu: Do not export iommu_device_link/unlink()
+  iommu: Always destroy the iommu_group during iommu_release_device()
+  iommu/power: Remove iommu_del_device()
+  iommu: Split iommu_group_add_device()
+  iommu: Avoid locking/unlocking for iommu_probe_device()
 
-      Arnd
+ arch/powerpc/include/asm/iommu.h       |   5 -
+ arch/powerpc/kernel/iommu.c            |  17 -
+ arch/powerpc/platforms/powernv/pci.c   |  25 --
+ arch/powerpc/platforms/pseries/iommu.c |  25 --
+ drivers/acpi/scan.c                    |   2 +-
+ drivers/iommu/intel/iommu.c            |   7 -
+ drivers/iommu/iommu-sysfs.c            |   8 -
+ drivers/iommu/iommu.c                  | 411 +++++++++++++------------
+ drivers/iommu/of_iommu.c               |   2 +-
+ 9 files changed, 212 insertions(+), 290 deletions(-)
+
+
+base-commit: 172314c88ed17bd838404d837bfb256d9bfd4e3d
+-- 
+2.40.0
+
