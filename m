@@ -2,182 +2,190 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52D866E7557
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Apr 2023 10:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B2456E7CD2
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Apr 2023 16:35:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232744AbjDSIeY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Apr 2023 04:34:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44230 "EHLO
+        id S232753AbjDSOff (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Apr 2023 10:35:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232696AbjDSIeJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Apr 2023 04:34:09 -0400
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B0211025A
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Apr 2023 01:33:54 -0700 (PDT)
-Received: by mail-wm1-x332.google.com with SMTP id v10so10058528wmn.5
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Apr 2023 01:33:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681893232; x=1684485232;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZFr0nNH7gKvfGd1xmrDdwsbO4A4hFnitswKb+PdA3E8=;
-        b=W/Tqw/dMvtEe3FajEF9yCwGnfzmUZEjH+Tif9EgeaHJIdCUZf++mkSpx6eNr2zFb3B
-         ev+9mSAGmiJOJ/xVRku+fLPsaOHjzLH2vkIUvhFYMXg7qd0Fk1N8vHRCL4CXq+60iHAG
-         KpfoO799aCEpb1snZiiflY8lj4Yo2MXdArjEAeSUWr98PgdJ6U8mRomWqj566wQR1ZhZ
-         LhHNRCim/aJ0ubva7AbwrKjtojJ2zcS0hQABDMbqunXxyXfaEQcEd12Y4zJsuyqNN9B3
-         iUAWLfYe3gGZ+lxE+JU/R7HFQWChRETiFZ0meFXZBsdJZdALiwBMGzcLOM7cIEOkwhvT
-         QgQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681893232; x=1684485232;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZFr0nNH7gKvfGd1xmrDdwsbO4A4hFnitswKb+PdA3E8=;
-        b=hPogRFlVBqTLujekc7/8wv3Wk2xmdcfh/dQnES7sI5lO+qsCMKo3b8QFI17MalTQgq
-         AynHsscDyjhUq1AY0yEtz2ut7UfXhgxlCtiv6EH28sQEJgfknEfedV8qZTdAYiBCKfTZ
-         juV6DmOoabQ+ljeHEafeOZNIMSFuFKi8crNbDkWuvLKm7K2R601+8MC4IQM5miUq3198
-         UN9KRl44xhvX6kALDfzhWWDcCtGWDEAp/CfA1RRlaHPQwl8u0Zr2kLM49YbI2vantbw5
-         EEoZcZOg6wSd75AJszxAdbruN5bEOP+g5gHIrJNGhdMJb+Kpf6ttg0MFwvHinKx4QlxH
-         l42w==
-X-Gm-Message-State: AAQBX9fssDhrR1PVanrxp9blEXl7u2rvBTjShULkNc6O+IeIXQxojERY
-        kwHf9XTkSjeOWLkOUm65dKBt5A==
-X-Google-Smtp-Source: AKy350bEQa6B5ZqLGlKS+oPmo6grbCsWKBRQGeNInPxEGgjFovGVroUCPj9Lo+sCs3xC28bfbvM3Cg==
-X-Received: by 2002:a1c:cc05:0:b0:3ef:d8c6:4bc0 with SMTP id h5-20020a1ccc05000000b003efd8c64bc0mr14793730wmb.40.1681893232730;
-        Wed, 19 Apr 2023 01:33:52 -0700 (PDT)
-Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:a794:9fb2:29fb:606d])
-        by smtp.gmail.com with ESMTPSA id s5-20020a1cf205000000b003ed1ff06faasm1442033wmc.19.2023.04.19.01.33.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Apr 2023 01:33:52 -0700 (PDT)
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     daniel.lezcano@linaro.org, rafael@kernel.org
-Cc:     rui.zhang@intel.com, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org (open list:ACPI THERMAL DRIVER)
-Subject: [PATCH v4 5/6] thermal/drivers/acpi: Move to dedicated function sysfs extra attr creation
-Date:   Wed, 19 Apr 2023 10:33:42 +0200
-Message-Id: <20230419083343.505780-6-daniel.lezcano@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230419083343.505780-1-daniel.lezcano@linaro.org>
-References: <20230419083343.505780-1-daniel.lezcano@linaro.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S232587AbjDSOfd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Apr 2023 10:35:33 -0400
+Received: from wnew3-smtp.messagingengine.com (wnew3-smtp.messagingengine.com [64.147.123.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA48E2703;
+        Wed, 19 Apr 2023 07:35:30 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailnew.west.internal (Postfix) with ESMTP id 91D492B06805;
+        Wed, 19 Apr 2023 10:35:25 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Wed, 19 Apr 2023 10:35:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm2; t=1681914925; x=1681922125; bh=Ut
+        qJg87sclxB8kmKKjm1dWi2X4vfjejVvTPZmHeTPGw=; b=G/roXKLhk54CD8O/zz
+        DKOt+KTNmyPZq5TIMil3xkVjiJd4gTK4vjA1iahL90dev069v5N6GP6D4X6S6QHQ
+        WvYaQZRGXnUiawwq3737yfdLPM2FOqs0nwDb7kNkl5nEB+zj4GrWnuK/Kpldb/Q/
+        KnMEA8pt7JkCJ+uTC/cvsYNEDCBt4czLcz09XIeWKn6tV59dg5QJLPtoBdbmT/EY
+        n6ATaxC8nX7Gmf3KCQDLWQWIxVie3bO/EC39/Hz6xlFqWSSNQRyKJ2f6pdFxgHR4
+        MhmcUGyiZMhTk52DLlrVJJosS9E95J7dPuHvPLnK8g4ANCtUf10ccU/yv1WcWyVC
+        yKWw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1681914925; x=1681922125; bh=UtqJg87sclxB8
+        kmKKjm1dWi2X4vfjejVvTPZmHeTPGw=; b=Ayoqp8BoVyIaTqYKSvWcxI+q7xXHr
+        U+07R4ERCxUYUq9YFS4IqW+Gp+PHOE9ohJpaIuy3LN0j+q7mtre99MEphni+CUi9
+        GtHvEkeMTNUO4uqC9evL9j2oAnCozJ6LR8DD3f/kodBPsj2ygXPb1r+HDejWXVn7
+        4LAysEHDz3DVFtZL89xxbtsWqphFWxgpWNewdaa1+F1eebn0gCrxeDdXX8yCuouy
+        u75OYXRGMFXHyqklWYD2DE7ZEOLnRrGJ0S0bdwI/TDq59f97r0HzBBFAjIzg6ZxM
+        MvrlEEl3DLz6yob+G9qptjb/YVCkVWlk99w394m3NYhW9ZlG5SBEnnSMw==
+X-ME-Sender: <xms:K_w_ZAAcnt0IFxlEu-sWYxxCFj4E5HCrdO6gr4X0MJfFAiGmxaV84w>
+    <xme:K_w_ZCgIcIHgK9Z_PsDoB7b-8pvkx6wG9Mbj9U1d8bQhT3GT-hf-oSqbx10GP8B9f
+    Jhbjv9YwQGYOZs3ACg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfedttddgjeelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:K_w_ZDnBR_BAFwoanwfv8B7_PSBstC3_JVczRuVfTB6V2PuNb39qew>
+    <xmx:K_w_ZGznlZkjeBrmRL2dmDP6FxH9drM_zy3lWKa4ZN2-MD9ep5xGag>
+    <xmx:K_w_ZFRVkk5niRZjuNrSLjU3rJcwPSBhzMaC4kF6tovakEg27aFodQ>
+    <xmx:Lfw_ZOCz7NLW2Y2zhw3Ebr9-jzkAqBwZ7jwfeV0CSme0H9PGF0Ss2-wPCx8>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 04D1AB60086; Wed, 19 Apr 2023 10:35:22 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-372-g43825cb665-fm-20230411.003-g43825cb6
+Mime-Version: 1.0
+Message-Id: <d0cf8fa6-d1d2-4a61-ac54-1a268030febc@app.fastmail.com>
+In-Reply-To: <487a20e7-2894-218a-47e9-b222aef4ec6e@huawei.com>
+References: <20230404182037.863533-1-sunilvl@ventanamicro.com>
+ <20230404182037.863533-24-sunilvl@ventanamicro.com>
+ <dcd04005-2dba-4ccc-a235-a809220f9dbd@app.fastmail.com>
+ <487a20e7-2894-218a-47e9-b222aef4ec6e@huawei.com>
+Date:   Wed, 19 Apr 2023 16:34:34 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Weili Qian" <qianweili@huawei.com>,
+        "Sunil V L" <sunilvl@ventanamicro.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-acpi@vger.kernel.org, linux-crypto@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, llvm@lists.linux.dev
+Cc:     "Jonathan Corbet" <corbet@lwn.net>,
+        "Paul Walmsley" <paul.walmsley@sifive.com>,
+        "Palmer Dabbelt" <palmer@dabbelt.com>,
+        "Albert Ou" <aou@eecs.berkeley.edu>, "Len Brown" <lenb@kernel.org>,
+        "Daniel Lezcano" <daniel.lezcano@linaro.org>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Zhou Wang" <wangzhou1@hisilicon.com>,
+        "Herbert Xu" <herbert@gondor.apana.org.au>,
+        "Marc Zyngier" <maz@kernel.org>,
+        "Maximilian Luz" <luzmaximilian@gmail.com>,
+        "Hans de Goede" <hdegoede@redhat.com>,
+        "Mark Gross" <markgross@kernel.org>,
+        "Nathan Chancellor" <nathan@kernel.org>,
+        "Nick Desaulniers" <ndesaulniers@google.com>,
+        "Tom Rix" <trix@redhat.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>
+Subject: Re: [PATCH V4 23/23] crypto: hisilicon/qm: Workaround to enable build with
+ RISC-V clang
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The ACPI thermal driver creates extra sysfs attributes in its own
-directory pointing to the thermal zone it is related to and add a
-pointer to the sysfs ACPI thermal device from the thermal zone sysfs
-entry.
+On Tue, Apr 11, 2023, at 13:42, Weili Qian wrote:
+> On 2023/4/5 16:16, Arnd Bergmann wrote:
+>> On Tue, Apr 4, 2023, at 20:20, Sunil V L wrote:
+>>> With CONFIG_ACPI enabled for RISC-V, this driver gets enabled in
+>>> allmodconfig build. The gcc tool chain builds this driver removing the
+>>> inline arm64 assembly code. However, clang for RISC-V tries to build
+>>> the arm64 assembly and below error is seen.
+>>>
+>>> drivers/crypto/hisilicon/qm.c:627:10: error: invalid output constraint 
+>>> '+Q' in asm
+>>>                        "+Q" (*((char __iomem *)fun_base))
+>>>                        ^
+>>> It appears that RISC-V clang is not smart enough to detect
+>>> IS_ENABLED(CONFIG_ARM64) and remove the dead code.
+>>>
+>>> As a workaround, move this check to preprocessing stage which works
+>>> with the RISC-V clang tool chain.
+>>>
+>>> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+>> 
+>> Your patch looks correct for this particular problem, but I
+>> see that there are a couple of other issues in the same function:
+>> 
+>>> -	}
+>>> +#if IS_ENABLED(CONFIG_ARM64)
+>>> +	unsigned long tmp0 = 0, tmp1 = 0;
+>>>
+>>>  	asm volatile("ldp %0, %1, %3\n"
+>>>  		     "stp %0, %1, %2\n"
+>>> @@ -627,6 +623,11 @@ static void qm_mb_write(struct hisi_qm *qm, const 
+>>> void *src)
+>>>  		       "+Q" (*((char __iomem *)fun_base))
+>>>  		     : "Q" (*((char *)src))
+>>>  		     : "memory");
+>> 
+>> For the arm64 version:
+>> 
+>> - the "dmb oshst" barrier needs to come before the stp, not after
+>>   it,  otherwise there is no guarantee that data written to memory
+>>   is visible by the device when the mailbox gets triggered
+>> - The input/output arguments need to be pointers to 128-bit types,
+>>   either a struct or a __uint128_t
+>> - this lacks a byteswap on big-endian kernels
+> Sorry for the late reply.
+>
+> - the execution order relies on the data dependency between ldp and stp:
+>   load "src" to "tmp0" and "tmp1", then
+>   store "tmp0" and "tmp1" to "fun_base";
 
-This is very specific to this ACPI thermal driver, let's encapsulate
-the related creation/deletion code to group it inside a function we
-can identify later for removal if needed.
+Not entirely sure how that data dependency would help serialize
+the store into the DMA buffer against the device access. The problem
+here is not the qm_mailbox structure but the data pointed to by the
+'u64 base' (e.g. struct qm_eqc *eqc) which may still be in a store
+buffer waiting to make it to physical memory at the time the mailbox
+store triggers the DMA from the device.
 
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
----
- drivers/acpi/thermal.c | 52 ++++++++++++++++++++++++++----------------
- 1 file changed, 32 insertions(+), 20 deletions(-)
+>   The "dmb oshst" is used to ensure that the stp instruction has been executed
+>   before CPU checking mailbox status. Whether the execution order
+>   cannot be guaranteed via data dependency?
 
-diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-index 5763db4528b8..9a90b1a117cd 100644
---- a/drivers/acpi/thermal.c
-+++ b/drivers/acpi/thermal.c
-@@ -787,9 +787,34 @@ static struct thermal_zone_device_ops acpi_thermal_zone_ops = {
- 	.critical = acpi_thermal_zone_device_critical,
- };
- 
-+static int acpi_thermal_zone_sysfs_add(struct acpi_thermal *tz)
-+{
-+	struct device *tzdev = thermal_zone_device(tz->thermal_zone);
-+	int ret;
-+	
-+	ret = sysfs_create_link(&tz->device->dev.kobj,
-+				&tzdev->kobj, "thermal_zone");
-+	if (ret)
-+		return ret;
-+
-+	ret = sysfs_create_link(&tzdev->kobj,
-+				   &tz->device->dev.kobj, "device");
-+	if (ret)
-+		sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
-+
-+	return ret;
-+}
-+
-+static void acpi_thermal_zone_sysfs_remove(struct acpi_thermal *tz)
-+{
-+	struct device *tzdev = thermal_zone_device(tz->thermal_zone);
-+	
-+	sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
-+	sysfs_remove_link(&tzdev->kobj, "device");
-+}
-+
- static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
- {
--	struct device *tzdev;
- 	int trips = 0;
- 	int result;
- 	acpi_status status;
-@@ -821,23 +846,15 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
- 	if (IS_ERR(tz->thermal_zone))
- 		return -ENODEV;
- 
--	tzdev = thermal_zone_device(tz->thermal_zone);
--	
--	result = sysfs_create_link(&tz->device->dev.kobj,
--				   &tzdev->kobj, "thermal_zone");
-+	result = acpi_thermal_zone_sysfs_add(tz);
- 	if (result)
- 		goto unregister_tzd;
--
--	result = sysfs_create_link(&tzdev->kobj,
--				   &tz->device->dev.kobj, "device");
--	if (result)
--		goto remove_tz_link;
--
-+	
- 	status =  acpi_bus_attach_private_data(tz->device->handle,
- 					       tz->thermal_zone);
- 	if (ACPI_FAILURE(status)) {
- 		result = -ENODEV;
--		goto remove_dev_link;
-+		goto remove_links;
- 	}
- 
- 	result = thermal_zone_device_enable(tz->thermal_zone);
-@@ -851,10 +868,8 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
- 
- acpi_bus_detach:
- 	acpi_bus_detach_private_data(tz->device->handle);
--remove_dev_link:
--	sysfs_remove_link(&tzdev->kobj, "device");
--remove_tz_link:
--	sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
-+remove_links:
-+	acpi_thermal_zone_sysfs_remove(tz);
- unregister_tzd:
- 	thermal_zone_device_unregister(tz->thermal_zone);
- 
-@@ -863,10 +878,7 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
- 
- static void acpi_thermal_unregister_thermal_zone(struct acpi_thermal *tz)
- {
--	struct device *tzdev = thermal_zone_device(tz->thermal_zone);
--	
--	sysfs_remove_link(&tz->device->dev.kobj, "thermal_zone");
--	sysfs_remove_link(&tzdev->kobj, "device");
-+	acpi_thermal_zone_sysfs_remove(tz);
- 	thermal_zone_device_unregister(tz->thermal_zone);
- 	tz->thermal_zone = NULL;
- 	acpi_bus_detach_private_data(tz->device->handle);
--- 
-2.34.1
+There is no need to have barriers between MMIO operations, they
+are implicitly serialized already. In this case specifically,
+the read is even on the same address as the write. Note that the
+"dmb oshst" does not actually guarantee that the store has made it
+to the device, as (at least on PCIe semantics) it can be posted,
+but the read from the same address does guarantee that the write
+is completed first, and this may be required to ensure that it does
+not complete after the mutex_unlock().
 
+> - The input argument "src" is struct "struct qm_mailbox".
+> - Before call this funcion, the data has been byteswapped.
+>
+> 	mailbox->w0 = cpu_to_le16((cmd) |
+> 		((op) ? 0x1 << QM_MB_OP_SHIFT : 0) |
+> 		(0x1 << QM_MB_BUSY_SHIFT));
+> 	mailbox->queue_num = cpu_to_le16(queue);
+> 	mailbox->base_l = cpu_to_le32(lower_32_bits(base));
+> 	mailbox->base_h = cpu_to_le32(upper_32_bits(base));
+> 	mailbox->rsvd = 0;
+
+Right, this bit does look correct.
+
+      Arnd
