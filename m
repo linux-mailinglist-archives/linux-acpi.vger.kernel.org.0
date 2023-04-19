@@ -2,51 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D79A6E828E
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Apr 2023 22:25:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D38386E828C
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Apr 2023 22:24:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231254AbjDSUY7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Apr 2023 16:24:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41380 "EHLO
+        id S231239AbjDSUY5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Apr 2023 16:24:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230361AbjDSUYE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Apr 2023 16:24:04 -0400
+        with ESMTP id S229701AbjDSUYs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Apr 2023 16:24:48 -0400
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DD2F10CB;
-        Wed, 19 Apr 2023 13:22:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D1C61718;
+        Wed, 19 Apr 2023 13:22:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681935734; x=1713471734;
+  t=1681935740; x=1713471740;
   h=subject:from:to:cc:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=0heK3iWUXBpvImAYgR+fwJoKb1lxTzGRCfK98tP3saY=;
-  b=P2rh4iOayHRMWpQ/LO+/F7XuY4qeiSn+r28GQDu9cymAY9ia2DB3gdMs
-   JsL36cm7vr133ar+52J71X7JvF3PcFeqTrhrldjX5nrQZIUp1fF71OtIv
-   pxP87xw3SvaceK6ngFQ+4qdApeymhaG6ne19aBL5aW58zI1zEenCcGOV5
-   HIvsuBSb1UOamgpfO+jJ/sVfq0Bzhl1wHcuEnWqf2sPnHPNx9YzgwTe0+
-   fkbB0hSW/iEtKO8H4fL5/dwzAFdpYlOT0nvT2fgsgmvwi3h+KSzunbZEy
-   CMnLl8Up2x2WHvtqJZ/KSdyh11W73IFV5nT4pskZR1kkzwf0zcLeM7zSa
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10685"; a="373441449"
+  bh=eEBg/f3aFbMUY3I3XPYQBmUE2TlAupmdtp1JaJWVme4=;
+  b=LM4YRkqRgWN+bkEmiPXnb0h9aAiBz3X4LH1TIcipDyPnak64srvuL8S9
+   K9nUNnZWKoRUGzIeLUCPGsahS3aSPMYNIBxW3dQVk1dPcyLnWXHtO67c4
+   QUp2GMC+XbP+Cyix2gu7EgdosZpaJ1cp5k3K1eV4bXQviFe9L3IM+sk3W
+   i92Kl+HRRAY03XDaw/ZHheFnNVnc/5yzMtDeUHc4GlydHIrYwnHZpJzzY
+   F6KZ2GZDltuzbqLLGsyBf2HycyzTHkheO+EruIuhCVk40sC/1AUHMaZ6g
+   kPgpY06ldk0zcn+YqXzM/SGx3jP+1Js1r5zkPcS5Jnf3+eXMZA9r9WuWq
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10685"; a="373441469"
 X-IronPort-AV: E=Sophos;i="5.99,210,1677571200"; 
-   d="scan'208";a="373441449"
+   d="scan'208";a="373441469"
 Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2023 13:22:14 -0700
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2023 13:22:20 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10685"; a="1021337075"
+X-IronPort-AV: E=McAfee;i="6600,9927,10685"; a="1021337109"
 X-IronPort-AV: E=Sophos;i="5.99,210,1677571200"; 
-   d="scan'208";a="1021337075"
+   d="scan'208";a="1021337109"
 Received: from djiang5-mobl3.amr.corp.intel.com (HELO [192.168.1.177]) ([10.209.179.6])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2023 13:22:13 -0700
-Subject: [PATCH v4 12/23] cxl: Add helper function that calculate QoS values
- for PCI path
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2023 13:22:19 -0700
+Subject: [PATCH v4 13/23] ACPI: NUMA: Create enum for memory_target hmem_attrs
+ indexing
 From:   Dave Jiang <dave.jiang@intel.com>
 To:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org
 Cc:     dan.j.williams@intel.com, ira.weiny@intel.com,
         vishal.l.verma@intel.com, alison.schofield@intel.com,
         rafael@kernel.org, lukas@wunner.de, Jonathan.Cameron@huawei.com
-Date:   Wed, 19 Apr 2023 13:22:13 -0700
-Message-ID: <168193573330.1178687.2727689734216767954.stgit@djiang5-mobl3>
+Date:   Wed, 19 Apr 2023 13:22:19 -0700
+Message-ID: <168193573914.1178687.10484110915867160837.stgit@djiang5-mobl3>
 In-Reply-To: <168193556660.1178687.15477509915255912089.stgit@djiang5-mobl3>
 References: <168193556660.1178687.15477509915255912089.stgit@djiang5-mobl3>
 User-Agent: StGit/1.5
@@ -64,126 +64,112 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Calculate the link bandwidth and latency for the PCIe path from the device
-to the CXL Host Bridge. This does not include the CDAT data from the device
-or the switch(es) in the path.
+Create enums to provide named indexing for the hmem_attrs array. This is in
+preparation for adding generic port support which will add a third member
+in the array to keep the generic port attributes separate from the memory
+attributes.
 
 Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 ---
-v4:
-- 0-day fix, remove unused var. Fix checking < 0 for unsigned var.
-- Rework port hierachy walk to calculate the latencies correctly
----
- drivers/cxl/core/port.c |   83 +++++++++++++++++++++++++++++++++++++++++++++++
- drivers/cxl/cxl.h       |    2 +
- 2 files changed, 85 insertions(+)
+ drivers/acpi/numa/hmat.c |   35 ++++++++++++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
-index 770b540d5325..8da437e038b9 100644
---- a/drivers/cxl/core/port.c
-+++ b/drivers/cxl/core/port.c
-@@ -2002,6 +2002,89 @@ int cxl_port_get_switch_qos(struct cxl_port *port, u64 *rd_bw, u64 *rd_lat,
+diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+index bba268ecd802..4911b7b9e4dd 100644
+--- a/drivers/acpi/numa/hmat.c
++++ b/drivers/acpi/numa/hmat.c
+@@ -57,12 +57,18 @@ struct target_cache {
+ 	struct node_cache_attrs cache_attrs;
+ };
+ 
++enum {
++	NODE_ACCESS_CLASS_0 = 0,
++	NODE_ACCESS_CLASS_1,
++	NODE_ACCESS_CLASS_MAX,
++};
++
+ struct memory_target {
+ 	struct list_head node;
+ 	unsigned int memory_pxm;
+ 	unsigned int processor_pxm;
+ 	struct resource memregions;
+-	struct node_hmem_attrs hmem_attrs[2];
++	struct node_hmem_attrs hmem_attrs[NODE_ACCESS_CLASS_MAX];
+ 	struct list_head caches;
+ 	struct node_cache_attrs cache_attrs;
+ 	bool registered;
+@@ -338,10 +344,12 @@ static __init int hmat_parse_locality(union acpi_subtable_headers *header,
+ 			if (mem_hier == ACPI_HMAT_MEMORY) {
+ 				target = find_mem_target(targs[targ]);
+ 				if (target && target->processor_pxm == inits[init]) {
+-					hmat_update_target_access(target, type, value, 0);
++					hmat_update_target_access(target, type, value,
++								  NODE_ACCESS_CLASS_0);
+ 					/* If the node has a CPU, update access 1 */
+ 					if (node_state(pxm_to_node(inits[init]), N_CPU))
+-						hmat_update_target_access(target, type, value, 1);
++						hmat_update_target_access(target, type, value,
++									  NODE_ACCESS_CLASS_1);
+ 				}
+ 			}
+ 		}
+@@ -600,10 +608,12 @@ static void hmat_register_target_initiators(struct memory_target *target)
+ 	 */
+ 	if (target->processor_pxm != PXM_INVAL) {
+ 		cpu_nid = pxm_to_node(target->processor_pxm);
+-		register_memory_node_under_compute_node(mem_nid, cpu_nid, 0);
++		register_memory_node_under_compute_node(mem_nid, cpu_nid,
++							NODE_ACCESS_CLASS_0);
+ 		access0done = true;
+ 		if (node_state(cpu_nid, N_CPU)) {
+-			register_memory_node_under_compute_node(mem_nid, cpu_nid, 1);
++			register_memory_node_under_compute_node(mem_nid, cpu_nid,
++								NODE_ACCESS_CLASS_1);
+ 			return;
+ 		}
+ 	}
+@@ -644,12 +654,13 @@ static void hmat_register_target_initiators(struct memory_target *target)
+ 			}
+ 			if (best)
+ 				hmat_update_target_access(target, loc->hmat_loc->data_type,
+-							  best, 0);
++							  best, NODE_ACCESS_CLASS_0);
+ 		}
+ 
+ 		for_each_set_bit(i, p_nodes, MAX_NUMNODES) {
+ 			cpu_nid = pxm_to_node(i);
+-			register_memory_node_under_compute_node(mem_nid, cpu_nid, 0);
++			register_memory_node_under_compute_node(mem_nid, cpu_nid,
++								NODE_ACCESS_CLASS_0);
+ 		}
+ 	}
+ 
+@@ -681,11 +692,13 @@ static void hmat_register_target_initiators(struct memory_target *target)
+ 				clear_bit(initiator->processor_pxm, p_nodes);
+ 		}
+ 		if (best)
+-			hmat_update_target_access(target, loc->hmat_loc->data_type, best, 1);
++			hmat_update_target_access(target, loc->hmat_loc->data_type, best,
++						  NODE_ACCESS_CLASS_1);
+ 	}
+ 	for_each_set_bit(i, p_nodes, MAX_NUMNODES) {
+ 		cpu_nid = pxm_to_node(i);
+-		register_memory_node_under_compute_node(mem_nid, cpu_nid, 1);
++		register_memory_node_under_compute_node(mem_nid, cpu_nid,
++							NODE_ACCESS_CLASS_1);
+ 	}
  }
- EXPORT_SYMBOL_NS_GPL(cxl_port_get_switch_qos, CXL);
  
-+/**
-+ * cxl_port_get_downstream_qos - retrieve QoS data for PCIE downstream path
-+ * @port: endpoint cxl_port
-+ * @bandwidth: writeback value for min bandwidth
-+ * @latency: writeback value for total latency
-+ *
-+ * Return: Errno on failure, 0 on success.
-+ */
-+int cxl_port_get_downstream_qos(struct cxl_port *port, u64 *bandwidth,
-+				u64 *latency)
-+{
-+	u64 min_bw = ULONG_MAX;
-+	struct pci_dev *pdev;
-+	struct cxl_port *p;
-+	struct device *dev;
-+	u64 total_lat = 0;
-+	long lat;
-+
-+	*bandwidth = 0;
-+	*latency = 0;
-+
-+	/* Grab the device that is the PCI device for CXL memdev */
-+	dev = port->uport->parent;
-+	/* Skip if it's not PCI, most likely a cxl_test device */
-+	if (!dev_is_pci(dev))
-+		return 0;
-+
-+	pdev = to_pci_dev(dev);
-+	min_bw = pcie_bandwidth_available(pdev, NULL, NULL, NULL);
-+	if (min_bw == 0)
-+		return -ENXIO;
-+
-+	/* convert to MB/s from Mb/s */
-+	min_bw >>= 3;
-+
-+	/*
-+	 * Walk the cxl_port hierachy to retrieve the link latencies for
-+	 * each of the PCIe segments. The loop will obtain the link latency
-+	 * via each of the switch downstream port.
-+	 */
-+	p = port;
-+	do {
-+		struct cxl_dport *dport = p->parent_dport;
-+		struct device *dport_dev, *uport_dev;
-+		struct pci_dev *dport_pdev;
-+
-+		if (!dport)
-+			break;
-+
-+		dport_dev = dport->dport;
-+		if (!dev_is_pci(dport_dev))
-+			break;
-+
-+		p = dport->port;
-+		uport_dev = p->uport;
-+		if (!dev_is_pci(uport_dev))
-+			break;
-+
-+		dport_pdev = to_pci_dev(dport_dev);
-+		pdev = to_pci_dev(uport_dev);
-+		lat = cxl_pci_get_latency(dport_pdev);
-+		if (lat < 0)
-+			return lat;
-+
-+		total_lat += lat;
-+	} while (1);
-+
-+	/*
-+	 * pdev would be either the cxl device if there are no switches, or the
-+	 * upstream port of the last switch.
-+	 */
-+	lat = cxl_pci_get_latency(pdev);
-+	if (lat < 0)
-+		return lat;
-+
-+	total_lat += lat;
-+	*bandwidth = min_bw;
-+	*latency = total_lat;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_NS_GPL(cxl_port_get_downstream_qos, CXL);
-+
- /* for user tooling to ensure port disable work has completed */
- static ssize_t flush_store(struct bus_type *bus, const char *buf, size_t count)
- {
-diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-index 76ccc815134f..6a6387a545db 100644
---- a/drivers/cxl/cxl.h
-+++ b/drivers/cxl/cxl.h
-@@ -811,6 +811,8 @@ struct qtg_dsm_output *cxl_acpi_evaluate_qtg_dsm(acpi_handle handle,
- acpi_handle cxl_acpi_get_rootdev_handle(struct device *dev);
- int cxl_port_get_switch_qos(struct cxl_port *port, u64 *rd_bw, u64 *rd_lat,
- 			    u64 *wr_bw, u64 *wr_lat);
-+int cxl_port_get_downstream_qos(struct cxl_port *port, u64 *bandwidth,
-+				u64 *latency);
- 
- /*
-  * Unit test builds overrides this to __weak, find the 'strong' version
+@@ -746,8 +759,8 @@ static void hmat_register_target(struct memory_target *target)
+ 	if (!target->registered) {
+ 		hmat_register_target_initiators(target);
+ 		hmat_register_target_cache(target);
+-		hmat_register_target_perf(target, 0);
+-		hmat_register_target_perf(target, 1);
++		hmat_register_target_perf(target, NODE_ACCESS_CLASS_0);
++		hmat_register_target_perf(target, NODE_ACCESS_CLASS_1);
+ 		target->registered = true;
+ 	}
+ 	mutex_unlock(&target_lock);
 
 
