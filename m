@@ -2,46 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F1526E92E8
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Apr 2023 13:36:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E32E6E9316
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Apr 2023 13:40:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234113AbjDTLgS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Apr 2023 07:36:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39258 "EHLO
+        id S231978AbjDTLkt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Apr 2023 07:40:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234304AbjDTLgO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Apr 2023 07:36:14 -0400
+        with ESMTP id S229758AbjDTLks (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Apr 2023 07:40:48 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA0B535B1;
-        Thu, 20 Apr 2023 04:35:52 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Q2Fnx3qXpz67GMJ;
-        Thu, 20 Apr 2023 19:30:29 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF55DAD;
+        Thu, 20 Apr 2023 04:40:46 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Q2G0R4BGDz67PjK;
+        Thu, 20 Apr 2023 19:39:35 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 20 Apr
- 2023 12:35:13 +0100
-Date:   Thu, 20 Apr 2023 12:35:12 +0100
+ 2023 12:40:44 +0100
+Date:   Thu, 20 Apr 2023 12:40:43 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To:     Dave Jiang <dave.jiang@intel.com>
 CC:     <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
         <dan.j.williams@intel.com>, <ira.weiny@intel.com>,
         <vishal.l.verma@intel.com>, <alison.schofield@intel.com>,
         <rafael@kernel.org>, <lukas@wunner.de>
-Subject: Re: [PATCH v4 05/23] cxl: Add callback to parse the DSMAS subtables
+Subject: Re: [PATCH v4 06/23] cxl: Add callback to parse the DSLBIS subtable
  from CDAT
-Message-ID: <20230420123512.0000650b@Huawei.com>
-In-Reply-To: <20230420123350.000061b1@Huawei.com>
+Message-ID: <20230420124043.00004e0e@Huawei.com>
+In-Reply-To: <168193569717.1178687.294428469465996536.stgit@djiang5-mobl3>
 References: <168193556660.1178687.15477509915255912089.stgit@djiang5-mobl3>
-        <168193569130.1178687.11664485128816659216.stgit@djiang5-mobl3>
-        <20230420123350.000061b1@Huawei.com>
+        <168193569717.1178687.294428469465996536.stgit@djiang5-mobl3>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 X-CFilter-Loop: Reflected
 X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
@@ -53,88 +52,41 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 20 Apr 2023 12:33:50 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+On Wed, 19 Apr 2023 13:21:37 -0700
+Dave Jiang <dave.jiang@intel.com> wrote:
 
-> On Wed, 19 Apr 2023 13:21:31 -0700
-> Dave Jiang <dave.jiang@intel.com> wrote:
+> Provide a callback to parse the Device Scoped Latency and Bandwidth
+> Information Structure (DSLBIS) in the CDAT structures. The DSLBIS
+> contains the bandwidth and latency information that's tied to a DSMAS
+> handle. The driver will retrieve the read and write latency and
+> bandwidth associated with the DSMAS which is tied to a DPA range.
 > 
-> > Provide a callback function to the CDAT parser in order to parse the Device
-> > Scoped Memory Affinity Structure (DSMAS). Each DSMAS structure contains the
-> > DPA range and its associated attributes in each entry. See the CDAT
-> > specification for details.
-> > 
-> > Coherent Device Attribute Table 1.03 2.1 Device Scoped memory Affinity
-> > Structure (DSMAS)  
+> Coherent Device Attribute Table 1.03 2.1 Device Scoped Latency and
+> Bandwidth Information Structure (DSLBIS)
 > 
-> I'm not sure what purpose of this is. If it's just detecting problems
-> with the entry because we aren't interested in the content yet, then fine
-> but good to make that clear in patch intro.
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 > 
-> Maybe I'm missing something!
-> 
-Ah. Got to next patch.  Perhaps a forwards reference to that will avoid
-anyone else wondering what is going on here!
 
-> Thanks,
-> 
-> Jonathan
-> 
-> > 
-> > Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> > 
-> > ---
-> > v3:
-> > - Add spec section number. (Alison)
-> > - Remove cast from void *. (Alison)
-> > - Refactor cxl_port_probe() block. (Alison)
-> > - Move CDAT parse to cxl_endpoint_port_probe()
-> > 
-> > v2:
-> > - Add DSMAS table size check. (Lukas)
-> > - Use local DSMAS header for LE handling.
-> > - Remove dsmas lock. (Jonathan)
-> > - Fix handle size (Jonathan)
-> > - Add LE to host conversion for DSMAS address and length.
-> > - Make dsmas_list local  
-> 
-> 
-> > diff --git a/drivers/cxl/port.c b/drivers/cxl/port.c
-> > index 615e0ef6b440..3022bdd52439 100644
-> > --- a/drivers/cxl/port.c
-> > +++ b/drivers/cxl/port.c
-> > @@ -57,6 +57,16 @@ static int discover_region(struct device *dev, void *root)
-> >  	return 0;
-> >  }  
-> 
-> >  static int cxl_switch_port_probe(struct cxl_port *port)
-> >  {
-> >  	struct cxl_hdm *cxlhdm;
-> > @@ -125,6 +135,18 @@ static int cxl_endpoint_port_probe(struct cxl_port *port)
-> >  	device_for_each_child(&port->dev, root, discover_region);
-> >  	put_device(&root->dev);
-> >  
-> > +	if (port->cdat.table) {
-> > +		LIST_HEAD(dsmas_list);
-> > +
-> > +		rc = cdat_table_parse_dsmas(port->cdat.table,
-> > +					    cxl_dsmas_parse_entry,
-> > +					    (void *)&dsmas_list);
-> > +		if (rc < 0)
-> > +			dev_warn(&port->dev, "Failed to parse DSMAS: %d\n", rc);
-> > +
-> > +		dsmas_list_destroy(&dsmas_list);  
-> 
-> I'm a little confused here.  What's the point?  Parse them then throw the info away?
-> Maybe a comment if all we are trying to do is warn about CDAT problems.
-> 
-> 
-> > +	}
-> > +
-> >  	return 0;
-> >  }
-> >  
-> > 
-> >   
-> 
+One comment inline.
+
+> +/* Flags for DSLBIS subtable */
+> +#define DSLBIS_MEM_MASK		GENMASK(3, 0)
+> +#define DSLBIS_MEM_MEMORY	0
+> +
+>  int devm_cxl_port_enumerate_dports(struct cxl_port *port);
+>  struct cxl_dev_state;
+>  int cxl_hdm_decode_init(struct cxl_dev_state *cxlds, struct cxl_hdm *cxlhdm,
+> @@ -136,5 +164,9 @@ cdat_table_parse(dsmas);
+>  cdat_table_parse(dslbis);
+>  cdat_table_parse(sslbis);
+>  
+> -int cxl_dsmas_parse_entry(struct cdat_entry_header *header, void *arg);
+> +#define cxl_parse_entry(x) \
+> +int cxl_##x##_parse_entry(struct cdat_entry_header *header, void *arg)
+I'm not sure this is worthwhile. What was your reasoning for it?
+Also wrecks typing that arg argument as I suggested earlier...
+
+> +
+> +cxl_parse_entry(dsmas);
+> +cxl_parse_entry(dslbis);
 
