@@ -2,38 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C6136E9437
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Apr 2023 14:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82B556E9480
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Apr 2023 14:33:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234113AbjDTM0b (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Apr 2023 08:26:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47480 "EHLO
+        id S234825AbjDTMd3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Apr 2023 08:33:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231864AbjDTM03 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Apr 2023 08:26:29 -0400
+        with ESMTP id S234942AbjDTMdT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Apr 2023 08:33:19 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 172B88F;
-        Thu, 20 Apr 2023 05:26:28 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Q2Gx06D4Lz67GMJ;
-        Thu, 20 Apr 2023 20:21:40 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83E8872A8;
+        Thu, 20 Apr 2023 05:32:59 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Q2H6m6q6Vz6J79L;
+        Thu, 20 Apr 2023 20:30:08 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 20 Apr
- 2023 13:26:25 +0100
-Date:   Thu, 20 Apr 2023 13:26:24 +0100
+ 2023 13:32:57 +0100
+Date:   Thu, 20 Apr 2023 13:32:56 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To:     Dave Jiang <dave.jiang@intel.com>
 CC:     <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
         <dan.j.williams@intel.com>, <ira.weiny@intel.com>,
         <vishal.l.verma@intel.com>, <alison.schofield@intel.com>,
         <rafael@kernel.org>, <lukas@wunner.de>
-Subject: Re: [PATCH v4 11/23] cxl: Add helper function that calculates QoS
- values for switches
-Message-ID: <20230420132624.00006334@Huawei.com>
-In-Reply-To: <168193572747.1178687.13347516490022640531.stgit@djiang5-mobl3>
+Subject: Re: [PATCH v4 12/23] cxl: Add helper function that calculate QoS
+ values for PCI path
+Message-ID: <20230420133256.00006cbd@Huawei.com>
+In-Reply-To: <168193573330.1178687.2727689734216767954.stgit@djiang5-mobl3>
 References: <168193556660.1178687.15477509915255912089.stgit@djiang5-mobl3>
-        <168193572747.1178687.13347516490022640531.stgit@djiang5-mobl3>
+        <168193573330.1178687.2727689734216767954.stgit@djiang5-mobl3>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
@@ -52,135 +52,137 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 19 Apr 2023 13:22:07 -0700
+On Wed, 19 Apr 2023 13:22:13 -0700
 Dave Jiang <dave.jiang@intel.com> wrote:
 
-> The CDAT information from the switch, Switch Scoped Latency and Bandwidth
-> Information Strucutre (SSLBIS), is parsed and stored in an xarray under the
-> cxl_port. The QoS data are indexed by the downstream port id.  Walk the CXL
-> ports from endpoint to root and retrieve the relevant QoS information
-> (bandwidth and latency) that are from the switch CDAT. If read or write QoS
-> values are not available, then use the access QoS value.
-
-I'd drop the access reference.  You already did that mapping from access to read
-and write in earlier patch. Now we have no concept of access so mentioning
-it will only potentially cause confusion.
-
+> Calculate the link bandwidth and latency for the PCIe path from the device
+> to the CXL Host Bridge. This does not include the CDAT data from the device
+> or the switch(es) in the path.
 > 
 > Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> 
+
+Same comment on _qos naming and one trivial comment inline.
+
+
 > ---
-> v3:
-> - Move to use 'struct node_hmem_attrs'
+> v4:
+> - 0-day fix, remove unused var. Fix checking < 0 for unsigned var.
+> - Rework port hierachy walk to calculate the latencies correctly
 > ---
->  drivers/cxl/core/port.c |   81 +++++++++++++++++++++++++++++++++++++++++++++++
+>  drivers/cxl/core/port.c |   83 +++++++++++++++++++++++++++++++++++++++++++++++
 >  drivers/cxl/cxl.h       |    2 +
->  2 files changed, 83 insertions(+)
+>  2 files changed, 85 insertions(+)
 > 
 > diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
-> index 3fedbabac1af..770b540d5325 100644
+> index 770b540d5325..8da437e038b9 100644
 > --- a/drivers/cxl/core/port.c
 > +++ b/drivers/cxl/core/port.c
-> @@ -1921,6 +1921,87 @@ bool schedule_cxl_memdev_detach(struct cxl_memdev *cxlmd)
+> @@ -2002,6 +2002,89 @@ int cxl_port_get_switch_qos(struct cxl_port *port, u64 *rd_bw, u64 *rd_lat,
 >  }
->  EXPORT_SYMBOL_NS_GPL(schedule_cxl_memdev_detach, CXL);
+>  EXPORT_SYMBOL_NS_GPL(cxl_port_get_switch_qos, CXL);
 >  
 > +/**
-> + * cxl_port_get_switch_qos - retrieve QoS data for CXL switches
-
-Hmm. Terminology wise, this is called QoS data in either CXL spec
-or the HMAT stuff it came from.  I'd avoid that term here.
-Might also get confused with the QoS telemetry stuff from the CXL
-spec which is totally different or the QoS controls on an MLD
-which are perhaps indirectly related to these.
-
-QoS only gets involved once these are mapped to a QTG - assumption
-being that a given QoS policy should apply to devices of similar access
-characteristics.
-
-Other than that bikeshedding.
-
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-
-
+> + * cxl_port_get_downstream_qos - retrieve QoS data for PCIE downstream path
 > + * @port: endpoint cxl_port
-> + * @rd_bw: writeback value for min read bandwidth
-> + * @rd_lat: writeback value for total read latency
-> + * @wr_bw: writeback value for min write bandwidth
-> + * @wr_lat: writeback value for total write latency
+> + * @bandwidth: writeback value for min bandwidth
+> + * @latency: writeback value for total latency
 > + *
-> + * Return: Errno on failure, 0 on success. -ENOENT if no switch device
+> + * Return: Errno on failure, 0 on success.
 > + */
-> +int cxl_port_get_switch_qos(struct cxl_port *port, u64 *rd_bw, u64 *rd_lat,
-> +			    u64 *wr_bw, u64 *wr_lat)
+> +int cxl_port_get_downstream_qos(struct cxl_port *port, u64 *bandwidth,
+> +				u64 *latency)
 > +{
-> +	u64 min_rd_bw = ULONG_MAX;
-> +	u64 min_wr_bw = ULONG_MAX;
-> +	struct cxl_dport *dport;
-> +	struct cxl_port *nport;
-> +	u64 total_rd_lat = 0;
-> +	u64 total_wr_lat = 0;
-> +	struct device *next;
-> +	int switches = 0;
-> +	int rc = 0;
+> +	u64 min_bw = ULONG_MAX;
+> +	struct pci_dev *pdev;
+> +	struct cxl_port *p;
+> +	struct device *dev;
+> +	u64 total_lat = 0;
+> +	long lat;
 > +
-> +	if (!is_cxl_endpoint(port))
-> +		return -EINVAL;
+> +	*bandwidth = 0;
+> +	*latency = 0;
 > +
-> +	/* Skip the endpoint */
-> +	next = port->dev.parent;
-> +	nport = to_cxl_port(next);
-> +	dport = port->parent_dport;
+> +	/* Grab the device that is the PCI device for CXL memdev */
+> +	dev = port->uport->parent;
+> +	/* Skip if it's not PCI, most likely a cxl_test device */
+> +	if (!dev_is_pci(dev))
+> +		return 0;
 > +
-> +	do {
-> +		struct node_hmem_attrs *hmem_attrs;
-> +		u64 lat, bw;
+> +	pdev = to_pci_dev(dev);
+> +	min_bw = pcie_bandwidth_available(pdev, NULL, NULL, NULL);
+> +	if (min_bw == 0)
+> +		return -ENXIO;
 > +
-> +		if (!nport->cdat.table)
-> +			break;
-> +
-> +		if (!dev_is_pci(dport->dport))
-> +			break;
-> +
-> +		hmem_attrs = xa_load(&nport->cdat.sslbis_xa, dport->port_id);
-> +		if (xa_is_err(hmem_attrs))
-> +			return xa_err(hmem_attrs);
-> +
-> +		if (!hmem_attrs) {
-> +			hmem_attrs = xa_load(&nport->cdat.sslbis_xa, SSLBIS_ANY_PORT);
-> +			if (xa_is_err(hmem_attrs))
-> +				return xa_err(hmem_attrs);
-> +			if (!hmem_attrs)
-> +				return -ENXIO;
-> +		}
-> +
-> +		bw = hmem_attrs->write_bandwidth;
-> +		lat = hmem_attrs->write_latency;
-> +		min_wr_bw = min_t(u64, min_wr_bw, bw);
-> +		total_wr_lat += lat;
-> +
-> +		bw = hmem_attrs->read_bandwidth;
-> +		lat = hmem_attrs->read_latency;
-> +		min_rd_bw = min_t(u64, min_rd_bw, bw);
-> +		total_rd_lat += lat;
-> +
-> +		dport = nport->parent_dport;
-> +		next = next->parent;
-> +		nport = to_cxl_port(next);
-> +		switches++;
-> +	} while (next);
-> +
-> +	*wr_bw = min_wr_bw;
-> +	*wr_lat = total_wr_lat;
-> +	*rd_bw = min_rd_bw;
-> +	*rd_lat = total_rd_lat;
-> +
-> +	if (!switches)
-> +		return -ENOENT;
-> +
-> +	return rc;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_port_get_switch_qos, CXL);
+> +	/* convert to MB/s from Mb/s */
+> +	min_bw >>= 3;
 
+/ BITS_PER_BYTE; (well MEGABITS_PER_MEGABYTE but still better than >>= 3;)
+
+> +
+> +	/*
+> +	 * Walk the cxl_port hierachy to retrieve the link latencies for
+> +	 * each of the PCIe segments. The loop will obtain the link latency
+> +	 * via each of the switch downstream port.
+> +	 */
+> +	p = port;
+> +	do {
+> +		struct cxl_dport *dport = p->parent_dport;
+> +		struct device *dport_dev, *uport_dev;
+> +		struct pci_dev *dport_pdev;
+> +
+> +		if (!dport)
+> +			break;
+> +
+> +		dport_dev = dport->dport;
+> +		if (!dev_is_pci(dport_dev))
+> +			break;
+> +
+> +		p = dport->port;
+> +		uport_dev = p->uport;
+> +		if (!dev_is_pci(uport_dev))
+> +			break;
+> +
+> +		dport_pdev = to_pci_dev(dport_dev);
+> +		pdev = to_pci_dev(uport_dev);
+> +		lat = cxl_pci_get_latency(dport_pdev);
+> +		if (lat < 0)
+> +			return lat;
+> +
+> +		total_lat += lat;
+> +	} while (1);
+> +
+> +	/*
+> +	 * pdev would be either the cxl device if there are no switches, or the
+> +	 * upstream port of the last switch.
+> +	 */
+> +	lat = cxl_pci_get_latency(pdev);
+> +	if (lat < 0)
+> +		return lat;
+> +
+> +	total_lat += lat;
+> +	*bandwidth = min_bw;
+> +	*latency = total_lat;
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cxl_port_get_downstream_qos, CXL);
+> +
+>  /* for user tooling to ensure port disable work has completed */
+>  static ssize_t flush_store(struct bus_type *bus, const char *buf, size_t count)
+>  {
+> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+> index 76ccc815134f..6a6387a545db 100644
+> --- a/drivers/cxl/cxl.h
+> +++ b/drivers/cxl/cxl.h
+> @@ -811,6 +811,8 @@ struct qtg_dsm_output *cxl_acpi_evaluate_qtg_dsm(acpi_handle handle,
+>  acpi_handle cxl_acpi_get_rootdev_handle(struct device *dev);
+>  int cxl_port_get_switch_qos(struct cxl_port *port, u64 *rd_bw, u64 *rd_lat,
+>  			    u64 *wr_bw, u64 *wr_lat);
+> +int cxl_port_get_downstream_qos(struct cxl_port *port, u64 *bandwidth,
+> +				u64 *latency);
+>  
+>  /*
+>   * Unit test builds overrides this to __weak, find the 'strong' version
+> 
+> 
 
