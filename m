@@ -2,187 +2,156 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82B556E9480
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Apr 2023 14:33:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3190A6E97CD
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Apr 2023 17:00:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234825AbjDTMd3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Apr 2023 08:33:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54284 "EHLO
+        id S231293AbjDTPAJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Apr 2023 11:00:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234942AbjDTMdT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Apr 2023 08:33:19 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83E8872A8;
-        Thu, 20 Apr 2023 05:32:59 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Q2H6m6q6Vz6J79L;
-        Thu, 20 Apr 2023 20:30:08 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 20 Apr
- 2023 13:32:57 +0100
-Date:   Thu, 20 Apr 2023 13:32:56 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Dave Jiang <dave.jiang@intel.com>
-CC:     <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <dan.j.williams@intel.com>, <ira.weiny@intel.com>,
-        <vishal.l.verma@intel.com>, <alison.schofield@intel.com>,
-        <rafael@kernel.org>, <lukas@wunner.de>
-Subject: Re: [PATCH v4 12/23] cxl: Add helper function that calculate QoS
- values for PCI path
-Message-ID: <20230420133256.00006cbd@Huawei.com>
-In-Reply-To: <168193573330.1178687.2727689734216767954.stgit@djiang5-mobl3>
-References: <168193556660.1178687.15477509915255912089.stgit@djiang5-mobl3>
-        <168193573330.1178687.2727689734216767954.stgit@djiang5-mobl3>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S233814AbjDTPAB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Apr 2023 11:00:01 -0400
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2049.outbound.protection.outlook.com [40.107.223.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C07F3AAF
+        for <linux-acpi@vger.kernel.org>; Thu, 20 Apr 2023 08:00:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=e1oGjl4LwOjLoQcgbuLUw6cL5uzdo38DlRqS5tfEPyMrzonaRtGCkGXGwWyRBAGHfbUaFVsb/KbpS83+ix8iw6juAhImaTve4tMx4WrieXGs2redl4Os727Q3GqqrVuSBnIvTfXGfk4vY/kEPUQ/VSSnYUOMvVQkn3tsBaWnyhCbhjeb3du4SwH7YzYuMlkhgRUbnNzGU521bd+IDbg4D67TdTZDAKBnMPTPaBzIwLsHC+UPGuoiERum8V/DhIZGQp5io19xTAxDk2LKd/6Iec6kd3qMJBQ0zJRWtlG/1k/A6WiM0Jqvg4ZOrUeOaZTFuTppflmZnSYrYLe/AAaDOA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c6pmelraxc1z7Xn9kfKLTZmXdkra9BksMRB4bWHqdh0=;
+ b=VwPw/kn0OEovU/T19W1JVmtlrzDZvhjoOtaVfT/u2pCPRVPaum7CghoScK+/2alzVc1wdOXS6QIe0SVIDsvq0m5Or5Y7eGfXKNxPdlVmbXBYs5CTbORhV0fh/b9MeA/kbDbqadO9joGv/ZqTxVY+vIj1mwzvSIn81ez6oTvAKzC7pX9psnpuy/mR4bk1Ll9Ekk4Zp4UD0T118h1Jvu6HWyhgktgBZ7MsRANd9vVEf9aWin623q6e1liVVdJaId6Y16rzhvPofTAoajwVBDLiXga8F4CUD1TVErgV26pJtOG/+rfYvs5vhgi4ZTqeSBCoZNK0OsW3NQdfYZEiETEzAA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=c6pmelraxc1z7Xn9kfKLTZmXdkra9BksMRB4bWHqdh0=;
+ b=tXU6ISoZXQKdKthK8WsaTSck4rTO3H7DW9/tvZOQoptUWb1hJqwVCG9E9N1jj/Vk2YeynrKpyZzI6xg1zMaOiDRVfM+tJDc7uWFebaOJtaBOIuAEtYj1FfipxnSxV4RKAQNSs5Y+xzACv76cyNurcJSyZ20rMXX4uWPgQrBZlHCJCtjIxoPgIotmhtKlWFo2nY11C+dJJFvXLkASzFxmG7eE7foEbsT/TdT6iUomLkWeeXa6SSxp14jc0+aOLFD1bFNpTn3rizA51ME92CjGfudBypbp/x9RbFTyaBvmbl9E51RB6Zg0OlvyF/eA1ubb+BqTp11Fm4CtIn/NIrlcNg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by DS7PR12MB6333.namprd12.prod.outlook.com (2603:10b6:8:96::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6298.45; Thu, 20 Apr
+ 2023 14:59:56 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f7a7:a561:87e9:5fab]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f7a7:a561:87e9:5fab%6]) with mapi id 15.20.6319.020; Thu, 20 Apr 2023
+ 14:59:56 +0000
+Date:   Thu, 20 Apr 2023 10:09:02 -0300
+From:   Jason Gunthorpe <jgg@nvidia.com>
+To:     Baolu Lu <baolu.lu@linux.intel.com>
+Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
+        David Woodhouse <dwmw2@infradead.org>, iommu@lists.linux.dev,
+        Joerg Roedel <joro@8bytes.org>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Nicolin Chen <nicolinc@nvidia.com>
+Subject: Re: [PATCH 10/11] iommu: Split iommu_group_add_device()
+Message-ID: <ZEE5bpvzS+tI+MXP@nvidia.com>
+References: <10-v1-8aecc628b904+2f42-iommu_probe_jgg@nvidia.com>
+ <132ceb1f-4559-5a99-af47-1a86a677eae7@linux.intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <132ceb1f-4559-5a99-af47-1a86a677eae7@linux.intel.com>
+X-ClientProxiedBy: BL6PEPF00013E08.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:22e:400:0:1001:0:5) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|DS7PR12MB6333:EE_
+X-MS-Office365-Filtering-Correlation-Id: e524475f-3708-40e5-e74b-08db41afe750
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: o4x8d76y+nra+TVSpO/ZofxKnrb8BNus2EPYmUAP4skYtdOo3JVkF/WADiTvimpjrGj62QSOHm9r7rjF/tvKZfv1gVXk7kL2QChSzLWr4o6Zq3nxJslsiuzcN36QiCrTDiK3V82fYr0WlCAMVuWf6ngGFLFmCoM+0qej2aFBzS12FjKPcypCaDs+NmeD4OpM8WrQBC+Lzq0U0FWnFs8Im3Ondkelpp6nn9Lt5soLcPZSTA5tMcsE1nH7L05aFgg20g8GMPutSjr2oC8aQWuiwUo8CRatvmOM07H1FHsFMiaAzSaQNKrtxNVy76080p4t1pNLknxSmiiEMgCk0jAUMhKB0G3CJ8LiKMRmmU676lt80eZX/5iMUbs2m2pxlI/V+Y3sd3NJ5f+Z6++/akbyKifjSmPOaMfsCVXWuGOLaWEql1vcRU7UcHtSIGn4I9qQz+GZCvF079i3DyEG7eNmme0gYQVMy6Jtpg7AhvhX92nvI4YNV4ddtav71qBe2yB8lzJCllVcOXojsioyRVS+E+mpciTlph6axfLN/86GdvOy2tSnv4L3pK6+HlVFhPE9
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(396003)(136003)(346002)(39860400002)(366004)(451199021)(36756003)(53546011)(4326008)(54906003)(6916009)(316002)(66556008)(66476007)(66946007)(41300700001)(6486002)(478600001)(6666004)(5660300002)(8676002)(8936002)(4744005)(7416002)(2906002)(86362001)(38100700002)(2616005)(6506007)(107886003)(26005)(83380400001)(186003)(6512007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?WMM4u+N2WFcHNg3Zf8UXd3SMikQMr6dMkSQCk3+ZLkvRdkLa2clhjBpELFAZ?=
+ =?us-ascii?Q?qTmrUDl3GTnS9dMjlaakqZiCOr2N6WR2sdGawJ0h1DUWzhUVUWbzpxjRhYCR?=
+ =?us-ascii?Q?qcrBZFybExyNoanI931FJDL3zVpn7LBvAAT8gywKzGz4FJqv4G/O3agTsIHz?=
+ =?us-ascii?Q?IdvO9tP5TVewStIoKVQsnHLXP0acEfcAC3BLPFVWs5n48lczOOQGVfLqL5qg?=
+ =?us-ascii?Q?CRYXL0b4ArAHT1sNnzCmR12xXj71gp2LzMsgZpOducXMCc6nnOyk1x4QSY7v?=
+ =?us-ascii?Q?mMUzmihEkA6so8Wec4GNXF9TGvRejlBH3os7lwWMSGzeYT5JBGq+Bx8Vd4+Z?=
+ =?us-ascii?Q?hJD8/ncmUGsF/SdaY52tqK08hrXWaiJNjv3KbS2Nr9WoAmPF08lSL/X66qFW?=
+ =?us-ascii?Q?geyxi5ygrPLZ3G73INcDyOSKaulfGm/gZddZ9VJPS+knqbgO3Hw67vwA2E4z?=
+ =?us-ascii?Q?p9X4WZSGBliQUZoXKimDUD0UOwHWhN8ZcR7XTfG6ujlc/X7owXcWuQpG9+Z4?=
+ =?us-ascii?Q?tZPzazQxyXnKxT6nPo4B7w3022y7LxYFrcBGdD0e0WAscLyqKRJkEW/T+pyY?=
+ =?us-ascii?Q?pwLL5afkAzOduur6TDvSgMdZRogLQufq/I3DlpPmPMKu4YpRuRyfR3yhAs6k?=
+ =?us-ascii?Q?Ekx5+XDXfxaOQslfRz6iBcbTmVX3KOjT3vmhuCTX1QJxnsT0jVxefioX+Xfi?=
+ =?us-ascii?Q?0Pqq2julUtkncvHOKkd/kJYKGMO0l46d15J5q8VHeucfOYgTyreTFlnO+uIA?=
+ =?us-ascii?Q?2CtSH64kE/qUCiecZD8ddsDDhMh13OehvjKmbZZlcKgSxUjvL48JcUD+H963?=
+ =?us-ascii?Q?rTZjO4Hgn9h3FNqpoUkNxqvpebAKeP+5eZbx6Js0YjbIKJRQvYrBvLrxjA0F?=
+ =?us-ascii?Q?nOFn8uHCbjlj2J+JuQnTbD420FLnPGKna9j1G64R1474QLtN+waSqEbdlFkp?=
+ =?us-ascii?Q?N2LWZiikzqpbzGExISsl4GtCM/KIj+6gTPE0VRJuzoY7ZynhN4XQXBVRo0dc?=
+ =?us-ascii?Q?Hd8004Fwn3wrzzNNIXXn54euO2KlJsQOVhf/p4cqI+dW5bPRg2nRNTox7zc4?=
+ =?us-ascii?Q?7dS6RUJhZlFobXudrAbYA81wyYXzI/AqtZboOlETbtRbhiDc86Z9iC6asAFc?=
+ =?us-ascii?Q?e9zBiI7XlEdGHsG/vB8BWcFWL9AphfeCf4gRnf+kSZPu0+QkeduYihWCRakp?=
+ =?us-ascii?Q?v5rdrUpHGb4lK/ST7CD76D6COaIR/002Sf8u5riKj1FTTRSJH7ktqap2Nqlo?=
+ =?us-ascii?Q?vTkRpBJaTGNsfKPqbYKa6A4drs369TW+gz/FWF3wiipN3w01C8OEckca1RYX?=
+ =?us-ascii?Q?b5tBVbF73nzzMcsskpk1T+IGqHPGXzC0R1+5/0BJDVDA4AaescdMd3cxhnj+?=
+ =?us-ascii?Q?5hxxzTLqBjDfGCcCZI7f0+Bd6YtP9UH2mQN5KMoLhmf5Bh+znm2/dtRUeiIx?=
+ =?us-ascii?Q?jjfYlqxOa9J5bX0UECoh/GmKfGRboANZ1AgkP81TVXNUNBSEXoGPZ5znrzZ6?=
+ =?us-ascii?Q?M41e2mEAfwOKorq5Y33ppLXeqsOI5hvtEnQAI1IWXMDa8d2UIokW+K8sKH+p?=
+ =?us-ascii?Q?xuHnLqM5kjxithD9f5aq+Zzq6iC04mWUVd++pco4?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e524475f-3708-40e5-e74b-08db41afe750
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2023 14:59:56.0632
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QqAAHTzzGQGnDpENY5wrtX25vx+i8mzW42Xc2PspdzNpUdmxLPrGKTloNSZVw8aT
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6333
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 19 Apr 2023 13:22:13 -0700
-Dave Jiang <dave.jiang@intel.com> wrote:
-
-> Calculate the link bandwidth and latency for the PCIe path from the device
-> to the CXL Host Bridge. This does not include the CDAT data from the device
-> or the switch(es) in the path.
+On Thu, Apr 20, 2023 at 12:25:11PM +0800, Baolu Lu wrote:
+> On 4/20/23 12:11 AM, Jason Gunthorpe wrote:
+> > @@ -451,16 +454,17 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
+> >   		goto out_unlock;
+> >   	group = dev->iommu_group;
+> > -	ret = iommu_group_add_device(group, dev);
+> > +	gdev = iommu_group_alloc_device(group, dev);
+> >   	mutex_lock(&group->mutex);
+> > -	if (ret)
+> > +	if (IS_ERR(gdev)) {
+> > +		ret = PTR_ERR(gdev);
+> >   		goto err_put_group;
+> > +	}
+> > +	list_add_tail(&gdev->list, &group->devices);
 > 
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-
-Same comment on _qos naming and one trivial comment inline.
-
-
-> ---
-> v4:
-> - 0-day fix, remove unused var. Fix checking < 0 for unsigned var.
-> - Rework port hierachy walk to calculate the latencies correctly
-> ---
->  drivers/cxl/core/port.c |   83 +++++++++++++++++++++++++++++++++++++++++++++++
->  drivers/cxl/cxl.h       |    2 +
->  2 files changed, 85 insertions(+)
+> Do we need to put
 > 
-> diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
-> index 770b540d5325..8da437e038b9 100644
-> --- a/drivers/cxl/core/port.c
-> +++ b/drivers/cxl/core/port.c
-> @@ -2002,6 +2002,89 @@ int cxl_port_get_switch_qos(struct cxl_port *port, u64 *rd_bw, u64 *rd_lat,
->  }
->  EXPORT_SYMBOL_NS_GPL(cxl_port_get_switch_qos, CXL);
->  
-> +/**
-> + * cxl_port_get_downstream_qos - retrieve QoS data for PCIE downstream path
-> + * @port: endpoint cxl_port
-> + * @bandwidth: writeback value for min bandwidth
-> + * @latency: writeback value for total latency
-> + *
-> + * Return: Errno on failure, 0 on success.
-> + */
-> +int cxl_port_get_downstream_qos(struct cxl_port *port, u64 *bandwidth,
-> +				u64 *latency)
-> +{
-> +	u64 min_bw = ULONG_MAX;
-> +	struct pci_dev *pdev;
-> +	struct cxl_port *p;
-> +	struct device *dev;
-> +	u64 total_lat = 0;
-> +	long lat;
-> +
-> +	*bandwidth = 0;
-> +	*latency = 0;
-> +
-> +	/* Grab the device that is the PCI device for CXL memdev */
-> +	dev = port->uport->parent;
-> +	/* Skip if it's not PCI, most likely a cxl_test device */
-> +	if (!dev_is_pci(dev))
-> +		return 0;
-> +
-> +	pdev = to_pci_dev(dev);
-> +	min_bw = pcie_bandwidth_available(pdev, NULL, NULL, NULL);
-> +	if (min_bw == 0)
-> +		return -ENXIO;
-> +
-> +	/* convert to MB/s from Mb/s */
-> +	min_bw >>= 3;
-
-/ BITS_PER_BYTE; (well MEGABITS_PER_MEGABYTE but still better than >>= 3;)
-
-> +
-> +	/*
-> +	 * Walk the cxl_port hierachy to retrieve the link latencies for
-> +	 * each of the PCIe segments. The loop will obtain the link latency
-> +	 * via each of the switch downstream port.
-> +	 */
-> +	p = port;
-> +	do {
-> +		struct cxl_dport *dport = p->parent_dport;
-> +		struct device *dport_dev, *uport_dev;
-> +		struct pci_dev *dport_pdev;
-> +
-> +		if (!dport)
-> +			break;
-> +
-> +		dport_dev = dport->dport;
-> +		if (!dev_is_pci(dport_dev))
-> +			break;
-> +
-> +		p = dport->port;
-> +		uport_dev = p->uport;
-> +		if (!dev_is_pci(uport_dev))
-> +			break;
-> +
-> +		dport_pdev = to_pci_dev(dport_dev);
-> +		pdev = to_pci_dev(uport_dev);
-> +		lat = cxl_pci_get_latency(dport_pdev);
-> +		if (lat < 0)
-> +			return lat;
-> +
-> +		total_lat += lat;
-> +	} while (1);
-> +
-> +	/*
-> +	 * pdev would be either the cxl device if there are no switches, or the
-> +	 * upstream port of the last switch.
-> +	 */
-> +	lat = cxl_pci_get_latency(pdev);
-> +	if (lat < 0)
-> +		return lat;
-> +
-> +	total_lat += lat;
-> +	*bandwidth = min_bw;
-> +	*latency = total_lat;
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_port_get_downstream_qos, CXL);
-> +
->  /* for user tooling to ensure port disable work has completed */
->  static ssize_t flush_store(struct bus_type *bus, const char *buf, size_t count)
->  {
-> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-> index 76ccc815134f..6a6387a545db 100644
-> --- a/drivers/cxl/cxl.h
-> +++ b/drivers/cxl/cxl.h
-> @@ -811,6 +811,8 @@ struct qtg_dsm_output *cxl_acpi_evaluate_qtg_dsm(acpi_handle handle,
->  acpi_handle cxl_acpi_get_rootdev_handle(struct device *dev);
->  int cxl_port_get_switch_qos(struct cxl_port *port, u64 *rd_bw, u64 *rd_lat,
->  			    u64 *wr_bw, u64 *wr_lat);
-> +int cxl_port_get_downstream_qos(struct cxl_port *port, u64 *bandwidth,
-> +				u64 *latency);
->  
->  /*
->   * Unit test builds overrides this to __weak, find the 'strong' version
+> 	dev->iommu_group = group;
 > 
-> 
+> here?
 
+It is done in iommu_init_driver() and iommu_deinit_driver() NULL's it
+
+	group = ops->device_group(dev);
+	if (WARN_ON_ONCE(group == NULL))
+		group = ERR_PTR(-EINVAL);
+	if (IS_ERR(group)) {
+		ret = PTR_ERR(group);
+		goto err_unlink;
+	}
+	dev->iommu_group = group;
+
+Jason
