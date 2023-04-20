@@ -2,267 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E0D56E96A0
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Apr 2023 16:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 747D26E9855
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Apr 2023 17:32:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231586AbjDTOGZ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 20 Apr 2023 10:06:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35642 "EHLO
+        id S229709AbjDTPcz convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 20 Apr 2023 11:32:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229960AbjDTOGX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Apr 2023 10:06:23 -0400
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ADE71BE3;
-        Thu, 20 Apr 2023 07:06:21 -0700 (PDT)
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-506bcf9aa50so255456a12.1;
-        Thu, 20 Apr 2023 07:06:21 -0700 (PDT)
+        with ESMTP id S230089AbjDTPcy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Apr 2023 11:32:54 -0400
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DABB1736;
+        Thu, 20 Apr 2023 08:32:53 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-94ea38c90ccso26376966b.1;
+        Thu, 20 Apr 2023 08:32:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681999579; x=1684591579;
+        d=1e100.net; s=20221208; t=1682004771; x=1684596771;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Jgg7OX/T96wNa/Haq/69/L0IA2HKROIWIem4E4UL828=;
-        b=gLnSZXFo6V2i+tP664G3D1rrx6DXVFhongEIx0E40q+L/9ua5eluS8xX+X4mvFsJuU
-         dHn9l7OaFiWlknnh7Agw5bUOSGGC/MCzIM0F5fZePcbeflSxmJeQfpB7jc+DsiZ5rrZl
-         KKZgYijjfmNWI4OXqdtCyIeReoYO9ijIsFeCfuaq8ApIPzFwSikwTDWUMVkjb8t7SKGg
-         4pRILbNUFWTHqlqLxSvpPn1r/106xPES0xOHOx1um8QwyplamCJoIRlZ/eQfWEPCOCy2
-         o2VAH+EAY3j3SGNfS0vJFbUgKKtk7iL2S/oHNbo+7V5P4WKh39TNXjkfm7mxAatIAe9b
-         XIhQ==
-X-Gm-Message-State: AAQBX9cPIAgeewwa8FeMB+1AvuALSuPUQ1SiGORgu/w+WqduEjWBLwga
-        SvXlLSTqXJ4E87TWgmV1BJhfGFNMKf8g6U7P46ZTUK9t
-X-Google-Smtp-Source: AKy350Y9l+3RrBgnRt/ZsV97ky+Whhpraic1B8yk+LoKwK10xK2yro9LelhgWAoWXJW7Fm9Jt9OAbZ7Gg74wD/zZwus=
-X-Received: by 2002:a17:906:35d1:b0:94f:4ec3:f0f5 with SMTP id
- p17-20020a17090635d100b0094f4ec3f0f5mr1583546ejb.4.1681999579416; Thu, 20 Apr
- 2023 07:06:19 -0700 (PDT)
+        bh=mrbfS9qzAxsg7Mxmkhy5II3bga2P8KO4swtn5KuXyG0=;
+        b=TlMP3bcXxxzTa1z+DfVAg1mqaQr7IS1hhd6hY9R6Vy2ecHTFd32yH+uhtupfN24fVn
+         SBxV4gatEkhNO/kWqDBwBBS5AECalqhyjxqxinbNab1d6R0aKuxWOsSr6Y1zIzndxzAM
+         ckypduQxnjB1r4esT2fFjpONh1VvuVziKOsXL2/zlApaUZPAKobEz95wo9NvhKVPPhW6
+         XodA/CR9tyMFw3NDbV2LCnwtH43+E/orf9bL3NQyl4rdgDm/XHgs4ybNQ5PE8zFP+1y1
+         VVXIWFnkmIqwP0IA5NgVJsfe6ZZ/dqzHuQZfF8Xgqo58wY5a876zlDrcBByr3hptBJmG
+         7G1Q==
+X-Gm-Message-State: AAQBX9eLrqcieB1LMurVwLKOObbk5Wu9CB9fO8TNikKDimnTJznkoFNM
+        ko1K5lJCR0TdVrmqNxNmwKJ/1WHkLNvJdp7CRq0=
+X-Google-Smtp-Source: AKy350Yp5p3Ap4k0cXbpLtdUdBH0oPAfDQGOUBN5Ag0FOx1IxezOJl4tNjCHJh/vRgVV5aucOQ/D3YCwgLgctxjR6+Q=
+X-Received: by 2002:a17:906:54d:b0:94e:dbce:69fe with SMTP id
+ k13-20020a170906054d00b0094edbce69femr1914715eja.2.1682004771101; Thu, 20 Apr
+ 2023 08:32:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230419164127.3773278-1-linux@roeck-us.net>
-In-Reply-To: <20230419164127.3773278-1-linux@roeck-us.net>
+References: <ZDawIXBd7gcA8DCk@smile.fi.intel.com> <20230419193432.GA220432@bhelgaas>
+In-Reply-To: <20230419193432.GA220432@bhelgaas>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 20 Apr 2023 16:06:08 +0200
-Message-ID: <CAJZ5v0gmDgb+VFwZecbKrbiBejAvODT38Ws=B_wGEGeBHTGR+Q@mail.gmail.com>
-Subject: Re: [PATCH] device property: make device_property functions take
- const device *
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>
+Date:   Thu, 20 Apr 2023 17:32:39 +0200
+Message-ID: <CAJZ5v0ir_SQgs=4_tdjbdrF0vnM5=6dQKw-Y=LxTyCAW2kZuhQ@mail.gmail.com>
+Subject: Re: [BUG] net, pci: 6.3-rc1-4 hangs during boot on PowerEdge R620
+ with igb
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rob Herring <robh@kernel.org>,
+        Donald Hunter <donald.hunter@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        Bjorn Helgaas <bhelgaas@google.com>, netdev@vger.kernel.org,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Apr 19, 2023 at 6:41 PM Guenter Roeck <linux@roeck-us.net> wrote:
+On Wed, Apr 19, 2023 at 9:34 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
 >
-> device_property functions do not modify the device pointer passed to them.
-> The underlying of_device and fwnode_ functions actually already take
-> const * arguments. Mark the parameter constant to simplify conversion
-> from of_property to device_property functions, and to let the calling code
-> use const device pointers where possible.
+> On Wed, Apr 12, 2023 at 04:20:33PM +0300, Andy Shevchenko wrote:
+> > On Tue, Apr 11, 2023 at 02:02:03PM -0500, Rob Herring wrote:
+> > > On Tue, Apr 11, 2023 at 7:53 AM Donald Hunter <donald.hunter@gmail.com> wrote:
+> > > > Bjorn Helgaas <helgaas@kernel.org> writes:
+> > > > > On Mon, Apr 10, 2023 at 04:10:54PM +0100, Donald Hunter wrote:
+> > > > >> On Sun, 2 Apr 2023 at 23:55, Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > > > >> > On Sat, Apr 01, 2023 at 01:52:25PM +0100, Donald Hunter wrote:
+> > > > >> > > On Fri, 31 Mar 2023 at 20:42, Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > > > >> > > >
+> > > > >> > > > I assume this igb NIC (07:00.0) must be built-in (not a plug-in card)
+> > > > >> > > > because it apparently has an ACPI firmware node, and there's something
+> > > > >> > > > we don't expect about its status?
+> > > > >> > >
+> > > > >> > > Yes they are built-in, to my knowledge.
+> > > > >> > >
+> > > > >> > > > Hopefully Rob will look at this.  If I were looking, I would be
+> > > > >> > > > interested in acpidump to see what's in the DSDT.
+> > > > >> > >
+> > > > >> > > I can get an acpidump. Is there a preferred way to share the files, or just
+> > > > >> > > an email attachment?
+> > > > >> >
+> > > > >> > I think by default acpidump produces ASCII that can be directly
+> > > > >> > included in email.  http://vger.kernel.org/majordomo-info.html says
+> > > > >> > 100K is the limit for vger mailing lists.  Or you could open a report
+> > > > >> > at https://bugzilla.kernel.org and attach it there, maybe along with a
+> > > > >> > complete dmesg log and "sudo lspci -vv" output.
+> > > > >>
+> > > > >> Apologies for the delay, I was unable to access the machine while travelling.
+> > > > >>
+> > > > >> https://bugzilla.kernel.org/show_bug.cgi?id=217317
+> > > > >
+> > > > > Thanks for that!  Can you boot a kernel with 6fffbc7ae137 reverted
+> > > > > with this in the kernel parameters:
+> > > > >
+> > > > >   dyndbg="file drivers/acpi/* +p"
+> > > > >
+> > > > > and collect the entire dmesg log?
+> > > >
+> > > > Added to the bugzilla report.
+> > >
+> > > Rafael, Andy, Any ideas why fwnode_device_is_available() would return
+> > > false for a built-in PCI device with a ACPI device entry? The only
+> > > thing I see in the log is it looks like the parent PCI bridge/bus
+> > > doesn't have ACPI device entry (based on "[    0.913389] pci_bus
+> > > 0000:07: No ACPI support"). For DT, if the parent doesn't have a node,
+> > > then the child can't. Not sure on ACPI.
+> >
+> > Thanks for the Cc'ing. I haven't checked anything yet, but from the above it
+> > sounds like a BIOS issue. If PCI has no ACPI companion tree, then why the heck
+> > one of the devices has the entry? I'm not even sure this is allowed by ACPI
+> > specification, but as I said, I just solely used the above mail.
 >
-> Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> ACPI r6.5, sec 6.3.7, about _STA says:
+>
+>   - Bit [0] - Set if the device is present.
+>   - Bit [1] - Set if the device is enabled and decoding its resources.
+>   - Bit [3] - Set if the device is functioning properly (cleared if
+>     device failed its diagnostics).
+>
+>   ...
+>
+>   If a device is present on an enumerable bus, then _STA must not
+>   return 0. In that case, bit[0] must be set and if the status of the
+>   device can be determined through a bus-specific enumeration and
+>   discovery mechanism, it must be reflected by the values of bit[1]
+>   and bit[3], even though the OSPM is not required to take them into
+>   account.
+>
+> Since PCI *is* an enumerable bus, I don't think we can use _STA to
+> decide whether a PCI device is present.
 
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+You are right, _STA can't be used for that.
 
-> ---
-> Found by Chris when trying to convert a driver from of_property_ to
-> device_property_ functions. I don't really see a reason why the device
-> parameter to device_property functions should not be const.
-> Please let me know if I am missing sonething.
+> We can use _STA to decide whether a host bridge is present, of course,
+> but that doesn't help here because the host bridge in question is
+> PNP0A08:00 that leads to [bus 00-3d], and it is present.
 >
->  drivers/base/property.c  | 16 ++++++++--------
->  include/linux/property.h | 36 ++++++++++++++++++------------------
->  2 files changed, 26 insertions(+), 26 deletions(-)
->
-> diff --git a/drivers/base/property.c b/drivers/base/property.c
-> index 083a95791d3b..21d7a5d13e05 100644
-> --- a/drivers/base/property.c
-> +++ b/drivers/base/property.c
-> @@ -38,7 +38,7 @@ EXPORT_SYMBOL_GPL(__dev_fwnode_const);
->   *
->   * Check if property @propname is present in the device firmware description.
->   */
-> -bool device_property_present(struct device *dev, const char *propname)
-> +bool device_property_present(const struct device *dev, const char *propname)
->  {
->         return fwnode_property_present(dev_fwnode(dev), propname);
->  }
-> @@ -86,7 +86,7 @@ EXPORT_SYMBOL_GPL(fwnode_property_present);
->   *        %-EOVERFLOW if the size of the property is not as expected.
->   *        %-ENXIO if no suitable firmware interface is present.
->   */
-> -int device_property_read_u8_array(struct device *dev, const char *propname,
-> +int device_property_read_u8_array(const struct device *dev, const char *propname,
->                                   u8 *val, size_t nval)
->  {
->         return fwnode_property_read_u8_array(dev_fwnode(dev), propname, val, nval);
-> @@ -114,7 +114,7 @@ EXPORT_SYMBOL_GPL(device_property_read_u8_array);
->   *        %-EOVERFLOW if the size of the property is not as expected.
->   *        %-ENXIO if no suitable firmware interface is present.
->   */
-> -int device_property_read_u16_array(struct device *dev, const char *propname,
-> +int device_property_read_u16_array(const struct device *dev, const char *propname,
->                                    u16 *val, size_t nval)
->  {
->         return fwnode_property_read_u16_array(dev_fwnode(dev), propname, val, nval);
-> @@ -142,7 +142,7 @@ EXPORT_SYMBOL_GPL(device_property_read_u16_array);
->   *        %-EOVERFLOW if the size of the property is not as expected.
->   *        %-ENXIO if no suitable firmware interface is present.
->   */
-> -int device_property_read_u32_array(struct device *dev, const char *propname,
-> +int device_property_read_u32_array(const struct device *dev, const char *propname,
->                                    u32 *val, size_t nval)
->  {
->         return fwnode_property_read_u32_array(dev_fwnode(dev), propname, val, nval);
-> @@ -170,7 +170,7 @@ EXPORT_SYMBOL_GPL(device_property_read_u32_array);
->   *        %-EOVERFLOW if the size of the property is not as expected.
->   *        %-ENXIO if no suitable firmware interface is present.
->   */
-> -int device_property_read_u64_array(struct device *dev, const char *propname,
-> +int device_property_read_u64_array(const struct device *dev, const char *propname,
->                                    u64 *val, size_t nval)
->  {
->         return fwnode_property_read_u64_array(dev_fwnode(dev), propname, val, nval);
-> @@ -198,7 +198,7 @@ EXPORT_SYMBOL_GPL(device_property_read_u64_array);
->   *        %-EOVERFLOW if the size of the property is not as expected.
->   *        %-ENXIO if no suitable firmware interface is present.
->   */
-> -int device_property_read_string_array(struct device *dev, const char *propname,
-> +int device_property_read_string_array(const struct device *dev, const char *propname,
->                                       const char **val, size_t nval)
->  {
->         return fwnode_property_read_string_array(dev_fwnode(dev), propname, val, nval);
-> @@ -220,7 +220,7 @@ EXPORT_SYMBOL_GPL(device_property_read_string_array);
->   *        %-EPROTO or %-EILSEQ if the property type is not a string.
->   *        %-ENXIO if no suitable firmware interface is present.
->   */
-> -int device_property_read_string(struct device *dev, const char *propname,
-> +int device_property_read_string(const struct device *dev, const char *propname,
->                                 const char **val)
->  {
->         return fwnode_property_read_string(dev_fwnode(dev), propname, val);
-> @@ -242,7 +242,7 @@ EXPORT_SYMBOL_GPL(device_property_read_string);
->   *        %-EPROTO if the property is not an array of strings,
->   *        %-ENXIO if no suitable firmware interface is present.
->   */
-> -int device_property_match_string(struct device *dev, const char *propname,
-> +int device_property_match_string(const struct device *dev, const char *propname,
->                                  const char *string)
->  {
->         return fwnode_property_match_string(dev_fwnode(dev), propname, string);
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index 0a29db15ff34..66fe73ee430d 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -40,20 +40,20 @@ struct fwnode_handle *__dev_fwnode(struct device *dev);
->                  const struct device *: __dev_fwnode_const,     \
->                  struct device *: __dev_fwnode)(dev)
->
-> -bool device_property_present(struct device *dev, const char *propname);
-> -int device_property_read_u8_array(struct device *dev, const char *propname,
-> +bool device_property_present(const struct device *dev, const char *propname);
-> +int device_property_read_u8_array(const struct device *dev, const char *propname,
->                                   u8 *val, size_t nval);
-> -int device_property_read_u16_array(struct device *dev, const char *propname,
-> +int device_property_read_u16_array(const struct device *dev, const char *propname,
->                                    u16 *val, size_t nval);
-> -int device_property_read_u32_array(struct device *dev, const char *propname,
-> +int device_property_read_u32_array(const struct device *dev, const char *propname,
->                                    u32 *val, size_t nval);
-> -int device_property_read_u64_array(struct device *dev, const char *propname,
-> +int device_property_read_u64_array(const struct device *dev, const char *propname,
->                                    u64 *val, size_t nval);
-> -int device_property_read_string_array(struct device *dev, const char *propname,
-> +int device_property_read_string_array(const struct device *dev, const char *propname,
->                                       const char **val, size_t nval);
-> -int device_property_read_string(struct device *dev, const char *propname,
-> +int device_property_read_string(const struct device *dev, const char *propname,
->                                 const char **val);
-> -int device_property_match_string(struct device *dev,
-> +int device_property_match_string(const struct device *dev,
->                                  const char *propname, const char *string);
->
->  bool fwnode_property_present(const struct fwnode_handle *fwnode,
-> @@ -143,57 +143,57 @@ int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
->
->  unsigned int device_get_child_node_count(const struct device *dev);
->
-> -static inline bool device_property_read_bool(struct device *dev,
-> +static inline bool device_property_read_bool(const struct device *dev,
->                                              const char *propname)
->  {
->         return device_property_present(dev, propname);
->  }
->
-> -static inline int device_property_read_u8(struct device *dev,
-> +static inline int device_property_read_u8(const struct device *dev,
->                                           const char *propname, u8 *val)
->  {
->         return device_property_read_u8_array(dev, propname, val, 1);
->  }
->
-> -static inline int device_property_read_u16(struct device *dev,
-> +static inline int device_property_read_u16(const struct device *dev,
->                                            const char *propname, u16 *val)
->  {
->         return device_property_read_u16_array(dev, propname, val, 1);
->  }
->
-> -static inline int device_property_read_u32(struct device *dev,
-> +static inline int device_property_read_u32(const struct device *dev,
->                                            const char *propname, u32 *val)
->  {
->         return device_property_read_u32_array(dev, propname, val, 1);
->  }
->
-> -static inline int device_property_read_u64(struct device *dev,
-> +static inline int device_property_read_u64(const struct device *dev,
->                                            const char *propname, u64 *val)
->  {
->         return device_property_read_u64_array(dev, propname, val, 1);
->  }
->
-> -static inline int device_property_count_u8(struct device *dev, const char *propname)
-> +static inline int device_property_count_u8(const struct device *dev, const char *propname)
->  {
->         return device_property_read_u8_array(dev, propname, NULL, 0);
->  }
->
-> -static inline int device_property_count_u16(struct device *dev, const char *propname)
-> +static inline int device_property_count_u16(const struct device *dev, const char *propname)
->  {
->         return device_property_read_u16_array(dev, propname, NULL, 0);
->  }
->
-> -static inline int device_property_count_u32(struct device *dev, const char *propname)
-> +static inline int device_property_count_u32(const struct device *dev, const char *propname)
->  {
->         return device_property_read_u32_array(dev, propname, NULL, 0);
->  }
->
-> -static inline int device_property_count_u64(struct device *dev, const char *propname)
-> +static inline int device_property_count_u64(const struct device *dev, const char *propname)
->  {
->         return device_property_read_u64_array(dev, propname, NULL, 0);
->  }
->
-> -static inline int device_property_string_array_count(struct device *dev,
-> +static inline int device_property_string_array_count(const struct device *dev,
->                                                      const char *propname)
->  {
->         return device_property_read_string_array(dev, propname, NULL, 0);
-> --
-> 2.39.2
->
+> I don't know exactly what path led to the igb issue, but I don't think
+> we need to figure that out.  I think we just need to avoid the use of
+> _STA in fwnode_device_is_available().
+
+I agree.  It is incorrect.
+
+> 6fffbc7ae137 ("PCI: Honor firmware's device disabled status") appeared
+> in v6.3-rc1, so I think we need to revert or fix it before v6.3, which
+> will probably be tagged Sunday (and I'll be on vacation
+> Friday-Monday).
+
+Yes, please revert this one ASAP.
+
+Cheers,
+Rafael
