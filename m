@@ -2,106 +2,155 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59C9E6E8916
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Apr 2023 06:25:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 030626E8A2B
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Apr 2023 08:10:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230102AbjDTEZY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Apr 2023 00:25:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51496 "EHLO
+        id S232546AbjDTGK4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Apr 2023 02:10:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233337AbjDTEZX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Apr 2023 00:25:23 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB7274220
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Apr 2023 21:25:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681964720; x=1713500720;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=uGkJDuCA5roZl+Gwls4r+YKtHGHUCchxEOme/jljAmg=;
-  b=fwuQWWg1JB8O9tq5xoYD8IHB+nMCBcLUNK9T3kmMbL6KvWuugyXNp4sv
-   RMiWSaMTxuVouGW9VRe2aVym7ZA92Kq7XQZYQrCRSE0ZZUEI9WfiH1o+T
-   z+aYMxVeU3gnnZgIgYk5HFZfjVExF219ejp6W2RwSKuozTszXWMAuNXKt
-   3PRhLHN7/VCLXpSvRulY/+B8lY8Yqzp0b48SPcru/NmBg75IPOmnxX1+8
-   eOtOa2T8zsz2VaHfKwvLov5Lnv5Qr2Tjc7FDXiiCjWFHIx4TVrTaS5+ds
-   wuE9LSd3t34MFwBiDruSSDJqocQzEKJP9huhMCNwYvW48u5c/Y1uqhykX
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10685"; a="347489829"
-X-IronPort-AV: E=Sophos;i="5.99,211,1677571200"; 
-   d="scan'208";a="347489829"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2023 21:25:20 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10685"; a="760994039"
-X-IronPort-AV: E=Sophos;i="5.99,211,1677571200"; 
-   d="scan'208";a="760994039"
-Received: from allen-box.sh.intel.com (HELO [10.239.159.127]) ([10.239.159.127])
-  by fmsmga004.fm.intel.com with ESMTP; 19 Apr 2023 21:25:16 -0700
-Message-ID: <132ceb1f-4559-5a99-af47-1a86a677eae7@linux.intel.com>
-Date:   Thu, 20 Apr 2023 12:25:11 +0800
+        with ESMTP id S233620AbjDTGKz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Apr 2023 02:10:55 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 398004696
+        for <linux-acpi@vger.kernel.org>; Wed, 19 Apr 2023 23:10:53 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id x34so1608098ljq.1
+        for <linux-acpi@vger.kernel.org>; Wed, 19 Apr 2023 23:10:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1681971051; x=1684563051;
+        h=cc:to:subject:message-id:date:user-agent:from:references
+         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cNPBzX6Y4DzEXkxrIsPy5WXkjPdEdrZU6Sa+8uyinhQ=;
+        b=T6LFJAc7v8GrrcO2kqA4STxSTFczF6e9f/FFkoTN386zEbafQ9OeBNDHhzAj0y4B5y
+         mjd4LqgBkN/Apo4JcK8bye9Edyo0Gu+PlOi/enVL4YyxQh4xdjTYDNPZJFb3GYxQ8Bf8
+         CVvxKkEvnNo9DJ02bKZUUmN9AY23CoqMNkrT8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681971051; x=1684563051;
+        h=cc:to:subject:message-id:date:user-agent:from:references
+         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cNPBzX6Y4DzEXkxrIsPy5WXkjPdEdrZU6Sa+8uyinhQ=;
+        b=cmcmvuf8NiXdu0Xsr3FXJSE2oWQFRysDTrRa0F2IY0KRxCHgiYaWuX2B+J8lX4KcGW
+         TnbV5BQFTQ24qqAGV9w3rRZU74wO9TwSImBHLo/WvqP1gURA5DZrdzr3iSV4by/9APSc
+         t1hUDyF6OlEWp28oJghogAA6nfop670k5yCBGRgOSDwjTIubpdapoTWiATG7cCFU1CCc
+         /cxeah0phVC4gKMFFBCR2/CKlRm2CX/KJZP4RWfJ61yOK6Cy5W36XKJZ3cM71JQ++ALV
+         6+MFZyDkbxDD1NyMuHSs3MS7JbfoerxO78Oxmkr1lmZVlCOgb8i9GeNC7QMFGeuMLPxs
+         x+ow==
+X-Gm-Message-State: AAQBX9dPWf0wlwn6P4NgQJyJgIwP9w1saa5Aufzwy0obgVp4UwPtyo0T
+        Dt5zGD1c2HwNWS2YgQuI+fq/Q/qvsU3PbjByqFBIqA==
+X-Google-Smtp-Source: AKy350Ydm+ji1Zz5gF+5t9+VddXM85teKkwpvpc0TGbgwOoQH/RjUhZIpMjhSmt4c7794yXFCLb7VjgGzoZF/T4iQuA=
+X-Received: by 2002:a2e:9051:0:b0:2a8:e4d3:11de with SMTP id
+ n17-20020a2e9051000000b002a8e4d311demr105767ljg.20.1681971051475; Wed, 19 Apr
+ 2023 23:10:51 -0700 (PDT)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 19 Apr 2023 23:10:50 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Cc:     baolu.lu@linux.intel.com, Kevin Tian <kevin.tian@intel.com>,
-        Nicolin Chen <nicolinc@nvidia.com>
-Subject: Re: [PATCH 10/11] iommu: Split iommu_group_add_device()
-Content-Language: en-US
-To:     Jason Gunthorpe <jgg@nvidia.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        David Woodhouse <dwmw2@infradead.org>, iommu@lists.linux.dev,
-        Joerg Roedel <joro@8bytes.org>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Will Deacon <will@kernel.org>
-References: <10-v1-8aecc628b904+2f42-iommu_probe_jgg@nvidia.com>
-From:   Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <10-v1-8aecc628b904+2f42-iommu_probe_jgg@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CAE-0n50atfmr-bFh5XtTCm4WpSijJGSe0B5JP8ni7CCYk7Bs5A@mail.gmail.com>
+References: <20230331091145.737305-1-treapking@chromium.org>
+ <20230331091145.737305-5-treapking@chromium.org> <CAE-0n51E5foFWQAsA73662_5e6XP426wuUCVVmcS5UWwiYpDmw@mail.gmail.com>
+ <CAEXTbpdcbB_z4ZGCGzc-cM74ECKyxekbroKCWFnhH8eR=4HmvA@mail.gmail.com> <CAE-0n50atfmr-bFh5XtTCm4WpSijJGSe0B5JP8ni7CCYk7Bs5A@mail.gmail.com>
+From:   Stephen Boyd <swboyd@chromium.org>
+User-Agent: alot/0.10
+Date:   Wed, 19 Apr 2023 23:10:50 -0700
+Message-ID: <CAE-0n51Qy-KDGHOCr4Smpebq1fCURqvJ2RJz6KAtVpv5e+DSGA@mail.gmail.com>
+Subject: Re: [PATCH v15 04/10] dt-bindings: display: bridge: anx7625: Add
+ mode-switch support
+To:     Pin-yen Lin <treapking@chromium.org>
+Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Benson Leung <bleung@chromium.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Xin Ji <xji@analogixsemi.com>, Marek Vasut <marex@denx.de>,
+        Hsin-Yi Wang <hsinyi@chromium.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Lyude Paul <lyude@redhat.com>, devicetree@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-acpi@vger.kernel.org,
+        chrome-platform@lists.linux.dev,
+        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
+        <nfraprado@collabora.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Chen-Yu Tsai <wenst@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 4/20/23 12:11 AM, Jason Gunthorpe wrote:
-> @@ -451,16 +454,17 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
->   		goto out_unlock;
->   
->   	group = dev->iommu_group;
-> -	ret = iommu_group_add_device(group, dev);
-> +	gdev = iommu_group_alloc_device(group, dev);
->   	mutex_lock(&group->mutex);
-> -	if (ret)
-> +	if (IS_ERR(gdev)) {
-> +		ret = PTR_ERR(gdev);
->   		goto err_put_group;
-> +	}
->   
-> +	list_add_tail(&gdev->list, &group->devices);
+Quoting Stephen Boyd (2023-04-13 17:22:46)
+> Quoting Pin-yen Lin (2023-04-13 02:50:44)
+> >
+> > Actually the `mode-switch` property here is mainly because
+> > `fwnode_typec_mux_get`[1] and `typec_mux_match`[2] only return matches
+> > when the property is present. I am not sure what side effects would be
+> > if I remove the ID-matching condition in `typec_mux_match`, so I added
+> > the property here.
+> >
+> > Is it feasible to remove the `mode-switch` property here given the
+> > existing implementation of the Type-C framework?
+>
+> Omitting the mode-switch property would require changes to the type-c
+> framework.
+>
+> I'm wondering if we can have this anx driver register mode switches for
+> however many endpoints exist in the output port all the time when the
+> aux-bus node doesn't exist. Then the type-c framework can walk from the
+> usb-c-connector to each connected node looking for a device that is both
+> a drm_bridge and a mode-switch. When it finds that combination, it knows
+> that the mode-switch has been found. This hinges on the idea that a
+> device that would have the mode-switch property is a drm_bridge and
+> would register a mode-switch with the type-c framework.
+>
+> It may be a little complicated though, because we would only register
+> one drm_bridge for the input to this anx device. The type-c walking code
+> would need to look at the graph endpoint, and find the parent device to
+> see if it is a drm_bridge.
 
-Do we need to put
+I've been thinking more about this. I think we should only have the
+'mode-switch' property possible when the USB input pins (port@2) are
+connected and the DPI input pins are connected (port@0). Probably you
+don't have that case though?
 
-	dev->iommu_group = group;
+In your case, this device should register either one or two drm_bridges
+that connect to whatever downstream is actually muxing the 2 DP lanes
+with the USB SS lanes onto the usb-c-connector. If that is the EC for
+ChromeOS, then the EC should have a binding that accepts some number of
+input ports for DP. The EC would act as a drm_bridge, or in this case
+probably two bridges, and also as two type-c switches for each
+drm_bridge corresponding to the usb-c-connector nodes. When DP is on the
+cable, the type-c switch/mux would signal to the drm_bridge that the
+display is 'connected' via DRM_BRIDGE_OP_DETECT and struct
+drm_bridge_funcs::detect(). Then the drm_bridge in this anx part would
+implement struct drm_bridge_funcs::atomic_enable() and configure the
+crosspoint switch the right way depending on the reg property of the
+output node in port@1.
 
-here?
-
->   	if (group_list && !group->default_domain && list_empty(&group->entry))
->   		list_add_tail(&group->entry, group_list);
->   	mutex_unlock(&group->mutex);
-> -	iommu_group_put(group);
-> -
->   	mutex_unlock(&iommu_probe_device_lock);
->   
->   	return 0;
-
-Best regards,
-baolu
+Because you don't have the part that implements the orientation-switch,
+you don't need to implement the code for it. I think simply adding
+support in the binding for mode-switch and orientation-switch if this is
+directly wired to a usb-c-connector should be sufficient. Those
+properties would be at the top-level and not part of the graph binding.
