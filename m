@@ -2,155 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 030626E8A2B
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Apr 2023 08:10:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAE1F6E8C1D
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Apr 2023 10:06:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232546AbjDTGK4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Apr 2023 02:10:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58686 "EHLO
+        id S234320AbjDTIGH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Apr 2023 04:06:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233620AbjDTGKz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Apr 2023 02:10:55 -0400
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 398004696
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Apr 2023 23:10:53 -0700 (PDT)
-Received: by mail-lj1-x231.google.com with SMTP id x34so1608098ljq.1
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Apr 2023 23:10:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1681971051; x=1684563051;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cNPBzX6Y4DzEXkxrIsPy5WXkjPdEdrZU6Sa+8uyinhQ=;
-        b=T6LFJAc7v8GrrcO2kqA4STxSTFczF6e9f/FFkoTN386zEbafQ9OeBNDHhzAj0y4B5y
-         mjd4LqgBkN/Apo4JcK8bye9Edyo0Gu+PlOi/enVL4YyxQh4xdjTYDNPZJFb3GYxQ8Bf8
-         CVvxKkEvnNo9DJ02bKZUUmN9AY23CoqMNkrT8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681971051; x=1684563051;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cNPBzX6Y4DzEXkxrIsPy5WXkjPdEdrZU6Sa+8uyinhQ=;
-        b=cmcmvuf8NiXdu0Xsr3FXJSE2oWQFRysDTrRa0F2IY0KRxCHgiYaWuX2B+J8lX4KcGW
-         TnbV5BQFTQ24qqAGV9w3rRZU74wO9TwSImBHLo/WvqP1gURA5DZrdzr3iSV4by/9APSc
-         t1hUDyF6OlEWp28oJghogAA6nfop670k5yCBGRgOSDwjTIubpdapoTWiATG7cCFU1CCc
-         /cxeah0phVC4gKMFFBCR2/CKlRm2CX/KJZP4RWfJ61yOK6Cy5W36XKJZ3cM71JQ++ALV
-         6+MFZyDkbxDD1NyMuHSs3MS7JbfoerxO78Oxmkr1lmZVlCOgb8i9GeNC7QMFGeuMLPxs
-         x+ow==
-X-Gm-Message-State: AAQBX9dPWf0wlwn6P4NgQJyJgIwP9w1saa5Aufzwy0obgVp4UwPtyo0T
-        Dt5zGD1c2HwNWS2YgQuI+fq/Q/qvsU3PbjByqFBIqA==
-X-Google-Smtp-Source: AKy350Ydm+ji1Zz5gF+5t9+VddXM85teKkwpvpc0TGbgwOoQH/RjUhZIpMjhSmt4c7794yXFCLb7VjgGzoZF/T4iQuA=
-X-Received: by 2002:a2e:9051:0:b0:2a8:e4d3:11de with SMTP id
- n17-20020a2e9051000000b002a8e4d311demr105767ljg.20.1681971051475; Wed, 19 Apr
- 2023 23:10:51 -0700 (PDT)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 19 Apr 2023 23:10:50 -0700
+        with ESMTP id S234333AbjDTIGF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Apr 2023 04:06:05 -0400
+Received: from mail.craftsplex.pl (mail.craftsplex.pl [162.19.155.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A97EF30FD
+        for <linux-acpi@vger.kernel.org>; Thu, 20 Apr 2023 01:06:02 -0700 (PDT)
+Received: by mail.craftsplex.pl (Postfix, from userid 1002)
+        id 47E1F241CE; Thu, 20 Apr 2023 08:05:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=craftsplex.pl;
+        s=mail; t=1681977961;
+        bh=PcMncQpBfIZCnTOfZJY5G1G+gaLn4c9QPfFvoXrE4rA=;
+        h=Date:From:To:Subject:From;
+        b=Fw7D1BGmAFb3H8xn102f/auUyG8cNbj5pRUivyLzlFNqziniGzwHIJzFJwa8LKw3T
+         GW8GKX1sRaeQ0Gh6/jwlnYd/5eTxB3Y8GgYmiDyIdBnWc7/+4NSsNtMa8FmJFgRFE9
+         /6vzvq7HGb5Hi4GcJCrZtVDPAUvvA7F+i7juCE+Df/yumKsKlO/ilMRX/V9U60WsF3
+         xqeIbV+LVnr1XeM8MR3fSAau8zFu4aNdM26961NqYgE6xYThHMu55GMnGLiNJSriUg
+         XCfxwpc9fDXqtcexkWhri7GBaPhNfB6BTKt05UsTqdL6zSW+RujDziHElFcAEAW+Lw
+         8LJmMdulHrDrg==
+Received: by mail.craftsplex.pl for <linux-acpi@vger.kernel.org>; Thu, 20 Apr 2023 08:05:42 GMT
+Message-ID: <20230420064500-0.1.5o.q9k7.0.3x9lfkdjw7@craftsplex.pl>
+Date:   Thu, 20 Apr 2023 08:05:42 GMT
+From:   "Kamil Tralewski" <kamil.tralewski@craftsplex.pl>
+To:     <linux-acpi@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
+X-Mailer: mail.craftsplex.pl
 MIME-Version: 1.0
-In-Reply-To: <CAE-0n50atfmr-bFh5XtTCm4WpSijJGSe0B5JP8ni7CCYk7Bs5A@mail.gmail.com>
-References: <20230331091145.737305-1-treapking@chromium.org>
- <20230331091145.737305-5-treapking@chromium.org> <CAE-0n51E5foFWQAsA73662_5e6XP426wuUCVVmcS5UWwiYpDmw@mail.gmail.com>
- <CAEXTbpdcbB_z4ZGCGzc-cM74ECKyxekbroKCWFnhH8eR=4HmvA@mail.gmail.com> <CAE-0n50atfmr-bFh5XtTCm4WpSijJGSe0B5JP8ni7CCYk7Bs5A@mail.gmail.com>
-From:   Stephen Boyd <swboyd@chromium.org>
-User-Agent: alot/0.10
-Date:   Wed, 19 Apr 2023 23:10:50 -0700
-Message-ID: <CAE-0n51Qy-KDGHOCr4Smpebq1fCURqvJ2RJz6KAtVpv5e+DSGA@mail.gmail.com>
-Subject: Re: [PATCH v15 04/10] dt-bindings: display: bridge: anx7625: Add
- mode-switch support
-To:     Pin-yen Lin <treapking@chromium.org>
-Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Benson Leung <bleung@chromium.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Robert Foss <rfoss@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Xin Ji <xji@analogixsemi.com>, Marek Vasut <marex@denx.de>,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Lyude Paul <lyude@redhat.com>, devicetree@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-acpi@vger.kernel.org,
-        chrome-platform@lists.linux.dev,
-        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
-        <nfraprado@collabora.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Chen-Yu Tsai <wenst@chromium.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Quoting Stephen Boyd (2023-04-13 17:22:46)
-> Quoting Pin-yen Lin (2023-04-13 02:50:44)
-> >
-> > Actually the `mode-switch` property here is mainly because
-> > `fwnode_typec_mux_get`[1] and `typec_mux_match`[2] only return matches
-> > when the property is present. I am not sure what side effects would be
-> > if I remove the ID-matching condition in `typec_mux_match`, so I added
-> > the property here.
-> >
-> > Is it feasible to remove the `mode-switch` property here given the
-> > existing implementation of the Type-C framework?
->
-> Omitting the mode-switch property would require changes to the type-c
-> framework.
->
-> I'm wondering if we can have this anx driver register mode switches for
-> however many endpoints exist in the output port all the time when the
-> aux-bus node doesn't exist. Then the type-c framework can walk from the
-> usb-c-connector to each connected node looking for a device that is both
-> a drm_bridge and a mode-switch. When it finds that combination, it knows
-> that the mode-switch has been found. This hinges on the idea that a
-> device that would have the mode-switch property is a drm_bridge and
-> would register a mode-switch with the type-c framework.
->
-> It may be a little complicated though, because we would only register
-> one drm_bridge for the input to this anx device. The type-c walking code
-> would need to look at the graph endpoint, and find the parent device to
-> see if it is a drm_bridge.
+Dzie=C5=84 dobry,
 
-I've been thinking more about this. I think we should only have the
-'mode-switch' property possible when the USB input pins (port@2) are
-connected and the DPI input pins are connected (port@0). Probably you
-don't have that case though?
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-In your case, this device should register either one or two drm_bridges
-that connect to whatever downstream is actually muxing the 2 DP lanes
-with the USB SS lanes onto the usb-c-connector. If that is the EC for
-ChromeOS, then the EC should have a binding that accepts some number of
-input ports for DP. The EC would act as a drm_bridge, or in this case
-probably two bridges, and also as two type-c switches for each
-drm_bridge corresponding to the usb-c-connector nodes. When DP is on the
-cable, the type-c switch/mux would signal to the drm_bridge that the
-display is 'connected' via DRM_BRIDGE_OP_DETECT and struct
-drm_bridge_funcs::detect(). Then the drm_bridge in this anx part would
-implement struct drm_bridge_funcs::atomic_enable() and configure the
-crosspoint switch the right way depending on the reg property of the
-output node in port@1.
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
-Because you don't have the part that implements the orientation-switch,
-you don't need to implement the code for it. I think simply adding
-support in the binding for mode-switch and orientation-switch if this is
-directly wired to a usb-c-connector should be sufficient. Those
-properties would be at the top-level and not part of the graph binding.
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+
+Pozdrawiam
+Kamil Tralewski
