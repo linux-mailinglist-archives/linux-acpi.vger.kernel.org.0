@@ -2,48 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B447F6E8E68
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Apr 2023 11:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 529606E91D2
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Apr 2023 13:06:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234262AbjDTJn2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Apr 2023 05:43:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57788 "EHLO
+        id S235259AbjDTLF2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Apr 2023 07:05:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234409AbjDTJnB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Apr 2023 05:43:01 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D00D40E5;
-        Thu, 20 Apr 2023 02:41:08 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Q2CGF2BwVz67qqr;
-        Thu, 20 Apr 2023 17:36:21 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 20 Apr
- 2023 10:41:05 +0100
-Date:   Thu, 20 Apr 2023 10:41:04 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Dave Jiang <dave.jiang@intel.com>
-CC:     <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <dan.j.williams@intel.com>, <ira.weiny@intel.com>,
-        <vishal.l.verma@intel.com>, <alison.schofield@intel.com>,
-        <rafael@kernel.org>, <lukas@wunner.de>
-Subject: Re: [PATCH v4 04/23] cxl: Add common helpers for cdat parsing
-Message-ID: <20230420104104.000065dd@Huawei.com>
-In-Reply-To: <168193568543.1178687.3067575213689202382.stgit@djiang5-mobl3>
-References: <168193556660.1178687.15477509915255912089.stgit@djiang5-mobl3>
-        <168193568543.1178687.3067575213689202382.stgit@djiang5-mobl3>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S235327AbjDTLEs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Apr 2023 07:04:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5617855A4
+        for <linux-acpi@vger.kernel.org>; Thu, 20 Apr 2023 04:02:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1681988544;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=Hq3QNEMudW51eMDzNrroNHBYxi5M+MAF5mxOYyUo23U=;
+        b=E2RqiFn0phuGeEqYwqIC1aCxUJKGsBDrLeLjVwFioZG2bHWHOsM/uYZ/6cfI/gabot9l0c
+        eAktN4PH736d29EX1N4DYpYif78lH1VLCoSGbH9+rAv0QlWRSsxMaiXWLgbuSSPe9t0M7h
+        OEeWAA02CrWE5Yh/YWDA1Zfwpadi618=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-247--BaZiDkLPmGhpw1imRHhmA-1; Thu, 20 Apr 2023 07:02:23 -0400
+X-MC-Unique: -BaZiDkLPmGhpw1imRHhmA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8CC38800047;
+        Thu, 20 Apr 2023 11:02:22 +0000 (UTC)
+Received: from shalem.redhat.com (unknown [10.39.194.216])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id B7026492B05;
+        Thu, 20 Apr 2023 11:02:21 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, regressions@lists.linux.dev,
+        linux-acpi@vger.kernel.org,
+        =?UTF-8?q?G=C3=A9=20Koerkamp?= <ge.koerkamp@gmail.com>
+Subject: [PATCH] ACPI: PM: Do not turn of unused power resources on the Toshiba Click Mini
+Date:   Thu, 20 Apr 2023 13:02:20 +0200
+Message-Id: <20230420110220.23168-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,144 +58,79 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 19 Apr 2023 13:21:25 -0700
-Dave Jiang <dave.jiang@intel.com> wrote:
+The CPR3 power resource on the Toshiba Click Mini toggles a GPIO
+which is called SISP (for SIS touchscreen power?) on/off.
 
-> Add helper functions to parse the CDAT table and provide a callback to
-> parse the sub-table. Helpers are provided for DSMAS and DSLBIS sub-table
-> parsing. The code is patterned after the ACPI table parsing helpers.
-> 
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> 
-A few minor things inline.   More than possible you addressed them
-in earlier versions though.
+This CPR3 power resource is not listed in any _PR? lists, let alone
+in a _PR0 list for the SIS0817 touchscreen ACPI device which needs it.
 
-Jonathan
+Before commit a1224f34d72a ("ACPI: PM: Check states of power resources
+during initialization") this was not an issue because since nothing
+referenced the CPR3 power resource its state was always
+ACPI_POWER_RESOURCE_STATE_UNKNOWN and power resources with this state
+get ignored by acpi_turn_off_unused_power_resources().
 
-> ---
-> v2:
-> - Use local headers to handle LE instead of ACPI header
-> - Reduce complexity of parser function. (Jonathan)
-> - Directly access header type. (Jonathan)
-> - Simplify header ptr math. (Jonathan)
-> - Move parsed counter to the correct location. (Jonathan)
-> - Add LE to host conversion for entry length
-> ---
->  drivers/cxl/core/Makefile |    1 
->  drivers/cxl/core/cdat.c   |  100 +++++++++++++++++++++++++++++++++++++++++++++
->  drivers/cxl/cxlpci.h      |   29 +++++++++++++
->  3 files changed, 130 insertions(+)
->  create mode 100644 drivers/cxl/core/cdat.c
-> 
-> diff --git a/drivers/cxl/core/Makefile b/drivers/cxl/core/Makefile
-> index ca4ae31d8f57..867a8014b462 100644
-> --- a/drivers/cxl/core/Makefile
-> +++ b/drivers/cxl/core/Makefile
-> @@ -12,5 +12,6 @@ cxl_core-y += memdev.o
->  cxl_core-y += mbox.o
->  cxl_core-y += pci.o
->  cxl_core-y += hdm.o
-> +cxl_core-y += cdat.o
->  cxl_core-$(CONFIG_TRACING) += trace.o
->  cxl_core-$(CONFIG_CXL_REGION) += region.o
-> diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
-> new file mode 100644
-> index 000000000000..210f4499bddb
-> --- /dev/null
-> +++ b/drivers/cxl/core/cdat.c
-> @@ -0,0 +1,100 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/* Copyright(c) 2023 Intel Corporation. All rights reserved. */
-> +#include "cxlpci.h"
-> +#include "cxl.h"
-> +
-> +static bool has_handler(struct cdat_subtable_proc *proc)
+This clearly is a bug in the DSDT of this device. Add a DMI quirk
+to make acpi_turn_off_unused_power_resources() a no-op on this
+model to fix the touchscreen no longer working since kernel 5.16 .
 
-Even though they are static, I'd add a cxl_ or cdat_ prefix
-to these to make it clear they are local.
+This quirk also causes 2 other power resources to not get turned
+off, but the _OFF method on these already was a no-op, so this makes
+no difference for the other 2 power resources.
 
-> +{
-> +	return proc->handler;
-> +}
-> +
-> +static int call_handler(struct cdat_subtable_proc *proc,
-> +			struct cdat_subtable_entry *ent)
-> +{
-> +	if (has_handler(proc))
+Fixes: a1224f34d72a ("ACPI: PM: Check states of power resources during initialization")
+Reported-by: Gé Koerkamp <ge.koerkamp@gmail.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216946
+Link: https://lore.kernel.org/regressions/32a14a8a-9795-4c8c-7e00-da9012f548f8@leemhuis.info/
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/power.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-Do we need to check this again? It's checked in the parse_entries code
-well before this point.
-
-Also, if moving to checking it once, then is it worth the
-little wrapper functions?
-
-
-> +		return proc->handler(ent->hdr, proc->arg);
-> +	return -EINVAL;
-> +}
-> +
-> +static bool cdat_is_subtable_match(struct cdat_subtable_entry *ent)
-> +{
-> +	return ent->hdr->type == ent->type;
-> +}
-> +
-> +static int cdat_table_parse_entries(enum cdat_type type,
-> +				    struct cdat_header *table_header,
-> +				    struct cdat_subtable_proc *proc)
-> +{
-> +	unsigned long table_end, entry_len;
-> +	struct cdat_subtable_entry entry;
-> +	int count = 0;
-> +	int rc;
-> +
-> +	if (!has_handler(proc))
-> +		return -EINVAL;
-> +
-> +	table_end = (unsigned long)table_header + table_header->length;
-> +
-> +	if (type >= CDAT_TYPE_RESERVED)
-> +		return -EINVAL;
-> +
-> +	entry.type = type;
-> +	entry.hdr = (struct cdat_entry_header *)(table_header + 1);
-> +
-> +	while ((unsigned long)entry.hdr < table_end) {
-> +		entry_len = le16_to_cpu(entry.hdr->length);
-> +
-> +		if ((unsigned long)entry.hdr + entry_len > table_end)
-> +			return -EINVAL;
-> +
-> +		if (entry_len == 0)
-> +			return -EINVAL;
-> +
-> +		if (cdat_is_subtable_match(&entry)) {
-> +			rc = call_handler(proc, &entry);
-> +			if (rc)
-> +				return rc;
-> +			count++;
-> +		}
-> +
-> +		entry.hdr = (struct cdat_entry_header *)((unsigned long)entry.hdr + entry_len);
-> +	}
-> +
-> +	return count;
-> +}
-
-...
-
-> +int cdat_table_parse_sslbis(struct cdat_header *table,
-> +			    cdat_tbl_entry_handler handler, void *arg)
-
-Feels like these ones should take a typed arg.  Sure you'll loose
-that again to use the generic handling code, but at this level we can 
-do it I think.
-
-> +{
-> +	struct cdat_subtable_proc proc = {
-> +		.handler	= handler,
-> +		.arg		= arg,
-> +	};
-> +
-> +	return cdat_table_parse_entries(CDAT_TYPE_SSLBIS, table, &proc);
-> +}
+diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
+index 292cec3691cc..5dc792961ab8 100644
+--- a/drivers/acpi/power.c
++++ b/drivers/acpi/power.c
+@@ -23,6 +23,7 @@
+ 
+ #define pr_fmt(fmt) "ACPI: PM: " fmt
+ 
++#include <linux/dmi.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+@@ -1022,6 +1023,21 @@ void acpi_resume_power_resources(void)
+ }
+ #endif
+ 
++static const struct dmi_system_id dmi_leave_unused_power_resources_on[] = {
++	{
++		/*
++		 * The Toshiba Click Mini has a CPR3 power-resource which must
++		 * be on for the touchscreen to work, but which is not in any
++		 * _PR? lists. The other 2 affected power-resources are no-ops.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "SATELLITE Click Mini L9W-B"),
++		},
++	},
++	{}
++};
++
+ /**
+  * acpi_turn_off_unused_power_resources - Turn off power resources not in use.
+  */
+@@ -1029,6 +1045,9 @@ void acpi_turn_off_unused_power_resources(void)
+ {
+ 	struct acpi_power_resource *resource;
+ 
++	if (dmi_check_system(dmi_leave_unused_power_resources_on))
++		return;
++
+ 	mutex_lock(&power_resource_list_lock);
+ 
+ 	list_for_each_entry_reverse(resource, &acpi_power_resource_list, list_node) {
+-- 
+2.39.2
 
