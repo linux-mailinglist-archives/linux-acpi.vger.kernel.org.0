@@ -2,145 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 065596EB159
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Apr 2023 20:08:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70E036EB5B5
+	for <lists+linux-acpi@lfdr.de>; Sat, 22 Apr 2023 01:25:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230472AbjDUSIN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Apr 2023 14:08:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60822 "EHLO
+        id S229543AbjDUXY7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Apr 2023 19:24:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229582AbjDUSIM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Apr 2023 14:08:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A37FD210E
-        for <linux-acpi@vger.kernel.org>; Fri, 21 Apr 2023 11:07:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1682100444;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=3GTxHvkaG3Waa0AOi1+R4WFBe9IzMQrM+XQVXW7z1zo=;
-        b=cMMFhs4T7EEhVA9WacjkAlxKbDLYCKizr9eR2PGrDDeK3VpP5H4eGRI3sNpqKcjYUVIxeM
-        KgccyMUwX3TfuDmHLxzMQIu7eVQ1oihQ4QhiFdsJXUKAefswBtIN0+MEhx3H4wvL0S7JGK
-        5KPRvFudDxZKCyo3vKcayzn4ZZlfxtE=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-vANBsndbNeusULpHK7mO8A-1; Fri, 21 Apr 2023 14:07:23 -0400
-X-MC-Unique: vANBsndbNeusULpHK7mO8A-1
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-50692ecb3c5so2217893a12.0
-        for <linux-acpi@vger.kernel.org>; Fri, 21 Apr 2023 11:07:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682100442; x=1684692442;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3GTxHvkaG3Waa0AOi1+R4WFBe9IzMQrM+XQVXW7z1zo=;
-        b=O+Jxjihzk99evEmt8AmF+Kd7YfGqHigiWj6wsZNK8g3zym/kRQQFM0G4JbZiHZZcdN
-         sX8smA11YRth1jPeqaXNtmTm3LWbffNc/efLR//mMGqxg+EfQfGp1CNqNLwbPaYerKHn
-         s2cEyUOLxd6gA2UhyXDphrEO9KP+R2NC+TawbExS0OiHHoumiws+9gpEjNm1uVOeyQaq
-         O9TFQuMRghuqSfpMKyTNiuXyzd/+REmCg9TIT62rMVu7q/ZnYLVHNV1q+3T0BJiuh9Ne
-         IT0GX/MPgTRlkHYVIxnmhHIrSbWhlCui7ty2pl3MjBhNTO4U0iepzGwuCuKROSGbh/yI
-         BOLg==
-X-Gm-Message-State: AAQBX9cMIR1wTxv5sXi68h4js6fIFY2jk3WuUGsgfDGmQoiGKeikVJxw
-        mL+/AlEb9C/eWf/PXgUiC0Bp14zvXHVMmxO1Tofd7t9bJE+0jT9qjz4CEnRtWdQUy8yDdWTsQYJ
-        o8+rKZPmitVh8vQBldF6zlA==
-X-Received: by 2002:aa7:dace:0:b0:4fb:78a0:eabe with SMTP id x14-20020aa7dace000000b004fb78a0eabemr5472591eds.14.1682100442218;
-        Fri, 21 Apr 2023 11:07:22 -0700 (PDT)
-X-Google-Smtp-Source: AKy350YYXiCS9K/XnuCzliK1ZEXEtdMpN9o9CL5iofAlnWDeDqaWbf89O/Rx4HonhWZilXztg2Hlvg==
-X-Received: by 2002:aa7:dace:0:b0:4fb:78a0:eabe with SMTP id x14-20020aa7dace000000b004fb78a0eabemr5472578eds.14.1682100441941;
-        Fri, 21 Apr 2023 11:07:21 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id u11-20020aa7d0cb000000b0050687dbb5dasm2079089edo.31.2023.04.21.11.07.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Apr 2023 11:07:21 -0700 (PDT)
-Message-ID: <06e9623d-26ae-e0e3-8fd8-1f5c89497a5a@redhat.com>
-Date:   Fri, 21 Apr 2023 20:07:20 +0200
+        with ESMTP id S233779AbjDUXY7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Apr 2023 19:24:59 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4C80E76;
+        Fri, 21 Apr 2023 16:24:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1682119497; x=1713655497;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=L+EsobrZxreSDv+BWEMf6VhzAGe7lYyZemTHArjpKV4=;
+  b=P+UhtgQ3K6uXlil48oqiIcWq8IPTgHTGHI9jxVyO7wOWHQ/OoTiji7JL
+   Ka2v8krcTAfKIVk7EUzMhmVyT3pwf9Y1C2K35vqntpdtc7OOW7i4R3jXg
+   zQyPdktOxt+RYNjXGgOUE3R1rQ+xXK7R93F5E4k8xSdCU97fvYOUgYEd8
+   okso7R5PHnTpAX7hEKctqdVl289pyKYMAv2Wy12BmtNR7iQ2AVPHfNiNV
+   45xHZJoJ8RAZ10yhtpPL0oTOudlXHC8Aqe+Bm0FM2vV95jbbfJa0p4Oiy
+   Wo5qWschjkGchVfAD7V1zzQLhOM4PHF1DWeqbXvZKyUlmbcuxUvFhpUhB
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10687"; a="348899515"
+X-IronPort-AV: E=Sophos;i="5.99,216,1677571200"; 
+   d="scan'208";a="348899515"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2023 16:24:57 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10687"; a="816589046"
+X-IronPort-AV: E=Sophos;i="5.99,216,1677571200"; 
+   d="scan'208";a="816589046"
+Received: from djiang5-mobl3.amr.corp.intel.com (HELO [10.212.19.203]) ([10.212.19.203])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2023 16:24:56 -0700
+Message-ID: <2ebf1d0f-84b4-7867-1b04-b391b5e73f55@intel.com>
+Date:   Fri, 21 Apr 2023 16:24:55 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] ACPI: scan: Ignore MAGN0001
-To:     Marius Hoch <mail@mariushoch.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230421162702.3558-1-mail@mariushoch.de>
-Content-Language: en-US, nl
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20230421162702.3558-1-mail@mariushoch.de>
-Content-Type: text/plain; charset=UTF-8
+ Firefox/102.0 Thunderbird/102.9.0
+Subject: Re: [PATCH v4 09/23] cxl: Add helper function to retrieve ACPI handle
+ of CXL root device
+Content-Language: en-US
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+        dan.j.williams@intel.com, ira.weiny@intel.com,
+        vishal.l.verma@intel.com, alison.schofield@intel.com,
+        rafael@kernel.org, lukas@wunner.de
+References: <168193556660.1178687.15477509915255912089.stgit@djiang5-mobl3>
+ <168193571575.1178687.18078745201457493723.stgit@djiang5-mobl3>
+ <20230420130602.0000413f@Huawei.com>
+From:   Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20230420130602.0000413f@Huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Marius,
 
-On 4/21/23 18:27, Marius Hoch wrote:
-> The LSM303D on the Lenovo Yoga Tablet 2 series is present
-> as both ACCL0001 and MAGN0001. As we can only ever register an
-> i2c client for one of them, ignore MAGN0001.
+
+On 4/20/23 5:06 AM, Jonathan Cameron wrote:
+> On Wed, 19 Apr 2023 13:21:55 -0700
+> Dave Jiang <dave.jiang@intel.com> wrote:
 > 
-> Currently this errors:
-> i2c i2c-4: Failed to register i2c client MAGN0001:00 at 0x1d (-16)
+>> Provide a helper to find the ACPI0017 device in order to issue the _DSM.
+>> The helper will take the 'struct device' from a cxl_port and iterate until
+>> the root device is reached. The ACPI handle will be returned from the root
+>> device.
+>>
+>> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 > 
-> Tested on a Lenovo Yoga Tablet 2 1051-F.
+> Question inline.  If the answer is no then this looks fine to me.
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Signed-off-by: Marius Hoch <mail@mariushoch.de>
-
-By adding the HID to the ignore_serial_bus_ids[] list, you are
-causing the ACPI code to instead instantiate a platform_device
-for it.
-
-This will successfully silence the error you are trying to silence,
-but I don't think it really is what you intent / want to do ?
-
-IMHO it would be better to add a NOT_PRESENT_ENTRY_HID() entry
-to the override_status_ids[] table in drivers/acpi/x86/utils.c,
-this will override the return of _STA, causing neither a
-platform_device not an i2c_client to get instantiated for
-the duplicate MAGN0001 device.
-
-(please keep the comment above the entry why the entry is there)
-
-Regards,
-
-Hans
-
-
-
-
-
-
-
-> ---
->  drivers/acpi/scan.c | 6 ++++++
->  1 file changed, 6 insertions(+)
 > 
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index 0c6f06abe3f4..d21c411e9719 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -1730,6 +1730,12 @@ static bool acpi_device_enumeration_by_parent(struct acpi_device *device)
->  	 */
->  		{"BCM4752", },
->  		{"LNV4752", },
-> +	/*
-> +	 * The LSM303D on the Lenovo Yoga Tablet 2 series is present
-> +	 * as both ACCL0001 and MAGN0001. As we can only ever register an
-> +	 * i2c client for one of them, ignore MAGN0001.
-> +	 */
-> +		{"MAGN0001", },
->  		{}
->  	};
->  
+>> +/**
+>> + * cxl_acpi_get_rootdev_handle - get the ACPI handle of the CXL root device
+>> + * @dev: 'struct device' to start searching from. Should be from cxl_port->dev.
+>> + *
+>> + * Return: acpi_handle on success, errptr of errno on error.
+>> + *
+>> + * Looks for the ACPI0017 device and return the ACPI handle
+>> + **/
 > 
-> base-commit: cb0856346a60fe3eb837ba5e73588a41f81ac05f
+> Could we implement this in terms of find_cxl_root()?  I think that will
+> end up giving you the same device though I haven't tested it.
 
+Yes I can simplify this. Thanks.
+
+> 
+>> +acpi_handle cxl_acpi_get_rootdev_handle(struct device *dev)
+>> +{
+>> +	struct device *itr = dev;
+>> +	struct device *root_dev;
+>> +	acpi_handle handle;
+>> +
+>> +	if (!dev)
+>> +		return ERR_PTR(-EINVAL);
+>> +
+>> +	while (itr->parent) {
+>> +		root_dev = itr;
+>> +		itr = itr->parent;
+>> +	}
+>> +
+>> +	if (!dev_is_platform(root_dev))
+>> +		return ERR_PTR(-ENODEV);
+>> +
+>> +	handle = ACPI_HANDLE(root_dev);
+>> +	if (!handle)
+>> +		return ERR_PTR(-ENODEV);
+>> +
+>> +	return handle;
+>> +}
+>> +EXPORT_SYMBOL_NS_GPL(cxl_acpi_get_rootdev_handle, CXL);
+> 
+> 
