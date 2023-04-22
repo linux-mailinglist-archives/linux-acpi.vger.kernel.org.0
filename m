@@ -2,130 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C8D16EBA77
-	for <lists+linux-acpi@lfdr.de>; Sat, 22 Apr 2023 18:48:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8034F6EBAB4
+	for <lists+linux-acpi@lfdr.de>; Sat, 22 Apr 2023 19:30:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229595AbjDVQr7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 22 Apr 2023 12:47:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55978 "EHLO
+        id S229556AbjDVRan (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 22 Apr 2023 13:30:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229669AbjDVQr5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 22 Apr 2023 12:47:57 -0400
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 111FE19B;
-        Sat, 22 Apr 2023 09:47:40 -0700 (PDT)
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4Q3ckw6J2yz9sJ5;
-        Sat, 22 Apr 2023 18:47:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mariushoch.de;
-        s=MBO0001; t=1682182056;
+        with ESMTP id S229508AbjDVRam (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 22 Apr 2023 13:30:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2286526A0
+        for <linux-acpi@vger.kernel.org>; Sat, 22 Apr 2023 10:29:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1682184588;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UIrYwtDUNhK/5waVX3oGzXkU27Yiu2oa4nhKmolwfzA=;
-        b=nkYzQtYFyrl+LQ9rMpj32chuo7A1iONlR4jFzFD9XTHDyCMfuHHCniNLvMFsTOa/7u0Dio
-        F1p/7pJpQZlt0SQouksXiUMZ5qClYJNIt6AVY7rnNTXyVA914BnQMulrtB4dLNP0y4OSvP
-        QXmEb8a243SXNWu1KQfE8iAFoTW3kU9jmFmdHwKzZ2H/LJW8BYc+rtg/9ZQaPRLfSDn4Hq
-        ltyB2KPQkYFRdJM4en2WaQxkxp9D/llEQxWLuE534kSt8Hpxpc/AOOYqxV9mq5868qXi0m
-        ohjbn7A4VglZZPnZ6nwVWVr/aYmv0VziANtNo4QnhY3Du6yDM8Kqi8A+CKb6lA==
-Message-ID: <d0068345-6832-c9ae-ec40-bb692baa3f69@mariushoch.de>
-Date:   Sat, 22 Apr 2023 18:47:35 +0200
+        bh=4Whc1PiL8cvCrwQXfR2j4EkLjnYvdXwSxmXSEz6X/dk=;
+        b=PZspJP8hi4xFraZdUbFMDBnQjtBn3g0lfG8hg2inUYcPa/Mc0V1YGqG8Ouzug9z5lwgjXY
+        NDXzIAUxAnU17IqMUKXqhcXEBTGFx4ISjPLMfXgZq/DVabdflNIsoRqGK/BRCUfQV8gXLS
+        vMsziWsnT9sL1qNWhEW2Zfkf9ZxnvHE=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-478-ZqUyvY7rO-CkFahikD-EOg-1; Sat, 22 Apr 2023 13:29:46 -0400
+X-MC-Unique: ZqUyvY7rO-CkFahikD-EOg-1
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-506b0b75731so2619030a12.3
+        for <linux-acpi@vger.kernel.org>; Sat, 22 Apr 2023 10:29:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682184585; x=1684776585;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4Whc1PiL8cvCrwQXfR2j4EkLjnYvdXwSxmXSEz6X/dk=;
+        b=dGDDH1AQKIBh+5dRbo++GRE7pumRsHuK5JhArR/gBqjxyrrsf8u3YfA4eExcrz1esN
+         Om0AMuzqQAtykg341kXn4euYXUIgNlZcNR/7LY19NphpwpF9JRLkd+G9wNbmd4ZIyxK4
+         du1m2KVACfCnwFKMtB17Uyq7P8hHdfW2NfZ4Ul4qrFsQBXs3dofqrqhq2teGSiGX1FaF
+         uXTkT5IQdDvkQGXAL5Ddn/qmUOaARDtbJDTR826TTebmFcLfiuCRq32mp/znJpCmZGyu
+         emwRupSbTv3WvfHlcRifLh2dSUhVKOIDUV1Lzm7FOKWZQmCkakX2iwCOUJRnF6OCih5/
+         /cuw==
+X-Gm-Message-State: AAQBX9cXHYGvcDFThz71hfSdDDnWYabo1ZeJh1ZuZumikGSLyJGTZ6aM
+        bOYtKoHtMrOXY97najA9UJrhK/DIY/NkHlsZAgbvE05blrlwieRawa/OEtYfx8dvD6EUPJLd5+0
+        v+kgpdnixZSwUHR6d/jiZQA==
+X-Received: by 2002:a17:906:c784:b0:94e:23b:75e9 with SMTP id cw4-20020a170906c78400b0094e023b75e9mr5850088ejb.43.1682184585506;
+        Sat, 22 Apr 2023 10:29:45 -0700 (PDT)
+X-Google-Smtp-Source: AKy350bfxC5TrRKzuNYFzFcfcAlfJa3Anku1Neu32ewCdS//eMbcwm/KNtEl+o7e4DvFbZXBE/SxQw==
+X-Received: by 2002:a17:906:c784:b0:94e:23b:75e9 with SMTP id cw4-20020a170906c78400b0094e023b75e9mr5850083ejb.43.1682184585208;
+        Sat, 22 Apr 2023 10:29:45 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id bj10-20020a170906b04a00b0094f5f6ba306sm3488679ejb.41.2023.04.22.10.29.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 22 Apr 2023 10:29:44 -0700 (PDT)
+Message-ID: <5ff4416c-a195-7ac7-9eb1-16d667fd3ad6@redhat.com>
+Date:   Sat, 22 Apr 2023 19:29:43 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH] ACPI: scan: Ignore MAGN0001
-To:     Hans de Goede <hdegoede@redhat.com>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] ACPI: x86: utils: Remove Lenovo Yoga Tablet 2's MAGN0001
+To:     Marius Hoch <mail@mariushoch.de>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <20230421162702.3558-1-mail@mariushoch.de>
- <06e9623d-26ae-e0e3-8fd8-1f5c89497a5a@redhat.com>
-Content-Language: en-US
-From:   Marius Hoch <mail@mariushoch.de>
-In-Reply-To: <06e9623d-26ae-e0e3-8fd8-1f5c89497a5a@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20230422164401.5986-1-mail@mariushoch.de>
+Content-Language: en-US, nl
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20230422164401.5986-1-mail@mariushoch.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Hans,
+Hi,
 
-On 21/04/2023 20:07, Hans de Goede wrote:
-> Hi Marius,
->
-> On 4/21/23 18:27, Marius Hoch wrote:
->> The LSM303D on the Lenovo Yoga Tablet 2 series is present
->> as both ACCL0001 and MAGN0001. As we can only ever register an
->> i2c client for one of them, ignore MAGN0001.
->>
->> Currently this errors:
->> i2c i2c-4: Failed to register i2c client MAGN0001:00 at 0x1d (-16)
->>
->> Tested on a Lenovo Yoga Tablet 2 1051-F.
->>
->> Signed-off-by: Marius Hoch <mail@mariushoch.de>
-> By adding the HID to the ignore_serial_bus_ids[] list, you are
-> causing the ACPI code to instead instantiate a platform_device
-> for it.
->
-> This will successfully silence the error you are trying to silence,
-> but I don't think it really is what you intent / want to do ?
-It is not, no. Given we will only ever care for ACCL0001, we can 
-entirely skip MAGN0001.
->
-> IMHO it would be better to add a NOT_PRESENT_ENTRY_HID() entry
-> to the override_status_ids[] table in drivers/acpi/x86/utils.c,
-> this will override the return of _STA, causing neither a
-> platform_device not an i2c_client to get instantiated for
-> the duplicate MAGN0001 device.
-That sounds much better, thanks for the pointer!
-I've send a new patch (20230422164401.5986-1-mail@mariushoch.de).
+On 4/22/23 18:44, Marius Hoch wrote:
+> The LSM303D on the Lenovo Yoga Tablet 2 series is present
+> as both ACCL0001 and MAGN0001. As we can only ever register an
+> i2c client for one of them, ignore MAGN0001.
+> 
+> Currently this errors:
+> i2c i2c-4: Failed to register i2c client MAGN0001:00 at 0x1d (-16)
+> 
+> Tested on a Lenovo Yoga Tablet 2 1051-F.
+> 
+> Signed-off-by: Marius Hoch <mail@mariushoch.de>
 
-Cheers,
-Marius
->
-> (please keep the comment above the entry why the entry is there)
->
-> Regards,
->
-> Hans
->
->
->
->
->
->
->
->> ---
->>   drivers/acpi/scan.c | 6 ++++++
->>   1 file changed, 6 insertions(+)
->>
->> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
->> index 0c6f06abe3f4..d21c411e9719 100644
->> --- a/drivers/acpi/scan.c
->> +++ b/drivers/acpi/scan.c
->> @@ -1730,6 +1730,12 @@ static bool acpi_device_enumeration_by_parent(struct acpi_device *device)
->>   	 */
->>   		{"BCM4752", },
->>   		{"LNV4752", },
->> +	/*
->> +	 * The LSM303D on the Lenovo Yoga Tablet 2 series is present
->> +	 * as both ACCL0001 and MAGN0001. As we can only ever register an
->> +	 * i2c client for one of them, ignore MAGN0001.
->> +	 */
->> +		{"MAGN0001", },
->>   		{}
->>   	};
->>   
->>
->> base-commit: cb0856346a60fe3eb837ba5e73588a41f81ac05f
+Thanks, patch looks good to me:
+
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+
+Regards,
+
+Hans
+
+
+> ---
+>  drivers/acpi/x86/utils.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+> index ba420a28a4aa..9c2d6f35f88a 100644
+> --- a/drivers/acpi/x86/utils.c
+> +++ b/drivers/acpi/x86/utils.c
+> @@ -143,6 +143,16 @@ static const struct override_status_id override_status_ids[] = {
+>  		DMI_EXACT_MATCH(DMI_BOARD_SERIAL, "Default string"),
+>  		DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Default string"),
+>  	      }),
+> +
+> +	/*
+> +	 * The LSM303D on the Lenovo Yoga Tablet 2 series is present
+> +	 * as both ACCL0001 and MAGN0001. As we can only ever register an
+> +	 * i2c client for one of them, ignore MAGN0001.
+> +	 */
+> +	NOT_PRESENT_ENTRY_HID("MAGN0001", "1", ATOM_SILVERMONT, {
+> +		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+> +		DMI_MATCH(DMI_PRODUCT_FAMILY, "YOGATablet2"),
+> +	      }),
+>  };
+>  
+>  bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *status)
 
