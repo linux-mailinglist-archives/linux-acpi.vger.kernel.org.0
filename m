@@ -2,183 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B758A6EBC88
-	for <lists+linux-acpi@lfdr.de>; Sun, 23 Apr 2023 05:05:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F46E6EBCBF
+	for <lists+linux-acpi@lfdr.de>; Sun, 23 Apr 2023 05:58:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229740AbjDWDFw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 22 Apr 2023 23:05:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50290 "EHLO
+        id S229580AbjDWD6g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 22 Apr 2023 23:58:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229757AbjDWDFv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 22 Apr 2023 23:05:51 -0400
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 780CB211C
-        for <linux-acpi@vger.kernel.org>; Sat, 22 Apr 2023 20:05:49 -0700 (PDT)
-Received: by mail-pg1-x534.google.com with SMTP id 41be03b00d2f7-52160b73bdfso2625800a12.1
-        for <linux-acpi@vger.kernel.org>; Sat, 22 Apr 2023 20:05:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1682219149; x=1684811149;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=crhg2BtmzV8z4fyeXuT3xLp41da6Pfmqjc/PTEndqFM=;
-        b=G9xbbtwY9Pdx+xP4Mhg57gpO5BbHxpcuAkWKxKCn7dEPJHPJhscll/9jG19ZmVdxR3
-         Udga/B9CAWMVvUgWbIQhwVs0f6jJnlavvoIeolP6dPxPcP9a7gRPpfrDYru56hO5mL7M
-         dyw4dDYxZm1hOJSPXhjCj7A6jOw3VZcZ/nEfdvyilyjnKfedvagcfVb3RMx/Q/t9K5JX
-         f7y0dY6uZz3x0Dqs3Cyw6Fd2SF8N88mhujMpaxq2+0Jb9QB/7uD2b3HJDLm7BYUuutrQ
-         59e1Np4YhXK+lghsWsMmnEbcGgNiSU12Zr2RD1ZjhmYLaPeFcCbUmlnHdsf+dKJPEyrB
-         C2uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682219149; x=1684811149;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=crhg2BtmzV8z4fyeXuT3xLp41da6Pfmqjc/PTEndqFM=;
-        b=OM8T3ddFFo8ImXoTKFIbsYvfjnt9lkHWdcZKq5kilHBOjX3mAwdlJf7k8meNwCmUDJ
-         BDqeBnNaRsOxgiM1AnYN4ifmf2x6eoSFEt0kqzJIDtuAP3tjS/vgzeriUQhW9Et4KN5r
-         Uq6/iSjCacyo++ZOoboi7eudc2fVxjjKY4PiywmVvWvS0rJ7Mw3732NlO3l/ul3wvaSP
-         +ecHD+i91pHGtgR4KZ8cGVLRBJ7z9cqNVXFYdSJVCvv71tRP6foHNc84hriqLP50xk5c
-         K+c16nIZo1wnhpqIncynTo7Lt58lXyPkUtYdoqoIEK/oCPZ+8bHIU92I/ezH6NIqxZsu
-         RKWA==
-X-Gm-Message-State: AAQBX9d9qXJn2jbUxGoVG2fFCr/60CZyDiph8buda/NxHyMHFAbHup0c
-        sNjFnOAg67DoLVEeQYjjFDFcKA==
-X-Google-Smtp-Source: AKy350bTF3GschNC3Wp1o4THB7iil7PMwvgBN1IquHPj20l5TL4uIusprnmXUKNRHWp6mQ6pSorJEA==
-X-Received: by 2002:a17:902:d4ca:b0:1a6:523c:8583 with SMTP id o10-20020a170902d4ca00b001a6523c8583mr11670530plg.68.1682219148771;
-        Sat, 22 Apr 2023 20:05:48 -0700 (PDT)
-Received: from localhost.localdomain (80.251.214.228.16clouds.com. [80.251.214.228])
-        by smtp.gmail.com with ESMTPSA id jb14-20020a170903258e00b001a6370bb33csm4584954plb.41.2023.04.22.20.05.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Apr 2023 20:05:47 -0700 (PDT)
-From:   Shawn Guo <shawn.guo@linaro.org>
-To:     Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Shawn Guo <shawn.guo@linaro.org>
-Subject: [PATCH v2] arm64: PCI: Add quirk for Qualcomm WoA devices
-Date:   Sun, 23 Apr 2023 11:05:20 +0800
-Message-Id: <20230423030520.9570-1-shawn.guo@linaro.org>
-X-Mailer: git-send-email 2.17.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229524AbjDWD6f (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 22 Apr 2023 23:58:35 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7AD210E0;
+        Sat, 22 Apr 2023 20:58:32 -0700 (PDT)
+Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Q3vXB0wzZzSsPW;
+        Sun, 23 Apr 2023 11:54:18 +0800 (CST)
+Received: from [10.67.103.231] (10.67.103.231) by
+ kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Sun, 23 Apr 2023 11:58:29 +0800
+Message-ID: <4f817538-ef0f-f35a-a748-03d4f7b51506@huawei.com>
+Date:   Sun, 23 Apr 2023 11:58:29 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2 0/2] mailbox: pcc: Support platform notification for
+ type4 and shared interrupt
+To:     Sudeep Holla <sudeep.holla@arm.com>
+CC:     Robbie King <robbiek@xsightlabs.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "rafael.j.wysocki@intel.com" <rafael.j.wysocki@intel.com>,
+        "wanghuiqiang@huawei.com" <wanghuiqiang@huawei.com>,
+        "zhangzekun11@huawei.com" <zhangzekun11@huawei.com>,
+        "wangxiongfeng2@huawei.com" <wangxiongfeng2@huawei.com>,
+        "tanxiaofei@huawei.com" <tanxiaofei@huawei.com>,
+        "guohanjun@huawei.com" <guohanjun@huawei.com>,
+        "xiexiuqi@huawei.com" <xiexiuqi@huawei.com>,
+        "wangkefeng.wang@huawei.com" <wangkefeng.wang@huawei.com>,
+        "huangdaode@huawei.com" <huangdaode@huawei.com>
+References: <20221016034043.52227-1-lihuisong@huawei.com>
+ <20230314111135.16520-1-lihuisong@huawei.com>
+ <20230327113326.dgrb5ainl6mv7wr5@bogus>
+ <570a6f6d-87cb-48ca-3bbc-cd1221bfa88c@huawei.com>
+ <7ef4eec4-2cfb-6f66-a9b9-9c130a1b71d8@huawei.com>
+ <AS8P193MB2335FA58943B305F97D2BACCCA9A9@AS8P193MB2335.EURP193.PROD.OUTLOOK.COM>
+ <57c537d8-6728-2ffc-3421-accd79c1eddf@huawei.com>
+ <AS8P193MB2335F1954BC345575A2C8829CA999@AS8P193MB2335.EURP193.PROD.OUTLOOK.COM>
+ <3d8e8817-12b9-62bc-4c04-34d8822d366f@huawei.com>
+ <20230421105510.hjmyt4l3rpx36mhl@bogus>
+From:   "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <20230421105510.hjmyt4l3rpx36mhl@bogus>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.103.231]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemm600004.china.huawei.com (7.193.23.242)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Commit 8fd4391ee717 ("arm64: PCI: Exclude ACPI "consumer" resources from
-host bridge windows") introduced a check to remove host bridge register
-resources for all arm64 platforms, with the assumption that the PNP0A03
-_CRS resources would always be host bridge registers and never as windows
-on arm64 platforms.
 
-The assumption stands true until Qualcomm WoA (Windows on ARM) devices
-emerge.  These devices describe host bridge windows in PNP0A03 _CRS
-resources instead.  For example, the Microsoft Surface Pro X has host
-bridges defined as
+在 2023/4/21 18:55, Sudeep Holla 写道:
+> On Tue, Apr 18, 2023 at 10:21:54AM +0800, lihuisong (C) wrote:
+>> 在 2023/4/14 21:48, Robbie King 写道:
+>>> Sorry for the delay.  I ran my simple stress test against the patch set and
+>>> saw no issues.  For the record it is by no means a thorough regression, but it
+>>> has illuminated issues in the past.
+>> Thanks for your testing.
+>>> The test itself uses a "heartbeat" module in the SCP firmware that generates
+>>> notifications at a programmable interval.  The stress test is simply generating
+>>> these heartbeats (SCP to AP notifications) while also generating protocol version
+>>> queries (AP to SCP).  The notifications are sequence numbered to verify none are
+>>> lost, however SCP to AP notification support does not support SCP generating
+>>> notifications faster than the AP can process them, so the heartbeat rate must be
+>>> reasonably slow (on the order of 10s of millliseconds).
+>> I understand your concern. I think this doesn't get int the way of what we
+>> are doing.
+>>
+>> My stress tests were also run in type3 and type4 concurrent scenarios.
+>> There were two drivers using type3 to send command looply on platform.
+>> In the firmware terminal window,
+>> there were two channels for type4 to generate notifications from platform at
+>> the 1ms(even shorter) interval.
+>> I didn't find anything issues in this stress after running a couple of
+>> hours.
+>>
+>> @Robbie King and @Sudeep, what do you think of my test?
+>>
+> IMO if there is a need to have this driver changes upstream, then it is good
+> enough test as it is the best that can be done at this time. We can always fix
+> the bugs or extend to new use-cases in the future.
+>
+> Since it is merge window next week, it is quite late now. But sometimes
+> Rafael picks up additional patches late. So please post v3 even if there
+> are no changes with my reviewed-by and Robbie's tested-by so that I can ask
+> Rafael to pick it up.
+All right. patch 2/2 needs to be updated because of the following patch:
+76d4adacd52e ("mailbox: pcc: Use mbox_bind_client")
 
-    Name (_HID, EisaId ("PNP0A08") /* PCI Express Bus */)  // _HID: Hardware ID
-    Name (_CID, EisaId ("PNP0A03") /* PCI Bus */)  // _CID: Compatible ID
-
-    Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
-    {
-        Name (RBUF, ResourceTemplate ()
-        {
-            Memory32Fixed (ReadWrite,
-                0x60200000,         // Address Base
-                0x01DF0000,         // Address Length
-                )
-            WordBusNumber (ResourceProducer, MinFixed, MaxFixed, PosDecode,
-                0x0000,             // Granularity
-                0x0000,             // Range Minimum
-                0x0001,             // Range Maximum
-                0x0000,             // Translation Offset
-                0x0002,             // Length
-                ,, )
-        })
-        Return (RBUF) /* \_SB_.PCI0._CRS.RBUF */
-    }
-
-The Memory32Fixed holds a host bridge window, but it's not properly
-defined as a "producer" resource.  Consequently the resource gets
-removed by kernel, and the BAR allocation fails later on:
-
-    [ 0.150731] pci 0002:00:00.0: BAR 14: no space for [mem size 0x00100000]
-    [ 0.150744] pci 0002:00:00.0: BAR 14: failed to assign [mem size 0x00100000]
-    [ 0.150758] pci 0002:01:00.0: BAR 0: no space for [mem size 0x00004000 64bit]
-    [ 0.150769] pci 0002:01:00.0: BAR 0: failed to assign [mem size 0x00004000 64bit]
-
-This eventually prevents the PCIe NVME drive from being accessible.
-
-Add a quirk for these devices to avoid the resource being removed.
-
-Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
----
-Changes for v2:
-- Match devices using PPTT instead of DSDT to avoid maintenance burden.
-  Hope this is an acceptable compromise.
-- Add const delaration to qcom_platlist[].
-
-v1 link:
-https://lore.kernel.org/lkml/20230227021221.17980-1-shawn.guo@linaro.org/
-
- arch/arm64/kernel/pci.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
-
-diff --git a/arch/arm64/kernel/pci.c b/arch/arm64/kernel/pci.c
-index 2276689b5411..2ff2f3befa76 100644
---- a/arch/arm64/kernel/pci.c
-+++ b/arch/arm64/kernel/pci.c
-@@ -109,16 +109,44 @@ int pcibios_root_bridge_prepare(struct pci_host_bridge *bridge)
- 	return 0;
- }
- 
-+#define QCOM_PCI_QUIRK "Host bridge windows in PNP0A03 _CRS"
-+
-+/*
-+ * Ideally DSDT (Differentiated System Description Table) should be used to
-+ * match the platforms, as the quirk is in there. But devices from different
-+ * manufacturers usually have different oem_id and oem_table_id in DSDT,
-+ * so matching DSDT makes the list a maintenance burden.  As a compromise,
-+ * PPTT (Processor Properties Topology Table) is used instead to work
-+ * around this quirk for the most Qualcomm WoA (Windows on ARM) devices.
-+ */
-+static const struct acpi_platform_list qcom_platlist[] = {
-+	{ "QCOM  ", "QCOMEDK2", 0, ACPI_SIG_PPTT, all_versions, QCOM_PCI_QUIRK },
-+	{ }
-+};
-+
- static int pci_acpi_root_prepare_resources(struct acpi_pci_root_info *ci)
- {
- 	struct resource_entry *entry, *tmp;
- 	int status;
-+	int idx;
- 
- 	status = acpi_pci_probe_root_resources(ci);
-+
-+	/*
-+	 * Instead of describing host bridge registers in PNP0A03 _CRS
-+	 * resources, Qualcomm WoA devices describe host bridge windows in
-+	 * there.  We do not want to destroy the resources on these platforms.
-+	 */
-+	idx = acpi_match_platform_list(qcom_platlist);
-+	if (idx >= 0)
-+		goto done;
-+
- 	resource_list_for_each_entry_safe(entry, tmp, &ci->resources) {
- 		if (!(entry->res->flags & IORESOURCE_WINDOW))
- 			resource_list_destroy_entry(entry);
- 	}
-+
-+done:
- 	return status;
- }
- 
--- 
-2.17.1
-
+v3 will be sent ASAP.
+>
