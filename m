@@ -2,131 +2,183 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8034F6EBAB4
-	for <lists+linux-acpi@lfdr.de>; Sat, 22 Apr 2023 19:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B758A6EBC88
+	for <lists+linux-acpi@lfdr.de>; Sun, 23 Apr 2023 05:05:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229556AbjDVRan (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 22 Apr 2023 13:30:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39892 "EHLO
+        id S229740AbjDWDFw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 22 Apr 2023 23:05:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbjDVRam (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 22 Apr 2023 13:30:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2286526A0
-        for <linux-acpi@vger.kernel.org>; Sat, 22 Apr 2023 10:29:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1682184588;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=4Whc1PiL8cvCrwQXfR2j4EkLjnYvdXwSxmXSEz6X/dk=;
-        b=PZspJP8hi4xFraZdUbFMDBnQjtBn3g0lfG8hg2inUYcPa/Mc0V1YGqG8Ouzug9z5lwgjXY
-        NDXzIAUxAnU17IqMUKXqhcXEBTGFx4ISjPLMfXgZq/DVabdflNIsoRqGK/BRCUfQV8gXLS
-        vMsziWsnT9sL1qNWhEW2Zfkf9ZxnvHE=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-478-ZqUyvY7rO-CkFahikD-EOg-1; Sat, 22 Apr 2023 13:29:46 -0400
-X-MC-Unique: ZqUyvY7rO-CkFahikD-EOg-1
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-506b0b75731so2619030a12.3
-        for <linux-acpi@vger.kernel.org>; Sat, 22 Apr 2023 10:29:46 -0700 (PDT)
+        with ESMTP id S229757AbjDWDFv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 22 Apr 2023 23:05:51 -0400
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 780CB211C
+        for <linux-acpi@vger.kernel.org>; Sat, 22 Apr 2023 20:05:49 -0700 (PDT)
+Received: by mail-pg1-x534.google.com with SMTP id 41be03b00d2f7-52160b73bdfso2625800a12.1
+        for <linux-acpi@vger.kernel.org>; Sat, 22 Apr 2023 20:05:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1682219149; x=1684811149;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=crhg2BtmzV8z4fyeXuT3xLp41da6Pfmqjc/PTEndqFM=;
+        b=G9xbbtwY9Pdx+xP4Mhg57gpO5BbHxpcuAkWKxKCn7dEPJHPJhscll/9jG19ZmVdxR3
+         Udga/B9CAWMVvUgWbIQhwVs0f6jJnlavvoIeolP6dPxPcP9a7gRPpfrDYru56hO5mL7M
+         dyw4dDYxZm1hOJSPXhjCj7A6jOw3VZcZ/nEfdvyilyjnKfedvagcfVb3RMx/Q/t9K5JX
+         f7y0dY6uZz3x0Dqs3Cyw6Fd2SF8N88mhujMpaxq2+0Jb9QB/7uD2b3HJDLm7BYUuutrQ
+         59e1Np4YhXK+lghsWsMmnEbcGgNiSU12Zr2RD1ZjhmYLaPeFcCbUmlnHdsf+dKJPEyrB
+         C2uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682184585; x=1684776585;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4Whc1PiL8cvCrwQXfR2j4EkLjnYvdXwSxmXSEz6X/dk=;
-        b=dGDDH1AQKIBh+5dRbo++GRE7pumRsHuK5JhArR/gBqjxyrrsf8u3YfA4eExcrz1esN
-         Om0AMuzqQAtykg341kXn4euYXUIgNlZcNR/7LY19NphpwpF9JRLkd+G9wNbmd4ZIyxK4
-         du1m2KVACfCnwFKMtB17Uyq7P8hHdfW2NfZ4Ul4qrFsQBXs3dofqrqhq2teGSiGX1FaF
-         uXTkT5IQdDvkQGXAL5Ddn/qmUOaARDtbJDTR826TTebmFcLfiuCRq32mp/znJpCmZGyu
-         emwRupSbTv3WvfHlcRifLh2dSUhVKOIDUV1Lzm7FOKWZQmCkakX2iwCOUJRnF6OCih5/
-         /cuw==
-X-Gm-Message-State: AAQBX9cXHYGvcDFThz71hfSdDDnWYabo1ZeJh1ZuZumikGSLyJGTZ6aM
-        bOYtKoHtMrOXY97najA9UJrhK/DIY/NkHlsZAgbvE05blrlwieRawa/OEtYfx8dvD6EUPJLd5+0
-        v+kgpdnixZSwUHR6d/jiZQA==
-X-Received: by 2002:a17:906:c784:b0:94e:23b:75e9 with SMTP id cw4-20020a170906c78400b0094e023b75e9mr5850088ejb.43.1682184585506;
-        Sat, 22 Apr 2023 10:29:45 -0700 (PDT)
-X-Google-Smtp-Source: AKy350bfxC5TrRKzuNYFzFcfcAlfJa3Anku1Neu32ewCdS//eMbcwm/KNtEl+o7e4DvFbZXBE/SxQw==
-X-Received: by 2002:a17:906:c784:b0:94e:23b:75e9 with SMTP id cw4-20020a170906c78400b0094e023b75e9mr5850083ejb.43.1682184585208;
-        Sat, 22 Apr 2023 10:29:45 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id bj10-20020a170906b04a00b0094f5f6ba306sm3488679ejb.41.2023.04.22.10.29.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Apr 2023 10:29:44 -0700 (PDT)
-Message-ID: <5ff4416c-a195-7ac7-9eb1-16d667fd3ad6@redhat.com>
-Date:   Sat, 22 Apr 2023 19:29:43 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] ACPI: x86: utils: Remove Lenovo Yoga Tablet 2's MAGN0001
-To:     Marius Hoch <mail@mariushoch.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230422164401.5986-1-mail@mariushoch.de>
-Content-Language: en-US, nl
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20230422164401.5986-1-mail@mariushoch.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        d=1e100.net; s=20221208; t=1682219149; x=1684811149;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=crhg2BtmzV8z4fyeXuT3xLp41da6Pfmqjc/PTEndqFM=;
+        b=OM8T3ddFFo8ImXoTKFIbsYvfjnt9lkHWdcZKq5kilHBOjX3mAwdlJf7k8meNwCmUDJ
+         BDqeBnNaRsOxgiM1AnYN4ifmf2x6eoSFEt0kqzJIDtuAP3tjS/vgzeriUQhW9Et4KN5r
+         Uq6/iSjCacyo++ZOoboi7eudc2fVxjjKY4PiywmVvWvS0rJ7Mw3732NlO3l/ul3wvaSP
+         +ecHD+i91pHGtgR4KZ8cGVLRBJ7z9cqNVXFYdSJVCvv71tRP6foHNc84hriqLP50xk5c
+         K+c16nIZo1wnhpqIncynTo7Lt58lXyPkUtYdoqoIEK/oCPZ+8bHIU92I/ezH6NIqxZsu
+         RKWA==
+X-Gm-Message-State: AAQBX9d9qXJn2jbUxGoVG2fFCr/60CZyDiph8buda/NxHyMHFAbHup0c
+        sNjFnOAg67DoLVEeQYjjFDFcKA==
+X-Google-Smtp-Source: AKy350bTF3GschNC3Wp1o4THB7iil7PMwvgBN1IquHPj20l5TL4uIusprnmXUKNRHWp6mQ6pSorJEA==
+X-Received: by 2002:a17:902:d4ca:b0:1a6:523c:8583 with SMTP id o10-20020a170902d4ca00b001a6523c8583mr11670530plg.68.1682219148771;
+        Sat, 22 Apr 2023 20:05:48 -0700 (PDT)
+Received: from localhost.localdomain (80.251.214.228.16clouds.com. [80.251.214.228])
+        by smtp.gmail.com with ESMTPSA id jb14-20020a170903258e00b001a6370bb33csm4584954plb.41.2023.04.22.20.05.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Apr 2023 20:05:47 -0700 (PDT)
+From:   Shawn Guo <shawn.guo@linaro.org>
+To:     Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
+        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Shawn Guo <shawn.guo@linaro.org>
+Subject: [PATCH v2] arm64: PCI: Add quirk for Qualcomm WoA devices
+Date:   Sun, 23 Apr 2023 11:05:20 +0800
+Message-Id: <20230423030520.9570-1-shawn.guo@linaro.org>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Commit 8fd4391ee717 ("arm64: PCI: Exclude ACPI "consumer" resources from
+host bridge windows") introduced a check to remove host bridge register
+resources for all arm64 platforms, with the assumption that the PNP0A03
+_CRS resources would always be host bridge registers and never as windows
+on arm64 platforms.
 
-On 4/22/23 18:44, Marius Hoch wrote:
-> The LSM303D on the Lenovo Yoga Tablet 2 series is present
-> as both ACCL0001 and MAGN0001. As we can only ever register an
-> i2c client for one of them, ignore MAGN0001.
-> 
-> Currently this errors:
-> i2c i2c-4: Failed to register i2c client MAGN0001:00 at 0x1d (-16)
-> 
-> Tested on a Lenovo Yoga Tablet 2 1051-F.
-> 
-> Signed-off-by: Marius Hoch <mail@mariushoch.de>
+The assumption stands true until Qualcomm WoA (Windows on ARM) devices
+emerge.  These devices describe host bridge windows in PNP0A03 _CRS
+resources instead.  For example, the Microsoft Surface Pro X has host
+bridges defined as
 
-Thanks, patch looks good to me:
+    Name (_HID, EisaId ("PNP0A08") /* PCI Express Bus */)  // _HID: Hardware ID
+    Name (_CID, EisaId ("PNP0A03") /* PCI Bus */)  // _CID: Compatible ID
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+    Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+    {
+        Name (RBUF, ResourceTemplate ()
+        {
+            Memory32Fixed (ReadWrite,
+                0x60200000,         // Address Base
+                0x01DF0000,         // Address Length
+                )
+            WordBusNumber (ResourceProducer, MinFixed, MaxFixed, PosDecode,
+                0x0000,             // Granularity
+                0x0000,             // Range Minimum
+                0x0001,             // Range Maximum
+                0x0000,             // Translation Offset
+                0x0002,             // Length
+                ,, )
+        })
+        Return (RBUF) /* \_SB_.PCI0._CRS.RBUF */
+    }
 
-Regards,
+The Memory32Fixed holds a host bridge window, but it's not properly
+defined as a "producer" resource.  Consequently the resource gets
+removed by kernel, and the BAR allocation fails later on:
 
-Hans
+    [ 0.150731] pci 0002:00:00.0: BAR 14: no space for [mem size 0x00100000]
+    [ 0.150744] pci 0002:00:00.0: BAR 14: failed to assign [mem size 0x00100000]
+    [ 0.150758] pci 0002:01:00.0: BAR 0: no space for [mem size 0x00004000 64bit]
+    [ 0.150769] pci 0002:01:00.0: BAR 0: failed to assign [mem size 0x00004000 64bit]
 
+This eventually prevents the PCIe NVME drive from being accessible.
 
-> ---
->  drivers/acpi/x86/utils.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-> index ba420a28a4aa..9c2d6f35f88a 100644
-> --- a/drivers/acpi/x86/utils.c
-> +++ b/drivers/acpi/x86/utils.c
-> @@ -143,6 +143,16 @@ static const struct override_status_id override_status_ids[] = {
->  		DMI_EXACT_MATCH(DMI_BOARD_SERIAL, "Default string"),
->  		DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Default string"),
->  	      }),
-> +
-> +	/*
-> +	 * The LSM303D on the Lenovo Yoga Tablet 2 series is present
-> +	 * as both ACCL0001 and MAGN0001. As we can only ever register an
-> +	 * i2c client for one of them, ignore MAGN0001.
-> +	 */
-> +	NOT_PRESENT_ENTRY_HID("MAGN0001", "1", ATOM_SILVERMONT, {
-> +		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-> +		DMI_MATCH(DMI_PRODUCT_FAMILY, "YOGATablet2"),
-> +	      }),
->  };
->  
->  bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *status)
+Add a quirk for these devices to avoid the resource being removed.
+
+Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+---
+Changes for v2:
+- Match devices using PPTT instead of DSDT to avoid maintenance burden.
+  Hope this is an acceptable compromise.
+- Add const delaration to qcom_platlist[].
+
+v1 link:
+https://lore.kernel.org/lkml/20230227021221.17980-1-shawn.guo@linaro.org/
+
+ arch/arm64/kernel/pci.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/arch/arm64/kernel/pci.c b/arch/arm64/kernel/pci.c
+index 2276689b5411..2ff2f3befa76 100644
+--- a/arch/arm64/kernel/pci.c
++++ b/arch/arm64/kernel/pci.c
+@@ -109,16 +109,44 @@ int pcibios_root_bridge_prepare(struct pci_host_bridge *bridge)
+ 	return 0;
+ }
+ 
++#define QCOM_PCI_QUIRK "Host bridge windows in PNP0A03 _CRS"
++
++/*
++ * Ideally DSDT (Differentiated System Description Table) should be used to
++ * match the platforms, as the quirk is in there. But devices from different
++ * manufacturers usually have different oem_id and oem_table_id in DSDT,
++ * so matching DSDT makes the list a maintenance burden.  As a compromise,
++ * PPTT (Processor Properties Topology Table) is used instead to work
++ * around this quirk for the most Qualcomm WoA (Windows on ARM) devices.
++ */
++static const struct acpi_platform_list qcom_platlist[] = {
++	{ "QCOM  ", "QCOMEDK2", 0, ACPI_SIG_PPTT, all_versions, QCOM_PCI_QUIRK },
++	{ }
++};
++
+ static int pci_acpi_root_prepare_resources(struct acpi_pci_root_info *ci)
+ {
+ 	struct resource_entry *entry, *tmp;
+ 	int status;
++	int idx;
+ 
+ 	status = acpi_pci_probe_root_resources(ci);
++
++	/*
++	 * Instead of describing host bridge registers in PNP0A03 _CRS
++	 * resources, Qualcomm WoA devices describe host bridge windows in
++	 * there.  We do not want to destroy the resources on these platforms.
++	 */
++	idx = acpi_match_platform_list(qcom_platlist);
++	if (idx >= 0)
++		goto done;
++
+ 	resource_list_for_each_entry_safe(entry, tmp, &ci->resources) {
+ 		if (!(entry->res->flags & IORESOURCE_WINDOW))
+ 			resource_list_destroy_entry(entry);
+ 	}
++
++done:
+ 	return status;
+ }
+ 
+-- 
+2.17.1
 
