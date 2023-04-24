@@ -2,107 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92D206ED343
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Apr 2023 19:11:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B31966ED37E
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Apr 2023 19:28:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231646AbjDXRLp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 24 Apr 2023 13:11:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44818 "EHLO
+        id S232002AbjDXR2B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 24 Apr 2023 13:28:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232238AbjDXRLj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Apr 2023 13:11:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD9766199;
-        Mon, 24 Apr 2023 10:11:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 47FC162685;
-        Mon, 24 Apr 2023 17:11:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A24C4339B;
-        Mon, 24 Apr 2023 17:11:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682356293;
-        bh=smjA4hS6kjat4I+K8s73W7U5nOnR31Km5dgxUUeyetQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CS70Hou3ncJvyNR23fyD381S2OkSeNAx3Zi6AkWYGkpoEjxYKDewUqlibkYeX8MiG
-         EtydbevZZAfH+D7miTzn+1elb1EduaPxSo0dXMuXlZHr3Qaz1KUOlvQtEzHAwGdIGx
-         Hin/1iuZifTSD2nxsU0a+/0txhzGALt8s/usoRnzNpjLmvDG/63uBES+ai4VJ7l0b0
-         sSZwwj80dX/eH4tTb+nrvppleAQKh4mTDrSbXmJCF4k2QsiclJ/G4f9rzDcgssnoUm
-         IDE+mCItZeoaGm6V/t88NsCmYLOkQ6sUr5W8bh4m4eNWBQw0whhkZ35+iL3YxUMLxz
-         l7qEeMSQ1GPHg==
-Date:   Mon, 24 Apr 2023 10:11:30 -0700
-From:   Nathan Chancellor <nathan@kernel.org>
+        with ESMTP id S232017AbjDXR17 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Apr 2023 13:27:59 -0400
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17B1E65B3;
+        Mon, 24 Apr 2023 10:27:55 -0700 (PDT)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-54f8af6dfa9so68363087b3.2;
+        Mon, 24 Apr 2023 10:27:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682357275; x=1684949275;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tdA6Byrf0lwX48iKKvuKILJgKE3LwYes2nbzbUPvwjQ=;
+        b=agMcbw5SWjFyUNOdq3N/KwNnq+uqHSf5o3sbylnzE5ky2sFKTCZSs+WFh2HzT+bNaH
+         ZoFfdDq+rKPPYtIQI+umDFZzxOnH+MWAK1lxkD1bSXCaQbTIaRDBjEDFe91H7Clyp9DB
+         rdQyoWU5D8EukOUTyc00eHJCNq3df/0yVGLfZD1Gjhf4CzODaHHgF9Ic4sQN/E8NJiQY
+         XfSXEHTxmWoRAjOwog+uCm6QiushxVNXzd7QuHB/cElgrSFkLpcU18dLGTITWRl80Hhn
+         eP401N7XdDccXWEp0NzzrN3An82kdM5T1cG7Ibi4G7xMoTFQTqz5mYP82XBm37wkoLck
+         yY7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682357275; x=1684949275;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tdA6Byrf0lwX48iKKvuKILJgKE3LwYes2nbzbUPvwjQ=;
+        b=Loz+N9YrllD6zcDLVXJjL5FACmtbxx/EZsFfGQDTVyYBQGBlZwAL4ICF033BJPMYxS
+         hXydM157f96jaOFN3xpNe85thcNGhaIfwRu96m07Io4CEqPNgL4hd3WC838h9caALnu5
+         JCCgEMm9znTo559Ub0GfYagcS+S2UGDeqhb/pYovfuJ78k56IwZlmKlkQdg6HRyHQUln
+         9ipfF33SXNnggAxwyeO6aUHa3yJSv9rE1ElqEO5fwf/QJ2+MT591+sg31UrSIlSomNcm
+         6Xbolt3Fl5VYdxST0Jg0vsiB8VhrgjYx4B0g0SQeZ5orHT508SmNG4GzBsPdjlWsyu7G
+         A4DQ==
+X-Gm-Message-State: AAQBX9dR/WwHiOtOvKnOePZlBRJnU8ZXO+/4hiOWXQuJFQOufyGr67F3
+        aTCllvf+IJT4DZ2LXD+0cXsqJwprrvIxI/X8JPg=
+X-Google-Smtp-Source: AKy350asbRHC8PDsiNKQs25dnFEaXtgJXtPjtNM7+i463aoBFsKoTYo1Y2MFtqEoiWXRuZufmD63t5ux/BXRK0Udszg=
+X-Received: by 2002:a0d:d5c2:0:b0:54f:b93f:759d with SMTP id
+ x185-20020a0dd5c2000000b0054fb93f759dmr8545103ywd.43.1682357273559; Mon, 24
+ Apr 2023 10:27:53 -0700 (PDT)
+MIME-Version: 1.0
+References: <20221016182349.49308-1-masahiroy@kernel.org> <20230424162110.11082-1-lrh2000@pku.edu.cn>
+In-Reply-To: <20230424162110.11082-1-lrh2000@pku.edu.cn>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Mon, 24 Apr 2023 19:27:42 +0200
+Message-ID: <CANiq72=Kb6ckhU8Ss9=Dg4Zn11Us+DLbKnNWAVaTb-nv7Y=ARA@mail.gmail.com>
+Subject: Re: [PATCH] scripts: Remove ICC-related dead code
 To:     Ruihan Li <lrh2000@pku.edu.cn>
 Cc:     torvalds@linux-foundation.org, masahiroy@kernel.org, arnd@arndb.de,
         bp@alien8.de, dave.hansen@linux.intel.com, devel@acpica.org,
         lenb@kernel.org, linux-acpi@vger.kernel.org,
         linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, mingo@redhat.com, ndesaulniers@google.com,
-        ojeda@kernel.org, rafael@kernel.org, robert.moore@intel.com,
-        terrelln@fb.com, tglx@linutronix.de, trix@redhat.com,
-        x86@kernel.org
-Subject: Re: [PATCH] scripts: Remove ICC-related dead code
-Message-ID: <20230424171130.GA2606535@dev-arch.thelio-3990X>
-References: <20221016182349.49308-1-masahiroy@kernel.org>
- <20230424162110.11082-1-lrh2000@pku.edu.cn>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230424162110.11082-1-lrh2000@pku.edu.cn>
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        llvm@lists.linux.dev, mingo@redhat.com, nathan@kernel.org,
+        ndesaulniers@google.com, ojeda@kernel.org, rafael@kernel.org,
+        robert.moore@intel.com, terrelln@fb.com, tglx@linutronix.de,
+        trix@redhat.com, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Apr 25, 2023 at 12:21:10AM +0800, Ruihan Li wrote:
+On Mon, Apr 24, 2023 at 6:22=E2=80=AFPM Ruihan Li <lrh2000@pku.edu.cn> wrot=
+e:
+>
 > Intel compiler support has already been completely removed in commit
 > 95207db8166a ("Remove Intel compiler support"). However, it appears that
 > there is still some ICC-related code in scripts/cc-version.sh. There is
 > no harm in leaving the code as it is, but removing the dead code makes
 > the codebase a bit cleaner.
-> 
-> Hopefully all ICC-related stuff in the build scripts will be removed
-> after this commit, given the grep output as below:
-> 
-> 	(linux/scripts) $ grep -i -w -R 'icc'
-> 	cc-version.sh:ICC)
-> 	cc-version.sh:	min_version=$($min_tool_version icc)
-> 	dtc/include-prefixes/arm64/qcom/sm6350.dtsi:#include <dt-bindings/interconnect/qcom,icc.h>
-> 
-> Fixes: 95207db8166a ("Remove Intel compiler support")
-> Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
 
-Thanks for the patch. I am not sure this patch really needs a fixes tag,
-as I do not really think dead code is a bug (and the commit message even
-mentions this), but who cares I guess? :) cleanups are always nice.
+Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
 
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-
-> ---
->  scripts/cc-version.sh | 4 ----
->  1 file changed, 4 deletions(-)
-> 
-> diff --git a/scripts/cc-version.sh b/scripts/cc-version.sh
-> index 0573c92e8..a7e28b6a5 100755
-> --- a/scripts/cc-version.sh
-> +++ b/scripts/cc-version.sh
-> @@ -45,10 +45,6 @@ Clang)
->  	version=$2.$3.$4
->  	min_version=$($min_tool_version llvm)
->  	;;
-> -ICC)
-> -	version=$(($2 / 100)).$(($2 % 100)).$3
-> -	min_version=$($min_tool_version icc)
-> -	;;
->  *)
->  	echo "$orig_args: unknown C compiler" >&2
->  	exit 1
-> -- 
-> 2.40.0
-> 
+Cheers,
+Miguel
