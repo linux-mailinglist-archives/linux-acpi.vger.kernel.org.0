@@ -2,127 +2,211 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DB666ED26F
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Apr 2023 18:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F14A6ED335
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Apr 2023 19:10:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232098AbjDXQ1t (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 24 Apr 2023 12:27:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47850 "EHLO
+        id S231779AbjDXRKI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 24 Apr 2023 13:10:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231490AbjDXQ1s (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Apr 2023 12:27:48 -0400
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C093E902D
-        for <linux-acpi@vger.kernel.org>; Mon, 24 Apr 2023 09:27:42 -0700 (PDT)
-Received: by mail-pj1-x102b.google.com with SMTP id 98e67ed59e1d1-246f856d751so3349822a91.0
-        for <linux-acpi@vger.kernel.org>; Mon, 24 Apr 2023 09:27:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1682353662; x=1684945662;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wFJ9uSsbbq6fAnU3Kv89VxYbJecjLW72W/BsfIeB9rQ=;
-        b=7WIX6XPYI7rfI6hh42UI6sWlQhx9+LKXBe8Db1y/QvAQf+qO/GC2QqpYPFoRXAnZTY
-         i49gD3v5iMIP9i2LGxTGBTXwvmGSeJ41WyTF/pArxQJlxh59Buiay20PgEVNBkwQPDxY
-         9Zceo6WX/6zNR43ftcPHMAAxNDABYWMVPSPNruZgincKTPBncPsQORsD+moF3WHmL+jH
-         yFyZgyJzZRlVvF9K8oRVi73oFD7ZgXokph2iRWDlOwnNFgPbl+dCLUABCzwyAdImCVcG
-         x7979WgWT8AvKCHLJ8OMCeumUVFJ1n2obaDMWTJOiYB7BmH3pEE1rOcoWNt92oyrrdpY
-         yrFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682353662; x=1684945662;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wFJ9uSsbbq6fAnU3Kv89VxYbJecjLW72W/BsfIeB9rQ=;
-        b=j/ZnpP5hftvzl2QUJvHdrZUoC2eix76ES5gttR3o19A0G8HEP6v13ohpPgk3CQ0sOo
-         LGW1lu60M8dk4ZPcFV225EEGClIXj6+pco0MZZhRRyT5GqBU46vV4ujGufRivhKqVpMa
-         ZOVFMmBUtfKVK4PLFIeTZ+Oiy0Vgv8VmsDnWFv8Zn+5c83jo2lnSjHUJGQ5BwZA4QXzC
-         dORNodg8T+uDdUf51oFmH25b6MBQSamSxeDqGKE3C5550t5mPJ+YVX411HO4MA8eBa2i
-         pTwKV+Na8sJ0d/fnub+mMsquWiX2KbpfwKpo5uQzTRXc6ciH6uylCDOOJzGnOCLq7tmL
-         /PzQ==
-X-Gm-Message-State: AAQBX9dsAB1wjhkGu7duZfQpp6F2gF4XCy19/1xaCRy/N5uGK9qp9sq8
-        Bl9cbG7nnZW2FXt/tH5wIcEPKu4zsSU1CXN8XC+6WA==
-X-Google-Smtp-Source: AKy350b8aiAxCyJyr7zba8Bh8V5VEKgimMMOMCQt+dlZihQrf/+7KBsPdSakpLSBULrc+qjyBWMlyos/sAIHVLgf+I0=
-X-Received: by 2002:a17:90a:290d:b0:23e:f8e2:9ed3 with SMTP id
- g13-20020a17090a290d00b0023ef8e29ed3mr14856964pjd.43.1682353662007; Mon, 24
- Apr 2023 09:27:42 -0700 (PDT)
+        with ESMTP id S231992AbjDXRJ4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Apr 2023 13:09:56 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A36025B8E;
+        Mon, 24 Apr 2023 10:09:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1682356195; x=1713892195;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Pw1ylww6YppQ60o4kus0K+yvfa33wOw6v413I1LSjfw=;
+  b=MRk6xMcWeFV9yOOIKPbP3DwSF7iHBrsskQIvrndMDlITXILg9rhhUeo+
+   3gnQKmwpU7D4uVcN5q+B76MdWH3HczfeycFnOb4N/VHtf3Dprg70MmMCB
+   rhPmy0wBSza5tHyMDLq+ekDCB9ExDBcHMi7oQWoXtXc/kvG0XLpC1jD21
+   l9MOshFx0ntDY+WhWdijcUbO38DdNNCySCcKzcvDBtG/eGoQFfOlf8nCz
+   uStGkjCLevNRqF77pkyTedSgRJ8Vd5AL8mFWIGb+YUApHs8fYYwpRam9J
+   7mID4H9bMoU63HE3htkPq3kmHDbeyRlagB54s/gg8g8vFOw6x84bpjr/T
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10690"; a="326823322"
+X-IronPort-AV: E=Sophos;i="5.99,223,1677571200"; 
+   d="scan'208";a="326823322"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2023 10:09:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10690"; a="686933262"
+X-IronPort-AV: E=Sophos;i="5.99,223,1677571200"; 
+   d="scan'208";a="686933262"
+Received: from sridharn-mobl.amr.corp.intel.com (HELO [10.212.106.191]) ([10.212.106.191])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2023 10:09:43 -0700
+Message-ID: <86ec4cb5-14fd-9860-0fd9-ed53b474fe6e@intel.com>
+Date:   Mon, 24 Apr 2023 10:09:42 -0700
 MIME-Version: 1.0
-References: <20221016182349.49308-1-masahiroy@kernel.org> <20230424162110.11082-1-lrh2000@pku.edu.cn>
-In-Reply-To: <20230424162110.11082-1-lrh2000@pku.edu.cn>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Mon, 24 Apr 2023 09:27:30 -0700
-Message-ID: <CAKwvOd=sDakt6Pay08=xh4mDiFnq8esXDm-Df9z2jz-5PpHMFg@mail.gmail.com>
-Subject: Re: [PATCH] scripts: Remove ICC-related dead code
-To:     Ruihan Li <lrh2000@pku.edu.cn>
-Cc:     torvalds@linux-foundation.org, masahiroy@kernel.org, arnd@arndb.de,
-        bp@alien8.de, dave.hansen@linux.intel.com, devel@acpica.org,
-        lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, mingo@redhat.com, nathan@kernel.org,
-        ojeda@kernel.org, rafael@kernel.org, robert.moore@intel.com,
-        terrelln@fb.com, tglx@linutronix.de, trix@redhat.com,
-        x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.9.0
+Subject: Re: [PATCH v4 11/23] cxl: Add helper function that calculates QoS
+ values for switches
+Content-Language: en-US
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+        dan.j.williams@intel.com, ira.weiny@intel.com,
+        vishal.l.verma@intel.com, alison.schofield@intel.com,
+        rafael@kernel.org, lukas@wunner.de
+References: <168193556660.1178687.15477509915255912089.stgit@djiang5-mobl3>
+ <168193572747.1178687.13347516490022640531.stgit@djiang5-mobl3>
+ <20230420132624.00006334@Huawei.com>
+From:   Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20230420132624.00006334@Huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Apr 24, 2023 at 9:21=E2=80=AFAM Ruihan Li <lrh2000@pku.edu.cn> wrot=
-e:
->
-> Intel compiler support has already been completely removed in commit
-> 95207db8166a ("Remove Intel compiler support"). However, it appears that
-> there is still some ICC-related code in scripts/cc-version.sh. There is
-> no harm in leaving the code as it is, but removing the dead code makes
-> the codebase a bit cleaner.
->
-> Hopefully all ICC-related stuff in the build scripts will be removed
-> after this commit, given the grep output as below:
->
->         (linux/scripts) $ grep -i -w -R 'icc'
->         cc-version.sh:ICC)
->         cc-version.sh:  min_version=3D$($min_tool_version icc)
->         dtc/include-prefixes/arm64/qcom/sm6350.dtsi:#include <dt-bindings=
-/interconnect/qcom,icc.h>
->
-> Fixes: 95207db8166a ("Remove Intel compiler support")
-> Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
-
-Thanks for the patch!
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-
-> ---
->  scripts/cc-version.sh | 4 ----
->  1 file changed, 4 deletions(-)
->
-> diff --git a/scripts/cc-version.sh b/scripts/cc-version.sh
-> index 0573c92e8..a7e28b6a5 100755
-> --- a/scripts/cc-version.sh
-> +++ b/scripts/cc-version.sh
-> @@ -45,10 +45,6 @@ Clang)
->         version=3D$2.$3.$4
->         min_version=3D$($min_tool_version llvm)
->         ;;
-> -ICC)
-> -       version=3D$(($2 / 100)).$(($2 % 100)).$3
-> -       min_version=3D$($min_tool_version icc)
-> -       ;;
->  *)
->         echo "$orig_args: unknown C compiler" >&2
->         exit 1
-> --
-> 2.40.0
->
 
 
---=20
-Thanks,
-~Nick Desaulniers
+On 4/20/23 5:26 AM, Jonathan Cameron wrote:
+> On Wed, 19 Apr 2023 13:22:07 -0700
+> Dave Jiang <dave.jiang@intel.com> wrote:
+> 
+>> The CDAT information from the switch, Switch Scoped Latency and Bandwidth
+>> Information Strucutre (SSLBIS), is parsed and stored in an xarray under the
+>> cxl_port. The QoS data are indexed by the downstream port id.  Walk the CXL
+>> ports from endpoint to root and retrieve the relevant QoS information
+>> (bandwidth and latency) that are from the switch CDAT. If read or write QoS
+>> values are not available, then use the access QoS value.
+> 
+> I'd drop the access reference.  You already did that mapping from access to read
+> and write in earlier patch. Now we have no concept of access so mentioning
+> it will only potentially cause confusion.
+
+ok
+
+> 
+>>
+>> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+>>
+>> ---
+>> v3:
+>> - Move to use 'struct node_hmem_attrs'
+>> ---
+>>   drivers/cxl/core/port.c |   81 +++++++++++++++++++++++++++++++++++++++++++++++
+>>   drivers/cxl/cxl.h       |    2 +
+>>   2 files changed, 83 insertions(+)
+>>
+>> diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+>> index 3fedbabac1af..770b540d5325 100644
+>> --- a/drivers/cxl/core/port.c
+>> +++ b/drivers/cxl/core/port.c
+>> @@ -1921,6 +1921,87 @@ bool schedule_cxl_memdev_detach(struct cxl_memdev *cxlmd)
+>>   }
+>>   EXPORT_SYMBOL_NS_GPL(schedule_cxl_memdev_detach, CXL);
+>>   
+>> +/**
+>> + * cxl_port_get_switch_qos - retrieve QoS data for CXL switches
+> 
+> Hmm. Terminology wise, this is called QoS data in either CXL spec
+> or the HMAT stuff it came from.  I'd avoid that term here.
+> Might also get confused with the QoS telemetry stuff from the CXL
+> spec which is totally different or the QoS controls on an MLD
+> which are perhaps indirectly related to these.
+> 
+> QoS only gets involved once these are mapped to a QTG - assumption
+> being that a given QoS policy should apply to devices of similar access
+> characteristics.
+
+locality_info?
+
+
+> 
+> Other than that bikeshedding.
+> 
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> 
+> 
+>> + * @port: endpoint cxl_port
+>> + * @rd_bw: writeback value for min read bandwidth
+>> + * @rd_lat: writeback value for total read latency
+>> + * @wr_bw: writeback value for min write bandwidth
+>> + * @wr_lat: writeback value for total write latency
+>> + *
+>> + * Return: Errno on failure, 0 on success. -ENOENT if no switch device
+>> + */
+>> +int cxl_port_get_switch_qos(struct cxl_port *port, u64 *rd_bw, u64 *rd_lat,
+>> +			    u64 *wr_bw, u64 *wr_lat)
+>> +{
+>> +	u64 min_rd_bw = ULONG_MAX;
+>> +	u64 min_wr_bw = ULONG_MAX;
+>> +	struct cxl_dport *dport;
+>> +	struct cxl_port *nport;
+>> +	u64 total_rd_lat = 0;
+>> +	u64 total_wr_lat = 0;
+>> +	struct device *next;
+>> +	int switches = 0;
+>> +	int rc = 0;
+>> +
+>> +	if (!is_cxl_endpoint(port))
+>> +		return -EINVAL;
+>> +
+>> +	/* Skip the endpoint */
+>> +	next = port->dev.parent;
+>> +	nport = to_cxl_port(next);
+>> +	dport = port->parent_dport;
+>> +
+>> +	do {
+>> +		struct node_hmem_attrs *hmem_attrs;
+>> +		u64 lat, bw;
+>> +
+>> +		if (!nport->cdat.table)
+>> +			break;
+>> +
+>> +		if (!dev_is_pci(dport->dport))
+>> +			break;
+>> +
+>> +		hmem_attrs = xa_load(&nport->cdat.sslbis_xa, dport->port_id);
+>> +		if (xa_is_err(hmem_attrs))
+>> +			return xa_err(hmem_attrs);
+>> +
+>> +		if (!hmem_attrs) {
+>> +			hmem_attrs = xa_load(&nport->cdat.sslbis_xa, SSLBIS_ANY_PORT);
+>> +			if (xa_is_err(hmem_attrs))
+>> +				return xa_err(hmem_attrs);
+>> +			if (!hmem_attrs)
+>> +				return -ENXIO;
+>> +		}
+>> +
+>> +		bw = hmem_attrs->write_bandwidth;
+>> +		lat = hmem_attrs->write_latency;
+>> +		min_wr_bw = min_t(u64, min_wr_bw, bw);
+>> +		total_wr_lat += lat;
+>> +
+>> +		bw = hmem_attrs->read_bandwidth;
+>> +		lat = hmem_attrs->read_latency;
+>> +		min_rd_bw = min_t(u64, min_rd_bw, bw);
+>> +		total_rd_lat += lat;
+>> +
+>> +		dport = nport->parent_dport;
+>> +		next = next->parent;
+>> +		nport = to_cxl_port(next);
+>> +		switches++;
+>> +	} while (next);
+>> +
+>> +	*wr_bw = min_wr_bw;
+>> +	*wr_lat = total_wr_lat;
+>> +	*rd_bw = min_rd_bw;
+>> +	*rd_lat = total_rd_lat;
+>> +
+>> +	if (!switches)
+>> +		return -ENOENT;
+>> +
+>> +	return rc;
+>> +}
+>> +EXPORT_SYMBOL_NS_GPL(cxl_port_get_switch_qos, CXL);
+> 
+> 
