@@ -2,107 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 364EE6EC63E
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Apr 2023 08:24:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 897576EC67F
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Apr 2023 08:47:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbjDXGYW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 24 Apr 2023 02:24:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44198 "EHLO
+        id S231150AbjDXGr3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 24 Apr 2023 02:47:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjDXGYV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Apr 2023 02:24:21 -0400
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55EDE1726;
-        Sun, 23 Apr 2023 23:24:19 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=24;SR=0;TI=SMTPD_---0VgnzJxO_1682317453;
-Received: from 30.240.114.50(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VgnzJxO_1682317453)
-          by smtp.aliyun-inc.com;
-          Mon, 24 Apr 2023 14:24:14 +0800
-Message-ID: <92f2642e-ab44-913f-24fa-3313acd905f8@linux.alibaba.com>
-Date:   Mon, 24 Apr 2023 14:24:12 +0800
+        with ESMTP id S229521AbjDXGr1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Apr 2023 02:47:27 -0400
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE4FF3A98;
+        Sun, 23 Apr 2023 23:47:10 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: sendonly@marcansoft.com)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 0DF0442181;
+        Mon, 24 Apr 2023 06:47:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+        t=1682318828; bh=3mjf32eyEhhtX71u9VNT0Tq8QAhtEflwUY8NEPfG0YA=;
+        h=From:Date:Subject:To:Cc;
+        b=nK/pAfgK0QpyxvN1Yv6dFIC/u8XNR5A9XoTtREmr5RAgvAn0ge1bNUFcmjf8axMXu
+         qYrdQfpKmdAz1mGf5GqrI2u1O7AIxEYOPajCxtegTlZlQ0h60ZinVwid0BaUtO7VW7
+         xXylWHv13SbP2kJGU80LeqBrL3Jym8WDzFhA9RCkqMy/vA3/MyAVzldqP45D0crCwj
+         WyMbzBI2U7V5xIAc0GmDQBhpHikv6OOHZKTrShIIIM2jpLEjl0NJhd1ciyqEbi/7bm
+         nPJ0RB1T4xm2UR3RkpHmGu1QmU+9hnZEjl5O+9iaoohgAkiMlskk9SzB3moNCiulrp
+         wf+MVIG6EJhIg==
+From:   Hector Martin <marcan@marcan.st>
+Date:   Mon, 24 Apr 2023 15:46:57 +0900
+Subject: [PATCH] ACPI / property: Support strings in Apple _DSM props
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.10.0
-Subject: Re: [PATCH v7 0/2] ACPI: APEI: handle synchronous exceptions with
- proper si_code
-To:     rafael@kernel.org, wangkefeng.wang@huawei.com,
-        tanxiaofei@huawei.com, mawupeng1@huawei.com, tony.luck@intel.com,
-        naoya.horiguchi@nec.com
-Cc:     linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, justin.he@arm.com,
-        akpm@linux-foundation.org, ardb@kernel.org, ashish.kalra@amd.com,
-        baolin.wang@linux.alibaba.com, bp@alien8.de,
-        cuibixuan@linux.alibaba.com, dave.hansen@linux.intel.com,
-        james.morse@arm.com, jarkko@kernel.org, lenb@kernel.org,
-        linmiaohe@huawei.com, lvying6@huawei.com, xiexiuqi@huawei.com,
-        zhuo.song@linux.alibaba.com
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20230417011407.58319-1-xueshuai@linux.alibaba.com>
-Content-Language: en-US
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20230417011407.58319-1-xueshuai@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-12.1 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
-        version=3.4.6
+Message-Id: <20230424-acpi-prop-v1-1-ffa9a300b1cd@marcan.st>
+X-B4-Tracking: v=1; b=H4sIAOAlRmQC/x2NQQqDMBBFryKz7tAY0wi9SukiiROdTRwmbRHEu
+ ze6fPz3eTtUUqYKz24HpR9XXkuD/tZBWkKZCXlqDNbYwTjrMCRhFF0Fx+jH/pGzM5OH5sdQCaO
+ Gkpbz8fHGbveoXOavnLsoZd6u1ut9HH/bSjznewAAAA==
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        asahi@lists.kernel.dev, Lukas Wunner <lukas@wunner.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hector Martin <marcan@marcan.st>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2038; i=marcan@marcan.st;
+ h=from:subject:message-id; bh=3mjf32eyEhhtX71u9VNT0Tq8QAhtEflwUY8NEPfG0YA=;
+ b=owGbwMvMwCEm+yP4NEe/cRLjabUkhhQ31ZdxgScNl4iJMJYH7Ct/aWiVkazPvKF6/7VtKbVTl
+ siXWMh0lLIwiHEwyIopsjSe6D3V7Tn9nLpqynSYOaxMIEMYuDgFYCJnfjL8T+xb9/RgrLzFOaft
+ lvkfXabt/O77NPHKCVNPds6IuFLFx4wMK09PT1j67nNg3utzX+c9PBfA48xwoX034+HyQxJOFxu
+ jGQA=
+X-Developer-Key: i=marcan@marcan.st; a=openpgp;
+ fpr=FC18F00317968B7BE86201CBE22A629A4C515DD5
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+The Wi-Fi module in x86 Apple machines has a "module-instance" device
+property that specifies the platform type and is used for firmware
+selection. Its value is a string, so add support for string values in
+acpi_extract_apple_properties().
 
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+---
+ drivers/acpi/x86/apple.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-On 2023/4/17 AM9:14, Shuai Xue wrote:
-> changes since v6:
-> - add more explicty error message suggested by Xiaofei
-> - pick up reviewed-by tag from Xiaofei
-> - pick up internal reviewed-by tag from Baolin
-> 
-> changes since v5 by addressing comments from Kefeng:
-> - document return value of memory_failure()
-> - drop redundant comments in call site of memory_failure() 
-> - make ghes_do_proc void and handle abnormal case within it
-> - pick up reviewed-by tag from Kefeng Wang 
-> 
-> changes since v4 by addressing comments from Xiaofei:
-> - do a force kill only for abnormal sync errors
-> 
-> changes since v3 by addressing comments from Xiaofei:
-> - do a force kill for abnormal memory failure error such as invalid PA,
-> unexpected severity, OOM, etc
-> - pcik up tested-by tag from Ma Wupeng
-> 
-> changes since v2 by addressing comments from Naoya:
-> - rename mce_task_work to sync_task_work
-> - drop ACPI_HEST_NOTIFY_MCE case in is_hest_sync_notify()
-> - add steps to reproduce this problem in cover letter
-> 
-> changes since v1:
-> - synchronous events by notify type
-> - Link: https://lore.kernel.org/lkml/20221206153354.92394-3-xueshuai@linux.alibaba.com/
-> 
-> Shuai Xue (2):
->   ACPI: APEI: set memory failure flags as MF_ACTION_REQUIRED on
->     synchronous events
->   ACPI: APEI: handle synchronous exceptions in task work
-> 
->  arch/x86/kernel/cpu/mce/core.c |   9 +--
->  drivers/acpi/apei/ghes.c       | 113 ++++++++++++++++++++++-----------
->  include/acpi/ghes.h            |   3 -
->  mm/memory-failure.c            |  17 +----
->  4 files changed, 79 insertions(+), 63 deletions(-)
-> 
+diff --git a/drivers/acpi/x86/apple.c b/drivers/acpi/x86/apple.c
+index 8812ecd03d55..45d0f16f374f 100644
+--- a/drivers/acpi/x86/apple.c
++++ b/drivers/acpi/x86/apple.c
+@@ -71,13 +71,16 @@ void acpi_extract_apple_properties(struct acpi_device *adev)
+ 
+ 		if ( key->type != ACPI_TYPE_STRING ||
+ 		    (val->type != ACPI_TYPE_INTEGER &&
+-		     val->type != ACPI_TYPE_BUFFER))
++		     val->type != ACPI_TYPE_BUFFER &&
++		     val->type != ACPI_TYPE_STRING))
+ 			continue; /* skip invalid properties */
+ 
+ 		__set_bit(i, valid);
+ 		newsize += key->string.length + 1;
+ 		if ( val->type == ACPI_TYPE_BUFFER)
+ 			newsize += val->buffer.length;
++		else if (val->type == ACPI_TYPE_STRING)
++			newsize += val->string.length + 1;
+ 	}
+ 
+ 	numvalid = bitmap_weight(valid, numprops);
+@@ -119,6 +122,12 @@ void acpi_extract_apple_properties(struct acpi_device *adev)
+ 		newprops[v].type = val->type;
+ 		if (val->type == ACPI_TYPE_INTEGER) {
+ 			newprops[v].integer.value = val->integer.value;
++		} else if (val->type == ACPI_TYPE_STRING) {
++			newprops[v].string.length = val->string.length;
++			newprops[v].string.pointer = free_space;
++			memcpy(free_space, val->string.pointer,
++			       val->string.length);
++			free_space += val->string.length + 1;
+ 		} else {
+ 			newprops[v].buffer.length = val->buffer.length;
+ 			newprops[v].buffer.pointer = free_space;
 
-Hi, Rafael,
+---
+base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+change-id: 20230424-acpi-prop-7b6715ff40d6
 
-Gentle ping. Are you happy to queue this patch set into your next tree, so that we can merge
-that in next merge window.
+Best regards,
+-- 
+Hector Martin <marcan@marcan.st>
 
-Thank you.
-
-Best Regards,
-Shuai
