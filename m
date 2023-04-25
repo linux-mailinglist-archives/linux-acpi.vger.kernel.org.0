@@ -2,76 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A8D66ED957
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Apr 2023 02:30:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 776ED6ED95A
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Apr 2023 02:33:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229822AbjDYAae (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 24 Apr 2023 20:30:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43530 "EHLO
+        id S231975AbjDYAdV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 24 Apr 2023 20:33:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229756AbjDYAab (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Apr 2023 20:30:31 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A61015585;
-        Mon, 24 Apr 2023 17:30:30 -0700 (PDT)
+        with ESMTP id S229756AbjDYAdT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Apr 2023 20:33:19 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F00259CA;
+        Mon, 24 Apr 2023 17:33:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1682382630; x=1713918630;
+  t=1682382795; x=1713918795;
   h=date:from:to:cc:subject:message-id:references:
    in-reply-to:mime-version;
-  bh=jz4V53Z+YzrHqSMt5mgbVp55qDFXmvcykZ59CB3KQ3Q=;
-  b=TByzuwETfI64ULTppltpH73wB7011Qas1Q/2C0T5CCFKAMpt/6lQSUnz
-   ureivM8Td/X5g/pXf4y/RnZ9rqc7AGQ9qNJPhr5oGTYPaqGpJr/b5lfjb
-   d+/pAlJ2GGt3Bv8jgNED8LuciW1Xf1ExCLNOTfRb8vZ9/oTkGFmUvjV96
-   AeDMCJHiPzrRhxDgYDDkQByjN8h6s/z/18j7LTzr8qrd4V9zP5nAoUUAs
-   h4cNStA/1MaRtw9oKVjnCik8XzsKEodreDdKzRTV/zl6LOcQ/WgKRH9H7
-   rHdUrP/4NwsbZWpBD9sMxIfQLNn83DOtU8Mra45UBROR2LdLDvRgEGQyw
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10690"; a="326913957"
+  bh=mdiuCqvIW/xTezmhPR1zbzkaym/GvaFdyimusXr3hWU=;
+  b=O4DNLKlrtMpXapBPB3p1gRQ4+zDa8aN3Sfr+QC62W18024EUHuyeV91k
+   zrHQZVGJOyRjlA3fgwus1p0207yJXoDCGByq7jfSdhPFtyGYAnZJPpdzS
+   0YMFwzyAObgfXuAR6HKr8ncVsuSQV1abiaULu4j4cXgcAPxU8pC8/5VdG
+   HM/q05XkLpqAJqwZyCJTCJ2wzGbsoiJG1Tsp92W8g8kOzpWIjxexk9bwX
+   z0WOx3bv0yPulSBVL5EHyvfC5wqBl2FNUFSKvLsQusFn81T8fLQTCRYpX
+   lgfgebllD3fCwxQwGeAcpyLtpygOnRftUwvLdjP4/weyvr/pimlTXVGCc
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10690"; a="330821749"
 X-IronPort-AV: E=Sophos;i="5.99,223,1677571200"; 
-   d="scan'208";a="326913957"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2023 17:30:30 -0700
+   d="scan'208";a="330821749"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2023 17:33:07 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10690"; a="723807102"
+X-IronPort-AV: E=McAfee;i="6600,9927,10690"; a="687128178"
 X-IronPort-AV: E=Sophos;i="5.99,223,1677571200"; 
-   d="scan'208";a="723807102"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orsmga008.jf.intel.com with ESMTP; 24 Apr 2023 17:30:29 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+   d="scan'208";a="687128178"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by orsmga007.jf.intel.com with ESMTP; 24 Apr 2023 17:33:06 -0700
+Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Mon, 24 Apr 2023 17:30:29 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.1.2507.23; Mon, 24 Apr 2023 17:33:06 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Mon, 24 Apr 2023 17:30:29 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.174)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ 15.1.2507.23 via Frontend Transport; Mon, 24 Apr 2023 17:33:06 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.173)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Mon, 24 Apr 2023 17:30:29 -0700
+ 15.1.2507.23; Mon, 24 Apr 2023 17:33:06 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bEBBar10K+zmvuMNo3sb+nrNuaB51B/O13f+aC/9tosqF5MNhnEA/GozUYVESX6Fv3MUnIhavonnhXOa9ss7gADT+GpcIStIN+sqIX/kAmuSzScVBDWBK0SA5Sfc6ZgdMk/vPiDJwei7P+9FvIAxt9ITRQq+grYzV8Ekf7mWEjHIpwZfOQ4+2vwLMqoHlTQK5O3BniGWbAPq8kFf77mHCkd/ZPqUmo4gkadi2Qu0XZbq71Jnc1rETzFuzanvidqJvq/eCyx5tKul8jWzwI9ee3KbrAcMA8P5bpFL2DS8juqOGOe24tRm0jlVJj19ZVAMsVnITZ3jQo2xXPr6mcVU+Q==
+ b=V9QUbCjRCwpeIwvJAFXp/TlIyaZ9wiUOsn7FuutXBlmdWC5gXOL2vbWIShcWBBO+7CHwvOpCB9yLyneMr7p8I8vXfw/+PgXKnE9sZzGkPsKS7sSN+q0/5IaxkOx9sO4v7pLVAkKYGn7xqGW7tBFt/ePEtPxouJbKmd1Exj0Y7rbW+J6WZoA1gC8PDhrD4MQhF9yjrvQ9pm4bYkaNnQb8FlJnxsqD93smEMlfWtl7pt3QGUYgf+E9//g5FTnMc25vFbzPEd85/uLaN3bdJwYTnS+/GvsaPWhWXHdR1+xZ3hCMEwwVC9OU2qX+Mvd6YV0GV37ft7H+EjCOfX84AOtkYw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UprNzMX2l2zyXjijTGio9P/ThfBmAekE3Q0EGqnNRRg=;
- b=WHAi4Kk5m8DzHKlG5OAWDjlNgwwNwnpYrqG68N37huZJUObfg7erF3OHg2prrDKSgE/kRAZUhDnjMc9DjwvEGo7GYc25ctCMPhXkkG/8pFzEkF4PA3YnPhN8ZLQRC/D/L/kLhzM11H01SvZr11AnWZD3pG+TU6sc4cf4NdtFWcFKbzeVFUJVzXE9/RunIxo3imW42JrviM3pcH0G1cdMm4oXJBckCl/4aVuoiCxr6XwphrG14hPKGiHGx8ds5IaBK2JMeorLFVuAKUp/PGQgt/RhzJBR1hafTbH8xahFncuTjUiwJIKy5n8Wi27sf6KHEXLVIbFrdqUOcKucIN0eOQ==
+ bh=3jm1SZdh7aJ2T3rSr56PNHS+lK1AfvVWC2ksguuv23I=;
+ b=hZ64tbC524gX6VZ5qi08fa+MgOsNQqQdI5opfi6rdx+opCuR7pfRp1XpVLJCrHIEoHrmPXRxQflIZHxtGcUAU17d9CaTBkVOND1ou3lPUAS+3ThAoDIQ2+O7Bw+Vo7FmMGs0l80uo64cy99P075xky5d5klsI766RHl2EJ0Z4asa9RocmfgUrPnFH7zzgzW+aG7hVUOQImjSRHwbFqdow5FTBO0j3/NxwzIxoD6Jxl/8lMeZzRLEe5CqFflyoLM4TqvnKUvefv/TVd8vXarql27dm7DNaDvROWEeJCn/+1Zss/rE2L2Zd5udrxybXCuDNJS7Ss/vgYY0xFsV7p2imQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by MW4PR11MB5776.namprd11.prod.outlook.com (2603:10b6:303:183::9) with
+ by DM4PR11MB5247.namprd11.prod.outlook.com (2603:10b6:5:38a::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6319.33; Tue, 25 Apr
- 2023 00:30:26 +0000
+ 2023 00:33:04 +0000
 Received: from PH8PR11MB8107.namprd11.prod.outlook.com
  ([fe80::95c6:c77e:733b:eee5]) by PH8PR11MB8107.namprd11.prod.outlook.com
  ([fe80::95c6:c77e:733b:eee5%3]) with mapi id 15.20.6319.032; Tue, 25 Apr 2023
- 00:30:26 +0000
-Date:   Mon, 24 Apr 2023 17:30:24 -0700
+ 00:33:04 +0000
+Date:   Mon, 24 Apr 2023 17:33:01 -0700
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     Dave Jiang <dave.jiang@intel.com>, <linux-cxl@vger.kernel.org>,
         <linux-acpi@vger.kernel.org>
@@ -79,71 +79,71 @@ CC:     <dan.j.williams@intel.com>, <ira.weiny@intel.com>,
         <vishal.l.verma@intel.com>, <alison.schofield@intel.com>,
         <rafael@kernel.org>, <lukas@wunner.de>,
         <Jonathan.Cameron@huawei.com>
-Subject: RE: [PATCH v4 10/23] cxl: Add helpers to calculate pci latency for
- the CXL device
-Message-ID: <64471f202f6dd_1b6629492@dwillia2-xfh.jf.intel.com.notmuch>
+Subject: RE: [PATCH v4 11/23] cxl: Add helper function that calculates QoS
+ values for switches
+Message-ID: <64471fbd2d9e9_1b6629482@dwillia2-xfh.jf.intel.com.notmuch>
 References: <168193556660.1178687.15477509915255912089.stgit@djiang5-mobl3>
- <168193572162.1178687.9726045601551945413.stgit@djiang5-mobl3>
+ <168193572747.1178687.13347516490022640531.stgit@djiang5-mobl3>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <168193572162.1178687.9726045601551945413.stgit@djiang5-mobl3>
-X-ClientProxiedBy: SJ0PR13CA0188.namprd13.prod.outlook.com
- (2603:10b6:a03:2c3::13) To PH8PR11MB8107.namprd11.prod.outlook.com
+In-Reply-To: <168193572747.1178687.13347516490022640531.stgit@djiang5-mobl3>
+X-ClientProxiedBy: SJ0PR05CA0183.namprd05.prod.outlook.com
+ (2603:10b6:a03:330::8) To PH8PR11MB8107.namprd11.prod.outlook.com
  (2603:10b6:510:256::6)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|MW4PR11MB5776:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7821e66c-3546-4b6e-a9e2-08db452443ef
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DM4PR11MB5247:EE_
+X-MS-Office365-Filtering-Correlation-Id: e13a2abd-3fcf-4bd7-e0d6-08db4524a1b8
 X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: E7i3fdsDpG/DI+aBfusOzLafPXBlebFSwdwdAvBJaqyRj0IFWJmvCzVufG0ailzV5yIlUDDLPJx3TL1BYAfNJ2NlDMIp1iciRsCzGhPuIGrSKbEqzWwYY4GfRo1wpPQzCIIrlVDQs4dFvIQq18b7Nw1z6Ix9aImf4040lkkYWySoeZoE/i7SMGXJmvI2q0qdEAu9hbwfnYkjIf8ePrCG4/v6nNmuROAstYHx5N1RbQMYbOUhQ43bmXpsvxyfVagSZIwGCoNHdoyAQIKpC9l+TCvAeiMkXNMUGfTUXaTB17FxFTsMOA/lTKKKTkYFLXokr50EZXGFhnrYrhHSdlB/m8XRAlc6qRBLoI+0CoeLRXdgIDKF9O7ejXEKzGfriCGs6Sq4X7/AIhtmjUAUF5MD7AMhDJAVfBMPc1jhoL22tvRfaxcLytYoc2abkDoU7DjB9/Oi58fPBtmiZKxv95VveBzK42V6VCJ0B/8UKq1XfM88YOSQjEKpov3Eyc1ju/ynaaT339OrzwylA29Qu6UJF3sheqclht3AHqbmegd/wKJROqQk3eN8BNisw0xV3Pge
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(136003)(376002)(396003)(366004)(39860400002)(451199021)(478600001)(82960400001)(316002)(66946007)(66476007)(66556008)(4326008)(41300700001)(2906002)(8936002)(8676002)(5660300002)(38100700002)(186003)(86362001)(26005)(6512007)(9686003)(6506007)(6486002)(83380400001);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: mzXfvHz3oSzrEt+TQZxTeESl7LA2mefiWmtXGXlNGLUNa0vBH4k9bFtUlHsi3or68xASZzIxakacPoSP0wYs7/3T5O+XpYUht4OsiaE9mHFNZrxYzzmkmofUka1KNFCnvafLE3XmqkFSIq0zcrfHqLcyyPFB27eBKlwDZWGIhfGTnnRWM2vCK5+Zolc1jBwCXbRKdcXz1hZpyf4Sr9+tPEg5zAl8hcJHzND9EH+51HI2FTLXJRJD6iXKkqCzCIloa2HTmtwH82EsnvWGk5xwJXuLq74AWykCdO/Qqgv+suojAb9QD987Qvf5qs+X8lSP4OjGwQYClVY/2ItXowIISXHTozmv+MctTpqL4YWWHI+OTGsreSEM2ApnNOPzUHXnQinIwuamvS7escpGjPDHWmSuj8pBo4dN+FWz5ftWUa04tv5MICMJuXqiLds8Ir2DfFODCqeVgcRmlSuSHonLhEK4yTyjm68kEOui8P2hcPi49eOJ63LaWh7UicuxbmZBryGYwB1/0k9OymLw+bzt8WLCuW/uNJXSebA3Qe77aDoxDHWx4mvxifFolHUZpnVo
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(376002)(346002)(366004)(396003)(39860400002)(136003)(451199021)(478600001)(86362001)(186003)(6486002)(26005)(9686003)(6512007)(6506007)(4326008)(66476007)(66556008)(316002)(82960400001)(6666004)(66946007)(83380400001)(2906002)(38100700002)(8676002)(41300700001)(5660300002)(8936002);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?71NQYfuSd2UuTXys0x0vNoGrfc4XseKoYElC4py+86GLVLJBzXiXbOXfFITz?=
- =?us-ascii?Q?6rETL5uMprT7WuOZ//BkC3TOB8FxdtsEkJoSoJs5FNQW+Cyir3bA0TE8E8Ac?=
- =?us-ascii?Q?BkvwhtB5FgHOr1r3f6xbRRwbNBMJz5m7KttZx/dkFS15AkUC0PAGV/C4Fq+D?=
- =?us-ascii?Q?Gh84d42tH5G7+PBaLwvuKMgFIEklapNS7OBU2QyAP9ijwQqCv5iB1le41PIG?=
- =?us-ascii?Q?HrpnkJtZPY6IPKrd+jfq+8EyigXwqiunBgDGhcTfziP0hWTH1vZ6a1sYvaHc?=
- =?us-ascii?Q?rLAYO//3sPSFK0NdTloWIGTpFzcr6LmJKsRq13KsYPWiwHUV3Va6lJBvjL+B?=
- =?us-ascii?Q?VUY9vJaS3G3smRyy/UXJX+5Q7W8bWIgxM84ryyXH8FffpmorXaqZzqYvZq8S?=
- =?us-ascii?Q?VL+teQ6gcpzgchOWyjWv1WPbuWVl3u6SnnDvyk3Y4BNw67JPiTitp9MUSYDO?=
- =?us-ascii?Q?jRPPGKs+wMc2umh6qy/aEVhlPSVIfxaJifHWLvRC7vSQTBaA/KK6PMbnbyiy?=
- =?us-ascii?Q?buANVrJn0xb81p8moy4MyL/HiuLQiRrfdVxoNfLt2Lrt8nUnoI82wbMOyHH/?=
- =?us-ascii?Q?H1j9SC7MvDYVbwDHzZcocDm9GElho+4i6aEnjIUzBTY74yuh849BMJaAAZH5?=
- =?us-ascii?Q?VhgectgpS/aNzdRD4daZGSHKW2BVvV0d1UM0DeUq0TyM5y5qnbtav0/cE7Se?=
- =?us-ascii?Q?Tqtmmb2kyx9fmyYpCWgCQDKLUYhqhR8H3+o9r0mwYegwhWHb+QFRDi6hXOdV?=
- =?us-ascii?Q?eYXNMEf7VJj5MApmT/zu4bCtyzvHabRsD0tu/4gsjDxIXJ0FPTtRgSrLilx1?=
- =?us-ascii?Q?Tr36HgfitxyowT/d8Vl1zlsBUOt59CDnmFFzhs4JfbQiAfMc7cJSavLC+QYg?=
- =?us-ascii?Q?v+5+UZANSldsp5ZfCsmRllWUYir+dbsPTgr+E/FcDkpBATuKrByb+fGnfkth?=
- =?us-ascii?Q?sZfi3kqY0kDDypEmmzmNyc0yOHbSyN2jl02uID6A07lAXAyF1XGWYcYro9ji?=
- =?us-ascii?Q?oZG1gSbHHTqTrist4PcEfqZbQC3j+3Ewh9StSb+Z7x/JKRry2WQAhLNaVqwo?=
- =?us-ascii?Q?fLVoJ2QR7TMB9O9pImS/L2jlM6rS7NUh5X0oaI6gb0HHc1uDbjEi2OMZzdH7?=
- =?us-ascii?Q?xAL3BrEcPyD+fQ/3bmh9JCQxYZI7KJb4AJ/xe7stad8D69FasTtuaAn/4ptO?=
- =?us-ascii?Q?573XBFnuPab4C6bXsB0Et+NZOfDOYSY0XYESL7JB+2EvcI2TELbFAoGDmM0L?=
- =?us-ascii?Q?jaSMvzXJ/NOQyeegqgcUnY0yBt+2KoNK8tkCY2daa4B+kLw/okmq6KN6EQpd?=
- =?us-ascii?Q?1vYUvKhHZEy/ttkTxeTmPHHXTDQ8Ql/BrZY9HwyjidRVWhKjYwDxTFEYQPyJ?=
- =?us-ascii?Q?B7l+SdEMiL8tMyMynjnZlpttx1lncT6pOfj62TcN9l0E8uGCTgTEsUJULNCY?=
- =?us-ascii?Q?dbisB9DEhFq4Q3/a+7EZRhcGFKUBbzEZo1zVvwGIvI5hFvMRbZSNQxI95/wP?=
- =?us-ascii?Q?qAYODHYZD2lVdkaz0vehzqeDyj65tsjgcE3/bHbH3xARtvuaZ3lVumv0Yq4J?=
- =?us-ascii?Q?JUBrldM0szEt3u0anZmTwIU2DBpG8VCOthLZGJbpPLboU3ZBc5wAWAv88uPs?=
- =?us-ascii?Q?1g=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7821e66c-3546-4b6e-a9e2-08db452443ef
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?MmalmiwkdFcmBOdkV5lTzUh0Js8W6p/lFCqUul1FeDOhTwXsNFXgNxAMvaQQ?=
+ =?us-ascii?Q?hU4N3qK297J9DqyrtRfBxbXOgbqGC48yIjUsXWOVxfF1YNlnYBd95E9R6gC2?=
+ =?us-ascii?Q?cZO2LwC5o3vQF6ZBBKfzi8zV70wqp+F47wRQYM8S0T3aAhLCAMPKYLz5Fs3Q?=
+ =?us-ascii?Q?7qHHMSXRBL0ZXhnIjgpg53ElYb8BeLygYFnKIBO3NLhDqhZ0BQFwW2IXELio?=
+ =?us-ascii?Q?XB6eAa5QwRY1rBl+GfMIvNgbdZdYUa1glc/frJKyJyJJ2+tekB5+wuL0Q64r?=
+ =?us-ascii?Q?OuQyUZv12Hc4fMUJXtSTQ7434DF2o1og3+1plucy+anG6a/K/mqHr2ZQlGrf?=
+ =?us-ascii?Q?IZVP018Jil6wOK+8Yx/FCMM+q7swc4xrmLfssHhp4jeSE47kXC79BYk8ySsu?=
+ =?us-ascii?Q?u/UiyJYmkpS6BWcdfkKT/30azIytJFifO68zm0IYzkZe0I6RzXqBVvwSN29Y?=
+ =?us-ascii?Q?f9VNTLDxKgtSpK/LJs1/wrCkj8JPQB7UItSaDV4PXCW7oBUMXM4Na0cv9pyM?=
+ =?us-ascii?Q?7j2yMsE1qMA6076WugXa/AYhPZPPFostW/hAs30bxhbjFJfBHQ5r5vt+XYTy?=
+ =?us-ascii?Q?lrbvgJ2ctX2hsUJoTfqxEnPmht4jFyin+Rs64YIEtP5oHtw9mxVRk5I+kpdV?=
+ =?us-ascii?Q?hkoUgEZKY2f/jDAg9bsEwqHH8TDKPRdar2weG4NjYQlojcOUQCwrCZs1IXpJ?=
+ =?us-ascii?Q?sCkO/qVE8wCz/nxsu6KiJZ3keL3Fgl9txJycazBgqKiQG2Q2ZtrEI39UVfAs?=
+ =?us-ascii?Q?8z9GYaQiHpHshF2VkamF7sobrz6LTMJko/jkieMBOa5hDAl+AZ3//6rTeyHn?=
+ =?us-ascii?Q?2G9lKi5omaVsA8Aza7swwgnlPwI0y8gBYVbT5m6JQiaKHc7QwQxZcuKQ0i3s?=
+ =?us-ascii?Q?hXRixRKb/4dEVbhhcyhEY10rqbdcLhw0WTpvnbj3qakb/nXG78IK4fw8i1Y5?=
+ =?us-ascii?Q?u5VhMnuWEhQ9+YcPG6UwhkM2e+Nc9O3WdrKUmswJVTLfmr9dP5bgHx2R6OBP?=
+ =?us-ascii?Q?MsLX8aFIWPP3tlPbubz0qGynLi1nTwZxpusTYhj6uA0xsZBN4VEUW0+cbBZa?=
+ =?us-ascii?Q?X9EmmM3uBfm5StSXiV1U4WVDRM1BRYQd/hMJ9lBgHl138VmOfXRsobRTwrDM?=
+ =?us-ascii?Q?HmqQ/QvFvaTfOzzzqPn+qGFP2fwvolmoiVO7PtikBNh63q/rk1vn4NqcZaxO?=
+ =?us-ascii?Q?eNQlUqQdmvZI+LyNpXKJbsRoGYyVsilTDBcl3nQftyR7SVYkQv0Yl1QoVuZZ?=
+ =?us-ascii?Q?uGoZbEsHAZ6L+Wu0ETDae2xhr8H2jw5+321UymqfHBt5QKhROHOakQHe7JXK?=
+ =?us-ascii?Q?4akjakgIKp+Z5npcIBJ1/4ZgrACiwSHF0BUlpkD/BfxQj797RWb1cTV/cDtH?=
+ =?us-ascii?Q?6xQ0zYh6dI6u9lqxor6KWRU//liJy6HZNm6JMHVbv/Y7BIhEoTWzVA48qH9m?=
+ =?us-ascii?Q?qFDxhOvfJCzbQbqMhmmp4VKLjh/QFb7uIpQ3TrxQ+13A28AD7vAjc4xgwzju?=
+ =?us-ascii?Q?EhIM4wure6yN8PfvJImYbfjR58q0kVMwsF/rhlQLljWcG7UAs/akEivh0hZj?=
+ =?us-ascii?Q?eHCs4mYyOhRYtpR5AwqrvjKleA06udn+ncou7HBU4SwOLTaT3zE/2Ymly5kv?=
+ =?us-ascii?Q?0A=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e13a2abd-3fcf-4bd7-e0d6-08db4524a1b8
 X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Apr 2023 00:30:26.6477
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Apr 2023 00:33:03.9694
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0jwYOX1ZUOMTlP3EIO34OqSnKaF1lPJwWLvR9Cs4be/NUN7cxVzbEEGZrfsQ3opEGZHiBXq+QcMVul9FPzIBaPtfdvxxZ3NOx4ZeeI/c1Xc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB5776
+X-MS-Exchange-CrossTenant-UserPrincipalName: xUfcYZhDjzF3bUAGVu6tWWTmvKAkszATmrFRgfJa3tXAGGrPKl8I/rsh0zAirqaEDnkBEstqcz28+WW9MZsAZ/mjzTJuysENTLQEm7t5G7A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5247
 X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -151,167 +151,84 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 Dave Jiang wrote:
-> The latency is calculated by dividing the flit size over the bandwidth. Add
-> support to retrieve the flit size for the CXL device and calculate the
-> latency of the downstream link.
+> The CDAT information from the switch, Switch Scoped Latency and Bandwidth
+> Information Strucutre (SSLBIS), is parsed and stored in an xarray under the
+> cxl_port. The QoS data are indexed by the downstream port id.  Walk the CXL
+> ports from endpoint to root and retrieve the relevant QoS information
+> (bandwidth and latency) that are from the switch CDAT. If read or write QoS
+> values are not available, then use the access QoS value.
 > 
 > Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 > 
 > ---
-> v2:
-> - Fix commit log issues. (Jonathan)
-> - Fix var declaration issues. (Jonathan)
+> v3:
+> - Move to use 'struct node_hmem_attrs'
 > ---
->  drivers/cxl/core/pci.c |   68 ++++++++++++++++++++++++++++++++++++++++++++++++
->  drivers/cxl/cxlpci.h   |   15 +++++++++++
->  drivers/cxl/pci.c      |   13 ---------
->  3 files changed, 83 insertions(+), 13 deletions(-)
+>  drivers/cxl/core/port.c |   81 +++++++++++++++++++++++++++++++++++++++++++++++
+>  drivers/cxl/cxl.h       |    2 +
+>  2 files changed, 83 insertions(+)
 > 
-> diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
-> index 1c415b26e866..bb58296b3e56 100644
-> --- a/drivers/cxl/core/pci.c
-> +++ b/drivers/cxl/core/pci.c
-> @@ -712,3 +712,71 @@ pci_ers_result_t cxl_error_detected(struct pci_dev *pdev,
->  	return PCI_ERS_RESULT_NEED_RESET;
+> diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+> index 3fedbabac1af..770b540d5325 100644
+> --- a/drivers/cxl/core/port.c
+> +++ b/drivers/cxl/core/port.c
+> @@ -1921,6 +1921,87 @@ bool schedule_cxl_memdev_detach(struct cxl_memdev *cxlmd)
 >  }
->  EXPORT_SYMBOL_NS_GPL(cxl_error_detected, CXL);
-> +
-> +static int pci_bus_speed_to_mbps(enum pci_bus_speed speed)
-> +{
-> +	switch (speed) {
-> +	case PCIE_SPEED_2_5GT:
-> +		return 2500;
-> +	case PCIE_SPEED_5_0GT:
-> +		return 5000;
-> +	case PCIE_SPEED_8_0GT:
-> +		return 8000;
-> +	case PCIE_SPEED_16_0GT:
-> +		return 16000;
-> +	case PCIE_SPEED_32_0GT:
-> +		return 32000;
-> +	case PCIE_SPEED_64_0GT:
-> +		return 64000;
-> +	default:
-> +		break;
-> +	}
-> +
-> +	return -EINVAL;
-> +}
-> +
-> +static int cxl_pci_mbits_to_mbytes(struct pci_dev *pdev)
-> +{
-> +	int mbits;
-> +
-> +	mbits = pci_bus_speed_to_mbps(pdev->bus->cur_bus_speed);
-> +	if (mbits < 0)
-> +		return mbits;
-> +
-> +	return mbits >> 3;
-
-Why not just return mbits directly and skip the conversion? Otherwise a
-"/ 8" requires bit less cleverness to read than ">> 3".
-
-> +}
-> +
-> +static int cxl_flit_size(struct pci_dev *pdev)
-
-This like something that might be worth caching in 'struct cxl_port'
-rather than re-reading the configuration register each call. Depends on
-how often it is used.
-
-> +{
-> +	if (cxl_pci_flit_256(pdev))
-> +		return 256;
-> +
-> +	return 68;
-> +}
-> +
+>  EXPORT_SYMBOL_NS_GPL(schedule_cxl_memdev_detach, CXL);
+>  
 > +/**
-> + * cxl_pci_get_latency - calculate the link latency for the PCIe link
-> + * @pdev - PCI device
+> + * cxl_port_get_switch_qos - retrieve QoS data for CXL switches
+> + * @port: endpoint cxl_port
+> + * @rd_bw: writeback value for min read bandwidth
+> + * @rd_lat: writeback value for total read latency
+> + * @wr_bw: writeback value for min write bandwidth
+> + * @wr_lat: writeback value for total write latency
 > + *
-> + * return: calculated latency or -errno
-> + *
-> + * CXL Memory Device SW Guide v1.0 2.11.4 Link latency calculation
-> + * Link latency = LinkPropagationLatency + FlitLatency + RetimerLatency
-> + * LinkProgationLatency is negligible, so 0 will be used
-> + * RetimerLatency is assumed to be negligible and 0 will be used
-> + * FlitLatency = FlitSize / LinkBandwidth
-> + * FlitSize is defined by spec. CXL rev3.0 4.2.1.
-> + * 68B flit is used up to 32GT/s. >32GT/s, 256B flit size is used.
-> + * The FlitLatency is converted to picoseconds.
+> + * Return: Errno on failure, 0 on success. -ENOENT if no switch device
 > + */
-> +long cxl_pci_get_latency(struct pci_dev *pdev)
+> +int cxl_port_get_switch_qos(struct cxl_port *port, u64 *rd_bw, u64 *rd_lat,
+> +			    u64 *wr_bw, u64 *wr_lat)
 > +{
-> +	long bw;
+> +	u64 min_rd_bw = ULONG_MAX;
+> +	u64 min_wr_bw = ULONG_MAX;
+> +	struct cxl_dport *dport;
+> +	struct cxl_port *nport;
+> +	u64 total_rd_lat = 0;
+> +	u64 total_wr_lat = 0;
+> +	struct device *next;
+> +	int switches = 0;
+> +	int rc = 0;
 > +
-> +	bw = cxl_pci_mbits_to_mbytes(pdev);
+> +	if (!is_cxl_endpoint(port))
+> +		return -EINVAL;
+> +
+> +	/* Skip the endpoint */
+> +	next = port->dev.parent;
+> +	nport = to_cxl_port(next);
+> +	dport = port->parent_dport;
+> +
+> +	do {
+> +		struct node_hmem_attrs *hmem_attrs;
+> +		u64 lat, bw;
+> +
+> +		if (!nport->cdat.table)
+> +			break;
+> +
+> +		if (!dev_is_pci(dport->dport))
+> +			break;
+> +
+> +		hmem_attrs = xa_load(&nport->cdat.sslbis_xa, dport->port_id);
+> +		if (xa_is_err(hmem_attrs))
+> +			return xa_err(hmem_attrs);
+> +
+> +		if (!hmem_attrs) {
+> +			hmem_attrs = xa_load(&nport->cdat.sslbis_xa, SSLBIS_ANY_PORT);
+> +			if (xa_is_err(hmem_attrs))
+> +				return xa_err(hmem_attrs);
+> +			if (!hmem_attrs)
+> +				return -ENXIO;
+> +		}
 
-This function looks misnamed when I read it here, it's retrieving the
-bus speed in MiBs not doing a conversion.
-
-> +	if (bw < 0)
-> +		return bw;
-> +
-> +	return cxl_flit_size(pdev) * 1000000L / bw;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_pci_get_latency, CXL);
-> diff --git a/drivers/cxl/cxlpci.h b/drivers/cxl/cxlpci.h
-> index 1bca1c0e4b40..795eba31fe29 100644
-> --- a/drivers/cxl/cxlpci.h
-> +++ b/drivers/cxl/cxlpci.h
-> @@ -167,6 +167,19 @@ struct cdat_sslbis {
->  #define SSLBIS_US_PORT		0x0100
->  #define SSLBIS_ANY_PORT		0xffff
->  
-> +/*
-> + * CXL v3.0 6.2.3 Table 6-4
-> + * The table indicates that if PCIe Flit Mode is set, then CXL is in 256B flits
-> + * mode, otherwise it's 68B flits mode.
-> + */
-> +static inline bool cxl_pci_flit_256(struct pci_dev *pdev)
-> +{
-> +	u16 lnksta2;
-> +
-> +	pcie_capability_read_word(pdev, PCI_EXP_LNKSTA2, &lnksta2);
-> +	return lnksta2 & PCI_EXP_LNKSTA2_FLIT;
-> +}
-> +
->  int devm_cxl_port_enumerate_dports(struct cxl_port *port);
->  struct cxl_dev_state;
->  int cxl_hdm_decode_init(struct cxl_dev_state *cxlds, struct cxl_hdm *cxlhdm,
-> @@ -189,4 +202,6 @@ int cxl_##x##_parse_entry(struct cdat_entry_header *header, void *arg)
->  cxl_parse_entry(dsmas);
->  cxl_parse_entry(dslbis);
->  cxl_parse_entry(sslbis);
-> +
-> +long cxl_pci_get_latency(struct pci_dev *pdev);
->  #endif /* __CXL_PCI_H__ */
-> diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
-> index ea38bd49b0cf..ed39d133b70d 100644
-> --- a/drivers/cxl/pci.c
-> +++ b/drivers/cxl/pci.c
-> @@ -365,19 +365,6 @@ static bool is_cxl_restricted(struct pci_dev *pdev)
->  	return pci_pcie_type(pdev) == PCI_EXP_TYPE_RC_END;
->  }
->  
-> -/*
-> - * CXL v3.0 6.2.3 Table 6-4
-> - * The table indicates that if PCIe Flit Mode is set, then CXL is in 256B flits
-> - * mode, otherwise it's 68B flits mode.
-> - */
-> -static bool cxl_pci_flit_256(struct pci_dev *pdev)
-> -{
-> -	u16 lnksta2;
-> -
-> -	pcie_capability_read_word(pdev, PCI_EXP_LNKSTA2, &lnksta2);
-> -	return lnksta2 & PCI_EXP_LNKSTA2_FLIT;
-> -}
-> -
->  static int cxl_pci_ras_unmask(struct pci_dev *pdev)
->  {
->  	struct pci_host_bridge *host_bridge = pci_find_host_bridge(pdev->bus);
-> 
-> 
-
-
+Yeah, I think my comment from a few patches back stands. There appears
+to be no need to maintain the xarray if each dport just resolves and
+caches its relative access coordinate at init time.
