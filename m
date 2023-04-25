@@ -2,105 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E7036EE2B0
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Apr 2023 15:19:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C1CC6EE2DA
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Apr 2023 15:23:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233600AbjDYNT0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Apr 2023 09:19:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47756 "EHLO
+        id S234131AbjDYNXA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Apr 2023 09:23:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233255AbjDYNTZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Apr 2023 09:19:25 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 12022210C;
-        Tue, 25 Apr 2023 06:19:24 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B2BA74B3;
-        Tue, 25 Apr 2023 06:20:07 -0700 (PDT)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 574FE3F64C;
-        Tue, 25 Apr 2023 06:19:21 -0700 (PDT)
-Date:   Tue, 25 Apr 2023 14:19:18 +0100
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     "lihuisong (C)" <lihuisong@huawei.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Shawn Guo <shawnguo@kernel.org>, linux-kernel@vger.kernel.org,
-        soc@kernel.org, wanghuiqiang@huawei.com, tanxiaofei@huawei.com,
-        liuyonglong@huawei.com, huangdaode@huawei.com,
-        linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH] soc: hisilicon: Support HCCS driver on Kunpeng SoC
-Message-ID: <20230425131918.5tf5vot4h7jf54xk@bogus>
-References: <20230424073020.4039-1-lihuisong@huawei.com>
- <e0c4f4b5-8b34-4542-b676-f98ddb8ef586@app.fastmail.com>
- <20230425103040.znv66k364ant6klq@bogus>
- <c7d9c3c5-e400-c60a-52e0-0f267ec8c517@huawei.com>
+        with ESMTP id S234083AbjDYNWz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Apr 2023 09:22:55 -0400
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD94D13C1C;
+        Tue, 25 Apr 2023 06:22:52 -0700 (PDT)
+Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.53])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Q5Myp2Mbsz16PKW;
+        Tue, 25 Apr 2023 21:18:58 +0800 (CST)
+Received: from [10.67.103.231] (10.67.103.231) by
+ kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Tue, 25 Apr 2023 21:22:48 +0800
+Message-ID: <d4207f8b-a631-a2fc-5722-86a103ad2a8e@huawei.com>
+Date:   Tue, 25 Apr 2023 21:22:48 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c7d9c3c5-e400-c60a-52e0-0f267ec8c517@huawei.com>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2 0/2] mailbox: pcc: Support platform notification for
+ type4 and shared interrupt
+To:     Sudeep Holla <sudeep.holla@arm.com>,
+        Robbie King <robbiek@xsightlabs.com>
+CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "rafael.j.wysocki@intel.com" <rafael.j.wysocki@intel.com>,
+        "wanghuiqiang@huawei.com" <wanghuiqiang@huawei.com>,
+        "zhangzekun11@huawei.com" <zhangzekun11@huawei.com>,
+        "wangxiongfeng2@huawei.com" <wangxiongfeng2@huawei.com>,
+        "tanxiaofei@huawei.com" <tanxiaofei@huawei.com>,
+        "guohanjun@huawei.com" <guohanjun@huawei.com>,
+        "xiexiuqi@huawei.com" <xiexiuqi@huawei.com>,
+        "wangkefeng.wang@huawei.com" <wangkefeng.wang@huawei.com>,
+        "huangdaode@huawei.com" <huangdaode@huawei.com>
+References: <20221016034043.52227-1-lihuisong@huawei.com>
+ <20230314111135.16520-1-lihuisong@huawei.com>
+ <20230327113326.dgrb5ainl6mv7wr5@bogus>
+ <570a6f6d-87cb-48ca-3bbc-cd1221bfa88c@huawei.com>
+ <7ef4eec4-2cfb-6f66-a9b9-9c130a1b71d8@huawei.com>
+ <AS8P193MB2335FA58943B305F97D2BACCCA9A9@AS8P193MB2335.EURP193.PROD.OUTLOOK.COM>
+ <57c537d8-6728-2ffc-3421-accd79c1eddf@huawei.com>
+ <AS8P193MB2335F1954BC345575A2C8829CA999@AS8P193MB2335.EURP193.PROD.OUTLOOK.COM>
+ <3d8e8817-12b9-62bc-4c04-34d8822d366f@huawei.com>
+ <20230421105510.hjmyt4l3rpx36mhl@bogus>
+From:   "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <20230421105510.hjmyt4l3rpx36mhl@bogus>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.103.231]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemm600004.china.huawei.com (7.193.23.242)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Apr 25, 2023 at 09:00:31PM +0800, lihuisong (C) wrote:
-> 
-> For firmware, DSD way is simpler and easier to manage these virtual platform
-> devices, and it's an usual way in kernel.
 
-Any specific examples you are referring here. We had lots of debate when
-DSD was introduced. It must be used only when there is no standard ACPI
-way to achieve the same. But in this I don't (yet) think that is the case.
-Further "simplicity" is remotely not the reason why you must use DSD.
-So until you provide me technical reasons as why _CRS can't work, I
-have to NACK this approach. DSD in this case seems like pure hack.
-
-> Driver only needs to get a fixed value, like pcc-id and type, here.
+在 2023/4/21 18:55, Sudeep Holla 写道:
+> On Tue, Apr 18, 2023 at 10:21:54AM +0800, lihuisong (C) wrote:
+>> 在 2023/4/14 21:48, Robbie King 写道:
+>>> Sorry for the delay.  I ran my simple stress test against the patch set and
+>>> saw no issues.  For the record it is by no means a thorough regression, but it
+>>> has illuminated issues in the past.
+>> Thanks for your testing.
+>>> The test itself uses a "heartbeat" module in the SCP firmware that generates
+>>> notifications at a programmable interval.  The stress test is simply generating
+>>> these heartbeats (SCP to AP notifications) while also generating protocol version
+>>> queries (AP to SCP).  The notifications are sequence numbered to verify none are
+>>> lost, however SCP to AP notification support does not support SCP generating
+>>> notifications faster than the AP can process them, so the heartbeat rate must be
+>>> reasonably slow (on the order of 10s of millliseconds).
+>> I understand your concern. I think this doesn't get int the way of what we
+>> are doing.
+>>
+>> My stress tests were also run in type3 and type4 concurrent scenarios.
+>> There were two drivers using type3 to send command looply on platform.
+>> In the firmware terminal window,
+>> there were two channels for type4 to generate notifications from platform at
+>> the 1ms(even shorter) interval.
+>> I didn't find anything issues in this stress after running a couple of
+>> hours.
+>>
+>> @Robbie King and @Sudeep, what do you think of my test?
+>>
+> IMO if there is a need to have this driver changes upstream, then it is good
+> enough test as it is the best that can be done at this time. We can always fix
+> the bugs or extend to new use-cases in the future.
 >
+> Since it is merge window next week, it is quite late now. But sometimes
+> Rafael picks up additional patches late. So please post v3 even if there
+> are no changes with my reviewed-by and Robbie's tested-by so that I can ask
+> Rafael to pick it up.
+Hi Robbie and Sudeep,
 
-Yes and _CRS is used to get similar such properties in ACPI. It includes
-normally MMIO and interrupts and since GAS supports PCC and _CRS can
-contain GAS, you must simply use that.
-
-> Any vantage if using _CRS with GAS compared with DSD?
-
-Simple IMO, it is also existing standard to achieve things you are trying
-to here and DSD is not. You are defining new properties to make DSD work.
-
-So the real question is if _CRS can be used what is the point in defining
-DSD for that. Unless I hear more technical and solid reasoning, I see
-DSD as just hack and misuse here. It wasn't designed for that and must not
-be allowed to make use of it for such use case.
-
-Anyways in case we decide to take DSD route(after more deeper and technical
-discussions), as in the kernel docs, please refer [1] for DSD. You need
-to publish properties there so that no one comes up with similar but
-alternate solution to do exactly this.
-
-> > quite understand what magic the flags contain here to provide any info
-> > there.
-> This flag is used to report other properties, and every bit means a
-> property.
-> For instance, driver doesn't need to request PCC channel during the probing
-> phase if driver use PCC operation Region.
-
-Sorry I still don't understand it fully.
-
--- 
-Regards,
-Sudeep
-
-[1] https://github.com/UEFI/DSD-Guide
+v3 has been sent.
+Can you take a look at this series again?
+Looking forward to your reply.
+>
