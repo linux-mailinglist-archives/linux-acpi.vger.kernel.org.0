@@ -2,65 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 056CE6EEC50
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Apr 2023 04:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E5A46EECC8
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Apr 2023 05:40:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239081AbjDZCWd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Apr 2023 22:22:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34254 "EHLO
+        id S239066AbjDZDkl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Apr 2023 23:40:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238460AbjDZCWc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Apr 2023 22:22:32 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C66B86B5;
-        Tue, 25 Apr 2023 19:22:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1682475750; x=1714011750;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=8SZ3I2m1PTCJhxsTYgIZ6hOWIPZ8k9drMMvfpZQsbdc=;
-  b=a5fG0RHroD+7/2q3R4N38a7MrlqMX8OkmQkotTqE2WgVYETtGHq+e8Pk
-   Sy7QBeP/7OQjeOEUnbiBo/bZeFJjOZ216yJOKcAGHDwUAX+bYnhwTxNbg
-   1mQco9E8Ut9l0F0GRMjXqPVSqxVIXIhnQ5z7a/mRh5z3/1F5YQxGRfKHx
-   wJ9ZX4pbh6POV+5tPHuYCmHDnXm0K0uRvpJPCqnaWMWSxPmVa9gsoQR+p
-   OyaNNnl8Of9Cx7Qss/6KD7SMuSYHa18tK3aMg7Nv152mypW30rioi4eN3
-   dHcpzOSQiGSJD2KOvzIyTCqJP6oEjrBINHKFEMGGOQCHeX8uIZzg7vG16
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="346991730"
-X-IronPort-AV: E=Sophos;i="5.99,227,1677571200"; 
-   d="scan'208";a="346991730"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2023 19:22:21 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="644061305"
-X-IronPort-AV: E=Sophos;i="5.99,227,1677571200"; 
-   d="scan'208";a="644061305"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 25 Apr 2023 19:22:13 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1prUnM-000k0m-1o;
-        Wed, 26 Apr 2023 02:22:12 +0000
-Date:   Wed, 26 Apr 2023 10:21:14 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-ext4@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        amd-gfx@lists.freedesktop.org,
-        Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master] BUILD REGRESSION
- f600e0bbde8562a06bee31b3eb1b69d49acac4c5
-Message-ID: <64488a9a.Dl/ldFuPHOHNov5Q%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S239254AbjDZDkj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Apr 2023 23:40:39 -0400
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A30ED196
+        for <linux-acpi@vger.kernel.org>; Tue, 25 Apr 2023 20:40:35 -0700 (PDT)
+Received: by mail-pg1-x529.google.com with SMTP id 41be03b00d2f7-517bdc9e81dso3903050a12.1
+        for <linux-acpi@vger.kernel.org>; Tue, 25 Apr 2023 20:40:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1682480435; x=1685072435;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MB0F5jxYkAhcPVkn3n03bs7ZNVNCxQMTXaIwIWVwASw=;
+        b=jHSfh0N8LMx5Z+NmczrE6U1m9vgkshHmeZHwOkIC4kRQOKex9Zm6pbgesdU2k0KzqI
+         tbJ07MaNQ5xkNEsJsofw4ptBZVguCR8egH87ZWppynn8oqhRNy8mKmYe1K2yr4KsArPm
+         tpOCpb+3dGWFo3I90Frd194pSDOdYAtXWHHszlct3kXLMkvI/ChZwM7Kp8JGihmPBv5l
+         jq0yT1tBdTQI4rgepBim/6QSkCAbmFbC2N4gXrXPfXjZ6GuIg3bynWNy0pmyYYJYBa3o
+         vLFeTflDm8xeFUDPl2CmfPKjxmpkj2pkKf12pIrHXHIOXyo3iZBNw3G2uWCD4Lx6obee
+         nrPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682480435; x=1685072435;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MB0F5jxYkAhcPVkn3n03bs7ZNVNCxQMTXaIwIWVwASw=;
+        b=F6bPHjEKt9OXIsosyCfDaM9+3NW84xxieeLU8joXicoy/tohVZebv/NQ5jAEfsobNE
+         lU02Leczc8UeOufjpAkQHAGjYxJtnaMTf/riP8SJVGKsTEaPfrMGtP77+fSFgsX6YVdW
+         EG5gIZpNVdGcLmJbNG5cY/G7pnJ4Q7DjkbSzxHzyPcbzx9HOD60nEVkDR0y5m1HCAIZo
+         CTWxvuMRWPftR10xeXfvBBq3R6VvxIRdc3hpMZO8QuDTCO7zBJnN1ljbymyHAD2NUZ3x
+         leD7oX8DUsbNkBHPKT0PFLxDi3edgKlPl9/io6xsK9QzlIgTpWe2a70tYJzTjaNDeoHe
+         IxTQ==
+X-Gm-Message-State: AAQBX9eMrwbmfzW9M0hvUi2io+Ymi2YIfahSKfC/+drW/9e87qG0XRN6
+        4gQpsE5DR2EboQIF1OLlCE5AgQ==
+X-Google-Smtp-Source: AKy350YFZYyCSVSlWpDdzZ1ZL92PCSV0WLlHWN+PkWcxgLoWOkXVFF807f29qH9W/TBVEjRQDW4/Wg==
+X-Received: by 2002:a05:6a20:7da9:b0:f2:bb3f:3b3e with SMTP id v41-20020a056a207da900b000f2bb3f3b3emr18378680pzj.38.1682480434984;
+        Tue, 25 Apr 2023 20:40:34 -0700 (PDT)
+Received: from PF2E59YH-BKX.inc.bytedance.com ([2408:8606:1800:501::a])
+        by smtp.gmail.com with ESMTPSA id x4-20020aa784c4000000b0063d238b1e4bsm9987671pfn.160.2023.04.25.20.40.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Apr 2023 20:40:34 -0700 (PDT)
+From:   Yunhui Cui <cuiyunhui@bytedance.com>
+To:     rafael@kernel.org, lenb@kernel.org, jdelvare@suse.com,
+        cuiyunhui@bytedance.com, cujomalainey@chromium.org,
+        yc.hung@mediatek.com, angelogioacchino.delregno@collabora.com,
+        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
+        tinghan.shen@mediatek.com, ardb@kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: [PATCH] firmware: added a firmware information passing method FFI
+Date:   Wed, 26 Apr 2023 11:40:01 +0800
+Message-Id: <20230426034001.16-1-cuiyunhui@bytedance.com>
+X-Mailer: git-send-email 2.37.3.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,319 +70,314 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: f600e0bbde8562a06bee31b3eb1b69d49acac4c5  Add linux-next specific files for 20230425
+Some BootLoaders do not support UEFI and cannot pass ACPI/SBMIOS table
+addresses through UEFI, such as coreboot.
 
-Error/Warning reports:
+On the x86 platform, we pass the ACPI/SMBIOS table through the reserved
+address segment 0xF0000, but other arches usually do not reserve this
+address segment.
 
-https://lore.kernel.org/oe-kbuild-all/202304102354.Q4VOXGTE-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202304140707.CoH337Ux-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202304210303.nlMI0sRQ-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202304210349.DykCi88S-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202304230014.YbScpx20-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202304260503.EVDTG0PJ-lkp@intel.com
+We have added a new firmware information transmission method named FFI
+(FDT FIRMWARE INTERFACE), through FDT to obtain firmware information,
+such as the base address of the ACPI and SMBIOS table.
 
-Error/Warning: (recently discovered and may have been fixed)
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+---
+ MAINTAINERS                 |  6 +++
+ drivers/acpi/osl.c          |  8 ++++
+ drivers/firmware/Kconfig    | 12 +++++
+ drivers/firmware/Makefile   |  1 +
+ drivers/firmware/dmi_scan.c | 96 ++++++++++++++++++++++---------------
+ drivers/firmware/ffi.c      | 56 ++++++++++++++++++++++
+ include/linux/ffi.h         | 15 ++++++
+ 7 files changed, 155 insertions(+), 39 deletions(-)
+ create mode 100644 drivers/firmware/ffi.c
+ create mode 100644 include/linux/ffi.h
 
-drivers/accel/habanalabs/gaudi/gaudi.c:117:19: warning: unused variable 'gaudi_irq_name' [-Wunused-const-variable]
-drivers/base/regmap/regcache-maple.c:113:23: warning: 'lower_index' is used uninitialized [-Wuninitialized]
-drivers/base/regmap/regcache-maple.c:113:36: warning: 'lower_last' is used uninitialized [-Wuninitialized]
-drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c:458:16: warning: variable 'j' set but not used [-Wunused-but-set-variable]
-drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c:1078:6: warning: no previous prototype for 'gfx_v9_4_3_disable_gpa_mode' [-Wmissing-prototypes]
-drivers/gpu/drm/i915/gt/uc/guc_capture_fwif.h:62: warning: wrong kernel-doc identifier on line:
-drivers/gpu/drm/i915/i915_pmu.h:41: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
-drivers/gpu/drm/i915/i915_request.h:176: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
-drivers/gpu/drm/i915/i915_vma.h:145: warning: expecting prototype for i915_vma_offset(). Prototype was for i915_vma_size() instead
-drivers/phy/mediatek/phy-mtk-hdmi-mt8195.c:298:6: warning: variable 'ret' is uninitialized when used here [-Wuninitialized]
-fs/ext4/super.c:1262:13: warning: unused variable 'i' [-Wunused-variable]
-fs/ext4/super.c:1262:6: warning: unused variable 'i' [-Wunused-variable]
-s390-linux-ld: arc-rimi.c:(.text+0x18c): undefined reference to `iounmap'
-
-Unverified Error/Warning (likely false positive, please contact us if interested):
-
-drivers/acpi/property.c:985 acpi_data_prop_read_single() error: potentially dereferencing uninitialized 'obj'.
-
-Error/Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- alpha-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- alpha-buildonly-randconfig-r006-20230424
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- alpha-randconfig-r013-20230424
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- arc-allyesconfig
-|   |-- drivers-base-regmap-regcache-maple.c:warning:lower_index-is-used-uninitialized
-|   |-- drivers-base-regmap-regcache-maple.c:warning:lower_last-is-used-uninitialized
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- arc-randconfig-c031-20230423
-|   |-- drivers-base-regmap-regcache-maple.c:warning:lower_index-is-used-uninitialized
-|   `-- drivers-base-regmap-regcache-maple.c:warning:lower_last-is-used-uninitialized
-|-- arc-randconfig-m031-20230423
-|   |-- drivers-base-regmap-regcache-maple.c:warning:lower_index-is-used-uninitialized
-|   `-- drivers-base-regmap-regcache-maple.c:warning:lower_last-is-used-uninitialized
-|-- arc-randconfig-r043-20230424
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- arm-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- arm-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- arm64-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- arm64-randconfig-r031-20230423
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- i386-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- i386-randconfig-a011-20230424
-|   `-- fs-ext4-super.c:warning:unused-variable-i
-|-- i386-randconfig-a016-20230424
-|   `-- fs-ext4-super.c:warning:unused-variable-i
-|-- i386-randconfig-c021
-|   `-- fs-ext4-super.c:warning:unused-variable-i
-|-- i386-randconfig-m021-20230424
-|   `-- drivers-acpi-property.c-acpi_data_prop_read_single()-error:potentially-dereferencing-uninitialized-obj-.
-|-- ia64-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- loongarch-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- loongarch-defconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- loongarch-loongson3_defconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- mips-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- mips-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- openrisc-buildonly-randconfig-r002-20230424
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- parisc-randconfig-c043-20230423
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- parisc-randconfig-s052-20230423
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- powerpc-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- powerpc-randconfig-s031-20230423
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   |-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|   `-- drivers-spi-spi-fsl-cpm.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-unsigned-short-usertype-got-restricted-__le16
-|-- riscv-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- riscv-buildonly-randconfig-r005-20230424
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- s390-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- s390-randconfig-r022-20230424
-|   `-- s390-linux-ld:arc-rimi.c:(.text):undefined-reference-to-iounmap
-|-- s390-randconfig-r044-20230424
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- sparc-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- sparc64-buildonly-randconfig-r002-20230423
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-|-- x86_64-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:warning:variable-j-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-gfx_v9_4_3.c:warning:no-previous-prototype-for-gfx_v9_4_3_disable_gpa_mode
-`-- x86_64-randconfig-m001
-    `-- drivers-acpi-property.c-acpi_data_prop_read_single()-error:potentially-dereferencing-uninitialized-obj-.
-clang_recent_errors
-|-- arm-randconfig-r046-20230424
-|   `-- drivers-phy-mediatek-phy-mtk-hdmi-mt8195.c:warning:variable-ret-is-uninitialized-when-used-here
-|-- i386-randconfig-a001-20230424
-|   `-- fs-ext4-super.c:warning:unused-variable-i
-|-- i386-randconfig-a003-20230424
-|   `-- fs-ext4-super.c:warning:unused-variable-i
-|-- i386-randconfig-a004-20230424
-|   |-- drivers-gpu-drm-i915-gt-uc-guc_capture_fwif.h:warning:wrong-kernel-doc-identifier-on-line:
-|   |-- drivers-gpu-drm-i915-i915_pmu.h:warning:This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
-|   |-- drivers-gpu-drm-i915-i915_request.h:warning:This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
-|   `-- drivers-gpu-drm-i915-i915_vma.h:warning:expecting-prototype-for-i915_vma_offset().-Prototype-was-for-i915_vma_size()-instead
-|-- i386-randconfig-a005-20230424
-|   `-- fs-ext4-super.c:warning:unused-variable-i
-|-- x86_64-randconfig-a001-20230424
-|   `-- fs-ext4-super.c:warning:unused-variable-i
-|-- x86_64-randconfig-a003-20230424
-|   `-- fs-ext4-super.c:warning:unused-variable-i
-|-- x86_64-randconfig-a004-20230424
-|   |-- drivers-accel-habanalabs-gaudi-gaudi.c:warning:unused-variable-gaudi_irq_name
-|   `-- fs-ext4-super.c:warning:unused-variable-i
-|-- x86_64-randconfig-a005-20230424
-|   `-- fs-ext4-super.c:warning:unused-variable-i
-|-- x86_64-randconfig-a006-20230424
-|   `-- fs-ext4-super.c:warning:unused-variable-i
-|-- x86_64-randconfig-a012
-|   `-- fs-ext4-super.c:warning:unused-variable-i
-`-- x86_64-randconfig-a014
-    `-- fs-ext4-super.c:warning:unused-variable-i
-
-elapsed time: 723m
-
-configs tested: 136
-configs skipped: 8
-
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha        buildonly-randconfig-r006-20230424   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r011-20230423   gcc  
-alpha                randconfig-r013-20230424   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                     nsimosci_hs_defconfig   gcc  
-arc                  randconfig-r043-20230423   gcc  
-arc                  randconfig-r043-20230424   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                         assabet_defconfig   gcc  
-arm          buildonly-randconfig-r004-20230423   gcc  
-arm                                 defconfig   gcc  
-arm                            hisi_defconfig   gcc  
-arm                  randconfig-r015-20230424   clang
-arm                  randconfig-r016-20230423   gcc  
-arm                  randconfig-r023-20230425   gcc  
-arm                  randconfig-r046-20230423   gcc  
-arm                  randconfig-r046-20230424   clang
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r013-20230423   clang
-arm64                randconfig-r031-20230423   gcc  
-arm64                randconfig-r035-20230423   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r021-20230425   gcc  
-csky                 randconfig-r033-20230423   gcc  
-hexagon              randconfig-r004-20230425   clang
-hexagon              randconfig-r014-20230423   clang
-hexagon              randconfig-r041-20230423   clang
-hexagon              randconfig-r041-20230424   clang
-hexagon              randconfig-r045-20230423   clang
-hexagon              randconfig-r045-20230424   clang
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-a001-20230424   clang
-i386                 randconfig-a002-20230424   clang
-i386                 randconfig-a003-20230424   clang
-i386                 randconfig-a004-20230424   clang
-i386                 randconfig-a005-20230424   clang
-i386                 randconfig-a006-20230424   clang
-i386                 randconfig-a011-20230424   gcc  
-i386                 randconfig-a012-20230424   gcc  
-i386                 randconfig-a013-20230424   gcc  
-i386                 randconfig-a014-20230424   gcc  
-i386                 randconfig-a015-20230424   gcc  
-i386                 randconfig-a016-20230424   gcc  
-ia64                             allmodconfig   gcc  
-ia64                                defconfig   gcc  
-ia64                 randconfig-r001-20230425   gcc  
-ia64                 randconfig-r026-20230425   gcc  
-loongarch                        alldefconfig   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch                 loongson3_defconfig   gcc  
-loongarch            randconfig-r002-20230425   gcc  
-loongarch            randconfig-r034-20230423   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                          multi_defconfig   gcc  
-m68k                        mvme16x_defconfig   gcc  
-m68k                 randconfig-r015-20230423   gcc  
-microblaze   buildonly-randconfig-r004-20230424   gcc  
-microblaze                          defconfig   gcc  
-microblaze           randconfig-r014-20230424   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                          ath79_defconfig   clang
-mips         buildonly-randconfig-r003-20230423   clang
-mips                 randconfig-r031-20230424   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r034-20230424   gcc  
-openrisc     buildonly-randconfig-r002-20230424   gcc  
-openrisc             randconfig-r032-20230423   gcc  
-openrisc             randconfig-r036-20230423   gcc  
-openrisc             randconfig-r036-20230424   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r012-20230424   gcc  
-parisc               randconfig-r025-20230425   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                      bamboo_defconfig   gcc  
-powerpc                   currituck_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv        buildonly-randconfig-r003-20230424   gcc  
-riscv        buildonly-randconfig-r005-20230424   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r042-20230423   clang
-riscv                randconfig-r042-20230424   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r012-20230423   clang
-s390                 randconfig-r044-20230423   clang
-s390                 randconfig-r044-20230424   gcc  
-sh                               allmodconfig   gcc  
-sh                         ap325rxa_defconfig   gcc  
-sh           buildonly-randconfig-r001-20230423   gcc  
-sh           buildonly-randconfig-r005-20230423   gcc  
-sh                          kfr2r09_defconfig   gcc  
-sh                   randconfig-r032-20230424   gcc  
-sh                   randconfig-r033-20230424   gcc  
-sparc        buildonly-randconfig-r001-20230424   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r016-20230424   gcc  
-sparc                randconfig-r022-20230425   gcc  
-sparc64      buildonly-randconfig-r002-20230423   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-a001-20230424   clang
-x86_64               randconfig-a002-20230424   clang
-x86_64               randconfig-a003-20230424   clang
-x86_64               randconfig-a004-20230424   clang
-x86_64               randconfig-a005-20230424   clang
-x86_64               randconfig-a006-20230424   clang
-x86_64                        randconfig-a011   gcc  
-x86_64                        randconfig-a012   clang
-x86_64                        randconfig-a013   gcc  
-x86_64                        randconfig-a014   clang
-x86_64                        randconfig-a015   gcc  
-x86_64                        randconfig-a016   clang
-x86_64                               rhel-8.3   gcc  
-xtensa       buildonly-randconfig-r006-20230423   gcc  
-xtensa               randconfig-r006-20230425   gcc  
-xtensa               randconfig-r024-20230425   gcc  
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8d5bc223f305..94664f3b4c96 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -7750,6 +7750,12 @@ F:	arch/x86/platform/efi/
+ F:	drivers/firmware/efi/
+ F:	include/linux/efi*.h
+ 
++FDT FIRMWARE INTERFACE (FFI)
++M:	Yunhui Cui cuiyunhui@bytedance.com
++S:	Maintained
++F:	drivers/firmware/ffi.c
++F:	include/linux/ffi.h
++
+ EXTERNAL CONNECTOR SUBSYSTEM (EXTCON)
+ M:	MyungJoo Ham <myungjoo.ham@samsung.com>
+ M:	Chanwoo Choi <cw00.choi@samsung.com>
+diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
+index 3269a888fb7a..d45000041d2b 100644
+--- a/drivers/acpi/osl.c
++++ b/drivers/acpi/osl.c
+@@ -25,6 +25,7 @@
+ #include <linux/nmi.h>
+ #include <linux/acpi.h>
+ #include <linux/efi.h>
++#include <linux/ffi.h>
+ #include <linux/ioport.h>
+ #include <linux/list.h>
+ #include <linux/jiffies.h>
+@@ -206,6 +207,13 @@ acpi_physical_address __init acpi_os_get_root_pointer(void)
+ 	if (pa)
+ 		return pa;
+ 
++#ifdef CONFIG_FDT_FW_INTERFACE
++	if (fdt_fwtbl.acpi20 != FDT_INVALID_FWTBL_ADDR)
++		return fdt_fwtbl.acpi20;
++	if (fdt_fwtbl.acpi != FDT_INVALID_FWTBL_ADDR)
++		return fdt_fwtbl.acpi;
++	pr_err("Fdt system description tables not found\n");
++#endif
+ 	if (efi_enabled(EFI_CONFIG_TABLES)) {
+ 		if (efi.acpi20 != EFI_INVALID_TABLE_ADDR)
+ 			return efi.acpi20;
+diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+index b59e3041fd62..13c67b50c17a 100644
+--- a/drivers/firmware/Kconfig
++++ b/drivers/firmware/Kconfig
+@@ -303,6 +303,18 @@ config TURRIS_MOX_RWTM
+ 	  other manufacturing data and also utilize the Entropy Bit Generator
+ 	  for hardware random number generation.
+ 
++config FDT_FW_INTERFACE
++	bool "An interface for passing firmware info through FDT"
++	depends on OF && OF_FLATTREE
++	default n
++	help
++	  When some bootloaders do not support UEFI, and the arch does not
++	  support SMBIOS_ENTRY_POINT_SCAN_START, then you can enable this option
++	  to support the transfer of firmware information, such as acpi, smbios
++	  tables.
++
++	  Say Y here if you want to pass firmware information by FDT.
++
+ source "drivers/firmware/arm_ffa/Kconfig"
+ source "drivers/firmware/broadcom/Kconfig"
+ source "drivers/firmware/cirrus/Kconfig"
+diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
+index 28fcddcd688f..3b8b5d0868a6 100644
+--- a/drivers/firmware/Makefile
++++ b/drivers/firmware/Makefile
+@@ -33,6 +33,7 @@ obj-y				+= cirrus/
+ obj-y				+= meson/
+ obj-$(CONFIG_GOOGLE_FIRMWARE)	+= google/
+ obj-y				+= efi/
++obj-$(CONFIG_FDT_FW_INTERFACE)	+= ffi.o
+ obj-y				+= imx/
+ obj-y				+= psci/
+ obj-y				+= smccc/
+diff --git a/drivers/firmware/dmi_scan.c b/drivers/firmware/dmi_scan.c
+index 015c95a825d3..1e1a74ed7d3b 100644
+--- a/drivers/firmware/dmi_scan.c
++++ b/drivers/firmware/dmi_scan.c
+@@ -6,6 +6,7 @@
+ #include <linux/ctype.h>
+ #include <linux/dmi.h>
+ #include <linux/efi.h>
++#include <linux/ffi.h>
+ #include <linux/memblock.h>
+ #include <linux/random.h>
+ #include <asm/dmi.h>
+@@ -655,54 +656,71 @@ static int __init dmi_smbios3_present(const u8 *buf)
+ 	return 1;
+ }
+ 
+-static void __init dmi_scan_machine(void)
++/*
++ * According to the DMTF SMBIOS reference spec v3.0.0, it is
++ * allowed to define both the 64-bit entry point (smbios3) and
++ * the 32-bit entry point (smbios), in which case they should
++ * either both point to the same SMBIOS structure table, or the
++ * table pointed to by the 64-bit entry point should contain a
++ * superset of the table contents pointed to by the 32-bit entry
++ * point (section 5.2)
++ * This implies that the 64-bit entry point should have
++ * precedence if it is defined and supported by the OS. If we
++ * have the 64-bit entry point, but fail to decode it, fall
++ * back to the legacy one (if available)
++ */
++static int __init dmi_sacn_smbios(unsigned long smbios3, unsigned long smbios)
+ {
+-	char __iomem *p, *q;
++	char __iomem *p;
+ 	char buf[32];
++	#define INVALID_TABLE_ADDR (~0UL)
+ 
+-	if (efi_enabled(EFI_CONFIG_TABLES)) {
+-		/*
+-		 * According to the DMTF SMBIOS reference spec v3.0.0, it is
+-		 * allowed to define both the 64-bit entry point (smbios3) and
+-		 * the 32-bit entry point (smbios), in which case they should
+-		 * either both point to the same SMBIOS structure table, or the
+-		 * table pointed to by the 64-bit entry point should contain a
+-		 * superset of the table contents pointed to by the 32-bit entry
+-		 * point (section 5.2)
+-		 * This implies that the 64-bit entry point should have
+-		 * precedence if it is defined and supported by the OS. If we
+-		 * have the 64-bit entry point, but fail to decode it, fall
+-		 * back to the legacy one (if available)
+-		 */
+-		if (efi.smbios3 != EFI_INVALID_TABLE_ADDR) {
+-			p = dmi_early_remap(efi.smbios3, 32);
+-			if (p == NULL)
+-				goto error;
+-			memcpy_fromio(buf, p, 32);
+-			dmi_early_unmap(p, 32);
+-
+-			if (!dmi_smbios3_present(buf)) {
+-				dmi_available = 1;
+-				return;
+-			}
+-		}
+-		if (efi.smbios == EFI_INVALID_TABLE_ADDR)
+-			goto error;
+-
+-		/* This is called as a core_initcall() because it isn't
+-		 * needed during early boot.  This also means we can
+-		 * iounmap the space when we're done with it.
+-		 */
+-		p = dmi_early_remap(efi.smbios, 32);
++	if (smbios3 != INVALID_TABLE_ADDR) {
++		p = dmi_early_remap(smbios3, 32);
+ 		if (p == NULL)
+-			goto error;
++			return -1;
+ 		memcpy_fromio(buf, p, 32);
+ 		dmi_early_unmap(p, 32);
+ 
+-		if (!dmi_present(buf)) {
++		if (!dmi_smbios3_present(buf)) {
+ 			dmi_available = 1;
+-			return;
++			return 0;
+ 		}
++	}
++
++	if (smbios == INVALID_TABLE_ADDR)
++		return -1;
++
++	/*
++	 * This is called as a core_initcall() because it isn't
++	 * needed during early boot.  This also means we can
++	 * iounmap the space when we're done with it.
++	 */
++	p = dmi_early_remap(smbios, 32);
++	if (p == NULL)
++		return -1;
++	memcpy_fromio(buf, p, 32);
++	dmi_early_unmap(p, 32);
++
++	if (!dmi_present(buf)) {
++		dmi_available = 1;
++		return 0;
++	}
++	return -1;
++}
++
++static void __init dmi_scan_machine(void)
++{
++	char __iomem *p, *q;
++	char buf[32];
++
++#ifdef CONFIG_FDT_FW_INTERFACE
++	if (dmi_sacn_smbios(fdt_fwtbl.smbios3, fdt_fwtbl.smbios))
++		goto error;
++#endif
++	if (efi_enabled(EFI_CONFIG_TABLES)) {
++		if (dmi_sacn_smbios(efi.smbios3, efi.smbios))
++			goto error;
+ 	} else if (IS_ENABLED(CONFIG_DMI_SCAN_MACHINE_NON_EFI_FALLBACK)) {
+ 		p = dmi_early_remap(SMBIOS_ENTRY_POINT_SCAN_START, 0x10000);
+ 		if (p == NULL)
+diff --git a/drivers/firmware/ffi.c b/drivers/firmware/ffi.c
+new file mode 100644
+index 000000000000..83c7abf22220
+--- /dev/null
++++ b/drivers/firmware/ffi.c
+@@ -0,0 +1,56 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
++#include <linux/kobject.h>
++#include <linux/ffi.h>
++#include <linux/of_fdt.h>
++#include <linux/libfdt.h>
++
++struct fdt_fwtable __read_mostly fdt_fwtbl = {
++	.acpi			= FDT_INVALID_FWTBL_ADDR,
++	.acpi20			= FDT_INVALID_FWTBL_ADDR,
++	.smbios			= FDT_INVALID_FWTBL_ADDR,
++	.smbios3		= FDT_INVALID_FWTBL_ADDR,
++};
++EXPORT_SYMBOL(fdt_fwtbl);
++
++void __init of_fdt_fwtbl(void)
++{
++	int cfgtbl, len;
++	fdt64_t *prop;
++
++	cfgtbl = fdt_path_offset(initial_boot_params, "/cfgtables");
++	if (cfgtbl < 0) {
++		pr_info("cfgtables not found.\n");
++		return;
++	}
++	prop = fdt_getprop_w(initial_boot_params, cfgtbl, "smbios_phy_ptr", &len);
++	if (!prop || len != sizeof(u64))
++		pr_info("smbios_phy_ptr not found.\n");
++	else
++		fdt_fwtbl.smbios = fdt64_to_cpu(*prop);
++
++	prop = fdt_getprop_w(initial_boot_params, cfgtbl, "smbios3_phy_ptr", &len);
++	if (!prop || len != sizeof(u64))
++		pr_info("smbios3_phy_ptr not found.\n");
++	else
++		fdt_fwtbl.smbios3 = fdt64_to_cpu(*prop);
++
++	prop = fdt_getprop_w(initial_boot_params, cfgtbl, "acpi_phy_ptr", &len);
++	if (!prop || len != sizeof(u64))
++		pr_info("acpi_phy_ptr not found.\n");
++	else
++		fdt_fwtbl.acpi = fdt64_to_cpu(*prop);
++
++	prop = fdt_getprop_w(initial_boot_params, cfgtbl, "acpi20_phy_ptr", &len);
++	if (!prop || len != sizeof(u64))
++		pr_info("acpi20_phy_ptr not found.\n");
++	else
++		fdt_fwtbl.acpi20 = fdt64_to_cpu(*prop);
++}
++
++void __init fdt_fwtbl_init(void)
++{
++	of_fdt_fwtbl();
++}
+diff --git a/include/linux/ffi.h b/include/linux/ffi.h
+new file mode 100644
+index 000000000000..ffb50810a01e
+--- /dev/null
++++ b/include/linux/ffi.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#ifndef _LINUX_FDT_FW_H
++#define _LINUX_FDT_FW_H
++
++#define FDT_INVALID_FWTBL_ADDR		(~0UL)
++extern struct fdt_fwtable {
++	unsigned long			acpi;
++	unsigned long			acpi20;
++	unsigned long			smbios;
++	unsigned long			smbios3;
++	unsigned long			flags;
++} fdt_fwtbl;
++
++#endif
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.20.1
+
