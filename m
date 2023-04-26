@@ -2,158 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCA596EF102
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Apr 2023 11:23:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91D3C6EF107
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Apr 2023 11:24:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240231AbjDZJXC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Apr 2023 05:23:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47636 "EHLO
+        id S240227AbjDZJYI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Apr 2023 05:24:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240238AbjDZJW6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Apr 2023 05:22:58 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E7F349ED
-        for <linux-acpi@vger.kernel.org>; Wed, 26 Apr 2023 02:22:29 -0700 (PDT)
+        with ESMTP id S239853AbjDZJYD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Apr 2023 05:24:03 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32C7A4EF2;
+        Wed, 26 Apr 2023 02:23:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1682500949; x=1714036949;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=UDRkmwHXJT2XNHcpzpvsE2bNH47bV+7+nfKX0up+KQM=;
-  b=hrg9fo/qTisGSLn1fKpmFj8yUvKgW9q38iOxc8d9WQjBxmjF8+9/Xu+C
-   /+fo6NTamWgLWAYlhRJNeWu4ELV/D+LL7fqXMeh+efaqxRDycvvHYcMOw
-   dVs93O7D6mz8yUt5Z6hGloOrWHI3mhjWUlOsqK7f6o9pHwSsQDHYe+jZf
-   0/gQmFEPC8MAJQ0U2CNz+VZ6Bn9T4lgubBcRkXodBxTjFpiX6ctl6wvF/
-   p0rMLIz6fv8iXYENs/vHGBr1tuT2M25LRqkmK6dH4XVztM0UVxHYbB+Ob
-   be/FDPOSN9GEFFAiPb8yvbyS0QBYlrufCWrQTavna/l21Nqv0P2jovwz7
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="347075517"
+  t=1682501031; x=1714037031;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wCxv9UpBjUg+nIFCxpugJDt198ixgLIiNE9cs8ZnPjI=;
+  b=gbo8BJzUOiGtcxcpZfxUCn8122q8i5IrCEm9sANMHeAVHldTiG8f74QB
+   cuhGLFI/aIWlvrjGn1J7eRUyLDRgKf9OBu1SpGUzfn2soUc1ZuFvijpua
+   35sV/ZC7CricK9MDnHa7dskzwI1/rWjqsPL+drc1i4os4kitidNrmMHcM
+   EA+kL5ra3GltC0ahCKNn/tWvdPKRcM/Ym/YzyTNe9sXCOnqu53ICfj7mF
+   2MVbRPzoON09iogyDYObFCvahH8jyW/IL9XdIz67guvgIqV79+SMO7aa7
+   0dQGuSDSBW3WaUO9hqrj5VWHX8WY/qLG/Nw5hDOsyLXvHJwedpX+abvSs
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="433337103"
 X-IronPort-AV: E=Sophos;i="5.99,227,1677571200"; 
-   d="scan'208";a="347075517"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2023 02:21:57 -0700
+   d="scan'208";a="433337103"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2023 02:22:51 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="724365806"
+X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="818044970"
 X-IronPort-AV: E=Sophos;i="5.99,227,1677571200"; 
-   d="scan'208";a="724365806"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orsmga008.jf.intel.com with ESMTP; 26 Apr 2023 02:21:57 -0700
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Wed, 26 Apr 2023 02:21:57 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Wed, 26 Apr 2023 02:21:56 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Wed, 26 Apr 2023 02:21:56 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.109)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Wed, 26 Apr 2023 02:21:56 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=d+Xhpk6DWoEuAW3SHJAbxQ+63Kne/LZyoRfXAixUj6Q+hg0fHCmH9fuUKSNu+oPyB/voRIF00Y7bSneXbnVEyaHMIPwb+i4lyd2x/mdQmZQloWQG5S2+nz018Y0KvccbPSIZH4xXFqTr9UzG9UikzC41YF5QyFRtd6DUtCCsRh70BjLLEkz5xwq1pmgJ5nFDtp9nXR6NasUSyLxK52BRMBOP/aoSnDzxeapRUmzKqgluK+Q1dXHcwA5tcU4VY9wwhQmnpLNBrpor2JOK/XgnAFQBDWGXi/DcVrGy39sxPGSv2vh1e8nPVruuWczQznNhHkX19MtDpmLh994nOjjM6w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UDRkmwHXJT2XNHcpzpvsE2bNH47bV+7+nfKX0up+KQM=;
- b=muAWyewN1ubVDM0gjmQ3FiXGfGcmVJzxDLd4z8zt5xdpYjVZcA1M49e4mLR6ah4AN43n7Z0SS1AESK4ZdraEgSIK11PY9yhOFbxDVFSswywZJNGHYd81hfs3t0ZSdo5d7WJ+j6+bbV97wE6k0Bn2iSMLtY1jQdOZuYFFi8hiE6mMbWC7K/1kKrDiZYYjB0COCG0oy5bw5IWrFHbSHbe3p9eqlmjOzw7omgAc3c+JQIhvmYyoQ3/McX/PY+g68XDPjekyLYDtQsap1eHSgmjDZHiJcN9f42lIZKPVBAa01nmqh1LRj43LEkWBL4fxaH1rTT46LeIoUcwD/eGZSW1GGA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BN9PR11MB5276.namprd11.prod.outlook.com (2603:10b6:408:135::18)
- by CH3PR11MB7345.namprd11.prod.outlook.com (2603:10b6:610:14a::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6340.21; Wed, 26 Apr
- 2023 09:21:50 +0000
-Received: from BN9PR11MB5276.namprd11.prod.outlook.com
- ([fe80::73e9:b405:2cae:9174]) by BN9PR11MB5276.namprd11.prod.outlook.com
- ([fe80::73e9:b405:2cae:9174%6]) with mapi id 15.20.6340.020; Wed, 26 Apr 2023
- 09:21:50 +0000
-From:   "Tian, Kevin" <kevin.tian@intel.com>
-To:     Jason Gunthorpe <jgg@nvidia.com>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        David Woodhouse <dwmw2@infradead.org>,
-        "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-        "Joerg Roedel" <joro@8bytes.org>, Len Brown <lenb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "Michael Ellerman" <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        "Will Deacon" <will@kernel.org>
-CC:     Nicolin Chen <nicolinc@nvidia.com>
-Subject: RE: [PATCH 04/11] iommu: Simplify the __iommu_group_remove_device()
- flow
-Thread-Topic: [PATCH 04/11] iommu: Simplify the __iommu_group_remove_device()
- flow
-Thread-Index: AQHZctm5E/IWVSsxRkG2ZMdgqan7aa89W0+A
-Date:   Wed, 26 Apr 2023 09:21:50 +0000
-Message-ID: <BN9PR11MB5276C93255EE24B3741D446B8C659@BN9PR11MB5276.namprd11.prod.outlook.com>
-References: <0-v1-8aecc628b904+2f42-iommu_probe_jgg@nvidia.com>
- <4-v1-8aecc628b904+2f42-iommu_probe_jgg@nvidia.com>
-In-Reply-To: <4-v1-8aecc628b904+2f42-iommu_probe_jgg@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BN9PR11MB5276:EE_|CH3PR11MB7345:EE_
-x-ms-office365-filtering-correlation-id: d5f9989f-1e1d-4d51-f583-08db4637aa87
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: tT7tnu2PYAbWLS7ybOsCx5ZmrZHWqZpB3ZUCWRN76y9wruZ0xNxNHvXfUr3VQZr4rK8JZmRwE+TBcctlJ6U5Rbbg7qiWbId0Nw3JcFpIQLMsJnhq85AHJoU6uZhlCzdB3dHDxDFfyns+FtG5Gixsml23Vy2XM4b7QDU1pGvYVxlkhe3Z0jwuYfcLdRIwJ7ug5Xh2UmPZX4V7YnrTQ8A3yjGqxRJ6DgQ1FD09VyVdXaN5Zt3iv/sEyVDbT8WmymtUY+yOppE8xMzzrIdMUemm7uSgdocdgBoRk/Z+QkS/Sw+PZxziFgqjtnEQz2FdUavWeG1qAqwV89yw0W0oCUExjupBKS98aCfZL+3ZHW2y8ymoPqjR2E+/UKTLzEuhWSvQb9x+mZQOnbUV5aCXEwWGKo1RSEG9eW9HCA2dwe5HZrpGXWNfBg64eVchy9DZ/jGr3o0wcBFihDoofpqDaaXU18x5ublZh/GtmU+MfsnLGbjmDWV6/5SfNF0n9zWBodPbrbSn1Nv5A8XYwnNxab7gARYdbTLjLjRVHACi+EVQCoPsfmu2atY5PV0qGWW62QTRHRUrqq57ifG6f6fb5e5HF8ElhOA0sL5h5hY+OHKlLm5lqAOi2kvQi1OUmHZGtFSlPwPSHu5WnqhLF47WrAYaJg==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5276.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(396003)(376002)(346002)(136003)(39860400002)(366004)(451199021)(86362001)(33656002)(4744005)(2906002)(38070700005)(55016003)(7696005)(71200400001)(186003)(83380400001)(9686003)(6506007)(26005)(4326008)(66446008)(76116006)(66946007)(66556008)(66476007)(64756008)(478600001)(41300700001)(122000001)(316002)(82960400001)(5660300002)(52536014)(921005)(38100700002)(110136005)(7416002)(8676002)(8936002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?0tvH1ygSxDGx0gTm/28nKIDo5eFdsGrN1TLwqUV0EFwhRy5oSecwwe3UWmrg?=
- =?us-ascii?Q?ZzaK7VurDCNfk2g8qY8z51vQQtntjNofFaUyq7rMQYpi1bxlRtFannB3YSGx?=
- =?us-ascii?Q?aCNus21ax8yQeZZJaIi5633TtjhLhndy2w3rMBEkpaVgt5kV7HSY25UKEExO?=
- =?us-ascii?Q?NYbJQ5bJ6RL32xp2Ylso5EW6ZA613zlpYJ7BEZV1lYIbUjHFYGGpwS3BTK2L?=
- =?us-ascii?Q?oD+eJblkIvmkFEjUOjd4Nvx1R7VveofNTg3AoGs4jc692D22rgWAFGQ+pgMM?=
- =?us-ascii?Q?vNOIXJte8hMDSn0HRzAQGOWjNlz+0NifB8NPQBocJMLh6q5aSiaf8rg9GrtF?=
- =?us-ascii?Q?jwnnfPHojH+6Tss8mifCr0WRseMxDHzhNqh1PpNqfn48usrvTFQePhIReYAz?=
- =?us-ascii?Q?oIvmublrhMB6uKSdpsUQ/8sBrG7FfRCiU5STaC/iIMOEfD7g36auRB69q+Iq?=
- =?us-ascii?Q?cm0Pl7UpQ8M4iTkqzRnkISZXqqWO+j7C6h4sWopaiEOaY7NV4PsyeEJLHZyU?=
- =?us-ascii?Q?uZW4Zq5tTaQiTjz8OEdOLfwjSxdoqRkQ+axFD80yhOizKVCZczZTk0OuoO4a?=
- =?us-ascii?Q?vDKkVRSvsdRF+IrAsAmHadiQyzjTjeju+imgUS7zKy85+QSj3tW1qjWVw8CA?=
- =?us-ascii?Q?g2cL95xIo4iH/Mh4tXFSNbM9yekVQN2GeM2PufUPuNP4D/i/uqtQ1bQpVFf9?=
- =?us-ascii?Q?B9w2URcy7BStPcAfQGTdrKi1soQW6wv+iyUQB+x//4TvxedI6Sot87g+Gxcv?=
- =?us-ascii?Q?3FTZkKcXHClPBUA08CgfKCfchy+jNWjTbHdqsWPgA7Wf/IOW64a1eHWZHG6C?=
- =?us-ascii?Q?U31TqL3iYVt+DeI8MWV2YITCP+XzkJ98emfh1eC5sZEvuwaKMeK6x0v0QOBo?=
- =?us-ascii?Q?V+/7FKeUbxh2yWenRqP3I2lTKdNU6TEkU2UXlLhtbFu2jAv1qsUdr0WIs9JF?=
- =?us-ascii?Q?lx4D259CQd30WhU3FETigbZ18cpVAnLQwoNy4hUJ0t6IG0o3pgBiZIRzEOnP?=
- =?us-ascii?Q?w/ymrX0fvWEM6RXRjazlM+42ETilonmbXFbNaF9FCTfHcpCc8SQPB5EK2FdI?=
- =?us-ascii?Q?6IxuW+TBKAVrNYpSL09siOxmQW7h7ju7KB/SDEXav7H6gTOiwJXRU5byQcoF?=
- =?us-ascii?Q?h4CjZ0J59TohvN1FVheaxLj/mu8FtMmiqamL67kKGs8Jf5C8SXL/nCU8/8ar?=
- =?us-ascii?Q?dM6WTcya9QWAs/3ObXvc9FGBqrw2l0NuVtNNgJbqHGh7DHoanWPj5MsW/w/+?=
- =?us-ascii?Q?AZHjt90J5xtQZVZYyj3A7p5alslkD0WRxfrA6LMNjUjJ1llpb0GKOkR2v0AE?=
- =?us-ascii?Q?B+lXahNxwD9HYuWatR7dfR7zgJu1pCCSKaBYxdclmsfVLPDQLkoo6FS5OmW/?=
- =?us-ascii?Q?6VXM1FFEY7ggHk0pUeEkFYyUMZfpZNpMVVWpQ/+pN82up98C0PNCIfVIvgRE?=
- =?us-ascii?Q?mTB5jYZ8go09X6Zh9hCuW7lYFGn8zvqHOsJMz1bZGLM+gFAXFPEvZqYhTL6O?=
- =?us-ascii?Q?4tbGavtuU8dhqhePvmWKpCOYqvO76cktUWyCdPDH/yY7Z5uIUMGVqvRTYFPq?=
- =?us-ascii?Q?h9uwtEYY+166iwnUtnXN2J8Qbz9gVGhSmUhW8i7M?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+   d="scan'208";a="818044970"
+Received: from lkp-server01.sh.intel.com (HELO 98ee5a99fc83) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 26 Apr 2023 02:22:48 -0700
+Received: from kbuild by 98ee5a99fc83 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1prbMI-0000Ki-1T;
+        Wed, 26 Apr 2023 09:22:42 +0000
+Date:   Wed, 26 Apr 2023 17:21:55 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Yunhui Cui <cuiyunhui@bytedance.com>, rafael@kernel.org,
+        lenb@kernel.org, jdelvare@suse.com, cujomalainey@chromium.org,
+        yc.hung@mediatek.com, angelogioacchino.delregno@collabora.com,
+        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
+        tinghan.shen@mediatek.com, ardb@kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Cc:     oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] firmware: added a firmware information passing method FFI
+Message-ID: <202304261756.84GsEW3V-lkp@intel.com>
+References: <20230426034001.16-1-cuiyunhui@bytedance.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5276.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d5f9989f-1e1d-4d51-f583-08db4637aa87
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Apr 2023 09:21:50.0640
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: PtGRKDlWcqE8OQCE1jJXd82XMslpfn1vp18nKCqJVw/RA6nonaGcobLuE/rVwqemUePiKbNvqPjm1PQ3yTTyVQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7345
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230426034001.16-1-cuiyunhui@bytedance.com>
 X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
@@ -164,26 +68,88 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> From: Jason Gunthorpe <jgg@nvidia.com>
-> Sent: Thursday, April 20, 2023 12:12 AM
->=20
-> Instead of returning the struct group_device and then later freeing it, d=
-o
-> the entire free under the group->mutex and defer only putting the
-> iommu_group.
->=20
-> It is safe to remove the sysfs_links and free memory while holding that
-> mutex.
->=20
-> Move the sanity assert of the group status into
-> __iommu_group_free_device().
->=20
-> The next patch will improve upon this and consolidate the group put and
-> the mutex into __iommu_group_remove_device().
->=20
-> __iommu_group_free_device() is close to being the paired undo of
-> iommu_group_add_device(), following patches will improve on that.
->=20
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Hi Yunhui,
 
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on rafael-pm/linux-next]
+[also build test WARNING on linus/master jdelvare-staging/dmi-for-next v6.3 next-20230425]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Yunhui-Cui/firmware-added-a-firmware-information-passing-method-FFI/20230426-114131
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20230426034001.16-1-cuiyunhui%40bytedance.com
+patch subject: [PATCH] firmware: added a firmware information passing method FFI
+config: m68k-allyesconfig (https://download.01.org/0day-ci/archive/20230426/202304261756.84GsEW3V-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/7d1fe633611738698520294d2a598575a765cfbf
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Yunhui-Cui/firmware-added-a-firmware-information-passing-method-FFI/20230426-114131
+        git checkout 7d1fe633611738698520294d2a598575a765cfbf
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash drivers/
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202304261756.84GsEW3V-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/firmware/ffi.c:18:13: warning: no previous prototype for 'of_fdt_fwtbl' [-Wmissing-prototypes]
+      18 | void __init of_fdt_fwtbl(void)
+         |             ^~~~~~~~~~~~
+>> drivers/firmware/ffi.c:53:13: warning: no previous prototype for 'fdt_fwtbl_init' [-Wmissing-prototypes]
+      53 | void __init fdt_fwtbl_init(void)
+         |             ^~~~~~~~~~~~~~
+
+
+vim +/of_fdt_fwtbl +18 drivers/firmware/ffi.c
+
+    17	
+  > 18	void __init of_fdt_fwtbl(void)
+    19	{
+    20		int cfgtbl, len;
+    21		fdt64_t *prop;
+    22	
+    23		cfgtbl = fdt_path_offset(initial_boot_params, "/cfgtables");
+    24		if (cfgtbl < 0) {
+    25			pr_info("cfgtables not found.\n");
+    26			return;
+    27		}
+    28		prop = fdt_getprop_w(initial_boot_params, cfgtbl, "smbios_phy_ptr", &len);
+    29		if (!prop || len != sizeof(u64))
+    30			pr_info("smbios_phy_ptr not found.\n");
+    31		else
+    32			fdt_fwtbl.smbios = fdt64_to_cpu(*prop);
+    33	
+    34		prop = fdt_getprop_w(initial_boot_params, cfgtbl, "smbios3_phy_ptr", &len);
+    35		if (!prop || len != sizeof(u64))
+    36			pr_info("smbios3_phy_ptr not found.\n");
+    37		else
+    38			fdt_fwtbl.smbios3 = fdt64_to_cpu(*prop);
+    39	
+    40		prop = fdt_getprop_w(initial_boot_params, cfgtbl, "acpi_phy_ptr", &len);
+    41		if (!prop || len != sizeof(u64))
+    42			pr_info("acpi_phy_ptr not found.\n");
+    43		else
+    44			fdt_fwtbl.acpi = fdt64_to_cpu(*prop);
+    45	
+    46		prop = fdt_getprop_w(initial_boot_params, cfgtbl, "acpi20_phy_ptr", &len);
+    47		if (!prop || len != sizeof(u64))
+    48			pr_info("acpi20_phy_ptr not found.\n");
+    49		else
+    50			fdt_fwtbl.acpi20 = fdt64_to_cpu(*prop);
+    51	}
+    52	
+  > 53	void __init fdt_fwtbl_init(void)
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
