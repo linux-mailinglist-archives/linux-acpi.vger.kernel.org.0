@@ -2,113 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AA4E6EE52A
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Apr 2023 18:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD39D6EEC12
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Apr 2023 03:52:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234226AbjDYQAq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Apr 2023 12:00:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40378 "EHLO
+        id S239301AbjDZBwX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Apr 2023 21:52:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231631AbjDYQAp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Apr 2023 12:00:45 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F033C17A;
-        Tue, 25 Apr 2023 09:00:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1682438444; x=1713974444;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=wZo7TiYQ+/8MmU6bpEbIFp5SasFLNfv+bfLYt9hVqNs=;
-  b=Ix2cLLhBGa2OYr7vfFeRQ/my0fBsUqY0bXa7KfnXrDyj18/3s0kp6zUt
-   IP+bfNfbrg9AOJtvzs7Tn5B+QAe4bu+9DtrrQiRxx9Eev3qHZbBDPwaE0
-   v66cD3Z3SLz2uqeIyQWIkvEad6ZQE6insIkinz1TK6BOVQwIoutAuGN7X
-   /yApEv7bWmRqO5PaPRanNTwQ7acPODnhyEvY5rOCAcRgx1V9/+pqI/6FR
-   UFXwV5F8eiZpyAWaDXoIbz3KkyaORcWkkLPAviAnkkWw+tCk83Mi3kv1f
-   odNiYz7hhi+K9/wwmXMvegRM6/v9W+57udrJyZNSlZcBKYtC4JP83CwMl
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="326417422"
-X-IronPort-AV: E=Sophos;i="5.99,225,1677571200"; 
-   d="scan'208";a="326417422"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2023 09:00:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="670949478"
-X-IronPort-AV: E=Sophos;i="5.99,225,1677571200"; 
-   d="scan'208";a="670949478"
-Received: from dtam1-mobl.amr.corp.intel.com (HELO [10.212.46.134]) ([10.212.46.134])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2023 09:00:43 -0700
-Message-ID: <42b3e292-28b7-f19b-81c3-5bb40974c913@intel.com>
-Date:   Tue, 25 Apr 2023 09:00:42 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.9.0
-Subject: Re: [PATCH v4 04/23] cxl: Add common helpers for cdat parsing
-Content-Language: en-US
-To:     Dan Williams <dan.j.williams@intel.com>, linux-cxl@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Cc:     ira.weiny@intel.com, vishal.l.verma@intel.com,
-        alison.schofield@intel.com, rafael@kernel.org, lukas@wunner.de,
-        Jonathan.Cameron@huawei.com
-References: <168193556660.1178687.15477509915255912089.stgit@djiang5-mobl3>
- <168193568543.1178687.3067575213689202382.stgit@djiang5-mobl3>
- <644703a1d25c2_1b66294d9@dwillia2-xfh.jf.intel.com.notmuch>
-From:   Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <644703a1d25c2_1b66294d9@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S239314AbjDZBwU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Apr 2023 21:52:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A2E6107;
+        Tue, 25 Apr 2023 18:52:12 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DE13A63246;
+        Wed, 26 Apr 2023 01:51:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 52D90C433A8;
+        Wed, 26 Apr 2023 01:51:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1682473880;
+        bh=JyxxvmROh0OsyDJ9v9r+Y6OjJ81JNiOLU/Ss3wrhskg=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=lWqy7XDaUIGLka8ByT7yoQBVNoersWX++Gdh/QmjrvlavLvBc/psMM8vMVZ8i4NBF
+         sMtYLGTjC3umC+EDeFUkjDIjtvAw/7vGJ31znOSeM5Jjgyv88WXFBTR8p3BPnqZVsd
+         4TZxbtihuEV5cYHsLVnTwFEDEj6FYKM3oV/6GHrFJVt0y8bjcN8vIMkUUZBNWMnYjz
+         elN3E1JwOrXQwEzkJP3S7kmOZXElnQz+ZTcZ6F5ugKUophYpHQgxbHPCg0vpz/ip1/
+         VdtCzfuKhy8p7oeOxkQyDDC/j7uH7wy99uSHZELGLfTPM1rW3Hutz+9s1M/Qnsycs9
+         XZIKXf3eILNMw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 42D66E5FFC6;
+        Wed, 26 Apr 2023 01:51:20 +0000 (UTC)
+Subject: Re: [GIT PULL] Thermal control updates for v6.4-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0h7z2iy5M+eWoA6M23rYfZ+OS54FVDjWmGNze4fR45EmA@mail.gmail.com>
+References: <CAJZ5v0h7z2iy5M+eWoA6M23rYfZ+OS54FVDjWmGNze4fR45EmA@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0h7z2iy5M+eWoA6M23rYfZ+OS54FVDjWmGNze4fR45EmA@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git thermal-6.4-rc1
+X-PR-Tracked-Commit-Id: 5bc6b1df65c87f8dd7d0afe494a2c0b9d5c73140
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 5e0ca0bfc33b7196ae3a5cbe26289a4025618f5a
+Message-Id: <168247388026.11449.11110692337488491582.pr-tracker-bot@kernel.org>
+Date:   Wed, 26 Apr 2023 01:51:20 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+The pull request you sent on Mon, 24 Apr 2023 19:50:31 +0200:
 
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git thermal-6.4-rc1
 
-On 4/24/23 3:33 PM, Dan Williams wrote:
-> Dave Jiang wrote:
->> Add helper functions to parse the CDAT table and provide a callback to
->> parse the sub-table. Helpers are provided for DSMAS and DSLBIS sub-table
->> parsing. The code is patterned after the ACPI table parsing helpers.
-> 
-> It seems a shame that CDAT is so ACPI-like, but can't reuse the ACPI
-> table parsing infrastructure. Can this not be achieved by modifying some
-> of the helpers helpers in drivers/acpi/tables.c to take a passed in
-> @table_header?
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/5e0ca0bfc33b7196ae3a5cbe26289a4025618f5a
 
-Rafael,
-Do you have any issues with adding some endieness support in 
-drivers/acpi/tables.c in order to support CDAT parsing by BE hosts? To 
-start off with something like below?
+Thank you!
 
-diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
-index 7b4680da57d7..e63e2daf151d 100644
---- a/drivers/acpi/tables.c
-+++ b/drivers/acpi/tables.c
-@@ -287,6 +287,12 @@ acpi_get_subtable_type(char *id)
-         return ACPI_SUBTABLE_COMMON;
-  }
-
-+static unsigned long __init_or_acpilib
-+acpi_table_get_length(struct acpi_table_header *hdr)
-+{
-+       return le32_to_cpu((__force __le32)hdr->length);
-+}
-+
-  static __init_or_acpilib bool has_handler(struct acpi_subtable_proc *proc)
-  {
-         return proc->handler || proc->handler_arg;
-@@ -337,7 +343,8 @@ static int __init_or_acpilib acpi_parse_entries_array(
-         int errs = 0;
-         int i;
-
--       table_end = (unsigned long)table_header + table_header->length;
-+       table_end = (unsigned long)table_header +
-+                   acpi_table_get_length(table_header);
-
-         /* Parse all entries looking for a match. */
-
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
