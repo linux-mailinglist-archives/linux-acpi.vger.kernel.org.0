@@ -2,154 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91D3C6EF107
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Apr 2023 11:24:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88AA76EF143
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Apr 2023 11:35:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240227AbjDZJYI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Apr 2023 05:24:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48330 "EHLO
+        id S240139AbjDZJfm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Apr 2023 05:35:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239853AbjDZJYD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Apr 2023 05:24:03 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32C7A4EF2;
-        Wed, 26 Apr 2023 02:23:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1682501031; x=1714037031;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wCxv9UpBjUg+nIFCxpugJDt198ixgLIiNE9cs8ZnPjI=;
-  b=gbo8BJzUOiGtcxcpZfxUCn8122q8i5IrCEm9sANMHeAVHldTiG8f74QB
-   cuhGLFI/aIWlvrjGn1J7eRUyLDRgKf9OBu1SpGUzfn2soUc1ZuFvijpua
-   35sV/ZC7CricK9MDnHa7dskzwI1/rWjqsPL+drc1i4os4kitidNrmMHcM
-   EA+kL5ra3GltC0ahCKNn/tWvdPKRcM/Ym/YzyTNe9sXCOnqu53ICfj7mF
-   2MVbRPzoON09iogyDYObFCvahH8jyW/IL9XdIz67guvgIqV79+SMO7aa7
-   0dQGuSDSBW3WaUO9hqrj5VWHX8WY/qLG/Nw5hDOsyLXvHJwedpX+abvSs
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="433337103"
-X-IronPort-AV: E=Sophos;i="5.99,227,1677571200"; 
-   d="scan'208";a="433337103"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2023 02:22:51 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="818044970"
-X-IronPort-AV: E=Sophos;i="5.99,227,1677571200"; 
-   d="scan'208";a="818044970"
-Received: from lkp-server01.sh.intel.com (HELO 98ee5a99fc83) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 26 Apr 2023 02:22:48 -0700
-Received: from kbuild by 98ee5a99fc83 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1prbMI-0000Ki-1T;
-        Wed, 26 Apr 2023 09:22:42 +0000
-Date:   Wed, 26 Apr 2023 17:21:55 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Yunhui Cui <cuiyunhui@bytedance.com>, rafael@kernel.org,
+        with ESMTP id S240330AbjDZJfk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Apr 2023 05:35:40 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DDE71FCF
+        for <linux-acpi@vger.kernel.org>; Wed, 26 Apr 2023 02:35:15 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-2f7c281a015so4205958f8f.1
+        for <linux-acpi@vger.kernel.org>; Wed, 26 Apr 2023 02:35:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1682501713; x=1685093713;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ce4GYxtRqPUN978KLBinEzPZHPyR7Q5Y4N3uHGTI18A=;
+        b=bLgsuL5jnXn0H97jLHgVAuTV95orbxH7cNIsemG9NrrG6IMhLYAz9O1E5xjggiipxp
+         IOvDRWCbVbcckyOEToIxL94M7eb18SCYRYO/U7sLqmNDO+rtvt86wnlufjQ0cSt4OTFG
+         2CwqJW0l8480m+WXJZ67om2DVZxgNOZHKL0Qj2b4CaxTF7RMt8ughdnVbcIx+FOKWiAT
+         GADrcGHsXDnT+VDhsJfwRyYuP/i0YGwBYX2zJ4Xx+LLaOum74DNi8gnPaPacoisGHxTB
+         sAdHiGV27a3cgs9b4uEx9GPGEE5XdnJcnr7LGddx8MFsrZ1MUPZQYllntxDoCoTddPdU
+         UoBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682501713; x=1685093713;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ce4GYxtRqPUN978KLBinEzPZHPyR7Q5Y4N3uHGTI18A=;
+        b=cpKKNmSkISd267DhKfTcDyMDqLguqwF4Xvjzij9vuMh0TG5v1ktddlFLuyvEdx4/Jy
+         hwclEqfkgNkWFZIAEQ5CJgRB77Nmzve9kBgq6Ycc7Mc31eJruDYQqsQL3ely7PGW5nuT
+         P2LK+dV8baiR1rTVjD02450SpmAevfl9B5AYt0OFVAUry80yiq66VnieZFiXPbSYbhi5
+         qN9xHEJ0RAmgZsqDiAieM68tLw+MHgO0EmIHQCj6uVx1UxlHva6M2wdMMqtoW/kzsXr/
+         DDIztJbqozZ0N38JauDbA0GrRb4eT65TBElE7CNF4/p07IVYVaZC8BwzxGnA6zzRFH60
+         hL/A==
+X-Gm-Message-State: AAQBX9elAs+yzMA9kgZ/9ob82PkktpAbMGqVnonzSK/WT0JrV2aJws0h
+        y/xDrQagyJNh9LqQmSF8dXt3RlXusogalfcymuTGSuG971785OrrKEc=
+X-Google-Smtp-Source: AKy350ZiTFT8VbpJ7VU+tRYZY2yvBJbF6WDlwkpXHMmIbM/NI3aAxc53ixNJkvIm7Aa8XMKoTY7YhKqL3k2O/rmidwk=
+X-Received: by 2002:a5d:4611:0:b0:2f6:987f:a0f5 with SMTP id
+ t17-20020a5d4611000000b002f6987fa0f5mr14112922wrq.5.1682501713638; Wed, 26
+ Apr 2023 02:35:13 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230426034001.16-1-cuiyunhui@bytedance.com> <CAMj1kXEKh9O-ndk3QFibJMYfMbG7vm-cLN2vVQM5eDsYK84NzQ@mail.gmail.com>
+In-Reply-To: <CAMj1kXEKh9O-ndk3QFibJMYfMbG7vm-cLN2vVQM5eDsYK84NzQ@mail.gmail.com>
+From:   =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
+Date:   Wed, 26 Apr 2023 17:34:55 +0800
+Message-ID: <CAEEQ3wkJB5CKm33mHXUOPX5makYOHF8By6FYGnNzRkM-Mo72OQ@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH] firmware: added a firmware information
+ passing method FFI
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>, rafael@kernel.org,
         lenb@kernel.org, jdelvare@suse.com, cujomalainey@chromium.org,
         yc.hung@mediatek.com, angelogioacchino.delregno@collabora.com,
         allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
-        tinghan.shen@mediatek.com, ardb@kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] firmware: added a firmware information passing method FFI
-Message-ID: <202304261756.84GsEW3V-lkp@intel.com>
-References: <20230426034001.16-1-cuiyunhui@bytedance.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230426034001.16-1-cuiyunhui@bytedance.com>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, rminnich@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Yunhui,
+Hi Ard,
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on rafael-pm/linux-next]
-[also build test WARNING on linus/master jdelvare-staging/dmi-for-next v6.3 next-20230425]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Yunhui-Cui/firmware-added-a-firmware-information-passing-method-FFI/20230426-114131
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20230426034001.16-1-cuiyunhui%40bytedance.com
-patch subject: [PATCH] firmware: added a firmware information passing method FFI
-config: m68k-allyesconfig (https://download.01.org/0day-ci/archive/20230426/202304261756.84GsEW3V-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/7d1fe633611738698520294d2a598575a765cfbf
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Yunhui-Cui/firmware-added-a-firmware-information-passing-method-FFI/20230426-114131
-        git checkout 7d1fe633611738698520294d2a598575a765cfbf
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash drivers/
-
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202304261756.84GsEW3V-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/firmware/ffi.c:18:13: warning: no previous prototype for 'of_fdt_fwtbl' [-Wmissing-prototypes]
-      18 | void __init of_fdt_fwtbl(void)
-         |             ^~~~~~~~~~~~
->> drivers/firmware/ffi.c:53:13: warning: no previous prototype for 'fdt_fwtbl_init' [-Wmissing-prototypes]
-      53 | void __init fdt_fwtbl_init(void)
-         |             ^~~~~~~~~~~~~~
+On Wed, Apr 26, 2023 at 3:09=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org> wr=
+ote:
+>
+> Hello Yunhui,
+>
+> I am not sure this is a good idea: this is clearly intended for arm64,
+> which cannot use ACPI without the EFI memory map, which it uses to
+> cross reference memory opregion accesses, to determine the correct
+> memory type attributes.
+>
+Not only for arm64, but also other arches, such as riscv.
+For memory-related nodes, it will be done in the early scan of the device t=
+ree.
 
 
-vim +/of_fdt_fwtbl +18 drivers/firmware/ffi.c
+> What is the use case you are trying to accommodate here?
+>
+Some bootloaders do not support uefi, such as coreboot,
+but need to support acpi, smbios.
 
-    17	
-  > 18	void __init of_fdt_fwtbl(void)
-    19	{
-    20		int cfgtbl, len;
-    21		fdt64_t *prop;
-    22	
-    23		cfgtbl = fdt_path_offset(initial_boot_params, "/cfgtables");
-    24		if (cfgtbl < 0) {
-    25			pr_info("cfgtables not found.\n");
-    26			return;
-    27		}
-    28		prop = fdt_getprop_w(initial_boot_params, cfgtbl, "smbios_phy_ptr", &len);
-    29		if (!prop || len != sizeof(u64))
-    30			pr_info("smbios_phy_ptr not found.\n");
-    31		else
-    32			fdt_fwtbl.smbios = fdt64_to_cpu(*prop);
-    33	
-    34		prop = fdt_getprop_w(initial_boot_params, cfgtbl, "smbios3_phy_ptr", &len);
-    35		if (!prop || len != sizeof(u64))
-    36			pr_info("smbios3_phy_ptr not found.\n");
-    37		else
-    38			fdt_fwtbl.smbios3 = fdt64_to_cpu(*prop);
-    39	
-    40		prop = fdt_getprop_w(initial_boot_params, cfgtbl, "acpi_phy_ptr", &len);
-    41		if (!prop || len != sizeof(u64))
-    42			pr_info("acpi_phy_ptr not found.\n");
-    43		else
-    44			fdt_fwtbl.acpi = fdt64_to_cpu(*prop);
-    45	
-    46		prop = fdt_getprop_w(initial_boot_params, cfgtbl, "acpi20_phy_ptr", &len);
-    47		if (!prop || len != sizeof(u64))
-    48			pr_info("acpi20_phy_ptr not found.\n");
-    49		else
-    50			fdt_fwtbl.acpi20 = fdt64_to_cpu(*prop);
-    51	}
-    52	
-  > 53	void __init fdt_fwtbl_init(void)
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Thanks,
+Yunhui
