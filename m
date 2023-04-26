@@ -2,115 +2,142 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B35C86EF410
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Apr 2023 14:12:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C6636EF5BE
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Apr 2023 15:47:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240438AbjDZMM0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Apr 2023 08:12:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60786 "EHLO
+        id S241207AbjDZNrv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Apr 2023 09:47:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231161AbjDZMMZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Apr 2023 08:12:25 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 631EF1BCB;
-        Wed, 26 Apr 2023 05:12:23 -0700 (PDT)
-Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.57])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Q5yNH6HqJzLnlG;
-        Wed, 26 Apr 2023 20:09:35 +0800 (CST)
-Received: from [10.67.103.231] (10.67.103.231) by
- kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Wed, 26 Apr 2023 20:12:19 +0800
-Message-ID: <51025038-21e0-63ad-1286-ff426f6df5bc@huawei.com>
-Date:   Wed, 26 Apr 2023 20:12:18 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH] soc: hisilicon: Support HCCS driver on Kunpeng SoC
-To:     Sudeep Holla <sudeep.holla@arm.com>
-CC:     Arnd Bergmann <arnd@arndb.de>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <soc@kernel.org>,
-        <wanghuiqiang@huawei.com>, <tanxiaofei@huawei.com>,
-        <liuyonglong@huawei.com>, <huangdaode@huawei.com>,
-        <linux-acpi@vger.kernel.org>, Len Brown <lenb@kernel.org>,
+        with ESMTP id S241209AbjDZNrm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Apr 2023 09:47:42 -0400
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2061.outbound.protection.outlook.com [40.107.94.61])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 300B24EC8
+        for <linux-acpi@vger.kernel.org>; Wed, 26 Apr 2023 06:47:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=eh71EuV4h2rOlCF63vmBdr2PMOK2oBmKSfbyMv8YQkSUAu4FFj1tmPZ/T7hjsoN8AHHtzaZbeo6o7kmmiHA9y4n1aYwXlwAxVhVSKgrfCtE1/X05FU7HIJxtNO6xUl/IrNhnT1/xZLUfC2stFP+ontlsqqCrvT7t8yOq5nMlbDosQf/0Pk5OevNl9FnCSuzKr9QcEeB05R0k6uvlnfd/7twwR509qTuzYOJi0X3tAvL00eXml+UKlCPxgJrxicCKuUcyo035m3bVTuWq9Q1Tm7sZzlDSUEELROTnEvyjQSGxxdHHGAFrHsMeZDuMdQHdJEyLxMa/HjYYZq1SiVvgsg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EpA+3GsfHkzitOYBxOdtknCI+uy9bvzr3j4J/OReio8=;
+ b=XgjU7Z2YFF8PSWYvKPYeCKfHVsChD09MAh82fQZEbfaJf5Jo5n/xRTk7H2qxquyJnkw+vI0PkwVQumDTCo00wQpsx8ZU4pcSOddxW+yQQISxIO7nUy/Tn6qPftm5SsCVtANvj6PwU2qAkHlLhPa3x2H+9tHF3x7ToFdjUwOBIvGJ87CwXyLVE2CNTVHk77B5EKoS9we1pf6kI9hitmH2mbARqHTjkGRiJgQJlap/RiltKIEQ1qREmumgLtOdTmcRUrokRCskJGXTLCwRMI9b5mlwzgpL0n+hhzripY08cEwX24RX4i9EUBP6bZ6PQdxqjTkFz2xA4F6EryRxlRmGgA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EpA+3GsfHkzitOYBxOdtknCI+uy9bvzr3j4J/OReio8=;
+ b=OnKTcS1jboKS8mAsqJeQFSenvxEuHy2iOzx7abKQs0XZDjGdwhOksfkBtYEIVEO7i2Yz8p9nalg3RM1hNFJe0dvxFSewdBb+ZtqIZSIB5MjCTw3oTIM2K5zbQm8C1DCjOfH8GSl4ZHgHdvfT0ut8EMPyHoTbKRL105fk0DVobDfRLc92jSwdPy7q9Qyg1k84knJdv+aZTUctD+Ko0L+9LBke5FlYngog2wqLMv4WkHbVVs4JjAT56dsXehpzyEphDd/O+tADjNzF32pVtAm4T3OG6sT5mmXpeQ7kcustvaHX3D9jFJ03RYO+4lkADlSgDViJ/PQMtgnWRToFYxq/iw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by CY8PR12MB7731.namprd12.prod.outlook.com (2603:10b6:930:86::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6319.34; Wed, 26 Apr
+ 2023 13:47:37 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f7a7:a561:87e9:5fab]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f7a7:a561:87e9:5fab%6]) with mapi id 15.20.6340.021; Wed, 26 Apr 2023
+ 13:47:37 +0000
+Date:   Wed, 26 Apr 2023 10:47:35 -0300
+From:   Jason Gunthorpe <jgg@nvidia.com>
+To:     Baolu Lu <baolu.lu@linux.intel.com>
+Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
+        David Woodhouse <dwmw2@infradead.org>, iommu@lists.linux.dev,
+        Joerg Roedel <joro@8bytes.org>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-References: <20230424073020.4039-1-lihuisong@huawei.com>
- <e0c4f4b5-8b34-4542-b676-f98ddb8ef586@app.fastmail.com>
- <20230425103040.znv66k364ant6klq@bogus>
- <c7d9c3c5-e400-c60a-52e0-0f267ec8c517@huawei.com>
- <20230425131918.5tf5vot4h7jf54xk@bogus>
-From:   "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <20230425131918.5tf5vot4h7jf54xk@bogus>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.103.231]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemm600004.china.huawei.com (7.193.23.242)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Nicolin Chen <nicolinc@nvidia.com>
+Subject: Re: [PATCH 08/11] iommu: Always destroy the iommu_group during
+ iommu_release_device()
+Message-ID: <ZEkrd2VY3wOdcSWm@nvidia.com>
+References: <8-v1-8aecc628b904+2f42-iommu_probe_jgg@nvidia.com>
+ <da60a120-e1dd-3b61-d6c4-ba0d955e2339@linux.intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <da60a120-e1dd-3b61-d6c4-ba0d955e2339@linux.intel.com>
+X-ClientProxiedBy: BLAPR03CA0147.namprd03.prod.outlook.com
+ (2603:10b6:208:32e::32) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|CY8PR12MB7731:EE_
+X-MS-Office365-Filtering-Correlation-Id: 97028621-4edd-44c4-87c8-08db465ccbd3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: gEJ4P5dpzL7c+k2NYTr5Cr8qLmL7qi1Yxhy5ahssVAJ6Ir5ZlHeD+jelreJvVYy26hTAzSfnLnKV5Tw5uMn4vc7L3JpAFTKNqsLKhTMAPWf+KZ+YJbB3dMW/QKgoiOyscCnGFkbPK1+BMVG/UU7o190HxRQcGUTO3WkoSo+gMmQFTJzhUkOzLBArobLFl8x47eIDQ6PUkpAJRqLNgYHJXqX2HVhUTYTsyy72dPlZunLQwaNTsdL3WlWy4lBQRfIr3RgbIokK/6I0h066T4SmJgoxeNIgcZAZrLMQ4ovgFNKuA3L0Ew2brr3luZZlxaAac7vWhjNM7zFYZEBdmyscdKy5EfQ1ynFEJa87h1Ch4FvWXrg/C+8mrhSa85fMRBgihoJ4l+5tDCHSsNBFy3QdP5T8nAAAah1cuBO1hunWdQ5jTyBBnFqV1QZ6I2lvPthzhG1TU+72tuMg5XeVeixOySphvsWnqfsKJcjFyy6b4SYsyJPLLOIboL/0/7PE0qvfu83dUFOpNJx9zEfQPmsPMTtBBNSX4b8TNTJbffD39yMUojmWr+oWL1xxuIMgeDj+
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(366004)(136003)(346002)(39860400002)(396003)(451199021)(7416002)(66556008)(26005)(186003)(86362001)(107886003)(6506007)(6512007)(53546011)(36756003)(2616005)(38100700002)(8936002)(316002)(6916009)(4326008)(41300700001)(8676002)(5660300002)(6486002)(66476007)(66946007)(478600001)(54906003)(2906002)(4744005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?GfuD0oSAox0D5GoTaQcTnCwETYvOy/WcXz58OYhcyTtZ43yRhppSbOixnM7G?=
+ =?us-ascii?Q?BygLN6hi+Pz4B+9xJSYh9LX1fhXn2NLqvTh7MhvKo2A8AvVVLByWZBcE9eNu?=
+ =?us-ascii?Q?f/uMNSjgRXBD/D8yFzk/ZYgcFO7p/rF28gmqymyMyRR/OyYfHzlo1YpJCeEZ?=
+ =?us-ascii?Q?3T7cfswSrNY271wgf63hYEpAEPGfe5/bL0b19yH2qXHXuGGxOPPMBOg4Rnsn?=
+ =?us-ascii?Q?cA+PjFBvP8B8jV/qEPVb19waXax+SRzjr2tSoDFZeKrAufIi/7HDZTu86qa1?=
+ =?us-ascii?Q?5j9XMdq8qmvpOVKzD2Z1xJv0w78E00MhT4VcNC+IKaKK7vKOwQGUGLQ1k81e?=
+ =?us-ascii?Q?7NDJDSi+Jl7mhS8DjNiVR09DG7RxiyRSr+NPbhllrYEbnP/sHwO9+BZufvl4?=
+ =?us-ascii?Q?iIufVXvFej341CvRkmDgssX6g8oTFRXS+NTXO0yP0Cc9BJxq7X5xWjKg3hNn?=
+ =?us-ascii?Q?bhDPK/kSzU8SmlPkXgQ/KQnpWcvSxpLfQXL/jaQvJskhmfP3FOZ547s8G7cq?=
+ =?us-ascii?Q?aIi5dLCxvroE7J9YFyHehHsGYsB9CeD0VGLz9PtJhnffxrJZ1n06doG53SIz?=
+ =?us-ascii?Q?uaRIH9d9Eb72WlATad62lKN1f6Y2LzoGI+orltBSJqz6/zN8ybMBb+btfsiV?=
+ =?us-ascii?Q?9LjAsXGk8urLH8QDIkvzc90UXJXipiPsVmm7UM8X2tQS+ESsM/Xof57Z0A3K?=
+ =?us-ascii?Q?4AMbtC614rWLckefrYYSevCKpGCZPQ9jgfXSBbHCqpmp2UGqC1hzoe9OHB4n?=
+ =?us-ascii?Q?SvvlpEPTlTnksZBOQefv5LU4dgkIY66cdkdzMlAswSQqHT+UOuEvORjKlf/Q?=
+ =?us-ascii?Q?mKvCDAtpDaNT3z6lptaj8ZaD5L0/EymP+OcSY0lj7DYaznClrv2YlMFbhwjc?=
+ =?us-ascii?Q?8CYaO7YTsG9LVYguc8ZQ9nkMAnqS3FGEleUCtLbfOyP1XBacEkW4fWB7o0B6?=
+ =?us-ascii?Q?dM99PoIu/qRDCBMbncgD13Dt5DRtviXlda0gJgbRk7mVziCVgywGMOW0d1VT?=
+ =?us-ascii?Q?BtYaoc6Sto4zpjwIqAZJwClfA6W5T0s7LpqUt5n006AePvT4Lhm2Dmh9RAWB?=
+ =?us-ascii?Q?o50rOJC84Mf/5RoWq9wGs/O8bV62LzbEy+qmF/LHGbcME40WzWmmFL8LuHg3?=
+ =?us-ascii?Q?+q0zhwrCXXbMF5uK9E8DPaLfsg+pAg5ozJfCr9i9urdAoGFUt30zy+FY8Tof?=
+ =?us-ascii?Q?5PTft9cNmPisfVLJPs1Ypq4Wj66A3614WalgGkxvnkeWGUDCVW8PiyhDJY0E?=
+ =?us-ascii?Q?PU64oexU987qYwQZxajjjtEe9Yq0cCBPT/Vs56eumBevhMSqBpGAtWmKUPqY?=
+ =?us-ascii?Q?NrpOJIaQsJBgFhG64xEv0wDbZn7JKPdBwoqfM7k6twRlUIsCiNNA1xQV0O0v?=
+ =?us-ascii?Q?5K7hw2Dic24pyuRR/xjgc8uBHolFdQ8zUTahSNbVckhV0gc2L4svBvY5KFiO?=
+ =?us-ascii?Q?gJj09i2KRDRPrW8M4JGtu7L3JdxTr4Bv7XOknnVINRBXErCEo3hWfemR7WI3?=
+ =?us-ascii?Q?2Hc73tEIJVyzL2jNnYEqWHbRMX3vyZkNYLSjWIr8ENrvKfCDqiMYXFW69IoH?=
+ =?us-ascii?Q?pYqJJU8f0u66Wgq/KCZFegzuEHEMtySvlbDDe3NL?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97028621-4edd-44c4-87c8-08db465ccbd3
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Apr 2023 13:47:37.5473
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NcB76GR2MfSe8VY0XQ6VB1TmaJGYFDD+m6uc/Lx9yqTF41zCPtynYT3287IXjCfQ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7731
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Thu, Apr 20, 2023 at 12:23:11PM +0800, Baolu Lu wrote:
+> On 4/20/23 12:11 AM, Jason Gunthorpe wrote:
+> > diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+> > index dbaf3ed9012c45..a82516c8ea87ad 100644
+> > --- a/drivers/iommu/iommu.c
+> > +++ b/drivers/iommu/iommu.c
+> > @@ -569,7 +569,6 @@ static void __iommu_group_remove_device(struct device *dev)
+> >   			dev->iommu_group = NULL;
+> >   		goto out;
+> 
+> Nit, given that below line has been removed, can above simply be a
+> loop break?
 
-在 2023/4/25 21:19, Sudeep Holla 写道:
-> On Tue, Apr 25, 2023 at 09:00:31PM +0800, lihuisong (C) wrote:
->> For firmware, DSD way is simpler and easier to manage these virtual platform
->> devices, and it's an usual way in kernel.
-> Any specific examples you are referring here. We had lots of debate when
-> DSD was introduced. It must be used only when there is no standard ACPI
-> way to achieve the same. But in this I don't (yet) think that is the case.
-> Further "simplicity" is remotely not the reason why you must use DSD.
-> So until you provide me technical reasons as why _CRS can't work, I
-> have to NACK this approach. DSD in this case seems like pure hack.
->
->> Driver only needs to get a fixed value, like pcc-id and type, here.
->>
-> Yes and _CRS is used to get similar such properties in ACPI. It includes
-> normally MMIO and interrupts and since GAS supports PCC and _CRS can
-> contain GAS, you must simply use that.
-Hi Sudeep,
-Can you give me some usage examples about this? I will try to do it.
->
->> Any vantage if using _CRS with GAS compared with DSD?
-> Simple IMO, it is also existing standard to achieve things you are trying
-> to here and DSD is not. You are defining new properties to make DSD work.
->
-> So the real question is if _CRS can be used what is the point in defining
-> DSD for that. Unless I hear more technical and solid reasoning, I see
-> DSD as just hack and misuse here. It wasn't designed for that and must not
-> be allowed to make use of it for such use case.
->
-> Anyways in case we decide to take DSD route(after more deeper and technical
-> discussions), as in the kernel docs, please refer [1] for DSD. You need
-> to publish properties there so that no one comes up with similar but
-> alternate solution to do exactly this.
-All right.
->
->>> quite understand what magic the flags contain here to provide any info
->>> there.
->> This flag is used to report other properties, and every bit means a
->> property.
->> For instance, driver doesn't need to request PCC channel during the probing
->> phase if driver use PCC operation Region.
-> Sorry I still don't understand it fully.
-If a driver uses type2 with polling way on one platform, and uses PCC 
-operation Region way to obtain some information on other platform.
-The driver doesn't need to request PCC channel when it uses PCC 
-Operation Region.
-So this driver must be aware of the communication way in advance in a 
-way during initialization.
+Yes, that is much nicer
 
->
+Thanks,
+Jason
