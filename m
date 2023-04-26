@@ -2,100 +2,172 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88AA76EF143
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Apr 2023 11:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEB656EF150
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Apr 2023 11:42:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240139AbjDZJfm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Apr 2023 05:35:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57892 "EHLO
+        id S239464AbjDZJmE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Apr 2023 05:42:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240330AbjDZJfk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Apr 2023 05:35:40 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DDE71FCF
-        for <linux-acpi@vger.kernel.org>; Wed, 26 Apr 2023 02:35:15 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-2f7c281a015so4205958f8f.1
-        for <linux-acpi@vger.kernel.org>; Wed, 26 Apr 2023 02:35:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1682501713; x=1685093713;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ce4GYxtRqPUN978KLBinEzPZHPyR7Q5Y4N3uHGTI18A=;
-        b=bLgsuL5jnXn0H97jLHgVAuTV95orbxH7cNIsemG9NrrG6IMhLYAz9O1E5xjggiipxp
-         IOvDRWCbVbcckyOEToIxL94M7eb18SCYRYO/U7sLqmNDO+rtvt86wnlufjQ0cSt4OTFG
-         2CwqJW0l8480m+WXJZ67om2DVZxgNOZHKL0Qj2b4CaxTF7RMt8ughdnVbcIx+FOKWiAT
-         GADrcGHsXDnT+VDhsJfwRyYuP/i0YGwBYX2zJ4Xx+LLaOum74DNi8gnPaPacoisGHxTB
-         sAdHiGV27a3cgs9b4uEx9GPGEE5XdnJcnr7LGddx8MFsrZ1MUPZQYllntxDoCoTddPdU
-         UoBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682501713; x=1685093713;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ce4GYxtRqPUN978KLBinEzPZHPyR7Q5Y4N3uHGTI18A=;
-        b=cpKKNmSkISd267DhKfTcDyMDqLguqwF4Xvjzij9vuMh0TG5v1ktddlFLuyvEdx4/Jy
-         hwclEqfkgNkWFZIAEQ5CJgRB77Nmzve9kBgq6Ycc7Mc31eJruDYQqsQL3ely7PGW5nuT
-         P2LK+dV8baiR1rTVjD02450SpmAevfl9B5AYt0OFVAUry80yiq66VnieZFiXPbSYbhi5
-         qN9xHEJ0RAmgZsqDiAieM68tLw+MHgO0EmIHQCj6uVx1UxlHva6M2wdMMqtoW/kzsXr/
-         DDIztJbqozZ0N38JauDbA0GrRb4eT65TBElE7CNF4/p07IVYVaZC8BwzxGnA6zzRFH60
-         hL/A==
-X-Gm-Message-State: AAQBX9elAs+yzMA9kgZ/9ob82PkktpAbMGqVnonzSK/WT0JrV2aJws0h
-        y/xDrQagyJNh9LqQmSF8dXt3RlXusogalfcymuTGSuG971785OrrKEc=
-X-Google-Smtp-Source: AKy350ZiTFT8VbpJ7VU+tRYZY2yvBJbF6WDlwkpXHMmIbM/NI3aAxc53ixNJkvIm7Aa8XMKoTY7YhKqL3k2O/rmidwk=
-X-Received: by 2002:a5d:4611:0:b0:2f6:987f:a0f5 with SMTP id
- t17-20020a5d4611000000b002f6987fa0f5mr14112922wrq.5.1682501713638; Wed, 26
- Apr 2023 02:35:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230426034001.16-1-cuiyunhui@bytedance.com> <CAMj1kXEKh9O-ndk3QFibJMYfMbG7vm-cLN2vVQM5eDsYK84NzQ@mail.gmail.com>
-In-Reply-To: <CAMj1kXEKh9O-ndk3QFibJMYfMbG7vm-cLN2vVQM5eDsYK84NzQ@mail.gmail.com>
-From:   =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
-Date:   Wed, 26 Apr 2023 17:34:55 +0800
-Message-ID: <CAEEQ3wkJB5CKm33mHXUOPX5makYOHF8By6FYGnNzRkM-Mo72OQ@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH] firmware: added a firmware information
- passing method FFI
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>, rafael@kernel.org,
-        lenb@kernel.org, jdelvare@suse.com, cujomalainey@chromium.org,
-        yc.hung@mediatek.com, angelogioacchino.delregno@collabora.com,
-        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
-        tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, rminnich@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+        with ESMTP id S240392AbjDZJlv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Apr 2023 05:41:51 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7E054685
+        for <linux-acpi@vger.kernel.org>; Wed, 26 Apr 2023 02:41:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1682502105; x=1714038105;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=naLLhTeNxmglcg6PPgZZELjA88GLWQMEFo6zBu/jU4o=;
+  b=nZogyQBUSXtbLOLtkYJM76y3O28E0Kl+Di2WDcO+v4QyYZoOHPuq62Ek
+   Kqiqpm1trTT9f7oi6DxG9p+gEIBp9NtVKie/lszFbfWqYuPMRLONwoSb2
+   XTeNpBaPJbJCu07eD9KESa5rQklIpw2jW4cq7PC32jbohyIRsJxvPqvMZ
+   etzLLOpqTpTDh13/oMsQSuSiG9yYIVZMd+3U9wOuB35kIwvuiUjnG/kWt
+   G6WFZlCenEyjPrCMsRZ51sDDCE2MkNLhmGqIRhi9y6/bDIa8vURELqhBQ
+   AsHIyFZXsvZ2R1wh9XWwV1PTllAHDJICSNpd5jHYjPnOVQjXK/TtPZg37
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="412367788"
+X-IronPort-AV: E=Sophos;i="5.99,227,1677571200"; 
+   d="scan'208";a="412367788"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2023 02:41:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="805429584"
+X-IronPort-AV: E=Sophos;i="5.99,227,1677571200"; 
+   d="scan'208";a="805429584"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by fmsmga002.fm.intel.com with ESMTP; 26 Apr 2023 02:41:43 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Wed, 26 Apr 2023 02:41:43 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23 via Frontend Transport; Wed, 26 Apr 2023 02:41:43 -0700
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.47) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.23; Wed, 26 Apr 2023 02:41:43 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=l593E51gsoJaqwVZXoZjRMZ8sJmF24/WlF947HkB1xJTxY7MbUn9fWOZJQPEMB7kckIv4nHcwbLk1XzViZB8OMcFtyWk5JDgpBThFq1siRhrp47X32YYw72b/nOaSMoT3vgqHEO/n2s/09NVB6/5KJB7+jVllLt4iKU07QwYeTXeShTUlqbj4z/bKdsPNlItD3DCRicu0OS53TaIMuJjMN1R9zdhUqEz0beYduz9eQ1ZQL8uRFeAcUe08L6PKv6R7wgZzO/LPjV0mP8uH9GeK+NfpcibmO79xdVe0z/Y2IZDljOJbpdVjHDBRSM3u2hoOOobp3fy6HGtegv45cPj3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=naLLhTeNxmglcg6PPgZZELjA88GLWQMEFo6zBu/jU4o=;
+ b=bkfxvfp1bxPDBNIFzGxsy4tznAMqvn6/qGjO6Ab1D5xlRnGbm/ZKWcPP8Rrq/hRryiU4MHBJ250e1JG5NsyKQLAsKD7LWmOPhK/hwnnIanmtXO28SzMkc6EFS0PU/MAAjD9fLESt4oLdKK8OdLVKzvjXnApSAsQJu2ekfMrvu2BMUytmwRJbWk00B2epqPt12Wg0QKg+mlV0WZ2YlPt3qczEOGcIrmLVWRedqJsr+32UinvoEKvFdU7x38hvuj1ntlH8OoFogFb3GQcLRIX5jXfHOFNkR3qJdXv9jXt1j3Sc9iDWcotzMGlxja/v5IWZpie9/wKY4BVGehhFfTHo6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BN9PR11MB5276.namprd11.prod.outlook.com (2603:10b6:408:135::18)
+ by MN6PR11MB8217.namprd11.prod.outlook.com (2603:10b6:208:47d::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6319.33; Wed, 26 Apr
+ 2023 09:41:41 +0000
+Received: from BN9PR11MB5276.namprd11.prod.outlook.com
+ ([fe80::73e9:b405:2cae:9174]) by BN9PR11MB5276.namprd11.prod.outlook.com
+ ([fe80::73e9:b405:2cae:9174%6]) with mapi id 15.20.6340.020; Wed, 26 Apr 2023
+ 09:41:39 +0000
+From:   "Tian, Kevin" <kevin.tian@intel.com>
+To:     Jason Gunthorpe <jgg@nvidia.com>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        David Woodhouse <dwmw2@infradead.org>,
+        "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+        Joerg Roedel <joro@8bytes.org>, Len Brown <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "Michael Ellerman" <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        "Will Deacon" <will@kernel.org>
+CC:     Nicolin Chen <nicolinc@nvidia.com>
+Subject: RE: [PATCH 05/11] iommu: Add iommu_init/deinit_driver() paired
+ functions
+Thread-Topic: [PATCH 05/11] iommu: Add iommu_init/deinit_driver() paired
+ functions
+Thread-Index: AQHZctm2XiKCtCIF/EGYKHWLqHkLTK89YJdQ
+Date:   Wed, 26 Apr 2023 09:41:38 +0000
+Message-ID: <BN9PR11MB52766930EE86D8D629258CA08C659@BN9PR11MB5276.namprd11.prod.outlook.com>
+References: <0-v1-8aecc628b904+2f42-iommu_probe_jgg@nvidia.com>
+ <5-v1-8aecc628b904+2f42-iommu_probe_jgg@nvidia.com>
+In-Reply-To: <5-v1-8aecc628b904+2f42-iommu_probe_jgg@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN9PR11MB5276:EE_|MN6PR11MB8217:EE_
+x-ms-office365-filtering-correlation-id: 22d80dc8-e5f4-4c04-ba64-08db463a6ebb
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: N4/MAvswUw1QS5/l5ESCB5MyJ4bkYtQInR9sJkDOWRcBZLp2xu5chu0uB2lNQ21tJbe9WGSIqt8YryC1j/5Ik4muhNfw330amp68oOXaBJLX7psHTK2iEBOt2upwmQq2oBRoUHOssJNlEbRlH1B8L9Pu2MAc+JfD+3ZBuV/kVQgR+IV6Me4XFFM1LRwG/yvzi5ncItdKSajOuga1OUh4MaDHd2J5edC7mcDcqlZM69ZDJvRo3nZdyobGQZ5XCLA3sTKVGoX/Jp/wHf/+9U3+s2wX2wfCG4/+1kI7TYw5Zt4w3CPfNAeGBBIzNhmf4k0Li/rX1CQzavao/NO5Y+K9m8pUrQXkIye7rlNm+XPPy4OW2DY4k8IW8maleEWxMmPpS0E+xxW0+BV3dYhUvTkLZG3F7900MSCjvdg9BMpb1OeKVR7B0kBuySp6Q8urur5jrBiFh4WWpIrQ0Ad5F/SWCh/Oef5KeHhGlCEo9b1yCye5RtMVxjtEAX0V4Chv99jwQ9d73YojSBFI4vp2+NE7buSD3fr0xR3Q6zSM7Pf+v3pcrBwxgnBLn65366nKrZqycBO5lMDQbCo30iHBxWHIpQZFOHOUD+4VscN020S/irfbIHHHNKEn+JqRily0HhkybDmPFEvC++5HHBQsR8on2g==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5276.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(376002)(366004)(136003)(346002)(39860400002)(396003)(451199021)(6506007)(558084003)(26005)(33656002)(9686003)(52536014)(86362001)(186003)(5660300002)(7696005)(71200400001)(38070700005)(8936002)(8676002)(110136005)(41300700001)(316002)(82960400001)(38100700002)(921005)(2906002)(66446008)(66476007)(76116006)(55016003)(66946007)(4326008)(478600001)(122000001)(64756008)(66556008)(7416002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?qdfsqBNjbNnCQ3ex99ER5q+crmlEayzjRq5ZZcK2tSuJ+gxG7Qbkf0xQo9Cm?=
+ =?us-ascii?Q?DA/2xqqBKoCD9twKFoXM9fSBS/dum/8HUaDIjeKpD4ohpo+tgKSlSRi/N39T?=
+ =?us-ascii?Q?/gHHheIAcSF48M+SzAop7Q99LrlWKPSfbbKbxIATrtWu7esl9O+7XvSGrX2I?=
+ =?us-ascii?Q?ggvM0762FVcqIzKlvsYGA1j0crmx/7N9gO8TlP4lQ6DxegdpGvjlQNxP0HWb?=
+ =?us-ascii?Q?7RjJZcEWzoRUUwW01r+GA+SqEVCahquwlEyElBBssKkt7d2fbZ3csCTvdqCG?=
+ =?us-ascii?Q?Dv8iVPDFq3PNLf6Xz0hK2fshPuakYoTFSV+hNdu5GL23KykMIii55FF1Gw/u?=
+ =?us-ascii?Q?9wOtShwO7pRPP+Dafcu7C9FzZvYLl8pPXC1jIz/HosjLfK5ijzTpseoccQQl?=
+ =?us-ascii?Q?WxddosebkxjZPUU+i7G01kn5iY/mzVfwOEMBpj/qsdOcF5Eq2w/NWk/0LgTJ?=
+ =?us-ascii?Q?KI+NZJ3ZPLfTMs/KuAwqzxohHEaspfeIydaesAjxssbeoqIyJzEAz/37j2Xu?=
+ =?us-ascii?Q?mwBjuAGvFmtu92iK30aJxLdzvXsVvrjEaE0fK/VqNAAxviSEanRvqXVynBji?=
+ =?us-ascii?Q?83HTw+QFX4CF1JB80cqnUAslqHyrF8TrcuZqj5nrQufaT/ulfwhOj6griyzF?=
+ =?us-ascii?Q?O/RO3hgvWqAqTneHGpCBX9jXP4UJaZtpGHO3dZXgH4Sth/GG3wi+fbWLx5YH?=
+ =?us-ascii?Q?dxDL8gu1ArheZb6YRx2wqTojn58rXi0wd+IgtIH/2Srojh1HNgRnp+wCK1Ck?=
+ =?us-ascii?Q?8zvJPITM1mvqHtOD33nLm1CJy0wjuGJnJi7SLGJTUnTibtosF5dZKvoyPMa+?=
+ =?us-ascii?Q?U0rX02E9aHkA/VMjh364HnawSXzyuz8pjCnCRNw0Z0mIajrzSE+CDj/Tin0K?=
+ =?us-ascii?Q?cyIfR46FXuCcUw2ZsZPxDAUC1AmI7bx4HSetHqvUu3CsSMaEquX/IdV7lFsv?=
+ =?us-ascii?Q?OjJSlsr4qOdYG/8MTViqUXCLixBWasT7OlIFudiocmEqmayvDOPW+wxIa07S?=
+ =?us-ascii?Q?nwS7o4+Xdb4QjreOiY1c2+/CEZDz8z0WTu5yJNRjJ6Y8akoHRkoIiZqmvCvd?=
+ =?us-ascii?Q?UA75MNgO5KchmOLe8kXPIifORXe6g0eKKyXbvKAcsZzi4xkpHKNdFYdmB1Zt?=
+ =?us-ascii?Q?XO0F2RIcEKnDzh/ipKlT6Vn1tPwPUgj4vIY1+wjjU8wrX9ZxhYNAzTG4bV7N?=
+ =?us-ascii?Q?BPMFLPBjpV4unVrOJO0G7BcdgF0kLWjdsEU4wDPO5hAmlzaSshwD7BcxJj9c?=
+ =?us-ascii?Q?F3x/BmwcLbKz8ffxrK/gQG9n+NHoP0puWsBhCGJBQMCorHga5mFV6Xq0bw4K?=
+ =?us-ascii?Q?J5WsZHNczV+K9a+QViFuYrxEYMgHLcAUaSgYCQOKdLNfUxEammDYC6R6Kox3?=
+ =?us-ascii?Q?DBNCiWA+PQ5Cn0wn426xXuYLk0E80sFzP+A73XM2hZhqrYSn1vmb/01g/wCj?=
+ =?us-ascii?Q?Zy7gnYC4oi2Bx5B+L8Fjem2eZHQGHP0WM3ToMbqnH7touWS8+6Zv0xzRdyeV?=
+ =?us-ascii?Q?FUajkPYLXaz6bcdqvm3eFpbtdVFu2QiL2zGq7AOQ5fzbVVzTLNhVnUFerJS4?=
+ =?us-ascii?Q?dbUAEQh1EuHiBR6NjOk5qmcjKIkvDot4IPE9aZn+?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5276.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 22d80dc8-e5f4-4c04-ba64-08db463a6ebb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Apr 2023 09:41:38.2836
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: XNZ9qSTXxwFixI4K3WXQHWX25PHW6B0KD532a1e1TMurp1mR+XlQ2RQzY1XQ27JG5wbJXXidAh3nSui1CUp3/Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8217
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Ard,
+> From: Jason Gunthorpe <jgg@nvidia.com>
+> Sent: Thursday, April 20, 2023 12:12 AM
+>=20
+> +static int iommu_init_driver(struct device *dev, const struct iommu_ops
+> *ops)
 
-On Wed, Apr 26, 2023 at 3:09=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org> wr=
-ote:
->
-> Hello Yunhui,
->
-> I am not sure this is a good idea: this is clearly intended for arm64,
-> which cannot use ACPI without the EFI memory map, which it uses to
-> cross reference memory opregion accesses, to determine the correct
-> memory type attributes.
->
-Not only for arm64, but also other arches, such as riscv.
-For memory-related nodes, it will be done in the early scan of the device t=
-ree.
+would iommu_init_device() better fit the purpose?
 
+otherwise,
 
-> What is the use case you are trying to accommodate here?
->
-Some bootloaders do not support uefi, such as coreboot,
-but need to support acpi, smbios.
-
-
-Thanks,
-Yunhui
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
