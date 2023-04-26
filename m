@@ -2,86 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 753526EF1A2
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Apr 2023 12:07:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B35C86EF410
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Apr 2023 14:12:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240143AbjDZKHe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Apr 2023 06:07:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46406 "EHLO
+        id S240438AbjDZMM0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Apr 2023 08:12:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230023AbjDZKHd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Apr 2023 06:07:33 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 259FC26A6;
-        Wed, 26 Apr 2023 03:07:31 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C06D74B3;
-        Wed, 26 Apr 2023 03:08:14 -0700 (PDT)
-Received: from FVFF77S0Q05N (unknown [10.57.23.120])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8ADE33F5A1;
-        Wed, 26 Apr 2023 03:07:28 -0700 (PDT)
-Date:   Wed, 26 Apr 2023 11:07:25 +0100
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     =?utf-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>, rafael@kernel.org,
-        lenb@kernel.org, jdelvare@suse.com, cujomalainey@chromium.org,
-        yc.hung@mediatek.com, angelogioacchino.delregno@collabora.com,
-        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
-        tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, rminnich@gmail.com
-Subject: Re: [External] Re: [PATCH] firmware: added a firmware information
- passing method FFI
-Message-ID: <ZEj33QLZqEeL+/y4@FVFF77S0Q05N>
-References: <20230426034001.16-1-cuiyunhui@bytedance.com>
- <CAMj1kXEKh9O-ndk3QFibJMYfMbG7vm-cLN2vVQM5eDsYK84NzQ@mail.gmail.com>
- <CAEEQ3wkJB5CKm33mHXUOPX5makYOHF8By6FYGnNzRkM-Mo72OQ@mail.gmail.com>
+        with ESMTP id S231161AbjDZMMZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Apr 2023 08:12:25 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 631EF1BCB;
+        Wed, 26 Apr 2023 05:12:23 -0700 (PDT)
+Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Q5yNH6HqJzLnlG;
+        Wed, 26 Apr 2023 20:09:35 +0800 (CST)
+Received: from [10.67.103.231] (10.67.103.231) by
+ kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Wed, 26 Apr 2023 20:12:19 +0800
+Message-ID: <51025038-21e0-63ad-1286-ff426f6df5bc@huawei.com>
+Date:   Wed, 26 Apr 2023 20:12:18 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH] soc: hisilicon: Support HCCS driver on Kunpeng SoC
+To:     Sudeep Holla <sudeep.holla@arm.com>
+CC:     Arnd Bergmann <arnd@arndb.de>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        <linux-kernel@vger.kernel.org>, <soc@kernel.org>,
+        <wanghuiqiang@huawei.com>, <tanxiaofei@huawei.com>,
+        <liuyonglong@huawei.com>, <huangdaode@huawei.com>,
+        <linux-acpi@vger.kernel.org>, Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+References: <20230424073020.4039-1-lihuisong@huawei.com>
+ <e0c4f4b5-8b34-4542-b676-f98ddb8ef586@app.fastmail.com>
+ <20230425103040.znv66k364ant6klq@bogus>
+ <c7d9c3c5-e400-c60a-52e0-0f267ec8c517@huawei.com>
+ <20230425131918.5tf5vot4h7jf54xk@bogus>
+From:   "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <20230425131918.5tf5vot4h7jf54xk@bogus>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEEQ3wkJB5CKm33mHXUOPX5makYOHF8By6FYGnNzRkM-Mo72OQ@mail.gmail.com>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Originating-IP: [10.67.103.231]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemm600004.china.huawei.com (7.193.23.242)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Apr 26, 2023 at 05:34:55PM +0800, 运辉崔 wrote:
-> Hi Ard,
-> 
-> On Wed, Apr 26, 2023 at 3:09 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > Hello Yunhui,
-> >
-> > I am not sure this is a good idea: this is clearly intended for arm64,
-> > which cannot use ACPI without the EFI memory map, which it uses to
-> > cross reference memory opregion accesses, to determine the correct
-> > memory type attributes.
-> >
-> Not only for arm64, but also other arches, such as riscv.
-> For memory-related nodes, it will be done in the early scan of the device tree.
 
-Ard's point is that the device tree doesn't have all the same information (e.g.
-nothing in DT describes the memory type attributes), and so this isn't
-sufficient.
+在 2023/4/25 21:19, Sudeep Holla 写道:
+> On Tue, Apr 25, 2023 at 09:00:31PM +0800, lihuisong (C) wrote:
+>> For firmware, DSD way is simpler and easier to manage these virtual platform
+>> devices, and it's an usual way in kernel.
+> Any specific examples you are referring here. We had lots of debate when
+> DSD was introduced. It must be used only when there is no standard ACPI
+> way to achieve the same. But in this I don't (yet) think that is the case.
+> Further "simplicity" is remotely not the reason why you must use DSD.
+> So until you provide me technical reasons as why _CRS can't work, I
+> have to NACK this approach. DSD in this case seems like pure hack.
+>
+>> Driver only needs to get a fixed value, like pcc-id and type, here.
+>>
+> Yes and _CRS is used to get similar such properties in ACPI. It includes
+> normally MMIO and interrupts and since GAS supports PCC and _CRS can
+> contain GAS, you must simply use that.
+Hi Sudeep,
+Can you give me some usage examples about this? I will try to do it.
+>
+>> Any vantage if using _CRS with GAS compared with DSD?
+> Simple IMO, it is also existing standard to achieve things you are trying
+> to here and DSD is not. You are defining new properties to make DSD work.
+>
+> So the real question is if _CRS can be used what is the point in defining
+> DSD for that. Unless I hear more technical and solid reasoning, I see
+> DSD as just hack and misuse here. It wasn't designed for that and must not
+> be allowed to make use of it for such use case.
+>
+> Anyways in case we decide to take DSD route(after more deeper and technical
+> discussions), as in the kernel docs, please refer [1] for DSD. You need
+> to publish properties there so that no one comes up with similar but
+> alternate solution to do exactly this.
+All right.
+>
+>>> quite understand what magic the flags contain here to provide any info
+>>> there.
+>> This flag is used to report other properties, and every bit means a
+>> property.
+>> For instance, driver doesn't need to request PCC channel during the probing
+>> phase if driver use PCC operation Region.
+> Sorry I still don't understand it fully.
+If a driver uses type2 with polling way on one platform, and uses PCC 
+operation Region way to obtain some information on other platform.
+The driver doesn't need to request PCC channel when it uses PCC 
+Operation Region.
+So this driver must be aware of the communication way in advance in a 
+way during initialization.
 
-We'd have to create entirely new ways to pass that information, which is not
-very desirable.
-
-> > What is the use case you are trying to accommodate here?
-> >
-> Some bootloaders do not support uefi, such as coreboot,
-> but need to support acpi, smbios.
-
-For arm64 at least, if you need ACPI you must have EFI, and trying to change
-that will require significant work and long term maintenance.
-
-Can you extend coreboot to provide EFI services, or to chain-load an EFI
-payload?
-
-Thanks,
-Mark.
+>
