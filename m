@@ -2,106 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24F676F0A46
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Apr 2023 18:53:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AC386F0E7E
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Apr 2023 00:48:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243361AbjD0QxY convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 27 Apr 2023 12:53:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43554 "EHLO
+        id S1344320AbjD0Wr7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 Apr 2023 18:47:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229632AbjD0QxX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Apr 2023 12:53:23 -0400
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63E4710DC;
-        Thu, 27 Apr 2023 09:53:22 -0700 (PDT)
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-9594916df23so161287466b.1;
-        Thu, 27 Apr 2023 09:53:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682614401; x=1685206401;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uAAK43FYkSPDkbKb63f0rFAtXfzexYyx0WPl0XP2SNA=;
-        b=iMbcqs3MmH4nHcsbfeoqWM54GEiLxoqxypMYenYLaxlXQJ7e6Z8u9oWz5YnBFJ1hTk
-         ooiULehopR5xxXS3ZjP2eddOpo1p2RSukyCwt7EGPQHTgHwU9qyZldoHekRlojDMcjso
-         tkhE+oGmiMnEX0UECdd8PH+zsbcWFf36y4RiIBMTmGC57uL3vSALn1G/Qtos2Xogm7uu
-         IH/V8we1KXgFSRbZjukgsMpLRhBup2KcvQQnccWW7HOU2zt0tD1PM7jK0WEYSGet7oY3
-         S1kgSUYh3Qv+RuDGT9ngS6uMUxgb0I2iMdZtmmBFgc6osIj+mRe/3pFrJcH14+1b7Fop
-         QqBw==
-X-Gm-Message-State: AC+VfDwpqKvxPRvPzerA2GJXawNGxudnAIKt8Klu8c/E0w8p6WCZQcC3
-        s4wlZCx0Cfh5tk8EDV17f9cY+AjhQfgxpuKyyAeDQcrn
-X-Google-Smtp-Source: ACHHUZ7NGjITqL/sy2iSIAPXZltOBWku1HfzRFNGpHkStaYyFxMoonQWvtsR8Jry6e1d5K3SsBgAQ9HfDcmTp2Uz6PI=
-X-Received: by 2002:a17:906:738a:b0:94e:9235:d77d with SMTP id
- f10-20020a170906738a00b0094e9235d77dmr2207225ejl.0.1682614400728; Thu, 27 Apr
- 2023 09:53:20 -0700 (PDT)
+        with ESMTP id S229724AbjD0Wr6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Apr 2023 18:47:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34C962129;
+        Thu, 27 Apr 2023 15:47:57 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C43D060BC3;
+        Thu, 27 Apr 2023 22:47:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 045E6C433EF;
+        Thu, 27 Apr 2023 22:47:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1682635676;
+        bh=mLAin49LaTO2Gar1reim/HnDERem55oO+zK/UnUJmBg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=Aib+68hsFlhLiRszyim/9Rwg4H2zMowHE9EZihIlEicNMyjyk0ol6oYchAz008x+1
+         Er3xT2x4r5LyMzIdDD7Kn/KSQ9it+2nn66iQJH+Gwcmc6z5yaETJGbpkK3DVRcN33j
+         ZOMi/u7hQtC1zTFU+gEWxGXB4ECGN+ekX9cncUd4ZrPJVbs/268DuO4GXsd9whH/18
+         bYW64sGurSqDXsWp4Mj9Bq3V5+3AVi7ayoeP0YkR9/B0qE1t9jIMEo2cNp4OfsaHcZ
+         g1+OTbBAQ5dKT1Uf/vsBIPkxEr400tmKlMof1UUL57eFpj4f0mD7IdU4YXGDAO/SXs
+         UfEQnpqXBAlDQ==
+Date:   Thu, 27 Apr 2023 17:47:54 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     LeoLiuoc <LeoLiu-oc@zhaoxin.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
+        tony.luck@intel.com, bp@alien8.de, robert.moore@intel.com,
+        ying.huang@intel.com, rdunlap@infradead.org, bhelgaas@google.com,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devel@acpica.org,
+        CobeChen@zhaoxin.com, TonyWWang@zhaoxin.com, ErosZhang@zhaoxin.com,
+        leoliu@zhaoxin.com
+Subject: Re: [PATCH v2 3/5] ACPI/PCI: Add AER bits #defines for PCIe to
+ PCI/PCI-X Bridge
+Message-ID: <20230427224754.GA298752@bhelgaas>
 MIME-Version: 1.0
-References: <20230422164401.5986-1-mail@mariushoch.de> <5ff4416c-a195-7ac7-9eb1-16d667fd3ad6@redhat.com>
-In-Reply-To: <5ff4416c-a195-7ac7-9eb1-16d667fd3ad6@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 27 Apr 2023 18:53:09 +0200
-Message-ID: <CAJZ5v0j7ZoGRAeASR1UtJTDANFHC=5VP7-5vSC-ouXozrwG6pw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: x86: utils: Remove Lenovo Yoga Tablet 2's MAGN0001
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Marius Hoch <mail@mariushoch.de>
-Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <dd3e967a-1f1a-9d3e-1058-a5e7951b1dbd@zhaoxin.com>
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Apr 22, 2023 at 7:29 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi,
->
-> On 4/22/23 18:44, Marius Hoch wrote:
-> > The LSM303D on the Lenovo Yoga Tablet 2 series is present
-> > as both ACCL0001 and MAGN0001. As we can only ever register an
-> > i2c client for one of them, ignore MAGN0001.
-> >
-> > Currently this errors:
-> > i2c i2c-4: Failed to register i2c client MAGN0001:00 at 0x1d (-16)
-> >
-> > Tested on a Lenovo Yoga Tablet 2 1051-F.
-> >
-> > Signed-off-by: Marius Hoch <mail@mariushoch.de>
->
-> Thanks, patch looks good to me:
->
-> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+On Tue, Apr 18, 2023 at 10:38:58AM +0800, LeoLiuoc wrote:
+> 在 2023/4/13 0:10, Bjorn Helgaas 写道:
+> > On Wed, Apr 12, 2023 at 05:49:55PM +0800, LeoLiuoc wrote:
 
-Applied as 6.4-rc material, thanks!
+> > > >     ...
+> > > >     #define PCI_ERR_ROOT_ERR_SRC    0x34    /* Error Source Identification */
+> > > >     #define PCI_ERR_UNCOR_MASK2     0x30    /* PCIe to PCI/PCI-X bridge */
+> > > >     #define PCI_ERR_UNCOR_SEVER2    0x34    /* PCIe to PCI/PCI-X bridge */
+> > > >     #define PCI_ERR_CAP2            0x38    /* PCIe to PCI/PCI-X bridge */
+> > > 
+> > > I don't seem to understand what you mean. PCI_ERR_UNCOR_MASK2,
+> > > PCI_ERR_UNCOR_SEVER2, and PCI_ERR_CAP2 represent the control and handling of
+> > > individual errors that occur on traditional PCI or PCI-x secondary bus
+> > > interfaces, these registers are valid only for Bridge. Although
+> > > PCI_ERR_ROOT_ERR_SRC and PCI_ERR_UNCOR_SEVER2 have the same value, they
+> > > represent register definitions for different device types.
+> > 
+> > Right.  I just don't want the blank line in the middle because it
+> > might be mistaken for items in a different capability.  All the other
+> > AER capability registers are defined together in a block, with no
+> > blank lines in the middle, so I think these new ones should be part of
+> > that block.
+> 
+> Ok，I see your point. Do you think this line of comment is still necessary?
+> /* PCIe advanced error reporting extended capabilities for PCIe to PCI/PCI-X
+> Bridge */
 
-> > ---
-> >  drivers/acpi/x86/utils.c | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> >
-> > diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-> > index ba420a28a4aa..9c2d6f35f88a 100644
-> > --- a/drivers/acpi/x86/utils.c
-> > +++ b/drivers/acpi/x86/utils.c
-> > @@ -143,6 +143,16 @@ static const struct override_status_id override_status_ids[] = {
-> >               DMI_EXACT_MATCH(DMI_BOARD_SERIAL, "Default string"),
-> >               DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Default string"),
-> >             }),
-> > +
-> > +     /*
-> > +      * The LSM303D on the Lenovo Yoga Tablet 2 series is present
-> > +      * as both ACCL0001 and MAGN0001. As we can only ever register an
-> > +      * i2c client for one of them, ignore MAGN0001.
-> > +      */
-> > +     NOT_PRESENT_ENTRY_HID("MAGN0001", "1", ATOM_SILVERMONT, {
-> > +             DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-> > +             DMI_MATCH(DMI_PRODUCT_FAMILY, "YOGATablet2"),
-> > +           }),
-> >  };
-> >
-> >  bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *status)
->
+I suggested a trailing comment ("PCIe to PCI/PCI-X bridge").  If we
+use that, I don't think the other is necessary.
+
+Bjorn
