@@ -2,68 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73FCF6F0632
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Apr 2023 14:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3CBB6F066D
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Apr 2023 15:13:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243650AbjD0Mwl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Apr 2023 08:52:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59214 "EHLO
+        id S243623AbjD0NNV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 Apr 2023 09:13:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242895AbjD0Mwl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Apr 2023 08:52:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 232F519F;
-        Thu, 27 Apr 2023 05:52:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B880863D3F;
-        Thu, 27 Apr 2023 12:52:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2124DC433A0;
-        Thu, 27 Apr 2023 12:52:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682599959;
-        bh=8nCNeq6AXVBJ5EROWgVt9eA0zo+3/yxMzOW0CgJVVkg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=W9Jr6LinDCp6loRDPYjnwFahHKlZBM0EppmUJaEtSplytrgAKoTIssQ8IiJaZIhJR
-         DO+uJZh9Oi8Jbf6tTg0krQWH+hWRFCuH39VCwzIh5W57KXwglXMW4qLFqYz5QEi0AZ
-         CeENXRSE7b4Kmi6t5jeLiS6YlxSF8cFyMnklZZouaYeS1I0IEErQgyTn9/woNtlfuf
-         hxSpEYDCGom5bps2STBCdfJGx+02xE+L74FSFDW/bfi01aMGyh3AGDJDJxp8xEIdIn
-         HyscRKkNvl6h8pgBCg0VKbSl40jPtxR5RlOrxs/zrlPSK/wNX7Qc+uWqq0Zj855WpZ
-         WPUJ3fgr/2oZA==
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2a8c30ac7e3so78988101fa.1;
-        Thu, 27 Apr 2023 05:52:39 -0700 (PDT)
-X-Gm-Message-State: AC+VfDwpESBzebk+b5Mru0vYZR7APrlbeDsVVvTVcaAPou+8mkjcGHC6
-        MoYljJ3AKOqH7igEugY57kXE1h0jSbFbWsaeVLE=
-X-Google-Smtp-Source: ACHHUZ4+lYEuTXfjergJTdbMtNMgSriOLZbeijoQ4dGgmQDMSaO3US5u2CA9Mh1ZsvJuvg/NwtJVHJ245d5LFh40jwM=
-X-Received: by 2002:a2e:9c81:0:b0:2a7:9cd3:3cc4 with SMTP id
- x1-20020a2e9c81000000b002a79cd33cc4mr517784lji.15.1682599957062; Thu, 27 Apr
- 2023 05:52:37 -0700 (PDT)
+        with ESMTP id S243595AbjD0NNU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Apr 2023 09:13:20 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1842040D9
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Apr 2023 06:13:17 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-94ef8b88a5bso1296437566b.2
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Apr 2023 06:13:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1682601195; x=1685193195;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9ymSyk174Q/aRoWNbYUHHG8erPdr3iK0BpQYJmy801k=;
+        b=HIgpg5N7XJjzbxz+z7IgxgVQ5128JI4dtyixvRnwGndbaq5YVIPtJHd+DaOorca26k
+         cr99XyR833joae9EIrXDFvGYDfgdx97lSuMToDnUqFhu9JA7SVMQJHER3oDi1Rp3QEOF
+         mLPJ2w5t3aMH0JrLeMU3g1mTm+pQghwAf7n/nH6OPPuRRH8u1MJicYy4tnsZoD/6nenc
+         EeThR0OHBw47zlfBPnB+cq15TJ0QLrtuGCvLMwLcZZYUg6DqV/RYw9pkk1E3rpyPuXst
+         ayDxj8TjQBJExMKsUnsMDqZQTfzm6bZlQ6b/oOXxuNOUqTuU/9i+0PZUQfGkDAoFnKXE
+         v4wA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682601195; x=1685193195;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9ymSyk174Q/aRoWNbYUHHG8erPdr3iK0BpQYJmy801k=;
+        b=JEm2vU3gmZO5sO4bSsesu1/V9bKAMq/AxdvcNV1wgYbZzzwVWwvlEffYDR3wGCerE1
+         cXEDZnd5veW6yU5BEYnT755LgkaoxFv1JsO5ng1V1G/IxsMMHlhjHA8VG5aJ5Ax9ARzM
+         uYEoxDfnpbHMnxgITXPPN64nFBjnMs7Uh7T9Rkg4Lz0O9DMqlcdMkHmPKyOC7ZT/6Vh8
+         sXKiJvHJs/oTuJ0wi9hRepa67ZXHPalPUrEidbGAy8SPyxnol/HYHz0p4WZQ7r/GnHNL
+         kv9WouwkavYJ7T2SUzA+BPJU3yeidHV4GVG45XsZTwRxrje7Xlll8rqixv/Hn7fiUqcw
+         QoXg==
+X-Gm-Message-State: AC+VfDxy+sYIrzh9uYe1lAjOIHvlhtUB9P3C32OzXy7oQ8ChryTZkUA8
+        9nQJHK0WGr1D58VPWWm0bhXEPg==
+X-Google-Smtp-Source: ACHHUZ4WhZAaEZw48L4mS8JWz5hV+DtJHTNQLlKB9/bS0XJh3GNfgim97pYJpFirPWLxY6K5pRGJaA==
+X-Received: by 2002:a17:907:7da9:b0:94b:cd7c:59f4 with SMTP id oz41-20020a1709077da900b0094bcd7c59f4mr1742934ejc.16.1682601195517;
+        Thu, 27 Apr 2023 06:13:15 -0700 (PDT)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+        by smtp.gmail.com with ESMTPSA id t25-20020a17090616d900b009534603453dsm9503863ejd.131.2023.04.27.06.13.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Apr 2023 06:13:14 -0700 (PDT)
+Date:   Thu, 27 Apr 2023 15:13:13 +0200
+From:   Andrew Jones <ajones@ventanamicro.com>
+To:     Sunil V L <sunilvl@ventanamicro.com>
+Cc:     Palmer Dabbelt <palmer@dabbelt.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-acpi@vger.kernel.org, linux-crypto@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, llvm@lists.linux.dev,
+        corbet@lwn.net, Paul Walmsley <paul.walmsley@sifive.com>,
+        aou@eecs.berkeley.edu, lenb@kernel.org, daniel.lezcano@linaro.org,
+        tglx@linutronix.de, qianweili@huawei.com, wangzhou1@hisilicon.com,
+        herbert@gondor.apana.org.au, Marc Zyngier <maz@kernel.org>,
+        luzmaximilian@gmail.com, hdegoede@redhat.com, markgross@kernel.org,
+        nathan@kernel.org, ndesaulniers@google.com, trix@redhat.com,
+        rafael@kernel.org, davem@davemloft.net, rafael.j.wysocki@intel.com
+Subject: Re: [PATCH V4 08/23] RISC-V: ACPI: Cache and retrieve the RINTC
+ structure
+Message-ID: <q7bug5j62ceniiif5joz5i73g7lbyebawbokcang4ctit4i634@e5bd6zqozbau>
+References: <20230404182037.863533-9-sunilvl@ventanamicro.com>
+ <mhng-fd6c3622-ce6c-4895-8dc9-7dbaa2ab14f4@palmer-ri-x1c9a>
+ <ZEo+6rwM+c6DvlMM@sunil-laptop>
+ <qqukqrc45zqyjh5bwpjpuiweogwtapuw7qqjjpubjwvteum6ig@esjfwqdivhpa>
+ <ZEpUCD+eq/NL7LXJ@sunil-laptop>
 MIME-Version: 1.0
-References: <20230426034001.16-1-cuiyunhui@bytedance.com> <CAMj1kXEKh9O-ndk3QFibJMYfMbG7vm-cLN2vVQM5eDsYK84NzQ@mail.gmail.com>
- <CAEEQ3wkJB5CKm33mHXUOPX5makYOHF8By6FYGnNzRkM-Mo72OQ@mail.gmail.com>
- <ZEj33QLZqEeL+/y4@FVFF77S0Q05N> <CAEEQ3wmDBJkfOeKCQfcnuE+1=1K0D2pzu+Sn+zPEWk+RHs0NFQ@mail.gmail.com>
- <CAP6exY+ydbzh1EkWTFejzwaW+PA-ySVO2Qj+CVJ1XbSMce2S9Q@mail.gmail.com> <ZEpbTE4gcsf8meXc@FVFF77S0Q05N>
-In-Reply-To: <ZEpbTE4gcsf8meXc@FVFF77S0Q05N>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 27 Apr 2023 13:52:25 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXH5kZJ6ff=PRCRDLCBcw2AkEnRL_L1ABuvu5n71=unvAw@mail.gmail.com>
-Message-ID: <CAMj1kXH5kZJ6ff=PRCRDLCBcw2AkEnRL_L1ABuvu5n71=unvAw@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH] firmware: added a firmware information
- passing method FFI
-To:     Mark Rutland <mark.rutland@arm.com>
-Cc:     ron minnich <rminnich@gmail.com>,
-        =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>, rafael@kernel.org,
-        lenb@kernel.org, jdelvare@suse.com, yc.hung@mediatek.com,
-        angelogioacchino.delregno@collabora.com,
-        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
-        tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZEpUCD+eq/NL7LXJ@sunil-laptop>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,54 +84,159 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 27 Apr 2023 at 12:24, Mark Rutland <mark.rutland@arm.com> wrote:
->
-> On Wed, Apr 26, 2023 at 09:04:56PM -0700, ron minnich wrote:
-> > The device tree is self describing data. Adding new information is easy. If you
-> > add new information to a node, and older software does not know about it, it is
-> > no big deal.
->
-> It's true that it's easy to add fields to an extensible format, but that wasn't
-> my point of contention. The *semantic* (e.g. all of the relevant DT bindings)
-> and *consumption* of that data is the important part, and that's what I was
-> referring to, though I appreciate my wording did not make that clear.
->
-> > So I can't agree with this comment: "We'd have to create entirely new ways to
-> > pass that information, which is not
-> > very desirable."
-> >
-> > The whole point of the dt is that you can always add new ways to pass
-> > information, by design.
-> >
-> > Adding memory attributes would be quite easy.
->
-> I don't disagree that is physically possible, and in isolation adding
-> properties to a DT is trivial, but the approach proposed is not "easy" unless
-> you ignore the cost of specifying analogues for all the EFI portions that you
-> plan to omit, ensuring that those stay functionally equivalent to their EFI
-> analogues as EFI and ACPI evolve over time, developing and maintaining the code
-> which must consume that, avoiding the issues that will arise due to novel
-> interactions (as e.g. DT and ACPI are mutually exclusive today, by design),
-> etc.
->
+On Thu, Apr 27, 2023 at 04:22:56PM +0530, Sunil V L wrote:
+> On Thu, Apr 27, 2023 at 12:25:42PM +0200, Andrew Jones wrote:
+> > On Thu, Apr 27, 2023 at 02:52:50PM +0530, Sunil V L wrote:
+> > > Hi Palmer,
+> > > 
+> > > On Wed, Apr 26, 2023 at 11:45:00AM -0700, Palmer Dabbelt wrote:
+> > > > On Tue, 04 Apr 2023 11:20:22 PDT (-0700), sunilvl@ventanamicro.com wrote:
+> > > > > RINTC structures in the MADT provide mapping between the hartid
+> > > > > and the CPU. This is required many times even at run time like
+> > > > > cpuinfo. So, instead of parsing the ACPI table every time, cache
+> > > > > the RINTC structures and provide a function to get the correct
+> > > > > RINTC structure for a given cpu.
+> > > > > 
+> > > > > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> > > > > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > > > ---
+> > > > >  arch/riscv/include/asm/acpi.h |  2 ++
+> > > > >  arch/riscv/kernel/acpi.c      | 60 +++++++++++++++++++++++++++++++++++
+> > > > >  2 files changed, 62 insertions(+)
+> > > > > 
+> > > > > diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acpi.h
+> > > > > index 9be52b6ffae1..1606dce8992e 100644
+> > > > > --- a/arch/riscv/include/asm/acpi.h
+> > > > > +++ b/arch/riscv/include/asm/acpi.h
+> > > > > @@ -59,6 +59,8 @@ static inline bool acpi_has_cpu_in_madt(void)
+> > > > > 
+> > > > >  static inline void arch_fix_phys_package_id(int num, u32 slot) { }
+> > > > > 
+> > > > > +struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu);
+> > > > > +u32 get_acpi_id_for_cpu(int cpu);
+> > > > >  #endif /* CONFIG_ACPI */
+> > > > > 
+> > > > >  #endif /*_ASM_ACPI_H*/
+> > > > > diff --git a/arch/riscv/kernel/acpi.c b/arch/riscv/kernel/acpi.c
+> > > > > index 81d448c41714..40ab55309c70 100644
+> > > > > --- a/arch/riscv/kernel/acpi.c
+> > > > > +++ b/arch/riscv/kernel/acpi.c
+> > > > > @@ -24,6 +24,66 @@ EXPORT_SYMBOL(acpi_disabled);
+> > > > >  int acpi_pci_disabled = 1;	/* skip ACPI PCI scan and IRQ initialization */
+> > > > >  EXPORT_SYMBOL(acpi_pci_disabled);
+> > > > > 
+> > > > > +static struct acpi_madt_rintc cpu_madt_rintc[NR_CPUS];
+> > > > > +
+> > > > > +static int acpi_parse_madt_rintc(union acpi_subtable_headers *header, const unsigned long end)
+> > > > > +{
+> > > > > +	struct acpi_madt_rintc *rintc = (struct acpi_madt_rintc *)header;
+> > > > > +	int cpuid;
+> > > > > +
+> > > > > +	if (!(rintc->flags & ACPI_MADT_ENABLED))
+> > > > > +		return 0;
+> > > > > +
+> > > > > +	cpuid = riscv_hartid_to_cpuid(rintc->hart_id);
+> > > > 
+> > > > Unless I'm missing something, this races with CPUs coming online.  Maybe
+> > > > that's a rare enough case we don't care, but I think we'd also just have
+> > > > simpler logic if we fixed it...
+> > > > 
+> > > This depend only on cpuid_to_hartid_map filled up. I wish I could
+> > > initialize this RINTC mapping in setup_smp() itself like ARM64. But in
+> > > RISC-V, this file smpboot.c gets built only when CONFIG_SMP is enabled.
+> > > Hence, we need to initialize this array outside of setup_smp().
+> > > 
+> > > I can update the code to initialize this from setup_arch() immediately
+> > > after setup_smp() if ACPI is enabled. That should avoid the global
+> > > variable check also. Let me know if you prefer this.
+> > > 
+> > > > > +	/*
+> > > > > +	 * When CONFIG_SMP is disabled, mapping won't be created for
+> > > > > +	 * all cpus.
+> > > > > +	 * CPUs more than NR_CPUS, will be ignored.
+> > > > > +	 */
+> > > > > +	if (cpuid >= 0 && cpuid < NR_CPUS)
+> > > > > +		cpu_madt_rintc[cpuid] = *rintc;
+> > > > > +
+> > > > > +	return 0;
+> > > > > +}
+> > > > > +
+> > > > > +static int acpi_init_rintc_array(void)
+> > > > > +{
+> > > > > +	if (acpi_table_parse_madt(ACPI_MADT_TYPE_RINTC, acpi_parse_madt_rintc, 0) > 0)
+> > > > > +		return 0;
+> > > > > +
+> > > > > +	return -ENODEV;
+> > > > > +}
+> > > > > +
+> > > > > +/*
+> > > > > + * Instead of parsing (and freeing) the ACPI table, cache
+> > > > > + * the RINTC structures since they are frequently used
+> > > > > + * like in  cpuinfo.
+> > > > > + */
+> > > > > +struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu)
+> > > > > +{
+> > > > > +	static bool rintc_init_done;
+> > > > 
+> > > > ... basically just get rid of this global variable, and instead have a
+> > > > 
+> > > >    if (!&cpu_madt_rintc[cpu])
+> > > >        ... parse ...
+> > > >    return &cpu_madt_rintc[cpu];
+> > > > 
+> > > > that'd probably let us get rid of a handful of these helpers too, as now
+> > > > it's just a call to the parsing bits.
+> > > > 
+> > > I am afraid this (!&cpu_madt_rintc[cpu]) check won't work since we are
+> > > not caching the RINTC pointers but actual contents itself. So, the
+> > > address is always valid. However, as per Drew's earlier feedback I am
+> > > going to reduce one helper. I am planning to send the next version of
+> > > this patch once 6.4 rc1 is available since the ACPICA patches are merged
+> > > now.
+> > > 
+> > > > > +
+> > > > > +	if (!rintc_init_done) {
+> > > > > +		if (acpi_init_rintc_array()) {
+> > > > > +			pr_err("No valid RINTC entries exist\n");
+> > > > > +			return NULL;
+> > > > > +		}
+> > > > > +
+> > > > > +		rintc_init_done = true;
+> > > > > +	}
+> > > > > +
+> > > > > +	return &cpu_madt_rintc[cpu];
+> > > > > +}
+> > > > > +
+> > > > > +u32 get_acpi_id_for_cpu(int cpu)
+> > > > > +{
+> > > > > +	struct acpi_madt_rintc *rintc = acpi_cpu_get_madt_rintc(cpu);
+> > > > > +
+> > > > > +	BUG_ON(!rintc);
+> > > > 
+> > > > We should have some better error reporting here.  It looks like all the
+> > > > callerss of get_acpi_id_for_cpu() are tolerant of a nonsense ID being
+> > > > returned, so maybe we just pr_warn() something users can understand and then
+> > > > return -1 or something?
+> > > > 
+> > > 
+> > > RINTC is mandatory for ACPI systems. Also, all 32bit values are valid
+> > > for UID. So, there is no bogus value we can return. 
+> > > 
+> > > Actually, I just realized this check is redundant. It will never be NULL
+> > > since it is a static array. So, we can just get rid of the BUG.
+> > 
+> > It can be NULL on the first call of acpi_cpu_get_madt_rintc(), which is
+> > a good time to BUG if there's isn't an RINTC.
+> > 
+> Sorry, I mean if we change the initialization to get called from
+> setup_arch, then we can get rid of this check along with global variable
+> check, correct?
 
-Indeed. Currently, Linux/arm64 supports two boot methods
+Sounds good to me, but now I think we're pushing the question of whether
+to BUG or not on a missing RINTC to that new init function, because
+otherwise we'll still end up in get_acpi_id_for_cpu() eventually with
+or without a valid rintc from which we get the uid (and the uid has no
+specified bogus value).
 
-- direct kernel boot
-- EFI boot
-
-and two types of hardware descriptions
-
-- device tree (DT)
-- ACPI
-
-and the only combination we do not support is ACPI without EFI, as
-ACPI on arm64 depends on the EFI memory map.
-
-What this patch seems to be proposing is a combination of all of
-these, i.e., doing a pseudo-EFI direct kernel boot where the EFI
-dependencies of ACPI are being fulfilled by ad-hoc descriptions passed
-in via DT.
-
-I am concerned that this will result in a maintenance burden for Linux
-with very little gain, so I feel we should not go down this road.
+Thanks,
+drew
