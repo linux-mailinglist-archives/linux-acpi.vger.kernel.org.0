@@ -2,241 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3CBB6F066D
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Apr 2023 15:13:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72AAE6F0871
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Apr 2023 17:35:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243623AbjD0NNV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Apr 2023 09:13:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36052 "EHLO
+        id S243906AbjD0Pfv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 Apr 2023 11:35:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243595AbjD0NNU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Apr 2023 09:13:20 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1842040D9
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Apr 2023 06:13:17 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-94ef8b88a5bso1296437566b.2
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Apr 2023 06:13:17 -0700 (PDT)
+        with ESMTP id S232630AbjD0Pfu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Apr 2023 11:35:50 -0400
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F123BFF;
+        Thu, 27 Apr 2023 08:35:48 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-b99f374179bso5432256276.3;
+        Thu, 27 Apr 2023 08:35:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1682601195; x=1685193195;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9ymSyk174Q/aRoWNbYUHHG8erPdr3iK0BpQYJmy801k=;
-        b=HIgpg5N7XJjzbxz+z7IgxgVQ5128JI4dtyixvRnwGndbaq5YVIPtJHd+DaOorca26k
-         cr99XyR833joae9EIrXDFvGYDfgdx97lSuMToDnUqFhu9JA7SVMQJHER3oDi1Rp3QEOF
-         mLPJ2w5t3aMH0JrLeMU3g1mTm+pQghwAf7n/nH6OPPuRRH8u1MJicYy4tnsZoD/6nenc
-         EeThR0OHBw47zlfBPnB+cq15TJ0QLrtuGCvLMwLcZZYUg6DqV/RYw9pkk1E3rpyPuXst
-         ayDxj8TjQBJExMKsUnsMDqZQTfzm6bZlQ6b/oOXxuNOUqTuU/9i+0PZUQfGkDAoFnKXE
-         v4wA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682601195; x=1685193195;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20221208; t=1682609748; x=1685201748;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9ymSyk174Q/aRoWNbYUHHG8erPdr3iK0BpQYJmy801k=;
-        b=JEm2vU3gmZO5sO4bSsesu1/V9bKAMq/AxdvcNV1wgYbZzzwVWwvlEffYDR3wGCerE1
-         cXEDZnd5veW6yU5BEYnT755LgkaoxFv1JsO5ng1V1G/IxsMMHlhjHA8VG5aJ5Ax9ARzM
-         uYEoxDfnpbHMnxgITXPPN64nFBjnMs7Uh7T9Rkg4Lz0O9DMqlcdMkHmPKyOC7ZT/6Vh8
-         sXKiJvHJs/oTuJ0wi9hRepa67ZXHPalPUrEidbGAy8SPyxnol/HYHz0p4WZQ7r/GnHNL
-         kv9WouwkavYJ7T2SUzA+BPJU3yeidHV4GVG45XsZTwRxrje7Xlll8rqixv/Hn7fiUqcw
-         QoXg==
-X-Gm-Message-State: AC+VfDxy+sYIrzh9uYe1lAjOIHvlhtUB9P3C32OzXy7oQ8ChryTZkUA8
-        9nQJHK0WGr1D58VPWWm0bhXEPg==
-X-Google-Smtp-Source: ACHHUZ4WhZAaEZw48L4mS8JWz5hV+DtJHTNQLlKB9/bS0XJh3GNfgim97pYJpFirPWLxY6K5pRGJaA==
-X-Received: by 2002:a17:907:7da9:b0:94b:cd7c:59f4 with SMTP id oz41-20020a1709077da900b0094bcd7c59f4mr1742934ejc.16.1682601195517;
-        Thu, 27 Apr 2023 06:13:15 -0700 (PDT)
-Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
-        by smtp.gmail.com with ESMTPSA id t25-20020a17090616d900b009534603453dsm9503863ejd.131.2023.04.27.06.13.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Apr 2023 06:13:14 -0700 (PDT)
-Date:   Thu, 27 Apr 2023 15:13:13 +0200
-From:   Andrew Jones <ajones@ventanamicro.com>
-To:     Sunil V L <sunilvl@ventanamicro.com>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-acpi@vger.kernel.org, linux-crypto@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, llvm@lists.linux.dev,
-        corbet@lwn.net, Paul Walmsley <paul.walmsley@sifive.com>,
-        aou@eecs.berkeley.edu, lenb@kernel.org, daniel.lezcano@linaro.org,
-        tglx@linutronix.de, qianweili@huawei.com, wangzhou1@hisilicon.com,
-        herbert@gondor.apana.org.au, Marc Zyngier <maz@kernel.org>,
-        luzmaximilian@gmail.com, hdegoede@redhat.com, markgross@kernel.org,
-        nathan@kernel.org, ndesaulniers@google.com, trix@redhat.com,
-        rafael@kernel.org, davem@davemloft.net, rafael.j.wysocki@intel.com
-Subject: Re: [PATCH V4 08/23] RISC-V: ACPI: Cache and retrieve the RINTC
- structure
-Message-ID: <q7bug5j62ceniiif5joz5i73g7lbyebawbokcang4ctit4i634@e5bd6zqozbau>
-References: <20230404182037.863533-9-sunilvl@ventanamicro.com>
- <mhng-fd6c3622-ce6c-4895-8dc9-7dbaa2ab14f4@palmer-ri-x1c9a>
- <ZEo+6rwM+c6DvlMM@sunil-laptop>
- <qqukqrc45zqyjh5bwpjpuiweogwtapuw7qqjjpubjwvteum6ig@esjfwqdivhpa>
- <ZEpUCD+eq/NL7LXJ@sunil-laptop>
+        bh=PsZyi0a0Qyzd4XEPp5AQRM/aaSWc36m3XhoaZ/NYbBo=;
+        b=dydtZn8dDiSwkv+/AK1cPkzFY7whtzPac7kF5OSf2RNdj+p5ORD4Vo8beDMBEPtaBm
+         6VnuDrLefwunnYWyrvpHkeSMBfOPMnvj3tctgGiGQli+JA3sp/bysou8mNlRvQIsVjP5
+         n/TGQ99mmdKg5axbl3+FgKW8RkYXYDs9ru/U1Urh9k9pfkbUz1+Nmo3T60afTcCqAjB5
+         Oa92XsZBy4ZjP2+ryTNrSMsBKQw2STWe6lVkd/XCJeU/TH0KwjhO20t9B+/JrDPiWj+p
+         fTYZekcdY5jNH8BnSrjZ9t4DQX9eEuwax5iPeXAiZfagK2922HXzwh0T6cMrktk4D9Qx
+         0OzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682609748; x=1685201748;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PsZyi0a0Qyzd4XEPp5AQRM/aaSWc36m3XhoaZ/NYbBo=;
+        b=iuhJqJGLkIieF2G2znFonRMoyY+Vr/jo/E5cYbvveldAF46WafsFc6eQUZ8dQuHHy6
+         RVARLQKdpQqlW/P2Ts3m/tLLFy6LzsMkNQ70cNP9rSJ2atb+ZEMXaMHw6ZFB3iEmS3fW
+         V48bGLMHGVS7EbAvfTnQXMFnXSFoE/r6lsvZ19k9jigVVGuOwzJFrJDWytZFFYquk/sq
+         5cXG1qLEUqyZnzhiKO+Ur24BNKw92CJVPEeXbatvArcJJMM5rfP0ZsPy0Pv32hKcCAdt
+         MrZBM1Ng2vfqCmHyujT8RLBO6dp0RquHF8ZIfGt9H544n6Pmrwap5YkMahJ7RKJ5YsKc
+         8zuw==
+X-Gm-Message-State: AC+VfDzhigmVOmUvvYRFUPOlkndEZMt0KoKanLvrPS2RMB6k6tTu68oH
+        LYZOoj6j/ZAryTxU66zzY38dsM5gCecjfb8rPg58hZOnEbxA6w==
+X-Google-Smtp-Source: ACHHUZ7HlMu1I4+r3L/J09BkBgctpOSx5nEnN0PSN7OjMbq/Qf+tQ8g/Sgo59BnZoxyvqWaf0MhbUQoIxzP0CTbnSH8=
+X-Received: by 2002:a25:24c4:0:b0:b99:15c0:770b with SMTP id
+ k187-20020a2524c4000000b00b9915c0770bmr1334413ybk.38.1682609748005; Thu, 27
+ Apr 2023 08:35:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZEpUCD+eq/NL7LXJ@sunil-laptop>
+References: <CAK4BXn0ngZRmzx1bodAF8nmYj0PWdUXzPGHofRrsyZj8MBpcVA@mail.gmail.com>
+ <2023041711-overcoat-fantastic-c817@gregkh> <CAK4BXn30dd3oCwcF2yVb5nNnjR21=8J2_po-gSUuArd5y=f9Ww@mail.gmail.com>
+ <CAJZ5v0g+PAOZs47LCrxRswZoCmHbGfBg3_cr13Y8zWPXDjgm3A@mail.gmail.com> <a3b89478-2d37-1b25-94e0-0e12396f6fd4@redhat.com>
+In-Reply-To: <a3b89478-2d37-1b25-94e0-0e12396f6fd4@redhat.com>
+From:   =?UTF-8?B?0KDRg9GB0LXQsiDQn9GD0YLQuNC9?= 
+        <rockeraliexpress@gmail.com>
+Date:   Thu, 27 Apr 2023 21:05:37 +0530
+Message-ID: <CAK4BXn37Ns8Z8g4ysKoOZJaVa8K+mFQm5PupAanQwmz07ygW9A@mail.gmail.com>
+Subject: Re: REGRESSION: ThinkPad W530 dim backlight with recent changes
+ introduced in Linux 6.1.24
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        linux-acpi@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 27, 2023 at 04:22:56PM +0530, Sunil V L wrote:
-> On Thu, Apr 27, 2023 at 12:25:42PM +0200, Andrew Jones wrote:
-> > On Thu, Apr 27, 2023 at 02:52:50PM +0530, Sunil V L wrote:
-> > > Hi Palmer,
-> > > 
-> > > On Wed, Apr 26, 2023 at 11:45:00AM -0700, Palmer Dabbelt wrote:
-> > > > On Tue, 04 Apr 2023 11:20:22 PDT (-0700), sunilvl@ventanamicro.com wrote:
-> > > > > RINTC structures in the MADT provide mapping between the hartid
-> > > > > and the CPU. This is required many times even at run time like
-> > > > > cpuinfo. So, instead of parsing the ACPI table every time, cache
-> > > > > the RINTC structures and provide a function to get the correct
-> > > > > RINTC structure for a given cpu.
-> > > > > 
-> > > > > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> > > > > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > > > ---
-> > > > >  arch/riscv/include/asm/acpi.h |  2 ++
-> > > > >  arch/riscv/kernel/acpi.c      | 60 +++++++++++++++++++++++++++++++++++
-> > > > >  2 files changed, 62 insertions(+)
-> > > > > 
-> > > > > diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acpi.h
-> > > > > index 9be52b6ffae1..1606dce8992e 100644
-> > > > > --- a/arch/riscv/include/asm/acpi.h
-> > > > > +++ b/arch/riscv/include/asm/acpi.h
-> > > > > @@ -59,6 +59,8 @@ static inline bool acpi_has_cpu_in_madt(void)
-> > > > > 
-> > > > >  static inline void arch_fix_phys_package_id(int num, u32 slot) { }
-> > > > > 
-> > > > > +struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu);
-> > > > > +u32 get_acpi_id_for_cpu(int cpu);
-> > > > >  #endif /* CONFIG_ACPI */
-> > > > > 
-> > > > >  #endif /*_ASM_ACPI_H*/
-> > > > > diff --git a/arch/riscv/kernel/acpi.c b/arch/riscv/kernel/acpi.c
-> > > > > index 81d448c41714..40ab55309c70 100644
-> > > > > --- a/arch/riscv/kernel/acpi.c
-> > > > > +++ b/arch/riscv/kernel/acpi.c
-> > > > > @@ -24,6 +24,66 @@ EXPORT_SYMBOL(acpi_disabled);
-> > > > >  int acpi_pci_disabled = 1;	/* skip ACPI PCI scan and IRQ initialization */
-> > > > >  EXPORT_SYMBOL(acpi_pci_disabled);
-> > > > > 
-> > > > > +static struct acpi_madt_rintc cpu_madt_rintc[NR_CPUS];
-> > > > > +
-> > > > > +static int acpi_parse_madt_rintc(union acpi_subtable_headers *header, const unsigned long end)
-> > > > > +{
-> > > > > +	struct acpi_madt_rintc *rintc = (struct acpi_madt_rintc *)header;
-> > > > > +	int cpuid;
-> > > > > +
-> > > > > +	if (!(rintc->flags & ACPI_MADT_ENABLED))
-> > > > > +		return 0;
-> > > > > +
-> > > > > +	cpuid = riscv_hartid_to_cpuid(rintc->hart_id);
-> > > > 
-> > > > Unless I'm missing something, this races with CPUs coming online.  Maybe
-> > > > that's a rare enough case we don't care, but I think we'd also just have
-> > > > simpler logic if we fixed it...
-> > > > 
-> > > This depend only on cpuid_to_hartid_map filled up. I wish I could
-> > > initialize this RINTC mapping in setup_smp() itself like ARM64. But in
-> > > RISC-V, this file smpboot.c gets built only when CONFIG_SMP is enabled.
-> > > Hence, we need to initialize this array outside of setup_smp().
-> > > 
-> > > I can update the code to initialize this from setup_arch() immediately
-> > > after setup_smp() if ACPI is enabled. That should avoid the global
-> > > variable check also. Let me know if you prefer this.
-> > > 
-> > > > > +	/*
-> > > > > +	 * When CONFIG_SMP is disabled, mapping won't be created for
-> > > > > +	 * all cpus.
-> > > > > +	 * CPUs more than NR_CPUS, will be ignored.
-> > > > > +	 */
-> > > > > +	if (cpuid >= 0 && cpuid < NR_CPUS)
-> > > > > +		cpu_madt_rintc[cpuid] = *rintc;
-> > > > > +
-> > > > > +	return 0;
-> > > > > +}
-> > > > > +
-> > > > > +static int acpi_init_rintc_array(void)
-> > > > > +{
-> > > > > +	if (acpi_table_parse_madt(ACPI_MADT_TYPE_RINTC, acpi_parse_madt_rintc, 0) > 0)
-> > > > > +		return 0;
-> > > > > +
-> > > > > +	return -ENODEV;
-> > > > > +}
-> > > > > +
-> > > > > +/*
-> > > > > + * Instead of parsing (and freeing) the ACPI table, cache
-> > > > > + * the RINTC structures since they are frequently used
-> > > > > + * like in  cpuinfo.
-> > > > > + */
-> > > > > +struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu)
-> > > > > +{
-> > > > > +	static bool rintc_init_done;
-> > > > 
-> > > > ... basically just get rid of this global variable, and instead have a
-> > > > 
-> > > >    if (!&cpu_madt_rintc[cpu])
-> > > >        ... parse ...
-> > > >    return &cpu_madt_rintc[cpu];
-> > > > 
-> > > > that'd probably let us get rid of a handful of these helpers too, as now
-> > > > it's just a call to the parsing bits.
-> > > > 
-> > > I am afraid this (!&cpu_madt_rintc[cpu]) check won't work since we are
-> > > not caching the RINTC pointers but actual contents itself. So, the
-> > > address is always valid. However, as per Drew's earlier feedback I am
-> > > going to reduce one helper. I am planning to send the next version of
-> > > this patch once 6.4 rc1 is available since the ACPICA patches are merged
-> > > now.
-> > > 
-> > > > > +
-> > > > > +	if (!rintc_init_done) {
-> > > > > +		if (acpi_init_rintc_array()) {
-> > > > > +			pr_err("No valid RINTC entries exist\n");
-> > > > > +			return NULL;
-> > > > > +		}
-> > > > > +
-> > > > > +		rintc_init_done = true;
-> > > > > +	}
-> > > > > +
-> > > > > +	return &cpu_madt_rintc[cpu];
-> > > > > +}
-> > > > > +
-> > > > > +u32 get_acpi_id_for_cpu(int cpu)
-> > > > > +{
-> > > > > +	struct acpi_madt_rintc *rintc = acpi_cpu_get_madt_rintc(cpu);
-> > > > > +
-> > > > > +	BUG_ON(!rintc);
-> > > > 
-> > > > We should have some better error reporting here.  It looks like all the
-> > > > callerss of get_acpi_id_for_cpu() are tolerant of a nonsense ID being
-> > > > returned, so maybe we just pr_warn() something users can understand and then
-> > > > return -1 or something?
-> > > > 
-> > > 
-> > > RINTC is mandatory for ACPI systems. Also, all 32bit values are valid
-> > > for UID. So, there is no bogus value we can return. 
-> > > 
-> > > Actually, I just realized this check is redundant. It will never be NULL
-> > > since it is a static array. So, we can just get rid of the BUG.
-> > 
-> > It can be NULL on the first call of acpi_cpu_get_madt_rintc(), which is
-> > a good time to BUG if there's isn't an RINTC.
-> > 
-> Sorry, I mean if we change the initialization to get called from
-> setup_arch, then we can get rid of this check along with global variable
-> check, correct?
+> This patch should not change the maximum brightness. But you may need
+to adjust the brightness once after changing to a new kernel with
+the patch because the range / brightness-curve may be different.
 
-Sounds good to me, but now I think we're pushing the question of whether
-to BUG or not on a missing RINTC to that new init function, because
-otherwise we'll still end up in get_acpi_id_for_cpu() eventually with
-or without a valid rintc from which we get the uid (and the uid has no
-specified bogus value).
+This patch does change the display brightness curve but it is very
+buggy and does not change the brightness as soon as set. There is a
+very significant delay in brightness transition on the laptop due to
+this patch. Also it is worth mentioning that this patch also messes up
+color contrast of the display causing significantly deeper blacks on
+the display.
 
-Thanks,
-drew
+> I would expect you to be able to get back your old brightness level
+then and this should persist over reboots after you have adjusted
+it once.
+>what happens if you use e.g. Fn + F9 to increase the brightness
+
+Here are the attached pictures explaining the situation.
+100% brightness on Kernel 6.3-rc7 - https://i.imgur.com/eQK890s.jpg
+100% brightness on Kernel 6.1.22 - https://i.imgur.com/1rgNtxJ.jpg
+
+Thanks.
+
+On Fri, Apr 21, 2023 at 12:05=E2=80=AFAM Hans de Goede <hdegoede@redhat.com=
+> wrote:
+>
+> Hi =D0=A0=D1=83=D1=81=D0=B5=D0=B2 =D0=9F=D1=83=D1=82=D0=B8=D0=BD,
+>
+> On 4/20/23 19:02, Rafael J. Wysocki wrote:
+> > CC: Hans
+> >
+> > On Thu, Apr 20, 2023 at 6:38=E2=80=AFPM =D0=A0=D1=83=D1=81=D0=B5=D0=B2 =
+=D0=9F=D1=83=D1=82=D0=B8=D0=BD <rockeraliexpress@gmail.com> wrote:
+> >>
+> >>> Any reason why you didn't cc: the developers of that commit?
+> >> Sorry I did not realise I should have done that.
+> >>
+> >>> Do you also have this issue on the latest 6.3-rc release?
+> >> Yes I have tested it recently by installing the latest 6.3-rc7 kernel
+> >> , and I do encounter the same issue there. I have linked the
+> >> screenshots below referring the same.
+> >> Kernel 6.3.0-rc7 with 43% brightness - https://i.imgur.com/5LqsEJb.jpg
+> >>
+> >>> That's what this commit does, right?
+> >> According to the commit , it was pushed to fix backlight controls
+> >> which were broken on Lenovo Thinkpad W530 while using NVIDIA. It was
+> >> not intended to reduce the backlight intensity on W530. Backlight is
+> >> dimmer than before even when using the laptop in Intel iGPU mode.
+>
+> This patch should not change the maximum brightness. But you may need
+> to adjust the brightness once after changing to a new kernel with
+> the patch because the range / brightness-curve may be different.
+>
+> On the imgur URL your display brightness shows as being at 43%,
+> what happens if you use e.g. Fn + F9 to increase the brightness ?
+>
+> I would expect you to be able to get back your old brightness level
+> then and this should persist over reboots after you have adjusted
+> it once.
+>
+> If adjusting it does not help / work then we will need to revert
+> the patch causing this.
+>
+> Regards,
+>
+> Hans
+>
+>
