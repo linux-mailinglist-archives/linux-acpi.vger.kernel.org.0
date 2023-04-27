@@ -2,98 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA0A26F02A2
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Apr 2023 10:34:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDE026F034F
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Apr 2023 11:24:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243133AbjD0IeK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Apr 2023 04:34:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46448 "EHLO
+        id S243308AbjD0JXM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 Apr 2023 05:23:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243166AbjD0IeF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Apr 2023 04:34:05 -0400
-Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B74F64C3D
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Apr 2023 01:34:02 -0700 (PDT)
-Received: by mail-il1-x132.google.com with SMTP id e9e14a558f8ab-32a62613a69so19156615ab.2
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Apr 2023 01:34:02 -0700 (PDT)
+        with ESMTP id S243252AbjD0JXL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Apr 2023 05:23:11 -0400
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 439B62D73
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Apr 2023 02:23:03 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-63b7b54642cso5870534b3a.0
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Apr 2023 02:23:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1682584442; x=1685176442;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sABY6A67E6Cr5HzYkc9PhVkZQhkD8kgg0GZ6k0SOVCs=;
-        b=ZXCewySSCGLGW2ssIYmj8XvdD9bNIevJa4tXEfsy/2Rz+vT3jB+TdKdDT0dHQdtQ7P
-         NhkiCmfWRYa1242dz9Hna3BPrYr0bHYXfjGTQyIMEr46utyp7Zty4/mxL4k08MdVqMbv
-         NysGsqgJnHdLCcEzprjPToeuBT/32G1FAqNKY=
+        d=ventanamicro.com; s=google; t=1682587382; x=1685179382;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=b4tmAtbJaHWfTAbFkdGyP1UUwCahMULqyPQK3zTjGzc=;
+        b=YRR8+nwiwBRWdu+ISCLSUieKCxjJzKGl6+oqhEO/3BRqOIOSZ8Qko6ouC9u7p2HpTX
+         gdnzmSG1RwEXmBdnDiO0OZMpDHopOb7UfbKa85eHey0TP0gQd3q1yv1tTPeaxeWx2qIu
+         kY2Mj84whu79JeOW5KjI+dW1EjDkrG8S/u0DbgVxwLqXWdjQfebgAN//TuFJsvpHCzMe
+         WdXHvCJQVo9P4UaFl9zY0C7wB0iXNSnzvnt4mHaUmyeayfGP7okRyh6CZxuwWIpMngbd
+         bYPmen8R4y4/TyTosIADLMAPn3mwYVLIBKA0NA7bBzvfqscFUwnmsFtr4siJ+1x47S6b
+         7PJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682584442; x=1685176442;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sABY6A67E6Cr5HzYkc9PhVkZQhkD8kgg0GZ6k0SOVCs=;
-        b=AdeQ2KANvTZRCxXJ+Rqz12rWzqF6Cwjf+qVTLYezDUy4HynAKUffgVd3E0jCV2F5JM
-         MRhfYtp+N+W3gVvkWOKyRRb3nqJz4Tl38BbGMKsICH1LOCTWQoEjD0qpQ4fxSp0BJp9x
-         B3HnPLkkeLnBFcp+3utPBAMKqm+Sg3TJdzYSxcf2Elsrkna2Glxp8l5WsR5CLrNmipBp
-         N+C/r6RCq89RsfUqSq4Lawoq1Ky6oFdnUBAuwxcB9fZqusWI42OLfhS1pilsvniaAeD+
-         yqsgjRcVenp8b+p2KL1Vv05ETUfeNgZKOYoI82W/C9R6fhS2rnJK9RSEdUSaGmGnQeFr
-         eG5g==
-X-Gm-Message-State: AC+VfDxNLucgPTqNXVBqhtrg/kWd3mGWvbfjSXVlWjVhCvmwCxGKeDZ6
-        Q1EbJ0deknMgoiNX/O0R2V2kHDeXrevZdFGWYvk1nQ==
-X-Google-Smtp-Source: ACHHUZ6G8bxKhwblghlEc4n/zFsjFZp0dwMaJ3weKd4SVVgKwn7iy+BZ9ek6/DBO+rvf15mslpALYE3KPS/vz18U6n8=
-X-Received: by 2002:a92:c84d:0:b0:318:ab40:4e9b with SMTP id
- b13-20020a92c84d000000b00318ab404e9bmr742195ilq.2.1682584441951; Thu, 27 Apr
- 2023 01:34:01 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1682587383; x=1685179383;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b4tmAtbJaHWfTAbFkdGyP1UUwCahMULqyPQK3zTjGzc=;
+        b=ghWdaTnViuaWEIoTcnyGzsxuTji1pI96cJJzhadNunGfX+w3nx9+O3/4Zbjijpk5ys
+         HqIgmXujmiRlGoN0H5noQYUHEt+N+JrC3EnbTjbRhS2GpAgLb4Yq5fE1B6htouNBXZIL
+         GI+P3gPJzmqqiQAwX2w5iIr4N8EGBA5TFvxggRgASZUlY/lVvDeBK3rrCzPAiLBQ4gXT
+         ld6GalbP/tEGyumjZPstWPQq/QMp+uMm2yCE9XWKUmK98/Cq93/17zZA6ViF7VBWbdPm
+         8ZbAZEIxSM89yGujV1VOLXOTAQEDL+X9uP0RxVBjTl5hjl2XkjCZwJvUKrSM4uv8UUDE
+         5kMQ==
+X-Gm-Message-State: AC+VfDydQaxvI5hvgVO/qaw9fH6leyDLlReQN0OMG0mj6glcF/46T4z6
+        bC5m5gNVGGDDS1l98Xeo0j3VJA==
+X-Google-Smtp-Source: ACHHUZ7RWci9fHcfj1Kz5md3jazQZh7oA/8a9iSA8EEYdE24w8faCyvnC3O4ecPFfRxC69G0cl789g==
+X-Received: by 2002:a05:6a00:22ca:b0:63b:5c82:e21a with SMTP id f10-20020a056a0022ca00b0063b5c82e21amr1814185pfj.1.1682587382560;
+        Thu, 27 Apr 2023 02:23:02 -0700 (PDT)
+Received: from sunil-laptop ([2409:4071:6e90:4e5:b276:2557:8da6:6c7e])
+        by smtp.gmail.com with ESMTPSA id i66-20020a62c145000000b0063d318699f9sm12712205pfg.48.2023.04.27.02.22.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Apr 2023 02:23:02 -0700 (PDT)
+Date:   Thu, 27 Apr 2023 14:52:50 +0530
+From:   Sunil V L <sunilvl@ventanamicro.com>
+To:     Palmer Dabbelt <palmer@dabbelt.com>
+Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+        linux-crypto@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        llvm@lists.linux.dev, corbet@lwn.net,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        aou@eecs.berkeley.edu, lenb@kernel.org, daniel.lezcano@linaro.org,
+        tglx@linutronix.de, qianweili@huawei.com, wangzhou1@hisilicon.com,
+        herbert@gondor.apana.org.au, Marc Zyngier <maz@kernel.org>,
+        luzmaximilian@gmail.com, hdegoede@redhat.com, markgross@kernel.org,
+        nathan@kernel.org, ndesaulniers@google.com, trix@redhat.com,
+        rafael@kernel.org, davem@davemloft.net, rafael.j.wysocki@intel.com
+Subject: Re: [PATCH V4 08/23] RISC-V: ACPI: Cache and retrieve the RINTC
+ structure
+Message-ID: <ZEo+6rwM+c6DvlMM@sunil-laptop>
+References: <20230404182037.863533-9-sunilvl@ventanamicro.com>
+ <mhng-fd6c3622-ce6c-4895-8dc9-7dbaa2ab14f4@palmer-ri-x1c9a>
 MIME-Version: 1.0
-References: <20230331091145.737305-1-treapking@chromium.org>
- <20230331091145.737305-5-treapking@chromium.org> <CAE-0n51E5foFWQAsA73662_5e6XP426wuUCVVmcS5UWwiYpDmw@mail.gmail.com>
- <CAEXTbpdcbB_z4ZGCGzc-cM74ECKyxekbroKCWFnhH8eR=4HmvA@mail.gmail.com>
- <CAE-0n50atfmr-bFh5XtTCm4WpSijJGSe0B5JP8ni7CCYk7Bs5A@mail.gmail.com>
- <CAE-0n51Qy-KDGHOCr4Smpebq1fCURqvJ2RJz6KAtVpv5e+DSGA@mail.gmail.com> <CAEXTbpeKe1dVHp9cauMN-9nQb35oJ-ZhdFV-8BiWzjjhWAy0Zg@mail.gmail.com>
-In-Reply-To: <CAEXTbpeKe1dVHp9cauMN-9nQb35oJ-ZhdFV-8BiWzjjhWAy0Zg@mail.gmail.com>
-From:   Pin-yen Lin <treapking@chromium.org>
-Date:   Thu, 27 Apr 2023 16:33:51 +0800
-Message-ID: <CAEXTbpcBrd9W_BLcDO5JO9v=r+WOOfU8KmuSyZKr5sT=ezk6KA@mail.gmail.com>
-Subject: Re: [PATCH v15 04/10] dt-bindings: display: bridge: anx7625: Add
- mode-switch support
-To:     Stephen Boyd <swboyd@chromium.org>
-Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Benson Leung <bleung@chromium.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Robert Foss <rfoss@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Xin Ji <xji@analogixsemi.com>, Marek Vasut <marex@denx.de>,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Lyude Paul <lyude@redhat.com>, devicetree@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-acpi@vger.kernel.org,
-        chrome-platform@lists.linux.dev,
-        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
-        <nfraprado@collabora.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Chen-Yu Tsai <wenst@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <mhng-fd6c3622-ce6c-4895-8dc9-7dbaa2ab14f4@palmer-ri-x1c9a>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -101,112 +81,143 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 20, 2023 at 5:10=E2=80=AFPM Pin-yen Lin <treapking@chromium.org=
-> wrote:
->
-> On Thu, Apr 20, 2023 at 2:10=E2=80=AFPM Stephen Boyd <swboyd@chromium.org=
-> wrote:
-> >
-> > Quoting Stephen Boyd (2023-04-13 17:22:46)
-> > > Quoting Pin-yen Lin (2023-04-13 02:50:44)
-> > > >
-> > > > Actually the `mode-switch` property here is mainly because
-> > > > `fwnode_typec_mux_get`[1] and `typec_mux_match`[2] only return matc=
-hes
-> > > > when the property is present. I am not sure what side effects would=
- be
-> > > > if I remove the ID-matching condition in `typec_mux_match`, so I ad=
-ded
-> > > > the property here.
-> > > >
-> > > > Is it feasible to remove the `mode-switch` property here given the
-> > > > existing implementation of the Type-C framework?
-> > >
-> > > Omitting the mode-switch property would require changes to the type-c
-> > > framework.
-> > >
-> > > I'm wondering if we can have this anx driver register mode switches f=
-or
-> > > however many endpoints exist in the output port all the time when the
-> > > aux-bus node doesn't exist. Then the type-c framework can walk from t=
-he
-> > > usb-c-connector to each connected node looking for a device that is b=
-oth
-> > > a drm_bridge and a mode-switch. When it finds that combination, it kn=
-ows
-> > > that the mode-switch has been found. This hinges on the idea that a
-> > > device that would have the mode-switch property is a drm_bridge and
-> > > would register a mode-switch with the type-c framework.
+Hi Palmer,
 
-I spent some time working on this approach on the Type-C side. The
-issue I met is that the driver doesn't know whether a node is a
-drm_bridge before the anx7625 driver probes. When there is a
-"mode-switch" property in the node, the Type-C framework knows that
-"here is a mode switch, but the corresponding driver hasn't registered
-the typec_mux". So it returns -EPROBE_DEFER and retries later.
-However, if we remove the property, the Type-C framework won't know
-whether a node will be registered as a drm_bridge and register a
-typec_mux.
+On Wed, Apr 26, 2023 at 11:45:00AM -0700, Palmer Dabbelt wrote:
+> On Tue, 04 Apr 2023 11:20:22 PDT (-0700), sunilvl@ventanamicro.com wrote:
+> > RINTC structures in the MADT provide mapping between the hartid
+> > and the CPU. This is required many times even at run time like
+> > cpuinfo. So, instead of parsing the ACPI table every time, cache
+> > the RINTC structures and provide a function to get the correct
+> > RINTC structure for a given cpu.
+> > 
+> > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >  arch/riscv/include/asm/acpi.h |  2 ++
+> >  arch/riscv/kernel/acpi.c      | 60 +++++++++++++++++++++++++++++++++++
+> >  2 files changed, 62 insertions(+)
+> > 
+> > diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acpi.h
+> > index 9be52b6ffae1..1606dce8992e 100644
+> > --- a/arch/riscv/include/asm/acpi.h
+> > +++ b/arch/riscv/include/asm/acpi.h
+> > @@ -59,6 +59,8 @@ static inline bool acpi_has_cpu_in_madt(void)
+> > 
+> >  static inline void arch_fix_phys_package_id(int num, u32 slot) { }
+> > 
+> > +struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu);
+> > +u32 get_acpi_id_for_cpu(int cpu);
+> >  #endif /* CONFIG_ACPI */
+> > 
+> >  #endif /*_ASM_ACPI_H*/
+> > diff --git a/arch/riscv/kernel/acpi.c b/arch/riscv/kernel/acpi.c
+> > index 81d448c41714..40ab55309c70 100644
+> > --- a/arch/riscv/kernel/acpi.c
+> > +++ b/arch/riscv/kernel/acpi.c
+> > @@ -24,6 +24,66 @@ EXPORT_SYMBOL(acpi_disabled);
+> >  int acpi_pci_disabled = 1;	/* skip ACPI PCI scan and IRQ initialization */
+> >  EXPORT_SYMBOL(acpi_pci_disabled);
+> > 
+> > +static struct acpi_madt_rintc cpu_madt_rintc[NR_CPUS];
+> > +
+> > +static int acpi_parse_madt_rintc(union acpi_subtable_headers *header, const unsigned long end)
+> > +{
+> > +	struct acpi_madt_rintc *rintc = (struct acpi_madt_rintc *)header;
+> > +	int cpuid;
+> > +
+> > +	if (!(rintc->flags & ACPI_MADT_ENABLED))
+> > +		return 0;
+> > +
+> > +	cpuid = riscv_hartid_to_cpuid(rintc->hart_id);
+> 
+> Unless I'm missing something, this races with CPUs coming online.  Maybe
+> that's a rare enough case we don't care, but I think we'd also just have
+> simpler logic if we fixed it...
+> 
+This depend only on cpuid_to_hartid_map filled up. I wish I could
+initialize this RINTC mapping in setup_smp() itself like ARM64. But in
+RISC-V, this file smpboot.c gets built only when CONFIG_SMP is enabled.
+Hence, we need to initialize this array outside of setup_smp().
 
-Do you have other suggestions on this if we want to choose this approach?
+I can update the code to initialize this from setup_arch() immediately
+after setup_smp() if ACPI is enabled. That should avoid the global
+variable check also. Let me know if you prefer this.
 
-Best regards,
-Pin-yen
-> > >
-> > > It may be a little complicated though, because we would only register
-> > > one drm_bridge for the input to this anx device. The type-c walking c=
-ode
-> > > would need to look at the graph endpoint, and find the parent device =
-to
-> > > see if it is a drm_bridge.
-> >
-> > I've been thinking more about this. I think we should only have the
-> > 'mode-switch' property possible when the USB input pins (port@2) are
-> > connected and the DPI input pins are connected (port@0). Probably you
-> > don't have that case though?
->
-> No we don't have the use case that uses the USB input pins on anx7625.
-> >
-> > In your case, this device should register either one or two drm_bridges
-> > that connect to whatever downstream is actually muxing the 2 DP lanes
-> > with the USB SS lanes onto the usb-c-connector.
->
-> What do you mean by "muxing the 2 DP lanes with the USB SS lanes''? In
-> our use case, the USB data lanes from both ports are connected to a
-> USB hub, but the DP lanes are muxed by the crosspoint switch on
-> anx7625. HPD and AUX for the external display are muxed by the EC. You
-> can find the diagram at
-> https://lore.kernel.org/linux-usb/YxGzk6DNAt0aCvIY@chromium.org/
->
-> > If that is the EC for
-> > ChromeOS, then the EC should have a binding that accepts some number of
-> > input ports for DP. The EC would act as a drm_bridge, or in this case
-> > probably two bridges, and also as two type-c switches for each
-> > drm_bridge corresponding to the usb-c-connector nodes. When DP is on th=
-e
-> > cable, the type-c switch/mux would signal to the drm_bridge that the
-> > display is 'connected' via DRM_BRIDGE_OP_DETECT and struct
-> > drm_bridge_funcs::detect(). Then the drm_bridge in this anx part would
-> > implement struct drm_bridge_funcs::atomic_enable() and configure the
-> > crosspoint switch the right way depending on the reg property of the
-> > output node in port@1.
->
-> So there will be two drm bridges that act as the downstreams for
-> anx7625, and we find the downstream with connector_status_connected to
-> configure the crosspoint switch? How do we support that kind of
-> topology given that the drm bridge chain is currently a list? Are you
-> suggesting making the bridge topology to a tree, or maintaining the
-> two downstreams inside the anx7625 driver and not attaching them to
-> the bridge chain?
->
-> Also, if we still register mode switches on the two downstream
-> bridges, why do you prefer that over the original approach that
-> register switches in the anx7625 driver?
->
-> >
-> > Because you don't have the part that implements the orientation-switch,
-> > you don't need to implement the code for it. I think simply adding
-> > support in the binding for mode-switch and orientation-switch if this i=
-s
-> > directly wired to a usb-c-connector should be sufficient. Those
-> > properties would be at the top-level and not part of the graph binding.
+> > +	/*
+> > +	 * When CONFIG_SMP is disabled, mapping won't be created for
+> > +	 * all cpus.
+> > +	 * CPUs more than NR_CPUS, will be ignored.
+> > +	 */
+> > +	if (cpuid >= 0 && cpuid < NR_CPUS)
+> > +		cpu_madt_rintc[cpuid] = *rintc;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int acpi_init_rintc_array(void)
+> > +{
+> > +	if (acpi_table_parse_madt(ACPI_MADT_TYPE_RINTC, acpi_parse_madt_rintc, 0) > 0)
+> > +		return 0;
+> > +
+> > +	return -ENODEV;
+> > +}
+> > +
+> > +/*
+> > + * Instead of parsing (and freeing) the ACPI table, cache
+> > + * the RINTC structures since they are frequently used
+> > + * like in  cpuinfo.
+> > + */
+> > +struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu)
+> > +{
+> > +	static bool rintc_init_done;
+> 
+> ... basically just get rid of this global variable, and instead have a
+> 
+>    if (!&cpu_madt_rintc[cpu])
+>        ... parse ...
+>    return &cpu_madt_rintc[cpu];
+> 
+> that'd probably let us get rid of a handful of these helpers too, as now
+> it's just a call to the parsing bits.
+> 
+I am afraid this (!&cpu_madt_rintc[cpu]) check won't work since we are
+not caching the RINTC pointers but actual contents itself. So, the
+address is always valid. However, as per Drew's earlier feedback I am
+going to reduce one helper. I am planning to send the next version of
+this patch once 6.4 rc1 is available since the ACPICA patches are merged
+now.
+
+> > +
+> > +	if (!rintc_init_done) {
+> > +		if (acpi_init_rintc_array()) {
+> > +			pr_err("No valid RINTC entries exist\n");
+> > +			return NULL;
+> > +		}
+> > +
+> > +		rintc_init_done = true;
+> > +	}
+> > +
+> > +	return &cpu_madt_rintc[cpu];
+> > +}
+> > +
+> > +u32 get_acpi_id_for_cpu(int cpu)
+> > +{
+> > +	struct acpi_madt_rintc *rintc = acpi_cpu_get_madt_rintc(cpu);
+> > +
+> > +	BUG_ON(!rintc);
+> 
+> We should have some better error reporting here.  It looks like all the
+> callerss of get_acpi_id_for_cpu() are tolerant of a nonsense ID being
+> returned, so maybe we just pr_warn() something users can understand and then
+> return -1 or something?
+> 
+
+RINTC is mandatory for ACPI systems. Also, all 32bit values are valid
+for UID. So, there is no bogus value we can return. 
+
+Actually, I just realized this check is redundant. It will never be NULL
+since it is a static array. So, we can just get rid of the BUG.
+
+Thanks!
+Sunil
