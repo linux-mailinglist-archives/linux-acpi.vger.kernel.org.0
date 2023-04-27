@@ -2,137 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F7AD6F0A2F
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Apr 2023 18:47:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61CC36F0A43
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Apr 2023 18:52:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244302AbjD0QrL convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 27 Apr 2023 12:47:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38876 "EHLO
+        id S243972AbjD0QwH convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 27 Apr 2023 12:52:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243777AbjD0QrI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Apr 2023 12:47:08 -0400
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B2264C34
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Apr 2023 09:47:04 -0700 (PDT)
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-9594916df23so161075266b.1
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Apr 2023 09:47:04 -0700 (PDT)
+        with ESMTP id S243673AbjD0QwG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Apr 2023 12:52:06 -0400
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8729BE53;
+        Thu, 27 Apr 2023 09:52:05 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-94ea38c90ccso257174466b.1;
+        Thu, 27 Apr 2023 09:52:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682614023; x=1685206023;
+        d=1e100.net; s=20221208; t=1682614324; x=1685206324;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KjsrLK++1Ok9mkPQh5RzlJPsuvae+2fAnwHy/bXuTZQ=;
-        b=f5AnjhThfcyLnyC7v+3eWWzgwGuiDgicvdBgLp8B/IRH8Iv21GcIv5WYalp6E9NKmI
-         nEV8rj/4qVu+drIcW1wMSOOQlm1J4b52vjdZxste21tyIKliO+bU0YjOhRSVoRWKmi6o
-         A3a5j1PBDpQVhQfgL2C0NnkKadGjfUzxI5VgCd9eP2btbZ0gixe2eNtTM4lsSrvYd1vG
-         w5xu+eoSRVKYK6Q5Xp6TNoFwbldh1orkFJ/irfJ2Am+eCfuuOZ67ygobqRlJIklFkYDC
-         hAwwDcsdNl8Ko5oXVZeaJa4a1zr4JxnzaqnqtVnpQWMim3QbU8AgX2d0ngqPWqiJ4zEO
-         BMEQ==
-X-Gm-Message-State: AC+VfDxuJMto8WoB2YcaycEOWJjzL9w8OGMHNVArACk4ZYzkAmUPkaL7
-        vSACWsOU8vpI0Mk9NKilKKSg6KHiqL+xLpeF3dQ=
-X-Google-Smtp-Source: ACHHUZ7D1zPxvk3A3EfX41SNrGI4Oj+vvVgaiLJaFUX28cuiAeNQp++k07zyro+shIsRsSfHNs5lDdKbXwvh2ifcbAQ=
-X-Received: by 2002:a17:906:64c4:b0:930:7f40:c1bb with SMTP id
- p4-20020a17090664c400b009307f40c1bbmr2189658ejn.4.1682614022494; Thu, 27 Apr
- 2023 09:47:02 -0700 (PDT)
+        bh=EvcbD3dea1VXhYTRxoOIHuehyvAfbvA2NIEtdoBYTSA=;
+        b=FQGQh/svT2ORpkGeB0ZFfnVqYg/TBpcH3ULIO9I+2/8rMPCeZhNtxyOU4lbQQ6rM+3
+         HrZvHmniUVp4Qkvluua51H0MrgigUYXUtazBJOosNqeYstFcNLGa9gaCYq+xJx0E4Qe9
+         UhVTvaOf275muEskp3TSuxzruJ0z0QqmukmBk1O5HqzHUp7rTnhhXoErhro/AXuVkF+a
+         3vAP4hVUXDU1aLqJjKZLmVVPQgpK4s+LChVIKb5LJEQnS5+IDsm6Ipz3C+Ybsp64TdhL
+         eZ56MArRN57H2aCt6IoTgIRDZTlInDzRiBweowyGkbOTze4pg3sxQsnx3BQEq/SYVM/o
+         7GGA==
+X-Gm-Message-State: AC+VfDwaG69EbQ3IWyF8ruCer/qH3HlSrp8HSIpxSDl2dmsGtYKEgEsN
+        JUGJemADAD2/E+wo9QrBhoK4XV15IL1JrneFzz4=
+X-Google-Smtp-Source: ACHHUZ7foY3qa/lhqYHWPYHMFlohzn9HpC6fAXvaMf+7yCEBoT61d9qAeve6bzo5KVOanK3QJkSnBqMm1TSgd6J5wmk=
+X-Received: by 2002:a17:906:738a:b0:94a:5f0d:d9d6 with SMTP id
+ f10-20020a170906738a00b0094a5f0dd9d6mr2120242ejl.4.1682614323815; Thu, 27 Apr
+ 2023 09:52:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230420110220.23168-1-hdegoede@redhat.com>
-In-Reply-To: <20230420110220.23168-1-hdegoede@redhat.com>
+References: <20230424-acpi-prop-v1-1-ffa9a300b1cd@marcan.st>
+In-Reply-To: <20230424-acpi-prop-v1-1-ffa9a300b1cd@marcan.st>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 27 Apr 2023 18:46:51 +0200
-Message-ID: <CAJZ5v0jUC24BanTT_-RTm=5z0Hnpdvyse4VgFsV-VFsM1nbxHg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: PM: Do not turn of unused power resources on the
- Toshiba Click Mini
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        regressions@lists.linux.dev, linux-acpi@vger.kernel.org,
-        =?UTF-8?B?R8OpIEtvZXJrYW1w?= <ge.koerkamp@gmail.com>
+Date:   Thu, 27 Apr 2023 18:51:52 +0200
+Message-ID: <CAJZ5v0hGyiUztmKkhZe9Hp4jaS0_iyOgnpVBRv8SLAre2nTOmw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI / property: Support strings in Apple _DSM props
+To:     Hector Martin <marcan@marcan.st>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, asahi@lists.kernel.dev,
+        Lukas Wunner <lukas@wunner.de>,
+        Linus Walleij <linus.walleij@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Apr 20, 2023 at 1:02 PM Hans de Goede <hdegoede@redhat.com> wrote:
+On Mon, Apr 24, 2023 at 8:47 AM Hector Martin <marcan@marcan.st> wrote:
 >
-> The CPR3 power resource on the Toshiba Click Mini toggles a GPIO
-> which is called SISP (for SIS touchscreen power?) on/off.
+> The Wi-Fi module in x86 Apple machines has a "module-instance" device
+> property that specifies the platform type and is used for firmware
+> selection. Its value is a string, so add support for string values in
+> acpi_extract_apple_properties().
 >
-> This CPR3 power resource is not listed in any _PR? lists, let alone
-> in a _PR0 list for the SIS0817 touchscreen ACPI device which needs it.
->
-> Before commit a1224f34d72a ("ACPI: PM: Check states of power resources
-> during initialization") this was not an issue because since nothing
-> referenced the CPR3 power resource its state was always
-> ACPI_POWER_RESOURCE_STATE_UNKNOWN and power resources with this state
-> get ignored by acpi_turn_off_unused_power_resources().
->
-> This clearly is a bug in the DSDT of this device. Add a DMI quirk
-> to make acpi_turn_off_unused_power_resources() a no-op on this
-> model to fix the touchscreen no longer working since kernel 5.16 .
->
-> This quirk also causes 2 other power resources to not get turned
-> off, but the _OFF method on these already was a no-op, so this makes
-> no difference for the other 2 power resources.
->
-> Fixes: a1224f34d72a ("ACPI: PM: Check states of power resources during initialization")
-> Reported-by: Gé Koerkamp <ge.koerkamp@gmail.com>
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216946
-> Link: https://lore.kernel.org/regressions/32a14a8a-9795-4c8c-7e00-da9012f548f8@leemhuis.info/
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> Reviewed-by: Lukas Wunner <lukas@wunner.de>
+> Acked-by: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Hector Martin <marcan@marcan.st>
 > ---
->  drivers/acpi/power.c | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
+>  drivers/acpi/x86/apple.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
-> index 292cec3691cc..5dc792961ab8 100644
-> --- a/drivers/acpi/power.c
-> +++ b/drivers/acpi/power.c
-> @@ -23,6 +23,7 @@
+> diff --git a/drivers/acpi/x86/apple.c b/drivers/acpi/x86/apple.c
+> index 8812ecd03d55..45d0f16f374f 100644
+> --- a/drivers/acpi/x86/apple.c
+> +++ b/drivers/acpi/x86/apple.c
+> @@ -71,13 +71,16 @@ void acpi_extract_apple_properties(struct acpi_device *adev)
 >
->  #define pr_fmt(fmt) "ACPI: PM: " fmt
+>                 if ( key->type != ACPI_TYPE_STRING ||
+>                     (val->type != ACPI_TYPE_INTEGER &&
+> -                    val->type != ACPI_TYPE_BUFFER))
+> +                    val->type != ACPI_TYPE_BUFFER &&
+> +                    val->type != ACPI_TYPE_STRING))
+>                         continue; /* skip invalid properties */
 >
-> +#include <linux/dmi.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/init.h>
-> @@ -1022,6 +1023,21 @@ void acpi_resume_power_resources(void)
->  }
->  #endif
+>                 __set_bit(i, valid);
+>                 newsize += key->string.length + 1;
+>                 if ( val->type == ACPI_TYPE_BUFFER)
+>                         newsize += val->buffer.length;
+> +               else if (val->type == ACPI_TYPE_STRING)
+> +                       newsize += val->string.length + 1;
+>         }
 >
-> +static const struct dmi_system_id dmi_leave_unused_power_resources_on[] = {
-> +       {
-> +               /*
-> +                * The Toshiba Click Mini has a CPR3 power-resource which must
-> +                * be on for the touchscreen to work, but which is not in any
-> +                * _PR? lists. The other 2 affected power-resources are no-ops.
-> +                */
-> +               .matches = {
-> +                       DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
-> +                       DMI_MATCH(DMI_PRODUCT_NAME, "SATELLITE Click Mini L9W-B"),
-> +               },
-> +       },
-> +       {}
-> +};
-> +
->  /**
->   * acpi_turn_off_unused_power_resources - Turn off power resources not in use.
->   */
-> @@ -1029,6 +1045,9 @@ void acpi_turn_off_unused_power_resources(void)
->  {
->         struct acpi_power_resource *resource;
+>         numvalid = bitmap_weight(valid, numprops);
+> @@ -119,6 +122,12 @@ void acpi_extract_apple_properties(struct acpi_device *adev)
+>                 newprops[v].type = val->type;
+>                 if (val->type == ACPI_TYPE_INTEGER) {
+>                         newprops[v].integer.value = val->integer.value;
+> +               } else if (val->type == ACPI_TYPE_STRING) {
+> +                       newprops[v].string.length = val->string.length;
+> +                       newprops[v].string.pointer = free_space;
+> +                       memcpy(free_space, val->string.pointer,
+> +                              val->string.length);
+> +                       free_space += val->string.length + 1;
+>                 } else {
+>                         newprops[v].buffer.length = val->buffer.length;
+>                         newprops[v].buffer.pointer = free_space;
 >
-> +       if (dmi_check_system(dmi_leave_unused_power_resources_on))
-> +               return;
-> +
->         mutex_lock(&power_resource_list_lock);
->
->         list_for_each_entry_reverse(resource, &acpi_power_resource_list, list_node) {
-> --
+> ---
 
 Applied as 6.4-rc material, thanks!
