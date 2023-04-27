@@ -2,125 +2,137 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55BA76F08CE
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Apr 2023 17:55:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F7AD6F0A2F
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Apr 2023 18:47:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244145AbjD0PzI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Apr 2023 11:55:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40000 "EHLO
+        id S244302AbjD0QrL convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 27 Apr 2023 12:47:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244014AbjD0PzH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Apr 2023 11:55:07 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B20B449D;
-        Thu, 27 Apr 2023 08:55:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1682610905; x=1714146905;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=mWrqCDSmF5hsa85Gs8efjRzJji6AekZQCAoSuxuOC2o=;
-  b=VE4cSgRQPL+CqQYhBdhNEoYaTHiGS5cmmrGOeCvql3sLPFvvEVnQ24Y3
-   ZCepNfOmH6IUBOvMA+8WwZhmO4BKtHBhH7yyAA7IA8Yr12A5ymRsjhGrm
-   2Y+V93zKHw3KUsH36QCuAF2c7N4VkVB2Kkl8jlhNMTJe2LNb2+n0LYujE
-   8NelVX3vtal/py42KDq3Erzyu/JRBC6NOYOZqyxeW8H1VbRfiBiXj8XN8
-   PpBsMi9wc49mT6OePrIWyjIIM/+sN0uSZ9yF+LOx1MrW2WHxlrpHK/Rmc
-   H294B8C8StkAvJ3kf0XbJvTDpjdH3G6CwJZKf6fh/r+ibHHu8u7rt68Jw
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10693"; a="433771891"
-X-IronPort-AV: E=Sophos;i="5.99,230,1677571200"; 
-   d="scan'208";a="433771891"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2023 08:55:04 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10693"; a="697127570"
-X-IronPort-AV: E=Sophos;i="5.99,230,1677571200"; 
-   d="scan'208";a="697127570"
-Received: from djiang5-mobl3.amr.corp.intel.com (HELO [10.212.123.129]) ([10.212.123.129])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2023 08:55:04 -0700
-Message-ID: <1a267202-ce0c-2112-aecf-f74823ea9ae4@intel.com>
-Date:   Thu, 27 Apr 2023 08:55:03 -0700
+        with ESMTP id S243777AbjD0QrI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Apr 2023 12:47:08 -0400
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B2264C34
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Apr 2023 09:47:04 -0700 (PDT)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-9594916df23so161075266b.1
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Apr 2023 09:47:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682614023; x=1685206023;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KjsrLK++1Ok9mkPQh5RzlJPsuvae+2fAnwHy/bXuTZQ=;
+        b=f5AnjhThfcyLnyC7v+3eWWzgwGuiDgicvdBgLp8B/IRH8Iv21GcIv5WYalp6E9NKmI
+         nEV8rj/4qVu+drIcW1wMSOOQlm1J4b52vjdZxste21tyIKliO+bU0YjOhRSVoRWKmi6o
+         A3a5j1PBDpQVhQfgL2C0NnkKadGjfUzxI5VgCd9eP2btbZ0gixe2eNtTM4lsSrvYd1vG
+         w5xu+eoSRVKYK6Q5Xp6TNoFwbldh1orkFJ/irfJ2Am+eCfuuOZ67ygobqRlJIklFkYDC
+         hAwwDcsdNl8Ko5oXVZeaJa4a1zr4JxnzaqnqtVnpQWMim3QbU8AgX2d0ngqPWqiJ4zEO
+         BMEQ==
+X-Gm-Message-State: AC+VfDxuJMto8WoB2YcaycEOWJjzL9w8OGMHNVArACk4ZYzkAmUPkaL7
+        vSACWsOU8vpI0Mk9NKilKKSg6KHiqL+xLpeF3dQ=
+X-Google-Smtp-Source: ACHHUZ7D1zPxvk3A3EfX41SNrGI4Oj+vvVgaiLJaFUX28cuiAeNQp++k07zyro+shIsRsSfHNs5lDdKbXwvh2ifcbAQ=
+X-Received: by 2002:a17:906:64c4:b0:930:7f40:c1bb with SMTP id
+ p4-20020a17090664c400b009307f40c1bbmr2189658ejn.4.1682614022494; Thu, 27 Apr
+ 2023 09:47:02 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.10.0
-Subject: Re: [PATCH v4 03/23] cxl: Add support for reading CXL switch CDAT
- table
-Content-Language: en-US
-To:     Dan Williams <dan.j.williams@intel.com>, linux-cxl@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Cc:     Ira Weiny <ira.weiny@intel.com>, vishal.l.verma@intel.com,
-        alison.schofield@intel.com, rafael@kernel.org, lukas@wunner.de,
-        Jonathan.Cameron@huawei.com
-References: <168193556660.1178687.15477509915255912089.stgit@djiang5-mobl3>
- <168193567959.1178687.13133878561024203176.stgit@djiang5-mobl3>
- <6446fdfa69769_1b66294ef@dwillia2-xfh.jf.intel.com.notmuch>
-From:   Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <6446fdfa69769_1b66294ef@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230420110220.23168-1-hdegoede@redhat.com>
+In-Reply-To: <20230420110220.23168-1-hdegoede@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 27 Apr 2023 18:46:51 +0200
+Message-ID: <CAJZ5v0jUC24BanTT_-RTm=5z0Hnpdvyse4VgFsV-VFsM1nbxHg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: PM: Do not turn of unused power resources on the
+ Toshiba Click Mini
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        regressions@lists.linux.dev, linux-acpi@vger.kernel.org,
+        =?UTF-8?B?R8OpIEtvZXJrYW1w?= <ge.koerkamp@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Thu, Apr 20, 2023 at 1:02 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> The CPR3 power resource on the Toshiba Click Mini toggles a GPIO
+> which is called SISP (for SIS touchscreen power?) on/off.
+>
+> This CPR3 power resource is not listed in any _PR? lists, let alone
+> in a _PR0 list for the SIS0817 touchscreen ACPI device which needs it.
+>
+> Before commit a1224f34d72a ("ACPI: PM: Check states of power resources
+> during initialization") this was not an issue because since nothing
+> referenced the CPR3 power resource its state was always
+> ACPI_POWER_RESOURCE_STATE_UNKNOWN and power resources with this state
+> get ignored by acpi_turn_off_unused_power_resources().
+>
+> This clearly is a bug in the DSDT of this device. Add a DMI quirk
+> to make acpi_turn_off_unused_power_resources() a no-op on this
+> model to fix the touchscreen no longer working since kernel 5.16 .
+>
+> This quirk also causes 2 other power resources to not get turned
+> off, but the _OFF method on these already was a no-op, so this makes
+> no difference for the other 2 power resources.
+>
+> Fixes: a1224f34d72a ("ACPI: PM: Check states of power resources during initialization")
+> Reported-by: Gé Koerkamp <ge.koerkamp@gmail.com>
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216946
+> Link: https://lore.kernel.org/regressions/32a14a8a-9795-4c8c-7e00-da9012f548f8@leemhuis.info/
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/acpi/power.c | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+>
+> diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
+> index 292cec3691cc..5dc792961ab8 100644
+> --- a/drivers/acpi/power.c
+> +++ b/drivers/acpi/power.c
+> @@ -23,6 +23,7 @@
+>
+>  #define pr_fmt(fmt) "ACPI: PM: " fmt
+>
+> +#include <linux/dmi.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+>  #include <linux/init.h>
+> @@ -1022,6 +1023,21 @@ void acpi_resume_power_resources(void)
+>  }
+>  #endif
+>
+> +static const struct dmi_system_id dmi_leave_unused_power_resources_on[] = {
+> +       {
+> +               /*
+> +                * The Toshiba Click Mini has a CPR3 power-resource which must
+> +                * be on for the touchscreen to work, but which is not in any
+> +                * _PR? lists. The other 2 affected power-resources are no-ops.
+> +                */
+> +               .matches = {
+> +                       DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
+> +                       DMI_MATCH(DMI_PRODUCT_NAME, "SATELLITE Click Mini L9W-B"),
+> +               },
+> +       },
+> +       {}
+> +};
+> +
+>  /**
+>   * acpi_turn_off_unused_power_resources - Turn off power resources not in use.
+>   */
+> @@ -1029,6 +1045,9 @@ void acpi_turn_off_unused_power_resources(void)
+>  {
+>         struct acpi_power_resource *resource;
+>
+> +       if (dmi_check_system(dmi_leave_unused_power_resources_on))
+> +               return;
+> +
+>         mutex_lock(&power_resource_list_lock);
+>
+>         list_for_each_entry_reverse(resource, &acpi_power_resource_list, list_node) {
+> --
 
-
-On 4/24/23 3:08 PM, Dan Williams wrote:
-> Dave Jiang wrote:
->> Move read_cdat_data() from endpoint probe to general port probe to
->> allow reading of CDAT data for CXL switches as well as CXL device.
->> Add wrapper support for cxl_test to bypass the cdat reading.
->>
->> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
->> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
->>
->> ---
->> v4:
->> - Remove cxl_test wrapper. (Ira)
->> ---
->>   drivers/cxl/core/pci.c |   20 +++++++++++++++-----
->>   drivers/cxl/port.c     |    6 +++---
->>   2 files changed, 18 insertions(+), 8 deletions(-)
->>
->> diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
->> index 9c7e2f69d9ca..1c415b26e866 100644
->> --- a/drivers/cxl/core/pci.c
->> +++ b/drivers/cxl/core/pci.c
->> @@ -546,16 +546,26 @@ static unsigned char cdat_checksum(void *buf, size_t size)
->>    */
->>   void read_cdat_data(struct cxl_port *port)
->>   {
->> -	struct pci_doe_mb *cdat_doe;
->> -	struct device *dev = &port->dev;
->>   	struct device *uport = port->uport;
->> -	struct cxl_memdev *cxlmd = to_cxl_memdev(uport);
->> -	struct cxl_dev_state *cxlds = cxlmd->cxlds;
->> -	struct pci_dev *pdev = to_pci_dev(cxlds->dev);
->> +	struct device *dev = &port->dev;
->> +	struct cxl_dev_state *cxlds;
->> +	struct pci_doe_mb *cdat_doe;
->> +	struct cxl_memdev *cxlmd;
->> +	struct pci_dev *pdev;
->>   	size_t cdat_length;
->>   	void *cdat_table;
->>   	int rc;
->>   
->> +	if (is_cxl_memdev(uport)) {
->> +		cxlmd = to_cxl_memdev(uport);
->> +		cxlds = cxlmd->cxlds;
->> +		pdev = to_pci_dev(cxlds->dev);
-> 
-> Per this fix [1], there's no need to reference cxlds, the parent of the
-> memory device is the device this wants, and needs to be careful that not
-> all 'struct cxl_memdev' instances are hosted by pci devices.
-> 
-> [1]: http://lore.kernel.org/r/168213190748.708404.16215095414060364800.stgit@dwillia2-xfh.jf.intel.com
-
-Ok will pull this fix patch in and rebase against that.
-> 
-> Otherwise, looks good to me.
+Applied as 6.4-rc material, thanks!
