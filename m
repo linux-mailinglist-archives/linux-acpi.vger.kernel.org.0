@@ -2,127 +2,154 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91B436F1965
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Apr 2023 15:27:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E214B6F1DC7
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Apr 2023 20:03:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346256AbjD1N06 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 28 Apr 2023 09:26:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38406 "EHLO
+        id S229892AbjD1SDf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 Apr 2023 14:03:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229702AbjD1N05 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Apr 2023 09:26:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A0E11FF5
-        for <linux-acpi@vger.kernel.org>; Fri, 28 Apr 2023 06:26:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1682688372;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=STu7YaLdDG8nPsEVlYhXNUOcMxwx5g0OadIoYgDkbrY=;
-        b=UpZDGNtumRHfTq9vnpXTpqTXApcdPKjAi+jIVw2nTGLsh/uziyQKfsKktgyZdl1J809Lys
-        F7S7nXM2TUexzNdmn8+J5Qd6SRxn4Oj96SeKbEveEnv+32c6+m8IBug4fiirjvglUVIP1p
-        RYGv95O/GuViJab6x+VhSURV7iKDV1c=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-2jcF3eJGMzOOd9mXf90cTw-1; Fri, 28 Apr 2023 09:26:10 -0400
-X-MC-Unique: 2jcF3eJGMzOOd9mXf90cTw-1
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-50a094d5876so4161563a12.3
-        for <linux-acpi@vger.kernel.org>; Fri, 28 Apr 2023 06:26:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682688370; x=1685280370;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=STu7YaLdDG8nPsEVlYhXNUOcMxwx5g0OadIoYgDkbrY=;
-        b=gAyBZFoplk/6qHA8o7a9KU5yyUntDI456f1468Q3oJIzLU+Kpng3AIS7B7jMA9Ky24
-         DXU28Wu24v6uvJkNT8e3KaKwzEJJZLwf3MsVRsEe/Xplg0gbNvKeDEMD81rAu/ODnfHn
-         QgAgrUS/Abe4oujEUEqeGkgVjvhCNiusfmIs4rBc5IaFfxlGYKJfIa+j+ChWnhwqGttS
-         V6G1zo6j0T+gDdHz68xIrejn/toW536BB/FhMK5WNpstXeNgKqlIHGVJbzwOdBUiZkm1
-         N/Fm+EhU9N/sTpPFS54TguoT+xCreY0FtTpMl/F6sQ2vI0SpeGEh5mapzyopi9W/OG6G
-         GIpg==
-X-Gm-Message-State: AC+VfDzivQB012Mu1IpKLRTl91sabKMbdRZo3u5CgwUUg/KLct31Z2zA
-        /I8IewLhMyOJj/5PjV+W3EQcuKHqz/tPU+rQKVWxnjb/IiK0Ij1LZNZf5EC2WUTZl4JF8NCP+Y2
-        Y5K14NZKWhZJxIJsgAd9WuQ==
-X-Received: by 2002:aa7:d982:0:b0:506:82b7:10c3 with SMTP id u2-20020aa7d982000000b0050682b710c3mr4550900eds.41.1682688369877;
-        Fri, 28 Apr 2023 06:26:09 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5CCW/Jyr+5Y3KHgbmqEA0xNQh0H0ptqZWxalQP4WOGaxem7p5E+wEtbCODK8WGm6FC4W/b4Q==
-X-Received: by 2002:aa7:d982:0:b0:506:82b7:10c3 with SMTP id u2-20020aa7d982000000b0050682b710c3mr4550878eds.41.1682688369568;
-        Fri, 28 Apr 2023 06:26:09 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id k26-20020aa7c39a000000b005068053b53dsm9215433edq.73.2023.04.28.06.26.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Apr 2023 06:26:09 -0700 (PDT)
-Message-ID: <c228e469-9d17-faa8-d218-dfb2b7b63b22@redhat.com>
-Date:   Fri, 28 Apr 2023 15:26:08 +0200
+        with ESMTP id S229741AbjD1SDe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Apr 2023 14:03:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B03A72D69;
+        Fri, 28 Apr 2023 11:03:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4970661A66;
+        Fri, 28 Apr 2023 18:03:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D471C4339E;
+        Fri, 28 Apr 2023 18:03:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1682705012;
+        bh=c6L1X4BgIOcktzeLUChU6aJWGbP0/aLPkV7gmZS0UKs=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=URULa2d+QR+HOlQeO1K+icIhT3OW5LEZSsME1RudNmHb9UK0uoJS6h/f3xVjhyvM3
+         aAJ2jYHP3yuzZpH85y/m2no5D5JdY9zMNYZgkj4gMZg45z3fTMOdhUSB19EZ7SYe7N
+         FurFBMHteEMQrW204LGDgx3QPo4WkhB9vEyhBIyxin+2vrI9xPCULorg2gs/haWZVi
+         991FJ5e97dOUTGhdBnE0lHeHuW2NT5xJ4w5IY7PSCDjL7nW0sZFS+Cej0iWYDSMGfH
+         oZc0bbayrnMwodygH98AyaRT464XbwKwlcee4ekrlrfOD2HacKgmGgqK/StEykfhVt
+         YMY+Uf/NJil6A==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-4efe8991b8aso250835e87.0;
+        Fri, 28 Apr 2023 11:03:32 -0700 (PDT)
+X-Gm-Message-State: AC+VfDzUdXoL8XgppuixvEN6iNTJHTH37xuxsZQ+AWHok0PTuIJkgXL9
+        13WPEk5+BpJ7NPcvQLK7p77bK8+IKMpyG5s9mx8=
+X-Google-Smtp-Source: ACHHUZ5otoB6oLEGJMnsT3sSOLwsgs9s9w+5qXKcQyWcMi/p8jKZng6ZikMfQofiDQMvYmkR4J+fm6rbxpfxC+dA6Ys=
+X-Received: by 2002:a05:6512:403:b0:4ef:ec94:9674 with SMTP id
+ u3-20020a056512040300b004efec949674mr1777138lfk.32.1682705010596; Fri, 28 Apr
+ 2023 11:03:30 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: REGRESSION: ThinkPad W530 dim backlight with recent changes
- introduced in Linux 6.1.24
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     =?UTF-8?B?0KDRg9GB0LXQsiDQn9GD0YLQuNC9?= 
-        <rockeraliexpress@gmail.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        linux-acpi@vger.kernel.org, stable@vger.kernel.org,
-        Daniel Dadap <ddadap@nvidia.com>
-References: <CAK4BXn0ngZRmzx1bodAF8nmYj0PWdUXzPGHofRrsyZj8MBpcVA@mail.gmail.com>
- <2023041711-overcoat-fantastic-c817@gregkh>
- <CAK4BXn30dd3oCwcF2yVb5nNnjR21=8J2_po-gSUuArd5y=f9Ww@mail.gmail.com>
- <CAJZ5v0g+PAOZs47LCrxRswZoCmHbGfBg3_cr13Y8zWPXDjgm3A@mail.gmail.com>
- <a3b89478-2d37-1b25-94e0-0e12396f6fd4@redhat.com>
- <CAK4BXn37Ns8Z8g4ysKoOZJaVa8K+mFQm5PupAanQwmz07ygW9A@mail.gmail.com>
- <689fdd60-66e4-d423-3ae5-f9fc4513a9b7@redhat.com>
-Content-Language: en-US, nl
-In-Reply-To: <689fdd60-66e4-d423-3ae5-f9fc4513a9b7@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+References: <20230426034001.16-1-cuiyunhui@bytedance.com> <CAMj1kXEKh9O-ndk3QFibJMYfMbG7vm-cLN2vVQM5eDsYK84NzQ@mail.gmail.com>
+ <CAEEQ3wkJB5CKm33mHXUOPX5makYOHF8By6FYGnNzRkM-Mo72OQ@mail.gmail.com>
+ <ZEj33QLZqEeL+/y4@FVFF77S0Q05N> <CAEEQ3wmDBJkfOeKCQfcnuE+1=1K0D2pzu+Sn+zPEWk+RHs0NFQ@mail.gmail.com>
+ <CAP6exY+ydbzh1EkWTFejzwaW+PA-ySVO2Qj+CVJ1XbSMce2S9Q@mail.gmail.com>
+ <ZEpbTE4gcsf8meXc@FVFF77S0Q05N> <CAMj1kXH5kZJ6ff=PRCRDLCBcw2AkEnRL_L1ABuvu5n71=unvAw@mail.gmail.com>
+ <CAEEQ3w=495snOz3UNBO4dpgyfZs3jQoRKo4QRAXXqR5-0j4SWA@mail.gmail.com> <CAP6exYK9ytcgqcy2gFyOGvbxd7DPGQNs=m7nNgnfunnh8et9aQ@mail.gmail.com>
+In-Reply-To: <CAP6exYK9ytcgqcy2gFyOGvbxd7DPGQNs=m7nNgnfunnh8et9aQ@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 28 Apr 2023 19:03:19 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGB4yXCdzts2=G_-hadoka9F2BU1gvVxeLEs5ifSbqgog@mail.gmail.com>
+Message-ID: <CAMj1kXGB4yXCdzts2=G_-hadoka9F2BU1gvVxeLEs5ifSbqgog@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH] firmware: added a firmware information
+ passing method FFI
+To:     ron minnich <rminnich@gmail.com>
+Cc:     =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>, rafael@kernel.org,
+        lenb@kernel.org, jdelvare@suse.com, yc.hung@mediatek.com,
+        angelogioacchino.delregno@collabora.com,
+        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
+        tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Русев,
+On Fri, 28 Apr 2023 at 17:09, ron minnich <rminnich@gmail.com> wrote:
+>
+> There is lots of text in the preceding notes :-), which is nice because w=
+e're clearly looking at something that matters!
+>
+> But, note, ARM Chromebooks run Linux, and I checked with the firmware tea=
+m just now:
+> "Right. We're not using UEFI or ACPI or SMBIOS or DMI or any of that on A=
+rm. Just the Device Tree."
+>
+> So I do not agree that we need UEFI tables due to some presumed semantics=
+ that they implement, because: several tens of millions of ARM chromebooks =
+running Linux show otherwise.
+>
+> We've got a chance here to move to self describing data, and I think we n=
+eed to take it. It will be a long time before we get this chance again.
+>
 
-On 4/28/23 15:22, Hans de Goede wrote:
-> Hi Русев,
-> 
-> On 4/27/23 17:35, Русев Путин wrote:
->>> This patch should not change the maximum brightness. But you may need
->> to adjust the brightness once after changing to a new kernel with
->> the patch because the range / brightness-curve may be different.
+I'm not sure what you mean by self-describing: device tree is
+definitely not self-describing, and we maintain a huge collection of
+DT bindings (which are documented in separate YAML files) in the
+kernel tree that specify in detail how a device tree must be
+constructed in order to comply with the device tree based boot
+protocol.
+
+However, introducing such a binding for SMBIOS is perfectly
+reasonable, although I would suggest that we don't copy the
+SMBIOS/SMBIOS3 entry point address into the device tree (as this patch
+does), but properly describe the memory region that contains the
+actual SMBIOS structured data directly, along with its version. This
+might be reused by other DT based platforms as well.
+
+Doing the same for ACPI is where we'll get into trouble, given that
+we'd end up with two conflicting hardware descriptions and unfulfilled
+dependencies on EFI specific data structures, and it is not the
+kernel's job to reason about which h/w description should take
+precedence, or to make guesses about memory types. So I fully agree
+with Ron that moving to device tree is a much better choice here -
+that way, you can avoid ACPI and UEFI altogether
+
+
+
+
+> On Thu, Apr 27, 2023 at 8:18=E2=80=AFPM =E8=BF=90=E8=BE=89=E5=B4=94 <cuiy=
+unhui@bytedance.com> wrote:
 >>
->> This patch does change the display brightness curve but it is very
->> buggy and does not change the brightness as soon as set. There is a
->> very significant delay in brightness transition on the laptop due to
->> this patch. Also it is worth mentioning that this patch also messes up
->> color contrast of the display causing significantly deeper blacks on
->> the display.
-> 
-> Ok, lets remove the acpi_backlight=video quirk for Lenovo ThinkPad W530
-> then. This was intended to make life easier for Nvidia binary driver
-> users, but since it is causing issues elsewhere  Nvidia binary driver
-> users will just have to manually pass acpi_backlight=video on
-> the kernel commandline until Nvidia fixes the driver.
-> 
-> I'll submit a patch to remove the quirk right away.
-
-p.s.
-
-In the mean time you can work around the regression by passing:
-"acpi_backlight=native" on the kernel commandline.
-
-Regards,
-
-Hans
-
-
+>> Hi Ard, Mark,
+>>
+>> On Thu, Apr 27, 2023 at 8:52=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org>=
+ wrote:
+>>
+>> > and the only combination we do not support is ACPI without EFI, as
+>> > ACPI on arm64 depends on the EFI memory map.
+>> >
+>> > What this patch seems to be proposing is a combination of all of
+>> > these, i.e., doing a pseudo-EFI direct kernel boot where the EFI
+>> > dependencies of ACPI are being fulfilled by ad-hoc descriptions passed
+>> > in via DT.
+>> >
+>> > I am concerned that this will result in a maintenance burden for Linux
+>> > with very little gain, so I feel we should not go down this road.
+>>
+>> Judging from the current kernel, getting acpi smbios, memmap tables is
+>> not just a way to have EFI, right?
+>> smbios:SMBIOS_ENTRY_POINT_SCAN_START
+>> acpi:CONFIG_ACPI_LEGACY_TABLES_LOOKUP
+>> memmap: e820
+>>
+>> Our current situation is that coreboot does not support EFI, but support=
+s fdt,
+>> but we need to support ACPI,  and riscv does not have a reserved
+>> address segment
+>> like x86 that can be used, so our current solution is to pass acpi and
+>> other tables through fdt.
+>>
+>> Based on this, do you have a better suggestion ?
+>>
+>> Thanks=EF=BC=8C
+>> Yunhui
