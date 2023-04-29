@@ -2,163 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 884D26F2420
-	for <lists+linux-acpi@lfdr.de>; Sat, 29 Apr 2023 12:31:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C1846F2428
+	for <lists+linux-acpi@lfdr.de>; Sat, 29 Apr 2023 12:39:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230414AbjD2Kbc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 29 Apr 2023 06:31:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49432 "EHLO
+        id S229458AbjD2Kjl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 29 Apr 2023 06:39:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229507AbjD2Kba (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 29 Apr 2023 06:31:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 935D61BE8;
-        Sat, 29 Apr 2023 03:31:29 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S229507AbjD2Kjj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 29 Apr 2023 06:39:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C819C1FC3
+        for <linux-acpi@vger.kernel.org>; Sat, 29 Apr 2023 03:38:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1682764731;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=FMC6uCEvFdBZotxj83agPMBA6bOn48Tj6FuN66MXwS4=;
+        b=PQOR/1cjfa+SkNL3xxukJbdtWfbIlohW7d4SfIWGDjl0CeTTVbjoj6ng26DnHOILPi4DeQ
+        UWiAo0R8w8aYnVyxLa2ecL1dZTxL+Gb1m6EDJyatoB//lKP3HzjJyt9p1UBg7ugrhj0swe
+        V3/XSugrVokSZrsO7wTJ9JthmlwQIVE=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-398-928BXJnHPz22_Bf1JYSvyQ-1; Sat, 29 Apr 2023 06:38:48 -0400
+X-MC-Unique: 928BXJnHPz22_Bf1JYSvyQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 27A2D61610;
-        Sat, 29 Apr 2023 10:31:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28794C433EF;
-        Sat, 29 Apr 2023 10:31:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682764288;
-        bh=0GbmBMGiNiQlIdnACBgahvtc+QtoJehbHv6nICycqIU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tFhPkZUDutv1XqNNNayYgpxTWhqBsGyicP5ZE+0P5aZPM1SFgNwGsYutMDbjAeX7r
-         JoIbcHIL0grDinAv1Xen+AI6GLJDOeK7oulXXWtq6Af2EkCNZQ+Mv+TGKx4KpPj8HN
-         o37YI2ZiY580d9dsHNxhOy0NYV9xON8ceNNwkVCsu8Ru8dxYj+hqpK5NDa69iCq5bv
-         r9g9qfYstDE8+Mz8clTHSExMwWUjXwj04kTfT766VTMf5JEJoTxTu2UDU6msp9DTxf
-         zniinNBnHQ9amnPS6KwooRNkDA8OaKb5fE7QYpuHGv+Jrcx6drNQ/sHkF9tOE8VPCP
-         qPbfmrd2AbdWQ==
-Date:   Sat, 29 Apr 2023 11:31:20 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Sunil V L <sunilvl@ventanamicro.com>
-Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux-crypto@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        llvm@lists.linux.dev, Jonathan Corbet <corbet@lwn.net>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Len Brown <lenb@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Weili Qian <qianweili@huawei.com>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Marc Zyngier <maz@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Andrew Jones <ajones@ventanamicro.com>
-Subject: Re: [PATCH V4 13/23] RISC-V: cpufeature: Add ACPI support in
- riscv_fill_hwcap()
-Message-ID: <20230429-voucher-tutor-715fd4f6c24e@spud>
-References: <20230404182037.863533-1-sunilvl@ventanamicro.com>
- <20230404182037.863533-14-sunilvl@ventanamicro.com>
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CCB1B29AA387;
+        Sat, 29 Apr 2023 10:38:47 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.192.57])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 4412A492C13;
+        Sat, 29 Apr 2023 10:38:47 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org
+Subject: [PATCH 1/2] ACPI / x86: Add skip i2c clients quirk for Nextbook Ares 8A
+Date:   Sat, 29 Apr 2023 12:38:40 +0200
+Message-Id: <20230429103841.6988-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="mD53ytQ30VQ4ln/R"
-Content-Disposition: inline
-In-Reply-To: <20230404182037.863533-14-sunilvl@ventanamicro.com>
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+The Nextbook Ares 8A is a x86 ACPI tablet which ships with Android x86
+as factory OS. Its DSDT contains a bunch of I2C devices which are not
+actually there (the Android x86 kernel fork ignores I2C devices described
+in the DSDT).
 
---mD53ytQ30VQ4ln/R
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On this specific model this just not cause resource conflicts, one of
+the probe() calls for the non existing i2c_clients actually ends up
+toggling a GPIO or executing a _PS3 after a failed probe which turns
+the tablet off.
 
-Hey Sunil,
+Add a ACPI_QUIRK_SKIP_I2C_CLIENTS for the Nextbook Ares 8 to the
+acpi_quirk_skip_dmi_ids table to avoid the bogus i2c_clients and
+to fix the tablet turning off during boot because of this.
 
-On Tue, Apr 04, 2023 at 11:50:27PM +0530, Sunil V L wrote:
+Also add the "10EC5651" HID for the RealTek ALC5651 codec used
+in this tablet to the list of HIDs for which not to skipi2c_client
+instantiation, since the Intel SST sound driver relies on
+the codec being instantiated through ACPI.
 
-> @@ -103,14 +109,36 @@ void __init riscv_fill_hwcap(void)
-> =20
->  	bitmap_zero(riscv_isa, RISCV_ISA_EXT_MAX);
-> =20
-> -	for_each_of_cpu_node(node) {
-> +	if (!acpi_disabled) {
-> +		status =3D acpi_get_table(ACPI_SIG_RHCT, 0, &rhct);
-> +		if (ACPI_FAILURE(status))
-> +			return;
-> +	}
-> +
-> +	for_each_possible_cpu(cpu) {
->  		unsigned long this_hwcap =3D 0;
->  		DECLARE_BITMAP(this_isa, RISCV_ISA_EXT_MAX);
->  		const char *temp;
-> =20
-> -		if (of_property_read_string(node, "riscv,isa", &isa)) {
-> -			pr_warn("Unable to find \"riscv,isa\" devicetree entry\n");
-> -			continue;
-> +		if (acpi_disabled) {
-> +			node =3D of_cpu_device_node_get(cpu);
-> +			if (node) {
-> +				rc =3D of_property_read_string(node, "riscv,isa", &isa);
-> +				of_node_put(node);
-> +				if (rc) {
-> +					pr_warn("Unable to find \"riscv,isa\" devicetree entry\n");
-> +					continue;
-> +				}
-> +			} else {
-> +				pr_warn("Unable to find cpu node\n");
-> +				continue;
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/x86/utils.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-I was poking at this the last few days and went back to look at the ACPI
-code again. Is there a reason we don't do early-return here? IOW:
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index 9c2d6f35f88a..4cfee2da0675 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -365,7 +365,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
+ 	},
+ 	{
+-		/* Nextbook Ares 8 */
++		/* Nextbook Ares 8 (BYT version)*/
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "M890BAP"),
+@@ -374,6 +374,16 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
+ 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
+ 	},
++	{
++		/* Nextbook Ares 8A (CHT version)*/
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "CherryTrail"),
++			DMI_MATCH(DMI_BIOS_VERSION, "M882"),
++		},
++		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
++					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
++	},
+ 	{
+ 		/* Whitelabel (sold as various brands) TM800A550L */
+ 		.matches = {
+@@ -392,6 +402,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ #if IS_ENABLED(CONFIG_X86_ANDROID_TABLETS)
+ static const struct acpi_device_id i2c_acpi_known_good_ids[] = {
+ 	{ "10EC5640", 0 }, /* RealTek ALC5640 audio codec */
++	{ "10EC5651", 0 }, /* RealTek ALC5651 audio codec */
+ 	{ "INT33F4", 0 },  /* X-Powers AXP288 PMIC */
+ 	{ "INT33FD", 0 },  /* Intel Crystal Cove PMIC */
+ 	{ "INT34D3", 0 },  /* Intel Whiskey Cove PMIC */
+-- 
+2.39.2
 
-	node =3D of_cpu_device_node_get(cpu);
-	if (!node) {
-		pr_warn()
-		continue;
-	}
-
-	rc =3D of_property_read_string(node, "riscv,isa", &isa);
-	of_node_put(node);
-	if (rc) {
-		pr_warn();
-		continue;
-	}
-
-Cheers,
-Conor.
-
-> +			}
-> +		} else {
-> +			rc =3D acpi_get_riscv_isa(rhct, cpu, &isa);
-> +			if (rc < 0) {
-> +				pr_warn("Unable to get ISA for the hart - %d\n", cpu);
-> +				continue;
-> +			}
->  		}
-> =20
->  		temp =3D isa;
-> @@ -243,6 +271,9 @@ void __init riscv_fill_hwcap(void)
-
---mD53ytQ30VQ4ln/R
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZEzx+AAKCRB4tDGHoIJi
-0uDXAP0UihCqegQRGuBLnWtSMvMhsuIza2XwUNXv6Jsjw1EdNwD5AT1aXZpghWod
-R72zPlGiSaij2J867SuTR51j5SWNmQE=
-=7cU+
------END PGP SIGNATURE-----
-
---mD53ytQ30VQ4ln/R--
