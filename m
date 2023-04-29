@@ -2,221 +2,181 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CE796F201D
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Apr 2023 23:30:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2F186F21EB
+	for <lists+linux-acpi@lfdr.de>; Sat, 29 Apr 2023 03:19:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229978AbjD1Vac (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 28 Apr 2023 17:30:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52204 "EHLO
+        id S229991AbjD2BTz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 Apr 2023 21:19:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229779AbjD1Vab (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Apr 2023 17:30:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 617661725;
-        Fri, 28 Apr 2023 14:30:30 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ECB52645A7;
-        Fri, 28 Apr 2023 21:30:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0223FC433D2;
-        Fri, 28 Apr 2023 21:30:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682717429;
-        bh=LZyvQOlA+YPLE+u/H4MSi/7JEM8BoKst314zkORamyM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=scNMVTiK+VrCxkEm4YpMEKmW87PGkYkYyYdp6RXnUtRMt/VRZJWrcXtkoBBk++qy0
-         Za3H+LFtJwN0E1O6M0oSK8R6wrh92prC7RryMEiDkAA+XgzdrQSZmD8WPDesPo3fIy
-         faBVHY3G0oo6DwDmnou9KfWJcSPuUBufRU+wprVFZDE/UrGBbVhJoAYPUXEEf/9MYH
-         DB1ozSHYZrTEWkd14yHVwn7XnulTLIofDkuKPx9Tei4URqOamoYxqI6c7Cnyc6uBUc
-         Bafhm2RD9A2I7aUcdPtyHhc+BWMAk296O8FJBOYne2NqeZEs8JXAXaOlNuj/J//T4Q
-         HAMPm3JzuprfQ==
-Date:   Fri, 28 Apr 2023 16:30:27 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Shawn Guo <shawn.guo@linaro.org>
-Cc:     Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas@t-8ch.de>,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: Re: [PATCH v2] arm64: PCI: Add quirk for Qualcomm WoA devices
-Message-ID: <20230428213027.GA363093@bhelgaas>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230423030520.9570-1-shawn.guo@linaro.org>
-X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S1347078AbjD2BTw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Apr 2023 21:19:52 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61C4A2703;
+        Fri, 28 Apr 2023 18:19:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1682731191; x=1714267191;
+  h=date:from:to:cc:subject:message-id;
+  bh=22QTXEBjFpcAg5cFO3GhkzejLOG8U0S6Ny4DPU7VWhc=;
+  b=fAnL3Jy4lUcbCMWdqnd4LylvRfJRMTVpGnFP6aRQHO9yDSDuV/a14P0P
+   PXc7eE3xSFBxopTlZDTy47ih4nJQUP5vhRM/EGIpe3mXRsF9pYFI0x88o
+   8aX+YNLtvcjLP7qA2LhIWY1dpGev01Y1oCqtRZZhU611/Zi6lIcHTUkEp
+   O41S1sMXeFb7Ly3CqkruqaB9F/so2Cra2uEGAXAbCswvJ/LUPL6q0I02H
+   SncbYH3sasgFGu/QO4Bdv2St69znvCd9eLB6THL9eEv5cFYuWPvgyoI2m
+   FxCNiSNXEFeIfRAOOURn866FBjnj7adO20Pfl8MyPx7mNtHSbxzPMumFt
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10694"; a="328231890"
+X-IronPort-AV: E=Sophos;i="5.99,235,1677571200"; 
+   d="scan'208";a="328231890"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2023 18:19:51 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10694"; a="819206961"
+X-IronPort-AV: E=Sophos;i="5.99,235,1677571200"; 
+   d="scan'208";a="819206961"
+Received: from lkp-server01.sh.intel.com (HELO 5bad9d2b7fcb) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 28 Apr 2023 18:19:49 -0700
+Received: from kbuild by 5bad9d2b7fcb with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1psZFc-0000n5-1t;
+        Sat, 29 Apr 2023 01:19:48 +0000
+Date:   Sat, 29 Apr 2023 09:19:27 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 7e40823f061f58eb79b868914b702b613acf2da2
+Message-ID: <20230429011927.J3bgB%lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-[+cc Andy, Bjorn A, plea for help from Qualcomm firmware folks]
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 7e40823f061f58eb79b868914b702b613acf2da2  Merge branch 'thermal/bleeding-edge' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into bleeding-edge
 
-On Sun, Apr 23, 2023 at 11:05:20AM +0800, Shawn Guo wrote:
-> Commit 8fd4391ee717 ("arm64: PCI: Exclude ACPI "consumer" resources from
-> host bridge windows") introduced a check to remove host bridge register
-> resources for all arm64 platforms, with the assumption that the PNP0A03
-> _CRS resources would always be host bridge registers and never as windows
-> on arm64 platforms.
+elapsed time: 726m
 
-That's not quite what the commit log says.  The 8fd4391ee717
-assumption is that on arm64,
+configs tested: 103
+configs skipped: 8
 
-  - _CRS *consumer* resources are host bridge registers
-  - _CRS *producer* resources are windows
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-which I think matches the intent of the ACPI spec.
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha        buildonly-randconfig-r002-20230428   gcc  
+alpha        buildonly-randconfig-r003-20230428   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r023-20230428   gcc  
+arc                              allyesconfig   gcc  
+arc          buildonly-randconfig-r006-20230428   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r043-20230428   gcc  
+arc                           tb10x_defconfig   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                                 defconfig   gcc  
+arm                  randconfig-r046-20230428   clang
+arm                           stm32_defconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r033-20230428   clang
+csky         buildonly-randconfig-r004-20230428   gcc  
+csky                                defconfig   gcc  
+hexagon              randconfig-r016-20230428   clang
+hexagon              randconfig-r025-20230428   clang
+hexagon              randconfig-r041-20230428   clang
+hexagon              randconfig-r045-20230428   clang
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                          randconfig-a001   gcc  
+i386                          randconfig-a002   clang
+i386                          randconfig-a003   gcc  
+i386                          randconfig-a004   clang
+i386                          randconfig-a005   gcc  
+i386                          randconfig-a006   clang
+i386                          randconfig-a011   clang
+i386                          randconfig-a012   gcc  
+i386                          randconfig-a013   clang
+i386                          randconfig-a014   gcc  
+i386                          randconfig-a015   clang
+i386                          randconfig-a016   gcc  
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+ia64                 randconfig-r006-20230428   gcc  
+ia64                 randconfig-r026-20230428   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r015-20230428   gcc  
+m68k                 randconfig-r036-20230428   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r011-20230428   clang
+nios2                               defconfig   gcc  
+nios2                randconfig-r003-20230428   gcc  
+openrisc             randconfig-r004-20230428   gcc  
+openrisc             randconfig-r012-20230428   gcc  
+openrisc                       virt_defconfig   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r002-20230428   gcc  
+parisc               randconfig-r021-20230428   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                     kmeter1_defconfig   clang
+powerpc                 mpc8315_rdb_defconfig   clang
+powerpc              randconfig-r022-20230428   gcc  
+powerpc              randconfig-r024-20230428   gcc  
+powerpc              randconfig-r032-20230428   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r005-20230428   clang
+riscv                randconfig-r042-20230428   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r044-20230428   gcc  
+sh                               allmodconfig   gcc  
+sh           buildonly-randconfig-r005-20230428   gcc  
+sh                   randconfig-r014-20230428   gcc  
+sparc                               defconfig   gcc  
+sparc64      buildonly-randconfig-r001-20230428   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                        randconfig-a001   clang
+x86_64                        randconfig-a002   gcc  
+x86_64                        randconfig-a003   clang
+x86_64                        randconfig-a004   gcc  
+x86_64                        randconfig-a005   clang
+x86_64                        randconfig-a006   gcc  
+x86_64                        randconfig-a011   gcc  
+x86_64                        randconfig-a012   clang
+x86_64                        randconfig-a013   gcc  
+x86_64                        randconfig-a014   clang
+x86_64                        randconfig-a015   gcc  
+x86_64                        randconfig-a016   clang
+x86_64                               rhel-8.3   gcc  
 
-> The assumption stands true until Qualcomm WoA (Windows on ARM) devices
-> emerge.  These devices describe host bridge windows in PNP0A03 _CRS
-> resources instead.  For example, the Microsoft Surface Pro X has host
-> bridges defined as
-> 
->     Name (_CID, EisaId ("PNP0A03") /* PCI Bus */)  // _CID: Compatible ID
-> 
->     Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
->     {
->         Name (RBUF, ResourceTemplate ()
->         {
->             Memory32Fixed (ReadWrite,
->                 0x60200000,         // Address Base
->                 0x01DF0000,         // Address Length
->                 )
-> ...
-
-> The Memory32Fixed holds a host bridge window, but it's not properly
-> defined as a "producer" resource.
-
-I assume you're saying the use of Memory32Fixed for a window is a
-firmware defect, right?
-
-(Per ACPI r6.5, sec 19.6.83, the Memory32Fixed descriptor cannot
-specify a Producer/Consumer ResourceUsage.  I think that means the
-space is assumed to be ResourceConsumer.)
-
-> Consequently the resource gets removed by kernel, and the BAR
-> allocation fails later on:
-> 
->     [ 0.150731] pci 0002:00:00.0: BAR 14: no space for [mem size 0x00100000]
->     [ 0.150744] pci 0002:00:00.0: BAR 14: failed to assign [mem size 0x00100000]
->     [ 0.150758] pci 0002:01:00.0: BAR 0: no space for [mem size 0x00004000 64bit]
->     [ 0.150769] pci 0002:01:00.0: BAR 0: failed to assign [mem size 0x00004000 64bit]
-> 
-> This eventually prevents the PCIe NVME drive from being accessible.
-> 
-> Add a quirk for these devices to avoid the resource being removed.
-
-Since this is a Windows laptop, I assume this works with Windows and
-that Windows will in fact assign BARs in that Memory32Fixed area.
-
-If we knew what the firmware author's intent was, we could probably
-make Linux understand it.
-
-Maybe (probably) Windows treats these descriptors the same on arm64 as
-on x86, i.e., *everything* in PNP0A03 _CRS is assumed to be "producer"
-(at least, that's my experimental observation; I have no actual
-knowledge of Windows).
-
-So I guess 8fd4391ee717 must have been motivated by some early arm64
-platform that put "consumer" descriptors in PNP0A03 _CRS as Lorenzo
-said [1].
-
-In that case I guess our choices are:
-
-  - Add quirks like this and keep adding them for every new arm64
-    platform that uses the same "everything in PNP0A03 _CRS is a
-    producer" strategy.
-
-  - Remove 8fd4391ee717, break whatever early arm64 platforms needed
-    it, and add piecemeal quirks for them.
-
-I hate both, but I think I hate the first more because it has no end,
-while the second is painful but limited.
-
-Obviously we would need to do whatever we can to identify and fix
-things that depend on 8fd4391ee717 before reverting it.
-
-Bjorn
-
-[1] https://lore.kernel.org/lkml/ZBA2Gl5xCjk7mMoW@lpieralisi/
-
-> Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
-> ---
-> Changes for v2:
-> - Match devices using PPTT instead of DSDT to avoid maintenance burden.
->   Hope this is an acceptable compromise.
-> - Add const delaration to qcom_platlist[].
-> 
-> v1 link:
-> https://lore.kernel.org/lkml/20230227021221.17980-1-shawn.guo@linaro.org/
-> 
->  arch/arm64/kernel/pci.c | 28 ++++++++++++++++++++++++++++
->  1 file changed, 28 insertions(+)
-> 
-> diff --git a/arch/arm64/kernel/pci.c b/arch/arm64/kernel/pci.c
-> index 2276689b5411..2ff2f3befa76 100644
-> --- a/arch/arm64/kernel/pci.c
-> +++ b/arch/arm64/kernel/pci.c
-> @@ -109,16 +109,44 @@ int pcibios_root_bridge_prepare(struct pci_host_bridge *bridge)
->  	return 0;
->  }
->  
-> +#define QCOM_PCI_QUIRK "Host bridge windows in PNP0A03 _CRS"
-> +
-> +/*
-> + * Ideally DSDT (Differentiated System Description Table) should be used to
-> + * match the platforms, as the quirk is in there. But devices from different
-> + * manufacturers usually have different oem_id and oem_table_id in DSDT,
-> + * so matching DSDT makes the list a maintenance burden.  As a compromise,
-> + * PPTT (Processor Properties Topology Table) is used instead to work
-> + * around this quirk for the most Qualcomm WoA (Windows on ARM) devices.
-> + */
-> +static const struct acpi_platform_list qcom_platlist[] = {
-> +	{ "QCOM  ", "QCOMEDK2", 0, ACPI_SIG_PPTT, all_versions, QCOM_PCI_QUIRK },
-> +	{ }
-> +};
-> +
->  static int pci_acpi_root_prepare_resources(struct acpi_pci_root_info *ci)
->  {
->  	struct resource_entry *entry, *tmp;
->  	int status;
-> +	int idx;
->  
->  	status = acpi_pci_probe_root_resources(ci);
-> +
-> +	/*
-> +	 * Instead of describing host bridge registers in PNP0A03 _CRS
-> +	 * resources, Qualcomm WoA devices describe host bridge windows in
-> +	 * there.  We do not want to destroy the resources on these platforms.
-> +	 */
-> +	idx = acpi_match_platform_list(qcom_platlist);
-> +	if (idx >= 0)
-> +		goto done;
-> +
->  	resource_list_for_each_entry_safe(entry, tmp, &ci->resources) {
->  		if (!(entry->res->flags & IORESOURCE_WINDOW))
->  			resource_list_destroy_entry(entry);
->  	}
-> +
-> +done:
->  	return status;
->  }
->  
-> -- 
-> 2.17.1
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
