@@ -2,45 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17A366F2D7C
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 May 2023 05:13:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0DE86F2D89
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 May 2023 05:13:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232492AbjEADNP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 30 Apr 2023 23:13:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35418 "EHLO
+        id S233025AbjEADNw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 30 Apr 2023 23:13:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232529AbjEADLc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 30 Apr 2023 23:11:32 -0400
+        with ESMTP id S232888AbjEADMO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 30 Apr 2023 23:12:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAA382701;
-        Sun, 30 Apr 2023 20:04:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBBF15FE5;
+        Sun, 30 Apr 2023 20:04:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B1E7617B3;
-        Mon,  1 May 2023 03:03:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29DBC4339C;
-        Mon,  1 May 2023 03:03:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9749D617C9;
+        Mon,  1 May 2023 03:04:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B716C4339E;
+        Mon,  1 May 2023 03:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682910233;
-        bh=hRj1ydpVYptJsvNmiO59+UYPMUE4NUJHzAScAHy8VdI=;
+        s=k20201202; t=1682910243;
+        bh=uuYB3GYhzu1nlujF9rZqipg7hLv6MUrq3ASUNNgZGFI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GJjuFQEvcCxx4kcBMDeEmlgXj0C58nOHCVWuL24XBuF7Zf8eiNSO/HavWGlvXb/51
-         BX63p+Biv8U2w5wpBJQ89q9FaUvBBCUo4sh9TM0G/47JlBWQqnCneBiG0Ek5IybnFj
-         i7QqF1Ls1AnS8NERn7nECg3C38MXKY5abSgc09QO6TWgXixEZd14W7QuYS/O8wRxL7
-         F1vFQ2LfSIJOIqvCK1exsCuAV0/oN93WCUXx0AqIjadNlwcaP2O61Kgoi7v9GLN1aE
-         ahHK9M7FLnI2fgPhH+M4HUE8ZhgpLoGu+IdckDBOyAY7XwIeQMhts8Ywn5fzGhAGwk
-         amH0oSOBJEccA==
+        b=mjQJ4M5BXEkVB387lsy/IXuu4jtiUYGMUYox3NAOrjl1QFnjnT4LWA6sFLV82Hv5d
+         0Uy7jmpuwO4lgegqu12Lr/OXZNVklUuHSNieED5dGFEXw31B5yhBK9VlH4qdaflKJp
+         ++OfB5gonjL5bmvTIiTdCqVXhpc3UCCLWtoMWqLEGYt3I2/l6egp2XwkEyxKEn+XnO
+         QJrtVfkB5H4AjMU8n+sqzzYWGL38Bpk2Baq03h6ewyauhjhWg6HqdVII5LxLXq0Hqz
+         KFj885Tamg+34Oi9Qhjn4uGYQtauD4wOcEzgO5+lRkSkZpZWmOzaoD+Zt3rnzTdVLA
+         rTZ5+3pcUSktA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     void0red <30990023+void0red@users.noreply.github.com>,
-        Bob Moore <robert.moore@intel.com>,
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
-        acpica-devel@lists.linuxfoundation.org
-Subject: [PATCH AUTOSEL 6.1 24/33] ACPICA: ACPICA: check null return of ACPI_ALLOCATE_ZEROED in acpi_db_display_objects
-Date:   Sun, 30 Apr 2023 23:02:18 -0400
-Message-Id: <20230501030227.3254266-24-sashal@kernel.org>
+        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 28/33] ACPI: video: Remove desktops without backlight DMI quirks
+Date:   Sun, 30 Apr 2023 23:02:22 -0400
+Message-Id: <20230501030227.3254266-28-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230501030227.3254266-1-sashal@kernel.org>
 References: <20230501030227.3254266-1-sashal@kernel.org>
@@ -58,37 +58,82 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: void0red <30990023+void0red@users.noreply.github.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit ae5a0eccc85fc960834dd66e3befc2728284b86c ]
+[ Upstream commit abe4f5ae5efa6a63c7d5abfa07eb02bb56b4654e ]
 
-ACPICA commit 0d5f467d6a0ba852ea3aad68663cbcbd43300fd4
+After the recent backlight changes acpi_video# backlight devices are only
+registered when explicitly requested from the cmdline, by DMI quirk or by
+the GPU driver.
 
-ACPI_ALLOCATE_ZEROED may fails, object_info might be null and will cause
-null pointer dereference later.
+This means that we no longer get false-positive backlight control support
+advertised on desktop boards.
 
-Link: https://github.com/acpica/acpica/commit/0d5f467d
-Signed-off-by: Bob Moore <robert.moore@intel.com>
+Remove the 3 DMI quirks for desktop boards where the false-positive issue
+was fixed through quirks before. Note many more desktop boards were
+affected but we never build a full quirk list for this.
+
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/dbnames.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/acpi/video_detect.c | 35 -----------------------------------
+ 1 file changed, 35 deletions(-)
 
-diff --git a/drivers/acpi/acpica/dbnames.c b/drivers/acpi/acpica/dbnames.c
-index 3615e1a6efd8a..b91155ea9c343 100644
---- a/drivers/acpi/acpica/dbnames.c
-+++ b/drivers/acpi/acpica/dbnames.c
-@@ -652,6 +652,9 @@ acpi_status acpi_db_display_objects(char *obj_type_arg, char *display_count_arg)
- 		object_info =
- 		    ACPI_ALLOCATE_ZEROED(sizeof(struct acpi_object_info));
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index f0f41959faea6..ea739005336ca 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -130,12 +130,6 @@ static int video_detect_force_native(const struct dmi_system_id *d)
+ 	return 0;
+ }
  
-+		if (!object_info)
-+			return (AE_NO_MEMORY);
-+
- 		/* Walk the namespace from the root */
+-static int video_detect_force_none(const struct dmi_system_id *d)
+-{
+-	acpi_backlight_dmi = acpi_backlight_none;
+-	return 0;
+-}
+-
+ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 	/*
+ 	 * Models which should use the vendor backlight interface,
+@@ -766,35 +760,6 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 15 3535"),
+ 		},
+ 	},
+-
+-	/*
+-	 * Desktops which falsely report a backlight and which our heuristics
+-	 * for this do not catch.
+-	 */
+-	{
+-	 .callback = video_detect_force_none,
+-	 /* Dell OptiPlex 9020M */
+-	 .matches = {
+-		DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+-		DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex 9020M"),
+-		},
+-	},
+-	{
+-	 .callback = video_detect_force_none,
+-	 /* GIGABYTE GB-BXBT-2807 */
+-	 .matches = {
+-		DMI_MATCH(DMI_SYS_VENDOR, "GIGABYTE"),
+-		DMI_MATCH(DMI_PRODUCT_NAME, "GB-BXBT-2807"),
+-		},
+-	},
+-	{
+-	 .callback = video_detect_force_none,
+-	 /* MSI MS-7721 */
+-	 .matches = {
+-		DMI_MATCH(DMI_SYS_VENDOR, "MSI"),
+-		DMI_MATCH(DMI_PRODUCT_NAME, "MS-7721"),
+-		},
+-	},
+ 	{ },
+ };
  
- 		(void)acpi_walk_namespace(ACPI_TYPE_ANY, ACPI_ROOT_OBJECT,
 -- 
 2.39.2
 
