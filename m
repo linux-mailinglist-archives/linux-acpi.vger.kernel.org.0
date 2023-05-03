@@ -2,200 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2A926F3F8A
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 May 2023 10:48:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D942B6F4F77
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 May 2023 06:31:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233766AbjEBIr7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 May 2023 04:47:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50076 "EHLO
+        id S229459AbjECEbW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 May 2023 00:31:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232402AbjEBIrf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 May 2023 04:47:35 -0400
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D33B85FF9
-        for <linux-acpi@vger.kernel.org>; Tue,  2 May 2023 01:46:19 -0700 (PDT)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1a66e7a52d3so25816875ad.0
-        for <linux-acpi@vger.kernel.org>; Tue, 02 May 2023 01:46:19 -0700 (PDT)
+        with ESMTP id S229449AbjECEbU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 May 2023 00:31:20 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49386B5;
+        Tue,  2 May 2023 21:31:17 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-63b67a26069so5273137b3a.0;
+        Tue, 02 May 2023 21:31:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683017175; x=1685609175;
+        d=gmail.com; s=20221208; t=1683088276; x=1685680276;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hiQalyBCKoJzAGN9ygHoJ7Nfja67Oxy2+AA4JQPS0Pk=;
-        b=kOuFAu58T3IPgNuNzVp5vCYh7hR6x44qFnuyjuSRIfLqqO0MHN5vtigFl/4id/LQVq
-         f9b3pEh65z3oghVjzMcjeMOe6qEEWG37i5Pr72O440jxONR6H4uGh8jkayhV+Z/DE5UG
-         7zCYXfRzRRjSjfnZWXed9evFK4oZhbwOd7IuL8X8/XbpDgyKuMbE5SdZ2BJfPzxgZDED
-         1QIAn3JSzPflxYubseT69TnaL1bkMyVjF2KRYfUSHJLvZopFMBligxlqzHIcFi428JeL
-         GkAlUCc/E2HY481Fgi/9gZArPY3Wlcmuv7LXpgcUOLiPojkd3p4Tw7rKT/63dODvb5wZ
-         Vg/g==
+        bh=j36FxbwcTfFp+Gw+OcG7+yTUIaRmnbVgGu4hODtTOa0=;
+        b=citAXFKdtFhDlYnMr+GPqWXwjQYIvHLtz/niHkqQih/1UNzeLl3TEUTEeb+3Z21JXJ
+         WP0PogRcYNrjxnnih1jSjvxB4iRIrPEv4IV5vmDfIa7cvtGzed2C2bNeFrGR/N/lLmmx
+         CndsSzUQd8zF6VqgbCnal2ZGPgIa4wjfHC8uCssmN+6As/oZ1InjHs6GiZ4b2vnSWqqE
+         Cn4RSAXzV+1yVvnc1ljIrnfow/J3GuthUY0JN59EfER1TNmyJDIjByOYy2dhdLAujOOd
+         UDGMSbS792NCH53/sf23pAg6Ifkh9bnmFdtNR20TrEvH6In0WHiZ30tnAWu7XfZD0tfd
+         +Hqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683017175; x=1685609175;
+        d=1e100.net; s=20221208; t=1683088277; x=1685680277;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hiQalyBCKoJzAGN9ygHoJ7Nfja67Oxy2+AA4JQPS0Pk=;
-        b=OW69otjvoBM1WDTA4aRc5RdcvzTG4e8IpKMhXUkDq5JicNtVBAq9wvosfPCEBCEyZh
-         ezq7vT5FgjBsWv8MXHW/SmaNA7hvkwZXBeW/u2FG6lRMyOR+WO7ve0iX0DQRv2E9tO51
-         i8BCqSaIvR4rZLbbQzq+j/dZgu2g6KMz9d+g3MIQf5Qf6ruYKVhbv3qDHBzDM9lme8+O
-         Uz8GEtePqrVGryE6RrB5bJ6z7AFR01sy/s0sDXf52ua3OkLQg+AerA7mihkgjAR6sTMs
-         9JiZK3RS0MoGReQEbfy30CDIMPtSER2GrGb1uC/rJl7P+P0mfqzcPNedlBZwduGz2MDD
-         bzrA==
-X-Gm-Message-State: AC+VfDyahaE8i9PZXmPznn69o8/TOzb2GBoMSTrox3XDUFv2Fcz3fvLk
-        CiETo9PdgRMn2nDAzI0+RC7IzA==
-X-Google-Smtp-Source: ACHHUZ6I0qdjECptknquNNgpCQjBrs60RT5yKteV6HyLqYd2VSn4QOAnmQ+6LOEt3OVBlMYpUQ4hqA==
-X-Received: by 2002:a17:903:2304:b0:1a1:dd2a:fe6c with SMTP id d4-20020a170903230400b001a1dd2afe6cmr17861325plh.53.1683017175023;
-        Tue, 02 May 2023 01:46:15 -0700 (PDT)
-Received: from dragon (80.251.214.228.16clouds.com. [80.251.214.228])
-        by smtp.gmail.com with ESMTPSA id n20-20020a170902969400b001a6e9d170b8sm19031044plp.265.2023.05.02.01.46.05
+        bh=j36FxbwcTfFp+Gw+OcG7+yTUIaRmnbVgGu4hODtTOa0=;
+        b=F7APy0VdTF/BnhZ1TWZR1Fziwfsj9o0QM1J/VSc3bTJ+n52rWBtx7/JW5VvEHwDHhd
+         OJ83Dv7vM7TBWBO9r46VCxPvUZB36zG/m7gjeg99Ga/DAhvckEjlZBToIROOQa9cBzFx
+         0Gx0hFaIXfSV0go7wKvCsnpbiAvLaC2kGvXJI9x+jSqPTfudeWxEIePDuL6YWL+Nw57n
+         uvE2WkdvJrhOJ0GYk4D6t3rYQmRTZYJnp6A+fELF9NVfl3CAtvSHCxZ7YC13NYGQ0jT1
+         3NSJfyzYnn8m1tc93Gg0FS/aQU/9xIe3t5r5gKA9O3Vf1GKgyJuSetoR1AAEW1w9nVyW
+         c8wg==
+X-Gm-Message-State: AC+VfDzhDQZQ6eE+hrRBqKqI8CNgxJ1dPWuP2OJwZNYjNniRV1TZ68JF
+        GREQbsxjpCbxekGfX8ZCw1j2vBZMg3I=
+X-Google-Smtp-Source: ACHHUZ7fgYIek3AW/jmP9fqZIwYfJQKDV4HBGtHSbzm88HjynunVyvK7sLCzkGyJubW9ytiB59fATw==
+X-Received: by 2002:a05:6a00:a26:b0:641:3c61:db27 with SMTP id p38-20020a056a000a2600b006413c61db27mr21516460pfh.13.1683088276567;
+        Tue, 02 May 2023 21:31:16 -0700 (PDT)
+Received: from debian.me (subs32-116-206-28-39.three.co.id. [116.206.28.39])
+        by smtp.gmail.com with ESMTPSA id n7-20020a056a00212700b0063b6fb4522esm22460215pfj.20.2023.05.02.21.31.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 May 2023 01:46:13 -0700 (PDT)
-Date:   Tue, 2 May 2023 16:45:58 +0800
-From:   Shawn Guo <shawn.guo@linaro.org>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas@t-8ch.de>,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: Re: [PATCH v2] arm64: PCI: Add quirk for Qualcomm WoA devices
-Message-ID: <20230502084558.GA2103@dragon>
-References: <20230423030520.9570-1-shawn.guo@linaro.org>
- <20230428213027.GA363093@bhelgaas>
+        Tue, 02 May 2023 21:31:16 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 61B83106248; Wed,  3 May 2023 11:31:13 +0700 (WIB)
+Date:   Wed, 3 May 2023 11:31:13 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Acid Bong <acidbong@tilde.cafe>, regressions@lists.linux.dev
+Cc:     stable@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Thorsten Leemhuis <regressions@leemhuis.info>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [REGRESSION] Asus X541UAK hangs on suspend and poweroff (v6.1.6
+ onward)
+Message-ID: <ZFHjkb75lgzKRhRr@debian.me>
+References: <CRVU11I7JJWF.367PSO4YAQQEI@bong>
+ <5f445dab-a152-bcaa-4462-1665998c3e2e@gmail.com>
+ <ZE+1pKbfy1l/tTo6@debian.me>
+ <CSB8TSV6LXJ8.7SHI9VM2YMAR@bong>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="qzZ1tcaqoAMep0dQ"
 Content-Disposition: inline
-In-Reply-To: <20230428213027.GA363093@bhelgaas>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <CSB8TSV6LXJ8.7SHI9VM2YMAR@bong>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Apr 28, 2023 at 04:30:27PM -0500, Bjorn Helgaas wrote:
-> [+cc Andy, Bjorn A, plea for help from Qualcomm firmware folks]
-> 
-> On Sun, Apr 23, 2023 at 11:05:20AM +0800, Shawn Guo wrote:
-> > Commit 8fd4391ee717 ("arm64: PCI: Exclude ACPI "consumer" resources from
-> > host bridge windows") introduced a check to remove host bridge register
-> > resources for all arm64 platforms, with the assumption that the PNP0A03
-> > _CRS resources would always be host bridge registers and never as windows
-> > on arm64 platforms.
-> 
-> That's not quite what the commit log says.  The 8fd4391ee717
-> assumption is that on arm64,
-> 
->   - _CRS *consumer* resources are host bridge registers
->   - _CRS *producer* resources are windows
-> 
-> which I think matches the intent of the ACPI spec.
 
-Yes, I will update.
+--qzZ1tcaqoAMep0dQ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> > The assumption stands true until Qualcomm WoA (Windows on ARM) devices
-> > emerge.  These devices describe host bridge windows in PNP0A03 _CRS
-> > resources instead.  For example, the Microsoft Surface Pro X has host
-> > bridges defined as
-> > 
-> >     Name (_CID, EisaId ("PNP0A03") /* PCI Bus */)  // _CID: Compatible ID
-> > 
-> >     Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
-> >     {
-> >         Name (RBUF, ResourceTemplate ()
-> >         {
-> >             Memory32Fixed (ReadWrite,
-> >                 0x60200000,         // Address Base
-> >                 0x01DF0000,         // Address Length
-> >                 )
-> > ...
-> 
-> > The Memory32Fixed holds a host bridge window, but it's not properly
-> > defined as a "producer" resource.
-> 
-> I assume you're saying the use of Memory32Fixed for a window is a
-> firmware defect, right?
+On Tue, May 02, 2023 at 12:02:26AM +0300, Acid Bong wrote:
+> Hi there, and thank you for the reminder.
+>=20
+> Bisecting, unfortunately, takes a long time: I'm only trying out the 7th
+> commit, 15e7433e1dc2 (previous 6 marked as bad). The bug, as noted in
+> the head, doesn't have any (strict) patterns and takes randomly long
+> times: some kernels hung on the next day after compilation, one took 5
+> days. I'm not excluding a possibility that I might've got the versions
+> wrong and the bug occured on the update from 6.1-pf1 to 6.1-pf2 (6.1 and
+> 6.1.3; could be unrelated, but I saw a bunch of commits related to i915
+> and Skylake).
 
-Yes, I will reword.
+OK, try keep updating on bisection process.
 
-> 
-> (Per ACPI r6.5, sec 19.6.83, the Memory32Fixed descriptor cannot
-> specify a Producer/Consumer ResourceUsage.  I think that means the
-> space is assumed to be ResourceConsumer.)
-> 
-> > Consequently the resource gets removed by kernel, and the BAR
-> > allocation fails later on:
-> > 
-> >     [ 0.150731] pci 0002:00:00.0: BAR 14: no space for [mem size 0x00100000]
-> >     [ 0.150744] pci 0002:00:00.0: BAR 14: failed to assign [mem size 0x00100000]
-> >     [ 0.150758] pci 0002:01:00.0: BAR 0: no space for [mem size 0x00004000 64bit]
-> >     [ 0.150769] pci 0002:01:00.0: BAR 0: failed to assign [mem size 0x00004000 64bit]
-> > 
-> > This eventually prevents the PCIe NVME drive from being accessible.
-> > 
-> > Add a quirk for these devices to avoid the resource being removed.
-> 
-> Since this is a Windows laptop, I assume this works with Windows and
-> that Windows will in fact assign BARs in that Memory32Fixed area.
-> 
-> If we knew what the firmware author's intent was, we could probably
-> make Linux understand it.
-> 
-> Maybe (probably) Windows treats these descriptors the same on arm64 as
-> on x86, i.e., *everything* in PNP0A03 _CRS is assumed to be "producer"
-> (at least, that's my experimental observation; I have no actual
-> knowledge of Windows).
+> What exactly do you mean by "swapping the hardware"? I'm already sure
+> it's not related to my storage, because a month ago I replaced my faulty
+> HDD with an SSD, but the bug still remained. Unfortunately, I don't have
+> spare PCs or resources to purchase new hardware.
 
-That's my bet too.
+In case of laptops, I mean buying out new laptop (maybe with similar
+hardware specs as your current one) and try reproducing the regression
+there.
 
-> 
-> So I guess 8fd4391ee717 must have been motivated by some early arm64
-> platform that put "consumer" descriptors in PNP0A03 _CRS as Lorenzo
-> said [1].
-> 
-> In that case I guess our choices are:
-> 
->   - Add quirks like this and keep adding them for every new arm64
->     platform that uses the same "everything in PNP0A03 _CRS is a
->     producer" strategy.
-> 
->   - Remove 8fd4391ee717, break whatever early arm64 platforms needed
->     it, and add piecemeal quirks for them.
-> 
-> I hate both, but I think I hate the first more because it has no end,
-> while the second is painful but limited.
+Thanks.
 
-Thanks for your opinion on this!  Let's try to pursue the second then.
+--=20
+An old man doll... just what I always wanted! - Clara
 
-> 
-> Obviously we would need to do whatever we can to identify and fix
-> things that depend on 8fd4391ee717 before reverting it.
+--qzZ1tcaqoAMep0dQ
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Lorenzo,
+-----BEGIN PGP SIGNATURE-----
 
-I have zero experience on any of those early arm64 platforms.  I would
-appreciate it if you can give some direction on how to identify them.
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZFHjkAAKCRD2uYlJVVFO
+o0hGAP0bEioOcTuwLyb+gkUo3DPx3R9ztyRQPLu3u8KxtSe9LQEAoy7Rm/yGzwrQ
+uibC0VjplPdI/WpcMp7epkioqm6SnQY=
+=Tnp8
+-----END PGP SIGNATURE-----
 
-Looking at your comment below, I'm wondering if it's true that the
-firmware on those early arm64 platforms has no MCFG table but provide
-root->mcfg_addr via _CBA method?
-
-"I believe it is because there were arm64 platforms (early) that added a
-consumer descriptor in the host bridge CRS with MMIO registers space in
-it (I am not sure I can find the bug report - it has been a while,
-remember the issue with non-ECAM config space and where to add the MMIO
-resource required to "extend" MCFG config space ? I will never forget
-that :))."
-
-It would be very helpful if we can find someone running any of those
-early platforms, so that we can ask favor to dump ACPI tables and test
-things out.
-
-Shawn
+--qzZ1tcaqoAMep0dQ--
