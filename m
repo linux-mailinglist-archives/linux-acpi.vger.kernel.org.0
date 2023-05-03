@@ -2,113 +2,171 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEF816F5864
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 May 2023 14:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2BA16F59ED
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 May 2023 16:25:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230045AbjECM6r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 May 2023 08:58:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58624 "EHLO
+        id S229757AbjECOZx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 May 2023 10:25:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230071AbjECM6f (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 May 2023 08:58:35 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 819896192;
-        Wed,  3 May 2023 05:58:34 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1puC3z-0000ak-74; Wed, 03 May 2023 14:58:31 +0200
-Message-ID: <01ea5c8e-ed2f-7568-f6ed-896329e7b673@leemhuis.info>
-Date:   Wed, 3 May 2023 14:58:30 +0200
+        with ESMTP id S229610AbjECOZw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 May 2023 10:25:52 -0400
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45A3E9B;
+        Wed,  3 May 2023 07:25:51 -0700 (PDT)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-95227e5164dso148574766b.1;
+        Wed, 03 May 2023 07:25:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683123949; x=1685715949;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RIP7Bnp4xK0LFUf9sFfF4T86SZTayeCYfaCUxKklfzk=;
+        b=iJ89LdS9fTiMTNBksYoA5rpvX92xIhKSnznfMquDhoyde4WQ8nztuu4WmTw7PdLj2v
+         9mJ6QwmGSd7O+6nEgOeZAh4TN2bQSL+qpgluJT7gLdcposfxrpzBNNFwR7liy6/+RzSq
+         4V/+sM4ajyetfoaSuPUEUCoijWdgU27PnNFkBpM6cAzhvRc7tPx2P895et2jNtJY/GW2
+         HiQJVmlwtpBDPmGx5LWdMynCQNBfU6mDGbvZYX03ONNs4NxWfbsqtNvtuGh4WfoHYJ3n
+         ar+fRogzw4U567UN8aOfT7nyNOMGeo60GkShVJJnnxP3LjOGxrk/CRBaw/S1Z7U84fsu
+         q3Cg==
+X-Gm-Message-State: AC+VfDwAKjBYWovDtC87ElQfiRRuBiJ43Jnk1CTblwVi7jWOo8dNfuL9
+        NI+5WfvJ64z9n3hOVSwthF24bLN5tBlhxOsTspX37TrAmXU=
+X-Google-Smtp-Source: ACHHUZ52qffEbYqlPr1CeP1L0eu02iInuR0otx0ELGAqSWtsR6xIypgcQlzb265c2fKzdCFsIlsws04xQp4cdLsxJkw=
+X-Received: by 2002:a17:906:64db:b0:94f:4122:28f5 with SMTP id
+ p27-20020a17090664db00b0094f412228f5mr5009455ejn.2.1683123949504; Wed, 03 May
+ 2023 07:25:49 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US, de-DE
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-To:     Chuanhong Guo <gch981213@gmail.com>
-Cc:     Mario Limonciello <mario.limonciello@amd.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 3 May 2023 16:25:38 +0200
+Message-ID: <CAJZ5v0hv3CrvnrY=7NrpxMeUyoupB43Bu2Cv_4CD7asPFTU-cw@mail.gmail.com>
+Subject: [GIT PULL] More thermal control updates for v6.4-rc1
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux kernel regressions list <regressions@lists.linux.dev>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: [regression] Bug 217394 - IRQ override skipping breaks the Aya Neo
- Air Plus 6800U keyboard buttons
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1683118714;7599c7f1;
-X-HE-SMSGID: 1puC3z-0000ak-74
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Thorsten here, the Linux kernel's regression tracker.
+Hi Linus,
 
-I noticed a regression report in bugzilla.kernel.org. As many (most?)
-kernel developers don't keep an eye on it, I decided to forward it by mail.
+Please pull from the tag
 
-Chuanhong Guo, apparently it's cause by a change of yours.
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ thermal-6.4-rc1-2
 
-Note, you have to use bugzilla to reach the reporter, as I sadly[1] can
-not CCed them in mails like this.
+with top-most commit 53389edd4020514b876b01d05e851fb7d46eb51f
 
-Quoting from https://bugzilla.kernel.org/show_bug.cgi?id=217394 :
+ Merge branch 'thermal-core'
 
->  Matthew 2023-05-03 02:28:33 UTC
-> 
-> Reverting the changes found in this patch fixes the issue:
->> https://lore.kernel.org/all/20220712020058.90374-1-gch981213@gmail.com/
-> 
-> With that patch the AT Translated Set 2 Keyboard doesn't show up with the evtest and is not usable.
-> 
-> Hardware: 
-> 
-> Aya Neo Air Plus
-> AMD Ryzen 7 6800U
-See the ticket for more details.
+on top of commit 5e0ca0bfc33b7196ae3a5cbe26289a4025618f5a
 
-BTW: there apparently is another IRQ override needed for a different
-machine. See https://bugzilla.kernel.org/show_bug.cgi?id=216804#c8 for
-details (ignore the comments before that, the quirk entry for that
-machine was merged; comment 8 and all related to it really should have a
-separate bug; that's also why this partly fall through the cracks here
-:-/ ). The user is currently trying to create a patch.
+ Merge tag 'thermal-6.4-rc1' of
+git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+
+to receive more thermal control updates for 6.4-rc1.
+
+These are mostly cleanups on top of the previously merged thermal
+control changes plus some driver fixes and the removal of the Intel
+Menlow thermal driver.
+
+Specifics:
+
+ - Add compatible DT bindings for imx6sll and imx6ul to fix a dtbs check
+   warning (Stefan Wahren).
+
+ - Update the example in the DT bindings to reflect changes with the
+   ADC node name for QCom TM and TM5 (Marijn Suijten).
+
+ - Fix comments for the cpuidle_cooling_register() function to match the
+   function prototype (Chenggang Wang).
+
+ - Fix inconsistent temperature read and some Mediatek variant board
+   reboot by reverting a change and handling the temperature
+   differently (AngeloGioacchino Del Regno).
+
+ - Fix a memory leak in the initialization error path for the Mediatek
+   driver (Kang Chen).
+
+ - Use of_address_to_resource() in the Mediatek driver (Rob Herring).
+
+ - Fix unit address in the QCom tsens driver DT bindings (Krzysztof
+   Kozlowski).
+
+ - Clean up the step-wise thermal governor (Zhang Rui).
+
+ - Introduce thermal_zone_device() for accessing the device field of
+   struct thermal_zone_device and two drivers use it (Daniel Lezcano).
+
+ - Clean up the ACPI thermal driver a bit (Daniel Lezcano).
+
+ - Delete the thermal driver for Intel Menlow platforms that is not
+   expected to have any users (Rafael Wysocki).
+
+Thanks!
 
 
-[TLDR for the rest of this mail: I'm adding this report to the list of
-tracked Linux kernel regressions; the text you find below is based on a
-few templates paragraphs you might have encountered already in similar
-form.]
+---------------
 
-BTW, let me use this mail to also add the report to the list of tracked
-regressions to ensure it's doesn't fall through the cracks:
+AngeloGioacchino Del Regno (2):
+      Revert "thermal/drivers/mediatek: Add delay after thermal banks
+initialization"
+      thermal/drivers/mediatek: Add temperature constraints to validate read
 
-#regzbot introduced: 9946e39fe8d0
-https://bugzilla.kernel.org/show_bug.cgi?id=217394
-#regzbot title: acpi: IRQ override quirk needed for Aya Neo Air Plus 6800U
-#regzbot ignore-activity
+Chenggang Wang (1):
+      thermal/drivers/cpuidle_cooling: Delete unmatched comments
 
-This isn't a regression? This issue or a fix for it are already
-discussed somewhere else? It was fixed already? You want to clarify when
-the regression started to happen? Or point out I got the title or
-something else totally wrong? Then just reply and tell me -- ideally
-while also telling regzbot about it, as explained by the page listed in
-the footer of this mail.
+Daniel Lezcano (4):
+      thermal: core: Encapsulate tz->device field
+      thermal: intel: pch_thermal: Use thermal driver device to write a trace
+      ACPI: thermal: Use thermal_zone_device()
+      ACPI: thermal: Move to dedicated function sysfs extra attr creation
 
-Developers: When fixing the issue, remember to add 'Link:' tags pointing
-to the report (e.g. the buzgzilla ticket and maybe this mail as well, if
-this thread sees some discussion). See page linked in footer for details.
+Kang Chen (2):
+      thermal/drivers/mediatek: Use devm_of_iomap to avoid resource
+leak in mtk_thermal_probe
+      thermal/drivers/mediatek: Change clk_prepare_enable to
+devm_clk_get_enabled in mtk_thermal_probe
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+Krzysztof Kozlowski (1):
+      dt-bindings: thermal: qcom-tsens: Correct unit address
 
-[1] because bugzilla.kernel.org tells users upon registration their
-"email address will never be displayed to logged out users"
+Marijn Suijten (1):
+      dt-bindings: thermal: Use generic ADC node name in examples
+
+Rafael J. Wysocki (1):
+      thermal: intel: menlow: Get rid of this driver
+
+Rob Herring (1):
+      thermal/drivers/mediatek: Use of_address_to_resource()
+
+Stefan Wahren (1):
+      dt-bindings: imx-thermal: Add imx6sll and imx6ul compatible
+
+Zhang Rui (2):
+      thermal: gov_step_wise: Delete obsolete comment
+      thermal: gov_step_wise: Adjust code logic to match comment
+
+---------------
+
+ .../devicetree/bindings/thermal/imx-thermal.yaml   |  14 +-
+ .../bindings/thermal/qcom-spmi-adc-tm-hc.yaml      |   4 +-
+ .../bindings/thermal/qcom-spmi-adc-tm5.yaml        |   9 +-
+ .../devicetree/bindings/thermal/qcom-tsens.yaml    |   4 +-
+ drivers/acpi/thermal.c                             |  45 +-
+ drivers/thermal/cpuidle_cooling.c                  |   3 -
+ drivers/thermal/gov_step_wise.c                    |  28 +-
+ drivers/thermal/intel/Kconfig                      |   9 -
+ drivers/thermal/intel/Makefile                     |   1 -
+ drivers/thermal/intel/intel_menlow.c               | 521 ---------------------
+ drivers/thermal/intel/intel_pch_thermal.c          |   3 +-
+ drivers/thermal/mediatek/auxadc_thermal.c          |  89 ++--
+ drivers/thermal/thermal_core.c                     |   6 +
+ include/linux/thermal.h                            |   1 +
+ 14 files changed, 110 insertions(+), 627 deletions(-)
