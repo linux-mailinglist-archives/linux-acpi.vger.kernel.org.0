@@ -2,78 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 622046F6755
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 May 2023 10:28:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 451B26F6AD7
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 May 2023 14:06:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229772AbjEDI2B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 May 2023 04:28:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35856 "EHLO
+        id S230293AbjEDMGj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 May 2023 08:06:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229886AbjEDI1c (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 May 2023 04:27:32 -0400
-Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58A7E26A4
-        for <linux-acpi@vger.kernel.org>; Thu,  4 May 2023 01:20:22 -0700 (PDT)
-Received: by mail-il1-x130.google.com with SMTP id e9e14a558f8ab-3311691ebd0so446445ab.1
-        for <linux-acpi@vger.kernel.org>; Thu, 04 May 2023 01:20:22 -0700 (PDT)
+        with ESMTP id S230268AbjEDMGi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 May 2023 08:06:38 -0400
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A36DD26B5
+        for <linux-acpi@vger.kernel.org>; Thu,  4 May 2023 05:06:12 -0700 (PDT)
+Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-3f315712406so60789415e9.0
+        for <linux-acpi@vger.kernel.org>; Thu, 04 May 2023 05:06:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683188421; x=1685780421;
-        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=21T2ruoV7Hb2byNjXRrKdStLSJ9N1tOpZrLYkVqWI4g=;
-        b=FaiP5wWrywwzd4YeEUl3otRuGeCL+KX1UqNXOUpjk62xfANA7AwY3AXuR3buegRZez
-         NWA1qu+zD7SViq4F12zZkKX/NQpDUrBZb2BjHhBwsgt5ZmXgDqTOAZJPYWdBXRTKTAAT
-         NApnbdLhOeB1whsfHdXGqN+ewe31/qsVcfu0l3LNAOBjzQra+cvCqJ0G6FdYS+f58Hy/
-         axWZu/IY5olm+h3+WCuQDAZHwxjEYbpmmq8fTyDHlMwzRfMmm1E2usLotv+ukOGIxyBT
-         j22wy6QJRoli3rhhpU4Jn5z1M5gJYZ5lnViIp9z7+KTyQq9Yth2jljRX+ApJb3NDxjIp
-         4lOw==
+        d=bytedance.com; s=google; t=1683201971; x=1685793971;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kpKcjSg5vqqsnKH/yTedumgltcvVZ8m32D88kZ3aoDg=;
+        b=ESzvuy/VrPJGnTMt3Tat+zFw9GNqc1x7koKO3A56v+A3rOvj1aPT8pi5bt7z3k7Bt0
+         w3micn2UGmUtmieqlfj3SB+lp6Ycd9zJ8oquelTwPga7FR0cQekElC325zhl/myQ5Y0q
+         qtk4WHDVZhXh4evgCtuUY8uLJCqlzi0ZZ5IRndYHXcM6ggTSwo3SgHoyrJRXKfFN22Yi
+         p6hwBQTKKE879hgHkJGmWp+meYksn7miD/VLzIQJ+erEo+xo4xdPQEWilXhjj1jEfrzb
+         yRbBDsunDcnYfHBn03QU9a0Chkit3iGPBosfr4DT/6puvLOaRmXuyTmF6Zy72ZH9+ACP
+         lMHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683188421; x=1685780421;
-        h=to:subject:message-id:date:from:sender:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=21T2ruoV7Hb2byNjXRrKdStLSJ9N1tOpZrLYkVqWI4g=;
-        b=BdWZ2uG1DXHlM4ekDgxVJ0Qd0INybGYqMH1kRqpcjMOlumvsrxgI3gt7IxHD76oKCi
-         1UKOgOQ6f2wKUdQzLTuL+Dp4gHFWsJzF2JIjr0omf/O5Y+v/XUbziVM636rMbtc4NbJE
-         66/dvAL0sK8n6yDFofzt3pl8l/YfsRlWtznqb7KvfYF1FQtCvMD8V2dCdD5/K5XffmYq
-         l44dMJO3J86BBv9DqqLVfICbL3EAQeyMAocdhI9seETu71qFTTeZ9i7wK+ctay+aTxFA
-         MAXBbKWqgUUdwGypgpN1GfzoZAdbM9M+s60SzYuydxWRTnvpH5pdbaFY3KPj++/78J5Q
-         I9SA==
-X-Gm-Message-State: AC+VfDxoT22LaMUDp7mlSRDzz4Zwyru6VI/sNe8B65C7K+ZWxVsYh84W
-        onaOEJqrAZa7UU+jDDYgPcb62pd0fFQLWXt8+UI=
-X-Google-Smtp-Source: ACHHUZ5HKde+k5Dt5RvV3e1wq9ZPnlQ6YWoAEdv4RoJgrhSmMVe4HVPcUmyFescZWoI4m3ihPXHXjx68xfYYcChBWNE=
-X-Received: by 2002:a92:c102:0:b0:331:122c:2788 with SMTP id
- p2-20020a92c102000000b00331122c2788mr6986198ile.20.1683188421229; Thu, 04 May
- 2023 01:20:21 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1683201971; x=1685793971;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kpKcjSg5vqqsnKH/yTedumgltcvVZ8m32D88kZ3aoDg=;
+        b=girzo9VtiP220a+WK14bjdmw0MAEdQVOKMFAYf8xHatVVt3SSoEvFQwrjmgzPbLgCy
+         D3cHKNnLvCRPs+AvBD1uAYjPLHCLCiA3FOWzdksAGDh6raQ4MJLclclKilF25JcNt1xi
+         zdULzaTGmMzRHN5MH/AY2eqksbqesuG3GXtQO/mD+arGIQ2Bxx9VrzIPr/Zs996kLiUx
+         2A2Bb3Xz0iJa1x4W7g9WScu5E3tHQ3HwVLLTMwglPUxvA/ZuKHxoYm27qN+e+imoqQHk
+         jJi5gQvuOLnM4i9XK5rM4KZKtuoXo/yClbd0rQji9rq0F7XGmE5Z6AXIzZ9MI4gfN/O3
+         J/qQ==
+X-Gm-Message-State: AC+VfDyF5TUzEsdfrLZ5ykLvQztU/8dphIpbIx9YwQMDi6eKpHddiAT7
+        CXKlKmMGYf4/X8wpjmaZGbCRLbVc3JfwSxcqa/gARQ==
+X-Google-Smtp-Source: ACHHUZ5ZxZCr4XjHy4yR4UAZitMN9KGEZkBVkdAufgmbQbw1HiUK8e5eBimXGyHXugh7p6Ju8XBKwgpUzbrS0QlAES0=
+X-Received: by 2002:adf:f4cf:0:b0:307:5091:5b96 with SMTP id
+ h15-20020adff4cf000000b0030750915b96mr627945wrp.22.1683201971039; Thu, 04 May
+ 2023 05:06:11 -0700 (PDT)
 MIME-Version: 1.0
-Sender: 53e59t26@gmail.com
-Received: by 2002:a92:d442:0:b0:326:4581:50a0 with HTTP; Thu, 4 May 2023
- 01:20:20 -0700 (PDT)
-From:   Mrs Suzara Maling Wan <mrssuzaramailingwan12@gmail.com>
-Date:   Thu, 4 May 2023 09:20:20 +0100
-X-Google-Sender-Auth: l4AwGH5tKNtofM7Bte52UV44Yg8
-Message-ID: <CANcxMs54ifN5KO5MdqbRXR4BftwbEcSFx2H8dBb+9pDTi42Axg@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
+References: <20230426034001.16-1-cuiyunhui@bytedance.com> <CAMj1kXEKh9O-ndk3QFibJMYfMbG7vm-cLN2vVQM5eDsYK84NzQ@mail.gmail.com>
+ <CAEEQ3wkJB5CKm33mHXUOPX5makYOHF8By6FYGnNzRkM-Mo72OQ@mail.gmail.com>
+ <ZEj33QLZqEeL+/y4@FVFF77S0Q05N> <CAEEQ3wmDBJkfOeKCQfcnuE+1=1K0D2pzu+Sn+zPEWk+RHs0NFQ@mail.gmail.com>
+ <CAP6exY+ydbzh1EkWTFejzwaW+PA-ySVO2Qj+CVJ1XbSMce2S9Q@mail.gmail.com>
+ <ZEpbTE4gcsf8meXc@FVFF77S0Q05N> <CAMj1kXH5kZJ6ff=PRCRDLCBcw2AkEnRL_L1ABuvu5n71=unvAw@mail.gmail.com>
+ <CAEEQ3w=495snOz3UNBO4dpgyfZs3jQoRKo4QRAXXqR5-0j4SWA@mail.gmail.com>
+ <CAP6exYK9ytcgqcy2gFyOGvbxd7DPGQNs=m7nNgnfunnh8et9aQ@mail.gmail.com> <CAMj1kXGB4yXCdzts2=G_-hadoka9F2BU1gvVxeLEs5ifSbqgog@mail.gmail.com>
+In-Reply-To: <CAMj1kXGB4yXCdzts2=G_-hadoka9F2BU1gvVxeLEs5ifSbqgog@mail.gmail.com>
+From:   =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
+Date:   Thu, 4 May 2023 20:05:59 +0800
+Message-ID: <CAEEQ3wmcPMf44g2zRLRW3jKgd1ostpjQp=JMmwWdyYrhGQJnjA@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH] firmware: added a firmware information
+ passing method FFI
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     ron minnich <rminnich@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>, rafael@kernel.org,
+        lenb@kernel.org, jdelvare@suse.com, yc.hung@mediatek.com,
+        angelogioacchino.delregno@collabora.com,
+        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
+        tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-I am Mrs Suzara Maling Wan, I have a desire to build an orphanage home
-in your country and also support the poor and less privilege in your
-society, I want you to handle this project on my behalf, I have $4.5
-Million Dollars with Ecobank to execute this project .
+Hi Ron, Ard
 
-If you are in a good position to handle this project, reply for
-further details of the project
+On Sat, Apr 29, 2023 at 2:03=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> wr=
+ote:
+>
+> On Fri, 28 Apr 2023 at 17:09, ron minnich <rminnich@gmail.com> wrote:
+> >
+> > There is lots of text in the preceding notes :-), which is nice because=
+ we're clearly looking at something that matters!
+> >
+> > But, note, ARM Chromebooks run Linux, and I checked with the firmware t=
+eam just now:
+> > "Right. We're not using UEFI or ACPI or SMBIOS or DMI or any of that on=
+ Arm. Just the Device Tree."
+> >
+> > So I do not agree that we need UEFI tables due to some presumed semanti=
+cs that they implement, because: several tens of millions of ARM chromebook=
+s running Linux show otherwise.
+> >
+> > We've got a chance here to move to self describing data, and I think we=
+ need to take it. It will be a long time before we get this chance again.
+> >
 
-Regards
-Mrs Suzara Maling Wan
+> However, introducing such a binding for SMBIOS is perfectly
+> reasonable, although I would suggest that we don't copy the
+> SMBIOS/SMBIOS3 entry point address into the device tree (as this patch
+> does), but properly describe the memory region that contains the
+> actual SMBIOS structured data directly, along with its version. This
+> might be reused by other DT based platforms as well.
+
+Could you help to give me an example to add smbios in the memmap
+region description?
+
+Even after adding to the memmap region, it needs to be connected to
+the current dmi_scan_machine()?
+Or add another dmi code under the fdt framework?
+
+
+> Doing the same for ACPI is where we'll get into trouble, given that
+> we'd end up with two conflicting hardware descriptions and unfulfilled
+> dependencies on EFI specific data structures, and it is not the
+> kernel's job to reason about which h/w description should take
+> precedence, or to make guesses about memory types. So I fully agree
+> with Ron that moving to device tree is a much better choice here -
+> that way, you can avoid ACPI and UEFI altogether
+
+Thanks for your suggestions, I don't quite get what needs to be moved
+to dts? Could you explain in detail?
+Is it to realize the content of acpi based on the dts framework?
+
+Thanks,
+Yunhui
