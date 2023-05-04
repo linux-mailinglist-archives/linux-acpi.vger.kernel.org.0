@@ -2,78 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 451B26F6AD7
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 May 2023 14:06:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D164F6F6CBF
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 May 2023 15:16:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230293AbjEDMGj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 May 2023 08:06:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42390 "EHLO
+        id S229935AbjEDNQY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 May 2023 09:16:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230268AbjEDMGi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 May 2023 08:06:38 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A36DD26B5
-        for <linux-acpi@vger.kernel.org>; Thu,  4 May 2023 05:06:12 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-3f315712406so60789415e9.0
-        for <linux-acpi@vger.kernel.org>; Thu, 04 May 2023 05:06:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1683201971; x=1685793971;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kpKcjSg5vqqsnKH/yTedumgltcvVZ8m32D88kZ3aoDg=;
-        b=ESzvuy/VrPJGnTMt3Tat+zFw9GNqc1x7koKO3A56v+A3rOvj1aPT8pi5bt7z3k7Bt0
-         w3micn2UGmUtmieqlfj3SB+lp6Ycd9zJ8oquelTwPga7FR0cQekElC325zhl/myQ5Y0q
-         qtk4WHDVZhXh4evgCtuUY8uLJCqlzi0ZZ5IRndYHXcM6ggTSwo3SgHoyrJRXKfFN22Yi
-         p6hwBQTKKE879hgHkJGmWp+meYksn7miD/VLzIQJ+erEo+xo4xdPQEWilXhjj1jEfrzb
-         yRbBDsunDcnYfHBn03QU9a0Chkit3iGPBosfr4DT/6puvLOaRmXuyTmF6Zy72ZH9+ACP
-         lMHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683201971; x=1685793971;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kpKcjSg5vqqsnKH/yTedumgltcvVZ8m32D88kZ3aoDg=;
-        b=girzo9VtiP220a+WK14bjdmw0MAEdQVOKMFAYf8xHatVVt3SSoEvFQwrjmgzPbLgCy
-         D3cHKNnLvCRPs+AvBD1uAYjPLHCLCiA3FOWzdksAGDh6raQ4MJLclclKilF25JcNt1xi
-         zdULzaTGmMzRHN5MH/AY2eqksbqesuG3GXtQO/mD+arGIQ2Bxx9VrzIPr/Zs996kLiUx
-         2A2Bb3Xz0iJa1x4W7g9WScu5E3tHQ3HwVLLTMwglPUxvA/ZuKHxoYm27qN+e+imoqQHk
-         jJi5gQvuOLnM4i9XK5rM4KZKtuoXo/yClbd0rQji9rq0F7XGmE5Z6AXIzZ9MI4gfN/O3
-         J/qQ==
-X-Gm-Message-State: AC+VfDyF5TUzEsdfrLZ5ykLvQztU/8dphIpbIx9YwQMDi6eKpHddiAT7
-        CXKlKmMGYf4/X8wpjmaZGbCRLbVc3JfwSxcqa/gARQ==
-X-Google-Smtp-Source: ACHHUZ5ZxZCr4XjHy4yR4UAZitMN9KGEZkBVkdAufgmbQbw1HiUK8e5eBimXGyHXugh7p6Ju8XBKwgpUzbrS0QlAES0=
-X-Received: by 2002:adf:f4cf:0:b0:307:5091:5b96 with SMTP id
- h15-20020adff4cf000000b0030750915b96mr627945wrp.22.1683201971039; Thu, 04 May
- 2023 05:06:11 -0700 (PDT)
+        with ESMTP id S229606AbjEDNQX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 May 2023 09:16:23 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94C706194;
+        Thu,  4 May 2023 06:16:22 -0700 (PDT)
+Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.56])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4QBvQL3SpbzLpJZ;
+        Thu,  4 May 2023 21:13:30 +0800 (CST)
+Received: from [10.67.103.231] (10.67.103.231) by
+ kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Thu, 4 May 2023 21:16:17 +0800
+Message-ID: <db6c713c-f99c-fa3f-8d38-9a5d50889cc2@huawei.com>
+Date:   Thu, 4 May 2023 21:16:16 +0800
 MIME-Version: 1.0
-References: <20230426034001.16-1-cuiyunhui@bytedance.com> <CAMj1kXEKh9O-ndk3QFibJMYfMbG7vm-cLN2vVQM5eDsYK84NzQ@mail.gmail.com>
- <CAEEQ3wkJB5CKm33mHXUOPX5makYOHF8By6FYGnNzRkM-Mo72OQ@mail.gmail.com>
- <ZEj33QLZqEeL+/y4@FVFF77S0Q05N> <CAEEQ3wmDBJkfOeKCQfcnuE+1=1K0D2pzu+Sn+zPEWk+RHs0NFQ@mail.gmail.com>
- <CAP6exY+ydbzh1EkWTFejzwaW+PA-ySVO2Qj+CVJ1XbSMce2S9Q@mail.gmail.com>
- <ZEpbTE4gcsf8meXc@FVFF77S0Q05N> <CAMj1kXH5kZJ6ff=PRCRDLCBcw2AkEnRL_L1ABuvu5n71=unvAw@mail.gmail.com>
- <CAEEQ3w=495snOz3UNBO4dpgyfZs3jQoRKo4QRAXXqR5-0j4SWA@mail.gmail.com>
- <CAP6exYK9ytcgqcy2gFyOGvbxd7DPGQNs=m7nNgnfunnh8et9aQ@mail.gmail.com> <CAMj1kXGB4yXCdzts2=G_-hadoka9F2BU1gvVxeLEs5ifSbqgog@mail.gmail.com>
-In-Reply-To: <CAMj1kXGB4yXCdzts2=G_-hadoka9F2BU1gvVxeLEs5ifSbqgog@mail.gmail.com>
-From:   =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
-Date:   Thu, 4 May 2023 20:05:59 +0800
-Message-ID: <CAEEQ3wmcPMf44g2zRLRW3jKgd1ostpjQp=JMmwWdyYrhGQJnjA@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH] firmware: added a firmware information
- passing method FFI
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     ron minnich <rminnich@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>, rafael@kernel.org,
-        lenb@kernel.org, jdelvare@suse.com, yc.hung@mediatek.com,
-        angelogioacchino.delregno@collabora.com,
-        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
-        tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH] soc: hisilicon: Support HCCS driver on Kunpeng SoC
+To:     Sudeep Holla <sudeep.holla@arm.com>
+CC:     Arnd Bergmann <arnd@arndb.de>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        <linux-kernel@vger.kernel.org>, <soc@kernel.org>,
+        <wanghuiqiang@huawei.com>, <tanxiaofei@huawei.com>,
+        <liuyonglong@huawei.com>, <huangdaode@huawei.com>,
+        <linux-acpi@vger.kernel.org>, Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+References: <20230424073020.4039-1-lihuisong@huawei.com>
+ <e0c4f4b5-8b34-4542-b676-f98ddb8ef586@app.fastmail.com>
+ <20230425103040.znv66k364ant6klq@bogus>
+ <c7d9c3c5-e400-c60a-52e0-0f267ec8c517@huawei.com>
+ <20230425131918.5tf5vot4h7jf54xk@bogus>
+From:   "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <20230425131918.5tf5vot4h7jf54xk@bogus>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.103.231]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemm600004.china.huawei.com (7.193.23.242)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-8.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,55 +64,39 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Ron, Ard
 
-On Sat, Apr 29, 2023 at 2:03=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> wr=
-ote:
+在 2023/4/25 21:19, Sudeep Holla 写道:
+> On Tue, Apr 25, 2023 at 09:00:31PM +0800, lihuisong (C) wrote:
+>> For firmware, DSD way is simpler and easier to manage these virtual platform
+>> devices, and it's an usual way in kernel.
+> Any specific examples you are referring here. We had lots of debate when
+> DSD was introduced. It must be used only when there is no standard ACPI
+> way to achieve the same. But in this I don't (yet) think that is the case.
+> Further "simplicity" is remotely not the reason why you must use DSD.
+> So until you provide me technical reasons as why _CRS can't work, I
+> have to NACK this approach. DSD in this case seems like pure hack.
 >
-> On Fri, 28 Apr 2023 at 17:09, ron minnich <rminnich@gmail.com> wrote:
-> >
-> > There is lots of text in the preceding notes :-), which is nice because=
- we're clearly looking at something that matters!
-> >
-> > But, note, ARM Chromebooks run Linux, and I checked with the firmware t=
-eam just now:
-> > "Right. We're not using UEFI or ACPI or SMBIOS or DMI or any of that on=
- Arm. Just the Device Tree."
-> >
-> > So I do not agree that we need UEFI tables due to some presumed semanti=
-cs that they implement, because: several tens of millions of ARM chromebook=
-s running Linux show otherwise.
-> >
-> > We've got a chance here to move to self describing data, and I think we=
- need to take it. It will be a long time before we get this chance again.
-> >
+>> Driver only needs to get a fixed value, like pcc-id and type, here.
+>>
+> Yes and _CRS is used to get similar such properties in ACPI. It includes
+> normally MMIO and interrupts and since GAS supports PCC and _CRS can
+> contain GAS, you must simply use that.
+Hi Sudeep,
 
-> However, introducing such a binding for SMBIOS is perfectly
-> reasonable, although I would suggest that we don't copy the
-> SMBIOS/SMBIOS3 entry point address into the device tree (as this patch
-> does), but properly describe the memory region that contains the
-> actual SMBIOS structured data directly, along with its version. This
-> might be reused by other DT based platforms as well.
+I'm tring to use CRS with GAS to report PCC channel ID and get other 
+informations driver need by address.
+I found a way to obtain the generic register information according to 
+"Referencing the PCC address space" in ACPI spec.
+And driver also get the PCC generic register information successfully.
 
-Could you help to give me an example to add smbios in the memmap
-region description?
+But I don't know how to set and use the address in PCC register.
+Where should this address come from?
+It seems that ACPI spec is not very detailed about this.
+Do you have any suggestions?
 
-Even after adding to the memmap region, it needs to be connected to
-the current dmi_scan_machine()?
-Or add another dmi code under the fdt framework?
+On the other hand, we think that System Memory space + method can also 
+achieve above goal.
+What do you think of that?
 
-
-> Doing the same for ACPI is where we'll get into trouble, given that
-> we'd end up with two conflicting hardware descriptions and unfulfilled
-> dependencies on EFI specific data structures, and it is not the
-> kernel's job to reason about which h/w description should take
-> precedence, or to make guesses about memory types. So I fully agree
-> with Ron that moving to device tree is a much better choice here -
-> that way, you can avoid ACPI and UEFI altogether
-
-Thanks for your suggestions, I don't quite get what needs to be moved
-to dts? Could you explain in detail?
-Is it to realize the content of acpi based on the dts framework?
-
-Thanks,
-Yunhui
+Best regards,
+Huisong
