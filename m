@@ -2,84 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32D5E6F62A9
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 May 2023 03:31:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 622046F6755
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 May 2023 10:28:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229461AbjEDBbK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 May 2023 21:31:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41220 "EHLO
+        id S229772AbjEDI2B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 May 2023 04:28:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbjEDBbI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 May 2023 21:31:08 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E1C110E6;
-        Wed,  3 May 2023 18:31:03 -0700 (PDT)
-Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4QBbnl13YRzsR6S;
-        Thu,  4 May 2023 09:29:15 +0800 (CST)
-Received: from [10.67.103.231] (10.67.103.231) by
- kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Thu, 4 May 2023 09:31:00 +0800
-Message-ID: <65434e32-d1e5-54ef-2e91-b4aa8d79dfc8@huawei.com>
-Date:   Thu, 4 May 2023 09:30:59 +0800
+        with ESMTP id S229886AbjEDI1c (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 May 2023 04:27:32 -0400
+Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58A7E26A4
+        for <linux-acpi@vger.kernel.org>; Thu,  4 May 2023 01:20:22 -0700 (PDT)
+Received: by mail-il1-x130.google.com with SMTP id e9e14a558f8ab-3311691ebd0so446445ab.1
+        for <linux-acpi@vger.kernel.org>; Thu, 04 May 2023 01:20:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683188421; x=1685780421;
+        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=21T2ruoV7Hb2byNjXRrKdStLSJ9N1tOpZrLYkVqWI4g=;
+        b=FaiP5wWrywwzd4YeEUl3otRuGeCL+KX1UqNXOUpjk62xfANA7AwY3AXuR3buegRZez
+         NWA1qu+zD7SViq4F12zZkKX/NQpDUrBZb2BjHhBwsgt5ZmXgDqTOAZJPYWdBXRTKTAAT
+         NApnbdLhOeB1whsfHdXGqN+ewe31/qsVcfu0l3LNAOBjzQra+cvCqJ0G6FdYS+f58Hy/
+         axWZu/IY5olm+h3+WCuQDAZHwxjEYbpmmq8fTyDHlMwzRfMmm1E2usLotv+ukOGIxyBT
+         j22wy6QJRoli3rhhpU4Jn5z1M5gJYZ5lnViIp9z7+KTyQq9Yth2jljRX+ApJb3NDxjIp
+         4lOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683188421; x=1685780421;
+        h=to:subject:message-id:date:from:sender:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=21T2ruoV7Hb2byNjXRrKdStLSJ9N1tOpZrLYkVqWI4g=;
+        b=BdWZ2uG1DXHlM4ekDgxVJ0Qd0INybGYqMH1kRqpcjMOlumvsrxgI3gt7IxHD76oKCi
+         1UKOgOQ6f2wKUdQzLTuL+Dp4gHFWsJzF2JIjr0omf/O5Y+v/XUbziVM636rMbtc4NbJE
+         66/dvAL0sK8n6yDFofzt3pl8l/YfsRlWtznqb7KvfYF1FQtCvMD8V2dCdD5/K5XffmYq
+         l44dMJO3J86BBv9DqqLVfICbL3EAQeyMAocdhI9seETu71qFTTeZ9i7wK+ctay+aTxFA
+         MAXBbKWqgUUdwGypgpN1GfzoZAdbM9M+s60SzYuydxWRTnvpH5pdbaFY3KPj++/78J5Q
+         I9SA==
+X-Gm-Message-State: AC+VfDxoT22LaMUDp7mlSRDzz4Zwyru6VI/sNe8B65C7K+ZWxVsYh84W
+        onaOEJqrAZa7UU+jDDYgPcb62pd0fFQLWXt8+UI=
+X-Google-Smtp-Source: ACHHUZ5HKde+k5Dt5RvV3e1wq9ZPnlQ6YWoAEdv4RoJgrhSmMVe4HVPcUmyFescZWoI4m3ihPXHXjx68xfYYcChBWNE=
+X-Received: by 2002:a92:c102:0:b0:331:122c:2788 with SMTP id
+ p2-20020a92c102000000b00331122c2788mr6986198ile.20.1683188421229; Thu, 04 May
+ 2023 01:20:21 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH v3 0/2] mailbox: pcc: Support platform notification for
- type4 and shared interrupt
-To:     <robbiek@xsightlabs.com>, <sudeep.holla@arm.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <rafael@kernel.org>, <rafael.j.wysocki@intel.com>,
-        <wanghuiqiang@huawei.com>, <zhangzekun11@huawei.com>,
-        <wangxiongfeng2@huawei.com>, <tanxiaofei@huawei.com>,
-        <guohanjun@huawei.com>, <wangkefeng.wang@huawei.com>,
-        <huangdaode@huawei.com>
-References: <20221016034043.52227-1-lihuisong@huawei.com>
- <20230423110335.2679-1-lihuisong@huawei.com>
-From:   "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <20230423110335.2679-1-lihuisong@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.103.231]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemm600004.china.huawei.com (7.193.23.242)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-8.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Sender: 53e59t26@gmail.com
+Received: by 2002:a92:d442:0:b0:326:4581:50a0 with HTTP; Thu, 4 May 2023
+ 01:20:20 -0700 (PDT)
+From:   Mrs Suzara Maling Wan <mrssuzaramailingwan12@gmail.com>
+Date:   Thu, 4 May 2023 09:20:20 +0100
+X-Google-Sender-Auth: l4AwGH5tKNtofM7Bte52UV44Yg8
+Message-ID: <CANcxMs54ifN5KO5MdqbRXR4BftwbEcSFx2H8dBb+9pDTi42Axg@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Sudeep,
+I am Mrs Suzara Maling Wan, I have a desire to build an orphanage home
+in your country and also support the poor and less privilege in your
+society, I want you to handle this project on my behalf, I have $4.5
+Million Dollars with Ecobank to execute this project .
 
-Can you add Reviewed-by again?
-I forgot to do it when send v3.
-There is no the 'Reviewed-by' tag on patchwork now.
-I'm not sure if this affects patch merging.
+If you are in a good position to handle this project, reply for
+further details of the project
 
-/Huisong
-
-在 2023/4/23 19:03, Huisong Li 写道:
-> PCC supports processing platform notification for slave subspaces and
-> shared interrupt for multiple subspaces.
->
-> ---
->   -v3: update requesting shared irq code due to pcc using mbox_bind_client.
->   -v2: extract cmd complete code into a function.
->        unrelated types regard chan_in_use as dummy.
->   -v1: using subspace type to replace comm_flow_dir in patch [1/2]
->   -rfc-v3: split V2 into two patches.
->   -rfc-v2: don't use platform interrupt ack register to identify if the given
->        channel should respond interrupt.
->
-> Huisong Li (2):
->    mailbox: pcc: Add support for platform notification handling
->    mailbox: pcc: Support shared interrupt for multiple subspaces
->
->   drivers/mailbox/pcc.c | 91 +++++++++++++++++++++++++++++++++++++------
->   1 file changed, 80 insertions(+), 11 deletions(-)
->
+Regards
+Mrs Suzara Maling Wan
