@@ -2,104 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CB996F8515
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 May 2023 16:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5AD06F87A3
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 May 2023 19:33:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232032AbjEEOyE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 May 2023 10:54:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40054 "EHLO
+        id S232012AbjEERdH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 May 2023 13:33:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232006AbjEEOyD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 May 2023 10:54:03 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 108A615EE8;
-        Fri,  5 May 2023 07:54:01 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E628C1FB;
-        Fri,  5 May 2023 07:54:45 -0700 (PDT)
-Received: from [10.57.81.246] (unknown [10.57.81.246])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 055803F5A1;
-        Fri,  5 May 2023 07:53:58 -0700 (PDT)
-Message-ID: <8eab6d63-1fa1-704f-279b-83b2df7fa808@arm.com>
-Date:   Fri, 5 May 2023 15:53:54 +0100
+        with ESMTP id S231669AbjEERdG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 May 2023 13:33:06 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11EEA1A1F1;
+        Fri,  5 May 2023 10:32:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683307971; x=1714843971;
+  h=subject:from:to:cc:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=UG3IantLb/8SeHBFjZJxWPLt2fu+CV/jcov7kLjZ/n4=;
+  b=RQI5kEhLYlY6IekotqrwRjfy0+RGRofGXa/LxfMh/FuK2OVv3L4ykF5d
+   dluwfwPKU64cR+6nBYty6df47FRkjI4c0Z0tPeKFjZ+AnLcyMMSbQjHqp
+   ksnXIRSPFa7DsEyO2B4FIcR36yFb1unjddC+1ixwyfz+Zm6fj0d+HQf84
+   ZMqDTA+YI40Rf0gzLm5ubPCZTyNb28J59EMgGDarQ+yC+g3Yf2gf63/kj
+   sgZUeOG2TIRy03DLoR8QE97qm1t4m30RQ+VEorCqvxSbkgziWLXwL2buD
+   NX9pnO0taRdZkU0IrQTzZRQBvGE8QrOg+EjUv4QilOMEPrfkVel4PpP2S
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10701"; a="349301174"
+X-IronPort-AV: E=Sophos;i="5.99,252,1677571200"; 
+   d="scan'208";a="349301174"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2023 10:32:51 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10701"; a="700531195"
+X-IronPort-AV: E=Sophos;i="5.99,252,1677571200"; 
+   d="scan'208";a="700531195"
+Received: from djiang5-mobl3.amr.corp.intel.com (HELO [192.168.1.177]) ([10.212.77.78])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2023 10:32:51 -0700
+Subject: [PATCH 0/4] acpi: Add CDAT parsing support to ACPI tables code
+From:   Dave Jiang <dave.jiang@intel.com>
+To:     linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org
+Cc:     rafael@kernel.org, lenb@kernel.org, dan.j.williams@intel.com,
+        ira.weiny@intel.com, vishal.l.verma@intel.com,
+        alison.schofield@intel.com, lukas@wunner.de,
+        Jonathan.Cameron@huawei.com
+Date:   Fri, 05 May 2023 10:32:50 -0700
+Message-ID: <168330787964.2042604.17648905811002211147.stgit@djiang5-mobl3>
+User-Agent: StGit/1.5
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH 1/3] iommu/dma: Clean up Kconfig
-Content-Language: en-GB
-To:     Jason Gunthorpe <jgg@nvidia.com>
-Cc:     joro@8bytes.org, will@kernel.org, catalin.marinas@arm.com,
-        jean-philippe@linaro.org, inki.dae@samsung.com,
-        sw0312.kim@samsung.com, kyungmin.park@samsung.com,
-        tglx@linutronix.de, maz@kernel.org, alex.williamson@redhat.com,
-        cohuck@redhat.com, iommu@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-References: <cover.1660668998.git.robin.murphy@arm.com>
- <2e33c8bc2b1bb478157b7964bfed976cb7466139.1660668998.git.robin.murphy@arm.com>
- <ZFUXmH9vndGZFuPr@nvidia.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <ZFUXmH9vndGZFuPr@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-8.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2023-05-05 15:50, Jason Gunthorpe wrote:
-> On Tue, Aug 16, 2022 at 06:28:03PM +0100, Robin Murphy wrote:
->> Although iommu-dma is a per-architecture chonce, that is currently
->> implemented in a rather haphazard way. Selecting from the arch Kconfig
->> was the original logical approach, but is complicated by having to
->> manage dependencies; conversely, selecting from drivers ends up hiding
->> the architecture dependency *too* well. Instead, let's just have it
->> enable itself automatically when IOMMU API support is enabled for the
->> relevant architectures. It can't get much clearer than that.
->>
->> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
->> ---
->>   arch/arm64/Kconfig          | 1 -
->>   drivers/iommu/Kconfig       | 3 +--
->>   drivers/iommu/amd/Kconfig   | 1 -
->>   drivers/iommu/intel/Kconfig | 1 -
->>   4 files changed, 1 insertion(+), 5 deletions(-)
->>
->> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
->> index 571cc234d0b3..59af600445c2 100644
->> --- a/arch/arm64/Kconfig
->> +++ b/arch/arm64/Kconfig
->> @@ -209,7 +209,6 @@ config ARM64
->>   	select HAVE_KPROBES
->>   	select HAVE_KRETPROBES
->>   	select HAVE_GENERIC_VDSO
->> -	select IOMMU_DMA if IOMMU_SUPPORT
->>   	select IRQ_DOMAIN
->>   	select IRQ_FORCED_THREADING
->>   	select KASAN_VMALLOC if KASAN
->> diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
->> index 5c5cb5bee8b6..1d99c2d984fb 100644
->> --- a/drivers/iommu/Kconfig
->> +++ b/drivers/iommu/Kconfig
->> @@ -137,7 +137,7 @@ config OF_IOMMU
->>   
->>   # IOMMU-agnostic DMA-mapping layer
->>   config IOMMU_DMA
->> -	bool
->> +	def_bool ARM64 || IA64 || X86
-> 
-> Robin, do you remember why you added IA64 here? What is the Itanimum
-> IOMMU driver?
+Hi Rafael,
+I've broken out the "cxl: Add support for QTG ID retrieval for CXL subsystem" [1]
+series in order to make it more manageable. Here's the first part of the ACPI
+changes. These changes are added to allow reuse of ACPI tables code to parse
+the CDAT tables. While CDAT is not part of ACPI, the table structures are similar
+to ACPI layouts that the code can be reused with some small modifications.
 
-config INTEL_IOMMU
-	bool "Support for Intel IOMMU using DMA Remapping Devices"
-	depends on PCI_MSI && ACPI && (X86 || IA64)
+However, in order to be properly utilized by CXL users, the tables code needs
+to be refactored out to be independent of ACPI. For example, a PPC BE host may
+have CXL and does not have ACPI support. But it will have CDAT to read from
+devices and switches. patch 4/4 included is not APCI, but I have included it as
+a reference to this problem. Currently as you can see, I have the cdat code in
+CXL as "cxl_core-$(CONFIG_ACPI) += cdat.o". That will not work for a scenario
+with the PPC host mentioned above since it won't compile in ACPI support. I'm
+looking for guidance and to start the discussion on how we want the table handling
+code to be broken out to be independent of CONFIG_ACPI. Thank you!
 
-Yes, really :)
+The whole series is at [2] for convenience.
 
-Robin.
+[1]: https://lore.kernel.org/linux-cxl/168193556660.1178687.15477509915255912089.stgit@djiang5-mobl3/T/#t                                                                                               
+[2]: https://git.kernel.org/pub/scm/linux/kernel/git/djiang/linux.git/log/?h=cxl-qtg
+
+---
+
+Dave Jiang (4):
+      acpi: tables: Add CDAT table parsing support
+      acpi: Add header struct in CDAT subtables
+      acpi: fix misnamed define for CDAT DSMAS
+      cxl: Add callback to parse the DSMAS subtables from CDAT
+
+
+ drivers/acpi/tables.c     | 47 +++++++++++++++++++++++++++++++++++++--
+ drivers/cxl/core/Makefile |  1 +
+ drivers/cxl/core/cdat.c   | 40 +++++++++++++++++++++++++++++++++
+ drivers/cxl/cxl.h         | 18 +++++++++++++++
+ drivers/cxl/port.c        | 22 ++++++++++++++++++
+ include/acpi/actbl1.h     | 11 ++++++++-
+ include/linux/acpi.h      |  4 ++++
+ 7 files changed, 140 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/cxl/core/cdat.c
+
+--
+
