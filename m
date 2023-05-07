@@ -2,276 +2,192 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F3676F909C
-	for <lists+linux-acpi@lfdr.de>; Sat,  6 May 2023 10:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A9D86F987A
+	for <lists+linux-acpi@lfdr.de>; Sun,  7 May 2023 14:41:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231616AbjEFIgK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 6 May 2023 04:36:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36818 "EHLO
+        id S230283AbjEGMll (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 7 May 2023 08:41:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229872AbjEFIgK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 6 May 2023 04:36:10 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CC2E659F;
-        Sat,  6 May 2023 01:36:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683362168; x=1714898168;
-  h=date:from:to:cc:subject:message-id;
-  bh=+GAyhS8rOCjpR96ucmfnR3s22x5B9ZLcQ6I4c0R2EsI=;
-  b=WaGGbX+Ly9iCDahGoQ/9xI04T8fRxzMzeNA++zXhVhPBzZODwBEO6Mx5
-   GgsJk3fbC9FheHmlvauPWiQUWcHsV62vwVAkfxLVrXSi2vPqnnNII6h54
-   wDFnBOoKbe8mSccOyBbChxBIzZyGuq2aqt6K+GzEsjxC467PniGEgOScz
-   eAi0tiOQyVt1j0DA5enBSe0AknJvmWRiLVXZCKRdWLgwMqHhlom9sAqRG
-   dtRNOgnP6vvnnLBAiR7CoNUefUDuMiT8Vm6VeEhKM8IHFsE42Td0lWBOk
-   r85mKx9K4U61WfZBSH7r7WgU7j4+cFf4v+qTMZacZG6B9cfaNar0FHb5B
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10701"; a="352416132"
-X-IronPort-AV: E=Sophos;i="5.99,254,1677571200"; 
-   d="scan'208";a="352416132"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2023 01:36:07 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10701"; a="762759788"
-X-IronPort-AV: E=Sophos;i="5.99,254,1677571200"; 
-   d="scan'208";a="762759788"
-Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 06 May 2023 01:36:06 -0700
-Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pvDOf-00003t-2N;
-        Sat, 06 May 2023 08:36:05 +0000
-Date:   Sat, 06 May 2023 16:35:12 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 170e7b17571df81a831d1018a6ffa58fe6d7eeb9
-Message-ID: <20230506083512.5Bfw2%lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229757AbjEGMlk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 7 May 2023 08:41:40 -0400
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2068.outbound.protection.outlook.com [40.107.220.68])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D790012491;
+        Sun,  7 May 2023 05:41:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UaoAFui6ydJcPCzIPxAk5xojMr6V8kAWgY13B3hk1jdawVjvzO44zaq2zwWKxpoVTTDz4xIUkWbTUkvT8NO0fX4wA1NdyI9nGi+xNQYcS36rx8DfKVdkvQvAtEcfbtWQkZehAu+oXxMdWApE41o7PQiwDBGW4VktRFUZlWLg8kSrHpW1vIK5GtA5pDdNCkvJd30DqxU52LglrIAitNJcGgM5OBuwbNt4a5s7ySCR2kz1YcjjF1zSCi9GbpBz6C8XeG8jRXGv15niGC95UFloZai72DBaF33MPKhgYbFpxRkyNqX+DGDmBmSr1IyBC1jAb0PuEI78z/pgHzbE/I2Faw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I7j5ChS8dfhn+HBk8OfgoqM8fviCvtp/JYWijsUuBvQ=;
+ b=GPDUVWjwoAMRoKFmCfQX9kHmetGkpy59qz1ED6L8hL+wv1xCIREvIgISE4vDCjmiwzT3ejxl/qO3FxiKVClk/qyORLTy7bFP/ZHp1TRWm7Ei6+QWy3aN/QW6e/0/auTE8Gyj4YOFIdPsi0kyAQKaYBwJW2Dwc+oQX9YNjPguAEfvvj5+X5ccne/VoMUfdjro9MUY+XCil7jRz/g4PWdSGSL5L4jJbmznL8bGecyX8/I7Q9+GHXVZYbvk17Pq8BkeS+u/KMJjXQzKI4mLuQX8JtlhdRGPVN+rF/wqfQcT2gMuuLIcZCp651qmMJSNX4ZrFki1uinYvfGYJd96yMwAtw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=I7j5ChS8dfhn+HBk8OfgoqM8fviCvtp/JYWijsUuBvQ=;
+ b=My0jeQvvPd/u2M+xz9WogvcKrh5hWGY+MSQBxYf7G3eRNHttRwUxe1R5akSyJyBtxsS7hTb6b0/oconR/d8xCJB+KRH6qxOZJISXL3SA4UuKk4qCzwY161AXGr/bXyJMW0kRt2ymQR+ty2ypKhlplvqSsvWqFTzZJT6FMC5WFEQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB6095.namprd12.prod.outlook.com (2603:10b6:8:9c::19) by
+ MN0PR12MB6320.namprd12.prod.outlook.com (2603:10b6:208:3d3::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6363.30; Sun, 7 May 2023 12:41:34 +0000
+Received: from DS7PR12MB6095.namprd12.prod.outlook.com
+ ([fe80::ea3d:ec42:656e:a248]) by DS7PR12MB6095.namprd12.prod.outlook.com
+ ([fe80::ea3d:ec42:656e:a248%4]) with mapi id 15.20.6363.031; Sun, 7 May 2023
+ 12:41:34 +0000
+Message-ID: <1b3e5df0-6190-e560-72c8-f600f715f89e@amd.com>
+Date:   Sun, 7 May 2023 07:41:36 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [regression] Bug 217394 - IRQ override skipping breaks the Aya
+ Neo Air Plus 6800U keyboard buttons
+Content-Language: en-US
+To:     Chuanhong Guo <gch981213@gmail.com>,
+        "Limonciello, Mario" <mlimonci@amd.com>
+Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
+        linux-input@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+References: <01ea5c8e-ed2f-7568-f6ed-896329e7b673@leemhuis.info>
+ <68d017d9-d815-01d4-23c1-49c0aaf5f20b@amd.com>
+ <CAJsYDVKY0V4V5fCseGJ7SPW6+-4r7d04RTgkF82VgYcNLk5DtQ@mail.gmail.com>
+From:   Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <CAJsYDVKY0V4V5fCseGJ7SPW6+-4r7d04RTgkF82VgYcNLk5DtQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: DM5PR07CA0052.namprd07.prod.outlook.com
+ (2603:10b6:4:ad::17) To DS7PR12MB6095.namprd12.prod.outlook.com
+ (2603:10b6:8:9c::19)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6095:EE_|MN0PR12MB6320:EE_
+X-MS-Office365-Filtering-Correlation-Id: bbd78f58-ef6e-48e0-85a5-08db4ef8643e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 1hRUGz1injtMOQto8f89C2BWRoKXci8WHssybcepqmOIkvvIoXbeusQsmfj8fmO3fxjG4TtojAQKU+cGCQ2evrtpo4+MxwA0MEzRFGQn8A7csVJlyqjTXw32dVM2cb1Zf3+6pMZ+gxGMhQLI62LmjFOv3jN2KhcRq/RAPDHImsKhqKJbtU6pu23Mwg7lg/bIXZRVvG89R/j9msFSSXpjii2xZQ6CRZe5LNRTG4ZOyDudDe0XFxA6tPVIqe7a0koFoFASW4cVQ3WqgjWwfZEifaIuLmAhYwW4V9SmsqZykngNYRlxrCmCJTib1PahnvM1mPre+Q4Zmsckd5ufcXCF9atKMlW3+8ImhdsZuQgg+Yr2/qhzqbgoS3pgjr3BF4xqiTblBpZhR6NgFUFqYd6vAidmgckztdqpP0V52fP0lMYJUKWexxGX+4TnV9AoUiNiVafBCvMgKrQn6LexS0Y/AGXZcHWDxu/lm3SqGlwD6hhAdgUBBUn4UoiNYHj8o51YrOs+6C1IZATlp/uTac90v0huzGgYHU7oxo+XNW9WO4yYLFSYb0WBWPe24rqGloMR5g2irEASabYecN058L8+NZM2V3JFqmecJwVyhP25jdCeLUuObUlV9NDMfyp0fvfQpSUYuQAwEA0t3S8DjdMyd6XZz1SNG4j6a5dL19w6Qgzqw4gYnTfa0W6ONlq9kzDC
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB6095.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(346002)(136003)(366004)(39860400002)(376002)(451199021)(31686004)(966005)(66946007)(66556008)(66476007)(6636002)(4326008)(478600001)(6486002)(316002)(54906003)(110136005)(31696002)(86362001)(36756003)(83380400001)(2616005)(53546011)(6506007)(6512007)(8676002)(8936002)(5660300002)(44832011)(41300700001)(2906002)(186003)(38100700002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YktCMExKc0NKNUp2SzR4MVl3RFRBYlR4REV2VVZUbzZITnJTS0labGQ5WC9K?=
+ =?utf-8?B?Y0JsSWVVV2FzL3dHNFhwM0ZEbmkrMDFOS012dzJDMjhRd2xINmZ0ckFJWHFl?=
+ =?utf-8?B?UGNnR0NUb2hhTFhXMEk3ZGZkczFOSWxDaXZ4WHg5cEl3aCt3Nk5mTE05dUFM?=
+ =?utf-8?B?OVpUNWQ1ZmdLNXZEUy9vd0FwWVNOWGpNYVVUSWVsM3pHVkZrb01iWno5Qlhj?=
+ =?utf-8?B?TmxLSHZDQW1OTDZPaDlyMkFpV3hXbGFZMUhkT1kraDNEa29SSktiUS8xc3I1?=
+ =?utf-8?B?OTc3bGdyckxEUlFUQm5nbG1sekFFKzNEVzhLQTN0bkJ4MUFLRitaVGtXTTFT?=
+ =?utf-8?B?bXBVMnd5SERhdnovbzlQakFrdG1YZjJKdDV2MDNYTkJKNWg0QXNwbmhGTHRO?=
+ =?utf-8?B?anBkR3F5NlRkQ0lnTGxnYkNKb1RuSzlKamx6TWg3KzEvQVExaU0rOU4wMEdR?=
+ =?utf-8?B?SVNkcWJMQ3pFTGdZR2Nqcy9CQ2VjTk14WEZmTUs4UkdjVkV5MFc4TG5JcHRj?=
+ =?utf-8?B?QTA0RndhT0E4b0krdW1GMCtabEdGYWxhdG9JNkF4T1JnNXYyTWFVU0tDd1Zp?=
+ =?utf-8?B?aEMxZU5ja3NmVytIdGw2bWxzMGM4ZnFHZDJvY1U1Tys2SXFoZjFFZmNsQWM5?=
+ =?utf-8?B?ZXo2SjZseTFSWEsxazJWaFVtYkhjVFJxemsxMWhYMVZneHBKeTNBY2NjZi9t?=
+ =?utf-8?B?M2s1ZUUrS1Y0OUxRbWh0UDVITXNybXZWZVZCeVRJSmc2Znc1eUZiYmdQbDky?=
+ =?utf-8?B?b3E3ejBKb2FiUHJCVTR3VU5rcjBWWWVFdnBMTVZiRGNOdGpsVXRWWnZ2SklJ?=
+ =?utf-8?B?bGJndTducVlEcG1MUDhPaFVWeSt4Qm5PU3dtdnlnZUN6U2RMa0syQ1Fvc3lU?=
+ =?utf-8?B?TlduOHFESWRiUHo2dnNCSUpkOTZHMk0xR21QS1RrRkUvbSt0bU00eDhWdngz?=
+ =?utf-8?B?cklFVkVwRURNMDJwVi9UMmdIenNRMTVnK3RoaEdycFltM0FaTGEzU2Y4amVK?=
+ =?utf-8?B?N29YdVdLT3dwekd2Y0YvL0kwT3NUQ004K05KMDVFMW91dGp3ODBFdXpPK0xG?=
+ =?utf-8?B?eGFIMHROTFVGS2dCSkR5SklDVEVIdDBtUzdhR0VCNStkZ0ZUc0d1cDR6TTRB?=
+ =?utf-8?B?RGlPZGtRNW5keUtMRjV6MGpxZkFvY1B1cDBnUHpWMDhmVW5mWnMxc2Q3SERE?=
+ =?utf-8?B?WmZzczlNdVdUb3UrdDgyRFhOSUo2ZTh2YWkxQ1Q4YVpralpnS1I0QjVzZ0gy?=
+ =?utf-8?B?Y0RIeDcxVmo5M0dZNDZmWlZybDgzQWczMGEyZXZ5cFp1a012OWI1a2xaM2hR?=
+ =?utf-8?B?NjlNa2FOTWcvaWJOeGhTbmZwbjk3TU81R0ErZjdEaHR1b3g4ZTFGSnlBeHpX?=
+ =?utf-8?B?L0dqTWVGaTdFSHRJN1A4L3cxVElHaVE0U1IxalVjZ2drZUVxMi90VW5teVQy?=
+ =?utf-8?B?YTFNMk5ncEt4RjYxaWRNb1lsY2FrUlhlUk5HZXFrODZBMWZDQ0xLanFGQ0Js?=
+ =?utf-8?B?REVxY3Q5ZW85OFBuK3l5b1M1bWNBRGNxc3JQRjJYcjZVYnJtczh3RVNPaHRw?=
+ =?utf-8?B?TXBYNTVhb3ZRSzgvTUFIN05uN24zdkRyd2cvMk9EeS94emRqMnVUTTVUVUtj?=
+ =?utf-8?B?MzYzVXVodUorM3E3VDA3MUFXb0dxRkhIbnJBMDV3L1dzSUg0OWFqemQyUEpw?=
+ =?utf-8?B?MFY2bkJERy91VWlUajk0Z0xORGpOTy8wQW5kTGNZNmgyaldjckxySUptRlFY?=
+ =?utf-8?B?TXFYWGFaeUVPWitJN2JOMS9lVXBLaUo2OHg2MDl2ZHlEekFGM2JqdjkvZDJC?=
+ =?utf-8?B?VHVxOU9FTk4zZEwwUlQyTmtiVC9BUmJkZm1pQzl1Z25oUXNlam9YOEVJME9N?=
+ =?utf-8?B?NEpSUEgveEYrVEpiM1dGdGxPdG1kbWQ3aXM5Q1VZVm9XMCtXQWZYVUdpUkxl?=
+ =?utf-8?B?MFVBOSt4OHdYN2ZGbW1sTlpPdU1BNDZkMU1UdE1VS2J0Zlg3VmpGZDl3V29Y?=
+ =?utf-8?B?RXR6MjltM2hiYSsvRjlMdVVJcHNOTm1ab1A2MjlPMkdtSnc4ZS9OdXA2RDFR?=
+ =?utf-8?B?eVQrTVpJenpjNCtCU0ZBb2V3R1FISmF2SjhBOS9vRmUzclUxRXlnSVNuaHpw?=
+ =?utf-8?B?UkM3TnRjSkdIMUZGWnRlYllPTlUrZ29uZSs3N29sd0lXd09abUQ5d25CK1RR?=
+ =?utf-8?Q?b1YhZj8ZXGWuDgITYLw4gpa1pvKqYVL/JPvu4Xgz84C4?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bbd78f58-ef6e-48e0-85a5-08db4ef8643e
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6095.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2023 12:41:34.5656
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2hGhrHqmTErkMqTSEzG57NddxVf6WEMKws2uujbJ9i6TGXBSSDIarCaXgXd+iSgY4BDVt0kb/QiMATXXdH1GAA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6320
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 170e7b17571df81a831d1018a6ffa58fe6d7eeb9  Merge branch 'thermal/bleeding-edge' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into bleeding-edge
 
-elapsed time: 725m
-
-configs tested: 199
-configs skipped: 15
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha        buildonly-randconfig-r003-20230505   gcc  
-alpha        buildonly-randconfig-r006-20230502   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r002-20230505   gcc  
-alpha                randconfig-r014-20230502   gcc  
-alpha                randconfig-r031-20230501   gcc  
-alpha                randconfig-r034-20230430   gcc  
-alpha                randconfig-r036-20230502   gcc  
-arc                              allyesconfig   gcc  
-arc          buildonly-randconfig-r003-20230501   gcc  
-arc          buildonly-randconfig-r006-20230430   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r011-20230505   gcc  
-arc                  randconfig-r015-20230502   gcc  
-arc                  randconfig-r023-20230505   gcc  
-arc                  randconfig-r043-20230430   gcc  
-arc                  randconfig-r043-20230501   gcc  
-arc                  randconfig-r043-20230504   gcc  
-arc                  randconfig-r043-20230505   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm          buildonly-randconfig-r002-20230430   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r005-20230505   clang
-arm                  randconfig-r015-20230430   gcc  
-arm                  randconfig-r046-20230430   gcc  
-arm                  randconfig-r046-20230501   gcc  
-arm                  randconfig-r046-20230504   clang
-arm                  randconfig-r046-20230505   gcc  
-arm64                            allyesconfig   gcc  
-arm64        buildonly-randconfig-r002-20230505   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r002-20230430   gcc  
-arm64                randconfig-r015-20230504   gcc  
-arm64                randconfig-r016-20230502   gcc  
-arm64                randconfig-r023-20230430   clang
-arm64                randconfig-r024-20230430   clang
-arm64                randconfig-r026-20230430   clang
-csky         buildonly-randconfig-r005-20230501   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r024-20230501   gcc  
-csky                 randconfig-r036-20230430   gcc  
-hexagon      buildonly-randconfig-r001-20230505   clang
-hexagon      buildonly-randconfig-r003-20230502   clang
-hexagon              randconfig-r013-20230430   clang
-hexagon              randconfig-r013-20230504   clang
-hexagon              randconfig-r014-20230501   clang
-hexagon              randconfig-r016-20230501   clang
-hexagon              randconfig-r016-20230504   clang
-hexagon              randconfig-r035-20230501   clang
-hexagon              randconfig-r041-20230430   clang
-hexagon              randconfig-r041-20230501   clang
-hexagon              randconfig-r041-20230504   clang
-hexagon              randconfig-r041-20230505   clang
-hexagon              randconfig-r045-20230430   clang
-hexagon              randconfig-r045-20230501   clang
-hexagon              randconfig-r045-20230504   clang
-hexagon              randconfig-r045-20230505   clang
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-a001-20230501   gcc  
-i386                 randconfig-a002-20230501   gcc  
-i386                 randconfig-a003-20230501   gcc  
-i386                 randconfig-a004-20230501   gcc  
-i386                 randconfig-a005-20230501   gcc  
-i386                 randconfig-a006-20230501   gcc  
-i386                 randconfig-a011-20230501   clang
-i386                 randconfig-a012-20230501   clang
-i386                 randconfig-a013-20230501   clang
-i386                 randconfig-a014-20230501   clang
-i386                 randconfig-a015-20230501   clang
-i386                 randconfig-a016-20230501   clang
-ia64                             allmodconfig   gcc  
-ia64                                defconfig   gcc  
-ia64                 randconfig-r005-20230430   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r014-20230505   gcc  
-loongarch            randconfig-r015-20230501   gcc  
-loongarch            randconfig-r024-20230505   gcc  
-loongarch            randconfig-r031-20230502   gcc  
-loongarch            randconfig-r034-20230502   gcc  
-loongarch            randconfig-r036-20230501   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r003-20230504   gcc  
-m68k                 randconfig-r004-20230430   gcc  
-m68k                 randconfig-r006-20230504   gcc  
-m68k                 randconfig-r024-20230502   gcc  
-m68k                 randconfig-r034-20230501   gcc  
-microblaze           randconfig-r001-20230430   gcc  
-microblaze           randconfig-r012-20230504   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips         buildonly-randconfig-r001-20230502   gcc  
-mips                 randconfig-r003-20230505   clang
-mips                 randconfig-r011-20230504   clang
-mips                 randconfig-r012-20230505   gcc  
-nios2        buildonly-randconfig-r002-20230502   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r004-20230504   gcc  
-nios2                randconfig-r013-20230505   gcc  
-openrisc     buildonly-randconfig-r004-20230430   gcc  
-openrisc     buildonly-randconfig-r006-20230505   gcc  
-openrisc             randconfig-r003-20230501   gcc  
-openrisc             randconfig-r006-20230501   gcc  
-openrisc             randconfig-r011-20230430   gcc  
-openrisc             randconfig-r022-20230502   gcc  
-openrisc             randconfig-r022-20230505   gcc  
-openrisc             randconfig-r026-20230502   gcc  
-openrisc             randconfig-r035-20230502   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r002-20230504   gcc  
-parisc               randconfig-r003-20230430   gcc  
-parisc               randconfig-r004-20230505   gcc  
-parisc               randconfig-r011-20230502   gcc  
-parisc               randconfig-r032-20230430   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc              randconfig-r001-20230501   gcc  
-powerpc              randconfig-r001-20230504   clang
-powerpc              randconfig-r013-20230501   clang
-powerpc              randconfig-r021-20230430   clang
-powerpc              randconfig-r023-20230502   gcc  
-powerpc              randconfig-r031-20230430   gcc  
-powerpc              randconfig-r033-20230501   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r006-20230505   gcc  
-riscv                randconfig-r013-20230502   gcc  
-riscv                randconfig-r014-20230430   clang
-riscv                randconfig-r015-20230505   clang
-riscv                randconfig-r032-20230501   gcc  
-riscv                randconfig-r035-20230430   gcc  
-riscv                randconfig-r042-20230430   clang
-riscv                randconfig-r042-20230501   clang
-riscv                randconfig-r042-20230504   gcc  
-riscv                randconfig-r042-20230505   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390         buildonly-randconfig-r001-20230501   clang
-s390         buildonly-randconfig-r004-20230502   gcc  
-s390         buildonly-randconfig-r005-20230502   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r021-20230502   gcc  
-s390                 randconfig-r022-20230501   clang
-s390                 randconfig-r023-20230501   clang
-s390                 randconfig-r025-20230430   clang
-s390                 randconfig-r033-20230502   clang
-s390                 randconfig-r044-20230430   clang
-s390                 randconfig-r044-20230501   clang
-s390                 randconfig-r044-20230504   gcc  
-s390                 randconfig-r044-20230505   clang
-sh                               allmodconfig   gcc  
-sh                   randconfig-r002-20230501   gcc  
-sh                   randconfig-r006-20230430   gcc  
-sh                   randconfig-r025-20230502   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r005-20230501   gcc  
-sparc                randconfig-r005-20230504   gcc  
-sparc                randconfig-r033-20230430   gcc  
-sparc64      buildonly-randconfig-r003-20230430   gcc  
-sparc64              randconfig-r011-20230501   gcc  
-sparc64              randconfig-r012-20230430   gcc  
-sparc64              randconfig-r012-20230501   gcc  
-sparc64              randconfig-r016-20230505   gcc  
-sparc64              randconfig-r021-20230505   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-a001-20230501   gcc  
-x86_64               randconfig-a002-20230501   gcc  
-x86_64               randconfig-a003-20230501   gcc  
-x86_64               randconfig-a004-20230501   gcc  
-x86_64               randconfig-a005-20230501   gcc  
-x86_64               randconfig-a006-20230501   gcc  
-x86_64               randconfig-a011-20230501   clang
-x86_64               randconfig-a012-20230501   clang
-x86_64               randconfig-a013-20230501   clang
-x86_64               randconfig-a014-20230501   clang
-x86_64               randconfig-a015-20230501   clang
-x86_64               randconfig-a016-20230501   clang
-x86_64               randconfig-r004-20230501   gcc  
-x86_64                               rhel-8.3   gcc  
-xtensa       buildonly-randconfig-r005-20230430   gcc  
-xtensa               randconfig-r001-20230505   gcc  
-xtensa               randconfig-r022-20230430   gcc  
-xtensa               randconfig-r025-20230501   gcc  
-xtensa               randconfig-r026-20230501   gcc  
-xtensa               randconfig-r026-20230505   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+On 5/6/23 03:25, Chuanhong Guo wrote:
+> Hi Mario!
+>
+> On Thu, May 4, 2023 at 12:11 AM Limonciello, Mario <mlimonci@amd.com> wrote:
+>> +linux-input
+>>
+>> On 5/3/2023 7:58 AM, Linux regression tracking (Thorsten Leemhuis) wrote:
+>>> Hi, Thorsten here, the Linux kernel's regression tracker.
+>>>
+>>> I noticed a regression report in bugzilla.kernel.org. As many (most?)
+>>> kernel developers don't keep an eye on it, I decided to forward it by mail.
+>>>
+>>> Chuanhong Guo, apparently it's cause by a change of yours.
+>>>
+>>> Note, you have to use bugzilla to reach the reporter, as I sadly[1] can
+>>> not CCed them in mails like this.
+>>>
+>>> Quoting from https://bugzilla.kernel.org/show_bug.cgi?id=217394 :
+>>>
+>>>>    Matthew 2023-05-03 02:28:33 UTC
+>>>>
+>>>> Reverting the changes found in this patch fixes the issue:
+>>>>> https://lore.kernel.org/all/20220712020058.90374-1-gch981213@gmail.com/
+>>>> With that patch the AT Translated Set 2 Keyboard doesn't show up with the evtest and is not usable.
+>>>>
+>>>> Hardware:
+>>>>
+>>>> Aya Neo Air Plus
+>>>> AMD Ryzen 7 6800U
+>>> See the ticket for more details.
+>>>
+>>> BTW: there apparently is another IRQ override needed for a different
+>>> machine. See https://bugzilla.kernel.org/show_bug.cgi?id=216804#c8 for
+>>> details (ignore the comments before that, the quirk entry for that
+>>> machine was merged; comment 8 and all related to it really should have a
+>>> separate bug; that's also why this partly fall through the cracks here
+>>> :-/ ). The user is currently trying to create a patch.
+>>>
+>> Something I'm wondering about is if it's possible for i8042 to detect
+>> the polarity is incorrect when it probes and
+>> to try to correct it.
+>>
+>> If we could do that we can probably drop 9946e39fe8d0 ("ACPI: resource:
+>> skip IRQ override on AMD Zen platforms")
+>> to fix this issue along with all the other quirks that have collected
+>> over time on i8042 polarity issues.
+>>
+> I don't really understand why there are more and more new laptops
+> appearing with broken IRQ settings in ACPI, especially considering
+> the fact that some of these laptops were released after the original
+> problem was already identified almost a year ago.
+> What exactly was the solution when AMD internally discovered this IRQ
+> mismatch problem? Did you guys changed the emulated IRQ polarity
+> without updating the ACPI table with the corresponding polarity
+> description in your reference design?
+>
+In the reference design the tables are updated to be accurate and
+reflect the appropriate polarity.  It seems that the vendors must be
+changing this and it not breaking Windows for some reason.
