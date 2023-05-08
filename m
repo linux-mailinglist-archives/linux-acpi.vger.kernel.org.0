@@ -2,53 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A7DB6FAF61
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 May 2023 13:57:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 014DC6FAF65
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 May 2023 13:57:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236334AbjEHL5F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 May 2023 07:57:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56360 "EHLO
+        id S236088AbjEHL5W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 May 2023 07:57:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236391AbjEHL41 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 May 2023 07:56:27 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9667C4031F
-        for <linux-acpi@vger.kernel.org>; Mon,  8 May 2023 04:54:56 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1aaebed5bd6so30377705ad.1
-        for <linux-acpi@vger.kernel.org>; Mon, 08 May 2023 04:54:56 -0700 (PDT)
+        with ESMTP id S233451AbjEHL4l (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 May 2023 07:56:41 -0400
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 768D84369E
+        for <linux-acpi@vger.kernel.org>; Mon,  8 May 2023 04:55:04 -0700 (PDT)
+Received: by mail-pg1-x536.google.com with SMTP id 41be03b00d2f7-51b661097bfso3060759a12.0
+        for <linux-acpi@vger.kernel.org>; Mon, 08 May 2023 04:55:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1683546891; x=1686138891;
+        d=ventanamicro.com; s=google; t=1683546900; x=1686138900;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VyhfCZ5csOlZFGV4bhDymGpgdY5PFJC+Se96opk/VAw=;
-        b=mZVolCAzG8wvIf6oLT4D4ZY0rlzt0iN1IwMS4s8MGydTIshmGFWZmlzbShfdzJOuBW
-         px2AO5xanvA1J4MGpklcisJXnEEqeF//ddT/JS6zappzr1KbcZ1cDxjBNH/A6h3+gbA8
-         Z7CohGl6S5DR78mc3xk2ypWYhJvMw01eEs7obS4aSo6CTG/pvT9MZF8oywQI8QZn89rq
-         7+iiLWswwwgBc2etohzciXWK2a0h9JdMrdKMKYI+uTPQ3lzwut4nG8jzhqgfjVqMee8E
-         uUVdk5gYm0y74iCLkXN6AuWLTotIsWxKoyS9SExB+rM/4pjksv/WO50M3ug19w1NVtYp
-         MkhQ==
+        bh=GSuTggFYj3JSbFizfFEsySbatkGCHwC0oNgPzvEucIg=;
+        b=OwnBVNyw27EdkLus1jTOuwbndB2EL2oVzQ7k7WqNfE23/8qlo+tk8UFosj4+DGtIEM
+         we9+O1U8hj7m0aWDcbRQxN5ACgyeeG2VJSTA+BGXf0Lc91Yu3v8w6YkG0P9tVDrl1Pjb
+         M/Jj9HtGkwPWIa+gtgQXauU7tRECTZ4MSLSX7eV6SQDAJy5Q22e88y0ohlQ2w+9nI9vm
+         4cLX6IAHT9CSG0m6PilY/qusyz8K+wT4LRCKXTzhosGOyZItkPHdE81/RAXq3F3cHu9l
+         MrD0rX8pil+aPxPPGWzdKtYQEVz9zLmR7W/XzVVJNkvN4gGzVcNn/RllSUoQVTVxW2HZ
+         pP5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683546891; x=1686138891;
+        d=1e100.net; s=20221208; t=1683546900; x=1686138900;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VyhfCZ5csOlZFGV4bhDymGpgdY5PFJC+Se96opk/VAw=;
-        b=RR8T/TeqNxDm6ZItUGa202IBLKmzXbYSOAkieQvZwLy40uXd/H8kCakw8uxLoHEiZJ
-         UcoXGg3uz8jjGyNYr8xCvV7W02grWEMPr3vO+UctfIExaZDeWepo7Oz5RNcnl2JsVI6x
-         F8o4MYHNrOJ1VbFl0yyjk4njReR1NLD3xrNLGz+TtJUMsDgxB/aE5xsN7DpALGqUweDk
-         zsQaQxQoGoqOaMJCyVRe28Zq7MEHg7qgjyGk+vRWOm1iUoSp45O02JSWKOOQlCQOWyH4
-         ouR+T1jizsU90gJJlh7MNc0KIj3qd2Rq1Zz6dWWvlQC1nlDX9iqjsovGbFuUJl54d86z
-         aIvA==
-X-Gm-Message-State: AC+VfDz8lVRcQIoTKrnWSaspL5dqXHvOf0juruhIL8iur5fbiCgShM2j
-        qDpTTxk9mkhxeNHZQA+TmDnT5A==
-X-Google-Smtp-Source: ACHHUZ7fIR3m0mAK+PAQajTnE1Ep8+CpD/PcOgSSG5R7OWV3PrMXc4KDXQ6LmGExgO8pEE9BvOM6Dg==
-X-Received: by 2002:a17:902:d701:b0:1ab:624:38cb with SMTP id w1-20020a170902d70100b001ab062438cbmr9348824ply.14.1683546891602;
-        Mon, 08 May 2023 04:54:51 -0700 (PDT)
+        bh=GSuTggFYj3JSbFizfFEsySbatkGCHwC0oNgPzvEucIg=;
+        b=hzZQoLO1ORMfQUcMgKeTXFX0F+o4ktqC1GUFvsjJGdzO27ksoUZpR4ybRtTs8yGfiI
+         Fc4Igu1QmaDKcggmNs/STdcc1wfEA/lScfsE50h2R6q80i890mGJHZUvCkQQtQzGVPsY
+         SV6r603FXsiXrJFON+G8SaPIN7XdRgZ8+0m4plhtBhba0pCTy3FEX04q6cyBT2jFk63l
+         m6yLMMVfLLUVKXOWvPxRzDt8uc+V0QwAh7vvp/7GW0XPswrgYuVGZj9OfFAYcECAyAf3
+         2g0TV/zt8CkTXXyPGdUXupXAddBruv3zALnk65DFgLdUzQtSw+j6m+ow0eCHAzeZFPuB
+         G5bg==
+X-Gm-Message-State: AC+VfDyGMH4pUE4tpvkPvE1Jc8WCYsx5KYUvl76jwmMxCm7Rym7eXG8Y
+        GieBwRzJ4QBSQw65eKMTmDZSKA==
+X-Google-Smtp-Source: ACHHUZ74VlINKqqw1M1Nzm9Knvlkg1O1yI8Vgz31f0P7xgzVEMnDcYaHW6CpqAaMkpJZUju498eICg==
+X-Received: by 2002:a17:902:eccc:b0:1a6:6b85:7b4a with SMTP id a12-20020a170902eccc00b001a66b857b4amr12146859plh.18.1683546899877;
+        Mon, 08 May 2023 04:54:59 -0700 (PDT)
 Received: from sunil-laptop.. ([106.51.189.144])
-        by smtp.gmail.com with ESMTPSA id w9-20020a170902904900b001aaed524541sm7015149plz.227.2023.05.08.04.54.43
+        by smtp.gmail.com with ESMTPSA id w9-20020a170902904900b001aaed524541sm7015149plz.227.2023.05.08.04.54.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 May 2023 04:54:51 -0700 (PDT)
+        Mon, 08 May 2023 04:54:59 -0700 (PDT)
 From:   Sunil V L <sunilvl@ventanamicro.com>
 To:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
@@ -77,9 +77,9 @@ Cc:     Jonathan Corbet <corbet@lwn.net>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Andrew Jones <ajones@ventanamicro.com>,
         Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH V5 14/21] RISC-V: cpu: Enable cpuinfo for ACPI systems
-Date:   Mon,  8 May 2023 17:22:30 +0530
-Message-Id: <20230508115237.216337-15-sunilvl@ventanamicro.com>
+Subject: [PATCH V5 15/21] irqchip/riscv-intc: Add ACPI support
+Date:   Mon,  8 May 2023 17:22:31 +0530
+Message-Id: <20230508115237.216337-16-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230508115237.216337-1-sunilvl@ventanamicro.com>
 References: <20230508115237.216337-1-sunilvl@ventanamicro.com>
@@ -87,7 +87,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -95,81 +95,115 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On ACPI based platforms, few details like ISA need to be read
-from the ACPI table. Enable cpuinfo on ACPI based systems.
-
-ACPI has nothing similar to DT compatible property for each CPU.
-Hence, cpuinfo will not print "uarch".
+Add support for initializing the RISC-V INTC driver on ACPI
+platforms.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 ---
- arch/riscv/kernel/cpu.c | 30 ++++++++++++++++++++++--------
- 1 file changed, 22 insertions(+), 8 deletions(-)
+ drivers/irqchip/irq-riscv-intc.c | 70 +++++++++++++++++++++++++-------
+ 1 file changed, 55 insertions(+), 15 deletions(-)
 
-diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
-index c96aa56cf1c7..5de6fb703cc2 100644
---- a/arch/riscv/kernel/cpu.c
-+++ b/arch/riscv/kernel/cpu.c
-@@ -3,10 +3,12 @@
-  * Copyright (C) 2012 Regents of the University of California
+diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
+index f229e3e66387..4adeee1bc391 100644
+--- a/drivers/irqchip/irq-riscv-intc.c
++++ b/drivers/irqchip/irq-riscv-intc.c
+@@ -6,6 +6,7 @@
   */
  
+ #define pr_fmt(fmt) "riscv-intc: " fmt
 +#include <linux/acpi.h>
+ #include <linux/atomic.h>
+ #include <linux/bits.h>
  #include <linux/cpu.h>
- #include <linux/init.h>
- #include <linux/seq_file.h>
- #include <linux/of.h>
-+#include <asm/acpi.h>
- #include <asm/cpufeature.h>
- #include <asm/csr.h>
- #include <asm/hwcap.h>
-@@ -283,23 +285,35 @@ static void c_stop(struct seq_file *m, void *v)
- static int c_show(struct seq_file *m, void *v)
- {
- 	unsigned long cpu_id = (unsigned long)v - 1;
--	struct device_node *node = of_get_cpu_node(cpu_id, NULL);
- 	struct riscv_cpuinfo *ci = per_cpu_ptr(&riscv_cpuinfo, cpu_id);
-+	struct device_node *node;
- 	const char *compat, *isa;
+@@ -112,6 +113,30 @@ static struct fwnode_handle *riscv_intc_hwnode(void)
+ 	return intc_domain->fwnode;
+ }
  
- 	seq_printf(m, "processor\t: %lu\n", cpu_id);
- 	seq_printf(m, "hart\t\t: %lu\n", cpuid_to_hartid_map(cpu_id));
--	if (!of_property_read_string(node, "riscv,isa", &isa))
--		print_isa(m, isa);
--	print_mmu(m);
--	if (!of_property_read_string(node, "compatible", &compat)
--	    && strcmp(compat, "riscv"))
--		seq_printf(m, "uarch\t\t: %s\n", compat);
++static int __init riscv_intc_init_common(struct fwnode_handle *fn)
++{
++	int rc;
 +
-+	if (acpi_disabled) {
-+		node = of_get_cpu_node(cpu_id, NULL);
-+		if (!of_property_read_string(node, "riscv,isa", &isa))
-+			print_isa(m, isa);
-+
-+		print_mmu(m);
-+		if (!of_property_read_string(node, "compatible", &compat) &&
-+		    strcmp(compat, "riscv"))
-+			seq_printf(m, "uarch\t\t: %s\n", compat);
-+
-+		of_node_put(node);
-+	} else {
-+		if (!acpi_get_riscv_isa(NULL, cpu_id, &isa))
-+			print_isa(m, isa);
-+
-+		print_mmu(m);
++	intc_domain = irq_domain_create_linear(fn, BITS_PER_LONG,
++					       &riscv_intc_domain_ops, NULL);
++	if (!intc_domain) {
++		pr_err("unable to add IRQ domain\n");
++		return -ENXIO;
 +	}
 +
- 	seq_printf(m, "mvendorid\t: 0x%lx\n", ci->mvendorid);
- 	seq_printf(m, "marchid\t\t: 0x%lx\n", ci->marchid);
- 	seq_printf(m, "mimpid\t\t: 0x%lx\n", ci->mimpid);
- 	seq_puts(m, "\n");
--	of_node_put(node);
++	rc = set_handle_irq(&riscv_intc_irq);
++	if (rc) {
++		pr_err("failed to set irq handler\n");
++		return rc;
++	}
++
++	riscv_set_intc_hwnode_fn(riscv_intc_hwnode);
++
++	pr_info("%d local interrupts mapped\n", BITS_PER_LONG);
++
++	return 0;
++}
++
+ static int __init riscv_intc_init(struct device_node *node,
+ 				  struct device_node *parent)
+ {
+@@ -133,24 +158,39 @@ static int __init riscv_intc_init(struct device_node *node,
+ 	if (riscv_hartid_to_cpuid(hartid) != smp_processor_id())
+ 		return 0;
  
- 	return 0;
+-	intc_domain = irq_domain_add_linear(node, BITS_PER_LONG,
+-					    &riscv_intc_domain_ops, NULL);
+-	if (!intc_domain) {
+-		pr_err("unable to add IRQ domain\n");
+-		return -ENXIO;
+-	}
++	return riscv_intc_init_common(of_node_to_fwnode(node));
++}
+ 
+-	rc = set_handle_irq(&riscv_intc_irq);
+-	if (rc) {
+-		pr_err("failed to set irq handler\n");
+-		return rc;
+-	}
++IRQCHIP_DECLARE(riscv, "riscv,cpu-intc", riscv_intc_init);
+ 
+-	riscv_set_intc_hwnode_fn(riscv_intc_hwnode);
++#ifdef CONFIG_ACPI
+ 
+-	pr_info("%d local interrupts mapped\n", BITS_PER_LONG);
++static int __init riscv_intc_acpi_init(union acpi_subtable_headers *header,
++				       const unsigned long end)
++{
++	struct fwnode_handle *fn;
++	struct acpi_madt_rintc *rintc;
+ 
+-	return 0;
++	rintc = (struct acpi_madt_rintc *)header;
++
++	/*
++	 * The ACPI MADT will have one INTC for each CPU (or HART)
++	 * so riscv_intc_acpi_init() function will be called once
++	 * for each INTC. We only do INTC initialization
++	 * for the INTC belonging to the boot CPU (or boot HART).
++	 */
++	if (riscv_hartid_to_cpuid(rintc->hart_id) != smp_processor_id())
++		return 0;
++
++	fn = irq_domain_alloc_named_fwnode("RISCV-INTC");
++	if (!fn) {
++		pr_err("unable to allocate INTC FW node\n");
++		return -ENOMEM;
++	}
++
++	return riscv_intc_init_common(fn);
  }
+ 
+-IRQCHIP_DECLARE(riscv, "riscv,cpu-intc", riscv_intc_init);
++IRQCHIP_ACPI_DECLARE(riscv_intc, ACPI_MADT_TYPE_RINTC, NULL,
++		     ACPI_MADT_RINTC_VERSION_V1, riscv_intc_acpi_init);
++#endif
 -- 
 2.34.1
 
