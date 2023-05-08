@@ -2,97 +2,224 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 245946FB62D
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 May 2023 20:03:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D66886FB84B
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 May 2023 22:28:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229577AbjEHSD1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 May 2023 14:03:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54356 "EHLO
+        id S232643AbjEHU2x (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 May 2023 16:28:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232428AbjEHSD1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 May 2023 14:03:27 -0400
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF44AE5A
-        for <linux-acpi@vger.kernel.org>; Mon,  8 May 2023 11:03:22 -0700 (PDT)
-Date:   Mon, 08 May 2023 18:03:07 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1683568993; x=1683828193;
-        bh=tnQrUpBjZ5FWw23LcCAZJiqdu8dL9KhQ+9q8BrAIc88=;
-        h=Date:To:From:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-         Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-        b=WesZj9t/SdqGrmMkq/eotDjug9THB0eN/dClw1wgVQ56mZaxBQpxJsc/TYX8Mo8Mr
-         wD3eRPP1FWpnvX7eU66T3DZ7NANTwQ4zVYUtebGxyHpqp2LNy/3JZa88h2xgkL43fx
-         Lp7GjXqGVdruNmVE2xZaZFyfx073WBZaesr6BRL46y4a9dgD5WrV9UV3pTYPLO4aVD
-         ERrx2mc5j8OpaXD+8fgAs3NY2Qw9PNPTZPZufeAPLqUf5qJIi6oZgdjItSj8vyR/K9
-         J0o9EhPy0EGL2PVJ/+EJ2y+H27YcsN0HbaT6Ad2hGDpNWhjEu6noXEVEl637cIwzgJ
-         ACrTCyAxwOfUg==
-To:     linux-acpi@vger.kernel.org
-From:   =?utf-8?Q?Rub=C3=A9n_G=C3=B3mez?= <mrgommer@proton.me>
-Subject: [PATCH] Laptop internal keyboard not working on LG UltraPC 17U70P
-Message-ID: <jzqzwdedY4SnVMhKdJpA2nv5eA7o6COWGesAYO0Th3IXK2Pu2UoYfKlhd0YJhospEusFM-qmJG5Mzo-vGhE9VzVWebfqbyYlDdk7ZeDUXCI=@proton.me>
-Feedback-ID: 66491317:user:proton
+        with ESMTP id S233106AbjEHU2w (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 May 2023 16:28:52 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E0A655AD;
+        Mon,  8 May 2023 13:28:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683577730; x=1715113730;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kGJO5bW7l9MO0KOgZZZ6RDiyfHYcSzVdXZEnB631cPo=;
+  b=OV6tan0kKL6DAWs3P0epKyz1ci0yUrhCg0E4CDN2K51uS3hv5E15qMGm
+   OPqKP4xfixAqa7eQAblxOPEMbKA4Rj1YsIFpN5tj65Uejqh4VZnJQC1Pz
+   Z/i2dPykpyaSqoWgjsI2aXq5TJKncySk1ewHeNCLubon1tM0uqXWQHJS/
+   NkS/NtAcR9++Cwjr0+ZQe2SFUguavDHA0CtFDLF/gyx4Os13laQ016Q8k
+   LfzbGPEFNTKLgL/+BCIwcBgzvyaenVm0HdNLFnZ7mvMxFCgX44KhW9b42
+   K+OVGqRRhM5wdSYXeVSV28dHUGrBVsFo+NUCpwrbw9RpAWzK0wIiahqaH
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10704"; a="349782838"
+X-IronPort-AV: E=Sophos;i="5.99,259,1677571200"; 
+   d="scan'208";a="349782838"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 13:28:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10704"; a="729212406"
+X-IronPort-AV: E=Sophos;i="5.99,259,1677571200"; 
+   d="scan'208";a="729212406"
+Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 08 May 2023 13:28:40 -0700
+Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pw7TL-0001Ob-2V;
+        Mon, 08 May 2023 20:28:39 +0000
+Date:   Tue, 9 May 2023 04:27:53 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Piyush Malgujar <pmalgujar@marvell.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        dan.j.williams@intel.com, xueshuai@linux.alibaba.com,
+        jaylu102@amd.com, benjamin.cheatham@amd.com, bp@alien8.de,
+        tony.luck@intel.com, james.morse@arm.com, lenb@kernel.org,
+        rafael@kernel.org
+Cc:     oe-kbuild-all@lists.linux.dev, jannadurai@marvell.com,
+        cchavva@marvell.com, Piyush Malgujar <pmalgujar@marvell.com>
+Subject: Re: [PATCH] ACPI: APEI: EINJ: EINJV2 support added
+Message-ID: <202305090445.WSd683gm-lkp@intel.com>
+References: <20230503143759.10485-1-pmalgujar@marvell.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230503143759.10485-1-pmalgujar@marvell.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi Piyush,
 
-This patch, destined to the specific laptop model LG UltraPC 17U70P, solves=
- an already known problem happening with some devices where the keyboard IR=
-Q is handled with the ActiveLow attribute. The kernel currently ignores tha=
-t, and as a consequence the internal keyboard stops responding as soon it l=
-oads up. This has been extensively discussed in bug 213031 [1]. From the wo=
-rk done there an ad hoc list was introduced in the kernel to handle those d=
-evices, as seems like other broader solutions would cause problems to other=
- devices. This patch just adds this laptop model to that list. I filled a b=
-ug specifically for this laptop model with number 216983 [2]. Patch is alre=
-ady tested against commit 7163a2111f6c in the linux-pm branch.
+kernel test robot noticed the following build warnings:
 
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=3D213031
-[2] https://bugzilla.kernel.org/show_bug.cgi?id=3D216983
+[auto build test WARNING on rafael-pm/linux-next]
+[also build test WARNING on linus/master v6.4-rc1 next-20230508]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Signed-off-by: Rub=C3=A9n G=C3=B3mez Agudo <mrgommer@proton.me>
----
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index e8492b3a393a..0800a9d77558 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -516,6 +516,17 @@ static const struct dmi_system_id maingear_laptop[] =
-=3D {
-        { }
- };
+url:    https://github.com/intel-lab-lkp/linux/commits/Piyush-Malgujar/ACPI-APEI-EINJ-EINJV2-support-added/20230503-223915
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20230503143759.10485-1-pmalgujar%40marvell.com
+patch subject: [PATCH] ACPI: APEI: EINJ: EINJV2 support added
+config: x86_64-randconfig-s022 (https://download.01.org/0day-ci/archive/20230509/202305090445.WSd683gm-lkp@intel.com/config)
+compiler: gcc-11 (Debian 11.3.0-12) 11.3.0
+reproduce:
+        # apt-get install sparse
+        # sparse version: v0.6.4-39-gce1a6720-dirty
+        # https://github.com/intel-lab-lkp/linux/commit/ca5bbbdcc074577ee88ccaa2d078a37eb5eec36f
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Piyush-Malgujar/ACPI-APEI-EINJ-EINJV2-support-added/20230503-223915
+        git checkout ca5bbbdcc074577ee88ccaa2d078a37eb5eec36f
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        make W=1 C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=x86_64 olddefconfig
+        make W=1 C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/acpi/apei/ drivers/platform/x86/
 
-+static const struct dmi_system_id lg_laptop[] =3D {
-+       {
-+               .ident =3D "LG Electronics 17U70P",
-+               .matches =3D {
-+                       DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
-+                       DMI_MATCH(DMI_BOARD_NAME, "17U70P"),
-+               },
-+       },
-+       { }
-+};
-+
- struct irq_override_cmp {
-        const struct dmi_system_id *system;
-        unsigned char irq;
-@@ -532,6 +543,7 @@ static const struct irq_override_cmp override_table[] =
-=3D {
-        { lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true=
- },
-        { tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true =
-},
-        { maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true=
- },
-+       { lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
- };
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202305090445.WSd683gm-lkp@intel.com/
 
- static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+sparse warnings: (new ones prefixed by >>)
+   drivers/acpi/apei/einj.c:247:11: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct vendor_error_type_extension *v @@     got void [noderef] __iomem * @@
+   drivers/acpi/apei/einj.c:247:11: sparse:     expected struct vendor_error_type_extension *v
+   drivers/acpi/apei/einj.c:247:11: sparse:     got void [noderef] __iomem *
+   drivers/acpi/apei/einj.c:255:29: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void [noderef] __iomem *virt @@     got struct vendor_error_type_extension *v @@
+   drivers/acpi/apei/einj.c:255:29: sparse:     expected void [noderef] __iomem *virt
+   drivers/acpi/apei/einj.c:255:29: sparse:     got struct vendor_error_type_extension *v
+>> drivers/acpi/apei/einj.c:286:26: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct einjv2_set_error_type *v65param @@     got void [noderef] __iomem * @@
+   drivers/acpi/apei/einj.c:286:26: sparse:     expected struct einjv2_set_error_type *v65param
+   drivers/acpi/apei/einj.c:286:26: sparse:     got void [noderef] __iomem *
+   drivers/acpi/apei/einj.c:295:25: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct set_error_type_with_address *v5param @@     got void [noderef] __iomem * @@
+   drivers/acpi/apei/einj.c:295:25: sparse:     expected struct set_error_type_with_address *v5param
+   drivers/acpi/apei/einj.c:295:25: sparse:     got void [noderef] __iomem *
+   drivers/acpi/apei/einj.c:305:25: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct einj_parameter *v4param @@     got void [noderef] __iomem * @@
+   drivers/acpi/apei/einj.c:305:25: sparse:     expected struct einj_parameter *v4param
+   drivers/acpi/apei/einj.c:305:25: sparse:     got void [noderef] __iomem *
+   drivers/acpi/apei/einj.c:309:45: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void [noderef] __iomem *virt @@     got struct einj_parameter *v4param @@
+   drivers/acpi/apei/einj.c:309:45: sparse:     expected void [noderef] __iomem *virt
+   drivers/acpi/apei/einj.c:309:45: sparse:     got struct einj_parameter *v4param
+   drivers/acpi/apei/einj.c:376:21: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct acpi_einj_trigger *trigger_tab @@     got void [noderef] __iomem * @@
+   drivers/acpi/apei/einj.c:376:21: sparse:     expected struct acpi_einj_trigger *trigger_tab
+   drivers/acpi/apei/einj.c:376:21: sparse:     got void [noderef] __iomem *
+   drivers/acpi/apei/einj.c:402:17: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void volatile [noderef] __iomem *addr @@     got struct acpi_einj_trigger *trigger_tab @@
+   drivers/acpi/apei/einj.c:402:17: sparse:     expected void volatile [noderef] __iomem *addr
+   drivers/acpi/apei/einj.c:402:17: sparse:     got struct acpi_einj_trigger *trigger_tab
+   drivers/acpi/apei/einj.c:403:21: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct acpi_einj_trigger *trigger_tab @@     got void [noderef] __iomem * @@
+   drivers/acpi/apei/einj.c:403:21: sparse:     expected struct acpi_einj_trigger *trigger_tab
+   drivers/acpi/apei/einj.c:403:21: sparse:     got void [noderef] __iomem *
+   drivers/acpi/apei/einj.c:468:25: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void volatile [noderef] __iomem *addr @@     got struct acpi_einj_trigger *trigger_tab @@
+   drivers/acpi/apei/einj.c:468:25: sparse:     expected void volatile [noderef] __iomem *addr
+   drivers/acpi/apei/einj.c:468:25: sparse:     got struct acpi_einj_trigger *trigger_tab
+   drivers/acpi/apei/einj.c:930:37: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void [noderef] __iomem *virt @@     got void *static [assigned] [toplevel] einj_param @@
+   drivers/acpi/apei/einj.c:930:37: sparse:     expected void [noderef] __iomem *virt
+   drivers/acpi/apei/einj.c:930:37: sparse:     got void *static [assigned] [toplevel] einj_param
+
+vim +286 drivers/acpi/apei/einj.c
+
+   237	
+   238	static void check_vendor_extension(u64 paddr,
+   239					   struct set_error_type_with_address *v5param)
+   240	{
+   241		int	offset = v5param->vendor_extension;
+   242		struct	vendor_error_type_extension *v;
+   243		u32	sbdf;
+   244	
+   245		if (!offset)
+   246			return;
+ > 247		v = acpi_os_map_iomem(paddr + offset, sizeof(*v));
+   248		if (!v)
+   249			return;
+   250		sbdf = v->pcie_sbdf;
+   251		sprintf(vendor_dev, "%x:%x:%x.%x vendor_id=%x device_id=%x rev_id=%x\n",
+   252			sbdf >> 24, (sbdf >> 16) & 0xff,
+   253			(sbdf >> 11) & 0x1f, (sbdf >> 8) & 0x7,
+   254			 v->vendor_id, v->device_id, v->rev_id);
+   255		acpi_os_unmap_iomem(v, sizeof(*v));
+   256	}
+   257	
+   258	static void *einj_get_parameter_address(void)
+   259	{
+   260		int i;
+   261		u64 pa_v4 = 0, pa_v5 = 0, pa_v65 = 0;
+   262		struct acpi_whea_header *entry;
+   263	
+   264		entry = EINJ_TAB_ENTRY(einj_tab);
+   265		for (i = 0; i < einj_tab->entries; i++) {
+   266			if (entry->action == ACPI_EINJ_SET_ERROR_TYPE &&
+   267			    entry->instruction == ACPI_EINJ_WRITE_REGISTER &&
+   268			    entry->register_region.space_id ==
+   269			    ACPI_ADR_SPACE_SYSTEM_MEMORY)
+   270				pa_v4 = get_unaligned(&entry->register_region.address);
+   271			if (entry->action == ACPI_EINJ_SET_ERROR_TYPE_WITH_ADDRESS &&
+   272			    entry->instruction == ACPI_EINJ_WRITE_REGISTER &&
+   273			    entry->register_region.space_id ==
+   274			    ACPI_ADR_SPACE_SYSTEM_MEMORY)
+   275				pa_v5 = get_unaligned(&entry->register_region.address);
+   276			if (entry->action == ACPI_EINJV2_SET_ERROR_TYPE &&
+   277			    entry->instruction == ACPI_EINJ_WRITE_REGISTER &&
+   278			    entry->register_region.space_id ==
+   279			    ACPI_ADR_SPACE_SYSTEM_MEMORY)
+   280				pa_v65 = get_unaligned(&entry->register_region.address);
+   281			entry++;
+   282		}
+   283		if (pa_v65) {
+   284			struct einjv2_set_error_type *v65param;
+   285	
+ > 286			v65param = acpi_os_map_iomem(pa_v65, sizeof(*v65param));
+   287			if (v65param) {
+   288				einjv2_supp = 1;
+   289				return v65param;
+   290			}
+   291		}
+   292		if (pa_v5) {
+   293			struct set_error_type_with_address *v5param;
+   294	
+   295			v5param = acpi_os_map_iomem(pa_v5, sizeof(*v5param));
+   296			if (v5param) {
+   297				acpi5 = 1;
+   298				check_vendor_extension(pa_v5, v5param);
+   299				return v5param;
+   300			}
+   301		}
+   302		if (param_extension && pa_v4) {
+   303			struct einj_parameter *v4param;
+   304	
+   305			v4param = acpi_os_map_iomem(pa_v4, sizeof(*v4param));
+   306			if (!v4param)
+   307				return NULL;
+   308			if (v4param->reserved1 || v4param->reserved2) {
+   309				acpi_os_unmap_iomem(v4param, sizeof(*v4param));
+   310				return NULL;
+   311			}
+   312			return v4param;
+   313		}
+   314	
+   315		return NULL;
+   316	}
+   317	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
