@@ -2,171 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55EAE6F990B
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 May 2023 16:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6399F6F9D8D
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 May 2023 03:55:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229518AbjEGOza (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 7 May 2023 10:55:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48412 "EHLO
+        id S230348AbjEHBz3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 7 May 2023 21:55:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjEGOza (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 7 May 2023 10:55:30 -0400
-Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECC3172BA;
-        Sun,  7 May 2023 07:55:28 -0700 (PDT)
-Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-55aa9bcde31so4995137b3.0;
-        Sun, 07 May 2023 07:55:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683471328; x=1686063328;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0a1+UeLlATmgaT4hIrkt4/5zUzk0Ow/J8sqcb3kQi/A=;
-        b=D8oNiHkuVxig1gep6gO0cHT+strbDtVEhVzzvoIChhlbWN/T/LiQ8muaBiYDeiRam4
-         k6Hg2eluXy0Sd5ij6o8X1aGaE0vGB1Qc3V9+XxqrgPMFf10ePTg3CnBf9YrpWpr8KrFo
-         90DTLR6nzd76YT9akek53DDpYDb/WZUV27MMl+kScqkq5mqAH4kJSkzUGZicjF8NHzz2
-         zKg3G2CzKJjeXH5fNmTKnilz5uqYYqIP8BehbGvWdHn0zPxjC4bNodpQf2ADdBsbvk7C
-         M6oHXqcw6xkxz7hQj1kZ33FhQMNuk1vVsbAf2kk6Z+lLg0HH1AuuaFWqX/FbBplT6QQ5
-         z3nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683471328; x=1686063328;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0a1+UeLlATmgaT4hIrkt4/5zUzk0Ow/J8sqcb3kQi/A=;
-        b=CnAZZkeQDEKm6jelKGTqMv72i+2GW/zi88BW89PiKnE54qOdB8hVUDKtf+x85KAFpV
-         /uMThGFhveweA8N+5zqEVQkefiKHUKg/TeqR7QtVPnGDbwLZsaFAIrpeHOHlLhHxDjKZ
-         DAJl8e0CwiAWNs7Ot0vW2vhS/w7FWMkwSDNbHYLDRiLM/w+0rdNvPh/SS4dE6cshtCHa
-         J4RV6Rk2KKZlqET0lXzNbxpiLNyjZvwjrhAORFFjn5pyYXVJfGhoqOBOJ1a70h81hxcU
-         SM6Sr/cKLykux5lALq750gi+2r/bzr4eAJ0DJic7JM3DMz/ySps6wUF1+5TjikyX/WNI
-         VK3Q==
-X-Gm-Message-State: AC+VfDx+bQONHS6hfZ/2hV+XMnb3QbMndga34whHQUNb0QNys6F6GlVi
-        x6Rg2X/WgGdKxx1bAQDNDpw=
-X-Google-Smtp-Source: ACHHUZ73lLFaaN5yQqcTGVDNauL6G7L1c8diOqwAnZkrCIPUGbPOEqJzxEAO4HctJp8fF4IsC5fB7A==
-X-Received: by 2002:a25:aa71:0:b0:b9d:b2b6:7fd9 with SMTP id s104-20020a25aa71000000b00b9db2b67fd9mr6939647ybi.1.1683471328071;
-        Sun, 07 May 2023 07:55:28 -0700 (PDT)
-Received: from [192.168.75.211] ([173.23.87.62])
-        by smtp.gmail.com with ESMTPSA id s4-20020a259a84000000b00b9dfcc7a1fasm1712432ybo.7.2023.05.07.07.55.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 07 May 2023 07:55:27 -0700 (PDT)
-Message-ID: <0bb0439e-b066-ad05-371b-73d3135b39a3@gmail.com>
-Date:   Sun, 7 May 2023 09:55:25 -0500
+        with ESMTP id S229960AbjEHBz1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 7 May 2023 21:55:27 -0400
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38E9AA24B;
+        Sun,  7 May 2023 18:55:26 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=24;SR=0;TI=SMTPD_---0Vhyn0p8_1683510918;
+Received: from 30.240.112.215(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vhyn0p8_1683510918)
+          by smtp.aliyun-inc.com;
+          Mon, 08 May 2023 09:55:21 +0800
+Message-ID: <1694e1b3-c4ad-abfe-bf3a-e3210473b3b5@linux.alibaba.com>
+Date:   Mon, 8 May 2023 09:55:17 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [regression] Bug 217394 - IRQ override skipping breaks the Aya
- Neo Air Plus 6800U keyboard buttons
-To:     Mario Limonciello <mario.limonciello@amd.com>,
-        Chuanhong Guo <gch981213@gmail.com>,
-        "Limonciello, Mario" <mlimonci@amd.com>
-Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        linux-input@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-References: <01ea5c8e-ed2f-7568-f6ed-896329e7b673@leemhuis.info>
- <68d017d9-d815-01d4-23c1-49c0aaf5f20b@amd.com>
- <CAJsYDVKY0V4V5fCseGJ7SPW6+-4r7d04RTgkF82VgYcNLk5DtQ@mail.gmail.com>
- <1b3e5df0-6190-e560-72c8-f600f715f89e@amd.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.10.1
+Subject: Re: [PATCH v7 0/2] ACPI: APEI: handle synchronous exceptions with
+ proper si_code
 Content-Language: en-US
-From:   Matthew Anderson <ruinairas1992@gmail.com>
-In-Reply-To: <1b3e5df0-6190-e560-72c8-f600f715f89e@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+To:     rafael@kernel.org, wangkefeng.wang@huawei.com,
+        tanxiaofei@huawei.com, mawupeng1@huawei.com, tony.luck@intel.com,
+        naoya.horiguchi@nec.com
+Cc:     linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, justin.he@arm.com,
+        akpm@linux-foundation.org, ardb@kernel.org, ashish.kalra@amd.com,
+        baolin.wang@linux.alibaba.com, bp@alien8.de,
+        cuibixuan@linux.alibaba.com, dave.hansen@linux.intel.com,
+        james.morse@arm.com, jarkko@kernel.org, lenb@kernel.org,
+        linmiaohe@huawei.com, lvying6@huawei.com, xiexiuqi@huawei.com,
+        zhuo.song@linux.alibaba.com
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20230417011407.58319-1-xueshuai@linux.alibaba.com>
+ <92f2642e-ab44-913f-24fa-3313acd905f8@linux.alibaba.com>
+In-Reply-To: <92f2642e-ab44-913f-24fa-3313acd905f8@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-12.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On the Ayaneo Air Plus I modified the DSDT based on another handheld 
-with a 6800U that does not have the problem and it resolved the issue. I 
-hope this information helps in some way.
-
-<             Name (_HID, EisaId ("PNP0303") /* IBM Enhanced Keyboard 
-(101/102-key, PS/2 Mouse) */)  // _HID: Hardware ID
-<             Name (_UID, Zero)  // _UID: Unique ID
----
- >             Name (_HID, "MSFT0001")  // _HID: Hardware ID
- >             Name (_CID, EisaId ("PNP0303") /* IBM Enhanced Keyboard 
-(101/102-key, PS/2 Mouse) */)  // _CID: Compatible ID
-6135c6135
-<                 IRQNoFlags ()
----
- >                 IRQ (Edge, ActiveLow, Shared, )
 
 
-On 5/7/23 7:41 AM, Mario Limonciello wrote:
->
-> On 5/6/23 03:25, Chuanhong Guo wrote:
->> Hi Mario!
+On 2023/4/24 14:24, Shuai Xue wrote:
+> 
+> 
+> On 2023/4/17 AM9:14, Shuai Xue wrote:
+>> changes since v6:
+>> - add more explicty error message suggested by Xiaofei
+>> - pick up reviewed-by tag from Xiaofei
+>> - pick up internal reviewed-by tag from Baolin
 >>
->> On Thu, May 4, 2023 at 12:11 AM Limonciello, Mario <mlimonci@amd.com> 
->> wrote:
->>> +linux-input
->>>
->>> On 5/3/2023 7:58 AM, Linux regression tracking (Thorsten Leemhuis) 
->>> wrote:
->>>> Hi, Thorsten here, the Linux kernel's regression tracker.
->>>>
->>>> I noticed a regression report in bugzilla.kernel.org. As many (most?)
->>>> kernel developers don't keep an eye on it, I decided to forward it 
->>>> by mail.
->>>>
->>>> Chuanhong Guo, apparently it's cause by a change of yours.
->>>>
->>>> Note, you have to use bugzilla to reach the reporter, as I sadly[1] 
->>>> can
->>>> not CCed them in mails like this.
->>>>
->>>> Quoting from https://bugzilla.kernel.org/show_bug.cgi?id=217394 :
->>>>
->>>>>    Matthew 2023-05-03 02:28:33 UTC
->>>>>
->>>>> Reverting the changes found in this patch fixes the issue:
->>>>>> https://lore.kernel.org/all/20220712020058.90374-1-gch981213@gmail.com/ 
->>>>>>
->>>>> With that patch the AT Translated Set 2 Keyboard doesn't show up 
->>>>> with the evtest and is not usable.
->>>>>
->>>>> Hardware:
->>>>>
->>>>> Aya Neo Air Plus
->>>>> AMD Ryzen 7 6800U
->>>> See the ticket for more details.
->>>>
->>>> BTW: there apparently is another IRQ override needed for a different
->>>> machine. See https://bugzilla.kernel.org/show_bug.cgi?id=216804#c8 for
->>>> details (ignore the comments before that, the quirk entry for that
->>>> machine was merged; comment 8 and all related to it really should 
->>>> have a
->>>> separate bug; that's also why this partly fall through the cracks here
->>>> :-/ ). The user is currently trying to create a patch.
->>>>
->>> Something I'm wondering about is if it's possible for i8042 to detect
->>> the polarity is incorrect when it probes and
->>> to try to correct it.
->>>
->>> If we could do that we can probably drop 9946e39fe8d0 ("ACPI: resource:
->>> skip IRQ override on AMD Zen platforms")
->>> to fix this issue along with all the other quirks that have collected
->>> over time on i8042 polarity issues.
->>>
->> I don't really understand why there are more and more new laptops
->> appearing with broken IRQ settings in ACPI, especially considering
->> the fact that some of these laptops were released after the original
->> problem was already identified almost a year ago.
->> What exactly was the solution when AMD internally discovered this IRQ
->> mismatch problem? Did you guys changed the emulated IRQ polarity
->> without updating the ACPI table with the corresponding polarity
->> description in your reference design?
+>> changes since v5 by addressing comments from Kefeng:
+>> - document return value of memory_failure()
+>> - drop redundant comments in call site of memory_failure() 
+>> - make ghes_do_proc void and handle abnormal case within it
+>> - pick up reviewed-by tag from Kefeng Wang 
 >>
-> In the reference design the tables are updated to be accurate and
-> reflect the appropriate polarity.  It seems that the vendors must be
-> changing this and it not breaking Windows for some reason.
->
->
+>> changes since v4 by addressing comments from Xiaofei:
+>> - do a force kill only for abnormal sync errors
+>>
+>> changes since v3 by addressing comments from Xiaofei:
+>> - do a force kill for abnormal memory failure error such as invalid PA,
+>> unexpected severity, OOM, etc
+>> - pcik up tested-by tag from Ma Wupeng
+>>
+>> changes since v2 by addressing comments from Naoya:
+>> - rename mce_task_work to sync_task_work
+>> - drop ACPI_HEST_NOTIFY_MCE case in is_hest_sync_notify()
+>> - add steps to reproduce this problem in cover letter
+>>
+>> changes since v1:
+>> - synchronous events by notify type
+>> - Link: https://lore.kernel.org/lkml/20221206153354.92394-3-xueshuai@linux.alibaba.com/
+>>
+>> Shuai Xue (2):
+>>   ACPI: APEI: set memory failure flags as MF_ACTION_REQUIRED on
+>>     synchronous events
+>>   ACPI: APEI: handle synchronous exceptions in task work
+>>
+>>  arch/x86/kernel/cpu/mce/core.c |   9 +--
+>>  drivers/acpi/apei/ghes.c       | 113 ++++++++++++++++++++++-----------
+>>  include/acpi/ghes.h            |   3 -
+>>  mm/memory-failure.c            |  17 +----
+>>  4 files changed, 79 insertions(+), 63 deletions(-)
+>>
+> 
+> Hi, Rafael,
+> 
+> Gentle ping. Are you happy to queue this patch set into your next tree, so that we can merge
+> that in next merge window.
+> 
+> Thank you.
+> 
+
+Gentle ping :)
+
+Thanks.
+
+> Best Regards,
+> Shuai
+
+
