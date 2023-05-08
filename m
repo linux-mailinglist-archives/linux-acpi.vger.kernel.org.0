@@ -2,53 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07E676FAF69
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 May 2023 13:57:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7B0F6FAF76
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 May 2023 13:57:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234775AbjEHL5f (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 May 2023 07:57:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56340 "EHLO
+        id S236096AbjEHL5w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 May 2023 07:57:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234779AbjEHL47 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 May 2023 07:56:59 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A6B34640C
-        for <linux-acpi@vger.kernel.org>; Mon,  8 May 2023 04:55:10 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1aaed87d8bdso30311325ad.3
-        for <linux-acpi@vger.kernel.org>; Mon, 08 May 2023 04:55:10 -0700 (PDT)
+        with ESMTP id S235833AbjEHL5S (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 May 2023 07:57:18 -0400
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5412E44522
+        for <linux-acpi@vger.kernel.org>; Mon,  8 May 2023 04:55:16 -0700 (PDT)
+Received: by mail-pg1-x532.google.com with SMTP id 41be03b00d2f7-52c759b7d45so4027336a12.3
+        for <linux-acpi@vger.kernel.org>; Mon, 08 May 2023 04:55:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1683546907; x=1686138907;
+        d=ventanamicro.com; s=google; t=1683546915; x=1686138915;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IS1GWILYl7Q6QsdApEh939z6h09NwhOHpvU6XTgdfRk=;
-        b=eJP89kRror/WxWaBzogTWwKQS/PyObvkTktOyW2ST1w6dYrfbIM25CrRJEoriiGQPv
-         jBw7v2p3iubHma3A00VZI1GxTututaNq3cEMEB+VpqfPtLgUM9ldNDYuerBTRWKmM7HO
-         Lceb3PA1kqCbvSCD9bENVg7C0g0Thk/GkHZNcEGymFu7CY4aWIYRjmikxQwgnKx9rwzO
-         tSjzRzpNulsyDBmv+tYYCYByckjjCpnnnyHxJGnbxutWrWtqV71BjhaIl0FcKjMZ539i
-         O/gtCtD7xMfoH2ESqmBOdrXjxLrTeJUIMhCeYnp5nlw9g4GL5wD79puJaehSyrvk/xSt
-         K2Dg==
+        bh=yTcS6ERydBi3sd7UUw2QFTJaMwmeqvxl7dgO0DDj6Ys=;
+        b=fw9w2wVvyg18HQUViAb/q8qFm0YGCFl6OA5t0nEkt/x4efJjZz1AlZazIVHATLSW+w
+         heUG1plkNWqhle47JUQzWHWSG+vGxo82ayY9ANGhfWkzbQO8Dr6YUiheG3svkLfmg+NN
+         2GZx2gFnSEjoQGMVoLG9jHAqVyTSd707Zvc6pVK2NLdcrbmEHn3Glt7k/emJkDKaKSq2
+         MIRlCk1P2l9380YHjRqRfnRuqH8OWIWYheVO0szdRaxlAliT5X3EoD3CDOtTxHsFXQ1y
+         F8OptUnVg8xt4KdB2scf8uJ5YrNv+5MozGjfHscY0OiyRNm/5t2/AQGAJfIYOrKzz/J2
+         rCFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683546907; x=1686138907;
+        d=1e100.net; s=20221208; t=1683546915; x=1686138915;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IS1GWILYl7Q6QsdApEh939z6h09NwhOHpvU6XTgdfRk=;
-        b=Tk+rscx4kVQjehO2M5RUGN4aCPGfk98yARLf0Sg7nNZY7xjUIGhMikuAE/e1gFBGHm
-         JExSn26oSyZHhf6QlxpnNUnFZaTy3xXIso+Ua7ViB3+yWTJksBJc1d8oam5vIY1xKIq9
-         CsFQN2L49hdhtoj/NXGBSv+YfiuqA3o1dAcdddF1dAOh1KXaAJxiIxi1bsJR9CvnN1QK
-         0mYiYlEBsGCNXC9OlCccf4uqK1EAiumeW9uvqxZ4x9dzT4kkCrR3yX+F3E4mTFezRB+Q
-         n8fJIb1xcLWJDQu7tUw8PNOkerc1n/ca3iTVcPs3+jUNTRCMqeB80SLZ+9mDdgVFhHX7
-         vgBg==
-X-Gm-Message-State: AC+VfDy/nSlijqjARPXoAE23umVQIv4yFOqP7ICR5OBWo4AxwimlKEZ/
-        mnnWDkZloAy42yRQX+GkK6wbeA==
-X-Google-Smtp-Source: ACHHUZ6//ba6VErYOIFC/lD2lq4dOAV7ar+pg4EF30qL8CJ9coxtnjfAekRLC5ouqlPwgJX2ME/5RA==
-X-Received: by 2002:a17:903:2344:b0:1ac:6a6f:2dc3 with SMTP id c4-20020a170903234400b001ac6a6f2dc3mr5426436plh.20.1683546907481;
-        Mon, 08 May 2023 04:55:07 -0700 (PDT)
+        bh=yTcS6ERydBi3sd7UUw2QFTJaMwmeqvxl7dgO0DDj6Ys=;
+        b=kIGycTZXdjIUFPqbXcDCpOF766aUVgCpePK4+KS+XVQ6nArWEtw9807RDYtB9FESNG
+         lOyW/88RZkwcsm4taEXD5v7ZhaPSgE75R60xxEbpaOzlzO4ISWPMIGGH+nPUDEiQ7h0T
+         JWORdMT2Ddx4sti95i8ZiM6/P2SzcuvMweNOoLnjn9yP1Jh+LbipjabXeAQNwmnW3KRb
+         ZFRQBnjkHo1hkXv6gWsNvo7udBe8972pdGG6QbA/9sL4zRvmeLyqZbqPgyx8cIbFFQSF
+         qQpoHND0InwBTntp1q2udeLCpEsZ/cw8b2Svwq/wJ8J+kg4SYcYIhUORGp1zlm60HhXP
+         Wt9g==
+X-Gm-Message-State: AC+VfDxzzqAzyffPMOG096sSlhkF+aoeqY8ZmL4fVSwJaXK74nenf7LW
+        Vy7AxRS0cAeeo9xkd0cc/FIg5Q==
+X-Google-Smtp-Source: ACHHUZ5LX88i99DmSCUmXSBK7hbOW5754EnsnTa/mud3XPBdrIA3mmjSCvDHn3cMXRSoaPysS72Dog==
+X-Received: by 2002:a17:902:868f:b0:1a6:b971:faf8 with SMTP id g15-20020a170902868f00b001a6b971faf8mr9907040plo.53.1683546915118;
+        Mon, 08 May 2023 04:55:15 -0700 (PDT)
 Received: from sunil-laptop.. ([106.51.189.144])
-        by smtp.gmail.com with ESMTPSA id w9-20020a170902904900b001aaed524541sm7015149plz.227.2023.05.08.04.55.00
+        by smtp.gmail.com with ESMTPSA id w9-20020a170902904900b001aaed524541sm7015149plz.227.2023.05.08.04.55.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 May 2023 04:55:07 -0700 (PDT)
+        Mon, 08 May 2023 04:55:14 -0700 (PDT)
 From:   Sunil V L <sunilvl@ventanamicro.com>
 To:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
@@ -74,13 +74,12 @@ Cc:     Jonathan Corbet <corbet@lwn.net>,
         Nick Desaulniers <ndesaulniers@google.com>,
         Tom Rix <trix@redhat.com>,
         Sunil V L <sunilvl@ventanamicro.com>,
-        Anup Patel <apatel@ventanamicro.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Andrew Jones <ajones@ventanamicro.com>,
         Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH V5 16/21] clocksource/timer-riscv: Refactor riscv_timer_init_dt()
-Date:   Mon,  8 May 2023 17:22:32 +0530
-Message-Id: <20230508115237.216337-17-sunilvl@ventanamicro.com>
+Subject: [PATCH V5 17/21] clocksource/timer-riscv: Add ACPI support
+Date:   Mon,  8 May 2023 17:22:33 +0530
+Message-Id: <20230508115237.216337-18-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230508115237.216337-1-sunilvl@ventanamicro.com>
 References: <20230508115237.216337-1-sunilvl@ventanamicro.com>
@@ -96,130 +95,47 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Refactor the timer init function such that few things can be
-shared by both DT and ACPI based platforms.
+Initialize the timer driver based on RHCT table on ACPI based
+platforms.
 
-Co-developed-by: Anup Patel <apatel@ventanamicro.com>
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Currently, ACPI doesn't support a flag to indicate that the
+timer interrupt can wake up the cpu irrespective of its
+power state. It will be added in future update.
+
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 ---
- drivers/clocksource/timer-riscv.c | 81 +++++++++++++++----------------
- 1 file changed, 40 insertions(+), 41 deletions(-)
+ drivers/clocksource/timer-riscv.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
-index 5f0f10c7e222..cecc4662293b 100644
+index cecc4662293b..da3071b387eb 100644
 --- a/drivers/clocksource/timer-riscv.c
 +++ b/drivers/clocksource/timer-riscv.c
-@@ -124,61 +124,28 @@ static irqreturn_t riscv_timer_interrupt(int irq, void *dev_id)
- 	return IRQ_HANDLED;
+@@ -10,6 +10,7 @@
+ 
+ #define pr_fmt(fmt) "riscv-timer: " fmt
+ 
++#include <linux/acpi.h>
+ #include <linux/clocksource.h>
+ #include <linux/clockchips.h>
+ #include <linux/cpu.h>
+@@ -207,3 +208,13 @@ static int __init riscv_timer_init_dt(struct device_node *n)
  }
  
--static int __init riscv_timer_init_dt(struct device_node *n)
-+static int __init riscv_timer_init_common(void)
- {
--	int cpuid, error;
--	unsigned long hartid;
--	struct device_node *child;
-+	int error;
- 	struct irq_domain *domain;
-+	struct fwnode_handle *intc_fwnode = riscv_get_intc_hwnode();
- 
--	error = riscv_of_processor_hartid(n, &hartid);
--	if (error < 0) {
--		pr_warn("Not valid hartid for node [%pOF] error = [%lu]\n",
--			n, hartid);
--		return error;
--	}
--
--	cpuid = riscv_hartid_to_cpuid(hartid);
--	if (cpuid < 0) {
--		pr_warn("Invalid cpuid for hartid [%lu]\n", hartid);
--		return cpuid;
--	}
--
--	if (cpuid != smp_processor_id())
--		return 0;
--
--	child = of_find_compatible_node(NULL, NULL, "riscv,timer");
--	if (child) {
--		riscv_timer_cannot_wake_cpu = of_property_read_bool(child,
--					"riscv,timer-cannot-wake-cpu");
--		of_node_put(child);
--	}
--
--	domain = NULL;
--	child = of_get_compatible_child(n, "riscv,cpu-intc");
--	if (!child) {
--		pr_err("Failed to find INTC node [%pOF]\n", n);
--		return -ENODEV;
--	}
--	domain = irq_find_host(child);
--	of_node_put(child);
-+	domain = irq_find_matching_fwnode(intc_fwnode, DOMAIN_BUS_ANY);
- 	if (!domain) {
--		pr_err("Failed to find IRQ domain for node [%pOF]\n", n);
-+		pr_err("Failed to find irq_domain for INTC node [%pfwP]\n",
-+		       intc_fwnode);
- 		return -ENODEV;
- 	}
- 
- 	riscv_clock_event_irq = irq_create_mapping(domain, RV_IRQ_TIMER);
- 	if (!riscv_clock_event_irq) {
--		pr_err("Failed to map timer interrupt for node [%pOF]\n", n);
-+		pr_err("Failed to map timer interrupt for node [%pfwP]\n", intc_fwnode);
- 		return -ENODEV;
- 	}
- 
--	pr_info("%s: Registering clocksource cpuid [%d] hartid [%lu]\n",
--	       __func__, cpuid, hartid);
- 	error = clocksource_register_hz(&riscv_clocksource, riscv_timebase);
- 	if (error) {
--		pr_err("RISCV timer register failed [%d] for cpu = [%d]\n",
--		       error, cpuid);
-+		pr_err("RISCV timer registration failed [%d]\n", error);
- 		return error;
- 	}
- 
-@@ -207,4 +174,36 @@ static int __init riscv_timer_init_dt(struct device_node *n)
- 	return error;
- }
- 
-+static int __init riscv_timer_init_dt(struct device_node *n)
+ TIMER_OF_DECLARE(riscv_timer, "riscv", riscv_timer_init_dt);
++
++#ifdef CONFIG_ACPI
++static int __init riscv_timer_acpi_init(struct acpi_table_header *table)
 +{
-+	int cpuid, error;
-+	unsigned long hartid;
-+	struct device_node *child;
-+
-+	error = riscv_of_processor_hartid(n, &hartid);
-+	if (error < 0) {
-+		pr_warn("Invalid hartid for node [%pOF] error = [%lu]\n",
-+			n, hartid);
-+		return error;
-+	}
-+
-+	cpuid = riscv_hartid_to_cpuid(hartid);
-+	if (cpuid < 0) {
-+		pr_warn("Invalid cpuid for hartid [%lu]\n", hartid);
-+		return cpuid;
-+	}
-+
-+	if (cpuid != smp_processor_id())
-+		return 0;
-+
-+	child = of_find_compatible_node(NULL, NULL, "riscv,timer");
-+	if (child) {
-+		riscv_timer_cannot_wake_cpu = of_property_read_bool(child,
-+					"riscv,timer-cannot-wake-cpu");
-+		of_node_put(child);
-+	}
-+
 +	return riscv_timer_init_common();
 +}
 +
- TIMER_OF_DECLARE(riscv_timer, "riscv", riscv_timer_init_dt);
++TIMER_ACPI_DECLARE(aclint_mtimer, ACPI_SIG_RHCT, riscv_timer_acpi_init);
++
++#endif
 -- 
 2.34.1
 
