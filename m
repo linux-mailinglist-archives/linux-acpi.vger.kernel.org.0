@@ -2,53 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C59506FAF1A
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 May 2023 13:53:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C0296FAF1E
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 May 2023 13:53:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234077AbjEHLxH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 May 2023 07:53:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55756 "EHLO
+        id S232924AbjEHLxa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 May 2023 07:53:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233298AbjEHLxF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 May 2023 07:53:05 -0400
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A9F661A5
-        for <linux-acpi@vger.kernel.org>; Mon,  8 May 2023 04:53:03 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1ab1b79d3a7so29575855ad.3
-        for <linux-acpi@vger.kernel.org>; Mon, 08 May 2023 04:53:03 -0700 (PDT)
+        with ESMTP id S235319AbjEHLx0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 May 2023 07:53:26 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3947E4091E
+        for <linux-acpi@vger.kernel.org>; Mon,  8 May 2023 04:53:12 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1ab267e3528so30529595ad.0
+        for <linux-acpi@vger.kernel.org>; Mon, 08 May 2023 04:53:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1683546783; x=1686138783;
+        d=ventanamicro.com; s=google; t=1683546791; x=1686138791;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rfepdXJdsq6ohX2AkAAGDRO8NQz+5w0XQmMbJfl5w48=;
-        b=hWuy+ZiUw1JYUSFzt1E/M+vNy0IUQxsPk5lOKUyv1zV9wOWRmYghioaQiBULlwHm9s
-         jgnGlauoLdXVPoAMoxq4MadMMtFM/J5XWiJ9NMXuPt4LI8V/fO1wX4KQedMz02XonrpK
-         2bKULo+edMjXoVmEnOJdNrGtOaG6T6fhzIJUjWfnqw8QNcENZyq4HHdpt54CoYg1Mk4i
-         2xOHuUtc8rMwNFDQWtei/1baL+hX/1cAkLd71vAoyeotWh6p04MycEDBN2sWpxJBT6QD
-         d9zQ+HamS9r+B/LNFexRnGBokTG0UOkQpIbnT55w877Iq/XlSSM5alf3zJLvARbSSt8U
-         ngsg==
+        bh=+3BRBVSL8Q8oMs51cYTt5mS52il5fOg1fDJihGv43qY=;
+        b=ES80Pxi/On81xqzn466VvCtk334hOGfLr3xn3NTzV4apgRB6RhbwKVZIBTo1IalSBU
+         lVcmcysxZ/p/60nF3RQX8UI1koHmb+gb7F5LJZjEVSoVIGSHNIZ9O+CQQqq/ou8vs896
+         PsjSxFkz+JnUtxrFW3Jc29Ds2qTuysCBuEk2ac+MWgL1rEcleqYXwdECBvL5XAcvB/Wu
+         hGnV8U+fIXsSHGY1953OB4LCCRDAP4Dd+fG/2c0eFv5FtPnxQujLOUpF86J7i47XEM3m
+         1YKonECds2h4NnmW4jdkgHVQz2gvVlcClU0sfnJgFqdQkSIDsEQpi42essJJz1Rx3DXZ
+         MKXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683546783; x=1686138783;
+        d=1e100.net; s=20221208; t=1683546791; x=1686138791;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rfepdXJdsq6ohX2AkAAGDRO8NQz+5w0XQmMbJfl5w48=;
-        b=D+2gvUk0IUWFDFptoMFtSRN7GdBg4kpCd018e5duTxfThbRHub6+O5G1xwRFHzsYLh
-         LjWm+OC9IFlZlsqPHr4qiq8kD8ihM9peN6tHUYhHm4+Y2swhxBpBYGJhROl2I0vCiNc+
-         jqmZu1ecUesF/7qWD4u7xDFpsHG6unad0c4JFNqC+5R9NqOt7kUXf57x7NBUyb0lVGGB
-         HNfT+VGLUGj8uPAkmFLseUt7DhleokBMgDt7V1VSRJnIoi0Pm+W1/Dqy0bQFs4xbDvwI
-         SAXsGHnFCqLghalZsgpbjZ63+AeXWUj3veee+IKDBxBvFpqzjQgS/N+x1oJK/YoalV/d
-         nYgA==
-X-Gm-Message-State: AC+VfDyq00XP/5Raat1SPkHoxXYncjFuaxbg7lAy5JSpZeGEM+rirX0A
-        e6zp3yQBKI+Cc9Pb+giUXTWgQQ==
-X-Google-Smtp-Source: ACHHUZ6E5oSS35ppin16Fc2D/CJweZplodceAaOSb9zbK0yJSsiHXmdseC+7l9W8CGis6yGw0B7fxg==
-X-Received: by 2002:a17:902:ceca:b0:1a6:5fa2:3293 with SMTP id d10-20020a170902ceca00b001a65fa23293mr12096226plg.56.1683546783045;
-        Mon, 08 May 2023 04:53:03 -0700 (PDT)
+        bh=+3BRBVSL8Q8oMs51cYTt5mS52il5fOg1fDJihGv43qY=;
+        b=GZhFn7iK4wplKrMlEUnTPertGvwTFMshGtpctP5QSDGDBF1AWZ/+zV+msM0Ch5uJVD
+         Qq+rKrztub2ELlGMNtAutXY97+PT2l5nlTw6+ZIvX10J8YBTHTbd6ohI0zXeF1lmYU88
+         aTADUqwYEFihi4wnjSLyzqbhzJeo7Lr6dSO7d5klJ+FnoFziIMuqeGxEq85TQjHDJCQY
+         D07ZCJ1PQymeEXFkroQ1RSA0Bfuq51zlyOOWLo+81ZzQuHPy2qnnOggEWqNYnfwI5B7v
+         JqCeRAQ/3+4K15f0uj+6HJL6B8oXBu2aTVLWqrpXxt76ViJnf4wNM1PlNka7ey9qn23q
+         gUzg==
+X-Gm-Message-State: AC+VfDytlbJgjBvkoW1L1FieGNRuyHWeGF5INgLts0WYnxFQli7xo8cE
+        qaDPpxjF8eoOyFWwDstgWZzDUQ==
+X-Google-Smtp-Source: ACHHUZ53NJaW+sZlrm12uD3x0j9cg0hxSH1iCIdCk/a3op4cRVXeGuLCDkrlAFFwOkN/WoP8UHY5Cg==
+X-Received: by 2002:a17:903:2312:b0:1ac:656f:a697 with SMTP id d18-20020a170903231200b001ac656fa697mr6858328plh.21.1683546791698;
+        Mon, 08 May 2023 04:53:11 -0700 (PDT)
 Received: from sunil-laptop.. ([106.51.189.144])
-        by smtp.gmail.com with ESMTPSA id w9-20020a170902904900b001aaed524541sm7015149plz.227.2023.05.08.04.52.54
+        by smtp.gmail.com with ESMTPSA id w9-20020a170902904900b001aaed524541sm7015149plz.227.2023.05.08.04.53.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 May 2023 04:53:02 -0700 (PDT)
+        Mon, 08 May 2023 04:53:11 -0700 (PDT)
 From:   Sunil V L <sunilvl@ventanamicro.com>
 To:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
@@ -72,16 +72,15 @@ Cc:     Jonathan Corbet <corbet@lwn.net>,
         Mark Gross <markgross@kernel.org>,
         Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, Jisheng Zhang <jszhang@kernel.org>,
-        Anup Patel <anup@brainfault.org>,
-        Atish Patra <atishp@rivosinc.com>
-Subject: [PATCH V5 01/21] riscv: move sbi_init() earlier before jump_label_init()
-Date:   Mon,  8 May 2023 17:22:17 +0530
-Message-Id: <20230508115237.216337-2-sunilvl@ventanamicro.com>
+        Tom Rix <trix@redhat.com>, Sunil V L <sunilvl@ventanamicro.com>
+Subject: [PATCH V5 02/21] platform/surface: Disable for RISC-V
+Date:   Mon,  8 May 2023 17:22:18 +0530
+Message-Id: <20230508115237.216337-3-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230508115237.216337-1-sunilvl@ventanamicro.com>
 References: <20230508115237.216337-1-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -93,75 +92,66 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Jisheng Zhang <jszhang@kernel.org>
+With CONFIG_ACPI enabled for RISC-V, this driver gets enabled
+in allmodconfig build. However, RISC-V doesn't support sub-word
+atomics which is used by this driver. Due to this, the build fails
+with below error.
 
-We call jump_label_init() in setup_arch() is to use static key
-mechanism earlier, but riscv jump label relies on the sbi functions,
-If we enable static key before sbi_init(), the code path looks like:
-  static_branch_enable()
-    ..
-      arch_jump_label_transform()
-        patch_text_nosync()
-          flush_icache_range()
-            flush_icache_all()
-              sbi_remote_fence_i() for CONFIG_RISCV_SBI case
-                __sbi_rfence()
+In function ‘ssh_seq_next’,
+    inlined from ‘ssam_request_write_data’ at drivers/platform/surface/aggregator/controller.c:1483:8:
+././include/linux/compiler_types.h:399:45: error: call to ‘__compiletime_assert_335’ declared with attribute error: BUILD_BUG failed
+  399 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+      |                                             ^
+./include/linux/compiler.h:78:45: note: in definition of macro ‘unlikely’
+   78 | # define unlikely(x)    __builtin_expect(!!(x), 0)
+      |                                             ^
+././include/linux/compiler_types.h:387:9: note: in expansion of macro ‘__compiletime_assert’
+  387 |         __compiletime_assert(condition, msg, prefix, suffix)
+      |         ^~~~~~~~~~~~~~~~~~~~
+././include/linux/compiler_types.h:399:9: note: in expansion of macro ‘_compiletime_assert’
+  399 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+      |         ^~~~~~~~~~~~~~~~~~~
+./include/linux/build_bug.h:39:37: note: in expansion of macro ‘compiletime_assert’
+   39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+      |                                     ^~~~~~~~~~~~~~~~~~
+./include/linux/build_bug.h:59:21: note: in expansion of macro ‘BUILD_BUG_ON_MSG’
+   59 | #define BUILD_BUG() BUILD_BUG_ON_MSG(1, "BUILD_BUG failed")
+      |                     ^~~~~~~~~~~~~~~~
+./arch/riscv/include/asm/cmpxchg.h:335:17: note: in expansion of macro ‘BUILD_BUG’
+  335 |                 BUILD_BUG();                                            \
+      |                 ^~~~~~~~~
+./arch/riscv/include/asm/cmpxchg.h:344:30: note: in expansion of macro ‘__cmpxchg’
+  344 |         (__typeof__(*(ptr))) __cmpxchg((ptr),                           \
+      |                              ^~~~~~~~~
+./include/linux/atomic/atomic-instrumented.h:1916:9: note: in expansion of macro ‘arch_cmpxchg’
+ 1916 |         arch_cmpxchg(__ai_ptr, __VA_ARGS__); \
+      |         ^~~~~~~~~~~~
+drivers/platform/surface/aggregator/controller.c:61:32: note: in expansion of macro ‘cmpxchg’
+   61 |         while (unlikely((ret = cmpxchg(&c->value, old, new)) != old)) {
+      |                                ^~~~~~~
 
-Since sbi isn't initialized, so NULL deference! Here is a typical
-panic log:
+There is currently no plan to support this driver for RISC-V. So,
+disable this driver for RISC-V even when ACPI is enabled for now.
 
-[    0.000000] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[    0.000000] Oops [#1]
-[    0.000000] Modules linked in:
-[    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted 5.18.0-rc7+ #79
-[    0.000000] Hardware name: riscv-virtio,qemu (DT)
-[    0.000000] epc : 0x0
-[    0.000000]  ra : sbi_remote_fence_i+0x1e/0x26
-[    0.000000] epc : 0000000000000000 ra : ffffffff80005826 sp : ffffffff80c03d50
-[    0.000000]  gp : ffffffff80ca6178 tp : ffffffff80c0ad80 t0 : 6200000000000000
-[    0.000000]  t1 : 0000000000000000 t2 : 62203a6b746e6972 s0 : ffffffff80c03d60
-[    0.000000]  s1 : ffffffff80001af6 a0 : 0000000000000000 a1 : 0000000000000000
-[    0.000000]  a2 : 0000000000000000 a3 : 0000000000000000 a4 : 0000000000000000
-[    0.000000]  a5 : 0000000000000000 a6 : 0000000000000000 a7 : 0000000000080200
-[    0.000000]  s2 : ffffffff808b3e48 s3 : ffffffff808bf698 s4 : ffffffff80cb2818
-[    0.000000]  s5 : 0000000000000001 s6 : ffffffff80c9c345 s7 : ffffffff80895aa0
-[    0.000000]  s8 : 0000000000000001 s9 : 000000000000007f s10: 0000000000000000
-[    0.000000]  s11: 0000000000000000 t3 : ffffffff80824d08 t4 : 0000000000000022
-[    0.000000]  t5 : 000000000000003d t6 : 0000000000000000
-[    0.000000] status: 0000000000000100 badaddr: 0000000000000000 cause: 000000000000000c
-[    0.000000] ---[ end trace 0000000000000000 ]---
-[    0.000000] Kernel panic - not syncing: Attempted to kill the idle task!
-[    0.000000] ---[ end Kernel panic - not syncing: Attempted to kill the idle task! ]---
-
-Fix this issue by moving sbi_init() earlier before jump_label_init()
-
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+Acked-by: Maximilian Luz <luzmaximilian@gmail.com>
 ---
- arch/riscv/kernel/setup.c | 2 +-
+ drivers/platform/surface/aggregator/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-index 36b026057503..9fb839074e16 100644
---- a/arch/riscv/kernel/setup.c
-+++ b/arch/riscv/kernel/setup.c
-@@ -270,6 +270,7 @@ void __init setup_arch(char **cmdline_p)
- 	*cmdline_p = boot_command_line;
- 
- 	early_ioremap_setup();
-+	sbi_init();
- 	jump_label_init();
- 	parse_early_param();
- 
-@@ -283,7 +284,6 @@ void __init setup_arch(char **cmdline_p)
- 	misc_mem_init();
- 
- 	init_resources();
--	sbi_init();
- 
- #ifdef CONFIG_KASAN
- 	kasan_init();
+diff --git a/drivers/platform/surface/aggregator/Kconfig b/drivers/platform/surface/aggregator/Kconfig
+index c114f9dd5fe1..88afc38ffdc5 100644
+--- a/drivers/platform/surface/aggregator/Kconfig
++++ b/drivers/platform/surface/aggregator/Kconfig
+@@ -4,7 +4,7 @@
+ menuconfig SURFACE_AGGREGATOR
+ 	tristate "Microsoft Surface System Aggregator Module Subsystem and Drivers"
+ 	depends on SERIAL_DEV_BUS
+-	depends on ACPI
++	depends on ACPI && !RISCV
+ 	select CRC_CCITT
+ 	help
+ 	  The Surface System Aggregator Module (Surface SAM or SSAM) is an
 -- 
 2.34.1
 
