@@ -2,267 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46D286FCD3F
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 May 2023 20:06:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C56206FCDA2
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 May 2023 20:21:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234876AbjEISGq convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 9 May 2023 14:06:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34816 "EHLO
+        id S234420AbjEISV2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 9 May 2023 14:21:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234897AbjEISGn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 May 2023 14:06:43 -0400
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5073E5278;
-        Tue,  9 May 2023 11:06:41 -0700 (PDT)
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-504d149839bso1579662a12.1;
-        Tue, 09 May 2023 11:06:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683655600; x=1686247600;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2uAV8/8elWuBoFp2U6X37MYwrNK4FwAxcuWNLFk3654=;
-        b=L7ioIEmXHnMM+pRFUsPUQT8380qSVMZ9WDmnAwmYol4bJDavzN0ki8186/Hj/+0Ink
-         FENSvnKssE241dpyig1u/CF8S4H1AwKj5leZDLzV9+ZN1bXff0p6NTUB5GsxosU4XfNP
-         qcsUZIEcyg8uJo2TVe0ta519QT/pjCRs22tnaXTv27znhUk44dg+ShjWenTr03YagZns
-         4dOZk95v2/AaFzPZ2E6XJuivM4C3toE4OaMwnLkzyo1jhEpqcrqKka1fN2/GZ370vejU
-         zTL/+gdALRaImg53ZbO0+sZv9+152p7Klo/t6IA0m76AGpQebLAk02STgLkqFNrK/fO0
-         881w==
-X-Gm-Message-State: AC+VfDxwC563z9u5AVmnKaPScA5N/A/6YABa3J0Prnxn3/nY+gAQXAk0
-        l+w0RLYs58tsuZn3lf9UFKPa3KpGMmqq+KvNky7reMTcFwU=
-X-Google-Smtp-Source: ACHHUZ7dviQaJKE0zW3tnd2UvNT94P6kLYAxdblfOnapWxLnxdwt3C0ee0UDfEQmCiQFnVyYQe6y+AMUzBW5eQS36yI=
-X-Received: by 2002:a17:906:64cd:b0:965:a6c1:9b96 with SMTP id
- p13-20020a17090664cd00b00965a6c19b96mr12226804ejn.2.1683655599579; Tue, 09
- May 2023 11:06:39 -0700 (PDT)
+        with ESMTP id S229543AbjEISV1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 May 2023 14:21:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 327EF4C2D;
+        Tue,  9 May 2023 11:21:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BB6FA6132C;
+        Tue,  9 May 2023 18:21:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE77FC433EF;
+        Tue,  9 May 2023 18:21:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683656484;
+        bh=wTrGWZ/prXac+ksuuHC0df7jUrXSG9zBg0tuZm4eZAk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=eWEhqVADxc/GqJSwXnOQ3JLmV9EVm67GRKXU/8kCH+e7bYAn4tbjZ8OZRHVaX3ZcO
+         S0xv0AhCQd5NINM++YJU/lVWNxRqARJ2JdTZgkf8DKQ/aBVDAb43Y4DpvrsggmiDhc
+         VLuK4RypC1++gIMHtYJwDcVU3u+My56Q4IZYK0at1LgOku1qb8yZmqculMrILZXTXZ
+         neG8vnzAeERR8/VCvqWmCzd1JtSknWdohvz8yYije8I6fBKpAtZuUigoK/yqxiyRiQ
+         4E280Lp7b1rI5aQ6wbmUv7nAdHleWjJ8JY7/fVD00VEW304Ke/w4PCv+lqMsKKDnXi
+         XzOdVIUpJ2dRg==
+Date:   Tue, 9 May 2023 13:21:22 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        linux-pci@vger.kernel.org,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        linux-mips@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-acpi@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>,
+        Anatolij Gustschin <agust@denx.de>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Juergen Gross <jgross@suse.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-kernel@vger.kernel.org,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>,
+        "Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: Re: [PATCH v8 0/7] Add pci_dev_for_each_resource() helper and update
+ users
+Message-ID: <20230509182122.GA1259567@bhelgaas>
 MIME-Version: 1.0
-References: <20230329100951.1522322-1-sakari.ailus@linux.intel.com> <20230329100951.1522322-2-sakari.ailus@linux.intel.com>
-In-Reply-To: <20230329100951.1522322-2-sakari.ailus@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 9 May 2023 20:06:28 +0200
-Message-ID: <CAJZ5v0gzSjDS16Sq9oAs_9BSEgmM6VPPFF4vrd2cyK++UP7=_w@mail.gmail.com>
-Subject: Re: [PATCH v8 01/10] ACPI: scan: Remove the second DSDT traversal
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        rafael@kernel.org, andriy.shevchenko@linux.intel.com,
-        heikki.krogerus@linux.intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230404161101.GA3554747@bhelgaas>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 29, 2023 at 12:10 PM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
->
-> Collect the devices with _DEP into a list and continue processing them
-> after a full traversal, instead of doing a full second traversal of the
-> tree.
->
-> This makes the second DSDT traversal pass unnecessary as we already have
-> the nodes we're interested in in a linked list.
+On Tue, Apr 04, 2023 at 11:11:01AM -0500, Bjorn Helgaas wrote:
+> On Thu, Mar 30, 2023 at 07:24:27PM +0300, Andy Shevchenko wrote:
+> > Provide two new helper macros to iterate over PCI device resources and
+> > convert users.
 
-The second traversal of the ACPI namespace (it may not be just the
-DSDT at that point to be precise) is not really about _DEP handling.
-In fact, the latter has been added on top of it.
+> Applied 2-7 to pci/resource for v6.4, thanks, I really like this!
 
-It is about the PCI enumeration.  Namely, when acpi_pci_root_add()
-runs for the PCI host bridge object in the ACPI namespace, the entire
-device hierarchy below it is walked and all of the ACPI device objects
-corresponding to the PCI devices on the bus are assumed to be present.
-This means that all of the ACPI device objects need to be created in
-the first walk, without binding any ACPI drivers or scan handlers to
-them, and the second walk is to find out what is actually represented
-by those objects.
+This is 09cc90063240 ("PCI: Introduce pci_dev_for_each_resource()")
+upstream now.
 
-It cannot be eliminated in any simple way.
+Coverity complains about each use, sample below from
+drivers/pci/vgaarb.c.  I didn't investigate at all, so it might be a
+false positive; just FYI.
 
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> ---
->  drivers/acpi/scan.c | 125 ++++++++++++++++++++++++++++++++------------
->  1 file changed, 92 insertions(+), 33 deletions(-)
->
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index 0c6f06abe3f4..280d12e0aa2f 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -2029,10 +2029,52 @@ static u32 acpi_scan_check_dep(acpi_handle handle, bool check_dep)
->         return count;
->  }
->
-> -static bool acpi_bus_scan_second_pass;
-> +/**
-> + * struct acpi_postponed_handle - A postponed ACPI handle
-> + * @list: Entry in a postponed list
-> + * @handle: The postponed handle
-> + *
-> + * One such entry represents an ACPI handle the scanning of which has been
-> + * postponed.
-> + */
-> +struct acpi_postponed_handle {
-> +       struct list_head list;
-> +       acpi_handle handle;
-> +};
-> +
-> +/**
-> + * struct acpi_scan_context - Context for scanning ACPI devices
-> + * @postponed_head: The list head of the postponed ACPI handles
-> + * @device: The first encountered device, typically the root of the scanned tree
-> + */
-> +struct acpi_scan_context {
-> +       struct list_head postponed_head;
-> +       struct acpi_device *device;
-> +};
-> +
-> +/**
-> + * acpi_bus_handle_postpone - Add an ACPI handle to a given postponed list
-> + * @handle: The ACPI handle
-> + * @head: Postponed list head
-> + *
-> + * Add a given ACPI handle to a list of ACPI objects for which the creation
-> + * of the device objects is to be postponed.
-> + */
-> +static void acpi_bus_handle_postpone(acpi_handle handle,
-> +                                    struct list_head *head)
-> +{
-> +       struct acpi_postponed_handle *ph;
-> +
-> +       ph = kzalloc(sizeof(*ph), GFP_KERNEL);
-> +       if (!ph)
-> +               return;
-> +
-> +       ph->handle = handle;
-> +       list_add(&ph->list, head);
-> +}
->
->  static acpi_status acpi_bus_check_add(acpi_handle handle, bool check_dep,
-> -                                     struct acpi_device **adev_p)
-> +                                     struct acpi_scan_context *ctx)
->  {
->         struct acpi_device *device = acpi_fetch_acpi_dev(handle);
->         acpi_object_type acpi_type;
-> @@ -2051,7 +2093,7 @@ static acpi_status acpi_bus_check_add(acpi_handle handle, bool check_dep,
->
->                 /* Bail out if there are dependencies. */
->                 if (acpi_scan_check_dep(handle, check_dep) > 0) {
-> -                       acpi_bus_scan_second_pass = true;
-> +                       acpi_bus_handle_postpone(handle, &ctx->postponed_head);
->                         return AE_CTRL_DEPTH;
->                 }
->
-> @@ -2086,22 +2128,22 @@ static acpi_status acpi_bus_check_add(acpi_handle handle, bool check_dep,
->         acpi_scan_init_hotplug(device);
->
->  out:
-> -       if (!*adev_p)
-> -               *adev_p = device;
-> +       if (!ctx->device)
-> +               ctx->device = device;
->
->         return AE_OK;
->  }
->
->  static acpi_status acpi_bus_check_add_1(acpi_handle handle, u32 lvl_not_used,
-> -                                       void *not_used, void **ret_p)
-> +                                       void *ctx, void **unused)
->  {
-> -       return acpi_bus_check_add(handle, true, (struct acpi_device **)ret_p);
-> +       return acpi_bus_check_add(handle, true, (struct acpi_scan_context *)ctx);
->  }
->
->  static acpi_status acpi_bus_check_add_2(acpi_handle handle, u32 lvl_not_used,
-> -                                       void *not_used, void **ret_p)
-> +                                       void *ctx, void **device)
->  {
-> -       return acpi_bus_check_add(handle, false, (struct acpi_device **)ret_p);
-> +       return acpi_bus_check_add(handle, false, (struct acpi_scan_context *)ctx);
->  }
->
->  static void acpi_default_enumeration(struct acpi_device *device)
-> @@ -2422,37 +2464,54 @@ EXPORT_SYMBOL_GPL(acpi_dev_get_next_consumer_dev);
->   */
->  int acpi_bus_scan(acpi_handle handle)
->  {
-> -       struct acpi_device *device = NULL;
-> -
-> -       acpi_bus_scan_second_pass = false;
-> -
-> -       /* Pass 1: Avoid enumerating devices with missing dependencies. */
-> +       struct acpi_scan_context ctx = {
-> +               .postponed_head = LIST_HEAD_INIT(ctx.postponed_head),
-> +       };
-> +       struct acpi_postponed_handle *ph, *tmp_ph;
-> +       int ret = 0;
->
-> -       if (ACPI_SUCCESS(acpi_bus_check_add(handle, true, &device)))
-> +       if (ACPI_SUCCESS(acpi_bus_check_add(handle, true, &ctx)))
->                 acpi_walk_namespace(ACPI_TYPE_ANY, handle, ACPI_UINT32_MAX,
-> -                                   acpi_bus_check_add_1, NULL, NULL,
-> -                                   (void **)&device);
-> -
-> -       if (!device)
-> -               return -ENODEV;
-> -
-> -       acpi_bus_attach(device, (void *)true);
-> +                                   acpi_bus_check_add_1, NULL, (void *)&ctx,
-> +                                   NULL);
->
-> -       if (!acpi_bus_scan_second_pass)
-> -               return 0;
-> -
-> -       /* Pass 2: Enumerate all of the remaining devices. */
-> +       if (!ctx.device) {
-> +               ret = -ENODEV;
-> +               goto out_release;
-> +       }
->
-> -       device = NULL;
-> +       acpi_bus_attach(ctx.device, (void *)true);
->
-> -       if (ACPI_SUCCESS(acpi_bus_check_add(handle, false, &device)))
-> -               acpi_walk_namespace(ACPI_TYPE_ANY, handle, ACPI_UINT32_MAX,
-> -                                   acpi_bus_check_add_2, NULL, NULL,
-> -                                   (void **)&device);
-> +       /*
-> +        * Proceed to register ACPI devices that were postponed due to _DEP
-> +        * objects during the namespace walk.
-> +        */
-> +       list_for_each_entry_safe(ph, tmp_ph, &ctx.postponed_head, list) {
-> +               list_del(&ph->list);
-> +               /* Set device NULL here to obtain the root for this sub-tree. */
-> +               ctx.device = NULL;
-> +               /*
-> +                * Do this manually, as the namespace walk will only include
-> +                * sub-nodes, not the node itself. ctx.device is set to the
-> +                * ACPI device corresponding ph->handle.
-> +                */
-> +               acpi_bus_check_add_2(ph->handle, 0, &ctx, NULL);
-> +               /* Walk the rest of the sub-namespace. */
-> +               acpi_walk_namespace(ACPI_TYPE_ANY, ph->handle, ACPI_UINT32_MAX,
-> +                                   acpi_bus_check_add_2, NULL, (void *)&ctx,
-> +                                   NULL);
-> +               if (ctx.device)
-> +                       acpi_bus_attach(ctx.device, NULL);
-> +               kfree(ph);
-> +       }
->
-> -       acpi_bus_attach(device, NULL);
-> +out_release:
-> +       list_for_each_entry_safe(ph, tmp_ph, &ctx.postponed_head, list) {
-> +               list_del(&ph->list);
-> +               kfree(ph);
-> +       }
->
-> -       return 0;
-> +       return ret;
->  }
->  EXPORT_SYMBOL(acpi_bus_scan);
->
-> --
-> 2.30.2
->
+	  1. Condition screen_info.capabilities & (2U /* 1 << 1 */), taking true branch.
+  556        if (screen_info.capabilities & VIDEO_CAPABILITY_64BIT_BASE)
+  557                base |= (u64)screen_info.ext_lfb_base << 32;
+  558
+  559        limit = base + size;
+  560
+  561        /* Does firmware framebuffer belong to us? */
+	  2. Condition __b < PCI_NUM_RESOURCES, taking true branch.
+	  3. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
+	  6. Condition __b < PCI_NUM_RESOURCES, taking true branch.
+	  7. cond_at_most: Checking __b < PCI_NUM_RESOURCES implies that __b may be up to 16 on the true branch.
+	  8. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
+	  11. incr: Incrementing __b. The value of __b may now be up to 17.
+	  12. alias: Assigning: r = &pdev->resource[__b]. r may now point to as high as element 17 of pdev->resource (which consists of 17 64-byte elements).
+	  13. Condition __b < PCI_NUM_RESOURCES, taking true branch.
+	  14. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
+  562        pci_dev_for_each_resource(pdev, r) {
+	  4. Condition resource_type(r) != 512, taking true branch.
+	  9. Condition resource_type(r) != 512, taking true branch.
+
+  CID 1529911 (#1 of 1): Out-of-bounds read (OVERRUN)
+  15. overrun-local: Overrunning array of 1088 bytes at byte offset 1088 by dereferencing pointer r. [show details]
+  563                if (resource_type(r) != IORESOURCE_MEM)
+	  5. Continuing loop.
+	  10. Continuing loop.
+  564                        continue;
