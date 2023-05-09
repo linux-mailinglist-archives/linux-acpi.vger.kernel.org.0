@@ -2,95 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94C8E6FCE9A
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 May 2023 21:34:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7EAF6FD00B
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 May 2023 22:50:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234983AbjEITe4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 May 2023 15:34:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57886 "EHLO
+        id S235574AbjEIUuX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 9 May 2023 16:50:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229998AbjEITew (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 May 2023 15:34:52 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EC1719B3
-        for <linux-acpi@vger.kernel.org>; Tue,  9 May 2023 12:34:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1683660882; i=w_armin@gmx.de;
-        bh=XMqKLm8ouMo+iDNpwGLfItJyA+Rtgxgy3S7jea2xjVs=;
-        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=pojLcUwlXYP5ntE6Nn+xmCjJlQO5flQQ/04AveSkY/n+YWC7lomhRyU+c/Rs+8pfA
-         TIBGroKCzq3ldF+NbMjr+SLaffPtLtNFDmCXoItOiwhYkSoyIZeL5qKNSzs5gCwVFR
-         FRQLt3f8UbYWxFmtI04nb56D4yQKdn7hPtYtulJjVMwe/ZRE5rB7AIUbGUoHcfreao
-         lCpX5cqEJPeqA6SyHyp4gMcf1yflKvfcfgMRpJAvXjPGRddjNlbII8smWfpliTIsJF
-         isxDG2kzOPeQ1nzEQbsTAfEnewsCQGqrWuFZyawmo+vY5HydGAbrX7pOUIcb3Sk7DF
-         nlw1yMnH/KmKw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MeU4s-1qWdL42z6i-00aZJS; Tue, 09
- May 2023 21:34:42 +0200
-To:     robert.moore@intel.com, rafael.j.wysocki@intel.com
-Cc:     linux-acpi@vger.kernel.org, acpica-devel@lists.linuxfoundation.org
-From:   Armin Wolf <W_Armin@gmx.de>
-Subject: Handling of Integers in ToHexString() problematic
-Message-ID: <e893dc0a-5490-5d2d-c124-9a770a0cc3f1@gmx.de>
-Date:   Tue, 9 May 2023 21:34:41 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        with ESMTP id S235381AbjEIUtv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 May 2023 16:49:51 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73CF86587;
+        Tue,  9 May 2023 13:49:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683665367; x=1715201367;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=E51vTbxqfe9pTuaL+Otbb55IlTlhk/XxE5WfOD7sxvM=;
+  b=kgPbwS+Kgx64cnUDLx8zo9RN8t32TPiRWYFKjVxCrntPvVhbxbIpD6NL
+   lf0Rv6sB3w96T6Y3o64RmWCzRBlkhiiARvAfttVdF5ro7VnCHmvPSmC3/
+   vECq+J0MXtWKwXd+HVx6ojmgqq8lp+vfdTAeuzVs9Uyi2l8Ab2HaEV+aL
+   DviE4OomBcWe3egF9BYZUIFv2Mg5V2P0r5G9Cd1VqT+gBe1yuF+h1Cae1
+   PB8GRvwiWkC648tm90QNsEBsr3WuDqmrowQmDIZvNBugt06uNmDI6FRpx
+   YJnp+nIAS8ge9U+h0wgnJV80bq7Jg6F/+UTUsW4B64Ubo7tsr6Rgkl3oM
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10705"; a="350081313"
+X-IronPort-AV: E=Sophos;i="5.99,262,1677571200"; 
+   d="scan'208";a="350081313"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2023 13:49:26 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10705"; a="649486471"
+X-IronPort-AV: E=Sophos;i="5.99,262,1677571200"; 
+   d="scan'208";a="649486471"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2023 13:49:24 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+        by kekkonen.fi.intel.com (Postfix) with ESMTP id B5BD612279B;
+        Tue,  9 May 2023 23:49:21 +0300 (EEST)
+Date:   Tue, 9 May 2023 23:49:21 +0300
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
+        andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH v8 01/10] ACPI: scan: Remove the second DSDT traversal
+Message-ID: <ZFqx0SB71Ht3IpQ3@kekkonen.localdomain>
+References: <20230329100951.1522322-1-sakari.ailus@linux.intel.com>
+ <20230329100951.1522322-2-sakari.ailus@linux.intel.com>
+ <CAJZ5v0gzSjDS16Sq9oAs_9BSEgmM6VPPFF4vrd2cyK++UP7=_w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Provags-ID: V03:K1:vjyFiHCpYM4oEJNN8/9iL18ne1GyRYVB+u7qObqZHyui3850A99
- rz85GTjsVPtjzG5S2oRtmnj08seiaPN911sbcpCAw3ykVo2dW9tLiW61dGVYf/oRPFHAXjq
- 1KbWiN9KLB24QSW5yDESWQKSRwQ3Fg29oR+7BseX7uCiiDLkErBp5VK0+xa7j12YfgbwHXY
- WPDfZc6eFRce0ogkU1Uew==
-UI-OutboundReport: notjunk:1;M01:P0:X9CqlxGrax8=;2Voj+5KuVHDiBT17qCRFv5GEhX+
- MvQEQVWwJP+3QCtWd+jVBl2SOa68rmXhDOXPwj8zJfu+pqUfrZmiTVKPmz/RmCXG143oh38wL
- 90O4kgkHo9vzU7sScKHs12z959TXFUMjm5VGjQuIj4eY1SgTyLL9Mv06IWKoprt7OdIjIs02P
- oI+PuqT4x6n/sHlVo+/W6WSv+uxoYJRyG5GYf6RE+DbqBChiv+jdEo6pTgpgLem/k80RJD1vx
- KU7zYqBLlbkj9Gj1n41RLPYc4M9WHNbWZU46mRDKRUzRxeUOeRG0bT144X36beoyu1tTmyGfw
- a6nHTKJfxoZh8GhXObeo7uuiBmANQ8Elfv1BCL1Sq8hNi0LHul7p9cjbeAwLsW+I7/cGl6+3n
- cYB9qc5GoiCkJHwP5ObT9X8HzKY+9eP/wcmpMXzuV8jtWPxbokMol1C1Hq5/+0OVsWuAtSdqj
- KPKpMNQaJWVwHSMrnCA4npXnmUYWpJXba545oAK4bPRPft5C6n+L/riOpkRNFPG41k17Hb8ho
- gPiiv29b3By+Rmsn93/oR5sxwBRVBv07gNhETeK1QHivpkgLRqKnBZlvd+oVt9HnUqPNShUxk
- 5JS5oLzIyJPcazjWF65FbgAzuk5WSv8PY2g590Yh67aEnaJiTQ9D7IHViMdHTfrT7jr1r+ncj
- 356JsyVXdd+gQMZfIZW0xlwKVEs9qrLwesWAKAY8Pco9gZHbmCzMYzEe39Z/zXUvH3VUmr1Af
- iVg9zUxy+JWyOZ2/pDyOxHMmL71BpSLjauvbKJZlhT5Vcj5N9mMuR3h3+7+KMkk5dYD9TNcbP
- qexAL5s4Ho4ceRyCWU9Bku8akY3PPJFl2lFCK6vSfmlpvip+AjMWsScY9uYeCUUE5b4elDXX0
- mS0QhRp8Br8JxYGiduvpONSvBc6jafRxCjQUQs9AZ4YfHItBoOxt1Gwd5RMT4600EjyQhpbUu
- JDYXCUl8DHX89mUCOwfUY7IEgPM=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0gzSjDS16Sq9oAs_9BSEgmM6VPPFF4vrd2cyK++UP7=_w@mail.gmail.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi Rafael,
 
-i found out that the behavior of the ToHexString() ASL operator differs between Windows and Linux:
-- Windows:
-byte 0x0f =>"0xf"
-word 0x0f0f => "0xf0f"
-dword 0x0f0f0f0f => "0xf0f0f0f"
-qword 0x0f0f0f0f0f0f0f0f => "0xf0f0f0f0f0f0f0f"
+Thank you for the review.
 
-- Linux (ACPICA):
-byte 0x0f =>"0000000f"
-word 0x0f0f => "00000f0f"
-dword 0x0f0f0f0f => "0f0f0f0f"
-qword 0x0f0f0f0f0f0f0f0f => "0f0f0f0f" (32-bit table, but qword is 64-bit?)
+On Tue, May 09, 2023 at 08:06:28PM +0200, Rafael J. Wysocki wrote:
+> On Wed, Mar 29, 2023 at 12:10 PM Sakari Ailus
+> <sakari.ailus@linux.intel.com> wrote:
+> >
+> > Collect the devices with _DEP into a list and continue processing them
+> > after a full traversal, instead of doing a full second traversal of the
+> > tree.
+> >
+> > This makes the second DSDT traversal pass unnecessary as we already have
+> > the nodes we're interested in in a linked list.
+> 
+> The second traversal of the ACPI namespace (it may not be just the
+> DSDT at that point to be precise) is not really about _DEP handling.
+> In fact, the latter has been added on top of it.
+> 
+> It is about the PCI enumeration.  Namely, when acpi_pci_root_add()
+> runs for the PCI host bridge object in the ACPI namespace, the entire
+> device hierarchy below it is walked and all of the ACPI device objects
+> corresponding to the PCI devices on the bus are assumed to be present.
+> This means that all of the ACPI device objects need to be created in
+> the first walk, without binding any ACPI drivers or scan handlers to
+> them, and the second walk is to find out what is actually represented
+> by those objects.
+> 
+> It cannot be eliminated in any simple way.
 
-This causes problems on my Inspiron 3505, as the battery serial number is generated by using ToHexString(<16 bit field>, Local1)
-and Mid(Local1, 0x02, 0x04, Local0), causing a wrong serial number to be displayed (0020 instead of 20CD).
+My understanding still remains that this patch does not (or other patches
+in this set) change the above. It is just how those nodes are reached:
+instead of traversing the entire tree and ignoring the devices that have
+already an acpi_device created for them, a linked list of devices of
+interest is traversed.
 
-Would it be possible to change the behavior of ToHexString() for integers to match the Windows behavior?
-Something similar was already done in ACPICA version 20181213 regarding the behavior of ToHexString() on buffers.
-I understand that this has the potential of introducing regressions, but i believe that most systems
-target the behavior of Windows anyway.
+Of course it is possible that I have missed something. The codebase isn't
+entirely trivial.
 
-Armin Wolf
+-- 
+Kind regards,
 
+Sakari Ailus
