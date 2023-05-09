@@ -2,77 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 382AE6FC6FD
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 May 2023 14:45:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B50DD6FC92A
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 May 2023 16:37:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230252AbjEIMps (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 May 2023 08:45:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53328 "EHLO
+        id S235764AbjEIOhu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 9 May 2023 10:37:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230029AbjEIMpr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 May 2023 08:45:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFCC426A8
-        for <linux-acpi@vger.kernel.org>; Tue,  9 May 2023 05:45:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1683636294;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=0atVn8hE4TWtYprE3l2D/bldVae4vEGU9rmhpIuRuRM=;
-        b=KbHsnrenwsiVP79Xcc5rBS8xrVMxg3BHkPKmsTYthL7uHJ2pXA/jPat/u8qvdACionHvRW
-        tjwKH2Ef5qBbgmwCVG7m8pO11DqGhvejjWg1jEMuf8ISVEStuGavjaNHYWi1BwylUdjBzx
-        jSNbAFuyxLmFMx5rPajrXZRRRrNs/Ik=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-543-9yy23nwkM22WiciieXDQPQ-1; Tue, 09 May 2023 08:44:53 -0400
-X-MC-Unique: 9yy23nwkM22WiciieXDQPQ-1
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-50bc456a94dso5518461a12.1
-        for <linux-acpi@vger.kernel.org>; Tue, 09 May 2023 05:44:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683636292; x=1686228292;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0atVn8hE4TWtYprE3l2D/bldVae4vEGU9rmhpIuRuRM=;
-        b=N6T9YrndBSEPyVSsQFJ5/Qz7XSdyHPukbBywcktABffKgMD/rlXNhuLIxNm69ZTKjP
-         MYLAdkgEnvxDAowt2mqNSet+JtBzQee5b4dqAIn8EH5W1z+QRwYoX70B6GfvoiUdFbGH
-         kHF6gDOTUjAdR44TeDbrpYzDkDbUEKBtcf5aPQLGE+SqN+c+UqupZy4l0bYZ/7PJmrni
-         pLJD1xYHRl26PkksJ/h3cGy2n1fmSwmUc07thqTw0t0TV7FtDb+XPp3/6KioiS2xaG4m
-         apvVok1I7BCIHUWbDx9ehODGw4hHYGKEdNhRot0Q+PMaroCYrfL2t2iDk26zB8cbgFVj
-         qVgw==
-X-Gm-Message-State: AC+VfDwskxo7tK6F8ORbsguUOOErZbB1IyMr7hlyGzNf50o1kf+G5zPM
-        4Iu12nzj6MZG1NB1Jx9ijEJ91OSOX3NaBvpQKC1W8Vgp3a4on/cj+DXfzdGwmHGPBgrpPoE+szJ
-        HEngLpdtQ/kbSiatGcKKVdA==
-X-Received: by 2002:aa7:c74b:0:b0:506:b228:7b08 with SMTP id c11-20020aa7c74b000000b00506b2287b08mr11570172eds.17.1683636292178;
-        Tue, 09 May 2023 05:44:52 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7CLeiKvojA8ol97ghYKS30L3xlPs1xNBy2YAqxITFwcuJFzajIjrQY8KNJX/UTo8/nCkIk6w==
-X-Received: by 2002:aa7:c74b:0:b0:506:b228:7b08 with SMTP id c11-20020aa7c74b000000b00506b2287b08mr11570148eds.17.1683636291806;
-        Tue, 09 May 2023 05:44:51 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id y15-20020a50e60f000000b0050bc27a4967sm746733edm.21.2023.05.09.05.44.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 May 2023 05:44:51 -0700 (PDT)
-Date:   Tue, 9 May 2023 14:44:50 +0200
-From:   Igor Mammedov <imammedo@redhat.com>
-To:     helgaas@kernel.org
-Cc:     linux-kernel@vger.kernel.org, mst@redhat.com, rafael@kernel.org,
-        lenb@kernel.org, bhelgaas@google.com, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, mika.westerberg@linux.intel.com
-Subject: Re: [PATCH v2] PCI: acpiphp: Reassign resources on bridge if
- necessary
-Message-ID: <20230509144450.2bc3aea8@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230424191557.2464760-1-imammedo@redhat.com>
-References: <20230424191557.2464760-1-imammedo@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-redhat-linux-gnu)
+        with ESMTP id S234758AbjEIOht (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 May 2023 10:37:49 -0400
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93808109;
+        Tue,  9 May 2023 07:37:45 -0700 (PDT)
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+        by mx0b-0016f401.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 349Dx17f018202;
+        Tue, 9 May 2023 07:37:24 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=date : from : to :
+ cc : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pfpt0220; bh=+mfLhJmVBJOGTMDQi+ADShaWubb8Mn6G8qmNPyPioBc=;
+ b=BZP5xQ6BhDY/X02Sr1zT9v4YP7vRgChmsdPGbdJxgCKh2HqVbywmbxRkUtQwo81UWswm
+ /G/Y2AyZQHUE3XxGS7/thOtMTdvyXf8NpGJ7ZaSGjh4pwLybXNZqDx1IT85RdGycOFTb
+ LOSzyVCK6zGEYrnZ7jQFx/to27LbewnP+qVKoJaWMGmH6QiatUexTTWoaHtnulc7HKCa
+ pVlTqndt30zZODp6V5Pk2ajXh+aaY8nxmiSaN296hCkMFrbAoxdLj76H6RDfwb2LcmWz
+ cKdvTNcbs2LUfcqWGT/B/K6ZzvsL5+LjuqGWvel4Ml7dlHK/+z0VsD0MsC4XvvIjPYpW /Q== 
+Received: from dc5-exch01.marvell.com ([199.233.59.181])
+        by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 3qf77s2tu5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+        Tue, 09 May 2023 07:37:23 -0700
+Received: from DC5-EXCH02.marvell.com (10.69.176.39) by DC5-EXCH01.marvell.com
+ (10.69.176.38) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Tue, 9 May
+ 2023 07:37:21 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH02.marvell.com
+ (10.69.176.39) with Microsoft SMTP Server id 15.0.1497.48 via Frontend
+ Transport; Tue, 9 May 2023 07:37:21 -0700
+Received: from Dell2s-9 (unknown [10.110.150.250])
+        by maili.marvell.com (Postfix) with ESMTP id 822C63F7087;
+        Tue,  9 May 2023 07:37:21 -0700 (PDT)
+Date:   Tue, 9 May 2023 07:37:21 -0700
+From:   Piyush Malgujar <pmalgujar@marvell.com>
+To:     "Luck, Tony" <tony.luck@intel.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "Williams, Dan J" <dan.j.williams@intel.com>,
+        "xueshuai@linux.alibaba.com" <xueshuai@linux.alibaba.com>,
+        "benjamin.cheatham@amd.com" <benjamin.cheatham@amd.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "jannadurai@marvell.com" <jannadurai@marvell.com>,
+        "cchavva@marvell.com" <cchavva@marvell.com>
+Subject: Re: [PATCH v2] ACPI: APEI: EINJ: EINJV2 support added
+Message-ID: <20230509143721.GA10616@Dell2s-9>
+References: <20230504133224.2669-1-pmalgujar@marvell.com>
+ <SJ1PR11MB6083A266C4A869FC9AAA5A9AFC6D9@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <SJ1PR11MB608326A6AC3FFE42699DDB40FC6D9@SJ1PR11MB6083.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <SJ1PR11MB608326A6AC3FFE42699DDB40FC6D9@SJ1PR11MB6083.namprd11.prod.outlook.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-ORIG-GUID: qFnYkAutu_djET8H85p-1jwg8Z89UJjp
+X-Proofpoint-GUID: qFnYkAutu_djET8H85p-1jwg8Z89UJjp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-09_08,2023-05-05_01,2023-02-09_01
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,85 +77,57 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 24 Apr 2023 21:15:57 +0200
-Igor Mammedov <imammedo@redhat.com> wrote:
+Hi Tony,
 
-Bjorn,
+Thanks for the review comments.
 
-I've fixed up issues you've mentioned on v1 review,
-is it good enough to take it in now?
+On Thu, May 04, 2023 at 09:00:51PM +0000, Luck, Tony wrote:
+> > +An error injection example::
+> > +
+> > +  # cd /sys/kernel/debug/apei/einj
+> > +  # cat available_error_type         # See which errors can be injected
+> > +  0x00000001 EINJV2 Processor Error
+> > +  0x00000002 EINJV2 Memory Error
+> > +  0x00000004 EINJV2 PCI Express Error
+> > +  # echo 0x2 > error_type
+> > +  # echo 0x5 > flags
+> > +  # echo 0x12345000 > param1
+> > +  # echo 0x2 > param5
+> > +  # echo 1 > error_inject
+> >
+> > Is the expectation that platforms that implement EINJV2 will not include legacy
+> > EINJ support?
+> 
+> I spoke to some BIOS folks here. They said that the ACPI 6.5 change is an
+> extension to the action table with new opcodes for GET/SET when EINJV2
+> is supported. The legacy actions are not deprecated. So platform firmware could
+> support both old and new injection formats.
+> 
+> So I'm going to double down on this:
+> 
+> > Maybe it would be better to change the top-level directory to:
+> >
+> >	/sys/kernel/debug/apei/einjv2
+> 
+> and say this isn't a "maybe". The EINJV2 interface files should go
+> in a new directory. The old files should continue to work (assuming
+> firmware still enumerates the old available types).
+> 
+> Simplifying the interface for EINJV2 in the new directory is an option.
+> I think we should take it ... the "paramN" files that mean different
+> things for different injection types were an evolution rather than a design.
+> 
+> -Tony
+> 
+> 
+> 
+> 
+If a platform supports einj v2, then the einj directory wont be needed, as per spec,
+if a non-zero Error Type value is set by EINJV2_SET_ERROR_TYPE, then any Error Type
+value set by (einj case) SET_ERROR_TYPE_WITH_ADDRESS and/or SET_ERROR_TYPE will be
+ignored. So based on einjv2 is supported or not, we can have either einjv2 or einj 
+directory with the related params files in it respectively. 
+Kindly let us know your thoughts.
 
-> When using ACPI PCI hotplug, hotplugging a device with
-> large BARs may fail if bridge windows programmed by
-> firmware are not large enough.
-> 
-> Reproducer:
->   $ qemu-kvm -monitor stdio -M q35  -m 4G \
->       -global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=on \
->       -device id=rp1,pcie-root-port,bus=pcie.0,chassis=4 \
->       disk_image
-> 
->  wait till linux guest boots, then hotplug device
->    (qemu) device_add qxl,bus=rp1
-> 
->  hotplug on guest side fails with:
->    pci 0000:01:00.0: [1b36:0100] type 00 class 0x038000
->    pci 0000:01:00.0: reg 0x10: [mem 0x00000000-0x03ffffff]
->    pci 0000:01:00.0: reg 0x14: [mem 0x00000000-0x03ffffff]
->    pci 0000:01:00.0: reg 0x18: [mem 0x00000000-0x00001fff]
->    pci 0000:01:00.0: reg 0x1c: [io  0x0000-0x001f]
->    pci 0000:01:00.0: BAR 0: no space for [mem size 0x04000000]
->    pci 0000:01:00.0: BAR 0: failed to assign [mem size 0x04000000]
->    pci 0000:01:00.0: BAR 1: no space for [mem size 0x04000000]
->    pci 0000:01:00.0: BAR 1: failed to assign [mem size 0x04000000]
->    pci 0000:01:00.0: BAR 2: assigned [mem 0xfe800000-0xfe801fff]
->    pci 0000:01:00.0: BAR 3: assigned [io  0x1000-0x101f]
->    qxl 0000:01:00.0: enabling device (0000 -> 0003)
->    Unable to create vram_mapping
->    qxl: probe of 0000:01:00.0 failed with error -12
-> 
-> However when using native PCIe hotplug
->   '-global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off'
-> it works fine, since kernel attempts to reassign unused resources.
-> Use the same machinery as native PCIe hotplug to (re)assign resources.
-> 
-> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-> ---
-> tested in QEMU with Q35 machine on PCIE root port and also
-> with nested conventional bridge attached to root port.
-> 
-> v2:
->   * fixup subject to match expected style
->   * drop no longer needed __pci_bus_size_bridges() to avoid
->     memory leak (Bjorn Helgaas <helgaas@kernel.org>)
-> ---
->  drivers/pci/hotplug/acpiphp_glue.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
-> index 5b1f271c6034..328d1e416014 100644
-> --- a/drivers/pci/hotplug/acpiphp_glue.c
-> +++ b/drivers/pci/hotplug/acpiphp_glue.c
-> @@ -498,7 +498,6 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
->  				acpiphp_native_scan_bridge(dev);
->  		}
->  	} else {
-> -		LIST_HEAD(add_list);
->  		int max, pass;
->  
->  		acpiphp_rescan_slot(slot);
-> @@ -512,12 +511,10 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
->  				if (pass && dev->subordinate) {
->  					check_hotplug_bridge(slot, dev);
->  					pcibios_resource_survey_bus(dev->subordinate);
-> -					__pci_bus_size_bridges(dev->subordinate,
-> -							       &add_list);
->  				}
->  			}
->  		}
-> -		__pci_bus_assign_resources(bus, &add_list, NULL);
-> +		pci_assign_unassigned_bridge_resources(bus->self);
->  	}
->  
->  	acpiphp_sanitize_bus(bus);
-
+Thanks,
+Piyush 
