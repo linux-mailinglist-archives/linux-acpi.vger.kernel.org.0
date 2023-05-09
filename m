@@ -2,58 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6071F6FC6A1
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 May 2023 14:42:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 382AE6FC6FD
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 May 2023 14:45:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235067AbjEIMl6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 May 2023 08:41:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48798 "EHLO
+        id S230252AbjEIMps (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 9 May 2023 08:45:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235585AbjEIMlw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 May 2023 08:41:52 -0400
+        with ESMTP id S230029AbjEIMpr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 May 2023 08:45:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF075469A
-        for <linux-acpi@vger.kernel.org>; Tue,  9 May 2023 05:41:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFCC426A8
+        for <linux-acpi@vger.kernel.org>; Tue,  9 May 2023 05:45:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1683636066;
+        s=mimecast20190719; t=1683636294;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=prSuF/n0nTP4tVpfw0zJu4M+wYcRmV3FnA5TUKxAW+8=;
-        b=QqBbxb0EuUSH8G0lPKYVL4Ac9xf6ybkU6li0SqpLi/EPw846M8VIfGtUzkkISqiHjvo7j2
-        yUKi2C5vpa5/5i27ZjZaEPRhKfbQONEDkOVnu54t+9XBIGLSo7curi2MgRYqAeVjvzp4dv
-        UDD22XmLliAb5oHo6m80uAsNvGtEuLU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-47-iAu6zzJ-PXqd4oZ46V5HQA-1; Tue, 09 May 2023 08:41:02 -0400
-X-MC-Unique: iAu6zzJ-PXqd4oZ46V5HQA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 21004100F653;
-        Tue,  9 May 2023 12:41:02 +0000 (UTC)
-Received: from shalem.redhat.com (unknown [10.39.194.239])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 21BD440C6E67;
-        Tue,  9 May 2023 12:41:01 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andy@kernel.org>, linux-acpi@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Subject: [PATCH v2] ACPI: LPSS: Add pwm_lookup_table entry for second PWM on CHT/BSW devices
-Date:   Tue,  9 May 2023 14:41:00 +0200
-Message-Id: <20230509124100.288814-1-hdegoede@redhat.com>
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=0atVn8hE4TWtYprE3l2D/bldVae4vEGU9rmhpIuRuRM=;
+        b=KbHsnrenwsiVP79Xcc5rBS8xrVMxg3BHkPKmsTYthL7uHJ2pXA/jPat/u8qvdACionHvRW
+        tjwKH2Ef5qBbgmwCVG7m8pO11DqGhvejjWg1jEMuf8ISVEStuGavjaNHYWi1BwylUdjBzx
+        jSNbAFuyxLmFMx5rPajrXZRRRrNs/Ik=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-543-9yy23nwkM22WiciieXDQPQ-1; Tue, 09 May 2023 08:44:53 -0400
+X-MC-Unique: 9yy23nwkM22WiciieXDQPQ-1
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-50bc456a94dso5518461a12.1
+        for <linux-acpi@vger.kernel.org>; Tue, 09 May 2023 05:44:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683636292; x=1686228292;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0atVn8hE4TWtYprE3l2D/bldVae4vEGU9rmhpIuRuRM=;
+        b=N6T9YrndBSEPyVSsQFJ5/Qz7XSdyHPukbBywcktABffKgMD/rlXNhuLIxNm69ZTKjP
+         MYLAdkgEnvxDAowt2mqNSet+JtBzQee5b4dqAIn8EH5W1z+QRwYoX70B6GfvoiUdFbGH
+         kHF6gDOTUjAdR44TeDbrpYzDkDbUEKBtcf5aPQLGE+SqN+c+UqupZy4l0bYZ/7PJmrni
+         pLJD1xYHRl26PkksJ/h3cGy2n1fmSwmUc07thqTw0t0TV7FtDb+XPp3/6KioiS2xaG4m
+         apvVok1I7BCIHUWbDx9ehODGw4hHYGKEdNhRot0Q+PMaroCYrfL2t2iDk26zB8cbgFVj
+         qVgw==
+X-Gm-Message-State: AC+VfDwskxo7tK6F8ORbsguUOOErZbB1IyMr7hlyGzNf50o1kf+G5zPM
+        4Iu12nzj6MZG1NB1Jx9ijEJ91OSOX3NaBvpQKC1W8Vgp3a4on/cj+DXfzdGwmHGPBgrpPoE+szJ
+        HEngLpdtQ/kbSiatGcKKVdA==
+X-Received: by 2002:aa7:c74b:0:b0:506:b228:7b08 with SMTP id c11-20020aa7c74b000000b00506b2287b08mr11570172eds.17.1683636292178;
+        Tue, 09 May 2023 05:44:52 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7CLeiKvojA8ol97ghYKS30L3xlPs1xNBy2YAqxITFwcuJFzajIjrQY8KNJX/UTo8/nCkIk6w==
+X-Received: by 2002:aa7:c74b:0:b0:506:b228:7b08 with SMTP id c11-20020aa7c74b000000b00506b2287b08mr11570148eds.17.1683636291806;
+        Tue, 09 May 2023 05:44:51 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
+        by smtp.gmail.com with ESMTPSA id y15-20020a50e60f000000b0050bc27a4967sm746733edm.21.2023.05.09.05.44.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 May 2023 05:44:51 -0700 (PDT)
+Date:   Tue, 9 May 2023 14:44:50 +0200
+From:   Igor Mammedov <imammedo@redhat.com>
+To:     helgaas@kernel.org
+Cc:     linux-kernel@vger.kernel.org, mst@redhat.com, rafael@kernel.org,
+        lenb@kernel.org, bhelgaas@google.com, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, mika.westerberg@linux.intel.com
+Subject: Re: [PATCH v2] PCI: acpiphp: Reassign resources on bridge if
+ necessary
+Message-ID: <20230509144450.2bc3aea8@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230424191557.2464760-1-imammedo@redhat.com>
+References: <20230424191557.2464760-1-imammedo@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,57 +80,85 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-BSW PWM2 is used for backlight control for fixed (etched into the glass)
-touch controls on some models.
+On Mon, 24 Apr 2023 21:15:57 +0200
+Igor Mammedov <imammedo@redhat.com> wrote:
 
-Add an entry for the second PWM controller to bsw_pwm_lookup,
-so that drivers can use pwm_get() to get a reference to it.
+Bjorn,
 
-These touch-controls have specialized drivers which bind to different
-devices on different models, so the consumer-device-name in the lookup
-table entry is set to NULL, so that only con-id matching is used.
+I've fixed up issues you've mentioned on v1 review,
+is it good enough to take it in now?
 
-The con-id is set to "pwm_soc_lpss_2" which describes the PWM controller
-rather than the usual approach of describing its function.
-The specialized (model specific) drivers which need access to the PWM
-controller know they need the "pwm_soc_lpss_2" con-id.
-
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes in v2:
-- 2 spelling fixes in commit msg (Andy)
-- Add Andy's Reviewed-by + Uwe's Acked-by
----
- drivers/acpi/acpi_lpss.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
-index 77186f084d3a..539e700de4d2 100644
---- a/drivers/acpi/acpi_lpss.c
-+++ b/drivers/acpi/acpi_lpss.c
-@@ -201,11 +201,19 @@ static void byt_i2c_setup(struct lpss_private_data *pdata)
- 	writel(0, pdata->mmio_base + LPSS_I2C_ENABLE);
- }
- 
--/* BSW PWM used for backlight control by the i915 driver */
-+/*
-+ * BSW PWM1 is used for backlight control by the i915 driver
-+ * BSW PWM2 is used for backlight control for fixed (etched into the glass)
-+ * touch controls on some models. These touch-controls have specialized
-+ * drivers which know they need the "pwm_soc_lpss_2" con-id.
-+ */
- static struct pwm_lookup bsw_pwm_lookup[] = {
- 	PWM_LOOKUP_WITH_MODULE("80862288:00", 0, "0000:00:02.0",
- 			       "pwm_soc_backlight", 0, PWM_POLARITY_NORMAL,
- 			       "pwm-lpss-platform"),
-+	PWM_LOOKUP_WITH_MODULE("80862289:00", 0, NULL,
-+			       "pwm_soc_lpss_2", 0, PWM_POLARITY_NORMAL,
-+			       "pwm-lpss-platform"),
- };
- 
- static void bsw_pwm_setup(struct lpss_private_data *pdata)
--- 
-2.40.1
+> When using ACPI PCI hotplug, hotplugging a device with
+> large BARs may fail if bridge windows programmed by
+> firmware are not large enough.
+> 
+> Reproducer:
+>   $ qemu-kvm -monitor stdio -M q35  -m 4G \
+>       -global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=on \
+>       -device id=rp1,pcie-root-port,bus=pcie.0,chassis=4 \
+>       disk_image
+> 
+>  wait till linux guest boots, then hotplug device
+>    (qemu) device_add qxl,bus=rp1
+> 
+>  hotplug on guest side fails with:
+>    pci 0000:01:00.0: [1b36:0100] type 00 class 0x038000
+>    pci 0000:01:00.0: reg 0x10: [mem 0x00000000-0x03ffffff]
+>    pci 0000:01:00.0: reg 0x14: [mem 0x00000000-0x03ffffff]
+>    pci 0000:01:00.0: reg 0x18: [mem 0x00000000-0x00001fff]
+>    pci 0000:01:00.0: reg 0x1c: [io  0x0000-0x001f]
+>    pci 0000:01:00.0: BAR 0: no space for [mem size 0x04000000]
+>    pci 0000:01:00.0: BAR 0: failed to assign [mem size 0x04000000]
+>    pci 0000:01:00.0: BAR 1: no space for [mem size 0x04000000]
+>    pci 0000:01:00.0: BAR 1: failed to assign [mem size 0x04000000]
+>    pci 0000:01:00.0: BAR 2: assigned [mem 0xfe800000-0xfe801fff]
+>    pci 0000:01:00.0: BAR 3: assigned [io  0x1000-0x101f]
+>    qxl 0000:01:00.0: enabling device (0000 -> 0003)
+>    Unable to create vram_mapping
+>    qxl: probe of 0000:01:00.0 failed with error -12
+> 
+> However when using native PCIe hotplug
+>   '-global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off'
+> it works fine, since kernel attempts to reassign unused resources.
+> Use the same machinery as native PCIe hotplug to (re)assign resources.
+> 
+> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+> ---
+> tested in QEMU with Q35 machine on PCIE root port and also
+> with nested conventional bridge attached to root port.
+> 
+> v2:
+>   * fixup subject to match expected style
+>   * drop no longer needed __pci_bus_size_bridges() to avoid
+>     memory leak (Bjorn Helgaas <helgaas@kernel.org>)
+> ---
+>  drivers/pci/hotplug/acpiphp_glue.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
+> index 5b1f271c6034..328d1e416014 100644
+> --- a/drivers/pci/hotplug/acpiphp_glue.c
+> +++ b/drivers/pci/hotplug/acpiphp_glue.c
+> @@ -498,7 +498,6 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
+>  				acpiphp_native_scan_bridge(dev);
+>  		}
+>  	} else {
+> -		LIST_HEAD(add_list);
+>  		int max, pass;
+>  
+>  		acpiphp_rescan_slot(slot);
+> @@ -512,12 +511,10 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
+>  				if (pass && dev->subordinate) {
+>  					check_hotplug_bridge(slot, dev);
+>  					pcibios_resource_survey_bus(dev->subordinate);
+> -					__pci_bus_size_bridges(dev->subordinate,
+> -							       &add_list);
+>  				}
+>  			}
+>  		}
+> -		__pci_bus_assign_resources(bus, &add_list, NULL);
+> +		pci_assign_unassigned_bridge_resources(bus->self);
+>  	}
+>  
+>  	acpiphp_sanitize_bus(bus);
 
