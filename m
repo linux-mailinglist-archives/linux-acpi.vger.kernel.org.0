@@ -2,55 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B51E96FD492
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 May 2023 05:47:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 310AF6FD659
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 May 2023 07:48:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230023AbjEJDrJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 9 May 2023 23:47:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50322 "EHLO
+        id S235992AbjEJFsI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 May 2023 01:48:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230353AbjEJDrI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 9 May 2023 23:47:08 -0400
-Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D04DE2125
-        for <linux-acpi@vger.kernel.org>; Tue,  9 May 2023 20:47:06 -0700 (PDT)
-Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-18f4a6d2822so42038369fac.1
-        for <linux-acpi@vger.kernel.org>; Tue, 09 May 2023 20:47:06 -0700 (PDT)
+        with ESMTP id S235593AbjEJFsF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 May 2023 01:48:05 -0400
+Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B6613C16
+        for <linux-acpi@vger.kernel.org>; Tue,  9 May 2023 22:48:03 -0700 (PDT)
+Received: by mail-ot1-x330.google.com with SMTP id 46e09a7af769-6ab0a942f46so1871048a34.2
+        for <linux-acpi@vger.kernel.org>; Tue, 09 May 2023 22:48:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1683690424; x=1686282424;
+        d=ventanamicro.com; s=google; t=1683697682; x=1686289682;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ifGsiDNA4DSRmYfOgUypvWteVU13/UhrU3vLKCdk6uY=;
-        b=gpu59KdBTaV2y1OrztVKMXiHwwwuoI3UpLzcobU/TQ2lpWwCXqfQeLrRAXWEPGtJSt
-         tm1d0OXblLRJdNQRMO2buSn3nl1xIhAN8Kauc/LZVWUMo8CXL0iFI3d6DEDxF1ycqWDw
-         r1rHmplIjra3BgAkeBX8t7EOBIdRohvoIDuRjqlOuvOXLOP6YOeNU2ZpS5MKq642wdhX
-         GfNYlzC0XytTFCaerhonm26O9xJ9/8MhM6sd7/oIFtzgrZQLfmX3yglSVV8N/PhPQkiH
-         i7/Yi2ApjQ0JBdYqdm0OldmwCNu0AoOvfYm4ktvDPD+BwoUqLs1zBdJSVi+IJmJVihcs
-         6wRA==
+        bh=aLoXxmvmI+TNDBhJrgne+NmasMw88TAHwNMgEXRV8rI=;
+        b=cdGX27W3aTaVuF1lXqNU3dXFL5s/Mxv+Moz1oLv1bQd1dEC9mDTi2x1P2N71gBko7J
+         2+zczCTSBLiri2fJqfSyyz5RHx46ktfWmUOXnHuyj5Cn4nTnemxRsBPtCWjjZawCjJGN
+         78Z4MCWQKxZMpusPRAJQCksQy1Dfq+cU/sE+LDbzedpxxiDwbqNmgut9N0xguAbrwjC6
+         i26od8SWAexY2jtV7kg0NYHScaH2lXuJWt2XqxC61phsOtpGEOKp0RycWSufEb7ci05D
+         XrgVIiuCTq2cXFJRCtMevAMjlG69+8PadWF6hGIxq7j2gai3jXAqXDEXXYFo0g1p+Z4b
+         ehIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683690424; x=1686282424;
+        d=1e100.net; s=20221208; t=1683697682; x=1686289682;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ifGsiDNA4DSRmYfOgUypvWteVU13/UhrU3vLKCdk6uY=;
-        b=NdhOCf/lgPDe+5ZDBEBoQGvGgBMC+UIrB42D+zNXy0hCiaCzDwClNatFw1fk8m4iox
-         HkxqzNwRUn1see1mj3Mlbzdz7aSIpRqiplUZ+wPzEOlS/4LbR5MNeVT+bPAhuHlP6UQl
-         uLqyIXEasYv7nrDJZHzCrgke8SZSIRc633vxqJ4sSMNX7fPEBFHe5IxKrJ5I+p6Fhckd
-         KQ+qLE4mqJvb0Ki8SLvyb9z/MNra57yGsfBJ1lDMgzZifJ74DFxJwtq6xhyVGeBURVKg
-         RxvHHHZvf5lUoaOf+hUMJ7drQ+UjECRqcJYvEUZREJok/+6c0bHhGFsiomoIY8q/rNeo
-         3bMg==
-X-Gm-Message-State: AC+VfDzrB1qsH5Fg8oSxs2CR35jN0opHf9k1p29J9tvJHY3a2gekxVn7
-        KAjX1vTn5o6h8H1R6pjl8kCUsw==
-X-Google-Smtp-Source: ACHHUZ4YePMDzR3NxPf56dWWs0438cRvarCHuKqCLPxWMl4dytqu+RlEXReFpB+kOAyPzW2K5KhhxQ==
-X-Received: by 2002:a05:6830:6081:b0:6ab:1aa5:1634 with SMTP id by1-20020a056830608100b006ab1aa51634mr2429359otb.10.1683690424388;
-        Tue, 09 May 2023 20:47:04 -0700 (PDT)
-Received: from sunil-laptop ([106.51.189.144])
-        by smtp.gmail.com with ESMTPSA id j16-20020a9d7690000000b006a6558ef17fsm5865716otl.30.2023.05.09.20.46.52
+        bh=aLoXxmvmI+TNDBhJrgne+NmasMw88TAHwNMgEXRV8rI=;
+        b=T+wilDjt0imPMR6gLI0RL9zjwPEi1t0kPagfm+GjcH+wo06K+6HRZ3dJzu0To2RVvg
+         R46XZ5b/dAJKUJlfwVpvXoCL9T4nLEGOAE35oO2bOwGrpFF9XOl9QT228FXYyRCFxgVn
+         EX2/bTLUL3bYmZDnuuRHANUWHUHvsxpPE2lVbEdMZ+TaDGrwgh3w/1rHilbVPMkUwof5
+         XX5D05QKf5E0Xls/I5lIQkUKYV5M6gAUI2kk4OFfQKrE8AbBo/WHyB7dsVwxGsD8ndPo
+         wsvpnUHiO0WhwTgJeEVTwSJY/bPKSDScyvVWqhExtixNt2MNj8uT1bAwGrCaCFrC7Oce
+         1nPg==
+X-Gm-Message-State: AC+VfDzByQILYdj8qW445qU83ho7kXqBSLdbvWMO/hntMKgdHaG1sUdN
+        hQZk75B6Hkh4DghcclEjARtl0g==
+X-Google-Smtp-Source: ACHHUZ4YI0Ows+2qLCE5z9Sy2RLUd1OHJeod9NGdxiAb7Ex5AAbigEasnBSuYpWAru1W0u5cnRfMdw==
+X-Received: by 2002:a9d:730d:0:b0:6ab:b20:18a5 with SMTP id e13-20020a9d730d000000b006ab0b2018a5mr2569954otk.26.1683697682642;
+        Tue, 09 May 2023 22:48:02 -0700 (PDT)
+Received: from sunil-laptop ([106.51.188.76])
+        by smtp.gmail.com with ESMTPSA id p25-20020a9d76d9000000b0068bd922a244sm603978otl.20.2023.05.09.22.47.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 May 2023 20:47:04 -0700 (PDT)
-Date:   Wed, 10 May 2023 09:16:47 +0530
+        Tue, 09 May 2023 22:48:02 -0700 (PDT)
+Date:   Wed, 10 May 2023 11:17:49 +0530
 From:   Sunil V L <sunilvl@ventanamicro.com>
-To:     Conor Dooley <conor@kernel.org>
+To:     Herbert Xu <herbert@gondor.apana.org.au>
 Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
         linux-crypto@vger.kernel.org, platform-driver-x86@vger.kernel.org,
@@ -64,7 +64,6 @@ Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Weili Qian <qianweili@huawei.com>,
         Zhou Wang <wangzhou1@hisilicon.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
         "David S . Miller" <davem@davemloft.net>,
         Marc Zyngier <maz@kernel.org>,
         Maximilian Luz <luzmaximilian@gmail.com>,
@@ -72,18 +71,17 @@ Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         Mark Gross <markgross@kernel.org>,
         Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH V5 08/21] RISC-V: ACPI: Cache and retrieve the RINTC
- structure
-Message-ID: <ZFsTp/cbuPFauDui@sunil-laptop>
+        Tom Rix <trix@redhat.com>
+Subject: Re: [PATCH V5 03/21] crypto: hisilicon/qm: Fix to enable build with
+ RISC-V clang
+Message-ID: <ZFswBePAtF/ror5G@sunil-laptop>
 References: <20230508115237.216337-1-sunilvl@ventanamicro.com>
- <20230508115237.216337-9-sunilvl@ventanamicro.com>
- <20230509-atlantic-writing-3ceea38e050e@spud>
+ <20230508115237.216337-4-sunilvl@ventanamicro.com>
+ <ZFmtSReX9/WR5CkK@gondor.apana.org.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230509-atlantic-writing-3ceea38e050e@spud>
+In-Reply-To: <ZFmtSReX9/WR5CkK@gondor.apana.org.au>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
@@ -94,40 +92,58 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Conor,
-
-On Tue, May 09, 2023 at 06:50:07PM +0100, Conor Dooley wrote:
-> Hey Sunil,
-> 
-> On Mon, May 08, 2023 at 05:22:24PM +0530, Sunil V L wrote:
-> > RINTC structures in the MADT provide mapping between the hartid
-> > and the CPU. This is required many times even at run time like
-> > cpuinfo. So, instead of parsing the ACPI table every time, cache
-> > the RINTC structures and provide a function to get the correct
-> > RINTC structure for a given cpu.
+On Tue, May 09, 2023 at 10:17:45AM +0800, Herbert Xu wrote:
+> On Mon, May 08, 2023 at 05:22:19PM +0530, Sunil V L wrote:
+> > With CONFIG_ACPI enabled for RISC-V, this driver gets enabled in
+> > allmodconfig build. However, build fails with clang and below
+> > error is seen.
 > > 
+> > drivers/crypto/hisilicon/qm.c:627:10: error: invalid output constraint '+Q' in asm
+> >                        "+Q" (*((char __iomem *)fun_base))
+> >                        ^
+> > This is expected error with clang due to the way it is designed.
+> > 
+> > To fix this issue, move arm64 assembly code under #if.
+> > 
+> > Link: https://github.com/ClangBuiltLinux/linux/issues/999
+> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> > [sunilvl@ventanamicro.com: Moved tmp0 and tmp1 into the #if]
 > > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >  drivers/crypto/hisilicon/qm.c | 13 +++++++------
+> >  1 file changed, 7 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
+> > index ad0c042b5e66..2eaeaac2e246 100644
+> > --- a/drivers/crypto/hisilicon/qm.c
+> > +++ b/drivers/crypto/hisilicon/qm.c
+> > @@ -610,13 +610,9 @@ EXPORT_SYMBOL_GPL(hisi_qm_wait_mb_ready);
+> >  static void qm_mb_write(struct hisi_qm *qm, const void *src)
+> >  {
+> >  	void __iomem *fun_base = qm->io_base + QM_MB_CMD_SEND_BASE;
+> > -	unsigned long tmp0 = 0, tmp1 = 0;
+> >  
+> > -	if (!IS_ENABLED(CONFIG_ARM64)) {
+> > -		memcpy_toio(fun_base, src, 16);
+> > -		dma_wmb();
+> > -		return;
+> > -	}
 > 
-> From this patch until "RISC-V: Add ACPI initialization in
-> setup_arch()" (which is 19/21), the series fails to build.
+> Please leave this bit as it stands.
 > 
-> allmodconfig, clang-16:
-> ../arch/riscv/include/asm/acpi.h:22:23: error: unknown type name 'acpi_physical_address'; did you mean 'efi_physical_addr_t'?
-> ../arch/riscv/include/asm/acpi.h:22:51: error: unknown type name 'acpi_size'
+> > +#if IS_ENABLED(CONFIG_ARM64)
+> > +	unsigned long tmp0 = 0, tmp1 = 0;
+> >  
+> >  	asm volatile("ldp %0, %1, %3\n"
+> >  		     "stp %0, %1, %2\n"
+> > @@ -626,6 +622,11 @@ static void qm_mb_write(struct hisi_qm *qm, const void *src)
+> >  		       "+Q" (*((char __iomem *)fun_base))
+> >  		     : "Q" (*((char *)src))
+> >  		     : "memory");
 > 
-> rv32_defconfig, clang-16:
-> arch/riscv/kernel/setup.c:297:7: error: use of undeclared identifier 'acpi_disabled'; did you mean '__cpu_disable'?
-> arch/riscv/kernel/setup.c:297:7: warning: address of function '__cpu_disable' will always evaluate to 'true' [-Wpointer-bool-conversion]
->
-> I ballsed up a toolchain upgrade to gcc-13, so the whole series is
-> showing build issues on patchwork for the gcc configurations:
-> https://patchwork.kernel.org/project/linux-riscv/list/?series=745787
+> And simply add the ifdef around the assembly.
 > 
-> However, I suspect that the same patches that fail for clang-16 will
-> fail for gcc-13 too, once I have fixed that!
-> 
-My bad. It is a commit order issue. Let me fix it.
+Sure, Herbert.
 
 Thanks!
-Sunil 
+Sunil
