@@ -2,48 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C1E56FF6CA
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 May 2023 18:08:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D54B6FF80C
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 May 2023 19:05:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238664AbjEKQIO convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 11 May 2023 12:08:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56872 "EHLO
+        id S238788AbjEKRFf convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 11 May 2023 13:05:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238643AbjEKQIM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 May 2023 12:08:12 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FE3B7DBC;
-        Thu, 11 May 2023 09:08:03 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
- id fc5c505b103c4cc6; Thu, 11 May 2023 18:08:01 +0200
-Received: from kreacher.localnet (unknown [195.136.19.94])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id B814B961D7C;
-        Thu, 11 May 2023 18:08:00 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH v8 01/10] ACPI: scan: Remove the second DSDT traversal
-Date:   Thu, 11 May 2023 18:08:00 +0200
-Message-ID: <4845818.31r3eYUQgx@kreacher>
-In-Reply-To: <ZFqx0SB71Ht3IpQ3@kekkonen.localdomain>
-References: <20230329100951.1522322-1-sakari.ailus@linux.intel.com> <CAJZ5v0gzSjDS16Sq9oAs_9BSEgmM6VPPFF4vrd2cyK++UP7=_w@mail.gmail.com> <ZFqx0SB71Ht3IpQ3@kekkonen.localdomain>
+        with ESMTP id S238799AbjEKRFK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 May 2023 13:05:10 -0400
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 525B87EF5;
+        Thu, 11 May 2023 10:04:52 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-965aa9d1d19so243869866b.0;
+        Thu, 11 May 2023 10:04:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683824690; x=1686416690;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ucqyEffPWs+q2vDtJcql/AcD+fR5Wr9S90IPFzwbVeY=;
+        b=HdVKpEyTWeBdYbNx3jBMOXXFtZeUxisLTe47YGiEyl7AK3IhieQDRvxsD82a6hgIpD
+         zKmtWWT3RueDM5DgCp4vnSTg5UN0kyAP3OXOei7+MwpuMO9/pvlxNFfj/9JI+XHQHn1C
+         ptQelQbXkPzpzfgBV12QbtYJwk/RU9VSnUZXOcXdG88PO5L5WN9aDxXcHdvDNApTVTIN
+         ER0YqqA6v7A9xS/fyDi6m/o/FOo7UR4Sog41IXdv4YWj9cUtcAcJl/phx+dj9W4oY+wp
+         5hRujGw0PWcVgYyxpwjDD9Ge/mx6riMRJO/FLEXN7/mx57RUFipvUHyIkf4Y7Ay064ib
+         7xZw==
+X-Gm-Message-State: AC+VfDzkPy3LND5VQ+ZGI76Id+0rpxx/7TvpTbszjPVv/7d/KwFAwQtp
+        8f0ZkmxKvmCjfJ/Pr+poJSh7bmEkGmTEjw6fcqw=
+X-Google-Smtp-Source: ACHHUZ5PiZS8vYPauFUTvVaTGZa31hMPMhhD8wSCImznIslV74VXjHd24U7mcPuL+RLOfXkh2m6WRllBcyLPQ9l6WTI=
+X-Received: by 2002:a17:906:518a:b0:959:37cc:190e with SMTP id
+ y10-20020a170906518a00b0095937cc190emr18014763ejk.3.1683824690480; Thu, 11
+ May 2023 10:04:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
+References: <20230329100951.1522322-1-sakari.ailus@linux.intel.com> <20230329100951.1522322-3-sakari.ailus@linux.intel.com>
+In-Reply-To: <20230329100951.1522322-3-sakari.ailus@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 11 May 2023 19:04:39 +0200
+Message-ID: <CAJZ5v0gsCa+ejgmHX8u6sPtkTNFg06rsY5=ogmD4CGoqX0qvHg@mail.gmail.com>
+Subject: Re: [PATCH v8 02/10] ACPI: property: Parse data node string
+ references in properties
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
+        rafael@kernel.org, andriy.shevchenko@linux.intel.com,
+        heikki.krogerus@linux.intel.com
 Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 195.136.19.94
-X-CLIENT-HOSTNAME: 195.136.19.94
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrfeegkedgleekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtqhertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnheptddvfeegledvfedvveevhedvteeffeehvdeuiedukeeiledttefgvdeihffgteetnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepiedprhgtphhtthhopehsrghkrghrihdrrghilhhusheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhgvughirgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegr
- nhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohephhgvihhkkhhirdhkrhhoghgvrhhusheslhhinhhugidrihhnthgvlhdrtghomh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,216 +59,214 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tuesday, May 9, 2023 10:49:21 PM CEST Sakari Ailus wrote:
-> Hi Rafael,
-> 
-> Thank you for the review.
-> 
-> On Tue, May 09, 2023 at 08:06:28PM +0200, Rafael J. Wysocki wrote:
-> > On Wed, Mar 29, 2023 at 12:10 PM Sakari Ailus
-> > <sakari.ailus@linux.intel.com> wrote:
-> > >
-> > > Collect the devices with _DEP into a list and continue processing them
-> > > after a full traversal, instead of doing a full second traversal of the
-> > > tree.
-> > >
-> > > This makes the second DSDT traversal pass unnecessary as we already have
-> > > the nodes we're interested in in a linked list.
-> > 
-> > The second traversal of the ACPI namespace (it may not be just the
-> > DSDT at that point to be precise) is not really about _DEP handling.
-> > In fact, the latter has been added on top of it.
-> > 
-> > It is about the PCI enumeration.  Namely, when acpi_pci_root_add()
-> > runs for the PCI host bridge object in the ACPI namespace, the entire
-> > device hierarchy below it is walked and all of the ACPI device objects
-> > corresponding to the PCI devices on the bus are assumed to be present.
-> > This means that all of the ACPI device objects need to be created in
-> > the first walk, without binding any ACPI drivers or scan handlers to
-> > them, and the second walk is to find out what is actually represented
-> > by those objects.
-> > 
-> > It cannot be eliminated in any simple way.
-> 
-> My understanding still remains that this patch does not (or other patches
-> in this set) change the above. It is just how those nodes are reached:
-> instead of traversing the entire tree and ignoring the devices that have
-> already an acpi_device created for them, a linked list of devices of
-> interest is traversed.
-> 
-> Of course it is possible that I have missed something. The codebase isn't
-> entirely trivial.
+On Wed, Mar 29, 2023 at 12:10 PM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
+>
+> Add support for parsing property references using strings, besides
+> reference objects that were previously supported. This allows also
+> referencing data nodes which was not possible with reference objects.
+>
+> Also add pr_fmt() macro to prefix printouts.
+>
+> While at it, update copyright.
+>
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-You are right and I see what it is about now.
+This one looks good to me, so formally
 
-However, the implementation is rather fragile and the list added by the
-$subject patch is redundant AFAICS, because all of the objects in it
-are also present in acpi_dep_list as consumers (adding an object to
-acpi_dep_list as a consumer is necessary for that object to be added to the
-new list too).  Of course, there may be multiple acpi_dep_list for the same
-consumer object, but it is not a fundamental problem.
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-So overall I'd prefer to do something like the appended (untested) patch
-instead.
+and please add this tag if you resubmit.
 
----
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Subject: [PATCH] ACPI: scan: Reduce overhead related to devices with dependencies
+Alternatively, I can just queue it up, because IMV this is an
+improvement regardless of the rest of the series.
 
-Notice that all of the objects for which the acpi_scan_check_dep()
-return value is greater than 0 are present in acpi_dep_list as consumers
-(there may be multiple entries for one object, but that is not a
-problem), so after carrying out the initial ACPI namespace walk in which
-devices with dependencies are skipped, acpi_bus_scan() can simply walk
-acpi_dep_list and enumerate all of the unique consumer objects from
-there and their descendants instead of walking the entire target branch
-of the ACPI namespace and looking for device objects that have not been
-enumerated yet in it.
-
-Because walking acpi_dep_list is generally less overhead than walking
-the entire ACPI namespace, use the observation above to reduce the
-system initialization overhead related to ACPI, which is particularly
-important on large systems.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/scan.c     |   71 ++++++++++++++++++++++++++++++++++--------------
- include/acpi/acpi_bus.h |    2 +
- 2 files changed, 53 insertions(+), 20 deletions(-)
-
-Index: linux-pm/include/acpi/acpi_bus.h
-===================================================================
---- linux-pm.orig/include/acpi/acpi_bus.h
-+++ linux-pm/include/acpi/acpi_bus.h
-@@ -289,6 +289,8 @@ struct acpi_dep_data {
- 	acpi_handle supplier;
- 	acpi_handle consumer;
- 	bool honor_dep;
-+	bool met;
-+	bool free_when_met;
- };
- 
- /* Performance Management */
-Index: linux-pm/drivers/acpi/scan.c
-===================================================================
---- linux-pm.orig/drivers/acpi/scan.c
-+++ linux-pm/drivers/acpi/scan.c
-@@ -2029,8 +2029,6 @@ static u32 acpi_scan_check_dep(acpi_hand
- 	return count;
- }
- 
--static bool acpi_bus_scan_second_pass;
--
- static acpi_status acpi_bus_check_add(acpi_handle handle, bool check_dep,
- 				      struct acpi_device **adev_p)
- {
-@@ -2050,10 +2048,8 @@ static acpi_status acpi_bus_check_add(ac
- 			return AE_OK;
- 
- 		/* Bail out if there are dependencies. */
--		if (acpi_scan_check_dep(handle, check_dep) > 0) {
--			acpi_bus_scan_second_pass = true;
-+		if (acpi_scan_check_dep(handle, check_dep) > 0)
- 			return AE_CTRL_DEPTH;
--		}
- 
- 		fallthrough;
- 	case ACPI_TYPE_ANY:	/* for ACPI_ROOT_OBJECT */
-@@ -2311,8 +2307,12 @@ static int acpi_scan_clear_dep(struct ac
- 			acpi_dev_put(adev);
- 	}
- 
--	list_del(&dep->node);
--	kfree(dep);
-+	if (dep->free_when_met) {
-+		list_del(&dep->node);
-+		kfree(dep);
-+	} else {
-+		dep->met = true;
-+	}
- 
- 	return 0;
- }
-@@ -2406,6 +2406,49 @@ struct acpi_device *acpi_dev_get_next_co
- }
- EXPORT_SYMBOL_GPL(acpi_dev_get_next_consumer_dev);
- 
-+static void acpi_scan_postponed(acpi_handle handle)
-+{
-+	struct acpi_device *adev = NULL;
-+	struct acpi_dep_data *dep, *tmp;
-+
-+	mutex_lock(&acpi_dep_list_lock);
-+
-+	list_for_each_entry_safe(dep, tmp, &acpi_dep_list, node) {
-+		acpi_handle handle = dep->consumer;
-+
-+		/*
-+		 * Even though the lock is released here, tmp is guaranteed to
-+		 * be valid, because none of the list entries following dep is
-+		 * marked as "free when met" and so they cannot be deleted.
-+		 */
-+		mutex_unlock(&acpi_dep_list_lock);
-+
-+		/*
-+		 * In case there are multiple acpi_dep_list entries with the
-+		 * same consumer, skip the current entry if the consumer device
-+		 * object corresponding to it is present already.
-+		 */
-+		if (!acpi_fetch_acpi_dev(handle) &&
-+		    ACPI_SUCCESS(acpi_bus_check_add(handle, false, &adev))) {
-+			acpi_walk_namespace(ACPI_TYPE_ANY, handle, ACPI_UINT32_MAX,
-+					    acpi_bus_check_add_2, NULL, NULL,
-+					    (void **)&adev);
-+			acpi_bus_attach(adev, NULL);
-+		}
-+
-+		mutex_lock(&acpi_dep_list_lock);
-+
-+		if (dep->met) {
-+			list_del(&dep->node);
-+			kfree(dep);
-+		} else {
-+			dep->free_when_met = true;
-+		}
-+	}
-+
-+	mutex_unlock(&acpi_dep_list_lock);
-+}
-+
- /**
-  * acpi_bus_scan - Add ACPI device node objects in a given namespace scope.
-  * @handle: Root of the namespace scope to scan.
-@@ -2424,8 +2467,6 @@ int acpi_bus_scan(acpi_handle handle)
- {
- 	struct acpi_device *device = NULL;
- 
--	acpi_bus_scan_second_pass = false;
--
- 	/* Pass 1: Avoid enumerating devices with missing dependencies. */
- 
- 	if (ACPI_SUCCESS(acpi_bus_check_add(handle, true, &device)))
-@@ -2438,19 +2479,9 @@ int acpi_bus_scan(acpi_handle handle)
- 
- 	acpi_bus_attach(device, (void *)true);
- 
--	if (!acpi_bus_scan_second_pass)
--		return 0;
--
- 	/* Pass 2: Enumerate all of the remaining devices. */
- 
--	device = NULL;
--
--	if (ACPI_SUCCESS(acpi_bus_check_add(handle, false, &device)))
--		acpi_walk_namespace(ACPI_TYPE_ANY, handle, ACPI_UINT32_MAX,
--				    acpi_bus_check_add_2, NULL, NULL,
--				    (void **)&device);
--
--	acpi_bus_attach(device, NULL);
-+	acpi_scan_postponed(handle);
- 
- 	return 0;
- }
-
-
-
+> ---
+>  drivers/acpi/property.c | 110 ++++++++++++++++++++++++++++++++++------
+>  1 file changed, 94 insertions(+), 16 deletions(-)
+>
+> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> index b8d9eb9a433e..08831ffba26c 100644
+> --- a/drivers/acpi/property.c
+> +++ b/drivers/acpi/property.c
+> @@ -2,14 +2,17 @@
+>  /*
+>   * ACPI device specific properties support.
+>   *
+> - * Copyright (C) 2014, Intel Corporation
+> + * Copyright (C) 2014-2023, Intel Corporation
+>   * All rights reserved.
+>   *
+>   * Authors: Mika Westerberg <mika.westerberg@linux.intel.com>
+> - *          Darren Hart <dvhart@linux.intel.com>
+> - *          Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> + *         Darren Hart <dvhart@linux.intel.com>
+> + *         Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> + *         Sakari Ailus <sakari.ailus@linux.intel.com>
+>   */
+>
+> +#define pr_fmt(fmt) "ACPI: " fmt
+> +
+>  #include <linux/acpi.h>
+>  #include <linux/device.h>
+>  #include <linux/export.h>
+> @@ -795,7 +798,8 @@ acpi_fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
+>  static int acpi_get_ref_args(struct fwnode_reference_args *args,
+>                              struct fwnode_handle *ref_fwnode,
+>                              const union acpi_object **element,
+> -                            const union acpi_object *end, size_t num_args)
+> +                            const union acpi_object *end, size_t num_args,
+> +                            bool subnode_string)
+>  {
+>         u32 nargs = 0, i;
+>
+> @@ -803,13 +807,16 @@ static int acpi_get_ref_args(struct fwnode_reference_args *args,
+>          * Find the referred data extension node under the
+>          * referred device node.
+>          */
+> -       for (; *element < end && (*element)->type == ACPI_TYPE_STRING;
+> -            (*element)++) {
+> -               const char *child_name = (*element)->string.pointer;
+> -
+> -               ref_fwnode = acpi_fwnode_get_named_child_node(ref_fwnode, child_name);
+> -               if (!ref_fwnode)
+> -                       return -EINVAL;
+> +       if (subnode_string) {
+> +               for (; *element < end && (*element)->type == ACPI_TYPE_STRING;
+> +                    (*element)++) {
+> +                       const char *child_name = (*element)->string.pointer;
+> +
+> +                       ref_fwnode = acpi_fwnode_get_named_child_node(ref_fwnode,
+> +                                                                     child_name);
+> +                       if (!ref_fwnode)
+> +                               return -EINVAL;
+> +               }
+>         }
+>
+>         /*
+> @@ -820,7 +827,8 @@ static int acpi_get_ref_args(struct fwnode_reference_args *args,
+>         for (i = 0; (*element) + i < end && i < num_args; i++) {
+>                 acpi_object_type type = (*element)[i].type;
+>
+> -               if (type == ACPI_TYPE_LOCAL_REFERENCE)
+> +               if (type == ACPI_TYPE_LOCAL_REFERENCE ||
+> +                   (!subnode_string && type == ACPI_TYPE_STRING))
+>                         break;
+>
+>                 if (type == ACPI_TYPE_INTEGER)
+> @@ -844,6 +852,43 @@ static int acpi_get_ref_args(struct fwnode_reference_args *args,
+>         return 0;
+>  }
+>
+> +static struct fwnode_handle *
+> +acpi_parse_string_ref(const struct fwnode_handle *fwnode, const char *refstring)
+> +{
+> +       acpi_handle scope, handle;
+> +       struct acpi_data_node *dn;
+> +       struct acpi_device *device;
+> +       acpi_status status;
+> +
+> +       if (is_acpi_device_node(fwnode)) {
+> +               scope = to_acpi_device_node(fwnode)->handle;
+> +       } else if (is_acpi_data_node(fwnode)) {
+> +               scope = to_acpi_data_node(fwnode)->handle;
+> +       } else {
+> +               pr_debug("bad node type for node %pfw\n", fwnode);
+> +               return ERR_PTR(-EINVAL);
+> +       }
+> +
+> +       status = acpi_get_handle(scope, refstring, &handle);
+> +       if (ACPI_FAILURE(status)) {
+> +               acpi_handle_debug(scope, "can't get handle for %s", refstring);
+> +               return ERR_PTR(-EINVAL);
+> +       }
+> +
+> +       device = acpi_fetch_acpi_dev(handle);
+> +       if (device)
+> +               return acpi_fwnode_handle(device);
+> +
+> +       status = acpi_get_data_full(handle, acpi_nondev_subnode_tag,
+> +                                   (void **)&dn, NULL);
+> +       if (ACPI_FAILURE(status) || !dn) {
+> +               acpi_handle_debug(handle, "can't find subnode");
+> +               return ERR_PTR(-EINVAL);
+> +       }
+> +
+> +       return &dn->fwnode;
+> +}
+> +
+>  /**
+>   * __acpi_node_get_property_reference - returns handle to the referenced object
+>   * @fwnode: Firmware node to get the property from
+> @@ -886,6 +931,7 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
+>         const union acpi_object *element, *end;
+>         const union acpi_object *obj;
+>         const struct acpi_device_data *data;
+> +       struct fwnode_handle *ref_fwnode;
+>         struct acpi_device *device;
+>         int ret, idx = 0;
+>
+> @@ -909,16 +955,29 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
+>
+>                 args->fwnode = acpi_fwnode_handle(device);
+>                 args->nargs = 0;
+> +               return 0;
+> +       case ACPI_TYPE_STRING:
+> +               if (index)
+> +                       return -ENOENT;
+> +
+> +               ref_fwnode = acpi_parse_string_ref(fwnode, obj->string.pointer);
+> +               if (IS_ERR(ref_fwnode))
+> +                       return PTR_ERR(ref_fwnode);
+> +
+> +               args->fwnode = ref_fwnode;
+> +               args->nargs = 0;
+> +
+>                 return 0;
+>         case ACPI_TYPE_PACKAGE:
+>                 /*
+>                  * If it is not a single reference, then it is a package of
+> -                * references followed by number of ints as follows:
+> +                * references, followed by number of ints as follows:
+>                  *
+>                  *  Package () { REF, INT, REF, INT, INT }
+>                  *
+> -                * The index argument is then used to determine which reference
+> -                * the caller wants (along with the arguments).
+> +                * Here, REF may be either a local reference or a string. The
+> +                * index argument is then used to determine which reference the
+> +                * caller wants (along with the arguments).
+>                  */
+>                 break;
+>         default:
+> @@ -942,7 +1001,26 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
+>
+>                         ret = acpi_get_ref_args(idx == index ? args : NULL,
+>                                                 acpi_fwnode_handle(device),
+> -                                               &element, end, num_args);
+> +                                               &element, end, num_args, true);
+> +                       if (ret < 0)
+> +                               return ret;
+> +
+> +                       if (idx == index)
+> +                               return 0;
+> +
+> +                       break;
+> +               case ACPI_TYPE_STRING:
+> +                       ref_fwnode =
+> +                               acpi_parse_string_ref(fwnode,
+> +                                                     element->string.pointer);
+> +                       if (IS_ERR(ref_fwnode))
+> +                               return PTR_ERR(ref_fwnode);
+> +
+> +                       element++;
+> +
+> +                       ret = acpi_get_ref_args(idx == index ? args : NULL,
+> +                                               ref_fwnode, &element, end,
+> +                                               num_args, false);
+>                         if (ret < 0)
+>                                 return ret;
+>
+> --
+> 2.30.2
+>
