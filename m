@@ -2,271 +2,208 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D54B6FF80C
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 May 2023 19:05:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB04A6FF866
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 May 2023 19:30:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238788AbjEKRFf convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 11 May 2023 13:05:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43166 "EHLO
+        id S238613AbjEKRa1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 11 May 2023 13:30:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238799AbjEKRFK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 May 2023 13:05:10 -0400
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 525B87EF5;
-        Thu, 11 May 2023 10:04:52 -0700 (PDT)
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-965aa9d1d19so243869866b.0;
-        Thu, 11 May 2023 10:04:52 -0700 (PDT)
+        with ESMTP id S238150AbjEKRa0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 May 2023 13:30:26 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EC273C2F
+        for <linux-acpi@vger.kernel.org>; Thu, 11 May 2023 10:30:24 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-4f13d8f74abso10067964e87.0
+        for <linux-acpi@vger.kernel.org>; Thu, 11 May 2023 10:30:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1683826223; x=1686418223;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:user-agent
+         :from:references:in-reply-to:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Fg8PRT8lkm3NPG8eSAKVMEE5ErkK9HmIXAxn27oczZs=;
+        b=VTN9N0z2GsuFCm4SJGRZ/zR2tPa24eBCC8JF2Hft6EJmkWPX/s3vIUK4nuG5n5nWJ/
+         nE/e05S270+8cRS2tYdJs2Oq8VIqYR15aXaig9dVHs/hRxEYwBrYUfy1bKvdJlthMIgP
+         nHUCLIrXHx9Fuyug8KFKu9/7cfowMEhPOmw0I=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683824690; x=1686416690;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ucqyEffPWs+q2vDtJcql/AcD+fR5Wr9S90IPFzwbVeY=;
-        b=HdVKpEyTWeBdYbNx3jBMOXXFtZeUxisLTe47YGiEyl7AK3IhieQDRvxsD82a6hgIpD
-         zKmtWWT3RueDM5DgCp4vnSTg5UN0kyAP3OXOei7+MwpuMO9/pvlxNFfj/9JI+XHQHn1C
-         ptQelQbXkPzpzfgBV12QbtYJwk/RU9VSnUZXOcXdG88PO5L5WN9aDxXcHdvDNApTVTIN
-         ER0YqqA6v7A9xS/fyDi6m/o/FOo7UR4Sog41IXdv4YWj9cUtcAcJl/phx+dj9W4oY+wp
-         5hRujGw0PWcVgYyxpwjDD9Ge/mx6riMRJO/FLEXN7/mx57RUFipvUHyIkf4Y7Ay064ib
-         7xZw==
-X-Gm-Message-State: AC+VfDzkPy3LND5VQ+ZGI76Id+0rpxx/7TvpTbszjPVv/7d/KwFAwQtp
-        8f0ZkmxKvmCjfJ/Pr+poJSh7bmEkGmTEjw6fcqw=
-X-Google-Smtp-Source: ACHHUZ5PiZS8vYPauFUTvVaTGZa31hMPMhhD8wSCImznIslV74VXjHd24U7mcPuL+RLOfXkh2m6WRllBcyLPQ9l6WTI=
-X-Received: by 2002:a17:906:518a:b0:959:37cc:190e with SMTP id
- y10-20020a170906518a00b0095937cc190emr18014763ejk.3.1683824690480; Thu, 11
- May 2023 10:04:50 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1683826223; x=1686418223;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:user-agent
+         :from:references:in-reply-to:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Fg8PRT8lkm3NPG8eSAKVMEE5ErkK9HmIXAxn27oczZs=;
+        b=jsaEuDct6tsKSkZq0LsF+XSkEx01EfamoE+P1qz/xuFiWd3Cd4aIZnm33qJu3wF8/b
+         4fYhoJKpobHo4YZDAJhHlFsx4tbGNS+m/xiJaLnAWBa6mFP29Jt4N2D6D0Bthc9zBZAf
+         BcZc1IsgNDMko+nuJDRKSUILSQLNp4YrrSEJifwhW4g2bI8v7mHs2MO9G9i8AX6bkcT2
+         dJ6/MZAfzNwmsqIadmUxIk9XDTwppiDK2CtELzT1i2WAFu1bavhK63kJQs6QdFL8U9jU
+         OGVTjxmWaEGtg2hNRq9DGSuuB6YkMMKGfu9lXy67+hOZgcURaJ2wXHZMtVQN0XWL7/kT
+         xHeA==
+X-Gm-Message-State: AC+VfDxlU5WPTitaaxiL5Vt6UPUvcAawRDBO9AQ+g+nsajWMoAOE7LrW
+        ZJJqv/0OxuSXO5teXuVMlnARrE3VuDq2EcRtTPhlww==
+X-Google-Smtp-Source: ACHHUZ7+DsiBLVL+G+PyPSCvDv2Rf18Jgj9RceQGNCWvdyWZ2Go6iibCk0Ty1ltmNZIOPyj9kaUmS6Hr2h/EYJZZLAM=
+X-Received: by 2002:ac2:4302:0:b0:4f1:26f5:780c with SMTP id
+ l2-20020ac24302000000b004f126f5780cmr2687173lfh.13.1683826222788; Thu, 11 May
+ 2023 10:30:22 -0700 (PDT)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 11 May 2023 10:30:22 -0700
 MIME-Version: 1.0
-References: <20230329100951.1522322-1-sakari.ailus@linux.intel.com> <20230329100951.1522322-3-sakari.ailus@linux.intel.com>
-In-Reply-To: <20230329100951.1522322-3-sakari.ailus@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 11 May 2023 19:04:39 +0200
-Message-ID: <CAJZ5v0gsCa+ejgmHX8u6sPtkTNFg06rsY5=ogmD4CGoqX0qvHg@mail.gmail.com>
-Subject: Re: [PATCH v8 02/10] ACPI: property: Parse data node string
- references in properties
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        rafael@kernel.org, andriy.shevchenko@linux.intel.com,
-        heikki.krogerus@linux.intel.com
+In-Reply-To: <CAEXTbpcWfYV_58pw_VupjhAFZsUU3pkLRN_8JoASyLLBmgTYqQ@mail.gmail.com>
+References: <20230331091145.737305-1-treapking@chromium.org>
+ <20230331091145.737305-5-treapking@chromium.org> <CAE-0n51E5foFWQAsA73662_5e6XP426wuUCVVmcS5UWwiYpDmw@mail.gmail.com>
+ <CAEXTbpdcbB_z4ZGCGzc-cM74ECKyxekbroKCWFnhH8eR=4HmvA@mail.gmail.com>
+ <CAE-0n50atfmr-bFh5XtTCm4WpSijJGSe0B5JP8ni7CCYk7Bs5A@mail.gmail.com>
+ <CAE-0n51Qy-KDGHOCr4Smpebq1fCURqvJ2RJz6KAtVpv5e+DSGA@mail.gmail.com>
+ <CAEXTbpeKe1dVHp9cauMN-9nQb35oJ-ZhdFV-8BiWzjjhWAy0Zg@mail.gmail.com>
+ <CAE-0n50bj303jou==v6eMabrZ3EL6Cq7tPJmCj9vM_B7FA8s2g@mail.gmail.com> <CAEXTbpcWfYV_58pw_VupjhAFZsUU3pkLRN_8JoASyLLBmgTYqQ@mail.gmail.com>
+From:   Stephen Boyd <swboyd@chromium.org>
+User-Agent: alot/0.10
+Date:   Thu, 11 May 2023 10:30:22 -0700
+Message-ID: <CAE-0n51i0kzSKYeUtzLV93miq2GcN1APDYh18p4wr9XxWGrfWA@mail.gmail.com>
+Subject: Re: [PATCH v15 04/10] dt-bindings: display: bridge: anx7625: Add
+ mode-switch support
+To:     Pin-yen Lin <treapking@chromium.org>
+Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Benson Leung <bleung@chromium.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Xin Ji <xji@analogixsemi.com>, Marek Vasut <marex@denx.de>,
+        Hsin-Yi Wang <hsinyi@chromium.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Lyude Paul <lyude@redhat.com>, devicetree@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-acpi@vger.kernel.org,
+        chrome-platform@lists.linux.dev,
+        =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= 
+        <nfraprado@collabora.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Chen-Yu Tsai <wenst@chromium.org>, jagan@amarulasolutions.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 29, 2023 at 12:10 PM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
+Quoting Pin-yen Lin (2023-05-09 20:41:54)
+> On Sat, Apr 29, 2023 at 12:47=E2=80=AFPM Stephen Boyd <swboyd@chromium.or=
+g> wrote:
+> >
+> > Good point. I'm suggesting to make the drm bridge chain into a tree. We
+> > need to teach drm_bridge core about a mux, and have some logic to
+> > navigate atomically switching from one output to another. I was talking
+> > with dianders@ and he was suggesting to use bridge attach/detach for
+> > this. I'm not sure that will work though because that hook is only
+> > called when the encoder is attached to the bridge.
+> >
+> > It may also turn out that this helps with DP multi-stream transport
+> > (MST). As far as I can recall DP MST doesn't mesh well with drm_bridge
+> > designs because it wants to operate on a drm_connector and
+> > drm_bridge_connector_init() wants to make only one drm_connector for a
+> > chain of bridges. If you squint, the anx7625 could be an MST "branch"
+> > that only supports one drm_connector being enabled at a time. Maybe tha=
+t
+> > is what we should do here, make drm_bridge support creating more than
+> > one drm_connector and when there is a mux in the tree it walks both
+> > sides and runs a callback similar to struct
+> > drm_dp_mst_topology_cbs::add_connector() to tell the encoder that
+> > there's another possible drm_connector here.
 >
-> Add support for parsing property references using strings, besides
-> reference objects that were previously supported. This allows also
-> referencing data nodes which was not possible with reference objects.
->
-> Also add pr_fmt() macro to prefix printouts.
->
-> While at it, update copyright.
->
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> I have been surveying the approaches to change the bridge chain in
+> runtime, and I found this thread[1]. Quoting from Daniel:
 
-This one looks good to me, so formally
+I find the lore links easier to read.
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> "... exchanging the bridge chain isn't supported, there's no locking
+> for that since it's assumed to be invariant over the lifetime of the
+> drm_device instance. The simplest way to make that happen right now is to
+> have 2 drm_encoder instances, one with the lvds bridge chain, the other
+> with the hdmi bridge chain, and select the right encoder/bridge chain
+> depending upon which output userspace picks.
+> ...
+> I wouldn't try to make bridge chains exchangeable instead, that's
+> headaches - e.g. with dp mst we've also opted for a bunch of fake
+> drm_encoders to model that kind of switching."
+>
+> I'm not sure how we register two encoders properly, though. Do we make
+> the encoder driver check all the downstream bridges and register two
+> drm_encoder when a bridge is acting as a mux?
 
-and please add this tag if you resubmit.
+I honestly don't know because I'm not a DRM expert. Maybe Jagan or DRM
+bridge maintainers can add to the thread here.
 
-Alternatively, I can just queue it up, because IMV this is an
-improvement regardless of the rest of the series.
+I kept reading the thread[2] and I think they settled on 2 drm_encoders
+because they're different display formats (LVDS vs. HDMI) and 2
+drm_connector structures. But then I watched the youtube video from this
+thread[3] and it seems like 1 drm_encoder is actually what should be
+done because there is really only DSI at the root. There's at least
+three people working on this topic of muxing displays though. Good news?
 
-> ---
->  drivers/acpi/property.c | 110 ++++++++++++++++++++++++++++++++++------
->  1 file changed, 94 insertions(+), 16 deletions(-)
->
-> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-> index b8d9eb9a433e..08831ffba26c 100644
-> --- a/drivers/acpi/property.c
-> +++ b/drivers/acpi/property.c
-> @@ -2,14 +2,17 @@
->  /*
->   * ACPI device specific properties support.
->   *
-> - * Copyright (C) 2014, Intel Corporation
-> + * Copyright (C) 2014-2023, Intel Corporation
->   * All rights reserved.
->   *
->   * Authors: Mika Westerberg <mika.westerberg@linux.intel.com>
-> - *          Darren Hart <dvhart@linux.intel.com>
-> - *          Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> + *         Darren Hart <dvhart@linux.intel.com>
-> + *         Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> + *         Sakari Ailus <sakari.ailus@linux.intel.com>
->   */
->
-> +#define pr_fmt(fmt) "ACPI: " fmt
-> +
->  #include <linux/acpi.h>
->  #include <linux/device.h>
->  #include <linux/export.h>
-> @@ -795,7 +798,8 @@ acpi_fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
->  static int acpi_get_ref_args(struct fwnode_reference_args *args,
->                              struct fwnode_handle *ref_fwnode,
->                              const union acpi_object **element,
-> -                            const union acpi_object *end, size_t num_args)
-> +                            const union acpi_object *end, size_t num_args,
-> +                            bool subnode_string)
->  {
->         u32 nargs = 0, i;
->
-> @@ -803,13 +807,16 @@ static int acpi_get_ref_args(struct fwnode_reference_args *args,
->          * Find the referred data extension node under the
->          * referred device node.
->          */
-> -       for (; *element < end && (*element)->type == ACPI_TYPE_STRING;
-> -            (*element)++) {
-> -               const char *child_name = (*element)->string.pointer;
-> -
-> -               ref_fwnode = acpi_fwnode_get_named_child_node(ref_fwnode, child_name);
-> -               if (!ref_fwnode)
-> -                       return -EINVAL;
-> +       if (subnode_string) {
-> +               for (; *element < end && (*element)->type == ACPI_TYPE_STRING;
-> +                    (*element)++) {
-> +                       const char *child_name = (*element)->string.pointer;
-> +
-> +                       ref_fwnode = acpi_fwnode_get_named_child_node(ref_fwnode,
-> +                                                                     child_name);
-> +                       if (!ref_fwnode)
-> +                               return -EINVAL;
-> +               }
->         }
->
->         /*
-> @@ -820,7 +827,8 @@ static int acpi_get_ref_args(struct fwnode_reference_args *args,
->         for (i = 0; (*element) + i < end && i < num_args; i++) {
->                 acpi_object_type type = (*element)[i].type;
->
-> -               if (type == ACPI_TYPE_LOCAL_REFERENCE)
-> +               if (type == ACPI_TYPE_LOCAL_REFERENCE ||
-> +                   (!subnode_string && type == ACPI_TYPE_STRING))
->                         break;
->
->                 if (type == ACPI_TYPE_INTEGER)
-> @@ -844,6 +852,43 @@ static int acpi_get_ref_args(struct fwnode_reference_args *args,
->         return 0;
->  }
->
-> +static struct fwnode_handle *
-> +acpi_parse_string_ref(const struct fwnode_handle *fwnode, const char *refstring)
-> +{
-> +       acpi_handle scope, handle;
-> +       struct acpi_data_node *dn;
-> +       struct acpi_device *device;
-> +       acpi_status status;
-> +
-> +       if (is_acpi_device_node(fwnode)) {
-> +               scope = to_acpi_device_node(fwnode)->handle;
-> +       } else if (is_acpi_data_node(fwnode)) {
-> +               scope = to_acpi_data_node(fwnode)->handle;
-> +       } else {
-> +               pr_debug("bad node type for node %pfw\n", fwnode);
-> +               return ERR_PTR(-EINVAL);
-> +       }
-> +
-> +       status = acpi_get_handle(scope, refstring, &handle);
-> +       if (ACPI_FAILURE(status)) {
-> +               acpi_handle_debug(scope, "can't get handle for %s", refstring);
-> +               return ERR_PTR(-EINVAL);
-> +       }
-> +
-> +       device = acpi_fetch_acpi_dev(handle);
-> +       if (device)
-> +               return acpi_fwnode_handle(device);
-> +
-> +       status = acpi_get_data_full(handle, acpi_nondev_subnode_tag,
-> +                                   (void **)&dn, NULL);
-> +       if (ACPI_FAILURE(status) || !dn) {
-> +               acpi_handle_debug(handle, "can't find subnode");
-> +               return ERR_PTR(-EINVAL);
-> +       }
-> +
-> +       return &dn->fwnode;
-> +}
-> +
->  /**
->   * __acpi_node_get_property_reference - returns handle to the referenced object
->   * @fwnode: Firmware node to get the property from
-> @@ -886,6 +931,7 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
->         const union acpi_object *element, *end;
->         const union acpi_object *obj;
->         const struct acpi_device_data *data;
-> +       struct fwnode_handle *ref_fwnode;
->         struct acpi_device *device;
->         int ret, idx = 0;
->
-> @@ -909,16 +955,29 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
->
->                 args->fwnode = acpi_fwnode_handle(device);
->                 args->nargs = 0;
-> +               return 0;
-> +       case ACPI_TYPE_STRING:
-> +               if (index)
-> +                       return -ENOENT;
-> +
-> +               ref_fwnode = acpi_parse_string_ref(fwnode, obj->string.pointer);
-> +               if (IS_ERR(ref_fwnode))
-> +                       return PTR_ERR(ref_fwnode);
-> +
-> +               args->fwnode = ref_fwnode;
-> +               args->nargs = 0;
-> +
->                 return 0;
->         case ACPI_TYPE_PACKAGE:
->                 /*
->                  * If it is not a single reference, then it is a package of
-> -                * references followed by number of ints as follows:
-> +                * references, followed by number of ints as follows:
->                  *
->                  *  Package () { REF, INT, REF, INT, INT }
->                  *
-> -                * The index argument is then used to determine which reference
-> -                * the caller wants (along with the arguments).
-> +                * Here, REF may be either a local reference or a string. The
-> +                * index argument is then used to determine which reference the
-> +                * caller wants (along with the arguments).
->                  */
->                 break;
->         default:
-> @@ -942,7 +1001,26 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
->
->                         ret = acpi_get_ref_args(idx == index ? args : NULL,
->                                                 acpi_fwnode_handle(device),
-> -                                               &element, end, num_args);
-> +                                               &element, end, num_args, true);
-> +                       if (ret < 0)
-> +                               return ret;
-> +
-> +                       if (idx == index)
-> +                               return 0;
-> +
-> +                       break;
-> +               case ACPI_TYPE_STRING:
-> +                       ref_fwnode =
-> +                               acpi_parse_string_ref(fwnode,
-> +                                                     element->string.pointer);
-> +                       if (IS_ERR(ref_fwnode))
-> +                               return PTR_ERR(ref_fwnode);
-> +
-> +                       element++;
-> +
-> +                       ret = acpi_get_ref_args(idx == index ? args : NULL,
-> +                                               ref_fwnode, &element, end,
-> +                                               num_args, false);
->                         if (ret < 0)
->                                 return ret;
->
-> --
-> 2.30.2
->
+The analogy between their gpio controlled mux and this anx part with a
+crosspoint switch is that the gpio is like the crosspoint switch, but
+the gpio is like a virtual mux? If the gpio is asserted for them, one
+display bridge is enabled (HDMI) and the other one is not (LVDS).
+
+In this case, the type-c cables may be connected to both
+usb-c-connectors and HPD may be asserted on both, but only one
+drm_connector will be able to attach to the 1 drm_encoder at a time. If
+we had 2 drm_encoders it would be possible to attach both encoders to
+both drm_connectors at the same time, which is impossible because it's a
+mux. Indicating that each connector is connected is OK when HPD is high
+on both usb-c-connectors. Userspace will have to attach an encoder to
+the drm_connector it wants to use, and the drm_connector will indicate
+which drm_encoders are possible for it, so all the information will be
+provided to userspace in this design.
+
+I think it really comes down to implementing the tree walking logic in
+the drm bridge APIs. The problem is things like
+drm_bridge_get_next_bridge(), drm_bridge_get_prev_bridge(), and
+drm_for_each_bridge_in_chain() which will have to operate on a tree
+instead of a list. There's also drm_bridge_chain_get_first_bridge() and
+drm_bridge_attach(). The good news is most of these APIs are used
+sparingly.
+
+Maybe the simplest way to handle this is to maintain a tree of bridges
+and generate bridge chains when an encoder is attached to a connector in
+the tree. Presumably there is only one connector possible for a leaf of
+the bridge tree, and one encoder at the root of the bridge chain. From
+the drm_bridge structure, you'll only be able to iterate over the bridge
+chain that is currently configured. Same for the encoder, you'll only be
+able to walk the currently configured bridge chain from struct
+drm_encoder::bridge_chain.
+
+This hinges on the idea that the bridge_chain is a list, not a tree, and
+that it only needs to exist when an encoder is attached to a connector.
+When an encoder isn't attached to a connector the bridges will be in the
+tree, and probably that tree structure will be maintained in the bridge
+driver itself knowing that there is one input side bridge and two output
+side bridges. When the input bridge is attached, it should be able to
+query the output side bridges for the connector that the encoder is
+attaching to and configure the mux and hook the input bridge to the
+correct output bridge.
+
+[2] https://lore.kernel.org/all/CAPj87rO7a=3DNbarOyZp1pE=3D19Lf2aGjWu7sru-e=
+HwGjX0fpN+-A@mail.gmail.com/
+[3] https://lore.kernel.org/all/CAMty3ZAQyADGLVcB13qJdEy_BiZEKpyDfCr9QrM-uc=
+FLFPZLcw@mail.gmail.com/
