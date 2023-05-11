@@ -2,237 +2,265 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9227E6FE235
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 May 2023 18:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C1E56FF6CA
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 May 2023 18:08:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230181AbjEJQOw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 May 2023 12:14:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45066 "EHLO
+        id S238664AbjEKQIO convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 11 May 2023 12:08:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229826AbjEJQOv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 May 2023 12:14:51 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77EF87AB1;
-        Wed, 10 May 2023 09:14:49 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QGg7v6gD0z67mYL;
-        Thu, 11 May 2023 00:14:03 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 10 May
- 2023 17:14:46 +0100
-Date:   Wed, 10 May 2023 17:14:45 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Dave Jiang <dave.jiang@intel.com>
-CC:     <linux-kernel@vger.kernel.org>, <gregkh@linuxfoundation.org>,
-        <rafael@kernel.org>, <linux-acpi@vger.kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        <linux-cxl@vger.kernel.org>
-Subject: Re: [PATCH] base/node / acpi: Change 'node_hmem_attrs' to
- 'access_coordinates'
-Message-ID: <20230510171445.00004cea@Huawei.com>
-In-Reply-To: <168332248685.2190392.1983307884583782116.stgit@djiang5-mobl3>
-References: <168332248685.2190392.1983307884583782116.stgit@djiang5-mobl3>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S238643AbjEKQIM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 11 May 2023 12:08:12 -0400
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FE3B7DBC;
+        Thu, 11 May 2023 09:08:03 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
+ id fc5c505b103c4cc6; Thu, 11 May 2023 18:08:01 +0200
+Received: from kreacher.localnet (unknown [195.136.19.94])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id B814B961D7C;
+        Thu, 11 May 2023 18:08:00 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
+        andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH v8 01/10] ACPI: scan: Remove the second DSDT traversal
+Date:   Thu, 11 May 2023 18:08:00 +0200
+Message-ID: <4845818.31r3eYUQgx@kreacher>
+In-Reply-To: <ZFqx0SB71Ht3IpQ3@kekkonen.localdomain>
+References: <20230329100951.1522322-1-sakari.ailus@linux.intel.com> <CAJZ5v0gzSjDS16Sq9oAs_9BSEgmM6VPPFF4vrd2cyK++UP7=_w@mail.gmail.com> <ZFqx0SB71Ht3IpQ3@kekkonen.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrfeegkedgleekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtqhertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnheptddvfeegledvfedvveevhedvteeffeehvdeuiedukeeiledttefgvdeihffgteetnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepiedprhgtphhtthhopehsrghkrghrihdrrghilhhusheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhgvughirgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegr
+ nhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohephhgvihhkkhhirdhkrhhoghgvrhhusheslhhinhhugidrihhnthgvlhdrtghomh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 05 May 2023 14:34:46 -0700
-Dave Jiang <dave.jiang@intel.com> wrote:
-
-> Dan Williams suggested changing the struct 'node_hmem_attrs' to
-> 'access_coordinates' [1]. The struct is a container of r/w-latency and
-> r/w-bandwidth numbers. Moving forward, this container will also be used by
-> CXL to store the performance characteristics of each link hop in
-> the PCIE/CXL topology. So, where node_hmem_attrs is just the access
-> parameters of a memory-node, access_coordinates applies more broadly
-> to hardware topology characteristics.
-
-Not that it hugely matters, but why the term "coordinates"?
-Looks like Dan used that term, but I've not come across it being applied
-in this circumstances and it isn't a case of being immediately obvious
-to me what it means.
-
-If it is just another vague entry in kernel word soup then I don't really
-mind the term, but nice to give some reasoning in patch description.
-
-Patch otherwise looks fine to me.
-
-Jonathan
-
-
+On Tuesday, May 9, 2023 10:49:21 PM CEST Sakari Ailus wrote:
+> Hi Rafael,
 > 
-> [1]: http://lore.kernel.org/r/64471313421f7_1b66294d5@dwillia2-xfh.jf.intel.com.notmuch/
+> Thank you for the review.
 > 
-> Suggested-by: Dan Williams <dan.j.williams@intel.com>
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> ---
->  drivers/acpi/numa/hmat.c |   20 ++++++++++----------
->  drivers/base/node.c      |   12 ++++++------
->  include/linux/node.h     |    8 ++++----
->  3 files changed, 20 insertions(+), 20 deletions(-)
+> On Tue, May 09, 2023 at 08:06:28PM +0200, Rafael J. Wysocki wrote:
+> > On Wed, Mar 29, 2023 at 12:10 PM Sakari Ailus
+> > <sakari.ailus@linux.intel.com> wrote:
+> > >
+> > > Collect the devices with _DEP into a list and continue processing them
+> > > after a full traversal, instead of doing a full second traversal of the
+> > > tree.
+> > >
+> > > This makes the second DSDT traversal pass unnecessary as we already have
+> > > the nodes we're interested in in a linked list.
+> > 
+> > The second traversal of the ACPI namespace (it may not be just the
+> > DSDT at that point to be precise) is not really about _DEP handling.
+> > In fact, the latter has been added on top of it.
+> > 
+> > It is about the PCI enumeration.  Namely, when acpi_pci_root_add()
+> > runs for the PCI host bridge object in the ACPI namespace, the entire
+> > device hierarchy below it is walked and all of the ACPI device objects
+> > corresponding to the PCI devices on the bus are assumed to be present.
+> > This means that all of the ACPI device objects need to be created in
+> > the first walk, without binding any ACPI drivers or scan handlers to
+> > them, and the second walk is to find out what is actually represented
+> > by those objects.
+> > 
+> > It cannot be eliminated in any simple way.
 > 
-> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-> index bba268ecd802..f9ff992038fa 100644
-> --- a/drivers/acpi/numa/hmat.c
-> +++ b/drivers/acpi/numa/hmat.c
-> @@ -62,7 +62,7 @@ struct memory_target {
->  	unsigned int memory_pxm;
->  	unsigned int processor_pxm;
->  	struct resource memregions;
-> -	struct node_hmem_attrs hmem_attrs[2];
-> +	struct access_coordinate coord[2];
->  	struct list_head caches;
->  	struct node_cache_attrs cache_attrs;
->  	bool registered;
-> @@ -227,24 +227,24 @@ static void hmat_update_target_access(struct memory_target *target,
->  {
->  	switch (type) {
->  	case ACPI_HMAT_ACCESS_LATENCY:
-> -		target->hmem_attrs[access].read_latency = value;
-> -		target->hmem_attrs[access].write_latency = value;
-> +		target->coord[access].read_latency = value;
-> +		target->coord[access].write_latency = value;
->  		break;
->  	case ACPI_HMAT_READ_LATENCY:
-> -		target->hmem_attrs[access].read_latency = value;
-> +		target->coord[access].read_latency = value;
->  		break;
->  	case ACPI_HMAT_WRITE_LATENCY:
-> -		target->hmem_attrs[access].write_latency = value;
-> +		target->coord[access].write_latency = value;
->  		break;
->  	case ACPI_HMAT_ACCESS_BANDWIDTH:
-> -		target->hmem_attrs[access].read_bandwidth = value;
-> -		target->hmem_attrs[access].write_bandwidth = value;
-> +		target->coord[access].read_bandwidth = value;
-> +		target->coord[access].write_bandwidth = value;
->  		break;
->  	case ACPI_HMAT_READ_BANDWIDTH:
-> -		target->hmem_attrs[access].read_bandwidth = value;
-> +		target->coord[access].read_bandwidth = value;
->  		break;
->  	case ACPI_HMAT_WRITE_BANDWIDTH:
-> -		target->hmem_attrs[access].write_bandwidth = value;
-> +		target->coord[access].write_bandwidth = value;
->  		break;
->  	default:
->  		break;
-> @@ -701,7 +701,7 @@ static void hmat_register_target_cache(struct memory_target *target)
->  static void hmat_register_target_perf(struct memory_target *target, int access)
->  {
->  	unsigned mem_nid = pxm_to_node(target->memory_pxm);
-> -	node_set_perf_attrs(mem_nid, &target->hmem_attrs[access], access);
-> +	node_set_perf_attrs(mem_nid, &target->coord[access], access);
->  }
->  
->  static void hmat_register_target_devices(struct memory_target *target)
-> diff --git a/drivers/base/node.c b/drivers/base/node.c
-> index 2cada01c70da..fc0444b617d0 100644
-> --- a/drivers/base/node.c
-> +++ b/drivers/base/node.c
-> @@ -75,14 +75,14 @@ static BIN_ATTR_RO(cpulist, CPULIST_FILE_MAX_BYTES);
->   * @dev:	Device for this memory access class
->   * @list_node:	List element in the node's access list
->   * @access:	The access class rank
-> - * @hmem_attrs: Heterogeneous memory performance attributes
-> + * @coord:	Heterogeneous memory performance coordinates
->   */
->  struct node_access_nodes {
->  	struct device		dev;
->  	struct list_head	list_node;
->  	unsigned int		access;
->  #ifdef CONFIG_HMEM_REPORTING
-> -	struct node_hmem_attrs	hmem_attrs;
-> +	struct access_coordinate	coord;
->  #endif
->  };
->  #define to_access_nodes(dev) container_of(dev, struct node_access_nodes, dev)
-> @@ -168,7 +168,7 @@ static ssize_t property##_show(struct device *dev,			\
->  			   char *buf)					\
->  {									\
->  	return sysfs_emit(buf, "%u\n",					\
-> -			  to_access_nodes(dev)->hmem_attrs.property);	\
-> +			  to_access_nodes(dev)->coord.property);	\
->  }									\
->  static DEVICE_ATTR_RO(property)
->  
-> @@ -188,10 +188,10 @@ static struct attribute *access_attrs[] = {
->  /**
->   * node_set_perf_attrs - Set the performance values for given access class
->   * @nid: Node identifier to be set
-> - * @hmem_attrs: Heterogeneous memory performance attributes
-> + * @coord: Heterogeneous memory performance coordinates
->   * @access: The access class the for the given attributes
->   */
-> -void node_set_perf_attrs(unsigned int nid, struct node_hmem_attrs *hmem_attrs,
-> +void node_set_perf_attrs(unsigned int nid, struct access_coordinate *coord,
->  			 unsigned int access)
->  {
->  	struct node_access_nodes *c;
-> @@ -206,7 +206,7 @@ void node_set_perf_attrs(unsigned int nid, struct node_hmem_attrs *hmem_attrs,
->  	if (!c)
->  		return;
->  
-> -	c->hmem_attrs = *hmem_attrs;
-> +	c->coord = *coord;
->  	for (i = 0; access_attrs[i] != NULL; i++) {
->  		if (sysfs_add_file_to_group(&c->dev.kobj, access_attrs[i],
->  					    "initiators")) {
-> diff --git a/include/linux/node.h b/include/linux/node.h
-> index 427a5975cf40..25b66d705ee2 100644
-> --- a/include/linux/node.h
-> +++ b/include/linux/node.h
-> @@ -20,14 +20,14 @@
->  #include <linux/list.h>
->  
->  /**
-> - * struct node_hmem_attrs - heterogeneous memory performance attributes
-> + * struct access_coordinate - generic performance coordinates container
->   *
->   * @read_bandwidth:	Read bandwidth in MB/s
->   * @write_bandwidth:	Write bandwidth in MB/s
->   * @read_latency:	Read latency in nanoseconds
->   * @write_latency:	Write latency in nanoseconds
->   */
-> -struct node_hmem_attrs {
-> +struct access_coordinate {
->  	unsigned int read_bandwidth;
->  	unsigned int write_bandwidth;
->  	unsigned int read_latency;
-> @@ -65,7 +65,7 @@ struct node_cache_attrs {
->  
->  #ifdef CONFIG_HMEM_REPORTING
->  void node_add_cache(unsigned int nid, struct node_cache_attrs *cache_attrs);
-> -void node_set_perf_attrs(unsigned int nid, struct node_hmem_attrs *hmem_attrs,
-> +void node_set_perf_attrs(unsigned int nid, struct access_coordinate *coord,
->  			 unsigned access);
->  #else
->  static inline void node_add_cache(unsigned int nid,
-> @@ -74,7 +74,7 @@ static inline void node_add_cache(unsigned int nid,
->  }
->  
->  static inline void node_set_perf_attrs(unsigned int nid,
-> -				       struct node_hmem_attrs *hmem_attrs,
-> +				       struct access_coordinate *coord,
->  				       unsigned access)
->  {
->  }
+> My understanding still remains that this patch does not (or other patches
+> in this set) change the above. It is just how those nodes are reached:
+> instead of traversing the entire tree and ignoring the devices that have
+> already an acpi_device created for them, a linked list of devices of
+> interest is traversed.
 > 
-> 
+> Of course it is possible that I have missed something. The codebase isn't
+> entirely trivial.
+
+You are right and I see what it is about now.
+
+However, the implementation is rather fragile and the list added by the
+$subject patch is redundant AFAICS, because all of the objects in it
+are also present in acpi_dep_list as consumers (adding an object to
+acpi_dep_list as a consumer is necessary for that object to be added to the
+new list too).  Of course, there may be multiple acpi_dep_list for the same
+consumer object, but it is not a fundamental problem.
+
+So overall I'd prefer to do something like the appended (untested) patch
+instead.
+
+---
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Subject: [PATCH] ACPI: scan: Reduce overhead related to devices with dependencies
+
+Notice that all of the objects for which the acpi_scan_check_dep()
+return value is greater than 0 are present in acpi_dep_list as consumers
+(there may be multiple entries for one object, but that is not a
+problem), so after carrying out the initial ACPI namespace walk in which
+devices with dependencies are skipped, acpi_bus_scan() can simply walk
+acpi_dep_list and enumerate all of the unique consumer objects from
+there and their descendants instead of walking the entire target branch
+of the ACPI namespace and looking for device objects that have not been
+enumerated yet in it.
+
+Because walking acpi_dep_list is generally less overhead than walking
+the entire ACPI namespace, use the observation above to reduce the
+system initialization overhead related to ACPI, which is particularly
+important on large systems.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/scan.c     |   71 ++++++++++++++++++++++++++++++++++--------------
+ include/acpi/acpi_bus.h |    2 +
+ 2 files changed, 53 insertions(+), 20 deletions(-)
+
+Index: linux-pm/include/acpi/acpi_bus.h
+===================================================================
+--- linux-pm.orig/include/acpi/acpi_bus.h
++++ linux-pm/include/acpi/acpi_bus.h
+@@ -289,6 +289,8 @@ struct acpi_dep_data {
+ 	acpi_handle supplier;
+ 	acpi_handle consumer;
+ 	bool honor_dep;
++	bool met;
++	bool free_when_met;
+ };
+ 
+ /* Performance Management */
+Index: linux-pm/drivers/acpi/scan.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/scan.c
++++ linux-pm/drivers/acpi/scan.c
+@@ -2029,8 +2029,6 @@ static u32 acpi_scan_check_dep(acpi_hand
+ 	return count;
+ }
+ 
+-static bool acpi_bus_scan_second_pass;
+-
+ static acpi_status acpi_bus_check_add(acpi_handle handle, bool check_dep,
+ 				      struct acpi_device **adev_p)
+ {
+@@ -2050,10 +2048,8 @@ static acpi_status acpi_bus_check_add(ac
+ 			return AE_OK;
+ 
+ 		/* Bail out if there are dependencies. */
+-		if (acpi_scan_check_dep(handle, check_dep) > 0) {
+-			acpi_bus_scan_second_pass = true;
++		if (acpi_scan_check_dep(handle, check_dep) > 0)
+ 			return AE_CTRL_DEPTH;
+-		}
+ 
+ 		fallthrough;
+ 	case ACPI_TYPE_ANY:	/* for ACPI_ROOT_OBJECT */
+@@ -2311,8 +2307,12 @@ static int acpi_scan_clear_dep(struct ac
+ 			acpi_dev_put(adev);
+ 	}
+ 
+-	list_del(&dep->node);
+-	kfree(dep);
++	if (dep->free_when_met) {
++		list_del(&dep->node);
++		kfree(dep);
++	} else {
++		dep->met = true;
++	}
+ 
+ 	return 0;
+ }
+@@ -2406,6 +2406,49 @@ struct acpi_device *acpi_dev_get_next_co
+ }
+ EXPORT_SYMBOL_GPL(acpi_dev_get_next_consumer_dev);
+ 
++static void acpi_scan_postponed(acpi_handle handle)
++{
++	struct acpi_device *adev = NULL;
++	struct acpi_dep_data *dep, *tmp;
++
++	mutex_lock(&acpi_dep_list_lock);
++
++	list_for_each_entry_safe(dep, tmp, &acpi_dep_list, node) {
++		acpi_handle handle = dep->consumer;
++
++		/*
++		 * Even though the lock is released here, tmp is guaranteed to
++		 * be valid, because none of the list entries following dep is
++		 * marked as "free when met" and so they cannot be deleted.
++		 */
++		mutex_unlock(&acpi_dep_list_lock);
++
++		/*
++		 * In case there are multiple acpi_dep_list entries with the
++		 * same consumer, skip the current entry if the consumer device
++		 * object corresponding to it is present already.
++		 */
++		if (!acpi_fetch_acpi_dev(handle) &&
++		    ACPI_SUCCESS(acpi_bus_check_add(handle, false, &adev))) {
++			acpi_walk_namespace(ACPI_TYPE_ANY, handle, ACPI_UINT32_MAX,
++					    acpi_bus_check_add_2, NULL, NULL,
++					    (void **)&adev);
++			acpi_bus_attach(adev, NULL);
++		}
++
++		mutex_lock(&acpi_dep_list_lock);
++
++		if (dep->met) {
++			list_del(&dep->node);
++			kfree(dep);
++		} else {
++			dep->free_when_met = true;
++		}
++	}
++
++	mutex_unlock(&acpi_dep_list_lock);
++}
++
+ /**
+  * acpi_bus_scan - Add ACPI device node objects in a given namespace scope.
+  * @handle: Root of the namespace scope to scan.
+@@ -2424,8 +2467,6 @@ int acpi_bus_scan(acpi_handle handle)
+ {
+ 	struct acpi_device *device = NULL;
+ 
+-	acpi_bus_scan_second_pass = false;
+-
+ 	/* Pass 1: Avoid enumerating devices with missing dependencies. */
+ 
+ 	if (ACPI_SUCCESS(acpi_bus_check_add(handle, true, &device)))
+@@ -2438,19 +2479,9 @@ int acpi_bus_scan(acpi_handle handle)
+ 
+ 	acpi_bus_attach(device, (void *)true);
+ 
+-	if (!acpi_bus_scan_second_pass)
+-		return 0;
+-
+ 	/* Pass 2: Enumerate all of the remaining devices. */
+ 
+-	device = NULL;
+-
+-	if (ACPI_SUCCESS(acpi_bus_check_add(handle, false, &device)))
+-		acpi_walk_namespace(ACPI_TYPE_ANY, handle, ACPI_UINT32_MAX,
+-				    acpi_bus_check_add_2, NULL, NULL,
+-				    (void **)&device);
+-
+-	acpi_bus_attach(device, NULL);
++	acpi_scan_postponed(handle);
+ 
+ 	return 0;
+ }
+
+
 
