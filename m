@@ -2,153 +2,268 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3126A700610
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 May 2023 12:56:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DD64700766
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 May 2023 13:59:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240881AbjELK4t (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 May 2023 06:56:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54646 "EHLO
+        id S240936AbjELL7E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 May 2023 07:59:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240880AbjELK4p (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 06:56:45 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAA1CFE;
-        Fri, 12 May 2023 03:56:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683889004; x=1715425004;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=aTme5qDkFV7Mcp0uaOboKBbeV5ze/dqrLO9cBA/tElE=;
-  b=RXB9WXpjC1DvMlJbCHHDAAU+YudODiVQi5nCUUCI8S6qBwG2alUG5t0G
-   FdgMNayGjwIxKv9jVzWaNRENfLBuDWbpR155MyDVLlNqhaae6Xvb9Zet2
-   ICNJZIQgOBm8M2kKwWMOtUkoxyr2TVlS/2f/HRsBgcjSCAuTYpYba913/
-   LayD8z/z5D1/vsIUbnTyeVGyaWtX6iIsWsMTtL8+DNppjRUtf64y3cGxj
-   3JWBvpumkJ25j99MM8FHwtsxdC/LpZQ8ElKNva092BJ5SVlJ4Fe2+bnpw
-   4HaILCrxhJT82KnW2H6sapvFdku/lJop06VVALUZWmbO+u0kgzTzEEPvi
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10707"; a="414132446"
-X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="414132446"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 03:56:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10707"; a="812041055"
-X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="812041055"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP; 12 May 2023 03:56:34 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pxQRq-0004Zv-0i;
-        Fri, 12 May 2023 13:56:30 +0300
-Date:   Fri, 12 May 2023 13:56:29 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        linux-pci@vger.kernel.org,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        linux-mips@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-acpi@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>,
-        Anatolij Gustschin <agust@denx.de>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Juergen Gross <jgross@suse.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
-        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-kernel@vger.kernel.org,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>,
-        "Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: Re: [PATCH v8 0/7] Add pci_dev_for_each_resource() helper and update
- users
-Message-ID: <ZF4bXaz2r75dlA5g@smile.fi.intel.com>
-References: <20230404161101.GA3554747@bhelgaas>
- <20230509182122.GA1259567@bhelgaas>
+        with ESMTP id S241105AbjELL7B (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 07:59:01 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80F7414379;
+        Fri, 12 May 2023 04:58:35 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QHnLC1qQcz67lJ3;
+        Fri, 12 May 2023 19:56:51 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Fri, 12 May
+ 2023 12:58:32 +0100
+Date:   Fri, 12 May 2023 12:58:31 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Dave Jiang <dave.jiang@intel.com>
+CC:     <linux-acpi@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+        <rafael@kernel.org>, <lenb@kernel.org>, <dan.j.williams@intel.com>,
+        <ira.weiny@intel.com>, <vishal.l.verma@intel.com>,
+        <alison.schofield@intel.com>, <lukas@wunner.de>
+Subject: Re: [PATCH 1/4] acpi: tables: Add CDAT table parsing support
+Message-ID: <20230512125831.00000eb0@Huawei.com>
+In-Reply-To: <168330797672.2042604.12339416734589446371.stgit@djiang5-mobl3>
+References: <168330787964.2042604.17648905811002211147.stgit@djiang5-mobl3>
+        <168330797672.2042604.12339416734589446371.stgit@djiang5-mobl3>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230509182122.GA1259567@bhelgaas>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 09, 2023 at 01:21:22PM -0500, Bjorn Helgaas wrote:
-> On Tue, Apr 04, 2023 at 11:11:01AM -0500, Bjorn Helgaas wrote:
-> > On Thu, Mar 30, 2023 at 07:24:27PM +0300, Andy Shevchenko wrote:
-> > > Provide two new helper macros to iterate over PCI device resources and
-> > > convert users.
-> 
-> > Applied 2-7 to pci/resource for v6.4, thanks, I really like this!
-> 
-> This is 09cc90063240 ("PCI: Introduce pci_dev_for_each_resource()")
-> upstream now.
-> 
-> Coverity complains about each use,
+On Fri, 05 May 2023 10:32:56 -0700
+Dave Jiang <dave.jiang@intel.com> wrote:
 
-It needs more clarification here. Use of reduced variant of the macro or all of
-them? If the former one, then I can speculate that Coverity (famous for false
-positives) simply doesn't understand `for (type var; var ...)` code.
-
->	sample below from
-> drivers/pci/vgaarb.c.  I didn't investigate at all, so it might be a
-> false positive; just FYI.
+> The CDAT table is very similar to ACPI tables when it comes to sub-table
+> and entry structures. The helper functions can be also used to parse the
+> CDAT table. Add support to the helper functions to deal with an external
+> CDAT table, and also handle the endieness since CDAT can be processed by a
+> BE host. Export a function acpi_table_parse_cdat() for CXL driver to parse
+> a CDAT table.
 > 
-> 	  1. Condition screen_info.capabilities & (2U /* 1 << 1 */), taking true branch.
->   556        if (screen_info.capabilities & VIDEO_CAPABILITY_64BIT_BASE)
->   557                base |= (u64)screen_info.ext_lfb_base << 32;
->   558
->   559        limit = base + size;
->   560
->   561        /* Does firmware framebuffer belong to us? */
-> 	  2. Condition __b < PCI_NUM_RESOURCES, taking true branch.
-> 	  3. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
-> 	  6. Condition __b < PCI_NUM_RESOURCES, taking true branch.
-> 	  7. cond_at_most: Checking __b < PCI_NUM_RESOURCES implies that __b may be up to 16 on the true branch.
-> 	  8. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
-> 	  11. incr: Incrementing __b. The value of __b may now be up to 17.
-> 	  12. alias: Assigning: r = &pdev->resource[__b]. r may now point to as high as element 17 of pdev->resource (which consists of 17 64-byte elements).
-> 	  13. Condition __b < PCI_NUM_RESOURCES, taking true branch.
-> 	  14. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
->   562        pci_dev_for_each_resource(pdev, r) {
-> 	  4. Condition resource_type(r) != 512, taking true branch.
-> 	  9. Condition resource_type(r) != 512, taking true branch.
+> In order to minimize ACPI code changes, __force is being utilized to deal
+> with the case of a big endien (BE) host parsing a CDAT. All CDAT data
+> structure variables are being force casted to __leX as appropriate.
+
+Hi Dave,
+
+This falls into the annoyance that CDAT doesn't have a standard table header.
+Whilst I understand that was done deliberately it means some odd things happen
+in this code.
+
+Just how bad is the duplication if we don't do this at all, but instead roll
+a version for CDAT that doesn't force things through pointers of the wrong types?
+
+Otherwise, maybe we need some unions so that the type mashups don't happen.
+
 > 
->   CID 1529911 (#1 of 1): Out-of-bounds read (OVERRUN)
->   15. overrun-local: Overrunning array of 1088 bytes at byte offset 1088 by dereferencing pointer r. [show details]
->   563                if (resource_type(r) != IORESOURCE_MEM)
-> 	  5. Continuing loop.
-> 	  10. Continuing loop.
->   564                        continue;
+> Cc: Rafael J. Wysocki <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+> ---
+>  drivers/acpi/tables.c |   47 +++++++++++++++++++++++++++++++++++++++++++++--
+>  include/acpi/actbl1.h |    3 +++
+>  include/linux/acpi.h  |    4 ++++
+>  3 files changed, 52 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
+> index 7b4680da57d7..08486f6df442 100644
+> --- a/drivers/acpi/tables.c
+> +++ b/drivers/acpi/tables.c
+> @@ -42,6 +42,7 @@ enum acpi_subtable_type {
+>  	ACPI_SUBTABLE_HMAT,
+>  	ACPI_SUBTABLE_PRMT,
+>  	ACPI_SUBTABLE_CEDT,
+> +	ACPI_SUBTABLE_CDAT,
+>  };
+>  
+>  struct acpi_subtable_entry {
+> @@ -239,6 +240,8 @@ acpi_get_entry_type(struct acpi_subtable_entry *entry)
+>  		return 0;
+>  	case ACPI_SUBTABLE_CEDT:
+>  		return entry->hdr->cedt.type;
+> +	case ACPI_SUBTABLE_CDAT:
+> +		return entry->hdr->cdat.type;
+>  	}
+>  	return 0;
+>  }
+> @@ -255,6 +258,8 @@ acpi_get_entry_length(struct acpi_subtable_entry *entry)
+>  		return entry->hdr->prmt.length;
+>  	case ACPI_SUBTABLE_CEDT:
+>  		return entry->hdr->cedt.length;
+> +	case ACPI_SUBTABLE_CDAT:
+> +		return le16_to_cpu((__force __le16)entry->hdr->cdat.length);
+>  	}
+>  	return 0;
+>  }
+> @@ -271,6 +276,8 @@ acpi_get_subtable_header_length(struct acpi_subtable_entry *entry)
+>  		return sizeof(entry->hdr->prmt);
+>  	case ACPI_SUBTABLE_CEDT:
+>  		return sizeof(entry->hdr->cedt);
+> +	case ACPI_SUBTABLE_CDAT:
+> +		return sizeof(entry->hdr->cdat);
+>  	}
+>  	return 0;
+>  }
+> @@ -284,9 +291,22 @@ acpi_get_subtable_type(char *id)
+>  		return ACPI_SUBTABLE_PRMT;
+>  	if (strncmp(id, ACPI_SIG_CEDT, 4) == 0)
+>  		return ACPI_SUBTABLE_CEDT;
+> +	if (strncmp(id, ACPI_SIG_CDAT, 4) == 0)
+> +		return ACPI_SUBTABLE_CDAT;
 
--- 
-With Best Regards,
-Andy Shevchenko
+I'm not super keen on inventing a SIG when the CDAT 'table'
+doesn't actually have one.
 
+>  	return ACPI_SUBTABLE_COMMON;
+>  }
+>  
+> +static unsigned long __init_or_acpilib
+> +acpi_table_get_length(enum acpi_subtable_type type,
+> +		      struct acpi_table_header *hdr)
+
+I don't like parsing in an acpi_table_header type here when it may not be one.
+I think this length decision needs to be pushed up a level to where we can see
+if we have a CDAT table or not.
+
+
+> +{
+> +	if (type == ACPI_SUBTABLE_CDAT)
+> +		return le32_to_cpu(
+> +			(__force __le32)((struct acpi_table_cdat *)hdr)->length);
+
+Perhaps a local variable in here somewhere would make it more readable.
+	__le32 length = (__force__le32)((struct acpi_table_cdat *)hdr)->length;
+
+	return le32_to_cpu(length)?
+
+
+> +
+> +	return hdr->length;
+> +}
+> +
+>  static __init_or_acpilib bool has_handler(struct acpi_subtable_proc *proc)
+>  {
+>  	return proc->handler || proc->handler_arg;
+> @@ -332,16 +352,19 @@ static int __init_or_acpilib acpi_parse_entries_array(
+>  	int proc_num, unsigned int max_entries)
+>  {
+>  	struct acpi_subtable_entry entry;
+> +	enum acpi_subtable_type type;
+>  	unsigned long table_end, subtable_len, entry_len;
+>  	int count = 0;
+>  	int errs = 0;
+>  	int i;
+>  
+> -	table_end = (unsigned long)table_header + table_header->length;
+> +	type = acpi_get_subtable_type(id);
+> +	table_end = (unsigned long)table_header +
+> +		    acpi_table_get_length(type, table_header);
+As above, I don't like carrying CDAT which doesn't have an acpi_table_header
+section around as that type of pointer.
+
+>  
+>  	/* Parse all entries looking for a match. */
+>  
+> -	entry.type = acpi_get_subtable_type(id);
+> +	entry.type = type;
+>  	entry.hdr = (union acpi_subtable_headers *)
+>  	    ((unsigned long)table_header + table_size);
+>  	subtable_len = acpi_get_subtable_header_length(&entry);
+> @@ -464,6 +487,26 @@ int __init acpi_table_parse_madt(enum acpi_madt_type id,
+>  					    handler, max_entries);
+>  }
+>  
+> +int acpi_table_parse_cdat(enum acpi_cdat_type type,
+> +			  acpi_tbl_entry_handler_arg handler_arg, void *arg,
+> +			  struct acpi_table_cdat *table_header)
+> +{
+> +	struct acpi_subtable_proc proc = {
+> +		.id		= type,
+> +		.handler_arg	= handler_arg,
+> +		.arg		= arg,
+> +	};
+> +
+> +	if (!table_header)
+> +		return -EINVAL;
+> +
+> +	return acpi_parse_entries_array(ACPI_SIG_CDAT,
+> +			sizeof(struct acpi_table_cdat),
+> +			(struct acpi_table_header *)table_header,
+> +			&proc, 1, 0);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(acpi_table_parse_cdat, CXL);
+> +
+>  /**
+>   * acpi_table_parse - find table with @id, run @handler on it
+>   * @id: table id to find
+> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+> index 81b9e794424d..3119be093cfe 100644
+> --- a/include/acpi/actbl1.h
+> +++ b/include/acpi/actbl1.h
+> @@ -66,6 +66,9 @@
+>  #define ACPI_SIG_IEIT           "IEIT"
+>  #endif
+>  
+> +/* External to ACPI */
+> +#define ACPI_SIG_CDAT		"CDAT" /* Coherent Device Attribute Table */
+
+Worse that that, fictional signature :)
+It's the nameof the 'table', but it's not a signature as it's never
+used as they are in ACPI and doesn't appear anywhere in the table.
+
+> +
+>  /*
+>   * All tables must be byte-packed to match the ACPI specification, since
+>   * the tables are provided by the system BIOS.
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index efff750f326d..4c3dfe7587e9 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -135,6 +135,7 @@ union acpi_subtable_headers {
+>  	struct acpi_hmat_structure hmat;
+>  	struct acpi_prmt_module_header prmt;
+>  	struct acpi_cedt_header cedt;
+> +	struct acpi_cdat_header cdat;
+>  };
+>  
+>  typedef int (*acpi_tbl_table_handler)(struct acpi_table_header *table);
+> @@ -266,6 +267,9 @@ acpi_table_parse_cedt(enum acpi_cedt_type id,
+>  
+>  int acpi_parse_mcfg (struct acpi_table_header *header);
+>  void acpi_table_print_madt_entry (struct acpi_subtable_header *madt);
+> +int acpi_table_parse_cdat(enum acpi_cdat_type type,
+> +			  acpi_tbl_entry_handler_arg handler, void *arg,
+> +			  struct acpi_table_cdat *table_header);
+How did we end up with an 'acpi_' table that isn't in ACPI?
+(I'm not looking as I fear I might be responsible :)
+Should perhaps consider renaming all the CDAT entries so it doesn't looks like they
+are.
+
+>  
+>  /* the following numa functions are architecture-dependent */
+>  void acpi_numa_slit_init (struct acpi_table_slit *slit);
+> 
+> 
+> 
 
