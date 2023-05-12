@@ -2,100 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEA347009E4
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 May 2023 16:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40093700A21
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 May 2023 16:17:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241405AbjELOEP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 May 2023 10:04:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41428 "EHLO
+        id S241518AbjELORl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 May 2023 10:17:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241459AbjELODj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 10:03:39 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AC4513C16
-        for <linux-acpi@vger.kernel.org>; Fri, 12 May 2023 07:03:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683900218; x=1715436218;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=J0PI22rnw+GYC5C6NqjiXOlKuANTYa1On/ROwJ+FKUU=;
-  b=NXNo/nsQzO/vLe8af4pmzodylzgeRWI8ciZ64c6NVrGRYn3io8NjeZMK
-   aIkEPGPqaXwcBjCYNnSRKvHFtVbgRWA84ayJzi0OwuGY/gePeG3M70jJY
-   qqUQgJhE5LYNibb/NjTHXFHo404dY25FlqvLBqT6NddhULV0JgWl24Xmq
-   Q/zn379WYdCOraZtMXl5tu7P6HqbTDME5wBdHvXL9+WgD+TPUEFLcGkOh
-   xq8tP+VAJnICAoFNFFjHvMbtkQODC5hkJkt1wB++ayoRCgKljk6eDQs5/
-   xOl8vasbq6NUN0/uzjoC3hEzp4mcLnYztuvkhTzs1+pkA2f3gpmlX50rw
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="378931232"
-X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="378931232"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:38 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="650649028"
-X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="650649028"
-Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:37 -0700
-From:   Michal Wilczynski <michal.wilczynski@intel.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     rafael@kernel.org, Michal Wilczynski <michal.wilczynski@intel.com>
-Subject: [PATCH v1 34/34] acpi/bus: Remove notify callback and flags
-Date:   Fri, 12 May 2023 16:02:22 +0200
-Message-Id: <20230512140222.124868-35-michal.wilczynski@intel.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20230512140222.124868-1-michal.wilczynski@intel.com>
-References: <20230512140222.124868-1-michal.wilczynski@intel.com>
+        with ESMTP id S241462AbjELORk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 10:17:40 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E849011DB1;
+        Fri, 12 May 2023 07:17:06 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QHrM630pMz6J6pr;
+        Fri, 12 May 2023 22:12:50 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Fri, 12 May
+ 2023 15:16:48 +0100
+Date:   Fri, 12 May 2023 15:16:48 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Dave Jiang <dave.jiang@intel.com>
+CC:     <linux-acpi@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+        <rafael@kernel.org>, <lenb@kernel.org>, <dan.j.williams@intel.com>,
+        <ira.weiny@intel.com>, <vishal.l.verma@intel.com>,
+        <alison.schofield@intel.com>, <lukas@wunner.de>
+Subject: Re: [PATCH 3/4] acpi: fix misnamed define for CDAT DSMAS
+Message-ID: <20230512151648.000015bf@Huawei.com>
+In-Reply-To: <168330798865.2042604.4255466100952700191.stgit@djiang5-mobl3>
+References: <168330787964.2042604.17648905811002211147.stgit@djiang5-mobl3>
+        <168330798865.2042604.4255466100952700191.stgit@djiang5-mobl3>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-As callback has been replaced by drivers installing their handlers in
-.add it's presence is not useful anymore.
+On Fri, 05 May 2023 10:33:08 -0700
+Dave Jiang <dave.jiang@intel.com> wrote:
 
-Remove notify callback from struct acpi_driver, and flags as it's not
-needed anymore.
+> ACPI_CEDT_DSMAS_NON_VOLATILE should be defined as
+> ACPI_CDAT_DSMAS_NON_VOLATILE. Fix misspelled define.
+> 
+> Cc: Rafael J. Wysocki <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 
-Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
----
- include/acpi/acpi_bus.h | 3 ---
- 1 file changed, 3 deletions(-)
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index 7fb411438b6f..3326794d5b70 100644
---- a/include/acpi/acpi_bus.h
-+++ b/include/acpi/acpi_bus.h
-@@ -151,12 +151,10 @@ struct acpi_hotplug_context {
- 
- typedef int (*acpi_op_add) (struct acpi_device * device);
- typedef void (*acpi_op_remove) (struct acpi_device *device);
--typedef void (*acpi_op_notify) (struct acpi_device * device, u32 event);
- 
- struct acpi_device_ops {
- 	acpi_op_add add;
- 	acpi_op_remove remove;
--	acpi_op_notify notify;
- };
- 
- #define ACPI_DRIVER_ALL_NOTIFY_EVENTS	0x1	/* system AND device events */
-@@ -165,7 +163,6 @@ struct acpi_driver {
- 	char name[80];
- 	char class[80];
- 	const struct acpi_device_id *ids; /* Supported Hardware IDs */
--	unsigned int flags;
- 	struct acpi_device_ops ops;
- 	struct device_driver drv;
- 	struct module *owner;
--- 
-2.38.1
+> ---
+>  include/acpi/actbl1.h |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+> index 166337b04306..8ea7e5d64bc1 100644
+> --- a/include/acpi/actbl1.h
+> +++ b/include/acpi/actbl1.h
+> @@ -360,7 +360,7 @@ struct acpi_cdat_dsmas {
+>  
+>  /* Flags for subtable above */
+>  
+> -#define ACPI_CEDT_DSMAS_NON_VOLATILE        (1 << 2)
+> +#define ACPI_CDAT_DSMAS_NON_VOLATILE        (1 << 2)
+>  
+>  /* Subtable 1: Device scoped Latency and Bandwidth Information Structure (DSLBIS) */
+>  
+> 
+> 
+> 
 
