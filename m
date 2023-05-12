@@ -2,162 +2,137 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95BBE700F6D
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 May 2023 21:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71B08700F8C
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 May 2023 22:10:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238467AbjELTsz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 May 2023 15:48:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53160 "EHLO
+        id S238406AbjELUKA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 May 2023 16:10:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238608AbjELTsx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 15:48:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 572B27693;
-        Fri, 12 May 2023 12:48:52 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E00DB6585A;
-        Fri, 12 May 2023 19:48:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04CD3C433D2;
-        Fri, 12 May 2023 19:48:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683920931;
-        bh=UJAu/sEPUEjYwNghUWoNUhNjtFQtSfleebB2APfRPuI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=izATGEJPbIV3K4bCaiKo7Hs1883mTtDq56tAMqR9b8VXex2H1Ta5qXbJ34DUMlipI
-         hkP36Hf18gfQ/c5WhLTbqHxqmGDxT8c6GZsTNVnFEdOQaZaJ/oYwHmrit1EAw1x+1Y
-         2z22L2JvUWHTpA485tRqm3EMRgDgtReOCU64LBI1xffqjx2Y+7vetzAwosC65+lInq
-         x9YdWwtXI3O85iO05qxJMbcPnrLIE+gUjS7LacDVi8KOmMYZ7RSibPwc0Q194zjna+
-         tNHv7vuMAsogyAVpsXpRcwcmIepl/BM1Pky4mWnjJL9I8gbCdKyEWdBqbLqeB9zbcY
-         repkA1Uz/worA==
-Date:   Fri, 12 May 2023 14:48:49 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        linux-pci@vger.kernel.org,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        linux-kernel@vger.kernel.org,
-        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
-        Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-acpi@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>,
-        Anatolij Gustschin <agust@denx.de>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Juergen Gross <jgross@suse.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-mips@vger.kernel.org,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        linux-alpha@vger.kernel.org,
-        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: Re: [PATCH v8 0/7] Add pci_dev_for_each_resource() helper and update
- users
-Message-ID: <ZF6YIezraETr9iNM@bhelgaas>
+        with ESMTP id S230148AbjELUJ6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 16:09:58 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A38E26B5
+        for <linux-acpi@vger.kernel.org>; Fri, 12 May 2023 13:09:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683922197; x=1715458197;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=tp2xh46A913lFUtWLvAyyxQWldT4ytG5KViNS+ZuCAU=;
+  b=VwtMIMFS7h56svmkRNBgiYmjHNiynzkYku+EfIY+sTa7+mP+8isGX5vQ
+   VpGpKq3HDFBGQaXcg6Jl/WezILrQPjnOWjn8f2+iw9Tk0F4olEhvMC1cD
+   JjCFn1hkg2QLuk9GRO6UBCHTYjwTZudbXb/Estnwt2fOfTMRb62tl9v6R
+   /8+uxuOQTWAg3/THtMwSZ2BxBjO5JPz4IIxX6rLph0Tr5jbyO2OXwOjFV
+   Sx8H5Whj+6FOWTl0BmYxGtvCnpOdXyO38rogHeB0+7w07tDdt47a6ck+Y
+   p+N1w/yJiHMZWPGc9faGHYTS3PqexJA0106n3VCQx8VJUdimO+Xc63Kkr
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="354010204"
+X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
+   d="scan'208";a="354010204"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 13:09:57 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="765276042"
+X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
+   d="scan'208";a="765276042"
+Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 12 May 2023 13:09:55 -0700
+Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pxZ5P-00055Q-01;
+        Fri, 12 May 2023 20:09:55 +0000
+Date:   Sat, 13 May 2023 04:09:49 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Michal Wilczynski <michal.wilczynski@intel.com>,
+        linux-acpi@vger.kernel.org
+Cc:     oe-kbuild-all@lists.linux.dev, rafael@kernel.org,
+        Michal Wilczynski <michal.wilczynski@intel.com>
+Subject: Re: [PATCH v1 09/34] acpi/tiny-power-button: Move handler installing
+ logic to driver
+Message-ID: <202305130350.ZEskVtFO-lkp@intel.com>
+References: <20230512140222.124868-10-michal.wilczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZF4bXaz2r75dlA5g@smile.fi.intel.com>
+In-Reply-To: <20230512140222.124868-10-michal.wilczynski@intel.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 12, 2023 at 01:56:29PM +0300, Andy Shevchenko wrote:
-> On Tue, May 09, 2023 at 01:21:22PM -0500, Bjorn Helgaas wrote:
-> > On Tue, Apr 04, 2023 at 11:11:01AM -0500, Bjorn Helgaas wrote:
-> > > On Thu, Mar 30, 2023 at 07:24:27PM +0300, Andy Shevchenko wrote:
-> > > > Provide two new helper macros to iterate over PCI device resources and
-> > > > convert users.
-> > 
-> > > Applied 2-7 to pci/resource for v6.4, thanks, I really like this!
-> > 
-> > This is 09cc90063240 ("PCI: Introduce pci_dev_for_each_resource()")
-> > upstream now.
-> > 
-> > Coverity complains about each use,
-> 
-> It needs more clarification here. Use of reduced variant of the
-> macro or all of them? If the former one, then I can speculate that
-> Coverity (famous for false positives) simply doesn't understand `for
-> (type var; var ...)` code.
+Hi Michal,
 
-True, Coverity finds false positives.  It flagged every use in
-drivers/pci and drivers/pnp.  It didn't mention the arch/alpha, arm,
-mips, powerpc, sh, or sparc uses, but I think it just didn't look at
-those.
+kernel test robot noticed the following build errors:
 
-It flagged both:
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on chrome-platform/for-next groeck-staging/hwmon-next linus/master v6.4-rc1 next-20230512]
+[cannot apply to jic23-iio/togreg nvdimm/libnvdimm-for-next nvdimm/dax-misc crng-random/master]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-  pbus_size_io    pci_dev_for_each_resource(dev, r)
-  pbus_size_mem   pci_dev_for_each_resource(dev, r, i)
+url:    https://github.com/intel-lab-lkp/linux/commits/Michal-Wilczynski/acpi-Adjust-functions-installing-bus-event-handlers/20230512-220607
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20230512140222.124868-10-michal.wilczynski%40intel.com
+patch subject: [PATCH v1 09/34] acpi/tiny-power-button: Move handler installing logic to driver
+config: ia64-allmodconfig (https://download.01.org/0day-ci/archive/20230513/202305130350.ZEskVtFO-lkp@intel.com/config)
+compiler: ia64-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/e12cdb4ace4a523a569590ecc95f782f3d6fa98f
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Michal-Wilczynski/acpi-Adjust-functions-installing-bus-event-handlers/20230512-220607
+        git checkout e12cdb4ace4a523a569590ecc95f782f3d6fa98f
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=ia64 olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=ia64 SHELL=/bin/bash drivers/acpi/
 
-Here's a spreadsheet with a few more details (unfortunately I don't
-know how to make it dump the actual line numbers or analysis like I
-pasted below, so "pci_dev_for_each_resource" doesn't appear).  These
-are mostly in the "Drivers-PCI" component.
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202305130350.ZEskVtFO-lkp@intel.com/
 
-https://docs.google.com/spreadsheets/d/1ohOJwxqXXoDUA0gwopgk-z-6ArLvhN7AZn4mIlDkHhQ/edit?usp=sharing
+All errors (new ones prefixed by >>):
 
-These particular reports are in the "High Impact Outstanding" tab.
+   drivers/acpi/tiny-power-button.c: In function 'acpi_tiny_power_button_add':
+>> drivers/acpi/tiny-power-button.c:25:51: error: 'acpi_tiny_power_button_notify' undeclared (first use in this function); did you mean 'acpi_tiny_power_button_add'?
+      25 |                                                   acpi_tiny_power_button_notify);
+         |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |                                                   acpi_tiny_power_button_add
+   drivers/acpi/tiny-power-button.c:25:51: note: each undeclared identifier is reported only once for each function it appears in
+   drivers/acpi/tiny-power-button.c: In function 'acpi_tiny_power_button_remove':
+   drivers/acpi/tiny-power-button.c:31:42: error: 'acpi_tiny_power_button_notify' undeclared (first use in this function); did you mean 'acpi_tiny_power_button_remove'?
+      31 |                                          acpi_tiny_power_button_notify);
+         |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |                                          acpi_tiny_power_button_remove
+   drivers/acpi/tiny-power-button.c: In function 'acpi_tiny_power_button_add':
+   drivers/acpi/tiny-power-button.c:26:1: error: control reaches end of non-void function [-Werror=return-type]
+      26 | }
+         | ^
+   drivers/acpi/tiny-power-button.c: At top level:
+   drivers/acpi/tiny-power-button.c:34:13: warning: 'acpi_tiny_power_button_notify' defined but not used [-Wunused-function]
+      34 | static void acpi_tiny_power_button_notify(acpi_handle handle, u32 event, void *data)
+         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
 
-> >	sample below from
-> > drivers/pci/vgaarb.c.  I didn't investigate at all, so it might be a
-> > false positive; just FYI.
-> > 
-> > 	  1. Condition screen_info.capabilities & (2U /* 1 << 1 */), taking true branch.
-> >   556        if (screen_info.capabilities & VIDEO_CAPABILITY_64BIT_BASE)
-> >   557                base |= (u64)screen_info.ext_lfb_base << 32;
-> >   558
-> >   559        limit = base + size;
-> >   560
-> >   561        /* Does firmware framebuffer belong to us? */
-> > 	  2. Condition __b < PCI_NUM_RESOURCES, taking true branch.
-> > 	  3. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
-> > 	  6. Condition __b < PCI_NUM_RESOURCES, taking true branch.
-> > 	  7. cond_at_most: Checking __b < PCI_NUM_RESOURCES implies that __b may be up to 16 on the true branch.
-> > 	  8. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
-> > 	  11. incr: Incrementing __b. The value of __b may now be up to 17.
-> > 	  12. alias: Assigning: r = &pdev->resource[__b]. r may now point to as high as element 17 of pdev->resource (which consists of 17 64-byte elements).
-> > 	  13. Condition __b < PCI_NUM_RESOURCES, taking true branch.
-> > 	  14. Condition (r = &pdev->resource[__b]) , (__b < PCI_NUM_RESOURCES), taking true branch.
-> >   562        pci_dev_for_each_resource(pdev, r) {
-> > 	  4. Condition resource_type(r) != 512, taking true branch.
-> > 	  9. Condition resource_type(r) != 512, taking true branch.
-> > 
-> >   CID 1529911 (#1 of 1): Out-of-bounds read (OVERRUN)
-> >   15. overrun-local: Overrunning array of 1088 bytes at byte offset 1088 by dereferencing pointer r. [show details]
-> >   563                if (resource_type(r) != IORESOURCE_MEM)
-> > 	  5. Continuing loop.
-> > 	  10. Continuing loop.
-> >   564                        continue;
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
+
+vim +25 drivers/acpi/tiny-power-button.c
+
+    21	
+    22	static int acpi_tiny_power_button_add(struct acpi_device *device)
+    23	{
+    24		return acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY,
+  > 25							  acpi_tiny_power_button_notify);
+    26	}
+    27	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
