@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57BC87009D0
+	by mail.lfdr.de (Postfix) with ESMTP id B7D9A7009D1
 	for <lists+linux-acpi@lfdr.de>; Fri, 12 May 2023 16:03:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241423AbjELODV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 May 2023 10:03:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41182 "EHLO
+        id S241425AbjELODW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 May 2023 10:03:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241425AbjELODN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 10:03:13 -0400
+        with ESMTP id S241426AbjELODQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 10:03:16 -0400
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 794561729
-        for <linux-acpi@vger.kernel.org>; Fri, 12 May 2023 07:03:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 988B71BC8
+        for <linux-acpi@vger.kernel.org>; Fri, 12 May 2023 07:03:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683900190; x=1715436190;
+  t=1683900192; x=1715436192;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ylOa+MP5gTe7qVPfZv72klAlbk2ksb9dPDlpSZU21sQ=;
-  b=ez4rsLmrMcry4ukujfpn7HqoqTRYI14lXSPrXx3rHyV3shtoKQ3mls4c
-   ZkF79bQa0gCkCHVUzhZEY1uZgeDgzwVtCTgc/U8JgTUahYRwbucukSZzS
-   n1If5tM8jOaR9rWBFQwUyz7YsKuSdmsdPjaNhsvdEAS+teamxjNBVm40o
-   pVypGMPZuDnABL3XJOpIwLK29I8sywb8xaUllQ1ZVx+Xo1x6mNx4v/TL2
-   qWfOdNDxr0YYbdLTTYW+m0J33GKxERceS1zi4kGA3hk30f1QBh/bjLBCr
-   FKXuNw8qWmS89X7ibRO0QmPKcseOy8O5ieOQMX3VLuuar4XiOYGKIuIjQ
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="378931084"
+  bh=GCWBKlFM/THadBMuqknyHdfdQ7OSOB6vhXPpbRYrzmg=;
+  b=ioKzwzh1RBVx1aa12mDfvhEDh6AQp11Ds80GKAfktIIAqaWpKCXDUJq7
+   inPqxEsgVHRRzzZncxKVrp85ehDTGpPy6CyzwARlCrfT1xWksJ7Dmr/qL
+   VzZgL/W9fPWz2/cePaLlz5b+2Peeu/xfdgM6vwBoRpyT3DcmSYkfYNdPH
+   YaK4mIaUtH3yu8kyMwi2TYRXztTAeRRV40sKGgGgR04Bj1mMUJpOK9LXI
+   Jbi0KBXn/KiUd+jyUN/ecMClJW0dxglgNcchrWussiWPlT3rAU42heyS3
+   cI88jQincV25gdE82PYUs4dbkTCMXBTDqakmQBMVHOB2n4G/RS3i5F2aJ
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="378931094"
 X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="378931084"
+   d="scan'208";a="378931094"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:10 -0700
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:12 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="650648953"
+X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="650648960"
 X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="650648953"
+   d="scan'208";a="650648960"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:09 -0700
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:10 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
 To:     linux-acpi@vger.kernel.org
 Cc:     rafael@kernel.org, Michal Wilczynski <michal.wilczynski@intel.com>
-Subject: [PATCH v1 13/34] platform/wilco_ec: Move handler installing logic to driver
-Date:   Fri, 12 May 2023 16:02:01 +0200
-Message-Id: <20230512140222.124868-14-michal.wilczynski@intel.com>
+Subject: [PATCH v1 14/34] platform/surface/button: Move handler installing logic to driver
+Date:   Fri, 12 May 2023 16:02:02 +0200
+Message-Id: <20230512140222.124868-15-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230512140222.124868-1-michal.wilczynski@intel.com>
 References: <20230512140222.124868-1-michal.wilczynski@intel.com>
@@ -74,63 +74,64 @@ what's required by acpi_device_install_event_handler().
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/platform/chrome/wilco_ec/event.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ drivers/platform/surface/surfacepro3_button.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/platform/chrome/wilco_ec/event.c b/drivers/platform/chrome/wilco_ec/event.c
-index a40f60bcefb6..572462610853 100644
---- a/drivers/platform/chrome/wilco_ec/event.c
-+++ b/drivers/platform/chrome/wilco_ec/event.c
-@@ -251,16 +251,10 @@ static int enqueue_events(struct acpi_device *adev, const u8 *buf, u32 length)
- 	return 0;
- }
+diff --git a/drivers/platform/surface/surfacepro3_button.c b/drivers/platform/surface/surfacepro3_button.c
+index 2755601f979c..ec070ce9de53 100644
+--- a/drivers/platform/surface/surfacepro3_button.c
++++ b/drivers/platform/surface/surfacepro3_button.c
+@@ -71,13 +71,16 @@ struct surface_button {
+ 	bool suspended;
+ };
  
--/**
-- * event_device_notify() - Callback when EC generates an event over ACPI.
-- * @adev: The device that the event is coming from.
-- * @value: Value passed to Notify() in ACPI.
-- *
-- * This function will read the events from the device and enqueue them.
-- */
--static void event_device_notify(struct acpi_device *adev, u32 value)
-+static void event_device_notify(acpi_handle handle, u32 value, void *data)
+-static void surface_button_notify(struct acpi_device *device, u32 event)
++static void surface_button_notify(acpi_handle handle, u32 event, void *data)
  {
--	struct acpi_buffer event_buffer = { ACPI_ALLOCATE_BUFFER, NULL };
-+	struct acpi_buffer event_buffer; = { ACPI_ALLOCATE_BUFFER, NULL };
-+	struct acpi_device *adev = data;
- 	union acpi_object *obj;
- 	acpi_status status;
+-	struct surface_button *button = acpi_driver_data(device);
+-	struct input_dev *input;
++	struct acpi_device *device = data;
++	struct surface_button *button;
+ 	int key_code = KEY_RESERVED;
++	struct input_dev *input;
+ 	bool pressed = false;
  
-@@ -490,7 +484,12 @@ static int event_device_add(struct acpi_device *adev)
- 	if (error)
- 		goto free_dev_data;
- 
++	button = acpi_driver_data(device);
++
+ 	switch (event) {
+ 	/* Power button press,release handle */
+ 	case SURFACE_BUTTON_NOTIFY_PRESS_POWER:
+@@ -230,7 +233,13 @@ static int surface_button_add(struct acpi_device *device)
+ 	device_init_wakeup(&device->dev, true);
+ 	dev_info(&device->dev,
+ 			"%s [%s]\n", name, acpi_device_bid(device));
 -	return 0;
-+	error =  acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY,
-+						    event_device_notify);
++
++	error = acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY,
++						   surface_button_notify);
 +	if (error)
-+		goto free_dev_data;
++		goto err_free_input;
 +
 +	return error;
  
- free_dev_data:
- 	hangup_device(dev_data);
-@@ -503,6 +502,7 @@ static void event_device_remove(struct acpi_device *adev)
+  err_free_input:
+ 	input_free_device(input);
+@@ -243,6 +252,7 @@ static void surface_button_remove(struct acpi_device *device)
  {
- 	struct event_device_data *dev_data = adev->driver_data;
+ 	struct surface_button *button = acpi_driver_data(device);
  
-+	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, event_device_notify);
- 	cdev_device_del(&dev_data->cdev, &dev_data->dev);
- 	ida_simple_remove(&event_ida, MINOR(dev_data->dev.devt));
- 	hangup_device(dev_data);
-@@ -520,7 +520,6 @@ static struct acpi_driver event_driver = {
- 	.ids = event_acpi_ids,
++	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, surface_button_notify);
+ 	input_unregister_device(button->input);
+ 	kfree(button);
+ }
+@@ -257,7 +267,6 @@ static struct acpi_driver surface_button_driver = {
  	.ops = {
- 		.add = event_device_add,
--		.notify = event_device_notify,
- 		.remove = event_device_remove,
+ 		.add = surface_button_add,
+ 		.remove = surface_button_remove,
+-		.notify = surface_button_notify,
  	},
- 	.owner = THIS_MODULE,
+ 	.drv.pm = &surface_button_pm,
+ };
 -- 
 2.38.1
 
