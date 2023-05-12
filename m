@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E612D7009DC
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 May 2023 16:03:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5080A7009DD
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 May 2023 16:03:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241428AbjELODq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 May 2023 10:03:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41180 "EHLO
+        id S241440AbjELODr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 May 2023 10:03:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241444AbjELODd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 10:03:33 -0400
+        with ESMTP id S241398AbjELODi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 10:03:38 -0400
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22FF8D870
-        for <linux-acpi@vger.kernel.org>; Fri, 12 May 2023 07:03:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 623F9106CB
+        for <linux-acpi@vger.kernel.org>; Fri, 12 May 2023 07:03:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683900207; x=1715436207;
+  t=1683900208; x=1715436208;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=nbCBiSyuCy2m+4Tz/iazNSbMP/gr+s3bj2lE55c9N3A=;
-  b=lc/MdTMbw2yt2kmDPx0HpO3RFv/yx/CfWuLqqwru0CZgrokntL8OBVcC
-   Cg4RescfSV0U8NXXxjMftTFLFwIZ1UMh2Ye9Dts3XfjbciHBujWDMgIDD
-   +xvdcOMt6Ctrsk8j7cfra0AXmarGu78HZe06ArBMj13henHtUKnaKGb1a
-   jW53dl6nYezyHtNxDjs9Ae4+Tt2wd93ZmSQn3hAf9VDnC5pLyy7tU8y9Z
-   fyLzSf3ok/qrVY6yanMFx4TYMR590F0670NzpMGnlcaDBWswnKV0sOZVO
-   7x8t9e5MKbVjpb984RdERKrzoKY715SgWvUMWAW+fsz5LnBP4zNwtsgBk
+  bh=PJi/rzJx0JG0jTlQQjDqVY9CNtM024TPNfwM6gh0Gug=;
+  b=C9Dk4xrXZBA998H1lMdvjujJcgcn/UwJWL+SGV+v9JJ3fnfjh2SUjAgf
+   Zafb0K71SUfQ0JMZlrl3pjpTKGTXckMvWsslLtNfg2ck6j1A+ztMcg54B
+   zb75FSl+EmiBI7zHJidj1Gg/6o+1dx6caWrUDYhr7CP0kWDfBrTt/+fVX
+   oAB1JlNPuq49cqJx4CwPM0e2rXNmKqH5eLETUq+rj7hW3zG3tkMHhSNeF
+   RsaCy+U83AQk4kaDOv6+SH0aDxpeJvgIAj++H8oHKWPGfZ8xICaWPJwJx
+   IGCiEwx22+OGZkv0pC4YpYhJMSPxXAdJZhZY7m6OK5tbW1pP9Aqmrg96Z
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="378931169"
+X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="378931181"
 X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="378931169"
+   d="scan'208";a="378931181"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:26 -0700
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:28 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="650648999"
+X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="650649002"
 X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="650648999"
+   d="scan'208";a="650649002"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:25 -0700
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:26 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
 To:     linux-acpi@vger.kernel.org
 Cc:     rafael@kernel.org, Michal Wilczynski <michal.wilczynski@intel.com>
-Subject: [PATCH v1 25/34] platform/x86/topstar-laptop: Move handler installing logic to driver
-Date:   Fri, 12 May 2023 16:02:13 +0200
-Message-Id: <20230512140222.124868-26-michal.wilczynski@intel.com>
+Subject: [PATCH v1 26/34] platform/x86/toshiba_acpi: Move handler installing logic to driver
+Date:   Fri, 12 May 2023 16:02:14 +0200
+Message-Id: <20230512140222.124868-27-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230512140222.124868-1-michal.wilczynski@intel.com>
 References: <20230512140222.124868-1-michal.wilczynski@intel.com>
@@ -74,61 +74,61 @@ what's required by acpi_device_install_event_handler().
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/platform/x86/topstar-laptop.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/platform/x86/toshiba_acpi.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/platform/x86/topstar-laptop.c b/drivers/platform/x86/topstar-laptop.c
-index 20df1ebefc30..31cc3ce9bff3 100644
---- a/drivers/platform/x86/topstar-laptop.c
-+++ b/drivers/platform/x86/topstar-laptop.c
-@@ -232,12 +232,15 @@ static int topstar_acpi_fncx_switch(struct acpi_device *device, bool state)
- 	return 0;
- }
- 
--static void topstar_acpi_notify(struct acpi_device *device, u32 event)
-+static void topstar_acpi_notify(acpi_handle handle, u32 event, void *data)
+diff --git a/drivers/platform/x86/toshiba_acpi.c b/drivers/platform/x86/toshiba_acpi.c
+index b34984bbee33..29980c84d189 100644
+--- a/drivers/platform/x86/toshiba_acpi.c
++++ b/drivers/platform/x86/toshiba_acpi.c
+@@ -3190,6 +3190,8 @@ static void toshiba_acpi_remove(struct acpi_device *acpi_dev)
  {
--	struct topstar_laptop *topstar = acpi_driver_data(device);
-+	struct acpi_device *device = data;
-+	struct topstar_laptop *topstar;
- 	static bool dup_evnt[2];
- 	bool *dup;
+ 	struct toshiba_acpi_dev *dev = acpi_driver_data(acpi_dev);
  
-+	topstar = acpi_driver_data(device);
++	acpi_device_remove_event_handler(acpi_dev, ACPI_ALL_NOTIFY, toshiba_acpi_notify);
 +
- 	/* 0x83 and 0x84 key events comes duplicated... */
- 	if (event == 0x83 || event == 0x84) {
- 		dup = &dup_evnt[event - 0x83];
-@@ -319,7 +322,11 @@ static int topstar_acpi_add(struct acpi_device *device)
- 			goto err_input_exit;
- 	}
+ 	misc_deregister(&dev->miscdev);
+ 
+ 	remove_toshiba_proc_entries(dev);
+@@ -3473,16 +3475,23 @@ static int toshiba_acpi_add(struct acpi_device *acpi_dev)
+ 	if (dev->battery_charge_mode_supported)
+ 		battery_hook_register(&battery_hook);
  
 -	return 0;
-+	err = acpi_device_install_event_handler(acpi_dev, ACPI_DEVICE_NOTIFY, topstar_acpi_notify);
-+	if (err)
-+		goto err_input_exit;
++	ret = acpi_device_install_event_handler(acpi_dev, ACPI_ALL_NOTIFY, toshiba_acpi_notify);
++	if (ret)
++		goto error;
 +
-+	return err;
++	return ret;
  
- err_input_exit:
- 	topstar_input_exit(topstar);
-@@ -336,6 +343,8 @@ static void topstar_acpi_remove(struct acpi_device *device)
+ error:
+ 	toshiba_acpi_remove(acpi_dev);
+ 	return ret;
+ }
+ 
+-static void toshiba_acpi_notify(struct acpi_device *acpi_dev, u32 event)
++static void toshiba_acpi_notify(acpi_handle handle, u32 event, void *data)
  {
- 	struct topstar_laptop *topstar = acpi_driver_data(device);
- 
-+	acpi_device_remove_event_handler(acpi_dev, ACPI_DEVICE_NOTIFY, topstar_acpi_notify);
+-	struct toshiba_acpi_dev *dev = acpi_driver_data(acpi_dev);
++	struct acpi_device *acpi_dev = data;
++	struct toshiba_acpi_dev *dev;
 +
- 	if (led_workaround)
- 		topstar_led_exit(topstar);
++	dev = acpi_driver_data(acpi_dev);
  
-@@ -360,7 +369,6 @@ static struct acpi_driver topstar_acpi_driver = {
- 	.ops = {
- 		.add = topstar_acpi_add,
- 		.remove = topstar_acpi_remove,
--		.notify = topstar_acpi_notify,
+ 	switch (event) {
+ 	case 0x80: /* Hotkeys and some system events */
+@@ -3583,11 +3592,9 @@ static struct acpi_driver toshiba_acpi_driver = {
+ 	.name	= "Toshiba ACPI driver",
+ 	.owner	= THIS_MODULE,
+ 	.ids	= toshiba_device_ids,
+-	.flags	= ACPI_DRIVER_ALL_NOTIFY_EVENTS,
+ 	.ops	= {
+ 		.add		= toshiba_acpi_add,
+ 		.remove		= toshiba_acpi_remove,
+-		.notify		= toshiba_acpi_notify,
  	},
+ 	.drv.pm	= &toshiba_acpi_pm,
  };
- 
 -- 
 2.38.1
 
