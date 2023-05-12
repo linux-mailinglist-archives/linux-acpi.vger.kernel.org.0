@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1BBB7009DA
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 May 2023 16:03:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D26E17009DB
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 May 2023 16:03:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241426AbjELODo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 May 2023 10:03:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41332 "EHLO
+        id S241438AbjELODp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 May 2023 10:03:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241441AbjELODZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 10:03:25 -0400
+        with ESMTP id S241443AbjELOD0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 10:03:26 -0400
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1F763C23
-        for <linux-acpi@vger.kernel.org>; Fri, 12 May 2023 07:03:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA3C259D0
+        for <linux-acpi@vger.kernel.org>; Fri, 12 May 2023 07:03:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683900204; x=1715436204;
+  t=1683900205; x=1715436205;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=T/p7wXwgggq+ONStRo5Sa0RISORO8YEbXInY81s2yOk=;
-  b=JHFCcBykLjypMNTgc9SmvJ1FOEcIZ4lZz10dcTBlnkZSvrOLGY98E/HZ
-   SriBc3EPWYktaE+6Pd7c69Kl+kXNG/kHt6zLFzPm5TYlIm1Mdg0Lh9Y3R
-   t3iLM9KgHMne3m5LYSLIGBad1ysEL5CUtt/Sl47l5gn6tjbXwRfVq8viN
-   mayPW6mcCx/zg4wWEudM6P+leVTSQQ5Op/aDKnyh7IRPckDhBEQBwCnq7
-   CD8CD649jM24oewolnJATK1G/mi+d1N0vOXHOO0FRiBYl5BrzTq+UvDmo
-   GaOC/OLLo7DyKbbvQMbRwhxnzYVHoh5WhRePx8z/Fz+MV+/2Yq6iIJ4ie
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="378931150"
+  bh=8f1zF/CYjsR0VEmhcV9UTOXYcizlKE93MgFKQdhrbi4=;
+  b=A+YeB2pNc8gfH4szWA7Vd5YhtBPo8HFk2iUEF3aPRr+9nBS78zpeqROm
+   481XIereQeRXdVHEW5ko9Mqp0rbiXMQIjfHq4s9LQOxgmO0Es+1HXh1AS
+   tt8joCvIyNyq7d27lAIXz7MdGpc25RK3Z+E+3lO0VjIf9eyu97wFiOqH3
+   8O2Jl2AkVU01y5yn2G7/Ak7gLPMDUCWIxZHPN1Jat9earQmiptkLoZqYj
+   cbz0DLz0CvUL/bRc7mTAo4/nXqSXUG7hijOU5ww3VwOJQJydS9y+n0Pai
+   NJFjuEwA/RTpXOuQ5ct4OgTRndJ3t15krFFf7bII39/6Un5AkaWFppQ/s
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="378931159"
 X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="378931150"
+   d="scan'208";a="378931159"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:24 -0700
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:25 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="650648993"
+X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="650648996"
 X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="650648993"
+   d="scan'208";a="650648996"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:23 -0700
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:24 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
 To:     linux-acpi@vger.kernel.org
 Cc:     rafael@kernel.org, Michal Wilczynski <michal.wilczynski@intel.com>
-Subject: [PATCH v1 23/34] platform/x86/panasonic-laptop: Move handler installing logic to driver
-Date:   Fri, 12 May 2023 16:02:11 +0200
-Message-Id: <20230512140222.124868-24-michal.wilczynski@intel.com>
+Subject: [PATCH v1 24/34] platform/x86/system76_acpi: Move handler installing logic to driver
+Date:   Fri, 12 May 2023 16:02:12 +0200
+Message-Id: <20230512140222.124868-25-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230512140222.124868-1-michal.wilczynski@intel.com>
 References: <20230512140222.124868-1-michal.wilczynski@intel.com>
@@ -74,52 +74,83 @@ what's required by acpi_device_install_event_handler().
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/platform/x86/panasonic-laptop.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/platform/x86/system76_acpi.c | 28 +++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/platform/x86/panasonic-laptop.c b/drivers/platform/x86/panasonic-laptop.c
-index cf845ee1c7b1..3f845802c1d3 100644
---- a/drivers/platform/x86/panasonic-laptop.c
-+++ b/drivers/platform/x86/panasonic-laptop.c
-@@ -833,9 +833,12 @@ static void acpi_pcc_generate_keyinput(struct pcc_acpi *pcc)
- 		pr_err("Unknown hotkey event: 0x%04llx\n", result);
+diff --git a/drivers/platform/x86/system76_acpi.c b/drivers/platform/x86/system76_acpi.c
+index 97f5a8255b91..3e729ec08b8b 100644
+--- a/drivers/platform/x86/system76_acpi.c
++++ b/drivers/platform/x86/system76_acpi.c
+@@ -627,29 +627,30 @@ static void input_key(struct system76_data *data, unsigned int code)
  }
  
--static void acpi_pcc_hotkey_notify(struct acpi_device *device, u32 event)
-+static void acpi_pcc_hotkey_notify(acpi_handle handle, u32 event, void *data)
+ // Handle ACPI notification
+-static void system76_notify(struct acpi_device *acpi_dev, u32 event)
++static void system76_notify(acpi_handle handle, u32 event, void *data)
  {
--	struct pcc_acpi *pcc = acpi_driver_data(device);
-+	struct acpi_device *device = data;
-+	struct pcc_acpi *pcc;
-+
-+	pcc = acpi_driver_data(device);
+-	struct system76_data *data;
++	struct acpi_device *acpi_dev = data;
++	struct system76_data *s_data;
  
+-	data = acpi_driver_data(acpi_dev);
++	s_data = acpi_driver_data(acpi_dev);
  	switch (event) {
- 	case HKEY_NOTIFY:
-@@ -1049,7 +1052,13 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
+ 	case 0x80:
+-		kb_led_hotkey_hardware(data);
++		kb_led_hotkey_hardware(s_data);
+ 		break;
+ 	case 0x81:
+-		kb_led_hotkey_toggle(data);
++		kb_led_hotkey_toggle(s_data);
+ 		break;
+ 	case 0x82:
+-		kb_led_hotkey_down(data);
++		kb_led_hotkey_down(s_data);
+ 		break;
+ 	case 0x83:
+-		kb_led_hotkey_up(data);
++		kb_led_hotkey_up(s_data);
+ 		break;
+ 	case 0x84:
+-		kb_led_hotkey_color(data);
++		kb_led_hotkey_color(s_data);
+ 		break;
+ 	case 0x85:
+-		input_key(data, KEY_SCREENLOCK);
++		input_key(s_data, KEY_SCREENLOCK);
+ 		break;
+ 	}
+ }
+@@ -733,7 +734,11 @@ static int system76_add(struct acpi_device *acpi_dev)
+ 		system76_battery_init();
  	}
  
- 	i8042_install_filter(panasonic_i8042_filter);
 -	return 0;
++	err = acpi_device_install_event_handler(acpi_dev, ACPI_DEVICE_NOTIFY, system76_notify);
++	if (err)
++		goto error;
 +
-+	result =  acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY,
-+						     acpi_pcc_hotkey_notify);
-+	if (result)
-+		goto out_platform;
++	return err;
+ 
+ error:
+ 	if (data->has_open_ec) {
+@@ -750,6 +755,8 @@ static void system76_remove(struct acpi_device *acpi_dev)
+ 
+ 	data = acpi_driver_data(acpi_dev);
+ 
++	acpi_device_remove_event_handler(acpi_dev, ACPI_DEVICE_NOTIFY, system76_notify);
 +
-+	return result;
- 
- out_platform:
- 	platform_device_unregister(pcc->platform);
-@@ -1072,6 +1081,8 @@ static void acpi_pcc_hotkey_remove(struct acpi_device *device)
- 	if (!device || !pcc)
- 		return;
- 
-+	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, acpi_pcc_hotkey_notify);
-+
- 	i8042_remove_filter(panasonic_i8042_filter);
- 
- 	if (pcc->platform) {
+ 	if (data->has_open_ec) {
+ 		system76_battery_exit();
+ 		kfree(data->nfan);
+@@ -769,7 +776,6 @@ static struct acpi_driver system76_driver = {
+ 	.ops = {
+ 		.add = system76_add,
+ 		.remove = system76_remove,
+-		.notify = system76_notify,
+ 	},
+ };
+ module_acpi_driver(system76_driver);
 -- 
 2.38.1
 
