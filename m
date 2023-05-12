@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D26E17009DB
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 May 2023 16:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E612D7009DC
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 May 2023 16:03:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241438AbjELODp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 May 2023 10:03:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41338 "EHLO
+        id S241428AbjELODq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 May 2023 10:03:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241443AbjELOD0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 10:03:26 -0400
+        with ESMTP id S241444AbjELODd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 10:03:33 -0400
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA3C259D0
-        for <linux-acpi@vger.kernel.org>; Fri, 12 May 2023 07:03:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22FF8D870
+        for <linux-acpi@vger.kernel.org>; Fri, 12 May 2023 07:03:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683900205; x=1715436205;
+  t=1683900207; x=1715436207;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=8f1zF/CYjsR0VEmhcV9UTOXYcizlKE93MgFKQdhrbi4=;
-  b=A+YeB2pNc8gfH4szWA7Vd5YhtBPo8HFk2iUEF3aPRr+9nBS78zpeqROm
-   481XIereQeRXdVHEW5ko9Mqp0rbiXMQIjfHq4s9LQOxgmO0Es+1HXh1AS
-   tt8joCvIyNyq7d27lAIXz7MdGpc25RK3Z+E+3lO0VjIf9eyu97wFiOqH3
-   8O2Jl2AkVU01y5yn2G7/Ak7gLPMDUCWIxZHPN1Jat9earQmiptkLoZqYj
-   cbz0DLz0CvUL/bRc7mTAo4/nXqSXUG7hijOU5ww3VwOJQJydS9y+n0Pai
-   NJFjuEwA/RTpXOuQ5ct4OgTRndJ3t15krFFf7bII39/6Un5AkaWFppQ/s
+  bh=nbCBiSyuCy2m+4Tz/iazNSbMP/gr+s3bj2lE55c9N3A=;
+  b=lc/MdTMbw2yt2kmDPx0HpO3RFv/yx/CfWuLqqwru0CZgrokntL8OBVcC
+   Cg4RescfSV0U8NXXxjMftTFLFwIZ1UMh2Ye9Dts3XfjbciHBujWDMgIDD
+   +xvdcOMt6Ctrsk8j7cfra0AXmarGu78HZe06ArBMj13henHtUKnaKGb1a
+   jW53dl6nYezyHtNxDjs9Ae4+Tt2wd93ZmSQn3hAf9VDnC5pLyy7tU8y9Z
+   fyLzSf3ok/qrVY6yanMFx4TYMR590F0670NzpMGnlcaDBWswnKV0sOZVO
+   7x8t9e5MKbVjpb984RdERKrzoKY715SgWvUMWAW+fsz5LnBP4zNwtsgBk
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="378931159"
+X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="378931169"
 X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="378931159"
+   d="scan'208";a="378931169"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:25 -0700
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:26 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="650648996"
+X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="650648999"
 X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="650648996"
+   d="scan'208";a="650648999"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:24 -0700
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:25 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
 To:     linux-acpi@vger.kernel.org
 Cc:     rafael@kernel.org, Michal Wilczynski <michal.wilczynski@intel.com>
-Subject: [PATCH v1 24/34] platform/x86/system76_acpi: Move handler installing logic to driver
-Date:   Fri, 12 May 2023 16:02:12 +0200
-Message-Id: <20230512140222.124868-25-michal.wilczynski@intel.com>
+Subject: [PATCH v1 25/34] platform/x86/topstar-laptop: Move handler installing logic to driver
+Date:   Fri, 12 May 2023 16:02:13 +0200
+Message-Id: <20230512140222.124868-26-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230512140222.124868-1-michal.wilczynski@intel.com>
 References: <20230512140222.124868-1-michal.wilczynski@intel.com>
@@ -74,83 +74,61 @@ what's required by acpi_device_install_event_handler().
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/platform/x86/system76_acpi.c | 28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ drivers/platform/x86/topstar-laptop.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/system76_acpi.c b/drivers/platform/x86/system76_acpi.c
-index 97f5a8255b91..3e729ec08b8b 100644
---- a/drivers/platform/x86/system76_acpi.c
-+++ b/drivers/platform/x86/system76_acpi.c
-@@ -627,29 +627,30 @@ static void input_key(struct system76_data *data, unsigned int code)
+diff --git a/drivers/platform/x86/topstar-laptop.c b/drivers/platform/x86/topstar-laptop.c
+index 20df1ebefc30..31cc3ce9bff3 100644
+--- a/drivers/platform/x86/topstar-laptop.c
++++ b/drivers/platform/x86/topstar-laptop.c
+@@ -232,12 +232,15 @@ static int topstar_acpi_fncx_switch(struct acpi_device *device, bool state)
+ 	return 0;
  }
  
- // Handle ACPI notification
--static void system76_notify(struct acpi_device *acpi_dev, u32 event)
-+static void system76_notify(acpi_handle handle, u32 event, void *data)
+-static void topstar_acpi_notify(struct acpi_device *device, u32 event)
++static void topstar_acpi_notify(acpi_handle handle, u32 event, void *data)
  {
--	struct system76_data *data;
-+	struct acpi_device *acpi_dev = data;
-+	struct system76_data *s_data;
+-	struct topstar_laptop *topstar = acpi_driver_data(device);
++	struct acpi_device *device = data;
++	struct topstar_laptop *topstar;
+ 	static bool dup_evnt[2];
+ 	bool *dup;
  
--	data = acpi_driver_data(acpi_dev);
-+	s_data = acpi_driver_data(acpi_dev);
- 	switch (event) {
- 	case 0x80:
--		kb_led_hotkey_hardware(data);
-+		kb_led_hotkey_hardware(s_data);
- 		break;
- 	case 0x81:
--		kb_led_hotkey_toggle(data);
-+		kb_led_hotkey_toggle(s_data);
- 		break;
- 	case 0x82:
--		kb_led_hotkey_down(data);
-+		kb_led_hotkey_down(s_data);
- 		break;
- 	case 0x83:
--		kb_led_hotkey_up(data);
-+		kb_led_hotkey_up(s_data);
- 		break;
- 	case 0x84:
--		kb_led_hotkey_color(data);
-+		kb_led_hotkey_color(s_data);
- 		break;
- 	case 0x85:
--		input_key(data, KEY_SCREENLOCK);
-+		input_key(s_data, KEY_SCREENLOCK);
- 		break;
- 	}
- }
-@@ -733,7 +734,11 @@ static int system76_add(struct acpi_device *acpi_dev)
- 		system76_battery_init();
++	topstar = acpi_driver_data(device);
++
+ 	/* 0x83 and 0x84 key events comes duplicated... */
+ 	if (event == 0x83 || event == 0x84) {
+ 		dup = &dup_evnt[event - 0x83];
+@@ -319,7 +322,11 @@ static int topstar_acpi_add(struct acpi_device *device)
+ 			goto err_input_exit;
  	}
  
 -	return 0;
-+	err = acpi_device_install_event_handler(acpi_dev, ACPI_DEVICE_NOTIFY, system76_notify);
++	err = acpi_device_install_event_handler(acpi_dev, ACPI_DEVICE_NOTIFY, topstar_acpi_notify);
 +	if (err)
-+		goto error;
++		goto err_input_exit;
 +
 +	return err;
  
- error:
- 	if (data->has_open_ec) {
-@@ -750,6 +755,8 @@ static void system76_remove(struct acpi_device *acpi_dev)
+ err_input_exit:
+ 	topstar_input_exit(topstar);
+@@ -336,6 +343,8 @@ static void topstar_acpi_remove(struct acpi_device *device)
+ {
+ 	struct topstar_laptop *topstar = acpi_driver_data(device);
  
- 	data = acpi_driver_data(acpi_dev);
- 
-+	acpi_device_remove_event_handler(acpi_dev, ACPI_DEVICE_NOTIFY, system76_notify);
++	acpi_device_remove_event_handler(acpi_dev, ACPI_DEVICE_NOTIFY, topstar_acpi_notify);
 +
- 	if (data->has_open_ec) {
- 		system76_battery_exit();
- 		kfree(data->nfan);
-@@ -769,7 +776,6 @@ static struct acpi_driver system76_driver = {
+ 	if (led_workaround)
+ 		topstar_led_exit(topstar);
+ 
+@@ -360,7 +369,6 @@ static struct acpi_driver topstar_acpi_driver = {
  	.ops = {
- 		.add = system76_add,
- 		.remove = system76_remove,
--		.notify = system76_notify,
+ 		.add = topstar_acpi_add,
+ 		.remove = topstar_acpi_remove,
+-		.notify = topstar_acpi_notify,
  	},
  };
- module_acpi_driver(system76_driver);
+ 
 -- 
 2.38.1
 
