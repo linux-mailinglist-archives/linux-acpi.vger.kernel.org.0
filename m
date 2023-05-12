@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A04317009D4
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 May 2023 16:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90B6C7009D6
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 May 2023 16:03:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241424AbjELODl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 May 2023 10:03:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41214 "EHLO
+        id S241400AbjELODm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 May 2023 10:03:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241418AbjELODT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 10:03:19 -0400
+        with ESMTP id S241435AbjELODV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 10:03:21 -0400
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7293C1B1
-        for <linux-acpi@vger.kernel.org>; Fri, 12 May 2023 07:03:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D99E1729
+        for <linux-acpi@vger.kernel.org>; Fri, 12 May 2023 07:03:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683900198; x=1715436198;
+  t=1683900200; x=1715436200;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=XkKJ8TM3GYnv3u7IL03ncZgdAXLi2ZTXpbAt2ivi4h0=;
-  b=DcJlYIDsGB5GK5WmSLUsTnVim2hKtdcyWstS/VYRRNElZW6jQ+c7cuow
-   IAIL1cOEv2T76u9oDb71c0PH02SLzxrvbv7z8LeTQf116iyOCSLncVnXv
-   yRmZrv1jgQPpYWZ1B1hCukL158/Y0bBg+9zm0OhkOxDxi7sPhbLJ0D5F2
-   XPLcCnOhz6zHLHfmjrXGTn7sezu3j34tZkjqq4ub4riv1MJjRILvg5QsE
-   CnreqW+3dEC7c5CM4FG04ImU4zXb+wDu9NwDigefemRqB54j3u4izSi6c
-   EdouP6T6PlM+fTl21FzJzobLXJXPZRUxQypjH+j0YZl95oWNBCuIgV/ni
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="378931119"
+  bh=oJv43mtzy6+CJK5yy6JwXPkNgWqSQNkVyqt5EQi4dTI=;
+  b=FaPhmqA2LkNm5lTDHzGeaBGlZi+CvdfVCjDVFvHtyTCxnYbjttddfIuq
+   C8bKlfmi1PUPpzN/NfsmaXxQdZnz8S8Puk2NyqoS6/k2yXLt4xqO9u8Oz
+   4jBZi6CdRXmtt0YSSihCPwMq0xsFePbFRHRFdeCcIzA4rXWnQ3pSXW4nd
+   W4HCuCHxFin/HpaicjUz3y/nKu/d1HJx8zBHgS0CB0z+MsqITRQInCjbF
+   A6+qKKg9uYg27mu83LmBKvtl/gA0KWzxLyd0nCFK64vKH/oBuZNZ+Afpc
+   KD9yV4thHOREqj5qiQK9hgRSG2LVMqbcLGXpz8fyTRKZnADl/PEKMKBIk
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="378931124"
 X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="378931119"
+   d="scan'208";a="378931124"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:17 -0700
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:19 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="650648977"
+X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="650648980"
 X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="650648977"
+   d="scan'208";a="650648980"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:16 -0700
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:18 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
 To:     linux-acpi@vger.kernel.org
 Cc:     rafael@kernel.org, Michal Wilczynski <michal.wilczynski@intel.com>
-Subject: [PATCH v1 18/34] platform/x86/classmate-laptop: Move handler installing logic to driver
-Date:   Fri, 12 May 2023 16:02:06 +0200
-Message-Id: <20230512140222.124868-19-michal.wilczynski@intel.com>
+Subject: [PATCH v1 19/34] platform/x86/dell/dell-rbtn: Move handler installing logic to driver
+Date:   Fri, 12 May 2023 16:02:07 +0200
+Message-Id: <20230512140222.124868-20-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230512140222.124868-1-michal.wilczynski@intel.com>
 References: <20230512140222.124868-1-michal.wilczynski@intel.com>
@@ -74,54 +74,57 @@ what's required by acpi_device_install_event_handler().
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/platform/x86/classmate-laptop.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/platform/x86/dell/dell-rbtn.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/classmate-laptop.c b/drivers/platform/x86/classmate-laptop.c
-index 2edaea2492df..51a0dd28b8ec 100644
---- a/drivers/platform/x86/classmate-laptop.c
-+++ b/drivers/platform/x86/classmate-laptop.c
-@@ -180,8 +180,9 @@ static acpi_status cmpc_get_accel_v4(acpi_handle handle,
- 	return status;
+diff --git a/drivers/platform/x86/dell/dell-rbtn.c b/drivers/platform/x86/dell/dell-rbtn.c
+index aa0e6c907494..679ff2d6adbf 100644
+--- a/drivers/platform/x86/dell/dell-rbtn.c
++++ b/drivers/platform/x86/dell/dell-rbtn.c
+@@ -293,7 +293,6 @@ static struct acpi_driver rbtn_driver = {
+ 	.ops = {
+ 		.add = rbtn_add,
+ 		.remove = rbtn_remove,
+-		.notify = rbtn_notify,
+ 	},
+ 	.owner = THIS_MODULE,
+ };
+@@ -422,7 +421,10 @@ static int rbtn_add(struct acpi_device *device)
+ 		ret = -EINVAL;
+ 	}
+ 
+-	return ret;
++	if (ret)
++		return ret;
++
++	return acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY, rbtn_notify);
+ 
  }
  
--static void cmpc_accel_handler_v4(struct acpi_device *dev, u32 event)
-+static void cmpc_accel_handler_v4(acpi_handle handle, u32 event, void *data)
+@@ -430,6 +432,8 @@ static void rbtn_remove(struct acpi_device *device)
  {
-+	struct acpi_device *dev = data;
- 	if (event == 0x81) {
- 		int16_t x, y, z;
- 		acpi_status status;
-@@ -407,7 +408,12 @@ static int cmpc_accel_add_v4(struct acpi_device *acpi)
- 	inputdev = dev_get_drvdata(&acpi->dev);
- 	dev_set_drvdata(&inputdev->dev, accel);
+ 	struct rbtn_data *rbtn_data = device->driver_data;
  
--	return 0;
-+	error =  acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY,
-+						    cmpc_accel_handler_v4);
-+	if (error)
-+		goto failed_input;
++	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, rbtn_notify);
 +
-+	return error;
+ 	switch (rbtn_data->type) {
+ 	case RBTN_TOGGLE:
+ 		rbtn_input_exit(rbtn_data);
+@@ -445,9 +449,12 @@ static void rbtn_remove(struct acpi_device *device)
+ 	device->driver_data = NULL;
+ }
  
- failed_input:
- 	device_remove_file(&acpi->dev, &cmpc_accel_g_select_attr_v4);
-@@ -420,6 +426,7 @@ static int cmpc_accel_add_v4(struct acpi_device *acpi)
- 
- static void cmpc_accel_remove_v4(struct acpi_device *acpi)
+-static void rbtn_notify(struct acpi_device *device, u32 event)
++static void rbtn_notify(acpi_handle handle, u32 event, void *data)
  {
-+	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, cmpc_accel_handler_v4);
- 	device_remove_file(&acpi->dev, &cmpc_accel_sensitivity_attr_v4);
- 	device_remove_file(&acpi->dev, &cmpc_accel_g_select_attr_v4);
- 	cmpc_remove_acpi_notify_device(acpi);
-@@ -1071,7 +1078,6 @@ static struct acpi_driver cmpc_keys_acpi_driver = {
- 	.ops = {
- 		.add = cmpc_keys_add,
- 		.remove = cmpc_keys_remove,
--		.notify = cmpc_keys_handler,
- 	}
- };
+-	struct rbtn_data *rbtn_data = device->driver_data;
++	struct acpi_device *device = data;
++	struct rbtn_data *rbtn_data;
++
++	rbtn_data = device->driver_data;
  
+ 	/*
+ 	 * Some BIOSes send a notification at resume.
 -- 
 2.38.1
 
