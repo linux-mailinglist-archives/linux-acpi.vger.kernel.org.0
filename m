@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 328EB7009DE
+	by mail.lfdr.de (Postfix) with ESMTP id D61077009DF
 	for <lists+linux-acpi@lfdr.de>; Fri, 12 May 2023 16:03:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241443AbjELODr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 May 2023 10:03:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41414 "EHLO
+        id S241445AbjELODs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 May 2023 10:03:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241449AbjELODi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 10:03:38 -0400
+        with ESMTP id S241450AbjELODj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 10:03:39 -0400
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C48ED12EA1
-        for <linux-acpi@vger.kernel.org>; Fri, 12 May 2023 07:03:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED406132B4
+        for <linux-acpi@vger.kernel.org>; Fri, 12 May 2023 07:03:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683900209; x=1715436209;
+  t=1683900210; x=1715436210;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Cq01VFhjgj/mEhu0HxUgKXpUNPjV4fQitrA3AnSxcpE=;
-  b=LG+ewfXvd0UFAagpBO/KAwIJv1/W6vrZPAX5t9f6c+vW3J4wy9KZcZfZ
-   oPo9eVtemJEWCMYsdpTAYsKOly3OUzT2m0PqkapWIBQZU+ZYOn0mlmnHd
-   dnorvjR1GX3gUxPOyn8g4NT0Up3sd2uf6NwzlE4elB+6gy9v/qIdxjLHQ
-   fhrXBI1qMlg+SgPnhE+4DYFX89ZDuvoabbCKTHu67Lq66pyX5lLewnxRz
-   eTC+gjOSFudZBQNEThnVqUMW9F2Y3Lj4FTsJJxtTauCvPa4iwXnRGAJTv
-   9r0nV6FjIKlHUzbxiV4OR57N/pJL19eRgXCjKoMxEPMeO5E1zRJO86pgD
+  bh=WLKJ1EHMeHpdKP/vBtOYJQNkoa4IDwWxTq1fyvbh/mM=;
+  b=VEveL3h4qt1cY4Si7maf2D41PqQrSv/sW2tfdvQgkpoKJCZceI+cx0+2
+   IFWKP6USWPW5VnO9QWPMD356rikXqkXxEwNX3caWkeDh7wvR/yeu//Vff
+   vDnWz2P4zyrBGBVKYa041VyPrB2FTqz+bAn7ZEqIo0r2GzHEZQt7FV25f
+   yXEaRfzL0441qRymS/KhWyf9ndgITfT05SvIGaG4OW4vWT51NYCjZmXHa
+   gJK45GAYvAxsKKfqLnnDAsidaO4S+fqRXvyS8ouSfR5gaoxYKYETdlPuV
+   C9Ycftv+Ju1tEzV9g0WxCZ/+buJX7HEw4H+TZGgm2yuFWodscNx5hhUHq
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="378931186"
+X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="378931192"
 X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="378931186"
+   d="scan'208";a="378931192"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:29 -0700
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:30 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="650649005"
+X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="650649009"
 X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="650649005"
+   d="scan'208";a="650649009"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:28 -0700
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:03:29 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
 To:     linux-acpi@vger.kernel.org
 Cc:     rafael@kernel.org, Michal Wilczynski <michal.wilczynski@intel.com>
-Subject: [PATCH v1 27/34] platform/x86/toshiba_bluetooth: Move handler installing logic to driver
-Date:   Fri, 12 May 2023 16:02:15 +0200
-Message-Id: <20230512140222.124868-28-michal.wilczynski@intel.com>
+Subject: [PATCH v1 28/34] platform/x86/toshiba_haps: Move handler installing logic to driver
+Date:   Fri, 12 May 2023 16:02:16 +0200
+Message-Id: <20230512140222.124868-29-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230512140222.124868-1-michal.wilczynski@intel.com>
 References: <20230512140222.124868-1-michal.wilczynski@intel.com>
@@ -74,71 +74,54 @@ what's required by acpi_device_install_event_handler().
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/platform/x86/toshiba_bluetooth.c | 27 ++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ drivers/platform/x86/toshiba_haps.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/toshiba_bluetooth.c b/drivers/platform/x86/toshiba_bluetooth.c
-index d8f81962a240..7d8bd5f73eae 100644
---- a/drivers/platform/x86/toshiba_bluetooth.c
-+++ b/drivers/platform/x86/toshiba_bluetooth.c
-@@ -204,9 +204,12 @@ static const struct rfkill_ops rfk_ops = {
- };
- 
- /* ACPI driver functions */
--static void toshiba_bt_rfkill_notify(struct acpi_device *device, u32 event)
-+static void toshiba_bt_rfkill_notify(acpi_handle handle, u32 event, void *data)
+diff --git a/drivers/platform/x86/toshiba_haps.c b/drivers/platform/x86/toshiba_haps.c
+index 8c9f76286b08..ec0ffae3516c 100644
+--- a/drivers/platform/x86/toshiba_haps.c
++++ b/drivers/platform/x86/toshiba_haps.c
+@@ -129,8 +129,10 @@ static const struct attribute_group haps_attr_group = {
+ /*
+  * ACPI stuff
+  */
+-static void toshiba_haps_notify(struct acpi_device *device, u32 event)
++static void toshiba_haps_notify(acpi_handle handle, u32 event, void *data)
  {
--	struct toshiba_bluetooth_dev *bt_dev = acpi_driver_data(device);
-+	struct toshiba_bluetooth_dev *bt_dev;
 +	struct acpi_device *device = data;
 +
-+	bt_dev = acpi_driver_data(device);
+ 	pr_debug("Received event: 0x%x\n", event);
  
- 	if (toshiba_bluetooth_sync_status(bt_dev))
- 		return;
-@@ -263,8 +266,8 @@ static int toshiba_bt_rfkill_add(struct acpi_device *device)
- 				   bt_dev);
- 	if (!bt_dev->rfk) {
- 		pr_err("Unable to allocate rfkill device\n");
--		kfree(bt_dev);
--		return -ENOMEM;
-+		result = -ENOMEM;
-+		goto fail_allocate;
- 	}
+ 	acpi_bus_generate_netlink_event(device->pnp.device_class,
+@@ -140,6 +142,7 @@ static void toshiba_haps_notify(struct acpi_device *device, u32 event)
  
- 	rfkill_set_hw_state(bt_dev->rfk, !bt_dev->killswitch);
-@@ -272,10 +275,20 @@ static int toshiba_bt_rfkill_add(struct acpi_device *device)
- 	result = rfkill_register(bt_dev->rfk);
- 	if (result) {
- 		pr_err("Unable to register rfkill device\n");
--		rfkill_destroy(bt_dev->rfk);
--		kfree(bt_dev);
-+		goto fail_register;
- 	}
+ static void toshiba_haps_remove(struct acpi_device *device)
+ {
++	acpi_device_remove_event_handler(acpi_dev, ACPI_ALL_NOTIFY, toshiba_haps_notify);
+ 	sysfs_remove_group(&device->dev.kobj, &haps_attr_group);
  
-+	result = acpi_device_install_event_handler(acpi_dev, ACPI_DEVICE_NOTIFY,
-+						    toshiba_bt_rfkill_notify);
-+	if (result)
-+		goto fail_register;
-+
-+	return result;
-+
-+fail_register:
-+	rfkill_destroy(bt_dev->rfk);
-+fail_allocate:
-+	kfree(bt_dev);
- 	return result;
+ 	if (toshiba_haps)
+@@ -203,7 +206,7 @@ static int toshiba_haps_add(struct acpi_device *acpi_dev)
+ 
+ 	toshiba_haps = haps;
+ 
+-	return 0;
++	return acpi_device_install_event_handler(acpi_dev, ACPI_ALL_NOTIFY, toshiba_haps_notify);
  }
  
-@@ -283,6 +296,8 @@ static void toshiba_bt_rfkill_remove(struct acpi_device *device)
- {
- 	struct toshiba_bluetooth_dev *bt_dev = acpi_driver_data(device);
- 
-+	acpi_device_remove_event_handler(acpi_dev, ACPI_DEVICE_NOTIFY, toshiba_bt_rfkill_notify);
-+
- 	/* clean up */
- 	if (bt_dev->rfk) {
- 		rfkill_unregister(bt_dev->rfk);
+ #ifdef CONFIG_PM_SLEEP
+@@ -253,11 +256,9 @@ static struct acpi_driver toshiba_haps_driver = {
+ 	.name = "Toshiba HAPS",
+ 	.owner = THIS_MODULE,
+ 	.ids = haps_device_ids,
+-	.flags = ACPI_DRIVER_ALL_NOTIFY_EVENTS,
+ 	.ops = {
+ 		.add =		toshiba_haps_add,
+ 		.remove =	toshiba_haps_remove,
+-		.notify =	toshiba_haps_notify,
+ 	},
+ 	.drv.pm = &toshiba_haps_pm,
+ };
 -- 
 2.38.1
 
