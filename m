@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1525E7009C6
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 May 2023 16:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB5717009C8
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 May 2023 16:03:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241368AbjELODB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 May 2023 10:03:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41112 "EHLO
+        id S241420AbjELODH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 May 2023 10:03:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241353AbjELODA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 10:03:00 -0400
+        with ESMTP id S241387AbjELODB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 May 2023 10:03:01 -0400
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52286198E
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A563D19BE
         for <linux-acpi@vger.kernel.org>; Fri, 12 May 2023 07:02:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1683900179; x=1715436179;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=cQOhgVN9KktkwIdn69lUFA14KuHTSV40NQJJxX6i+1c=;
-  b=epVF8xWbn7LUVJez0VmXIiycZvbRXkB59XhWk1wbgx0XyPV2rgypVTi4
-   BHxxn2V8mZ7OWM4+FvgKvcDgmvERz78HVFPgIQu2YwuE3WSfGQP1Qyq6I
-   x1sFRpoNO5Prj4F6tr6h3YJpffmNM4SDiE/iHnoMKPMVABExkIaaGOCpK
-   OWFrl9AXbUZqVfvyhZDu2AFH+r2MSDkn6dfAkOA1cB488F9FElzvdNiZl
-   4sjDhW+0ydUiUlH352DCjGzK+2W/tKli4Awf0vLshooRYxRvJjIqrI2ss
-   MaiDIq+M1llhvRojbEB7YU9rr6cQ0Ot7EfJi82ZEy3iJHin7+FpBFJUDj
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="378931017"
+  bh=9ornG7hWOY6i8oXxZC9eMfmzDrjvXb8WBsDPkaTucWY=;
+  b=ICqOlo8UmgjlHjihcX8udwCDRTANg/WtPHjQ7BlBwmndTDzvbiDwOWFc
+   qqKusTA/qvsRJGmV9tf1Y+IK8QAAc/hoIBVmd63rysvYvfusMNvpzzIje
+   zFH6w0exGk/soukYO7K4bNOeLMSweW8T4REv+EM250CG8La2dRlh6YwdC
+   kyv657NJoLKmvUzYmbS7rIvvyad+8gErfsYt73/x+RF1xpcPJvzbE+mf3
+   YeJ1XH9PlvKdIFCtN4gXxihR+AdHWrwHDSkroB/XWjkWW/Lo+gMT7pQnA
+   5Wp3xcglWQ7B7CPW+ALN0Kl/9JhPogaV5iI4CgZIVP1ZoLUXT1xhwbt33
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="378931024"
 X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="378931017"
+   d="scan'208";a="378931024"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:02:55 -0700
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:02:56 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="650648911"
+X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="650648915"
 X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
-   d="scan'208";a="650648911"
+   d="scan'208";a="650648915"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:02:51 -0700
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 07:02:53 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
 To:     linux-acpi@vger.kernel.org
 Cc:     rafael@kernel.org, Michal Wilczynski <michal.wilczynski@intel.com>
-Subject: [PATCH v1 04/34] acpi/battery: Move handler installing logic to driver
-Date:   Fri, 12 May 2023 16:01:52 +0200
-Message-Id: <20230512140222.124868-5-michal.wilczynski@intel.com>
+Subject: [PATCH v1 05/34] acpi/button: Move handler installing logic to driver
+Date:   Fri, 12 May 2023 16:01:53 +0200
+Message-Id: <20230512140222.124868-6-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230512140222.124868-1-michal.wilczynski@intel.com>
 References: <20230512140222.124868-1-michal.wilczynski@intel.com>
@@ -74,61 +74,69 @@ what's required by acpi_device_install_event_handler().
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/acpi/battery.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/acpi/button.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 9c67ed02d797..18c496f76d42 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -1034,11 +1034,14 @@ static void acpi_battery_refresh(struct acpi_battery *battery)
+diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
+index 475e1eddfa3b..e978b2eafb27 100644
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -126,7 +126,7 @@ static const struct dmi_system_id dmi_lid_quirks[] = {
+ 
+ static int acpi_button_add(struct acpi_device *device);
+ static void acpi_button_remove(struct acpi_device *device);
+-static void acpi_button_notify(struct acpi_device *device, u32 event);
++static void acpi_button_notify(acpi_handle handle, u32 event, void *data);
+ 
+ #ifdef CONFIG_PM_SLEEP
+ static int acpi_button_suspend(struct device *dev);
+@@ -144,7 +144,6 @@ static struct acpi_driver acpi_button_driver = {
+ 	.ops = {
+ 		.add = acpi_button_add,
+ 		.remove = acpi_button_remove,
+-		.notify = acpi_button_notify,
+ 	},
+ 	.drv.pm = &acpi_button_pm,
+ };
+@@ -400,11 +399,14 @@ static void acpi_lid_initialize_state(struct acpi_device *device)
+ 	button->lid_state_initialized = true;
  }
  
- /* Driver Interface */
--static void acpi_battery_notify(struct acpi_device *device, u32 event)
-+static void acpi_battery_notify(acpi_handle handle, u32 event, void *data)
+-static void acpi_button_notify(struct acpi_device *device, u32 event)
++static void acpi_button_notify(acpi_handle handle, u32 event, void *data)
  {
--	struct acpi_battery *battery = acpi_driver_data(device);
+-	struct acpi_button *button = acpi_driver_data(device);
 +	struct acpi_device *device = data;
-+	struct acpi_battery *battery;
- 	struct power_supply *old;
++	struct acpi_button *button;
+ 	struct input_dev *input;
  
-+	battery = acpi_driver_data(device);
++	button = acpi_driver_data(device);
 +
- 	if (!battery)
- 		return;
- 	old = battery->bat;
-@@ -1212,6 +1215,10 @@ static int acpi_battery_add(struct acpi_device *device)
+ 	switch (event) {
+ 	case ACPI_FIXED_HARDWARE_EVENT:
+ 		event = ACPI_BUTTON_NOTIFY_STATUS;
+@@ -569,7 +571,12 @@ static int acpi_button_add(struct acpi_device *device)
  
- 	device_init_wakeup(&device->dev, 1);
- 
-+	result  = acpi_device_install_event_handler(device, ACPI_ALL_NOTIFY, acpi_battery_notify);
-+	if (result)
-+		goto fail;
+ 	device_init_wakeup(&device->dev, true);
+ 	pr_info("%s [%s]\n", name, acpi_device_bid(device));
+-	return 0;
 +
- 	return result;
++	error =  acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY, acpi_button_notify);
++	if (error)
++		goto err_remove_fs;
++
++	return error;
  
- fail:
-@@ -1228,6 +1235,7 @@ static void acpi_battery_remove(struct acpi_device *device)
+  err_remove_fs:
+ 	acpi_button_remove_fs(device);
+@@ -584,6 +591,7 @@ static void acpi_button_remove(struct acpi_device *device)
+ {
+ 	struct acpi_button *button = acpi_driver_data(device);
  
- 	if (!device || !acpi_driver_data(device))
- 		return;
-+	acpi_device_remove_event_handler(device, ACPI_ALL_NOTIFY, acpi_battery_notify);
- 	device_init_wakeup(&device->dev, 0);
- 	battery = acpi_driver_data(device);
- 	unregister_pm_notifier(&battery->pm_nb);
-@@ -1264,11 +1272,9 @@ static struct acpi_driver acpi_battery_driver = {
- 	.name = "battery",
- 	.class = ACPI_BATTERY_CLASS,
- 	.ids = battery_device_ids,
--	.flags = ACPI_DRIVER_ALL_NOTIFY_EVENTS,
- 	.ops = {
- 		.add = acpi_battery_add,
- 		.remove = acpi_battery_remove,
--		.notify = acpi_battery_notify,
- 		},
- 	.drv.pm = &acpi_battery_pm,
- };
++	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, acpi_button_notify);
+ 	acpi_button_remove_fs(device);
+ 	input_unregister_device(button->input);
+ 	kfree(button);
 -- 
 2.38.1
 
