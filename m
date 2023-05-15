@@ -2,145 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A653702C4C
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 May 2023 14:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ABF9702C99
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 May 2023 14:25:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241472AbjEOMHX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 May 2023 08:07:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38368 "EHLO
+        id S241726AbjEOMZI convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 15 May 2023 08:25:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241292AbjEOMHO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 May 2023 08:07:14 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E36B3E75;
-        Mon, 15 May 2023 05:07:05 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2ad89c7a84fso104814881fa.2;
-        Mon, 15 May 2023 05:07:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684152424; x=1686744424;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=T8S8sAP8Fagl8K2YKg4fpZu8ftXd+FY79lvepC4kyJc=;
-        b=gl10t5IbWZvPcfimSxWMYLFLFqoygfcXT3axtUv5YJ0sZCmKOVDWCcA2VWB/F/jfl1
-         tOX0mXfr8Is8+xw0FyIJDHCHM+7EjBNF+iwr2/sabkjo+RzWjFa4HXk1rYF4Ug54Zd3i
-         psJomYgEd//rjA5m9jk7cDquT0MUT/nj9GFEB7JpiwatlWBoDWCBmKKDo45ybD7xwH2U
-         3i8Fy5t/yKYMUu1McU8RhaFc3Pmk+/yWron5oQ23I8SCJ9dDvi5JoTb02Jl2Oqd7wRY1
-         KmDbBrwzVQiwb0+iRND6zIv6PYQIlKsyD1Q4Q4Y2k6wDC5gR6SR68LG+ssXW2pMADWP3
-         zVjg==
+        with ESMTP id S231348AbjEOMZH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 May 2023 08:25:07 -0400
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 314D41BC
+        for <linux-acpi@vger.kernel.org>; Mon, 15 May 2023 05:25:04 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-96a2b6d698cso167567866b.1
+        for <linux-acpi@vger.kernel.org>; Mon, 15 May 2023 05:25:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684152424; x=1686744424;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T8S8sAP8Fagl8K2YKg4fpZu8ftXd+FY79lvepC4kyJc=;
-        b=IqfL1cdi2epzAwjnbwrMmtAC0xsHNesVf8C+vCP28xCqBlDlx63kYesgDOpyzn0m1y
-         Mxch++AOW7k+ExA108thYghlESpgGPHnfS+28NRUu/fQmB09IWtg6xRTi+q8BBAmoY8x
-         vNKqQapSsOn7pZQzcS0yyOPfoM7vf8eiUC+qgBGNLfT/4mUoU4sSXXIL4+UF4ZPZfAp7
-         rREZsSjOd6wSZ3kfR1/ZmkdEiZmDV+mCigT+8+iqQzOZG9v4VmHwNLor7ezcQdJTYRGz
-         Vr3wNbtndACmhuMH23eDvSJnL5h9tq16TVVShKaJNprXxRlWFmnYBOnFdfpfW0KPOsQj
-         UWfQ==
-X-Gm-Message-State: AC+VfDxeAKJpdmOcWHhhuItnqXjsflYYgQGN/hBC9tjxiFqFy9t6mrIf
-        fKk6S26PmuOMmktP1/47qiU=
-X-Google-Smtp-Source: ACHHUZ4ImT+NseNLVCHJyYNbiz8/qaEbKm2bXboMyU3yUX3Tpo+dB8WlLspZbxMxQ3NzRnCu321l5g==
-X-Received: by 2002:a2e:9496:0:b0:2a7:9884:ad53 with SMTP id c22-20020a2e9496000000b002a79884ad53mr6689938ljh.48.1684152423793;
-        Mon, 15 May 2023 05:07:03 -0700 (PDT)
-Received: from [192.168.1.126] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id q18-20020a2e9692000000b002ac7a25c001sm3756668lji.24.2023.05.15.05.07.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 May 2023 05:07:03 -0700 (PDT)
-Message-ID: <0fb0ef4f-b310-0922-2823-e8737159bf26@gmail.com>
-Date:   Mon, 15 May 2023 15:07:02 +0300
+        d=1e100.net; s=20221208; t=1684153502; x=1686745502;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fU8TkkWi1PLQmP9Q/PJIeLJ+Q7Ze8owevQ+26p3y85U=;
+        b=eVjsAWezRgL1wR8n1RO08/uBrmTfnRwo4O3qMApddKoQyL7T/WMiN6ZuljBA5Xn2qG
+         oZbg27J3roCXIY6kC6oeS5QQKmXPbKy3/c+6qsXGJJDTcG/pyPW2CVhtDtbGp0sDHHdE
+         BOLyclNZ/tqLYB1ZGEwVYoSjFnEwtTxx73SpSgNxGhxwetljNJ2n5QhCAnfuNT6DFNqz
+         3bb+juB3zGXMhskLRYCFzZv/nOybJTSsvrxBL0HAlCF9MT9LgEZEbmNOJJKwrcIy7N0u
+         mSLD02yZ9Wt6WyaNA9/+onvZ4Is+X7MjDQov2JiUqeiE0cAGqtCCgXU/7ZAW0vZlON7q
+         uS0A==
+X-Gm-Message-State: AC+VfDxZ+FbgSV7fGatwGRZADDzzhjxnaN7wQIdwRx95wwl0dQQN7FfW
+        YCiRmlgFX6vY+93sVve7sX2LeiiPDL2/afl8xGv4BKgy
+X-Google-Smtp-Source: ACHHUZ58cJfdj9XeVDR+FO+youSone9XQ44FLD6G4fg5sRDRKFZjRbsDKn5j88F6G1txMue9v3lI2dN2jNovoKz9tgQ=
+X-Received: by 2002:a17:906:72cd:b0:965:9db5:3824 with SMTP id
+ m13-20020a17090672cd00b009659db53824mr27274524ejl.6.1684153502387; Mon, 15
+ May 2023 05:25:02 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v3 1/3] drivers: fwnode: fix fwnode_irq_get_byname()
-Content-Language: en-US, en-GB
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org
-References: <cover.1683875389.git.mazziesaccount@gmail.com>
- <9dd75817886fbb2a0cc58e2248dbba52d8a6d908.1683875389.git.mazziesaccount@gmail.com>
- <20230513194003.5a27a841@jic23-huawei>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20230513194003.5a27a841@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <jzqzwdedY4SnVMhKdJpA2nv5eA7o6COWGesAYO0Th3IXK2Pu2UoYfKlhd0YJhospEusFM-qmJG5Mzo-vGhE9VzVWebfqbyYlDdk7ZeDUXCI=@proton.me>
+In-Reply-To: <jzqzwdedY4SnVMhKdJpA2nv5eA7o6COWGesAYO0Th3IXK2Pu2UoYfKlhd0YJhospEusFM-qmJG5Mzo-vGhE9VzVWebfqbyYlDdk7ZeDUXCI=@proton.me>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 15 May 2023 14:24:50 +0200
+Message-ID: <CAJZ5v0i7Sw6EDDdjiyzG-HHmxy-1NkGz+Tq9BoYG-0_nC=EvRQ@mail.gmail.com>
+Subject: Re: [PATCH] Laptop internal keyboard not working on LG UltraPC 17U70P
+To:     =?UTF-8?B?UnViw6luIEfDs21leg==?= <mrgommer@proton.me>
+Cc:     linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Jonathan,
+On Mon, May 8, 2023 at 8:03 PM Rubén Gómez <mrgommer@proton.me> wrote:
+>
+> Hi,
+>
+> This patch, destined to the specific laptop model LG UltraPC 17U70P, solves an already known problem happening with some devices where the keyboard IRQ is handled with the ActiveLow attribute. The kernel currently ignores that, and as a consequence the internal keyboard stops responding as soon it loads up. This has been extensively discussed in bug 213031 [1]. From the work done there an ad hoc list was introduced in the kernel to handle those devices, as seems like other broader solutions would cause problems to other devices. This patch just adds this laptop model to that list. I filled a bug specifically for this laptop model with number 216983 [2]. Patch is already tested against commit 7163a2111f6c in the linux-pm branch.
+>
+> [1] https://bugzilla.kernel.org/show_bug.cgi?id=213031
+> [2] https://bugzilla.kernel.org/show_bug.cgi?id=216983
+>
+> Signed-off-by: Rubén Gómez Agudo <mrgommer@proton.me>
+> ---
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index e8492b3a393a..0800a9d77558 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -516,6 +516,17 @@ static const struct dmi_system_id maingear_laptop[] = {
+>         { }
+>  };
+>
+> +static const struct dmi_system_id lg_laptop[] = {
+> +       {
+> +               .ident = "LG Electronics 17U70P",
+> +               .matches = {
+> +                       DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
+> +                       DMI_MATCH(DMI_BOARD_NAME, "17U70P"),
+> +               },
+> +       },
+> +       { }
+> +};
+> +
+>  struct irq_override_cmp {
+>         const struct dmi_system_id *system;
+>         unsigned char irq;
+> @@ -532,6 +543,7 @@ static const struct irq_override_cmp override_table[] = {
+>         { lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
+>         { tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+>         { maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+> +       { lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+>  };
+>
+>  static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
 
-It was somewhat busy "Mother's day" weekend for me but now I'm back in 
-the business :)
+Fixed up (new subject, new changelog, white space damage fixes) and
+applied as 6.4-rc material.
 
-On 5/13/23 21:40, Jonathan Cameron wrote:
-> On Fri, 12 May 2023 10:53:00 +0300
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
->> The fwnode_irq_get_byname() does return 0 upon device-tree IRQ mapping
->> failure. This is contradicting the function documentation and can
->> potentially be a source of errors like:
->>
->> int probe(...) {
->> 	...
->>
->> 	irq = fwnode_irq_get_byname();
->> 	if (irq <= 0)
->> 		return irq;
->>
->> 	...
->> }
->>
->> Here we do correctly check the return value from fwnode_irq_get_byname()
->> but the driver probe will now return success. (There was already one
->> such user in-tree).
->>
->> Change the fwnode_irq_get_byname() to work as documented and according to
->> the common convention and abd always return a negative errno upon failure.
->>
->> Fixes: ca0acb511c21 ("device property: Add fwnode_irq_get_byname")
->> Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
->> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
->> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> 
-> Whilst the docs don't contradict behaviour for fwnode_irq_get()
-> unlike the byname() variant, it does seem odd to fix it only in this
-> version rather than modifying them both not to return 0.
-
-I think you're right. I think I overlooked this because the whole thing 
-started as a documentation fix :)
-
-> Is there clear logic why they should be different?
-
-Not that I know of. I'll re-spin this with fwnode_irq_get() modified if 
-no-one objects. Thanks for pointing this out!
-
-Yours,
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+Thanks!
