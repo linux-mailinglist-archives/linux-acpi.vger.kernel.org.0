@@ -2,48 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87356702A79
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 May 2023 12:31:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A653702C4C
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 May 2023 14:07:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238850AbjEOKbh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 May 2023 06:31:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58376 "EHLO
+        id S241472AbjEOMHX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 May 2023 08:07:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230091AbjEOKbg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 May 2023 06:31:36 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D69BE75;
-        Mon, 15 May 2023 03:31:35 -0700 (PDT)
-Received: from canpemm500002.china.huawei.com (unknown [172.30.72.53])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4QKbBv6gt1zTkMW;
-        Mon, 15 May 2023 18:26:47 +0800 (CST)
-Received: from [10.174.179.211] (10.174.179.211) by
- canpemm500002.china.huawei.com (7.192.104.244) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Mon, 15 May 2023 18:31:32 +0800
-Message-ID: <fb86128f-2134-61d2-f34b-1b610e3f406d@huawei.com>
-Date:   Mon, 15 May 2023 18:31:12 +0800
+        with ESMTP id S241292AbjEOMHO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 May 2023 08:07:14 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E36B3E75;
+        Mon, 15 May 2023 05:07:05 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2ad89c7a84fso104814881fa.2;
+        Mon, 15 May 2023 05:07:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684152424; x=1686744424;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=T8S8sAP8Fagl8K2YKg4fpZu8ftXd+FY79lvepC4kyJc=;
+        b=gl10t5IbWZvPcfimSxWMYLFLFqoygfcXT3axtUv5YJ0sZCmKOVDWCcA2VWB/F/jfl1
+         tOX0mXfr8Is8+xw0FyIJDHCHM+7EjBNF+iwr2/sabkjo+RzWjFa4HXk1rYF4Ug54Zd3i
+         psJomYgEd//rjA5m9jk7cDquT0MUT/nj9GFEB7JpiwatlWBoDWCBmKKDo45ybD7xwH2U
+         3i8Fy5t/yKYMUu1McU8RhaFc3Pmk+/yWron5oQ23I8SCJ9dDvi5JoTb02Jl2Oqd7wRY1
+         KmDbBrwzVQiwb0+iRND6zIv6PYQIlKsyD1Q4Q4Y2k6wDC5gR6SR68LG+ssXW2pMADWP3
+         zVjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684152424; x=1686744424;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=T8S8sAP8Fagl8K2YKg4fpZu8ftXd+FY79lvepC4kyJc=;
+        b=IqfL1cdi2epzAwjnbwrMmtAC0xsHNesVf8C+vCP28xCqBlDlx63kYesgDOpyzn0m1y
+         Mxch++AOW7k+ExA108thYghlESpgGPHnfS+28NRUu/fQmB09IWtg6xRTi+q8BBAmoY8x
+         vNKqQapSsOn7pZQzcS0yyOPfoM7vf8eiUC+qgBGNLfT/4mUoU4sSXXIL4+UF4ZPZfAp7
+         rREZsSjOd6wSZ3kfR1/ZmkdEiZmDV+mCigT+8+iqQzOZG9v4VmHwNLor7ezcQdJTYRGz
+         Vr3wNbtndACmhuMH23eDvSJnL5h9tq16TVVShKaJNprXxRlWFmnYBOnFdfpfW0KPOsQj
+         UWfQ==
+X-Gm-Message-State: AC+VfDxeAKJpdmOcWHhhuItnqXjsflYYgQGN/hBC9tjxiFqFy9t6mrIf
+        fKk6S26PmuOMmktP1/47qiU=
+X-Google-Smtp-Source: ACHHUZ4ImT+NseNLVCHJyYNbiz8/qaEbKm2bXboMyU3yUX3Tpo+dB8WlLspZbxMxQ3NzRnCu321l5g==
+X-Received: by 2002:a2e:9496:0:b0:2a7:9884:ad53 with SMTP id c22-20020a2e9496000000b002a79884ad53mr6689938ljh.48.1684152423793;
+        Mon, 15 May 2023 05:07:03 -0700 (PDT)
+Received: from [192.168.1.126] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
+        by smtp.gmail.com with ESMTPSA id q18-20020a2e9692000000b002ac7a25c001sm3756668lji.24.2023.05.15.05.07.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 May 2023 05:07:03 -0700 (PDT)
+Message-ID: <0fb0ef4f-b310-0922-2823-e8737159bf26@gmail.com>
+Date:   Mon, 15 May 2023 15:07:02 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 1/2] cpufreq: CPPC: keep target core awake when reading
- its cpufreq rate
-To:     Zeng Heng <zengheng4@huawei.com>
-CC:     <weiyongjun1@huawei.com>, <linux-pm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <xiexiuqi@huawei.com>,
-        <linux-acpi@vger.kernel.org>, <wangxiongfeng2@huawei.com>,
-        <lenb@kernel.org>, <viresh.kumar@linaro.org>, <rafael@kernel.org>
-References: <20230515100005.3540793-1-zengheng4@huawei.com>
-From:   "liwei (GF)" <liwei391@huawei.com>
-In-Reply-To: <20230515100005.3540793-1-zengheng4@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v3 1/3] drivers: fwnode: fix fwnode_irq_get_byname()
+Content-Language: en-US, en-GB
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org
+References: <cover.1683875389.git.mazziesaccount@gmail.com>
+ <9dd75817886fbb2a0cc58e2248dbba52d8a6d908.1683875389.git.mazziesaccount@gmail.com>
+ <20230513194003.5a27a841@jic23-huawei>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20230513194003.5a27a841@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.179.211]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- canpemm500002.china.huawei.com (7.192.104.244)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-8.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,73 +86,61 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi Jonathan,
 
+It was somewhat busy "Mother's day" weekend for me but now I'm back in 
+the business :)
 
-On 2023/5/15 18:00, Zeng Heng wrote:
-> As ARM AMU's document says, all counters are subject to any changes
-> in clock frequency, including clock stopping caused by the WFI and WFE
-> instructions.
+On 5/13/23 21:40, Jonathan Cameron wrote:
+> On Fri, 12 May 2023 10:53:00 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
-> Therefore, using smp_call_function_single() to trigger target CPU to
-> read self's AMU counters, which ensures the counters are working
-> properly during calculation.
+>> The fwnode_irq_get_byname() does return 0 upon device-tree IRQ mapping
+>> failure. This is contradicting the function documentation and can
+>> potentially be a source of errors like:
+>>
+>> int probe(...) {
+>> 	...
+>>
+>> 	irq = fwnode_irq_get_byname();
+>> 	if (irq <= 0)
+>> 		return irq;
+>>
+>> 	...
+>> }
+>>
+>> Here we do correctly check the return value from fwnode_irq_get_byname()
+>> but the driver probe will now return success. (There was already one
+>> such user in-tree).
+>>
+>> Change the fwnode_irq_get_byname() to work as documented and according to
+>> the common convention and abd always return a negative errno upon failure.
+>>
+>> Fixes: ca0acb511c21 ("device property: Add fwnode_irq_get_byname")
+>> Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+>> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+>> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 > 
-> Signed-off-by: Zeng Heng <zengheng4@huawei.com>
-> ---
->  drivers/cpufreq/cppc_cpufreq.c | 30 ++++++++++++++++--------------
->  1 file changed, 16 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-> index 022e3555407c..169af7ff9a2a 100644
-> --- a/drivers/cpufreq/cppc_cpufreq.c
-> +++ b/drivers/cpufreq/cppc_cpufreq.c
-> @@ -837,29 +837,31 @@ static int cppc_perf_from_fbctrs(struct cppc_cpudata *cpu_data,
->  	return (reference_perf * delta_delivered) / delta_reference;
->  }
->  
-> +static void cppc_get_perf_ctrs_smp(void *val)
-> +{
-> +	int cpu = smp_processor_id();
-> +	struct cppc_perf_fb_ctrs *fb_ctrs = val;
-> +
-> +	cppc_get_perf_ctrs(cpu, fb_ctrs);
-> +
-> +	udelay(2); /* 2usec delay between sampling */
-> +
-> +	cppc_get_perf_ctrs(cpu, fb_ctrs + 1);
-> +}
-> +
->  static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
->  {
-> -	struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
-> +	struct cppc_perf_fb_ctrs fb_ctrs[2] = {0};
->  	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
->  	struct cppc_cpudata *cpu_data = policy->driver_data;
->  	u64 delivered_perf;
-> -	int ret;
->  
->  	cpufreq_cpu_put(policy);
->  
-> -	ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
-> -	if (ret)
-> -		return ret;
-> -
-> -	udelay(2); /* 2usec delay between sampling */
-> -
-> -	ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
-> -	if (ret)
-> -		return ret;
-> -
-> -	delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
-> -					       &fb_ctrs_t1);
-> +	smp_call_function_single(cpu, cppc_get_perf_ctrs_smp, fb_ctrs, 1);
+> Whilst the docs don't contradict behaviour for fwnode_irq_get()
+> unlike the byname() variant, it does seem odd to fix it only in this
+> version rather than modifying them both not to return 0.
 
-cppc_get_perf_ctrs() may call down_write(), while the callback for smp_call_function_single()
-should be non-blocking, you can use smp_call_on_cpu() instead.
+I think you're right. I think I overlooked this because the whole thing 
+started as a documentation fix :)
 
->  
-> +	delivered_perf = cppc_perf_from_fbctrs(cpu_data, fb_ctrs,
-> +					       fb_ctrs + 1);
->  	return cppc_cpufreq_perf_to_khz(cpu_data, delivered_perf);
->  }
->  
+> Is there clear logic why they should be different?
+
+Not that I know of. I'll re-spin this with fwnode_irq_get() modified if 
+no-one objects. Thanks for pointing this out!
+
+Yours,
+	-- Matti
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
+
