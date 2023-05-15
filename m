@@ -2,112 +2,231 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D027070228C
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 May 2023 05:41:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC90C70237A
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 May 2023 07:49:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239487AbjEODla (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 14 May 2023 23:41:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48286 "EHLO
+        id S235175AbjEOFtl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 May 2023 01:49:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233993AbjEODlA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 14 May 2023 23:41:00 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B5621BCC;
-        Sun, 14 May 2023 20:37:33 -0700 (PDT)
-Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.57])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4QKQ1B0yRpzTkhP;
-        Mon, 15 May 2023 11:32:46 +0800 (CST)
-Received: from [10.67.103.231] (10.67.103.231) by
- kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Mon, 15 May 2023 11:37:30 +0800
-Message-ID: <e92558e2-f371-27f4-a030-04efe840cda8@huawei.com>
-Date:   Mon, 15 May 2023 11:37:25 +0800
+        with ESMTP id S229635AbjEOFtk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 May 2023 01:49:40 -0400
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D8C01FCA
+        for <linux-acpi@vger.kernel.org>; Sun, 14 May 2023 22:49:38 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id 98e67ed59e1d1-24e1d272b09so9005710a91.1
+        for <linux-acpi@vger.kernel.org>; Sun, 14 May 2023 22:49:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1684129778; x=1686721778;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TZ99alEe0A23tymHcdv/vfT8nEQiGh2D6cQUBbX+NYU=;
+        b=YC+K75o6oTdqYCv/UpwXe9gABJK307bP4yAL6WMj+c0OGsLbwkOJ/0OoSCS/Hfnwsu
+         GE65E5xvfgH6srsEB4tPrXUaOlutSgYPtnJ9OnZa6Sfly4dUMHmFpX5971LIfNSqGIdP
+         Nv2gRNBDawMmNUWqOTu0rbCvluknVfp9eY5z9QAJU2PYdGv+chHD3N6e9l7aDmV5kzWK
+         lSJdnZNxeGgWdSd74Lab4pJ/OB2qUQOL81v5QcFRSIwoBmezMntHOYaPBw740unBgypm
+         Fdcxp34uF51fGVRKTaWQuNCk7Asr2mpnyQ189by4GCzwMaNY9+Mm6vBizXEnrYzhR8lK
+         UKUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684129778; x=1686721778;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TZ99alEe0A23tymHcdv/vfT8nEQiGh2D6cQUBbX+NYU=;
+        b=Bd/4g4Ibx15P7u84wWan5uF4x1a2X+icvjcopJlJj7oElyhHAskCjNjCgbary5L86i
+         MGj+CRphiNE5+NUXiTXUo01kUaGA1AuJ7bTT2MoYt7h3npgWUqQVNDSD4fOUWfNVdIHQ
+         iPfuwkeXwjjExwjq0VDpyD2FpuSb+jvRSUdwn8mB2wznouyMJPbG2+k2zjmprqmoDPNC
+         Am16djHPe0cMw+6JYmCsVTNS6V1au79B5DVjo99cVhi8qxwdiZxdot20atYmsyVjs2Jb
+         QdsVcc32t2Ak+LZrbth1V4MuMnMB2JmLj12gGkguLpqNpKR6MjbyLYLUZ8W3zXEyc1RJ
+         rs8A==
+X-Gm-Message-State: AC+VfDxpr5lw1WuKURpAQm68WfeckvrnWJ0dDBha9tNuZAEtCaOJT9zV
+        GU+8Jr6mp9DXr7FLvBNxVgbXaw==
+X-Google-Smtp-Source: ACHHUZ66EM/Ffo2wiDqrucRe8wNpu1TreTFryx+X27BDltpTe5DxTsemz+afopAg9iZvWFHQw1Mb4A==
+X-Received: by 2002:a17:902:e9d5:b0:1ac:b52e:f3e5 with SMTP id 21-20020a170902e9d500b001acb52ef3e5mr18553911plk.43.1684129777671;
+        Sun, 14 May 2023 22:49:37 -0700 (PDT)
+Received: from localhost.localdomain ([106.51.191.118])
+        by smtp.gmail.com with ESMTPSA id f10-20020a17090274ca00b001ab28f620d0sm12423277plt.290.2023.05.14.22.49.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 May 2023 22:49:37 -0700 (PDT)
+From:   Sunil V L <sunilvl@ventanamicro.com>
+To:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+        linux-crypto@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        llvm@lists.linux.dev
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Sunil V L <sunilvl@ventanamicro.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Weili Qian <qianweili@huawei.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Marc Zyngier <maz@kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>
+Subject: [PATCH V6 00/21] Add basic ACPI support for RISC-V
+Date:   Mon, 15 May 2023 11:19:07 +0530
+Message-Id: <20230515054928.2079268-1-sunilvl@ventanamicro.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH] soc: hisilicon: Support HCCS driver on Kunpeng SoC
-From:   "lihuisong (C)" <lihuisong@huawei.com>
-To:     Sudeep Holla <sudeep.holla@arm.com>
-CC:     Arnd Bergmann <arnd@arndb.de>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <soc@kernel.org>,
-        <wanghuiqiang@huawei.com>, <tanxiaofei@huawei.com>,
-        <liuyonglong@huawei.com>, <huangdaode@huawei.com>,
-        <linux-acpi@vger.kernel.org>, Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-References: <20230424073020.4039-1-lihuisong@huawei.com>
- <e0c4f4b5-8b34-4542-b676-f98ddb8ef586@app.fastmail.com>
- <20230425103040.znv66k364ant6klq@bogus>
- <c7d9c3c5-e400-c60a-52e0-0f267ec8c517@huawei.com>
- <20230425131918.5tf5vot4h7jf54xk@bogus>
- <db6c713c-f99c-fa3f-8d38-9a5d50889cc2@huawei.com>
-In-Reply-To: <db6c713c-f99c-fa3f-8d38-9a5d50889cc2@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.103.231]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemm600004.china.huawei.com (7.193.23.242)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+This patch series enables the basic ACPI infrastructure for RISC-V.
+Supporting external interrupt controllers is in progress and hence it is
+tested using poll based HVC SBI console and RAM disk.
 
-在 2023/5/4 21:16, lihuisong (C) 写道:
->
-> 在 2023/4/25 21:19, Sudeep Holla 写道:
->> On Tue, Apr 25, 2023 at 09:00:31PM +0800, lihuisong (C) wrote:
->>> For firmware, DSD way is simpler and easier to manage these virtual 
->>> platform
->>> devices, and it's an usual way in kernel.
->> Any specific examples you are referring here. We had lots of debate when
->> DSD was introduced. It must be used only when there is no standard ACPI
->> way to achieve the same. But in this I don't (yet) think that is the 
->> case.
->> Further "simplicity" is remotely not the reason why you must use DSD.
->> So until you provide me technical reasons as why _CRS can't work, I
->> have to NACK this approach. DSD in this case seems like pure hack.
->>
->>> Driver only needs to get a fixed value, like pcc-id and type, here.
->>>
->> Yes and _CRS is used to get similar such properties in ACPI. It includes
->> normally MMIO and interrupts and since GAS supports PCC and _CRS can
->> contain GAS, you must simply use that.
-> Hi Sudeep,
->
-> I'm tring to use CRS with GAS to report PCC channel ID and get other 
-> informations driver need by address.
-> I found a way to obtain the generic register information according to 
-> "Referencing the PCC address space" in ACPI spec.
-> And driver also get the PCC generic register information successfully.
->
-> But I don't know how to set and use the address in PCC register.
-> Where should this address come from?
-> It seems that ACPI spec is not very detailed about this.
-> Do you have any suggestions?
->
-> On the other hand, we think that System Memory space + method can also 
-> achieve above goal.
-> What do you think of that?
->
->
-Hi Sudeep,
+The first patch in this series is one of the patch from Jisheng's
+series [1] which is not merged yet. This patch is required to support
+ACPI since efi_init() which gets called before sbi_init() can enable
+static branches and hits a panic.
 
-Can you give us some suggestions about above question and idea?
+Below are two ECRs approved by ASWG.
+RINTC - https://drive.google.com/file/d/1R6k4MshhN3WTT-hwqAquu5nX6xSEqK2l/view
+RHCT - https://drive.google.com/file/d/1nP3nFiH4jkPMp6COOxP6123DCZKR-tia/view
 
-Looking forward to your reply.
 
-/Huisong
+Changes since V5:
+	1) Reordered commits in the series to avoid intermediate build failure reported by Conor.
+	2) Updated hisilicon driver patch as per feedback from Herbert Xu.
+	3) Rebased to 6.4-rc2
+
+Changes since V4:
+	1) Rebased with 6.4-rc1 which has ACPICA patches now.
+	2) Split cpufeature.c patch into two by adding patch 2/7 from Conor's series [2]
+	3) Updated caching RINTC logic to avoid global.
+	4) Added driver patches to enable allmodconfig build at the start of the series.
+	5) Updated tags
+
+Changes since V3:
+	1) Added two more driver patches to workaround allmodconfig build failure.
+	2) Separated removal of riscv_of_processor_hartid() to a different patch.
+	3) Addressed Conor's feedback.
+	4) Rebased to v6.3-rc5 and added latest tags
+
+Changes since V2:
+	1) Dropped ACPI_PROCESSOR patch.
+	2) Added new patch to print debug info of RISC-V INTC in MADT
+	3) Addressed other comments from Drew.
+	4) Rebased and updated tags
+
+Changes since V1:
+	1) Dropped PCI changes and instead added dummy interfaces just to enable
+	   building ACPI core when CONFIG_PCI is enabled. Actual PCI changes will
+	   be added in future along with external interrupt controller support
+	   in ACPI.
+	2) Squashed couple of patches so that new code added gets built in each
+	   commit.
+	3) Fixed the missing wake_cpu code in timer refactor patch as pointed by
+	   Conor
+	4) Fixed an issue with SMP disabled.
+	5) Addressed other comments from Conor.
+	6) Updated documentation patch as per feedback from Sanjaya.
+	7) Fixed W=1 and checkpatch --strict issues.
+	8) Added ACK/RB tags
+
+[1] https://lore.kernel.org/all/20220821140918.3613-1-jszhang@kernel.org/
+[2] https://lore.kernel.org/linux-riscv/20230504-divisive-unsavory-5a2ff0c3c2d1@spud/
+
+These changes are available at
+https://github.com/vlsunil/linux/commits/acpi_b1_us_review_v6
+
+Testing:
+1) Build latest Qemu 
+
+2) Build EDK2 as per instructions in
+https://github.com/vlsunil/riscv-uefi-edk2-docs/wiki/RISC-V-Qemu-Virt-support
+
+3) Build Linux after enabling SBI HVC and SBI earlycon
+CONFIG_RISCV_SBI_V01=y
+CONFIG_SERIAL_EARLYCON_RISCV_SBI=y
+CONFIG_HVC_RISCV_SBI=y
+
+4) Build buildroot.
+
+Run with below command.
+qemu-system-riscv64   -nographic \
+-drive file=Build/RiscVVirtQemu/RELEASE_GCC5/FV/RISCV_VIRT.fd,if=pflash,format=raw,unit=1 \
+-machine virt -smp 16 -m 2G \
+-kernel arch/riscv/boot/Image \
+-initrd buildroot/output/images/rootfs.cpio \
+-append "root=/dev/ram ro console=hvc0 earlycon=sbi"
+
+
+Jisheng Zhang (1):
+  riscv: move sbi_init() earlier before jump_label_init()
+
+Sunil V L (20):
+  platform/surface: Disable for RISC-V
+  crypto: hisilicon/qm: Fix to enable build with RISC-V clang
+  ACPI: tables: Print RINTC information when MADT is parsed
+  ACPI: OSL: Make should_use_kmap() 0 for RISC-V
+  RISC-V: Add support to build the ACPI core
+  ACPI: processor_core: RISC-V: Enable mapping processor to the hartid
+  RISC-V: Add ACPI initialization in setup_arch()
+  RISC-V: ACPI: Cache and retrieve the RINTC structure
+  drivers/acpi: RISC-V: Add RHCT related code
+  RISC-V: smpboot: Create wrapper setup_smp()
+  RISC-V: smpboot: Add ACPI support in setup_smp()
+  RISC-V: only iterate over possible CPUs in ISA string parser
+  RISC-V: cpufeature: Add ACPI support in riscv_fill_hwcap()
+  RISC-V: cpu: Enable cpuinfo for ACPI systems
+  irqchip/riscv-intc: Add ACPI support
+  clocksource/timer-riscv: Refactor riscv_timer_init_dt()
+  clocksource/timer-riscv: Add ACPI support
+  RISC-V: time.c: Add ACPI support for time_init()
+  RISC-V: Enable ACPI in defconfig
+  MAINTAINERS: Add entry for drivers/acpi/riscv
+
+ .../admin-guide/kernel-parameters.txt         |   8 +-
+ MAINTAINERS                                   |   7 +
+ arch/riscv/Kconfig                            |   5 +
+ arch/riscv/configs/defconfig                  |   1 +
+ arch/riscv/include/asm/acenv.h                |  11 +
+ arch/riscv/include/asm/acpi.h                 |  84 ++++++
+ arch/riscv/include/asm/cpu.h                  |   8 +
+ arch/riscv/kernel/Makefile                    |   1 +
+ arch/riscv/kernel/acpi.c                      | 251 ++++++++++++++++++
+ arch/riscv/kernel/cpu.c                       |  30 ++-
+ arch/riscv/kernel/cpufeature.c                |  42 ++-
+ arch/riscv/kernel/setup.c                     |  11 +-
+ arch/riscv/kernel/smpboot.c                   |  77 +++++-
+ arch/riscv/kernel/time.c                      |  25 +-
+ drivers/acpi/Makefile                         |   2 +
+ drivers/acpi/osl.c                            |   2 +-
+ drivers/acpi/processor_core.c                 |  29 ++
+ drivers/acpi/riscv/Makefile                   |   2 +
+ drivers/acpi/riscv/rhct.c                     |  83 ++++++
+ drivers/acpi/tables.c                         |  10 +
+ drivers/clocksource/timer-riscv.c             |  92 ++++---
+ drivers/crypto/hisilicon/qm.c                 |   5 +
+ drivers/irqchip/irq-riscv-intc.c              |  70 +++--
+ drivers/platform/surface/aggregator/Kconfig   |   2 +-
+ 24 files changed, 772 insertions(+), 86 deletions(-)
+ create mode 100644 arch/riscv/include/asm/acenv.h
+ create mode 100644 arch/riscv/include/asm/acpi.h
+ create mode 100644 arch/riscv/include/asm/cpu.h
+ create mode 100644 arch/riscv/kernel/acpi.c
+ create mode 100644 drivers/acpi/riscv/Makefile
+ create mode 100644 drivers/acpi/riscv/rhct.c
+
+-- 
+2.34.1
+
