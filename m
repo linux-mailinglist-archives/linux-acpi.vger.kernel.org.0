@@ -2,103 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ABF9702C99
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 May 2023 14:25:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6899702D9E
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 May 2023 15:09:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241726AbjEOMZI convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 15 May 2023 08:25:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51266 "EHLO
+        id S242157AbjEONJe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 May 2023 09:09:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231348AbjEOMZH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 May 2023 08:25:07 -0400
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 314D41BC
-        for <linux-acpi@vger.kernel.org>; Mon, 15 May 2023 05:25:04 -0700 (PDT)
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-96a2b6d698cso167567866b.1
-        for <linux-acpi@vger.kernel.org>; Mon, 15 May 2023 05:25:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684153502; x=1686745502;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fU8TkkWi1PLQmP9Q/PJIeLJ+Q7Ze8owevQ+26p3y85U=;
-        b=eVjsAWezRgL1wR8n1RO08/uBrmTfnRwo4O3qMApddKoQyL7T/WMiN6ZuljBA5Xn2qG
-         oZbg27J3roCXIY6kC6oeS5QQKmXPbKy3/c+6qsXGJJDTcG/pyPW2CVhtDtbGp0sDHHdE
-         BOLyclNZ/tqLYB1ZGEwVYoSjFnEwtTxx73SpSgNxGhxwetljNJ2n5QhCAnfuNT6DFNqz
-         3bb+juB3zGXMhskLRYCFzZv/nOybJTSsvrxBL0HAlCF9MT9LgEZEbmNOJJKwrcIy7N0u
-         mSLD02yZ9Wt6WyaNA9/+onvZ4Is+X7MjDQov2JiUqeiE0cAGqtCCgXU/7ZAW0vZlON7q
-         uS0A==
-X-Gm-Message-State: AC+VfDxZ+FbgSV7fGatwGRZADDzzhjxnaN7wQIdwRx95wwl0dQQN7FfW
-        YCiRmlgFX6vY+93sVve7sX2LeiiPDL2/afl8xGv4BKgy
-X-Google-Smtp-Source: ACHHUZ58cJfdj9XeVDR+FO+youSone9XQ44FLD6G4fg5sRDRKFZjRbsDKn5j88F6G1txMue9v3lI2dN2jNovoKz9tgQ=
-X-Received: by 2002:a17:906:72cd:b0:965:9db5:3824 with SMTP id
- m13-20020a17090672cd00b009659db53824mr27274524ejl.6.1684153502387; Mon, 15
- May 2023 05:25:02 -0700 (PDT)
+        with ESMTP id S242311AbjEONJQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 15 May 2023 09:09:16 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 811532D57;
+        Mon, 15 May 2023 06:08:53 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C941B2F4;
+        Mon, 15 May 2023 06:08:56 -0700 (PDT)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C55EF3F67D;
+        Mon, 15 May 2023 06:08:09 -0700 (PDT)
+Date:   Mon, 15 May 2023 14:08:07 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     "lihuisong (C)" <lihuisong@huawei.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Shawn Guo <shawnguo@kernel.org>, linux-kernel@vger.kernel.org,
+        soc@kernel.org, wanghuiqiang@huawei.com, tanxiaofei@huawei.com,
+        liuyonglong@huawei.com, huangdaode@huawei.com,
+        linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: Re: [PATCH] soc: hisilicon: Support HCCS driver on Kunpeng SoC
+Message-ID: <20230515130807.pdvx7bxwjkfdsmsr@bogus>
+References: <20230424073020.4039-1-lihuisong@huawei.com>
+ <e0c4f4b5-8b34-4542-b676-f98ddb8ef586@app.fastmail.com>
+ <20230425103040.znv66k364ant6klq@bogus>
+ <c7d9c3c5-e400-c60a-52e0-0f267ec8c517@huawei.com>
+ <20230425131918.5tf5vot4h7jf54xk@bogus>
+ <db6c713c-f99c-fa3f-8d38-9a5d50889cc2@huawei.com>
 MIME-Version: 1.0
-References: <jzqzwdedY4SnVMhKdJpA2nv5eA7o6COWGesAYO0Th3IXK2Pu2UoYfKlhd0YJhospEusFM-qmJG5Mzo-vGhE9VzVWebfqbyYlDdk7ZeDUXCI=@proton.me>
-In-Reply-To: <jzqzwdedY4SnVMhKdJpA2nv5eA7o6COWGesAYO0Th3IXK2Pu2UoYfKlhd0YJhospEusFM-qmJG5Mzo-vGhE9VzVWebfqbyYlDdk7ZeDUXCI=@proton.me>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 15 May 2023 14:24:50 +0200
-Message-ID: <CAJZ5v0i7Sw6EDDdjiyzG-HHmxy-1NkGz+Tq9BoYG-0_nC=EvRQ@mail.gmail.com>
-Subject: Re: [PATCH] Laptop internal keyboard not working on LG UltraPC 17U70P
-To:     =?UTF-8?B?UnViw6luIEfDs21leg==?= <mrgommer@proton.me>
-Cc:     linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <db6c713c-f99c-fa3f-8d38-9a5d50889cc2@huawei.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 8, 2023 at 8:03 PM Rubén Gómez <mrgommer@proton.me> wrote:
+On Thu, May 04, 2023 at 09:16:16PM +0800, lihuisong (C) wrote:
 >
-> Hi,
->
-> This patch, destined to the specific laptop model LG UltraPC 17U70P, solves an already known problem happening with some devices where the keyboard IRQ is handled with the ActiveLow attribute. The kernel currently ignores that, and as a consequence the internal keyboard stops responding as soon it loads up. This has been extensively discussed in bug 213031 [1]. From the work done there an ad hoc list was introduced in the kernel to handle those devices, as seems like other broader solutions would cause problems to other devices. This patch just adds this laptop model to that list. I filled a bug specifically for this laptop model with number 216983 [2]. Patch is already tested against commit 7163a2111f6c in the linux-pm branch.
->
-> [1] https://bugzilla.kernel.org/show_bug.cgi?id=213031
-> [2] https://bugzilla.kernel.org/show_bug.cgi?id=216983
->
-> Signed-off-by: Rubén Gómez Agudo <mrgommer@proton.me>
-> ---
-> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> index e8492b3a393a..0800a9d77558 100644
-> --- a/drivers/acpi/resource.c
-> +++ b/drivers/acpi/resource.c
-> @@ -516,6 +516,17 @@ static const struct dmi_system_id maingear_laptop[] = {
->         { }
->  };
->
-> +static const struct dmi_system_id lg_laptop[] = {
-> +       {
-> +               .ident = "LG Electronics 17U70P",
-> +               .matches = {
-> +                       DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
-> +                       DMI_MATCH(DMI_BOARD_NAME, "17U70P"),
-> +               },
-> +       },
-> +       { }
-> +};
-> +
->  struct irq_override_cmp {
->         const struct dmi_system_id *system;
->         unsigned char irq;
-> @@ -532,6 +543,7 @@ static const struct irq_override_cmp override_table[] = {
->         { lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
->         { tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
->         { maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
-> +       { lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
->  };
->
->  static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+> I'm tring to use CRS with GAS to report PCC channel ID and get other
+> informations driver need by address.
 
-Fixed up (new subject, new changelog, white space damage fixes) and
-applied as 6.4-rc material.
+OK you had pcc-chan-id pcc-type and device-flags in the DSD style bindings
+to begin with. I haven't understood device-flags here so can't comment on
+that.
 
-Thanks!
+> I found a way to obtain the generic register information according to
+> "Referencing the PCC address space" in ACPI spec.
+> And driver also get the PCC generic register information successfully.
+>
+
+Can you elaborate ? I assume by that you must be able to get pcc-chan-id
+right ? You must not need pcc-type as the pcc mailbox driver must handle
+the type for you. If not, we may need to fix or add any missing support.
+
+> But I don't know how to set and use the address in PCC register.
+
+It must be same as what you would have specified in you new bindings
+under "pcc-chan-id". I am confused as you say you were able to get the
+PCC generic register information successfully but you still claim you
+don't know how to set or use the address.
+
+> Where should this address come from?
+> It seems that ACPI spec is not very detailed about this.
+> Do you have any suggestions?
+>
+
+I am afraid, I don't have any as I am failing to understand the exact issue
+you are facing. 
+
+Let me try to ask the question explicity here: 
+
+If you are just referring to just the <RegisterAddress,> in
+
+Register (PCC, RegisterBitWidth, RegisterBitOffset, RegisterAddress, AccessSize)
+
+then,
+
+RegisterAddress is usually the offset in the comms address associated with
+the PCC subspace ID specified in AccessSize. Yes the use of AccessSize for
+the PCC subspace ID is bit confusing though.
+
+You can either list all the registers with _CRS individually or the driver
+can just use the PCC subspace ID in AccessSize and keep RegisterAddress = 0
+but access individual offset based on its own knowledge. I haven't seen the
+full driver yet but I assuming that's how you would have used if you went with
+your DSD pcc-chan-id proposal.
+
+> On the other hand, we think that System Memory space + method can also
+> achieve above goal. What do you think of that?
+
+Again I don't understand what you mean by that.
+
+-- 
+Regards,
+Sudeep
