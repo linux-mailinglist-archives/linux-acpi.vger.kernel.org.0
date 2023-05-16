@@ -2,343 +2,207 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE2AF7051A6
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 17:06:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CB3D7053F5
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 18:34:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232108AbjEPPG5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 May 2023 11:06:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38654 "EHLO
+        id S231208AbjEPQeB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 May 2023 12:34:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234069AbjEPPGy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 11:06:54 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 241CF6A5B
-        for <linux-acpi@vger.kernel.org>; Tue, 16 May 2023 08:06:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684249609; x=1715785609;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ctOUzRb+ZcegTGCVkNEVrNY8x7q5FeX0R0PBONTTeig=;
-  b=TjbBw+ZDd4+HP0iJI/10e98yICja2X5ukOxG6YEpOWswD1gCVyNwtLmc
-   u2diizuAMIF4BIpj0ROX5Ts+1cE3QS89+SZ+GOrqLTTBDLCWO1BdCQNPX
-   gF+s5uCKP+NzHAwa3FoeWImaI3h2T4FMOOJCR/72hbyDhyUKK1T/7LHih
-   sumgoTiYc/NQxLxGqB4Y0BlOefF0ig9UXeWVCJxd3OH7n1ceuMpHvqAmB
-   L3Q6QaVXcvaw4/IFW1FGNyrEyMi5Hz1zOhlmWTES+ly0y11cbdm8KZxSd
-   zxz81y+3stONDF+ymczv/88yZ7Ylq2xBw46iCAmuBRaQew8Lq6zb36gUr
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="417158346"
-X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
-   d="scan'208";a="417158346"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 08:06:42 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="704446245"
-X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
-   d="scan'208";a="704446245"
-Received: from hextor.igk.intel.com ([10.123.220.6])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 08:06:18 -0700
-From:   Michal Wilczynski <michal.wilczynski@intel.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     rafael@kernel.org, srinivas.pandruvada@linux.intel.com,
-        Michal Wilczynski <michal.wilczynski@intel.com>
-Subject: [PATCH v2 2/2] acpi: Move logic responsible for conveying processor OSPM capabilities
-Date:   Tue, 16 May 2023 17:05:58 +0200
-Message-Id: <20230516150558.149886-3-michal.wilczynski@intel.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20230516150558.149886-1-michal.wilczynski@intel.com>
-References: <20230516150558.149886-1-michal.wilczynski@intel.com>
+        with ESMTP id S230527AbjEPQdq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 12:33:46 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F22141BCD;
+        Tue, 16 May 2023 09:33:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net; s=s31663417;
+        t=1684254733; i=j.neuschaefer@gmx.net;
+        bh=fhB7hXqPlLyhvg8cmuKZg4nTLKqqIf4hFaLjTAmDR8E=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=WCKv0kSCq8cZdcodj3bzJzACl4VUx0N8jIRRLDx6AZWncDeaknHBQ5nP0eVYnCTxp
+         6fsbLxswW3YliTBP2l+jyje57qJGgPy81P3h231K9Wp8Y0nyU8CVCoxcD3tatY5bu7
+         FfGSz1VbwzQtNSTW63A+AAmbzuU5zRdOeMKg8S63XdKKPLRuHqQYu4nhaWKGUmOlRh
+         2wm3hFDjfV8vnq7vnoX++qTaeehQG1WstXLXkrAp+sNV2llu33a3OvtCcG2IM4FTB4
+         hGp2yJajFlFUXH+JElvq6qMEZ1iu56Hooa6evB3SyqoDt4iJDtsdnyQg097NKKYS+L
+         vQquKptUrnA8g==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from probook ([89.1.59.32]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M6Udt-1q5HFt3Faz-006u37; Tue, 16
+ May 2023 18:32:12 +0200
+Date:   Tue, 16 May 2023 18:32:09 +0200
+From:   Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Wolfram Sang <wsa@kernel.org>,
+        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        netdev@vger.kernel.org, openbmc@lists.ozlabs.org,
+        linux-gpio@vger.kernel.org, linux-mips@vger.kernel.org
+Subject: Re: [PATCH v4 4/7] pinctrl: wpcm450: elax return value check for IRQ
+ get
+Message-ID: <ZGOwCSPH68DJN/NC@probook>
+References: <cover.1684220962.git.mazziesaccount@gmail.com>
+ <2d89de999a1d142efbd5eb10ff31cca12309e66d.1684220962.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="WrLvMy0clVxWGHYm"
+Content-Disposition: inline
+In-Reply-To: <2d89de999a1d142efbd5eb10ff31cca12309e66d.1684220962.git.mazziesaccount@gmail.com>
+X-Provags-ID: V03:K1:kb9Ha+Yx98MCgnViJRbJ5mV8EzgVqSMWDyckGXEBHPEckS2yxtX
+ WLxGHbQHHyww6R6Ovfb1I6+MLs6unjVXcHPN9cTB2qUyLT2OCQV4a0EnroagIj69QDhNiwQ
+ +/Vn/78OKHy4brwPcnbpJc03GQ7dSWBsQWsx+Fe8NIAEyAT9HzZ3hdQy/WQNO1Ec+/rSljD
+ BU7HzvqPeijKqg+zAILnw==
+UI-OutboundReport: notjunk:1;M01:P0:eqLG+MfPsvo=;dsn+3nEr9xMgnpHyFWJxZLNYN5d
+ GY31/ESf0RyFHD0Wsp5dR+6FvUvf8ls2+02yNc1I2OnqO2S6w+9e/u7Qsm3ag2yMUuidMmHZe
+ MrPhjAT2f2zHNIqKcehCtR7r4DZiPS4PxM1pl5J470ceF/tu+JZM+F6MMdtg14K+qSIGQlutQ
+ 5xt8LAjzsKAlC3PqG8lw2hu2tB1mAuFsZfzw30NulhTGl1PvfesyWE9eSoLCk7oi85iJgKMTi
+ yX50PkGycHbQ4CxFjMCbqPypmZt1W+tvEOBDTadB+HuQn6XPevTpezXUlgyqwxndqX7L/bwWO
+ PlEfuD270YU708j3ci6G5HldGNA+bMgF40SFGDCbUzEGDezwqTiuVXJNulxdVq1ldILAmygiM
+ lXSfJCjR8r1O3Djv6vssLn02B4NtgPa0mLAtCQ0qHFxV27VbCFxTyhSAY2Cp/yEOZ+A1DwCvO
+ iKIfSyBPQropa3WL8AKS6EuF175T5xPOzUJHtjhP4+OZgsIPQVbYmozwTnXUbDSwSI7L5JoZg
+ qCD37EJqugrU2l874OdAy9M1yVK8Ju9HsPeLxU2Tvl3bnLZ1oLWEeFxhGGu+TxenEdz8ZefMM
+ pVc2VtXX4y6dZKbFv25tzyY4JWgxnCITXQfQcDFy8oPsRucV3DVXwmRnbBu8RpS2z4M9hYGaY
+ QWJdFql4bakNJzQ03Fky11IDGzakxsCSlSTV9zvg2ZSLU9LA2F4hqjTcP0F9PbQlGkpQFswY8
+ V61c8E3mMNh8Nwx9acEZX731LSLhNHST2xA47cI5nKlsLKCkMTmHEa5oqHwenSq856CLVG/z+
+ uXjIksinveoOI/IsthUbBTEUy+5PZhl774qIjlxgacPc5ovl4zxUOh/qJGJ0ratCbtsvYVG4c
+ gl2sL6cFa1cJq8BZrlu6Bnwkt7SnTGiIpUclJ8hvqyB+vymjLCUmmHu7pAJENNej8JcvaLCBH
+ G92iqg==
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Since _PDC method is deprecated and a preferred method of communicating
-OSPM processor power management capabilities is _OSC, there is a need to
-move functions checking whether processor is present and workarounds for
-specific hardware to acpi_processor.c as this logic is not _PDC specific.
-It also applies to the _OSC objects.
 
-Move processor_dmi_check(), processor_idle_dmi_table, set_no_mwait() and
-processor_physically_present() to acpi_processor.c.
-Introduce IDLE_NOMWAIT workaround and processor_dmi_table workarounds to
-work with _OSC objects.
-Mark acpi_early_processor_set_pdc() and acpi_processor_set_pdc() as
-deprecated.
+--WrLvMy0clVxWGHYm
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
----
- drivers/acpi/acpi_processor.c | 81 +++++++++++++++++++++++++++++++++++
- drivers/acpi/internal.h       |  3 ++
- drivers/acpi/processor_pdc.c  | 80 +---------------------------------
- include/acpi/processor.h      |  2 +-
- 4 files changed, 87 insertions(+), 79 deletions(-)
+Hello,
 
-diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-index 26f6c002016b..7ab53d0a42d3 100644
---- a/drivers/acpi/acpi_processor.c
-+++ b/drivers/acpi/acpi_processor.c
-@@ -10,6 +10,7 @@
-  *                     Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-  */
- 
-+#include <linux/dmi.h>
- #include <linux/acpi.h>
- #include <linux/device.h>
- #include <linux/kernel.h>
-@@ -21,6 +22,8 @@
- 
- #include <asm/cpu.h>
- 
-+#include <xen/xen.h>
-+
- #include "internal.h"
- 
- DEFINE_PER_CPU(struct acpi_processor *, processors);
-@@ -508,6 +511,79 @@ static void acpi_processor_remove(struct acpi_device *device)
- }
- #endif /* CONFIG_ACPI_HOTPLUG_CPU */
- 
-+bool __init processor_physically_present(acpi_handle handle)
-+{
-+	int cpuid, type;
-+	u32 acpi_id;
-+	acpi_status status;
-+	acpi_object_type acpi_type;
-+	unsigned long long tmp;
-+	union acpi_object object = { 0 };
-+	struct acpi_buffer buffer = { sizeof(union acpi_object), &object };
-+
-+	status = acpi_get_type(handle, &acpi_type);
-+	if (ACPI_FAILURE(status))
-+		return false;
-+
-+	switch (acpi_type) {
-+	case ACPI_TYPE_PROCESSOR:
-+		status = acpi_evaluate_object(handle, NULL, NULL, &buffer);
-+		if (ACPI_FAILURE(status))
-+			return false;
-+		acpi_id = object.processor.proc_id;
-+		break;
-+	case ACPI_TYPE_DEVICE:
-+		status = acpi_evaluate_integer(handle, "_UID", NULL, &tmp);
-+		if (ACPI_FAILURE(status))
-+			return false;
-+		acpi_id = tmp;
-+		break;
-+	default:
-+		return false;
-+	}
-+
-+	if (xen_initial_domain())
-+		/*
-+		 * When running as a Xen dom0 the number of processors Linux
-+		 * sees can be different from the real number of processors on
-+		 * the system, and we still need to execute _PDC for all of
-+		 * them.
-+		 */
-+		return xen_processor_present(acpi_id);
-+
-+	type = (acpi_type == ACPI_TYPE_DEVICE) ? 1 : 0;
-+	cpuid = acpi_get_cpuid(handle, type, acpi_id);
-+
-+	return !invalid_logical_cpuid(cpuid);
-+}
-+
-+static int __init set_no_mwait(const struct dmi_system_id *id)
-+{
-+	pr_notice("%s detected - disabling mwait for CPU C-states\n",
-+		  id->ident);
-+	boot_option_idle_override = IDLE_NOMWAIT;
-+	return 0;
-+}
-+
-+static const struct dmi_system_id processor_idle_dmi_table[] __initconst = {
-+	{
-+	set_no_mwait, "Extensa 5220", {
-+	DMI_MATCH(DMI_BIOS_VENDOR, "Phoenix Technologies LTD"),
-+	DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+	DMI_MATCH(DMI_PRODUCT_VERSION, "0100"),
-+	DMI_MATCH(DMI_BOARD_NAME, "Columbia") }, NULL},
-+	{},
-+};
-+
-+void __init processor_dmi_check(void)
-+{
-+	/*
-+	 * Check whether the system is DMI table. If yes, OSPM
-+	 * should not use mwait for CPU-states.
-+	 */
-+	dmi_check_system(processor_idle_dmi_table);
-+}
-+
- #ifdef CONFIG_X86
- static bool acpi_hwp_native_thermal_lvt_set;
- static acpi_status __init acpi_processor_osc(acpi_handle handle, u32 lvl,
-@@ -523,6 +599,9 @@ static acpi_status __init acpi_processor_osc(acpi_handle handle, u32 lvl,
- 		.cap.pointer = capbuf,
- 	};
- 
-+	if (processor_physically_present(handle) == false)
-+		return AE_OK;
-+
- 	arch_acpi_set_proc_cap_bits(&capbuf[OSC_SUPPORT_DWORD]);
- 
- 	if (boot_option_idle_override == IDLE_NOMWAIT)
-@@ -550,6 +629,8 @@ acpi_status __init acpi_early_processor_osc(void)
- {
- 	acpi_status status;
- 
-+	processor_dmi_check();
-+
- 	status = acpi_walk_namespace(ACPI_TYPE_PROCESSOR, ACPI_ROOT_OBJECT,
- 				     ACPI_UINT32_MAX, acpi_processor_osc, NULL,
- 				     NULL, NULL);
-diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-index 58e892376391..24e93413ae41 100644
---- a/drivers/acpi/internal.h
-+++ b/drivers/acpi/internal.h
-@@ -155,6 +155,9 @@ void acpi_early_processor_set_pdc(void);
- static inline void acpi_early_processor_set_pdc(void) {}
- #endif
- 
-+void processor_dmi_check(void);
-+bool processor_physically_present(acpi_handle handle);
-+
- #ifdef CONFIG_X86
- acpi_status acpi_early_processor_osc(void);
- #else
-diff --git a/drivers/acpi/processor_pdc.c b/drivers/acpi/processor_pdc.c
-index 8d10d000ebc2..ce3acd86dd12 100644
---- a/drivers/acpi/processor_pdc.c
-+++ b/drivers/acpi/processor_pdc.c
-@@ -9,61 +9,12 @@
- 
- #define pr_fmt(fmt) "ACPI: " fmt
- 
--#include <linux/dmi.h>
- #include <linux/slab.h>
- #include <linux/acpi.h>
- #include <acpi/processor.h>
- 
--#include <xen/xen.h>
--
- #include "internal.h"
- 
--static bool __init processor_physically_present(acpi_handle handle)
--{
--	int cpuid, type;
--	u32 acpi_id;
--	acpi_status status;
--	acpi_object_type acpi_type;
--	unsigned long long tmp;
--	union acpi_object object = { 0 };
--	struct acpi_buffer buffer = { sizeof(union acpi_object), &object };
--
--	status = acpi_get_type(handle, &acpi_type);
--	if (ACPI_FAILURE(status))
--		return false;
--
--	switch (acpi_type) {
--	case ACPI_TYPE_PROCESSOR:
--		status = acpi_evaluate_object(handle, NULL, NULL, &buffer);
--		if (ACPI_FAILURE(status))
--			return false;
--		acpi_id = object.processor.proc_id;
--		break;
--	case ACPI_TYPE_DEVICE:
--		status = acpi_evaluate_integer(handle, "_UID", NULL, &tmp);
--		if (ACPI_FAILURE(status))
--			return false;
--		acpi_id = tmp;
--		break;
--	default:
--		return false;
--	}
--
--	if (xen_initial_domain())
--		/*
--		 * When running as a Xen dom0 the number of processors Linux
--		 * sees can be different from the real number of processors on
--		 * the system, and we still need to execute _PDC for all of
--		 * them.
--		 */
--		return xen_processor_present(acpi_id);
--
--	type = (acpi_type == ACPI_TYPE_DEVICE) ? 1 : 0;
--	cpuid = acpi_get_cpuid(handle, type, acpi_id);
--
--	return !invalid_logical_cpuid(cpuid);
--}
--
- static void acpi_set_pdc_bits(u32 *buf)
- {
- 	buf[0] = ACPI_PDC_REVISION_ID;
-@@ -146,7 +97,7 @@ acpi_processor_eval_pdc(acpi_handle handle, struct acpi_object_list *pdc_in)
- 	return status;
- }
- 
--void acpi_processor_set_pdc(acpi_handle handle)
-+void __deprecated acpi_processor_set_pdc(acpi_handle handle)
- {
- 	struct acpi_object_list *obj_list;
- 
-@@ -174,34 +125,7 @@ early_init_pdc(acpi_handle handle, u32 lvl, void *context, void **rv)
- 	return AE_OK;
- }
- 
--static int __init set_no_mwait(const struct dmi_system_id *id)
--{
--	pr_notice("%s detected - disabling mwait for CPU C-states\n",
--		  id->ident);
--	boot_option_idle_override = IDLE_NOMWAIT;
--	return 0;
--}
--
--static const struct dmi_system_id processor_idle_dmi_table[] __initconst = {
--	{
--	set_no_mwait, "Extensa 5220", {
--	DMI_MATCH(DMI_BIOS_VENDOR, "Phoenix Technologies LTD"),
--	DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
--	DMI_MATCH(DMI_PRODUCT_VERSION, "0100"),
--	DMI_MATCH(DMI_BOARD_NAME, "Columbia") }, NULL},
--	{},
--};
--
--static void __init processor_dmi_check(void)
--{
--	/*
--	 * Check whether the system is DMI table. If yes, OSPM
--	 * should not use mwait for CPU-states.
--	 */
--	dmi_check_system(processor_idle_dmi_table);
--}
--
--void __init acpi_early_processor_set_pdc(void)
-+void __init __deprecated acpi_early_processor_set_pdc(void)
- {
- 	processor_dmi_check();
- 
-diff --git a/include/acpi/processor.h b/include/acpi/processor.h
-index 94181fe9780a..83ed42254567 100644
---- a/include/acpi/processor.h
-+++ b/include/acpi/processor.h
-@@ -372,7 +372,7 @@ static inline void acpi_cppc_processor_exit(struct acpi_processor *pr)
- #endif	/* CONFIG_ACPI_CPPC_LIB */
- 
- /* in processor_pdc.c */
--void acpi_processor_set_pdc(acpi_handle handle);
-+void __deprecated acpi_processor_set_pdc(acpi_handle handle);
- 
- /* in processor_throttling.c */
- #ifdef CONFIG_ACPI_CPU_FREQ_PSS
--- 
-2.40.1
+> [PATCH v4 4/7] pinctrl: wpcm450: elax return value check for IRQ get
 
+Typo ("elax") in the subject line.
+
+>
+On Tue, May 16, 2023 at 10:13:14AM +0300, Matti Vaittinen wrote:
+> fwnode_irq_get[_byname]() were changed to not return 0 anymore. The
+> special error case where device-tree based IRQ mapping fails can't no
+> longer be reliably detected from this return value. This yields a
+> functional change in the driver where the mapping failure is treated as
+> an error.
+>=20
+> The mapping failure can occur for example when the device-tree IRQ
+> information translation call-back(s) (xlate) fail, IRQ domain is not
+> found, IRQ type conflicts, etc. In most cases this indicates an error in
+> the device-tree and special handling is not really required.
+>=20
+> One more thing to note is that ACPI APIs do not return zero for any
+> failures so this special handling did only apply on device-tree based
+> systems.
+>=20
+> Drop the special (no error, just skip the IRQ) handling for DT mapping
+> failures as these can no longer be separated from other errors at driver
+> side.
+>=20
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>=20
+> ---
+>=20
+> The special handling in this driver was added when fixing a problem
+> where returning zero from fwnode_irq_get[_byname]() was treated as
+> succes yielding zero being used as a valid IRQ by the driver.
+> f4a31facfa80 ("pinctrl: wpcm450: Correct the fwnode_irq_get() return valu=
+e check")
+> The commit message does not mention if choosing not to abort the probe
+> on device-tree mapping failure (as is done on other errors) was chosen
+> because: a) Abort would have broken some existing setup. b) Because skipp=
+ing
+> an IRQ on failure is "the right thing to do", or c) because it sounded li=
+ke
+> a way to minimize risk of breaking something.
+>=20
+> If the reason is a) - then I'd appreciate receiving some more
+> information and a suggestion how to proceed (if possible). If the reason
+> is b), then it might be best to just skip the IRQ instead of aborting
+> the probe for all errors on IRQ getting. Finally, in case of c), well,
+> by acking this change you will now accept the risk :)
+>=20
+> The first patch of the series changes the fwnode_irq_get() so this depends
+> on the first patch of the series and should not be applied alone.
+
+Thanks for investigating this!
+
+It's not a), because there are no existing setups that rely on broken
+IRQs connected to this pinctrl/GPIO controller.
+
+I suspect b) or c), but I'll let Andy give a more definite answer.
+
+> ---
+>  drivers/pinctrl/nuvoton/pinctrl-wpcm450.c | 2 --
+>  1 file changed, 2 deletions(-)
+>=20
+> diff --git a/drivers/pinctrl/nuvoton/pinctrl-wpcm450.c b/drivers/pinctrl/=
+nuvoton/pinctrl-wpcm450.c
+> index 2d1c1652cfd9..f9326210b5eb 100644
+> --- a/drivers/pinctrl/nuvoton/pinctrl-wpcm450.c
+> +++ b/drivers/pinctrl/nuvoton/pinctrl-wpcm450.c
+> @@ -1106,8 +1106,6 @@ static int wpcm450_gpio_register(struct platform_de=
+vice *pdev,
+>  			irq =3D fwnode_irq_get(child, i);
+>  			if (irq < 0)
+>  				break;
+> -			if (!irq)
+> -				continue;
+> =20
+>  			girq->parents[i] =3D irq;
+>  			girq->num_parents++;
+
+Anyway, this looks good to me.
+
+Reviewed-by: Jonathan Neusch=C3=A4fer <j.neuschaefer@gmx.net>
+
+--WrLvMy0clVxWGHYm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEvHAHGBBjQPVy+qvDCDBEmo7zX9sFAmRjr+cACgkQCDBEmo7z
+X9sWzA//bZZ5OxVZ8EtxzPSK/eibQZfgmPiYXqXgsEMjpRZwcPXskSEwCPtOtf6m
+iRl8ElSCbpvjpPbtjnUWp8s4OcehmR6WvMwY9kSj2rlzojAi5Q3vypAPJKi1l/qn
+X/XFvUt7H21kj2uxfvCF2MTpIimfc+52YDyE2f1JZgcczkSaRzL4fc1EtQMpW2BQ
+/OekLcM7OV9iebAFdptvQiRJIMFPCTL0G7RQKoWrCvoB+TaKBR/FDRYyLIOtzbYe
+r3KCfb1b9ocP4FERIOXPWaeaFmk5cX6fDw3+UOr9w7h1UzKzRYGE+f2eQ9s2kPzy
+kP6Cy6wJ5u1MbnqBDiw1+zZhLTDcP4g2wwWVNMVZdwspVfs5zpdSOwzcYRAhRQeY
+0uy9tJ1HxveapA9WLQCrpEi09c3M3T3rHM8Ico04tpsqSmELqgvFhNaaULcBqQij
+mmQD8nMmJJD2bGVxHl23JtpFFjgK0kDM7TmAxfpbBJc3MSf8cWaOpcZYrsOPmYaI
+fCXIwzCt3eLMkz3/biTv4ORaXEjxuEn5a2c83DLNCiDIOBcZdXkewdorw+PJdxES
+xoM8/2zc7jondgdJv/OMRccXi/AFHybz0pt46gT049vHNvKvBVH1DawYqKIVQb/T
+4O0q+GgQhYRTCb3iz8ZPVEJoGcYiqi4J/xUpx7UAMNY8fYCUsUU=
+=yzDe
+-----END PGP SIGNATURE-----
+
+--WrLvMy0clVxWGHYm--
