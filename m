@@ -2,128 +2,231 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B833E704A2F
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 12:12:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAE14704A7B
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 12:26:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230292AbjEPKMa convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 16 May 2023 06:12:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44750 "EHLO
+        id S231401AbjEPK0d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 May 2023 06:26:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230419AbjEPKMa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 06:12:30 -0400
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75509E6A;
-        Tue, 16 May 2023 03:12:28 -0700 (PDT)
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-50c079eb705so3465666a12.1;
-        Tue, 16 May 2023 03:12:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684231947; x=1686823947;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5F3t+I70HkGPNqWn1Cxy/keylC97OBDE6YM4DG0f+rk=;
-        b=PQT8DrH4ZP1HFMPAyg7CmTaqZDt2D2njsJFH46R0oYJvgO30f2iHwehhbsOjTI4hoF
-         +Q3VWwYMXPtePDuXavhexUsrwweFL7f5CudmyWUdC7AwW0aYJTx10qj6GJxpOtS00uQY
-         8FOBg8IrEIPFlMiuZacacPKksT4w/YPiQhf8qKu3oMIjkFMgfNDKw9dCkPn1Nus+qkjR
-         i380l0kOKlu/jU5bCHlfiMDTgjTP0SixjtNBap/Eykil4Q+R8uAPmTmybeo6f0sH5NzM
-         iwVGqY4aXRsXtbKClBIzVS/jA9gFoE6R7f8zzhxsYfMrluYXq3WX26MWFrTHAd0JmOl+
-         b9ng==
-X-Gm-Message-State: AC+VfDz4Hj3jgkTC7jmhMuIZoaW9GnLo3rVPp28u6phZStUjz620xlUC
-        7FG6WGHb68NQKbJQdZxZQeWYkIxXb6Kxk8AkMpE=
-X-Google-Smtp-Source: ACHHUZ5yjVAJpur1QhPthzZl9+7b01OXZNKtWF/FtkuaM/uZwU381npEbIc/6Tyi0jSlY7DOzaDgHdPk71BSVXpKsTs=
-X-Received: by 2002:a17:906:73dc:b0:94f:4ec3:f0f5 with SMTP id
- n28-20020a17090673dc00b0094f4ec3f0f5mr8908817ejl.4.1684231946583; Tue, 16 May
- 2023 03:12:26 -0700 (PDT)
+        with ESMTP id S232208AbjEPKZ7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 06:25:59 -0400
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B132D5594;
+        Tue, 16 May 2023 03:25:24 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.1.0)
+ id d62d357134d2fbef; Tue, 16 May 2023 12:25:23 +0200
+Received: from kreacher.localnet (unknown [195.136.19.94])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 62198CE4FA9;
+        Tue, 16 May 2023 12:25:22 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH v2] ACPI: scan: Reduce overhead related to devices with dependencies
+Date:   Tue, 16 May 2023 12:25:22 +0200
+Message-ID: <12223415.O9o76ZdvQC@kreacher>
 MIME-Version: 1.0
-References: <20230329100951.1522322-1-sakari.ailus@linux.intel.com>
- <20230329100951.1522322-4-sakari.ailus@linux.intel.com> <1865464.tdWV9SEqCh@kreacher>
- <ZGNFgXM/463ycI6R@kekkonen.localdomain>
-In-Reply-To: <ZGNFgXM/463ycI6R@kekkonen.localdomain>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 16 May 2023 12:12:13 +0200
-Message-ID: <CAJZ5v0jcZsANJr5n7pAM2KR4c_kLkhbDC_docOA8iTVNq_WshA@mail.gmail.com>
-Subject: Re: [PATCH v8 03/10] ACPI: property: Parse _CRS CSI-2 descriptor
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        rafael@kernel.org, andriy.shevchenko@linux.intel.com,
-        heikki.krogerus@linux.intel.com
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrfeehledgvdejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepffffffekgfehheffleetieevfeefvefhleetjedvvdeijeejledvieehueevueffnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepgedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehhuggvghhovgguvgesrhgvughhrghtrdgtohhmpdhrtghpthhtohepshgrkhgrrhhirdgrihhluhhssehlihhnuhigrdhinhhtvghlrdgtohhm
+X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Sakari,
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Subject: [PATCH] ACPI: scan: Reduce overhead related to devices with dependencies
 
-On Tue, May 16, 2023 at 10:57 AM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
->
-> Hi Rafael,
->
-> On Mon, May 15, 2023 at 06:45:10PM +0200, Rafael J. Wysocki wrote:
-> > On Wednesday, March 29, 2023 12:09:44 PM CEST Sakari Ailus wrote:
-> > > Parse newly added ACPI _CRS CSI-2 descriptor for CSI-2 and camera
-> > > configuration, associate it with appropriate devices and allocate memory for
-> > > software nodes needed to create a DT-like data structure for drivers.
-> >
-> > It occurred to me, that there would be so many things I would like to change
-> > in this patch, so it would be better to create my own version of it, which
-> > is appended.
-> >
-> > It is based on
-> >
-> > https://patchwork.kernel.org/project/linux-acpi/patch/2694293.mvXUDI8C0e@kreacher/
-> >
-> > that has just been posted.
-> >
-> > IIUC, the idea is to extract the ACPI handle for each resource source in every
-> > _CRS CSI-2 resource descriptor and count how many times each handle appears in
-> > a CSI-2 context, either because it is referenced from a _CRS CSI-2 resource
-> > descriptor (as a "resource source"), or because its device object has CSI-2
-> > resource descriptors in _CRS.
->
-> Correct.
->
-> >
-> > This allows a set of software nodes to be allocated for each of these handles.
-> >
-> > If I got that totally wrong, please let me know.  Otherwise, I will rework the
-> > remaining patches in the series to match this one.
->
-> It seems about right. I mostly see renames, moving the code around,
-> using the existing dependency list and then parsing sub-tree for _CRS CSI-2
-> objects right from the bus scan callback.
->
-> It seems you've also moved the structs from internal.h to what is now
-> called mipi-disco-imaging.c.
+Notice that all of the objects for which the acpi_scan_check_dep()
+return value is greater than 0 are present in acpi_dep_list as consumers
+(there may be multiple entries for one object, but that is not a
+problem), so after carrying out the initial ACPI namespace walk in which
+devices with dependencies are skipped, acpi_bus_scan() can simply walk
+acpi_dep_list and enumerate all of the unique consumer objects from
+there and their descendants instead of walking the entire target branch
+of the ACPI namespace and looking for device objects that have not been
+enumerated yet in it.
 
-No, I haven't moved anything in this direction, I've just dropped them.
+Because walking acpi_dep_list is generally less overhead than walking
+the entire ACPI namespace, use the observation above to reduce the
+system initialization overhead related to ACPI, which is particularly
+important on large systems.
 
-They can be added in the next patches if needed.
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
 
-> They'll be later needed in e.g. scan.c. At
-> least I'd use names that indicate they're related to scanning the bus:
-> they're not needed after this is done.
->
-> I don't have objections to you reworking the rest, but given the number of
-> non-trivial changes, will it work after this? :-)
+-> v2: Hold acpi_dep_list_lock around the acpi_fetch_acpi_dev() invocation in
+       acpi_scan_postponed() (Hans).
 
-Probably not right from the start, but after some minor adjustments it
-should work, unless I've missed something significant.
+---
+ drivers/acpi/scan.c     |   81 ++++++++++++++++++++++++++++++++++++------------
+ include/acpi/acpi_bus.h |    2 +
+ 2 files changed, 63 insertions(+), 20 deletions(-)
 
-> I can also do this, although I would un-do some of the changes in this patch in order to
-> prepare for the rest (such as moving the structs from internal.h).
->
-> See e.g. "ACPI: scan: Generate software nodes based on MIPI DisCo for
-> Imaging", I think it's the 6th patch.
+Index: linux-pm/include/acpi/acpi_bus.h
+===================================================================
+--- linux-pm.orig/include/acpi/acpi_bus.h
++++ linux-pm/include/acpi/acpi_bus.h
+@@ -289,6 +289,8 @@ struct acpi_dep_data {
+ 	acpi_handle supplier;
+ 	acpi_handle consumer;
+ 	bool honor_dep;
++	bool met;
++	bool free_when_met;
+ };
+ 
+ /* Performance Management */
+Index: linux-pm/drivers/acpi/scan.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/scan.c
++++ linux-pm/drivers/acpi/scan.c
+@@ -2029,8 +2029,6 @@ static u32 acpi_scan_check_dep(acpi_hand
+ 	return count;
+ }
+ 
+-static bool acpi_bus_scan_second_pass;
+-
+ static acpi_status acpi_bus_check_add(acpi_handle handle, bool check_dep,
+ 				      struct acpi_device **adev_p)
+ {
+@@ -2050,10 +2048,8 @@ static acpi_status acpi_bus_check_add(ac
+ 			return AE_OK;
+ 
+ 		/* Bail out if there are dependencies. */
+-		if (acpi_scan_check_dep(handle, check_dep) > 0) {
+-			acpi_bus_scan_second_pass = true;
++		if (acpi_scan_check_dep(handle, check_dep) > 0)
+ 			return AE_CTRL_DEPTH;
+-		}
+ 
+ 		fallthrough;
+ 	case ACPI_TYPE_ANY:	/* for ACPI_ROOT_OBJECT */
+@@ -2301,6 +2297,12 @@ static bool acpi_scan_clear_dep_queue(st
+ 	return true;
+ }
+ 
++static void acpi_scan_delete_dep_data(struct acpi_dep_data *dep)
++{
++	list_del(&dep->node);
++	kfree(dep);
++}
++
+ static int acpi_scan_clear_dep(struct acpi_dep_data *dep, void *data)
+ {
+ 	struct acpi_device *adev = acpi_get_acpi_dev(dep->consumer);
+@@ -2311,8 +2313,10 @@ static int acpi_scan_clear_dep(struct ac
+ 			acpi_dev_put(adev);
+ 	}
+ 
+-	list_del(&dep->node);
+-	kfree(dep);
++	if (dep->free_when_met)
++		acpi_scan_delete_dep_data(dep);
++	else
++		dep->met = true;
+ 
+ 	return 0;
+ }
+@@ -2406,6 +2410,55 @@ struct acpi_device *acpi_dev_get_next_co
+ }
+ EXPORT_SYMBOL_GPL(acpi_dev_get_next_consumer_dev);
+ 
++static void acpi_scan_postponed_branch(acpi_handle handle)
++{
++	struct acpi_device *adev = NULL;
++
++	if (ACPI_FAILURE(acpi_bus_check_add(handle, false, &adev)))
++		return;
++
++	acpi_walk_namespace(ACPI_TYPE_ANY, handle, ACPI_UINT32_MAX,
++			    acpi_bus_check_add_2, NULL, NULL, (void **)&adev);
++	acpi_bus_attach(adev, NULL);
++}
++
++static void acpi_scan_postponed(void)
++{
++	struct acpi_dep_data *dep, *tmp;
++
++	mutex_lock(&acpi_dep_list_lock);
++
++	list_for_each_entry_safe(dep, tmp, &acpi_dep_list, node) {
++		acpi_handle handle = dep->consumer;
++
++		/*
++		 * In case there are multiple acpi_dep_list entries with the
++		 * same consumer, skip the current entry if the consumer device
++		 * object corresponding to it is present already.
++		 */
++		if (!acpi_fetch_acpi_dev(handle)) {
++			/*
++			 * Even though the lock is released here, tmp is
++			 * guaranteed to be valid, because none of the list
++			 * entries following dep is marked as "free when met"
++			 * and so they cannot be deleted.
++			 */
++			mutex_unlock(&acpi_dep_list_lock);
++
++			acpi_scan_postponed_branch(handle);
++
++			mutex_lock(&acpi_dep_list_lock);
++		}
++
++		if (dep->met)
++			acpi_scan_delete_dep_data(dep);
++		else
++			dep->free_when_met = true;
++	}
++
++	mutex_unlock(&acpi_dep_list_lock);
++}
++
+ /**
+  * acpi_bus_scan - Add ACPI device node objects in a given namespace scope.
+  * @handle: Root of the namespace scope to scan.
+@@ -2424,8 +2477,6 @@ int acpi_bus_scan(acpi_handle handle)
+ {
+ 	struct acpi_device *device = NULL;
+ 
+-	acpi_bus_scan_second_pass = false;
+-
+ 	/* Pass 1: Avoid enumerating devices with missing dependencies. */
+ 
+ 	if (ACPI_SUCCESS(acpi_bus_check_add(handle, true, &device)))
+@@ -2438,19 +2489,9 @@ int acpi_bus_scan(acpi_handle handle)
+ 
+ 	acpi_bus_attach(device, (void *)true);
+ 
+-	if (!acpi_bus_scan_second_pass)
+-		return 0;
+-
+ 	/* Pass 2: Enumerate all of the remaining devices. */
+ 
+-	device = NULL;
+-
+-	if (ACPI_SUCCESS(acpi_bus_check_add(handle, false, &device)))
+-		acpi_walk_namespace(ACPI_TYPE_ANY, handle, ACPI_UINT32_MAX,
+-				    acpi_bus_check_add_2, NULL, NULL,
+-				    (void **)&device);
+-
+-	acpi_bus_attach(device, NULL);
++	acpi_scan_postponed();
+ 
+ 	return 0;
+ }
 
-I will.
 
-Thanks!
+
