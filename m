@@ -2,133 +2,128 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC20C704B9E
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 13:04:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3F1F704BFF
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 13:11:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232675AbjEPLEP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 May 2023 07:04:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53812 "EHLO
+        id S232825AbjEPLLr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 May 2023 07:11:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231557AbjEPLDZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 07:03:25 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B3B4198E;
-        Tue, 16 May 2023 04:01:50 -0700 (PDT)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34GAjGJL030986;
-        Tue, 16 May 2023 11:01:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pp1; bh=ezG6jTGZUINryZDCi0wemxVU5pmXhLyRDWX1OhiOgHU=;
- b=h6lzSEKUdWWG4A/aTdtGXH4vAF28nPcnoL6kIe44ov3ha/krGBBhU6GOjFyGyGKXbmTc
- aqkXi1L+M9tQZaItW62onlbM1aWemBBncbegVPeaRnVHHwVLqoQwlUPg/CYGn3H0rUOh
- JuYHWT+xcdsROKFCUtzQYM2fDjB8xwtkj7OTsmKnOvBNf8EHoUifuu4yaGn5pb4uguGq
- MSgwzfe8UxOJQkeKlp7UfuMS1O1aSHy0wUEju9YpBgY8oJ9CmbqiClPZ6BxzZB1cbEfk
- UcSfuX9WaYmvy6pQesXsTZCLnSCH+OAN6ai7qir4mu/9m91OkxnGZVlRMFvOMtfJibq0 kQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qm8bn0e7p-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 16 May 2023 11:01:08 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34GAkeu5002316;
-        Tue, 16 May 2023 11:01:07 GMT
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qm8bn0e69-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 16 May 2023 11:01:07 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-        by ppma04fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34G9brXp014004;
-        Tue, 16 May 2023 11:01:04 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-        by ppma04fra.de.ibm.com (PPS) with ESMTPS id 3qj264sane-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 16 May 2023 11:01:04 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-        by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34GB121x44433722
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 16 May 2023 11:01:02 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 61BA820043;
-        Tue, 16 May 2023 11:01:02 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id EFA5B2004D;
-        Tue, 16 May 2023 11:01:01 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-        by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-        Tue, 16 May 2023 11:01:01 +0000 (GMT)
-From:   Niklas Schnelle <schnelle@linux.ibm.com>
-To:     Arnd Bergmann <arnd@arndb.de>, Jaroslav Kysela <perex@perex.cz>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH v4 26/41] pnp: add HAS_IOPORT dependencies
-Date:   Tue, 16 May 2023 13:00:22 +0200
-Message-Id: <20230516110038.2413224-27-schnelle@linux.ibm.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230516110038.2413224-1-schnelle@linux.ibm.com>
-References: <20230516110038.2413224-1-schnelle@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 4SOFwS1bUwRSspsSLqmRSfBI48x6gJXQ
-X-Proofpoint-ORIG-GUID: iGVhOeXDZmrWc_CqFrDp9Y7IH11Ipm_X
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+        with ESMTP id S232829AbjEPLLS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 07:11:18 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E61C47292;
+        Tue, 16 May 2023 04:10:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1684235415; x=1715771415;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=TbDFPPkO6oQQdWKo53x3LE6KWfww5hbCUtUF4G8tXCE=;
+  b=Ee+Kr0jb9gZaHV8JdDGs45Ld/DnVDLrJBD/z+8Nsd+j0fET/9837yJ2h
+   CXrawG4omSiydm6s2nsxZGw6Hy37LIgKfseeZ8xYIclIE7UaxdY+XgEpq
+   WAL3I53/TJwQV/+I/FA4fNjCXWNtk9HJb+p5VTon3KW7L/MDkt76KBFhZ
+   x4xpXhtsDs0NKthAt6rOeOob4zIL4OVKoHXOk5TmvXOJOLIMEbkDY/pSg
+   8hhAWiYca7UCAnf3PggvyYf/MqTcuMzUarAlC5ddKArqcoXkSHJHOufbn
+   yIiKbcZ5Ng6nV++DU+wAnRIKeCmZkanMtJkHp9Qj/G/8FjppPcBPhzUKr
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="379622175"
+X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
+   d="scan'208";a="379622175"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:09:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="678819882"
+X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
+   d="scan'208";a="678819882"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:09:54 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+        by kekkonen.fi.intel.com (Postfix) with ESMTP id 3D018120279;
+        Tue, 16 May 2023 14:09:52 +0300 (EEST)
+Date:   Tue, 16 May 2023 11:09:52 +0000
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
+        andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH v8 03/10] ACPI: property: Parse _CRS CSI-2 descriptor
+Message-ID: <ZGNkgE5NHoSPm4a5@kekkonen.localdomain>
+References: <20230329100951.1522322-1-sakari.ailus@linux.intel.com>
+ <20230329100951.1522322-4-sakari.ailus@linux.intel.com>
+ <1865464.tdWV9SEqCh@kreacher>
+ <ZGNFgXM/463ycI6R@kekkonen.localdomain>
+ <CAJZ5v0jcZsANJr5n7pAM2KR4c_kLkhbDC_docOA8iTVNq_WshA@mail.gmail.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-16_04,2023-05-16_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- lowpriorityscore=0 mlxlogscore=999 impostorscore=0 mlxscore=0 phishscore=0
- suspectscore=0 spamscore=0 malwarescore=0 clxscore=1011 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305160089
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0jcZsANJr5n7pAM2KR4c_kLkhbDC_docOA8iTVNq_WshA@mail.gmail.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In a future patch HAS_IOPORT=n will result in inb()/outb() and friends
-not being declared. We thus need to depend on HAS_IOPORT even when
-compile testing only.
+Hi Rafael,
 
-Co-developed-by: Arnd Bergmann <arnd@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@kernel.org>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
----
-Note: The HAS_IOPORT Kconfig option was added in v6.4-rc1 so
-      per-subsystem patches may be applied independently
+On Tue, May 16, 2023 at 12:12:13PM +0200, Rafael J. Wysocki wrote:
+> Hi Sakari,
+> 
+> On Tue, May 16, 2023 at 10:57 AM Sakari Ailus
+> <sakari.ailus@linux.intel.com> wrote:
+> >
+> > Hi Rafael,
+> >
+> > On Mon, May 15, 2023 at 06:45:10PM +0200, Rafael J. Wysocki wrote:
+> > > On Wednesday, March 29, 2023 12:09:44 PM CEST Sakari Ailus wrote:
+> > > > Parse newly added ACPI _CRS CSI-2 descriptor for CSI-2 and camera
+> > > > configuration, associate it with appropriate devices and allocate memory for
+> > > > software nodes needed to create a DT-like data structure for drivers.
+> > >
+> > > It occurred to me, that there would be so many things I would like to change
+> > > in this patch, so it would be better to create my own version of it, which
+> > > is appended.
+> > >
+> > > It is based on
+> > >
+> > > https://patchwork.kernel.org/project/linux-acpi/patch/2694293.mvXUDI8C0e@kreacher/
+> > >
+> > > that has just been posted.
+> > >
+> > > IIUC, the idea is to extract the ACPI handle for each resource source in every
+> > > _CRS CSI-2 resource descriptor and count how many times each handle appears in
+> > > a CSI-2 context, either because it is referenced from a _CRS CSI-2 resource
+> > > descriptor (as a "resource source"), or because its device object has CSI-2
+> > > resource descriptors in _CRS.
+> >
+> > Correct.
+> >
+> > >
+> > > This allows a set of software nodes to be allocated for each of these handles.
+> > >
+> > > If I got that totally wrong, please let me know.  Otherwise, I will rework the
+> > > remaining patches in the series to match this one.
+> >
+> > It seems about right. I mostly see renames, moving the code around,
+> > using the existing dependency list and then parsing sub-tree for _CRS CSI-2
+> > objects right from the bus scan callback.
+> >
+> > It seems you've also moved the structs from internal.h to what is now
+> > called mipi-disco-imaging.c.
+> 
+> No, I haven't moved anything in this direction, I've just dropped them.
 
- drivers/pnp/isapnp/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Ah, I think the struct was added to scan.c by the earlier patch. Indeed, by
+doing the _CRS CSI2 scanning right from the device scanning callback, it's
+probably possible to omit these.
 
-diff --git a/drivers/pnp/isapnp/Kconfig b/drivers/pnp/isapnp/Kconfig
-index d0479a563123..79bd48f1dd94 100644
---- a/drivers/pnp/isapnp/Kconfig
-+++ b/drivers/pnp/isapnp/Kconfig
-@@ -4,7 +4,7 @@
- #
- config ISAPNP
- 	bool "ISA Plug and Play support"
--	depends on ISA || COMPILE_TEST
-+	depends on ISA || (HAS_IOPORT && COMPILE_TEST)
- 	help
- 	  Say Y here if you would like support for ISA Plug and Play devices.
- 	  Some information is in <file:Documentation/driver-api/isapnp.rst>.
 -- 
-2.39.2
+Regards,
 
+Sakari Ailus
