@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47149704CF5
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 13:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F093704CF7
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 13:50:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233049AbjEPLuL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 May 2023 07:50:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45166 "EHLO
+        id S233152AbjEPLu1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 May 2023 07:50:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233184AbjEPLt4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 07:49:56 -0400
+        with ESMTP id S233195AbjEPLt6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 07:49:58 -0400
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B1C6EA5
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8662B7284
         for <linux-acpi@vger.kernel.org>; Tue, 16 May 2023 04:49:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1684237780; x=1715773780;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=X4jzIxNcptBRjTuITcQhS+P6UWBqr7/Y+dzVNs5Qp3I=;
-  b=e1FvoJOC7slhhawFxvgoJUBOGsSHt0VPfUVZo84WI6ouw4OrVZb2BA/l
-   l7RdvuRRg4JbrayvbOdI8dw3sMo5Q+FMS/Zoyn2hGeLO7ol5uNy5CFPsI
-   h+2RjS1pEcfsh1bLFM0S4MtLSoGsC8VZN0gXY5lNwbZVeJy/qXWt2qaj4
-   EIoxIi5JbpDsXLD1vjADSoNNZ/45lFHaTKClE5fqRkCkSGJ2XAJq4IIwM
-   YxlmIHcVb4bwQPJDVDahUpT6WMU+NX77NQzf8popk6SGUIWlplluI3XFh
-   tl+UdUxLPwk8zgr0jXb0TlulrVoZstDLFV0Yd0EJzYt6VUefn9u70OlAv
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="417111735"
+  bh=y0VBERQ5PR3nyeSq+O7hX0oeQ5wwm1bOcmrLZAB/n3I=;
+  b=lTvKpGx0WsJIFj5Ynb3e/+9VTIPUFVHLmDW6NPEKAG30yFNSTfUcJyD1
+   feRRUxrCtpSqEC9deDQWzk87Nht8kQQ4Mce2WHWWi4wMwXBt+dxLkKKuy
+   kzL7nfxfohKoHMTgLDgWQaOv333n+9CBmgMkKEpBppUqwhBDC4XEBuETS
+   pgqEtOKw6EFbmj4v4WrrLqHY7486HLupE1kX47V8vTuTKvszfqyKOWXqt
+   KNP2y6Mk08saDWqRJhLGLEAHA0BGtCjSpZJjTQIv3YGo0tBJUwsRthaAw
+   DNVE9UDUspvytiPXHUKlGJg9w68doNWw2w8KxUNlnq+kYEMNsc8LAKPdG
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="417111740"
 X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
-   d="scan'208";a="417111735"
+   d="scan'208";a="417111740"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:47:12 -0700
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:47:13 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="731961989"
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="731961999"
 X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
-   d="scan'208";a="731961989"
+   d="scan'208";a="731961999"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:47:10 -0700
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:47:12 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
 To:     linux-acpi@vger.kernel.org
 Cc:     rafael@kernel.org, Michal Wilczynski <michal.wilczynski@intel.com>
-Subject: [PATCH v2 29/34] platform/x86/wireless-hotkey: Move handler installing logic to driver
-Date:   Tue, 16 May 2023 13:46:12 +0200
-Message-Id: <20230516114617.148963-30-michal.wilczynski@intel.com>
+Subject: [PATCH v2 30/34] platform/x86/xo15-ebook: Move handler installing logic to driver
+Date:   Tue, 16 May 2023 13:46:13 +0200
+Message-Id: <20230516114617.148963-31-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230516114617.148963-1-michal.wilczynski@intel.com>
 References: <20230516114617.148963-1-michal.wilczynski@intel.com>
@@ -73,57 +73,53 @@ what's required by acpi_device_install_event_handler().
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/platform/x86/wireless-hotkey.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ drivers/platform/x86/xo15-ebook.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/x86/wireless-hotkey.c b/drivers/platform/x86/wireless-hotkey.c
-index 4422863f47bb..51169509fea1 100644
---- a/drivers/platform/x86/wireless-hotkey.c
-+++ b/drivers/platform/x86/wireless-hotkey.c
-@@ -68,9 +68,12 @@ static void wireless_input_destroy(struct acpi_device *device)
+diff --git a/drivers/platform/x86/xo15-ebook.c b/drivers/platform/x86/xo15-ebook.c
+index 391f7ea4431e..8b5b05429889 100644
+--- a/drivers/platform/x86/xo15-ebook.c
++++ b/drivers/platform/x86/xo15-ebook.c
+@@ -56,8 +56,9 @@ static int ebook_send_state(struct acpi_device *device)
+ 	return 0;
+ }
+ 
+-static void ebook_switch_notify(struct acpi_device *device, u32 event)
++static void ebook_switch_notify(acpi_handle handle, u32 event, void *data)
+ {
++	struct acpi_device *device = data;
+ 	switch (event) {
+ 	case ACPI_FIXED_HARDWARE_EVENT:
+ 	case XO15_EBOOK_NOTIFY_STATUS:
+@@ -134,7 +135,11 @@ static int ebook_switch_add(struct acpi_device *device)
+ 		device_set_wakeup_enable(&device->dev, true);
+ 	}
+ 
+-	return 0;
++	error = acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY, ebook_switch_notify);
++	if (error)
++		goto err_free_input;
++
++	return error;
+ 
+  err_free_input:
+ 	input_free_device(input);
+@@ -147,6 +152,7 @@ static void ebook_switch_remove(struct acpi_device *device)
+ {
+ 	struct ebook_switch *button = acpi_driver_data(device);
+ 
++	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, ebook_switch_notify);
+ 	input_unregister_device(button->input);
  	kfree(button);
  }
- 
--static void wl_notify(struct acpi_device *acpi_dev, u32 event)
-+static void wl_notify(acpi_handle handle, u32 event, void *data)
- {
--	struct wl_button *button = acpi_driver_data(acpi_dev);
-+	struct acpi_device *acpi_dev = data;
-+	struct wl_button *button;
-+
-+	button = acpi_driver_data(acpi_dev);
- 
- 	if (event != 0x80) {
- 		pr_info("Received unknown event (0x%x)\n", event);
-@@ -95,16 +98,24 @@ static int wl_add(struct acpi_device *device)
- 	device->driver_data = button;
- 
- 	err = wireless_input_setup(device);
--	if (err) {
--		pr_err("Failed to setup wireless hotkeys\n");
--		kfree(button);
--	}
-+	if (err)
-+		goto fail;
- 
-+	err = acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY, wl_notify);
-+	if (err)
-+		goto fail;
-+
-+	return err;
-+
-+fail:
-+	pr_err("Failed to setup wireless hotkeys\n");
-+	kfree(button);
- 	return err;
- }
- 
- static void wl_remove(struct acpi_device *device)
- {
-+	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, wl_notify);
- 	wireless_input_destroy(device);
- }
- 
+@@ -158,7 +164,6 @@ static struct acpi_driver xo15_ebook_driver = {
+ 	.ops = {
+ 		.add = ebook_switch_add,
+ 		.remove = ebook_switch_remove,
+-		.notify = ebook_switch_notify,
+ 	},
+ 	.drv.pm = &ebook_switch_pm,
+ };
 -- 
 2.40.1
 
