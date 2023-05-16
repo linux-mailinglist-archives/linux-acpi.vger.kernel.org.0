@@ -2,234 +2,143 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 756D8704C73
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 13:37:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6455A704CBF
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 13:46:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232905AbjEPLhG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 May 2023 07:37:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34232 "EHLO
+        id S233057AbjEPLqz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 May 2023 07:46:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232651AbjEPLhF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 07:37:05 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0887EBD;
-        Tue, 16 May 2023 04:37:04 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7C0DC2F4;
-        Tue, 16 May 2023 04:37:48 -0700 (PDT)
-Received: from [10.163.71.75] (unknown [10.163.71.75])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 318063F663;
-        Tue, 16 May 2023 04:36:57 -0700 (PDT)
-Message-ID: <6ebe814c-437a-dead-cdaa-d6b48fa36ba7@arm.com>
-Date:   Tue, 16 May 2023 17:06:54 +0530
+        with ESMTP id S233061AbjEPLqn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 07:46:43 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29E5C6A58
+        for <linux-acpi@vger.kernel.org>; Tue, 16 May 2023 04:46:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1684237593; x=1715773593;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=XYspxCqO5D4kWJBWip8vWqmnjagezUV8ah+tJqm3twA=;
+  b=Kk4l27rmuSK/JJAHIQoSZ2yS1TPAeguCCe4k4jOVvWRn/XS5CsMR2uTZ
+   bxsBiEmX8xYol69/uvIB9YU46dpK5DJgdOhVrjbRv1p52lYyh/a8Wmma3
+   7BmQ0Nk4cXF3GYI7SsZfMvWER2wDu5CZ7DBfIXvruMEasj2whol3JYQUw
+   SpNYG2SOMGzGdrw8o809/cw70s8WVZPO6uC2zCSd6RL2ysNuihnX2Azd1
+   J64TIzz80lN2nmnE7ScsBzmq3j0HPHB0/hWuVcNvZ95rECO7DLtWo71XK
+   5IYJofjyFsEcGAi3Ffx19JLe526g5HHNxbk6ocKUhEhxikCdWJnfKg4K6
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="417111584"
+X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
+   d="scan'208";a="417111584"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:46:32 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="731961773"
+X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
+   d="scan'208";a="731961773"
+Received: from hextor.igk.intel.com ([10.123.220.6])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:46:31 -0700
+From:   Michal Wilczynski <michal.wilczynski@intel.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     rafael@kernel.org, Michal Wilczynski <michal.wilczynski@intel.com>
+Subject: [PATCH v2 00/34] Remove .notify callback in acpi_device_ops
+Date:   Tue, 16 May 2023 13:45:43 +0200
+Message-Id: <20230516114617.148963-1-michal.wilczynski@intel.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH V2 4/5] coresight: etm4x: Change etm4_platform_driver
- driver for MMIO devices
-Content-Language: en-US
-To:     Suzuki K Poulose <suzuki.poulose@arm.com>,
-        linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org
-Cc:     scclevenger@os.amperecomputing.com,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Mike Leach <mike.leach@linaro.org>, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230327050537.30861-1-anshuman.khandual@arm.com>
- <20230327050537.30861-5-anshuman.khandual@arm.com>
- <775052f2-ef23-c015-86e9-daaffca75527@arm.com>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <775052f2-ef23-c015-86e9-daaffca75527@arm.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Currently drivers support ACPI event handlers by defining .notify
+callback in acpi_device_ops. This solution is suboptimal as event
+handler installer installs intermediary function acpi_notify_device as a
+handler in every driver. Also this approach requires extra variable
+'flags' for specifying event types that the driver want to subscribe to.
+Additionally this is a pre-work required to align acpi_driver with
+platform_driver and eventually replace acpi_driver with platform_driver.
 
+Remove .notify callback from the acpi_device_ops. Replace it with each
+driver installing and removing it's event handlers.
 
-On 3/27/23 20:24, Suzuki K Poulose wrote:
-> On 27/03/2023 06:05, Anshuman Khandual wrote:
->> Add support for handling MMIO based devices via platform driver. We need to
->> make sure that :
->>
->> 1) The APB clock, if present is enabled at probe and via runtime_pm ops
->> 2) Use the ETM4x architecture or CoreSight architecture registers to
->>     identify a device as CoreSight ETM4x, instead of relying a white list of
->>     "Peripheral IDs"
->>
->> The driver doesn't get to handle the devices yet, until we wire the ACPI
->> changes to move the devices to be handled via platform driver than the
->> etm4_amba driver.
->>
->> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
->> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Cc: Mike Leach <mike.leach@linaro.org>
->> Cc: Leo Yan <leo.yan@linaro.org>
->> Cc: coresight@lists.linaro.org
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linux-kernel@vger.kernel.org
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>   .../coresight/coresight-etm4x-core.c          | 62 +++++++++++++++++--
->>   drivers/hwtracing/coresight/coresight-etm4x.h |  4 ++
->>   include/linux/coresight.h                     | 47 ++++++++++++++
->>   3 files changed, 109 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
->> index 3521838ab4fb..bef205023bbe 100644
->> --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
->> +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
->> @@ -30,6 +30,7 @@
->>   #include <linux/platform_device.h>
->>   #include <linux/pm_runtime.h>
->>   #include <linux/property.h>
->> +#include <linux/clk/clk-conf.h>
->>     #include <asm/barrier.h>
->>   #include <asm/sections.h>
->> @@ -1067,12 +1068,22 @@ static bool etm4_init_sysreg_access(struct etmv4_drvdata *drvdata,
->>       return true;
->>   }
->>   +static bool is_etm4x_devtype(void __iomem *base)
->> +{
->> +    u32 devtype = readl(base + TRCDEVTYPE);
->> +
->> +    return (devtype == ETM_DEVTYPE_ETMv4x_ARCH);
->> +}
->> +
->>   static bool etm4_init_iomem_access(struct etmv4_drvdata *drvdata,
->>                      struct csdev_access *csa)
->>   {
->>       u32 devarch = readl_relaxed(drvdata->base + TRCDEVARCH);
->>       u32 idr1 = readl_relaxed(drvdata->base + TRCIDR1);
->>   +    if (!is_coresight_device(drvdata->base) || !is_etm4x_devtype(drvdata->base))
->> +        return false;
->> +
->>       /*
->>        * All ETMs must implement TRCDEVARCH to indicate that
->>        * the component is an ETMv4. To support any broken
->> @@ -2133,6 +2144,7 @@ static int etm4_probe_amba(struct amba_device *adev, const struct amba_id *id)
->>     static int etm4_probe_platform_dev(struct platform_device *pdev)
->>   {
->> +    struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->>       struct etmv4_drvdata *drvdata;
->>       int ret;
->>   @@ -2140,7 +2152,18 @@ static int etm4_probe_platform_dev(struct platform_device *pdev)
->>       if (!drvdata)
->>           return -ENOMEM;
->>   -    drvdata->base = NULL;
->> +    drvdata->pclk = coresight_get_enable_apb_pclk(&pdev->dev);
->> +    if (IS_ERR(drvdata->pclk))
->> +        return -ENODEV;
->> +
->> +    if (res) {
->> +        drvdata->base = devm_ioremap_resource(&pdev->dev, res);
->> +        if (IS_ERR(drvdata->base)) {
->> +            clk_put(drvdata->pclk);
->> +            return PTR_ERR(drvdata->base);
->> +        }
->> +    }
->> +
->>       dev_set_drvdata(&pdev->dev, drvdata);
->>       pm_runtime_get_noresume(&pdev->dev);
->>       pm_runtime_set_active(&pdev->dev);
->> @@ -2186,7 +2209,7 @@ static struct amba_cs_uci_id uci_id_etm4[] = {
->>           /*  ETMv4 UCI data */
->>           .devarch    = ETM_DEVARCH_ETMv4x_ARCH,
->>           .devarch_mask    = ETM_DEVARCH_ID_MASK,
->> -        .devtype    = 0x00000013,
->> +        .devtype    = ETM_DEVTYPE_ETMv4x_ARCH,
->>       }
->>   };
->>   @@ -2244,6 +2267,10 @@ static int __exit etm4_remove_platform_dev(struct platform_device *pdev)
->>         if (drvdata)
->>           ret = etm4_remove_dev(drvdata);
->> +
->> +    if (drvdata->pclk)
->> +        clk_put(drvdata->pclk);
->> +
->>       pm_runtime_disable(&pdev->dev);
->>       return ret;
->>   }
->> @@ -2284,7 +2311,33 @@ static struct amba_driver etm4x_amba_driver = {
->>       .id_table    = etm4_ids,
->>   };
->>   -static const struct of_device_id etm4_sysreg_match[] = {
->> +#ifdef CONFIG_PM
->> +static int etm4_runtime_suspend(struct device *dev)
->> +{
->> +    struct etmv4_drvdata *drvdata = dev_get_drvdata(dev);
->> +
->> +    if (!IS_ERR(drvdata->pclk))
->> +        clk_disable_unprepare(drvdata->pclk);
->> +
->> +    return 0;
->> +}
->> +
->> +static int etm4_runtime_resume(struct device *dev)
->> +{
->> +    struct etmv4_drvdata *drvdata = dev_get_drvdata(dev);
->> +
->> +    if (!IS_ERR(drvdata->pclk))
->> +        clk_prepare_enable(drvdata->pclk);
->> +
->> +    return 0;
->> +}
->> +#endif
->> +
->> +static const struct dev_pm_ops etm4_dev_pm_ops = {
->> +    SET_RUNTIME_PM_OPS(etm4_runtime_suspend, etm4_runtime_resume, NULL)
->> +};
->> +
->> +static const struct of_device_id etm4_match[] = {
->>       { .compatible    = "arm,coresight-etm4x-sysreg" },
->>       { .compatible    = "arm,embedded-trace-extension" },
->>       {}
->> @@ -2295,8 +2348,9 @@ static struct platform_driver etm4_platform_driver = {
->>       .remove        = etm4_remove_platform_dev,
->>       .driver            = {
->>           .name            = "coresight-etm4x",
->> -        .of_match_table        = etm4_sysreg_match,
->> +        .of_match_table        = etm4_match,
->>           .suppress_bind_attrs    = true,
->> +        .pm            = &etm4_dev_pm_ops,
->>       },
->>   };
->>   diff --git a/drivers/hwtracing/coresight/coresight-etm4x.h b/drivers/hwtracing/coresight/coresight-etm4x.h
->> index 434f4e95ee17..78dfe7949548 100644
->> --- a/drivers/hwtracing/coresight/coresight-etm4x.h
->> +++ b/drivers/hwtracing/coresight/coresight-etm4x.h
->> @@ -701,6 +701,8 @@
->>   #define ETM_DEVARCH_ETE_ARCH                        \
->>       (ETM_DEVARCH_ARCHITECT_ARM | ETM_DEVARCH_ARCHID_ETE | ETM_DEVARCH_PRESENT)
->>   +#define ETM_DEVTYPE_ETMv4x_ARCH        0x00000013
-> 
-> This has nothing to do with ETMv4 ARCH. This indicates :
-> 
-> [3:0] == 0x3 -> Indicates CoreSight Source
-> [7:4] == 0x1 -> Generates PE trace
-> 
-> So, we could call it : CS_DEVTYPE_PE_TRACE, but not ETMv4x
+Michal Wilczynski (34):
+  acpi: Adjust functions installing bus event handlers
+  acpi/ac: Move handler installing logic to driver
+  acpi/video: Move handler installing logic to driver
+  acpi/battery: Move handler installing logic to driver
+  acpi/button: Move handler installing logic to driver
+  acpi/hed: Move handler installing logic to driver
+  acpi/nfit: Move handler installing logic to driver
+  acpi/thermal: Move handler installing logic to driver
+  acpi/tiny-power-button: Move handler installing logic to driver
+  hwmon: Move handler installing logic to driver
+  iio/acpi-als: Move handler installing logic to driver
+  platform/chromeos_tbmc: Move handler installing logic to driver
+  platform/wilco_ec: Move handler installing logic to driver
+  platform/surface/button: Move handler installing logic to driver
+  platform/x86/acer-wireless: Move handler installing logic to driver
+  platform/x86/asus-laptop: Move handler installing logic to driver
+  platform/x86/asus-wireless: Move handler installing logic to driver
+  platform/x86/classmate-laptop: Move handler installing logic to driver
+  platform/x86/dell/dell-rbtn: Move handler installing logic to driver
+  platform/x86/eeepc-laptop: Move handler installing logic to driver
+  platform/x86/fujitsu-laptop: Move handler installing logic to driver
+  platform/x86/lg-laptop: Move handler installing logic to driver
+  platform/x86/panasonic-laptop: Move handler installing logic to driver
+  platform/x86/system76_acpi: Move handler installing logic to driver
+  platform/x86/topstar-laptop: Move handler installing logic to driver
+  platform/x86/toshiba_acpi: Move handler installing logic to driver
+  platform/x86/toshiba_bluetooth: Move handler installing logic to
+    driver
+  platform/x86/toshiba_haps: Move handler installing logic to driver
+  platform/x86/wireless-hotkey: Move handler installing logic to driver
+  platform/x86/xo15-ebook: Move handler installing logic to driver
+  virt/vmgenid: Move handler installing logic to driver
+  acpi/bus: Remove installing/removing notify handlers from probe/remove
+  acpi/bus: Remove redundant functions
+  acpi/bus: Remove notify callback and flags
 
-Sure, will rename it as suggested.
+ drivers/acpi/ac.c                             |  14 +-
+ drivers/acpi/acpi_video.c                     |  18 ++-
+ drivers/acpi/battery.c                        |  14 +-
+ drivers/acpi/bus.c                            |  53 ++-----
+ drivers/acpi/button.c                         |  18 ++-
+ drivers/acpi/hed.c                            |   6 +-
+ drivers/acpi/nfit/core.c                      |  25 ++--
+ drivers/acpi/thermal.c                        |  20 ++-
+ drivers/acpi/tiny-power-button.c              |  18 +--
+ drivers/hwmon/acpi_power_meter.c              |  15 +-
+ drivers/iio/light/acpi-als.c                  |  23 ++-
+ drivers/platform/chrome/chromeos_tbmc.c       |  14 +-
+ drivers/platform/chrome/wilco_ec/event.c      |  19 ++-
+ drivers/platform/surface/surfacepro3_button.c |  19 ++-
+ drivers/platform/x86/acer-wireless.c          |  22 ++-
+ drivers/platform/x86/asus-laptop.c            |  16 ++-
+ drivers/platform/x86/asus-wireless.c          |  24 ++--
+ drivers/platform/x86/classmate-laptop.c       |  12 +-
+ drivers/platform/x86/dell/dell-rbtn.c         |  15 +-
+ drivers/platform/x86/eeepc-laptop.c           |  18 ++-
+ drivers/platform/x86/fujitsu-laptop.c         | 103 +++++++-------
+ drivers/platform/x86/lg-laptop.c              |  12 +-
+ drivers/platform/x86/panasonic-laptop.c       |  17 ++-
+ drivers/platform/x86/system76_acpi.c          |  28 ++--
+ drivers/platform/x86/topstar-laptop.c         |  16 ++-
+ drivers/platform/x86/toshiba_acpi.c           | 131 +++++++++---------
+ drivers/platform/x86/toshiba_bluetooth.c      |  28 +++-
+ drivers/platform/x86/toshiba_haps.c           |   9 +-
+ drivers/platform/x86/wireless-hotkey.c        |  23 ++-
+ drivers/platform/x86/xo15-ebook.c             |  11 +-
+ drivers/virt/vmgenid.c                        |  30 ++--
+ include/acpi/acpi_bus.h                       |  10 +-
+ 32 files changed, 497 insertions(+), 304 deletions(-)
 
-> 
-> Rest looks good to me.
-> 
-> Suzuki
-> 
-> _______________________________________________
-> CoreSight mailing list -- coresight@lists.linaro.org
-> To unsubscribe send an email to coresight-leave@lists.linaro.org
+-- 
+2.40.1
+
