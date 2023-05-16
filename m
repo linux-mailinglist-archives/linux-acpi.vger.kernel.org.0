@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35DB5704CF9
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 13:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09888704CFE
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 13:50:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233173AbjEPLu2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 May 2023 07:50:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45216 "EHLO
+        id S233196AbjEPLuk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 May 2023 07:50:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233197AbjEPLt6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 07:49:58 -0400
+        with ESMTP id S233222AbjEPLuB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 07:50:01 -0400
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9F6F55BE
-        for <linux-acpi@vger.kernel.org>; Tue, 16 May 2023 04:49:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 433126E86
+        for <linux-acpi@vger.kernel.org>; Tue, 16 May 2023 04:49:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684237786; x=1715773786;
+  t=1684237788; x=1715773788;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=+ts6C5JUZkQiwH7gJ6stxKKdR9KfqEVngICJLmKLlXY=;
-  b=JdjGAVHA4oOECphtVALyck/AAH18WngSdCSRqpDolM/LYj+DHBhne7wW
-   2Y9MqtzqM+nrr/4ZTaVJD6vfu7yqTKywc/IxCMA5+XyKM2fxCBHQOT+SJ
-   rqHhQIPwsChnP7Hbz/7WQXLi0kAt6Wy8THNOPpOipe859/d3ldiihzSAR
-   S/CtDwHXEV9+9PLswvIfMvboq83ACJQdDR5Z4LAxN2HizAYrGcGyW3pdA
-   CTReeBkLZchzFPA6KDwBE0LT7KbRt7/pGtJBOb+UZI+zfLFQdwLUcjgCp
-   lk7hss+IJ59bRplBGcWrrFPycMsdZznBRntuOP8P3/mlIYfImZfr9bUrH
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="417111746"
+  bh=nHJDSBb//sGSaCA3AwWCNyG65ipnPcU8elWQY3C1O5o=;
+  b=RzU/wUk425hGwgEV9LSeF+44V7HHZPCleB4WIri1/AGJkTH4QokDrXya
+   PXLjNBBKAdpiV1z/PDiPZzvkn2VKaNJKEXrutGII/2sU4TF9onBGrsKqM
+   azY2oJTPA0nXKgmsIOx3cribTjMgDyEUfrz9EXmDpI1pUA9F7h61U9y9t
+   r6ZzKd16xRUDAu3M9fAF4eBs1zxgy2+La7Q9mzcSPy+hfItC8T9Vh6+KB
+   oW1LGLylxYlRt+pRQY3ZV14eoKn7oPn18oBBR8J3AN893P60MH0nbScdX
+   cmweUK3sOJsxMjzxm1YjlTz/X4wwzHGkTBVUOZVETn/QXc01wUs7aQVzP
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="417111752"
 X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
-   d="scan'208";a="417111746"
+   d="scan'208";a="417111752"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:47:15 -0700
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:47:16 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="731962003"
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="731962009"
 X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
-   d="scan'208";a="731962003"
+   d="scan'208";a="731962009"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:47:13 -0700
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:47:15 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
 To:     linux-acpi@vger.kernel.org
 Cc:     rafael@kernel.org, Michal Wilczynski <michal.wilczynski@intel.com>
-Subject: [PATCH v2 31/34] virt/vmgenid: Move handler installing logic to driver
-Date:   Tue, 16 May 2023 13:46:14 +0200
-Message-Id: <20230516114617.148963-32-michal.wilczynski@intel.com>
+Subject: [PATCH v2 32/34] acpi/bus: Remove installing/removing notify handlers from probe/remove
+Date:   Tue, 16 May 2023 13:46:15 +0200
+Message-Id: <20230516114617.148963-33-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230516114617.148963-1-michal.wilczynski@intel.com>
 References: <20230516114617.148963-1-michal.wilczynski@intel.com>
@@ -59,83 +59,52 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Currently logic for installing notifications from ACPI devices is
-implemented using notify callback in struct acpi_driver. Preparations
-are being made to replace acpi_driver with more generic struct
-platform_driver, which doesn't contain notify callback. Furthermore
-as of now handlers are being called indirectly through
-acpi_notify_device(), which decreases performance.
+Remove installing/removing .notify callback handlers, to prepare for
+notify callback removal.
 
-Call acpi_device_install_event_handler() at the end of .add() callback.
-Call acpi_device_remove_event_handler() at the beginning of .remove()
-callback. Change arguments passed to the notify callback to match with
-what's required by acpi_device_install_event_handler().
+Remove logic calling .remove callback, as .add should be expected to
+clean after itself in case of the failure, and event handler
+installation was moved to .add in all drivers already.
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/virt/vmgenid.c | 30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+ drivers/acpi/bus.c | 17 -----------------
+ 1 file changed, 17 deletions(-)
 
-diff --git a/drivers/virt/vmgenid.c b/drivers/virt/vmgenid.c
-index a1c467a0e9f7..50e7f4a82f99 100644
---- a/drivers/virt/vmgenid.c
-+++ b/drivers/virt/vmgenid.c
-@@ -21,6 +21,21 @@ struct vmgenid_state {
- 	u8 this_id[VMGENID_SIZE];
- };
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index 00309df56c24..3eeeec70e70b 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -1086,20 +1086,6 @@ static int acpi_device_probe(struct device *dev)
+ 	pr_debug("Driver [%s] successfully bound to device [%s]\n",
+ 		 acpi_drv->name, acpi_dev->pnp.bus_id);
  
-+static void vmgenid_notify(acpi_handle handle, u32 event, void *data)
-+{
-+	struct acpi_device *device = data;
-+	struct vmgenid_state *state;
-+	u8 old_id[VMGENID_SIZE];
-+
-+	state = acpi_driver_data(device);
-+
-+	memcpy(old_id, state->this_id, sizeof(old_id));
-+	memcpy(state->this_id, state->next_id, sizeof(state->this_id));
-+	if (!memcmp(old_id, state->this_id, sizeof(old_id)))
-+		return;
-+	add_vmfork_randomness(state->this_id, sizeof(state->this_id));
-+}
-+
- static int vmgenid_add(struct acpi_device *device)
- {
- 	struct acpi_buffer parsed = { ACPI_ALLOCATE_BUFFER };
-@@ -60,21 +75,16 @@ static int vmgenid_add(struct acpi_device *device)
- 
- 	device->driver_data = state;
- 
-+	ret = acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY, vmgenid_notify);
-+
- out:
- 	ACPI_FREE(parsed.pointer);
- 	return ret;
- }
- 
--static void vmgenid_notify(struct acpi_device *device, u32 event)
-+static void vmgenid_remove(struct acpi_device *device)
- {
--	struct vmgenid_state *state = acpi_driver_data(device);
--	u8 old_id[VMGENID_SIZE];
+-	if (acpi_drv->ops.notify) {
+-		ret = acpi_device_install_notify_handler(acpi_dev, acpi_drv);
+-		if (ret) {
+-			if (acpi_drv->ops.remove)
+-				acpi_drv->ops.remove(acpi_dev);
 -
--	memcpy(old_id, state->this_id, sizeof(old_id));
--	memcpy(state->this_id, state->next_id, sizeof(state->this_id));
--	if (!memcmp(old_id, state->this_id, sizeof(old_id)))
--		return;
--	add_vmfork_randomness(state->this_id, sizeof(state->this_id));
-+	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, vmgenid_notify);
+-			acpi_dev->driver_data = NULL;
+-			return ret;
+-		}
+-	}
+-
+-	pr_debug("Found driver [%s] for device [%s]\n", acpi_drv->name,
+-		 acpi_dev->pnp.bus_id);
+-
+ 	get_device(dev);
+ 	return 0;
  }
+@@ -1109,9 +1095,6 @@ static void acpi_device_remove(struct device *dev)
+ 	struct acpi_device *acpi_dev = to_acpi_device(dev);
+ 	struct acpi_driver *acpi_drv = to_acpi_driver(dev->driver);
  
- static const struct acpi_device_id vmgenid_ids[] = {
-@@ -89,7 +99,7 @@ static struct acpi_driver vmgenid_driver = {
- 	.owner = THIS_MODULE,
- 	.ops = {
- 		.add = vmgenid_add,
--		.notify = vmgenid_notify
-+		.remove = vmgenid_remove,
- 	}
- };
+-	if (acpi_drv->ops.notify)
+-		acpi_device_remove_notify_handler(acpi_dev, acpi_drv);
+-
+ 	if (acpi_drv->ops.remove)
+ 		acpi_drv->ops.remove(acpi_dev);
  
 -- 
 2.40.1
