@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CB3F704CF3
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 13:50:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ED97704CF2
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 13:50:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231648AbjEPLuF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 May 2023 07:50:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45186 "EHLO
+        id S231557AbjEPLuE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 May 2023 07:50:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233097AbjEPLtq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 07:49:46 -0400
+        with ESMTP id S233102AbjEPLts (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 07:49:48 -0400
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C60EE53
-        for <linux-acpi@vger.kernel.org>; Tue, 16 May 2023 04:49:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F349559DA
+        for <linux-acpi@vger.kernel.org>; Tue, 16 May 2023 04:49:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1684237763; x=1715773763;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=6qztspbuvFvAW/W8wYhffgZucSx6tOdeUUrglpHXvAY=;
-  b=jcoWGuc5hL5tm080mFNOUEdC/hfDmsfkfKZ1joKXlP85C+GcL01JNIsO
-   SYC/wJdKwvJefz7vH8MaeWljJ5UlQwTLeHtSUr8h8sf+dGVb2nu+p4pcZ
-   MHe2qs1jlanszuHtzR7LgAJuYOwf/TX8IoAbZc4i7slctY9aQfeyeU5dg
-   hjqh8EV2s0hKXaqZcxyhSTzGp88vy6RtXaDcicioQZmTYyR/fVVpLLXYF
-   ABlW/BjbtgSx/eH1+MdE1+P8N6jN9uu0cL7uWuydjLpMwMrIF5OgTTLpy
-   NEBYlIXVQ6QVq9uZHRGdCBYzIP+KyplzYHM92bqFh35nDQx65R0QYb3+E
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="417111719"
+  bh=x3AJ3PId6jIGtQB9vpaoOXEI4Ix+E0rg/cnm/msjsok=;
+  b=CzPfacWDBDWqmMF+GJs++e+5AVdbaYlGc8nWIAuuuHVBO9NiYYfs04lg
+   uAHYyxDYauNDK9/btylbY+gkvWatkCjnsW84ElEIc3zxVpLmnQ1rFu7e3
+   ylaSv6Z7FPwhw5hnLCMnhJP2OG0TcFaDVljh8FgmmnqpibAJ7SwWmpo6K
+   kxwAQsnobUqCNHp5FcOVySRgFTt8abaa4wDDwL3Ombk/ZAxn9h3qXSlMm
+   PPVno3R1hE84xnM0ATEBpnj6J4QWrKSjZhY1hnhCnymEs9xIeUp8uW79J
+   P2ZCTx9RpnTewwjvOw0IllZaDb8R+ImsL1EL+4A7Kaf9xoOMtfUsKNnW5
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="417111722"
 X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
-   d="scan'208";a="417111719"
+   d="scan'208";a="417111722"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:47:08 -0700
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:47:09 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="731961958"
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="731961966"
 X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
-   d="scan'208";a="731961958"
+   d="scan'208";a="731961966"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:47:07 -0700
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:47:08 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
 To:     linux-acpi@vger.kernel.org
 Cc:     rafael@kernel.org, Michal Wilczynski <michal.wilczynski@intel.com>
-Subject: [PATCH v2 26/34] platform/x86/toshiba_acpi: Move handler installing logic to driver
-Date:   Tue, 16 May 2023 13:46:09 +0200
-Message-Id: <20230516114617.148963-27-michal.wilczynski@intel.com>
+Subject: [PATCH v2 27/34] platform/x86/toshiba_bluetooth: Move handler installing logic to driver
+Date:   Tue, 16 May 2023 13:46:10 +0200
+Message-Id: <20230516114617.148963-28-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230516114617.148963-1-michal.wilczynski@intel.com>
 References: <20230516114617.148963-1-michal.wilczynski@intel.com>
@@ -73,178 +73,79 @@ what's required by acpi_device_install_event_handler().
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/platform/x86/toshiba_acpi.c | 131 +++++++++++++++-------------
- 1 file changed, 69 insertions(+), 62 deletions(-)
+ drivers/platform/x86/toshiba_bluetooth.c | 28 ++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/platform/x86/toshiba_acpi.c b/drivers/platform/x86/toshiba_acpi.c
-index b34984bbee33..628c7910d653 100644
---- a/drivers/platform/x86/toshiba_acpi.c
-+++ b/drivers/platform/x86/toshiba_acpi.c
-@@ -3186,10 +3186,74 @@ static void print_supported_features(struct toshiba_acpi_dev *dev)
- 	pr_cont("\n");
- }
- 
-+static void toshiba_acpi_notify(acpi_handle handle, u32 event, void *data)
-+{
-+	struct acpi_device *acpi_dev = data;
-+	struct toshiba_acpi_dev *dev;
-+
-+	dev = acpi_driver_data(acpi_dev);
-+
-+	switch (event) {
-+	case 0x80: /* Hotkeys and some system events */
-+		/*
-+		 * Machines with this WMI GUID aren't supported due to bugs in
-+		 * their AML.
-+		 *
-+		 * Return silently to avoid triggering a netlink event.
-+		 */
-+		if (wmi_has_guid(TOSHIBA_WMI_EVENT_GUID))
-+			return;
-+		toshiba_acpi_process_hotkeys(dev);
-+		break;
-+	case 0x81: /* Dock events */
-+	case 0x82:
-+	case 0x83:
-+		pr_info("Dock event received %x\n", event);
-+		break;
-+	case 0x88: /* Thermal events */
-+		pr_info("Thermal event received\n");
-+		break;
-+	case 0x8f: /* LID closed */
-+	case 0x90: /* LID is closed and Dock has been ejected */
-+		break;
-+	case 0x8c: /* SATA power events */
-+	case 0x8b:
-+		pr_info("SATA power event received %x\n", event);
-+		break;
-+	case 0x92: /* Keyboard backlight mode changed */
-+		dev->kbd_event_generated = true;
-+		/* Update sysfs entries */
-+		if (sysfs_update_group(&acpi_dev->dev.kobj,
-+				       &toshiba_attr_group))
-+			pr_err("Unable to update sysfs entries\n");
-+		/* Notify LED subsystem about keyboard backlight change */
-+		if (dev->kbd_type == 2 && dev->kbd_mode != SCI_KBD_MODE_AUTO)
-+			led_classdev_notify_brightness_hw_changed(&dev->kbd_led,
-+					(dev->kbd_mode == SCI_KBD_MODE_ON) ?
-+					LED_FULL : LED_OFF);
-+		break;
-+	case 0x85: /* Unknown */
-+	case 0x8d: /* Unknown */
-+	case 0x8e: /* Unknown */
-+	case 0x94: /* Unknown */
-+	case 0x95: /* Unknown */
-+	default:
-+		pr_info("Unknown event received %x\n", event);
-+		break;
-+	}
-+
-+	acpi_bus_generate_netlink_event(acpi_dev->pnp.device_class,
-+					dev_name(&acpi_dev->dev),
-+					event, (event == 0x80) ?
-+					dev->last_key_event : 0);
-+}
-+
- static void toshiba_acpi_remove(struct acpi_device *acpi_dev)
- {
- 	struct toshiba_acpi_dev *dev = acpi_driver_data(acpi_dev);
- 
-+	acpi_device_remove_event_handler(acpi_dev, ACPI_ALL_NOTIFY, toshiba_acpi_notify);
-+
- 	misc_deregister(&dev->miscdev);
- 
- 	remove_toshiba_proc_entries(dev);
-@@ -3473,72 +3537,17 @@ static int toshiba_acpi_add(struct acpi_device *acpi_dev)
- 	if (dev->battery_charge_mode_supported)
- 		battery_hook_register(&battery_hook);
- 
--	return 0;
-+	ret = acpi_device_install_event_handler(acpi_dev, ACPI_ALL_NOTIFY, toshiba_acpi_notify);
-+	if (ret)
-+		goto error;
-+
-+	return ret;
- 
- error:
- 	toshiba_acpi_remove(acpi_dev);
- 	return ret;
- }
- 
--static void toshiba_acpi_notify(struct acpi_device *acpi_dev, u32 event)
--{
--	struct toshiba_acpi_dev *dev = acpi_driver_data(acpi_dev);
--
--	switch (event) {
--	case 0x80: /* Hotkeys and some system events */
--		/*
--		 * Machines with this WMI GUID aren't supported due to bugs in
--		 * their AML.
--		 *
--		 * Return silently to avoid triggering a netlink event.
--		 */
--		if (wmi_has_guid(TOSHIBA_WMI_EVENT_GUID))
--			return;
--		toshiba_acpi_process_hotkeys(dev);
--		break;
--	case 0x81: /* Dock events */
--	case 0x82:
--	case 0x83:
--		pr_info("Dock event received %x\n", event);
--		break;
--	case 0x88: /* Thermal events */
--		pr_info("Thermal event received\n");
--		break;
--	case 0x8f: /* LID closed */
--	case 0x90: /* LID is closed and Dock has been ejected */
--		break;
--	case 0x8c: /* SATA power events */
--	case 0x8b:
--		pr_info("SATA power event received %x\n", event);
--		break;
--	case 0x92: /* Keyboard backlight mode changed */
--		dev->kbd_event_generated = true;
--		/* Update sysfs entries */
--		if (sysfs_update_group(&acpi_dev->dev.kobj,
--				       &toshiba_attr_group))
--			pr_err("Unable to update sysfs entries\n");
--		/* Notify LED subsystem about keyboard backlight change */
--		if (dev->kbd_type == 2 && dev->kbd_mode != SCI_KBD_MODE_AUTO)
--			led_classdev_notify_brightness_hw_changed(&dev->kbd_led,
--					(dev->kbd_mode == SCI_KBD_MODE_ON) ?
--					LED_FULL : LED_OFF);
--		break;
--	case 0x85: /* Unknown */
--	case 0x8d: /* Unknown */
--	case 0x8e: /* Unknown */
--	case 0x94: /* Unknown */
--	case 0x95: /* Unknown */
--	default:
--		pr_info("Unknown event received %x\n", event);
--		break;
--	}
--
--	acpi_bus_generate_netlink_event(acpi_dev->pnp.device_class,
--					dev_name(&acpi_dev->dev),
--					event, (event == 0x80) ?
--					dev->last_key_event : 0);
--}
--
- #ifdef CONFIG_PM_SLEEP
- static int toshiba_acpi_suspend(struct device *device)
- {
-@@ -3583,11 +3592,9 @@ static struct acpi_driver toshiba_acpi_driver = {
- 	.name	= "Toshiba ACPI driver",
- 	.owner	= THIS_MODULE,
- 	.ids	= toshiba_device_ids,
--	.flags	= ACPI_DRIVER_ALL_NOTIFY_EVENTS,
- 	.ops	= {
- 		.add		= toshiba_acpi_add,
- 		.remove		= toshiba_acpi_remove,
--		.notify		= toshiba_acpi_notify,
- 	},
- 	.drv.pm	= &toshiba_acpi_pm,
+diff --git a/drivers/platform/x86/toshiba_bluetooth.c b/drivers/platform/x86/toshiba_bluetooth.c
+index d8f81962a240..78931c21608a 100644
+--- a/drivers/platform/x86/toshiba_bluetooth.c
++++ b/drivers/platform/x86/toshiba_bluetooth.c
+@@ -57,7 +57,6 @@ static struct acpi_driver toshiba_bt_rfkill_driver = {
+ 	.ops =		{
+ 				.add =		toshiba_bt_rfkill_add,
+ 				.remove =	toshiba_bt_rfkill_remove,
+-				.notify =	toshiba_bt_rfkill_notify,
+ 			},
+ 	.owner = 	THIS_MODULE,
+ 	.drv.pm =	&toshiba_bt_pm,
+@@ -204,9 +203,12 @@ static const struct rfkill_ops rfk_ops = {
  };
+ 
+ /* ACPI driver functions */
+-static void toshiba_bt_rfkill_notify(struct acpi_device *device, u32 event)
++static void toshiba_bt_rfkill_notify(acpi_handle handle, u32 event, void *data)
+ {
+-	struct toshiba_bluetooth_dev *bt_dev = acpi_driver_data(device);
++	struct toshiba_bluetooth_dev *bt_dev;
++	struct acpi_device *device = data;
++
++	bt_dev = acpi_driver_data(device);
+ 
+ 	if (toshiba_bluetooth_sync_status(bt_dev))
+ 		return;
+@@ -263,8 +265,8 @@ static int toshiba_bt_rfkill_add(struct acpi_device *device)
+ 				   bt_dev);
+ 	if (!bt_dev->rfk) {
+ 		pr_err("Unable to allocate rfkill device\n");
+-		kfree(bt_dev);
+-		return -ENOMEM;
++		result = -ENOMEM;
++		goto fail_allocate;
+ 	}
+ 
+ 	rfkill_set_hw_state(bt_dev->rfk, !bt_dev->killswitch);
+@@ -272,10 +274,20 @@ static int toshiba_bt_rfkill_add(struct acpi_device *device)
+ 	result = rfkill_register(bt_dev->rfk);
+ 	if (result) {
+ 		pr_err("Unable to register rfkill device\n");
+-		rfkill_destroy(bt_dev->rfk);
+-		kfree(bt_dev);
++		goto fail_register;
+ 	}
+ 
++	result = acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY,
++						   toshiba_bt_rfkill_notify);
++	if (result)
++		goto fail_register;
++
++	return result;
++
++fail_register:
++	rfkill_destroy(bt_dev->rfk);
++fail_allocate:
++	kfree(bt_dev);
+ 	return result;
+ }
+ 
+@@ -283,6 +295,8 @@ static void toshiba_bt_rfkill_remove(struct acpi_device *device)
+ {
+ 	struct toshiba_bluetooth_dev *bt_dev = acpi_driver_data(device);
+ 
++	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, toshiba_bt_rfkill_notify);
++
+ 	/* clean up */
+ 	if (bt_dev->rfk) {
+ 		rfkill_unregister(bt_dev->rfk);
 -- 
 2.40.1
 
