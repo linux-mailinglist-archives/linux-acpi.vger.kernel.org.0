@@ -2,73 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87D9F7056B6
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 21:05:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6483705709
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 21:25:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229449AbjEPTFf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 May 2023 15:05:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40794 "EHLO
+        id S229751AbjEPTZa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 May 2023 15:25:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229515AbjEPTFe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 15:05:34 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C678E1BF6
-        for <linux-acpi@vger.kernel.org>; Tue, 16 May 2023 12:05:33 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id 5614622812f47-3943fdc59f9so18437b6e.0
-        for <linux-acpi@vger.kernel.org>; Tue, 16 May 2023 12:05:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684263933; x=1686855933;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=cIuacTUe55V68yxCoo7ary9vLzT4+1nPwynRvBBZauw=;
-        b=oEHLMhvTQqeAFA86uX2W003QQmuECmHBYJqRL8c3XcqEC7zkj9yGnTFKamtqebagqq
-         bEooOO3+liB2/lDq+k97iV5LFvH7g/3N2dpcAd+siv+BLfu0iK5au9lm5Teld9qX/qt+
-         VVjGKDqBhgpAYdm33HlBA26yUxgEDNhGtFy5u1x42AUXnAQ6PuAo3TiEwOUO8dOGSfEK
-         o/nE33rpV/VeQmIP7c/V03p0hPRbpw+2k5njpyzvfYl1OdisTz6KPuUNZJw5hnTzMZxw
-         7H7QrQPxDLLGUYpnjckv4+bOhUCAVGqZBCqzJZ58Qs3sOUlRwepSlCxiG9QxWiwzIhLS
-         t14Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684263933; x=1686855933;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cIuacTUe55V68yxCoo7ary9vLzT4+1nPwynRvBBZauw=;
-        b=HZS8YcHp0XWTFZkACDxWbHFID+RrOS/j8CNXx0zIpQ0Us/Tz8MDiHzjl0zmjRIPpDg
-         f5IjloHgcvx8Csx7JbticlrPLt3S+oDrRArXWVO0ceGbppdNLWZb0ZP/3RAnQ8DH05tP
-         tf7mRJcbvqPEep8f1yyudcNx/vpbQrAD3Pzn+1gBD2sfgM2MJzHMhHbs9EwUb1SWHODv
-         9nYmIq+SzErjV6j2OnfN7V7niebaG5z4kjAQrjIZEC+p6IkbDmodnuKQbjOFCqs8I8dw
-         7SE9l66j1wAtGIhN4enB15qsCz66nRLdUBpKHzPGKJ3cxKG4P2Lwzlpy+Yc2CMCmzqDZ
-         STrA==
-X-Gm-Message-State: AC+VfDwzghMkNMttrjUcl6lRkpyk7q7Mz320z9MyudlhfentaZIFHIJv
-        ZB3TUpIrWJk6RECNHcYmzOH/TGgTIVWIN8Y/bTs=
-X-Google-Smtp-Source: ACHHUZ5tQWLyfZ6Wv//YRYQYtHum1hnvAuOmDMTdFkWiCRfuZKhxkoUHBM5ibRWeRSeSJI/ykbZvC50e7eEQxIATxQE=
-X-Received: by 2002:a54:4391:0:b0:395:f3ee:d191 with SMTP id
- u17-20020a544391000000b00395f3eed191mr4974011oiv.23.1684263933058; Tue, 16
- May 2023 12:05:33 -0700 (PDT)
+        with ESMTP id S229770AbjEPTZ3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 15:25:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6494C8A48;
+        Tue, 16 May 2023 12:25:28 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F188663E5B;
+        Tue, 16 May 2023 19:25:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2317C433D2;
+        Tue, 16 May 2023 19:25:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1684265127;
+        bh=S0Rq0G95CHXp1m5S50Xtw88jTsSFrtOHdzpyyFfPe0E=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=wz3FHy0V43KAsSPzha+tkRRwMjg88jaek5nHtnOKFD69lkdQjPK1x4dLPI8VAhx4+
+         cUjeTfmLgmawZQr1sy/f0j9C5nRE2xgaE0EKWlK9c5bYUcwIXNDs7+jH22wKB/ukWv
+         TiMRfHW63t4IQ6YksDh/bFAzrJP12OWuWyhmNNtY=
+Date:   Tue, 16 May 2023 21:25:24 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Avadhut Naik <Avadhut.Naik@amd.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, yazen.ghannam@amd.com,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v1] ACPI: APEI: EINJ: Add support for vendor defined
+ error types
+Message-ID: <2023051602-clear-encode-984e@gregkh>
+References: <20230516183228.3736-1-Avadhut.Naik@amd.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6841:4da3:b0:128e:4a83:b402 with HTTP; Tue, 16 May 2023
- 12:05:32 -0700 (PDT)
-Reply-To: sharharshalom@gmail.com
-From:   Shahar shalom <shalomshahar47@gmail.com>
-Date:   Tue, 16 May 2023 19:05:32 +0000
-Message-ID: <CADDwMLLm+-7GJ1zBFSX8NMgOv8TmVXrdTeG_z6DqBGqScYgYfg@mail.gmail.com>
-Subject: =?UTF-8?B?5YaN5Lya?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=3.7 required=5.0 tests=BAYES_20,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230516183228.3736-1-Avadhut.Naik@amd.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-LS0gDQrkuIrlkajmn5DkuKrml7blgJnlr4TkuobkuIDlsIHpgq7ku7bnu5nkvaDvvIzmnJ/mnJsN
-CuaUtuWIsOS9oOeahOWbnuS/oe+8jOS9huS7pOaIkeaDiuiutueahOaYr+S9oOS7juadpeayoeac
-iei0ueW/g+WbnuWkjeOAgg0K6K+35Zue5aSN6L+b5LiA5q2l55qE6Kej6YeK44CCDQoNCuiCg+eE
-tu+8jA0K5rKZ5ZOI5bCU5bmz5a6JDQo=
+On Tue, May 16, 2023 at 06:32:28PM +0000, Avadhut Naik wrote:
+> According to ACPI specification 6.5, section 18.6.4, Vendor-Defined Error
+> types are supported by the system apart from standard error types if bit
+> 31 is set in the output of GET_ERROR_TYPE Error Injection Action. While
+> the errors themselves and the length of their associated OEM Vendor data
+> structure might vary between vendors, the physical address of this very
+> structure can be computed through vendor_extension and length fields of
+> SET_ERROR_TYPE_WITH_ADDRESS Data Structure and Vendor Error Type Extension
+> Structure respectively (ACPI Spec 6.5, Table 18.31 and 18.32).
+> 
+> Currently, however, the einj module only computes the physical address of
+> Vendor Error Type Extension Structure. Neither does it compute the physical
+> address of OEM Vendor structure nor does it establish the memory mapping
+> required for injecting Vendor-defined errors. Consequently, userspace
+> tools have to establish the very mapping through /dev/mem, nopat kernel
+> parameter and system calls like mmap/munmap initially before injecting
+> Vendor-defined errors.
+> 
+> Circumvent the issue by computing the physical address of OEM Vendor data
+> structure and establishing the required mapping with the structure. Create
+> a new file "oem_error", if the system supports Vendor-defined errors, to
+> export this mapping, through debugfs_create_blob API. Userspace tools can
+> then populate their respective OEM Vendor structure instances and just
+> write to the file as part of injecting Vendor-defined Errors.
+> 
+> Additionally, since the debugfs files created through debugfs_create_blob
+> API are read-only, introduce a write callback to enable userspace tools to
+> write OEM Vendor structures into the oem_error file.
+
+When you say "additionally", that's usually a huge hint that you need to
+split this up into multiple patches.
+
+Please do so here.
+
+Also note that debugfs is almost never a valid api for anything you care
+about for having a running system, as it is locked down for root access
+only and some distros refuse to enable it at all due to its security
+leakage.  So be careful about creating an api here that you might need
+to use on a normal running system.
+
+
+> 
+> Note: Some checkpatch warnings are ignored to maintain coding style.
+
+That's not good, please follow the right style for new code.
+
+thanks,
+
+greg k-h
