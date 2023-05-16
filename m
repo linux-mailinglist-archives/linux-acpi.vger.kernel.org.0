@@ -2,80 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 957587047DC
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 10:32:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D80070484F
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 10:57:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230408AbjEPIco (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 May 2023 04:32:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50772 "EHLO
+        id S231734AbjEPI5q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 May 2023 04:57:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230203AbjEPIcn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 04:32:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BA1EBA
-        for <linux-acpi@vger.kernel.org>; Tue, 16 May 2023 01:32:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1684225923;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=CC1+LnWioCnymTFuT2N5MqSF3mYASkgMJBth5jnttMc=;
-        b=Kl1YnPMg8OvUr6cdkbwx03EOfMrRpqD3ujxle8E7PbLUfzx/f/Bxfud6zGGGcleE5blZwz
-        kwNjwX4Z2S8pnNy5xQ5zP9H6tUOAMuI6Mktrh1K/9+l136A+qK4R8sA67J1r6/6kcO16/2
-        KwYNrQkf73Iq1OZ2Iii31z4j8m+OMTA=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-46-szYCPA_PM8Ky8KgKoP4CxQ-1; Tue, 16 May 2023 04:32:01 -0400
-X-MC-Unique: szYCPA_PM8Ky8KgKoP4CxQ-1
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-506b21104faso14884942a12.1
-        for <linux-acpi@vger.kernel.org>; Tue, 16 May 2023 01:32:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684225920; x=1686817920;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CC1+LnWioCnymTFuT2N5MqSF3mYASkgMJBth5jnttMc=;
-        b=FsiqfOKplqLGYgi4oYy2D5joAD4f8tiVmdEBgrOfWPC87Thkl9jmC7sK6x61K2eIVb
-         7eO2EJeX3rZZ7aDYoAimlmoZZkfLL3GEOyFGvzHls8bhDX1ELvj8lNp9lo++Zc8FgRUJ
-         HwG5P8nzy/vqSWYo0sO4y/zs+p5rCarBwdYSeNHLocKbrzCRVBke86fJpivqKCCsIeWo
-         GmBv8rs9lqJLqLyN7E821hfvQp3trvZ8FWGMZJzmNoxvQTeezYpMJP8ebvVUtdxZI71D
-         JL5J+TnOh1Uwt/hsIOzyYq4kS55dr9Qt/BCRsI52G1LN/0YTe2qqLI0PrbOlQm1p8IKF
-         lIpg==
-X-Gm-Message-State: AC+VfDzZnSLM9gp8Tz5COcioc15sdbNrpf8j4LptadRgCUDOaFnEQSUF
-        lZXUl1gyasOZfNV383Jyyffn9oe3wA4di/id/kgasDa8b0r0BGN1kKmjmwtHRh4LwBJoarqiOrP
-        SCaUAntQ/GhksxGZFchHQIA==
-X-Received: by 2002:aa7:c546:0:b0:50b:d4e8:3173 with SMTP id s6-20020aa7c546000000b0050bd4e83173mr30245713edr.8.1684225920416;
-        Tue, 16 May 2023 01:32:00 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5k5QzvaE25vkNdDIHzpYPG2zuP0QWC8FKdmCrqUMe5TtheYmqT2Gm/bx+ZTnQHNHjHQBl+xQ==
-X-Received: by 2002:aa7:c546:0:b0:50b:d4e8:3173 with SMTP id s6-20020aa7c546000000b0050bd4e83173mr30245703edr.8.1684225920071;
-        Tue, 16 May 2023 01:32:00 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id i12-20020aa7c70c000000b0050bd7267a5csm7905686edq.58.2023.05.16.01.31.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 May 2023 01:31:59 -0700 (PDT)
-Message-ID: <b2082cef-2e23-253d-4833-542c3460972a@redhat.com>
-Date:   Tue, 16 May 2023 10:31:58 +0200
+        with ESMTP id S231731AbjEPI5o (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 04:57:44 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 630A649DA;
+        Tue, 16 May 2023 01:57:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1684227462; x=1715763462;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9ieOiHdR2XFodCWGlERuengFjj9o9lpxO2QT8t8Ovg0=;
+  b=E6y5vnoEZd+Ks3nlp/Y7Xr4arM0J2Zr00AYoROT1AKFS1ZJt17Nh9yjm
+   AuJpDTlttrklBeP/0VPkrLIwlfUHdIhCKfVTDdHJXc3oHnPMPK3Ksu1Dx
+   gKbMv/xSegIBdEROlcEHz8rm9EbmTXtWxpLp2w5gwLIwBAAIkLcv3WmIw
+   xFBrvEb50HIP66CgXzd5jI+ES/kr+Wyx0ca5ACesGdZ46ylBK7wvf2Cd3
+   RcrlaF/erg8trm1Lfp7I7ZnQlYxGGD5TxmAmO9F3plM+s1OiEeew2QXd0
+   k/XN0jWOdnwoNUiai2zMEGx6/i5eEh8c+XIILllCFKGyKDV89wXcf6WNF
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="354588392"
+X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
+   d="scan'208";a="354588392"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 01:57:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="678768726"
+X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
+   d="scan'208";a="678768726"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 01:57:39 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+        by kekkonen.fi.intel.com (Postfix) with SMTP id 429A0120279;
+        Tue, 16 May 2023 11:57:37 +0300 (EEST)
+Date:   Tue, 16 May 2023 08:57:37 +0000
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
+        rafael@kernel.org, andriy.shevchenko@linux.intel.com,
+        heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH v8 03/10] ACPI: property: Parse _CRS CSI-2 descriptor
+Message-ID: <ZGNFgXM/463ycI6R@kekkonen.localdomain>
+References: <20230329100951.1522322-1-sakari.ailus@linux.intel.com>
+ <20230329100951.1522322-4-sakari.ailus@linux.intel.com>
+ <1865464.tdWV9SEqCh@kreacher>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] ACPI: scan: Reduce overhead related to devices with
- dependencies
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
-References: <2694293.mvXUDI8C0e@kreacher>
-Content-Language: en-US, nl
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <2694293.mvXUDI8C0e@kreacher>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1865464.tdWV9SEqCh@kreacher>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -84,216 +68,111 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi Rafael,
 
-On 5/15/23 18:30, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Mon, May 15, 2023 at 06:45:10PM +0200, Rafael J. Wysocki wrote:
+> On Wednesday, March 29, 2023 12:09:44 PM CEST Sakari Ailus wrote:
+> > Parse newly added ACPI _CRS CSI-2 descriptor for CSI-2 and camera
+> > configuration, associate it with appropriate devices and allocate memory for
+> > software nodes needed to create a DT-like data structure for drivers.
 > 
-> Notice that all of the objects for which the acpi_scan_check_dep()
-> return value is greater than 0 are present in acpi_dep_list as consumers
-> (there may be multiple entries for one object, but that is not a
-> problem), so after carrying out the initial ACPI namespace walk in which
-> devices with dependencies are skipped, acpi_bus_scan() can simply walk
-> acpi_dep_list and enumerate all of the unique consumer objects from
-> there and their descendants instead of walking the entire target branch
-> of the ACPI namespace and looking for device objects that have not been
-> enumerated yet in it.
+> It occurred to me, that there would be so many things I would like to change
+> in this patch, so it would be better to create my own version of it, which
+> is appended.
 > 
-> Because walking acpi_dep_list is generally less overhead than walking
-> the entire ACPI namespace, use the observation above to reduce the
-> system initialization overhead related to ACPI, which is particularly
-> important on large systems.
+> It is based on
 > 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
->  drivers/acpi/scan.c     |   79 +++++++++++++++++++++++++++++++++++-------------
->  include/acpi/acpi_bus.h |    2 +
->  2 files changed, 61 insertions(+), 20 deletions(-)
+> https://patchwork.kernel.org/project/linux-acpi/patch/2694293.mvXUDI8C0e@kreacher/
 > 
-> Index: linux-pm/include/acpi/acpi_bus.h
-> ===================================================================
-> --- linux-pm.orig/include/acpi/acpi_bus.h
-> +++ linux-pm/include/acpi/acpi_bus.h
-> @@ -289,6 +289,8 @@ struct acpi_dep_data {
->  	acpi_handle supplier;
->  	acpi_handle consumer;
->  	bool honor_dep;
-> +	bool met;
-> +	bool free_when_met;
->  };
->  
->  /* Performance Management */
-> Index: linux-pm/drivers/acpi/scan.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/scan.c
-> +++ linux-pm/drivers/acpi/scan.c
-> @@ -2029,8 +2029,6 @@ static u32 acpi_scan_check_dep(acpi_hand
->  	return count;
->  }
->  
-> -static bool acpi_bus_scan_second_pass;
-> -
->  static acpi_status acpi_bus_check_add(acpi_handle handle, bool check_dep,
->  				      struct acpi_device **adev_p)
->  {
-> @@ -2050,10 +2048,8 @@ static acpi_status acpi_bus_check_add(ac
->  			return AE_OK;
->  
->  		/* Bail out if there are dependencies. */
-> -		if (acpi_scan_check_dep(handle, check_dep) > 0) {
-> -			acpi_bus_scan_second_pass = true;
-> +		if (acpi_scan_check_dep(handle, check_dep) > 0)
->  			return AE_CTRL_DEPTH;
-> -		}
->  
->  		fallthrough;
->  	case ACPI_TYPE_ANY:	/* for ACPI_ROOT_OBJECT */
-> @@ -2301,6 +2297,12 @@ static bool acpi_scan_clear_dep_queue(st
->  	return true;
->  }
->  
-> +static void acpi_scan_delete_dep_data(struct acpi_dep_data *dep)
+> that has just been posted.
+> 
+> IIUC, the idea is to extract the ACPI handle for each resource source in every
+> _CRS CSI-2 resource descriptor and count how many times each handle appears in
+> a CSI-2 context, either because it is referenced from a _CRS CSI-2 resource
+> descriptor (as a "resource source"), or because its device object has CSI-2
+> resource descriptors in _CRS.
+
+Correct.
+
+> 
+> This allows a set of software nodes to be allocated for each of these handles.
+> 
+> If I got that totally wrong, please let me know.  Otherwise, I will rework the
+> remaining patches in the series to match this one.
+
+It seems about right. I mostly see renames, moving the code around,
+using the existing dependency list and then parsing sub-tree for _CRS CSI-2
+objects right from the bus scan callback. 
+
+It seems you've also moved the structs from internal.h to what is now
+called mipi-disco-imaging.c. They'll be later needed in e.g. scan.c. At
+least I'd use names that indicate they're related to scanning the bus:
+they're not needed after this is done.
+
+I don't have objections to you reworking the rest, but given the number of
+non-trivial changes, will it work after this? :-) I can also do this,
+although I would un-do some of the changes in this patch in order to
+prepare for the rest (such as moving the structs from internal.h).
+
+See e.g. "ACPI: scan: Generate software nodes based on MIPI DisCo for
+Imaging", I think it's the 6th patch.
+
+...
+
+> +/**
+> + * acpi_mipi_scan_crs_csi2 - Allocate ACPI _CRS CSI-2 software nodes
+> + *
+> + * Note that this function must be called before any struct acpi_device objects
+> + * are bound to any ACPI drivers or scan handlers, so it cannot assume the
+> + * existence of struct acpi_device objects for every device present in the ACPI
+> + * namespace.
+> + *
+> + * acpi_scan_lock in scan.c must be held when calling this function.
+> + */
+> +void acpi_mipi_scan_crs_csi2(void)
 > +{
-> +	list_del(&dep->node);
-> +	kfree(dep);
+> +	struct crs_csi2 *csi2;
+> +	LIST_HEAD(aux_list);
+> +
+> +	/* Count references to each ACPI handle in the CSI-2 connection graph. */
+> +	list_for_each_entry(csi2, &acpi_mipi_crs_csi2_list, entry) {
+> +		struct crs_csi2_connection *conn;
+> +
+> +		list_for_each_entry(conn, &csi2->connections, entry) {
+> +			struct crs_csi2 *remote_csi2;
+> +			acpi_status status;
+> +
+> +			status = acpi_get_data_full(conn->remote_handle,
+> +						    acpi_mipi_data_tag,
+> +						    (void **)&remote_csi2,
+> +						    NULL);
+> +			if (ACPI_SUCCESS(status) && remote_csi2) {
+> +				remote_csi2->port_count++;
+> +				continue;
+> +			}
+> +
+> +			/*
+> +			 * The "remote" device has no _CRS CSI-2 list entry yet,
+> +			 * so create one for it and add it to the list.
+> +			 */
+> +			remote_csi2 = create_crs_csi2_entry(conn->remote_handle);
+> +			if (!remote_csi2)
+> +				continue;
+> +
+> +			list_add(&remote_csi2->entry, &aux_list);
+> +		}
+> +	}
+> +	list_splice(&aux_list, &acpi_mipi_crs_csi2_list);
+> +
+> +	/* Allocate softwware nodes for representing the CSI-2 information. */
+
+"software"
+
+> +	list_for_each_entry(csi2, &acpi_mipi_crs_csi2_list, entry)
+> +		alloc_fill_crs_csi2_swnodes(csi2->handle, csi2->port_count);
+> +
+> +	acpi_mipi_crs_csi2_release();
 > +}
-> +
->  static int acpi_scan_clear_dep(struct acpi_dep_data *dep, void *data)
->  {
->  	struct acpi_device *adev = acpi_get_acpi_dev(dep->consumer);
-> @@ -2311,8 +2313,10 @@ static int acpi_scan_clear_dep(struct ac
->  			acpi_dev_put(adev);
->  	}
->  
-> -	list_del(&dep->node);
-> -	kfree(dep);
-> +	if (dep->free_when_met)
-> +		acpi_scan_delete_dep_data(dep);
-> +	else
-> +		dep->met = true;
->  
->  	return 0;
->  }
-> @@ -2406,6 +2410,53 @@ struct acpi_device *acpi_dev_get_next_co
->  }
->  EXPORT_SYMBOL_GPL(acpi_dev_get_next_consumer_dev);
->  
-> +static void acpi_scan_postponed_branch(acpi_handle handle)
-> +{
-> +	struct acpi_device *adev = NULL;
-> +
-> +	if (ACPI_FAILURE(acpi_bus_check_add(handle, false, &adev)))
-> +		return;
-> +
-> +	acpi_walk_namespace(ACPI_TYPE_ANY, handle, ACPI_UINT32_MAX,
-> +			    acpi_bus_check_add_2, NULL, NULL, (void **)&adev);
-> +	acpi_bus_attach(adev, NULL);
-> +}
-> +
-> +static void acpi_scan_postponed(void)
-> +{
-> +	struct acpi_dep_data *dep, *tmp;
-> +
-> +	mutex_lock(&acpi_dep_list_lock);
-> +
-> +	list_for_each_entry_safe(dep, tmp, &acpi_dep_list, node) {
-> +		acpi_handle handle = dep->consumer;
-> +
-> +		/*
-> +		 * Even though the lock is released here, tmp is guaranteed to
-> +		 * be valid, because none of the list entries following dep is
-> +		 * marked as "free when met" and so they cannot be deleted.
-> +		 */
-> +		mutex_unlock(&acpi_dep_list_lock);
-> +
-> +		/*
-> +		 * In case there are multiple acpi_dep_list entries with the
-> +		 * same consumer, skip the current entry if the consumer device
-> +		 * object corresponding to it is present already.
-> +		 */
-> +		if (!acpi_fetch_acpi_dev(handle))
-> +			acpi_scan_postponed_branch(handle);
 
-acpi_fetch_acpi_dev(handle) does not need/take the acpi_dep_list_lock,
-so you can avoid a needless unlock/lock in case acpi_fetch_acpi_dev(handle)
-finds a device already, which will happen quite regular since devices
-with _DEP lists regularly have more then 1 dep so they will be present
-as consumer on the _DEP list more then once.
+-- 
+Kind regards,
 
-So maybe:
-
-	list_for_each_entry_safe(dep, tmp, &acpi_dep_list, node) {
-		acpi_handle handle = dep->consumer;
-		struct acpi_device *device = acpi_fetch_acpi_dev(handle);
-
-		/*
-		 * In case there are multiple acpi_dep_list entries with the
-		 * same consumer, skip scanning the current entry if the consumer
-		 * device object corresponding to it is present already.
-		 */
-		if (device)
-			goto check_dep;
-
-		/*
-		 * Even though the lock is released here, tmp is guaranteed to
-		 * be valid, because none of the list entries following dep is
-		 * marked as "free when met" and so they cannot be deleted.
-		 */
-		mutex_unlock(&acpi_dep_list_lock);
-		acpi_scan_postponed_branch(handle);
-		mutex_lock(&acpi_dep_list_lock);
-
-check_dep:
-		if (dep->met)
-			acpi_scan_delete_dep_data(dep);
-		else
-			dep->free_when_met = true;
-	}
-
-?
-
-Regards,
-
-Hans
-
-
-
-> +
-> +	mutex_unlock(&acpi_dep_list_lock);
-> +}
-> +
->  /**
->   * acpi_bus_scan - Add ACPI device node objects in a given namespace scope.
->   * @handle: Root of the namespace scope to scan.
-> @@ -2424,8 +2475,6 @@ int acpi_bus_scan(acpi_handle handle)
->  {
->  	struct acpi_device *device = NULL;
->  
-> -	acpi_bus_scan_second_pass = false;
-> -
->  	/* Pass 1: Avoid enumerating devices with missing dependencies. */
->  
->  	if (ACPI_SUCCESS(acpi_bus_check_add(handle, true, &device)))
-> @@ -2438,19 +2487,9 @@ int acpi_bus_scan(acpi_handle handle)
->  
->  	acpi_bus_attach(device, (void *)true);
->  
-> -	if (!acpi_bus_scan_second_pass)
-> -		return 0;
-> -
->  	/* Pass 2: Enumerate all of the remaining devices. */
->  
-> -	device = NULL;
-> -
-> -	if (ACPI_SUCCESS(acpi_bus_check_add(handle, false, &device)))
-> -		acpi_walk_namespace(ACPI_TYPE_ANY, handle, ACPI_UINT32_MAX,
-> -				    acpi_bus_check_add_2, NULL, NULL,
-> -				    (void **)&device);
-> -
-> -	acpi_bus_attach(device, NULL);
-> +	acpi_scan_postponed();
->  
->  	return 0;
->  }
-> 
-> 
-> 
-
+Sakari Ailus
