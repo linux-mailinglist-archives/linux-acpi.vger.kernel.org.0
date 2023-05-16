@@ -2,207 +2,284 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CB3D7053F5
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 18:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BE50705602
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 20:32:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231208AbjEPQeB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 May 2023 12:34:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60084 "EHLO
+        id S229600AbjEPScs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 May 2023 14:32:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230527AbjEPQdq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 12:33:46 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F22141BCD;
-        Tue, 16 May 2023 09:33:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net; s=s31663417;
-        t=1684254733; i=j.neuschaefer@gmx.net;
-        bh=fhB7hXqPlLyhvg8cmuKZg4nTLKqqIf4hFaLjTAmDR8E=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=WCKv0kSCq8cZdcodj3bzJzACl4VUx0N8jIRRLDx6AZWncDeaknHBQ5nP0eVYnCTxp
-         6fsbLxswW3YliTBP2l+jyje57qJGgPy81P3h231K9Wp8Y0nyU8CVCoxcD3tatY5bu7
-         FfGSz1VbwzQtNSTW63A+AAmbzuU5zRdOeMKg8S63XdKKPLRuHqQYu4nhaWKGUmOlRh
-         2wm3hFDjfV8vnq7vnoX++qTaeehQG1WstXLXkrAp+sNV2llu33a3OvtCcG2IM4FTB4
-         hGp2yJajFlFUXH+JElvq6qMEZ1iu56Hooa6evB3SyqoDt4iJDtsdnyQg097NKKYS+L
-         vQquKptUrnA8g==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from probook ([89.1.59.32]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M6Udt-1q5HFt3Faz-006u37; Tue, 16
- May 2023 18:32:12 +0200
-Date:   Tue, 16 May 2023 18:32:09 +0200
-From:   Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Wolfram Sang <wsa@kernel.org>,
-        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        netdev@vger.kernel.org, openbmc@lists.ozlabs.org,
-        linux-gpio@vger.kernel.org, linux-mips@vger.kernel.org
-Subject: Re: [PATCH v4 4/7] pinctrl: wpcm450: elax return value check for IRQ
- get
-Message-ID: <ZGOwCSPH68DJN/NC@probook>
-References: <cover.1684220962.git.mazziesaccount@gmail.com>
- <2d89de999a1d142efbd5eb10ff31cca12309e66d.1684220962.git.mazziesaccount@gmail.com>
+        with ESMTP id S229460AbjEPScr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 14:32:47 -0400
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2076.outbound.protection.outlook.com [40.107.92.76])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B24C155BD;
+        Tue, 16 May 2023 11:32:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=i8vELFlnsNDbahn3qOgBATEOyL4+kJfi1PUf5IQNIF107Uj4BfphetHhqZQpUc215xEr0Fg3NVqZcxAamRn0fCUlsdYzi1NNBjHt0WGOWw604DpQ03ZVFa1hceapZnl/F4EO5Xq9U2z+9eslg9WnpXM8ZAYqeQQ7nZdsuCA6EPmE3IF5m3X9inCqqeitB2NTCI4EwJVl5d7CsjAceDo/ER4V650SWF+sdTSM7nyi7mJMiueODyYex7xDIJAzj62mbKhUjns6v7vUokY2PRevfhOssBN4X4c5SwlK01gxxVHKVAjbWanvGjS82HIk4rGg/KB5qUqQ5wq1Qxu7F2mTYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZctYU2ScxGiV3VuJa/y87S7yJ44bKk7wVuA73/Arkb4=;
+ b=ibgYQNL9jvezH5VCd4mCVVz590ff+igBAIWzHAZoJkxUheALGRKSjU4KyRTV9bFncQQl7k1S1Jua41OCw/ZRUkBvUBQZqshUSiPQ+2kE6YwlSCXsapTKUS0KAI1zPDrjkTRt53OtFter+eOUSCjvYfyfguGYo0f/At7glqB1gr18WZzdfp5P2uEqqtcjLJM7QhMf1ANWM/d3DRNyarT+RG9XFqdNEVkfuwECVIXpfngqR3y0NbEgoFU42JIHYfewB6evRm/Sw5cZOqotRFfV16kvt0DX4h1dTJgCoZU7XD6yPwJPa1h0AYwcKyPLzrbS0B57Wd8ZOn8P4ElNJ4zI8Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZctYU2ScxGiV3VuJa/y87S7yJ44bKk7wVuA73/Arkb4=;
+ b=FlokkGwhyB9v5r1k4C8Mlai1etcTmWv25sW48oe1dcB9VIDkcDWz50PvEgEtG5y2qKdPKGUlpZCOfwzF9eJCHYGGL4/sPesHwvgiGFZJd6R7oqtkFJV4ejDfaU86++kVUS2SFs+CKTV2+RwAIObtNtKkPyyg71Nz7LYAOZR/RGw=
+Received: from MW4PR03CA0023.namprd03.prod.outlook.com (2603:10b6:303:8f::28)
+ by PH7PR12MB6954.namprd12.prod.outlook.com (2603:10b6:510:1b7::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.24; Tue, 16 May
+ 2023 18:32:42 +0000
+Received: from CO1NAM11FT044.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:303:8f:cafe::49) by MW4PR03CA0023.outlook.office365.com
+ (2603:10b6:303:8f::28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.33 via Frontend
+ Transport; Tue, 16 May 2023 18:32:42 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1NAM11FT044.mail.protection.outlook.com (10.13.175.188) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6411.17 via Frontend Transport; Tue, 16 May 2023 18:32:42 +0000
+Received: from onyx-7400host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Tue, 16 May
+ 2023 13:32:40 -0500
+From:   Avadhut Naik <Avadhut.Naik@amd.com>
+To:     <rafael@kernel.org>, <gregkh@linuxfoundation.org>,
+        <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-fsdevel@vger.kernel.org>
+CC:     <Avadhut.Naik@amd.com>, <yazen.ghannam@amd.com>,
+        <linux-kernel@vger.kernel.org>
+Subject: [RFC PATCH v1] ACPI: APEI: EINJ: Add support for vendor defined error types
+Date:   Tue, 16 May 2023 18:32:28 +0000
+Message-ID: <20230516183228.3736-1-Avadhut.Naik@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="WrLvMy0clVxWGHYm"
-Content-Disposition: inline
-In-Reply-To: <2d89de999a1d142efbd5eb10ff31cca12309e66d.1684220962.git.mazziesaccount@gmail.com>
-X-Provags-ID: V03:K1:kb9Ha+Yx98MCgnViJRbJ5mV8EzgVqSMWDyckGXEBHPEckS2yxtX
- WLxGHbQHHyww6R6Ovfb1I6+MLs6unjVXcHPN9cTB2qUyLT2OCQV4a0EnroagIj69QDhNiwQ
- +/Vn/78OKHy4brwPcnbpJc03GQ7dSWBsQWsx+Fe8NIAEyAT9HzZ3hdQy/WQNO1Ec+/rSljD
- BU7HzvqPeijKqg+zAILnw==
-UI-OutboundReport: notjunk:1;M01:P0:eqLG+MfPsvo=;dsn+3nEr9xMgnpHyFWJxZLNYN5d
- GY31/ESf0RyFHD0Wsp5dR+6FvUvf8ls2+02yNc1I2OnqO2S6w+9e/u7Qsm3ag2yMUuidMmHZe
- MrPhjAT2f2zHNIqKcehCtR7r4DZiPS4PxM1pl5J470ceF/tu+JZM+F6MMdtg14K+qSIGQlutQ
- 5xt8LAjzsKAlC3PqG8lw2hu2tB1mAuFsZfzw30NulhTGl1PvfesyWE9eSoLCk7oi85iJgKMTi
- yX50PkGycHbQ4CxFjMCbqPypmZt1W+tvEOBDTadB+HuQn6XPevTpezXUlgyqwxndqX7L/bwWO
- PlEfuD270YU708j3ci6G5HldGNA+bMgF40SFGDCbUzEGDezwqTiuVXJNulxdVq1ldILAmygiM
- lXSfJCjR8r1O3Djv6vssLn02B4NtgPa0mLAtCQ0qHFxV27VbCFxTyhSAY2Cp/yEOZ+A1DwCvO
- iKIfSyBPQropa3WL8AKS6EuF175T5xPOzUJHtjhP4+OZgsIPQVbYmozwTnXUbDSwSI7L5JoZg
- qCD37EJqugrU2l874OdAy9M1yVK8Ju9HsPeLxU2Tvl3bnLZ1oLWEeFxhGGu+TxenEdz8ZefMM
- pVc2VtXX4y6dZKbFv25tzyY4JWgxnCITXQfQcDFy8oPsRucV3DVXwmRnbBu8RpS2z4M9hYGaY
- QWJdFql4bakNJzQ03Fky11IDGzakxsCSlSTV9zvg2ZSLU9LA2F4hqjTcP0F9PbQlGkpQFswY8
- V61c8E3mMNh8Nwx9acEZX731LSLhNHST2xA47cI5nKlsLKCkMTmHEa5oqHwenSq856CLVG/z+
- uXjIksinveoOI/IsthUbBTEUy+5PZhl774qIjlxgacPc5ovl4zxUOh/qJGJ0ratCbtsvYVG4c
- gl2sL6cFa1cJq8BZrlu6Bnwkt7SnTGiIpUclJ8hvqyB+vymjLCUmmHu7pAJENNej8JcvaLCBH
- G92iqg==
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1NAM11FT044:EE_|PH7PR12MB6954:EE_
+X-MS-Office365-Filtering-Correlation-Id: 62898160-7ab3-48e7-5c42-08db563bef82
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: sGjwFpToBp98IX+55Yaz1Rd4ipt5Rz5NTWZ9pkZaEJJTpBcp2X734TR3864Eg9BHQPWQeXQ/J/Qi4Tdntbere3CJTKzFOHu4F8YL6MTKchrEgQP+oj7rmJKHVs9kBiH6GTOZtqSFxj2g0XxzzlgpT0H0pWCadxf/Ly+YCRSmfUbVqAZFvAfi3UuDRdzmZConvmypWbQ50Fwb1XgFupS/G3O+ISg7b+hD8PNSf/MpfA/HeMeP6r4PqeYinaRp7uZxuFp7lDCUJTEDywkuRu/3Ee8I2DbUsAYabVEKh8EJ/i9BiKLcysYp1XR/3JMTy/Hjhm/6y3HelJu2gLJeSUInvnszlLF/1zBeCoDuGU7K65B/IxHYBiTH0fMCWATAL7EvMHpfTpWYxuGYpZd2BwflIa7yvKS2cTiWxBAowr3tr3alnHOMy/DI1d+NHJjNlxPRst5Yqui0HeCI1vKZ2JzAW7pafxS20m3Xmx1E0ePVmFUHwDw73jPEXjwecoNJ0AdlqbTBtpIAmchSxyjP1d4xZd0ojMJZGjjYg3C/6tOVwaaAA9yRaHRMToVXMYXHnf87n2zeNup4FvmQGdI3UU3rTynY8OSZjAWx3YQmyDdgQssUjSLRYF0GUrc958TVMGWd+C+Cgq2W2gvoQA0wz/YA3EkA2VVzkve2vP/exf63mXKU2n0j8eYW+5iX5TqyiFRLeXR5brsmM1EeJXZ8LTdgl1+RAvQ6GH/I+iPBchBjZ3uapQ5c2/zL8hjqtdzW45VhUR6Di0eofAW99UmXhERtomXcOpsmbFW4an+I5EhDKKA=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(396003)(136003)(39860400002)(346002)(376002)(451199021)(46966006)(40470700004)(36840700001)(82310400005)(110136005)(356005)(40460700003)(41300700001)(54906003)(316002)(6666004)(478600001)(82740400003)(70586007)(86362001)(7696005)(70206006)(2616005)(36756003)(40480700001)(16526019)(1076003)(26005)(426003)(81166007)(336012)(186003)(47076005)(8936002)(8676002)(4326008)(5660300002)(2906002)(36860700001)(83380400001)(2101003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2023 18:32:42.2851
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 62898160-7ab3-48e7-5c42-08db563bef82
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT044.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6954
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+According to ACPI specification 6.5, section 18.6.4, Vendor-Defined Error
+types are supported by the system apart from standard error types if bit
+31 is set in the output of GET_ERROR_TYPE Error Injection Action. While
+the errors themselves and the length of their associated OEM Vendor data
+structure might vary between vendors, the physical address of this very
+structure can be computed through vendor_extension and length fields of
+SET_ERROR_TYPE_WITH_ADDRESS Data Structure and Vendor Error Type Extension
+Structure respectively (ACPI Spec 6.5, Table 18.31 and 18.32).
 
---WrLvMy0clVxWGHYm
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Currently, however, the einj module only computes the physical address of
+Vendor Error Type Extension Structure. Neither does it compute the physical
+address of OEM Vendor structure nor does it establish the memory mapping
+required for injecting Vendor-defined errors. Consequently, userspace
+tools have to establish the very mapping through /dev/mem, nopat kernel
+parameter and system calls like mmap/munmap initially before injecting
+Vendor-defined errors.
 
-Hello,
+Circumvent the issue by computing the physical address of OEM Vendor data
+structure and establishing the required mapping with the structure. Create
+a new file "oem_error", if the system supports Vendor-defined errors, to
+export this mapping, through debugfs_create_blob API. Userspace tools can
+then populate their respective OEM Vendor structure instances and just
+write to the file as part of injecting Vendor-defined Errors.
 
-> [PATCH v4 4/7] pinctrl: wpcm450: elax return value check for IRQ get
+Additionally, since the debugfs files created through debugfs_create_blob
+API are read-only, introduce a write callback to enable userspace tools to
+write OEM Vendor structures into the oem_error file.
 
-Typo ("elax") in the subject line.
+Note: Some checkpatch warnings are ignored to maintain coding style.
 
->
-On Tue, May 16, 2023 at 10:13:14AM +0300, Matti Vaittinen wrote:
-> fwnode_irq_get[_byname]() were changed to not return 0 anymore. The
-> special error case where device-tree based IRQ mapping fails can't no
-> longer be reliably detected from this return value. This yields a
-> functional change in the driver where the mapping failure is treated as
-> an error.
->=20
-> The mapping failure can occur for example when the device-tree IRQ
-> information translation call-back(s) (xlate) fail, IRQ domain is not
-> found, IRQ type conflicts, etc. In most cases this indicates an error in
-> the device-tree and special handling is not really required.
->=20
-> One more thing to note is that ACPI APIs do not return zero for any
-> failures so this special handling did only apply on device-tree based
-> systems.
->=20
-> Drop the special (no error, just skip the IRQ) handling for DT mapping
-> failures as these can no longer be separated from other errors at driver
-> side.
->=20
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->=20
-> ---
->=20
-> The special handling in this driver was added when fixing a problem
-> where returning zero from fwnode_irq_get[_byname]() was treated as
-> succes yielding zero being used as a valid IRQ by the driver.
-> f4a31facfa80 ("pinctrl: wpcm450: Correct the fwnode_irq_get() return valu=
-e check")
-> The commit message does not mention if choosing not to abort the probe
-> on device-tree mapping failure (as is done on other errors) was chosen
-> because: a) Abort would have broken some existing setup. b) Because skipp=
-ing
-> an IRQ on failure is "the right thing to do", or c) because it sounded li=
-ke
-> a way to minimize risk of breaking something.
->=20
-> If the reason is a) - then I'd appreciate receiving some more
-> information and a suggestion how to proceed (if possible). If the reason
-> is b), then it might be best to just skip the IRQ instead of aborting
-> the probe for all errors on IRQ getting. Finally, in case of c), well,
-> by acking this change you will now accept the risk :)
->=20
-> The first patch of the series changes the fwnode_irq_get() so this depends
-> on the first patch of the series and should not be applied alone.
+Suggested-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Avadhut Naik <Avadhut.Naik@amd.com>
+---
+ drivers/acpi/apei/einj.c | 25 ++++++++++++++++++++++++-
+ fs/debugfs/file.c        | 27 ++++++++++++++++++++++-----
+ 2 files changed, 46 insertions(+), 6 deletions(-)
 
-Thanks for investigating this!
+diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
+index 013eb621dc92..99f6d495b627 100644
+--- a/drivers/acpi/apei/einj.c
++++ b/drivers/acpi/apei/einj.c
+@@ -73,6 +73,7 @@ static u32 notrigger;
+ 
+ static u32 vendor_flags;
+ static struct debugfs_blob_wrapper vendor_blob;
++static struct debugfs_blob_wrapper oem_err;
+ static char vendor_dev[64];
+ 
+ /*
+@@ -182,6 +183,16 @@ static int einj_timedout(u64 *t)
+ 	return 0;
+ }
+ 
++static void get_oem_vendor_struct(u64 paddr, int offset,
++				  struct vendor_error_type_extension *v)
++{
++	u64 target_pa = paddr + offset + sizeof(struct vendor_error_type_extension);
++
++	oem_err.size = v->length - sizeof(struct vendor_error_type_extension);
++	if (oem_err.size)
++		oem_err.data = acpi_os_map_iomem(target_pa, oem_err.size);
++}
++
+ static void check_vendor_extension(u64 paddr,
+ 				   struct set_error_type_with_address *v5param)
+ {
+@@ -194,6 +205,7 @@ static void check_vendor_extension(u64 paddr,
+ 	v = acpi_os_map_iomem(paddr + offset, sizeof(*v));
+ 	if (!v)
+ 		return;
++	get_oem_vendor_struct(paddr, offset, v);
+ 	sbdf = v->pcie_sbdf;
+ 	sprintf(vendor_dev, "%x:%x:%x.%x vendor_id=%x device_id=%x rev_id=%x\n",
+ 		sbdf >> 24, (sbdf >> 16) & 0xff,
+@@ -596,20 +608,25 @@ static const char * const einj_error_type_string[] = {
+ 	"0x00008000\tCXL.mem Protocol Correctable\n",
+ 	"0x00010000\tCXL.mem Protocol Uncorrectable non-fatal\n",
+ 	"0x00020000\tCXL.mem Protocol Uncorrectable fatal\n",
++	"0x80000000\tVendor Defined Error Types\n",
+ };
+ 
+ static int available_error_type_show(struct seq_file *m, void *v)
+ {
+ 	int rc;
++	int pos = 0;
+ 	u32 available_error_type = 0;
+ 
+ 	rc = einj_get_available_error_type(&available_error_type);
+ 	if (rc)
+ 		return rc;
+-	for (int pos = 0; pos < ARRAY_SIZE(einj_error_type_string); pos++)
++	for (; pos < ARRAY_SIZE(einj_error_type_string); pos++)
+ 		if (available_error_type & BIT(pos))
+ 			seq_puts(m, einj_error_type_string[pos]);
+ 
++	if (available_error_type & BIT(31))
++		seq_puts(m, einj_error_type_string[--pos]);
++
+ 	return 0;
+ }
+ 
+@@ -767,6 +784,10 @@ static int __init einj_init(void)
+ 				   einj_debug_dir, &vendor_flags);
+ 	}
+ 
++	if (oem_err.size)
++		debugfs_create_blob("oem_error", S_IWUSR, einj_debug_dir,
++				    &oem_err);
++
+ 	pr_info("Error INJection is initialized.\n");
+ 
+ 	return 0;
+@@ -792,6 +813,8 @@ static void __exit einj_exit(void)
+ 			sizeof(struct einj_parameter);
+ 
+ 		acpi_os_unmap_iomem(einj_param, size);
++		if (oem_err.size)
++			acpi_os_unmap_iomem(oem_err.data, oem_err.size);
+ 	}
+ 	einj_exec_ctx_init(&ctx);
+ 	apei_exec_post_unmap_gars(&ctx);
+diff --git a/fs/debugfs/file.c b/fs/debugfs/file.c
+index 1f971c880dde..6570745d2836 100644
+--- a/fs/debugfs/file.c
++++ b/fs/debugfs/file.c
+@@ -973,17 +973,34 @@ static ssize_t read_file_blob(struct file *file, char __user *user_buf,
+ 	return r;
+ }
+ 
++static ssize_t write_file_blob(struct file *file, const char __user *user_buf,
++			       size_t count, loff_t *ppos)
++{
++	struct debugfs_blob_wrapper *blob = file->private_data;
++	struct dentry *dentry = F_DENTRY(file);
++	ssize_t r;
++
++	r = debugfs_file_get(dentry);
++	if (unlikely(r))
++		return r;
++	r = simple_write_to_buffer(blob->data, blob->size, ppos, user_buf,
++				   count);
++
++	debugfs_file_put(dentry);
++	return r;
++}
++
+ static const struct file_operations fops_blob = {
+ 	.read =		read_file_blob,
++	.write =	write_file_blob,
+ 	.open =		simple_open,
+ 	.llseek =	default_llseek,
+ };
+ 
+ /**
+- * debugfs_create_blob - create a debugfs file that is used to read a binary blob
++ * debugfs_create_blob - create a debugfs file that is used to read and write a binary blob
+  * @name: a pointer to a string containing the name of the file to create.
+- * @mode: the read permission that the file should have (other permissions are
+- *	  masked out)
++ * @mode: the permission that the file should have
+  * @parent: a pointer to the parent dentry for this file.  This should be a
+  *          directory dentry if set.  If this parameter is %NULL, then the
+  *          file will be created in the root of the debugfs filesystem.
+@@ -992,7 +1009,7 @@ static const struct file_operations fops_blob = {
+  *
+  * This function creates a file in debugfs with the given name that exports
+  * @blob->data as a binary blob. If the @mode variable is so set it can be
+- * read from. Writing is not supported.
++ * read from, and written to.
+  *
+  * This function will return a pointer to a dentry if it succeeds.  This
+  * pointer must be passed to the debugfs_remove() function when the file is
+@@ -1007,7 +1024,7 @@ struct dentry *debugfs_create_blob(const char *name, umode_t mode,
+ 				   struct dentry *parent,
+ 				   struct debugfs_blob_wrapper *blob)
+ {
+-	return debugfs_create_file_unsafe(name, mode & 0444, parent, blob, &fops_blob);
++	return debugfs_create_file_unsafe(name, mode, parent, blob, &fops_blob);
+ }
+ EXPORT_SYMBOL_GPL(debugfs_create_blob);
+ 
+-- 
+2.34.1
 
-It's not a), because there are no existing setups that rely on broken
-IRQs connected to this pinctrl/GPIO controller.
-
-I suspect b) or c), but I'll let Andy give a more definite answer.
-
-> ---
->  drivers/pinctrl/nuvoton/pinctrl-wpcm450.c | 2 --
->  1 file changed, 2 deletions(-)
->=20
-> diff --git a/drivers/pinctrl/nuvoton/pinctrl-wpcm450.c b/drivers/pinctrl/=
-nuvoton/pinctrl-wpcm450.c
-> index 2d1c1652cfd9..f9326210b5eb 100644
-> --- a/drivers/pinctrl/nuvoton/pinctrl-wpcm450.c
-> +++ b/drivers/pinctrl/nuvoton/pinctrl-wpcm450.c
-> @@ -1106,8 +1106,6 @@ static int wpcm450_gpio_register(struct platform_de=
-vice *pdev,
->  			irq =3D fwnode_irq_get(child, i);
->  			if (irq < 0)
->  				break;
-> -			if (!irq)
-> -				continue;
-> =20
->  			girq->parents[i] =3D irq;
->  			girq->num_parents++;
-
-Anyway, this looks good to me.
-
-Reviewed-by: Jonathan Neusch=C3=A4fer <j.neuschaefer@gmx.net>
-
---WrLvMy0clVxWGHYm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEvHAHGBBjQPVy+qvDCDBEmo7zX9sFAmRjr+cACgkQCDBEmo7z
-X9sWzA//bZZ5OxVZ8EtxzPSK/eibQZfgmPiYXqXgsEMjpRZwcPXskSEwCPtOtf6m
-iRl8ElSCbpvjpPbtjnUWp8s4OcehmR6WvMwY9kSj2rlzojAi5Q3vypAPJKi1l/qn
-X/XFvUt7H21kj2uxfvCF2MTpIimfc+52YDyE2f1JZgcczkSaRzL4fc1EtQMpW2BQ
-/OekLcM7OV9iebAFdptvQiRJIMFPCTL0G7RQKoWrCvoB+TaKBR/FDRYyLIOtzbYe
-r3KCfb1b9ocP4FERIOXPWaeaFmk5cX6fDw3+UOr9w7h1UzKzRYGE+f2eQ9s2kPzy
-kP6Cy6wJ5u1MbnqBDiw1+zZhLTDcP4g2wwWVNMVZdwspVfs5zpdSOwzcYRAhRQeY
-0uy9tJ1HxveapA9WLQCrpEi09c3M3T3rHM8Ico04tpsqSmELqgvFhNaaULcBqQij
-mmQD8nMmJJD2bGVxHl23JtpFFjgK0kDM7TmAxfpbBJc3MSf8cWaOpcZYrsOPmYaI
-fCXIwzCt3eLMkz3/biTv4ORaXEjxuEn5a2c83DLNCiDIOBcZdXkewdorw+PJdxES
-xoM8/2zc7jondgdJv/OMRccXi/AFHybz0pt46gT049vHNvKvBVH1DawYqKIVQb/T
-4O0q+GgQhYRTCb3iz8ZPVEJoGcYiqi4J/xUpx7UAMNY8fYCUsUU=
-=yzDe
------END PGP SIGNATURE-----
-
---WrLvMy0clVxWGHYm--
