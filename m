@@ -2,267 +2,133 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35144704ADA
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 12:38:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC20C704B9E
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 13:04:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231932AbjEPKh7 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 16 May 2023 06:37:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37826 "EHLO
+        id S232675AbjEPLEP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 May 2023 07:04:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232068AbjEPKh6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 06:37:58 -0400
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05ED6213A;
-        Tue, 16 May 2023 03:37:52 -0700 (PDT)
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-94a342f4c8eso355435066b.0;
-        Tue, 16 May 2023 03:37:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684233471; x=1686825471;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aZvG9EwxbAkTIUCb+ia3g2SAb5ao369dYmZpB1L75vM=;
-        b=jW+7dxsscE9FYigkF8o5v8o5XGtHiAt4GanywSyeOo19Rs5lmTgT9I5vsyma3DbXCO
-         jYg+BQz9kPXr9my20V3vJZtMHBMSdt02xZFaqV4DcAUpoMRZi5RSVqyb75M3E9k5wNjt
-         c5/k/4xk6Gc7U7Cwi5XWHN4xay9CLfaqLR/5nvoteeA/k43hN+XWPR+6voauSHJdilbQ
-         Z6e9GNiGZafEtBcgzGQKe1Q416/q/rkrJMJ4hbvyi1w5wWOGafDi5VApFSe6Khbgi5tq
-         zjWTGUi50E5gqWkN2MR1kIGWcTdjsX0JHpcqAhgNQu14QTUsQ8bjabCb4mVkTgjBuCkY
-         ELvg==
-X-Gm-Message-State: AC+VfDwIW47nyhqlwCHpFE6j/Hd8N1in0lg1QXOoIAV5YENvm4oSr+XM
-        UfM56eXTU4DHn4rsiyB+RPFPKPIOlFl36R4ZFGp+TKqY
-X-Google-Smtp-Source: ACHHUZ4XAIHLNhqsjB3xkqymaxap0VVLgEqJosjP7KKpP9ZI6U0MBT02pTufAM2NO1jDA8rTrOcbDb2ntpCgvbLEiMQ=
-X-Received: by 2002:a17:906:51cb:b0:94e:d688:fca6 with SMTP id
- v11-20020a17090651cb00b0094ed688fca6mr9001606ejk.0.1684233471153; Tue, 16 May
- 2023 03:37:51 -0700 (PDT)
+        with ESMTP id S231557AbjEPLDZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 07:03:25 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B3B4198E;
+        Tue, 16 May 2023 04:01:50 -0700 (PDT)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34GAjGJL030986;
+        Tue, 16 May 2023 11:01:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : content-transfer-encoding
+ : mime-version; s=pp1; bh=ezG6jTGZUINryZDCi0wemxVU5pmXhLyRDWX1OhiOgHU=;
+ b=h6lzSEKUdWWG4A/aTdtGXH4vAF28nPcnoL6kIe44ov3ha/krGBBhU6GOjFyGyGKXbmTc
+ aqkXi1L+M9tQZaItW62onlbM1aWemBBncbegVPeaRnVHHwVLqoQwlUPg/CYGn3H0rUOh
+ JuYHWT+xcdsROKFCUtzQYM2fDjB8xwtkj7OTsmKnOvBNf8EHoUifuu4yaGn5pb4uguGq
+ MSgwzfe8UxOJQkeKlp7UfuMS1O1aSHy0wUEju9YpBgY8oJ9CmbqiClPZ6BxzZB1cbEfk
+ UcSfuX9WaYmvy6pQesXsTZCLnSCH+OAN6ai7qir4mu/9m91OkxnGZVlRMFvOMtfJibq0 kQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qm8bn0e7p-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 16 May 2023 11:01:08 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34GAkeu5002316;
+        Tue, 16 May 2023 11:01:07 GMT
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qm8bn0e69-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 16 May 2023 11:01:07 +0000
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+        by ppma04fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34G9brXp014004;
+        Tue, 16 May 2023 11:01:04 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+        by ppma04fra.de.ibm.com (PPS) with ESMTPS id 3qj264sane-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 16 May 2023 11:01:04 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+        by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34GB121x44433722
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 16 May 2023 11:01:02 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 61BA820043;
+        Tue, 16 May 2023 11:01:02 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id EFA5B2004D;
+        Tue, 16 May 2023 11:01:01 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+        by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+        Tue, 16 May 2023 11:01:01 +0000 (GMT)
+From:   Niklas Schnelle <schnelle@linux.ibm.com>
+To:     Arnd Bergmann <arnd@arndb.de>, Jaroslav Kysela <perex@perex.cz>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH v4 26/41] pnp: add HAS_IOPORT dependencies
+Date:   Tue, 16 May 2023 13:00:22 +0200
+Message-Id: <20230516110038.2413224-27-schnelle@linux.ibm.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230516110038.2413224-1-schnelle@linux.ibm.com>
+References: <20230516110038.2413224-1-schnelle@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 4SOFwS1bUwRSspsSLqmRSfBI48x6gJXQ
+X-Proofpoint-ORIG-GUID: iGVhOeXDZmrWc_CqFrDp9Y7IH11Ipm_X
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <12223415.O9o76ZdvQC@kreacher> <f665b082-6114-d132-915b-e5b45f52af99@redhat.com>
-In-Reply-To: <f665b082-6114-d132-915b-e5b45f52af99@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 16 May 2023 12:37:37 +0200
-Message-ID: <CAJZ5v0hRzeq201Wt98TdPp6k90Z4J5+eMmibsCXXugGKXzAknA@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: scan: Reduce overhead related to devices with dependencies
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-16_04,2023-05-16_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 mlxlogscore=999 impostorscore=0 mlxscore=0 phishscore=0
+ suspectscore=0 spamscore=0 malwarescore=0 clxscore=1011 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305160089
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Hans,
+In a future patch HAS_IOPORT=n will result in inb()/outb() and friends
+not being declared. We thus need to depend on HAS_IOPORT even when
+compile testing only.
 
-On Tue, May 16, 2023 at 12:33 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi Rafael,
->
-> On 5/16/23 12:25, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > Subject: [PATCH] ACPI: scan: Reduce overhead related to devices with dependencies
-> >
-> > Notice that all of the objects for which the acpi_scan_check_dep()
-> > return value is greater than 0 are present in acpi_dep_list as consumers
-> > (there may be multiple entries for one object, but that is not a
-> > problem), so after carrying out the initial ACPI namespace walk in which
-> > devices with dependencies are skipped, acpi_bus_scan() can simply walk
-> > acpi_dep_list and enumerate all of the unique consumer objects from
-> > there and their descendants instead of walking the entire target branch
-> > of the ACPI namespace and looking for device objects that have not been
-> > enumerated yet in it.
-> >
-> > Because walking acpi_dep_list is generally less overhead than walking
-> > the entire ACPI namespace, use the observation above to reduce the
-> > system initialization overhead related to ACPI, which is particularly
-> > important on large systems.
-> >
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >
-> > -> v2: Hold acpi_dep_list_lock around the acpi_fetch_acpi_dev() invocation in
-> >        acpi_scan_postponed() (Hans).
->
-> This looks good to me now:
->
-> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
->
-> with the remark that this obviously is going to need a lot
-> of testing in case this somehow breaks some weird corner case.
->
-> I'll add it to my personal git kernel tree with all my
-> pending work right away, so that it will get tested on
-> various devices as I test other patches on those devices.
->
-> I'll let you know if I hit any problems which seem to be
-> caused by this.
+Co-developed-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+---
+Note: The HAS_IOPORT Kconfig option was added in v6.4-rc1 so
+      per-subsystem patches may be applied independently
 
-Awesome, thanks!
+ drivers/pnp/isapnp/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/pnp/isapnp/Kconfig b/drivers/pnp/isapnp/Kconfig
+index d0479a563123..79bd48f1dd94 100644
+--- a/drivers/pnp/isapnp/Kconfig
++++ b/drivers/pnp/isapnp/Kconfig
+@@ -4,7 +4,7 @@
+ #
+ config ISAPNP
+ 	bool "ISA Plug and Play support"
+-	depends on ISA || COMPILE_TEST
++	depends on ISA || (HAS_IOPORT && COMPILE_TEST)
+ 	help
+ 	  Say Y here if you would like support for ISA Plug and Play devices.
+ 	  Some information is in <file:Documentation/driver-api/isapnp.rst>.
+-- 
+2.39.2
 
-> >
-> > ---
-> >  drivers/acpi/scan.c     |   81 ++++++++++++++++++++++++++++++++++++------------
-> >  include/acpi/acpi_bus.h |    2 +
-> >  2 files changed, 63 insertions(+), 20 deletions(-)
-> >
-> > Index: linux-pm/include/acpi/acpi_bus.h
-> > ===================================================================
-> > --- linux-pm.orig/include/acpi/acpi_bus.h
-> > +++ linux-pm/include/acpi/acpi_bus.h
-> > @@ -289,6 +289,8 @@ struct acpi_dep_data {
-> >       acpi_handle supplier;
-> >       acpi_handle consumer;
-> >       bool honor_dep;
-> > +     bool met;
-> > +     bool free_when_met;
-> >  };
-> >
-> >  /* Performance Management */
-> > Index: linux-pm/drivers/acpi/scan.c
-> > ===================================================================
-> > --- linux-pm.orig/drivers/acpi/scan.c
-> > +++ linux-pm/drivers/acpi/scan.c
-> > @@ -2029,8 +2029,6 @@ static u32 acpi_scan_check_dep(acpi_hand
-> >       return count;
-> >  }
-> >
-> > -static bool acpi_bus_scan_second_pass;
-> > -
-> >  static acpi_status acpi_bus_check_add(acpi_handle handle, bool check_dep,
-> >                                     struct acpi_device **adev_p)
-> >  {
-> > @@ -2050,10 +2048,8 @@ static acpi_status acpi_bus_check_add(ac
-> >                       return AE_OK;
-> >
-> >               /* Bail out if there are dependencies. */
-> > -             if (acpi_scan_check_dep(handle, check_dep) > 0) {
-> > -                     acpi_bus_scan_second_pass = true;
-> > +             if (acpi_scan_check_dep(handle, check_dep) > 0)
-> >                       return AE_CTRL_DEPTH;
-> > -             }
-> >
-> >               fallthrough;
-> >       case ACPI_TYPE_ANY:     /* for ACPI_ROOT_OBJECT */
-> > @@ -2301,6 +2297,12 @@ static bool acpi_scan_clear_dep_queue(st
-> >       return true;
-> >  }
-> >
-> > +static void acpi_scan_delete_dep_data(struct acpi_dep_data *dep)
-> > +{
-> > +     list_del(&dep->node);
-> > +     kfree(dep);
-> > +}
-> > +
-> >  static int acpi_scan_clear_dep(struct acpi_dep_data *dep, void *data)
-> >  {
-> >       struct acpi_device *adev = acpi_get_acpi_dev(dep->consumer);
-> > @@ -2311,8 +2313,10 @@ static int acpi_scan_clear_dep(struct ac
-> >                       acpi_dev_put(adev);
-> >       }
-> >
-> > -     list_del(&dep->node);
-> > -     kfree(dep);
-> > +     if (dep->free_when_met)
-> > +             acpi_scan_delete_dep_data(dep);
-> > +     else
-> > +             dep->met = true;
-> >
-> >       return 0;
-> >  }
-> > @@ -2406,6 +2410,55 @@ struct acpi_device *acpi_dev_get_next_co
-> >  }
-> >  EXPORT_SYMBOL_GPL(acpi_dev_get_next_consumer_dev);
-> >
-> > +static void acpi_scan_postponed_branch(acpi_handle handle)
-> > +{
-> > +     struct acpi_device *adev = NULL;
-> > +
-> > +     if (ACPI_FAILURE(acpi_bus_check_add(handle, false, &adev)))
-> > +             return;
-> > +
-> > +     acpi_walk_namespace(ACPI_TYPE_ANY, handle, ACPI_UINT32_MAX,
-> > +                         acpi_bus_check_add_2, NULL, NULL, (void **)&adev);
-> > +     acpi_bus_attach(adev, NULL);
-> > +}
-> > +
-> > +static void acpi_scan_postponed(void)
-> > +{
-> > +     struct acpi_dep_data *dep, *tmp;
-> > +
-> > +     mutex_lock(&acpi_dep_list_lock);
-> > +
-> > +     list_for_each_entry_safe(dep, tmp, &acpi_dep_list, node) {
-> > +             acpi_handle handle = dep->consumer;
-> > +
-> > +             /*
-> > +              * In case there are multiple acpi_dep_list entries with the
-> > +              * same consumer, skip the current entry if the consumer device
-> > +              * object corresponding to it is present already.
-> > +              */
-> > +             if (!acpi_fetch_acpi_dev(handle)) {
-> > +                     /*
-> > +                      * Even though the lock is released here, tmp is
-> > +                      * guaranteed to be valid, because none of the list
-> > +                      * entries following dep is marked as "free when met"
-> > +                      * and so they cannot be deleted.
-> > +                      */
-> > +                     mutex_unlock(&acpi_dep_list_lock);
-> > +
-> > +                     acpi_scan_postponed_branch(handle);
-> > +
-> > +                     mutex_lock(&acpi_dep_list_lock);
-> > +             }
-> > +
-> > +             if (dep->met)
-> > +                     acpi_scan_delete_dep_data(dep);
-> > +             else
-> > +                     dep->free_when_met = true;
-> > +     }
-> > +
-> > +     mutex_unlock(&acpi_dep_list_lock);
-> > +}
-> > +
-> >  /**
-> >   * acpi_bus_scan - Add ACPI device node objects in a given namespace scope.
-> >   * @handle: Root of the namespace scope to scan.
-> > @@ -2424,8 +2477,6 @@ int acpi_bus_scan(acpi_handle handle)
-> >  {
-> >       struct acpi_device *device = NULL;
-> >
-> > -     acpi_bus_scan_second_pass = false;
-> > -
-> >       /* Pass 1: Avoid enumerating devices with missing dependencies. */
-> >
-> >       if (ACPI_SUCCESS(acpi_bus_check_add(handle, true, &device)))
-> > @@ -2438,19 +2489,9 @@ int acpi_bus_scan(acpi_handle handle)
-> >
-> >       acpi_bus_attach(device, (void *)true);
-> >
-> > -     if (!acpi_bus_scan_second_pass)
-> > -             return 0;
-> > -
-> >       /* Pass 2: Enumerate all of the remaining devices. */
-> >
-> > -     device = NULL;
-> > -
-> > -     if (ACPI_SUCCESS(acpi_bus_check_add(handle, false, &device)))
-> > -             acpi_walk_namespace(ACPI_TYPE_ANY, handle, ACPI_UINT32_MAX,
-> > -                                 acpi_bus_check_add_2, NULL, NULL,
-> > -                                 (void **)&device);
-> > -
-> > -     acpi_bus_attach(device, NULL);
-> > +     acpi_scan_postponed();
-> >
-> >       return 0;
-> >  }
-> >
-> >
-> >
->
