@@ -2,91 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4DC770460D
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 09:15:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A9FB70467D
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 09:36:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231204AbjEPHPF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 May 2023 03:15:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49156 "EHLO
+        id S230411AbjEPHgB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 May 2023 03:36:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231241AbjEPHOk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 03:14:40 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 854B23C3D;
-        Tue, 16 May 2023 00:14:17 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4f1fe1208a4so12908068e87.2;
-        Tue, 16 May 2023 00:14:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684221256; x=1686813256;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bBg0Mv9yvZiy6gYM1yujQ0ayIWUjiANXlVQil+oRP9Y=;
-        b=E6/E0+MEEZ1V/BLo6RWxpKoRFfZ5rkKw7MEVSwmdLGV2YtTugh6RLL2JwsEvv33dM5
-         ClAwf7nx4vMYQFP/7MhVwN9krtGpdVcMhlTzD+WxhCtwj4QgM/F3GcoPnQWSxi8LWGbx
-         9cEwrV0sKZVvM0yg/DTClauC7F3/0jP+g4f7wBC+rpg7g6I5e4sPzoCkkE0QlkS5dfv7
-         ZGw+aT4+k3lFWsFGifek2Og/IMTTArPni0CoftZbKkHMOh9COZoT6OmsJiqqSQxZDBjd
-         xOIGwnaMbePP50iMnTkjUVJX2eQC6AecG2TcFE5OH+yANztuBHPh6mOS4mCqriOj+ldE
-         wHaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684221256; x=1686813256;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bBg0Mv9yvZiy6gYM1yujQ0ayIWUjiANXlVQil+oRP9Y=;
-        b=DgrmR/cLOZlZZyZaR9cF7Hso+8eeo3+NxIPdA58qdE28z79JM6AqXnawXiSt0ZAttz
-         +o+WPvC6EmqX2bC9u4XeIlJuVq9/BYb/1Tr4j2X/GMOzp9y7Y0XLMXq+bRoViCwjii4X
-         GQFXGZGPEYW2RtIR34wzk/Saz7Mzqs5WIXDJvnFMQfsPk9GGTx2r71KBStc0cePnDY4T
-         +RXenlNltEgvsp/9U2qu4hdgm3xp5gW3WvsYxqf0hxuIA/E5YA03L/3ExiPsf6jFEfas
-         K/zx4rW0kgkejzy6cXZhrhpmLsifU1mSGBnuMywVzLzFZIE9d3TFdujoVEGbK6gzL+9u
-         IHEw==
-X-Gm-Message-State: AC+VfDycPlYR9KGwbIsufNml8+3jrG7hIdUwtojqtQruupJgRm1Gt1rp
-        TFqzqyL7fozhZZo99TAx9Z8=
-X-Google-Smtp-Source: ACHHUZ49uNR3NJnq5Gt3aNGxblrfIAs3JelfkYNAqlgvXUmiEjle/AtjF7IeH2JaJf2x8K0OPFI9rQ==
-X-Received: by 2002:ac2:446b:0:b0:4ef:b18c:89b2 with SMTP id y11-20020ac2446b000000b004efb18c89b2mr8584496lfl.56.1684221255593;
-        Tue, 16 May 2023 00:14:15 -0700 (PDT)
-Received: from fedora (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id o4-20020ac24944000000b004eeda2caa3fsm2864092lfi.55.2023.05.16.00.14.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 May 2023 00:14:14 -0700 (PDT)
-Date:   Tue, 16 May 2023 10:14:10 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Wolfram Sang <wsa@kernel.org>,
-        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        netdev@vger.kernel.org, openbmc@lists.ozlabs.org,
-        linux-gpio@vger.kernel.org, linux-mips@vger.kernel.org
-Subject: [PATCH v4 7/7] iio: cdc: ad7150: Functional change
-Message-ID: <b0a95bbc8258bf527e1c011591e22320452174fe.1684220962.git.mazziesaccount@gmail.com>
-References: <cover.1684220962.git.mazziesaccount@gmail.com>
+        with ESMTP id S230145AbjEPHgA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 03:36:00 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E9F444B6;
+        Tue, 16 May 2023 00:35:58 -0700 (PDT)
+Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4QL7Fn2fNmzTkhh;
+        Tue, 16 May 2023 15:31:09 +0800 (CST)
+Received: from [10.67.103.231] (10.67.103.231) by
+ kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Tue, 16 May 2023 15:35:55 +0800
+Message-ID: <aa5b1919-74c6-1f97-78af-ab5f0904c3ce@huawei.com>
+Date:   Tue, 16 May 2023 15:35:54 +0800
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="mCCjHAg4ND0FvBry"
-Content-Disposition: inline
-In-Reply-To: <cover.1684220962.git.mazziesaccount@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH] soc: hisilicon: Support HCCS driver on Kunpeng SoC
+To:     Sudeep Holla <sudeep.holla@arm.com>
+CC:     Arnd Bergmann <arnd@arndb.de>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        <linux-kernel@vger.kernel.org>, <soc@kernel.org>,
+        <wanghuiqiang@huawei.com>, <tanxiaofei@huawei.com>,
+        <liuyonglong@huawei.com>, <huangdaode@huawei.com>,
+        <linux-acpi@vger.kernel.org>, Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+References: <20230424073020.4039-1-lihuisong@huawei.com>
+ <e0c4f4b5-8b34-4542-b676-f98ddb8ef586@app.fastmail.com>
+ <20230425103040.znv66k364ant6klq@bogus>
+ <c7d9c3c5-e400-c60a-52e0-0f267ec8c517@huawei.com>
+ <20230425131918.5tf5vot4h7jf54xk@bogus>
+ <db6c713c-f99c-fa3f-8d38-9a5d50889cc2@huawei.com>
+ <20230515130807.pdvx7bxwjkfdsmsr@bogus>
+From:   "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <20230515130807.pdvx7bxwjkfdsmsr@bogus>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.103.231]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemm600004.china.huawei.com (7.193.23.242)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-8.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -95,112 +67,136 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
---mCCjHAg4ND0FvBry
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+在 2023/5/15 21:08, Sudeep Holla 写道:
+> On Thu, May 04, 2023 at 09:16:16PM +0800, lihuisong (C) wrote:
+>> I'm tring to use CRS with GAS to report PCC channel ID and get other
+>> informations driver need by address.
+> OK you had pcc-chan-id pcc-type and device-flags in the DSD style bindings
+> to begin with. I haven't understood device-flags here so can't comment on
+> that.
 
-fwnode_irq_get[_byname]() were changed to not return 0 anymore. The
-special error case where device-tree based IRQ mapping fails can't no
-longer be reliably detected from this return value. This yields a
-functional change in the driver where the mapping failure is treated as
-an error.
+We want to use the 'device-flags' to report some information by bit.
+Currently, this driver requests PCC channel and use type2 to communicate 
+with firmware.
+But, if some platform support type3 and PCC Operation Region, driver can 
+choice this method to communicate with firmware.
+So firmware and driver have to use this flag to make compatibility.
 
-The mapping failure can occur for example when the device-tree IRQ
-information translation call-back(s) (xlate) fail, IRQ domain is not
-found, IRQ type conflicts, etc. In most cases this indicates an error in
-the device-tree and special handling is not really required.
+>
+>> I found a way to obtain the generic register information according to
+>> "Referencing the PCC address space" in ACPI spec.
+>> And driver also get the PCC generic register information successfully.
+>>
+> Can you elaborate ? I assume by that you must be able to get pcc-chan-id
 
-One more thing to note is that ACPI APIs do not return zero for any
-failures so this special handling did only apply on device-tree based
-systems.
+Yes，driver can get pcc-chan-id by below register.
 
-Drop the special handling for DT mapping failures as these can no longer
-be separated from other errors at driver side.
+Register (PCC, RegisterBitWidth, RegisterBitOffset, RegisterAddress, AccessSize)
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> right ? You must not need pcc-type as the pcc mailbox driver must handle
+> the type for you. If not, we may need to fix or add any missing support.
+Yes, PCC driver doesn't support it currently. And aother patch [1] we've 
+been talking about does it.
+If it is applied to kernel, we can drop this pcc-type here.
 
----
+[1] 
+https://patchwork.kernel.org/project/linux-acpi/patch/20230423110335.2679-2-lihuisong@huawei.com/
+>
+>> But I don't know how to set and use the address in PCC register.
+> It must be same as what you would have specified in you new bindings
+> under "pcc-chan-id". I am confused as you say you were able to get the
+> PCC generic register information successfully but you still claim you
+> don't know how to set or use the address.
+My confusion about this address is mentioned below.
+>> Where should this address come from?
+>> It seems that ACPI spec is not very detailed about this.
+>> Do you have any suggestions?
+>>
+> I am afraid, I don't have any as I am failing to understand the exact issue
+> you are facing.
+>
+> Let me try to ask the question explicity here:
+>
+> If you are just referring to just the <RegisterAddress,> in
+>
+> Register (PCC, RegisterBitWidth, RegisterBitOffset, RegisterAddress, AccessSize)
+Yeah, this is what I'm using.
+>
+> then,
+>
+> RegisterAddress is usually the offset in the comms address associated with
+Communication subspace in share memory of PCC subspace?
+> the PCC subspace ID specified in AccessSize. Yes the use of AccessSize for
+> the PCC subspace ID is bit confusing though.
+>
+> You can either list all the registers with _CRS individually or the driver
+List all the registers as following way?
+Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
+{
+     QWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, 
+NonCacheable, ReadWrite,
+         0x0000000000000000, // Granularity
+         0x0000000098190000, // Range Minimum
+         0x000000009819FFFF, // Range Maximum
+         0x0000000000000000, // Translation Offset
+         0x0000000000010000, // Length
+         ,, , AddressRangeMemory, TypeStatic)
+})
+> can just use the PCC subspace ID in AccessSize and keep RegisterAddress = 0
+> but access individual offset based on its own knowledge. I haven't seen the
+Following words come from ACPI spec.
+-->
+As an example, the following resource template refers to the feld 
+occupying bits 8 through 15 at address 0x30 in PCC
+subspace 9:
+ResourceTemplate()
+{
+Register (
+     PCC, //AddressSpaceKeyword
+     8, //RegisterBitWidth
+     8, //RegisterBitOffset
+     0x30, //RegisterAddress
+     9 //AccessSize (subspace ID)
+     )
+}
 
-Please note that I don't have the hardware to test this change.
-Furthermore, testing this type of device-tree error cases is not
-trivial, as the question we probably dive in is "what happens with the
-existing users who have errors in the device-tree". Answering to this
-question is not simple.
+If the width of the address is 32bit, set RegisterAddress to 0, 
+RegisterBitOffset to 0 and set RegisterBitWidth to 64 here.
+Driver can access to the ((void __iomem *)pcc_comm_addr + 0x8 + 0) and 
+((void __iomem *)pcc_comm_addr + 0x8 + 4) address，right?
+(This virtual address = pcc mapped address + header size + offset within 
+PCC subspace.)
+> full driver yet but I assuming that's how you would have used if you went with
+> your DSD pcc-chan-id proposal.
+>
+>> On the other hand, we think that System Memory space + method can also
+>> achieve above goal. What do you think of that?
+> Again I don't understand what you mean by that.
+Sorry, here is what I want to say.
+-->
+OperationRegion (CCS0, SystemMemory, 0x00000002081000CC, 0x04)
+Field (CCS0, DWordAcc, NoLock, Preserve)
+{
+     HAU1,   32
+}
+OperationRegion (CCS1, SystemMemory, 0x0000000201070410, 0x04)
+Field (CCS1, DWordAcc, NoLock, Preserve)
+{
+     HCGE,   32
+}
+Method (_DSM, 2, Serialized)  // _DSM: Device-Specific Method
+{
+     If ((Arg0 == ToUUID ("b06b81ab-0134-4a45-9b0c-483447b95fa7")))
+     {
+         If ((Arg1 == One))
+         {
+             Return (HAU1)
+         }
 
-I did this patch with minimal code changes - but a question is if we
-should really jump into the else branch below on all IRQ getting errors?
+         Return (HCGE)
+     }
+}
 
-        } else {
-                indio_dev->info =3D &ad7150_info_no_irq;
-                switch (id->driver_data) {
-                case AD7150:
-                        indio_dev->channels =3D ad7150_channels_no_irq;
-                        indio_dev->num_channels =3D
-                                ARRAY_SIZE(ad7150_channels_no_irq);
-                        break;
-                case AD7151:
-                        indio_dev->channels =3D ad7151_channels_no_irq;
-                        indio_dev->num_channels =3D
-                                ARRAY_SIZE(ad7151_channels_no_irq);
-                        break;
-                default:
-                        return -EINVAL;
-                }
-
-Why do we have special handling for !chip->interrupts[0] while other
-errors on getting the fwnode_irq_get(dev_fwnode(&client->dev), 0); will
-abort the probe?
-
-The first patch of the series changes the fwnode_irq_get() so this depends
-on the first patch of the series and should not be applied alone.
----
- drivers/iio/cdc/ad7150.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/iio/cdc/ad7150.c b/drivers/iio/cdc/ad7150.c
-index 79aeb0aaea67..d7ba50b9780d 100644
---- a/drivers/iio/cdc/ad7150.c
-+++ b/drivers/iio/cdc/ad7150.c
-@@ -567,8 +567,7 @@ static int ad7150_probe(struct i2c_client *client)
- 		if (chip->interrupts[1] < 0)
- 			return chip->interrupts[1];
- 	}
--	if (chip->interrupts[0] &&
--	    (id->driver_data =3D=3D AD7151 || chip->interrupts[1])) {
-+	if (id->driver_data =3D=3D AD7151 || chip->interrupts[1]) {
- 		irq_set_status_flags(chip->interrupts[0], IRQ_NOAUTOEN);
- 		ret =3D devm_request_threaded_irq(&client->dev,
- 						chip->interrupts[0],
---=20
-2.40.1
-
-
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
-
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---mCCjHAg4ND0FvBry
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmRjLUIACgkQeFA3/03a
-ocXXRwgAyWtKk7U/XUD4vC4F6ITQAv3XsHVWi9FrVtLWK4UHNU/lOkniW+1bLnA5
-NzuhGLHcFpARG5z/ZCTFJqvrDCATo6O29MgbNqgdMBTLESv50iKDAxhkgv9VLbF1
-fhYmADOJNfEmuoIrhs9VpJaDImDAjX1dc4qsYaA+cbl5ZBYN+HspXopD5Vr+Qicn
-ihTdRHJSqMPLf8dw1xSbgtnGKB78ul0IXP0fgsYIb2cgezYo1iuiASfujEChBFkP
-3gKcxCvDwDmhnf6Z/ukA4t9rfg6Ctbbv5VYmT5LGCR1cTnkYwxJ5hzrrE5RCTTsG
-bOdSiSW0u1uogrOdzEP629A3rwNeDg==
-=4CGL
------END PGP SIGNATURE-----
-
---mCCjHAg4ND0FvBry--
+Driver can call _DSM method to get some information, such as pcc_chan_id 
+and device_flags.
+>
