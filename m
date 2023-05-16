@@ -2,102 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6483705709
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 21:25:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB5EC705722
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 21:32:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229751AbjEPTZa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 May 2023 15:25:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50728 "EHLO
+        id S229828AbjEPTct (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 May 2023 15:32:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229770AbjEPTZ3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 15:25:29 -0400
+        with ESMTP id S229458AbjEPTct (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 15:32:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6494C8A48;
-        Tue, 16 May 2023 12:25:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 751E53C0A;
+        Tue, 16 May 2023 12:32:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F188663E5B;
-        Tue, 16 May 2023 19:25:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2317C433D2;
-        Tue, 16 May 2023 19:25:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684265127;
-        bh=S0Rq0G95CHXp1m5S50Xtw88jTsSFrtOHdzpyyFfPe0E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=wz3FHy0V43KAsSPzha+tkRRwMjg88jaek5nHtnOKFD69lkdQjPK1x4dLPI8VAhx4+
-         cUjeTfmLgmawZQr1sy/f0j9C5nRE2xgaE0EKWlK9c5bYUcwIXNDs7+jH22wKB/ukWv
-         TiMRfHW63t4IQ6YksDh/bFAzrJP12OWuWyhmNNtY=
-Date:   Tue, 16 May 2023 21:25:24 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Avadhut Naik <Avadhut.Naik@amd.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, yazen.ghannam@amd.com,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v1] ACPI: APEI: EINJ: Add support for vendor defined
- error types
-Message-ID: <2023051602-clear-encode-984e@gregkh>
-References: <20230516183228.3736-1-Avadhut.Naik@amd.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 129996373F;
+        Tue, 16 May 2023 19:32:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF40C433D2;
+        Tue, 16 May 2023 19:32:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684265567;
+        bh=WBnwfoUdwMV1Gu+XaFHfWeScAtyaISLBR5Bwfq3CzQY=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=Lnx2M4IFPeFpS0vIWlzOSuxKenTmpzWiVrEcOMTLCpwMMpiDt20WgxmFFj0sh4I3U
+         G1H4Dc2COxind+KG4cfY5aN2MWvrStV/rIefo0lXw9av/CUDRnkLyLXfNhuiYc8YpC
+         eWLDCr/Av6FsPZOK4IHFEZdiJj8A7jjPfTAmaJVLVemLg55a+rvw54Y696IsfnMq4j
+         hkCMNtRU+yQIa28y+Bfzs8nuN3p+cwIuv7IB98De50VRRrG7JLFpXZr0o9GQBMBBoC
+         FnlYFwlEWIx5uqA57dpYCGiqhY9k2sjodskyMFYAPV0mBTsjLilqmAC+93rI5sq5iO
+         3HP2/lHYWQ2lw==
+Date:   Tue, 16 May 2023 14:32:45 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Acid Bong <acidbong@tilde.cafe>
+Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
+        Bagas Sanjaya <bagasdotme@gmail.com>, stable@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>, linux-pci@vger.kernel.org
+Subject: Re: [REGRESSION] Asus X541UAK hangs on suspend and poweroff (v6.1.6
+ onward)
+Message-ID: <ZGPaXfV6+RUb6fXs@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230516183228.3736-1-Avadhut.Naik@amd.com>
+In-Reply-To: <A5B9D233-A082-4C60-9DCB-2B0A2081C089@tilde.cafe>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 16, 2023 at 06:32:28PM +0000, Avadhut Naik wrote:
-> According to ACPI specification 6.5, section 18.6.4, Vendor-Defined Error
-> types are supported by the system apart from standard error types if bit
-> 31 is set in the output of GET_ERROR_TYPE Error Injection Action. While
-> the errors themselves and the length of their associated OEM Vendor data
-> structure might vary between vendors, the physical address of this very
-> structure can be computed through vendor_extension and length fields of
-> SET_ERROR_TYPE_WITH_ADDRESS Data Structure and Vendor Error Type Extension
-> Structure respectively (ACPI Spec 6.5, Table 18.31 and 18.32).
+On Tue, May 16, 2023 at 01:26:23PM +0300, Acid Bong wrote:
+> >Can you collect the complete dmesg log and output of "sudo lspci -vv"
+> >and post them somewhere (https://bugzilla.kernel.org is a good place)?
+> `lspci -vvnn` output is linked in the head of the thread. Append .txt to make it readable in the browser (I only understood it after the upload).
 > 
-> Currently, however, the einj module only computes the physical address of
-> Vendor Error Type Extension Structure. Neither does it compute the physical
-> address of OEM Vendor structure nor does it establish the memory mapping
-> required for injecting Vendor-defined errors. Consequently, userspace
-> tools have to establish the very mapping through /dev/mem, nopat kernel
-> parameter and system calls like mmap/munmap initially before injecting
-> Vendor-defined errors.
+> >Ideally the dmesg would be from the most recent kernel you have.
+>
+> Speaking of that, a couple of questions:
 > 
-> Circumvent the issue by computing the physical address of OEM Vendor data
-> structure and establishing the required mapping with the structure. Create
-> a new file "oem_error", if the system supports Vendor-defined errors, to
-> export this mapping, through debugfs_create_blob API. Userspace tools can
-> then populate their respective OEM Vendor structure instances and just
-> write to the file as part of injecting Vendor-defined Errors.
+> 1) Should I post them with or without pci=nomsi/noaer? The problem
+> with disabling it is that it floods the logs so fast, that they
+> reach 700M in 5-7 minutes, and, when rotation is enabled (my
+> parameters are default, up to 10 copies 10M each), all pre-flood
+> data is lost instantly.
+
+You're seeing AER logging, and that's what I'm interested in, so if
+you could do one quick boot *without* "pci=nomsi" and "pci=noaer",
+that would be great.  Then turn it off again so you don't drown in
+logs.
+
+The snippet from [1] shows a few messages related to 00:1c.5, and it
+would be useful to know if there are errors related to other devices
+as well.
+
+Something like "head -c500K /var/log/dmesg > file" should be plenty.
+
+> Also I'm currently bisecting the kernel with MSI disabled in the
+> config. But I'm keeping the parameter in the bootloader for cases
+> when I'm using Gentoo's prebuilt kernel.
 > 
-> Additionally, since the debugfs files created through debugfs_create_blob
-> API are read-only, introduce a write callback to enable userspace tools to
-> write OEM Vendor structures into the oem_error file.
+> 2) Can I delete messages by ufw? They contain MACs of my router,
+> laptop and cellphone and I don't really wanna share them
 
-When you say "additionally", that's usually a huge hint that you need to
-split this up into multiple patches.
+Sure, delete those.
 
-Please do so here.
-
-Also note that debugfs is almost never a valid api for anything you care
-about for having a running system, as it is locked down for root access
-only and some distros refuse to enable it at all due to its security
-leakage.  So be careful about creating an api here that you might need
-to use on a normal running system.
-
-
+> 3) I'm not savvy in logs, how exactly should I share dmesg? `dmesg >
+> file`? /var/log/syslog? I already know kern.log doesn't contain
+> logind and some other messages that are present in dmesg
 > 
-> Note: Some checkpatch warnings are ignored to maintain coding style.
+> 4) Should we continue in this thread or rather start a new one?
 
-That's not good, please follow the right style for new code.
+Good point, a new thread would probably be better.
 
-thanks,
+Bjorn
 
-greg k-h
+[1] https://lore.kernel.org/all/CRWCUOAB4JKZ.3EKQN1TFFMVQL@bong/
