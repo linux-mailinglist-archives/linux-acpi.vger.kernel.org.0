@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E665704CD7
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 13:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3FC4704CDD
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 13:47:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233141AbjEPLrp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 May 2023 07:47:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42990 "EHLO
+        id S231557AbjEPLr4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 May 2023 07:47:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232574AbjEPLrX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 07:47:23 -0400
+        with ESMTP id S233152AbjEPLrf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 07:47:35 -0400
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C837C6E93
-        for <linux-acpi@vger.kernel.org>; Tue, 16 May 2023 04:46:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74A0D5242
+        for <linux-acpi@vger.kernel.org>; Tue, 16 May 2023 04:47:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684237617; x=1715773617;
+  t=1684237629; x=1715773629;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Lp/kxYtx5BEFPRdFsLdyjtEl8gwzWV0k0B49HXp6xmE=;
-  b=MTtFY690q2jF+eDO11RhFUlAIw8oCkg4ZomfAqAgrMA3HCyqno8H5lnY
-   yjmoNtMMwStskQMJhLtyW+OCCvw4v2MBuaaqBIPX5lfhSLIHnatE99W5A
-   LiJz8dsBjggC9PPVN7OBASZh96ZdLQmLZ9pr7T7P7HdJDov+oU3Or1s7G
-   OaKJ6vpKggMYHIac8KCknH0Ib/yWX2TsEjqTbbs+ZZXoIJ3Klda/XvwcC
-   4lz+u8j0blMEOVbgLTMICNCwY1XBfH4t8BYUTHxWeRHD6S3FZIWBbLB1Z
-   UkBJbqCYUo0VvaYqnNOFVAeCDY9KK7ClViRool4hOH/LclCxRvkQq9cBw
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="417111606"
+  bh=BncRc/ualuZ8LcPyw+ub2qXe2KebX9KMoBldPR/5MXE=;
+  b=LRTM2G0Gr0DWLnFpUWRj5n0OW/O1pMVnyHUtiNA85W6t04u1o6uk0t4D
+   uLYeQN6JQBlrUvtYveYjZjTU8Hz2xbRUXqElKqR3P3y2xyFtOZdLRFAWq
+   rgyond8VAMkdMOfA4bALeUwGafgPTHL2mFuwRPjj6Bc/6ApGudOgUgoye
+   QC2ROOLYgDw/i7x8UBNtY4Zwue8NiUMz4l8Aa/fSYNHzyc6bRO75gOV3S
+   Wvdyf9mcj9OSWpm+DCwrwK7ZxAwE4wMEzpXyOU1pntNX2oYoM5l0zFO9E
+   NUbwB3iYYFdhWo+m8pHXBaxmU2qEhIc+nfX3SmOG9eRnVuK7lvLzAwFki
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="417111608"
 X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
-   d="scan'208";a="417111606"
+   d="scan'208";a="417111608"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:46:41 -0700
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:46:42 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="731961791"
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="731961794"
 X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
-   d="scan'208";a="731961791"
+   d="scan'208";a="731961794"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:46:40 -0700
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:46:41 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
 To:     linux-acpi@vger.kernel.org
 Cc:     rafael@kernel.org, Michal Wilczynski <michal.wilczynski@intel.com>
-Subject: [PATCH v2 05/34] acpi/button: Move handler installing logic to driver
-Date:   Tue, 16 May 2023 13:45:48 +0200
-Message-Id: <20230516114617.148963-6-michal.wilczynski@intel.com>
+Subject: [PATCH v2 06/34] acpi/hed: Move handler installing logic to driver
+Date:   Tue, 16 May 2023 13:45:49 +0200
+Message-Id: <20230516114617.148963-7-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230516114617.148963-1-michal.wilczynski@intel.com>
 References: <20230516114617.148963-1-michal.wilczynski@intel.com>
@@ -73,69 +73,44 @@ what's required by acpi_device_install_event_handler().
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/acpi/button.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/acpi/hed.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
-index 475e1eddfa3b..e978b2eafb27 100644
---- a/drivers/acpi/button.c
-+++ b/drivers/acpi/button.c
-@@ -126,7 +126,7 @@ static const struct dmi_system_id dmi_lid_quirks[] = {
- 
- static int acpi_button_add(struct acpi_device *device);
- static void acpi_button_remove(struct acpi_device *device);
--static void acpi_button_notify(struct acpi_device *device, u32 event);
-+static void acpi_button_notify(acpi_handle handle, u32 event, void *data);
- 
- #ifdef CONFIG_PM_SLEEP
- static int acpi_button_suspend(struct device *dev);
-@@ -144,7 +144,6 @@ static struct acpi_driver acpi_button_driver = {
- 	.ops = {
- 		.add = acpi_button_add,
- 		.remove = acpi_button_remove,
--		.notify = acpi_button_notify,
- 	},
- 	.drv.pm = &acpi_button_pm,
- };
-@@ -400,11 +399,14 @@ static void acpi_lid_initialize_state(struct acpi_device *device)
- 	button->lid_state_initialized = true;
+diff --git a/drivers/acpi/hed.c b/drivers/acpi/hed.c
+index 78d44e3fe129..2a476415817f 100644
+--- a/drivers/acpi/hed.c
++++ b/drivers/acpi/hed.c
+@@ -42,7 +42,7 @@ EXPORT_SYMBOL_GPL(unregister_acpi_hed_notifier);
+  * it is used by HEST Generic Hardware Error Source with notify type
+  * SCI.
+  */
+-static void acpi_hed_notify(struct acpi_device *device, u32 event)
++static void acpi_hed_notify(acpi_handle handle, u32 event, void *data)
+ {
+ 	blocking_notifier_call_chain(&acpi_hed_notify_list, 0, NULL);
+ }
+@@ -53,11 +53,12 @@ static int acpi_hed_add(struct acpi_device *device)
+ 	if (hed_handle)
+ 		return -EINVAL;
+ 	hed_handle = device->handle;
+-	return 0;
++	return acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY, acpi_hed_notify);
  }
  
--static void acpi_button_notify(struct acpi_device *device, u32 event)
-+static void acpi_button_notify(acpi_handle handle, u32 event, void *data)
+ static void acpi_hed_remove(struct acpi_device *device)
  {
--	struct acpi_button *button = acpi_driver_data(device);
-+	struct acpi_device *device = data;
-+	struct acpi_button *button;
- 	struct input_dev *input;
++	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, acpi_hed_notify);
+ 	hed_handle = NULL;
+ }
  
-+	button = acpi_driver_data(device);
-+
- 	switch (event) {
- 	case ACPI_FIXED_HARDWARE_EVENT:
- 		event = ACPI_BUTTON_NOTIFY_STATUS;
-@@ -569,7 +571,12 @@ static int acpi_button_add(struct acpi_device *device)
- 
- 	device_init_wakeup(&device->dev, true);
- 	pr_info("%s [%s]\n", name, acpi_device_bid(device));
--	return 0;
-+
-+	error =  acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY, acpi_button_notify);
-+	if (error)
-+		goto err_remove_fs;
-+
-+	return error;
- 
-  err_remove_fs:
- 	acpi_button_remove_fs(device);
-@@ -584,6 +591,7 @@ static void acpi_button_remove(struct acpi_device *device)
- {
- 	struct acpi_button *button = acpi_driver_data(device);
- 
-+	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, acpi_button_notify);
- 	acpi_button_remove_fs(device);
- 	input_unregister_device(button->input);
- 	kfree(button);
+@@ -68,7 +69,6 @@ static struct acpi_driver acpi_hed_driver = {
+ 	.ops = {
+ 		.add = acpi_hed_add,
+ 		.remove = acpi_hed_remove,
+-		.notify = acpi_hed_notify,
+ 	},
+ };
+ module_acpi_driver(acpi_hed_driver);
 -- 
 2.40.1
 
