@@ -2,48 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D641E704CE1
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 13:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38130704CE5
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 May 2023 13:48:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231648AbjEPLsR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 May 2023 07:48:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43658 "EHLO
+        id S231401AbjEPLsq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 May 2023 07:48:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231913AbjEPLsO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 07:48:14 -0400
+        with ESMTP id S232905AbjEPLsl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 May 2023 07:48:41 -0400
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 296083C10
-        for <linux-acpi@vger.kernel.org>; Tue, 16 May 2023 04:47:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6154D212B
+        for <linux-acpi@vger.kernel.org>; Tue, 16 May 2023 04:48:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684237655; x=1715773655;
+  t=1684237693; x=1715773693;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=wGccJ78CLi03k6nca7s4EOYG5mUfzdzU9KNUU7GPysY=;
-  b=ORRLak4LpXG/oJyyd6zkiUuSsWNWaW+F9ZJqLDxrUDajOHoMaF63yaaQ
-   EHOcn3kvPjGH7XtarzDl4jOIqyNKsx3Pj6dmQohCbaIEzpF2bbomQukwU
-   hBJmXRugaXxqEoawT0VtavwPQx5cvSL1K8cq2j0TMjLtQ0HaEMbIoFatT
-   v18X8rqfrbx67yp1w38RiREywDHonbiEKoFYC/qY0eT0hX3RomAQ1N8w9
-   bbtekaeLRWlRrWSs2ot+SJ3hMj6GvK0qob/eGo8HWG80yElndhY4Fpm56
-   nUNVVXhiU7Vwt3nWK1EMQwvRW453ZrUoRDgSYJ4isdvkGJOBh5VhIh6Do
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="417111636"
+  bh=eKaXqW+DRkqJGpmPjw5NP4F6Cx+mNw9LMr+YNIGyaoY=;
+  b=fT2xNfSEeu3/Z8cBIchGT27/UjtJ0ITtq9RFs+IDOihhsecURwSAH+J8
+   LRw6Lwy5V71UnXzAFYZeILoYWHbMuNbXy/WbOKGnkjUR0OIdpaRNMuTNV
+   B0S3JLUFqyEHQTP+8W/y/2HnOPNQq3LQLID0cyOWzGwUGrb/TzbKT1cnw
+   B+ocVWbCoWVwhkmU8Ams3fPCsVF0cJylGcP4gOkRYQw9QUoc3j0TZVUuC
+   erUeLOCCO6TwONQsjUF9xs16GGdbUjPXH1csBgG5hchE2SkxczEj1tvo2
+   bIDEDRU+y2OrwS6KCtYFZKKLel0pX9YXw2SwBD0fVdAUHeZd5XV3KN9lK
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="417111638"
 X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
-   d="scan'208";a="417111636"
+   d="scan'208";a="417111638"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:46:48 -0700
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:46:49 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="731961807"
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="731961810"
 X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
-   d="scan'208";a="731961807"
+   d="scan'208";a="731961810"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:46:46 -0700
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 04:46:48 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
 To:     linux-acpi@vger.kernel.org
 Cc:     rafael@kernel.org, Michal Wilczynski <michal.wilczynski@intel.com>
-Subject: [PATCH v2 10/34] hwmon: Move handler installing logic to driver
-Date:   Tue, 16 May 2023 13:45:53 +0200
-Message-Id: <20230516114617.148963-11-michal.wilczynski@intel.com>
+Subject: [PATCH v2 11/34] iio/acpi-als: Move handler installing logic to driver
+Date:   Tue, 16 May 2023 13:45:54 +0200
+Message-Id: <20230516114617.148963-12-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230516114617.148963-1-michal.wilczynski@intel.com>
 References: <20230516114617.148963-1-michal.wilczynski@intel.com>
@@ -73,65 +73,58 @@ what's required by acpi_device_install_event_handler().
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/hwmon/acpi_power_meter.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/iio/light/acpi-als.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
-index fa28d447f0df..5cc43986d9ab 100644
---- a/drivers/hwmon/acpi_power_meter.c
-+++ b/drivers/hwmon/acpi_power_meter.c
-@@ -817,9 +817,10 @@ static int read_capabilities(struct acpi_power_meter_resource *resource)
+diff --git a/drivers/iio/light/acpi-als.c b/drivers/iio/light/acpi-als.c
+index 2d91caf24dd0..5e200c6d91bc 100644
+--- a/drivers/iio/light/acpi-als.c
++++ b/drivers/iio/light/acpi-als.c
+@@ -100,10 +100,14 @@ static int acpi_als_read_value(struct acpi_als *als, char *prop, s32 *val)
+ 	return 0;
  }
  
- /* Handle ACPI event notifications */
--static void acpi_power_meter_notify(struct acpi_device *device, u32 event)
-+static void acpi_power_meter_notify(acpi_handle handle, u32 event, void *data)
+-static void acpi_als_notify(struct acpi_device *device, u32 event)
++static void acpi_als_notify(acpi_handle handle, u32 event, void *data)
  {
- 	struct acpi_power_meter_resource *resource;
+-	struct iio_dev *indio_dev = acpi_driver_data(device);
+-	struct acpi_als *als = iio_priv(indio_dev);
 +	struct acpi_device *device = data;
- 	int res;
- 
- 	if (!device || !acpi_driver_data(device))
-@@ -897,8 +898,12 @@ static int acpi_power_meter_add(struct acpi_device *device)
- 		goto exit_remove;
- 	}
- 
--	res = 0;
--	goto exit;
-+	res = acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY,
-+						acpi_power_meter_notify);
-+	if (res)
-+		goto exit_remove;
++	struct iio_dev *indio_dev;
++	struct acpi_als *als;
 +
-+	return res;
++	indio_dev = acpi_driver_data(device);
++	als = iio_priv(indio_dev);
  
- exit_remove:
- 	remove_attrs(resource);
-@@ -906,7 +911,7 @@ static int acpi_power_meter_add(struct acpi_device *device)
- 	free_capabilities(resource);
- exit_free:
- 	kfree(resource);
--exit:
+ 	if (iio_buffer_enabled(indio_dev) && iio_trigger_using_own(indio_dev)) {
+ 		switch (event) {
+@@ -225,7 +229,16 @@ static int acpi_als_add(struct acpi_device *device)
+ 	if (ret)
+ 		return ret;
+ 
+-	return devm_iio_device_register(dev, indio_dev);
++	ret = devm_iio_device_register(dev, indio_dev);
++	if (ret)
++		return ret;
 +
- 	return res;
++	return acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY, acpi_als_notify);
++}
++
++static void acpi_als_remove(struct acpi_device *device)
++{
++	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, acpi_als_notify);
  }
  
-@@ -917,6 +922,7 @@ static void acpi_power_meter_remove(struct acpi_device *device)
- 	if (!device || !acpi_driver_data(device))
- 		return;
- 
-+	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, acpi_power_meter_notify);
- 	resource = acpi_driver_data(device);
- 	hwmon_device_unregister(resource->hwmon_dev);
- 
-@@ -953,7 +959,6 @@ static struct acpi_driver acpi_power_meter_driver = {
+ static const struct acpi_device_id acpi_als_device_ids[] = {
+@@ -241,7 +254,7 @@ static struct acpi_driver acpi_als_driver = {
+ 	.ids	= acpi_als_device_ids,
  	.ops = {
- 		.add = acpi_power_meter_add,
- 		.remove = acpi_power_meter_remove,
--		.notify = acpi_power_meter_notify,
- 		},
- 	.drv.pm = pm_sleep_ptr(&acpi_power_meter_pm),
+ 		.add	= acpi_als_add,
+-		.notify	= acpi_als_notify,
++		.remove = acpi_als_remove,
+ 	},
  };
+ 
 -- 
 2.40.1
 
