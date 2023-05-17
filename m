@@ -2,103 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4D29706F83
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 May 2023 19:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C47D87070C8
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 May 2023 20:30:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229456AbjEQRe1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 17 May 2023 13:34:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44126 "EHLO
+        id S229512AbjEQSaf convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 17 May 2023 14:30:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229866AbjEQReY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 May 2023 13:34:24 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39B201FFE;
-        Wed, 17 May 2023 10:34:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684344863; x=1715880863;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=J1vTwWXDWOmB5KTcRXHCtG0ov/EzmpZpuFt2eQ7PAKw=;
-  b=LFsPrCBUnAXcJVJI6oPECJ3aomwnqNRMc7yVX+BkmJEMyEdOJxmd1zhc
-   wzoo4KKkSrbw8Zh4Fh36GCqzDOD59EpjfC/fEU9hSOGALFMGyVjlz8rC1
-   xgKNWfkTJSPxJswO7TnWpH1Zwj1Fu+9CcX/BFvjYNYLAdnVJtiCQXcCr1
-   8w24/fjufI3kMYw80nmbpVGjF+3LZuO/yDg/eCdEWxbtybw8BuBnhzHsT
-   R92SB0gHdDWmSFfeLnxbClx4eH8DcKnrnvUXZwYzPgrYgoJXa9v6rekwf
-   2mD3G8M6UdqxmVtcSuKoQHQulRaKjUZZmDZvjCjRnpdxdiN45soq1nkYZ
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="336384339"
-X-IronPort-AV: E=Sophos;i="5.99,282,1677571200"; 
-   d="scan'208";a="336384339"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2023 10:34:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="846175229"
-X-IronPort-AV: E=Sophos;i="5.99,282,1677571200"; 
-   d="scan'208";a="846175229"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2023 10:34:21 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-        by kekkonen.fi.intel.com (Postfix) with ESMTP id 6F1DD120C45;
-        Wed, 17 May 2023 20:34:18 +0300 (EEST)
-Date:   Wed, 17 May 2023 17:34:18 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH v8 05/10] ACPI: property: Prepare generating swnodes for
- ACPI and DisCo for Imaging
-Message-ID: <ZGUQGo/5A5+ET4OP@kekkonen.localdomain>
-References: <20230329100951.1522322-1-sakari.ailus@linux.intel.com>
- <20230329100951.1522322-6-sakari.ailus@linux.intel.com>
- <CAJZ5v0gxqs3+ofqX0PGmM=3HOi96ioyYJis+RL2oACPq6rggEA@mail.gmail.com>
- <ZGS+RzCGl7Y3p6N/@kekkonen.localdomain>
- <CAJZ5v0i73bdo7oxv_hrj0qM0PQuk9cbRLQ4jqPbKn7V4nMqOhQ@mail.gmail.com>
- <CAJZ5v0hG-qGa==9cQz2-xK01JJxL2UZuL9u=5yaDo3rW9eL9eQ@mail.gmail.com>
+        with ESMTP id S229476AbjEQSae (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 May 2023 14:30:34 -0400
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30C86106
+        for <linux-acpi@vger.kernel.org>; Wed, 17 May 2023 11:30:33 -0700 (PDT)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-50a20bfe366so290891a12.0
+        for <linux-acpi@vger.kernel.org>; Wed, 17 May 2023 11:30:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684348231; x=1686940231;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DVuUkuNNuJM37/LFA1UHbT8I1xwI509oVTgpVuBMBeE=;
+        b=GBYaE3mYfTjkZTO5jMOj5B+m5B1O1fje0j2j43rpN9DyIGZCxbp+DP1HIvioIPdByB
+         ZJxYtVkrqI2OfAVoBFC92bFk8bvysyJ9BugPxwWMEYnnFwDYwarMEGmqig3JSIDn1otN
+         eFvGImFi3TORK5WSwtXneZPa5UVLpdT0Ajk5YaPav+3QBMw8/DKgc9qrjBvH1F28CfjL
+         WkEpRLMXuGVAgOBEMyylgMyGuIiBsvVnPJ7XsGamRWACJkNZAw7sv+gxjUuanxpZZOPi
+         zFKuLxvvUk9/fl6kkg6AiptbsLeOvHkNPEjGmVS/zZLy4X1jBLOm+RLaavEqdRLwlAQv
+         xlfQ==
+X-Gm-Message-State: AC+VfDxWNjSBZiRBN7UqptV0sx0QZDLqvlrM0MmRuVWwlO3wgIxr++Xk
+        yAJV+N8eA/av8efYQscWil9XlgOgaMYjEeyVIzc=
+X-Google-Smtp-Source: ACHHUZ4AWJbvCXd2yzoMFZtCBv7Q/bcS8c1GdC77TOtncDle2K/IPN8WzgHyZ+xa3A770dvL/shmSm1S3bVGdPrlAG8=
+X-Received: by 2002:a05:6402:4406:b0:50d:a9bb:3571 with SMTP id
+ y6-20020a056402440600b0050da9bb3571mr4415307eda.2.1684348231509; Wed, 17 May
+ 2023 11:30:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0hG-qGa==9cQz2-xK01JJxL2UZuL9u=5yaDo3rW9eL9eQ@mail.gmail.com>
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20230429103841.6988-1-hdegoede@redhat.com>
+In-Reply-To: <20230429103841.6988-1-hdegoede@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 17 May 2023 20:30:20 +0200
+Message-ID: <CAJZ5v0jRy_Ckf5sbw3eZL4SFDj=k93i7Z2nonLhh7RUv2CPPpw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ACPI / x86: Add skip i2c clients quirk for Nextbook
+ Ares 8A
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 17, 2023 at 03:50:47PM +0200, Rafael J. Wysocki wrote:
-> On Wed, May 17, 2023 at 2:22 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> > On Wed, May 17, 2023 at 1:54 PM Sakari Ailus
-> > <sakari.ailus@linux.intel.com> wrote:
-> 
-> [cut]
-> 
-> > > > > +                       local_port = &local_swnodes->ports[local_index];
-> > > > > +                       local_node = &local_swnodes->nodes[ACPI_DEVICE_SWNODE_EP(local_index)];
-> > > > > +                       local_port->remote_ep_ref[0] = SOFTWARE_NODE_REFERENCE(local_node);
-> > > >
-> > > > This looks odd.  Is local_port pointing to its own node as a remote
-> > > > endpont, or am I confused?
-> > >
-> > > This is a reference to a software node that will be, in turn, referenced by
-> > > the "remote-endpoint" property entry in the remote node. Look for
-> > > ACPI_DEVICE_SWNODE_EP_REMOTE_EP a few lines below these.
-> >
-> > To be precise, IIUC, it is going to be the "remote-endpoint" value for
-> > the remote node.
-> >
-> > OK, thanks for the explanation.  This isn't exactly straightforward TBH.
-> 
-> So I'd arrange it so that the value of the "remote-endpoint" property
-> in a given node is stored in that node (the value itself being a
-> reference to another endpoint).
+On Sat, Apr 29, 2023 at 12:38 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> The Nextbook Ares 8A is a x86 ACPI tablet which ships with Android x86
+> as factory OS. Its DSDT contains a bunch of I2C devices which are not
+> actually there (the Android x86 kernel fork ignores I2C devices described
+> in the DSDT).
+>
+> On this specific model this just not cause resource conflicts, one of
+> the probe() calls for the non existing i2c_clients actually ends up
+> toggling a GPIO or executing a _PS3 after a failed probe which turns
+> the tablet off.
+>
+> Add a ACPI_QUIRK_SKIP_I2C_CLIENTS for the Nextbook Ares 8 to the
+> acpi_quirk_skip_dmi_ids table to avoid the bogus i2c_clients and
+> to fix the tablet turning off during boot because of this.
+>
+> Also add the "10EC5651" HID for the RealTek ALC5651 codec used
+> in this tablet to the list of HIDs for which not to skipi2c_client
+> instantiation, since the Intel SST sound driver relies on
+> the codec being instantiated through ACPI.
+>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/acpi/x86/utils.c | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+> index 9c2d6f35f88a..4cfee2da0675 100644
+> --- a/drivers/acpi/x86/utils.c
+> +++ b/drivers/acpi/x86/utils.c
+> @@ -365,7 +365,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+>                                         ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
+>         },
+>         {
+> -               /* Nextbook Ares 8 */
+> +               /* Nextbook Ares 8 (BYT version)*/
+>                 .matches = {
+>                         DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
+>                         DMI_MATCH(DMI_PRODUCT_NAME, "M890BAP"),
+> @@ -374,6 +374,16 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+>                                         ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
+>                                         ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
+>         },
+> +       {
+> +               /* Nextbook Ares 8A (CHT version)*/
+> +               .matches = {
+> +                       DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
+> +                       DMI_MATCH(DMI_PRODUCT_NAME, "CherryTrail"),
+> +                       DMI_MATCH(DMI_BIOS_VERSION, "M882"),
+> +               },
+> +               .driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
+> +                                       ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
+> +       },
+>         {
+>                 /* Whitelabel (sold as various brands) TM800A550L */
+>                 .matches = {
+> @@ -392,6 +402,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+>  #if IS_ENABLED(CONFIG_X86_ANDROID_TABLETS)
+>  static const struct acpi_device_id i2c_acpi_known_good_ids[] = {
+>         { "10EC5640", 0 }, /* RealTek ALC5640 audio codec */
+> +       { "10EC5651", 0 }, /* RealTek ALC5651 audio codec */
+>         { "INT33F4", 0 },  /* X-Powers AXP288 PMIC */
+>         { "INT33FD", 0 },  /* Intel Crystal Cove PMIC */
+>         { "INT34D3", 0 },  /* Intel Whiskey Cove PMIC */
+> --
 
-Fine for me.
-
--- 
-Sakari Ailus
+Applied as 6.5 material along with the [2/2], thanks!
