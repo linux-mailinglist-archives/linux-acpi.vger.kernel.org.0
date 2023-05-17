@@ -2,105 +2,137 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E8B47066D9
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 May 2023 13:35:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3A21706739
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 May 2023 13:54:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229924AbjEQLfx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 17 May 2023 07:35:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54844 "EHLO
+        id S230190AbjEQLyr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 17 May 2023 07:54:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbjEQLfx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 May 2023 07:35:53 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B1F059D3;
-        Wed, 17 May 2023 04:35:28 -0700 (PDT)
-Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.53])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4QLrXB2BPkz18LWR;
-        Wed, 17 May 2023 19:31:06 +0800 (CST)
-Received: from [10.67.103.231] (10.67.103.231) by
- kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Wed, 17 May 2023 19:35:25 +0800
-Message-ID: <5ca49494-5a0c-4dc8-9cf5-fc4bc3b8e1b2@huawei.com>
-Date:   Wed, 17 May 2023 19:35:25 +0800
+        with ESMTP id S231404AbjEQLym (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 May 2023 07:54:42 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D98D861AF;
+        Wed, 17 May 2023 04:54:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1684324468; x=1715860468;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=VV4lVVp+iP+G9ezqwsFzO1KAxbwweS5JtOfRMkSNvMM=;
+  b=io7yZYmnwl7HhRPm4G7QWLLDiroUFQCjIoOYPmnyZHCm/BRci88jldfb
+   ClQ3nQteaKHcdzU7ZKvtHMfZoMh4UhgMcuy3iYAigIOz1/LFEcq0Z3vF1
+   u0W9FlQ0JXAxs2NPtujo24lawUL9V406hTqOb11/ZbajX1v+z+wY0cHtt
+   1TqxFsKLk/MDHEk7ajtg+x1nyT+s5MwTEjcBmBv/hIR2uD3dysB1fgFrR
+   oVwpwI1xenOiAwiThCjtywmpU2nRCBy+c57I5kPD3cmzvC9kjevVRUeUW
+   NQDNCMgegQa3AWg7mf2rbG8ss0mQqdqSoGOgBnwACsZ3Ou1kweo5Yzqvt
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10712"; a="331351717"
+X-IronPort-AV: E=Sophos;i="5.99,282,1677571200"; 
+   d="scan'208";a="331351717"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2023 04:54:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10712"; a="771435358"
+X-IronPort-AV: E=Sophos;i="5.99,282,1677571200"; 
+   d="scan'208";a="771435358"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2023 04:54:27 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+        by kekkonen.fi.intel.com (Postfix) with SMTP id B6570120279;
+        Wed, 17 May 2023 14:45:11 +0300 (EEST)
+Date:   Wed, 17 May 2023 11:45:11 +0000
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
+        andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH v8 05/10] ACPI: property: Prepare generating swnodes for
+ ACPI and DisCo for Imaging
+Message-ID: <ZGS+RzCGl7Y3p6N/@kekkonen.localdomain>
+References: <20230329100951.1522322-1-sakari.ailus@linux.intel.com>
+ <20230329100951.1522322-6-sakari.ailus@linux.intel.com>
+ <CAJZ5v0gxqs3+ofqX0PGmM=3HOi96ioyYJis+RL2oACPq6rggEA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH] soc: hisilicon: Support HCCS driver on Kunpeng SoC
-To:     Sudeep Holla <sudeep.holla@arm.com>
-CC:     Arnd Bergmann <arnd@arndb.de>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <soc@kernel.org>,
-        <wanghuiqiang@huawei.com>, <tanxiaofei@huawei.com>,
-        <liuyonglong@huawei.com>, <huangdaode@huawei.com>,
-        <linux-acpi@vger.kernel.org>, Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-References: <20230425103040.znv66k364ant6klq@bogus>
- <c7d9c3c5-e400-c60a-52e0-0f267ec8c517@huawei.com>
- <20230425131918.5tf5vot4h7jf54xk@bogus>
- <db6c713c-f99c-fa3f-8d38-9a5d50889cc2@huawei.com>
- <20230515130807.pdvx7bxwjkfdsmsr@bogus>
- <aa5b1919-74c6-1f97-78af-ab5f0904c3ce@huawei.com>
- <20230516122931.il4ai7fyxdo5gsff@bogus>
- <f0733521-2557-fdaf-e59b-b10d515c487c@huawei.com>
- <20230516143530.venhj4gax6stinah@bogus>
- <a98e3620-57da-000e-f5ee-2c2e47e97906@huawei.com>
- <20230517093033.4jvwjxuoeic46a24@bogus>
-From:   "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <20230517093033.4jvwjxuoeic46a24@bogus>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.103.231]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemm600004.china.huawei.com (7.193.23.242)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0gxqs3+ofqX0PGmM=3HOi96ioyYJis+RL2oACPq6rggEA@mail.gmail.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi Rafael,
 
-在 2023/5/17 17:30, Sudeep Holla 写道:
-> On Wed, May 17, 2023 at 03:16:12PM +0800, lihuisong (C) wrote:
->
-> [...]
->
->> No. I want to use this flag to make compability between different platforms.
->> This driver only use PCC OpRegion to access to the channel if platform
->> support use PCC OpRegion.
-> What do you mean by that ? It is not correct. If there is a PCC Opregion,
-> then you need to make it work with drivers/acpi/acpi_pcc.c
->
-> You need to have all the other details in the firmware(ASL). By looking
-> at the driver, it has no connection to PCC Opregion IMO unless I am missing
-> something.
-Driver just needs to call these APIs, such as acpi_evaluate_integer(), 
-if want to use PCC OpRegion.
-I know that. I have tested PCC OpRegion before.
-You've completely misunderstood what I said.😅
+Thanks for the review.
 
-I mean that this driver plans to support both PCC and PCC OpRegion.
-For example,
-Platform A: this driver use PCC (as the current implementation)
-Platform B: this driver use PCC OpRegion (Currently, this patch does not 
-implement it, but it may be available in the future.)
-Note:
-This driver selects only one of them (PCC and PCC OpRegion) to 
-communicate with firmware on one platform.
-We use one bit in device-flags to know which one this driver will use.
+On Wed, May 17, 2023 at 12:53:43PM +0200, Rafael J. Wysocki wrote:
+> > +       list_for_each_entry(csi2, &ctx->crs_csi2_head, list) {
+> > +               struct acpi_device_software_nodes *local_swnodes;
+> > +               struct crs_csi2_instance *inst;
+> > +
+> > +               local_swnodes = crs_csi2_swnode_get(csi2->handle);
+> > +               if (WARN_ON_ONCE(!local_swnodes))
+> > +                       continue;
+> > +
+> > +               list_for_each_entry(inst, &csi2->buses, list) {
+> > +                       struct acpi_device_software_nodes *remote_swnodes;
+> > +                       struct acpi_device_software_node_port *local_port;
+> > +                       struct acpi_device_software_node_port *remote_port;
+> > +                       struct software_node *local_node, *remote_node;
+> > +                       unsigned int local_index, remote_index;
+> > +                       unsigned int bus_type;
+> > +
+> > +                       remote_swnodes = crs_csi2_swnode_get(inst->remote_handle);
+> > +                       if (WARN_ON_ONCE(!remote_swnodes))
+> > +                               continue;
+> > +
+> > +                       local_index = next_csi2_port_index(local_swnodes, inst->csi2.local_port_instance);
+> > +                       remote_index = next_csi2_port_index(remote_swnodes, inst->csi2.resource_source.index);
+> > +
+> > +                       if (WARN_ON_ONCE(local_index >= local_swnodes->num_ports) ||
+> > +                           WARN_ON_ONCE(remote_index >= remote_swnodes->num_ports))
+> > +                               goto out_free;
+> > +
+> > +                       switch (inst->csi2.phy_type) {
+> > +                       case ACPI_CRS_CSI2_PHY_TYPE_C:
+> > +                               bus_type = V4L2_FWNODE_BUS_TYPE_CSI2_CPHY;
+> > +                               break;
+> > +                       case ACPI_CRS_CSI2_PHY_TYPE_D:
+> > +                               bus_type = V4L2_FWNODE_BUS_TYPE_CSI2_DPHY;
+> > +                               break;
+> > +                       default:
+> > +                               acpi_handle_info(csi2->handle,
+> > +                                                "ignoring CSI-2 PHY type %u\n",
+> > +                                                inst->csi2.phy_type);
+> > +                               continue;
+> > +                       }
+> > +
+> > +                       local_port = &local_swnodes->ports[local_index];
+> > +                       local_node = &local_swnodes->nodes[ACPI_DEVICE_SWNODE_EP(local_index)];
+> > +                       local_port->remote_ep_ref[0] = SOFTWARE_NODE_REFERENCE(local_node);
+> 
+> This looks odd.  Is local_port pointing to its own node as a remote
+> endpont, or am I confused?
 
-I'm not sure if you can understand what I mean by saing that.
-If you're not confused about this now, can you reply to my last email 
-again?😁
->
+This is a reference to a software node that will be, in turn, referenced by
+the "remote-endpoint" property entry in the remote node. Look for
+ACPI_DEVICE_SWNODE_EP_REMOTE_EP a few lines below these.
+
+> 
+> > +                       local_port->crs_csi2_local = true;
+> > +
+> > +                       remote_port = &remote_swnodes->ports[remote_index];
+> > +                       remote_node = &remote_swnodes->nodes[ACPI_DEVICE_SWNODE_EP(remote_index)];
+> > +                       remote_port->remote_ep_ref[0] = SOFTWARE_NODE_REFERENCE(remote_node);
+> 
+> Analogously here.
+
+-- 
+Regards,
+
+Sakari Ailus
