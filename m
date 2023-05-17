@@ -2,77 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1D5F70643E
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 May 2023 11:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7628F706442
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 May 2023 11:38:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229538AbjEQJfy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 17 May 2023 05:35:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41814 "EHLO
+        id S229678AbjEQJix (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 17 May 2023 05:38:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230086AbjEQJfw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 May 2023 05:35:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17880210C
-        for <linux-acpi@vger.kernel.org>; Wed, 17 May 2023 02:35:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1684316108;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=oxK8LY/FjzSiRfo409GBi+hU1V7Stjw8B2NwjQo24BU=;
-        b=eadeaHJh6jSMqySvA3oxR9EJ9HhucNteTAqe08jSqkQrLYXrZOhKof5Dj3tdWcDcp4XklS
-        e9blSi0nMu18Whep8ARFjsG1e8hSFZ8TXYnDtITluVJxCitheZbGfLxH2Ly2FfMVXv3Yzx
-        WeBmWgUnFKCtg7wP4/88SZ9QVRMvZrU=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-443-EDPp8eD0M2aSnnjcUa-Ifg-1; Wed, 17 May 2023 05:35:06 -0400
-X-MC-Unique: EDPp8eD0M2aSnnjcUa-Ifg-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-9663552473fso70467366b.1
-        for <linux-acpi@vger.kernel.org>; Wed, 17 May 2023 02:35:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684316105; x=1686908105;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oxK8LY/FjzSiRfo409GBi+hU1V7Stjw8B2NwjQo24BU=;
-        b=IMsS94IHWsGMQs6lhY/q7UE73qIzTmfgxnTyM9h1Rxbw2JF22b2RmCfluu0ZIbZlPy
-         Nolvk1u+B6UQjHDqnOYCqlIsEzg+N9qQfDwSwqK4SI9Q1GrejVpE405DgiG+nOHu+VUa
-         ujThgiQ1cJ0ELDcmESZB45osd1x4Uw1sTEI1Wfnc8Bwj6zbT2F36j2LrZNeAVbaZVkG3
-         nABjdVVaDxNnfq6+aGYdd/GTAGZpEtH8mBTPecpRmFN/ya81gXHNX6mkyQrHyZdUMq6/
-         WVlJRkd/y35ncQYo0Xf4fpylUx47qLMV/H0x1hgdiLnzdyYL7upUUa3xNdFx//PNMbTI
-         TrWw==
-X-Gm-Message-State: AC+VfDxxzgzuibj9ly7acP7RXH33w7goP9h/x9Snd+wpOaj7zRneR2Vp
-        w7usWiaDsN1d2S1el1RgsItNvyfWpkapnrFJrig4XwANrdzyBYbOxZFK7EUwD2wauQ/7wrP11Ii
-        KdDSShWPOCc7oznoLeoZ5W45H96ROrA==
-X-Received: by 2002:a17:907:3f90:b0:953:9899:d9c1 with SMTP id hr16-20020a1709073f9000b009539899d9c1mr47645527ejc.1.1684316105286;
-        Wed, 17 May 2023 02:35:05 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5clou2zt6lGzIyt6E7UdDBDzztuSK6ldxsv6RhHgB2iDKWzZxrwFZBUZxHEG6FWpRJRl1yVQ==
-X-Received: by 2002:a17:907:3f90:b0:953:9899:d9c1 with SMTP id hr16-20020a1709073f9000b009539899d9c1mr47645505ejc.1.1684316104943;
-        Wed, 17 May 2023 02:35:04 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id jl4-20020a17090775c400b009658475919csm12106548ejc.188.2023.05.17.02.35.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 May 2023 02:35:04 -0700 (PDT)
-Message-ID: <1454e65b-1d99-4542-fdcb-e72b1e447b1c@redhat.com>
-Date:   Wed, 17 May 2023 11:35:03 +0200
+        with ESMTP id S229511AbjEQJix (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 May 2023 05:38:53 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C51B93C3B;
+        Wed, 17 May 2023 02:38:50 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 434AD1FB;
+        Wed, 17 May 2023 02:39:35 -0700 (PDT)
+Received: from [10.57.73.125] (unknown [10.57.73.125])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 24B3D3F663;
+        Wed, 17 May 2023 02:38:48 -0700 (PDT)
+Message-ID: <420680f2-0d27-3174-532d-7f69760fc58d@arm.com>
+Date:   Wed, 17 May 2023 10:38:46 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v3 00/34] Remove .notify callback in acpi_device_ops
-Content-Language: en-US, nl
-To:     Michal Wilczynski <michal.wilczynski@intel.com>,
-        linux-acpi@vger.kernel.org
-Cc:     rafael@kernel.org, srinivas.pandruvada@linux.intel.com
-References: <20230517075724.153992-1-michal.wilczynski@intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20230517075724.153992-1-michal.wilczynski@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.10.0
+Subject: Re: [PATCH V2 3/5] coresight: etm4x: Drop pid argument from
+ etm4_probe()
+To:     Anshuman Khandual <anshuman.khandual@arm.com>,
+        linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org
+Cc:     scclevenger@os.amperecomputing.com,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Mike Leach <mike.leach@linaro.org>,
+        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230327050537.30861-1-anshuman.khandual@arm.com>
+ <20230327050537.30861-4-anshuman.khandual@arm.com>
+ <d995fec6-1d3f-df37-724e-67d929e9e0db@arm.com>
+ <28c7a088-bfdb-5172-c7c4-0a572ecda78a@arm.com>
+From:   Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <28c7a088-bfdb-5172-c7c4-0a572ecda78a@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,122 +59,158 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi all,
-
-On 5/17/23 09:56, Michal Wilczynski wrote:
-> Currently drivers support ACPI event handlers by defining .notify
-> callback in acpi_device_ops. This solution is suboptimal as event
-> handler installer installs intermediary function acpi_notify_device as a
-> handler in every driver. Also this approach requires extra variable
-> 'flags' for specifying event types that the driver want to subscribe to.
-> Additionally this is a pre-work required to align acpi_driver with
-> platform_driver and eventually replace acpi_driver with platform_driver.
+On 17/05/2023 05:32, Anshuman Khandual wrote:
 > 
-> Remove .notify callback from the acpi_device_ops. Replace it with each
-> driver installing and removing it's event handlers.
 > 
-> v3:
->  - lkp still reported some failures for eeepc, fujitsu and
->    toshiba_bluetooth, fix those
-> v2:
->  - fix compilation errors for drivers
+> On 3/31/23 16:36, Suzuki K Poulose wrote:
+>> On 27/03/2023 06:05, Anshuman Khandual wrote:
+>>> Coresight device pid can be retrieved from its iomem base address, which is
+>>> stored in 'struct etm4x_drvdata'. This drops pid argument from etm4_probe()
+>>> and 'struct etm4_init_arg'. Instead etm4_check_arch_features() derives the
+>>> coresight device pid with a new helper coresight_get_pid(), right before it
+>>> is consumed in etm4_hisi_match_pid().
+>>>
+>>> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+>>> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>> Cc: Mike Leach <mike.leach@linaro.org>
+>>> Cc: Leo Yan <leo.yan@linaro.org>
+>>> Cc: coresight@lists.linaro.org
+>>> Cc: linux-arm-kernel@lists.infradead.org
+>>> Cc: linux-kernel@vger.kernel.org
+>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>>> ---
+>>>    .../coresight/coresight-etm4x-core.c          | 21 +++++++------------
+>>>    include/linux/coresight.h                     | 12 +++++++++++
+>>>    2 files changed, 20 insertions(+), 13 deletions(-)
+>>>
+>>> diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+>>> index 5d77571a8df9..3521838ab4fb 100644
+>>> --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
+>>> +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+>>> @@ -66,7 +66,6 @@ static u64 etm4_get_access_type(struct etmv4_config *config);
+>>>    static enum cpuhp_state hp_online;
+>>>      struct etm4_init_arg {
+>>> -    unsigned int        pid;
+>>>        struct device        *dev;
+>>>        struct csdev_access    *csa;
+>>>    };
+>>> @@ -370,8 +369,10 @@ static void etm4_disable_arch_specific(struct etmv4_drvdata *drvdata)
+>>>    }
+>>>      static void etm4_check_arch_features(struct etmv4_drvdata *drvdata,
+>>> -                      unsigned int id)
+>>> +                     struct csdev_access *csa)
+>>>    {
+>>> +    unsigned int id = coresight_get_pid(csa);
+>>> +
+>>
+>> This throws up the following error on an ETE.
+>>
+>> ete: trying to read unsupported register @fe0
+>>
+>> So, I guess this must be performed only for iomem based
+>> devices. System instruction based device must be identified
+>> by MIDR_EL1/REVIDR_EL1 if needed for specific erratum.
+>> This is not required now. So, we could bail out early
+>> if we are system instruction based device.
 > 
-> Michal Wilczynski (34):
->   acpi: Adjust functions installing bus event handlers
->   acpi/ac: Move handler installing logic to driver
->   acpi/video: Move handler installing logic to driver
->   acpi/battery: Move handler installing logic to driver
->   acpi/button: Move handler installing logic to driver
->   acpi/hed: Move handler installing logic to driver
->   acpi/nfit: Move handler installing logic to driver
->   acpi/thermal: Move handler installing logic to driver
->   acpi/tiny-power-button: Move handler installing logic to driver
->   hwmon: Move handler installing logic to driver
->   iio/acpi-als: Move handler installing logic to driver
->   platform/chromeos_tbmc: Move handler installing logic to driver
->   platform/wilco_ec: Move handler installing logic to driver
->   platform/surface/button: Move handler installing logic to driver
->   platform/x86/acer-wireless: Move handler installing logic to driver
->   platform/x86/asus-laptop: Move handler installing logic to driver
->   platform/x86/asus-wireless: Move handler installing logic to driver
->   platform/x86/classmate-laptop: Move handler installing logic to driver
->   platform/x86/dell/dell-rbtn: Move handler installing logic to driver
->   platform/x86/eeepc-laptop: Move handler installing logic to driver
->   platform/x86/fujitsu-laptop: Move handler installing logic to driver
->   platform/x86/lg-laptop: Move handler installing logic to driver
->   platform/x86/panasonic-laptop: Move handler installing logic to driver
->   platform/x86/system76_acpi: Move handler installing logic to driver
->   platform/x86/topstar-laptop: Move handler installing logic to driver
->   platform/x86/toshiba_acpi: Move handler installing logic to driver
->   platform/x86/toshiba_bluetooth: Move handler installing logic to
->     driver
->   platform/x86/toshiba_haps: Move handler installing logic to driver
->   platform/x86/wireless-hotkey: Move handler installing logic to driver
->   platform/x86/xo15-ebook: Move handler installing logic to driver
-
-Michal, I just stumbled over this patch-set while looking at
-the lore.kernel.org linux-acpi archives...
-
-17 of the patches here are for platform/surface or platform/x86
-so I must say that I'm quite surprised that
-platform-driver-x86@vger.kernel.org is not in the Cc for this patch-set?
-
-And several of the pdx86 drivers at least also have individual driver
-maintainers which should be Cc-ed. So that those maintainers can
-hopefully help with reviewing reducing the workload for the subsystem
-maintainers.
-
-Please make sure to run scripts/get_maintainer for all touched files
-and put all the relevant people on the Cc. Either do so for a future
-v4, or if there is no reason atm to do a v4, please resend v3
-with the Cc list extended.
-
-Regards,
-
-Hans
-
-
-
-
-
-
->   virt/vmgenid: Move handler installing logic to driver
->   acpi/bus: Remove installing/removing notify handlers from probe/remove
->   acpi/bus: Remove redundant functions
->   acpi/bus: Remove notify callback and flags
+> Will bail out on non iomem devices via drvdata->base address switch.
 > 
->  drivers/acpi/ac.c                             |  14 +-
->  drivers/acpi/acpi_video.c                     |  18 ++-
->  drivers/acpi/battery.c                        |  14 +-
->  drivers/acpi/bus.c                            |  53 ++-----
->  drivers/acpi/button.c                         |  18 ++-
->  drivers/acpi/hed.c                            |   6 +-
->  drivers/acpi/nfit/core.c                      |  25 ++--
->  drivers/acpi/thermal.c                        |  20 ++-
->  drivers/acpi/tiny-power-button.c              |  18 +--
->  drivers/hwmon/acpi_power_meter.c              |  15 +-
->  drivers/iio/light/acpi-als.c                  |  23 ++-
->  drivers/platform/chrome/chromeos_tbmc.c       |  14 +-
->  drivers/platform/chrome/wilco_ec/event.c      |  19 ++-
->  drivers/platform/surface/surfacepro3_button.c |  19 ++-
->  drivers/platform/x86/acer-wireless.c          |  22 ++-
->  drivers/platform/x86/asus-laptop.c            |  16 ++-
->  drivers/platform/x86/asus-wireless.c          |  24 ++--
->  drivers/platform/x86/classmate-laptop.c       |  12 +-
->  drivers/platform/x86/dell/dell-rbtn.c         |  15 +-
->  drivers/platform/x86/eeepc-laptop.c           |  18 ++-
->  drivers/platform/x86/fujitsu-laptop.c         |  19 ++-
->  drivers/platform/x86/lg-laptop.c              |  12 +-
->  drivers/platform/x86/panasonic-laptop.c       |  17 ++-
->  drivers/platform/x86/system76_acpi.c          |  28 ++--
->  drivers/platform/x86/topstar-laptop.c         |  16 ++-
->  drivers/platform/x86/toshiba_acpi.c           | 131 +++++++++---------
->  drivers/platform/x86/toshiba_bluetooth.c      |  30 ++--
->  drivers/platform/x86/toshiba_haps.c           |   9 +-
->  drivers/platform/x86/wireless-hotkey.c        |  23 ++-
->  drivers/platform/x86/xo15-ebook.c             |  11 +-
->  drivers/virt/vmgenid.c                        |  30 ++--
->  include/acpi/acpi_bus.h                       |  10 +-
->  32 files changed, 457 insertions(+), 262 deletions(-)
-> 
+> --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
+> +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+> @@ -373,9 +373,10 @@ static void etm4_disable_arch_specific(struct etmv4_drvdata *drvdata)
+>   static void etm4_check_arch_features(struct etmv4_drvdata *drvdata,
+>                                       struct csdev_access *csa)
+>   {
+> -       unsigned int id = coresight_get_pid(csa);
+> +       if (!drvdata->base)
+> +               return;
 
+I would use !csa->io_mem to be more readerf friendly.
+
+>   
+> -       if (etm4_hisi_match_pid(id))
+> +       if (etm4_hisi_match_pid(coresight_get_pid(csa)))
+>                  set_bit(ETM4_IMPDEF_HISI_CORE_COMMIT, drvdata->arch_features);
+>   }
+>   #else
+> 
+>>
+>>
+>>>        if (etm4_hisi_match_pid(id))
+>>>            set_bit(ETM4_IMPDEF_HISI_CORE_COMMIT, drvdata->arch_features);
+>>>    }
+>>> @@ -385,7 +386,7 @@ static void etm4_disable_arch_specific(struct etmv4_drvdata *drvdata)
+>>>    }
+>>>      static void etm4_check_arch_features(struct etmv4_drvdata *drvdata,
+>>> -                     unsigned int id)
+>>> +                     struct csdev_access *csa)
+>>>    {
+>>>    }
+>>>    #endif /* CONFIG_ETM4X_IMPDEF_FEATURE */
+>>> @@ -1165,7 +1166,7 @@ static void etm4_init_arch_data(void *info)
+>>>        etm4_os_unlock_csa(drvdata, csa);
+>>>        etm4_cs_unlock(drvdata, csa);
+>>>    -    etm4_check_arch_features(drvdata, init_arg->pid);
+>>> +    etm4_check_arch_features(drvdata, csa);
+>>>          /* find all capabilities of the tracing unit */
+>>>        etmidr0 = etm4x_relaxed_read32(csa, TRCIDR0);
+>>> @@ -2048,7 +2049,7 @@ static int etm4_add_coresight_dev(struct etm4_init_arg *init_arg)
+>>>        return 0;
+>>>    }
+>>>    -static int etm4_probe(struct device *dev, u32 etm_pid)
+>>> +static int etm4_probe(struct device *dev)
+>>>    {
+>>>        struct etmv4_drvdata *drvdata = dev_get_drvdata(dev);
+>>>        struct csdev_access access = { 0 };
+>>> @@ -2077,7 +2078,6 @@ static int etm4_probe(struct device *dev, u32 etm_pid)
+>>>          init_arg.dev = dev;
+>>>        init_arg.csa = &access;
+>>> -    init_arg.pid = etm_pid;
+>>>          /*
+>>>         * Serialize against CPUHP callbacks to avoid race condition
+>>> @@ -2124,7 +2124,7 @@ static int etm4_probe_amba(struct amba_device *adev, const struct amba_id *id)
+>>>          drvdata->base = base;
+>>>        dev_set_drvdata(dev, drvdata);
+>>> -    ret = etm4_probe(dev, id->id);
+>>> +    ret = etm4_probe(dev);
+>>>        if (!ret)
+>>>            pm_runtime_put(&adev->dev);
+>>>    @@ -2146,12 +2146,7 @@ static int etm4_probe_platform_dev(struct platform_device *pdev)
+>>>        pm_runtime_set_active(&pdev->dev);
+>>>        pm_runtime_enable(&pdev->dev);
+>>>    -    /*
+>>> -     * System register based devices could match the
+>>> -     * HW by reading appropriate registers on the HW
+>>> -     * and thus we could skip the PID.
+>>> -     */
+>>> -    ret = etm4_probe(&pdev->dev, 0);
+>>> +    ret = etm4_probe(&pdev->dev);
+>>>          pm_runtime_put(&pdev->dev);
+>>>        return ret;
+>>> diff --git a/include/linux/coresight.h b/include/linux/coresight.h
+>>> index f19a47b9bb5a..f85b041ea475 100644
+>>> --- a/include/linux/coresight.h
+>>> +++ b/include/linux/coresight.h
+>>> @@ -370,6 +370,18 @@ static inline u32 csdev_access_relaxed_read32(struct csdev_access *csa,
+>>>        return csa->read(offset, true, false);
+>>>    }
+>>>    +#define CORESIGHT_PIDRn(i)    (0xFE0 + ((i) * 4))
+>>> +
+>>> +static inline u32 coresight_get_pid(struct csdev_access *csa)
+>>> +{
+>>> +    u32 i, pid = 0;
+>>> +
+>>> +    for (i = 0; i < 4; i++)
+>>> +        pid |= csdev_access_relaxed_read32(csa, CORESIGHT_PIDRn(i)) << (i * 8);
+>>
+>> Given the above, we could make this iomem specific.
+> 
+> We could change coresight_get_pid() to take iomem base address instead
+> and fetch the pid. But is not the existing csdev_access based approach
+> better and more generic ?
+
+Yes, true, lets leave it with csdev_access, as it is coresight specific
+and not ETMv4.
+
+Cheers
+Suzuki
