@@ -2,126 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6468D7067F7
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 May 2023 14:22:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B47A706878
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 May 2023 14:44:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231585AbjEQMWi convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 17 May 2023 08:22:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38012 "EHLO
+        id S231443AbjEQMoJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 17 May 2023 08:44:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231348AbjEQMWh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 May 2023 08:22:37 -0400
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D13A13C0C;
-        Wed, 17 May 2023 05:22:36 -0700 (PDT)
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-94a342f4c8eso16452566b.0;
-        Wed, 17 May 2023 05:22:36 -0700 (PDT)
+        with ESMTP id S231336AbjEQMoJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 May 2023 08:44:09 -0400
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A54463586
+        for <linux-acpi@vger.kernel.org>; Wed, 17 May 2023 05:44:06 -0700 (PDT)
+Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-ba82d82bd39so923580276.2
+        for <linux-acpi@vger.kernel.org>; Wed, 17 May 2023 05:44:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1684327446; x=1686919446;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gNevE736BEsxBU0FmwLJIhGqBiG7yoAC/t6/uUIBMdY=;
+        b=FMlLS0aECYmfOvG19PTRQ4JzQVOPvgp3keEl4q4lBIcarONNex1FSS2aSSOrdLjxfE
+         OYiPfSd3p8dfD1QItx7D8wl2cvYk/x1+YjFMYiLcupDwHagK7bMFjrihVjrw89h1isK/
+         BL8m4dOesp9dOvFJIsPhRXwRJJZw0WXMjrRaZLCGs1aGyZghu3sRXCSFqAbHEbi4bEe9
+         sb34beQApq2PcsJ82bacmFQQUt6j72BaQNjANrnbsGmWxQJeZKXoqvssjMl8KTkBxSm2
+         hNmUL8hfNmz56/sTiGz6zGIXfLgQdcu9zLtf9Q3wfq58AlUNYHc4mTp5/+V36z6r3Z0n
+         03CQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684326155; x=1686918155;
+        d=1e100.net; s=20221208; t=1684327446; x=1686919446;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=n9vpLl8En2po1hgvgZ4Kq++UySWYhDbpCJOGRfNDmMg=;
-        b=VSVDF+VG5uPW4areUnP9uGpzNgtRYJ8+9AdhdN50OlQFhnwEICzWQZDjVmopt2e+yz
-         fqGtyrnMX0G0N6wHRtoAukGvhca0lvkdRcIeu/Ll9FahHVD9U+vt36e2pBgNEvTOGyvV
-         o6sdqBiTUv/Y8uL3qXo61l0AparC0lPNB2ClLx2/q6gp8ZKAZCBHQAb5i/xXqX40h9BZ
-         uE6iimra5gxWuwy8e23UMWEt6JwVcCtWGfOSE/GihMoxwpRVNoA3xfRgI+Zyjxmtx2+u
-         bc5690rhZvfDsJAdZ/5lgGNX2Ehwp69a3bXELmB/kbdu896cXt1A8+M4APPt7ExPdzzQ
-         Xjbw==
-X-Gm-Message-State: AC+VfDw4/ETuQ2H6mutPDd0wEj15xGxFnrNcmqMDjJJZrqntc0ZckPCd
-        TfuAgjfy/NdFUJenxjAzW5qUtkVPS+FHmQ1nVebVz/MxQgA=
-X-Google-Smtp-Source: ACHHUZ4r4R3Jz/cbFYFAFk/SLndjdWbI6379aMs7l1kQwehJXS/lZy++1xQRLQjnnpsmXwgYSLDVnxgeXbeYjWd8gOo=
-X-Received: by 2002:a17:906:7391:b0:966:1f60:fd32 with SMTP id
- f17-20020a170906739100b009661f60fd32mr1762981ejl.6.1684326155140; Wed, 17 May
- 2023 05:22:35 -0700 (PDT)
+        bh=gNevE736BEsxBU0FmwLJIhGqBiG7yoAC/t6/uUIBMdY=;
+        b=MJj9L78mb9YTI/hLmV23VeQaoKyUtIuoKEeZHP0FL2E5pnkBdU+meGHJrZKyT74MYb
+         PkKZI4WCf2QX8oFYh7WC0ybmafWhWB4rLrAfNDRelJp7i7lfRW/P13lWnmqzZzXMPbRS
+         OWaNrPmFujcpdtGCwgRZsNOPj6+euyvqpgGFe8zZZbCxe5qTFoPkLAmdzpNF9pwVIHc6
+         d2uuMejFDdwB3fuDuC6w4Uov+P8f84H5P6ACekCLWyhgNnbTOBjGIHudVzMlbHa02wIe
+         vuzQ2MW6Kbg3MRbtiTyKrL/XowK4rTpQA/p0zcLw4HPSNXeHorZ9HWek6rHwH4HWlC+u
+         OhBg==
+X-Gm-Message-State: AC+VfDzIrhssDK6EQ6KBhRcDo9GzEXQ2FiNQV+hdzJK27DTJo5BKBUFC
+        Pq9GqJwosf6MptX0YKOndbu5DbLyAtjg9qEPUWPuGA==
+X-Google-Smtp-Source: ACHHUZ4prpZ1ZwoDxxoHkrbtIQ9L4j9bzrbZd//ns/O1W/Gj5TZTAbzyimVq3qT7URmcD+Feztnv9pZGkl2jlaxwl+I=
+X-Received: by 2002:a25:1504:0:b0:ba7:382f:6380 with SMTP id
+ 4-20020a251504000000b00ba7382f6380mr12543280ybv.24.1684327445737; Wed, 17 May
+ 2023 05:44:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230329100951.1522322-1-sakari.ailus@linux.intel.com>
- <20230329100951.1522322-6-sakari.ailus@linux.intel.com> <CAJZ5v0gxqs3+ofqX0PGmM=3HOi96ioyYJis+RL2oACPq6rggEA@mail.gmail.com>
- <ZGS+RzCGl7Y3p6N/@kekkonen.localdomain>
-In-Reply-To: <ZGS+RzCGl7Y3p6N/@kekkonen.localdomain>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 17 May 2023 14:22:23 +0200
-Message-ID: <CAJZ5v0i73bdo7oxv_hrj0qM0PQuk9cbRLQ4jqPbKn7V4nMqOhQ@mail.gmail.com>
-Subject: Re: [PATCH v8 05/10] ACPI: property: Prepare generating swnodes for
- ACPI and DisCo for Imaging
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com
+References: <cover.1684220962.git.mazziesaccount@gmail.com>
+In-Reply-To: <cover.1684220962.git.mazziesaccount@gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 17 May 2023 14:43:54 +0200
+Message-ID: <CACRpkdYPZWNTOW6c0q1+q64JRvxUXswQqm6j5N5KaAWO=sSUaQ@mail.gmail.com>
+Subject: Re: [PATCH v4 0/7] fix fwnode_irq_get[_byname()] returnvalue
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Wolfram Sang <wsa@kernel.org>,
+        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        netdev@vger.kernel.org, openbmc@lists.ozlabs.org,
+        linux-gpio@vger.kernel.org, linux-mips@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 17, 2023 at 1:54 PM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
->
-> Hi Rafael,
->
-> Thanks for the review.
->
-> On Wed, May 17, 2023 at 12:53:43PM +0200, Rafael J. Wysocki wrote:
-> > > +       list_for_each_entry(csi2, &ctx->crs_csi2_head, list) {
-> > > +               struct acpi_device_software_nodes *local_swnodes;
-> > > +               struct crs_csi2_instance *inst;
-> > > +
-> > > +               local_swnodes = crs_csi2_swnode_get(csi2->handle);
-> > > +               if (WARN_ON_ONCE(!local_swnodes))
-> > > +                       continue;
-> > > +
-> > > +               list_for_each_entry(inst, &csi2->buses, list) {
-> > > +                       struct acpi_device_software_nodes *remote_swnodes;
-> > > +                       struct acpi_device_software_node_port *local_port;
-> > > +                       struct acpi_device_software_node_port *remote_port;
-> > > +                       struct software_node *local_node, *remote_node;
-> > > +                       unsigned int local_index, remote_index;
-> > > +                       unsigned int bus_type;
-> > > +
-> > > +                       remote_swnodes = crs_csi2_swnode_get(inst->remote_handle);
-> > > +                       if (WARN_ON_ONCE(!remote_swnodes))
-> > > +                               continue;
-> > > +
-> > > +                       local_index = next_csi2_port_index(local_swnodes, inst->csi2.local_port_instance);
-> > > +                       remote_index = next_csi2_port_index(remote_swnodes, inst->csi2.resource_source.index);
-> > > +
-> > > +                       if (WARN_ON_ONCE(local_index >= local_swnodes->num_ports) ||
-> > > +                           WARN_ON_ONCE(remote_index >= remote_swnodes->num_ports))
-> > > +                               goto out_free;
-> > > +
-> > > +                       switch (inst->csi2.phy_type) {
-> > > +                       case ACPI_CRS_CSI2_PHY_TYPE_C:
-> > > +                               bus_type = V4L2_FWNODE_BUS_TYPE_CSI2_CPHY;
-> > > +                               break;
-> > > +                       case ACPI_CRS_CSI2_PHY_TYPE_D:
-> > > +                               bus_type = V4L2_FWNODE_BUS_TYPE_CSI2_DPHY;
-> > > +                               break;
-> > > +                       default:
-> > > +                               acpi_handle_info(csi2->handle,
-> > > +                                                "ignoring CSI-2 PHY type %u\n",
-> > > +                                                inst->csi2.phy_type);
-> > > +                               continue;
-> > > +                       }
-> > > +
-> > > +                       local_port = &local_swnodes->ports[local_index];
-> > > +                       local_node = &local_swnodes->nodes[ACPI_DEVICE_SWNODE_EP(local_index)];
-> > > +                       local_port->remote_ep_ref[0] = SOFTWARE_NODE_REFERENCE(local_node);
-> >
-> > This looks odd.  Is local_port pointing to its own node as a remote
-> > endpont, or am I confused?
->
-> This is a reference to a software node that will be, in turn, referenced by
-> the "remote-endpoint" property entry in the remote node. Look for
-> ACPI_DEVICE_SWNODE_EP_REMOTE_EP a few lines below these.
+On Tue, May 16, 2023 at 9:12=E2=80=AFAM Matti Vaittinen
+<mazziesaccount@gmail.com> wrote:
 
-To be precise, IIUC, it is going to be the "remote-endpoint" value for
-the remote node.
+> The fwnode_irq_get() and the fwnode_irq_get_byname() may have returned
+> zero if mapping the IRQ fails. This contradicts the
+> fwnode_irq_get_byname() documentation. Furthermore, returning zero or
+> errno on error is unepected and can easily lead to problems
+> like:
 
-OK, thanks for the explanation.  This isn't exactly straightforward TBH.
+Also, zero is not really a valid IRQ, it means NO_IRQ:
+https://lwn.net/Articles/470820/
+
+I'll apply the pinctrl patches.
+
+Yours,
+Linus Walleij
