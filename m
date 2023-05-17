@@ -2,56 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D976705EB1
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 May 2023 06:33:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3522B705F0F
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 May 2023 07:04:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229476AbjEQEc6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 17 May 2023 00:32:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47764 "EHLO
+        id S231682AbjEQFE6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 17 May 2023 01:04:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjEQEc5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 May 2023 00:32:57 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4094F2D4F;
-        Tue, 16 May 2023 21:32:55 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 63B5D1FB;
-        Tue, 16 May 2023 21:33:39 -0700 (PDT)
-Received: from [10.163.70.237] (unknown [10.163.70.237])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BDF003F793;
-        Tue, 16 May 2023 21:32:48 -0700 (PDT)
-Message-ID: <28c7a088-bfdb-5172-c7c4-0a572ecda78a@arm.com>
-Date:   Wed, 17 May 2023 10:02:45 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH V2 3/5] coresight: etm4x: Drop pid argument from
- etm4_probe()
-Content-Language: en-US
-To:     Suzuki K Poulose <suzuki.poulose@arm.com>,
-        linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org
-Cc:     scclevenger@os.amperecomputing.com,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Mike Leach <mike.leach@linaro.org>,
-        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230327050537.30861-1-anshuman.khandual@arm.com>
- <20230327050537.30861-4-anshuman.khandual@arm.com>
- <d995fec6-1d3f-df37-724e-67d929e9e0db@arm.com>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <d995fec6-1d3f-df37-724e-67d929e9e0db@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        with ESMTP id S229646AbjEQFE5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 May 2023 01:04:57 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AE942136;
+        Tue, 16 May 2023 22:04:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1684299896; x=1715835896;
+  h=date:from:to:cc:subject:message-id;
+  bh=eOcgo1b2zgQqT4igFFBSPPk0tJ8cYJd1kXmVjA8LxzU=;
+  b=CHy0QqtZwReyJKid6Kb9LfKa4vBvfYHW35DVekMSb01Bt3+RzNqG97lk
+   5HAC43Wi+1YXftg6kaeZmcV29JurB0BFXTZvFSAaIDvL6xyvPAGtU8ZcT
+   wyD10VMV/91NwVd7HC4sySquoIAp6A6J+CcA9E3U2HoAPYzyhfVWCybTZ
+   JEF5DeshrewghHoWWbA7qBoyofRwg3HBcrtNLXBO26W/so+4zx4bBMIs1
+   BznSrjVm7QDWVt8NinC4NarqvIxcsa6BLvzV7GjL3gctmFhUBr3koxQsm
+   x2awTgCJEbgPlTdV4kIeK71JfVCrHErALryKmn0Z7VzdvGHyg4Alm+A1Q
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10712"; a="349164121"
+X-IronPort-AV: E=Sophos;i="5.99,281,1677571200"; 
+   d="scan'208";a="349164121"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 22:04:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10712"; a="771334516"
+X-IronPort-AV: E=Sophos;i="5.99,281,1677571200"; 
+   d="scan'208";a="771334516"
+Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 16 May 2023 22:04:54 -0700
+Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pz9LJ-0008G7-1R;
+        Wed, 17 May 2023 05:04:53 +0000
+Date:   Wed, 17 May 2023 13:04:25 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 2eb9db58cef824fd8c5b0107462478b80d4870a5
+Message-ID: <20230517050425.Iaxjx%lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,160 +60,189 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+tree/branch: INFO setup_repo_specs: /db/releases/20230517121050/lkp-src/repo/*/rafael-pm
+https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 2eb9db58cef824fd8c5b0107462478b80d4870a5  Merge branch 'thermal/bleeding-edge' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into bleeding-edge
 
+elapsed time: 728m
 
-On 3/31/23 16:36, Suzuki K Poulose wrote:
-> On 27/03/2023 06:05, Anshuman Khandual wrote:
->> Coresight device pid can be retrieved from its iomem base address, which is
->> stored in 'struct etm4x_drvdata'. This drops pid argument from etm4_probe()
->> and 'struct etm4_init_arg'. Instead etm4_check_arch_features() derives the
->> coresight device pid with a new helper coresight_get_pid(), right before it
->> is consumed in etm4_hisi_match_pid().
->>
->> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
->> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Cc: Mike Leach <mike.leach@linaro.org>
->> Cc: Leo Yan <leo.yan@linaro.org>
->> Cc: coresight@lists.linaro.org
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linux-kernel@vger.kernel.org
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>   .../coresight/coresight-etm4x-core.c          | 21 +++++++------------
->>   include/linux/coresight.h                     | 12 +++++++++++
->>   2 files changed, 20 insertions(+), 13 deletions(-)
->>
->> diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
->> index 5d77571a8df9..3521838ab4fb 100644
->> --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
->> +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
->> @@ -66,7 +66,6 @@ static u64 etm4_get_access_type(struct etmv4_config *config);
->>   static enum cpuhp_state hp_online;
->>     struct etm4_init_arg {
->> -    unsigned int        pid;
->>       struct device        *dev;
->>       struct csdev_access    *csa;
->>   };
->> @@ -370,8 +369,10 @@ static void etm4_disable_arch_specific(struct etmv4_drvdata *drvdata)
->>   }
->>     static void etm4_check_arch_features(struct etmv4_drvdata *drvdata,
->> -                      unsigned int id)
->> +                     struct csdev_access *csa)
->>   {
->> +    unsigned int id = coresight_get_pid(csa);
->> +
-> 
-> This throws up the following error on an ETE.
-> 
-> ete: trying to read unsupported register @fe0
-> 
-> So, I guess this must be performed only for iomem based
-> devices. System instruction based device must be identified
-> by MIDR_EL1/REVIDR_EL1 if needed for specific erratum.
-> This is not required now. So, we could bail out early
-> if we are system instruction based device.
+configs tested: 169
+configs skipped: 5
 
-Will bail out on non iomem devices via drvdata->base address switch.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -373,9 +373,10 @@ static void etm4_disable_arch_specific(struct etmv4_drvdata *drvdata)
- static void etm4_check_arch_features(struct etmv4_drvdata *drvdata,
-                                     struct csdev_access *csa)
- {
--       unsigned int id = coresight_get_pid(csa);
-+       if (!drvdata->base)
-+               return;
- 
--       if (etm4_hisi_match_pid(id))
-+       if (etm4_hisi_match_pid(coresight_get_pid(csa)))
-                set_bit(ETM4_IMPDEF_HISI_CORE_COMMIT, drvdata->arch_features);
- }
- #else
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r043-20230515   gcc  
+arc                  randconfig-r043-20230516   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                           h3600_defconfig   gcc  
+arm                  randconfig-r022-20230516   gcc  
+arm                  randconfig-r025-20230515   clang
+arm                  randconfig-r046-20230515   clang
+arm                  randconfig-r046-20230516   gcc  
+arm                        shmobile_defconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64        buildonly-randconfig-r005-20230515   clang
+arm64                               defconfig   gcc  
+arm64                randconfig-r026-20230515   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r014-20230515   gcc  
+csky                 randconfig-r031-20230515   gcc  
+hexagon              randconfig-r021-20230515   clang
+hexagon              randconfig-r023-20230515   clang
+hexagon              randconfig-r041-20230515   clang
+hexagon              randconfig-r041-20230516   clang
+hexagon              randconfig-r045-20230515   clang
+hexagon              randconfig-r045-20230516   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r001-20230515   clang
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-a001-20230515   clang
+i386                 randconfig-a002-20230515   clang
+i386                 randconfig-a003-20230515   clang
+i386                 randconfig-a004-20230515   clang
+i386                 randconfig-a005-20230515   clang
+i386                 randconfig-a006-20230515   clang
+i386                 randconfig-a011-20230515   gcc  
+i386                 randconfig-a012-20230515   gcc  
+i386                 randconfig-a013-20230515   gcc  
+i386                 randconfig-a014-20230515   gcc  
+i386                 randconfig-a015-20230515   gcc  
+i386                 randconfig-a016-20230515   gcc  
+i386                          randconfig-i051   gcc  
+i386                          randconfig-i052   clang
+i386                          randconfig-i053   gcc  
+i386                          randconfig-i054   clang
+i386                          randconfig-i055   gcc  
+i386                          randconfig-i056   clang
+i386                 randconfig-i061-20230515   clang
+i386                 randconfig-i062-20230515   clang
+i386                 randconfig-i063-20230515   clang
+i386                 randconfig-i064-20230515   clang
+i386                 randconfig-i065-20230515   clang
+i386                 randconfig-i066-20230515   clang
+i386                 randconfig-i081-20230515   gcc  
+i386                 randconfig-i082-20230515   gcc  
+i386                 randconfig-i083-20230515   gcc  
+i386                 randconfig-i084-20230515   gcc  
+i386                 randconfig-i085-20230515   gcc  
+i386                 randconfig-i086-20230515   gcc  
+i386                 randconfig-i091-20230515   clang
+i386                 randconfig-i092-20230515   clang
+i386                 randconfig-i093-20230515   clang
+i386                 randconfig-i094-20230515   clang
+i386                 randconfig-i095-20230515   clang
+i386                 randconfig-i096-20230515   clang
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r002-20230515   gcc  
+m68k                             allmodconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r025-20230516   gcc  
+microblaze           randconfig-r006-20230515   gcc  
+microblaze           randconfig-r013-20230515   gcc  
+microblaze           randconfig-r024-20230515   gcc  
+microblaze           randconfig-r026-20230516   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r022-20230515   clang
+mips                 randconfig-r035-20230515   gcc  
+nios2                               defconfig   gcc  
+openrisc     buildonly-randconfig-r003-20230515   gcc  
+openrisc             randconfig-r036-20230515   gcc  
+parisc       buildonly-randconfig-r006-20230515   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r003-20230515   clang
+riscv                randconfig-r004-20230515   clang
+riscv                randconfig-r042-20230515   gcc  
+riscv                randconfig-r042-20230516   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r012-20230515   gcc  
+s390                 randconfig-r023-20230516   clang
+s390                 randconfig-r044-20230515   gcc  
+s390                 randconfig-r044-20230516   clang
+sh                               allmodconfig   gcc  
+sh                   randconfig-r033-20230515   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r015-20230515   gcc  
+sparc                randconfig-r024-20230516   gcc  
+sparc                randconfig-r032-20230515   gcc  
+sparc                randconfig-r034-20230515   gcc  
+sparc64              randconfig-r011-20230515   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r002-20230515   clang
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-a001-20230515   clang
+x86_64               randconfig-a002-20230515   clang
+x86_64               randconfig-a003-20230515   clang
+x86_64               randconfig-a004-20230515   clang
+x86_64               randconfig-a005-20230515   clang
+x86_64               randconfig-a006-20230515   clang
+x86_64                        randconfig-a011   gcc  
+x86_64                        randconfig-a012   clang
+x86_64                        randconfig-a013   gcc  
+x86_64                        randconfig-a014   clang
+x86_64                        randconfig-a015   gcc  
+x86_64                        randconfig-a016   clang
+x86_64               randconfig-r016-20230515   gcc  
+x86_64               randconfig-x051-20230515   gcc  
+x86_64               randconfig-x052-20230515   gcc  
+x86_64               randconfig-x053-20230515   gcc  
+x86_64               randconfig-x054-20230515   gcc  
+x86_64               randconfig-x055-20230515   gcc  
+x86_64               randconfig-x056-20230515   gcc  
+x86_64               randconfig-x061-20230515   gcc  
+x86_64               randconfig-x062-20230515   gcc  
+x86_64               randconfig-x063-20230515   gcc  
+x86_64               randconfig-x064-20230515   gcc  
+x86_64               randconfig-x065-20230515   gcc  
+x86_64               randconfig-x066-20230515   gcc  
+x86_64               randconfig-x071-20230515   clang
+x86_64               randconfig-x072-20230515   clang
+x86_64               randconfig-x073-20230515   clang
+x86_64               randconfig-x074-20230515   clang
+x86_64               randconfig-x075-20230515   clang
+x86_64               randconfig-x076-20230515   clang
+x86_64               randconfig-x081-20230515   clang
+x86_64               randconfig-x082-20230515   clang
+x86_64               randconfig-x083-20230515   clang
+x86_64               randconfig-x084-20230515   clang
+x86_64               randconfig-x085-20230515   clang
+x86_64               randconfig-x086-20230515   clang
+x86_64                        randconfig-x091   clang
+x86_64                        randconfig-x092   gcc  
+x86_64                        randconfig-x093   clang
+x86_64                        randconfig-x094   gcc  
+x86_64                        randconfig-x095   clang
+x86_64                        randconfig-x096   gcc  
+x86_64                               rhel-8.3   gcc  
+xtensa       buildonly-randconfig-r004-20230515   gcc  
+xtensa                  nommu_kc705_defconfig   gcc  
 
-> 
-> 
->>       if (etm4_hisi_match_pid(id))
->>           set_bit(ETM4_IMPDEF_HISI_CORE_COMMIT, drvdata->arch_features);
->>   }
->> @@ -385,7 +386,7 @@ static void etm4_disable_arch_specific(struct etmv4_drvdata *drvdata)
->>   }
->>     static void etm4_check_arch_features(struct etmv4_drvdata *drvdata,
->> -                     unsigned int id)
->> +                     struct csdev_access *csa)
->>   {
->>   }
->>   #endif /* CONFIG_ETM4X_IMPDEF_FEATURE */
->> @@ -1165,7 +1166,7 @@ static void etm4_init_arch_data(void *info)
->>       etm4_os_unlock_csa(drvdata, csa);
->>       etm4_cs_unlock(drvdata, csa);
->>   -    etm4_check_arch_features(drvdata, init_arg->pid);
->> +    etm4_check_arch_features(drvdata, csa);
->>         /* find all capabilities of the tracing unit */
->>       etmidr0 = etm4x_relaxed_read32(csa, TRCIDR0);
->> @@ -2048,7 +2049,7 @@ static int etm4_add_coresight_dev(struct etm4_init_arg *init_arg)
->>       return 0;
->>   }
->>   -static int etm4_probe(struct device *dev, u32 etm_pid)
->> +static int etm4_probe(struct device *dev)
->>   {
->>       struct etmv4_drvdata *drvdata = dev_get_drvdata(dev);
->>       struct csdev_access access = { 0 };
->> @@ -2077,7 +2078,6 @@ static int etm4_probe(struct device *dev, u32 etm_pid)
->>         init_arg.dev = dev;
->>       init_arg.csa = &access;
->> -    init_arg.pid = etm_pid;
->>         /*
->>        * Serialize against CPUHP callbacks to avoid race condition
->> @@ -2124,7 +2124,7 @@ static int etm4_probe_amba(struct amba_device *adev, const struct amba_id *id)
->>         drvdata->base = base;
->>       dev_set_drvdata(dev, drvdata);
->> -    ret = etm4_probe(dev, id->id);
->> +    ret = etm4_probe(dev);
->>       if (!ret)
->>           pm_runtime_put(&adev->dev);
->>   @@ -2146,12 +2146,7 @@ static int etm4_probe_platform_dev(struct platform_device *pdev)
->>       pm_runtime_set_active(&pdev->dev);
->>       pm_runtime_enable(&pdev->dev);
->>   -    /*
->> -     * System register based devices could match the
->> -     * HW by reading appropriate registers on the HW
->> -     * and thus we could skip the PID.
->> -     */
->> -    ret = etm4_probe(&pdev->dev, 0);
->> +    ret = etm4_probe(&pdev->dev);
->>         pm_runtime_put(&pdev->dev);
->>       return ret;
->> diff --git a/include/linux/coresight.h b/include/linux/coresight.h
->> index f19a47b9bb5a..f85b041ea475 100644
->> --- a/include/linux/coresight.h
->> +++ b/include/linux/coresight.h
->> @@ -370,6 +370,18 @@ static inline u32 csdev_access_relaxed_read32(struct csdev_access *csa,
->>       return csa->read(offset, true, false);
->>   }
->>   +#define CORESIGHT_PIDRn(i)    (0xFE0 + ((i) * 4))
->> +
->> +static inline u32 coresight_get_pid(struct csdev_access *csa)
->> +{
->> +    u32 i, pid = 0;
->> +
->> +    for (i = 0; i < 4; i++)
->> +        pid |= csdev_access_relaxed_read32(csa, CORESIGHT_PIDRn(i)) << (i * 8);
-> 
-> Given the above, we could make this iomem specific.
-
-We could change coresight_get_pid() to take iomem base address instead
-and fetch the pid. But is not the existing csdev_access based approach
-better and more generic ?
-
-#define CORESIGHT_PIDRn(i)     (0xFE0 + ((i) * 4))
-
-static inline u32 coresight_get_pid(void __iomem *base)
-{
-       u32 i, pid = 0;
-
-	for (i = 0; i < 4; i++)
-                pid |= readl(base + CORESIGHT_PIDRn(i)) << (i * 8);
-
-       return pid;
-}
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
