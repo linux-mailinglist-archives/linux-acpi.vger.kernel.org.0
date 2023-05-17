@@ -2,127 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62A7E7068E9
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 May 2023 15:09:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F9C270697C
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 May 2023 15:16:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230378AbjEQNJn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 17 May 2023 09:09:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47066 "EHLO
+        id S231616AbjEQNQq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 17 May 2023 09:16:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229943AbjEQNJm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 May 2023 09:09:42 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7091D10E;
-        Wed, 17 May 2023 06:09:41 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-4f22908a082so958212e87.1;
-        Wed, 17 May 2023 06:09:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684328980; x=1686920980;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HiOIFsakx0aMej54eXXoxdRm1SObTd8+GXwcqmC+gDI=;
-        b=nQqbckCj40fswXyyoyZANlw32GoODASyRy+I0BEcH8jVTq+9CS8dZsi7KJnYXhUTMu
-         T8gm0LELievGmm4DCn0L08Kr+seIoYQuhmH8JJFTb5+4j6v4xFyLpxB3yTdEjB0Uy3Z2
-         Pz+zfFv6OWCLZRHo9un5cb4wBQOORGnQ33+GIOY5AyrE1ifnChl7DYc9slDOBybRZmZg
-         gCbAeQs15epFThbzR9IlcsDHkEefxmLFxEiAiXvGYvT/RUtOtgRTr8WUlkLx3IalVvtz
-         z9gRDvbnTAyhsrgTWhFfApJBf27hSb1sAmfTC4SgGMe2CSQXRh48XoQzExndoLzjP4ca
-         NMjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684328980; x=1686920980;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HiOIFsakx0aMej54eXXoxdRm1SObTd8+GXwcqmC+gDI=;
-        b=QnY+/zJEti03r0OVFFIInlLbaGUJpcvz4cOhzE5iEKmP6Zi1vYDedadge2bSDVCbyt
-         QNroOSL4L1d26pbt9xbtFK+LAMyeU/CBrnv72FqylAt87xktVtAdw7Z7WtH5fjd5R8Py
-         H8ffTBtp1A/1Q9bvxZPZBYX3VO7xDqSb8omu7UktBNR8vPLibguLpcFCYFrBcUCUmhtr
-         QQNZFA7nmPeyrNhvB179+WBiwXVaH1KrlYs2wZyqMeN8ZvuAxEveKEcKjycgYEg9VHFf
-         L3OXekf/cxb+jcgijaRO9msC9ud7Ejn4PGFckAX2nkAthdzk4n+9HO3dViN3Nf62ZKAP
-         1v0A==
-X-Gm-Message-State: AC+VfDxy3zukX5dlyh1ENfK8hmXzYax7B4ziK+r/2ty3LWly6fp6M6jT
-        qlDXwSASp8QOifg3syB4jb4=
-X-Google-Smtp-Source: ACHHUZ7xq1vU49+oDj7CrWdxacjqGLeqMxxCfV6ZUVNhzOEYif121viDARlILRPrr/j6HhxvRR0olw==
-X-Received: by 2002:a05:6512:21d:b0:4f1:22a2:989b with SMTP id a29-20020a056512021d00b004f122a2989bmr200043lfo.50.1684328979302;
-        Wed, 17 May 2023 06:09:39 -0700 (PDT)
-Received: from [192.168.1.126] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id n1-20020a195501000000b004f25129628fsm3372942lfe.151.2023.05.17.06.09.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 May 2023 06:09:38 -0700 (PDT)
-Message-ID: <f47550f9-73de-f212-fbd3-430ef6bd48a1@gmail.com>
-Date:   Wed, 17 May 2023 16:09:37 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US, en-GB
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        with ESMTP id S231622AbjEQNQa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 May 2023 09:16:30 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0EECB7AAD;
+        Wed, 17 May 2023 06:16:19 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 36BB81FB;
+        Wed, 17 May 2023 06:17:04 -0700 (PDT)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1D9BF3F7BD;
+        Wed, 17 May 2023 06:16:17 -0700 (PDT)
+Date:   Wed, 17 May 2023 14:16:14 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     "lihuisong (C)" <lihuisong@huawei.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Shawn Guo <shawnguo@kernel.org>, linux-kernel@vger.kernel.org,
+        soc@kernel.org, wanghuiqiang@huawei.com, tanxiaofei@huawei.com,
+        liuyonglong@huawei.com, huangdaode@huawei.com,
+        linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Wolfram Sang <wsa@kernel.org>,
-        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        netdev@vger.kernel.org, openbmc@lists.ozlabs.org,
-        linux-gpio@vger.kernel.org, linux-mips@vger.kernel.org
-References: <cover.1684220962.git.mazziesaccount@gmail.com>
- <CACRpkdYPZWNTOW6c0q1+q64JRvxUXswQqm6j5N5KaAWO=sSUaQ@mail.gmail.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v4 0/7] fix fwnode_irq_get[_byname()] returnvalue
-In-Reply-To: <CACRpkdYPZWNTOW6c0q1+q64JRvxUXswQqm6j5N5KaAWO=sSUaQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: Re: [PATCH] soc: hisilicon: Support HCCS driver on Kunpeng SoC
+Message-ID: <20230517131614.cwi2fcj2cngaq7dm@bogus>
+References: <20230425131918.5tf5vot4h7jf54xk@bogus>
+ <db6c713c-f99c-fa3f-8d38-9a5d50889cc2@huawei.com>
+ <20230515130807.pdvx7bxwjkfdsmsr@bogus>
+ <aa5b1919-74c6-1f97-78af-ab5f0904c3ce@huawei.com>
+ <20230516122931.il4ai7fyxdo5gsff@bogus>
+ <f0733521-2557-fdaf-e59b-b10d515c487c@huawei.com>
+ <20230516143530.venhj4gax6stinah@bogus>
+ <a98e3620-57da-000e-f5ee-2c2e47e97906@huawei.com>
+ <20230517093033.4jvwjxuoeic46a24@bogus>
+ <5ca49494-5a0c-4dc8-9cf5-fc4bc3b8e1b2@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <5ca49494-5a0c-4dc8-9cf5-fc4bc3b8e1b2@huawei.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 5/17/23 15:43, Linus Walleij wrote:
-> On Tue, May 16, 2023 at 9:12 AM Matti Vaittinen
-> <mazziesaccount@gmail.com> wrote:
+On Wed, May 17, 2023 at 07:35:25PM +0800, lihuisong (C) wrote:
 > 
->> The fwnode_irq_get() and the fwnode_irq_get_byname() may have returned
->> zero if mapping the IRQ fails. This contradicts the
->> fwnode_irq_get_byname() documentation. Furthermore, returning zero or
->> errno on error is unepected and can easily lead to problems
->> like:
-> 
-> Also, zero is not really a valid IRQ, it means NO_IRQ:
-> https://lwn.net/Articles/470820/
-> 
-> I'll apply the pinctrl patches.
+> 在 2023/5/17 17:30, Sudeep Holla 写道:
+> > On Wed, May 17, 2023 at 03:16:12PM +0800, lihuisong (C) wrote:
+> > 
+> > [...]
+> > 
+> > > No. I want to use this flag to make compability between different platforms.
+> > > This driver only use PCC OpRegion to access to the channel if platform
+> > > support use PCC OpRegion.
+> > What do you mean by that ? It is not correct. If there is a PCC Opregion,
+> > then you need to make it work with drivers/acpi/acpi_pcc.c
+> > 
+> > You need to have all the other details in the firmware(ASL). By looking
+> > at the driver, it has no connection to PCC Opregion IMO unless I am missing
+> > something.
+> Driver just needs to call these APIs, such as acpi_evaluate_integer(), if
+> want to use PCC OpRegion.
 
-Thanks Linus. I guess you noticed but please wait until the patch 1/7 
-gets in as the pinctrl patches won't do "the right thing" without it. 
-(Just ensuring we are on a same page ;) )
+OK, please provide examples. I am definitely lost as it doesn't match with
+my understanding of how PCC Opregions are/can be used.
 
-Yours,
-	-- Matti
+> I know that. I have tested PCC OpRegion before.
+
+Cool, examples please.
+
+> You've completely misunderstood what I said.😅
+>
+
+Hmm, may be but I need examples.
+
+> I mean that this driver plans to support both PCC and PCC OpRegion.
+> For example,
+> Platform A: this driver use PCC (as the current implementation)
+
+Good, then just keep what it needs in the implementation nothing more
+until you add support for something you have described below(not that
+I agree, just want you to make progress here based on what is actually
+required today)
+
+> Platform B: this driver use PCC OpRegion (Currently, this patch does not
+> implement it, but it may be available in the future.)
+
+Then let us discuss that in the future, don't add unnecessary complexity
+for some future use case today. You can always add it when you introduce
+that feature or support in the future.
+
+> Note:
+> This driver selects only one of them (PCC and PCC OpRegion) to communicate
+> with firmware on one platform.
+
+Let us keep it simple(KISS). The driver works just for PCC not PCC Opregion
+for now.
+
+> We use one bit in device-flags to know which one this driver will use.
+>
+
+NACK again just to re-iterate my point if you have not yet accepted that
+fact.
+
+> I'm not sure if you can understand what I mean by saing that.
+> If you're not confused about this now, can you reply to my last email
+> again?😁
+>
+
+The example you had IIRC is use of System Memory Opregion to demonstrate
+some _DSM. That has nothing to do with PCC Opregion.
+
+Commit 77e2a04745ff ("ACPI: PCC: Implement OperationRegion handler for
+the PCC Type 3 subtype") has the example in the commit message. IIRC,
+you have even fixed couple of bugs in that driver. That is the reason
+why I don't understand how you think this driver and that can or must
+work together. At least I fail to see how ATM(examples please, by that
+I mean ASL snippet for PCC vs PCC Opregion usage to work with this driver)
 
 -- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+Regards,
+Sudeep
