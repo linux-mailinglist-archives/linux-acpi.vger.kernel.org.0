@@ -2,129 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ED41706EF6
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 May 2023 19:03:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4D29706F83
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 May 2023 19:34:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229538AbjEQRDn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 17 May 2023 13:03:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51322 "EHLO
+        id S229456AbjEQRe1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 17 May 2023 13:34:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbjEQRDm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 May 2023 13:03:42 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70D989E;
-        Wed, 17 May 2023 10:03:41 -0700 (PDT)
+        with ESMTP id S229866AbjEQReY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 May 2023 13:34:24 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39B201FFE;
+        Wed, 17 May 2023 10:34:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684343021; x=1715879021;
+  t=1684344863; x=1715880863;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=2y9dc4fvVXmSayb63VV0cFv6otKKoZXMYMxw98nbiUY=;
-  b=kRcCOgBggZt0gF/jc+KW4oVF1X8CHd4VGfx3lWlIry/tdwVU8QS/zubG
-   xe0NQamEfwys21whCOa/0Qc3+3/TlThDBOoEixu2sjuhLRfisygi2U0Qj
-   KATSMUNpuTMJtvFlraIFdbbEN+YtVp4kg9kBxskU0+Nknp9FUWg1tqeTD
-   /Dy7tCw4fzxFq9Oey4h2ippE57VfKzI8DvXoK+2HSSLOcAQBYv5Vcx8fs
-   YkcV0hdQdmaIzyu/2Jy5/4EWYJdgApN8RCZ2dc30mYa/XcJMpfI7fbOjv
-   zxuaFLH2WY0lTYl0/FCWjdBs3ub7IFe0vUri4fykpr9pksi8HI70Cftpr
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="351840399"
+  bh=J1vTwWXDWOmB5KTcRXHCtG0ov/EzmpZpuFt2eQ7PAKw=;
+  b=LFsPrCBUnAXcJVJI6oPECJ3aomwnqNRMc7yVX+BkmJEMyEdOJxmd1zhc
+   wzoo4KKkSrbw8Zh4Fh36GCqzDOD59EpjfC/fEU9hSOGALFMGyVjlz8rC1
+   xgKNWfkTJSPxJswO7TnWpH1Zwj1Fu+9CcX/BFvjYNYLAdnVJtiCQXcCr1
+   8w24/fjufI3kMYw80nmbpVGjF+3LZuO/yDg/eCdEWxbtybw8BuBnhzHsT
+   R92SB0gHdDWmSFfeLnxbClx4eH8DcKnrnvUXZwYzPgrYgoJXa9v6rekwf
+   2mD3G8M6UdqxmVtcSuKoQHQulRaKjUZZmDZvjCjRnpdxdiN45soq1nkYZ
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="336384339"
 X-IronPort-AV: E=Sophos;i="5.99,282,1677571200"; 
-   d="scan'208";a="351840399"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2023 10:03:39 -0700
+   d="scan'208";a="336384339"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2023 10:34:22 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="813944402"
+X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="846175229"
 X-IronPort-AV: E=Sophos;i="5.99,282,1677571200"; 
-   d="scan'208";a="813944402"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP; 17 May 2023 10:03:31 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pzKYi-0008V6-2X;
-        Wed, 17 May 2023 20:03:28 +0300
-Date:   Wed, 17 May 2023 20:03:28 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>
-Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Wolfram Sang <wsa@kernel.org>,
-        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        netdev@vger.kernel.org, openbmc@lists.ozlabs.org,
-        linux-gpio@vger.kernel.org, linux-mips@vger.kernel.org
-Subject: Re: [PATCH v4 4/7] pinctrl: wpcm450: elax return value check for IRQ
- get
-Message-ID: <ZGUI4J27h69ed005@smile.fi.intel.com>
-References: <cover.1684220962.git.mazziesaccount@gmail.com>
- <2d89de999a1d142efbd5eb10ff31cca12309e66d.1684220962.git.mazziesaccount@gmail.com>
- <ZGOwCSPH68DJN/NC@probook>
+   d="scan'208";a="846175229"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2023 10:34:21 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+        by kekkonen.fi.intel.com (Postfix) with ESMTP id 6F1DD120C45;
+        Wed, 17 May 2023 20:34:18 +0300 (EEST)
+Date:   Wed, 17 May 2023 17:34:18 +0000
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
+        andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH v8 05/10] ACPI: property: Prepare generating swnodes for
+ ACPI and DisCo for Imaging
+Message-ID: <ZGUQGo/5A5+ET4OP@kekkonen.localdomain>
+References: <20230329100951.1522322-1-sakari.ailus@linux.intel.com>
+ <20230329100951.1522322-6-sakari.ailus@linux.intel.com>
+ <CAJZ5v0gxqs3+ofqX0PGmM=3HOi96ioyYJis+RL2oACPq6rggEA@mail.gmail.com>
+ <ZGS+RzCGl7Y3p6N/@kekkonen.localdomain>
+ <CAJZ5v0i73bdo7oxv_hrj0qM0PQuk9cbRLQ4jqPbKn7V4nMqOhQ@mail.gmail.com>
+ <CAJZ5v0hG-qGa==9cQz2-xK01JJxL2UZuL9u=5yaDo3rW9eL9eQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZGOwCSPH68DJN/NC@probook>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <CAJZ5v0hG-qGa==9cQz2-xK01JJxL2UZuL9u=5yaDo3rW9eL9eQ@mail.gmail.com>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 16, 2023 at 06:32:09PM +0200, Jonathan Neusch�fer wrote:
-> On Tue, May 16, 2023 at 10:13:14AM +0300, Matti Vaittinen wrote:
-
-> > The special handling in this driver was added when fixing a problem
-> > where returning zero from fwnode_irq_get[_byname]() was treated as
-> > succes yielding zero being used as a valid IRQ by the driver.
-> > f4a31facfa80 ("pinctrl: wpcm450: Correct the fwnode_irq_get() return value check")
-> > The commit message does not mention if choosing not to abort the probe
-> > on device-tree mapping failure (as is done on other errors) was chosen
-> > because: a) Abort would have broken some existing setup. b) Because skipping
-> > an IRQ on failure is "the right thing to do", or c) because it sounded like
-> > a way to minimize risk of breaking something.
-> > 
-> > If the reason is a) - then I'd appreciate receiving some more
-> > information and a suggestion how to proceed (if possible). If the reason
-> > is b), then it might be best to just skip the IRQ instead of aborting
-> > the probe for all errors on IRQ getting. Finally, in case of c), well,
-> > by acking this change you will now accept the risk :)
-
-From my side it was c).
-
-> > The first patch of the series changes the fwnode_irq_get() so this depends
-> > on the first patch of the series and should not be applied alone.
+On Wed, May 17, 2023 at 03:50:47PM +0200, Rafael J. Wysocki wrote:
+> On Wed, May 17, 2023 at 2:22 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> >
+> > On Wed, May 17, 2023 at 1:54 PM Sakari Ailus
+> > <sakari.ailus@linux.intel.com> wrote:
 > 
-> Thanks for investigating this!
+> [cut]
 > 
-> It's not a), because there are no existing setups that rely on broken
-> IRQs connected to this pinctrl/GPIO controller.
+> > > > > +                       local_port = &local_swnodes->ports[local_index];
+> > > > > +                       local_node = &local_swnodes->nodes[ACPI_DEVICE_SWNODE_EP(local_index)];
+> > > > > +                       local_port->remote_ep_ref[0] = SOFTWARE_NODE_REFERENCE(local_node);
+> > > >
+> > > > This looks odd.  Is local_port pointing to its own node as a remote
+> > > > endpont, or am I confused?
+> > >
+> > > This is a reference to a software node that will be, in turn, referenced by
+> > > the "remote-endpoint" property entry in the remote node. Look for
+> > > ACPI_DEVICE_SWNODE_EP_REMOTE_EP a few lines below these.
+> >
+> > To be precise, IIUC, it is going to be the "remote-endpoint" value for
+> > the remote node.
+> >
+> > OK, thanks for the explanation.  This isn't exactly straightforward TBH.
 > 
-> I suspect b) or c), but I'll let Andy give a more definite answer.
+> So I'd arrange it so that the value of the "remote-endpoint" property
+> in a given node is stored in that node (the value itself being a
+> reference to another endpoint).
 
+Fine for me.
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Sakari Ailus
