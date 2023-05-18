@@ -2,122 +2,186 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 917687078A1
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 May 2023 05:54:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB752707BF1
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 May 2023 10:25:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229661AbjERDy0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 17 May 2023 23:54:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55702 "EHLO
+        id S230098AbjERIZV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 18 May 2023 04:25:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229514AbjERDyZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 May 2023 23:54:25 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 919F1114;
-        Wed, 17 May 2023 20:54:24 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-30935d343f7so1436037f8f.1;
-        Wed, 17 May 2023 20:54:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684382063; x=1686974063;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w+6bngIPlRaxvFBxjFkhMReUFJu6ef/0Etf19kPyE0E=;
-        b=IgnIIiSCFX+sAE06Nn8WotOSa1XJDLsJCfNRWlsnMaGEI+3t3ZY+xjxOeup8LHhw9d
-         TPlrOzu1emcDMSBDyY2vWb7z2/Y5xWdi23emJCU3GjQqtIVxiYsHzRLiOJYq2DJceXDq
-         8EP/OUts7+NQaN8LAI9TC+HMNRTND+BKqI8lBQgECn7zxXwXE+1++ncp7j2Y0O6SqfqR
-         qh9VIlIEnc0+gQOW2l0yvCf4UhPIWpz5Yrj3ONBIzBgx/8D0fzTzOOq+fHBrXitYDQAT
-         V/wU9j2FvIc+xqeRvdanY8TZLFQk0Y++FzDe41cN10vyyZ0H/A3WRHqLJTklX3p0rGBU
-         gxBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684382063; x=1686974063;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w+6bngIPlRaxvFBxjFkhMReUFJu6ef/0Etf19kPyE0E=;
-        b=WnCEfSjE054piD7cYOR5EBagwo8LSVJFKLCXDEkjERqMatqLSmnJnVIs+1z6dpK1tA
-         5qqDk+AoByxE7OH1YweRUN+Man/wLoPqBWaidA37+4CglVesHLdI5O0RmFSHCzCqR/iD
-         oqCKgW0tjSjbfgzI/gb+l+V6oPorBYYibehk1ggi/RefPMuHy8vrkb337fr+QGAuWlzL
-         inw2qB/lsc2hVN2gY4KWY8uELs93ttiPP4kYQCtnAxuH3plYJR58Yh8vmaZxFwEamVNX
-         AYeZ8Yaq6unS+infN+4vj5veuJ2YK3a4F1MsEq4+qRx/7Y2KXPQD73ehJL8v9aB3TptW
-         mpTQ==
-X-Gm-Message-State: AC+VfDxQVREuvqWSpZae51/K9wzOl7rSx9crJkqa5cgwNJ3MOb+39LSU
-        yS+3Stmsb5jfmy013VHGsTrTMZol2KmsEBoMlpM=
-X-Google-Smtp-Source: ACHHUZ7leEjBPH9XcWIslAMGd2eimLbWCb7exyHpdSn9QCq5Ld6ewU7VrQHTmYk//wBrpCB+feNcdw11RGyWhonwIvA=
-X-Received: by 2002:adf:fc12:0:b0:309:3b4a:cdf4 with SMTP id
- i18-20020adffc12000000b003093b4acdf4mr274930wrr.67.1684382062853; Wed, 17 May
- 2023 20:54:22 -0700 (PDT)
+        with ESMTP id S229902AbjERIZS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 May 2023 04:25:18 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EA27122;
+        Thu, 18 May 2023 01:25:04 -0700 (PDT)
+Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.56])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4QMNKQ4tGdzLmLP;
+        Thu, 18 May 2023 16:23:38 +0800 (CST)
+Received: from [10.67.103.231] (10.67.103.231) by
+ kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Thu, 18 May 2023 16:24:59 +0800
+Message-ID: <aec13381-e9be-4f3d-1834-52f32f9f8418@huawei.com>
+Date:   Thu, 18 May 2023 16:24:36 +0800
 MIME-Version: 1.0
-References: <20230515213822.1277-1-mario.limonciello@amd.com>
-In-Reply-To: <20230515213822.1277-1-mario.limonciello@amd.com>
-From:   Chuanhong Guo <gch981213@gmail.com>
-Date:   Thu, 18 May 2023 11:54:10 +0800
-Message-ID: <CAJsYDVKsZyKR_EcgfqV=sptnFmWawY5uy27KtTK3ZrjGWGYygw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: resource: Remove "Zen" specific match and quirks
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     rafael@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, regressions@leemhuis.info,
-        ofenfisch@googlemail.com, wse@tuxedocomputers.com,
-        adam.niederer@gmail.com, adrian@freund.io, jirislaby@kernel.org,
-        Renjith.Pananchikkal@amd.com, anson.tsao@amd.com,
-        Richard.Gong@amd.com, evilsnoo@proton.me, ruinairas1992@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH] soc: hisilicon: Support HCCS driver on Kunpeng SoC
+To:     Sudeep Holla <sudeep.holla@arm.com>
+CC:     Arnd Bergmann <arnd@arndb.de>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        <linux-kernel@vger.kernel.org>, <soc@kernel.org>,
+        <wanghuiqiang@huawei.com>, <tanxiaofei@huawei.com>,
+        <liuyonglong@huawei.com>, <huangdaode@huawei.com>,
+        <linux-acpi@vger.kernel.org>, Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+References: <20230425131918.5tf5vot4h7jf54xk@bogus>
+ <db6c713c-f99c-fa3f-8d38-9a5d50889cc2@huawei.com>
+ <20230515130807.pdvx7bxwjkfdsmsr@bogus>
+ <aa5b1919-74c6-1f97-78af-ab5f0904c3ce@huawei.com>
+ <20230516122931.il4ai7fyxdo5gsff@bogus>
+ <f0733521-2557-fdaf-e59b-b10d515c487c@huawei.com>
+ <20230516143530.venhj4gax6stinah@bogus>
+ <a98e3620-57da-000e-f5ee-2c2e47e97906@huawei.com>
+ <20230517093033.4jvwjxuoeic46a24@bogus>
+ <5ca49494-5a0c-4dc8-9cf5-fc4bc3b8e1b2@huawei.com>
+ <20230517131614.cwi2fcj2cngaq7dm@bogus>
+From:   "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <20230517131614.cwi2fcj2cngaq7dm@bogus>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.103.231]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemm600004.china.huawei.com (7.193.23.242)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi!
 
-On Tue, May 16, 2023 at 5:38=E2=80=AFAM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
+在 2023/5/17 21:16, Sudeep Holla 写道:
+> On Wed, May 17, 2023 at 07:35:25PM +0800, lihuisong (C) wrote:
+>> 在 2023/5/17 17:30, Sudeep Holla 写道:
+>>> On Wed, May 17, 2023 at 03:16:12PM +0800, lihuisong (C) wrote:
+>>>
+>>> [...]
+>>>
+>>>> No. I want to use this flag to make compability between different platforms.
+>>>> This driver only use PCC OpRegion to access to the channel if platform
+>>>> support use PCC OpRegion.
+>>> What do you mean by that ? It is not correct. If there is a PCC Opregion,
+>>> then you need to make it work with drivers/acpi/acpi_pcc.c
+>>>
+>>> You need to have all the other details in the firmware(ASL). By looking
+>>> at the driver, it has no connection to PCC Opregion IMO unless I am missing
+>>> something.
+>> Driver just needs to call these APIs, such as acpi_evaluate_integer(), if
+>> want to use PCC OpRegion.
+> OK, please provide examples. I am definitely lost as it doesn't match with
+> my understanding of how PCC Opregions are/can be used.
 >
-> commit 9946e39fe8d0 ("ACPI: resource: skip IRQ override on
-> AMD Zen platforms") attempted to overhaul the override logic so it
-> didn't apply on X86 AMD Zen systems.  This was intentional so that
-> systems would prefer DSDT values instead of default MADT value for
-> IRQ 1 on Ryzen 6000 systems which use ActiveLow for IRQ1.
+>> I know that. I have tested PCC OpRegion before.
+> Cool, examples please.
 >
-> This turned out to be a bad assumption because several vendors seem
-> to add Interrupt Source Override but don't fix the DSDT. A pile of
-> quirks was collecting that proved this wasn't sustaintable.
+>> You've completely misunderstood what I said.😅
+>>
+> Hmm, may be but I need examples.
+As you said below, the driver works just for PCC not PCC Opregion for now.
+not sure if we need to discuss how PCC Opregion is used here.
 >
-> Adjust the logic so that only IRQ1 is overridden in Ryzen 6000 case.
+>> I mean that this driver plans to support both PCC and PCC OpRegion.
+>> For example,
+>> Platform A: this driver use PCC (as the current implementation)
+> Good, then just keep what it needs in the implementation nothing more
+> until you add support for something you have described below(not that
+> I agree, just want you to make progress here based on what is actually
+> required today)
+Agreed.
 >
-> This effectively reverts the following commits:
-> commit 17bb7046e7ce ("ACPI: resource: Do IRQ override on all TongFang
-> GMxRGxx")
-> commit f3cb9b740869 ("ACPI: resource: do IRQ override on Lenovo 14ALC7")
-> commit bfcdf58380b1 ("ACPI: resource: do IRQ override on LENOVO IdeaPad")
-> commit 7592b79ba4a9 ("ACPI: resource: do IRQ override on XMG Core 15")
->
-> Cc: ofenfisch@googlemail.com
-> Cc: gch981213@gmail.com
-> Cc: wse@tuxedocomputers.com
-> Cc: adam.niederer@gmail.com
-> Cc: adrian@freund.io
-> Cc: jirislaby@kernel.org
-> Tested-by: Renjith.Pananchikkal@amd.com
-> Tested-by: anson.tsao@amd.com
-> Tested-by: Richard.Gong@amd.com
-> Reported-by: evilsnoo@proton.me
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217394
-> Reported-by: ruinairas1992@gmail.com
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217406
-> Fixes: 9946e39fe8d0 ("ACPI: resource: skip IRQ override on AMD Zen platfo=
-rms")
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>> Platform B: this driver use PCC OpRegion (Currently, this patch does not
+>> implement it, but it may be available in the future.)
+> Then let us discuss that in the future, don't add unnecessary complexity
+> for some future use case today. You can always add it when you introduce
+> that feature or support in the future.
+Yes. We just need to focus on the current.
+If there are any usage problems with PCC OpRegion in the future, we can 
+discuss that later.
 
-Tested on Lenovo Thinkbook 14G4+ ARA with Ryzen 7 6800H.
-The keyboard still works with this patch applied.
+My original full scheme is as follows:
+-->
+dev_flags = get_device_flags();  // to know if use PCC OpRegion
+if (USE_PCC_OPREGION_B in dev_flags is 0) {
+     chan_id = get_pcc_chan_id();
+     init_mbox_client();
+     pcc_mbox_request_channel(cl, chan_id)
+} else {
+     /* we need to return unsupport now because of no this feature in 
+this driver. */
+     do_nothing();
+}
 
-Tested-by: Chuanhong Guo <gch981213@gmail.com>
+void get_some_info(...) {
+     if (USE_PCC_OPREGION_B in dev_flags is 0)
+         pcc_cmd_send();  // use PCC to communicate with Platform
+     else
+         acpi_evaluate_object(); // will be used in future.
+}
 
---=20
-Regards,
-Chuanhong Guo
+As described in the pseudocode above,
+it is necessary to put "dev_flags" in this current driver first in case of
+the version driver runs on the platform which just use PCC Opregion.
+>
+>> Note:
+>> This driver selects only one of them (PCC and PCC OpRegion) to communicate
+>> with firmware on one platform.
+> Let us keep it simple(KISS). The driver works just for PCC not PCC Opregion
+> for now.
+ok.
+>
+>> We use one bit in device-flags to know which one this driver will use.
+>>
+> NACK again just to re-iterate my point if you have not yet accepted that
+> fact.
+Above is our plan. Do you still think we shouldn't add this device-flags?
+please let me know.
+>> I'm not sure if you can understand what I mean by saing that.
+>> If you're not confused about this now, can you reply to my last email
+>> again?😁
+>>
+> The example you had IIRC is use of System Memory Opregion to demonstrate
+> some _DSM. That has nothing to do with PCC Opregion.
+Yes, it doesn't matter.
+I just want to have a way to get device-flags which contains many 
+bits(every bits can be used to as one feature for expanding), rigtht?
+>
+> Commit 77e2a04745ff ("ACPI: PCC: Implement OperationRegion handler for
+> the PCC Type 3 subtype") has the example in the commit message. IIRC,
+Your example is very useful to the user.
+> you have even fixed couple of bugs in that driver. That is the reason
+> why I don't understand how you think this driver and that can or must
+Understand you, Sudeep.
+At that time, I tested it by a simple demo driver on the platform 
+supported type3.
+
+This driver will support multiple platforms.
+On some platforms, we can only use PCC with polling way.
+And we will add PCC Opregion way for others platforms.
+What's more, every platform just use one of them(PCC and PCC Opregion).
+> work together. At least I fail to see how ATM(examples please, by that
+> I mean ASL snippet for PCC vs PCC Opregion usage to work with this driver)
+ok!
+For PCC, ASL snippet is little.
+I will add ASL snippet when this driver addes PCC Opregion way.
+>
