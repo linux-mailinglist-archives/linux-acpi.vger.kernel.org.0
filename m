@@ -2,58 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10DDA707C30
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 May 2023 10:38:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83F97707E69
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 May 2023 12:46:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230207AbjERIit (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 18 May 2023 04:38:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33870 "EHLO
+        id S230090AbjERKqu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 18 May 2023 06:46:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230040AbjERIis (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 May 2023 04:38:48 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 63EFE173C;
-        Thu, 18 May 2023 01:38:46 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 92EC91FB;
-        Thu, 18 May 2023 01:39:30 -0700 (PDT)
-Received: from bogus (unknown [10.57.22.192])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 993653F73F;
-        Thu, 18 May 2023 01:38:42 -0700 (PDT)
-Date:   Thu, 18 May 2023 09:38:41 +0100
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     "lihuisong (C)" <lihuisong@huawei.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Shawn Guo <shawnguo@kernel.org>, linux-kernel@vger.kernel.org,
-        soc@kernel.org, wanghuiqiang@huawei.com, tanxiaofei@huawei.com,
-        liuyonglong@huawei.com, huangdaode@huawei.com,
-        linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH] soc: hisilicon: Support HCCS driver on Kunpeng SoC
-Message-ID: <20230518083841.nqmjvqqxnea6qrbe@bogus>
-References: <20230515130807.pdvx7bxwjkfdsmsr@bogus>
- <aa5b1919-74c6-1f97-78af-ab5f0904c3ce@huawei.com>
- <20230516122931.il4ai7fyxdo5gsff@bogus>
- <f0733521-2557-fdaf-e59b-b10d515c487c@huawei.com>
- <20230516143530.venhj4gax6stinah@bogus>
- <a98e3620-57da-000e-f5ee-2c2e47e97906@huawei.com>
- <20230517093033.4jvwjxuoeic46a24@bogus>
- <5ca49494-5a0c-4dc8-9cf5-fc4bc3b8e1b2@huawei.com>
- <20230517131614.cwi2fcj2cngaq7dm@bogus>
- <aec13381-e9be-4f3d-1834-52f32f9f8418@huawei.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aec13381-e9be-4f3d-1834-52f32f9f8418@huawei.com>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        with ESMTP id S230319AbjERKqr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 May 2023 06:46:47 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EAFB1FE0;
+        Thu, 18 May 2023 03:46:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1684406791; x=1715942791;
+  h=date:from:to:cc:subject:message-id;
+  bh=0/tCe5j0RZX8uCy0GhUzHNzNLG1RWf4eXVHOKU/AEAY=;
+  b=kWHtVdJiYi1bSEo1sxFGE7K2K+cKQepQ2zJeo3OJh9gCAuX0oSBRc3W7
+   V883wxE/BGOCukhfb30HR2dDxA0eS9Z0A/wqF9H7u71VTxvAsYmufWHzO
+   30kSj5DS1f9BnGlnSU49am1u9bqCYiXNe/O6GQzdZDyyFe0EmO3vnxpuE
+   Qrbg6O4XLTveGvkTFJ9GZezlBUrybAPH7PjUELedQNbtMBgbegkqxX2cf
+   75SiumAjEUW5nZUkRUexlxWy65iS+EuWzNchvOKrfpWO5UlMDQZ7gnWoY
+   N05aUpwBWiYHRxwkCq7u8zv4k7vNc1WtCiro/WaKOTbYPezqhy7lak9fg
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="349546336"
+X-IronPort-AV: E=Sophos;i="5.99,285,1677571200"; 
+   d="scan'208";a="349546336"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2023 03:46:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="791931443"
+X-IronPort-AV: E=Sophos;i="5.99,285,1677571200"; 
+   d="scan'208";a="791931443"
+Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 18 May 2023 03:46:23 -0700
+Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pzb9K-0009uP-2Y;
+        Thu, 18 May 2023 10:46:22 +0000
+Date:   Thu, 18 May 2023 18:45:52 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ dac0c6388ff86af74dc6f4dd6e90a7db5a429e3d
+Message-ID: <20230518104552.Qvelm%lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,160 +60,131 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, May 18, 2023 at 04:24:36PM +0800, lihuisong (C) wrote:
-> 
-> 在 2023/5/17 21:16, Sudeep Holla 写道:
-> > On Wed, May 17, 2023 at 07:35:25PM +0800, lihuisong (C) wrote:
-> > > 在 2023/5/17 17:30, Sudeep Holla 写道:
-> > > > On Wed, May 17, 2023 at 03:16:12PM +0800, lihuisong (C) wrote:
-> > > > 
-> > > > [...]
-> > > > 
-> > > > > No. I want to use this flag to make compability between different platforms.
-> > > > > This driver only use PCC OpRegion to access to the channel if platform
-> > > > > support use PCC OpRegion.
-> > > > What do you mean by that ? It is not correct. If there is a PCC Opregion,
-> > > > then you need to make it work with drivers/acpi/acpi_pcc.c
-> > > > 
-> > > > You need to have all the other details in the firmware(ASL). By looking
-> > > > at the driver, it has no connection to PCC Opregion IMO unless I am missing
-> > > > something.
-> > > Driver just needs to call these APIs, such as acpi_evaluate_integer(), if
-> > > want to use PCC OpRegion.
-> > OK, please provide examples. I am definitely lost as it doesn't match with
-> > my understanding of how PCC Opregions are/can be used.
-> > 
-> > > I know that. I have tested PCC OpRegion before.
-> > Cool, examples please.
-> > 
-> > > You've completely misunderstood what I said.😅
-> > > 
-> > Hmm, may be but I need examples.
-> As you said below, the driver works just for PCC not PCC Opregion for now.
-> not sure if we need to discuss how PCC Opregion is used here.
+tree/branch: INFO setup_repo_specs: /db/releases/20230517200055/lkp-src/repo/*/rafael-pm
+https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: dac0c6388ff86af74dc6f4dd6e90a7db5a429e3d  Merge branch 'thermal/bleeding-edge' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into bleeding-edge
 
-Good let us drop the idea of using PCC Opregion with this driver for now.
+elapsed time: 720m
 
-> > 
-> > > I mean that this driver plans to support both PCC and PCC OpRegion.
-> > > For example,
-> > > Platform A: this driver use PCC (as the current implementation)
-> > Good, then just keep what it needs in the implementation nothing more
-> > until you add support for something you have described below(not that
-> > I agree, just want you to make progress here based on what is actually
-> > required today)
-> Agreed.
-> > 
-> > > Platform B: this driver use PCC OpRegion (Currently, this patch does not
-> > > implement it, but it may be available in the future.)
-> > Then let us discuss that in the future, don't add unnecessary complexity
-> > for some future use case today. You can always add it when you introduce
-> > that feature or support in the future.
-> Yes. We just need to focus on the current.
-> If there are any usage problems with PCC OpRegion in the future, we can
-> discuss that later.
->
+configs tested: 111
+configs skipped: 6
 
-Agreed.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> My original full scheme is as follows:
-> -->
-> dev_flags = get_device_flags();  // to know if use PCC OpRegion
-> if (USE_PCC_OPREGION_B in dev_flags is 0) {
->     chan_id = get_pcc_chan_id();
->     init_mbox_client();
->     pcc_mbox_request_channel(cl, chan_id)
-> } else {
->     /* we need to return unsupport now because of no this feature in this
-> driver. */
->     do_nothing();
-> }
-> 
-> void get_some_info(...) {
->     if (USE_PCC_OPREGION_B in dev_flags is 0)
->         pcc_cmd_send();  // use PCC to communicate with Platform
->     else
->         acpi_evaluate_object(); // will be used in future.
-> }
-> 
-> As described in the pseudocode above,
-> it is necessary to put "dev_flags" in this current driver first in case of
-> the version driver runs on the platform which just use PCC Opregion.
-
-No, you can't randomly define dev_flags just to assist your driver
-implementation. If you need it, you need to get the spec updated. We
-will not add anything unless that happens.
-
-Note that I don't agree with the flags at all but if you convince and get
-them added to spec, I won't object.
-
-> >
-> > > Note:
-> > > This driver selects only one of them (PCC and PCC OpRegion) to communicate
-> > > with firmware on one platform.
-> > Let us keep it simple(KISS). The driver works just for PCC not PCC Opregion
-> > for now.
-> ok.
-
-Good
-
-> > 
-> > > We use one bit in device-flags to know which one this driver will use.
-> > > 
-> > NACK again just to re-iterate my point if you have not yet accepted that
-> > fact.
-> Above is our plan. Do you still think we shouldn't add this device-flags?
-> please let me know.
-
-Correct, no device flags as I see no use for it with your PCC only use case
-for now, right ?
-
-> > > I'm not sure if you can understand what I mean by saing that.
-> > > If you're not confused about this now, can you reply to my last email
-> > > again?😁
-> > > 
-> > The example you had IIRC is use of System Memory Opregion to demonstrate
-> > some _DSM. That has nothing to do with PCC Opregion.
-> Yes, it doesn't matter.
-> I just want to have a way to get device-flags which contains many bits(every
-> bits can be used to as one feature for expanding), rigtht?
-
-Get it through the spec, we don't allow random additions for some
-implementations like this.
-
-> > 
-> > Commit 77e2a04745ff ("ACPI: PCC: Implement OperationRegion handler for
-> > the PCC Type 3 subtype") has the example in the commit message. IIRC,
-> Your example is very useful to the user.
-> > you have even fixed couple of bugs in that driver. That is the reason
-> > why I don't understand how you think this driver and that can or must
-> Understand you, Sudeep.
-> At that time, I tested it by a simple demo driver on the platform supported
-> type3.
->
-
-OK
-
-> This driver will support multiple platforms.
-> On some platforms, we can only use PCC with polling way.
-> And we will add PCC Opregion way for others platforms.
-
-Again when you do please post the patch with the ASL snippet as I am
-very much interested in understanding how you would make that work.
-
-> What's more, every platform just use one of them(PCC and PCC Opregion).
-
-OK
-
-> > work together. At least I fail to see how ATM(examples please, by that
-> > I mean ASL snippet for PCC vs PCC Opregion usage to work with this driver)
-> ok!
-> For PCC, ASL snippet is little.
-> I will add ASL snippet when this driver addes PCC Opregion way.
-
-
-Sounds like a plan to make progress at-least for now.
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r013-20230517   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r022-20230517   gcc  
+arc                  randconfig-r043-20230517   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r036-20230517   gcc  
+arm                  randconfig-r046-20230517   clang
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r026-20230517   gcc  
+hexagon              randconfig-r041-20230517   clang
+hexagon              randconfig-r045-20230517   clang
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                          randconfig-a001   gcc  
+i386                          randconfig-a002   clang
+i386                          randconfig-a003   gcc  
+i386                          randconfig-a004   clang
+i386                          randconfig-a005   gcc  
+i386                          randconfig-a006   clang
+i386                          randconfig-a011   clang
+i386                          randconfig-a012   gcc  
+i386                          randconfig-a013   clang
+i386                          randconfig-a014   gcc  
+i386                          randconfig-a015   clang
+i386                          randconfig-a016   gcc  
+ia64                             allmodconfig   gcc  
+ia64         buildonly-randconfig-r005-20230517   gcc  
+ia64                                defconfig   gcc  
+ia64                 randconfig-r011-20230517   gcc  
+ia64                 randconfig-r025-20230517   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k         buildonly-randconfig-r002-20230517   gcc  
+m68k                                defconfig   gcc  
+microblaze   buildonly-randconfig-r001-20230517   gcc  
+microblaze           randconfig-r021-20230517   gcc  
+microblaze           randconfig-r031-20230517   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips         buildonly-randconfig-r003-20230517   gcc  
+mips                 randconfig-r015-20230517   clang
+nios2                               defconfig   gcc  
+nios2                randconfig-r002-20230517   gcc  
+openrisc     buildonly-randconfig-r004-20230517   gcc  
+openrisc             randconfig-r035-20230517   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r003-20230517   clang
+riscv                randconfig-r005-20230517   clang
+riscv                randconfig-r042-20230517   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r004-20230517   clang
+s390                 randconfig-r023-20230517   gcc  
+s390                 randconfig-r044-20230517   gcc  
+sh                               allmodconfig   gcc  
+sh           buildonly-randconfig-r006-20230517   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r012-20230517   gcc  
+sparc64              randconfig-r024-20230517   gcc  
+sparc64              randconfig-r033-20230517   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                        randconfig-a001   clang
+x86_64                        randconfig-a002   gcc  
+x86_64                        randconfig-a003   clang
+x86_64                        randconfig-a004   gcc  
+x86_64                        randconfig-a005   clang
+x86_64                        randconfig-a006   gcc  
+x86_64                        randconfig-a011   gcc  
+x86_64                        randconfig-a012   clang
+x86_64                        randconfig-a013   gcc  
+x86_64                        randconfig-a014   clang
+x86_64                        randconfig-a015   gcc  
+x86_64                        randconfig-a016   clang
+x86_64                        randconfig-x051   gcc  
+x86_64                        randconfig-x052   clang
+x86_64                        randconfig-x053   gcc  
+x86_64                        randconfig-x054   clang
+x86_64                        randconfig-x055   gcc  
+x86_64                        randconfig-x056   clang
+x86_64                        randconfig-x061   gcc  
+x86_64                        randconfig-x062   clang
+x86_64                        randconfig-x063   gcc  
+x86_64                        randconfig-x064   clang
+x86_64                        randconfig-x065   gcc  
+x86_64                        randconfig-x066   clang
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r001-20230517   gcc  
+xtensa               randconfig-r034-20230517   gcc  
 
 -- 
-Regards,
-Sudeep
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
