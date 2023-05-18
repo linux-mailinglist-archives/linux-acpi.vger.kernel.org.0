@@ -2,137 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48A227086DD
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 May 2023 19:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 970267087B7
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 May 2023 20:19:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230053AbjERR2y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 18 May 2023 13:28:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56714 "EHLO
+        id S229451AbjERSTU convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 18 May 2023 14:19:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229980AbjERR2u (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 May 2023 13:28:50 -0400
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2069.outbound.protection.outlook.com [40.107.93.69])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADF86E6D;
-        Thu, 18 May 2023 10:28:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dxNvhS+BKZteu/P85RAIpfbR0OFYf+eoGkig9Gftvp70qQqPUKrE7VSHxS5sczsupIONBoeeSekyFU1FZxEHyyaVN8PM2zLhkrbXQaG3PjtxD7HYzEkavqreOIIdA8YtnsqzquF1ePpR3Pp5oyXSMx2VYYP0HJDjuhq9yB7CpCedIjiHiH5VBnW9FZH1qukDpILZoLrbdsGjSJSXYQ77f7Qnzn91nzMT9Pr8jqcELjXMHLV/8+PI9+98X8mtSTEEPZ+nHjvv9K/IN4o07FDosBWqVbRk5ZZui3Gn9yKJCvT2LGMHbN4PN/YmX7pNxED32l/KwGdRCieQs+Wnii2h9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CrHATCoFhmN6yg/azbKKFkcA0h9V7q/tjG0BF8LbZ5Q=;
- b=OGG9eP1BehymH+IIQFvwrav/gsq+GncABQk65umBqbYNLKaco0IEk+0Z8bnIsMthusUfe+YGcAHh4i52KsRQuH25HxDQOOhDzkagbY0JKUaXXJ1y991ndmHzvsFTCWp/SsVFT9qbJawz3iKmbFVAx+NbFcC3BpFwKxUNpF86/wmGrBXr3d6CzH51kET1WyJBqeb8F3DhVWtXM7bWNS+WAl8bsp2fYIccxKZV2yaOR8me1+mWnDF5TGO8yFpt9SEHjMxXRC0F40oU2H3o8oVBFzjkQN+k1hiF0RxnqGnWF8qT2k7VVDEXswpksPFB0whQQS7f0bTpTltCdYstAfqcgQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CrHATCoFhmN6yg/azbKKFkcA0h9V7q/tjG0BF8LbZ5Q=;
- b=UglK3fpkgNpHwVHB+kOzMK8+aHM7UpryOXMpmKdFJ8vNNpGDh4jf03NUiHXNRXiXBGmGanb29OrBeW+Qfiuu+6S6Swz/xkoQBeJoMXVIOD2tPiDytZRCFgWPj3AwPUZgrYE5p3sscjGGggAK/iHaWCi8vaR0ZNIlmNcD8/2dUc4=
-Received: from MW4PR03CA0030.namprd03.prod.outlook.com (2603:10b6:303:8f::35)
- by DM6PR12MB4928.namprd12.prod.outlook.com (2603:10b6:5:1b8::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.19; Thu, 18 May
- 2023 17:28:41 +0000
-Received: from CO1NAM11FT090.eop-nam11.prod.protection.outlook.com
- (2603:10b6:303:8f:cafe::3f) by MW4PR03CA0030.outlook.office365.com
- (2603:10b6:303:8f::35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.20 via Frontend
- Transport; Thu, 18 May 2023 17:28:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT090.mail.protection.outlook.com (10.13.175.152) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6411.21 via Frontend Transport; Thu, 18 May 2023 17:28:41 +0000
-Received: from SITE-L-T34-2.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Thu, 18 May
- 2023 12:28:39 -0500
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     <rafael@kernel.org>, <hdegoede@redhat.com>,
-        <linus.walleij@linaro.org>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-gpio@vger.kernel.org>,
-        <platform-driver-x86@vger.kernel.org>, <linux-pm@vger.kernel.org>,
-        <Shyam-sundar.S-k@amd.com>, <Basavaraj.Natikar@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 4/4] platform/x86/amd: pmc: Use pm_pr_dbg() for suspend related messages
-Date:   Thu, 18 May 2023 12:27:52 -0500
-Message-ID: <20230518172752.93322-5-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230518172752.93322-1-mario.limonciello@amd.com>
-References: <20230518172752.93322-1-mario.limonciello@amd.com>
+        with ESMTP id S229449AbjERSTT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 May 2023 14:19:19 -0400
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A87CDE46
+        for <linux-acpi@vger.kernel.org>; Thu, 18 May 2023 11:19:18 -0700 (PDT)
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-9659dee48edso52903266b.0
+        for <linux-acpi@vger.kernel.org>; Thu, 18 May 2023 11:19:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684433957; x=1687025957;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2zdcS9pStqK1h8VcMBqOoDwl6oyMyM8+DG//pzqY/T8=;
+        b=ED44N9/P/f1H73qdV8OxkRBtSbYe556i4r1IPU0OebLTKrpDVEcqnaqHB3Rrw68oc4
+         0F+erT0fKLWx4nOUs/ZRjrLbTiJ8LtnKeG/osP1lu/2wqd8wWdQT/t/KVc0LAifdvkLr
+         yPjMuuklT2gPF/nYDu0WXa/8V8TAQ/S6okjK/O7XoCbgr4ZIpo9Ye4WBXBPNVE7Xn0IM
+         1BD2VKqX8Xm/czkoVNd4muMaCNYXTgKkM0te8LJi9BaPu20lrQPo+mXhcb7911JJxoaY
+         2Y2Du8De0bc8hpwXMo/+BQjGOa3pqOLf4SWwtyBltDhN9wwYLx0vzLNwlkWpx2kbC7/3
+         tRdw==
+X-Gm-Message-State: AC+VfDygehXmzHpP3oQpEhInN2tgVXlEtmJYDPp0HCX1Kh5uHq6w9yhV
+        HubmT7te92xSLwJul9iURUsIitnlHgMXgw0qVvLLVr10
+X-Google-Smtp-Source: ACHHUZ7t8Pigonj7gNAD2NeNZpPEZUNxQnRRyCRj+evCLRmFl+O2Rcimg6ai8ldJjI3o0lF/5phmD10hWI4giBWVGLc=
+X-Received: by 2002:a17:906:748c:b0:965:9c7d:df96 with SMTP id
+ e12-20020a170906748c00b009659c7ddf96mr2593ejl.1.1684433956922; Thu, 18 May
+ 2023 11:19:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1NAM11FT090:EE_|DM6PR12MB4928:EE_
-X-MS-Office365-Filtering-Correlation-Id: 45d6dcdc-8e5d-4332-23cd-08db57c552c7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: SupjCA7Bo1HCJv4g6tiPt2QW5q5Px4zIovLcBKEYKG2k6EHr9pRzmqqgjWzk7VPMFYyaD4DMmzuoqiAwnUlp6+jI0RzwV6mb/PeOQUzy8rdz8zm6XyQmNenwOtDzrB8NAPMD/fW+SGUJ8CgHiutYO/Wy2hYjZb513ECinkRNBkzCPzjGnAIQAmWCzp6hWQZHMpytMVPhB21epuG6ae9GfPuUdpS7EevYDHj7wFcTsMTtXjVoBKzXe3McPuFWPQ8TUfPfE3neczvCP/43Mng7wx9TA0K6Z8tBTF2B1kYchis6Uw0JZs+yeff9k4XhWvtfO01DEuHpmgzHvKp8VotdDrg4k8ubiuGmZB5v2Lwe9FpmzIWEl1BzFAZkZtk2QIcu1oYhB+kDFfbHleWFX2UlsuZcL8wi1M1YPOg6g1l/ns5QNVpTezyk7WvIrP4NN2teSQOD0pewMyP8IruTwLf22y16yNXNr0JZjbxgqrrVcSxyt/KwyJn2WqXx7QTZtufFjoV3JL+lFc77LRS33ymHcVkw8qBVs673bF6MXmkj4qBat3j5kSXEf3hI712NC2y1Mc+Rj9nxhZx5uXimWUI5QMmTUDPRnbXn5uuEeY6z+5RpOxOXuSf9HAfA+A0BKQeCRuf998e7xTy08/yWWaTvZ7m7lVcEcR9Lfa6SD8jgLa0La4t5DBpuLxLPt4/u0hYH+Iasw0LC9w1XwCmXDDJ9gtSBeUppKbNvm1JbnoiN892t9L5v7r/g+xaTZgWOaGqbaJ2rz7pzygF/XH+AcoLQ7A==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(396003)(136003)(346002)(376002)(451199021)(36840700001)(40470700004)(46966006)(1076003)(26005)(40460700003)(7696005)(36860700001)(36756003)(40480700001)(47076005)(83380400001)(426003)(336012)(86362001)(82310400005)(2616005)(82740400003)(356005)(16526019)(186003)(81166007)(110136005)(54906003)(44832011)(478600001)(15650500001)(2906002)(4326008)(8936002)(8676002)(41300700001)(316002)(5660300002)(70586007)(70206006)(6666004)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2023 17:28:41.0607
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 45d6dcdc-8e5d-4332-23cd-08db57c552c7
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT090.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4928
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+References: <20230429163458.73479-1-hdegoede@redhat.com>
+In-Reply-To: <20230429163458.73479-1-hdegoede@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 18 May 2023 20:19:05 +0200
+Message-ID: <CAJZ5v0jR-P_VdRSasZo0vXrYzQtpzvRG0UWV_iTgPZGJ59G2-Q@mail.gmail.com>
+Subject: Re: [PATCH] ACPI / x86: Add ACPI_QUIRK_UART1_SKIP for Lenovo Yoga
+ Book yb1-x90f/l
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Using pm_pr_dbg() allows users to toggle `/sys/power/pm_debug_messages`
-as a single knob to turn on messages that amd-pmc can emit to aid in
-any s2idle debugging.
+On Sat, Apr 29, 2023 at 6:35 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> The Lenovo Yoga Book yb1-x90f/l 2-in-1 which ships with Android as
+> Factory OS has (another) bug in its DSDT where the UART resource for
+> the BTH0 ACPI device contains "\\_SB.PCIO.URT1" as path to the UART.
+>
+> Note that is with a letter 'O' instead of the number '0' which is wrong.
+>
+> This causes Linux to instantiate a standard /dev/ttyS? device for
+> the UART instead of a /sys/bus/serial device, which in turn causes
+> bluetooth to not work.
+>
+> Similar DSDT bugs have been encountered before and to work around those
+> the acpi_quirk_skip_serdev_enumeration() helper exists.
+>
+> Previous devices had the broken resource pointing to the first UART, while
+> the BT HCI was on the second UART, which ACPI_QUIRK_UART1_TTY_UART2_SKIP
+> deals with. Add a new ACPI_QUIRK_UART1_SKIP quirk for skipping enumeration
+> of UART1 instead for the Yoga Book case and add this quirk to the
+> existing DMI quirk table entry for the yb1-x90f/l .
+>
+> This leaves the UART1 controller unbound allowing the x86-android-tablets
+> module to manually instantiate a serdev for it fixing bluetooth.
+>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/acpi/x86/utils.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+> index 4cfee2da0675..c2b925f8cd4e 100644
+> --- a/drivers/acpi/x86/utils.c
+> +++ b/drivers/acpi/x86/utils.c
+> @@ -259,10 +259,11 @@ bool force_storage_d3(void)
+>   * drivers/platform/x86/x86-android-tablets.c kernel module.
+>   */
+>  #define ACPI_QUIRK_SKIP_I2C_CLIENTS                            BIT(0)
+> -#define ACPI_QUIRK_UART1_TTY_UART2_SKIP                                BIT(1)
+> -#define ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY                    BIT(2)
+> -#define ACPI_QUIRK_USE_ACPI_AC_AND_BATTERY                     BIT(3)
+> -#define ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS                    BIT(4)
+> +#define ACPI_QUIRK_UART1_SKIP                                  BIT(1)
+> +#define ACPI_QUIRK_UART1_TTY_UART2_SKIP                                BIT(2)
+> +#define ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY                    BIT(3)
+> +#define ACPI_QUIRK_USE_ACPI_AC_AND_BATTERY                     BIT(4)
+> +#define ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS                    BIT(5)
+>
+>  static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+>         /*
+> @@ -319,6 +320,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+>                         DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
+>                 },
+>                 .driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
+> +                                       ACPI_QUIRK_UART1_SKIP |
+>                                         ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
+>                                         ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
+>         },
+> @@ -449,6 +451,9 @@ int acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *s
+>         if (dmi_id)
+>                 quirks = (unsigned long)dmi_id->driver_data;
+>
+> +       if ((quirks & ACPI_QUIRK_UART1_SKIP) && uid == 1)
+> +               *skip = true;
+> +
+>         if (quirks & ACPI_QUIRK_UART1_TTY_UART2_SKIP) {
+>                 if (uid == 1)
+>                         return -ENODEV; /* Create tty cdev instead of serdev */
+> --
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/platform/x86/amd/pmc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/platform/x86/amd/pmc.c b/drivers/platform/x86/amd/pmc.c
-index 427905714f79..1304cd6f13f6 100644
---- a/drivers/platform/x86/amd/pmc.c
-+++ b/drivers/platform/x86/amd/pmc.c
-@@ -543,7 +543,7 @@ static int amd_pmc_idlemask_read(struct amd_pmc_dev *pdev, struct device *dev,
- 	}
- 
- 	if (dev)
--		dev_dbg(pdev->dev, "SMU idlemask s0i3: 0x%x\n", val);
-+		pm_pr_dbg("SMU idlemask s0i3: 0x%x\n", val);
- 
- 	if (s)
- 		seq_printf(s, "SMU idlemask : 0x%x\n", val);
-@@ -769,7 +769,7 @@ static int amd_pmc_verify_czn_rtc(struct amd_pmc_dev *pdev, u32 *arg)
- 
- 	*arg |= (duration << 16);
- 	rc = rtc_alarm_irq_enable(rtc_device, 0);
--	dev_dbg(pdev->dev, "wakeup timer programmed for %lld seconds\n", duration);
-+	pm_pr_dbg("wakeup timer programmed for %lld seconds\n", duration);
- 
- 	return rc;
- }
--- 
-2.34.1
-
+Applied as 6.5 material, thanks!
