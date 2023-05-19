@@ -2,113 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CE9F709F45
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 May 2023 20:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B032709F4A
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 May 2023 20:44:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230144AbjESSm6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 May 2023 14:42:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42030 "EHLO
+        id S229680AbjESSoM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 19 May 2023 14:44:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229568AbjESSmj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 May 2023 14:42:39 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06B2EE43;
-        Fri, 19 May 2023 11:42:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684521758; x=1716057758;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=dMoEWzzSvgqrTqk8OTnPnCyPMuPKg8Vg30mm08/q1lw=;
-  b=R0TYE3Yw25CD+JwTNSbwu09ashpIafyaiQDer0EEWXF75CyaA7AvYICV
-   pOvdXxvTVc5q7WGheeiit+qKG9LPKa1cB/1WiGvU/PmsvRH3Yota8Sla8
-   LHNY1maVn3WTg7Qu2/xteF/NjynmxN7o1eEVsLHxKEJtSChmN5MIEZalV
-   BLLJMvMQK8UJP2RKXpQRw5YK/z9jRENMtuWRZd8a4PGMpPZVi6uuZkv5c
-   SLVjXqi59GKLOFAl6Q720FDE3tdiQVNZHGdZdvYWFBylV7lmpzXHieNTM
-   hJ8uJ/Jo6n58qbJ2iVfOl7LclQTID3jYySYaMHcXOvtW3tXh6UvQjq36I
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10715"; a="332057226"
-X-IronPort-AV: E=Sophos;i="6.00,177,1681196400"; 
-   d="scan'208";a="332057226"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2023 11:42:37 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10715"; a="735610960"
-X-IronPort-AV: E=Sophos;i="6.00,177,1681196400"; 
-   d="scan'208";a="735610960"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2023 11:42:36 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-        by kekkonen.fi.intel.com (Postfix) with ESMTP id 65BC5120867;
-        Fri, 19 May 2023 21:42:33 +0300 (EEST)
-Date:   Fri, 19 May 2023 18:42:33 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH v8 08/10] ACPI: property: Rename parsed MIPI DisCo for
- Imaging properties
-Message-ID: <ZGfDGRdB+oMXPMiz@kekkonen.localdomain>
-References: <20230329100951.1522322-1-sakari.ailus@linux.intel.com>
- <20230329100951.1522322-9-sakari.ailus@linux.intel.com>
- <CAJZ5v0gFeN7WQQStjP80jdCM-yi2vaa9vyh-Smp9jOfjfv3wAA@mail.gmail.com>
+        with ESMTP id S229675AbjESSoL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 May 2023 14:44:11 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D226E43
+        for <linux-acpi@vger.kernel.org>; Fri, 19 May 2023 11:44:10 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-510d92184faso5535037a12.1
+        for <linux-acpi@vger.kernel.org>; Fri, 19 May 2023 11:44:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1684521848; x=1687113848;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iP0roWAg79GmNnTX3PActukmpsHrXoYZPfWyNU+CGOc=;
+        b=XzfMn2+xMQxSD4yOtkkYJSoocxFa6IRMYl4mivx7mjMgkuWlajFoErGAXzRctR986V
+         qAcRzGOC9YNFf2FY00DcJMqNTuK4x4xg5QqDnrNoO6he4tPvitXfqOAGBw17RPtUqw8F
+         J/pj8d44//1dOqbAMy5DPcoWjhWaCgBtOQqM0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684521848; x=1687113848;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iP0roWAg79GmNnTX3PActukmpsHrXoYZPfWyNU+CGOc=;
+        b=D1ZeM3KUcr+4pp82CjqYottUXIe3QdqYtK9ymVAxsarNkfKt0XeR44dVzYrUVnZqh1
+         n0qTywKEJkGcdM1NVEF8x4Xm6fzagxABwJtY996qZhazecbonVr3dZQxCCjZ5Ippelb2
+         6bUS3gr1P2uvjqVRPsaquCuO29LAUfUmF/FIqsPErqDDdAjTwHg1fgeTyOUgPA0yD0U4
+         nDPIIcv7VL6w1/bQgTBRpNBlAc8EFsHVXEiF04lO16MJt96wFxlXYMTm9Sp5VOks0BiJ
+         AxUCwPhbaG6xsn4ZidTCLELptqDQuIpW+fO82R8DpYYw66/nrm7Jgavl5FifLlPTdi+t
+         R/Ug==
+X-Gm-Message-State: AC+VfDyGPs9KtnoJgzgPi/GzGPhLBEcqeqDfgP1vtgmezuJ5Zsx26ybA
+        uCUwbkIOcfGhuv9FqCu122VpR/jhVqncwJY1ECtsdFtf
+X-Google-Smtp-Source: ACHHUZ4V5fi8T+yWy7JTBezoHAjM2rYN/o4zoHqgZQb4sueUj6BcYaXIQmDcDfGrAqVBC+idaR2pqw==
+X-Received: by 2002:a17:906:5044:b0:96a:3e39:f567 with SMTP id e4-20020a170906504400b0096a3e39f567mr2323181ejk.47.1684521848449;
+        Fri, 19 May 2023 11:44:08 -0700 (PDT)
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
+        by smtp.gmail.com with ESMTPSA id rl6-20020a170907216600b0096f55247570sm1505594ejb.0.2023.05.19.11.44.07
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 May 2023 11:44:08 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-96f850b32caso69761166b.3
+        for <linux-acpi@vger.kernel.org>; Fri, 19 May 2023 11:44:07 -0700 (PDT)
+X-Received: by 2002:a17:906:fd85:b0:961:78c2:1d27 with SMTP id
+ xa5-20020a170906fd8500b0096178c21d27mr2552006ejb.19.1684521847716; Fri, 19
+ May 2023 11:44:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0gFeN7WQQStjP80jdCM-yi2vaa9vyh-Smp9jOfjfv3wAA@mail.gmail.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <CAJZ5v0g9RmqJm=bpc9SQryYo4r+9Ctj7_aXQcfFRWTS3=xs6qw@mail.gmail.com>
+In-Reply-To: <CAJZ5v0g9RmqJm=bpc9SQryYo4r+9Ctj7_aXQcfFRWTS3=xs6qw@mail.gmail.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri, 19 May 2023 11:43:51 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whZqMhLk6qbcO-pQSPFh2v-iu8v0A8U=mppYjLVHkf0Pw@mail.gmail.com>
+Message-ID: <CAHk-=whZqMhLk6qbcO-pQSPFh2v-iu8v0A8U=mppYjLVHkf0Pw@mail.gmail.com>
+Subject: Re: [GIT PULL] ACPI fix for v6.4-rc3
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+On Fri, May 19, 2023 at 8:28=E2=80=AFAM Rafael J. Wysocki <rafael@kernel.or=
+g> wrote:
+>
+> This adds an ACPI IRQ override quirk for LG UltraPC 17U70P so as to
+> make the internal keyboard work on that machine (Rub=C3=A9n G=C3=B3mez).
 
-On Fri, May 19, 2023 at 08:34:34PM +0200, Rafael J. Wysocki wrote:
-> On Wed, Mar 29, 2023 at 12:10 PM Sakari Ailus
-> <sakari.ailus@linux.intel.com> wrote:
-> >
-> > MIPI DisCo for Imaging defines properties for sensor-adjacent devices such
-> > as EEPROM, LED flash or lens VCM as either device or sub-node references.
-> > This is compliant with existing DT definitions apart from property names.
-> >
-> > Rename parsed MIPI-defined properties so drivers will have a unified view
-> > of them as defined in DT and already parsed by drivers.
-> 
-> I don't particularly like this idea.
-> 
-> One of the drawbacks is that if somebody doesn't care about DT
-> bindings (for instance, because they will always run on platforms
-> without DT), they won't be able to use the MIPI-defined property names
-> in their code.
-> 
-> I would very much prefer to add a set of DT-defined properties with
-> the same values.  The, whoever wants to use the property names from
-> the DT bindings, they will be able to do that, but it will be also
-> possible to use the MIPI-defined ones.
-> 
-> The previous patch adds the "rotation" property to the swnodes set, so
-> I don't see any problems with doing that for the properties in
-> question.
+I've pulled this, but those overrides are just odd. How does Windows
+work on those machines?
 
-I don't think this would be a problem really, no, but I question the need
-to ever access the MIPI specification names in Linux outside this piece of
-code. Drivers for cameras, lens controllers and LED flashes generally try
-to avoid being specific to a given firmware interface and the established
-de facto naming of these properties in the kernel is aligned with
-Devicetree.
+This feels like we're missing something...
 
-I'd like to see differences only when the functionality differs, otherwise
-they should be the same. Creating a copy when you can modify it is waste of
-a bit of memory. On the upside, the object memory could remain const that
-way.
-
--- 
-Kind regards,
-
-Sakari Ailus
+             Linus
