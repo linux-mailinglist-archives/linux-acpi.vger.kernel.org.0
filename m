@@ -2,208 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D64E7092CD
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 May 2023 11:16:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A72DC709563
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 May 2023 12:51:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229694AbjESJQQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 May 2023 05:16:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58554 "EHLO
+        id S231628AbjESKvT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 19 May 2023 06:51:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230026AbjESJQP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 May 2023 05:16:15 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B57B8125;
-        Fri, 19 May 2023 02:16:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684487773; x=1716023773;
-  h=date:from:to:cc:subject:message-id;
-  bh=2YhrVlL4FZOpjVcFPhJDwXoO8LpS8gLXgkECnRCFB04=;
-  b=cAq59fO7DeqbpYEB5hWDprkTP7HUA7vIBOns+W0qBSuKDr4FRDbppKw8
-   do+z540NH3tAg31NUD6LNve+2o6/C73c1CQZ/MbB8tJy+ZZ9WSbqATjdm
-   OgQfuUzjE+G3O4/uJoZHJqyfq8SdxhBR8YkcdDm2aSQZbWFpxmtO23D8y
-   u1KumaejBRiXpNbHysUNJ/sVUgxmSwHeLb7GSQ6UnA9UG1ljfjDoO0jdV
-   O6LaQKTzrbkv5t0E76H8u+Ta3QlXar+Jzt8s2R3Lve31q9J6rbvPIVUPS
-   5AGpgy+EagA9m77Cx19c3ZVpctBgIQiPa+/LitmXp4ESOA2L7MgKKKth/
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10714"; a="352345043"
-X-IronPort-AV: E=Sophos;i="6.00,176,1681196400"; 
-   d="scan'208";a="352345043"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2023 02:16:06 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10714"; a="792305631"
-X-IronPort-AV: E=Sophos;i="6.00,176,1681196400"; 
-   d="scan'208";a="792305631"
-Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 19 May 2023 02:16:05 -0700
-Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pzwDU-000AjG-0u;
-        Fri, 19 May 2023 09:16:04 +0000
-Date:   Fri, 19 May 2023 17:15:17 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 27d75d398f66b653fe4f3a6f17fc5652b7837c5a
-Message-ID: <20230519091517.llzIn%lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S231655AbjESKvR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 May 2023 06:51:17 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 64ECCE4D;
+        Fri, 19 May 2023 03:51:13 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 71B161FB;
+        Fri, 19 May 2023 03:51:57 -0700 (PDT)
+Received: from [10.57.84.114] (unknown [10.57.84.114])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C28623F762;
+        Fri, 19 May 2023 03:51:10 -0700 (PDT)
+Message-ID: <3dcc08c8-f8e8-69d0-7ad8-e8938f4f2cca@arm.com>
+Date:   Fri, 19 May 2023 11:50:56 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 3/3] Documentation/arm64: Update ACPI tables from BBR
+To:     Hanjun Guo <guohanjun@huawei.com>,
+        Jose Marinho <jose.marinho@arm.com>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Jeremy Linton <Jeremy.Linton@arm.com>,
+        James Morse <James.Morse@arm.com>,
+        Rob Herring <Rob.Herring@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>
+References: <20230518105202.451739-1-jose.marinho@arm.com>
+ <20230518105202.451739-4-jose.marinho@arm.com>
+ <0969894f-d653-482c-f043-2a085ee3b404@huawei.com>
+ <e9918d6e-ca5c-5a3a-6ff4-27acf7f73b30@arm.com>
+ <dd0114f5-2e9c-40ea-8722-93fdf3f57b87@huawei.com>
+Content-Language: en-GB
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <dd0114f5-2e9c-40ea-8722-93fdf3f57b87@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.7 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: INFO setup_repo_specs: /db/releases/20230519164737/lkp-src/repo/*/rafael-pm
-https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 27d75d398f66b653fe4f3a6f17fc5652b7837c5a  Merge branch 'acpi-video' into bleeding-edge
+On 2023-05-19 08:10, Hanjun Guo wrote:
+> On 2023/5/18 21:40, Robin Murphy wrote:
+>> On 2023-05-18 13:07, Hanjun Guo wrote:
+>>> Hi Jose,
+>>>
+>>> On 2023/5/18 18:52, Jose Marinho wrote:
+>>>> The BBR specification requires (or conditionally requires) a set of 
+>>>> ACPI
+>>>> tables for a proper working system.
+>>>> This commit updates:
+>>>> - the list of ACPI tables to reflect the contents of
+>>>> BBR version 2.0 (see 
+>>>> https://developer.arm.com/documentation/den0044/g).
+>>>> - the list of ACPI tables in acpi_object_usage. This last update 
+>>>> ensures
+>>>> that both files remain coherent.
+>>>
+>>> Thanks for the update, some comments inline.
+>>>
+>>>>
+>>>> Signed-off-by: Jose Marinho <jose.marinho@arm.com>
+>>>> Reviewed-by: Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>
+>>>> ---
+>>>>   Documentation/arm64/acpi_object_usage.rst | 81 
+>>>> +++++++++++++++++++++--
+>>>>   Documentation/arm64/arm-acpi.rst          | 71 +++++++++++++++++---
+>>>>   2 files changed, 139 insertions(+), 13 deletions(-)
+>>>>
+>>>> diff --git a/Documentation/arm64/acpi_object_usage.rst 
+>>>> b/Documentation/arm64/acpi_object_usage.rst
+>>>> index 484ef9676653..1da22200fdf8 100644
+>>>> --- a/Documentation/arm64/acpi_object_usage.rst
+>>>> +++ b/Documentation/arm64/acpi_object_usage.rst
+>>>> @@ -17,16 +17,37 @@ For ACPI on arm64, tables also fall into the 
+>>>> following categories:
+>>>>          -  Recommended: BERT, EINJ, ERST, HEST, PCCT, SSDT
+>>>> -       -  Optional: BGRT, CPEP, CSRT, DBG2, DRTM, ECDT, FACS, FPDT, 
+>>>> IBFT,
+>>>> -          IORT, MCHI, MPST, MSCT, NFIT, PMTT, RASF, SBST, SLIT, 
+>>>> SPMI, SRAT,
+>>>> -          STAO, TCPA, TPM2, UEFI, XENV
+>>>> +       -  Optional: AGDI, BGRT, CEDT, CPEP, CSRT, DBG2, DRTM, ECDT, 
+>>>> FACS, FPDT,
+>>>> +          HMAT, IBFT, IORT, MCHI, MPAM, MPST, MSCT, NFIT, PMTT, 
+>>>> PPTT, RASF, SBST,
+>>>> +          SDEI, SLIT, SPMI, SRAT, STAO, TCPA, TPM2, UEFI, XENV
+>>>> -       -  Not supported: BOOT, DBGP, DMAR, ETDT, HPET, IVRS, LPIT, 
+>>>> MSDM, OEMx,
+>>>> -          PSDT, RSDT, SLIC, WAET, WDAT, WDRT, WPBT
+>>>> +       -  Not supported: AEST, APMT, BOOT, DBGP, DMAR, ETDT, HPET, 
+>>>> IVRS, LPIT,
+>>>
+>>> AEST is ARM Error Source Table, and it can be used for ARM platforms, so
+>>> I thinsk AEST is not belong to "Not supportted", "Optional" instead.
+>>
+>> Can you point to the code in Linux which does anything with AEST, 
+>> optionally or otherwise? ;)
+>>> and APMT is the same.
+>>>
+>>>> +          MSDM, OEMx, PDTT, PSDT, RAS2, RSDT, SLIC, WAET, WDAT, 
+>>>> WDRT, WPBT
+>>>
+>>> PDTT and RAS2 are now used for ARM too, please move it to Optional :)
+>>
+>> Ditto; as stated in arm-acpi.rst this is Linux documentation covering 
+>> the interaction between Linux and ACPI. It is not some kind of generic 
+> 
+> Hmm, let me see...
+> 
+> OK, I checked the arm-acpi.rst, it is saying:
+> 
+> "Detailed expectations for ACPI tables and object are listed in the file
+> Documentation/arm64/acpi_object_usage.rst."
+> 
+> So if I remember correctly, it is the guidance of ACPI tables and
+> methods usage on arm64, to align with the BBR.
 
-elapsed time: 875m
+"The purpose of this document is to describe the interaction between
+ACPI and Linux only, on an ARMv8 system -- that is, what Linux expects 
+of ACPI and what ACPI can expect of Linux."
 
-configs tested: 129
-configs skipped: 7
+I don't see how it could get much clearer than that. Yes, phrasing like 
+"ACPI on arm64" is used elsewhere, but remember that in context "arm64" 
+means "AArch64 Linux".
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+>> ACPI-on-Arm guidance whitepaper. If and when Linux actually supports 
+>> these tables in the sense of meaningfully consuming them, that is when 
+>> we can document such support.
+> 
+> If this is the case, we don't need categories of "Required",
+> "Recommmened" and etc.
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r012-20230517   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                     haps_hs_smp_defconfig   gcc  
-arc                  randconfig-r043-20230517   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                         at91_dt_defconfig   gcc  
-arm                                 defconfig   gcc  
-arm                          pxa3xx_defconfig   gcc  
-arm                             pxa_defconfig   gcc  
-arm                  randconfig-r046-20230517   clang
-arm                        vexpress_defconfig   clang
-arm64                            allyesconfig   gcc  
-arm64        buildonly-randconfig-r003-20230517   clang
-arm64                               defconfig   gcc  
-csky         buildonly-randconfig-r005-20230517   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r006-20230517   gcc  
-csky                 randconfig-r013-20230517   gcc  
-csky                 randconfig-r024-20230517   gcc  
-csky                 randconfig-r025-20230517   gcc  
-csky                 randconfig-r032-20230517   gcc  
-hexagon              randconfig-r041-20230517   clang
-hexagon              randconfig-r045-20230517   clang
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                          randconfig-a001   gcc  
-i386                          randconfig-a002   clang
-i386                          randconfig-a003   gcc  
-i386                          randconfig-a004   clang
-i386                          randconfig-a005   gcc  
-i386                          randconfig-a006   clang
-i386                          randconfig-a011   clang
-i386                          randconfig-a012   gcc  
-i386                          randconfig-a013   clang
-i386                          randconfig-a014   gcc  
-i386                          randconfig-a015   clang
-i386                          randconfig-a016   gcc  
-ia64                             allmodconfig   gcc  
-ia64         buildonly-randconfig-r004-20230517   gcc  
-ia64                                defconfig   gcc  
-ia64                 randconfig-r005-20230517   gcc  
-ia64                 randconfig-r023-20230517   gcc  
-ia64                 randconfig-r031-20230517   gcc  
-ia64                 randconfig-r036-20230517   gcc  
-loongarch                        alldefconfig   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r003-20230517   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                       m5275evb_defconfig   gcc  
-m68k                        m5407c3_defconfig   gcc  
-m68k                 randconfig-r011-20230517   gcc  
-microblaze           randconfig-r034-20230517   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                           ci20_defconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r004-20230517   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r002-20230517   gcc  
-parisc64                            defconfig   gcc  
-powerpc                    adder875_defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                      arches_defconfig   gcc  
-powerpc                        cell_defconfig   gcc  
-powerpc                     ksi8560_defconfig   clang
-powerpc                 linkstation_defconfig   gcc  
-powerpc                     mpc83xx_defconfig   gcc  
-powerpc                      pcm030_defconfig   gcc  
-powerpc              randconfig-r014-20230517   gcc  
-powerpc              randconfig-r016-20230517   gcc  
-powerpc              randconfig-r035-20230517   clang
-powerpc                    sam440ep_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r042-20230517   gcc  
-riscv                          rv32_defconfig   clang
-riscv                          rv32_defconfig   gcc  
-s390                             alldefconfig   clang
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r044-20230517   gcc  
-sh                               allmodconfig   gcc  
-sh                   randconfig-r022-20230517   gcc  
-sh                   secureedge5410_defconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r001-20230517   gcc  
-sparc64              randconfig-r015-20230517   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64                        randconfig-a001   clang
-x86_64                        randconfig-a002   gcc  
-x86_64                        randconfig-a003   clang
-x86_64                        randconfig-a004   gcc  
-x86_64                        randconfig-a005   clang
-x86_64                        randconfig-a006   gcc  
-x86_64                        randconfig-a011   gcc  
-x86_64                        randconfig-a012   clang
-x86_64                        randconfig-a013   gcc  
-x86_64                        randconfig-a014   clang
-x86_64                        randconfig-a015   gcc  
-x86_64                        randconfig-a016   clang
-x86_64                        randconfig-x051   gcc  
-x86_64                        randconfig-x052   clang
-x86_64                        randconfig-x053   gcc  
-x86_64                        randconfig-x054   clang
-x86_64                        randconfig-x055   gcc  
-x86_64                        randconfig-x056   clang
-x86_64                        randconfig-x061   gcc  
-x86_64                        randconfig-x062   clang
-x86_64                        randconfig-x063   gcc  
-x86_64                        randconfig-x064   clang
-x86_64                        randconfig-x065   gcc  
-x86_64                        randconfig-x066   clang
-x86_64                               rhel-8.3   gcc  
-xtensa       buildonly-randconfig-r002-20230517   gcc  
+Certainly the distinction between required and optional is significant 
+and useful, since Linux may fail to boot at all if a required table is 
+missing. I'd agree I can't really make sense of the "recommended" 
+category though - it's not like firmware could make up RAS support if 
+the hardware doesn't have it, and whether SSDTs are appropriate or not 
+seems to depend on the fundamental design of the system, rather than 
+being something an OS should dictate :/
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+However that's something we can think about separately, since it's 
+orthogonal to this content update.
+
+Thanks,
+Robin.
