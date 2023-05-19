@@ -2,58 +2,42 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F293709F64
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 May 2023 20:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E20970A083
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 May 2023 22:23:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230412AbjESStv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 May 2023 14:49:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45182 "EHLO
+        id S229522AbjESUXE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 19 May 2023 16:23:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230409AbjESStt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 May 2023 14:49:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B342BE42;
-        Fri, 19 May 2023 11:49:39 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F0E465A94;
-        Fri, 19 May 2023 18:49:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 90D5CC4339B;
-        Fri, 19 May 2023 18:49:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684522174;
-        bh=aUkBUKNUpcALPr+T6nHxvMBylpHvBkOKn3FPBXLttFA=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=a+FTHWQiPKgbGp9GE4Sau/ZrloDEjnwxY4GYdMpkkvTBaAo9OSd9Psu5REvQAFjcA
-         XpIn6KtqiNQLwaBYyoYdxkDMUXYukvpLeG8ySzaQFdVhiHWADYG2f330aKqMiwxfG9
-         hJ6IlZPVV/aD2jdXkJFL/uU+XVi8zWY7eP1aJGFqU2C8rtSQKSlALjD2MbfycoWSAQ
-         CibRpm+fzw+2sUY5HviDZgi3u2JvL72Y1kVOjghxHCjDcdIbNfnXQHRjshXDOg6UBP
-         XvsT+tI3CkP+B3ACOgVnmwapRYt4vttIZcm1Y+WYlVX20nvvuiRlJBBLW+2tFza9ca
-         ttP40FVWdMGYg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 74123C73FE0;
-        Fri, 19 May 2023 18:49:34 +0000 (UTC)
-Subject: Re: [GIT PULL] Power management fixes for v6.4-rc3
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0ifvaf3FBLtKGkSJxEkxLWA8dSatp2hygtYnSbnNRo65w@mail.gmail.com>
-References: <CAJZ5v0ifvaf3FBLtKGkSJxEkxLWA8dSatp2hygtYnSbnNRo65w@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0ifvaf3FBLtKGkSJxEkxLWA8dSatp2hygtYnSbnNRo65w@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-6.4-rc3
-X-PR-Tracked-Commit-Id: 5783ecc90e24a870a563b1acbfd13cad3786e519
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: d3f704310cc7e04e89d178ea080a2e74dae9db67
-Message-Id: <168452217447.776.12611114623470701626.pr-tracker-bot@kernel.org>
-Date:   Fri, 19 May 2023 18:49:34 +0000
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        with ESMTP id S229508AbjESUXE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 May 2023 16:23:04 -0400
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E4881A8;
+        Fri, 19 May 2023 13:23:02 -0700 (PDT)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 606AF1A1941;
+        Fri, 19 May 2023 22:04:41 +0200 (CEST)
+Received: from smtp.na-rdc02.nxp.com (usphx01srsp001v.us-phx01.nxp.com [134.27.49.11])
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 26D6D1A1936;
+        Fri, 19 May 2023 22:04:41 +0200 (CEST)
+Received: from right.am.freescale.net (right.am.freescale.net [10.81.116.134])
+        by usphx01srsp001v.us-phx01.nxp.com (Postfix) with ESMTP id A9AEC405E0;
+        Fri, 19 May 2023 13:04:39 -0700 (MST)
+From:   Li Yang <leoyang.li@nxp.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>, Jia He <justin.he@arm.com>
+Cc:     Li Yang <leoyang.li@nxp.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] apei/ghes: correctly return NULL for ghes_get_devices()
+Date:   Fri, 19 May 2023 15:03:41 -0500
+Message-Id: <20230519200342.30817-1-leoyang.li@nxp.com>
+X-Mailer: git-send-email 2.25.1.377.g2d2118b
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,15 +46,37 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Fri, 19 May 2023 17:29:55 +0200:
+Since 315bada690e0 ("EDAC: Check for GHES preference in the
+chipset-specific EDAC drivers"), vendor specific EDAC driver will not
+probe correctly when CONFIG_ACPI_APEI_GHES is enabled but no GHES device
+is present.  Make ghes_get_devices() return NULL when the GHES device
+list is empty to fix the problem.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-6.4-rc3
+Fixes: 9057a3f7ac36 ("EDAC/ghes: Prepare to make ghes_edac a proper module")
+Signed-off-by: Li Yang <leoyang.li@nxp.com>
+Cc: Jia He <justin.he@arm.com>
+---
+ drivers/acpi/apei/ghes.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/d3f704310cc7e04e89d178ea080a2e74dae9db67
-
-Thank you!
-
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 34ad071a64e9..da1a712f370b 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -1544,9 +1544,11 @@ struct list_head *ghes_get_devices(void)
+ 
+ 			pr_warn_once("Force-loading ghes_edac on an unsupported platform. You're on your own!\n");
+ 		}
++	} else if (list_empty(&ghes_devs)) {
++		return NULL;
++	} else {
++		return &ghes_devs;
+ 	}
+-
+-	return &ghes_devs;
+ }
+ EXPORT_SYMBOL_GPL(ghes_get_devices);
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.38.0
+
