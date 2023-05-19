@@ -2,148 +2,142 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19D55708F65
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 May 2023 07:26:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78069709027
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 May 2023 09:10:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229489AbjESF0G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 May 2023 01:26:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60642 "EHLO
+        id S229852AbjESHKP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 19 May 2023 03:10:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjESF0G (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 May 2023 01:26:06 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48FF7E4C;
-        Thu, 18 May 2023 22:26:04 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4f25d79f6bfso3323068e87.2;
-        Thu, 18 May 2023 22:26:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684473962; x=1687065962;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wNtRnyQN8vO04gSlcyvpsqnkimMuzHNYu/QdOo0JXbg=;
-        b=MmMPzTf5aPuDZyy+pZTLvBgU5RoGY7h4ncqYpeVHj+sAwcpYtepWH2v7u7wE8tOJzH
-         bQ5aF6x3HuDfU4LKnPHxc46tOqC0CsVkDkt18RKY4+/oF01Zkb2oFebosWut936pCpOy
-         92KBvUQcEMweaWq9cp97c8g/pPRra1YqK8CFHze+UV8JedIm0WcFrvkmX2RnHxsCrBTn
-         tbX7hz5/zz9ObpEGIJC3MFYqQoiwit4jmSpt1clolDqy455jzvYUo4VWl1oZFAOHd1/T
-         lrt4WwatKqHTU2QOnFZAaf1rDlL+FccUx8Eb7ZKUBhJvz7XM22RkLPBnUbjgKCxS1wyO
-         fv9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684473962; x=1687065962;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wNtRnyQN8vO04gSlcyvpsqnkimMuzHNYu/QdOo0JXbg=;
-        b=c8z9ksRvASxb8bNb0nDjddM/qVNIEyohrvNkQzd6otMp7UhkoqTb9862FtyfMde75B
-         GKOKEGfCeXgEvPlkKGM7Q6lhFDCZEBJWWsQFqBJtoiSsTNqFyL9JYZM/k+lYv9Wk8MYF
-         T7oqlL0G5+zg2HiS4BwRJWfT2QpUsZKrvh2nMVK5suWI3qqT+fDOCqNtQehbNmnBwWNZ
-         vhh64bEK2UaoJIEFzjQtvLtrZ8TF9r7rI8hfr8tSKw8kKy0X/LDo6Fpc4Kpx/wLDSByE
-         5TMQwFKHpZ9zBdytEhuYnf8vQLTo+/lINq5DV2oCJMlHP+MeJyH6weR+IJO2mIvWv2dZ
-         ZT8Q==
-X-Gm-Message-State: AC+VfDxzt0itKxYxl/RqC2xbEeU0nFF7HBfx2e8GfuQ30V1V3hTgXiEx
-        3vf2Y+nxE7idWpT2xrVNIoY=
-X-Google-Smtp-Source: ACHHUZ7okWk9/fgEhxsg8/G1HG9gq5sDzS/nZVIxkKaxoXGvjfkpg8GlqgOs4szyC1dxuJJOg4zqFg==
-X-Received: by 2002:ac2:4352:0:b0:4f0:124:b56b with SMTP id o18-20020ac24352000000b004f00124b56bmr441637lfl.7.1684473962219;
-        Thu, 18 May 2023 22:26:02 -0700 (PDT)
-Received: from [192.168.1.126] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id m5-20020ac24ac5000000b004eed8de597csm472747lfp.32.2023.05.18.22.26.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 May 2023 22:26:01 -0700 (PDT)
-Message-ID: <6ab1852e-139f-579b-3ef4-5c98e0ea446d@gmail.com>
-Date:   Fri, 19 May 2023 08:26:00 +0300
+        with ESMTP id S229504AbjESHKN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 May 2023 03:10:13 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A85BE4A;
+        Fri, 19 May 2023 00:10:11 -0700 (PDT)
+Received: from dggpemm500002.china.huawei.com (unknown [172.30.72.55])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4QMyY40KWHzqSZG;
+        Fri, 19 May 2023 15:05:44 +0800 (CST)
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Fri, 19 May 2023 15:10:06 +0800
+Subject: Re: [PATCH 3/3] Documentation/arm64: Update ACPI tables from BBR
+To:     Robin Murphy <robin.murphy@arm.com>,
+        Jose Marinho <jose.marinho@arm.com>
+CC:     Catalin Marinas <catalin.marinas@arm.com>,
+        Jeremy Linton <Jeremy.Linton@arm.com>,
+        James Morse <James.Morse@arm.com>,
+        Rob Herring <Rob.Herring@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-doc@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>
+References: <20230518105202.451739-1-jose.marinho@arm.com>
+ <20230518105202.451739-4-jose.marinho@arm.com>
+ <0969894f-d653-482c-f043-2a085ee3b404@huawei.com>
+ <e9918d6e-ca5c-5a3a-6ff4-27acf7f73b30@arm.com>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <dd0114f5-2e9c-40ea-8722-93fdf3f57b87@huawei.com>
+Date:   Fri, 19 May 2023 15:10:06 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v4 2/7] iio: mb1232: relax return value check for IRQ get
-Content-Language: en-US, en-GB
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Wolfram Sang <wsa@kernel.org>,
-        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        netdev@vger.kernel.org, openbmc@lists.ozlabs.org,
-        linux-gpio@vger.kernel.org, linux-mips@vger.kernel.org
-References: <cover.1684220962.git.mazziesaccount@gmail.com>
- <429804dac3b1ea55dd233d1e2fdf94240e2f2b93.1684220962.git.mazziesaccount@gmail.com>
- <ZGUFJ5LRCzW2V0a1@smile.fi.intel.com>
- <1a3a84d4-1955-f0ee-5c6d-ab36fddc5e15@gmail.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <1a3a84d4-1955-f0ee-5c6d-ab36fddc5e15@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <e9918d6e-ca5c-5a3a-6ff4-27acf7f73b30@arm.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.174.178.247]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm500002.china.huawei.com (7.185.36.229)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 5/19/23 08:00, Matti Vaittinen wrote:
-> On 5/17/23 19:47, Andy Shevchenko wrote:
->> On Tue, May 16, 2023 at 10:12:41AM +0300, Matti Vaittinen wrote:
->>> fwnode_irq_get() was changed to not return 0 anymore.
+On 2023/5/18 21:40, Robin Murphy wrote:
+> On 2023-05-18 13:07, Hanjun Guo wrote:
+>> Hi Jose,
+>>
+>> On 2023/5/18 18:52, Jose Marinho wrote:
+>>> The BBR specification requires (or conditionally requires) a set of ACPI
+>>> tables for a proper working system.
+>>> This commit updates:
+>>> - the list of ACPI tables to reflect the contents of
+>>> BBR version 2.0 (see https://developer.arm.com/documentation/den0044/g).
+>>> - the list of ACPI tables in acpi_object_usage. This last update ensures
+>>> that both files remain coherent.
+>>
+>> Thanks for the update, some comments inline.
+>>
 >>>
->>> Drop check for return value 0.
+>>> Signed-off-by: Jose Marinho <jose.marinho@arm.com>
+>>> Reviewed-by: Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>
+>>> ---
+>>>   Documentation/arm64/acpi_object_usage.rst | 81 +++++++++++++++++++++--
+>>>   Documentation/arm64/arm-acpi.rst          | 71 +++++++++++++++++---
+>>>   2 files changed, 139 insertions(+), 13 deletions(-)
+>>>
+>>> diff --git a/Documentation/arm64/acpi_object_usage.rst 
+>>> b/Documentation/arm64/acpi_object_usage.rst
+>>> index 484ef9676653..1da22200fdf8 100644
+>>> --- a/Documentation/arm64/acpi_object_usage.rst
+>>> +++ b/Documentation/arm64/acpi_object_usage.rst
+>>> @@ -17,16 +17,37 @@ For ACPI on arm64, tables also fall into the 
+>>> following categories:
+>>>          -  Recommended: BERT, EINJ, ERST, HEST, PCCT, SSDT
+>>> -       -  Optional: BGRT, CPEP, CSRT, DBG2, DRTM, ECDT, FACS, FPDT, 
+>>> IBFT,
+>>> -          IORT, MCHI, MPST, MSCT, NFIT, PMTT, RASF, SBST, SLIT, 
+>>> SPMI, SRAT,
+>>> -          STAO, TCPA, TPM2, UEFI, XENV
+>>> +       -  Optional: AGDI, BGRT, CEDT, CPEP, CSRT, DBG2, DRTM, ECDT, 
+>>> FACS, FPDT,
+>>> +          HMAT, IBFT, IORT, MCHI, MPAM, MPST, MSCT, NFIT, PMTT, 
+>>> PPTT, RASF, SBST,
+>>> +          SDEI, SLIT, SPMI, SRAT, STAO, TCPA, TPM2, UEFI, XENV
+>>> -       -  Not supported: BOOT, DBGP, DMAR, ETDT, HPET, IVRS, LPIT, 
+>>> MSDM, OEMx,
+>>> -          PSDT, RSDT, SLIC, WAET, WDAT, WDRT, WPBT
+>>> +       -  Not supported: AEST, APMT, BOOT, DBGP, DMAR, ETDT, HPET, 
+>>> IVRS, LPIT,
 >>
->> ...
->>
->>> -    if (data->irqnr <= 0) {
->>> +    if (data->irqnr < 0) {
->>>           /* usage of interrupt is optional */
->>>           data->irqnr = -1;
->>>       } else {
->>
->>
->> After this change I'm not sure we need this branch at all, I mean that 
->> -errn is
->> equal to -1 in the code (but needs to be checked for silly checks like 
->> == -1).
->>
->> Hence
->>
->> Entire excerpt can be replaced with
->>
->>     if (data->irqnr > 0) {
->>
+>> AEST is ARM Error Source Table, and it can be used for ARM platforms, so
+>> I thinsk AEST is not belong to "Not supportted", "Optional" instead.
 > 
-> I agree. Furthermore, at a quick glance it seems the whole irqnr could 
-> be dropped from the private data, and the private data struct could 
-> probably be static. I'd send them as separate clean-ups though as those 
-> changes are not really related to this return-value series.
-
-Please, ignore everything I wrote above, except that I agree to your 
-suggestion. I was writing utter nonsense. Sorry for the noise.
-
+> Can you point to the code in Linux which does anything with AEST, 
+> optionally or otherwise? ;)
+>> and APMT is the same.
+>>
+>>> +          MSDM, OEMx, PDTT, PSDT, RAS2, RSDT, SLIC, WAET, WDAT, 
+>>> WDRT, WPBT
+>>
+>> PDTT and RAS2 are now used for ARM too, please move it to Optional :)
 > 
-> Yours,
->      -- Matti
-> 
+> Ditto; as stated in arm-acpi.rst this is Linux documentation covering 
+> the interaction between Linux and ACPI. It is not some kind of generic 
 
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+Hmm, let me see...
 
-~~ When things go utterly wrong vim users can always type :help! ~~
+OK, I checked the arm-acpi.rst, it is saying:
 
+"Detailed expectations for ACPI tables and object are listed in the file
+Documentation/arm64/acpi_object_usage.rst."
+
+So if I remember correctly, it is the guidance of ACPI tables and
+methods usage on arm64, to align with the BBR.
+
+> ACPI-on-Arm guidance whitepaper. If and when Linux actually supports 
+> these tables in the sense of meaningfully consuming them, that is when 
+> we can document such support.
+
+If this is the case, we don't need categories of "Required",
+"Recommmened" and etc.
+
+Thanks
+Hanjun
