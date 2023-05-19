@@ -2,52 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15389709B51
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 May 2023 17:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35CF1709B55
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 May 2023 17:30:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232347AbjESP2k convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 19 May 2023 11:28:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52708 "EHLO
+        id S230519AbjESPaK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 19 May 2023 11:30:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230440AbjESP2i (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 May 2023 11:28:38 -0400
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E9471A6;
-        Fri, 19 May 2023 08:28:37 -0700 (PDT)
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-94f9cd65b1aso85276266b.0;
-        Fri, 19 May 2023 08:28:37 -0700 (PDT)
+        with ESMTP id S230305AbjESPaJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 May 2023 11:30:09 -0400
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8963ECF;
+        Fri, 19 May 2023 08:30:08 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-96a6c0cc0fbso85150566b.1;
+        Fri, 19 May 2023 08:30:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684510116; x=1687102116;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6LpLEsVi8gedKYCkeDSQbqSIWZm0Ti0kQFvwl5FvWwk=;
-        b=d/24Mjw/fQsATZJVi3uRAl38SACulya6D2uRmwyWyMMjV1jg9ZK0rkvGGVVRD0+JDX
-         ijAZawIdpD+moVx16zVQGvWJ8GoUDwKEtHAH5SZ2dLD1yK28PLwsQLqfkQ+NcVa+RdOP
-         0cQg208bF2bPD4ErYGUdtllS9AMB9JW82UqBFIbYvn766J81sx9z+Cu6YWT8EgQ9je5g
-         SQTIgpYgkcBvfRdg90OVq3sT9a51nwV/F3qn4yB9ms07OZR3vMPk8kQP7ep02MXc8+ek
-         yY5j+n34QrgUpMUWyqIi/J3h0eDPYKkSt2QKXDk8yguO98tGTPDiyLp2mGb+BPWOi1OR
-         u4fQ==
-X-Gm-Message-State: AC+VfDyCUrxX48WRy1eSvEkxjFZXo25FRz6N9Fo40Y6n5vWxgW4Dsi/v
-        IjSk2GSLhyyyKsQ4YmzI1L4H3VNmo2snYurGhc8UEABhohM=
-X-Google-Smtp-Source: ACHHUZ7js2vhL7jMHv3mcBklVxXc8VsE+E3d9LIxIlCW1ZDAa8TcDoPdpSK/rrCd1cxya08jVrh2rd2CIe0wjzwdrug=
+        d=1e100.net; s=20221208; t=1684510207; x=1687102207;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hcZ/Ub84YadBRwYZeJ0rs+CniJfE2wBfphDsgARviFw=;
+        b=Zkx7uoxrkoVBzCuzGy1rMFkNs3VIqOCK+vFWH21ZAQS+Y23vCMW3ZN4QoW72MNbyWC
+         KPk5FK9qT5aIgmFXCFIZ92VpTR0PIjqmYkpNKf6ZcBtRpGxUUFf4MVbWrNQzE8dFMB7m
+         0SZTpG2PabZ8PJjksp1OC/uUqvGhzAPDSH2+aQIKZXE6XwNgWMtUoM/pEH+6x6EGLWIT
+         Cd6qDRbBvEC3dUmknms+AuoX+uMVaAL9OPuF4I9IYkc8e31JtFvIbj77GFNKQ/yinTzr
+         0U4I6gtTjQWX2Ijz2NI1v7RQmp/xWiBG9marup80zSkxn/26zRq2bkKTTf8tWxtJGUD7
+         zW2A==
+X-Gm-Message-State: AC+VfDz4wB7M5WE7Ckj8Y/o7PEb96m0Sk5szQTp4GiWttn6F5qSZsN1g
+        GIlnpdwL7IYuDK6Ddl1la347/wzUBiD8deERmz4=
+X-Google-Smtp-Source: ACHHUZ42Pwf/DpsQ/roRNrt1pUd9unjJ13E4hrqjMO8VNbOSd+9qmhWWCiO3jCcwjGwEYRD+RWyKM3h66zY0IFCIiCg=
 X-Received: by 2002:a17:906:74dd:b0:929:b101:937d with SMTP id
- z29-20020a17090674dd00b00929b101937dmr2623077ejl.1.1684510115560; Fri, 19 May
- 2023 08:28:35 -0700 (PDT)
+ z29-20020a17090674dd00b00929b101937dmr2628424ejl.1.1684510206855; Fri, 19 May
+ 2023 08:30:06 -0700 (PDT)
 MIME-Version: 1.0
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 19 May 2023 17:28:24 +0200
-Message-ID: <CAJZ5v0g9RmqJm=bpc9SQryYo4r+9Ctj7_aXQcfFRWTS3=xs6qw@mail.gmail.com>
-Subject: [GIT PULL] ACPI fix for v6.4-rc3
+Date:   Fri, 19 May 2023 17:29:55 +0200
+Message-ID: <CAJZ5v0ifvaf3FBLtKGkSJxEkxLWA8dSatp2hygtYnSbnNRo65w@mail.gmail.com>
+Subject: [GIT PULL] Power management fixes for v6.4-rc3
 To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -59,30 +59,53 @@ Hi Linus,
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.4-rc3
+ pm-6.4-rc3
 
-with top-most commit 71a485624c4cbb144169852d7bb8ca8c0667d7a3
+with top-most commit 5783ecc90e24a870a563b1acbfd13cad3786e519
 
- ACPI: resource: Add IRQ override quirk for LG UltraPC 17U70P
+ Merge branch 'pm-tools'
 
 on top of commit f1fcbaa18b28dec10281551dfe6ed3a3ed80e3d6
 
  Linux 6.4-rc2
 
-to receive an ACPI fix for 6.4-rc3.
+to receive power management fixes for 6.4-rc3.
 
-This adds an ACPI IRQ override quirk for LG UltraPC 17U70P so as to
-make the internal keyboard work on that machine (Rubén Gómez).
+These fix two issues in the cpupower utility and get rid of a spurious
+warning message printed to the kernel log by the ACPI cpufreq driver
+after recent changes.
+
+Specifics:
+
+ - Get rid of a warning message printed by the ACPI cpufreq driver
+   after recent changes in it when anohter CPU performance scaling
+   driver is registered already when it starts (Petr Pavlu).
+
+ - Make cpupower read TSC on each CPU right before reading MPERF so as
+   to reduce the potential time difference between the TSC and MPERF
+   accesses and improve the C0 percentage calculation (Wyes Karny).
+
+ - Fix a possible file handle leak and clean up the code in the
+   sysfs_get_enabled() function in cpupower (Hao Zeng).
 
 Thanks!
 
 
 ---------------
 
-Rubén Gómez (1):
-      ACPI: resource: Add IRQ override quirk for LG UltraPC 17U70P
+Hao Zeng (1):
+      cpupower:Fix resource leaks in sysfs_get_enabled()
+
+Petr Pavlu (1):
+      cpufreq: ACPI: Prevent a warning when another frequency driver is loaded
+
+Wyes Karny (1):
+      cpupower: Make TSC read per CPU for Mperf monitor
 
 ---------------
 
- drivers/acpi/resource.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/cpufreq/acpi-cpufreq.c                     |  2 +-
+ drivers/cpufreq/pcc-cpufreq.c                      |  2 +-
+ tools/power/cpupower/lib/powercap.c                | 23 +++++++++++-----
+ .../cpupower/utils/idle_monitor/mperf_monitor.c    | 31 ++++++++++------------
+ 4 files changed, 32 insertions(+), 26 deletions(-)
