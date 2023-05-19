@@ -2,121 +2,137 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A745708DAC
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 May 2023 04:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6569A708E6F
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 May 2023 05:47:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229707AbjESCMD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 18 May 2023 22:12:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43000 "EHLO
+        id S229460AbjESDrz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 18 May 2023 23:47:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230308AbjESCMB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 May 2023 22:12:01 -0400
-Received: from bird.elm.relay.mailchannels.net (bird.elm.relay.mailchannels.net [23.83.212.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1419FE4A;
-        Thu, 18 May 2023 19:11:59 -0700 (PDT)
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-        by relay.mailchannels.net (Postfix) with ESMTP id 5170B540B3A;
-        Fri, 19 May 2023 02:11:59 +0000 (UTC)
-Received: from pdx1-sub0-mail-a208.dreamhost.com (unknown [127.0.0.6])
-        (Authenticated sender: dreamhost)
-        by relay.mailchannels.net (Postfix) with ESMTPA id B909554189B;
-        Fri, 19 May 2023 02:11:58 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1684462318; a=rsa-sha256;
-        cv=none;
-        b=lFVuP0UoAneulIb7AnLiKzB/VWkoxfjRvq9wDf/gk5bJ0/rcRTYyHpH/RCpPhJl1iALLig
-        jIq5PhCKmV8jrX5yowgbfX8NvUPZqRuxH0cNB6YdORheHKeCOn5J547NAy4R0ogBvUAMYJ
-        u5GuLicKDmbbqa6WitM6R+0KA7BG9wwNdZ8E29aDbyL6NPNYU/GljD6b7v/zbkAWCqW6Hl
-        hqsSRd1pLvsFcOms537k03oRCdCjSkEyBkl9xH0bcXJFiZCkgSCYpaCPCadPbnCx7gfiOP
-        k4LSsgJE8zgAVzEseCnCWupQTZKhwh5O9p7tqtu8EOPXOUXqU7gQ9kd/AcwGYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-        s=arc-2022; t=1684462318;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references:dkim-signature;
-        bh=UGS5YSwf/rGU2XZSGVPlNsADHYegr/4g6swrqUfHy7s=;
-        b=7mShLIeClaqzPUCKIdjphAH2oWfX+GzrU/n0YYf5GZwnx6vBJGOz6Ud4sISM2FFCG8sl8Q
-        6fA0t67d5XFZfEXlDgYKMRLtCiJTpLTzN7kWn7491KZ3Pl2u+AEaNvK34mXB711KlBME9t
-        xeEGsFs5xgo2bLOw8lYwP11WKZq4TxmmwcrG2pccP/TTsJspxpaOopzyO52TBYIma1edIh
-        uZ3rlsz3A3ndwiMOx/xgkMjJwidIzYl45rMtn6/mFjUOmuU4y7m/osfsrNZIrj3EibazMi
-        TnR9uo4NkkvwQJAYBDmtnqSSOHK29gc80eTbecqV+m2fbBWL3ePRuYpWfgkA4A==
-ARC-Authentication-Results: i=1;
-        rspamd-5cdf8fd7d9-fw8rh;
-        auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
-X-MailChannels-Auth-Id: dreamhost
-X-Stupid-Trouble: 64a12e39217dfb73_1684462319114_247395351
-X-MC-Loop-Signature: 1684462319113:2194989952
-X-MC-Ingress-Time: 1684462319113
-Received: from pdx1-sub0-mail-a208.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-        by 100.127.59.19 (trex/6.8.1);
-        Fri, 19 May 2023 02:11:59 +0000
-Received: from offworld (unknown [104.36.25.8])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: dave@stgolabs.net)
-        by pdx1-sub0-mail-a208.dreamhost.com (Postfix) with ESMTPSA id 4QMr255946z9r;
-        Thu, 18 May 2023 19:11:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
-        s=dreamhost; t=1684462318;
-        bh=UGS5YSwf/rGU2XZSGVPlNsADHYegr/4g6swrqUfHy7s=;
-        h=Date:From:To:Cc:Subject:Content-Type;
-        b=edgYCx8RTxJ0QaKA/sRny6kjo4yI+ie8V3T3tW3Jox9IGLLgUlCkCUW7GsXlG+fQt
-         Dy7yqwu9j4WqawEvohkJsvU0mOTsv9Qd7SadnukmYuHAiZSmWE1qX5A6PuM/zoRbpm
-         TBTJE4UzsqXG2EvTEN7GtbvfDe72pql0hx847aZO0IeAYYn6+ybr8QvRB4b8yJ4UiH
-         vlCaeg3n9I70PEXabo2MdA9a7+MdQYUl8MiZukvF+LO9FKWqmHJY5CZ3vlLgqLzcFj
-         w8FI+Ir/NVi31hL9ajSsQdWVlirdm4NCVOUg+SAuLbduizTKIzR134trbKguCnkJ5n
-         kfq78sUTFUMdw==
-Date:   Thu, 18 May 2023 18:38:46 -0700
-From:   Davidlohr Bueso <dave@stgolabs.net>
-To:     LiuLele <liu.lele@qq.com>
-Cc:     dave.jiang@intel.com, Jonathan.Cameron@huawei.com,
-        alison.schofield@intel.com, bhelgaas@google.com,
-        bwidawsk@kernel.org, dan.j.williams@intel.com, helgaas@kernel.org,
-        ira.weiny@intel.com, linux-acpi@vger.kernel.org,
-        linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, rostedt@goodmis.org,
-        vishal.l.verma@intel.com
-Subject: Re: CXL memory device not created correctly
-Message-ID: <gbsxrcjtnf67jxpqmbn57nqoslpmjtuk2ycatmau3vfsmpvbrd@c2umpofn2hti>
-References: <cec6a8f5-a284-4f46-1ada-4edd625a9a2e@intel.com>
- <tencent_D9D9D358330CA573E23D490C6EE13E0DC105@qq.com>
+        with ESMTP id S229452AbjESDry (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 May 2023 23:47:54 -0400
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0759183;
+        Thu, 18 May 2023 20:47:51 -0700 (PDT)
+X-UUID: db552eac63e74346acb950bb270ce840-20230519
+X-CID-O-RULE: Release_Ham
+X-CID-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.22,REQID:e8bff93f-6c4d-476a-9c4c-5a3306c8d5a1,IP:20,
+        URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,AC
+        TION:release,TS:-20
+X-CID-INFO: VERSION:1.1.22,REQID:e8bff93f-6c4d-476a-9c4c-5a3306c8d5a1,IP:20,UR
+        L:0,TC:0,Content:-25,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+        ON:release,TS:-20
+X-CID-META: VersionHash:120426c,CLOUDID:1c0a58c1-e32c-4c97-918d-fbb3fc224d4e,B
+        ulkID:2305191142541VNJAY6F,BulkQuantity:1,Recheck:0,SF:24|17|19|44|102,TC:
+        nil,Content:0,EDM:-3,IP:-2,URL:0,File:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI
+        :0,OSA:0,AV:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-UUID: db552eac63e74346acb950bb270ce840-20230519
+X-User: lijun01@kylinos.cn
+Received: from localhost.localdomain [(210.12.40.82)] by mailgw
+        (envelope-from <lijun01@kylinos.cn>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1480332580; Fri, 19 May 2023 11:47:39 +0800
+From:   lijun <lijun01@kylinos.cn>
+To:     robert.moore@intel.com, rafael.j.wysocki@intel.com
+Cc:     linux-acpi@vger.kernel.org, evel@acpica.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] acpi: add a new line after ACPI_STATE_COMMON
+Date:   Fri, 19 May 2023 11:47:36 +0800
+Message-Id: <20230519034736.3006661-1-lijun01@kylinos.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <tencent_D9D9D358330CA573E23D490C6EE13E0DC105@qq.com>
-User-Agent: NeoMutt/20230407
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 19 May 2023, LiuLele wrote:
+when i read here ,the "ACPI_STATE_COMMON" before the "u8", I feel confused,
+"ACPI_STATE_COMMON" and "u8" in a same line ，just looks cleaner,
+but causing poor readability.
 
->In my testing CXL device /sys/bus/cxl/devices/mem0  not created, and the get error messages :
->
->```
->cxl_pci 0000:0d:00.0: Failed to get interrupt for event Info log
->```
->
->My test environment is a qemu CXL emulator with qemu v8.0.0, Linux kernel v6.3.0.
->While with kernel 5.9.13,  /sys/bus/cxl/devices/mem0  can be created.
+Signed-off-by: lijun <lijun01@kylinos.cn>
+---
+ drivers/acpi/acpica/aclocal.h | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-Yes, this can be annoying and would argue the probe should not error out.
-Regardless, the actual qemu support is in Jonathan's tree:
+diff --git a/drivers/acpi/acpica/aclocal.h b/drivers/acpi/acpica/aclocal.h
+index 12d4a024f029..439b7bca4d75 100644
+--- a/drivers/acpi/acpica/aclocal.h
++++ b/drivers/acpi/acpica/aclocal.h
+@@ -571,14 +571,16 @@ ACPI_STATE_COMMON};
+  * Update state - used to traverse complex objects such as packages
+  */
+ struct acpi_update_state {
+-	ACPI_STATE_COMMON union acpi_operand_object *object;
++	ACPI_STATE_COMMON
++	union acpi_operand_object *object;
+ };
+ 
+ /*
+  * Pkg state - used to traverse nested package structures
+  */
+ struct acpi_pkg_state {
+-	ACPI_STATE_COMMON u32 index;
++	ACPI_STATE_COMMON
++	u32 index;
+ 	union acpi_operand_object *source_object;
+ 	union acpi_operand_object *dest_object;
+ 	struct acpi_walk_state *walk_state;
+@@ -591,7 +593,8 @@ struct acpi_pkg_state {
+  * Allows nesting of these constructs
+  */
+ struct acpi_control_state {
+-	ACPI_STATE_COMMON u16 opcode;
++	ACPI_STATE_COMMON
++	u16 opcode;
+ 	union acpi_parse_object *predicate_op;
+ 	u8 *aml_predicate_start;	/* Start of if/while predicate */
+ 	u8 *package_end;	/* End of if/while block */
+@@ -602,11 +605,13 @@ struct acpi_control_state {
+  * Scope state - current scope during namespace lookups
+  */
+ struct acpi_scope_state {
+-	ACPI_STATE_COMMON struct acpi_namespace_node *node;
++	ACPI_STATE_COMMON
++	struct acpi_namespace_node *node;
+ };
+ 
+ struct acpi_pscope_state {
+-	ACPI_STATE_COMMON u32 arg_count;	/* Number of fixed arguments */
++	ACPI_STATE_COMMON
++	u32 arg_count;	/* Number of fixed arguments */
+ 	union acpi_parse_object *op;	/* Current op being parsed */
+ 	u8 *arg_end;		/* Current argument end */
+ 	u8 *pkg_end;		/* Current package end */
+@@ -618,7 +623,8 @@ struct acpi_pscope_state {
+  * states are created when there are nested control methods executing.
+  */
+ struct acpi_thread_state {
+-	ACPI_STATE_COMMON u8 current_sync_level;	/* Mutex Sync (nested acquire) level */
++	ACPI_STATE_COMMON
++	u8 current_sync_level;	/* Mutex Sync (nested acquire) level */
+ 	struct acpi_walk_state *walk_state_list;	/* Head of list of walk_states for this thread */
+ 	union acpi_operand_object *acquired_mutex_list;	/* List of all currently acquired mutexes */
+ 	acpi_thread_id thread_id;	/* Running thread ID */
+@@ -652,7 +658,8 @@ struct acpi_global_notify_handler {
+  * handler/dispatcher.
+  */
+ struct acpi_notify_info {
+-	ACPI_STATE_COMMON u8 handler_list_id;
++	ACPI_STATE_COMMON
++	u8 handler_list_id;
+ 	struct acpi_namespace_node *node;
+ 	union acpi_operand_object *handler_list_head;
+ 	struct acpi_global_notify_handler *global;
+-- 
+2.25.1
 
-https://gitlab.com/jic23/qemu/-/commit/a04e6476df363d1f6bc160577b30dda6564d3f67
-
-Thanks,
-Davidlohr
