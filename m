@@ -2,74 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7CAD70961F
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 May 2023 13:17:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 485D570974F
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 May 2023 14:38:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231816AbjESLR6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 May 2023 07:17:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53984 "EHLO
+        id S230198AbjESMi0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 19 May 2023 08:38:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231712AbjESLRr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 May 2023 07:17:47 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ADBA10DC
-        for <linux-acpi@vger.kernel.org>; Fri, 19 May 2023 04:17:44 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-969f90d71d4so480047666b.3
-        for <linux-acpi@vger.kernel.org>; Fri, 19 May 2023 04:17:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684495062; x=1687087062;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YmxaI1amCfTksu6ynk2557PwK0HJxrBQmYIx/Pz5hBs=;
-        b=JSg3rdU6W2mjqmEc+mB2A7cFmRegMCR83SHfOjxmRVbwY2A7mgymSN+oh42ISHBfwO
-         GhYoUeZQdTAgrrktfs4VHXg5wvlxv+psdIxXqG71lRhZUTeGY0gkCC1W0WGnQ2KuhHot
-         +NPDFYfn4R+L8OP+VhWdlcDsDSc9o5ruZin0Jy7jEd2WIJigUk3W15VR/5RcuFsK0DW/
-         FpfL86ckeVx6y5Gc/4Q2cQwsXt6HqauHnQBLsDdwzZSaOMbN/NAWKn10V/OC4oS8nobW
-         BkYyI389vonSGsu8g2o2QiZVmSCS1RCYF7e1+Ah3/AvqFMUnq3kHlvS8oKVbVQM9I4Wp
-         NQBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684495062; x=1687087062;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YmxaI1amCfTksu6ynk2557PwK0HJxrBQmYIx/Pz5hBs=;
-        b=adumsRX95libPnXo/qj7U5pQyW3ewvYTxs8+Et25HqepMViTMiR0BpLp49Upv1wazk
-         6HOf60mCkgxAQs44A4Ah2VyTZT/EulkSwK6WNaW5fYRAJfRqDu2Kz6RT0bBCY5TgvXuT
-         tZvRLLjQ05c7upoPa7HT43f2Syh4KkRmaTvNKFEY6GgfdOzYOES7ZEMSGjRzmvEMUqHz
-         DSTQYJ67JjJqFSpdATlOSWMMO7/fHVUIrGbWno31H25ijUD/uIImY7u3k0yLk+eqhWDw
-         W9xRYBJVRRfMVro9ty47aFrBMgYdTJ0BSkQSJMbmteoc0UPLkvouBKg4Bex0aB6vpnkn
-         jt7A==
-X-Gm-Message-State: AC+VfDyjOdeFVnwXs+UR7sgCECOecJfbXfOBcbA0HLhqGUEE6aAkQRg0
-        apyvrLAUArUSgLe6ToqyHA3v7CTSXiesSI9Xu14=
-X-Google-Smtp-Source: ACHHUZ4GcdKjctEWmkMJD/Q5ZDCusH7zrjV+w4c4EgP8GDbM+BMa7NNuPpP4cOMUW2oAUk/kOHHzW6hqw5zKR98kQX0=
-X-Received: by 2002:a17:907:1b12:b0:8b8:c06e:52d8 with SMTP id
- mp18-20020a1709071b1200b008b8c06e52d8mr1298232ejc.36.1684495062361; Fri, 19
- May 2023 04:17:42 -0700 (PDT)
+        with ESMTP id S230049AbjESMiZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 May 2023 08:38:25 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6D6BFF4;
+        Fri, 19 May 2023 05:38:24 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9EBDE1FB;
+        Fri, 19 May 2023 05:39:08 -0700 (PDT)
+Received: from [10.57.73.119] (unknown [10.57.73.119])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4C83D3F762;
+        Fri, 19 May 2023 05:38:21 -0700 (PDT)
+Message-ID: <b40b3512-1782-80ad-2bcc-6a7558fc64a2@arm.com>
+Date:   Fri, 19 May 2023 13:38:19 +0100
 MIME-Version: 1.0
-Received: by 2002:a17:907:7dab:b0:94f:7d03:8e8b with HTTP; Fri, 19 May 2023
- 04:17:41 -0700 (PDT)
-Reply-To: ninacoulibaly03@myself.com
-From:   nina coulibaly <ninacoulibaly199@gmail.com>
-Date:   Fri, 19 May 2023 04:17:41 -0700
-Message-ID: <CAM7Z2JAd00KW6b=O8M27vwRnsJ1w3AmDO5tP+gSmzkaHvk6=CA@mail.gmail.com>
-Subject: from nina coulibaly
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.10.0
+Subject: Re: [PATCH V3 3/6] coresight: etm4x: Drop pid argument from
+ etm4_probe()
+To:     Anshuman Khandual <anshuman.khandual@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        coresight@lists.linaro.org
+Cc:     Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+        Steve Clevenger <scclevenger@os.amperecomputing.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Mike Leach <mike.leach@linaro.org>,
+        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+References: <20230519052149.1367814-1-anshuman.khandual@arm.com>
+ <20230519052149.1367814-4-anshuman.khandual@arm.com>
+From:   Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20230519052149.1367814-4-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.7 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dear,
+On 19/05/2023 06:21, Anshuman Khandual wrote:
+> Coresight device pid can be retrieved from its iomem base address, which is
+> stored in 'struct etm4x_drvdata'. This drops pid argument from etm4_probe()
+> and 'struct etm4_init_arg'. Instead etm4_check_arch_features() derives the
+> coresight device pid with a new helper coresight_get_pid(), right before it
+> is consumed in etm4_hisi_match_pid().
+> 
+> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Cc: Mike Leach <mike.leach@linaro.org>
+> Cc: Leo Yan <leo.yan@linaro.org>
+> Cc: coresight@lists.linaro.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>   .../coresight/coresight-etm4x-core.c          | 29 ++++++++++---------
+>   include/linux/coresight.h                     | 12 ++++++++
+>   2 files changed, 27 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+> index 748d2ef53cb0..914ef6eb85d1 100644
+> --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
+> +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+> @@ -66,7 +66,6 @@ static u64 etm4_get_access_type(struct etmv4_config *config);
+>   static enum cpuhp_state hp_online;
+>   
+>   struct etm4_init_arg {
+> -	unsigned int		pid;
+>   	struct device		*dev;
+>   	struct csdev_access	*csa;
+>   };
+> @@ -370,9 +369,17 @@ static void etm4_disable_arch_specific(struct etmv4_drvdata *drvdata)
+>   }
+>   
+>   static void etm4_check_arch_features(struct etmv4_drvdata *drvdata,
+> -				      unsigned int id)
+> +				     struct csdev_access *csa)
+>   {
+> -	if (etm4_hisi_match_pid(id))
+> +	/*
+> +	 * coresight_get_pid() fetches device PID from the iomem
+> +	 * register based accesses, which cannot be performed on
+> +	 * system instruction based devices.
+> +	 */
 
-Please grant me permission to share a very crucial discussion with
-you. I am looking forward to hearing from you at your earliest
-convenience.
+Minor nit: Please fix the comment to say something like :
 
-Mrs. Nina Coulibal
+	/*
+	 * TRCPIDR* registers are not required for ETMs with system
+	 * instructions. They must be identified by the MIDR+REVIDRs.
+	 * Skip the TRCPID checks for now.
+	 */
+
+Rest looks good to me.
+
+Suzuki
+
