@@ -2,67 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35ABB70AD9E
-	for <lists+linux-acpi@lfdr.de>; Sun, 21 May 2023 13:36:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C96B170AF60
+	for <lists+linux-acpi@lfdr.de>; Sun, 21 May 2023 19:58:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229610AbjEULgX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 21 May 2023 07:36:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42732 "EHLO
+        id S231189AbjEURyi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 21 May 2023 13:54:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230190AbjEULgT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 21 May 2023 07:36:19 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C669107
-        for <linux-acpi@vger.kernel.org>; Sun, 21 May 2023 04:32:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684668741; x=1716204741;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=H6xD/kT2DjThbjaCMtS6oZnjUoDogpfQPzsk+0v/FCg=;
-  b=CXrGaHYU6FacgreI/+9g71HGptuRTLGMpRkIMK3KP/NhOFSM7CNpT10H
-   cGmNwXZWCehPa6cgCsLIuWSUb+PqhORhzoy5LHjUr/nyPeWS6F0iCGzgD
-   I2A+PYxuhCfUHmLTBRsevdqTt2crIy3Of2atRY1ifYWfgHSFxHKzjr+sk
-   h2yu20s/EwsGYJLGrApdmjqls856G7dbO3j5K381PnZtgHgga5l8zl+dS
-   poclDeF7TBQyd49k1xw0PEq4MkMnkQ9F3SxJBWonJsKndBhHFq3n6dfCS
-   kYrH1qZrBy0ybqHAFxdeSUk0sa/2Q7TI832aEgJTA1o5XKl/VHs7cJtdK
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10716"; a="439048222"
-X-IronPort-AV: E=Sophos;i="6.00,182,1681196400"; 
-   d="scan'208";a="439048222"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2023 04:32:20 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10716"; a="949708586"
-X-IronPort-AV: E=Sophos;i="6.00,182,1681196400"; 
-   d="scan'208";a="949708586"
-Received: from allen-box.sh.intel.com (HELO [10.239.159.127]) ([10.239.159.127])
-  by fmsmga006.fm.intel.com with ESMTP; 21 May 2023 04:32:17 -0700
-Message-ID: <5bcb5f03-77c9-116e-c436-9d0af21fa82a@linux.intel.com>
-Date:   Sun, 21 May 2023 19:31:38 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Cc:     baolu.lu@linux.intel.com, Kevin Tian <kevin.tian@intel.com>,
-        Nicolin Chen <nicolinc@nvidia.com>
-Subject: Re: [PATCH v2 05/10] iommu: Add iommu_init/deinit_device() paired
- functions
-Content-Language: en-US
-To:     Jason Gunthorpe <jgg@nvidia.com>,
-        David Woodhouse <dwmw2@infradead.org>, iommu@lists.linux.dev,
-        Joerg Roedel <joro@8bytes.org>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org,
+        with ESMTP id S231519AbjEURnF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 21 May 2023 13:43:05 -0400
+X-Greylist: delayed 62 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 21 May 2023 10:14:26 PDT
+Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E6D0E42
+        for <linux-acpi@vger.kernel.org>; Sun, 21 May 2023 10:14:26 -0700 (PDT)
+Received: from localhost (88-113-26-95.elisa-laajakaista.fi [88.113.26.95])
+        by fgw20.mail.saunalahti.fi (Halon) with ESMTP
+        id c6755f98-f7fa-11ed-b3cf-005056bd6ce9;
+        Sun, 21 May 2023 20:13:18 +0300 (EEST)
+From:   andy.shevchenko@gmail.com
+Date:   Sun, 21 May 2023 20:13:16 +0300
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Will Deacon <will@kernel.org>
-References: <5-v2-3c3bb7aa6e48+1916b-iommu_probe_jgg@nvidia.com>
-From:   Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <5-v2-3c3bb7aa6e48+1916b-iommu_probe_jgg@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        Wolfram Sang <wsa@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, netdev@vger.kernel.org,
+        openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org,
+        linux-mips@vger.kernel.org
+Subject: Re: [PATCH v5 1/8] drivers: fwnode: fix fwnode_irq_get[_byname]()
+Message-ID: <ZGpRLLy1Snez94NQ@surfacebook>
+References: <cover.1684493615.git.mazziesaccount@gmail.com>
+ <339cc23ccae4580d5551cc2b6b9b4afdde48f25e.1684493615.git.mazziesaccount@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <339cc23ccae4580d5551cc2b6b9b4afdde48f25e.1684493615.git.mazziesaccount@gmail.com>
+X-Spam-Status: No, score=0.7 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
+        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,92 +66,79 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-I revisited this patch. And I still have some questions.
+Fri, May 19, 2023 at 02:00:54PM +0300, Matti Vaittinen kirjoitti:
+> The fwnode_irq_get() and the fwnode_irq_get_byname() return 0 upon
+> device-tree IRQ mapping failure. This is contradicting the
+> fwnode_irq_get_byname() function documentation and can potentially be a
+> source of errors like:
+> 
+> int probe(...) {
+> 	...
+> 
+> 	irq = fwnode_irq_get_byname();
+> 	if (irq <= 0)
+> 		return irq;
+> 
+> 	...
+> }
+> 
+> Here we do correctly check the return value from fwnode_irq_get_byname()
+> but the driver probe will now return success. (There was already one
+> such user in-tree).
+> 
+> Change the fwnode_irq_get_byname() to work as documented and make also the
+> fwnode_irq_get() follow same common convention returning a negative errno
+> upon failure.
 
-On 5/20/23 2:42 AM, Jason Gunthorpe wrote:
-> -/*
-> - * Remove the iommu_group from the struct device. The attached group must be put
-> - * by the caller after releaseing the group->mutex.
-> - */
-> +/* Remove the iommu_group from the struct device. */
->   static void __iommu_group_remove_device(struct device *dev)
->   {
->   	struct iommu_group *group = dev->iommu_group;
->   	struct group_device *device;
->   
-> +	mutex_lock(&group->mutex);
->   	lockdep_assert_held(&group->mutex);
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-By moving mutex_lock/unlock into this helper, above
-lockdep_assert_held() is unnecessary.
-
->   	for_each_group_device(group, device) {
->   		if (device->dev != dev)
-> @@ -510,44 +564,30 @@ static void __iommu_group_remove_device(struct device *dev)
->   
->   		list_del(&device->list);
->   		__iommu_group_free_device(group, device);
-> -		/* Caller must put iommu_group */
-> -		return;
-> +		if (dev->iommu && dev->iommu->iommu_dev)
-> +			iommu_deinit_device(dev);
-> +		else
-> +			dev->iommu_group = NULL;
-> +		goto out;
->   	}
->   	WARN(true, "Corrupted iommu_group device_list");
-> +out:
-> +	mutex_unlock(&group->mutex);
+> Fixes: ca0acb511c21 ("device property: Add fwnode_irq_get_byname")
+> Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> 
+> ---
+> I dropped the existing reviewed-by tags because change to
+> fwnode_irq_get() was added.
+> 
+> Revision history:
+> v3 => v4:
+>  - Change also the fwnode_irq_get()
+> ---
+>  drivers/base/property.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index f6117ec9805c..8c40abed7852 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -987,12 +987,18 @@ EXPORT_SYMBOL(fwnode_iomap);
+>   * @fwnode:	Pointer to the firmware node
+>   * @index:	Zero-based index of the IRQ
+>   *
+> - * Return: Linux IRQ number on success. Other values are determined
+> - * according to acpi_irq_get() or of_irq_get() operation.
+> + * Return: Linux IRQ number on success. Negative errno on failure.
+>   */
+>  int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
+>  {
+> -	return fwnode_call_int_op(fwnode, irq_get, index);
+> +	int ret;
 > +
-> +	/* Pairs with the get in iommu_group_add_device() */
-> +	iommu_group_put(group);
+> +	ret = fwnode_call_int_op(fwnode, irq_get, index);
+> +	/* We treat mapping errors as invalid case */
+> +	if (ret == 0)
+> +		return -EINVAL;
 
-The group->devices_kobj was increased on the probe device path twice:
+Not sure if this is the best choice, perhaps -EEXIST or -ENOENT might be
+better, but it's just a spoken up thought.
 
-- iommu_init_device() - allocate the group
-- iommu_group_add_device() - add device to the group
+> +	return ret;
+>  }
+>  EXPORT_SYMBOL(fwnode_irq_get);
 
-But, on the release path, it seems that group->devices_kobj is only
-decreased once.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Did I overlook anything? Otherwise, the group will never be released,
-right?
 
->   }
->   
->   static void iommu_release_device(struct device *dev)
->   {
->   	struct iommu_group *group = dev->iommu_group;
-> -	const struct iommu_ops *ops;
->   
->   	if (!dev->iommu || !group)
->   		return;
->   
->   	iommu_device_unlink(dev->iommu->iommu_dev, dev);
->   
-> -	mutex_lock(&group->mutex);
->   	__iommu_group_remove_device(dev);
-> -
-> -	/*
-> -	 * release_device() must stop using any attached domain on the device.
-> -	 * If there are still other devices in the group they are not effected
-> -	 * by this callback.
-> -	 *
-> -	 * The IOMMU driver must set the device to either an identity or
-> -	 * blocking translation and stop using any domain pointer, as it is
-> -	 * going to be freed.
-> -	 */
-> -	ops = dev_iommu_ops(dev);
-> -	if (ops->release_device)
-> -		ops->release_device(dev);
-> -	mutex_unlock(&group->mutex);
-> -
-> -	/* Pairs with the get in iommu_group_add_device() */
-> -	iommu_group_put(group);
-> -
-> -	module_put(ops->owner);
-> -	dev_iommu_free(dev);
->   }
-
-Best regards,
-baolu
