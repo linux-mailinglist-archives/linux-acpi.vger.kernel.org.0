@@ -2,169 +2,323 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 966ED70C39C
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 May 2023 18:38:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D02FD70C3A8
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 May 2023 18:42:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231712AbjEVQiw convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 22 May 2023 12:38:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46282 "EHLO
+        id S230379AbjEVQmd convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 22 May 2023 12:42:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231615AbjEVQiv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 May 2023 12:38:51 -0400
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 703B5E9;
-        Mon, 22 May 2023 09:38:50 -0700 (PDT)
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-96f72e6925cso82507666b.1;
-        Mon, 22 May 2023 09:38:50 -0700 (PDT)
+        with ESMTP id S233114AbjEVQmc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 May 2023 12:42:32 -0400
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EF77ED;
+        Mon, 22 May 2023 09:42:31 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-94ea38c90ccso66446266b.1;
+        Mon, 22 May 2023 09:42:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684773529; x=1687365529;
+        d=1e100.net; s=20221208; t=1684773750; x=1687365750;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kbXmGtSpDb/1zESGxKbzMRnI2ZUXEWWp4U9KoUTW0ks=;
-        b=XsS+kwLRHWs6uPDa0UsJSGjzBcOQ1N6rsA7oF64HLoWadb0Iy7RMJDQXbFnTSff/GZ
-         MmTEsabY+HOgiNcGfOPN6pNzx6Ie4w2nxli7R7Y1Zbf0dLsd7jex44v0qqp0rssPaAVg
-         irmD5GcCIpI2+Ql3uiQSWu4kiRw2ofWje9G/KVjDwxN1PQy2H1aAQ5hWFgCGoS+b4Rdd
-         5XSt8mAmrZRNNe4NXiqzSYMPO1UstdVNbz7vVZJdeNXUZjrdWSzDI3/Kp4xrlL0bMI7l
-         wNzFnEdq8dvmwE3bGHeRwuHXiFCW8CwUrtVlg0KbKfJLGZ8KSC1uiONb3xCf59Zstam+
-         hJTw==
-X-Gm-Message-State: AC+VfDwAq8fGo0fOMkNpvw36p/1zaSIfpi1RZbC8q4fG8WnJh6WUTuue
-        Qpxb3iOfDfVyG6jwIfWe5kUumV7lsnOTsxk/p1g=
-X-Google-Smtp-Source: ACHHUZ6UCUY75L6F2Ueh9y8rBz7msfucJ2viGIUmsGnIduqSK/4bd3jm+Sp+opH81RJre3xuDP2SwtrHySXd/nhoPRE=
-X-Received: by 2002:a17:906:778c:b0:953:2918:71e7 with SMTP id
- s12-20020a170906778c00b00953291871e7mr10365988ejm.5.1684773528674; Mon, 22
- May 2023 09:38:48 -0700 (PDT)
+        bh=2WcX3SRwGwPJF/OLcu5aIMyc9Ws3Rgb9ngOJyMBFxxs=;
+        b=b7gTOv74YwxHswl/ruFSJCMg7cNkk+4XCwBQenoA28vMloQdRjmvjrvBgUw5QazhNT
+         ZuxDFC2RRs9jXwrbwWTJRcSdSgXkvsuvRWWsgNO4sL4qXD7NKtBRX5f9bXUVntifJNpR
+         DZnqCYpA7D1Ci9IBCfGjj4EJ6dIMgRf55C6PIRIH/i7gO/7eOTaW0KIPcZDTQXUKvzC5
+         +R1DmDvsVna/DNCpXZlrvqokrAxnLfNZhvgu+1WDLP0vHxcHYxUoc/O8nXZrM8/F0TLw
+         nNt49lyciHCxq0vz/OlG368aAvusMnHdmBaMbJr0I15WhKpy6w/qpOMHmxPhyFeZXF+c
+         QYJw==
+X-Gm-Message-State: AC+VfDyhwd3d8albL+JWkNjVdUrWUA9PFntsaF2sbFPUsUFkdjZwEErY
+        hg4jmAYYFcsFc/huzB7t4oUlypXxR0py45UK2bs=
+X-Google-Smtp-Source: ACHHUZ4DMA9Mprfi92vprO0D2gswje55f0mtYB8zZVvXwcDDNLnVPIJX+kukrHreZjNGbeSBg04IAeZs6S998dTWw5w=
+X-Received: by 2002:a17:906:6495:b0:8d2:78c5:1d4e with SMTP id
+ e21-20020a170906649500b008d278c51d4emr11503963ejm.5.1684773749502; Mon, 22
+ May 2023 09:42:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230329100951.1522322-1-sakari.ailus@linux.intel.com>
- <20230329100951.1522322-3-sakari.ailus@linux.intel.com> <CAJZ5v0gG1Zc8h8Lt_tKJp8u7b-nH0Rxt=2j9RqptMVc8r0vL7Q@mail.gmail.com>
- <ZGNn9jOWmh0/aEOW@kekkonen.localdomain> <CAJZ5v0iPcSc_x9g1tpTOVVaEB+9O_6N8SFqWSgG_ku+dNqveQg@mail.gmail.com>
- <ZGuYHGMQBzBi4myq@kekkonen.localdomain>
-In-Reply-To: <ZGuYHGMQBzBi4myq@kekkonen.localdomain>
+References: <20230518183920.93472-1-mario.limonciello@amd.com>
+In-Reply-To: <20230518183920.93472-1-mario.limonciello@amd.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 22 May 2023 18:38:37 +0200
-Message-ID: <CAJZ5v0hW-JewnYP48sowLmi7=v00EBWJLLR-8mWBK8-DOeC=uA@mail.gmail.com>
-Subject: Re: [PATCH v8 02/10] ACPI: property: Parse data node string
- references in properties
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com
+Date:   Mon, 22 May 2023 18:42:17 +0200
+Message-ID: <CAJZ5v0hen9KrT7Yt=afsYc2W0rjoffcU=5NwZ5kZcONQLfw_Bg@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: resource: Remove "Zen" specific match and quirks
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     rafael@kernel.org, gch981213@gmail.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, regressions@leemhuis.info,
+        ofenfisch@googlemail.com, wse@tuxedocomputers.com,
+        adam.niederer@gmail.com, adrian@freund.io, jirislaby@kernel.org,
+        Renjith.Pananchikkal@amd.com, anson.tsao@amd.com,
+        Richard.Gong@amd.com, evilsnoo@proton.me, ruinairas1992@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Sakari,
-
-On Mon, May 22, 2023 at 6:28 PM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
-> On Mon, May 22, 2023 at 05:29:48PM +0200, Rafael J. Wysocki wrote:
-> > On Tue, May 16, 2023 at 1:24 PM Sakari Ailus
-> > <sakari.ailus@linux.intel.com> wrote:
-> > > On Fri, May 12, 2023 at 06:04:26PM +0200, Rafael J. Wysocki wrote:
-> > > > On Wed, Mar 29, 2023 at 12:10 PM Sakari Ailus
-> > > > <sakari.ailus@linux.intel.com> wrote:
-> > > > >
-> > > > > Add support for parsing property references using strings, besides
-> > > > > reference objects that were previously supported. This allows also
-> > > > > referencing data nodes which was not possible with reference objects.
-> > > > >
-> > > > > Also add pr_fmt() macro to prefix printouts.
-> > > > >
-> > > > > While at it, update copyright.
-> > > >
-> > > > Although I said that it looked good to me, some minor improvements can
-> > > > still be made.
-> > > >
-> > > > First off, the above changelog is a bit terse.
-> > > >
-> > > > I think that it would help to provide an example of device properties
-> > > > that would not be parsed properly before the change and can be parsed
-> > > > now.
-> > > >
-> > > > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > > > > ---
-> > > > >  drivers/acpi/property.c | 110 ++++++++++++++++++++++++++++++++++------
-> > > > >  1 file changed, 94 insertions(+), 16 deletions(-)
-> > > > >
-> > > > > diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-> > > > > index b8d9eb9a433e..08831ffba26c 100644
-> > > > > --- a/drivers/acpi/property.c
-> > > > > +++ b/drivers/acpi/property.c
-> > > > > @@ -2,14 +2,17 @@
-> > > > >  /*
-> > > > >   * ACPI device specific properties support.
-> > > > >   *
-> > > > > - * Copyright (C) 2014, Intel Corporation
-> > > > > + * Copyright (C) 2014-2023, Intel Corporation
-> > > > >   * All rights reserved.
-> > > > >   *
-> > > > >   * Authors: Mika Westerberg <mika.westerberg@linux.intel.com>
-> > > > > - *          Darren Hart <dvhart@linux.intel.com>
-> > > > > - *          Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > > > + *         Darren Hart <dvhart@linux.intel.com>
-> > > > > + *         Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > >
-> > > > I'm not sure if the whitespace change here is really useful.
-> > >
-> > > I did that to address a comment from Andy --- the earlier lines used spaces
-> > > for indentation.
-> > >
-> > > >
-> > > > > + *         Sakari Ailus <sakari.ailus@linux.intel.com>
-> > > > >   */
-> > > > >
-> > > > > +#define pr_fmt(fmt) "ACPI: " fmt
-> > > > > +
-> > > > >  #include <linux/acpi.h>
-> > > > >  #include <linux/device.h>
-> > > > >  #include <linux/export.h>
-> > > > > @@ -795,7 +798,8 @@ acpi_fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
-> > > > >  static int acpi_get_ref_args(struct fwnode_reference_args *args,
-> > > > >                              struct fwnode_handle *ref_fwnode,
-> > > > >                              const union acpi_object **element,
-> > > > > -                            const union acpi_object *end, size_t num_args)
-> > > > > +                            const union acpi_object *end, size_t num_args,
-> > > > > +                            bool subnode_string)
-> > > >
-> > > > The meaning of the new argument isn't really clear.  it would be good
-> > > > to somehow help a casual reader of the code to find this out more
-> > > > easily.
-> > >
-> > > I can add comments to v9.
-> >
-> > If you can send me an example of ASL that will be parsed correctly
-> > after this change, but not before, it will help a bit.
+On Thu, May 18, 2023 at 8:39 PM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
 >
-> E.g. this bit from DisCo for Imaging 1.0 (Annex B.1):
+> commit 9946e39fe8d0 ("ACPI: resource: skip IRQ override on
+> AMD Zen platforms") attempted to overhaul the override logic so it
+> didn't apply on X86 AMD Zen systems.  This was intentional so that
+> systems would prefer DSDT values instead of default MADT value for
+> IRQ 1 on Ryzen 6000 systems which use ActiveLow for IRQ1.
 >
->         Package () {
->             "mipi-img-flash-leds",
->             Package () {
->                 "\\_SB.PCI0.I2C2.LEDD.LED0",
->                 "\\_SB.PCI0.I2C2.LEDD.LED1"
->             },
->         },
+> This turned out to be a bad assumption because several vendors seem
+> to add Interrupt Source Override but don't fix the DSDT. A pile of
+> quirks was collecting that proved this wasn't sustaintable.
 >
-> It's a property with a string reference to an ACPI non-device node,
-> although you can refer to device nodes as well.
+> Adjust the logic so that only IRQ1 is overridden in Ryzen 6000 case.
+>
+> This effectively reverts the following commits:
+> commit 17bb7046e7ce ("ACPI: resource: Do IRQ override on all TongFang
+> GMxRGxx")
+> commit f3cb9b740869 ("ACPI: resource: do IRQ override on Lenovo 14ALC7")
+> commit bfcdf58380b1 ("ACPI: resource: do IRQ override on LENOVO IdeaPad")
+> commit 7592b79ba4a9 ("ACPI: resource: do IRQ override on XMG Core 15")
 
-This example is missing the definition of LED0 or LED1 from which it
-would be clear that they are data nodes (or at least one of them is a
-data node).
+Should it also remove the quirk added by commit 71a485624c4c ("ACPI:
+resource: Add IRQ override quirk for LG UltraPC 17U70P")?
 
-Also I'm kind of wondering about the "reference with arguments" part
-which seems to work differently depending on whether the reference is
-represented by a string or by a reference object.
-
-> You can get the spec from here:
-> <URL:https://www.mipi.org/mipi-disco-for-imaging-download>.
-
-Sure, but it alone won't help me much with documenting this code change.
+> Cc: ofenfisch@googlemail.com
+> Cc: wse@tuxedocomputers.com
+> Cc: adam.niederer@gmail.com
+> Cc: adrian@freund.io
+> Cc: jirislaby@kernel.org
+> Tested-by: Renjith.Pananchikkal@amd.com
+> Tested-by: anson.tsao@amd.com
+> Tested-by: Richard.Gong@amd.com
+> Tested-by: Chuanhong Guo <gch981213@gmail.com>
+> Reported-by: evilsnoo@proton.me
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217394
+> Reported-by: ruinairas1992@gmail.com
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217406
+> Fixes: 9946e39fe8d0 ("ACPI: resource: skip IRQ override on AMD Zen platforms")
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+> v1->v2:
+>  * Rebase on 71a485624c4c ("ACPI: resource: Add IRQ override quirk for LG UltraPC 17U70P")
+>  * Pick up tag
+> ---
+>  drivers/acpi/resource.c | 154 +++++++++++++++++-----------------------
+>  1 file changed, 65 insertions(+), 89 deletions(-)
+>
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index 0800a9d77558..c6ac87e01e1c 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -470,52 +470,6 @@ static const struct dmi_system_id asus_laptop[] = {
+>         { }
+>  };
+>
+> -static const struct dmi_system_id lenovo_laptop[] = {
+> -       {
+> -               .ident = "LENOVO IdeaPad Flex 5 14ALC7",
+> -               .matches = {
+> -                       DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+> -                       DMI_MATCH(DMI_PRODUCT_NAME, "82R9"),
+> -               },
+> -       },
+> -       {
+> -               .ident = "LENOVO IdeaPad Flex 5 16ALC7",
+> -               .matches = {
+> -                       DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+> -                       DMI_MATCH(DMI_PRODUCT_NAME, "82RA"),
+> -               },
+> -       },
+> -       { }
+> -};
+> -
+> -static const struct dmi_system_id tongfang_gm_rg[] = {
+> -       {
+> -               .ident = "TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15 Gen4 AMD",
+> -               .matches = {
+> -                       DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
+> -               },
+> -       },
+> -       { }
+> -};
+> -
+> -static const struct dmi_system_id maingear_laptop[] = {
+> -       {
+> -               .ident = "MAINGEAR Vector Pro 2 15",
+> -               .matches = {
+> -                       DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
+> -                       DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-15A3070T"),
+> -               }
+> -       },
+> -       {
+> -               .ident = "MAINGEAR Vector Pro 2 17",
+> -               .matches = {
+> -                       DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
+> -                       DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-17A3070T"),
+> -               },
+> -       },
+> -       { }
+> -};
+> -
+>  static const struct dmi_system_id lg_laptop[] = {
+>         {
+>                 .ident = "LG Electronics 17U70P",
+> @@ -527,7 +481,7 @@ static const struct dmi_system_id lg_laptop[] = {
+>         { }
+>  };
+>
+> -struct irq_override_cmp {
+> +struct irq_override_dmi_cmp {
+>         const struct dmi_system_id *system;
+>         unsigned char irq;
+>         unsigned char triggering;
+> @@ -536,50 +490,86 @@ struct irq_override_cmp {
+>         bool override;
+>  };
+>
+> -static const struct irq_override_cmp override_table[] = {
+> +struct irq_override_acpi_cmp {
+> +       const char *id;
+> +       unsigned char irq;
+> +       unsigned char triggering;
+> +       unsigned char polarity;
+> +};
+> +
+> +static const struct irq_override_dmi_cmp dmi_override_table[] = {
+>         { medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+>         { asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+> -       { lenovo_laptop, 6, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
+> -       { lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
+> -       { tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+> -       { maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+>         { lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+>  };
+>
+> -static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+> -                                 u8 shareable)
+> +/*
+> + * Ryzen 6000 requires ActiveLow for keyboard, but a number of machines
+> + * seem to get it wrong in DSDT or don't have an Interrupt Source
+> + * Override.
+> + */
+> +static const struct irq_override_acpi_cmp acpi_override_table[] = {
+> +       { "AMDI0007", 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW },
+> +};
+> +
+> +static void acpi_dev_irq_override(u32 gsi, u8 *triggering, u8 *polarity,
+> +                                 u8 *shareable)
+>  {
+> -       int i;
+> +       int i, p, t;
+> +       int check_override = true;
+>
+> -       for (i = 0; i < ARRAY_SIZE(override_table); i++) {
+> -               const struct irq_override_cmp *entry = &override_table[i];
+> +       for (i = 0; i < ARRAY_SIZE(dmi_override_table); i++) {
+> +               const struct irq_override_dmi_cmp *entry = &dmi_override_table[i];
+>
+>                 if (dmi_check_system(entry->system) &&
+>                     entry->irq == gsi &&
+> -                   entry->triggering == triggering &&
+> -                   entry->polarity == polarity &&
+> -                   entry->shareable == shareable)
+> -                       return entry->override;
+> +                   entry->triggering == *triggering &&
+> +                   entry->polarity == *polarity &&
+> +                   entry->shareable == *shareable)
+> +                       check_override = entry->override;
+>         }
+>
+> -#ifdef CONFIG_X86
+> -       /*
+> -        * IRQ override isn't needed on modern AMD Zen systems and
+> -        * this override breaks active low IRQs on AMD Ryzen 6000 and
+> -        * newer systems. Skip it.
+> -        */
+> -       if (boot_cpu_has(X86_FEATURE_ZEN))
+> -               return false;
+> -#endif
+> +       if (!check_override)
+> +               return;
+>
+> -       return true;
+> +       if (!acpi_get_override_irq(gsi, &t, &p)) {
+> +               u8 trig = t ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
+> +               u8 pol = p ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
+> +
+> +               if (*triggering != trig || *polarity != pol) {
+> +                       pr_warn("ACPI: IRQ %d override to %s%s, %s%s\n", gsi,
+> +                               t ? "level" : "edge",
+> +                               trig == *triggering ? "" : "(!)",
+> +                               p ? "low" : "high",
+> +                               pol == *polarity ? "" : "(!)");
+> +                       *triggering = trig;
+> +                       *polarity = pol;
+> +               }
+> +       }
+> +
+> +       for (i = 0; i < ARRAY_SIZE(acpi_override_table); i++) {
+> +               const struct irq_override_acpi_cmp *entry = &acpi_override_table[i];
+> +
+> +               if (acpi_dev_found(entry->id) && gsi == entry->irq &&
+> +                  (*polarity != entry->polarity || *triggering != entry->triggering)) {
+> +                       pr_warn("ACPI: IRQ %d override to %s%s, %s%s due to %s\n",
+> +                               gsi,
+> +                               entry->triggering ? "level" : "edge",
+> +                               entry->triggering == *triggering ? "" : "(!)",
+> +                               entry->polarity ? "low" : "high",
+> +                               entry->polarity == *polarity ? "" : "(!)",
+> +                               entry->id);
+> +                       *polarity = entry->polarity;
+> +                       *triggering = entry->triggering;
+> +               }
+> +       }
+>  }
+>
+>  static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
+>                                      u8 triggering, u8 polarity, u8 shareable,
+>                                      u8 wake_capable, bool check_override)
+>  {
+> -       int irq, p, t;
+> +       int irq;
+>
+>         if (!valid_IRQ(gsi)) {
+>                 irqresource_disabled(res, gsi);
+> @@ -592,26 +582,12 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
+>          * 2. BIOS uses IO-APIC mode Interrupt Source Override
+>          *
+>          * We do this only if we are dealing with IRQ() or IRQNoFlags()
+> -        * resource (the legacy ISA resources). With modern ACPI 5 devices
+> +        * resource (the legacy ISA resources). With ACPI devices
+>          * using extended IRQ descriptors we take the IRQ configuration
+>          * from _CRS directly.
+>          */
+> -       if (check_override &&
+> -           acpi_dev_irq_override(gsi, triggering, polarity, shareable) &&
+> -           !acpi_get_override_irq(gsi, &t, &p)) {
+> -               u8 trig = t ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
+> -               u8 pol = p ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
+> -
+> -               if (triggering != trig || polarity != pol) {
+> -                       pr_warn("ACPI: IRQ %d override to %s%s, %s%s\n", gsi,
+> -                               t ? "level" : "edge",
+> -                               trig == triggering ? "" : "(!)",
+> -                               p ? "low" : "high",
+> -                               pol == polarity ? "" : "(!)");
+> -                       triggering = trig;
+> -                       polarity = pol;
+> -               }
+> -       }
+> +       if (check_override)
+> +               acpi_dev_irq_override(gsi, &triggering, &polarity, &shareable);
+>
+>         res->flags = acpi_dev_irq_flags(triggering, polarity, shareable, wake_capable);
+>         irq = acpi_register_gsi(NULL, gsi, triggering, polarity);
+>
+> base-commit: c554eee18c9a440bd2dd5a363b0f79325717f0bf
+> --
+> 2.34.1
+>
