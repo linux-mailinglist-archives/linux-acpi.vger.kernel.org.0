@@ -2,123 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB0D370B948
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 May 2023 11:44:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 986DF70BAD0
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 May 2023 12:54:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232630AbjEVJo0 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 22 May 2023 05:44:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40434 "EHLO
+        id S233095AbjEVKyu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 22 May 2023 06:54:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232657AbjEVJoV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 May 2023 05:44:21 -0400
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB537FD;
-        Mon, 22 May 2023 02:44:18 -0700 (PDT)
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-96f66fbd770so59788766b.1;
-        Mon, 22 May 2023 02:44:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684748657; x=1687340657;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=H0v9adtniTT8QNuGIgBreS0o2NPh2mX6275Qoav/Keo=;
-        b=CXwi1SAEX8lHCPFyvAbrxI5uaANzedgDMy4bV6/qoApMLglr6Z8idHPB0rJEZMNcKH
-         p2lUuAoMm91setAVT9vUwArBjtkg/Pi2+VlQeLDgjhttDq69uOLnHV10w7RiHx5tyW4Z
-         pBmzEd+ix8s1+uD8uPYLl15qs5/WPSHlfdrkxJp5r+W71pbeQf+urMmjK1p6I6hVnpzf
-         bu0aEuNIouLCN/GDGuCJZuAlI6xlGm+ih2iBvnthyE7xVpOAHSWpI7xz5VQKMxoS84Ka
-         QoSQwxxLG6qBGaESlBWrvqvbZ1CSXGiVCmGadqUbP9QbS5vKdztSvpKSNlHfeTISVr8/
-         B2Zg==
-X-Gm-Message-State: AC+VfDyIOyHvypvLerHZheg6+8aMGOweAbgcoV7Dqhp18WBALbTm+11h
-        rugOjZcPpbIKaPw5sBR6No0m76ltURwQhAC6qV8=
-X-Google-Smtp-Source: ACHHUZ4WRGjpcozBTc7qvQY6+H8MfsrOajqLuZkWKppHdNcZWnk2yX1TxehlXPzo4Nxu9a1Mq7fs3kQCYqmFJ/lSjEE=
-X-Received: by 2002:a17:906:2218:b0:96f:4c38:4b1a with SMTP id
- s24-20020a170906221800b0096f4c384b1amr8703985ejs.5.1684748656459; Mon, 22 May
- 2023 02:44:16 -0700 (PDT)
+        with ESMTP id S232937AbjEVKwq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 May 2023 06:52:46 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF5E0FF;
+        Mon, 22 May 2023 03:51:42 -0700 (PDT)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34M8lGFj030674;
+        Mon, 22 May 2023 10:51:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : content-transfer-encoding
+ : mime-version; s=pp1; bh=dd0K+0Sa8R65c+a2P9+/Q518l7F4X9iVJjpDwWDz76U=;
+ b=XdoTd9GJZKt10ieKjQ9NJ37fphrBJPQ/2+7RBhpbE2W3cNhL5m6yWNfD0hG9Hiy/QYej
+ APk3jr5on6k5NqzBbf78yT3btL/jwelHdDRHYU1ChvEPeuv4MJNKSkXUdCC/L8m715fT
+ eKMOMwx1HaHRyytL2/GX+BukI4/fnEta8sMg2+ynGniSyvIGhMZGi99okRfbndxuZTWc
+ AjW+0YuowOZkB0m+IIV+zLZljNJGjNbpNJhLnDp9nKT493z+F45Fri2jcgU7YuGT7+i+
+ 0sDoRylgfVtWNf34uiMH0IdnD5WbKcQH56aSyko6hQ6VxLPG9uRnhDbMqoB+F5Y2rltQ uA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qq7qjgnc5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 22 May 2023 10:51:22 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34MAbZCM004161;
+        Mon, 22 May 2023 10:51:21 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qq7qjgnb8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 22 May 2023 10:51:21 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+        by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34M8rw3u015786;
+        Mon, 22 May 2023 10:51:19 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+        by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3qppe08rk6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 22 May 2023 10:51:18 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+        by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34MApEOM25362716
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 22 May 2023 10:51:15 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C6D1020043;
+        Mon, 22 May 2023 10:51:14 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 506D120040;
+        Mon, 22 May 2023 10:51:14 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+        by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+        Mon, 22 May 2023 10:51:14 +0000 (GMT)
+From:   Niklas Schnelle <schnelle@linux.ibm.com>
+To:     Arnd Bergmann <arnd@arndb.de>, Jaroslav Kysela <perex@perex.cz>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH v5 28/44] pnp: add HAS_IOPORT dependencies
+Date:   Mon, 22 May 2023 12:50:33 +0200
+Message-Id: <20230522105049.1467313-29-schnelle@linux.ibm.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230522105049.1467313-1-schnelle@linux.ibm.com>
+References: <20230522105049.1467313-1-schnelle@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 26vKMZmQBbeaYohOvs9egl8s0__WMMyg
+X-Proofpoint-GUID: FPgvcn5xGQ61cQNOi_ZHropGUHCEkmto
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <DM6PR19MB2780634FE9D96D6FB72712B2BC429@DM6PR19MB2780.namprd19.prod.outlook.com>
-In-Reply-To: <DM6PR19MB2780634FE9D96D6FB72712B2BC429@DM6PR19MB2780.namprd19.prod.outlook.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 22 May 2023 11:44:01 +0200
-Message-ID: <CAJZ5v0j5hFbVh05wP5t49_j2kSkW9XY3WaqtrOb6YA9NJYHKcQ@mail.gmail.com>
-Subject: Re: ACPI: what should Linux do for "call-order-swap" quirk from firmware?
-To:     Ratchanan Srirattanamet <peathot@hotmail.com>
-Cc:     linux-pm@vger.kernel.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-22_06,2023-05-22_03,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ priorityscore=1501 clxscore=1015 mlxlogscore=866 impostorscore=0
+ mlxscore=0 bulkscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305220089
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-+Mario and linux-acpi
+In a future patch HAS_IOPORT=n will result in inb()/outb() and friends
+not being declared. We thus need to depend on HAS_IOPORT even when
+compile testing only.
 
-On Sun, May 21, 2023 at 9:26 PM Ratchanan Srirattanamet
-<peathot@hotmail.com> wrote:
->
-> Hello,
->
-> I'm trying to debug an issue where Nouveau is unable to runtime-resume
-> an Nvidia GTX 1650 Ti in an AMD-based laptop [1]. As part of this, I've
-> traced ACPI calls for the same device on Windows. And it seems like this
-> device has a weird quirk, which I call it "call-order-swap" for a lack
-> of better words, when it transitions from D3cold to D0.
->
-> So, a bit of context: Lenovo Legion 5-15ARH05 [2] is a laptop sporting
-> AMD Ryzen 7 4800H with Radeon Graphics + Nvidia GTX 1650 Ti. This
-> device's PCI-E topology to the GPU is:
->
-> 00:01.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Renoir
-> PCIe GPP Bridge [1022:1633]
->          +- 01:00.0 VGA compatible controller [0300]: NVIDIA Corporation
-> TU117M [GeForce GTX 1650 Ti Mobile] [10de:1f95] (rev a1)
->
-> And for ACPI perspective (according to my interpretation), a power
-> resource \_SB.PCI0.GPP0 seems to represent the PCI bridge, having
-> \_SB.PCI0.GPP0.PG00 as a power resource, and \_SB.PCI0.GPP0.PEGP seems
-> to represent the GPU itself, which doesn't seem to have its own power
-> resource. All ACPI table dumps and infos can be found in the issue on
-> Freedesktop GitLab [1].
->
-> Now, if I understand the specs correctly, when transitioning the GPU &
-> the bridge back from D3cold to D0, the kernel should start up the bridge
-> before the GPU itself. From the ACPI perspective, I should see calls for
-> .PG00._ON() (power resource for the bridge) before .PEGP.PS0().
->
-> However, on Windows [3], instead it seems like .PEGP.PS0() is called
-> before .PG00._ON(), for some reason. This is weird, because if
-> .PG00._ON() has not been called yet, .PEGP.PS0() should be even valid to
-> call. Now, I have no idea on what part of the Windows system is supposed
-> to call those ACPI functions, but my feeling is that it must be either
-> Nvidia or AMD driver that does this kind of quirks.
->
-> As for what Linux does... well it seems like when Linux resumes the PCI
-> bridge, it calls only .PG00._ON(), skipping .PEGP.PS0() on the ground
-> that the downstream devices must have been reset when that happens. I'm
-> not sure that's the right thing to happen either, but at least it makes
-> more sense. Nvidia's proprietary driver seems to disable runtime D3
-> support inside it completely on this device, so I think Nvidia must have
-> a quirk for this chipset, as I briefly borrowed my friend's laptop
-> sporting AMD 6000 series CPU and it doesn't disable runtime D3.
->
-> So... I'm not sure what the correct behavior is here. I'm a developer
-> myself, but kernel is not where I'm familiar with. Please advise me on
-> where I should look next.
->
-> Ratchanan.
->
-> P.S. please make sure to include me in the reply, as I'm not the list's
-> subscriber.
->
-> [1] https://gitlab.freedesktop.org/drm/nouveau/-/issues/79
-> [2]
-> https://pcsupport.lenovo.com/th/en/products/laptops-and-netbooks/legion-series/legion-5-15arh05/82b5/82b500fqta
-> [3]
-> https://gitlab.freedesktop.org/drm/nouveau/uploads/2659e5cb41a52290ebf18d9906408d62/nvamli1-processed.txt
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Co-developed-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+---
+ drivers/pnp/isapnp/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pnp/isapnp/Kconfig b/drivers/pnp/isapnp/Kconfig
+index d0479a563123..79bd48f1dd94 100644
+--- a/drivers/pnp/isapnp/Kconfig
++++ b/drivers/pnp/isapnp/Kconfig
+@@ -4,7 +4,7 @@
+ #
+ config ISAPNP
+ 	bool "ISA Plug and Play support"
+-	depends on ISA || COMPILE_TEST
++	depends on ISA || (HAS_IOPORT && COMPILE_TEST)
+ 	help
+ 	  Say Y here if you would like support for ISA Plug and Play devices.
+ 	  Some information is in <file:Documentation/driver-api/isapnp.rst>.
+-- 
+2.39.2
+
