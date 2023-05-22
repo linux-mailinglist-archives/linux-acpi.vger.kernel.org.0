@@ -2,153 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31B8B70B472
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 May 2023 07:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D441170B7C3
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 May 2023 10:36:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231867AbjEVFQi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 22 May 2023 01:16:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55624 "EHLO
+        id S231781AbjEVIg2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 22 May 2023 04:36:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231795AbjEVFQh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 May 2023 01:16:37 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4935A1;
-        Sun, 21 May 2023 22:16:35 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-2ab3e8f4efeso37738321fa.0;
-        Sun, 21 May 2023 22:16:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684732594; x=1687324594;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CYrQOZoyONEufq+LqeQBmXVtdJJKIjdnOxohkmrAY6o=;
-        b=edyY9Uwr97Vumn46XigszV1y/m9Gv7cv/j55TMmwIGEBhAFVFRjWdybCzaYU5NixCS
-         Oy7lbHC2nES3xXibpgL20jNZZ577FxfG418ggGueA9EsKAShwZ80/RwFfsmDiyfuoofG
-         XU5tXwCrBra5Kb2IvMC1SC5YRCcGgqEd8E5TJILGa6uctQYZ4d81y/YWJBbzULtudJv2
-         klWuGT31X8OqVVju7bO1OnRz0QH+E15bv0xwtpRZSYjuP4vcqj9KUqB6De6Au5r1ta5M
-         t5g3mkhXjYHbCEbcK5SWO7imUJDRp2fJpvWX9EBEPoxFWUNHkX1CKznVwUWPDat7ybXT
-         7RXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684732594; x=1687324594;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CYrQOZoyONEufq+LqeQBmXVtdJJKIjdnOxohkmrAY6o=;
-        b=Unde6ivhDmImx+1VDzBYxnncnXyEWeSky6TC+qomHv08Czep048XWuHfFodUufv9j8
-         LicV1Bb4Xc499ffySw1rwLVuKqpoN03aH4Ffi+WQr/GAkXr2aH/DsC2x8L75QkIhuTlE
-         S/+NhnwpJdb3s0H/Dxya1NdLg2y30hMMUaLuHJyF3g0wiLCb5iJUIEPmZaezDTZvECTB
-         nDU9fEnDwoKaP2RgHHzb/3YY9t04kgF22+tFtbwPRynPaxcAn1sWRIi92cy1dcjbx2mI
-         YxMUSfIEmRtPq1FLRJv5tQSa9Xovk5wRC7HMWbPIbLXU74eHLioUpWYIlE0+a/TBweO8
-         qCww==
-X-Gm-Message-State: AC+VfDzYnfPrNmiF8q2F7D5tBzTV3R/uTymWGPdP9IBbtFWychMwNtnx
-        AJ2Qlt1iAPFqfSRHS8R3qxA=
-X-Google-Smtp-Source: ACHHUZ7TbanQlhwifMepu7ORWVh/VP5bZ18ETSV+MsG47HW0VXAqmzXXDf/VvqNJ6H52yVSkjCYq8A==
-X-Received: by 2002:a05:6512:3f1e:b0:4f3:a763:ccb7 with SMTP id y30-20020a0565123f1e00b004f3a763ccb7mr3425929lfa.2.1684732593811;
-        Sun, 21 May 2023 22:16:33 -0700 (PDT)
-Received: from [192.168.1.126] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id k19-20020ac24573000000b004f00189e1dasm847966lfm.143.2023.05.21.22.16.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 21 May 2023 22:16:33 -0700 (PDT)
-Message-ID: <44c87ed5-f14d-e690-1e5f-74212370611b@gmail.com>
-Date:   Mon, 22 May 2023 08:16:32 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v5 4/8] pinctrl: wpcm450: relax return value check for IRQ
- get
-Content-Language: en-US, en-GB
-To:     andy.shevchenko@gmail.com
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        with ESMTP id S229890AbjEVIg1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 May 2023 04:36:27 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77620B7
+        for <linux-acpi@vger.kernel.org>; Mon, 22 May 2023 01:36:26 -0700 (PDT)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34M7BCRf014700;
+        Mon, 22 May 2023 08:35:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=5ROhQBkArFep+UPB9mqu4wVSvS6XVSUEou8A5Q3oEu4=;
+ b=hoAhjWZUYBGB2tlR/O6LDUBgSgkiV1cAexCofKUQqWJvZ/55YegucyINmZCg+h+32lsP
+ z15QJzCEeFFOKQYi+IuF+jJlbN2Yj3z631n1NMcDziXdBsXC43Pp+waF845ciOMdAV28
+ nPd7p1i5ib3+0Y1WJSdXaUeiIETm08glJa5c9J/7vVlfPoYpz6XZTn5/C5dNFia1aL8C
+ jVx9fQ31nRFWRx6JIizeVuHrOTlhJdlwNe4w7Y5uFJlrYf1uJNjHotKg+QFmJhs4ckK0
+ 2oyvFVACoJ9SZEIJEt9qPN1AoEF+u//X45hnvvCvUrj2xPAqoqw65xMXUHAgO8CPessa UQ== 
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qqgbq5ny7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 22 May 2023 08:35:55 +0000
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+        by ppma04fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34M6Xa1V027512;
+        Mon, 22 May 2023 08:35:53 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+        by ppma04fra.de.ibm.com (PPS) with ESMTPS id 3qppcf0qdk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 22 May 2023 08:35:53 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+        by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34M8Zoed7406294
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 22 May 2023 08:35:50 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 8400C20043;
+        Mon, 22 May 2023 08:35:50 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BAB7320040;
+        Mon, 22 May 2023 08:35:49 +0000 (GMT)
+Received: from [9.171.23.45] (unknown [9.171.23.45])
+        by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+        Mon, 22 May 2023 08:35:49 +0000 (GMT)
+Message-ID: <8c00a455c0ff008634aad331d5d85584697f02ff.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 04/10] iommu: Simplify the
+ __iommu_group_remove_device() flow
+From:   Niklas Schnelle <schnelle@linux.ibm.com>
+To:     Jason Gunthorpe <jgg@nvidia.com>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        David Woodhouse <dwmw2@infradead.org>, iommu@lists.linux.dev,
+        Joerg Roedel <joro@8bytes.org>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, netdev@vger.kernel.org,
-        openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org,
-        linux-mips@vger.kernel.org
-References: <cover.1684493615.git.mazziesaccount@gmail.com>
- <42264f1b12a91e415ffa47ff9adb53f02a6aa3ea.1684493615.git.mazziesaccount@gmail.com>
- <ZGpS-13CozLp-p4f@surfacebook>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <ZGpS-13CozLp-p4f@surfacebook>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>
+Cc:     Kevin Tian <kevin.tian@intel.com>,
+        Nicolin Chen <nicolinc@nvidia.com>
+Date:   Mon, 22 May 2023 10:35:49 +0200
+In-Reply-To: <4-v2-3c3bb7aa6e48+1916b-iommu_probe_jgg@nvidia.com>
+References: <4-v2-3c3bb7aa6e48+1916b-iommu_probe_jgg@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.1 (3.48.1-1.fc38) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: nQp6YTRyXjfQ4VJNyzcy_PAXxT0P4p_m
+X-Proofpoint-ORIG-GUID: nQp6YTRyXjfQ4VJNyzcy_PAXxT0P4p_m
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-22_05,2023-05-17_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
+ phishscore=0 clxscore=1011 impostorscore=0 adultscore=0 mlxlogscore=999
+ lowpriorityscore=0 mlxscore=0 malwarescore=0 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305220068
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 5/21/23 20:20, andy.shevchenko@gmail.com wrote:
-> Fri, May 19, 2023 at 02:02:16PM +0300, Matti Vaittinen kirjoitti:
->> fwnode_irq_get[_byname]() were changed to not return 0 anymore. The
->> special error case where device-tree based IRQ mapping fails can't no
->> longer be reliably detected from this return value. This yields a
->> functional change in the driver where the mapping failure is treated as
->> an error.
->>
->> The mapping failure can occur for example when the device-tree IRQ
->> information translation call-back(s) (xlate) fail, IRQ domain is not
->> found, IRQ type conflicts, etc. In most cases this indicates an error in
->> the device-tree and special handling is not really required.
->>
->> One more thing to note is that ACPI APIs do not return zero for any
->> failures so this special handling did only apply on device-tree based
->> systems.
->>
->> Drop the special (no error, just skip the IRQ) handling for DT mapping
->> failures as these can no longer be separated from other errors at driver
->> side.
-> 
-> ...
-> 
->> The commit message does not mention if choosing not to abort the probe
->> on device-tree mapping failure (as is done on other errors) was chosen
->> because: a) Abort would have broken some existing setup. b) Because skipping
->> an IRQ on failure is "the right thing to do", or c) because it sounded like
->> a way to minimize risk of breaking something.
->>
->> If the reason is a) - then I'd appreciate receiving some more
->> information and a suggestion how to proceed (if possible). If the reason
->> is b), then it might be best to just skip the IRQ instead of aborting
->> the probe for all errors on IRQ getting. Finally, in case of c), well,
->> by acking this change you will now accept the risk :)
-> 
-> No need to repeat this. As I answered the case c) was in my mind when I made
-> that change.
+On Fri, 2023-05-19 at 15:42 -0300, Jason Gunthorpe wrote:
+> Instead of returning the struct group_device and then later freeing it, d=
+o
+> the entire free under the group->mutex and defer only putting the
+> iommu_group.
+>=20
+> It is safe to remove the sysfs_links and free memory while holding that
+> mutex.
+>=20
+> Move the sanity assert of the group status into
+> __iommu_group_free_device().
+>=20
+> The next patch will improve upon this and consolidate the group put and
+> the mutex into __iommu_group_remove_device().
+>=20
+> __iommu_group_free_device() is close to being the paired undo of
+> iommu_group_add_device(), following patches will improve on that.
+>=20
+> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> ---
+>  drivers/iommu/iommu.c | 83 ++++++++++++++++++++-----------------------
+>  1 file changed, 39 insertions(+), 44 deletions(-)
+>=20
+---8<---
+> +
+> +/*
+> + * Remove the iommu_group from the struct device. The attached group mus=
+t be put
+> + * by the caller after releaseing the group->mutex.
+> + */
+> +static void __iommu_group_remove_device(struct device *dev)
+> +{
+> +	struct iommu_group *group =3D dev->iommu_group;
+> +	struct group_device *device;
+> +
+> +	lockdep_assert_held(&group->mutex);
+> +	for_each_group_device(group, device) {
+> +		if (device->dev !=3D dev)
+> +			continue;
+> +
+> +		list_del(&device->list);
 
-True. I'll drop that if I re-spin. Thanks for pointing it out.
+for_each_group_device() uses list_for_each_entry() but here you are
+deleting from the list, don't we need a ..._safe() variant then?
 
-
-Yours,
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+> +		__iommu_group_free_device(group, device);
+> +		/* Caller must put iommu_group */
+> +		return;
+> +	}
+> +	WARN(true, "Corrupted iommu_group device_list");
+>  }
+>=20
+---8<---
