@@ -2,51 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2899C70B33C
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 May 2023 04:32:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B96E770B341
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 May 2023 04:35:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229893AbjEVCcK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 21 May 2023 22:32:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60922 "EHLO
+        id S229621AbjEVCfj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 21 May 2023 22:35:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231357AbjEVCcJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 21 May 2023 22:32:09 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F14BC2
-        for <linux-acpi@vger.kernel.org>; Sun, 21 May 2023 19:32:08 -0700 (PDT)
+        with ESMTP id S229620AbjEVCfj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 21 May 2023 22:35:39 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 729DABF
+        for <linux-acpi@vger.kernel.org>; Sun, 21 May 2023 19:35:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684722728; x=1716258728;
+  t=1684722938; x=1716258938;
   h=message-id:date:mime-version:cc:subject:to:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=tbGJg+2i9U//neYjsXNAosrptASqysxnVwW7shFdYaA=;
-  b=oElkN26AWkyW75y/QCbY/Gz32hjIHblWyjhTQZOz/KCQ1I+J5O6rqplw
-   2W11mnQhkDeEVdz6NnK6Izjk9mwmiTYrxdD1EjrlT3VH0P96DqRwltxMi
-   p5uqOGltgqQTzhGh/sriOX6qzey3A6ZAK4M9vXjuIU5Ls78cFodjMgne4
-   EZpcUeeTJW3auVFEmHLwi9aVZafnILtfQQRSa3YugJZozhPDMfBXjW6QA
-   n0PKYWisuk+gHCWBGhzrc75N55+ZUBTM5uAJ/Vlh2bFlU//qlgExySRmq
-   TpKcGBtPDBGV/r3wmEzqyWKInA8fNf4Ctwa5qyJvVBhAdi8e607xUrWr7
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10717"; a="416272431"
+  bh=OBnrxtIzz48wzmeh7S+AaCrm0N9o9EGx5LnaVLGcdVc=;
+  b=XhJDw9EpwWgNITp7Rcbeh4cq1HH4W1iFDmH4zDBzDo4pHK+BB+N3v4UE
+   75lwOKgppPjmoIQxBLDZWMuTjiqVn+o4Xao9yQtvjSWHJ0KnfMBHobQKK
+   9i/rv4u49KPLLY62HiDShMMHPOaXvDPavcAT3gfSX39qWwt30hxruDdEI
+   P1MaYKZmDwcyVwhtaOdsKnK0p576oQchRVs7n0FQ+6A0IzAdVBsYBe1Tz
+   B1RK8Hk4Tc+gT/CMadGw11dZtkn8H0Wqps7g7M37Ze4c3X2KQJBw50Nvr
+   K5BgkQMUapwcaMQTe9td86tJkTq/ntCuN8PCyE6QGhHIifO78pHtEp+35
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10717"; a="342263810"
 X-IronPort-AV: E=Sophos;i="6.00,183,1681196400"; 
-   d="scan'208";a="416272431"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2023 19:31:53 -0700
+   d="scan'208";a="342263810"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2023 19:35:37 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10717"; a="793120183"
+X-IronPort-AV: E=McAfee;i="6600,9927,10717"; a="706359300"
 X-IronPort-AV: E=Sophos;i="6.00,183,1681196400"; 
-   d="scan'208";a="793120183"
+   d="scan'208";a="706359300"
 Received: from allen-box.sh.intel.com (HELO [10.239.159.127]) ([10.239.159.127])
-  by FMSMGA003.fm.intel.com with ESMTP; 21 May 2023 19:31:44 -0700
-Message-ID: <20654d71-1497-bd31-e2e8-a42c5e5a36e5@linux.intel.com>
-Date:   Mon, 22 May 2023 10:31:04 +0800
+  by fmsmga007.fm.intel.com with ESMTP; 21 May 2023 19:35:34 -0700
+Message-ID: <8900ceec-ce7f-841e-28c1-1c31bd6edda5@linux.intel.com>
+Date:   Mon, 22 May 2023 10:34:53 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
 Cc:     baolu.lu@linux.intel.com, Kevin Tian <kevin.tian@intel.com>,
         Nicolin Chen <nicolinc@nvidia.com>
-Subject: Re: [PATCH v2 05/10] iommu: Add iommu_init/deinit_device() paired
- functions
+Subject: Re: [PATCH v2 09/10] iommu: Split iommu_group_add_device()
 Content-Language: en-US
 To:     Jason Gunthorpe <jgg@nvidia.com>,
         David Woodhouse <dwmw2@infradead.org>, iommu@lists.linux.dev,
@@ -55,64 +54,36 @@ To:     Jason Gunthorpe <jgg@nvidia.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Robin Murphy <robin.murphy@arm.com>,
         Will Deacon <will@kernel.org>
-References: <5-v2-3c3bb7aa6e48+1916b-iommu_probe_jgg@nvidia.com>
- <5bcb5f03-77c9-116e-c436-9d0af21fa82a@linux.intel.com>
+References: <9-v2-3c3bb7aa6e48+1916b-iommu_probe_jgg@nvidia.com>
 From:   Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <5bcb5f03-77c9-116e-c436-9d0af21fa82a@linux.intel.com>
+In-Reply-To: <9-v2-3c3bb7aa6e48+1916b-iommu_probe_jgg@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 5/21/23 7:31 PM, Baolu Lu wrote:
->>       for_each_group_device(group, device) {
->>           if (device->dev != dev)
->> @@ -510,44 +564,30 @@ static void __iommu_group_remove_device(struct 
->> device *dev)
->>           list_del(&device->list);
->>           __iommu_group_free_device(group, device);
->> -        /* Caller must put iommu_group */
->> -        return;
->> +        if (dev->iommu && dev->iommu->iommu_dev)
->> +            iommu_deinit_device(dev);
->> +        else
->> +            dev->iommu_group = NULL;
->> +        goto out;
->>       }
->>       WARN(true, "Corrupted iommu_group device_list");
->> +out:
->> +    mutex_unlock(&group->mutex);
->> +
->> +    /* Pairs with the get in iommu_group_add_device() */
->> +    iommu_group_put(group);
+On 5/20/23 2:42 AM, Jason Gunthorpe wrote:
+> Move the list_add_tail() for the group_device into the critical region
+> that immediately follows in __iommu_probe_device(). This avoids one case
+> of unlocking and immediately re-locking the group->mutex.
 > 
-> The group->devices_kobj was increased on the probe device path twice:
+> Consistently make the caller responsible for setting dev->iommu_group,
+> prior patches moved this into iommu_init_device(), make the no-driver path
+> do this in iommu_group_add_device().
 > 
-> - iommu_init_device() - allocate the group
-> - iommu_group_add_device() - add device to the group
+> This completes making __iommu_group_free_device() and
+> iommu_group_alloc_device() into pair'd functions.
 > 
-> But, on the release path, it seems that group->devices_kobj is only
-> decreased once.
-> 
-> Did I overlook anything? Otherwise, the group will never be released,
-> right?
+> Signed-off-by: Jason Gunthorpe<jgg@nvidia.com>
 
-I can answer this question by myself now. The
-iommu_group_add/remove_device() helpers are only for external users.
-They are not on the internal probe/release paths.
-
-The code is fine. I can see below debug message during my test:
-
-         pr_debug("Releasing group %d\n", group->id);
-
-Sorry for the noise.
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
 
 Best regards,
 baolu
