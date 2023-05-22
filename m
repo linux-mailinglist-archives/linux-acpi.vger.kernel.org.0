@@ -2,110 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54F0D70AF93
-	for <lists+linux-acpi@lfdr.de>; Sun, 21 May 2023 20:32:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B288570B29B
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 May 2023 02:52:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230188AbjEUSco (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 21 May 2023 14:32:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44236 "EHLO
+        id S229576AbjEVAwE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 21 May 2023 20:52:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231267AbjEURmt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 21 May 2023 13:42:49 -0400
-Received: from fgw23-7.mail.saunalahti.fi (fgw23-7.mail.saunalahti.fi [62.142.5.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E242EC
-        for <linux-acpi@vger.kernel.org>; Sun, 21 May 2023 10:21:03 -0700 (PDT)
-Received: from localhost (88-113-26-95.elisa-laajakaista.fi [88.113.26.95])
-        by fgw23.mail.saunalahti.fi (Halon) with ESMTP
-        id dacd9c49-f7fb-11ed-b972-005056bdfda7;
-        Sun, 21 May 2023 20:21:00 +0300 (EEST)
-From:   andy.shevchenko@gmail.com
-Date:   Sun, 21 May 2023 20:20:59 +0300
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, netdev@vger.kernel.org,
-        openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org,
-        linux-mips@vger.kernel.org
-Subject: Re: [PATCH v5 4/8] pinctrl: wpcm450: relax return value check for
- IRQ get
-Message-ID: <ZGpS-13CozLp-p4f@surfacebook>
-References: <cover.1684493615.git.mazziesaccount@gmail.com>
- <42264f1b12a91e415ffa47ff9adb53f02a6aa3ea.1684493615.git.mazziesaccount@gmail.com>
+        with ESMTP id S229481AbjEVAwE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 21 May 2023 20:52:04 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1F50C5
+        for <linux-acpi@vger.kernel.org>; Sun, 21 May 2023 17:52:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1684716722; x=1716252722;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=riI12iI9eXEaQbXUV1i5TxI4nm6VjzxhP1/In23NaW0=;
+  b=BKiVikBQybKVfKUSWf1s2UFtvRr18BDhcXBfxgHnD3Qai5FzF8eVS51N
+   8Xy3ezEwsHHF2YyZ5X0+L/6Iz2F2uBqMHJUfqBAAy0h7J1FZ3ueyhYffL
+   p4HtoOmWUh7Xq+SFdXEr6orwruokdLcLN7o9ABzZ/2bptlHnxl4QSEJb3
+   x77vXLkhGrCdSlm4qBVELTK6fsaLl4nOSeJn4qZ8Ybwdo9MMionEeBdfu
+   OXpn/9IW5fwfCumO4bhbPIj+hBCmJKTK22elIJLzL9CPAbbFaEw1wmWxm
+   nEE24tXJe2+yYeJ0AGUwRr8Iox/CiPr5UJA84Qj1Zx5VaogVXugXzP/Kl
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10717"; a="356019354"
+X-IronPort-AV: E=Sophos;i="6.00,183,1681196400"; 
+   d="scan'208";a="356019354"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2023 17:52:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10717"; a="736227420"
+X-IronPort-AV: E=Sophos;i="6.00,183,1681196400"; 
+   d="scan'208";a="736227420"
+Received: from allen-box.sh.intel.com (HELO [10.239.159.127]) ([10.239.159.127])
+  by orsmga001.jf.intel.com with ESMTP; 21 May 2023 17:51:59 -0700
+Message-ID: <b9df5551-5856-3b00-f6cc-9b76eb205a20@linux.intel.com>
+Date:   Mon, 22 May 2023 08:51:17 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <42264f1b12a91e415ffa47ff9adb53f02a6aa3ea.1684493615.git.mazziesaccount@gmail.com>
-X-Spam-Status: No, score=0.7 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
-        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,SPF_HELO_NONE,
-        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Cc:     baolu.lu@linux.intel.com, Kevin Tian <kevin.tian@intel.com>,
+        Nicolin Chen <nicolinc@nvidia.com>
+Subject: Re: [PATCH v2 06/10] iommu: Move the iommu driver sysfs setup into
+ iommu_init/deinit_device()
+Content-Language: en-US
+To:     Jason Gunthorpe <jgg@nvidia.com>,
+        David Woodhouse <dwmw2@infradead.org>, iommu@lists.linux.dev,
+        Joerg Roedel <joro@8bytes.org>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>
+References: <6-v2-3c3bb7aa6e48+1916b-iommu_probe_jgg@nvidia.com>
+From:   Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <6-v2-3c3bb7aa6e48+1916b-iommu_probe_jgg@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Fri, May 19, 2023 at 02:02:16PM +0300, Matti Vaittinen kirjoitti:
-> fwnode_irq_get[_byname]() were changed to not return 0 anymore. The
-> special error case where device-tree based IRQ mapping fails can't no
-> longer be reliably detected from this return value. This yields a
-> functional change in the driver where the mapping failure is treated as
-> an error.
+On 5/20/23 2:42 AM, Jason Gunthorpe wrote:
+> It makes logical sense that once the driver is attached to the device the
+> sysfs links appear, even if we haven't fully created the group_device or
+> attached the device to a domain.
 > 
-> The mapping failure can occur for example when the device-tree IRQ
-> information translation call-back(s) (xlate) fail, IRQ domain is not
-> found, IRQ type conflicts, etc. In most cases this indicates an error in
-> the device-tree and special handling is not really required.
+> Fix the missing error handling on sysfs creation since
+> iommu_init_device() can trivially handle this.
 > 
-> One more thing to note is that ACPI APIs do not return zero for any
-> failures so this special handling did only apply on device-tree based
-> systems.
-> 
-> Drop the special (no error, just skip the IRQ) handling for DT mapping
-> failures as these can no longer be separated from other errors at driver
-> side.
+> Reviewed-by: Kevin Tian<kevin.tian@intel.com>
+> Signed-off-by: Jason Gunthorpe<jgg@nvidia.com>
 
-...
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
 
-> The commit message does not mention if choosing not to abort the probe
-> on device-tree mapping failure (as is done on other errors) was chosen
-> because: a) Abort would have broken some existing setup. b) Because skipping
-> an IRQ on failure is "the right thing to do", or c) because it sounded like
-> a way to minimize risk of breaking something.
-> 
-> If the reason is a) - then I'd appreciate receiving some more
-> information and a suggestion how to proceed (if possible). If the reason
-> is b), then it might be best to just skip the IRQ instead of aborting
-> the probe for all errors on IRQ getting. Finally, in case of c), well,
-> by acking this change you will now accept the risk :)
-
-No need to repeat this. As I answered the case c) was in my mind when I made
-that change.
-
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Best regards,
+baolu
