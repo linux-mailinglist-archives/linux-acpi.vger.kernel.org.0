@@ -2,140 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BEE970C25F
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 May 2023 17:30:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9119E70C2F6
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 May 2023 18:06:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234220AbjEVPaE convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 22 May 2023 11:30:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33180 "EHLO
+        id S233969AbjEVQGM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 22 May 2023 12:06:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234543AbjEVPaC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 May 2023 11:30:02 -0400
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A456CA1;
-        Mon, 22 May 2023 08:30:01 -0700 (PDT)
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-510f866ce78so672620a12.1;
-        Mon, 22 May 2023 08:30:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684769400; x=1687361400;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NQvsAXlGcHvmtohT89vRy/bk6f34DtVATxwZoL4dvuM=;
-        b=jkZ6mlP5RvT+Y4xyB9xsofKUVtC1cKMOvgjlgV9VwP3P2q1ChocbIExTZapFcctZ9i
-         OEd9m3zaGZz8nWb3j4Oh7siTRfE5cvG98bSrCtZh9FG5YjFhyk3ol8kEse36a7K3OpeZ
-         Z0FxOCrLjqJP8BwjgUyldp7JYRqdja/j1tW34Oar/cDn1wl08vTjrrSEMg/KHOMOvp6O
-         cuDHJMEL0HjFxlF9c0J/BAQzo/oqYctF3Z3AteooLcXaBNDTbyK2K3ehjK0sCs4vZ3j/
-         YTPrlyMogqVs7pqbJ+hgYr4e0WJNUYyNjN1nqfx/Pa4ZEgd47sfYavbPu8inXd830W/G
-         wJqQ==
-X-Gm-Message-State: AC+VfDwHg504m7k7AC2NhTqYYZd+dPu6YtmNHrWGrXNDFfsp5nedhKVz
-        /GlfspRxX2gIVSvYlYqXJedl+Xg/lvkvJ32XzUfBwxLQ
-X-Google-Smtp-Source: ACHHUZ7FQ/tHFvGSWcA2GKleuT4mcIJoQ0ioQEq6C24UOsJ0chiTYeLIUjbQGqbqSvMdD1OVoIQ6CBvFrkdC2vGanIo=
-X-Received: by 2002:a17:906:5199:b0:965:9602:3ee1 with SMTP id
- y25-20020a170906519900b0096596023ee1mr9551591ejk.2.1684769399833; Mon, 22 May
- 2023 08:29:59 -0700 (PDT)
+        with ESMTP id S231147AbjEVQGL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 22 May 2023 12:06:11 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9F74C5;
+        Mon, 22 May 2023 09:06:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1684771570; x=1716307570;
+  h=subject:from:to:cc:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=PWeG8h1d4X+UeHqtvMp+lS9INBwDt1oWtuMjIoA5HEQ=;
+  b=Esti7dYdnE1qrGp1SJolbqgo9F0rjausUBre6ui5Yi5B1j0jLEGc8Ulp
+   aEULH2v28dgrwf6OUQC8iG98ZJBCm3mvhnukGSYKNb9S/88YlXS+Kf3ef
+   Jc09Yv40hx5HmjUR26YLLRNtRYD6EtQgPsADLom8IWQWSwWkZpKL60MK0
+   oX8aERrr4U+YeF/r0yVWD28Zkwr8LN193EBJsctO8+jkZI3RDabuPccV0
+   vNIE67AaRNha4z7zYPVxHcixg/2ecUdg4v2Cj+ik0zxQNMfPxOicw6fUP
+   KetLS+ZxTk/RWV1HDKD4TQoq3OZ+ddQMJg9e0PnDjIJJ8U+BCWgbXGL8k
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10718"; a="439315095"
+X-IronPort-AV: E=Sophos;i="6.00,184,1681196400"; 
+   d="scan'208";a="439315095"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2023 09:06:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10718"; a="793357250"
+X-IronPort-AV: E=Sophos;i="6.00,184,1681196400"; 
+   d="scan'208";a="793357250"
+Received: from djiang5-mobl3.amr.corp.intel.com (HELO [192.168.1.177]) ([10.213.173.219])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2023 09:06:05 -0700
+Subject: [PATCH] acpi: Fix header declaration of acpi_arch_dma_setup() w/o
+ CONFIG_ACPI
+From:   Dave Jiang <dave.jiang@intel.com>
+To:     lpieralisi@kernel.org, guohanjun@huawei.com, sudeep.holla@arm.com
+Cc:     kernel test robot <lkp@intel.com>,
+        Jianmin Lv <lvjianmin@loongson.cn>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date:   Mon, 22 May 2023 09:06:04 -0700
+Message-ID: <168477156440.3873520.6153672647621739139.stgit@djiang5-mobl3>
+User-Agent: StGit/1.5
 MIME-Version: 1.0
-References: <20230329100951.1522322-1-sakari.ailus@linux.intel.com>
- <20230329100951.1522322-3-sakari.ailus@linux.intel.com> <CAJZ5v0gG1Zc8h8Lt_tKJp8u7b-nH0Rxt=2j9RqptMVc8r0vL7Q@mail.gmail.com>
- <ZGNn9jOWmh0/aEOW@kekkonen.localdomain>
-In-Reply-To: <ZGNn9jOWmh0/aEOW@kekkonen.localdomain>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 22 May 2023 17:29:48 +0200
-Message-ID: <CAJZ5v0iPcSc_x9g1tpTOVVaEB+9O_6N8SFqWSgG_ku+dNqveQg@mail.gmail.com>
-Subject: Re: [PATCH v8 02/10] ACPI: property: Parse data node string
- references in properties
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 16, 2023 at 1:24 PM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
->
-> Hi Rafael,
->
-> On Fri, May 12, 2023 at 06:04:26PM +0200, Rafael J. Wysocki wrote:
-> > On Wed, Mar 29, 2023 at 12:10 PM Sakari Ailus
-> > <sakari.ailus@linux.intel.com> wrote:
-> > >
-> > > Add support for parsing property references using strings, besides
-> > > reference objects that were previously supported. This allows also
-> > > referencing data nodes which was not possible with reference objects.
-> > >
-> > > Also add pr_fmt() macro to prefix printouts.
-> > >
-> > > While at it, update copyright.
-> >
-> > Although I said that it looked good to me, some minor improvements can
-> > still be made.
-> >
-> > First off, the above changelog is a bit terse.
-> >
-> > I think that it would help to provide an example of device properties
-> > that would not be parsed properly before the change and can be parsed
-> > now.
-> >
-> > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > > ---
-> > >  drivers/acpi/property.c | 110 ++++++++++++++++++++++++++++++++++------
-> > >  1 file changed, 94 insertions(+), 16 deletions(-)
-> > >
-> > > diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-> > > index b8d9eb9a433e..08831ffba26c 100644
-> > > --- a/drivers/acpi/property.c
-> > > +++ b/drivers/acpi/property.c
-> > > @@ -2,14 +2,17 @@
-> > >  /*
-> > >   * ACPI device specific properties support.
-> > >   *
-> > > - * Copyright (C) 2014, Intel Corporation
-> > > + * Copyright (C) 2014-2023, Intel Corporation
-> > >   * All rights reserved.
-> > >   *
-> > >   * Authors: Mika Westerberg <mika.westerberg@linux.intel.com>
-> > > - *          Darren Hart <dvhart@linux.intel.com>
-> > > - *          Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > + *         Darren Hart <dvhart@linux.intel.com>
-> > > + *         Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > I'm not sure if the whitespace change here is really useful.
->
-> I did that to address a comment from Andy --- the earlier lines used spaces
-> for indentation.
->
-> >
-> > > + *         Sakari Ailus <sakari.ailus@linux.intel.com>
-> > >   */
-> > >
-> > > +#define pr_fmt(fmt) "ACPI: " fmt
-> > > +
-> > >  #include <linux/acpi.h>
-> > >  #include <linux/device.h>
-> > >  #include <linux/export.h>
-> > > @@ -795,7 +798,8 @@ acpi_fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
-> > >  static int acpi_get_ref_args(struct fwnode_reference_args *args,
-> > >                              struct fwnode_handle *ref_fwnode,
-> > >                              const union acpi_object **element,
-> > > -                            const union acpi_object *end, size_t num_args)
-> > > +                            const union acpi_object *end, size_t num_args,
-> > > +                            bool subnode_string)
-> >
-> > The meaning of the new argument isn't really clear.  it would be good
-> > to somehow help a casual reader of the code to find this out more
-> > easily.
->
-> I can add comments to v9.
+arm64 build can be done without CONFIG_ACPI. The ifdef bits for
+acpi_arch_dma_setup() is placed inside CONFIG_ACPI. When CONFIG_ACPI is
+not set, this causes warning reported by kernel test bot. Move the
+prototype declaration for acpi_arch_dma_setup() outside of CONFIG_ACPI.
 
-If you can send me an example of ASL that will be parsed correctly
-after this change, but not before, it will help a bit.
+>> drivers/acpi/arm64/dma.c:7:6: warning: no previous prototype for function 'acpi_arch_dma_setup' [-Wmissing-prototypes]
+   void acpi_arch_dma_setup(struct device *dev)
+        ^
+   drivers/acpi/arm64/dma.c:7:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+   void acpi_arch_dma_setup(struct device *dev)
+   ^
+   static
+   1 warning generated.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202305200933.afKCLlxS-lkp@intel.com/
+Fixes: bf2ee8d0c385 ("ACPI: scan: Support multiple DMA windows with different offsets")
+CC: Jianmin Lv <lvjianmin@loongson.cn>
+CC: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+---
+ include/linux/acpi.h |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 7b71dd74baeb..a0a8492d8a60 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -281,12 +281,6 @@ acpi_numa_processor_affinity_init(struct acpi_srat_cpu_affinity *pa) { }
+ 
+ void acpi_numa_x2apic_affinity_init(struct acpi_srat_x2apic_cpu_affinity *pa);
+ 
+-#if defined(CONFIG_ARM64) || defined(CONFIG_LOONGARCH)
+-void acpi_arch_dma_setup(struct device *dev);
+-#else
+-static inline void acpi_arch_dma_setup(struct device *dev) { }
+-#endif
+-
+ #ifdef CONFIG_ARM64
+ void acpi_numa_gicc_affinity_init(struct acpi_srat_gicc_affinity *pa);
+ #else
+@@ -1084,6 +1078,12 @@ static inline bool acpi_sleep_state_supported(u8 sleep_state)
+ 
+ #endif	/* !CONFIG_ACPI */
+ 
++#if defined(CONFIG_ARM64) || defined(CONFIG_LOONGARCH)
++void acpi_arch_dma_setup(struct device *dev);
++#else
++static inline void acpi_arch_dma_setup(struct device *dev) { }
++#endif
++
+ #ifdef CONFIG_ACPI_HOTPLUG_IOAPIC
+ int acpi_ioapic_add(acpi_handle root);
+ #else
+
+
