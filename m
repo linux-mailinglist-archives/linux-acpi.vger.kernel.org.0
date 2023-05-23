@@ -2,51 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8579870E0C6
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 May 2023 17:42:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97E7E70E105
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 May 2023 17:52:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237611AbjEWPmt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 May 2023 11:42:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46408 "EHLO
+        id S237252AbjEWPwI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 May 2023 11:52:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237609AbjEWPms (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 May 2023 11:42:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 584E5DD;
-        Tue, 23 May 2023 08:42:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E1D6860F8B;
-        Tue, 23 May 2023 15:42:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 048B6C433D2;
-        Tue, 23 May 2023 15:42:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684856566;
-        bh=JqY2JQToRp5CVEzDDydrabhm0dAB49w4rljNNCW/Xlo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=GMwG7gLU/gZuGTMI701TxdPydj/UA0Y5S4V2bn4aupcp7hpHdQ9RtQjiv/gOX5Ol2
-         4AmM+Le4UFHZ+WYsMFp1Dq4CyLN+3NsAsn3Pcg/wQnic7GmqUGbG29GPSp8mQCuFqY
-         QnwGHTzuv/TK7NXliWyobp6ohmcZX9XT69BswwQiRql+9X6yFg1PCoVobm9eQ787tM
-         mgjeZtvb7OpF7ZZjQ6ZUq9I+llpYCujrlyJUluavNXfi1DMSMNH/agSmAJ9I1dyCSk
-         Jv403FV2eu/DNIJIx1FX8wp7f2ViTmn0mFoUA6ZBuc+LLqhQUEp5bUUJHDiGb0iGQ2
-         z6gyOas4JCwDg==
-Date:   Tue, 23 May 2023 10:42:44 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Igor Mammedov <imammedo@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, mst@redhat.com, rafael@kernel.org,
-        lenb@kernel.org, bhelgaas@google.com, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, mika.westerberg@linux.intel.com
-Subject: Re: [PATCH v2] PCI: acpiphp: Reassign resources on bridge if
- necessary
-Message-ID: <ZGze9HyQLKZ89dna@bhelgaas>
+        with ESMTP id S235682AbjEWPwG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 May 2023 11:52:06 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3412A91;
+        Tue, 23 May 2023 08:52:04 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3BE94139F;
+        Tue, 23 May 2023 08:52:49 -0700 (PDT)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C4AC13F840;
+        Tue, 23 May 2023 08:52:01 -0700 (PDT)
+Date:   Tue, 23 May 2023 16:51:59 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Anshuman Khandual <anshuman.khandual@arm.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        coresight@lists.linaro.org, suzuki.poulose@arm.com,
+        Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+        Steve Clevenger <scclevenger@os.amperecomputing.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Mike Leach <mike.leach@linaro.org>,
+        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH V4 0/6] coresight: etm4x: Migrate ACPI AMBA devices to
+ platform driver
+Message-ID: <20230523155159.na2wfhuhb7fqr3cy@bogus>
+References: <20230523044553.1525048-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZGvj7aqaY3InNqun@bhelgaas>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <20230523044553.1525048-1-anshuman.khandual@arm.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,92 +56,44 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 22, 2023 at 04:51:41PM -0500, Bjorn Helgaas wrote:
-> On Mon, Apr 24, 2023 at 09:15:57PM +0200, Igor Mammedov wrote:
-> > When using ACPI PCI hotplug, hotplugging a device with
-> > large BARs may fail if bridge windows programmed by
-> > firmware are not large enough.
-> > 
-> > Reproducer:
-> >   $ qemu-kvm -monitor stdio -M q35  -m 4G \
-> >       -global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=on \
-> >       -device id=rp1,pcie-root-port,bus=pcie.0,chassis=4 \
-> >       disk_image
-> > 
-> >  wait till linux guest boots, then hotplug device
-> >    (qemu) device_add qxl,bus=rp1
-> > 
-> >  hotplug on guest side fails with:
-> >    pci 0000:01:00.0: [1b36:0100] type 00 class 0x038000
-> >    pci 0000:01:00.0: reg 0x10: [mem 0x00000000-0x03ffffff]
-> >    pci 0000:01:00.0: reg 0x14: [mem 0x00000000-0x03ffffff]
-> >    pci 0000:01:00.0: reg 0x18: [mem 0x00000000-0x00001fff]
-> >    pci 0000:01:00.0: reg 0x1c: [io  0x0000-0x001f]
-> >    pci 0000:01:00.0: BAR 0: no space for [mem size 0x04000000]
-> >    pci 0000:01:00.0: BAR 0: failed to assign [mem size 0x04000000]
-> >    pci 0000:01:00.0: BAR 1: no space for [mem size 0x04000000]
-> >    pci 0000:01:00.0: BAR 1: failed to assign [mem size 0x04000000]
-> >    pci 0000:01:00.0: BAR 2: assigned [mem 0xfe800000-0xfe801fff]
-> >    pci 0000:01:00.0: BAR 3: assigned [io  0x1000-0x101f]
-> >    qxl 0000:01:00.0: enabling device (0000 -> 0003)
-> >    Unable to create vram_mapping
-> >    qxl: probe of 0000:01:00.0 failed with error -12
-> > 
-> > However when using native PCIe hotplug
-> >   '-global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off'
-> > it works fine, since kernel attempts to reassign unused resources.
-> > Use the same machinery as native PCIe hotplug to (re)assign resources.
-> > 
-> > Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+On Tue, May 23, 2023 at 10:15:47AM +0530, Anshuman Khandual wrote:
+> CoreSight ETM4x devices could be accessed either via MMIO (handled via
+> amba_driver) or CPU system instructions (handled via platform driver). But
+> this has the following issues :
 > 
-> Tentatively applied to pci/hotplug for v6.5.
+>   - Each new CPU comes up with its own PID and thus we need to keep on
+>     adding the "known" PIDs to get it working with AMBA driver. While
+>     the ETM4 architecture (and CoreSight architecture) defines way to
+>     identify a device as ETM4. Thus older kernels  won't be able to
+>     "discover" a newer CPU, unless we add the PIDs.
 > 
-> Tentative only because I'm hoping for your ack or review, Rafael (I
-> see you acked v1, but this one is a little different).
+>   - With ACPI, the ETM4x devices have the same HID to identify the device
+>     irrespective of the mode of access. This creates a problem where two
+>     different drivers (both AMBA based driver and platform driver) would
+>     hook into the "HID" and could conflict. e.g., if AMBA driver gets
+>     hold of a non-MMIO device, the probe fails. If we have single driver
+>     hooked into the given "HID", we could handle them seamlessly,
+>     irrespective of the mode of access.
 > 
-> And I think you'd like a stable tag, Michael?  I'm happy to add one,
-> but wasn't sure if you wanted a separate ack for that.
+>   - CoreSight is heavily dependent on the runtime power management. With
+>     ACPI, amba_driver doesn't get us anywhere with handling the power
+>     and thus one need to always turn the power ON to use them. Moving to
+>     platform driver gives us the power management for free.
+> 
+> Due to all of the above, we are moving ACPI MMIO based etm4x devices to be
+> supported via tha platform driver. The series makes the existing platform
+> driver generic to handle both type of the access modes. Although existing
+> AMBA driver would still continue to support DT based etm4x MMIO devices.
+> Although some problems still remain, such as manually adding PIDs for all
+> new AMBA DT based devices.
+> 
+> The series applies on 6.4-rc3.
+> 
 
-Added stable tag and Rafael's ack.  All set for v6.5, thanks!
+Tested on Juno with some hacked up UEFI f/w.
 
-> > ---
-> > tested in QEMU with Q35 machine on PCIE root port and also
-> > with nested conventional bridge attached to root port.
-> > 
-> > v2:
-> >   * fixup subject to match expected style
-> >   * drop no longer needed __pci_bus_size_bridges() to avoid
-> >     memory leak (Bjorn Helgaas <helgaas@kernel.org>)
-> > ---
-> >  drivers/pci/hotplug/acpiphp_glue.c | 5 +----
-> >  1 file changed, 1 insertion(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
-> > index 5b1f271c6034..328d1e416014 100644
-> > --- a/drivers/pci/hotplug/acpiphp_glue.c
-> > +++ b/drivers/pci/hotplug/acpiphp_glue.c
-> > @@ -498,7 +498,6 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
-> >  				acpiphp_native_scan_bridge(dev);
-> >  		}
-> >  	} else {
-> > -		LIST_HEAD(add_list);
-> >  		int max, pass;
-> >  
-> >  		acpiphp_rescan_slot(slot);
-> > @@ -512,12 +511,10 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
-> >  				if (pass && dev->subordinate) {
-> >  					check_hotplug_bridge(slot, dev);
-> >  					pcibios_resource_survey_bus(dev->subordinate);
-> > -					__pci_bus_size_bridges(dev->subordinate,
-> > -							       &add_list);
-> >  				}
-> >  			}
-> >  		}
-> > -		__pci_bus_assign_resources(bus, &add_list, NULL);
-> > +		pci_assign_unassigned_bridge_resources(bus->self);
-> >  	}
-> >  
-> >  	acpiphp_sanitize_bus(bus);
-> > -- 
-> > 2.39.1
-> > 
+Tested-by: Sudeep Holla <sudeep.holla@arm.com>
+
+-- 
+Regards,
+Sudeep
