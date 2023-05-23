@@ -2,337 +2,211 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32E6470E741
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 May 2023 23:21:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2174170E762
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 May 2023 23:32:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237944AbjEWVVE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 May 2023 17:21:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56248 "EHLO
+        id S237819AbjEWVcq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 May 2023 17:32:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbjEWVVB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 May 2023 17:21:01 -0400
-Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E162E5;
-        Tue, 23 May 2023 14:21:00 -0700 (PDT)
-Received: by mail-qv1-xf32.google.com with SMTP id 6a1803df08f44-62576fa52b4so990956d6.0;
-        Tue, 23 May 2023 14:21:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684876859; x=1687468859;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AHPM3GBQPi8yO5qwlZK4x/CMaBvpXl5XM+iCpe+XpBs=;
-        b=Etoyh42Wp1cO2y8+LEySWfPxZlUOkJ5wlpDrsb1torsW49tqa9/y3wXZTCKO4VsrNU
-         5oK1t/Y/1y+aG6NKqrQGLjJr7LlLkCJ/hMHoy4S6ZEWggWRcVfHWt+K0A49CFMrI5ZWN
-         FebBTHUeG5DlSbYG6va3d2mZsjb3TbfPxUjYNa0jJYgt81hCDc5sEpFomXv+iu/eqb09
-         Xmgyw9QxYMiW1Prs8IAbYgYKnoC1TtErPM1BQD2CKpAFZa7+rP4TINDBvYPOdMWJAcRt
-         fvTHXHi4jUhHJ/hYyR75ONyS7ostQvoIV48k+cmlkZF4+6U0uiwCDDq7A/9JN6fI46X1
-         w91Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684876859; x=1687468859;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AHPM3GBQPi8yO5qwlZK4x/CMaBvpXl5XM+iCpe+XpBs=;
-        b=e+rA4eI1FUf2aVidbGPltlhWMxZ8YeUnBNmorOjRQZoqcX+NMMsjrRR26xkbcxzsm5
-         /5NZHl9qwC9ViPukJvu1gaNqqQLnQP4FZ8Hkiig2qGfPYnCXyCR/E8J9Fnz6AkS3TUPF
-         Z1zTLfjGpp0Hq4L5ZMQBBzcop6QcVHLyvEm3irfwENtGrIHUGRGNES/3Gz2OOTAzeV6b
-         GYXpAX46vr6cwixGdFX4HlbUxGJi/uCwas895FLTmCirvrJHOXQFItlbVUhl7y+6lc1b
-         V5yP/XHYc8Ult3+fo3GmHzN2Sb8W9vFwn9kJ6/OmWUcNWefp/z/NIEomTIOuCCDAwC7v
-         GgAg==
-X-Gm-Message-State: AC+VfDzwZ3y49Lq45mhyw5y9OL/DTleBGWeYOk49K8ldBwD5vwLreYGx
-        6Ij6NVjIHycXudP+o4V0Cfk=
-X-Google-Smtp-Source: ACHHUZ5RAlhMyacvlj2RQpzqpO/xmuUrwyniOctxxCXvfogovAVjGuWB2vbbMGrw1F8CPi1/ltmmdw==
-X-Received: by 2002:a05:6214:d4b:b0:5ef:5456:783c with SMTP id 11-20020a0562140d4b00b005ef5456783cmr27017864qvr.40.1684876859017;
-        Tue, 23 May 2023 14:20:59 -0700 (PDT)
-Received: from [192.168.1.176] (pool-72-94-185-71.phlapa.fios.verizon.net. [72.94.185.71])
-        by smtp.gmail.com with ESMTPSA id c18-20020a0cd612000000b006215f334a18sm3041431qvj.28.2023.05.23.14.20.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 May 2023 14:20:58 -0700 (PDT)
-Message-ID: <d4522480-8095-3162-2842-25d5dc0ccfff@gmail.com>
-Date:   Tue, 23 May 2023 17:20:57 -0400
-MIME-Version: 1.0
+        with ESMTP id S230142AbjEWVcp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 May 2023 17:32:45 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11olkn2010.outbound.protection.outlook.com [40.92.20.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13F9AFA;
+        Tue, 23 May 2023 14:32:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZN7FBFOqKhNKGRKsiAdaCP1QLqYRlegjSdxJQqRHTAnB4c+fja5QB04k+pAX/gzql9QTdI3UO0wugpW9xTRSL5jFN6KV11MHLj7WIPnvD5YfcqmcRN3OtZVWbEIwCySvyTzcExuOC6qRdU2BuFo/v6/o1ouMQreYcGJrJalc8SE2fWakkkDsVtF1531UMlGXyAQs66/vxOqQ/Hc7q4L5wAuRklkGCUFrdJTTjWzOqbBVrb5QTGhYaoJWu1z8io9gON9I1zMd+m3bjgrLl+MtRxr8QNkb7HoE0c6DPNn0KQ5xMtK9D0vHXsWNjuDcITYQIk1PXe1PnpXZnSIsUbWHdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5BMzOby1gFlEcEntUs9n4xqQBnkvV9+N/lcBbLWpZqM=;
+ b=Ol4Uw9bxtnrIYpNWciWzxOvfio86GQFsvHSFUh+f8AleakndQVIhrrnwKS4sS4Psqe/Kr2gErd8F4BnX9sGV0WKQYbl1sfqUd+h1EshbeIPi/rX1u8wx6Sg+saeweDCye9Olwrlxw0iW+vMV/V1q6HLN58utIBTP2lX50Vx2wyK+hQvCJOPDLKYtL6q4s9IXAQuEsC1Knnqv5nkDXjIZzLhfYoLJFKd3gG0bVWr5Wdq+nqLqPEVk5A/RBYQeFd7/+MOefVg7zeRwCdWnObsB3Is6T3gyYMFU1NCcwRfooZ9wVsWzt0qvUwpl01p8bp6p18YqKaXggmKODmTwI3fTFQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5BMzOby1gFlEcEntUs9n4xqQBnkvV9+N/lcBbLWpZqM=;
+ b=tsQPxH9vggRS0f0g/WvZIyKN+TNXP1E7E0WtgWVLIAyByL/CTgHa6TIC8SSelMeoX/ygHzxKSi05BDkw1iT/SBIOoHGwt2QtLzfiwooCLrJgtuciFmUdEwavea/nkg0BaNcUMex0tQtO0fTcbdTfeWsn9+K7u0wr9dEJefEuCKFjscbstu/NuaxoirZeoPfVjP/h9BuAutohf0iE7WlYZsxplItrWuOWGCMoSgWyfYBt6y9Q7NFXxlTfUHtEaDUOskpXVtMs9HuNhA4Ojqizgiq809xXrqCcMLxaifMtkgTREZvFb0/mqH4hp0TdwIhGydEByEVW1h0ocdHtqf7CCA==
+Received: from DM6PR19MB2780.namprd19.prod.outlook.com (2603:10b6:5:13d::26)
+ by PH0PR19MB4775.namprd19.prod.outlook.com (2603:10b6:510:20::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.15; Tue, 23 May
+ 2023 21:32:42 +0000
+Received: from DM6PR19MB2780.namprd19.prod.outlook.com
+ ([fe80::c62c:7fe7:679d:6a42]) by DM6PR19MB2780.namprd19.prod.outlook.com
+ ([fe80::c62c:7fe7:679d:6a42%4]) with mapi id 15.20.6433.013; Tue, 23 May 2023
+ 21:32:42 +0000
+Message-ID: <DM6PR19MB2780DAE87B67BD49B6159A5ABC409@DM6PR19MB2780.namprd19.prod.outlook.com>
+Date:   Wed, 24 May 2023 04:32:34 +0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v2] ACPI: resource: Remove "Zen" specific match and quirks
-To:     Mario Limonciello <mario.limonciello@amd.com>, rafael@kernel.org
-Cc:     gch981213@gmail.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, regressions@leemhuis.info,
-        ofenfisch@googlemail.com, wse@tuxedocomputers.com,
-        adrian@freund.io, jirislaby@kernel.org,
-        Renjith.Pananchikkal@amd.com, anson.tsao@amd.com,
-        Richard.Gong@amd.com, evilsnoo@proton.me, ruinairas1992@gmail.com
-References: <20230518183920.93472-1-mario.limonciello@amd.com>
+Subject: Re: ACPI: what should Linux do for "call-order-swap" quirk from
+ firmware?
 Content-Language: en-US
-From:   Adam <adam.niederer@gmail.com>
-In-Reply-To: <20230518183920.93472-1-mario.limonciello@amd.com>
+To:     Mario Limonciello <mario.limonciello@amd.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-pm@vger.kernel.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+References: <DM6PR19MB2780634FE9D96D6FB72712B2BC429@DM6PR19MB2780.namprd19.prod.outlook.com>
+ <CAJZ5v0j5hFbVh05wP5t49_j2kSkW9XY3WaqtrOb6YA9NJYHKcQ@mail.gmail.com>
+ <ba0d326f-cace-3b39-00a5-4307a78045e3@amd.com>
+From:   Ratchanan Srirattanamet <peathot@hotmail.com>
+In-Reply-To: <ba0d326f-cace-3b39-00a5-4307a78045e3@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-TMN:  [KQ/SHW7ZH8NPbqeXYFK2fxogguM8demz]
+X-ClientProxiedBy: SI2PR02CA0051.apcprd02.prod.outlook.com
+ (2603:1096:4:196::10) To DM6PR19MB2780.namprd19.prod.outlook.com
+ (2603:10b6:5:13d::26)
+X-Microsoft-Original-Message-ID: <f9863bc6-872c-768d-753b-757c59743a3f@hotmail.com>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR19MB2780:EE_|PH0PR19MB4775:EE_
+X-MS-Office365-Filtering-Correlation-Id: e1a20bb2-4dd4-480c-2c66-08db5bd53ce3
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 4KascVaf6ymu89dEdlh9OE4K8GoNnhJlvQQrDFo5BpQ/gqPVgK5Zwrg0vhLwjpjhgaRsBkucntaFiXuX4iLgIfD/e2hRl+Z8+NifxmYk8Tv7F7oCJgqVDs7nxvU+rIz9FxCIY0uw3M/NQ8ndVFfKclBZnXwfnOZ94K3u2Pu24NYF+RcJbc6M42BzgvTHb7AgNsB6kGkfaWZsISvrGHXPeVNYIMYfeeZuVv8FAxr6iZuj4oEkRGntqukhVIExHqMvazc9SJJUmWlg0PtTvy2t15MZOujZVM0XmGZCOI5mSZ0TiIMIcxcXQ8oC2l+qMtLyNzHWNmEWOi7XpqiPi7NxpKAPEApIUNHSPKUPFht59QOsKnmehszHaTvNXi6RyQXptjvZIafXPu5iaJN635TSpyO31gvTURPgNMoRfmcM5ffRdfV9x/kz1pOJXEWHCLiEGV8ZikhWHFHuJCjZ+Zhz578Iyvbql/SkEe3gVuJLR7EMCDjiZuCJ+dcEksYVMc86UmR9GjfAD0GkgRcA55/1ggHCofQLQ6kUB40Sq9I1xJlsFZdn/g5JryXyxnqRSS/X9yQS22XwUofd5g78o+If77I+tqdCksxBt1Hsf1MsqxE=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dFJxM0VaaUJBa1Z3MmRGSERram9hbU1MNGFSbUFRSGJLMVZDTUtIMmkxajlm?=
+ =?utf-8?B?bis4bGJXNnN3K2h1cndyZzVsRzdSK3h4eXhUTkpTdEVTdFZmYmRYQ2ZDOTRX?=
+ =?utf-8?B?Zm5UWW1RTHZQcUV1c3M5YlRuRjJHOC94TFNGMk1mcVZOeFRwVzErOThmVnJJ?=
+ =?utf-8?B?MGkwaVJQSXBIUGhLeTJSRUZZYkx2TytCeWhPTkd3a25pWXZWV1lWMXc2REpK?=
+ =?utf-8?B?ZXAzOGRWYXNlS1E1eVk3RWVDMVUxbm5FQW1jcmdRbnI3Y0NEOVBLRDNHN2tJ?=
+ =?utf-8?B?QW4rOTBFU3E4cmsvOGZNU2dYM2hDWGRaSkVYblg1WFIyaCsrNVdLK0Q3dUpr?=
+ =?utf-8?B?TVRNbUJ1NjVHSTFqTWlndnpUM00zd3M4dkhHVkpUOXN5TkNKQWo0RUhncWZ3?=
+ =?utf-8?B?dTBYQnc2L01yVHZtVTFteEZpOWVhcTRvZ1JIN3ZDdUUrcmhBZ09SZDJkVkdS?=
+ =?utf-8?B?SWpBVHBTdnBGMGViZWhCQ0hZa242TFZqL0dRanBwbnhuU2JlS3JRWC82YTJo?=
+ =?utf-8?B?aDZPelphSWhicWJadE1TZVpDY0tBSTkzYUVtSVdQSUp5NVBKVlRXL1pOaTBw?=
+ =?utf-8?B?TnNRYUp1S21UL2tYQ2VUamoxc1duQnpYQnpyUFRmTTFiMnlIbHNEVG9hVjVJ?=
+ =?utf-8?B?Q1VKSnJwSDBjT1V1UGdtV2JOMG8vTElTODZ4QU45UExlY3A3Qy9aMnFzempW?=
+ =?utf-8?B?SFhvTFJSNTNYckRxck9vb25rVllldzF2ZWN2V0JjaWkvS0JUalUwVWMwTWxp?=
+ =?utf-8?B?MGhmNEoySnBaSndIWjB3MnZrVGdUazQ0VnFXcVorTGx6emdOUUdZVDFUVitU?=
+ =?utf-8?B?TFhIWlNra095WVZuQmFvNTVTeUU5S2lPYTdKMFQwaFE2VGxwSWV3VGs2Ym00?=
+ =?utf-8?B?cGw1RVRYc3ZLMGNtQWJDRS9HMUFSbnhNcnI4MWpsZWtuZGpGc3orTE9oUWNI?=
+ =?utf-8?B?bGd4N2JvR0x2RXd3cHUybnRUckw3bHFHNHplMDdBUE1GREQvZ0lrbC9GdHNl?=
+ =?utf-8?B?VXNmRnN5SFBXM0FNcHBxQitKRTBZRDRJU04xemptTkxacEE0SWtPdzdUck5U?=
+ =?utf-8?B?OWRqZTI3TmhrdW1HSzdIbnJPa2J5QnNSYmZKZ1IyQWIyVCs5aW1FVytQRXBI?=
+ =?utf-8?B?T2lMdkJzVW1FemxlSWdiNXFRc2tsMFpBOUZ5VDF2WkZkbTkxNU9QNVh2VURF?=
+ =?utf-8?B?UWlDaTdCTXIzZkRHYXZWYlZwZ3VGTU96bElwVnNwUXE2YklFZXNOVmQvTFFQ?=
+ =?utf-8?B?aTZueTQ1cFpQZEg3ZWt3M0paSU9KME5ncTZJWEE1andvTmhOSFVvVUxzcytK?=
+ =?utf-8?B?ZWk1dWVNZ2pZaUJIbnZ6VngwZWJkbWlZejZhSENrOVRVaWJOS2t1TVZaSmNM?=
+ =?utf-8?B?TUsrZFNtTW0yWUVqaE1zWnZSM3o0SU02RlMvUUhPcldDWG1ZbUh1ZiswK3l1?=
+ =?utf-8?B?MUlLaU1TUkJUUGt3NFNtVkVlaHhxd3QxaVJEYWZ0WG5tMWFOR2w4WkJoMmhT?=
+ =?utf-8?B?aTBacXFGcGNyNlRkWjhKdkZtUVZTWkR3UXlWWUJ1b3luelM1eUtLQ1o3VEhY?=
+ =?utf-8?B?NWpMdnQvOTBRcjc0dEVLMEF0YzlPS01NZXBxZVpzdXJXZ0s4Sk5pQzhYNGRy?=
+ =?utf-8?B?VkZ5RkUrWkh5K0RGeGZ1VWpPUUZQRVE9PQ==?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-e7757.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: e1a20bb2-4dd4-480c-2c66-08db5bd53ce3
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR19MB2780.namprd19.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 May 2023 21:32:41.9532
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR19MB4775
+X-Spam-Status: No, score=0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_MUA_MOZILLA,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hey, I have tested 6.4-rc3 and this breaks the integrated trackpad on my 
-MAINGEAR Vector Pro 2 15" 6900H model (MG-VCP2-15A3070T), but the 
-keyboard still works (the trackpad worked and keyboard did not before I 
-submitted my ACPI override). I'll send over an acpidump directly as well.
 
-On 5/18/23 14:39, Mario Limonciello wrote:
-> commit 9946e39fe8d0 ("ACPI: resource: skip IRQ override on
-> AMD Zen platforms") attempted to overhaul the override logic so it
-> didn't apply on X86 AMD Zen systems.  This was intentional so that
-> systems would prefer DSDT values instead of default MADT value for
-> IRQ 1 on Ryzen 6000 systems which use ActiveLow for IRQ1.
->
-> This turned out to be a bad assumption because several vendors seem
-> to add Interrupt Source Override but don't fix the DSDT. A pile of
-> quirks was collecting that proved this wasn't sustaintable.
->
-> Adjust the logic so that only IRQ1 is overridden in Ryzen 6000 case.
->
-> This effectively reverts the following commits:
-> commit 17bb7046e7ce ("ACPI: resource: Do IRQ override on all TongFang
-> GMxRGxx")
-> commit f3cb9b740869 ("ACPI: resource: do IRQ override on Lenovo 14ALC7")
-> commit bfcdf58380b1 ("ACPI: resource: do IRQ override on LENOVO IdeaPad")
-> commit 7592b79ba4a9 ("ACPI: resource: do IRQ override on XMG Core 15")
->
-> Cc: ofenfisch@googlemail.com
-> Cc: wse@tuxedocomputers.com
-> Cc: adam.niederer@gmail.com
-> Cc: adrian@freund.io
-> Cc: jirislaby@kernel.org
-> Tested-by: Renjith.Pananchikkal@amd.com
-> Tested-by: anson.tsao@amd.com
-> Tested-by: Richard.Gong@amd.com
-> Tested-by: Chuanhong Guo <gch981213@gmail.com>
-> Reported-by: evilsnoo@proton.me
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217394
-> Reported-by: ruinairas1992@gmail.com
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217406
-> Fixes: 9946e39fe8d0 ("ACPI: resource: skip IRQ override on AMD Zen platforms")
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
-> v1->v2:
->   * Rebase on 71a485624c4c ("ACPI: resource: Add IRQ override quirk for LG UltraPC 17U70P")
->   * Pick up tag
-> ---
->   drivers/acpi/resource.c | 154 +++++++++++++++++-----------------------
->   1 file changed, 65 insertions(+), 89 deletions(-)
->
-> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> index 0800a9d77558..c6ac87e01e1c 100644
-> --- a/drivers/acpi/resource.c
-> +++ b/drivers/acpi/resource.c
-> @@ -470,52 +470,6 @@ static const struct dmi_system_id asus_laptop[] = {
->   	{ }
->   };
->   
-> -static const struct dmi_system_id lenovo_laptop[] = {
-> -	{
-> -		.ident = "LENOVO IdeaPad Flex 5 14ALC7",
-> -		.matches = {
-> -			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-> -			DMI_MATCH(DMI_PRODUCT_NAME, "82R9"),
-> -		},
-> -	},
-> -	{
-> -		.ident = "LENOVO IdeaPad Flex 5 16ALC7",
-> -		.matches = {
-> -			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-> -			DMI_MATCH(DMI_PRODUCT_NAME, "82RA"),
-> -		},
-> -	},
-> -	{ }
-> -};
-> -
-> -static const struct dmi_system_id tongfang_gm_rg[] = {
-> -	{
-> -		.ident = "TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15 Gen4 AMD",
-> -		.matches = {
-> -			DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
-> -		},
-> -	},
-> -	{ }
-> -};
-> -
-> -static const struct dmi_system_id maingear_laptop[] = {
-> -	{
-> -		.ident = "MAINGEAR Vector Pro 2 15",
-> -		.matches = {
-> -			DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
-> -			DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-15A3070T"),
-> -		}
-> -	},
-> -	{
-> -		.ident = "MAINGEAR Vector Pro 2 17",
-> -		.matches = {
-> -			DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
-> -			DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-17A3070T"),
-> -		},
-> -	},
-> -	{ }
-> -};
-> -
->   static const struct dmi_system_id lg_laptop[] = {
->   	{
->   		.ident = "LG Electronics 17U70P",
-> @@ -527,7 +481,7 @@ static const struct dmi_system_id lg_laptop[] = {
->   	{ }
->   };
->   
-> -struct irq_override_cmp {
-> +struct irq_override_dmi_cmp {
->   	const struct dmi_system_id *system;
->   	unsigned char irq;
->   	unsigned char triggering;
-> @@ -536,50 +490,86 @@ struct irq_override_cmp {
->   	bool override;
->   };
->   
-> -static const struct irq_override_cmp override_table[] = {
-> +struct irq_override_acpi_cmp {
-> +	const char *id;
-> +	unsigned char irq;
-> +	unsigned char triggering;
-> +	unsigned char polarity;
-> +};
-> +
-> +static const struct irq_override_dmi_cmp dmi_override_table[] = {
->   	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
->   	{ asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
-> -	{ lenovo_laptop, 6, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
-> -	{ lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
-> -	{ tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
-> -	{ maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
->   	{ lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
->   };
->   
-> -static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
-> -				  u8 shareable)
-> +/*
-> + * Ryzen 6000 requires ActiveLow for keyboard, but a number of machines
-> + * seem to get it wrong in DSDT or don't have an Interrupt Source
-> + * Override.
-> + */
-> +static const struct irq_override_acpi_cmp acpi_override_table[] = {
-> +	{ "AMDI0007", 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW },
-> +};
-> +
-> +static void acpi_dev_irq_override(u32 gsi, u8 *triggering, u8 *polarity,
-> +				  u8 *shareable)
->   {
-> -	int i;
-> +	int i, p, t;
-> +	int check_override = true;
->   
-> -	for (i = 0; i < ARRAY_SIZE(override_table); i++) {
-> -		const struct irq_override_cmp *entry = &override_table[i];
-> +	for (i = 0; i < ARRAY_SIZE(dmi_override_table); i++) {
-> +		const struct irq_override_dmi_cmp *entry = &dmi_override_table[i];
->   
->   		if (dmi_check_system(entry->system) &&
->   		    entry->irq == gsi &&
-> -		    entry->triggering == triggering &&
-> -		    entry->polarity == polarity &&
-> -		    entry->shareable == shareable)
-> -			return entry->override;
-> +		    entry->triggering == *triggering &&
-> +		    entry->polarity == *polarity &&
-> +		    entry->shareable == *shareable)
-> +			check_override = entry->override;
->   	}
->   
-> -#ifdef CONFIG_X86
-> -	/*
-> -	 * IRQ override isn't needed on modern AMD Zen systems and
-> -	 * this override breaks active low IRQs on AMD Ryzen 6000 and
-> -	 * newer systems. Skip it.
-> -	 */
-> -	if (boot_cpu_has(X86_FEATURE_ZEN))
-> -		return false;
-> -#endif
-> +	if (!check_override)
-> +		return;
->   
-> -	return true;
-> +	if (!acpi_get_override_irq(gsi, &t, &p)) {
-> +		u8 trig = t ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
-> +		u8 pol = p ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
-> +
-> +		if (*triggering != trig || *polarity != pol) {
-> +			pr_warn("ACPI: IRQ %d override to %s%s, %s%s\n", gsi,
-> +				t ? "level" : "edge",
-> +				trig == *triggering ? "" : "(!)",
-> +				p ? "low" : "high",
-> +				pol == *polarity ? "" : "(!)");
-> +			*triggering = trig;
-> +			*polarity = pol;
-> +		}
-> +	}
-> +
-> +	for (i = 0; i < ARRAY_SIZE(acpi_override_table); i++) {
-> +		const struct irq_override_acpi_cmp *entry = &acpi_override_table[i];
-> +
-> +		if (acpi_dev_found(entry->id) && gsi == entry->irq &&
-> +		   (*polarity != entry->polarity || *triggering != entry->triggering)) {
-> +			pr_warn("ACPI: IRQ %d override to %s%s, %s%s due to %s\n",
-> +				gsi,
-> +				entry->triggering ? "level" : "edge",
-> +				entry->triggering == *triggering ? "" : "(!)",
-> +				entry->polarity ? "low" : "high",
-> +				entry->polarity == *polarity ? "" : "(!)",
-> +				entry->id);
-> +			*polarity = entry->polarity;
-> +			*triggering = entry->triggering;
-> +		}
-> +	}
->   }
->   
->   static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
->   				     u8 triggering, u8 polarity, u8 shareable,
->   				     u8 wake_capable, bool check_override)
->   {
-> -	int irq, p, t;
-> +	int irq;
->   
->   	if (!valid_IRQ(gsi)) {
->   		irqresource_disabled(res, gsi);
-> @@ -592,26 +582,12 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
->   	 * 2. BIOS uses IO-APIC mode Interrupt Source Override
->   	 *
->   	 * We do this only if we are dealing with IRQ() or IRQNoFlags()
-> -	 * resource (the legacy ISA resources). With modern ACPI 5 devices
-> +	 * resource (the legacy ISA resources). With ACPI devices
->   	 * using extended IRQ descriptors we take the IRQ configuration
->   	 * from _CRS directly.
->   	 */
-> -	if (check_override &&
-> -	    acpi_dev_irq_override(gsi, triggering, polarity, shareable) &&
-> -	    !acpi_get_override_irq(gsi, &t, &p)) {
-> -		u8 trig = t ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
-> -		u8 pol = p ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
-> -
-> -		if (triggering != trig || polarity != pol) {
-> -			pr_warn("ACPI: IRQ %d override to %s%s, %s%s\n", gsi,
-> -				t ? "level" : "edge",
-> -				trig == triggering ? "" : "(!)",
-> -				p ? "low" : "high",
-> -				pol == polarity ? "" : "(!)");
-> -			triggering = trig;
-> -			polarity = pol;
-> -		}
-> -	}
-> +	if (check_override)
-> +		acpi_dev_irq_override(gsi, &triggering, &polarity, &shareable);
->   
->   	res->flags = acpi_dev_irq_flags(triggering, polarity, shareable, wake_capable);
->   	irq = acpi_register_gsi(NULL, gsi, triggering, polarity);
->
-> base-commit: c554eee18c9a440bd2dd5a363b0f79325717f0bf
+
+เมื่อ 22/5/66 เวลา 20:13 Mario Limonciello เขียนว่า:
+> On 5/22/23 04:44, Rafael J. Wysocki wrote:
+>> +Mario and linux-acpi
+>>
+>> On Sun, May 21, 2023 at 9:26 PM Ratchanan Srirattanamet
+>> <peathot@hotmail.com> wrote:
+>>>
+>>> Hello,
+>>>
+>>> I'm trying to debug an issue where Nouveau is unable to runtime-resume
+>>> an Nvidia GTX 1650 Ti in an AMD-based laptop [1]. As part of this, I've
+>>> traced ACPI calls for the same device on Windows. And it seems like this
+>>> device has a weird quirk, which I call it "call-order-swap" for a lack
+>>> of better words, when it transitions from D3cold to D0.
+
+Hello,
+
+Turns out, the problem is actually elsewhere and the current method call 
+ordering in Linux, while seemingly differs from Windows, doesn't seem to 
+actually be a problem.
+
+For reference, the actual problem comes from Nouveau incorrectly 
+re-initializing the GPU after it returns from D3cold, which is 
+subsequently masked by Nouveau mis-detecting the presence of power 
+resource causing it to use a custom DSM, confusing the ACPI code.
+
+Sorry for the earlier email.
+
+Ratchanan
+
+>>> So, a bit of context: Lenovo Legion 5-15ARH05 [2] is a laptop sporting
+>>> AMD Ryzen 7 4800H with Radeon Graphics + Nvidia GTX 1650 Ti. This
+>>> device's PCI-E topology to the GPU is:
+>>>
+>>> 00:01.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Renoir
+>>> PCIe GPP Bridge [1022:1633]
+>>>           +- 01:00.0 VGA compatible controller [0300]: NVIDIA 
+>>> Corporation
+>>> TU117M [GeForce GTX 1650 Ti Mobile] [10de:1f95] (rev a1)
+>>>
+>>> And for ACPI perspective (according to my interpretation), a power
+>>> resource \_SB.PCI0.GPP0 seems to represent the PCI bridge, having
+>>> \_SB.PCI0.GPP0.PG00 as a power resource, and \_SB.PCI0.GPP0.PEGP seems
+>>> to represent the GPU itself, which doesn't seem to have its own power
+>>> resource. All ACPI table dumps and infos can be found in the issue on
+>>> Freedesktop GitLab [1].
+>>>
+>>> Now, if I understand the specs correctly, when transitioning the GPU &
+>>> the bridge back from D3cold to D0, the kernel should start up the bridge
+>>> before the GPU itself. From the ACPI perspective, I should see calls for
+>>> .PG00._ON() (power resource for the bridge) before .PEGP.PS0().
+>>>
+>>> However, on Windows [3], instead it seems like .PEGP.PS0() is called
+>>> before .PG00._ON(), for some reason. This is weird, because if
+>>> .PG00._ON() has not been called yet, .PEGP.PS0() should be even valid to
+>>> call. Now, I have no idea on what part of the Windows system is supposed
+>>> to call those ACPI functions, but my feeling is that it must be either
+>>> Nvidia or AMD driver that does this kind of quirks.
+> 
+> I don't think it could be an AMD driver in this case for Windows as the 
+> PCIe root port uses "inbox" drivers.
+> 
+>>>
+>>> As for what Linux does... well it seems like when Linux resumes the PCI
+>>> bridge, it calls only .PG00._ON(), skipping .PEGP.PS0() on the ground
+>>> that the downstream devices must have been reset when that happens. I'm
+>>> not sure that's the right thing to happen either, but at least it makes
+>>> more sense. Nvidia's proprietary driver seems to disable runtime D3
+>>> support inside it completely on this device, so I think Nvidia must have
+>>> a quirk for this chipset, as I briefly borrowed my friend's laptop
+>>> sporting AMD 6000 series CPU and it doesn't disable runtime D3. >>
+>>> So... I'm not sure what the correct behavior is here. I'm a developer
+>>> myself, but kernel is not where I'm familiar with. Please advise me on
+>>> where I should look next.
+> 
+> Yeah if it's working properly on newer hardware it does seem like a good 
+> argument for a quirk in the Nouveau driver to me when this older 
+> combination is encountered.
+> 
+>>>
+>>> Ratchanan.
+>>>
+>>> P.S. please make sure to include me in the reply, as I'm not the list's
+>>> subscriber.
+>>>
+>>> [1] https://gitlab.freedesktop.org/drm/nouveau/-/issues/79
+>>> [2]
+>>> https://pcsupport.lenovo.com/th/en/products/laptops-and-netbooks/legion-series/legion-5-15arh05/82b5/82b500fqta
+>>> [3]
+>>> https://gitlab.freedesktop.org/drm/nouveau/uploads/2659e5cb41a52290ebf18d9906408d62/nvamli1-processed.txt
+> 
