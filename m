@@ -2,42 +2,42 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A9B670E271
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 May 2023 18:49:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E82EF70E402
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 May 2023 19:47:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237819AbjEWQt2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 May 2023 12:49:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58536 "EHLO
+        id S237395AbjEWQzo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 May 2023 12:55:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237810AbjEWQt1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 May 2023 12:49:27 -0400
-Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB3A5E6
-        for <linux-acpi@vger.kernel.org>; Tue, 23 May 2023 09:49:25 -0700 (PDT)
+        with ESMTP id S235039AbjEWQzm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 May 2023 12:55:42 -0400
+Received: from fgw21-7.mail.saunalahti.fi (fgw21-7.mail.saunalahti.fi [62.142.5.82])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 288BADD
+        for <linux-acpi@vger.kernel.org>; Tue, 23 May 2023 09:55:40 -0700 (PDT)
 Received: from localhost (88-113-26-95.elisa-laajakaista.fi [88.113.26.95])
-        by fgw20.mail.saunalahti.fi (Halon) with ESMTP
-        id c4f33e1d-f989-11ed-b3cf-005056bd6ce9;
-        Tue, 23 May 2023 19:49:23 +0300 (EEST)
+        by fgw21.mail.saunalahti.fi (Halon) with ESMTP
+        id a4647b55-f98a-11ed-abf4-005056bdd08f;
+        Tue, 23 May 2023 19:55:38 +0300 (EEST)
 From:   andy.shevchenko@gmail.com
-Date:   Tue, 23 May 2023 19:49:22 +0300
+Date:   Tue, 23 May 2023 19:55:37 +0300
 To:     Mario Limonciello <mario.limonciello@amd.com>
 Cc:     rafael@kernel.org, hdegoede@redhat.com, linus.walleij@linaro.org,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-gpio@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-pm@vger.kernel.org, Shyam-sundar.S-k@amd.com,
         Basavaraj.Natikar@amd.com
-Subject: Re: [PATCH v2 2/4] ACPI: x86: Add pm_debug_messages for LPS0 _DSM
- state tracking
-Message-ID: <ZGzukhSTqWzXJRAL@surfacebook>
+Subject: Re: [PATCH v2 3/4] pinctrl: amd: Use pm_pr_dbg to show debugging
+ messages
+Message-ID: <ZGzwCdTO2LptPeQs@surfacebook>
 References: <20230522200033.2605-1-mario.limonciello@amd.com>
- <20230522200033.2605-2-mario.limonciello@amd.com>
+ <20230522200033.2605-3-mario.limonciello@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230522200033.2605-2-mario.limonciello@amd.com>
+In-Reply-To: <20230522200033.2605-3-mario.limonciello@amd.com>
 X-Spam-Status: No, score=0.7 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
-        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no
+        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,SPF_HELO_NONE,
+        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -45,69 +45,23 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Mon, May 22, 2023 at 03:00:31PM -0500, Mario Limonciello kirjoitti:
-> Enabling debugging messages for the state requires turning on dynamic
-> debugging for the file. To make it more accessible, use
-> `pm_debug_messages` and clearer strings for what is happening.
+Mon, May 22, 2023 at 03:00:32PM -0500, Mario Limonciello kirjoitti:
+> To make the GPIO tracking around suspend easier for end users to
+> use, link it with pm_debug_messages.  This will make discovering
+> sources of spurious GPIOs around suspend easier.
+
+Unfortunatelly this has two regressions.
 
 ...
 
-> +		switch (state) {
-> +		case ACPI_LPS0_SCREEN_OFF:
-> +			return "screen off";
-> +		case ACPI_LPS0_SCREEN_ON:
-> +			return "screen on";
-> +		case ACPI_LPS0_ENTRY:
-> +			return "lps0 entry";
-> +		case ACPI_LPS0_EXIT:
-> +			return "lps0 exit";
-> +		case ACPI_LPS0_MS_ENTRY:
-> +			return "lps0 ms entry";
-> +		case ACPI_LPS0_MS_EXIT:
-> +			return "lps0 ms exit";
+> -				dev_dbg(&gpio_dev->pdev->dev,
+> -					"GPIO %d is active: 0x%x",
+> -					irqnr + i, regval);
+> +				pm_pr_dbg("GPIO %d is active: 0x%x",
+> +					  irqnr + i, regval);
 
-No default?
-
-> +		}
-
-...
-
-> +		switch (state) {
-> +		case ACPI_LPS0_SCREEN_ON_AMD:
-> +			return "screen on";
-> +		case ACPI_LPS0_SCREEN_OFF_AMD:
-> +			return "screen off";
-> +		case ACPI_LPS0_ENTRY_AMD:
-> +			return "lps0 entry";
-> +		case ACPI_LPS0_EXIT_AMD:
-> +			return "lps0 exit";
-> +		}
-> +	}
-> +
-> +	return "unknown";
-
-Make it default in each switch-case. That way we might have an option to alter
-them if needed.
-
-...
-
-> -	acpi_handle_debug(lps0_device_handle, "_DSM function %u evaluation %s\n",
-> -			  func, out_obj ? "successful" : "failed");
-> +	lps0_dsm_state = func;
-> +	if (pm_debug_messages_on) {
-> +		acpi_handle_info(lps0_device_handle,
-> +				"%s transitioned to state %s\n",
-> +				 out_obj ? "Successfully" : "Failed to",
-> +				 acpi_sleep_dsm_state_to_str(lps0_dsm_state));
-> +	}
-
-Can we keep the original choice (i.e. 
-
-	? "successful" : "failed");
-
-) unmodified? The rationale is that we migh add something like
-str_successful_failed() to the string_helpers.h for wider use and common
-standardization.
+Regression 1: The device is now omitted from the output.
+Regression 2: See https://stackoverflow.com/a/43957671/2511795
 
 -- 
 With Best Regards,
