@@ -2,384 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 013C470FBA7
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 May 2023 18:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 752A470FD78
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 May 2023 20:06:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229605AbjEXQYU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 May 2023 12:24:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44786 "EHLO
+        id S235126AbjEXSG1 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 24 May 2023 14:06:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbjEXQYT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 May 2023 12:24:19 -0400
-Received: from debian-mailserver.fidu.org (mail.tuxedocomputers.com [157.90.84.7])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF578E9;
-        Wed, 24 May 2023 09:24:16 -0700 (PDT)
-Received: from [192.168.178.25] (business-24-134-105-141.pool2.vodafone-ip.de [24.134.105.141])
-        (Authenticated sender: wse@tuxedocomputers.com)
-        by debian-mailserver.fidu.org (Postfix) with ESMTPSA id 7469C2FC00CF;
-        Wed, 24 May 2023 18:24:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tuxedocomputers.com;
-        s=default; t=1684945455;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=mfFxQs/lolLgBVLKGn3/oeJ4OPiYGO891nJGc0ctP/A=;
-        b=HuzBR2CnEyIMo9ETSYoPY/aE8FF9oqeAnjPow3uhuU1niinAbqIWplGobSlRVno96VicQ4
-        WDBNTA43IZY3nJO1e3nCZtBtHqeZdjnBKxocEKQkD6dsqfT2lsV/tS9kZ32cGQ3Mp1G+/y
-        vZ5OgdwP8WT2fhTjq9iuTyNl/9gMa4M=
-Authentication-Results: debian-mailserver.fidu.org;
-        auth=pass smtp.auth=wse@tuxedocomputers.com smtp.mailfrom=wse@tuxedocomputers.com
-Message-ID: <1921a791-10ad-90c4-5656-71bca1dfded5@tuxedocomputers.com>
-Date:   Wed, 24 May 2023 18:24:13 +0200
+        with ESMTP id S233755AbjEXSG0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 24 May 2023 14:06:26 -0400
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48C37E7;
+        Wed, 24 May 2023 11:06:23 -0700 (PDT)
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-9739440b60bso10041766b.0;
+        Wed, 24 May 2023 11:06:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684951581; x=1687543581;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JCb55Zgn6mVQwYnYnhdrcQMfFu1FfHYcI82tnxgFFXY=;
+        b=TB8LWL7r9QMoFuxPJYnPwdKXpm7lla4zdSzM9yN/KwAUtvdcJJiR2jsKXUazIbGS7H
+         Yw+7ibdssgQVJT3nyJR2w1PqPfV5Ld55iLrh9SSZxf84O6M80ZjuoY/R1/vzeRHNHajI
+         j/nSkiEJaSMm96Kb7kob2DalbOsNI3UglLIPPlorxYWFJLMtD+NfUCpeTa2DGe9+2fAW
+         QyGN1hpkhmSxMgJAn9rOQx2sBidhkh2zT4vWrklgYXX+rYX9WeV8Sysm47M97EhzQ7aR
+         cOLEEDlpoWpNIxrdZ1Zw3466vHL83yHv0/0ZTG47B02bP978mEObVJgB3MjhFrmdnfB+
+         aQgg==
+X-Gm-Message-State: AC+VfDztXK5D7mEw+UGlWFDnx8gEcW1+/qBhF24WE9/S9pL7S22Nc0I8
+        mD33V57iJ5gipp98Qecty6dmwTA2CLjb1P23LNiAzqXH
+X-Google-Smtp-Source: ACHHUZ4Zau31Zkqmffi9M8T99R9vE1X8UU2tRT/1M11kJ81h2dfM+6yB1chLKny5LEPIzuZcNbHgeerTLPjpRJfoU0w=
+X-Received: by 2002:a17:906:739d:b0:965:9db5:3821 with SMTP id
+ f29-20020a170906739d00b009659db53821mr17548734ejl.7.1684951580645; Wed, 24
+ May 2023 11:06:20 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2] ACPI: resource: Remove "Zen" specific match and quirks
-To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>,
-        "rafael@kernel.org" <rafael@kernel.org>
-Cc:     "gch981213@gmail.com" <gch981213@gmail.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "regressions@leemhuis.info" <regressions@leemhuis.info>,
-        "ofenfisch@googlemail.com" <ofenfisch@googlemail.com>,
-        "adam.niederer@gmail.com" <adam.niederer@gmail.com>,
-        "adrian@freund.io" <adrian@freund.io>,
-        "jirislaby@kernel.org" <jirislaby@kernel.org>,
-        "Pananchikkal, Renjith" <Renjith.Pananchikkal@amd.com>,
-        "Tsao, Anson" <anson.tsao@amd.com>,
-        "Gong, Richard" <Richard.Gong@amd.com>,
-        "evilsnoo@proton.me" <evilsnoo@proton.me>,
-        "ruinairas1992@gmail.com" <ruinairas1992@gmail.com>
-References: <20230518183920.93472-1-mario.limonciello@amd.com>
- <ca1f3eeb-76b5-d80f-e12f-94890922fdd6@tuxedocomputers.com>
- <DS7PR12MB6095B4D8F7882719E5224861E2409@DS7PR12MB6095.namprd12.prod.outlook.com>
-Content-Language: en-US
-From:   Werner Sembach <wse@tuxedocomputers.com>
-In-Reply-To: <DS7PR12MB6095B4D8F7882719E5224861E2409@DS7PR12MB6095.namprd12.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <13276375.uLZWGnKmhe@kreacher>
+In-Reply-To: <13276375.uLZWGnKmhe@kreacher>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 24 May 2023 20:06:09 +0200
+Message-ID: <CAJZ5v0gKaheHVfRcgFx_3JdBp9bw5nUQXYp9vZP4RVVXzdb7uw@mail.gmail.com>
+Subject: Re: [PATCH v1 0/6] ACPI: scan: MIPI DiSco for Imaging support
+To:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-Am 23.05.23 um 19:56 schrieb Limonciello, Mario:
-> [AMD Official Use Only - General]
+On Wed, May 24, 2023 at 1:48 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
 >
->> -----Original Message-----
->> From: Werner Sembach <wse@tuxedocomputers.com>
->> Sent: Tuesday, May 23, 2023 12:53 PM
->> To: Limonciello, Mario <Mario.Limonciello@amd.com>; rafael@kernel.org
->> Cc: gch981213@gmail.com; linux-acpi@vger.kernel.org; linux-
->> kernel@vger.kernel.org; regressions@leemhuis.info;
->> ofenfisch@googlemail.com; adam.niederer@gmail.com; adrian@freund.io;
->> jirislaby@kernel.org; Pananchikkal, Renjith <Renjith.Pananchikkal@amd.com>;
->> Tsao, Anson <anson.tsao@amd.com>; Gong, Richard
->> <Richard.Gong@amd.com>; evilsnoo@proton.me; ruinairas1992@gmail.com
->> Subject: Re: [PATCH v2] ACPI: resource: Remove "Zen" specific match and
->> quirks
->>
->> Hi,
->>
->> Am 18.05.23 um 20:39 schrieb Mario Limonciello:
->>> commit 9946e39fe8d0 ("ACPI: resource: skip IRQ override on
->>> AMD Zen platforms") attempted to overhaul the override logic so it
->>> didn't apply on X86 AMD Zen systems.  This was intentional so that
->>> systems would prefer DSDT values instead of default MADT value for
->>> IRQ 1 on Ryzen 6000 systems which use ActiveLow for IRQ1.
->>>
->>> This turned out to be a bad assumption because several vendors seem
->>> to add Interrupt Source Override but don't fix the DSDT. A pile of
->>> quirks was collecting that proved this wasn't sustaintable.
->>>
->>> Adjust the logic so that only IRQ1 is overridden in Ryzen 6000 case.
->>>
->>> This effectively reverts the following commits:
->>> commit 17bb7046e7ce ("ACPI: resource: Do IRQ override on all TongFang
->>> GMxRGxx")
->>> commit f3cb9b740869 ("ACPI: resource: do IRQ override on Lenovo
->> 14ALC7")
->>> commit bfcdf58380b1 ("ACPI: resource: do IRQ override on LENOVO
->> IdeaPad")
->>> commit 7592b79ba4a9 ("ACPI: resource: do IRQ override on XMG Core 15")
->> The TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15 Gen4 AMD
->> breaks again with this patch (applied to 6.4-rc3). Am I missing an additional
->> patch that is required?
-> You're not missing anything extra, but let's gather some detail about your system
-> and figure out why.
+> Hi Folks,
 >
-> What CPU is in it?
-AMD Ryzen 9 6900HX
-> Also would you mind sending me an acpidump?  You can send directly to me off-list
-> if you want.
-
-Doing that to not load the list with big attachments.
-
-But for reference: here it was discussed too: 
-https://bugzilla.kernel.org/show_bug.cgi?id=216698
-
-Note that TF did eventually provide a fixed BIOS, but most likely not all 
-vendors ship that BIOS and/or all users are aware that this fix exists. So I 
-purposefully used the older unfixed BIOS to test the kernel.
-
+> This basically is a re-write of a recent patch series from Sakari:
 >
->>> Cc: ofenfisch@googlemail.com
->>> Cc: wse@tuxedocomputers.com
->>> Cc: adam.niederer@gmail.com
->>> Cc: adrian@freund.io
->>> Cc: jirislaby@kernel.org
->>> Tested-by: Renjith.Pananchikkal@amd.com
->>> Tested-by: anson.tsao@amd.com
->>> Tested-by: Richard.Gong@amd.com
->>> Tested-by: Chuanhong Guo <gch981213@gmail.com>
->>> Reported-by: evilsnoo@proton.me
->>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217394
->>> Reported-by: ruinairas1992@gmail.com
->>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217406
->>> Fixes: 9946e39fe8d0 ("ACPI: resource: skip IRQ override on AMD Zen
->> platforms")
->>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->>> ---
->>> v1->v2:
->>>    * Rebase on 71a485624c4c ("ACPI: resource: Add IRQ override quirk for LG
->> UltraPC 17U70P")
->>>    * Pick up tag
->>> ---
->>>    drivers/acpi/resource.c | 154 +++++++++++++++++-----------------------
->>>    1 file changed, 65 insertions(+), 89 deletions(-)
->>>
->>> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
->>> index 0800a9d77558..c6ac87e01e1c 100644
->>> --- a/drivers/acpi/resource.c
->>> +++ b/drivers/acpi/resource.c
->>> @@ -470,52 +470,6 @@ static const struct dmi_system_id asus_laptop[] = {
->>>      { }
->>>    };
->>>
->>> -static const struct dmi_system_id lenovo_laptop[] = {
->>> -   {
->>> -           .ident = "LENOVO IdeaPad Flex 5 14ALC7",
->>> -           .matches = {
->>> -                   DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
->>> -                   DMI_MATCH(DMI_PRODUCT_NAME, "82R9"),
->>> -           },
->>> -   },
->>> -   {
->>> -           .ident = "LENOVO IdeaPad Flex 5 16ALC7",
->>> -           .matches = {
->>> -                   DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
->>> -                   DMI_MATCH(DMI_PRODUCT_NAME, "82RA"),
->>> -           },
->>> -   },
->>> -   { }
->>> -};
->>> -
->>> -static const struct dmi_system_id tongfang_gm_rg[] = {
->>> -   {
->>> -           .ident = "TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO
->> Stellaris 15 Gen4 AMD",
->>> -           .matches = {
->>> -                   DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
->>> -           },
->>> -   },
->>> -   { }
->>> -};
->>> -
->>> -static const struct dmi_system_id maingear_laptop[] = {
->>> -   {
->>> -           .ident = "MAINGEAR Vector Pro 2 15",
->>> -           .matches = {
->>> -                   DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics
->> Inc"),
->>> -                   DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-
->> 15A3070T"),
->>> -           }
->>> -   },
->>> -   {
->>> -           .ident = "MAINGEAR Vector Pro 2 17",
->>> -           .matches = {
->>> -                   DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics
->> Inc"),
->>> -                   DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-
->> 17A3070T"),
->>> -           },
->>> -   },
->>> -   { }
->>> -};
->>> -
->>>    static const struct dmi_system_id lg_laptop[] = {
->>>      {
->>>              .ident = "LG Electronics 17U70P",
->>> @@ -527,7 +481,7 @@ static const struct dmi_system_id lg_laptop[] = {
->>>      { }
->>>    };
->>>
->>> -struct irq_override_cmp {
->>> +struct irq_override_dmi_cmp {
->>>      const struct dmi_system_id *system;
->>>      unsigned char irq;
->>>      unsigned char triggering;
->>> @@ -536,50 +490,86 @@ struct irq_override_cmp {
->>>      bool override;
->>>    };
->>>
->>> -static const struct irq_override_cmp override_table[] = {
->>> +struct irq_override_acpi_cmp {
->>> +   const char *id;
->>> +   unsigned char irq;
->>> +   unsigned char triggering;
->>> +   unsigned char polarity;
->>> +};
->>> +
->>> +static const struct irq_override_dmi_cmp dmi_override_table[] = {
->>>      { medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0,
->> false },
->>>      { asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false
->> },
->>> -   { lenovo_laptop, 6, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0,
->> true },
->>> -   { lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0,
->> true },
->>> -   { tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1,
->> true },
->>> -   { maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1,
->> true },
->>>      { lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
->>>    };
->>>
->>> -static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
->>> -                             u8 shareable)
->>> +/*
->>> + * Ryzen 6000 requires ActiveLow for keyboard, but a number of machines
->>> + * seem to get it wrong in DSDT or don't have an Interrupt Source
->>> + * Override.
->>> + */
->>> +static const struct irq_override_acpi_cmp acpi_override_table[] = {
->>> +   { "AMDI0007", 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW },
->>> +};
->>> +
->>> +static void acpi_dev_irq_override(u32 gsi, u8 *triggering, u8 *polarity,
->>> +                             u8 *shareable)
->>>    {
->>> -   int i;
->>> +   int i, p, t;
->>> +   int check_override = true;
->>>
->>> -   for (i = 0; i < ARRAY_SIZE(override_table); i++) {
->>> -           const struct irq_override_cmp *entry = &override_table[i];
->>> +   for (i = 0; i < ARRAY_SIZE(dmi_override_table); i++) {
->>> +           const struct irq_override_dmi_cmp *entry =
->> &dmi_override_table[i];
->>>              if (dmi_check_system(entry->system) &&
->>>                  entry->irq == gsi &&
->>> -               entry->triggering == triggering &&
->>> -               entry->polarity == polarity &&
->>> -               entry->shareable == shareable)
->>> -                   return entry->override;
->>> +               entry->triggering == *triggering &&
->>> +               entry->polarity == *polarity &&
->>> +               entry->shareable == *shareable)
->>> +                   check_override = entry->override;
->>>      }
->>>
->>> -#ifdef CONFIG_X86
->>> -   /*
->>> -    * IRQ override isn't needed on modern AMD Zen systems and
->>> -    * this override breaks active low IRQs on AMD Ryzen 6000 and
->>> -    * newer systems. Skip it.
->>> -    */
->>> -   if (boot_cpu_has(X86_FEATURE_ZEN))
->>> -           return false;
->>> -#endif
->>> +   if (!check_override)
->>> +           return;
->>>
->>> -   return true;
->>> +   if (!acpi_get_override_irq(gsi, &t, &p)) {
->>> +           u8 trig = t ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
->>> +           u8 pol = p ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
->>> +
->>> +           if (*triggering != trig || *polarity != pol) {
->>> +                   pr_warn("ACPI: IRQ %d override to %s%s, %s%s\n",
->> gsi,
->>> +                           t ? "level" : "edge",
->>> +                           trig == *triggering ? "" : "(!)",
->>> +                           p ? "low" : "high",
->>> +                           pol == *polarity ? "" : "(!)");
->>> +                   *triggering = trig;
->>> +                   *polarity = pol;
->>> +           }
->>> +   }
->>> +
->>> +   for (i = 0; i < ARRAY_SIZE(acpi_override_table); i++) {
->>> +           const struct irq_override_acpi_cmp *entry =
->> &acpi_override_table[i];
->>> +
->>> +           if (acpi_dev_found(entry->id) && gsi == entry->irq &&
->>> +              (*polarity != entry->polarity || *triggering != entry-
->>> triggering)) {
->>> +                   pr_warn("ACPI: IRQ %d override to %s%s, %s%s due
->> to %s\n",
->>> +                           gsi,
->>> +                           entry->triggering ? "level" : "edge",
->>> +                           entry->triggering == *triggering ? "" : "(!)",
->>> +                           entry->polarity ? "low" : "high",
->>> +                           entry->polarity == *polarity ? "" : "(!)",
->>> +                           entry->id);
->>> +                   *polarity = entry->polarity;
->>> +                   *triggering = entry->triggering;
->>> +           }
->>> +   }
->>>    }
->>>
->>>    static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
->>>                                   u8 triggering, u8 polarity, u8 shareable,
->>>                                   u8 wake_capable, bool check_override)
->>>    {
->>> -   int irq, p, t;
->>> +   int irq;
->>>
->>>      if (!valid_IRQ(gsi)) {
->>>              irqresource_disabled(res, gsi);
->>> @@ -592,26 +582,12 @@ static void acpi_dev_get_irqresource(struct
->> resource *res, u32 gsi,
->>>       * 2. BIOS uses IO-APIC mode Interrupt Source Override
->>>       *
->>>       * We do this only if we are dealing with IRQ() or IRQNoFlags()
->>> -    * resource (the legacy ISA resources). With modern ACPI 5 devices
->>> +    * resource (the legacy ISA resources). With ACPI devices
->>>       * using extended IRQ descriptors we take the IRQ configuration
->>>       * from _CRS directly.
->>>       */
->>> -   if (check_override &&
->>> -       acpi_dev_irq_override(gsi, triggering, polarity, shareable) &&
->>> -       !acpi_get_override_irq(gsi, &t, &p)) {
->>> -           u8 trig = t ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
->>> -           u8 pol = p ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
->>> -
->>> -           if (triggering != trig || polarity != pol) {
->>> -                   pr_warn("ACPI: IRQ %d override to %s%s, %s%s\n",
->> gsi,
->>> -                           t ? "level" : "edge",
->>> -                           trig == triggering ? "" : "(!)",
->>> -                           p ? "low" : "high",
->>> -                           pol == polarity ? "" : "(!)");
->>> -                   triggering = trig;
->>> -                   polarity = pol;
->>> -           }
->>> -   }
->>> +   if (check_override)
->>> +           acpi_dev_irq_override(gsi, &triggering, &polarity, &shareable);
->>>
->>>      res->flags = acpi_dev_irq_flags(triggering, polarity, shareable,
->> wake_capable);
->>>      irq = acpi_register_gsi(NULL, gsi, triggering, polarity);
->>>
->>> base-commit: c554eee18c9a440bd2dd5a363b0f79325717f0bf
+> https://lore.kernel.org/linux-acpi/20230329100951.1522322-1-sakari.ailus@linux.intel.com
+>
+> The general idea is the same - CSI-2 resource descriptors, introduced in
+> ACPI 6.4 and defined by
+>
+> https://uefi.org/specs/ACPI/6.5/06_Device_Configuration.html#camera-serial-interface-csi-2-connection-resource-descriptor
+>
+> are found and used for creating a set of software nodes that represent the CSI-2
+> connection graph.
+>
+> These software nodes need to be available before any scan handlers or ACPI drivers
+> are bound to any struct acpi_device objects, so all of that is done at the early
+> stage of ACPI device enumeration, but unnecessary ACPI namespace walks are avoided.
+>
+> The CSI-2 software nodes are populated with data extracted from the CSI-2 resource
+> descriptors themselves and from device properties defined by the MIPI DiSco for
+> Imaging specification (see https://www.mipi.org/specifications/mipi-disco-imaging).
+>
+> Patches [4,6/6] come from the original series directly, but the other patches have
+> been changes substantially, so I've decided to re-start patch series versioning from
+> scratch.
+>
+> This series is based on the patch at
+>
+> https://patchwork.kernel.org/project/linux-acpi/patch/12223415.O9o76ZdvQC@kreacher/
+>
+> applied on top of 6.4-rc3.
+>
+> Later on, I'll put all of this material into a special git branch for easier
+> access.
+
+The patches are now available from the acpi-mipi-disco-imaging branch
+in the linux-pm.git tree at kernel.org.
+
+Thanks!
