@@ -2,209 +2,170 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 271B8711827
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 May 2023 22:33:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F36E71182B
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 May 2023 22:33:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241523AbjEYUdP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 May 2023 16:33:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41250 "EHLO
+        id S240994AbjEYUde (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 May 2023 16:33:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbjEYUdN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 May 2023 16:33:13 -0400
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2052.outbound.protection.outlook.com [40.107.247.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A118BB;
-        Thu, 25 May 2023 13:33:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cm5a1xJNWl7CRZpDxXFMi2hus/62wFHnkuDLdYJzZ9s3P9YCxHx/EMO3qhUWsAS+GM29Zg20MMX7v/HpA0Fpsl2fs/p4NGd20CATHY0iBYCxAf/Az5e9ZrE8SpLk9VI3nwP8pNuqa7TNvy8OWiH061CTxDRaK+sTCf7Sc6VV8jW+HzwDlCSMqFwLXJJdptcXaNFT9oJhnpgSy3CNTXrusKADvhWutSYB1Us5omQSsEX1a539tcZcocikbX3Ybm0A7rmZUfKBKSzoHhau2NSNMFIzTzj6gxHPFIOFOoCTwk5rRQMeP9rwfCJpj/TQPXza3DJn9rUX8HQyMd165TF2XQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ncpHNXk8UVcv7tvJJuDdeArgA2U/Dg9B2QNkjNcsnKI=;
- b=fIO1AhvbybY1ZnfDj9Wk0ad10IFzQcjmfdz/A2dmHNwuvT9tc/g+O2fEWJ+9SZ6WmBUi6B3/YlTSZw+yo39+viESWrZp4zPGLTPHSywEAzeaHQIJTZllGoeKWjXm4MZ7mT2/jsaBovvdVnCHFBnngcoJF3cC3vDyaS9GLq2hcAuLB6kF8YbGhOL1xBirk8wyeKk3z8tuRiInt/wQfx1dfxB33MzfDCFdl53AgVxSUSLOdkSrjze1Vj4o7MEAeXq6iY4Q2aSPy9/DBrgBK59328EYyoSrCqXrB8LHhbVmhM3nEkMsF+mIrJCozB8KZhqycWrxrEBfZhkAVnJKD6v+8A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ncpHNXk8UVcv7tvJJuDdeArgA2U/Dg9B2QNkjNcsnKI=;
- b=Bc08h7J9bHNruFiZkZA5wXZnzue6MCeS7vhYgnx6FykJvxKmob56kRfkAh+81grrXznU5NHpPUq9WDtIh9EkRNkuDVE+OnMebcckg2okFhgF40BFxRpujpAyOJxkCTBe6zEb2EBEuC894giRQ3EacHBiccV5eSfgT0mGLsOWiKQ=
-Received: from AM0PR04MB6289.eurprd04.prod.outlook.com (2603:10a6:208:145::23)
- by AM8PR04MB7441.eurprd04.prod.outlook.com (2603:10a6:20b:1c4::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.29; Thu, 25 May
- 2023 20:33:07 +0000
-Received: from AM0PR04MB6289.eurprd04.prod.outlook.com
- ([fe80::2afc:49d2:3e66:75b9]) by AM0PR04MB6289.eurprd04.prod.outlook.com
- ([fe80::2afc:49d2:3e66:75b9%5]) with mapi id 15.20.6433.018; Thu, 25 May 2023
- 20:33:07 +0000
-From:   Leo Li <leoyang.li@nxp.com>
-To:     Justin He <Justin.He@arm.com>, Toshi Kani <toshi.kani@hpe.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, James Morse <James.Morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>
-CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v2] apei/ghes: correctly return NULL for
- ghes_get_devices()
-Thread-Topic: [PATCH v2] apei/ghes: correctly return NULL for
- ghes_get_devices()
-Thread-Index: AQHZio5emEQw3LYlzkiJVNVJUUKJyq9rIvMAgABSPwA=
-Date:   Thu, 25 May 2023 20:33:07 +0000
-Message-ID: <AM0PR04MB62894F2D0B9BA5512086FB9E8F469@AM0PR04MB6289.eurprd04.prod.outlook.com>
-References: <20230519201249.31147-1-leoyang.li@nxp.com>
- <DBBPR08MB45386D3C1E4958A36FDA781BF7469@DBBPR08MB4538.eurprd08.prod.outlook.com>
-In-Reply-To: <DBBPR08MB45386D3C1E4958A36FDA781BF7469@DBBPR08MB4538.eurprd08.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM0PR04MB6289:EE_|AM8PR04MB7441:EE_
-x-ms-office365-filtering-correlation-id: 4fe91c15-c272-42c8-fc56-08db5d5f3f87
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: R3X6s6HgRXbNuU7gHHIEmW+/0VvXMj8aecTD3lMIQl6JDpm3Rb5EuJIAh7DrBaJPqA3pNEp7tGUXczX2m0TPefLSaXXOLkC1EzdYWjQLCm0L/FQtBNtobERNH30HbNCgZ3eTZAg9mfC6Ynwj2mhe5ANmTmqVQzj8q8EqXT7/S9ic/yZGdpGOVStl5i5aO50cB7H7LRVXMAZmUQ8Y2hV1vVQFlZmq6fDvffh/GBGLt9XtzZ0mISuo/UxF2bPiGRjOw1RnUUcSaAR1O1Hr6yjGlMyOrkjODwUNKKtGOWBuPDKa0jGLmsy2iizL4+Vh6y3SBsQQpBzHAZ2WoZwwDD21Ov//Uo3QHVpSoFX8uvrGeEq+1qjiXo3u1Ql/ddhkP7I5Qv+M4jXwnGceHWlGX/x4ZqvAc1y+V/qbAH9/LCMWUyV3X8CfE9vJKOQ5KB84HMkpN/3Shf5vWgX5oAujqFk1Vf1AVJdntIREZAEAq7BNzdTy+Wvz0e8Iwgyv87+NMz32tHyJNPZ9cTyrUBolQWUkerVRBjs40AHVb+6atXoLcldQjZWBGvm1p8Z+QBoumTBCNMgxAdOj6TPDpZg1VvfYn+8vE/ljiHiWLR7TjtLhO3rS9ZonC8gehmQFT0IICmI+
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6289.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(346002)(396003)(376002)(39860400002)(136003)(451199021)(5660300002)(54906003)(9686003)(8676002)(186003)(33656002)(8936002)(110136005)(52536014)(316002)(4326008)(6506007)(83380400001)(122000001)(26005)(55016003)(76116006)(66446008)(66556008)(66476007)(66946007)(41300700001)(38070700005)(64756008)(53546011)(71200400001)(7696005)(55236004)(86362001)(38100700002)(478600001)(2906002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Fwly6+hDT1a3YxIvQk/PEIrk1wuNMA+NdKHIgw+w/OuNKmNnqIsXwCSraX3t?=
- =?us-ascii?Q?L6Fs8kv8HG/eAB/eIt1Z9Ik1pkqdbAU+qWnomQAFGVzsyF8PtIZpOEbQ8o7S?=
- =?us-ascii?Q?b7MOaXzPe2NzTrMkLHnsCOfdQ0cS6QOvLDBucD0EV243nFXN0MG6rHHrktkY?=
- =?us-ascii?Q?dB2sgjnpCRJanCh/9Z3xPlbDKsLWWiLehHOsvImv6LRutY4bHt6MnkOsipoU?=
- =?us-ascii?Q?a4KDLQqUBCIHx/8jGMQWR90tqOgrT1X+3QZT5KU2HYy0CYhPoU3bcz2MtSRD?=
- =?us-ascii?Q?XbVL/v/WzvQb8hZMS95Lw9u5D7Q+Yqj5mrY/wjp/lM9OR0d5AMBS9ZSbFPN1?=
- =?us-ascii?Q?h/9fyPzEpejdSGnS1iuVWyrbeX2mKWJWZtsV3FLfQ4l5nyQqx5jBoeE7EStP?=
- =?us-ascii?Q?fTnGD12PMMMWTabP9L1VoSOt82ZZNg+6srn4iRu/BjtihJ1e6wgRvGEmUTzX?=
- =?us-ascii?Q?9q6P+BAdCmetBsfBMqHS1pynkVlymkbB7DCQ7N93mDgQkGHN2TfkqWBsNQzG?=
- =?us-ascii?Q?EHD1awKNXXlKcATXnt3mQKqN3YKpiVD8HozhJKJVAnaJBxGHm1GhNK6PnwS4?=
- =?us-ascii?Q?sTVbjoacJ/fN9Iv1Jvg9fZKsw+qY6pXBkVhQQ9/dy78po9Sb0OX2R/Q0iMvd?=
- =?us-ascii?Q?CwN63Nqul90GxeYNBgRqzIv4aYpXetracEjeF6G7Was4AW2IUeJH7/ix2SsD?=
- =?us-ascii?Q?zWVJore4GyD+MNBdHm6hIg1Y3dErxmY32FUQzQhDQQpyk3GaVvEXGorb0Z95?=
- =?us-ascii?Q?7ZzK3qUF4mRJ4jkeKqGu5TCFzcsHrCuVaY0WIq7KOMe1cw1LnWwEcVZOo3Eh?=
- =?us-ascii?Q?oZsfBX5pHDb770oINHzMIpvZ+JNHcNuW9Q7gVL/6RdncBpYS4CzpdXuK79WY?=
- =?us-ascii?Q?LIJi2uz8DRgjoXOlaSVNWyvM3h4CLdSk+DNmtHujXbM3S4jyJKmYYsyg1ToF?=
- =?us-ascii?Q?CAvHC6NXBDDT3q3glICvOEHQpTD2YbwIlgCCLjuyU8h56cGss+cyY4xcJ+R4?=
- =?us-ascii?Q?HpY1YGbhoKzZ+bE4WQlHZnLdlTIhJrLEI6LzK2HAWB/eDkQE6sTT8fEo3UeZ?=
- =?us-ascii?Q?dQgi4c3oiTPtK4Q/kMf+kJZBeU1D/wXO77GIJd1KgvhPnM+HXzm4Tl1/iaZ2?=
- =?us-ascii?Q?r/XeIZX+/ZcQNBD4NHI54f4QWglFx7fpcNoxL/VfAzcEnoHxu+vXnIAbXDAG?=
- =?us-ascii?Q?44H7Z4ZlIpByvKQLvE61JGqcbLmuzSBxVVV6jQzkyjL1YsqAwDzfikLc4A6M?=
- =?us-ascii?Q?36oTfFesJTKe8sdpOiWG8DJ1+g7shd4fRm1ltpqPnKEU3Yal2QkFVTEDcnwp?=
- =?us-ascii?Q?vhRz7sXQccdgL4ptYDiFFT06YWmHWU7QDDZOY0m1kjal4xabktZgEwk3kebH?=
- =?us-ascii?Q?XmourUSG5xaRNZdLJFfwEgpOnYHp5aV5nyC7DjKl2iyqGpk/1SkXSYrEHr5c?=
- =?us-ascii?Q?So3jBth1WW9hXhXJongCnk3oEMc84iRsUp8blpUAfnPTd6Ngi+MewnWurSYo?=
- =?us-ascii?Q?KujYh2HQ66da+0t2a4NmjlEKVmMdkCc+OVXuz0KpMrCI83EutrVLsPcNUCCW?=
- =?us-ascii?Q?Gurdb1a7iRHV6658p7nP3ORCISuBx4y64Gz6aFBK?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S235016AbjEYUdd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 May 2023 16:33:33 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39073195;
+        Thu, 25 May 2023 13:33:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685046809; x=1716582809;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=tfJkIOm9zuXhqmaaDhAkkMUG0+2BRG1q94R+sptnmuc=;
+  b=BO9YZ85F486oH2WHJ6fH9MTRZFofWvVWkgHLpqEZ2JFnDfioT1G/F5x1
+   O0QcnAtqftcit9o6AM9MsISdGZj76Eetp62MeyjFaWfuFvx6mSTI+CkPn
+   R6iQBicTTccxMQWc/z/X3rIHB6NXkPXfHXsQIxqyhYJnxQ5Uh909VTYiy
+   ZkaYFHXegWQ9NhGe+uR7XmVJMkqNcJs3ziZFqgJW23dqoelVcD6E40bVK
+   s8vX3HPzzE/7THrNUprJ0c/NoBXee4fcEuhGKAlBJ/bkCbomVnaV0yK8I
+   mPB1xhT+XtRpLYyUOSm+FcYxmr7wCT+vAEvmdfLlog5gf5mH+6KkChOES
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10721"; a="440373482"
+X-IronPort-AV: E=Sophos;i="6.00,192,1681196400"; 
+   d="scan'208";a="440373482"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2023 13:33:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10721"; a="655353264"
+X-IronPort-AV: E=Sophos;i="6.00,192,1681196400"; 
+   d="scan'208";a="655353264"
+Received: from patelni-mobl1.amr.corp.intel.com (HELO [10.78.16.220]) ([10.78.16.220])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2023 13:33:28 -0700
+Message-ID: <c49ed344-f521-b4b9-8a7a-a70600002358@linux.intel.com>
+Date:   Thu, 25 May 2023 13:33:27 -0700
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6289.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4fe91c15-c272-42c8-fc56-08db5d5f3f87
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 May 2023 20:33:07.1840
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /5vRDu3AAKK7PekxSG3S3XNr8VAZWLT5nfGiotAc9ZpVYJipnmj1/LhsFh6KKWp10a2hfmzSa++EIUCDjBSGKQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7441
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: FW: [Bug 217472] New: ACPI _OSC features have different values in
+ Host OS and Guest OS
+Content-Language: en-US
+From:   "Patel, Nirmal" <nirmal.patel@linux.intel.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>,
+        Alex Williamson <alex.williamson@redhat.com>
+Cc:     linux-pci@vger.kernel.org, kvm@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+References: <bug-217472-41252@https.bugzilla.kernel.org/>
+ <ZGz2FQpHPKYgcc0+@bhelgaas>
+ <20230523120626.5b76d289.alex.williamson@redhat.com>
+ <BYAPR11MB3031739869CB639695896CEF98469@BYAPR11MB3031.namprd11.prod.outlook.com>
+ <1f7f84a4-0df4-a413-ba30-cc2257980abd@linux.intel.com>
+In-Reply-To: <1f7f84a4-0df4-a413-ba30-cc2257980abd@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On 5/25/2023 1:19 PM, Patel, Nirmal wrote:
 
+>> On Tue, 23 May 2023 12:21:25 -0500
+>> Bjorn Helgaas <helgaas@kernel.org> wrote:
+>>
+>>> Hi Nirmal, thanks for the report!
+>>>
+>>> On Mon, May 22, 2023 at 04:32:03PM +0000, bugzilla-daemon@kernel.org wrote:
+>>>> https://bugzilla.kernel.org/show_bug.cgi?id=217472
+>>>> ...  
+>>>> Created attachment 304301  
+>>>>   --> 
+>>>> https://bugzilla.kernel.org/attachment.cgi?id=304301&action=edit
+>>>> Rhel9.1_Guest_dmesg
+>>>>
+>>>> Issue:
+>>>> NVMe Drives are still present after performing hotplug in guest OS. 
+>>>> We have tested with different combination of OSes, drives and Hypervisor. The issue is
+>>>> present across all the OSes.   
+>>> Maybe attach the specific commands to reproduce the problem in one of 
+>>> these scenarios to the bugzilla?  I'm a virtualization noob, so I 
+>>> can't visualize all the usual pieces.
+>>>
+>>>> The following patch was added to honor ACPI _OSC values set by BIOS 
+>>>> and the patch helped to bring the issue out in VM/ Guest OS.
+>>>>
+>>>> https://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git/comm
+>>>> it/drivers/pci/controller/vmd.c?id=04b12ef163d10e348db664900ae7f611b
+>>>> 83c7a0e
+>>>>
+>>>>
+>>>> I also compared the values of the parameters in the patch in Host and Guest OS.
+>>>> The parameters with different values in Host and Guest OS are:
+>>>>
+>>>> native_pcie_hotplug
+>>>> native_shpc_hotplug
+>>>> native_aer
+>>>> native_ltr
+>>>>
+>>>> i.e.
+>>>> value of native_pcie_hotplug in Host OS is 1.
+>>>> value of native_pcie_hotplug in Guest OS is 0.
+>>>>
+>>>> I am not sure why "native_pcie_hotplug" is changed to 0 in guest.
+>>>> Isn't it OSC_ managed parameter? If that is the case, it should have 
+>>>> same value in Host and Guest OS.
+>>> From your dmesg:
+>>>  
+>>>   DMI: Red Hat KVM/RHEL, BIOS 1.16.0-4.el9 04/01/2014
+>>>   _OSC: OS supports [ExtendedConfig ASPM ClockPM Segments MSI EDR HPX-Type3]
+>>>   _OSC: platform does not support [PCIeHotplug LTR DPC]
+>>>   _OSC: OS now controls [SHPCHotplug PME AER PCIeCapability]
+>>>   acpiphp: Slot [0] registered
+>>>   virtio_blk virtio3: [vda] 62914560 512-byte logical blocks (32.2 
+>>> GB/30.0 GiB)
+>>>
+>>> So the DMI ("KVM/RHEL ...") is the BIOS seen by the guest.  Doesn't 
+>>> mean anything to me, but the KVM folks would know about it.  In any 
+>>> event, the guest BIOS is different from the host BIOS, so I'm not 
+>>> surprised that _OSC is different.
+>> Right, the premise of the issue that guest and host should have the same OSC features is flawed.  The guest is a virtual machine that can present an entirely different feature set from the host.  A software hotplug on the guest can occur without any bearing to the slot status on the host.
+>>
+>>> That guest BIOS _OSC declined to grant control of PCIe native hotplug 
+>>> to the guest OS, so the guest will use acpiphp (not pciehp, which 
+>>> would be used if native_pcie_hotplug were set).
+>>>
+>>> The dmesg doesn't mention the nvme driver.  Are you using something 
+>>> like virtio_blk with qemu pointed at an NVMe drive?  And you 
+>>> hot-remove the NVMe device, but the guest OS thinks it's still 
+>>> present?
+>>>
+>>> Since the guest is using acpiphp, I would think a hot-remove of a host 
+>>> NVMe device should be noticed by qemu and turned into an ACPI 
+>>> notification that the guest OS would consume.  But I don't know how 
+>>> those connections work.
+>> If vfio-pci is involved, a cooperative hot-unplug will attempt to unbind the host driver, which triggers a device request through vfio, which is ultimately seen as a hotplug eject operation by the guest.
+>> Surprise hotplugs of assigned devices are not supported.  There's not enough info in the bz to speculate how this VM is wired or what actions are taken.  Thanks,
+>>
+>> Alex
 
-> -----Original Message-----
-> From: Justin He <Justin.He@arm.com>
-> Sent: Thursday, May 25, 2023 10:18 AM
-> To: Leo Li <leoyang.li@nxp.com>; Toshi Kani <toshi.kani@hpe.com>; Rafael =
-J.
-> Wysocki <rafael@kernel.org>; Len Brown <lenb@kernel.org>; James Morse
-> <James.Morse@arm.com>; Tony Luck <tony.luck@intel.com>; Borislav
-> Petkov <bp@alien8.de>
-> Cc: linux-acpi@vger.kernel.org; linux-kernel@vger.kernel.org
-> Subject: RE: [PATCH v2] apei/ghes: correctly return NULL for
-> ghes_get_devices()
->=20
-> Hi Li,
->=20
-> > -----Original Message-----
-> > From: Li Yang <leoyang.li@nxp.com>
-> > Sent: Saturday, May 20, 2023 4:13 AM
-> > To: Rafael J. Wysocki <rafael@kernel.org>; Len Brown
-> > <lenb@kernel.org>; James Morse <James.Morse@arm.com>; Tony Luck
-> > <tony.luck@intel.com>; Borislav Petkov <bp@alien8.de>; Justin He
-> > <Justin.He@arm.com>
-> > Cc: Li Yang <leoyang.li@nxp.com>; linux-acpi@vger.kernel.org;
-> > linux-kernel@vger.kernel.org
-> > Subject: [PATCH v2] apei/ghes: correctly return NULL for
-> > ghes_get_devices()
-> >
-> > Since 315bada690e0 ("EDAC: Check for GHES preference in the
-> > chipset-specific EDAC drivers"), vendor specific EDAC driver will not
-> > probe correctly when CONFIG_ACPI_APEI_GHES is enabled but no GHES
-> > device is present.  Make
-> > ghes_get_devices() return NULL when the GHES device list is empty to
-> > fix the problem.
-> >
-> > Fixes: 9057a3f7ac36 ("EDAC/ghes: Prepare to make ghes_edac a proper
-> > module")
-> > Signed-off-by: Li Yang <leoyang.li@nxp.com>
-> > Cc: Jia He <justin.he@arm.com>
-> > ---
-> >
-> > V2: fix the fallthrough case in x86 path
-> >
-> >  drivers/acpi/apei/ghes.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c index
-> > 34ad071a64e9..4382fe13ee3e 100644
-> > --- a/drivers/acpi/apei/ghes.c
-> > +++ b/drivers/acpi/apei/ghes.c
-> > @@ -1544,6 +1544,8 @@ struct list_head *ghes_get_devices(void)
-> >
-> >                       pr_warn_once("Force-loading ghes_edac on an
-> > unsupported platform. You're on your own!\n");
-> >               }
-> > +     } else if (list_empty(&ghes_devs)) {
-> > +             return NULL;
-> >       }
-> I have no major objections to the fix. Just curious about the edac driver=
- in
-> you platform.
-> IIUC, in your case, CONFIG_ACPI_APEI_GHES is enabled and edac_ghes
-> driver is either not loaded or fails to load. Is my understanding correct=
-?
+Thanks Bjorn and Alex for quick response.
+I agree with the analysis about guest BIOS not giving control of PCIe native hotplug to guest OS.
 
-Right.  ghes_edac is loaded but since ghes_devs is empty due to this platfo=
-rm not using ACPI, it bails out with -ENODEV very quickly.  I would expect =
-the original platform EDAC driver should continue to work in this scenario.
+Adding some background about the patch f611b83c7a0e PCI: vmd: Honor ACPI _OSC on PCIe features.
+The above patch was added to suppress AER messages when samsung drives were connected with VMD enabled. I believe AER was enabled in BIOS i.e. pre-OS VMD driver not by VMD linux driver. So the AER flooding would be seen even non-linux environment.
 
-> I wonder whether ghes_get_devices() can unblock such check condition and
-> let other chipset-specific edac drivers continue with the initialization.=
- @Toshi,
-> What do u think of it?
->=20
->=20
-> --
-> Cheers,
-> Justin (Jia He)
->=20
->=20
-> IMPORTANT NOTICE: The contents of this email and any attachments are
-> confidential and may also be privileged. If you are not the intended reci=
-pient,
-> please notify the sender immediately and do not disclose the contents to =
-any
-> other person, use it for any purpose, or store or copy the information in=
- any
-> medium. Thank you.
+So with guest BIOS providing different values than the Host BIOS and adding this patch in VMD linux driver leaves direct assign functionality broken across all the hypervisors and guest OS combinations. As a result hotplug will not work which is a major issue.
+
+Before this patch, VMD used pciehp.
+
+What should be the ideal case here?
+
+I am open to a better suggestion, but I can think of two options.
+
+Option 1: Revert the patch f611b83c7a0e and suggest the AER fix to be added to the BIOS or Pre-OS vmd driver.
+
+Option 2: VMD to enumerate all the devices and set native_pcie_hotplug for all the hotplug capable devices.
+
+Thanks
+
