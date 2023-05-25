@@ -2,52 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A4B7710BA2
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 May 2023 14:03:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06749710BB5
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 May 2023 14:07:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240595AbjEYMDP convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 25 May 2023 08:03:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44278 "EHLO
+        id S241027AbjEYMHD convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 25 May 2023 08:07:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229754AbjEYMDO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 May 2023 08:03:14 -0400
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EFB79C;
-        Thu, 25 May 2023 05:03:13 -0700 (PDT)
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-504d149839bso581234a12.1;
-        Thu, 25 May 2023 05:03:13 -0700 (PDT)
+        with ESMTP id S233511AbjEYMHC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 May 2023 08:07:02 -0400
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4720E7;
+        Thu, 25 May 2023 05:07:00 -0700 (PDT)
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-9739440b60bso29999766b.0;
+        Thu, 25 May 2023 05:07:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685016192; x=1687608192;
+        d=1e100.net; s=20221208; t=1685016419; x=1687608419;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=K9S0ma7iu2Ky/aDiCRE3Nd9h/94aau3Fx7GR6wHQD04=;
-        b=FkvJBh+ubyXOHu18AH0c5YwRhJW6JJcwRTsjnuvI7CV8ayQcYCyzdgL8mOkuH1nfjN
-         p+UVeaqz+B0LvVV2mmB0UuOi91mrEUKxmsjjXUYTYPh8jE43L0nCnpvmN+h1NaaHpSnt
-         udeUC64uMZPtqyEqg4Cs5b4lBD9bwly31gWRJq95A9OmkOpoy1dXb+VM9GWmBIQ4KBO6
-         KK3RNjxXkeHS+iJR9OB2giISSn4Hw1OXeydZYNzBN6FC5bJ0La1iQmnSBF4MkTNmFeew
-         NoLiehAMW4m9tRoiwiH80Nl18utKL2CA7gzYqrk6Vszh1zCObNG/jKVuoipr3XFFcp7B
-         ZleQ==
-X-Gm-Message-State: AC+VfDw8rJI8j/baut9QZdk94zG1KV7or4QLoNBtjlRTJ9Be/ti3ecff
-        FrSur674s1DciZZfyNLMNOae9BihDFZ5EHfMjjE=
-X-Google-Smtp-Source: ACHHUZ7RzuKQg/fIionyFwEoFqR+Eeg3H6bRtfIP3/OhCUcag8qzxwzIimb3MHkAmExHXu9pYSV1F6LGCj5QdYXqwus=
-X-Received: by 2002:a05:6402:524e:b0:50d:fd8e:e224 with SMTP id
- t14-20020a056402524e00b0050dfd8ee224mr15510365edd.1.1685016191394; Thu, 25
- May 2023 05:03:11 -0700 (PDT)
+        bh=hKW6nh3Stu7+N3Kp7mLlmvutOp3dc9cSfF1cRxfu1tI=;
+        b=dbJi4YeDCBVWMp0fZp5TjHNoAK96oqYvbW5U7hLpWC7p/7P5IfxcUlOjRK6/W7uP2G
+         +gWBDfIFoGN5KaxM4+UyaI92yaPUOztuXwuU0xAhZZP/49ttsRebSZ91LObmCb+HKwjO
+         VehSSQVJl/MeL4uLx2K97h/CF4TUvSUT5/kbLX02bbAzAOkyCxWD8SGblLquIVdY4Vah
+         oejrCvIyAvvs0ehjSYJlICjQVIKNzbLsam0I2VYiU+MQtZf2TjDunAOKSBYm4OSpldyv
+         JStpHhZc4u3vbsyahLJQh5lW+0lHCD5lPY48/KQZDfQcaNw+2B+EAajhiZ+Y4i8Ns6hw
+         7Xyw==
+X-Gm-Message-State: AC+VfDwvExtrFkiqSjXDU014hkUNscncI5UNDfkph3gPjltLHyagARm+
+        VyeAtclv7ljagQ+pHHw5X2YHPPP5Vi9NVwQlWFs=
+X-Google-Smtp-Source: ACHHUZ6IRQ/SnBgyfpCgayrSbirvIindZHWRMc+FngvXIzH25Iu+YuHgvlryIKQiaIxUsbTuhF1Hvdfb9QDAWtg1VY4=
+X-Received: by 2002:a17:906:72d4:b0:96f:da08:d451 with SMTP id
+ m20-20020a17090672d400b0096fda08d451mr11519029ejl.6.1685016418720; Thu, 25
+ May 2023 05:06:58 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230522200033.2605-1-mario.limonciello@amd.com>
-In-Reply-To: <20230522200033.2605-1-mario.limonciello@amd.com>
+ <20230522200033.2605-4-mario.limonciello@amd.com> <e9eb526d-84fe-b814-67a3-6f7977aa0078@redhat.com>
+ <MN0PR12MB6101AF7606A3547EC5AA42A7E2409@MN0PR12MB6101.namprd12.prod.outlook.com>
+ <dcdb3d12-e0af-5e4d-119e-d4fbe9a9495b@redhat.com>
+In-Reply-To: <dcdb3d12-e0af-5e4d-119e-d4fbe9a9495b@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 25 May 2023 14:02:58 +0200
-Message-ID: <CAJZ5v0gSDxEGMM02SeKuSMRGJppJwYTbX2_Jy5-ovUOGpKASvw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] include/linux/suspend.h: Only show pm_pr_dbg
- messages at suspend/resume
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     rafael@kernel.org, hdegoede@redhat.com, linus.walleij@linaro.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-pm@vger.kernel.org, Shyam-sundar.S-k@amd.com,
-        Basavaraj.Natikar@amd.com
+Date:   Thu, 25 May 2023 14:06:46 +0200
+Message-ID: <CAJZ5v0h=tSKjZxQJECZCQqzWDMAwY8cKf7F_xyLQSBG8TPyzrg@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] platform/x86/amd: pmc: Use pm_pr_dbg() for suspend
+ related messages
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Limonciello, Mario" <Mario.Limonciello@amd.com>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "platform-driver-x86@vger.kernel.org" 
+        <platform-driver-x86@vger.kernel.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "S-k, Shyam-sundar" <Shyam-sundar.S-k@amd.com>,
+        "Natikar, Basavaraj" <Basavaraj.Natikar@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -60,48 +69,86 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 22, 2023 at 10:01 PM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
+On Thu, May 25, 2023 at 12:13 PM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> All uses in the kernel are currently already oriented around
-> suspend/resume. As some other parts of the kernel may also use these
-> messages in functions that could also be used outside of
-> suspend/resume, only enable in suspend/resume path.
+> Hi Mario,
 >
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  include/linux/suspend.h | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+> On 5/23/23 18:21, Limonciello, Mario wrote:
+> > [AMD Official Use Only - General]
+> >
+> >> -----Original Message-----
+> >> From: Hans de Goede <hdegoede@redhat.com>
+> >> Sent: Tuesday, May 23, 2023 6:08 AM
+> >> To: Limonciello, Mario <Mario.Limonciello@amd.com>; rafael@kernel.org;
+> >> linus.walleij@linaro.org
+> >> Cc: linux-acpi@vger.kernel.org; linux-kernel@vger.kernel.org; linux-
+> >> gpio@vger.kernel.org; platform-driver-x86@vger.kernel.org; linux-
+> >> pm@vger.kernel.org; S-k, Shyam-sundar <Shyam-sundar.S-k@amd.com>;
+> >> Natikar, Basavaraj <Basavaraj.Natikar@amd.com>
+> >> Subject: Re: [PATCH v2 4/4] platform/x86/amd: pmc: Use pm_pr_dbg() for
+> >> suspend related messages
+> >>
+> >> Hi Mario,
+> >>
+> >> On 5/22/23 22:00, Mario Limonciello wrote:
+> >>> Using pm_pr_dbg() allows users to toggle
+> >> `/sys/power/pm_debug_messages`
+> >>> as a single knob to turn on messages that amd-pmc can emit to aid in
+> >>> any s2idle debugging.
+> >>>
+> >>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> >>> ---
+> >>>  drivers/platform/x86/amd/pmc.c | 4 ++--
+> >>>  1 file changed, 2 insertions(+), 2 deletions(-)
+> >>>
+> >>> diff --git a/drivers/platform/x86/amd/pmc.c
+> >> b/drivers/platform/x86/amd/pmc.c
+> >>> index 427905714f79..1304cd6f13f6 100644
+> >>> --- a/drivers/platform/x86/amd/pmc.c
+> >>> +++ b/drivers/platform/x86/amd/pmc.c
+> >>> @@ -543,7 +543,7 @@ static int amd_pmc_idlemask_read(struct
+> >> amd_pmc_dev *pdev, struct device *dev,
+> >>>     }
+> >>>
+> >>>     if (dev)
+> >>> -           dev_dbg(pdev->dev, "SMU idlemask s0i3: 0x%x\n", val);
+> >>> +           pm_pr_dbg("SMU idlemask s0i3: 0x%x\n", val);
+> >>>
+> >>>     if (s)
+> >>>             seq_printf(s, "SMU idlemask : 0x%x\n", val);
+> >>
+> >> This does not compile, amd/pmc.c may be build as an amd-pmc.ko module
+> >> and currently the pm_debug_messages_on flag used by pm_pr_dbg()
+> >> is not exported to modules:
+> >>
+> >>   CC [M]  drivers/platform/x86/amd/pmc.o
+> >>   LD [M]  drivers/platform/x86/amd/amd-pmc.o
+> >>   MODPOST Module.symvers
+> >> ERROR: modpost: "pm_debug_messages_on"
+> >> [drivers/platform/x86/amd/amd-pmc.ko] undefined!
+> >> make[1]: *** [scripts/Makefile.modpost:136: Module.symvers] Error 1
+> >> make: *** [Makefile:1978: modpost] Error 2
+> >>
+> >> Regards,
+> >>
+> >> Hans
+> >>
+> >
+> > My apologies, yes I was compiling in when testing.  Let me ask if this
+> > series makes sense and is "generally" agreeable though.
 >
-> diff --git a/include/linux/suspend.h b/include/linux/suspend.h
-> index d0d4598a7b3f..a40f2e667e09 100644
-> --- a/include/linux/suspend.h
-> +++ b/include/linux/suspend.h
-> @@ -564,7 +564,8 @@ static inline int pm_dyn_debug_messages_on(void)
->  #endif
->  #define __pm_pr_dbg(fmt, ...)                                  \
->         do {                                                    \
-> -               if (pm_debug_messages_on)                       \
-> +               if (pm_debug_messages_on &&                     \
-> +                   pm_suspend_target_state != PM_SUSPEND_ON)   \
+> I have no objections against this series, otherwise I don't really
+> have a strong opinion on this series.
+>
+> If this makes sense and if exporting pm_debug_messages_on is ok
+> is Rafael's call to make IMHO.
+>
+> Rafael ?
 
-Instead of this, I would define a function, say
-pm_debug_messages_should_print(), that would do the check and I would
-use it also in __pm_deferred_pr_dbg().
+I have no strong opinion.
 
->                         printk(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__);  \
->                 else if (pm_dyn_debug_messages_on())            \
->                         pr_debug(fmt, ##__VA_ARGS__);   \
-> @@ -589,7 +590,8 @@ static inline int pm_dyn_debug_messages_on(void)
->  /**
->   * pm_pr_dbg - print pm sleep debug messages
->   *
-> - * If pm_debug_messages_on is enabled, print message.
-> + * If pm_debug_messages_on is enabled and the system is entering/leaving
-> + *      suspend, print message.
->   * If pm_debug_messages_on is disabled and CONFIG_DYNAMIC_DEBUG is enabled,
->   *     print message only from instances explicitly enabled on dynamic debug's
->   *     control.
->
-> base-commit: 42dfdd08422dec99bfe526072063f65c0b9fb7d2
-> --
+I would do it slightly differently as mentioned in my reply to patch
+[1/4] (and then the new function could be used in patch [2/4] I
+think).
+
+Otherwise this is fine with me if it helps to debug failures in the field.
