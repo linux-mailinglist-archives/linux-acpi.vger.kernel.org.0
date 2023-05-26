@@ -2,93 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BFDF712051
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 May 2023 08:40:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1091B7122CF
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 May 2023 10:58:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242141AbjEZGkM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 26 May 2023 02:40:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40024 "EHLO
+        id S242674AbjEZI6x (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 26 May 2023 04:58:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240535AbjEZGkL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 May 2023 02:40:11 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C4F610D7;
-        Thu, 25 May 2023 23:39:43 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-4f4b2bc1565so349122e87.2;
-        Thu, 25 May 2023 23:39:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685083182; x=1687675182;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=r8WxArmJoZC8xqHylJdU5AGk+XIbCJbogTeDfs0y2fc=;
-        b=kZlxofiucY8/Lfp0amC/THuRlzjVm4QfLqqW0v8XoWvGEazpIcKfv+6Y3Hkn28xoPU
-         QfGXd7HkgrTwQ7CNDgIIxnupjEz612uEqGABVzbMzhsb3UBA2jm0mgt2VHWoKOAuXmsN
-         VoFAX2icB6TKFkhF6SS3ZcDfsVrB95m4IDnEBZKQRCzUMgKrO3rab67HUeLHwPmnbOkk
-         eU6j760c569VapRpeY/+vjs6apRsTp67TJowAAq0MNV7LVC9PoFNzE9UR+PZOD/CuW3p
-         ChtTT4YO9tj+T6H6Cksspq3qsVrEGp/722KN9wUHFz63wiU2cDlaZyUWlHhxkheWZ0DC
-         eYfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685083182; x=1687675182;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r8WxArmJoZC8xqHylJdU5AGk+XIbCJbogTeDfs0y2fc=;
-        b=YFA9TIX8E2PH6upJmkKC6t4+seOzjNNIbI3lSIpSBBAaCUiwktzzRYaUtgTbZFXTZt
-         sHYzTxwnJOd6dfysK4sx1/vHDDJR7WlZdmVUPkprG7FMUmbvSsEGmyYi3eHVoresdeMy
-         jlyJFUThzZdYnKXiKY80/iF/q94osJEDAkbWOuBt3Px8xIzWKXTX3eoaWDf8fWNg3dgP
-         f4/AR8toZDRDUcYxG1DyLHbL1VPQuVL64JB6mKQ/AB8zp8TGLFNVyLHX/EpbM5cAy3kD
-         ksMxS/oQ56Q4X+zL5e2mKbSy4Yh7hWSP3xLwgCu/LK666xrjMQTZXvcN5JCmkTWjd/u1
-         fXeQ==
-X-Gm-Message-State: AC+VfDx9Sz/Tzh85iQLtm0Ye2fhRMzhx2T0gmaPsTQjjTMFBacU2Mk0A
-        jZcBEOnIlHVpSi8FzGyd62Y=
-X-Google-Smtp-Source: ACHHUZ7suqP34B7zhh7d+MVDHYwTRa3XCDJTVoRDJ3idVkc5oKu76GbAuL5+UGbLruSq7U8YqZfIpQ==
-X-Received: by 2002:ac2:5deb:0:b0:4eb:1361:895c with SMTP id z11-20020ac25deb000000b004eb1361895cmr168335lfq.55.1685083181695;
-        Thu, 25 May 2023 23:39:41 -0700 (PDT)
-Received: from fedora ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id a22-20020a19f816000000b004f3789c8bd5sm488291lff.132.2023.05.25.23.39.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 May 2023 23:39:41 -0700 (PDT)
-Date:   Fri, 26 May 2023 09:39:37 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, netdev@vger.kernel.org,
-        openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org,
-        linux-mips@vger.kernel.org
-Subject: [PATCH v6 8/8] i2c: i2c-smbus: fwnode_irq_get_byname() return value
- fix
-Message-ID: <1c77cca2bb4a61133ebfc6833516981c98fb48b4.1685082026.git.mazziesaccount@gmail.com>
-References: <cover.1685082026.git.mazziesaccount@gmail.com>
+        with ESMTP id S242378AbjEZI6w (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 May 2023 04:58:52 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E85C712A;
+        Fri, 26 May 2023 01:58:49 -0700 (PDT)
+Received: from kwepemi500024.china.huawei.com (unknown [172.30.72.57])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4QSJd26cYrzqSZW;
+        Fri, 26 May 2023 16:54:14 +0800 (CST)
+Received: from [10.174.179.163] (10.174.179.163) by
+ kwepemi500024.china.huawei.com (7.221.188.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Fri, 26 May 2023 16:58:46 +0800
+Message-ID: <9025b93a-faec-bc84-00c4-34a3b1c01b35@huawei.com>
+Date:   Fri, 26 May 2023 16:58:45 +0800
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="H4EfgDTIilQ8R8lz"
-Content-Disposition: inline
-In-Reply-To: <cover.1685082026.git.mazziesaccount@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 1/2] cpufreq: CPPC: keep target core awake when reading
+ its cpufreq rate
+Content-Language: en-US
+To:     Pierre Gondois <pierre.gondois@arm.com>,
+        Ionela Voinescu <Ionela.Voinescu@arm.com>, <sumitg@nvidia.com>
+CC:     <linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+        <wangxiongfeng2@huawei.com>, <xiexiuqi@huawei.com>,
+        <liwei391@huawei.com>, <linux-acpi@vger.kernel.org>,
+        <lenb@kernel.org>, <viresh.kumar@linaro.org>, <rafael@kernel.org>,
+        Yang Shi <yang@os.amperecomputing.com>
+References: <20230516133248.712242-1-zengheng4@huawei.com>
+ <a1075da1-4ff1-4a8b-2902-3954db717ded@arm.com>
+From:   Zeng Heng <zengheng4@huawei.com>
+In-Reply-To: <a1075da1-4ff1-4a8b-2902-3954db717ded@arm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.179.163]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemi500024.china.huawei.com (7.221.188.100)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -97,84 +56,90 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
---H4EfgDTIilQ8R8lz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-The fwnode_irq_get_byname() was changed to not return 0 upon failure so
-return value check can be adjusted to reflect the change.
-
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-
----
-Revision history:
-v5 =3D>:
- - No changes
-v4 =3D> v5:
- - Added back after this was accidentally dropped at v4.
-
-Depends on the mentioned return value change which is in patch 1/2. The
-return value change does also cause a functional change here. Eg. when
-IRQ mapping fails, the fwnode_irq_get_byname() no longer returns zero.
-This will cause also the probe here to return nonzero failure. I guess
-this is desired behaviour - but I would appreciate any confirmation.
-
-Please, see also previous discussion here:
-https://lore.kernel.org/all/fbd52f5f5253b382b8d7b3e8046134de29f965b8.166671=
-0197.git.mazziesaccount@gmail.com/
-
-Another suggestion has been to drop the check altogether. I am slightly
-reluctant on doing that unless it gets confirmed that is the "right
-thing to do".
----
- drivers/i2c/i2c-smbus.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/i2c/i2c-smbus.c b/drivers/i2c/i2c-smbus.c
-index 138c3f5e0093..893fe7cd3e41 100644
---- a/drivers/i2c/i2c-smbus.c
-+++ b/drivers/i2c/i2c-smbus.c
-@@ -129,7 +129,7 @@ static int smbalert_probe(struct i2c_client *ara)
- 	} else {
- 		irq =3D fwnode_irq_get_byname(dev_fwnode(adapter->dev.parent),
- 					    "smbus_alert");
--		if (irq <=3D 0)
-+		if (irq < 0)
- 			return irq;
- 	}
-=20
---=20
-2.40.1
+在 2023/5/17 16:17, Pierre Gondois 写道:
+> +Ionela, Sumit, Yang,
+>
+> Hello Zeng,
+>
+> I think solutions around related issues were suggested at:
+>
+> [1] https://lore.kernel.org/all/20230418113459.12860-7-sumitg@nvidia.com/
+> [2] 
+> https://lore.kernel.org/all/20230328193846.8757-1-yang@os.amperecomputing.com/
+> [3] https://lore.kernel.org/all/ZEl1Fms%2FJmdEZsVn@arm.com/
+>
+> About this patch, it seems to mean that CPPC counters of CPUx are always
+> accessed from CPUx, even when they are not AMUs. For instance CPPC
+> counters could be memory mapped and accessible from any CPU.
+> cpu_has_amu_feat() should allow to probe if a CPU uses AMUs or not,
+> and [2] had an implementation using it.
+>
+> Another comment about PATCH 2/2 is that if the counters are accessed
+> through FFH, arm64 version of cpc_read_ffh() is calling
+> counters_read_on_cpu(), and a comment in counters_read_on_cpu() seems
+> to specify the function must be called with interrupt enabled.
+>
+> I think the best solution so far was the one at [3], suggested by Ionela,
+> but it doesn't seem to solve your issue. Indeed, it is not checked 
+> whether
+> the counters are AMU counters and that they must be remotely read (to
+> have the CPU awake),
+>
+> Regards,
+> Pierre
 
 
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
+Here is segment I picked from patch[3], and there is a modification is 
+deserved to be discussed:
 
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
+---------------------------------------------------------------------------
 
---H4EfgDTIilQ8R8lz
-Content-Type: application/pgp-signature; name="signature.asc"
+@@ -1336,8 +1361,25 @@ int cppc_get_perf_ctrs(int cpunum, struct 
+cppc_perf_fb_ctrs *perf_fb_ctrs)
+          }
+      }
 
------BEGIN PGP SIGNATURE-----
+-    cpc_read(cpunum, delivered_reg, &delivered);
+-    cpc_read(cpunum, reference_reg, &reference);
++    ctrs.cpunum = cpunum;
++    ctrs.delivered_reg = delivered_reg;
++    ctrs.reference_reg = reference_reg;
++    ctrs.delivered = &delivered;
++    ctrs.reference = &reference;
++
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmRwVCkACgkQeFA3/03a
-ocXmFggA0lKFBzYI45TejrFqGuuYHu+8Jvkb5ZtRGtbzJr/G+YTwI3+Lr7UsBYWK
-ExhoeK/JVn9hUHfktDxlb3ibqhvv0w8c/YIqlYpPjie1RoOnaibtvLSDdeZWImpx
-J5P0HgPCcNmYzf7HB+EkBPbO3A97rjoEPRqQrDIKlbvXKeVJ9UOe5aozoTJ0Zbks
-vS/xjtofsQFeG4HY2AQhdJxzeK6rN6icW268kNmOH3HVwmWLxhM95yGReoA5AIrR
-eB9LBNORgHJgWdyGMuXS8DKHmLE+IRAYS0z3yPhojk9JHTuNfLS1AkycuMOfGKZM
-nbpr1az2DNhdzKL/dPApFJ5Ee7Rxsg==
-=nb3R
------END PGP SIGNATURE-----
++    if (CPC_IN_FFH(delivered_reg) && CPC_IN_FFH(reference_reg)) {
 
---H4EfgDTIilQ8R8lz--
+Here we call cpu_has_amu_feat() as precondition (like Sumit's mail 
+mentions), which could be compatible with
+
+any SoCs with AMU that could be accessible via sys-register and system 
+memory both.
+
+
++        ret = smp_call_on_cpu(cpunum, cppc_get_cycle_ctrs, &ctrs, false);
++    } else {
++        if (CPC_IN_SYSTEM_MEMORY(delivered_reg) &&
++            CPC_IN_SYSTEM_MEMORY(reference_reg)) {
++            local_irq_save(flags);
++            cppc_get_cycle_ctrs(&ctrs);
++            local_irq_restore(flags);
++        } else {
++            cppc_get_cycle_ctrs(&ctrs);
++        }
++    }
++
+      cpc_read(cpunum, ref_perf_reg, &ref_perf);
+
+-----------------------------------------------------------------------------------
+
+If there were a new version patch released, please loop me at that time.
+
+Thanks a lot in advance.
+
+
+B.R.,
+
+Zeng Heng
+
+
