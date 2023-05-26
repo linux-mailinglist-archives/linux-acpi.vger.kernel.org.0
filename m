@@ -2,56 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0906F7118FA
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 May 2023 23:23:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7879712008
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 May 2023 08:35:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234814AbjEYVX4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 May 2023 17:23:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35066 "EHLO
+        id S236626AbjEZGfF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 26 May 2023 02:35:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230290AbjEYVXz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 25 May 2023 17:23:55 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D38E4AA;
-        Thu, 25 May 2023 14:23:53 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6702D1FB;
-        Thu, 25 May 2023 14:24:38 -0700 (PDT)
-Received: from [10.57.23.235] (unknown [10.57.23.235])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AE9D73F67D;
-        Thu, 25 May 2023 14:23:50 -0700 (PDT)
-Message-ID: <0dab3bb3-c264-494f-1132-94e1f03ccee3@arm.com>
-Date:   Thu, 25 May 2023 22:23:49 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH V4 4/6] coresight: etm4x: Change etm4_platform_driver
- driver for MMIO devices
-To:     Anshuman Khandual <anshuman.khandual@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        coresight@lists.linaro.org
-Cc:     Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-        Steve Clevenger <scclevenger@os.amperecomputing.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
+        with ESMTP id S229847AbjEZGfF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 May 2023 02:35:05 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 789809C;
+        Thu, 25 May 2023 23:35:02 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2af225e5b4bso3554111fa.3;
+        Thu, 25 May 2023 23:35:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685082901; x=1687674901;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WcJOZerpXi8ObNNdTOUnt4O1FT4NXUTLaczmvwBX9kY=;
+        b=HVYhbWH5FxmTZOP2RMUrEJwk3Y0kEqphdgwS15BCu42Lky/My2LAi4wwia4SLV8YcJ
+         mdm81Bz2O0IXaDRhXxvnveeisdQWSHMWIX2pegSlrMwAZj1IpscNMYGbEPqVXdZZ/fXL
+         8rdyrYgZN7YL3+N1o8IgtpYUapJ0HQB0WJRmODtuK4x3Il7MJffIj/8VyVHNzPbLebqS
+         CoIECfRgwC+AB6cAjht7/Be+xBIUDU0WWvIVt6z2xCJvQpc0JFlES13g7UH0jBOvc+KT
+         7ckzmE2I90dOYJe3tJ5lCxUlol1anJgnsohxJXS17JLGgWg0xNhUCeNcm4hXx1PbLRSQ
+         d28Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685082901; x=1687674901;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WcJOZerpXi8ObNNdTOUnt4O1FT4NXUTLaczmvwBX9kY=;
+        b=e6MeaPydNNk6WrKAsT17x1tm4qCcVutjg7lKIjJDywBZV8RyvPm9GmYJGkh4VYGmwm
+         rJHpix17v+li4IoB2ZyDYflnGQ0wz+E8ZcVyEz1wfhh4HUht6hEEA/L2U4niGCOw+n2/
+         sSbJt7uNaVOJF3tL7WIPTCurH3P0h/zndZTPivAOOjpwGjzj/Vjuard2rrTTaMdB94EL
+         utKlsTunK9DLrAVlH9Iq0mxsCzlH0Cg8zrfi3WAQNxXK6M83S67S1sUYQv1XusVCrNcB
+         9eRXI+HJw+kWWSFuXlAMmJd4nDEf3+tJliH22dGMtMmw69fIlzX0eXwsnWeoEEGjf2s7
+         WM6A==
+X-Gm-Message-State: AC+VfDxbTigxdnoI7cFeJBdrlkZ+LNg2XX89q4Mf+eeMj9m8GWZc1mAK
+        NYaNmGef20Eg6JfpTJlnICEoNB/5GpY=
+X-Google-Smtp-Source: ACHHUZ4DJBxQQEa/1VeMXLnR0qOMEbRktLB7HCgdxnCUjBh/7NEMEMVin+iGP9WqpmCOXNgp3rHlCg==
+X-Received: by 2002:a2e:8e88:0:b0:2ac:7a77:1d4e with SMTP id z8-20020a2e8e88000000b002ac7a771d4emr387558ljk.24.1685082900374;
+        Thu, 25 May 2023 23:35:00 -0700 (PDT)
+Received: from fedora ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id f19-20020a2ea0d3000000b002a8bc2fb3cesm562896ljm.115.2023.05.25.23.34.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 May 2023 23:34:59 -0700 (PDT)
+Date:   Fri, 26 May 2023 09:34:48 +0300
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Mike Leach <mike.leach@linaro.org>,
-        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-References: <20230523044553.1525048-1-anshuman.khandual@arm.com>
- <20230523044553.1525048-5-anshuman.khandual@arm.com>
-From:   Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20230523044553.1525048-5-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        Wolfram Sang <wsa@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, netdev@vger.kernel.org,
+        openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org,
+        linux-mips@vger.kernel.org
+Subject: [PATCH v6 0/8] fix fwnode_irq_get[_byname()] returnvalue
+Message-ID: <cover.1685082026.git.mazziesaccount@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="BIdqUJjNRoUB+WL6"
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,195 +92,158 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Anshuman
 
-Please find a minor issue with the clock handling below.
+--BIdqUJjNRoUB+WL6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 23/05/2023 05:45, Anshuman Khandual wrote:
-> Add support for handling MMIO based devices via platform driver. We need to
-> make sure that :
-> 
-> 1) The APB clock, if present is enabled at probe and via runtime_pm ops
-> 2) Use the ETM4x architecture or CoreSight architecture registers to
->     identify a device as CoreSight ETM4x, instead of relying a white list of
->     "Peripheral IDs"
-> 
-> The driver doesn't get to handle the devices yet, until we wire the ACPI
-> changes to move the devices to be handled via platform driver than the
-> etm4_amba driver.
-> 
-> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
-> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Cc: Mike Leach <mike.leach@linaro.org>
-> Cc: Leo Yan <leo.yan@linaro.org>
-> Cc: coresight@lists.linaro.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
->   .../coresight/coresight-etm4x-core.c          | 57 ++++++++++++++++++-
->   drivers/hwtracing/coresight/coresight-etm4x.h |  4 ++
->   include/linux/coresight.h                     | 47 +++++++++++++++
->   3 files changed, 106 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-> index 57a7181017bd..c9e2219ee6b6 100644
-> --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-> +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-> @@ -30,6 +30,7 @@
->   #include <linux/platform_device.h>
->   #include <linux/pm_runtime.h>
->   #include <linux/property.h>
-> +#include <linux/clk/clk-conf.h>
->   
->   #include <asm/barrier.h>
->   #include <asm/sections.h>
-> @@ -1073,11 +1074,21 @@ static bool etm4_init_sysreg_access(struct etmv4_drvdata *drvdata,
->   	return true;
->   }
->   
-> +static bool is_devtype_cpu_trace(void __iomem *base)
-> +{
-> +	u32 devtype = readl(base + TRCDEVTYPE);
-> +
-> +	return (devtype == CS_DEVTYPE_PE_TRACE);
-> +}
-> +
->   static bool etm4_init_iomem_access(struct etmv4_drvdata *drvdata,
->   				   struct csdev_access *csa)
->   {
->   	u32 devarch = readl_relaxed(drvdata->base + TRCDEVARCH);
->   
-> +	if (!is_coresight_device(drvdata->base) || !is_devtype_cpu_trace(drvdata->base))
-> +		return false;
-> +
->   	/*
->   	 * All ETMs must implement TRCDEVARCH to indicate that
->   	 * the component is an ETMv4. Even though TRCIDR1 also
-> @@ -2135,6 +2146,7 @@ static int etm4_probe_amba(struct amba_device *adev, const struct amba_id *id)
->   
->   static int etm4_probe_platform_dev(struct platform_device *pdev)
->   {
-> +	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->   	struct etmv4_drvdata *drvdata;
->   	int ret;
->   
-> @@ -2142,7 +2154,18 @@ static int etm4_probe_platform_dev(struct platform_device *pdev)
->   	if (!drvdata)
->   		return -ENOMEM;
->   
-> -	drvdata->base = NULL;
-> +	drvdata->pclk = coresight_get_enable_apb_pclk(&pdev->dev);
-> +	if (IS_ERR(drvdata->pclk))
-> +		return -ENODEV;
-> +
-> +	if (res) {
-> +		drvdata->base = devm_ioremap_resource(&pdev->dev, res);
-> +		if (IS_ERR(drvdata->base)) {
-> +			clk_put(drvdata->pclk);
+The fwnode_irq_get() and the fwnode_irq_get_byname() may have returned
+zero if mapping the IRQ fails. This contradicts the
+fwnode_irq_get_byname() documentation. Furthermore, returning zero or
+errno on error is unepected and can easily lead to problems
+like:
 
-clk_put() can handle drvdata->pclk == NULL and bail out early. So 
-calling this without the != NULL check is fine.
+int probe(foo)
+{
+=2E..
+	ret =3D fwnode_irq_get_byname(...);
+	if (ret < 0)
+		return ret;
+=2E..
+}
 
-> +			return PTR_ERR(drvdata->base);
-> +		}
-> +	}
-> +
->   	dev_set_drvdata(&pdev->dev, drvdata);
->   	pm_runtime_get_noresume(&pdev->dev);
->   	pm_runtime_set_active(&pdev->dev);
-> @@ -2188,7 +2211,7 @@ static struct amba_cs_uci_id uci_id_etm4[] = {
->   		/*  ETMv4 UCI data */
->   		.devarch	= ETM_DEVARCH_ETMv4x_ARCH,
->   		.devarch_mask	= ETM_DEVARCH_ID_MASK,
-> -		.devtype	= 0x00000013,
-> +		.devtype	= CS_DEVTYPE_PE_TRACE,
->   	}
->   };
->   
-> @@ -2247,6 +2270,9 @@ static int __exit etm4_remove_platform_dev(struct platform_device *pdev)
->   	if (drvdata)
->   		ret = etm4_remove_dev(drvdata);
->   	pm_runtime_disable(&pdev->dev);
-> +
-> +	if (drvdata->pclk)
-> +		clk_put(drvdata->pclk);
->   	return ret;
->   }
->   
-> @@ -2286,6 +2312,32 @@ static struct amba_driver etm4x_amba_driver = {
->   	.id_table	= etm4_ids,
->   };
->   
-> +#ifdef CONFIG_PM
-> +static int etm4_runtime_suspend(struct device *dev)
-> +{
-> +	struct etmv4_drvdata *drvdata = dev_get_drvdata(dev);
-> +
-> +	if (!IS_ERR(drvdata->pclk))
-> +		clk_disable_unprepare(drvdata->pclk);
+or
 
-However this seems to be inconsistent. Should we not use:
+int probe(foo)
+{
+=2E..
+	ret =3D fwnode_irq_get_byname(...);
+	if (ret <=3D 0)
+		return ret;
+=2E..
+}
 
-	if (drvdata->pclk)
-		...
+which are both likely to be wrong. First treats zero as successful call and
+misses the IRQ mapping failure. Second returns zero from probe even though
+it detects the IRQ mapping failure correvtly.
 
-> +
-> +	return 0;
-> +}
-> +
-> +static int etm4_runtime_resume(struct device *dev)
-> +{
-> +	struct etmv4_drvdata *drvdata = dev_get_drvdata(dev);
-> +
-> +	if (!IS_ERR(drvdata->pclk))
+Here we change the fwnode_irq_get() and the fwnode_irq_get_byname() to
+always return a negative errno upon failure.
 
-same as above ?
+I have audited following callers (v6.4-rc2):
 
-> +		clk_prepare_enable(drvdata->pclk);
-> +
-> +	return 0;
-> +}
-> +#endif
-> +
-> +static const struct dev_pm_ops etm4_dev_pm_ops = {
-> +	SET_RUNTIME_PM_OPS(etm4_runtime_suspend, etm4_runtime_resume, NULL)
-> +};
-> +
->   static const struct of_device_id etm4_sysreg_match[] = {
->   	{ .compatible	= "arm,coresight-etm4x-sysreg" },
->   	{ .compatible	= "arm,embedded-trace-extension" },
-> @@ -2299,6 +2351,7 @@ static struct platform_driver etm4_platform_driver = {
->   		.name			= "coresight-etm4x",
->   		.of_match_table		= etm4_sysreg_match,
->   		.suppress_bind_attrs	= true,
-> +		.pm			= &etm4_dev_pm_ops,
->   	},
->   };
->   
-> diff --git a/drivers/hwtracing/coresight/coresight-etm4x.h b/drivers/hwtracing/coresight/coresight-etm4x.h
-> index 27c8a9901868..0ff0bd2cd504 100644
-> --- a/drivers/hwtracing/coresight/coresight-etm4x.h
-> +++ b/drivers/hwtracing/coresight/coresight-etm4x.h
-> @@ -701,6 +701,8 @@
->   #define ETM_DEVARCH_ETE_ARCH						\
->   	(ETM_DEVARCH_ARCHITECT_ARM | ETM_DEVARCH_ARCHID_ETE | ETM_DEVARCH_PRESENT)
->   
-> +#define CS_DEVTYPE_PE_TRACE		0x00000013
-> +
->   #define TRCSTATR_IDLE_BIT		0
->   #define TRCSTATR_PMSTABLE_BIT		1
->   #define ETM_DEFAULT_ADDR_COMP		0
-> @@ -944,6 +946,7 @@ struct etmv4_save_state {
->   
->   /**
->    * struct etm4_drvdata - specifics associated to an ETM component
-> + * @pclk        APB clock for this component
+fwnode_irq_get_byname():
+drivers/i2c/i2c-smbus.c
+drivers/iio/accel/adxl355_core.c
+drivers/iio/accel/kionix-kx022a.c
+drivers/iio/adc/ad4130.c
+drivers/iio/adc/max11410.c
+drivers/iio/addac/ad74115.c
+drivers/iio/gyro/fxas21002c_core.c
+drivers/iio/imu/adis16480.c
+drivers/iio/imu/bmi160/bmi160_core.c
+drivers/iio/imu/bmi160/bmi160_core.c
 
-Might be worth adding the comment here :
+fwnode_irq_get():
+drivers/gpio/gpio-dwapb.c
+drivers/iio/chemical/scd30_serial.c
+drivers/iio/proximity/mb1232.c
+drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+drivers/net/mdio/fwnode_mdio.c
+drivers/pinctrl/pinctrl-ingenic.c
+drivers/pinctrl/pinctrl-microchip-sgpio.c
+drivers/pinctrl/pinctrl-pistachio.c
 
-      * @pclk:	    APB clock if present, otherwise NULL
+and it seems to me these calls will be Ok after the change. The
+i2c-smbus.c and kionix-kx022a.c will gain a functional change (bugfix?) as
+after this patch the probe will return -EINVAL should the IRQ mapping fail.
+The series will also adjust the return value check for zero to be omitted.
 
-Rest looks fine to me
+NOTES:
 
-Suzuki
+Changes are compile-tested only.
+
+drivers/pinctrl/nuvoton/pinctrl-wpcm450.c
+will also gain a functional change. The pinctrl-wpcm450.c change is easy
+to see - after this series the device-tree mapping failures will be
+handled as any other errors - probe will be aborted with -EINVAL. Other
+feasible option could be treating other errors in IRQ getting same way
+as the DT mapping failures - just silently skip the IRQ. Please see
+comment in the respective patch.
+
+drivers/iio/cdc/ad7150.c
+Changed logic so that all the IRQ getting errors jump to the same
+'no-IRQ' branch as the DT mapping error did.
+
+Revision history:
+v5 =3D> v6:
+ - iio: cdc: ad7150 - never abort probe if IRQ getting fails
+v4 =3D> v5:
+ - Fix subject lines for mvpp2 and wpcm450
+ - drop unnecessary irqno assignment from mb1232
+ - add back the drivers/i2c/i2c-smbus.c change which was accidentally
+   dropped during v3 =3D> v4 work
+v3 =3D> v4:
+ - Change also the fwnode_irq_get() as was suggested by Jonathan.
+Changelog v2 =3D> v3:
+ - rebase/resend/add kx022a fix.
+Changelog v1 =3D> v2:
+ - minor styling
+
+---
+
+Matti Vaittinen (8):
+  drivers: fwnode: fix fwnode_irq_get[_byname]()
+  iio: mb1232: relax return value check for IRQ get
+  net-next: mvpp2: relax return value check for IRQ get
+  pinctrl: wpcm450: relax return value check for IRQ get
+  pinctrl: ingenic: relax return value check for IRQ get
+  pinctrl: pistachio: relax return value check for IRQ get
+  iio: cdc: ad7150: relax return value check for IRQ get
+  i2c: i2c-smbus: fwnode_irq_get_byname() return value fix
+
+ drivers/base/property.c                         | 12 +++++++++---
+ drivers/i2c/i2c-smbus.c                         |  2 +-
+ drivers/iio/cdc/ad7150.c                        | 10 +++++-----
+ drivers/iio/proximity/mb1232.c                  |  7 ++-----
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c |  4 ++--
+ drivers/pinctrl/nuvoton/pinctrl-wpcm450.c       |  2 --
+ drivers/pinctrl/pinctrl-ingenic.c               |  2 --
+ drivers/pinctrl/pinctrl-pistachio.c             |  6 ------
+ 8 files changed, 19 insertions(+), 26 deletions(-)
+
+
+base-commit: f1fcbaa18b28dec10281551dfe6ed3a3ed80e3d6
+--=20
+2.40.1
+
+
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--BIdqUJjNRoUB+WL6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmRwUwQACgkQeFA3/03a
+ocXAagf/SATcFgxl0jKSBaNOTF/+28Pno+TjHp9Sdo/8Ymwrg9L9edhW7FpovyWA
+5ErMPmzMs7zSKg6b9ThVlNqVX0ApH/9sVsrZZ5+xh3TapswoYLPPngUxSV2JC6cF
++Dq5A7qKkcHV5nQVQgW3tI/e7E0xybH3LNit2KaF3xgVFjfrJZ00Wx2R+j0N0JrG
+WjRQ12FUGQ7fa5W52qG9/P3aFDC1L9kQL0peEAhA6PLuIdiX86tMkp0eh7n2Ni90
+O28ZvVRC1lL+xeTxhW3QvtrxiT4EgxfbGiDgHGJ+nAJdGblViNXYFbqJXGcI+n70
+R9znRQPe0WUgM2XzsU9mp/1w9qdxFg==
+=GMUh
+-----END PGP SIGNATURE-----
+
+--BIdqUJjNRoUB+WL6--
