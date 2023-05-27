@@ -2,58 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3594D713622
-	for <lists+linux-acpi@lfdr.de>; Sat, 27 May 2023 20:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E896713640
+	for <lists+linux-acpi@lfdr.de>; Sat, 27 May 2023 21:40:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229501AbjE0Smi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 27 May 2023 14:42:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42096 "EHLO
+        id S231218AbjE0Tkx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 27 May 2023 15:40:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbjE0Smh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 27 May 2023 14:42:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A10099;
-        Sat, 27 May 2023 11:42:36 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AD7DB615B0;
-        Sat, 27 May 2023 18:42:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A77C433EF;
-        Sat, 27 May 2023 18:42:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685212955;
-        bh=ILLm7sjS2AUbgX5ZU3V6OvdwznjKgFXN4a/oNoiqZNE=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=NUkjfs+FLPecL9MScQaHcjH42z08/Anpuon7d1M1eUg6dsY+F0Orwnz+00gcUcPVx
-         U0XH+Oce0uRcTtKwG5Bebcm2vgVFN30IF5We+cbfmYS5TIP5uS/qz+wUodCkoisbqH
-         8O/fmbZt1Rp2kMn1pPxyA13RdSiJwxe+ITqKtq3KZAxxCcCgIZm65bcRFYvcbN4XBF
-         uUjKrgT4w9we1CU/hIAODtjR/fj3hV9t7mqGRc030Ap8U2O1dGj/Z5cAJR/fCqEZYg
-         H4v+6DMcmIZ3edMQH4QKiMSkJPzIBYDFrBf10HdwD5xZ9iaM819AdydDMg/679U6K0
-         FaYBLjaaZijhA==
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2af2602848aso18691191fa.2;
-        Sat, 27 May 2023 11:42:34 -0700 (PDT)
-X-Gm-Message-State: AC+VfDwLXdx2QImlWGSuWoE3ERd7j4XgxqHGwG81/HE2wQupLrHmnqtI
-        6+7cyynGDJG15R1uQNm+MuiWlS4AGDLlISHz3fc=
-X-Google-Smtp-Source: ACHHUZ6cjZTU+MaVWVZBdrSI6NnR4VUENr+IJy/gE11EQm0JbKPhjcTfU05GXxO9wspVLC8vMwpOFa/iC3DfdJ1ePoM=
-X-Received: by 2002:a2e:7c18:0:b0:2af:23c2:5dce with SMTP id
- x24-20020a2e7c18000000b002af23c25dcemr2054843ljc.25.1685212952230; Sat, 27
- May 2023 11:42:32 -0700 (PDT)
+        with ESMTP id S231210AbjE0Tkw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 27 May 2023 15:40:52 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BD53EC
+        for <linux-acpi@vger.kernel.org>; Sat, 27 May 2023 12:40:49 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-96fb45a5258so355314666b.2
+        for <linux-acpi@vger.kernel.org>; Sat, 27 May 2023 12:40:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1685216448; x=1687808448;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8JcPeHx5b/Toh4k4OiN1qju08d1gnox4XXe9rs4ZJHI=;
+        b=WV0V2HZRXvi6BC0+lTY1BFaRQoiJFNQYSdc4KILwvNyBeP8uw5lKnOvQx1QHvIc4OF
+         n3xE50kzkEPyfrRRGHNNncBMFmN4FzRFF/9qj4EBh/pe+7C7D8nSAZGZ/GCpUMAdxwDR
+         4lq0klEbbUb4nQIqdCeJdYo5iEu1wdOoiehfQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685216448; x=1687808448;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8JcPeHx5b/Toh4k4OiN1qju08d1gnox4XXe9rs4ZJHI=;
+        b=FYICne6I6K5kpUwFF8bISRi1wx7A/lMZ1cjqn8hIkN3oeYFken2A4dczXTre7N3Jld
+         XPx799PN2xJ2PSptQbvJZxZevW59TOSuFb7aWjeOA+/Av1y0y0Z1t23/X0TTJEHodmW5
+         llIp2tDvqzAwLvfUhg3/EfyTo3r2fwjEJit0PS8pEZ9XsTJUMILnywEEp+FVvR/Vo+fn
+         6N01c/cR7hUiyzCZaZcojhPm/9o6VksgaiqOwGcAWziP8de3+DueobJj6DQGxhCtHUC3
+         h3CSudibpA7YHzkDnLd+YUcuynQzOSQKIshbHfKiunC/En4gvoZ39LUnEw3NZbu6EpjX
+         pmjg==
+X-Gm-Message-State: AC+VfDw/S+sA4FokBRoumVRc4/kYfHi5jFQR3QBX6Mv64G3JmTeU7l1j
+        Wwd2o5Jv3s/o7VaAmCsesInYfh0jkPFcI+Ep5EY3thvh
+X-Google-Smtp-Source: ACHHUZ5o24nfxFdbgrnl6j0CP/PZ12Qdirg7JcV7Kh26KlZcO2Jjkkm9Qj2uXtWoouROGsAC7tOsyA==
+X-Received: by 2002:a17:907:7da7:b0:94e:e6b9:fef2 with SMTP id oz39-20020a1709077da700b0094ee6b9fef2mr6403491ejc.67.1685216447955;
+        Sat, 27 May 2023 12:40:47 -0700 (PDT)
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com. [209.85.208.41])
+        by smtp.gmail.com with ESMTPSA id c7-20020a17090603c700b0096a68648329sm3724308eja.214.2023.05.27.12.40.45
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 27 May 2023 12:40:46 -0700 (PDT)
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-51478f6106cso2918985a12.1
+        for <linux-acpi@vger.kernel.org>; Sat, 27 May 2023 12:40:45 -0700 (PDT)
+X-Received: by 2002:a17:907:36cd:b0:953:37eb:7727 with SMTP id
+ bj13-20020a17090736cd00b0095337eb7727mr6716027ejc.43.1685216445655; Sat, 27
+ May 2023 12:40:45 -0700 (PDT)
 MIME-Version: 1.0
 References: <efd6f2d4-547c-1378-1faa-53c044dbd297@gmail.com>
  <CAG8fp8SaHi0X-tZHnji_93wBADp1_=brjauWCVXuLaG7iP0p=A@mail.gmail.com>
  <CAG8fp8QXoEkndCzyaYZmg6+ZrszKOfh_YSi0o2_weV7y1_xYkQ@mail.gmail.com>
- <CAMj1kXGjkKK-oHm64Y9P-AbYQWd9jnEdsNucRbY_-7mgJ_4yAA@mail.gmail.com> <CAG8fp8ReYLaNYO9LYE1WeeSDg1pO1hz3f-8_WPZkLVWbzzyCvg@mail.gmail.com>
-In-Reply-To: <CAG8fp8ReYLaNYO9LYE1WeeSDg1pO1hz3f-8_WPZkLVWbzzyCvg@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Sat, 27 May 2023 20:42:21 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEGTJufrrcrqjjKqeR-FN+nLsbzx8xGgO+gPfc2YPsy2w@mail.gmail.com>
-Message-ID: <CAMj1kXEGTJufrrcrqjjKqeR-FN+nLsbzx8xGgO+gPfc2YPsy2w@mail.gmail.com>
+ <CAMj1kXGjkKK-oHm64Y9P-AbYQWd9jnEdsNucRbY_-7mgJ_4yAA@mail.gmail.com>
+ <CAG8fp8ReYLaNYO9LYE1WeeSDg1pO1hz3f-8_WPZkLVWbzzyCvg@mail.gmail.com> <CAMj1kXEGTJufrrcrqjjKqeR-FN+nLsbzx8xGgO+gPfc2YPsy2w@mail.gmail.com>
+In-Reply-To: <CAMj1kXEGTJufrrcrqjjKqeR-FN+nLsbzx8xGgO+gPfc2YPsy2w@mail.gmail.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sat, 27 May 2023 12:40:29 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whKJoDVuUNhf3U7gPXKu4EeZRv-iwwhL0prQ=U3n8PHiw@mail.gmail.com>
+Message-ID: <CAHk-=whKJoDVuUNhf3U7gPXKu4EeZRv-iwwhL0prQ=U3n8PHiw@mail.gmail.com>
 Subject: Re: mix of ACPICA regression and EFISTUB regression (Was: kernel >=
  v6.2 no longer boots on Apple's Virtualization.framework (x86_64); likely to
  be related to ACPICA)
-To:     Akihiro Suda <suda.kyoto@gmail.com>
-Cc:     Bagas Sanjaya <bagasdotme@gmail.com>, linux-efi@vger.kernel.org,
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Akihiro Suda <suda.kyoto@gmail.com>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        linux-efi@vger.kernel.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Linux Regressions <regressions@lists.linux.dev>,
         Linux x86 <x86@kernel.org>,
@@ -63,51 +79,41 @@ Cc:     Bagas Sanjaya <bagasdotme@gmail.com>, linux-efi@vger.kernel.org,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Jianmin Lv <lvjianmin@loongson.cn>,
         Huacai Chen <chenhuacai@loongson.cn>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
         Robert Moore <robert.moore@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, 27 May 2023 at 20:34, Akihiro Suda <suda.kyoto@gmail.com> wrote:
+On Sat, May 27, 2023 at 11:42=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> w=
+rote:
 >
-> > Are you using OVMF? Which versions of qemu and OVMF are you using?
->
-> I'm using Apple's Virtualization.framework, not QEMU.
->
-> It doesn't use UEFI when it directly loads bzImage.
-> ( dmesg: https://bugzilla.kernel.org/attachment.cgi?id=304323 )
->
-> Despite that, it still expects LINUX_EFISTUB_MINOR_VERSION
-> (include/linux/pe.h) referred from arch/x86/boot/header.S to be 0x0.
-> I confirmed that the kernel can boot by just setting
-> LINUX_EFISTUB_MINOR_VERSION to 0x0.
->
+> Yes, that makes the most sense. If the existing virtual machine BIOS
+> has a hardcoded check that the EFI stub version is 1.0 even if it does
+> not boot via EFI to begin with, I don't see how we can reasonably
+> treat this as a regression that needs fixing on the Linux side.
 
-Thanks for checking that, that is very helpful/
+Well, we consider firmware issues to be the same as any hardware
+issue. If firmware has a bug that requires us to do things certain
+ways, that's really no different from hardware that requires some
+insane init sequence.
 
-> Would it be possible to revert the LINUX_EFISTUB_MINOR_VERSION value
-> (not the actual code) to 0x0?
-> Or will it break something else?
->
-> Anyway, I'll try to make a request to Apple to remove the
-> LINUX_EFISTUB_MINOR_VERSION check.
->
+So why not just say that LINUX_EFISTUB_MINOR_VERSION should be 0, and
+just add the comment that versioning doesn't work?
 
-Yes, that makes the most sense. If the existing virtual machine BIOS
-has a hardcoded check that the EFI stub version is 1.0 even if it does
-not boot via EFI to begin with, I don't see how we can reasonably
-treat this as a regression that needs fixing on the Linux side.
+I'm not sure why this was tied into always enabling the initrd command
+line loader.
 
-The version bump to PE image version v1.1 sets a baseline across all
-Linux archifectures that can boot via EFI that initrd loading is
-supported via the command line as well as via the LoadFile2 protocol.
-Reverting that would substantially reduce the value of having this
-identification embedded into the image.
+Numbered version checks are a fundamentally broken and stupid concept
+anyway. Don't do them. Just leave it at zero, and maybe some day there
+is a sane model that actually has a bitfield of capabilities and
+requirements.
+
+              Linus
