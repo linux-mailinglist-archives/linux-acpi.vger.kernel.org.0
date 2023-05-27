@@ -2,73 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AEBA713278
-	for <lists+linux-acpi@lfdr.de>; Sat, 27 May 2023 06:08:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2825F7131D1
+	for <lists+linux-acpi@lfdr.de>; Sat, 27 May 2023 04:00:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229783AbjE0EIZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 27 May 2023 00:08:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37972 "EHLO
+        id S229823AbjE0CAp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 26 May 2023 22:00:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231855AbjE0EIY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 27 May 2023 00:08:24 -0400
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3686719C;
-        Fri, 26 May 2023 21:08:16 -0700 (PDT)
-Date:   Sat, 27 May 2023 04:07:56 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=jszrlxa4gzh5bnhkd22xh7nmpi.protonmail; t=1685160491; x=1685419691;
-        bh=xmCBZKa3oW/2MDrSFjMmMw1tLSxZ4M52/i7LPIG8qlY=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=eAxamXziwf1i2MmtvkA3Y+EBp9goOjRkfFNG7Io8CN16Ak2ZAr7YY55QliuEU9+nl
-         auc7vbfWAoFKxXrKhWaVts6xa/2UJm9KETSMYDAmd6PNGA8OH8U6G57XdEr4ZHLxNh
-         tDlx6bcQr1qw37hIMQo+t+OC7wXQXRVRi1nxsvAJ/QxvGwWACxTtKROj6DZCjw+U9J
-         g15RWUl7Y0VOEAL3LBbVJMj97Tih4fCyL62uUHuSDCULg2B7th97JilMF8b8pq4b7d
-         WpVgxhxJQwScJwk1nyjnEHtEjiC2/sJf0Ma5R3okXBG1MwlEwTPvpAwyP6RDHwHdh1
-         E36a8gy2dPrQw==
-To:     Bagas Sanjaya <bagasdotme@gmail.com>
-From:   Sami Korkalainen <sami.korkalainen@proton.me>
-Cc:     Linux Stable <stable@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Networking <netdev@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [REGRESSION][BISECTED] Boot stall from merge tag 'net-next-6.2'
-Message-ID: <NVN-hJsvHwaHe6R-y6XIYJp0FV7sCavgMjobFnseULT1wjgkOFNXbGBGT5iVjCfbtU7dW5xy2hIDoq0ASeNaXhvSY-g2Df4aHWVIMQ2c3TQ=@proton.me>
-In-Reply-To: <ZHFaFosKY24-L7tQ@debian.me>
-References: <GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24OrlljeCyeWveLW9pICEmB9Qc8PKdNt3w1t_g3-Uvxq1l8Wj67PpoMeWDoH8PKk=@proton.me> <ZHFaFosKY24-L7tQ@debian.me>
-Feedback-ID: 45678890:user:proton
+        with ESMTP id S229716AbjE0CAo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 May 2023 22:00:44 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38865FB;
+        Fri, 26 May 2023 19:00:43 -0700 (PDT)
+Received: from canpemm500002.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4QSlPJ21T4zTkpf;
+        Sat, 27 May 2023 10:00:36 +0800 (CST)
+Received: from huawei.com (10.175.104.170) by canpemm500002.china.huawei.com
+ (7.192.104.244) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Sat, 27 May
+ 2023 10:00:39 +0800
+From:   Miaohe Lin <linmiaohe@huawei.com>
+To:     <rafael@kernel.org>, <bp@suse.de>
+CC:     <lenb@kernel.org>, <james.morse@arm.com>, <tony.luck@intel.com>,
+        <bp@alien8.de>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linmiaohe@huawei.com>
+Subject: [PATCH] apei/ghes: remove unused ghes_estatus_pool_size_request
+Date:   Sat, 27 May 2023 17:51:58 +0800
+Message-ID: <20230527095158.211568-1-linmiaohe@huawei.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.104.170]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ canpemm500002.china.huawei.com (7.192.104.244)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_06_12,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
->Where is SCSI info?
+ghes_estatus_pool_size_request is unused now. Remove it.
 
-Right there, under the text (It was so short, that I thought to put it in t=
-he message. Maybe I should have put that also in pastebin for consistency a=
-nd clarity):
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+---
+ drivers/acpi/apei/ghes.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Attached devices:
-Host: scsi0 Channel: 00 Id: 00 Lun: 00
-Vendor: ATA      Model: KINGSTON SVP200S Rev: C4
-Type:   Direct-Access                    ANSI  SCSI revision: 05
-Host: scsi1 Channel: 00 Id: 00 Lun: 00
-Vendor: hp       Model: CDDVDW TS-L633M  Rev: 0301
-Type:   CD-ROM                           ANSI  SCSI revision: 05
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 34ad071a64e9..a4148a7d3afe 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -152,7 +152,6 @@ struct ghes_vendor_record_entry {
+ };
+ 
+ static struct gen_pool *ghes_estatus_pool;
+-static unsigned long ghes_estatus_pool_size_request;
+ 
+ static struct ghes_estatus_cache __rcu *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
+ static atomic_t ghes_estatus_cache_alloced;
+@@ -191,7 +190,6 @@ int ghes_estatus_pool_init(unsigned int num_ghes)
+ 	len = GHES_ESTATUS_CACHE_AVG_SIZE * GHES_ESTATUS_CACHE_ALLOCED_MAX;
+ 	len += (num_ghes * GHES_ESOURCE_PREALLOC_MAX_SIZE);
+ 
+-	ghes_estatus_pool_size_request = PAGE_ALIGN(len);
+ 	addr = (unsigned long)vmalloc(PAGE_ALIGN(len));
+ 	if (!addr)
+ 		goto err_pool_alloc;
+-- 
+2.27.0
 
->I think networking changes shouldn't cause this ACPI regression, right?
-Yeah, beats me, but that's what I got by bisecting. My expertise ends about=
- here.
