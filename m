@@ -2,171 +2,207 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D01A71383F
-	for <lists+linux-acpi@lfdr.de>; Sun, 28 May 2023 09:02:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8F0C713973
+	for <lists+linux-acpi@lfdr.de>; Sun, 28 May 2023 14:44:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229571AbjE1HCy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 28 May 2023 03:02:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56534 "EHLO
+        id S229536AbjE1MoO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 28 May 2023 08:44:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjE1HCx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 28 May 2023 03:02:53 -0400
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6576ED9;
-        Sun, 28 May 2023 00:02:52 -0700 (PDT)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-561a41db2c0so32786917b3.3;
-        Sun, 28 May 2023 00:02:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685257371; x=1687849371;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TRkqudkgMQ49oMc1gbKQdMb2w50Dkd1fBeJ/gvJ6yX8=;
-        b=qmMTFrt8uoytygO19Oob0VRjf+V9CWhsO4qE9F78KrSta+nabHhX11re+hazJIZlPX
-         TzJeNTBNwbB/qCGJaFc6B34OW2Khw8CWOyne6MGJy7DOi8STTwy4Lyel3LWUwAzb74sG
-         mEwxjcmeyArXXCEa77HqYNLRXy+MU5Amtw8TuAHLJ3I4JXpnqJRFwSYO3T7NhYQZ0N40
-         9AMiK7zVcPZZt8n1p8u/NL/fk5VKFoGWY/dtTIpExxZD/B6ygrOc2dipwboWZmXU/qmt
-         fmbXQGA0vg8g+l7EDAdUXj4eQYJZn5mY3WS03aAvA2h0h0SqU28km1LxCmAwMTqtuK32
-         Uglg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685257371; x=1687849371;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TRkqudkgMQ49oMc1gbKQdMb2w50Dkd1fBeJ/gvJ6yX8=;
-        b=F+sR9eYAGKkbElXTrjUAswhrV7Omw/SFp0w2gtw7qe5sEUB3lXT5GgrZnfAnpUY24o
-         78NMWAgFKm1FhE54TDfm9LYYKinLRYFGHtipcy9BoFWxAH0wlWstYBGK61pJ2+ksRXBb
-         q0tfYnqMblU74eZGvv3k/UwmANFTaiHMGjy6zZezFO8RmRRqEkHLcZWcR4JxsT/KvaVf
-         9plYE10vHN4CIqGvAXM924SS3kFvjYmg3q1n69qDXwCj0DUBn9cZCOLicAX9yisfKUm4
-         aFV26+gdDXHu03440AH0ANsbQMYrf7j3Gbj0wboZTMgWtykr+6D96Y16RYZvu/Jg3zb5
-         WkIQ==
-X-Gm-Message-State: AC+VfDwEEc23F7LjGLzdFxodow1ocwI0ImBLgVogrewceT74vrmzHqQM
-        X1g3eMKk4Fm/RvfT70MDkzHL7JHTAvZgsnTzy2U=
-X-Google-Smtp-Source: ACHHUZ5QnHgzGna8A0ict5YGfhiUK1/FyXdi06p0MjmNBDyw5tltLHDzYhcCm1SX6aeGhqMyx+OQ3MmemowirLDgF2Y=
-X-Received: by 2002:a0d:cc0c:0:b0:55a:5870:3d47 with SMTP id
- o12-20020a0dcc0c000000b0055a58703d47mr7603574ywd.26.1685257371475; Sun, 28
- May 2023 00:02:51 -0700 (PDT)
+        with ESMTP id S229445AbjE1MoN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 28 May 2023 08:44:13 -0400
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2068.outbound.protection.outlook.com [40.107.94.68])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CE51B9;
+        Sun, 28 May 2023 05:44:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MhUcuSOh5XYiQ4m5qaB+Y5klsFxkx7a3z97duU9HX+SERBd91M/FDWCEnMZyzT3KboNtZn5+nfcB6IV2fpz2f1awPOGnKqAG3aTADzPoocdtErc0QsD2NtTODb+mwZo34ObbnWbpM8x8JR9yYzbIvN38k0vTIbCAWeqbkcwxjYROFcJPBl05nJrrn7Yel6TMIRWSKIAatLyZQVn5EwJOy4lQ3T8IxwBjV4KuQX4M6okQyvaEKRttWsHp2S9d+iOZR2fhYuCcNQjOAs0TuQh2K146qLtcxXk1cuHqpkhWYHUUNTMdx0Mhc3dquZVNKXdV7nuIy8vhBSUJ3Gdx/niOag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=P3ADXnT76gKJG+XW3nvG74bDwmaYj1pk4rChzsQGITk=;
+ b=nSlq3LM+Y1F2QwvvOzrLg41vz+Uh6vxgWIRN/Up6x2yb3YCgwUYteiA3MV6HLzymeksKA/EZvCWVvDvuCMUC5x0nALk/sVgS327KMlY5BoW3IeSz2qo7AwX+tvTAz1E9SSgmQXOzNGeeJh8HeiEOgg8Z7fLm/12G3tgmetK1WeX8IYp08bAk70Hb5d2cvfJ0tQjrVHG5K33aHvvJID4rGTjLOrtzujh+2zavqj/i+ILcW/32JskeuocAiAllm0PtaVGiJhhwsEmQgrnvNMu0gD5R8hiZA6UgAUHXU6IKr5lSVgH9prY9iWNlElgXw8K7SR0nLGD5pyxrNl6ekZm8rA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=P3ADXnT76gKJG+XW3nvG74bDwmaYj1pk4rChzsQGITk=;
+ b=Z5eiVoIyDMi3qcsX8piJWNPfDOwGApjY0tB0/ONJCkZWXN1XFaavWA9KmLnfN1LPCoZiAsFXbdWM36Q0YhtwaXXbDg61di3YG2cUQYGLnjNY/tfy5v2wlptWqMyHuTtdzvgefYOsALzSh7x4nS4mL+LD4U8bdgTlE6J6QYjg1TY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by DS0PR12MB6558.namprd12.prod.outlook.com (2603:10b6:8:d2::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.21; Sun, 28 May
+ 2023 12:44:08 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::a65c:3aa0:b759:8527]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::a65c:3aa0:b759:8527%5]) with mapi id 15.20.6433.022; Sun, 28 May 2023
+ 12:44:08 +0000
+Message-ID: <ab12984e-be17-903d-ba0a-f9c85b8c544f@amd.com>
+Date:   Sun, 28 May 2023 07:44:05 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: Regression from "ACPI: OSI: Remove Linux-Dell-Video _OSI string"?
+ (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of system)
+To:     Salvatore Bonaccorso <carnil@debian.org>,
+        Nick Hastings <nicholaschastings@gmail.com>,
+        1036530@bugs.debian.org
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, regressions@lists.linux.dev
+References: <168471337231.1913606.15905047692536779158.reportbug@xps>
+ <ZG3mbc3zdR4KcUW/@eldamar.lan> <ZG6cY8xjfob4Bvcs@xps>
+ <ZG98fQ+MD4O0nGGE@eldamar.lan>
+ <168471337231.1913606.15905047692536779158.reportbug@xps>
+ <ZG/8cxxTJ9ZzrVPQ@xps> <ZHCYRmD7YeIWoy2W@eldamar.lan>
+ <168471337231.1913606.15905047692536779158.reportbug@xps>
+ <ZHKrC4/G6ZyvRReI@xps> <ZHL5cCNUzVdleiag@eldamar.lan>
+Content-Language: en-US
+From:   Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <ZHL5cCNUzVdleiag@eldamar.lan>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DM6PR08CA0039.namprd08.prod.outlook.com
+ (2603:10b6:5:1e0::13) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 MIME-Version: 1.0
-References: <efd6f2d4-547c-1378-1faa-53c044dbd297@gmail.com>
- <CAG8fp8SaHi0X-tZHnji_93wBADp1_=brjauWCVXuLaG7iP0p=A@mail.gmail.com>
- <CAG8fp8QXoEkndCzyaYZmg6+ZrszKOfh_YSi0o2_weV7y1_xYkQ@mail.gmail.com>
- <CAMj1kXGjkKK-oHm64Y9P-AbYQWd9jnEdsNucRbY_-7mgJ_4yAA@mail.gmail.com>
- <CAG8fp8ReYLaNYO9LYE1WeeSDg1pO1hz3f-8_WPZkLVWbzzyCvg@mail.gmail.com>
- <CAMj1kXEGTJufrrcrqjjKqeR-FN+nLsbzx8xGgO+gPfc2YPsy2w@mail.gmail.com>
- <CAHk-=whKJoDVuUNhf3U7gPXKu4EeZRv-iwwhL0prQ=U3n8PHiw@mail.gmail.com> <CAMj1kXHmRYkmJyfW5+B74dPyA1+yHvt9majpZ9Ut1p0i8zM+DA@mail.gmail.com>
-In-Reply-To: <CAMj1kXHmRYkmJyfW5+B74dPyA1+yHvt9majpZ9Ut1p0i8zM+DA@mail.gmail.com>
-From:   Akihiro Suda <suda.kyoto@gmail.com>
-Date:   Sun, 28 May 2023 16:02:40 +0900
-Message-ID: <CAG8fp8Teu4G9JuenQrqGndFt2Gy+V4YgJ=hN1xX7AD940YKf3A@mail.gmail.com>
-Subject: Re: mix of ACPICA regression and EFISTUB regression (Was: kernel >=
- v6.2 no longer boots on Apple's Virtualization.framework (x86_64); likely to
- be related to ACPICA)
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        linux-efi@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux x86 <x86@kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux ACPICA <acpica-devel@lists.linuxfoundation.org>,
-        Linux Stable <stable@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Jianmin Lv <lvjianmin@loongson.cn>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Robert Moore <robert.moore@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|DS0PR12MB6558:EE_
+X-MS-Office365-Filtering-Correlation-Id: 53fbc910-d1a8-448b-89ef-08db5f793a71
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: wUnGRGPRgsuUlCrVsPZgtZZxxc52o3/beYi+DxEtdFknAA/GA4XppxOyuWhSa7YIHU0SlgbacrnfZUX5ZYSmmfFxdp/jv6P9HLWoBAdxl/foAAJ8JIP6hR2U88vMjy2l4NWtHsK0eMfv+1oC/Ki/5JWoxKs2Kh3wyaaFAUq7sP0B2DLDLaYdC9E8uEc+JXR955rwhGvyQT/FA7GkAp+Gaj0ZwoY2LF23WZ1/+JOwyorxWVux84Z2SWcAMWDz2zqH/ALvkzUZlBABzTCr3qPSIHGmcGkocJYyYsBKXeINisLMo9vN/xy7iKU009r9GSkSO/duYyHg6omNP2GWtjsL1SqOQcz9BtXtLq6RxTtf9olld/YCHK0z4OKVCyRRtAnXPq92ekdghfub9BKa6vjapbE83u7919p1pdDEZqTkIeG47jmAvqClxPeR5bZB/7LCH8EfRwV12N3mGG5VlhbhRcGyTGpDYI0yGlzowHFhsSD+3+FZKWBmomYbFRvLTL5rlD6L9+mosbmnHTuh0895257WGn7t2yRgv4wHp9nIP6HmqQyL2OZ4u3awY+ZU/0gt65nM7+ypag2ypAiJ6MpvgSnZ9Wsecrc7hCcZ7uda5UhXGcZMagMhjTNpHDv9FXC+I9laLRsZhHmdZLJ2ne/I3w==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(366004)(346002)(396003)(136003)(376002)(451199021)(83380400001)(5660300002)(316002)(6666004)(66946007)(36756003)(66476007)(66556008)(4326008)(966005)(31696002)(8676002)(6486002)(41300700001)(38100700002)(8936002)(86362001)(44832011)(110136005)(54906003)(53546011)(2906002)(2616005)(6506007)(6512007)(186003)(31686004)(478600001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZUc2R25lNm1STytqWHRrWHdta05ZS0k5Yk5yZDBDT1hTNklJN3loNzZEcG05?=
+ =?utf-8?B?SVFEN1V1ZURDNHliU1BZWVVNWkwvK1I2Mi9Jd1MxYk9zeXRVaGt0dGJoQmI3?=
+ =?utf-8?B?eWJsZXJpZWkzU21zRHFUNjZHOFEvc01VMDFYamtvSnB1UVhZbWNOS3F5UGhT?=
+ =?utf-8?B?VTQzVnFXM1VLN2YvVldCY0xSTkZHeHE5MTJGSzVZUnNyc0kxclBiRHdZVGt2?=
+ =?utf-8?B?Tk4vT3k5MXlKVEN1bG05aWltbmFhSnRoZyswZXhZYkVja1NUNGs2d3N1K281?=
+ =?utf-8?B?UHZ5TXp5WkZiQ1hqTXpkalFjSVZ6dW56aktNTVRhSW5pZXF3LzAvRHBRYm5t?=
+ =?utf-8?B?a21hNklFZFBhUk9rUDlwNUJHMk1aNlVqVUNHZ0xRN0xTOWc1dE5QeDFhRVJF?=
+ =?utf-8?B?TTV3dmJlUW9kaXdEOUd2blN1dHE1NVQ3em5vVzNOTEI2UDNJYnp2Rjd0dnlq?=
+ =?utf-8?B?OFpaNWJYMmNoSnhISklEQ0lFSGVRTldmTFpaRFQ4UUJ0Y0FhV3lhYkU4Slcr?=
+ =?utf-8?B?aVVjZHhLNlJZalErVVdUU0I3Z3Bkb2s0NzlmYytmS2hTZ2lwWktWSVFObDBp?=
+ =?utf-8?B?S2laekU2ZUZIOE9pSWtucTBVMy8zSEdDMlZ1TWJVZVNQd3d6ZHZlQVBKVFdp?=
+ =?utf-8?B?dXc2eU91ZjlSSXhTRHNOMks4TXhtMGhGdC9PTG11VXZCVG1aMUJKV0ZZV2NQ?=
+ =?utf-8?B?bjZKOXFoazdDVlhnTEttaTdCRW55Ri9hcGdzNk1GY0t0bHl1VFh3cy9GQVU5?=
+ =?utf-8?B?S2NqVk1aTmUrdzlTVGpIVHJ1NjVZZGdycDhVZnk4emRnTzJ0NGpsNU9IRmpP?=
+ =?utf-8?B?djF6MWZZbmw4amN0SXZkMnVWUFhlRlNGeVBPQ29LSGJabVNYeHBEMG9mR0pi?=
+ =?utf-8?B?bEtkaitKbWhkQTZyMTJKYytLdmUvYmZVLzUzaGx4QUhza1k4c24yVXVYYkNV?=
+ =?utf-8?B?Q0w3ZUxPWVROQ0lzOTFzdHpxTHZVMCtpQVdad1BnM3dYUVpnV3R3WkY5WGNO?=
+ =?utf-8?B?YjlrRzlYN0w1SFEvanJaSFh2T3krVHpsY2hoYVc2VFpocGNUYU4rSXpxUCtC?=
+ =?utf-8?B?bVpWemFFOG41S3JWa1JRZmp1bWdnYmhxK1NLQkFQRzJ6U3pncTFGVngwUGZR?=
+ =?utf-8?B?WTdQSEtFQTZua00xNFM2WUVFTDBuZ1AvZ1Q3TndyWnBHN3ovYktkM0lPTHhD?=
+ =?utf-8?B?S2U5SlBUbGdlbUplYmdJQ0tGazZMRWU2bjJsZHZCUlV1MGdXRFFNMVNvazhX?=
+ =?utf-8?B?bXFQWWdPZnFOTDAwUWcrVUhkcWszam45RUovMEQyZGlkaVZuTVpLWlU2cmox?=
+ =?utf-8?B?RzdWaFBCdG54WlNlRlY3N0FLcS9QZGJaV3dvSjQrMDFCWUtDOUw0SGQxOGxP?=
+ =?utf-8?B?b24rOFFnWmFDeFkwcUhvN1BGYllqRDlaSG9ZRTAveWtxWVNtdlVhREhwZWwy?=
+ =?utf-8?B?M1FMU29yT2RhNWlWMzFFOUdwZm5lYndGVzZXbU40bk4vekRKWEVnN1BLeCsz?=
+ =?utf-8?B?M0doVC8yZHJETm9tcmtaSnJtbE1xcG1TeGNRT0szMjM4N3IwaGMzT21zM2lF?=
+ =?utf-8?B?WWNEWklYT2NSNlFQc21BVldZZnZWVHpFYW5XaUdpZzRUOGRhejQ2d1JzUWc4?=
+ =?utf-8?B?bkREUnpERFp0WEEvR1RNaFFRbzRhUUc2ZVp3MjdSLzZGYWduSXMydWpoeDd5?=
+ =?utf-8?B?bm5DTXZIaUJsRlYrRjV3K1hUajROdjJ1ZjZYUmtGZmg0R1lOMWwvZDZ3cGtF?=
+ =?utf-8?B?RHJCaHUyY3J6eTFDN0F0WHplVHhKQ3VWOE90eUFHZlBHYzFHMnNianA3WjJE?=
+ =?utf-8?B?UTQ1dFpBbFJmelNSZVAvMm96YTBrWFNWRFZ0eFl1UWVueHdTTm02VnFBMlZQ?=
+ =?utf-8?B?blRrZFNjZUt2UHkxS3IwUWQ4SnZHcFhBSEx3YURTWUNBZVhPMVo3ZlNUdVcv?=
+ =?utf-8?B?TUdEejNrQXN4TGJXajZ4OWdMZmFHcWRweWwvTXdGcWpNT2FjcDAra1hhQjBX?=
+ =?utf-8?B?bWlXaElMdVFWYjFpQUQ0TGRpQ21BZFlwb3RvejMwRDFrNWZRZXRCd0ZKRTNZ?=
+ =?utf-8?B?ckx3K1UwakNyVnFUU0NId2h6d25vSXVvZWFmNEJRVVB2R08xT2taVXpyM2l4?=
+ =?utf-8?B?emF0OTJHTjhUc3UyUExFTjFZUUtyeVFCcVg4UEgwOU43ODdQRlFoZmRKTkNP?=
+ =?utf-8?B?MHc9PQ==?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 53fbc910-d1a8-448b-89ef-08db5f793a71
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2023 12:44:08.0785
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: O0E5pb0ae37+dpGg6DVZ7vtRlc6mo8hqZOETrN6MMypwaMlNqYuS+zzQJqhbgM5jTR0Ndn37YzVUuskE6ZaJDQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6558
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> Fair enough. Or we could try bumping it from v1.1 to v2.0 (or v3.0 if
-> we make it a bit mask).
->
-> Akihiro, would you mind checking if changing the major/minor to any of
-> these values results in the same problem?
+On 5/28/23 01:49, Salvatore Bonaccorso wrote:
+> Hi Mario
+> 
+> Nick Hastings reported in Debian in https://bugs.debian.org/1036530
+> lockups from his system after updating from a 6.0 based version to
+> 6.1.y. >
+> #regzbot ^introduced 24867516f06d
+> 
+> he bisected the issue and tracked it down to:
+> 
+> On Sun, May 28, 2023 at 10:14:51AM +0900, Nick Hastings wrote:
+>> Control: tags -1 - moreinfo
+>>
+>> Hi,
+>>
+>> I repeated the git bisect, and the bad commit seems to be:
+>>
+>> (git)-[v6.1-rc1~206^2~4^5~3|bisect] % git bisect bad
+>> 24867516f06dabedef3be7eea0ef0846b91538bc is the first bad commit
+>> commit 24867516f06dabedef3be7eea0ef0846b91538bc
+>> Author: Mario Limonciello <mario.limonciello@amd.com>
+>> Date:   Tue Aug 23 13:51:31 2022 -0500
+>>
+>>      ACPI: OSI: Remove Linux-Dell-Video _OSI string
+>>      
+>>      This string was introduced because drivers for NVIDIA hardware
+>>      had bugs supporting RTD3 in the past.
+>>      
+>>      Before proprietary NVIDIA driver started to support RTD3, Ubuntu had
+>>      had a mechanism for switching PRIME on and off, though it had required
+>>      to logout/login to make the library switch happen.
+>>      
+>>      When the PRIME had been off, the mechanism had unloaded the NVIDIA
+>>      driver and put the device into D3cold, but the GPU had never come back
+>>      to D0 again which is why ODMs used the _OSI to expose an old _DSM
+>>      method to switch the power on/off.
+>>      
+>>      That has been fixed by commit 5775b843a619 ("PCI: Restore config space
+>>      on runtime resume despite being unbound"). so vendors shouldn't be
+>>      using this string to modify ASL any more.
+>>      
+>>      Reviewed-by: Lyude Paul <lyude@redhat.com>
+>>      Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>>      Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>
+>>   drivers/acpi/osi.c | 9 ---------
+>>   1 file changed, 9 deletions(-)
+>>
+>> This machine is a Dell with an nvidia chip so it looks like this really
+>> could be the commit that that is causing the problems. The description
+>> of the commit also seems (to my untrained eye) to be consistent with the
+>> error reported on the console when the lockup occurs:
+>>
+>> [   58.729863] ACPI Error: Aborting method \_SB.PCI0.PGON due to previous error (AE_AML_LOOP_TIMEOUT) (20220331/psparse-529)
+>> [   58.729904] ACPI Error: Aborting method \_SB.PCI0.PEG0.PG00._ON due to previous error (AE_AML_LOOP_TIMEOUT) (20220331/psparse-529)
+>> [   60.083261] vfio-pci 0000:01:00.0 Unable to change power state from D3cold to D0, device inaccessible
+>>
+>> Hopefully this is enough information for experts to resolve this.
+> 
+> Does this ring some bell for you? Do you need any further information
+> from Nick?
+> 
+> Regards,
+> Salvatore
 
-Surprisingly, v2.0 and v3.0 boot, although v1.1, v2.1, v2.2, v3.1,
-etc. do not boot.
+Hi Salvatore,
 
-Looks like Apple's vmlinuz loader only requires
-LINUX_EFISTUB_MINOR_VERSION to be 0x0
-and does not care about LINUX_EFISTUB_MAJOR_VERSION.
+Have Nick try using "pcie_port_pm=off" and see if it helps the issue.
 
-2023=E5=B9=B45=E6=9C=8828=E6=97=A5(=E6=97=A5) 6:48 Ard Biesheuvel <ardb@ker=
-nel.org>:
->
-> On Sat, 27 May 2023 at 21:40, Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
-> >
-> > On Sat, May 27, 2023 at 11:42=E2=80=AFAM Ard Biesheuvel <ardb@kernel.or=
-g> wrote:
-> > >
-> > > Yes, that makes the most sense. If the existing virtual machine BIOS
-> > > has a hardcoded check that the EFI stub version is 1.0 even if it doe=
-s
-> > > not boot via EFI to begin with, I don't see how we can reasonably
-> > > treat this as a regression that needs fixing on the Linux side.
-> >
-> > Well, we consider firmware issues to be the same as any hardware
-> > issue. If firmware has a bug that requires us to do things certain
-> > ways, that's really no different from hardware that requires some
-> > insane init sequence.
-> >
-> > So why not just say that LINUX_EFISTUB_MINOR_VERSION should be 0, and
-> > just add the comment that versioning doesn't work?
-> >
->
-> Fair enough. Or we could try bumping it from v1.1 to v2.0 (or v3.0 if
-> we make it a bit mask).
->
-> Akihiro, would you mind checking if changing the major/minor to any of
-> these values results in the same problem?
->
-> Unfortunately, the only data point we have is that a non-EFI
-> bootloader (which is unlikely to carry a PE/COFF loader) needs the
-> byte at that specific offset to be 0x0, and we really have no idea
-> why, or whether we could hit this in other ways (i.e., by changing the
-> PE/COFF header to comply with new MS requirements for secure boot,
-> which is another thing that is in progress)
->
-> > I'm not sure why this was tied into always enabling the initrd command
-> > line loader.
-> >
->
-> For x86, it doesn't actually make a difference, but on other
-> architectures, the command line initrd=3D loader could be disabled, but
-> that possibility was removed. The idea was that by bumping the version
-> to v1.1 at the same time, generic EFI loaders would be able to
-> identify this capability without arch specific conditionals in the
-> logic.
->
-> Currently, GRUB and systemd-stub check this version field, but only
-> for v1.0 or higher. Upstream GRUB  switched to this generic version of
-> the EFI loader just this week, but does not actually use initrd=3D at
-> all for EFI boot (on any architecture).
->
-> > Numbered version checks are a fundamentally broken and stupid concept
-> > anyway. Don't do them. Just leave it at zero, and maybe some day there
-> > is a sane model that actually has a bitfield of capabilities and
-> > requirements.
-> >
->
-> Yeah, maybe you're right. Currently, only a single feature is tied to
-> LINUX_EFISTUB_MAJOR_VERSION=3D=3D1 (LoadFile2 support for initrd loading)=
-,
-> and this PE/COFF version field has no meaning to UEFI firmware itself,
-> so we could simply treat these fields as bit masks if we wanted to
-> (and setting the initrd command line loader bit for x86 would be
-> redundant anyway)
->
-> But not being able to freely set such a bit because some rarely used
-> non-EFI BIOS implementation imposes requirements on the contents of
-> the EFI specific image header is rather disappointing.
+Does this happen in the latest 6.4 RC as well?
+
+I think we need to see a full dmesg and acpidump to better characterize it.
