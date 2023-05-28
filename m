@@ -2,207 +2,166 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8F0C713973
-	for <lists+linux-acpi@lfdr.de>; Sun, 28 May 2023 14:44:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D86D713AAE
+	for <lists+linux-acpi@lfdr.de>; Sun, 28 May 2023 18:48:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229536AbjE1MoO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 28 May 2023 08:44:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48012 "EHLO
+        id S229632AbjE1Qst (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 28 May 2023 12:48:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjE1MoN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 28 May 2023 08:44:13 -0400
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2068.outbound.protection.outlook.com [40.107.94.68])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CE51B9;
-        Sun, 28 May 2023 05:44:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MhUcuSOh5XYiQ4m5qaB+Y5klsFxkx7a3z97duU9HX+SERBd91M/FDWCEnMZyzT3KboNtZn5+nfcB6IV2fpz2f1awPOGnKqAG3aTADzPoocdtErc0QsD2NtTODb+mwZo34ObbnWbpM8x8JR9yYzbIvN38k0vTIbCAWeqbkcwxjYROFcJPBl05nJrrn7Yel6TMIRWSKIAatLyZQVn5EwJOy4lQ3T8IxwBjV4KuQX4M6okQyvaEKRttWsHp2S9d+iOZR2fhYuCcNQjOAs0TuQh2K146qLtcxXk1cuHqpkhWYHUUNTMdx0Mhc3dquZVNKXdV7nuIy8vhBSUJ3Gdx/niOag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P3ADXnT76gKJG+XW3nvG74bDwmaYj1pk4rChzsQGITk=;
- b=nSlq3LM+Y1F2QwvvOzrLg41vz+Uh6vxgWIRN/Up6x2yb3YCgwUYteiA3MV6HLzymeksKA/EZvCWVvDvuCMUC5x0nALk/sVgS327KMlY5BoW3IeSz2qo7AwX+tvTAz1E9SSgmQXOzNGeeJh8HeiEOgg8Z7fLm/12G3tgmetK1WeX8IYp08bAk70Hb5d2cvfJ0tQjrVHG5K33aHvvJID4rGTjLOrtzujh+2zavqj/i+ILcW/32JskeuocAiAllm0PtaVGiJhhwsEmQgrnvNMu0gD5R8hiZA6UgAUHXU6IKr5lSVgH9prY9iWNlElgXw8K7SR0nLGD5pyxrNl6ekZm8rA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P3ADXnT76gKJG+XW3nvG74bDwmaYj1pk4rChzsQGITk=;
- b=Z5eiVoIyDMi3qcsX8piJWNPfDOwGApjY0tB0/ONJCkZWXN1XFaavWA9KmLnfN1LPCoZiAsFXbdWM36Q0YhtwaXXbDg61di3YG2cUQYGLnjNY/tfy5v2wlptWqMyHuTtdzvgefYOsALzSh7x4nS4mL+LD4U8bdgTlE6J6QYjg1TY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by DS0PR12MB6558.namprd12.prod.outlook.com (2603:10b6:8:d2::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.21; Sun, 28 May
- 2023 12:44:08 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::a65c:3aa0:b759:8527]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::a65c:3aa0:b759:8527%5]) with mapi id 15.20.6433.022; Sun, 28 May 2023
- 12:44:08 +0000
-Message-ID: <ab12984e-be17-903d-ba0a-f9c85b8c544f@amd.com>
-Date:   Sun, 28 May 2023 07:44:05 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: Regression from "ACPI: OSI: Remove Linux-Dell-Video _OSI string"?
- (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of system)
-To:     Salvatore Bonaccorso <carnil@debian.org>,
-        Nick Hastings <nicholaschastings@gmail.com>,
-        1036530@bugs.debian.org
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, regressions@lists.linux.dev
-References: <168471337231.1913606.15905047692536779158.reportbug@xps>
- <ZG3mbc3zdR4KcUW/@eldamar.lan> <ZG6cY8xjfob4Bvcs@xps>
- <ZG98fQ+MD4O0nGGE@eldamar.lan>
- <168471337231.1913606.15905047692536779158.reportbug@xps>
- <ZG/8cxxTJ9ZzrVPQ@xps> <ZHCYRmD7YeIWoy2W@eldamar.lan>
- <168471337231.1913606.15905047692536779158.reportbug@xps>
- <ZHKrC4/G6ZyvRReI@xps> <ZHL5cCNUzVdleiag@eldamar.lan>
-Content-Language: en-US
-From:   Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <ZHL5cCNUzVdleiag@eldamar.lan>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DM6PR08CA0039.namprd08.prod.outlook.com
- (2603:10b6:5:1e0::13) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+        with ESMTP id S229607AbjE1Qss (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 28 May 2023 12:48:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFB80C7;
+        Sun, 28 May 2023 09:48:46 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CA7760FB4;
+        Sun, 28 May 2023 16:48:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C65C433D2;
+        Sun, 28 May 2023 16:48:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685292525;
+        bh=2/Xdzz0f6dHRULVAbV2CIXRJaSLW15lBmvFfiihjXKI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=tLWwWYcxzOj9hAqkBMAboJHJD2284sMen1uDmzR6YPQBB/U8HezzseSt2SU7kDoTq
+         uOUFEx7r/BJlI0Aly6K0if4JpXqNw1VtlNaRhE9ysgPjDeoRqSWJexmX7+rqLtGAcx
+         VQHBA+5mxvG1FGEvV5OJ1EnF42iusIdQijSpIaKk4d72RC9tdMXAiRQrtxruWRiB3d
+         LaJilwrPTFNmc+5WL0/7aVxU1fPPg/d1p13rEnVSC3sqo0u8ObbhVO+VUgcRgNVQPz
+         PpwU5kfLXFTOv26CpaaPdWQaBI1XEP2Ly7RPp4dfAHnGixz6y4ez85wJbBCh4bLMhQ
+         GaUFmQu3jZyJg==
+Date:   Sun, 28 May 2023 18:05:01 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jonathan =?UTF-8?B?TmV1c2Now6RmZXI=?= <j.neuschaefer@gmx.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, netdev@vger.kernel.org,
+        openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org,
+        linux-mips@vger.kernel.org
+Subject: Re: [PATCH v6 7/8] iio: cdc: ad7150: relax return value check for
+ IRQ get
+Message-ID: <20230528180501.4cb28a76@jic23-huawei>
+In-Reply-To: <6de4448e9fe46d706bdeddb71ba6923d89ea8f4d.1685082026.git.mazziesaccount@gmail.com>
+References: <cover.1685082026.git.mazziesaccount@gmail.com>
+        <6de4448e9fe46d706bdeddb71ba6923d89ea8f4d.1685082026.git.mazziesaccount@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|DS0PR12MB6558:EE_
-X-MS-Office365-Filtering-Correlation-Id: 53fbc910-d1a8-448b-89ef-08db5f793a71
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: wUnGRGPRgsuUlCrVsPZgtZZxxc52o3/beYi+DxEtdFknAA/GA4XppxOyuWhSa7YIHU0SlgbacrnfZUX5ZYSmmfFxdp/jv6P9HLWoBAdxl/foAAJ8JIP6hR2U88vMjy2l4NWtHsK0eMfv+1oC/Ki/5JWoxKs2Kh3wyaaFAUq7sP0B2DLDLaYdC9E8uEc+JXR955rwhGvyQT/FA7GkAp+Gaj0ZwoY2LF23WZ1/+JOwyorxWVux84Z2SWcAMWDz2zqH/ALvkzUZlBABzTCr3qPSIHGmcGkocJYyYsBKXeINisLMo9vN/xy7iKU009r9GSkSO/duYyHg6omNP2GWtjsL1SqOQcz9BtXtLq6RxTtf9olld/YCHK0z4OKVCyRRtAnXPq92ekdghfub9BKa6vjapbE83u7919p1pdDEZqTkIeG47jmAvqClxPeR5bZB/7LCH8EfRwV12N3mGG5VlhbhRcGyTGpDYI0yGlzowHFhsSD+3+FZKWBmomYbFRvLTL5rlD6L9+mosbmnHTuh0895257WGn7t2yRgv4wHp9nIP6HmqQyL2OZ4u3awY+ZU/0gt65nM7+ypag2ypAiJ6MpvgSnZ9Wsecrc7hCcZ7uda5UhXGcZMagMhjTNpHDv9FXC+I9laLRsZhHmdZLJ2ne/I3w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(366004)(346002)(396003)(136003)(376002)(451199021)(83380400001)(5660300002)(316002)(6666004)(66946007)(36756003)(66476007)(66556008)(4326008)(966005)(31696002)(8676002)(6486002)(41300700001)(38100700002)(8936002)(86362001)(44832011)(110136005)(54906003)(53546011)(2906002)(2616005)(6506007)(6512007)(186003)(31686004)(478600001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZUc2R25lNm1STytqWHRrWHdta05ZS0k5Yk5yZDBDT1hTNklJN3loNzZEcG05?=
- =?utf-8?B?SVFEN1V1ZURDNHliU1BZWVVNWkwvK1I2Mi9Jd1MxYk9zeXRVaGt0dGJoQmI3?=
- =?utf-8?B?eWJsZXJpZWkzU21zRHFUNjZHOFEvc01VMDFYamtvSnB1UVhZbWNOS3F5UGhT?=
- =?utf-8?B?VTQzVnFXM1VLN2YvVldCY0xSTkZHeHE5MTJGSzVZUnNyc0kxclBiRHdZVGt2?=
- =?utf-8?B?Tk4vT3k5MXlKVEN1bG05aWltbmFhSnRoZyswZXhZYkVja1NUNGs2d3N1K281?=
- =?utf-8?B?UHZ5TXp5WkZiQ1hqTXpkalFjSVZ6dW56aktNTVRhSW5pZXF3LzAvRHBRYm5t?=
- =?utf-8?B?a21hNklFZFBhUk9rUDlwNUJHMk1aNlVqVUNHZ0xRN0xTOWc1dE5QeDFhRVJF?=
- =?utf-8?B?TTV3dmJlUW9kaXdEOUd2blN1dHE1NVQ3em5vVzNOTEI2UDNJYnp2Rjd0dnlq?=
- =?utf-8?B?OFpaNWJYMmNoSnhISklEQ0lFSGVRTldmTFpaRFQ4UUJ0Y0FhV3lhYkU4Slcr?=
- =?utf-8?B?aVVjZHhLNlJZalErVVdUU0I3Z3Bkb2s0NzlmYytmS2hTZ2lwWktWSVFObDBp?=
- =?utf-8?B?S2laekU2ZUZIOE9pSWtucTBVMy8zSEdDMlZ1TWJVZVNQd3d6ZHZlQVBKVFdp?=
- =?utf-8?B?dXc2eU91ZjlSSXhTRHNOMks4TXhtMGhGdC9PTG11VXZCVG1aMUJKV0ZZV2NQ?=
- =?utf-8?B?bjZKOXFoazdDVlhnTEttaTdCRW55Ri9hcGdzNk1GY0t0bHl1VFh3cy9GQVU5?=
- =?utf-8?B?S2NqVk1aTmUrdzlTVGpIVHJ1NjVZZGdycDhVZnk4emRnTzJ0NGpsNU9IRmpP?=
- =?utf-8?B?djF6MWZZbmw4amN0SXZkMnVWUFhlRlNGeVBPQ29LSGJabVNYeHBEMG9mR0pi?=
- =?utf-8?B?bEtkaitKbWhkQTZyMTJKYytLdmUvYmZVLzUzaGx4QUhza1k4c24yVXVYYkNV?=
- =?utf-8?B?Q0w3ZUxPWVROQ0lzOTFzdHpxTHZVMCtpQVdad1BnM3dYUVpnV3R3WkY5WGNO?=
- =?utf-8?B?YjlrRzlYN0w1SFEvanJaSFh2T3krVHpsY2hoYVc2VFpocGNUYU4rSXpxUCtC?=
- =?utf-8?B?bVpWemFFOG41S3JWa1JRZmp1bWdnYmhxK1NLQkFQRzJ6U3pncTFGVngwUGZR?=
- =?utf-8?B?WTdQSEtFQTZua00xNFM2WUVFTDBuZ1AvZ1Q3TndyWnBHN3ovYktkM0lPTHhD?=
- =?utf-8?B?S2U5SlBUbGdlbUplYmdJQ0tGazZMRWU2bjJsZHZCUlV1MGdXRFFNMVNvazhX?=
- =?utf-8?B?bXFQWWdPZnFOTDAwUWcrVUhkcWszam45RUovMEQyZGlkaVZuTVpLWlU2cmox?=
- =?utf-8?B?RzdWaFBCdG54WlNlRlY3N0FLcS9QZGJaV3dvSjQrMDFCWUtDOUw0SGQxOGxP?=
- =?utf-8?B?b24rOFFnWmFDeFkwcUhvN1BGYllqRDlaSG9ZRTAveWtxWVNtdlVhREhwZWwy?=
- =?utf-8?B?M1FMU29yT2RhNWlWMzFFOUdwZm5lYndGVzZXbU40bk4vekRKWEVnN1BLeCsz?=
- =?utf-8?B?M0doVC8yZHJETm9tcmtaSnJtbE1xcG1TeGNRT0szMjM4N3IwaGMzT21zM2lF?=
- =?utf-8?B?WWNEWklYT2NSNlFQc21BVldZZnZWVHpFYW5XaUdpZzRUOGRhejQ2d1JzUWc4?=
- =?utf-8?B?bkREUnpERFp0WEEvR1RNaFFRbzRhUUc2ZVp3MjdSLzZGYWduSXMydWpoeDd5?=
- =?utf-8?B?bm5DTXZIaUJsRlYrRjV3K1hUajROdjJ1ZjZYUmtGZmg0R1lOMWwvZDZ3cGtF?=
- =?utf-8?B?RHJCaHUyY3J6eTFDN0F0WHplVHhKQ3VWOE90eUFHZlBHYzFHMnNianA3WjJE?=
- =?utf-8?B?UTQ1dFpBbFJmelNSZVAvMm96YTBrWFNWRFZ0eFl1UWVueHdTTm02VnFBMlZQ?=
- =?utf-8?B?blRrZFNjZUt2UHkxS3IwUWQ4SnZHcFhBSEx3YURTWUNBZVhPMVo3ZlNUdVcv?=
- =?utf-8?B?TUdEejNrQXN4TGJXajZ4OWdMZmFHcWRweWwvTXdGcWpNT2FjcDAra1hhQjBX?=
- =?utf-8?B?bWlXaElMdVFWYjFpQUQ0TGRpQ21BZFlwb3RvejMwRDFrNWZRZXRCd0ZKRTNZ?=
- =?utf-8?B?ckx3K1UwakNyVnFUU0NId2h6d25vSXVvZWFmNEJRVVB2R08xT2taVXpyM2l4?=
- =?utf-8?B?emF0OTJHTjhUc3UyUExFTjFZUUtyeVFCcVg4UEgwOU43ODdQRlFoZmRKTkNP?=
- =?utf-8?B?MHc9PQ==?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 53fbc910-d1a8-448b-89ef-08db5f793a71
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2023 12:44:08.0785
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O0E5pb0ae37+dpGg6DVZ7vtRlc6mo8hqZOETrN6MMypwaMlNqYuS+zzQJqhbgM5jTR0Ndn37YzVUuskE6ZaJDQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6558
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 5/28/23 01:49, Salvatore Bonaccorso wrote:
-> Hi Mario
-> 
-> Nick Hastings reported in Debian in https://bugs.debian.org/1036530
-> lockups from his system after updating from a 6.0 based version to
-> 6.1.y. >
-> #regzbot ^introduced 24867516f06d
-> 
-> he bisected the issue and tracked it down to:
-> 
-> On Sun, May 28, 2023 at 10:14:51AM +0900, Nick Hastings wrote:
->> Control: tags -1 - moreinfo
->>
->> Hi,
->>
->> I repeated the git bisect, and the bad commit seems to be:
->>
->> (git)-[v6.1-rc1~206^2~4^5~3|bisect] % git bisect bad
->> 24867516f06dabedef3be7eea0ef0846b91538bc is the first bad commit
->> commit 24867516f06dabedef3be7eea0ef0846b91538bc
->> Author: Mario Limonciello <mario.limonciello@amd.com>
->> Date:   Tue Aug 23 13:51:31 2022 -0500
->>
->>      ACPI: OSI: Remove Linux-Dell-Video _OSI string
->>      
->>      This string was introduced because drivers for NVIDIA hardware
->>      had bugs supporting RTD3 in the past.
->>      
->>      Before proprietary NVIDIA driver started to support RTD3, Ubuntu had
->>      had a mechanism for switching PRIME on and off, though it had required
->>      to logout/login to make the library switch happen.
->>      
->>      When the PRIME had been off, the mechanism had unloaded the NVIDIA
->>      driver and put the device into D3cold, but the GPU had never come back
->>      to D0 again which is why ODMs used the _OSI to expose an old _DSM
->>      method to switch the power on/off.
->>      
->>      That has been fixed by commit 5775b843a619 ("PCI: Restore config space
->>      on runtime resume despite being unbound"). so vendors shouldn't be
->>      using this string to modify ASL any more.
->>      
->>      Reviewed-by: Lyude Paul <lyude@redhat.com>
->>      Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->>      Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>
->>   drivers/acpi/osi.c | 9 ---------
->>   1 file changed, 9 deletions(-)
->>
->> This machine is a Dell with an nvidia chip so it looks like this really
->> could be the commit that that is causing the problems. The description
->> of the commit also seems (to my untrained eye) to be consistent with the
->> error reported on the console when the lockup occurs:
->>
->> [   58.729863] ACPI Error: Aborting method \_SB.PCI0.PGON due to previous error (AE_AML_LOOP_TIMEOUT) (20220331/psparse-529)
->> [   58.729904] ACPI Error: Aborting method \_SB.PCI0.PEG0.PG00._ON due to previous error (AE_AML_LOOP_TIMEOUT) (20220331/psparse-529)
->> [   60.083261] vfio-pci 0000:01:00.0 Unable to change power state from D3cold to D0, device inaccessible
->>
->> Hopefully this is enough information for experts to resolve this.
-> 
-> Does this ring some bell for you? Do you need any further information
-> from Nick?
-> 
-> Regards,
-> Salvatore
+On Fri, 26 May 2023 09:39:14 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-Hi Salvatore,
+> fwnode_irq_get[_byname]() were changed to not return 0 anymore. The
+> special error case where device-tree based IRQ mapping fails can't no
+> longer be reliably detected from this return value. This yields a
+> functional change in the driver where the mapping failure is treated as
+> an error.
+> 
+> The mapping failure can occur for example when the device-tree IRQ
+> information translation call-back(s) (xlate) fail, IRQ domain is not
+> found, IRQ type conflicts, etc. In most cases this indicates an error in
+> the device-tree and special handling is not really required.
+> 
+> One more thing to note is that ACPI APIs do not return zero for any
+> failures so this special handling did only apply on device-tree based
+> systems.
+> 
+> Drop the special handling for DT mapping failures as these can no longer
+> be separated from other errors at driver side. Change all failures in
+> IRQ getting to be handled by continuing without the events instead of
+> aborting the probe upon certain errors.
+> 
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 
-Have Nick try using "pcie_port_pm=off" and see if it helps the issue.
+I think this is the best we can do, though ideally I'd like to have
+seen errors due to not being provided by firmware passed through and
+firmware bug issues (where it provides an irq we can't get for some reason
+shouted about - with the driver failing to probe.)
 
-Does this happen in the latest 6.4 RC as well?
+Still, it's an improvement and for some FW old code wouldn't have
+done this either. Hence let's go with this approach.
 
-I think we need to see a full dmesg and acpidump to better characterize it.
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+> 
+> ---
+> Revision history:
+> v5 => v6:
+>  - Never abort the probe when IRQ getting fails but continue without
+>    events.
+> 
+> Please note that I don't have the hardware to test this change.
+> Furthermore, testing this type of device-tree error cases is not
+> trivial, as the question we probably dive in is "what happens with the
+> existing users who have errors in the device-tree". Answering to this
+> question is not simple.
+> 
+> The first patch of the series changes the fwnode_irq_get() so this depends
+> on the first patch of the series and should not be applied alone.
+> ---
+>  drivers/iio/cdc/ad7150.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/iio/cdc/ad7150.c b/drivers/iio/cdc/ad7150.c
+> index 79aeb0aaea67..c05e078bba16 100644
+> --- a/drivers/iio/cdc/ad7150.c
+> +++ b/drivers/iio/cdc/ad7150.c
+> @@ -541,6 +541,7 @@ static int ad7150_probe(struct i2c_client *client)
+>  	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+>  	struct ad7150_chip_info *chip;
+>  	struct iio_dev *indio_dev;
+> +	bool use_irq = true;
+>  	int ret;
+>  
+>  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*chip));
+> @@ -561,14 +562,13 @@ static int ad7150_probe(struct i2c_client *client)
+>  
+>  	chip->interrupts[0] = fwnode_irq_get(dev_fwnode(&client->dev), 0);
+>  	if (chip->interrupts[0] < 0)
+> -		return chip->interrupts[0];
+> -	if (id->driver_data == AD7150) {
+> +		use_irq = false;
+> +	else if (id->driver_data == AD7150) {
+>  		chip->interrupts[1] = fwnode_irq_get(dev_fwnode(&client->dev), 1);
+>  		if (chip->interrupts[1] < 0)
+> -			return chip->interrupts[1];
+> +			use_irq = false;
+>  	}
+> -	if (chip->interrupts[0] &&
+> -	    (id->driver_data == AD7151 || chip->interrupts[1])) {
+> +	if (use_irq) {
+>  		irq_set_status_flags(chip->interrupts[0], IRQ_NOAUTOEN);
+>  		ret = devm_request_threaded_irq(&client->dev,
+>  						chip->interrupts[0],
+
