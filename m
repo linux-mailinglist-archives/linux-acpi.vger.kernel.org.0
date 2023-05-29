@@ -2,172 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 026B1714499
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 May 2023 08:26:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11FFE714BD0
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 May 2023 16:13:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231626AbjE2G0D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 29 May 2023 02:26:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53016 "EHLO
+        id S229902AbjE2ONo convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 29 May 2023 10:13:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231612AbjE2G0B (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 May 2023 02:26:01 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65C9819C;
-        Sun, 28 May 2023 23:25:29 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-4eed764a10cso3043213e87.0;
-        Sun, 28 May 2023 23:25:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685341520; x=1687933520;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=C8+bnKjskXykSg/iKyM4tx22OBuA1gQnjvmBSIg+LQg=;
-        b=fFliZVkMY6bLJAuYH+zFK4+JAx6PcjcFknIiq781O2oY3I435SWATGl1m+BLfl752X
-         9VF5qvU7gxfrJcCYmb0eAg3X65C+BMJ3nFUxTBQ0/y7jHU9eQ+9tbfJbLNrfDTBwom73
-         tQ00BJhN236S6OG3HE2gbGrJqlo6ls+rTxX7WUcgwmL/An/DgfvtOswQbaWmjbRxgJJd
-         dr0+1qJ+ZTSsgElhFGpPQ/0V+7uEz9iu9rxuT0m81vFZzJ9NcoAa0ZItX4q4fvbwHX4O
-         SCCYEQsoM0lVFBLlzpYs2CaibCeIqOOYaOj2PJPNS1znR8dAxIHFdobqPTvcE3rtDhDr
-         7eYg==
+        with ESMTP id S229896AbjE2ONo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 May 2023 10:13:44 -0400
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58C6BAD;
+        Mon, 29 May 2023 07:13:42 -0700 (PDT)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-9740c1c4a24so14477966b.1;
+        Mon, 29 May 2023 07:13:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685341520; x=1687933520;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=C8+bnKjskXykSg/iKyM4tx22OBuA1gQnjvmBSIg+LQg=;
-        b=I9yhLMOZUDVehKqgErP+HKR9ptEVmAEmfJarvkBbpi9y3Kcb4FyLXGnAVq7sNp/a/w
-         M1489/diKS6uSZO71GtDWVBsjVbbZNYm/dpQ9dtbRPt/Gc0TNTXRrqmgH4HVtjcdiXwP
-         zwF5xV+yLzoq3fbflTVGpDxb8CMtCDb1u/OF04EzvaYpfQPCt/ne6wBQJnXKB5cgCVpw
-         /BfsHx0DmebcOs20+y6kX1myZMcqK7gJKiVM51pQQuSfXz4txMCszTYFRomA4Mhfr2yp
-         XPYYl4QnZGb5+2xps2atHjtzqzboibqGJ6XHz3GXcJNiDBUgRSWycuJD6PmWG1WOoMPd
-         87pg==
-X-Gm-Message-State: AC+VfDztJ4/tdjG2aPPeZWt3LJacl3tWD1Xh5JDEMj58Q2I1d/+sKhpe
-        i6Cct/TCnnM1G5VhCiMZo5s=
-X-Google-Smtp-Source: ACHHUZ6Xj6UKjjPlJgrfE9uMHkKDWTfWA5sR45BQylbXf8Ay6rkSnz/XTqU+Q3yir0vd0i1zrhMoUw==
-X-Received: by 2002:ac2:4477:0:b0:4f5:76a:2033 with SMTP id y23-20020ac24477000000b004f5076a2033mr46640lfl.25.1685341520423;
-        Sun, 28 May 2023 23:25:20 -0700 (PDT)
-Received: from fedora (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id c18-20020a197612000000b004efd3c2b746sm1857330lff.162.2023.05.28.23.25.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 May 2023 23:25:19 -0700 (PDT)
-Date:   Mon, 29 May 2023 09:25:15 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, netdev@vger.kernel.org,
-        openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org,
-        linux-mips@vger.kernel.org
-Subject: [PATCH v7 9/9] net-next: mvpp2: don't shadow error
-Message-ID: <16d2b244566d4993c8fb26e1e2fbd178f46587f4.1685340157.git.mazziesaccount@gmail.com>
-References: <cover.1685340157.git.mazziesaccount@gmail.com>
+        d=1e100.net; s=20221208; t=1685369621; x=1687961621;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=26NjF04cMsMDS8klff31uqLdZAIm9ImX4dVMC32z4z4=;
+        b=MfrK594lEAcfKeFD9SHcdUPlVR/+3YEOGjeaSEwnp7Y5wl3sR810uuSBPatIVg5urc
+         5Z/mk/m2ySe7lABBrbuNu8+6BhqU4UBeYVq8+qfhFK7Xdgfon9QAhwrIQWDuLsevNcAf
+         9un8HCAnHzMncfmJyCUixz/dm5ugYtwaW5xsIiJSFNOfCiHIWfK9X0TcTGZ9Fx4YfJ4J
+         ZeUAIwyb66abSKsr66kGE7sOt8bD2PLaKSjv3kSWNf3InsGVGI0fUYxsBqhEz5/gQ6vU
+         txF7d8s5EHHCquwjcCmYGn2UGwK7e3U45ZhuWMnIYnyzYUBoi4V/DO3CJYNI5zbJsAZD
+         dgkg==
+X-Gm-Message-State: AC+VfDxPeV69nNT84A/yyKb2ewXiFyfbWrgKWE7c+NDGrjTcbKFfQY1j
+        92l6KTGvvNG2Iv4lshk1BlWX7KEgN0NwTdRsgdw=
+X-Google-Smtp-Source: ACHHUZ5A5h0rdHchN5D5aqNIGja/yKWlLLcAJsn6CyLak4s9T7I/PUv8BsikHYLDTp0eTbjMk4WWFOb8fF0+s8YZG3A=
+X-Received: by 2002:a17:906:729e:b0:94f:66af:b1f7 with SMTP id
+ b30-20020a170906729e00b0094f66afb1f7mr10353306ejl.1.1685369620628; Mon, 29
+ May 2023 07:13:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="SctzMwS3S5m1hcfy"
-Content-Disposition: inline
-In-Reply-To: <cover.1685340157.git.mazziesaccount@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <4464371bc72147e10a392a1873466c8df033039c.1685341309.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <4464371bc72147e10a392a1873466c8df033039c.1685341309.git.christophe.jaillet@wanadoo.fr>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 29 May 2023 16:13:25 +0200
+Message-ID: <CAJZ5v0g2=iYThmRzJXofUXSMrVPM-T2Ck8-HxiS=2_cn3Hv52g@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: Slightly simplify an error message in acpi_ds_result_push()
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Robert Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-acpi@vger.kernel.org,
+        acpica-devel@lists.linuxfoundation.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Mon, May 29, 2023 at 8:31 AM Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
+>
+> 'object' is known to be NULL at this point. There is little value to log
+> it twice in the error message.
+>
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
---SctzMwS3S5m1hcfy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+ACPICA changes require (at least) a pull request submitted to the
+upstream ACPICA project on GitHub.
 
-Do not overwrite error from lower layers but return the actual error to
-user if obtaining an IRQ fails.
+If you have submitted one, please resend the Linux patch with a Link
+tag pointing to the corresponding upstream ACPICA pull request.
 
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Suggested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
----
-Revision history:
-v7: New patch
+Thanks!
 
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/=
-ethernet/marvell/mvpp2/mvpp2_main.c
-index 5b987af306a5..57cacdcd49ea 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -5830,13 +5830,13 @@ static int mvpp2_multi_queue_vectors_init(struct mv=
-pp2_port *port,
- 		}
-=20
- 		if (port_node)
--			v->irq =3D of_irq_get_byname(port_node, irqname);
-+			ret =3D of_irq_get_byname(port_node, irqname);
- 		else
--			v->irq =3D fwnode_irq_get(port->fwnode, i);
--		if (v->irq < 0) {
--			ret =3D -EINVAL;
-+			ret =3D fwnode_irq_get(port->fwnode, i);
-+		if (ret < 0)
- 			goto err;
--		}
-+
-+		v->irq =3D ret;
-=20
- 		netif_napi_add(port->dev, &v->napi, mvpp2_poll);
- 	}
---=20
-2.40.1
-
-
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
-
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---SctzMwS3S5m1hcfy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmR0RUsACgkQeFA3/03a
-ocU54Qf8CkaOG5QvcsAv7Y80ZCZ2KrWN3VVw6ajXQPGUsVHkPHKy+YRDzxzHjWlG
-vZqTFYYV+31mM2MrbjtkgoP6VKIncoMH4ZqK9iFnGFEiNmtLJRz3a7GNQVZFe9xP
-xLQMMxprxtwBUpwDarlyovyuRMyKjJ00i/efaFU9o6n4vAXfwovRy9L+gbuH+vpf
-GwIOUJcNG/UaGvr2+y6msRA4zOLzyef6p+Mr7MK0645A1jPhPkyfqAhfbiYlJ2b5
-S36vWFgRHfjDwU/XZH4s6uT7wdPGl/CRbFeo6f5lCKc4RwWJO3PFNKofNgnV08CI
-RNifxhTc8Pz30LxHLbcQQD7swjI1jg==
-=xQ21
------END PGP SIGNATURE-----
-
---SctzMwS3S5m1hcfy--
+> ---
+>  drivers/acpi/acpica/dswstate.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/acpi/acpica/dswstate.c b/drivers/acpi/acpica/dswstate.c
+> index d3841ded3a81..75338a13c802 100644
+> --- a/drivers/acpi/acpica/dswstate.c
+> +++ b/drivers/acpi/acpica/dswstate.c
+> @@ -146,8 +146,8 @@ acpi_ds_result_push(union acpi_operand_object *object,
+>
+>         if (!object) {
+>                 ACPI_ERROR((AE_INFO,
+> -                           "Null Object! Obj=%p State=%p Num=%u",
+> -                           object, walk_state, walk_state->result_count));
+> +                           "Null Object! State=%p Num=%u",
+> +                           walk_state, walk_state->result_count));
+>                 return (AE_BAD_PARAMETER);
+>         }
+>
+> --
+> 2.34.1
+>
