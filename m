@@ -2,153 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C138D716D2E
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 May 2023 21:07:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3CE8716DD0
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 May 2023 21:43:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232159AbjE3THn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 May 2023 15:07:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48124 "EHLO
+        id S231193AbjE3Tnr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 May 2023 15:43:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231286AbjE3THm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 May 2023 15:07:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E30DF9
-        for <linux-acpi@vger.kernel.org>; Tue, 30 May 2023 12:06:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1685473614;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=fSmFtWgu65TksWT+Us90A+D3QMtRR1H00zZMfgSmti4=;
-        b=QzszITu9pKqNPFfMBBMa5xC9116n+6/rmfdzOhAMa7t33AK+aOrk/yp24XlOQgR6bE3CIU
-        SZSY+cwSEGSQj5L9wikVJ7c3cOWYS+dfJBcM10jeim4ayA0Zky1tkv0q+zevG4IMtH44oi
-        NvFZp2A9JCatBERWmsKNamUadFODUv4=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-328-6aX6W5uBNu-ZRJXJLuiCqw-1; Tue, 30 May 2023 15:06:52 -0400
-X-MC-Unique: 6aX6W5uBNu-ZRJXJLuiCqw-1
-Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-4edc7406cb5so2558990e87.3
-        for <linux-acpi@vger.kernel.org>; Tue, 30 May 2023 12:06:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685473611; x=1688065611;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fSmFtWgu65TksWT+Us90A+D3QMtRR1H00zZMfgSmti4=;
-        b=kE3ZiUtnpTuxyfzzWvdRCOOSSZl21Jv2ROEbc43AS30shahkwQYmht66xFHQ2XMOIG
-         AeD4UI98KHjkiDshtUXMQSP2FzsCSn5pQhc34+EcHJOJXIdvxjPNbjqPCRRCzshn8L99
-         MEdbktpVsENO1GnOg/mxBbGLZHi/3Qek6in+ksQJZKUaMSWug1OzyERtdQ9IVvtxAamw
-         Gp2vZAJXmCBBEUZ8Vok1lijCDnGEIoeho2toYLHWvl18k2gq8rTobcOR8uwznsCbkfXm
-         pOYkXyEAkI3AhS4typ0VAFHrUgd5nkNDceRnG770EYrVCD9MIinzu0dePvW9WrOgqK1z
-         VB7A==
-X-Gm-Message-State: AC+VfDwpUKL1IkmKqxbcEB9HbgL0sR5SoyhzJBWCFYI+2o3Y7Lugm6IW
-        u01aWj4177p021Etj7mg/mx0TMmTtbN9Y6JBhDvYSQMWcqhwkrSQ6B6yUT9u09+VaHI1bfIOjYm
-        TF49V4nowp0B3vU6F21a0Pg==
-X-Received: by 2002:ac2:43c7:0:b0:4f3:a49b:121f with SMTP id u7-20020ac243c7000000b004f3a49b121fmr1286301lfl.40.1685473611539;
-        Tue, 30 May 2023 12:06:51 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6i347dAklPJbPv8EkDS2YnvF4+V4rWvJj6xX7aXx26i4gIYG6DhV3FoTipjX8Q0zjzNeUxZQ==
-X-Received: by 2002:ac2:43c7:0:b0:4f3:a49b:121f with SMTP id u7-20020ac243c7000000b004f3a49b121fmr1286284lfl.40.1685473611189;
-        Tue, 30 May 2023 12:06:51 -0700 (PDT)
-Received: from redhat.com ([176.12.143.106])
-        by smtp.gmail.com with ESMTPSA id d10-20020ac24c8a000000b004f252f48e5fsm429049lfl.40.2023.05.30.12.06.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 May 2023 12:06:50 -0700 (PDT)
-Date:   Tue, 30 May 2023 15:06:45 -0400
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Igor Mammedov <imammedo@redhat.com>, linux-kernel@vger.kernel.org,
-        rafael@kernel.org, lenb@kernel.org, bhelgaas@google.com,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        mika.westerberg@linux.intel.com
-Subject: Re: [PATCH v2] PCI: acpiphp: Reassign resources on bridge if
- necessary
-Message-ID: <20230530150019-mutt-send-email-mst@kernel.org>
-References: <20230530141321-mutt-send-email-mst@kernel.org>
- <ZHZGkAg34ltZLV9J@bhelgaas>
+        with ESMTP id S229754AbjE3Tnq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 May 2023 15:43:46 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 748E5E8;
+        Tue, 30 May 2023 12:43:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685475825; x=1717011825;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=nvmOvQoNmAoTsH+wEqnxySP1xPrfiw2o/cbFmdtW2O8=;
+  b=SUJRuj8zGDkMsNBWBqi9DuQ/DnpO2dt10OQtWa/2fXsGitHAxinCb1fI
+   CnRXNKVy0DhgxN3cGl8xQe10MpXPNPZSg68uuk/RjiMNi+8pRvj3MCCdz
+   wZrskjlkKUdf3C5RkKkSbWcLN5I3qIISXhbxx43+MOF+8vNmLRoH1R4t4
+   HTqT+y8Kw/n5pbhoeGV3WmSEQ0rrrqYqoQ3T7h9RSC6GrxOFzvG74tRfT
+   9yCNCBAEb6D1aHtfcrsO5hJ0W0jMDKnDrvhdYALrt+KZAxC2ywJ7M3lJd
+   Qf8NfFSGNG4/gZEuv6YayRFgBmKfmfKel7VfJdAKNmdP4vAVDovAL0rNH
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="357410329"
+X-IronPort-AV: E=Sophos;i="6.00,205,1681196400"; 
+   d="scan'208";a="357410329"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2023 12:43:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="776476045"
+X-IronPort-AV: E=Sophos;i="6.00,205,1681196400"; 
+   d="scan'208";a="776476045"
+Received: from lkp-server01.sh.intel.com (HELO fb1ced2c09fb) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 30 May 2023 12:43:39 -0700
+Received: from kbuild by fb1ced2c09fb with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1q45Fr-0000lq-06;
+        Tue, 30 May 2023 19:43:39 +0000
+Date:   Wed, 31 May 2023 03:43:35 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Evan Quan <evan.quan@amd.com>, rafael@kernel.org, lenb@kernel.org,
+        alexander.deucher@amd.com, christian.koenig@amd.com,
+        Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
+        kvalo@kernel.org, nbd@nbd.name, lorenzo@kernel.org,
+        ryder.lee@mediatek.com, shayne.chen@mediatek.com,
+        sean.wang@mediatek.com, matthias.bgg@gmail.com,
+        angelogioacchino.delregno@collabora.com, Mario.Limonciello@amd.com,
+        Lijo.Lazar@amd.com
+Cc:     oe-kbuild-all@lists.linux.dev, ath12k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-acpi@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, ath11k@lists.infradead.org
+Subject: Re: [PATCH 9/9] drm/amd/pm: enable Wifi RFI mitigation feature
+ support for SMU13.0.7
+Message-ID: <202305310314.EAMX2AeE-lkp@intel.com>
+References: <20230530024227.2139632-10-evan.quan@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZHZGkAg34ltZLV9J@bhelgaas>
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230530024227.2139632-10-evan.quan@amd.com>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 30, 2023 at 01:55:12PM -0500, Bjorn Helgaas wrote:
-> On Tue, May 30, 2023 at 02:16:36PM -0400, Michael S. Tsirkin wrote:
-> > On Tue, May 30, 2023 at 12:12:44PM -0500, Bjorn Helgaas wrote:
-> > > On Mon, Apr 24, 2023 at 09:15:57PM +0200, Igor Mammedov wrote:
-> > > > When using ACPI PCI hotplug, hotplugging a device with
-> > > > large BARs may fail if bridge windows programmed by
-> > > > firmware are not large enough.
-> > > > 
-> > > > Reproducer:
-> > > >   $ qemu-kvm -monitor stdio -M q35  -m 4G \
-> > > >       -global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=on \
-> > > >       -device id=rp1,pcie-root-port,bus=pcie.0,chassis=4 \
-> > > >       disk_image
-> > > > 
-> > > >  wait till linux guest boots, then hotplug device
-> > > >    (qemu) device_add qxl,bus=rp1
-> > > > 
-> > > >  hotplug on guest side fails with:
-> > > >    pci 0000:01:00.0: [1b36:0100] type 00 class 0x038000
-> > > >    pci 0000:01:00.0: reg 0x10: [mem 0x00000000-0x03ffffff]
-> > > >    pci 0000:01:00.0: reg 0x14: [mem 0x00000000-0x03ffffff]
-> > > >    pci 0000:01:00.0: reg 0x18: [mem 0x00000000-0x00001fff]
-> > > >    pci 0000:01:00.0: reg 0x1c: [io  0x0000-0x001f]
-> > > >    pci 0000:01:00.0: BAR 0: no space for [mem size 0x04000000]
-> > > >    pci 0000:01:00.0: BAR 0: failed to assign [mem size 0x04000000]
-> > > >    pci 0000:01:00.0: BAR 1: no space for [mem size 0x04000000]
-> > > >    pci 0000:01:00.0: BAR 1: failed to assign [mem size 0x04000000]
-> > > >    pci 0000:01:00.0: BAR 2: assigned [mem 0xfe800000-0xfe801fff]
-> > > >    pci 0000:01:00.0: BAR 3: assigned [io  0x1000-0x101f]
-> > > >    qxl 0000:01:00.0: enabling device (0000 -> 0003)
-> > > 
-> > > Ugh, I just noticed that we turned on PCI_COMMAND_MEMORY even though
-> > > BARs 0 and 1 haven't been assigned.  How did that happen?  It looks
-> > > like pci_enable_resources() checks for that, but there must be a hole
-> > > somewhere.
-> > 
-> > Maybe because BAR2 was assigned? I think pci_enable_resources just
-> > does
-> >                 if (r->flags & IORESOURCE_MEM)
-> >                         cmd |= PCI_COMMAND_MEMORY;
-> > in a loop so if any memory BARs are assigned then PCI_COMMAND_MEMORY
-> > is set.
-> 
-> It does, but it also bails out if it finds IORESOURCE_UNSET:
-> 
->   pci_enable_resources()
->   {
->     ...
->     pci_dev_for_each_resource(dev, r, i) {
->       ...
->       if (r->flags & IORESOURCE_UNSET) {
->         pci_err(dev, "can't enable device: BAR %d %pR not assigned\n");
->         return -EINVAL;
->       }
->       ...
->       if (r->flags & IORESOURCE_MEM)
->         cmd |= PCI_COMMAND_MEMORY;
->     }
->     ...
->   }
-> 
-> I expected that IORESOURCE_UNSET would still be there from
-> pci_assign_resource(), since we saw the "failed to assign" messages,
-> but there must be more going on.
-> 
-> Bjorn
+Hi Evan,
 
-Oh you are right. I donnu.
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on drm-misc/drm-misc-next]
+[also build test ERROR on kvalo-ath/ath-next wireless-next/main wireless/main]
+[cannot apply to linus/master v6.4-rc4 next-20230530]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Evan-Quan/drivers-acpi-Add-support-for-Wifi-band-RF-mitigations/20230530-104541
+base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
+patch link:    https://lore.kernel.org/r/20230530024227.2139632-10-evan.quan%40amd.com
+patch subject: [PATCH 9/9] drm/amd/pm: enable Wifi RFI mitigation feature support for SMU13.0.7
+config: arm-allyesconfig (https://download.01.org/0day-ci/archive/20230531/202305310314.EAMX2AeE-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 12.3.0
+reproduce (this is a W=1 build):
+        mkdir -p ~/bin
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/8c935eeab7a439739f3dd369516f18ddd86ef348
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Evan-Quan/drivers-acpi-Add-support-for-Wifi-band-RF-mitigations/20230530-104541
+        git checkout 8c935eeab7a439739f3dd369516f18ddd86ef348
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=arm olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=arm SHELL=/bin/bash
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202305310314.EAMX2AeE-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   arm-linux-gnueabi-ld: drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.o: in function `smu_v13_0_0_set_wbrf_exclusion_ranges':
+   smu_v13_0_0_ppt.c:(.text+0xfa8): undefined reference to `__aeabi_uldivmod'
+   arm-linux-gnueabi-ld: smu_v13_0_0_ppt.c:(.text+0xfc0): undefined reference to `__aeabi_uldivmod'
+   arm-linux-gnueabi-ld: smu_v13_0_0_ppt.c:(.text+0xfd4): undefined reference to `__aeabi_uldivmod'
+   arm-linux-gnueabi-ld: drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.o: in function `smu_v13_0_7_set_wbrf_exclusion_ranges':
+>> smu_v13_0_7_ppt.c:(.text+0xe9c): undefined reference to `__aeabi_uldivmod'
+>> arm-linux-gnueabi-ld: smu_v13_0_7_ppt.c:(.text+0xeb4): undefined reference to `__aeabi_uldivmod'
+   arm-linux-gnueabi-ld: drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.o:smu_v13_0_7_ppt.c:(.text+0xec8): more undefined references to `__aeabi_uldivmod' follow
 
 -- 
-MST
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
