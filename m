@@ -2,57 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F7C571578F
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 May 2023 09:49:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 591E5715AD2
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 May 2023 11:57:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229623AbjE3HtO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 May 2023 03:49:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43350 "EHLO
+        id S229922AbjE3J5X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 May 2023 05:57:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229629AbjE3Hst (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 May 2023 03:48:49 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C2F7193
-        for <linux-acpi@vger.kernel.org>; Tue, 30 May 2023 00:48:26 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q3u4a-00035d-UP; Tue, 30 May 2023 09:47:16 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q3u4Z-003oxg-Tn; Tue, 30 May 2023 09:47:15 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q3u4Z-009OgM-2D; Tue, 30 May 2023 09:47:15 +0200
-Date:   Tue, 30 May 2023 09:47:14 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        James Morse <james.morse@arm.com>
-Cc:     linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        kernel@pengutronix.de, Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v2] firmware: arm_sdei: Make sdei_unregister_ghes()
- return void
-Message-ID: <20230530074714.bvxe44ofo2tr2pvr@pengutronix.de>
-References: <20221220154447.12341-1-u.kleine-koenig@pengutronix.de>
- <CAJZ5v0inEMEQ1NJwjNboDokL_35-yG8o6QwVb5po2qKW8LRLWA@mail.gmail.com>
- <20221221182138.aqupmjom5kixvvsu@pengutronix.de>
- <20230412145517.6vozcdkhcg6xd5xh@pengutronix.de>
- <CAJZ5v0hswyNQoY9GPuPaj61a3xHbNE+Xhd+7K-JekKRzTPDbfQ@mail.gmail.com>
+        with ESMTP id S229559AbjE3J5W (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 May 2023 05:57:22 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B12A49C;
+        Tue, 30 May 2023 02:57:20 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AB4A5AB6;
+        Tue, 30 May 2023 02:58:05 -0700 (PDT)
+Received: from [10.1.197.1] (ewhatever.cambridge.arm.com [10.1.197.1])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2D7603F67D;
+        Tue, 30 May 2023 02:57:18 -0700 (PDT)
+Message-ID: <4c3572f8-9710-0955-72c6-a9907ce6ce8b@arm.com>
+Date:   Tue, 30 May 2023 10:57:16 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="2pgkxovml7zdsibq"
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0hswyNQoY9GPuPaj61a3xHbNE+Xhd+7K-JekKRzTPDbfQ@mail.gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH V5 6/6] coresight: etm4x: Add ACPI support in platform
+ driver
+Content-Language: en-US
+To:     Anshuman Khandual <anshuman.khandual@arm.com>,
+        linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+Cc:     scclevenger@os.amperecomputing.com,
+        Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Mike Leach <mike.leach@linaro.org>,
+        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230529062511.52016-1-anshuman.khandual@arm.com>
+ <20230529062511.52016-7-anshuman.khandual@arm.com>
+From:   Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20230529062511.52016-7-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,113 +61,85 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi Rafael
 
---2pgkxovml7zdsibq
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 29/05/2023 07:25, Anshuman Khandual wrote:
+> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+> 
+> Drop ETM4X ACPI ID from the AMBA ACPI device list, and instead just move it
+> inside the new ACPI devices list detected and used via platform driver.
+> 
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Cc: Mike Leach <mike.leach@linaro.org>
+> Cc: Leo Yan <leo.yan@linaro.org>
+> Cc: Sudeep Holla <sudeep.holla@arm.com>
+> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> Cc: linux-acpi@vger.kernel.org
+> Cc: coresight@lists.linaro.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com> (for ACPI specific changes)
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>   drivers/acpi/acpi_amba.c                           |  1 -
 
-Hello,
+We would like to push this via the coresight tree. Please could you Ack 
+this change if you are happy with the proposal and the change ?
 
-On Wed, Apr 12, 2023 at 08:33:15PM +0200, Rafael J. Wysocki wrote:
-> On Wed, Apr 12, 2023 at 4:55=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-> <u.kleine-koenig@pengutronix.de> wrote:
-> > On Wed, Dec 21, 2022 at 07:21:38PM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> > > On Wed, Dec 21, 2022 at 02:53:05PM +0100, Rafael J. Wysocki wrote:
-> > > > On Tue, Dec 20, 2022 at 4:45 PM Uwe Kleine-K=C3=B6nig
-> > > > <u.kleine-koenig@pengutronix.de> wrote:
-> > > > > [...]
-> > > > > diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> > > > > index 066dc1f5c235..7d705930e21b 100644
-> > > > > --- a/drivers/acpi/apei/ghes.c
-> > > > > +++ b/drivers/acpi/apei/ghes.c
-> > > > > @@ -1275,12 +1275,20 @@ static int apei_sdei_register_ghes(struct=
- ghes *ghes)
-> > > > >                                  ghes_sdei_critical_callback);
-> > > > >  }
-> > > > >
-> > > > > -static int apei_sdei_unregister_ghes(struct ghes *ghes)
-> > > > > +static void apei_sdei_unregister_ghes(struct ghes *ghes)
-> > > > >  {
-> > > > > +       /*
-> > > > > +        * If CONFIG_ARM_SDE_INTERFACE isn't enabled apei_sdei_re=
-gister_ghes()
-> > > > > +        * cannot have been called successfully. So ghes_remove()=
- won't be
-> > > > > +        * called because either ghes_probe() failed or the notif=
-y type isn't
-> > > > > +        * ACPI_HEST_NOTIFY_SOFTWARE_DELEGATED.
-> > > > > +        * Note the if statement below is necessary to prevent a =
-linker error as
-> > > > > +        * the compiler has no chance to understand the above cor=
-relation.
-> > > > > +        */
-> > > > >         if (!IS_ENABLED(CONFIG_ARM_SDE_INTERFACE))
-> > > > > -               return -EOPNOTSUPP;
-> > > > > +               BUG();
-> > > >
-> > > > Well, you could just provide an empty stub for the !CONFIG_ARM_SDE_=
-INTERFACE.
-> > > >
-> > > > It would be cleaner and probably fewer lines of code too.
-> > >
-> > > It's you who cares for this code, but I'd prefer my option. If we ass=
-ume
-> > > the describing comment would have a similar length, we're saving 3 or
-> > > four lines of code here but need 3 lines for the #if / #else / #endif
-> > > plus the stub definition. And compared to my suggested solution we do=
-n't
-> > > catch someone introducing a (bogus) call to apei_sdei_unregister_ghes=
-()
-> > > (or sdei_unregister_ghes()). And (again IMHO) two different
-> > > implementations are harder to grasp than a single with an if.
-> > >
-> > > If you don't like the BUG, a plain return is in my eyes the next best
-> > > option which is semantically equivalent to an empty stub.
-> > >
-> > > If you still like the stub better (or a return instead of the BUG), I
-> > > can send a v3, just tell me your preference.
-> >
-> > I work on changes that depend on a solution here. However you didn't
-> > tell me your preference here. I'm unsure if this means that this
-> > discussion fell through the cracks, or if it annoys you and you still
-> > prefer the cpp #ifdef solution. A note from your side would be very
-> > welcome.
->=20
-> Well, every time I see BUG() in the code I wonder if crashing the
-> kernel really is the best thing one can do should the execution reach
-> that point.
->=20
-> In any case, it's not my opinion that matters the most regarding
-> APEI/GHES, so I would like Tony/Boris/James to speak up here.
+Suzuki
 
-hmm, they didn't speak up so this patch is stalled. I added them to
-"To:" (instead of Cc: before) in this mail, let's see if that helps.
 
-Can you please state your preferred solution that I can properly prepare
-this driver for the conversion of the remove callback?!
+>   drivers/hwtracing/coresight/coresight-etm4x-core.c | 10 ++++++++++
+>   2 files changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/acpi_amba.c b/drivers/acpi/acpi_amba.c
+> index f5b443ab01c2..099966cbac5a 100644
+> --- a/drivers/acpi/acpi_amba.c
+> +++ b/drivers/acpi/acpi_amba.c
+> @@ -22,7 +22,6 @@
+>   static const struct acpi_device_id amba_id_list[] = {
+>   	{"ARMH0061", 0}, /* PL061 GPIO Device */
+>   	{"ARMH0330", 0}, /* ARM DMA Controller DMA-330 */
+> -	{"ARMHC500", 0}, /* ARM CoreSight ETM4x */
+>   	{"ARMHC501", 0}, /* ARM CoreSight ETR */
+>   	{"ARMHC502", 0}, /* ARM CoreSight STM */
+>   	{"ARMHC503", 0}, /* ARM CoreSight Debug */
+> diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+> index e10f6676dd9b..fd6f9dff5881 100644
+> --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
+> +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+> @@ -3,6 +3,7 @@
+>    * Copyright (c) 2014, The Linux Foundation. All rights reserved.
+>    */
+>   
+> +#include <linux/acpi.h>
+>   #include <linux/bitops.h>
+>   #include <linux/kernel.h>
+>   #include <linux/moduleparam.h>
+> @@ -2344,12 +2345,21 @@ static const struct of_device_id etm4_sysreg_match[] = {
+>   	{}
+>   };
+>   
+> +#ifdef CONFIG_ACPI
+> +static const struct acpi_device_id etm4x_acpi_ids[] = {
+> +	{"ARMHC500", 0}, /* ARM CoreSight ETM4x */
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(acpi, etm4x_acpi_ids);
+> +#endif
+> +
+>   static struct platform_driver etm4_platform_driver = {
+>   	.probe		= etm4_probe_platform_dev,
+>   	.remove		= etm4_remove_platform_dev,
+>   	.driver			= {
+>   		.name			= "coresight-etm4x",
+>   		.of_match_table		= etm4_sysreg_match,
+> +		.acpi_match_table	= ACPI_PTR(etm4x_acpi_ids),
+>   		.suppress_bind_attrs	= true,
+>   		.pm			= &etm4_dev_pm_ops,
+>   	},
 
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=C3=B6nig         =
-   |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---2pgkxovml7zdsibq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmR1qgIACgkQj4D7WH0S
-/k58Iwf/cAYq0Cdh4N5ya0CfEc7/ZzSJ+5FIry6RtaSkoJut6Ezy62KZimZ/6c1y
-Za42cXW2bLlfNe1k/1DzjRAAehM1h8OkHyyvhIor9eMCL4Wro+NLeND0vPreeshr
-48mGqxp8+hnpUywDn4ltF6TT3kDpOO547jDteqVHG7Lb2i9WgtM2TyRHXNQAzNYE
-3Sqw7+FSR1CtF/anPaN5DYSV+CAR/4r2HrESQe4pZME/XqgsrHtIzXQX5Qm8hXaj
-QgvgDXXpQJ5OggZ5ecZw6dMdQWpEEmFTjjWupYezVLJLkz0DTcuBGgGFjOB7AxzL
-KqBggz7F5977s76y+K5EGDyLP7pCog==
-=xt0w
------END PGP SIGNATURE-----
-
---2pgkxovml7zdsibq--
