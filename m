@@ -2,214 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D198D715D07
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 May 2023 13:23:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1F97715D4D
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 May 2023 13:33:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231837AbjE3LXB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 May 2023 07:23:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33432 "EHLO
+        id S231383AbjE3Ldn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 May 2023 07:33:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231520AbjE3LW7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 May 2023 07:22:59 -0400
-Received: from stravinsky.debian.org (stravinsky.debian.org [IPv6:2001:41b8:202:deb::311:108])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 493AFD9;
-        Tue, 30 May 2023 04:22:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-        s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=EIqbr3ImWSf/0upwjLftoyo2ik4nrN7ZVxzp8AE4Lws=; b=S5hrlOkuY9bcl8i37p7KIhzcvy
-        RgbGCGFuq1fhNMWlzgWeAV1OlGAdLcOf5V5kdtGWvFXxpRsf3s2bjuGiJbuOiEYQS5jW5rOj+fVRZ
-        4TMnsXkxapqoc1zHd3/hbptFJ0uBz0A2kygPZT6sWimts93IBRBmD3nSKLfroXRRMvwGfvNb6GYp5
-        D/ojL14qar2bXOkrjrqpadgZAXQUj99rLoyH6Cr3D3dnFNTpALfkPELfc9/lokjm+Vz+63PcjAyyR
-        yIUSe+8+O3ad+AXTuXkDDE9RYQQx+Sbx0S13eSVIznlihEHAu5WG3BoEsYam+OJfmO6shNC93vu3v
-        Xqq6PO7A==;
-Received: from authenticated user
-        by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <carnil@debian.org>)
-        id 1q3xR3-00Eoj8-Rh; Tue, 30 May 2023 11:22:42 +0000
-Received: by eldamar.lan (Postfix, from userid 1000)
-        id 90673BE2DE0; Tue, 30 May 2023 13:22:40 +0200 (CEST)
-Date:   Tue, 30 May 2023 13:22:40 +0200
-From:   Salvatore Bonaccorso <carnil@debian.org>
-To:     Nick Hastings <nicholaschastings@gmail.com>,
-        1036530@bugs.debian.org
-Cc:     Mario Limonciello <mario.limonciello@amd.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: Bug#1036530: Regression from "ACPI: OSI: Remove Linux-Dell-Video
- _OSI string"? (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of
- system)
-Message-ID: <ZHXcgPC+7u04RuGD@eldamar.lan>
-References: <ZHKrC4/G6ZyvRReI@xps>
- <ZHL5cCNUzVdleiag@eldamar.lan>
- <ab12984e-be17-903d-ba0a-f9c85b8c544f@amd.com>
- <ZHP4IqxBUPuVRvRV@xps>
- <09e24386-de63-e9e9-9e7f-5d04bad62d83@amd.com>
- <ZHQhPcKUF76Kplwm@xps>
- <ZHUt9xQKCwCflvVC@xps>
- <8537d965-ddf4-7f45-6459-d5acf520376e@amd.com>
- <168471337231.1913606.15905047692536779158.reportbug@xps>
- <ZHWfMBeAONerAJmd@xps>
+        with ESMTP id S229872AbjE3Ldm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 May 2023 07:33:42 -0400
+Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27571E8
+        for <linux-acpi@vger.kernel.org>; Tue, 30 May 2023 04:33:41 -0700 (PDT)
+Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-565c7399afaso44195637b3.1
+        for <linux-acpi@vger.kernel.org>; Tue, 30 May 2023 04:33:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1685446420; x=1688038420;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zO/hEIm/6vFm+Ve2jfklUx8YwRrMLFv0UwuU9t+2qT8=;
+        b=AMemBWUvnvX0G0MDmnf8f/zVF0q9PNYTQ6bTUriXGy7KkrQEgnontw/Rtf9Mdm+nKw
+         neUaH++nwf7A4ncvxc5inevGIC7S/TnIYxNRnPAHuSAXyfgOp4pgUO+u8Bth0LoTiHcd
+         93M2sORUXM35A4h2G54YotHEcuxq9Z0jmGtIxq5n6F3AMMYVN15L97TB5woGOoQk/dfl
+         Z2ETVLE9UNJ18AvVV6ozW5UcamPts81RLcS8ZaiJt2yrv3nj4LlD/SaxHrChTv4qXCF6
+         aBvSSCdzK+qBAXqwWR89gVfFH0fV44QxViYHFTmWkGvpZVxFVvj86Jw3R89tpkgA/588
+         6mlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685446420; x=1688038420;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zO/hEIm/6vFm+Ve2jfklUx8YwRrMLFv0UwuU9t+2qT8=;
+        b=JJda5W61zxFggHtT9Lr6qAknPZ0oN+540yWe+2BfEKkf4so/YmLUSiW5QFvqyP1l5k
+         3Vy+EStVsB5KcccclPYpFXnGW6XGgQMXdQrB5D4JeerECpsI2ixPqmFSTewZLrU4Xnmj
+         o3DMemIDSayTozcJzhV8WNgp4xRx2b5HhTMuJYjDACVPJMvN3sq79voh/2PASRx+L3LS
+         jvPeOus3+5TqSdpaVStMXQsj7PVIrFVf7WQbLAFRY2r2wS0NaZMvB+Ek7cOqo4pDEf1q
+         xh2R1VRWUV4bGdfpVQMiCRXrzoHiF2JwXhu9K0GCH+QjCmM1FS9naDLBUqzWZrsY7Uvl
+         8sGQ==
+X-Gm-Message-State: AC+VfDzBKJOtxpDjGzs8by+eks5OneuLxg5F6XwxMG3yN+0NcXf8EMw7
+        yCL9lfQ7vnb3l3822pbTC83Vay+ZDBQS77lko1pURg==
+X-Google-Smtp-Source: ACHHUZ5OqCG1+FL/F18LVpp4TSjuAEWgttMpiOAuDfgIrf50Bf1rJPTXcD2dr152yi2w5mvi/Cgzm9bpg7BtykybcCI=
+X-Received: by 2002:a0d:d741:0:b0:565:dff1:d1e2 with SMTP id
+ z62-20020a0dd741000000b00565dff1d1e2mr2408888ywd.18.1685446420350; Tue, 30
+ May 2023 04:33:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZHWfMBeAONerAJmd@xps>
-X-Debian-User: carnil
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230315215027.30685-1-asmaa@nvidia.com> <20230315215027.30685-2-asmaa@nvidia.com>
+ <CAHp75VfnNOsfcyLM-UP61CMAF9sLOwMbRkAe5Ljhs2p8F=4Pgw@mail.gmail.com> <CH2PR12MB3895BDF9D79D61420A2F2BA8D7479@CH2PR12MB3895.namprd12.prod.outlook.com>
+In-Reply-To: <CH2PR12MB3895BDF9D79D61420A2F2BA8D7479@CH2PR12MB3895.namprd12.prod.outlook.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 30 May 2023 13:33:29 +0200
+Message-ID: <CACRpkdbN3oa=chsoh8ko74xKBPXA_yh1K07MSaghnMMk5PWYYw@mail.gmail.com>
+Subject: Re: [PATCH v6 1/2] gpio: mlxbf3: Add gpio driver support
+To:     Asmaa Mnebhi <asmaa@nvidia.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Nick,
+On Fri, May 26, 2023 at 3:49=E2=80=AFPM Asmaa Mnebhi <asmaa@nvidia.com> wro=
+te:
 
-Thanks to you both for triaging the issue!
+> Hi Andy, Hi Linus,
+>
+> I see that the pinctl-mlxbf3.c is in v6.4 kernel but I am not seeing gpio=
+-mlxbf3.c, not
+> even in Linux next. Do you know when this driver will be integrated?
 
-On Tue, May 30, 2023 at 04:01:04PM +0900, Nick Hastings wrote:
-> Hi,
-> 
-> * Mario Limonciello <mario.limonciello@amd.com> [230530 13:00]:
-> > On 5/29/23 18:01, Nick Hastings wrote:
-> > > Hi,
-> > > 
-> > > * Nick Hastings <nicholaschastings@gmail.com> [230529 12:51]:
-> > > > * Mario Limonciello <mario.limonciello@amd.com> [230529 10:14]:
-> > > > > On 5/28/23 19:56, Nick Hastings wrote:
-> > > > > > Hi,
-> > > > > > 
-> > > > > > * Mario Limonciello <mario.limonciello@amd.com> [230528 21:44]:
-> > > > > > > On 5/28/23 01:49, Salvatore Bonaccorso wrote:
-> > > > > > > > Hi Mario
-> > > > > > > > 
-> > > > > > > > Nick Hastings reported in Debian in https://bugs.debian.org/1036530
-> > > > > > > > lockups from his system after updating from a 6.0 based version to
-> > > > > > > > 6.1.y. >
-> > > > > > > > #regzbot ^introduced 24867516f06d
-> > > > > > > > 
-> > > > > > > > he bisected the issue and tracked it down to:
-> > > > > > > > 
-> > > > > > > > On Sun, May 28, 2023 at 10:14:51AM +0900, Nick Hastings wrote:
-> > > > > > > > > Control: tags -1 - moreinfo
-> > > > > > > > > 
-> > > > > > > > > Hi,
-> > > > > > > > > 
-> > > > > > > > > I repeated the git bisect, and the bad commit seems to be:
-> > > > > > > > > 
-> > > > > > > > > (git)-[v6.1-rc1~206^2~4^5~3|bisect] % git bisect bad
-> > > > > > > > > 24867516f06dabedef3be7eea0ef0846b91538bc is the first bad commit
-> > > > > > > > > commit 24867516f06dabedef3be7eea0ef0846b91538bc
-> > > > > > > > > Author: Mario Limonciello <mario.limonciello@amd.com>
-> > > > > > > > > Date:   Tue Aug 23 13:51:31 2022 -0500
-> > > > > > > > > 
-> > > > > > > > >        ACPI: OSI: Remove Linux-Dell-Video _OSI string
-> > > > > > > > >        This string was introduced because drivers for NVIDIA hardware
-> > > > > > > > >        had bugs supporting RTD3 in the past.
-> > > > > > > > >        Before proprietary NVIDIA driver started to support RTD3, Ubuntu had
-> > > > > > > > >        had a mechanism for switching PRIME on and off, though it had required
-> > > > > > > > >        to logout/login to make the library switch happen.
-> > > > > > > > >        When the PRIME had been off, the mechanism had unloaded the NVIDIA
-> > > > > > > > >        driver and put the device into D3cold, but the GPU had never come back
-> > > > > > > > >        to D0 again which is why ODMs used the _OSI to expose an old _DSM
-> > > > > > > > >        method to switch the power on/off.
-> > > > > > > > >        That has been fixed by commit 5775b843a619 ("PCI: Restore config space
-> > > > > > > > >        on runtime resume despite being unbound"). so vendors shouldn't be
-> > > > > > > > >        using this string to modify ASL any more.
-> > > > > > > > >        Reviewed-by: Lyude Paul <lyude@redhat.com>
-> > > > > > > > >        Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > > > > > > > >        Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > > > > > > > 
-> > > > > > > > >     drivers/acpi/osi.c | 9 ---------
-> > > > > > > > >     1 file changed, 9 deletions(-)
-> > > > > > > > > 
-> > > > > > > > > This machine is a Dell with an nvidia chip so it looks like this really
-> > > > > > > > > could be the commit that that is causing the problems. The description
-> > > > > > > > > of the commit also seems (to my untrained eye) to be consistent with the
-> > > > > > > > > error reported on the console when the lockup occurs:
-> > > > > > > > > 
-> > > > > > > > > [   58.729863] ACPI Error: Aborting method \_SB.PCI0.PGON due to previous error (AE_AML_LOOP_TIMEOUT) (20220331/psparse-529)
-> > > > > > > > > [   58.729904] ACPI Error: Aborting method \_SB.PCI0.PEG0.PG00._ON due to previous error (AE_AML_LOOP_TIMEOUT) (20220331/psparse-529)
-> > > > > > > > > [   60.083261] vfio-pci 0000:01:00.0 Unable to change power state from D3cold to D0, device inaccessible
-> > > > > > > > > 
-> > > > > > > > > Hopefully this is enough information for experts to resolve this.
-> > > > > > > > 
-> > > > > > > > Does this ring some bell for you? Do you need any further information
-> > > > > > > > from Nick?
-> > > > > > > > 
-> > > > > > > > Regards,
-> > > > > > > > Salvatore
-> > > > > > > 
-> > > > > > 
-> > > > > > > Have Nick try using "pcie_port_pm=off" and see if it helps the issue.
-> > > > > > 
-> > > > > > I booted into a 6.1 kernel with this option. It has been running without
-> > > > > > problems for 1.5 hours. Usually I would expect the lockup to have
-> > > > > > occurred by now.
-> > > > 
-> > > > I let this run for 3 hours without issue.
-> > > > 
-> > > > > > > Does this happen in the latest 6.4 RC as well?
-> > > > > > 
-> > > > > > I have compiled that kernel and will boot into it after running this one
-> > > > > > with the pcie_port_pm=off for another hour or so.
-> > > > 
-> > > > I'm now running 6.4.0-rc4 without seeing the problem after 1 hour.
-> > > 
-> > > I did eventually see a lockup of this kernel. On the console I saw:
-> > > 
-> > > [  151.035036] vfio-pci 0000:01:00.0 Unable to change power state from D3cold to D0, device inaccessible
-> > > 
-> > > I did not see the other two lines that were present in earlier lock ups >
-> > > > I did however see two unrelated problems that I include here for
-> > > > completeness:
-> > > > 1. iwlwifi module did not automatically load
-> > > > 2. Xwayland used huge amount of CPU even though was not running any X
-> > > > programs. Recompiling my wayland compositor without XWayland support
-> > > > "fixed" this.
-> > > > 
-> > > > > > > I think we need to see a full dmesg and acpidump to better
-> > > > > > > characterize it.
-> > > > > > 
-> > > > > > Please find attached. Let me know if there is anything else I can provide.
-> > > > > > 
-> > > > > > Regards,
-> > > > > > 
-> > > > > > Nick.
-> > > > > 
-> > > > > I don't see nouveau loading, are you explicitly preventing it from
-> > > > > loading?
-> > > > 
-> > > > Yes nouveau is blacklisted.
-> > > > 
-> > > > > Can I see the journal from a boot when it reproduced?
-> > > > 
-> > > > Hmm not sure which n for "journalctl -b n" maps to which kernel (is that
-> > > > what you are requesting?). The commit hash doesn't not seem to be
-> > > > listed. I may have to boot into a bad kernel again.
-> > > 
-> > > Please find attached the output from a "journalctl --system -bN" for a
-> > > kernel that has this issue.
-> > > 
-> > > Regards,
-> > > 
-> > > Nick.
-> > 
-> > In this log I see nouveau loaded, but I also don't see the failure
-> > occurring.
-> 
-> I never saw anything in the logs from a lockup either. I had assumed it
-> was no longer able to write to disk. The failure did occur on that
-> occasion.
+Bartosz is applying GPIO patches, I am sure he will get around to it once
+all things are reviewed, but you need to use the right email address to
+him (see MAINTAINERS).
 
-Can you try if you would get more out of it using netconsole?
-
-https://www.kernel.org/doc/html/latest/networking/netconsole.html
-
-Regards,
-Salvatore
+Yours,
+Linus Walleij
