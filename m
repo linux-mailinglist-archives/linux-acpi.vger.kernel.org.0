@@ -2,119 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2459716342
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 May 2023 16:11:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3583C716380
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 May 2023 16:17:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232950AbjE3OLe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 May 2023 10:11:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53866 "EHLO
+        id S230349AbjE3ORm convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 30 May 2023 10:17:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230321AbjE3OLd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 May 2023 10:11:33 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E436FB2;
-        Tue, 30 May 2023 07:11:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685455890; x=1716991890;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0ZSjvmRsPahZ8Twh6++RSb7rZmPdH3pP2QZxrCkFm9U=;
-  b=evptSdx6ou9QKKvHYAtiw6TZfSSD4lw4cFWDAxli/5HZVKtJHmXiPqg3
-   hi1Jnam+ZRuHv9DOOUFleecuyOz67j9Xunp3ohohNhfpfKhR9oG0jlLz1
-   sFZHSQkk2QzXidaG+X3Dwj8dR7NQjziqJGhkDHtzDKHiqrrAlhqc3osQg
-   dNNzV3LTKK9gy6oJXZrP7F3IuTUAkv+Ssb8QmVkoW8mGZ8GnY4GofEjX4
-   iT6lDPFyOnY4gZGTBSuchA9yJqTFjPcocoRbUXCyOHbPAm6JMlbh5M029
-   IvEVLjsdKsCvczdYgZ2x+GqqE0qZz4Ngeh5bBUqXKzXJFArMBjF3dMMik
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="441282310"
-X-IronPort-AV: E=Sophos;i="6.00,204,1681196400"; 
-   d="scan'208";a="441282310"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2023 07:11:30 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="830768672"
-X-IronPort-AV: E=Sophos;i="6.00,204,1681196400"; 
-   d="scan'208";a="830768672"
-Received: from lkp-server01.sh.intel.com (HELO fb1ced2c09fb) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 30 May 2023 07:11:23 -0700
-Received: from kbuild by fb1ced2c09fb with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1q404J-0000ap-0k;
-        Tue, 30 May 2023 14:11:23 +0000
-Date:   Tue, 30 May 2023 22:10:52 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Evan Quan <evan.quan@amd.com>, rafael@kernel.org, lenb@kernel.org,
-        alexander.deucher@amd.com, christian.koenig@amd.com,
-        Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
-        kvalo@kernel.org, nbd@nbd.name, lorenzo@kernel.org,
-        ryder.lee@mediatek.com, shayne.chen@mediatek.com,
-        sean.wang@mediatek.com, matthias.bgg@gmail.com,
-        angelogioacchino.delregno@collabora.com, Mario.Limonciello@amd.com,
-        Lijo.Lazar@amd.com
-Cc:     oe-kbuild-all@lists.linux.dev, ath12k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-acpi@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, ath11k@lists.infradead.org
-Subject: Re: [PATCH 8/9] drm/amd/pm: enable Wifi RFI mitigation feature
- support for SMU13.0.0
-Message-ID: <202305302142.rrUt4NJV-lkp@intel.com>
-References: <20230530024227.2139632-9-evan.quan@amd.com>
+        with ESMTP id S229899AbjE3ORl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 May 2023 10:17:41 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A02C111B;
+        Tue, 30 May 2023 07:17:09 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QVvYW0nc3z67mXG;
+        Tue, 30 May 2023 22:15:11 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Tue, 30 May
+ 2023 15:16:49 +0100
+Date:   Tue, 30 May 2023 15:16:48 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     <linux-i2c@vger.kernel.org>, Wolfram Sang <wsa@kernel.org>,
+        Niyas Sait <niyas.sait@linaro.org>,
+        Klaus Jensen <its@irrelevant.dk>,
+        Andy Shevchenko <andy@kernel.org>,
+        <linux-acpi@vger.kernel.org>,
+        Jeremy Kerr <jk@codeconstruct.com.au>,
+        Matt Johnston <matt@codeconstruct.com.au>,
+        Shesha Bhushan Sreenivasamurthy <sheshas@marvell.com>,
+        <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>,
+        "Viacheslav A . Dubeyko" <viacheslav.dubeyko@bytedance.com>
+Subject: Re: [RFC PATCH 3/6] i2c: aspeed: switch to generic fw properties.
+Message-ID: <20230530151648.00007d32@Huawei.com>
+In-Reply-To: <CAHp75Vd3ARzzWjWV=cRRghHKXMFWkrRXBa2ssCGRCZAqDEAjAA@mail.gmail.com>
+References: <20230525152203.32190-1-Jonathan.Cameron@huawei.com>
+        <20230525152203.32190-4-Jonathan.Cameron@huawei.com>
+        <CAHp75Vd3ARzzWjWV=cRRghHKXMFWkrRXBa2ssCGRCZAqDEAjAA@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230530024227.2139632-9-evan.quan@amd.com>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Evan,
+On Sat, 27 May 2023 00:11:09 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-kernel test robot noticed the following build errors:
+> On Thu, May 25, 2023 at 6:23 PM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> >
+> > Not tested on device tree but works nicely for ACPI :)  
 
-[auto build test ERROR on drm-misc/drm-misc-next]
-[also build test ERROR on kvalo-ath/ath-next wireless-next/main wireless/main linus/master v6.4-rc4]
-[cannot apply to next-20230530]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I was planning to abandon these as 'on list for anyone who
+cared' but now you've reviewed them I guess I better do
+an RFC v2 :)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Evan-Quan/drivers-acpi-Add-support-for-Wifi-band-RF-mitigations/20230530-104541
-base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
-patch link:    https://lore.kernel.org/r/20230530024227.2139632-9-evan.quan%40amd.com
-patch subject: [PATCH 8/9] drm/amd/pm: enable Wifi RFI mitigation feature support for SMU13.0.0
-config: arm-allyesconfig (https://download.01.org/0day-ci/archive/20230530/202305302142.rrUt4NJV-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 12.3.0
-reproduce (this is a W=1 build):
-        mkdir -p ~/bin
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/8ecc361da81a0915bb626156b47403a91b678de1
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Evan-Quan/drivers-acpi-Add-support-for-Wifi-band-RF-mitigations/20230530-104541
-        git checkout 8ecc361da81a0915bb626156b47403a91b678de1
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=arm olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=arm SHELL=/bin/bash
+> 
+> Needs a better commit message obviously :-)
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202305302142.rrUt4NJV-lkp@intel.com/
+:)
 
-All errors (new ones prefixed by >>):
+> 
+> ...
+> 
+> > -       ret = of_property_read_u32(pdev->dev.of_node,
+> > +       ret = device_property_read_u32(&pdev->dev,
+> >                                    "bus-frequency", &bus->bus_frequency);  
+> 
+> Oh, please avoid double effort, i.e. go further and use I²C core APIs
+> for the timings. Oh, wait, do they use non-standard property?!
 
-   arm-linux-gnueabi-ld: drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.o: in function `smu_v13_0_0_set_wbrf_exclusion_ranges':
->> smu_v13_0_0_ppt.c:(.text+0x1384): undefined reference to `__aeabi_uldivmod'
->> arm-linux-gnueabi-ld: smu_v13_0_0_ppt.c:(.text+0x139c): undefined reference to `__aeabi_uldivmod'
-   arm-linux-gnueabi-ld: smu_v13_0_0_ppt.c:(.text+0x13b0): undefined reference to `__aeabi_uldivmod'
+yup :(
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Though it is documented as having a default of 100kHz in the devicetree
+binding so the original code shouldn't be calling dev_err() and should
+just do:
+
+	bus->frequency = I2C_MAX_STANDARD_MODE_FREQ;
+	device_property_read_u32(&pdev->dev,
+				 "bus-frequency, &bus->frequency);
+
+Fixing that is an unrelated change though. I'll do it for dt
+in a precusor patch then carry that forward to here.
+
+> 
+> ...
+> 
+> > +       bus->get_clk_reg_val = (u32 (*)(struct device *, u32))
+> > +               device_get_match_data(&pdev->dev);  
+> 
+> Personally I prefer using pointers in driver_data so we can avoid
+> ambiguity for the 0/NULL value returned by this call. But if 0 value
+> is considered invalid here, it's probably fine.
+
+It is a pointer, just a function pointer rather than to a structure.
+I could wrap it up in a structure but that would be an unrelated
+driver change so at very least a separate patch. 
+
+> 
+> > +       if (!bus->get_clk_reg_val)
+> >                 bus->get_clk_reg_val = aspeed_i2c_24xx_get_clk_reg_val;
+> > -       else
+> > -               bus->get_clk_reg_val = (u32 (*)(struct device *, u32))
+> > -                               match->data;  
+> 
+> 
+
