@@ -2,79 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74897715604
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 May 2023 09:01:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F7C571578F
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 May 2023 09:49:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229989AbjE3HB3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 May 2023 03:01:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41010 "EHLO
+        id S229623AbjE3HtO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 May 2023 03:49:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229603AbjE3HB2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 May 2023 03:01:28 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 232EC124;
-        Tue, 30 May 2023 00:01:14 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-64d5b4c400fso4581583b3a.1;
-        Tue, 30 May 2023 00:01:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685430068; x=1688022068;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fk99nHTowkAbXunn+arnORjVFJFBQPCdSbV/HP1twd0=;
-        b=ONNDvfwRP9COQv0o/Xm0STUTeB8ZxKECg32/iQcrxW+4vYJ6h98g2LE8w7hd2axQKq
-         sSdkhhDBHXcZRoHtOacusN7cpolE/k55a6WOa5fhDilLT05+NKZnh5S3B94VOqi6Tvjj
-         EMXn2kTp0qOASPj2DeG1NgN1ftBYQMMN9qPrqtY1w1ZGm/w0D63H/ENgtZgWtBiN5fsi
-         pO7SJrbQfRADrrm3JhWKrLUn0w3HF6piPFQQ7hT9j5fSDvh8twhWI6KkrG8AIqyIrvpa
-         hH4/mxd0eLbrLBG6/wcIY797YSZwCiBuo5o/SRgbGnISSYR7+mXN88tOJPG+C3urg2s4
-         553w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685430068; x=1688022068;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fk99nHTowkAbXunn+arnORjVFJFBQPCdSbV/HP1twd0=;
-        b=QyUPBqdnAEJ6yIIKluSbgd+q8wpYsAxMdBqgDxJyitACpjWyGrS5XS/hCxkhVZbq3P
-         pfzIFfiakCuQMUWhqF9VJWSbnBFFeKnVERChGNyr4k8DQu8CMhMtU1hwT40o2pfHKtK7
-         /RwGxT/B63qiBV72U8EA3uruSXWsYVcRLpFjDq4NkFIk9G74SlVx8SOWxKBvbaLCX8/U
-         5fcL5i3HgExYfAHBMu2UZVbwqCY8qLA4GoDFD6shN1r217Mh0wMk0bMTDskRi99EoT42
-         XCwka6Qr9ZTdjE6pcuGLmVZFmou8ox1f3DXTx2bh3ghLLTC72wNKhCE7wLvArouZoG0z
-         U47A==
-X-Gm-Message-State: AC+VfDxHfdgDeiuVgPfamzd81nPHHRsOyi0XHUzxQe1tHw7QOEU9WQmp
-        eN+9G1vE5sPA8OarRf9dLPI=
-X-Google-Smtp-Source: ACHHUZ78bcPmocoq1OEtrrjwh0/JfGXNP4tvnfRBHgXXv27f40VFC7XLVpRFg19GYkG6nCGkuIt3gQ==
-X-Received: by 2002:a17:903:2641:b0:1ae:43a8:2759 with SMTP id je1-20020a170903264100b001ae43a82759mr1293172plb.58.1685430068352;
-        Tue, 30 May 2023 00:01:08 -0700 (PDT)
-Received: from localhost ([2405:6581:d4e0:1600:c494:2aca:bc01:6f7b])
-        by smtp.gmail.com with ESMTPSA id k18-20020a170902c41200b001a6a53c3b04sm5658487plk.306.2023.05.30.00.01.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 May 2023 00:01:07 -0700 (PDT)
-Date:   Tue, 30 May 2023 16:01:04 +0900
-From:   Nick Hastings <nicholaschastings@gmail.com>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Salvatore Bonaccorso <carnil@debian.org>, 1036530@bugs.debian.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: Regression from "ACPI: OSI: Remove Linux-Dell-Video _OSI
- string"? (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of system)
-Message-ID: <ZHWfMBeAONerAJmd@xps>
-References: <ZHCYRmD7YeIWoy2W@eldamar.lan>
- <168471337231.1913606.15905047692536779158.reportbug@xps>
- <ZHKrC4/G6ZyvRReI@xps>
- <ZHL5cCNUzVdleiag@eldamar.lan>
- <ab12984e-be17-903d-ba0a-f9c85b8c544f@amd.com>
- <ZHP4IqxBUPuVRvRV@xps>
- <09e24386-de63-e9e9-9e7f-5d04bad62d83@amd.com>
- <ZHQhPcKUF76Kplwm@xps>
- <ZHUt9xQKCwCflvVC@xps>
- <8537d965-ddf4-7f45-6459-d5acf520376e@amd.com>
+        with ESMTP id S229629AbjE3Hst (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 May 2023 03:48:49 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C2F7193
+        for <linux-acpi@vger.kernel.org>; Tue, 30 May 2023 00:48:26 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1q3u4a-00035d-UP; Tue, 30 May 2023 09:47:16 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1q3u4Z-003oxg-Tn; Tue, 30 May 2023 09:47:15 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1q3u4Z-009OgM-2D; Tue, 30 May 2023 09:47:15 +0200
+Date:   Tue, 30 May 2023 09:47:14 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        James Morse <james.morse@arm.com>
+Cc:     linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        kernel@pengutronix.de, Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH v2] firmware: arm_sdei: Make sdei_unregister_ghes()
+ return void
+Message-ID: <20230530074714.bvxe44ofo2tr2pvr@pengutronix.de>
+References: <20221220154447.12341-1-u.kleine-koenig@pengutronix.de>
+ <CAJZ5v0inEMEQ1NJwjNboDokL_35-yG8o6QwVb5po2qKW8LRLWA@mail.gmail.com>
+ <20221221182138.aqupmjom5kixvvsu@pengutronix.de>
+ <20230412145517.6vozcdkhcg6xd5xh@pengutronix.de>
+ <CAJZ5v0hswyNQoY9GPuPaj61a3xHbNE+Xhd+7K-JekKRzTPDbfQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="2pgkxovml7zdsibq"
 Content-Disposition: inline
-In-Reply-To: <8537d965-ddf4-7f45-6459-d5acf520376e@amd.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+In-Reply-To: <CAJZ5v0hswyNQoY9GPuPaj61a3xHbNE+Xhd+7K-JekKRzTPDbfQ@mail.gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,165 +60,113 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
 
-* Mario Limonciello <mario.limonciello@amd.com> [230530 13:00]:
-> On 5/29/23 18:01, Nick Hastings wrote:
-> > Hi,
-> > 
-> > * Nick Hastings <nicholaschastings@gmail.com> [230529 12:51]:
-> > > * Mario Limonciello <mario.limonciello@amd.com> [230529 10:14]:
-> > > > On 5/28/23 19:56, Nick Hastings wrote:
-> > > > > Hi,
-> > > > > 
-> > > > > * Mario Limonciello <mario.limonciello@amd.com> [230528 21:44]:
-> > > > > > On 5/28/23 01:49, Salvatore Bonaccorso wrote:
-> > > > > > > Hi Mario
-> > > > > > > 
-> > > > > > > Nick Hastings reported in Debian in https://bugs.debian.org/1036530
-> > > > > > > lockups from his system after updating from a 6.0 based version to
-> > > > > > > 6.1.y. >
-> > > > > > > #regzbot ^introduced 24867516f06d
-> > > > > > > 
-> > > > > > > he bisected the issue and tracked it down to:
-> > > > > > > 
-> > > > > > > On Sun, May 28, 2023 at 10:14:51AM +0900, Nick Hastings wrote:
-> > > > > > > > Control: tags -1 - moreinfo
-> > > > > > > > 
-> > > > > > > > Hi,
-> > > > > > > > 
-> > > > > > > > I repeated the git bisect, and the bad commit seems to be:
-> > > > > > > > 
-> > > > > > > > (git)-[v6.1-rc1~206^2~4^5~3|bisect] % git bisect bad
-> > > > > > > > 24867516f06dabedef3be7eea0ef0846b91538bc is the first bad commit
-> > > > > > > > commit 24867516f06dabedef3be7eea0ef0846b91538bc
-> > > > > > > > Author: Mario Limonciello <mario.limonciello@amd.com>
-> > > > > > > > Date:   Tue Aug 23 13:51:31 2022 -0500
-> > > > > > > > 
-> > > > > > > >        ACPI: OSI: Remove Linux-Dell-Video _OSI string
-> > > > > > > >        This string was introduced because drivers for NVIDIA hardware
-> > > > > > > >        had bugs supporting RTD3 in the past.
-> > > > > > > >        Before proprietary NVIDIA driver started to support RTD3, Ubuntu had
-> > > > > > > >        had a mechanism for switching PRIME on and off, though it had required
-> > > > > > > >        to logout/login to make the library switch happen.
-> > > > > > > >        When the PRIME had been off, the mechanism had unloaded the NVIDIA
-> > > > > > > >        driver and put the device into D3cold, but the GPU had never come back
-> > > > > > > >        to D0 again which is why ODMs used the _OSI to expose an old _DSM
-> > > > > > > >        method to switch the power on/off.
-> > > > > > > >        That has been fixed by commit 5775b843a619 ("PCI: Restore config space
-> > > > > > > >        on runtime resume despite being unbound"). so vendors shouldn't be
-> > > > > > > >        using this string to modify ASL any more.
-> > > > > > > >        Reviewed-by: Lyude Paul <lyude@redhat.com>
-> > > > > > > >        Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > > > > > > >        Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > > > > > > 
-> > > > > > > >     drivers/acpi/osi.c | 9 ---------
-> > > > > > > >     1 file changed, 9 deletions(-)
-> > > > > > > > 
-> > > > > > > > This machine is a Dell with an nvidia chip so it looks like this really
-> > > > > > > > could be the commit that that is causing the problems. The description
-> > > > > > > > of the commit also seems (to my untrained eye) to be consistent with the
-> > > > > > > > error reported on the console when the lockup occurs:
-> > > > > > > > 
-> > > > > > > > [   58.729863] ACPI Error: Aborting method \_SB.PCI0.PGON due to previous error (AE_AML_LOOP_TIMEOUT) (20220331/psparse-529)
-> > > > > > > > [   58.729904] ACPI Error: Aborting method \_SB.PCI0.PEG0.PG00._ON due to previous error (AE_AML_LOOP_TIMEOUT) (20220331/psparse-529)
-> > > > > > > > [   60.083261] vfio-pci 0000:01:00.0 Unable to change power state from D3cold to D0, device inaccessible
-> > > > > > > > 
-> > > > > > > > Hopefully this is enough information for experts to resolve this.
-> > > > > > > 
-> > > > > > > Does this ring some bell for you? Do you need any further information
-> > > > > > > from Nick?
-> > > > > > > 
-> > > > > > > Regards,
-> > > > > > > Salvatore
-> > > > > > 
-> > > > > 
-> > > > > > Have Nick try using "pcie_port_pm=off" and see if it helps the issue.
-> > > > > 
-> > > > > I booted into a 6.1 kernel with this option. It has been running without
-> > > > > problems for 1.5 hours. Usually I would expect the lockup to have
-> > > > > occurred by now.
-> > > 
-> > > I let this run for 3 hours without issue.
-> > > 
-> > > > > > Does this happen in the latest 6.4 RC as well?
-> > > > > 
-> > > > > I have compiled that kernel and will boot into it after running this one
-> > > > > with the pcie_port_pm=off for another hour or so.
-> > > 
-> > > I'm now running 6.4.0-rc4 without seeing the problem after 1 hour.
-> > 
-> > I did eventually see a lockup of this kernel. On the console I saw:
-> > 
-> > [  151.035036] vfio-pci 0000:01:00.0 Unable to change power state from D3cold to D0, device inaccessible
-> > 
-> > I did not see the other two lines that were present in earlier lock ups >
-> > > I did however see two unrelated problems that I include here for
-> > > completeness:
-> > > 1. iwlwifi module did not automatically load
-> > > 2. Xwayland used huge amount of CPU even though was not running any X
-> > > programs. Recompiling my wayland compositor without XWayland support
-> > > "fixed" this.
-> > > 
-> > > > > > I think we need to see a full dmesg and acpidump to better
-> > > > > > characterize it.
-> > > > > 
-> > > > > Please find attached. Let me know if there is anything else I can provide.
-> > > > > 
-> > > > > Regards,
-> > > > > 
-> > > > > Nick.
-> > > > 
-> > > > I don't see nouveau loading, are you explicitly preventing it from
-> > > > loading?
-> > > 
-> > > Yes nouveau is blacklisted.
-> > > 
-> > > > Can I see the journal from a boot when it reproduced?
-> > > 
-> > > Hmm not sure which n for "journalctl -b n" maps to which kernel (is that
-> > > what you are requesting?). The commit hash doesn't not seem to be
-> > > listed. I may have to boot into a bad kernel again.
-> > 
-> > Please find attached the output from a "journalctl --system -bN" for a
-> > kernel that has this issue.
-> > 
-> > Regards,
-> > 
-> > Nick.
-> 
-> In this log I see nouveau loaded, but I also don't see the failure
-> occurring.
+--2pgkxovml7zdsibq
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I never saw anything in the logs from a lockup either. I had assumed it
-was no longer able to write to disk. The failure did occur on that
-occasion.
+Hello,
 
-> As you're actually loading nouveau, can you please try nouveau.runpm=0 on
-> the kernel command line?
+On Wed, Apr 12, 2023 at 08:33:15PM +0200, Rafael J. Wysocki wrote:
+> On Wed, Apr 12, 2023 at 4:55=E2=80=AFPM Uwe Kleine-K=C3=B6nig
+> <u.kleine-koenig@pengutronix.de> wrote:
+> > On Wed, Dec 21, 2022 at 07:21:38PM +0100, Uwe Kleine-K=C3=B6nig wrote:
+> > > On Wed, Dec 21, 2022 at 02:53:05PM +0100, Rafael J. Wysocki wrote:
+> > > > On Tue, Dec 20, 2022 at 4:45 PM Uwe Kleine-K=C3=B6nig
+> > > > <u.kleine-koenig@pengutronix.de> wrote:
+> > > > > [...]
+> > > > > diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> > > > > index 066dc1f5c235..7d705930e21b 100644
+> > > > > --- a/drivers/acpi/apei/ghes.c
+> > > > > +++ b/drivers/acpi/apei/ghes.c
+> > > > > @@ -1275,12 +1275,20 @@ static int apei_sdei_register_ghes(struct=
+ ghes *ghes)
+> > > > >                                  ghes_sdei_critical_callback);
+> > > > >  }
+> > > > >
+> > > > > -static int apei_sdei_unregister_ghes(struct ghes *ghes)
+> > > > > +static void apei_sdei_unregister_ghes(struct ghes *ghes)
+> > > > >  {
+> > > > > +       /*
+> > > > > +        * If CONFIG_ARM_SDE_INTERFACE isn't enabled apei_sdei_re=
+gister_ghes()
+> > > > > +        * cannot have been called successfully. So ghes_remove()=
+ won't be
+> > > > > +        * called because either ghes_probe() failed or the notif=
+y type isn't
+> > > > > +        * ACPI_HEST_NOTIFY_SOFTWARE_DELEGATED.
+> > > > > +        * Note the if statement below is necessary to prevent a =
+linker error as
+> > > > > +        * the compiler has no chance to understand the above cor=
+relation.
+> > > > > +        */
+> > > > >         if (!IS_ENABLED(CONFIG_ARM_SDE_INTERFACE))
+> > > > > -               return -EOPNOTSUPP;
+> > > > > +               BUG();
+> > > >
+> > > > Well, you could just provide an empty stub for the !CONFIG_ARM_SDE_=
+INTERFACE.
+> > > >
+> > > > It would be cleaner and probably fewer lines of code too.
+> > >
+> > > It's you who cares for this code, but I'd prefer my option. If we ass=
+ume
+> > > the describing comment would have a similar length, we're saving 3 or
+> > > four lines of code here but need 3 lines for the #if / #else / #endif
+> > > plus the stub definition. And compared to my suggested solution we do=
+n't
+> > > catch someone introducing a (bogus) call to apei_sdei_unregister_ghes=
+()
+> > > (or sdei_unregister_ghes()). And (again IMHO) two different
+> > > implementations are harder to grasp than a single with an if.
+> > >
+> > > If you don't like the BUG, a plain return is in my eyes the next best
+> > > option which is semantically equivalent to an empty stub.
+> > >
+> > > If you still like the stub better (or a return instead of the BUG), I
+> > > can send a v3, just tell me your preference.
+> >
+> > I work on changes that depend on a solution here. However you didn't
+> > tell me your preference here. I'm unsure if this means that this
+> > discussion fell through the cracks, or if it annoys you and you still
+> > prefer the cpp #ifdef solution. A note from your side would be very
+> > welcome.
+>=20
+> Well, every time I see BUG() in the code I wonder if crashing the
+> kernel really is the best thing one can do should the execution reach
+> that point.
+>=20
+> In any case, it's not my opinion that matters the most regarding
+> APEI/GHES, so I would like Tony/Boris/James to speak up here.
 
-I'm not intentionally loading it. This machine also has intel graphics
-which is what I prefer. Checking my
-/etc/modprobe.d/blacklist-nvidia-nouveau.conf
-I see:
+hmm, they didn't speak up so this patch is stalled. I added them to
+"To:" (instead of Cc: before) in this mail, let's see if that helps.
 
-blacklist nvidia
-blacklist nvidia-drm
-blacklist nvidia-modeset
-blacklist nvidia-uvm
-blacklist ipmi_msghandler
-blacklist ipmi_devintf
+Can you please state your preferred solution that I can properly prepare
+this driver for the conversion of the remove callback?!
 
-So I thought I had blacklisted it but it seems I did not. Since I do not
-want to use it maybe it is better to check if the lock up occurs with
-nouveau blacklisted. I will try that now.
+Best regards
+Uwe
 
-> If that helps the issue; I strongly suggest you cross reference the latest
-> kernel to see if this bug still exists.
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=C3=B6nig         =
+   |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
-I did. See above.
+--2pgkxovml7zdsibq
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Regards,
+-----BEGIN PGP SIGNATURE-----
 
-Nick.
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmR1qgIACgkQj4D7WH0S
+/k58Iwf/cAYq0Cdh4N5ya0CfEc7/ZzSJ+5FIry6RtaSkoJut6Ezy62KZimZ/6c1y
+Za42cXW2bLlfNe1k/1DzjRAAehM1h8OkHyyvhIor9eMCL4Wro+NLeND0vPreeshr
+48mGqxp8+hnpUywDn4ltF6TT3kDpOO547jDteqVHG7Lb2i9WgtM2TyRHXNQAzNYE
+3Sqw7+FSR1CtF/anPaN5DYSV+CAR/4r2HrESQe4pZME/XqgsrHtIzXQX5Qm8hXaj
+QgvgDXXpQJ5OggZ5ecZw6dMdQWpEEmFTjjWupYezVLJLkz0DTcuBGgGFjOB7AxzL
+KqBggz7F5977s76y+K5EGDyLP7pCog==
+=xt0w
+-----END PGP SIGNATURE-----
 
+--2pgkxovml7zdsibq--
