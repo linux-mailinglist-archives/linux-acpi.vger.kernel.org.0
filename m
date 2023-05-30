@@ -2,493 +2,223 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A1C0716772
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 May 2023 17:46:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5241E7168A3
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 May 2023 18:06:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232321AbjE3PqJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 May 2023 11:46:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36484 "EHLO
+        id S230219AbjE3QGd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 May 2023 12:06:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231389AbjE3PqF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 May 2023 11:46:05 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04BB3E8;
-        Tue, 30 May 2023 08:46:00 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
- id a35aa2df3769ba41; Tue, 30 May 2023 17:45:58 +0200
-Received: from kreacher.localnet (unknown [195.136.19.94])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 16D618BB094;
-        Tue, 30 May 2023 17:45:58 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Michal Wilczynski <michal.wilczynski@intel.com>
-Subject: [PATCH v1 5/5] ACPI: thermal: Eliminate struct acpi_thermal_state_flags
-Date:   Tue, 30 May 2023 17:45:39 +0200
-Message-ID: <3737693.kQq0lBPeGt@kreacher>
-In-Reply-To: <5675481.DvuYhMxLoT@kreacher>
-References: <5675481.DvuYhMxLoT@kreacher>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+        with ESMTP id S231965AbjE3QG0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 May 2023 12:06:26 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDCCC109;
+        Tue, 30 May 2023 09:06:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685462783; x=1716998783;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=8sCKZvSRx/c3nsYvoQJ2yHNfHlSYRqPhHc4LiwSoPjU=;
+  b=eNgK4CEkzLoMwQXCMrqxK9KmZuL8XsO3p3RNLOj9HYvTtupt4i2EuBHn
+   PyQws1et9/+zumjOsXd1VszOmP29Um73V6/sEWfZIFQuEQzJPs9kg8qkN
+   yTkK3SKWOYElcptHXyEeqeiXvQlimvH7It/WfH5wQ1Oygbm11/0W3YPhZ
+   bxic9IQwwnpUuaPSw+OcX6xdT4FaR7rpKkvstUhca0bVDLrRdQK+4g7gx
+   Mc3/Ucva/cIOsK/qIcPKSKi2xgWIMieYBv0eK4DUdMOrXkDQiM1cPTxDu
+   ypgxq4WTPlTCwDY+AKT/oqwoIu4ny6/cmMrUzyidc8TLSi1hMcCSnPXy8
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="441321688"
+X-IronPort-AV: E=Sophos;i="6.00,204,1681196400"; 
+   d="scan'208";a="441321688"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2023 09:06:03 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="850839881"
+X-IronPort-AV: E=Sophos;i="6.00,204,1681196400"; 
+   d="scan'208";a="850839881"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by fmsmga001.fm.intel.com with ESMTP; 30 May 2023 09:06:02 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Tue, 30 May 2023 09:06:01 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Tue, 30 May 2023 09:06:01 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23 via Frontend Transport; Tue, 30 May 2023 09:06:01 -0700
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.49) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.23; Tue, 30 May 2023 09:05:57 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jzHJWIHHCEnhgYMgnaSNFDXG3GCIjylQoYytG31RnvljUBIq0X/aTafFZDIN0D8Wu6pyqMgFGAewEfBc/shhssDK6zohjrzXGOHfQqo1ZDuM/Fi8IXpsM5fnD31MQvKgS2AgTPqD1yatChJS7LXYPvTiH5Rc93+i0g0XK3ZYRDVNV+oEMsiKqUa7h0DfVSKILvU1xnF6YzV1HP4KcoLoL6zhn40bIsvJtxOseb5cL9obKJEhtGt9qjBIk8KEKOW6FTEIGa41pgXCYweJdn9ZH1RPCg0e6qAqj6VIYZvS2ky7ZSR8hfaWQphDcmJK8Q9p0qL7J3g38h+9ePjwllrqrA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3mjDhrawPzZg+dC0EUQiQFwgaE/xXFNEMcog76O9ElI=;
+ b=fvRusUxFNY1rSUUUMA3R0c0pm50mtxfuAb6iyUOBohXOC1vmFDOgkhnqaNg/BMBsGCPH0vmukLwUPB8r+aKI8C0YM7RxyIBrCjiKBdYcgt1cPRxj3p+5JAxsSuM6AeBGbo0nrrZNAXN8CRSmpLAMhovFPtFX/Vz1xAAEsjaa+ODRSsgZCi3XFYQM3PHxlQKhgMc+9A0sE6//6Yg5LD2zxVwiU70xPe8nVl2FrcKorDAyy5okBGG72tpESDqVXsWDkNZ7bPocGT1vvlvFEMxy1tt48rN6jssl2iBvJrSwFIeTlZ3EpA8z+EXlcn97svU77QYqkUXtVQhDoxQ3rReLnw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CO6PR11MB5603.namprd11.prod.outlook.com (2603:10b6:5:35c::12)
+ by SJ1PR11MB6156.namprd11.prod.outlook.com (2603:10b6:a03:45d::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.23; Tue, 30 May
+ 2023 16:05:56 +0000
+Received: from CO6PR11MB5603.namprd11.prod.outlook.com
+ ([fe80::4287:6d31:8c78:de92]) by CO6PR11MB5603.namprd11.prod.outlook.com
+ ([fe80::4287:6d31:8c78:de92%6]) with mapi id 15.20.6455.020; Tue, 30 May 2023
+ 16:05:55 +0000
+Message-ID: <4376a7ba-2f85-6160-b7d4-d5c08b5b3429@intel.com>
+Date:   Tue, 30 May 2023 18:05:48 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH v2] ACPI: APEI: EINJ: EINJV2 support added
+Content-Language: en-US
+To:     "Luck, Tony" <tony.luck@intel.com>,
+        Piyush Malgujar <pmalgujar@marvell.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "Williams, Dan J" <dan.j.williams@intel.com>,
+        "xueshuai@linux.alibaba.com" <xueshuai@linux.alibaba.com>,
+        "benjamin.cheatham@amd.com" <benjamin.cheatham@amd.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "jannadurai@marvell.com" <jannadurai@marvell.com>,
+        "cchavva@marvell.com" <cchavva@marvell.com>
+References: <20230504133224.2669-1-pmalgujar@marvell.com>
+ <SJ1PR11MB6083A266C4A869FC9AAA5A9AFC6D9@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <SJ1PR11MB608326A6AC3FFE42699DDB40FC6D9@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <20230509143721.GA10616@Dell2s-9>
+ <SJ1PR11MB60831FCB30F2A642B95C9D9FFC769@SJ1PR11MB6083.namprd11.prod.outlook.com>
+From:   "Wilczynski, Michal" <michal.wilczynski@intel.com>
+In-Reply-To: <SJ1PR11MB60831FCB30F2A642B95C9D9FFC769@SJ1PR11MB6083.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 195.136.19.94
-X-CLIENT-HOSTNAME: 195.136.19.94
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrfeekjedgledtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffueeitdfgvddtudegueejtdffteetgeefkeffvdeftddttdeuhfegfedvjefhnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohephedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepuggrnhhivghlrdhlvgiitggrnhhosehlihhnrghrohdrohhrghdprhgtphhtthhopehm
- ihgthhgrlhdrfihilhgtiiihnhhskhhisehinhhtvghlrdgtohhm
-X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR3P281CA0097.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a1::15) To CO6PR11MB5603.namprd11.prod.outlook.com
+ (2603:10b6:5:35c::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO6PR11MB5603:EE_|SJ1PR11MB6156:EE_
+X-MS-Office365-Filtering-Correlation-Id: 20f1056d-b18b-4409-3fb6-08db6127bffc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Qw0i+Wog9sz/nLNip4gEvD2hBTymXO1+g/zqLuQSDo/eXxRb8/6NYagzEwoPhfjQsojnuWPmnmkLy1zGfsntRULhm37x0R78r/88m8KnGEZ2eUK+G5ZUs2TRVuGMboUxF2VONQnt8I/eKb7GGqIhN2dQgoYA2H0kvsv0q+nti0K0FoDt7ippXP2sqnoCpvxg1lZbZ1ndHwGdMQtc35nkcMibYgKBeML/zoa8TLPQRICguU/na++kSiqfJ7wF8kG/7+tv1pwT9mJCQi1kgETltl1d4yqGAbnHCdkUYdeXePBwiGv3mjr4f2lLuKjlqZnihtVxnVj6Epdfv0Ey5qcozbBWj6Ep6tfHDYLZdGY4ED3R1WI1PHK2E7kPXa18hO2OYlNqJoqT+bFfKS7xBwEk3Un1i4DRt759Q4e/SZ1Ri316/V7Q2EW8KsI5cVRQ4dE9EQKRAtsaxBok9nqzCD7pd5W5jc/aS96lPquibN2b/Tjlpdr7Ch/R0NYNHr9rOvW2XeSfkGaatUCln7oTnE5OxiBpr8/P4CsxfEFleRVQvFprHiZ1e5kZybIKhtHrDHvw2kvvxvKzQAk39s7n8cKC4VnB70vDHxw05WNdxH3vHW9xn/Oc1IqA0U1Br6Jj2+/BKvTdp8qQbFbEvqQEjpFysg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR11MB5603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(136003)(39860400002)(376002)(366004)(396003)(451199021)(966005)(186003)(2616005)(38100700002)(41300700001)(31686004)(6506007)(6512007)(53546011)(26005)(6666004)(6486002)(478600001)(110136005)(54906003)(66899021)(82960400001)(66946007)(66476007)(4326008)(316002)(66556008)(5660300002)(8676002)(8936002)(7416002)(2906002)(31696002)(86362001)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?M1FQQ2Zoa2xvYVVPMlNOc3UyWEwybVFPR0ZqdDNkakhWUjQwbm55bjhYM0Vq?=
+ =?utf-8?B?QS9TRW56Rk5Vd1RIM0Rld091QTZxUkRJc3lReVN4L1Uzc2hYaHp0MTZIMlN5?=
+ =?utf-8?B?V09tVTFNN1R3anI0bnh0bG0vbGlZYTBIYThrbjlqTnNDSVo4aXRSaHN5dVdG?=
+ =?utf-8?B?U2d0MlRqa2Vaa1hqazA1d2VpVUtjTUp3OXlRTjlQUzVPOWVsOGdQZldOdEtG?=
+ =?utf-8?B?Q2s4eVBnQmRUWkJITzJxalhMQXFhcDJXNWRHb0d3OGdoYk5ieFh0ckhKdHhE?=
+ =?utf-8?B?QmJlNG91Q3JMcDFESlBYUE8xOXZYNzhpVnlNSTdtMGZsQVQ1VWp5U1p6TGl0?=
+ =?utf-8?B?OGpoZDhwNFF3SHd3d1FIMExaYnY0YWNFTnRWeHRnSS9VMFVOUmRCdkcwTlo5?=
+ =?utf-8?B?MytsZVlkWFk1OGhodlRVQUoxRTcxN1VkM3JmK01vSGVKcHpocjhQRzBsNURH?=
+ =?utf-8?B?cW9xRWZBL1lmYTdIS2I1c29JSy9pbmwzcUhscmFYejI2enJNdGdUOFYwZmVH?=
+ =?utf-8?B?eG5PUHBvTnVLcmlkV21vSW1vbDBnWlFJSUxCSzB1YnUrQTlWK0tCK1dmS1NF?=
+ =?utf-8?B?TkhPVDhvMkxqV3ExaXJLN1FubVVkNFhqOEdHY2xJUXkxQmZsODZRYWlycDlH?=
+ =?utf-8?B?TDVFM1dJNnRIcHN1bjFyYU1CcXFuQU1iak42cVM3VDZabWUwUldDTnduSHFt?=
+ =?utf-8?B?QzFJd1Zha2JPYkwvR1Q4ZWVTakc0S3RHQUt4ZU5rZFBJQVBsR3pZaFhCMnZm?=
+ =?utf-8?B?QU1qRkVtREV6Q2ZLZWxVb2VpV005eTE3bDFhb0xQNFlRQ3R1cnNNNUorUTgy?=
+ =?utf-8?B?dW8vbysvMzhWS3RXRWdmbFhmNEFZdEljdmI3L0I0SWloc0NrVzJpUWlWNk0z?=
+ =?utf-8?B?N2RSdzhjRjZ2dmJzRkNkOW5IRmNYSDFrcVlMTUgyZXZLNk9Va1RFY01VVWtS?=
+ =?utf-8?B?ZmtvRGJzU2dCaW5XK1Y0QjVzMzJjdjlOb3NKaS9oQkh3NEVCbGIwaWorblQz?=
+ =?utf-8?B?cVRjbFZaaVI0eGxacjVkRDNDYmVhSjd6RElWL2R6cS9SdWltVE5QMitNQit5?=
+ =?utf-8?B?S2ZTYzYzVFpKNjFPRjZYODdWRm15QVdvMGhhMHpPaVQ2c3orbmc5dUV2djJJ?=
+ =?utf-8?B?b1grRXk3VjZLbWJUYjRhTXU0Q1hlRTdYTCttdWdlK2FSRFYzc3hGZ2NWWU1t?=
+ =?utf-8?B?OTcvVVEyTDZJRVpyeGpNTkdtdExEWlNzaCtXWEVndWxCWjVCMGFJZ3lucnQ4?=
+ =?utf-8?B?a3NtME1qeTRuT1FvUnhEdkduVkNNbTNpN3p2VXFSS1hzdzJ5Sm5hOXowbFkz?=
+ =?utf-8?B?TGRBdGNPMFk2aytYUUJQWnc0dDVtVUpCa0RzbWVZZlJCV285TEg3ZzNvMEhk?=
+ =?utf-8?B?TGp2WmhaTDFEbW1VdGE1M2gzYnNLN0M4NG5ZRGgwZlhFQ1dUYlhuZ0grS2M3?=
+ =?utf-8?B?Zmp5ay9wRVlCMW13Y1R4eEoyd1h4RER2N2hHeDJ3Q1JOclhZWDBJLzBOcmJ2?=
+ =?utf-8?B?a3o4MDJmVlY3ckEyS1FLcGJnU1pZdFZmdGtqZTJCZXl2NStQVlE2NHV2QlRz?=
+ =?utf-8?B?S2M2ZjZzbkkzcmZoU2dibmw4QlJzc0pKb0U0OUFTRlN4WXh2OUZWU2F2QkFS?=
+ =?utf-8?B?a0pWQUdBZFkva0dLUC9PRThONnllY0VpK011TW5GZVB5cHhVTHh2SzJ5R09T?=
+ =?utf-8?B?MVF1ZVQ3ZEdMdlFsNWNnOTJ6TUNaY2ZFVGlnNlZkRWN3YlF3UGlvWDlQcUdu?=
+ =?utf-8?B?TEFML0NjQUlUMXJIbFQ1d2hYNU9XdVpzQzFoc1F4NDB4bXpVcTRRUUhlQ0Nr?=
+ =?utf-8?B?ampKOHA4cXIxbXRBdnVSYXpvWG1uTHpHT3ZrQTRmQ0NFdWsweC9aRXRUbk1q?=
+ =?utf-8?B?ektSRWY2ZklXdWQ4TDlSMmhic0NUUXExQTBSeVZDSHdJREtHb25IV1RzNFhj?=
+ =?utf-8?B?Ti8rdllHbUtHeDdaMlFxMDUyeExEY216VHN4c09icmUyUUdsOXZNKzVYdVQ4?=
+ =?utf-8?B?WkRaWUlMVUFoZnNselpnck9MQU1tNkJhd1EzRXIwRUNEOEMwbVFGbk5RaXpE?=
+ =?utf-8?B?WXJFdjA3bG5FU3JORzlLNkpjUllOSnFwR3h3UHludForOGk4MWNDd3UzWDRn?=
+ =?utf-8?B?WWpIazZLNTJ4eUQ0RnpWSXNVY094eTNkRENnR25nVG0zVzk4a3poK0o2Wjh1?=
+ =?utf-8?B?Mmc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 20f1056d-b18b-4409-3fb6-08db6127bffc
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR11MB5603.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2023 16:05:55.8415
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2o+3qv0SnBAoqMr49wXzFbtxsiilYAoWN8rfY/JzVwHmAGIyp6IAEP1R/OP8Nnqe9I3aRjyoBfAIQaYnRwwdbw9Y7y06vmsOidQIQJU0HSE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR11MB6156
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-Notice that the enabled flag is only needed for active trip points,
-so drop struct acpi_thermal_state_flags, add a simple "bool valid" field
-to the definitions of all trip point structures instead of flags and
-add a "bool enabled" field to struct acpi_thermal_active.
-
-Adjust the code using the modified structures accordingly.
-
-No intentional functional impact.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/thermal.c |  132 +++++++++++++++++++++++--------------------------
- 1 file changed, 64 insertions(+), 68 deletions(-)
-
-Index: linux-pm/drivers/acpi/thermal.c
-===================================================================
---- linux-pm.orig/drivers/acpi/thermal.c
-+++ linux-pm/drivers/acpi/thermal.c
-@@ -105,35 +105,30 @@ struct acpi_thermal_state {
- 	int active_index;
- };
- 
--struct acpi_thermal_state_flags {
--	u8 valid:1;
--	u8 enabled:1;
--	u8 reserved:6;
--};
--
- struct acpi_thermal_critical {
--	struct acpi_thermal_state_flags flags;
- 	unsigned long temperature;
-+	bool valid;
- };
- 
- struct acpi_thermal_hot {
--	struct acpi_thermal_state_flags flags;
- 	unsigned long temperature;
-+	bool valid;
- };
- 
- struct acpi_thermal_passive {
--	struct acpi_thermal_state_flags flags;
-+	struct acpi_handle_list devices;
- 	unsigned long temperature;
- 	unsigned long tc1;
- 	unsigned long tc2;
- 	unsigned long tsp;
--	struct acpi_handle_list devices;
-+	bool valid;
- };
- 
- struct acpi_thermal_active {
--	struct acpi_thermal_state_flags flags;
--	unsigned long temperature;
- 	struct acpi_handle_list devices;
-+	unsigned long temperature;
-+	bool valid;
-+	bool enabled;
- };
- 
- struct acpi_thermal_trips {
-@@ -229,7 +224,7 @@ static int acpi_thermal_trips_update(str
- 	acpi_status status;
- 	unsigned long long tmp;
- 	struct acpi_handle_list devices;
--	int valid = 0;
-+	bool valid = false;
- 	int i;
- 
- 	/* Critical Shutdown */
-@@ -243,21 +238,21 @@ static int acpi_thermal_trips_update(str
- 		 * ... so lets discard those as invalid.
- 		 */
- 		if (ACPI_FAILURE(status)) {
--			tz->trips.critical.flags.valid = 0;
-+			tz->trips.critical.valid = false;
- 			acpi_handle_debug(tz->device->handle,
- 					  "No critical threshold\n");
- 		} else if (tmp <= 2732) {
- 			pr_info(FW_BUG "Invalid critical threshold (%llu)\n", tmp);
--			tz->trips.critical.flags.valid = 0;
-+			tz->trips.critical.valid = false;
- 		} else {
--			tz->trips.critical.flags.valid = 1;
-+			tz->trips.critical.valid = true;
- 			acpi_handle_debug(tz->device->handle,
- 					  "Found critical threshold [%lu]\n",
- 					  tz->trips.critical.temperature);
- 		}
--		if (tz->trips.critical.flags.valid) {
-+		if (tz->trips.critical.valid) {
- 			if (crt == -1) {
--				tz->trips.critical.flags.valid = 0;
-+				tz->trips.critical.valid = false;
- 			} else if (crt > 0) {
- 				unsigned long crt_k = celsius_to_deci_kelvin(crt);
- 
-@@ -276,12 +271,12 @@ static int acpi_thermal_trips_update(str
- 	if (flag & ACPI_TRIPS_HOT) {
- 		status = acpi_evaluate_integer(tz->device->handle, "_HOT", NULL, &tmp);
- 		if (ACPI_FAILURE(status)) {
--			tz->trips.hot.flags.valid = 0;
-+			tz->trips.hot.valid = false;
- 			acpi_handle_debug(tz->device->handle,
- 					  "No hot threshold\n");
- 		} else {
- 			tz->trips.hot.temperature = tmp;
--			tz->trips.hot.flags.valid = 1;
-+			tz->trips.hot.valid = true;
- 			acpi_handle_debug(tz->device->handle,
- 					  "Found hot threshold [%lu]\n",
- 					  tz->trips.hot.temperature);
-@@ -289,9 +284,9 @@ static int acpi_thermal_trips_update(str
- 	}
- 
- 	/* Passive (optional) */
--	if (((flag & ACPI_TRIPS_PASSIVE) && tz->trips.passive.flags.valid) ||
-+	if (((flag & ACPI_TRIPS_PASSIVE) && tz->trips.passive.valid) ||
- 	    flag == ACPI_TRIPS_INIT) {
--		valid = tz->trips.passive.flags.valid;
-+		valid = tz->trips.passive.valid;
- 		if (psv == -1) {
- 			status = AE_SUPPORT;
- 		} else if (psv > 0) {
-@@ -303,44 +298,44 @@ static int acpi_thermal_trips_update(str
- 		}
- 
- 		if (ACPI_FAILURE(status)) {
--			tz->trips.passive.flags.valid = 0;
-+			tz->trips.passive.valid = false;
- 		} else {
- 			tz->trips.passive.temperature = tmp;
--			tz->trips.passive.flags.valid = 1;
-+			tz->trips.passive.valid = true;
- 			if (flag == ACPI_TRIPS_INIT) {
- 				status = acpi_evaluate_integer(tz->device->handle,
- 							       "_TC1", NULL, &tmp);
- 				if (ACPI_FAILURE(status))
--					tz->trips.passive.flags.valid = 0;
-+					tz->trips.passive.valid = false;
- 				else
- 					tz->trips.passive.tc1 = tmp;
- 
- 				status = acpi_evaluate_integer(tz->device->handle,
- 							       "_TC2", NULL, &tmp);
- 				if (ACPI_FAILURE(status))
--					tz->trips.passive.flags.valid = 0;
-+					tz->trips.passive.valid = false;
- 				else
- 					tz->trips.passive.tc2 = tmp;
- 
- 				status = acpi_evaluate_integer(tz->device->handle,
- 							       "_TSP", NULL, &tmp);
- 				if (ACPI_FAILURE(status))
--					tz->trips.passive.flags.valid = 0;
-+					tz->trips.passive.valid = false;
- 				else
- 					tz->trips.passive.tsp = tmp;
- 			}
- 		}
- 	}
--	if ((flag & ACPI_TRIPS_DEVICES) && tz->trips.passive.flags.valid) {
-+	if ((flag & ACPI_TRIPS_DEVICES) && tz->trips.passive.valid) {
- 		memset(&devices, 0, sizeof(struct acpi_handle_list));
- 		status = acpi_evaluate_reference(tz->device->handle, "_PSL",
- 						 NULL, &devices);
- 		if (ACPI_FAILURE(status)) {
- 			acpi_handle_info(tz->device->handle,
- 					 "Invalid passive threshold\n");
--			tz->trips.passive.flags.valid = 0;
-+			tz->trips.passive.valid = false;
- 		} else {
--			tz->trips.passive.flags.valid = 1;
-+			tz->trips.passive.valid = true;
- 		}
- 
- 		if (memcmp(&tz->trips.passive.devices, &devices,
-@@ -351,24 +346,24 @@ static int acpi_thermal_trips_update(str
- 		}
- 	}
- 	if ((flag & ACPI_TRIPS_PASSIVE) || (flag & ACPI_TRIPS_DEVICES)) {
--		if (valid != tz->trips.passive.flags.valid)
-+		if (valid != tz->trips.passive.valid)
- 			ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "state");
- 	}
- 
- 	/* Active (optional) */
- 	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
- 		char name[5] = { '_', 'A', 'C', ('0' + i), '\0' };
--		valid = tz->trips.active[i].flags.valid;
-+		valid = tz->trips.active[i].valid;
- 
- 		if (act == -1)
- 			break; /* disable all active trip points */
- 
- 		if (flag == ACPI_TRIPS_INIT || ((flag & ACPI_TRIPS_ACTIVE) &&
--		    tz->trips.active[i].flags.valid)) {
-+		    tz->trips.active[i].valid)) {
- 			status = acpi_evaluate_integer(tz->device->handle,
- 						       name, NULL, &tmp);
- 			if (ACPI_FAILURE(status)) {
--				tz->trips.active[i].flags.valid = 0;
-+				tz->trips.active[i].valid = 0;
- 				if (i == 0)
- 					break;
- 
-@@ -390,21 +385,21 @@ static int acpi_thermal_trips_update(str
- 				break;
- 			} else {
- 				tz->trips.active[i].temperature = tmp;
--				tz->trips.active[i].flags.valid = 1;
-+				tz->trips.active[i].valid = true;
- 			}
- 		}
- 
- 		name[2] = 'L';
--		if ((flag & ACPI_TRIPS_DEVICES) && tz->trips.active[i].flags.valid) {
-+		if ((flag & ACPI_TRIPS_DEVICES) && tz->trips.active[i].valid) {
- 			memset(&devices, 0, sizeof(struct acpi_handle_list));
- 			status = acpi_evaluate_reference(tz->device->handle,
- 							 name, NULL, &devices);
- 			if (ACPI_FAILURE(status)) {
- 				acpi_handle_info(tz->device->handle,
- 						 "Invalid active%d threshold\n", i);
--				tz->trips.active[i].flags.valid = 0;
-+				tz->trips.active[i].valid = false;
- 			} else {
--				tz->trips.active[i].flags.valid = 1;
-+				tz->trips.active[i].valid = true;
- 			}
- 
- 			if (memcmp(&tz->trips.active[i].devices, &devices,
-@@ -415,10 +410,10 @@ static int acpi_thermal_trips_update(str
- 			}
- 		}
- 		if ((flag & ACPI_TRIPS_ACTIVE) || (flag & ACPI_TRIPS_DEVICES))
--			if (valid != tz->trips.active[i].flags.valid)
-+			if (valid != tz->trips.active[i].valid)
- 				ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "state");
- 
--		if (!tz->trips.active[i].flags.valid)
-+		if (!tz->trips.active[i].valid)
- 			break;
- 	}
- 
-@@ -438,17 +433,18 @@ static int acpi_thermal_trips_update(str
- 
- static int acpi_thermal_get_trip_points(struct acpi_thermal *tz)
- {
--	int i, valid, ret = acpi_thermal_trips_update(tz, ACPI_TRIPS_INIT);
-+	int i, ret = acpi_thermal_trips_update(tz, ACPI_TRIPS_INIT);
-+	bool valid;
- 
- 	if (ret)
- 		return ret;
- 
--	valid = tz->trips.critical.flags.valid |
--		tz->trips.hot.flags.valid |
--		tz->trips.passive.flags.valid;
-+	valid = tz->trips.critical.valid |
-+		tz->trips.hot.valid |
-+		tz->trips.passive.valid;
- 
- 	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++)
--		valid |= tz->trips.active[i].flags.valid;
-+		valid = valid || tz->trips.active[i].valid;
- 
- 	if (!valid) {
- 		pr_warn(FW_BUG "No valid trip found\n");
-@@ -485,7 +481,7 @@ static int thermal_get_trip_type(struct
- 	if (!tz || trip < 0)
- 		return -EINVAL;
- 
--	if (tz->trips.critical.flags.valid) {
-+	if (tz->trips.critical.valid) {
- 		if (!trip) {
- 			*type = THERMAL_TRIP_CRITICAL;
- 			return 0;
-@@ -493,7 +489,7 @@ static int thermal_get_trip_type(struct
- 		trip--;
- 	}
- 
--	if (tz->trips.hot.flags.valid) {
-+	if (tz->trips.hot.valid) {
- 		if (!trip) {
- 			*type = THERMAL_TRIP_HOT;
- 			return 0;
-@@ -501,7 +497,7 @@ static int thermal_get_trip_type(struct
- 		trip--;
- 	}
- 
--	if (tz->trips.passive.flags.valid) {
-+	if (tz->trips.passive.valid) {
- 		if (!trip) {
- 			*type = THERMAL_TRIP_PASSIVE;
- 			return 0;
-@@ -509,7 +505,7 @@ static int thermal_get_trip_type(struct
- 		trip--;
- 	}
- 
--	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE && tz->trips.active[i].flags.valid; i++) {
-+	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE && tz->trips.active[i].valid; i++) {
- 		if (!trip) {
- 			*type = THERMAL_TRIP_ACTIVE;
- 			return 0;
-@@ -529,7 +525,7 @@ static int thermal_get_trip_temp(struct
- 	if (!tz || trip < 0)
- 		return -EINVAL;
- 
--	if (tz->trips.critical.flags.valid) {
-+	if (tz->trips.critical.valid) {
- 		if (!trip) {
- 			*temp = deci_kelvin_to_millicelsius_with_offset(
- 					tz->trips.critical.temperature,
-@@ -539,7 +535,7 @@ static int thermal_get_trip_temp(struct
- 		trip--;
- 	}
- 
--	if (tz->trips.hot.flags.valid) {
-+	if (tz->trips.hot.valid) {
- 		if (!trip) {
- 			*temp = deci_kelvin_to_millicelsius_with_offset(
- 					tz->trips.hot.temperature,
-@@ -549,7 +545,7 @@ static int thermal_get_trip_temp(struct
- 		trip--;
- 	}
- 
--	if (tz->trips.passive.flags.valid) {
-+	if (tz->trips.passive.valid) {
- 		if (!trip) {
- 			*temp = deci_kelvin_to_millicelsius_with_offset(
- 					tz->trips.passive.temperature,
-@@ -560,7 +556,7 @@ static int thermal_get_trip_temp(struct
- 	}
- 
- 	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE &&
--		tz->trips.active[i].flags.valid; i++) {
-+		tz->trips.active[i].valid; i++) {
- 		if (!trip) {
- 			*temp = deci_kelvin_to_millicelsius_with_offset(
- 					tz->trips.active[i].temperature,
-@@ -578,7 +574,7 @@ static int thermal_get_crit_temp(struct
- {
- 	struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
- 
--	if (tz->trips.critical.flags.valid) {
-+	if (tz->trips.critical.valid) {
- 		*temperature = deci_kelvin_to_millicelsius_with_offset(
- 					tz->trips.critical.temperature,
- 					tz->kelvin_offset);
-@@ -664,13 +660,13 @@ static int acpi_thermal_cooling_device_c
- 	int trip = -1;
- 	int result = 0;
- 
--	if (tz->trips.critical.flags.valid)
-+	if (tz->trips.critical.valid)
- 		trip++;
- 
--	if (tz->trips.hot.flags.valid)
-+	if (tz->trips.hot.valid)
- 		trip++;
- 
--	if (tz->trips.passive.flags.valid) {
-+	if (tz->trips.passive.valid) {
- 		trip++;
- 		for (i = 0; i < tz->trips.passive.devices.count; i++) {
- 			handle = tz->trips.passive.devices.handles[i];
-@@ -695,7 +691,7 @@ static int acpi_thermal_cooling_device_c
- 	}
- 
- 	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
--		if (!tz->trips.active[i].flags.valid)
-+		if (!tz->trips.active[i].valid)
- 			break;
- 
- 		trip++;
-@@ -783,19 +779,19 @@ static int acpi_thermal_register_thermal
- 	acpi_status status;
- 	int i;
- 
--	if (tz->trips.critical.flags.valid)
-+	if (tz->trips.critical.valid)
- 		trips++;
- 
--	if (tz->trips.hot.flags.valid)
-+	if (tz->trips.hot.valid)
- 		trips++;
- 
--	if (tz->trips.passive.flags.valid)
-+	if (tz->trips.passive.valid)
- 		trips++;
- 
--	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE && tz->trips.active[i].flags.valid;
-+	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE && tz->trips.active[i].valid;
- 	     i++, trips++);
- 
--	if (tz->trips.passive.flags.valid)
-+	if (tz->trips.passive.valid)
- 		tz->thermal_zone = thermal_zone_device_register("acpitz", trips, 0, tz,
- 								&acpi_thermal_zone_ops, NULL,
- 								tz->trips.passive.tsp * 100,
-@@ -965,7 +961,7 @@ static int acpi_thermal_get_info(struct
-  */
- static void acpi_thermal_guess_offset(struct acpi_thermal *tz)
- {
--	if (tz->trips.critical.flags.valid &&
-+	if (tz->trips.critical.valid &&
- 	    (tz->trips.critical.temperature % 5) == 1)
- 		tz->kelvin_offset = 273100;
- 	else
-@@ -1074,20 +1070,20 @@ static int acpi_thermal_resume(struct de
- 		return -EINVAL;
- 
- 	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
--		if (!tz->trips.active[i].flags.valid)
-+		if (!tz->trips.active[i].valid)
- 			break;
- 
--		tz->trips.active[i].flags.enabled = 1;
-+		tz->trips.active[i].enabled = true;
- 		for (j = 0; j < tz->trips.active[i].devices.count; j++) {
- 			result = acpi_bus_update_power(
- 					tz->trips.active[i].devices.handles[j],
- 					&power_state);
- 			if (result || (power_state != ACPI_STATE_D0)) {
--				tz->trips.active[i].flags.enabled = 0;
-+				tz->trips.active[i].enabled = false;
- 				break;
- 			}
- 		}
--		tz->state.active |= tz->trips.active[i].flags.enabled;
-+		tz->state.active |= tz->trips.active[i].enabled;
- 	}
- 
- 	acpi_queue_thermal_check(tz);
 
 
+On 5/9/2023 8:35 PM, Luck, Tony wrote:
+>> If a platform supports einj v2, then the einj directory wont be needed, as per spec,
+>> if a non-zero Error Type value is set by EINJV2_SET_ERROR_TYPE, then any Error Type
+>> value set by (einj case) SET_ERROR_TYPE_WITH_ADDRESS and/or SET_ERROR_TYPE will be
+>> ignored. So based on einjv2 is supported or not, we can have either einjv2 or einj 
+>> directory with the related params files in it respectively. 
+>> Kindly let us know your thoughts.
+> Piyush,
+>
+> There are a lot of validation tests built on top of the EINJ v1 Linux interface and interest
+> in keeping them working rather than forcing a giant "change everything" when the first
+> EINJ V2 system arrives.
+>
+> BIOS team here thinks that the EINJ V2 spec change is (or can be) incremental.
+> Platform firmware can choose to continue supporting EINJ V1 while also providing
+> EINJ V2 actions.
+>
+> So Linux should be prepared to handle:
+>
+> 1) Legacy systems with just the V1 interface.
+>
+> 2) Incremental systems that have both V1 and V2 interfaces.
+>
+> 3) Future looking systems that only have the V2 interface.
+>
+> -Tony
+
+Hi all,
+
+It seems to me like backwards compatibility has been a big priority historically for Linux.
+I guess with debugfs we get more leeway to change things, however this interface seems
+to be present for a very long time and seems to be entrenched enough to keep backwards
+compatibility.
+
+
+Piyush,
+Did you make any progress on the solution ? I can offer some help if you don't have BW to work
+on this.
+
+
+Good video on the topic :)
+Link: https://www.youtube.com/watch?v=Nn-SGblUhi4&ab_channel=FelipeContreras
+
+>
+>
 
