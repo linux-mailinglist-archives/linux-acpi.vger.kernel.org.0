@@ -2,104 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9D3F7153FE
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 May 2023 04:45:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D624C715455
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 May 2023 06:00:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230292AbjE3CpT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 29 May 2023 22:45:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37912 "EHLO
+        id S229455AbjE3EA1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 May 2023 00:00:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229614AbjE3CpP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 May 2023 22:45:15 -0400
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2074.outbound.protection.outlook.com [40.107.237.74])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43E931AD;
-        Mon, 29 May 2023 19:44:35 -0700 (PDT)
+        with ESMTP id S229977AbjE3EAQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 May 2023 00:00:16 -0400
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2054.outbound.protection.outlook.com [40.107.92.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 798B9F1;
+        Mon, 29 May 2023 21:00:14 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lVobFsa8NpPMgGaV0rbMSeC5+vgz/WO6ndBoqBDEdMCCHBS3JdDmm2RE/ZVcbpNRQUwHsFreroY30pz/qbCvMMfqVf1WPGu6ak/EuTGIjnQQO5B3152OqETvd2I4YkAEcaTKPu/wvKN+s+MDRCzgjPEcVZ5uwsGN2c7INMlq+KG6gl0JH5lj57H4n15Ku54hISI15olkA9061ze9IDo3AX8BA49vDauLKYp1lVS/HUPFd+fjrIMxcvafNOAvbKRHMrUxG2R76XKPqtBKATlxBjKZftW/R+GRmxCZE3Q9GjvlSdOoj6LJmEWJij8Tpawx9IYIdEJi1X4+asMkMUhNZA==
+ b=ABF3iGhe6SGZkoGBQvCyT/SPbON7V9kLmd1qNcl4i2Pboiaz0ECa67LFrybJXCOU53milay7wOqt5YmjBjwxcLIA+5SJFZqfJtvhl91uW1QPz+0RqT+L8r8oXLKWRkmcx+dlZN1dDJ8Uz0fB/XY0vdN1hLaCXVfjI5SuxlXu+BMC4cjGxMZ3DkNlW7dOQI7cp31Um2fUnMU3MajM07ptV/1tdzXqYkAfpCfL0QQrOBFVNOTo046igo2zUGioP3kZx4YaTlpn/4mztjjUN5zvXWpKkWhDHvULXgLTWFoXrPOnZoxiyVR8uDP4XonjKAv0s1vxyokHPyHKCHElFfDOOw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DvOPH4a1HF+Wn1Cr30JJC456qjKMVEuOZFPrL3Y9Ajw=;
- b=J+GQRTuFj7dmV1ZKa/d67WW7Wt9Vn/WVo/o+4sy6XVBVQK2+TZXJaYd9tJyneECXyvn/y/PLXzCJ2WYtM4r3fkltODAGQc+Xj4Z63B1ACZhDqATCFEmYprHbeEjyl8NEcywURDnGe1aRaF2+yzDjQgQ0ZfQfmsKurP+9OSDtqhEQyuT2wekM7gl1APxnkjBd6dmXj3mnaapVLp8l9pvmzRFA3Ra0vEyH5EYajbUx7CNIj3VGscF05HEN0BglAVgTR6DrA6uYbBE/cG20YdtSvkQOCBjrONUgvdppqIk+SbE2q1SpNpGgZdVqzt5v7R9Z96fR89iUcwRzCGSabr0jHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
+ bh=Q5HiBBQ00meKzAWRSJc6c86d+StCxH6L9z3k9f2hV9o=;
+ b=Plr72bvFPUxaK6b8oZUXVZVgsMgLl6FtblDPGAFAJLk5dcNTwUzDzKyS88OQhqjcmkz9SBHDcc3DxBRfwE7mf2drlkDjC6ibg4rtxTWYBVdRgfzsSUy/JpJNUvCW0tE61mOvbFiMLxu/r9un6cjgHLBfzgLH9iXT1A0uAsJeGlSIhALU1Sywj0zo2bVdEkmvHnr2MlEmQfb5XD1jLrP2M6/qowH/eVQl4WmoXpYyA3vPRszLPktWNmPyM6WwFhc5en94FjXb/kWCuOtirSNcgKl/4v8dgNnSzAzL0nMuH0RjRNCPdpCfX7+GXbnB0/psOREluVS59h0FMFLqxd1Wsw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DvOPH4a1HF+Wn1Cr30JJC456qjKMVEuOZFPrL3Y9Ajw=;
- b=M8gKFGwOLkJ/FegitRQtGSLrjHMlo6jve08sqY9RirdSUire+SVF0Iq399oz/lRuQ3J98xA8GuniRiqJeWsj0mbR/WI3oqekklVwGx30GLFw09ZYXV/dktKdjz8gufgPRr1BuSCFw9ZYfZP43Bul/AulVsINWkJ6ZhFUVad5O+4=
-Received: from BN0PR04CA0142.namprd04.prod.outlook.com (2603:10b6:408:ed::27)
- by CY8PR12MB7492.namprd12.prod.outlook.com (2603:10b6:930:93::9) with
+ bh=Q5HiBBQ00meKzAWRSJc6c86d+StCxH6L9z3k9f2hV9o=;
+ b=YCRoDmbmlokNG6XE4NUBTlY++zD/Fm+Nv5dwLzKYZDBw3Bd2bWustt3PpoPAvVTlFwbXtcOSLkLS9lNZJfcwlAlfUckZV5S00I4y+dJK40GRU+jmRiSVX3rbnJWQBlzmtWn89gUBYycYzvsxTQKXLpF09n5KIv49ieCN0qBzWXA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by PH7PR12MB9068.namprd12.prod.outlook.com (2603:10b6:510:1f4::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.23; Tue, 30 May
- 2023 02:44:12 +0000
-Received: from BN8NAM11FT029.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:ed:cafe::1c) by BN0PR04CA0142.outlook.office365.com
- (2603:10b6:408:ed::27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.23 via Frontend
- Transport; Tue, 30 May 2023 02:44:12 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT029.mail.protection.outlook.com (10.13.177.68) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6455.21 via Frontend Transport; Tue, 30 May 2023 02:44:12 +0000
-Received: from equan-buildpc.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Mon, 29 May
- 2023 21:44:06 -0500
-From:   Evan Quan <evan.quan@amd.com>
-To:     <rafael@kernel.org>, <lenb@kernel.org>,
-        <alexander.deucher@amd.com>, <christian.koenig@amd.com>,
-        <Xinhui.Pan@amd.com>, <airlied@gmail.com>, <daniel@ffwll.ch>,
-        <evan.quan@amd.com>, <kvalo@kernel.org>, <nbd@nbd.name>,
-        <lorenzo@kernel.org>, <ryder.lee@mediatek.com>,
-        <shayne.chen@mediatek.com>, <sean.wang@mediatek.com>,
-        <matthias.bgg@gmail.com>,
-        <angelogioacchino.delregno@collabora.com>,
-        <Mario.Limonciello@amd.com>, <Lijo.Lazar@amd.com>
-CC:     <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-        <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>,
-        <ath12k@lists.infradead.org>
-Subject: [PATCH 9/9] drm/amd/pm: enable Wifi RFI mitigation feature support for SMU13.0.7
-Date:   Tue, 30 May 2023 10:42:27 +0800
-Message-ID: <20230530024227.2139632-10-evan.quan@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230530024227.2139632-1-evan.quan@amd.com>
-References: <20230530024227.2139632-1-evan.quan@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.21; Tue, 30 May
+ 2023 04:00:12 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::a65c:3aa0:b759:8527]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::a65c:3aa0:b759:8527%5]) with mapi id 15.20.6433.022; Tue, 30 May 2023
+ 04:00:12 +0000
+Message-ID: <8537d965-ddf4-7f45-6459-d5acf520376e@amd.com>
+Date:   Mon, 29 May 2023 23:00:09 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: Regression from "ACPI: OSI: Remove Linux-Dell-Video _OSI string"?
+ (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of system)
+To:     Nick Hastings <nicholaschastings@gmail.com>
+Cc:     Salvatore Bonaccorso <carnil@debian.org>, 1036530@bugs.debian.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, regressions@lists.linux.dev
+References: <168471337231.1913606.15905047692536779158.reportbug@xps>
+ <ZG/8cxxTJ9ZzrVPQ@xps> <ZHCYRmD7YeIWoy2W@eldamar.lan>
+ <168471337231.1913606.15905047692536779158.reportbug@xps>
+ <ZHKrC4/G6ZyvRReI@xps> <ZHL5cCNUzVdleiag@eldamar.lan>
+ <ab12984e-be17-903d-ba0a-f9c85b8c544f@amd.com> <ZHP4IqxBUPuVRvRV@xps>
+ <09e24386-de63-e9e9-9e7f-5d04bad62d83@amd.com> <ZHQhPcKUF76Kplwm@xps>
+ <ZHUt9xQKCwCflvVC@xps>
+Content-Language: en-US
+From:   Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <ZHUt9xQKCwCflvVC@xps>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DS0PR17CA0003.namprd17.prod.outlook.com
+ (2603:10b6:8:191::17) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT029:EE_|CY8PR12MB7492:EE_
-X-MS-Office365-Filtering-Correlation-Id: cd9173ad-4b57-4c6f-6f8b-08db60b7c071
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|PH7PR12MB9068:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0aa28f62-9b9f-4542-19fe-08db60c25ddd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: a6RhYQkiKZPMJAVr/JkuK27HisTs8JHQFCnZZ2UUkqiPAclRuBaTvo2cm7+oUVWjr3HXEtBXheG6y+WRIeQozsKpekQ7hppGWeULG7nD+nxPRNIogaWOPB5khRkgj652lWopCgBBknfUhhuyiElov4R9k2JCV5VmK2CPTTaUs5JsynKUGHaZ9wBJtM+n18F3cn5M5Tzh07ioMRsj3wSaHcc1PWvP6j1WThQBRpa9k44zFArfwi3B8NPJleERROSfiHxKcXan+F6tYjTdsrLk5vGK3Tb+rdtoV+omWkQxYYVYQALPIXJ3qo+Lri86dMFeoeCEItWd1efobI2fhzwXr5w0Xk3v26cTQFwFDZ3yQqZsBzYJWm38M951w45zmA9FN7WHp+YxlL34OAMG1m4WgMm8Dpz7j9QR90QyRwQQ+0bfvUi+4xfYz8yDAaif9K+LvGNr96WAOREwH77mhPO6mMnhIWQel3t2ytGH23bJmj80Strwd2ovX6JOXAjEqSPmITyVYX6Fo29W8vx9BGcy5ymO0Q6vKVwMMcNz6KsJGL8ncLpRDnCnkt4z7oOFB9/ykWz+BlTX09ONFS7/EibY0aau/KBUA0CkelcNr15M1Xk/5Nbz3YTnN/6PXPtzIe04AubOrSUhpcpXAaFKHMX5IgC0/hoQyzu2bYaYsSp6pxM7yB2a0S5hpDiprKdfxY0WaEGmCFjK2MoJGD+YgXP1kQfhKqkOoRkEDQ+VzcoxE6gajxyBmtfKuMhJGslfqh3KeKKOoyVaberNz7AK3SA5uP36Vqr3EdBiKosRianD1vQ=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(396003)(39860400002)(136003)(346002)(376002)(451199021)(46966006)(40470700004)(36840700001)(40460700003)(47076005)(83380400001)(2616005)(426003)(336012)(2906002)(16526019)(186003)(40480700001)(36756003)(82740400003)(356005)(81166007)(921005)(36860700001)(8936002)(8676002)(7416002)(5660300002)(86362001)(478600001)(6636002)(4326008)(70586007)(70206006)(41300700001)(7696005)(316002)(6666004)(26005)(1076003)(110136005)(82310400005)(44832011)(54906003)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: hHt7eGpvPziekSH1xR69Z74gIJd1TlA5q/dDk6N7CMxHh4qSOX7y4f7+QOaKvM8m+CCXzGEuTgfOfbZp1PYzXE//7veW3+RAzEa4KPuP6skey7ZPyPbxgXUlLW5higqJnJ8Kvtwn7ZV1yuAJGHKxo30J8ND53bH/ii8GKNVGt6Xwc/2yMyAhZAye74SAnlI/6xdoVenwYdai/5pC2rDViR8pZ06imNKIqgjRljIds+EiEzhcVIHCJCMy1c5CKusT/3AMwgXtYR2MVJoecGZvHSS3EmGKoRHlKuziA7i3lMr13u7plLFnaU8xwqprA9OA04niXf4AxrdGmBW0bMB+hDMJB6zcO9Y1xnLwv1ml+OAHGqNHAomL8mhOn/xLWO79SvFfhl7SlrVMw6+/MLYAnkDVd4LrZwiFX70fkR6FFTKmj6Xh57LO3pPRnPuweCE1xOTnQkVm6J10vC8ZMY9pdk9csp34pyDo8S+FIlrUPyBVYztlEb9POhcbmUMbPfbjJDapc5dqii8hdmUSS7YncIJ82rcHu9MJRNVIFWgHXpudNeJtwYZfg6bfGqv1Kr5/4TK/rnqMD+x/NEuNZngfsOw7oWGZSHUME5xlxk5EmkY2jEkM90zzLhNFcDpN7vTG+MyXhjsmMkjrnPipbVJfXw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(376002)(346002)(39860400002)(136003)(396003)(451199021)(41300700001)(2906002)(316002)(6666004)(6486002)(38100700002)(8936002)(8676002)(2616005)(86362001)(53546011)(31696002)(186003)(5660300002)(6512007)(44832011)(83380400001)(6506007)(966005)(36756003)(66556008)(66946007)(66476007)(478600001)(54906003)(31686004)(6916009)(4326008)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SDB0UWc3NDlJdHVWVkcvOTV4dm00aEYxcmpmMXNSYWtQcDhjblJablQyb3ll?=
+ =?utf-8?B?STU0d2t6UHN4S3VGeGFBVHpHYlZwcGl2YldqVzMvR2tudG1sUC9xcnp2YXdL?=
+ =?utf-8?B?Tnh0Ui9HUXFLdFFscEZ6T0E1TlFpaS9GR1NZdU5VdmpOcU5mK3BZS1JVQmdI?=
+ =?utf-8?B?Y1pYUU0zQ2NFTWttRHgzc0RhNE1EeVZzanFpdUY5Qm1aNm1kclJDOHdrYU1z?=
+ =?utf-8?B?T1FBaEs4b1VQUjlZVU9ON2xTNEJRYkFiRGpTc3paNlFYcEhFQm5GT2NONjhI?=
+ =?utf-8?B?ZFRCdGcwQjU0d2JKS3FxUVJsYjFGYlhKSktuZ0NENzNhWlIvMzM3dFZRS20v?=
+ =?utf-8?B?UHp2TFdQMmxvMDB1OEFxZFJPNUQrWHVTYnVrMTJMRWYvR1lOOFUzOHI5aFNi?=
+ =?utf-8?B?WmZIZEhsellzNVVUY01tKzMvS0JWWDNIVzBpcXZVRGdMMHRnN0lVdnVoeEs0?=
+ =?utf-8?B?UnhVRjkwSUxtSzJPbHVQNHRXUVVHUlNJc1p1ZTJ4KzhyQ2VqckI2Vmd6Qmp2?=
+ =?utf-8?B?TFZkQ3ZEelhyNjRNbU5PRVlqZGNzbTJHaTc3eDZDTGExakVqNjhZcXNMNnpS?=
+ =?utf-8?B?OFVTa1lPRVF4MTVBaWd2MDl3VzF6cGI0UU04RUx5R0E2MGNFU3h6a2R6K2tQ?=
+ =?utf-8?B?dmhjdFZpNDZoWFlkalEvK016MGpHdkxiaFlKUml2Zzhjb3hHY1NoQVdGL2Jo?=
+ =?utf-8?B?MUpiYXk5TU80akk3VEsrZ0hyVWVBcFpDblNlSmc5c3FvTzIwNEFPTFZsdjIy?=
+ =?utf-8?B?QzFWcWw0T21ISG14ZE1XZG9rVnR2Q3ozWVc2ay96WUhZeFlHdGpyVUxMRzkv?=
+ =?utf-8?B?L2I3bWNZbnRlbmdETGtkVCs2RTZSMThieDFwZldac01MbFBDaDJUZVM4c09K?=
+ =?utf-8?B?VGNkanNUbUpmRjFxbzhvcUlYVXZEdm9TOGtJb2pmMXUvUEpaMnVSVW9BQVZo?=
+ =?utf-8?B?aDFHYzk0djBGWFJaY3dZRlhHTW93a1phazk5eVdodmdSYVZjZGlRZUplZnZC?=
+ =?utf-8?B?Y3ZiWlhWSlpHOFBUQnRsU2REZldpelpQMVBWZUJzL1lRSHY3WHpIWGNKa3Q0?=
+ =?utf-8?B?N1U4dnFQSHkwcGZ2OW9uY2l6UVVZYVNiU1A0bnR4WmU4djNxRW5HU0xSRWFa?=
+ =?utf-8?B?SG1nMTd5eG5uZ0grSVdQUjJHQzBvRXE0Ly9rQytYSHNBczI0QnJ5ZTd2MG5s?=
+ =?utf-8?B?aVdpeDVNQnlzOTVockR3MmluNmlYRWpLZ0NGaERxWWYvU1FIbGpSZGthZHFn?=
+ =?utf-8?B?cnRhM1RFQUx3ZER2OVo5cDZaa2g4VjFGZ1JOb1ZpRGlSY1pUbU1weWVWTjlr?=
+ =?utf-8?B?cmtXdmtYM2NKQUE2ZHpLUUFhMHVScU1qYXYwbDk4TUplR0ZtbExRVW4rRnJq?=
+ =?utf-8?B?TUZwRkFIUWJnZTY5NkxyN3hVY21NV1E3aTcyRzNjaWM4RENtK3cxOVptZXAy?=
+ =?utf-8?B?YU9oYldQcE50Z2lyUWphMjBHTFJuQVkzTnJXVkNyenZUKzBMMEl0cVJYdmdD?=
+ =?utf-8?B?S3VwbW10SjhBTHU0UUpuUWlYc2FEdnRkbTZqNW1uQkFneXZMdXdNNXQxeExT?=
+ =?utf-8?B?MVB5dHJBcnpqbUFIK1NmdFpvV1paYkNTVW1lMVBzb1pNVmJPWjBiY1prNHZm?=
+ =?utf-8?B?OGplK0JwZlJxTTA5bWlURXFrcy8xV0FXc0E2V0pOS0tiNUF0bjBrZXlOTGtE?=
+ =?utf-8?B?UVNpR1E3N3RzeEwxYUZxcFltUEhiQkQxc3I3WFY0Ui9XaU0vditHVXUyQjMr?=
+ =?utf-8?B?c2F0REh4YXU3MmJ3eGFBNjZDMWVDVDFWTEpSL0sveHV6ZmI5dmVJdWw4V2xl?=
+ =?utf-8?B?R3pZalBnbmRuMmszN0JDYkMxciszeWN2bE8wd05GZ2JQeXJJQVNlRXd2RW1N?=
+ =?utf-8?B?TXdSQm9LQmNoQ2h4YTNFQmpOWU5yL3FtbVpwUTdOUUpzczdYcjBnT2I3QzhO?=
+ =?utf-8?B?bFcybTBOc29SWWZnS0tsYjloeU5KWEZ6Wnk3blJDMzlkTG1iSkRLUnJxT3I2?=
+ =?utf-8?B?SHdMbmllQjgwWG85d1lRcmhsUW1VRy9va3Yvc3dsV1J4MkhCRmp1SjBaQ0E0?=
+ =?utf-8?B?MWp6NFVOQlo4RzZBcTF4akpyUlRSejIrVXhGNGYrS1ltRXNWSzFWTEFyakxp?=
+ =?utf-8?B?S25aK0c1eGdKNXdTRHVJV1lSTmsrdkl6c2RQNktBY1hkNTM5RUdHaThqY21s?=
+ =?utf-8?B?cWc9PQ==?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2023 02:44:12.6529
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0aa28f62-9b9f-4542-19fe-08db60c25ddd
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2023 04:00:11.9347
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd9173ad-4b57-4c6f-6f8b-08db60b7c071
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT029.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7492
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: S/OJxf18MZERzEH/Rd3fIZqA80LpK7D67YABaEBzuvDq6I9MByv4j33/hPoDOnqvCSV/Biwsnhp0b7DZWPpUaw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9068
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
         T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
         version=3.4.6
@@ -109,118 +134,135 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Fulfill the SMU13.0.7 support for Wifi RFI mitigation feature.
+On 5/29/23 18:01, Nick Hastings wrote:
+> Hi,
+> 
+> * Nick Hastings <nicholaschastings@gmail.com> [230529 12:51]:
+>> * Mario Limonciello <mario.limonciello@amd.com> [230529 10:14]:
+>>> On 5/28/23 19:56, Nick Hastings wrote:
+>>>> Hi,
+>>>>
+>>>> * Mario Limonciello <mario.limonciello@amd.com> [230528 21:44]:
+>>>>> On 5/28/23 01:49, Salvatore Bonaccorso wrote:
+>>>>>> Hi Mario
+>>>>>>
+>>>>>> Nick Hastings reported in Debian in https://bugs.debian.org/1036530
+>>>>>> lockups from his system after updating from a 6.0 based version to
+>>>>>> 6.1.y. >
+>>>>>> #regzbot ^introduced 24867516f06d
+>>>>>>
+>>>>>> he bisected the issue and tracked it down to:
+>>>>>>
+>>>>>> On Sun, May 28, 2023 at 10:14:51AM +0900, Nick Hastings wrote:
+>>>>>>> Control: tags -1 - moreinfo
+>>>>>>>
+>>>>>>> Hi,
+>>>>>>>
+>>>>>>> I repeated the git bisect, and the bad commit seems to be:
+>>>>>>>
+>>>>>>> (git)-[v6.1-rc1~206^2~4^5~3|bisect] % git bisect bad
+>>>>>>> 24867516f06dabedef3be7eea0ef0846b91538bc is the first bad commit
+>>>>>>> commit 24867516f06dabedef3be7eea0ef0846b91538bc
+>>>>>>> Author: Mario Limonciello <mario.limonciello@amd.com>
+>>>>>>> Date:   Tue Aug 23 13:51:31 2022 -0500
+>>>>>>>
+>>>>>>>        ACPI: OSI: Remove Linux-Dell-Video _OSI string
+>>>>>>>        This string was introduced because drivers for NVIDIA hardware
+>>>>>>>        had bugs supporting RTD3 in the past.
+>>>>>>>        Before proprietary NVIDIA driver started to support RTD3, Ubuntu had
+>>>>>>>        had a mechanism for switching PRIME on and off, though it had required
+>>>>>>>        to logout/login to make the library switch happen.
+>>>>>>>        When the PRIME had been off, the mechanism had unloaded the NVIDIA
+>>>>>>>        driver and put the device into D3cold, but the GPU had never come back
+>>>>>>>        to D0 again which is why ODMs used the _OSI to expose an old _DSM
+>>>>>>>        method to switch the power on/off.
+>>>>>>>        That has been fixed by commit 5775b843a619 ("PCI: Restore config space
+>>>>>>>        on runtime resume despite being unbound"). so vendors shouldn't be
+>>>>>>>        using this string to modify ASL any more.
+>>>>>>>        Reviewed-by: Lyude Paul <lyude@redhat.com>
+>>>>>>>        Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>>>>>>>        Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>>>>>>
+>>>>>>>     drivers/acpi/osi.c | 9 ---------
+>>>>>>>     1 file changed, 9 deletions(-)
+>>>>>>>
+>>>>>>> This machine is a Dell with an nvidia chip so it looks like this really
+>>>>>>> could be the commit that that is causing the problems. The description
+>>>>>>> of the commit also seems (to my untrained eye) to be consistent with the
+>>>>>>> error reported on the console when the lockup occurs:
+>>>>>>>
+>>>>>>> [   58.729863] ACPI Error: Aborting method \_SB.PCI0.PGON due to previous error (AE_AML_LOOP_TIMEOUT) (20220331/psparse-529)
+>>>>>>> [   58.729904] ACPI Error: Aborting method \_SB.PCI0.PEG0.PG00._ON due to previous error (AE_AML_LOOP_TIMEOUT) (20220331/psparse-529)
+>>>>>>> [   60.083261] vfio-pci 0000:01:00.0 Unable to change power state from D3cold to D0, device inaccessible
+>>>>>>>
+>>>>>>> Hopefully this is enough information for experts to resolve this.
+>>>>>>
+>>>>>> Does this ring some bell for you? Do you need any further information
+>>>>>> from Nick?
+>>>>>>
+>>>>>> Regards,
+>>>>>> Salvatore
+>>>>>
+>>>>
+>>>>> Have Nick try using "pcie_port_pm=off" and see if it helps the issue.
+>>>>
+>>>> I booted into a 6.1 kernel with this option. It has been running without
+>>>> problems for 1.5 hours. Usually I would expect the lockup to have
+>>>> occurred by now.
+>>
+>> I let this run for 3 hours without issue.
+>>
+>>>>> Does this happen in the latest 6.4 RC as well?
+>>>>
+>>>> I have compiled that kernel and will boot into it after running this one
+>>>> with the pcie_port_pm=off for another hour or so.
+>>
+>> I'm now running 6.4.0-rc4 without seeing the problem after 1 hour.
+> 
+> I did eventually see a lockup of this kernel. On the console I saw:
+> 
+> [  151.035036] vfio-pci 0000:01:00.0 Unable to change power state from D3cold to D0, device inaccessible
+> 
+> I did not see the other two lines that were present in earlier lock ups >
+>> I did however see two unrelated problems that I include here for
+>> completeness:
+>> 1. iwlwifi module did not automatically load
+>> 2. Xwayland used huge amount of CPU even though was not running any X
+>> programs. Recompiling my wayland compositor without XWayland support
+>> "fixed" this.
+>>
+>>>>> I think we need to see a full dmesg and acpidump to better
+>>>>> characterize it.
+>>>>
+>>>> Please find attached. Let me know if there is anything else I can provide.
+>>>>
+>>>> Regards,
+>>>>
+>>>> Nick.
+>>>
+>>> I don't see nouveau loading, are you explicitly preventing it from
+>>> loading?
+>>
+>> Yes nouveau is blacklisted.
+>>
+>>> Can I see the journal from a boot when it reproduced?
+>>
+>> Hmm not sure which n for "journalctl -b n" maps to which kernel (is that
+>> what you are requesting?). The commit hash doesn't not seem to be
+>> listed. I may have to boot into a bad kernel again.
+> 
+> Please find attached the output from a "journalctl --system -bN" for a
+> kernel that has this issue.
+> 
+> Regards,
+> 
+> Nick.
 
-Signed-off-by: Evan Quan <evan.quan@amd.com>
---
-v1->v2:
-  - check wbrf support using pmfw version(Lijo)
-v2->v3:
-  - some minor fixes(Mario)
----
- .../drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c  | 61 +++++++++++++++++++
- 1 file changed, 61 insertions(+)
+In this log I see nouveau loaded, but I also don't see the failure 
+occurring.
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-index 98a33f8ee209..d885f20e33d7 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-@@ -125,6 +125,7 @@ static struct cmn2asic_msg_mapping smu_v13_0_7_message_map[SMU_MSG_MAX_COUNT] =
- 	MSG_MAP(ArmD3,				PPSMC_MSG_ArmD3,                       0),
- 	MSG_MAP(AllowGpo,			PPSMC_MSG_SetGpoAllow,           0),
- 	MSG_MAP(GetPptLimit,			PPSMC_MSG_GetPptLimit,                 0),
-+	MSG_MAP(EnableUCLKShadow,		PPSMC_MSG_EnableUCLKShadow,            0),
- };
- 
- static struct cmn2asic_mapping smu_v13_0_7_clk_map[SMU_CLK_COUNT] = {
-@@ -205,6 +206,7 @@ static struct cmn2asic_mapping smu_v13_0_7_table_map[SMU_TABLE_COUNT] = {
- 	TAB_MAP(DRIVER_SMU_CONFIG),
- 	TAB_MAP(ACTIVITY_MONITOR_COEFF),
- 	[SMU_TABLE_COMBO_PPTABLE] = {1, TABLE_COMBO_PPTABLE},
-+	TAB_MAP(WIFIBAND),
- };
- 
- static struct cmn2asic_mapping smu_v13_0_7_pwr_src_map[SMU_POWER_SOURCE_COUNT] = {
-@@ -487,6 +489,9 @@ static int smu_v13_0_7_tables_init(struct smu_context *smu)
- 	               AMDGPU_GEM_DOMAIN_VRAM);
- 	SMU_TABLE_INIT(tables, SMU_TABLE_COMBO_PPTABLE, MP0_MP1_DATA_REGION_SIZE_COMBOPPTABLE,
- 			PAGE_SIZE, AMDGPU_GEM_DOMAIN_VRAM);
-+	SMU_TABLE_INIT(tables, SMU_TABLE_WIFIBAND,
-+		       sizeof(WifiBandEntryTable_t), PAGE_SIZE,
-+		       AMDGPU_GEM_DOMAIN_VRAM);
- 
- 	smu_table->metrics_table = kzalloc(sizeof(SmuMetricsExternal_t), GFP_KERNEL);
- 	if (!smu_table->metrics_table)
-@@ -1721,6 +1726,59 @@ static int smu_v13_0_7_set_df_cstate(struct smu_context *smu,
- 					       NULL);
- }
- 
-+static bool smu_v13_0_7_wbrf_support_check(struct smu_context *smu)
-+{
-+	return smu->smc_fw_version > 0x00524600;
-+}
-+
-+static int smu_v13_0_7_set_wbrf_exclusion_ranges(struct smu_context *smu,
-+						 struct exclusion_range *exclusion_ranges)
-+{
-+	WifiBandEntryTable_t wifi_bands;
-+	uint64_t start_rounddown;
-+	uint64_t end_roundup;
-+	int valid_entries = 0;
-+	int ret, i;
-+
-+	memset(&wifi_bands, 0, sizeof(wifi_bands));
-+	for (i = 0; i < ARRAY_SIZE(wifi_bands.WifiBandEntry); i++) {
-+		if (!exclusion_ranges[i].start &&
-+		    !exclusion_ranges[i].end)
-+			break;
-+
-+		start_rounddown = rounddown(exclusion_ranges[i].start, HZ_IN_MHZ);
-+		end_roundup = roundup(exclusion_ranges[i].end, HZ_IN_MHZ);
-+		/* PMFW expects the inputs to be in Mhz unit */
-+		wifi_bands.WifiBandEntry[valid_entries].LowFreq = HZ_TO_MHZ(start_rounddown);
-+		wifi_bands.WifiBandEntry[valid_entries++].HighFreq = HZ_TO_MHZ(end_roundup);
-+	}
-+	wifi_bands.WifiBandEntryNum = valid_entries;
-+
-+	/*
-+	 * Per confirm with PMFW team, WifiBandEntryNum = 0 is a valid setting.
-+	 * Considering the scenarios below:
-+	 * - At first the wifi device adds an exclusion range e.g. (2400,2500) to
-+	 *   BIOS and our driver gets notified. We will set WifiBandEntryNum = 1
-+	 *   and pass the WifiBandEntry (2400, 2500) to PMFW.
-+	 *
-+	 * - Later the wifi device removes the wifiband list added above and
-+	 *   our driver gets notified again. At this time, driver will set
-+	 *   WifiBandEntryNum = 0 and pass an empty WifiBandEntry list to PMFW.
-+	 *   - PMFW may still need to do some uclk shadow update(e.g. switching
-+	 *     from shadow clock back to primary clock) on receiving this.
-+	 */
-+
-+	ret = smu_cmn_update_table(smu,
-+				   SMU_TABLE_WIFIBAND,
-+				   0,
-+				   (void *)(&wifi_bands),
-+				   true);
-+	if (ret)
-+		dev_err(smu->adev->dev, "Failed to set wifiband!");
-+
-+	return ret;
-+}
-+
- static const struct pptable_funcs smu_v13_0_7_ppt_funcs = {
- 	.get_allowed_feature_mask = smu_v13_0_7_get_allowed_feature_mask,
- 	.set_default_dpm_table = smu_v13_0_7_set_default_dpm_table,
-@@ -1786,6 +1844,9 @@ static const struct pptable_funcs smu_v13_0_7_ppt_funcs = {
- 	.set_mp1_state = smu_v13_0_7_set_mp1_state,
- 	.set_df_cstate = smu_v13_0_7_set_df_cstate,
- 	.gpo_control = smu_v13_0_gpo_control,
-+	.is_asic_wbrf_supported = smu_v13_0_7_wbrf_support_check,
-+	.enable_uclk_shadow = smu_v13_0_enable_uclk_shadow,
-+	.set_wbrf_exclusion_ranges = smu_v13_0_7_set_wbrf_exclusion_ranges,
- };
- 
- void smu_v13_0_7_set_ppt_funcs(struct smu_context *smu)
--- 
-2.34.1
+As you're actually loading nouveau, can you please try nouveau.runpm=0 
+on the kernel command line?
 
+If that helps the issue; I strongly suggest you cross reference the 
+latest kernel to see if this bug still exists.
