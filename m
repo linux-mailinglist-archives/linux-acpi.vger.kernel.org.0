@@ -2,88 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 370E171739C
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 May 2023 04:18:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 450797176E7
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 May 2023 08:34:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233659AbjEaCSs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 May 2023 22:18:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54068 "EHLO
+        id S232072AbjEaGeo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 31 May 2023 02:34:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230494AbjEaCSo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 May 2023 22:18:44 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5B5B10E;
-        Tue, 30 May 2023 19:18:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=AHO4M8sGie0OSLO/d8Ur4iCaRbtViVC/sruAnPnDQl8=; b=WFqPI8lzgzeJCE5VBFZricroLX
-        VFVwpGjv7oZfxVGuYabP5XSgYrcC99JBwmMBYwEpRi+4MJEEbTG56BDO9yUIfE/qrADTFZeCslMRu
-        dmHDK8HvHqzd6jptf2Qgnmu/t6fjtnCbxR3U+mS1QqAeiyWIkDumPeLkHT1DpFGU9UqLiJhFrFY4J
-        WBRjWzRJhXxIw+K+QX4dy+m0GYlzLwHfTPwOTjWnjlHDMoCBLYaoFCrndkR3NhfSew0gAc8HGkSrO
-        f9NTyXgLW8vAcPNrycVkq0TGk003xokLYfWfkWkFgyk36xuCMPBFI+OHX4qVbSPIaqIajw98yJJW2
-        3ILdNcZw==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-        id 1q4BPr-00FmRc-04;
-        Wed, 31 May 2023 02:18:23 +0000
-Date:   Tue, 30 May 2023 19:18:22 -0700
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     Ira Weiny <ira.weiny@intel.com>
-Cc:     Davidlohr Bueso <dave@stgolabs.net>, LiuLele <liu.lele@qq.com>,
-        dave.jiang@intel.com, Jonathan.Cameron@huawei.com,
-        alison.schofield@intel.com, bhelgaas@google.com,
-        bwidawsk@kernel.org, dan.j.williams@intel.com, helgaas@kernel.org,
-        linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        rostedt@goodmis.org, vishal.l.verma@intel.com
-Subject: Re: CXL memory device not created correctly
-Message-ID: <ZHaubgQOFU0+r1MD@bombadil.infradead.org>
-References: <cec6a8f5-a284-4f46-1ada-4edd625a9a2e@intel.com>
- <tencent_D9D9D358330CA573E23D490C6EE13E0DC105@qq.com>
- <gbsxrcjtnf67jxpqmbn57nqoslpmjtuk2ycatmau3vfsmpvbrd@c2umpofn2hti>
- <646793cc665bf_1231462943c@iweiny-mobl.notmuch>
+        with ESMTP id S230001AbjEaGem (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 31 May 2023 02:34:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82F7E99;
+        Tue, 30 May 2023 23:34:41 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 14A2363709;
+        Wed, 31 May 2023 06:34:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F03C4339B;
+        Wed, 31 May 2023 06:34:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685514880;
+        bh=VbJXJ5zz+WVpnyRQMyry3uFyArPowS0EQwKqrDggAFo=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=QijCDzcRmZbR2iHcYZtpEYpw6bAFdDHejD9UBEfPcsfUQaOT2Tt/9k/VxjOQbGdxA
+         QDJOoV3DxLF8Vt54AzGdX21lutd/xZParafTh73vV+oSfsHSBfYegP2u43MtzMdh7T
+         oecQFkldm7MpwUtQXBxIVMqWCTm8H6aKcfEFofaRrDbR/1Uw4TtdcONaphzmDXRyWo
+         RppPS1Z2PYrZsAbT/p225lgG8fwFiDplK5sUt3//lMWdXQ8SE4/4sM7D9Jp+t8x4OO
+         15wDxV6BJaKVjOV9VqVi/DHRoXdI0/deofPd9pw5Icn/svT+DQpujic4PwX6f/MJ3z
+         olvSJGHdp3NRw==
+Date:   Tue, 30 May 2023 23:34:38 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jonathan =?UTF-8?B?TmV1c2Now6RmZXI=?= <j.neuschaefer@gmx.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, netdev@vger.kernel.org,
+        openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org,
+        linux-mips@vger.kernel.org
+Subject: Re: [PATCH v7 0/9] fix fwnode_irq_get[_byname()] returnvalue
+Message-ID: <20230530233438.572db3fb@kernel.org>
+In-Reply-To: <cover.1685340157.git.mazziesaccount@gmail.com>
+References: <cover.1685340157.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <646793cc665bf_1231462943c@iweiny-mobl.notmuch>
-Sender: Luis Chamberlain <mcgrof@infradead.org>
-X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 19, 2023 at 08:20:44AM -0700, Ira Weiny wrote:
-> Davidlohr Bueso wrote:
-> > On Fri, 19 May 2023, LiuLele wrote:
-> > 
-> > >In my testing CXL device /sys/bus/cxl/devices/mem0  not created, and the get error messages :
-> > >
-> > >```
-> > >cxl_pci 0000:0d:00.0: Failed to get interrupt for event Info log
-> > >```
-> > >
-> > >My test environment is a qemu CXL emulator with qemu v8.0.0, Linux kernel v6.3.0.
-> > >While with kernel 5.9.13,  /sys/bus/cxl/devices/mem0  can be created.
-> > 
-> > Yes, this can be annoying and would argue the probe should not error out.
-> 
-> I had to double check.  Events are mandatory on devices.  On checking
-> again interrupt support is mandatory as well.  So that is why I errored
-> out here.
+On Mon, 29 May 2023 09:22:15 +0300 Matti Vaittinen wrote:
+> The fwnode_irq_get() and the fwnode_irq_get_byname() may have returned
+> zero if mapping the IRQ fails. This contradicts the
+> fwnode_irq_get_byname() documentation. Furthermore, returning zero or
+> errno on error is unepected and can easily lead to problems
+> like.
 
-The failure essentially creates a user visible regression whereas
-booting an older kernel fixes it. It is not a friendly error message
-when testing kernels / upgrading / test environments. The only thing
-I can think of is if a new kconfig symbol is introduced so to make
-such cases a bit more clearer for now as things get settled.
-
-Otherwise for testing this creates a few cycles of just noise. And I'd
-imagine even a few developer hours.
-
-  Luis
+What's the merging plan? Could patch 1 go to a stable branch 
+and then driver trees can pull it in and apply their respective 
+patches locally?
