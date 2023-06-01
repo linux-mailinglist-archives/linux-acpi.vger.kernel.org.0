@@ -2,52 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05B9D719E89
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 15:44:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5643A719E8B
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 15:44:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233353AbjFANoW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Jun 2023 09:44:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45746 "EHLO
+        id S233287AbjFANof (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Jun 2023 09:44:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229899AbjFANoV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 09:44:21 -0400
+        with ESMTP id S229899AbjFANoe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 09:44:34 -0400
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C83013E;
-        Thu,  1 Jun 2023 06:44:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08EB4139;
+        Thu,  1 Jun 2023 06:44:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685627060; x=1717163060;
+  t=1685627074; x=1717163074;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=AUrLdSuup874aht3aizw4YqD6Igyfos0v1Ki2V0RotQ=;
-  b=ivyDkiUxKTLVwSC7sn3linnHQKyZrMhr9/qiNFxNzRaOz4DFQT8NI/2u
-   P+pGgxnNpc+AnnHpvNP0hVL7sIGnhwOKxrUvzwaq4NU/XRJ6wPva/kqu2
-   TYpHMbOtV6paO23FAVt/5u+oLOc6VCwMpGC4pMewKIMx50A9DcGB9I1my
-   XtH85KnwiE9RUbkfhjHxK/HlCFwrnP4wcMlJbbrhaTbK5GtMZsogpXquI
-   RVaQ7s7fBRNAtVFdYnP4cK8NdhP8kNTihx140i+x//UdZbKIZgInqudqy
-   1YXhLOk2v59gPxiHFf1fR5ut50HBX3atp0+qODBx0qZKhLv0GQ6GBCHSr
+  bh=Ou2d7WNU5iGtvXSJSbVni3WkhDwCgDRi6B+45IXWcX4=;
+  b=BB977zxOP3D7L6t+mqXOOZIx6I4MOkTwGG65M8yaL84E7wOUjtSfiBo2
+   nCEtpbV9GCSF0LePZeUZyS5vj2O6OKB3JZj2B+Ylmnf4flol1BSymd/WE
+   eEj3iKCZvE/9+6C7mf53fiROHgcR7d7/PwSm+xthbzRkYmkNwJ4LpJoI3
+   VwWXIBfQ6lEYPHmq6amdckbGDp7L5qbgrOThaVFTOoSBcScNOWl0569mi
+   aLRe7HiavbaivgwCAGmD03yCm/6Q0pR4TwrcIEFMH0FCG2ZTFH0P9QDLX
+   TPVXR+T8WXWNdfNKWHd+6DOpEEg1iGGBHfc50GZBaT9WkMjk48up0ubbG
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="419067612"
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="419067737"
 X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="419067612"
+   d="scan'208";a="419067737"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:19:17 -0700
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:19:23 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="881601741"
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="881601793"
 X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="881601741"
+   d="scan'208";a="881601793"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:19:15 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:19:21 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
-To:     Chen Yu <yu.c.chen@intel.com>, Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>
+To:     Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>
 Cc:     Michal Wilczynski <michal.wilczynski@intel.com>,
         platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
         rafael@kernel.org
-Subject: [PATCH v4 14/35] platform/surface/button: Move handler installing logic to driver
-Date:   Thu,  1 Jun 2023 15:17:17 +0200
-Message-Id: <20230601131739.300760-15-michal.wilczynski@intel.com>
+Subject: [PATCH v4 15/35] platform/x86/acer-wireless: Move handler installing logic to driver
+Date:   Thu,  1 Jun 2023 15:17:18 +0200
+Message-Id: <20230601131739.300760-16-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230601131739.300760-3-michal.wilczynski@intel.com>
 References: <20230601131739.300760-3-michal.wilczynski@intel.com>
@@ -77,62 +76,64 @@ what's required by acpi_device_install_event_handler().
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/platform/surface/surfacepro3_button.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ drivers/platform/x86/acer-wireless.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/surface/surfacepro3_button.c b/drivers/platform/surface/surfacepro3_button.c
-index 2755601f979c..fa5f1e4c4abc 100644
---- a/drivers/platform/surface/surfacepro3_button.c
-+++ b/drivers/platform/surface/surfacepro3_button.c
-@@ -71,13 +71,16 @@ struct surface_button {
- 	bool suspended;
+diff --git a/drivers/platform/x86/acer-wireless.c b/drivers/platform/x86/acer-wireless.c
+index 1b5d935d085a..af7aef27cdff 100644
+--- a/drivers/platform/x86/acer-wireless.c
++++ b/drivers/platform/x86/acer-wireless.c
+@@ -18,9 +18,12 @@ static const struct acpi_device_id acer_wireless_acpi_ids[] = {
  };
+ MODULE_DEVICE_TABLE(acpi, acer_wireless_acpi_ids);
  
--static void surface_button_notify(struct acpi_device *device, u32 event)
-+static void surface_button_notify(acpi_handle handle, u32 event, void *data)
+-static void acer_wireless_notify(struct acpi_device *adev, u32 event)
++static void acer_wireless_notify(acpi_handle handle, u32 event, void *data)
  {
--	struct surface_button *button = acpi_driver_data(device);
--	struct input_dev *input;
-+	struct acpi_device *device = data;
-+	struct surface_button *button;
- 	int key_code = KEY_RESERVED;
-+	struct input_dev *input;
- 	bool pressed = false;
+-	struct input_dev *idev = acpi_driver_data(adev);
++	struct acpi_device *adev = data;
++	struct input_dev *idev;
++
++	idev = acpi_driver_data(adev);
  
-+	button = acpi_driver_data(device);
-+
- 	switch (event) {
- 	/* Power button press,release handle */
- 	case SURFACE_BUTTON_NOTIFY_PRESS_POWER:
-@@ -230,6 +233,12 @@ static int surface_button_add(struct acpi_device *device)
- 	device_init_wakeup(&device->dev, true);
- 	dev_info(&device->dev,
- 			"%s [%s]\n", name, acpi_device_bid(device));
-+
-+	error = acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY,
-+						  surface_button_notify);
-+	if (error)
-+		goto err_free_input;
-+
- 	return 0;
- 
-  err_free_input:
-@@ -243,6 +252,7 @@ static void surface_button_remove(struct acpi_device *device)
+ 	dev_dbg(&adev->dev, "event=%#x\n", event);
+ 	if (event != 0x80) {
+@@ -36,6 +39,7 @@ static void acer_wireless_notify(struct acpi_device *adev, u32 event)
+ static int acer_wireless_add(struct acpi_device *adev)
  {
- 	struct surface_button *button = acpi_driver_data(device);
+ 	struct input_dev *idev;
++	int ret;
  
-+	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, surface_button_notify);
- 	input_unregister_device(button->input);
- 	kfree(button);
+ 	idev = devm_input_allocate_device(&adev->dev);
+ 	if (!idev)
+@@ -50,7 +54,17 @@ static int acer_wireless_add(struct acpi_device *adev)
+ 	set_bit(EV_KEY, idev->evbit);
+ 	set_bit(KEY_RFKILL, idev->keybit);
+ 
+-	return input_register_device(idev);
++	ret = input_register_device(idev);
++
++	if (ret)
++		return ret;
++
++	return acpi_device_install_event_handler(adev, ACPI_DEVICE_NOTIFY, acer_wireless_notify);
++}
++
++static void acer_wireless_remove(struct acpi_device *adev)
++{
++	acpi_device_remove_event_handler(adev, ACPI_DEVICE_NOTIFY, acer_wireless_notify);
  }
-@@ -257,7 +267,6 @@ static struct acpi_driver surface_button_driver = {
+ 
+ static struct acpi_driver acer_wireless_driver = {
+@@ -59,7 +73,7 @@ static struct acpi_driver acer_wireless_driver = {
+ 	.ids = acer_wireless_acpi_ids,
  	.ops = {
- 		.add = surface_button_add,
- 		.remove = surface_button_remove,
--		.notify = surface_button_notify,
+ 		.add = acer_wireless_add,
+-		.notify = acer_wireless_notify,
++		.remove = acer_wireless_remove,
  	},
- 	.drv.pm = &surface_button_pm,
  };
+ module_acpi_driver(acer_wireless_driver);
 -- 
 2.40.1
 
