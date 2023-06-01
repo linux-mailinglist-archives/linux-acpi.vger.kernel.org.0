@@ -2,42 +2,42 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAC4A719EAD
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 15:46:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AC53719EB0
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 15:46:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233352AbjFANqN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Jun 2023 09:46:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46754 "EHLO
+        id S232776AbjFANqV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Jun 2023 09:46:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233276AbjFANqM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 09:46:12 -0400
+        with ESMTP id S230222AbjFANqU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 09:46:20 -0400
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEC97107;
-        Thu,  1 Jun 2023 06:46:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 646C6107;
+        Thu,  1 Jun 2023 06:46:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685627171; x=1717163171;
+  t=1685627178; x=1717163178;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=CHhVf9ySLsix+mE5RzK7lqt0XuxhrtmQCio3pLRwejA=;
-  b=MNUHTVFRGBWtsH7sLRbIpkvRUmvfQPAPkjeuVADdDWYIYSHg4Kaj6kg9
-   9WNCYzzHQpJEiioTMatLGcUADSG4BzBj0LJaC6OryykRgbETdCk1J/IXG
-   c7imh0QTRJQVCfrIQjpH935hAqNAZfDDbEPPG8DK9mQfyzewqqLVk6inT
-   MX+7TQ23ep51yqFGoBFUfMt86E9yURN/W/kYnU8uGaHHk4z51SYTXceFv
-   FdCsRgDUGv1lB4gDZTZirHVYvTYUc0f5B8tDnvm+5RDAf1C5UiiwVr9De
-   gvZZ3fRhXKAoVD1vNynRdsEZQeMqTxqEYcKXV+aGW89P2U1P4GZoifUAQ
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="419068683"
+  bh=vPErQFvNbDQV5UxbBwjTeZS4Z3UrzYSQ/WcQgm1VIHs=;
+  b=jb6L7p70QbJrNyxjSZXEMgrKEQFuJUtCfVT9XgLvDSzyNkXWoY0e5wp1
+   eculHMHGSNPtuKlxS7vcvLAcmzVB3p6+0ZywWadhquKfzqGj1gHjpKRbS
+   jibnXjGy0XPcnl3LhHH8vivtl9QRHkOp09NaZ4+jfML3XJTr+1lgoomT2
+   ZhJH9FrrrwI3abNxjb/8FUHdVLAt1bqzLRwn4xFVG7GzbvfnohSZZ/6Pq
+   46+XeTgySbPj8Tox5k45PF6BRgTZjxiUCN6JiTr6S2XazOOX0vuNMii9s
+   tYxgUwaSBpiWd7NAx3Uv1UP+kJ/UjgBGwRpNmmTnKi26rA1yPC8KOfje0
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="419068745"
 X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="419068683"
+   d="scan'208";a="419068745"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:20:07 -0700
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:20:10 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="881602095"
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="881602114"
 X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="881602095"
+   d="scan'208";a="881602114"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:20:05 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:20:08 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
 To:     Azael Avalos <coproscefalo@gmail.com>,
         Hans de Goede <hdegoede@redhat.com>,
@@ -45,9 +45,9 @@ To:     Azael Avalos <coproscefalo@gmail.com>,
 Cc:     Michal Wilczynski <michal.wilczynski@intel.com>,
         platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
         rafael@kernel.org
-Subject: [PATCH v4 27/35] platform/x86/toshiba_bluetooth: Move handler installing logic to driver
-Date:   Thu,  1 Jun 2023 15:17:30 +0200
-Message-Id: <20230601131739.300760-28-michal.wilczynski@intel.com>
+Subject: [PATCH v4 28/35] platform/x86/toshiba_haps: Move handler installing logic to driver
+Date:   Thu,  1 Jun 2023 15:17:31 +0200
+Message-Id: <20230601131739.300760-29-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230601131739.300760-3-michal.wilczynski@intel.com>
 References: <20230601131739.300760-3-michal.wilczynski@intel.com>
@@ -77,88 +77,54 @@ what's required by acpi_device_install_event_handler().
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/platform/x86/toshiba_bluetooth.c | 30 +++++++++++++++++-------
- 1 file changed, 22 insertions(+), 8 deletions(-)
+ drivers/platform/x86/toshiba_haps.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/toshiba_bluetooth.c b/drivers/platform/x86/toshiba_bluetooth.c
-index d8f81962a240..a717bd5fcc88 100644
---- a/drivers/platform/x86/toshiba_bluetooth.c
-+++ b/drivers/platform/x86/toshiba_bluetooth.c
-@@ -37,7 +37,7 @@ struct toshiba_bluetooth_dev {
- 
- static int toshiba_bt_rfkill_add(struct acpi_device *device);
- static void toshiba_bt_rfkill_remove(struct acpi_device *device);
--static void toshiba_bt_rfkill_notify(struct acpi_device *device, u32 event);
-+static void toshiba_bt_rfkill_notify(acpi_handle handle, u32 event, void *data);
- 
- static const struct acpi_device_id bt_device_ids[] = {
- 	{ "TOS6205", 0},
-@@ -57,7 +57,6 @@ static struct acpi_driver toshiba_bt_rfkill_driver = {
- 	.ops =		{
- 				.add =		toshiba_bt_rfkill_add,
- 				.remove =	toshiba_bt_rfkill_remove,
--				.notify =	toshiba_bt_rfkill_notify,
- 			},
- 	.owner = 	THIS_MODULE,
- 	.drv.pm =	&toshiba_bt_pm,
-@@ -204,9 +203,12 @@ static const struct rfkill_ops rfk_ops = {
- };
- 
- /* ACPI driver functions */
--static void toshiba_bt_rfkill_notify(struct acpi_device *device, u32 event)
-+static void toshiba_bt_rfkill_notify(acpi_handle handle, u32 event, void *data)
+diff --git a/drivers/platform/x86/toshiba_haps.c b/drivers/platform/x86/toshiba_haps.c
+index 8c9f76286b08..39e4c49847a8 100644
+--- a/drivers/platform/x86/toshiba_haps.c
++++ b/drivers/platform/x86/toshiba_haps.c
+@@ -129,8 +129,10 @@ static const struct attribute_group haps_attr_group = {
+ /*
+  * ACPI stuff
+  */
+-static void toshiba_haps_notify(struct acpi_device *device, u32 event)
++static void toshiba_haps_notify(acpi_handle handle, u32 event, void *data)
  {
--	struct toshiba_bluetooth_dev *bt_dev = acpi_driver_data(device);
-+	struct toshiba_bluetooth_dev *bt_dev;
 +	struct acpi_device *device = data;
 +
-+	bt_dev = acpi_driver_data(device);
+ 	pr_debug("Received event: 0x%x\n", event);
  
- 	if (toshiba_bluetooth_sync_status(bt_dev))
- 		return;
-@@ -263,8 +265,8 @@ static int toshiba_bt_rfkill_add(struct acpi_device *device)
- 				   bt_dev);
- 	if (!bt_dev->rfk) {
- 		pr_err("Unable to allocate rfkill device\n");
--		kfree(bt_dev);
--		return -ENOMEM;
-+		result = -ENOMEM;
-+		goto fail_allocate;
- 	}
+ 	acpi_bus_generate_netlink_event(device->pnp.device_class,
+@@ -140,6 +142,7 @@ static void toshiba_haps_notify(struct acpi_device *device, u32 event)
  
- 	rfkill_set_hw_state(bt_dev->rfk, !bt_dev->killswitch);
-@@ -272,10 +274,20 @@ static int toshiba_bt_rfkill_add(struct acpi_device *device)
- 	result = rfkill_register(bt_dev->rfk);
- 	if (result) {
- 		pr_err("Unable to register rfkill device\n");
--		rfkill_destroy(bt_dev->rfk);
--		kfree(bt_dev);
-+		goto fail_register;
- 	}
+ static void toshiba_haps_remove(struct acpi_device *device)
+ {
++	acpi_device_remove_event_handler(device, ACPI_ALL_NOTIFY, toshiba_haps_notify);
+ 	sysfs_remove_group(&device->dev.kobj, &haps_attr_group);
  
-+	result = acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY,
-+						   toshiba_bt_rfkill_notify);
-+	if (result)
-+		goto fail_register;
-+
-+	return 0;
-+
-+fail_register:
-+	rfkill_destroy(bt_dev->rfk);
-+fail_allocate:
-+	kfree(bt_dev);
- 	return result;
+ 	if (toshiba_haps)
+@@ -203,7 +206,7 @@ static int toshiba_haps_add(struct acpi_device *acpi_dev)
+ 
+ 	toshiba_haps = haps;
+ 
+-	return 0;
++	return acpi_device_install_event_handler(acpi_dev, ACPI_ALL_NOTIFY, toshiba_haps_notify);
  }
  
-@@ -283,6 +295,8 @@ static void toshiba_bt_rfkill_remove(struct acpi_device *device)
- {
- 	struct toshiba_bluetooth_dev *bt_dev = acpi_driver_data(device);
- 
-+	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, toshiba_bt_rfkill_notify);
-+
- 	/* clean up */
- 	if (bt_dev->rfk) {
- 		rfkill_unregister(bt_dev->rfk);
+ #ifdef CONFIG_PM_SLEEP
+@@ -253,11 +256,9 @@ static struct acpi_driver toshiba_haps_driver = {
+ 	.name = "Toshiba HAPS",
+ 	.owner = THIS_MODULE,
+ 	.ids = haps_device_ids,
+-	.flags = ACPI_DRIVER_ALL_NOTIFY_EVENTS,
+ 	.ops = {
+ 		.add =		toshiba_haps_add,
+ 		.remove =	toshiba_haps_remove,
+-		.notify =	toshiba_haps_notify,
+ 	},
+ 	.drv.pm = &toshiba_haps_pm,
+ };
 -- 
 2.40.1
 
