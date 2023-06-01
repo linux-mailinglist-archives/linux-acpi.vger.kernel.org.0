@@ -2,60 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C93B471F4BF
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 23:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92B0671F4C6
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 23:33:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232444AbjFAVcP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Jun 2023 17:32:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50242 "EHLO
+        id S232572AbjFAVd2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Jun 2023 17:33:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232441AbjFAVcO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 17:32:14 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9770196;
-        Thu,  1 Jun 2023 14:32:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685655132; x=1717191132;
-  h=subject:from:to:cc:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=BEEjOAqfF2uEYyYA/Yp2b7+pHYEv7kWDqY/xkDccu8A=;
-  b=bb0gEIhtX+MjP74ch+zcLxAbCUTEA5g4gKa49DIzj6Vc/01Va1XW0c2K
-   QSGnXXbOB45VXaVWKTjO1ueliZnGzPM89f1DYNvUgcoQ7KkowmV8w1JQX
-   kX1E6CBoNqoI6iKQHywdgqZlrCFEQPu15l/i7gZfe5Ej7DPKRIabaLU1b
-   b7gFL/ZSJUtZYhjYiZdNO79UOmq9KCJGdNjDH7HiOYBi+aGGyOHPza0Qh
-   w59j+5Z0Onj1lMfInNIzkesLwMs1Qa/fN+qNBgJ7PPrEtuBQ9gnsZiSnx
-   rU1kymGf5CdO7i0GdxVfpntRZrfWx5sKZJex/aggd1XybzvOkKlf4ZEbO
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="421507510"
-X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="421507510"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 14:32:12 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="777376614"
-X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="777376614"
-Received: from djiang5-mobl3.amr.corp.intel.com (HELO [192.168.1.177]) ([10.212.26.132])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 14:32:11 -0700
-Subject: [PATCH v3 4/4] acpi: Add defines for CDAT SSLBIS
-From:   Dave Jiang <dave.jiang@intel.com>
-To:     linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org
-Cc:     rafael@kernel.org, lenb@kernel.org, dan.j.williams@intel.com,
-        ira.weiny@intel.com, vishal.l.verma@intel.com,
-        alison.schofield@intel.com, lukas@wunner.de,
-        Jonathan.Cameron@huawei.com
-Date:   Thu, 01 Jun 2023 14:32:11 -0700
-Message-ID: <168565513141.1098279.7310204214131055216.stgit@djiang5-mobl3>
-In-Reply-To: <168565502116.1098279.131831312990693128.stgit@djiang5-mobl3>
-References: <168565502116.1098279.131831312990693128.stgit@djiang5-mobl3>
-User-Agent: StGit/1.5
+        with ESMTP id S229610AbjFAVd1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 17:33:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B8C7184;
+        Thu,  1 Jun 2023 14:33:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F315964A01;
+        Thu,  1 Jun 2023 21:33:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264F7C433EF;
+        Thu,  1 Jun 2023 21:33:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685655205;
+        bh=DVSNOTIP/R8bS1m5PsAZpRYvyTGEtVsJhbarVlye1+4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=NKehU82LODJq5Rc+Sc6LvY0DuP9DeKLBNt2mw38k1N8TmlsjQ44xMIxRmAr+XswpV
+         jVGQIylW4BpsY69NMSamJ5SpsGssiiWACFQxQBmo5tzut27bObwiyUWt71KLk6ltBC
+         XapuXMoABWgX5G0PCFl4qIgfWm7BRdQpnBu6GW9Gv9bwFxxVLX6KPtS5/4YBZEW4iC
+         7X2fEYmqlGINHMGXwjeOpNGi4Ar1cF8uicLpyQ+7XXB4ES/p15eD+nVST/4nqTXGJ1
+         mS6oAdXHZl7a/O3LZjoabM06FCzidiFbByXxXCBeSgu5ANY4Wwvl5bt9oAaqQXbdFo
+         fl5i1qo8Q4URg==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Len Brown <lenb@kernel.org>,
+        Manyi Li <limanyi@uniontech.com>,
+        Juergen Gross <jgross@suse.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Simon Gaiser <simon@invisiblethingslab.com>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ACPI: s2idle: fix section mismatch warning
+Date:   Thu,  1 Jun 2023 23:33:15 +0200
+Message-Id: <20230601213319.3304080-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,29 +56,35 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Add upstream port and any port definition for SSLBIS.
+From: Arnd Bergmann <arnd@arndb.de>
 
-Links: https://github.com/acpica/acpica/pull/874
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+The acpi_sleep_suspend_setup() function is missing an __init annotation,
+which causes a warning in rare configurations that end up not inlining
+it into its caller:
 
+WARNING: modpost: vmlinux.o: section mismatch in reference: acpi_sleep_suspend_setup (section: .text) -> acpi_s2idle_setup (section: .init.text)
+
+It's only called from an __init function, so adding the annotation is
+correct here.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
----
- include/acpi/actbl1.h |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/acpi/sleep.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
-index 8d5572ad48cb..a33375e055ad 100644
---- a/include/acpi/actbl1.h
-+++ b/include/acpi/actbl1.h
-@@ -465,6 +465,9 @@ struct acpi_cdat_sslbe {
- 	u16 reserved;
- };
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index 72470b9f16c45..552adc04743b5 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -840,7 +840,7 @@ void __weak acpi_s2idle_setup(void)
+ 	s2idle_set_ops(&acpi_s2idle_ops);
+ }
  
-+#define ACPI_CDAT_SSLBIS_US_PORT	0x0100
-+#define ACPI_CDAT_SSLBIS_ANY_PORT	0xffff
-+
- /*******************************************************************************
-  *
-  * CEDT - CXL Early Discovery Table
-
+-static void acpi_sleep_suspend_setup(void)
++static void __init acpi_sleep_suspend_setup(void)
+ {
+ 	bool suspend_ops_needed = false;
+ 	int i;
+-- 
+2.39.2
 
