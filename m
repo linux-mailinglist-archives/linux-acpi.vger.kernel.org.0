@@ -2,78 +2,128 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1376971F1C2
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 20:28:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B96E571F4B9
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 23:31:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231279AbjFASWA convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 1 Jun 2023 14:22:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57566 "EHLO
+        id S232214AbjFAVbt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Jun 2023 17:31:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231334AbjFASV7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 14:21:59 -0400
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A68D51B0;
-        Thu,  1 Jun 2023 11:21:49 -0700 (PDT)
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-9740c1c4a24so1039466b.1;
-        Thu, 01 Jun 2023 11:21:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685643708; x=1688235708;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QqCUqDYksVNvqeVQHZgCHSSKZ/7/hLGB68zLmIOsRUs=;
-        b=BbrVD/BHeKpIWSRmifzDN25cNF/57QQeIRJ+QSYeuuuVodg+3spB721fiOcvj+8AqR
-         Hgeyz+kholFZqqfmZ05RpsGDegKa41ApomZ0538zWnKKkZHvbc+GxBujNQ+KZbQ11tfk
-         JTitKu0X95G44Pm2ThTa9NUbmFunr9vYMY6qQtQ/U9iN++inVKD1xRwHnoq65WAMFtGB
-         QVD2ZCwZQoNQV9WeRFaGxfBCCOSvNuXJq34byusY6M/hZowuLzfjoesdqRhbmT/pAPDO
-         qptBCaaJxkGvhTfEZyCaRj51mzY0rXCQDVmVaDqKfsY/dcd+Zlps/5sNzVTBULIDFsPs
-         NiGQ==
-X-Gm-Message-State: AC+VfDzusF2KKFCNjdbpz/7Gtd1jO/eyvg0zYtFCmvlVe4P3tgwICyRU
-        bjUnlcMHwDf0YeUnmDQcRnbzaXjEKHCVQgw5JjU=
-X-Google-Smtp-Source: ACHHUZ4vxX+rKzsnlhWpc+E25cJv5aDvF3bra5I+gLszk30gfyuQi9JZeUSRLiKI+wtuKlhDdh7we6SPxQ03g4Q4E5s=
-X-Received: by 2002:a17:906:7791:b0:96f:6590:cbdb with SMTP id
- s17-20020a170906779100b0096f6590cbdbmr5026678ejm.6.1685643707928; Thu, 01 Jun
- 2023 11:21:47 -0700 (PDT)
+        with ESMTP id S231213AbjFAVbs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 17:31:48 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2191184;
+        Thu,  1 Jun 2023 14:31:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685655107; x=1717191107;
+  h=subject:from:to:cc:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=KI6JDuT8wxF1HgAlteNxzcKARumuL/cX87STidw8uyg=;
+  b=Dhdft37DsDprcLVxWb6lvm6nhQ68/7Yafr/cCDGFt5hEMHVTgeAIRi01
+   IWEkNVTcvwZp7QjP6rYXgDvMCunF0Bs03wyW+HuKCAT1Db8EAUIt2rSCe
+   NsQtn7b4J3kTBu1xPhYgm+rmjXIbZ9wk4Dd2BzMFBEpb8co1N3PJyKUv5
+   YylGrQTgIYQ+H81SqNnG7m2d4vMDEjxBSMYkt+vE0CIXmS6lo9baxUifK
+   5qEOAMtmxT5M2zbG637lTGISOyn5R9yBEtMb8a+zwZMCJEIAofcznDt3T
+   byEmAtrBbMMEomi9FnpcVCinj07H7En6L3lQzuLaXoFzbnwkJqoK+/8lW
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="421507361"
+X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
+   d="scan'208";a="421507361"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 14:31:47 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="685016401"
+X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
+   d="scan'208";a="685016401"
+Received: from djiang5-mobl3.amr.corp.intel.com (HELO [192.168.1.177]) ([10.212.26.132])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 14:31:46 -0700
+Subject: [PATCH v3 0/4] acpi: Add CDAT parsing support to ACPI tables code
+From:   Dave Jiang <dave.jiang@intel.com>
+To:     linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org
+Cc:     Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, rafael@kernel.org,
+        lenb@kernel.org, dan.j.williams@intel.com, ira.weiny@intel.com,
+        vishal.l.verma@intel.com, alison.schofield@intel.com,
+        lukas@wunner.de, Jonathan.Cameron@huawei.com
+Date:   Thu, 01 Jun 2023 14:31:45 -0700
+Message-ID: <168565502116.1098279.131831312990693128.stgit@djiang5-mobl3>
+User-Agent: StGit/1.5
 MIME-Version: 1.0
-References: <20230523161815.3083-1-wyes.karny@amd.com> <168563860014.2889935.9236369807138013890.b4-ty@chromium.org>
-In-Reply-To: <168563860014.2889935.9236369807138013890.b4-ty@chromium.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 1 Jun 2023 20:21:36 +0200
-Message-ID: <CAJZ5v0jpZQ-kMikEPUvuESxX+OMVyx97zDxavs9WhTiyu7ZA1g@mail.gmail.com>
-Subject: Re: [PATCH] acpi: Replace struct acpi_table_slit 1-element array with flex-array
-To:     Kees Cook <keescook@chromium.org>
-Cc:     lenb@kernel.org, rafael@kernel.org, wyes.karny@amd.com,
-        robert.moore@intel.com, acpica-devel@lists.linuxfoundation.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 1, 2023 at 6:57 PM Kees Cook <keescook@chromium.org> wrote:
->
-> On Tue, 23 May 2023 16:18:15 +0000, Wyes Karny wrote:
-> > struct acpi_table_slit is used for copying System Locality Information
-> > Table data from ACPI tables. Here `entry` is a flex array but it was
-> > using ancient 1-element fake flexible array, which has been deprecated.
-> > Replace it with a C99 flexible array.
-> >
-> >
->
-> Since this is a fix for -fstrict-flex-arrays=3, I can carry this in the
-> hardening tree until it shows up in upstream ACPICA.
->
-> Applied to for-next/hardening, thanks!
->
-> [1/1] acpi: Replace struct acpi_table_slit 1-element array with flex-array
->       https://git.kernel.org/kees/c/0233ca593eba
+v3:
+- Move common code to lib/fw_table.c
+v2:
+- Split out with CONFIG_ACPI_TABLES_LIB to be independent
+- Fixed 0-day issues
+- Change CDAT releveant names to prefix with cdat/CDAT instead of
+  acpi/ACPI. (Jonathan)
+- Make table_header a union with cdat table header instead of
+  'acpi_table_header'. (Jonathan)
+- Removed ACPI_SIG_CDAT, already defined.
 
-Works for me, thanks!
+Hi Rafael,
+Please consider ack these patches. Dan can take these through the CXL tree. After
+attempting to rename the cxl_ prefixes of functions and non ACPICA data structures
+to something more common, it seems that significant amount of ACPI code would be
+touched for the rename. For this series I left it alone in order to have the minimal
+changes to ACPI code.
+
+I've broken out the "cxl: Add support for QTG ID retrieval for CXL subsystem" [1]
+series in order to make it more manageable. Here's the first part of the ACPI
+changes. These changes are added to allow reuse of ACPI tables code to parse
+the CDAT tables. While CDAT is not part of ACPI, the table structures are similar
+to ACPI layouts that the code can be reused with some small modifications.
+
+However, in order to be properly utilized by CXL users, the tables code needs
+to be refactored out to be independent of ACPI. For example, a PPC BE host may
+have CXL and does not have ACPI support. But it will have CDAT to read from
+devices and switches. I have created CONFIG_ACPI_TABLES_LIB in order to allow
+the common code to be independent. 0-day seems to be happy now for all the
+different configs and archs.
+
+1/4: Split out the common code from drivers/acpi/tables.c to lib/fw_table.c
+2/4: Add CDAT support
+3,4/4: These two are minor patches that has ACPICA impact. Has been merged into
+       the ACPICA git repo [3].
+
+The whole series is at [2] for convenience.
+
+[1]: https://lore.kernel.org/linux-cxl/168193556660.1178687.15477509915255912089.stgit@djiang5-mobl3/T/#t
+[2]: https://git.kernel.org/pub/scm/linux/kernel/git/djiang/linux.git/log/?h=cxl-qtg
+[3]: https://github.com/acpica/acpica/pull/874
+
+---
+
+Dave Jiang (4):
+      acpi: Move common tables helper functions to common lib
+      lib/firmware_table: tables: Add CDAT table parsing support
+      acpi: fix misnamed define for CDAT DSMAS
+      acpi: Add defines for CDAT SSLBIS
+
+
+ drivers/acpi/Kconfig     |   1 +
+ drivers/acpi/tables.c    | 178 +----------------------------
+ include/acpi/actbl1.h    |   5 +-
+ include/linux/acpi.h     |  22 +---
+ include/linux/fw_table.h |  52 +++++++++
+ lib/Kconfig              |   3 +
+ lib/Makefile             |   2 +
+ lib/fw_table.c           | 236 +++++++++++++++++++++++++++++++++++++++
+ 8 files changed, 302 insertions(+), 197 deletions(-)
+ create mode 100644 include/linux/fw_table.h
+ create mode 100644 lib/fw_table.c
+
+--
+
