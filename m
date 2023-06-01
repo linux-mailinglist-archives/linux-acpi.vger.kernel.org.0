@@ -2,250 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3F1971F166
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 20:11:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1376971F1C2
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 20:28:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231639AbjFASLb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Jun 2023 14:11:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50234 "EHLO
+        id S231279AbjFASWA convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 1 Jun 2023 14:22:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231480AbjFASL3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 14:11:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8047198
-        for <linux-acpi@vger.kernel.org>; Thu,  1 Jun 2023 11:10:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1685643042;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=r2dczyxnMSoVxG4Sl+UFzUV7DqIebX1V1UnCasZfupU=;
-        b=Dg4DxXwltP0TUUztdQ5XbvVnOHMGnLCFNQSzwvMySrzmy9oNanWOIK8ssIG0SH/+ChuPsc
-        1ci7MTT++nWRe/2kdCZtzY2y5/aaY+IKL2VkEaCRAZFxrCfepi65l7HP5ogr0hjq3LjMeA
-        qp3wpktM4DMs0fblOSLmBB9GifTOS94=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-154-fOfhLQmlP3iJZKblcS2fLQ-1; Thu, 01 Jun 2023 14:10:39 -0400
-X-MC-Unique: fOfhLQmlP3iJZKblcS2fLQ-1
-Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2b04d5ed394so2031441fa.1
-        for <linux-acpi@vger.kernel.org>; Thu, 01 Jun 2023 11:10:39 -0700 (PDT)
+        with ESMTP id S231334AbjFASV7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 14:21:59 -0400
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A68D51B0;
+        Thu,  1 Jun 2023 11:21:49 -0700 (PDT)
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-9740c1c4a24so1039466b.1;
+        Thu, 01 Jun 2023 11:21:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685643038; x=1688235038;
+        d=1e100.net; s=20221208; t=1685643708; x=1688235708;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=r2dczyxnMSoVxG4Sl+UFzUV7DqIebX1V1UnCasZfupU=;
-        b=kklEQeC0Bhpe41GhKtudfs8OyrWLMF9gPgPyJcOCE5l7Euxgn5sP9RLoA+Dyz1HJYw
-         UBT5Z7s59VfN+UhqA7WzwQc7MlsM/VJHW0aVFjviAcPoHY+KPwTRzKFzjpTC4j/7j9j5
-         R551mgYcNi6mNwJ6sU/ud4s2LZ4DhfrrtYnHvaZg2g5Fj6hCBI0FEadCtpjnekR81j8q
-         LP2XGPWQh3v9rSEoAFfUOq3a3rGCx9bU88sAIbramEYf7IK9BXaoF/5+oqch3blVY9GJ
-         YkCtWTvdA21pOBEBPe7keQ3yEAv2SOWIs7a3wr0iN7s+mwK5CLlaAvZfpOot8mhyVoP1
-         2FlQ==
-X-Gm-Message-State: AC+VfDyLFVcreveoICgk1f6BNyVodf/hfZDTP+Csy2K43/A0W9+3FKm0
-        Ic4vBcu6YJu6AbvwG1n6r6qTWRGSdpN7H3LRYgW4rk1p4iMgj/7imrge0t3h4/USlktVndhs2Zi
-        s86OraVSz5D4HKr/zPwihhQXKbVET3CAr8/ebmw==
-X-Received: by 2002:a2e:a366:0:b0:2b1:a667:dbca with SMTP id i6-20020a2ea366000000b002b1a667dbcamr1176776ljn.2.1685643038243;
-        Thu, 01 Jun 2023 11:10:38 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6E+8PmtBTtfhqIQ8CyQl+AFRssV7QB0a+miJocgIdab1bQ94244X3nJENHgaxC7ITFD42T8q+tHXuMeLLa7tQ=
-X-Received: by 2002:a2e:a366:0:b0:2b1:a667:dbca with SMTP id
- i6-20020a2ea366000000b002b1a667dbcamr1176762ljn.2.1685643037963; Thu, 01 Jun
- 2023 11:10:37 -0700 (PDT)
+        bh=QqCUqDYksVNvqeVQHZgCHSSKZ/7/hLGB68zLmIOsRUs=;
+        b=BbrVD/BHeKpIWSRmifzDN25cNF/57QQeIRJ+QSYeuuuVodg+3spB721fiOcvj+8AqR
+         Hgeyz+kholFZqqfmZ05RpsGDegKa41ApomZ0538zWnKKkZHvbc+GxBujNQ+KZbQ11tfk
+         JTitKu0X95G44Pm2ThTa9NUbmFunr9vYMY6qQtQ/U9iN++inVKD1xRwHnoq65WAMFtGB
+         QVD2ZCwZQoNQV9WeRFaGxfBCCOSvNuXJq34byusY6M/hZowuLzfjoesdqRhbmT/pAPDO
+         qptBCaaJxkGvhTfEZyCaRj51mzY0rXCQDVmVaDqKfsY/dcd+Zlps/5sNzVTBULIDFsPs
+         NiGQ==
+X-Gm-Message-State: AC+VfDzusF2KKFCNjdbpz/7Gtd1jO/eyvg0zYtFCmvlVe4P3tgwICyRU
+        bjUnlcMHwDf0YeUnmDQcRnbzaXjEKHCVQgw5JjU=
+X-Google-Smtp-Source: ACHHUZ4vxX+rKzsnlhWpc+E25cJv5aDvF3bra5I+gLszk30gfyuQi9JZeUSRLiKI+wtuKlhDdh7we6SPxQ03g4Q4E5s=
+X-Received: by 2002:a17:906:7791:b0:96f:6590:cbdb with SMTP id
+ s17-20020a170906779100b0096f6590cbdbmr5026678ejm.6.1685643707928; Thu, 01 Jun
+ 2023 11:21:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <168471337231.1913606.15905047692536779158.reportbug@xps>
- <ZHKrC4/G6ZyvRReI@xps> <ZHL5cCNUzVdleiag@eldamar.lan> <ab12984e-be17-903d-ba0a-f9c85b8c544f@amd.com>
- <ZHP4IqxBUPuVRvRV@xps> <09e24386-de63-e9e9-9e7f-5d04bad62d83@amd.com>
- <ZHQhPcKUF76Kplwm@xps> <ZHUt9xQKCwCflvVC@xps> <8537d965-ddf4-7f45-6459-d5acf520376e@amd.com>
- <ZHWfMBeAONerAJmd@xps> <ZHfa/wQlaVCeUC22@xps> <fe0ab1fa-6ed6-dc64-8165-8fc70669317b@amd.com>
- <CACO55tsuO1kQUFfPdPFUHm4WEQseCR2tQSDhFRzR+8wOECZCyA@mail.gmail.com>
- <MN0PR12MB61017541F5AC55485A490BCDE2499@MN0PR12MB6101.namprd12.prod.outlook.com>
- <CACO55tudULtvt_Hcdg+uqXeYkSAR_NZ1oD=R_KhuE_THSRe88g@mail.gmail.com> <MN0PR12MB6101DE067CF85E59AF187763E2499@MN0PR12MB6101.namprd12.prod.outlook.com>
-In-Reply-To: <MN0PR12MB6101DE067CF85E59AF187763E2499@MN0PR12MB6101.namprd12.prod.outlook.com>
-From:   Karol Herbst <kherbst@redhat.com>
-Date:   Thu, 1 Jun 2023 20:10:26 +0200
-Message-ID: <CACO55tuqAH5Zt+X9pjLFZ-RcFgxpgjpqmrAHPvm4=fb_DMBHyw@mail.gmail.com>
-Subject: Re: Regression from "ACPI: OSI: Remove Linux-Dell-Video _OSI string"?
- (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of system)
-To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
-Cc:     Nick Hastings <nicholaschastings@gmail.com>,
-        Lyude Paul <lyude@redhat.com>, Lukas Wunner <lukas@wunner.de>,
-        Salvatore Bonaccorso <carnil@debian.org>,
-        "1036530@bugs.debian.org" <1036530@bugs.debian.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+References: <20230523161815.3083-1-wyes.karny@amd.com> <168563860014.2889935.9236369807138013890.b4-ty@chromium.org>
+In-Reply-To: <168563860014.2889935.9236369807138013890.b4-ty@chromium.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 1 Jun 2023 20:21:36 +0200
+Message-ID: <CAJZ5v0jpZQ-kMikEPUvuESxX+OMVyx97zDxavs9WhTiyu7ZA1g@mail.gmail.com>
+Subject: Re: [PATCH] acpi: Replace struct acpi_table_slit 1-element array with flex-array
+To:     Kees Cook <keescook@chromium.org>
+Cc:     lenb@kernel.org, rafael@kernel.org, wyes.karny@amd.com,
+        robert.moore@intel.com, acpica-devel@lists.linuxfoundation.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 1, 2023 at 7:21=E2=80=AFPM Limonciello, Mario
-<Mario.Limonciello@amd.com> wrote:
+On Thu, Jun 1, 2023 at 6:57 PM Kees Cook <keescook@chromium.org> wrote:
 >
-> [AMD Official Use Only - General]
->
-> > -----Original Message-----
-> > From: Karol Herbst <kherbst@redhat.com>
-> > Sent: Thursday, June 1, 2023 12:19 PM
-> > To: Limonciello, Mario <Mario.Limonciello@amd.com>
-> > Cc: Nick Hastings <nicholaschastings@gmail.com>; Lyude Paul
-> > <lyude@redhat.com>; Lukas Wunner <lukas@wunner.de>; Salvatore
-> > Bonaccorso <carnil@debian.org>; 1036530@bugs.debian.org; Rafael J.
-> > Wysocki <rafael@kernel.org>; Len Brown <lenb@kernel.org>; linux-
-> > acpi@vger.kernel.org; linux-kernel@vger.kernel.org;
-> > regressions@lists.linux.dev
-> > Subject: Re: Regression from "ACPI: OSI: Remove Linux-Dell-Video _OSI
-> > string"? (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of sys=
-tem)
+> On Tue, 23 May 2023 16:18:15 +0000, Wyes Karny wrote:
+> > struct acpi_table_slit is used for copying System Locality Information
+> > Table data from ACPI tables. Here `entry` is a flex array but it was
+> > using ancient 1-element fake flexible array, which has been deprecated.
+> > Replace it with a C99 flexible array.
 > >
-> > On Thu, Jun 1, 2023 at 6:54=E2=80=AFPM Limonciello, Mario
-> > <Mario.Limonciello@amd.com> wrote:
-> > >
-> > > [AMD Official Use Only - General]
-> > >
-> > > > -----Original Message-----
-> > > > From: Karol Herbst <kherbst@redhat.com>
-> > > > Sent: Thursday, June 1, 2023 11:33 AM
-> > > > To: Limonciello, Mario <Mario.Limonciello@amd.com>
-> > > > Cc: Nick Hastings <nicholaschastings@gmail.com>; Lyude Paul
-> > > > <lyude@redhat.com>; Lukas Wunner <lukas@wunner.de>; Salvatore
-> > > > Bonaccorso <carnil@debian.org>; 1036530@bugs.debian.org; Rafael J.
-> > > > Wysocki <rafael@kernel.org>; Len Brown <lenb@kernel.org>; linux-
-> > > > acpi@vger.kernel.org; linux-kernel@vger.kernel.org;
-> > > > regressions@lists.linux.dev
-> > > > Subject: Re: Regression from "ACPI: OSI: Remove Linux-Dell-Video _O=
-SI
-> > > > string"? (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of
-> > system)
-> > > >
-> > > > On Thu, Jun 1, 2023 at 6:18=E2=80=AFPM Limonciello, Mario
-> > > > <mario.limonciello@amd.com> wrote:
-> > > > >
-> > > > > +Lyude, Lukas, Karol
-> > > > >
-> > > > > On 5/31/2023 6:40 PM, Nick Hastings wrote:
-> > > > > > Hi,
-> > > > > >
-> > > > > > * Nick Hastings <nicholaschastings@gmail.com> [230530 16:01]:
-> > > > > >> * Mario Limonciello <mario.limonciello@amd.com> [230530 13:00]=
-:
-> > > > > > <snip>
-> > > > > >>> As you're actually loading nouveau, can you please try
-> > > > nouveau.runpm=3D0 on
-> > > > > >>> the kernel command line?
-> > > > > >> I'm not intentionally loading it. This machine also has intel =
-graphics
-> > > > > >> which is what I prefer. Checking my
-> > > > > >> /etc/modprobe.d/blacklist-nvidia-nouveau.conf
-> > > > > >> I see:
-> > > > > >>
-> > > > > >> blacklist nvidia
-> > > > > >> blacklist nvidia-drm
-> > > > > >> blacklist nvidia-modeset
-> > > > > >> blacklist nvidia-uvm
-> > > > > >> blacklist ipmi_msghandler
-> > > > > >> blacklist ipmi_devintf
-> > > > > >>
-> > > > > >> So I thought I had blacklisted it but it seems I did not. Sinc=
-e I do not
-> > > > > >> want to use it maybe it is better to check if the lock up occu=
-rs with
-> > > > > >> nouveau blacklisted. I will try that now.
-> > > > > > I blacklisted nouveau and booted into a 6.1 kernel:
-> > > > > > % uname -a
-> > > > > > Linux xps 6.1.0-9-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.27-1
-> > > > (2023-05-08) x86_64 GNU/Linux
-> > > > > >
-> > > > > > It has been running without problems for nearly two days now:
-> > > > > > % uptime
-> > > > > >   08:34:48 up 1 day, 16:22,  2 users,  load average: 1.33, 1.26=
-, 1.27
-> > > > > >
-> > > > > > Regards,
-> > > > > >
-> > > > > > Nick.
-> > > > >
-> > > > > Thanks, that makes a lot more sense now.
-> > > > >
-> > > > > Nick, Can you please test if nouveau works with runtime PM in the
-> > > > > latest 6.4-rc?
-> > > > >
-> > > > > If it works in 6.4-rc, there are probably nouveau commits that ne=
-ed
-> > > > > to be backported to 6.1 LTS.
-> > > > >
-> > > > > If it's still broken in 6.4-rc, I believe you should file a bug:
-> > > > >
-> > > > > https://gitlab.freedesktop.org/drm/nouveau/
-> > > > >
-> > > > >
-> > > > > Lyude, Lukas, Karol
-> > > > >
-> > > > > This thread is in relation to this commit:
-> > > > >
-> > > > > 24867516f06d ("ACPI: OSI: Remove Linux-Dell-Video _OSI string")
-> > > > >
-> > > > > Nick has found that runtime PM is *not* working for nouveau.
-> > > > >
-> > > >
-> > > > keep in mind we have a list of PCIe controllers where we apply a
-> > > > workaround:
-> > > >
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/drivers
-> > > > /gpu/drm/nouveau/nouveau_drm.c?h=3Dv6.4-rc4#n682
-> > > >
-> > > > And I suspect there might be one or two more IDs we'll have to add
-> > > > there. Do we have any logs?
-> > >
-> > > There's some archived onto the distro bug.  Search this page for
-> > "journalctl.log.gz"
-> > > https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1036530
-> > >
 > >
-> > interesting.. It seems to be the same controller used here. I wonder
-> > if the pci topology is different or if the workaround is applied at
-> > all.
 >
-> I didn't see the message in the log about the workaround being applied
-> in that log, so I guess PCI topology difference is a likely suspect.
+> Since this is a fix for -fstrict-flex-arrays=3, I can carry this in the
+> hardening tree until it shows up in upstream ACPICA.
 >
+> Applied to for-next/hardening, thanks!
+>
+> [1/1] acpi: Replace struct acpi_table_slit 1-element array with flex-array
+>       https://git.kernel.org/kees/c/0233ca593eba
 
-yeah, but I also couldn't see a log with the usual nouveau messages,
-so it's kinda weird.
-
-Anyway, the output of `lspci -tvnn` would help
-
-> >
-> > But yeah, I'd kinda love for somebody with better knowledge on all of
-> > this to figure out what exactly is going wrong, but everytime this
-> > gets investigated Intel says "our hardware has no bugs", the ACPI
-> > folks dig for months and find nothing and I end up figuring out some
-> > weirdo workaround I don't understand. And apparently also nobody is
-> > able to hand out docs explaining in detail how that runtime
-> > suspend/resume stuff is supposed to work.
-> >
-> > I have a Dell XPS 9560 where the added workaround in nouveau fixed the
-> > problem and I know it's fixed on a bunch of other systems. So if
-> > anybody is willing to publish docs and/or actually debug it with
-> > domain knowledge, please go ahead.
-> >
-> > > > And could anybody test if adding the
-> > > > controller in play here does resolve the problem?
-> > > >
-> > > > > If you recall we did 24867516f06d because 5775b843a619 was
-> > > > > supposed to have fixed it.
-> > > > >
-> > >
->
-
+Works for me, thanks!
