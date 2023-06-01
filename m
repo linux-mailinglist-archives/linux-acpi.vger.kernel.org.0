@@ -2,53 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9EBC719E9E
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 15:45:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7EC8719E92
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 15:45:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233226AbjFANpJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Jun 2023 09:45:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46060 "EHLO
+        id S233240AbjFANpS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Jun 2023 09:45:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233300AbjFANpH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 09:45:07 -0400
+        with ESMTP id S234037AbjFANpQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 09:45:16 -0400
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8364019F;
-        Thu,  1 Jun 2023 06:45:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 423761A2;
+        Thu,  1 Jun 2023 06:45:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685627103; x=1717163103;
+  t=1685627110; x=1717163110;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=WoghFPLJJmwA8gTZVBZZPRlBetblz1Bh8YAjwgqBN48=;
-  b=HlSomfq3qIzluzrQ7/jaNDMkTnxVWTMzTIGSr+jiIXHqcNXgB3Ar02TA
-   a5FR8J8odidjr4phy3auSRYYh/1BF3fDnRF/gNhasV0yQBw/ZZYKnweCV
-   TJbJUJODxEDr2/pXq+b0IJvFSDsKS5BuXm9dlxpW81mQdXMjsm4v7FDZD
-   4rOmA7dvMtSSxqCi6ck/RkCk6/xYikende8CFMgVJ8VZb+HTZWCZ+zWst
-   t+i6VVIJAl+hJ4JhFPxQQreJWVBKlBtHC3x1+Dy8yZ54RJVkJBE/8SsNO
-   1LDQBcRiGh1VIo1aDYrpttfkzWph2kNKNWuPdm9vdGgcSI69m68D2JRIK
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="419068022"
+  bh=NQLWnXWZae271CRjFuvZfxarWxX1dDRBywhMvrqXcx0=;
+  b=Oojb5xdGjGhUKGW0c9jaS+z8+BExXEKRYGdhHdkovlCXpVbUl8yy1AQf
+   CeHg0CUJX3YtJtoc95NvugZjlKFvWlaLefr39DC3PbZiqSXPFo8FmgDMj
+   F6DN1z7YumaUb1hsaQsQ04YreOub/Jd4RY+oOQ42oIAGjW03koyX8D5pG
+   Ys/4QVG7sz+7cPmGzM/Dbsz137pB0CEm0osZJEbFbbejLJoZkiG7p1egL
+   wh7UouT31EX5n8WNz8QtYISzcLHG7T7NA0oKG38OkVyaT0Ygxmf6btA+T
+   dPyZlhF+iOUEH5ZLYRPXpHfODSvNvXl7Rr/mOZN7GGWlVKzisVbxBwIVw
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="419068093"
 X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="419068022"
+   d="scan'208";a="419068093"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:19:36 -0700
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:19:39 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="881601868"
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="881601895"
 X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="881601868"
+   d="scan'208";a="881601895"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:19:34 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:19:37 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
-To:     Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>,
-        Daniel Oliveira Nascimento <don@syst.com.br>,
+To:     =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
         Hans de Goede <hdegoede@redhat.com>,
         Mark Gross <markgross@kernel.org>
 Cc:     Michal Wilczynski <michal.wilczynski@intel.com>,
         platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
         rafael@kernel.org
-Subject: [PATCH v4 18/35] platform/x86/classmate-laptop: Move handler installing logic to driver
-Date:   Thu,  1 Jun 2023 15:17:21 +0200
-Message-Id: <20230601131739.300760-19-michal.wilczynski@intel.com>
+Subject: [PATCH v4 19/35] platform/x86/dell/dell-rbtn: Move handler installing logic to driver
+Date:   Thu,  1 Jun 2023 15:17:22 +0200
+Message-Id: <20230601131739.300760-20-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230601131739.300760-3-michal.wilczynski@intel.com>
 References: <20230601131739.300760-3-michal.wilczynski@intel.com>
@@ -78,176 +77,66 @@ what's required by acpi_device_install_event_handler().
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/platform/x86/classmate-laptop.c | 53 +++++++++++++++++++------
- 1 file changed, 41 insertions(+), 12 deletions(-)
+ drivers/platform/x86/dell/dell-rbtn.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/platform/x86/classmate-laptop.c b/drivers/platform/x86/classmate-laptop.c
-index 2edaea2492df..2d36abf5ecfe 100644
---- a/drivers/platform/x86/classmate-laptop.c
-+++ b/drivers/platform/x86/classmate-laptop.c
-@@ -180,8 +180,9 @@ static acpi_status cmpc_get_accel_v4(acpi_handle handle,
- 	return status;
- }
+diff --git a/drivers/platform/x86/dell/dell-rbtn.c b/drivers/platform/x86/dell/dell-rbtn.c
+index aa0e6c907494..4dcad59eb035 100644
+--- a/drivers/platform/x86/dell/dell-rbtn.c
++++ b/drivers/platform/x86/dell/dell-rbtn.c
+@@ -207,7 +207,7 @@ static void rbtn_input_event(struct rbtn_data *rbtn_data)
  
--static void cmpc_accel_handler_v4(struct acpi_device *dev, u32 event)
-+static void cmpc_accel_handler_v4(acpi_handle handle, u32 event, void *data)
- {
-+	struct acpi_device *dev = data;
- 	if (event == 0x81) {
- 		int16_t x, y, z;
- 		acpi_status status;
-@@ -407,6 +408,11 @@ static int cmpc_accel_add_v4(struct acpi_device *acpi)
- 	inputdev = dev_get_drvdata(&acpi->dev);
- 	dev_set_drvdata(&inputdev->dev, accel);
+ static int rbtn_add(struct acpi_device *device);
+ static void rbtn_remove(struct acpi_device *device);
+-static void rbtn_notify(struct acpi_device *device, u32 event);
++static void rbtn_notify(acpi_handle handle, u32 event, void *data);
  
-+	error = acpi_device_install_event_handler(acpi, ACPI_DEVICE_NOTIFY,
-+						  cmpc_accel_handler_v4);
-+	if (error)
-+		goto failed_input;
-+
- 	return 0;
- 
- failed_input:
-@@ -420,6 +426,7 @@ static int cmpc_accel_add_v4(struct acpi_device *acpi)
- 
- static void cmpc_accel_remove_v4(struct acpi_device *acpi)
- {
-+	acpi_device_remove_event_handler(acpi, ACPI_DEVICE_NOTIFY, cmpc_accel_handler_v4);
- 	device_remove_file(&acpi->dev, &cmpc_accel_sensitivity_attr_v4);
- 	device_remove_file(&acpi->dev, &cmpc_accel_g_select_attr_v4);
- 	cmpc_remove_acpi_notify_device(acpi);
-@@ -441,7 +448,6 @@ static struct acpi_driver cmpc_accel_acpi_driver_v4 = {
+ static const struct acpi_device_id rbtn_ids[] = {
+ 	{ "DELRBTN", 0 },
+@@ -293,7 +293,6 @@ static struct acpi_driver rbtn_driver = {
  	.ops = {
- 		.add = cmpc_accel_add_v4,
- 		.remove = cmpc_accel_remove_v4,
--		.notify = cmpc_accel_handler_v4,
+ 		.add = rbtn_add,
+ 		.remove = rbtn_remove,
+-		.notify = rbtn_notify,
  	},
- 	.drv.pm = &cmpc_accel_pm,
+ 	.owner = THIS_MODULE,
  };
-@@ -523,8 +529,10 @@ static acpi_status cmpc_get_accel(acpi_handle handle,
- 	return status;
- }
- 
--static void cmpc_accel_handler(struct acpi_device *dev, u32 event)
-+static void cmpc_accel_handler(acpi_handle handle, u32 event, void *data)
- {
-+	struct acpi_device *dev = data;
-+
- 	if (event == 0x81) {
- 		unsigned char x, y, z;
- 		acpi_status status;
-@@ -639,6 +647,11 @@ static int cmpc_accel_add(struct acpi_device *acpi)
- 	inputdev = dev_get_drvdata(&acpi->dev);
- 	dev_set_drvdata(&inputdev->dev, accel);
- 
-+	error = acpi_device_install_event_handler(acpi, ACPI_DEVICE_NOTIFY,
-+						  cmpc_accel_handler);
-+	if (error)
-+		goto failed_input;
-+
- 	return 0;
- 
- failed_input:
-@@ -650,6 +663,7 @@ static int cmpc_accel_add(struct acpi_device *acpi)
- 
- static void cmpc_accel_remove(struct acpi_device *acpi)
- {
-+	acpi_device_remove_event_handler(acpi, ACPI_DEVICE_NOTIFY, cmpc_accel_handler);
- 	device_remove_file(&acpi->dev, &cmpc_accel_sensitivity_attr);
- 	cmpc_remove_acpi_notify_device(acpi);
- }
-@@ -667,7 +681,6 @@ static struct acpi_driver cmpc_accel_acpi_driver = {
- 	.ops = {
- 		.add = cmpc_accel_add,
- 		.remove = cmpc_accel_remove,
--		.notify = cmpc_accel_handler,
+@@ -422,7 +421,10 @@ static int rbtn_add(struct acpi_device *device)
+ 		ret = -EINVAL;
  	}
- };
  
-@@ -693,8 +706,9 @@ static acpi_status cmpc_get_tablet(acpi_handle handle,
- 	return status;
- }
- 
--static void cmpc_tablet_handler(struct acpi_device *dev, u32 event)
-+static void cmpc_tablet_handler(acpi_handle handle, u32 event, void *data)
- {
-+	struct acpi_device *dev = data;
- 	unsigned long long val = 0;
- 	struct input_dev *inputdev = dev_get_drvdata(&dev->dev);
- 
-@@ -723,12 +737,20 @@ static void cmpc_tablet_idev_init(struct input_dev *inputdev)
- 
- static int cmpc_tablet_add(struct acpi_device *acpi)
- {
--	return cmpc_add_acpi_notify_device(acpi, "cmpc_tablet",
--					   cmpc_tablet_idev_init);
-+	int ret;
-+
-+	ret = cmpc_add_acpi_notify_device(acpi, "cmpc_tablet",
-+					  cmpc_tablet_idev_init);
+-	return ret;
 +	if (ret)
 +		return ret;
 +
-+	return acpi_device_install_event_handler(acpi, ACPI_DEVICE_NOTIFY,
-+						 cmpc_tablet_handler);
++	return acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY, rbtn_notify);
+ 
  }
  
- static void cmpc_tablet_remove(struct acpi_device *acpi)
+@@ -430,6 +432,8 @@ static void rbtn_remove(struct acpi_device *device)
  {
-+	acpi_device_remove_event_handler(acpi, ACPI_DEVICE_NOTIFY, cmpc_tablet_handler);
- 	cmpc_remove_acpi_notify_device(acpi);
- }
+ 	struct rbtn_data *rbtn_data = device->driver_data;
  
-@@ -761,7 +783,6 @@ static struct acpi_driver cmpc_tablet_acpi_driver = {
- 	.ops = {
- 		.add = cmpc_tablet_add,
- 		.remove = cmpc_tablet_remove,
--		.notify = cmpc_tablet_handler,
- 	},
- 	.drv.pm = &cmpc_tablet_pm,
- };
-@@ -1026,8 +1047,9 @@ static int cmpc_keys_codes[] = {
- 	KEY_MAX
- };
- 
--static void cmpc_keys_handler(struct acpi_device *dev, u32 event)
-+static void cmpc_keys_handler(acpi_handle handle, u32 event, void *data)
- {
-+	struct acpi_device *dev = data;
- 	struct input_dev *inputdev;
- 	int code = KEY_MAX;
- 
-@@ -1049,12 +1071,20 @@ static void cmpc_keys_idev_init(struct input_dev *inputdev)
- 
- static int cmpc_keys_add(struct acpi_device *acpi)
- {
--	return cmpc_add_acpi_notify_device(acpi, "cmpc_keys",
--					   cmpc_keys_idev_init);
-+	int error;
++	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, rbtn_notify);
 +
-+	error = cmpc_add_acpi_notify_device(acpi, "cmpc_keys",
-+					    cmpc_keys_idev_init);
-+	if (error)
-+		return error;
-+
-+	return acpi_device_install_event_handler(acpi, ACPI_DEVICE_NOTIFY,
-+						 cmpc_keys_handler);
+ 	switch (rbtn_data->type) {
+ 	case RBTN_TOGGLE:
+ 		rbtn_input_exit(rbtn_data);
+@@ -445,9 +449,12 @@ static void rbtn_remove(struct acpi_device *device)
+ 	device->driver_data = NULL;
  }
  
- static void cmpc_keys_remove(struct acpi_device *acpi)
+-static void rbtn_notify(struct acpi_device *device, u32 event)
++static void rbtn_notify(acpi_handle handle, u32 event, void *data)
  {
-+	acpi_device_remove_event_handler(acpi, ACPI_DEVICE_NOTIFY, cmpc_keys_handler);
- 	cmpc_remove_acpi_notify_device(acpi);
- }
+-	struct rbtn_data *rbtn_data = device->driver_data;
++	struct acpi_device *device = data;
++	struct rbtn_data *rbtn_data;
++
++	rbtn_data = device->driver_data;
  
-@@ -1071,7 +1101,6 @@ static struct acpi_driver cmpc_keys_acpi_driver = {
- 	.ops = {
- 		.add = cmpc_keys_add,
- 		.remove = cmpc_keys_remove,
--		.notify = cmpc_keys_handler,
- 	}
- };
- 
+ 	/*
+ 	 * Some BIOSes send a notification at resume.
 -- 
 2.40.1
 
