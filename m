@@ -2,79 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5237B718F13
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 01:40:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6719871902D
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 03:48:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229689AbjEaXky (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 31 May 2023 19:40:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41334 "EHLO
+        id S229874AbjFABsz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 31 May 2023 21:48:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbjEaXkw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 31 May 2023 19:40:52 -0400
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8392812C;
-        Wed, 31 May 2023 16:40:51 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-ba8374001abso190191276.2;
-        Wed, 31 May 2023 16:40:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685576450; x=1688168450;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=l9Ip848C4+PX4sdvUZ6qA+ntR4dfPFEEj72E1ynrboE=;
-        b=pmbEWlVHe2mnM0kY4kuCc8OnetP493gSGJbXzI0xxIWrd9LL1PS2D18wAYrEiMStCL
-         kSECDoiKsGntGM8Qe/H2nkvREyJNry15290+xo6UUF35/UPatbv6uJYbVG75Wk1ONQIB
-         AhH3qjpWVy+4GBZzEN8xgxZQj/Tkd9S/nyJOfXlCLlVtdAyGu1P4o2u717AiWZHW+c19
-         D9CZ3d2bRgmD/JPI/4xt4fIi70g3/Nf8LyKL9Sezm1/8Wh3MZW0c52CUJ3wOBk5cjZHV
-         36lw14neIoDR3GRB63G/ON1Kt5h0Y3kUvJYPlfYKlmBByDCkTwVXClzuw4iAC0VK+B4k
-         MDhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685576450; x=1688168450;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l9Ip848C4+PX4sdvUZ6qA+ntR4dfPFEEj72E1ynrboE=;
-        b=Dqg/CBuRzZNuXM0AHkq6DrY+YB35Cz9c2FpxH1axsu4GSRcik6bwNVJaUH9JvdX3wW
-         if5cZ/5ApIbMehY4J1C6sNAcDVITHelMmLZky/f27f9Xs396/L4FCA/WMkMARVdC/L1t
-         LSqfuL2eXzS2cqI1uvwvjX4Mthi1j/fCh00YuX4HlBPpFkOeModRBo6gdxuyih1xTpwO
-         sM+svSWbi+gpii3ygoVq4vbhF2OEU+ybN7GZSBqUerMmTaL9xCTrUDvrKZNUinIYAD1W
-         viqyPsVEYieylUxb5vGyqCwvo+uvtOhDB3WUX+GmZT6ouaSMDWuyKd7ZgUInR1b/kE/5
-         BEgQ==
-X-Gm-Message-State: AC+VfDxOAOs3o10saDSOl4SlpKRG6g97O5m8XYOcJcx6pEbAJxvJ42TL
-        5AL1APjvi5rPxUqTcShk/Q8=
-X-Google-Smtp-Source: ACHHUZ6hg+BzE3S+Lb8Ii8mZm+C3Ly8o+bGGFHw0M9DuMbORKjj6D6SrCydAYiE87Dhw9g1FQVOWtA==
-X-Received: by 2002:a25:be04:0:b0:bab:f4bb:9402 with SMTP id h4-20020a25be04000000b00babf4bb9402mr7628265ybk.46.1685576450666;
-        Wed, 31 May 2023 16:40:50 -0700 (PDT)
-Received: from localhost ([2405:6581:d4e0:1600:c494:2aca:bc01:6f7b])
-        by smtp.gmail.com with ESMTPSA id ja10-20020a170902efca00b001b0358848b0sm1957355plb.161.2023.05.31.16.40.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 May 2023 16:40:49 -0700 (PDT)
-Date:   Thu, 1 Jun 2023 08:40:47 +0900
-From:   Nick Hastings <nicholaschastings@gmail.com>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Salvatore Bonaccorso <carnil@debian.org>, 1036530@bugs.debian.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: Regression from "ACPI: OSI: Remove Linux-Dell-Video _OSI
- string"? (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of system)
-Message-ID: <ZHfa/wQlaVCeUC22@xps>
-References: <168471337231.1913606.15905047692536779158.reportbug@xps>
- <ZHKrC4/G6ZyvRReI@xps>
- <ZHL5cCNUzVdleiag@eldamar.lan>
- <ab12984e-be17-903d-ba0a-f9c85b8c544f@amd.com>
- <ZHP4IqxBUPuVRvRV@xps>
- <09e24386-de63-e9e9-9e7f-5d04bad62d83@amd.com>
- <ZHQhPcKUF76Kplwm@xps>
- <ZHUt9xQKCwCflvVC@xps>
- <8537d965-ddf4-7f45-6459-d5acf520376e@amd.com>
- <ZHWfMBeAONerAJmd@xps>
+        with ESMTP id S229618AbjFABsy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 31 May 2023 21:48:54 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57C5BA3;
+        Wed, 31 May 2023 18:48:52 -0700 (PDT)
+Received: from dggpemm500002.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4QWpqy5DdHzLqM9;
+        Thu,  1 Jun 2023 09:45:50 +0800 (CST)
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Thu, 1 Jun 2023 09:48:49 +0800
+Subject: Re: [PATCH] acpi: Fix header declaration of acpi_arch_dma_setup() w/o
+ CONFIG_ACPI
+To:     Dave Jiang <dave.jiang@intel.com>, <lpieralisi@kernel.org>,
+        <sudeep.holla@arm.com>
+CC:     kernel test robot <lkp@intel.com>,
+        Jianmin Lv <lvjianmin@loongson.cn>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        <rafael@kernel.org>, <lenb@kernel.org>,
+        <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+References: <168477156440.3873520.6153672647621739139.stgit@djiang5-mobl3>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <0953941a-ad4e-ba7e-4f4e-64c47de71f0b@huawei.com>
+Date:   Thu, 1 Jun 2023 09:48:32 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZHWfMBeAONerAJmd@xps>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+In-Reply-To: <168477156440.3873520.6153672647621739139.stgit@djiang5-mobl3>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.247]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpemm500002.china.huawei.com (7.185.36.229)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,40 +56,41 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi Dave,
 
-* Nick Hastings <nicholaschastings@gmail.com> [230530 16:01]:
+Sorry for the late reply, I have some comments inline.
+
+On 2023/5/23 0:06, Dave Jiang wrote:
+> arm64 build can be done without CONFIG_ACPI. The ifdef bits for
+> acpi_arch_dma_setup() is placed inside CONFIG_ACPI. When CONFIG_ACPI is
+> not set, this causes warning reported by kernel test bot. Move the
+> prototype declaration for acpi_arch_dma_setup() outside of CONFIG_ACPI.
+
+...
+
 > 
-> * Mario Limonciello <mario.limonciello@amd.com> [230530 13:00]:
-<snip>
-> > As you're actually loading nouveau, can you please try nouveau.runpm=0 on
-> > the kernel command line?
+>>> drivers/acpi/arm64/dma.c:7:6: warning: no previous prototype for function 'acpi_arch_dma_setup' [-Wmissing-prototypes]
+>     void acpi_arch_dma_setup(struct device *dev)
+>          ^
+>     drivers/acpi/arm64/dma.c:7:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+>     void acpi_arch_dma_setup(struct device *dev)
+>     ^
+>     static
+>     1 warning generated.
+
+drivers/acpi can only be compiled with CONFIG_ACPI=y, so
+drivers/acpi/arm64/ will be the same, not sure how to trigger
+this compile warning.
+
+I disable CONFIG_ACPI on my ARM64 machine, but didn't get the
+warning you reported.
+
 > 
-> I'm not intentionally loading it. This machine also has intel graphics
-> which is what I prefer. Checking my
-> /etc/modprobe.d/blacklist-nvidia-nouveau.conf
-> I see:
-> 
-> blacklist nvidia
-> blacklist nvidia-drm
-> blacklist nvidia-modeset
-> blacklist nvidia-uvm
-> blacklist ipmi_msghandler
-> blacklist ipmi_devintf
-> 
-> So I thought I had blacklisted it but it seems I did not. Since I do not
-> want to use it maybe it is better to check if the lock up occurs with
-> nouveau blacklisted. I will try that now.
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202305200933.afKCLlxS-lkp@intel.com/
 
-I blacklisted nouveau and booted into a 6.1 kernel:
-% uname -a
-Linux xps 6.1.0-9-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.27-1 (2023-05-08) x86_64 GNU/Linux
+How to generate the kernel config file as you kindly attached in the
+link?
 
-It has been running without problems for nearly two days now:
-% uptime
- 08:34:48 up 1 day, 16:22,  2 users,  load average: 1.33, 1.26, 1.27
-
-Regards,
-
-Nick.
-
+Thanks
+Hanjun
