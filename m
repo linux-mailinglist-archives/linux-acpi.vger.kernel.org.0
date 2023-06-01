@@ -2,152 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCDF971EEE6
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 18:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02E9371EF23
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 18:34:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231545AbjFAQ1r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Jun 2023 12:27:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48432 "EHLO
+        id S231702AbjFAQeI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Jun 2023 12:34:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229880AbjFAQ1q (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 12:27:46 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F125212C;
-        Thu,  1 Jun 2023 09:27:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685636865; x=1717172865;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Re3XUbJYE5wz7BKtwG+m2aCGFJz7ak2dDNPkBnP/kmg=;
-  b=LYgA2WPWdZssZmEPeY1Rr7lbbbRrKYNF+Zx9CsW+bPHxHc/Jlcrw8oiJ
-   ofN7lYLmBsbsCHD8m3dkobK24qeA5W0mlyrxABaxLDG1aEREmk0AqVRW3
-   QV+25pR3UC2lrQjiotkiHroCv7FQ2XYhGq+v+4EFYyTtkMOO7I/U3EJ0Q
-   jrQwCMxIL7WbP+Tw7TyRifglzAMurA3XfL+2KRSk/h40phCt0L0uS9aGR
-   bckw71Gv8lbaIoau2digHUiKJrNB1eTd7QtzfsuTXzudG4qOCGmMEmpSv
-   bsylEhnfUSIK7Z+5f/FiYr7d+VHztapVvasLBya//SzcV1LdMNfrN+3av
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="345169915"
-X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="345169915"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 09:27:44 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="657859553"
-X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="657859553"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga003.jf.intel.com with ESMTP; 01 Jun 2023 09:27:34 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1q4l98-000SZF-0S;
-        Thu, 01 Jun 2023 19:27:30 +0300
-Date:   Thu, 1 Jun 2023 19:27:29 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonas Gorski <jonas.gorski@gmail.com>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        linux-pci@vger.kernel.org,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        linux-kernel@vger.kernel.org,
-        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
-        Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-acpi@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>,
-        Anatolij Gustschin <agust@denx.de>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Juergen Gross <jgross@suse.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-mips@vger.kernel.org,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        linux-alpha@vger.kernel.org,
-        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: Re: [PATCH v8 0/7] Add pci_dev_for_each_resource() helper and update
- users
-Message-ID: <ZHjG8cBIdZsjhDOe@smile.fi.intel.com>
-References: <ZF6YIezraETr9iNM@bhelgaas>
- <ZHZpcli2UmdzHgme@bhelgaas>
- <CAOiHx==5YWhDiZP2PyHZiJrmtqRzvqCqoSO59RwuYuR85BezBg@mail.gmail.com>
- <ZHjGik12vSFgi1eO@smile.fi.intel.com>
+        with ESMTP id S231728AbjFAQeG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 12:34:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 109A2186
+        for <linux-acpi@vger.kernel.org>; Thu,  1 Jun 2023 09:33:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1685637201;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=lKfNaN4l/MR8zlLzyVVW3/Ll4oj7wzuBoASQm/awxOs=;
+        b=R9TqJXdwZO/16nglc0belNuDy2umOpByCMZBSSJ8Kuk3fR5th/5pDQPcdf+e4YVD0LHttL
+        3hqFHACSTEe/UXAM/kRgh+LGeo00zzhpuF/hHzrNe9/8wA8pyI475+udb51o4xYfMZsvka
+        zG2DdyDxDl3aYm2DBQGbXbLI1IxbS68=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-135-a6kDnDnOOoWwZBqwilPnnQ-1; Thu, 01 Jun 2023 12:33:19 -0400
+X-MC-Unique: a6kDnDnOOoWwZBqwilPnnQ-1
+Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-2af1cf1a118so29901fa.0
+        for <linux-acpi@vger.kernel.org>; Thu, 01 Jun 2023 09:33:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685637198; x=1688229198;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lKfNaN4l/MR8zlLzyVVW3/Ll4oj7wzuBoASQm/awxOs=;
+        b=AaoaHQ3AG1gEAhzqRM2xFqp3vgCJCYuqb4QOnodpSe9CwgPAp7uLf08lMfwmcO5+Yq
+         IX6LsloYP1dNtOYV3QOSfgyMYsdPUCLdAzW1kruDC+xtQpMoe2fZxI8+dYyqtA89O3dQ
+         y9HQwrZ2ScxMU9CdAdd/2ol0pYNWC12kX4QzG7Z9G5NW9IGi2kp31yJr6MD+ue6WfPGH
+         wd5OxYM6cY1L6+mwMsG2bTUhK5xlb71GOQtGjv77FIIK6pKPhVoQCd7CxTsPfsSxRVuc
+         m1j2hBOODVlggf82BsCBWKTUXrXQ5BNcFCct9dWnMZzX4wqWwcsdfHuxgmByGE8/7AJP
+         C/Fg==
+X-Gm-Message-State: AC+VfDwjAFRMAwI8LOoKYGYlfiTs3iv6nwh0NK++6KM+63SdSqQuuO+K
+        vOfCqmyqaJweAosPnrYpGhEkD/P9imOL1a/dyfm2GPA++pEne0iaEPjhyuASDpqr5sqOj7saj/M
+        cVIVVEuAkDMakItrje4OSDSE7hVXuCK86wbFqzg==
+X-Received: by 2002:a2e:a4ac:0:b0:2b1:a69e:6a8e with SMTP id g12-20020a2ea4ac000000b002b1a69e6a8emr925281ljm.3.1685637198424;
+        Thu, 01 Jun 2023 09:33:18 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6sX+gZm7ZA5+9vSBRoryBdVNamolMuCnhrtAuIzv4GVF3xl6ftjdZdgSxoZfJGJTNBJipxrwFfnfQLsuMLFeU=
+X-Received: by 2002:a2e:a4ac:0:b0:2b1:a69e:6a8e with SMTP id
+ g12-20020a2ea4ac000000b002b1a69e6a8emr925265ljm.3.1685637198130; Thu, 01 Jun
+ 2023 09:33:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZHjGik12vSFgi1eO@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <168471337231.1913606.15905047692536779158.reportbug@xps>
+ <ZHKrC4/G6ZyvRReI@xps> <ZHL5cCNUzVdleiag@eldamar.lan> <ab12984e-be17-903d-ba0a-f9c85b8c544f@amd.com>
+ <ZHP4IqxBUPuVRvRV@xps> <09e24386-de63-e9e9-9e7f-5d04bad62d83@amd.com>
+ <ZHQhPcKUF76Kplwm@xps> <ZHUt9xQKCwCflvVC@xps> <8537d965-ddf4-7f45-6459-d5acf520376e@amd.com>
+ <ZHWfMBeAONerAJmd@xps> <ZHfa/wQlaVCeUC22@xps> <fe0ab1fa-6ed6-dc64-8165-8fc70669317b@amd.com>
+In-Reply-To: <fe0ab1fa-6ed6-dc64-8165-8fc70669317b@amd.com>
+From:   Karol Herbst <kherbst@redhat.com>
+Date:   Thu, 1 Jun 2023 18:33:07 +0200
+Message-ID: <CACO55tsuO1kQUFfPdPFUHm4WEQseCR2tQSDhFRzR+8wOECZCyA@mail.gmail.com>
+Subject: Re: Regression from "ACPI: OSI: Remove Linux-Dell-Video _OSI string"?
+ (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of system)
+To:     "Limonciello, Mario" <mario.limonciello@amd.com>
+Cc:     Nick Hastings <nicholaschastings@gmail.com>,
+        Lyude Paul <lyude@redhat.com>, Lukas Wunner <lukas@wunner.de>,
+        Salvatore Bonaccorso <carnil@debian.org>,
+        1036530@bugs.debian.org, "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, regressions@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 01, 2023 at 07:25:46PM +0300, Andy Shevchenko wrote:
-> On Wed, May 31, 2023 at 08:48:35PM +0200, Jonas Gorski wrote:
-> > On Tue, 30 May 2023 at 23:34, Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > On Fri, May 12, 2023 at 02:48:51PM -0500, Bjorn Helgaas wrote:
+On Thu, Jun 1, 2023 at 6:18=E2=80=AFPM Limonciello, Mario
+<mario.limonciello@amd.com> wrote:
+>
+> +Lyude, Lukas, Karol
+>
+> On 5/31/2023 6:40 PM, Nick Hastings wrote:
+> > Hi,
+> >
+> > * Nick Hastings <nicholaschastings@gmail.com> [230530 16:01]:
+> >> * Mario Limonciello <mario.limonciello@amd.com> [230530 13:00]:
+> > <snip>
+> >>> As you're actually loading nouveau, can you please try nouveau.runpm=
+=3D0 on
+> >>> the kernel command line?
+> >> I'm not intentionally loading it. This machine also has intel graphics
+> >> which is what I prefer. Checking my
+> >> /etc/modprobe.d/blacklist-nvidia-nouveau.conf
+> >> I see:
+> >>
+> >> blacklist nvidia
+> >> blacklist nvidia-drm
+> >> blacklist nvidia-modeset
+> >> blacklist nvidia-uvm
+> >> blacklist ipmi_msghandler
+> >> blacklist ipmi_devintf
+> >>
+> >> So I thought I had blacklisted it but it seems I did not. Since I do n=
+ot
+> >> want to use it maybe it is better to check if the lock up occurs with
+> >> nouveau blacklisted. I will try that now.
+> > I blacklisted nouveau and booted into a 6.1 kernel:
+> > % uname -a
+> > Linux xps 6.1.0-9-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.27-1 (2023-05=
+-08) x86_64 GNU/Linux
+> >
+> > It has been running without problems for nearly two days now:
+> > % uptime
+> >   08:34:48 up 1 day, 16:22,  2 users,  load average: 1.33, 1.26, 1.27
+> >
+> > Regards,
+> >
+> > Nick.
+>
+> Thanks, that makes a lot more sense now.
+>
+> Nick, Can you please test if nouveau works with runtime PM in the
+> latest 6.4-rc?
+>
+> If it works in 6.4-rc, there are probably nouveau commits that need
+> to be backported to 6.1 LTS.
+>
+> If it's still broken in 6.4-rc, I believe you should file a bug:
+>
+> https://gitlab.freedesktop.org/drm/nouveau/
+>
+>
+> Lyude, Lukas, Karol
+>
+> This thread is in relation to this commit:
+>
+> 24867516f06d ("ACPI: OSI: Remove Linux-Dell-Video _OSI string")
+>
+> Nick has found that runtime PM is *not* working for nouveau.
+>
 
-...
+keep in mind we have a list of PCIe controllers where we apply a
+workaround: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.=
+git/tree/drivers/gpu/drm/nouveau/nouveau_drm.c?h=3Dv6.4-rc4#n682
 
-> > > Where are we at?  Are we going to ignore this because some Coverity
-> > > reports are false positives?
-> > 
-> > Looking at the code I understand where coverity is coming from:
-> > 
-> > #define __pci_dev_for_each_res0(dev, res, ...)                         \
-> >        for (unsigned int __b = 0;                                      \
-> >             res = pci_resource_n(dev, __b), __b < PCI_NUM_RESOURCES;   \
-> >             __b++)
-> > 
-> >  res will be assigned before __b is checked for being less than
-> > PCI_NUM_RESOURCES, making it point to behind the array at the end of
-> > the last loop iteration.
-> 
-> Which is fine and you stumbled over the same mistake I made, that's why the
-> documentation has been added to describe why the heck this macro is written
-> the way it's written.
-> 
-> Coverity sucks.
-> 
-> > Rewriting the test expression as
-> > 
-> > __b < PCI_NUM_RESOURCES && (res = pci_resource_n(dev, __b));
-> > 
-> > should avoid the (coverity) warning by making use of lazy evaluation.
-> 
-> Obviously NAK.
-> 
-> > It probably makes the code slightly less performant as res will now be
-> > checked for being not NULL (which will always be true), but I doubt it
-> > will be significant (or in any hot paths).
+And I suspect there might be one or two more IDs we'll have to add
+there. Do we have any logs? And could anybody test if adding the
+controller in play here does resolve the problem?
 
-Oh my god, I mistakenly read this as bus macro, sorry for my rant,
-it's simply wrong.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+> If you recall we did 24867516f06d because 5775b843a619 was
+> supposed to have fixed it.
+>
 
