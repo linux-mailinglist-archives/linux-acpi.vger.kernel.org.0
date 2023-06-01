@@ -2,50 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A083719E74
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 15:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6295719E76
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 15:43:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232229AbjFANnP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Jun 2023 09:43:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45358 "EHLO
+        id S233357AbjFANnZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Jun 2023 09:43:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233035AbjFANnO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 09:43:14 -0400
+        with ESMTP id S233887AbjFANnT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 09:43:19 -0400
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15E7C13D;
-        Thu,  1 Jun 2023 06:43:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6227D18B;
+        Thu,  1 Jun 2023 06:43:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685626991; x=1717162991;
+  t=1685626996; x=1717162996;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=5vVrghpGOTA3RERE3zA1auppmXDXMvbIuTyU1BKRx+U=;
-  b=mywKz4Xx2Stoj4NJbE4x/FObERWAZ3THmVc0BkiGH+Wk0iFNL4HdsiuV
-   zNaz6387Iz6u61cekJbIhTdR9atebajCbV/p/b6vHLTOg7AexcgWYhvje
-   ml/kmh/bWpuDFG8SlPB1LAaTJlEbpICVOb3/7NzAZhSdVPnVvbxg2IUeX
-   ZO+9aVvXJRr69n5VoDOdSBJ+1OVEoo/dIjZ/P/QM3g4RrcY9mfhMamijj
-   8+5/tr+2EiqEMzsUTUVBvBYYfGg1AF1zp/lE8LipA48wP0yhW0TCK8odw
-   rJ5lu53ISuACgIddL97KOA3D8i45J7ee5RFhQlgTlBWfHLAf8D4kTJ3Qv
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="419066973"
+  bh=fkEaRIb+aCgkppCjudGHedC6J4w9GYBp7R496rzIUY4=;
+  b=hiPowNVq6Lwu4V5pb818dvIcM4BtbnDhGG+SJeMGLXxa0LiHAPH3mBM3
+   c20+lEdHUfiKtevklRAYlx3ulj9o8Cw2C8xBZ47/yP0xDH8AkWPnNLZsV
+   m4SUBbfrbJdb5/ljE/NeJn/YeR8kLv1hjglsQSPMDPR8xEJ9QFT/7H++a
+   /ygFVGav7Au1AN5iW7i3PtjxNCjyo0TNixpeq1JZB6fF+dgo8PFfnwvDO
+   vzhMpSwqI7O+XB89wZPPHkWWlORAun2wJI1G73tIQNUH0kV5S3nunW2gC
+   L9i+mLfRh4ueyECQy0/oX9evXcWsElGe207QV7qtb7pJiniC+JN48QWVO
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="419067027"
 X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="419066973"
+   d="scan'208";a="419067027"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:18:45 -0700
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:18:48 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="881601564"
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="881601590"
 X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="881601564"
+   d="scan'208";a="881601590"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:18:43 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:18:46 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
 To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>
+        Len Brown <lenb@kernel.org>
 Cc:     Michal Wilczynski <michal.wilczynski@intel.com>,
         linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org
-Subject: [PATCH v4 08/35] acpi/thermal: Move handler installing logic to driver
-Date:   Thu,  1 Jun 2023 15:17:11 +0200
-Message-Id: <20230601131739.300760-9-michal.wilczynski@intel.com>
+Subject: [PATCH v4 09/35] acpi/tiny-power-button: Move handler installing logic to driver
+Date:   Thu,  1 Jun 2023 15:17:12 +0200
+Message-Id: <20230601131739.300760-10-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230601131739.300760-3-michal.wilczynski@intel.com>
 References: <20230601131739.300760-3-michal.wilczynski@intel.com>
@@ -75,71 +75,51 @@ what's required by acpi_device_install_event_handler().
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/acpi/thermal.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/acpi/tiny-power-button.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-index 4720a3649a61..66156c5998b7 100644
---- a/drivers/acpi/thermal.c
-+++ b/drivers/acpi/thermal.c
-@@ -75,7 +75,7 @@ static struct workqueue_struct *acpi_thermal_pm_queue;
- 
- static int acpi_thermal_add(struct acpi_device *device);
- static void acpi_thermal_remove(struct acpi_device *device);
--static void acpi_thermal_notify(struct acpi_device *device, u32 event);
-+static void acpi_thermal_notify(acpi_handle handle, u32 event, void *data);
- 
- static const struct acpi_device_id  thermal_device_ids[] = {
- 	{ACPI_THERMAL_HID, 0},
-@@ -99,7 +99,6 @@ static struct acpi_driver acpi_thermal_driver = {
- 	.ops = {
- 		.add = acpi_thermal_add,
- 		.remove = acpi_thermal_remove,
--		.notify = acpi_thermal_notify,
- 		},
- 	.drv.pm = &acpi_thermal_pm,
+diff --git a/drivers/acpi/tiny-power-button.c b/drivers/acpi/tiny-power-button.c
+index 598f548b21f3..9c8e8b8cc19f 100644
+--- a/drivers/acpi/tiny-power-button.c
++++ b/drivers/acpi/tiny-power-button.c
+@@ -19,18 +19,21 @@ static const struct acpi_device_id tiny_power_button_device_ids[] = {
  };
-@@ -894,9 +893,12 @@ static void acpi_queue_thermal_check(struct acpi_thermal *tz)
- 		queue_work(acpi_thermal_pm_queue, &tz->thermal_check_work);
- }
+ MODULE_DEVICE_TABLE(acpi, tiny_power_button_device_ids);
  
--static void acpi_thermal_notify(struct acpi_device *device, u32 event)
-+static void acpi_thermal_notify(acpi_handle handle, u32 event, void *data)
+-static int acpi_noop_add(struct acpi_device *device)
++static void acpi_tiny_power_button_notify(acpi_handle handle, u32 event, void *data)
  {
--	struct acpi_thermal *tz = acpi_driver_data(device);
-+	struct acpi_device *device = data;
-+	struct acpi_thermal *tz;
-+
-+	tz = acpi_driver_data(device);
- 
- 	if (!tz)
- 		return;
-@@ -1067,11 +1069,16 @@ static int acpi_thermal_add(struct acpi_device *device)
- 
- 	pr_info("%s [%s] (%ld C)\n", acpi_device_name(device),
- 		acpi_device_bid(device), deci_kelvin_to_celsius(tz->temperature));
--	goto end;
-+
-+	result = acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY,
-+						   acpi_thermal_notify);
-+	if (result)
-+		goto free_memory;
-+
-+	return 0;
- 
- free_memory:
- 	kfree(tz);
--end:
- 	return result;
+-	return 0;
++	kill_cad_pid(power_signal, 1);
  }
  
-@@ -1082,6 +1089,7 @@ static void acpi_thermal_remove(struct acpi_device *device)
- 	if (!device || !acpi_driver_data(device))
- 		return;
+-static void acpi_noop_remove(struct acpi_device *device)
++static int acpi_tiny_power_button_add(struct acpi_device *device)
+ {
++	return acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY,
++						 acpi_tiny_power_button_notify);
+ }
  
-+	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, acpi_thermal_notify);
- 	flush_workqueue(acpi_thermal_pm_queue);
- 	tz = acpi_driver_data(device);
+-static void acpi_tiny_power_button_notify(struct acpi_device *device, u32 event)
++static void acpi_tiny_power_button_remove(struct acpi_device *device)
+ {
+-	kill_cad_pid(power_signal, 1);
++	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY,
++					 acpi_tiny_power_button_notify);
+ }
+ 
+ static struct acpi_driver acpi_tiny_power_button_driver = {
+@@ -38,9 +41,8 @@ static struct acpi_driver acpi_tiny_power_button_driver = {
+ 	.class = "tiny-power-button",
+ 	.ids = tiny_power_button_device_ids,
+ 	.ops = {
+-		.add = acpi_noop_add,
+-		.remove = acpi_noop_remove,
+-		.notify = acpi_tiny_power_button_notify,
++		.add = acpi_tiny_power_button_add,
++		.remove = acpi_tiny_power_button_remove,
+ 	},
+ };
  
 -- 
 2.40.1
