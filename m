@@ -2,54 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F347719E99
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 15:45:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9EBC719E9E
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 15:45:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232834AbjFANpA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Jun 2023 09:45:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45942 "EHLO
+        id S233226AbjFANpJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Jun 2023 09:45:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234110AbjFANo5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 09:44:57 -0400
+        with ESMTP id S233300AbjFANpH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 09:45:07 -0400
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76A3B107;
-        Thu,  1 Jun 2023 06:44:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8364019F;
+        Thu,  1 Jun 2023 06:45:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685627095; x=1717163095;
+  t=1685627103; x=1717163103;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=JrB7/4kncfIBImWpl4e3Fx27E14xF2xq5M7od+acmrA=;
-  b=lqT2R7cND7IrYvGV+4wPpkRESYDmlJ1IupDwq4TQrbAtnTmk1cvFg7hN
-   rm/O1zRxb0W1jgjWkCOI6XFEkiaAYjwcUgAp6O+4X0lc3d36L7gimCJFo
-   VEVxFwXBJWj5+i9PigQ26Dhc80sC6QlUdFtNmiAwMTX5g7YbVlYrq8a/X
-   P6GNfMhNolIEW8EhQG5ngdJQEr6sSWoulkB9YgkJHtOvVi7DFrKCUtvJT
-   jpPQ2g6ykWoB06PEG+OZvpLIx4pXsL2iRRU9q+DTCg5UQeafgzvJH8z7w
-   +mOvWS4dCkBAtONRNzxbrDFyE4L0RPNcNry47qZY0wHX60D6n+QOwoSQn
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="419067942"
+  bh=WoghFPLJJmwA8gTZVBZZPRlBetblz1Bh8YAjwgqBN48=;
+  b=HlSomfq3qIzluzrQ7/jaNDMkTnxVWTMzTIGSr+jiIXHqcNXgB3Ar02TA
+   a5FR8J8odidjr4phy3auSRYYh/1BF3fDnRF/gNhasV0yQBw/ZZYKnweCV
+   TJbJUJODxEDr2/pXq+b0IJvFSDsKS5BuXm9dlxpW81mQdXMjsm4v7FDZD
+   4rOmA7dvMtSSxqCi6ck/RkCk6/xYikende8CFMgVJ8VZb+HTZWCZ+zWst
+   t+i6VVIJAl+hJ4JhFPxQQreJWVBKlBtHC3x1+Dy8yZ54RJVkJBE/8SsNO
+   1LDQBcRiGh1VIo1aDYrpttfkzWph2kNKNWuPdm9vdGgcSI69m68D2JRIK
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="419068022"
 X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="419067942"
+   d="scan'208";a="419068022"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:19:32 -0700
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:19:36 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="881601848"
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="881601868"
 X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="881601848"
+   d="scan'208";a="881601868"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:19:30 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:19:34 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
-To:     Corentin Chary <corentin.chary@gmail.com>,
-        =?UTF-8?q?Jo=C3=A3o=20Paulo=20Rechi=20Vita?= <jprvita@gmail.com>,
+To:     Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>,
+        Daniel Oliveira Nascimento <don@syst.com.br>,
         Hans de Goede <hdegoede@redhat.com>,
         Mark Gross <markgross@kernel.org>
 Cc:     Michal Wilczynski <michal.wilczynski@intel.com>,
-        platform-driver-x86@vger.kernel.org,
-        acpi4asus-user@lists.sourceforge.net, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
         rafael@kernel.org
-Subject: [PATCH v4 17/35] platform/x86/asus-wireless: Move handler installing logic to driver
-Date:   Thu,  1 Jun 2023 15:17:20 +0200
-Message-Id: <20230601131739.300760-18-michal.wilczynski@intel.com>
+Subject: [PATCH v4 18/35] platform/x86/classmate-laptop: Move handler installing logic to driver
+Date:   Thu,  1 Jun 2023 15:17:21 +0200
+Message-Id: <20230601131739.300760-19-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230601131739.300760-3-michal.wilczynski@intel.com>
 References: <20230601131739.300760-3-michal.wilczynski@intel.com>
@@ -79,73 +78,176 @@ what's required by acpi_device_install_event_handler().
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/platform/x86/asus-wireless.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ drivers/platform/x86/classmate-laptop.c | 53 +++++++++++++++++++------
+ 1 file changed, 41 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/platform/x86/asus-wireless.c b/drivers/platform/x86/asus-wireless.c
-index abf01e00b799..6544e3419ae4 100644
---- a/drivers/platform/x86/asus-wireless.c
-+++ b/drivers/platform/x86/asus-wireless.c
-@@ -108,19 +108,22 @@ static void led_state_set(struct led_classdev *led, enum led_brightness value)
- 	queue_work(data->wq, &data->led_work);
+diff --git a/drivers/platform/x86/classmate-laptop.c b/drivers/platform/x86/classmate-laptop.c
+index 2edaea2492df..2d36abf5ecfe 100644
+--- a/drivers/platform/x86/classmate-laptop.c
++++ b/drivers/platform/x86/classmate-laptop.c
+@@ -180,8 +180,9 @@ static acpi_status cmpc_get_accel_v4(acpi_handle handle,
+ 	return status;
  }
  
--static void asus_wireless_notify(struct acpi_device *adev, u32 event)
-+static void asus_wireless_notify(acpi_handle handle, u32 event, void *data)
+-static void cmpc_accel_handler_v4(struct acpi_device *dev, u32 event)
++static void cmpc_accel_handler_v4(acpi_handle handle, u32 event, void *data)
  {
--	struct asus_wireless_data *data = acpi_driver_data(adev);
-+	struct asus_wireless_data *w_data;
-+	struct acpi_device *adev = data;
++	struct acpi_device *dev = data;
+ 	if (event == 0x81) {
+ 		int16_t x, y, z;
+ 		acpi_status status;
+@@ -407,6 +408,11 @@ static int cmpc_accel_add_v4(struct acpi_device *acpi)
+ 	inputdev = dev_get_drvdata(&acpi->dev);
+ 	dev_set_drvdata(&inputdev->dev, accel);
+ 
++	error = acpi_device_install_event_handler(acpi, ACPI_DEVICE_NOTIFY,
++						  cmpc_accel_handler_v4);
++	if (error)
++		goto failed_input;
 +
-+	w_data = acpi_driver_data(adev);
+ 	return 0;
  
- 	dev_dbg(&adev->dev, "event=%#x\n", event);
- 	if (event != 0x88) {
- 		dev_notice(&adev->dev, "Unknown ASHS event: %#x\n", event);
- 		return;
- 	}
--	input_report_key(data->idev, KEY_RFKILL, 1);
--	input_sync(data->idev);
--	input_report_key(data->idev, KEY_RFKILL, 0);
--	input_sync(data->idev);
-+	input_report_key(w_data->idev, KEY_RFKILL, 1);
-+	input_sync(w_data->idev);
-+	input_report_key(w_data->idev, KEY_RFKILL, 0);
-+	input_sync(w_data->idev);
- }
+ failed_input:
+@@ -420,6 +426,7 @@ static int cmpc_accel_add_v4(struct acpi_device *acpi)
  
- static int asus_wireless_add(struct acpi_device *adev)
-@@ -169,16 +172,20 @@ static int asus_wireless_add(struct acpi_device *adev)
- 	data->led.max_brightness = 1;
- 	data->led.default_trigger = "rfkill-none";
- 	err = devm_led_classdev_register(&adev->dev, &data->led);
--	if (err)
-+	if (err) {
- 		destroy_workqueue(data->wq);
-+		return err;
-+	}
- 
--	return err;
-+	return acpi_device_install_event_handler(adev, ACPI_DEVICE_NOTIFY, asus_wireless_notify);
- }
- 
- static void asus_wireless_remove(struct acpi_device *adev)
+ static void cmpc_accel_remove_v4(struct acpi_device *acpi)
  {
- 	struct asus_wireless_data *data = acpi_driver_data(adev);
- 
-+	acpi_device_remove_event_handler(adev, ACPI_DEVICE_NOTIFY, asus_wireless_notify);
-+
- 	if (data->wq) {
- 		devm_led_classdev_unregister(&adev->dev, &data->led);
- 		destroy_workqueue(data->wq);
-@@ -192,7 +199,6 @@ static struct acpi_driver asus_wireless_driver = {
++	acpi_device_remove_event_handler(acpi, ACPI_DEVICE_NOTIFY, cmpc_accel_handler_v4);
+ 	device_remove_file(&acpi->dev, &cmpc_accel_sensitivity_attr_v4);
+ 	device_remove_file(&acpi->dev, &cmpc_accel_g_select_attr_v4);
+ 	cmpc_remove_acpi_notify_device(acpi);
+@@ -441,7 +448,6 @@ static struct acpi_driver cmpc_accel_acpi_driver_v4 = {
  	.ops = {
- 		.add = asus_wireless_add,
- 		.remove = asus_wireless_remove,
--		.notify = asus_wireless_notify,
+ 		.add = cmpc_accel_add_v4,
+ 		.remove = cmpc_accel_remove_v4,
+-		.notify = cmpc_accel_handler_v4,
  	},
+ 	.drv.pm = &cmpc_accel_pm,
  };
- module_acpi_driver(asus_wireless_driver);
+@@ -523,8 +529,10 @@ static acpi_status cmpc_get_accel(acpi_handle handle,
+ 	return status;
+ }
+ 
+-static void cmpc_accel_handler(struct acpi_device *dev, u32 event)
++static void cmpc_accel_handler(acpi_handle handle, u32 event, void *data)
+ {
++	struct acpi_device *dev = data;
++
+ 	if (event == 0x81) {
+ 		unsigned char x, y, z;
+ 		acpi_status status;
+@@ -639,6 +647,11 @@ static int cmpc_accel_add(struct acpi_device *acpi)
+ 	inputdev = dev_get_drvdata(&acpi->dev);
+ 	dev_set_drvdata(&inputdev->dev, accel);
+ 
++	error = acpi_device_install_event_handler(acpi, ACPI_DEVICE_NOTIFY,
++						  cmpc_accel_handler);
++	if (error)
++		goto failed_input;
++
+ 	return 0;
+ 
+ failed_input:
+@@ -650,6 +663,7 @@ static int cmpc_accel_add(struct acpi_device *acpi)
+ 
+ static void cmpc_accel_remove(struct acpi_device *acpi)
+ {
++	acpi_device_remove_event_handler(acpi, ACPI_DEVICE_NOTIFY, cmpc_accel_handler);
+ 	device_remove_file(&acpi->dev, &cmpc_accel_sensitivity_attr);
+ 	cmpc_remove_acpi_notify_device(acpi);
+ }
+@@ -667,7 +681,6 @@ static struct acpi_driver cmpc_accel_acpi_driver = {
+ 	.ops = {
+ 		.add = cmpc_accel_add,
+ 		.remove = cmpc_accel_remove,
+-		.notify = cmpc_accel_handler,
+ 	}
+ };
+ 
+@@ -693,8 +706,9 @@ static acpi_status cmpc_get_tablet(acpi_handle handle,
+ 	return status;
+ }
+ 
+-static void cmpc_tablet_handler(struct acpi_device *dev, u32 event)
++static void cmpc_tablet_handler(acpi_handle handle, u32 event, void *data)
+ {
++	struct acpi_device *dev = data;
+ 	unsigned long long val = 0;
+ 	struct input_dev *inputdev = dev_get_drvdata(&dev->dev);
+ 
+@@ -723,12 +737,20 @@ static void cmpc_tablet_idev_init(struct input_dev *inputdev)
+ 
+ static int cmpc_tablet_add(struct acpi_device *acpi)
+ {
+-	return cmpc_add_acpi_notify_device(acpi, "cmpc_tablet",
+-					   cmpc_tablet_idev_init);
++	int ret;
++
++	ret = cmpc_add_acpi_notify_device(acpi, "cmpc_tablet",
++					  cmpc_tablet_idev_init);
++	if (ret)
++		return ret;
++
++	return acpi_device_install_event_handler(acpi, ACPI_DEVICE_NOTIFY,
++						 cmpc_tablet_handler);
+ }
+ 
+ static void cmpc_tablet_remove(struct acpi_device *acpi)
+ {
++	acpi_device_remove_event_handler(acpi, ACPI_DEVICE_NOTIFY, cmpc_tablet_handler);
+ 	cmpc_remove_acpi_notify_device(acpi);
+ }
+ 
+@@ -761,7 +783,6 @@ static struct acpi_driver cmpc_tablet_acpi_driver = {
+ 	.ops = {
+ 		.add = cmpc_tablet_add,
+ 		.remove = cmpc_tablet_remove,
+-		.notify = cmpc_tablet_handler,
+ 	},
+ 	.drv.pm = &cmpc_tablet_pm,
+ };
+@@ -1026,8 +1047,9 @@ static int cmpc_keys_codes[] = {
+ 	KEY_MAX
+ };
+ 
+-static void cmpc_keys_handler(struct acpi_device *dev, u32 event)
++static void cmpc_keys_handler(acpi_handle handle, u32 event, void *data)
+ {
++	struct acpi_device *dev = data;
+ 	struct input_dev *inputdev;
+ 	int code = KEY_MAX;
+ 
+@@ -1049,12 +1071,20 @@ static void cmpc_keys_idev_init(struct input_dev *inputdev)
+ 
+ static int cmpc_keys_add(struct acpi_device *acpi)
+ {
+-	return cmpc_add_acpi_notify_device(acpi, "cmpc_keys",
+-					   cmpc_keys_idev_init);
++	int error;
++
++	error = cmpc_add_acpi_notify_device(acpi, "cmpc_keys",
++					    cmpc_keys_idev_init);
++	if (error)
++		return error;
++
++	return acpi_device_install_event_handler(acpi, ACPI_DEVICE_NOTIFY,
++						 cmpc_keys_handler);
+ }
+ 
+ static void cmpc_keys_remove(struct acpi_device *acpi)
+ {
++	acpi_device_remove_event_handler(acpi, ACPI_DEVICE_NOTIFY, cmpc_keys_handler);
+ 	cmpc_remove_acpi_notify_device(acpi);
+ }
+ 
+@@ -1071,7 +1101,6 @@ static struct acpi_driver cmpc_keys_acpi_driver = {
+ 	.ops = {
+ 		.add = cmpc_keys_add,
+ 		.remove = cmpc_keys_remove,
+-		.notify = cmpc_keys_handler,
+ 	}
+ };
+ 
 -- 
 2.40.1
 
