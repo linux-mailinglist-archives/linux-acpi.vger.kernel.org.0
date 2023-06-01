@@ -2,43 +2,42 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B71171F5BB
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jun 2023 00:12:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9B4471F695
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jun 2023 01:29:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232124AbjFAWMu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Jun 2023 18:12:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40546 "EHLO
+        id S232921AbjFAX3y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Jun 2023 19:29:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230268AbjFAWMt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 18:12:49 -0400
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2086.outbound.protection.outlook.com [40.107.94.86])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A49B18D;
-        Thu,  1 Jun 2023 15:12:47 -0700 (PDT)
+        with ESMTP id S231700AbjFAX3q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 19:29:46 -0400
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2049.outbound.protection.outlook.com [40.107.223.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBDF7132;
+        Thu,  1 Jun 2023 16:29:44 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=le5joztdBVSdCOJAz5HmViaDRK6E32+Or/3byNAPxGM+FTinmmiJ49yiCVWuxlQ39SiRPg5teq7Kb18rNj2qZK+3/rGW9domxzamtsPLDhLYUb3qfskCykUliPRvHQGFh3JXjbIweM87hW7dJBm92RruoPSW0ZEPbRMngOvHo//k1Mn2bfWOuBz589Q0qWc5bfVGq6CqVRBK+SlKAp82BaaZVFF624XqjBdTW1WYzI9QqzFs44f9z9YP1vctuFlrqgdD7hCqNuCNlXuf24b/4lFZNpF3KHpuL8Y2J1ON8ZQvOk65gotX5j1Drb7W92IKCr8ksQ8tTpx8kDqiins+VA==
+ b=jP5QnPQDlRh4HCozYq9Vh9XOok/Z1xDN0mbXpzGn7+x/fClHI+2eFF9m9BE3kSFuxORU+bovDFbTqWonECTgZonUzCWphJ1A60bIKUHAX3YI66cuAigNVBaC05YnlTNsX0wvMWUBZIIccO+NURjcaSeZRgvDaUEYB+Lv/mUKnKmPUWb7m9GdUSj+Uya8gUEx0z9v0QOFseqyMoqA2JSTDPzblPi1fy0VghgD8/XXAjVOgW+918Kiq1YhmWYb6OV932fQiWqIhZitvOHyRSMbRzmg/GRrFa/6eFq5bGOQjx9VxU3j6yueT4xhFDTUBI+dUJt6bwOcO4FKYVzaDGJtqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A2uvnyadgmPv/UplCy3dfHolCS1iQD6or73uaLQ6l4c=;
- b=D+26heNBkij45LzY9LmCDJpChCTl1Spbb72ZwpMh2aHSu0RQb5VB8fcelqS5XClKjWoZFeruUMvROn++3Ll27sgIBytO0wjTXMhOWtZCFbs7QLM00QAs8Bm8BLqLCh7w2nlP2vglqZqLZz1zq/2gIvEmxk63+v9395RypU+Y+L0yTIH2waWbRzT0/E0zi6fqT0Crg1cneo5NtlOnTCIcm+k1wvogQFKwW20clU6EVVXd1RNblevBEL0qZ5zFD4xY+LPFHrVXtdxEM+p36D9XVcweaXLeXsEKuMJ+8U5Y+YML9F+hc4o8kMw24CIytukQ/trnkn3fYZOlaSNkTtmbyA==
+ bh=NeoHFlJ4HX4hZtRkOHcQEXnwYMnU3F+8KWm89Ri2Sg4=;
+ b=NJosYzfAp2axGLkHg3xh5wm//DcBIp0nuI7vsUV1OXzHvrfUlKW9LFnzslVt1VOVmOx/iN0GHwGYdoFBFQzS35Af8WDUllptwN695A6z5v75kpFabiU/9RLnrdl/oCK331aLcEt66O9l0ZvWkGK7aloTiOGAkqhR3YRvbbFdeiBKuGIqNi4vXyq5fWdPFb/YRttZDF2azs9G4PXC0ap9s+2HLctpV2XM8SfMYXVN8naDchkRfGtlpYsKmisMkL9/PRr6RWBQdCaAMO9+0IV7NOyuGX9m6CJvluE+KJxO0jw8CgtxgefNc8oFz/P4T9SfZNFrJ/1qa54Ds8x9CoHTcQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=A2uvnyadgmPv/UplCy3dfHolCS1iQD6or73uaLQ6l4c=;
- b=FCnTumqEKrTMqujE4Yag4djkJbe/HKrn6pna/auerDlmYd1yZXCOTFEOdPHSp/W68wK93xKc5Bwt1t8GnXkjaAsXAJPk1rbe93KdfMQMyLfl4vCru9fT+ZYkCVibHywenGj+3dur+U/N8LC8i/q+LQqnDjeTOi1RUdFKUBySuW8=
-Received: from MW4P222CA0009.NAMP222.PROD.OUTLOOK.COM (2603:10b6:303:114::14)
- by PH0PR12MB8006.namprd12.prod.outlook.com (2603:10b6:510:28d::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.23; Thu, 1 Jun
- 2023 22:12:41 +0000
-Received: from CO1NAM11FT019.eop-nam11.prod.protection.outlook.com
- (2603:10b6:303:114:cafe::69) by MW4P222CA0009.outlook.office365.com
- (2603:10b6:303:114::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.23 via Frontend
- Transport; Thu, 1 Jun 2023 22:12:41 +0000
+ bh=NeoHFlJ4HX4hZtRkOHcQEXnwYMnU3F+8KWm89Ri2Sg4=;
+ b=vOg14xP72WYOsWQH4cN0rt/DTmWzLs4Sz7vAOZOnLPqDRsiVtBLe7r52stdvSO3WhRVQp97QmxDRDOZR9pqOYb9yqP3Cthhbey1dHeH40Qu1eLua0MEayTg12mzbLFo70wmoKekcgvWl1/5ffVun0N2LzFJAxyz/0i/AyorIqxo=
+Received: from DM6PR21CA0029.namprd21.prod.outlook.com (2603:10b6:5:174::39)
+ by DS7PR12MB8084.namprd12.prod.outlook.com (2603:10b6:8:ef::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6455.22; Thu, 1 Jun 2023 23:29:42 +0000
+Received: from DM6NAM11FT053.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:5:174:cafe::a9) by DM6PR21CA0029.outlook.office365.com
+ (2603:10b6:5:174::39) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.9 via Frontend
+ Transport; Thu, 1 Jun 2023 23:29:42 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -46,52 +45,51 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT019.mail.protection.outlook.com (10.13.175.57) with Microsoft SMTP
+ DM6NAM11FT053.mail.protection.outlook.com (10.13.173.74) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6455.24 via Frontend Transport; Thu, 1 Jun 2023 22:12:41 +0000
+ 15.20.6455.24 via Frontend Transport; Thu, 1 Jun 2023 23:29:42 +0000
 Received: from SITE-L-T34-2.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Thu, 1 Jun
- 2023 17:12:40 -0500
+ 2023 18:29:41 -0500
 From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     <linux-acpi@vger.kernel.org>, <rafael@kernel.org>
-CC:     <linux-kernel@vger.kernel.org>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        <ofenfisch@googlemail.com>, <wse@tuxedocomputers.com>,
-        <adam.niederer@gmail.com>, <adrian@freund.io>,
-        <jirislaby@kernel.org>, <Renjith.Pananchikkal@amd.com>,
-        <anson.tsao@amd.com>, <Richard.Gong@amd.com>,
-        Chuanhong Guo <gch981213@gmail.com>, <evilsnoo@proton.me>,
-        <ruinairas1992@gmail.com>, <nmschulte@gmail.com>
-Subject: [PATCH v3] ACPI: resource: Remove "Zen" specific match and quirks
-Date:   Thu, 1 Jun 2023 17:11:51 -0500
-Message-ID: <20230601221151.670-1-mario.limonciello@amd.com>
+To:     Rafael Wysocki <rafael@kernel.org>, <hdegoede@redhat.com>,
+        <linus.walleij@linaro.org>
+CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-gpio@vger.kernel.org>,
+        <platform-driver-x86@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+        S-k Shyam-sundar <Shyam-sundar.S-k@amd.com>,
+        Natikar Basavaraj <Basavaraj.Natikar@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH v3 1/4] include/linux/suspend.h: Only show pm_pr_dbg messages at suspend/resume
+Date:   Thu, 1 Jun 2023 18:29:20 -0500
+Message-ID: <20230601232923.1248-1-mario.limonciello@amd.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1NAM11FT019:EE_|PH0PR12MB8006:EE_
-X-MS-Office365-Filtering-Correlation-Id: e3dd9812-acf7-4f12-2c4a-08db62ed516b
+X-MS-TrafficTypeDiagnostic: DM6NAM11FT053:EE_|DS7PR12MB8084:EE_
+X-MS-Office365-Filtering-Correlation-Id: 43970db9-82e1-4c1e-65ea-08db62f81389
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: phR9WnBwNhSLKCkV3U9b+6BrCSwl2/Wp/+loX/lEmHgnAeqQe3WK0EUzdHuzdllcLYS+d9OXaogEM5ohtsIiBSA66jfer8ILD346bixuCPIXjXGlbjgqHV5nupkW/KlPw6OE5jMihR3D/AIfY6uy20MjMg9+JW1uxBDLhGdcm8nLVQ0chGTwHoa2tWq9qWOhq6lzRjRbgIoWGnOd1hYuZ2WJGFFY3+8ROif7BwHL0zvCa/2lmwzEarx1QxFl/hlhX8B43tTciwIGRK4+XN2RZXW7Gb3ykeR42xAlsgOPpfoWM19Q+ylTPNb6gtAS9IJ0uOgVTYjzUsVF5DeIHe8/zJobECPYTfecVaAdcC7reLS48BOr967NS8VD1fhRqKQGhjhVpPrYUcNLXJYZHBsSRoYbLxUpYGKpVkXxgYj5scXF0MEkXW7dJekBCeNOSsLdtelS7I+DsdHpE1AFgs2RnCLZVC6ZQhhguxcwk6dPdf6u9w6UsoJyPLmOrmHsUR0RbLtmHYjhGPjIzTkaLLpFh6/ZZYWxOk3pn8UH/Ax6Avu5klZkZze/Dt6NUlHwrT34oY/2+86CNQ1IYhK3IQ3NVw0MuOzJREXzNxSnWV7uNtjoGcL+94gHDKw1Q6phaL2AbgxRX4YSCApYTXoSmcHFx7eKHUebWw6NYPSzEBenSUn5M9KLz+Ai00en0R/qztgy1U2ZQ3fc0WyVNS4hv+HUWGttujY4QmDYxVaSHAFzkUzoEONdB8useQnNwYJHEAT/y4a6IzGzNo/VbOCcy/ZsqhLVS3lYv49zvkjhqeLaRA0=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(376002)(39860400002)(136003)(346002)(396003)(451199021)(40470700004)(46966006)(36840700001)(36756003)(82740400003)(86362001)(110136005)(4326008)(478600001)(316002)(54906003)(70206006)(966005)(70586007)(7416002)(44832011)(6666004)(83380400001)(41300700001)(2906002)(8676002)(40480700001)(82310400005)(7696005)(81166007)(2616005)(356005)(5660300002)(36860700001)(47076005)(426003)(26005)(336012)(1076003)(16526019)(8936002)(186003)(40460700003)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: uB5mbJZlEXRgpKjZzm+qsLJTf8bTy808opSMEtxja8okn17IuQX869YhGhPtUdfSN29yTJTwfY8gp1aO1HqYxYnoWqrFf9wE62FX1jChan7J9JRJ9us2S9+O3dzvI2skDU3iRDTObZAwsLbbsfQTkKARBOkj3BAc4sbafNVJ3aaxQ9CwXTsGqtdAn9S1Bj8lGMs4/T69OI9uutfsWsYOzISDAwc2ic8EcPtl98Q9oqwLzgbEA0Z1abwaeerdHmw1832AjmIvsOqWCmJmG/833ZA3V4dhvNB6GIsN1oFnKTe1jarT2hj8P4afvHRpppAOEUFx2RTb5Bk6RSM6B2R6NOf+IOq/En7BU2GK1224siO2XUbRpLVMPmUSwQu7LCj8GdlDMWohmuKoy3Vsez3MhJArSAAi3+5m4zGRcKTybl/wd7owJbJ890YgIiVQCn+XKVS7wTsPQCMRJR3M4xn1qFsVoNOjlD2aLnjYXeNyikbXiocMAaJUxsGH6Bx5r0CgaE9dm0D8uQRnaTkh8d1RZyWBrOtFp+Rq/yXG0HGrLZ1ZD0AhRH/9SzNUBwhUF8HyKsbZj4eBJEVTqhNhJxQ2k8m59JLkldKWI+xq5Wp8Pgu9L2u7ZKL8/Qivy4oMUZgrRmTJ5bU8XQsvHei67goZ9KVo5B6jrdUE2nMJ9/aTMSx+HJYvJVtfXuXG0oswmhHJXf1r0+jjPKdHDYDKOrq78G9c5o5y62iV586TLn4rlgvhadYSQp9Xq2FxXDPYDXScWb7t3LNNHqU/kePBMeVnlA==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(136003)(376002)(39860400002)(346002)(396003)(451199021)(36840700001)(40470700004)(46966006)(16526019)(6666004)(82740400003)(82310400005)(356005)(81166007)(478600001)(40480700001)(47076005)(83380400001)(2616005)(426003)(336012)(36860700001)(26005)(186003)(36756003)(1076003)(7696005)(40460700003)(316002)(70206006)(70586007)(41300700001)(86362001)(4326008)(44832011)(8676002)(8936002)(54906003)(15650500001)(5660300002)(2906002)(110136005)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2023 22:12:41.4400
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2023 23:29:42.1459
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e3dd9812-acf7-4f12-2c4a-08db62ed516b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 43970db9-82e1-4c1e-65ea-08db62f81389
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT019.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT053.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8006
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8084
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
@@ -102,148 +100,87 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-commit 9946e39fe8d0 ("ACPI: resource: skip IRQ override on
-AMD Zen platforms") attempted to overhaul the override logic so it
-didn't apply on X86 AMD Zen systems.  This was intentional so that
-systems would prefer DSDT values instead of default MADT value for
-IRQ 1 on Ryzen 6000 systems which typically uses ActiveLow for IRQ1.
+All uses in the kernel are currently already oriented around
+suspend/resume. As some other parts of the kernel may also use these
+messages in functions that could also be used outside of
+suspend/resume, only enable in suspend/resume path.
 
-This turned out to be a bad assumption because several vendors
-add Interrupt Source Override but don't fix the DSDT. A pile of
-quirks was collecting that proved this wasn't sustaintable.
-
-Furthermore some vendors have used ActiveHigh for IRQ1.
-To solve this problem revert the following commits:
-* commit 17bb7046e7ce ("ACPI: resource: Do IRQ override on all TongFang
-GMxRGxx")
-* commit f3cb9b740869 ("ACPI: resource: do IRQ override on Lenovo 14ALC7")
-* commit bfcdf58380b1 ("ACPI: resource: do IRQ override on LENOVO IdeaPad")
-* commit 7592b79ba4a9 ("ACPI: resource: do IRQ override on XMG Core 15")
-* commit 9946e39fe8d0 ("ACPI: resource: skip IRQ override on AMD Zen
-platforms")
-
-Cc: ofenfisch@googlemail.com
-Cc: wse@tuxedocomputers.com
-Cc: adam.niederer@gmail.com
-Cc: adrian@freund.io
-Cc: jirislaby@kernel.org
-Cc: Renjith.Pananchikkal@amd.com
-Cc: anson.tsao@amd.com
-Cc: Richard.Gong@amd.com
-Cc: Chuanhong Guo <gch981213@gmail.com>
-Reported-by: evilsnoo@proton.me
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217394
-Reported-by: ruinairas1992@gmail.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217406
-Reported-by: nmschulte@gmail.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217336
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
-v2->v3:
- * Adjust to drop heuristics entirely
- * Drop tested tags
- * Add more links and people to Cc
- * Drop Fixes tag as this got a lot more risky
 v1->v2:
- * Rebase on 71a485624c4c ("ACPI: resource: Add IRQ override quirk for LG UltraPC 17U70P")
- * Pick up tag
-
-Rafael,
-Please hold off on picking this up until the majority of those on CC
-have tested it on hardware they have and reported results.
-
-Everyone else,
-Please test. If you have problems with this applied, please share
-an acpidump and dmesg either on a bug or to me privately.
+ * Remove pointless do/while
+ * Add a function pm_debug_messages_should_print
+ * Export pm_debug_messages_should_print so modules can use it too.
 ---
- drivers/acpi/resource.c | 60 -----------------------------------------
- 1 file changed, 60 deletions(-)
+ include/linux/suspend.h | 20 +++++++++-----------
+ kernel/power/main.c     |  6 ++++++
+ 2 files changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 0800a9d77558..1dd8d5aebf67 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -470,52 +470,6 @@ static const struct dmi_system_id asus_laptop[] = {
- 	{ }
- };
+diff --git a/include/linux/suspend.h b/include/linux/suspend.h
+index 1a0426e6761c..9a3cc0b89208 100644
+--- a/include/linux/suspend.h
++++ b/include/linux/suspend.h
+@@ -555,6 +555,7 @@ static inline void unlock_system_sleep(unsigned int flags) {}
+ #ifdef CONFIG_PM_SLEEP_DEBUG
+ extern bool pm_print_times_enabled;
+ extern bool pm_debug_messages_on;
++extern bool pm_debug_messages_should_print(void);
+ static inline int pm_dyn_debug_messages_on(void)
+ {
+ #ifdef CONFIG_DYNAMIC_DEBUG
+@@ -567,17 +568,13 @@ static inline int pm_dyn_debug_messages_on(void)
+ #define pr_fmt(fmt) "PM: " fmt
+ #endif
+ #define __pm_pr_dbg(fmt, ...)					\
+-	do {							\
+-		if (pm_debug_messages_on)			\
+-			printk(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__);	\
+-		else if (pm_dyn_debug_messages_on())		\
+-			pr_debug(fmt, ##__VA_ARGS__);	\
+-	} while (0)
++	if (pm_debug_messages_should_print())			\
++		printk(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__);	\
++	else if (pm_dyn_debug_messages_on())			\
++		pr_debug(fmt, ##__VA_ARGS__);
+ #define __pm_deferred_pr_dbg(fmt, ...)				\
+-	do {							\
+-		if (pm_debug_messages_on)			\
+-			printk_deferred(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__);	\
+-	} while (0)
++	if (pm_debug_messages_should_print())			\
++		printk_deferred(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__);
+ #else
+ #define pm_print_times_enabled	(false)
+ #define pm_debug_messages_on	(false)
+@@ -593,7 +590,8 @@ static inline int pm_dyn_debug_messages_on(void)
+ /**
+  * pm_pr_dbg - print pm sleep debug messages
+  *
+- * If pm_debug_messages_on is enabled, print message.
++ * If pm_debug_messages_on is enabled and the system is entering/leaving
++ *      suspend, print message.
+  * If pm_debug_messages_on is disabled and CONFIG_DYNAMIC_DEBUG is enabled,
+  *	print message only from instances explicitly enabled on dynamic debug's
+  *	control.
+diff --git a/kernel/power/main.c b/kernel/power/main.c
+index 3113ec2f1db4..daa535012e51 100644
+--- a/kernel/power/main.c
++++ b/kernel/power/main.c
+@@ -556,6 +556,12 @@ power_attr_ro(pm_wakeup_irq);
  
--static const struct dmi_system_id lenovo_laptop[] = {
--	{
--		.ident = "LENOVO IdeaPad Flex 5 14ALC7",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "82R9"),
--		},
--	},
--	{
--		.ident = "LENOVO IdeaPad Flex 5 16ALC7",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "82RA"),
--		},
--	},
--	{ }
--};
--
--static const struct dmi_system_id tongfang_gm_rg[] = {
--	{
--		.ident = "TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15 Gen4 AMD",
--		.matches = {
--			DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
--		},
--	},
--	{ }
--};
--
--static const struct dmi_system_id maingear_laptop[] = {
--	{
--		.ident = "MAINGEAR Vector Pro 2 15",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-15A3070T"),
--		}
--	},
--	{
--		.ident = "MAINGEAR Vector Pro 2 17",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-17A3070T"),
--		},
--	},
--	{ }
--};
--
- static const struct dmi_system_id lg_laptop[] = {
- 	{
- 		.ident = "LG Electronics 17U70P",
-@@ -539,10 +493,6 @@ struct irq_override_cmp {
- static const struct irq_override_cmp override_table[] = {
- 	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
- 	{ asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
--	{ lenovo_laptop, 6, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
--	{ lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
--	{ tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
--	{ maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
- 	{ lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
- };
+ bool pm_debug_messages_on __read_mostly;
  
-@@ -562,16 +512,6 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
- 			return entry->override;
- 	}
- 
--#ifdef CONFIG_X86
--	/*
--	 * IRQ override isn't needed on modern AMD Zen systems and
--	 * this override breaks active low IRQs on AMD Ryzen 6000 and
--	 * newer systems. Skip it.
--	 */
--	if (boot_cpu_has(X86_FEATURE_ZEN))
--		return false;
--#endif
--
- 	return true;
- }
- 
++bool pm_debug_messages_should_print(void)
++{
++	return pm_debug_messages_on && pm_suspend_target_state != PM_SUSPEND_ON;
++}
++EXPORT_SYMBOL_GPL(pm_debug_messages_should_print);
++
+ static ssize_t pm_debug_messages_show(struct kobject *kobj,
+ 				      struct kobj_attribute *attr, char *buf)
+ {
+
+base-commit: 7736c431466abb54a2679dc257f739fddfa84295
 -- 
 2.34.1
 
