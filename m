@@ -2,53 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEEA8719E8D
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 15:44:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F347719E99
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 15:45:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233421AbjFANoo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Jun 2023 09:44:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45808 "EHLO
+        id S232834AbjFANpA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Jun 2023 09:45:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229899AbjFANon (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 09:44:43 -0400
+        with ESMTP id S234110AbjFANo5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 09:44:57 -0400
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6802107;
-        Thu,  1 Jun 2023 06:44:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76A3B107;
+        Thu,  1 Jun 2023 06:44:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685627082; x=1717163082;
+  t=1685627095; x=1717163095;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=VjmFYoUk3ppWyxuHsT01mpbXu3uCoDZy5oj2DUuL4FI=;
-  b=Rwm52EWNB6OZkjog/K3r13bXmzb+XSpT7t4yhMQJwLsliVvAPG29zNUt
-   P+H7VQD6NF5zS/1sdG0rpZsoBf1cyxlOaVaTECvPzB1Zbrp2kU7+uJb8w
-   9nCZx+PDvG06D6aVx39CT9KN6L6CtDPgmzrBezrmLJMxpZbMba0e9pVOr
-   dXAbwdlLgQIt1omzDKIAOsz2U+jtlxAx8quys9tm1t4f7O1Z0fl41riwZ
-   5LwJ2uxmvh94f9MYwxUGHNWfcr6aqylMrBpO1A1H+hn0W3FAUNKDQJCdr
-   i2zUYr4WDMnBgu5Nbdlbx8MyKXOB7cuu1sjtzG/Ult+kx6PgfC/TWrGWv
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="419067813"
+  bh=JrB7/4kncfIBImWpl4e3Fx27E14xF2xq5M7od+acmrA=;
+  b=lqT2R7cND7IrYvGV+4wPpkRESYDmlJ1IupDwq4TQrbAtnTmk1cvFg7hN
+   rm/O1zRxb0W1jgjWkCOI6XFEkiaAYjwcUgAp6O+4X0lc3d36L7gimCJFo
+   VEVxFwXBJWj5+i9PigQ26Dhc80sC6QlUdFtNmiAwMTX5g7YbVlYrq8a/X
+   P6GNfMhNolIEW8EhQG5ngdJQEr6sSWoulkB9YgkJHtOvVi7DFrKCUtvJT
+   jpPQ2g6ykWoB06PEG+OZvpLIx4pXsL2iRRU9q+DTCg5UQeafgzvJH8z7w
+   +mOvWS4dCkBAtONRNzxbrDFyE4L0RPNcNry47qZY0wHX60D6n+QOwoSQn
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="419067942"
 X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="419067813"
+   d="scan'208";a="419067942"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:19:27 -0700
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:19:32 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="881601822"
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="881601848"
 X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="881601822"
+   d="scan'208";a="881601848"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:19:24 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:19:30 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
 To:     Corentin Chary <corentin.chary@gmail.com>,
+        =?UTF-8?q?Jo=C3=A3o=20Paulo=20Rechi=20Vita?= <jprvita@gmail.com>,
         Hans de Goede <hdegoede@redhat.com>,
         Mark Gross <markgross@kernel.org>
 Cc:     Michal Wilczynski <michal.wilczynski@intel.com>,
-        acpi4asus-user@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        acpi4asus-user@lists.sourceforge.net, linux-acpi@vger.kernel.org,
         rafael@kernel.org
-Subject: [PATCH v4 16/35] platform/x86/asus-laptop: Move handler installing logic to driver
-Date:   Thu,  1 Jun 2023 15:17:19 +0200
-Message-Id: <20230601131739.300760-17-michal.wilczynski@intel.com>
+Subject: [PATCH v4 17/35] platform/x86/asus-wireless: Move handler installing logic to driver
+Date:   Thu,  1 Jun 2023 15:17:20 +0200
+Message-Id: <20230601131739.300760-18-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230601131739.300760-3-michal.wilczynski@intel.com>
 References: <20230601131739.300760-3-michal.wilczynski@intel.com>
@@ -78,61 +79,73 @@ what's required by acpi_device_install_event_handler().
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/platform/x86/asus-laptop.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/platform/x86/asus-wireless.c | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/platform/x86/asus-laptop.c b/drivers/platform/x86/asus-laptop.c
-index 761029f39314..6d2f5767bf70 100644
---- a/drivers/platform/x86/asus-laptop.c
-+++ b/drivers/platform/x86/asus-laptop.c
-@@ -1515,11 +1515,14 @@ static void asus_input_exit(struct asus_laptop *asus)
- /*
-  * ACPI driver
-  */
--static void asus_acpi_notify(struct acpi_device *device, u32 event)
-+static void asus_acpi_notify(acpi_handle handle, u32 event, void *data)
+diff --git a/drivers/platform/x86/asus-wireless.c b/drivers/platform/x86/asus-wireless.c
+index abf01e00b799..6544e3419ae4 100644
+--- a/drivers/platform/x86/asus-wireless.c
++++ b/drivers/platform/x86/asus-wireless.c
+@@ -108,19 +108,22 @@ static void led_state_set(struct led_classdev *led, enum led_brightness value)
+ 	queue_work(data->wq, &data->led_work);
+ }
+ 
+-static void asus_wireless_notify(struct acpi_device *adev, u32 event)
++static void asus_wireless_notify(acpi_handle handle, u32 event, void *data)
  {
--	struct asus_laptop *asus = acpi_driver_data(device);
-+	struct acpi_device *device = data;
-+	struct asus_laptop *asus;
- 	u16 count;
- 
-+	asus = acpi_driver_data(device);
+-	struct asus_wireless_data *data = acpi_driver_data(adev);
++	struct asus_wireless_data *w_data;
++	struct acpi_device *adev = data;
 +
- 	/* TODO Find a better way to handle events count. */
- 	count = asus->event_count[event % 128]++;
- 	acpi_bus_generate_netlink_event(asus->device->pnp.device_class,
-@@ -1880,6 +1883,10 @@ static int asus_acpi_add(struct acpi_device *device)
- 	if (result && result != -ENODEV)
- 		goto fail_pega_rfkill;
++	w_data = acpi_driver_data(adev);
  
-+	result =  acpi_device_install_event_handler(device, ACPI_ALL_NOTIFY, asus_acpi_notify);
-+	if (result)
-+		goto fail_pega_rfkill;
-+
- 	asus_device_present = true;
- 	return 0;
+ 	dev_dbg(&adev->dev, "event=%#x\n", event);
+ 	if (event != 0x88) {
+ 		dev_notice(&adev->dev, "Unknown ASHS event: %#x\n", event);
+ 		return;
+ 	}
+-	input_report_key(data->idev, KEY_RFKILL, 1);
+-	input_sync(data->idev);
+-	input_report_key(data->idev, KEY_RFKILL, 0);
+-	input_sync(data->idev);
++	input_report_key(w_data->idev, KEY_RFKILL, 1);
++	input_sync(w_data->idev);
++	input_report_key(w_data->idev, KEY_RFKILL, 0);
++	input_sync(w_data->idev);
+ }
  
-@@ -1905,6 +1912,7 @@ static void asus_acpi_remove(struct acpi_device *device)
+ static int asus_wireless_add(struct acpi_device *adev)
+@@ -169,16 +172,20 @@ static int asus_wireless_add(struct acpi_device *adev)
+ 	data->led.max_brightness = 1;
+ 	data->led.default_trigger = "rfkill-none";
+ 	err = devm_led_classdev_register(&adev->dev, &data->led);
+-	if (err)
++	if (err) {
+ 		destroy_workqueue(data->wq);
++		return err;
++	}
+ 
+-	return err;
++	return acpi_device_install_event_handler(adev, ACPI_DEVICE_NOTIFY, asus_wireless_notify);
+ }
+ 
+ static void asus_wireless_remove(struct acpi_device *adev)
  {
- 	struct asus_laptop *asus = acpi_driver_data(device);
+ 	struct asus_wireless_data *data = acpi_driver_data(adev);
  
-+	acpi_device_remove_event_handler(device, ACPI_ALL_NOTIFY, asus_acpi_notify);
- 	asus_backlight_exit(asus);
- 	asus_rfkill_exit(asus);
- 	asus_led_exit(asus);
-@@ -1928,11 +1936,9 @@ static struct acpi_driver asus_acpi_driver = {
- 	.class = ASUS_LAPTOP_CLASS,
- 	.owner = THIS_MODULE,
- 	.ids = asus_device_ids,
--	.flags = ACPI_DRIVER_ALL_NOTIFY_EVENTS,
++	acpi_device_remove_event_handler(adev, ACPI_DEVICE_NOTIFY, asus_wireless_notify);
++
+ 	if (data->wq) {
+ 		devm_led_classdev_unregister(&adev->dev, &data->led);
+ 		destroy_workqueue(data->wq);
+@@ -192,7 +199,6 @@ static struct acpi_driver asus_wireless_driver = {
  	.ops = {
- 		.add = asus_acpi_add,
- 		.remove = asus_acpi_remove,
--		.notify = asus_acpi_notify,
- 		},
+ 		.add = asus_wireless_add,
+ 		.remove = asus_wireless_remove,
+-		.notify = asus_wireless_notify,
+ 	},
  };
- 
+ module_acpi_driver(asus_wireless_driver);
 -- 
 2.40.1
 
