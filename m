@@ -2,64 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 788B2719D27
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 15:17:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CF73719E62
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 15:41:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232876AbjFANRQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Jun 2023 09:17:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56962 "EHLO
+        id S233565AbjFANlX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Jun 2023 09:41:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231797AbjFANRP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 09:17:15 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47D5BE7;
-        Thu,  1 Jun 2023 06:17:14 -0700 (PDT)
+        with ESMTP id S233470AbjFANlW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 09:41:22 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 626B1189;
+        Thu,  1 Jun 2023 06:41:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685625434; x=1717161434;
+  t=1685626881; x=1717162881;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=7rTn8BHWOp7NtmIZTi6wbClky6r1q098Fh3m1tEa+1U=;
-  b=H/2E92BdNHGZSGYJ4U8gfxiewWm+ktDYKHv4B/1d3kZm9kOn96uCIPw7
-   CH1n+cWRV8DF6Deo7iBoFjfMlbUdN/UuSKs1Wdm/vnfDg4x6m/AROA1P0
-   CDLcRJTX4uuJkm5ZWHLBbwQDdwx+9bxON08Ey8ZHuK7cHakuYw6Xu5rz7
-   Jp8Nof0qSTx2iZhoVP/WO9fqrY/JVunHjtjlHudNklG62vswE5wTpXiIa
-   /+YklNOBbpRAL7vbEPrJ/ROap3XFL/YQrf0kpvD7naTPEp7BFPAEia1yY
-   oWZHESGhioYnQrbcQ+z2Fy1WOVrAYL1YryXFgSpsgJMTfvbt9jTmPbdpl
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="353050858"
+  bh=wNzFAp+2Askmwe3Z0I4i+TRfnPUKD8KrFQAyDNVZazs=;
+  b=IfO8gzl3TR7LAVAuHxEYiTqv5MiTI1Q+x0/fTfqs4D4greAvY/pqUIiQ
+   t9FzLrBkG6cbThGrkcUuvvvgcgiwFmoNsAa1BQV84A92b3hGm6Ecq2Qqf
+   9/1p4u2vuqb1Le/J86MtwMnXy4Mrn26Iqh/dG3Dx+tmfucGHe7dmcizKK
+   264RuaCBaVRldfg5kN2Jvf6H5zYAQz0zQYr6P/pPjL9Spzbw+y5+KMaBJ
+   htDybXtu1kuD+8VcM/uhQXeHHiqpt265DHMIvM5zamnDe8RjSg275asLs
+   Dfa3JuUc0KBTMqjX/ulZVa5CKiI73KRQ37ql2GrcBI3HStB6JK0lLRGNw
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="419066129"
 X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="353050858"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:17:13 -0700
+   d="scan'208";a="419066129"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:18:05 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="737104338"
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="881601091"
 X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="737104338"
+   d="scan'208";a="881601091"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:17:04 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:18:03 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
-To:     rafael@kernel.org, lenb@kernel.org, dan.j.williams@intel.com,
-        vishal.l.verma@intel.com, dave.jiang@intel.com,
-        ira.weiny@intel.com, rui.zhang@intel.com, jdelvare@suse.com,
-        linux@roeck-us.net, jic23@kernel.org, lars@metafoo.de,
-        bleung@chromium.org, yu.c.chen@intel.com, hdegoede@redhat.com,
-        markgross@kernel.org, luzmaximilian@gmail.com,
-        corentin.chary@gmail.com, jprvita@gmail.com,
-        cascardo@holoscopio.com, don@syst.com.br, pali@kernel.org,
-        jwoithe@just42.net, matan@svgalib.org, kenneth.t.chan@gmail.com,
-        malattia@linux.it, jeremy@system76.com, productdev@system76.com,
-        herton@canonical.com, coproscefalo@gmail.com, tytso@mit.edu,
-        Jason@zx2c4.com, robert.moore@intel.com
-Cc:     linux-acpi@vger.kernel.org, nvdimm@lists.linux.dev,
-        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-        chrome-platform@lists.linux.dev,
-        platform-driver-x86@vger.kernel.org,
-        acpi4asus-user@lists.sourceforge.net,
-        Michal Wilczynski <michal.wilczynski@intel.com>
-Subject: [PATCH v4 00/35] Remove .notify callback in acpi_device_ops
-Date:   Thu,  1 Jun 2023 15:16:55 +0200
-Message-Id: <20230601131655.300675-1-michal.wilczynski@intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+Cc:     Michal Wilczynski <michal.wilczynski@intel.com>,
+        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org
+Subject: [PATCH v4 02/35] acpi/ac: Move handler installing logic to driver
+Date:   Thu,  1 Jun 2023 15:17:05 +0200
+Message-Id: <20230601131739.300760-3-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -73,99 +59,80 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Currently drivers support ACPI event handlers by defining .notify
-callback in acpi_device_ops. This solution is suboptimal as event
-handler installer installs intermediary function acpi_notify_device as a
-handler in every driver. Also this approach requires extra variable
-'flags' for specifying event types that the driver want to subscribe to.
-Additionally this is a pre-work required to align acpi_driver with
-platform_driver and eventually replace acpi_driver with platform_driver.
+Currently logic for installing notifications from ACPI devices is
+implemented using notify callback in struct acpi_driver. Preparations
+are being made to replace acpi_driver with more generic struct
+platform_driver, which doesn't contain notify callback. Furthermore
+as of now handlers are being called indirectly through
+acpi_notify_device(), which decreases performance.
 
-Remove .notify callback from the acpi_device_ops. Replace it with each
-driver installing and removing it's event handlers.
+Call acpi_device_install_event_handler() at the end of .add callback.
+Call acpi_device_remove_event_handler() at the beginning of .remove
+callback. Change arguments passed to the notify callback to match with
+what's required by acpi_install_event_handler().
 
-v4:
- - added one commit for previously missed driver sony-laptop,
-   refactored return statements, added NULL check for event installer
-v3:
- - lkp still reported some failures for eeepc, fujitsu and
-   toshiba_bluetooth, fix those
-v2:
- - fix compilation errors for drivers
+Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
+---
+ drivers/acpi/ac.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-Michal Wilczynski (35):
-  acpi: Adjust functions installing bus event handlers
-  acpi/ac: Move handler installing logic to driver
-  acpi/video: Move handler installing logic to driver
-  acpi/battery: Move handler installing logic to driver
-  acpi/button: Move handler installing logic to driver
-  acpi/hed: Move handler installing logic to driver
-  acpi/nfit: Move handler installing logic to driver
-  acpi/thermal: Move handler installing logic to driver
-  acpi/tiny-power-button: Move handler installing logic to driver
-  hwmon/acpi_power_meter: Move handler installing logic to driver
-  iio/acpi-als: Move handler installing logic to driver
-  platform/chromeos_tbmc: Move handler installing logic to driver
-  platform/wilco_ec: Move handler installing logic to driver
-  platform/surface/button: Move handler installing logic to driver
-  platform/x86/acer-wireless: Move handler installing logic to driver
-  platform/x86/asus-laptop: Move handler installing logic to driver
-  platform/x86/asus-wireless: Move handler installing logic to driver
-  platform/x86/classmate-laptop: Move handler installing logic to driver
-  platform/x86/dell/dell-rbtn: Move handler installing logic to driver
-  platform/x86/eeepc-laptop: Move handler installing logic to driver
-  platform/x86/fujitsu-laptop: Move handler installing logic to driver
-  platform/x86/lg-laptop: Move handler installing logic to driver
-  platform/x86/panasonic-laptop: Move handler installing logic to driver
-  platform/x86/system76_acpi: Move handler installing logic to driver
-  platform/x86/topstar-laptop: Move handler installing logic to driver
-  platform/x86/toshiba_acpi: Move handler installing logic to driver
-  platform/x86/toshiba_bluetooth: Move handler installing logic to
-    driver
-  platform/x86/toshiba_haps: Move handler installing logic to driver
-  platform/x86/wireless-hotkey: Move handler installing logic to driver
-  platform/x86/xo15-ebook: Move handler installing logic to driver
-  platform/x86/sony-laptop: Move handler installing logic to driver
-  virt/vmgenid: Move handler installing logic to driver
-  acpi/bus: Remove installing/removing notify handlers from probe/remove
-  acpi/bus: Remove redundant functions
-  acpi/bus: Remove notify callback and flags
-
- drivers/acpi/ac.c                             |  14 +-
- drivers/acpi/acpi_video.c                     |  16 ++-
- drivers/acpi/battery.c                        |  16 ++-
- drivers/acpi/bus.c                            |  56 +++-----
- drivers/acpi/button.c                         |  16 ++-
- drivers/acpi/hed.c                            |   7 +-
- drivers/acpi/nfit/core.c                      |  25 ++--
- drivers/acpi/thermal.c                        |  20 ++-
- drivers/acpi/tiny-power-button.c              |  18 +--
- drivers/hwmon/acpi_power_meter.c              |  15 +-
- drivers/iio/light/acpi-als.c                  |  23 +++-
- drivers/platform/chrome/chromeos_tbmc.c       |  14 +-
- drivers/platform/chrome/wilco_ec/event.c      |  17 ++-
- drivers/platform/surface/surfacepro3_button.c |  17 ++-
- drivers/platform/x86/acer-wireless.c          |  22 ++-
- drivers/platform/x86/asus-laptop.c            |  14 +-
- drivers/platform/x86/asus-wireless.c          |  24 ++--
- drivers/platform/x86/classmate-laptop.c       |  53 +++++--
- drivers/platform/x86/dell/dell-rbtn.c         |  17 ++-
- drivers/platform/x86/eeepc-laptop.c           |  16 ++-
- drivers/platform/x86/fujitsu-laptop.c         |  86 +++++++-----
- drivers/platform/x86/lg-laptop.c              |  10 +-
- drivers/platform/x86/panasonic-laptop.c       |  18 ++-
- drivers/platform/x86/sony-laptop.c            |   9 +-
- drivers/platform/x86/system76_acpi.c          |  26 ++--
- drivers/platform/x86/topstar-laptop.c         |  14 +-
- drivers/platform/x86/toshiba_acpi.c           | 129 +++++++++---------
- drivers/platform/x86/toshiba_bluetooth.c      |  30 ++--
- drivers/platform/x86/toshiba_haps.c           |   9 +-
- drivers/platform/x86/wireless-hotkey.c        |  24 +++-
- drivers/platform/x86/xo15-ebook.c             |   9 +-
- drivers/virt/vmgenid.c                        |  30 ++--
- include/acpi/acpi_bus.h                       |  10 +-
- 33 files changed, 530 insertions(+), 294 deletions(-)
-
+diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
+index 1ace70b831cd..208af5a3106e 100644
+--- a/drivers/acpi/ac.c
++++ b/drivers/acpi/ac.c
+@@ -34,7 +34,7 @@ MODULE_LICENSE("GPL");
+ 
+ static int acpi_ac_add(struct acpi_device *device);
+ static void acpi_ac_remove(struct acpi_device *device);
+-static void acpi_ac_notify(struct acpi_device *device, u32 event);
++static void acpi_ac_notify(acpi_handle handle, u32 event, void *data);
+ 
+ static const struct acpi_device_id ac_device_ids[] = {
+ 	{"ACPI0003", 0},
+@@ -54,11 +54,9 @@ static struct acpi_driver acpi_ac_driver = {
+ 	.name = "ac",
+ 	.class = ACPI_AC_CLASS,
+ 	.ids = ac_device_ids,
+-	.flags = ACPI_DRIVER_ALL_NOTIFY_EVENTS,
+ 	.ops = {
+ 		.add = acpi_ac_add,
+ 		.remove = acpi_ac_remove,
+-		.notify = acpi_ac_notify,
+ 		},
+ 	.drv.pm = &acpi_ac_pm,
+ };
+@@ -128,9 +126,12 @@ static enum power_supply_property ac_props[] = {
+ };
+ 
+ /* Driver Model */
+-static void acpi_ac_notify(struct acpi_device *device, u32 event)
++static void acpi_ac_notify(acpi_handle handle, u32 event, void *data)
+ {
+-	struct acpi_ac *ac = acpi_driver_data(device);
++	struct acpi_device *device = data;
++	struct acpi_ac *ac;
++
++	ac = acpi_driver_data(device);
+ 
+ 	if (!ac)
+ 		return;
+@@ -256,6 +257,8 @@ static int acpi_ac_add(struct acpi_device *device)
+ 
+ 	ac->battery_nb.notifier_call = acpi_ac_battery_notify;
+ 	register_acpi_notifier(&ac->battery_nb);
++
++	result = acpi_device_install_event_handler(device, ACPI_ALL_NOTIFY, acpi_ac_notify);
+ end:
+ 	if (result)
+ 		kfree(ac);
+@@ -297,6 +300,7 @@ static void acpi_ac_remove(struct acpi_device *device)
+ 
+ 	ac = acpi_driver_data(device);
+ 
++	acpi_device_remove_event_handler(device, ACPI_ALL_NOTIFY, acpi_ac_notify);
+ 	power_supply_unregister(ac->charger);
+ 	unregister_acpi_notifier(&ac->battery_nb);
+ 
 -- 
 2.40.1
 
