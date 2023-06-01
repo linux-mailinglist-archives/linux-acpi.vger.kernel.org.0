@@ -2,50 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0E32719E65
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 15:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6599E719E67
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jun 2023 15:41:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233614AbjFANli (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Jun 2023 09:41:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44750 "EHLO
+        id S233470AbjFANl4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Jun 2023 09:41:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233470AbjFANlh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 09:41:37 -0400
+        with ESMTP id S232699AbjFANlz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jun 2023 09:41:55 -0400
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69406180;
-        Thu,  1 Jun 2023 06:41:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7344C138;
+        Thu,  1 Jun 2023 06:41:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685626896; x=1717162896;
+  t=1685626914; x=1717162914;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=FCMoj4Gj8XZ5msdccA3UmP66sLs7lLh7QR48M0Uz8Xg=;
-  b=UOVf3cPhL/Zxb7dsySVYxKX9KeNTa+hZMZ+59rwCNmPgGsN/qSs0Rd49
-   Q9DNOHEyvGGqAw3Nb5+v/mPEej6avLfrYDM4KVw8VTqkT/8DQAlR8sAT6
-   M+bcES7VbR68b2ECN7Y14PQVvPfzcy6Nf+iDeZQCkXmBGsU6/M8nL7kQb
-   +Vzh1SHPmh9oV9UulXEH0ycLfKhEZ6RC5WptYHaj7s3cPnpBRnlEdvBp6
-   W/e12B48ygAc6nSGkVAvrr7PZt35meMSG4A/lyU6VH8nCZsuGpm3OjxWk
-   INRJaY85yRoM6VGtrX9iLff9ny7phw9lQGjEP24qH8RrNyXD50Cw1BEfv
+  bh=J2m0TGOiRoBd/ax/IBNGAB4gn5LdAqZnUKRaqrOD26M=;
+  b=fImHP365NyyfPVIZKULo3F4MPqxf1F+SMfphRvmXwBer0nkUReOgs+zj
+   tR5yndRG72N3N4UBOrdg9mjnlki4urWbvv6qqQ7TT90d3GwcSDRG3pXkF
+   7jHCT0aOszYT1U1Ua1AN/Bmnsmz24kX6I0FT2yQYh+Y5fkkt+Xnc1uZ9d
+   +ecJ9l+157qYbX04SULUc/gk2VK3WYv2b9VrqBYggjtV+L1WKGNDwvdVn
+   RJ+CJHjpToGG0wuSo4Q42gGI/9ceiRHflOWMUQ8eeX3TgwmnZUg3/7ONH
+   MPhAKB4bK/c2j3VveqYTnjfQzFqVqLzLwyddU8EAU4UlUJAUnqGDpIDWk
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="419066293"
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="419066480"
 X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="419066293"
+   d="scan'208";a="419066480"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:18:12 -0700
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:18:21 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="881601181"
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="881601301"
 X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="881601181"
+   d="scan'208";a="881601301"
 Received: from hextor.igk.intel.com ([10.123.220.6])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:18:11 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:18:18 -0700
 From:   Michal Wilczynski <michal.wilczynski@intel.com>
 To:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>
 Cc:     Michal Wilczynski <michal.wilczynski@intel.com>,
         linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org
-Subject: [PATCH v4 03/35] acpi/video: Move handler installing logic to driver
-Date:   Thu,  1 Jun 2023 15:17:06 +0200
-Message-Id: <20230601131739.300760-4-michal.wilczynski@intel.com>
+Subject: [PATCH v4 04/35] acpi/battery: Move handler installing logic to driver
+Date:   Thu,  1 Jun 2023 15:17:07 +0200
+Message-Id: <20230601131739.300760-5-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230601131739.300760-3-michal.wilczynski@intel.com>
 References: <20230601131739.300760-3-michal.wilczynski@intel.com>
@@ -75,68 +75,63 @@ what's required by acpi_device_install_event_handler().
 
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/acpi/acpi_video.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/acpi/battery.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index 62f4364e4460..f1623fcc3973 100644
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -77,7 +77,7 @@ static DEFINE_MUTEX(video_list_lock);
- static LIST_HEAD(video_bus_head);
- static int acpi_video_bus_add(struct acpi_device *device);
- static void acpi_video_bus_remove(struct acpi_device *device);
--static void acpi_video_bus_notify(struct acpi_device *device, u32 event);
-+static void acpi_video_bus_notify(acpi_handle handle, u32 event, void *data);
- 
- /*
-  * Indices in the _BCL method response: the first two items are special,
-@@ -104,7 +104,6 @@ static struct acpi_driver acpi_video_bus = {
- 	.ops = {
- 		.add = acpi_video_bus_add,
- 		.remove = acpi_video_bus_remove,
--		.notify = acpi_video_bus_notify,
- 		},
- };
- 
-@@ -1527,12 +1526,15 @@ static int acpi_video_bus_stop_devices(struct acpi_video_bus *video)
- 				  acpi_osi_is_win8() ? 0 : 1);
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index 9c67ed02d797..37449c33771b 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -1034,11 +1034,14 @@ static void acpi_battery_refresh(struct acpi_battery *battery)
  }
  
--static void acpi_video_bus_notify(struct acpi_device *device, u32 event)
-+static void acpi_video_bus_notify(acpi_handle handle, u32 event, void *data)
+ /* Driver Interface */
+-static void acpi_battery_notify(struct acpi_device *device, u32 event)
++static void acpi_battery_notify(acpi_handle handle, u32 event, void *data)
  {
--	struct acpi_video_bus *video = acpi_driver_data(device);
+-	struct acpi_battery *battery = acpi_driver_data(device);
 +	struct acpi_device *device = data;
-+	struct acpi_video_bus *video;
- 	struct input_dev *input;
- 	int keycode = 0;
++	struct acpi_battery *battery;
+ 	struct power_supply *old;
  
-+	video = acpi_driver_data(device);
++	battery = acpi_driver_data(device);
 +
- 	if (!video || !video->input)
+ 	if (!battery)
  		return;
+ 	old = battery->bat;
+@@ -1212,7 +1215,11 @@ static int acpi_battery_add(struct acpi_device *device)
  
-@@ -2053,6 +2055,11 @@ static int acpi_video_bus_add(struct acpi_device *device)
+ 	device_init_wakeup(&device->dev, 1);
  
- 	acpi_video_bus_add_notify_handler(video);
- 
-+	error =  acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY,
-+						   acpi_video_bus_notify);
-+	if (error)
-+		goto err_put_video;
+-	return result;
++	result = acpi_device_install_event_handler(device, ACPI_ALL_NOTIFY, acpi_battery_notify);
++	if (result)
++		goto fail;
 +
- 	return 0;
++	return 0;
  
- err_put_video:
-@@ -2075,6 +2082,7 @@ static void acpi_video_bus_remove(struct acpi_device *device)
+ fail:
+ 	sysfs_remove_battery(battery);
+@@ -1228,6 +1235,7 @@ static void acpi_battery_remove(struct acpi_device *device)
  
- 	video = acpi_driver_data(device);
- 
-+	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, acpi_video_bus_notify);
- 	mutex_lock(&video_list_lock);
- 	list_del(&video->entry);
- 	mutex_unlock(&video_list_lock);
+ 	if (!device || !acpi_driver_data(device))
+ 		return;
++	acpi_device_remove_event_handler(device, ACPI_ALL_NOTIFY, acpi_battery_notify);
+ 	device_init_wakeup(&device->dev, 0);
+ 	battery = acpi_driver_data(device);
+ 	unregister_pm_notifier(&battery->pm_nb);
+@@ -1264,11 +1272,9 @@ static struct acpi_driver acpi_battery_driver = {
+ 	.name = "battery",
+ 	.class = ACPI_BATTERY_CLASS,
+ 	.ids = battery_device_ids,
+-	.flags = ACPI_DRIVER_ALL_NOTIFY_EVENTS,
+ 	.ops = {
+ 		.add = acpi_battery_add,
+ 		.remove = acpi_battery_remove,
+-		.notify = acpi_battery_notify,
+ 		},
+ 	.drv.pm = &acpi_battery_pm,
+ };
 -- 
 2.40.1
 
