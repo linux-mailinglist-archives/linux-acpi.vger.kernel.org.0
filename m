@@ -2,254 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A02471FFD0
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jun 2023 12:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFDD7720224
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jun 2023 14:35:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234187AbjFBKzI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Jun 2023 06:55:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42250 "EHLO
+        id S235097AbjFBMfL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Jun 2023 08:35:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjFBKzH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jun 2023 06:55:07 -0400
-X-Greylist: delayed 873 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 02 Jun 2023 03:55:04 PDT
-Received: from grilo.cascardo.info (grilo.cascardo.info [IPv6:2a01:4f8:13a:6e8:152:1:0:10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEF26C0;
-        Fri,  2 Jun 2023 03:55:04 -0700 (PDT)
-Received: from siri.cascardo.eti.br (unknown [IPv6:2804:431:e7c5:145d:6a17:29ff:fe00:4f38])
-        by grilo.cascardo.info (Postfix) with ESMTPSA id CAF1A200172;
-        Fri,  2 Jun 2023 07:30:00 -0300 (-03)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=holoscopio.com;
-        s=mail; t=1685701803;
-        bh=ueONc7ev81AAlv0Rz4GJDLaRhMnB1XlzZCYB16hNYlg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=I5bdHpqd+s4eoRZc8KF0x4CL1Kiw8qGvsKkT6cjbK5qOdlQI4qpzmC0eVHcE+i2o0
-         G5l6xmbZy9v4aliz4y6FeCamOV75bQxwdcd0B0EAXWbSrj4Fp5u2JYcQQw5UyIcVbA
-         nCRWzeRgCOkKdxXE07fUXiYkI8tTzzhK/sLk2OGAsEVNrIn8+V260BoQ88cgZ/nNYg
-         tpH6A3saSPbLp1jHDEJZZrWkXdvOmFCaH1H7yZ5v3hOnTvEbtQeYGjh71DXJuZP7dC
-         8MbuKcM6L+WAR3ZHVZBYP254NvfIFzv925+f85yM1WZDu2B+JlZlHzpB1rgZj0DDTl
-         EXjAoWdZnlz9w==
-Date:   Fri, 2 Jun 2023 07:29:56 -0300
-From:   Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
-To:     Michal Wilczynski <michal.wilczynski@intel.com>
-Cc:     Daniel Oliveira Nascimento <don@syst.com.br>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
-        rafael@kernel.org
-Subject: Re: [PATCH v4 18/35] platform/x86/classmate-laptop: Move handler
- installing logic to driver
-Message-ID: <ZHnEpDRJfywWP3mB@siri.cascardo.eti.br>
-References: <20230601131739.300760-3-michal.wilczynski@intel.com>
- <20230601131739.300760-19-michal.wilczynski@intel.com>
+        with ESMTP id S234571AbjFBMfK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jun 2023 08:35:10 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 813741AE;
+        Fri,  2 Jun 2023 05:35:07 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QXj862q2Rz6D8XS;
+        Fri,  2 Jun 2023 20:32:54 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Fri, 2 Jun
+ 2023 13:35:05 +0100
+Date:   Fri, 2 Jun 2023 13:35:04 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Dave Jiang <dave.jiang@intel.com>
+CC:     <linux-acpi@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, <lenb@kernel.org>,
+        <dan.j.williams@intel.com>, <ira.weiny@intel.com>,
+        <vishal.l.verma@intel.com>, <alison.schofield@intel.com>,
+        <lukas@wunner.de>
+Subject: Re: [PATCH v3 1/4] acpi: Move common tables helper functions to
+ common lib
+Message-ID: <20230602133504.00001c69@Huawei.com>
+In-Reply-To: <168565511236.1098279.11767193165079131197.stgit@djiang5-mobl3>
+References: <168565502116.1098279.131831312990693128.stgit@djiang5-mobl3>
+        <168565511236.1098279.11767193165079131197.stgit@djiang5-mobl3>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230601131739.300760-19-michal.wilczynski@intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 01, 2023 at 03:17:21PM +0200, Michal Wilczynski wrote:
-> Currently logic for installing notifications from ACPI devices is
-> implemented using notify callback in struct acpi_driver. Preparations
-> are being made to replace acpi_driver with more generic struct
-> platform_driver, which doesn't contain notify callback. Furthermore
-> as of now handlers are being called indirectly through
-> acpi_notify_device(), which decreases performance.
-> 
-> Call acpi_device_install_event_handler() at the end of .add() callback.
-> Call acpi_device_remove_event_handler() at the beginning of .remove()
-> callback. Change arguments passed to the notify callback to match with
-> what's required by acpi_device_install_event_handler().
-> 
-> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
-> ---
->  drivers/platform/x86/classmate-laptop.c | 53 +++++++++++++++++++------
->  1 file changed, 41 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/platform/x86/classmate-laptop.c b/drivers/platform/x86/classmate-laptop.c
-> index 2edaea2492df..2d36abf5ecfe 100644
-> --- a/drivers/platform/x86/classmate-laptop.c
-> +++ b/drivers/platform/x86/classmate-laptop.c
-> @@ -180,8 +180,9 @@ static acpi_status cmpc_get_accel_v4(acpi_handle handle,
->  	return status;
->  }
->  
-> -static void cmpc_accel_handler_v4(struct acpi_device *dev, u32 event)
-> +static void cmpc_accel_handler_v4(acpi_handle handle, u32 event, void *data)
->  {
-> +	struct acpi_device *dev = data;
->  	if (event == 0x81) {
->  		int16_t x, y, z;
->  		acpi_status status;
-> @@ -407,6 +408,11 @@ static int cmpc_accel_add_v4(struct acpi_device *acpi)
->  	inputdev = dev_get_drvdata(&acpi->dev);
->  	dev_set_drvdata(&inputdev->dev, accel);
->  
-> +	error = acpi_device_install_event_handler(acpi, ACPI_DEVICE_NOTIFY,
-> +						  cmpc_accel_handler_v4);
-> +	if (error)
-> +		goto failed_input;
-> +
+On Thu, 01 Jun 2023 14:31:52 -0700
+Dave Jiang <dave.jiang@intel.com> wrote:
 
-In all cases, acpi_device_install_event_handler is being called after
-cmpc_add_acpi_notify_device, which allocates and registers an input
-device.
-
-You should cleanup in case acpi_device_install_event_handler fails and
-call cmpc_remove_acpi_notify_device.
-
-Cascardo.
-
->  	return 0;
->  
->  failed_input:
-> @@ -420,6 +426,7 @@ static int cmpc_accel_add_v4(struct acpi_device *acpi)
->  
->  static void cmpc_accel_remove_v4(struct acpi_device *acpi)
->  {
-> +	acpi_device_remove_event_handler(acpi, ACPI_DEVICE_NOTIFY, cmpc_accel_handler_v4);
->  	device_remove_file(&acpi->dev, &cmpc_accel_sensitivity_attr_v4);
->  	device_remove_file(&acpi->dev, &cmpc_accel_g_select_attr_v4);
->  	cmpc_remove_acpi_notify_device(acpi);
-> @@ -441,7 +448,6 @@ static struct acpi_driver cmpc_accel_acpi_driver_v4 = {
->  	.ops = {
->  		.add = cmpc_accel_add_v4,
->  		.remove = cmpc_accel_remove_v4,
-> -		.notify = cmpc_accel_handler_v4,
->  	},
->  	.drv.pm = &cmpc_accel_pm,
->  };
-> @@ -523,8 +529,10 @@ static acpi_status cmpc_get_accel(acpi_handle handle,
->  	return status;
->  }
->  
-> -static void cmpc_accel_handler(struct acpi_device *dev, u32 event)
-> +static void cmpc_accel_handler(acpi_handle handle, u32 event, void *data)
->  {
-> +	struct acpi_device *dev = data;
-> +
->  	if (event == 0x81) {
->  		unsigned char x, y, z;
->  		acpi_status status;
-> @@ -639,6 +647,11 @@ static int cmpc_accel_add(struct acpi_device *acpi)
->  	inputdev = dev_get_drvdata(&acpi->dev);
->  	dev_set_drvdata(&inputdev->dev, accel);
->  
-> +	error = acpi_device_install_event_handler(acpi, ACPI_DEVICE_NOTIFY,
-> +						  cmpc_accel_handler);
-> +	if (error)
-> +		goto failed_input;
-> +
->  	return 0;
->  
->  failed_input:
-> @@ -650,6 +663,7 @@ static int cmpc_accel_add(struct acpi_device *acpi)
->  
->  static void cmpc_accel_remove(struct acpi_device *acpi)
->  {
-> +	acpi_device_remove_event_handler(acpi, ACPI_DEVICE_NOTIFY, cmpc_accel_handler);
->  	device_remove_file(&acpi->dev, &cmpc_accel_sensitivity_attr);
->  	cmpc_remove_acpi_notify_device(acpi);
->  }
-> @@ -667,7 +681,6 @@ static struct acpi_driver cmpc_accel_acpi_driver = {
->  	.ops = {
->  		.add = cmpc_accel_add,
->  		.remove = cmpc_accel_remove,
-> -		.notify = cmpc_accel_handler,
->  	}
->  };
->  
-> @@ -693,8 +706,9 @@ static acpi_status cmpc_get_tablet(acpi_handle handle,
->  	return status;
->  }
->  
-> -static void cmpc_tablet_handler(struct acpi_device *dev, u32 event)
-> +static void cmpc_tablet_handler(acpi_handle handle, u32 event, void *data)
->  {
-> +	struct acpi_device *dev = data;
->  	unsigned long long val = 0;
->  	struct input_dev *inputdev = dev_get_drvdata(&dev->dev);
->  
-> @@ -723,12 +737,20 @@ static void cmpc_tablet_idev_init(struct input_dev *inputdev)
->  
->  static int cmpc_tablet_add(struct acpi_device *acpi)
->  {
-> -	return cmpc_add_acpi_notify_device(acpi, "cmpc_tablet",
-> -					   cmpc_tablet_idev_init);
-> +	int ret;
-> +
-> +	ret = cmpc_add_acpi_notify_device(acpi, "cmpc_tablet",
-> +					  cmpc_tablet_idev_init);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return acpi_device_install_event_handler(acpi, ACPI_DEVICE_NOTIFY,
-> +						 cmpc_tablet_handler);
->  }
->  
->  static void cmpc_tablet_remove(struct acpi_device *acpi)
->  {
-> +	acpi_device_remove_event_handler(acpi, ACPI_DEVICE_NOTIFY, cmpc_tablet_handler);
->  	cmpc_remove_acpi_notify_device(acpi);
->  }
->  
-> @@ -761,7 +783,6 @@ static struct acpi_driver cmpc_tablet_acpi_driver = {
->  	.ops = {
->  		.add = cmpc_tablet_add,
->  		.remove = cmpc_tablet_remove,
-> -		.notify = cmpc_tablet_handler,
->  	},
->  	.drv.pm = &cmpc_tablet_pm,
->  };
-> @@ -1026,8 +1047,9 @@ static int cmpc_keys_codes[] = {
->  	KEY_MAX
->  };
->  
-> -static void cmpc_keys_handler(struct acpi_device *dev, u32 event)
-> +static void cmpc_keys_handler(acpi_handle handle, u32 event, void *data)
->  {
-> +	struct acpi_device *dev = data;
->  	struct input_dev *inputdev;
->  	int code = KEY_MAX;
->  
-> @@ -1049,12 +1071,20 @@ static void cmpc_keys_idev_init(struct input_dev *inputdev)
->  
->  static int cmpc_keys_add(struct acpi_device *acpi)
->  {
-> -	return cmpc_add_acpi_notify_device(acpi, "cmpc_keys",
-> -					   cmpc_keys_idev_init);
-> +	int error;
-> +
-> +	error = cmpc_add_acpi_notify_device(acpi, "cmpc_keys",
-> +					    cmpc_keys_idev_init);
-> +	if (error)
-> +		return error;
-> +
-> +	return acpi_device_install_event_handler(acpi, ACPI_DEVICE_NOTIFY,
-> +						 cmpc_keys_handler);
->  }
->  
->  static void cmpc_keys_remove(struct acpi_device *acpi)
->  {
-> +	acpi_device_remove_event_handler(acpi, ACPI_DEVICE_NOTIFY, cmpc_keys_handler);
->  	cmpc_remove_acpi_notify_device(acpi);
->  }
->  
-> @@ -1071,7 +1101,6 @@ static struct acpi_driver cmpc_keys_acpi_driver = {
->  	.ops = {
->  		.add = cmpc_keys_add,
->  		.remove = cmpc_keys_remove,
-> -		.notify = cmpc_keys_handler,
->  	}
->  };
->  
-> -- 
-> 2.40.1
+> Some of the routines in ACPI driver/acpi/tables.c can be shared with
+> parsing CDAT. CDAT is a device-provided data structure that is formatted
+> similar to a platform provided ACPI table. CDAT is used by CXL and can
+> exist on platforms that do not use ACPI. Split out the common routine
+> from ACPI to accommodate platforms that do not support ACPI and move that
+> to /lib. The common routines can be built outside of ACPI if
+> FIRMWARE_TABLES is selected.
 > 
+> Link: https://lore.kernel.org/linux-cxl/CAJZ5v0jipbtTNnsA0-o5ozOk8ZgWnOg34m34a9pPenTyRLj=6A@mail.gmail.com/
+> Suggested-by: Rafael J. Wysocki <rafael@kernel.org>
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+
+Minor comment to fix inline. With that tidied up
+
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+> diff --git a/include/linux/fw_table.h b/include/linux/fw_table.h
+> new file mode 100644
+> index 000000000000..ff8fa58d5818
+> --- /dev/null
+> +++ b/include/linux/fw_table.h
+> @@ -0,0 +1,43 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + *  fw_tables.h - Parsing support for ACPI and ACPI-like tables provided by
+> + *                platform or device firmware
+> + *
+> + *  Copyright (C) 2001 Paul Diefenbaugh <paul.s.diefenbaugh@intel.com>
+> + *  Copyright (C) 2023 Intel Corp.
+> + */
+> +#ifndef _FW_TABLE_H_
+> +#define _FW_TABLE_H_
+> +
+> +union acpi_subtable_headers;
+> +
+> +typedef int (*acpi_tbl_entry_handler)(union acpi_subtable_headers *header,
+> +				      const unsigned long end);
+> +
+> +typedef int (*acpi_tbl_entry_handler_arg)(union acpi_subtable_headers *header,
+> +					  void *arg, const unsigned long end);
+> +
+> +struct acpi_subtable_proc {
+> +	int id;
+> +	acpi_tbl_entry_handler handler;
+> +	acpi_tbl_entry_handler_arg handler_arg;
+> +	void *arg;
+> +	int count;
+> +};
+> +
+> +#include <linux/acpi.h>
+> +#include <acpi/acpi.h>
+
+Includes mid way down the files is not a common pattern and I can't see why
+it's particularly useful to do so here.
+
++ linux/acpi.h includes acpi/acpi.h and I can't see that changing any time
+soon...
+
+> +
+> +union acpi_subtable_headers {
+> +	struct acpi_subtable_header common;
+> +	struct acpi_hmat_structure hmat;
+> +	struct acpi_prmt_module_header prmt;
+> +	struct acpi_cedt_header cedt;
+> +};
+> +
+> +int acpi_parse_entries_array(char *id, unsigned long table_size,
+> +			     struct acpi_table_header *table_header,
+> +			     struct acpi_subtable_proc *proc,
+> +			     int proc_num, unsigned int max_entries);
+> +
+> +#endif
+
+
