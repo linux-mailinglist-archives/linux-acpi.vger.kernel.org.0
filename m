@@ -2,86 +2,160 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83FB6720242
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jun 2023 14:39:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3C1A7202A9
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jun 2023 15:10:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234248AbjFBMjW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Jun 2023 08:39:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42204 "EHLO
+        id S235965AbjFBNJ7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Jun 2023 09:09:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235560AbjFBMi6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jun 2023 08:38:58 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA3F118C;
-        Fri,  2 Jun 2023 05:38:47 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QXjGn1j1Rz6J6x5;
-        Fri,  2 Jun 2023 20:38:41 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Fri, 2 Jun
- 2023 13:38:45 +0100
-Date:   Fri, 2 Jun 2023 13:38:44 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Dave Jiang <dave.jiang@intel.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
-        <rafael@kernel.org>, <lenb@kernel.org>, <dan.j.williams@intel.com>,
-        <ira.weiny@intel.com>, <vishal.l.verma@intel.com>,
-        <alison.schofield@intel.com>, <lukas@wunner.de>
-Subject: Re: [PATCH v3 4/4] acpi: Add defines for CDAT SSLBIS
-Message-ID: <20230602133844.00004377@Huawei.com>
-In-Reply-To: <168565513141.1098279.7310204214131055216.stgit@djiang5-mobl3>
-References: <168565502116.1098279.131831312990693128.stgit@djiang5-mobl3>
-        <168565513141.1098279.7310204214131055216.stgit@djiang5-mobl3>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S235963AbjFBNJ6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jun 2023 09:09:58 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67E8D1AB;
+        Fri,  2 Jun 2023 06:09:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685711397; x=1717247397;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=0bLFxmXhUWhrp2vU5VeAk9naT3tLznJtVEOx3Bbgzf0=;
+  b=ArEFUs2LDaTfdZWt8Chluy0eW124jvWQVUW5oJb3/6fy2E9edapYLijU
+   PKo/rS18nHicSvwP1qToFcIKqdAxykL0o77sG2XQ3g5qtNQ6dPvR1seeR
+   JpumwNH+6druoV6d8OfD2mBQYasl6482tcKkbYmZNBeaP7BlldSp5Bciz
+   8+IfLr8jbIIiP1wtccUEWpDXGJhiz6Ffe3MGLNqezkgc19lQSanA2bVGz
+   VFvKWVBbwdGkZAHFZxbI+8JELsDvR78bcOmOEEe6MRkldy+C7y2xMA8dw
+   hc9zQGixKh1Y1oitoZIa3or14dYGO2glFJBxb8Q+j4MGKRnKpLK+pwzF6
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="359164110"
+X-IronPort-AV: E=Sophos;i="6.00,213,1681196400"; 
+   d="scan'208";a="359164110"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2023 06:09:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="882069405"
+X-IronPort-AV: E=Sophos;i="6.00,213,1681196400"; 
+   d="scan'208";a="882069405"
+Received: from rspatil-mobl3.gar.corp.intel.com ([10.251.208.112])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2023 06:09:53 -0700
+Date:   Fri, 2 Jun 2023 16:09:51 +0300 (EEST)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Michal Wilczynski <michal.wilczynski@intel.com>
+cc:     Corentin Chary <corentin.chary@gmail.com>,
+        =?ISO-8859-15?Q?Jo=E3o_Paulo_Rechi_Vita?= <jprvita@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        platform-driver-x86@vger.kernel.org,
+        acpi4asus-user@lists.sourceforge.net, linux-acpi@vger.kernel.org,
+        rafael@kernel.org
+Subject: Re: [PATCH v4 17/35] platform/x86/asus-wireless: Move handler
+ installing logic to driver
+In-Reply-To: <20230601131739.300760-18-michal.wilczynski@intel.com>
+Message-ID: <de33f84-8774-9d8-5d6c-ea6a31343fab@linux.intel.com>
+References: <20230601131739.300760-3-michal.wilczynski@intel.com> <20230601131739.300760-18-michal.wilczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 01 Jun 2023 14:32:11 -0700
-Dave Jiang <dave.jiang@intel.com> wrote:
+On Thu, 1 Jun 2023, Michal Wilczynski wrote:
 
-> Add upstream port and any port definition for SSLBIS.
+> Currently logic for installing notifications from ACPI devices is
+> implemented using notify callback in struct acpi_driver. Preparations
+> are being made to replace acpi_driver with more generic struct
+> platform_driver, which doesn't contain notify callback. Furthermore
+> as of now handlers are being called indirectly through
+> acpi_notify_device(), which decreases performance.
 > 
-> Links: https://github.com/acpica/acpica/pull/874
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-
-FWIW given may come from acpica route anyway.
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
+> Call acpi_device_install_event_handler() at the end of .add() callback.
+> Call acpi_device_remove_event_handler() at the beginning of .remove()
+> callback. Change arguments passed to the notify callback to match with
+> what's required by acpi_device_install_event_handler().
 > 
+> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 > ---
-> ---
->  include/acpi/actbl1.h |    3 +++
->  1 file changed, 3 insertions(+)
+>  drivers/platform/x86/asus-wireless.c | 24 +++++++++++++++---------
+>  1 file changed, 15 insertions(+), 9 deletions(-)
 > 
-> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
-> index 8d5572ad48cb..a33375e055ad 100644
-> --- a/include/acpi/actbl1.h
-> +++ b/include/acpi/actbl1.h
-> @@ -465,6 +465,9 @@ struct acpi_cdat_sslbe {
->  	u16 reserved;
->  };
+> diff --git a/drivers/platform/x86/asus-wireless.c b/drivers/platform/x86/asus-wireless.c
+> index abf01e00b799..6544e3419ae4 100644
+> --- a/drivers/platform/x86/asus-wireless.c
+> +++ b/drivers/platform/x86/asus-wireless.c
+> @@ -108,19 +108,22 @@ static void led_state_set(struct led_classdev *led, enum led_brightness value)
+>  	queue_work(data->wq, &data->led_work);
+>  }
 >  
-> +#define ACPI_CDAT_SSLBIS_US_PORT	0x0100
-> +#define ACPI_CDAT_SSLBIS_ANY_PORT	0xffff
+> -static void asus_wireless_notify(struct acpi_device *adev, u32 event)
+> +static void asus_wireless_notify(acpi_handle handle, u32 event, void *data)
+>  {
+> -	struct asus_wireless_data *data = acpi_driver_data(adev);
+> +	struct asus_wireless_data *w_data;
+> +	struct acpi_device *adev = data;
 > +
->  /*******************************************************************************
->   *
->   * CEDT - CXL Early Discovery Table
-> 
-> 
+> +	w_data = acpi_driver_data(adev);
+>  
+>  	dev_dbg(&adev->dev, "event=%#x\n", event);
+>  	if (event != 0x88) {
+>  		dev_notice(&adev->dev, "Unknown ASHS event: %#x\n", event);
+>  		return;
+>  	}
+> -	input_report_key(data->idev, KEY_RFKILL, 1);
+> -	input_sync(data->idev);
+> -	input_report_key(data->idev, KEY_RFKILL, 0);
+> -	input_sync(data->idev);
+> +	input_report_key(w_data->idev, KEY_RFKILL, 1);
+> +	input_sync(w_data->idev);
+> +	input_report_key(w_data->idev, KEY_RFKILL, 0);
+> +	input_sync(w_data->idev);
+>  }
+>  
+>  static int asus_wireless_add(struct acpi_device *adev)
+> @@ -169,16 +172,20 @@ static int asus_wireless_add(struct acpi_device *adev)
+>  	data->led.max_brightness = 1;
+>  	data->led.default_trigger = "rfkill-none";
+>  	err = devm_led_classdev_register(&adev->dev, &data->led);
+> -	if (err)
+> +	if (err) {
+>  		destroy_workqueue(data->wq);
+> +		return err;
+> +	}
+>  
+> -	return err;
+> +	return acpi_device_install_event_handler(adev, ACPI_DEVICE_NOTIFY, asus_wireless_notify);
 
+So if acpi_device_install_event_handler() returns error, should you 
+rollback something here like the error branch above? If that's the case, 
+use goto to rollback as you'll have two places calling destroy_workqueue() 
+already.
+
+-- 
+ i.
+
+
+>  }
+>  
+>  static void asus_wireless_remove(struct acpi_device *adev)
+>  {
+>  	struct asus_wireless_data *data = acpi_driver_data(adev);
+>  
+> +	acpi_device_remove_event_handler(adev, ACPI_DEVICE_NOTIFY, asus_wireless_notify);
+> +
+>  	if (data->wq) {
+>  		devm_led_classdev_unregister(&adev->dev, &data->led);
+>  		destroy_workqueue(data->wq);
+> @@ -192,7 +199,6 @@ static struct acpi_driver asus_wireless_driver = {
+>  	.ops = {
+>  		.add = asus_wireless_add,
+>  		.remove = asus_wireless_remove,
+> -		.notify = asus_wireless_notify,
+>  	},
+>  };
+>  module_acpi_driver(asus_wireless_driver);
+> 
