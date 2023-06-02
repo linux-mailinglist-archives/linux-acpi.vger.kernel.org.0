@@ -2,150 +2,207 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6603372059B
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jun 2023 17:11:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04CE4720645
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jun 2023 17:34:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236514AbjFBPLq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Jun 2023 11:11:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60860 "EHLO
+        id S236534AbjFBPed (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Jun 2023 11:34:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236505AbjFBPLp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jun 2023 11:11:45 -0400
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77B4610F0
-        for <linux-acpi@vger.kernel.org>; Fri,  2 Jun 2023 08:11:17 -0700 (PDT)
-Received: by mail-pg1-x52f.google.com with SMTP id 41be03b00d2f7-53fb64b3368so1150766a12.0
-        for <linux-acpi@vger.kernel.org>; Fri, 02 Jun 2023 08:11:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20221208.gappssmtp.com; s=20221208; t=1685718665; x=1688310665;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fg/hT1sAjEd8rIup2CN/upwAvrKBrR2pDnfw7PopqQs=;
-        b=hzC+VK1jGbXhgWkUL0OeOG1AJqJbOX3K5gyj68YKEVb25v+GV//e4fuQzpeld+sA8O
-         2WdHnDWRmeXmx6geUq25Vqxa42Hwlwqdf2d3i39t0QDaQut+gvISpWJtIZYz6ATNTV4J
-         1QgEA/SczaV3YNFw9abTToLwu9ommsI9VhXE9xT7mkCTEttc+N0EQxPZMpDLxdvRsYj/
-         vigM1fvZ6FnHiCjG/KwbRAMRDaIrv/Z/FRrNAxXbI5k0K/HQDFft3bQe5wCk1Fv5vZNL
-         qf3LvjUpS8LXDQb0jauHzcz/lrdIold+VYUYF2cO5H6ly0TtjlRd8yC6CMLl3XKwdH1F
-         m3Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685718665; x=1688310665;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fg/hT1sAjEd8rIup2CN/upwAvrKBrR2pDnfw7PopqQs=;
-        b=RgwDFOfxk5I4FqX1/qu2+tZW/gpFYr+81ZX3fwXY2g1fhDC2THTXXBiv/wve3lMIOy
-         qHyd3pocvIwo8OhDY5wb4SIDwVcGd65XZfvW8Ql9QeDyFJehTBfj65Z/vtp4Ph/fopL3
-         v8xSrPFgiFO7+QhgKMlfOlz6sG5meYJP84rK4wRrJ2asvYoklAYOqDR28yCC2wikKwdu
-         0wq7Y/tOGnLz1ganYN7ij6dhrOTZKaFirmdRYpfPDrG5ppM3wqXiLCQN4jR70oHv01Cp
-         vi1PMDwO4Z2dqk0vzhbdkmYYQOh3okyirR6KVNz8kDss0eYnA93JVxw8EwR5t9xZzeN+
-         wZPA==
-X-Gm-Message-State: AC+VfDwHLbDt6sw9dK4LavRngbqTQviLXITTL9o8V4aMIJtFcVZEoorC
-        GKqh1mpHapuH958uJ7LD1gnw9PTdgBxbtZIQvMY=
-X-Google-Smtp-Source: ACHHUZ4iv27hx94ZjANRzx1oNWxLXW5Ls2Q/boifCy7lcHk8Olifk19LX70BLLdSoojjPpYWMlRiwQ==
-X-Received: by 2002:a17:902:cec9:b0:1a9:8d57:6d6c with SMTP id d9-20020a170902cec900b001a98d576d6cmr254164plg.24.1685718665293;
-        Fri, 02 Jun 2023 08:11:05 -0700 (PDT)
-Received: from localhost ([135.180.227.0])
-        by smtp.gmail.com with ESMTPSA id d12-20020a170902654c00b001b03cda6389sm1520434pln.10.2023.06.02.08.11.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jun 2023 08:11:04 -0700 (PDT)
-Date:   Fri, 02 Jun 2023 08:11:04 -0700 (PDT)
-X-Google-Original-Date: Fri, 02 Jun 2023 08:10:51 PDT (-0700)
-Subject:     Re: (subset) [PATCH V6 00/21] Add basic ACPI support for RISC-V
-In-Reply-To: <168571787727.17224.6663458864222960682.b4-ty@rivosinc.com>
-CC:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux-crypto@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        llvm@lists.linux.dev, corbet@lwn.net,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        aou@eecs.berkeley.edu, rafael@kernel.org, lenb@kernel.org,
-        daniel.lezcano@linaro.org, tglx@linutronix.de,
-        qianweili@huawei.com, wangzhou1@hisilicon.com,
-        herbert@gondor.apana.org.au, davem@davemloft.net,
-        Marc Zyngier <maz@kernel.org>, luzmaximilian@gmail.com,
-        hdegoede@redhat.com, markgross@kernel.org, nathan@kernel.org,
-        ndesaulniers@google.com, trix@redhat.com
-From:   Palmer Dabbelt <palmer@dabbelt.com>
-To:     sunilvl@ventanamicro.com, Bjorn Topel <bjorn@rivosinc.com>,
-        Conor Dooley <conor@kernel.org>
-Message-ID: <mhng-4fad860f-b5ff-4dc1-968e-219be1983acd@palmer-ri-x1c9>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        with ESMTP id S235809AbjFBPe3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jun 2023 11:34:29 -0400
+Received: from mail.tuxedocomputers.com (mail.tuxedocomputers.com [157.90.84.7])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06D9318D;
+        Fri,  2 Jun 2023 08:34:26 -0700 (PDT)
+Received: from [192.168.178.25] (host-212-18-30-247.customer.m-online.net [212.18.30.247])
+        (Authenticated sender: wse@tuxedocomputers.com)
+        by mail.tuxedocomputers.com (Postfix) with ESMTPSA id E24EA2FC00B8;
+        Fri,  2 Jun 2023 17:34:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tuxedocomputers.com;
+        s=default; t=1685720065;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=DMw4aBwZvd76/Th6Lg3FoMKLs9BCdBhFxrm3snd6MOY=;
+        b=rpooj18oiiKFoE+4g/NNuAPMHYO/itiIZ0+6FdM7pIM+2oLC5ILM410mDuWC1qOv1R8oPC
+        YrzeRRRLvC2Y9b5iYzWHGySXdbWthGK67oH/Wvev4k4nS6elLTdL2akDauejueecY8N8GQ
+        M8shkSGPcaQOpZplCQnlMh2WUZzvIAU=
+Authentication-Results: mail.tuxedocomputers.com;
+        auth=pass smtp.auth=wse@tuxedocomputers.com smtp.mailfrom=wse@tuxedocomputers.com
+Message-ID: <c801e9ba-0169-606f-1122-e1c2691c8ee3@tuxedocomputers.com>
+Date:   Fri, 2 Jun 2023 17:34:23 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v3] ACPI: resource: Remove "Zen" specific match and quirks
+To:     Mario Limonciello <mario.limonciello@amd.com>,
+        linux-acpi@vger.kernel.org, rafael@kernel.org
+Cc:     linux-kernel@vger.kernel.org, ofenfisch@googlemail.com,
+        adam.niederer@gmail.com, adrian@freund.io, jirislaby@kernel.org,
+        Renjith.Pananchikkal@amd.com, anson.tsao@amd.com,
+        Richard.Gong@amd.com, Chuanhong Guo <gch981213@gmail.com>,
+        evilsnoo@proton.me, ruinairas1992@gmail.com, nmschulte@gmail.com
+References: <20230601221151.670-1-mario.limonciello@amd.com>
+Content-Language: en-US
+From:   Werner Sembach <wse@tuxedocomputers.com>
+In-Reply-To: <20230601221151.670-1-mario.limonciello@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 02 Jun 2023 07:57:57 PDT (-0700), Palmer Dabbelt wrote:
->
-> On Mon, 15 May 2023 11:19:07 +0530, Sunil V L wrote:
->> This patch series enables the basic ACPI infrastructure for RISC-V.
->> Supporting external interrupt controllers is in progress and hence it is
->> tested using poll based HVC SBI console and RAM disk.
->>
->> The first patch in this series is one of the patch from Jisheng's
->> series [1] which is not merged yet. This patch is required to support
->> ACPI since efi_init() which gets called before sbi_init() can enable
->> static branches and hits a panic.
->>
->> [...]
->
-> Applied, thanks!
->
-> [01/21] riscv: move sbi_init() earlier before jump_label_init()
->         https://git.kernel.org/palmer/c/24fc18087f42
-> [02/21] platform/surface: Disable for RISC-V
->         https://git.kernel.org/palmer/c/7f2e20459b28
-> [03/21] crypto: hisilicon/qm: Fix to enable build with RISC-V clang
->         https://git.kernel.org/palmer/c/fbb995a7b27c
-> [04/21] ACPI: tables: Print RINTC information when MADT is parsed
->         https://git.kernel.org/palmer/c/4d02d88d2b92
-> [05/21] ACPI: OSL: Make should_use_kmap() 0 for RISC-V
->         https://git.kernel.org/palmer/c/214c236223b8
-> [06/21] RISC-V: Add support to build the ACPI core
->         https://git.kernel.org/palmer/c/a91a9ffbd3a5
-> [07/21] ACPI: processor_core: RISC-V: Enable mapping processor to the hartid
->         https://git.kernel.org/palmer/c/8b7809e28952
-> [08/21] RISC-V: Add ACPI initialization in setup_arch()
->         https://git.kernel.org/palmer/c/724f4c0df766
-> [09/21] RISC-V: ACPI: Cache and retrieve the RINTC structure
->         https://git.kernel.org/palmer/c/f99561199470
-> [10/21] drivers/acpi: RISC-V: Add RHCT related code
->         https://git.kernel.org/palmer/c/e6b9d8eddb17
-> [11/21] RISC-V: smpboot: Create wrapper setup_smp()
->         https://git.kernel.org/palmer/c/61946127ab49
-> [12/21] RISC-V: smpboot: Add ACPI support in setup_smp()
->         https://git.kernel.org/palmer/c/ce92546cd637
-> [13/21] RISC-V: only iterate over possible CPUs in ISA string parser
->         https://git.kernel.org/palmer/c/914d6f44fc50
-> [14/21] RISC-V: cpufeature: Add ACPI support in riscv_fill_hwcap()
->         https://git.kernel.org/palmer/c/396c018332a1
-> [15/21] RISC-V: cpu: Enable cpuinfo for ACPI systems
->         https://git.kernel.org/palmer/c/0b144c818989
-> [16/21] irqchip/riscv-intc: Add ACPI support
->         https://git.kernel.org/palmer/c/7023b9d83f03
-> [17/21] clocksource/timer-riscv: Refactor riscv_timer_init_dt()
->         https://git.kernel.org/palmer/c/cd12d206685a
-> [18/21] clocksource/timer-riscv: Add ACPI support
->         https://git.kernel.org/palmer/c/21f4f92410dc
-> [19/21] RISC-V: time.c: Add ACPI support for time_init()
->         https://git.kernel.org/palmer/c/714aa1d1c8ca
-> [20/21] RISC-V: Enable ACPI in defconfig
->         https://git.kernel.org/palmer/c/0b8e15ca0082
+Works for TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15 Gen4 AMD
 
-I applied the MAINTAINERS entry too, it just had a conflict and it looks 
-like my attempt at juggling it didn't play nice with the thanks message.  
-Everything's on top of rc1 because that's what my for-next is based on.
+Tested-by: Werner Sembach <wse@tuxedocomputers.com>
 
-I also don't yet have any testing for the ACPI stuff, but hopefully I'll 
-get around to adding some.  We should probably add it to the patchwwork 
-CI as well.
-
+Am 02.06.23 um 00:11 schrieb Mario Limonciello:
+> commit 9946e39fe8d0 ("ACPI: resource: skip IRQ override on
+> AMD Zen platforms") attempted to overhaul the override logic so it
+> didn't apply on X86 AMD Zen systems.  This was intentional so that
+> systems would prefer DSDT values instead of default MADT value for
+> IRQ 1 on Ryzen 6000 systems which typically uses ActiveLow for IRQ1.
 >
-> Best regards,
+> This turned out to be a bad assumption because several vendors
+> add Interrupt Source Override but don't fix the DSDT. A pile of
+> quirks was collecting that proved this wasn't sustaintable.
+>
+> Furthermore some vendors have used ActiveHigh for IRQ1.
+> To solve this problem revert the following commits:
+> * commit 17bb7046e7ce ("ACPI: resource: Do IRQ override on all TongFang
+> GMxRGxx")
+> * commit f3cb9b740869 ("ACPI: resource: do IRQ override on Lenovo 14ALC7")
+> * commit bfcdf58380b1 ("ACPI: resource: do IRQ override on LENOVO IdeaPad")
+> * commit 7592b79ba4a9 ("ACPI: resource: do IRQ override on XMG Core 15")
+> * commit 9946e39fe8d0 ("ACPI: resource: skip IRQ override on AMD Zen
+> platforms")
+>
+> Cc: ofenfisch@googlemail.com
+> Cc: wse@tuxedocomputers.com
+> Cc: adam.niederer@gmail.com
+> Cc: adrian@freund.io
+> Cc: jirislaby@kernel.org
+> Cc: Renjith.Pananchikkal@amd.com
+> Cc: anson.tsao@amd.com
+> Cc: Richard.Gong@amd.com
+> Cc: Chuanhong Guo <gch981213@gmail.com>
+> Reported-by: evilsnoo@proton.me
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217394
+> Reported-by: ruinairas1992@gmail.com
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217406
+> Reported-by: nmschulte@gmail.com
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217336
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+> v2->v3:
+>   * Adjust to drop heuristics entirely
+>   * Drop tested tags
+>   * Add more links and people to Cc
+>   * Drop Fixes tag as this got a lot more risky
+> v1->v2:
+>   * Rebase on 71a485624c4c ("ACPI: resource: Add IRQ override quirk for LG UltraPC 17U70P")
+>   * Pick up tag
+>
+> Rafael,
+> Please hold off on picking this up until the majority of those on CC
+> have tested it on hardware they have and reported results.
+>
+> Everyone else,
+> Please test. If you have problems with this applied, please share
+> an acpidump and dmesg either on a bug or to me privately.
+> ---
+>   drivers/acpi/resource.c | 60 -----------------------------------------
+>   1 file changed, 60 deletions(-)
+>
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index 0800a9d77558..1dd8d5aebf67 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -470,52 +470,6 @@ static const struct dmi_system_id asus_laptop[] = {
+>   	{ }
+>   };
+>   
+> -static const struct dmi_system_id lenovo_laptop[] = {
+> -	{
+> -		.ident = "LENOVO IdeaPad Flex 5 14ALC7",
+> -		.matches = {
+> -			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+> -			DMI_MATCH(DMI_PRODUCT_NAME, "82R9"),
+> -		},
+> -	},
+> -	{
+> -		.ident = "LENOVO IdeaPad Flex 5 16ALC7",
+> -		.matches = {
+> -			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+> -			DMI_MATCH(DMI_PRODUCT_NAME, "82RA"),
+> -		},
+> -	},
+> -	{ }
+> -};
+> -
+> -static const struct dmi_system_id tongfang_gm_rg[] = {
+> -	{
+> -		.ident = "TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15 Gen4 AMD",
+> -		.matches = {
+> -			DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
+> -		},
+> -	},
+> -	{ }
+> -};
+> -
+> -static const struct dmi_system_id maingear_laptop[] = {
+> -	{
+> -		.ident = "MAINGEAR Vector Pro 2 15",
+> -		.matches = {
+> -			DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
+> -			DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-15A3070T"),
+> -		}
+> -	},
+> -	{
+> -		.ident = "MAINGEAR Vector Pro 2 17",
+> -		.matches = {
+> -			DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
+> -			DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-17A3070T"),
+> -		},
+> -	},
+> -	{ }
+> -};
+> -
+>   static const struct dmi_system_id lg_laptop[] = {
+>   	{
+>   		.ident = "LG Electronics 17U70P",
+> @@ -539,10 +493,6 @@ struct irq_override_cmp {
+>   static const struct irq_override_cmp override_table[] = {
+>   	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+>   	{ asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+> -	{ lenovo_laptop, 6, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
+> -	{ lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
+> -	{ tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+> -	{ maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+>   	{ lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+>   };
+>   
+> @@ -562,16 +512,6 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+>   			return entry->override;
+>   	}
+>   
+> -#ifdef CONFIG_X86
+> -	/*
+> -	 * IRQ override isn't needed on modern AMD Zen systems and
+> -	 * this override breaks active low IRQs on AMD Ryzen 6000 and
+> -	 * newer systems. Skip it.
+> -	 */
+> -	if (boot_cpu_has(X86_FEATURE_ZEN))
+> -		return false;
+> -#endif
+> -
+>   	return true;
+>   }
+>   
