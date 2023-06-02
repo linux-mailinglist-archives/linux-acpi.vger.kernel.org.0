@@ -2,113 +2,153 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDAFB7204E6
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jun 2023 16:51:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C91FE720595
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jun 2023 17:11:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236253AbjFBOva convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 2 Jun 2023 10:51:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48870 "EHLO
+        id S236478AbjFBPLo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Jun 2023 11:11:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234989AbjFBOva (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jun 2023 10:51:30 -0400
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA023E49;
-        Fri,  2 Jun 2023 07:51:27 -0700 (PDT)
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-50c079eb705so512354a12.1;
-        Fri, 02 Jun 2023 07:51:27 -0700 (PDT)
+        with ESMTP id S236474AbjFBPLm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jun 2023 11:11:42 -0400
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C282210E9
+        for <linux-acpi@vger.kernel.org>; Fri,  2 Jun 2023 08:11:15 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-64d18d772bdso2518461b3a.3
+        for <linux-acpi@vger.kernel.org>; Fri, 02 Jun 2023 08:11:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1685718662; x=1688310662;
+        h=to:from:cc:content-transfer-encoding:mime-version:date:message-id
+         :subject:references:in-reply-to:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YrYBSW8qeXE8L8yfvdl8QinykFnJTuk07/XjwMoUeVE=;
+        b=qu93yN+BiKoQR/bKXLpg56UTzaPfupYXZkwPAS/SM4sV/8V5hm62649tjUEpGP7YLW
+         CTcl/91RCAuHjZlaVLKPhSq1JgbIhQ88RkyebHa/Ru9bQcq3orZF1/Phc0RHYqyK/txS
+         4ygVpr4xdpOMgj96fS+DTrwY+vc2+sSk+p2eCCsYHGJhDaUmbzM5QUrHanNekHFnbv64
+         kVnW8lRrLFGxezD/kIDCpKMfjO4phXPEtYQqJ0Qk1ZhLZ2WB0wNNOfrbrlUgTZGsFWPc
+         AMGr7p26DJUfKXi09NOnK2bbdSdhTPsoLDw+CouGXT0eMAERoW7PF+x7a4qOBxCsePKu
+         IJmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685717486; x=1688309486;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1685718662; x=1688310662;
+        h=to:from:cc:content-transfer-encoding:mime-version:date:message-id
+         :subject:references:in-reply-to:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kXHfdMrgpozX1VOcBn1dgVWQVi3s3HG1/X81+A5jHZo=;
-        b=TCH68Eg01gaFre+ljvdcoNPQIntwKCxFANPIf5v0v6S4xrx+q7O/N88wO8d4mrw6h0
-         7dpJOrBa+P/mBVEJX/Wp2nwx4+t+FFLZNF17w7LvTgTKboWyjaBEncgi4IxHA2XBjnJm
-         yeOJ9a+mKUgISQ7/adlPfE3s5SYTFfL4wI83L5m/GuUe4fGUGFvNdrxbIcvkQ7z/sOsT
-         FOx8gpr7z/gCBtlu8+SGNb2Trg1CEul6Qmw1RSghiYiVVnb/J1gReoF+E/B7EUtT8LHr
-         7N60nxm8e1VNczFdCL3+q8CLAh4a/S9bcFXLsydXFKxuLXdBUMEANVV98J5/9zsUmJdr
-         ujRw==
-X-Gm-Message-State: AC+VfDwKK1zngNkJgAAQIUvzoOH5Pd9Ghj1ZNZFrW7hIYWLLKDvTKumA
-        SSu3+M/VBgOrCiKVw6Mxy8G+aEkRurplfQwM+tK6Y8mS
-X-Google-Smtp-Source: ACHHUZ40ia8U3bhmMtJZKW83lKmq8I3pg3C5oT7SvB79yrvkP1+pKAZzyzJNV2VAYGQnq/2KV8MQdP61loiTbPyHfPw=
-X-Received: by 2002:a17:906:5199:b0:975:bb7:5dc3 with SMTP id
- y25-20020a170906519900b009750bb75dc3mr958357ejk.7.1685717486156; Fri, 02 Jun
- 2023 07:51:26 -0700 (PDT)
+        bh=YrYBSW8qeXE8L8yfvdl8QinykFnJTuk07/XjwMoUeVE=;
+        b=IPYjreN9oHPm/DgBC5oBFeOFQdlEk8wu1PyMq0WiOCKMaYKFG6DqX8hIodWpc7Qz19
+         SE5zISCgIRJD5JYmaVYpQi05KR0gPtwohXkEnvHWoubzQsdGkfl1Zh9aQ5BE+kZEuh+w
+         6Su8CJqsCRMCzl50/Hhbm8yq8SnIVOYBqyUmPlId6aYFHWmyKGCauudprxqjxo+63J6x
+         +qLdTwOdthEM3lQvx7y0L4R3PFnOXhggk2jhW2QEwm9rPBiMsgaImBEJn9LpKzcDgGFB
+         1YK4LteW47YM3lL+lzlaouqzmyyivCMUbadPmqvnLcbFaxXMqiRqCAjMmD29XO7P8cJ5
+         ge4w==
+X-Gm-Message-State: AC+VfDzZvBjnDg7gZ5TXuuaZ19dB1etLh8Z4/8kj72fuIVg6ihioo+kw
+        o3KnHvRB+Pyvgi9MVxaVx8nI7KKaGi2j8hSus1QFmw==
+X-Google-Smtp-Source: ACHHUZ5lq868GyrBxPLkEgZi3NcLZ0qAOyZwshzbl/Lk7FSKdcWKA6GQThH1Jum2CNXd5wP4XzABMA==
+X-Received: by 2002:a05:6a00:88d:b0:64f:5406:d59e with SMTP id q13-20020a056a00088d00b0064f5406d59emr17852377pfj.17.1685718662535;
+        Fri, 02 Jun 2023 08:11:02 -0700 (PDT)
+Received: from localhost ([135.180.227.0])
+        by smtp.gmail.com with ESMTPSA id n12-20020a62e50c000000b00634a96493f7sm1114822pff.128.2023.06.02.08.11.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Jun 2023 08:11:02 -0700 (PDT)
+In-Reply-To: <20230515054928.2079268-1-sunilvl@ventanamicro.com>
+References: <20230515054928.2079268-1-sunilvl@ventanamicro.com>
+Subject: Re: (subset) [PATCH V6 00/21] Add basic ACPI support for RISC-V
+Message-Id: <168571787727.17224.6663458864222960682.b4-ty@rivosinc.com>
+Date:   Fri, 02 Jun 2023 07:57:57 -0700
 MIME-Version: 1.0
-References: <20230601233953.1332-1-mario.limonciello@amd.com>
- <d1e0d5fc837753c292f78a5357fd9ba4531f06d2.camel@linux.intel.com>
- <b0e0abc0-26ba-d104-ff73-b89745510be8@amd.com> <05162d36a009a1669870a2c82bd0b2b65458b244.camel@linux.intel.com>
-In-Reply-To: <05162d36a009a1669870a2c82bd0b2b65458b244.camel@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 2 Jun 2023 16:51:13 +0200
-Message-ID: <CAJZ5v0j8-1Kg5v04yBNMEvPJpJ5KdFX8opu+EXFRw_e6jvEAAw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: x86: Adjust Microsoft LPS0 _DSM handling sequence
-To:     david.e.box@linux.intel.com
-Cc:     "Limonciello, Mario" <mario.limonciello@amd.com>,
-        rafael@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-901c5
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Weili Qian <qianweili@huawei.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Marc Zyngier <maz@kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>
+From:   Palmer Dabbelt <palmer@rivosinc.com>
+To:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+        linux-crypto@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        llvm@lists.linux.dev, Sunil V L <sunilvl@ventanamicro.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 2, 2023 at 5:06 AM David E. Box <david.e.box@linux.intel.com> wrote:
->
-> On Thu, 2023-06-01 at 20:46 -0500, Limonciello, Mario wrote:
-> >
-> > On 6/1/2023 8:31 PM, David E. Box wrote:
-> > > On Thu, 2023-06-01 at 18:39 -0500, Mario Limonciello wrote:
-> > > > In Windows the Microsoft _DSM doesn't call functions 3->5->7 for suspend
-> > > > and 8->6->4 for resume like Linux currently does.
-> > > >
-> > > > Rather it calls 3->7->5 for suspend and 6->8->4 for resume.
-> > > > Align this calling order for Linux as well.
-> > > >
-> > > > Link:
-> > > > https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/modern-standby-states
-> > > I didn't catch the ordering in the link.
-> >
-> > Yeah it's tough to interpret from the link, because the picture at the
-> > bottom
-> > is missing annotations.
-> >
-> > Basically if you look at the picture the blue part is the screen on/off.
-> >
-> > The green part is "modern standby" and then the little "humps" are LPS0
-> > enter/exit.
-> >
-> > > Was there any issue that prompted this
-> > > change?
-> >
-> >
-> > We were debugging an unrelated problem and noticed the difference
-> > comparing the
-> >
-> > BIOS debugging log from Windows and Linux.
-> >
-> > If an OEM depends on this call order in that code used in LPS0 phase
-> > requires
-> > changes from MS phase I could hypothesize this fixes it.
-> >
-> >
-> > > David
-> >
-> > BTW - is there interest in supporting the Microsoft _DSM GUID for Intel
-> > side too?
-> >
-> > It's an incongruity today that we run both AMD GUID and Microsoft GUID
-> > for AMD systems
-> > but only run Intel GUID for Intel systems.
->
-> There hasn't been a need yet. Rafael have you look at it?
 
-Nothing official ATM AFAICS.
+On Mon, 15 May 2023 11:19:07 +0530, Sunil V L wrote:
+> This patch series enables the basic ACPI infrastructure for RISC-V.
+> Supporting external interrupt controllers is in progress and hence it is
+> tested using poll based HVC SBI console and RAM disk.
+> 
+> The first patch in this series is one of the patch from Jisheng's
+> series [1] which is not merged yet. This patch is required to support
+> ACPI since efi_init() which gets called before sbi_init() can enable
+> static branches and hits a panic.
+> 
+> [...]
 
-But I guess it'll need to be used on Intel at one point too.
+Applied, thanks!
+
+[01/21] riscv: move sbi_init() earlier before jump_label_init()
+        https://git.kernel.org/palmer/c/24fc18087f42
+[02/21] platform/surface: Disable for RISC-V
+        https://git.kernel.org/palmer/c/7f2e20459b28
+[03/21] crypto: hisilicon/qm: Fix to enable build with RISC-V clang
+        https://git.kernel.org/palmer/c/fbb995a7b27c
+[04/21] ACPI: tables: Print RINTC information when MADT is parsed
+        https://git.kernel.org/palmer/c/4d02d88d2b92
+[05/21] ACPI: OSL: Make should_use_kmap() 0 for RISC-V
+        https://git.kernel.org/palmer/c/214c236223b8
+[06/21] RISC-V: Add support to build the ACPI core
+        https://git.kernel.org/palmer/c/a91a9ffbd3a5
+[07/21] ACPI: processor_core: RISC-V: Enable mapping processor to the hartid
+        https://git.kernel.org/palmer/c/8b7809e28952
+[08/21] RISC-V: Add ACPI initialization in setup_arch()
+        https://git.kernel.org/palmer/c/724f4c0df766
+[09/21] RISC-V: ACPI: Cache and retrieve the RINTC structure
+        https://git.kernel.org/palmer/c/f99561199470
+[10/21] drivers/acpi: RISC-V: Add RHCT related code
+        https://git.kernel.org/palmer/c/e6b9d8eddb17
+[11/21] RISC-V: smpboot: Create wrapper setup_smp()
+        https://git.kernel.org/palmer/c/61946127ab49
+[12/21] RISC-V: smpboot: Add ACPI support in setup_smp()
+        https://git.kernel.org/palmer/c/ce92546cd637
+[13/21] RISC-V: only iterate over possible CPUs in ISA string parser
+        https://git.kernel.org/palmer/c/914d6f44fc50
+[14/21] RISC-V: cpufeature: Add ACPI support in riscv_fill_hwcap()
+        https://git.kernel.org/palmer/c/396c018332a1
+[15/21] RISC-V: cpu: Enable cpuinfo for ACPI systems
+        https://git.kernel.org/palmer/c/0b144c818989
+[16/21] irqchip/riscv-intc: Add ACPI support
+        https://git.kernel.org/palmer/c/7023b9d83f03
+[17/21] clocksource/timer-riscv: Refactor riscv_timer_init_dt()
+        https://git.kernel.org/palmer/c/cd12d206685a
+[18/21] clocksource/timer-riscv: Add ACPI support
+        https://git.kernel.org/palmer/c/21f4f92410dc
+[19/21] RISC-V: time.c: Add ACPI support for time_init()
+        https://git.kernel.org/palmer/c/714aa1d1c8ca
+[20/21] RISC-V: Enable ACPI in defconfig
+        https://git.kernel.org/palmer/c/0b8e15ca0082
+
+Best regards,
+-- 
+Palmer Dabbelt <palmer@rivosinc.com>
+
