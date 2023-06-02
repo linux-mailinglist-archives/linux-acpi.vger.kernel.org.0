@@ -2,147 +2,175 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65FCC71F9E4
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jun 2023 08:10:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4538A7209D1
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jun 2023 21:33:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233742AbjFBGK1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Jun 2023 02:10:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34844 "EHLO
+        id S235353AbjFBTc6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Jun 2023 15:32:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233700AbjFBGKZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jun 2023 02:10:25 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 108AA19A;
-        Thu,  1 Jun 2023 23:10:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685686224; x=1717222224;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8MCDzOZf6ynqWV2m8S12QsjH7rgGxvUKD86pDe2odnI=;
-  b=MB/FILjtdC+LvLDhouUHiaZV3nu8PBGISjVTQQ3n4JiOsOVxWabT4Ni8
-   KZ6fiRAroLF+Rh/Z4edx6gffdL8HLmBy4KshDeVVeKkeCpxNcPb4dPtPp
-   qkWmOaWvcJ0dCRKU02USCi75ZhfKawqaph9YQ1tMyyjRH2u2l20y+4M1a
-   98t4Xwa4H4jFnK3SSDfQ1wqJSpwqihX8m+47Kncalo6Lxvl+sTKdunTKN
-   Hz1Cw9NIpezoNzyFgdxJ4K6i6iqXsrSzUcT0PXHtwZJcITDvCC24kcjV1
-   K13WH6F3EHC5gKGtbtrPC282xaiQxdePDiroZQbOC4itiUSFdq7RX/3Cb
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="355799797"
-X-IronPort-AV: E=Sophos;i="6.00,212,1681196400"; 
-   d="scan'208";a="355799797"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 23:10:17 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="772748985"
-X-IronPort-AV: E=Sophos;i="6.00,212,1681196400"; 
-   d="scan'208";a="772748985"
-Received: from lkp-server01.sh.intel.com (HELO 15ab08e44a81) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 01 Jun 2023 23:10:14 -0700
-Received: from kbuild by 15ab08e44a81 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1q4xzJ-00009Z-2I;
-        Fri, 02 Jun 2023 06:10:13 +0000
-Date:   Fri, 2 Jun 2023 14:09:14 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Mario Limonciello <mario.limonciello@amd.com>,
-        Rafael Wysocki <rafael@kernel.org>, hdegoede@redhat.com,
-        linus.walleij@linaro.org
-Cc:     oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org,
-        S-k Shyam-sundar <Shyam-sundar.S-k@amd.com>,
-        Natikar Basavaraj <Basavaraj.Natikar@amd.com>,
+        with ESMTP id S234300AbjFBTc4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jun 2023 15:32:56 -0400
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2085.outbound.protection.outlook.com [40.107.94.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04545CE;
+        Fri,  2 Jun 2023 12:32:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Es38AhNk6YzVmNOZ2eiUeyZBKJviSatKwpnYd/lyPIydBAozSbl/5ueIPHvm2YBYw8jJp5h3KQSm63Kn9DrCxaQnN/qyQGE7+FpCJMffw2xxxpxBBuM6aPzCjf2XGzCOd4ReR60jqVfMosdtrOgEv4aizPkFJ8NNh4W+MhyQryNUyH5eKLja0RQ4P/Lmcz5CoBA+GOCfy2PlpvMLpZ5l0kq6Va6Z3GHIQ77CAl5ChEufJ4xF3bgDvMCTR/6rjfUn4420TTW5dGXVdRplAZewRcRDckqOX95JUCLk5dsfmDcKaSGOQ0+rOyaBbc/8RowrNambHn3/uYc43Hc+DH6Lxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5jW3Os9uP2+hla3vlGDL/LlGtwxxwgiHpW066e9D7Hc=;
+ b=TfdS+wyTE55WAVL3+wPb1hF+/tK2zfCZ2tDo8QmWdjFXuZUUW7zEm+c2EVsiR9EqCI6k3U/h9fI4u/e69SId6Pmy4YizXXkitTejOUkDL8FBAdbGNBZXo4CBm3Re2rSdGuEGoueGwavoR51ViBe3zWXFeBXmvVEkTD4BppApX5IdwHEtnpUh3cvZK2CbvR/ZVYCsR651hxZwnD2yKUNgmay8cTG87cBn2Bw4ZEupmBG4rErL/nAk5BfApuZUr8I8Rpl5TgvYQwAUsV3lnrCyFu6cdeQBvPx717155QsVw29xy7VvV6REndSfzhxiSaDMMD7ZDNO946VD1bIKL6koxQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5jW3Os9uP2+hla3vlGDL/LlGtwxxwgiHpW066e9D7Hc=;
+ b=vE8FEIjuda1AaBeAI8FpH2ExssMKpQke3IdcKxfNFcGCmID17GLI+sJtXKyb+D5I0KxGwTrXJk8v6PKad9WuxhUit4TIozNlvtgREaY/1PPz/X3nuiadeG4+IC2ybVgKdJH+4cXKZnfhpQR1AQO2sPl4tSDtBGmOWZnS7J3yJkE=
+Received: from MW4PR02CA0001.namprd02.prod.outlook.com (2603:10b6:303:16d::21)
+ by BN9PR12MB5163.namprd12.prod.outlook.com (2603:10b6:408:11c::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.26; Fri, 2 Jun
+ 2023 19:32:51 +0000
+Received: from CO1NAM11FT026.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:303:16d:cafe::db) by MW4PR02CA0001.outlook.office365.com
+ (2603:10b6:303:16d::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.24 via Frontend
+ Transport; Fri, 2 Jun 2023 19:32:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1NAM11FT026.mail.protection.outlook.com (10.13.175.67) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6455.24 via Frontend Transport; Fri, 2 Jun 2023 19:32:51 +0000
+Received: from SITE-L-T34-2.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Fri, 2 Jun
+ 2023 14:32:49 -0500
+From:   Mario Limonciello <mario.limonciello@amd.com>
+To:     Rafael Wysocki <rafael@kernel.org>, <hdegoede@redhat.com>,
+        <linus.walleij@linaro.org>
+CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <platform-driver-x86@vger.kernel.org>,
+        <linux-gpio@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+        <Basavaraj.Natikar@amd.com>, <Shyam-sundar.S-k@amd.com>,
         Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: [PATCH v3 1/4] include/linux/suspend.h: Only show pm_pr_dbg
- messages at suspend/resume
-Message-ID: <202306021344.JymS3JYg-lkp@intel.com>
-References: <20230601232923.1248-1-mario.limonciello@amd.com>
+Subject: [PATCH v4 1/4] include/linux/suspend.h: Only show pm_pr_dbg messages at suspend/resume
+Date:   Fri, 2 Jun 2023 02:30:22 -0500
+Message-ID: <20230602073025.22884-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230601232923.1248-1-mario.limonciello@amd.com>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1NAM11FT026:EE_|BN9PR12MB5163:EE_
+X-MS-Office365-Filtering-Correlation-Id: 22670920-0de5-416d-b4bd-08db63a027bd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: f7chVz3UcVPnCJwo7MIVIAYyc3lui1fKkobs6vRLCqcBXzmgY0HNXY9lVx6uV5UuBfTSU5ekX7yQ3Ce0KLHVtcsTnlPzVHa5KRG5Uzo/6EvAqQ+rF2hlwxbV+W3D168t4vPb0EGMHwkgw4byCnwPbB4frZxETDo6ibcE+MhyTbMg5IlnaxOwNc4gH8wdMOfQsQJ3pjKT1a4XNLeaC6yR3hyCnuhnkhAJZCWJ8fOblJ2DkVBWzSXlxu2O8KXBzVdtM3eRM9+NkSNdk1h8txYpaUSXVL/05VN8Vh3rjpO2yAKWWTjUXkhKBAXbGcw9OpPl4obxPkKOjcRe1q1E2R1ysstZEbOvJ0OCGR37Wes4GMi3RBosJr4jJekzeY+ZmC1JIr7zDqlIMhRD2YDLtfUZDVNLSd7JfVC0WxewBL6U/ElzaM6zPsbw1u8YfLjnDS2ff2bLodHXb7UrJUOcoB0XV9BsxZ5aI0pe2DZ3KLURd7Y2epXv59QRyYTSJVU3fjP3+ZzX9M7IaGOmgj88yQqmrCLoTSflqhw5pawXDONtaOxr1rCaEfMsWWUhmegJRIURwJh5MgpmIysM9FZ0c5Fg0Vrat/gvB47RjT7/v9AQUkLz2qnmqOML0qiE9unduC2APY9OTsv82t9HRwUF9jiSBkdmOTwZLuEX2HHi60rh+k+vHE3F9xzn9hHYzOA54zLbUMxmlp6H2shiJre2v2hiFEOBv+LhJvCJK/GzkVhwo9vyWxXsAZXOzmVNzXUa8sN22RB72wbF//i6Zx3Q8DziyA==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(136003)(376002)(396003)(39860400002)(346002)(451199021)(36840700001)(40470700004)(46966006)(1076003)(86362001)(70206006)(186003)(70586007)(16526019)(4326008)(15650500001)(2616005)(5660300002)(426003)(336012)(8936002)(8676002)(47076005)(478600001)(83380400001)(2906002)(7696005)(82310400005)(36860700001)(356005)(82740400003)(81166007)(316002)(44832011)(54906003)(40460700003)(110136005)(40480700001)(41300700001)(6666004)(26005)(36756003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2023 19:32:51.3687
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 22670920-0de5-416d-b4bd-08db63a027bd
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT026.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5163
+X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DATE_IN_PAST_12_24,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Mario,
+All uses in the kernel are currently already oriented around
+suspend/resume. As some other parts of the kernel may also use these
+messages in functions that could also be used outside of
+suspend/resume, only enable in suspend/resume path.
 
-kernel test robot noticed the following build warnings:
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+---
+v3->v4:
+ * add back do/while as it wasn't pointless.  It fixes a warning.
+---
+ include/linux/suspend.h | 8 +++++---
+ kernel/power/main.c     | 6 ++++++
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
-[auto build test WARNING on 7736c431466abb54a2679dc257f739fddfa84295]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Mario-Limonciello/ACPI-x86-Add-pm_debug_messages-for-LPS0-_DSM-state-tracking/20230602-073044
-base:   7736c431466abb54a2679dc257f739fddfa84295
-patch link:    https://lore.kernel.org/r/20230601232923.1248-1-mario.limonciello%40amd.com
-patch subject: [PATCH v3 1/4] include/linux/suspend.h: Only show pm_pr_dbg messages at suspend/resume
-config: powerpc-randconfig-r035-20230531 (https://download.01.org/0day-ci/archive/20230602/202306021344.JymS3JYg-lkp@intel.com/config)
-compiler: powerpc-linux-gcc (GCC) 12.3.0
-reproduce (this is a W=1 build):
-        mkdir -p ~/bin
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/5828d770a5f17c4028520050068fd3cdd13b80a1
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Mario-Limonciello/ACPI-x86-Add-pm_debug_messages-for-LPS0-_DSM-state-tracking/20230602-073044
-        git checkout 5828d770a5f17c4028520050068fd3cdd13b80a1
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=powerpc olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash drivers/base/power/ kernel/power/
-
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202306021344.JymS3JYg-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/base/power/wakeup.c: In function 'pm_print_active_wakeup_sources':
->> drivers/base/power/wakeup.c:861:12: warning: suggest explicit braces to avoid ambiguous 'else' [-Wdangling-else]
-     861 |         if (!active && last_activity_ws)
-         |            ^
---
-   kernel/power/hibernate.c: In function 'disk_store':
->> kernel/power/hibernate.c:1158:12: warning: suggest explicit braces to avoid ambiguous 'else' [-Wdangling-else]
-    1158 |         if (!error)
-         |            ^
-
-
-vim +/else +861 drivers/base/power/wakeup.c
-
-074037ec79bea7 Rafael J. Wysocki  2010-09-22  841  
-bb177fedd348c9 Julius Werner      2013-06-12  842  void pm_print_active_wakeup_sources(void)
-a938da0682c248 Todd Poynor        2012-08-12  843  {
-a938da0682c248 Todd Poynor        2012-08-12  844  	struct wakeup_source *ws;
-ea0212f40c6bc0 Thomas Gleixner    2017-06-25  845  	int srcuidx, active = 0;
-a938da0682c248 Todd Poynor        2012-08-12  846  	struct wakeup_source *last_activity_ws = NULL;
-a938da0682c248 Todd Poynor        2012-08-12  847  
-ea0212f40c6bc0 Thomas Gleixner    2017-06-25  848  	srcuidx = srcu_read_lock(&wakeup_srcu);
-2591e7b17c0d3f Madhuparna Bhowmik 2020-03-04  849  	list_for_each_entry_rcu_locked(ws, &wakeup_sources, entry) {
-a938da0682c248 Todd Poynor        2012-08-12  850  		if (ws->active) {
-74a1dd86d1739e Stephen Boyd       2019-03-25  851  			pm_pr_dbg("active wakeup source: %s\n", ws->name);
-a938da0682c248 Todd Poynor        2012-08-12  852  			active = 1;
-a938da0682c248 Todd Poynor        2012-08-12  853  		} else if (!active &&
-a938da0682c248 Todd Poynor        2012-08-12  854  			   (!last_activity_ws ||
-a938da0682c248 Todd Poynor        2012-08-12  855  			    ktime_to_ns(ws->last_time) >
-a938da0682c248 Todd Poynor        2012-08-12  856  			    ktime_to_ns(last_activity_ws->last_time))) {
-a938da0682c248 Todd Poynor        2012-08-12  857  			last_activity_ws = ws;
-a938da0682c248 Todd Poynor        2012-08-12  858  		}
-a938da0682c248 Todd Poynor        2012-08-12  859  	}
-a938da0682c248 Todd Poynor        2012-08-12  860  
-a938da0682c248 Todd Poynor        2012-08-12 @861  	if (!active && last_activity_ws)
-74a1dd86d1739e Stephen Boyd       2019-03-25  862  		pm_pr_dbg("last active wakeup source: %s\n",
-a938da0682c248 Todd Poynor        2012-08-12  863  			last_activity_ws->name);
-ea0212f40c6bc0 Thomas Gleixner    2017-06-25  864  	srcu_read_unlock(&wakeup_srcu, srcuidx);
-a938da0682c248 Todd Poynor        2012-08-12  865  }
-bb177fedd348c9 Julius Werner      2013-06-12  866  EXPORT_SYMBOL_GPL(pm_print_active_wakeup_sources);
-a938da0682c248 Todd Poynor        2012-08-12  867  
-
+diff --git a/include/linux/suspend.h b/include/linux/suspend.h
+index 1a0426e6761c..74f406c53ac0 100644
+--- a/include/linux/suspend.h
++++ b/include/linux/suspend.h
+@@ -555,6 +555,7 @@ static inline void unlock_system_sleep(unsigned int flags) {}
+ #ifdef CONFIG_PM_SLEEP_DEBUG
+ extern bool pm_print_times_enabled;
+ extern bool pm_debug_messages_on;
++extern bool pm_debug_messages_should_print(void);
+ static inline int pm_dyn_debug_messages_on(void)
+ {
+ #ifdef CONFIG_DYNAMIC_DEBUG
+@@ -568,14 +569,14 @@ static inline int pm_dyn_debug_messages_on(void)
+ #endif
+ #define __pm_pr_dbg(fmt, ...)					\
+ 	do {							\
+-		if (pm_debug_messages_on)			\
++		if (pm_debug_messages_should_print())		\
+ 			printk(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__);	\
+ 		else if (pm_dyn_debug_messages_on())		\
+ 			pr_debug(fmt, ##__VA_ARGS__);	\
+ 	} while (0)
+ #define __pm_deferred_pr_dbg(fmt, ...)				\
+ 	do {							\
+-		if (pm_debug_messages_on)			\
++		if (pm_debug_messages_should_print())		\
+ 			printk_deferred(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__);	\
+ 	} while (0)
+ #else
+@@ -593,7 +594,8 @@ static inline int pm_dyn_debug_messages_on(void)
+ /**
+  * pm_pr_dbg - print pm sleep debug messages
+  *
+- * If pm_debug_messages_on is enabled, print message.
++ * If pm_debug_messages_on is enabled and the system is entering/leaving
++ *      suspend, print message.
+  * If pm_debug_messages_on is disabled and CONFIG_DYNAMIC_DEBUG is enabled,
+  *	print message only from instances explicitly enabled on dynamic debug's
+  *	control.
+diff --git a/kernel/power/main.c b/kernel/power/main.c
+index 3113ec2f1db4..daa535012e51 100644
+--- a/kernel/power/main.c
++++ b/kernel/power/main.c
+@@ -556,6 +556,12 @@ power_attr_ro(pm_wakeup_irq);
+ 
+ bool pm_debug_messages_on __read_mostly;
+ 
++bool pm_debug_messages_should_print(void)
++{
++	return pm_debug_messages_on && pm_suspend_target_state != PM_SUSPEND_ON;
++}
++EXPORT_SYMBOL_GPL(pm_debug_messages_should_print);
++
+ static ssize_t pm_debug_messages_show(struct kobject *kobj,
+ 				      struct kobj_attribute *attr, char *buf)
+ {
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
