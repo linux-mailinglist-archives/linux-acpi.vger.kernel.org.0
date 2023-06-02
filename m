@@ -2,98 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C91FE720595
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jun 2023 17:11:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05E9872050F
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jun 2023 17:00:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236478AbjFBPLo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Jun 2023 11:11:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60816 "EHLO
+        id S236350AbjFBPAf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Jun 2023 11:00:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236474AbjFBPLm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jun 2023 11:11:42 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C282210E9
-        for <linux-acpi@vger.kernel.org>; Fri,  2 Jun 2023 08:11:15 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-64d18d772bdso2518461b3a.3
-        for <linux-acpi@vger.kernel.org>; Fri, 02 Jun 2023 08:11:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1685718662; x=1688310662;
-        h=to:from:cc:content-transfer-encoding:mime-version:date:message-id
-         :subject:references:in-reply-to:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YrYBSW8qeXE8L8yfvdl8QinykFnJTuk07/XjwMoUeVE=;
-        b=qu93yN+BiKoQR/bKXLpg56UTzaPfupYXZkwPAS/SM4sV/8V5hm62649tjUEpGP7YLW
-         CTcl/91RCAuHjZlaVLKPhSq1JgbIhQ88RkyebHa/Ru9bQcq3orZF1/Phc0RHYqyK/txS
-         4ygVpr4xdpOMgj96fS+DTrwY+vc2+sSk+p2eCCsYHGJhDaUmbzM5QUrHanNekHFnbv64
-         kVnW8lRrLFGxezD/kIDCpKMfjO4phXPEtYQqJ0Qk1ZhLZ2WB0wNNOfrbrlUgTZGsFWPc
-         AMGr7p26DJUfKXi09NOnK2bbdSdhTPsoLDw+CouGXT0eMAERoW7PF+x7a4qOBxCsePKu
-         IJmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685718662; x=1688310662;
-        h=to:from:cc:content-transfer-encoding:mime-version:date:message-id
-         :subject:references:in-reply-to:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YrYBSW8qeXE8L8yfvdl8QinykFnJTuk07/XjwMoUeVE=;
-        b=IPYjreN9oHPm/DgBC5oBFeOFQdlEk8wu1PyMq0WiOCKMaYKFG6DqX8hIodWpc7Qz19
-         SE5zISCgIRJD5JYmaVYpQi05KR0gPtwohXkEnvHWoubzQsdGkfl1Zh9aQ5BE+kZEuh+w
-         6Su8CJqsCRMCzl50/Hhbm8yq8SnIVOYBqyUmPlId6aYFHWmyKGCauudprxqjxo+63J6x
-         +qLdTwOdthEM3lQvx7y0L4R3PFnOXhggk2jhW2QEwm9rPBiMsgaImBEJn9LpKzcDgGFB
-         1YK4LteW47YM3lL+lzlaouqzmyyivCMUbadPmqvnLcbFaxXMqiRqCAjMmD29XO7P8cJ5
-         ge4w==
-X-Gm-Message-State: AC+VfDzZvBjnDg7gZ5TXuuaZ19dB1etLh8Z4/8kj72fuIVg6ihioo+kw
-        o3KnHvRB+Pyvgi9MVxaVx8nI7KKaGi2j8hSus1QFmw==
-X-Google-Smtp-Source: ACHHUZ5lq868GyrBxPLkEgZi3NcLZ0qAOyZwshzbl/Lk7FSKdcWKA6GQThH1Jum2CNXd5wP4XzABMA==
-X-Received: by 2002:a05:6a00:88d:b0:64f:5406:d59e with SMTP id q13-20020a056a00088d00b0064f5406d59emr17852377pfj.17.1685718662535;
-        Fri, 02 Jun 2023 08:11:02 -0700 (PDT)
-Received: from localhost ([135.180.227.0])
-        by smtp.gmail.com with ESMTPSA id n12-20020a62e50c000000b00634a96493f7sm1114822pff.128.2023.06.02.08.11.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jun 2023 08:11:02 -0700 (PDT)
-In-Reply-To: <20230515054928.2079268-1-sunilvl@ventanamicro.com>
-References: <20230515054928.2079268-1-sunilvl@ventanamicro.com>
-Subject: Re: (subset) [PATCH V6 00/21] Add basic ACPI support for RISC-V
-Message-Id: <168571787727.17224.6663458864222960682.b4-ty@rivosinc.com>
-Date:   Fri, 02 Jun 2023 07:57:57 -0700
-MIME-Version: 1.0
+        with ESMTP id S236338AbjFBPAa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jun 2023 11:00:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5851E56;
+        Fri,  2 Jun 2023 08:00:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E16E650FE;
+        Fri,  2 Jun 2023 15:00:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 71A95C433A1;
+        Fri,  2 Jun 2023 15:00:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685718025;
+        bh=pa+sw7piReDEjInKXKqjGINHz86IV7DvHVj4nDWYvdg=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=bi1ioK3XvJ+q3Rle2fRqVnvW64r4HT8l9zsDWx2N6bHMb5QqsnpQCIOMcyY9Hw848
+         Xqg2oqOYe6wkErfYpqyvP8jlZPPlmo0Wumcgle7dFw27lEz/gaQbCj2gaKCdGVzaFf
+         uvJ0LWXz2QpSe9R+7XtwbPIRUxs5EI23BhpgxxrDiAAjqpaGhhGknFjehuO/54fMUE
+         sd7S43jlfkmhLMf+L7AjrFZT70ek2YzNkN/kEZnOIsOyREwA0veeqVsD1k256/LjFB
+         RUi29jySWu1mxRgDYpEgjof6CwLCXLIWY+mywg/AOpAjR1ItHueuzhqH8nbkHuvZFL
+         65Hw2cciOpK4A==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 421D5C395E5;
+        Fri,  2 Jun 2023 15:00:25 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-901c5
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Weili Qian <qianweili@huawei.com>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        Marc Zyngier <maz@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>
-From:   Palmer Dabbelt <palmer@rivosinc.com>
-To:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH V6 00/21] Add basic ACPI support for RISC-V
+From:   patchwork-bot+linux-riscv@kernel.org
+Message-Id: <168571802526.11683.10109882495660507850.git-patchwork-notify@kernel.org>
+Date:   Fri, 02 Jun 2023 15:00:25 +0000
+References: <20230515054928.2079268-1-sunilvl@ventanamicro.com>
+In-Reply-To: <20230515054928.2079268-1-sunilvl@ventanamicro.com>
+To:     Sunil V L <sunilvl@ventanamicro.com>
+Cc:     linux-riscv@lists.infradead.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
         linux-crypto@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        llvm@lists.linux.dev, Sunil V L <sunilvl@ventanamicro.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        llvm@lists.linux.dev, qianweili@huawei.com, aou@eecs.berkeley.edu,
+        daniel.lezcano@linaro.org, trix@redhat.com, rafael@kernel.org,
+        maz@kernel.org, corbet@lwn.net, ndesaulniers@google.com,
+        markgross@kernel.org, hdegoede@redhat.com, wangzhou1@hisilicon.com,
+        palmer@dabbelt.com, paul.walmsley@sifive.com,
+        herbert@gondor.apana.org.au, tglx@linutronix.de,
+        luzmaximilian@gmail.com, davem@davemloft.net, nathan@kernel.org,
+        lenb@kernel.org
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hello:
 
-On Mon, 15 May 2023 11:19:07 +0530, Sunil V L wrote:
+This series was applied to riscv/linux.git (for-next)
+by Palmer Dabbelt <palmer@rivosinc.com>:
+
+On Mon, 15 May 2023 11:19:07 +0530 you wrote:
 > This patch series enables the basic ACPI infrastructure for RISC-V.
 > Supporting external interrupt controllers is in progress and hence it is
 > tested using poll based HVC SBI console and RAM disk.
@@ -105,50 +82,53 @@ On Mon, 15 May 2023 11:19:07 +0530, Sunil V L wrote:
 > 
 > [...]
 
-Applied, thanks!
+Here is the summary with links:
+  - [V6,01/21] riscv: move sbi_init() earlier before jump_label_init()
+    https://git.kernel.org/riscv/c/24fc18087f42
+  - [V6,02/21] platform/surface: Disable for RISC-V
+    https://git.kernel.org/riscv/c/7f2e20459b28
+  - [V6,03/21] crypto: hisilicon/qm: Fix to enable build with RISC-V clang
+    https://git.kernel.org/riscv/c/fbb995a7b27c
+  - [V6,04/21] ACPI: tables: Print RINTC information when MADT is parsed
+    https://git.kernel.org/riscv/c/4d02d88d2b92
+  - [V6,05/21] ACPI: OSL: Make should_use_kmap() 0 for RISC-V
+    https://git.kernel.org/riscv/c/214c236223b8
+  - [V6,06/21] RISC-V: Add support to build the ACPI core
+    https://git.kernel.org/riscv/c/a91a9ffbd3a5
+  - [V6,07/21] ACPI: processor_core: RISC-V: Enable mapping processor to the hartid
+    https://git.kernel.org/riscv/c/8b7809e28952
+  - [V6,08/21] RISC-V: Add ACPI initialization in setup_arch()
+    https://git.kernel.org/riscv/c/724f4c0df766
+  - [V6,09/21] RISC-V: ACPI: Cache and retrieve the RINTC structure
+    https://git.kernel.org/riscv/c/f99561199470
+  - [V6,10/21] drivers/acpi: RISC-V: Add RHCT related code
+    https://git.kernel.org/riscv/c/e6b9d8eddb17
+  - [V6,11/21] RISC-V: smpboot: Create wrapper setup_smp()
+    https://git.kernel.org/riscv/c/61946127ab49
+  - [V6,12/21] RISC-V: smpboot: Add ACPI support in setup_smp()
+    https://git.kernel.org/riscv/c/ce92546cd637
+  - [V6,13/21] RISC-V: only iterate over possible CPUs in ISA string parser
+    https://git.kernel.org/riscv/c/914d6f44fc50
+  - [V6,14/21] RISC-V: cpufeature: Add ACPI support in riscv_fill_hwcap()
+    https://git.kernel.org/riscv/c/396c018332a1
+  - [V6,15/21] RISC-V: cpu: Enable cpuinfo for ACPI systems
+    https://git.kernel.org/riscv/c/0b144c818989
+  - [V6,16/21] irqchip/riscv-intc: Add ACPI support
+    https://git.kernel.org/riscv/c/7023b9d83f03
+  - [V6,17/21] clocksource/timer-riscv: Refactor riscv_timer_init_dt()
+    https://git.kernel.org/riscv/c/cd12d206685a
+  - [V6,18/21] clocksource/timer-riscv: Add ACPI support
+    https://git.kernel.org/riscv/c/21f4f92410dc
+  - [V6,19/21] RISC-V: time.c: Add ACPI support for time_init()
+    https://git.kernel.org/riscv/c/714aa1d1c8ca
+  - [V6,20/21] RISC-V: Enable ACPI in defconfig
+    https://git.kernel.org/riscv/c/0b8e15ca0082
+  - [V6,21/21] MAINTAINERS: Add entry for drivers/acpi/riscv
+    https://git.kernel.org/riscv/c/cc9e654a7e81
 
-[01/21] riscv: move sbi_init() earlier before jump_label_init()
-        https://git.kernel.org/palmer/c/24fc18087f42
-[02/21] platform/surface: Disable for RISC-V
-        https://git.kernel.org/palmer/c/7f2e20459b28
-[03/21] crypto: hisilicon/qm: Fix to enable build with RISC-V clang
-        https://git.kernel.org/palmer/c/fbb995a7b27c
-[04/21] ACPI: tables: Print RINTC information when MADT is parsed
-        https://git.kernel.org/palmer/c/4d02d88d2b92
-[05/21] ACPI: OSL: Make should_use_kmap() 0 for RISC-V
-        https://git.kernel.org/palmer/c/214c236223b8
-[06/21] RISC-V: Add support to build the ACPI core
-        https://git.kernel.org/palmer/c/a91a9ffbd3a5
-[07/21] ACPI: processor_core: RISC-V: Enable mapping processor to the hartid
-        https://git.kernel.org/palmer/c/8b7809e28952
-[08/21] RISC-V: Add ACPI initialization in setup_arch()
-        https://git.kernel.org/palmer/c/724f4c0df766
-[09/21] RISC-V: ACPI: Cache and retrieve the RINTC structure
-        https://git.kernel.org/palmer/c/f99561199470
-[10/21] drivers/acpi: RISC-V: Add RHCT related code
-        https://git.kernel.org/palmer/c/e6b9d8eddb17
-[11/21] RISC-V: smpboot: Create wrapper setup_smp()
-        https://git.kernel.org/palmer/c/61946127ab49
-[12/21] RISC-V: smpboot: Add ACPI support in setup_smp()
-        https://git.kernel.org/palmer/c/ce92546cd637
-[13/21] RISC-V: only iterate over possible CPUs in ISA string parser
-        https://git.kernel.org/palmer/c/914d6f44fc50
-[14/21] RISC-V: cpufeature: Add ACPI support in riscv_fill_hwcap()
-        https://git.kernel.org/palmer/c/396c018332a1
-[15/21] RISC-V: cpu: Enable cpuinfo for ACPI systems
-        https://git.kernel.org/palmer/c/0b144c818989
-[16/21] irqchip/riscv-intc: Add ACPI support
-        https://git.kernel.org/palmer/c/7023b9d83f03
-[17/21] clocksource/timer-riscv: Refactor riscv_timer_init_dt()
-        https://git.kernel.org/palmer/c/cd12d206685a
-[18/21] clocksource/timer-riscv: Add ACPI support
-        https://git.kernel.org/palmer/c/21f4f92410dc
-[19/21] RISC-V: time.c: Add ACPI support for time_init()
-        https://git.kernel.org/palmer/c/714aa1d1c8ca
-[20/21] RISC-V: Enable ACPI in defconfig
-        https://git.kernel.org/palmer/c/0b8e15ca0082
-
-Best regards,
+You are awesome, thank you!
 -- 
-Palmer Dabbelt <palmer@rivosinc.com>
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
