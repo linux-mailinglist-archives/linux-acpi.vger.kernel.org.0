@@ -2,51 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F822720A2E
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jun 2023 22:21:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10517720B3F
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jun 2023 23:51:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233079AbjFBUVW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Jun 2023 16:21:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51692 "EHLO
+        id S236010AbjFBVvv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Jun 2023 17:51:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231676AbjFBUVW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jun 2023 16:21:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0621F1B5;
-        Fri,  2 Jun 2023 13:21:18 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C7D660C55;
-        Fri,  2 Jun 2023 20:21:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B27C433D2;
-        Fri,  2 Jun 2023 20:21:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685737276;
-        bh=gy+GKIB8wBKms5xw12H7bdeX00I9GSSZF+zA2BKmxPE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=jRNmjODirwoXcqf5yVLu4jP3gVFM69xE3sq/5l2zU+95FFFj3mfji/kM4+ekfh3uo
-         EJyJQMbItTYkA1obSrK/qVCgjxn/ARrLoQX0zX+DBVJHvRNQrtHf95WDAzK0GZU/2y
-         A5W5YsQuWcr4nqqqke1CoaACHC+TyY+ooHL//++BOdI7cB7urAT30pXFCSSuHimsUA
-         uSc6DsTNqkxcx1kE4bpj/tZzHnp5TLSQr8BdsXXli2zGDQnHNe5Wtd7OW23RZbmiEp
-         2RoZtlRaL82BaL/BmkmaTDTkrRHrnE7WcvwCEPg5lBNoN1Qc1LDy2yECN3vA4783tN
-         VrqVVKcQAyPBQ==
-Date:   Fri, 2 Jun 2023 15:21:15 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     bhelgaas@google.com, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] PCI: Call _REG when saving/restoring PCI state
-Message-ID: <ZHpPOzT0nm+vddPq@bhelgaas>
+        with ESMTP id S236128AbjFBVvu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jun 2023 17:51:50 -0400
+Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6015B10C6;
+        Fri,  2 Jun 2023 14:51:22 -0700 (PDT)
+Received: by mail-ot1-x32e.google.com with SMTP id 46e09a7af769-6af7fef214cso1905237a34.0;
+        Fri, 02 Jun 2023 14:51:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685742664; x=1688334664;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9LyhjoS28aUESLXn6ZKM0bdRXh4cqYI4n9WNxwVEOj8=;
+        b=LpYGwwBLSVmgNXEL85B7LFpRJ5Y36vn1pkemJFqJLcLVh6qzjgRGl8pDvSords0S8X
+         ca+Cs8/qnSGrj2M09z6uyAxXQCVez41QjB+TEWD0wK0SxZEmtl6D+DjvmNSpv4N8l6Ak
+         BWyvn+bFQuTZWbujitI6gScpUl1otUY8zfFeh0T0OQOCrrT7Ws8mzHqiZFHSER78H++i
+         op9l7g3aCRngWqFx9nrYlu1Upwv/SCTc+vRh0w6PXWSp6TjT3bmRT5fRz/ejaxPkPUQH
+         xtq+FOcFRXsBriECDXcy+1HOutZuqJko3PrzKROMcHhviCDbncu+PXZRHW6tkItSZoxZ
+         8Egw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685742664; x=1688334664;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9LyhjoS28aUESLXn6ZKM0bdRXh4cqYI4n9WNxwVEOj8=;
+        b=GFN4PJX8U4mK4TKMORqkPatd2TEkE/kTQXau5QG9016xroK/AeaP2nH5T3/dc4D+jI
+         MMHp2sJmtBPxQIRWO0/HlhQF1Br9G6/AtLrbEVDeb5aOIEWF6pRfRdtlbKydgcWj5nzt
+         qY9PySN5n3S9qtfniQMVHpJ/HsisJ3YlT3DhgTRQU1kUU9Qe3KQHe2kfDkvZOZIhFnO2
+         K8wGXgC6+4oGAxBwld9N53dIHB8rdRhXT8OrP3pwBupi9ePMpbEDeyAzgxy173IDzZwY
+         c2mcipO2/mxDk8TIQJ/cJFHDuWVOhi94HY9zky0EulRBO62CxkHhJ0gGeXkTQEPog5Y8
+         YIfA==
+X-Gm-Message-State: AC+VfDxKwAKMXT8OQuaBQKHnUHE5QyGQFuclgl1iJAfhHA9H+b7Ur7dv
+        KEGDFMx0P/tevB6X4l1rVD5CXPm/WBeWIw==
+X-Google-Smtp-Source: ACHHUZ46Vxon1WXTeWKbHhazSe/lclkMMiBqLCynxDoI400iszcQFoOb5Ezi3x5065rtpWkEdQ31Lg==
+X-Received: by 2002:a9d:6255:0:b0:6af:6f7c:843f with SMTP id i21-20020a9d6255000000b006af6f7c843fmr1906673otk.7.1685742664559;
+        Fri, 02 Jun 2023 14:51:04 -0700 (PDT)
+Received: from madhu-kernel (99-145-207-128.lightspeed.austtx.sbcglobal.net. [99.145.207.128])
+        by smtp.gmail.com with ESMTPSA id e17-20020a9d63d1000000b006af9405773dsm1042679otl.35.2023.06.02.14.51.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Jun 2023 14:51:04 -0700 (PDT)
+Date:   Fri, 2 Jun 2023 16:51:02 -0500
+From:   Madhumitha Prabakaran <madhumithabiw@gmail.com>
+To:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, skhan@linuxfoundation.org
+Cc:     ivan.orlov0322@gmail.com
+Subject: [PATCH] docs: Fix warning:Error in "code-block" directive
+Message-ID: <20230602215102.GA220958@madhu-kernel>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230602031122.18350-1-mario.limonciello@amd.com>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,94 +67,54 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-[+cc Rafael, Len, linux-acpi]
+Fix the error in "code-block" directive by providing the
+argument as "text".
 
-Hi Mario,
+Signed-off-by: Madhumitha Prabakaran <madhumithabiw@gmail.com>
+---
+ .../firmware-guide/acpi/chromeos-acpi-device.rst          | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-On Thu, Jun 01, 2023 at 10:11:22PM -0500, Mario Limonciello wrote:
-> ASMedia PCIe GPIO controllers connected to AMD SOC fail functional tests
-> after returning from s2idle. This is because the BIOS checks whether the
-> OSPM has called the _REG method to determine whether it can interact with
-> the OperationRegion assigned to the device.
+diff --git a/Documentation/firmware-guide/acpi/chromeos-acpi-device.rst b/Documentation/firmware-guide/acpi/chromeos-acpi-device.rst
+index f37fc90ce340..27292299ad17 100644
+--- a/Documentation/firmware-guide/acpi/chromeos-acpi-device.rst
++++ b/Documentation/firmware-guide/acpi/chromeos-acpi-device.rst
+@@ -131,7 +131,7 @@ None
+ Result code:
+ ------------
+ 
+-.. code-block::
++.. code-block:: text
+ 
+    Package {
+            Reserved1
+@@ -192,7 +192,7 @@ None
+ 
+ Result code:
+ ------------
+-.. code-block::
++.. code-block:: text
+ 
+         Package {
+                 Package {
+@@ -265,7 +265,7 @@ None
+ 
+ Result code:
+ ------------
+-.. code-block::
++.. code-block:: text
+ 
+         Package {
+                 NV Storage Block Offset  //DWORD
+@@ -347,7 +347,7 @@ A package containing a list of null-terminated ASCII strings, one for each contr
+ supported by the Chrome OS hardware device, not including the MLST method itself.
+ For this version of the specification, the result is:
+ 
+-.. code-block::
++.. code-block:: text
+ 
+         Package {
+                 "CHSW",
+-- 
+2.25.1
 
-"s2idle" is a Linux term; I'd prefer something that we can relate to
-the ACPI spec.
-
-Maybe a pointer to the specific function in the driver that has a
-problem?  Based on the patch, I assume the driver uses some control
-method that looks at PCI config space?
-
-> To fix this issue, call acpi_evaluate_reg() when saving and restoring the
-> state of PCI devices.
-
-Please include the spec citation: ACPI r6.5, sec 6.5.4.  The URL has
-changed in the past and may change in the future, but the name/section
-number will not.
-
-> Link: https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/06_Device_Configuration/Device_Configuration.html#reg-region
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/pci/pci.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index e38c2f6eebd4..071ecba548b0 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -1068,6 +1068,12 @@ static inline bool platform_pci_bridge_d3(struct pci_dev *dev)
->  	return acpi_pci_bridge_d3(dev);
->  }
->  
-> +static inline int platform_toggle_reg(struct pci_dev *dev, int c)
-> +{
-> +	return acpi_evaluate_reg(ACPI_HANDLE(&dev->dev),
-> +				 ACPI_ADR_SPACE_PCI_CONFIG, c);
-> +}
-
-You never check the return value, so why return it?
-
-The function actually doesn't *toggle*; it connects or disconnects
-based on "c".
-
-This looks like it only builds when CONFIG_ACPI=y?
-
->  /**
->   * pci_update_current_state - Read power state of given device and cache it
->   * @dev: PCI device to handle.
-> @@ -1645,6 +1651,9 @@ static void pci_restore_ltr_state(struct pci_dev *dev)
->  int pci_save_state(struct pci_dev *dev)
->  {
->  	int i;
-> +
-> +	platform_toggle_reg(dev, ACPI_REG_DISCONNECT);
-
-I would expect these to be in the PM code near the power state
-transitions, not in the state save/restore code.  These functions
-*are* used during suspend/resume, but are used in other places as
-well, where we probably don't want _REG executed.
-
-Cc'd Rafael and PM folks, who can give much better feedback.
-
->  	/* XXX: 100% dword access ok here? */
->  	for (i = 0; i < 16; i++) {
->  		pci_read_config_dword(dev, i * 4, &dev->saved_config_space[i]);
-> @@ -1790,6 +1799,8 @@ void pci_restore_state(struct pci_dev *dev)
->  	pci_enable_acs(dev);
->  	pci_restore_iov_state(dev);
->  
-> +	platform_toggle_reg(dev, ACPI_REG_CONNECT);
-> +
->  	dev->state_saved = false;
->  }
->  EXPORT_SYMBOL(pci_restore_state);
-> @@ -3203,6 +3214,7 @@ void pci_pm_init(struct pci_dev *dev)
->  	pci_read_config_word(dev, PCI_STATUS, &status);
->  	if (status & PCI_STATUS_IMM_READY)
->  		dev->imm_ready = 1;
-> +	platform_toggle_reg(dev, ACPI_REG_CONNECT);
->  }
->  
->  static unsigned long pci_ea_flags(struct pci_dev *dev, u8 prop)
-> -- 
-> 2.34.1
-> 
