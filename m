@@ -2,72 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60092720CF5
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 Jun 2023 03:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47F97720D09
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 Jun 2023 03:41:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236734AbjFCBUv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Jun 2023 21:20:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49552 "EHLO
+        id S236670AbjFCBlv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Jun 2023 21:41:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236639AbjFCBUu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jun 2023 21:20:50 -0400
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B4D7D3;
-        Fri,  2 Jun 2023 18:20:49 -0700 (PDT)
-Received: by mail-pg1-x52f.google.com with SMTP id 41be03b00d2f7-53482b44007so1582152a12.2;
-        Fri, 02 Jun 2023 18:20:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685755249; x=1688347249;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3Y8G14r0YKKL8+n+kxnv7WBaleE87AmdN5aEH7tTSD0=;
-        b=GE4o4UgrHnVuBjbHYjL70FiW0mNsGq7LMqCYTiXoyni/vx2kywW1gnRzT4PSyG98in
-         G6fQ7rhf4vu5kMFeka/ZnQoRZeWpKEFIXDEwxuPpb6ixK15sH2NIDEngx+qhdf7FTROy
-         uS0Egk7/Odr4K9WyRbpEXvjbgTwe/T5dQ9rzwq1SeslQTjQxoSDFxMrSiDa7m3Y/9Ub1
-         9c8Y8y/g/1rnNvWtCZhmosgezdT2iArDpxvpi8BqcmIgzz9gGcVu5giQUgkYVDSJDbUq
-         p72/eazhxsfZvLmb5/EIkvHw0nbNZrJFFac6vjis3D5d5m4zTaeeFNgzv9GjFHEm0CgD
-         zKMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685755249; x=1688347249;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3Y8G14r0YKKL8+n+kxnv7WBaleE87AmdN5aEH7tTSD0=;
-        b=kbtDvkZoaPDYSo4r/somBUYLt0eejETUX0sfeBTRcqCibD6zQHSspb9B+Csd5ToGvj
-         m64pQSacni5QAnO+WO8u9/vCSyyYKz4qI+Zbc3qxgc4Fid/wVGVEpsKm4QMfmxqfCCxI
-         s6XXtdA6mZAf6jrWOmVdLxKWfrvO8GQHGTvjDHUwBYimSAUvL4B4Vply+0yLFQxILQk4
-         3YzzGrf6/LWIWIMik46fD6P2hG0fF7+u2987DSR4bCwoapMEPN6NiUwGrPF2445wTCiD
-         gPwOX+PILkCI8biShVQUGYWZD/f1AlYVQYFKxzFSYcCbap+9iiggwJputpDXC2RJjY4+
-         j8VA==
-X-Gm-Message-State: AC+VfDz+5nJbrcERpB2bctLNpiu3aO5aQoBrb/1N3My7PJ3segTLqTz1
-        iB8dUmnq0Jh+NKbrBh6SJC5hDe9D22U=
-X-Google-Smtp-Source: ACHHUZ7LmVwCwsURitbtWYQSwB8mFwNeU2UJxFwVrfjzu6MUO9S7a1WjVJoOeSUzyHLEBBLxgtL0hw==
-X-Received: by 2002:a17:90b:374a:b0:256:23f:abc5 with SMTP id ne10-20020a17090b374a00b00256023fabc5mr904687pjb.10.1685755248530;
-        Fri, 02 Jun 2023 18:20:48 -0700 (PDT)
-Received: from debian.me (subs28-116-206-12-37.three.co.id. [116.206.12.37])
-        by smtp.gmail.com with ESMTPSA id t8-20020a17090a3b4800b00246cc751c6bsm3880815pjf.46.2023.06.02.18.20.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jun 2023 18:20:48 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id B97121069ED; Sat,  3 Jun 2023 08:20:44 +0700 (WIB)
-Date:   Sat, 3 Jun 2023 08:20:44 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Madhumitha Prabakaran <madhumithabiw@gmail.com>, rafael@kernel.org,
-        lenb@kernel.org, linux-acpi@vger.kernel.org,
+        with ESMTP id S235954AbjFCBlv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jun 2023 21:41:51 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C9981B6;
+        Fri,  2 Jun 2023 18:41:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+        bh=IGvHg8ueaPSLkb+HRbdq0Dyuayg75nPra3YsPtVkCzg=; b=1mFtfwrNSoCATUnXEClh2raq2A
+        a+OJhHBskgEx566hrqUDJyFNaBAWrMYNt9Gq8lJ/dN4xIqG9HW53zJN47Escx2TCxEQeGhvx7PHwY
+        K8FZAyxM/BK9k4n28fNUDbE7f8Jk0sDphxyIiwCjGQJmZFNYcwx8KMWkTWJT/9YaZWxx5hwRL3AYD
+        +i+NIs7LfCRHPkYDNpncNsQwX9XUF/pRE2glfMZ8wmTrbCpigkVPZyhpC3hvwY1cp+2Vx6TfNV9De
+        OllCRQlPZlnkItQJw+cddq8qMbS9l5MmCH26qXZdYSDV50V/kR5syVySuuIiQsoQhh5rgDLD+v/ZC
+        64+E5nlA==;
+Received: from [2601:1c2:980:9ec0::2764]
+        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1q5GH5-008T8b-2K;
+        Sat, 03 Jun 2023 01:41:47 +0000
+Message-ID: <e69410c1-8632-354e-e6e0-ac16631f0566@infradead.org>
+Date:   Fri, 2 Jun 2023 18:41:46 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] docs: Fix warning:Error in "code-block" directive
+Content-Language: en-US
+To:     Bagas Sanjaya <bagasdotme@gmail.com>,
+        Madhumitha Prabakaran <madhumithabiw@gmail.com>,
+        rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
         linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
         Linux Documentation <linux-doc@vger.kernel.org>
 Cc:     ivan.orlov0322@gmail.com
-Subject: Re: [PATCH] docs: Fix warning:Error in "code-block" directive
-Message-ID: <ZHqVbIouMkvM4OAs@debian.me>
 References: <20230602215102.GA220958@madhu-kernel>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="TMDPLLkdIOvqcUM1"
-Content-Disposition: inline
-In-Reply-To: <20230602215102.GA220958@madhu-kernel>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+ <ZHqVbIouMkvM4OAs@debian.me>
+From:   Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <ZHqVbIouMkvM4OAs@debian.me>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,46 +58,34 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
---TMDPLLkdIOvqcUM1
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 02, 2023 at 04:51:02PM -0500, Madhumitha Prabakaran wrote:
-> Fix the error in "code-block" directive by providing the
-> argument as "text".
->=20
-> <snipped> ...
->  Result code:
->  ------------
-> =20
-> -.. code-block::
-> +.. code-block:: text
+On 6/2/23 18:20, Bagas Sanjaya wrote:
+> On Fri, Jun 02, 2023 at 04:51:02PM -0500, Madhumitha Prabakaran wrote:
+>> Fix the error in "code-block" directive by providing the
+>> argument as "text".
+>>
+>> <snipped> ...
+>>  Result code:
+>>  ------------
+>>  
+>> -.. code-block::
+>> +.. code-block:: text
+> 
+> Nope.
+> 
+> I don't see error you mention in this patch when making htmldocs on my
+> computer (my setup is pretty standard: see
+> Documentation/doc-guide/sphinx.rst). This patch is unneccessary, though,
+> unless you have code snippets in some language (e.g. C, where passing
+> language name to code-block:: syntax-highlight it). Result code outputs,
+> on the other hand, are generic text with no definitive syntax, hence
+> you can omit language name.
+> 
+> Thanks.
 
-Nope.
 
-I don't see error you mention in this patch when making htmldocs on my
-computer (my setup is pretty standard: see
-Documentation/doc-guide/sphinx.rst). This patch is unneccessary, though,
-unless you have code snippets in some language (e.g. C, where passing
-language name to code-block:: syntax-highlight it). Result code outputs,
-on the other hand, are generic text with no definitive syntax, hence
-you can omit language name.
+I also don't see any such warnings so I don't see a need for this patch.
+My wild guess is that some older version of Sphinx was being used.
 
-Thanks.
-
---=20
-An old man doll... just what I always wanted! - Clara
-
---TMDPLLkdIOvqcUM1
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZHqVZgAKCRD2uYlJVVFO
-o+pPAQC1MK/h/J4QW3qWmnbpauQ0Cr0k33lf8QV+hDnWKCkEpQD/QTYX820N+B3c
-/0rBRMzVYbE7FluBIIK+7tJ0f+ahswg=
-=JKVF
------END PGP SIGNATURE-----
-
---TMDPLLkdIOvqcUM1--
+-- 
+~Randy
