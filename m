@@ -2,127 +2,241 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A9BF720DB3
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 Jun 2023 06:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DC7A720F0B
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 Jun 2023 11:54:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229617AbjFCEEP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 3 Jun 2023 00:04:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50416 "EHLO
+        id S229520AbjFCJyO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 3 Jun 2023 05:54:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbjFCEEN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Jun 2023 00:04:13 -0400
-Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27791E41;
-        Fri,  2 Jun 2023 21:04:11 -0700 (PDT)
-Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-1a2c85ef3c2so124732fac.0;
-        Fri, 02 Jun 2023 21:04:11 -0700 (PDT)
+        with ESMTP id S229475AbjFCJyN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Jun 2023 05:54:13 -0400
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9126D197;
+        Sat,  3 Jun 2023 02:54:12 -0700 (PDT)
+Received: by mail-io1-xd30.google.com with SMTP id ca18e2360f4ac-76c64da0e46so91065139f.0;
+        Sat, 03 Jun 2023 02:54:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685765050; x=1688357050;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uDJ4NW+v18hRQd8QqPDqLFxlqAOhHV7cNr8XZuV5p/M=;
-        b=LSX7ARdS59+DyGbvCXkuRwOgqNdiKd9etKckiesB61nejVFFs5qd7juAnJxIbhHaRN
-         gnWjC4xZ/bEAOmnN9DUWXaZc/pVLzF10a/s4mXae33HepSSjnzKYqSAmVtsh2m/FQTEA
-         Am1bupJp1qiwX+EF/j1RYExTuCVjUxxQpwJd74EGo489swZ5ApkGEIfm0w4Ly0Qv01m8
-         ARdb/7uLQ5n8VW70R9piC4lfYxjn86c+s/fLGFSX9N6DGT59IOoIVg/P7d+7QW0XROvC
-         mD9JzoLyvvJeRocyUVZ1k4jqWdso9cJ1iYH84Sxt0QEfu5jGTqkBUI1vyDfyJKMg79ax
-         e+Rw==
+        d=gmail.com; s=20221208; t=1685786052; x=1688378052;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b9xipDnELMe57gSqssIZi9FLmAA8jeVRZYMJPoPrxg4=;
+        b=kkYOW1SzfgoWqKPdEgMSbmivVcpNOeio6G3ZuKksI5gE1blkS4pYhZX/4hmQPUNYCH
+         QN8lITQ2kg/p5zud5rz0le8IOGz0EFh1IgL4iCaS+geQYF0BiEgUEefRvo9TUnbrodOU
+         YxrKzjMx1/j5uC6WJfMo27KkpXH/jASq5UE0SffRauwtZcpJZcye9QuTmSZ9I8wZlIjK
+         xg5v/DIHhuNBlbbuXI/WawHP8cr8yNELHvBM+xhrBjA9aTaWccgQWiKbniMxDHfiUVE4
+         WIB/K733nIiI/lbjejVW06Ym7o+jiBW1i6KcYXlC5AY3QVV4TVSBCy3wN5cLoo2WdRWh
+         EUTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685765050; x=1688357050;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uDJ4NW+v18hRQd8QqPDqLFxlqAOhHV7cNr8XZuV5p/M=;
-        b=WipL+BgF2wvxuqtFXi55ml4o03lALAZPlSMYvnuIeVFB7fCdMyEjb6hqkHja3VMKiJ
-         Pz2llQf5bphDkcY/JzyrFXZ6f0ocIXb4RlW/o67l725OIvo+iudL34IOZMAY9YOEXVSm
-         M23fg15wiStEYahJtswAuu9UDMPPil2vFOqtw/j2ZIvZE7yRuOL74sLS516D7h2SxIMK
-         1te1LPsq7irfCsv076qFgw524hFJbaVAD76l5VuDkPCU0MOoKMS43E3tKMCHIMwj+kYY
-         VBPYF6C4rIHhEVVmwS6O1JXZnJ8Ws1V5GVbVklmL5s5N0kjEZ9HAJEJ1eq5HgtpFqpxf
-         yoGg==
-X-Gm-Message-State: AC+VfDxGO9pSEGltUwK86GuX1PUlnOzBxvEaRq3XZJJo3n+JpDWj0LxA
-        bZO+K0ICMQI0C/ZFugBgC2I=
-X-Google-Smtp-Source: ACHHUZ79T/IdMlsUgPFqgx50GCVquh7X2k1tD/RxI5X6jTrEpBwxfRzrW8lGWHsDXQpHaj+wlD+T8Q==
-X-Received: by 2002:a05:6808:186:b0:398:2a35:f328 with SMTP id w6-20020a056808018600b003982a35f328mr2055001oic.8.1685765050391;
-        Fri, 02 Jun 2023 21:04:10 -0700 (PDT)
-Received: from [192.168.11.9] (KD106167171201.ppp-bb.dion.ne.jp. [106.167.171.201])
-        by smtp.gmail.com with ESMTPSA id ie3-20020a17090b400300b00255e2d5d56csm1944618pjb.1.2023.06.02.21.04.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Jun 2023 21:04:10 -0700 (PDT)
-Message-ID: <bf0dee59-20ce-27d6-5b6a-683525fc012e@gmail.com>
-Date:   Sat, 3 Jun 2023 13:04:04 +0900
+        d=1e100.net; s=20221208; t=1685786052; x=1688378052;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=b9xipDnELMe57gSqssIZi9FLmAA8jeVRZYMJPoPrxg4=;
+        b=WwdxIN2LZprqPDMK4/iz0W7oSO/pV4uSRRuSmhxOiOj2G6PTj0bYR7EvILbMyMjZtX
+         nYf8O1gO9uSByaw4AOz45we2bzBvSY5YdQ/K27ZeA/GUgUCRwLmOHXtOMAh7AnXxlpBZ
+         KgKY8YNRy03d7d6EkL36VUK0S53SdqiAkoM7Ff/Fo8hSNlTyRqneyL7iDZedylPMItxC
+         DSw0uQW+yAS2EyJqiLqNOVRSnoA+i5jn4NsJGWVGsxmElY2TTBwcJgM29oKZtbligTEg
+         Y/QGBhgfDUszUrN0pwBQSYpMon8iDojSPPm6LSsQ8xqbqL7GcJq+qd2ueF+3uyqpq16F
+         Z2kQ==
+X-Gm-Message-State: AC+VfDzQGKnHQD4rkJ1p4gftu10ASjuU5+LWstcV1MLGxh71UdlYIGAN
+        5Tp82EixaDKv28okoKQcCfHAZG0U5EAzYaOnxtMg6C2g7xYlqQ==
+X-Google-Smtp-Source: ACHHUZ5K1M1p621p0RZX4zAG24hSSGTbnRZFwB57yPelWOhodJUFzHVBb66cXKC7xkj2wubkpK2akuthLugiannw56E=
+X-Received: by 2002:a92:280a:0:b0:33d:6536:46e1 with SMTP id
+ l10-20020a92280a000000b0033d653646e1mr3261440ilf.23.1685786051898; Sat, 03
+ Jun 2023 02:54:11 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-To:     rdunlap@infradead.org
-Cc:     bagasdotme@gmail.com, ivan.orlov0322@gmail.com, lenb@kernel.org,
-        linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, madhumithabiw@gmail.com,
-        rafael@kernel.org, skhan@linuxfoundation.org,
-        Akira Yokosawa <akiyks@gmail.com>
-References: <e69410c1-8632-354e-e6e0-ac16631f0566@infradead.org>
-Subject: Re: [PATCH] docs: Fix warning:Error in "code-block" directive
-Content-Language: en-US
-From:   Akira Yokosawa <akiyks@gmail.com>
-In-Reply-To: <e69410c1-8632-354e-e6e0-ac16631f0566@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: *
+References: <20230601221151.670-1-mario.limonciello@amd.com>
+In-Reply-To: <20230601221151.670-1-mario.limonciello@amd.com>
+From:   Nathan Schulte <nmschulte@gmail.com>
+Date:   Sat, 3 Jun 2023 04:54:00 -0500
+Message-ID: <CAO78Khpii4RxTdEdy22bzGzAwLYje3XnJWXfdHiLud9c1TuzgQ@mail.gmail.com>
+Subject: Re: [PATCH v3] ACPI: resource: Remove "Zen" specific match and quirks
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
+        linux-kernel@vger.kernel.org, ofenfisch@googlemail.com,
+        wse@tuxedocomputers.com, adam.niederer@gmail.com, adrian@freund.io,
+        jirislaby@kernel.org, Renjith.Pananchikkal@amd.com,
+        anson.tsao@amd.com, Richard.Gong@amd.com,
+        Chuanhong Guo <gch981213@gmail.com>, evilsnoo@proton.me,
+        ruinairas1992@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 2 Jun 2023 18:41:46 -0700, Randy Dunlap wrote:
-> On 6/2/23 18:20, Bagas Sanjaya wrote:
->> On Fri, Jun 02, 2023 at 04:51:02PM -0500, Madhumitha Prabakaran wrote:
->>> Fix the error in "code-block" directive by providing the
->>> argument as "text".
->>>
->>> <snipped> ...
->>>  Result code:
->>>  ------------
->>>  
->>> -.. code-block::
->>> +.. code-block:: text
->> 
->> Nope.
->> 
->> I don't see error you mention in this patch when making htmldocs on my
->> computer (my setup is pretty standard: see
->> Documentation/doc-guide/sphinx.rst). This patch is unneccessary, though,
->> unless you have code snippets in some language (e.g. C, where passing
->> language name to code-block:: syntax-highlight it). Result code outputs,
->> on the other hand, are generic text with no definitive syntax, hence
->> you can omit language name.
->> 
->> Thanks.
-> 
-> 
-> I also don't see any such warnings so I don't see a need for this patch.
-> My wild guess is that some older version of Sphinx was being used.
+This seems to work as well for the ASUS TUF Gaming A16 Advantage
+Edition FA617XT; both Linux 6.3 and 6.4.  Disabling the ITE5570 EC
+[I/O] is required for a "truly" functional experience, of course.
 
-Right.
-
-In Sphinx changelog, "Features added" for 2.0.0b1 [1] lists this:
-
-    #1851: Allow to omit an argument for code-block directive. If omitted,
-    it follows highlight or highlight_language
-
-[1]: https://www.sphinx-doc.org/en/master/changes.html#id1306
-
-Pre-2.0 Sphinx is now deprecated.
-See commit 31abfdda6527 ("docs: Deprecate use of Sphinx < 2.4.x").
-
-        Thanks, Akira    
-
-> 
-> -- 
-> ~Randy
-
+On Thu, Jun 1, 2023 at 5:12=E2=80=AFPM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
+>
+> commit 9946e39fe8d0 ("ACPI: resource: skip IRQ override on
+> AMD Zen platforms") attempted to overhaul the override logic so it
+> didn't apply on X86 AMD Zen systems.  This was intentional so that
+> systems would prefer DSDT values instead of default MADT value for
+> IRQ 1 on Ryzen 6000 systems which typically uses ActiveLow for IRQ1.
+>
+> This turned out to be a bad assumption because several vendors
+> add Interrupt Source Override but don't fix the DSDT. A pile of
+> quirks was collecting that proved this wasn't sustaintable.
+>
+> Furthermore some vendors have used ActiveHigh for IRQ1.
+> To solve this problem revert the following commits:
+> * commit 17bb7046e7ce ("ACPI: resource: Do IRQ override on all TongFang
+> GMxRGxx")
+> * commit f3cb9b740869 ("ACPI: resource: do IRQ override on Lenovo 14ALC7"=
+)
+> * commit bfcdf58380b1 ("ACPI: resource: do IRQ override on LENOVO IdeaPad=
+")
+> * commit 7592b79ba4a9 ("ACPI: resource: do IRQ override on XMG Core 15")
+> * commit 9946e39fe8d0 ("ACPI: resource: skip IRQ override on AMD Zen
+> platforms")
+>
+> Cc: ofenfisch@googlemail.com
+> Cc: wse@tuxedocomputers.com
+> Cc: adam.niederer@gmail.com
+> Cc: adrian@freund.io
+> Cc: jirislaby@kernel.org
+> Cc: Renjith.Pananchikkal@amd.com
+> Cc: anson.tsao@amd.com
+> Cc: Richard.Gong@amd.com
+> Cc: Chuanhong Guo <gch981213@gmail.com>
+> Reported-by: evilsnoo@proton.me
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217394
+> Reported-by: ruinairas1992@gmail.com
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217406
+> Reported-by: nmschulte@gmail.com
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217336
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+> v2->v3:
+>  * Adjust to drop heuristics entirely
+>  * Drop tested tags
+>  * Add more links and people to Cc
+>  * Drop Fixes tag as this got a lot more risky
+> v1->v2:
+>  * Rebase on 71a485624c4c ("ACPI: resource: Add IRQ override quirk for LG=
+ UltraPC 17U70P")
+>  * Pick up tag
+>
+> Rafael,
+> Please hold off on picking this up until the majority of those on CC
+> have tested it on hardware they have and reported results.
+>
+> Everyone else,
+> Please test. If you have problems with this applied, please share
+> an acpidump and dmesg either on a bug or to me privately.
+> ---
+>  drivers/acpi/resource.c | 60 -----------------------------------------
+>  1 file changed, 60 deletions(-)
+>
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index 0800a9d77558..1dd8d5aebf67 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -470,52 +470,6 @@ static const struct dmi_system_id asus_laptop[] =3D =
+{
+>         { }
+>  };
+>
+> -static const struct dmi_system_id lenovo_laptop[] =3D {
+> -       {
+> -               .ident =3D "LENOVO IdeaPad Flex 5 14ALC7",
+> -               .matches =3D {
+> -                       DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+> -                       DMI_MATCH(DMI_PRODUCT_NAME, "82R9"),
+> -               },
+> -       },
+> -       {
+> -               .ident =3D "LENOVO IdeaPad Flex 5 16ALC7",
+> -               .matches =3D {
+> -                       DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+> -                       DMI_MATCH(DMI_PRODUCT_NAME, "82RA"),
+> -               },
+> -       },
+> -       { }
+> -};
+> -
+> -static const struct dmi_system_id tongfang_gm_rg[] =3D {
+> -       {
+> -               .ident =3D "TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Ste=
+llaris 15 Gen4 AMD",
+> -               .matches =3D {
+> -                       DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
+> -               },
+> -       },
+> -       { }
+> -};
+> -
+> -static const struct dmi_system_id maingear_laptop[] =3D {
+> -       {
+> -               .ident =3D "MAINGEAR Vector Pro 2 15",
+> -               .matches =3D {
+> -                       DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"=
+),
+> -                       DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-15A3070T"),
+> -               }
+> -       },
+> -       {
+> -               .ident =3D "MAINGEAR Vector Pro 2 17",
+> -               .matches =3D {
+> -                       DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"=
+),
+> -                       DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-17A3070T"),
+> -               },
+> -       },
+> -       { }
+> -};
+> -
+>  static const struct dmi_system_id lg_laptop[] =3D {
+>         {
+>                 .ident =3D "LG Electronics 17U70P",
+> @@ -539,10 +493,6 @@ struct irq_override_cmp {
+>  static const struct irq_override_cmp override_table[] =3D {
+>         { medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, fal=
+se },
+>         { asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false=
+ },
+> -       { lenovo_laptop, 6, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, tru=
+e },
+> -       { lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, tr=
+ue },
+> -       { tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, tru=
+e },
+> -       { maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, tr=
+ue },
+>         { lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false }=
+,
+>  };
+>
+> @@ -562,16 +512,6 @@ static bool acpi_dev_irq_override(u32 gsi, u8 trigge=
+ring, u8 polarity,
+>                         return entry->override;
+>         }
+>
+> -#ifdef CONFIG_X86
+> -       /*
+> -        * IRQ override isn't needed on modern AMD Zen systems and
+> -        * this override breaks active low IRQs on AMD Ryzen 6000 and
+> -        * newer systems. Skip it.
+> -        */
+> -       if (boot_cpu_has(X86_FEATURE_ZEN))
+> -               return false;
+> -#endif
+> -
+>         return true;
+>  }
+>
+> --
+> 2.34.1
+>
