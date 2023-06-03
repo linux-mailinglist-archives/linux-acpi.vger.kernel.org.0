@@ -2,159 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D244720F27
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 Jun 2023 12:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EB4A720FD7
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 Jun 2023 13:03:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229658AbjFCKUR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 3 Jun 2023 06:20:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46112 "EHLO
+        id S237169AbjFCLD3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 3 Jun 2023 07:03:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229628AbjFCKUQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Jun 2023 06:20:16 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF616BB;
-        Sat,  3 Jun 2023 03:20:13 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-3078cc99232so2728964f8f.3;
-        Sat, 03 Jun 2023 03:20:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685787612; x=1688379612;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WiyEzTB76d51V4yyJkufi8HLIk7ZWcK0vs+TVmZ8HT4=;
-        b=AJ7gci2EWVpp70ajhdJ3QJ6xAv3nQL5YuZ4bHDZ//uc+x87g78koUZlCSKKvEiMZRO
-         d5//72GoLPQR/iHBbN/MeAzPWZNXH+PbGlj2YnC0Y7fRXtABbtu3qRulzOq/10YQXhyX
-         +FkEjnFdcvhkKNGyHYTc7i9g6EfJeDXtUR+dZsJoRu6C+2FJt2qc+ZPqCdBTVM9Uw1Re
-         drgBGSd8+r7Dq69/Nt9fnLH66ZMmLI+3PnAoa2IDvTmHkqGTheB4hgK2l96YxBMoYHmQ
-         YFePNc3L0kOkAJWP2YOM4gseEKopHQ5I8lQgV3aoQ7Ys0hGO5yhML0P2UgeRMWMEym75
-         01nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685787612; x=1688379612;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WiyEzTB76d51V4yyJkufi8HLIk7ZWcK0vs+TVmZ8HT4=;
-        b=EVwSH6AstYqJZkzSAuZBIWASD0abwdeBnHuflYPQ2hmkj1t8j9bpOeyUGbAEYQ4AFe
-         GzEnSK/5u7dae9ABB6NOF4E2b+EuyjPG3sXZPvNUALfXk+vj80oqBgwjxJxPVRoT6mC4
-         PNHamX07BaArgUYxDfX5sgl/8lx4+ic0nIUa8rJJuuNSw2mOi+64DUOjg6lX/0Scjm2D
-         AP+BK4jPaXlRgr5ftZdFJhAazrBfqdYlNpl1JUpDf9lArCviVfI1q9UAPG6AG5Hhgo11
-         XrTYKFY/gFmJsAeU6nxNGj5ajvnAdLr7x8DXnjmvEKvOMEkZtwYGD7LWmW+tJdsDUI4u
-         3+6w==
-X-Gm-Message-State: AC+VfDzAe/N//IZN1+sUSNKDMUpn2KD57MLXcpqtERHmSN0hVge+Jzys
-        Lcn6/iQeA3JDi47Mij8VYiUA13ZRX7G3lsrRcEE=
-X-Google-Smtp-Source: ACHHUZ5Al2tHisbt7qIrU5MUZ5CmcUjy6JTHvp1qO5H49bwETMbflHI6IvsQHd/Fd58ki71ubfosqZn236HSA2PesW8=
-X-Received: by 2002:a05:6000:885:b0:30a:b4e1:a89f with SMTP id
- cs5-20020a056000088500b0030ab4e1a89fmr2180137wrb.58.1685787612229; Sat, 03
- Jun 2023 03:20:12 -0700 (PDT)
+        with ESMTP id S236733AbjFCLD2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 3 Jun 2023 07:03:28 -0400
+Received: from fgw23-7.mail.saunalahti.fi (fgw23-7.mail.saunalahti.fi [62.142.5.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59FF3BD
+        for <linux-acpi@vger.kernel.org>; Sat,  3 Jun 2023 04:03:26 -0700 (PDT)
+Received: from localhost (88-113-26-95.elisa-laajakaista.fi [88.113.26.95])
+        by fgw23.mail.saunalahti.fi (Halon) with ESMTP
+        id 4150446e-01fe-11ee-b972-005056bdfda7;
+        Sat, 03 Jun 2023 14:03:24 +0300 (EEST)
+From:   andy.shevchenko@gmail.com
+Date:   Sat, 3 Jun 2023 14:03:22 +0300
+To:     Michal Wilczynski <michal.wilczynski@intel.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, dan.j.williams@intel.com,
+        vishal.l.verma@intel.com, dave.jiang@intel.com,
+        ira.weiny@intel.com, rui.zhang@intel.com, jdelvare@suse.com,
+        linux@roeck-us.net, jic23@kernel.org, lars@metafoo.de,
+        bleung@chromium.org, yu.c.chen@intel.com, hdegoede@redhat.com,
+        markgross@kernel.org, luzmaximilian@gmail.com,
+        corentin.chary@gmail.com, jprvita@gmail.com,
+        cascardo@holoscopio.com, don@syst.com.br, pali@kernel.org,
+        jwoithe@just42.net, matan@svgalib.org, kenneth.t.chan@gmail.com,
+        malattia@linux.it, jeremy@system76.com, productdev@system76.com,
+        herton@canonical.com, coproscefalo@gmail.com, tytso@mit.edu,
+        Jason@zx2c4.com, robert.moore@intel.com,
+        linux-acpi@vger.kernel.org, nvdimm@lists.linux.dev,
+        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
+        chrome-platform@lists.linux.dev,
+        platform-driver-x86@vger.kernel.org,
+        acpi4asus-user@lists.sourceforge.net
+Subject: Re: [PATCH v4 00/35] Remove .notify callback in acpi_device_ops
+Message-ID: <ZHsd-je7kDDpii2q@surfacebook>
+References: <20230601131655.300675-1-michal.wilczynski@intel.com>
 MIME-Version: 1.0
-References: <20230601221151.670-1-mario.limonciello@amd.com>
-In-Reply-To: <20230601221151.670-1-mario.limonciello@amd.com>
-From:   Chuanhong Guo <gch981213@gmail.com>
-Date:   Sat, 3 Jun 2023 18:19:59 +0800
-Message-ID: <CAJsYDVKoB1AEL47Ud+8jbxMrbZedM0i9p44-PLQTFR9PKLfy6A@mail.gmail.com>
-Subject: Re: [PATCH v3] ACPI: resource: Remove "Zen" specific match and quirks
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
-        linux-kernel@vger.kernel.org, ofenfisch@googlemail.com,
-        wse@tuxedocomputers.com, adam.niederer@gmail.com, adrian@freund.io,
-        jirislaby@kernel.org, Renjith.Pananchikkal@amd.com,
-        anson.tsao@amd.com, Richard.Gong@amd.com, evilsnoo@proton.me,
-        ruinairas1992@gmail.com, nmschulte@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230601131655.300675-1-michal.wilczynski@intel.com>
+X-Spam-Status: No, score=0.7 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
+        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,SPF_HELO_NONE,
+        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi!
+Thu, Jun 01, 2023 at 03:16:55PM +0200, Michal Wilczynski kirjoitti:
+> Currently drivers support ACPI event handlers by defining .notify
+> callback in acpi_device_ops. This solution is suboptimal as event
+> handler installer installs intermediary function acpi_notify_device as a
+> handler in every driver. Also this approach requires extra variable
+> 'flags' for specifying event types that the driver want to subscribe to.
+> Additionally this is a pre-work required to align acpi_driver with
+> platform_driver and eventually replace acpi_driver with platform_driver.
+> 
+> Remove .notify callback from the acpi_device_ops. Replace it with each
+> driver installing and removing it's event handlers.
 
-On Fri, Jun 2, 2023 at 6:12=E2=80=AFAM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
->
-> commit 9946e39fe8d0 ("ACPI: resource: skip IRQ override on
-> AMD Zen platforms") attempted to overhaul the override logic so it
-> didn't apply on X86 AMD Zen systems.  This was intentional so that
-> systems would prefer DSDT values instead of default MADT value for
-> IRQ 1 on Ryzen 6000 systems which typically uses ActiveLow for IRQ1.
->
-> This turned out to be a bad assumption because several vendors
-> add Interrupt Source Override but don't fix the DSDT. A pile of
-> quirks was collecting that proved this wasn't sustaintable.
->
-> Furthermore some vendors have used ActiveHigh for IRQ1.
-> To solve this problem revert the following commits:
-> * commit 17bb7046e7ce ("ACPI: resource: Do IRQ override on all TongFang
-> GMxRGxx")
-> * commit f3cb9b740869 ("ACPI: resource: do IRQ override on Lenovo 14ALC7"=
-)
-> * commit bfcdf58380b1 ("ACPI: resource: do IRQ override on LENOVO IdeaPad=
-")
-> * commit 7592b79ba4a9 ("ACPI: resource: do IRQ override on XMG Core 15")
-> * commit 9946e39fe8d0 ("ACPI: resource: skip IRQ override on AMD Zen
-> platforms")
->
-> Cc: ofenfisch@googlemail.com
-> Cc: wse@tuxedocomputers.com
-> Cc: adam.niederer@gmail.com
-> Cc: adrian@freund.io
-> Cc: jirislaby@kernel.org
-> Cc: Renjith.Pananchikkal@amd.com
-> Cc: anson.tsao@amd.com
-> Cc: Richard.Gong@amd.com
-> Cc: Chuanhong Guo <gch981213@gmail.com>
-> Reported-by: evilsnoo@proton.me
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217394
-> Reported-by: ruinairas1992@gmail.com
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217406
-> Reported-by: nmschulte@gmail.com
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217336
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
-> v2->v3:
->  * Adjust to drop heuristics entirely
->  * Drop tested tags
->  * Add more links and people to Cc
->  * Drop Fixes tag as this got a lot more risky
-> v1->v2:
->  * Rebase on 71a485624c4c ("ACPI: resource: Add IRQ override quirk for LG=
- UltraPC 17U70P")
->  * Pick up tag
->
-> Rafael,
-> Please hold off on picking this up until the majority of those on CC
-> have tested it on hardware they have and reported results.
->
-> Everyone else,
-> Please test. If you have problems with this applied, please share
-> an acpidump and dmesg either on a bug or to me privately.
+Somehow this thread is screwed up in a sense of linking messages.
+Even on the archives there are rather individual patches.
 
-I was expecting this patch to break my keyboard again but
-that didn't happen. I'm on the latest UEFI from Lenovo.
-By dumping ACPI APIC I found that there's this:
+Please, be sure you are always use --thread when formatting it.
+Yet you have a possibility to Cc different patches to the different
+mailing lists and people.
 
-[0C4h 0196   1]                Subtable Type : 02 [Interrupt Source Overrid=
-e]
-[0C5h 0197   1]                       Length : 0A
-[0C6h 0198   1]                          Bus : 00
-[0C7h 0199   1]                       Source : 01
-[0C8h 0200   4]                    Interrupt : 00000001
-[0CCh 0204   2]        Flags (decoded below) : 0007
-                                    Polarity : 3
-                                Trigger Mode : 1
+-- 
+With Best Regards,
+Andy Shevchenko
 
-I don't have a dump of the ACPI table from older UEFIs anymore.
 
-Tested on Lenovo Thinkbook 14G4+ ARA with the latest
-UEFI (J6CN45WW).
-
-Tested-by: Chuanhong Guo <gch981213@gmail.com>
-
---=20
-Regards,
-Chuanhong Guo
