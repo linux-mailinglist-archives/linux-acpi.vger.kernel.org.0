@@ -2,153 +2,178 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D29F72163C
-	for <lists+linux-acpi@lfdr.de>; Sun,  4 Jun 2023 12:53:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9E11721644
+	for <lists+linux-acpi@lfdr.de>; Sun,  4 Jun 2023 13:06:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229703AbjFDKxl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 4 Jun 2023 06:53:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57044 "EHLO
+        id S231249AbjFDLGw convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Sun, 4 Jun 2023 07:06:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229578AbjFDKxl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 4 Jun 2023 06:53:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C812C0;
-        Sun,  4 Jun 2023 03:53:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B877C60E71;
-        Sun,  4 Jun 2023 10:53:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E28C433EF;
-        Sun,  4 Jun 2023 10:53:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685876019;
-        bh=v/j4DKmdtzM+oQApqSfZhtaduo95gGQbg/IfYamNqVE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=kHSDpFO6Ru/4oFyMkLmFCNWjVtNDmcWuDktSjwbpuLn1U6ByqGmXb+CPDWbKpmSzy
-         rNI2j5b5UPtxP84sfjjN993uwp+8p3AnxsQtjwGtbccUQaGxHVdMAM5XhRpK+W0S3W
-         SJy3qhYP39lhP0UJsNSvZW9rC7G+RBv7spvyYlC/WXNQ5Y5v9Qj+rMXh8z1Try6/oQ
-         n/RaYgqaD3gRqaBoNvIkEjrg0BibyUrSj75X+/xGcYQaDLgRFfIqrR9+thg6/tfccx
-         8x/7aPhTwZoRxK19fs9E/O2/f+GGPiTI3cXG4l7b2fUuxzdJJyWYTTMoc0Rlrrxy3Y
-         tc8prp8phi1Nw==
-Date:   Sun, 4 Jun 2023 11:53:35 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Michal Wilczynski <michal.wilczynski@intel.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        rafael@kernel.org
-Subject: Re: [PATCH v4 11/35] iio/acpi-als: Move handler installing logic to
- driver
-Message-ID: <20230604115335.0e66ca2f@jic23-huawei>
-In-Reply-To: <20230601131739.300760-12-michal.wilczynski@intel.com>
-References: <20230601131739.300760-3-michal.wilczynski@intel.com>
-        <20230601131739.300760-12-michal.wilczynski@intel.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        with ESMTP id S229578AbjFDLGv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 4 Jun 2023 07:06:51 -0400
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70551CF;
+        Sun,  4 Jun 2023 04:06:50 -0700 (PDT)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-94f9cd65b1aso76112266b.0;
+        Sun, 04 Jun 2023 04:06:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685876809; x=1688468809;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iul/lfmfErHcNmWNvS+6469y34DXHRpFyOnb+NMJ3Pc=;
+        b=jAQ3H6qglq5xvL9AZAc3fjkkIJC2Xx0HpxPFFltbLn0sYCAQ+fcNFd015JWZHtr6Mq
+         Zojl3j5Nr6MVWbo3u0RbbMhFKXqcsmpywzklOFDaLauQ+nCkfEKIkqFaBPhDYDTuH6BZ
+         DOZJECf5stB1vvuHQlTPsVCc3Tv1ZaORvBtvHVg10kbLUOaTk2B1+LSNqjmGUCV3tUnY
+         ehPyWjiO4TzOgjP4oFAaVuod+d5ggE4CGpcWdngjhyChhoaDIpzbbuE/PcohyjEa5S7u
+         vks8AGhcZ48cZl4o0bsG553VktbdOZSREEDix1IRW10P7ax6RcFj1qhYKmrGub39hphF
+         ykng==
+X-Gm-Message-State: AC+VfDxBAavNs3IWUHFa4+YDyGGayB+Vjh5sAerBRi3O4Jm9MhXJD/G0
+        jF/GiWE7bNY6jcxbpKBrcjELR9AmT+xF7J9YYe8=
+X-Google-Smtp-Source: ACHHUZ7N1b8OvpjZ7+uRkzDlT+9iVd5uIpbWzkB1JHj9/zLCBm+FKUHl1ojiQ0/WiCsbb7O9qcUHDdroZrUAEYzIi80=
+X-Received: by 2002:a17:906:d2:b0:977:cb73:ef6a with SMTP id
+ 18-20020a17090600d200b00977cb73ef6amr1967397eji.3.1685876808573; Sun, 04 Jun
+ 2023 04:06:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230602031122.18350-1-mario.limonciello@amd.com> <ZHpPOzT0nm+vddPq@bhelgaas>
+In-Reply-To: <ZHpPOzT0nm+vddPq@bhelgaas>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Sun, 4 Jun 2023 13:06:34 +0200
+Message-ID: <CAJZ5v0jr=2FYhyoJMZFV7hcbiO8Ugj4OZVhrtSyb3j+SuXs=+Q@mail.gmail.com>
+Subject: Re: [PATCH] PCI: Call _REG when saving/restoring PCI state
+To:     Bjorn Helgaas <helgaas@kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Cc:     bhelgaas@google.com, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu,  1 Jun 2023 15:17:14 +0200
-Michal Wilczynski <michal.wilczynski@intel.com> wrote:
+On Fri, Jun 2, 2023 at 10:21 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+>
+> [+cc Rafael, Len, linux-acpi]
+>
+> Hi Mario,
+>
+> On Thu, Jun 01, 2023 at 10:11:22PM -0500, Mario Limonciello wrote:
+> > ASMedia PCIe GPIO controllers connected to AMD SOC fail functional tests
+> > after returning from s2idle. This is because the BIOS checks whether the
+> > OSPM has called the _REG method to determine whether it can interact with
+> > the OperationRegion assigned to the device.
+>
+> "s2idle" is a Linux term; I'd prefer something that we can relate to
+> the ACPI spec.
 
-> Currently logic for installing notifications from ACPI devices is
-> implemented using notify callback in struct acpi_driver. Preparations
-> are being made to replace acpi_driver with more generic struct
-> platform_driver, which doesn't contain notify callback. Furthermore
-> as of now handlers are being called indirectly through
-> acpi_notify_device(), which decreases performance.
-> 
-> Call acpi_device_install_event_handler() at the end of .add() callback.
-> Call acpi_device_remove_event_handler() at the beginning of .remove()
-> callback. Change arguments passed to the notify callback to match with
-> what's required by acpi_device_install_event_handler().
-> 
-> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
-Hi Michal,
+From the ACPI spec viewpoint, s2idle is S0, so this means that _REG
+needs to be called under specific conditions when the system is in S0.
+I'm not sure if this is really ACPI-compliant.
 
-Comments inline.
+> Maybe a pointer to the specific function in the driver that has a
+> problem?  Based on the patch, I assume the driver uses some control
+> method that looks at PCI config space?
+>
+> > To fix this issue, call acpi_evaluate_reg() when saving and restoring the
+> > state of PCI devices.
+>
+> Please include the spec citation: ACPI r6.5, sec 6.5.4.  The URL has
+> changed in the past and may change in the future,
 
-> ---
->  drivers/iio/light/acpi-als.c | 23 ++++++++++++++++++-----
->  1 file changed, 18 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/iio/light/acpi-als.c b/drivers/iio/light/acpi-als.c
-> index 2d91caf24dd0..5e200c6d91bc 100644
-> --- a/drivers/iio/light/acpi-als.c
-> +++ b/drivers/iio/light/acpi-als.c
-> @@ -100,10 +100,14 @@ static int acpi_als_read_value(struct acpi_als *als, char *prop, s32 *val)
->  	return 0;
->  }
->  
-> -static void acpi_als_notify(struct acpi_device *device, u32 event)
-> +static void acpi_als_notify(acpi_handle handle, u32 event, void *data)
->  {
-> -	struct iio_dev *indio_dev = acpi_driver_data(device);
-> -	struct acpi_als *als = iio_priv(indio_dev);
-> +	struct acpi_device *device = data;
-> +	struct iio_dev *indio_dev;
-> +	struct acpi_als *als;
-> +
-> +	indio_dev = acpi_driver_data(device);
-> +	als = iio_priv(indio_dev);
+That's true, but it has been promised to us that these URLs will be
+stable for the foreseeable future.
 
-Not particularly important, but I'd have kept to existing style
+Besides, the spec version and section information is there in the link itself.
 
-	struct acpi_device *device = data;
-	struct iio_dev *indio_dev = acpi_driver_data(device);
-	struct acpi_als *als = iio_priv(indio_dev);
+> but the name/section number will not.
+>
+> > Link: https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/06_Device_Configuration/Device_Configuration.html#reg-region
+> > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> > ---
+> >  drivers/pci/pci.c | 12 ++++++++++++
+> >  1 file changed, 12 insertions(+)
+> >
+> > diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> > index e38c2f6eebd4..071ecba548b0 100644
+> > --- a/drivers/pci/pci.c
+> > +++ b/drivers/pci/pci.c
+> > @@ -1068,6 +1068,12 @@ static inline bool platform_pci_bridge_d3(struct pci_dev *dev)
+> >       return acpi_pci_bridge_d3(dev);
+> >  }
+> >
+> > +static inline int platform_toggle_reg(struct pci_dev *dev, int c)
+> > +{
+> > +     return acpi_evaluate_reg(ACPI_HANDLE(&dev->dev),
+> > +                              ACPI_ADR_SPACE_PCI_CONFIG, c);
+> > +}
+>
+> You never check the return value, so why return it?
+>
+> The function actually doesn't *toggle*; it connects or disconnects
+> based on "c".
+>
+> This looks like it only builds when CONFIG_ACPI=y?
+>
+> >  /**
+> >   * pci_update_current_state - Read power state of given device and cache it
+> >   * @dev: PCI device to handle.
+> > @@ -1645,6 +1651,9 @@ static void pci_restore_ltr_state(struct pci_dev *dev)
+> >  int pci_save_state(struct pci_dev *dev)
+> >  {
+> >       int i;
+> > +
+> > +     platform_toggle_reg(dev, ACPI_REG_DISCONNECT);
+>
+> I would expect these to be in the PM code near the power state
+> transitions, not in the state save/restore code.  These functions
+> *are* used during suspend/resume, but are used in other places as
+> well, where we probably don't want _REG executed.
+>
+> Cc'd Rafael and PM folks, who can give much better feedback.
 
-Less churn that way.
+Right, they are not PM-specific.
 
->  
->  	if (iio_buffer_enabled(indio_dev) && iio_trigger_using_own(indio_dev)) {
->  		switch (event) {
-> @@ -225,7 +229,16 @@ static int acpi_als_add(struct acpi_device *device)
->  	if (ret)
->  		return ret;
->  
-> -	return devm_iio_device_register(dev, indio_dev);
-> +	ret = devm_iio_device_register(dev, indio_dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return acpi_device_install_event_handler(device, ACPI_DEVICE_NOTIFY, acpi_als_notify);
+Also, it looks like this isn't really about system suspend, but about
+the device (port?) going into D3(hot/cold?) and back into D0.
 
-Prefer to keep to a fully devm managed flow for removal
+I'm not sure if the spec mandates the need to reevaluate _REG on
+device power state transitions.
 
-So use a devm_add_action_or_reset() to unwind this rather than adding a remove()
-callback.
+At least, it looks like the operation region becomes invalid when the
+device goes into D3 and there is no provision in the spec I can recall
+ATM to notify AML about that.
 
-Obviously ordering is the same currently but that may change if this driver
-is modified in future and it's a lot easier to get that right if fully devm
-(or fully not).
+IOW, once _REG has been called, the operation region needs to stay
+valid from the perspective of AML using it which I think is not the
+case on the affected platform.
 
-Jonathan
-
-> +}
-> +
-> +static void acpi_als_remove(struct acpi_device *device)
-> +{
-> +	acpi_device_remove_event_handler(device, ACPI_DEVICE_NOTIFY, acpi_als_notify);
->  }
->  
->  static const struct acpi_device_id acpi_als_device_ids[] = {
-> @@ -241,7 +254,7 @@ static struct acpi_driver acpi_als_driver = {
->  	.ids	= acpi_als_device_ids,
->  	.ops = {
->  		.add	= acpi_als_add,
-> -		.notify	= acpi_als_notify,
-> +		.remove = acpi_als_remove,
->  	},
->  };
->  
-
+> >       /* XXX: 100% dword access ok here? */
+> >       for (i = 0; i < 16; i++) {
+> >               pci_read_config_dword(dev, i * 4, &dev->saved_config_space[i]);
+> > @@ -1790,6 +1799,8 @@ void pci_restore_state(struct pci_dev *dev)
+> >       pci_enable_acs(dev);
+> >       pci_restore_iov_state(dev);
+> >
+> > +     platform_toggle_reg(dev, ACPI_REG_CONNECT);
+> > +
+> >       dev->state_saved = false;
+> >  }
+> >  EXPORT_SYMBOL(pci_restore_state);
+> > @@ -3203,6 +3214,7 @@ void pci_pm_init(struct pci_dev *dev)
+> >       pci_read_config_word(dev, PCI_STATUS, &status);
+> >       if (status & PCI_STATUS_IMM_READY)
+> >               dev->imm_ready = 1;
+> > +     platform_toggle_reg(dev, ACPI_REG_CONNECT);
+> >  }
+> >
+> >  static unsigned long pci_ea_flags(struct pci_dev *dev, u8 prop)
+> > --
