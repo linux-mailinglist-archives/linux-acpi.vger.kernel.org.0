@@ -2,140 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 012E8721874
-	for <lists+linux-acpi@lfdr.de>; Sun,  4 Jun 2023 18:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F6F27218C8
+	for <lists+linux-acpi@lfdr.de>; Sun,  4 Jun 2023 19:09:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231912AbjFDQJe convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Sun, 4 Jun 2023 12:09:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47386 "EHLO
+        id S229886AbjFDRJZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 4 Jun 2023 13:09:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjFDQJd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 4 Jun 2023 12:09:33 -0400
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1541DB3;
-        Sun,  4 Jun 2023 09:09:32 -0700 (PDT)
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-94ea38c90ccso72930266b.1;
-        Sun, 04 Jun 2023 09:09:32 -0700 (PDT)
+        with ESMTP id S229635AbjFDRJY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 4 Jun 2023 13:09:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 335EDDE
+        for <linux-acpi@vger.kernel.org>; Sun,  4 Jun 2023 10:08:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1685898518;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=PdD6fLCgV2aQnBd7dmmJ3kgTXzpNFEeCf0r/5R17D2M=;
+        b=XrTYWZ4YBmVOl0SygssuK04sz6eS/iFVIMGoSkQ0Vu8Emw+pJKINYJ+uhV3vh+cHQ3J0wq
+        15NDal1oNv/vhHooPfY58vmLwWZMX4X5vE/tsIisIBuwAJWY1LCPcsUrA36CjyeauoEgr6
+        cuR+tLWoiJGJWDs9yqOCCJgsP7K0SQQ=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-625-elTRROGmNbWQXfG8Wdwg9g-1; Sun, 04 Jun 2023 13:08:35 -0400
+X-MC-Unique: elTRROGmNbWQXfG8Wdwg9g-1
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-94a35b0d4ceso283320366b.3
+        for <linux-acpi@vger.kernel.org>; Sun, 04 Jun 2023 10:08:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685894970; x=1688486970;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YF9X4I63I2PmSlQXak66EM9u+G4hRGXTYT1CsoyXv8A=;
-        b=EoPoWHveMWJ9veG0LIcIcOdiQrJIwjwzgkZVyc61N/GJBUkYrNk0H1f9nBCsifUeEM
-         NYjhyZLcXD6M3GYMZm5wvVR9PFEcN4cJf9sh5hKza+INsn7onxP8uIrUuYu6z7AqJMZD
-         3hTXFLnfHyBWjRTymjvyhiRNRKBveuLkBw9dIJNdKEFbhTJhAAtqPjXVkJ9bQe+wypB4
-         rmQSGJyiv4wDilPg4csTlul9iwnPimZBWVobD4NQb9OiLsfmvKrF4EI0Mtiseme/R0HX
-         qQMu+tBRS2UtmE6Zv+BNzxdZzjaLM8OvQq6tgcrPU9u7wj50jkCSX1VgOBnM0hRtxSkf
-         JQ6w==
-X-Gm-Message-State: AC+VfDzgOm1nEJcN/APyu07DHKD9Zs+50tqDTFBVX/7J9en2F6+5uktB
-        iCxor252QB8J/rEmakLYEgkefYCSIj1a4KUEPMU=
-X-Google-Smtp-Source: ACHHUZ7uxNj+HwBGMoaJ4vShM+UlBmIsfu/kadNWj3tfFDYjns2iSrQRTc5TzB5cbg+jY6IMuR0GX2/+tX42EvcvCNU=
-X-Received: by 2002:a17:906:145:b0:94a:5f0d:d9d6 with SMTP id
- 5-20020a170906014500b0094a5f0dd9d6mr14762463ejh.4.1685894970362; Sun, 04 Jun
- 2023 09:09:30 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1685898514; x=1688490514;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PdD6fLCgV2aQnBd7dmmJ3kgTXzpNFEeCf0r/5R17D2M=;
+        b=Ew7d6RWrtBeHbqRT9fgsdySfIjLwx+g0WDq2WJjLDbHT1LhJI/8SjKv5W+CvukGTOK
+         IPQc57isHg+E6gAKweBJEurcuPu1kN0oufxXqGEwCM8oaQODFzmAKwDjKEbfOtVQd7H1
+         giQATeaKvFq5+35pUsN6u/x62jzkYGVzFREtkuoHVY+fzIJcF4ZXf0is41NLmFxKZhqZ
+         91SSXgN+tnUyf0MzJ9i76tlz4pGHcuFXSQIJ7f/txGe/lgiTrOetZRGFPpwhhzLMQhiP
+         NpL7BO8pUAYRSDW6HoM7ZxIkzJrKn5isFCds4b3ONr0mUi5CRTSJums7FBt1eGLchXs/
+         VK2g==
+X-Gm-Message-State: AC+VfDznIemfGgCdgZb4WjMzdbnusfSnCGTtWQRdupfCKlm9nDytiyoa
+        WgKwuVkNZcK5avVWfYWfHuzmS7xvU/mfEmOMInnvXSoLWtk8QPehxVCSLY5nG41e3brrlPpUzQd
+        alTqMgFn+4Hd9/TcOtdozIA==
+X-Received: by 2002:a17:907:168a:b0:967:21:5887 with SMTP id hc10-20020a170907168a00b0096700215887mr4095492ejc.40.1685898513856;
+        Sun, 04 Jun 2023 10:08:33 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4TPZilX3j01WIYfIYhahPcl8kTB8RkUD2ANGHMSpVRbwGGQb9vu22ijVQ0bzecqOBy+9DBTQ==
+X-Received: by 2002:a17:907:168a:b0:967:21:5887 with SMTP id hc10-20020a170907168a00b0096700215887mr4095470ejc.40.1685898513516;
+        Sun, 04 Jun 2023 10:08:33 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id j24-20020a170906095800b009659fa6eeddsm3269450ejd.196.2023.06.04.10.08.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 04 Jun 2023 10:08:32 -0700 (PDT)
+Message-ID: <48a267c4-15c5-4ab6-7704-f7ee41e2fb90@redhat.com>
+Date:   Sun, 4 Jun 2023 19:08:31 +0200
 MIME-Version: 1.0
-References: <168565502116.1098279.131831312990693128.stgit@djiang5-mobl3>
-In-Reply-To: <168565502116.1098279.131831312990693128.stgit@djiang5-mobl3>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sun, 4 Jun 2023 18:09:19 +0200
-Message-ID: <CAJZ5v0gbSN5K1Q_Afsr9T3WGadg6zphGsz6ATavmiXVmRMPWcw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] acpi: Add CDAT parsing support to ACPI tables code
-To:     Dave Jiang <dave.jiang@intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
-        Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, dan.j.williams@intel.com,
-        ira.weiny@intel.com, vishal.l.verma@intel.com,
-        alison.schofield@intel.com, lukas@wunner.de,
-        Jonathan.Cameron@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v4 4/4] platform/x86/amd: pmc: Use pm_pr_dbg() for suspend
+ related messages
+To:     Mario Limonciello <mario.limonciello@amd.com>,
+        Rafael Wysocki <rafael@kernel.org>, linus.walleij@linaro.org
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-pm@vger.kernel.org, Basavaraj.Natikar@amd.com,
+        Shyam-sundar.S-k@amd.com
+References: <20230602073025.22884-1-mario.limonciello@amd.com>
+ <20230602073025.22884-4-mario.limonciello@amd.com>
+Content-Language: en-US, nl
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20230602073025.22884-4-mario.limonciello@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 1, 2023 at 11:31 PM Dave Jiang <dave.jiang@intel.com> wrote:
->
-> v3:
-> - Move common code to lib/fw_table.c
-> v2:
-> - Split out with CONFIG_ACPI_TABLES_LIB to be independent
-> - Fixed 0-day issues
-> - Change CDAT releveant names to prefix with cdat/CDAT instead of
->   acpi/ACPI. (Jonathan)
-> - Make table_header a union with cdat table header instead of
->   'acpi_table_header'. (Jonathan)
-> - Removed ACPI_SIG_CDAT, already defined.
->
-> Hi Rafael,
-> Please consider ack these patches. Dan can take these through the CXL tree. After
-> attempting to rename the cxl_ prefixes of functions and non ACPICA data structures
-> to something more common, it seems that significant amount of ACPI code would be
-> touched for the rename. For this series I left it alone in order to have the minimal
-> changes to ACPI code.
->
-> I've broken out the "cxl: Add support for QTG ID retrieval for CXL subsystem" [1]
-> series in order to make it more manageable. Here's the first part of the ACPI
-> changes. These changes are added to allow reuse of ACPI tables code to parse
-> the CDAT tables. While CDAT is not part of ACPI, the table structures are similar
-> to ACPI layouts that the code can be reused with some small modifications.
->
-> However, in order to be properly utilized by CXL users, the tables code needs
-> to be refactored out to be independent of ACPI. For example, a PPC BE host may
-> have CXL and does not have ACPI support. But it will have CDAT to read from
-> devices and switches. I have created CONFIG_ACPI_TABLES_LIB in order to allow
-> the common code to be independent. 0-day seems to be happy now for all the
-> different configs and archs.
->
-> 1/4: Split out the common code from drivers/acpi/tables.c to lib/fw_table.c
-> 2/4: Add CDAT support
-> 3,4/4: These two are minor patches that has ACPICA impact. Has been merged into
->        the ACPICA git repo [3].
->
-> The whole series is at [2] for convenience.
->
-> [1]: https://lore.kernel.org/linux-cxl/168193556660.1178687.15477509915255912089.stgit@djiang5-mobl3/T/#t
-> [2]: https://git.kernel.org/pub/scm/linux/kernel/git/djiang/linux.git/log/?h=cxl-qtg
-> [3]: https://github.com/acpica/acpica/pull/874
->
+Hi,
+
+On 6/2/23 09:30, Mario Limonciello wrote:
+> Using pm_pr_dbg() allows users to toggle `/sys/power/pm_debug_messages`
+> as a single knob to turn on messages that amd-pmc can emit to aid in
+> any s2idle debugging.
+> 
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+
+Thanks, patch looks good to me.
+
+Here is my ack for merging this through the linux-pm tree:
+
+Acked-by: Hans de Goede <hdegoede@redhat.com>
+
+Regards,
+
+Hans
+
+
+
+
 > ---
->
-> Dave Jiang (4):
->       acpi: Move common tables helper functions to common lib
->       lib/firmware_table: tables: Add CDAT table parsing support
->       acpi: fix misnamed define for CDAT DSMAS
->       acpi: Add defines for CDAT SSLBIS
->
->
->  drivers/acpi/Kconfig     |   1 +
->  drivers/acpi/tables.c    | 178 +----------------------------
->  include/acpi/actbl1.h    |   5 +-
->  include/linux/acpi.h     |  22 +---
->  include/linux/fw_table.h |  52 +++++++++
->  lib/Kconfig              |   3 +
->  lib/Makefile             |   2 +
->  lib/fw_table.c           | 236 +++++++++++++++++++++++++++++++++++++++
->  8 files changed, 302 insertions(+), 197 deletions(-)
->  create mode 100644 include/linux/fw_table.h
->  create mode 100644 lib/fw_table.c
->
-> --
+>  drivers/platform/x86/amd/pmc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/platform/x86/amd/pmc.c b/drivers/platform/x86/amd/pmc.c
+> index 427905714f79..1304cd6f13f6 100644
+> --- a/drivers/platform/x86/amd/pmc.c
+> +++ b/drivers/platform/x86/amd/pmc.c
+> @@ -543,7 +543,7 @@ static int amd_pmc_idlemask_read(struct amd_pmc_dev *pdev, struct device *dev,
+>  	}
+>  
+>  	if (dev)
+> -		dev_dbg(pdev->dev, "SMU idlemask s0i3: 0x%x\n", val);
+> +		pm_pr_dbg("SMU idlemask s0i3: 0x%x\n", val);
+>  
+>  	if (s)
+>  		seq_printf(s, "SMU idlemask : 0x%x\n", val);
+> @@ -769,7 +769,7 @@ static int amd_pmc_verify_czn_rtc(struct amd_pmc_dev *pdev, u32 *arg)
+>  
+>  	*arg |= (duration << 16);
+>  	rc = rtc_alarm_irq_enable(rtc_device, 0);
+> -	dev_dbg(pdev->dev, "wakeup timer programmed for %lld seconds\n", duration);
+> +	pm_pr_dbg("wakeup timer programmed for %lld seconds\n", duration);
+>  
+>  	return rc;
+>  }
 
-I think that this series can go in via the CXL tree and I'm expecting
-ACPICA to make a new release including the counterparts of patches
-[3-4/4] shortly.
-
-Please feel free to add
-
-Acled-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-to the series.
-
-Thanks!
