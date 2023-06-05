@@ -2,296 +2,188 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67AC3722AEC
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jun 2023 17:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1E45722C2D
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jun 2023 18:07:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231774AbjFEPYQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 5 Jun 2023 11:24:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33844 "EHLO
+        id S229878AbjFEQHd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 5 Jun 2023 12:07:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233090AbjFEPYO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Jun 2023 11:24:14 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0696DD2
-        for <linux-acpi@vger.kernel.org>; Mon,  5 Jun 2023 08:24:13 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 51A44D75;
-        Mon,  5 Jun 2023 08:24:58 -0700 (PDT)
-Received: from [10.57.85.135] (unknown [10.57.85.135])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9FF903F663;
-        Mon,  5 Jun 2023 08:24:11 -0700 (PDT)
-Message-ID: <cddea4a2-79ec-ab3e-2e67-be3a2e10824c@arm.com>
-Date:   Mon, 5 Jun 2023 16:24:10 +0100
+        with ESMTP id S229634AbjFEQHc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Jun 2023 12:07:32 -0400
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2079.outbound.protection.outlook.com [40.107.243.79])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 610A3B7;
+        Mon,  5 Jun 2023 09:07:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Z2zb+n1L5WFwlQ8T6pnmxn21FUAV6XjFWwIN2JMatQsLEqVIqdTxvLpLJQ9WjaXdB8UABPKPnwTQi6HFzi7vZ09/dEZqSSCidfKc52APayTnWz8kPKW/PFmZNgLIveR9Lo0FnzS3TCRfbJm5BbGiodFkeJ3uApNqnz/D/zuX1IntsX+z+D+BUabbEvvKMb4Q0+78QYyBbGN3XU2gOoBHkpxQv7Mh0ArmzhL0Z6rJuc9zNU4fbdW0EXIXkNhEGEIMjQkNaouXTWS1gx7tvPmfWho+D8A325JP0L5dtBmpDQrOUKXBnc1A81VpF4QvuhOHw96HAvge649j+o2rV5CXkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qGCYkFJX9TGWlcMPZEBgP67u4k53RLi7tr9V/TuNiqQ=;
+ b=Oj8/Z6ZQBC/DnZi8jAGlT9HPzkb2R108qO/SNIvJaPWf/19JuN6kIUiyxchEp37EQ5wnUgaAbtcaDiQ29JmSeJAblB/iewNdM1li9ibe1bFuh54e0eXPExwhop9h5dKnWizMAHDCRGjDSq+6YuvcjqfX0rgjY8jaqOQRc26oD0PX4T/rcwcNX5GmjF9j4pecEYjtySR1eDi1o07q5PIP4ZbmGy++l6tZYMGnuJc1fzv7ianQ1Ph2RnrffezWcP8RpZDbBsEhXAhtq0wn2T6CvoA1519x8NXd7D4WgXc5IEIv2oge0S6KGXe4Qg5gYe7LTOYWlOb7jh0546IFs8od/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qGCYkFJX9TGWlcMPZEBgP67u4k53RLi7tr9V/TuNiqQ=;
+ b=jsDpaDDGOYbd2AZoRU5Psf/Pss00jHcBHsxcUi4n1stHIdWEjYmkhFof3ICtnCnzdt1TxhUCzn4f3he7xMYO1AASsQduQ8Pty+RNNePavUp4lff4IhJpfQsKMBREZSju1NnnRbF/GA8vb+tSxOsCRo51g3b/dAxakVt/uaQ1tKY=
+Received: from CYYPR12MB8655.namprd12.prod.outlook.com (2603:10b6:930:c4::19)
+ by MW5PR12MB5649.namprd12.prod.outlook.com (2603:10b6:303:19d::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.33; Mon, 5 Jun
+ 2023 16:07:27 +0000
+Received: from CYYPR12MB8655.namprd12.prod.outlook.com
+ ([fe80::6239:f594:96fd:2af3]) by CYYPR12MB8655.namprd12.prod.outlook.com
+ ([fe80::6239:f594:96fd:2af3%4]) with mapi id 15.20.6455.030; Mon, 5 Jun 2023
+ 16:07:27 +0000
+From:   "Yuan, Perry" <Perry.Yuan@amd.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        "Limonciello, Mario" <Mario.Limonciello@amd.com>,
+        "Huang, Ray" <Ray.Huang@amd.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+CC:     Len Brown <lenb@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Robert Moore <robert.moore@intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "Shenoy, Gautham Ranjal" <gautham.shenoy@amd.com>,
+        "Karny, Wyes" <Wyes.Karny@amd.com>,
+        "Yuan, Perry" <Perry.Yuan@amd.com>
+Subject: RE: [PATCH 0/4] Enable amd-pstate active mode by default
+Thread-Topic: [PATCH 0/4] Enable amd-pstate active mode by default
+Thread-Index: AQHZl8AYgGk+ncCZWUSMrNFXSaXP9K98XhLw
+Date:   Mon, 5 Jun 2023 16:07:27 +0000
+Message-ID: <CYYPR12MB8655C41A0DE7938EBF44DFCF9C4DA@CYYPR12MB8655.namprd12.prod.outlook.com>
+References: <20230605151133.2615-1-mario.limonciello@amd.com>
+In-Reply-To: <20230605151133.2615-1-mario.limonciello@amd.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=51047bad-fa66-471a-832f-e0183515fd3d;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=0;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2023-06-05T16:00:02Z;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CYYPR12MB8655:EE_|MW5PR12MB5649:EE_
+x-ms-office365-filtering-correlation-id: 55935776-486d-4687-fe11-08db65def52a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: wDWbFE9vOtpHefz2EOzvm0ll5g8jamStv6RaFJLYOnZjl/A2YDVLlgsweX512GYC5C2dAcw2sUFojSZly2OJ+vD1Ury58roOBf9sXb68qg21R5czMHIIBUj5y6m13ghUoiCgmQAwOZGCnIVzE7jcxHz7Ob78f2YbedKxuAZ3JM+4+uT/jevHu1RTqioVEAfSQ5ZVpDxCAnqmu6JZ+kiY0fJBU2bWeJE68Nz32LAqaLjU5lAFZOxYlCOcMtQrD53FDUlur0fq8I95wTQ1QmWpnfhC6djkcZ0szKBNeglsgmNaix8fr8BJ9hgjzun0jnkO+zFvSQeIEEoGJQDqusR67c2ewzDgHsElNDUMArA7j5iOJbIoS5kSvbQ54zSIpHW0l11qirF0ExDsR7SCdc2v0cAmEevTPZBdofV/3OpmP6Bmfw04nOYDMB4rMzEC28lehLpRLxi6LCgeWc28EJyvAxlczgsEV4B+E/sC09DGdYs1TW4xqqva6fxjFRVnachTtVEM2SwPe7Ms65+D/LqMGHKtQL9rGkvUQ9uDv5pVwT7xFdyg2DDGDJRPjh/vBM3wJ22VcmswWrO4V6UgBLIqXtIDWzu72irRIqBGz1C1OuSN5xJhQPMyU5734f9Om4wo
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYYPR12MB8655.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(396003)(136003)(346002)(376002)(366004)(451199021)(54906003)(110136005)(71200400001)(478600001)(52536014)(5660300002)(8936002)(8676002)(38070700005)(2906002)(33656002)(86362001)(4326008)(122000001)(64756008)(66446008)(66476007)(66556008)(76116006)(316002)(66946007)(55016003)(38100700002)(41300700001)(53546011)(9686003)(6506007)(26005)(186003)(83380400001)(7696005);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?e0fe2IJyDRiGr8bK+ntBQDvg2UnB/RVz+BmFmKF/kJsvedhLFHz5CR9LaSze?=
+ =?us-ascii?Q?AB4DSUJ+8kxrlKJHh3vlebGfBmwzREhc+KzMlN/2GfV5LPuNuetk2fOAH7fA?=
+ =?us-ascii?Q?/N5fb9J63fjCa2uAYwir2i6KeRQRPBXMgrBYbmHY29MZV+mscPi8cTqve/9Y?=
+ =?us-ascii?Q?MiaWX3yemo6LqiZZ7dnhV/OSbL588fBSb67p7nIOL2XsKumJnovysLPUoLig?=
+ =?us-ascii?Q?5BJ/bnWN6TbijroOY+J0ntoqmA+TuyXqwCmNTXvH//BL35DxunmUQkyapxXJ?=
+ =?us-ascii?Q?C5c/anieN5FxkmEWNEBagzIBzWyqn37g62atdocDoKDcPWei0wR1vzGkfInQ?=
+ =?us-ascii?Q?PKeGPRKRvTsTHmCUXHbNRe0V4wM8FddbIL7ywHXa6dsvTL5gEqpLv9T8AYam?=
+ =?us-ascii?Q?ljVajdQAFKLA1lH5I3F7hecOdthBo3V11MqBJlXKPoafIWt1sMJhieB07yrx?=
+ =?us-ascii?Q?Wuqh7qpIVubDu6l1S8uRpwBM+6h5+IjX/xwTuJxsFc+rsNSVheZA+ZRfOA+U?=
+ =?us-ascii?Q?L5MWLjkjls4oUjE+E2xftYsqdmLMcWFs6uq+Duns9IW9hyoZ+atzcaTUPTm2?=
+ =?us-ascii?Q?F492fOvztY+e7uDDee34e4BEblwvQA3B4kWWNAbf77p0XLSOELD2t2jMQHcr?=
+ =?us-ascii?Q?ysMBg1iFNd+LXz8/CY0bqwhGuMwae5URiFh662Ympx755WoXxZyNPh8aihfF?=
+ =?us-ascii?Q?iR3UAjA98nwDFEHNyGab3vLc3yjAfSqWTxq7HJRgc733AHLgYmt3H+APbNln?=
+ =?us-ascii?Q?/s95y38dkVNh6CF/RqqsIwvdq2krEH4Gc6niWlUvg/sQY/lvVVfFNDcxelNq?=
+ =?us-ascii?Q?8WQ+11KQ2t85cUECmqKsfL4aj0shza7krPYILDQkQZkJNOcpA5ai1FfaaC6e?=
+ =?us-ascii?Q?r+tnpH8VrdUM2P6nRuHEpWrwCrrJN1qsgmQ+eTnh6TYUVio0zPVdS+DrsbBq?=
+ =?us-ascii?Q?y0AVI6Wp9GyiVhUkSWHX51GyiwdhvGMItQ390fZgHc59QY75JLSBkCEWdeCS?=
+ =?us-ascii?Q?o3mLuBXaegvQnpwGxyhpLvxtQj0uOF891JoQ3NincBhtENTYtTMk8tGnHtva?=
+ =?us-ascii?Q?H/Ei7bxlWKTfM19UJ2WaH3sOfLypU9PMZSkJBjNkOVLsK0XsczXowxtwYZ4s?=
+ =?us-ascii?Q?2vk3CvWXnuax4qt1TbWD2t1EOLvmQ27DmfrNz8nSpsLZqQ6yABbjf4VSzBNj?=
+ =?us-ascii?Q?Wzk6An2axcOq8rLvoJrEaSn3P8ac8Vxt8/KY6wy190KmTvfn9zC7hPP8lt8r?=
+ =?us-ascii?Q?/5ynSVNlN/MZqJzOD5uFCS6akCQfW5dDHZEtkuGDUUpZoi0MoR9M9sAdEJ4X?=
+ =?us-ascii?Q?/fzwXno2odwRIM/94zUAndtWfYwvnOTnJw4yxTDsmqUu46tYo7luGUSY3zmg?=
+ =?us-ascii?Q?TDZgEBwC7vv2rDMbrN3IrPpjStPy2H0lIqls7yn08TUnsyoqQkuoJ1lWRxxA?=
+ =?us-ascii?Q?DZA8OzzIgK/XXdfJdUkpqz0u6Fn22hIYTTjr2bpMqlmXK+UpipfEIQuMJNFQ?=
+ =?us-ascii?Q?Zlmtxfrh9NzPfpU/CGjkvQBjdPTZ00BG41CAeuK+izIX7fIRD9lHethlfohS?=
+ =?us-ascii?Q?/qzrWOzTBob39avm2BU=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH] ACPI: bus: Consolidate all arm specific initialisation
- into acpi_arm_init()
-Content-Language: en-GB
-To:     Sudeep Holla <sudeep.holla@arm.com>, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Cc:     Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-References: <20230605103550.2427459-1-sudeep.holla@arm.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <20230605103550.2427459-1-sudeep.holla@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CYYPR12MB8655.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 55935776-486d-4687-fe11-08db65def52a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Jun 2023 16:07:27.3242
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: jbncZ8sMdJ0ysB6dr+epkuzhsNvd5tOJyRIIcOfzZDxYE3Tu6QLEK1hodqTjz4CBnJaEO+qG6LW7MFa51me9MA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR12MB5649
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2023-06-05 11:35, Sudeep Holla wrote:
-> Move all of the ARM-specific initialization into one function namely
-> acpi_arm_init(), so it is not necessary to modify/update bus.c every
-> time a new piece of it is added.
-> 
-> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> Cc: Hanjun Guo <guohanjun@huawei.com>
-> Cc: Rafael J. Wysocki <rafael@kernel.org>
-> Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Link: https://lore.kernel.org/r/CAJZ5v0iBZRZmV_oU+VurqxnVMbFN_ttqrL=cLh0sUH+=u0PYsw@mail.gmail.com
-> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-> ---
->   drivers/acpi/arm64/Makefile |  2 +-
->   drivers/acpi/arm64/agdi.c   |  2 +-
->   drivers/acpi/arm64/apmt.c   |  2 +-
->   drivers/acpi/arm64/init.c   | 10 ++++++++++
->   drivers/acpi/arm64/init.h   | 20 ++++++++++++++++++++
->   drivers/acpi/arm64/iort.c   |  1 +
->   drivers/acpi/bus.c          |  7 +------
->   include/linux/acpi.h        |  6 ++++++
->   include/linux/acpi_agdi.h   | 13 -------------
->   include/linux/acpi_apmt.h   | 19 -------------------
->   include/linux/acpi_iort.h   |  2 --
->   11 files changed, 41 insertions(+), 43 deletions(-)
->   create mode 100644 drivers/acpi/arm64/init.c
->   create mode 100644 drivers/acpi/arm64/init.h
->   delete mode 100644 include/linux/acpi_agdi.h
->   delete mode 100644 include/linux/acpi_apmt.h
-> 
-> diff --git a/drivers/acpi/arm64/Makefile b/drivers/acpi/arm64/Makefile
-> index e21a9e84e394..f81fe24894b2 100644
-> --- a/drivers/acpi/arm64/Makefile
-> +++ b/drivers/acpi/arm64/Makefile
-> @@ -3,4 +3,4 @@ obj-$(CONFIG_ACPI_AGDI) 	+= agdi.o
->   obj-$(CONFIG_ACPI_IORT) 	+= iort.o
->   obj-$(CONFIG_ACPI_GTDT) 	+= gtdt.o
->   obj-$(CONFIG_ACPI_APMT) 	+= apmt.o
-> -obj-y				+= dma.o
-> +obj-y				+= dma.o init.o
-> diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
-> index f605302395c3..8b3c7d42b41b 100644
-> --- a/drivers/acpi/arm64/agdi.c
-> +++ b/drivers/acpi/arm64/agdi.c
-> @@ -9,11 +9,11 @@
->   #define pr_fmt(fmt) "ACPI: AGDI: " fmt
->   
->   #include <linux/acpi.h>
-> -#include <linux/acpi_agdi.h>
->   #include <linux/arm_sdei.h>
->   #include <linux/io.h>
->   #include <linux/kernel.h>
->   #include <linux/platform_device.h>
-> +#include "init.h"
->   
->   struct agdi_data {
->   	int sdei_event;
-> diff --git a/drivers/acpi/arm64/apmt.c b/drivers/acpi/arm64/apmt.c
-> index 8cab69fa5d59..e5c3bc99fc79 100644
-> --- a/drivers/acpi/arm64/apmt.c
-> +++ b/drivers/acpi/arm64/apmt.c
-> @@ -10,10 +10,10 @@
->   #define pr_fmt(fmt)	"ACPI: APMT: " fmt
->   
->   #include <linux/acpi.h>
-> -#include <linux/acpi_apmt.h>
->   #include <linux/init.h>
->   #include <linux/kernel.h>
->   #include <linux/platform_device.h>
-> +#include "init.h"
->   
->   #define DEV_NAME "arm-cs-arch-pmu"
->   
-> diff --git a/drivers/acpi/arm64/init.c b/drivers/acpi/arm64/init.c
-> new file mode 100644
-> index 000000000000..b4f6ba1c8ef1
-> --- /dev/null
-> +++ b/drivers/acpi/arm64/init.c
-> @@ -0,0 +1,10 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +#include <linux/acpi.h>
-> +#include "init.h"
-> +
-> +void __init acpi_arm_init(void)
-> +{
-> +	acpi_agdi_init();
-> +	acpi_apmt_init();
-> +	acpi_iort_init();
-> +}
-> diff --git a/drivers/acpi/arm64/init.h b/drivers/acpi/arm64/init.h
-> new file mode 100644
-> index 000000000000..85b0541ce3cc
-> --- /dev/null
-> +++ b/drivers/acpi/arm64/init.h
-> @@ -0,0 +1,20 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#include <linux/init.h>
-> +
-> +#ifdef CONFIG_ACPI_AGDI
-> +void acpi_agdi_init(void);
-> +#else
-> +static inline void acpi_agdi_init(void) { }
-> +#endif /* CONFIG_ACPI_AGDI */
+[AMD Official Use Only - General]
 
-Hmm, I wonder if it might be any nicer to make the declarations 
-unconditional and guard the calls in "if (IS_ENABLED(...))" instead. No 
-particular preference, just musing - either way this looks like a 
-sensible refactor, so FWIW,
+Hi Mario, Raphael,
 
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+> -----Original Message-----
+> From: Limonciello, Mario <Mario.Limonciello@amd.com>
+> Sent: Monday, June 5, 2023 11:11 PM
+> To: Huang, Ray <Ray.Huang@amd.com>; Srinivas Pandruvada
+> <srinivas.pandruvada@linux.intel.com>
+> Cc: Rafael J . Wysocki <rafael@kernel.org>; Len Brown <lenb@kernel.org>;
+> Viresh Kumar <viresh.kumar@linaro.org>; Robert Moore
+> <robert.moore@intel.com>; linux-acpi@vger.kernel.org; linux-
+> kernel@vger.kernel.org; linux-pm@vger.kernel.org; devel@acpica.org; Sheno=
+y,
+> Gautham Ranjal <gautham.shenoy@amd.com>; Karny, Wyes
+> <Wyes.Karny@amd.com>; Yuan, Perry <Perry.Yuan@amd.com>; Limonciello,
+> Mario <Mario.Limonciello@amd.com>
+> Subject: [PATCH 0/4] Enable amd-pstate active mode by default
+>
+> Active mode for amd-pstate has shown enough success now that it makes
+> sense to enable it by default on client systems.
+>
+> This series introduces a new kernel configuration option to set the defau=
+lt
+> policy for amd-pstate modes for a kernel.
+>
+> Server systems will by identified by the PM preferred profile and still b=
+e set as
+> disabled by default for now.
+>
+> Mario Limonciello (4):
+>   ACPI: CPPC: Add a symbol to check if the preferred profile is a server
+>   cpufreq: amd-pstate: Set a fallback policy based on preferred_profile
+>   cpufreq: amd-pstate: Add a kernel config option to set default mode
+>   cpufreq: intel_pstate: Use the acpi_pm_profile_server() symbol
+>
+>  drivers/acpi/cppc_acpi.c       | 34 +++++++++++++++
+>  drivers/cpufreq/Kconfig.x86    | 17 ++++++++
+>  drivers/cpufreq/amd-pstate.c   | 80 ++++++++++++++++++++++------------
+>  drivers/cpufreq/intel_pstate.c | 17 +-------
+>  include/acpi/actbl.h           |  3 +-
+>  include/acpi/processor.h       | 10 +++++
+>  include/linux/amd-pstate.h     |  4 +-
+>  7 files changed, 121 insertions(+), 44 deletions(-)
+>
+> --
+> 2.34.1
 
-> +
-> +#ifdef CONFIG_ACPI_APMT
-> +void acpi_apmt_init(void);
-> +#else
-> +static inline void acpi_apmt_init(void) { }
-> +#endif /* CONFIG_ACPI_APMT */
-> +
-> +#ifdef CONFIG_ACPI_IORT
-> +void acpi_iort_init(void);
-> +#else
-> +static inline void acpi_iort_init(void) { }
-> +#endif /* CONFIG_ACPI_IORT */
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index 38fb84974f35..3631230a61c8 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -19,6 +19,7 @@
->   #include <linux/platform_device.h>
->   #include <linux/slab.h>
->   #include <linux/dma-map-ops.h>
-> +#include "init.h"
->   
->   #define IORT_TYPE_MASK(type)	(1 << (type))
->   #define IORT_MSI_TYPE		(1 << ACPI_IORT_NODE_ITS_GROUP)
-> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> index d161ff707de4..7a1eaf8c7bde 100644
-> --- a/drivers/acpi/bus.c
-> +++ b/drivers/acpi/bus.c
-> @@ -26,9 +26,6 @@
->   #include <asm/mpspec.h>
->   #include <linux/dmi.h>
->   #endif
-> -#include <linux/acpi_agdi.h>
-> -#include <linux/acpi_apmt.h>
-> -#include <linux/acpi_iort.h>
->   #include <linux/acpi_viot.h>
->   #include <linux/pci.h>
->   #include <acpi/apei.h>
-> @@ -1408,7 +1405,7 @@ static int __init acpi_init(void)
->   	acpi_init_ffh();
->   
->   	pci_mmcfg_late_init();
-> -	acpi_iort_init();
-> +	acpi_arm_init();
->   	acpi_viot_early_init();
->   	acpi_hest_init();
->   	acpi_ghes_init();
-> @@ -1420,8 +1417,6 @@ static int __init acpi_init(void)
->   	acpi_debugger_init();
->   	acpi_setup_sb_notify_handler();
->   	acpi_viot_init();
-> -	acpi_agdi_init();
-> -	acpi_apmt_init();
->   	return 0;
->   }
->   
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 7b71dd74baeb..5ef126a0a50f 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -1507,6 +1507,12 @@ static inline int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
->   }
->   #endif
->   
-> +#ifdef CONFIG_ARM64
-> +void acpi_arm_init(void);
-> +#else
-> +static inline void acpi_arm_init(void) { }
-> +#endif
-> +
->   #ifdef CONFIG_ACPI_PCC
->   void acpi_init_pcc(void);
->   #else
-> diff --git a/include/linux/acpi_agdi.h b/include/linux/acpi_agdi.h
-> deleted file mode 100644
-> index f477f0b452fa..000000000000
-> --- a/include/linux/acpi_agdi.h
-> +++ /dev/null
-> @@ -1,13 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0-only */
-> -
-> -#ifndef __ACPI_AGDI_H__
-> -#define __ACPI_AGDI_H__
-> -
-> -#include <linux/acpi.h>
-> -
-> -#ifdef CONFIG_ACPI_AGDI
-> -void __init acpi_agdi_init(void);
-> -#else
-> -static inline void acpi_agdi_init(void) {}
-> -#endif
-> -#endif /* __ACPI_AGDI_H__ */
-> diff --git a/include/linux/acpi_apmt.h b/include/linux/acpi_apmt.h
-> deleted file mode 100644
-> index 40bd634d082f..000000000000
-> --- a/include/linux/acpi_apmt.h
-> +++ /dev/null
-> @@ -1,19 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0
-> - *
-> - * ARM CoreSight PMU driver.
-> - * Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES.
-> - *
-> - */
-> -
-> -#ifndef __ACPI_APMT_H__
-> -#define __ACPI_APMT_H__
-> -
-> -#include <linux/acpi.h>
-> -
-> -#ifdef CONFIG_ACPI_APMT
-> -void acpi_apmt_init(void);
-> -#else
-> -static inline void acpi_apmt_init(void) { }
-> -#endif /* CONFIG_ACPI_APMT */
-> -
-> -#endif /* __ACPI_APMT_H__ */
-> diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
-> index b43be0987b19..e4e7bb6fa720 100644
-> --- a/include/linux/acpi_iort.h
-> +++ b/include/linux/acpi_iort.h
-> @@ -27,7 +27,6 @@ int iort_register_domain_token(int trans_id, phys_addr_t base,
->   void iort_deregister_domain_token(int trans_id);
->   struct fwnode_handle *iort_find_domain_token(int trans_id);
->   #ifdef CONFIG_ACPI_IORT
-> -void acpi_iort_init(void);
->   u32 iort_msi_map_id(struct device *dev, u32 id);
->   struct irq_domain *iort_get_device_domain(struct device *dev, u32 id,
->   					  enum irq_domain_bus_token bus_token);
-> @@ -43,7 +42,6 @@ int iort_iommu_configure_id(struct device *dev, const u32 *id_in);
->   void iort_iommu_get_resv_regions(struct device *dev, struct list_head *head);
->   phys_addr_t acpi_iort_dma_get_max_cpu_address(void);
->   #else
-> -static inline void acpi_iort_init(void) { }
->   static inline u32 iort_msi_map_id(struct device *dev, u32 id)
->   { return id; }
->   static inline struct irq_domain *iort_get_device_domain(
+The series is tested with commit 7736c431466abb54a2679dc257f739fddfa84295 (=
+linux-pm/bleeding-edge)
+
+Default option will enable EPP mode without any parameters added to kernel =
+command line,
+If user adds "amd_pstate=3Dpassive" to kernel command line, they still can =
+choose other modes to use.
+
+Based the testing result.
+Tested-by: Yuan Perry <Perry.Yuan@amd.com>
+
+Perry.
+
