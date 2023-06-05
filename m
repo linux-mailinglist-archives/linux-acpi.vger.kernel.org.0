@@ -2,102 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D9E5722D52
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jun 2023 19:08:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71B26722D63
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jun 2023 19:11:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235349AbjFERIO convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 5 Jun 2023 13:08:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38414 "EHLO
+        id S233033AbjFERL0 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 5 Jun 2023 13:11:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235358AbjFERIG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Jun 2023 13:08:06 -0400
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9359118;
-        Mon,  5 Jun 2023 10:07:57 -0700 (PDT)
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-977fae250easo12103366b.1;
-        Mon, 05 Jun 2023 10:07:57 -0700 (PDT)
+        with ESMTP id S231550AbjFERLZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Jun 2023 13:11:25 -0400
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12CB9F3;
+        Mon,  5 Jun 2023 10:11:24 -0700 (PDT)
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-50a20bfe366so1279544a12.0;
+        Mon, 05 Jun 2023 10:11:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685984876; x=1688576876;
+        d=1e100.net; s=20221208; t=1685985082; x=1688577082;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HZGakePAKwplYG/llAo4FkXZmbuykUNqGGuE67aJlhQ=;
-        b=KTpptja4t1+u8XTBddwp9PinJ+O4rVQoO5vWUOVOR1abYPyI4G7uHQ0SVxLKFXB+E2
-         kRoDK9UemuyRf5MMhvlSTeJ/prK51BR7IbaDWmbErgXSl0BKGz1lLqgAlcwIO1hHcVAd
-         gZuKQO+XTGt0M4fOA8WkCgdJhHB9wWX/gms4XyB2NgzPSgwC/fuo02GQOuZ851BPOLwQ
-         ZI2CmPBHkAaCr9A4e7/s8zoSc+Z7ukn0GNSleM6UsuBCqMWYM2m+sZ9qPWzzlTGn/18s
-         WuQtKbhwgWYuUpdCBVvTviTk3eFlwfRmD46Ob/7WHw1iY4sfuLC9le3IZfg3uNiBxuRI
-         VzCg==
-X-Gm-Message-State: AC+VfDx6AQ4dnDDFs5EIfkdCpaU1+GvPDOZiLsoUkFHFhzO9Bts76CqW
-        FhtLK3/BN4cWJXsOiL2VXwYbYg6tsZw3C8i+IxA=
-X-Google-Smtp-Source: ACHHUZ4y6QX2tq8E27by6YkCxR3PmJMiktMABs4n4JVAUpCSd+lhY388IXN+mErboDW/wtCtUakJxEJ57qmSY1TQ/Zc=
-X-Received: by 2002:a17:906:778a:b0:977:ead3:c91 with SMTP id
- s10-20020a170906778a00b00977ead30c91mr1215071ejm.1.1685984875965; Mon, 05 Jun
- 2023 10:07:55 -0700 (PDT)
+        bh=gAZK0CFWBZg3n0JhDQbbwcnvbot02N2sjUNcr3SyWic=;
+        b=Q1ZCscsg18hC/J00jydq7FlY23U0Fb3/4wUmHxygoNLJiiKTGHSFnV0nXzYDEsgiaG
+         cCS3Egzxif/TmXpJDBHXb6F/hOl2nqOU+UMWRjHxbKS7dzD5I5XIW+nKbdZHlWgLF3us
+         2VDd2GjLQXsQq2WdRQmkr4Ncq0MLro/RohRwU9a9/dq8qlH2XSUmqASRGoivZ/UBB/Kf
+         fZ0i2t2l+4oGPTz0ELp38SOvIWmVlRCFrV4cdMgPj7ciLajI0nzGg8Uaj4DBjY5F+m6k
+         YbqrHY5AIx70S/tBEL75TwtYJsBp15z5Z+3RdGM8m9HCcUJJb5SgpfahbrCk0s0HhyBY
+         OPvQ==
+X-Gm-Message-State: AC+VfDw5To1OAXRslJX/6zOO5bqFHkZLaFH+6zDFg5/fE3ROMAI/toRp
+        X6vhcc5WVNRRUr80r/XcgQiY65tMjQQdBsrmo7I=
+X-Google-Smtp-Source: ACHHUZ5h86xRMdCReVoqdtgTo9c0HC1pLXPtCnQP6/MLDzPEeu78XbCD1rTyegXFjQLEHKfvzK/UKjGqQ8ScFgm6H6o=
+X-Received: by 2002:a17:906:7794:b0:974:5de8:b5ce with SMTP id
+ s20-20020a170906779400b009745de8b5cemr8307438ejm.2.1685985082344; Mon, 05 Jun
+ 2023 10:11:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230516201415.556858-1-arnd@kernel.org> <780579b5-3900-da14-3acd-a4d24e02e4ba@intel.com>
-In-Reply-To: <780579b5-3900-da14-3acd-a4d24e02e4ba@intel.com>
+References: <20230519201249.31147-1-leoyang.li@nxp.com>
+In-Reply-To: <20230519201249.31147-1-leoyang.li@nxp.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 5 Jun 2023 19:07:44 +0200
-Message-ID: <CAJZ5v0hPLnFmWiv2DHh=U0FHkeu0A8yTwz7Mn8=jfenrP6wFGA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] acpi: nfit: add declaration in a local header
-To:     Dave Jiang <dave.jiang@intel.com>, Arnd Bergmann <arnd@kernel.org>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, Len Brown <lenb@kernel.org>,
-        nvdimm@lists.linux.dev, linux-acpi@vger.kernel.org,
+Date:   Mon, 5 Jun 2023 19:11:11 +0200
+Message-ID: <CAJZ5v0i1nspPuHuUoLsWOz7MLnnB8bv=cXYbFcv0a=okBxBg3w@mail.gmail.com>
+Subject: Re: [PATCH v2] apei/ghes: correctly return NULL for ghes_get_devices()
+To:     Li Yang <leoyang.li@nxp.com>, Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+        Jia He <justin.he@arm.com>, linux-acpi@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 22, 2023 at 5:22 PM Dave Jiang <dave.jiang@intel.com> wrote:
+On Fri, May 19, 2023 at 10:13 PM Li Yang <leoyang.li@nxp.com> wrote:
 >
+> Since 315bada690e0 ("EDAC: Check for GHES preference in the
+> chipset-specific EDAC drivers"), vendor specific EDAC driver will not
+> probe correctly when CONFIG_ACPI_APEI_GHES is enabled but no GHES device
+> is present.  Make ghes_get_devices() return NULL when the GHES device
+> list is empty to fix the problem.
 >
->
-> On 5/16/23 1:14 PM, Arnd Bergmann wrote:
-> > From: Arnd Bergmann <arnd@arndb.de>
-> >
-> > The nfit_intel_shutdown_status() function has a __weak defintion
-> > in nfit.c and an override in acpi_nfit_test.c for testing
-> > purposes. This works without an extern declaration, but causes
-> > a W=1 build warning:
-> >
-> > drivers/acpi/nfit/core.c:1717:13: error: no previous prototype for 'nfit_intel_shutdown_status' [-Werror=missing-prototypes]
-> >
-> > Add a declaration in a header that gets included from both
-> > sides to shut up the warning and ensure that the prototypes
-> > actually match.
-> >
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->
-> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> Fixes: 9057a3f7ac36 ("EDAC/ghes: Prepare to make ghes_edac a proper module")
+> Signed-off-by: Li Yang <leoyang.li@nxp.com>
+> Cc: Jia He <justin.he@arm.com>
 
-Applied as 6.5 material, thanks!
+Boris, Tony, any comments?
 
-> > ---
-> >   drivers/acpi/nfit/nfit.h | 2 ++
-> >   1 file changed, 2 insertions(+)
-> >
-> > diff --git a/drivers/acpi/nfit/nfit.h b/drivers/acpi/nfit/nfit.h
-> > index 6023ad61831a..573bc0de2990 100644
-> > --- a/drivers/acpi/nfit/nfit.h
-> > +++ b/drivers/acpi/nfit/nfit.h
-> > @@ -347,4 +347,6 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
-> >   void acpi_nfit_desc_init(struct acpi_nfit_desc *acpi_desc, struct device *dev);
-> >   bool intel_fwa_supported(struct nvdimm_bus *nvdimm_bus);
-> >   extern struct device_attribute dev_attr_firmware_activate_noidle;
-> > +void nfit_intel_shutdown_status(struct nfit_mem *nfit_mem);
-> > +
-> >   #endif /* __NFIT_H__ */
+> ---
+>
+> V2: fix the fallthrough case in x86 path
+>
+>  drivers/acpi/apei/ghes.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index 34ad071a64e9..4382fe13ee3e 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -1544,6 +1544,8 @@ struct list_head *ghes_get_devices(void)
+>
+>                         pr_warn_once("Force-loading ghes_edac on an unsupported platform. You're on your own!\n");
+>                 }
+> +       } else if (list_empty(&ghes_devs)) {
+> +               return NULL;
+>         }
+>
+>         return &ghes_devs;
+> --
+> 2.38.0
+>
