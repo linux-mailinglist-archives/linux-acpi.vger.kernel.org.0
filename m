@@ -2,164 +2,273 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52B79722A9D
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jun 2023 17:13:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B09A3722AB7
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jun 2023 17:17:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234205AbjFEPNa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 5 Jun 2023 11:13:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48718 "EHLO
+        id S233691AbjFEPRl convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 5 Jun 2023 11:17:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234177AbjFEPNN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Jun 2023 11:13:13 -0400
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 175FEE56;
-        Mon,  5 Jun 2023 08:12:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NqrqNhXvlFuO99NdwWgEYLaHFWQQjSlEK/PFFpMoGGuthQp78Z5CWTLyhG606ybdShmbd6EKWsNT0W1G9d9RAmetkiIlAw4dG0lvG8zbh7V9ZYzIDCu1xtn7n7H2UCpDlZRME0gut09wVvoiqW+elYFvlRY9m/XGnPkoFWMIazQJGzVn0pTTWGOadJlMst19brryhJz19Cc3tLXWtJezTy6lC0ow8fcZAKZBM4BwBpuv3c3jQknii2zNTn6xyCvKbotjh7OEcw5pcTQpiFRZvHWfh7AAr38MRhP25N0aQgWR20Xf9OBTNsM/SmGYJdseohRmyeetLfCpQfgZWx6AAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iH6Y3AwplmndhbWiF/4vPmKuIQ0dTJEF/RNe1z7wNcY=;
- b=ObB0u1OiGUXDlNxyfaFHIPPD72Decrg7jaQYcE2aIb4W7EijVSDBZwCoXyZxcFaNTOIeDY793d+0/Nwe9KzfUC34vRj2bOHGA46mwLvoVWwNZGSU3xeiMgvqW+y7em7mZSF4QkPi/GfjyC9/gvz4OddXa+vowddIBkDvxgzfz3G/dwC7oJMDJJn2rgK4LlEOGC7UEtvqPjRj3i24D7YDcqyVY5HUqKakBvYBhLMiy89/8Ygr9c3EBYDu1pEe/RTyNuAgkD9XTUx4SiPLDQpeNYhSQL7cdzjTauYoGsehbFCInckDUYx16jq+5OZm9a1TXKPeAHEiEBreKvDQ2Q+ewA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iH6Y3AwplmndhbWiF/4vPmKuIQ0dTJEF/RNe1z7wNcY=;
- b=D6SdUA3FXXtxDwXsayeJWxhemzYKd00iGdMpYQQ9pJwC1ztuPJKilsFffOPBK61a0uq51RQEBG3niLu34csvYbORHzsQsifMBvwF/SfQNl3ClwX2l2XSOoivia1ndS9o5xOHkHVTnLmLEpdGUAPqTDLG+INGR1uPHYSfICSqolY=
-Received: from BN9PR03CA0955.namprd03.prod.outlook.com (2603:10b6:408:108::30)
- by IA0PR12MB7508.namprd12.prod.outlook.com (2603:10b6:208:440::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.32; Mon, 5 Jun
- 2023 15:12:09 +0000
-Received: from BN8NAM11FT076.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:108:cafe::6c) by BN9PR03CA0955.outlook.office365.com
- (2603:10b6:408:108::30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.32 via Frontend
- Transport; Mon, 5 Jun 2023 15:12:09 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT076.mail.protection.outlook.com (10.13.176.174) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6455.33 via Frontend Transport; Mon, 5 Jun 2023 15:12:08 +0000
-Received: from SITE-L-T34-2.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Mon, 5 Jun
- 2023 10:12:07 -0500
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     Huang Rui <ray.huang@amd.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-CC:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Robert Moore <robert.moore@intel.com>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <devel@acpica.org>,
-        Gautham Ranjal Shenoy <gautham.shenoy@amd.com>,
-        "Wyes Karny" <Wyes.Karny@amd.com>, Perry Yuan <perry.yuan@amd.com>,
-        "Mario Limonciello" <mario.limonciello@amd.com>
-Subject: [PATCH 4/4] cpufreq: intel_pstate: Use the acpi_pm_profile_server() symbol
-Date:   Mon, 5 Jun 2023 10:11:33 -0500
-Message-ID: <20230605151133.2615-5-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230605151133.2615-1-mario.limonciello@amd.com>
-References: <20230605151133.2615-1-mario.limonciello@amd.com>
+        with ESMTP id S232874AbjFEPRk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Jun 2023 11:17:40 -0400
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89238C5;
+        Mon,  5 Jun 2023 08:17:38 -0700 (PDT)
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-977fae250easo9371166b.1;
+        Mon, 05 Jun 2023 08:17:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685978257; x=1688570257;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tbfcYeB2w7B50q0ysWHxmmSLJ1HrD1Fyk9f2XcX1nIM=;
+        b=YIlScVvTydX5ArkYaSK1NS1gUYAnlM/j3L12Aoaeu+qOFcnUNdFNNKrncINuS//ULe
+         geSI35ep17cwD6+uVsfAKgPKApy5kEQntGTP68h3IJeO+qB7nDVleKrB4IQLpsp+FqmJ
+         N0F90Ambw9BjRyACw2QSl/YGpoHVb2pDAxReQp9NmUBCg18uG3O2RKhe7wwmTb1IygPi
+         ewVH6jnJNlUgkYSTZLPHB7bJxxHP+uokKl3n/P2glbmQ5HnSNFHqeCnmdg1ZNZTjnOey
+         jhTg0DokShSB/yodNat8JOZTMmuRxFgzpSwPfx2D19EbemniriSjOVA9tQFfX0XFYDGK
+         QZ2A==
+X-Gm-Message-State: AC+VfDztjc78RPmbXIX8RnkwGey35AE3lir9KgG0hhWvm0DsmttB5L/2
+        xGTk21aGwpwinUNExNB8MknilOIddQAFuM7xlBk=
+X-Google-Smtp-Source: ACHHUZ6uIrTpJo8B2/LjSDlhZ/ojQ4YYPlmrHQ5V4qFBg1Aj+EgMbPqMXHJF0QkTRIqCxxEEOydVwz23MR772NERjco=
+X-Received: by 2002:a17:906:5188:b0:974:6025:cc6 with SMTP id
+ y8-20020a170906518800b0097460250cc6mr7300451ejk.6.1685978256665; Mon, 05 Jun
+ 2023 08:17:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT076:EE_|IA0PR12MB7508:EE_
-X-MS-Office365-Filtering-Correlation-Id: 56d1ae03-fdf0-40ee-6282-08db65d73b06
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: baq6J5a2bmcp4jh3GdqrrIRJ7RqWSP93apXIpEZ3k5XQl4IS7N8GHiYEjuWUrWNZwaECVXSzbqBoGKs5bMpSgJYUp3n8VhhUh+H1y6OZxIhLqS7lPeug7bPVt0WU/UjxP/4F7WhlYckHLqkRLnx+brOZ8p7QtGPRPGvCls3YEwl9gUqHITQQr3jXqL2QeWVLHfg1UGcH78X5aAPSKJmhtadAAejNQyQ0RMonIzSgRT90BNOVJoBXGPje8BZr2wTyrS69zD6Fh/T+0msBFDGG8jlLTYGAvVvUdxejtvrscA9MDQ2h+fNf2V+6Vn9N1Z7M+L1r8ePovG3vELgDD7zdqGCQ2T00yf7g77aO3Zp4b4x1xj4lwm0eZMeLNh4aUQHWoFCy7Hb6cl/QrQoWmuXrOzm5xh4n0qSEGuUCakOdK/LPmsd0XYO0kUMfhOOgEXlD5+jxVL3H1Jh6d3cx5AqFk1cos+sDbmHGKHKXniMSiesF+rVh8Qczcg0JRfpFcFQsIKeroLeY0lqZpJ4YydnupLWnG2vSiMXiHlbrBDitbj5MOTBRhdw/FH86FYHfm2IXGX7oz7ejniGeP+opln0NwEBR4lCRranqqQ1zbeFayyTQmCR9oCjs1MFaFXqHsyQz7I4xxj1IDw+HFaOsrDhNiyjS6sRqNpIa+HpWUQsv0s1AGE9G7JlC5AChvuicxlbo8vj0s3QGX9aCYLN/AtO9EnsWxw8oMvKZMpDO3cd8hIiB8pDLxV12oPJnbu4O/7VnimyD3pqb054+uT5QJooEVQ==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(376002)(39860400002)(136003)(396003)(346002)(451199021)(40470700004)(46966006)(36840700001)(70586007)(70206006)(2906002)(478600001)(316002)(4326008)(8936002)(8676002)(41300700001)(54906003)(110136005)(44832011)(6666004)(5660300002)(7696005)(40460700003)(1076003)(26005)(16526019)(82740400003)(356005)(2616005)(40480700001)(186003)(47076005)(83380400001)(426003)(336012)(81166007)(36860700001)(36756003)(82310400005)(86362001)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2023 15:12:08.5236
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 56d1ae03-fdf0-40ee-6282-08db65d73b06
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT076.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7508
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+References: <20230601131719.300720-1-michal.wilczynski@intel.com>
+ <4500594.LvFx2qVVIh@kreacher> <eb5ed997-201a-ffc4-6181-b2f8a6d451a8@intel.com>
+In-Reply-To: <eb5ed997-201a-ffc4-6181-b2f8a6d451a8@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 5 Jun 2023 17:17:17 +0200
+Message-ID: <CAJZ5v0hWKUbX0vdp09uD2-QNH611S4gZEirnQtj78oXiQ2YJQA@mail.gmail.com>
+Subject: Re: [PATCH v4 01/35] acpi: Adjust functions installing bus event handlers
+To:     "Wilczynski, Michal" <michal.wilczynski@intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>, rafael@kernel.org,
+        lenb@kernel.org, dan.j.williams@intel.com,
+        vishal.l.verma@intel.com, dave.jiang@intel.com,
+        ira.weiny@intel.com, rui.zhang@intel.com, jdelvare@suse.com,
+        linux@roeck-us.net, jic23@kernel.org, lars@metafoo.de,
+        bleung@chromium.org, yu.c.chen@intel.com, hdegoede@redhat.com,
+        markgross@kernel.org, luzmaximilian@gmail.com,
+        corentin.chary@gmail.com, jprvita@gmail.com,
+        cascardo@holoscopio.com, don@syst.com.br, pali@kernel.org,
+        jwoithe@just42.net, matan@svgalib.org, kenneth.t.chan@gmail.com,
+        malattia@linux.it, jeremy@system76.com, productdev@system76.com,
+        herton@canonical.com, coproscefalo@gmail.com, tytso@mit.edu,
+        Jason@zx2c4.com, robert.moore@intel.com,
+        linux-acpi@vger.kernel.org, nvdimm@lists.linux.dev,
+        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
+        chrome-platform@lists.linux.dev,
+        platform-driver-x86@vger.kernel.org,
+        acpi4asus-user@lists.sourceforge.net,
+        acpica-devel@lists.linuxfoundation.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Avoid duplication of functionality by using the generic symbol.
-This does have a functional change that intel-pstate will now
-match "SOHO server" as well.
+On Mon, Jun 5, 2023 at 10:44 AM Wilczynski, Michal
+<michal.wilczynski@intel.com> wrote:
+>
+> On 6/2/2023 8:34 PM, Rafael J. Wysocki wrote:
+> > On Thursday, June 1, 2023 3:17:19 PM CEST Michal Wilczynski wrote:
+> >> Currently acpi_device_install_notify_handler() and
+> >> acpi_device_remove_notify_handler() always install acpi_notify_device()
+> >> as a function handler, and only then the real .notify callback gets
+> >> called. This is not efficient and doesn't provide any real advantage.
+> >>
+> >> Introduce new acpi_device_install_event_handler() and
+> >> acpi_device_remove_event_handler(). Those functions are replacing old
+> >> installers, and after all drivers switch to the new model, old installers
+> >> will be removed at the end of the patchset.
+> >>
+> >> Make new installer/removal function arguments to take function pointer as
+> >> an argument instead of using .notify callback. Introduce new variable in
+> >> struct acpi_device, as fixed events still needs to be handled by an
+> >> intermediary that would schedule them for later execution. This is due to
+> >> fixed hardware event handlers being executed in interrupt context.
+> >>
+> >> Make acpi_device_install_event_handler() and
+> >> acpi_device_remove_event_handler() non-static, and export symbols. This
+> >> will allow the drivers to call them directly, instead of relying on
+> >> .notify callback.
+> >>
+> >> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
+> >> ---
+> >>  drivers/acpi/bus.c      | 59 ++++++++++++++++++++++++++++++++++++++++-
+> >>  include/acpi/acpi_bus.h |  7 +++++
+> >>  2 files changed, 65 insertions(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> >> index d161ff707de4..cf2c2bfe29a0 100644
+> >> --- a/drivers/acpi/bus.c
+> >> +++ b/drivers/acpi/bus.c
+> >> @@ -535,7 +535,7 @@ static void acpi_notify_device_fixed(void *data)
+> >>      struct acpi_device *device = data;
+> >>
+> >>      /* Fixed hardware devices have no handles */
+> >> -    acpi_notify_device(NULL, ACPI_FIXED_HARDWARE_EVENT, device);
+> >> +    device->fixed_event_notify(NULL, ACPI_FIXED_HARDWARE_EVENT, device);
+> >>  }
+> >>
+> >>  static u32 acpi_device_fixed_event(void *data)
+> >> @@ -550,11 +550,13 @@ static int acpi_device_install_notify_handler(struct acpi_device *device,
+> >>      acpi_status status;
+> >>
+> >>      if (device->device_type == ACPI_BUS_TYPE_POWER_BUTTON) {
+> >> +            device->fixed_event_notify = acpi_notify_device;
+> >>              status =
+> >>                  acpi_install_fixed_event_handler(ACPI_EVENT_POWER_BUTTON,
+> >>                                                   acpi_device_fixed_event,
+> >>                                                   device);
+> >>      } else if (device->device_type == ACPI_BUS_TYPE_SLEEP_BUTTON) {
+> >> +            device->fixed_event_notify = acpi_notify_device;
+> >>              status =
+> >>                  acpi_install_fixed_event_handler(ACPI_EVENT_SLEEP_BUTTON,
+> >>                                                   acpi_device_fixed_event,
+> >> @@ -579,9 +581,11 @@ static void acpi_device_remove_notify_handler(struct acpi_device *device,
+> >>      if (device->device_type == ACPI_BUS_TYPE_POWER_BUTTON) {
+> >>              acpi_remove_fixed_event_handler(ACPI_EVENT_POWER_BUTTON,
+> >>                                              acpi_device_fixed_event);
+> >> +            device->fixed_event_notify = NULL;
+> >>      } else if (device->device_type == ACPI_BUS_TYPE_SLEEP_BUTTON) {
+> >>              acpi_remove_fixed_event_handler(ACPI_EVENT_SLEEP_BUTTON,
+> >>                                              acpi_device_fixed_event);
+> >> +            device->fixed_event_notify = NULL;
+> >>      } else {
+> >>              u32 type = acpi_drv->flags & ACPI_DRIVER_ALL_NOTIFY_EVENTS ?
+> >>                              ACPI_ALL_NOTIFY : ACPI_DEVICE_NOTIFY;
+> >> @@ -592,6 +596,59 @@ static void acpi_device_remove_notify_handler(struct acpi_device *device,
+> >>      acpi_os_wait_events_complete();
+> >>  }
+> >>
+> >> +int acpi_device_install_event_handler(struct acpi_device *device,
+> >> +                                  u32 type,
+> >> +                                  void (*notify)(acpi_handle, u32, void*))
+> >> +{
+> >> +    acpi_status status;
+> >> +
+> >> +    if (!notify)
+> >> +            return -EINVAL;
+> >> +
+> >> +    if (device->device_type == ACPI_BUS_TYPE_POWER_BUTTON) {
+> >> +            device->fixed_event_notify = notify;
+> >> +            status =
+> >> +                acpi_install_fixed_event_handler(ACPI_EVENT_POWER_BUTTON,
+> >> +                                                 acpi_device_fixed_event,
+> >> +                                                 device);
+> >> +    } else if (device->device_type == ACPI_BUS_TYPE_SLEEP_BUTTON) {
+> >> +            device->fixed_event_notify = notify;
+> >> +            status =
+> >> +                acpi_install_fixed_event_handler(ACPI_EVENT_SLEEP_BUTTON,
+> >> +                                                 acpi_device_fixed_event,
+> >> +                                                 device);
+> >> +    } else {
+> >> +            status = acpi_install_notify_handler(device->handle, type,
+> >> +                                                 notify,
+> >> +                                                 device);
+> >> +    }
+> >> +
+> >> +    if (ACPI_FAILURE(status))
+> >> +            return -EINVAL;
+> >> +    return 0;
+> >> +}
+> >> +EXPORT_SYMBOL(acpi_device_install_event_handler);
+> >> +
+> >> +void acpi_device_remove_event_handler(struct acpi_device *device,
+> >> +                                  u32 type,
+> >> +                                  void (*notify)(acpi_handle, u32, void*))
+> >> +{
+> >> +    if (device->device_type == ACPI_BUS_TYPE_POWER_BUTTON) {
+> >> +            acpi_remove_fixed_event_handler(ACPI_EVENT_POWER_BUTTON,
+> >> +                                            acpi_device_fixed_event);
+> >> +            device->fixed_event_notify = NULL;
+> >> +    } else if (device->device_type == ACPI_BUS_TYPE_SLEEP_BUTTON) {
+> >> +            acpi_remove_fixed_event_handler(ACPI_EVENT_SLEEP_BUTTON,
+> >> +                                            acpi_device_fixed_event);
+> >> +            device->fixed_event_notify = NULL;
+> >> +    } else {
+> >> +            acpi_remove_notify_handler(device->handle, type,
+> >> +                                       notify);
+> >> +    }
+> >> +    acpi_os_wait_events_complete();
+> >> +}
+> >> +EXPORT_SYMBOL(acpi_device_remove_event_handler);
+> >> +
+> >>  /* Handle events targeting \_SB device (at present only graceful shutdown) */
+> >>
+> >>  #define ACPI_SB_NOTIFY_SHUTDOWN_REQUEST 0x81
+> >> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> >> index a6affc0550b0..7fb411438b6f 100644
+> >> --- a/include/acpi/acpi_bus.h
+> >> +++ b/include/acpi/acpi_bus.h
+> >> @@ -387,6 +387,7 @@ struct acpi_device {
+> >>      struct list_head physical_node_list;
+> >>      struct mutex physical_node_lock;
+> >>      void (*remove)(struct acpi_device *);
+> >> +    void (*fixed_event_notify)(acpi_handle handle, u32 type, void *data);
+>
+>
+> Hi,
+> Thank for you review,
+>
+> > This is a rather confusing change, because ->remove() above is not a driver
+> > callback, whereas the new one would be.
+> >
+> > Moreover, it is rather wasteful, because the only devices needing it are
+> > buttons, so for all of the other ACPI device objects the new callback pointer
+> > would always be NULL.
+> >
+> > Finally, it is not necessary even.
+>
+> I was thinking about resolving this somehow in compile-time, but I guess was a bit
+> afraid of refactoring too much code - didn't want to break anything.
+>
+> >
+> > The key observation here is that there are only 2 drivers handling power and
+> > sleep buttons that use ACPI fixed events: the ACPI button driver (button.c in
+> > drivers/acpi) and the "tiny power button" driver (tiny-power-button.c in
+> > drivers/acpi).  All of the other drivers don't need the "fixed event notify"
+> > thing and these two can be modified to take care of all of it by themselves.
+> >
+> > So if something like the below is done prior to the rest of your series, the
+> > rest will be about acpi_install/remove_notify_handler() only and you won't
+> > even need the wrapper routines any more: driver may just be switched over
+> > to using the ACPICA functions directly.
+>
+> Sure, will get your patch, apply it before my series and fix individual drivers to use acpica
+> functions directly.
 
-Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/cpufreq/intel_pstate.c | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+I have posted this series which replaces it  in the meantime:
+https://lore.kernel.org/linux-acpi/1847933.atdPhlSkOF@kreacher
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 2548ec92faa2..3a36c0169d82 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -313,18 +313,9 @@ static DEFINE_MUTEX(intel_pstate_limits_lock);
- 
- #ifdef CONFIG_ACPI
- 
--static bool intel_pstate_acpi_pm_profile_server(void)
--{
--	if (acpi_gbl_FADT.preferred_profile == PM_ENTERPRISE_SERVER ||
--	    acpi_gbl_FADT.preferred_profile == PM_PERFORMANCE_SERVER)
--		return true;
--
--	return false;
--}
--
- static bool intel_pstate_get_ppc_enable_status(void)
- {
--	if (intel_pstate_acpi_pm_profile_server())
-+	if (acpi_pm_profile_server())
- 		return true;
- 
- 	return acpi_ppc;
-@@ -481,10 +472,6 @@ static inline void intel_pstate_exit_perf_limits(struct cpufreq_policy *policy)
- {
- }
- 
--static inline bool intel_pstate_acpi_pm_profile_server(void)
--{
--	return false;
--}
- #endif /* CONFIG_ACPI */
- 
- #ifndef CONFIG_ACPI_CPPC_LIB
-@@ -2407,7 +2394,7 @@ static int intel_pstate_init_cpu(unsigned int cpunum)
- 		if (hwp_active) {
- 			intel_pstate_hwp_enable(cpu);
- 
--			if (intel_pstate_acpi_pm_profile_server())
-+			if (acpi_pm_profile_server())
- 				hwp_boost = true;
- 		}
- 	} else if (hwp_active) {
--- 
-2.34.1
+Moreover, I think that there's still a reason to use the wrappers.
 
+Namely, the unregistration part needs to call
+acpi_os_wait_events_complete() after the notify handler has been
+unregistered and it's better to avoid code duplication related to
+that.
+
+Also the registration wrapper can be something like:
+
+int acpi_dev_install_notify_handler(struct acpi_device *adev,
+acpi_notify_handler handler, u32 handler_type)
+{
+    if (ACPI_FAILURE(acpi_install_notify_handler(adev->handle,
+handler_type, handler, adev)))
+        return -ENODEV;
+
+    return 0;
+}
+
+which would be simpler to use than the "raw"
+acpi_install_notify_handler() and using it would avoid a tiny bit of
+code duplication IMV.
