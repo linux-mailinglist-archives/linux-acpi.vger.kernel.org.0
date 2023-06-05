@@ -2,48 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7125A722D6B
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jun 2023 19:14:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 810EC722D70
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jun 2023 19:16:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235473AbjFERO4 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 5 Jun 2023 13:14:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41560 "EHLO
+        id S229825AbjFERQz convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 5 Jun 2023 13:16:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231495AbjFEROn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Jun 2023 13:14:43 -0400
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDD2ED3;
-        Mon,  5 Jun 2023 10:14:42 -0700 (PDT)
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-3f7364c2ed8so4364325e9.0;
-        Mon, 05 Jun 2023 10:14:42 -0700 (PDT)
+        with ESMTP id S234383AbjFERQy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Jun 2023 13:16:54 -0400
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 862CDF2;
+        Mon,  5 Jun 2023 10:16:52 -0700 (PDT)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-94ea38c90ccso99621366b.1;
+        Mon, 05 Jun 2023 10:16:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685985281; x=1688577281;
+        d=1e100.net; s=20221208; t=1685985411; x=1688577411;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XU+jPITmyoPvg1lBzxo3O9Iy6aVR1qw9rhOIr22a22c=;
-        b=iX4Clpc+HFF2NMRRrDZxsl3dxZvphSvmhswpzNF9HS+78CdUrcJnhK+gqElYNxYtF/
-         1k/BjhObH53hMlnKGxM6n4Q5A9JwcM+4rBEeUYmHMaCntaBo+Bjq4wopTVe5LtYigtI6
-         Tlpwral9u5/0fBh9wLmsqhrDesS/cEnJtPf10fRHOWjH/bQX7BBeNvPXhocLr1oApovu
-         b8Gf6vZAEzxOdC9kJ37emlofNzPzvk08OkDQbYnrxOha5GV+uRR5ELPdoA8YJ1jnslpk
-         j0DH4CbfGQL9B5adRZRFVYBzVVFbwNu9U+H/Xo+YyolNgsJbJ/jaRfU4ywgYGuHfSeXL
-         gemA==
-X-Gm-Message-State: AC+VfDw4Fztcm0Aw0Bc+wXjtaRgv024twA7+LQcyu92evEqH/7SerLUb
-        xmHM4901dAo4jzw3wihq++fsO9zRBAt0LsUm19o=
-X-Google-Smtp-Source: ACHHUZ4P6nFls4Uv4pNH5wBEgvcZ8iGdoWVwhojr5Oa8Vx6lQo3Rgwr8iBG+BWxe9aCpRffRT+mZDSHZFWqQmwwnI3w=
-X-Received: by 2002:a05:600c:8511:b0:3f7:1483:b229 with SMTP id
- gw17-20020a05600c851100b003f71483b229mr16853197wmb.3.1685985281202; Mon, 05
- Jun 2023 10:14:41 -0700 (PDT)
+        bh=uIbP3FT06Bqfrrnf4uXT+R2nnTjQ/h9BisXJxhTGbb4=;
+        b=T2RemKIhb957Cf+M930edgAZ8DOcKpSOFXIh00hvVWjIHbRrnMBJ8RMJNA4jrx7uKr
+         GLFGHySolIn5lOBJjVsLCJEdjRts+LLYIvBZx/TNIHnQYKEspGeE4yoxLytsQN8sE4EZ
+         0b5V/pIaKdgqdhz2Bzj24RLX+4i3Sf5jppdEz0c6oOrsoSywai6nQTny+kf4NoeXX6Pr
+         j0cBGjPYRjm3bIzWCG986cQpmOoCasGdsNt+UWbVH0IQgHTBvkY18r2VavLWY6IOAWPv
+         mUYhz/Id7mKD+qQ68XTUbxVLDOPLPRkLY5Al5zT3/+MysYY96TtvszAVfVCmy1L25WsQ
+         c/cg==
+X-Gm-Message-State: AC+VfDzvt2+xwPzoe7SGd1rFsxjr5g3DomljFH8S86cKplBMiDuJ2ENi
+        nYEqtpGAEhbJXiDpbn8qEsH9fQDhHuhFg44gmeQ=
+X-Google-Smtp-Source: ACHHUZ5ATJMAgTFQRLZaSki3/or39XJvk7wjX5ejaDkoA8irtuJEsa6KEt3JSSP/xpbRH8puvn/A7k+6d8IMesvJDYg=
+X-Received: by 2002:a17:906:1d9:b0:974:ae1d:ad0b with SMTP id
+ 25-20020a17090601d900b00974ae1dad0bmr8058822ejj.3.1685985410685; Mon, 05 Jun
+ 2023 10:16:50 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230527095158.211568-1-linmiaohe@huawei.com>
-In-Reply-To: <20230527095158.211568-1-linmiaohe@huawei.com>
+References: <20230601213319.3304080-1-arnd@kernel.org>
+In-Reply-To: <20230601213319.3304080-1-arnd@kernel.org>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 5 Jun 2023 19:14:29 +0200
-Message-ID: <CAJZ5v0gQS6O0Gj3vd-xdqEV+vpbCVg1Mdq8r-W0ZXpsKHyyRFA@mail.gmail.com>
-Subject: Re: [PATCH] apei/ghes: remove unused ghes_estatus_pool_size_request
-To:     Miaohe Lin <linmiaohe@huawei.com>
-Cc:     rafael@kernel.org, bp@suse.de, lenb@kernel.org,
-        james.morse@arm.com, tony.luck@intel.com, bp@alien8.de,
+Date:   Mon, 5 Jun 2023 19:16:39 +0200
+Message-ID: <CAJZ5v0gvs=3GVE_1GpP1mKsQAkc0+gC6AQYoWP7r+60kUtjfAw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: s2idle: fix section mismatch warning
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, Len Brown <lenb@kernel.org>,
+        Manyi Li <limanyi@uniontech.com>,
+        Juergen Gross <jgross@suse.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Simon Gaiser <simon@invisiblethingslab.com>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
@@ -57,38 +62,37 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, May 27, 2023 at 4:00 AM Miaohe Lin <linmiaohe@huawei.com> wrote:
+On Thu, Jun 1, 2023 at 11:33 PM Arnd Bergmann <arnd@kernel.org> wrote:
 >
-> ghes_estatus_pool_size_request is unused now. Remove it.
+> From: Arnd Bergmann <arnd@arndb.de>
 >
-> Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+> The acpi_sleep_suspend_setup() function is missing an __init annotation,
+> which causes a warning in rare configurations that end up not inlining
+> it into its caller:
+>
+> WARNING: modpost: vmlinux.o: section mismatch in reference: acpi_sleep_suspend_setup (section: .text) -> acpi_s2idle_setup (section: .init.text)
+>
+> It's only called from an __init function, so adding the annotation is
+> correct here.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  drivers/acpi/sleep.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+> index 72470b9f16c45..552adc04743b5 100644
+> --- a/drivers/acpi/sleep.c
+> +++ b/drivers/acpi/sleep.c
+> @@ -840,7 +840,7 @@ void __weak acpi_s2idle_setup(void)
+>         s2idle_set_ops(&acpi_s2idle_ops);
+>  }
+>
+> -static void acpi_sleep_suspend_setup(void)
+> +static void __init acpi_sleep_suspend_setup(void)
+>  {
+>         bool suspend_ops_needed = false;
+>         int i;
+> --
 
 Applied as 6.5 material, thanks!
-
-> ---
->  drivers/acpi/apei/ghes.c | 2 --
->  1 file changed, 2 deletions(-)
->
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 34ad071a64e9..a4148a7d3afe 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -152,7 +152,6 @@ struct ghes_vendor_record_entry {
->  };
->
->  static struct gen_pool *ghes_estatus_pool;
-> -static unsigned long ghes_estatus_pool_size_request;
->
->  static struct ghes_estatus_cache __rcu *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
->  static atomic_t ghes_estatus_cache_alloced;
-> @@ -191,7 +190,6 @@ int ghes_estatus_pool_init(unsigned int num_ghes)
->         len = GHES_ESTATUS_CACHE_AVG_SIZE * GHES_ESTATUS_CACHE_ALLOCED_MAX;
->         len += (num_ghes * GHES_ESOURCE_PREALLOC_MAX_SIZE);
->
-> -       ghes_estatus_pool_size_request = PAGE_ALIGN(len);
->         addr = (unsigned long)vmalloc(PAGE_ALIGN(len));
->         if (!addr)
->                 goto err_pool_alloc;
-> --
-> 2.27.0
->
