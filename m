@@ -2,48 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AB00722C74
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jun 2023 18:27:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D9E5722D52
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jun 2023 19:08:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229660AbjFEQ1A convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 5 Jun 2023 12:27:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42364 "EHLO
+        id S235349AbjFERIO convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 5 Jun 2023 13:08:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230326AbjFEQ07 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Jun 2023 12:26:59 -0400
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4BB9E9
-        for <linux-acpi@vger.kernel.org>; Mon,  5 Jun 2023 09:26:57 -0700 (PDT)
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-977c8baa86fso65550566b.0
-        for <linux-acpi@vger.kernel.org>; Mon, 05 Jun 2023 09:26:57 -0700 (PDT)
+        with ESMTP id S235358AbjFERIG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Jun 2023 13:08:06 -0400
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9359118;
+        Mon,  5 Jun 2023 10:07:57 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-977fae250easo12103366b.1;
+        Mon, 05 Jun 2023 10:07:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685982416; x=1688574416;
+        d=1e100.net; s=20221208; t=1685984876; x=1688576876;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZrqlshbiBifqSPafbZHS78SHmxs0wVmYxbKQkDA7zp8=;
-        b=NFwGlr42Tdt9cVvlc1mVnr4G+k7ENx61IxXGoGs7nOJfo/Q0rXqJs2f4k5mtvH4ILi
-         y6mo5ZqT9ZjdNzhLdJKMLYRa8JO0KWsRA2I/OSt1OE4omqdggCkLAI1TCVVr5j166ehS
-         /ZmDHOBY9IFtPe5eoPjaK1QTxf02XPCNZ4lef2CDu930URoYthXpinW/t0lp293BGZCk
-         ELRVNA/WShJD5KJ1sB/bc0c/4j/541feAl9GXXjjiCNBDc4TUFBOYOLvW37s1P/NKKVW
-         dsOwyWHZ4UnST0yzmrlBBkhwdHiAUYQv/Ks8+1JKn3K8z8LLVVdLLax1IHoK40HlKM+K
-         c1Lw==
-X-Gm-Message-State: AC+VfDy0ZOBleHVZr7XFsZpoIUPz2PJQAX/19QnfCroiWYQPHlSV+cSz
-        qOFULF5gPGMEihb/iuDtRwtMJ3A8jHFShV9GujQ=
-X-Google-Smtp-Source: ACHHUZ5kvaGzOoQLjF4m64vrG4odrD05WEWVa+JSW9VdYH3/krvT1K5DVR3SicOLiTuuSxkZMlaKSpiflcGM1nyYSxc=
-X-Received: by 2002:a17:906:77c6:b0:977:cc87:62b5 with SMTP id
- m6-20020a17090677c600b00977cc8762b5mr4624195ejn.4.1685982416218; Mon, 05 Jun
- 2023 09:26:56 -0700 (PDT)
+        bh=HZGakePAKwplYG/llAo4FkXZmbuykUNqGGuE67aJlhQ=;
+        b=KTpptja4t1+u8XTBddwp9PinJ+O4rVQoO5vWUOVOR1abYPyI4G7uHQ0SVxLKFXB+E2
+         kRoDK9UemuyRf5MMhvlSTeJ/prK51BR7IbaDWmbErgXSl0BKGz1lLqgAlcwIO1hHcVAd
+         gZuKQO+XTGt0M4fOA8WkCgdJhHB9wWX/gms4XyB2NgzPSgwC/fuo02GQOuZ851BPOLwQ
+         ZI2CmPBHkAaCr9A4e7/s8zoSc+Z7ukn0GNSleM6UsuBCqMWYM2m+sZ9qPWzzlTGn/18s
+         WuQtKbhwgWYuUpdCBVvTviTk3eFlwfRmD46Ob/7WHw1iY4sfuLC9le3IZfg3uNiBxuRI
+         VzCg==
+X-Gm-Message-State: AC+VfDx6AQ4dnDDFs5EIfkdCpaU1+GvPDOZiLsoUkFHFhzO9Bts76CqW
+        FhtLK3/BN4cWJXsOiL2VXwYbYg6tsZw3C8i+IxA=
+X-Google-Smtp-Source: ACHHUZ4y6QX2tq8E27by6YkCxR3PmJMiktMABs4n4JVAUpCSd+lhY388IXN+mErboDW/wtCtUakJxEJ57qmSY1TQ/Zc=
+X-Received: by 2002:a17:906:778a:b0:977:ead3:c91 with SMTP id
+ s10-20020a170906778a00b00977ead30c91mr1215071ejm.1.1685984875965; Mon, 05 Jun
+ 2023 10:07:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <87353x87p7.fsf@jcompost-mobl.amr.corp.intel.com> <CAJZ5v0gCcWJHkrf1zfcSJU1Aw1ZDEVkkTnvBFOpORJ6L0ji6UQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0gCcWJHkrf1zfcSJU1Aw1ZDEVkkTnvBFOpORJ6L0ji6UQ@mail.gmail.com>
+References: <20230516201415.556858-1-arnd@kernel.org> <780579b5-3900-da14-3acd-a4d24e02e4ba@intel.com>
+In-Reply-To: <780579b5-3900-da14-3acd-a4d24e02e4ba@intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 5 Jun 2023 18:26:45 +0200
-Message-ID: <CAJZ5v0jina9b4Yt9prEwbemyiGY2Q4psRawkwLZ+VKYY90R2xA@mail.gmail.com>
-Subject: Re: ACPI: EC: Clear GPE on interrupt handling only
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Compostella, Jeremy" <jeremy.compostella@intel.com>,
-        linux-acpi@vger.kernel.org
+Date:   Mon, 5 Jun 2023 19:07:44 +0200
+Message-ID: <CAJZ5v0hPLnFmWiv2DHh=U0FHkeu0A8yTwz7Mn8=jfenrP6wFGA@mail.gmail.com>
+Subject: Re: [PATCH 1/3] acpi: nfit: add declaration in a local header
+To:     Dave Jiang <dave.jiang@intel.com>, Arnd Bergmann <arnd@kernel.org>
+Cc:     Dan Williams <dan.j.williams@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, Len Brown <lenb@kernel.org>,
+        nvdimm@lists.linux.dev, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -57,56 +62,42 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 5, 2023 at 6:14 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+On Mon, May 22, 2023 at 5:22 PM Dave Jiang <dave.jiang@intel.com> wrote:
 >
-> On Tue, May 16, 2023 at 2:02 AM Compostella, Jeremy
-> <jeremy.compostella@intel.com> wrote:
-> >
-> > On multiple devices I work on, we noticed that
-> > /sys/firmware/acpi/interrupts/sci_not is non-zero and keeps increasing
-> > over time.
-> >
-> > It turns out that there is a race condition between servicing a GPE
-> > interrupt and handling task driven transactions.
-> >
-> > If a GPE interrupt is received at the same time ec_poll() is running,
-> > the advance_transaction() clears the GPE flag and the interrupt is not
-> > serviced as acpi_ev_detect_gpe() relies on the GPE flag to call the
-> > handler. As a result, `sci_not' is increased.
 >
-> And if I'm not mistaken, it is not necessary to run the entire
-> interrupt handler in that case, because the currently running
-> advance_transaction() will take care of the pending event anyway.
 >
-> I agree that it is confusing to increase sci_not in that case, but I'm
-> not sure if running the entire advance_transaction() for the same
-> transaction twice in a row, once from ec_poll() and once from the
-> interrupt handler is entirely correct.
+> On 5/16/23 1:14 PM, Arnd Bergmann wrote:
+> > From: Arnd Bergmann <arnd@arndb.de>
+> >
+> > The nfit_intel_shutdown_status() function has a __weak defintion
+> > in nfit.c and an override in acpi_nfit_test.c for testing
+> > purposes. This works without an extern declaration, but causes
+> > a W=1 build warning:
+> >
+> > drivers/acpi/nfit/core.c:1717:13: error: no previous prototype for 'nfit_intel_shutdown_status' [-Werror=missing-prototypes]
+> >
+> > Add a declaration in a header that gets included from both
+> > sides to shut up the warning and ensure that the prototypes
+> > actually match.
+> >
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 
-However, if the interrupt handler wins the race, advance_transaction()
-will run for the same transaction twice in a row anyway, so this
-change will only make it happen more often.
+Applied as 6.5 material, thanks!
 
-So no objections, but I would move the GPE clearing piece directly
-into acpi_ec_handle_interrupt(), because it will only be needed there
-and it doesn't depend on anything else in advance_transaction().
-
-> > Signed-off-by: Jeremy Compostella <jeremy.compostella@intel.com>
 > > ---
-> >  drivers/acpi/ec.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >   drivers/acpi/nfit/nfit.h | 2 ++
+> >   1 file changed, 2 insertions(+)
 > >
-> > diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-> > index 928899ab9502..42af09732238 100644
-> > --- a/drivers/acpi/ec.c
-> > +++ b/drivers/acpi/ec.c
-> > @@ -674,7 +674,7 @@ static void advance_transaction(struct acpi_ec *ec, bool interrupt)
-> >          * 2. As long as software can ensure only clearing it when it is set,
-> >          *    hardware won't set it in parallel.
-> >          */
-> > -       if (ec->gpe >= 0 && acpi_ec_gpe_status_set(ec))
-> > +       if (interrupt && ec->gpe >= 0 && acpi_ec_gpe_status_set(ec))
-> >                 acpi_clear_gpe(NULL, ec->gpe);
-> >
-> >         status = acpi_ec_read_status(ec);
-> > --
+> > diff --git a/drivers/acpi/nfit/nfit.h b/drivers/acpi/nfit/nfit.h
+> > index 6023ad61831a..573bc0de2990 100644
+> > --- a/drivers/acpi/nfit/nfit.h
+> > +++ b/drivers/acpi/nfit/nfit.h
+> > @@ -347,4 +347,6 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+> >   void acpi_nfit_desc_init(struct acpi_nfit_desc *acpi_desc, struct device *dev);
+> >   bool intel_fwa_supported(struct nvdimm_bus *nvdimm_bus);
+> >   extern struct device_attribute dev_attr_firmware_activate_noidle;
+> > +void nfit_intel_shutdown_status(struct nfit_mem *nfit_mem);
+> > +
+> >   #endif /* __NFIT_H__ */
