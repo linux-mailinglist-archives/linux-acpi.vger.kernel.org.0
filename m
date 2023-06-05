@@ -2,289 +2,233 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E028722EC0
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jun 2023 20:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F58D72332C
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Jun 2023 00:27:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231454AbjFESdL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 5 Jun 2023 14:33:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50806 "EHLO
+        id S232171AbjFEW1E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 5 Jun 2023 18:27:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231472AbjFESdK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Jun 2023 14:33:10 -0400
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECEDECD;
-        Mon,  5 Jun 2023 11:33:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eVBJb2QaLZlSEwTH59PqClzrGtz4yn6IQAZs/WxZD5Qso9nzJLi2lchWitTOPr8hfrctxcmQhRmOl/xZWmLvv93bkJw9YcLhiUqlro3E9U6BWAKaIGtDB/R9WagT7q751D/gdxAV5q4x41s/w+rnjtenjdmsQCk4frfnYY+sCfGC9JJ4eX2drBSc2U4vt6yHKUFq+hNslYr6Z2u0z8kNmoVhIcQWNSYZGQQLqtlPNwDBvWzUWW8KWuPZmGWfLkFr44z6IdcQYktdFQ5NtqnL+1Jvlwv8K8inDi8zQJkeCGrigVxOmIUdx1JdCnltnTvsRtsLweGlwpiRCSB2yVmuXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2kAw3vyZ0CfQLMHch9mrrsjLMFuPGrD/2EBpvs3eEjQ=;
- b=jj24k0VAsBjbtXYKuN59xVq0cV7Yz/kqbjeXnTjjq5qt4X1jtMMiwr6FgkKeJSV1TJRsmtBdduGGfrtn0Al3+6uMS5tjD1bMwo+UMwC8tphgid9y23UHsSm3dCHuHNGaHGCtOX8d2prdUtbrcRsFREt4zY+klYUYJdaAlSSMjxOGXwdCqgDtaUwZNhBLlNR2+znGkcNMPUlMS+KAHEj4cnq9hY/C/QiCGqpuPBB2f4dbSdnTc3nMKvStQw9hjEA4u8IEFAEf5Zy9FWZd2eVzZqNnXxBdRTmd2kYr1n3vGmyHZNve54ZK07Xg5DVSGh79dV3aZqDoB8fWt/IDMEEh4w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2kAw3vyZ0CfQLMHch9mrrsjLMFuPGrD/2EBpvs3eEjQ=;
- b=Ezxj5LAcipiy/NJvVJ7I33lnaHNxb0DVkxTxXk6Q9Vt8l7B0YeRAMfs0mQ4EpMXfqLryQcnItsunx5kBTHxcL0or6Mlxo1TArcA2gryeEjb+d8qaNyDore2gMLnHgxEx9ZhjyzhT/1xPyHFqS6DWwtiFK0j+qgvx4GM7pqQI/h8=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by BL0PR12MB4883.namprd12.prod.outlook.com (2603:10b6:208:1c6::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.32; Mon, 5 Jun
- 2023 18:33:06 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::43b2:55d7:9958:390e]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::43b2:55d7:9958:390e%5]) with mapi id 15.20.6455.030; Mon, 5 Jun 2023
- 18:33:06 +0000
-Message-ID: <f8b5ed80-62b2-3a00-d036-08bf1ef6a7dd@amd.com>
-Date:   Mon, 5 Jun 2023 13:33:03 -0500
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH] PCI: Call _REG when saving/restoring PCI state
-Content-Language: en-US
+        with ESMTP id S231735AbjFEW1E (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Jun 2023 18:27:04 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7729210D
+        for <linux-acpi@vger.kernel.org>; Mon,  5 Jun 2023 15:27:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686004022; x=1717540022;
+  h=from:to:cc:subject:references:date:in-reply-to:
+   message-id:mime-version;
+  bh=MLoTeFVYxaw1KfVFoEk0dJm+KCJVsBiK2wqlhlW3JoQ=;
+  b=X+zqN0F2dIqojFD3EbMKT7suuXbgPhrHagyaM75l2Q5aaQ/HK+f3pmMe
+   KPbsZRTPCA3gOYbOnxF1PBrAgCXiEEon1DZeSKsjMiDxjJ7ATmEf5YhWI
+   AcIHOlBq2rix7khgayEtLON02SVlBedEj2nsPK3QyLjCR4jhqMN/BfIEX
+   7yzyyw1aMF8nLu8LnGHEyjivbaHPacQNTL2Ph4SRCaPxRqBDplu8/Wb7F
+   B5RUrGrUirFifKu4ojqzBNP5ew83ofT722uM6sC8RclkYpq1S/dFN6bzW
+   fkMsF1O5XsRxs/y3f9bbX+sYGNRKjZIQmw98XnSB0JzThL0OjRPnmZeOq
+   g==;
+IronPort-Data: A9a23:PzJiC6gvXwyzZ5mUqR8u3vD/X161khEKZh0ujC45NGQN5FlGYwR3i
+ jdXHXbOJ7/bJjGtS21EGI229UsbyOW1t8sWOx8f8XxkVTdlkeeAAtLcL0HsMjmIM9XfCUJu6
+ ckaa9/PaccySm6avh6xObiJQRJUhfHTG+qsWOObYXF7HlE4Q3Yv1kM4kORoi9U33YjoD1yB5
+ YKsqZWHNgf5izQqbDJLs/7Y8Bkxtqz45WMR4lVkPpin0LOme1w9VfrzconrcienKmUtItOHe
+ grj8F2Y1jiBpUl3UIr/nOelKhdSTu/YM1TShCoJV6Tz00EYr3Vjjv9rZfERVxxrhmTSlbid6
+ jnsWb9c6+sNFvSUwIzxhjEBS3kW0YtupuGfeRBTluTKlxKdKRMA+903UAdse9dwFt9fWQlm7
+ eYfJC0GcieNjue3xKPTYuR3j6zPFuGyVG8kki8mlWmx4coOG8iZGP2UvYIAhV/cu+gVdRrgT
+ 5tBAdZQREmYC/F/Eg9/II4zmu6umk7+f1VwwL5CjfFvi4R75FUZPInFaLI5SPTTLSlmth/wS
+ lb9wojMKkpy2Oq3kmPZry321ocjqgugMG4aPOXQGveHGzR/zERLYPEdfQLTTfVUESdS8j+QQ
+ qAZ0nNGkEQ8yKCkZvTAcTalhnWLhxgdaf5PC/w54R/X94OBtm51BkBcJtJAQNIjr8o5TGRyi
+ hmHmpXoAyBitPueTnf1GrW89Gv0Y3VOazVeI3NUJecGy4CLTIUbjB/VQ9NyVqWyi8XyAi39x
+ zSDhCk4m7gXy8UM0s1X+Hib2Wr0+sKWFFZdCgP/fGb/zjxEWNeZbLeatQnX9Px6N6jJdwzU1
+ JQDs43EhAwUNrmXnSKETeElH7yz4fuBdjrGjjZS84IJ+TG2/nGqJdgMpj97YkZvLssAPzTuZ
+ Sc/pD9s2XOaB1PyBYcfXm57I59CIXTIfTg9as3pUw==
+IronPort-HdrOrdr: A9a23:inQo3apcl+DIGxAPPFvsEXgaV5oQeYIsimQD101hICG9vPb4qy
+ nOpoVi6faaskdyZJhNo7+90ey7MBbhHP1OkPAs1NWZLW3bUbuTXedfBOLZqlWNJ8S9zJ8/6U
+ 4KSchD4bPLY2SSwfyKhzVQVOxK/DCAysrEudvj
+X-Talos-CUID: 9a23:fXFnPG9TT+koA5xYT0KVv2MpNOs4VHbS9XHREWunEXdqQaPPdHbFrQ==
+X-Talos-MUID: 9a23:hawIHAmcuiGLi8K/63RNdnpAMJ1I3JmSUXwGqqda6sWdPxZrFWek2WE=
+X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="420042721"
+X-IronPort-AV: E=Sophos;i="6.00,218,1681196400"; 
+   d="scan'208,223";a="420042721"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2023 15:27:01 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="778739211"
+X-IronPort-AV: E=Sophos;i="6.00,218,1681196400"; 
+   d="scan'208,223";a="778739211"
+Received: from lrperezc-mobl1.amr.corp.intel.com (HELO jcompost-mobl.amr.corp.intel.com) ([10.212.57.112])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2023 15:27:00 -0700
+From:   "Compostella, Jeremy" <jeremy.compostella@intel.com>
 To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>, bhelgaas@google.com,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-References: <ZHpPOzT0nm+vddPq@bhelgaas>
- <fda371a2-da84-c764-c809-2a361418b4ef@amd.com>
- <CAJZ5v0gzSitt2zm2fhwkg51ZRUd_1ZBVB8akiUK_cnr8wupFQA@mail.gmail.com>
-From:   "Limonciello, Mario" <mario.limonciello@amd.com>
-In-Reply-To: <CAJZ5v0gzSitt2zm2fhwkg51ZRUd_1ZBVB8akiUK_cnr8wupFQA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: DS7PR03CA0230.namprd03.prod.outlook.com
- (2603:10b6:5:3ba::25) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+Cc:     <linux-acpi@vger.kernel.org>
+Subject: Re: ACPI: EC: Clear GPE on interrupt handling only
+References: <87353x87p7.fsf@jcompost-mobl.amr.corp.intel.com>
+        <CAJZ5v0gCcWJHkrf1zfcSJU1Aw1ZDEVkkTnvBFOpORJ6L0ji6UQ@mail.gmail.com>
+        <CAJZ5v0jina9b4Yt9prEwbemyiGY2Q4psRawkwLZ+VKYY90R2xA@mail.gmail.com>
+Date:   Mon, 05 Jun 2023 15:26:59 -0700
+In-Reply-To: <CAJZ5v0jina9b4Yt9prEwbemyiGY2Q4psRawkwLZ+VKYY90R2xA@mail.gmail.com>
+        (Rafael J. Wysocki's message of "Mon, 5 Jun 2023 18:26:45 +0200")
+Message-ID: <87ilc1lf4c.fsf@jcompost-mobl.amr.corp.intel.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Organization: Intel Corporation - 2200 Mission College Blvd. Santa Clara, CA
+        95052. USA
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|BL0PR12MB4883:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6a7d704b-ee63-4c2b-62ff-08db65f34e2c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 1GDlM+VALX+nj8VPY/V7VWduEs+A+f7nZo9QtSgFjgDRdk2Hm1EjGesZxantIOjtS4WBWursLgHCytXV89KF4lgeSOudmCNfbJIFaX7E4s5Pg89eZgccdzQcgMmxvxbIcgVoJhsivQE2uQFGh4fFXH8TB6/j0MueEusgWoZoNKtUof25MK+Vzowpi7vr4h41a7XniYzlN8I5NtZ/Xw9krpePdajP0l3/DtrebFMMpLISyr8t3Nxk7Y0acE0jpPO9S27GgaHFjVFaOzXwlBgvUiBN+ceDzU2ge+A7YjtMlYXeoKU7ox5g18HGO6GRTMQJK8i8kg8PSiLoPBI73t46RUVgbicuz0/i+AYM1FAaCqAq0SES15qKhLTyXpqGfdaJXJGXfh5ui+OaVO5qw1hIVF9OIL6M8O6a9wTlO5pS6y08ufYVwTIpATHA/ZBakjL9Com2rrBi4P4bWKsl12cJ8CgbGEFtCh4oyC1Lm7vvlHn4huPbA2FSt9m8nUujwNowk1UhlO+ykSQ9xrLbpgdSY2mmtQI0Z7KU34kyFYwhrOy8VzqUpLDTieu8Wmbvki9x7Plht071U6rfwh1hP29Tt36PANXjjCRutqjmdOJ6DEs16JiXoDnwA4XpiM7vf1jJqrBgQ2I0mCmpq+YesptwQw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(136003)(376002)(366004)(346002)(396003)(451199021)(2616005)(26005)(53546011)(6512007)(6506007)(38100700002)(83380400001)(41300700001)(31686004)(6486002)(6666004)(186003)(966005)(478600001)(54906003)(4326008)(66476007)(66556008)(6916009)(66946007)(316002)(8676002)(5660300002)(8936002)(2906002)(86362001)(31696002)(36756003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WWlNWU0xRjBCcWNUNDkzOTZzTUlqazZyQlgvRlZuVWdLcWNqTDNxUEZGbmsr?=
- =?utf-8?B?aEFDUjhkbGVZaXY2TTFWU21CRUVvRnBxUkRUMjk5NzN2OFhzTUZYSW5GK0dq?=
- =?utf-8?B?ZTZtWmFWVkFDT0c4UnM0VWo2ZXBMa1haK1cyNVNEYTBrSjRlVk85ditqZ1hH?=
- =?utf-8?B?MGthK3pHN3ZSUUFVWGdsWXdFTjJnUXcvRVdqS092RWwrRTZKUUcxdStmc2gx?=
- =?utf-8?B?ZGNNcXgrZUlvQmtidzV0bWFKYjJxaVdsOExNckxKVWdqMmVXT21EUFZKcGdv?=
- =?utf-8?B?eW5oT0RkU05kdXVZVzlRS043bmZxNEF2R2JSeUszc29IZExGL3E4WFBCSldV?=
- =?utf-8?B?bFliNVh5VE94YlpVd1puekswRDhpWnRvS09GRlNzQU9iZFFRbisrUnB5bEMv?=
- =?utf-8?B?MjJVTk9BSEgzVnlMWE1nc24yWS91eWZmTkErbUZWZ3JWTE8vTG1lSWROSFVl?=
- =?utf-8?B?WG8yem5QYVJrMzcwMkkzT1BVUFZNdytQWXg4Q2JBYUNvOUVocE5jMm9NNTdz?=
- =?utf-8?B?L2M3bFFQZm9XTjdEZFZMYk9PSVZ5NnQxQnlLYXJEWjBTTWJTWlJvczFJYjds?=
- =?utf-8?B?UFp5cXN4T3N6WjZ5N2gyOG5HYUFiYW00NGNsWjVFSlQ2SEFQSnVPdGsycm9Z?=
- =?utf-8?B?MmI5Q3Rmeml3MWxUNkpvTkUxSXN5SFhHbTVqWm5OSjNSRGYzNHovcXBZaFoy?=
- =?utf-8?B?c0FkdWJVTGwzYnZYRERSOWZOU1FaMkxjZ1RhOFNLajdGTS9XRkhNdG9rS3hl?=
- =?utf-8?B?TU1CZ2ZZanRzdzNvdjF2TGwvczZ0UG15VW9sWmNxdUN1SytSeUxiOVUyWC9O?=
- =?utf-8?B?YmhHcDdXbllhOHhZR01tTHlqd09sYnR4QkUva1JrNTFRQUlYZ3ZkRlNoZHY5?=
- =?utf-8?B?cWpZL0dKVERvQVpTRFN2ejhVWWJxS2xxNVNZemRuWFFPM09HQytXU2N0QkFm?=
- =?utf-8?B?cHJpbDBiVGEyRVVLRWdtVkNibzMzZDdlaDYvS0tKNlZWaGtXU29LTFlJSzRz?=
- =?utf-8?B?NHYzbUdOTVlScTRoKy9KV2dvS1p2ZlQ2di94bW9xVENzVVM2Qy9XQmtDQmtP?=
- =?utf-8?B?ZU1sWGptSVhvejJxN3JwT0NJY01ZMnJrUDVGdFRDcHZYbXhOb2VlMEVOUm9r?=
- =?utf-8?B?ejJIY2JCVEFFR1FQSTJPZTR5RTczR1VTMmlBeTNTSnJvK3JJbXFONWVuWnIr?=
- =?utf-8?B?SHJyUE9pdlFJcTZLelVldzlCVExmR3NLLzVrV1RBMkhTbjYxY0lNU1NqMWNq?=
- =?utf-8?B?a1VkRkwwQ0l6WldjbEFlRWhhcnJCUjJNclpUeFYxVmplL2NLTVlDOXp3TlVm?=
- =?utf-8?B?bDEvbFEwY3lPSmxPMXR4aGN0VDVwQnMwNnQwK3BzcE5qa3NHRU1hZ2pIQVdO?=
- =?utf-8?B?czFwelBtUkNTd05Tdm4wOHFyWnkrYlZwS01hVUZycUVOeFdtdzNldlZiWGlO?=
- =?utf-8?B?YXlQN3dXS2Q3VXc0VjErWjUxV25TQkg2bzI4M0EyVm1TKy9wckQ3OFIrN2NH?=
- =?utf-8?B?VXhROHlKM1Q2N3ZPajE3Q3NhT2VVMXBWcS9aODhpMFNibVdXZWREUzl3bElu?=
- =?utf-8?B?RHphckpqT1krdVQ4K2oxbjVmUmdjWE9RYzFITEs1cFpUVGJSR0JGZTFrOEY3?=
- =?utf-8?B?WElDT29ITUM2Vjk1dm5PMGlXNTloRDBMZE9KTWJvcHZ0QjRRTkxONjlVNGF1?=
- =?utf-8?B?ZEQydGlVQnN4bitkZFpRVi9IQk9vN2hoMzlmZVBFWEZKanhBLzd0ZTZrNUdr?=
- =?utf-8?B?NGNTZFYzUjRlN1FZYmJBbjJuN1c4TzVhQ0lYUE1ENjNWTTJwT2VPMllVOGZ4?=
- =?utf-8?B?ZG9zdloyc3FJM0pTS2QraldoTllEL0hPdE5iWmRXLzVqK0JPLzV2d1d0NEd5?=
- =?utf-8?B?bEJEeHovajNQZWtsWVBHUHNhS1ZkYVhJMmh1czhvckhJbVV6TU9lTkRjL2dT?=
- =?utf-8?B?Q2dSUVJvek15K1pnRUxHRERkaG5BaDVabXNHdlh3d0Fhc0d6RVZWaGdydXZu?=
- =?utf-8?B?UUhRZXpiYmlIeHNHY29DaWJVQnF1MUk2SXhROUhaYzNOMEsyTXVFc1VUT2NV?=
- =?utf-8?B?U29pS0ZHU0tjcmxPRjVpUUdPTlZreUMrQ1RkNVZIYXlveGFNODh1WW9JMjRZ?=
- =?utf-8?Q?g9iSJpLbLn9Bo5ZRLnJUwfb29?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a7d704b-ee63-4c2b-62ff-08db65f34e2c
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2023 18:33:06.8445
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fMO+EWZvIf9JgTj6RJJ63XT+RHPtSaEE84FmVgZi2ZJJjlxLbuPnrt70P3I3CdIll7ZBBMizNix5zEeI859WRQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR12MB4883
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: multipart/mixed; boundary="=-=-="
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+--=-=-=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 6/4/2023 6:30 AM, Rafael J. Wysocki wrote:
-> On Fri, Jun 2, 2023 at 11:57 PM Limonciello, Mario
-> <mario.limonciello@amd.com> wrote:
+"Rafael J. Wysocki" <rafael@kernel.org> writes:
+
+> On Mon, Jun 5, 2023 at 6:14=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.o=
+rg> wrote:
 >>
->> On 6/2/2023 3:21 PM, Bjorn Helgaas wrote:
->>> [+cc Rafael, Len, linux-acpi]
->>>
->>> Hi Mario,
->>>
->>> On Thu, Jun 01, 2023 at 10:11:22PM -0500, Mario Limonciello wrote:
->>>> ASMedia PCIe GPIO controllers connected to AMD SOC fail functional tests
->>>> after returning from s2idle. This is because the BIOS checks whether the
->>>> OSPM has called the _REG method to determine whether it can interact with
->>>> the OperationRegion assigned to the device.
->>> "s2idle" is a Linux term; I'd prefer something that we can relate to
->>> the ACPI spec.
->> It's important for the symptoms of this issue though, this
->> problem doesn't trigger "just" by moving D-states.
+>> On Tue, May 16, 2023 at 2:02=E2=80=AFAM Compostella, Jeremy
+>> <jeremy.compostella@intel.com> wrote:
+>> >
+>> > On multiple devices I work on, we noticed that
+>> > /sys/firmware/acpi/interrupts/sci_not is non-zero and keeps increasing
+>> > over time.
+>> >
+>> > It turns out that there is a race condition between servicing a GPE
+>> > interrupt and handling task driven transactions.
+>> >
+>> > If a GPE interrupt is received at the same time ec_poll() is running,
+>> > the advance_transaction() clears the GPE flag and the interrupt is not
+>> > serviced as acpi_ev_detect_gpe() relies on the GPE flag to call the
+>> > handler. As a result, `sci_not' is increased.
 >>
->> It happens as a result of system suspend.
-> As I said in my response to Bjorn, s2idle is D0 from the ACPI
-> standpoint.  It is not a system sleep and it has no special meaning in
-> ACPI.
+>> And if I'm not mistaken, it is not necessary to run the entire
+>> interrupt handler in that case, because the currently running
+>> advance_transaction() will take care of the pending event anyway.
+>>
+>> I agree that it is confusing to increase sci_not in that case, but I'm
+>> not sure if running the entire advance_transaction() for the same
+>> transaction twice in a row, once from ec_poll() and once from the
+>> interrupt handler is entirely correct.
 >
-> The problem seems to be related to the low-power S0 idle _DSM calls to me.
-
-This particular hardware that triggered this patch can do S3
-or s2idle.
-
-Let me confirm with internal guys whether this can reproduce
-with BIOS configured to S3 as well.
->>> Maybe a pointer to the specific function in the driver that has a
->>> problem?  Based on the patch, I assume the driver uses some control
->>> method that looks at PCI config space?
->> The issue isn't in anything Linux code "does"; it's in the "lack"
->> of Linux code doing what it needs to IE using _REG.
-> So the argument seems to be that under certain conditions the PCI
-> config space becomes unavailable and so _REG(dev, 0) needs to be
-> called when this is about to happen and _REG(dev, 1) needs to be
-> called when the config space becomes available again.  Fair enough,
-> but I'm not sure why this is limited to system suspend and resume.
-I didn't think it should be limited to suspend/resume
-either.
-
-That's why I had put it in save state/restore state.
-
-> Moreover, "PCI_Config operation regions on a PCI root bus containing a
-> _BBN object" are specifically mentioned as one of the cases when _REG
-> need not be evaluated at all.  I guess the operation region in
-> question doesn't fall into that category?
-
-Yes; that's right.  _BBN is only present on \_SB_.PCI0
-and the problematic device is on \_SB_.PCI0.GPP5.
-
->> At least for this issue _REG is treated like a lock mechanism.
->> In the spec it says specifically:
->>
->> "When an operation region handler is unavailable, AML cannot access
->> data fields in that region".
->>
->> That is it's to ensure that OSPM and AML don't both simultaneously
->> access the same region.
->>
->> What happens is that AML normally wants to access this region during
->> suspend, but without the sequence of calling _REG it can't.
-> Is this about being unable to access the opregion or racing with
-> concurrent accesses on the OS side?
-Access.
+> However, if the interrupt handler wins the race, advance_transaction()
+> will run for the same transaction twice in a row anyway, so this
+> change will only make it happen more often.
 >
->>>> To fix this issue, call acpi_evaluate_reg() when saving and restoring the
->>>> state of PCI devices.
->>> Please include the spec citation: ACPI r6.5, sec 6.5.4.  The URL has
->>> changed in the past and may change in the future, but the name/section
->>> number will not.
->> Sure.
->>>> Link: https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/06_Device_Configuration/Device_Configuration.html#reg-region
->>>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->>>> ---
->>>>    drivers/pci/pci.c | 12 ++++++++++++
->>>>    1 file changed, 12 insertions(+)
->>>>
->>>> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
->>>> index e38c2f6eebd4..071ecba548b0 100644
->>>> --- a/drivers/pci/pci.c
->>>> +++ b/drivers/pci/pci.c
->>>> @@ -1068,6 +1068,12 @@ static inline bool platform_pci_bridge_d3(struct pci_dev *dev)
->>>>       return acpi_pci_bridge_d3(dev);
->>>>    }
->>>>
->>>> +static inline int platform_toggle_reg(struct pci_dev *dev, int c)
->>>> +{
->>>> +    return acpi_evaluate_reg(ACPI_HANDLE(&dev->dev),
->>>> +                             ACPI_ADR_SPACE_PCI_CONFIG, c);
->>>> +}
->>> You never check the return value, so why return it?
->> _REG isn't mandatory for any of these uses, and I wanted to make
->> sure that if it does end up being mandatory in a future use that
->> the return code wasn't thrown away.  If you think it's better to
->> just throw it away now, I have no qualms making it a void instead.
-> I don't think it can reasonably become mandatory without adding a
-> specific _OSC bit for that.
-OK.
->
->>> The function actually doesn't *toggle*; it connects or disconnects
->>> based on "c".
->> Can you suggest a better function name?
->>> This looks like it only builds when CONFIG_ACPI=y?
->> The prototype for acpi_evaluate_reg isn't guarded by CONFIG_ACPI
->> so I figured it worked both ways.
->>
->> But looking again I don't see a dummy implementation version for
->> the lack of CONFIG_ACPI, so I'll double check it.
->>
->>>>    /**
->>>>     * pci_update_current_state - Read power state of given device and cache it
->>>>     * @dev: PCI device to handle.
->>>> @@ -1645,6 +1651,9 @@ static void pci_restore_ltr_state(struct pci_dev *dev)
->>>>    int pci_save_state(struct pci_dev *dev)
->>>>    {
->>>>       int i;
->>>> +
->>>> +    platform_toggle_reg(dev, ACPI_REG_DISCONNECT);
->>> I would expect these to be in the PM code near the power state
->>> transitions, not in the state save/restore code.  These functions
->>> *are* used during suspend/resume, but are used in other places as
->>> well, where we probably don't want _REG executed.
->>>
->>> Cc'd Rafael and PM folks, who can give much better feedback.
->> My knee jerk reaction when we found the root cause for this issue
->> was to put the code right around the D-state transitions, but I
->> decided against this.
->>
->> I put it in save/restore intentionally because
->> like I mentioned above it's treated like a locking mechanism between
->> OSPM and AML and it's not functionally tied to a D-state transition.
->>
->> When the state is saved it's like Linux says
->> "I'm done using this region, go ahead and touch it firmware".
->> When it's restored it's like Linux says
->> "Don't use that region, I'm claiming it for now".
-> So it looks like you want to use _REG for protecting PCI config space
-> against concurrent accesses from AML and the OS.
-Yeah.  When I discussed it with BIOS guys they
-explained to me that the BIOS will typically save/restore the
-PCIe device BAR when _REG is called (depending on the argument
-to _REG).
+> So no objections, but I would move the GPE clearing piece directly
+> into acpi_ec_handle_interrupt(), because it will only be needed there
+> and it doesn't depend on anything else in advance_transaction().
 
-They'll only operate on the region when it's in the right
-state, and they'll restore it as necessary when OSPM would use
-it again.
+I took into account your suggestion (cf. patch in attachment).
 
-This is also how Windows works.
 
->> Think about that other patch I wrote recently that controls D3
->> availability [1].  If it was only run in the D-state transitions and
->> the root port stays in D0 but has a _REG method it would never get
->> called.
-> And why should it be evaluated in that case?
-No matter what the actual D-state is the OSPM isn't
-accessing it anymore, so AML should be able to.
+--=-=-=
+Content-Type: text/x-patch
+Content-Disposition: attachment;
+ filename=0001-ACPI-EC-Clear-GPE-on-interrupt-handling-only.patch
+
+From 42fa736fcd5d6a2e17c550f493a12e8df2e7cd72 Mon Sep 17 00:00:00 2001
+From: Jeremy Compostella <jeremy.compostella@intel.com>
+Date: Mon, 15 May 2023 16:49:19 -0700
+Subject: [PATCH] ACPI: EC: Clear GPE on interrupt handling only
+
+On multiple devices I work on, we noticed that
+/sys/firmware/acpi/interrupts/sci_not is non-zero and keeps increasing
+over time.
+
+It turns out that there is a race condition between servicing a GPE
+interrupt and handling task driven transactions.
+
+If a GPE interrupt is received at the same time ec_poll() is running,
+the advance_transaction() clears the GPE flag and the interrupt is not
+serviced as acpi_ev_detect_gpe() relies on the GPE flag to call the
+handler. As a result, `sci_not' is increased.
+
+Signed-off-by: Jeremy Compostella <jeremy.compostella@intel.com>
+---
+ drivers/acpi/ec.c | 31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
+
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 928899ab9502..8569f55e55b6 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -662,21 +662,6 @@ static void advance_transaction(struct acpi_ec *ec, bool interrupt)
+ 
+ 	ec_dbg_stm("%s (%d)", interrupt ? "IRQ" : "TASK", smp_processor_id());
+ 
+-	/*
+-	 * Clear GPE_STS upfront to allow subsequent hardware GPE_STS 0->1
+-	 * changes to always trigger a GPE interrupt.
+-	 *
+-	 * GPE STS is a W1C register, which means:
+-	 *
+-	 * 1. Software can clear it without worrying about clearing the other
+-	 *    GPEs' STS bits when the hardware sets them in parallel.
+-	 *
+-	 * 2. As long as software can ensure only clearing it when it is set,
+-	 *    hardware won't set it in parallel.
+-	 */
+-	if (ec->gpe >= 0 && acpi_ec_gpe_status_set(ec))
+-		acpi_clear_gpe(NULL, ec->gpe);
+-
+ 	status = acpi_ec_read_status(ec);
+ 
+ 	/*
+@@ -1287,6 +1272,22 @@ static void acpi_ec_handle_interrupt(struct acpi_ec *ec)
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&ec->lock, flags);
++
++	/*
++	 * Clear GPE_STS upfront to allow subsequent hardware GPE_STS 0->1
++	 * changes to always trigger a GPE interrupt.
++	 *
++	 * GPE STS is a W1C register, which means:
++	 *
++	 * 1. Software can clear it without worrying about clearing the other
++	 *    GPEs' STS bits when the hardware sets them in parallel.
++	 *
++	 * 2. As long as software can ensure only clearing it when it is set,
++	 *    hardware won't set it in parallel.
++	 */
++	if (ec->gpe >= 0 && acpi_ec_gpe_status_set(ec))
++		acpi_clear_gpe(NULL, ec->gpe);
++
+ 	advance_transaction(ec, true);
+ 	spin_unlock_irqrestore(&ec->lock, flags);
+ }
+-- 
+2.40.1
+
+
+--=-=-=
+Content-Type: text/plain
+
+
+>> > Signed-off-by: Jeremy Compostella <jeremy.compostella@intel.com>
+>> > ---
+>> >  drivers/acpi/ec.c | 2 +-
+>> >  1 file changed, 1 insertion(+), 1 deletion(-)
+>> >
+>> > diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+>> > index 928899ab9502..42af09732238 100644
+>> > --- a/drivers/acpi/ec.c
+>> > +++ b/drivers/acpi/ec.c
+>> > @@ -674,7 +674,7 @@ static void advance_transaction(struct acpi_ec *ec, bool interrupt)
+>> >          * 2. As long as software can ensure only clearing it when it is set,
+>> >          *    hardware won't set it in parallel.
+>> >          */
+>> > -       if (ec->gpe >= 0 && acpi_ec_gpe_status_set(ec))
+>> > +       if (interrupt && ec->gpe >= 0 && acpi_ec_gpe_status_set(ec))
+>> >                 acpi_clear_gpe(NULL, ec->gpe);
+>> >
+>> >         status = acpi_ec_read_status(ec);
+>> > --
+
+--=-=-=--
