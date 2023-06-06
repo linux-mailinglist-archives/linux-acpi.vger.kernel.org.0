@@ -2,51 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75AE3724D9B
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Jun 2023 21:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7113724DA7
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Jun 2023 22:03:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239613AbjFFT65 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 6 Jun 2023 15:58:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42482 "EHLO
+        id S238520AbjFFUDh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 6 Jun 2023 16:03:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239617AbjFFT6y (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Jun 2023 15:58:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4C721715;
-        Tue,  6 Jun 2023 12:58:50 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 65CC5637C6;
-        Tue,  6 Jun 2023 19:58:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 792F3C433D2;
-        Tue,  6 Jun 2023 19:58:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686081529;
-        bh=/t6PMs1ae1Hb/cw1vXCpNAE0c2/e78MXFIPoLtaur5w=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=C15aBS/oHLFLtGBs/1r7ELULfaMLrV6M6TG0zdECTZrK7EmrYn6+pPz0h+SUnjk/v
-         N7PkbV3Q/CN+YV5kRR2FK5Xm8FtFdWUz370xckU1VX9rgdg3aHUdne0htPOyCJpvT9
-         /MqpDpY3jZ4TLxkY6vLrC38FwaMBgp4ZiEXxQjrtLY+a2qgMGVz1yB114qSPv8uY9k
-         MaDaje/OZyIyHymB9l2D/fkgwYgG5+uX6FWUe1VrSDke7MwV7gnaDOiDibP8FFWMT7
-         IkA2pp0gFx1CnGW+9OkwXJAUksDRSrX2qp7lpW8G0q6Snp8SGphZ9vGmlf7S38jez6
-         JSPPVa+9ED3tg==
-Date:   Tue, 6 Jun 2023 14:58:47 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2] PCI: Call _REG when saving/restoring PCI state
-Message-ID: <20230606195847.GA1142401@bhelgaas>
+        with ESMTP id S234164AbjFFUDg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Jun 2023 16:03:36 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BD1810F3;
+        Tue,  6 Jun 2023 13:03:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686081815; x=1717617815;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Q/P4uBMum54OsguSow/2pgghi0WtoiS74sGhM9dzFnU=;
+  b=h2dBE1tOcPaxyu8H5iqJh8fW0IHbMMChv2BovRVakuo7J2U+lWHBqwro
+   Rsyevmukw4LtKAjk/8lRo/+tpjHdjB8nt7XhKMJ1KeSYDHvr6cK5kmH/m
+   PWwmW7IpI90ihny4AH+LGR9O9RnFgpWMVPbslOY0esLYrs9lSWILXM7Y6
+   PEsRX9HndGaf9sRc2pIiyoEEsuWi4tel0gtBLnS4gqooTh9ISmHfIVy2r
+   TSNdNYa1lVvzt8Fb79uQnqh8kyaIntCcYy6qsDYKyWBMc9EHZpaIxqbqF
+   QYGh8bC8DqzCirtUUpEkOLRlrrylSQFrag9P5rqKuP6aPLeG4+yt94U4A
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10733"; a="355641837"
+X-IronPort-AV: E=Sophos;i="6.00,221,1681196400"; 
+   d="scan'208";a="355641837"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2023 13:03:34 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10733"; a="709201251"
+X-IronPort-AV: E=Sophos;i="6.00,221,1681196400"; 
+   d="scan'208";a="709201251"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2) ([10.251.25.226])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2023 13:03:33 -0700
+Date:   Tue, 6 Jun 2023 13:03:32 -0700
+From:   Alison Schofield <alison.schofield@intel.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Dave Jiang <dave.jiang@intel.com>, x86@kernel.org,
+        linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] x86/numa: Introduce numa_fill_memblks()
+Message-ID: <ZH+RFGZqAoSEIHqT@aschofie-mobl2>
+References: <cover.1684448934.git.alison.schofield@intel.com>
+ <e365f4dfa7fa974118eb4e59aebc7cc423cf19a1.1684448934.git.alison.schofield@intel.com>
+ <647bd26937a11_142af829499@dwillia2-xfh.jf.intel.com.notmuch>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <48a843d5-ed4f-e4c5-782c-b246b81142e0@amd.com>
+In-Reply-To: <647bd26937a11_142af829499@dwillia2-xfh.jf.intel.com.notmuch>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,94 +73,297 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 06, 2023 at 02:40:45PM -0500, Limonciello, Mario wrote:
-> On 6/6/2023 2:23 PM, Bjorn Helgaas wrote:
-> > On Tue, Jun 06, 2023 at 11:23:21AM -0500, Mario Limonciello wrote:
-> > > ASMedia PCIe GPIO controllers fail functional tests after returning from
-> > > suspend (S3 or s2idle). This is because the BIOS checks whether the
-> > > OSPM has called the `_REG` method to determine whether it can interact with
-> > > the OperationRegion assigned to the device.
-> > > 
-> > > As described in 6.5.4 in the APCI spec, `_REG` is used to inform the AML
-> > > code on the availability of an operation region.
-> > > 
-> > > To fix this issue, call acpi_evaluate_reg() when saving and restoring the
-> > > state of PCI devices.
-> > > 
-> > > Link: https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/06_Device_Configuration/Device_Configuration.html#reg-region
-> > > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > > ---
-> > > v1->v2:
-> > >   * Handle case of no CONFIG_ACPI
-> > >   * Rename function
-> > >   * Update commit message
-> > >   * Move ACPI calling code into pci-acpi.c instead
-> > >   * Cite the ACPI spec
-> >
-> > Thanks for the spec reference (s/APCI/ACPI/ and add the revision if
-> > you rev this (r6.5 is the latest, AFAIK) if you rev this).
+On Sat, Jun 03, 2023 at 04:53:13PM -0700, Dan Williams wrote:
+> alison.schofield@ wrote:
+> > From: Alison Schofield <alison.schofield@intel.com>
 > > 
-> > I don't see text in that section that connects S3 with _REG.  If it's
-> > there, you might have to quote the relevant sentence or two in the
-> > commit log.
->
-> I don't think there is anything the spec connecting this
-> with S3.  At least from my perspective S3 is the reason
-> this was exposed but there is a deficiency that exists
-> that _REG is not being called by Linux.
+> > numa_fill_memblks() fills in the gaps in numa_meminfo memblks
+> > over an HPA address range.
+> > 
+> > The initial use case is the ACPI driver that needs to extend
+> > SRAT defined proximity domains to an entire CXL CFMWS Window[1].
 > 
-> I intend to re-word the commit message something to the
-> effect of explaining what _REG does and why _REG should be
-> called, along with citations.
+> I feel like this demands more explanation because the "need" is not
+> apparent. In fact its a Linux policy choice not a requirement. The next
+> patch has some of this, but this story is needed earlier for someone
+> that reads this patch first. Something like:
 > 
-> Then in another paragraph "Fixing this resolves an issue ...".
+
+Hi Dan,
+
+Thanks for the review :)
+
+Sure, I can add the story below to make the 'need' for this function
+more apparent, as well as s/needs/want so as not to conflate need with
+requirement.
+
+> ---
 > 
-> > You mentioned _REG being sort of a mutex to synchronize OSPM vs
-> > platform access; if there's spec language to that effect, let's cite
-> > it.
->
-> That sentence I included was cited from the spec.
-
-If it's necessary to justify the commit, include the citation in the
-commit log.
-
-> > Ideally we should have been able to read the PCI and ACPI specs and
-> > implement this without tripping over problem on this particular
-> > hardware.  I'm looking for the text that enables that "clean-room"
-> > implementation.  If the spec doesn't have that text, it's either a
-> > hole in the spec or a BIOS defect that depends on something the spec
-> > doesn't require.
+> The CFWMS is an ACPI data structure that indicates *potential* locations
+> where CXL memory can be placed. It is the playground where the CXL
+> driver has free reign to establish regions.  That space can be populated
+> by BIOS created regions, or driver created regions, after hotplug or
+> other reconfiguration.
 > 
-> IMO both the spec and BIOS are correct, it's a Linux
-> issue that _REG wasn't used.
-
-What tells Linux that _REG needs to be used here?  If there's nothing
-that tells Linux to use _REG here, I claim it's a BIOS defect.  I'm
-happy to be convinced otherwise; the way to convince me is to point to
-the spec.
-
-If it's a BIOS defect, it's fine to work around it, but we need to
-understand that, own up to it, and make the exact requirements very
-clear.  Otherwise we're likely to break this in the future because
-future developers and maintainers will rely on the specs.
-
-> > Doing this in pci_save_state() still seems wrong to me.  For example,
-> > e1000_probe() calls pci_save_state(), but this is not part of suspend.
-> > IIUC, this patch will disconnect the opregion when we probe an e1000
-> > NIC.  Is that what you intend?
->
-> Thanks for pointing this one out.  I was narrowly focused
-> on callers in PCI core.  This was a caller I wasn't
-> aware of; I agree it doesn't make sense.
+> When the BIOS creates a region in a CXL Window it additionally describes
+> that subset of the Window range in the other typical ACPI tables SRAT,
+> SLIT, and HMAT. The rationale for the BIOS not pre-describing the entire
+> CXL Window in SRAT, SLIT, and HMAT is that it can not predict the
+> future. I.e. there is nothing stopping higher or lower performance
+> devices being placed in the same Window. Compare that to ACPI memory
+> hotplug that just onlines additional capacity in the proximity domain
+> with little freedom for dynamic performance differentiation.
 > 
-> I think pci_set_power_state() might be another good
-> candidate to use.  What do you think of this?
+> That leaves the OS with a choice, should unpopulated window capacity
+> match the proximity domain of an existing region, or should it allocate
+> a new one? This patch takes the simple position of minimizing proximity
+> domain proliferation and reuse any proximity domain intersection for the
+> entire Window. If the Window has no intersections then allocate a new
+> proximity domain. Note that SRAT, SLIT and HMAT information can be
+> enumerated dynamically in a standard way from device provided data.
+> Think of CXL as the end of ACPI needing to describe memory attributes,
+> CXL offers a standard discovery model for performance attributes, but
+> Linux still needs to interoperate with the old regime.
+> 
+> ---
+> 
+> > 
+> > The APCI driver expects to use numa_fill_memblks() while parsing
+> 
+> s/APCI/ACPI/
+> 
+> Again, the ACPI code does not have any expectation, this is pure OS
+> policy decision about how to handle undescribed memory.
+> 
 
-I can't suggest a call site because (1) I'm not a power management
-person, and (2) I don't think we have a clear statement of when it is
-required.  This must be expressed in terms of PCI power state
-transitions, or at least something discoverable from a pci_dev, not
-"s2idle" or even "S3" because those are meaningless in the PCI
-context.
+The intent was to show the pending use case, perhaps 'wants to' use
+this function to enact a purely OS policy decision!
 
-Bjorn
+
+> > the CFMWS. Extending the memblks created during SRAT parsing, to
+> > cover the entire CFMWS Window, is desirable because everything in
+> > a CFMWS Window is expected to be of a similar performance class.
+> > 
+> > Requires CONFIG_NUMA_KEEP_MEMINFO.
+> 
+> Not sure this adds anything to the description.
+> 
+> > 
+> > [1] A CXL CFMWS Window represents a contiguous CXL memory resource,
+> > aka an HPA range. The CFMWS (CXL Fixed Memory Window Structure) is
+> > part of the ACPI CEDT (CXL Early Discovery Table).
+> > 
+> > Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+> > ---
+> >  arch/x86/include/asm/sparsemem.h |  2 +
+> >  arch/x86/mm/numa.c               | 82 ++++++++++++++++++++++++++++++++
+> >  include/linux/numa.h             |  7 +++
+> >  3 files changed, 91 insertions(+)
+> > 
+> > diff --git a/arch/x86/include/asm/sparsemem.h b/arch/x86/include/asm/sparsemem.h
+> > index 64df897c0ee3..1be13b2dfe8b 100644
+> > --- a/arch/x86/include/asm/sparsemem.h
+> > +++ b/arch/x86/include/asm/sparsemem.h
+> > @@ -37,6 +37,8 @@ extern int phys_to_target_node(phys_addr_t start);
+> >  #define phys_to_target_node phys_to_target_node
+> >  extern int memory_add_physaddr_to_nid(u64 start);
+> >  #define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
+> > +extern int numa_fill_memblks(u64 start, u64 end);
+> > +#define numa_fill_memblks numa_fill_memblks
+> 
+> What is this for? The other defines are due to being an arch-specific
+> API and the #define is how the arch declares that it has a local version
+> to replace the generic one.
+
+That define, along with the numa.h change below, are to support builds of
+CONFIG_ARM64 and CONFIG_LOONGARCH, both include the caller acpi_parse_cfmws(),
+of numa_fill_memblks().
+
+> 
+> >  #endif
+> >  #endif /* __ASSEMBLY__ */
+> >  
+> > diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+> > index 2aadb2019b4f..6c8f9cff71da 100644
+> > --- a/arch/x86/mm/numa.c
+> > +++ b/arch/x86/mm/numa.c
+> > @@ -11,6 +11,7 @@
+> >  #include <linux/nodemask.h>
+> >  #include <linux/sched.h>
+> >  #include <linux/topology.h>
+> > +#include <linux/sort.h>
+> >  
+> >  #include <asm/e820/api.h>
+> >  #include <asm/proto.h>
+> > @@ -961,4 +962,85 @@ int memory_add_physaddr_to_nid(u64 start)
+> >  	return nid;
+> >  }
+> >  EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
+> > +
+> > +static int __init cmp_memblk(const void *a, const void *b)
+> > +{
+> > +	const struct numa_memblk *ma = *(const struct numa_memblk **)a;
+> > +	const struct numa_memblk *mb = *(const struct numa_memblk **)b;
+> > +
+> > +	if (ma->start != mb->start)
+> > +		return (ma->start < mb->start) ? -1 : 1;
+> > +
+> > +	if (ma->end != mb->end)
+> > +		return (ma->end < mb->end) ? -1 : 1;
+> 
+> Why is this sorting by start and end? I can maybe guess, but a comment
+> would help a future intrepid reader.
+
+Sure, can add comment. It compares ends only if starts are the same.
+It's putting the list in order for numa_fill_memblks() to walk and
+fill.
+
+> 
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static struct numa_memblk *numa_memblk_list[NR_NODE_MEMBLKS] __initdata;
+> > +
+> > +/**
+> > + * numa_fill_memblks - Fill gaps in numa_meminfo memblks
+> > + * @start: address to begin fill
+> > + * @end: address to end fill
+> > + *
+> > + * Find and extend numa_meminfo memblks to cover the @start/@end
+> > + * HPA address range, following these rules:
+> > + * 1. The first memblk must start at @start
+> > + * 2. The last memblk must end at @end
+> 
+> Why these requirements? I worry this is too strict because of the
+> existence of numa_cleanup_meminfo() which indicates that Linux has seen
+> quite messy firmware tables, or otherwise needs to cleanup after the
+> "numa=fake=" command line option. Is it not enough to just check for any
+> intersection?
+
+Yes, it would be enough to just check for intersection, and not
+force the alignment. Will change code to reflect.
+
+> 
+> > + * 3. Fill the gaps between memblks by extending numa_memblk.end
+> > + * Result: All addresses in start/end range are included in
+> > + *	   numa_meminfo.
+> > + *
+> > + * RETURNS:
+> > + * 0		  : Success. numa_meminfo fully describes start/end
+> > + * NUMA_NO_MEMBLK : No memblk exists in start/end range
+> 
+> This probably wants to clarify whether @end is inclusive or exclusive.
+
+It's exclusive and I'll add comment.
+
+> 
+> > + */
+> > +
+> > +int __init numa_fill_memblks(u64 start, u64 end)
+> > +{
+> > +	struct numa_meminfo *mi = &numa_meminfo;
+> > +	struct numa_memblk **blk = &numa_memblk_list[0];
+> > +	int count = 0;
+> > +
+> > +	for (int i = 0; i < mi->nr_blks; i++) {
+> > +		struct numa_memblk *bi = &mi->blk[i];
+> > +
+> > +		if (start <= bi->start && end >= bi->end) {
+> 
+> Maybe a comment about what this is doing? This is looking for to see if
+> any CXL window completely overlaps any SRAT entry?
+
+Based on your first comment about messy tables, I can see the need to
+expand the search to include any intersection. Will do.
+
+>    
+> > +			blk[count] = &mi->blk[i];
+> > +			count++;
+> > +		}
+> > +	}
+> > +	if (!count)
+> > +		return NUMA_NO_MEMBLK;
+> > +
+> > +	if (count == 1) {
+> > +		blk[0]->start = start;
+> > +		blk[0]->end = end;
+> > +		return 0;
+> 
+> So this is updating numa_meminfo in place?
+
+Yes.
+
+> 
+> > +	}
+> > +
+> > +	sort(&blk[0], count, sizeof(blk[0]), cmp_memblk, NULL);
+> > +	blk[0]->start = start;
+> > +	blk[count - 1]->end = end;
+> > +
+> > +	for (int i = 0, j = 1; j < count; i++, j++) {
+> > +		/* Overlaps OK. sort() put the lesser end first */
+> > +		if (blk[i]->start == blk[j]->start)
+> > +			continue;
+> > +
+> > +		/* No gap */
+> > +		if (blk[i]->end == blk[j]->start)
+> > +			continue;
+> > +
+> > +		/* Fill the gap */
+> > +		if (blk[i]->end < blk[j]->start) {
+> > +			blk[i]->end = blk[j]->start;
+> > +			continue;
+> > +		}
+> 
+> This looks clever to sort an array of pointers into the existing
+> numa_meminfo, I think it needs some comments to explain the cleverness,
+> but I am not seeing anything glaringly wrong about the approach.
+> 
+
+I'll add comments on all the above.
+
+
+> > +	}
+> > +	return 0;
+> > +}
+> > +EXPORT_SYMBOL_GPL(numa_fill_memblks);
+> > +
+> >  #endif
+> > diff --git a/include/linux/numa.h b/include/linux/numa.h
+> > index 59df211d051f..0f512c0aba54 100644
+> > --- a/include/linux/numa.h
+> > +++ b/include/linux/numa.h
+> > @@ -12,6 +12,7 @@
+> >  #define MAX_NUMNODES    (1 << NODES_SHIFT)
+> >  
+> >  #define	NUMA_NO_NODE	(-1)
+> > +#define	NUMA_NO_MEMBLK	(-1)
+> >  
+> >  /* optionally keep NUMA memory info available post init */
+> >  #ifdef CONFIG_NUMA_KEEP_MEMINFO
+> > @@ -43,6 +44,12 @@ static inline int phys_to_target_node(u64 start)
+> >  	return 0;
+> >  }
+> >  #endif
+> > +#ifndef numa_fill_memblks
+> > +static inline int __init numa_fill_memblks(u64 start, u64 end)
+> > +{
+> > +	return NUMA_NO_MEMBLK;
+> > +}
+> > +#endif
+> 
+> Why does linux/numa.h need to care about this x86-specific init routine?
+> 
+
+This is how I got ARM64 and LOONGARCH to build.
+
+
+> >  #else /* !CONFIG_NUMA */
+> >  static inline int numa_map_to_online_node(int node)
+> >  {
+> > -- 
+> > 2.37.3
+> > 
+> 
+> 
