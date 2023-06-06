@@ -2,50 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05C14723498
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Jun 2023 03:36:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9175E7237D3
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Jun 2023 08:37:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233753AbjFFBgf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 5 Jun 2023 21:36:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57898 "EHLO
+        id S234796AbjFFGhS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 6 Jun 2023 02:37:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233794AbjFFBgd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 5 Jun 2023 21:36:33 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1E23110;
-        Mon,  5 Jun 2023 18:36:30 -0700 (PDT)
-Received: from dggpemm500002.china.huawei.com (unknown [172.30.72.54])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4QZtLt1qH7z1c0HN;
-        Tue,  6 Jun 2023 09:34:46 +0800 (CST)
-Received: from [10.174.178.247] (10.174.178.247) by
- dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Tue, 6 Jun 2023 09:36:27 +0800
-Subject: Re: [PATCH v3 0/4] acpi: Add CDAT parsing support to ACPI tables code
-To:     Dave Jiang <dave.jiang@intel.com>, <linux-acpi@vger.kernel.org>,
-        <linux-cxl@vger.kernel.org>
-CC:     Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        <dan.j.williams@intel.com>, <ira.weiny@intel.com>,
-        <vishal.l.verma@intel.com>, <alison.schofield@intel.com>,
-        <lukas@wunner.de>, <Jonathan.Cameron@huawei.com>
-References: <168565502116.1098279.131831312990693128.stgit@djiang5-mobl3>
-From:   Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <0076edb9-7e65-eeb4-38fa-fb3c4a112a40@huawei.com>
-Date:   Tue, 6 Jun 2023 09:36:26 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
-MIME-Version: 1.0
-In-Reply-To: <168565502116.1098279.131831312990693128.stgit@djiang5-mobl3>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.247]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpemm500002.china.huawei.com (7.185.36.229)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        with ESMTP id S235399AbjFFGhE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Jun 2023 02:37:04 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09905E4F;
+        Mon,  5 Jun 2023 23:37:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686033423; x=1717569423;
+  h=date:from:to:cc:subject:message-id;
+  bh=womVFeEwgqMoccN1kbUwjvaJp0TZtYpmw3GBXAlLnjE=;
+  b=BXUIWUGJNs0KI2LTnADP9a6f96ZXcH1YAWULDTMBB4pXbKPXdEK4WvSt
+   sO1hDNNnwkZ9BnKSIg0RyOpp3RgM42snPYKi59STUyH3piIAn/w4HqTSt
+   4S9fCyEXPitrMXGkYZrATp79RMZuUYUJidHfmOOmqBfiYFM3C7/oH2jpY
+   0dMfrvakgKC6F2hX7yjttAyZybDLJF0DjOuCt6U2386jh8QmyNmrPnmcI
+   sOHGgVKxGORDiBk4wphsTGAJ20tQqjDxgz9P6AZOwh4nLEhsPFa9F6LkZ
+   0bxMxy8bC1A5bBHY0ODha4fVIuxEA4+ABqX/K297uy6E2ZRZyQ+Vb+5Zl
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="336938803"
+X-IronPort-AV: E=Sophos;i="6.00,219,1681196400"; 
+   d="scan'208";a="336938803"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2023 23:37:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="774007259"
+X-IronPort-AV: E=Sophos;i="6.00,219,1681196400"; 
+   d="scan'208";a="774007259"
+Received: from lkp-server01.sh.intel.com (HELO 15ab08e44a81) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 05 Jun 2023 23:37:01 -0700
+Received: from kbuild by 15ab08e44a81 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1q6QJQ-0004wR-1i;
+        Tue, 06 Jun 2023 06:37:00 +0000
+Date:   Tue, 06 Jun 2023 14:36:33 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 65491e9d74b424454284f3b14a5953b6a80df8dd
+Message-ID: <20230606063633.zZVrf%lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,70 +60,157 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2023/6/2 5:31, Dave Jiang wrote:
-> v3:
-> - Move common code to lib/fw_table.c
-> v2:
-> - Split out with CONFIG_ACPI_TABLES_LIB to be independent
-> - Fixed 0-day issues
-> - Change CDAT releveant names to prefix with cdat/CDAT instead of
->    acpi/ACPI. (Jonathan)
-> - Make table_header a union with cdat table header instead of
->    'acpi_table_header'. (Jonathan)
-> - Removed ACPI_SIG_CDAT, already defined.
-> 
-> Hi Rafael,
-> Please consider ack these patches. Dan can take these through the CXL tree. After
-> attempting to rename the cxl_ prefixes of functions and non ACPICA data structures
-> to something more common, it seems that significant amount of ACPI code would be
-> touched for the rename. For this series I left it alone in order to have the minimal
-> changes to ACPI code.
-> 
-> I've broken out the "cxl: Add support for QTG ID retrieval for CXL subsystem" [1]
-> series in order to make it more manageable. Here's the first part of the ACPI
-> changes. These changes are added to allow reuse of ACPI tables code to parse
-> the CDAT tables. While CDAT is not part of ACPI, the table structures are similar
-> to ACPI layouts that the code can be reused with some small modifications.
-> 
-> However, in order to be properly utilized by CXL users, the tables code needs
-> to be refactored out to be independent of ACPI. For example, a PPC BE host may
-> have CXL and does not have ACPI support. But it will have CDAT to read from
-> devices and switches. I have created CONFIG_ACPI_TABLES_LIB in order to allow
-> the common code to be independent. 0-day seems to be happy now for all the
-> different configs and archs.
-> 
-> 1/4: Split out the common code from drivers/acpi/tables.c to lib/fw_table.c
-> 2/4: Add CDAT support
-> 3,4/4: These two are minor patches that has ACPICA impact. Has been merged into
->         the ACPICA git repo [3].
-> 
-> The whole series is at [2] for convenience.
-> 
-> [1]: https://lore.kernel.org/linux-cxl/168193556660.1178687.15477509915255912089.stgit@djiang5-mobl3/T/#t
-> [2]: https://git.kernel.org/pub/scm/linux/kernel/git/djiang/linux.git/log/?h=cxl-qtg
-> [3]: https://github.com/acpica/acpica/pull/874
-> 
-> ---
-> 
-> Dave Jiang (4):
->        acpi: Move common tables helper functions to common lib
->        lib/firmware_table: tables: Add CDAT table parsing support
->        acpi: fix misnamed define for CDAT DSMAS
->        acpi: Add defines for CDAT SSLBIS
-> 
-> 
->   drivers/acpi/Kconfig     |   1 +
->   drivers/acpi/tables.c    | 178 +----------------------------
->   include/acpi/actbl1.h    |   5 +-
->   include/linux/acpi.h     |  22 +---
->   include/linux/fw_table.h |  52 +++++++++
->   lib/Kconfig              |   3 +
->   lib/Makefile             |   2 +
->   lib/fw_table.c           | 236 +++++++++++++++++++++++++++++++++++++++
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 65491e9d74b424454284f3b14a5953b6a80df8dd  Merge branch 'acpi-pm' into bleeding-edge
 
-Who will maintain this file? since it's the core function of parsing
-ACPI tables, I would like the update of this file in the future will
-Cc ACPI mailing list.
+elapsed time: 724m
 
-Thanks
-Hanjun
+configs tested: 138
+configs skipped: 7
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r016-20230605   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                        nsim_700_defconfig   gcc  
+arc                  randconfig-r015-20230605   gcc  
+arc                  randconfig-r043-20230605   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r032-20230605   gcc  
+arm                  randconfig-r046-20230605   clang
+arm                         s3c6400_defconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                                defconfig   gcc  
+hexagon              randconfig-r041-20230605   clang
+hexagon              randconfig-r045-20230605   clang
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230605   clang
+i386                 randconfig-i002-20230605   clang
+i386                 randconfig-i003-20230605   clang
+i386                 randconfig-i004-20230605   clang
+i386                 randconfig-i005-20230605   clang
+i386                 randconfig-i006-20230605   clang
+i386                 randconfig-i011-20230605   gcc  
+i386                 randconfig-i012-20230605   gcc  
+i386                 randconfig-i013-20230605   gcc  
+i386                 randconfig-i014-20230605   gcc  
+i386                 randconfig-i015-20230605   gcc  
+i386                 randconfig-i016-20230605   gcc  
+i386                 randconfig-i051-20230605   clang
+i386                 randconfig-i052-20230605   clang
+i386                 randconfig-i053-20230605   clang
+i386                 randconfig-i054-20230605   clang
+i386                 randconfig-i055-20230605   clang
+i386                 randconfig-i056-20230605   clang
+i386                 randconfig-i061-20230605   clang
+i386                 randconfig-i062-20230605   clang
+i386                 randconfig-i063-20230605   clang
+i386                 randconfig-i064-20230605   clang
+i386                 randconfig-i065-20230605   clang
+i386                 randconfig-i066-20230605   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r006-20230606   gcc  
+loongarch            randconfig-r025-20230605   gcc  
+m68k                             allmodconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r002-20230606   gcc  
+microblaze           randconfig-r003-20230606   gcc  
+microblaze           randconfig-r035-20230605   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                        bcm63xx_defconfig   clang
+mips         buildonly-randconfig-r002-20230605   gcc  
+mips         buildonly-randconfig-r003-20230605   gcc  
+mips                         cobalt_defconfig   gcc  
+mips                     loongson1b_defconfig   gcc  
+nios2                            alldefconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r021-20230605   gcc  
+nios2                randconfig-r024-20230605   gcc  
+nios2                randconfig-r031-20230605   gcc  
+nios2                randconfig-r034-20230605   gcc  
+openrisc     buildonly-randconfig-r001-20230605   gcc  
+openrisc     buildonly-randconfig-r004-20230605   gcc  
+openrisc             randconfig-r036-20230605   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r014-20230605   gcc  
+parisc               randconfig-r022-20230605   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                    amigaone_defconfig   gcc  
+powerpc                  iss476-smp_defconfig   gcc  
+powerpc                 mpc8315_rdb_defconfig   clang
+powerpc                 mpc834x_itx_defconfig   gcc  
+powerpc                 mpc85xx_cds_defconfig   gcc  
+powerpc              randconfig-r005-20230606   gcc  
+powerpc                    sam440ep_defconfig   gcc  
+powerpc                     tqm8540_defconfig   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv        buildonly-randconfig-r006-20230605   gcc  
+riscv                               defconfig   gcc  
+riscv             nommu_k210_sdcard_defconfig   gcc  
+riscv                randconfig-r033-20230605   clang
+riscv                randconfig-r042-20230605   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r001-20230606   gcc  
+s390                 randconfig-r044-20230605   gcc  
+sh                               allmodconfig   gcc  
+sh                                  defconfig   gcc  
+sh                          kfr2r09_defconfig   gcc  
+sh                            migor_defconfig   gcc  
+sh                   randconfig-r026-20230605   gcc  
+sparc                               defconfig   gcc  
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-a001-20230605   clang
+x86_64               randconfig-a002-20230605   clang
+x86_64               randconfig-a003-20230605   clang
+x86_64               randconfig-a004-20230605   clang
+x86_64               randconfig-a005-20230605   clang
+x86_64               randconfig-a006-20230605   clang
+x86_64               randconfig-a011-20230605   gcc  
+x86_64               randconfig-a012-20230605   gcc  
+x86_64               randconfig-a013-20230605   gcc  
+x86_64               randconfig-a014-20230605   gcc  
+x86_64               randconfig-a015-20230605   gcc  
+x86_64               randconfig-a016-20230605   gcc  
+x86_64               randconfig-x051-20230605   gcc  
+x86_64               randconfig-x052-20230605   gcc  
+x86_64               randconfig-x053-20230605   gcc  
+x86_64               randconfig-x054-20230605   gcc  
+x86_64               randconfig-x055-20230605   gcc  
+x86_64               randconfig-x056-20230605   gcc  
+x86_64               randconfig-x061-20230605   gcc  
+x86_64               randconfig-x062-20230605   gcc  
+x86_64               randconfig-x063-20230605   gcc  
+x86_64               randconfig-x064-20230605   gcc  
+x86_64               randconfig-x065-20230605   gcc  
+x86_64               randconfig-x066-20230605   gcc  
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r012-20230605   gcc  
+xtensa               randconfig-r023-20230605   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
