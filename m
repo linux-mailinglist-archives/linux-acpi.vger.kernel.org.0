@@ -2,59 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AF4A72481B
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Jun 2023 17:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8A76724820
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Jun 2023 17:46:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232681AbjFFPpj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 6 Jun 2023 11:45:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33672 "EHLO
+        id S236236AbjFFPqH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 6 Jun 2023 11:46:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232123AbjFFPpi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Jun 2023 11:45:38 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36526100
-        for <linux-acpi@vger.kernel.org>; Tue,  6 Jun 2023 08:45:35 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3f6da07ff00so63924395e9.3
-        for <linux-acpi@vger.kernel.org>; Tue, 06 Jun 2023 08:45:35 -0700 (PDT)
+        with ESMTP id S237700AbjFFPqC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Jun 2023 11:46:02 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D41A11711
+        for <linux-acpi@vger.kernel.org>; Tue,  6 Jun 2023 08:45:59 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-30aebe2602fso5130726f8f.3
+        for <linux-acpi@vger.kernel.org>; Tue, 06 Jun 2023 08:45:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686066333; x=1688658333;
+        d=linaro.org; s=google; t=1686066358; x=1688658358;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=zjmkqNjWvkkkWu9fwkZt4kzyy0KOeA6vdXpXW6eeYsI=;
-        b=UUJyfgVRY/lZMeWDMl1M8Kw+CPT/3pJ85LtIJZqB2ml7hu8TSwdZmHL+U8N2ErAHud
-         93Q2buj8fJUmOBBVhc47aqRcx5XkoWS7q+HPpbl3Z+kAT3B4qI5DzLfhL7Irf1SS6b2A
-         djyCGo6bDC7PS+gs7GxJ2HpnC5Q3Yy/FCdLLMbH8Xlc+cwxQHolGxXFb9VhSFHi3HPg6
-         qfYSwyQUDc2NC8PTbkTxlTwpCcvk4ZEmMO0lBQEcKjx4BJ414v/XjX14K01I7L0VRyd+
-         oFEhS8rtG17N/YFCZrhJg017M2Q44lkGC6cgs1R7pz8+U/072pQsIR4P+BmMoj36sOIr
-         pjig==
+        bh=wZb/LSRaeuM9YR+LBFnjbnz/LjYgZUSzBf+uR9nUwOw=;
+        b=gM/eyy+g6O2zLXUltAl7IUBbKy2ELlu1RI8hraHzLB4zLWa+TLuj29a2+uEZTfOzVx
+         DjtX/N8CNwMpzVLJntNEzKP8zaA5xLfhN2H3/vK8VuK1eERgiLedGKfJ6lok9mRnglx2
+         OScSFSb1DTDq1x+nBdNgRUr5uyqv368YsyiOmP5xhAsou0Ed137d4xFX6ZtkIJIVbVh8
+         p5D3mlB8IGvIx3HqozmWLDXYF0lCgrhl8IUJT3/PFImw3yXYbudcYe/E6WNF7nfbvQQH
+         F0WTkLS60XMt0R/AHZpigMNNanU6NaauczY/yK+LddXFenx0hc9x+n8H2flCkZFAhmj7
+         9DmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686066333; x=1688658333;
+        d=1e100.net; s=20221208; t=1686066358; x=1688658358;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zjmkqNjWvkkkWu9fwkZt4kzyy0KOeA6vdXpXW6eeYsI=;
-        b=Qx31yXES+vBZ3dwHS7WN9QPd4kW7wMkyvp9W05cm4Pxpm65vXH6HKxOytGqL68JoN7
-         gsznlvsC13xXGwaQTc/evDuYCC7L64tMIVJDZtic3G/0reigpzR2VpY1XA5W8Hz/QbR+
-         53hXHZDwjoUmc27/95vy/8CEWt6HYKl4q4PiNiLLmdrZufsWBCLKXE24FetQL/WKZv09
-         iWgD1SeagOXpM7a/oJgP3ssbaN7yt0E9Gxwhx4zas8ASQXuQZDN6unwe7oMmlHQJOQKV
-         vLvkkiTYzINS9TZOLUYZeDVi54CX2QqbGg8vTCBMLngr9X6jVqdclruqT+xN2i6fe4b7
-         URrA==
-X-Gm-Message-State: AC+VfDw+7DrS7JA8A4Qgzo+siJhH3rIkMudo0iKmcwx0nMN3FtyPUfg4
-        zFhWHdrDO8LdsACTIOnqQiaeq8BPwONxJTcIKPc=
-X-Google-Smtp-Source: ACHHUZ69tvRpTe8UQ4S3CR4bz6PL3KAc/6SOo6AK4bbdP+qIYU6Z1ahQDVy8TPocW5dHdLAqUKiijg==
-X-Received: by 2002:a05:600c:202:b0:3f6:1474:905 with SMTP id 2-20020a05600c020200b003f614740905mr2945175wmi.29.1686066333405;
-        Tue, 06 Jun 2023 08:45:33 -0700 (PDT)
+        bh=wZb/LSRaeuM9YR+LBFnjbnz/LjYgZUSzBf+uR9nUwOw=;
+        b=PVEgUtn+PaOL0LgKLuP/KmSoJuxRKZNwESZ8uuRRxupWBrLf0ji3ANVbZ10nwMoi7n
+         jAyqkrPJqpxWHFOBjsMZzgleCTFNKTY+M6YQnR7rgmqnG+Z/y5nh5VrUi3FRKydrMznJ
+         Oiq06rbZIiVJY36iayp8X2oQcYDpzyIeCS3wGsfaF6xbL1cjnCMd0RI6DhpxYmA/Ox0G
+         tZ2jiKpHBQNZ1OT9VqiFp4/OyeaofjDcp/Avuygm6ZZ+sM2cYb0VPdub+xGpVFZOgNkq
+         +Vhb7+5eiiU2ZkCQ9KPDK3Fz5AxkQQRYEAoTKJqrYXUupGCmSBPGDezsny36qXgn3lr/
+         L+MA==
+X-Gm-Message-State: AC+VfDwGNMp9LGnjljWZ3wHJ/5+SctVScUE+JecuiX+K5nsPOvTU4CFp
+        PcgU77ztCzdS4Hy5ULbYpzKVag==
+X-Google-Smtp-Source: ACHHUZ6k8PVvRfUwRe2aKfxo+yMvfbbG3AjKPaHsOSeVMITlhxclCBf7qRlKhlne+LUdWTC7qgQYug==
+X-Received: by 2002:a5d:4a12:0:b0:30e:4515:1529 with SMTP id m18-20020a5d4a12000000b0030e45151529mr2208242wrq.37.1686066358254;
+        Tue, 06 Jun 2023 08:45:58 -0700 (PDT)
 Received: from ?IPV6:2a05:6e02:1041:c10:d8fb:84d9:d402:6b22? ([2a05:6e02:1041:c10:d8fb:84d9:d402:6b22])
-        by smtp.googlemail.com with ESMTPSA id j11-20020a5d564b000000b00307c8d6b4a0sm13009936wrw.26.2023.06.06.08.45.32
+        by smtp.googlemail.com with ESMTPSA id f9-20020a056000036900b0030c2e3c7fb3sm12860673wrf.101.2023.06.06.08.45.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Jun 2023 08:45:32 -0700 (PDT)
-Message-ID: <ab70132e-10c8-40a2-8b2b-f701e529e840@linaro.org>
-Date:   Tue, 6 Jun 2023 17:45:32 +0200
+        Tue, 06 Jun 2023 08:45:57 -0700 (PDT)
+Message-ID: <6f2a63a1-1cc2-03e9-c983-8cb117923fb9@linaro.org>
+Date:   Tue, 6 Jun 2023 17:45:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.0
-Subject: Re: [PATCH v2 1/7] ACPI: thermal: Use BIT() macro for defining flags
+Subject: Re: [PATCH v2 2/7] ACPI: thermal: Drop redundant
+ ACPI_TRIPS_REFRESH_DEVICES symbol
 Content-Language: en-US
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Linux ACPI <linux-acpi@vger.kernel.org>
@@ -62,26 +63,31 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         Zhang Rui <rui.zhang@intel.com>,
         Michal Wilczynski <michal.wilczynski@intel.com>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-References: <2703629.mvXUDI8C0e@kreacher> <5959573.lOV4Wx5bFT@kreacher>
+References: <2703629.mvXUDI8C0e@kreacher> <13298027.uLZWGnKmhe@kreacher>
 From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <5959573.lOV4Wx5bFT@kreacher>
+In-Reply-To: <13298027.uLZWGnKmhe@kreacher>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 04/06/2023 14:07, Rafael J. Wysocki wrote:
+On 04/06/2023 14:13, Rafael J. Wysocki wrote:
 > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> Use the BIT() macro for defining flag symbols in the ACPI thermal driver
-> instead of using "raw" values for the flags.
+> Drop the ACPI_TRIPS_REFRESH_DEVICES symbol which is redundant, because
+> ACPI_TRIPS_DEVICES can be used directly instead of it without any
+> drawbacks and rename the ACPI_TRIPS_REFRESH_THRESHOLDS to
+> ACPI_TRIPS_THRESHOLDS to make the code a bit more consistent.
+> 
+> While at it, fix up some formatting white space used in the symbol
+> definitions.
 > 
 > No functional impact.
 > 
@@ -95,30 +101,46 @@ Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 > v1 -> v2: Added R-by from Michal.
 > 
 > ---
->   drivers/acpi/thermal.c |   10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
+>   drivers/acpi/thermal.c |   13 ++++++-------
+>   1 file changed, 6 insertions(+), 7 deletions(-)
 > 
 > Index: linux-pm/drivers/acpi/thermal.c
 > ===================================================================
 > --- linux-pm.orig/drivers/acpi/thermal.c
 > +++ linux-pm/drivers/acpi/thermal.c
-> @@ -232,11 +232,11 @@ static int acpi_thermal_set_cooling_mode
->   	return 0;
->   }
+> @@ -238,12 +238,11 @@ static int acpi_thermal_set_cooling_mode
+>   #define ACPI_TRIPS_ACTIVE	BIT(3)
+>   #define ACPI_TRIPS_DEVICES	BIT(4)
 >   
-> -#define ACPI_TRIPS_CRITICAL	0x01
-> -#define ACPI_TRIPS_HOT		0x02
-> -#define ACPI_TRIPS_PASSIVE	0x04
-> -#define ACPI_TRIPS_ACTIVE	0x08
-> -#define ACPI_TRIPS_DEVICES	0x10
-> +#define ACPI_TRIPS_CRITICAL	BIT(0)
-> +#define ACPI_TRIPS_HOT		BIT(1)
-> +#define ACPI_TRIPS_PASSIVE	BIT(2)
-> +#define ACPI_TRIPS_ACTIVE	BIT(3)
-> +#define ACPI_TRIPS_DEVICES	BIT(4)
+> -#define ACPI_TRIPS_REFRESH_THRESHOLDS	(ACPI_TRIPS_PASSIVE | ACPI_TRIPS_ACTIVE)
+> -#define ACPI_TRIPS_REFRESH_DEVICES	ACPI_TRIPS_DEVICES
+> +#define ACPI_TRIPS_THRESHOLDS	(ACPI_TRIPS_PASSIVE | ACPI_TRIPS_ACTIVE)
 >   
->   #define ACPI_TRIPS_REFRESH_THRESHOLDS	(ACPI_TRIPS_PASSIVE | ACPI_TRIPS_ACTIVE)
->   #define ACPI_TRIPS_REFRESH_DEVICES	ACPI_TRIPS_DEVICES
+> -#define ACPI_TRIPS_INIT      (ACPI_TRIPS_CRITICAL | ACPI_TRIPS_HOT |	\
+> -			      ACPI_TRIPS_PASSIVE | ACPI_TRIPS_ACTIVE |	\
+> -			      ACPI_TRIPS_DEVICES)
+> +#define ACPI_TRIPS_INIT		(ACPI_TRIPS_CRITICAL | ACPI_TRIPS_HOT | \
+> +				 ACPI_TRIPS_PASSIVE | ACPI_TRIPS_ACTIVE | \
+> +				 ACPI_TRIPS_DEVICES)
+>   
+>   /*
+>    * This exception is thrown out in two cases:
+> @@ -906,13 +905,13 @@ static void acpi_thermal_notify(struct a
+>   		acpi_queue_thermal_check(tz);
+>   		break;
+>   	case ACPI_THERMAL_NOTIFY_THRESHOLDS:
+> -		acpi_thermal_trips_update(tz, ACPI_TRIPS_REFRESH_THRESHOLDS);
+> +		acpi_thermal_trips_update(tz, ACPI_TRIPS_THRESHOLDS);
+>   		acpi_queue_thermal_check(tz);
+>   		acpi_bus_generate_netlink_event(device->pnp.device_class,
+>   						dev_name(&device->dev), event, 0);
+>   		break;
+>   	case ACPI_THERMAL_NOTIFY_DEVICES:
+> -		acpi_thermal_trips_update(tz, ACPI_TRIPS_REFRESH_DEVICES);
+> +		acpi_thermal_trips_update(tz, ACPI_TRIPS_DEVICES);
+>   		acpi_queue_thermal_check(tz);
+>   		acpi_bus_generate_netlink_event(device->pnp.device_class,
+>   						dev_name(&device->dev), event, 0);
 > 
 > 
 > 
