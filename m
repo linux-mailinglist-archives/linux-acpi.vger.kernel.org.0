@@ -2,197 +2,246 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76C2A7259BA
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jun 2023 11:12:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6A71725BC5
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jun 2023 12:45:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239894AbjFGJMS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 7 Jun 2023 05:12:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36564 "EHLO
+        id S234728AbjFGKpV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 7 Jun 2023 06:45:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239852AbjFGJLh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Jun 2023 05:11:37 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A2001BF8;
-        Wed,  7 Jun 2023 02:10:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686129056; x=1717665056;
-  h=date:from:to:cc:subject:message-id;
-  bh=mjJOaH+WPWdzG0n9ToOGyA9Qg+rLEDrmNmanJzJn0RM=;
-  b=RQvA6MTLi4vQn6uwWYMYHQMLPcLqstJWkjjRmVPWIMUBH02mmdiiIVPF
-   RkEh7bobHo3SjiwXgxIlZ/EH9rC4PrbqH3oHuIhYBtkR116a2MJkEd8Qv
-   BhKbOcFfP7fB+BbIV5G2NdQdExYcOeBNMO/x6ViHkPo1VjgXGx3llhZJn
-   pWvguKsZ4FH0yvVX+55Q8AbJW7lKruTxxsRmxtJfWODXeXsXGFQw1312n
-   pHVElB//rwgzfy5QM9tMVwyLXNWpF+hMUzK9cANLYt7JeBE2NMRMAwGLi
-   fREBZJ/P8SaezngNQrF2aTTfteKa+BwHKsXUoz3ah05tsu8C7sLOzrDcP
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10733"; a="359402704"
-X-IronPort-AV: E=Sophos;i="6.00,223,1681196400"; 
-   d="scan'208";a="359402704"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2023 02:10:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10733"; a="659856610"
-X-IronPort-AV: E=Sophos;i="6.00,223,1681196400"; 
-   d="scan'208";a="659856610"
-Received: from lkp-server01.sh.intel.com (HELO 15ab08e44a81) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 07 Jun 2023 02:10:54 -0700
-Received: from kbuild by 15ab08e44a81 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1q6pBu-0006Qi-0D;
-        Wed, 07 Jun 2023 09:10:54 +0000
-Date:   Wed, 07 Jun 2023 17:10:18 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- dda1186b1b88e54cd40458ccf30c0fd3f9be5299
-Message-ID: <20230607091018.bsGsl%lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S232476AbjFGKpU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Jun 2023 06:45:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 465ED192;
+        Wed,  7 Jun 2023 03:45:19 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C70A061934;
+        Wed,  7 Jun 2023 10:45:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B5BC433EF;
+        Wed,  7 Jun 2023 10:45:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686134718;
+        bh=ZAgihkjz7ucMavs74jDS5YgrVm8n9bUQbtdTPGw7n/k=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=DKHpBKYIy1uafQ78GqwnkfYAix6QAKnaEs/KbN0JEVo4FpMumdn2LkbSRpC/XDoH5
+         eu9C4QMijX4tskiULdUR5AAABi2VfG6tkzLuo2OZDBmM+QlASDHabaBvS5xC8PkqVW
+         Goz+5fjfZnB+XObDUz6A0lU6l0R2+6EfpQ5iQG7AQUA5VJ3I5QROG7uX+K4EP6en5+
+         TmGUQmy8zcijKy4p7S4AnbrLZWS+qugCiVX74u9PMahdg1gA4sYsLcgV6zV3TlvKmD
+         5H3WOsGczUWQQGuHopCfmAUtRWlhBLEEz6VhFyeNvRmrwZhn5u8NZPU03av1OWkpW/
+         1Z5ljeK470EOQ==
+Date:   Wed, 7 Jun 2023 13:44:50 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     Alison Schofield <alison.schofield@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Dave Jiang <dave.jiang@intel.com>, x86@kernel.org,
+        linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rppt@linux.ibm.com
+Subject: Re: [PATCH 1/2] x86/numa: Introduce numa_fill_memblks()
+Message-ID: <20230607104450.GE52412@kernel.org>
+References: <cover.1684448934.git.alison.schofield@intel.com>
+ <e365f4dfa7fa974118eb4e59aebc7cc423cf19a1.1684448934.git.alison.schofield@intel.com>
+ <647bd26937a11_142af829499@dwillia2-xfh.jf.intel.com.notmuch>
+ <ZH+RFGZqAoSEIHqT@aschofie-mobl2>
+ <647f9aef8928d_1433ac294ee@dwillia2-xfh.jf.intel.com.notmuch>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <647f9aef8928d_1433ac294ee@dwillia2-xfh.jf.intel.com.notmuch>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: dda1186b1b88e54cd40458ccf30c0fd3f9be5299  Merge branch 'thermal/bleeding-edge' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into bleeding-edge
+On Tue, Jun 06, 2023 at 01:45:35PM -0700, Dan Williams wrote:
+> [ add Mike, see "[Mike]" note below... ]
+> 
+> Alison Schofield wrote:
+> > On Sat, Jun 03, 2023 at 04:53:13PM -0700, Dan Williams wrote:
+> > > alison.schofield@ wrote:
+> > > > From: Alison Schofield <alison.schofield@intel.com>
+> > > > 
+> > > > numa_fill_memblks() fills in the gaps in numa_meminfo memblks
+> > > > over an HPA address range.
+> > > > 
+> > > > The initial use case is the ACPI driver that needs to extend
+> > > > SRAT defined proximity domains to an entire CXL CFMWS Window[1].
+> > > 
+> > > I feel like this demands more explanation because the "need" is not
+> > > apparent. In fact its a Linux policy choice not a requirement. The next
+> > > patch has some of this, but this story is needed earlier for someone
+> > > that reads this patch first. Something like:
+> > > 
+> > 
+> > Hi Dan,
+> > 
+> > Thanks for the review :)
+> > 
+> > Sure, I can add the story below to make the 'need' for this function
+> > more apparent, as well as s/needs/want so as not to conflate need with
+> > requirement.
+> > 
+> > > ---
+> > > 
+> > > The CFWMS is an ACPI data structure that indicates *potential* locations
+> > > where CXL memory can be placed. It is the playground where the CXL
+> > > driver has free reign to establish regions.  That space can be populated
+> > > by BIOS created regions, or driver created regions, after hotplug or
+> > > other reconfiguration.
+> > > 
+> > > When the BIOS creates a region in a CXL Window it additionally describes
+> > > that subset of the Window range in the other typical ACPI tables SRAT,
+> > > SLIT, and HMAT. The rationale for the BIOS not pre-describing the entire
+> > > CXL Window in SRAT, SLIT, and HMAT is that it can not predict the
+> > > future. I.e. there is nothing stopping higher or lower performance
+> > > devices being placed in the same Window. Compare that to ACPI memory
+> > > hotplug that just onlines additional capacity in the proximity domain
+> > > with little freedom for dynamic performance differentiation.
+> > > 
+> > > That leaves the OS with a choice, should unpopulated window capacity
+> > > match the proximity domain of an existing region, or should it allocate
+> > > a new one? This patch takes the simple position of minimizing proximity
+> > > domain proliferation and reuse any proximity domain intersection for the
+> > > entire Window. If the Window has no intersections then allocate a new
+> > > proximity domain. Note that SRAT, SLIT and HMAT information can be
+> > > enumerated dynamically in a standard way from device provided data.
+> > > Think of CXL as the end of ACPI needing to describe memory attributes,
+> > > CXL offers a standard discovery model for performance attributes, but
+> > > Linux still needs to interoperate with the old regime.
+> > > 
+> > > ---
+> > > 
+> > > > 
+> > > > The APCI driver expects to use numa_fill_memblks() while parsing
+> > > 
+> > > s/APCI/ACPI/
+> > > 
+> > > Again, the ACPI code does not have any expectation, this is pure OS
+> > > policy decision about how to handle undescribed memory.
+> > > 
+> > 
+> > The intent was to show the pending use case, perhaps 'wants to' use
+> > this function to enact a purely OS policy decision!
+> 
+> Sounds good, yeah I tend to read "need" as a requirement and assume that
+> Linux is out of spec or something breaks if it does not do the needed
+> thing.
+> 
+> > 
+> > 
+> > > > the CFMWS. Extending the memblks created during SRAT parsing, to
+> > > > cover the entire CFMWS Window, is desirable because everything in
+> > > > a CFMWS Window is expected to be of a similar performance class.
+> > > > 
+> > > > Requires CONFIG_NUMA_KEEP_MEMINFO.
+> > > 
+> > > Not sure this adds anything to the description.
+> > > 
+> > > > 
+> > > > [1] A CXL CFMWS Window represents a contiguous CXL memory resource,
+> > > > aka an HPA range. The CFMWS (CXL Fixed Memory Window Structure) is
+> > > > part of the ACPI CEDT (CXL Early Discovery Table).
+> > > > 
+> > > > Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+> > > > ---
+> > > >  arch/x86/include/asm/sparsemem.h |  2 +
+> > > >  arch/x86/mm/numa.c               | 82 ++++++++++++++++++++++++++++++++
+> > > >  include/linux/numa.h             |  7 +++
+> > > >  3 files changed, 91 insertions(+)
+> > > > 
+> > > > diff --git a/arch/x86/include/asm/sparsemem.h b/arch/x86/include/asm/sparsemem.h
+> > > > index 64df897c0ee3..1be13b2dfe8b 100644
+> > > > --- a/arch/x86/include/asm/sparsemem.h
+> > > > +++ b/arch/x86/include/asm/sparsemem.h
+> > > > @@ -37,6 +37,8 @@ extern int phys_to_target_node(phys_addr_t start);
+> > > >  #define phys_to_target_node phys_to_target_node
+> > > >  extern int memory_add_physaddr_to_nid(u64 start);
+> > > >  #define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
+> > > > +extern int numa_fill_memblks(u64 start, u64 end);
+> > > > +#define numa_fill_memblks numa_fill_memblks
+> > > 
+> > > What is this for? The other defines are due to being an arch-specific
+> > > API and the #define is how the arch declares that it has a local version
+> > > to replace the generic one.
+> > 
+> > That define, along with the numa.h change below, are to support builds of
+> > CONFIG_ARM64 and CONFIG_LOONGARCH, both include the caller acpi_parse_cfmws(),
+> > of numa_fill_memblks().
+> 
+> [Mike]
+> 
+> Hmm, ok, but this is piling onto the maintenance burden of x86 not
+> getting onboard with memblock for numa info yet. At a minimum that
+> avoidance of touching the ARM64 and LOONGARCH cases needs to be called
+> out, but it would be useful to have a discussion about the options here
+> with questions like:
+> 
+> - What's blocking x86 from switching to memblock?
 
-elapsed time: 815m
+To start with, someone need to work on it :)
 
-configs tested: 119
-configs skipped: 7
+There are some differences in how drivers/base/arch_numa.c and
+arch/x86/mm/numa.c handle SRAT ranges. E.g. x86 checks that SRAT covers all
+the memory reported by e820 and have this peculiar dance around hotplugable
+memory for the sake of movable_node.
+Another x86 specific thing that is build around numa_meminfo is the
+numa_emulation.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I don't see a conceptual reason why arch_numa.c cannot handle x86, but
+that's quite some work needed to make that happen.
+ 
+> - Or, does the memblock API support what numa_fill_memblks() wants to
+>   do? I.e. add a real numa_fill_memblks() implementation to
+>   drivers/base/arch_numa.c rather than skip SRAT based fixups for the
+>   generic case.
+ 
+memblock does not have a notion of empty physical ranges, so it will
+require a new set of regions to support what numa_fill_memblks() wants to
+do.
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r031-20230606   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r043-20230606   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r013-20230606   gcc  
-arm                  randconfig-r046-20230606   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r025-20230606   clang
-csky                                defconfig   gcc  
-csky                 randconfig-r022-20230606   gcc  
-hexagon              randconfig-r041-20230606   clang
-hexagon              randconfig-r045-20230606   clang
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230606   gcc  
-i386                 randconfig-i002-20230606   gcc  
-i386                 randconfig-i003-20230606   gcc  
-i386                 randconfig-i004-20230606   gcc  
-i386                 randconfig-i005-20230606   gcc  
-i386                 randconfig-i006-20230606   gcc  
-i386                 randconfig-i011-20230606   clang
-i386                 randconfig-i012-20230606   clang
-i386                 randconfig-i013-20230606   clang
-i386                 randconfig-i014-20230606   clang
-i386                 randconfig-i015-20230606   clang
-i386                 randconfig-i016-20230606   clang
-i386                 randconfig-i051-20230606   gcc  
-i386                 randconfig-i052-20230606   gcc  
-i386                 randconfig-i053-20230606   gcc  
-i386                 randconfig-i054-20230606   gcc  
-i386                 randconfig-i055-20230606   gcc  
-i386                 randconfig-i056-20230606   gcc  
-i386                 randconfig-i061-20230606   gcc  
-i386                 randconfig-i062-20230606   gcc  
-i386                 randconfig-i063-20230606   gcc  
-i386                 randconfig-i064-20230606   gcc  
-i386                 randconfig-i065-20230606   gcc  
-i386                 randconfig-i066-20230606   gcc  
-i386                 randconfig-r033-20230606   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch    buildonly-randconfig-r002-20230606   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r026-20230606   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze           randconfig-r024-20230606   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips         buildonly-randconfig-r003-20230606   clang
-mips                 randconfig-r001-20230606   clang
-nios2                               defconfig   gcc  
-nios2                randconfig-r011-20230606   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc              randconfig-r021-20230606   clang
-powerpc              randconfig-r032-20230606   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv        buildonly-randconfig-r004-20230606   clang
-riscv        buildonly-randconfig-r006-20230606   clang
-riscv                               defconfig   gcc  
-riscv                randconfig-r004-20230606   gcc  
-riscv                randconfig-r015-20230606   clang
-riscv                randconfig-r042-20230606   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390         buildonly-randconfig-r001-20230606   clang
-s390                                defconfig   gcc  
-s390                 randconfig-r002-20230606   gcc  
-s390                 randconfig-r014-20230606   clang
-s390                 randconfig-r035-20230606   gcc  
-s390                 randconfig-r044-20230606   clang
-sh                               allmodconfig   gcc  
-sh                   randconfig-r005-20230606   gcc  
-sh                   randconfig-r034-20230606   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r012-20230606   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-a001-20230606   gcc  
-x86_64               randconfig-a002-20230606   gcc  
-x86_64               randconfig-a003-20230606   gcc  
-x86_64               randconfig-a004-20230606   gcc  
-x86_64               randconfig-a005-20230606   gcc  
-x86_64               randconfig-a006-20230606   gcc  
-x86_64               randconfig-a011-20230606   clang
-x86_64               randconfig-a012-20230606   clang
-x86_64               randconfig-a013-20230606   clang
-x86_64               randconfig-a014-20230606   clang
-x86_64               randconfig-a015-20230606   clang
-x86_64               randconfig-a016-20230606   clang
-x86_64               randconfig-r003-20230606   gcc  
-x86_64               randconfig-x051-20230606   clang
-x86_64               randconfig-x052-20230606   clang
-x86_64               randconfig-x053-20230606   clang
-x86_64               randconfig-x054-20230606   clang
-x86_64               randconfig-x055-20230606   clang
-x86_64               randconfig-x056-20230606   clang
-x86_64               randconfig-x061-20230606   clang
-x86_64               randconfig-x062-20230606   clang
-x86_64               randconfig-x063-20230606   clang
-x86_64               randconfig-x064-20230606   clang
-x86_64               randconfig-x065-20230606   clang
-x86_64               randconfig-x066-20230606   clang
-x86_64                               rhel-8.3   gcc  
+With this patch numa_meminfo essentially becomes a superset of
+memblock.memory and to have a generic implementation in
+drivers/base/arch_numa.c this set should be kept somewhere.
+
+> Last I remember it was the conceptual disconnect of x86 not marking Reserved
+> ranges as memory like other architectures:
+> 
+> https://lore.kernel.org/all/20200708091520.GE128651@kernel.org/
+
+This was more about e820 vs memblock, I don't think it's relevant here.
+ 
+> ...but its been a while since this last came up and I have not been
+> following memblock developments. Maybe the anwser is the same in the
+> end, add x86-specific numa_fill_memblks, but this is as good a time as
+> any to revisit carrying that burden.
+
+I've been thinking about how to make arch_numa to support x86 and (sigh)
+loongarch, and the simplest way looks like shoving numa_meminfo there and
+then optimizing redundant pieces.
+
+For CXL on arm64/riscv we'd need a new data structure for empty physical
+ranges anyway at some point and numa_meminfo quite fits the requirements.
+We can later reconsider numa_meminfo vs memblock relationship.
+
+That said, add x86-specific numa_fill_memblks and revisit this later is a
+option as well :)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Sincerely yours,
+Mike.
