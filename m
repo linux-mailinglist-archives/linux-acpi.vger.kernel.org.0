@@ -2,99 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BFC272527F
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jun 2023 05:44:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B11EE72591D
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jun 2023 11:01:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234828AbjFGDof (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 6 Jun 2023 23:44:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60532 "EHLO
+        id S239391AbjFGJBZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 7 Jun 2023 05:01:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240880AbjFGDoV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Jun 2023 23:44:21 -0400
-Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 803AE19BD;
-        Tue,  6 Jun 2023 20:44:15 -0700 (PDT)
-Received: from pps.filterd (m0134424.ppops.net [127.0.0.1])
-        by mx0b-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35705CMk010873;
-        Wed, 7 Jun 2023 03:44:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pps0720;
- bh=mgF+EFo73mChu0H94YLLm3hRHtASY83KiLWkFphr8vA=;
- b=cg572F2ZaFJFui+bP/yPQLmUAqLz+qKHzSetn5/y4rPJD2Rf1JSCxRTQ2YWJUu0ZBDGH
- ryzuuKYd5VJ5R4RHcQr0Z38iCNXDzxCBb8POwoMB5+THCJMHvWQqlj00Zp7hhvC6bT3Z
- dNUTHqr9R0enddqvYNhlsPDXjuwowHC176E+7T2BEWeX2LqLNbcrC5t68lpZ31glIdlf
- Kg4u9sqjP6l+BDzgGWVtmjXZz8zoOJVzkfEkU2a8aI2HmH13d5mXXuNu712XD/ZHFJQT
- Nu9ZIHr3iZOjjpirs1o7t73CEmaCETzGkdoGGQe9yvUrceA5NcNoCEHLSmtasH4iOq8Q dw== 
-Received: from p1lg14880.it.hpe.com (p1lg14880.it.hpe.com [16.230.97.201])
-        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3r2a8ak5nh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 07 Jun 2023 03:44:11 +0000
-Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by p1lg14880.it.hpe.com (Postfix) with ESMTPS id D570D80022D;
-        Wed,  7 Jun 2023 03:44:10 +0000 (UTC)
-Received: from ILEIUN5Z4B.asiapacific.hpqcorp.net (unknown [16.231.227.36])
-        by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTP id 19EAE80B3A6;
-        Wed,  7 Jun 2023 03:44:07 +0000 (UTC)
-From:   James Liu <james.liu@hpe.com>
-To:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     hpelk@lists.osp.hpe.com, james.liu@hpe.com
-Subject: [PATCH v1] ACPI: reboot: Increase the delay to avoid racing after writing to ACPI RESET_REG on AMD Milan platforms.
-Date:   Wed,  7 Jun 2023 11:44:03 +0800
-Message-Id: <20230607034403.2885-1-james.liu@hpe.com>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S239439AbjFGJAw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Jun 2023 05:00:52 -0400
+Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE1021FDC
+        for <linux-acpi@vger.kernel.org>; Wed,  7 Jun 2023 01:59:07 -0700 (PDT)
+Received: by mail-oi1-x233.google.com with SMTP id 5614622812f47-39a3f26688bso6085038b6e.2
+        for <linux-acpi@vger.kernel.org>; Wed, 07 Jun 2023 01:59:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686128347; x=1688720347;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=hBdjUmLLxTMipCtOKQafeZ6YaOeoY5bbnR9kUaMiMR8=;
+        b=jsrrj31dMSZIbXb6poLk+N0BvihdLqH/JjRk6kRQ8CuxsF4eUzJZT7EJKYb2550fMx
+         K83PUI/+23opZQgiJRIQzZzwdEq/0RcaOdgoCYoGY314fiTZDc/xzHPoqCEIclLbTCML
+         klrGBtBtIYMajaM193uWBkXXjlfmFTj02kkZ61DxCeLvh2tOEhYkyM49b4IzWmbf0S8l
+         a9HjtvM14SwVf3KXyvNnWY5f/NLHD7oKEHmTlED3VxUCDfRm0i0S/K4FVevYFkn61tWb
+         o0BmY4F63xRMkoN75bsLUX+27YMcINWK190TXD6d36PBEs1sUzw2CznAZMr9oIqPPVtI
+         FY8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686128347; x=1688720347;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hBdjUmLLxTMipCtOKQafeZ6YaOeoY5bbnR9kUaMiMR8=;
+        b=hBX9FM+8AbkFJVnH022FkGGFWM5BCGyDPJETqn5pV1UkTD7w6IZfnyT7pym9+bSDHw
+         4pMFBZTY9+5RbY9J0Nj7InU+tvwh4KOBUuw6WuDvI+APubMp4lTxZ4X68oXvkl1tqbM2
+         W7uJE+dpMzy7/M5QXHUKluADoJjlQoO5KjWJV3nZ5nphxgLISM/XebVnEpJav2LQpylt
+         dQmDo09cH/+MSqXBh/Jk3Mw+FNMJn19WmhFwHjo1OJzNq2IMeSSMlyJe3fuZVF3IGnsX
+         VVptDLaUpI1ppIEc9nYbOTDNNyS5aARq6y34DcB28/8ta2rzadUq0ef0bQTn1yvRAY9w
+         TE2Q==
+X-Gm-Message-State: AC+VfDz5yfYrVZINaOPAtSZMyvImU/S7jtu2wTnGUvRSYuPuFAjxx4Qr
+        dBi6oPjQyn/oBjX8wfqkum5jUpZn5iBj7A4ebJsJOQ==
+X-Google-Smtp-Source: ACHHUZ58qE/jJ6JiHkhted4hEmdJJkE4YrpMwduhlMy70pGAkRQPDl8XF8dwesLFyXSW5wi1d++FZyEEUrZqVPMc/hU=
+X-Received: by 2002:a05:6808:4294:b0:396:4977:e148 with SMTP id
+ dq20-20020a056808429400b003964977e148mr4766073oib.9.1686128347140; Wed, 07
+ Jun 2023 01:59:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: 0BWj7BAlMXdw-YolrWWncbPTmm4o2aFA
-X-Proofpoint-ORIG-GUID: 0BWj7BAlMXdw-YolrWWncbPTmm4o2aFA
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-07_01,2023-06-06_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- mlxlogscore=904 bulkscore=0 impostorscore=0 lowpriorityscore=0
- priorityscore=1501 spamscore=0 clxscore=1011 adultscore=0 mlxscore=0
- suspectscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2305260000 definitions=main-2306070029
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20230529062511.52016-1-anshuman.khandual@arm.com> <20230529062511.52016-6-anshuman.khandual@arm.com>
+In-Reply-To: <20230529062511.52016-6-anshuman.khandual@arm.com>
+From:   Mike Leach <mike.leach@linaro.org>
+Date:   Wed, 7 Jun 2023 09:58:55 +0100
+Message-ID: <CAJ9a7ViWiSuabBVPASHO-MDs9z7wGSLuCLCpPezFrh6p3AOgyA@mail.gmail.com>
+Subject: Re: [PATCH V5 5/6] coresight: platform: acpi: Ignore the absence of graph
+To:     Anshuman Khandual <anshuman.khandual@arm.com>
+Cc:     linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org,
+        suzuki.poulose@arm.com, scclevenger@os.amperecomputing.com,
+        Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-For AMD Milan platforms, the delay of 15ms is insufficient to avoid racing
-of reboot mechanisms. That said, the AMD Milan processors don't reboot
-in 15ms after invoking acpi_reset().
+HI Ansuman,
 
-The proposed 50ms delay can effectively work around this issue.
-This extended delay aligns better with ACPI v6.4 (i.e., sec. 4.8.4.6),
-which indicates that ideally OSPM should execute spin loops on the CPUs
-in the system following a write to this register.
+On Mon, 29 May 2023 at 07:26, Anshuman Khandual
+<anshuman.khandual@arm.com> wrote:
+>
+> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+>
+> Some components may not have graph connections for describing
+> the trace path. e.g., ETE, where it could directly use the per
+> CPU TRBE. Ignore the absence of graph connections
+>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>  drivers/hwtracing/coresight/coresight-platform.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/hwtracing/coresight/coresight-platform.c b/drivers/hwtracing/coresight/coresight-platform.c
+> index 475899714104..c4b4fbde8550 100644
+> --- a/drivers/hwtracing/coresight/coresight-platform.c
+> +++ b/drivers/hwtracing/coresight/coresight-platform.c
+> @@ -692,8 +692,12 @@ static int acpi_coresight_parse_graph(struct acpi_device *adev,
+>
+>         pdata->nr_inport = pdata->nr_outport = 0;
+>         graph = acpi_get_coresight_graph(adev);
+> +       /*
+> +        * There are no graph connections, which is fine for some components.
+> +        * e.g., ETE
+> +        */
+>         if (!graph)
+> -               return -ENOENT;
+> +               return 0;
+>
 
-Signed-off-by: James Liu <james.liu@hpe.com>
----
- drivers/acpi/reboot.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Should we not determine if it is valid for a particular component not
+to have a graph connection?
+Prior to this patch an incorrectly configured ETMv4 - which must have
+a graph would return an error, after this it will fail silently
 
-diff --git a/drivers/acpi/reboot.c b/drivers/acpi/reboot.c
-index b79b7c99c237..002f7c7814a1 100644
---- a/drivers/acpi/reboot.c
-+++ b/drivers/acpi/reboot.c
-@@ -78,5 +78,5 @@ void acpi_reboot(void)
- 	 * The 15ms delay has been found to be long enough for the system
- 	 * to reboot on the affected platforms.
- 	 */
--	mdelay(15);
-+	mdelay(50);
- }
+Mike
+
+>         nlinks = graph->package.elements[2].integer.value;
+>         if (!nlinks)
+> --
+> 2.25.1
+>
+
+
 -- 
-2.40.1
-
+Mike Leach
+Principal Engineer, ARM Ltd.
+Manchester Design Centre. UK
