@@ -2,309 +2,214 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B0BB72626F
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jun 2023 16:11:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EF9772629A
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jun 2023 16:20:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240508AbjFGOLy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 7 Jun 2023 10:11:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46638 "EHLO
+        id S241073AbjFGOUP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 7 Jun 2023 10:20:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240340AbjFGOLy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Jun 2023 10:11:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C927919D
-        for <linux-acpi@vger.kernel.org>; Wed,  7 Jun 2023 07:11:52 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4ED5163FD8
-        for <linux-acpi@vger.kernel.org>; Wed,  7 Jun 2023 14:11:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0ADC433D2;
-        Wed,  7 Jun 2023 14:11:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686147111;
-        bh=b5dbHZ6/oDbH7dilLlSxJcr0e7iiridtcy15U7Z+AzI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=JfjAF6nA+9Yid5T0NBJ3uB79W7zJUs8nWeDj9eW5gQAPLDTPgSqQJ/flWJhNC85DB
-         2PU+jFMaWWrZXelu1SGpacl0AaEaTMRAEBhZwCdI1J+z62rab2z4+j4h0RlImZGS6F
-         /ekWjUp6ZGYlGN1lTiHO5qLEv4JhInK8kiSSRZ9JveJzrSsfnBKBKCQomz+JZUaQN5
-         z4Z5Whv5jvoCsIPHvt8g1gu2DrsFBANHND7YqlmazRu1B9XdyIPxWi7MtqEnNC1ZUN
-         vPLjJQXS2PBAFLdA7FQ0xWVS9WfHurD+rZq1kUWbh0mMOrdIoKvAtdDBhyP7X6MK+t
-         dbHLA40KJP18Q==
-Date:   Wed, 7 Jun 2023 16:11:46 +0200
-From:   Lorenzo Pieralisi <lpieralisi@kernel.org>
-To:     Sudeep Holla <sudeep.holla@arm.com>, catalin.marinas@arm.com,
-        will@kernel.org
-Cc:     linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>
-Subject: Re: [PATCH v2] ACPI: bus: Consolidate all arm specific
- initialisation into acpi_arm_init()
-Message-ID: <ZICQIqdbYJlJkI5E@lpieralisi>
-References: <20230606093531.2746732-1-sudeep.holla@arm.com>
+        with ESMTP id S241021AbjFGOUO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Jun 2023 10:20:14 -0400
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2089.outbound.protection.outlook.com [40.107.223.89])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB773137;
+        Wed,  7 Jun 2023 07:20:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=c4a98Kt180BJOS2FA+qblsKep9J6J3SQXSWVyt+VIG5J4C+hep31/yqZW34YHvb16vqIyO8uqcgVg1ZJRg7hAtUjtPfxQ050cbDnOPHuRqD+xIwZSGcJiun1Q9+I9vOk+kQ1CoROoUzWs6OPHB0u3SNWsbZxTHdn9Ule5bFWdvRX7/neJE19dXiQ/QrGPzKe7Cgv3ZVT015WLI2tGOCwUvSWNXE3bVrV/pX8Y1wV0AnbjDcQE9EF67xRRxZ3niVrjE6V/pA1C1OR3dQlAdP7eHE3k7YPmFNpzyj5ol/k/uwjrc+PccJGBBZGXHjI6JaEZHUi1v2vULxpGWCmDeCl3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NLh2oRtE/VgRfaB3/2FPgd7s36lGrmafpuQ/aS63PpU=;
+ b=Q2mbwgXQb0CBa3ztv5UOPQ6QULtBZXKPS4b0pfA7/Y6LgtvNBYYlHqs6OALdeWV0oRW6K5FI0Iu0785Bu8EuoDDyLNhTUxqKBajdSi1Of/3sumMPOrX0nIe4GPngj8AXOGAi8tMBIHPGHYaygHV2h6JvplxiuP1HtyaeHIf+CiNfGXdFvKoSRlY8lh2PWR5fQS9I9deYxtoZsYY+4kiWcPgrfv7PPYRQvlPekuxG+BvtgSPeD5ozVddH7A9XTw97iQBLgutNSqr9rUA3sCfKQH9zJK0k+DAJLnMi/fVm3bl9ePxYyHWy+R8uqaG0Fr7AWsDGirQK6B8wNh15Eq4QuA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NLh2oRtE/VgRfaB3/2FPgd7s36lGrmafpuQ/aS63PpU=;
+ b=WDeESPRA6Q4U3Kzs03pRuve9rM3YNVgum6UDbAU7U6BVe8xUu4+Gqalny+2pwJ5VZEr608gpc8I0kcqgFNyBB439BAe5lgxgdPYDG1xC2YhKXpzVfaoSJhQuzmtoErp8YZquacDolME9Cy7o3LihywRydT/Z8k3MQXQNtNUpdk4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BN8PR12MB3108.namprd12.prod.outlook.com (2603:10b6:408:40::20)
+ by SA1PR12MB8161.namprd12.prod.outlook.com (2603:10b6:806:330::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.33; Wed, 7 Jun
+ 2023 14:20:10 +0000
+Received: from BN8PR12MB3108.namprd12.prod.outlook.com
+ ([fe80::ca6a:7f77:6bb7:17fb]) by BN8PR12MB3108.namprd12.prod.outlook.com
+ ([fe80::ca6a:7f77:6bb7:17fb%3]) with mapi id 15.20.6455.028; Wed, 7 Jun 2023
+ 14:20:10 +0000
+Message-ID: <37f64467-c9d7-826d-de41-aa571b2df0ec@amd.com>
+Date:   Wed, 7 Jun 2023 10:20:07 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Cc:     yazen.ghannam@amd.com, avadnaik@amd.com,
+        alexey.kardashevskiy@amd.com, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 1/3] ACPI: APEI: EINJ: Refactor
+ available_error_type_show()
+Content-Language: en-US
+To:     Avadhut Naik <Avadhut.Naik@amd.com>, rafael@kernel.org,
+        gregkh@linuxfoundation.org, lenb@kernel.org,
+        linux-acpi@vger.kernel.org, linux-fsdevel@vger.kernel.org
+References: <20230525204422.4754-1-Avadhut.Naik@amd.com>
+ <20230525204422.4754-2-Avadhut.Naik@amd.com>
+From:   Yazen Ghannam <yazen.ghannam@amd.com>
+In-Reply-To: <20230525204422.4754-2-Avadhut.Naik@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BN8PR07CA0036.namprd07.prod.outlook.com
+ (2603:10b6:408:ac::49) To BN8PR12MB3108.namprd12.prod.outlook.com
+ (2603:10b6:408:40::20)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230606093531.2746732-1-sudeep.holla@arm.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8PR12MB3108:EE_|SA1PR12MB8161:EE_
+X-MS-Office365-Filtering-Correlation-Id: cf4f0f13-97ec-418b-de9d-08db67624d3e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: iQbwoXBjPzxiF2NynhEaxSs5kXjPlVVuWFR+FxGLsHVG8wqJdroGlh357jdi1b0a/ArhnHmSZVecpVAKNtDFxVwdKHFK5mYtEAyU8p3QchbJjTK/4HTfPVNqkkFAp0kF9l54zadEEP95G8Le5pAv+fYzH6JExAuxbQZhiAviH97pCnKIYLenAW6l832Bh6Hti2EVZS/YyN9JEPAusi57THY1+d/8bHiAryy1lz50SS0GGeC6P6MP4k/J+oyAa/xobelMEbmVI/ZMczkI4Mwx57AfP31va3MZCesbGhcNk7mlBV6GS7vWelQxZ+2fNI73AlQaDfrikgaIIELK6i6lZpSFl0uzO6enu2jdgBS/M3iCq3jEmR63qUp3xXyopsEemIzA11UXwBPfXiGYJ0stFYpCynoOU3v4UDPWF/Kl4JSYT4sjAw52FxIH3dLvjpbmJMx0xcTcqpgKhwLkGGDW1pzYc3DW7vqCioudWReKq66VsP+N3jfAcY/InEJSZA8IEOUlZxZLUPxsjyoI2DsFlb1BUThzyuZmDRINUT/T3Ql7L20KMOxvI5BIzG18E1uB68p2C1SapUx9dKKSctFi4AzA9JovRpPjsxgmONcLVUQQ2ArbAKYIYxV1dBXquUuI4hAYP4QN4g9fM8Z8ajyoxQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR12MB3108.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(346002)(366004)(376002)(396003)(136003)(451199021)(83380400001)(2906002)(2616005)(36756003)(31696002)(86362001)(38100700002)(41300700001)(6486002)(316002)(6666004)(5660300002)(8936002)(8676002)(478600001)(66556008)(66946007)(66476007)(4326008)(31686004)(6506007)(53546011)(6512007)(26005)(186003)(44832011)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TktJeEtTczBvQ1dyT0haTHlRd2p3emNwK3YrQXloZW02NHZ6RTI4TWhCZzdF?=
+ =?utf-8?B?NjBpemU1akdRTG9CTm1oZlc3Q1dSMWpvTGxVcnA1S1JueFVUbmNaOWxzMnVa?=
+ =?utf-8?B?aXUvZEN2TXVPeDcrNXJpZTJhMkdxSzFmVm9MaE1ybmVObVRCdkxQaUNXQVp4?=
+ =?utf-8?B?NVZYelFyMjRoZlBoV0ZMNys0NW5yTlpwNjhJYVFvWWo5N0FRMEl6K3NldHBj?=
+ =?utf-8?B?M05oSmRBNGlBSUh3UkdTZVk2QXJRdUFBVUVMVkVBZnJNKzB3MDlZQmRHNDQ3?=
+ =?utf-8?B?L0NkZlVmSVgya3JGbWN3ZVZFS2l2WkVDcjdzNkErS0RLUGwzUHB4Z3NuNVdT?=
+ =?utf-8?B?LzIwK0hJY0YwMjdOdmtDL0luc0RMWFBHd2Z6OTEzeXYrWHoySlNMS1I4RmVB?=
+ =?utf-8?B?TmVJNnhUYzE5T04vNFZzbUxESURQMTNIZzVSU2o2RURlR2tSTUo5dmZMSVdV?=
+ =?utf-8?B?R2p2VjBDZWMvWnA2QkpDQWVveDJQdVBOVS9ZenkvaHVYbzBKZlJTWmRWbFZB?=
+ =?utf-8?B?V0F6S3I2R1dZMmxoVzhOZE1tTlMvVi83QnFITUtsN1hCbGhUYU9SUHhHOE5R?=
+ =?utf-8?B?SkdUNUhweGhXdWFjVjhYQjVtQXZWWVFuV2FvUWNWaUNMT29VYUwxZm83NnI0?=
+ =?utf-8?B?OVhSU1QzS2lkWFJVaDNTenZOUmttQm5mR09Yb0ExSlBha2dYODd3a3IzMXQ4?=
+ =?utf-8?B?ZzZoVHRuZGxCUXlnSmxoZGJHSW55K2JVZTIyZGwrcFFqbmZ2U2Q2TjBCTU4r?=
+ =?utf-8?B?bzNaM3ZUWVF6MHNqeW5KMHo3L1lzWTExc2hFSVI1MkVrQWRIL3RJV1lRNmJT?=
+ =?utf-8?B?UkZERHd6S2g3ZkFmYWh5L01qMEpzRnRTMTJSRnBqTWVGZVRZQU0zdUdyK3Fy?=
+ =?utf-8?B?V2lQMGxQSWh5MXlQREExS3IzSzFSdVBxUGJja1liQ0dDU0NDV3ljTU5QdzQy?=
+ =?utf-8?B?bUlyeHNsR0o5TEZ6TnBJQXphUG9uS3pKd2VDQllHSjkrY04rbHVnVEk1ZGJx?=
+ =?utf-8?B?VlhBbDY5Nng3VitQRXRMbXhWZjYvV3NBVnRCcjZaV3FHay83aEk5YjJoWkJW?=
+ =?utf-8?B?Z1E2SUFBMVRFUGxWYlNLQVJ6c1RBVUtlTE1vc3FISnE3NllycTlOcXJUcTZ2?=
+ =?utf-8?B?TXMzeDJkVjhyUE4vZ3crSXlDckZCYXl1NFRaeVVyOVJHVjZMcHplYkpDSm9w?=
+ =?utf-8?B?YkNFYXZEek1QbFpSbVVlUjhCYzJ6TEFFbHk5cFBNQzZSS1p4eWI3RXJyNnJF?=
+ =?utf-8?B?c1FHVU9PUThtamE0WDE4SmRWcXNmZFlVUkg3Tk9DdkZzeUlxa1RHeXhFb1o2?=
+ =?utf-8?B?Ykk4SEJxRUdXR241YmE4YmFocll5WFhBMG5NSXFXVDlMTXI0RlZaaHlRRXdo?=
+ =?utf-8?B?L01aZGdZZnNweWJFeittL1kwWHNONnErNjhZblA5bll3K2ZzbjhrOVBNS0xx?=
+ =?utf-8?B?NEdxVUxiNVVJVzFBSHR2MzhzNmNheWVoY1hxUVNsQnpEd3gxRTM2M04xTWJE?=
+ =?utf-8?B?RWFxN0g3anU4azdKQURJQkNTcmVqVWdpcnRBSzZEUzhoVEtwME5kSUdWbE91?=
+ =?utf-8?B?emRBVi81OEV5RWdoYkFNRldETytVWlFCZFZxdUVYQXB5c0dnT1JpOXV2VS9s?=
+ =?utf-8?B?SlZxOXF5R01oVnVZZjhtY09OSkFBd1ROWHVTU0Npc080QnpENEpRWEVZaXBR?=
+ =?utf-8?B?OUFtenFRS0tBd28ydnhFaDV2T2JEbHp6TUZ5d0piNXBuSGYzOGdOalRsWWxy?=
+ =?utf-8?B?M1FWamVlbytGcmJLcndJQ3l6eXAxbjBQQWsvR0ZzaFlCR3NFR0kva0tiZHhJ?=
+ =?utf-8?B?dWsyVFpIYkR0ZXlQUXJSeTBzZ0JBc1ZQVzVKeEMrNDBqdkxzalNqeG1QMHN4?=
+ =?utf-8?B?MWthQzliTkJhaEsrb3huOG11Um5pSkpTaGFwMXFWV2QvTHA2MUlBblZIeUxX?=
+ =?utf-8?B?eGEyNDJMbWlpLzd5K1RZUHo5V1JodHg3dWc0Ukd5clRqditGYlAxVm9tanE3?=
+ =?utf-8?B?Uzc4c1dRMklrZ2U1bTdPbk1ST2VXbVFCR1o3YjJQSDlQUjNNVFVWK0daTFYx?=
+ =?utf-8?B?bU5kL1cyZVArSkwrcDgyWUd5VVZuL1p5Sy9xbGEybE1XMFo2aEZBZkd1aFE5?=
+ =?utf-8?Q?PVe0sbBWqrEStL24XbbZgMvl0?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf4f0f13-97ec-418b-de9d-08db67624d3e
+X-MS-Exchange-CrossTenant-AuthSource: BN8PR12MB3108.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2023 14:20:10.4844
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yNHuhe0QhnlqJcNKsUvZTxs3kLHf/S35QrPAOFig0mtiDRYU6vTcc+tISoHvaIWfKMd8cXf8VkRbL4VmT+7c0A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8161
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-[+Catalin, Will]
-
-On Tue, Jun 06, 2023 at 10:35:31AM +0100, Sudeep Holla wrote:
-> Move all of the ARM-specific initialization into one function namely
-> acpi_arm_init(), so it is not necessary to modify/update bus.c every
-> time a new piece of it is added.
+On 5/25/23 4:44 PM, Avadhut Naik wrote:
+> OSPM can discover the error injection capabilities of the platform by
+> executing GET_ERROR_TYPE error injection action.[1] The action returns
+> a DWORD representing a bitmap of platform supported error injections.[2]
 > 
-> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> Cc: Rafael J. Wysocki <rafael@kernel.org>
-> Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-> Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
-> Link: https://lore.kernel.org/r/CAJZ5v0iBZRZmV_oU+VurqxnVMbFN_ttqrL=cLh0sUH+=u0PYsw@mail.gmail.com
-> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> The available_error_type_show() function determines the bits set within
+> this DWORD and provides a verbose output, from einj_error_type_string
+> array, through /sys/kernel/debug/apei/einj/available_error_type file.
+> 
+> The function however, assumes one to one correspondence between an error's
+> position in the bitmap and its array entry offset. Consequently, some
+> errors like Vendor Defined Error Type fail this assumption and will
+> incorrectly be shown as not supported, even if their corresponding bit is
+> set in the bitmap and they have an entry in the array.
+> 
+> Navigate around the issue by converting einj_error_type_string into an
+> array of structures with a predetermined mask for all error types
+> corresponding to their bit position in the DWORD returned by GET_ERROR_TYPE
+> action. The same breaks the aforementioned assumption resulting in all
+> supported error types by a platform being outputted through the above
+> available_error_type file.
+> 
+> [1] ACPI specification 6.5, Table 18.25
+> [2] ACPI specification 6.5, Table 18.30
+> 
+> Suggested-by: Alexey Kardashevskiy <alexey.kardashevskiy@amd.com>
+> Signed-off-by: Avadhut Naik <Avadhut.Naik@amd.com>
 > ---
->  drivers/acpi/arm64/Makefile |  2 +-
->  drivers/acpi/arm64/agdi.c   |  2 +-
->  drivers/acpi/arm64/apmt.c   |  2 +-
->  drivers/acpi/arm64/init.c   | 13 +++++++++++++
->  drivers/acpi/arm64/init.h   |  6 ++++++
->  drivers/acpi/arm64/iort.c   |  1 +
->  drivers/acpi/bus.c          |  7 +------
->  include/linux/acpi.h        |  6 ++++++
->  include/linux/acpi_agdi.h   | 13 -------------
->  include/linux/acpi_apmt.h   | 19 -------------------
->  include/linux/acpi_iort.h   |  2 --
->  11 files changed, 30 insertions(+), 43 deletions(-)
->  create mode 100644 drivers/acpi/arm64/init.c
->  create mode 100644 drivers/acpi/arm64/init.h
->  delete mode 100644 include/linux/acpi_agdi.h
->  delete mode 100644 include/linux/acpi_apmt.h
+>  drivers/acpi/apei/einj.c | 43 ++++++++++++++++++++--------------------
+>  1 file changed, 22 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
+> index 013eb621dc92..d5f8dc4df7a5 100644
+> --- a/drivers/acpi/apei/einj.c
+> +++ b/drivers/acpi/apei/einj.c
+> @@ -577,25 +577,25 @@ static u64 error_param2;
+>  static u64 error_param3;
+>  static u64 error_param4;
+>  static struct dentry *einj_debug_dir;
+> -static const char * const einj_error_type_string[] = {
+> -	"0x00000001\tProcessor Correctable\n",
+> -	"0x00000002\tProcessor Uncorrectable non-fatal\n",
+> -	"0x00000004\tProcessor Uncorrectable fatal\n",
+> -	"0x00000008\tMemory Correctable\n",
+> -	"0x00000010\tMemory Uncorrectable non-fatal\n",
+> -	"0x00000020\tMemory Uncorrectable fatal\n",
+> -	"0x00000040\tPCI Express Correctable\n",
+> -	"0x00000080\tPCI Express Uncorrectable non-fatal\n",
+> -	"0x00000100\tPCI Express Uncorrectable fatal\n",
+> -	"0x00000200\tPlatform Correctable\n",
+> -	"0x00000400\tPlatform Uncorrectable non-fatal\n",
+> -	"0x00000800\tPlatform Uncorrectable fatal\n",
+> -	"0x00001000\tCXL.cache Protocol Correctable\n",
+> -	"0x00002000\tCXL.cache Protocol Uncorrectable non-fatal\n",
+> -	"0x00004000\tCXL.cache Protocol Uncorrectable fatal\n",
+> -	"0x00008000\tCXL.mem Protocol Correctable\n",
+> -	"0x00010000\tCXL.mem Protocol Uncorrectable non-fatal\n",
+> -	"0x00020000\tCXL.mem Protocol Uncorrectable fatal\n",
+> +static struct { u32 mask; const char *str; } const einj_error_type_string[] = {
+> +	{0x00000001, "Processor Correctable"},
+> +	{0x00000002, "Processor Uncorrectable non-fatal"},
+> +	{0x00000004, "Processor Uncorrectable fatal"},
+> +	{0x00000008, "Memory Correctable"},
+> +	{0x00000010, "Memory Uncorrectable non-fatal"},
+> +	{0x00000020, "Memory Uncorrectable fatal"},
+> +	{0x00000040, "PCI Express Correctable"},
+> +	{0x00000080, "PCI Express Uncorrectable non-fatal"},
+> +	{0x00000100, "PCI Express Uncorrectable fatal"},
+> +	{0x00000200, "Platform Correctable"},
+> +	{0x00000400, "Platform Uncorrectable non-fatal"},
+> +	{0x00000800, "Platform Uncorrectable fatal"},
+> +	{0x00001000, "CXL.cache Protocol Correctable"},
+> +	{0x00002000, "CXL.cache Protocol Uncorrectable non-fatal"},
+> +	{0x00004000, "CXL.cache Protocol Uncorrectable fatal"},
+> +	{0x00008000, "CXL.mem Protocol Correctable"},
+> +	{0x00010000, "CXL.mem Protocol Uncorrectable non-fatal"},
+> +	{0x00020000, "CXL.mem Protocol Uncorrectable fatal"},
+>  };
+>
 
-Hi Catalin/Will,
-
-this patch has got all tags required and it is best to send
-arm64 ACPI changes upstream through the arm64 tree for
-consistency, can you pick it up for v6.5 please ?
+I think it'd be easier to read if the masks used the BIT() macro rather
+than a hex value.
 
 Thanks,
-Lorenzo
-
-> v1[1]->v2:
-> 	- Used IS_ENABLED and made the init functions' declarations
-> 	  unconditional
-> 	- Added review tags
-> 
-> [1] https://lore.kernel.org/all/20230605103550.2427459-1-sudeep.holla@arm.com
-> 
-> diff --git a/drivers/acpi/arm64/Makefile b/drivers/acpi/arm64/Makefile
-> index e21a9e84e394..f81fe24894b2 100644
-> --- a/drivers/acpi/arm64/Makefile
-> +++ b/drivers/acpi/arm64/Makefile
-> @@ -3,4 +3,4 @@ obj-$(CONFIG_ACPI_AGDI) 	+= agdi.o
->  obj-$(CONFIG_ACPI_IORT) 	+= iort.o
->  obj-$(CONFIG_ACPI_GTDT) 	+= gtdt.o
->  obj-$(CONFIG_ACPI_APMT) 	+= apmt.o
-> -obj-y				+= dma.o
-> +obj-y				+= dma.o init.o
-> diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
-> index f605302395c3..8b3c7d42b41b 100644
-> --- a/drivers/acpi/arm64/agdi.c
-> +++ b/drivers/acpi/arm64/agdi.c
-> @@ -9,11 +9,11 @@
->  #define pr_fmt(fmt) "ACPI: AGDI: " fmt
-> 
->  #include <linux/acpi.h>
-> -#include <linux/acpi_agdi.h>
->  #include <linux/arm_sdei.h>
->  #include <linux/io.h>
->  #include <linux/kernel.h>
->  #include <linux/platform_device.h>
-> +#include "init.h"
-> 
->  struct agdi_data {
->  	int sdei_event;
-> diff --git a/drivers/acpi/arm64/apmt.c b/drivers/acpi/arm64/apmt.c
-> index 8cab69fa5d59..e5c3bc99fc79 100644
-> --- a/drivers/acpi/arm64/apmt.c
-> +++ b/drivers/acpi/arm64/apmt.c
-> @@ -10,10 +10,10 @@
->  #define pr_fmt(fmt)	"ACPI: APMT: " fmt
-> 
->  #include <linux/acpi.h>
-> -#include <linux/acpi_apmt.h>
->  #include <linux/init.h>
->  #include <linux/kernel.h>
->  #include <linux/platform_device.h>
-> +#include "init.h"
-> 
->  #define DEV_NAME "arm-cs-arch-pmu"
-> 
-> diff --git a/drivers/acpi/arm64/init.c b/drivers/acpi/arm64/init.c
-> new file mode 100644
-> index 000000000000..d3ce53dda122
-> --- /dev/null
-> +++ b/drivers/acpi/arm64/init.c
-> @@ -0,0 +1,13 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +#include <linux/acpi.h>
-> +#include "init.h"
-> +
-> +void __init acpi_arm_init(void)
-> +{
-> +	if (IS_ENABLED(CONFIG_ACPI_AGDI))
-> +		acpi_agdi_init();
-> +	if (IS_ENABLED(CONFIG_ACPI_APMT))
-> +		acpi_apmt_init();
-> +	if (IS_ENABLED(CONFIG_ACPI_IORT))
-> +		acpi_iort_init();
-> +}
-> diff --git a/drivers/acpi/arm64/init.h b/drivers/acpi/arm64/init.h
-> new file mode 100644
-> index 000000000000..a1715a2a34e9
-> --- /dev/null
-> +++ b/drivers/acpi/arm64/init.h
-> @@ -0,0 +1,6 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#include <linux/init.h>
-> +
-> +void __init acpi_agdi_init(void);
-> +void __init acpi_apmt_init(void);
-> +void __init acpi_iort_init(void);
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index 38fb84974f35..3631230a61c8 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -19,6 +19,7 @@
->  #include <linux/platform_device.h>
->  #include <linux/slab.h>
->  #include <linux/dma-map-ops.h>
-> +#include "init.h"
-> 
->  #define IORT_TYPE_MASK(type)	(1 << (type))
->  #define IORT_MSI_TYPE		(1 << ACPI_IORT_NODE_ITS_GROUP)
-> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> index d161ff707de4..7a1eaf8c7bde 100644
-> --- a/drivers/acpi/bus.c
-> +++ b/drivers/acpi/bus.c
-> @@ -26,9 +26,6 @@
->  #include <asm/mpspec.h>
->  #include <linux/dmi.h>
->  #endif
-> -#include <linux/acpi_agdi.h>
-> -#include <linux/acpi_apmt.h>
-> -#include <linux/acpi_iort.h>
->  #include <linux/acpi_viot.h>
->  #include <linux/pci.h>
->  #include <acpi/apei.h>
-> @@ -1408,7 +1405,7 @@ static int __init acpi_init(void)
->  	acpi_init_ffh();
-> 
->  	pci_mmcfg_late_init();
-> -	acpi_iort_init();
-> +	acpi_arm_init();
->  	acpi_viot_early_init();
->  	acpi_hest_init();
->  	acpi_ghes_init();
-> @@ -1420,8 +1417,6 @@ static int __init acpi_init(void)
->  	acpi_debugger_init();
->  	acpi_setup_sb_notify_handler();
->  	acpi_viot_init();
-> -	acpi_agdi_init();
-> -	acpi_apmt_init();
->  	return 0;
->  }
-> 
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 7b71dd74baeb..5ef126a0a50f 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -1507,6 +1507,12 @@ static inline int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
->  }
->  #endif
-> 
-> +#ifdef CONFIG_ARM64
-> +void acpi_arm_init(void);
-> +#else
-> +static inline void acpi_arm_init(void) { }
-> +#endif
-> +
->  #ifdef CONFIG_ACPI_PCC
->  void acpi_init_pcc(void);
->  #else
-> diff --git a/include/linux/acpi_agdi.h b/include/linux/acpi_agdi.h
-> deleted file mode 100644
-> index f477f0b452fa..000000000000
-> --- a/include/linux/acpi_agdi.h
-> +++ /dev/null
-> @@ -1,13 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0-only */
-> -
-> -#ifndef __ACPI_AGDI_H__
-> -#define __ACPI_AGDI_H__
-> -
-> -#include <linux/acpi.h>
-> -
-> -#ifdef CONFIG_ACPI_AGDI
-> -void __init acpi_agdi_init(void);
-> -#else
-> -static inline void acpi_agdi_init(void) {}
-> -#endif
-> -#endif /* __ACPI_AGDI_H__ */
-> diff --git a/include/linux/acpi_apmt.h b/include/linux/acpi_apmt.h
-> deleted file mode 100644
-> index 40bd634d082f..000000000000
-> --- a/include/linux/acpi_apmt.h
-> +++ /dev/null
-> @@ -1,19 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0
-> - *
-> - * ARM CoreSight PMU driver.
-> - * Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES.
-> - *
-> - */
-> -
-> -#ifndef __ACPI_APMT_H__
-> -#define __ACPI_APMT_H__
-> -
-> -#include <linux/acpi.h>
-> -
-> -#ifdef CONFIG_ACPI_APMT
-> -void acpi_apmt_init(void);
-> -#else
-> -static inline void acpi_apmt_init(void) { }
-> -#endif /* CONFIG_ACPI_APMT */
-> -
-> -#endif /* __ACPI_APMT_H__ */
-> diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
-> index b43be0987b19..e4e7bb6fa720 100644
-> --- a/include/linux/acpi_iort.h
-> +++ b/include/linux/acpi_iort.h
-> @@ -27,7 +27,6 @@ int iort_register_domain_token(int trans_id, phys_addr_t base,
->  void iort_deregister_domain_token(int trans_id);
->  struct fwnode_handle *iort_find_domain_token(int trans_id);
->  #ifdef CONFIG_ACPI_IORT
-> -void acpi_iort_init(void);
->  u32 iort_msi_map_id(struct device *dev, u32 id);
->  struct irq_domain *iort_get_device_domain(struct device *dev, u32 id,
->  					  enum irq_domain_bus_token bus_token);
-> @@ -43,7 +42,6 @@ int iort_iommu_configure_id(struct device *dev, const u32 *id_in);
->  void iort_iommu_get_resv_regions(struct device *dev, struct list_head *head);
->  phys_addr_t acpi_iort_dma_get_max_cpu_address(void);
->  #else
-> -static inline void acpi_iort_init(void) { }
->  static inline u32 iort_msi_map_id(struct device *dev, u32 id)
->  { return id; }
->  static inline struct irq_domain *iort_get_device_domain(
-> --
-> 2.40.1
-> 
+Yazen
