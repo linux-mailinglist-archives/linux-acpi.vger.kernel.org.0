@@ -2,173 +2,225 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7333D727273
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jun 2023 00:56:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D2B17275E4
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jun 2023 05:49:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231373AbjFGW4a (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 7 Jun 2023 18:56:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54200 "EHLO
+        id S233889AbjFHDtH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 7 Jun 2023 23:49:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233322AbjFGW4O (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Jun 2023 18:56:14 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F3932711
-        for <linux-acpi@vger.kernel.org>; Wed,  7 Jun 2023 15:55:54 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-51458187be1so2544170a12.2
-        for <linux-acpi@vger.kernel.org>; Wed, 07 Jun 2023 15:55:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686178553; x=1688770553;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
-        b=d8ALJgWgHzWLVbYqm5Xun40Trrtx9u26PJxgDpuM+opU1kagifpoMF3E49HbI3GY2V
-         wVrEz/8VMNXOa34mGDXKD+N7lGOv2QGCP2gi2Pc2YR15Cm6aBUEYMKdxMAaBdTZps5JD
-         wHIIcg7iFPDm6hq2Anc8eetPMFV7Dmp3k3ChvztUfrQawEncim7LlPLb1dcX0GFSQa2Z
-         MpCDoaZndeCwrh4lYpSlY+MIxLpkoT0dvzpzNzmwq8ANq48/S89YAmvR6lG4ID6DJkmg
-         UQBMvZ4NUlogSfe/ccOin4LQnm3S/JQ2MwxZLa7FvZbQYk7vl4nSPeVW9A3WoEossLXw
-         Xp4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686178553; x=1688770553;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
-        b=AfF2XE62Wc2LO8W289c3V5qUn0Rf9slEQHIF9XcZzKAXKLiq9peiEX9SnkpVJBmDoU
-         yu5REHo8J9YUL58O5zlZJCTE2F5mc7EI8e1WKnhdoRucKhK92hUdiWMJReZeJQhvItGu
-         EVSEKlrrDUL/sxvO/+nJW6jjOU0fKA47Et/olz4IORQiSXvUYZoNEm9lwFaHCr7Rqcn5
-         phrMnY/YFy1QicPjsRY5ywk9e0RLU/4Tzlj/8WB/UbvpR2SqIm7OszWyY2ciI1rQR4J9
-         7sdVxNtnUyiwfe9hKuc3NIoDErZ/ekdZkUTlk7TKE9Yh5dYotYtTjUdfQNMRTdEUOLnq
-         Gt/w==
-X-Gm-Message-State: AC+VfDxDkj4G2OLjnHCp7kCKGeVcM5en1+Bi2McErYTf8V83rZ1I6dr0
-        YHwHwPiXeJG+H6KPLLo0qLojiRgcOpbw+oq2gDg=
-X-Google-Smtp-Source: ACHHUZ5lc5uNG0II8N/7owu97MNYayebO2FU5BOHITGRdvZTCXANx0Yi1fv5Th/dfzvi0zTuZAaSCLE67mXxoPl8ud4=
-X-Received: by 2002:a17:907:8a08:b0:973:ad8f:ef9b with SMTP id
- sc8-20020a1709078a0800b00973ad8fef9bmr8009971ejc.5.1686178552696; Wed, 07 Jun
- 2023 15:55:52 -0700 (PDT)
+        with ESMTP id S233153AbjFHDtG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Jun 2023 23:49:06 -0400
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2053.outbound.protection.outlook.com [40.107.223.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EEF926B5;
+        Wed,  7 Jun 2023 20:49:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IHzXFC2a3xRXW+OzWKguGNHE/OI69NXwfc6ysegWLxaNtg/KAzAl+hMbNsCY4cG/lYUz5aqACIj1U/YWkMtSLF7QMhxgL6uoTff5RfBYsEQHWHGRAO99Z3L1S7ODDFzVpNCjAVQ0Oayf5R/JkQ9qQcNs+Jer/mgVPwBJdK9a1xhKSL+/NvrCGV9aiXS1mzUdyBx/4fsHGd8haQsTTotUEDBLF5ZDl8kOvw5gFoMJUZBurGNU+pj9cgHh7qh2LcC8bWUSvtzq2yvrXujG9BaPhOkqzseT4d+tCDaMorDj/KZRP9+PVv0LJzUwVrdXEZ1kdl7ChlHhr4dBllVnuKGWBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/L0X9j+SlfrIu/KiAv02S1GhXiAL82f1qIegIMq3eDo=;
+ b=OFDO4IrnvZVjyNX0fbW77G42XZM9YJTqFeA8tagWfH+q7j/3vH9o2E+juOOrIKXye4IKWkBL5JDoGESw4Z37R8Def1X/tNTn6IUEc3B0nb8rNVgxEExtcaJmDKfBw2PxNCTnm7VP6o44dfhgUQYrKl8JLrqlztRVDKTKTbK63Dq43WXAN8UZ5jDvT1ZwoMjI+6+9mFxCSgNEmOjELO0nqnG14Ojp/tqOF9VEwSX1J6R4NCAB7v7Tzw0ID2/uZ+FmGZ4FIklgHhIGGVyHXhevSsA0L/LHaqayabQJHPamAqBVF9NSn4s4NBk4o2qAmahpooot0QsWnsHV5rSlfEn6fQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/L0X9j+SlfrIu/KiAv02S1GhXiAL82f1qIegIMq3eDo=;
+ b=QjhYo61U2dujkTFqOjUfFHry0qTMogo2qCVL6kJeGeHgumeEz158gAnLgsoLrh/+Sjvyt33bc9+vwRLX2x5IwGcl1mtooYdcivSgbHQO1PNF6tyMcZH05PWzapUzRHuv1E+BTnJdDWN0eANLSjxsuWtHHh+pL1jpLrsMegI8SmU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM6PR12MB2843.namprd12.prod.outlook.com (2603:10b6:5:48::24) by
+ PH0PR12MB7885.namprd12.prod.outlook.com (2603:10b6:510:28f::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6455.31; Thu, 8 Jun 2023 03:49:01 +0000
+Received: from DM6PR12MB2843.namprd12.prod.outlook.com
+ ([fe80::ff22:cffa:293:5cef]) by DM6PR12MB2843.namprd12.prod.outlook.com
+ ([fe80::ff22:cffa:293:5cef%3]) with mapi id 15.20.6455.030; Thu, 8 Jun 2023
+ 03:49:01 +0000
+Message-ID: <aeecb9a0-b3b2-cfa2-e5b7-a64d1ffe1c0c@amd.com>
+Date:   Thu, 8 Jun 2023 13:48:51 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.5.1
+Subject: Re: [RFC PATCH v2 1/3] ACPI: APEI: EINJ: Refactor
+ available_error_type_show()
+Content-Language: en-US
+To:     Yazen Ghannam <yazen.ghannam@amd.com>,
+        Avadhut Naik <Avadhut.Naik@amd.com>, rafael@kernel.org,
+        gregkh@linuxfoundation.org, lenb@kernel.org,
+        linux-acpi@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Cc:     avadnaik@amd.com, alexey.kardashevskiy@amd.com,
+        linux-kernel@vger.kernel.org
+References: <20230525204422.4754-1-Avadhut.Naik@amd.com>
+ <20230525204422.4754-2-Avadhut.Naik@amd.com>
+ <37f64467-c9d7-826d-de41-aa571b2df0ec@amd.com>
+From:   Alexey Kardashevskiy <aik@amd.com>
+In-Reply-To: <37f64467-c9d7-826d-de41-aa571b2df0ec@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY5PR01CA0048.ausprd01.prod.outlook.com
+ (2603:10c6:10:1fc::18) To DM6PR12MB2843.namprd12.prod.outlook.com
+ (2603:10b6:5:48::24)
 MIME-Version: 1.0
-Received: by 2002:a54:2409:0:b0:217:72a9:f646 with HTTP; Wed, 7 Jun 2023
- 15:55:52 -0700 (PDT)
-Reply-To: unitednationcompensationcoordinatortreasury@hotmail.com
-From:   "UNITED NATION DEPUTY SECRETARY-GENERAL (U.N)" 
-        <successikolo@gmail.com>
-Date:   Wed, 7 Jun 2023 15:55:52 -0700
-Message-ID: <CADFNGJ8EwbrtVXBod+yuxOPvcNStu1uNZVywED0Ra-jpG92ATw@mail.gmail.com>
-Subject: CONTACT DHL OFFICE IMMEDIATELY FOR YOUR ATM MASTER CARD 1.5 MILLION,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.6 required=5.0 tests=ADVANCE_FEE_3_NEW_FRM_MNY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FILL_THIS_FORM,FORM_FRAUD_5,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        LOTS_OF_MONEY,MONEY_FORM,MONEY_FRAUD_5,MONEY_FREEMAIL_REPTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
-        T_FILL_THIS_FORM_LOAN,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:52d listed in]
-        [list.dnswl.org]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [successikolo[at]gmail.com]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  0.2 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  0.0 FILL_THIS_FORM Fill in a form with personal information
-        *  0.0 T_FILL_THIS_FORM_LOAN Answer loan question(s)
-        *  0.0 MONEY_FORM Lots of money if you fill out a form
-        *  1.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  0.0 ADVANCE_FEE_3_NEW_FRM_MNY Advance Fee fraud form and lots of
-        *      money
-        *  0.2 MONEY_FRAUD_5 Lots of money and many fraud phrases
-        *  0.0 FORM_FRAUD_5 Fill a form and many fraud phrases
-X-Spam-Level: ******
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB2843:EE_|PH0PR12MB7885:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4a54ad92-fcfa-434b-45ad-08db67d34b98
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: fVIG0m/s2qwLeLN1uRBFRBZ9C6JBa0VnkeEP/2wWd9C5gxbV0MdP0w19NvFCM/+Mx7xBSTFxsXmPbc1YJZpZ46qa6Zdjike0MLe2O1nZ7uCy5fknXhR6RxsbTCiPC3eeGRc0qXdoKbx8VHQakpyd5Mz5Zg9J3wm7IShw//ga4XdRbMzhBfpmkuU1N2tAVo+OAkbDay8ZUFp84axpa+Mm4XWl/yobYLiiiK3WyMWDpBdWRbJqejb4h5mu416OWQWCkLoXljlpIkyk7NIyMShTRVtVT08DEzXKiGhU5dZfdDxZw7oKA6I1sphejgRNVJf5v/Svy8gqtlOGVMIQfHwG9TKUCCIIgAhtgZLnfVz0USjnW1inAQiQooL/GhSCtmg5A9N7xFsz9gNctNLN/fLRFr0b4oQjjOkwxk4s8RJlFNc+HPYYa8cg0hzucSe0Hb9KwM/f19iCZ12+wbTOPqw2Jg6DYmT+qxj/FDRqqAGd3TTaeeYu49r24M2Jp/YWrWGRwt9F8IZSnnCx3lFEgzuvqN6xABz/yWK/PE7sN1vUd8KJIGDUx/CFBCCmpLuVfXiFDX7qc/QZxCZlMTnaqPj+I2biRBmpumfrJevuoJUZkTXiH28zPo3+4OLQqRycVYv0lKw2sXN9dAicP/RGmhsKcA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2843.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(39860400002)(376002)(346002)(366004)(396003)(451199021)(53546011)(478600001)(186003)(36756003)(6506007)(2616005)(83380400001)(6512007)(26005)(6666004)(6486002)(316002)(8676002)(41300700001)(66946007)(66476007)(66556008)(4326008)(31696002)(31686004)(5660300002)(2906002)(110136005)(8936002)(38100700002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZXZiMmxWWlFuNnBZVmZrTjNsb3JJaDBWMldvWFRBRmFZVldDT3BHS2cyUDlF?=
+ =?utf-8?B?S3ROeXJiVXZ5eVh4b2dXc1laT1AwS2RabjdtendXcWxObit3Tk81bGpYa2ZJ?=
+ =?utf-8?B?VEYxTm5reEJYazVsWWFMQTFQeWdWSXBmdEd4NzFhMDFYWGFtNjJ0Skladjk5?=
+ =?utf-8?B?UDJ4OHQ5RjRkcmRQZXY5d0hJdFU5ZzRHWUVQNGJHUmwvNGh5cDh2dmZXWWIz?=
+ =?utf-8?B?VjRZRzlJcGNDWUdPMjFsOWFLUlpkR05OUEtFVitCd3Zhak9QMU81d1dBQVRh?=
+ =?utf-8?B?VzJ0UlU0WjVPOWQxQ3NpemNDb3ZqMFd6cWZERmpITTVhOWhFL0ZaTGxuUlkz?=
+ =?utf-8?B?UENUU3NuaEhoK1gzMkRWOW5uMlM0c3ppem9KVG5XVWl0QWdONzJPZ0UwUXZY?=
+ =?utf-8?B?RGpLdmZEUXNOL0pVSUhsMndJUUlPaHVjRS9CTHc2LytXOERhc2FMK1Fnci9B?=
+ =?utf-8?B?L2RESFRacVZMc2Mzc0IrK1dNdURtSjZGMzBLR2d2OU5XOFg5R2VVc1hsamlT?=
+ =?utf-8?B?YmlZUkpOQUxqVlFaR000WVplbEE2bXRDdXZnL0J2c2lScEVZL1N2b1ZkT2sx?=
+ =?utf-8?B?RlZUdW5QSWVpUnhIMUQ4dndFMHFQTGxhUlFTRUt1T1ZDQVQ3WjlmS1lmNzFQ?=
+ =?utf-8?B?aDJ5WFd1YjlTZW1HSnFnUUluK1NvZHR5eDhPUzNXTEMyYW5kVUFzS3JNamtM?=
+ =?utf-8?B?b09FbjJSQ1d6UllhV3ltaW8vaFJpK2tDOUpHdjhkelVLVDBkbnFzeFl2VXg3?=
+ =?utf-8?B?V25BSEdsNUNsVGI2TGlvcktnbEduOXdkdHBFSzhMemFleGt0N01rajJ0R0tm?=
+ =?utf-8?B?dUZ5dFhTcmdNWE11Y0VhbXNsS213QkVyQXJucSt3bWhvUVJFWDlOOTBvMmRO?=
+ =?utf-8?B?dTk2S29nUEh0K2FJQ3R6LzRHdklJNFJvWk1HUGlqWGpUMVNRUkN1SVJIYUNo?=
+ =?utf-8?B?UjlYTUlBYU9vTUxxOXJXcmtmaklNTUlWK2xnT09wbm8wL0lZdkd5SVBHRnNH?=
+ =?utf-8?B?MmZ5U041SnZFRkxuRjBhZExrYm84Nnl2VmFuVmpvUTVNTFd5UWFiYUdJMG1D?=
+ =?utf-8?B?ZzVIZXhlanByallKTG1UWU5qaFFZTFBGZFNFZ1ZJdWhJMlZNN0g2U3ZSOW9m?=
+ =?utf-8?B?RngxUUZjSzM1ZC96YStPMGZId2w3WUFtMStOdEFUaDZwamh4Q0Rnd2Vmc3lQ?=
+ =?utf-8?B?REFxK0RzVGRBQkJwN2oxNkVHVnNvRVZ0OEZpODVybVppV2dUZDJIYWJVSU5s?=
+ =?utf-8?B?eHZxb0ZKT2JicWhaQjR0SDBrYm1HYURFcjdyZkFjRVNCR0JHd2ZjaVBIZGYw?=
+ =?utf-8?B?THdiOWZvMXR0Snk1OEVPVkltZzFFZWF3dCtDNHNjNGJBenhlR3J0d0MyTEtv?=
+ =?utf-8?B?aTVaN0p1WThoNTQvaUlPRnlzVWo3c0JBWU45TEtUSDUzdGV3ejd4QU9ZNnZM?=
+ =?utf-8?B?c2haRENablQ4eHpDR0J5SFNRb1laeUNYNGJUSHluYWlRYWxBOEJJMS9ldkc3?=
+ =?utf-8?B?bVUxQk9LWlpaMkVyK3JOdEkxcjBzS0cwL0Npb01xUWRWazZTTUxKYkRUei9w?=
+ =?utf-8?B?QmFZdGhuYVlRbFprMmMwWlJ0VkZIWXAyaXhlUFovZ1FRdi8xVWtqeURVMkFZ?=
+ =?utf-8?B?TkkxNklPSjRpQjBLbG9zVmxtakJxS0crY29nSmt6a2kwMW1qejVvbklXcjcr?=
+ =?utf-8?B?aGE1T0Z2SFZyQm9KMExYOE12SzRFbkVOZTQ1MGhINnBQTnl5c0xXc1lhVTE0?=
+ =?utf-8?B?SWI4SDRDM0x1Y0hPYnhoY0NMWXMyRCtCYm1RMmJub1VHNmJqaHJIbFRSdlYv?=
+ =?utf-8?B?ZmJaSENFTnVEcGpGUXdaUHEybzF4Sng0TjI5cjdxK2pLMW1qUWpwUFpBa1g3?=
+ =?utf-8?B?NTZFanVNWlprV0ZibGErZ1IyY01vOFhIdisrYnBBazBQaWNBZHpqbWpHRGJy?=
+ =?utf-8?B?R3VlZW01alE1UDJQZmhxTUtRc3FmOTh5REt5ZG1xU2EwVVJTZnVnYWFIVzVw?=
+ =?utf-8?B?SkNvNnlaNGdMbVpES0doZWlOWXpKUUdRNVlhYXFEYnhtbmIwQjI5UGwvQUk2?=
+ =?utf-8?B?Z1E3cXh1YUdDTjlBOWpxNkpJYW4xaVZlWW53OWZnM3k4QWUzdEphdG5GSjRo?=
+ =?utf-8?Q?At2ZNzmR34J/QmwKT06fJGdmg?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4a54ad92-fcfa-434b-45ad-08db67d34b98
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB2843.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2023 03:49:01.3620
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lzT/J9NaoJC2LMqJREdHvkI7QPGDUeJafDY8400cx17Sr2tqCN3pRy0i3ShAaDC3n3cP3aTTnt+iWmobS1fhIQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7885
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-UNITED NATION DEPUTY SECRETARY-GENERAL.
 
-This is to official inform you that we have been having meetings for
-the past three (3) weeks which ended two days ago with MR. JIM YONG
-KIM the world bank president and other seven continent presidents on
-the congress we treated on solution to scam victim problems.
 
- Note: we have decided to contact you following the reports we
-received from anti-fraud international monitoring group your
-name/email has been submitted to us therefore the united nations have
-agreed to compensate you with the sum of (USD$ 1.5 Million) this
-compensation is also including international business that failed you
-in the past due to government problems etc.
+On 8/6/23 00:20, Yazen Ghannam wrote:
+> On 5/25/23 4:44 PM, Avadhut Naik wrote:
+>> OSPM can discover the error injection capabilities of the platform by
+>> executing GET_ERROR_TYPE error injection action.[1] The action returns
+>> a DWORD representing a bitmap of platform supported error injections.[2]
+>>
+>> The available_error_type_show() function determines the bits set within
+>> this DWORD and provides a verbose output, from einj_error_type_string
+>> array, through /sys/kernel/debug/apei/einj/available_error_type file.
+>>
+>> The function however, assumes one to one correspondence between an error's
+>> position in the bitmap and its array entry offset. Consequently, some
+>> errors like Vendor Defined Error Type fail this assumption and will
+>> incorrectly be shown as not supported, even if their corresponding bit is
+>> set in the bitmap and they have an entry in the array.
+>>
+>> Navigate around the issue by converting einj_error_type_string into an
+>> array of structures with a predetermined mask for all error types
+>> corresponding to their bit position in the DWORD returned by GET_ERROR_TYPE
+>> action. The same breaks the aforementioned assumption resulting in all
+>> supported error types by a platform being outputted through the above
+>> available_error_type file.
+>>
+>> [1] ACPI specification 6.5, Table 18.25
+>> [2] ACPI specification 6.5, Table 18.30
+>>
+>> Suggested-by: Alexey Kardashevskiy <alexey.kardashevskiy@amd.com>
+>> Signed-off-by: Avadhut Naik <Avadhut.Naik@amd.com>
+>> ---
+>>   drivers/acpi/apei/einj.c | 43 ++++++++++++++++++++--------------------
+>>   1 file changed, 22 insertions(+), 21 deletions(-)
+>>
+>> diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
+>> index 013eb621dc92..d5f8dc4df7a5 100644
+>> --- a/drivers/acpi/apei/einj.c
+>> +++ b/drivers/acpi/apei/einj.c
+>> @@ -577,25 +577,25 @@ static u64 error_param2;
+>>   static u64 error_param3;
+>>   static u64 error_param4;
+>>   static struct dentry *einj_debug_dir;
+>> -static const char * const einj_error_type_string[] = {
+>> -	"0x00000001\tProcessor Correctable\n",
+>> -	"0x00000002\tProcessor Uncorrectable non-fatal\n",
+>> -	"0x00000004\tProcessor Uncorrectable fatal\n",
+>> -	"0x00000008\tMemory Correctable\n",
+>> -	"0x00000010\tMemory Uncorrectable non-fatal\n",
+>> -	"0x00000020\tMemory Uncorrectable fatal\n",
+>> -	"0x00000040\tPCI Express Correctable\n",
+>> -	"0x00000080\tPCI Express Uncorrectable non-fatal\n",
+>> -	"0x00000100\tPCI Express Uncorrectable fatal\n",
+>> -	"0x00000200\tPlatform Correctable\n",
+>> -	"0x00000400\tPlatform Uncorrectable non-fatal\n",
+>> -	"0x00000800\tPlatform Uncorrectable fatal\n",
+>> -	"0x00001000\tCXL.cache Protocol Correctable\n",
+>> -	"0x00002000\tCXL.cache Protocol Uncorrectable non-fatal\n",
+>> -	"0x00004000\tCXL.cache Protocol Uncorrectable fatal\n",
+>> -	"0x00008000\tCXL.mem Protocol Correctable\n",
+>> -	"0x00010000\tCXL.mem Protocol Uncorrectable non-fatal\n",
+>> -	"0x00020000\tCXL.mem Protocol Uncorrectable fatal\n",
+>> +static struct { u32 mask; const char *str; } const einj_error_type_string[] = {
+>> +	{0x00000001, "Processor Correctable"},
+>> +	{0x00000002, "Processor Uncorrectable non-fatal"},
+>> +	{0x00000004, "Processor Uncorrectable fatal"},
+>> +	{0x00000008, "Memory Correctable"},
+>> +	{0x00000010, "Memory Uncorrectable non-fatal"},
+>> +	{0x00000020, "Memory Uncorrectable fatal"},
+>> +	{0x00000040, "PCI Express Correctable"},
+>> +	{0x00000080, "PCI Express Uncorrectable non-fatal"},
+>> +	{0x00000100, "PCI Express Uncorrectable fatal"},
+>> +	{0x00000200, "Platform Correctable"},
+>> +	{0x00000400, "Platform Uncorrectable non-fatal"},
+>> +	{0x00000800, "Platform Uncorrectable fatal"},
+>> +	{0x00001000, "CXL.cache Protocol Correctable"},
+>> +	{0x00002000, "CXL.cache Protocol Uncorrectable non-fatal"},
+>> +	{0x00004000, "CXL.cache Protocol Uncorrectable fatal"},
+>> +	{0x00008000, "CXL.mem Protocol Correctable"},
+>> +	{0x00010000, "CXL.mem Protocol Uncorrectable non-fatal"},
+>> +	{0x00020000, "CXL.mem Protocol Uncorrectable fatal"},
+>>   };
+>>
+> 
+> I think it'd be easier to read if the masks used the BIT() macro rather
+> than a hex value.
 
- We have arranged your payment through our ATM Master Card and
-deposited it in DHL Office to deliver it to you which is the latest
-instruction from the World Bank president MR. JIM YONG KIM, For your
-information=E2=80=99s, the delivery charges already paid by U.N treasury, t=
-he
-only money you will send to DHL office south Korea is
-($500). for security keeping fee, U.N coordinator already paid for
-others charges fees for delivery except the security keeping fee, the
-director of DHL refused to collect the security keeping fee from U.N
-coordinator, the Director of DHL office said that they don=E2=80=99t know
-exactly time you will contact them to reconfirm your details to avoid
-counting demur-rage that is why they refused collecting the ($500) .
-for security keeping fee.
+Makes sense but I'd say because it is easier to match the APCI spec 
+which uses the bit numbers, not easier to read (which is arguable).
 
- Therefore be advice to contact DHL Office agent south Korea. Rev:John
-Lee Tae-seok
-who is in position to deliver your ATM
-Master Card to your location address, contact DHL Office immediately
-with the bellow email & phone number as listed below.
 
- Contact name: John Lee Tae-seok
+> 
+> Thanks,
+> Yazen
 
- Email:( dhlgeneralheadquartersrepublic@gmail.com )
-
- Do not hesitate to Contact Rev: John Lee Tae-seok, as soon as you
-
- read this message. Email:( dhlgeneralheadquartersrepublic@gmail.com )
-
- Make sure you reconfirmed DHL Office your details ASAP as stated
-below to avoid wrong delivery.
-
- Your full name..........
-
- Home address:.........
-
- Your country...........
-
- Your city..............
-
- Telephone......
-
- Occupation:.......
-
- Age:=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6..
-
- Let us know as soon as possible you receive your ATM MasterCard
-for proper verification.
-
- Regards,
-
- Mrs Vivian kakadu.
-
- DEPUTY SECRETARY-GENERAL (U.N)
+-- 
+Alexey
