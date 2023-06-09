@@ -2,35 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 070AE729E98
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Jun 2023 17:33:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00037729EC3
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Jun 2023 17:39:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241580AbjFIPdb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 9 Jun 2023 11:33:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33336 "EHLO
+        id S230092AbjFIPi6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 9 Jun 2023 11:38:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241588AbjFIPda (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Jun 2023 11:33:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7269219B;
-        Fri,  9 Jun 2023 08:33:28 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F1B0465905;
-        Fri,  9 Jun 2023 15:33:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1390C433D2;
-        Fri,  9 Jun 2023 15:33:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686324807;
-        bh=W+qcFRzbfF55Eg1Rj7JReLVSfxRn80S88YZctfGjFV8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=aMdYRhGAKfXdpzSL//zDL9I7bPsvJoGqM9qTHEvtYl4Maq3YS/AJtgfP8b1YsyDjL
-         /E3q4qLczEjTFfFKq9//hFhSkwlIZHYHdRNL38XajRkh6pZqddtaOS91X/BKqwCWr7
-         LZ8kIxgP1Hp0TV3fmMk0ZFG8nPCUMf/Eg2K4bIU0=
-Date:   Fri, 9 Jun 2023 17:33:25 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        with ESMTP id S241761AbjFIPi5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Jun 2023 11:38:57 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F9D335AC;
+        Fri,  9 Jun 2023 08:38:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686325134; x=1717861134;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JHKkr5ftMghStaPte8Ag1DlR65Bds0ob3L1V4arjbTA=;
+  b=HIvkzp6tJGfMRfo+jYzQlIc/14iu+RWCPpSWrUOssEhh0Jdyhi9nFT8K
+   HSek1ADRwjI9rZ9911Ul4wzwh7H7A1W7bilpOdTrwvphQfLMtvCc9WHCk
+   cqJ1gzQepYRHNZbB9ziBcY2dQMkD6tEpslsiUf8TR5vFb+AVXxKzbU/1z
+   y1Ibs+bJgEhJLj7R+lDC7+r69Y8bOtyLiWomtUBYgsnIPfY13LZdNVMCv
+   1RQBrTpukZWYShIidgPjc6xOOmQ2wGa2sFEQdg+Xzmd/WIF1fccUnDQnE
+   wwaJZDGv9K0KnXquTRtw7K0PvqUyHgyXHaGvD2mD12khZ9ppimV9OFXTG
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10736"; a="357626850"
+X-IronPort-AV: E=Sophos;i="6.00,229,1681196400"; 
+   d="scan'208";a="357626850"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2023 08:38:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10736"; a="704591451"
+X-IronPort-AV: E=Sophos;i="6.00,229,1681196400"; 
+   d="scan'208";a="704591451"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga007.jf.intel.com with ESMTP; 09 Jun 2023 08:38:50 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1q7eCO-002Qql-0b;
+        Fri, 09 Jun 2023 18:38:48 +0300
+Date:   Fri, 9 Jun 2023 18:38:47 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Damien Le Moal <dlemoal@kernel.org>,
         linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -42,29 +56,38 @@ Cc:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>
 Subject: Re: [PATCH v1 2/3] device property: Implement device_is_compatible()
-Message-ID: <2023060902-gills-flatness-e402@gregkh>
+Message-ID: <ZINHh5xmqK/zprwd@smile.fi.intel.com>
 References: <20230609152507.77649-1-andriy.shevchenko@linux.intel.com>
  <20230609152507.77649-3-andriy.shevchenko@linux.intel.com>
+ <2023060902-gills-flatness-e402@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230609152507.77649-3-andriy.shevchenko@linux.intel.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <2023060902-gills-flatness-e402@gregkh>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 09, 2023 at 06:25:06PM +0300, Andy Shevchenko wrote:
-> Some users want to use the struct device pointer to see if
-> the device is compatible. Provide inline helpers for them.
+On Fri, Jun 09, 2023 at 05:33:25PM +0200, Greg Kroah-Hartman wrote:
+> On Fri, Jun 09, 2023 at 06:25:06PM +0300, Andy Shevchenko wrote:
+> > Some users want to use the struct device pointer to see if
+> > the device is compatible. Provide inline helpers for them.
+> What do you mean by "compatible"?
 
-What do you mean by "compatible"?
+In terms of how OF defines it (note that ACPI may also utilize it,
+so it's wider than there).
 
-thanks,
+I will elaborate this in v2.
 
-greg k-h
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
