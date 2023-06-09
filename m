@@ -2,104 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B29872911D
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Jun 2023 09:31:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A1D47292EF
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Jun 2023 10:24:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238805AbjFIHaW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 9 Jun 2023 03:30:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44004 "EHLO
+        id S240622AbjFIIYb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 9 Jun 2023 04:24:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230242AbjFIHaP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Jun 2023 03:30:15 -0400
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2080.outbound.protection.outlook.com [40.107.92.80])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC2E72D7C;
-        Fri,  9 Jun 2023 00:30:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Eck/539/p9gwoyh67uhEHJS7jz7uQpxlwmt0sJiMiUmYzOjz4LV2LShsULAryAboJhgPgeEjUmr8GIC2XWU5HtHpaU/knOw4nsZad+CodMkohIdm4MNsnRYrpTWkF8nX8j74XUF6a+RMheJs6ChS8+gVEQUsazD8mb+pmu2gYTvETSeIe2MEnb/NeLtfnzruWr1uyNwd3bcGCqK8b8xRMpVykM6NpFu40SC5UBTpJ3DNMTJow3zyilPWdgLmCW1wEumJE34XqmvmNz13UJ5yKbeWU4ioitSYrW9ldCfU2Oa1cWDSd2jmGoUYX5E1BK9cCtQKTa4i8OD+cvU1k1yoaA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uE+bqOMK/vEPNCeadJJAJvY4Ncouei1S5fSDGvN5UTc=;
- b=PEDIzQa4JElJZc9k/8f3NiXug5RHXJ/GuQ867rh8RTpqru8ym29aheu631xsZE8m4fU05jL4ktjx36TKboQlMs7H3BLjXHJDYkTQkjEv67e0Y0gGMmifBd28QWzxWpMIlKjQAOSTGI8+ctsEpdBgBZryi17dZRAzSAQT1UqaVvhwWQaHMLHBZZLbhE0JAYIj+Uo8SvpIGaJM4xY7aWyYXqkRSF6DDnqZX6Jc94kGNq9OVcKBWGZFZItnAAZDyoBNsvCB5S8lzdEpz0qdNwUySrt4RZptuNi353Cew1eYelO19BX1eVSO+I4IHSp78jSZ3IvNO+YYRUYmMXJQAD/kDg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uE+bqOMK/vEPNCeadJJAJvY4Ncouei1S5fSDGvN5UTc=;
- b=0k5lNsoCul58dPrwU/0ieId2VCt2vGFfyD3a4PTckM4Bmnr81ps3WOuv+SgCw1CQKK66JOA5GI5Ge9l8NAdKlMm4df0QP/ecHCdiGi8NAmfFoRvOBNgjvWBcY7RthLhWFsgWcp1c7GnbIwJ2/ByGvrUOV/KuMjj1JSkeB+TpEZQ=
-Received: from SJ0PR13CA0107.namprd13.prod.outlook.com (2603:10b6:a03:2c5::22)
- by DM4PR12MB5118.namprd12.prod.outlook.com (2603:10b6:5:391::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.33; Fri, 9 Jun
- 2023 07:30:08 +0000
-Received: from DM6NAM11FT026.eop-nam11.prod.protection.outlook.com
- (2603:10b6:a03:2c5:cafe::a0) by SJ0PR13CA0107.outlook.office365.com
- (2603:10b6:a03:2c5::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.14 via Frontend
- Transport; Fri, 9 Jun 2023 07:30:08 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DM6NAM11FT026.mail.protection.outlook.com (10.13.172.161) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6477.27 via Frontend Transport; Fri, 9 Jun 2023 07:30:07 +0000
-Received: from equan-buildpc.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Fri, 9 Jun
- 2023 02:30:00 -0500
-From:   Evan Quan <evan.quan@amd.com>
-To:     <rafael@kernel.org>, <lenb@kernel.org>,
-        <Alexander.Deucher@amd.com>, <Christian.Koenig@amd.com>,
-        <Xinhui.Pan@amd.com>, <airlied@gmail.com>, <daniel@ffwll.ch>,
-        <kvalo@kernel.org>, <nbd@nbd.name>, <lorenzo@kernel.org>,
-        <ryder.lee@mediatek.com>, <shayne.chen@mediatek.com>,
-        <sean.wang@mediatek.com>, <matthias.bgg@gmail.com>,
-        <angelogioacchino.delregno@collabora.com>,
-        <Mario.Limonciello@amd.com>, <Lijo.Lazar@amd.com>
-CC:     <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-        <linux-wireless@vger.kernel.org>, Evan Quan <evan.quan@amd.com>
-Subject: [PATCH V2 7/7] drm/amd/pm: enable Wifi RFI mitigation feature support for SMU13.0.7
-Date:   Fri, 9 Jun 2023 15:28:46 +0800
-Message-ID: <20230609072846.1552238-8-evan.quan@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230609072846.1552238-1-evan.quan@amd.com>
+        with ESMTP id S240624AbjFIIYL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Jun 2023 04:24:11 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1126549E2;
+        Fri,  9 Jun 2023 01:22:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=ioJP5/nPwkDScpLmhYFsFtpoICiOH9A6AqZVomfCoCQ=;
+        t=1686298978; x=1687508578; b=Fj2Omoqt3ZL/OswKsngO9jty2eDHEr6OYDwKzdWyP++5bdz
+        U1kYjyWW53KyYKLVbsg8eYBuLLMva5CIxuMx+Sl3/XgMVbA+ayed/21ugPgYQCeYzGM4uo84Yt81R
+        eHTpu0fpTL+0lUQJn1fFHnYynZ+xE1y/cuYOKjPMrm8UtJjhM48dKYfKw6mpQAw7IeYdhp/5GOSaO
+        SyExcKrqR6i2VZ+b/jvQAvvG9ezu14wSjUwK4h5j2CwCa80IR1F/Hh/H0K2szp0/MdtfjVu1/v6G0
+        gaSzqJhZgENjEuOR9IUIsGY9lAjFw67VBq3E7vHp17fluQTwrUoECdVBJaSseaAA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1q7XMw-000rrZ-1g;
+        Fri, 09 Jun 2023 10:21:14 +0200
+Message-ID: <ccbaf80adb305ea59eb1a457460b99dc920bb65d.camel@sipsolutions.net>
+Subject: Re: [PATCH V2 2/7] wifi: mac80211: Add support for ACPI WBRF
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Evan Quan <evan.quan@amd.com>, rafael@kernel.org, lenb@kernel.org,
+        Alexander.Deucher@amd.com, Christian.Koenig@amd.com,
+        Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
+        kvalo@kernel.org, nbd@nbd.name, lorenzo@kernel.org,
+        ryder.lee@mediatek.com, shayne.chen@mediatek.com,
+        sean.wang@mediatek.com, matthias.bgg@gmail.com,
+        angelogioacchino.delregno@collabora.com, Mario.Limonciello@amd.com,
+        Lijo.Lazar@amd.com
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-wireless@vger.kernel.org
+Date:   Fri, 09 Jun 2023 10:21:12 +0200
+In-Reply-To: <20230609072846.1552238-3-evan.quan@amd.com>
 References: <20230609072846.1552238-1-evan.quan@amd.com>
+         <20230609072846.1552238-3-evan.quan@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6NAM11FT026:EE_|DM4PR12MB5118:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e262760-0f3a-49d1-d095-08db68bb59cc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: qkZpucXjhVuvXAjZObZBWp6Ri5XIuwFQKgRzOmzxwThkoTbf302Hb7KHXlQwtUi5m2WSQiJLJRl42/9O0he54doW1UVWFcnqI+Y86ppEz8M4gmz4qZLgpxBrrEKzCsagsyzXBW5Pt0fyO8ZFGwAr61LczBQuY4twt9XCt4kk2v+P2eAYP5a8e/OCA93eu7M1CFsRTy6gTy2rj0FGdfNCVkKK5p2+mRDVv0EteBH6A+V71/5wYvbkqfP+S660//ARlc1apVRny9qGNvvl+LP4aLf9hqLjtwdSQl5gSHUKlzBTTP6H8WSFgIxaqpmEUyKFp7vAkthLfVpyrQrd/Jww9SdTnKRFfXLf+6Bwx9N3/CngeUzZoDUQDbo1443bOM4+e6Yo5UMQ5pDq1E9qqqoTuOKwJ8Lnb/DrOOFP9pzhr5tUmlaSxC8mAvBt28PIeesny/Jj+k0K6aCn8hXLLO8hKgdg1yWdEXmvDDkfGlGZbFCzhKXZ2ziPGYnbQz7CH6vrrFTiFAz6drh9uOe1fXOSdB2J45nMLugzTzPDr9SZFpONDHIDJ5lEg9Ol/tKEHeJHUCRRaXI9kJcPjq0xC/VRX3SvFoO8SiYOLJZxRpH26/Bgvn5BMY5vFPiHpg2f1txk2LVg3VjQL6rOhdY5Wbvi7lyFlrxe6dClnqlJJX5QazvFogXInLc+CXHgPb/S8evheKIbPCazVbkyfQ1h/eU0ytpQWeZm5WlzzBnwyVRAk0PtVX3RMa+tkIWK61pJ4QOA6r8KHJrDajynNST9lFPm9qbzhuFzsQZJ0zyqiZ9EJ9c=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(346002)(376002)(136003)(39860400002)(396003)(451199021)(40470700004)(46966006)(36840700001)(40460700003)(26005)(426003)(1076003)(40480700001)(5660300002)(41300700001)(16526019)(186003)(82310400005)(7696005)(36756003)(47076005)(7416002)(36860700001)(44832011)(4326008)(70206006)(6666004)(70586007)(83380400001)(336012)(8936002)(8676002)(2616005)(110136005)(478600001)(54906003)(316002)(2906002)(86362001)(921005)(356005)(6636002)(82740400003)(81166007)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2023 07:30:07.7043
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e262760-0f3a-49d1-d095-08db68bb59cc
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT026.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5118
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -107,111 +62,175 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Fulfill the SMU13.0.7 support for Wifi RFI mitigation feature.
+On Fri, 2023-06-09 at 15:28 +0800, Evan Quan wrote:
 
-Signed-off-by: Evan Quan <evan.quan@amd.com>
----
- .../drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c  | 59 +++++++++++++++++++
- 1 file changed, 59 insertions(+)
+> --- a/include/net/cfg80211.h
+> +++ b/include/net/cfg80211.h
+> @@ -5551,6 +5551,10 @@ struct wiphy {
+> =20
+>  	u16 hw_timestamp_max_peers;
+> =20
+> +#ifdef CONFIG_ACPI_WBRF
+> +	bool wbrf_supported;
+> +#endif
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-index 98a33f8ee209..16c1c04e2034 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-@@ -125,6 +125,7 @@ static struct cmn2asic_msg_mapping smu_v13_0_7_message_map[SMU_MSG_MAX_COUNT] =
- 	MSG_MAP(ArmD3,				PPSMC_MSG_ArmD3,                       0),
- 	MSG_MAP(AllowGpo,			PPSMC_MSG_SetGpoAllow,           0),
- 	MSG_MAP(GetPptLimit,			PPSMC_MSG_GetPptLimit,                 0),
-+	MSG_MAP(EnableUCLKShadow,		PPSMC_MSG_EnableUCLKShadow,            0),
- };
- 
- static struct cmn2asic_mapping smu_v13_0_7_clk_map[SMU_CLK_COUNT] = {
-@@ -205,6 +206,7 @@ static struct cmn2asic_mapping smu_v13_0_7_table_map[SMU_TABLE_COUNT] = {
- 	TAB_MAP(DRIVER_SMU_CONFIG),
- 	TAB_MAP(ACTIVITY_MONITOR_COEFF),
- 	[SMU_TABLE_COMBO_PPTABLE] = {1, TABLE_COMBO_PPTABLE},
-+	TAB_MAP(WIFIBAND),
- };
- 
- static struct cmn2asic_mapping smu_v13_0_7_pwr_src_map[SMU_POWER_SOURCE_COUNT] = {
-@@ -487,6 +489,9 @@ static int smu_v13_0_7_tables_init(struct smu_context *smu)
- 	               AMDGPU_GEM_DOMAIN_VRAM);
- 	SMU_TABLE_INIT(tables, SMU_TABLE_COMBO_PPTABLE, MP0_MP1_DATA_REGION_SIZE_COMBOPPTABLE,
- 			PAGE_SIZE, AMDGPU_GEM_DOMAIN_VRAM);
-+	SMU_TABLE_INIT(tables, SMU_TABLE_WIFIBAND,
-+		       sizeof(WifiBandEntryTable_t), PAGE_SIZE,
-+		       AMDGPU_GEM_DOMAIN_VRAM);
- 
- 	smu_table->metrics_table = kzalloc(sizeof(SmuMetricsExternal_t), GFP_KERNEL);
- 	if (!smu_table->metrics_table)
-@@ -1721,6 +1726,57 @@ static int smu_v13_0_7_set_df_cstate(struct smu_context *smu,
- 					       NULL);
- }
- 
-+static bool smu_v13_0_7_wbrf_support_check(struct smu_context *smu)
-+{
-+	return smu->smc_fw_version > 0x00524600;
-+}
-+
-+static int smu_v13_0_7_set_wbrf_exclusion_ranges(struct smu_context *smu,
-+						 struct exclusion_range *exclusion_ranges)
-+{
-+	WifiBandEntryTable_t wifi_bands;
-+	int valid_entries = 0;
-+	int ret, i;
-+
-+	memset(&wifi_bands, 0, sizeof(wifi_bands));
-+	for (i = 0; i < ARRAY_SIZE(wifi_bands.WifiBandEntry); i++) {
-+		if (!exclusion_ranges[i].start &&
-+		    !exclusion_ranges[i].end)
-+			break;
-+
-+		/* PMFW expects the inputs to be in Mhz unit */
-+		wifi_bands.WifiBandEntry[valid_entries].LowFreq =
-+			DIV_ROUND_DOWN_ULL(exclusion_ranges[i].start, HZ_IN_MHZ);
-+		wifi_bands.WifiBandEntry[valid_entries++].HighFreq =
-+			DIV_ROUND_UP_ULL(exclusion_ranges[i].end, HZ_IN_MHZ);
-+	}
-+	wifi_bands.WifiBandEntryNum = valid_entries;
-+
-+	/*
-+	 * Per confirm with PMFW team, WifiBandEntryNum = 0 is a valid setting.
-+	 * Considering the scenarios below:
-+	 * - At first the wifi device adds an exclusion range e.g. (2400,2500) to
-+	 *   BIOS and our driver gets notified. We will set WifiBandEntryNum = 1
-+	 *   and pass the WifiBandEntry (2400, 2500) to PMFW.
-+	 *
-+	 * - Later the wifi device removes the wifiband list added above and
-+	 *   our driver gets notified again. At this time, driver will set
-+	 *   WifiBandEntryNum = 0 and pass an empty WifiBandEntry list to PMFW.
-+	 *   - PMFW may still need to do some uclk shadow update(e.g. switching
-+	 *     from shadow clock back to primary clock) on receiving this.
-+	 */
-+
-+	ret = smu_cmn_update_table(smu,
-+				   SMU_TABLE_WIFIBAND,
-+				   0,
-+				   (void *)(&wifi_bands),
-+				   true);
-+	if (ret)
-+		dev_err(smu->adev->dev, "Failed to set wifiband!");
-+
-+	return ret;
-+}
-+
- static const struct pptable_funcs smu_v13_0_7_ppt_funcs = {
- 	.get_allowed_feature_mask = smu_v13_0_7_get_allowed_feature_mask,
- 	.set_default_dpm_table = smu_v13_0_7_set_default_dpm_table,
-@@ -1786,6 +1842,9 @@ static const struct pptable_funcs smu_v13_0_7_ppt_funcs = {
- 	.set_mp1_state = smu_v13_0_7_set_mp1_state,
- 	.set_df_cstate = smu_v13_0_7_set_df_cstate,
- 	.gpo_control = smu_v13_0_gpo_control,
-+	.is_asic_wbrf_supported = smu_v13_0_7_wbrf_support_check,
-+	.enable_uclk_shadow = smu_v13_0_enable_uclk_shadow,
-+	.set_wbrf_exclusion_ranges = smu_v13_0_7_set_wbrf_exclusion_ranges,
- };
- 
- void smu_v13_0_7_set_ppt_funcs(struct smu_context *smu)
--- 
-2.34.1
+This should be in some private struct in mac80211, ieee80211_local I
+think.
 
+>  	char priv[] __aligned(NETDEV_ALIGN);
+>  };
+> =20
+> @@ -9067,4 +9071,18 @@ static inline int cfg80211_color_change_notify(str=
+uct net_device *dev)
+>  bool cfg80211_valid_disable_subchannel_bitmap(u16 *bitmap,
+>  					      const struct cfg80211_chan_def *chandef);
+> =20
+> +#ifdef CONFIG_ACPI_WBRF
+> +void ieee80211_check_wbrf_support(struct wiphy *wiphy);
+> +int ieee80211_add_wbrf(struct wiphy *wiphy,
+> +		       struct cfg80211_chan_def *chandef);
+> +void ieee80211_remove_wbrf(struct wiphy *wiphy,
+> +			   struct cfg80211_chan_def *chandef);
+> +#else
+> +static inline void ieee80211_check_wbrf_support(struct wiphy *wiphy) { }
+> +static inline int ieee80211_add_wbrf(struct wiphy *wiphy,
+> +				     struct cfg80211_chan_def *chandef) { return 0; }
+> +static inline void ieee80211_remove_wbrf(struct wiphy *wiphy,
+> +					 struct cfg80211_chan_def *chandef) { }
+> +#endif /* CONFIG_ACPI_WBRF */
+
+Same here, not the right place. This should even be in an internal
+mac80211 header (such as net/mac80211/ieee80211_i.h or create a new
+net/mac80211/wrbf.h or so if you prefer.)
+
+
+> --- a/net/mac80211/chan.c
+> +++ b/net/mac80211/chan.c
+> @@ -668,6 +668,10 @@ static int ieee80211_add_chanctx(struct ieee80211_lo=
+cal *local,
+>  	lockdep_assert_held(&local->mtx);
+>  	lockdep_assert_held(&local->chanctx_mtx);
+> =20
+> +	err =3D ieee80211_add_wbrf(local->hw.wiphy, &ctx->conf.def);
+> +	if (err)
+> +		return err;
+> +
+>  	if (!local->use_chanctx)
+>  		local->hw.conf.radar_enabled =3D ctx->conf.radar_enabled;
+> =20
+> @@ -748,6 +752,8 @@ static void ieee80211_del_chanctx(struct ieee80211_lo=
+cal *local,
+>  	}
+> =20
+>  	ieee80211_recalc_idle(local);
+> +
+> +	ieee80211_remove_wbrf(local->hw.wiphy, &ctx->conf.def);
+>  }
+> =20
+>  static void ieee80211_free_chanctx(struct ieee80211_local *local,
+>=20
+
+This is tricky, and quite likely incorrect.
+
+First of all, chandefs can actually _change_, see
+_ieee80211_change_chanctx(). You'd probably have to call this add/remove
+(or have modify) whenever we call drv_change_chanctx() to change the
+width (not if radar/rx chains change).
+
+Secondly, you don't know if the driver will actually use ctx->conf.def,
+or ctx->conf.mindef. For client mode that doesn't matter, but for AP
+mode if the AP is configured to say 160 MHz, it might actually configure
+down to 20 MHz when no stations are connected (or only 20 MHz stations
+are). I don't know if you really care about taking that into account, I
+also don't know how dynamic this really should be. Stations can connect
+and disconnect quickly, so perhaps the WBRF should actually take the
+full potential bandwidth into account all the time, in which case taking
+ctx->conf.def would be correct.
+
+I'll note that your previous in-driver approach had all the same
+problems the way you had implemented it, though I don't know if that
+driver ever can use mindef or not.
+
+
+> +void ieee80211_check_wbrf_support(struct wiphy *wiphy)
+> +{
+> +	struct device *dev =3D wiphy->dev.parent;
+> +	struct acpi_device *acpi_dev;
+> +
+> +	acpi_dev =3D ACPI_COMPANION(dev);
+
+Can this cope with 'dev' being NULL? Just not sure nothing like hwsim or
+so always even has a parent. I guess it should, but ...
+
+> +static int chan_width_to_mhz(enum nl80211_chan_width chan_width)
+> +{
+> +	int mhz;
+> +
+> +	switch (chan_width) {
+> +	case NL80211_CHAN_WIDTH_1:
+> +		mhz =3D 1;
+> +		break;
+> +	case NL80211_CHAN_WIDTH_2:
+> +		mhz =3D 2;
+> +		break;
+> +	case NL80211_CHAN_WIDTH_4:
+> +		mhz =3D 4;
+> +		break;
+> +	case NL80211_CHAN_WIDTH_8:
+> +		mhz =3D 8;
+> +		break;
+> +	case NL80211_CHAN_WIDTH_16:
+> +		mhz =3D 16;
+> +		break;
+> +	case NL80211_CHAN_WIDTH_5:
+> +		mhz =3D 5;
+> +		break;
+> +	case NL80211_CHAN_WIDTH_10:
+> +		mhz =3D 10;
+> +		break;
+> +	case NL80211_CHAN_WIDTH_20:
+> +	case NL80211_CHAN_WIDTH_20_NOHT:
+> +		mhz =3D 20;
+> +		break;
+> +	case NL80211_CHAN_WIDTH_40:
+> +		mhz =3D 40;
+> +		break;
+> +	case NL80211_CHAN_WIDTH_80P80:
+> +	case NL80211_CHAN_WIDTH_80:
+> +		mhz =3D 80;
+> +		break;
+> +	case NL80211_CHAN_WIDTH_160:
+> +		mhz =3D 160;
+> +		break;
+> +	case NL80211_CHAN_WIDTH_320:
+> +		mhz =3D 320;
+> +		break;
+> +	default:
+> +		WARN_ON_ONCE(1);
+> +		return -1;
+> +	}
+> +	return mhz;
+
+This might be more generally useful as a function in cfg80211 that's
+exported - hwsim has exactly the same function today, for example.
+
+> +static void get_chan_freq_boundary(u32 center_freq,
+> +				   u32 bandwidth,
+> +				   u64 *start,
+> +				   u64 *end)
+> +{
+> +	bandwidth =3D MHZ_TO_KHZ(bandwidth);
+> +	center_freq =3D MHZ_TO_KHZ(center_freq);
+> +
+> +	*start =3D center_freq - bandwidth / 2;
+> +	*end =3D center_freq + bandwidth / 2;
+> +
+> +	/* Frequency in HZ is expected */
+> +	*start =3D KHZ_TO_HZ(*start);
+> +	*end =3D KHZ_TO_HZ(*end);
+> +}
+
+Similar patterns are probably elsewhere too for this, but I guess we can
+always refactor later too.
+
+johannes
