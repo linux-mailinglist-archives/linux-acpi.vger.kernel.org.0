@@ -2,65 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 432D1729623
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Jun 2023 11:59:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 545B67297DB
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Jun 2023 13:10:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241480AbjFIJ72 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 9 Jun 2023 05:59:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49430 "EHLO
+        id S239066AbjFILJt convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 9 Jun 2023 07:09:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241900AbjFIJ6q (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Jun 2023 05:58:46 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37F1D3AB2;
-        Fri,  9 Jun 2023 02:51:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686304271; x=1717840271;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=AvruXqThihYTdwzn7jJFQ7xk66jtEf/aSgqQmsYKfpM=;
-  b=DVt97gJNS+CKMH1Ws0aM6MNWaFOnG9wtNfKAXepJhK+Wqd027JWTJrJY
-   EWhSGrylWWbgG2EqHfw4eoHzfSCEtNB5h3JUraXehHpXj7STjn8A9vFOC
-   sE4XP0e32P1+MZwdonBu/SsK2siBZCLPc7fM8XtXhaliBh/uH2Ft+R28u
-   Zy7QxCPSyWa7Bz5miTQzFBRLtru7RkL9IUQKOIz2kIFf/h8kv4wLlqBzf
-   wGEsruILjzG8fw9R9wh+xBj7+HzmoR/M7NHNpah0AgTlKo9LXbNvD7IAu
-   l5iQQmhb5d65VCWcToA2DEHFT5jzg2w0RJrfP+mzbUWxm4w1vqmQWGgK4
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10735"; a="342239922"
-X-IronPort-AV: E=Sophos;i="6.00,228,1681196400"; 
-   d="scan'208";a="342239922"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2023 02:51:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10735"; a="713454261"
-X-IronPort-AV: E=Sophos;i="6.00,228,1681196400"; 
-   d="scan'208";a="713454261"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2023 02:51:08 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-        by kekkonen.fi.intel.com (Postfix) with ESMTP id 65F3011F9D2;
-        Fri,  9 Jun 2023 12:51:04 +0300 (EEST)
-Date:   Fri, 9 Jun 2023 09:51:04 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: Re: [PATCH v1 0/6] ACPI: scan: MIPI DiSco for Imaging support
-Message-ID: <ZIL2CPyNpy4xCfdn@kekkonen.localdomain>
-References: <13276375.uLZWGnKmhe@kreacher>
- <CAJZ5v0gKaheHVfRcgFx_3JdBp9bw5nUQXYp9vZP4RVVXzdb7uw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0gKaheHVfRcgFx_3JdBp9bw5nUQXYp9vZP4RVVXzdb7uw@mail.gmail.com>
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        with ESMTP id S238967AbjFILJX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Jun 2023 07:09:23 -0400
+Received: from tilde.cafe (tilde.cafe [51.222.161.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3336E2D42;
+        Fri,  9 Jun 2023 04:09:22 -0700 (PDT)
+Received: from localhost (67.250.94.80.dyn.idknet.com [80.94.250.67])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by tilde.cafe (Postfix) with ESMTPSA id CA44020309;
+        Fri,  9 Jun 2023 07:09:18 -0400 (EDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=UTF-8
+Date:   Fri, 09 Jun 2023 14:09:17 +0300
+Subject: Re: [REGRESSION] Asus X541UAK hangs on suspend and poweroff (v6.1.6
+ onward)
+Cc:     <bagasdotme@gmail.com>, <linux-acpi@vger.kernel.org>,
+        <rafael@kernel.org>, <regressions@leemhuis.info>,
+        <regressions@lists.linux.dev>, <stable@vger.kernel.org>,
+        <helgaas@kernel.org>
+From:   "Acid Bong" <acidbong@tilde.cafe>
+To:     <acidbong@tilde.cafe>
+Message-Id: <CT81XH8HT8A1.2XAHQ1IF5VSO9@bong>
+X-Mailer: aerc 0.15.2-0-gf1772c92f92e
+In-Reply-To: <CSB8TSV6LXJ8.7SHI9VM2YMAR@bong>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,64 +44,26 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafael,
+Hi there, hello.
 
-On Wed, May 24, 2023 at 08:06:09PM +0200, Rafael J. Wysocki wrote:
-> On Wed, May 24, 2023 at 1:48 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
-> >
-> > Hi Folks,
-> >
-> > This basically is a re-write of a recent patch series from Sakari:
-> >
-> > https://lore.kernel.org/linux-acpi/20230329100951.1522322-1-sakari.ailus@linux.intel.com
-> >
-> > The general idea is the same - CSI-2 resource descriptors, introduced in
-> > ACPI 6.4 and defined by
-> >
-> > https://uefi.org/specs/ACPI/6.5/06_Device_Configuration.html#camera-serial-interface-csi-2-connection-resource-descriptor
-> >
-> > are found and used for creating a set of software nodes that represent the CSI-2
-> > connection graph.
-> >
-> > These software nodes need to be available before any scan handlers or ACPI drivers
-> > are bound to any struct acpi_device objects, so all of that is done at the early
-> > stage of ACPI device enumeration, but unnecessary ACPI namespace walks are avoided.
-> >
-> > The CSI-2 software nodes are populated with data extracted from the CSI-2 resource
-> > descriptors themselves and from device properties defined by the MIPI DiSco for
-> > Imaging specification (see https://www.mipi.org/specifications/mipi-disco-imaging).
-> >
-> > Patches [4,6/6] come from the original series directly, but the other patches have
-> > been changes substantially, so I've decided to re-start patch series versioning from
-> > scratch.
-> >
-> > This series is based on the patch at
-> >
-> > https://patchwork.kernel.org/project/linux-acpi/patch/12223415.O9o76ZdvQC@kreacher/
-> >
-> > applied on top of 6.4-rc3.
-> >
-> > Later on, I'll put all of this material into a special git branch for easier
-> > access.
-> 
-> The patches are now available from the acpi-mipi-disco-imaging branch
-> in the linux-pm.git tree at kernel.org.
+This seems to be my final update.
 
-I've been doing some testing on this version.
+About a week ago I returned to using Gajim, which, as I remember from
+earlier, also seemed to be responsible for these hangings, and they got
+more frequent (I haven't updated any software for the last 2 months). I
+decided to move to the kernel version 6.1.1, which I earlier marked as
+"good", and my laptop hung last evening during the shutdown. As always,
+nothing in the logs.
 
-It oopses and that's relatively easy to fix by removing the kfree() that
-releases memory of the software nodes and properties.
+I tried to compile some versions from 5.15.y branch, but either I had a
+bad luck, or the commits weren't properly compatible with GCC 12 yet,
+but they (.48 and .78) emitted warnings, so I never used them (or I
+broke the repo, who knows).
 
-It doesn't work with that change either, it would seem like that the _CRS
-CSI2 data is (most of the time) released before it gets used for creating
-the software nodes, leading node registration to fail. This appears to be
-taking place in different processes --- there's a work queue.
+Due to the fact that software does have impact on this behaviour, and
+due to my health issues and potential conscription (cuz our army doesn't
+care about health), which will cut me from my laptop for a long-long
+time, I give up on bisecting. I'll just update all my software (there's
+also a GCC upgrade in the repos) and hope for the best.
 
-Moving the release of the _CRS CSI-2 resources to where they are no longer
-needed makes the system crash early at boot. I've yet to debug this
-further.
-
--- 
-Regards,
-
-Sakari Ailus
+Sorry for inconvenience and have a great day. Thank you very much.
