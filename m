@@ -2,69 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00037729EC3
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Jun 2023 17:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B76F729F15
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Jun 2023 17:49:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230092AbjFIPi6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 9 Jun 2023 11:38:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36352 "EHLO
+        id S241886AbjFIPtD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 9 Jun 2023 11:49:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241761AbjFIPi5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Jun 2023 11:38:57 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F9D335AC;
-        Fri,  9 Jun 2023 08:38:54 -0700 (PDT)
+        with ESMTP id S241887AbjFIPtC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Jun 2023 11:49:02 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5A28359D;
+        Fri,  9 Jun 2023 08:48:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686325134; x=1717861134;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JHKkr5ftMghStaPte8Ag1DlR65Bds0ob3L1V4arjbTA=;
-  b=HIvkzp6tJGfMRfo+jYzQlIc/14iu+RWCPpSWrUOssEhh0Jdyhi9nFT8K
-   HSek1ADRwjI9rZ9911Ul4wzwh7H7A1W7bilpOdTrwvphQfLMtvCc9WHCk
-   cqJ1gzQepYRHNZbB9ziBcY2dQMkD6tEpslsiUf8TR5vFb+AVXxKzbU/1z
-   y1Ibs+bJgEhJLj7R+lDC7+r69Y8bOtyLiWomtUBYgsnIPfY13LZdNVMCv
-   1RQBrTpukZWYShIidgPjc6xOOmQ2wGa2sFEQdg+Xzmd/WIF1fccUnDQnE
-   wwaJZDGv9K0KnXquTRtw7K0PvqUyHgyXHaGvD2mD12khZ9ppimV9OFXTG
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10736"; a="357626850"
+  t=1686325738; x=1717861738;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=kOCx0QRpqvaaVLOmLE4ZMvn4JCpJBQVlhraQgfxDKLE=;
+  b=XS57XqNKFxynEclagnQwort/ASNV4+6pnEbSmoWnkwpK8Q07vq+DVFGV
+   NmgvurQKsCAq1qjU9w7Dwsw0sEPgAkamPgUY1S7x2Zgc4mWPhXLsd5/8w
+   qAEdbo20HmGM4NwPhT9ikRx/v9Rokf6fCD4efh8HUCvvZKkDRCzRxnBIJ
+   d8N2W2E4d9fbNkqAtpLZ8Upl82sdXABldq1GRIMmJv9bQZHHCwyuKisP0
+   GPfH/iqUC6YEZ+ruupIhHI0fQNby0Ls05uh61F0wwvNxO3UDNoBGoL6PK
+   pyU/Trn5mL3gVpmUKTdfPKaNik/URLgl90jDTAZopW9zR5ymWlcker2aK
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10736"; a="423504352"
 X-IronPort-AV: E=Sophos;i="6.00,229,1681196400"; 
-   d="scan'208";a="357626850"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2023 08:38:53 -0700
+   d="scan'208";a="423504352"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2023 08:48:58 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10736"; a="704591451"
+X-IronPort-AV: E=McAfee;i="6600,9927,10736"; a="854785635"
 X-IronPort-AV: E=Sophos;i="6.00,229,1681196400"; 
-   d="scan'208";a="704591451"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga007.jf.intel.com with ESMTP; 09 Jun 2023 08:38:50 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1q7eCO-002Qql-0b;
-        Fri, 09 Jun 2023 18:38:48 +0300
-Date:   Fri, 9 Jun 2023 18:38:47 +0300
+   d="scan'208";a="854785635"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 09 Jun 2023 08:48:54 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 4ECA234C; Fri,  9 Jun 2023 18:49:02 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Damien Le Moal <dlemoal@kernel.org>,
+To:     Damien Le Moal <dlemoal@kernel.org>,
+        Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
-        Jens Axboe <axboe@kernel.dk>,
+        linux-acpi@vger.kernel.org
+Cc:     Hans de Goede <hdegoede@redhat.com>, Jens Axboe <axboe@kernel.dk>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
         Daniel Scally <djrscally@gmail.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: Re: [PATCH v1 2/3] device property: Implement device_is_compatible()
-Message-ID: <ZINHh5xmqK/zprwd@smile.fi.intel.com>
-References: <20230609152507.77649-1-andriy.shevchenko@linux.intel.com>
- <20230609152507.77649-3-andriy.shevchenko@linux.intel.com>
- <2023060902-gills-flatness-e402@gregkh>
+Subject: [PATCH v2 0/3] device property: Introduce device_is_compatible()
+Date:   Fri,  9 Jun 2023 18:48:57 +0300
+Message-Id: <20230609154900.43024-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2023060902-gills-flatness-e402@gregkh>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
@@ -75,19 +69,34 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 09, 2023 at 05:33:25PM +0200, Greg Kroah-Hartman wrote:
-> On Fri, Jun 09, 2023 at 06:25:06PM +0300, Andy Shevchenko wrote:
-> > Some users want to use the struct device pointer to see if
-> > the device is compatible. Provide inline helpers for them.
-> What do you mean by "compatible"?
+Introduce a new helper to tell if device (node) is compatible to the
+given string value. This will help some drivers to get rid of unneeded
+OF APIs/etc and in may help others to be agnostic to OF/ACPI.
 
-In terms of how OF defines it (note that ACPI may also utilize it,
-so it's wider than there).
+While doing it, I have noticed that ACPI_DEVICE_CLASS() macro seems
+defined in unsuitable location. Move it to the better one.
 
-I will elaborate this in v2.
+Last patch is an example of what the first two are doing.
+
+The entire series can go, I believe, via ACPI (linux-pm) tree in case
+the last patch gets tag from the respective maintainer.
+
+In v2:
+- updated commit message and added kernel doc for a new API (Greg)
+- also replaced acpi_device_get_match_data() with the agnostic API
+- tried to keep header inclusions ordered (to some extent)
+
+Andy Shevchenko (3):
+  ACPI: Move ACPI_DEVICE_CLASS() to mod_devicetable.h
+  device property: Implement device_is_compatible()
+  ata: ahci_platform: Make code agnostic to OF/ACPI
+
+ drivers/ata/ahci_platform.c     |  8 ++++----
+ include/linux/acpi.h            | 14 --------------
+ include/linux/mod_devicetable.h | 13 +++++++++++++
+ include/linux/property.h        | 12 ++++++++++++
+ 4 files changed, 29 insertions(+), 18 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.40.0.1.gaa8946217a0b
 
