@@ -2,68 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 545B67297DB
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Jun 2023 13:10:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF07D729E4F
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Jun 2023 17:25:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239066AbjFILJt convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 9 Jun 2023 07:09:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54872 "EHLO
+        id S241505AbjFIPZQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 9 Jun 2023 11:25:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238967AbjFILJX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Jun 2023 07:09:23 -0400
-Received: from tilde.cafe (tilde.cafe [51.222.161.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3336E2D42;
-        Fri,  9 Jun 2023 04:09:22 -0700 (PDT)
-Received: from localhost (67.250.94.80.dyn.idknet.com [80.94.250.67])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by tilde.cafe (Postfix) with ESMTPSA id CA44020309;
-        Fri,  9 Jun 2023 07:09:18 -0400 (EDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Type: text/plain; charset=UTF-8
-Date:   Fri, 09 Jun 2023 14:09:17 +0300
-Subject: Re: [REGRESSION] Asus X541UAK hangs on suspend and poweroff (v6.1.6
- onward)
-Cc:     <bagasdotme@gmail.com>, <linux-acpi@vger.kernel.org>,
-        <rafael@kernel.org>, <regressions@leemhuis.info>,
-        <regressions@lists.linux.dev>, <stable@vger.kernel.org>,
-        <helgaas@kernel.org>
-From:   "Acid Bong" <acidbong@tilde.cafe>
-To:     <acidbong@tilde.cafe>
-Message-Id: <CT81XH8HT8A1.2XAHQ1IF5VSO9@bong>
-X-Mailer: aerc 0.15.2-0-gf1772c92f92e
-In-Reply-To: <CSB8TSV6LXJ8.7SHI9VM2YMAR@bong>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S241500AbjFIPZO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 9 Jun 2023 11:25:14 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A7EC359A;
+        Fri,  9 Jun 2023 08:25:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686324310; x=1717860310;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=qtaVsvzDvJRlb72B8amTkVRnjCIA4psIcmOP5FzGYL4=;
+  b=EhGSr0SUm8Z82+s0D5WQeuXJxq1pBaMT8JX+rS5betEx/IGmxI1xaYaX
+   Auh2MLR/jsh7pe9kXaReOfvm2pIXpa00Iu7IQ/MJso5x8KIWXaK5tl5jQ
+   jSjz9kYCNRrgejpMlxshe8qkKyHCop1GtD5qUAM/KzhBMLJgqmx0z+JPR
+   Um1rAJJ4Y2RRse3KWpLsd9yMlr3r7NLVBTxxkCUeJIVg3GPAZRHBiGxZ+
+   rZU6IMYcqPxp2RcLmS2qOU/WofIxRWoFdTDMLm89N7BVJVcJHWQ+YM86M
+   dkaLXzT/BBEL1FzmTccilJQDguV4A2/uJDnBxPI33b0TVp/O2zhULw9dq
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10736"; a="357623168"
+X-IronPort-AV: E=Sophos;i="6.00,229,1681196400"; 
+   d="scan'208";a="357623168"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2023 08:25:09 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10736"; a="775532600"
+X-IronPort-AV: E=Sophos;i="6.00,229,1681196400"; 
+   d="scan'208";a="775532600"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga008.fm.intel.com with ESMTP; 09 Jun 2023 08:25:06 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 59DD134C; Fri,  9 Jun 2023 18:25:14 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        Damien Le Moal <dlemoal@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Cc:     Hans de Goede <hdegoede@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH v1 0/3] device property: Introduce device_is_compatible()
+Date:   Fri,  9 Jun 2023 18:25:04 +0300
+Message-Id: <20230609152507.77649-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi there, hello.
+Introduce a new helper to tell if device (node) is compatible to the
+given string value. This will help some drivers to get rid of unneeded
+OF APIs/etc and in may help others to be agnostic to OF/ACPI.
 
-This seems to be my final update.
+While doing it, I have noticed that ACPI_DEVICE_CLASS() macro seems
+defined in unsuitable location. Move it to the better one.
 
-About a week ago I returned to using Gajim, which, as I remember from
-earlier, also seemed to be responsible for these hangings, and they got
-more frequent (I haven't updated any software for the last 2 months). I
-decided to move to the kernel version 6.1.1, which I earlier marked as
-"good", and my laptop hung last evening during the shutdown. As always,
-nothing in the logs.
+Last patch is an example of what the first two are doing.
 
-I tried to compile some versions from 5.15.y branch, but either I had a
-bad luck, or the commits weren't properly compatible with GCC 12 yet,
-but they (.48 and .78) emitted warnings, so I never used them (or I
-broke the repo, who knows).
+The entire series can go, I believe, via ACPI (linux-pm) tree in case
+the last patch gets tag from the respective maintainer.
 
-Due to the fact that software does have impact on this behaviour, and
-due to my health issues and potential conscription (cuz our army doesn't
-care about health), which will cut me from my laptop for a long-long
-time, I give up on bisecting. I'll just update all my software (there's
-also a GCC upgrade in the repos) and hope for the best.
+Andy Shevchenko (3):
+  ACPI: Move ACPI_DEVICE_CLASS() to mod_devicetable.h
+  device property: Implement device_is_compatible()
+  ata: ahci_platform: Make code agnostic to OF/ACPI
 
-Sorry for inconvenience and have a great day. Thank you very much.
+ drivers/ata/ahci_platform.c     |  6 +++---
+ include/linux/acpi.h            | 14 --------------
+ include/linux/mod_devicetable.h | 13 +++++++++++++
+ include/linux/property.h        |  5 +++++
+ 4 files changed, 21 insertions(+), 17 deletions(-)
+
+-- 
+2.40.0.1.gaa8946217a0b
+
