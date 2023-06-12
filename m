@@ -2,84 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C9E372CC5E
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jun 2023 19:24:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD4A972CC80
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jun 2023 19:27:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235968AbjFLRYa convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 12 Jun 2023 13:24:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35312 "EHLO
+        id S236150AbjFLR1L convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 12 Jun 2023 13:27:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236368AbjFLRY2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Jun 2023 13:24:28 -0400
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FDF110B;
-        Mon, 12 Jun 2023 10:24:27 -0700 (PDT)
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-9787d11a410so97761766b.0;
-        Mon, 12 Jun 2023 10:24:27 -0700 (PDT)
+        with ESMTP id S237374AbjFLR1J (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Jun 2023 13:27:09 -0400
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 589C8107;
+        Mon, 12 Jun 2023 10:27:06 -0700 (PDT)
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-30fbaf12bbaso441816f8f.1;
+        Mon, 12 Jun 2023 10:27:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686590665; x=1689182665;
+        d=1e100.net; s=20221208; t=1686590825; x=1689182825;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/5Hvx6Dau5hLXCc+MkPwK5vrK7hRtZQDi/JSaHrIrwc=;
-        b=ZMeKiVJRVnlch0n8xiv6HhAQeBBoTNAQ8Imo1ICsQ2L5pZW57/SQ0txrTiSfOq4V6m
-         e4pgKbngOxtm27QQJ78ukYDK4K8zuCKcoaC+05pvUaUK9bsWfEMabYgn7xI2kpeKqAXp
-         T57iczt3kus8qSmKNxQHWZoagvYlvYa32UWCIryPtTzWlq/TQ29wC7Lkjcs39enXLuh3
-         ym2GVSEZ4fsMEMIL/qBg+uTlmZotWq+oX2Q0XZz1d+dPQ+esF3rGJN3J1BjmX6Z+JMye
-         NB46KOjAKZIUmQz3QJ3hkvJXM8xEui9FWUIGFD5kHGzfMQXbJDxTbwczaQd529i7Qq8F
-         wBWQ==
-X-Gm-Message-State: AC+VfDygkprFRcjHXXwoSsKiui0L4yDp4TV7RGwEBIM6D4MsTrFl9O1m
-        /Se1ELt0OFWhAso3Aw0g+EpqNxaSky1dc2oO4Nc=
-X-Google-Smtp-Source: ACHHUZ5hGudTfkhfmt5cBz2VmFEdPlhxuMv19+N2EhFKcr/uT4JUdODvuPaNslce3OItrzVTrPAZiOyTUIQ7NWiSLNM=
-X-Received: by 2002:a17:906:1049:b0:977:cb73:ef6a with SMTP id
- j9-20020a170906104900b00977cb73ef6amr7188139ejj.3.1686590665590; Mon, 12 Jun
- 2023 10:24:25 -0700 (PDT)
+        bh=U+blguC2WbFz1aop25IT0egRp+jWYhhHvAbXh2rsQ/A=;
+        b=kzn7UCa2Zh8EEBtRt6HdE9kHlzv+y/KBkACyY9XPkLQ+FbsmxNKxLiQN8eDME9gtxx
+         mu8bxunGEyqP4IVElg64/3t1xJIY1l8/y9XNv76W0GMWxrMrp140/3iM5B/oyhLgHxm5
+         RIcGvz2k4tFbWYsNiZBsRCERQOJMDVNXuycivKzBxCk97fAiVJV0QJo/cTELISlvKPhc
+         M52TMZS9Yw4f6P/TNA3LtCsXhzftsIqQNqT41OdcxYauZhtgg53XXn5g0jsvo6yBNYLK
+         7U1Z4trU7JocE85B+iYkQ4kXSSV+2hUPn83lCKSuT5UxyNEJS/VBKe8ZVzaWqY7lbnkD
+         ye8w==
+X-Gm-Message-State: AC+VfDzjPWv09x/VbDsI/gb7Gki6v/XkkkrmDVutby4W/tK0AwNWXtXS
+        pQKFhwnERKAONFYaaUyKl6U2xlJCPabJAGj645S+LvNk
+X-Google-Smtp-Source: ACHHUZ5tqaxaXGpXNUsFFwTH4j3zwIwzjKa8AuxeigYxWQ6JdX+BGhVgG2D55Qj6mgLJ7ePBAapnUmx+imekqnQbsdM=
+X-Received: by 2002:a5d:48c7:0:b0:30a:d0a0:266e with SMTP id
+ p7-20020a5d48c7000000b0030ad0a0266emr7096018wrs.2.1686590824776; Mon, 12 Jun
+ 2023 10:27:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230606122819.343378-1-linmiaohe@huawei.com>
-In-Reply-To: <20230606122819.343378-1-linmiaohe@huawei.com>
+References: <20230606095641.5357-1-TonyWWang-oc@zhaoxin.com>
+In-Reply-To: <20230606095641.5357-1-TonyWWang-oc@zhaoxin.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 12 Jun 2023 19:24:14 +0200
-Message-ID: <CAJZ5v0jTo+bX7K2L=3cnVsd_R1e2h7H5w6LXGuA3d_WQc1K0AA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: APEI: mark bert_disable as __initdata
-To:     Miaohe Lin <linmiaohe@huawei.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
-        tony.luck@intel.com, bp@alien8.de, ardb@kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 12 Jun 2023 19:26:53 +0200
+Message-ID: <CAJZ5v0h539BYRN53perdsRViUqU2YG96abRuB2xpTHqYKfFvkw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: acpi_pad: mark Zhaoxin CPUs NONSTOP TSC correctly
+To:     Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, CobeChen@zhaoxin.com,
+        TimGuo@zhaoxin.com, LeoLiu-oc@zhaoxin.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 6, 2023 at 2:28 PM Miaohe Lin <linmiaohe@huawei.com> wrote:
+On Tue, Jun 6, 2023 at 11:56 AM Tony W Wang-oc <TonyWWang-oc@zhaoxin.com> wrote:
 >
-> It's only used inside __init section. Mark it __initdata.
+> Zhaoxin CPUs support NONSTOP TSC feature, so do not mark these CPUs
+> TSC unstable when use the acpi_pad driver.
 >
-> Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+> Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
 > ---
->  drivers/acpi/apei/bert.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/acpi/acpi_pad.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/drivers/acpi/apei/bert.c b/drivers/acpi/apei/bert.c
-> index 7514e38d5640..5427e49e646b 100644
-> --- a/drivers/acpi/apei/bert.c
-> +++ b/drivers/acpi/apei/bert.c
-> @@ -34,7 +34,7 @@
->  #define ACPI_BERT_PRINT_MAX_RECORDS 5
->  #define ACPI_BERT_PRINT_MAX_LEN 1024
->
-> -static int bert_disable;
-> +static int bert_disable __initdata;
->
->  /*
->   * Print "all" the error records in the BERT table, but avoid huge spam to
+> diff --git a/drivers/acpi/acpi_pad.c b/drivers/acpi/acpi_pad.c
+> index 02f1a1b1143c..7a453c5ff303 100644
+> --- a/drivers/acpi/acpi_pad.c
+> +++ b/drivers/acpi/acpi_pad.c
+> @@ -66,6 +66,7 @@ static void power_saving_mwait_init(void)
+>         case X86_VENDOR_AMD:
+>         case X86_VENDOR_INTEL:
+>         case X86_VENDOR_ZHAOXIN:
+> +       case X86_VENDOR_CENTAUR:
+>                 /*
+>                  * AMD Fam10h TSC will tick in all
+>                  * C/P/S0/S1 states when this bit is set.
 > --
 
 Applied as 6.5 material, thanks!
