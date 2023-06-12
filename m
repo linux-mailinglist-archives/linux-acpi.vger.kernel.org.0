@@ -2,119 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 234C472CB1F
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jun 2023 18:12:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1445B72CBE9
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jun 2023 18:57:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232852AbjFLQM4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Jun 2023 12:12:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52342 "EHLO
+        id S229736AbjFLQ5Q convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 12 Jun 2023 12:57:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232662AbjFLQM4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Jun 2023 12:12:56 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C599C5;
-        Mon, 12 Jun 2023 09:12:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686586375; x=1718122375;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ekjCA2CGwiZrAX/o+zl26feODwMRZ9OhX+gAL/VO0z8=;
-  b=Nmw7Ixa/Wr1RI2UbrHa9u87RH4HNNdy/2HnMpNBxBVbHxr62fKjOuRNn
-   ceap7mDXxn+zU0xsqAGZumDjBu0gl1ssIJZBJ5jqzrxRrSmetdFQMTPx0
-   h3B0JX7bEzJQiccVFP89SqeM+pZHHPuIQYUTY7UOWQlmQ9qXp/zluXeZE
-   TTFozMNNexUZ58TE8s+QdsqTeFWvySujfMOt5y+P82K6wY6QaNSN+ehKo
-   Usf4vqbrdfkpH04kFFklg1reB4WUSH1L8zAsqNeAZtaogJpQaIfQtHV+p
-   H1by1CqNmksx5f/xtLLeKmrSGDjqNueDi07MqrXLASREFU/8l6/SMyWE6
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="360572639"
-X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
-   d="scan'208";a="360572639"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 09:10:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="824031046"
-X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
-   d="scan'208";a="824031046"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga002.fm.intel.com with ESMTP; 12 Jun 2023 09:10:05 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id DC44C3BC; Mon, 12 Jun 2023 19:10:13 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [PATCH v3 3/3] ata: ahci_platform: Make code agnostic to OF/ACPI
-Date:   Mon, 12 Jun 2023 19:10:11 +0300
-Message-Id: <20230612161011.86871-4-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
-In-Reply-To: <20230612161011.86871-1-andriy.shevchenko@linux.intel.com>
-References: <20230612161011.86871-1-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S229697AbjFLQ5P (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Jun 2023 12:57:15 -0400
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DDD619C;
+        Mon, 12 Jun 2023 09:57:14 -0700 (PDT)
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-3f7364c2ed8so11397445e9.0;
+        Mon, 12 Jun 2023 09:57:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686589032; x=1689181032;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/fdthmW3uN8vm/z0fYcR0kZV9BTQdLtqnyjec8VowSA=;
+        b=F8kPyM0WZj95oRzQx1yfLfDmF+pzHFQlKysPiMf6SUyd7ylmznWuLLqNNE7oj9susr
+         OhEZBxV9uxpe2ZyrTFJDSKwx3iWcCX9akdoFvLHiO6gNyNEATb83eKqe+dAES3Sq9ztV
+         JKyP2G+DYdhIGkJgWFYCbgTFPGop8TrkJDzKuqnUl5VolY4cKJo0kxtUcqCH8Ly3dro6
+         YEiNpgpQCPnvhK/srnkkMH129ln2Xov4im+ecLuIjDxkNumLvlP+5N2ZWTCy+CYsbvze
+         Q0gvukLUILEvqxw90/z1kuJfdkg+G3YNWxWMhYxD1Rhb3rwjYzVTAjCsq01EQV3ayDQu
+         cqxw==
+X-Gm-Message-State: AC+VfDxHHvKnNqkR4dYCr/CCoKgRx1la1K55NNtT5QXoYfY0q8JSIJCT
+        N+f44BiRdvvna6sYrdtz0+WYJQwNeO5GQi+Ythu7+LVK
+X-Google-Smtp-Source: ACHHUZ65gnKfYcpfpwnZX1IYq/N10F99bzWWdkwUBfUZkrTQoGAXV/b0lYyby/w6hqMeOnUSHUgbn4ezALjlh7MkLTM=
+X-Received: by 2002:adf:e9d2:0:b0:30c:fdac:ef57 with SMTP id
+ l18-20020adfe9d2000000b0030cfdacef57mr6152290wrn.0.1686589032388; Mon, 12 Jun
+ 2023 09:57:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230607034403.2885-1-james.liu@hpe.com> <CAJZ5v0hTsEzFKvRf-MHpUxyJdFDUqc2ZL63s6BkyJyFtEzxvhw@mail.gmail.com>
+ <ZIGbBF+GxHAlTqGk@ILEIUN5Z4B.asiapacific.hpqcorp.net>
+In-Reply-To: <ZIGbBF+GxHAlTqGk@ILEIUN5Z4B.asiapacific.hpqcorp.net>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 12 Jun 2023 18:57:01 +0200
+Message-ID: <CAJZ5v0iR+CAOwip0zPV1uug-0duJXFS4YMxwNWDntUnK6a+oQQ@mail.gmail.com>
+Subject: Re: [PATCH v1] ACPI: reboot: Increase the delay to avoid racing after
+ writing to ACPI RESET_REG on AMD Milan platforms.
+To:     James Liu <james.liu@hpe.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        mlangsdo@redhat.com, craig.lamparter@hpe.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-With the help of a new device_is_compatible() make the driver code
-agnostic to the OF/ACPI. This makes it neater. As a side effect
-the header inclusions is corrected (seems mod_devicetable.h was
-implicitly included).
+On Thu, Jun 8, 2023 at 11:14 AM James Liu <james.liu@hpe.com> wrote:
+>
+> On Wed, Jun 07, 2023 at 01:19:42PM +0200, Rafael J. Wysocki wrote:
+> > On Wed, Jun 7, 2023 at 5:44 AM James Liu <james.liu@hpe.com> wrote:
+> > >
+> > > For AMD Milan platforms, the delay of 15ms is insufficient to avoid racing
+> > > of reboot mechanisms. That said, the AMD Milan processors don't reboot
+> > > in 15ms after invoking acpi_reset().
+> > >
+> > > The proposed 50ms delay can effectively work around this issue.
+> > > This extended delay aligns better with ACPI v6.4 (i.e., sec. 4.8.4.6),
+> > > which indicates that ideally OSPM should execute spin loops on the CPUs
+> > > in the system following a write to this register.
+> > >
+> > > Signed-off-by: James Liu <james.liu@hpe.com>
+> >
+> > Why do you want to affect everyone (including guest kernels running in
+> > virtual machines AFAICS) in order to address a problem specific to one
+> > platform?
+>
+> I hoped to address this issue for any platform requiring a longer delay to
+> complete ACPI reset in time for any (maybe silicon-level) reasons. Some AMD Milan
+> platforms were the cases that we've found so far.
 
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/ata/ahci_platform.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Do you know about any other?
 
-diff --git a/drivers/ata/ahci_platform.c b/drivers/ata/ahci_platform.c
-index ab30c7138d73..81fc63f6b008 100644
---- a/drivers/ata/ahci_platform.c
-+++ b/drivers/ata/ahci_platform.c
-@@ -9,14 +9,14 @@
-  */
- 
- #include <linux/kernel.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/pm.h>
- #include <linux/device.h>
--#include <linux/of_device.h>
- #include <linux/platform_device.h>
-+#include <linux/property.h>
- #include <linux/libata.h>
- #include <linux/ahci_platform.h>
--#include <linux/acpi.h>
- #include <linux/pci_ids.h>
- #include "ahci.h"
- 
-@@ -56,10 +56,10 @@ static int ahci_probe(struct platform_device *pdev)
- 	if (rc)
- 		return rc;
- 
--	if (of_device_is_compatible(dev->of_node, "hisilicon,hisi-ahci"))
-+	if (device_is_compatible(dev, "hisilicon,hisi-ahci"))
- 		hpriv->flags |= AHCI_HFLAG_NO_FBS | AHCI_HFLAG_NO_NCQ;
- 
--	port = acpi_device_get_match_data(dev);
-+	port = device_get_match_data(dev);
- 	if (!port)
- 		port = &ahci_port_info;
- 
--- 
-2.40.0.1.gaa8946217a0b
+> Except that, since ACPI spec indicates there should be a spin loop (long enough)
+> after the write instruction to Reset Register, I thought it should be no harms to
+> the other systems which well consider this spin loop when they claim to support
+> ACPI reboot.
+>
+> Btw, I am just curious, why is the virtual machine mentioned here?
 
+The new delay would be over 3 times larger, so some users might be
+surprised by it at least potentially.
+
+> is the 50ms delay in acpi_reboot() for a guest OS on VM so long that some
+> unexpected behavior might happen?
+>
+> > Wouldn't it be better to quirk that platform and document the quirk properly?
+>
+> Yeah, it could be. Actually we considered this, and we will consider it again.
+>
+> > > ---
+> > >  drivers/acpi/reboot.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/acpi/reboot.c b/drivers/acpi/reboot.c
+> > > index b79b7c99c237..002f7c7814a1 100644
+> > > --- a/drivers/acpi/reboot.c
+> > > +++ b/drivers/acpi/reboot.c
+> > > @@ -78,5 +78,5 @@ void acpi_reboot(void)
+> > >          * The 15ms delay has been found to be long enough for the system
+> > >          * to reboot on the affected platforms.
+> > >          */
+> > > -       mdelay(15);
+> > > +       mdelay(50);
+> > >  }
+> > > --
