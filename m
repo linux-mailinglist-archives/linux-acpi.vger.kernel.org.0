@@ -2,81 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABDC172CD54
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jun 2023 19:58:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AAC172CEFC
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jun 2023 21:06:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235401AbjFLR6y convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 12 Jun 2023 13:58:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58620 "EHLO
+        id S237779AbjFLTGG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Jun 2023 15:06:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234058AbjFLR6x (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Jun 2023 13:58:53 -0400
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17951E52;
-        Mon, 12 Jun 2023 10:58:51 -0700 (PDT)
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-974539fd9f0so90926366b.0;
-        Mon, 12 Jun 2023 10:58:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686592729; x=1689184729;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=A3eCuUugtCHCIvJfGUvpouutW/MqpB73NWLtQIoZsdg=;
-        b=ABMTXPLeGVnMnJf5hFuW7jME3oGWPTANcDRfpzRsFaNQlM8Qe4ziMVYy5SFdv6NYw/
-         LT5ytckvWPXtZCCEY3qDfin62hSjaZTosg4E+PvnKwwAMElQDimai7zf6gqX/opSSfc7
-         sM3NEN+g7ml0XbbBsh2v8gYDQ6AZEjzG5zAVFGOXU0pZKqq8MdcrQNa+f2H8wqRhKBRE
-         LmmtP44i200gtLBFstNVkjWvxiBom7N1OR2yp+ZQPAZbYJbsu/6k7GhwVlnyuD52jNVC
-         S+bI8baKZzwFJatz66ofh8M2DtnTlM/2IQV4hFYlGx4Flc2LhNRyGhjlWZcxi+JNND0e
-         pt8g==
-X-Gm-Message-State: AC+VfDzbm4J7I+tJBrBoj3FoAtKAPuH/RxPGRpW/aMNknFh1ZssDM2eP
-        0JLQBeiLZhy4lm0SvWUxWsYPFIKcRHz5rzqGxCiR0gk2
-X-Google-Smtp-Source: ACHHUZ7wTZfe+gmfVbQ8l5SUY8x+JfLN3gDKcmQL4KZgtE2TObrzL1rqflSKY3Pe3gZzuI2GA8PsUQ45F7+1n6Zdhtk=
-X-Received: by 2002:a17:906:5185:b0:974:5480:6270 with SMTP id
- y5-20020a170906518500b0097454806270mr8020315ejk.0.1686592729377; Mon, 12 Jun
- 2023 10:58:49 -0700 (PDT)
+        with ESMTP id S237691AbjFLTGE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Jun 2023 15:06:04 -0400
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 466D7114;
+        Mon, 12 Jun 2023 12:05:59 -0700 (PDT)
+Date:   Mon, 12 Jun 2023 19:05:45 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+        s=hk5wwxcnufftnmnhwl5xrasb5a.protonmail; t=1686596754; x=1686855954;
+        bh=25iDRWOxvgNspBxNkjPDBM29e6F7kcNQ02iow0Mrb0s=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=lOAZlqYJh3lQ5cuA0WRR8ZJ2QUOn1PeZRl9WPh/3ppHub1GJgqpXggTL8806BR9TY
+         XJtO9gEKzPE8RhoDeIFJvh/xGYRsDcCu1E7N1Y/6buhrz2woTYQSYRtmRd6N7J3Yi0
+         gMqOEf0CI7+ulrrPy7GwkxwpPhhZZNrjuaKucO7pcEIMyVuBMsZ8XektUpe41lef1n
+         79gSGc2AN4KBgWPg53pd5bUE2O69hFXa9BS0UeSTrJ/hCx0xDTpHIgdORsa5/HhpSW
+         HDF3cZOpr2x2a0DzW2ek+Nyss5/u4Y+jRDbItEwCMkwvj7zRcZjmJUrmNOjI6XNSS0
+         /3EIj+/ZMIduw==
+To:     Bagas Sanjaya <bagasdotme@gmail.com>
+From:   Sami Korkalainen <sami.korkalainen@proton.me>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Linux Stable <stable@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Networking <netdev@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Subject: Re: [REGRESSION][BISECTED] Boot stall from merge tag 'net-next-6.2'
+Message-ID: <oEbkgJ-ImLxBDZDUTnIAGFWrRVnwBss3FOlalTpwrz83xWgESC9pcvNKiAVp9BzFgqZ0V-NIwzBZ7icKD8ynuIi_ZMtGt7URu3ftcSt16u4=@proton.me>
+In-Reply-To: <ZIcmpcEsTLXFaO0f@debian.me>
+References: <GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24OrlljeCyeWveLW9pICEmB9Qc8PKdNt3w1t_g3-Uvxq1l8Wj67PpoMeWDoH8PKk=@proton.me> <ZHFaFosKY24-L7tQ@debian.me> <NVN-hJsvHwaHe6R-y6XIYJp0FV7sCavgMjobFnseULT1wjgkOFNXbGBGT5iVjCfbtU7dW5xy2hIDoq0ASeNaXhvSY-g2Df4aHWVIMQ2c3TQ=@proton.me> <ZIcmpcEsTLXFaO0f@debian.me>
+Feedback-ID: 45678890:user:proton
 MIME-Version: 1.0
-References: <20230602073025.22884-1-mario.limonciello@amd.com>
- <20230602073025.22884-2-mario.limonciello@amd.com> <CAJZ5v0jNn1wHtF7c0XYKpM=XzZasdu3OwksUdqRFO3TyZwrPOg@mail.gmail.com>
-In-Reply-To: <CAJZ5v0jNn1wHtF7c0XYKpM=XzZasdu3OwksUdqRFO3TyZwrPOg@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 12 Jun 2023 19:58:38 +0200
-Message-ID: <CAJZ5v0gdY93OidC=on3LsmO4+eT8e3bT8XJwrim2BrQ5AoG+vg@mail.gmail.com>
-Subject: Re: [PATCH v4 2/4] ACPI: x86: Add pm_debug_messages for LPS0 _DSM
- state tracking
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Mario Limonciello <mario.limonciello@amd.com>, hdegoede@redhat.com,
-        linus.walleij@linaro.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
-        Basavaraj.Natikar@amd.com, Shyam-sundar.S-k@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Jun 4, 2023 at 6:04 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Fri, Jun 2, 2023 at 9:32 PM Mario Limonciello
-> <mario.limonciello@amd.com> wrote:
-> >
-> > Enabling debugging messages for the state requires turning on dynamic
-> > debugging for the file. To make it more accessible, use
-> > `pm_debug_messages` and clearer strings for what is happening.
-> >
-> > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->
-> I'm inclined to apply this one and the [1/4] at this point.
->
-> I can also apply the 2 remaining patches in this series if I get ACKs
-> for them from the respective subsystem maintainers.
+Ok. I will try the latest mainline and if it does not work, I try bisecting=
+ again, but it should take at least a couple of weeks with this old PC. Can=
+'t really compile more than once a day.
 
-The ACKs were provided, so the entire series has been applied as 6.5
-material, thanks!
+Regards
+Sami Korkalainen
+___________________________
+
+Sent with Proton Mail secure email.
+
+------- Original Message -------
+On Monday, June 12th, 2023 at 17.07, Bagas Sanjaya <bagasdotme@gmail.com> w=
+rote:
+
+
+> On Sat, May 27, 2023 at 04:07:56AM +0000, Sami Korkalainen wrote:
+>=20
+> > > Where is SCSI info?
+> >=20
+> > Right there, under the text (It was so short, that I thought to put it =
+in the message. Maybe I should have put that also in pastebin for consisten=
+cy and clarity):
+> >=20
+> > Attached devices:
+> > Host: scsi0 Channel: 00 Id: 00 Lun: 00
+> > Vendor: ATA Model: KINGSTON SVP200S Rev: C4
+> > Type: Direct-Access ANSI SCSI revision: 05
+> > Host: scsi1 Channel: 00 Id: 00 Lun: 00
+> > Vendor: hp Model: CDDVDW TS-L633M Rev: 0301
+> > Type: CD-ROM ANSI SCSI revision: 05
+> >=20
+> > > I think networking changes shouldn't cause this ACPI regression, righ=
+t?
+> > > Yeah, beats me, but that's what I got by bisecting. My expertise ends=
+ about here.
+>=20
+>=20
+> Hmm, no reply for a while.
+>=20
+> Networking people: It looks like your v6.2 PR introduces unrelated
+> ACPICA regression. Can you explain why?
+>=20
+> ACPICA people: Can you figure out why do this regression happen?
+>=20
+> Sami: Can you try latest mainline and repeat bisection as confirmation?
+>=20
+> I'm considering to remove this from regression tracking if there is
+> no replies in several more days.
+>=20
+> Thanks.
+>=20
+> --
+> An old man doll... just what I always wanted! - Clara
