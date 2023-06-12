@@ -2,119 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1445B72CBE9
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jun 2023 18:57:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E022672CBFD
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jun 2023 19:03:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229736AbjFLQ5Q convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 12 Jun 2023 12:57:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47898 "EHLO
+        id S236394AbjFLRDt convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 12 Jun 2023 13:03:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229697AbjFLQ5P (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Jun 2023 12:57:15 -0400
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DDD619C;
-        Mon, 12 Jun 2023 09:57:14 -0700 (PDT)
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-3f7364c2ed8so11397445e9.0;
-        Mon, 12 Jun 2023 09:57:14 -0700 (PDT)
+        with ESMTP id S233118AbjFLRDq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Jun 2023 13:03:46 -0400
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 503F3E0
+        for <linux-acpi@vger.kernel.org>; Mon, 12 Jun 2023 10:03:45 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-974604c1394so127330166b.0
+        for <linux-acpi@vger.kernel.org>; Mon, 12 Jun 2023 10:03:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686589032; x=1689181032;
+        d=1e100.net; s=20221208; t=1686589424; x=1689181424;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/fdthmW3uN8vm/z0fYcR0kZV9BTQdLtqnyjec8VowSA=;
-        b=F8kPyM0WZj95oRzQx1yfLfDmF+pzHFQlKysPiMf6SUyd7ylmznWuLLqNNE7oj9susr
-         OhEZBxV9uxpe2ZyrTFJDSKwx3iWcCX9akdoFvLHiO6gNyNEATb83eKqe+dAES3Sq9ztV
-         JKyP2G+DYdhIGkJgWFYCbgTFPGop8TrkJDzKuqnUl5VolY4cKJo0kxtUcqCH8Ly3dro6
-         YEiNpgpQCPnvhK/srnkkMH129ln2Xov4im+ecLuIjDxkNumLvlP+5N2ZWTCy+CYsbvze
-         Q0gvukLUILEvqxw90/z1kuJfdkg+G3YNWxWMhYxD1Rhb3rwjYzVTAjCsq01EQV3ayDQu
-         cqxw==
-X-Gm-Message-State: AC+VfDxHHvKnNqkR4dYCr/CCoKgRx1la1K55NNtT5QXoYfY0q8JSIJCT
-        N+f44BiRdvvna6sYrdtz0+WYJQwNeO5GQi+Ythu7+LVK
-X-Google-Smtp-Source: ACHHUZ65gnKfYcpfpwnZX1IYq/N10F99bzWWdkwUBfUZkrTQoGAXV/b0lYyby/w6hqMeOnUSHUgbn4ezALjlh7MkLTM=
-X-Received: by 2002:adf:e9d2:0:b0:30c:fdac:ef57 with SMTP id
- l18-20020adfe9d2000000b0030cfdacef57mr6152290wrn.0.1686589032388; Mon, 12 Jun
- 2023 09:57:12 -0700 (PDT)
+        bh=KugEFd75p1HZibW0H8djou1t0Nl/aoyoyfY3EmGS3GU=;
+        b=BYZZChUlZQ1CLOSV+rQ5lE2uJHRqF1X0tIqqNTEaj+8Jsnt4Zj5vBNpedbVvGa9Koz
+         5bFZ3Jon+4fpOTfUGtFY7rSvFCXEyc6FDR4604CBFmgiXLz+WjSywQevwopo1vw7oWrd
+         X0oLdoNt0Bw/tBxj6rMslJ/Uxc5c1HjT6da1Gn534zlVZvTu0n8Qt1La+qEX2HgbLfJx
+         lw1SMaXVnmFLrSMd58NpRcjl7meT2IwWkacqMRTKJCYiXUjNFDblM1G8Sp93m46582/u
+         LK7qFSX59ShYRQmM4lVx2+bSx3w2m1tJrfeeu0TzaYu+1GXW6WL99d069AEG1ESLc3xr
+         yHsQ==
+X-Gm-Message-State: AC+VfDwKdfx9VvzR2t8x9+t97VtoPyWS/XBTzVSWSt9sScgexoTFL9FE
+        CS8OWnNlfQFyXdVEWc5Xx0Mslq0CPMRB+5QMh2I=
+X-Google-Smtp-Source: ACHHUZ5CqeOQCoEqktdtHpydPMO87HIdeHogxTCQ5YGaBtzuQTCAw21aMeRJMM3T9AMhTIQBYSzZ5A0I/YpyTDZ/wsI=
+X-Received: by 2002:a17:906:5188:b0:977:c446:3a24 with SMTP id
+ y8-20020a170906518800b00977c4463a24mr8682828ejk.7.1686589423565; Mon, 12 Jun
+ 2023 10:03:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230607034403.2885-1-james.liu@hpe.com> <CAJZ5v0hTsEzFKvRf-MHpUxyJdFDUqc2ZL63s6BkyJyFtEzxvhw@mail.gmail.com>
- <ZIGbBF+GxHAlTqGk@ILEIUN5Z4B.asiapacific.hpqcorp.net>
-In-Reply-To: <ZIGbBF+GxHAlTqGk@ILEIUN5Z4B.asiapacific.hpqcorp.net>
+References: <20230608091258.7963-1-hdegoede@redhat.com>
+In-Reply-To: <20230608091258.7963-1-hdegoede@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 12 Jun 2023 18:57:01 +0200
-Message-ID: <CAJZ5v0iR+CAOwip0zPV1uug-0duJXFS4YMxwNWDntUnK6a+oQQ@mail.gmail.com>
-Subject: Re: [PATCH v1] ACPI: reboot: Increase the delay to avoid racing after
- writing to ACPI RESET_REG on AMD Milan platforms.
-To:     James Liu <james.liu@hpe.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mlangsdo@redhat.com, craig.lamparter@hpe.com
+Date:   Mon, 12 Jun 2023 19:03:32 +0200
+Message-ID: <CAJZ5v0jNSWo041AMP0vRbs-909g9ErWJt261oM+RuKvET2sPKw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: video: Stop trying to use vendor backlight control
+ on laptops from after ~2012
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org, Matthew Garrett <mjg59@srcf.ucam.org>,
+        AceLan Kao <acelan.kao@canonical.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 8, 2023 at 11:14 AM James Liu <james.liu@hpe.com> wrote:
+On Thu, Jun 8, 2023 at 11:13 AM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> On Wed, Jun 07, 2023 at 01:19:42PM +0200, Rafael J. Wysocki wrote:
-> > On Wed, Jun 7, 2023 at 5:44 AM James Liu <james.liu@hpe.com> wrote:
-> > >
-> > > For AMD Milan platforms, the delay of 15ms is insufficient to avoid racing
-> > > of reboot mechanisms. That said, the AMD Milan processors don't reboot
-> > > in 15ms after invoking acpi_reset().
-> > >
-> > > The proposed 50ms delay can effectively work around this issue.
-> > > This extended delay aligns better with ACPI v6.4 (i.e., sec. 4.8.4.6),
-> > > which indicates that ideally OSPM should execute spin loops on the CPUs
-> > > in the system following a write to this register.
-> > >
-> > > Signed-off-by: James Liu <james.liu@hpe.com>
-> >
-> > Why do you want to affect everyone (including guest kernels running in
-> > virtual machines AFAICS) in order to address a problem specific to one
-> > platform?
+> There have been 2 separate reports now about a non working
+> "dell_backlight" device getting registered under /sys/class/backlight
+> 1 report for a Raptor Lake based Dell and 1 report for a Meteor Lake
+> (development) platform.
 >
-> I hoped to address this issue for any platform requiring a longer delay to
-> complete ACPI reset in time for any (maybe silicon-level) reasons. Some AMD Milan
-> platforms were the cases that we've found so far.
+> On hw from the last 10 years dell-laptop will not register "dell_backlight"
+> because acpi_video_get_backlight_type() will return acpi_backlight_video
+> there if called before the GPU/kms driver loads. So it does not matter if
+> the GPU driver's native backlight is registered after dell-laptop loads.
+>
+> But it seems that on the latest generation laptops the ACPI tables
+> no longer contain acpi_video backlight control support which causes
+> acpi_video_get_backlight_type() to return acpi_backlight_vendor causing
+> "dell_backlight" to get registered if the dell-laptop module is loaded
+> before the GPU/kms driver.
+>
+> Vendor specific backlight control like the "dell_backlight" device is
+> only necessary on quite old hw (from before acpi_video backlight control
+> was introduced). Work around "dell_backlight" registering on very new
+> hw (where acpi_video backlight control seems to be no more) by making
+> acpi_video_get_backlight_type() return acpi_backlight_none instead
+> of acpi_backlight_vendor as final fallback when the ACPI tables have
+> support for Windows 8 or later (laptops from after ~2012).
+>
+> Suggested-by: Matthew Garrett <mjg59@srcf.ucam.org>
+> Reported-by: AceLan Kao <acelan.kao@canonical.com>
+> Closes: https://lore.kernel.org/platform-driver-x86/20230607034331.576623-1-acelan.kao@canonical.com/
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/acpi/video_detect.c | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
+>
+> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+> index b87783c5872d..eb014c0eba42 100644
+> --- a/drivers/acpi/video_detect.c
+> +++ b/drivers/acpi/video_detect.c
+> @@ -844,6 +844,27 @@ enum acpi_backlight_type __acpi_video_get_backlight_type(bool native, bool *auto
+>         if (native_available)
+>                 return acpi_backlight_native;
+>
+> +       /*
+> +        * The vendor specific BIOS interfaces are only necessary for
+> +        * laptops from before ~2008.
+> +        *
+> +        * For laptops from ~2008 till ~2023 this point is never reached
+> +        * because on those (video_caps & ACPI_VIDEO_BACKLIGHT) above is true.
+> +        *
+> +        * Laptops from after ~2023 no longer support ACPI_VIDEO_BACKLIGHT,
+> +        * if this point is reached on those, this likely means that
+> +        * the GPU kms driver which sets native_available has not loaded yet.
+> +        *
+> +        * Returning acpi_backlight_vendor in this case is known to sometimes
+> +        * cause a non working vendor specific /sys/class/backlight device to
+> +        * get registered.
+> +        *
+> +        * Return acpi_backlight_none on laptops with ACPI tables written
+> +        * for Windows 8 (laptops from after ~2012) to avoid this problem.
+> +        */
+> +       if (acpi_osi_is_win8())
+> +               return acpi_backlight_none;
+> +
+>         /* No ACPI video/native (old hw), use vendor specific fw methods. */
+>         return acpi_backlight_vendor;
+>  }
+> --
 
-Do you know about any other?
-
-> Except that, since ACPI spec indicates there should be a spin loop (long enough)
-> after the write instruction to Reset Register, I thought it should be no harms to
-> the other systems which well consider this spin loop when they claim to support
-> ACPI reboot.
->
-> Btw, I am just curious, why is the virtual machine mentioned here?
-
-The new delay would be over 3 times larger, so some users might be
-surprised by it at least potentially.
-
-> is the 50ms delay in acpi_reboot() for a guest OS on VM so long that some
-> unexpected behavior might happen?
->
-> > Wouldn't it be better to quirk that platform and document the quirk properly?
->
-> Yeah, it could be. Actually we considered this, and we will consider it again.
->
-> > > ---
-> > >  drivers/acpi/reboot.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/acpi/reboot.c b/drivers/acpi/reboot.c
-> > > index b79b7c99c237..002f7c7814a1 100644
-> > > --- a/drivers/acpi/reboot.c
-> > > +++ b/drivers/acpi/reboot.c
-> > > @@ -78,5 +78,5 @@ void acpi_reboot(void)
-> > >          * The 15ms delay has been found to be long enough for the system
-> > >          * to reboot on the affected platforms.
-> > >          */
-> > > -       mdelay(15);
-> > > +       mdelay(50);
-> > >  }
-> > > --
+Applied as 6.5 material, thanks!
