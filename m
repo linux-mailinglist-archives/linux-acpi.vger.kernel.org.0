@@ -2,128 +2,84 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4BDB72CC50
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jun 2023 19:22:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C9E372CC5E
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jun 2023 19:24:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235037AbjFLRWR convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 12 Jun 2023 13:22:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34032 "EHLO
+        id S235968AbjFLRYa convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 12 Jun 2023 13:24:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233118AbjFLRWQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Jun 2023 13:22:16 -0400
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2B25B2
-        for <linux-acpi@vger.kernel.org>; Mon, 12 Jun 2023 10:22:10 -0700 (PDT)
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-97ea801b0d0so49202666b.1
-        for <linux-acpi@vger.kernel.org>; Mon, 12 Jun 2023 10:22:10 -0700 (PDT)
+        with ESMTP id S236368AbjFLRY2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Jun 2023 13:24:28 -0400
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FDF110B;
+        Mon, 12 Jun 2023 10:24:27 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-9787d11a410so97761766b.0;
+        Mon, 12 Jun 2023 10:24:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686590529; x=1689182529;
+        d=1e100.net; s=20221208; t=1686590665; x=1689182665;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=D7WVFzKIqQEcAcQmSETj8pHhIEToE2gftqc2j5ZT0WM=;
-        b=U+aEVGe++4qKDsMooE9bE0/0QaDNy1y381Y0cZMR3Ow9gVhsjErMkP4MLA8ufsgU6u
-         DB3mA62WKnB3KaMsjL3CQk+rZQwUbdlFVJ7v4oTvlOzda7mndRmUV2geeFPt2oH3u457
-         tEXvImsOo9spg24ZX1XF98U/HUU6PN6U4+3ZOY4BqN7Qkt6/BfcpIUngQEhgUXyFws8C
-         zyvFxEbxwv1fxpS5j47zGbYAeiLmDwTu7p5qfUcMwd8t0q4U75CsY0Mw4gjVATx9bEz5
-         ZyCVvTIWt3aD63G5lDT9gvwqaB8VoG2aEw//tHf5FZm8XxQ8u/Z0HH3a1Ky2/2Cef8Mv
-         NPOg==
-X-Gm-Message-State: AC+VfDxZ2+/B8a8/pR2Zt1aHIPPCa3Tipqvjf7KgFKBIL7PyREBCVgKr
-        W6hQ2XVzm/P398sXHUdOL3XBqm2LMETd1fnx4Vu8Zz1Y
-X-Google-Smtp-Source: ACHHUZ6zp5ZvgfscpOf19hYeuwE4fum+QlWzrVw27faZddgpcwHbGLnMX04R6LLYQW7y+FCinEQxNqWGq7cAaepLoCs=
-X-Received: by 2002:a17:906:6485:b0:974:5ec0:5246 with SMTP id
- e5-20020a170906648500b009745ec05246mr7084528ejm.7.1686590528993; Mon, 12 Jun
- 2023 10:22:08 -0700 (PDT)
+        bh=/5Hvx6Dau5hLXCc+MkPwK5vrK7hRtZQDi/JSaHrIrwc=;
+        b=ZMeKiVJRVnlch0n8xiv6HhAQeBBoTNAQ8Imo1ICsQ2L5pZW57/SQ0txrTiSfOq4V6m
+         e4pgKbngOxtm27QQJ78ukYDK4K8zuCKcoaC+05pvUaUK9bsWfEMabYgn7xI2kpeKqAXp
+         T57iczt3kus8qSmKNxQHWZoagvYlvYa32UWCIryPtTzWlq/TQ29wC7Lkjcs39enXLuh3
+         ym2GVSEZ4fsMEMIL/qBg+uTlmZotWq+oX2Q0XZz1d+dPQ+esF3rGJN3J1BjmX6Z+JMye
+         NB46KOjAKZIUmQz3QJ3hkvJXM8xEui9FWUIGFD5kHGzfMQXbJDxTbwczaQd529i7Qq8F
+         wBWQ==
+X-Gm-Message-State: AC+VfDygkprFRcjHXXwoSsKiui0L4yDp4TV7RGwEBIM6D4MsTrFl9O1m
+        /Se1ELt0OFWhAso3Aw0g+EpqNxaSky1dc2oO4Nc=
+X-Google-Smtp-Source: ACHHUZ5hGudTfkhfmt5cBz2VmFEdPlhxuMv19+N2EhFKcr/uT4JUdODvuPaNslce3OItrzVTrPAZiOyTUIQ7NWiSLNM=
+X-Received: by 2002:a17:906:1049:b0:977:cb73:ef6a with SMTP id
+ j9-20020a170906104900b00977cb73ef6amr7188139ejj.3.1686590665590; Mon, 12 Jun
+ 2023 10:24:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <875y80lgbg.fsf@jcompost-mobl.amr.corp.intel.com>
-In-Reply-To: <875y80lgbg.fsf@jcompost-mobl.amr.corp.intel.com>
+References: <20230606122819.343378-1-linmiaohe@huawei.com>
+In-Reply-To: <20230606122819.343378-1-linmiaohe@huawei.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 12 Jun 2023 19:21:57 +0200
-Message-ID: <CAJZ5v0herXf=1n9nd_edd23bX9VgikK6OOs6t662xd_a0LTSvA@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: EC: Clear GPE on interrupt handling only
-To:     "Compostella, Jeremy" <jeremy.compostella@intel.com>
-Cc:     linux-acpi@vger.kernel.org
+Date:   Mon, 12 Jun 2023 19:24:14 +0200
+Message-ID: <CAJZ5v0jTo+bX7K2L=3cnVsd_R1e2h7H5w6LXGuA3d_WQc1K0AA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: APEI: mark bert_disable as __initdata
+To:     Miaohe Lin <linmiaohe@huawei.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
+        tony.luck@intel.com, bp@alien8.de, ardb@kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 6, 2023 at 6:17 PM Compostella, Jeremy
-<jeremy.compostella@intel.com> wrote:
+On Tue, Jun 6, 2023 at 2:28 PM Miaohe Lin <linmiaohe@huawei.com> wrote:
 >
-> On multiple devices I work on, we noticed that
-> /sys/firmware/acpi/interrupts/sci_not is non-zero and keeps increasing
-> over time.
+> It's only used inside __init section. Mark it __initdata.
 >
-> It turns out that there is a race condition between servicing a GPE
-> interrupt and handling task driven transactions.
->
-> If a GPE interrupt is received at the same time ec_poll() is running,
-> the advance_transaction() clears the GPE flag and the interrupt is not
-> serviced as acpi_ev_detect_gpe() relies on the GPE flag to call the
-> handler. As a result, `sci_not' is increased.
->
-> Signed-off-by: Jeremy Compostella <jeremy.compostella@intel.com>
+> Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
 > ---
->  drivers/acpi/ec.c | 31 ++++++++++++++++---------------
->  1 file changed, 16 insertions(+), 15 deletions(-)
+>  drivers/acpi/apei/bert.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-> index 928899ab9502..8569f55e55b6 100644
-> --- a/drivers/acpi/ec.c
-> +++ b/drivers/acpi/ec.c
-> @@ -662,21 +662,6 @@ static void advance_transaction(struct acpi_ec *ec, bool interrupt)
+> diff --git a/drivers/acpi/apei/bert.c b/drivers/acpi/apei/bert.c
+> index 7514e38d5640..5427e49e646b 100644
+> --- a/drivers/acpi/apei/bert.c
+> +++ b/drivers/acpi/apei/bert.c
+> @@ -34,7 +34,7 @@
+>  #define ACPI_BERT_PRINT_MAX_RECORDS 5
+>  #define ACPI_BERT_PRINT_MAX_LEN 1024
 >
->         ec_dbg_stm("%s (%d)", interrupt ? "IRQ" : "TASK", smp_processor_id());
+> -static int bert_disable;
+> +static int bert_disable __initdata;
 >
-> -       /*
-> -        * Clear GPE_STS upfront to allow subsequent hardware GPE_STS 0->1
-> -        * changes to always trigger a GPE interrupt.
-> -        *
-> -        * GPE STS is a W1C register, which means:
-> -        *
-> -        * 1. Software can clear it without worrying about clearing the other
-> -        *    GPEs' STS bits when the hardware sets them in parallel.
-> -        *
-> -        * 2. As long as software can ensure only clearing it when it is set,
-> -        *    hardware won't set it in parallel.
-> -        */
-> -       if (ec->gpe >= 0 && acpi_ec_gpe_status_set(ec))
-> -               acpi_clear_gpe(NULL, ec->gpe);
-> -
->         status = acpi_ec_read_status(ec);
->
->         /*
-> @@ -1287,6 +1272,22 @@ static void acpi_ec_handle_interrupt(struct acpi_ec *ec)
->         unsigned long flags;
->
->         spin_lock_irqsave(&ec->lock, flags);
-> +
-> +       /*
-> +        * Clear GPE_STS upfront to allow subsequent hardware GPE_STS 0->1
-> +        * changes to always trigger a GPE interrupt.
-> +        *
-> +        * GPE STS is a W1C register, which means:
-> +        *
-> +        * 1. Software can clear it without worrying about clearing the other
-> +        *    GPEs' STS bits when the hardware sets them in parallel.
-> +        *
-> +        * 2. As long as software can ensure only clearing it when it is set,
-> +        *    hardware won't set it in parallel.
-> +        */
-> +       if (ec->gpe >= 0 && acpi_ec_gpe_status_set(ec))
-> +               acpi_clear_gpe(NULL, ec->gpe);
-> +
->         advance_transaction(ec, true);
->         spin_unlock_irqrestore(&ec->lock, flags);
->  }
+>  /*
+>   * Print "all" the error records in the BERT table, but avoid huge spam to
 > --
 
 Applied as 6.5 material, thanks!
