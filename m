@@ -2,97 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B343672C5B7
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jun 2023 15:20:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7537472C6EC
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jun 2023 16:07:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235229AbjFLNU4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Jun 2023 09:20:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52072 "EHLO
+        id S236880AbjFLOHk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Jun 2023 10:07:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229781AbjFLNUz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Jun 2023 09:20:55 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54F50B8;
-        Mon, 12 Jun 2023 06:20:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686576054; x=1718112054;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=sSKazqk8pLT68/V8f34A6Z/gkcMXHhg/HflTcf8eD9A=;
-  b=J6KwkvMR37ejyMO/iQG2r4naTqztlT5llD927RwHtw21NI7LW5uvs3o3
-   aW2YY8W0wCmCdWwPeNHuhcuRB7o0sLGJ1uLI0LKNKCM8rT0XZRanFCooo
-   OqEHZpbSseGGfSpmp2EEovsiZGY3FljkLhzozzXEquRkyDKKxGD0lvqQc
-   aAn8xyoceKRau7kfKBASlXY2ORCeS+LJJoOaAjbG1jlCq+dcvPmyDogDi
-   W9b9GyPaZHEshu2Is0q6sKUyRH4J0kzYRkzHY2hkBP80BNAqKZvktnTTn
-   zfR8NgrTrQeEgUDia7D5GdyHcnPR8bEUznk6yKkW79LmuteUOB62s6Ibo
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="338396092"
-X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
-   d="scan'208";a="338396092"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 06:20:53 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="714401057"
-X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
-   d="scan'208";a="714401057"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga007.fm.intel.com with ESMTP; 12 Jun 2023 06:20:50 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1q8hTV-0037fa-0V;
-        Mon, 12 Jun 2023 16:20:49 +0300
-Date:   Mon, 12 Jun 2023 16:20:48 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+        with ESMTP id S235853AbjFLOHj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Jun 2023 10:07:39 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFE09A1;
+        Mon, 12 Jun 2023 07:07:38 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-655d1fc8ad8so3578158b3a.1;
+        Mon, 12 Jun 2023 07:07:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686578858; x=1689170858;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=B+7S35QW+acZtg4WWUpYFQktRq0VTaZ64Z9p3u7NETI=;
+        b=qSQK6e/WaMB/Xqatfc63tiEPAzFpdUezm2kefEGgJwx/0LiPniP7wob/B/ICrs1mcg
+         l4kKjwnwv1f/Uef9MAbTklNCB7Rj+x8r7ZRMogEg0iQ0JlENJjOqVKpFUcPqoPRxQhMw
+         n+uaMV+pRX3jo+mGEdIkfx1V18BN1A8hJkfMK3IB4n49ASr43nFsqOeqq/GyC1czPMxa
+         ulF4Y2T/iposudnh6/ovz6HlvzB1cKDXESTNHhbqADKwhiR+RI9VdEhxLV2SBMuw0Xui
+         MSOnpxwv2d8papuYkQXRwR6jNwL+6gQT+7q3m5QHOsGcD4YiHIy02WQ0A/F8lLkW0L0q
+         BxVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686578858; x=1689170858;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B+7S35QW+acZtg4WWUpYFQktRq0VTaZ64Z9p3u7NETI=;
+        b=hFERIZq1s6mgwN1aGKkdyd07A/TCl7nq/AX2+GLuTeAGB3vyn9BirsYOrvalfPJCe8
+         zBw5lwPLyE014nAjSjzbP9N/voJael/O1By5mmI2gyLvyDIJkI+2y/Vrmsm4LEhbiA5q
+         3ArU7P7tsC6n4YaF5jBlX2T5P7FeBPim1f4DWFajuPhZwuobpW+e6bbh/atke/8Wx2WG
+         CzY12jouSCjLhKJW7Ec5LEII6tOEBQkTSXp7c+9nHwi68qwjnAY68IDcXd3vL24n2CLs
+         hfobSZOS0Zrl5Nr8hV3bqBXPdbb4gfs+FqQIWhI74psC2i8TkBtGSGh/XENyFCdjDOJ/
+         l4YA==
+X-Gm-Message-State: AC+VfDw2kJ9lrLy/XzKZ2AvLZ98tpy7hwuXewSgd7PhBJinihUNpXuG7
+        Ltg0nNfWfIKN3EhnL61KQzk=
+X-Google-Smtp-Source: ACHHUZ5upXhNnZ0xatFLuC9i6LDRa9OLgeV+Y3qmM3xfBGZkBs9NfQfUKOgKSXrmA8KEYZCpdp5BPw==
+X-Received: by 2002:a05:6a00:180e:b0:659:ae1c:c9e2 with SMTP id y14-20020a056a00180e00b00659ae1cc9e2mr11595513pfa.17.1686578858208;
+        Mon, 12 Jun 2023 07:07:38 -0700 (PDT)
+Received: from debian.me (subs02-180-214-232-21.three.co.id. [180.214.232.21])
+        by smtp.gmail.com with ESMTPSA id e15-20020aa7824f000000b0066355064acbsm6914328pfn.104.2023.06.12.07.07.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jun 2023 07:07:37 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 2ADC5106C19; Mon, 12 Jun 2023 21:07:34 +0700 (WIB)
+Date:   Mon, 12 Jun 2023 21:07:33 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Sami Korkalainen <sami.korkalainen@proton.me>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Linux Stable <stable@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Networking <netdev@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: Re: [PATCH v1 3/3] ata: ahci_platform: Make code agnostic to OF/ACPI
-Message-ID: <ZIcbsKxxZcAhLx+N@smile.fi.intel.com>
-References: <20230609152507.77649-1-andriy.shevchenko@linux.intel.com>
- <20230609152507.77649-4-andriy.shevchenko@linux.intel.com>
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Subject: Re: [REGRESSION][BISECTED] Boot stall from merge tag 'net-next-6.2'
+Message-ID: <ZIcmpcEsTLXFaO0f@debian.me>
+References: <GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24OrlljeCyeWveLW9pICEmB9Qc8PKdNt3w1t_g3-Uvxq1l8Wj67PpoMeWDoH8PKk=@proton.me>
+ <ZHFaFosKY24-L7tQ@debian.me>
+ <NVN-hJsvHwaHe6R-y6XIYJp0FV7sCavgMjobFnseULT1wjgkOFNXbGBGT5iVjCfbtU7dW5xy2hIDoq0ASeNaXhvSY-g2Df4aHWVIMQ2c3TQ=@proton.me>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="tWIpDNZqlXgx17RH"
 Content-Disposition: inline
-In-Reply-To: <20230609152507.77649-4-andriy.shevchenko@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <NVN-hJsvHwaHe6R-y6XIYJp0FV7sCavgMjobFnseULT1wjgkOFNXbGBGT5iVjCfbtU7dW5xy2hIDoq0ASeNaXhvSY-g2Df4aHWVIMQ2c3TQ=@proton.me>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 09, 2023 at 06:25:07PM +0300, Andy Shevchenko wrote:
-> With the help of a new device_is_compatible() make
-> the driver code agnostic to the OF/ACPI. This makes
-> it neater. As a side effect the header inclusions is
-> corrected (seems mod_devicetable.h was implicitly
-> included).
 
-...
+--tWIpDNZqlXgx17RH
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> -	if (of_device_is_compatible(dev->of_node, "hisilicon,hisi-ahci"))
-> +	if (device_is_compatible(dev, "hisilicon,hisi-ahci"))
->  		hpriv->flags |= AHCI_HFLAG_NO_FBS | AHCI_HFLAG_NO_NCQ;
->  
->  	port = acpi_device_get_match_data(dev);
+On Sat, May 27, 2023 at 04:07:56AM +0000, Sami Korkalainen wrote:
+> >Where is SCSI info?
+>=20
+> Right there, under the text (It was so short, that I thought to put it in=
+ the message. Maybe I should have put that also in pastebin for consistency=
+ and clarity):
+>=20
+> Attached devices:
+> Host: scsi0 Channel: 00 Id: 00 Lun: 00
+> Vendor: ATA      Model: KINGSTON SVP200S Rev: C4
+> Type:   Direct-Access                    ANSI  SCSI revision: 05
+> Host: scsi1 Channel: 00 Id: 00 Lun: 00
+> Vendor: hp       Model: CDDVDW TS-L633M  Rev: 0301
+> Type:   CD-ROM                           ANSI  SCSI revision: 05
+>=20
+> >I think networking changes shouldn't cause this ACPI regression, right?
+> Yeah, beats me, but that's what I got by bisecting. My expertise ends abo=
+ut here.
 
-Oops, missed this one, will send a v2. This is Friday :-)
+Hmm, no reply for a while.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Networking people: It looks like your v6.2 PR introduces unrelated
+ACPICA regression. Can you explain why?
 
+ACPICA people: Can you figure out why do this regression happen?
 
+Sami: Can you try latest mainline and repeat bisection as confirmation?
+
+I'm considering to remove this from regression tracking if there is
+no replies in several more days.
+
+Thanks.
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--tWIpDNZqlXgx17RH
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZIcmoQAKCRD2uYlJVVFO
+o0wKAQCcH1j4r5tTFN68Co51J4YMdY4PIF5cCpAk35SIIZX4IQEA07PBQBFcbwxR
+k4AfJYj4bdOcl372Mr+/9vr6aGcgFgc=
+=p0sj
+-----END PGP SIGNATURE-----
+
+--tWIpDNZqlXgx17RH--
