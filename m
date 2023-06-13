@@ -2,109 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BD1472DDAC
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jun 2023 11:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4391772DDA2
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jun 2023 11:28:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233062AbjFMJaA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Jun 2023 05:30:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51126 "EHLO
+        id S239142AbjFMJ2J (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Jun 2023 05:28:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233791AbjFMJ37 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Jun 2023 05:29:59 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD1FEB7;
-        Tue, 13 Jun 2023 02:29:57 -0700 (PDT)
+        with ESMTP id S233062AbjFMJ2I (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Jun 2023 05:28:08 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FD2CE52;
+        Tue, 13 Jun 2023 02:28:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686648598; x=1718184598;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9iJSS+fYCSN4GX9xxSm4DKGKOLWhgyVoGNnqxqQ6SbY=;
-  b=Yx3edj3QGpLLtRHETUdVeDc2Ldbqp2KlOiKv4ltcKpyJJmvwIZAom+Zc
-   oJxtnFRFEi0TY0vg4l7wwoma6AO/xYuhBYdvRO6iZ2tyZA5tbtlBEj4pJ
-   PTlUYXUyzo4wYD2+Sa3IzVDmpBWlbeV9c/7s5vksa0A5855JJAA4d9e1x
-   A1NDPuX5FigbBA5nUnWr4RjE7y5m2tcOHTfpvf0uzYd2vQm/E4++LBsnG
-   NYNRrWRximpbKfjKrKSQpunznjkzY/2DbmmR7Bi19o/KOvOGUPcQ2PcLN
-   P4HniG5m/FglHjP0jlmDiVhuuABWdFJvtDr1XymxU+98CVIVl327FA1nh
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="347932658"
+  t=1686648487; x=1718184487;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version:content-id;
+  bh=+94BmlOXXK9BhgybLoQlXD+SsDGq3jQslMKS/rV+7YI=;
+  b=j8vOGpsuuH5cNj5ryiTBbaavIVd3RgLgPGbu2veeIROEg5ObgtXfAxwI
+   AW+x+9zvEJRRIB5Qob6FXyUUzmwTDTOS6wPCQT+Z/4r+846KGawl8KSSS
+   wAtb1qWXQjZDVrECrwP9/6ypA4tvkBaFXF4cHJ5dIFXiugGs3b6LvUBYG
+   0LTpfd7FuJGYcjvZeAXRx5Hnegiskf6sdYz/P2ZaJJ4t1ME49DVwSWQwG
+   XmwBwd6AM51FlhLjKd9MMhkv4/V3LKu7b3RiZLnS5ssKcY6wFNTzIEuxR
+   6dkAeChLhPemDAEUVPbbab5shLCHiOvQw+pPR4VRn8AUcJmh6FqYpTIlp
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="444654230"
 X-IronPort-AV: E=Sophos;i="6.00,239,1681196400"; 
-   d="scan'208";a="347932658"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 02:27:31 -0700
+   d="scan'208";a="444654230"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 02:28:07 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="688946802"
+X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="856017131"
 X-IronPort-AV: E=Sophos;i="6.00,239,1681196400"; 
-   d="scan'208";a="688946802"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 02:27:27 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-        by kekkonen.fi.intel.com (Postfix) with SMTP id F3AFB1216CF;
-        Tue, 13 Jun 2023 12:27:24 +0300 (EEST)
-Date:   Tue, 13 Jun 2023 09:27:24 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Damien Le Moal <dlemoal@kernel.org>,
-        Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: Re: [PATCH v2 3/3] ata: ahci_platform: Make code agnostic to OF/ACPI
-Message-ID: <ZIg2fAMxhHgHY1Lk@kekkonen.localdomain>
-References: <20230609154900.43024-1-andriy.shevchenko@linux.intel.com>
- <20230609154900.43024-4-andriy.shevchenko@linux.intel.com>
- <ZIbgLIEylgZsxXAB@kekkonen.localdomain>
- <ZIc3enu+EW93WjW7@smile.fi.intel.com>
+   d="scan'208";a="856017131"
+Received: from abujor-mobl.ger.corp.intel.com ([10.249.44.113])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 02:28:03 -0700
+Date:   Tue, 13 Jun 2023 12:28:01 +0300 (EEST)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Michal Wilczynski <michal.wilczynski@intel.com>
+cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
+        andriy.shevchenko@intel.com, pali@kernel.org, hdegoede@redhat.com,
+        markgross@kernel.org, fengguang.wu@intel.com,
+        dvhart@linux.intel.com, platform-driver-x86@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1] platform/x86/dell/dell-rbtn: Fix resources leaking
+ on error path
+In-Reply-To: <20230612090250.1417940-1-michal.wilczynski@intel.com>
+Message-ID: <27dfd35-1d9d-b52f-ee7-1a5b9b25794@linux.intel.com>
+References: <20230612090250.1417940-1-michal.wilczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZIc3enu+EW93WjW7@smile.fi.intel.com>
+Content-Type: multipart/mixed; BOUNDARY="8323329-1811702421-1686643242=:2099"
+Content-ID: <902feaef-9eb8-167d-8b1b-9a28d1c936b8@linux.intel.com>
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-On Mon, Jun 12, 2023 at 06:19:22PM +0300, Andy Shevchenko wrote:
-> On Mon, Jun 12, 2023 at 09:06:52AM +0000, Sakari Ailus wrote:
-> > On Fri, Jun 09, 2023 at 06:49:00PM +0300, Andy Shevchenko wrote:
+--8323329-1811702421-1686643242=:2099
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: 8BIT
+Content-ID: <e391539-a58-2e42-2fc3-bb836f9ca96@linux.intel.com>
+
+On Mon, 12 Jun 2023, Michal Wilczynski wrote:
+
+> Currently rbtn_add() in case of failure is leaking resources. Fix this
+> by adding a proper rollback. While at it, remove unnecessary assignment
+> of NULL to device->driver_data and unnecessary whitespace, plus add a
+> break for the default case in a switch.
 > 
-> ...
+> Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> Fixes: 817a5cdb40c8 ("dell-rbtn: Dell Airplane Mode Switch driver")
+> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/platform/x86/dell/dell-rbtn.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 > 
-> > > -	if (of_device_is_compatible(dev->of_node, "hisilicon,hisi-ahci"))
-> > > +	if (device_is_compatible(dev, "hisilicon,hisi-ahci"))
-> > >  		hpriv->flags |= AHCI_HFLAG_NO_FBS | AHCI_HFLAG_NO_NCQ;
-> > >  
-> > > -	port = acpi_device_get_match_data(dev);
-> > > +	port = device_get_match_data(dev);
-> > 
-> > There are just a handful of users for acpi_device_get_match_data() in the
-> > tree. The code could be moved to acpi_fwnode_device_get_match_data() after
-> > coverting these. May be out of scope of this set though.
-> 
-> Why do we need that one if we can use device_get_match_data() directly?
+> diff --git a/drivers/platform/x86/dell/dell-rbtn.c b/drivers/platform/x86/dell/dell-rbtn.c
+> index aa0e6c907494..e9b3f9c3ab7d 100644
+> --- a/drivers/platform/x86/dell/dell-rbtn.c
+> +++ b/drivers/platform/x86/dell/dell-rbtn.c
+> @@ -420,10 +420,12 @@ static int rbtn_add(struct acpi_device *device)
+>  		break;
+>  	default:
+>  		ret = -EINVAL;
+> +		break;
+>  	}
+> +	if (ret)
+> +		rbtn_acquire(device, false);
+>  
+>  	return ret;
+> -
+>  }
+>  
+>  static void rbtn_remove(struct acpi_device *device)
+> @@ -442,7 +444,6 @@ static void rbtn_remove(struct acpi_device *device)
+>  	}
+>  
+>  	rbtn_acquire(device, false);
+> -	device->driver_data = NULL;
+>  }
+>  
+>  static void rbtn_notify(struct acpi_device *device, u32 event)
 
-That was what I wanted to point your attention to. ;-)
-
-> It will be also flexible in case one of OF code will need something like
-> this (custom info structure for the respective compatible string).
-> That said, I don't think we need to change to acpi_*() whatever.
-
-I agree.
+I'm a bit worried the stable people might not like "these while at it 
+parts". Those changes too are all good but unrelated to the actual fix so 
+they should appear in their own patches.
 
 -- 
-Kind regards,
-
-Sakari Ailus
+ i.
+--8323329-1811702421-1686643242=:2099--
