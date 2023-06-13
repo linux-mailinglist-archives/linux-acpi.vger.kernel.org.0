@@ -2,48 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D54EB72DBCA
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jun 2023 09:58:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78A4272DBDF
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jun 2023 10:00:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240760AbjFMH61 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Jun 2023 03:58:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51632 "EHLO
+        id S240760AbjFMIAy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Jun 2023 04:00:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240721AbjFMH56 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Jun 2023 03:57:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAF0C1FC1;
-        Tue, 13 Jun 2023 00:57:09 -0700 (PDT)
+        with ESMTP id S240924AbjFMIAV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Jun 2023 04:00:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16A5D270E;
+        Tue, 13 Jun 2023 00:59:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F74C62A2C;
-        Tue, 13 Jun 2023 07:57:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410FFC433EF;
-        Tue, 13 Jun 2023 07:57:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D6EF6325C;
+        Tue, 13 Jun 2023 07:59:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 634F6C433EF;
+        Tue, 13 Jun 2023 07:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686643028;
-        bh=XZcRKllUDNwn2KB+yvdCn+WcXnldLMqtBn28JoqAwAs=;
+        s=korg; t=1686643177;
+        bh=q5quCZvUQGmqD8Ns5weWChZ5I+yTQoplfjbTAIFRrCA=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rVLOG4lJhh5nhCufoSbyVcE1QEDmhGeLg1W0JkZcRgXj1ET7Sg9f+xe2zE/Q197Y3
-         pJg0YJSvPPbAtn3qdfzqKSme8VbbTLoDV4NQKASwOWwN3eeLPOztUFwZQedHvBrXNt
-         2fFpF4Vqqn/rcBe0SNOrl9X+LuZBUDWMB49GFaP8=
-Date:   Tue, 13 Jun 2023 09:57:05 +0200
+        b=ws9TG3LoZc/UvWWoUbv6usy39ghWuR9Jd+eiYmnoKj0ppee0hmo526Bp9GVT6FP0L
+         aUVKcWkq/5YJ9hRflhG0pbaTdwnQYjINY7789y/dQSIsc/CnGgQTZ4eGQG14259+HZ
+         XrJh7/8XHX1kKlI3H7rPx1NtgD3yoIv4xSSwWw30=
+Date:   Tue, 13 Jun 2023 09:59:35 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Dave Jiang <dave.jiang@intel.com>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-cxl@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
-        rafael@kernel.org, jonathan.cameron@huawei.com
-Subject: Re: [PATCH v2] base/node / acpi: Change 'node_hmem_attrs' to
- 'access_coordinates'
-Message-ID: <2023061331-napkin-disburse-915d@gregkh>
-References: <168660916231.1965241.248859226126456131.stgit@djiang5-mobl3>
+To:     Avadhut Naik <Avadhut.Naik@amd.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, avadnaik@amd.com,
+        yazen.ghannam@amd.com, alexey.kardashevskiy@amd.com,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v3 2/3] fs: debugfs: Add write functionality to
+ debugfs blobs
+Message-ID: <2023061334-surplus-eclair-197a@gregkh>
+References: <20230612215139.5132-1-Avadhut.Naik@amd.com>
+ <20230612215139.5132-3-Avadhut.Naik@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <168660916231.1965241.248859226126456131.stgit@djiang5-mobl3>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+In-Reply-To: <20230612215139.5132-3-Avadhut.Naik@amd.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,42 +54,39 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 03:32:42PM -0700, Dave Jiang wrote:
-> Dan Williams suggested changing the struct 'node_hmem_attrs' to
-> 'access_coordinates' [1]. The struct is a container of r/w-latency and
-> r/w-bandwidth numbers. Moving forward, this container will also be used by
-> CXL to store the performance characteristics of each link hop in
-> the PCIE/CXL topology. So, where node_hmem_attrs is just the access
-> parameters of a memory-node, access_coordinates applies more broadly
-> to hardware topology characteristics. The observation is that seemed like
-> an excercise in having the application identify "where" it falls on a
-> spectrum of bandwidth and latency needs. For the tuple of read/write-latency
-> and read/write-bandwidth, "coordinates" is not a perfect fit. Sometimes it
-> is just conveying values in isolation and not a "location" relative to
-> other performance points, but in the end this data is used to identify the
-> performance operation point of a given memory-node. [2]
-> 
-> Link: http://lore.kernel.org/r/64471313421f7_1b66294d5@dwillia2-xfh.jf.intel.com.notmuch/
-> Link: https://lore.kernel.org/linux-cxl/645e6215ee0de_1e6f2945e@dwillia2-xfh.jf.intel.com.notmuch/
-> Suggested-by: Dan Williams <dan.j.williams@intel.com>
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> 
-> ---
-> 
-> Hi Greg and Rafael,
-> please consider ACK this patch and Dan can take it through the
-> CXL upstream tree. The remaining ACPI [1] and CXL [2] patches for enabling
-> CXL QoS class data have dependency on this patch. Thank you!
-> 
-> [1]: https://lore.kernel.org/linux-cxl/168333141100.2290593.16294670316057617744.stgit@djiang5-mobl3/T/#t
-> [2]: https://lore.kernel.org/linux-cxl/168451588868.3470703.3527256859632103687.stgit@djiang5-mobl3/T/#t
+On Mon, Jun 12, 2023 at 09:51:38PM +0000, Avadhut Naik wrote:
+>  /**
+> - * debugfs_create_blob - create a debugfs file that is used to read a binary blob
+> + * debugfs_create_blob - create a debugfs file that is used to read and write
+> + * a binary blob
+>   * @name: a pointer to a string containing the name of the file to create.
+> - * @mode: the read permission that the file should have (other permissions are
+> - *	  masked out)
+> + * @mode: the permission that the file should have
+>   * @parent: a pointer to the parent dentry for this file.  This should be a
+>   *          directory dentry if set.  If this parameter is %NULL, then the
+>   *          file will be created in the root of the debugfs filesystem.
+> @@ -992,7 +1010,7 @@ static const struct file_operations fops_blob = {
+>   *
+>   * This function creates a file in debugfs with the given name that exports
+>   * @blob->data as a binary blob. If the @mode variable is so set it can be
+> - * read from. Writing is not supported.
+> + * read from and written to.
+>   *
+>   * This function will return a pointer to a dentry if it succeeds.  This
+>   * pointer must be passed to the debugfs_remove() function when the file is
+> @@ -1007,7 +1025,7 @@ struct dentry *debugfs_create_blob(const char *name, umode_t mode,
+>  				   struct dentry *parent,
+>  				   struct debugfs_blob_wrapper *blob)
+>  {
+> -	return debugfs_create_file_unsafe(name, mode & 0444, parent, blob, &fops_blob);
+> +	return debugfs_create_file_unsafe(name, mode, parent, blob, &fops_blob);
 
-Isn't this going to conflict with the version that I have in the
-driver-core-next tree as commit 7810f4dc8795 ("base/node: Use 'property'
-to identify an access parameter")?
+Have you audited all calls to this function to verify that you haven't
+just turned on write access to some debugfs files?
 
-Or was that a different thing?
+Why not rename this to debugfs_create_blob_wo() and then make a new
+debugfs_create_blob_rw() call to ensure that it all is ok?
 
 thanks,
 
